@@ -2,70 +2,123 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7748514AD4
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 May 2019 15:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2015415596
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 May 2019 23:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726016AbfEFNV6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 6 May 2019 09:21:58 -0400
-Received: from sonic310-13.consmr.mail.bf2.yahoo.com ([74.6.135.123]:33730
-        "EHLO sonic310-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725813AbfEFNV6 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 6 May 2019 09:21:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1557148916; bh=M+2BQM2x3GSy/dmtDG0o07y3ZYWK28QOQCLRz1DcS2Q=; h=Date:From:Reply-To:Subject:References:From:Subject; b=YN2n5U6yzr0xVOrxiJLS8WbTuxUU6/5/im4x1Ch8qEFiEPmri+fkTBihFd0NOetJK/9AFdyjBqePypI5SOezLYKLEv7OlUqp5+L8aIst6LjZ/IFB3CTRRqYLdMffeHu2HGmGScGcot8GVxtssmzalSaULi4I+XzHMvVwp65udKL5l3eVZCG6aZsLOTjR6m3sMxrgGuhRGa3ytaM5/2zQi6K4h7BfFF8zo3zh0ixkAPY2oW+mLAz0VYbNWeH7k5UKhUQw4rnCjRbDGNhpMwpKwmPLkO1+GgH6Bu+zxdv/OTxR6NXTqymYyflpuCYDJRymj7M1QvRDgcBzqBrYvtx5sw==
-X-YMail-OSG: gb8zDiIVM1nQaKuFqQeKaRw6T1XuVDOdAG8YB54WATpYu.uyVvaFo4btS8XEPHZ
- VOTgm3e4_TTXwsGMlRAgtwyeeoHjOUQSqTd_pR82R6s5YM4RVY9dgbS3tKQbgovnQgiSaUA367bN
- SU0k3dJSOkNsDrvhKQPtL5tsLSOBNSIo8OIYeb1TRHLVZbPQLM60uwb5sZ8r5ETk.lU.SbZJzxcw
- 0BCIhjoAXbVGL07rTlkVUD0ovhAt3ttKQIQ.E0vslb.tCjaQtjKo8HN2kroxj7QijqEdw3D0MAtS
- odQhED0OeRTC8p2YN.Tw0GC_BoiIBb0Cldp3TLrTz2mt5e5Gx1_mmjzpo.GJ7OeN4nss5IHtrPHD
- BZexKr7T5ae8kFYJaksHomuqANMDzrg9lUvqB7G0RlKlPAqn_29ZHPRXP1epCN84alNywiE4wp2J
- qlDVrwtT5vBR7txnQIpXFLlsJ01HmOh3j3XLXiiIbMESJLMYeLeaHVGg177N2l1Q4QJQ01fMknKT
- hc0TBcZlNIOvDMUv5gOBLqzQItgD1.Kn14_CNK1QJKG37ejYHlkR8cwnsH200Rim9hK95cp2DAEy
- aQl37mvq.PVfYWdAsbsUAV7RdyfYlVt4GJUx8uiFkwWWMr3giNFOHrXPpcV5bFumO4AQphWeLF7l
- TtI_vwKXtQ.MYYsGwmCOGXMiB9ZQxKDAHbE6Vm0j1i_gfRKzogKa055Ixa46BFUMWVgjnfkYqywq
- 8blkkUabQnzEWtyUUDzJDLtLTRo0b7lm9GuXxnfDIWbQPa3ZyMpLS35K_SwsfvvUq105SMQyeo1i
- NtKNJgXGSP03FEHxe4tHNVcRhz_Fcvw8YQ1j0eAEkSUanwqPRq0whFY_F20Jk09PJSuyU8P5RBZC
- Mni.f_GNvIrtjk_4.p6mOz2JQa9am4w7dwHB0p_iXoWpt6IjNjikedj7yDKHaz4fnWObKw0IfCfu
- QrVg4qAebbfZdDsJcs3F6N03VXNtkmhMHHFKT86H.DJfJXc3GRbfw6Wjr6DDiZkrNP_oXZU10weP
- gFRCVY2jQkmdxBo__4LApokkV4VB0l3_YiZgYbKz6_6kK9VQ9vy8PFrwW87nLFSmmiGlTvVDMe0.
- KG7hURp7iZ35sbEPrysUPwe129qA4YHkF9Ett8YcZdLzAorn2Y.x0FY233KOxbZKjUg--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.bf2.yahoo.com with HTTP; Mon, 6 May 2019 13:21:56 +0000
-Date:   Mon, 6 May 2019 13:21:51 +0000 (UTC)
-From:   Aisha Gaddafi <aishagaddafi721@aol.com>
-Reply-To: Aisha Gaddafi <gaisha983@gmail.com>
-Message-ID: <1284120297.625970.1557148911724@mail.yahoo.com>
-Subject: Hello My Beloved One, i need your assistance
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1284120297.625970.1557148911724.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.13583 YahooMailBasic Mozilla/5.0 (Windows NT 6.1; rv:66.0) Gecko/20100101 Firefox/66.0
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726752AbfEFV1r (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 6 May 2019 17:27:47 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:34409 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726956AbfEFV0m (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 May 2019 17:26:42 -0400
+Received: by mail-io1-f67.google.com with SMTP id g84so4445493ioa.1;
+        Mon, 06 May 2019 14:26:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
+         :reply-to:organization;
+        bh=rllXTOSI+l4dOxVedgJq5yZYXTiqRbCrivN8bEva+1o=;
+        b=XbAHGi+9ZzQTmKRVjGiRMM8+/MG7wQmGfl1AT3d83I3LOq+YByi/vjZO5G7stu1PbA
+         5Srl3aOE8jVsnuPUIpB8xIG3rHJ+m22o3KXiUx6h3Z6MU5ZG4YEBOVyU3X+zlx7M3pua
+         vZ+PXSItLRIWUvOrdXSq//nnufPmXSjzLYXjU9dcK/9ojo780LoplcEWBvWWLqnVG+20
+         ptzyHH/YK1A7o2iAKUB0RsV8Dff25+FuR+rMPtKorX4jjDTlTDgriJhn6dcdzWZzmnRC
+         n7Rx5ro96BgyYCrjvZ+72rQyKntQOZdozbUu7xBBHY70cX9eEUfXS4kXJqjACf3vvxfh
+         WFyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :in-reply-to:references:reply-to:organization;
+        bh=rllXTOSI+l4dOxVedgJq5yZYXTiqRbCrivN8bEva+1o=;
+        b=hqNBc1ow6w8um+N12wqQMzVqMqFXAqnGxvr1fiDxc4n5GDvKeYswHvHupg0a994OMI
+         s9uY2EB3hw3l9z7U88hm4sgsfkPDL29zJkdzVi4UX57QRdVSUs/iOvpvLBnq7Mgmr7gK
+         jnG8WcJL8d3Arz/I7Me1swWNQ74JNBoSDCBWc3pIGjfJlTurk6LdY+mENIh5phXS5tW/
+         YLWXw1MR8gHUMK/a3hxN+u3NpuKz1m28EW0MeoDGXIZWU7vb1segNaZe5oaqkykusZEZ
+         6cvTBTtDae4Lj1jT413db5xM9AZfNJOlmL5KDni+se1hr5QhCqWeGJAGaJU3KtwURBE8
+         q9Cg==
+X-Gm-Message-State: APjAAAVy9fd2LM2pbmhN4kcESlHa3UjyJ3oKav1pHdUpkRDiuje55uCS
+        83eg094kTAG+ZnwkkeOAFN0=
+X-Google-Smtp-Source: APXvYqx6mYHaqoZF3+81oCwrxQCD2jqxgtmOU5IIWRQ3TMRVtR+/J9jOIu+qYpNcf2VSTlIjYGMEBg==
+X-Received: by 2002:a05:6602:20cc:: with SMTP id 12mr3027644ioz.6.1557178001737;
+        Mon, 06 May 2019 14:26:41 -0700 (PDT)
+Received: from nuc8.lan (h69-131-112-51.cntcnh.dsl.dynamic.tds.net. [69.131.112.51])
+        by smtp.gmail.com with ESMTPSA id v25sm4268009ioh.81.2019.05.06.14.26.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 May 2019 14:26:41 -0700 (PDT)
+From:   Len Brown <lenb@kernel.org>
+To:     x86@kernel.org
+Cc:     linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
+Subject: [PATCH 13/22] hwmon/coretemp: Support multi-die/package
+Date:   Mon,  6 May 2019 17:26:08 -0400
+Message-Id: <75731eb53db844af1559aa92f257cb9ca8c2a70a.1557177585.git.len.brown@intel.com>
+X-Mailer: git-send-email 2.18.0-rc0
+In-Reply-To: <6f53f0e494d743c79e18f6e3a98085711e6ddd0c.1557177585.git.len.brown@intel.com>
+References: <6f53f0e494d743c79e18f6e3a98085711e6ddd0c.1557177585.git.len.brown@intel.com>
+Reply-To: Len Brown <lenb@kernel.org>
+Organization: Intel Open Source Technology Center
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear Friend,
+From: Zhang Rui <rui.zhang@intel.com>
 
-I came across your e-mail contact prior a private search while in need of 
-your assistance. My name is Aisha  Gaddafi a single Mother and a Widow with 
-three Children. I am the only biological Daughter of late Libyan President 
-(Late Colonel Muammar Gaddafi).
+Package temperature sensors are actually implemented in hardware per-die.
 
-I have investment funds worth Twenty Seven Million Five Hundred Thousand 
-United State Dollar ($27.500.000.00 ) and i need a trusted investment 
-Manager/Partner because of my current refugee status, however, I am 
-interested in you for investment project assistance in your country, may be 
-from there, we can build business relationship in the nearest future.
+Update coretemp to be "die-aware", so it can expose mulitple sensors
+per package, instead of just one.  No change to single-die/package
+systems.
 
-I am willing to negotiate investment/business profit sharing ratio with you 
-base on the future investment earning profits.
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-pm@vger.kernel.org
+Cc: linux-hwmon@vger.kernel.org
+---
+ drivers/hwmon/coretemp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-If you are willing to handle this project on my behalf kindly reply urgent 
-to enable me provide you more information about the investment funds.
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index 5d34f7271e67..c64ce32d3214 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -435,7 +435,7 @@ static int chk_ucode_version(unsigned int cpu)
+ 
+ static struct platform_device *coretemp_get_pdev(unsigned int cpu)
+ {
+-	int pkgid = topology_logical_package_id(cpu);
++	int pkgid = topology_logical_die_id(cpu);
+ 
+ 	if (pkgid >= 0 && pkgid < max_packages)
+ 		return pkg_devices[pkgid];
+@@ -579,7 +579,7 @@ static struct platform_driver coretemp_driver = {
+ 
+ static struct platform_device *coretemp_device_add(unsigned int cpu)
+ {
+-	int err, pkgid = topology_logical_package_id(cpu);
++	int err, pkgid = topology_logical_die_id(cpu);
+ 	struct platform_device *pdev;
+ 
+ 	if (pkgid < 0)
+@@ -703,7 +703,7 @@ static int coretemp_cpu_offline(unsigned int cpu)
+ 	 * the rest.
+ 	 */
+ 	if (cpumask_empty(&pd->cpumask)) {
+-		pkg_devices[topology_logical_package_id(cpu)] = NULL;
++		pkg_devices[topology_logical_die_id(cpu)] = NULL;
+ 		platform_device_unregister(pdev);
+ 		return 0;
+ 	}
+@@ -741,7 +741,7 @@ static int __init coretemp_init(void)
+ 	if (!x86_match_cpu(coretemp_ids))
+ 		return -ENODEV;
+ 
+-	max_packages = topology_max_packages();
++	max_packages = topology_max_packages() * topology_max_die_per_package();
+ 	pkg_devices = kcalloc(max_packages, sizeof(struct platform_device *),
+ 			      GFP_KERNEL);
+ 	if (!pkg_devices)
+-- 
+2.18.0-rc0
 
-Your Urgent Reply Will Be Appreciated.
-
-Best Regards
-Mrs Aisha Gaddafi
