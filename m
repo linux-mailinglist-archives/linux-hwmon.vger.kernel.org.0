@@ -2,405 +2,568 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BB992AE9E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 27 May 2019 08:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2D5E2B88D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 27 May 2019 17:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726380AbfE0G1K (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 27 May 2019 02:27:10 -0400
-Received: from mga07.intel.com ([134.134.136.100]:4773 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726279AbfE0G1J (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 27 May 2019 02:27:09 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 May 2019 23:27:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,518,1549958400"; 
-   d="scan'208";a="178752039"
-Received: from hao-dev.bj.intel.com ([10.238.157.65])
-  by fmsmga002.fm.intel.com with ESMTP; 26 May 2019 23:27:03 -0700
-From:   Wu Hao <hao.wu@intel.com>
-To:     atull@kernel.org, mdf@kernel.org, jdelvare@suse.com,
-        linux@roeck-us.net, linux-fpga@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     linux-api@vger.kernel.org, Wu Hao <hao.wu@intel.com>,
-        Luwei Kang <luwei.kang@intel.com>,
-        Xu Yilun <yilun.xu@intel.com>
-Subject: [PATCH v3 3/3] fpga: dfl: fme: add power management support
-Date:   Mon, 27 May 2019 14:06:56 +0800
-Message-Id: <1558937216-12742-4-git-send-email-hao.wu@intel.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1558937216-12742-1-git-send-email-hao.wu@intel.com>
-References: <1558937216-12742-1-git-send-email-hao.wu@intel.com>
+        id S1726484AbfE0Po2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 27 May 2019 11:44:28 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:45214 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726329AbfE0Po2 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 27 May 2019 11:44:28 -0400
+Received: by mail-pg1-f194.google.com with SMTP id w34so4627345pga.12;
+        Mon, 27 May 2019 08:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cymuDkkdeUA6dQu4804UZ53+8s1kn44KvT3Gy/8/5pw=;
+        b=aF+E7FxFlZXeKiFJMb8QZsGxnENfVCNIhjjk9GhAmMK43KrrEWAUi+jzBnM1JdghMv
+         IHMzLiNw9BagwxoAeqIklAK0uKl+4L8NvDVNQeh4ddtbjzriBQ1uSeJMxbrtsXGm8Z3H
+         Xec0vPMVmzC+uYCwEu3kfLnM4MwF14x8qik0DaiShPA/52YkMDA0RDIOdrcjaLuqcZOl
+         hQb3+Tri+kPZg8560fg6xkdHZkIGSr/j0nuczvijvMDkPQeYENbvfqytEzFdKt6PNcpB
+         iHuDqlv0YEHrooJo158ADtbZbGFM0ql7W0odKDHt5SOcfcXpCbM1Ioi6uyxWAiOVFR8D
+         0NFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cymuDkkdeUA6dQu4804UZ53+8s1kn44KvT3Gy/8/5pw=;
+        b=aTaHxMZSdU6FSa9AH9NRWu+QTptxa/gFTtkUVymK/71Ktoe+Px3e2OjjTxst02j3QZ
+         cQQU9Ssqrg1IHi44gcu+iQJWcZXCwxj91tARVKkpthuaeNk/zvpbde5dH6N4QfKoMvbG
+         +lKR72FULDUpbOuUZmpsbyyaVorRft+tIlhz+De9sChSDNg+njwjOLN1nv1HIBUIfGxr
+         bo/rZkVULQjV1Zk2gvLHmFG3ouBDZ3PwHuS92M3Exp3HA9U+6i7FgLnZdjpqrqZxLIGz
+         /IspzAZoy7AvtBpnG3fi0cxSQF4ynpqklEMiR75jQavieQjjgF9/9LOiYaGTd0JwLHQi
+         qujg==
+X-Gm-Message-State: APjAAAW70hk3xXhITtLGDG7m0TH5nlgLoYVG/b48mabZDRoJNldRH2re
+        izZ4/vca43PqFCgZbvXkvINKK8bn
+X-Google-Smtp-Source: APXvYqz/dcKpT3lAo6MCPtHqRSEQZV/NgSYTsKsSG3fJ4EMAn8pkpf7vM1AKGTa+345uxstKF6cofA==
+X-Received: by 2002:a63:4422:: with SMTP id r34mr124980207pga.362.1558971867048;
+        Mon, 27 May 2019 08:44:27 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d35sm3976516pgb.55.2019.05.27.08.44.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 May 2019 08:44:25 -0700 (PDT)
+Subject: Re: [PATCH V5] net: phy: tja11xx: Add TJA11xx PHY driver
+To:     Marek Vasut <marex@denx.de>, netdev@vger.kernel.org
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+References: <20190517235123.32261-1-marex@denx.de>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <e5e36955-732f-4b5b-50f7-78609fcae888@roeck-us.net>
+Date:   Mon, 27 May 2019 08:44:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190517235123.32261-1-marex@denx.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This patch adds support for power management private feature under
-FPGA Management Engine (FME). This private feature driver registers
-a hwmon for power (power1_input), thresholds information, e.g.
-(power1_max / crit / max_alarm / crit_alarm) and also read-only sysfs
-interfaces for other power management information. For configuration,
-user could write threshold values via above power1_max / crit sysfs
-interface under hwmon too.
+On 5/17/19 4:51 PM, Marek Vasut wrote:
+> Add driver for the NXP TJA1100 and TJA1101 PHYs. These PHYs are special
+> BroadRReach 100BaseT1 PHYs used in automotive.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Heiner Kallweit <hkallweit1@gmail.com>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: linux-hwmon@vger.kernel.org
+> ---
+> V2: - Use phy_modify(), phy_{set,clear}_bits()
+>      - Drop enable argument of tja11xx_enable_link_control()
+>      - Use PHY_BASIC_T1_FEATURES and dont modify supported/advertised
+>        features in config_init callback
+>      - Use genphy_soft_reset() instead of opencoding the reset sequence.
+>      - Drop the aneg parts, since the PHY datasheet claims it does not
+>        support aneg
+> V3: - Replace clr with mask
+>      - Add hwmon support
+>      - Check commstat in tja11xx_read_status() only if link is up
+>      - Use PHY_ID_MATCH_MODEL()
+> V4: - Use correct bit in tja11xx_hwmon_read() hwmon_temp_crit_alarm
+>      - Use ENOMEM if devm_kstrdup() fails
+>      - Check $type in tja11xx_hwmon_read() in addition to $attr
+> V5: - Drop assignment of phydev->irq,pause,asym_pause
+> ---
+>   drivers/net/phy/Kconfig       |   6 +
+>   drivers/net/phy/Makefile      |   1 +
+>   drivers/net/phy/nxp-tja11xx.c | 423 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 430 insertions(+)
+>   create mode 100644 drivers/net/phy/nxp-tja11xx.c
+> 
+> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+> index d6299710d634..31478d8b3c0c 100644
+> --- a/drivers/net/phy/Kconfig
+> +++ b/drivers/net/phy/Kconfig
+> @@ -415,6 +415,12 @@ config NATIONAL_PHY
+>   	---help---
+>   	  Currently supports the DP83865 PHY.
+>   
+> +config NXP_TJA11XX_PHY
+> +	tristate "NXP TJA11xx PHYs support"
+> +	depends on HWMON
+> +	---help---
+> +	  Currently supports the NXP TJA1100 and TJA1101 PHY.
+> +
+>   config QSEMI_PHY
+>   	tristate "Quality Semiconductor PHYs"
+>   	---help---
+> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+> index 27d7f9f3b0de..bac339e09042 100644
+> --- a/drivers/net/phy/Makefile
+> +++ b/drivers/net/phy/Makefile
+> @@ -82,6 +82,7 @@ obj-$(CONFIG_MICROCHIP_PHY)	+= microchip.o
+>   obj-$(CONFIG_MICROCHIP_T1_PHY)	+= microchip_t1.o
+>   obj-$(CONFIG_MICROSEMI_PHY)	+= mscc.o
+>   obj-$(CONFIG_NATIONAL_PHY)	+= national.o
+> +obj-$(CONFIG_NXP_TJA11XX_PHY)	+= nxp-tja11xx.o
+>   obj-$(CONFIG_QSEMI_PHY)		+= qsemi.o
+>   obj-$(CONFIG_REALTEK_PHY)	+= realtek.o
+>   obj-$(CONFIG_RENESAS_PHY)	+= uPD60620.o
+> diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
+> new file mode 100644
+> index 000000000000..11b8701e78fd
+> --- /dev/null
+> +++ b/drivers/net/phy/nxp-tja11xx.c
+> @@ -0,0 +1,423 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* NXP TJA1100 BroadRReach PHY driver
+> + *
+> + * Copyright (C) 2018 Marek Vasut <marex@denx.de>
+> + */
+> +#include <linux/delay.h>
+> +#include <linux/ethtool.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mii.h>
+> +#include <linux/module.h>
+> +#include <linux/phy.h>
+> +#include <linux/hwmon.h>
+> +#include <linux/bitfield.h>
+> +
+> +#define PHY_ID_MASK			0xfffffff0
+> +#define PHY_ID_TJA1100			0x0180dc40
+> +#define PHY_ID_TJA1101			0x0180dd00
+> +
+> +#define MII_ECTRL			17
+> +#define MII_ECTRL_LINK_CONTROL		BIT(15)
+> +#define MII_ECTRL_POWER_MODE_MASK	GENMASK(14, 11)
+> +#define MII_ECTRL_POWER_MODE_NO_CHANGE	(0x0 << 11)
+> +#define MII_ECTRL_POWER_MODE_NORMAL	(0x3 << 11)
+> +#define MII_ECTRL_POWER_MODE_STANDBY	(0xc << 11)
+> +#define MII_ECTRL_CONFIG_EN		BIT(2)
+> +#define MII_ECTRL_WAKE_REQUEST		BIT(0)
+> +
+> +#define MII_CFG1			18
+> +#define MII_CFG1_AUTO_OP		BIT(14)
+> +#define MII_CFG1_SLEEP_CONFIRM		BIT(6)
+> +#define MII_CFG1_LED_MODE_MASK		GENMASK(5, 4)
+> +#define MII_CFG1_LED_MODE_LINKUP	0
+> +#define MII_CFG1_LED_ENABLE		BIT(3)
+> +
+> +#define MII_CFG2			19
+> +#define MII_CFG2_SLEEP_REQUEST_TO	GENMASK(1, 0)
+> +#define MII_CFG2_SLEEP_REQUEST_TO_16MS	0x3
+> +
+> +#define MII_INTSRC			21
+> +#define MII_INTSRC_TEMP_ERR		BIT(1)
+> +#define MII_INTSRC_UV_ERR		BIT(3)
+> +
+> +#define MII_COMMSTAT			23
+> +#define MII_COMMSTAT_LINK_UP		BIT(15)
+> +
+> +#define MII_GENSTAT			24
+> +#define MII_GENSTAT_PLL_LOCKED		BIT(14)
+> +
+> +#define MII_COMMCFG			27
+> +#define MII_COMMCFG_AUTO_OP		BIT(15)
+> +
+> +struct tja11xx_priv {
+> +	char		*hwmon_name;
+> +	struct device	*hwmon_dev;
+> +};
+> +
+> +struct tja11xx_phy_stats {
+> +	const char	*string;
+> +	u8		reg;
+> +	u8		off;
+> +	u16		mask;
+> +};
+> +
+> +static struct tja11xx_phy_stats tja11xx_hw_stats[] = {
+> +	{ "phy_symbol_error_count", 20, 0, GENMASK(15, 0) },
+> +	{ "phy_polarity_detect", 25, 6, BIT(6) },
+> +	{ "phy_open_detect", 25, 7, BIT(7) },
+> +	{ "phy_short_detect", 25, 8, BIT(8) },
+> +	{ "phy_rem_rcvr_count", 26, 0, GENMASK(7, 0) },
+> +	{ "phy_loc_rcvr_count", 26, 8, GENMASK(15, 8) },
+> +};
+> +
+> +static int tja11xx_check(struct phy_device *phydev, u8 reg, u16 mask, u16 set)
+> +{
+> +	int i, ret;
+> +
+> +	for (i = 0; i < 200; i++) {
+> +		ret = phy_read(phydev, reg);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		if ((ret & mask) == set)
+> +			return 0;
+> +
+> +		usleep_range(100, 150);
+> +	}
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +static int phy_modify_check(struct phy_device *phydev, u8 reg,
+> +			    u16 mask, u16 set)
+> +{
+> +	int ret;
+> +
+> +	ret = phy_modify(phydev, reg, mask, set);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return tja11xx_check(phydev, reg, mask, set);
+> +}
+> +
+> +static int tja11xx_enable_reg_write(struct phy_device *phydev)
+> +{
+> +	return phy_set_bits(phydev, MII_ECTRL, MII_ECTRL_CONFIG_EN);
+> +}
+> +
+> +static int tja11xx_enable_link_control(struct phy_device *phydev)
+> +{
+> +	return phy_set_bits(phydev, MII_ECTRL, MII_ECTRL_LINK_CONTROL);
+> +}
+> +
+> +static int tja11xx_wakeup(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = phy_read(phydev, MII_ECTRL);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	switch (ret & MII_ECTRL_POWER_MODE_MASK) {
+> +	case MII_ECTRL_POWER_MODE_NO_CHANGE:
+> +		break;
+> +	case MII_ECTRL_POWER_MODE_NORMAL:
+> +		ret = phy_set_bits(phydev, MII_ECTRL, MII_ECTRL_WAKE_REQUEST);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = phy_clear_bits(phydev, MII_ECTRL, MII_ECTRL_WAKE_REQUEST);
+> +		if (ret)
+> +			return ret;
+> +		break;
+> +	case MII_ECTRL_POWER_MODE_STANDBY:
+> +		ret = phy_modify_check(phydev, MII_ECTRL,
+> +				       MII_ECTRL_POWER_MODE_MASK,
+> +				       MII_ECTRL_POWER_MODE_STANDBY);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = phy_modify(phydev, MII_ECTRL, MII_ECTRL_POWER_MODE_MASK,
+> +				 MII_ECTRL_POWER_MODE_NORMAL);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = phy_modify_check(phydev, MII_GENSTAT,
+> +				       MII_GENSTAT_PLL_LOCKED,
+> +				       MII_GENSTAT_PLL_LOCKED);
+> +		if (ret)
+> +			return ret;
+> +
+> +		return tja11xx_enable_link_control(phydev);
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int tja11xx_soft_reset(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = tja11xx_enable_reg_write(phydev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return genphy_soft_reset(phydev);
+> +}
+> +
+> +static int tja11xx_config_init(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = tja11xx_enable_reg_write(phydev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	phydev->autoneg = AUTONEG_DISABLE;
+> +	phydev->speed = SPEED_100;
+> +	phydev->duplex = DUPLEX_FULL;
+> +
+> +	switch (phydev->phy_id & PHY_ID_MASK) {
+> +	case PHY_ID_TJA1100:
+> +		ret = phy_modify(phydev, MII_CFG1,
+> +				 MII_CFG1_AUTO_OP | MII_CFG1_LED_MODE_MASK |
+> +				 MII_CFG1_LED_ENABLE,
+> +				 MII_CFG1_AUTO_OP | MII_CFG1_LED_MODE_LINKUP |
+> +				 MII_CFG1_LED_ENABLE);
+> +		if (ret)
+> +			return ret;
+> +		break;
+> +	case PHY_ID_TJA1101:
+> +		ret = phy_set_bits(phydev, MII_COMMCFG, MII_COMMCFG_AUTO_OP);
+> +		if (ret)
+> +			return ret;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = phy_clear_bits(phydev, MII_CFG1, MII_CFG1_SLEEP_CONFIRM);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = phy_modify(phydev, MII_CFG2, MII_CFG2_SLEEP_REQUEST_TO,
+> +			 MII_CFG2_SLEEP_REQUEST_TO_16MS);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = tja11xx_wakeup(phydev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* ACK interrupts by reading the status register */
+> +	ret = phy_read(phydev, MII_INTSRC);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int tja11xx_read_status(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = genphy_update_link(phydev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (phydev->link) {
+> +		ret = phy_read(phydev, MII_COMMSTAT);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		if (!(ret & MII_COMMSTAT_LINK_UP))
+> +			phydev->link = 0;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int tja11xx_get_sset_count(struct phy_device *phydev)
+> +{
+> +	return ARRAY_SIZE(tja11xx_hw_stats);
+> +}
+> +
+> +static void tja11xx_get_strings(struct phy_device *phydev, u8 *data)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(tja11xx_hw_stats); i++) {
+> +		strncpy(data + i * ETH_GSTRING_LEN,
+> +			tja11xx_hw_stats[i].string, ETH_GSTRING_LEN);
+> +	}
+> +}
+> +
+> +static void tja11xx_get_stats(struct phy_device *phydev,
+> +			      struct ethtool_stats *stats, u64 *data)
+> +{
+> +	int i, ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(tja11xx_hw_stats); i++) {
+> +		ret = phy_read(phydev, tja11xx_hw_stats[i].reg);
+> +		if (ret < 0)
+> +			data[i] = U64_MAX;
+> +		else {
+> +			data[i] = ret & tja11xx_hw_stats[i].mask;
+> +			data[i] >>= tja11xx_hw_stats[i].off;
+> +		}
+> +	}
+> +}
+> +
+> +static int tja11xx_hwmon_read(struct device *dev,
+> +			      enum hwmon_sensor_types type,
+> +			      u32 attr, int channel, long *value)
+> +{
+> +	struct phy_device *phydev = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	if (type == hwmon_in && attr == hwmon_in_lcrit_alarm) {
+> +		ret = phy_read(phydev, MII_INTSRC);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		*value = !!(ret & MII_INTSRC_TEMP_ERR);
+> +		return 0;
+> +	}
+> +
+> +	if (type == hwmon_temp && attr == hwmon_temp_crit_alarm) {
+> +		ret = phy_read(phydev, MII_INTSRC);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		*value = !!(ret & MII_INTSRC_UV_ERR);
+> +		return 0;
+> +	}
+> +
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static umode_t tja11xx_hwmon_is_visible(const void *data,
+> +					enum hwmon_sensor_types type,
+> +					u32 attr, int channel)
+> +{
+> +	if (type == hwmon_in && attr == hwmon_in_lcrit_alarm)
+> +		return 0444;
+> +
+> +	if (type == hwmon_temp && attr == hwmon_temp_crit_alarm)
+> +		return 0444;
+> +
+> +	return 0;
+> +}
+> +
+> +static u32 tja11xx_hwmon_in_config[] = {
+> +	HWMON_I_LCRIT_ALARM,
+> +	0
+> +};
+> +
+> +static const struct hwmon_channel_info tja11xx_hwmon_in = {
+> +	.type		= hwmon_in,
+> +	.config		= tja11xx_hwmon_in_config,
+> +};
+> +
+> +static u32 tja11xx_hwmon_temp_config[] = {
+> +	HWMON_T_CRIT_ALARM,
+> +	0
+> +};
+> +
+> +static const struct hwmon_channel_info tja11xx_hwmon_temp = {
+> +	.type		= hwmon_temp,
+> +	.config		= tja11xx_hwmon_temp_config,
+> +};
+> +
+> +static const struct hwmon_channel_info *tja11xx_hwmon_info[] = {
+> +	&tja11xx_hwmon_in,
+> +	&tja11xx_hwmon_temp,
+> +	NULL
+> +};
+> +
+You might want to consider using the new HWMON_CHANNEL_INFO() macro
+to simplify above boilerplate code.
 
-Signed-off-by: Luwei Kang <luwei.kang@intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@intel.com>
-Signed-off-by: Wu Hao <hao.wu@intel.com>
-----
-v2: create a dfl_fme_power hwmon to expose power sysfs interfaces.
-    move all sysfs interfaces under hwmon
-        consumed          --> hwmon power1_input
-        threshold1        --> hwmon power1_cap
-        threshold2        --> hwmon power1_crit
-        threshold1_status --> hwmon power1_cap_status
-        threshold2_status --> hwmon power1_crit_status
-        xeon_limit        --> hwmon power1_xeon_limit
-        fpga_limit        --> hwmon power1_fpga_limit
-        ltr               --> hwmon power1_ltr
-v3: rename some hwmon sysfs interfaces to follow hwmon ABI.
-	power1_cap         --> power1_max
-	power1_cap_status  --> power1_max_alarm
-	power1_crit_status --> power1_crit_alarm
-    update sysfs doc for above sysfs interface changes.
-    replace scnprintf with sprintf in sysfs interface.
----
- Documentation/ABI/testing/sysfs-platform-dfl-fme |  67 +++++++
- drivers/fpga/dfl-fme-main.c                      | 230 +++++++++++++++++++++++
- 2 files changed, 297 insertions(+)
+Guenter
 
-diff --git a/Documentation/ABI/testing/sysfs-platform-dfl-fme b/Documentation/ABI/testing/sysfs-platform-dfl-fme
-index 0a0b7b9..49c44f7 100644
---- a/Documentation/ABI/testing/sysfs-platform-dfl-fme
-+++ b/Documentation/ABI/testing/sysfs-platform-dfl-fme
-@@ -220,6 +220,7 @@ Contact:	Wu Hao <hao.wu@intel.com>
- Description:	Read-Only. Read this file to get the name of hwmon device, it
- 		supports values:
- 		    'dfl_fme_thermal' - thermal hwmon device name
-+		    'dfl_fme_power'   - power hwmon device name
- 
- What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/temp1_input
- Date:		May 2019
-@@ -276,3 +277,69 @@ Description:	Read-Only. Read this file to get the policy of hardware threshold1
- 		(see 'temp1_max'). It only supports two values (policies):
- 		    0 - AP2 state (90% throttling)
- 		    1 - AP1 state (50% throttling)
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_input
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-Only. It returns current FPGA power consumption in uW.
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_max
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-Write. Read this file to get current hardware power
-+		threshold1 in uW. If power consumption rises at or above
-+		this threshold, hardware starts 50% throttling.
-+		Write this file to set current hardware power threshold1 in uW.
-+		As hardware only accepts values in Watts, so input value will
-+		be round down per Watts (< 1 watts part will be discarded).
-+		Write fails with -EINVAL if input parsing fails or input isn't
-+		in the valid range (0 - 127000000 uW).
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_crit
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-Write. Read this file to get current hardware power
-+		threshold2 in uW. If power consumption rises at or above
-+		this threshold, hardware starts 90% throttling.
-+		Write this file to set current hardware power threshold2 in uW.
-+		As hardware only accepts values in Watts, so input value will
-+		be round down per Watts (< 1 watts part will be discarded).
-+		Write fails with -EINVAL if input parsing fails or input isn't
-+		in the valid range (0 - 127000000 uW).
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_max_alarm
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-only. It returns 1 if power consumption is currently at or
-+		above hardware threshold1 (see 'power1_max'), otherwise 0.
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_crit_alarm
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-only. It returns 1 if power consumption is currently at or
-+		above hardware threshold2 (see 'power1_crit'), otherwise 0.
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_xeon_limit
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-Only. It returns power limit for XEON in uW.
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_fpga_limit
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-Only. It returns power limit for FPGA in uW.
-+
-+What:		/sys/bus/platform/devices/dfl-fme.0/hwmon/hwmonX/power1_ltr
-+Date:		May 2019
-+KernelVersion:	5.3
-+Contact:	Wu Hao <hao.wu@intel.com>
-+Description:	Read-only. Read this file to get current Latency Tolerance
-+		Reporting (ltr) value. This ltr impacts the CPU low power
-+		state in integrated solution.
-diff --git a/drivers/fpga/dfl-fme-main.c b/drivers/fpga/dfl-fme-main.c
-index 91152d5..d6d4ab8 100644
---- a/drivers/fpga/dfl-fme-main.c
-+++ b/drivers/fpga/dfl-fme-main.c
-@@ -409,6 +409,232 @@ static void fme_thermal_mgmt_uinit(struct platform_device *pdev,
- 	.uinit = fme_thermal_mgmt_uinit,
- };
- 
-+#define FME_PWR_STATUS		0x8
-+#define FME_LATENCY_TOLERANCE	BIT_ULL(18)
-+#define PWR_CONSUMED		GENMASK_ULL(17, 0)
-+
-+#define FME_PWR_THRESHOLD	0x10
-+#define PWR_THRESHOLD1		GENMASK_ULL(6, 0)	/* in Watts */
-+#define PWR_THRESHOLD2		GENMASK_ULL(14, 8)	/* in Watts */
-+#define PWR_THRESHOLD_MAX	0x7f			/* in Watts */
-+#define PWR_THRESHOLD1_STATUS	BIT_ULL(16)
-+#define PWR_THRESHOLD2_STATUS	BIT_ULL(17)
-+
-+#define FME_PWR_XEON_LIMIT	0x18
-+#define XEON_PWR_LIMIT		GENMASK_ULL(14, 0)	/* in 0.1 Watts */
-+#define XEON_PWR_EN		BIT_ULL(15)
-+#define FME_PWR_FPGA_LIMIT	0x20
-+#define FPGA_PWR_LIMIT		GENMASK_ULL(14, 0)	/* in 0.1 Watts */
-+#define FPGA_PWR_EN		BIT_ULL(15)
-+
-+#define PWR_THRESHOLD_MAX_IN_UW (PWR_THRESHOLD_MAX * 1000000)
-+
-+static int power_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
-+			    u32 attr, int channel, long *val)
-+{
-+	struct dfl_feature *feature = dev_get_drvdata(dev);
-+	u64 v;
-+
-+	switch (attr) {
-+	case hwmon_power_input:
-+		v = readq(feature->ioaddr + FME_PWR_STATUS);
-+		*val = (long)(FIELD_GET(PWR_CONSUMED, v) * 1000000);
-+		break;
-+	case hwmon_power_max:
-+		v = readq(feature->ioaddr + FME_PWR_THRESHOLD);
-+		*val = (long)(FIELD_GET(PWR_THRESHOLD1, v) * 1000000);
-+		break;
-+	case hwmon_power_crit:
-+		v = readq(feature->ioaddr + FME_PWR_THRESHOLD);
-+		*val = (long)(FIELD_GET(PWR_THRESHOLD2, v) * 1000000);
-+		break;
-+	case hwmon_power_max_alarm:
-+		v = readq(feature->ioaddr + FME_PWR_THRESHOLD);
-+		*val = (long)FIELD_GET(PWR_THRESHOLD1_STATUS, v);
-+		break;
-+	case hwmon_power_crit_alarm:
-+		v = readq(feature->ioaddr + FME_PWR_THRESHOLD);
-+		*val = (long)FIELD_GET(PWR_THRESHOLD2_STATUS, v);
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+static int power_hwmon_write(struct device *dev, enum hwmon_sensor_types type,
-+			     u32 attr, int channel, long val)
-+{
-+	struct dfl_feature_platform_data *pdata = dev_get_platdata(dev->parent);
-+	struct dfl_feature *feature = dev_get_drvdata(dev);
-+	int ret = 0;
-+	u64 v;
-+
-+	if (val < 0 || val > PWR_THRESHOLD_MAX_IN_UW)
-+		return -EINVAL;
-+
-+	val = val / 1000000;
-+
-+	mutex_lock(&pdata->lock);
-+
-+	switch (attr) {
-+	case hwmon_power_max:
-+		v = readq(feature->ioaddr + FME_PWR_THRESHOLD);
-+		v &= ~PWR_THRESHOLD1;
-+		v |= FIELD_PREP(PWR_THRESHOLD1, val);
-+		writeq(v, feature->ioaddr + FME_PWR_THRESHOLD);
-+		break;
-+	case hwmon_power_crit:
-+		v = readq(feature->ioaddr + FME_PWR_THRESHOLD);
-+		v &= ~PWR_THRESHOLD2;
-+		v |= FIELD_PREP(PWR_THRESHOLD2, val);
-+		writeq(v, feature->ioaddr + FME_PWR_THRESHOLD);
-+		break;
-+	default:
-+		ret = -EOPNOTSUPP;
-+		break;
-+	}
-+
-+	mutex_unlock(&pdata->lock);
-+
-+	return ret;
-+}
-+
-+static umode_t power_hwmon_attrs_visible(const void *drvdata,
-+					 enum hwmon_sensor_types type,
-+					 u32 attr, int channel)
-+{
-+	switch (attr) {
-+	case hwmon_power_input:
-+	case hwmon_power_max_alarm:
-+	case hwmon_power_crit_alarm:
-+		return 0444;
-+	case hwmon_power_max:
-+	case hwmon_power_crit:
-+		return 0644;
-+	}
-+
-+	return 0;
-+}
-+
-+static const u32 power_hwmon_config[] = {
-+	HWMON_P_INPUT | HWMON_P_MAX | HWMON_P_CRIT |
-+	HWMON_P_MAX_ALARM | HWMON_P_CRIT_ALARM,
-+	0
-+};
-+
-+static const struct hwmon_channel_info hwmon_pwr_info = {
-+	.type = hwmon_power,
-+	.config = power_hwmon_config,
-+};
-+
-+static const struct hwmon_channel_info *power_hwmon_info[] = {
-+	&hwmon_pwr_info,
-+	NULL
-+};
-+
-+static const struct hwmon_ops power_hwmon_ops = {
-+	.is_visible = power_hwmon_attrs_visible,
-+	.read = power_hwmon_read,
-+	.write = power_hwmon_write,
-+};
-+
-+static const struct hwmon_chip_info power_hwmon_chip_info = {
-+	.ops = &power_hwmon_ops,
-+	.info = power_hwmon_info,
-+};
-+
-+static ssize_t power1_xeon_limit_show(struct device *dev,
-+				      struct device_attribute *attr, char *buf)
-+{
-+	struct dfl_feature *feature = dev_get_drvdata(dev);
-+	u16 xeon_limit = 0;
-+	u64 v;
-+
-+	v = readq(feature->ioaddr + FME_PWR_XEON_LIMIT);
-+
-+	if (FIELD_GET(XEON_PWR_EN, v))
-+		xeon_limit = FIELD_GET(XEON_PWR_LIMIT, v);
-+
-+	return sprintf(buf, "%u\n", xeon_limit * 100000);
-+}
-+
-+static ssize_t power1_fpga_limit_show(struct device *dev,
-+				      struct device_attribute *attr, char *buf)
-+{
-+	struct dfl_feature *feature = dev_get_drvdata(dev);
-+	u16 fpga_limit = 0;
-+	u64 v;
-+
-+	v = readq(feature->ioaddr + FME_PWR_FPGA_LIMIT);
-+
-+	if (FIELD_GET(FPGA_PWR_EN, v))
-+		fpga_limit = FIELD_GET(FPGA_PWR_LIMIT, v);
-+
-+	return sprintf(buf, "%u\n", fpga_limit * 100000);
-+}
-+
-+static ssize_t power1_ltr_show(struct device *dev,
-+			       struct device_attribute *attr, char *buf)
-+{
-+	struct dfl_feature *feature = dev_get_drvdata(dev);
-+	u64 v;
-+
-+	v = readq(feature->ioaddr + FME_PWR_STATUS);
-+
-+	return sprintf(buf, "%u\n",
-+		       (unsigned int)FIELD_GET(FME_LATENCY_TOLERANCE, v));
-+}
-+
-+static DEVICE_ATTR_RO(power1_xeon_limit);
-+static DEVICE_ATTR_RO(power1_fpga_limit);
-+static DEVICE_ATTR_RO(power1_ltr);
-+
-+static struct attribute *power_extra_attrs[] = {
-+	&dev_attr_power1_xeon_limit.attr,
-+	&dev_attr_power1_fpga_limit.attr,
-+	&dev_attr_power1_ltr.attr,
-+	NULL
-+};
-+
-+ATTRIBUTE_GROUPS(power_extra);
-+
-+static int fme_power_mgmt_init(struct platform_device *pdev,
-+			       struct dfl_feature *feature)
-+{
-+	struct device *hwmon;
-+
-+	dev_dbg(&pdev->dev, "FME Power Management Init.\n");
-+
-+	hwmon = devm_hwmon_device_register_with_info(&pdev->dev,
-+						     "dfl_fme_power", feature,
-+						     &power_hwmon_chip_info,
-+						     power_extra_groups);
-+	if (IS_ERR(hwmon)) {
-+		dev_err(&pdev->dev, "Fail to register power hwmon\n");
-+		return PTR_ERR(hwmon);
-+	}
-+
-+	return 0;
-+}
-+
-+static void fme_power_mgmt_uinit(struct platform_device *pdev,
-+				 struct dfl_feature *feature)
-+{
-+	dev_dbg(&pdev->dev, "FME Power Management UInit.\n");
-+}
-+
-+static const struct dfl_feature_id fme_power_mgmt_id_table[] = {
-+	{.id = FME_FEATURE_ID_POWER_MGMT,},
-+	{0,}
-+};
-+
-+static const struct dfl_feature_ops fme_power_mgmt_ops = {
-+	.init = fme_power_mgmt_init,
-+	.uinit = fme_power_mgmt_uinit,
-+};
-+
- static struct dfl_feature_driver fme_feature_drvs[] = {
- 	{
- 		.id_table = fme_hdr_id_table,
-@@ -431,6 +657,10 @@ static void fme_thermal_mgmt_uinit(struct platform_device *pdev,
- 		.ops = &fme_thermal_mgmt_ops,
- 	},
- 	{
-+		.id_table = fme_power_mgmt_id_table,
-+		.ops = &fme_power_mgmt_ops,
-+	},
-+	{
- 		.ops = NULL,
- 	},
- };
--- 
-1.8.3.1
+> +static const struct hwmon_ops tja11xx_hwmon_hwmon_ops = {
+> +	.is_visible	= tja11xx_hwmon_is_visible,
+> +	.read		= tja11xx_hwmon_read,
+> +};
+> +
+> +static const struct hwmon_chip_info tja11xx_hwmon_chip_info = {
+> +	.ops		= &tja11xx_hwmon_hwmon_ops,
+> +	.info		= tja11xx_hwmon_info,
+> +};
+> +
+> +static int tja11xx_probe(struct phy_device *phydev)
+> +{
+> +	struct device *dev = &phydev->mdio.dev;
+> +	struct tja11xx_priv *priv;
+> +	int i;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->hwmon_name = devm_kstrdup(dev, dev_name(dev), GFP_KERNEL);
+> +	if (!priv->hwmon_name)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; priv->hwmon_name[i]; i++)
+> +		if (hwmon_is_bad_char(priv->hwmon_name[i]))
+> +			priv->hwmon_name[i] = '_';
+> +
+> +	priv->hwmon_dev =
+> +		devm_hwmon_device_register_with_info(dev, priv->hwmon_name,
+> +						     phydev,
+> +						     &tja11xx_hwmon_chip_info,
+> +						     NULL);
+> +
+> +	return PTR_ERR_OR_ZERO(priv->hwmon_dev);
+> +}
+> +
+> +static struct phy_driver tja11xx_driver[] = {
+> +	{
+> +		PHY_ID_MATCH_MODEL(PHY_ID_TJA1100),
+> +		.name		= "NXP TJA1100",
+> +		.features       = PHY_BASIC_T1_FEATURES,
+> +		.probe		= tja11xx_probe,
+> +		.soft_reset	= tja11xx_soft_reset,
+> +		.config_init	= tja11xx_config_init,
+> +		.read_status	= tja11xx_read_status,
+> +		.suspend	= genphy_suspend,
+> +		.resume		= genphy_resume,
+> +		.set_loopback   = genphy_loopback,
+> +		/* Statistics */
+> +		.get_sset_count = tja11xx_get_sset_count,
+> +		.get_strings	= tja11xx_get_strings,
+> +		.get_stats	= tja11xx_get_stats,
+> +	}, {
+> +		PHY_ID_MATCH_MODEL(PHY_ID_TJA1101),
+> +		.name		= "NXP TJA1101",
+> +		.features       = PHY_BASIC_T1_FEATURES,
+> +		.probe		= tja11xx_probe,
+> +		.soft_reset	= tja11xx_soft_reset,
+> +		.config_init	= tja11xx_config_init,
+> +		.read_status	= tja11xx_read_status,
+> +		.suspend	= genphy_suspend,
+> +		.resume		= genphy_resume,
+> +		.set_loopback   = genphy_loopback,
+> +		/* Statistics */
+> +		.get_sset_count = tja11xx_get_sset_count,
+> +		.get_strings	= tja11xx_get_strings,
+> +		.get_stats	= tja11xx_get_stats,
+> +	}
+> +};
+> +
+> +module_phy_driver(tja11xx_driver);
+> +
+> +static struct mdio_device_id __maybe_unused tja11xx_tbl[] = {
+> +	{ PHY_ID_MATCH_MODEL(PHY_ID_TJA1100) },
+> +	{ PHY_ID_MATCH_MODEL(PHY_ID_TJA1101) },
+> +	{ }
+> +};
+> +
+> +MODULE_DEVICE_TABLE(mdio, tja11xx_tbl);
+> +
+> +MODULE_AUTHOR("Marek Vasut <marex@denx.de>");
+> +MODULE_DESCRIPTION("NXP TJA11xx BoardR-Reach PHY driver");
+> +MODULE_LICENSE("GPL");
+> 
 
