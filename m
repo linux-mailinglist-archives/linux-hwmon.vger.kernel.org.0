@@ -2,69 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C902FEC3
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 May 2019 17:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ECD0300DE
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 May 2019 19:21:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726045AbfE3PCV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 30 May 2019 11:02:21 -0400
-Received: from sonic309-24.consmr.mail.ir2.yahoo.com ([77.238.179.82]:33415
-        "EHLO sonic309-24.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726828AbfE3PCV (ORCPT
+        id S1726721AbfE3RVY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 30 May 2019 13:21:24 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:46358 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbfE3RVY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 30 May 2019 11:02:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1559228538; bh=r8mvpsdSWTgrFU7sKbqDDOp6njqb0485clzVt3O86CA=; h=Date:From:Reply-To:Subject:References:From:Subject; b=dm7XchzcaZdS1nR8inQcRkFtHStwSzpiaJqZvKecWO9BMrq47HQSa1Po52AkPdtfUtMMUseeLmLmgoMoXqSQSsm0Mkz3HBDSgaIVUlpTMFfny9hMtPx/z8K0PWZKcTaj3tPPLhUVnxR8f1kviTdmGA7A4u6oJf/iB7Bmg2h/sLSnTPJObTj/EkSPPUCjKbrpsMpDkY6dEm95LZ2/JQ2Vg4z3TuF0rAYVV4OcJOImF/pBjOhCFcElWiUYVfM3XBlLkIcApXZlRSM+0JqSop1ikGiFOS8+j2Y13v4P2bfskfZuYvJ/grjgxxO2zvETe6vT59mKksjHLmZQiPwqEnF61w==
-X-YMail-OSG: JCpGDtoVM1lQ7.noNWZkJqrVTxtsZPFvmAMP0pGiDVvTS0kOJ6mVOIjIiVwACeo
- VtUiyBzQlFLoDpCubM.KZDAGPfxVatE8UyUtUFW8_K6BMZOfZovFI3bBCbHgxFjNeStSaZqAv1xr
- n2qpD0TRpfQLOhmIJVWcaakRMGizI43B9TdS8ONPja6Ltb3_tJxVyZL48ajNeDv5moV3fhmgkGIJ
- w6ni.W.ByI3xwgWpnpYhFuPob.HL5XvmIjKGORT8VPpZ0bLHylaiDUGc.43GIJb1E2sNy87oJDzY
- CbCqafPoCfW9y0fmEddfqKpbvjhB1kemK0XIcxKDBu2XMZUdpcHHNY3b311zZeyHlx8DEflAz7ns
- 2RUSZOPOpd5JqGDIpuq0e7WiT_gBuA5NfLqEQ1G..emjRtKXfyT.Y9ZE_655f5F7ib.HHdlbQ7Ec
- ow3dXRXNHcoLpkzdFnqwhpiiyW.HS.JMeVi7gh_wMHvq70ARVnc3RCzPlKjD3YPlCfS28rsfYa9A
- FNFw_xvVty2EMjVndIf8MXJ1joFgHLUvyIugmTtU5YrmdMjL2kRAqL6D.RxEKO7Y6FE0g.SQKFhi
- Ex2kC.L3MT07p3EEkU8.qvfTe1TEkzYuaJfwcqf0Vjd1R4Os2khqJ0lAKlvJxS1APee7YXxM1QOG
- EzNMok33h8436EK2MTfu.l9SK7YjXQVDroooWExh98Xqida5Ar.JpBq4kvZu9GEOM9VlHJuA8ZVY
- I3B_PwUhw.BftklQRcVM.QaYOnbgJiE96IRxYFOwf54PLJ6SStkZleWuVU9e3r1GPX3aSC2nYXPd
- 2izJkebyqIEpHlV_SrYpXfOG2bh8F_B4Fbpd4qdo1LVYKz0rE_W09V5_fUenbr6DsJjdC67W_yGW
- WVmHuUo7ZlH0cJqhJybXLhmihOQt_5slYl83Q9SmS_lV0zDy5jCyzCwWfLm3nkC8UXZcVPzJUl1o
- jO_yRZom3eS9tkI5jy.M2Ep.79rEN3bWSX2wIkPX1le2hSeoxoW1Ir6AZFWVefetDnwEkprCEMgN
- EPKkPII0iNyfC2zyxMhoAsCRiunt4OvRC8pBcEVdnMdhToutepM5PvcwHLvuM2VKs8KhrNhjq9f.
- Butox8lRFJGzhuGgIxklGpzyLQO.UKHSQTFDspPQTmTBU6x3qv_SVMYwFalQLt4boSG6d2Z53Xbt
- 04Xxfy8iv9pxrt8dmnmbFNz7ROm2LoadHe.b3tt6Mvno3Q1xb06AmMl4Q7ThzLQ--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Thu, 30 May 2019 15:02:18 +0000
-Date:   Thu, 30 May 2019 15:02:16 +0000 (UTC)
-From:   "Mr. Nor Hizam Hashim" <abmousa444@gmail.com>
-Reply-To: "Mr. Nor Hizam Hashim" <nhizamhshi@gmail.com>
-Message-ID: <1955570798.13522196.1559228536186@mail.yahoo.com>
-Subject: Waiting for your urgent reply,
+        Thu, 30 May 2019 13:21:24 -0400
+Received: by mail-pf1-f194.google.com with SMTP id y11so4347809pfm.13;
+        Thu, 30 May 2019 10:21:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=ImDPwL3I+w8BoRqnd5eRM3+R8I/eXEMLrLJdrRnJGP8=;
+        b=rvyah85PBMMF6fSehi9wvZfJvOlEiwurKCDdHwrZ2f5fh8OIO5nuTy4ApgBznEv7xq
+         ZVJbTGAiTAc4HnxcdFtHuUUrYjIlVKkiDnPsXqxtLTowv9VDw6l8yufrilq9B+S0XuMA
+         +WDbzrxSaCSzRb3AJJF1Bjc4VSvEL+U6TaYnPIen5MLG2H6wsyuBzTHu73TJ9HG4/34v
+         dPX14My1cnc8XywDE3mC64bL4U1xivYIip1qqG0Y93iuuzcme4oyH/a8hnSvcNdYfClw
+         3khKWCCfS6qdwK/wCe4IdIQFkb476hULgTr1d3MwwnsAlJloHVOMubOJeR8DbEMaq+Kj
+         OhNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mime-version:content-disposition:user-agent;
+        bh=ImDPwL3I+w8BoRqnd5eRM3+R8I/eXEMLrLJdrRnJGP8=;
+        b=FPODyWB5pOcAG6M4ZVOLJcmvPagk7/VV2+QcmKkzMk0QuuUjtJdtx7eoC5hhN4unFd
+         /9RbAYc+WBLBAwjJ14DAg8H9ccC6UpKBjvpkV96++WAZZJqki9OiInGjquEPUgSlsp1A
+         Ct8Fc5aDd0uPNgC+2RXdu8dJm3noqKKpVvychz2ek/x2rgv+vG4Xr5jJ/IlyjGrGjx+D
+         5ym7wlxN8vltM9m3Rb9wS3bEUBkDYKUrhuAkcY9K2umlQLeH06ptoJVuyBkEZlSscMyu
+         yfW711LnD2qlDXiQVSEx3U1sfz+FrgV+WCQR8xGVBQjGWtDdE4e7AnKiGEGBorbNFSwd
+         m8gA==
+X-Gm-Message-State: APjAAAXS4cznpEj3tISBZZLfbSxyI3iitGtD4fUPboYbePH1GxBWPMi2
+        U5JGWTsaLOT9TXoZzNIzyAo=
+X-Google-Smtp-Source: APXvYqwu621Z9vd819IPtN8DotvELno2ZdptP5eZ+k/WpG5kRtSvkQG3qtAcf1ovJ4KF97KqXwEm+A==
+X-Received: by 2002:a63:cb:: with SMTP id 194mr4561175pga.395.1559236883517;
+        Thu, 30 May 2019 10:21:23 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id i7sm3660624pfo.19.2019.05.30.10.21.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 May 2019 10:21:22 -0700 (PDT)
+Date:   Thu, 30 May 2019 10:21:20 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Adamski, Krzysztof (Nokia - PL/Wroclaw)" 
+        <krzysztof.adamski@nokia.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] hwmon: pmbus: protect read-modify-write with lock
+Message-ID: <20190530172120.GA22145@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1955570798.13522196.1559228536186.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.13634 YahooMailBasic Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear Sir/ Madam,
+Hi,
 
-Please forgive me if my request is not acceptable by your kind person.
+On Thu, May 30, 2019 at 06:45:48AM +0000, Adamski, Krzysztof (Nokia - PL/Wroclaw) wrote:
+> The operation done in the pmbus_update_fan() function is a
+> read-modify-write operation but it lacks any kind of lock protection
+> which may cause problems if run more than once simultaneously. This
+> patch uses an existing update_lock mutex to fix this problem.
+> 
+> Signed-off-by: Krzysztof Adamski <krzysztof.adamski@nokia.com>
+> ---
+> 
+> I'm resending this patch to proper recipients this time. Sorry if the
+> previous submission confused anybody.
+> 
+>  drivers/hwmon/pmbus/pmbus_core.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+> index ef7ee90ee785..94adbede7912 100644
+> --- a/drivers/hwmon/pmbus/pmbus_core.c
+> +++ b/drivers/hwmon/pmbus/pmbus_core.c
+> @@ -268,6 +268,7 @@ int pmbus_update_fan(struct i2c_client *client, int page, int id,
+>  	int rv;
+>  	u8 to;
+>  
+> +	mutex_lock(&data->update_lock);
+>  	from = pmbus_read_byte_data(client, page,
+>  				    pmbus_fan_config_registers[id]);
+>  	if (from < 0)
+> @@ -278,11 +279,15 @@ int pmbus_update_fan(struct i2c_client *client, int page, int id,
+>  		rv = pmbus_write_byte_data(client, page,
+>  					   pmbus_fan_config_registers[id], to);
+>  		if (rv < 0)
+> -			return rv;
+> +			goto out;
+>  	}
+>  
+> -	return _pmbus_write_word_data(client, page,
+> -				      pmbus_fan_command_registers[id], command);
+> +	rv = _pmbus_write_word_data(client, page,
+> +				    pmbus_fan_command_registers[id], command);
+> +
+> +out:
+> +	mutex_lock(&data->update_lock);
 
-I am Mr. Nor Hizam Hashim, Working at MAYBANK (Malaysia) as the Independent Non-Executive Director & Audit Committee. During our last banking Audits we discovered an abandoned account belongs to one of our Foreign Deceased Customer, Late Mr. Wang Jian, The Co-founder and Co-chairman of HNA Group, a Chinese conglomerate with significant real estate ownerships across the U.S., died in an accident while on a business trip in France on Tuesday.
+Should be mutex_unlock(), meaning you have not tested this ;-).
 
+Either case, I think this is unnecessary. The function is (or should be)
+always called with the lock already taken (ie with pmbus_set_sensor()
+in the call path). If not, we would need a locked and an unlocked version
+of this function to avoid lock recursion.
 
-Please go through this link:https://observer.com/2018/07/wang-jian-hna-founder-dies-tragic-fall/
+Thanks,
+Guenter
 
-I am writing to request your assistance in transferring the sum of $15.000.000.00 (Fifteen Million United States Dollars) into your account as the Late Mr. Wang Jian Foreign Business Partner. Meanwhile, before I contacted you I have done personal investigation in locating any of Late Mr. Wang Jian relatives who knows about the account, but I came out unsuccessful.
-
-I will like to bring to your notice that I have made all the necessary arrangements with my colleagues to transfer the funds into your nominated bank account without any problem.  Upon your consideration and acceptance of this offer, I am willing to offer you 40% for your assistant, while 60% for me which I am planning to invest into a profitable business venture in your country.
-
-More details information will be forwarded to you to breakdown explaining comprehensively what require of you.
-
- 
-Waiting for your urgent reply,
-Best Regards
-Mr. Nor Hizam Hashim.
-E-Mail Address (nhizam.has@yahoo.com)
-
+> +	return rv;
+>  }
+>  EXPORT_SYMBOL_GPL(pmbus_update_fan);
+>  
+> -- 
+> 2.20.1
+> 
