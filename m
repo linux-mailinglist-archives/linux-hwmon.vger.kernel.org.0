@@ -2,109 +2,48 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A59562EAD8
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 May 2019 04:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA0F2F704
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 May 2019 07:03:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727357AbfE3C4O (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 29 May 2019 22:56:14 -0400
-Received: from smtp-fw-9101.amazon.com ([207.171.184.25]:23435 "EHLO
-        smtp-fw-9101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726483AbfE3C4O (ORCPT
+        id S1727564AbfE3FDT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 30 May 2019 01:03:19 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:46926 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727394AbfE3FDT (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 29 May 2019 22:56:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1559184973; x=1590720973;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qDsL18aDwQTcILov+CgblUA1JhXa5nFHLDzuuC/mnGA=;
-  b=MjLytlaqESDRNy/PcQzbkUWUbn1LeIPx37VN2HYgfvsUNA4kaTLVjS6k
-   3UYNZf/8DF9ygNvwE2RwZ8JJER9ilvdRD8nff3HsvQlRAvQ5bUzcpRasB
-   wYye1qZduNZB+tks77k312dUt+xEiazQ52FJF1K8rzZWK1JOXcSDYO9kh
-   4=;
-X-IronPort-AV: E=Sophos;i="5.60,529,1549929600"; 
-   d="scan'208";a="807528124"
-Received: from sea3-co-svc-lb6-vlan3.sea.amazon.com (HELO email-inbound-relay-2b-3714e498.us-west-2.amazon.com) ([10.47.22.38])
-  by smtp-border-fw-out-9101.sea19.amazon.com with ESMTP; 30 May 2019 02:56:12 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-2b-3714e498.us-west-2.amazon.com (Postfix) with ESMTPS id 2C6DDA25B0;
-        Thu, 30 May 2019 02:56:11 +0000 (UTC)
-Received: from EX13D05UWB004.ant.amazon.com (10.43.161.208) by
- EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Thu, 30 May 2019 02:56:11 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (10.43.161.207) by
- EX13D05UWB004.ant.amazon.com (10.43.161.208) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Thu, 30 May 2019 02:56:10 +0000
-Received: from localhost (10.94.220.85) by mail-relay.amazon.com
- (10.43.161.249) with Microsoft SMTP Server id 15.0.1367.3 via Frontend
- Transport; Thu, 30 May 2019 02:56:11 +0000
-From:   Eduardo Valentin <eduval@amazon.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     Eduardo Valentin <eduval@amazon.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCHv2 2/2] hwmon: core: fix potential memory leak in *hwmon_device_register*
-Date:   Wed, 29 May 2019 19:56:05 -0700
-Message-ID: <20190530025605.3698-3-eduval@amazon.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190530025605.3698-1-eduval@amazon.com>
-References: <20190530025605.3698-1-eduval@amazon.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+        Thu, 30 May 2019 01:03:19 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1A96713D3B820;
+        Wed, 29 May 2019 22:03:18 -0700 (PDT)
+Date:   Wed, 29 May 2019 22:03:17 -0700 (PDT)
+Message-Id: <20190529.220317.450232553317203536.davem@davemloft.net>
+To:     marex@denx.de
+Cc:     netdev@vger.kernel.org, andrew@lunn.ch, f.fainelli@gmail.com,
+        linux@roeck-us.net, hkallweit1@gmail.com, jdelvare@suse.com,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH] net: phy: tja11xx: Switch to HWMON_CHANNEL_INFO()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190528181541.1946-1-marex@denx.de>
+References: <20190528181541.1946-1-marex@denx.de>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 29 May 2019 22:03:18 -0700 (PDT)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-When registering a hwmon device with HWMON_C_REGISTER_TZ flag
-in place, the hwmon subsystem will attempt to register the device
-also with the thermal subsystem. When the of-thermal registration
-fails, __hwmon_device_register jumps to ida_remove, leaving
-the locally allocated hwdev pointer.
+From: Marek Vasut <marex@denx.de>
+Date: Tue, 28 May 2019 20:15:41 +0200
 
-This patch fixes the leak by jumping to a new label that
-will first unregister hdev and then fall into the kfree of hwdev
-to finally remove the idas and propagate the error code.
+> The HWMON_CHANNEL_INFO macro simplifies the code, reduces the likelihood
+> of errors, and makes the code easier to read.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Eduardo Valentin <eduval@amazon.com>
----
-V1->V2: removed the device_unregister() before jumping
-into the new label, as suggested in the first review round.
-
- drivers/hwmon/hwmon.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-index 429784edd5ff..620f05fc412a 100644
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -652,10 +652,8 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
- 				if (info[i]->config[j] & HWMON_T_INPUT) {
- 					err = hwmon_thermal_add_sensor(dev,
- 								hwdev, j);
--					if (err) {
--						device_unregister(hdev);
--						goto ida_remove;
--					}
-+					if (err)
-+						goto device_unregister;
- 				}
- 			}
- 		}
-@@ -663,6 +661,8 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
- 
- 	return hdev;
- 
-+device_unregister:
-+	device_unregister(hdev);
- free_hwmon:
- 	kfree(hwdev);
- ida_remove:
--- 
-2.21.0
-
+Applied to net-next.
