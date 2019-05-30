@@ -2,182 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B079D2EA08
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 May 2019 03:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 809792EADD
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 May 2019 04:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727237AbfE3BFM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 29 May 2019 21:05:12 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:42100 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727146AbfE3BFM (ORCPT
+        id S1727434AbfE3C4P (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 29 May 2019 22:56:15 -0400
+Received: from smtp-fw-4101.amazon.com ([72.21.198.25]:2423 "EHLO
+        smtp-fw-4101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725821AbfE3C4O (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 29 May 2019 21:05:12 -0400
-Received: by mail-pf1-f193.google.com with SMTP id r22so2776764pfh.9;
-        Wed, 29 May 2019 18:05:11 -0700 (PDT)
+        Wed, 29 May 2019 22:56:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=beZsP/rjfL8EXcX60xBuuJ47HiagG33HBKhM1gI7z7o=;
-        b=IPrIlAtXr2FDMSjX0/bzIEMw/DD91kRI7Kyd2nGYNcDCqviqF1yxJsKXacq5gSvR4M
-         mBMuI9tFBSVxJtViMOKIdFfjPHDOCjrob7YTUQIobPby9v3cBSKt/FkrhY8i3ptyz54Z
-         SJMLgYl/OVIWGJsq/YfN4ueGa2+iEX3UCeyVg5Jp1Tes3SZMJjw/iPyA/J1TxkwjhnTY
-         XaT1Um7uoW+VB7utBeyzIeMfgNu3aQg57D5D/K+wcsh+k0nZyodje++7T7/JYXBVld/k
-         +lMCKSyD7OuPJ4KapoZjFyaRryz8wNedo4iha6ZtqqF2vAeSqMW0Fi/9+N2OWe/gURNP
-         QiZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=beZsP/rjfL8EXcX60xBuuJ47HiagG33HBKhM1gI7z7o=;
-        b=hrE/F3JFe2VqzBTm+lLMrZKhsGL8RPn1vl4UqE+KKMGVsCogQmknof+LrKEBHhgWDh
-         vZCdQfUBnenr2ur+4WlmjnYQQs7PvGXx61c2+x+5MjdmmpXq2ts45WlVFosexM0bCzvT
-         PzUPxu7X1MDLxjOyz1ccBpMjMDChR+NI9u7wGJUJ8+yOsdSIA8sUVVW4O4AiYny8UFEO
-         YtwgnrZ26ASSFEpBfTrJu8+JuwpFnxB44Da2uXtRzvp/KeKExOF8y5oXgnA7u7FR3XQm
-         JG2WR3DHAjeWXESHTw6zSba/LrMDwpuTzLxdnVVpWRyc4Q0phsOwPtjT2sIA5ycma3jG
-         S4yg==
-X-Gm-Message-State: APjAAAX3Aw+7jjuYWfei6rXEXg5pB0tNu3DusCtCrYDnrp96bl3V3z2m
-        O3LyEwjT3mCrJjh7ypxMP3Q=
-X-Google-Smtp-Source: APXvYqwhXINGpYIe3fien1AMYupfuhGAODKoz3EA3gp4YnMJViJP2gBaJ4YnyeKQZhwk32gigQp88g==
-X-Received: by 2002:a17:90a:bf0d:: with SMTP id c13mr675233pjs.88.1559178311313;
-        Wed, 29 May 2019 18:05:11 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id s42sm799092pjc.5.2019.05.29.18.05.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 May 2019 18:05:10 -0700 (PDT)
-Subject: Re: [PATCH 2/2] Docs: hwmon: pmbus: Add PXE1610 driver
-To:     Vijay Khemka <vijaykhemka@fb.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     joel@jms.id.au, linux-aspeed@lists.ozlabs.org, sdasari@fb.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20190529223511.4059120-1-vijaykhemka@fb.com>
- <20190529223511.4059120-2-vijaykhemka@fb.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <0a94e784-41a0-4f2d-f9f8-6b365a1e755e@roeck-us.net>
-Date:   Wed, 29 May 2019 18:05:09 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1559184974; x=1590720974;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IryhIRAluN0UnomwvxkbYxdPEqGdg0Oi5OVTWudGcpM=;
+  b=HxRm98xT5YYSlHMw7NJsIzIwDbRppO/P12XpWAfqDXUSY/3cLqsLmie8
+   tIbkKCgv52UjnrgNQL1MSXpAESVnB2tgLF7Va5mnDlOaa/zaLHBMdfg9G
+   fk8QSB8fS3Jr/tf42uxVlaAiFcem5ZATDd0NzVgP+dWdgIKNOS76O7lw2
+   g=;
+X-IronPort-AV: E=Sophos;i="5.60,529,1549929600"; 
+   d="scan'208";a="768210708"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-2b-8cc5d68b.us-west-2.amazon.com) ([10.124.125.6])
+  by smtp-border-fw-out-4101.iad4.amazon.com with ESMTP; 30 May 2019 02:56:11 +0000
+Received: from EX13MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-2b-8cc5d68b.us-west-2.amazon.com (Postfix) with ESMTPS id A51B6A2156;
+        Thu, 30 May 2019 02:56:10 +0000 (UTC)
+Received: from EX13D05UWB002.ant.amazon.com (10.43.161.50) by
+ EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
+ id 15.0.1367.3; Thu, 30 May 2019 02:56:10 +0000
+Received: from EX13MTAUWB001.ant.amazon.com (10.43.161.207) by
+ EX13D05UWB002.ant.amazon.com (10.43.161.50) with Microsoft SMTP Server (TLS)
+ id 15.0.1367.3; Thu, 30 May 2019 02:56:09 +0000
+Received: from localhost (10.94.220.85) by mail-relay.amazon.com
+ (10.43.161.249) with Microsoft SMTP Server id 15.0.1367.3 via Frontend
+ Transport; Thu, 30 May 2019 02:56:10 +0000
+From:   Eduardo Valentin <eduval@amazon.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+CC:     Eduardo Valentin <eduval@amazon.com>,
+        <linux-kernel@vger.kernel.org>, <linux-hwmon@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>
+Subject: [PATCHv2 0/2] hwmon: couple of fixes on HWMON_C_REGISTER_TZ
+Date:   Wed, 29 May 2019 19:56:03 -0700
+Message-ID: <20190530025605.3698-1-eduval@amazon.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190529223511.4059120-2-vijaykhemka@fb.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/29/19 3:35 PM, Vijay Khemka wrote:
-> Added support for Infenion PXE1610 driver
-> 
-> Signed-off-by: Vijay Khemka <vijaykhemka@fb.com>
-> ---
->   Documentation/hwmon/pxe1610 | 84 +++++++++++++++++++++++++++++++++++++
->   1 file changed, 84 insertions(+)
->   create mode 100644 Documentation/hwmon/pxe1610
-> 
-> diff --git a/Documentation/hwmon/pxe1610 b/Documentation/hwmon/pxe1610
-> new file mode 100644
-> index 000000000000..b5c83edf027a
-> --- /dev/null
-> +++ b/Documentation/hwmon/pxe1610
-> @@ -0,0 +1,84 @@
-> +Kernel driver pxe1610
-> +=====================
-> +
-> +Supported chips:
-> +  * Infinion PXE1610
-> +    Prefix: 'pxe1610'
-> +    Addresses scanned: -
-> +    Datasheet: Datasheet is not publicly available.
-> +
-> +  * Infinion PXE1110
-> +    Prefix: 'pxe1110'
-> +    Addresses scanned: -
-> +    Datasheet: Datasheet is not publicly available.
-> +
-> +  * Infinion PXM1310
-> +    Prefix: 'pxm1310'
-> +    Addresses scanned: -
-> +    Datasheet: Datasheet is not publicly available.
-> +
-> +Author: Vijay Khemka <vijaykhemka@fb.com>
-> +
-> +
-> +Description
-> +-----------
-> +
-> +PXE1610 is a Multi-rail/Multiphase Digital Controllers and
-> +it is compliant to Intel VR13 DC-DC converter specifications.
-> +
+Hello Guenter,
 
-And the others ?
+I found these bugs in the error path of hwmon_device_register().
+One related to calling of-thermal when no dev->of_node is present.
+And another in the error path handling of it.
 
-> +
-> +Usage Notes
-> +-----------
-> +
-> +This driver can be enabled with kernel config CONFIG_SENSORS_PXE1610
-> +set to 'y' or 'm'(for module).
-> +
-The above does not really add value.
+Only difference from V1 is that I changed patch 2/2 to remove
+the device_unregister() before jumping into the new label.
 
-> +This driver does not probe for PMBus devices. You will have
-> +to instantiate devices explicitly.
-> +
-> +Example: the following commands will load the driver for an PXE1610
-> +at address 0x70 on I2C bus #4:
-> +
-> +# modprobe pxe1610
-> +# echo pxe1610 0x70 > /sys/bus/i2c/devices/i2c-4/new_device
-> +
-> +It can also be instantiated by declaring in device tree if it is
-> +built as a kernel not as a module.
-> +
+Eduardo Valentin (2):
+  hwmon: core: add thermal sensors only if dev->of_node is present
+  hwmon: core: fix potential memory leak in *hwmon_device_register*
 
-I assume you mean "built into the kernel".
-Why would devicetree based instantiation not work if the driver is built
-as module ?
+ drivers/hwmon/hwmon.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-> +
-> +Sysfs attributes
-> +----------------
-> +
-> +curr1_label		"iin"
-> +curr1_input		Measured input current
-> +curr1_alarm		Current high alarm
-> +
-> +curr[2-4]_label		"iout[1-3]"
-> +curr[2-4]_input		Measured output current
-> +curr[2-4]_crit		Critical maximum current
-> +curr[2-4]_crit_alarm	Current critical high alarm
-> +
-> +in1_label		"vin"
-> +in1_input		Measured input voltage
-> +in1_crit		Critical maximum input voltage
-> +in1_crit_alarm		Input voltage critical high alarm
-> +
-> +in[2-4]_label		"vout[1-3]"
-> +in[2-4]_input		Measured output voltage
-> +in[2-4]_lcrit		Critical minimum output voltage
-> +in[2-4]_lcrit_alarm	Output voltage critical low alarm
-> +in[2-4]_crit		Critical maximum output voltage
-> +in[2-4]_crit_alarm	Output voltage critical high alarm
-> +
-> +power1_label		"pin"
-> +power1_input		Measured input power
-> +power1_alarm		Input power high alarm
-> +
-> +power[2-4]_label	"pout[1-3]"
-> +power[2-4]_input	Measured output power
-> +
-> +temp[1-3]_input		Measured temperature
-> +temp[1-3]_crit		Critical high temperature
-> +temp[1-3]_crit_alarm	Chip temperature critical high alarm
-> +temp[1-3]_max		Maximum temperature
-> +temp[1-3]_max_alarm	Chip temperature high alarm
-> 
+-- 
+2.21.0
 
