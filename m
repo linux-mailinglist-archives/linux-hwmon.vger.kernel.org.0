@@ -2,20 +2,19 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD5A30CA1
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2019 12:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 420F030C83
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2019 12:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726233AbfEaKdQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 31 May 2019 06:33:16 -0400
-Received: from aclms1.advantech.com.tw ([61.58.41.199]:5634 "EHLO
-        ACLMS1.advantech.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726158AbfEaKdQ (ORCPT
+        id S1726275AbfEaK0l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 31 May 2019 06:26:41 -0400
+Received: from aclms3.advantech.com.tw ([125.252.70.86]:15026 "EHLO
+        ACLMS3.advantech.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbfEaK0l (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 31 May 2019 06:33:16 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Fri, 31 May 2019 06:33:15 EDT
-Received: from taipei08.ADVANTECH.CORP (unverified [172.20.0.235]) by ACLMS1.advantech.com.tw
- (Clearswift SMTPRS 5.6.0) with ESMTP id <Td81b8a549eac14014b1568@ACLMS1.advantech.com.tw>;
- Fri, 31 May 2019 18:23:06 +0800
+        Fri, 31 May 2019 06:26:41 -0400
+Received: from taipei08.ADVANTECH.CORP (unverified [172.20.0.235]) by ACLMS3.advantech.com.tw
+ (Clearswift SMTPRS 5.6.0) with ESMTP id <Td81b8d9510ac1401c8e60@ACLMS3.advantech.com.tw>;
+ Fri, 31 May 2019 18:26:39 +0800
 From:   <Amy.Shih@advantech.com.tw>
 To:     <she90122@gmail.com>
 CC:     <amy.shih@advantech.com.tw>, <oakley.ding@advantech.com.tw>,
@@ -23,8 +22,8 @@ CC:     <amy.shih@advantech.com.tw>, <oakley.ding@advantech.com.tw>,
         Guenter Roeck <linux@roeck-us.net>,
         <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: [PATCH] hwmon: (nct7904) Add extra sysfs support for fan, voltage and temperature.
-Date:   Fri, 31 May 2019 10:22:54 +0000
-Message-ID: <20190531102255.28740-1-Amy.Shih@advantech.com.tw>
+Date:   Fri, 31 May 2019 10:26:28 +0000
+Message-ID: <20190531102628.28785-1-Amy.Shih@advantech.com.tw>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
