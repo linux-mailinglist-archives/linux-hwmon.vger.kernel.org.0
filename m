@@ -2,93 +2,57 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57A3E3110B
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2019 17:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E84031F9E
+	for <lists+linux-hwmon@lfdr.de>; Sat,  1 Jun 2019 16:02:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbfEaPPi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 31 May 2019 11:15:38 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45804 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726418AbfEaPPi (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 31 May 2019 11:15:38 -0400
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4VFDiIG046714
-        for <linux-hwmon@vger.kernel.org>; Fri, 31 May 2019 11:15:37 -0400
-Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2su6k6rfbw-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-hwmon@vger.kernel.org>; Fri, 31 May 2019 11:15:37 -0400
-Received: from localhost
-        by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-hwmon@vger.kernel.org> from <jejb@linux.ibm.com>;
-        Fri, 31 May 2019 16:15:36 +0100
-Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
-        by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Fri, 31 May 2019 16:15:31 +0100
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4VFFUN811665728
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 31 May 2019 15:15:30 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A89616A047;
-        Fri, 31 May 2019 15:15:30 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F36C56A051;
-        Fri, 31 May 2019 15:15:25 +0000 (GMT)
-Received: from jarvis.ext.hansenpartnership.com (unknown [9.85.204.144])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Fri, 31 May 2019 15:15:25 +0000 (GMT)
-Subject: Re: clean some unneeded #ifdef MODULE
-From:   James Bottomley <jejb@linux.ibm.com>
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        linux-kernel@vger.kernel.org
+        id S1726817AbfFAOCn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 1 Jun 2019 10:02:43 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:52767 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726634AbfFAOCm (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 1 Jun 2019 10:02:42 -0400
+Received: from orion.localdomain ([95.114.112.19]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MuUrM-1gfeyh2gPS-00rU8U; Sat, 01 Jun 2019 16:01:45 +0200
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
 Cc:     rjw@rjwysocki.net, viresh.kumar@linaro.org, jdelvare@suse.com,
-        linux@roeck-us.net, khalid@gonehiking.org,
+        linux@roeck-us.net, khalid@gonehiking.org, jejb@linux.ibm.com,
         martin.petersen@oracle.com, aacraid@microsemi.com,
         linux-pm@vger.kernel.org, linux-hwmon@vger.kernel.org,
         linux-scsi@vger.kernel.org
-Date:   Fri, 31 May 2019 18:15:24 +0300
-In-Reply-To: <1559315344-10384-1-git-send-email-info@metux.net>
-References: <1559315344-10384-1-git-send-email-info@metux.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19053115-0036-0000-0000-00000AC5467E
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011191; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01211268; UDB=6.00636449; IPR=6.00992305;
- MB=3.00027133; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-31 15:15:34
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19053115-0037-0000-0000-00004C032C0B
-Message-Id: <1559315724.2878.7.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-31_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=943 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905310095
+Subject: remove unneeded #ifdef MODULE
+Date:   Sat,  1 Jun 2019 16:01:37 +0200
+Message-Id: <1559397700-15585-1-git-send-email-info@metux.net>
+X-Mailer: git-send-email 1.9.1
+X-Provags-ID: V03:K1:hGTgP1y7zY+DVXA/rOYqRPbljVCiVHRqPra8wSw4Lkfo1xHjwNn
+ eK9ZzEYzFoatUXTklAva012EmlLrpLSb5plOGiEEGxCWI39nTOi/JdUF5xvW8bmZeubpcSc
+ xc8pnImbQFOUGhhWZLVGngY7hE7GncvcAlxymgO3klVT6wdQkYncmMKsMOeeuEsQKS0QShc
+ StwfyiM1ZO9f+Gk1pPJCg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:d0/aFr6L5/Q=:dJYAEC1kzUKCKAKaj1w7ME
+ FSAvSirVALQTSLvxpmanuY0cyWrJUEcUF64D/ArKTxkOK9sw2FxEmipp29+ADmoAMKkAxUSWM
+ VlUckQ3W5mhQCPS4OG22rHvGAZRHAGVGC58h3bOQJVCcg7r3c9ZaH3MFIswYfqDg39zG0919Y
+ H6oRs1tUaGqdL6Xy9zaStkgTtFHs7hOeIlGU17FEpdA4wQQFxyihmCcKhIDooSxeJBeDOE5xW
+ svi/gvFfIWe/QO8LpJyCyp9FMnHg47NcutYWxd5yvDyXdrS+73TWw/aOiWkg2VZiVCQs8Gcoy
+ q9H27W7399HD88fTcZBIv7uyWmk9dODuqr1PoJ0NAgBnEWnS1uYisLZ+QN8oJKlBSa/EgKyn3
+ OyScGXWW/H0E4OkggsSp6DVYsn1KPBQXKEt+zTO2lTrHdFiqisk24EfmeMrSqSrWcY7CIvHFe
+ kJHhQZ+TiS5EXEACMa/24cIN9Rz5U7L8RmmY3FXdEL1nvmP0zlBlRFXPdWQn9zvxPFLDksBfU
+ m1uVq6R/tOm6U3rkF+qAB7lOIkI5nbN4B5JH3y0XFQF5sJRG5ooKitxAjLNEFhWryzGiHij4h
+ 5zp4maKCCbi83lNTcfG9AS2VdVUzpSyH8jqtOVUO0G9elkHJCIRrVR3bwE/49TXOcBB+WQ+MI
+ GVtfS40Gbg/noJkoNf3q6cdxwX545eiBElw20LPpVnpLl8a1ZHpDU7CMANVsa/epfhWqPgh3U
+ Uy4qF0JDswsG9vefLymMZZohFAAWJpuiTzibPw==
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, 2019-05-31 at 17:09 +0200, Enrico Weigelt, metux IT consult
-wrote:
-> Hi folks,
-> 
-> here're some patches that clean up uncessary cases of #ifdef MODULE.
-> These ifdef's just exlude MODULE_DEVICE_TABLE's when the kernel is
-> built w/o module support. As MODULE_DEVICE_TABLE() macro already
-> checks for that, these extra #ifdef's shouldn't be necessary.
+Hi folks,
 
-Isn't the problem the #ifdefs are trying to solve a complaint about an
-unused variable in the non-module case? if so, is that fixed some other
-way?
+here're some patches that remove some (IMHO) unncessary cases of #ifdef MODULE
+These basically switch off calls to MODULE_DEVICE_TABLE() macro, which already
+checks for MODULE symbol on its own.
 
-James
+have fun
+--mtx 
 
