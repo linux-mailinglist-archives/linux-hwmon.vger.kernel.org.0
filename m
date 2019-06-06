@@ -2,132 +2,56 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF9D376EC
-	for <lists+linux-hwmon@lfdr.de>; Thu,  6 Jun 2019 16:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6659837750
+	for <lists+linux-hwmon@lfdr.de>; Thu,  6 Jun 2019 17:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729133AbfFFOgW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 6 Jun 2019 10:36:22 -0400
-Received: from smtp-fw-4101.amazon.com ([72.21.198.25]:27975 "EHLO
-        smtp-fw-4101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728508AbfFFOgW (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 6 Jun 2019 10:36:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1559831781; x=1591367781;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VLzEF5AzOpV6fnQ8fVRLQhxhBcwCON1BJjsm+1F9fTg=;
-  b=aGtubtOBSSfCd/Us9r1WMlpAy/LpeUgv1w8AaVCuKWEx4CgPct1tf4Yw
-   U9HFmiC0tTq7b+e/ihMQiNzx2LfoobZ2NZsOSN+8p/K/RnneuQ1an0HNQ
-   34D2UinKkwBxQdkrm4hZSLYpoJe8lSxuY2g8s5IjFPrfMvUjqLkZ5NbXI
-   g=;
-X-IronPort-AV: E=Sophos;i="5.60,559,1549929600"; 
-   d="scan'208";a="769272317"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-2c-168cbb73.us-west-2.amazon.com) ([10.124.125.6])
-  by smtp-border-fw-out-4101.iad4.amazon.com with ESMTP; 06 Jun 2019 14:36:19 +0000
-Received: from EX13MTAUWC001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-2c-168cbb73.us-west-2.amazon.com (Postfix) with ESMTPS id 804B7A07C3;
-        Thu,  6 Jun 2019 14:36:19 +0000 (UTC)
-Received: from EX13D05UWC003.ant.amazon.com (10.43.162.226) by
- EX13MTAUWC001.ant.amazon.com (10.43.162.135) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Thu, 6 Jun 2019 14:36:19 +0000
-Received: from EX13MTAUEA001.ant.amazon.com (10.43.61.82) by
- EX13D05UWC003.ant.amazon.com (10.43.162.226) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Thu, 6 Jun 2019 14:36:19 +0000
-Received: from localhost (10.95.251.103) by mail-relay.amazon.com
- (10.43.61.243) with Microsoft SMTP Server id 15.0.1367.3 via Frontend
- Transport; Thu, 6 Jun 2019 14:36:17 +0000
-Date:   Thu, 6 Jun 2019 07:35:44 -0700
-From:   Eduardo Valentin <eduval@amazon.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     Eduardo Valentin <eduval@amazon.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv2 2/2] hwmon: core: fix potential memory leak in
- *hwmon_device_register*
-Message-ID: <20190606143509.GF1534@u40b0340c692b58f6553c.ant.amazon.com>
-References: <20190530025605.3698-1-eduval@amazon.com>
- <20190530025605.3698-3-eduval@amazon.com>
- <20190605203837.GA30238@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20190605203837.GA30238@roeck-us.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        id S1728651AbfFFPBY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 6 Jun 2019 11:01:24 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:59649 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727309AbfFFPBY (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 6 Jun 2019 11:01:24 -0400
+Received: from orion.localdomain ([77.9.2.22]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MTR6K-1h7QsW1L8m-00TomO; Thu, 06 Jun 2019 17:00:40 +0200
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org
+Subject: drivers: hwmon: i5k_amb: simplify probing / device
+Date:   Thu,  6 Jun 2019 17:00:32 +0200
+Message-Id: <1559833233-25723-1-git-send-email-info@metux.net>
+X-Mailer: git-send-email 1.9.1
+X-Provags-ID: V03:K1:IKbxlQPaqwU1YSjaQw5qI+1zFaJ1ESxY5CHkeOHtz5uDKXf1518
+ qgDaREwZEi0AN/a78NUG/eyU4aky4EqWUOU+opfuZTX5E+0n2yRcWdYtQ9sCcqFxLsQZi9d
+ g/B4bnG+EB5c8P8M8y5kx4+KsFF8Ulnu3XIiG5culpc4HImzA0el9jaAkkSo3Q2nyP9rSN+
+ v5zLdMz9RRwCnXXwemesw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:hVU4RXuAmJQ=:RnMLN81v2+wSmFuObCxbP0
+ W4+UOzWcFK8GxJpTtF2b1RD/i3lii4Wd9OyNH95ZpM3tVC/7n/plODKf1MLN0Ej1idf684DTh
+ 5v5PjgsxRHqcrP8SozTb7fRU8ADO2I9cxGC0my1gjooPQnWvphmMn4o2nSiwZMjwB9LUo5tyt
+ QB0mrJDu12AZerE3ZqFrz33dINuKw76HpCAFFJnOA4JEu9cjeCNeFijiSnzMjHrr4cFX2eS5E
+ MHoEQQCZmKzD8H3HRApL4jQiTVxJBDqZoMQycTPOU6fUu5z+X+ZDJcgTEJPbqweccVF/cZBWG
+ ml6X3ZPUdiyzQKs5OujyAXIAV2Oq3NlgSnYi8Bylr6FzdPVK1wCgxmilczoRuy5btfbmfBbwK
+ gdrXZIzV8T7kg1Ruf2SGE1CGsx01gL7LRrSSWo7nrP/kT1hkp0hqD7hQMEA6W2S9dMu5LGa3k
+ CwN1jhyTk7YY8i/JAhMDfg280/w/CrE4YMzI7MeRGJ9l5eXz1tifd3Z1bmUw8sje44wbSvIyp
+ MOZ4lb6geaeUVX0Wp3RdWlMBdYDdc5fjwYL4ttS/t0HLLbGHagmdncrGVFAo2AzsjZdrwU1Ym
+ V4jQ5YwR4nW7lye1rOaYG6si49+2m3lT1D6TP1GcZ7fyAqxJHHdkYcE1VeR2gdayyONNmLnH/
+ xEiOKiYzl3zh1J7Eo/exB9/kb8lRnGTWDKMEI8qHKXptfFRcNFYKZ6Mddp6FnQq+gC1iMvTCd
+ QIzky/q5k7i9aFLVGuXU+P2IAKx2Kw07UqI53w==
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Jun 05, 2019 at 01:38:38PM -0700, Guenter Roeck wrote:
-> On Wed, May 29, 2019 at 07:56:05PM -0700, Eduardo Valentin wrote:
-> > When registering a hwmon device with HWMON_C_REGISTER_TZ flag
-> > in place, the hwmon subsystem will attempt to register the device
-> > also with the thermal subsystem. When the of-thermal registration
-> > fails, __hwmon_device_register jumps to ida_remove, leaving
-> > the locally allocated hwdev pointer.
-> > 
-> > This patch fixes the leak by jumping to a new label that
-> > will first unregister hdev and then fall into the kfree of hwdev
-> > to finally remove the idas and propagate the error code.
-> > 
-> 
-> Hah, actually this is wrong. hwdev is freed indirectly with the
-> device_unregister() call. See commit 74e3512731bd ("hwmon: (core)
-> Fix double-free in __hwmon_device_register()").
+Hi folks,
 
-heh.. I see it now. Well, it is not a straight catch though. 
+the current way of device probing looks a bit strange and
+uses two redundant tables - one only for the module loading
+and another for the actual probing.
 
-> 
-> It may make sense to add a respective comment to the code, though.
-> 
+Simplifying it by putting everything into the pci match table.
 
-I agree. Or a simple comment saying "dont worry about freeing hwdev
-because hwmon_dev_release() takes care of it".
 
-Are you patching it ?
+--mtx
 
-> Guenter
-> 
-> > Cc: Jean Delvare <jdelvare@suse.com>
-> > Cc: Guenter Roeck <linux@roeck-us.net>
-> > Cc: linux-hwmon@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Eduardo Valentin <eduval@amazon.com>
-> > ---
-> > V1->V2: removed the device_unregister() before jumping
-> > into the new label, as suggested in the first review round.
-> > 
-> >  drivers/hwmon/hwmon.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-> > index 429784edd5ff..620f05fc412a 100644
-> > --- a/drivers/hwmon/hwmon.c
-> > +++ b/drivers/hwmon/hwmon.c
-> > @@ -652,10 +652,8 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
-> >  				if (info[i]->config[j] & HWMON_T_INPUT) {
-> >  					err = hwmon_thermal_add_sensor(dev,
-> >  								hwdev, j);
-> > -					if (err) {
-> > -						device_unregister(hdev);
-> > -						goto ida_remove;
-> > -					}
-> > +					if (err)
-> > +						goto device_unregister;
-> >  				}
-> >  			}
-> >  		}
-> > @@ -663,6 +661,8 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
-> >  
-> >  	return hdev;
-> >  
-> > +device_unregister:
-> > +	device_unregister(hdev);
-> >  free_hwmon:
-> >  	kfree(hwdev);
-> >  ida_remove:
 
--- 
-All the best,
-Eduardo Valentin
