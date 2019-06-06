@@ -2,164 +2,140 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EDF83774E
-	for <lists+linux-hwmon@lfdr.de>; Thu,  6 Jun 2019 17:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959D93791F
+	for <lists+linux-hwmon@lfdr.de>; Thu,  6 Jun 2019 18:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728797AbfFFPBH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 6 Jun 2019 11:01:07 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:43315 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727309AbfFFPBH (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 6 Jun 2019 11:01:07 -0400
-Received: from orion.localdomain ([77.9.2.22]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MeTkC-1h0wZg2fC8-00aSbg; Thu, 06 Jun 2019 17:00:40 +0200
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org
-Subject: [PATCH] drivers: hwmon: i5k_amb: simplify probing / device identification
-Date:   Thu,  6 Jun 2019 17:00:33 +0200
-Message-Id: <1559833233-25723-2-git-send-email-info@metux.net>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1559833233-25723-1-git-send-email-info@metux.net>
-References: <1559833233-25723-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:xgFb+Inj4aDfp/gYDygJhDlwg0GJKj5xkP7T34yrBOq4ZvRzA53
- JLjb9bcWg51SPxqYWxL5dMXSM6hYzLLt9NyGZtX2l/rqDIFftl+5b63t4Eyrp/YFdi7Fxzm
- Ht/3l+fat4JzwHxoyPUc2qj44dW5IJJEOHp5B9Dqd7QWzxeR/rNFN9KdAUY14/HawE5/m6b
- U698vPPHR7jbqh7k5n9pQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1ofB2UevWLU=:fod3Z4yAxcFPc2s76E9TE2
- la2+cS3nXw03X1N1bw5dsk+Ecyhs6pSDSog2f6povlnvcBI/vA42TRJtXgc8cBfythb5SWafF
- PEyZvS9ubxR0QAMjzInmHFiEmaNWR2Oi74oErAZmkrmUxVdYggs01gUYJh4lU7D06c8P60Nij
- cXFT8Twcrlv9FboyJb1QcSECx/kKf3TOYajEu25zKyFUQW+x7eVd1hsZ7fv777xr05ohp8bJm
- EoxVf1bnAal8HHxRa0z/8MCu+FLPcn6m9IIR3twmDWuwkc/ejrXxsaq3GvHoEJAvFg7m+ZLcG
- UpCAx8yzllf3cHinidaE/4dlP1XxJ6uVC37uCZMqJJPEl2d8DYF6b7Y2kTzehYvOc1OCZDIPG
- 0CbVkweNiZSP8Sr6Jz7PfGVXFIcmE1hWgZHo5lS5hoR1vgztCgOj+S/6yB8DRbXXCbWE/Y+XU
- Z6bExlJTwC77Vti58xmzgLy4QpH4MnDqfPApu4jzuTFTaRwZwhVxTRwyOeBojg7NxQ7tOdvVY
- 3Drn3caShIg6WI4XeoWX/llhUCbO/nrgbZZeoAGsh/94Eh0ifkvtcug8m6R8KdqlfL0E0uU70
- JXkosQ6cWHjLFKDwUyls9TEn4GR9OaBcwZtyH+avw9vR7zxtDb+tFopktbP0nZS1ktEoJ+muU
- VAj67BWKRP2FwHxj49bx2LK42Dgrl1+vDIi4ydXgKppZJ+5irqiltDOb+1w/LJdt5yVElboQg
- 4W5E8TT4oYt/+uh2IToKtmgJAcnLGGIkkr1aPQ==
+        id S1729615AbfFFQFo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 6 Jun 2019 12:05:44 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:37905 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729595AbfFFQFn (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 6 Jun 2019 12:05:43 -0400
+Received: by mail-pf1-f193.google.com with SMTP id a186so1789594pfa.5;
+        Thu, 06 Jun 2019 09:05:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=RsUBXGCWWwX7lyjcxWY8cLlq71Ab4rZ0DW+0q/5EnKk=;
+        b=kQZ2NgMq7OSik7fMh83uJyEoEcPZwmwHs1jR+D94vMj/RCdGcG1yt2mmdwY5yPfcao
+         Ot1F6nQZK+rcWU+pxiTV6KtEPDmZStHTiRWdyhFH0dedPlaWe2luEsEZjcexAthRYoYc
+         eHZ8a2GpOFBo0YksDkQQbwNPrG5Y8Amf567FrDk0mFEu0/QX+2vwqW05c8/XDnrDHjof
+         jPuZYPEalDmfN+ZaNKMQJEC28TDALHmFoCEsMzkF8/WoJyAjVH4A7FGK8PI5scAY+KZ2
+         PTAlfDPluWNm8DKWnfR+kJSe9jUp7UbvX/MF10HeI+0Qj03keyaE6YCxropzR2680R2B
+         Gppw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=RsUBXGCWWwX7lyjcxWY8cLlq71Ab4rZ0DW+0q/5EnKk=;
+        b=Si2o6YmwjWmgyrvqOI05iaxa6LUe3+RhOYvy1/DswCupec/8uSbTLQE4ESCNNMeYIC
+         Uv5WAmyrtZurrmsQWHbuZcEHaqFDKNhfh3MplIE2IP5QhzjXJB57muXJ9Y6Itwa/bMru
+         tu/W5aviHUuoHr3EqJtWrt664rxJ+FdKJyY+5hAUCqoewuftgefSZUFTzUPvw5DciDXj
+         ZT/gM3V8I0JlqpQqHDiMWF6xXVDpDB8Utnvy/VAoPoY0o6h3PMzLGfusQOKT8+dbBHxr
+         Fyty24w/dDYEJIWkkT5VKcpzua4HJ7xnhn5ckQX8XqJmS+WxP+wIzH5h5M6fOplOYFjj
+         YPdg==
+X-Gm-Message-State: APjAAAU4u5e22M0NGzXtL74+6+TQoWThG5sKZOe1/xp/yboMTxIhiRLS
+        lG9Sx2+JnLeajzhU8gRu5i8=
+X-Google-Smtp-Source: APXvYqxdYZT7ZicCPTapEFHqm9bYk5t5/iR2qqdEFJmqcjLLy7yFRYBTEByjzh/AWIwb0ncE8f9F5g==
+X-Received: by 2002:a17:90a:2627:: with SMTP id l36mr612651pje.71.1559837142266;
+        Thu, 06 Jun 2019 09:05:42 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 188sm6099699pfe.30.2019.06.06.09.05.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Jun 2019 09:05:40 -0700 (PDT)
+Date:   Thu, 6 Jun 2019 09:05:38 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        "amy.shih" <amy.shih@advantech.com.tw>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH] hwmon: (nct7904) Avoid fall-through warnings
+Message-ID: <20190606160538.GA29430@roeck-us.net>
+References: <20190606140659.GA2970@embeddedor>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190606140659.GA2970@embeddedor>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Enrico Weigelt <info@metux.net>
+Hi Gustavo,
 
-Simpilify the probing by putting all chip-specific data directly
-into the pci match table, removing the redundant chipset_ids table.
+On Thu, Jun 06, 2019 at 09:06:59AM -0500, Gustavo A. R. Silva wrote:
+> In preparation to enabling -Wimplicit-fallthrough, this patch silences
+> the following warnings:
+> 
 
-Signed-off-by: Enrico Weigelt <info@metux.net>
----
- drivers/hwmon/i5k_amb.c | 45 +++++++++++++++++++++++----------------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+Thanks a lot for the patch. I pulled the patch introducing the problem
+due to other issues with it.
 
-diff --git a/drivers/hwmon/i5k_amb.c b/drivers/hwmon/i5k_amb.c
-index b09c39a..f06c40f 100644
---- a/drivers/hwmon/i5k_amb.c
-+++ b/drivers/hwmon/i5k_amb.c
-@@ -414,15 +414,15 @@ static int i5k_amb_add(void)
- }
- 
- static int i5k_find_amb_registers(struct i5k_amb_data *data,
--					    unsigned long devid)
-+				  const struct pci_device_id *devid)
- {
- 	struct pci_dev *pcidev;
- 	u32 val32;
- 	int res = -ENODEV;
- 
- 	/* Find AMB register memory space */
--	pcidev = pci_get_device(PCI_VENDOR_ID_INTEL,
--				devid,
-+	pcidev = pci_get_device(devid->vendor,
-+				devid->device,
- 				NULL);
- 	if (!pcidev)
- 		return -ENODEV;
-@@ -447,14 +447,18 @@ static int i5k_find_amb_registers(struct i5k_amb_data *data,
- 	return res;
- }
- 
--static int i5k_channel_probe(u16 *amb_present, unsigned long dev_id)
-+static int i5k_channel_probe(u16 *amb_present,
-+			     const struct pci_device_id *devid,
-+			     int next)
- {
- 	struct pci_dev *pcidev;
- 	u16 val16;
- 	int res = -ENODEV;
- 
- 	/* Copy the DIMM presence map for these two channels */
--	pcidev = pci_get_device(PCI_VENDOR_ID_INTEL, dev_id, NULL);
-+	pcidev = pci_get_device(devid->vendor,
-+				(unsigned long)devid->driver_data + next,
-+				NULL);
- 	if (!pcidev)
- 		return -ENODEV;
- 
-@@ -473,23 +477,20 @@ static int i5k_channel_probe(u16 *amb_present, unsigned long dev_id)
- 	return res;
- }
- 
--static struct {
--	unsigned long err;
--	unsigned long fbd0;
--} chipset_ids[]  = {
--	{ PCI_DEVICE_ID_INTEL_5000_ERR, PCI_DEVICE_ID_INTEL_5000_FBD0 },
--	{ PCI_DEVICE_ID_INTEL_5400_ERR, PCI_DEVICE_ID_INTEL_5400_FBD0 },
--	{ 0, 0 }
--};
--
--#ifdef MODULE
- static const struct pci_device_id i5k_amb_ids[] = {
--	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_5000_ERR) },
--	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_5400_ERR) },
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTEL,
-+		.device		= PCI_DEVICE_ID_INTEL_5000_ERR,
-+		.driver_data	= PCI_DEVICE_ID_INTEL_5000_FBD0,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTEL,
-+		.device		= PCI_DEVICE_ID_INTEL_5400_ERR,
-+		.driver_data	= PCI_DEVICE_ID_INTEL_5400_FBD0,
-+	},
- 	{ 0, }
- };
- MODULE_DEVICE_TABLE(pci, i5k_amb_ids);
--#endif
- 
- static int i5k_amb_probe(struct platform_device *pdev)
- {
-@@ -504,22 +505,22 @@ static int i5k_amb_probe(struct platform_device *pdev)
- 	/* Figure out where the AMB registers live */
- 	i = 0;
- 	do {
--		res = i5k_find_amb_registers(data, chipset_ids[i].err);
-+		res = i5k_find_amb_registers(data, &i5k_amb_ids[i]);
- 		if (res == 0)
- 			break;
- 		i++;
--	} while (chipset_ids[i].err);
-+	} while (i5k_amb_ids[i].device);
- 
- 	if (res)
- 		goto err;
- 
- 	/* Copy the DIMM presence map for the first two channels */
--	res = i5k_channel_probe(&data->amb_present[0], chipset_ids[i].fbd0);
-+	res = i5k_channel_probe(&data->amb_present[0], &i5k_amb_ids[i], 0);
- 	if (res)
- 		goto err;
- 
- 	/* Copy the DIMM presence map for the optional second two channels */
--	i5k_channel_probe(&data->amb_present[2], chipset_ids[i].fbd0 + 1);
-+	i5k_channel_probe(&data->amb_present[2], &i5k_amb_ids[i], 1);
- 
- 	/* Set up resource regions */
- 	reso = request_mem_region(data->amb_base, data->amb_len, DRVNAME);
--- 
-1.9.1
+Guenter
 
+> drivers/hwmon/nct7904.c: In function 'nct7904_in_is_visible':
+> drivers/hwmon/nct7904.c:313:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (channel > 0 && (data->vsen_mask & BIT(index)))
+>       ^
+> drivers/hwmon/nct7904.c:315:2: note: here
+>   case hwmon_in_min:
+>   ^~~~
+> drivers/hwmon/nct7904.c: In function 'nct7904_fan_is_visible':
+> drivers/hwmon/nct7904.c:230:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (data->fanin_mask & (1 << channel))
+>       ^
+> drivers/hwmon/nct7904.c:232:2: note: here
+>   case hwmon_fan_min:
+>   ^~~~
+> drivers/hwmon/nct7904.c: In function 'nct7904_temp_is_visible':
+> drivers/hwmon/nct7904.c:443:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (channel < 5) {
+>       ^
+> drivers/hwmon/nct7904.c:450:2: note: here
+>   case hwmon_temp_max:
+>   ^~~~
+> 
+> Warning level 3 was used: -Wimplicit-fallthrough=3
+> 
+> This patch is part of the ongoing efforts to enable
+> -Wimplicit-fallthrough.
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> ---
+>  drivers/hwmon/nct7904.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
+> index dd450dd29ac7..bf35dfd2d3a7 100644
+> --- a/drivers/hwmon/nct7904.c
+> +++ b/drivers/hwmon/nct7904.c
+> @@ -229,6 +229,7 @@ static umode_t nct7904_fan_is_visible(const void *_data, u32 attr, int channel)
+>  	case hwmon_fan_alarm:
+>  		if (data->fanin_mask & (1 << channel))
+>  			return 0444;
+> +		break;
+>  	case hwmon_fan_min:
+>  		if (data->fanin_mask & (1 << channel))
+>  			return 0644;
+> @@ -312,6 +313,7 @@ static umode_t nct7904_in_is_visible(const void *_data, u32 attr, int channel)
+>  	case hwmon_in_alarm:
+>  		if (channel > 0 && (data->vsen_mask & BIT(index)))
+>  			return 0444;
+> +		break;
+>  	case hwmon_in_min:
+>  	case hwmon_in_max:
+>  		if (channel > 0 && (data->vsen_mask & BIT(index)))
+> @@ -447,6 +449,7 @@ static umode_t nct7904_temp_is_visible(const void *_data, u32 attr, int channel)
+>  			if (data->has_dts & BIT(channel - 5))
+>  				return 0444;
+>  		}
+> +		break;
+>  	case hwmon_temp_max:
+>  	case hwmon_temp_max_hyst:
+>  	case hwmon_temp_emergency:
+> -- 
+> 2.21.0
+> 
