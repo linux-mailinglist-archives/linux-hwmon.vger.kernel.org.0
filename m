@@ -2,94 +2,58 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C89074630B
-	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jun 2019 17:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93C1746617
+	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jun 2019 19:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbfFNPhs (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 14 Jun 2019 11:37:48 -0400
-Received: from smtp.radiodata.biz ([116.203.112.52]:38329 "EHLO
-        smtp.radiodata.biz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbfFNPhr (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 14 Jun 2019 11:37:47 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by smtp.radiodata.biz (Postfix) with ESMTP id 000AA3E8E7;
-        Fri, 14 Jun 2019 17:37:45 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at smtp.radiodata.biz
-Received: from smtp.radiodata.biz ([116.203.112.52])
-        by localhost (smtp.radiodata.biz [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6xGRaH0-4DQm; Fri, 14 Jun 2019 17:37:38 +0200 (CEST)
-Received: from mail.radiodata.biz (p578044f8.dip0.t-ipconnect.de [87.128.68.248])
-        by smtp.radiodata.biz (Postfix) with ESMTPSA id 0CFCF3E8E6;
-        Fri, 14 Jun 2019 17:37:38 +0200 (CEST)
-Received: from [192.168.2.213] (raphael-WINPC.radiodata.xx [192.168.2.213])
-        by mail.radiodata.biz (Postfix) with ESMTPSA id B402120264;
-        Fri, 14 Jun 2019 17:37:37 +0200 (CEST)
-Subject: Re: [PATCH] hwmon, gpio-fan: fix that sysfs_notify in void
- fan_alarm_notify is not received in userspace
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-References: <e9dbbefb-7714-921b-c5d1-4064d8c43f74@radiodata.biz>
- <2680453b-9631-3cb9-06c4-326d63e93988@roeck-us.net>
- <178c4302-3333-b60f-afbd-ff73fbe943ca@radiodata.biz>
- <20190614145256.GA464@roeck-us.net>
-From:   Christian Schneider <cschneider@radiodata.biz>
-Message-ID: <a09503d5-114e-3064-2669-ac6f8b74bbb2@radiodata.biz>
-Date:   Fri, 14 Jun 2019 17:37:37 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726719AbfFNRsW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 14 Jun 2019 13:48:22 -0400
+Received: from smtp2.ono.com ([62.42.230.179]:38699 "EHLO smtp2.ono.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726082AbfFNRsW (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 14 Jun 2019 13:48:22 -0400
+X-Junkmail-Premium-Raw: score=26/50,refid=2.7.2:2019.6.14.164816:17:26.894,ip=62.42.230.134,rules=__HAS_MSGID,
+ __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
+ FROM_NAME_PHRASE, FROM_NAME_ALLCAPS, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
+ BLANK_SUBJECT, __MIME_VERSION, __CT, __CT_TEXT_PLAIN, __CTE, MISSING_HEADERS,
+ __ANY_URI, __FRAUD_BODY_WEBMAIL, __URI_NO_WWW, __NO_HTML_TAG_RAW,
+ BODYTEXTP_SIZE_400_LESS, BODY_SIZE_200_299, BODYTEXTP_SIZE_3000_LESS,
+ __MIME_TEXT_P1, __MIME_TEXT_ONLY, __URI_NS, HTML_00_01, HTML_00_10,
+ BODY_SIZE_5000_LESS, __FRAUD_WEBMAIL, WEBMAIL_REPLYTO_NOT_FROM,
+ FRAUD_WEBMAIL_R_NOT_F, __MIME_TEXT_P, FRAUD_LITTLE_BODY,
+ __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS, BODY_SIZE_2000_LESS,
+ SMALL_BODY, __PHISH_SPEAR_STRUCTURE_2, REPLYTO_FROM_DIFF_ADDY, NO_URI_HTTPS,
+ BODY_SIZE_7000_LESS, TO_MALFORMED
+Received: from resprs04 (62.42.230.134) by smtp2.ono.com (9.0.019.09-1)
+        id 5CAF0F5D033A9A92; Fri, 14 Jun 2019 19:48:18 +0200
+Received: from (149.126.75.1) by webmailcpr04n.ono.com;  Fri, 14 Jun 2019 19:48:17 +0200
+Message-ID: <33296203.262531560534497614.JavaMail.defaultUser@defaultHost>
+Date:   Fri, 14 Jun 2019 19:48:17 +0200 (CEST)
+From:   DR ALBERT ZONGO <rjpd@ono.com>
+Reply-To: dralbertddzongo@gmail.com
+Subject: 
 MIME-Version: 1.0
-In-Reply-To: <20190614145256.GA464@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Am 14.06.2019 um 15:52 schrieb Guenter Roeck:
-> On Fri, Jun 14, 2019 at 04:16:55PM +0200, Christian Schneider wrote:
->> Am 14.06.2019 um 15:05 schrieb Guenter Roeck:
->>> On 6/14/19 6:52 AM, Christian Schneider wrote:
->>>> From: Christian Schneider <cschneider@radiodata.biz>
->>>>     To: linux-hwmon
->>>
->>> The above should not be part of the e-mail body.
->>>
->>>> Alarms on gpio-fan can't be received from sysfs_notify, because the
->>>> wrong kobject is passed.
->>>> This patch fixes this.
->>>
->>> Empty line here please.
->>>
->>>> Signed-off-by: Christian Schneider <cschneider@radiodata.biz>
->>>> ---
->>>> diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
->>>> index 84753680a4e8..5f3a35db18a1 100644
->>>> --- a/drivers/hwmon/gpio-fan.c
->>>> +++ b/drivers/hwmon/gpio-fan.c
->>>> @@ -54,7 +54,7 @@ static void fan_alarm_notify(struct work_struct *ws)
->>>>           struct gpio_fan_data *fan_data =
->>>>                   container_of(ws, struct gpio_fan_data, alarm_work);
->>>>
->>>> -       sysfs_notify(&fan_data->dev->kobj, NULL, "fan1_alarm");
->>>> +       sysfs_notify(&fan_data->hwmon_dev->kobj, NULL, "fan1_alarm");
->>>>           kobject_uevent(&fan_data->dev->kobj, KOBJ_CHANGE);
->>>>    }
->>>>
->>> You'll want to make the same change for kobject_uevent().
->>
->> Actually, uevents are send and can be received as is. I have tried changing
->> the kobject for kobject_uevent(), too, and only the content of the uevent
->> changes.
->> Since I don't know what would be the "right" one, I left it as is.
->> If you say, that it would be correct with the hwmon_dev kobject, I'll add
->> this to the patch.
-> 
-> The point of uevent notifications is to tell userspace that something changed
-> in the provided directory. It doesn't help if the uevent does not point there.
-> 
-> Guenter
-> 
 
-Sounds legit. I sent new patch.
+
+
+--
+Greetings,
+
+I have an intending proposal for you please i need you to contact my 
+private
+
+ E-mail (dralbertddzongo@gmail.com) for more updates,
+
+Best Wishes.
+
+DR ALBERT ZONGO
+
+--
+
