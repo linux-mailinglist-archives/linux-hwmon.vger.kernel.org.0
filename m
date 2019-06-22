@@ -2,134 +2,65 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1395C4F4A5
-	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Jun 2019 11:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D94114F6E6
+	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Jun 2019 18:28:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbfFVJTp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 22 Jun 2019 05:19:45 -0400
-Received: from mta02.svc.cra.dublin.eircom.net ([159.134.118.53]:60436 "HELO
-        mta02.svc.cra.dublin.eircom.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S1726187AbfFVJTp (ORCPT
+        id S1726353AbfFVQ2z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 22 Jun 2019 12:28:55 -0400
+Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:41314 "EHLO
+        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726401AbfFVQ2u (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 22 Jun 2019 05:19:45 -0400
-X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Sat, 22 Jun 2019 05:19:42 EDT
-Received: (qmail 19674 messnum 10241578 invoked from network[213.94.190.14/avas02.vendorsvc.cra.dublin.eircom.net]); 22 Jun 2019 09:13:01 -0000
-Received: from avas02.vendorsvc.cra.dublin.eircom.net (HELO avas02) (213.94.190.14)
-  by mta02.svc.cra.dublin.eircom.net (qp 19674) with SMTP; 22 Jun 2019 09:13:01 -0000
-Received: from vzmbx23.eircom.net ([86.43.60.113])
-        by Cloudmark Gateway with SMTP
-        id ec4zhRDNCOQFYec4zhrTRt; Sat, 22 Jun 2019 10:13:01 +0100
-X-Spam-Flag: NO
-X-CNFS-Analysis: v=2.2 cv=QNUYfkDL c=1 sm=1 tr=0
- a=8ItVz2sHr4/iwNscDFT0Ig==:117 a=FKkrIqjQGGEA:10 a=owFuL7-QlUMA:10
- a=IkcTkHD0fZMA:10 a=rp15K2jThj0A:10 a=eKmhlhzmtrQA:10 a=ZZnuYtJkoWoA:10
- a=K_3BPOXYa6hvDG5fGeYA:9 a=QEXdDO2ut3YA:10
-Date:   Sat, 22 Jun 2019 10:13:01 +0100 (IST)
-From:   "TPG, Investment Firm" <wgormanplanthire@eircom.net>
-To:     tpginvestmentfirm@suddenlink.net
-Message-ID: <1518993536.359812.1561194781615.JavaMail.zimbra@eircom.net>
-Subject: Investment Plan.
+        Sat, 22 Jun 2019 12:28:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
+X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
+ lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
+ 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
+ b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
+ lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
+ 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
+ 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
+ O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
+ RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
+ 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
+ q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
+ P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
+ BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
+ ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
+ FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
+ ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
+ 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
+Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
+From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
+Reply-To: miss.fmayusuf11@gmail.com
+Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
+Subject: From:Miss: Fatima Yusuf.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [154.160.18.234]
-X-Mailer: Zimbra 8.6.0_GA_1194 (ZimbraWebClient - GC75 (Win)/8.6.0_GA_1194)
-Thread-Topic: Investment Plan.
-Thread-Index: RDV1nBUByoKa/ajr8PVMH7bJeJ2Jrg==
-X-CMAE-Envelope: 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
- HKQSYexH2FipTydv9GBUhiN6e19LAm1fZt0=
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello, I have an Investment proposals that will be of good interest to you. Let me know if you have any viable business idea in your region/country.
-Regards, Mike Zap.
+
+
+From:Miss: Fatima Yusuf.
+
+For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+
+I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+
+Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
+
+I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
+
+I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
+
+My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
+
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.
