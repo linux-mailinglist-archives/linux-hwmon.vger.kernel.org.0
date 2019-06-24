@@ -2,65 +2,105 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D94114F6E6
-	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Jun 2019 18:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD73950687
+	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Jun 2019 12:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbfFVQ2z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 22 Jun 2019 12:28:55 -0400
-Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:41314 "EHLO
-        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726401AbfFVQ2u (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 22 Jun 2019 12:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
-X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
- lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
- 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
- b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
- lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
- 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
- 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
- O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
- RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
- 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
- q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
- P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
- BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
- ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
- FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
- ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
- 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
-Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
+        id S1727282AbfFXJ7W (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 24 Jun 2019 05:59:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58352 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728673AbfFXJ7T (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 24 Jun 2019 05:59:19 -0400
+Received: from localhost (f4.8f.5177.ip4.static.sl-reverse.com [119.81.143.244])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CB27F21655;
+        Mon, 24 Jun 2019 09:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561370358;
+        bh=lQIVZkQGmXcK1EaMH+3xunD5I8bRDu8RrN8phKF5kMY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=wGec/v7ZQBWWeZW/RzMVGa+dZu6Ui4oygYNC0KjciBD8ag/FOSZ/AZubXskvpOFyc
+         Da7dbJVQJIxqY0lf8p9Aq5mM4/SLbcUCN8yQgxmBHAV+kulCzgTEnjYPZZ3JVmK2TD
+         A0/CaL+EAzJoTwLeqpNHYdAWvEtyyVQVLo+d5JHk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-hwmon@vger.kernel.org, Eduardo Valentin <eduval@amazon.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 36/51] hwmon: (core) add thermal sensors only if dev->of_node is present
+Date:   Mon, 24 Jun 2019 17:56:54 +0800
+Message-Id: <20190624092310.342420987@linuxfoundation.org>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190624092305.919204959@linuxfoundation.org>
+References: <20190624092305.919204959@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+[ Upstream commit c41dd48e21fae3e55b3670ccf2eb562fc1f6a67d ]
+
+Drivers may register to hwmon and request for also registering
+with the thermal subsystem (HWMON_C_REGISTER_TZ). However,
+some of these driver, e.g. marvell phy, may be probed from
+Device Tree or being dynamically allocated, and in the later
+case, it will not have a dev->of_node entry.
+
+Registering with hwmon without the dev->of_node may result in
+different outcomes depending on the device tree, which may
+be a bit misleading. If the device tree blob has no 'thermal-zones'
+node, the *hwmon_device_register*() family functions are going
+to gracefully succeed, because of-thermal,
+*thermal_zone_of_sensor_register() return -ENODEV in this case,
+and the hwmon error path handles this error code as success to
+cover for the case where CONFIG_THERMAL_OF is not set.
+However, if the device tree blob has the 'thermal-zones'
+entry, the *hwmon_device_register*() will always fail on callers
+with no dev->of_node, propagating -EINVAL.
+
+If dev->of_node is not present, calling of-thermal does not
+make sense. For this reason, this patch checks first if the
+device has a of_node before going over the process of registering
+with the thermal subsystem of-thermal interface. And in this case,
+when a caller of *hwmon_device_register*() with HWMON_C_REGISTER_TZ
+and no dev->of_node will still register with hwmon, but not with
+the thermal subsystem. If all the hwmon part bits are in place,
+the registration will succeed.
+
+Fixes: d560168b5d0f ("hwmon: (core) New hwmon registration API")
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Eduardo Valentin <eduval@amazon.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
+index c9790e2c3440..7b53065e9882 100644
+--- a/drivers/hwmon/hwmon.c
++++ b/drivers/hwmon/hwmon.c
+@@ -608,7 +608,7 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
+ 	if (err)
+ 		goto free_hwmon;
+ 
+-	if (dev && chip && chip->ops->read &&
++	if (dev && dev->of_node && chip && chip->ops->read &&
+ 	    chip->info[0]->type == hwmon_chip &&
+ 	    (chip->info[0]->config[0] & HWMON_C_REGISTER_TZ)) {
+ 		const struct hwmon_channel_info **info = chip->info;
+-- 
+2.20.1
 
 
-From:Miss: Fatima Yusuf.
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
-
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
-
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
-
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
-
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
-
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
