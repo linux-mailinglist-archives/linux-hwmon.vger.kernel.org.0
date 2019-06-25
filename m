@@ -2,105 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 424BF50883
-	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Jun 2019 12:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EFBA52834
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jun 2019 11:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727525AbfFXKSS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Jun 2019 06:18:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53958 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729770AbfFXKQ1 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Jun 2019 06:16:27 -0400
-Received: from localhost (f4.8f.5177.ip4.static.sl-reverse.com [119.81.143.244])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF272208E3;
-        Mon, 24 Jun 2019 10:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561371387;
-        bh=ZWzPHxVYO6d7ILI+35xWNGfP9V6kWW0cbdaUNlzXlDU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gjHDuDS5q969CBYr7xVYm6kH6H3AKJQC1ehb8wq3Gi2hejFNlppgwQWS1cuMeM9wM
-         DnDbXsOhCne9gVjLVxfg8veoSOPvBXWFZOAXhRuDo5UCtSOxMGx3hjCRl/D+aNivUh
-         U2qpDBJl5avr5SUIuXfIpk/t8jclDDHp77rf6KF8=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, Eduardo Valentin <eduval@amazon.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.1 085/121] hwmon: (core) add thermal sensors only if dev->of_node is present
-Date:   Mon, 24 Jun 2019 17:56:57 +0800
-Message-Id: <20190624092325.180202592@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190624092320.652599624@linuxfoundation.org>
-References: <20190624092320.652599624@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1729163AbfFYJij (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 25 Jun 2019 05:38:39 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36708 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730093AbfFYJij (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 25 Jun 2019 05:38:39 -0400
+Received: by mail-wr1-f66.google.com with SMTP id n4so15852065wrs.3
+        for <linux-hwmon@vger.kernel.org>; Tue, 25 Jun 2019 02:38:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=+bllI+uhX4ifvIS1PickYrW1huvdTbgr8Lv09pVb6FU=;
+        b=qGxAYu0Kc8a8QY81cpAL/vOs7zUNruOUSdBRb4/Y7HKovLSdoDG/DiAaFRzPayZr3x
+         PRu8itVSbPTpwqKwopbWNOFC8GFoI642nQaC3eVrliaJqXdgR/Pa37oMb03KDS9QzED4
+         oZt1r9UQGCngckqw7LRqBoAFDXA9tdxUNa0wFOyQSLWSb5rW/mt/TYWlijzhfYJPGmgx
+         UsUbSSz3CSLGF/2PC2k0Nc/2tn+WCwzTZ5Jbsp+d88G52hGeCnDxfw/eWTytDb6sxCQk
+         aZj9iy8kRedoYJBURiMtiqSATb91DnSJLnNvtEr7T6d+vziU+mlA3U1Xexo+1Mnr4SJ/
+         EFzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=+bllI+uhX4ifvIS1PickYrW1huvdTbgr8Lv09pVb6FU=;
+        b=iHk+b1IXirdVOFHs8BNECv9/Ca6SHvdSjq0g9NSw86J1x2BsYrI17eixL6/XZu5hVv
+         a1IKOTJEikeXxl4FvZ865KbeleZQk9K1jY6DIP4JHrhoBCnY1qvb4ck2SsbGAo2zEYwH
+         s0LloebZn2/o/swLoAkCdpK5TVHtUK0RbLWBpstafQqqu7h357Z1oxNPbz0IxGy+CdDC
+         sCq8Oojn7MFsSrcK3o7y17w1xYa3QAqmOvxp8ULqJh+katPGeUwE5zV/rhYCBNaIjQt1
+         /GvPKXvxYdCCJHGxBVjlWOKTNNNWupJXth1eqE62SvdS0CBPvcXLuoPWCuTXYuyq+Uxm
+         HnRA==
+X-Gm-Message-State: APjAAAVN/+827Q3YnMC/lROwo4UoOlHS/HsOakQCpPW9kYlLXRa3QDL+
+        82YqeAeadayLqSmrSU+67od1kHKUFFrVJ2ihYrU=
+X-Google-Smtp-Source: APXvYqw0M6+69Cx78Pb2WgjNR/GcV376Kk13F8KBQFWAO9Cvr1SVrvRen9G4vPtV0pEqqeC6LcTpKLVnqq7yVStYPgA=
+X-Received: by 2002:adf:ec0f:: with SMTP id x15mr26815133wrn.165.1561455517240;
+ Tue, 25 Jun 2019 02:38:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a5d:4d44:0:0:0:0:0 with HTTP; Tue, 25 Jun 2019 02:38:36
+ -0700 (PDT)
+Reply-To: arnettdavid2030@gmail.com
+From:   "Sgt,Arnett David" <alasanahmad200@gmail.com>
+Date:   Tue, 25 Jun 2019 14:08:36 +0430
+Message-ID: <CACLpcxwKYFjwfXOUx=mhkNRK=hRM=nTCYageT7H34PpFeF+gsQ@mail.gmail.com>
+Subject: Assist Request From You
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-[ Upstream commit c41dd48e21fae3e55b3670ccf2eb562fc1f6a67d ]
-
-Drivers may register to hwmon and request for also registering
-with the thermal subsystem (HWMON_C_REGISTER_TZ). However,
-some of these driver, e.g. marvell phy, may be probed from
-Device Tree or being dynamically allocated, and in the later
-case, it will not have a dev->of_node entry.
-
-Registering with hwmon without the dev->of_node may result in
-different outcomes depending on the device tree, which may
-be a bit misleading. If the device tree blob has no 'thermal-zones'
-node, the *hwmon_device_register*() family functions are going
-to gracefully succeed, because of-thermal,
-*thermal_zone_of_sensor_register() return -ENODEV in this case,
-and the hwmon error path handles this error code as success to
-cover for the case where CONFIG_THERMAL_OF is not set.
-However, if the device tree blob has the 'thermal-zones'
-entry, the *hwmon_device_register*() will always fail on callers
-with no dev->of_node, propagating -EINVAL.
-
-If dev->of_node is not present, calling of-thermal does not
-make sense. For this reason, this patch checks first if the
-device has a of_node before going over the process of registering
-with the thermal subsystem of-thermal interface. And in this case,
-when a caller of *hwmon_device_register*() with HWMON_C_REGISTER_TZ
-and no dev->of_node will still register with hwmon, but not with
-the thermal subsystem. If all the hwmon part bits are in place,
-the registration will succeed.
-
-Fixes: d560168b5d0f ("hwmon: (core) New hwmon registration API")
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Eduardo Valentin <eduval@amazon.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-index c22dc1e07911..c38883f748a1 100644
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -633,7 +633,7 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
- 	if (err)
- 		goto free_hwmon;
- 
--	if (dev && chip && chip->ops->read &&
-+	if (dev && dev->of_node && chip && chip->ops->read &&
- 	    chip->info[0]->type == hwmon_chip &&
- 	    (chip->info[0]->config[0] & HWMON_C_REGISTER_TZ)) {
- 		const struct hwmon_channel_info **info = chip->info;
 -- 
-2.20.1
 
+Accept my greetings to you
 
+Assist Request From You
 
+I am 28 years old single an orphan my parents died when I am five
+years old nobody to help me,I send you my business proposal with tears
+and sorrow,Please let this not be a surprised message to you because I
+decided to contact you on this magnitude and lucrative transaction for
+our present and future survival in life. Moreover, I have laid all the
+solemn trust in you before i decided to disclose this successful and
+confidential transaction to you.
+
+I am  Arnett David ,I hope all is well with you? I am female soldier
+working as United Nations peace keeping troop in Afghanistan on war
+against terrorism. I have in my possession the sum of $3.5million USD
+Which I made here in Afghanistan 2014,I deposited this money with a
+Red Cross agent. I want you to stand as my beneficiary and receive the
+fund And keep it safe so that as soon as am through with my mission
+here in Afghanistan.
+
+You will assist me to invest it in a good profitable Venture or you
+keep it for me until I arrive your country, I will give You 40% of the
+total money for your assistance after you have receive The money.
+Please reply back to me via my private email address
+(arnettdavid2030@gmail.com ) if you are willing to work with me so
+that I can send you the information where the money is been deposited,
+your urgent reply is needed  so i can send you more details.
+
+Thank Yours
+Sgt,Arnett David
