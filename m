@@ -2,70 +2,155 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B087E54DEE
-	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jun 2019 13:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 966EA57165
+	for <lists+linux-hwmon@lfdr.de>; Wed, 26 Jun 2019 21:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfFYLst (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 25 Jun 2019 07:48:49 -0400
-Received: from smtp3.ono.com ([62.42.230.163]:10669 "EHLO smtp3.ono.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726524AbfFYLst (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 25 Jun 2019 07:48:49 -0400
-X-Junkmail-Premium-Raw: score=17/50,refid=2.7.2:2019.6.25.104217:17:17.150,ip=62.42.230.132,rules=__HAS_MSGID,
- __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
- FROM_NAME_ONE_WORD, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
- __SUBJ_ALPHA_START, __PHISH_SPEAR_SUBJ_ALERT, __SUBJ_ALPHA_END,
- __MIME_VERSION, __CT, __CT_TEXT_PLAIN, __CTE, MISSING_HEADERS,
- __CP_NAME_BODY, __FRAUD_INYOURCOUNTRY, __STOCK_PHRASE_7, __STOCK_PHRASE_8,
- __FRAUD_MONEY_GENERIC, __FRAUD_MONEY_BIG_COIN_DIG, __OEM_PRICE,
- __FRAUD_MONEY_CURRENCY_DOLLAR, __NO_HTML_TAG_RAW, BODY_SIZE_700_799,
- BODYTEXTP_SIZE_3000_LESS, __MIME_TEXT_P1, __MIME_TEXT_ONLY, HTML_00_01,
- HTML_00_10, __FRAUD_MONEY_CURRENCY, __FRAUD_MONEY_BIG_COIN,
- __FRAUD_MONEY_VALUE, __FRAUD_MONEY, FRAUD_X3, BODY_SIZE_5000_LESS,
- __FRAUD_WEBMAIL, WEBMAIL_REPLYTO_NOT_FROM, FRAUD_WEBMAIL_R_NOT_F,
- __FRAUD_COMMON, __MIME_TEXT_P, NO_URI_FOUND, NO_CTA_URI_FOUND,
- __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS, BODY_SIZE_2000_LESS,
- __PHISH_SPEAR_STRUCTURE_2, REPLYTO_FROM_DIFF_ADDY, NO_URI_HTTPS,
- BODY_SIZE_7000_LESS, TO_MALFORMED
-Received: from resprs02 (62.42.230.132) by smtp3.ono.com (9.0.019.09-1)
-        id 5CC0A28F03112C4E; Tue, 25 Jun 2019 13:47:39 +0200
-Received: from (149.126.78.1) by webmailcpr02n.ono.com;  Tue, 25 Jun 2019 13:47:34 +0200
-Message-ID: <7763326.1043081561463254006.JavaMail.defaultUser@defaultHost>
-Date:   Tue, 25 Jun 2019 13:47:34 +0200 (CEST)
-From:   Aisha <luis.comeche@ono.com>
-Reply-To: mrsgaddafi06@gmail.com
-Subject: hello dear
-MIME-Version: 1.0
-Content-Type: text/plain;charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726227AbfFZTOV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 26 Jun 2019 15:14:21 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:39248 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726223AbfFZTOU (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 26 Jun 2019 15:14:20 -0400
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5QJ7Uep100280;
+        Wed, 26 Jun 2019 15:13:35 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2tcdn92nan-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jun 2019 15:13:35 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x5QJ7Wi9100406;
+        Wed, 26 Jun 2019 15:13:35 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2tcdn92na3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jun 2019 15:13:34 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+        by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5QJ9RIb026146;
+        Wed, 26 Jun 2019 19:13:34 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+        by ppma01dal.us.ibm.com with ESMTP id 2t9by7980a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jun 2019 19:13:34 +0000
+Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+        by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5QJDW0I43188514
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 19:13:32 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A5CF56A057;
+        Wed, 26 Jun 2019 19:13:32 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3D4086A047;
+        Wed, 26 Jun 2019 19:13:32 +0000 (GMT)
+Received: from talon7.ibm.com (unknown [9.41.179.222])
+        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Wed, 26 Jun 2019 19:13:32 +0000 (GMT)
+From:   Eddie James <eajames@linux.ibm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-hwmon@vger.kernel.org, linux@roeck-us.net, jdelvare@suse.com,
+        mine260309@gmail.com, Eddie James <eajames@linux.ibm.com>
+Subject: [PATCH] OCC: FSI and hwmon: Add sequence numbering
+Date:   Wed, 26 Jun 2019 14:13:15 -0500
+Message-Id: <1561576395-6429-1-git-send-email-eajames@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-26_10:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906260222
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh,
+Sequence numbering of the commands submitted to the OCC is required by
+the OCC interface specification. Add sequence numbering and check for
+the correct sequence number on the response.
 
-hello dear
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+---
+ drivers/fsi/fsi-occ.c      | 15 ++++++++++++---
+ drivers/hwmon/occ/common.c |  4 ++--
+ drivers/hwmon/occ/common.h |  1 +
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
-I came across your contact during my private search. Mrs Aisha Al-
-Qaddafi is my name, the only daughter of late Libyan president, am a 
-single Mother and a Widow with three Children.I have funds the sum of 
-$27.5 million USD for, investment, I am interested in you for 
-investment project assistance in your country,because of my current 
-refugee status, i shall compensate you 30% of the total sum after the 
-funds are transfer into your account,I am willing to, negotiate 
-investment/business profit sharing ratio with you base on the future 
-investment earning profits.
-
-Reply me urgent for more details
-
-Mrs Aisha Al-Qaddafi
-
-
-
-
-
-
-
+diff --git a/drivers/fsi/fsi-occ.c b/drivers/fsi/fsi-occ.c
+index a2301ce..7da9c81 100644
+--- a/drivers/fsi/fsi-occ.c
++++ b/drivers/fsi/fsi-occ.c
+@@ -412,6 +412,7 @@ int fsi_occ_submit(struct device *dev, const void *request, size_t req_len,
+ 		msecs_to_jiffies(OCC_CMD_IN_PRG_WAIT_MS);
+ 	struct occ *occ = dev_get_drvdata(dev);
+ 	struct occ_response *resp = response;
++	u8 seq_no;
+ 	u16 resp_data_length;
+ 	unsigned long start;
+ 	int rc;
+@@ -426,6 +427,8 @@ int fsi_occ_submit(struct device *dev, const void *request, size_t req_len,
+ 
+ 	mutex_lock(&occ->occ_lock);
+ 
++	/* Extract the seq_no from the command (first byte) */
++	seq_no = *(const u8 *)request;
+ 	rc = occ_putsram(occ, OCC_SRAM_CMD_ADDR, request, req_len);
+ 	if (rc)
+ 		goto done;
+@@ -441,11 +444,17 @@ int fsi_occ_submit(struct device *dev, const void *request, size_t req_len,
+ 		if (rc)
+ 			goto done;
+ 
+-		if (resp->return_status == OCC_RESP_CMD_IN_PRG) {
++		if (resp->return_status == OCC_RESP_CMD_IN_PRG ||
++		    resp->seq_no != seq_no) {
+ 			rc = -ETIMEDOUT;
+ 
+-			if (time_after(jiffies, start + timeout))
+-				break;
++			if (time_after(jiffies, start + timeout)) {
++				dev_err(occ->dev, "resp timeout status=%02x "
++					"resp seq_no=%d our seq_no=%d\n",
++					resp->return_status, resp->seq_no,
++					seq_no);
++				goto done;
++			}
+ 
+ 			set_current_state(TASK_UNINTERRUPTIBLE);
+ 			schedule_timeout(wait_time);
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index d593517..a7d2b16 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -124,12 +124,12 @@ struct extended_sensor {
+ static int occ_poll(struct occ *occ)
+ {
+ 	int rc;
+-	u16 checksum = occ->poll_cmd_data + 1;
++	u16 checksum = occ->poll_cmd_data + occ->seq_no + 1;
+ 	u8 cmd[8];
+ 	struct occ_poll_response_header *header;
+ 
+ 	/* big endian */
+-	cmd[0] = 0;			/* sequence number */
++	cmd[0] = occ->seq_no++;		/* sequence number */
+ 	cmd[1] = 0;			/* cmd type */
+ 	cmd[2] = 0;			/* data length msb */
+ 	cmd[3] = 1;			/* data length lsb */
+diff --git a/drivers/hwmon/occ/common.h b/drivers/hwmon/occ/common.h
+index fc13f3c..67e6968 100644
+--- a/drivers/hwmon/occ/common.h
++++ b/drivers/hwmon/occ/common.h
+@@ -95,6 +95,7 @@ struct occ {
+ 	struct occ_sensors sensors;
+ 
+ 	int powr_sample_time_us;	/* average power sample time */
++	u8 seq_no;
+ 	u8 poll_cmd_data;		/* to perform OCC poll command */
+ 	int (*send_cmd)(struct occ *occ, u8 *cmd);
+ 
+-- 
+1.8.3.1
 
