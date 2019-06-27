@@ -2,58 +2,173 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F4D57FF8
-	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Jun 2019 12:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 494A7581FF
+	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Jun 2019 14:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbfF0KNu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 27 Jun 2019 06:13:50 -0400
-Received: from smtp2.ono.com ([62.42.230.179]:30323 "EHLO smtp2.ono.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726187AbfF0KNu (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 27 Jun 2019 06:13:50 -0400
-X-Junkmail-Premium-Raw: score=26/50,refid=2.7.2:2019.6.27.94517:17:26.894,ip=62.42.230.144,rules=__HAS_MSGID,
- __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
- FROM_NAME_PHRASE, FROM_NAME_ALLCAPS, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
- __SUBJECT_NOLC, __SUBJECT_ALLCAPS, SUBJ_1WORD, __MIME_VERSION, __CT,
- __CT_TEXT_PLAIN, __CTE, MISSING_HEADERS, __ANY_URI, __FRAUD_BODY_WEBMAIL,
- __URI_NO_WWW, __NO_HTML_TAG_RAW, BODYTEXTP_SIZE_400_LESS, BODY_SIZE_200_299,
- BODYTEXTP_SIZE_3000_LESS, __MIME_TEXT_P1, __MIME_TEXT_ONLY, __URI_NS,
- HTML_00_01, HTML_00_10, BODY_SIZE_5000_LESS, __FRAUD_WEBMAIL,
- WEBMAIL_REPLYTO_NOT_FROM, FRAUD_WEBMAIL_R_NOT_F, __MIME_TEXT_P,
- FRAUD_LITTLE_BODY, __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS,
- BODY_SIZE_2000_LESS, SMALL_BODY, __PHISH_SPEAR_STRUCTURE_2,
- REPLYTO_FROM_DIFF_ADDY, NO_URI_HTTPS, BODY_SIZE_7000_LESS, TO_MALFORMED
-Received: from resprs05 (62.42.230.144) by smtp2.ono.com (9.0.019.09-1)
-        id 5CAF0F5D03C867A2; Thu, 27 Jun 2019 12:13:45 +0200
-Received: from (149.126.75.7) by webmailcpr05n.ono.com;  Thu, 27 Jun 2019 12:13:44 +0200
-Message-ID: <21336663.1149931561630424807.JavaMail.defaultUser@defaultHost>
-Date:   Thu, 27 Jun 2019 12:13:44 +0200 (CEST)
-From:   DR ALBERT ZONGO <rjpd@ono.com>
-Reply-To: dralbertddzongo@gmail.com
-Subject: HI
+        id S1726462AbfF0MC4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 27 Jun 2019 08:02:56 -0400
+Received: from mx-rz-1.rrze.uni-erlangen.de ([131.188.11.20]:36713 "EHLO
+        mx-rz-1.rrze.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726370AbfF0MC4 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 27 Jun 2019 08:02:56 -0400
+X-Greylist: delayed 347 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 08:02:54 EDT
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx-rz-1.rrze.uni-erlangen.de (Postfix) with ESMTPS id 45ZJKZ48Zfz8wLP;
+        Thu, 27 Jun 2019 13:57:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2013;
+        t=1561636626; bh=tLI6fN2m+RLQ4kM6V9C7P+ZlDKcDLKJqvXEJ6qUPnGs=;
+        h=From:To:Cc:Subject:Date:From:To:CC:Subject;
+        b=B8IlS5287rbLHHAaI7ACSQTrgBeHJkwvag98EN6ZSISoSC6yMjqpbxlYdXozGOak2
+         hTEp4luN50bqS/18bN9LP7ZArwgqotXeY1T/kbYi5VWFpdNbP5eNfNcfBiQPvgIdHb
+         stvxWrYmqE5fiL7cWbF4MbnVc0gUHFRbMxohYpYL4CIRlRpHA0/W1LUVSxaRJHiOwG
+         6Wi3GgyTDrJ+P5s1Anmjfyx5+jTrqSQbqRB6DJtpGK5p2CGsaqu5AFVKnnz0MNn7RV
+         M8oBgH1mM0bgMCaoeWn34ubCsSH1YYEJSmG3iig6W/dcHmWvD7jUWRS0WmmpYWc4sf
+         EijH8FZjVzt0w==
+X-Virus-Scanned: amavisd-new at boeck1.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 10.21.35.53
+Received: from laptop.pool.uni-erlangen.de (faustud-010-021-035-053.pool.uni-erlangen.de [10.21.35.53])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: U2FsdGVkX18IgU6a1VjlMOGrCyBI/NzffopWKzLo6Vg=)
+        by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 45ZJKX1G1zz8wMS;
+        Thu, 27 Jun 2019 13:57:04 +0200 (CEST)
+From:   Fabian Schindlatz <fabian.schindlatz@fau.de>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Rudolf Marek <r.marek@assembler.cz>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Fabian Schindlatz <fabian.schindlatz@fau.de>,
+        =?UTF-8?q?Thomas=20R=C3=B6thenbacher?= 
+        <thomas.roethenbacher@fau.de>, linux-kernel@i4.cs.fau.de
+Subject: [PATCH] hwmon: Correct struct allocation style
+Date:   Thu, 27 Jun 2019 13:56:45 +0200
+Message-Id: <20190627115645.5077-1-fabian.schindlatz@fau.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain;charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Use sizeof(*var) instead of sizeof(struct var_type) as argument to
+kalloc() and friends to comply with the kernel coding style.
 
+Co-developed-by: Thomas Röthenbacher <thomas.roethenbacher@fau.de>
+Signed-off-by: Thomas Röthenbacher <thomas.roethenbacher@fau.de>
+Signed-off-by: Fabian Schindlatz <fabian.schindlatz@fau.de>
+Cc: linux-kernel@i4.cs.fau.de
+---
+ drivers/hwmon/acpi_power_meter.c | 2 +-
+ drivers/hwmon/coretemp.c         | 4 ++--
+ drivers/hwmon/fschmd.c           | 2 +-
+ drivers/hwmon/sch56xx-common.c   | 2 +-
+ drivers/hwmon/via-cputemp.c      | 4 ++--
+ drivers/hwmon/w83793.c           | 2 +-
+ 6 files changed, 8 insertions(+), 8 deletions(-)
 
-
---
-
-Greetings,
-
-I have an intending proposal for you please i need you to contact my 
-private
-
- E-mail(dralbertddzongo@gmail.com) for more updates,
-
-Best Wishes.
-
-DR ALBERT ZONGO
---
+diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+index 6ba1a08253f0..f20223e3579c 100644
+--- a/drivers/hwmon/acpi_power_meter.c
++++ b/drivers/hwmon/acpi_power_meter.c
+@@ -862,7 +862,7 @@ static int acpi_power_meter_add(struct acpi_device *device)
+ 	if (!device)
+ 		return -EINVAL;
+ 
+-	resource = kzalloc(sizeof(struct acpi_power_meter_resource),
++	resource = kzalloc(sizeof(*resource),
+ 			   GFP_KERNEL);
+ 	if (!resource)
+ 		return -ENOMEM;
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index fe6618e49dc4..0361115d25dd 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -433,7 +433,7 @@ static struct temp_data *init_temp_data(unsigned int cpu, int pkg_flag)
+ {
+ 	struct temp_data *tdata;
+ 
+-	tdata = kzalloc(sizeof(struct temp_data), GFP_KERNEL);
++	tdata = kzalloc(sizeof(*tdata), GFP_KERNEL);
+ 	if (!tdata)
+ 		return NULL;
+ 
+@@ -532,7 +532,7 @@ static int coretemp_probe(struct platform_device *pdev)
+ 	struct platform_data *pdata;
+ 
+ 	/* Initialize the per-zone data structures */
+-	pdata = devm_kzalloc(dev, sizeof(struct platform_data), GFP_KERNEL);
++	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/hwmon/fschmd.c b/drivers/hwmon/fschmd.c
+index fa0c2f1fb443..d464dcbe5ac8 100644
+--- a/drivers/hwmon/fschmd.c
++++ b/drivers/hwmon/fschmd.c
+@@ -1090,7 +1090,7 @@ static int fschmd_probe(struct i2c_client *client,
+ 	int i, err;
+ 	enum chips kind = id->driver_data;
+ 
+-	data = kzalloc(sizeof(struct fschmd_data), GFP_KERNEL);
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
+index 6c84780e358e..0d6d20814183 100644
+--- a/drivers/hwmon/sch56xx-common.c
++++ b/drivers/hwmon/sch56xx-common.c
+@@ -401,7 +401,7 @@ struct sch56xx_watchdog_data *sch56xx_watchdog_register(struct device *parent,
+ 		return NULL;
+ 	}
+ 
+-	data = kzalloc(sizeof(struct sch56xx_watchdog_data), GFP_KERNEL);
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return NULL;
+ 
+diff --git a/drivers/hwmon/via-cputemp.c b/drivers/hwmon/via-cputemp.c
+index 8264e849e588..338b600716a5 100644
+--- a/drivers/hwmon/via-cputemp.c
++++ b/drivers/hwmon/via-cputemp.c
+@@ -114,7 +114,7 @@ static int via_cputemp_probe(struct platform_device *pdev)
+ 	int err;
+ 	u32 eax, edx;
+ 
+-	data = devm_kzalloc(&pdev->dev, sizeof(struct via_cputemp_data),
++	data = devm_kzalloc(&pdev->dev, sizeof(*data),
+ 			    GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+@@ -223,7 +223,7 @@ static int via_cputemp_online(unsigned int cpu)
+ 		goto exit;
+ 	}
+ 
+-	pdev_entry = kzalloc(sizeof(struct pdev_entry), GFP_KERNEL);
++	pdev_entry = kzalloc(sizeof(*pdev_entry), GFP_KERNEL);
+ 	if (!pdev_entry) {
+ 		err = -ENOMEM;
+ 		goto exit_device_put;
+diff --git a/drivers/hwmon/w83793.c b/drivers/hwmon/w83793.c
+index 46f5dfec8d0a..b37106c6f26d 100644
+--- a/drivers/hwmon/w83793.c
++++ b/drivers/hwmon/w83793.c
+@@ -1669,7 +1669,7 @@ static int w83793_probe(struct i2c_client *client,
+ 	int files_pwm = ARRAY_SIZE(w83793_left_pwm) / 5;
+ 	int files_temp = ARRAY_SIZE(w83793_temp) / 6;
+ 
+-	data = kzalloc(sizeof(struct w83793_data), GFP_KERNEL);
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data) {
+ 		err = -ENOMEM;
+ 		goto exit;
+-- 
+2.20.1
 
