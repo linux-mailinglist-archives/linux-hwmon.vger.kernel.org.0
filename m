@@ -2,53 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8992661BD
-	for <lists+linux-hwmon@lfdr.de>; Fri, 12 Jul 2019 00:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D978067A41
+	for <lists+linux-hwmon@lfdr.de>; Sat, 13 Jul 2019 15:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728918AbfGKWaL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 11 Jul 2019 18:30:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33954 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726207AbfGKWaK (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 11 Jul 2019 18:30:10 -0400
-Subject: Re: [GIT PULL] hwmon updates for hwmon-for-v5.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562884209;
-        bh=qg9MuYAAEKybpD5s5r8MpUip0VUV4OFFZAgr0BLzbis=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=mvQz9Ndl5NIkaD/ImKlZh0k0OiDyEdSmr8etUUODQKO6i4/zmWGDiW6YulOBBbPIO
-         5TYBVLYXlvay/UrNk5z2qcuSiHLKV7lAvQszutiUX0Zk3ZOKbOY58BzH0oOATwtM4q
-         oQ4fxobC4XZbLbqw9CQZAziHZz5l1Vz2OxrhvdH0=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <1562696588-26554-1-git-send-email-linux@roeck-us.net>
-References: <1562696588-26554-1-git-send-email-linux@roeck-us.net>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <1562696588-26554-1-git-send-email-linux@roeck-us.net>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
- hwmon-for-v5.3
-X-PR-Tracked-Commit-Id: 9f7546570bcb20debfaa97bcf720fa0fcb8fc05a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 64b08df460cfdfc2b010263043a057cdd33500ed
-Message-Id: <156288420938.10140.5674950479448727944.pr-tracker-bot@kernel.org>
-Date:   Thu, 11 Jul 2019 22:30:09 +0000
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+        id S1727638AbfGMNZB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 13 Jul 2019 09:25:01 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:39297 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726474AbfGMNZA (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 13 Jul 2019 09:25:00 -0400
+Received: by mail-pl1-f194.google.com with SMTP id b7so6115189pls.6;
+        Sat, 13 Jul 2019 06:25:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1lBa4mcJkva9S5bC7+ha4hZyO8xurJu7hVx3I7DL1pI=;
+        b=CuOkXVLjkBIOfftdehBksYpZ4YeLO07CmiBBCzqx47G3I152FZrGEyZWQqh3ExweSM
+         T43XcsgvuTB5/0zPLrjyRa5o9vd8ZsGFJDP74zqISk0FGxPGhgTGxTrRbPbI8F2+Gh/r
+         lMoLtknkYcrktislbQh1pV6FHVbS8HUjvf/NM2HM+Xyvm+VoLjlRT1gUmZnLmuG8HPtP
+         GkcSPjKbv6B/kcIXMLV6PhPcKnpJW4mdCkDn9SNrXPnX/74thFIcONiUhLmQuwYsS0/7
+         dF+nkCsKrBdpYw6K18PnOA6WlWueUgBb97goxq0xPNWeS1auz1L9pRJFiDzYYc4e2E5C
+         s/7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1lBa4mcJkva9S5bC7+ha4hZyO8xurJu7hVx3I7DL1pI=;
+        b=QUVCyKftpCAspD7sPxKz36K0FAcrW4L6QURkXfD6CcEb+BcR3Pr1AjhMfNpEcg64+w
+         SN9ALzIsCq4huXS7Hucg+ynyMgBUWQk4jY8ViFDHk2sxpF9wRJtPHcMOrvL4M/FjZfYt
+         sB1+I8PTO+kRHXP8ppM/WQhs3YR0Yxrn7HcT3hI09ju/aTTUyuLCSHwAPcv/rRpshvkO
+         L8xvsr/Csjj73wWc5v+8A/siuzqPXJiRC8pYz7fHNhwZPe8LT0zUuHXCvgM6jG/mviMg
+         gVr7ubtldGe8rSl8dQJ7lxRviDbU60mn1QrF4FeQrwtxRdPZvnfFs7A/b1vsC7HLvoLn
+         bu1Q==
+X-Gm-Message-State: APjAAAV1w6Upw894Xlz9Jx2s52H58AkhHGW3zS3FImqpDcYMlHr35JMe
+        XcGMB2p6PX3DWFGe19xmEy3qja2j
+X-Google-Smtp-Source: APXvYqyxw3BOuYkfawZOIgCHosgrFBKVzQuaCkYZcdHq/yzUqhOBqzrbcOSrQ8RJWTRhZm3YBElx3g==
+X-Received: by 2002:a17:902:9a07:: with SMTP id v7mr7480610plp.245.1563024300258;
+        Sat, 13 Jul 2019 06:25:00 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id z2sm10370389pgg.58.2019.07.13.06.24.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 13 Jul 2019 06:24:59 -0700 (PDT)
+Date:   Sat, 13 Jul 2019 06:24:58 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Daniel Mack <daniel@zonque.org>
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        jdelvare@suse.com
+Subject: Re: [PATCH 1/2] device-tree: bindinds: add NXP PCT2075 as compatible
+ device to LM75
+Message-ID: <20190713132458.GA13733@roeck-us.net>
+References: <20190711124504.7580-1-daniel@zonque.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190711124504.7580-1-daniel@zonque.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The pull request you sent on Tue,  9 Jul 2019 11:23:08 -0700:
+On Thu, Jul 11, 2019 at 02:45:03PM +0200, Daniel Mack wrote:
+> The PCT2075 is compatible to other chips that are already handled by
+> the LM75 driver.
+> 
+> Signed-off-by: Daniel Mack <daniel@zonque.org>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.3
+Applied to hwmon-next.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/64b08df460cfdfc2b010263043a057cdd33500ed
+Thanks,
+Guenter
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+> ---
+>  Documentation/devicetree/bindings/hwmon/lm75.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/lm75.txt b/Documentation/devicetree/bindings/hwmon/lm75.txt
+> index 12d8cf7cf592..bfb22b249708 100644
+> --- a/Documentation/devicetree/bindings/hwmon/lm75.txt
+> +++ b/Documentation/devicetree/bindings/hwmon/lm75.txt
+> @@ -15,6 +15,7 @@ Required properties:
+>  		"maxim,max31725",
+>  		"maxim,max31726",
+>  		"maxim,mcp980x",
+> +		"nxp,pct2075",
+>  		"st,stds75",
+>  		"st,stlm75",
+>  		"microchip,tcn75",
