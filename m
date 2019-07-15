@@ -2,100 +2,82 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA9668147
-	for <lists+linux-hwmon@lfdr.de>; Sun, 14 Jul 2019 23:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB41C681EF
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Jul 2019 02:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728886AbfGNVdb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 14 Jul 2019 17:33:31 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:37132 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728701AbfGNVdb (ORCPT
+        id S1728979AbfGOAkA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 14 Jul 2019 20:40:00 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:43107 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728996AbfGOAkA (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 14 Jul 2019 17:33:31 -0400
-Received: by mail-pf1-f195.google.com with SMTP id 19so6494443pfa.4;
-        Sun, 14 Jul 2019 14:33:30 -0700 (PDT)
+        Sun, 14 Jul 2019 20:40:00 -0400
+Received: by mail-wr1-f65.google.com with SMTP id p13so15180737wru.10
+        for <linux-hwmon@vger.kernel.org>; Sun, 14 Jul 2019 17:39:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Gy72qOCVAIdmdsywBTPJMwMFI2UfguzvzgBUaCOS3cI=;
-        b=mhLS8G5f27clneXSt/29L9BZPXPPIwtSiIkfnTu4koUXyCOrOmmj/YyDfVhDJs9kfk
-         z1EPxgaiIjuLLdi4Bsb6caTIJWEy+k7GjMtgOES5BUlvUEAojvcBCPQKx8S6P3IEalpv
-         SqBWWUzphh9EgFGT7aJr8rLNZSRqg4Xj0vr4LhO8iPy9sjq8HVjYFphB0aa6JVrR1VW3
-         y0k06PoS6OiU0T08Zj63FoZA9strYQAicpRw4hNCdZX9t+d27T5NeF9W4JQx6dqWSW82
-         GJ1JzmDhLQQIQb/mmzbrEIiPxTCSd2QmYObIg2hWLRnS8hQad+SDxOFNx3y/S8YEXEPf
-         Y+5Q==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=y7cIzG0PVrRis126czyvwHkkalaXGhnWuRZIJrhxFOU=;
+        b=hhEoiGFqVtqimvpJuyj1EbEX4DfbGhbQvq8njm/v6eFi+XvarC8aUrUP5igj/qXzqW
+         CfvzM3A0u5yGko7wbXAKXpaR9YsAi8Hqy8QSvpyaSPfCgC1FRjbWE3l/RS5x93Dj6XsM
+         VsllFeDtatqUwVvpeIR8KbJRh79rwenN2aCVhvKffhpCAJG368k0s/AqfUK+263lgpKY
+         Dbsr9/r6nk1Fgzh5wv7dlyyDS8yxSjjCoSjzXX27h5vxLXCUFy6dMDBXJ6iRnV4WpX+6
+         7S2GlXlHIm3D/Dd7jip3c8eyKj6NPPdWh1yq0uVS6wbWztgEmS8yqNP1mHcTAv5+bP+Q
+         ICcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Gy72qOCVAIdmdsywBTPJMwMFI2UfguzvzgBUaCOS3cI=;
-        b=XmfXN23GG65g+Zxf9Dx8mGR4Ur0N7k3cizcUWKl4VJQ30tIRYIkE6rEGCHjTWAXpch
-         NTWOZvNBpflix5Qr5qMXGCWYA/pIbaMlIB6r9nX8tcQGb9fmhquau3p4+34cfhJ8Sl41
-         3KNSaCb/jKpstpNRowPaoXsioRW8Q3D06p3qo9tAl0mcQ6JTchJQR/PfJQ5eLXyboYM9
-         gUIPFySInMUuMFj0esdpCdWTvhu83ibsJChn2rwyXtBJVLwkYy+qL5fqxOrB3188lneR
-         R4RV9GF+8VSB0AI8FFUScF5sn4lxOzL65DkxGlC+A1V/qM/6kBy1jEwx9ydFddlaB24K
-         vS+w==
-X-Gm-Message-State: APjAAAVHFZl5QYhXoXtGatvivNLD92/TqK3fxIszQ8bUXrUbOeBniVq0
-        JihAc9fY8Qhb/5IZLBJaI9E=
-X-Google-Smtp-Source: APXvYqxHMQCGiLuddtlpw2+gyPVgh5o8fo0D081hq39D+PjGVDt2xk9h8LQx5EhDFgiTrKeDr9Omsw==
-X-Received: by 2002:a63:2cc7:: with SMTP id s190mr11719128pgs.236.1563140010564;
-        Sun, 14 Jul 2019 14:33:30 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f12sm14108425pgo.85.2019.07.14.14.33.29
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 14 Jul 2019 14:33:30 -0700 (PDT)
-Subject: Re: [PATCH 2/2] hwmon: (k10temp) Add PCI device IDs for family 17h,
- model 70h
-To:     Vicki Pfau <vi@endrift.com>, linux-hwmon@vger.kernel.org,
-        linux-pci@vger.kernel.org, Brian Woods <brian.woods@amd.com>
-References: <20190714183209.29916-1-vi@endrift.com>
- <20190714183209.29916-2-vi@endrift.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <94313f9f-e37a-40f5-ddbe-ebc9e6b01539@roeck-us.net>
-Date:   Sun, 14 Jul 2019 14:33:28 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=y7cIzG0PVrRis126czyvwHkkalaXGhnWuRZIJrhxFOU=;
+        b=Kom04/gARDrZpDtOc34kb9Kg5tBoHgi0bXo3R4357OJDX6OGoXvhXhmMfyZDaYm6LL
+         bRht+IeQpjDeWn0G+nfX2bVvZLtS0DPO71vdR9VX6+LQOKZ6w7/v+ba9Fla9lz1Paz10
+         tbD86wUO/Th39qawAaGPFuxFH8G86nEgps8+TfFk5UmH1sJWvt59dSPiToklD79UUz40
+         R68j1qCntWzMQO1BSPfEbWfF4REcfDEwjV3d9gGCjRa1Il99Syg9mG40nFi+pNOIb/mb
+         oj83mTkTk5Ul7yZmh+9v13D07WXb8o/u3+ZZZTL/Ss9FKBvssnjiu9NAEOPv8mMQdvcK
+         ijaA==
+X-Gm-Message-State: APjAAAVuhctpCx0XpDuTTmFPyPjngvylHOY3NFd37GbaMhbWkQ7mAsfJ
+        GrVSn+mlabt6fQfd5GQNEIyrZc+5NSybneYilhA=
+X-Google-Smtp-Source: APXvYqy5oGOZ+mfDYXqgYvlIzvFtpyI0rJ29XthOUYtzbQGjNGHljWsirnpUjEv+GyGmZko3ZZEuYxBPjHUxMAZsH1k=
+X-Received: by 2002:a5d:564e:: with SMTP id j14mr24243874wrw.1.1563151198518;
+ Sun, 14 Jul 2019 17:39:58 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190714183209.29916-2-vi@endrift.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a5d:69cf:0:0:0:0:0 with HTTP; Sun, 14 Jul 2019 17:39:58
+ -0700 (PDT)
+Reply-To: ayishagddafio@mail.com
+From:   AISHA GADDAFI <ayishagadafi1@gmail.com>
+Date:   Sun, 14 Jul 2019 17:39:58 -0700
+Message-ID: <CAKmdXwsE33L0SSGvsb7bxapnkZikxpz94CGSzPqkUcoPzXMJpA@mail.gmail.com>
+Subject: Dear Friend (Assalamu Alaikum),
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 7/14/19 11:32 AM, Vicki Pfau wrote:
-> Add PCI device IDs for the new AMD Ryzen 3xxx (Matisse) CPUs to k10temp,
-> as they function identically from k10temp's point of view.
-> 
-> Signed-off-by: Vicki Pfau <vi@endrift.com>
+-- 
+Dear Friend (Assalamu Alaikum),
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+I came across your e-mail contact prior a private search while in need of
+your assistance. My name is Aisha  Al-Qaddafi a single Mother and a Widow
+with three Children. I am the only biological Daughter of late Libyan
+President (Late Colonel Muammar Gaddafi).
 
-I can not directly apply this patch since it depends on patch 1
-of the series. You might want to resubmit and include x86 maintainers;
-otherwise I don't see a path to get it accepted.
+I have investment funds worth Twenty Seven Million Five Hundred Thousand
+United State Dollar ($27.500.000.00 ) and i need a trusted investment
+Manager/Partner because of my current refugee status, however, I am
+interested in you for investment project assistance in your country, may be
+from there, we can build business relationship in the nearest future.
 
-Guenter
+I am willing to negotiate investment/business profit sharing ratio with you
+base on the future investment earning profits.
 
-> ---
->   drivers/hwmon/k10temp.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-> index c77e89239dcd..5c1dddde193c 100644
-> --- a/drivers/hwmon/k10temp.c
-> +++ b/drivers/hwmon/k10temp.c
-> @@ -349,6 +349,7 @@ static const struct pci_device_id k10temp_id_table[] = {
->   	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_DF_F3) },
->   	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F3) },
->   	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
-> +	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
->   	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
->   	{}
->   };
-> 
+If you are willing to handle this project on my behalf kindly reply urgent
+to enable me provide you more information about the investment funds.
 
+Your Urgent Reply Will Be Appreciated. write me at this email address(
+ayishagddafio@mail.com ) for further discussion.
+
+Best Regards
+Mrs Aisha Al-Qaddafi
+Reply to: ayishagddafio@mail.com
