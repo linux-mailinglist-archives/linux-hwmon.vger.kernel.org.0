@@ -2,65 +2,64 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A73707CE
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jul 2019 19:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C313707D0
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jul 2019 19:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728089AbfGVRqX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 22 Jul 2019 13:46:23 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:36601 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727021AbfGVRqX (ORCPT
+        id S1727805AbfGVRrI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 22 Jul 2019 13:47:08 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:35567 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727021AbfGVRrH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 22 Jul 2019 13:46:23 -0400
-Received: by mail-lf1-f65.google.com with SMTP id q26so27308471lfc.3
-        for <linux-hwmon@vger.kernel.org>; Mon, 22 Jul 2019 10:46:22 -0700 (PDT)
+        Mon, 22 Jul 2019 13:47:07 -0400
+Received: by mail-lj1-f194.google.com with SMTP id x25so38494471ljh.2
+        for <linux-hwmon@vger.kernel.org>; Mon, 22 Jul 2019 10:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=5HeHAOW5qlVevbz0BfcyUjugFV4l67SA/glaqvYngV8=;
-        b=bf2eO0R8FaO4Hwqb2JUs/Xl2VYM92cSAkafP0vs8CjTsA/kiHM6q6dXlbT0ZelvS1J
-         SAlHzsGwv6a10YZ5Y1oaGuDYsomqK1z5eptPfZeRJrSFqdW7UO2jXYE5e+kD7v8za3In
-         DAE9zafL5+QECX1JW7rCaVcBTeqxNccsQpT3yL+YHuZemyx6+5SjfF6uDdkt5jpQ6ErZ
-         R/tXS2usFzkZ0Us5d3Z3QIUmJITNeRxqd4Yg8rDc8SMtkwOpEoLYwHanUaUobwW/fikI
-         IM7MMgZZx/kuz6tu5j3d7tIN9YJ2zF5l/nTOeO54KxKzp70i1hS1y+0CI0Z6GeUdUQHT
-         w4Dg==
+        bh=yi7tU5SUkCIGdqAUvgyD+UDtTx+gpXk7EYo/a4kpc88=;
+        b=KitVP75sjqOnxi7AZofX97Qm5Mfio2e/+4pS0lwCzAxzYO88UI94ck/9Ij+fU1BwXz
+         SPK0j53Om/Avv8FlqvqmR5rNWFWeZMLueC1ew7kJphetLlaHe2pi/kZhCcC0luj7HtWP
+         yjIDd9Ean4kWvHxwm6v7A0wAKl1q/USAGjRpEUmzETeEtz2/nt3KA5LUbJOXsI+A0sHV
+         qxF1/MD3lNcn6iYHbXyCIxr8/0TYczlylCtQTVsSkHJVA2pvt2CLIfx/yw6AREk9kJzw
+         sx6HZY9dbEEfACLT6HVZ2ixh6cAu87TxrHoSA2yiuqtXD8PHwOAHB7onKV6CqVwWAxpJ
+         6aVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=5HeHAOW5qlVevbz0BfcyUjugFV4l67SA/glaqvYngV8=;
-        b=DmZ+XjWXMqAopjEY8+sWecpqvJsrZUbXXyWhizLozuBn7Fb/BFR2GsrWaRbh9tQjfU
-         cB0Ov11jOZnwzTMgjmHDCsN/OqPwOKFVfwOuX2MsMj8SIEftbakKBGvzx6vORovV+feZ
-         OQ+7kNDH0C5xuJObhKhd+lpqNM8vrVNfkaZ40lalcc3eVZLuTUXQq7ewvkX1bDqGxX+s
-         IDQ+KFGNvM2h1/dfCtAdpQPAaOafEQVJFHrDEThK+jkA40+qpnOFhNDF9e25A9kqbegG
-         DToO0EgOxo9uVSdNYPY7/3NPov2NXxruuHitWQlAWKGXi2/4wMXM5qRL9wxpeii7+2cn
-         tWtg==
-X-Gm-Message-State: APjAAAXm16xfO/n8bgnTjdTAlhkFd2/pa1ZQKDb0eAXsW6AVIsHdjACz
-        27bDhvTkFuSaMEronI0h/ZE=
-X-Google-Smtp-Source: APXvYqx+mBCBzzkTm0aHvYcRTNvDGnsyngrVFaUuRtkJ1s+yJfI0HG/SCteePQqa4bxz9Z9fM+KSLg==
-X-Received: by 2002:a19:f007:: with SMTP id p7mr32415022lfc.24.1563817581360;
-        Mon, 22 Jul 2019 10:46:21 -0700 (PDT)
+        bh=yi7tU5SUkCIGdqAUvgyD+UDtTx+gpXk7EYo/a4kpc88=;
+        b=TeB3DTnBq2EyD7y/inRvBlMjT0nyYyxAc8qQLeHYgVg111WcoN/1doId0PI9Rb7mPT
+         UNNNcSyt8DDeoU0gSU6jYOcC9eE6yZJvLQlLAxvNKJFBy8MJNgawN3vFmFKkxTuWBsv6
+         CTMd9vWE9bNxNCCBz3RT17mXrvJwmr022N6bYlKw+R7ePpLvT++OqwFVUG6YTfqfSApN
+         y3FHXn3AUFirSK49TmkHtGQnW/m74HmyoTQr1hhdXotDCmbCOEkPFlnnG4ldFtqsgvLl
+         T67c75Z7YBvdYqwuNDd0m5nj+0JgkvC5C/tALaKcWV/n/SWYfoS4X7JnkQOQI/RwbDAu
+         KcaA==
+X-Gm-Message-State: APjAAAXUZc+YT55WByjXw/XfvSz0Rodt7rc1ph22fFnOIZ67C3DYPE14
+        Q9kfEiKeH0StUqz67lo9W1c=
+X-Google-Smtp-Source: APXvYqysu92WrLG9BBqbuOvUdewYpYEHffkxGjPSMfdf9xcMRgUzY8N02D4kzzfR3v06fJJkJEd28w==
+X-Received: by 2002:a2e:93c5:: with SMTP id p5mr36195060ljh.79.1563817625976;
+        Mon, 22 Jul 2019 10:47:05 -0700 (PDT)
 Received: from cathaou.pp.htv.fi (62-78-152-105.bb.dnainternet.fi. [62.78.152.105])
-        by smtp.gmail.com with ESMTPSA id h78sm7647394ljf.88.2019.07.22.10.46.20
+        by smtp.gmail.com with ESMTPSA id p5sm7618577ljb.91.2019.07.22.10.47.04
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 22 Jul 2019 10:46:20 -0700 (PDT)
+        Mon, 22 Jul 2019 10:47:05 -0700 (PDT)
 From:   Marcel Bocu <marcel.p.bocu@gmail.com>
 Cc:     Marcel Bocu <marcel.p.bocu@gmail.com>, Vicki Pfau <vi@endrift.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Brian Woods <brian.woods@amd.com>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
         "Woods, Brian" <Brian.Woods@amd.com>,
         Clemens Ladisch <clemens@ladisch.de>,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 1/2] x86/amd_nb: Add PCI device IDs for family 17h, model 70h
-Date:   Mon, 22 Jul 2019 20:45:10 +0300
-Message-Id: <20190722174510.2179-1-marcel.p.bocu@gmail.com>
+Subject: [PATCH v2 2/2] hwmon/k10temp: Add support for AMD family 17h, model 70h CPUs
+Date:   Mon, 22 Jul 2019 20:46:53 +0300
+Message-Id: <20190722174653.2391-1-marcel.p.bocu@gmail.com>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190718182617.6964-1-marcel.p.bocu@gmail.com>
-References: <20190718182617.6964-1-marcel.p.bocu@gmail.com>
+In-Reply-To: <20190718182617.6964-2-marcel.p.bocu@gmail.com>
+References: <20190718182617.6964-2-marcel.p.bocu@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 To:     unlisted-recipients:; (no To-header on input)
@@ -69,13 +68,14 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The AMD Ryzen gen 3 processors came with a different PCI IDs for the
-function 3 & 4 which are used to access the SMN interface. The root
-PCI address however remained at the same address as the model 30h.
+It would seem like model 70h is behaving in the same way as model 30h,
+so let's just add the new F3 PCI ID to the list of compatible devices.
 
-Adding the F3/F4 PCI IDs respectively to the misc and link ids appear
-to be sufficient for k10temp, so let's add them and follow up on the
-patch if other functions need more tweaking.
+Unlike previous Ryzen/Threadripper, Ryzen gen 3 processors do not need
+temperature offsets anymore. This has been reported in the press and
+verified on my Ryzen 3700X by checking that the idle temperature
+reported by k10temp is matching the temperature reported by the
+firmware.
 
 Vicki Pfau sent an identical patch after I checked that no-one had
 written this patch. I would have been happy about dropping my patch but
@@ -87,13 +87,11 @@ my series. To acknowledge Vicki's anteriority, I added his S-o-b to
 the patch.
 
 v2, suggested by Guenter Roeck and Brian Woods:
- - rename from 71h to 70h
+  - rename from 71h to 70h
 
 Signed-off-by: Vicki Pfau <vi@endrift.com>
 Signed-off-by: Marcel Bocu <marcel.p.bocu@gmail.com>
 Tested-by: Marcel Bocu <marcel.p.bocu@gmail.com>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Brian Woods <brian.woods@amd.com>
 
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Ingo Molnar <mingo@redhat.com>
@@ -106,50 +104,21 @@ Cc: Jean Delvare <jdelvare@suse.com>
 Cc: Guenter Roeck <linux@roeck-us.net>
 Cc: linux-hwmon@vger.kernel.org
 ---
- arch/x86/kernel/amd_nb.c | 3 +++
- include/linux/pci_ids.h  | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/hwmon/k10temp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index d63e63b7d1d9..251c795b4eb3 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -21,6 +21,7 @@
- #define PCI_DEVICE_ID_AMD_17H_DF_F4	0x1464
- #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F4 0x15ec
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F4 0x1494
-+#define PCI_DEVICE_ID_AMD_17H_M70H_DF_F4 0x1444
- 
- /* Protect the PCI config register pairs used for SMN and DF indirect access. */
- static DEFINE_MUTEX(smn_mutex);
-@@ -50,6 +51,7 @@ const struct pci_device_id amd_nb_misc_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index c77e89239dcd..5c1dddde193c 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -349,6 +349,7 @@ static const struct pci_device_id k10temp_id_table[] = {
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
++	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
+ 	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
  	{}
  };
- EXPORT_SYMBOL_GPL(amd_nb_misc_ids);
-@@ -63,6 +65,7 @@ static const struct pci_device_id amd_nb_link_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
- 	{}
- };
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index c842735a4f45..4b97f427cc92 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -548,6 +548,7 @@
- #define PCI_DEVICE_ID_AMD_17H_DF_F3	0x1463
- #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F3 0x15eb
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
-+#define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
- #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
 -- 
 2.22.0
 
