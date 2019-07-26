@@ -2,165 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 785F57666B
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jul 2019 14:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E0CE766D0
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jul 2019 15:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbfGZMwC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 26 Jul 2019 08:52:02 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:41256 "EHLO
+        id S1726604AbfGZNFp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 26 Jul 2019 09:05:45 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:54662 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726447AbfGZMwC (ORCPT
+        with ESMTP id S1726086AbfGZNFp (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 26 Jul 2019 08:52:02 -0400
+        Fri, 26 Jul 2019 09:05:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3U1QrPfNvOtuuSLliYgGDMKrpJg0LMXUyN+mmcUPwa4=; b=hmYFMf2WvJO96EOiaxD7IgsrW1
-        toqI3s7hEwc28sjnmyEksmfKiTdbrTrAd3q8qXASkdSVGK2ir1ximq8YL2OyCUZM26TPAUfRd5CKD
-        nR0WXuphJdxAojpNrh6vcTGhlqeym33TIf0FEExruuesObPVRZF21b/T8ONMfWbiOZlqXK7rYyYLx
-        LLWGl/mH+q4cKZf3c/7fDzlgATmhVIHuzx3NB7QYmqlQ6OmYc6BRsJPrlECu4XWZoJhoeXnxycJSv
-        IhvZkJVpif7Hn0Y66++KTGW/iUcC/R7uchACJwXLYmbnvEGsUSDZmyqxHPqHt5QNMWI4KOCRiB/QK
-        V0zBuC7g==;
-Received: from [179.95.31.157] (helo=bombadil.infradead.org)
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+        From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=v25fSyTOpn+HLVJ1/RYUYjo/p2HKkKXuypllJV6JuFU=; b=FGTl2rF5Ekw99U5eWA0qO4ViY
+        ezxgPoNckrfd02rKeR5DfhI5n58vJTcEz7aQ3diHZkRmGndI5Rrlekc33Ay4TibbLOwpG1XKCSloG
+        82pJRxtCcnQvPslNG7xO/8DHeER9qlTWSUhlaF/iNE0YUnkdxnIGvBgg9Brpdp4iVK9JkJjbm0TvY
+        TcCvfrG3NaxcqzRwVsiX1+l5U3fjf1yQEEnGnZRs2iZazrP26MkKBj4gTVChmnzy3Hz3krFh/Kx2g
+        S6dj3Qi5GKN2Rfpl0jR+wq9OXeL8jT6dpW75i/Mr7cpWYS51GnMWuFS7A6xMmFALsHG7f3ly85U0p
+        sDY3Ty9HA==;
+Received: from [179.95.31.157] (helo=coco.lan)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hqzhE-0006Ag-Ia; Fri, 26 Jul 2019 12:51:40 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
-        (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hqzhC-0005bh-G9; Fri, 26 Jul 2019 09:51:38 -0300
+        id 1hqzun-0004Yn-F9; Fri, 26 Jul 2019 13:05:42 +0000
+Date:   Fri, 26 Jul 2019 10:05:33 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Subject: [PATCH v2 22/26] docs: hwmon: pxe1610: convert to ReST format and add to the index
-Date:   Fri, 26 Jul 2019 09:51:32 -0300
-Message-Id: <2f8e33bd059b754f9f969a1edaf578736c2ac6ba.1564145354.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-pci@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-rtc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+        openrisc@lists.librecores.org, devel@driverdev.osuosl.org,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        devel@lists.orangefs.org, dmaengine@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-mips@vger.kernel.org,
+        linux-wireless@vger.kernel.org, rcu@vger.kernel.org
+Subject: Re: [PATCH v2 00/26] ReST conversion of text files without .txt
+ extension
+Message-ID: <20190726100521.5d379300@coco.lan>
 In-Reply-To: <cover.1564145354.git.mchehab+samsung@kernel.org>
 References: <cover.1564145354.git.mchehab+samsung@kernel.org>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This document was recently introduced. Convert it to ReST
-just like the other hwmon documents, adding it to the hwmon index.
+Em Fri, 26 Jul 2019 09:51:10 -0300
+Mauro Carvalho Chehab <mchehab+samsung@kernel.org> escreveu:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- Documentation/hwmon/index.rst                |  1 +
- Documentation/hwmon/{pxe1610 => pxe1610.rst} | 33 +++++++++++++++-----
- 2 files changed, 26 insertions(+), 8 deletions(-)
- rename Documentation/hwmon/{pxe1610 => pxe1610.rst} (82%)
+> This series converts the text files under Documentation with doesn't end
+> neither .txt or .rst and are not part of ABI or features.
+> 
+> This series is at:
+> 	https://git.linuxtv.org/mchehab/experimental.git/log/?h=rst_for_5_4_v3
+> 
+> And it is based on yesterday's upstream tree.
+> 
+> After this series, we have ~320 files left to be converted to ReST.
+> 
+> v2:
+>   - Added 3 files submitted for v5.3 that weren't merged yet;
+>   - markdown patch broken into two, per Rob's request;
+>   - rebased on the top of upstream master branch
+> 
+> Mauro Carvalho Chehab (26):
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index ee090e51653a..4d5f5fec43a3 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -130,6 +130,7 @@ Hardware Monitoring Kernel Drivers
-    pcf8591
-    pmbus
-    powr1220
-+   pxe1610
-    pwm-fan
-    raspberrypi-hwmon
-    sch5627
-diff --git a/Documentation/hwmon/pxe1610 b/Documentation/hwmon/pxe1610.rst
-similarity index 82%
-rename from Documentation/hwmon/pxe1610
-rename to Documentation/hwmon/pxe1610.rst
-index 211cedeefb44..4f2388840d06 100644
---- a/Documentation/hwmon/pxe1610
-+++ b/Documentation/hwmon/pxe1610.rst
-@@ -2,19 +2,29 @@ Kernel driver pxe1610
- =====================
- 
- Supported chips:
-+
-   * Infineon PXE1610
-+
-     Prefix: 'pxe1610'
-+
-     Addresses scanned: -
-+
-     Datasheet: Datasheet is not publicly available.
- 
-   * Infineon PXE1110
-+
-     Prefix: 'pxe1110'
-+
-     Addresses scanned: -
-+
-     Datasheet: Datasheet is not publicly available.
- 
-   * Infineon PXM1310
-+
-     Prefix: 'pxm1310'
-+
-     Addresses scanned: -
-+
-     Datasheet: Datasheet is not publicly available.
- 
- Author: Vijay Khemka <vijaykhemka@fb.com>
-@@ -25,14 +35,19 @@ Description
- 
- PXE1610/PXE1110 are Multi-rail/Multiphase Digital Controllers
- and compliant to
--	-- Intel VR13 DC-DC converter specifications.
--	-- Intel SVID protocol.
-+
-+	- Intel VR13 DC-DC converter specifications.
-+	- Intel SVID protocol.
-+
- Used for Vcore power regulation for Intel VR13 based microprocessors
--	-- Servers, Workstations, and High-end desktops
-+
-+	- Servers, Workstations, and High-end desktops
- 
- PXM1310 is a Multi-rail Controller and it is compliant to
--	-- Intel VR13 DC-DC converter specifications.
--	-- Intel SVID protocol.
-+
-+	- Intel VR13 DC-DC converter specifications.
-+	- Intel SVID protocol.
-+
- Used for DDR3/DDR4 Memory power regulation for Intel VR13 and
- IMVP8 based systems
- 
-@@ -44,10 +59,10 @@ This driver does not probe for PMBus devices. You will have
- to instantiate devices explicitly.
- 
- Example: the following commands will load the driver for an PXE1610
--at address 0x70 on I2C bus #4:
-+at address 0x70 on I2C bus #4::
- 
--# modprobe pxe1610
--# echo pxe1610 0x70 > /sys/bus/i2c/devices/i2c-4/new_device
-+    # modprobe pxe1610
-+    # echo pxe1610 0x70 > /sys/bus/i2c/devices/i2c-4/new_device
- 
- It can also be instantiated by declaring in device tree
- 
-@@ -55,6 +70,7 @@ It can also be instantiated by declaring in device tree
- Sysfs attributes
- ----------------
- 
-+======================  ====================================
- curr1_label		"iin"
- curr1_input		Measured input current
- curr1_alarm		Current high alarm
-@@ -88,3 +104,4 @@ temp[1-3]_crit		Critical high temperature
- temp[1-3]_crit_alarm	Chip temperature critical high alarm
- temp[1-3]_max		Maximum temperature
- temp[1-3]_max_alarm	Chip temperature high alarm
-+======================  ====================================
--- 
-2.21.0
+>   docs: ABI: remove extension from sysfs-class-mic.txt
 
+    ^ In time: this one was already merged.
+
+Thanks,
+Mauro
