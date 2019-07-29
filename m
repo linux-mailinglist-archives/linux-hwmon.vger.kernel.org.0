@@ -2,133 +2,74 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ECD477636
-	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Jul 2019 05:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14827829F
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jul 2019 02:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727763AbfG0DUS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 26 Jul 2019 23:20:18 -0400
-Received: from outils.crapouillou.net ([89.234.176.41]:46860 "EHLO
-        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726184AbfG0DUS (ORCPT
+        id S1726461AbfG2AIQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 28 Jul 2019 20:08:16 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:38326 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726346AbfG2AIP (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 26 Jul 2019 23:20:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1564197613; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KYjAC67ZYcDwtcnIBpp0BzLOMVIg3F/G58/tAsJimxs=;
-        b=ORUDr6CuY7vpgmdik7Ldm16UXWRFBr6Ee4ABQbj6tTfLvxBPwmhKA6bLpfcQxX+exzomjP
-        TDrZy1fzdFeQCmOXR6cIQOjxRV8Q06DX/kYE2jocswD/4JlyOxJP5kSuaV94FjAfM/JVnu
-        CJlyiJfb7/kikgxqr4FsYUPCYzzFns0=
-Date:   Fri, 26 Jul 2019 23:19:45 -0400
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 00/11] JZ4740 SoC cleanup
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Sebastian Reichel <sre@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-pm@vger.kernel.org,
-        linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, od@zcrc.me,
-        linux-mtd@lists.infradead.org, dmaengine@vger.kernel.org
-Message-Id: <1564197585.6472.0@crapouillou.net>
-In-Reply-To: <20190726184649.GC14981@ravnborg.org>
-References: <20190725220215.460-1-paul@crapouillou.net>
-        <20190726184649.GC14981@ravnborg.org>
+        Sun, 28 Jul 2019 20:08:15 -0400
+Received: by mail-vs1-f65.google.com with SMTP id k9so39613177vso.5
+        for <linux-hwmon@vger.kernel.org>; Sun, 28 Jul 2019 17:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=BrTkYGT/CoRQ7U7g4N9efxmX5N2ln4oVBYUSCIHtobA=;
+        b=Hrbix6Ncwndj0/ZhLdg0qekQEb+2Kgjc0SeRBr4FoeMFiX6XHGMMMukOQcIKSRIyn6
+         1FLJR6mLR/vulQ1VtBLTJl0Lda2nbHDXGla8f4MZapoFNxChdOqG0oC2RV/IR5Di4VyD
+         grjfPw7UAkWugiyvS9Gl1hDt40Nvloz7Q8hFS7wLEsjTOSX4W7lFPW9PhND4JzOEZ+VX
+         SBGYCM0giRSd8L6L/uLWJrYqn2I37qhpbbuqonQi3s5AF+bCkD88dzpmwDbsGmVCx0VK
+         YxQyZe0oSBHMaPJJxMQFY+Lj0j7LLb7a1Ztlp5dpJ58wOiotopzo5wS6I3+UonrsS7ek
+         PqTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=BrTkYGT/CoRQ7U7g4N9efxmX5N2ln4oVBYUSCIHtobA=;
+        b=L3M5GcmZ71v7pQXkp4bfcaWGPmlpUUHM/GJ0BbFvd9z1y/dXyBq0jcNznbUOycwEjX
+         NAgVmb4nKz/GLA5viLAp3kgxtbP4H6J3JdUVcPKsmkVHKRb2TllyH46js+4ynN+XESr6
+         7OmLdqcCvPeID46kTenTWUZd6ZdgojJ1IXMOLXEqTVB3o9VIpJ+v5GiC5ggjj7GwrbE5
+         bGV2ePKxFrepQxqMwV7/mnGvUGV5CZZ7G8AdTqkEXQC3nZJE3ZQ81/zwyiSgS6cqcyuy
+         J2jJqb7E7+53IYg360TElvRBu8NUKhO9ftxCyStnlIIlPZUKE0cxRVFj4DT2CWKucf8R
+         7lfA==
+X-Gm-Message-State: APjAAAXZC168zEn6xRw3wWiGA4bVyjwNrBquN1pAXpLQTgfrE8haxcbw
+        dBQBqXDzWT3n7H2EoIucJcFkn74rFM4MF+k/3Zs=
+X-Google-Smtp-Source: APXvYqz5Tv/G3ojzOIebxdxZc+D3VZ7ztK4AVBhaXkUwSAzoovp0N7wtTAf+Vftj4yT+nLwP2EIhs0O9djQd9MpIws8=
+X-Received: by 2002:a67:eb19:: with SMTP id a25mr65238884vso.109.1564358894898;
+ Sun, 28 Jul 2019 17:08:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Received: by 2002:a67:80c8:0:0:0:0:0 with HTTP; Sun, 28 Jul 2019 17:08:14
+ -0700 (PDT)
+Reply-To: williamrobert416@gmail.com
+From:   "Mr. Robert William" <officialuse87@gmail.com>
+Date:   Mon, 29 Jul 2019 01:08:14 +0100
+Message-ID: <CAD00q0_sEF2SnzFkOGUBd7uFGZugFRAOygkgQE-c=-i01FWC-w@mail.gmail.com>
+Subject: Please listen
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+-- 
+Hello,
 
+I am Eng. Robert William, a retired Marine Engineer residing in
+Trinidad & Tobago.
+Unfortunately i am admitted to the hospital for a cancer (Sickness)
+over a year now,my doctor reported that i have only few months to pass
+away. Please i need your consent to invest my money (USD$1.8 Million)
+in any business of your
 
-Le ven. 26 juil. 2019 =E0 14:46, Sam Ravnborg <sam@ravnborg.org> a=20
-=E9crit :
-> Hi Paul.
->=20
-> On Thu, Jul 25, 2019 at 06:02:04PM -0400, Paul Cercueil wrote:
->>  Hi,
->>=20
->>  This patchset converts the Qi LB60 MIPS board to devicetree and=20
->> makes it
->>  use all the shiny new drivers that have been developed or updated
->>  recently.
->>=20
->>  All the crappy old drivers and custom code can be dropped since they
->>  have been replaced by better alternatives.
->=20
-> The overall diffstat is missing.
-> Just for curiosity it would be nice to see what was dropped with this
-> patch.
->=20
-> 	Sam
+choice in your country before i die, i have no other relatives not
+even children because i lost my family in a fire disaster in 2005.
+Please i need your urgent and
 
-Diffstat:
+kind response to enable me send you more information on how to contact
+my bank as my next of kin to process the fund into your bank account.
 
- arch/mips/boot/dts/ingenic/jz4740.dtsi         |  84 ++++++++++++
- arch/mips/boot/dts/ingenic/qi_lb60.dts         | 295=20
-++++++++++++++++++++++++++++++++++++++++-
- arch/mips/configs/qi_lb60_defconfig            |  44 +++---
- arch/mips/include/asm/mach-jz4740/gpio.h       |  15 ---
- arch/mips/include/asm/mach-jz4740/jz4740_fb.h  |  58 --------
- arch/mips/include/asm/mach-jz4740/jz4740_mmc.h |  12 --
- arch/mips/include/asm/mach-jz4740/platform.h   |  26 ----
- arch/mips/jz4740/Makefile                      |   7 +-
- arch/mips/jz4740/board-qi_lb60.c               | 491=20
--------------------------------------------------------------------
- arch/mips/jz4740/platform.c                    | 250=20
------------------------------------
- arch/mips/jz4740/prom.c                        |   5 -
- arch/mips/jz4740/setup.c                       |   3 +-
- drivers/dma/Kconfig                            |   6 -
- drivers/dma/Makefile                           |   1 -
- drivers/dma/dma-jz4740.c                       | 623=20
----------------------------------------------------------------------------=
-----------
- drivers/hwmon/Kconfig                          |  10 --
- drivers/hwmon/Makefile                         |   1 -
- drivers/hwmon/jz4740-hwmon.c                   | 135=20
--------------------
- drivers/mfd/Kconfig                            |   9 --
- drivers/mfd/Makefile                           |   1 -
- drivers/mfd/jz4740-adc.c                       | 324=20
----------------------------------------------
- drivers/mtd/nand/raw/ingenic/Kconfig           |   7 -
- drivers/mtd/nand/raw/ingenic/Makefile          |   1 -
- drivers/mtd/nand/raw/ingenic/jz4740_nand.c     | 536=20
---------------------------------------------------------------------------
- drivers/power/supply/Kconfig                   |  11 --
- drivers/power/supply/Makefile                  |   1 -
- drivers/power/supply/jz4740-battery.c          | 421=20
-----------------------------------------------------------
- drivers/video/fbdev/Kconfig                    |   9 --
- drivers/video/fbdev/Makefile                   |   1 -
- drivers/video/fbdev/jz4740_fb.c                | 690=20
----------------------------------------------------------------------------=
---------------------
- sound/soc/jz4740/Kconfig                       |  25 +---
- sound/soc/jz4740/Makefile                      |   5 -
- sound/soc/jz4740/qi_lb60.c                     | 106 ---------------
- 33 files changed, 404 insertions(+), 3809 deletions(-)
-
-
-=
-
+Mr Robert William
