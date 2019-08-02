@@ -2,84 +2,101 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C4127F9A4
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Aug 2019 15:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88C77FD1F
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Aug 2019 17:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391680AbfHBN17 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 2 Aug 2019 09:27:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37570 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394606AbfHBN0r (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 2 Aug 2019 09:26:47 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0D5542182B;
-        Fri,  2 Aug 2019 13:26:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564752406;
-        bh=VVxsq61HM4FJq2hk/9dtNslDpOfsR3HIn+5Rc34ofNs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IvXhXHoiUJmjm7JEdyTN6zkLDmK8YDSaMeNedYcd/wscujJa4O9W2/HK2sdEwOHr+
-         qHiSYAng6Aj39Zw0fxoxpQ9MNHN4/Oo6MECnt4SB3joyF7Jlmm5S4GGviH/MiZhCOb
-         RurBjTIv4dMexqcgvcZds0thVQPc67jPh+1GftDA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     =?UTF-8?q?Bj=C3=B6rn=20Gerhart?= <gerhart@posteo.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 04/17] hwmon: (nct6775) Fix register address and added missed tolerance for nct6106
-Date:   Fri,  2 Aug 2019 09:26:21 -0400
-Message-Id: <20190802132635.14885-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802132635.14885-1-sashal@kernel.org>
-References: <20190802132635.14885-1-sashal@kernel.org>
+        id S1729907AbfHBPMS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 2 Aug 2019 11:12:18 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:35421 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729646AbfHBPMS (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 2 Aug 2019 11:12:18 -0400
+Received: by mail-ot1-f66.google.com with SMTP id j19so1810800otq.2
+        for <linux-hwmon@vger.kernel.org>; Fri, 02 Aug 2019 08:12:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=GL1D+NREz+AwqKel+1yP0KhoAwz0m4NH0WfQks67J/c=;
+        b=UHHpLNR0yqfNszsCYrs7g7C1YTQJ5S/ruwKQqyOPYYlmVMNkJnO/MZTHGCDjqGv5mC
+         +9AkE+nmKdaIJIQi483mTCGuoXR700di9CHL4UTyXujkscot+8yYB8g0touroFZt+pJH
+         Mqw69iXbMN28Ir0p0VGgAzjyxf/vaMd1lymyu7yzQ9Zvyo+auNm6eqwxdDB6i48A+PAH
+         z1AzCIwWCenC57C2/eZU7KKFFxwgpSLzykHOq5Dn+UeT89GKOIF3Qo1yNBhkYo+lCPIt
+         lAM2X0TrZcrrZ8i70rVyl/YciH8E/2OvZD+rMh2ngpLt0/XwajgLDMFaubaGWweEUP0s
+         kXWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=GL1D+NREz+AwqKel+1yP0KhoAwz0m4NH0WfQks67J/c=;
+        b=jLue0ZF2syUP/4tVuo8ZqmN8hSBzpmtlLSq2EyIfSW2MXnQfeHtgdcxf3UWfAY5uOx
+         dCYCEwfPgfEB40FWyzdF48uGC6lU31vEuySxUQQpE24C88u4mBVBtfwp9oj+sTVFu5kj
+         YjuNqw9ZTH8hpK/8gTy3zLef6xOFHUxIlotEIlj3SGtKNQP+h0V07BGMotmATlxaqBOh
+         v7RtV5S+v5xedijOPemLxuW6zt7AhXpwNSTcRPDuoetaHShz3LLNmQrGI4XZLJddqm2q
+         oTVwhqZuwPraZxLmhvdUdZdsUAJL7a7dYglIQXUyMDmSDjC9+ykbgB3ANE004WOwAGsD
+         5hlw==
+X-Gm-Message-State: APjAAAUfOwU11ofxWQLLCjisZ69i5fsqQ4JEgbwmTHw37pLXBs+fE/aj
+        LLSpV1xhGo5M1ahWaW998e1W8XZ3+rf1iC2SHzM=
+X-Google-Smtp-Source: APXvYqxi7HpHEBMGZbYA18BbHhKcMi5pG/s9R0SS4J5PTyaG3r0GhO2zqQef1wmP4QuqHkWi7R9f4Vbp4IXDR0nvS5I=
+X-Received: by 2002:a05:6830:1cd:: with SMTP id r13mr10473924ota.99.1564758737580;
+ Fri, 02 Aug 2019 08:12:17 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a4a:3018:0:0:0:0:0 with HTTP; Fri, 2 Aug 2019 08:12:17 -0700 (PDT)
+Reply-To: simondo45@outlook.com
+From:   Simon Dornoo <gendavidrodriguez500@gmail.com>
+Date:   Fri, 2 Aug 2019 18:12:17 +0300
+Message-ID: <CAC8P1ajgM=TyuB900kujD5dSWUnaDvno1ya8Ei52+x-DAZe=hg@mail.gmail.com>
+Subject: With due respect to your person
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Björn Gerhart <gerhart@posteo.de>
+Hello My friend,
 
-[ Upstream commit f3d43e2e45fd9d44ba52d20debd12cd4ee9c89bf ]
+I offer my friendship and believe you will accept me with good heart,
+I was pushed to contact you and see how best we can assist each other.
+I am Mr Simon Dornoo, a Bank  manager here in Ghana Commercial Bank
+(GCB. I believe it is the wish of God for me to come across you now. I
+am having an important business discussion I wish to share with you
+which I believe we are going to benefit from it.person but if you are
+not the intended receiver, do let me know whether you can be of
+assistance regarding my proposal below because it is top secret.
 
-Fixed address of third NCT6106_REG_WEIGHT_DUTY_STEP, and
-added missed NCT6106_REG_TOLERANCE_H.
+I am about to retire from active Bank service to start a new life but
+I am sceptical to reveal this particular secret to a stranger. You
+must assure me that everything will be handled confidentially because
+we are not going to suffer again in life. It has been 10 years now
+that most of the greedy African Politicians used our bank to launder
+money overseas through the help of their Political advisers. Most of
+the funds which they transferred out of the shores of Africa were gold
+and oil money that was supposed to have been used to develop the
+continent. Their Political advisers always inflated the amounts before
+transfer to foreign accounts so I also used the opportunity to divert
+part of the funds hence I am aware that there is no official trace of
+how much was transferred as all the accounts used for such transfers
+were being closed after transfer.
 
-Fixes: 6c009501ff200 ("hwmon: (nct6775) Add support for NCT6102D/6106D")
-Signed-off-by: Bjoern Gerhart <gerhart@posteo.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/nct6775.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+It is more than Eight years now and most of the politicians are no
+longer using our bank to transfer funds overseas. The ($11.5) Million
+Dollars has been laying waste but I don't want to retire from the bank
+without transferring the funds to a foreign account, It is better that
+we claim the money, than allowing the Bank Directors to take it, they
+are rich already. I am not a greedy person, so I am suggesting we
+share the funds equal, 50/50% to both parties, my share will assist me
+to start my own company and use the proceed for charity which has
+beenmy dream.
 
-diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
-index d3c6115f16b90..db38dff3f9867 100644
---- a/drivers/hwmon/nct6775.c
-+++ b/drivers/hwmon/nct6775.c
-@@ -696,7 +696,7 @@ static const u16 NCT6106_REG_TARGET[] = { 0x111, 0x121, 0x131 };
- static const u16 NCT6106_REG_WEIGHT_TEMP_SEL[] = { 0x168, 0x178, 0x188 };
- static const u16 NCT6106_REG_WEIGHT_TEMP_STEP[] = { 0x169, 0x179, 0x189 };
- static const u16 NCT6106_REG_WEIGHT_TEMP_STEP_TOL[] = { 0x16a, 0x17a, 0x18a };
--static const u16 NCT6106_REG_WEIGHT_DUTY_STEP[] = { 0x16b, 0x17b, 0x17c };
-+static const u16 NCT6106_REG_WEIGHT_DUTY_STEP[] = { 0x16b, 0x17b, 0x18b };
- static const u16 NCT6106_REG_WEIGHT_TEMP_BASE[] = { 0x16c, 0x17c, 0x18c };
- static const u16 NCT6106_REG_WEIGHT_DUTY_BASE[] = { 0x16d, 0x17d, 0x18d };
- 
-@@ -3478,6 +3478,7 @@ static int nct6775_probe(struct platform_device *pdev)
- 		data->REG_FAN_TIME[0] = NCT6106_REG_FAN_STOP_TIME;
- 		data->REG_FAN_TIME[1] = NCT6106_REG_FAN_STEP_UP_TIME;
- 		data->REG_FAN_TIME[2] = NCT6106_REG_FAN_STEP_DOWN_TIME;
-+		data->REG_TOLERANCE_H = NCT6106_REG_TOLERANCE_H;
- 		data->REG_PWM[0] = NCT6106_REG_PWM;
- 		data->REG_PWM[1] = NCT6106_REG_FAN_START_OUTPUT;
- 		data->REG_PWM[2] = NCT6106_REG_FAN_STOP_OUTPUT;
--- 
-2.20.1
+Let me know your mind on my proposal.Please, do treat this information
+as confidential and do not respond to this on facebook for security
+reason.
+I have more to write you about the details once I receive your urgent
+response strictly through my personal Email address
+below:(simondo45@outlook.com)
 
+Have a nice day and God bless. Anticipating your urgent response
+
+Best Regards
+
+Mr Simon Dornoo
