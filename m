@@ -2,38 +2,38 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E06037F881
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Aug 2019 15:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE537F93C
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Aug 2019 15:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393455AbfHBNUq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 2 Aug 2019 09:20:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59204 "EHLO mail.kernel.org"
+        id S2394468AbfHBN0D (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 2 Aug 2019 09:26:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36712 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393451AbfHBNUp (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 2 Aug 2019 09:20:45 -0400
+        id S2394459AbfHBN0C (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 2 Aug 2019 09:26:02 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C55D321841;
-        Fri,  2 Aug 2019 13:20:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C1F2E217D4;
+        Fri,  2 Aug 2019 13:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564752044;
-        bh=xzIse9m8MD7RHJdqfokzO9o+wEwCWbSYJdxi+SXs9uA=;
+        s=default; t=1564752361;
+        bh=aE0TKsg51/5VkLP6Htp7RfyjY1oMIPRIOqwFzbnlpls=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RBWIeYS0S70+754BryL2FU7lbytZrfJpkrIIHYWDkIh8nDIixJnXnBga42/2RK0mP
-         o4RA5D/krtkUnMxDioCJ0EZqdmEboBoLoY3XsVG7Gt1L+GeWYBXx2V2SpuLbcThnAQ
-         XMxJkJPagRC9S+XpTRG4YiO3frRFmgL6LHCG2U9I=
+        b=T3uRXzH8ElgI8yZl3vNyl5dCoLjkxnErybt/T9IHNNK/Rfk5VURGRmXcgHghSYJOU
+         4XLax0fV6j7lfGLmjH3hjDjc90PY0/+kNo+/dxbAElA/DF1y7ummLF6JzJ37C/dLS+
+         pUWOayxymro4bTYXgUSOJjeLUU/4spaK6VE8xOD0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Bj=C3=B6rn=20Gerhart?= <gerhart@posteo.de>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 32/76] hwmon: (nct6775) Fix register address and added missed tolerance for nct6106
-Date:   Fri,  2 Aug 2019 09:19:06 -0400
-Message-Id: <20190802131951.11600-32-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 04/22] hwmon: (nct6775) Fix register address and added missed tolerance for nct6106
+Date:   Fri,  2 Aug 2019 09:25:28 -0400
+Message-Id: <20190802132547.14517-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802131951.11600-1-sashal@kernel.org>
-References: <20190802131951.11600-1-sashal@kernel.org>
+In-Reply-To: <20190802132547.14517-1-sashal@kernel.org>
+References: <20190802132547.14517-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,10 +60,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
-index e7dff5febe161..d42bc0883a32b 100644
+index 2b31b84d0a5b9..006f090c1b0a7 100644
 --- a/drivers/hwmon/nct6775.c
 +++ b/drivers/hwmon/nct6775.c
-@@ -852,7 +852,7 @@ static const u16 NCT6106_REG_TARGET[] = { 0x111, 0x121, 0x131 };
+@@ -698,7 +698,7 @@ static const u16 NCT6106_REG_TARGET[] = { 0x111, 0x121, 0x131 };
  static const u16 NCT6106_REG_WEIGHT_TEMP_SEL[] = { 0x168, 0x178, 0x188 };
  static const u16 NCT6106_REG_WEIGHT_TEMP_STEP[] = { 0x169, 0x179, 0x189 };
  static const u16 NCT6106_REG_WEIGHT_TEMP_STEP_TOL[] = { 0x16a, 0x17a, 0x18a };
@@ -72,7 +72,7 @@ index e7dff5febe161..d42bc0883a32b 100644
  static const u16 NCT6106_REG_WEIGHT_TEMP_BASE[] = { 0x16c, 0x17c, 0x18c };
  static const u16 NCT6106_REG_WEIGHT_DUTY_BASE[] = { 0x16d, 0x17d, 0x18d };
  
-@@ -3764,6 +3764,7 @@ static int nct6775_probe(struct platform_device *pdev)
+@@ -3481,6 +3481,7 @@ static int nct6775_probe(struct platform_device *pdev)
  		data->REG_FAN_TIME[0] = NCT6106_REG_FAN_STOP_TIME;
  		data->REG_FAN_TIME[1] = NCT6106_REG_FAN_STEP_UP_TIME;
  		data->REG_FAN_TIME[2] = NCT6106_REG_FAN_STEP_DOWN_TIME;
