@@ -2,95 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E464E7E059
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Aug 2019 18:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A79D7F891
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Aug 2019 15:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731978AbfHAQj6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Aug 2019 12:39:58 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:35924 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726818AbfHAQj6 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Aug 2019 12:39:58 -0400
-Received: by mail-pg1-f196.google.com with SMTP id l21so34502063pgm.3
-        for <linux-hwmon@vger.kernel.org>; Thu, 01 Aug 2019 09:39:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=F/PUksvtpXcpg+39YDQghGGyZ+oHKyS5aAKWQTwtM8w=;
-        b=f9pusqko+V2Vu6CV1Xtn+706+uWzlOIEhf/2eSa5JZHoHi4NakN5PlsC7juNdRdyGk
-         itfukgrim6K2Ze0Lldgq2iwkCmMM8JsRHA5ez0LvOOoeF89vSQXGZHKw+wEDGuDvm0o/
-         xlpglfL6jVhyY3yxpb2VpkseAaRJE2UCu4j1OX40FbV+5gBRHlFySS4lITFIZVbf9vkk
-         KLD0L2DeWzOeV+XpnMHvFZxRy2yy0q7yYaFiy9azSsofDsL+CgKJ/r8gd4HQQETYJhlK
-         9o2AL/k6YCi0WB935jtw9zgwjruoE9mlzP+EsL2cGPcPwZOJ9nJSQU+JPfWY8thWJYre
-         GtBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=F/PUksvtpXcpg+39YDQghGGyZ+oHKyS5aAKWQTwtM8w=;
-        b=fPBideTOqPeBBAc6xyn0zlVDOue08tjwg6BU+7EtVAG8XUGV0F90Xu4rjUbr8PImTa
-         MWGsSjvb9MJGFaurGL0CGkuMcm0WQUOeeIUXJ4J7aj3Sc1n//obtuNvR9yk7gwjMXH8T
-         Wz8oQRF8gXZLRFw+3G9rT5rt6mk40cTsLyNPCZRNSxu3iyjlftzuMLRothpjfPzgvKdz
-         2YXXW5dfA83vmeUsPPnmtKSnGMgLxpLKy1Z/PuhxLZEDNrjPx/lInZz9keyYgfPEFbKg
-         //LjclQz7kHDIIxTr8BopS9EBAoj4KdLEmSBzpuX1rexOqHNEONRw2PHaqFYc4yPgTQ6
-         fj5A==
-X-Gm-Message-State: APjAAAVbSYg8DZzgRJFVHlqXbafInhaaSH8mUdv5jDfhBXpGXrbEKgJn
-        kwQPMsaZqAovVUkxApZYVSuXqiDO
-X-Google-Smtp-Source: APXvYqw4qmk1KFt9TFnl+Owy/JXdET0fd77PTtxoCUfq4JHuawxWRk3KfMShnO/wB4945KeYoImWtA==
-X-Received: by 2002:a63:520f:: with SMTP id g15mr115718381pgb.28.1564677597352;
-        Thu, 01 Aug 2019 09:39:57 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k14sm2638727pgb.78.2019.08.01.09.39.56
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Aug 2019 09:39:56 -0700 (PDT)
-Date:   Thu, 1 Aug 2019 09:39:55 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Iker Perez <iker.perez@codethink.co.uk>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (lm75) Fixup tmp75b clr_mask
-Message-ID: <20190801163955.GA17675@roeck-us.net>
-References: <20190801075324.4638-1-iker.perez@codethink.co.uk>
+        id S2393420AbfHBNUo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 2 Aug 2019 09:20:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59150 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2393444AbfHBNUn (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 2 Aug 2019 09:20:43 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8B9B2173E;
+        Fri,  2 Aug 2019 13:20:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564752042;
+        bh=9FaxuvGlL/MM4rTlmObzREzC0/lIE6SRjkWENMXn1M8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Gb4Gq7tOVfjwJQouIXTRWcm06Pc4TDFLr6M7SHbNufeHjWua1oHELMG16rG7MrO5c
+         jtQcjXUs9yI51yqQw5CSj2otXdhfPVoAY9m9qEUhV4LmKfCMYXNAUt4FW7DDWjLnfc
+         041Ja5iKkFewzxtNatf/bpdqjI5R/05peZAqQZys=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Lei YU <mine260309@gmail.com>, Eddie James <eajames@linux.ibm.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 31/76] hwmon: (occ) Fix division by zero issue
+Date:   Fri,  2 Aug 2019 09:19:05 -0400
+Message-Id: <20190802131951.11600-31-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190802131951.11600-1-sashal@kernel.org>
+References: <20190802131951.11600-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190801075324.4638-1-iker.perez@codethink.co.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Aug 01, 2019 at 08:53:24AM +0100, Iker Perez wrote:
-> From: Iker Perez del Palomar Sustatxa <iker.perez@codethink.co.uk>
-> 
-> The configuration register of the tmp75b sensor is 16bit long, however
-> the first byte is reserved, so there is not no need to take care of it.
-> 
-> Because the order of the bytes is little endian and it is only wanted to
-> write one byte, the desired bits must be shifted in a 8 bit range.
-> 
-> Signed-off-by: Iker Perez del Palomar Sustatxa <iker.perez@codethink.co.uk>
+From: Lei YU <mine260309@gmail.com>
 
-Applied.
+[ Upstream commit 211186cae14de09573b062e478eb9fe215aed8d9 ]
 
-Thanks,
-Guenter
+The code in occ_get_powr_avg() invokes div64_u64() without checking the
+divisor. In case the divisor is zero, kernel gets an "Division by zero
+in kernel" error.
 
-> ---
->  drivers/hwmon/lm75.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-> index 3fb9c0a2d6d0..ce5ec403ec73 100644
-> --- a/drivers/hwmon/lm75.c
-> +++ b/drivers/hwmon/lm75.c
-> @@ -343,7 +343,7 @@ lm75_probe(struct i2c_client *client, const struct i2c_device_id *id)
->  		data->sample_time = MSEC_PER_SEC / 2;
->  		break;
->  	case tmp75b:  /* not one-shot mode, Conversion rate 37Hz */
-> -		clr_mask |= 1 << 15 | 0x3 << 13;
-> +		clr_mask |= 1 << 7 | 0x3 << 5;
->  		data->resolution = 12;
->  		data->sample_time = MSEC_PER_SEC / 37;
->  		break;
+Check the divisor and make it return 0 if the divisor is 0.
+
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Signed-off-by: Lei YU <mine260309@gmail.com>
+Reviewed-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/r/1562813088-23708-1-git-send-email-mine260309@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/occ/common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 13a6290c8d254..f02aa403332c2 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -402,8 +402,10 @@ static ssize_t occ_show_power_1(struct device *dev,
+ 
+ static u64 occ_get_powr_avg(u64 *accum, u32 *samples)
+ {
+-	return div64_u64(get_unaligned_be64(accum) * 1000000ULL,
+-			 get_unaligned_be32(samples));
++	u64 divisor = get_unaligned_be32(samples);
++
++	return (divisor == 0) ? 0 :
++		div64_u64(get_unaligned_be64(accum) * 1000000ULL, divisor);
+ }
+ 
+ static ssize_t occ_show_power_2(struct device *dev,
+-- 
+2.20.1
+
