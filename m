@@ -2,93 +2,53 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C9C8557B
-	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Aug 2019 23:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EEC48558F
+	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Aug 2019 00:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730045AbfHGV6j (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 7 Aug 2019 17:58:39 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:45210 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729982AbfHGV6j (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 7 Aug 2019 17:58:39 -0400
-Received: by mail-pg1-f194.google.com with SMTP id o13so42856949pgp.12;
-        Wed, 07 Aug 2019 14:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=uIeRwaRIiqOqi4dTrdidnKMKO6PgxCzxKDJrRVdKeuM=;
-        b=K+iTI8A4/vw5vwjYLchA92CdhPvkoYtq0ubnVX4cw4ann8i8mcEXeicaqDLHGiFq3H
-         //HgH7Ig4hb2JHjuMUW1wXCZfk1gbHg1n3K02Dr0KePTKB5wZRhzw5yTfkKU8R/xfqNi
-         zAofO3ymOeUXwtRRjxF0vbIxB5Zk4WQOP9pxYiWHsM3RFgADPge+w/99YYf41p1jXMan
-         eYvcGq2yMYwetf6v2Gmfgv/DeMx2gqxDlcjDSUQRMvMi9TPdGaPbEHxzi9Vs+MFLp6m1
-         l2QE2c4Fr5ALLvwJjE6MAsxYjmhvvavZ43E2dnSRNwD6HYNbOa+Dj90O+R+LmSmMQ8Pf
-         JnpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=uIeRwaRIiqOqi4dTrdidnKMKO6PgxCzxKDJrRVdKeuM=;
-        b=da4UhCuls59VOoWUUU4AwHUaGsr+7dhCE80VFY4y2c74JKGpY5H8sOHSAIWMLV8NDC
-         h6DlEY7WjvhJS2EBYlFn5MMlMCFBtCkPRbdTp9kaqLlhxY1DUuakWWuT55Ji9rsZwU6z
-         FwKiMqRrbfFNulk66POg0D+BNYDOdqdXmJPgd+pcMskg4u4yn6xENkwNUiD5ozfKqXrJ
-         B8No3/ByhXf0hdXCpPAWvqoWuY88kzXWaoFQ9ZuPYJ/1EHbNSUnE4uhuINf3XfiVPPRE
-         jwC6S3802aGIlpfcid5sBJ+gfv/lIHqZl20azhDabt9CYS+CW+nnltaghRi6nmT7GfTT
-         78jg==
-X-Gm-Message-State: APjAAAWs9ZgI2yWqL4AU9x7igyuj3NjYc84yfJrIiPTod53wI+dGczCd
-        tb/6CWtDajoawR2GO6eiydX0ePGT
-X-Google-Smtp-Source: APXvYqzxxy3akodFeVrbjOVv/thI20P8HvBuyhwYaMoDkKyd/v1+YtUgorzhevyiYsfIGusZKlrNAA==
-X-Received: by 2002:a63:4c5a:: with SMTP id m26mr9467336pgl.270.1565215118345;
-        Wed, 07 Aug 2019 14:58:38 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id o14sm181941539pfh.153.2019.08.07.14.58.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Aug 2019 14:58:37 -0700 (PDT)
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hwmon fixes for v5.3-rc4
-Date:   Wed,  7 Aug 2019 14:58:35 -0700
-Message-Id: <1565215115-11064-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.7.4
+        id S1729344AbfHGWPJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 7 Aug 2019 18:15:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48676 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727213AbfHGWPJ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 7 Aug 2019 18:15:09 -0400
+Subject: Re: [GIT PULL] hwmon fixes for v5.3-rc4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565216108;
+        bh=MXsB0r5Yi1Cpk4u7iPJOhQGMZAoHZlu1b5/yfSuk4fg=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=zJltm0ehm4qUldbk5K2v+3KSZye+tHo3kCc5HbtzDP3jXKKg7e2k2KfV+UpjYHLzI
+         zho/gV93ageepgYx0sXnmJsZ3Dz1KzQylXAgN/1WEpUhtRmMT3+6rLhpVt8jqtt8FM
+         lwNNtp2f4qQ523C6HyQ8l3hSIjTq2JP5sQMhIEHY=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <1565215115-11064-1-git-send-email-linux@roeck-us.net>
+References: <1565215115-11064-1-git-send-email-linux@roeck-us.net>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <1565215115-11064-1-git-send-email-linux@roeck-us.net>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+ hwmon-for-v5.3-rc4
+X-PR-Tracked-Commit-Id: a95a4f3f2702b55a89393bf0f1b2b3d79e0f7da2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ecb095bff5d4b8711a81968625b3b4a235d3e477
+Message-Id: <156521610873.10652.16733860959491286296.pr-tracker-bot@kernel.org>
+Date:   Wed, 07 Aug 2019 22:15:08 +0000
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Wed,  7 Aug 2019 14:58:35 -0700:
 
-Please pull hwmon fixes for Linux v5.3-rc4 from signed tag:
+> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.3-rc4
 
-    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.3-rc4
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ecb095bff5d4b8711a81968625b3b4a235d3e477
 
-Thanks,
-Guenter
-------
+Thank you!
 
-The following changes since commit 609488bc979f99f805f34e9a32c1e3b71179d10b:
-
-  Linux 5.3-rc2 (2019-07-28 12:47:02 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v5.3-rc4
-
-for you to fetch changes up to a95a4f3f2702b55a89393bf0f1b2b3d79e0f7da2:
-
-  hwmon: (lm75) Fixup tmp75b clr_mask (2019-08-07 14:50:49 -0700)
-
-----------------------------------------------------------------
-Fixes to lm75 and nct7802 drivers
-
-In lm75 driver, fix TMP75B chip description to ensure correct
-initialization. In nct7802 driver, fix in4 presence detection.
-
-----------------------------------------------------------------
-Guenter Roeck (1):
-      hwmon: (nct7802) Fix wrong detection of in4 presence
-
-Iker Perez del Palomar Sustatxa (1):
-      hwmon: (lm75) Fixup tmp75b clr_mask
-
- drivers/hwmon/lm75.c    | 2 +-
- drivers/hwmon/nct7802.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
