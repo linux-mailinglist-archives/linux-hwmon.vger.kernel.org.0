@@ -2,137 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B39685C57
-	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Aug 2019 10:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFC086324
+	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Aug 2019 15:30:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731871AbfHHIC6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 8 Aug 2019 04:02:58 -0400
-Received: from imap1.codethink.co.uk ([176.9.8.82]:43392 "EHLO
-        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731548AbfHHIC5 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 8 Aug 2019 04:02:57 -0400
-Received: from [167.98.27.226] (helo=ct-lt-765.unassigned)
-        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
-        id 1hvdNp-0008KE-Tm; Thu, 08 Aug 2019 09:02:50 +0100
-Received: from ikerpalomar by ct-lt-765.unassigned with local (Exim 4.89)
-        (envelope-from <ikerpalomar@ct-lt-765.unassigned>)
-        id 1hvdNp-0002Bq-5E; Thu, 08 Aug 2019 09:02:49 +0100
-From:   Iker Perez <iker.perez@codethink.co.uk>
-To:     linux-hwmon@vger.kernel.org, linux@roeck-us.net
-Cc:     jdelvare@suse.com, linux-kernel@vger.kernel.org,
-        Iker Perez del Palomar Sustatxa 
-        <iker.perez@codethink.co.uk>
-Subject: [PATCH v2 4/4] hwmon: (lm75) Modularize lm75_write and make hwmon_chip writable
-Date:   Thu,  8 Aug 2019 09:02:46 +0100
-Message-Id: <20190808080246.8371-5-iker.perez@codethink.co.uk>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190808080246.8371-1-iker.perez@codethink.co.uk>
-References: <20190808080246.8371-1-iker.perez@codethink.co.uk>
+        id S1733109AbfHHN37 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 8 Aug 2019 09:29:59 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:40650 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732882AbfHHN37 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 8 Aug 2019 09:29:59 -0400
+Received: by mail-pf1-f193.google.com with SMTP id p184so44114158pfp.7;
+        Thu, 08 Aug 2019 06:29:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=eAHc4PXH4W80rIzb0P4YR5zSPB3pQZ2IAYO2JR2Za1c=;
+        b=iGN+VVdmYfA4zte+LhxYoLoG8ril+vwki+24TO4FpCqXv0hWmOkcpKxYojxt1VW5TV
+         44TyDOQfqVurgs8GpEIpQ85sV/lVRSgYzwGyKyOOmWk0qivuGIua5HWxz1S6mIc0sajC
+         G0eeFEwNXsfLgJzOEtdQKTlmmMYH0t6v0M9iFbfFVVs4+YU1W6AxOLakX/NdA+Gy4W0B
+         a2v61xtBD8UWsux0K3oJeieS3NnwDV7vJpz1P0auuYNO2Uhb7HKfAejCTW1Qs44hLxeU
+         1MaCexhRxK2V/e5MKU8c5VUz091wqWrSzvYBE5h/wwSDJGkYLlYw+TwceqRJP2SsLi7u
+         /BIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=eAHc4PXH4W80rIzb0P4YR5zSPB3pQZ2IAYO2JR2Za1c=;
+        b=XV5SsLAzLpQ8t0ZGr/MZ1fAPPVs/6l/WsbeUfuVuxMj3cmnNp4d/p5/PyMxGyNPBVP
+         Z977mQTYzf/wturoauO+6UL1MY+m74PhTVF2+UoK1rcbBK/OWP3cufYjcohhT6u6x7iV
+         EL/AlyQnqYJjZ0yxxaveaxsiY657ns3jgBNT8xoDkLRavcHsAG4+FUcHZIDjixhK2GUg
+         Ug7pRKwDXbp4nuNCh0KXjt3pa2FJQyJ3enUb5EWSTUV+L+XZNPp8d7SogDxMEY69Mwgc
+         z24WwD2EQ8bvMxXXhW0Hp5lVHRjX+CyC2ja1S5tFNpexwGoA/3c1R02P+1whGeAeYZvJ
+         mQjA==
+X-Gm-Message-State: APjAAAXnagGm3xOHySu6HD2nPPRE3p+DwRDMuZTMvfAuIa7KS/w888wL
+        a1g0/NysrHmU31SLJM8pXqZtRcO8/kY=
+X-Google-Smtp-Source: APXvYqzsY6UsECuf4DosK1dwgKNHz/fB378Lz71BI9XL/gfpkQKAQ1yCdaEuA5+HtdgpHjIldJ4jxg==
+X-Received: by 2002:a63:ee08:: with SMTP id e8mr13016625pgi.70.1565270998661;
+        Thu, 08 Aug 2019 06:29:58 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id o24sm175272521pfp.135.2019.08.08.06.29.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 08 Aug 2019 06:29:57 -0700 (PDT)
+Date:   Thu, 8 Aug 2019 06:29:56 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        kbuild test robot <lkp@intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH][next] hwmon: pmbus: ucd9000: remove unneeded include
+Message-ID: <20190808132956.GA30151@roeck-us.net>
+References: <20190808080144.6183-1-brgl@bgdev.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190808080144.6183-1-brgl@bgdev.pl>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Iker Perez del Palomar Sustatxa <iker.perez@codethink.co.uk>
+On Thu, Aug 08, 2019 at 10:01:44AM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> 
+> Build bot reports the following build issue after commit 9091373ab7ea
+> ("gpio: remove less important #ifdef around declarations):
+> 
+>    In file included from drivers/hwmon/pmbus/ucd9000.c:19:0:
+> >> include/linux/gpio/driver.h:576:1: error: redefinition of 'gpiochip_add_pin_range'
+>     gpiochip_add_pin_range(struct gpio_chip *chip, const char *pinctl_name,
+>     ^~~~~~~~~~~~~~~~~~~~~~
+>    In file included from drivers/hwmon/pmbus/ucd9000.c:18:0:
+>    include/linux/gpio.h:245:1: note: previous definition of 'gpiochip_add_pin_range' was here
+>     gpiochip_add_pin_range(struct gpio_chip *chip, const char *pinctl_name,
+>     ^~~~~~~~~~~~~~~~~~~~~~
+>    In file included from drivers/hwmon/pmbus/ucd9000.c:19:0:
+> >> include/linux/gpio/driver.h:583:1: error: redefinition of 'gpiochip_add_pingroup_range'
+>     gpiochip_add_pingroup_range(struct gpio_chip *chip,
+>     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    In file included from drivers/hwmon/pmbus/ucd9000.c:18:0:
+>    include/linux/gpio.h:254:1: note: previous definition of 'gpiochip_add_pingroup_range' was here
+>     gpiochip_add_pingroup_range(struct gpio_chip *chip,
+>     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    In file included from drivers/hwmon/pmbus/ucd9000.c:19:0:
+> >> include/linux/gpio/driver.h:591:1: error: redefinition of 'gpiochip_remove_pin_ranges'
+>     gpiochip_remove_pin_ranges(struct gpio_chip *chip)
+>     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+>    In file included from drivers/hwmon/pmbus/ucd9000.c:18:0:
+>    include/linux/gpio.h:263:1: note: previous definition of 'gpiochip_remove_pin_ranges' was here
+>     gpiochip_remove_pin_ranges(struct gpio_chip *chip)
+> 
+> This is caused by conflicting defines from linux/gpio.h and
+> linux/gpio/driver.h. Drivers should not include both the legacy and
+> the new API headers. This driver doesn't even use linux/gpio.h so
+> remove it.
+> 
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-* Create two separate functions to write into hwmon_temp and hwmon_chip.
-* Call the functions from lm75_write.
-* Make hwm_chip writable if the chip supports more than one sample time.
+Applied.
 
-Signed-off-by: Iker Perez del Palomar Sustatxa <iker.perez@codethink.co.uk>
----
- drivers/hwmon/lm75.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 5 deletions(-)
+Thanks,
+Guenter
 
-diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-index ed72455bcfa3..f83bfd7ceef7 100644
---- a/drivers/hwmon/lm75.c
-+++ b/drivers/hwmon/lm75.c
-@@ -16,6 +16,7 @@
- #include <linux/of_device.h>
- #include <linux/of.h>
- #include <linux/regmap.h>
-+#include <linux/util_macros.h>
- #include "lm75.h"
- 
- /*
-@@ -325,16 +326,12 @@ static int lm75_read(struct device *dev, enum hwmon_sensor_types type,
- 	return 0;
- }
- 
--static int lm75_write(struct device *dev, enum hwmon_sensor_types type,
--		      u32 attr, int channel, long temp)
-+static int lm75_write_temp(struct device *dev, u32 attr, long temp)
- {
- 	struct lm75_data *data = dev_get_drvdata(dev);
- 	u8 resolution;
- 	int reg;
- 
--	if (type != hwmon_temp)
--		return -EINVAL;
--
- 	switch (attr) {
- 	case hwmon_temp_max:
- 		reg = LM75_REG_MAX;
-@@ -362,13 +359,58 @@ static int lm75_write(struct device *dev, enum hwmon_sensor_types type,
- 	return regmap_write(data->regmap, reg, temp);
- }
- 
-+static int lm75_write_chip(struct device *dev, u32 attr, long val)
-+{
-+	struct lm75_data *data = dev_get_drvdata(dev);
-+	u8 index;
-+	s32 err;
-+
-+	switch (attr) {
-+	case hwmon_chip_update_interval:
-+		index = find_closest(val, data->params->sample_times,
-+				     (int)data->params->num_sample_times);
-+
-+		err = lm75_write_config(data,
-+					data->params->sample_set_masks[index],
-+					data->params->sample_clr_mask);
-+		if (err)
-+			return err;
-+		data->sample_time = data->params->sample_times[index];
-+
-+		if (data->params->resolutions)
-+			data->resolution = data->params->resolutions[index];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int lm75_write(struct device *dev, enum hwmon_sensor_types type,
-+		      u32 attr, int channel, long val)
-+{
-+	switch (type) {
-+	case hwmon_chip:
-+		return lm75_write_chip(dev, attr, val);
-+	case hwmon_temp:
-+		return lm75_write_temp(dev, attr, val);
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static umode_t lm75_is_visible(const void *data, enum hwmon_sensor_types type,
- 			       u32 attr, int channel)
- {
-+	const struct lm75_data *config_data = data;
-+
- 	switch (type) {
- 	case hwmon_chip:
- 		switch (attr) {
- 		case hwmon_chip_update_interval:
-+			if (config_data->params->num_sample_times > 1)
-+				return 0644;
- 			return 0444;
- 		}
- 		break;
--- 
-2.11.0
-
+> ---
+>  drivers/hwmon/pmbus/ucd9000.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/ucd9000.c b/drivers/hwmon/pmbus/ucd9000.c
+> index c846759bc1c0..a9229c6b0e84 100644
+> --- a/drivers/hwmon/pmbus/ucd9000.c
+> +++ b/drivers/hwmon/pmbus/ucd9000.c
+> @@ -15,7 +15,6 @@
+>  #include <linux/slab.h>
+>  #include <linux/i2c.h>
+>  #include <linux/pmbus.h>
+> -#include <linux/gpio.h>
+>  #include <linux/gpio/driver.h>
+>  #include "pmbus.h"
+>  
