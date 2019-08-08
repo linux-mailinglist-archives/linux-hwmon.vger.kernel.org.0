@@ -2,123 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AED87865FB
-	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Aug 2019 17:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3033B86A24
+	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Aug 2019 21:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403969AbfHHPgL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 8 Aug 2019 11:36:11 -0400
-Received: from sauhun.de ([88.99.104.3]:56468 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733213AbfHHPgJ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 8 Aug 2019 11:36:09 -0400
-Received: from localhost (p5486CA1C.dip0.t-ipconnect.de [84.134.202.28])
-        by pokefinder.org (Postfix) with ESMTPSA id DD0163E4858;
-        Thu,  8 Aug 2019 17:36:06 +0200 (CEST)
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Rudolf Marek <r.marek@assembler.cz>,
-        Jean Delvare <jdelvare@suse.com>,
+        id S2404034AbfHHTNb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 8 Aug 2019 15:13:31 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:42784 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405195AbfHHTN0 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 8 Aug 2019 15:13:26 -0400
+Received: by mail-pf1-f196.google.com with SMTP id q10so44613649pff.9
+        for <linux-hwmon@vger.kernel.org>; Thu, 08 Aug 2019 12:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=x9aVoBCcUzhgUwC3Nxl3unG+0lM/tnNGfGwCyeSNY4A=;
+        b=SoGUOxsEoEBpLh5wrYk6xSxm4mXrxcYX3UCf//haMSFRYWm0U22uRl8da8oPdc06hO
+         w3jCDycY5LgIFHDN5RrtE8kHDe7RtRIRZBAR6Dp3Q1soSG/pskUqoxXARLeptAtgNXqQ
+         tscAfsnoJf186pXFK0ju3cRloztvjen0cio+XPaNG7+VoGfehtWIWa4HrCvy4WJiOFMw
+         FYBmQsxd7D156umPqNFRwACBKlipxG4uepYo3yF70aeTUDoCv8p7k4K6h2fmGz9pdr3A
+         z6vdstf1wsA9WAd6uFzXDH3zYgba0sABQTchYpcmUGktNWt8uH16gCZWxdf1Faukg/fJ
+         rWuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=x9aVoBCcUzhgUwC3Nxl3unG+0lM/tnNGfGwCyeSNY4A=;
+        b=clcTHWAi9xzeqbGXtz0Kei+QjM2/rkHRXmURikkTNiJHvqNHcoRULarXr5O7jMJCD1
+         OaBqS18Q0GNO1qxlBpUW8cJJFNgekngIS+jYuLTnhLCa2QOnnxR902zm7+0wuLEWn2e8
+         IbaE31+G0F3+8xq2TJ+vccMZOsvCEnjjZayFjQHBNl2CEIvUpiQc53xquBgI7ljd3rkn
+         vsDFwlKtYE9XvMy9rAqvT20XZpvgrmbdIigd8CBj/G5/xRB3F7Laf4BQyNHLMJhfJZEF
+         c3Wi1c9tt0alN0+OB95+G5iwdlZXBAVq7lcXxNkhagM9sAtgBlo+3zJtZluZuKJFvKAi
+         nz1Q==
+X-Gm-Message-State: APjAAAXR6VuQjsoxXEGWxEOJL1GyztBfpt4+MeybV1WuTenbVcVANLKv
+        KqUhb3toHz49ddxqc/01V8pdEMpYL3s=
+X-Google-Smtp-Source: APXvYqx41z+eTYkGFUT6pPWG1r3F/HJ2aBCzQOJtsItIogNIW7oh4N0hrcnvcDVTjeo+eXcX97dpLg==
+X-Received: by 2002:a17:90a:d998:: with SMTP id d24mr5511506pjv.89.1565291605807;
+        Thu, 08 Aug 2019 12:13:25 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id a6sm2796108pjs.31.2019.08.08.12.13.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 08 Aug 2019 12:13:24 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH RFT 3/3] hwmon: w83793d: convert to use devm_i2c_new_dummy_device
-Date:   Thu,  8 Aug 2019 17:35:58 +0200
-Message-Id: <20190808153558.2362-4-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190808153558.2362-1-wsa+renesas@sang-engineering.com>
-References: <20190808153558.2362-1-wsa+renesas@sang-engineering.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Iker Perez del Palomar Sustatxa 
+        <iker.perez@codethink.co.uk>
+Subject: [PATCH] hwmon: (lm75) Fix write operations for negative temperatures
+Date:   Thu,  8 Aug 2019 12:13:22 -0700
+Message-Id: <1565291602-10505-1-git-send-email-linux@roeck-us.net>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-And simplify the error handling.
+Writes into limit registers fail if the temperature written is negative.
+The regmap write operation checks the value range, regmap_write accepts
+an unsigned int as parameter, and the temperature value passed to
+regmap_write is kept in a variable declared as long. Negative values
+are converted large unsigned integers, which fails the range check.
+Fix by type casting the temperature to u16 when calling regmap_write().
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Iker Perez del Palomar Sustatxa <iker.perez@codethink.co.uk>
+Fixes: e65365fed87f ("hwmon: (lm75) Convert to use regmap")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/hwmon/w83793.c | 30 ++++++++----------------------
- 1 file changed, 8 insertions(+), 22 deletions(-)
+ drivers/hwmon/lm75.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/w83793.c b/drivers/hwmon/w83793.c
-index 46f5dfec8d0a..9df48b70c70c 100644
---- a/drivers/hwmon/w83793.c
-+++ b/drivers/hwmon/w83793.c
-@@ -1551,9 +1551,6 @@ static int w83793_remove(struct i2c_client *client)
- 	for (i = 0; i < ARRAY_SIZE(w83793_temp); i++)
- 		device_remove_file(dev, &w83793_temp[i].dev_attr);
+diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
+index ce5ec403ec73..cbabab7ac788 100644
+--- a/drivers/hwmon/lm75.c
++++ b/drivers/hwmon/lm75.c
+@@ -154,7 +154,7 @@ static int lm75_write(struct device *dev, enum hwmon_sensor_types type,
+ 	temp = DIV_ROUND_CLOSEST(temp  << (resolution - 8),
+ 				 1000) << (16 - resolution);
  
--	i2c_unregister_device(data->lm75[0]);
--	i2c_unregister_device(data->lm75[1]);
--
- 	/* Decrease data reference counter */
- 	mutex_lock(&watchdog_data_mutex);
- 	kref_put(&data->kref, w83793_release_resources);
-@@ -1565,7 +1562,7 @@ static int w83793_remove(struct i2c_client *client)
- static int
- w83793_detect_subclients(struct i2c_client *client)
- {
--	int i, id, err;
-+	int i, id;
- 	int address = client->addr;
- 	u8 tmp;
- 	struct i2c_adapter *adapter = client->adapter;
-@@ -1580,8 +1577,7 @@ w83793_detect_subclients(struct i2c_client *client)
- 					"invalid subclient "
- 					"address %d; must be 0x48-0x4f\n",
- 					force_subclients[i]);
--				err = -EINVAL;
--				goto ERROR_SC_0;
-+				return -EINVAL;
- 			}
- 		}
- 		w83793_write_value(client, W83793_REG_I2C_SUBADDR,
-@@ -1591,28 +1587,21 @@ w83793_detect_subclients(struct i2c_client *client)
- 
- 	tmp = w83793_read_value(client, W83793_REG_I2C_SUBADDR);
- 	if (!(tmp & 0x08))
--		data->lm75[0] = i2c_new_dummy(adapter, 0x48 + (tmp & 0x7));
-+		data->lm75[0] = devm_i2c_new_dummy_device(&client->dev, adapter,
-+							  0x48 + (tmp & 0x7));
- 	if (!(tmp & 0x80)) {
--		if ((data->lm75[0] != NULL)
-+		if (!IS_ERR(data->lm75[0])
- 		    && ((tmp & 0x7) == ((tmp >> 4) & 0x7))) {
- 			dev_err(&client->dev,
- 				"duplicate addresses 0x%x, "
- 				"use force_subclients\n", data->lm75[0]->addr);
--			err = -ENODEV;
--			goto ERROR_SC_1;
-+			return -ENODEV;
- 		}
--		data->lm75[1] = i2c_new_dummy(adapter,
--					      0x48 + ((tmp >> 4) & 0x7));
-+		data->lm75[1] = devm_i2c_new_dummy_device(&client->dev, adapter,
-+							  0x48 + ((tmp >> 4) & 0x7));
- 	}
- 
- 	return 0;
--
--	/* Undo inits in case of errors */
--
--ERROR_SC_1:
--	i2c_unregister_device(data->lm75[0]);
--ERROR_SC_0:
--	return err;
+-	return regmap_write(data->regmap, reg, temp);
++	return regmap_write(data->regmap, reg, (u16)temp);
  }
  
- /* Return 0 if detection is successful, -ENODEV otherwise */
-@@ -1945,9 +1934,6 @@ static int w83793_probe(struct i2c_client *client,
- 
- 	for (i = 0; i < ARRAY_SIZE(w83793_temp); i++)
- 		device_remove_file(dev, &w83793_temp[i].dev_attr);
--
--	i2c_unregister_device(data->lm75[0]);
--	i2c_unregister_device(data->lm75[1]);
- free_mem:
- 	kfree(data);
- exit:
+ static umode_t lm75_is_visible(const void *data, enum hwmon_sensor_types type,
 -- 
-2.20.1
+2.7.4
 
