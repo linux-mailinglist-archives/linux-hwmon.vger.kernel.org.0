@@ -2,106 +2,123 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 834258988E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 12 Aug 2019 10:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBFFC89F7A
+	for <lists+linux-hwmon@lfdr.de>; Mon, 12 Aug 2019 15:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbfHLIQp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 12 Aug 2019 04:16:45 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:41813 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726528AbfHLIQp (ORCPT
+        id S1728809AbfHLNSw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 12 Aug 2019 09:18:52 -0400
+Received: from mta03.svc.cra.dublin.eircom.net ([159.134.118.145]:45384 "HELO
+        mta03.svc.cra.dublin.eircom.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S1728806AbfHLNSw (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 12 Aug 2019 04:16:45 -0400
-Received: by mail-wr1-f68.google.com with SMTP id j16so1509165wrr.8
-        for <linux-hwmon@vger.kernel.org>; Mon, 12 Aug 2019 01:16:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=MJHxBxh/Q5vo+W76uNGRUJUeN3hwDfWxfMg6P/gBOg0=;
-        b=u4QlkRbMDiHfGrjdu436aHZusopdsD94AaT6zXTM3eaZ4y6BosUM0tlaA56X51nN9c
-         umI3PH27REA1YdEm/bDm3OE2UI9MGULdMLuGUTvnDBKUBlM+u5BgwEJXKd1SByIuWkrY
-         2kv99VeKU+V5QXG9oieP77x7yQgoExIDYXx4vPH8vlEru6HzZ6/p32cpzzObsHy5W3az
-         O2VbXSjzdwyFpNJYin4w9mGvGx4NIQqGMocgiLaaq7HHG8qkJjXvIxiD9mAgo53+VJlh
-         LCcGJbAa2s5qZg9/JZfFsSRo/t/+spxSIJYxDJW7Gfq3OorZb4uOTIjODwyWsHDkDNXd
-         LmBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=MJHxBxh/Q5vo+W76uNGRUJUeN3hwDfWxfMg6P/gBOg0=;
-        b=rQhcG7qmkWcbV1vBaAikLrQ2H+tIFgY7d5OwPmCWlKLtEcNLU02zvSRJ/QlQv5zwsB
-         cVO+PsprX+ZfTzszJDsLX6HcfiGdo1xwH2c46XuH/NYpnhAJofzSv6IW6L6am93H2raO
-         MG9kki2RFNoZaEwz+OtdwX56sBxMq8yUN86qkQ5Z0yULhaoAmIF4ScRKdX+26xyuEkxN
-         roYIFMvozcPLK6/Ncu9haeKiHyaLN0rCQ+6ugHvJfilWOrLhQ+Tg9NxLo/SgttxB5Qxt
-         zlhNbFUQYva2u429LHb6/HFDfEo2kaS9Rg1LNb02y0RuXx+DYHHTqtpAkvT4IlbKo46h
-         cFyg==
-X-Gm-Message-State: APjAAAU7b2uKK8/qvwUgL2yhfIY86frTBgNNy83MvOgxveKCRNoofooe
-        GYBJfpKAbqjaE4cZBHzg/bNgrg==
-X-Google-Smtp-Source: APXvYqyD6fPKryZQTpN9zsdwGV7yS5BKNQZ8tOEeMIPGi0uW8Qmgi+HgiANiv0VmQSgyzgbueGKdzg==
-X-Received: by 2002:adf:ec0d:: with SMTP id x13mr40515082wrn.240.1565597802765;
-        Mon, 12 Aug 2019 01:16:42 -0700 (PDT)
-Received: from dell ([2.27.35.255])
-        by smtp.gmail.com with ESMTPSA id g15sm16420028wrp.29.2019.08.12.01.16.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 12 Aug 2019 01:16:42 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 09:16:40 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Sebastian Reichel <sre@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, od@zcrc.me,
-        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-pm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        Artur Rojek <contact@artur-rojek.eu>
-Subject: Re: [PATCH 10/11] mfd: Drop obsolete JZ4740 driver
-Message-ID: <20190812081640.GA26727@dell>
-References: <20190725220215.460-1-paul@crapouillou.net>
- <20190725220215.460-11-paul@crapouillou.net>
+        Mon, 12 Aug 2019 09:18:52 -0400
+Received: (qmail 11389 messnum 4723276 invoked from network[213.94.190.14/avas02.vendorsvc.cra.dublin.eircom.net]); 12 Aug 2019 13:18:47 -0000
+Received: from avas02.vendorsvc.cra.dublin.eircom.net (HELO avas02) (213.94.190.14)
+  by mta03.svc.cra.dublin.eircom.net (qp 11389) with SMTP; 12 Aug 2019 13:18:47 -0000
+Received: from vzmbx41.eircom.net ([86.43.60.54])
+        by Cloudmark Gateway with SMTP
+        id xADnhAty7leOUxADnhLhZI; Mon, 12 Aug 2019 14:18:47 +0100
+X-Spam-Flag: NO
+X-CNFS-Analysis: v=2.2 cv=DqcmwC3+ c=1 sm=1 tr=0
+ a=f2H5vv3rE8k1gxF0V0JitQ==:117 a=FKkrIqjQGGEA:10 a=B6i6r31_BJ0A:10
+ a=98QKKfQvVUkA:10 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:10 a=TOrqowBILPMA:10
+ a=RrPX01biE9AA:10 a=ZZnuYtJkoWoA:10 a=mca1Ix8Weim7-Bp-EAEA:9
+ a=zemOfyBR-EAdWwJA:21 a=CB6k3L2H-zaqk2yP:21 a=QEXdDO2ut3YA:10
+ a=5_9zNX347IVc0-ouzWcL:22
+Date:   Mon, 12 Aug 2019 14:18:47 +0100 (IST)
+From:   George Mason <cby@eircom.net>
+Reply-To: barr.georgemason@gmail.com
+To:     info@claims.com
+Message-ID: <1511520675.99481.1565615927086.JavaMail.zimbra@eircom.net>
+Subject: Re: Hello
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190725220215.460-11-paul@crapouillou.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [51.158.24.82]
+X-Mailer: Zimbra 8.6.0_GA_1242 (ZimbraWebClient - GC76 (Win)/8.6.0_GA_1242)
+Thread-Topic: Hello
+Thread-Index: wZln9LKcY2+wRkSC7ofd8EtmwevowA==
+X-CMAE-Envelope: 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
+ d4YQF3PrjDQFvdnfVOIWDNvlxvCcpQ==
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, 25 Jul 2019, Paul Cercueil wrote:
 
-> It has been replaced with the ingenic-iio driver for the ADC.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Tested-by: Artur Rojek <contact@artur-rojek.eu>
-> ---
->  drivers/mfd/Kconfig      |   9 --
->  drivers/mfd/Makefile     |   1 -
->  drivers/mfd/jz4740-adc.c | 324 ---------------------------------------
->  3 files changed, 334 deletions(-)
->  delete mode 100644 drivers/mfd/jz4740-adc.c
 
-Applied, thanks.
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+You are a recipient to Mrs Julie Leach Donation of $2 million USD.. Contact me for details.
