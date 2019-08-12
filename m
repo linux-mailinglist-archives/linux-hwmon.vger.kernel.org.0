@@ -2,123 +2,165 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBFFC89F7A
-	for <lists+linux-hwmon@lfdr.de>; Mon, 12 Aug 2019 15:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 888D989FB4
+	for <lists+linux-hwmon@lfdr.de>; Mon, 12 Aug 2019 15:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728809AbfHLNSw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 12 Aug 2019 09:18:52 -0400
-Received: from mta03.svc.cra.dublin.eircom.net ([159.134.118.145]:45384 "HELO
-        mta03.svc.cra.dublin.eircom.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S1728806AbfHLNSw (ORCPT
+        id S1728813AbfHLN3v (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 12 Aug 2019 09:29:51 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:35914 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728812AbfHLN3s (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 12 Aug 2019 09:18:52 -0400
-Received: (qmail 11389 messnum 4723276 invoked from network[213.94.190.14/avas02.vendorsvc.cra.dublin.eircom.net]); 12 Aug 2019 13:18:47 -0000
-Received: from avas02.vendorsvc.cra.dublin.eircom.net (HELO avas02) (213.94.190.14)
-  by mta03.svc.cra.dublin.eircom.net (qp 11389) with SMTP; 12 Aug 2019 13:18:47 -0000
-Received: from vzmbx41.eircom.net ([86.43.60.54])
-        by Cloudmark Gateway with SMTP
-        id xADnhAty7leOUxADnhLhZI; Mon, 12 Aug 2019 14:18:47 +0100
-X-Spam-Flag: NO
-X-CNFS-Analysis: v=2.2 cv=DqcmwC3+ c=1 sm=1 tr=0
- a=f2H5vv3rE8k1gxF0V0JitQ==:117 a=FKkrIqjQGGEA:10 a=B6i6r31_BJ0A:10
- a=98QKKfQvVUkA:10 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:10 a=TOrqowBILPMA:10
- a=RrPX01biE9AA:10 a=ZZnuYtJkoWoA:10 a=mca1Ix8Weim7-Bp-EAEA:9
- a=zemOfyBR-EAdWwJA:21 a=CB6k3L2H-zaqk2yP:21 a=QEXdDO2ut3YA:10
- a=5_9zNX347IVc0-ouzWcL:22
-Date:   Mon, 12 Aug 2019 14:18:47 +0100 (IST)
-From:   George Mason <cby@eircom.net>
-Reply-To: barr.georgemason@gmail.com
-To:     info@claims.com
-Message-ID: <1511520675.99481.1565615927086.JavaMail.zimbra@eircom.net>
-Subject: Re: Hello
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [51.158.24.82]
-X-Mailer: Zimbra 8.6.0_GA_1242 (ZimbraWebClient - GC76 (Win)/8.6.0_GA_1242)
-Thread-Topic: Hello
-Thread-Index: wZln9LKcY2+wRkSC7ofd8EtmwevowA==
-X-CMAE-Envelope: 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
- d4YQF3PrjDQFvdnfVOIWDNvlxvCcpQ==
+        Mon, 12 Aug 2019 09:29:48 -0400
+Received: by mail-wr1-f68.google.com with SMTP id r3so10829283wrt.3
+        for <linux-hwmon@vger.kernel.org>; Mon, 12 Aug 2019 06:29:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=monstr-eu.20150623.gappssmtp.com; s=20150623;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=JzKOQ5mHteEnLA3+yRVnS5bSf+ysPwr2I6LlVQ1trvk=;
+        b=pzLtY8G2u2/YII4gwwFRhcLQv7ubDho6IeAvFlIPIiH33bEq1k+YrhsW5qreW0lcGu
+         L8H/7jxTlCtE75v4uGJMXzTyAYnqsKESIRyU1jB0U7ym/F7mmhSp5BVEuO/DH8YSeROJ
+         Dc09BPlQNUtirekVi4fIOejsDxaRLtS8mZE7wCpdo5j3Bo8oxBepPRqFCJW1Binat5hE
+         5za6BeXQ+pd9wwO9PzFuAdc4BM9RVXMes78v2npvz+0UN+xMG2P5u5pIjbSGtzGJG8DL
+         m/RTpwiDSM7MSXoIHZ6J/00igHnxLlvu3FGtWKTFAAgwcJCUqLpY4j0wDuevn0vIjLvh
+         0csg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=JzKOQ5mHteEnLA3+yRVnS5bSf+ysPwr2I6LlVQ1trvk=;
+        b=p6Rl4rW/AZKVdThiqrQLdDh4IH4WRof4grAfgea1wRpr/tA/fB8j6gwD7SNc8KwcfH
+         zCTAQXwoZK1Y5su+QrtybLtzgImOhOZ5SZiePMHHmg1WdPKP+l8YFHZkxQUPrpJdQSh9
+         CtMyKVjOxLsmU3ePjLKT6WID4JTMJz/zUcfmU1BTbYhrDrGlJeYE2FvXPCZYtl5pkFm/
+         WG/qFgvhpJJMy1scvJKJmmJ9oHMThSLj7cw+j5nRWbihzGR2llMHylphHLwT6YAMvQfi
+         yuS2b8+eHND0JQhWEfMB75oMk4QmubiE5RZLoMK84XAg85E+VwH/RqFBxsixUMie1o0/
+         5Y2w==
+X-Gm-Message-State: APjAAAXJVZeOCZlikMOf7e+AkhSJKXr8/6pBVW9n1MrsSJFMdUfhK1Y4
+        5Hh0E2Wf36eq6luCdl2f7K07BA==
+X-Google-Smtp-Source: APXvYqwaEf6WuwVVerQyI89ctyrQfAdB2zFMlbGgzZgdebonBeQNWlY4URBWmb2S8aG6AGspzUC0+Q==
+X-Received: by 2002:a05:6000:148:: with SMTP id r8mr13154631wrx.312.1565616586205;
+        Mon, 12 Aug 2019 06:29:46 -0700 (PDT)
+Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
+        by smtp.gmail.com with ESMTPSA id r4sm70346111wrq.82.2019.08.12.06.29.45
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 12 Aug 2019 06:29:45 -0700 (PDT)
+From:   Michal Simek <michal.simek@xilinx.com>
+To:     linux-kernel@vger.kernel.org, monstr@monstr.eu,
+        michal.simek@xilinx.com
+Cc:     linux-hwmon@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>
+Subject: [RFC PATCH] hwmon: (iio_hwmon) Enable power exporting from IIO
+Date:   Mon, 12 Aug 2019 15:29:41 +0200
+Message-Id: <71aec0191e0e5f32cc760f95844d8ee215b48c7f.1565616579.git.michal.simek@xilinx.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+There is no reason why power channel shouldn't be exported as is done for
+voltage, current, temperature and humidity.
 
+Power channel is available on iio ina226 driver.
 
-You are a recipient to Mrs Julie Leach Donation of $2 million USD.. Contact me for details.
+Tested on Xilinx ZCU102 board.
+
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+---
+
+But I don't think values are properly converted. Voltage1 is fine but the
+rest is IMHO wrong. But this patch should enable power channel to be shown
+which looks good.
+
+root@zynqmp-debian:~# iio_info -a && sensors -u
+Library version: 0.16 (git tag: v0.16)
+Compiled with backends: local xml ip usb serial
+Using auto-detected IIO context at URI "local:"
+IIO context created with local backend.
+Backend version: 0.16 (git tag: v0.16)
+Backend description string: Linux zynqmp-debian 5.3.0-rc4-00004-ga7ca33daed22-dirty #41 SMP PREEMPT Mon Aug 12 15:06:58 CEST 2019 aarch64
+IIO context has 1 attributes:
+	local,kernel: 5.3.0-rc4-00004-ga7ca33daed22-dirty
+IIO context has 1 devices:
+	iio:device0: ina226 (buffer capable)
+		9 channels found:
+			voltage0:  (input, index: 0, format: le:U16/16>>0)
+			3 channel-specific attributes found:
+				attr  0: integration_time value: 0.001100
+				attr  1: raw value: 70
+				attr  2: scale value: 0.002500000
+			voltage1:  (input, index: 1, format: le:U16/16>>0)
+			3 channel-specific attributes found:
+				attr  0: integration_time value: 0.001100
+				attr  1: raw value: 958
+				attr  2: scale value: 1.250000000
+			power2:  (input, index: 2, format: le:U16/16>>0)
+			2 channel-specific attributes found:
+				attr  0: raw value: 3
+				attr  1: scale value: 0.006250000
+			current3:  (input, index: 3, format: le:U16/16>>0)
+			2 channel-specific attributes found:
+				attr  0: raw value: 70
+				attr  1: scale value: 0.000250000
+			timestamp:  (input, index: 4, format: le:S64/64>>0)
+			allow:  (input)
+			1 channel-specific attributes found:
+				attr  0: async_readout value: 0
+			oversampling:  (input)
+			1 channel-specific attributes found:
+				attr  0: ratio value: 4
+			sampling:  (input)
+			1 channel-specific attributes found:
+				attr  0: frequency value: 114
+			shunt:  (input)
+			1 channel-specific attributes found:
+				attr  0: resistor value: 10.000000000
+		2 device-specific attributes found:
+				attr  0: current_timestamp_clock value: realtime
+
+				attr  1: integration_time_available value: 0.000140 0.000204 0.000332 0.000588 0.001100 0.002116 0.004156 0.008244
+		2 buffer-specific attributes found:
+				attr  0: data_available value: 0
+				attr  1: watermark value: 1
+		1 debug attributes found:
+				debug attr  0: direct_reg_access value: 0x4327
+ina226_fourth-isa-0000
+Adapter: ISA adapter
+in1:
+  in1_input: 0.000
+in2:
+  in2_input: 1.198
+power1:
+  power1_input: 0.000
+curr1:
+  curr1_input: 0.000
+---
+ drivers/hwmon/iio_hwmon.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+index f1c2d5faedf0..aedb95fa24e3 100644
+--- a/drivers/hwmon/iio_hwmon.c
++++ b/drivers/hwmon/iio_hwmon.c
+@@ -59,7 +59,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+ 	struct iio_hwmon_state *st;
+ 	struct sensor_device_attribute *a;
+ 	int ret, i;
+-	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1;
++	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1, power_i = 1;
+ 	enum iio_chan_type type;
+ 	struct iio_channel *channels;
+ 	struct device *hwmon_dev;
+@@ -114,6 +114,10 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+ 			n = curr_i++;
+ 			prefix = "curr";
+ 			break;
++		case IIO_POWER:
++			n = power_i++;
++			prefix = "power";
++			break;
+ 		case IIO_HUMIDITYRELATIVE:
+ 			n = humidity_i++;
+ 			prefix = "humidity";
+-- 
+2.17.1
+
