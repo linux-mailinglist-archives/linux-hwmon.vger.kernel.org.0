@@ -2,92 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA2238AB82
-	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Aug 2019 01:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61EA28AD53
+	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Aug 2019 05:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726578AbfHLXxJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 12 Aug 2019 19:53:09 -0400
-Received: from enpas.org ([46.38.239.100]:55746 "EHLO mail.enpas.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726659AbfHLXxJ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 12 Aug 2019 19:53:09 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        by mail.enpas.org (Postfix) with ESMTPSA id B7B7D100704;
-        Mon, 12 Aug 2019 23:53:06 +0000 (UTC)
-From:   Max Staudt <max@enpas.org>
-To:     linux-i2c@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
-        glaubitz@physik.fu-berlin.de, Max Staudt <max@enpas.org>
-Subject: [PATCH v2 4/4] i2c/busses/i2c-icy: Add platform_data for LTC2990
-Date:   Tue, 13 Aug 2019 01:52:37 +0200
-Message-Id: <20190812235237.21797-4-max@enpas.org>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190812235237.21797-1-max@enpas.org>
-References: <20190812235237.21797-1-max@enpas.org>
+        id S1726488AbfHMD4K (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 12 Aug 2019 23:56:10 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:37575 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726296AbfHMD4K (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 12 Aug 2019 23:56:10 -0400
+Received: by mail-qk1-f194.google.com with SMTP id s14so8245860qkm.4
+        for <linux-hwmon@vger.kernel.org>; Mon, 12 Aug 2019 20:56:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=o17LEtmU5SuMT/EdUhpX6X9L35h59+688Mf2ACq1VtY=;
+        b=T/5xUO3Io7Dj7GXABoj6O8rS6jnXrJTZsDEQ5wRGA4ERUJnlNC5L5ZZ5mn4YRpqQNO
+         duc6r5QFsKsnrE9OEg3VpP64nWnfGG+r0EaDCcDEDnES2OkNAUMLpHRtKuufPdm9/AT0
+         2LE1kGqqrCVU9K8xCIs7Qt0euHrKUF37716prAIthSC3eRhpKipiv9yRRVnfOrcMaJf4
+         Y+yy4XbLNtT2Ik6s5PxEFLHSIGI9L8+rn0kQKTQNVu2mQOaX/BEGvYj/DdiZLywGJpX4
+         3zIP1nA2n+P1LGLy8e7u4fJY5a0zJ3Azs32Cp9+h7b5qZpJeR7ZizuGk2lTa+y4C580B
+         G1Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=o17LEtmU5SuMT/EdUhpX6X9L35h59+688Mf2ACq1VtY=;
+        b=WN4irZKIdIWl079VW/h3g78PFaGoNFJukBfdaCgL4zKRDkJZwhzUviYhSKjBkdBlb1
+         PvLLEKhfC9nyhcMflPHG0kvsSLvqTmHbHwbfeuEkGZ2F3H98t24qnb2092JqwWbsFcHL
+         v3PIcc5/47+6ABHpIj9GPDOWUuxJuTLg8mmo0b8mypTE3C+vwcjZ9Wy6JA2QvU31z6ol
+         zZJNWF1I+SMuJoFW1wChhIbE5cnh3ExMFkTDOvIyYCx7JWguHC3lH33pfNbz9fHVK5J5
+         K1uZXL7ifJdBGM4as1I8ghGlbTENIc7+/rwcyOUtb/pftXN15IRklqRmAt7+TVEYsqef
+         D1Dg==
+X-Gm-Message-State: APjAAAXbHm4S7uL2YSt1CVgGqLXzDfSOZbdvYuiNztcUMDhezD+k1Nj6
+        qRsWgIbIJOSxqO8+ddQMDvIFf8HWPSd12b/HJu4=
+X-Google-Smtp-Source: APXvYqwXEnSGtUrDboc7MDLxrixv4cmpVtqt0nDFetHHYQENwq73MSk5DEOWmlFUTmzmZM52O1MuAVVJAmrkBnUECeA=
+X-Received: by 2002:a37:8844:: with SMTP id k65mr5951810qkd.77.1565668569567;
+ Mon, 12 Aug 2019 20:56:09 -0700 (PDT)
+MIME-Version: 1.0
+Reply-To: mrahmedmuzashah@gmail.com
+Received: by 2002:a05:6214:3c8:0:0:0:0 with HTTP; Mon, 12 Aug 2019 20:56:09
+ -0700 (PDT)
+From:   "Mr.Ahmed Muzashah" <ahmedmuzashah@gmail.com>
+Date:   Mon, 12 Aug 2019 20:56:09 -0700
+X-Google-Sender-Auth: HPT2Ceoje9MeN_YpciDmA0J-dlM
+Message-ID: <CAM48wCEkVycSWYi0KTU2yNsu7NbPcnd1OAZcTSCvkWfA0rXx1Q@mail.gmail.com>
+Subject: From: Mr.Ahmed Muzashah
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This enables the three additional inputs available on the 2019 a1k.org
-reprint of the ICY board:
+Good Day,
 
-  in1 will be the voltage of the 5V rail, divided by 2.
-  in2 will be the voltage of the 12V rail, divided by 4.
-  temp3 will be measured using a PCB loop next the chip.
+I am Mr.Ahmed Muzashah, account Manager with an investment bank here
+in Burkina Faso. There is a draft account opened in my firm by a
+long-time client of our bank.I have the opportunity of transferring
+the left over fund (15.8 Million UsDollars)Fiftheen Million Eight
+Hundred Thousand United States of American Dollars.
 
-Signed-off-by: Max Staudt <max@enpas.org>
----
- drivers/i2c/busses/i2c-icy.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+I want to invest this funds and introduce you to our bank for this
+deal and this will be executed under a legitimate arrangement that
+will protect us from any breach of the law.We will share the fund 40%
+for you,50% for me while 10% is for establishing of foundation for the
+poor children in your country.If you are really interested in my
+proposal further details of the fund transfer will be forwarded to
+you.
 
-diff --git a/drivers/i2c/busses/i2c-icy.c b/drivers/i2c/busses/i2c-icy.c
-index 8125683c5..6ad9910a0 100644
---- a/drivers/i2c/busses/i2c-icy.c
-+++ b/drivers/i2c/busses/i2c-icy.c
-@@ -42,6 +42,7 @@
- 
- #include <linux/i2c.h>
- #include <linux/i2c-algo-pcf.h>
-+#include <linux/platform_data/ltc2990.h>
- 
- #include <asm/amigaints.h>
- #include <linux/zorro.h>
-@@ -106,8 +107,21 @@ static void icy_pcf_waitforpin(void *data)
- /*
-  * Main i2c-icy part
-  */
-+static struct ltc2990_platform_data icy_ltc2990_platform_data = {
-+	/*
-+	 * Additional sensors exposed by this platform data:
-+	 *
-+	 * in1 will be the voltage of the 5V rail, divided by 2.
-+	 * in2 will be the voltage of the 12V rail, divided by 4.
-+	 * temp3 will be measured using a PCB loop next the chip.
-+	 */
-+	.meas_mode = {0, 3},
-+};
-+
- static struct i2c_board_info icy_ltc2990_info = {
--	I2C_BOARD_INFO("ltc2990", 0x4c),
-+	.type		= "ltc2990",
-+	.addr		= 0x4c,
-+	.platform_data	= &icy_ltc2990_platform_data,
- };
- 
- static unsigned short const icy_ltc2990_addresses[] = {0x4c, I2C_CLIENT_END};
-@@ -167,6 +181,8 @@ static int icy_probe(struct zorro_dev *z,
- 	 *
- 	 * in0 is the voltage of the internal 5V power supply.
- 	 * temp1 is the temperature inside the chip.
-+	 *
-+	 * See platform data above for in1, in2, temp3.
- 	 */
- 	i2c->client_ltc2990 = i2c_new_probed_device(&i2c->adapter,
- 						    &icy_ltc2990_info,
--- 
-2.11.0
-
+Yours Sincerely,
+Mr.Ahmed Muzashah.
