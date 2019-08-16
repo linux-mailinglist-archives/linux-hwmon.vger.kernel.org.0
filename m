@@ -2,14 +2,14 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4ED90004
+	by mail.lfdr.de (Postfix) with ESMTP id E11A790006
 	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Aug 2019 12:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbfHPK1M (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 16 Aug 2019 06:27:12 -0400
-Received: from vip.corpemail.net ([162.243.126.186]:47865 "EHLO
+        id S1726261AbfHPK1N (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 16 Aug 2019 06:27:13 -0400
+Received: from vip.corpemail.net ([162.243.126.186]:35987 "EHLO
         vip.corpemail.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726261AbfHPK1M (ORCPT
+        with ESMTP id S1726839AbfHPK1M (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Fri, 16 Aug 2019 06:27:12 -0400
 Received: from ([60.208.111.195])
