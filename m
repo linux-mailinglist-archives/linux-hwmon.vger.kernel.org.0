@@ -2,182 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A349964B8
-	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Aug 2019 17:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E79F7993D9
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2019 14:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729858AbfHTPj6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 20 Aug 2019 11:39:58 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:36270 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730179AbfHTPj5 (ORCPT
+        id S2388654AbfHVMeN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 22 Aug 2019 08:34:13 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:39038 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387657AbfHVMeM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 20 Aug 2019 11:39:57 -0400
-Received: by mail-pf1-f196.google.com with SMTP id w2so3619233pfi.3;
-        Tue, 20 Aug 2019 08:39:57 -0700 (PDT)
+        Thu, 22 Aug 2019 08:34:12 -0400
+Received: by mail-lf1-f65.google.com with SMTP id x3so4410591lfn.6
+        for <linux-hwmon@vger.kernel.org>; Thu, 22 Aug 2019 05:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=1j7H+vhoqJHC4PUQJny3VV4YSdCvAEuiAV/gmPHS1VM=;
-        b=gr2mleZJ9dxVGMuvaPTQCcUBUl//PAfqvwWFfxsVa0PJkB37oeMzidGuiqFHHxwwCO
-         sKe1VLWEF4OugJsqUH66Q/SMlppeRaJZ/SYplA4lezSX2c/D7+tM97atRk6/Qms8gC2h
-         71Ft49he37dOSMEIOFyNPs4Tyx17VqYeoAgm17QIq/pb5iXk+qHwcw8S6epDOOYOjSXj
-         /ZuhZbRhX/AGYyb2k/IGttCikdiAeOO83/An5q7NjGtzs5PxoUV+2nGwSmiu5q98vd0s
-         RiIVw3RrVIbae8dTfY1Tf4LorjtpZe7Ld+RTIvFjb9Zo9UqhcKUcPVj8vcsZVUT0DmwK
-         4SUg==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=qQwouDogyXJvS+YAsG7u3jI4chdOO2iCwbnUv4qV7/t3H0mpAnkar5BQ6W4yzvm3w4
+         MFy7lbM3I35ux+N13OWQLqMSp+JYBfamJOBS4Rv9YtwGFbdx/1nZ3P/IH2tA3AOy5PjU
+         kwMZko6qlgHP0UHJGHFvzgceOWtw4tjNefrQZ96MP6AChhfKt94B36gjTZhv6W5d2u3q
+         XLX/JEQ53zQai3qewoG2X6xDeNJ4HOzQU6TV4Cb4zGt4uQQf5AD05mnaufLgjsYbqLh0
+         X5GVMmJW05ufNL+28p6nLz0lCjVsZITmyIS1mIvW9/VAX3eTcLMat0TkK0bawj8l1wal
+         unaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=1j7H+vhoqJHC4PUQJny3VV4YSdCvAEuiAV/gmPHS1VM=;
-        b=WqazG427Xa1jeWpHxRA9qyUSmtxsbi64Nn+IyajJs64jj5997PP177ndnhVnGhkjUR
-         lS0nV6qdD3QTyPNYdI+kMM0+f61N0U5vkdf59Z7nhdZbmr3FQuRrgOH1FvyB8Z1mk81v
-         Da/uKj6VVXAQteidsW/NOqSjGiEGckkBlyiwKA2yD5nXb7u7oHk3nQd/cndQzV+yS/wA
-         qq8BDY5z+MINnqtsGe+PvmFbq1C9Q3YoczFOoenbrFV4+c4UGh41oy0goaW8YVvDwcxG
-         K82k3CzyrLCkmK9EwBCgENNKC9QYP0L/aOugflDpK9R0YCDLR/GuP5UaesTnOQxDg5m/
-         WlFQ==
-X-Gm-Message-State: APjAAAVaB9yM2IQwWKvJJEbs01H8nBxlyIVCq0rqqEnz1+VyykoXngUM
-        jWrW98yeVJJ3ajUERWpDSyk=
-X-Google-Smtp-Source: APXvYqyykvp12dfCZS5mTvPsORZ/C+RGO2y6TtmoGJxnglxBRKn3wLFio47kQZwmemnqcRV4KE0biw==
-X-Received: by 2002:aa7:8108:: with SMTP id b8mr31256897pfi.197.1566315596703;
-        Tue, 20 Aug 2019 08:39:56 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b24sm19013454pfd.91.2019.08.20.08.39.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Aug 2019 08:39:56 -0700 (PDT)
-Subject: Re: [RFC PATCH] hwmon: (iio_hwmon) Enable power exporting from IIO
-To:     Michal Simek <michal.simek@xilinx.com>,
-        linux-kernel@vger.kernel.org, monstr@monstr.eu
-Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
-References: <71aec0191e0e5f32cc760f95844d8ee215b48c7f.1565616579.git.michal.simek@xilinx.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <906edfa3-9e7d-e8cc-29e3-e428b79ed0c2@roeck-us.net>
-Date:   Tue, 20 Aug 2019 08:39:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=CzQEQoX3O+yh9YLeGyKjZvYwHjx6bSOwPyE04QsHwbBNCzoiRSqRbAshf3rOVGtbIj
+         tMQJPXxs6+/69EPIWF1SaKCgppXEUdE44GGZAExWXzTAFmmJMiZyM5db8KBIHtsPACnC
+         NZ5xhkCGhIt5dv+IKJ/rMjvl4476Fk/uzd80kewFzSugJOZydO+p/5XNnmVXWg5pl/6r
+         Ts/mOPKJwK5eXkPUzTRNsbZnHklgvFc01ix8z1cJ8zke4MlSmvNxwgdzURXssGspArUB
+         PR8SvyITdQxZHatcz5xI8Ki6ZeDvklWcEMudY3MjgPJe5St7j/+kQ6g7lwIsyxu4nh4b
+         jAuA==
+X-Gm-Message-State: APjAAAXlWUAFBtvc8WHL4uzPmH7QdSAi5FDsJHToNCQbayRlweSAPB0W
+        zEevcAlURigwMrfMhRIKx7buX29885aXT5Ohdj8=
+X-Google-Smtp-Source: APXvYqyvt2RXzV9cZsTsiBwjcFFEoyd1HLlAwIQQPxXOemblWJ85A0QXgz94gt7tcllsT417ikCMvXpOU1ZxhrqMZqI=
+X-Received: by 2002:ac2:42c3:: with SMTP id n3mr13722899lfl.117.1566477250738;
+ Thu, 22 Aug 2019 05:34:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <71aec0191e0e5f32cc760f95844d8ee215b48c7f.1565616579.git.michal.simek@xilinx.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:34:10
+ -0700 (PDT)
+Reply-To: eku.lawfirm@gmail.com
+From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
+Date:   Thu, 22 Aug 2019 12:34:10 +0000
+Message-ID: <CAN-_bTZ04fanuBw0m=mWQFHTKscwdYgns3LR19ZdaFDanOVNGQ@mail.gmail.com>
+Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 8/12/19 6:29 AM, Michal Simek wrote:
-> There is no reason why power channel shouldn't be exported as is done for
-> voltage, current, temperature and humidity.
-> 
-> Power channel is available on iio ina226 driver.
-> 
-> Tested on Xilinx ZCU102 board.
-> 
-> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-> ---
-> 
-> But I don't think values are properly converted. Voltage1 is fine but the
-> rest is IMHO wrong. But this patch should enable power channel to be shown
-> which looks good.
-> 
+--=20
+Dear,
+With due respect this is not spam or Scam mail, because I have
+contacted you before and there was no response from you,I apologise if
+the contents of this mail are contrary to your moral ethics, which I
+feel may be of great disturbance to your person, but please treat this
+with absolute confidentiality, believing that this email reaches you
+in good faith. My contacting you is not a mistake or a coincidence
+because God can use any person known or unknown to accomplish great
+things.
+I am a lawyer and I have an investment business proposal to offer you.
+It is not official but should be considered as legal and confidential
+business. I have a customer's deposit of $US25 million dollars ready
+to be moved for investment if you can partner with us. We are ready to
+offer you 10% of this total amount as your compensation for supporting
+the transaction to completion. If you are interested to help me please
+reply me with your full details as stated below:
+(1) Your full names:
+(2) Your address:
+(3) Your occupation:
+(4) Your mobile telephone number:
+(5) Your nationality:
+(6) Your present location:
+(7) Your age:
+So that I will provide you more details on what to do and what is
+required for successful completion.
+Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
+MENTIONED DETAILS
 
-No idea what is going on there. I don't really know what "scaled" units
-the iio subsystem reports. power is supposed to be reported to user space
-in micro-Watt. Is that what the scaled value from iio reports ?
-
-Thanks,
-Guenter
-
-> root@zynqmp-debian:~# iio_info -a && sensors -u
-> Library version: 0.16 (git tag: v0.16)
-> Compiled with backends: local xml ip usb serial
-> Using auto-detected IIO context at URI "local:"
-> IIO context created with local backend.
-> Backend version: 0.16 (git tag: v0.16)
-> Backend description string: Linux zynqmp-debian 5.3.0-rc4-00004-ga7ca33daed22-dirty #41 SMP PREEMPT Mon Aug 12 15:06:58 CEST 2019 aarch64
-> IIO context has 1 attributes:
-> 	local,kernel: 5.3.0-rc4-00004-ga7ca33daed22-dirty
-> IIO context has 1 devices:
-> 	iio:device0: ina226 (buffer capable)
-> 		9 channels found:
-> 			voltage0:  (input, index: 0, format: le:U16/16>>0)
-> 			3 channel-specific attributes found:
-> 				attr  0: integration_time value: 0.001100
-> 				attr  1: raw value: 70
-> 				attr  2: scale value: 0.002500000
-> 			voltage1:  (input, index: 1, format: le:U16/16>>0)
-> 			3 channel-specific attributes found:
-> 				attr  0: integration_time value: 0.001100
-> 				attr  1: raw value: 958
-> 				attr  2: scale value: 1.250000000
-> 			power2:  (input, index: 2, format: le:U16/16>>0)
-> 			2 channel-specific attributes found:
-> 				attr  0: raw value: 3
-> 				attr  1: scale value: 0.006250000
-> 			current3:  (input, index: 3, format: le:U16/16>>0)
-> 			2 channel-specific attributes found:
-> 				attr  0: raw value: 70
-> 				attr  1: scale value: 0.000250000
-> 			timestamp:  (input, index: 4, format: le:S64/64>>0)
-> 			allow:  (input)
-> 			1 channel-specific attributes found:
-> 				attr  0: async_readout value: 0
-> 			oversampling:  (input)
-> 			1 channel-specific attributes found:
-> 				attr  0: ratio value: 4
-> 			sampling:  (input)
-> 			1 channel-specific attributes found:
-> 				attr  0: frequency value: 114
-> 			shunt:  (input)
-> 			1 channel-specific attributes found:
-> 				attr  0: resistor value: 10.000000000
-> 		2 device-specific attributes found:
-> 				attr  0: current_timestamp_clock value: realtime
-> 
-> 				attr  1: integration_time_available value: 0.000140 0.000204 0.000332 0.000588 0.001100 0.002116 0.004156 0.008244
-> 		2 buffer-specific attributes found:
-> 				attr  0: data_available value: 0
-> 				attr  1: watermark value: 1
-> 		1 debug attributes found:
-> 				debug attr  0: direct_reg_access value: 0x4327
-> ina226_fourth-isa-0000
-> Adapter: ISA adapter
-> in1:
->    in1_input: 0.000
-> in2:
->    in2_input: 1.198
-> power1:
->    power1_input: 0.000
-> curr1:
->    curr1_input: 0.000
-> ---
->   drivers/hwmon/iio_hwmon.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
-> index f1c2d5faedf0..aedb95fa24e3 100644
-> --- a/drivers/hwmon/iio_hwmon.c
-> +++ b/drivers/hwmon/iio_hwmon.c
-> @@ -59,7 +59,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
->   	struct iio_hwmon_state *st;
->   	struct sensor_device_attribute *a;
->   	int ret, i;
-> -	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1;
-> +	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1, power_i = 1;
->   	enum iio_chan_type type;
->   	struct iio_channel *channels;
->   	struct device *hwmon_dev;
-> @@ -114,6 +114,10 @@ static int iio_hwmon_probe(struct platform_device *pdev)
->   			n = curr_i++;
->   			prefix = "curr";
->   			break;
-> +		case IIO_POWER:
-> +			n = power_i++;
-> +			prefix = "power";
-> +			break;
->   		case IIO_HUMIDITYRELATIVE:
->   			n = humidity_i++;
->   			prefix = "humidity";
-> 
-
+Sinc=C3=A8rement v=C3=B4tre,
+Avocat Etienne Eku Esq.(Lawfirm)
+Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
+=E2=80=99ouest.
+Skype:westafricalawfirm
