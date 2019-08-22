@@ -2,92 +2,222 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E79F7993D9
-	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2019 14:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A48199955D
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2019 15:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388654AbfHVMeN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 22 Aug 2019 08:34:13 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:39038 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387657AbfHVMeM (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 22 Aug 2019 08:34:12 -0400
-Received: by mail-lf1-f65.google.com with SMTP id x3so4410591lfn.6
-        for <linux-hwmon@vger.kernel.org>; Thu, 22 Aug 2019 05:34:11 -0700 (PDT)
+        id S1725892AbfHVNoE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 22 Aug 2019 09:44:04 -0400
+Received: from mail-eopbgr780055.outbound.protection.outlook.com ([40.107.78.55]:47232
+        "EHLO NAM03-BY2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725941AbfHVNoE (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 22 Aug 2019 09:44:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Z6YDgktTytSwuTDy+B0n3Ik3VTwk3lRzNnEyVC+Ya5Rb2M+L0yLC5OnOvok7biac4w3NnvJ03lKOjIirAb8BdVj2i2GL3XvWK5VvgFCcKi5jd+xX6GthrtrDrXv6Iqz9dKuNZKNj5HF9NNnUf8N1eFJFcoZiKOIUzHnEVUJH7R1pCsJx77HAiLQFRsWZlf2ZbQb4UpR+V2O3iadgO4SteFqlh3cc2vyP5bBKVM/PJdKnigGFwavTKI5Eu1g2bi3m10MnmeMZORRfXMg7AEHsavV7zIyd7i1514fM4aluO6WZNoRcxaKyGznzaqer46r8MxTTkQzJOmLXF1bm9eE9KQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F5CaZpM8mse+vwke7+ZiLoN/bAnJzCHVKpxNruo7lnM=;
+ b=ii8fyVNXTlsmdQAnxS5gDwdESWGTxjMfCNVQu+N5uauVnhKiuAQUSCGn/rgZuWGQcxa4wXrxxxcA33e5Y0lFANAjzHWspajXSTzQbwJ3HjjPAsRj+POIn2zeu0RO07NMhffJT33eg+ViTR75Biy64eHAkjchYYP862zL8l4rvyEDtBBJm/227Pt1EfwO7ucW2kN6ZJBYW0hRm0ewzIyTrXUo8ROX5mhcOWpMjCwO+o3XvTvh2VDYQNPjFpqawquqU6qfRDucpiU1IBPrhBWudRXX+dVURzfg6fPQvb/vO93Z9YmEFo4AkLye1FL3ziMn06Dyu0d8woVUWEXQSUdEag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=roeck-us.net smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=qQwouDogyXJvS+YAsG7u3jI4chdOO2iCwbnUv4qV7/t3H0mpAnkar5BQ6W4yzvm3w4
-         MFy7lbM3I35ux+N13OWQLqMSp+JYBfamJOBS4Rv9YtwGFbdx/1nZ3P/IH2tA3AOy5PjU
-         kwMZko6qlgHP0UHJGHFvzgceOWtw4tjNefrQZ96MP6AChhfKt94B36gjTZhv6W5d2u3q
-         XLX/JEQ53zQai3qewoG2X6xDeNJ4HOzQU6TV4Cb4zGt4uQQf5AD05mnaufLgjsYbqLh0
-         X5GVMmJW05ufNL+28p6nLz0lCjVsZITmyIS1mIvW9/VAX3eTcLMat0TkK0bawj8l1wal
-         unaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=CzQEQoX3O+yh9YLeGyKjZvYwHjx6bSOwPyE04QsHwbBNCzoiRSqRbAshf3rOVGtbIj
-         tMQJPXxs6+/69EPIWF1SaKCgppXEUdE44GGZAExWXzTAFmmJMiZyM5db8KBIHtsPACnC
-         NZ5xhkCGhIt5dv+IKJ/rMjvl4476Fk/uzd80kewFzSugJOZydO+p/5XNnmVXWg5pl/6r
-         Ts/mOPKJwK5eXkPUzTRNsbZnHklgvFc01ix8z1cJ8zke4MlSmvNxwgdzURXssGspArUB
-         PR8SvyITdQxZHatcz5xI8Ki6ZeDvklWcEMudY3MjgPJe5St7j/+kQ6g7lwIsyxu4nh4b
-         jAuA==
-X-Gm-Message-State: APjAAAXlWUAFBtvc8WHL4uzPmH7QdSAi5FDsJHToNCQbayRlweSAPB0W
-        zEevcAlURigwMrfMhRIKx7buX29885aXT5Ohdj8=
-X-Google-Smtp-Source: APXvYqyvt2RXzV9cZsTsiBwjcFFEoyd1HLlAwIQQPxXOemblWJ85A0QXgz94gt7tcllsT417ikCMvXpOU1ZxhrqMZqI=
-X-Received: by 2002:ac2:42c3:: with SMTP id n3mr13722899lfl.117.1566477250738;
- Thu, 22 Aug 2019 05:34:10 -0700 (PDT)
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F5CaZpM8mse+vwke7+ZiLoN/bAnJzCHVKpxNruo7lnM=;
+ b=IQlVqVhbiGcCip4kZrX3IydlMdgCt8EIMStEmZFrAZmhi/A7aqcAYrt0cZFfma2DdVUh3tzSpZzEgHnEzQGNAWSxSiiQgoV3Oh/nPJguKgmdusl6qopxao9eRAIhajXBooT+ay5AEqxQsC6Pl1oQMMk5Tgk/QDdKT9HsSwseB6w=
+Received: from BYAPR02CA0027.namprd02.prod.outlook.com (2603:10b6:a02:ee::40)
+ by BN7PR02MB4034.namprd02.prod.outlook.com (2603:10b6:406:fe::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.16; Thu, 22 Aug
+ 2019 13:43:58 +0000
+Received: from CY1NAM02FT030.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e45::204) by BYAPR02CA0027.outlook.office365.com
+ (2603:10b6:a02:ee::40) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.18 via Frontend
+ Transport; Thu, 22 Aug 2019 13:43:58 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; roeck-us.net; dkim=none (message not signed)
+ header.d=none;roeck-us.net; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ CY1NAM02FT030.mail.protection.outlook.com (10.152.75.163) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2199.13
+ via Frontend Transport; Thu, 22 Aug 2019 13:43:57 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1i0nNc-000228-To; Thu, 22 Aug 2019 06:43:56 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1i0nNX-0005zw-Qr; Thu, 22 Aug 2019 06:43:51 -0700
+Received: from xsj-pvapsmtp01 (xsj-smtp1.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x7MDhfjP027008;
+        Thu, 22 Aug 2019 06:43:42 -0700
+Received: from [172.30.17.116]
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <michals@xilinx.com>)
+        id 1i0nNN-0005zP-KV; Thu, 22 Aug 2019 06:43:41 -0700
+Subject: Re: [RFC PATCH] hwmon: (iio_hwmon) Enable power exporting from IIO
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-kernel@vger.kernel.org, monstr@monstr.eu
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
+References: <71aec0191e0e5f32cc760f95844d8ee215b48c7f.1565616579.git.michal.simek@xilinx.com>
+ <906edfa3-9e7d-e8cc-29e3-e428b79ed0c2@roeck-us.net>
+From:   Michal Simek <michal.simek@xilinx.com>
+Message-ID: <2bbbc5e9-7f11-1522-b827-0c0614bb9b69@xilinx.com>
+Date:   Thu, 22 Aug 2019 15:43:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:34:10
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:34:10 +0000
-Message-ID: <CAN-_bTZ04fanuBw0m=mWQFHTKscwdYgns3LR19ZdaFDanOVNGQ@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <906edfa3-9e7d-e8cc-29e3-e428b79ed0c2@roeck-us.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(396003)(136003)(346002)(376002)(39860400002)(2980300002)(199004)(189003)(36756003)(9786002)(126002)(50466002)(476003)(70206006)(70586007)(44832011)(6246003)(31696002)(446003)(336012)(426003)(11346002)(2616005)(305945005)(8676002)(81156014)(486006)(81166006)(53546011)(8936002)(26005)(5660300002)(186003)(478600001)(110136005)(356004)(2906002)(4326008)(316002)(36386004)(58126008)(31686004)(106002)(229853002)(47776003)(230700001)(52146003)(2486003)(76176011)(23676004)(65806001)(65956001);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR02MB4034;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0357fea1-607b-4919-8f66-08d72706c82e
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600166)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:BN7PR02MB4034;
+X-MS-TrafficTypeDiagnostic: BN7PR02MB4034:
+X-LD-Processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+X-Microsoft-Antispam-PRVS: <BN7PR02MB40340AC03297A249EDB6D7FDC6A50@BN7PR02MB4034.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 01371B902F
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: KaNilu3v+D/JPw8RRkli+dyv/JfgVSMDe2Y5E2nWCeQ5DTe1/YY5DB8zBxd9wGZ/42+X4KVwf+0TY8NpW1ATR4LBZnGjCpLwJv3fA2+ZgWrtxvP5M1RenbW0r1UT9bUT+RRWYiEFGKpCIHFfuYFQFNPuhNjQXhwR8rR/kI3LDnATEEBvE96m0U8Co618ey9+s0CWiSz6VMH57ZN3bWlw2x3qba8eZX8KP/8Fi+ZothkNniH7o9TwzF9Fr+nM9GeVo+TVshFB1ycvFb3l0A8AbxvzaKKKoxxCz8EwfKUozkWoy6EeJF26eHTaTT77Yt+2lTinrIZJIoFy7KBJJLXbru47OWAK2DLAK4/N8xpwdDEL0Xd1rd/iCAh9Bo8Slwcp0UYR06Sy3ZzWzay7wnb+hCBZKEVtkrGzvztoZD0JSXM=
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2019 13:43:57.4113
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0357fea1-607b-4919-8f66-08d72706c82e
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR02MB4034
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+On 20. 08. 19 17:39, Guenter Roeck wrote:
+> On 8/12/19 6:29 AM, Michal Simek wrote:
+>> There is no reason why power channel shouldn't be exported as is done for
+>> voltage, current, temperature and humidity.
+>>
+>> Power channel is available on iio ina226 driver.
+>>
+>> Tested on Xilinx ZCU102 board.
+>>
+>> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+>> ---
+>>
+>> But I don't think values are properly converted. Voltage1 is fine but the
+>> rest is IMHO wrong. But this patch should enable power channel to be
+>> shown
+>> which looks good.
+>>
+> 
+> No idea what is going on there. I don't really know what "scaled" units
+> the iio subsystem reports. power is supposed to be reported to user space
+> in micro-Watt. Is that what the scaled value from iio reports ?
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+I have take a look at it again.
+
+root@zynqmp-debian:~/libiio/examples# sensors ina226_u76-*
+ina226_u76-isa-0000
+Adapter: ISA adapter
+in1:          +0.01 V
+in2:          +0.85 V
+power1:        1.16 mW
+curr1:        +1.60 A
+
+from iio_monitor
+voltage0          0.007 V
+voltage1          0.848 V
+power2            1.150 W
+current3          1.361 A
+
+from iio_info
+ IIO context has 18 devices:
+	iio:device0: ps_pmbus (buffer capable)
+		9 channels found:
+			voltage0:  (input, index: 0, format: le:U16/16>>0)
+			3 channel-specific attributes found:
+				attr  0: integration_time value: 0.001100
+				attr  1: raw value: 3152
+				attr  2: scale value: 0.002500000
+			voltage1:  (input, index: 1, format: le:U16/16>>0)
+			3 channel-specific attributes found:
+				attr  0: integration_time value: 0.001100
+				attr  1: raw value: 678
+				attr  2: scale value: 1.250000000
+			power2:  (input, index: 2, format: le:U16/16>>0)
+			2 channel-specific attributes found:
+				attr  0: raw value: 106
+				attr  1: scale value: 12.500000000
+			current3:  (input, index: 3, format: le:U16/16>>0)
+			2 channel-specific attributes found:
+				attr  0: raw value: 3152
+				attr  1: scale value: 0.500000000
+
+
+And if you look at power2 (in iio_info) then you see that calculation is
+returning mili-Watts not micro-Watts.
+
+And looking at it back it is also said there.
+
+What:           /sys/bus/iio/devices/iio:deviceX/in_powerY_raw
+KernelVersion:  4.5
+Contact:        linux-iio@vger.kernel.org
+Description:
+                Raw (unscaled no bias removal etc.) power measurement from
+                channel Y. The number must always be specified and
+                unique to allow association with event codes. Units after
+                application of scale and offset are milliwatts.
+
+That means for power channel value needs to be multiply by 1000.
+
+Are you OK with this solution?
+
+diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+index aedb95fa24e3..7ea105bd195b 100644
+--- a/drivers/hwmon/iio_hwmon.c
++++ b/drivers/hwmon/iio_hwmon.c
+@@ -44,12 +44,20 @@ static ssize_t iio_hwmon_read_val(struct device *dev,
+        int ret;
+        struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
+        struct iio_hwmon_state *state = dev_get_drvdata(dev);
++       struct iio_channel *chan = &state->channels[sattr->index];
++       enum iio_chan_type type;
+
+-       ret = iio_read_channel_processed(&state->channels[sattr->index],
+-                                       &result);
++       ret = iio_read_channel_processed(chan, &result);
+        if (ret < 0)
+                return ret;
+
++       ret = iio_get_channel_type(chan, &type);
++       if (ret < 0)
++               return ret;
++
++       if (type == IIO_POWER)
++               result *= 1000;
++
+        return sprintf(buf, "%d\n", result);
+ }
+
+
+Thanks,
+Michal
