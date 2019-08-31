@@ -2,290 +2,140 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24A7DA3E2E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 30 Aug 2019 21:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7108FA44EA
+	for <lists+linux-hwmon@lfdr.de>; Sat, 31 Aug 2019 17:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728117AbfH3TLu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 30 Aug 2019 15:11:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:32882 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727888AbfH3TLs (ORCPT
+        id S1728119AbfHaPGf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 31 Aug 2019 11:06:35 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:36732 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727816AbfHaPGf (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 30 Aug 2019 15:11:48 -0400
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7UIqJxb093132;
-        Fri, 30 Aug 2019 15:11:10 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2uq6g6pfh4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 30 Aug 2019 15:11:10 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7UItUpx002656;
-        Fri, 30 Aug 2019 19:11:09 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-        by ppma03dal.us.ibm.com with ESMTP id 2umpcu31yx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 30 Aug 2019 19:11:09 +0000
-Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
-        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x7UJB70E34275640
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 30 Aug 2019 19:11:07 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AE5AC136066;
-        Fri, 30 Aug 2019 19:11:07 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 23048136051;
-        Fri, 30 Aug 2019 19:11:07 +0000 (GMT)
-Received: from talon7.ibm.com (unknown [9.41.179.222])
-        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Fri, 30 Aug 2019 19:11:07 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        devicetree@vger.kernel.org, linux@roeck-us.net, andrew@aj.id.au,
-        joel@jms.id.au, mark.rutland@arm.com, robh+dt@kernel.org,
-        jdelvare@suse.com, Eddie James <eajames@linux.ibm.com>
-Subject: [PATCH v2 3/3] pmbus: ibm-cffps: Add support for version 2 of the PSU
-Date:   Fri, 30 Aug 2019 14:11:03 -0500
-Message-Id: <1567192263-15065-4-git-send-email-eajames@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1567192263-15065-1-git-send-email-eajames@linux.ibm.com>
-References: <1567192263-15065-1-git-send-email-eajames@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-30_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908300179
+        Sat, 31 Aug 2019 11:06:35 -0400
+Received: by mail-pl1-f194.google.com with SMTP id f19so4681997plr.3;
+        Sat, 31 Aug 2019 08:06:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=u1DCZh7j+TpknkccBgeBvz8YM54cv01G+W7Fn/Mmg90=;
+        b=vcFErEdaMDbMBmg/0/NGgsPFRa2o2rEZEzjPh5Wlplwi8J6/wc1Or0AotYzwMYlfcE
+         i83yKII2H+HgizYyl/1MLJVeqKj7kiHM9Eyq4UlHn3HDrYsZZJsb/0lO44fFfJuNE3/y
+         5zl232nQdKgig/1D7x7DjuizqUDCqXoHYiIT0eZfgS0GHLMwSzPaW2QGziQK8IRtBfG+
+         EBnZS4fmkKnbynKwesx1nbCs0XB7eLTifpMG+od/rwMXeosdHsHFYX6Jrsmpdw+Pik8l
+         lZLq6ZOnDXUyf16p9KGPmeiucY2dMqIwV7SDLnyWk3pJ6ih64Ve0JfyQUfdFBKcSO0FQ
+         hOng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=u1DCZh7j+TpknkccBgeBvz8YM54cv01G+W7Fn/Mmg90=;
+        b=UsDBYTklZ4hVUkLOUGynzLS9clBLB1Hwn4n3tjdfyP4M9cokUcQJldqHxLCrFFlUIA
+         j96iZMPZ0bKWql54IfiG6zFBUU36ZYFeBGFY1ia6elvBb0uGyoWHhmE6RwzL2ufRQmJL
+         yqaAxGIJtt17n4wdwiNBYyJ21Oi+BJpYMljT7ljFn1i6U27pC0yJm3XFZpBBjb2Imd4b
+         Sw+i+njdvZgaevD0iX73J0GWlzkL7yRQYqa22jKQYBnlTomM36Et0KhmeA9872XBh1b8
+         dNrSS3WzgZPE7MKMM0vFkw1eJa6hrSBLW2L23IKZMhYCQBI8mCSF5rJCilZZvIaR6/Jf
+         TTjw==
+X-Gm-Message-State: APjAAAX2SQFi05lvnJPT+oBAwTLLiMKpeIPBGr/SsIDcdO+SNDKSK1T6
+        QwhQKEWmZVo4rFZ/w1XrBJzti7K+
+X-Google-Smtp-Source: APXvYqwULm87nFISUE9eBef45oIqACxgdsbp69dTRSm4c5WAPMMnDrIhxFodYTCmeumONC0o3c6wDg==
+X-Received: by 2002:a17:902:20cc:: with SMTP id v12mr19776641plg.188.1567263994767;
+        Sat, 31 Aug 2019 08:06:34 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b3sm12037076pfp.65.2019.08.31.08.06.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 31 Aug 2019 08:06:34 -0700 (PDT)
+Date:   Sat, 31 Aug 2019 08:06:33 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     linux-kernel@vger.kernel.org, monstr@monstr.eu,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v1] hwmon: (iio_hwmon) Enable power exporting from IIO
+Message-ID: <20190831150633.GA8338@roeck-us.net>
+References: <db71f5ae87e4521a2856a1be5544de0b6cede575.1566483741.git.michal.simek@xilinx.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db71f5ae87e4521a2856a1be5544de0b6cede575.1566483741.git.michal.simek@xilinx.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Version 2 of the PSU supports a second page of data and changes the
-format of the FW version. Use the devicetree binding to differentiate
-between the version the driver should use.
+On Thu, Aug 22, 2019 at 04:22:24PM +0200, Michal Simek wrote:
+> There is no reason why power channel shouldn't be exported as is done for
+> voltage, current, temperature and humidity.
+> 
+> Power channel is available on iio ina226 driver.
+> 
+> Sysfs IIO documentation for power attribute added by commit 7c6d5c7ee883
+> ("iio: Documentation: Add missing documentation for power attribute")
+> is declaring that value is in mili-Watts but hwmon interface is expecting
+> value in micro-Watts that's why there is a need for mili-Watts to
+> micro-Watts conversion.
+> 
+> Tested on Xilinx ZCU102 board.
+> 
+> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
-Changes since v1:
- - use an enum for the version instead of integers 1, 2, etc
+Applied to hwmon-next.
 
- drivers/hwmon/pmbus/ibm-cffps.c | 110 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 88 insertions(+), 22 deletions(-)
+Thanks,
+Guenter
 
-diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
-index ee2ee9e..d44745e 100644
---- a/drivers/hwmon/pmbus/ibm-cffps.c
-+++ b/drivers/hwmon/pmbus/ibm-cffps.c
-@@ -12,6 +12,7 @@
- #include <linux/leds.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/of_device.h>
- #include <linux/pmbus.h>
- 
- #include "pmbus.h"
-@@ -20,8 +21,9 @@
- #define CFFPS_PN_CMD				0x9B
- #define CFFPS_SN_CMD				0x9E
- #define CFFPS_CCIN_CMD				0xBD
--#define CFFPS_FW_CMD_START			0xFA
--#define CFFPS_FW_NUM_BYTES			4
-+#define CFFPS_FW_CMD				0xFA
-+#define CFFPS1_FW_NUM_BYTES			4
-+#define CFFPS2_FW_NUM_WORDS			3
- #define CFFPS_SYS_CONFIG_CMD			0xDA
- 
- #define CFFPS_INPUT_HISTORY_CMD			0xD6
-@@ -52,6 +54,8 @@ enum {
- 	CFFPS_DEBUGFS_NUM_ENTRIES
- };
- 
-+enum versions { cffps1, cffps2 };
-+
- struct ibm_cffps_input_history {
- 	struct mutex update_lock;
- 	unsigned long last_update;
-@@ -61,6 +65,7 @@ struct ibm_cffps_input_history {
- };
- 
- struct ibm_cffps {
-+	enum versions version;
- 	struct i2c_client *client;
- 
- 	struct ibm_cffps_input_history input_history;
-@@ -132,6 +137,8 @@ static ssize_t ibm_cffps_debugfs_op(struct file *file, char __user *buf,
- 	struct ibm_cffps *psu = to_psu(idxp, idx);
- 	char data[I2C_SMBUS_BLOCK_MAX] = { 0 };
- 
-+	pmbus_set_page(psu->client, 0);
-+
- 	switch (idx) {
- 	case CFFPS_DEBUGFS_INPUT_HISTORY:
- 		return ibm_cffps_read_input_history(psu, buf, count, ppos);
-@@ -152,16 +159,36 @@ static ssize_t ibm_cffps_debugfs_op(struct file *file, char __user *buf,
- 		rc = snprintf(data, 5, "%04X", rc);
- 		goto done;
- 	case CFFPS_DEBUGFS_FW:
--		for (i = 0; i < CFFPS_FW_NUM_BYTES; ++i) {
--			rc = i2c_smbus_read_byte_data(psu->client,
--						      CFFPS_FW_CMD_START + i);
--			if (rc < 0)
--				return rc;
-+		switch (psu->version) {
-+		case cffps1:
-+			for (i = 0; i < CFFPS1_FW_NUM_BYTES; ++i) {
-+				rc = i2c_smbus_read_byte_data(psu->client,
-+							      CFFPS_FW_CMD +
-+								i);
-+				if (rc < 0)
-+					return rc;
-+
-+				snprintf(&data[i * 2], 3, "%02X", rc);
-+			}
- 
--			snprintf(&data[i * 2], 3, "%02X", rc);
--		}
-+			rc = i * 2;
-+			break;
-+		case cffps2:
-+			for (i = 0; i < CFFPS2_FW_NUM_WORDS; ++i) {
-+				rc = i2c_smbus_read_word_data(psu->client,
-+							      CFFPS_FW_CMD +
-+								i);
-+				if (rc < 0)
-+					return rc;
-+
-+				snprintf(&data[i * 4], 5, "%04X", rc);
-+			}
- 
--		rc = i * 2;
-+			rc = i * 4;
-+			break;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
- 		goto done;
- 	default:
- 		return -EINVAL;
-@@ -279,6 +306,8 @@ static void ibm_cffps_led_brightness_set(struct led_classdev *led_cdev,
- 			psu->led_state = CFFPS_LED_ON;
- 	}
- 
-+	pmbus_set_page(psu->client, 0);
-+
- 	rc = i2c_smbus_write_byte_data(psu->client, CFFPS_SYS_CONFIG_CMD,
- 				       psu->led_state);
- 	if (rc < 0)
-@@ -299,6 +328,8 @@ static int ibm_cffps_led_blink_set(struct led_classdev *led_cdev,
- 	if (led_cdev->brightness == LED_OFF)
- 		return 0;
- 
-+	pmbus_set_page(psu->client, 0);
-+
- 	rc = i2c_smbus_write_byte_data(psu->client, CFFPS_SYS_CONFIG_CMD,
- 				       CFFPS_LED_BLINK);
- 	if (rc < 0)
-@@ -328,15 +359,32 @@ static void ibm_cffps_create_led_class(struct ibm_cffps *psu)
- 		dev_warn(dev, "failed to register led class: %d\n", rc);
- }
- 
--static struct pmbus_driver_info ibm_cffps_info = {
--	.pages = 1,
--	.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
--		PMBUS_HAVE_PIN | PMBUS_HAVE_FAN12 | PMBUS_HAVE_TEMP |
--		PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 | PMBUS_HAVE_STATUS_VOUT |
--		PMBUS_HAVE_STATUS_IOUT | PMBUS_HAVE_STATUS_INPUT |
--		PMBUS_HAVE_STATUS_TEMP | PMBUS_HAVE_STATUS_FAN12,
--	.read_byte_data = ibm_cffps_read_byte_data,
--	.read_word_data = ibm_cffps_read_word_data,
-+static struct pmbus_driver_info ibm_cffps_info[] = {
-+	[cffps1] = {
-+		.pages = 1,
-+		.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
-+			PMBUS_HAVE_PIN | PMBUS_HAVE_FAN12 | PMBUS_HAVE_TEMP |
-+			PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 |
-+			PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT |
-+			PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP |
-+			PMBUS_HAVE_STATUS_FAN12,
-+		.read_byte_data = ibm_cffps_read_byte_data,
-+		.read_word_data = ibm_cffps_read_word_data,
-+	},
-+	[cffps2] = {
-+		.pages = 2,
-+		.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
-+			PMBUS_HAVE_PIN | PMBUS_HAVE_FAN12 | PMBUS_HAVE_TEMP |
-+			PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 |
-+			PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT |
-+			PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP |
-+			PMBUS_HAVE_STATUS_FAN12,
-+		.func[1] = PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
-+			PMBUS_HAVE_TEMP | PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 |
-+			PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT,
-+		.read_byte_data = ibm_cffps_read_byte_data,
-+		.read_word_data = ibm_cffps_read_word_data,
-+	},
- };
- 
- static struct pmbus_platform_data ibm_cffps_pdata = {
-@@ -347,12 +395,21 @@ static int ibm_cffps_probe(struct i2c_client *client,
- 			   const struct i2c_device_id *id)
- {
- 	int i, rc;
-+	enum versions vs;
- 	struct dentry *debugfs;
- 	struct dentry *ibm_cffps_dir;
- 	struct ibm_cffps *psu;
-+	const void *md = of_device_get_match_data(&client->dev);
-+
-+	if (md)
-+		vs = (enum versions)md;
-+	else if (id)
-+		vs = (enum versions)id->driver_data;
-+	else
-+		vs = cffps1;
- 
- 	client->dev.platform_data = &ibm_cffps_pdata;
--	rc = pmbus_do_probe(client, id, &ibm_cffps_info);
-+	rc = pmbus_do_probe(client, id, &ibm_cffps_info[vs]);
- 	if (rc)
- 		return rc;
- 
-@@ -364,6 +421,7 @@ static int ibm_cffps_probe(struct i2c_client *client,
- 	if (!psu)
- 		return 0;
- 
-+	psu->version = vs;
- 	psu->client = client;
- 	mutex_init(&psu->input_history.update_lock);
- 	psu->input_history.last_update = jiffies - HZ;
-@@ -405,13 +463,21 @@ static int ibm_cffps_probe(struct i2c_client *client,
- }
- 
- static const struct i2c_device_id ibm_cffps_id[] = {
--	{ "ibm_cffps1", 1 },
-+	{ "ibm_cffps1", cffps1 },
-+	{ "ibm_cffps2", cffps2 },
- 	{}
- };
- MODULE_DEVICE_TABLE(i2c, ibm_cffps_id);
- 
- static const struct of_device_id ibm_cffps_of_match[] = {
--	{ .compatible = "ibm,cffps1" },
-+	{
-+		.compatible = "ibm,cffps1",
-+		.data = (void *)cffps1
-+	},
-+	{
-+		.compatible = "ibm,cffps2",
-+		.data = (void *)cffps2
-+	},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ibm_cffps_of_match);
--- 
-1.8.3.1
-
+> ---
+> 
+> Changes in v1:
+> - from RFC - fix power conversion mili-Watts to micro-Watts
+> 
+>  drivers/hwmon/iio_hwmon.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+> index f1c2d5faedf0..b85a125dd86f 100644
+> --- a/drivers/hwmon/iio_hwmon.c
+> +++ b/drivers/hwmon/iio_hwmon.c
+> @@ -44,12 +44,20 @@ static ssize_t iio_hwmon_read_val(struct device *dev,
+>  	int ret;
+>  	struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
+>  	struct iio_hwmon_state *state = dev_get_drvdata(dev);
+> +	struct iio_channel *chan = &state->channels[sattr->index];
+> +	enum iio_chan_type type;
+> +
+> +	ret = iio_read_channel_processed(chan, &result);
+> +	if (ret < 0)
+> +		return ret;
+>  
+> -	ret = iio_read_channel_processed(&state->channels[sattr->index],
+> -					&result);
+> +	ret = iio_get_channel_type(chan, &type);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	if (type == IIO_POWER)
+> +		result *= 1000; /* mili-Watts to micro-Watts conversion */
+> +
+>  	return sprintf(buf, "%d\n", result);
+>  }
+>  
+> @@ -59,7 +67,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+>  	struct iio_hwmon_state *st;
+>  	struct sensor_device_attribute *a;
+>  	int ret, i;
+> -	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1;
+> +	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1, power_i = 1;
+>  	enum iio_chan_type type;
+>  	struct iio_channel *channels;
+>  	struct device *hwmon_dev;
+> @@ -114,6 +122,10 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+>  			n = curr_i++;
+>  			prefix = "curr";
+>  			break;
+> +		case IIO_POWER:
+> +			n = power_i++;
+> +			prefix = "power";
+> +			break;
+>  		case IIO_HUMIDITYRELATIVE:
+>  			n = humidity_i++;
+>  			prefix = "humidity";
