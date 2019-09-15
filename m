@@ -2,83 +2,65 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A2BB1DD6
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Sep 2019 14:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F08B3246
+	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Sep 2019 23:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729983AbfIMMoT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 13 Sep 2019 08:44:19 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:40909 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbfIMMoT (ORCPT
+        id S1726168AbfIOVlv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 15 Sep 2019 17:41:51 -0400
+Received: from sonic307-54.consmr.mail.ir2.yahoo.com ([87.248.110.31]:36951
+        "EHLO sonic307-54.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725971AbfIOVlu (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 13 Sep 2019 08:44:19 -0400
-Received: by mail-pf1-f195.google.com with SMTP id x127so18002117pfb.7
-        for <linux-hwmon@vger.kernel.org>; Fri, 13 Sep 2019 05:44:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=mobFanCDTyWxMSVW2G6RmCJSurxpUjrH02AideTmxmU=;
-        b=kfeq0vHJHtWqJNF/Q3oTGfzEmPmUw+YGfUamzVAb6+hvwqUJh0srkMKNtYf3gF4TAu
-         GSCkTC1XTkTOoytRixqERc8ccaLscbFLciH326UaSqDSnFqbkouL+FlQeFbsyulzjjcQ
-         spnyb9tB4d0Bh9n74nBZQwtHIBT6Utu8bGq7rPrKbse3p43pYnLfczynpCnWJY7ULTeu
-         jRwTbzze0pd0dwPHJYKmxluAeD1N+dYxDcLdoa4a/uxMeSFTVt9/nG7uzIDxF+RYVakB
-         ICAbflyBKurOUIlI7JzA6EE18BEJYUUvzIN7vrv16ExMyVqAMBwzC0tvCzkuodC0k6M8
-         XjNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=mobFanCDTyWxMSVW2G6RmCJSurxpUjrH02AideTmxmU=;
-        b=HdlkWQqL+WlF2wBrC7XQH1PZHtjnEu+SWl02BRd+ky7Twk44BFb25HwcLg5A8omeAL
-         OLxGl9+0bQ3uYlJFGcxSoafp+iWQFttmslKbe641YBlnrIMp1FuNaxC0SUSL3HZID6Fp
-         7HF+TGN6TjwoMx8KAGDBEPfV/LfVAL5TyR+J0PGx6aNchiwkRUfgV8QAPKv+dE+3kgaG
-         9h3BHaTjAzq1/zh/LyvUga1OPOvkiU0SZ4+5Z1KvjvoMuhv2GgKtOwTiWkt7iMQ9qDKs
-         5A4+sjEuEpO8I019kOkCbhg9lbBvDViwR/npjKkxLGcAxVCUnT2gxd0PDN50OG7rEQZk
-         gRDA==
-X-Gm-Message-State: APjAAAWMJjlyxb5F20jcUwhPyVeL0/F/3ME9ZyykQmM7el73NCTyb5GH
-        DPqEUHsn0FaqFaybIWjVtRI7/tvL
-X-Google-Smtp-Source: APXvYqwj6a0dQDaaO1sZv6I0MTv4Na4bfL9T1h4QVN4yl4BQCdd/Og9VzM5rgDk+ghSZNHlj7YOvSg==
-X-Received: by 2002:a63:4181:: with SMTP id o123mr8965578pga.164.1568378658372;
-        Fri, 13 Sep 2019 05:44:18 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z3sm2512427pjd.25.2019.09.13.05.44.16
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 13 Sep 2019 05:44:17 -0700 (PDT)
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH] hwmon: submitting-patches: Add note on comment style
-Date:   Fri, 13 Sep 2019 05:44:15 -0700
-Message-Id: <1568378655-18162-1-git-send-email-linux@roeck-us.net>
-X-Mailer: git-send-email 2.7.4
+        Sun, 15 Sep 2019 17:41:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1568583708; bh=lAh1VSII1GxH1Lprx9ZFG4FPrK3+vs4TTowEGakve2I=; h=Date:From:Reply-To:Subject:From:Subject; b=amqXg37f4YcDrVxIrYO0cXpaRGE/ysFQawBer/OF0nIqgW3CmzGKJRmJzVwVc38Q+AZXZqJu0jwix6ADcfwMCuu/eL3r2QJN5fPk8ESE6lltDM+Bn1kPqGOLM38IJiN+vCwXmn3vy97EsJvb7g0JYQ0PzoWpl76OtX9VSvmRdiNpvSxvZTzcZMJ6DVUk2iSOUuBLE2GrKL2lXZn/MS8mTtaCrKZn4yrzxKk95ePXDR3STfBnV3syERxWnbM8Cqehy/bdwmcwZ9lQZN2m/CQAKsmrgmhfuYb9qY4sYZ2eD7X5OSj/UP+G3LfQrfJZBR/J4CB4r1jbJ8USf6urJKJZSQ==
+X-YMail-OSG: Ny4QInoVM1kGVDdB.gfkcPbNbOCW6QQYKslKxUZrKGfRnhCJ4qR9Tv5LB2VgtuQ
+ 1tOCBYEuTN9Cp2D6fkArh7NHS6qE0tJfQd9OEjMsJ0LuUfJ5wUgy5nHojv.uNKuHArSDg5e1xh._
+ 4YGTLSlx9tLIPwNba4WEDnMSTR9WXWT9tCpZfpyfCxGqJ3iE8Wq0FRLMhXlYyxDHUmSHWX5esYRF
+ BYMznTpkZlZ5TTqiohxdWkU9C5ZKEPfBrxEwjyfVo6UUvMuCstvpgHOmEA4LT7Jttcit4sVt4Tu3
+ Aj17mCTdYBLI3haCGBM1TuFO86JccxfcJQNLvCqnPJE_hEuEBMNL6TNrxilbR5SZWTiaooNuz5ds
+ EKepFirNdHB4aIPszx4nC946kYbLcSa0kgZcB_To.vpCabdC4c67ELmnUdlTUrVgcMdorfDUwy9.
+ p_n86q3RnH3j5m7DB73wC02EEBP8GFdw5S_8kOaJ.x2lFbvUWen1ko_Rx6a7voA55vil2.1U2Bjx
+ QOl9U46Mx53QwNe1up8Q7egyssJrxCuBkEqTWU5aO2uZ_vrjsNop_n8LE93VaTsnt.CeymPuN79P
+ fFdh74swJHGf05NdLnLYWg7C.8NzpoLz5QBZqv6n9O2wHog.XwjFTCSpUnOm6XIS2I7uy0zhM9xb
+ s5SoSgZoVwc0ifBHxLfFpkhBpK47FZd2LKv17BW4lI.el8VUZ3rKUnQX1zFIwug1vFCI4dFzAOXm
+ OJ2YFdCd9qFIIY5erwo0JrogFKXFYoC1hCN84PoRCD.aZiwzQd4mrTQU9adDg2ryexWgj5CG6jec
+ NkRO7JMnMeiAYsD.uYWDDTYpKyOxGM2nWx2NG6ixZpD_ZcECi5YxHz3SxzqEJkCEZi665agZYvT9
+ B2qZFaZMNmg.V6zKf2InIc6DeAKIGWJO0MySQhktecwosY.UP1unBs1FG0jWBFYdTwz11TnogO9Q
+ 0zaBx4mdmYx7dnAOVOZPsxHn4j0cm4_S4TmTRUxoiLJaHN._aQ_J6aYbuKTDOolk6eON9uE64uZc
+ 6_EXXZTWK3Vli_jZOufEFzrRqzGjGq8gIjH4gW9w6QcfCK3E31H_VAlvcEOvOsxCFYtQlg83mQBM
+ 5A5spLa.SCJgdV2YDw8AQn6BPKDTg4qjzRNHYzHQ1UHNMXg834tbR2IFA.dwSzXJPkKGrUelFcjz
+ pv.trfuTC59t7MxbKua7U8Lm5CKmp3Av3PludFMFZxw3ClDM7EH.8NqWihewAQALCTAgISA9hxG.
+ a.QVPGLqG32ApJYXxdIW6NI2a0qCUPli63rzp
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Sun, 15 Sep 2019 21:41:48 +0000
+Date:   Sun, 15 Sep 2019 21:41:46 +0000 (UTC)
+From:   "Engr. Issah Ahmed" <officefilele@gmail.com>
+Reply-To: engrissahahmd@gmail.com
+Message-ID: <83731469.10245694.1568583706456@mail.yahoo.com>
+Subject: INVESTMENT PROPOSAL.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Ask for standard multi-line comments, and ask for consistent
-comment style.
+Dear Sir,
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- Documentation/hwmon/submitting-patches.rst | 4 ++++
- 1 file changed, 4 insertions(+)
+My Name is Engr. Issah Ahmed, I was a top official in the former government of Late Muammar Gaddafi of Libya.
 
-diff --git a/Documentation/hwmon/submitting-patches.rst b/Documentation/hwmon/submitting-patches.rst
-index 6b73dba32b89..9a218ea996d8 100644
---- a/Documentation/hwmon/submitting-patches.rst
-+++ b/Documentation/hwmon/submitting-patches.rst
-@@ -20,6 +20,10 @@ increase the chances of your change being accepted.
-   errors, no warnings, and few if any check messages. If there are any
-   messages, please be prepared to explain.
- 
-+* Please use the standard multi-line comment style. Do not mix C and C++
-+  style comments in a single driver (with the exception of the SPDX license
-+  identifier).
-+
- * If your patch generates checkpatch errors, warnings, or check messages,
-   please refrain from explanations such as "I prefer that coding style".
-   Keep in mind that each unnecessary message helps hiding a real problem,
--- 
-2.7.4
+My late master Muammar Gaddafi, the deposed leader of our country, died on 20 October 2011 during the Battle of Sirte. Gaddafi was found hiding in a culvert west of Sirte and captured by National Transitional Council forces. He was killed shortly afterwards.
 
+We the official members continued with war till the early year 2017 due to the painful death and forceful removal of our Late Master Muammar Gaddafi, our country was totally destabilized because we refused to another government.
+
+In this year 2019 all we the officials in the former Gaddafi government are being arrested, persecuted and imprisoned by the new wicked government.
+
+Libya is presently not safe at the moment, therefore we all moving our money out of Libya.
+
+I want you to quickly help me receive and keep the sum US $20.5million to your country for safety. I have agreed you take 25% of the said money for your assistance.
+
+It is very urgent and Please reply me urgently If you can be trustful to help. I will be waiting to hear from you as soon as possible.
+
+Regards
+Engr. Issah Ahmed
