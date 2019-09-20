@@ -2,134 +2,73 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F047BB7631
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Sep 2019 11:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFCE2B8CBF
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2019 10:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388569AbfISJZY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Sep 2019 05:25:24 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:24676 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2387637AbfISJZY (ORCPT
+        id S2395268AbfITI1H (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 20 Sep 2019 04:27:07 -0400
+Received: from sonic317-28.consmr.mail.bf2.yahoo.com ([74.6.129.83]:41314 "EHLO
+        sonic317-28.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2392352AbfITI1H (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Sep 2019 05:25:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1568885122;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=fMRCNlG4fHQ6srApEX1ynJpzQyPhLql6/7HXNniPNy0=;
-        b=H8g1ZVvxHlqGPMfRqURju/sWVE4Kk9/Vp8ah0ZBI3nRmCRyQZ67lleO7qEwemE+px8GhMa
-        oG4b3lt11mUPTmjjVpndLLxt0721wNvxVabGJoR+BxKE9/eezx6rgBh6Y/W1kTcj47SoWO
-        Uu9D9Q4JelQzVVMc0QZXEYrA3mvwWmU=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-44-TSTLjj5nNkqQEsoq1tzpfw-1; Thu, 19 Sep 2019 05:25:21 -0400
-Received: by mail-pf1-f198.google.com with SMTP id w16so1853282pfj.9
-        for <linux-hwmon@vger.kernel.org>; Thu, 19 Sep 2019 02:25:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=XLesU40Hdgd7PzoKuluSVn23wOzzqt01Vg23PoBHteo=;
-        b=RMVspH9Qo+haeMZWtjwBNsPq4uc0PFcSNOe6kT3UWu/wPWvQSVmnT87OdkBsCOy6s7
-         gOhPCJOEbVXhxAd0ylfYvh0Qs6di4ExRXqNCSjNhLUxogSeA7pmljmdbftiRtLCyL8mI
-         8m2NkksHuwAJ17KPUKBh6UYLmvmFdFsRQJLI21KPH87VmquJ7nGD6rBhCdfiPH40qBJR
-         82C0QGZbK1+LX7STd1Pokd8UMwNOJ+gkg4ntGnGluUWyv82KHNDQxrYYowZlEcaQDLQf
-         A0suWOCI5VT4WObX/nnmwa1RsEXTfR4MOU0O38iwaixE/jI6YJUHwKvLSL3jc9BdFCrw
-         RiIA==
-X-Gm-Message-State: APjAAAXtd/ckxGG+Wc8t22sFrnieJBZerLAcu/MFR5kkZuvafup1CJyu
-        hSRgGF1reWg08AcKJn2H1bCUimd/bHqG05L8vcnSM/7fo575q1WtLB28YtX0eRoI1pseEpIjyGo
-        DwpSJcnN+ms8l+v0HhfO9z9sw+VKImk4tXcEGpTs=
-X-Received: by 2002:a17:902:d201:: with SMTP id t1mr8608986ply.337.1568885119762;
-        Thu, 19 Sep 2019 02:25:19 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwxebg/eFmvg9TSWxTkXz2wakbtt36/63ziH8aDxfeXIpvSWlwa/HdF+TsW6Vtom1fFad2V2zw7pONDoTjCDXY=
-X-Received: by 2002:a17:902:d201:: with SMTP id t1mr8608970ply.337.1568885119507;
- Thu, 19 Sep 2019 02:25:19 -0700 (PDT)
+        Fri, 20 Sep 2019 04:27:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1568968025; bh=zPC9p8T5S06DA73PD5F75wViZ/EpBpeYylTS7OqjCU4=; h=Date:From:Reply-To:Subject:From:Subject; b=nnDIF05TSjqUOxLwoS2PdR8guus8mBS25qjPu9KiTwVvxlCUkl7nvXnyc71bxEUFfajgDmSUHtwE/Xpb1UqFBCfZckDvRJObf9/Ldw6aXc9eucszhKmg6DK4vjmT/m+4xGDPRwZCppFMViGNHb6+RsQgRbm7KbdTw1QFFJPj4c54R0Hokr519k2LLDm1xX2B/uc6Sr00dbZtmLYn8qRwHcUMjkta9fAa6MbPnFXuS+L5kRIaN9yWlb8WEZBx2pYb66ET6Nlwc+IA0VngUfR0xXZyQhRkgiydgH8i+3b4iM8HNyKtFIG7kXma9rX+a469JC6SkHZWfr0d0c7xVVVA1w==
+X-YMail-OSG: Uj75ns8VM1nBezpEbaXbumQT14wfbDNg0VJIB15lkg_.JBthXsG4lTHJGRSxHch
+ xmgjl.AJTEPss7tG.ZbybEoHCesV3zFsaiA88FOqnKMMknqNP0hUkWYL4EruZ7ECm2rtWgd2sHvc
+ ScriZVmL1CFl3O9tTxkpDDblSTQ0f.BdruNzCeOxbP8I8C4H65KyAUy42J_tL.jXadC8aDhHt86t
+ nSlSAUEr_2OpRYQl13qd_GgIYOLc_W1LHrAHivPgXmlfW4myt7K0T.KLJCFg.Hd_UCWNRgFnPO3l
+ slb9bSskyYoqSoJLohH.c_ve1hv7X._T4fXL_WTMw1FCGj9RrAfnTi4Ec0HA4dGJD_Lkxpsfbnyv
+ Jyh3k0URFL.VqtIyl_DFDOCk8RBWANBvawMrBIVhAxTk9.yBr376dNR9JS3EHf3JVZM06P.BYT8e
+ OCvQlv6xuZqa21zTSlNVCrP27zSQF5nf6ln.ImpDw0wnazixvkQ55EM91Xo5PuMJnDrOnYluNu3n
+ k_SIxDzkdsVS9dHV2lBteJuXkxbbqgxHoWMaoxVeh5wSCh5uJphKWn._zyoxrstwYC9FBxPfM7Rh
+ NwOJ7DOPMV8Z5.v8g3HBiGCzyYKuVMLlgAQUF1w1jlUSbNX421StSgNZjo6zEfqNg7F_7wdZRsHv
+ IUNWuhv57_8YA2_AoGdJd1GM.LwVyL6pV2q_XrdoswajDTQRemL9NTxAREyR9cJ28gyxzHvg6Ngo
+ 4ngJoEOi1JkF1YARXh0K4C1K0x230ZEmssCE2Ta4nFOk_tzvjmcWRjQ.F3mh3jlHl9b3Xl6uDmEk
+ gAbSAR9Mav8csUmM9Ay6SR0u1MEHf4QSi.q4AUEn7xrWlx8vOWA8hZD47kw70QhG4IseqlQo2tKk
+ 2QP_hXs47P8M0rMqCmkqfTu5rq4oNaaAUYv_lubHiSLficlD.rDOxUS_wx1iq2DAnRALpIHNDm9u
+ LakqUDOHGN05iHtaaKHLpdKPcQJuMtfAMqN7uoz0JmcVwoEEm95oIRcQzH6AqtqH8qNWq2iqXaBm
+ EwJzOcrc14qS9Rh2Mc_lOaKJmUHXitnRhaCKtEbD7C11752SymOaEoiqCTzTbUGP4rLAoK_rJdy0
+ WTZmbv1xppBvcf2mbpWZRtgO_K28I3Qvys9KXxcLFuFc1UyyZpkZCx72.XYwECluAy5O4V9KCDBg
+ o63TgvgRfacrklBOl09VJD5gluWr436ilooKWXThYSnfwinapuQHe3AmV9caJZike07ytgTzj_RV
+ rX.dCjot37txuiAsZV1z_TQs5aoucm1kvNjM-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Fri, 20 Sep 2019 08:27:05 +0000
+Date:   Fri, 20 Sep 2019 08:27:02 +0000 (UTC)
+From:   Ms Lisa Hugh <lisa.hugh222@gmail.com>
+Reply-To: ms.lisahugh000@gmail.com
+Message-ID: <1074883072.6851247.1568968022574@mail.yahoo.com>
+Subject: FROM MS LISA HUGH(BUSINESS).
 MIME-Version: 1.0
-From:   Lukas Zapletal <lzap@redhat.com>
-Date:   Thu, 19 Sep 2019 11:25:03 +0200
-Message-ID: <CAP80Qm2ORJ4cXukhH8oXeGv-C9LrADa1XyDuyq5LKeV_YaYxqA@mail.gmail.com>
-Subject: [PATCH] k10temp: update documentation
-To:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Clemens Ladisch <clemens@ladisch.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-X-MC-Unique: TSTLjj5nNkqQEsoq1tzpfw-1
-X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-It's been a while since the k10temp documentation has been updated.
-There are new CPU families supported as well as Tdie temp was added.
-This patch adds all missing families which I was able to find from git
-history and provides more info about Tctl vs Tdie exported temps.
-
-Signed-off-by: Lukas Zapletal <lzap+git@redhat.com>
----
- Documentation/hwmon/k10temp.rst | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/hwmon/k10temp.rst b/Documentation/hwmon/k10temp.=
-rst
-index 12a86ba17de9..bb2d0a02dc45 100644
---- a/Documentation/hwmon/k10temp.rst
-+++ b/Documentation/hwmon/k10temp.rst
-@@ -1,7 +1,7 @@
- Kernel driver k10temp
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
--Supported chips:
-+Although the driver is named k10temp, it supports wide range of AMD CPUs:
-
- * AMD Family 10h processors:
-
-@@ -21,10 +21,16 @@ Supported chips:
-
- * AMD Family 14h processors: "Brazos" (C/E/G/Z-Series)
-
--* AMD Family 15h processors: "Bulldozer" (FX-Series), "Trinity",
-"Kaveri", "Carrizo"
-+* AMD Family 15h processors: "Bulldozer" (FX-Series), "Trinity",
-"Kaveri", "Carrizo", "Stoney Ridge", "Bristol Ridge"
-
- * AMD Family 16h processors: "Kabini", "Mullins"
-
-+* AMD Family 17h processors: "Zen", "Zen 2"
-+
-+* AMD Family 18h processors: "Hygon Dhyana"
-+
-+* AMD Family 19h processors: "Zen 3"
-+
-   Prefix: 'k10temp'
-
-   Addresses scanned: PCI space
-@@ -110,3 +116,12 @@ The maximum value for Tctl is available in the
-file temp1_max.
- If the BIOS has enabled hardware temperature control, the threshold at
- which the processor will throttle itself to avoid damage is available in
- temp1_crit and temp1_crit_hyst.
-+
-+On some AMD CPUs, there is a difference between the die temperature (Tdie)=
- and
-+the reported temperature (Tctl). Tdie is the real measured temperature, an=
-d
-+Tctl is used for fan control. While Tctl is always available as temp1_inpu=
-t,
-+the driver exports Tdie temperature as temp2_input for those CPUs which su=
-pport
-+it.
-+
-+Models from 17h family report relative temperature, the driver aims to
-+compensate and report the real temperature.
---=20
-2.21.0
 
 
---=20
-Later,
-  Lukas @lzap Zapletal
+Dear Friend,
 
+I am Ms Lisa Hugh work with the department of Audit and accounting manager here in the Bank(B.O.A).
+
+Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+
+I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me forsuccess.
+
+Note/ 50% for you why 50% for me after success of the transfer to your bank
+account.
+
+Below information is what i need from you so will can be reaching each
+other
+
+1)Full name ...
+2)Private telephone number...
+3)Age...
+4)Nationality...
+5)Occupation ...
+
+
+Thanks.
+
+Ms Lisa Hugh
