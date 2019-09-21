@@ -2,73 +2,135 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCE2B8CBF
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2019 10:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3368FB9DB8
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Sep 2019 13:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395268AbfITI1H (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 20 Sep 2019 04:27:07 -0400
-Received: from sonic317-28.consmr.mail.bf2.yahoo.com ([74.6.129.83]:41314 "EHLO
-        sonic317-28.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2392352AbfITI1H (ORCPT
+        id S2405784AbfIUL5z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 21 Sep 2019 07:57:55 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39462 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405770AbfIUL5z (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 20 Sep 2019 04:27:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1568968025; bh=zPC9p8T5S06DA73PD5F75wViZ/EpBpeYylTS7OqjCU4=; h=Date:From:Reply-To:Subject:From:Subject; b=nnDIF05TSjqUOxLwoS2PdR8guus8mBS25qjPu9KiTwVvxlCUkl7nvXnyc71bxEUFfajgDmSUHtwE/Xpb1UqFBCfZckDvRJObf9/Ldw6aXc9eucszhKmg6DK4vjmT/m+4xGDPRwZCppFMViGNHb6+RsQgRbm7KbdTw1QFFJPj4c54R0Hokr519k2LLDm1xX2B/uc6Sr00dbZtmLYn8qRwHcUMjkta9fAa6MbPnFXuS+L5kRIaN9yWlb8WEZBx2pYb66ET6Nlwc+IA0VngUfR0xXZyQhRkgiydgH8i+3b4iM8HNyKtFIG7kXma9rX+a469JC6SkHZWfr0d0c7xVVVA1w==
-X-YMail-OSG: Uj75ns8VM1nBezpEbaXbumQT14wfbDNg0VJIB15lkg_.JBthXsG4lTHJGRSxHch
- xmgjl.AJTEPss7tG.ZbybEoHCesV3zFsaiA88FOqnKMMknqNP0hUkWYL4EruZ7ECm2rtWgd2sHvc
- ScriZVmL1CFl3O9tTxkpDDblSTQ0f.BdruNzCeOxbP8I8C4H65KyAUy42J_tL.jXadC8aDhHt86t
- nSlSAUEr_2OpRYQl13qd_GgIYOLc_W1LHrAHivPgXmlfW4myt7K0T.KLJCFg.Hd_UCWNRgFnPO3l
- slb9bSskyYoqSoJLohH.c_ve1hv7X._T4fXL_WTMw1FCGj9RrAfnTi4Ec0HA4dGJD_Lkxpsfbnyv
- Jyh3k0URFL.VqtIyl_DFDOCk8RBWANBvawMrBIVhAxTk9.yBr376dNR9JS3EHf3JVZM06P.BYT8e
- OCvQlv6xuZqa21zTSlNVCrP27zSQF5nf6ln.ImpDw0wnazixvkQ55EM91Xo5PuMJnDrOnYluNu3n
- k_SIxDzkdsVS9dHV2lBteJuXkxbbqgxHoWMaoxVeh5wSCh5uJphKWn._zyoxrstwYC9FBxPfM7Rh
- NwOJ7DOPMV8Z5.v8g3HBiGCzyYKuVMLlgAQUF1w1jlUSbNX421StSgNZjo6zEfqNg7F_7wdZRsHv
- IUNWuhv57_8YA2_AoGdJd1GM.LwVyL6pV2q_XrdoswajDTQRemL9NTxAREyR9cJ28gyxzHvg6Ngo
- 4ngJoEOi1JkF1YARXh0K4C1K0x230ZEmssCE2Ta4nFOk_tzvjmcWRjQ.F3mh3jlHl9b3Xl6uDmEk
- gAbSAR9Mav8csUmM9Ay6SR0u1MEHf4QSi.q4AUEn7xrWlx8vOWA8hZD47kw70QhG4IseqlQo2tKk
- 2QP_hXs47P8M0rMqCmkqfTu5rq4oNaaAUYv_lubHiSLficlD.rDOxUS_wx1iq2DAnRALpIHNDm9u
- LakqUDOHGN05iHtaaKHLpdKPcQJuMtfAMqN7uoz0JmcVwoEEm95oIRcQzH6AqtqH8qNWq2iqXaBm
- EwJzOcrc14qS9Rh2Mc_lOaKJmUHXitnRhaCKtEbD7C11752SymOaEoiqCTzTbUGP4rLAoK_rJdy0
- WTZmbv1xppBvcf2mbpWZRtgO_K28I3Qvys9KXxcLFuFc1UyyZpkZCx72.XYwECluAy5O4V9KCDBg
- o63TgvgRfacrklBOl09VJD5gluWr436ilooKWXThYSnfwinapuQHe3AmV9caJZike07ytgTzj_RV
- rX.dCjot37txuiAsZV1z_TQs5aoucm1kvNjM-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Fri, 20 Sep 2019 08:27:05 +0000
-Date:   Fri, 20 Sep 2019 08:27:02 +0000 (UTC)
-From:   Ms Lisa Hugh <lisa.hugh222@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <1074883072.6851247.1568968022574@mail.yahoo.com>
-Subject: FROM MS LISA HUGH(BUSINESS).
+        Sat, 21 Sep 2019 07:57:55 -0400
+Received: by mail-pf1-f196.google.com with SMTP id v4so1664345pff.6;
+        Sat, 21 Sep 2019 04:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=PKxsHDFmHPsQxmc4wfV//rWUve8tGbS0odSr9dmfP5c=;
+        b=kSfK52rw8/suJVsRKOQZy1DHh+NxMk0TKwGnclJ0AYiGTX4rbMAHUL8Wjalb5Gznh2
+         8iw1j4ZMP2KIeds/PazetJOzrK3I/aA5KjCwn1FWHxvogyYTyfTOuSZcZ4yGqNmyxUf1
+         I2il2nNA7d5QDksk9JKk528thNOFj0UB6FkiUpqMT4dAz1loLlYVYWHr9vvOdTqibddg
+         pYjW89srxfeLTI5l6SHzDs6iJ1Mv23HVDRKXsIVt4fxGFolBeHlQCPsMY2SZ8BVRhKEP
+         5/YeaKOpKg2PVh7NGyMS4GmUY3VG87JHJu+CSpvC7xnCK8W/tpPKdRKTVb8pLIGF0LJO
+         qnpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=PKxsHDFmHPsQxmc4wfV//rWUve8tGbS0odSr9dmfP5c=;
+        b=FcPRCvSHzm4nhqN6wO/xkCbVTex1xQNIuTDRSV8r0VT/7jMYK19p1dRZ+5xBYcKL4h
+         nJqw0Ue1RnDHXmWhSk4ye3u+ff3zzUcV7hucdBiY4U3eIUTNzelUV482gf81h4oLUioI
+         lVPyU3t0NQZnHF9OXTcov7UHx407uo5A07u0S67uqy+d4imxEpe8lNryP7ELpqdgZSGn
+         4vHcuQg5EEU3EcPn1sjv5UU6tHQ1b+zn03tBNn4Fczfe+IJAcU95sj1B+n+8Ob8NKOYn
+         5VxcQd6XLC5RiPFVWiqYsvb7sTKFB0HDzGQskfA6VsjqQXKZWqDPqNo5rEebHqWHR7fZ
+         4FgA==
+X-Gm-Message-State: APjAAAU3N/FGdNsCg1+a3TRPnasmNREkHLj46KxgMeBhUDkDfCoVwpyu
+        oXVeNZMqjVBGfRtsuqJb3lc=
+X-Google-Smtp-Source: APXvYqwkE737dDrUJVxTyTpx8nDPqxdBZIurIxHSyY6FScmj9KYFwetcQl4Td8KoKdWcVdhLrUAXyA==
+X-Received: by 2002:a62:3147:: with SMTP id x68mr22576597pfx.129.1569067074822;
+        Sat, 21 Sep 2019 04:57:54 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id v43sm26863328pjb.1.2019.09.21.04.57.53
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 21 Sep 2019 04:57:53 -0700 (PDT)
+Date:   Sat, 21 Sep 2019 04:57:52 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Lukas Zapletal <lzap@redhat.com>
+Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        Clemens Ladisch <clemens@ladisch.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] k10temp: update documentation
+Message-ID: <20190921115752.GA22647@roeck-us.net>
+References: <CAP80Qm2ORJ4cXukhH8oXeGv-C9LrADa1XyDuyq5LKeV_YaYxqA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP80Qm2ORJ4cXukhH8oXeGv-C9LrADa1XyDuyq5LKeV_YaYxqA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Thu, Sep 19, 2019 at 11:25:03AM +0200, Lukas Zapletal wrote:
+> It's been a while since the k10temp documentation has been updated.
+> There are new CPU families supported as well as Tdie temp was added.
+> This patch adds all missing families which I was able to find from git
+> history and provides more info about Tctl vs Tdie exported temps.
+> 
+> Signed-off-by: Lukas Zapletal <lzap+git@redhat.com>
 
+Your patch does not apply to the curent mainline kernel.
+What is the parent branch ?
 
-Dear Friend,
+> ---
+>  Documentation/hwmon/k10temp.rst | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+> 
+> 
+>    Addresses scanned: PCI space
+> @@ -110,3 +116,12 @@ The maximum value for Tctl is available in the
+> file temp1_max.
+>  If the BIOS has enabled hardware temperature control, the threshold at
+>  which the processor will throttle itself to avoid damage is available in
+>  temp1_crit and temp1_crit_hyst.
+> +
+> +On some AMD CPUs, there is a difference between the die temperature (Tdie) and
+> +the reported temperature (Tctl). Tdie is the real measured temperature, and
+> +Tctl is used for fan control. While Tctl is always available as temp1_input,
+> +the driver exports Tdie temperature as temp2_input for those CPUs which support
+> +it.
+> +
+> +Models from 17h family report relative temperature, the driver aims to
+> +compensate and report the real temperature.
+> 
+> diff --git a/Documentation/hwmon/k10temp.rst b/Documentation/hwmon/k10temp.rst
+> index 12a86ba17de9..bb2d0a02dc45 100644
+> --- a/Documentation/hwmon/k10temp.rst
+> +++ b/Documentation/hwmon/k10temp.rst
+> @@ -1,7 +1,7 @@
+>  Kernel driver k10temp
+>  =====================
+> 
+> -Supported chips:
+> +Although the driver is named k10temp, it supports wide range of AMD CPUs:
 
-I am Ms Lisa Hugh work with the department of Audit and accounting manager here in the Bank(B.O.A).
+The above does not add any value. Many drivers support more than one chip,
+but are named after the first supported chip. Please drop this change.
 
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+Guenter
 
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me forsuccess.
-
-Note/ 50% for you why 50% for me after success of the transfer to your bank
-account.
-
-Below information is what i need from you so will can be reaching each
-other
-
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa Hugh
+> 
+>  * AMD Family 10h processors:
+> 
+> @@ -21,10 +21,16 @@ Supported chips:
+> 
+>  * AMD Family 14h processors: "Brazos" (C/E/G/Z-Series)
+> 
+> -* AMD Family 15h processors: "Bulldozer" (FX-Series), "Trinity",
+> "Kaveri", "Carrizo"
+> +* AMD Family 15h processors: "Bulldozer" (FX-Series), "Trinity",
+> "Kaveri", "Carrizo", "Stoney Ridge", "Bristol Ridge"
+> 
+>  * AMD Family 16h processors: "Kabini", "Mullins"
+> 
+> +* AMD Family 17h processors: "Zen", "Zen 2"
+> +
+> +* AMD Family 18h processors: "Hygon Dhyana"
+> +
+> +* AMD Family 19h processors: "Zen 3"
+> +
+>    Prefix: 'k10temp'
