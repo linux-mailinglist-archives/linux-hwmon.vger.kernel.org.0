@@ -2,38 +2,38 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE0FBA96C
-	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Sep 2019 21:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75AE1BA8EB
+	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Sep 2019 21:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730642AbfIVTPJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 22 Sep 2019 15:15:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58836 "EHLO mail.kernel.org"
+        id S1730454AbfIVTJm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 22 Sep 2019 15:09:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34008 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394618AbfIVS4j (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:56:39 -0400
+        id S2389059AbfIVS7E (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:59:04 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 765CE21D7E;
-        Sun, 22 Sep 2019 18:56:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A24062190F;
+        Sun, 22 Sep 2019 18:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178599;
-        bh=R9wNMyVXTP8zyEL2EWjtB6HQTLw6rR1ooe2e0CV8Rao=;
+        s=default; t=1569178744;
+        bh=aurkG+qHpUTJ4ILOYxbbHtwEfOXzpl3vsIt2uUSsD34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r2L2K+uVS7HdZof9ZE3LzzjbnPvD3r5TiR7qSHG+GhHGrk1VmQ5DBPdH3bPDb65pa
-         wXnLkMtfyrs2XzLtyhu8YNxtTQO52MlPLhtyhW3doYaGFXVBBlPWpPmRWEt5QyL2NF
-         A2PSBs9HS4gDlrHTsQWzDTCr8bjiZM1amaz5/ru4=
+        b=ZpLOtfZ/s5EpE7DNpWrcCZEKBDAtQuvZeV590o5Hk8abhaffXdAH3D7WLioMAC0RQ
+         p77G0ps/kffrbG+n4rGwqDsjU5MgJfnLQ09vYzuqFe6EwLwhhhDLqrQ3SnNOQGX/Gy
+         08D7d7pkEbkTRMCloCAawR/0ew4IfrpXTFA8/aZA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Wang Shenran <shenran268@gmail.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 103/128] hwmon: (acpi_power_meter) Change log level for 'unsafe software power cap'
-Date:   Sun, 22 Sep 2019 14:53:53 -0400
-Message-Id: <20190922185418.2158-103-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 70/89] hwmon: (acpi_power_meter) Change log level for 'unsafe software power cap'
+Date:   Sun, 22 Sep 2019 14:56:58 -0400
+Message-Id: <20190922185717.3412-70-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185418.2158-1-sashal@kernel.org>
-References: <20190922185418.2158-1-sashal@kernel.org>
+In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
+References: <20190922185717.3412-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -71,10 +71,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 34e45b97629ed..2f2fb19669580 100644
+index 14a94d90c028a..ba3af4505d8fb 100644
 --- a/drivers/hwmon/acpi_power_meter.c
 +++ b/drivers/hwmon/acpi_power_meter.c
-@@ -694,8 +694,8 @@ static int setup_attrs(struct acpi_power_meter_resource *resource)
+@@ -693,8 +693,8 @@ static int setup_attrs(struct acpi_power_meter_resource *resource)
  
  	if (resource->caps.flags & POWER_METER_CAN_CAP) {
  		if (!can_cap_in_hardware()) {
