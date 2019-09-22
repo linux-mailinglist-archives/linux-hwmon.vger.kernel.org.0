@@ -2,35 +2,41 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D43BA45E
-	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Sep 2019 20:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02556BA634
+	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Sep 2019 21:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391547AbfIVSsU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 22 Sep 2019 14:48:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45052 "EHLO mail.kernel.org"
+        id S2390289AbfIVSsS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 22 Sep 2019 14:48:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45012 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391522AbfIVSsT (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:48:19 -0400
+        id S2391513AbfIVSsR (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:48:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FBA5208C2;
-        Sun, 22 Sep 2019 18:48:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 16DA1214D9;
+        Sun, 22 Sep 2019 18:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178098;
-        bh=MoJuAFD5H01r8aUKRg6WQ0qWyaX5xkkJmQOMh7mNsM0=;
+        s=default; t=1569178097;
+        bh=ZaoPHwtLHsvaA+ZAcx1/9Bq15BWjd0+3loZmP5V6Kmo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CK9PpmrmASZEHs1lRI3pFS3s3m9uHshvE542xD+koYXLrCcquOpIrL6K1T1odurVt
-         vSI5Lo5vsBgU0C7Qor2GNi8VETpHW8cC/NHBppiQoDXo206ZKQYsZJ6RUwPsiohnd/
-         srVunzkHg1yqTcdtRgf+HPz4C3IGmC2zQGvzmLuk=
+        b=UJDEh8YUep+macwhKWOs3hlEqxI8JMN6mpkKlP1FL0pEuTn7DsHbjyhB2HLsbXUwy
+         s+Nd6nzykiIcJTAq43sV7VouN0Nm0QE8e+yYVCV1YcZEJcdinWK5nnaZv83lwQP8vd
+         xAvDmGlMOgs6qrLa4z5eUVl6Ac9zddi/F1PvKvb4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wang Shenran <shenran268@gmail.com>,
+Cc:     Marcel Bocu <marcel.p.bocu@gmail.com>, Vicki Pfau <vi@endrift.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        "Woods, Brian" <Brian.Woods@amd.com>,
+        Clemens Ladisch <clemens@ladisch.de>,
+        Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 161/203] hwmon: (acpi_power_meter) Change log level for 'unsafe software power cap'
-Date:   Sun, 22 Sep 2019 14:43:07 -0400
-Message-Id: <20190922184350.30563-161-sashal@kernel.org>
+        linux-hwmon@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 160/203] hwmon: (k10temp) Add support for AMD family 17h, model 70h CPUs
+Date:   Sun, 22 Sep 2019 14:43:06 -0400
+Message-Id: <20190922184350.30563-160-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
 References: <20190922184350.30563-1-sashal@kernel.org>
@@ -43,48 +49,64 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Wang Shenran <shenran268@gmail.com>
+From: Marcel Bocu <marcel.p.bocu@gmail.com>
 
-[ Upstream commit 6e4d91aa071810deac2cd052161aefb376ecf04e ]
+[ Upstream commit 12163cfbfc0f804cc7d27bc20e8d266ce7459260 ]
 
-At boot time, the acpi_power_meter driver logs the following error level
-message: "Ignoring unsafe software power cap". Having read about it from
-a few sources, it seems that the error message can be quite misleading.
+It would seem like model 70h is behaving in the same way as model 30h,
+so let's just add the new F3 PCI ID to the list of compatible devices.
 
-While the message can imply that Linux is ignoring the fact that the
-system is operating in potentially dangerous conditions, the truth is
-the driver found an ACPI_PMC object that supports software power
-capping. The driver simply decides not to use it, perhaps because it
-doesn't support the object.
+Unlike previous Ryzen/Threadripper, Ryzen gen 3 processors do not need
+temperature offsets anymore. This has been reported in the press and
+verified on my Ryzen 3700X by checking that the idle temperature
+reported by k10temp is matching the temperature reported by the
+firmware.
 
-The best solution is probably changing the log level from error to warning.
-All sources I have found, regarding the error, have downplayed its
-significance. There is not much of a reason for it to be on error level,
-while causing potential confusions or misinterpretations.
+Vicki Pfau sent an identical patch after I checked that no-one had
+written this patch. I would have been happy about dropping my patch but
+unlike for his patch series, I had already Cc:ed the x86 people and
+they already reviewed the changes. Since Vicki has not answered to
+any email after his initial series, let's assume she is on vacation
+and let's avoid duplication of reviews from the maintainers and merge
+my series. To acknowledge Vicki's anteriority, I added her S-o-b to
+the patch.
 
-Signed-off-by: Wang Shenran <shenran268@gmail.com>
-Link: https://lore.kernel.org/r/20190724080110.6952-1-shenran268@gmail.com
+v2, suggested by Guenter Roeck and Brian Woods:
+  - rename from 71h to 70h
+
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Marcel Bocu <marcel.p.bocu@gmail.com>
+Tested-by: Marcel Bocu <marcel.p.bocu@gmail.com>
+
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: x86@kernel.org
+Cc: "Woods, Brian" <Brian.Woods@amd.com>
+Cc: Clemens Ladisch <clemens@ladisch.de>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org
+Link: https://lore.kernel.org/r/20190722174653.2391-1-marcel.p.bocu@gmail.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/acpi_power_meter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/k10temp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 6ba1a08253f0a..4cf25458f0b95 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -681,8 +681,8 @@ static int setup_attrs(struct acpi_power_meter_resource *resource)
- 
- 	if (resource->caps.flags & POWER_METER_CAN_CAP) {
- 		if (!can_cap_in_hardware()) {
--			dev_err(&resource->acpi_dev->dev,
--				"Ignoring unsafe software power cap!\n");
-+			dev_warn(&resource->acpi_dev->dev,
-+				 "Ignoring unsafe software power cap!\n");
- 			goto skip_unsafe_cap;
- 		}
- 
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index c77e89239dcd9..5c1dddde193c3 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -349,6 +349,7 @@ static const struct pci_device_id k10temp_id_table[] = {
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M10H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
++	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
+ 	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
+ 	{}
+ };
 -- 
 2.20.1
 
