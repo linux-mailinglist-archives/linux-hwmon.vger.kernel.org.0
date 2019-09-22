@@ -2,89 +2,79 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75AE1BA8EB
-	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Sep 2019 21:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547B2BAB07
+	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Sep 2019 21:54:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730454AbfIVTJm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 22 Sep 2019 15:09:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34008 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389059AbfIVS7E (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:59:04 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A24062190F;
-        Sun, 22 Sep 2019 18:59:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178744;
-        bh=aurkG+qHpUTJ4ILOYxbbHtwEfOXzpl3vsIt2uUSsD34=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZpLOtfZ/s5EpE7DNpWrcCZEKBDAtQuvZeV590o5Hk8abhaffXdAH3D7WLioMAC0RQ
-         p77G0ps/kffrbG+n4rGwqDsjU5MgJfnLQ09vYzuqFe6EwLwhhhDLqrQ3SnNOQGX/Gy
-         08D7d7pkEbkTRMCloCAawR/0ew4IfrpXTFA8/aZA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wang Shenran <shenran268@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 70/89] hwmon: (acpi_power_meter) Change log level for 'unsafe software power cap'
-Date:   Sun, 22 Sep 2019 14:56:58 -0400
-Message-Id: <20190922185717.3412-70-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
-References: <20190922185717.3412-1-sashal@kernel.org>
+        id S2389586AbfIVTy5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 22 Sep 2019 15:54:57 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:35664 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389396AbfIVTy5 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 22 Sep 2019 15:54:57 -0400
+Received: by mail-pl1-f194.google.com with SMTP id y10so4209908plp.2;
+        Sun, 22 Sep 2019 12:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=58rz5lvZVLhyd3Zg5tFeoG2i1LxHbdCzbi0Xwdg+Hv0=;
+        b=Ze3Cg9fo3n9ot13AgjjPA7VlZdKL+jZ9Q2MWl5do8JiKX3agJLQf50Qha3TMGaFSkg
+         SSOx542vRNfNK8spCVle+bDR78FFgrz8Aw224KMkujysLKciSMW5vVahPuPMAoekxOZj
+         I/Y2WkgwBq4iKsx0NvGqGQnABaTs8WIEyw/enRk8U8+yaG1rkRTYmnMzIvhG/LYtnFF5
+         dhW7uQzDv6lypd0pT5a9claAMPeeI7vgFs8gbLOM7kkmmNRatjIeoqJyZh94hXGmlglH
+         PKM3k7JBdOMfLr1WwJj29PDM2O7EmLERsjhQLTP5KIQBFsiJkg2H/1XybhoHLhmAyePp
+         jQ2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=58rz5lvZVLhyd3Zg5tFeoG2i1LxHbdCzbi0Xwdg+Hv0=;
+        b=Guj0MzkOVlAjvoMC5WOqO79zbedHLf3K6XnOE1U9a8hxRSvo/5Dkk2hUuucdMJpLKM
+         9lMf07PvtQJkQScQdcCXDPHSfMHD/sbXw1bSbkRumebjPclxfmLI7M8ANi17Mhk7tGPI
+         XRUoN+rhU3tzgNkp6bMvbWkALCh++p1u+lzZVsEQIg7NmJqrlWbeVA4AbL+qzhgbCtde
+         GMDQ46u+2hR7JieN2WZC+06HS1ChUvMS6Bo8iYWECdjUHq9MH4hTjDH8YN/WGB1s1map
+         oVk0FO7BhnMWoQzBlAIzLKFUHRpuOA8CNgU+JjU0e7Wy08tpXLp6NMI1OttHt29Run8k
+         h4MA==
+X-Gm-Message-State: APjAAAXQq3JwEEet+NbE7Vmju3trpT7juUMJYsKgSg0pvIhYvTqoI/UU
+        g0JJulm1bs10i1etSvLex5U=
+X-Google-Smtp-Source: APXvYqy0rB2eJoBS+CV0p4O9NTj3nfbrjzNJF/+o3iW0l95REhL6JCGCgorDF7ssy0ke5pQp+nuHAw==
+X-Received: by 2002:a17:902:14b:: with SMTP id 69mr28362662plb.286.1569182094743;
+        Sun, 22 Sep 2019 12:54:54 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y15sm10269662pfp.111.2019.09.22.12.54.53
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 22 Sep 2019 12:54:53 -0700 (PDT)
+Date:   Sun, 22 Sep 2019 12:54:52 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Lukas Zapletal <lzap@redhat.com>
+Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        Clemens Ladisch <clemens@ladisch.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] k10temp: update documentation
+Message-ID: <20190922195452.GA24696@roeck-us.net>
+References: <CAP80Qm2ORJ4cXukhH8oXeGv-C9LrADa1XyDuyq5LKeV_YaYxqA@mail.gmail.com>
+ <20190921115752.GA22647@roeck-us.net>
+ <CAP80Qm3ayVfh-pE2M5euTSf0Z0EJ3AvwTiK+YjM5xynEKH-g3w@mail.gmail.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAP80Qm3ayVfh-pE2M5euTSf0Z0EJ3AvwTiK+YjM5xynEKH-g3w@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Wang Shenran <shenran268@gmail.com>
+On Sun, Sep 22, 2019 at 08:25:40PM +0200, Lukas Zapletal wrote:
+> > Your patch does not apply to the curent mainline kernel.
+> > What is the parent branch ?
+> 
+> Oh well, this is my first contribution. I used Greg's staging tree
+> which I found in a first contributor tutorial on web. I will rebase,
+> let me know which branch do I need to pick. Thanks.
 
-[ Upstream commit 6e4d91aa071810deac2cd052161aefb376ecf04e ]
+Mainline should be fine.
 
-At boot time, the acpi_power_meter driver logs the following error level
-message: "Ignoring unsafe software power cap". Having read about it from
-a few sources, it seems that the error message can be quite misleading.
-
-While the message can imply that Linux is ignoring the fact that the
-system is operating in potentially dangerous conditions, the truth is
-the driver found an ACPI_PMC object that supports software power
-capping. The driver simply decides not to use it, perhaps because it
-doesn't support the object.
-
-The best solution is probably changing the log level from error to warning.
-All sources I have found, regarding the error, have downplayed its
-significance. There is not much of a reason for it to be on error level,
-while causing potential confusions or misinterpretations.
-
-Signed-off-by: Wang Shenran <shenran268@gmail.com>
-Link: https://lore.kernel.org/r/20190724080110.6952-1-shenran268@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/acpi_power_meter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 14a94d90c028a..ba3af4505d8fb 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -693,8 +693,8 @@ static int setup_attrs(struct acpi_power_meter_resource *resource)
- 
- 	if (resource->caps.flags & POWER_METER_CAN_CAP) {
- 		if (!can_cap_in_hardware()) {
--			dev_err(&resource->acpi_dev->dev,
--				"Ignoring unsafe software power cap!\n");
-+			dev_warn(&resource->acpi_dev->dev,
-+				 "Ignoring unsafe software power cap!\n");
- 			goto skip_unsafe_cap;
- 		}
- 
--- 
-2.20.1
-
+Guenter
