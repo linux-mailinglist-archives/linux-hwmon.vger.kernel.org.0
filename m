@@ -2,91 +2,95 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B809C305F
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Oct 2019 11:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7146EC39D7
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Oct 2019 18:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729553AbfJAJjX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 1 Oct 2019 05:39:23 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:41677 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729541AbfJAJjX (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Oct 2019 05:39:23 -0400
-Received: by mail-qk1-f194.google.com with SMTP id p10so10537609qkg.8
-        for <linux-hwmon@vger.kernel.org>; Tue, 01 Oct 2019 02:39:23 -0700 (PDT)
+        id S1726672AbfJAQEQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 1 Oct 2019 12:04:16 -0400
+Received: from smtp-fw-6001.amazon.com ([52.95.48.154]:64710 "EHLO
+        smtp-fw-6001.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726327AbfJAQEQ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Oct 2019 12:04:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=x6ZXQQxzoml14NVErNzUyQEmyrBF8ArDdBNS8Uodmbo=;
-        b=SNcTNKZusPIzT0tNaFTT+SZ1TrMDHINPTd8e+aQyod3iJpDxo3qGgHuvlUnKSnTRBj
-         dYkTR+UBgfnQmqZrSFT5H8QS+E6Rb1wOW3Qzai4hZ1WNCW4ts2Ifr/PycGZEAfYyrwXS
-         ZkJeUgXcswH+4mm0B6KrmGZPR4JiuUXsLQL+ppQ9HCouEpH143PQx8b2oVLH1EJYT0+s
-         0A1bQpHEtel5gLFvCfRxGxK8FQ3YmkX+a4HSbUKg9BFwZx2XrrvBblfhB2WFh8QV8KR3
-         /MMm/U3Qz7k97zF0iWRQO/V4Qn8JzN7Ww8ZT+8YQ8aGTx3KX4galjQQMctRf6iPkJJeO
-         KMPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=x6ZXQQxzoml14NVErNzUyQEmyrBF8ArDdBNS8Uodmbo=;
-        b=XJYXT+mcmXtpxtMI0hOnE7Dbt5JJodK1pP/i6AXbx18DKlH51ey9hEDeYxp+WWa2Kb
-         0wSexql3E1QfJwrKhD1jIWikhNM0d9dincjY6dJcNfJG3KXq2MgXwwverDrEAA69/ed8
-         40rOAGFAidaU0wXBtDR3AVKvG1IpNRB0P6nY8Aj2xJ6zwuuoaq1SVVEqpYDEj2uAur5d
-         q2TPttDOOwuutc0NiwrGbrqSzHfs250zv6LWsUjSOQwoY/adFawFpuViM7nryfH4rcjv
-         rFg5KxX+bgm38/k9cjSwDaBNWLiYesM5AZ671UYm1/ZlqcUHDojaFfumTLf5R8UE3Ahc
-         77Xg==
-X-Gm-Message-State: APjAAAXu+W1naNVJRj+Q0NlIf/jTmz0a790cP1zBkOfn1J+l/Y3qjtDX
-        41zNmX+L3jsBk4/aXtNGa3oNoigf5R0JtQbtGQ==
-X-Google-Smtp-Source: APXvYqzd+ZTVQMAeQwVao4ff//LPPCqU4fLp6Hz70jEz/mbUEnuaOFv71zqc3/7AfAp1YSrASLbThvP2zxlJrniNeoE=
-X-Received: by 2002:a05:620a:140b:: with SMTP id d11mr4979696qkj.22.1569922762727;
- Tue, 01 Oct 2019 02:39:22 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1569945855; x=1601481855;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=V31EWNMvdqyWe/Qg+FgJTs3uamoYxLmoNCf8l4/4axk=;
+  b=VHkK0EHmY7Iti2xqC8lDjuvy2I+kugptvS428xpSiiohNwCYOSHdrb30
+   wdRrdG6C3XbyqxxEnQMcPwXCSmZGiZTS/6OXtUtRiIMhW9/foYiyePg2t
+   ShbhOer6mJqseoyB7swaYks3j3UQkSBEMrxwFQrcjJj/6JVMBgE/7MHpS
+   8=;
+X-IronPort-AV: E=Sophos;i="5.64,571,1559520000"; 
+   d="scan'208";a="419069137"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-2a-22cc717f.us-west-2.amazon.com) ([10.124.125.6])
+  by smtp-border-fw-out-6001.iad6.amazon.com with ESMTP; 01 Oct 2019 16:04:13 +0000
+Received: from EX13MTAUWC001.ant.amazon.com (pdx4-ws-svc-p6-lb7-vlan3.pdx.amazon.com [10.170.41.166])
+        by email-inbound-relay-2a-22cc717f.us-west-2.amazon.com (Postfix) with ESMTPS id 8BB09A1E7E;
+        Tue,  1 Oct 2019 16:04:13 +0000 (UTC)
+Received: from EX13D02UWC002.ant.amazon.com (10.43.162.6) by
+ EX13MTAUWC001.ant.amazon.com (10.43.162.135) with Microsoft SMTP Server (TLS)
+ id 15.0.1367.3; Tue, 1 Oct 2019 16:04:13 +0000
+Received: from EX13MTAUWA001.ant.amazon.com (10.43.160.58) by
+ EX13D02UWC002.ant.amazon.com (10.43.162.6) with Microsoft SMTP Server (TLS)
+ id 15.0.1367.3; Tue, 1 Oct 2019 16:04:12 +0000
+Received: from 8c859006a84e.ant.amazon.com (172.26.203.30) by
+ mail-relay.amazon.com (10.43.160.118) with Microsoft SMTP Server id
+ 15.0.1367.3 via Frontend Transport; Tue, 1 Oct 2019 16:04:12 +0000
+From:   Patrick Williams <alpawi@amazon.com>
+CC:     Patrick Williams <alpawi@amazon.com>,
+        Patrick Williams <patrick@stwcx.xyz>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] hwmon: (pmbus) add VR12/VR13 mode support write paths
+Date:   Tue, 1 Oct 2019 11:03:41 -0500
+Message-ID: <20191001160407.6265-1-alpawi@amazon.com>
+X-Mailer: git-send-email 2.17.2 (Apple Git-113)
 MIME-Version: 1.0
-Received: by 2002:ac8:5205:0:0:0:0:0 with HTTP; Tue, 1 Oct 2019 02:39:21 -0700 (PDT)
-Reply-To: eddywilliam0003@gmail.com
-From:   eddy william <smithhason13@gmail.com>
-Date:   Tue, 1 Oct 2019 11:39:21 +0200
-Message-ID: <CAE9dMzbxxdWyqEQya_tittjwHQwQo37scoM17g+XLkx0YwWWag@mail.gmail.com>
-Subject: hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello
+pmbus_core supported VR11/VR12/VR13 modes when reading
+VID-formatted registers, but the write path only supported
+VR11 translations.  Add support for VR12 and VR13 to
+'data2reg_vid' for translating these formats.  This is the
+inverse of 'reg2data_vid'.
 
-My name is Eddy William I am a lawyer by profession. I wish to offer you
-the next of kin to my client. You will inherit the sum of ($14.2 Million)
-dollars my client left in the bank before his death.
+Signed-off-by: Patrick Williams <alpawi@amazon.com>
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-My client is a citizen of your country who died in auto crash with his wife
-and only son. I will be entitled with 50% of the total fund while 50% will
-be for you.
-Please contact my private email here for more details:eddywilliam0003@gmail=
-.com
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 8470097907bc..f0d696552142 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -845,9 +845,19 @@ static u16 pmbus_data2reg_direct(struct pmbus_data *data,
+ static u16 pmbus_data2reg_vid(struct pmbus_data *data,
+ 			      struct pmbus_sensor *sensor, long val)
+ {
+-	val = clamp_val(val, 500, 1600);
++	switch (data->info->vrm_version) {
++	case vr11:
++		val = clamp_val(val, 500, 1600);
++		return 2 + DIV_ROUND_CLOSEST((1600 - val) * 100, 625);
++	case vr12:
++		val = clamp_val(val, 0, 1520);
++		return ((val - 250) / 5) + 1;
++	case vr13:
++		val = clamp_val(val, 0, 2500);
++		return ((val - 500) / 10) + 1;
++	}
+ 
+-	return 2 + DIV_ROUND_CLOSEST((1600 - val) * 100, 625);
++	return 0;
+ }
+ 
+ static u16 pmbus_data2reg(struct pmbus_data *data,
+-- 
+2.17.2 (Apple Git-113)
 
-Many thanks in advance,
-Mr.Eddy William
-
-
-Hallo
-
-Mein Name ist Eddy William . Ich bin von Beruf Rechtsanwalt. Ich m=C3=B6cht=
-e
-Ihnen anbieten
-die n=C3=A4chsten Verwandten zu meinem Klienten. Sie erben die Summe von
-($14.2 Millionen US-Dollar)
-Dollar, die mein Kunde vor seinem Tod in der Bank gelassen hat.
-
-Mein Mandant ist ein Staatsb=C3=BCrger Ihres Landes, der mit seiner Frau
-bei einem Autounfall ums Leben gekommen ist
-und nur Sohn. Ich werde mit 50% des Gesamtfonds berechtigt sein, w=C3=A4hre=
-nd 50%
-sein f=C3=BCr dich.
-Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
-Informationen: eddywilliam0003@gmail.com
-
-Vielen Dank im Voraus,
-Mr.Eddy William
