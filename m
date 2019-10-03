@@ -2,27 +2,27 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30223CA6DC
-	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Oct 2019 18:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD1FCAAAF
+	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Oct 2019 19:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393046AbfJCQsK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 3 Oct 2019 12:48:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33764 "EHLO mail.kernel.org"
+        id S2392216AbfJCRL3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 3 Oct 2019 13:11:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38542 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393043AbfJCQsJ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 3 Oct 2019 12:48:09 -0400
+        id S2403861AbfJCQbd (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 3 Oct 2019 12:31:33 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5ADD820865;
-        Thu,  3 Oct 2019 16:48:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE248207FF;
+        Thu,  3 Oct 2019 16:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570121288;
-        bh=CNYbvKqNLOZehyxPnHnVXigu4DTXN2+614tsG+MGyi4=;
+        s=default; t=1570120292;
+        bh=llSn4ydV9YXYEK8DA21d6QG0PtBC/cL9om0VFCk4OtM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rhIEZTtA8LZ6JetY54Nu4eVoC+sy94dg3HTk2q8IN9rh3+5DOk9G5DysZoq769Ql2
-         RpgMu8VRGtTTg9J7vQY/N4GrMyonYQL4u4grAzcZHwf4Fkr2dm7KIAKAy1M84S299j
-         WvGzSot9lbNa+SmHAYyFvMnOjerg5GfLSZe2MIho=
+        b=jfU7Iy1xjP8zJmLSj4J1CuFHA+09RGyYahfe76eboPEikbWvHE9xN7j6ohM37hUId
+         3r++YCsXtyqNWtJB2FHwimXXBZ8m+spoCDVCxiexuiyUjJAMM3//JIyGYYwfKChfiC
+         Fd3jwQPb7peIpJSBEjFUL2lLaYNBiM7UwGqbPaqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
         linux-hwmon@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.3 188/344] x86/amd_nb: Add PCI device IDs for family 17h, model 70h
-Date:   Thu,  3 Oct 2019 17:52:33 +0200
-Message-Id: <20191003154558.743450158@linuxfoundation.org>
+Subject: [PATCH 5.2 169/313] x86/amd_nb: Add PCI device IDs for family 17h, model 70h
+Date:   Thu,  3 Oct 2019 17:52:27 +0200
+Message-Id: <20191003154549.620139024@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191003154540.062170222@linuxfoundation.org>
-References: <20191003154540.062170222@linuxfoundation.org>
+In-Reply-To: <20191003154533.590915454@linuxfoundation.org>
+References: <20191003154533.590915454@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -103,7 +103,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 4 insertions(+)
 
 diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index d63e63b7d1d95..251c795b4eb3c 100644
+index 002aedc693933..8c26b696d8930 100644
 --- a/arch/x86/kernel/amd_nb.c
 +++ b/arch/x86/kernel/amd_nb.c
 @@ -21,6 +21,7 @@
@@ -131,7 +131,7 @@ index d63e63b7d1d95..251c795b4eb3c 100644
  	{}
  };
 diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index c842735a4f45a..4b97f427cc929 100644
+index 70e86148cb1e9..862556761bbf4 100644
 --- a/include/linux/pci_ids.h
 +++ b/include/linux/pci_ids.h
 @@ -548,6 +548,7 @@
