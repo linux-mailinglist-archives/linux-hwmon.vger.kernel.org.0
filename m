@@ -2,177 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D25CBF0F
-	for <lists+linux-hwmon@lfdr.de>; Fri,  4 Oct 2019 17:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93244CC36C
+	for <lists+linux-hwmon@lfdr.de>; Fri,  4 Oct 2019 21:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389539AbfJDPXS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 4 Oct 2019 11:23:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57722 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389591AbfJDPXR (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 4 Oct 2019 11:23:17 -0400
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1227B2133F;
-        Fri,  4 Oct 2019 15:23:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570202596;
-        bh=fpWPXT8ggD/e+pn1BYIuXjDg5w4o0wtetCOExwO2jKI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=1HC8jaPP2G0MWAWxaAFL2+tq5ciAJ4x5mOg5CSEB8t19cEmbXeVfBzU87NzEzJYzU
-         /Z91Kt7mxYJejs3+VaDuSOptlGlIevhRK1zWaCkW9zPUgRvyhZzxjiGmh7mKcoePT9
-         drAO1mvoLrPQRMzwDU31x5pbXSxRgdfEwW1SGYRw=
-Received: by mail-qt1-f176.google.com with SMTP id 3so9098238qta.1;
-        Fri, 04 Oct 2019 08:23:16 -0700 (PDT)
-X-Gm-Message-State: APjAAAXSUdn19LnA+gvVYyJGm+dif/8LIaeRGUIF1pyZCbB5VdZYaHdB
-        S+/lz17ghZtQt6pvBApR4swTmCuGFozzIjf8gg==
-X-Google-Smtp-Source: APXvYqyMEEXcNS7O6u6Diqt8pCgl45a2tKKmM4tc+3EtuFfs+n4HBWeELngFdSwx5uOrLCiy+N5MR6jFrVyyPKoQlLc=
-X-Received: by 2002:ac8:6982:: with SMTP id o2mr16440439qtq.143.1570202595162;
- Fri, 04 Oct 2019 08:23:15 -0700 (PDT)
+        id S1730460AbfJDTLm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 4 Oct 2019 15:11:42 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:41770 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730555AbfJDTLj (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 4 Oct 2019 15:11:39 -0400
+Received: by mail-lj1-f194.google.com with SMTP id f5so7570255ljg.8
+        for <linux-hwmon@vger.kernel.org>; Fri, 04 Oct 2019 12:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=usuFISMqci9f735wNqIFTbIm+6Oe9vY9sfRcppqbt5s=;
+        b=HvnR1KR73qda6vY/C+pVxksN+VkAF79ybdTbYLgp2BPfIBTG3X5fPcL8CE/yRW+uYB
+         JcVyzvlgJ6a7Zo3IibEn8NznBc491IMUS7uRPQ2Xi9AskMnPYjzHlY0I24qeDxgvE2FD
+         a7sfDNkFfsbRQKT7Hkd/KJRDBgEOAcZaJc/qhjwn9HaGcxj1w9Cn4mZuNq3oSqE/XsII
+         YTdyE6x1+6JuJjv1gs9xZgr0HuM6VueBCMuQ71OTx2p9m5jrN/ipjmDSP9DBbbMOMvSB
+         2NYml5bEyyVkbiMwCNW4mMYiZ5Bz0QF6bjm/SnC1T8JED+3Ikj77qK6j4BTtzgYdniIo
+         h81g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=usuFISMqci9f735wNqIFTbIm+6Oe9vY9sfRcppqbt5s=;
+        b=JOCkDL6eRhtVkWebHeM1rhIDPu3+hgFaLb5KWFy9Oa47HLYS+BRTXwI0Kc2PZPeCGN
+         Iv/l8aTmKtBeJkWE+Kr6op1dl80CiQT+pVvLkdEo77Fto3qGyhDqIpUQHPyQW0k5oc4K
+         85mJmOVm3vbo+5KzFsvtsg3rO2nzFSl86JQUHChBCcxgqIRF2vuzRzlv5vRrb0WR5ajr
+         z9Oe39piiA2t5uFA009HnDqCSCMPj8Cv3MIWpz2mbVoIXxGEatARdEwNz1gJZ7rsx1J7
+         sSQTRSv6EOXzVAdQmq2SmGf/xlA21hmy0q1BEDdb7sehqpREeLxoqFxbfln3HJG6sNpW
+         mMaw==
+X-Gm-Message-State: APjAAAWj7Bkd9WQoUe6zW7FoX3vWLVmqN6nErawjaqUNYvWwc6evNzZk
+        5QJCKLFDNzWm4FoUFfCCcf/UlK1VUxIVYK60Xj4=
+X-Google-Smtp-Source: APXvYqxneftEXtgdp62+HuPpOF3H0Ge3/BzgCLs+OMAlvJEqXQGw4KdTusSyG/LNSfeR/H5ALp5GlFHQBbsKFNhd5wY=
+X-Received: by 2002:a2e:2953:: with SMTP id u80mr10372271lje.233.1570216296619;
+ Fri, 04 Oct 2019 12:11:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190924124945.491326-1-nuno.sa@analog.com> <20190924124945.491326-4-nuno.sa@analog.com>
- <20191002002331.GA17502@bogus> <a85b33d3cd24b4225e4be3a25221f9c56cdcca5c.camel@analog.com>
- <CAL_JsqJPFfUmOOQ-f_ibbTXdzgYxYMf2+7HCq2eBn_MkfRsdbQ@mail.gmail.com> <eec33c7156674770ca2f3033baed76c0e05a8587.camel@analog.com>
-In-Reply-To: <eec33c7156674770ca2f3033baed76c0e05a8587.camel@analog.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 4 Oct 2019 10:23:03 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqK6oC1VFb4ni9pn9a=sfxWK9pAmBBgajpZwad5udFkPoA@mail.gmail.com>
-Message-ID: <CAL_JsqK6oC1VFb4ni9pn9a=sfxWK9pAmBBgajpZwad5udFkPoA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] dt-bindings: iio: Add ltc2947 documentation
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "linux@roeck-us.net" <linux@roeck-us.net>,
-        "corbet@lwn.net" <corbet@lwn.net>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "jdelvare@suse.com" <jdelvare@suse.com>
+Received: by 2002:a05:6504:1175:0:0:0:0 with HTTP; Fri, 4 Oct 2019 12:11:35
+ -0700 (PDT)
+Reply-To: helenpatrrick@gmail.com
+From:   Angel Helen <isslamicbank@gmail.com>
+Date:   Fri, 4 Oct 2019 19:11:35 +0000
+Message-ID: <CABU49e=m5HNGJpwvNO_mW5jcwDtgW+5F4a+BVr03n1jFqfBEXA@mail.gmail.com>
+Subject: HELLO PLEASE CAN I SPEAK WITH YOU?
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Oct 4, 2019 at 9:59 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
->
-> Hi Rob,
->
-> Just wanted to clarify something which I don't know if is something I'm
-> doing wrong or if it is some issue.
->
-> On Wed, 2019-10-02 at 14:06 -0500, Rob Herring wrote:
-> >
-> > On Wed, Oct 2, 2019 at 10:09 AM Sa, Nuno <Nuno.Sa@analog.com> wrote:
-> > > On Wed, 2019-10-02 at 09:19 -0500, Rob Herring wrote:
-> > > > On Tue, Sep 24, 2019 at 02:49:45PM +0200, Nuno S=C3=A1 wrote:
-> > > > > Document the LTC2947 device devicetree bindings.
-> > > > >
-> > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > > ---
-> > > > >  .../bindings/hwmon/adi,ltc2947.yaml           | 101
-> > > > > ++++++++++++++++++
-> > > > >  MAINTAINERS                                   |   1 +
-> > > > >  2 files changed, 102 insertions(+)
-> > > > >  create mode 100644
-> > > > > Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-> > > > >
-> > > > > diff --git
-> > > > > a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-> > > > > b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-> > > > > new file mode 100644
-> > > > > index 000000000000..2ea0187421d4
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-> > > > > @@ -0,0 +1,101 @@
-> > > >
-> > > > Missing license. Please make new bindings (GPL-2.0-only OR BSD-2-
-> > > > Clause)
-> > >
-> > > ack.
-> > >
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id:
-> > > > > http://devicetree.org/schemas/bindings/hwmon/adi,ltc2947.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: Analog Devices LTC2947 high precision power and energy
-> > > > > monitor
-> > > > > +
-> > > > > +maintainers:
-> > > > > +  - Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > > +
-> > > > > +description: |
-> > > > > +  Analog Devices LTC2947 high precision power and energy
-> > > > > monitor
-> > > > > over SPI or I2C.
-> > > > > +
-> > > > > +
-> > > > > https://www.analog.com/media/en/technical-documentation/data-shee=
-ts/LTC2947.pdf
-> > > > > +
-> > > > > +properties:
-> > > > > +  compatible:
-> > > > > +    enum:
-> > > > > +      - adi,ltc2947
-> > > > > +
-> > > > > +  reg:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  clocks:
-> > > > > +    description:
-> > > > > +      The LTC2947 uses either a trimmed internal oscillator or
-> > > > > an
-> > > > > external clock
-> > > > > +      as the time base for determining the integration period
-> > > > > to
-> > > > > represent time,
-> > > > > +      charge and energy. When an external clock is used, this
-> > > > > property must be
-> > > > > +      set accordingly.
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  adi,accumulator-ctl-pol:
-> > > > > +    description:
-> > > > > +      This property controls the polarity of current that is
-> > > > > accumulated to
-> > > > > +      calculate charge and energy so that, they can be only
-> > > > > accumulated for
-> > > > > +      positive current for example. Since there are two sets
-> > > > > of
-> > > > > registers for
-> > > > > +      the accumulated values, this entry can also have two
-> > > > > items
-> > > > > which sets
-> > > > > +      energy1/charge1 and energy2/charger2 respectively. Check
-> > > > > table 12 of the
-> > > > > +      datasheet for more information on the supported options.
-> > > > > +    allOf:
-> > > > > +      - $ref: /schemas/types.yaml#/definitions/uint32-array
-> > > > > +      - enum: [0, 1, 2, 3]
-> > > > > +      - minItems: 2
-> > > > > +      - maxItems: 2
-> > > > > +    default: [0, 0]
-> > > >
-> > > > This should be:
-> > > >
-> > > > allOf:
-> > > >   - $ref: ...
-> > > > items:
-> > > >   enum: [0, 1, 2, 3]
-> > > >   default: 0
-> > > > minItems: 2
-> > > > maxItems: 2
->
-> When trying the above I get:
->
-> "ltc2947@0: adi,accumulator-ctl-pol:0: [0, 1] is not valid under any of
-> the given schemas"
+Hello dear,
+My name is Miss Helen i am a humble sincere single girl looking for
+true love, and a partner to assist me transfer my late father money,
+an amount of, (Four Million Two Hundred Thousand US Dollars) to your
+country for investment. I will give you 40% after the transfer, while
+the remaining amount will be invest in your country in your names,
+with 50% equal profits sharing.
 
-Is dtschema up to date with the latest. I think I fixed this case
-recently, though with the wonderful json-schema errors it is hard to
-tell.
+Send me your pictures with brief introductions about your self's, so
+that i will give you further details and procedure.
 
-Rob
+Message me to my email: helenpatrrick@gmail.com
+
+I awaits your answer today.
+God bless you.
+Miss Helen.
