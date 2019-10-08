@@ -2,130 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17AAED01AA
-	for <lists+linux-hwmon@lfdr.de>; Tue,  8 Oct 2019 21:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88A1D01EB
+	for <lists+linux-hwmon@lfdr.de>; Tue,  8 Oct 2019 22:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730795AbfJHTzW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 8 Oct 2019 15:55:22 -0400
-Received: from mail-ed1-f41.google.com ([209.85.208.41]:34567 "EHLO
-        mail-ed1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730722AbfJHTzV (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 8 Oct 2019 15:55:21 -0400
-Received: by mail-ed1-f41.google.com with SMTP id p10so16865012edq.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 08 Oct 2019 12:55:20 -0700 (PDT)
+        id S1730249AbfJHULd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 8 Oct 2019 16:11:33 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:44208 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729436AbfJHULd (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 8 Oct 2019 16:11:33 -0400
+Received: by mail-pf1-f193.google.com with SMTP id q21so10261pfn.11;
+        Tue, 08 Oct 2019 13:11:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
-        b=aMQQgi7dIXVBnmVMSSMCLgb3oXTzeafbZdgWl2Y7dgh9d3yilS1+9yTnvWoS7+GzUk
-         LWbTYKnbDzuBJ3/U6U4a0Txwis4unkVKDohWYyBjnKYrTLghN7laSYeGp1/FcmznDyEO
-         GS9pgiMN+uT0qCjbihaa5wuvtHOM98vqOW8UVjJ7Cv+EprgLSNS8LJdhrjnJyNqQEN56
-         5sfOyU15h4kpoOXNgzNljIz5N8IZnpl4XHLYJYLCwvTOpHMRDfM3ywlgrk+4Qs+isMtv
-         bwWMXB9P8rpPXCaQx70qpw2S2sG0Q07XznOIe3PPQ9uFVdh7+iWMtRM+rtyrWFblwrYM
-         wXZw==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=p7/9EcLsPyHN5M72vM2Dh9qj2UUt/pHcyAO/sxUa10I=;
+        b=VrflBTGGJuMfi+AgBa2OXFiTljpwLdGgJ3mkExMcjdlSMkxCYrfhBZUR6FTOkETadu
+         9tUcj20xtj3BppPJHt2SWTNbMaLGlHyBhsy2phIUGg86seUtYHfkl0dhVuYtOxhWIUJ+
+         AH62SVPuRfkZpFG2rMWS4jz6FzsX4zf+kPny7umo2Ivo6XxIK69kp1hBTQKGnoLIlR/P
+         Klf2MZqxNS//RuDsWNAenA2f0ljIZra60DOBC+AJU12vf29aLO8hXa58rkNQ+sDxsGFg
+         q6ViPUxqyIm87M85qyFD90UAJKiCcSWSjc07ezoOw9bkMhwALzGa+4afr80gKvimiIAn
+         UQQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
-        b=un3cRPDEnh9Qj4qE9Ps0knCcL+34VzvvwJc7GlOQY6IW57RFUbseMuSfQdBrMbPS6y
-         f+2xgakgcJt6SrxEI/9nOuWrog3YtaRuNxmXZl3W4aQSXlHC6m9D2i7pSDhcDAwbLIe5
-         JrAy5SqGl/5DL/ZzNlmMrz6jhCWH9AJvWdwWkjarIihhXJt3mft2AMjEWPv1uAw5Ng1C
-         AzH0JP6HGfxf68KTbP4+SWelwiuOOuECHosRu8KBsgaJCmDybzor2nLYFf1EuK6YJO1w
-         FvkpnCLD2tiNRa3oqHUxSNL5PaQRFFoK4v2/EF4qCLE73+Y90I27PqE8Tf7GRzorOPh9
-         gY1w==
-X-Gm-Message-State: APjAAAVJOFOvmd7dgbfEM5swnzWXlOM8u835qXMrqOZ9Ko3piQ3gXK8G
-        HQxP/DV+7kn3VeRA/xTwtrk0atsI9cE9+liSXsM=
-X-Google-Smtp-Source: APXvYqxaZfvXk0/G1PfPN40JEbEfue6b7v2Lk/SQWmnUxoxmnZyxXwpPNC4UPIh9mJw4kQ9atMHeHG1Orcb22TWXOSk=
-X-Received: by 2002:a50:c306:: with SMTP id a6mr36339639edb.108.1570564517490;
- Tue, 08 Oct 2019 12:55:17 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=p7/9EcLsPyHN5M72vM2Dh9qj2UUt/pHcyAO/sxUa10I=;
+        b=QfMt3bDA0pBUnJ08MczG9XPTudtlWHu1Ir+e1vWYS3Hi9J/HSdblN6gOkK4hqXbwYz
+         gi3ATgVoN4eSHWR1Cmc1AcsQoTSMFgoWZqt4idJIrVqHYzcwyDt8d/Y9VKacYTWjw9Qr
+         /JBnvtiSD6cYSDlMrYbtiY8nxxjW4LKO2DHo1/sCUVrtwV3glt31AWOR/YBAc8eZNZXX
+         MlHW0Ji2I2aZKjQfSkyGB6nZwpLqxWIYWeKxS6dbdQ8PAY4SMTrJPEKzQYRQCk4JUqqy
+         uggMrglaUqbhFUz2Epq0LVZlY5Xxw0SS18Xiw7Q346SrU2ZzpZq7EjL6xzWYVbpSNP6W
+         7Raw==
+X-Gm-Message-State: APjAAAWetXQ8Cg43/0k+BTpaQ/Bf9yQ5QvKgo/xd65ZhNhOCp3I2cKO6
+        +MRHJ1eeCKSj5gWmtHjyoj8=
+X-Google-Smtp-Source: APXvYqwqnXcAH8nYSgH3S93JmJb6c8Zk75A9uekNBUOFBLGg4iem0oxdgrDzgqrnwuU0XEOetqwYsw==
+X-Received: by 2002:aa7:9ab5:: with SMTP id x21mr6319739pfi.252.1570565492415;
+        Tue, 08 Oct 2019 13:11:32 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id c64sm337pfc.19.2019.10.08.13.11.30
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 08 Oct 2019 13:11:30 -0700 (PDT)
+Date:   Tue, 8 Oct 2019 13:11:29 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "mdf@kernel.org" <mdf@kernel.org>,
+        "linux-fpga@vger.kernel.org" <linux-fpga@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "jdelvare@suse.com" <jdelvare@suse.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH 2/3] hwmon: Support ADI Fan Control IP
+Message-ID: <20191008201129.GA14652@roeck-us.net>
+References: <20190926103925.194973-1-nuno.sa@analog.com>
+ <20190926103925.194973-3-nuno.sa@analog.com>
+ <20191006153209.GA30372@roeck-us.net>
+ <1125a1f831a76b27ccc050a0db4499e5c4abd76c.camel@analog.com>
 MIME-Version: 1.0
-Received: by 2002:a17:906:cc89:0:0:0:0 with HTTP; Tue, 8 Oct 2019 12:55:16
- -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   MONEY GRAM <currency1000000@gmail.com>
-Date:   Tue, 8 Oct 2019 20:55:16 +0100
-Message-ID: <CAPqfnSEO==O6BEtBbcMMZfh3qcY4Bz0qndhCqbcLqZx4DCs44A@mail.gmail.com>
-Subject: HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE M.T.C.N:78393135
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1125a1f831a76b27ccc050a0db4499e5c4abd76c.camel@analog.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE
-M.T.C.N:78393135
+On Tue, Oct 08, 2019 at 03:59:49PM +0000, Sa, Nuno wrote:
+[ ... ]
+> > > +
+> > > +	ctl->irq = platform_get_irq(pdev, 0);
+> > > +	if (ctl->irq < 0) {
+> > 
+> > This can return -EPROBE_DEFER. On top of that, it already generates
+> > an error
+> > message, meaning another one here is unnecessary.
+> 
+> Why returning -EPROBE_DEFER? platform_get_irq() already seems to handle
+> EPROBE_DEFER...
+> 
+... which is exactly why I am saying that you don't need another error
+message, and that an unconditional error message is a bad idea.
 
-Attn: Beneficiary,
-
-This is to inform you that the America Embassy office was instructed
-to transfer your fund $980,000.00 U.S Dollars compensating all the
-SCAM VICTIMS and your email was found as one of the VICTIMS. by
-America security leading team and America representative officers so
-between today the 8th of October till 1ST Of December 2019 you will
-be receiving MONEY GRAM the sum of $6,000 dollars per day. However be informed
-that we have already sent the $6,000 dollars this morning to avoid
-cancellation of your payment, remain the total sum of $980,000.00.
-
-You have only six hours to call this office upon the receipt of this
-email the maximum amount you will be receiving per a day starting from
-today's $6,000 and the Money Transfer Control Number of today is
-below.
-
-NOTE; The sent $6,000 is on hold because of the instruction from IMF
-office, they asked us to place it on hold by requesting the (Clean
-Bill Record Certificate) which will cost you $25 in order to fulfill
-all the necessary obligation to avoid any hitches while sending you
-the payment through MONEY GRAM money transfer, the necessary
-obligation I mean here is to obtain the (Clean Bill Record
-Certificate)
-
-Below is the information of today track it in our
-
-websitehttps://moneygarm.com/asp/orderStatus.asp?country=global
-to see is available to pick up by the receiver, but if we didn't here
-from you soon we'll pickup it up from line for security reason to
-avoid hackers stealing the money online.
-
-Money Transfer Control Number M.T.C.N)::78393135
-SENDERS FIRST NAME: John
-SENDERS LAST NAME: Chun
-SENDERS COUNTRY...BENIN REPUBLIC
-TEXT QUESTION: A
-ANSWER: B
-AMOUNT: $6,000
-
-We need the below details from you, to enable us place the payment to
-your name and transfer the fund to you.
-
-(Full Receivers name)...................
-(You're Country)................................
-(Address)......................................
-(Phone NuMBER-...............................
-(You're Age)............................
-(OCCUPATION)..REAL ESTATE..................
-(A Copy of Your ID CARD).SEE ATTACHMENTS.............
-
-HOWEVER YOU HAVE TO PAY $25 FOR THE (Clean Bill Record Certificate)
-AND THAT IS ALL YOU HAVE TO DO ASAP.
-
-The payment will be sending to below information, such as:
-
-Receiver.............. ALAN UDE
-Country................Benin Republic
-Amount: ....................$25
-Question: .....................A
-Answer:................... B
-Sender...............Name:
-MTCN :..............
-
-According to the instruction and order we received from IMF the their
-requested $25 must be made directly to the above info's.
-
-Furthermore you are advised to call us as the instruction was passed
-that within 6hours without hearing from you, Count your payment
-canceled. Number to call is below listed manager director office of
-release order:
-DR.ALAN UDE
-Director MONEY GRAM-Benin
+Guenter
