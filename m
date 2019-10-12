@@ -2,97 +2,111 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6174BD50D0
-	for <lists+linux-hwmon@lfdr.de>; Sat, 12 Oct 2019 18:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F81D52FA
+	for <lists+linux-hwmon@lfdr.de>; Sun, 13 Oct 2019 00:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729220AbfJLQEw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 12 Oct 2019 12:04:52 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:43258 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729274AbfJLQCw (ORCPT
+        id S1726957AbfJLWAL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 12 Oct 2019 18:00:11 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:41318 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726918AbfJLWAL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 12 Oct 2019 12:02:52 -0400
-Received: by mail-qt1-f193.google.com with SMTP id t20so13209046qtr.10
-        for <linux-hwmon@vger.kernel.org>; Sat, 12 Oct 2019 09:02:52 -0700 (PDT)
+        Sat, 12 Oct 2019 18:00:11 -0400
+Received: by mail-pf1-f194.google.com with SMTP id q7so8147767pfh.8;
+        Sat, 12 Oct 2019 15:00:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
+        h=sender:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=115n8fVPcb6FFdMlLEXy4f+oj6Xj6AxVK8mXd42SbSI=;
-        b=CGxTjducfs3i9fL9ZR/VcEs9UZRrWGrQ2h8205POiIL9yO/40CKYwPWD71NnFVxR5l
-         N6obY98Vpq4vgEOSnYTswhKpfbN/U6HjKuojF3XjAVOFHqO7hVtA0rg8tsB9ETz7oC/N
-         TIQz7gc5w0oatZqPJnwX57eKBIMYj/OowfUdngO85pbGuB/VTIyC10dEXpmRvaoaVZmf
-         Oj9NQp6s+EndxjTshCZlxqlmj0e80CAXX2bcLfQULS7n11/NCfv15eJ56YHj/WchAWXH
-         al6sFAZOZG11qrPIUTuqTjX+GRry17qnGDjAhq13inFg5F2GTgaxexcMYrx14XBTPXNi
-         SfgQ==
+        bh=gdX1AvP0jU+JAMglCXDBLRHeX+aZyBphY7SECFf/oEM=;
+        b=Ub6RFasAtB4+Y+MWZSV9kAK2W+59H09O1OQXtJPzY+KGUFg+LtRoXAOZ4u/rUPU0C3
+         Yj0iMN+xWmRyN+8r5OxvYcSS4LuiDLXEIVcVnlT82c+3d2jvbslJ/5XcV1zu8THaLN3c
+         fTDDDa8J/TGTHLdHhYOohR3FxIhY5iekRr18ydx9SuW4ZNU9/hoNG02sMmV/43O1rwKk
+         +79Vn7oOOJU7wbDkhNWFtHqvAihcZRMW0/nqCrF3/YTHa9gC8E9HGreR/2k5yViVC8JH
+         WsqhY8PY+P64CU8uN0/hhhWDioThaCw1uZ2CH1iuFDy/SmzAsX8K+TJ5WUDsbm8dVwxk
+         /X4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=115n8fVPcb6FFdMlLEXy4f+oj6Xj6AxVK8mXd42SbSI=;
-        b=UxgOH6M1t0gxcwzG7tPQ+MKAvKjhAx1HssMybRcNd2SGA62RrJ+Rgc503AUx368TZy
-         Hx2+XiddTYgj9lIawwl8CRRrJcM94PpnkBHzq8VUQ1sGosPivF3oAtMcgIpeQOxQ/gOv
-         IH6KyD7mza77Xi4dqfE98UacrxpYNNGnn/nctmpbvCmSouGJ+m+6OBqyV5hOUucw8A8g
-         Z6h4FgEWStoYZpiZqhFWmD/ZOnmwGD019KW6Esr8JBPryv5dhsDX3qHucpFFReUCA0Kt
-         9Vlcd68HGWdV8rf7GvQjHWgyTpf2ew3gYyM8FlMWZfAyUveaaSvJaC691pk9gUamVc57
-         7aCA==
-X-Gm-Message-State: APjAAAVQk4L+L5NMhlgjtt2mqvm6wUGkwWAESDrO8+NJIidjhAko+HzI
-        h7mLMt3vk4LQlpNImlIldc9Jq3WqjeZO4otdwe8=
-X-Google-Smtp-Source: APXvYqxIJ55vEKe7JqfFUqWpUX+HFLn9NxIYRwXDaTvESKfz64imklWfqUOF8EfZgXOON5gnn+AQtKzCyF5Mx07h2to=
-X-Received: by 2002:ad4:4342:: with SMTP id q2mr22403420qvs.42.1570896171755;
- Sat, 12 Oct 2019 09:02:51 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=gdX1AvP0jU+JAMglCXDBLRHeX+aZyBphY7SECFf/oEM=;
+        b=gRBtlNRTG1YMiyYsWsn5uQTyKz3To12RECTkGKnS0mhElp/jHYH7c2MYwDvmR7VqVX
+         AFoWDnSudwPVBMsKQCUzbK60/1S1KpFE1X/yBIfft+qFw8sq5EjDyPR+TNYQchcIk3Kw
+         jsT6Ar3WDJn7nWzLNDJRy+KaAhwwCAFztLnWdDritP7dyyMtl+ROKlhw7G1djU9vp7OB
+         g+AGCXLMUSPmnFav83EIkJ3gS6pURazgTpv0bU42T3Cq261VJSKCeh05noCQYEPQfEq7
+         8EZ/jS7wNUfJbxSMLFBYYcwu5gsTrivk1k/2HSSu6vnFL94Q+mcVobdVypZRF8g6EuCU
+         V1AA==
+X-Gm-Message-State: APjAAAW49TXimMVhrQx5oS9hWS9cQRdZtqfsnjiDAFU0hjqOe0PtFN3n
+        7xPYReTmP2uXou9/9av8/5m6KuFA
+X-Google-Smtp-Source: APXvYqycCPELiBjZ3k0potG/68WXfXtEzbLq66IsgoZk5orSN97dsKSvzbYDhANwrC2qw9K+MgOGng==
+X-Received: by 2002:a65:614e:: with SMTP id o14mr24385352pgv.237.1570917610319;
+        Sat, 12 Oct 2019 15:00:10 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id c8sm16741484pfi.117.2019.10.12.15.00.08
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 12 Oct 2019 15:00:09 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hwmon fixes for v5.4-rc3
+Date:   Sat, 12 Oct 2019 15:00:07 -0700
+Message-Id: <20191012220007.1384-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:a0c:f245:0:0:0:0:0 with HTTP; Sat, 12 Oct 2019 09:02:51
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.com
-From:   Aisha Gadafi <aishagddafi680@gmail.com>
-Date:   Sat, 12 Oct 2019 09:02:51 -0700
-Message-ID: <CAO3Jird+CkVKKsRDZ6WE7Ba9BpHx23EnoiaCOxEDFx1xpK7KSA@mail.gmail.com>
-Subject: Dear Friend (Assalamu Alaikum),
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+Hi Linus,
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, alleinerziehende Mutter und Wit=
-we
-mit drei Kindern. Ich bin die einzige biologische Tochter des sp=C3=A4ten L=
-ibyers
-Pr=C3=A4sident (Oberst Muammar Gaddafi).
+Please pull hwmon fixes for Linux v5.4-rc3 from signed tag:
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen und
-f=C3=BCnfhunderttausend
-United State Dollar (27.500.000,00 $) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner wegen meines aktuellen Fl=C3=BCchtlingsstatus bin ich jed=
-och
-Interesse an Ihnen f=C3=BCr die Unterst=C3=BCtzung von Investitionsprojekte=
-n in
-Ihrem Land, kann sein
-Von dort aus k=C3=B6nnen wir in n=C3=A4chster Zukunft eine Gesch=C3=A4ftsbe=
-ziehung aufbauen.
+    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.4-rc3
 
-Ich bin gerne bereit, mit Ihnen das Verh=C3=A4ltnis der Beteiligungsquote z=
-u teilen
-st=C3=BCtzen Sie sich auf die zuk=C3=BCnftigen Investitionen, die Gewinne e=
-rzielen.
+Thanks,
+Guenter
+------
 
-Wenn Sie bereit sind, dieses Projekt in meinem Namen durchzuf=C3=BChren,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
+The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
 
-Ihre dringende Antwort wird gesch=C3=A4tzt. Schreiben Sie mir an diese
-E-Mail-Adresse (
-ayishagddafio@mail.com ) zur weiteren Diskussion.
+  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
 
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Gaddafi
-Antwort an: ayishagddafio@mail.com
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v5.4-rc3
+
+for you to fetch changes up to 11c943a1a635d2c7141b5b6667ebb521ab4ecd58:
+
+  hwmon: docs: Extend inspur-ipsps1 title underline (2019-10-07 05:56:57 -0700)
+
+----------------------------------------------------------------
+hwmon fixes for v5.4-rc3
+
+Update/fix inspur-ipsps1 and k10temp Documentation
+Fix nct7904 driver
+Fix HWMON_P_MIN_ALARM mask in hwmon core
+
+----------------------------------------------------------------
+Adam Zerella (2):
+      docs: hwmon: Include 'inspur-ipsps1.rst' into docs
+      hwmon: docs: Extend inspur-ipsps1 title underline
+
+Lukas Zapletal (1):
+      hwmon: (k10temp) Update documentation and add temp2_input info
+
+Nuno Sá (1):
+      hwmon: Fix HWMON_P_MIN_ALARM mask
+
+amy.shih (2):
+      hwmon: (nct7904) Fix the incorrect value of vsen_mask in nct7904_data struct
+      hwmon: (nct7904) Add array fan_alarm and vsen_alarm to store the alarms in nct7904_data struct.
+
+ Documentation/hwmon/index.rst         |  1 +
+ Documentation/hwmon/inspur-ipsps1.rst |  2 +-
+ Documentation/hwmon/k10temp.rst       | 18 +++++++++++++++++-
+ drivers/hwmon/nct7904.c               | 33 +++++++++++++++++++++++++++------
+ include/linux/hwmon.h                 |  2 +-
+ 5 files changed, 47 insertions(+), 9 deletions(-)
