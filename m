@@ -2,111 +2,53 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F81D52FA
-	for <lists+linux-hwmon@lfdr.de>; Sun, 13 Oct 2019 00:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1791D56C4
+	for <lists+linux-hwmon@lfdr.de>; Sun, 13 Oct 2019 18:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfJLWAL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 12 Oct 2019 18:00:11 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:41318 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726918AbfJLWAL (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 12 Oct 2019 18:00:11 -0400
-Received: by mail-pf1-f194.google.com with SMTP id q7so8147767pfh.8;
-        Sat, 12 Oct 2019 15:00:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=gdX1AvP0jU+JAMglCXDBLRHeX+aZyBphY7SECFf/oEM=;
-        b=Ub6RFasAtB4+Y+MWZSV9kAK2W+59H09O1OQXtJPzY+KGUFg+LtRoXAOZ4u/rUPU0C3
-         Yj0iMN+xWmRyN+8r5OxvYcSS4LuiDLXEIVcVnlT82c+3d2jvbslJ/5XcV1zu8THaLN3c
-         fTDDDa8J/TGTHLdHhYOohR3FxIhY5iekRr18ydx9SuW4ZNU9/hoNG02sMmV/43O1rwKk
-         +79Vn7oOOJU7wbDkhNWFtHqvAihcZRMW0/nqCrF3/YTHa9gC8E9HGreR/2k5yViVC8JH
-         WsqhY8PY+P64CU8uN0/hhhWDioThaCw1uZ2CH1iuFDy/SmzAsX8K+TJ5WUDsbm8dVwxk
-         /X4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=gdX1AvP0jU+JAMglCXDBLRHeX+aZyBphY7SECFf/oEM=;
-        b=gRBtlNRTG1YMiyYsWsn5uQTyKz3To12RECTkGKnS0mhElp/jHYH7c2MYwDvmR7VqVX
-         AFoWDnSudwPVBMsKQCUzbK60/1S1KpFE1X/yBIfft+qFw8sq5EjDyPR+TNYQchcIk3Kw
-         jsT6Ar3WDJn7nWzLNDJRy+KaAhwwCAFztLnWdDritP7dyyMtl+ROKlhw7G1djU9vp7OB
-         g+AGCXLMUSPmnFav83EIkJ3gS6pURazgTpv0bU42T3Cq261VJSKCeh05noCQYEPQfEq7
-         8EZ/jS7wNUfJbxSMLFBYYcwu5gsTrivk1k/2HSSu6vnFL94Q+mcVobdVypZRF8g6EuCU
-         V1AA==
-X-Gm-Message-State: APjAAAW49TXimMVhrQx5oS9hWS9cQRdZtqfsnjiDAFU0hjqOe0PtFN3n
-        7xPYReTmP2uXou9/9av8/5m6KuFA
-X-Google-Smtp-Source: APXvYqycCPELiBjZ3k0potG/68WXfXtEzbLq66IsgoZk5orSN97dsKSvzbYDhANwrC2qw9K+MgOGng==
-X-Received: by 2002:a65:614e:: with SMTP id o14mr24385352pgv.237.1570917610319;
-        Sat, 12 Oct 2019 15:00:10 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c8sm16741484pfi.117.2019.10.12.15.00.08
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 12 Oct 2019 15:00:09 -0700 (PDT)
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hwmon fixes for v5.4-rc3
-Date:   Sat, 12 Oct 2019 15:00:07 -0700
-Message-Id: <20191012220007.1384-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S1726085AbfJMQPG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 13 Oct 2019 12:15:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59704 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728590AbfJMQPG (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 13 Oct 2019 12:15:06 -0400
+Subject: Re: [GIT PULL] hwmon fixes for v5.4-rc3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570983306;
+        bh=ReCxrvQyss4Gu9D5Mk/fDAQW+YiAAggUYRtgud9uPG8=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=wJDDAPEmsF9vIoC0Z+SAyqG9krGU9uo8wkMkFdT0bRkZcj4GxkpR8/AyCiGB+V4kA
+         jXaoZBJjfVPxB0JDzGKV7fxJMFR23rG97Jeid3EULAF6iQbGUjqrPsNlWLwRw3ZEEw
+         QrAF9kmsItsZeJaF3iKugFoQiDYN9+IzhgcV2WzU=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20191012220007.1384-1-linux@roeck-us.net>
+References: <20191012220007.1384-1-linux@roeck-us.net>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20191012220007.1384-1-linux@roeck-us.net>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+ hwmon-for-v5.4-rc3
+X-PR-Tracked-Commit-Id: 11c943a1a635d2c7141b5b6667ebb521ab4ecd58
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 2581efa9a47d3c9c349c6d6a2756a16bf69d3f4f
+Message-Id: <157098330598.26372.5257048621246308530.pr-tracker-bot@kernel.org>
+Date:   Sun, 13 Oct 2019 16:15:05 +0000
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Sat, 12 Oct 2019 15:00:07 -0700:
 
-Please pull hwmon fixes for Linux v5.4-rc3 from signed tag:
+> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.4-rc3
 
-    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.4-rc3
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/2581efa9a47d3c9c349c6d6a2756a16bf69d3f4f
 
-Thanks,
-Guenter
-------
+Thank you!
 
-The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
-
-  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v5.4-rc3
-
-for you to fetch changes up to 11c943a1a635d2c7141b5b6667ebb521ab4ecd58:
-
-  hwmon: docs: Extend inspur-ipsps1 title underline (2019-10-07 05:56:57 -0700)
-
-----------------------------------------------------------------
-hwmon fixes for v5.4-rc3
-
-Update/fix inspur-ipsps1 and k10temp Documentation
-Fix nct7904 driver
-Fix HWMON_P_MIN_ALARM mask in hwmon core
-
-----------------------------------------------------------------
-Adam Zerella (2):
-      docs: hwmon: Include 'inspur-ipsps1.rst' into docs
-      hwmon: docs: Extend inspur-ipsps1 title underline
-
-Lukas Zapletal (1):
-      hwmon: (k10temp) Update documentation and add temp2_input info
-
-Nuno Sá (1):
-      hwmon: Fix HWMON_P_MIN_ALARM mask
-
-amy.shih (2):
-      hwmon: (nct7904) Fix the incorrect value of vsen_mask in nct7904_data struct
-      hwmon: (nct7904) Add array fan_alarm and vsen_alarm to store the alarms in nct7904_data struct.
-
- Documentation/hwmon/index.rst         |  1 +
- Documentation/hwmon/inspur-ipsps1.rst |  2 +-
- Documentation/hwmon/k10temp.rst       | 18 +++++++++++++++++-
- drivers/hwmon/nct7904.c               | 33 +++++++++++++++++++++++++++------
- include/linux/hwmon.h                 |  2 +-
- 5 files changed, 47 insertions(+), 9 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
