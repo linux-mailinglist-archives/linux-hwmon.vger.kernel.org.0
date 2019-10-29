@@ -2,195 +2,98 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2872AE7D3D
-	for <lists+linux-hwmon@lfdr.de>; Tue, 29 Oct 2019 00:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C0BE7E2C
+	for <lists+linux-hwmon@lfdr.de>; Tue, 29 Oct 2019 02:47:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728704AbfJ1Xt2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 28 Oct 2019 19:49:28 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:42792 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728379AbfJ1Xt0 (ORCPT
+        id S1726362AbfJ2BrQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 28 Oct 2019 21:47:16 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:34092 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726302AbfJ2BrQ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 28 Oct 2019 19:49:26 -0400
-Received: by mail-pl1-f194.google.com with SMTP id c16so6549792plz.9;
-        Mon, 28 Oct 2019 16:49:26 -0700 (PDT)
+        Mon, 28 Oct 2019 21:47:16 -0400
+Received: by mail-pg1-f195.google.com with SMTP id e4so4044616pgs.1;
+        Mon, 28 Oct 2019 18:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=NeObGC1EVOm6spx2L51L+hiPcYQEKVP788D+xQH3iTs=;
-        b=jmgrSRXQFYNKQm1hb2rj6HrFWqHgWaQ39FpQ0UpBcCmGfMxW781W8EHKBZmZpa/JGQ
-         J099MviYtme/JO9ZJyJRpjURYu/lXNzYg4LS4XHB0n0ihf8uzWH6kN6NVxLeCOLGaDiH
-         hXc9xQ+UQqBFzaRovTZkJD2Vucrz4mAJ/DwW0fsBEnFX8IhsNc1TPVRnT03M4fFMQoLv
-         jTJFkoTLYF38ia2JARE2xqu3VP4Mq23QN9wN6SLsHUR+UpwnzeF/bbNAx6nH+n0FWYS2
-         U982G55vfGV+doZpsXO5pCN4tB/R2dpCpzsws24HnRpFHbEhZZuwb9KUwgFSvEyFq6dY
-         9oUA==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=H6F8R3JCUcijrcISpIqaMmNlxSaXg/x1o4VoaEKW7pk=;
+        b=FXx8A7MF3sJ3zC6HOzUkYCd4JgIvMFGOij89BPl1oBNkhVhIQy8MBcYE6kIaP4o18T
+         1FnhC0liEmZ+aWibVa5X2qPGXABYY7JTRVZ7rSGM/YVIpBzTcjg0/T+CTeE+2QzRMmlu
+         K9HLqCA/REDocLdmaCrprjQwaLZIsWwE/7u7e47G4X5LqPVLJD1bfTmX0wesfRwCIU4B
+         fWiRyNEzP5CDzabefSWJraYujLkh8X/RLOKReSlysYLGEq6r8vUMQaqQmA16G+lJMuxA
+         af7qJpEXrfT6WS+GD+o5FOFo/v/Ced8Z6tjSy5UNozc+irkcvN/A2nJA9d3k45ipIck6
+         AfrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=NeObGC1EVOm6spx2L51L+hiPcYQEKVP788D+xQH3iTs=;
-        b=KsMRn/eHEW7jpOhFCQ8e35NFWOIBvM3LaS/vhM7CVNuKhdUOl+xbpJeBpSq34GnsaO
-         QffB1FlUOIYQ9OTy+WJAirn3rhYeLB2KN4BTXzYtInpgH7mJEoxdyDnLr+/RkZUyl4hp
-         vcq+pcZI8xJZccOAdgXm8/xR0U/uyp5e4QIup9/mNNUONDMMGPp5CgG9LOsJmpkbXQet
-         m1GXQ5ecGlTLJpdjt2Mr2kpXe7I/fbsdvfooDKEozmrfxWI9YQ4SP0Qg266xFAe0kL4c
-         Lma2yBmIP6SLBW+YcNG4K0RfHCISTVShcI0xndvNMLfkgBQsrCm4ef8y8yPRL4so3aWx
-         B/Qw==
-X-Gm-Message-State: APjAAAU3R0kz5d15d/1GIge7eDXPJuhK9/KBBo7AF2ydSoab00KKPhuN
-        IgvwgDrtd0ELqyiHAhKRj1o=
-X-Google-Smtp-Source: APXvYqyXhcsYcTw+hWCPyqQEdoxc4SNoZS1I6wVveEcHdz3y6Xf26+c4UD09iS+BSoFx40pyATYn4A==
-X-Received: by 2002:a17:902:a714:: with SMTP id w20mr753018plq.116.1572306565426;
-        Mon, 28 Oct 2019 16:49:25 -0700 (PDT)
-Received: from taoren-ubuntu-R90MNF91.thefacebook.com ([2620:10d:c090:200::2:c0c7])
-        by smtp.gmail.com with ESMTPSA id d4sm597119pjs.9.2019.10.28.16.49.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2019 16:49:24 -0700 (PDT)
-From:   rentao.bupt@gmail.com
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        openbmc@lists.ozlabs.org, taoren@fb.com
-Cc:     Tao Ren <rentao.bupt@gmail.com>
-Subject: [PATCH 3/3] docs: hwmon: Document bel-pfe pmbus driver
-Date:   Mon, 28 Oct 2019 16:49:04 -0700
-Message-Id: <20191028234904.12441-4-rentao.bupt@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191028234904.12441-1-rentao.bupt@gmail.com>
-References: <20191028234904.12441-1-rentao.bupt@gmail.com>
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=H6F8R3JCUcijrcISpIqaMmNlxSaXg/x1o4VoaEKW7pk=;
+        b=Uz/iIrmOoj7aln5BUM3TDHfjgugWBgT2xjamtsvrkyFEemNJeD8tATz4+g1X1NioFj
+         qkitgAKUAfXz9GsTB7r4Tl9kd1msRyszuAOGTtIvRVyyuS64UAkl4+EM4mSWOoq8zKV0
+         SKe+cc0wNWTE1a3Qy0fg6D9oCaVtRByLE7AXSN42pJkLjAOluTDitj/WCRaqFFzY5aVj
+         ERj5anlrLBYj4x14pXr9BkcV+1ARhmUeyQ1j3q5QbzQnMbKVRfjhi7rqxKmUrm/NwJBb
+         /QFeghthu6GIn2J9y/FK81YfNedWEQWEEzYtxWX7Ol+5LmttDIC40UUHINsLgHPZZwWU
+         2FxA==
+X-Gm-Message-State: APjAAAWkTzdzW7fYUtvwqCyk2ECk26XXP8pHS09ZNePOwz6+yB0bM16y
+        H0rjs6YMNiWWJ0MBO2gzj5w=
+X-Google-Smtp-Source: APXvYqzWXN7iBuH3BLVP3Cl3cNjR0RXYx1DS5rGdd+gD6dwpidBa7wGsQ7kcjOzpWsCvJIettD1qXw==
+X-Received: by 2002:a17:90b:157:: with SMTP id em23mr2978709pjb.22.1572313635249;
+        Mon, 28 Oct 2019 18:47:15 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id f7sm12356156pfa.150.2019.10.28.18.47.13
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 28 Oct 2019 18:47:14 -0700 (PDT)
+Date:   Mon, 28 Oct 2019 18:47:12 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Nicolin Chen <nicoleotsuka@gmail.com>
+Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (ina3221) Fix read timeout issue
+Message-ID: <20191029014712.GA22268@roeck-us.net>
+References: <20191022005922.30239-1-nicoleotsuka@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191022005922.30239-1-nicoleotsuka@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Tao Ren <rentao.bupt@gmail.com>
+On Mon, Oct 21, 2019 at 05:59:22PM -0700, Nicolin Chen wrote:
+> After introducing "samples" to the calculation of wait time, the
+> driver might timeout at the regmap_field_read_poll_timeout call,
+> because the wait time could be longer than the 100000 usec limit
+> due to a large "samples" number.
+> 
+> So this patch sets the timeout limit to 2 times of the wait time
+> in order to fix this issue.
+> 
+> Fixes: 5c090abf945b ("hwmon: (ina3221) Add averaging mode support")
+> Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
-Add documentation for bel-pfe pmbus driver which supports BEL PFE1100 and
-PFE3000 power supplies.
+Applied.
 
-Signed-off-by: Tao Ren <rentao.bupt@gmail.com>
----
- Documentation/hwmon/bel-pfe.rst | 112 ++++++++++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
- create mode 100644 Documentation/hwmon/bel-pfe.rst
+Thanks,
+Guenter
 
-diff --git a/Documentation/hwmon/bel-pfe.rst b/Documentation/hwmon/bel-pfe.rst
-new file mode 100644
-index 000000000000..4b4a7d67854c
---- /dev/null
-+++ b/Documentation/hwmon/bel-pfe.rst
-@@ -0,0 +1,112 @@
-+Kernel driver bel-pfe
-+======================
-+
-+Supported chips:
-+
-+  * BEL PFE1100
-+
-+    Prefixes: 'pfe1100'
-+
-+    Addresses scanned: -
-+
-+    Datasheet: https://www.belfuse.com/resources/datasheets/powersolutions/ds-bps-pfe1100-12-054xa.pdf
-+
-+  * BEL PFE3000
-+
-+    Prefixes: 'pfe3000'
-+
-+    Addresses scanned: -
-+
-+    Datasheet: https://www.belfuse.com/resources/datasheets/powersolutions/ds-bps-pfe3000-series.pdf
-+
-+Author: Tao Ren <rentao.bupt@gmail.com>
-+
-+
-+Description
-+-----------
-+
-+This driver supports hardware monitoring for below power supply devices
-+which support PMBus Protocol:
-+
-+  * BEL PFE1100
-+
-+    1100 Watt AC to DC power-factor-corrected (PFC) power supply.
-+    PMBus Communication Manual is not publicly available.
-+
-+  * BEL PFE3000
-+
-+    3000 Watt AC/DC power-factor-corrected (PFC) and DC-DC power supply.
-+    PMBus Communication Manual is not publicly available.
-+
-+The driver is a client driver to the core PMBus driver. Please see
-+Documentation/hwmon/pmbus.rst for details on PMBus client drivers.
-+
-+
-+Usage Notes
-+-----------
-+
-+This driver does not auto-detect devices. You will have to instantiate the
-+devices explicitly. Please see Documentation/i2c/instantiating-devices.rst for
-+details.
-+
-+Example: the following will load the driver for an PFE3000 at address 0x20
-+on I2C bus #1::
-+
-+	$ modprobe bel-pfe
-+	$ echo pfe3000 0x20 > /sys/bus/i2c/devices/i2c-1/new_device
-+
-+
-+Platform data support
-+---------------------
-+
-+The driver supports standard PMBus driver platform data.
-+
-+
-+Sysfs entries
-+-------------
-+
-+======================= =======================================================
-+curr1_label		"iin"
-+curr1_input		Measured input current
-+curr1_max               Input current max value
-+curr1_max_alarm         Input current max alarm
-+
-+curr[2-3]_label		"iout[1-2]"
-+curr[2-3]_input		Measured output current
-+curr[2-3]_max           Output current max value
-+curr[2-3]_max_alarm     Output current max alarm
-+
-+fan[1-2]_input          Fan 1 and 2 speed in RPM
-+fan1_target             Set fan speed reference for both fans
-+
-+in1_label		"vin"
-+in1_input		Measured input voltage
-+in1_crit		Input voltage critical max value
-+in1_crit_alarm		Input voltage critical max alarm
-+in1_lcrit               Input voltage critical min value
-+in1_lcrit_alarm         Input voltage critical min alarm
-+in1_max                 Input voltage max value
-+in1_max_alarm           Input voltage max alarm
-+
-+in2_label               "vcap"
-+in2_input               Hold up capacitor voltage
-+
-+in[3-8]_label		"vout[1-3,5-7]"
-+in[3-8]_input		Measured output voltage
-+in[3-4]_alarm           vout[1-2] output voltage alarm
-+
-+power[1-2]_label	"pin[1-2]"
-+power[1-2]_input        Measured input power
-+power[1-2]_alarm	Input power high alarm
-+
-+power[3-4]_label	"pout[1-2]"
-+power[3-4]_input	Measured output power
-+
-+temp[1-3]_input		Measured temperature
-+temp[1-3]_alarm         Temperature alarm
-+======================= =======================================================
-+
-+.. note::
-+
-+    - curr3, fan2, vout[2-7], vcap, pin2, pout2 and temp3 attributes only
-+      exist for PFE3000.
--- 
-2.17.1
-
+> ---
+>  drivers/hwmon/ina3221.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
+> index ef37479991be..f335d0cb0c77 100644
+> --- a/drivers/hwmon/ina3221.c
+> +++ b/drivers/hwmon/ina3221.c
+> @@ -213,7 +213,7 @@ static inline int ina3221_wait_for_data(struct ina3221_data *ina)
+>  
+>  	/* Polling the CVRF bit to make sure read data is ready */
+>  	return regmap_field_read_poll_timeout(ina->fields[F_CVRF],
+> -					      cvrf, cvrf, wait, 100000);
+> +					      cvrf, cvrf, wait, wait * 2);
+>  }
+>  
+>  static int ina3221_read_value(struct ina3221_data *ina, unsigned int reg,
