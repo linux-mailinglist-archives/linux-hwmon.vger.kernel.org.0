@@ -2,197 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9EDE8F25
-	for <lists+linux-hwmon@lfdr.de>; Tue, 29 Oct 2019 19:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7523EACCA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 31 Oct 2019 10:45:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731241AbfJ2SV1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 29 Oct 2019 14:21:27 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:45943 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727257AbfJ2SV0 (ORCPT
+        id S1726911AbfJaJpM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 31 Oct 2019 05:45:12 -0400
+Received: from cyberdimension.org ([80.67.179.20]:40198 "EHLO
+        gnutoo.cyberdimension.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726949AbfJaJpL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 29 Oct 2019 14:21:26 -0400
-Received: by mail-pg1-f195.google.com with SMTP id r1so10113962pgj.12;
-        Tue, 29 Oct 2019 11:21:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=71OLTh41XrKOgl2b277xHxckY89HIxO01AHDWRPgmpQ=;
-        b=HVDOx6SpM3iNoabX6kbFg8wVXEL7fQYdvrcfljTSfGQv1BcHl95QQPafoBrA3RQpBm
-         d8ukeqaLVeYLTDzfPqc3BfkSk/Igy6rdUPTRF3s0Jt41s7U/wlNGo3EJoCuXffEP0+hd
-         YVJUhgi3RqwkTdj8oyAArB3ERCUeG1SHRkkS55g32s89MinQZtg92aBgFEKOhf+Xp+dJ
-         fmiBEoKzgJ/UELxLK1GJy/PwhZTDA5vU2Q3/7Rx2t3/Q9oXuy8YJzXdjCimY5nFJvTxu
-         U8z28v7X8SgBixQ7aiPTaLqb/0CUcaCF8i9niyIac/+Q3Ku3ZaGnZEynjzq1dOXVSFe/
-         OO0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=71OLTh41XrKOgl2b277xHxckY89HIxO01AHDWRPgmpQ=;
-        b=RCfA5DESViF9akojFPi/jjXWsyxZK1FIRsABXpPpbhmmHhkeHieb/rablFps8u0QZ5
-         oaSKYPfhwrhesfA9evchN3lIcALFPrweTGoNDQyFobqStPNLpsxSvIx5B/0AbdRf262C
-         o4yd9+etY94g9tquGMM3+sAwt77puTbaHnpijKzJrXL3EXdj5ZWRjWQO5t2IX5Q3L838
-         jRIYtDLy9C6/K7Iml4RdIIuooYFVvbNow0Ro+QkaDLyF8bJEaXmmsu9Aj5Ay8qOGXAoG
-         A2OVdF9O4NRZlEqqhsKTHe+61Nlsx1JdDZcJRWWcSRh0KEvDPM8fVZF85bi/kpVOrpWs
-         ZQ8Q==
-X-Gm-Message-State: APjAAAWijic6jTxCA6h87IK6zTHfZfgCo15uXiKwnkn8X71L57JbVaT6
-        ksbttrCZFTT4ATd1A7CwO/XJEsXJD1Q=
-X-Google-Smtp-Source: APXvYqx8/f20Koaa9igAtGwiT6Fa2k/qo+Kax/K+OlebL05JtE02KjKFn+X4YH1sFALw4hbn8dqL0A==
-X-Received: by 2002:a17:90a:c097:: with SMTP id o23mr8477800pjs.41.1572373285690;
-        Tue, 29 Oct 2019 11:21:25 -0700 (PDT)
-Received: from taoren-ubuntu-R90MNF91.thefacebook.com ([2620:10d:c090:200::1:3a3e])
-        by smtp.gmail.com with ESMTPSA id j10sm13488418pfn.128.2019.10.29.11.21.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2019 11:21:25 -0700 (PDT)
-From:   rentao.bupt@gmail.com
+        Thu, 31 Oct 2019 05:45:11 -0400
+X-Greylist: delayed 401 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Oct 2019 05:45:11 EDT
+Received: from gnutoo.cyberdimension.org (localhost [127.0.0.1])
+        by cyberdimension.org (OpenSMTPD) with ESMTP id d4af2476;
+        Thu, 31 Oct 2019 09:37:40 +0000 (UTC)
+Received: from primarylaptop.localdomain (localhost.localdomain [IPv6:::1])
+        by gnutoo.cyberdimension.org (OpenSMTPD) with ESMTP id dab1ada1;
+        Thu, 31 Oct 2019 09:37:40 +0000 (UTC)
+Date:   Thu, 31 Oct 2019 10:38:46 +0100
+From:   Denis 'GNUtoo' Carikli <GNUtoo@cyberdimension.org>
 To:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        openbmc@lists.ozlabs.org, taoren@fb.com
-Cc:     Tao Ren <rentao.bupt@gmail.com>
-Subject: [PATCH v2 2/2] docs: hwmon: Document bel-pfe pmbus driver
-Date:   Tue, 29 Oct 2019 11:20:54 -0700
-Message-Id: <20191029182054.32279-3-rentao.bupt@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191029182054.32279-1-rentao.bupt@gmail.com>
-References: <20191029182054.32279-1-rentao.bupt@gmail.com>
+        "amy.shih" <amy.shih@advantech.com.tw>, linux-hwmon@vger.kernel.org
+Subject: git fsck broken due to "hwmon: (nct7904) Fix incorrect temperature
+ limitation register setting of LTD."
+Message-ID: <20191031103846.59a96454@primarylaptop.localdomain>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/11kVLp9HaR3uoul1DoY9aVt";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Tao Ren <rentao.bupt@gmail.com>
+--Sig_/11kVLp9HaR3uoul1DoY9aVt
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Add documentation for bel-pfe pmbus driver which supports BEL PFE1100 and
-PFE3000 power supplies.
+Hi,
 
-Signed-off-by: Tao Ren <rentao.bupt@gmail.com>
----
- No change in v2.
+When fetching linux[1] I have:
+> $ git fetch origin
+> remote: Enumerating objects: 119615, done.
+> remote: Counting objects: 100% (119615/119615), done.
+> remote: Compressing objects: 100% (22639/22639), done.
+> error: object 4a2d78822fdf1556dfbbfaedd71182fe5b562194:
+> badDateOverflow: invalid author/committer line - date causes integer
+> overflow
+> fatal: fsck error in packed object
+> fatal: index-pack failed
 
- Documentation/hwmon/bel-pfe.rst | 112 ++++++++++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
- create mode 100644 Documentation/hwmon/bel-pfe.rst
+According to gitweb[2], 4a2d78822fdf1556dfbbfaedd71182fe5b562194
+corresponds to "hwmon: (nct7904) Fix incorrect temperature limitation
+register setting of LTD.".
 
-diff --git a/Documentation/hwmon/bel-pfe.rst b/Documentation/hwmon/bel-pfe.rst
-new file mode 100644
-index 000000000000..4b4a7d67854c
---- /dev/null
-+++ b/Documentation/hwmon/bel-pfe.rst
-@@ -0,0 +1,112 @@
-+Kernel driver bel-pfe
-+======================
-+
-+Supported chips:
-+
-+  * BEL PFE1100
-+
-+    Prefixes: 'pfe1100'
-+
-+    Addresses scanned: -
-+
-+    Datasheet: https://www.belfuse.com/resources/datasheets/powersolutions/ds-bps-pfe1100-12-054xa.pdf
-+
-+  * BEL PFE3000
-+
-+    Prefixes: 'pfe3000'
-+
-+    Addresses scanned: -
-+
-+    Datasheet: https://www.belfuse.com/resources/datasheets/powersolutions/ds-bps-pfe3000-series.pdf
-+
-+Author: Tao Ren <rentao.bupt@gmail.com>
-+
-+
-+Description
-+-----------
-+
-+This driver supports hardware monitoring for below power supply devices
-+which support PMBus Protocol:
-+
-+  * BEL PFE1100
-+
-+    1100 Watt AC to DC power-factor-corrected (PFC) power supply.
-+    PMBus Communication Manual is not publicly available.
-+
-+  * BEL PFE3000
-+
-+    3000 Watt AC/DC power-factor-corrected (PFC) and DC-DC power supply.
-+    PMBus Communication Manual is not publicly available.
-+
-+The driver is a client driver to the core PMBus driver. Please see
-+Documentation/hwmon/pmbus.rst for details on PMBus client drivers.
-+
-+
-+Usage Notes
-+-----------
-+
-+This driver does not auto-detect devices. You will have to instantiate the
-+devices explicitly. Please see Documentation/i2c/instantiating-devices.rst for
-+details.
-+
-+Example: the following will load the driver for an PFE3000 at address 0x20
-+on I2C bus #1::
-+
-+	$ modprobe bel-pfe
-+	$ echo pfe3000 0x20 > /sys/bus/i2c/devices/i2c-1/new_device
-+
-+
-+Platform data support
-+---------------------
-+
-+The driver supports standard PMBus driver platform data.
-+
-+
-+Sysfs entries
-+-------------
-+
-+======================= =======================================================
-+curr1_label		"iin"
-+curr1_input		Measured input current
-+curr1_max               Input current max value
-+curr1_max_alarm         Input current max alarm
-+
-+curr[2-3]_label		"iout[1-2]"
-+curr[2-3]_input		Measured output current
-+curr[2-3]_max           Output current max value
-+curr[2-3]_max_alarm     Output current max alarm
-+
-+fan[1-2]_input          Fan 1 and 2 speed in RPM
-+fan1_target             Set fan speed reference for both fans
-+
-+in1_label		"vin"
-+in1_input		Measured input voltage
-+in1_crit		Input voltage critical max value
-+in1_crit_alarm		Input voltage critical max alarm
-+in1_lcrit               Input voltage critical min value
-+in1_lcrit_alarm         Input voltage critical min alarm
-+in1_max                 Input voltage max value
-+in1_max_alarm           Input voltage max alarm
-+
-+in2_label               "vcap"
-+in2_input               Hold up capacitor voltage
-+
-+in[3-8]_label		"vout[1-3,5-7]"
-+in[3-8]_input		Measured output voltage
-+in[3-4]_alarm           vout[1-2] output voltage alarm
-+
-+power[1-2]_label	"pin[1-2]"
-+power[1-2]_input        Measured input power
-+power[1-2]_alarm	Input power high alarm
-+
-+power[3-4]_label	"pout[1-2]"
-+power[3-4]_input	Measured output power
-+
-+temp[1-3]_input		Measured temperature
-+temp[1-3]_alarm         Temperature alarm
-+======================= =======================================================
-+
-+.. note::
-+
-+    - curr3, fan2, vout[2-7], vcap, pin2, pout2 and temp3 attributes only
-+      exist for PFE3000.
--- 
-2.17.1
+The issue seem to be that the "Author date" is "2085-06-18 15:57:19
++0000" which seems wrong.
 
+Is there still time to fix this date?
+
+References:
+-----------
+[1]git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+[2]https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
+t/?id=3D4a2d78822fdf1556dfbbfaedd71182fe5b562194
+
+Denis.
+
+--Sig_/11kVLp9HaR3uoul1DoY9aVt
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEeC+d2+Nrp/PU3kkGX138wUF34mMFAl26q6YACgkQX138wUF3
+4mMiJw/8CWqU7RCe2PU0wsulIa7bQ1qr6GjEDroL3cWYmr0cqpxJK4gx7BE4e72i
+L9DtVB85UogAgApcSH/E/kCRPClQOPDaRSU0G4IHqICy0ldqpupeFOB5wwA03dwk
+iP3p7yvyJI3YtcyqD3IphOsrcO8QBuLkA3rCpOu/fxpD8//QpmOjCjlY20E5Rehr
+jolveaNf85dFD4D513unsFIVWPt+f6fAPTtR2v7o8arnQxNN28cK6OYem32uDU5z
+2cP7pypI8YpsF1V7tLumIFxZJHPAFdqQDMdsngMMA/vhXNrqfzzSvJS4gyGoKDXg
+xDa7C5ZgUSQus0CHJCQ9c+9ag99f9hcTwxB9ZbkZ6uC+rE4HYFsNhMCeHg6NOEWi
+bdbz/BZbctYDN46LiZuHBHEdVZhgB9sinnfoZuwa7HVVKRwdWRmXvLX5+kzvAiNz
+z1i5qPcMxwrwu0vHJBtk9riMHZUPULok/lkJXbtLnbsrr7PZvAzaKC9zk00fdbHN
+Z9x1UMXMzzGd9aC7tIDo+j2sqzI5bvimJHbOJ4PCFOZ6ons/KM12s6C7zH/r7fDa
+VwtTHdBTAdNuatLoVGtofX0BQQrsw9btJh27b6cki7TSECkjZRXC6748En5Mndqb
+eDzBB3ieZkGqNSSD89L89U6aRtB+uHljrO3HLfjmmo0tCp2lBWw=
+=/w+j
+-----END PGP SIGNATURE-----
+
+--Sig_/11kVLp9HaR3uoul1DoY9aVt--
