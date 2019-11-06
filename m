@@ -2,43 +2,76 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8432EF02AC
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Nov 2019 17:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3318F1F7B
+	for <lists+linux-hwmon@lfdr.de>; Wed,  6 Nov 2019 21:02:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390153AbfKEQ2j (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 5 Nov 2019 11:28:39 -0500
-Received: from host128-64-35-185.static.arubacloud.fr ([185.35.64.128]:45814
-        "EHLO mail.moleaves.ml" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S2390116AbfKEQ2j (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 5 Nov 2019 11:28:39 -0500
-X-Greylist: delayed 11653 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 Nov 2019 11:28:38 EST
-Received: by mail.moleaves.ml (Postfix, from userid 48)
-        id 9C68C457AA; Tue,  5 Nov 2019 07:57:12 -0500 (EST)
+        id S1727477AbfKFUCr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 6 Nov 2019 15:02:47 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:38460 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726934AbfKFUCq (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 6 Nov 2019 15:02:46 -0500
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA6Jx9tw058144;
+        Wed, 6 Nov 2019 15:01:12 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2w41x4xbms-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Nov 2019 15:01:12 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA6K0exJ023270;
+        Wed, 6 Nov 2019 20:01:11 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+        by ppma05wdc.us.ibm.com with ESMTP id 2w41ujhe8b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Nov 2019 20:01:11 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA6K1Bq038470070
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 6 Nov 2019 20:01:11 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 14C7528075;
+        Wed,  6 Nov 2019 20:01:11 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6A7BF28067;
+        Wed,  6 Nov 2019 20:01:10 +0000 (GMT)
+Received: from wisp4.ibm.com (unknown [9.163.22.179])
+        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed,  6 Nov 2019 20:01:10 +0000 (GMT)
+From:   Eddie James <eajames@linux.ibm.com>
 To:     linux-hwmon@vger.kernel.org
-Subject: Purchase Order 05/11/2019
-X-PHP-Originating-Script: 0:auualer.php
-From:   Julian Smith <sinara-group@list.ru>
-Reply-To: julian.smith@list.ru
+Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
+        jdelvare@suse.com, Eddie James <eajames@linux.ibm.com>
+Subject: [PATCH 0/2] hwmon: (pmbus/ibm-cffps) Fixes for the LED subsystem
+Date:   Wed,  6 Nov 2019 14:01:04 -0600
+Message-Id: <20191106200106.29519-1-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Message-Id: <20191105125712.9C68C457AA@mail.moleaves.ml>
-Date:   Tue,  5 Nov 2019 07:57:12 -0500 (EST)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-06_07:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=403 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911060196
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi,friend,
+This series fixes a "scheduling while atomic" bug in the CFFPS driver and some
+incorrect behavior with the LED blink functionality.
 
-This is Ms. Julian Smith and i am purchasing manager from Sinara Group Co.,LTD in Russia.
-We are glad to know about your company from the web and we are interested in your products.
-Could you kindly send us your Latest catalog and price list for our trial order.
+Eddie James (2):
+  hwmon: (pmbus/ibm-cffps) Switch LEDs to blocking brightness call
+  hwmon: (pmbus/ibm-cffps) Fix LED blink behavior
 
-Thanks and Best Regards,
+ drivers/hwmon/pmbus/ibm-cffps.c | 37 ++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-Julian Smith
-Purchasing Manager
-Sinara Group Co.,LTD
-
+-- 
+2.23.0
 
