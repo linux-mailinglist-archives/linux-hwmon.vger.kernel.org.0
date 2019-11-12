@@ -2,61 +2,61 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2408AF92DC
-	for <lists+linux-hwmon@lfdr.de>; Tue, 12 Nov 2019 15:40:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BC06F9378
+	for <lists+linux-hwmon@lfdr.de>; Tue, 12 Nov 2019 16:00:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727323AbfKLOkr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 12 Nov 2019 09:40:47 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:36588 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbfKLOkr (ORCPT
+        id S1726994AbfKLPAh (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 12 Nov 2019 10:00:37 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:45692 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726953AbfKLPAh (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 12 Nov 2019 09:40:47 -0500
-Received: by mail-lf1-f68.google.com with SMTP id m6so13054581lfl.3
-        for <linux-hwmon@vger.kernel.org>; Tue, 12 Nov 2019 06:40:45 -0800 (PST)
+        Tue, 12 Nov 2019 10:00:37 -0500
+Received: by mail-lj1-f194.google.com with SMTP id n21so18164596ljg.12
+        for <linux-hwmon@vger.kernel.org>; Tue, 12 Nov 2019 07:00:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=D0+mCwJvHZZGpXOrejwBvoUrE1rKqIxcVrLLV65g3dU=;
-        b=nvAzMbTC2bmnHwdji1J7sYUrM9QAPLElBkYCTZ0Zth9vuKzqOXYwgIZbgEpLjrGpyk
-         RPhBLA1BMjgApnaEwfa2kU6dpw9mDYD887VzTydqNNffU1a0wLaMOo3lM5D/RiLnfHSa
-         cInD9O75RNCtkHSHF4Iz4Yl5Qv8QvNAD3Vf/iUyIRtodsCR0C2PxApxNGJTbIUka3bi8
-         n5HkTa3VNpMebLtauG2tGOQA35bGFZjqkQJmB9IMBXh5uG5vgL13rdu8gdLA9dWpCO1v
-         9dazDp74rTFZx1qthy1/SL7z1GgMlq3iQvMJlVF5t/87pPd/vLwYEB0r9LeQZ8M+2ezE
-         2itw==
+        bh=iM9vIrvF71SlXNaCy32ws36CT30vUrEEvwG8JDY3Y90=;
+        b=VYmjpmT/pEQRTMR71BkEIT7ffs2Zo5YGAccCqw+vOS959rUluA4SXPHnEXvZdk1Bdg
+         kUewqPBiCIT5N+XrvT3YRvmHDvIq5h1DfQoJErQ9fBrFABRhyxgYRJ40TZN2y4CcpSZj
+         wp/4Mwp53aCkIvwgFP6EoaVZIGHV8pgLuk4jTWfW+5nf7j6KtTrqm8jph8QrQa9tDxIR
+         RiiDZisqEipP045CFDy9SB9YvmLcOh2QPumBwy7NewtBt+8QblF1XlQUIq3ShD6N535n
+         Anmub6kmnFfSValjXpTuZgwM42dBirfIvR6R/QSzfGLvAYlM2DOXzytphcDZKz5FaDTN
+         KReg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=D0+mCwJvHZZGpXOrejwBvoUrE1rKqIxcVrLLV65g3dU=;
-        b=Kee3iNczdDB72nSOh1rYX8tCepUcznYVSPMfpUPTdrAL+NpOBhIV6XfKdlk9T30uVM
-         5w7OddR9tNLckchQvXut23CEQp1YxUhQlvFByjuN7sVeVH5X769dDzWytl8Lm00fx3xW
-         ttTyYlTTNnTfde2dYTRN3/FE0/nRzjnficQ/Bw4L8twbAoBpRPIuDypXC4nd9hn31yco
-         y58E2R35YmrUCXtBI1krSwofoACv4KeSlSUCvbW+qFXUlog38fdkgRm9y4Uoqpsxp3YP
-         npYUbx2XaZc1NaLtW+h65jKKY29fvgoubPMTHrGig/v+0YMuv5VTcZcsJP/zPd4Y5gns
-         c6gA==
-X-Gm-Message-State: APjAAAVk2Vc/qHKwkjHJsqjZRNq//Zz9xITsOeEjF0DykxRHqotdnmqm
-        KjNEhT1i4Rjgwj0TH4sGeHxZqkWs5DAao1993Ik=
-X-Google-Smtp-Source: APXvYqwHxZ+IyoJdKVYjIf4LG+E5Mo8okP10vfKBtWf/7bZE5nrjrmrW1YKxzv6NYAzs8mSVtNKlfXkTv+2kMrSMgtE=
-X-Received: by 2002:a19:820e:: with SMTP id e14mr19885367lfd.29.1573569644343;
- Tue, 12 Nov 2019 06:40:44 -0800 (PST)
+        bh=iM9vIrvF71SlXNaCy32ws36CT30vUrEEvwG8JDY3Y90=;
+        b=ij383+2gipzT+P/VFwpBFZG+1qB28L434IiV/sUEeJryl2TrO4ofyuwdJMyPubeUKD
+         xhyfawBPZEw+F9rTeang30u1Fhv1aZQBdu96yMLR8PkFOi6Ni4bWwLpSrvZzciAQhjic
+         FNBhlqiuG5KQPCQ5NcPaxDh66MOGVyHh1qoPmAT9ehtLOZVpEvcc7uasZ7o8e0pr1kYk
+         HnK6RjMCjehnnyzKyhYKpYDtNTu6U9RVLL9z+jLsNu+hoWgqQ5tNsGqSls/TyAZq5d7y
+         8b9ua4EKla7tY4JanpTwZuIQiSuTHMzTGLEi+yRMGtkwakg3EflG9pU8DHny0GByTV1W
+         M+8A==
+X-Gm-Message-State: APjAAAXkcFz/QIJr6FNljRPkQCnZCeEJX8u4342fTB+MetDBTcxZl8Z+
+        MYIRkLUEoMRmwsZfIgBpiAg7xp8zmi1jm9I8vqRAk6DF
+X-Google-Smtp-Source: APXvYqz4PlNcFY3pbT0OqPixLSr/FY4Ak0mQ9u+xpjL8eub1QWuRXmm2MHQv87xs9UUwEbi+68rddQ61w5y6frhBnu8=
+X-Received: by 2002:a2e:9842:: with SMTP id e2mr20504769ljj.93.1573570833778;
+ Tue, 12 Nov 2019 07:00:33 -0800 (PST)
 MIME-Version: 1.0
 References: <1573395466-19526-1-git-send-email-akinobu.mita@gmail.com>
- <d3c0c9a7-00b9-0465-16e1-6fd7ba97dfd0@roeck-us.net> <CAC5umyiju2Q2fdfVaFyX+Q=sMKr5Gsc_GDVYmSa0vB+w8acvAw@mail.gmail.com>
- <20191111173505.GB5826@roeck-us.net>
-In-Reply-To: <20191111173505.GB5826@roeck-us.net>
+ <20191111165306.GA19814@lst.de> <CAC5umyi97UJZzk+4soD+th0BZ71WfnOqnTWWuTYKyo6aWTdLXA@mail.gmail.com>
+ <20191112142127.GA11580@lst.de>
+In-Reply-To: <20191112142127.GA11580@lst.de>
 From:   Akinobu Mita <akinobu.mita@gmail.com>
-Date:   Tue, 12 Nov 2019 23:40:32 +0900
-Message-ID: <CAC5umyjviR1J5HojE6WBhYQCzu=CFPPoNxXY=T9KRw2yTpO=VQ@mail.gmail.com>
+Date:   Wed, 13 Nov 2019 00:00:22 +0900
+Message-ID: <CAC5umygX=uBQsWV8O=9NL3HeVNo_iMcq7BE-vA-wpQtyU5iV3Q@mail.gmail.com>
 Subject: Re: [PATCH] nvme: hwmon: provide temperature min and max values for
  each sensor
-To:     Guenter Roeck <linux@roeck-us.net>
+To:     Christoph Hellwig <hch@lst.de>
 Cc:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
         Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
         Sagi Grimberg <sagi@grimberg.me>,
-        Jean Delvare <jdelvare@suse.com>
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
@@ -64,148 +64,17 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-2019=E5=B9=B411=E6=9C=8812=E6=97=A5(=E7=81=AB) 2:35 Guenter Roeck <linux@ro=
-eck-us.net>:
+2019=E5=B9=B411=E6=9C=8812=E6=97=A5(=E7=81=AB) 23:21 Christoph Hellwig <hch=
+@lst.de>:
 >
-> On Tue, Nov 12, 2019 at 12:56:21AM +0900, Akinobu Mita wrote:
-> > 2019=E5=B9=B411=E6=9C=8811=E6=97=A5(=E6=9C=88) 1:30 Guenter Roeck <linu=
-x@roeck-us.net>:
-> > >
+> On Tue, Nov 12, 2019 at 11:19:46PM +0900, Akinobu Mita wrote:
+> > OK. I'll add two macros.
 > >
-> [ ... ]
+> > #define MILLICELSIUS_TO_KELVIN(t) ((t) / 1000 + 273)
+> > #define KELVIN_TO_MILLICELSIUS(t) (((t) - 273) * 1000)
 >
-> > > > Example output from the "sensors" command:
-> > > >
-> > > > nvme-pci-0100
-> > > > Adapter: PCI adapter
-> > > > Composite:    +53.0 C  (low  =3D -273.0 C, high =3D +70.0 C)
-> > > >                         (crit =3D +80.0 C)
-> > > > Sensor 1:     +56.0 C  (low  =3D -273.0 C, high =3D +65262.0 C)
-> > > > Sensor 2:     +51.0 C  (low  =3D -273.0 C, high =3D +65262.0 C)
-> > > > Sensor 5:     +73.0 C  (low  =3D -273.0 C, high =3D +65262.0 C)
-> > > >
-> > >
-> > > Have you tried writing the limits ? On my Intel NVME drive (SSDPEKKW5=
-12G7), writing
-> > > any minimum limit on the Composite temperature sensor results in a te=
-mperature
-> > > warning, and that warning is sticky until I reset the controller.
-> > > I don't see that problem on Samsung SSD 970 EVO 500GB; I have not yet=
- tried others.
-> >
-> > I have Crucial CT500P1SSD8 and WDC WDS512G1X0C-00ENX0, and I have no
-> > problem with these devices.
-> >
-> > > root@jupiter:/sys/class/hwmon/hwmon0# sensors nvme-pci-0100
-> > > nvme-pci-0100
-> > > Adapter: PCI adapter
-> > > Composite:    +30.0=C2=B0C  (low  =3D -273.0=C2=B0C, high =3D +70.0=
-=C2=B0C)
-> > >                         (crit =3D +80.0=C2=B0C)
-> > >
-> > > root@jupiter:/sys/class/hwmon/hwmon0# echo 0 > temp1_min
-> > > root@jupiter:/sys/class/hwmon/hwmon0# sensors nvme-pci-0100
-> > > nvme-pci-0100
-> > > Adapter: PCI adapter
-> > > Composite:    +30.0=C2=B0C  (low  =3D  +0.0=C2=B0C, high =3D +70.0=C2=
-=B0C)  ALARM
-> > >                         (crit =3D +80.0=C2=B0C)
-> > >
-> > > It doesn't seem to matter which temperature I write; writing -273000 =
-has
-> > > the same result.
-> > >
-> > > [This is actually why I didn't use the features commands; not that I =
-had observed
-> > >   the problem, but I was concerned that problems like this would show=
- up.]
-> >
-> > Maybe we should introduce a new quirk so that we can avoid changing
-> > temperature threshold for such devices.  Could you tell SSDPEKKW512G7's
-> > vendor and device ID?  Quick googling answers it's 8086:f1a5, but I wan=
-t
-> > to make sure.
->
-> Yes, that is correct.
->
-> 01:00.0 Non-Volatile memory controller [0108]: Intel Corporation Device [=
-8086:f1a5] (rev 03)
+> Can you add them to linux/thermal.h that already has similar
+> helpers?
 
-OK.  I'll add NVME_QUIRK_NO_TEMP_THRESH_CHANGE and mark the device.
-
-> I'll see if I can test this tonight on my other NVMEs. I also dug up an o=
-ld
-> NVMe drive from Toshiba; I'll see if I can connect and test it as well.
-
-That's nice.
-
-> [ ... ]
->
-> > > >        */
-> > > >       switch (attr) {
-> > > >       case hwmon_temp_max:
-> > > > -             *val =3D (data->ctrl->wctemp - 273) * 1000;
-> > > > +             err =3D nvme_get_temp_thresh(data->ctrl, channel, fal=
-se, val);
-> > > > +             if (err)
-> > > > +                     *val =3D (data->ctrl->wctemp - 273) * 1000;
-> > >
-> > > This would report WCTEMP for all sensors on errors, including errors =
-seen while
-> > > the controller is resetting. I think it should be something like
-> > >
-> > >                 int err =3D 0;
-> > >                 ...
-> > >
-> > >                 if (!channel)
-> > >                         *val =3D (data->ctrl->wctemp - 273) * 1000;
-> > >                 else
-> > >                         err =3D nvme_get_temp_thresh(data->ctrl, chan=
-nel, false, val);
-> > >                 return err;
-> > >
-> > > assuming we keep using ctrl->wctemp (see below). If changing the uppe=
-r Composite
-> > > temperature sensor limit changes wctemp, and we don't update it, we s=
-hould not
-> > > use it at all after registration and just report the error.
-> > >
-> > > >               return 0;
-> > > > +     case hwmon_temp_min:
-> > > > +             return nvme_get_temp_thresh(data->ctrl, channel, true=
-, val);
-> > > >       case hwmon_temp_crit:
-> > > >               *val =3D (data->ctrl->cctemp - 273) * 1000;
-> > > >               return 0;
-> > > > @@ -73,6 +117,23 @@ static int nvme_hwmon_read(struct device *dev, =
-enum hwmon_sensor_types type,
-> > > >       return err;
-> > > >   }
-> > > >
-> > > > +static int nvme_hwmon_write(struct device *dev, enum hwmon_sensor_=
-types type,
-> > > > +                         u32 attr, int channel, long val)
-> > > > +{
-> > > > +     struct nvme_hwmon_data *data =3D dev_get_drvdata(dev);
-> > > > +
-> > > > +     switch (attr) {
-> > > > +     case hwmon_temp_max:
-> > > > +             return nvme_set_temp_thresh(data->ctrl, channel, fals=
-e, val);
-> > >
-> > > Does this change WCTEMP if written on channel 0 ? If so, we would hav=
-e to update
-> > > the cached value of ctrl->wctemp (or never use it after registration)=
-.
-> >
-> > At least for the devices I have, setting the over temperature threshold
-> > doesn't change the WCTEMP.
-> > I have checked with  'nvme id-ctrl /dev/nvme0 | grep ctemp'.
-> >
->
-> Interesting. I just tested this, and the result is the same with Samsung
-> SSD 970 EVO. With that in mind, maybe we should really not use wctemp
-> at all after initialization, as I had suggested above. What do you think =
-?
-
-Yes. We only need to use the WCTEMP in nvme_hwmon_is_visible().
+Should we add a new linux/temperature.h so that any other drivers or
+subsystems (including thermal.h and hwmon.h) can use these macros?
