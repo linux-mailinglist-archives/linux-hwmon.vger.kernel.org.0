@@ -2,34 +2,36 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A11CFA132
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 Nov 2019 02:56:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6C2FA4A4
+	for <lists+linux-hwmon@lfdr.de>; Wed, 13 Nov 2019 03:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729248AbfKMBzr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 12 Nov 2019 20:55:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47566 "EHLO mail.kernel.org"
+        id S1729222AbfKMBzm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 12 Nov 2019 20:55:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47452 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729244AbfKMBzq (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:55:46 -0500
+        id S1729215AbfKMBzm (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:55:42 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8257522469;
-        Wed, 13 Nov 2019 01:55:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4344022468;
+        Wed, 13 Nov 2019 01:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610146;
-        bh=Hk1LfhPBk8mf4j0A6gLA3Gxbg20jEn3kThQ4rBD+a2E=;
+        s=default; t=1573610142;
+        bh=FFuKDouo1rf8UsWPhO0vImXh4I1do/bn4P75rop+b8I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Khmou61yh0tFUK8KFT1/bc4QXZAD1izlob7H8/8jZdPHNndd/ZNdz2pJfsqdkaRoK
-         fMTla7MxzfVvWhnKS//UvgTPq8uSohLGzWlJkt5w1R7wiGMOaMIAf7xWCB4b31HLaf
-         2hzOWvZVqmNf935fNildLJwGgXFrFpY8qgX/EaYY=
+        b=UrEN91JweZYH0rkigjPdjMeiRSB+7XkmD5tH/RdXijlyKEHSQBSYtIcX1Wdp83Tl/
+         4fffia7TZdOV29LtwPDw+txGsYkOGhztNij/uBayYHawDHNyvsgS6kNEsosKKJSuLo
+         rD/tOD8WiQJowtsRLNz3HmGvNMXiwtH9V119tsEk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kun Yi <kunyi@google.com>, Guenter Roeck <linux@roeck-us.net>,
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Guglielmo Fanini <g.fanini@gmail.com>,
+        Clemens Ladisch <clemens@ladisch.de>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 192/209] hwmon: (npcm-750-pwm-fan) Change initial pwm target to 255
-Date:   Tue, 12 Nov 2019 20:50:08 -0500
-Message-Id: <20191113015025.9685-192-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 188/209] hwmon: (k10temp) Support all Family 15h Model 6xh and Model 7xh processors
+Date:   Tue, 12 Nov 2019 20:50:04 -0500
+Message-Id: <20191113015025.9685-188-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
@@ -42,34 +44,42 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Kun Yi <kunyi@google.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit f21c8e753b1dcb8f9e5b096db1f7f4e6fdfa7258 ]
+[ Upstream commit 53dfa0088edd2e2793afa21488532b12eb2dae48 ]
 
-Change initial PWM target to 255 to prevent overheating, for example
-when BMC hangs in userspace or when userspace fan control application is
-not implemented yet.
+BIOS developer guides refer to Family 15h Models 60h-6fh and Family 15h
+Models 70h-7fh. So far the driver only checked for Models 60h and 70h.
+However, there are now processors with other model numbers in the same
+families. Example is A10-9620P family 15h model 65h. Follow the developer
+guides and mask the lower 4 bit of the model number to determine the
+registers to use for reading temperatures and temperature limits.
 
-Signed-off-by: Kun Yi <kunyi@google.com>
+Reported-by: Guglielmo Fanini <g.fanini@gmail.com>
+Cc: Guglielmo Fanini <g.fanini@gmail.com>
+Acked-by: Clemens Ladisch <clemens@ladisch.de>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/npcm750-pwm-fan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/k10temp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/npcm750-pwm-fan.c b/drivers/hwmon/npcm750-pwm-fan.c
-index b998f9fbed41e..979b579bc118f 100644
---- a/drivers/hwmon/npcm750-pwm-fan.c
-+++ b/drivers/hwmon/npcm750-pwm-fan.c
-@@ -52,7 +52,7 @@
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index bb15d7816a294..2cef0c37ff6fe 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -325,8 +325,9 @@ static int k10temp_probe(struct pci_dev *pdev,
  
- /* Define the Counter Register, value = 100 for match 100% */
- #define NPCM7XX_PWM_COUNTER_DEFAULT_NUM		255
--#define NPCM7XX_PWM_CMR_DEFAULT_NUM		127
-+#define NPCM7XX_PWM_CMR_DEFAULT_NUM		255
- #define NPCM7XX_PWM_CMR_MAX			255
+ 	data->pdev = pdev;
  
- /* default all PWM channels PRESCALE2 = 1 */
+-	if (boot_cpu_data.x86 == 0x15 && (boot_cpu_data.x86_model == 0x60 ||
+-					  boot_cpu_data.x86_model == 0x70)) {
++	if (boot_cpu_data.x86 == 0x15 &&
++	    ((boot_cpu_data.x86_model & 0xf0) == 0x60 ||
++	     (boot_cpu_data.x86_model & 0xf0) == 0x70)) {
+ 		data->read_htcreg = read_htcreg_nb_f15;
+ 		data->read_tempreg = read_tempreg_nb_f15;
+ 	} else if (boot_cpu_data.x86 == 0x17) {
 -- 
 2.20.1
 
