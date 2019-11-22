@@ -2,63 +2,261 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7158A106111
-	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Nov 2019 06:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D2F1069BC
+	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Nov 2019 11:15:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727874AbfKVFxs (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 22 Nov 2019 00:53:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59812 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728894AbfKVFxq (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:53:46 -0500
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726947AbfKVKPj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 22 Nov 2019 05:15:39 -0500
+Received: from pietrobattiston.it ([92.243.7.39]:44218 "EHLO
+        jauntuale.pietrobattiston.it" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726500AbfKVKPj (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 22 Nov 2019 05:15:39 -0500
+Received: from amalgama (unknown [185.194.187.136])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AA10C20672;
-        Fri, 22 Nov 2019 05:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574402026;
-        bh=ZFLASfdovryR7LiQczr3/sQr5TcaQLVbPu/4tYd/oKU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QquYUjLfoTKdsrZ7MGtb3zHo/ZcZ4eCgYnavZ2KTeAXwgXTlanJiQeZGwbOa/WSsk
-         eu/fGao9IahHDtq0K3z+JCGsgxxJ9UQrrsT9x6oTE3671lv6kdNaYHGs+WGyHiawdv
-         i1/Xo+JaZO4wL7Yqf8jtDKF3LcQbDBL07Y/4QpWI=
-Received: by mail-lf1-f49.google.com with SMTP id f16so4565818lfm.3;
-        Thu, 21 Nov 2019 21:53:45 -0800 (PST)
-X-Gm-Message-State: APjAAAWSq1ftPLIjXsXF254B0iV6JsiIEi0lu1VOfZwznTNNVLNCaNgt
-        4cHkeQojyh5CMCPxzHWoandg0wNuc7UqO4IWHCE=
-X-Google-Smtp-Source: APXvYqxWlWvyv7M1PttJXoThDFMC3mJKD4wDrzEDT/AI63x858kL8RmqFmef/OrVPWtH2YgBq5PxUJwQ50uKJsXNy+s=
-X-Received: by 2002:ac2:51b5:: with SMTP id f21mr10474788lfk.159.1574402023874;
- Thu, 21 Nov 2019 21:53:43 -0800 (PST)
+        (Authenticated sender: giovanni)
+        by jauntuale.pietrobattiston.it (Postfix) with ESMTPSA id 29CB8E0DA8;
+        Fri, 22 Nov 2019 11:15:37 +0100 (CET)
+Received: by amalgama (Postfix, from userid 1000)
+        id A54343C004F; Fri, 22 Nov 2019 11:15:20 +0100 (CET)
+From:   Giovanni Mascellani <gio@debian.org>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali.rohar@gmail.com>,
+        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Giovanni Mascellani <gio@debian.org>
+Subject: [PATCH v6 1/2] dell-smm-hwmon: Add support for disabling automatic BIOS fan control
+Date:   Fri, 22 Nov 2019 11:15:18 +0100
+Message-Id: <20191122101519.1246458-1-gio@debian.org>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <20191120134153.15418-1-krzk@kernel.org> <e93c7c7e-dac7-8c8d-c68a-edaa9106d6ac@roeck-us.net>
-In-Reply-To: <e93c7c7e-dac7-8c8d-c68a-edaa9106d6ac@roeck-us.net>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Fri, 22 Nov 2019 13:53:32 +0800
-X-Gmail-Original-Message-ID: <CAJKOXPfw0nEFJum_uVqSBzNX2b_gVFbSuoz6gnULhyCENHORqw@mail.gmail.com>
-Message-ID: <CAJKOXPfw0nEFJum_uVqSBzNX2b_gVFbSuoz6gnULhyCENHORqw@mail.gmail.com>
-Subject: Re: [PATCH] hwmon: Fix Kconfig indentation
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, 22 Nov 2019 at 13:52, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 11/20/19 5:41 AM, Krzysztof Kozlowski wrote:
-> > Adjust indentation from spaces to tab (+optional two spaces) as in
-> > coding style with command like:
-> >       $ sed -e 's/^        /\t/' -i */Kconfig
-> >
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
->
-> Quite frankly I'd rather not have to deal with such cosmetic changes.
+This patch exports standard hwmon pwmX_enable sysfs attribute for
+enabling or disabling automatic fan control by BIOS. Standard value
+"1" is for disabling automatic BIOS fan control and value "2" for
+enabling.
 
-I understand, let's skip it then.
+By default BIOS auto mode is enabled by laptop firmware.
 
-Best regards,
-Krzysztof
+When BIOS auto mode is enabled, custom fan speed value (set via hwmon
+pwmX sysfs attribute) is overwritten by SMM in few seconds and
+therefore any custom settings are without effect. So this is reason
+why implementing option for disabling BIOS auto mode is needed.
+
+So finally this patch allows kernel to set and control fan speed on
+laptops, but it can be dangerous (like setting speed of other fans).
+
+The SMM commands to enable or disable automatic fan control are not
+documented and are not the same on all Dell laptops. Therefore a
+whitelist is used to send the correct codes only on laptopts for which
+they are known.
+
+This patch was originally developed by Pali Rohár; later Giovanni
+Mascellani implemented the whitelist.
+
+Signed-off-by: Giovanni Mascellani <gio@debian.org>
+Co-Developed-by: Pali Rohár <pali.rohar@gmail.com>
+Signed-off-by: Pali Rohár <pali.rohar@gmail.com>
+---
+ drivers/hwmon/dell-smm-hwmon.c | 114 ++++++++++++++++++++++++++++++---
+ 1 file changed, 104 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 4212d022d253..25d160b36a57 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -68,6 +68,8 @@ static uint i8k_pwm_mult;
+ static uint i8k_fan_max = I8K_FAN_HIGH;
+ static bool disallow_fan_type_call;
+ static bool disallow_fan_support;
++static unsigned int manual_fan;
++static unsigned int auto_fan;
+ 
+ #define I8K_HWMON_HAVE_TEMP1	(1 << 0)
+ #define I8K_HWMON_HAVE_TEMP2	(1 << 1)
+@@ -300,6 +302,20 @@ static int i8k_get_fan_nominal_speed(int fan, int speed)
+ 	return i8k_smm(&regs) ? : (regs.eax & 0xffff) * i8k_fan_mult;
+ }
+ 
++/*
++ * Enable or disable automatic BIOS fan control support
++ */
++static int i8k_enable_fan_auto_mode(bool enable)
++{
++	struct smm_regs regs = { };
++
++	if (disallow_fan_support)
++		return -EINVAL;
++
++	regs.eax = enable ? auto_fan : manual_fan;
++	return i8k_smm(&regs);
++}
++
+ /*
+  * Set the fan speed (off, low, high). Returns the new fan status.
+  */
+@@ -726,6 +742,35 @@ static ssize_t i8k_hwmon_pwm_store(struct device *dev,
+ 	return err < 0 ? -EIO : count;
+ }
+ 
++static ssize_t i8k_hwmon_pwm_enable_store(struct device *dev,
++					  struct device_attribute *attr,
++					  const char *buf, size_t count)
++{
++	int err;
++	bool enable;
++	unsigned long val;
++
++	if (!auto_fan)
++		return -ENODEV;
++
++	err = kstrtoul(buf, 10, &val);
++	if (err)
++		return err;
++
++	if (val == 1)
++		enable = false;
++	else if (val == 2)
++		enable = true;
++	else
++		return -EINVAL;
++
++	mutex_lock(&i8k_mutex);
++	err = i8k_enable_fan_auto_mode(enable);
++	mutex_unlock(&i8k_mutex);
++
++	return err ? err : count;
++}
++
+ static SENSOR_DEVICE_ATTR_RO(temp1_input, i8k_hwmon_temp, 0);
+ static SENSOR_DEVICE_ATTR_RO(temp1_label, i8k_hwmon_temp_label, 0);
+ static SENSOR_DEVICE_ATTR_RO(temp2_input, i8k_hwmon_temp, 1);
+@@ -749,6 +794,7 @@ static SENSOR_DEVICE_ATTR_RO(temp10_label, i8k_hwmon_temp_label, 9);
+ static SENSOR_DEVICE_ATTR_RO(fan1_input, i8k_hwmon_fan, 0);
+ static SENSOR_DEVICE_ATTR_RO(fan1_label, i8k_hwmon_fan_label, 0);
+ static SENSOR_DEVICE_ATTR_RW(pwm1, i8k_hwmon_pwm, 0);
++static SENSOR_DEVICE_ATTR_WO(pwm1_enable, i8k_hwmon_pwm_enable, 0);
+ static SENSOR_DEVICE_ATTR_RO(fan2_input, i8k_hwmon_fan, 1);
+ static SENSOR_DEVICE_ATTR_RO(fan2_label, i8k_hwmon_fan_label, 1);
+ static SENSOR_DEVICE_ATTR_RW(pwm2, i8k_hwmon_pwm, 1);
+@@ -780,12 +826,13 @@ static struct attribute *i8k_attrs[] = {
+ 	&sensor_dev_attr_fan1_input.dev_attr.attr,	/* 20 */
+ 	&sensor_dev_attr_fan1_label.dev_attr.attr,	/* 21 */
+ 	&sensor_dev_attr_pwm1.dev_attr.attr,		/* 22 */
+-	&sensor_dev_attr_fan2_input.dev_attr.attr,	/* 23 */
+-	&sensor_dev_attr_fan2_label.dev_attr.attr,	/* 24 */
+-	&sensor_dev_attr_pwm2.dev_attr.attr,		/* 25 */
+-	&sensor_dev_attr_fan3_input.dev_attr.attr,	/* 26 */
+-	&sensor_dev_attr_fan3_label.dev_attr.attr,	/* 27 */
+-	&sensor_dev_attr_pwm3.dev_attr.attr,		/* 28 */
++	&sensor_dev_attr_pwm1_enable.dev_attr.attr,	/* 23 */
++	&sensor_dev_attr_fan2_input.dev_attr.attr,	/* 24 */
++	&sensor_dev_attr_fan2_label.dev_attr.attr,	/* 25 */
++	&sensor_dev_attr_pwm2.dev_attr.attr,		/* 26 */
++	&sensor_dev_attr_fan3_input.dev_attr.attr,	/* 27 */
++	&sensor_dev_attr_fan3_label.dev_attr.attr,	/* 28 */
++	&sensor_dev_attr_pwm3.dev_attr.attr,		/* 29 */
+ 	NULL
+ };
+ 
+@@ -828,16 +875,19 @@ static umode_t i8k_is_visible(struct kobject *kobj, struct attribute *attr,
+ 	    !(i8k_hwmon_flags & I8K_HWMON_HAVE_TEMP10))
+ 		return 0;
+ 
+-	if (index >= 20 && index <= 22 &&
++	if (index >= 20 && index <= 23 &&
+ 	    !(i8k_hwmon_flags & I8K_HWMON_HAVE_FAN1))
+ 		return 0;
+-	if (index >= 23 && index <= 25 &&
++	if (index >= 24 && index <= 26 &&
+ 	    !(i8k_hwmon_flags & I8K_HWMON_HAVE_FAN2))
+ 		return 0;
+-	if (index >= 26 && index <= 28 &&
++	if (index >= 27 && index <= 29 &&
+ 	    !(i8k_hwmon_flags & I8K_HWMON_HAVE_FAN3))
+ 		return 0;
+ 
++	if (index == 23 && !auto_fan)
++		return 0;
++
+ 	return attr->mode;
+ }
+ 
+@@ -1135,12 +1185,48 @@ static struct dmi_system_id i8k_blacklist_fan_support_dmi_table[] __initdata = {
+ 	{ }
+ };
+ 
++struct i8k_fan_control_data {
++	unsigned int manual_fan;
++	unsigned int auto_fan;
++};
++
++enum i8k_fan_controls {
++	I8K_FAN_34A3_35A3,
++};
++
++static const struct i8k_fan_control_data i8k_fan_control_data[] = {
++	[I8K_FAN_34A3_35A3] = {
++		.manual_fan = 0x34a3,
++		.auto_fan = 0x35a3,
++	},
++};
++
++static struct dmi_system_id i8k_whitelist_fan_control[] __initdata = {
++	{
++		.ident = "Dell Precision 5530",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Precision 5530"),
++		},
++		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_34A3_35A3],
++	},
++	{
++		.ident = "Dell Latitude E6440",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Latitude E6440"),
++		},
++		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_34A3_35A3],
++	},
++	{ }
++};
++
+ /*
+  * Probe for the presence of a supported laptop.
+  */
+ static int __init i8k_probe(void)
+ {
+-	const struct dmi_system_id *id;
++	const struct dmi_system_id *id, *fan_control;
+ 	int fan, ret;
+ 
+ 	/*
+@@ -1200,6 +1286,14 @@ static int __init i8k_probe(void)
+ 	i8k_fan_max = fan_max ? : I8K_FAN_HIGH;	/* Must not be 0 */
+ 	i8k_pwm_mult = DIV_ROUND_UP(255, i8k_fan_max);
+ 
++	fan_control = dmi_first_match(i8k_whitelist_fan_control);
++	if (fan_control && fan_control->driver_data) {
++		const struct i8k_fan_control_data *fan_control_data = fan_control->driver_data;
++		manual_fan = fan_control_data->manual_fan;
++		auto_fan = fan_control_data->auto_fan;
++		pr_info("enabling support for setting automatic/manual fan control\n");
++	}
++
+ 	if (!fan_mult) {
+ 		/*
+ 		 * Autodetect fan multiplier based on nominal rpm
+-- 
+2.24.0
+
