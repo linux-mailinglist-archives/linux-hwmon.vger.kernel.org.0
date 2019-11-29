@@ -2,272 +2,144 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD82410D166
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 Nov 2019 07:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C1B10D92D
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 Nov 2019 18:54:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbfK2GHw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 29 Nov 2019 01:07:52 -0500
-Received: from segapp02.wistron.com ([103.200.3.19]:59447 "EHLO
-        segapp03.wistron.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725892AbfK2GHw (ORCPT
+        id S1726970AbfK2RyO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 29 Nov 2019 12:54:14 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:45356 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726909AbfK2RyN (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 29 Nov 2019 01:07:52 -0500
-X-Greylist: delayed 304 seconds by postgrey-1.27 at vger.kernel.org; Fri, 29 Nov 2019 01:07:45 EST
-Received: from EXCHAPP02.whq.wistron (unverified [10.37.38.25]) by TWNHUMSW4.wistron.com
- (Clearswift SMTPRS 5.6.0) with ESMTP id <Tdbc3e1450bc0a81672162c@TWNHUMSW4.wistron.com>;
- Fri, 29 Nov 2019 14:02:38 +0800
-Received: from EXCHAPP02.whq.wistron (10.37.38.25) by EXCHAPP02.whq.wistron
- (10.37.38.25) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 29 Nov 2019 12:54:13 -0500
+Received: by mail-ot1-f66.google.com with SMTP id r24so25464823otk.12
+        for <linux-hwmon@vger.kernel.org>; Fri, 29 Nov 2019 09:54:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:resent-from:resent-date:resent-message-id:resent-to
+         :envelope-to:delivery-date:from:to:cc:subject:thread-topic
+         :thread-index:date:message-id:accept-language:content-language
+         :user-agent:content-id:content-transfer-encoding:mime-version;
+        bh=o6jTf7K2b5VYgoB7BgVTe2gW1u286BnuUXjcCIVkAc4=;
+        b=bWgRql//G79usmj8d1eYsp2BviNWVCh72Kzo9KvxAmfTd8k5BExOaHiz3vwbedwJCD
+         yYENMzYZSCLTxGyQUcBpbcc7FJDRuSU3Re7opH5sgALkN/fs66KGpBL6K6VuFze2H8GA
+         +sxh9ULMzDvKZODwEM4+JD1krKprlDnZDw+EB8QdJ/Xbu4Fplyie1+JAlRi0DvPbrLfl
+         DwRUak6/dkGDm+wAELfxfqPPpAPgntoWGeKQKOGnTfZOYoy/GBgSjSOWjQl23n7kK0wR
+         IU+oa68Wu2CvBlFcGwfAKxcB3VkI0ZoAJe7HQ9/aYZ3H6P3qeOy4WyVd9c1hzw0CO3Yx
+         hwtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:resent-from:resent-date:resent-message-id
+         :resent-to:envelope-to:delivery-date:from:to:cc:subject:thread-topic
+         :thread-index:date:message-id:accept-language:content-language
+         :user-agent:content-id:content-transfer-encoding:mime-version;
+        bh=o6jTf7K2b5VYgoB7BgVTe2gW1u286BnuUXjcCIVkAc4=;
+        b=LclDPK/GM9CUJ9Vsr+jlCjKjHtFRniq9Ctc7lw8aR9JioJhXnRNZKYqlnM5r9nm100
+         qJ0u81SFxhg00s1X47UUomYYJCOBgwzT7WwQ1WY1Mg2kYyhdJRlVBnQsRkRBtv6nf3pT
+         NFmOw202W/GyK85EkhEXe3I3KDBWfqZgD17QDWRC6cUxI94u6t16Z9X8Oh7xarospJPn
+         DnDPLoxgJTA5FOtRuZ/yw1qfolDRt9sp122MuOCBXXhpgDmMub8gUUnoYjGbXkKydrvZ
+         tlCnSrd3XOHcLIxiBlt+ISwo8onRb2qH6yEBMJZU31luhbfc2t2AcufxBVhez+8TEjrL
+         OutA==
+X-Gm-Message-State: APjAAAXoGw3byVgG527CgJTIrZ76dgWpC1sbdlZGE4dlowRq8Uz0QoNd
+        FRfeX+j62LWKxAFiqMGKaOEPSuRu
+X-Google-Smtp-Source: APXvYqx51M9Fjto8TewI5s1a0vVb2ch6uv4xEtoTGO/PtxIWaLJjMmS+j2ffrwQEMw9wNLldBUX+zw==
+X-Received: by 2002:a9d:5543:: with SMTP id h3mr12086326oti.33.1575050052540;
+        Fri, 29 Nov 2019 09:54:12 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l3sm2770621oie.6.2019.11.29.09.54.11
+        for <linux-hwmon@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 29 Nov 2019 09:54:11 -0800 (PST)
+Received: from bh-25.webhostbox.net
+        by bh-25.webhostbox.net with LMTP
+        id 4Eq/ECP14F0x5wkAh82d6A
+        (envelope-from <gilles.buloz@kontron.com>)
+        for <linux@roeck-us.net>; Fri, 29 Nov 2019 10:38:27 +0000
+Envelope-to: linux@roeck-us.net
+Delivery-date: Fri, 29 Nov 2019 10:38:27 +0000
+Received: from skedge04.snt-world.com ([91.208.41.69]:33624)
+        by bh-25.webhostbox.net with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.92)
+        (envelope-from <gilles.buloz@kontron.com>)
+        id 1iadfH-00380F-KF
+        for linux@roeck-us.net; Fri, 29 Nov 2019 10:38:27 +0000
+Received: from sntmail10s.snt-is.com (unknown [10.203.32.183])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by skedge04.snt-world.com (Postfix) with ESMTPS id 1FD4567A075
+        for <linux@roeck-us.net>; Fri, 29 Nov 2019 11:38:03 +0100 (CET)
+Received: from sntmail12r.snt-is.com (10.203.32.182) by sntmail10s.snt-is.com
+ (10.203.32.183) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Fri, 29 Nov
- 2019 14:02:37 +0800
-Received: from gitserver.wistron.com (10.37.38.233) by EXCHAPP02.whq.wistron
- (10.37.38.25) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Fri, 29 Nov 2019 14:02:37 +0800
-From:   Ben Pai <Ben_Pai@wistron.com>
-To:     <linux@roeck-us.net>
-CC:     <robh+dt@kernel.org>, <jdelvare@suse.com>,
-        <linux-kernel@vger.kernel.org>, <linux-hwmon@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <corbet@lwn.net>,
-        <wangat@tw.ibm.com>, <Andy_YF_Wang@wistron.com>,
-        <Claire_Ku@wistron.com>, Ben Pai <Ben_Pai@wistron.com>
-Subject: [ v1] hwmon: (pmbus) Add Wistron power supply pmbus driver
-Date:   Fri, 29 Nov 2019 14:02:30 +0800
-Message-ID: <20191129060230.14522-1-Ben_Pai@wistron.com>
-X-Mailer: git-send-email 2.17.1
+ 2019 11:38:02 +0100
+Received: from sntmail12r.snt-is.com ([fe80::e551:8750:7bba:3305]) by
+ sntmail12r.snt-is.com ([fe80::e551:8750:7bba:3305%3]) with mapi id
+ 15.01.1713.004; Fri, 29 Nov 2019 11:38:02 +0100
+From:   Gilles Buloz <Gilles.Buloz@kontron.com>
+To:     "linux@roeck-us.net" <linux@roeck-us.net>
+CC:     Gilles Buloz <Gilles.Buloz@kontron.com>
+Subject: [PATCH 1/2] hwmon: (nct7802) Fix voltage limits to wrong registers
+Thread-Topic: [PATCH 1/2] hwmon: (nct7802) Fix voltage limits to wrong
+ registers
+Thread-Index: AQHVpqETZxldW7Z9bkSlKT2rifv8pA==
+Date:   Fri, 29 Nov 2019 10:38:02 +0000
+Message-ID: <5de0f509.rc0oEvPOMjbfPW1w%gilles.buloz@kontron.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Heirloom mailx 12.4 7/29/08
+x-originating-ip: [172.25.9.193]
+x-c2processedorg: 51b406b7-48a2-4d03-b652-521f56ac89f3
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <14C586CF40B25D478169C2903432E6AB@snt-world.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 2BB2C5B8A09FB1C966BBAE698742D39AE829BF86664D6743517F47263D541F492000:8
+X-SnT-MailScanner-Information: Please contact the ISP for more information
+X-SnT-MailScanner-ID: 1FD4567A075.AB5FF
+X-SnT-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+X-SnT-MailScanner-SpamCheck: 
+X-SnT-MailScanner-From: gilles.buloz@kontron.com
+X-SnT-MailScanner-To: linux@roeck-us.net
+X-Spam-Status: No
+X-Spam-Status: No, score=0.0
+X-Spam-Score: 0
+X-Spam-Bar: /
+X-Spam-Flag: NO
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add the driver to monitor Wisreon power supplies with hwmon over pmbus.
+From: Gilles Buloz <gilles.buloz@kontron.com>
+Date: Wed, 27 Nov 2019 18:09:34 +0100
+Subject: [PATCH 1/2] hwmon: (nct7802) Fix voltage limits to wrong registers
 
-Signed-off-by: Ben Pai <Ben_Pai@wistron.com>
+in0 thresholds are written to the in2 thresholds registers
+in2 thresholds to in3 thresholds
+in3 thresholds to in4 thresholds
+in4 thresholds to in0 thresholds
+
+Signed-off-by: Gilles Buloz <gilles.buloz@kontron.com>
 ---
- drivers/hwmon/pmbus/Kconfig       |   9 ++
- drivers/hwmon/pmbus/Makefile      |   1 +
- drivers/hwmon/pmbus/wistron-wps.c | 180 ++++++++++++++++++++++++++++++
- 3 files changed, 190 insertions(+)
- create mode 100644 drivers/hwmon/pmbus/wistron-wps.c
+ drivers/hwmon/nct7802.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index d62d69bb7e49..ebb7024e58ab 100644
---- a/drivers/hwmon/pmbus/Kconfig
-+++ b/drivers/hwmon/pmbus/Kconfig
-@@ -219,6 +219,15 @@ config SENSORS_UCD9200
- 	  This driver can also be built as a module. If so, the module will
- 	  be called ucd9200.
- 
-+config SENSORS_WISTRON_WPS
-+	tristate "Wistron Power Supply"
-+	help
-+	  If you say yes here you get hardware monitoring support for the Wistron
-+	  power supply.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called wistron-wps.
-+
- config SENSORS_ZL6100
- 	tristate "Intersil ZL6100 and compatibles"
- 	help
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index 03bacfcfd660..cad38f99e8c5 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -25,4 +25,5 @@ obj-$(CONFIG_SENSORS_TPS40422)	+= tps40422.o
- obj-$(CONFIG_SENSORS_TPS53679)	+= tps53679.o
- obj-$(CONFIG_SENSORS_UCD9000)	+= ucd9000.o
- obj-$(CONFIG_SENSORS_UCD9200)	+= ucd9200.o
-+obj-$(CONFIG_SENSORS_WISTRON_WPS) += wistron-wps.o
- obj-$(CONFIG_SENSORS_ZL6100)	+= zl6100.o
-diff --git a/drivers/hwmon/pmbus/wistron-wps.c b/drivers/hwmon/pmbus/wistron-wps.c
-new file mode 100644
-index 000000000000..764496aa9d4f
---- /dev/null
-+++ b/drivers/hwmon/pmbus/wistron-wps.c
-@@ -0,0 +1,180 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright 2019 Wistron Corp.
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/debugfs.h>
-+#include <linux/device.h>
-+#include <linux/fs.h>
-+#include <linux/i2c.h>
-+#include <linux/jiffies.h>
-+#include <linux/leds.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/pmbus.h>
-+
-+#include "pmbus.h"
-+
-+#define WPS_ID_CMD				0x99
-+#define WPS_PN_CMD				0x9A
-+#define WPS_FW_CMD				0x9B
-+#define WPS_DATE_CMD				0x9D
-+#define WPS_SN_CMD				0x9E
-+
-+enum {
-+	WPS_DEBUGFS_ID,
-+	WPS_DEBUGFS_PN,
-+	WPS_DEBUGFS_SN,
-+	WPS_DEBUGFS_FW,
-+	WPS_DEBUGFS_DATE,
-+	WPS_DEBUGFS_NUM_ENTRIES
-+};
-+
-+struct wistron_wps {
-+
-+	struct i2c_client *client;
-+
-+	int debugfs_entries[WPS_DEBUGFS_NUM_ENTRIES];
-+
-+};
-+
-+#define to_psu(x, y) container_of((x), struct wistron_wps, debugfs_entries[(y)])
-+
-+static ssize_t wistron_wps_debugfs_op(struct file *file, char __user *buf,
-+				    size_t count, loff_t *ppos)
-+{
-+	u8 cmd;
-+	int rc;
-+	int *idxp = file->private_data;
-+	int idx = *idxp;
-+	struct wistron_wps *psu = to_psu(idxp, idx);
-+	char data[I2C_SMBUS_BLOCK_MAX] = { 0 };
-+
-+	switch (idx) {
-+	case WPS_DEBUGFS_ID:
-+		cmd = WPS_ID_CMD;
-+		break;
-+	case WPS_DEBUGFS_PN:
-+		cmd = WPS_PN_CMD;
-+		break;
-+	case WPS_DEBUGFS_SN:
-+		cmd = WPS_SN_CMD;
-+		break;
-+	case WPS_DEBUGFS_FW:
-+		cmd = WPS_FW_CMD;
-+		break;
-+	case WPS_DEBUGFS_DATE:
-+		cmd = WPS_DATE_CMD;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	rc = i2c_smbus_read_block_data(psu->client, cmd, data);
-+	if (rc < 0)
-+		return rc;
-+
-+done:
-+	data[rc] = '\n';
-+	rc += 2;
-+
-+	return simple_read_from_buffer(buf, count, ppos, data, rc);
-+}
-+
-+static const struct file_operations wistron_wps_fops = {
-+	.llseek = noop_llseek,
-+	.read = wistron_wps_debugfs_op,
-+	.open = simple_open,
-+};
-+
-+static struct pmbus_driver_info wistron_wps_info = {
-+	.pages = 1,
-+	.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
-+		PMBUS_HAVE_PIN | PMBUS_HAVE_POUT | PMBUS_HAVE_FAN12 |
-+		PMBUS_HAVE_TEMP | PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 |
-+		PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT |
-+		PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP |
-+		PMBUS_HAVE_STATUS_FAN12,
-+};
-+
-+static struct pmbus_platform_data wistron_wps_pdata = {
-+	.flags = PMBUS_SKIP_STATUS_CHECK,
-+};
-+
-+static int wistron_wps_probe(struct i2c_client *client,
-+			   const struct i2c_device_id *id)
-+{
-+	int i, rc;
-+	struct dentry *debugfs;
-+	struct dentry *wistron_wps_dir;
-+	struct wistron_wps *psu;
-+
-+	client->dev.platform_data = &wistron_wps_pdata;
-+	rc = pmbus_do_probe(client, id, &wistron_wps_info);
-+	if (rc)
-+		return rc;
-+
-+	psu = devm_kzalloc(&client->dev, sizeof(*psu), GFP_KERNEL);
-+	if (!psu)
-+		return 0;
-+
-+	psu->client = client;
-+
-+	debugfs = pmbus_get_debugfs_dir(client);
-+	if (!debugfs)
-+		return 0;
-+
-+	wistron_wps_dir = debugfs_create_dir(client->name, debugfs);
-+	if (!wistron_wps_dir)
-+		return 0;
-+
-+	for (i = 0; i < WPS_DEBUGFS_NUM_ENTRIES; ++i)
-+		psu->debugfs_entries[i] = i;
-+
-+	debugfs_create_file("fru", 0444, wistron_wps_dir,
-+			    &psu->debugfs_entries[WPS_DEBUGFS_ID],
-+			    &wistron_wps_fops);
-+	debugfs_create_file("part_number", 0444, wistron_wps_dir,
-+			    &psu->debugfs_entries[WPS_DEBUGFS_PN],
-+			    &wistron_wps_fops);
-+	debugfs_create_file("serial_number", 0444, wistron_wps_dir,
-+			    &psu->debugfs_entries[WPS_DEBUGFS_SN],
-+			    &wistron_wps_fops);
-+	debugfs_create_file("fw_version", 0444, wistron_wps_dir,
-+			    &psu->debugfs_entries[WPS_DEBUGFS_FW],
-+			    &wistron_wps_fops);
-+	debugfs_create_file("mfr_date", 0444, wistron_wps_dir,
-+			    &psu->debugfs_entries[WPS_DEBUGFS_DATE],
-+			    &wistron_wps_fops);
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id wistron_wps_id[] = {
-+	{ "wistron_wps", 1 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, wistron_wps_id);
-+
-+static const struct of_device_id wistron_wps_of_match[] = {
-+	{ .compatible = "wistron,wps" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, wistron_wps_of_match);
-+
-+static struct i2c_driver wistron_wps_driver = {
-+	.driver = {
-+		.name = "wistron-wps",
-+		.of_match_table = wistron_wps_of_match,
-+	},
-+	.probe = wistron_wps_probe,
-+	.remove = pmbus_do_remove,
-+	.id_table = wistron_wps_id,
-+};
-+
-+module_i2c_driver(wistron_wps_driver);
-+
-+MODULE_AUTHOR("Ben Pai");
-+MODULE_DESCRIPTION("PMBus driver for Wistron power supplies");
-+MODULE_LICENSE("GPL");
--- 
+diff --git a/drivers/hwmon/nct7802.c b/drivers/hwmon/nct7802.c
+index f3dd2a17bd42..7915c2f2c85d 100644
+--- a/drivers/hwmon/nct7802.c
++++ b/drivers/hwmon/nct7802.c
+@@ -23,8 +23,8 @@
+ static const u8 REG_VOLTAGE[5] =3D { 0x09, 0x0a, 0x0c, 0x0d, 0x0e };
+=20
+ static const u8 REG_VOLTAGE_LIMIT_LSB[2][5] =3D {
+-	{ 0x40, 0x00, 0x42, 0x44, 0x46 },
+-	{ 0x3f, 0x00, 0x41, 0x43, 0x45 },
++	{ 0x46, 0x00, 0x40, 0x42, 0x44 },
++	{ 0x45, 0x00, 0x3f, 0x41, 0x43 },
+ };
+=20
+ static const u8 REG_VOLTAGE_LIMIT_MSB[5] =3D { 0x48, 0x00, 0x47, 0x47, 0x4=
+8 };
+--=20
 2.17.1
-
