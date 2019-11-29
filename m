@@ -2,263 +2,321 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBDDA10D92E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 Nov 2019 18:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE06010D979
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 Nov 2019 19:16:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726971AbfK2Ry0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 29 Nov 2019 12:54:26 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:36402 "EHLO
+        id S1727084AbfK2SQq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 29 Nov 2019 13:16:46 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:42782 "EHLO
         mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726909AbfK2Ry0 (ORCPT
+        with ESMTP id S1726985AbfK2SQp (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 29 Nov 2019 12:54:26 -0500
-Received: by mail-ot1-f66.google.com with SMTP id d7so8583969otq.3
-        for <linux-hwmon@vger.kernel.org>; Fri, 29 Nov 2019 09:54:25 -0800 (PST)
+        Fri, 29 Nov 2019 13:16:45 -0500
+Received: by mail-ot1-f66.google.com with SMTP id 66so19436088otd.9;
+        Fri, 29 Nov 2019 10:16:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:resent-from:resent-date:resent-message-id:resent-to
-         :envelope-to:delivery-date:from:to:cc:subject:thread-topic
-         :thread-index:date:message-id:accept-language:content-language
-         :user-agent:content-id:content-transfer-encoding:mime-version;
-        bh=6T+3k/zhPMyu1AsbAWKxzpmYwv6XNTFvM696gKdi9h4=;
-        b=rujS4wz5jPp7aLtzCtcXF8XXy5BPSPdj1lLrqAvPnt/M2wN8ENf8LyWJYnpPyziWiB
-         vuw3r9nFvsYVqie9gEiL+ix3KRhxwdaWnMCLKfKzOA4G4Sb/MhGTf/ibgSWe6wugESE+
-         c/FGlsRfpv49+Ru2dwJWdnaOG0r8i4fBlcBTOWye8stf663X6VwNQQQ/GHwe0cXvgWpM
-         1q4WizoM5KcPXViokbhWcuZBMuXY2uKTnsfhFA211FtZp2T4LMn1AOowC0RoTM+juuil
-         7U/CVSSflJyu9nmeFHOrXoA6jSZ9KPHLgW1lnDQWE+thm6f+yiJLAgEah5c8+d28TU3W
-         RDfA==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=l4xdyO3pbcjV7VFnEpdpI0eB5xd2aaOViAmddhCr718=;
+        b=qVqCrB/NvIAkVnXmiZv6toj/plOAU3xcgXsaNRck03Neip+Xo+z3vb1VtvIiJYpYl4
+         /H9cf1zpYUVGfLhxbcpJ+O3le/fnWQJOhLuWA13Oyp4+L7Tm1ZXTspg1QGH63wCnwwQH
+         6zXvNmQdUr2Jr3CIYoJ9nUUIRFGNcqklGkUrSa2Iz5WfU64k3RxglXCenQlyduE7oRXD
+         BXg3yoF8rLY/H+pRCtSc+EuDLwPp5/pPXahkDDtRYBCqrPSnEZxzf/9OMZaMekAwnRit
+         ia5qeSlHdw/WSN0/M4As5Bs+/tDd99Bv2HVBtCRA4Kt4GQDlvl0eJtzfzDfqUe/jFsun
+         2fPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:resent-from:resent-date:resent-message-id
-         :resent-to:envelope-to:delivery-date:from:to:cc:subject:thread-topic
-         :thread-index:date:message-id:accept-language:content-language
-         :user-agent:content-id:content-transfer-encoding:mime-version;
-        bh=6T+3k/zhPMyu1AsbAWKxzpmYwv6XNTFvM696gKdi9h4=;
-        b=W/ARgVZLGvmt+yR5RvOmL+IIZilnIRU8bHVy4S3OHA3BZ46GmoGRvXG5ajelPBwS9E
-         0LBbAtD1A4L0cqpBg3Rx9BD+Rg5jTl+Epf+jUT4RChWJJitsywlYNAbwPXsRni3DcP60
-         9MGVu9lKapNML67sTHh2JBnJTnmavuXdp3fNVA88STFu+CEKCSItNlLFUVXGmpOQ0xWg
-         Tr1Um72v1I9t/ncbXeqTvJoFVgbVXH+T9uSIDXFWNF7Qkhov+tg60MmbKTFP2yPYVRfJ
-         VLea5bGWnj2jOguCYY6AavOXCJj0ECIBIDl11nKMyUnMxPRpyDGJ4359po9J+l4VTsjK
-         GSOg==
-X-Gm-Message-State: APjAAAVzksVyRliwetlehQhV776LnR60iN5LpMw99E8RRq3Eo13TNxJD
-        Z1Paf06pRMUCxAojh8nZVQ6x/Kju
-X-Google-Smtp-Source: APXvYqx4mkLGRxKlE7UXg++HHFRNthcCHLxxQ2wlNDl+2QpVnt5u3h7go94uCzeB5QqVwn9iVIWRdg==
-X-Received: by 2002:a05:6830:1051:: with SMTP id b17mr4771557otp.227.1575050064775;
-        Fri, 29 Nov 2019 09:54:24 -0800 (PST)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=l4xdyO3pbcjV7VFnEpdpI0eB5xd2aaOViAmddhCr718=;
+        b=OLcALX7KatnWMLmzEXdrV+t/auC0uLMTaPCRDg9yjG+c41cJpERie8Ucj38tZkUNzT
+         JMX7W/8UNpjYNEmvYziRwkJIFRbiQWyIdcawDxwG3OvJvpKRo/s0ETESZhCJZPD3CUf5
+         pphH88lnV8T2mGq+Uv1kcFf8v9AFRzCJpp8CQZgO9/DCtIAOvn8QUb4C1ba70ALaLMul
+         Keaf05046ufxqf2y6FC6oynkqGY9M0v6qy9bVWjcW9HkHlqQ9fmE1cyP35hoZEAI8Oz6
+         ARxFmaL/c8wrsCZi4UU95KSYxCIBVMcvdMtBFEfjy6rJAcWh6wh4Pbko0SSt4k+fK/4x
+         x2LQ==
+X-Gm-Message-State: APjAAAUEYGq5QeHtNjdUFwCgV7Jc+ciiEuJM8uq8JBJGf4wjQetwZOt/
+        oy+2bicUUXcSiAX+McGjNmg=
+X-Google-Smtp-Source: APXvYqxbgJui5nzV2IrxEm8sjBHlPUE1XdAYEN6NBbbf2zSzqSOOoWfLftMFiVNUKkRG0lKRqkS9bg==
+X-Received: by 2002:a9d:7f12:: with SMTP id j18mr2628854otq.17.1575051404246;
+        Fri, 29 Nov 2019 10:16:44 -0800 (PST)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h39sm7622688oth.9.2019.11.29.09.54.24
-        for <linux-hwmon@vger.kernel.org>
+        by smtp.gmail.com with ESMTPSA id l73sm3959987oib.0.2019.11.29.10.16.42
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 Nov 2019 09:54:24 -0800 (PST)
-Received: from bh-25.webhostbox.net
-        by bh-25.webhostbox.net with LMTP
-        id aGrZNXr14F2IRQsAh82d6A
-        (envelope-from <gilles.buloz@kontron.com>)
-        for <linux@roeck-us.net>; Fri, 29 Nov 2019 10:39:54 +0000
-Envelope-to: linux@roeck-us.net
-Delivery-date: Fri, 29 Nov 2019 10:39:54 +0000
-Received: from skedge04.snt-world.com ([91.208.41.69]:34122)
-        by bh-25.webhostbox.net with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.92)
-        (envelope-from <gilles.buloz@kontron.com>)
-        id 1iadgh-0039w6-2v
-        for linux@roeck-us.net; Fri, 29 Nov 2019 10:39:54 +0000
-Received: from sntmail14r.snt-is.com (unknown [10.203.32.184])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by skedge04.snt-world.com (Postfix) with ESMTPS id 0A4F967A08B
-        for <linux@roeck-us.net>; Fri, 29 Nov 2019 11:39:35 +0100 (CET)
-Received: from sntmail12r.snt-is.com (10.203.32.182) by sntmail14r.snt-is.com
- (10.203.32.184) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Fri, 29 Nov
- 2019 11:39:34 +0100
-Received: from sntmail12r.snt-is.com ([fe80::e551:8750:7bba:3305]) by
- sntmail12r.snt-is.com ([fe80::e551:8750:7bba:3305%3]) with mapi id
- 15.01.1713.004; Fri, 29 Nov 2019 11:39:34 +0100
-From:   Gilles Buloz <Gilles.Buloz@kontron.com>
-To:     "linux@roeck-us.net" <linux@roeck-us.net>
-CC:     Gilles Buloz <Gilles.Buloz@kontron.com>
-Subject: [PATCH 2/2] hwmon: (nct7802) Fix non-working alarm on voltages
-Thread-Topic: [PATCH 2/2] hwmon: (nct7802) Fix non-working alarm on voltages
-Thread-Index: AQHVpqFKxcR1fWMFwE6M2gw4QTx4hA==
-Date:   Fri, 29 Nov 2019 10:39:34 +0000
-Message-ID: <5de0f566.tBga5POKAgHlmd0p%gilles.buloz@kontron.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Heirloom mailx 12.4 7/29/08
-x-originating-ip: [172.25.9.193]
-x-c2processedorg: 51b406b7-48a2-4d03-b652-521f56ac89f3
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <17BD850A68521C409860C1963B93C143@snt-world.com>
-Content-Transfer-Encoding: quoted-printable
+        Fri, 29 Nov 2019 10:16:43 -0800 (PST)
+Date:   Fri, 29 Nov 2019 10:16:42 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ben Pai <Ben_Pai@wistron.com>
+Cc:     robh+dt@kernel.org, jdelvare@suse.com,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, corbet@lwn.net, wangat@tw.ibm.com,
+        Andy_YF_Wang@wistron.com, Claire_Ku@wistron.com
+Subject: Re: [ v1] hwmon: (pmbus) Add Wistron power supply pmbus driver
+Message-ID: <20191129181642.GA4062@roeck-us.net>
+References: <20191129060230.14522-1-Ben_Pai@wistron.com>
 MIME-Version: 1.0
-X-SnT-MailScanner-Information: Please contact the ISP for more information
-X-SnT-MailScanner-ID: 0A4F967A08B.A0EE8
-X-SnT-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
-X-SnT-MailScanner-SpamCheck: 
-X-SnT-MailScanner-From: gilles.buloz@kontron.com
-X-SnT-MailScanner-To: linux@roeck-us.net
-X-Spam-Status: No
-X-Spam-Status: No, score=0.0
-X-Spam-Score: 0
-X-Spam-Bar: /
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191129060230.14522-1-Ben_Pai@wistron.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Gilles Buloz <gilles.buloz@kontron.com>
-Date: Fri, 29 Nov 2019 10:56:05 +0100
-Subject: [PATCH 2/2] hwmon: (nct7802) Fix non-working alarm on voltages
+On Fri, Nov 29, 2019 at 02:02:30PM +0800, Ben Pai wrote:
+> Add the driver to monitor Wisreon power supplies with hwmon over pmbus.
 
-No alarm is reported by /sys/.../inX_alarm
+Wistron ?
 
-In detail:
+> 
+> Signed-off-by: Ben Pai <Ben_Pai@wistron.com>
+> ---
+>  drivers/hwmon/pmbus/Kconfig       |   9 ++
+>  drivers/hwmon/pmbus/Makefile      |   1 +
+>  drivers/hwmon/pmbus/wistron-wps.c | 180 ++++++++++++++++++++++++++++++
+>  3 files changed, 190 insertions(+)
+>  create mode 100644 drivers/hwmon/pmbus/wistron-wps.c
+> 
+> diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
+> index d62d69bb7e49..ebb7024e58ab 100644
+> --- a/drivers/hwmon/pmbus/Kconfig
+> +++ b/drivers/hwmon/pmbus/Kconfig
+> @@ -219,6 +219,15 @@ config SENSORS_UCD9200
+>  	  This driver can also be built as a module. If so, the module will
+>  	  be called ucd9200.
+>  
+> +config SENSORS_WISTRON_WPS
+> +	tristate "Wistron Power Supply"
+> +	help
+> +	  If you say yes here you get hardware monitoring support for the Wistron
+> +	  power supply.
+> +
+> +	  This driver can also be built as a module. If so, the module will
+> +	  be called wistron-wps.
+> +
+>  config SENSORS_ZL6100
+>  	tristate "Intersil ZL6100 and compatibles"
+>  	help
+> diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
+> index 03bacfcfd660..cad38f99e8c5 100644
+> --- a/drivers/hwmon/pmbus/Makefile
+> +++ b/drivers/hwmon/pmbus/Makefile
+> @@ -25,4 +25,5 @@ obj-$(CONFIG_SENSORS_TPS40422)	+= tps40422.o
+>  obj-$(CONFIG_SENSORS_TPS53679)	+= tps53679.o
+>  obj-$(CONFIG_SENSORS_UCD9000)	+= ucd9000.o
+>  obj-$(CONFIG_SENSORS_UCD9200)	+= ucd9200.o
+> +obj-$(CONFIG_SENSORS_WISTRON_WPS) += wistron-wps.o
+>  obj-$(CONFIG_SENSORS_ZL6100)	+= zl6100.o
+> diff --git a/drivers/hwmon/pmbus/wistron-wps.c b/drivers/hwmon/pmbus/wistron-wps.c
+> new file mode 100644
+> index 000000000000..764496aa9d4f
+> --- /dev/null
+> +++ b/drivers/hwmon/pmbus/wistron-wps.c
+> @@ -0,0 +1,180 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright 2019 Wistron Corp.
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/debugfs.h>
+> +#include <linux/device.h>
+> +#include <linux/fs.h>
+> +#include <linux/i2c.h>
+> +#include <linux/jiffies.h>
+> +#include <linux/leds.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/pmbus.h>
+> +
+> +#include "pmbus.h"
+> +
+> +#define WPS_ID_CMD				0x99
+> +#define WPS_PN_CMD				0x9A
+> +#define WPS_FW_CMD				0x9B
+> +#define WPS_DATE_CMD				0x9D
+> +#define WPS_SN_CMD				0x9E
+> +
+> +enum {
+> +	WPS_DEBUGFS_ID,
+> +	WPS_DEBUGFS_PN,
+> +	WPS_DEBUGFS_SN,
+> +	WPS_DEBUGFS_FW,
+> +	WPS_DEBUGFS_DATE,
+> +	WPS_DEBUGFS_NUM_ENTRIES
+> +};
+> +
+> +struct wistron_wps {
+> +
+> +	struct i2c_client *client;
+> +
+> +	int debugfs_entries[WPS_DEBUGFS_NUM_ENTRIES];
+> +
+> +};
+> +
+> +#define to_psu(x, y) container_of((x), struct wistron_wps, debugfs_entries[(y)])
 
-The SMI Voltage status register is the only register giving a status
-for voltages, but it does not work like the non-SMI status registers
-used for temperatures and fans.
-A bit is set for each input crossing a threshold, in both direction,
-but the "inside" or "outside" limits info is not available.
-Also this register is cleared on read.
-Note : this is not explicitly spelled out in the datasheet, but from
-experiment.
-As a result if an input is crossing a threshold (min or max in any
-direction), the alarm is reported only once even if the input is
-still outside limits. Also if the alarm for another input is read
-before the one of this input, no alarm is reported at all.
+container_of() doesn't really need the extra ().
 
-Signed-off-by: Gilles Buloz <gilles.buloz@kontron.com>
----
- drivers/hwmon/nct7802.c | 71 ++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 67 insertions(+), 4 deletions(-)
+> +
+> +static ssize_t wistron_wps_debugfs_op(struct file *file, char __user *buf,
+> +				    size_t count, loff_t *ppos)
 
-diff --git a/drivers/hwmon/nct7802.c b/drivers/hwmon/nct7802.c
-index 7915c2f2c85d..35fb352d5a52 100644
---- a/drivers/hwmon/nct7802.c
-+++ b/drivers/hwmon/nct7802.c
-@@ -58,6 +58,8 @@ static const u8 REG_VOLTAGE_LIMIT_MSB_SHIFT[2][5] =3D {
- struct nct7802_data {
- 	struct regmap *regmap;
- 	struct mutex access_lock; /* for multi-byte read and write operations */
-+	u8 in_status;
-+	struct mutex in_alarm_lock;
- };
-=20
- static ssize_t temp_type_show(struct device *dev,
-@@ -368,6 +370,66 @@ static ssize_t in_store(struct device *dev, struct dev=
-ice_attribute *attr,
- 	return err ? : count;
- }
-=20
-+static ssize_t in_alarm_show(struct device *dev, struct device_attribute *=
-attr,
-+			     char *buf)
-+{
-+	struct sensor_device_attribute_2 *sattr =3D to_sensor_dev_attr_2(attr);
-+	struct nct7802_data *data =3D dev_get_drvdata(dev);
-+	int volt, min, max, ret;
-+	unsigned int val;
-+
-+	mutex_lock(&data->in_alarm_lock);
-+
-+	/*
-+	 * The SMI Voltage status register is the only register giving a status
-+	 * for voltages. A bit is set for each input crossing a threshold, in
-+	 * both direction, but the "inside" or "outside" limits info is not
-+	 * available. Also this register is cleared on read.
-+	 * Note : this is not explicitly spelled out in the datasheet, but
-+	 * from experiment.
-+	 * To deal with this we use a status cache with one validity bit and
-+	 * one status bit for each input. Validity is cleared at startup and
-+	 * each time the register reports a change, and the status is processed
-+	 * by software based on current input value and limits.
-+	 */
-+	ret =3D regmap_read(data->regmap, 0x1e, &val); /* SMI Voltage status */
-+	if (ret < 0)
-+		goto abort;
-+
-+	/* invalidate cached status for all inputs crossing a threshold */
-+	data->in_status &=3D ~((val & 0x0f) << 4);
-+
-+	/* if cached status for requested input is invalid, update it */
-+	if (!(data->in_status & (0x10 << sattr->index))) {
-+		ret =3D nct7802_read_voltage(data, sattr->nr, 0);
-+		if (ret < 0)
-+			goto abort;
-+		volt =3D ret;
-+
-+		ret =3D nct7802_read_voltage(data, sattr->nr, 1);
-+		if (ret < 0)
-+			goto abort;
-+		min =3D ret;
-+
-+		ret =3D nct7802_read_voltage(data, sattr->nr, 2);
-+		if (ret < 0)
-+			goto abort;
-+		max =3D ret;
-+
-+		if (volt < min || volt > max)
-+			data->in_status |=3D (1 << sattr->index);
-+		else
-+			data->in_status &=3D ~(1 << sattr->index);
-+
-+		data->in_status |=3D 0x10 << sattr->index;
-+	}
-+
-+	ret =3D sprintf(buf, "%u\n", !!(data->in_status & (1 << sattr->index)));
-+abort:
-+	mutex_unlock(&data->in_alarm_lock);
-+	return ret;
-+}
-+
- static ssize_t temp_show(struct device *dev, struct device_attribute *attr=
-,
- 			 char *buf)
- {
-@@ -660,7 +722,7 @@ static const struct attribute_group nct7802_temp_group =
-=3D {
- static SENSOR_DEVICE_ATTR_2_RO(in0_input, in, 0, 0);
- static SENSOR_DEVICE_ATTR_2_RW(in0_min, in, 0, 1);
- static SENSOR_DEVICE_ATTR_2_RW(in0_max, in, 0, 2);
--static SENSOR_DEVICE_ATTR_2_RO(in0_alarm, alarm, 0x1e, 3);
-+static SENSOR_DEVICE_ATTR_2_RO(in0_alarm, in_alarm, 0, 3);
- static SENSOR_DEVICE_ATTR_2_RW(in0_beep, beep, 0x5a, 3);
-=20
- static SENSOR_DEVICE_ATTR_2_RO(in1_input, in, 1, 0);
-@@ -668,19 +730,19 @@ static SENSOR_DEVICE_ATTR_2_RO(in1_input, in, 1, 0);
- static SENSOR_DEVICE_ATTR_2_RO(in2_input, in, 2, 0);
- static SENSOR_DEVICE_ATTR_2_RW(in2_min, in, 2, 1);
- static SENSOR_DEVICE_ATTR_2_RW(in2_max, in, 2, 2);
--static SENSOR_DEVICE_ATTR_2_RO(in2_alarm, alarm, 0x1e, 0);
-+static SENSOR_DEVICE_ATTR_2_RO(in2_alarm, in_alarm, 2, 0);
- static SENSOR_DEVICE_ATTR_2_RW(in2_beep, beep, 0x5a, 0);
-=20
- static SENSOR_DEVICE_ATTR_2_RO(in3_input, in, 3, 0);
- static SENSOR_DEVICE_ATTR_2_RW(in3_min, in, 3, 1);
- static SENSOR_DEVICE_ATTR_2_RW(in3_max, in, 3, 2);
--static SENSOR_DEVICE_ATTR_2_RO(in3_alarm, alarm, 0x1e, 1);
-+static SENSOR_DEVICE_ATTR_2_RO(in3_alarm, in_alarm, 3, 1);
- static SENSOR_DEVICE_ATTR_2_RW(in3_beep, beep, 0x5a, 1);
-=20
- static SENSOR_DEVICE_ATTR_2_RO(in4_input, in, 4, 0);
- static SENSOR_DEVICE_ATTR_2_RW(in4_min, in, 4, 1);
- static SENSOR_DEVICE_ATTR_2_RW(in4_max, in, 4, 2);
--static SENSOR_DEVICE_ATTR_2_RO(in4_alarm, alarm, 0x1e, 2);
-+static SENSOR_DEVICE_ATTR_2_RO(in4_alarm, in_alarm, 4, 2);
- static SENSOR_DEVICE_ATTR_2_RW(in4_beep, beep, 0x5a, 2);
-=20
- static struct attribute *nct7802_in_attrs[] =3D {
-@@ -1011,6 +1073,7 @@ static int nct7802_probe(struct i2c_client *client,
- 		return PTR_ERR(data->regmap);
-=20
- 	mutex_init(&data->access_lock);
-+	mutex_init(&data->in_alarm_lock);
-=20
- 	ret =3D nct7802_init_chip(data);
- 	if (ret < 0)
---=20
-2.17.1
+Please align continuation lines with '('.
+
+> +{
+> +	u8 cmd;
+> +	int rc;
+> +	int *idxp = file->private_data;
+> +	int idx = *idxp;
+> +	struct wistron_wps *psu = to_psu(idxp, idx);
+> +	char data[I2C_SMBUS_BLOCK_MAX] = { 0 };
+> +
+> +	switch (idx) {
+> +	case WPS_DEBUGFS_ID:
+> +		cmd = WPS_ID_CMD;
+> +		break;
+> +	case WPS_DEBUGFS_PN:
+> +		cmd = WPS_PN_CMD;
+> +		break;
+> +	case WPS_DEBUGFS_SN:
+> +		cmd = WPS_SN_CMD;
+> +		break;
+> +	case WPS_DEBUGFS_FW:
+> +		cmd = WPS_FW_CMD;
+> +		break;
+> +	case WPS_DEBUGFS_DATE:
+> +		cmd = WPS_DATE_CMD;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	rc = i2c_smbus_read_block_data(psu->client, cmd, data);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +done:
+> +	data[rc] = '\n';
+
+The block command can return up to 32 bytes. If it does, the above code
+writes beyond the end of the buffer.
+
+> +	rc += 2;
+
+Why += 2 ? This will report the trailing '\0' to userspace (and require
+an even larger buffer). Is that intentional ?
+
+> +
+> +	return simple_read_from_buffer(buf, count, ppos, data, rc);
+> +}
+> +
+> +static const struct file_operations wistron_wps_fops = {
+> +	.llseek = noop_llseek,
+> +	.read = wistron_wps_debugfs_op,
+> +	.open = simple_open,
+> +};
+> +
+> +static struct pmbus_driver_info wistron_wps_info = {
+> +	.pages = 1,
+> +	.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
+> +		PMBUS_HAVE_PIN | PMBUS_HAVE_POUT | PMBUS_HAVE_FAN12 |
+> +		PMBUS_HAVE_TEMP | PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 |
+> +		PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT |
+> +		PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP |
+> +		PMBUS_HAVE_STATUS_FAN12,
+> +};
+> +
+> +static struct pmbus_platform_data wistron_wps_pdata = {
+> +	.flags = PMBUS_SKIP_STATUS_CHECK,
+
+This should be explained if it is indeed needed.
+
+> +};
+> +
+> +static int wistron_wps_probe(struct i2c_client *client,
+> +			   const struct i2c_device_id *id)
+
+Please match ( in continuation lines.
+
+> +{
+> +	int i, rc;
+> +	struct dentry *debugfs;
+> +	struct dentry *wistron_wps_dir;
+> +	struct wistron_wps *psu;
+> +
+> +	client->dev.platform_data = &wistron_wps_pdata;
+> +	rc = pmbus_do_probe(client, id, &wistron_wps_info);
+> +	if (rc)
+> +		return rc;
+> +
+> +	psu = devm_kzalloc(&client->dev, sizeof(*psu), GFP_KERNEL);
+> +	if (!psu)
+> +		return 0;
+> +
+> +	psu->client = client;
+> +
+> +	debugfs = pmbus_get_debugfs_dir(client);
+> +	if (!debugfs)
+> +		return 0;
+> +
+> +	wistron_wps_dir = debugfs_create_dir(client->name, debugfs);
+> +	if (!wistron_wps_dir)
+> +		return 0;
+> +
+> +	for (i = 0; i < WPS_DEBUGFS_NUM_ENTRIES; ++i)
+> +		psu->debugfs_entries[i] = i;
+> +
+> +	debugfs_create_file("fru", 0444, wistron_wps_dir,
+> +			    &psu->debugfs_entries[WPS_DEBUGFS_ID],
+> +			    &wistron_wps_fops);
+> +	debugfs_create_file("part_number", 0444, wistron_wps_dir,
+> +			    &psu->debugfs_entries[WPS_DEBUGFS_PN],
+> +			    &wistron_wps_fops);
+> +	debugfs_create_file("serial_number", 0444, wistron_wps_dir,
+> +			    &psu->debugfs_entries[WPS_DEBUGFS_SN],
+> +			    &wistron_wps_fops);
+> +	debugfs_create_file("fw_version", 0444, wistron_wps_dir,
+> +			    &psu->debugfs_entries[WPS_DEBUGFS_FW],
+> +			    &wistron_wps_fops);
+> +	debugfs_create_file("mfr_date", 0444, wistron_wps_dir,
+> +			    &psu->debugfs_entries[WPS_DEBUGFS_DATE],
+> +			    &wistron_wps_fops);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct i2c_device_id wistron_wps_id[] = {
+> +	{ "wistron_wps", 1 },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, wistron_wps_id);
+> +
+> +static const struct of_device_id wistron_wps_of_match[] = {
+> +	{ .compatible = "wistron,wps" },
+
+This will need to be documented. It is also probably not the best name
+for a devicetree property (what is "wps" ?), but that will be up to
+a DT maintainer to decide.
+
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, wistron_wps_of_match);
+> +
+> +static struct i2c_driver wistron_wps_driver = {
+> +	.driver = {
+> +		.name = "wistron-wps",
+> +		.of_match_table = wistron_wps_of_match,
+> +	},
+> +	.probe = wistron_wps_probe,
+> +	.remove = pmbus_do_remove,
+> +	.id_table = wistron_wps_id,
+> +};
+> +
+> +module_i2c_driver(wistron_wps_driver);
+> +
+> +MODULE_AUTHOR("Ben Pai");
+> +MODULE_DESCRIPTION("PMBus driver for Wistron power supplies");
+> +MODULE_LICENSE("GPL");
