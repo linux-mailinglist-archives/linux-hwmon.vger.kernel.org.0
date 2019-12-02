@@ -2,89 +2,135 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C64E10E32F
-	for <lists+linux-hwmon@lfdr.de>; Sun,  1 Dec 2019 19:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 359AE10EB91
+	for <lists+linux-hwmon@lfdr.de>; Mon,  2 Dec 2019 15:32:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727266AbfLASmp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 1 Dec 2019 13:42:45 -0500
-Received: from mtax.cdmx.gob.mx ([187.141.35.197]:13726 "EHLO mtax.cdmx.gob.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726965AbfLASmp (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 1 Dec 2019 13:42:45 -0500
-X-Greylist: delayed 7819 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:42:44 EST
-X-NAI-Header: Modified by McAfee Email Gateway (4500)
+        id S1727435AbfLBOc6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 2 Dec 2019 09:32:58 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:43224 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727401AbfLBOc6 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 2 Dec 2019 09:32:58 -0500
+Received: by mail-ot1-f66.google.com with SMTP id p8so2467402oth.10
+        for <linux-hwmon@vger.kernel.org>; Mon, 02 Dec 2019 06:32:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
-        t=1575217662; h=DKIM-Filter:X-Virus-Scanned:
-         Content-Type:MIME-Version:Content-Transfer-Encoding:
-         Content-Description:Subject:To:From:Date:Message-Id:
-         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
-         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
-         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
-         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
-        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
-        8=; b=tr4KenU/GGl3T8RkIHFJajwgQX/ZoyyGNfdm+XI9jnux
-        h+N8tzr5YjbTkAoPKy/91NdX5bMWI53+yrKyH0JEPUvFaUpvrv
-        AkvKnoSA+dZH3RVGHSjg4abdIkpwORqM9wmm6AfUJuXZ4txizN
-        +tk857ChLx6oCatPZrdilONVAT0=
-Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
-        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
-         id 1a22_5119_1977f243_f591_4e2a_916c_7d116e359f75;
-        Sun, 01 Dec 2019 10:27:41 -0600
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id ACA651E2FE4;
-        Sun,  1 Dec 2019 10:18:59 -0600 (CST)
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id mBgCm4T-cyfY; Sun,  1 Dec 2019 10:18:59 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id 088061E30BA;
-        Sun,  1 Dec 2019 10:14:27 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx 088061E30BA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
-        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216867;
-        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Message-Id;
-        b=ACDlv7kdUb06apGD0Oywrqyh9rUSxaI2o/B8lbFqckph/psV6h9Q7edjISHwMRfXR
-         GZagfNCiJOf3OLPGFB4YGaT4yWzMjP1RROFYN8WDmO/TpUcquzwDTIaJxNppA7ZBpv
-         li6yYdBOKixp01JEFzso8ZRpl6Xbv7LxsMREO6KE=
-X-Virus-Scanned: amavisd-new at cdmx.gob.mx
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id VVy-o9OsQhwk; Sun,  1 Dec 2019 10:14:26 -0600 (CST)
-Received: from [192.168.0.104] (unknown [188.125.168.160])
-        by cdmx.gob.mx (Postfix) with ESMTPSA id 6676B1E2D73;
-        Sun,  1 Dec 2019 10:06:00 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ZQ0vEDLAXl+OXcybllOp1VVpMEWHftMZW2fx/Uiac6k=;
+        b=k9C4tUKKAkEkTlcDlJqQgalb8QthzEROeeqfqBTPkAxYhn88UMF+krc4OqvjtDBw34
+         1Vg4FqQAyH1qMkDgtEXKYl9h6UWumXLDnR1w26tpyhKapT9kSuC7IojzFCaktEIoBDfd
+         B6pdbo76je4k1zY6eONBMuP+1An4h3f0SRSmVRszVXuiHXHGqBpVasPOqxPinbbqIPGB
+         nStwhn67gJc+XYlB7CtdGJ63yHmwQCCYxpG+aTjDo678re6DVB+0etT10gnP3xIF1ubx
+         spzySgLLM3Yj58kFeqgcNdmMfyf139ynuqM3Uzrh01KhPbg50WscN7xs0jcX6oU8s5Jp
+         /sfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ZQ0vEDLAXl+OXcybllOp1VVpMEWHftMZW2fx/Uiac6k=;
+        b=mc8pWJR7WM66EXsrQ21aBlHF70xGJzipkgx9TLDr0gW9CprPZl16jYvlPt1+jKPso2
+         3RPXG9VFYIhOPo6pP+PK0J0BDy5Yo8+5F6IuoVqiIk4rajrMiIVx174BVtUXB/7/CkyB
+         mneZyBDn1EqccOHb8SMSAnMxhD73CojGHGlw0aYLIjN/wVZAy1gAHIgAjm3/dOfstS7P
+         KCHxMNpnG6Fasue5wsY7P7JV6xjh6f1oj73mZD59PHa4D3wvqMkRnUkZudF6wvsxtZkC
+         CrHCajMwqdXR4+WIlE6IWfQaiPUESGgLHOLQqMu67tLRenKMLM0Zgywe5IT6trxU2NwN
+         OTmQ==
+X-Gm-Message-State: APjAAAVTXrlpkcPMO/1hBfUK+8bfipvjrkMqTAzX+pSsp+fOawFNzbPZ
+        viG5fwTYZWj974FSnlA9PsI=
+X-Google-Smtp-Source: APXvYqx6lVCKxEalKzLYOnvG0BNDxGfBWY5pMHUD0E9dGaubpAeSuq1P74DlrHAMvLqDwDk/4edOaA==
+X-Received: by 2002:a9d:1295:: with SMTP id g21mr21379638otg.301.1575297175902;
+        Mon, 02 Dec 2019 06:32:55 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id v26sm10624616oic.5.2019.12.02.06.32.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2019 06:32:54 -0800 (PST)
+Subject: Re: [RFC] hwmon: add support for IT8686E to it87.c
+To:     Corey Ashford <yeroca@gmail.com>
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
+References: <CALUKdZ_-pjXPouBYxdm_LriN04Jp-vR5+7SBMkCK1reV2Lq_LA@mail.gmail.com>
+ <4e6fda8d-761a-741a-d4af-5dc8ea5fe072@roeck-us.net>
+ <CALUKdZ9pDpMNeKY4wb21gxF7Dqdp=9CJLTEmeRNtDP1N1Pw_9A@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <e4b5b93e-65ee-dd23-93a6-1737ede87ef4@roeck-us.net>
+Date:   Mon, 2 Dec 2019 06:32:53 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Congratulations
-To:     Recipients <aac-styfe@cdmx.gob.mx>
-From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
-Date:   Sun, 01 Dec 2019 17:05:51 +0100
-Message-Id: <20191201160600.6676B1E2D73@cdmx.gob.mx>
-X-AnalysisOut: [v=2.2 cv=R5pzIZZX c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
-X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
-X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
-X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
-X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
-X-SAAS-TrackingID: cf9e3ed5.0.72335432.00-2275.121912166.s12p02m001.mxlogic.net
-X-NAI-Spam-Flag: NO
-X-NAI-Spam-Threshold: 3
-X-NAI-Spam-Score: -5000
-X-NAI-Spam-Rules: 1 Rules triggered
-        WHITELISTED=-5000
-X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
- <1840193> : uri <2949750>
+In-Reply-To: <CALUKdZ9pDpMNeKY4wb21gxF7Dqdp=9CJLTEmeRNtDP1N1Pw_9A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
- them with this email for more information =
+On 11/29/19 8:48 PM, Corey Ashford wrote:
+> On Fri, Nov 29, 2019 at 8:17 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> On 11/29/19 6:11 PM, Corey Ashford wrote:
+>>> Hello folks.  I am running a newly-built system that uses an IT8686E
+>>> chip.  Currently, the latest kernel from kernel.org doesn't have code
+>>> in drivers/hwmon/it87.c to support it, however, I found some source on
+>>> the net which has added support for quite a few more variants of that
+>>> brand of Super I/O chip:
+>>> https://github.com/xdarklight/hwmon-it87/blob/master/it87.c
+>>> I tried it out by building the module and "insmod"ing it into my
+>>> running system, and it appears to work fine.
+>>>
+>>> It seems the original developer had a difficult time pushing the
+>>> changes upstream, so he abandoned the project.
+>>>
+>>
+>> I abandoned the project (and dropped the driver from my github page)
+>> because people started _demanding_ that I push the driver from github
+>> upstream, without offering any assistance whatsoever.
+>>
+>>> My thought was that I could add support for just the IT8686E chip as a
+>>> single patch, and since I can test it locally I would have a better
+>>> chance of getting the patch accepted.  The changes to the source at
+>>> the above git tree have quite a number of changes that aren't really
+>>> necessary for supporting the IT8686E chip, so I think the patch could
+>>> be pretty small, but will still credit the original author.
+>>>
+>>
+>> IT8686 is a multi-page chip, meaning you'll need the entire protection
+>> against multi-page accesses by the EC in the system. It also supports
+>> the new temperature map. I don't think it is that simple.
+>>
+>> Guenter
+> 
+> Thanks for the quick reply!
+> 
+> When you said they didn't offer any assistance, do you mean assistance
+> with testing?  If so, how about if the support is trimmed out for the
+> newly-added chips that have no available test system volunteers, and
+> then slowly add those back as people make test systems and testing
+> time available.  Should I presume that you have access to one or more
+> systems with the added ITnnnn chips?  I volunteer my system for
+> testing the IT8686E support.
+> 
 
+Testing and, more importantly, detailed code review. No one but me has
+seriously (if at all) scrutinized that code for years. Just picking it
+into mainline and hope that it won't cause trouble is, by itself, troublesome.
 
-EMail: allenandvioletlargeaward@gmail.com
+On top of that, the multi-page access problems are well known by board vendors
+using this chip as well as by the chip vendor. Yet, neither board vendors nor
+ITE talk with kernel developers. The workarounds I implemented are based on
+information I got from one of the Windows tools developers, and are not
+validated by any board vendor nor by ITE. Every board vendor I tried to contact
+tells me that they don't support Linux, and I never got any reply from ITE.
+I do know that the code causes problems on early Gigabyte board using the 8686
+and similar multi-page chips. Just accessing the chip from Linux may cause trouble
+because the built-in EC tries to access it as well in parallel (I suspect this
+causes the board to reset because that access is turned off for a while by
+the driver). This is all fine for an out-of-tree driver, but it would be
+unacceptable in the upstream kernel.
+
+In summary, you'll not only need to port the code, you'll also need to establish
+contact to ITE and/or to board vendors to ensure that the code works as intended
+with the EC on the affected boards.
+
+Guenter
