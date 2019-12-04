@@ -2,68 +2,93 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45483112EBF
-	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Dec 2019 16:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 564671137E5
+	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Dec 2019 23:59:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728340AbfLDPlF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 4 Dec 2019 10:41:05 -0500
-Received: from mail-il1-f194.google.com ([209.85.166.194]:37803 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728329AbfLDPlE (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 4 Dec 2019 10:41:04 -0500
-Received: by mail-il1-f194.google.com with SMTP id t9so7092748iln.4
-        for <linux-hwmon@vger.kernel.org>; Wed, 04 Dec 2019 07:41:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=TLk2PgZ2e58WxbaHmVMlSOdNXPExVH++fjn18cFWLq0=;
-        b=l7Nk2BdZMvILH1liWstBZ4SCLtJl5SDE219OEYgXTdHik/167OQtV4+JkBwmB97TZJ
-         Oql4AccVuIPHtIvDqTsRTJlQXcz2CNW/pGybPxnDI+tej0b6dLKGcM5lJzXmfH0Uub5u
-         djSSp3yRqh8cW8d3A9krM1ba83/n+0gDYxGRTRqw6NIIoxigfxiB61Qm+9JbK6W7Cog5
-         yBHUR6MTTxeVvsKUu5KXUWvnlIH/rj5fIR0aM2Wv1gcREJpp5ZSSNsWKCnE4dTHhgDsK
-         aOMGxdcyfL/xb8A8zJmGr7iCfKAR6HX8oT29fRhZm62injadwc6hUG3g3TYnHn5rs+dM
-         3tjA==
+        id S1728121AbfLDW7E (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 4 Dec 2019 17:59:04 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:40747 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728011AbfLDW7D (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 4 Dec 2019 17:59:03 -0500
+Received: by mail-oi1-f196.google.com with SMTP id 6so889315oix.7;
+        Wed, 04 Dec 2019 14:59:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=TLk2PgZ2e58WxbaHmVMlSOdNXPExVH++fjn18cFWLq0=;
-        b=cd81rLSsEmTGuqMpnCCl3+ssZZiAxr37yXt4sDySDf5hXSdUESNyuR+1DWkE1X1h4E
-         GIIJWKey38xuqVZsE3hD14KsmgbUFygPtvk99uqdhV5veM6in6W9bR1F0RPEdJRBhpnd
-         VSXAJg7ydkMzvAluBvJMOdLiCmTIEYXXAxPS3tD0NVcq2RgdLd/3laVMC8VQEOwi5WhP
-         oYf0HraDkTEykAPB11+bZKMROOE4uBkuuvB/nVDbsfPWZXn3Oh86/1s3yUGMuvs0ezLO
-         lLKKGJwpXuquHQ2xKDsEBuDzQMt2qYTRmWYkV5i6inGVA60k0mlnJb7WUvSc4OBa/bIK
-         XWjQ==
-X-Gm-Message-State: APjAAAXgyDOHwumx4Y3Bo5uLFP6iDURAE+caquGnXxLDEHBKU8yIq0Pl
-        udZlE/jXoV/gAVUtSQVdNsCSmV7nZL6sjr780Jg=
-X-Google-Smtp-Source: APXvYqxz8CoWOdiDzuYyWyDLCnATAn9bIhNT0ZJQNVZscG0ywb+sFrqUBjilK/3mdvRUwcIIYps+a1IVU/oK7ZcSOAY=
-X-Received: by 2002:a92:8108:: with SMTP id e8mr4000943ild.209.1575474063672;
- Wed, 04 Dec 2019 07:41:03 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=hqWdSoHcQzyTJkL7Mf3rYI2CqKq7GxVmoPtx9Wj/NUQ=;
+        b=HeeqcbTXIDcg1+EgDquum9Gbc+rK+sg/vwkSEMV7s6Jgb7mrLTGYzIzlP9ba2GjAKd
+         qc1HCRGBW17kPOVYcKC1Iru94DEnxak5qGbiU4ciNkWWg8vQGPCubtRstceKUc7BoNil
+         PVbwEgTGGtfOBdA++mpW4YJTyAH2Rt8RO2rDBqXC2W1GZ+o3B/ATDrWq+NEYbtWsUlVt
+         WBwQgvJ/zzxVp0xwfofvv/+ypqBcdC73t4bJ8MzFOMnwYjpLwtVjeQ1UYJ6V7yTFXHfH
+         wMQRjXRAz50+aEPBSPBzF/2yQH9ouK49D3Updpm2egJxwDwY+LX/f8EctHqbo9jw1aCI
+         9VJw==
+X-Gm-Message-State: APjAAAWXoSnc+ioG/xqExlZotU+sIBG0F+7FLrofM80o4SKYrP/BgDiO
+        s03CFzvqBckJTiuUU6JRnQ==
+X-Google-Smtp-Source: APXvYqzIMPoCRlaPXBAfjx/AI4iavLfiFcz3CpUIlhsCYXfOEc8f3duMXCd6ObvZG8FDt5/AHwWi0w==
+X-Received: by 2002:a05:6808:f:: with SMTP id u15mr4639374oic.164.1575500342713;
+        Wed, 04 Dec 2019 14:59:02 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id f11sm2842044oij.8.2019.12.04.14.59.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2019 14:59:02 -0800 (PST)
+Date:   Wed, 4 Dec 2019 16:59:01 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jim Wright <wrightj@linux.vnet.ibm.com>
+Cc:     jdelvare@suse.com, linux@roeck-us.net, mark.rutland@arm.com,
+        corbet@lwn.net, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jim Wright <jlwright@us.ibm.com>
+Subject: Re: [PATCH 1/2] dt-bindings: hwmon/pmbus: Add UCD90320 power
+ sequencer
+Message-ID: <20191204225901.GA20804@bogus>
+References: <20191122222542.29661-1-wrightj@linux.vnet.ibm.com>
+ <20191122222542.29661-2-wrightj@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Received: by 2002:a4f:244d:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 07:41:03 -0800 (PST)
-Reply-To: united.nation-finance@yandex.com
-From:   United Nations <dagboigho@gmail.com>
-Date:   Wed, 4 Dec 2019 07:41:03 -0800
-Message-ID: <CANqtXm6rZKMqg+A+bwxcEBctFNS4UzWH5FS+b_ij9xfVQSe+gw@mail.gmail.com>
-Subject: Congratulation,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191122222542.29661-2-wrightj@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Attention, your E-mail was selected as a Lucky winner of =E2=82=AC1,700.000=
-.00
-Euro Only. Under the Spanish Government. the European Union Throw
-Lottery of the year 2019 and you won. That is why we contact you for
-you Claim. meanwhile your fund sum =E2=82=AC1,700.000.00 Euros will be Cred=
-it
-in ATM Card and send to you the choice is yours. Congratulation!
+On Fri, Nov 22, 2019 at 04:25:41PM -0600, Jim Wright wrote:
+> From: Jim Wright <jlwright@us.ibm.com>
+> 
+> Document the UCD90320 device tree binding.
+> 
+> Signed-off-by: Jim Wright <jlwright@us.ibm.com>
+> ---
+>  .../devicetree/bindings/hwmon/pmbus/ucd90320.txt    | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/ucd90320.txt
 
-Yours Faithfully.
+Can you make this a schema. See 
+Documentation/devicetree/writing-schema.rst.
 
-Ant=C3=B3nio Manuel de Oliveira Guterres
-UN Secretary General
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/ucd90320.txt b/Documentation/devicetree/bindings/hwmon/pmbus/ucd90320.txt
+> new file mode 100644
+> index 000000000000..e1c1057c6292
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/pmbus/ucd90320.txt
+> @@ -0,0 +1,13 @@
+> +UCD90320 power sequencer
+> +-------------------------
+> +
+> +Requires node properties:
+> +- compatible : "ti,ucd90320"
+> +- reg : the I2C address of the device. This is 0x11, 0x13, 0x17, 0x31, 0x33,
+> +        0x37, 0x71, 0x73, or 0x77.
+> +
+> +Example:
+> +	ucd90320@11 {
+> +		compatible = "ti,ucd90320";
+> +		reg = <0x11>;
+> +	};
+> -- 
+> 2.17.1
+> 
