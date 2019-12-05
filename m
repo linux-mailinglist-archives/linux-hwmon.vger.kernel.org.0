@@ -2,69 +2,87 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 095BA113D65
-	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Dec 2019 09:55:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FEF114987
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Dec 2019 23:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726239AbfLEIz0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 5 Dec 2019 03:55:26 -0500
-Received: from users179.heteml.jp ([157.7.188.129]:59344 "EHLO
-        users179.heteml.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbfLEIz0 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 5 Dec 2019 03:55:26 -0500
-X-Greylist: delayed 1143 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Dec 2019 03:55:25 EST
-Received: by users179.heteml.jp (Postfix, from userid 3053)
-        id 2F62F1B8055D; Thu,  5 Dec 2019 17:36:21 +0900 (JST)
-To:     linux-hwmon@vger.kernel.org
-Subject: =?ISO-2022-JP?B?GyRCIU4bKEJKT1lXT09EGyRCIU8kKkxkOWckOyQiJGokLCRIJCYkNCQ2JCQkXiQ5ISMbKEI=?=
-Date:   Thu, 5 Dec 2019 08:36:21 +0000
-From:   =?ISO-2022-JP?B?Sk9ZV09PRBskQiROQG4+ZUA9Om49ahsoQg==?= 
-        <joywood@ruby.ocn.ne.jp>
-Message-ID: <783dcdff7632af1961e095207efce4af@joy-wood.co.jp>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+        id S1725988AbfLEWyg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 5 Dec 2019 17:54:36 -0500
+Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:37789 "EHLO
+        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726009AbfLEWyg (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 5 Dec 2019 17:54:36 -0500
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EEEBA891AC;
+        Fri,  6 Dec 2019 11:54:33 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1575586473;
+        bh=qYgExmNdCtwcDRSQc66QwJiOOORpb2mDrAtzNfPON4A=;
+        h=From:To:Cc:Subject:Date;
+        b=Pv0tEj3LeqkBz1P2Cd8eeBjVBIAeTTvCqn+1pL8nR2OxR3Xxk7LoKZuviVf1jCmnA
+         gU9U9nd2Dw9EKQwzvb0r/GbW2YSi7WjZjD3cQrOAGGE3JJ2y5ae9Ho+wg71zh8bs/2
+         4EDmJBnA4aFoK4v6ZzYg1WtEux1tl5BZYuV8WcJY8OkDesXqqQT4r4SP9qsND9+VEm
+         Bu+7pBzMixuMX8lSGZxVSqXSQliMAKTWAvj4S9mbngbTg2meTlvfTrVl4g0aB6AziU
+         H+P6VyK5SWZqyg/bgIpkV/NxCYa8+7pXRbCFg25xnPtXi/ZCNDgxKZaNFkRpdb/YuT
+         86XWUJzqJBDfA==
+Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
+        id <B5de98aa50000>; Fri, 06 Dec 2019 11:54:33 +1300
+Received: from luukp-dl.ws.atlnz.lc (luukp-dl.ws.atlnz.lc [10.33.25.31])
+        by smtp (Postfix) with ESMTP id 1BD2413EED2;
+        Fri,  6 Dec 2019 11:54:29 +1300 (NZDT)
+Received: by luukp-dl.ws.atlnz.lc (Postfix, from userid 1137)
+        id 3910426187A; Fri,  6 Dec 2019 11:54:30 +1300 (NZDT)
+From:   Luuk Paulussen <luuk.paulussen@alliedtelesis.co.nz>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luuk Paulussen <luuk.paulussen@alliedtelesis.co.nz>
+Subject: [PATCH] hwmon: (adt7475) Make volt2reg return same reg as reg2volt input
+Date:   Fri,  6 Dec 2019 11:54:30 +1300
+Message-Id: <20191205225430.14959-1-luuk.paulussen@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: quoted-printable
+x-atlnz-ls: pat
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-READY EARNINGS ON THE INTERNET from $6864 per week: https://make-1-btc-perday.blogspot.com.ar?c=67 様
+reg2volt returns the voltage that matches a given register value.
+Converting this back the other way with volt2reg didn't return the same
+register value because it used truncation instead of rounding.
 
-この度は、お問い合わせをいただきまして、
-ありがとうございました。
+This meant that values read from sysfs could not be written back to sysfs
+to set back the same register value.
 
-READY EARNINGS ON THE INTERNET from $6864 per week: https://make-1-btc-perday.blogspot.com.ar?c=67 様からのお問い合わせをお受けいたしました。
+With this change, volt2reg will return the same value for every voltage
+previously returned by reg2volt (for the set of possible input values)
 
-お見積をご依頼される際は
-こちらのメールに図面を添付してご返信下さい。
-内容を確認させていただき、お見積させていただきます。
+Signed-off-by: Luuk Paulussen <luuk.paulussen@alliedtelesis.co.nz>
+---
+ drivers/hwmon/adt7475.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-
-─ご送信内容の確認─────────────────────
-
-■ 会社名：google
-■ お名前： READY EARNINGS ON THE INTERNET from $6864 per week: https://make-1-btc-perday.blogspot.com.ar?c=67
-
-■ メールアドレス：linux-hwmon@vger.kernel.org
-■ 電話番号：84894339842
-■ FAX：83325227832
-■ 住所：〒#file_links["C:\Frazes.txt",1,N]: #file_links["C:\Links.txt",1,N]
-　　　　　 #file_links["C:\Frazes.txt",1,N]: #file_links["C:\Links.txt",1,N]
-
-
-■ メッセージ本文
-72 Ways to Make Money Online From $5736 per day: https://us-au-ca.blogspot.no?s=23
-
-
-
-このメールは自動返信メールです。
-なお、上記の内容に見覚えのない場合は、
-下記までお問い合わせください。
--------------------------------------------------------
- お問い合わせ先
--------------------------------------------------------
-株式会社　川上製作所
- 〒958-0822　新潟県村上市工業団地内339-22
- TEL.0254-53-3030（代）　FAX.0254-52-1660
- http://www.joy-wood.co.jp/
+diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
+index 6c64d50c9aae..5eed7dd2f16d 100644
+--- a/drivers/hwmon/adt7475.c
++++ b/drivers/hwmon/adt7475.c
+@@ -294,9 +294,10 @@ static inline u16 volt2reg(int channel, long volt, u=
+8 bypass_attn)
+ 	long reg;
+=20
+ 	if (bypass_attn & (1 << channel))
+-		reg =3D (volt * 1024) / 2250;
++		reg =3D DIV_ROUND_CLOSEST((volt * 1024), 2250);
+ 	else
+-		reg =3D (volt * r[1] * 1024) / ((r[0] + r[1]) * 2250);
++		reg =3D DIV_ROUND_CLOSEST((volt * r[1] * 1024),
++					((r[0] + r[1]) * 2250));
+ 	return clamp_val(reg, 0, 1023) & (0xff << 2);
+ }
+=20
+--=20
+2.24.0
 
