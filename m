@@ -2,126 +2,110 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF8A11ADE5
-	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Dec 2019 15:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6891411B17F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Dec 2019 16:31:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730217AbfLKOjv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 11 Dec 2019 09:39:51 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:45798 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729991AbfLKOjv (ORCPT
+        id S2387921AbfLKPay (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 Dec 2019 10:30:54 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:46182 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387867AbfLKP3X (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 11 Dec 2019 09:39:51 -0500
-Received: by mail-pg1-f196.google.com with SMTP id b9so10465357pgk.12;
-        Wed, 11 Dec 2019 06:39:50 -0800 (PST)
+        Wed, 11 Dec 2019 10:29:23 -0500
+Received: by mail-pj1-f67.google.com with SMTP id z21so9041500pjq.13;
+        Wed, 11 Dec 2019 07:29:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=3VEcdWQti206JWCDW3qI0BTxZ1lYQXCJ5XH3cd981NQ=;
-        b=jH82xtrYMxhgUcHQRPKqjw7ZKlvPgF+xBtcnxGsL7fh4pjdfao/pZu4Q6upvCNHIh1
-         a+G4WLTV+T+1yx2XyKqc1y8xCv1StbbjpoaBkIg8NeB3ZaZgozkM7fploPXJ9z4wTfQ+
-         Ee3DwRsSc0ZQHdjw5TCUYZzZjT/bppcgvXa+XIdYMuUnfrK1g7Ezy9pFVmVYZ5xkzhyz
-         fcFVbP3jXuwNeaeDXX7CkGxikmhPQRcLVgS21AwByB3NK8Gi6kZ+6aaemxXGyHfeFQBX
-         Jt2PbVWKRidv9CFTbWklTCKJjHPNRfVDQKtXDW3IQIf1C5PkhEmElEAQpjPQPl7rnVYf
-         OMLA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pfDhDYFuoXDrqHRE8i/08ZQEyfFGj50C9cMmD8Jy2MA=;
+        b=j5C0uyFcwXKjxMT2bhJ14CbB+fZCEQxShkK6p3Cf93qQ6BpSTKh005B5VD2g3OiyqF
+         /wNRFMf+eDpSe4TXNqE6yRjbz6RybfTWfb6JvF2sgW3j1ebFqzHfH+knhZW5LWMcLU9Q
+         PPkMZlifZ3WANqTGfezf8poByuNPftyfj2T8ipV3B9YeSB8ICKW5MsA6kddHfyed3zGU
+         vic5lX9Flai49PViVVxoFnEQJ1pk/ccakyFpoYFqPpU1m9xHZDAyiQ7nU9kNfJZthfG6
+         7ElzzegodjoKVuaP+P5wut6UEuDXichyFzp4GyPgvDzsqKx4ZybnxVzEt/Nh+yrpsJgq
+         kRqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=3VEcdWQti206JWCDW3qI0BTxZ1lYQXCJ5XH3cd981NQ=;
-        b=jxfQBdxD65GdbDlQPpTYmT5nPdbaT9leMn5bX8Ou7FwB727x1WduhZuu8W0YzPbr+a
-         Q7yz5E2xPtzzb0zHKuGklOVOb+BGsDn6Q7NPZY1By3xIXEk8P+DuixcDPcgFP1EW+n8S
-         ARi+T99RAP3BYWirbZrjewXMRdvjNlowhjh2F9TSqcbUy9NsGrYnFH4bOXLU5ODoYra+
-         k5uqLeqjV19HSI1XFUEQx8wL6kBhDSR1u2aPn+7BA5BrOdZUj8alvZ2+xkPeokXUMpkv
-         ZqF+4hhuanH0y0Q68yM80+8DbxgU5go/zDGJ/KorTY05Gj5UzEQNl2HwO+UTKiI+JAN5
-         W6Nw==
-X-Gm-Message-State: APjAAAXPB2U3z38ghY8H5GjgbiqxOCwKLniDFE2e08h6F2vTnH3Y5b5G
-        aaNfdmTV71MbwQ3ihvlj+HQ=
-X-Google-Smtp-Source: APXvYqwgEvnp2ndBwiIE94Wh4cRVzfCw2QFRf/3PG5eerLtk1/YgeA2uxE8wypG49aWWT3GbeFUcFg==
-X-Received: by 2002:a63:fd43:: with SMTP id m3mr4566724pgj.164.1576075190151;
-        Wed, 11 Dec 2019 06:39:50 -0800 (PST)
-Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id q11sm3444239pff.111.2019.12.11.06.39.46
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 11 Dec 2019 06:39:49 -0800 (PST)
-From:   Akinobu Mita <akinobu.mita@gmail.com>
-To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v3 12/12] iio: adc: qcom-vadc-common: use <linux/units.h> helpers
-Date:   Wed, 11 Dec 2019 23:38:19 +0900
-Message-Id: <1576075099-3441-13-git-send-email-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
-References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pfDhDYFuoXDrqHRE8i/08ZQEyfFGj50C9cMmD8Jy2MA=;
+        b=oAp9Da0cQAxIH33xtPRmHHU7hXcNi2uBWg1Og5bnOhBOKc+hnHLVtlcYxFnwXbX6zF
+         GEAaDkOqYoCsnjDS7bBWqirQhwVzj3p5jhoz5pUi3vNFcmz6OmMvfPehP1gwtNkj/FpT
+         3z3ypD6JonJ5HP91wt3V+mi5Gijz7NOU3juy/RKKTpDlY2pn7/Po+PHgd0kGvbEAGgXe
+         mIA42Asn90P5z94ZdBFE/amZfAWQw9qJf/c+w5LheJuK4rW2BZ+nyJjdkdZV1XmA+VBP
+         Wl6qpuDs65zuO7ZGQ45BENZByisPuxDaop07kTF9tryPX0BH4JedGPDxS5qhAqjTERnc
+         FSBQ==
+X-Gm-Message-State: APjAAAWG8fEtXNby/te4Lw1NUEZdGAC01iU/5E+FSAUQshH+DOm7Ksp/
+        6G6y8LdeLPeY7Putejvd+94YB7/nGUFqXoZE64E=
+X-Google-Smtp-Source: APXvYqwlR/tF5FA23iHp/eaMoUPuaCaCPBgDqm77FVGRFefN3YELGs3EmpG2NGeQvAJUc/yD31OEVyNePT/dpDkApsU=
+X-Received: by 2002:a17:90a:b10b:: with SMTP id z11mr4272497pjq.132.1576078162498;
+ Wed, 11 Dec 2019 07:29:22 -0800 (PST)
+MIME-Version: 1.0
+References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com> <1576075099-3441-3-git-send-email-akinobu.mita@gmail.com>
+In-Reply-To: <1576075099-3441-3-git-send-email-akinobu.mita@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 11 Dec 2019 17:29:12 +0200
+Message-ID: <CAHp75Vfq4KqNAGY4ivveR7D0Z1fA1EOFT+oL9+f+Ak2jikCTVg@mail.gmail.com>
+Subject: Re: [PATCH v3 02/12] ACPI: thermal: switch to use <linux/units.h> helpers
+To:     Akinobu Mita <akinobu.mita@gmail.com>
+Cc:     Linux NVMe Mailinglist <linux-nvme@lists.infradead.org>,
+        linux-hwmon@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sujith Thomas <sujith.thomas@intel.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This switches the qcom-vadc-common to use milli_kelvin_to_millicelsius()
-in <linux/units.h>.
+On Wed, Dec 11, 2019 at 4:39 PM Akinobu Mita <akinobu.mita@gmail.com> wrote:
+>
+> This switches the ACPI thermal zone driver to use celsius_to_deci_kelvin(),
+> deci_kelvin_to_celsius(), and deci_kelvin_to_millicelsius_with_offset() in
+> <linux/units.h> instead of helpers in <linux/thermal.h>.
+>
+> This is preparation for centralizing the kelvin to/from Celsius conversion
+> helpers in <linux/units.h>.
 
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
----
-* New patch from v3
+>  #include <linux/reboot.h>
+>  #include <linux/device.h>
+>  #include <linux/thermal.h>
 
- drivers/iio/adc/qcom-vadc-common.c | 6 +++---
- drivers/iio/adc/qcom-vadc-common.h | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+> +#include <linux/units.h>
 
-diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
-index dcd7fb5..2bb78d1 100644
---- a/drivers/iio/adc/qcom-vadc-common.c
-+++ b/drivers/iio/adc/qcom-vadc-common.c
-@@ -6,6 +6,7 @@
- #include <linux/log2.h>
- #include <linux/err.h>
- #include <linux/module.h>
-+#include <linux/units.h>
- 
- #include "qcom-vadc-common.h"
- 
-@@ -236,8 +237,7 @@ static int qcom_vadc_scale_die_temp(const struct vadc_linear_graph *calib_graph,
- 		voltage = 0;
- 	}
- 
--	voltage -= KELVINMIL_CELSIUSMIL;
--	*result_mdec = voltage;
-+	*result_mdec = milli_kelvin_to_millicelsius(voltage);
- 
- 	return 0;
- }
-@@ -325,7 +325,7 @@ static int qcom_vadc_scale_hw_calib_die_temp(
- {
- 	*result_mdec = qcom_vadc_scale_code_voltage_factor(adc_code,
- 				prescale, data, 2);
--	*result_mdec -= KELVINMIL_CELSIUSMIL;
-+	*result_mdec = milli_kelvin_to_millicelsius(*result_mdec);
- 
- 	return 0;
- }
-diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
-index bbb1fa0..e074902a 100644
---- a/drivers/iio/adc/qcom-vadc-common.h
-+++ b/drivers/iio/adc/qcom-vadc-common.h
-@@ -38,7 +38,6 @@
- #define VADC_AVG_SAMPLES_MAX			512
- #define ADC5_AVG_SAMPLES_MAX			16
- 
--#define KELVINMIL_CELSIUSMIL			273150
- #define PMIC5_CHG_TEMP_SCALE_FACTOR		377500
- #define PMIC5_SMB_TEMP_CONSTANT			419400
- #define PMIC5_SMB_TEMP_SCALE_FACTOR		356
+Can we try to keep *some* order, i.e. put this after acpi.h below?
+
+>  #include <linux/acpi.h>
+>  #include <linux/workqueue.h>
+>  #include <linux/uaccess.h>
+
+>                         } else if (crt > 0) {
+> -                               unsigned long crt_k = CELSIUS_TO_DECI_KELVIN(crt);
+> +                               unsigned long crt_k =
+> +                                       celsius_to_deci_kelvin(crt);
+
+It used to be one line, why do two?
+
+>         pr_info(PREFIX "%s [%s] (%ld C)\n", acpi_device_name(device),
+> -               acpi_device_bid(device), DECI_KELVIN_TO_CELSIUS(tz->temperature));
+> +               acpi_device_bid(device),
+> +               deci_kelvin_to_celsius(tz->temperature));
+
+Ditto.
+
 -- 
-2.7.4
-
+With Best Regards,
+Andy Shevchenko
