@@ -2,112 +2,74 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12E3A11C873
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Dec 2019 09:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEDD511C944
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Dec 2019 10:36:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbfLLIsN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 12 Dec 2019 03:48:13 -0500
-Received: from mga06.intel.com ([134.134.136.31]:13439 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728220AbfLLIsM (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 12 Dec 2019 03:48:12 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Dec 2019 00:48:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,305,1571727600"; 
-   d="scan'208";a="238866800"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Dec 2019 00:47:59 -0800
-Received: from andy by smile with local (Exim 4.93-RC7)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1ifK8c-0007tI-Bw; Thu, 12 Dec 2019 10:47:58 +0200
-Date:   Thu, 12 Dec 2019 10:47:58 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Darrick J . Wong" <darrick.wong@oracle.com>,
-        Eric Sandeen <sandeen@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>, Wu Hao <hao.wu@intel.com>,
-        Tomohiro Kusumi <kusumi.tomohiro@gmail.com>,
-        "Bryant G . Ly" <bryantly@linux.vnet.ibm.com>,
-        Frederic Barrat <fbarrat@linux.vnet.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        David Kershner <david.kershner@unisys.com>,
-        Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Johan Hovold <johan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Juergen Gross <jgross@suse.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        openbmc@lists.ozlabs.org, Robin Murphy <robin.murphy@arm.com>,
-        Ryan Chen <ryan_chen@aspeedtech.com>
-Subject: Re: [PATCH v11 06/14] peci: Add Aspeed PECI adapter driver
-Message-ID: <20191212084758.GE32742@smile.fi.intel.com>
-References: <20191211194624.2872-1-jae.hyun.yoo@linux.intel.com>
- <20191211194624.2872-7-jae.hyun.yoo@linux.intel.com>
- <20191211202818.GD32742@smile.fi.intel.com>
- <e05cdec0-1120-7e2d-bac0-e4a1ba1ceb3d@linux.intel.com>
+        id S1728391AbfLLJf7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 12 Dec 2019 04:35:59 -0500
+Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:34314
+        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728230AbfLLJf7 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 12 Dec 2019 04:35:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1576143358;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=w0FazNewqkNs8YdPQjOHQnKwKkuu3mZLl8EwXAI4GQ4=;
+        b=ANJXc3Rky85I9YFunNSO+qsBYLsG26dEyqi4DVTEFxuEXm365azWY4/7L0D6V3lG
+        fmDWR5y68QWknZZm1zREOsmWBeDRD87eVvdEgRcJjM8jCah8QohJi+UoU9E/x2a5zZi
+        7Z1eQEUOwk26Ko71vdCpwOcKH+TjXzQw3xeTKWRs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1576143358;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=w0FazNewqkNs8YdPQjOHQnKwKkuu3mZLl8EwXAI4GQ4=;
+        b=VPS3XteqH6TtUXFQws12fTJfuumjnJm16BnDtmB/dfTdGCxOPBCGkdVC6Zrkw6NW
+        0qmY8g2xesHE8E+1iUPUITx7lLK2Q8ovn8dGVrPz5KTNAFY7VJfAJnvwwktyJcnNEVe
+        QWk4rfnwSSKF2NeHxmQ3aLi2AZCAqFX7nEC92sHg=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A814C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Akinobu Mita <akinobu.mita@gmail.com>
+Cc:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+Subject: Re: [PATCH v3 09/12] wireless: iwlegacy: use <linux/units.h> helpers
+References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
+        <1576075099-3441-10-git-send-email-akinobu.mita@gmail.com>
+Date:   Thu, 12 Dec 2019 09:35:58 +0000
+In-Reply-To: <1576075099-3441-10-git-send-email-akinobu.mita@gmail.com>
+        (Akinobu Mita's message of "Wed, 11 Dec 2019 23:38:16 +0900")
+Message-ID: <0101016ef9770a79-8bb3d210-14d0-491a-ba0e-e5eea30ddfaa-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e05cdec0-1120-7e2d-bac0-e4a1ba1ceb3d@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-SES-Outgoing: 2019.12.12-54.240.27.10
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Dec 11, 2019 at 04:50:04PM -0800, Jae Hyun Yoo wrote:
-> On 12/11/2019 12:28 PM, Andy Shevchenko wrote:
-> > On Wed, Dec 11, 2019 at 11:46:16AM -0800, Jae Hyun Yoo wrote:
+Akinobu Mita <akinobu.mita@gmail.com> writes:
 
-> > Like in the previous patch...
+> This switches the iwlegacy driver to use celsius_to_kelvin() and
+> kelvin_to_celsius() in <linux/units.h>.
+>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Stanislaw Gruszka <sgruszka@redhat.com>
+> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 
-(1)
+It's enough to say "iwlegacy: ", no need to have "wireless:" in the title.
 
-> I see. I'll simplify this function like below:
-> 
-> #include <linux/iopoll.h>
-> 
-> static inline int aspeed_peci_check_idle(struct aspeed_peci *priv)
-> {
-> 	u32 cmd_sts;
-> 
-> 	return readl_poll_timeout(priv->base + ASPEED_PECI_CMD,
-> 				  cmd_sts,
-> 				  !(cmd_sts & ASPEED_PECI_CMD_IDLE_MASK),
-> 				  ASPEED_PECI_IDLE_CHECK_INTERVAL_USEC,
-> 				  ASPEED_PECI_IDLE_CHECK_TIMEOUT_USEC);
-> }
-
-Good for *this* case, but please fix all the rest accordingly.
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
