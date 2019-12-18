@@ -2,222 +2,94 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 445651249E6
-	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2019 15:42:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C12D9124B06
+	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2019 16:13:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727053AbfLROmJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 18 Dec 2019 09:42:09 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:37707 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727024AbfLROmJ (ORCPT
+        id S1727110AbfLRPNz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 18 Dec 2019 10:13:55 -0500
+Received: from mail-il1-f193.google.com ([209.85.166.193]:46465 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726723AbfLRPNy (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 18 Dec 2019 09:42:09 -0500
-Received: by mail-ot1-f65.google.com with SMTP id k14so2771419otn.4;
-        Wed, 18 Dec 2019 06:42:08 -0800 (PST)
+        Wed, 18 Dec 2019 10:13:54 -0500
+Received: by mail-il1-f193.google.com with SMTP id t17so1949422ilm.13
+        for <linux-hwmon@vger.kernel.org>; Wed, 18 Dec 2019 07:13:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=Q3vp2fJ40VWpq9rX2ikiWTUrhuiQJXzCeUu43e1oIIOk8rzGCPMljco+W3g3Sdt7mK
+         0zMp27lNXT81ott0dYeyE6wCdI4c1wfi5qCqRmoGIMvdtgle/6NMWI0GJrkD30CBojRq
+         hZbdgtbn9F/6uhvfSLkMdN7NhUpQoMVScRn9uDFKZJxofy0MWDF6kZw53YXeVt8sjWjA
+         Dd9TBzj4Ogplv/txGap2r0I252pQP7l7XSY4YOVhZ7qL539zlqhtO9W4mad505PIZ9Xp
+         yYy+XyL34oyC2pvEIWTDP8EMj+Gj6Cu0eHyc7GTPTD7Enq1rjLHU3JyAyX8LQzaLW/WP
+         +a+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=gwW7OiM+WjSZ4UZ1VJQamoPYCMV0Usyl4Dcq40hWMN4=;
-        b=Pe1ZcEUeuvNgRAlA/WFlAfSd99u7ucXPQwlHvGdsGoawzUtX7SIJ/ejhnlJcSXniNP
-         TKhigv8eWzFRjm8QzKhsQEVGICW/N5MO6tj45Rg5EpIoA2oJLCM0SsR6BE9CVr2l4HWP
-         4CFTr8y/jG2sC5q03tMFMZu3bwzUImIbSxH7EtQbexVBwBFGCB/BYUHAzljsqsB7/twP
-         eECNnbTOdtfBkj+w7/xU/6AhUihbtMivaM0lbVLVQnkeWbuFpwFpNFcTm1XDwF+tRY96
-         ABIR3C7oVr8/a3XMzh+cckh6S1plnLSNWAQCCLTXWZ9LQcRYpvqUBhNqkpXob/T4ewaz
-         2IJA==
-X-Gm-Message-State: APjAAAUtRdckG0pjaFDeR0o5bX0qmnExiGJYKO7tK8hrQrthEraZ6ZOJ
-        WoInZUrj4sTyPyKfzcmLTQ==
-X-Google-Smtp-Source: APXvYqwp0BEH7qea/GKGyW/LOejvqTbdWK+z/qoZkQL0jYWPDg6Ufh1KKYai1of0WRYU42rRzsqYxQ==
-X-Received: by 2002:a05:6830:1d59:: with SMTP id p25mr3090159oth.308.1576680128293;
-        Wed, 18 Dec 2019 06:42:08 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id u18sm846613otq.26.2019.12.18.06.42.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2019 06:42:07 -0800 (PST)
-Date:   Wed, 18 Dec 2019 08:42:06 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "Darrick J . Wong" <darrick.wong@oracle.com>,
-        Eric Sandeen <sandeen@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>, Wu Hao <hao.wu@intel.com>,
-        Tomohiro Kusumi <kusumi.tomohiro@gmail.com>,
-        "Bryant G . Ly" <bryantly@linux.vnet.ibm.com>,
-        Frederic Barrat <fbarrat@linux.vnet.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        David Kershner <david.kershner@unisys.com>,
-        Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>,
-        Sagar Dharia <sdharia@codeaurora.org>,
-        Johan Hovold <johan@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Juergen Gross <jgross@suse.com>,
-        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        openbmc@lists.ozlabs.org
-Subject: Re: [PATCH v11 07/14] dt-bindings: peci: add NPCM PECI documentation
-Message-ID: <20191218144206.GA26118@bogus>
-References: <20191211194624.2872-1-jae.hyun.yoo@linux.intel.com>
- <20191211194624.2872-8-jae.hyun.yoo@linux.intel.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=a/VML9StDhFdzsPXxL0XF+9hLZ5Z8SMkMfcgoxG1m8g3Kji3wSlKuek/i6nW9YsHsc
+         coOs/nOxPs6TlFQ1qjWCNHLVsO705kYnCoOn35Q4/e8EbqxV8gcuVwNc7gpCAxa7yRUW
+         AiZb2xJEXc2ulI/YMcEfwoQT3uMgrtp3G7jBSz3UmkUuD+mGRYQtDQgMMlUvBblI7dv3
+         2tNe3nhzcBU3SeM4dJaVYyzLd1R+bivnfSBrpXEYfE0Mh2T3PfIqubb/6NTWrBjqYBzp
+         spdzjcdjJSjeOza7KKVp5GVoXI6k1UT2c5Ngm/AjTXPKwWcKve3kYDJ9hRieHftbH/ln
+         tSvQ==
+X-Gm-Message-State: APjAAAXgnR2MPxxJInsZpCsoX0AUXWZvc1vq0eJF0opN+HbXmvZI56KF
+        /Izb2/mGdX1jAohUKySi8ZrVbBv8NroywEkERg==
+X-Google-Smtp-Source: APXvYqzpDMY1kfzvQTGFYFDuSf5Wkv4RFsY3uCP+mpqq6wLn7kqjCTzLCYufYBbbmMCBsVo5PHwr9dpQEEDI7K8RY00=
+X-Received: by 2002:a92:cc90:: with SMTP id x16mr2363556ilo.269.1576682033220;
+ Wed, 18 Dec 2019 07:13:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191211194624.2872-8-jae.hyun.yoo@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:52
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:13:52 +0100
+Message-ID: <CABHzvrnY8Lhdw4Y2q97jvAVrRpM9CVLFkw=Ved7y1GhGqHiAdw@mail.gmail.com>
+Subject: I WANT TO YOU TO TREAT THIS EMAIL VERY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Dec 11, 2019 at 11:46:17AM -0800, Jae Hyun Yoo wrote:
-> From: Tomer Maimon <tmaimon77@gmail.com>
-> 
-> Added device tree binding documentation for Nuvoton BMC
-> NPCM Platform Environment Control Interface(PECI).
-> 
-> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
-> Signed-off-by: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-> ---
-> Changes since v10:
-> - Newly added in v11.
-> 
->  .../devicetree/bindings/peci/peci-npcm.yaml   | 102 ++++++++++++++++++
->  1 file changed, 102 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/peci/peci-npcm.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/peci/peci-npcm.yaml b/Documentation/devicetree/bindings/peci/peci-npcm.yaml
-> new file mode 100644
-> index 000000000000..bcd5626e68e7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/peci/peci-npcm.yaml
-> @@ -0,0 +1,102 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/peci/peci-npcm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nuvoton NPCM PECI Bus Device Tree Bindings
-> +
-> +maintainers:
-> +  - Tomer Maimon <tmaimon77@gmail.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: nuvoton,npcm750-peci # for the NPCM7XX BMC.
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    # Required to define a client address.
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    # Required to define a client address.
-> +    const: 0
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    # PECI reference clock.
-> +    maxItems: 1
-> +
-> +  cmd-timeout-ms:
-> +    # Command timeout in units of ms.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
+Attn Dear.
 
-You can drop this as standard units already have a type.
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
-> +      - minimum: 1
-> +        maximum: 60000
-> +        default: 1000
-> +
-> +  pull-down:
-> +    description: |
-> +      Defines the PECI I/O internal pull down operation.
-> +        0: pull down always enable
-> +        1: pull down only during transactions.
-> +        2: pull down always disable.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +        maximum: 2
-> +        default: 0
-> +
-> +  host-neg-bit-rate:
-> +    description: |
-> +      Define host negotiation bit rate divider.
-> +      the host negotiation bit rate calculate with formula:
-> +      clock frequency[Hz] / [4 x {host-neg-bit-rate + 1}]
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 7
-> +        maximum: 31
-> +        default: 15
-> +
-> +  high-volt-range:
-> +    description: |
-> +      Adapts PECI I/O interface to voltage range.
-> +        0: PECI I/O interface voltage range of 0.8-1.06V (default)
-> +        1: PECI I/O interface voltage range of 0.95-1.26V
-> +    type: boolean
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-These last 4 properties are vendor specific or PECI common. For the 
-former, needs a vendor prefix. For the latter, needs to be moved to 
-common location.
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +  - interrupts
-> +  - clocks
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/clock/nuvoton,npcm7xx-clock.h>
-> +    peci: bus@100000 {
-> +        compatible = "simple-bus";
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +        ranges = <0x0 0x100000 0x200>;
-> +
-> +        peci0: peci-bus@0 {
-> +            compatible = "nuvoton,npcm750-peci";
-> +            reg = <0x0 0x200>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
-> +            clocks = <&clk NPCM7XX_CLK_APB3>;
-> +            cmd-timeout-ms = <1000>;
-> +            pull-down = <0>;
-> +            host-neg-bit-rate = <15>;
-> +        };
-> +    };
-> +...
-> -- 
-> 2.17.1
-> 
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
+
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
+
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
+
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin
