@@ -2,128 +2,65 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E80941230C8
-	for <lists+linux-hwmon@lfdr.de>; Tue, 17 Dec 2019 16:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2486F123D45
+	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2019 03:43:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727631AbfLQPrI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 17 Dec 2019 10:47:08 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:38565 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726191AbfLQPrH (ORCPT
+        id S1726556AbfLRCnO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 17 Dec 2019 21:43:14 -0500
+Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:55155 "EHLO
+        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726387AbfLRCnN (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 17 Dec 2019 10:47:07 -0500
-Received: by mail-pl1-f193.google.com with SMTP id f20so4516041plj.5;
-        Tue, 17 Dec 2019 07:47:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vOtwYzlf5BFOGPS2i3uFK7gceSiUI5q9A1BDB60vRjo=;
-        b=Rqk/w/lOd9uHLGdW1G/qZzQfTemaMfGD4hQOOtBGTgUWHKhRZNu3P9rjW1IsUJgzdt
-         G5aOMQVpp3oilAUveyqVWlgwEydUiDkWMRCZoCWgmBll1Dmck30d/HVzJO2rI0su7TyQ
-         f1hr5Gtnt8TaHLZkHpF+JmIo6TJu/UJ9B92NvHn1YrBXLZJdhV0uRBvXZfttZKC1Uukp
-         fgpUUI5HnfVo/cvULo2C8aWxZAUrDHMtZHUg1JyRIbJqYrQM7Cl1bXMNmACW4IVloUEv
-         EJJTd1XpWzKBqxSjnWUiZS7dSrXeR97UHEVbcgQZS1cYNIsSDIMyF5tX+5CQZFZUmjQw
-         h9bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vOtwYzlf5BFOGPS2i3uFK7gceSiUI5q9A1BDB60vRjo=;
-        b=P0M3jdupyS4eBy9G5K1XJurJpb0SuzVKShz3KXovVgysgNhQbKKDD8T6GI8e4xTgjj
-         tTx94q5oIDqvgTGeB8ZamTZKYkwK+Cxq3jqCGnqcdKOSPHE58rdkRDrH4Oyy72eZJSSo
-         gMwAc65J8w/bHMRjmkSThBUKcdFcVF5H/WHPgWAiSemc0OKDh6shIgyicSyw1jk5GcYE
-         2t87ewV+ZppWLs/7BVv6Z4WWSHLNh+dy+6lK+mvReiCUHKEmE1mqZLzsp6mqZAvUX6+f
-         A6bAn7uMA2RoZq0CIJiGqqs+98c3NRhGQ2cuJ9eu4J7dnoiXXRJNSUkVGiUY15wiRhIY
-         gizw==
-X-Gm-Message-State: APjAAAXlg8mfrXSzsf5Oyq/PuUZsdLdVWA8b+M1luda1HxPDQeVhj4oO
-        2PtfSWbkbblSo9LGoBwadhE=
-X-Google-Smtp-Source: APXvYqwAMrF5r62qmk0u1vRjUs5ls5a3I5G16sxctobohr3j5fkV44s5Ng4U89e82VuPRn7IcUEXhQ==
-X-Received: by 2002:a17:90a:a010:: with SMTP id q16mr6994619pjp.115.1576597626942;
-        Tue, 17 Dec 2019 07:47:06 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u1sm26067232pfn.133.2019.12.17.07.47.05
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 17 Dec 2019 07:47:06 -0800 (PST)
-Date:   Tue, 17 Dec 2019 07:47:04 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Damien Le Moal <Damien.LeMoal@wdc.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
-Subject: Re: [PATCH 0/1] Summary: hwmon driver for temperature sensors on
- SATA drives
-Message-ID: <20191217154704.GA32673@roeck-us.net>
-References: <20191209052119.32072-1-linux@roeck-us.net>
- <yq15zinmrmj.fsf@oracle.com>
- <67b75394-801d-ce91-55f2-f0c0db9cfffc@roeck-us.net>
- <yq1y2vbhe6i.fsf@oracle.com>
- <83d528fc-42b7-aa3f-5dd9-a000268da38e@roeck-us.net>
- <BYAPR04MB5816CA0C1CAFC21F7955F79FE7500@BYAPR04MB5816.namprd04.prod.outlook.com>
+        Tue, 17 Dec 2019 21:43:13 -0500
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 175B4891AA;
+        Wed, 18 Dec 2019 15:43:10 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1576636990;
+        bh=ZnzOQA8ZEc6czZsEMZfcwPMGN0vJwJqm2GI5CfLpdCI=;
+        h=From:To:Cc:Subject:Date;
+        b=lKCD51MvVfV2hrdlGzeU9BalzYx6tP+9FeEeaAl3742XmWhk9v7V/KcZEJgKXJjrZ
+         WovKPLe35XG+RDXu6HLIAHN23BIPV1raKb0CP8FRNwvqejJV+GpBkaKgcyRsLQ2OSL
+         pzd7X64CTOGzEpVnh07d59kyyJ9dpG2mAb4FyZ2leB6bxyWDroBqjil+CgrN1EXSmI
+         ZbgStOvp78a29nwUcCHntcPDraQXIrdYu+shrwsbklGQT1WwMOiDK6JilpBYhaGCkC
+         RIsbOnuKsoV12K/xfZk065iZrrqYtcgmRNr3pNJpvIOBI5Rn2nBLMmIYWsjlo4c2fX
+         xt3JJtRK781LQ==
+Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
+        id <B5df9923d0000>; Wed, 18 Dec 2019 15:43:09 +1300
+Received: from logans-dl.ws.atlnz.lc (logans-dl.ws.atlnz.lc [10.33.25.49])
+        by smtp (Postfix) with ESMTP id 6FBDD13EEA8;
+        Wed, 18 Dec 2019 15:43:09 +1300 (NZDT)
+Received: by logans-dl.ws.atlnz.lc (Postfix, from userid 1820)
+        id D9361C03C3; Wed, 18 Dec 2019 15:43:09 +1300 (NZDT)
+From:   Logan Shaw <logan.shaw@alliedtelesis.co.nz>
+To:     jdelvare@suse.com, linux@roeck-us.net
+Cc:     linux-hwmon@vger.kernel.org,
+        Logan Shaw <logan.shaw@alliedtelesis.co.nz>
+Subject: [PATCH 0/1] hwmon: (adt7475) Added attenuator bypass support
+Date:   Wed, 18 Dec 2019 15:42:37 +1300
+Message-Id: <20191218024238.19836-1-logan.shaw@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BYAPR04MB5816CA0C1CAFC21F7955F79FE7500@BYAPR04MB5816.namprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
+x-atlnz-ls: pat
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Dec 17, 2019 at 05:50:17AM +0000, Damien Le Moal wrote:
-> On 2019/12/17 12:57, Guenter Roeck wrote:
-> > On 12/16/19 6:35 PM, Martin K. Petersen wrote:
-> >>
-> >> Guenter,
-> >>
-> >>> If and when drives are detected which report bad information, such
-> >>> drives can be added to a blacklist without impact on the core SCSI or
-> >>> ATA code. Until that happens, not loading the driver solves the
-> >>> problem on any affected system.
-> >>
-> >> My only concern with that is that we'll have blacklisting several
-> >> places. We already have ATA and SCSI blacklists. If we now add a third
-> >> place, that's going to be a maintenance nightmare.
-> >>
-> >> More on that below.
-> >>
-> >>>> My concerns are wrt. identifying whether SMART data is available for
-> >>>> USB/UAS. I am not too worried about ATA and "real" SCSI (ignoring RAID
-> >>>> controllers that hide the real drives in various ways).
-> >>
-> >> OK, so I spent my weekend tinkering with 15+ years of accumulated USB
-> >> devices. And my conclusion is that no, we can't in any sensible manner,
-> >> support USB storage monitoring in the kernel. There is no heuristic that
-> >> I can find that identifies that "this is a hard drive or an SSD and
-> >> attempting one of the various SMART methods may be safe". As opposed to
-> >> "this is a USB key that's likely to lock up if you try". And that's
-> >> ignoring the drives with USB-ATA bridges that I managed to wedge in my
-> >> attempt at sending down commands.
-> >>
-> >> Even smartmontools is failing to work on a huge part of my vintage
-> >> collection.  Thanks to a wide variety of bridges with random, custom
-> >> interfaces.
-> >>
-> >> So my stance on all this is that I'm fine with your general approach for
-> >> ATA. I will post a patch adding the required bits for SCSI. And if a
-> >> device does not implement either of the two standard methods, people
-> >> should use smartmontools.
-> >>
-> >> Wrt. name, since I've added SCSI support, satatemp is a bit of a
-> >> misnomer. drivetemp, maybe? No particular preference.
-> >>
-> > Agreed, if we extend this to SCSI, satatemp is less than perfect.
-> > drivetemp ? disktemp ? I am open to suggestions, with maybe a small
-> > personal preference for disktemp out of those two.
-> 
-> "disk" tend to imply HDD, excluding SSDs. So my vote goes to
-> "drivetemp", or even the more generic, "devtemp".
-> 
-"devtemp" would apply to all devices with temperature sensors, which
-would be a bit too generic. I'll take that as a vote for "drivetemp".
+The ADT7476 controller supports bypassing all voltage input attenuators
+and bypassing individual voltage input attenuators. This can be used to
+improve the resolution of low voltages. Presently the driver does not
+support this functionality, and this patch adds it.
 
-Guenter
+Logan Shaw (1):
+  hwmon: (adt7475) Added attenuator bypass support
+
+ drivers/hwmon/adt7475.c | 162 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 161 insertions(+), 1 deletion(-)
+
+--=20
+2.23.0
+
