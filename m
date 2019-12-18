@@ -2,94 +2,323 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C12D9124B06
-	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2019 16:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C22F125785
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Dec 2019 00:12:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727110AbfLRPNz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 18 Dec 2019 10:13:55 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:46465 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726723AbfLRPNy (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 18 Dec 2019 10:13:54 -0500
-Received: by mail-il1-f193.google.com with SMTP id t17so1949422ilm.13
-        for <linux-hwmon@vger.kernel.org>; Wed, 18 Dec 2019 07:13:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=Q3vp2fJ40VWpq9rX2ikiWTUrhuiQJXzCeUu43e1oIIOk8rzGCPMljco+W3g3Sdt7mK
-         0zMp27lNXT81ott0dYeyE6wCdI4c1wfi5qCqRmoGIMvdtgle/6NMWI0GJrkD30CBojRq
-         hZbdgtbn9F/6uhvfSLkMdN7NhUpQoMVScRn9uDFKZJxofy0MWDF6kZw53YXeVt8sjWjA
-         Dd9TBzj4Ogplv/txGap2r0I252pQP7l7XSY4YOVhZ7qL539zlqhtO9W4mad505PIZ9Xp
-         yYy+XyL34oyC2pvEIWTDP8EMj+Gj6Cu0eHyc7GTPTD7Enq1rjLHU3JyAyX8LQzaLW/WP
-         +a+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=a/VML9StDhFdzsPXxL0XF+9hLZ5Z8SMkMfcgoxG1m8g3Kji3wSlKuek/i6nW9YsHsc
-         coOs/nOxPs6TlFQ1qjWCNHLVsO705kYnCoOn35Q4/e8EbqxV8gcuVwNc7gpCAxa7yRUW
-         AiZb2xJEXc2ulI/YMcEfwoQT3uMgrtp3G7jBSz3UmkUuD+mGRYQtDQgMMlUvBblI7dv3
-         2tNe3nhzcBU3SeM4dJaVYyzLd1R+bivnfSBrpXEYfE0Mh2T3PfIqubb/6NTWrBjqYBzp
-         spdzjcdjJSjeOza7KKVp5GVoXI6k1UT2c5Ngm/AjTXPKwWcKve3kYDJ9hRieHftbH/ln
-         tSvQ==
-X-Gm-Message-State: APjAAAXgnR2MPxxJInsZpCsoX0AUXWZvc1vq0eJF0opN+HbXmvZI56KF
-        /Izb2/mGdX1jAohUKySi8ZrVbBv8NroywEkERg==
-X-Google-Smtp-Source: APXvYqzpDMY1kfzvQTGFYFDuSf5Wkv4RFsY3uCP+mpqq6wLn7kqjCTzLCYufYBbbmMCBsVo5PHwr9dpQEEDI7K8RY00=
-X-Received: by 2002:a92:cc90:: with SMTP id x16mr2363556ilo.269.1576682033220;
- Wed, 18 Dec 2019 07:13:53 -0800 (PST)
+        id S1726817AbfLRXMt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 18 Dec 2019 18:12:49 -0500
+Received: from mga14.intel.com ([192.55.52.115]:40198 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726569AbfLRXMt (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 18 Dec 2019 18:12:49 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Dec 2019 15:12:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,330,1571727600"; 
+   d="scan'208";a="365887756"
+Received: from yoojae-mobl1.amr.corp.intel.com (HELO [10.7.153.143]) ([10.7.153.143])
+  by orsmga004.jf.intel.com with ESMTP; 18 Dec 2019 15:12:47 -0800
+Subject: Re: [PATCH v11 01/14] dt-bindings: Add PECI subsystem document
+To:     Rob Herring <robh@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        "Darrick J . Wong" <darrick.wong@oracle.com>,
+        Eric Sandeen <sandeen@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>, Wu Hao <hao.wu@intel.com>,
+        Tomohiro Kusumi <kusumi.tomohiro@gmail.com>,
+        "Bryant G . Ly" <bryantly@linux.vnet.ibm.com>,
+        Frederic Barrat <fbarrat@linux.vnet.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        David Kershner <david.kershner@unisys.com>,
+        Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>,
+        Sagar Dharia <sdharia@codeaurora.org>,
+        Johan Hovold <johan@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Juergen Gross <jgross@suse.com>,
+        Cyrille Pitchen <cyrille.pitchen@wedev4u.fr>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        openbmc@lists.ozlabs.org
+References: <20191211194624.2872-1-jae.hyun.yoo@linux.intel.com>
+ <20191211194624.2872-2-jae.hyun.yoo@linux.intel.com>
+ <20191218025240.GA6601@bogus>
+From:   Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+Message-ID: <f6ff2cc5-a906-88ac-2b47-351a8a0770bf@linux.intel.com>
+Date:   Wed, 18 Dec 2019 15:12:47 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:52
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:13:52 +0100
-Message-ID: <CABHzvrnY8Lhdw4Y2q97jvAVrRpM9CVLFkw=Ved7y1GhGqHiAdw@mail.gmail.com>
-Subject: I WANT TO YOU TO TREAT THIS EMAIL VERY URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191218025240.GA6601@bogus>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Attn Dear.
+Hi Rob,
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+On 12/17/2019 6:52 PM, Rob Herring wrote:
+> On Wed, Dec 11, 2019 at 11:46:11AM -0800, Jae Hyun Yoo wrote:
+>> This commit adds PECI subsystem document.
+>>
+>> Cc: Rob Herring <robh+dt@kernel.org>
+>> Cc: Mark Rutland <mark.rutland@arm.com>
+>> Cc: Andrew Jeffery <andrew@aj.id.au>
+>> Cc: Joel Stanley <joel@jms.id.au>
+>> Signed-off-by: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+>> ---
+>> Changes since v10:
+>> - Changed documents format to DT schema format so I dropped all review tags.
+>>    Please review it again.
+>>
+>>   .../devicetree/bindings/peci/peci-bus.yaml    | 129 ++++++++++++++++++
+>>   .../devicetree/bindings/peci/peci-client.yaml |  54 ++++++++
+>>   2 files changed, 183 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/peci/peci-bus.yaml
+>>   create mode 100644 Documentation/devicetree/bindings/peci/peci-client.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/peci/peci-bus.yaml b/Documentation/devicetree/bindings/peci/peci-bus.yaml
+>> new file mode 100644
+>> index 000000000000..b085e67089cf
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/peci/peci-bus.yaml
+>> @@ -0,0 +1,129 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+> 
+> Dual license new bindings please:
+> 
+> (GPL-2.0-only OR BSD-2-Clause)
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+I see. I'll replace that with it for all new bindings in this patch set.
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/peci/peci-bus.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Generic Device Tree Bindings for PECI bus
+>> +
+>> +maintainers:
+>> +  - Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+>> +
+>> +description: |
+>> +  PECI (Platform Environment Control Interface) is a one-wire bus interface that
+>> +  provides a communication channel from Intel processors and chipset components
+>> +  to external monitoring or control devices. PECI is designed to support the
+>> +  following sideband functions:
+>> +
+>> +  * Processor and DRAM thermal management
+>> +    - Processor fan speed control is managed by comparing Digital Thermal
+>> +      Sensor (DTS) thermal readings acquired via PECI against the
+>> +      processor-specific fan speed control reference point, or TCONTROL. Both
+>> +      TCONTROL and DTS thermal readings are accessible via the processor PECI
+>> +      client. These variables are referenced to a common temperature, the TCC
+>> +      activation point, and are both defined as negative offsets from that
+>> +      reference.
+>> +    - PECI based access to the processor package configuration space provides
+>> +      a means for Baseboard Management Controllers (BMC) or other platform
+>> +      management devices to actively manage the processor and memory power
+>> +      and thermal features.
+>> +
+>> +  * Platform Manageability
+>> +    - Platform manageability functions including thermal, power, and error
+>> +      monitoring. Note that platform 'power' management includes monitoring
+>> +      and control for both the processor and DRAM subsystem to assist with
+>> +      data center power limiting.
+>> +    - PECI allows read access to certain error registers in the processor MSR
+>> +      space and status monitoring registers in the PCI configuration space
+>> +      within the processor and downstream devices.
+>> +    - PECI permits writes to certain registers in the processor PCI
+>> +      configuration space.
+>> +
+>> +  * Processor Interface Tuning and Diagnostics
+>> +    - Processor interface tuning and diagnostics capabilities
+>> +      (Intel Interconnect BIST). The processors Intel Interconnect Built In
+>> +      Self Test (Intel IBIST) allows for infield diagnostic capabilities in
+>> +      the Intel UPI and memory controller interfaces. PECI provides a port to
+>> +      execute these diagnostics via its PCI Configuration read and write
+>> +      capabilities.
+>> +
+>> +  * Failure Analysis
+>> +    - Output the state of the processor after a failure for analysis via
+>> +      Crashdump.
+>> +
+>> +  PECI uses a single wire for self-clocking and data transfer. The bus
+>> +  requires no additional control lines. The physical layer is a self-clocked
+>> +  one-wire bus that begins each bit with a driven, rising edge from an idle
+>> +  level near zero volts. The duration of the signal driven high depends on
+>> +  whether the bit value is a logic '0' or logic '1'. PECI also includes
+>> +  variable data transfer rate established with every message. In this way, it
+>> +  is highly flexible even though underlying logic is simple.
+>> +
+>> +  The interface design was optimized for interfacing between an Intel
+>> +  processor and chipset components in both single processor and multiple
+>> +  processor environments. The single wire interface provides low board
+>> +  routing overhead for the multiple load connections in the congested routing
+>> +  area near the processor and chipset components. Bus speed, error checking,
+>> +  and low protocol overhead provides adequate link bandwidth and reliability
+>> +  to transfer critical device operating conditions and configuration
+>> +  information.
+>> +
+>> +  PECI subsystem provides single or multiple bus nodes support so each bus can
+>> +  have one adapter node and multiple device specific client nodes that can be
+>> +  attached to the PECI bus so each processor client's features can be supported
+>> +  by the client node through an adapter connection in the bus.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: simple-bus
+> 
+> This is wrong. We already have a schema for this.
+> 
+> What's needed is a peci-bus schema that defines the bus node structure
+> and then schemas for the specific controllers and child devices. See
+> i2c-controller.yaml for an example.
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
+Oh, I see. I'll fix and submit it as '/schema/peci-bus.yaml' into
+dt-schema tree.
 
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
+>> +
+>> +  "#address-cells":
+>> +    # Required to define bus device control resource address.
+>> +    const: 1
+>> +
+>> +  "#size-cells":
+>> +    # Required to define bus device control resource address.
+>> +    const: 1
+>> +
+>> +  ranges: true
+>> +
+>> +required:
+>> +  - compatible
+>> +  - "#address-cells"
+>> +  - "#size-cells"
+>> +  - ranges
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/clock/ast2600-clock.h>
+>> +    peci: bus@1e78b000 {
+>> +        compatible = "simple-bus";
+>> +        #address-cells = <1>;
+>> +        #size-cells = <1>;
+>> +        ranges = <0x0 0x1e78b000 0x200>;
+>> +
+>> +        peci0: peci-bus@0 {
+>> +            compatible = "aspeed,ast2600-peci";
+>> +            reg = <0x0 0x100>;
+>> +            #address-cells = <1>;
+>> +            #size-cells = <0>;
+>> +            interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
+>> +            clocks = <&syscon ASPEED_CLK_GATE_REF0CLK>;
+>> +            resets = <&syscon ASPEED_RESET_PECI>;
+>> +            clock-frequency = <24000000>;
+>> +        };
+>> +
+>> +        // Just an example. ast2600 doesn't have a second PECI module actually.
+>> +        peci1: peci-bus@100 {
+>> +            compatible = "aspeed,ast2600-peci";
+>> +            reg = <0x100 0x100>;
+>> +            #address-cells = <1>;
+>> +            #size-cells = <0>;
+>> +            interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
+>> +            clocks = <&syscon ASPEED_CLK_GATE_REF0CLK>;
+>> +            resets = <&syscon ASPEED_RESET_PECI>;
+>> +            clock-frequency = <24000000>;
+>> +        };
+>> +    };
+>> +...
+>> diff --git a/Documentation/devicetree/bindings/peci/peci-client.yaml b/Documentation/devicetree/bindings/peci/peci-client.yaml
+>> new file mode 100644
+>> index 000000000000..fc7c4110e929
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/peci/peci-client.yaml
+>> @@ -0,0 +1,54 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/peci/peci-client.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Generic Device Tree Bindings for PECI clients
+>> +
+>> +maintainers:
+>> +  - Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - intel,peci-client
+>> +
+>> +  reg:
+>> +    description: |
+>> +      Address of a client CPU. According to the PECI specification, client
+>> +      addresses start from 0x30.
+> 
+> 0x30 being the min should be a constraint in the bus schema.
 
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
+Right. Will add that.
 
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
+Thanks a lot for your review!
+
+-Jae
+
+>> +    maxItems: 1
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/clock/ast2600-clock.h>
+>> +    peci: bus@1e78b000 {
+>> +        compatible = "simple-bus";
+>> +        #address-cells = <1>;
+>> +        #size-cells = <1>;
+>> +        ranges = <0x0 0x1e78b000 0x60>;
+>> +
+>> +        peci0: peci-bus@0 {
+>> +            compatible = "aspeed,ast2600-peci";
+>> +            reg = <0x0 0x100>;
+>> +            #address-cells = <1>;
+>> +            #size-cells = <0>;
+>> +            interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
+>> +            clocks = <&syscon ASPEED_CLK_GATE_REF0CLK>;
+>> +            resets = <&syscon ASPEED_RESET_PECI>;
+>> +            clock-frequency = <24000000>;
+>> +
+>> +            peci-client@30 {
+>> +                compatible = "intel,peci-client";
+>> +                reg = <0x30>;
+>> +            };
+>> +
+>> +            peci-client@31 {
+>> +                compatible = "intel,peci-client";
+>> +                reg = <0x31>;
+>> +            };
+>> +        };
+>> +    };
+>> +...
+>> -- 
+>> 2.17.1
+>>
+> 
