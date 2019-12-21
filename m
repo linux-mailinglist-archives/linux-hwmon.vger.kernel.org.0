@@ -2,111 +2,73 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF957126F2B
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Dec 2019 21:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA049128C42
+	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Dec 2019 03:17:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726959AbfLSUuz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Dec 2019 15:50:55 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:37140 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727422AbfLSUuz (ORCPT
+        id S1726138AbfLVCRe (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 21 Dec 2019 21:17:34 -0500
+Received: from relay.tapes.rs.gov.br ([186.208.189.211]:38842 "EHLO
+        relay.tapes.rs.gov.br" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726086AbfLVCRd (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Dec 2019 15:50:55 -0500
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBJKleqQ026074;
-        Thu, 19 Dec 2019 15:50:29 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2x0g299500-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Dec 2019 15:50:29 -0500
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id xBJKliKj026433;
-        Thu, 19 Dec 2019 15:50:28 -0500
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2x0g2994yh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Dec 2019 15:50:28 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-        by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xBJKo1DO016922;
-        Thu, 19 Dec 2019 20:50:27 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
-        by ppma03wdc.us.ibm.com with ESMTP id 2wvqc71km5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Dec 2019 20:50:27 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-        by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBJKoQW560424642
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Dec 2019 20:50:26 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A62A0C605A;
-        Thu, 19 Dec 2019 20:50:26 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3C102C6059;
-        Thu, 19 Dec 2019 20:50:26 +0000 (GMT)
-Received: from talon7.ibm.com (unknown [9.41.103.158])
-        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu, 19 Dec 2019 20:50:26 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
-        jdelvare@suse.com, bjwyman@gmail.com,
-        Eddie James <eajames@linux.ibm.com>
-Subject: [PATCH 3/3] hwmon: (pmbus/ibm-cffps) Fix the LED behavior when turned off
-Date:   Thu, 19 Dec 2019 14:50:07 -0600
-Message-Id: <1576788607-13567-4-git-send-email-eajames@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1576788607-13567-1-git-send-email-eajames@linux.ibm.com>
-References: <1576788607-13567-1-git-send-email-eajames@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-19_06:2019-12-17,2019-12-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 phishscore=0 spamscore=0 adultscore=0 mlxscore=0
- mlxlogscore=904 suspectscore=1 lowpriorityscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1912190154
+        Sat, 21 Dec 2019 21:17:33 -0500
+X-Greylist: delayed 2756 seconds by postgrey-1.27 at vger.kernel.org; Sat, 21 Dec 2019 21:17:32 EST
+Received: from relay.tapes.rs.gov.br (localhost.localdomain [127.0.0.1])
+        by relay.tapes.rs.gov.br (MAILA NETWORKS) with ESMTP id DF8215E402E;
+        Sat, 21 Dec 2019 22:16:59 -0300 (-03)
+Received: from mail.tapes.rs.gov.br (mail.tapes.rs.gov.br [172.16.207.98])
+        by relay.tapes.rs.gov.br (MAILA NETWORKS) with ESMTP id AE7DC5E4022;
+        Sat, 21 Dec 2019 22:16:59 -0300 (-03)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.tapes.rs.gov.br (Postfix) with ESMTP id CA2D313C12C5;
+        Sat, 21 Dec 2019 22:16:54 -0300 (-03)
+Received: from mail.tapes.rs.gov.br ([127.0.0.1])
+        by localhost (mail.tapes.rs.gov.br [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ylAwRoKx0Psr; Sat, 21 Dec 2019 22:16:53 -0300 (-03)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.tapes.rs.gov.br (Postfix) with ESMTP id B194513C2F8A;
+        Sat, 21 Dec 2019 20:43:36 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.tapes.rs.gov.br B194513C2F8A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tapes.rs.gov.br;
+        s=F7D81972-B7E0-11E6-B070-76F4540BF914; t=1576971817;
+        bh=biEHBP5vh+ocbbp6wcnog5kTCnMA8zm1dzb6dpqgOkc=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=Xk5H1d4wqCoqCOADI4O0IADgnpYgkgFrKgZ7WEEQ4Sxe1OztXEVqPk3k31C3YpgOy
+         z9YilRSStVN8lsrO8T7sZFITWGuCBcJSwsLNhTTW3gvSWn+L/UY4Hx9jNC4c42a7ZG
+         Pd1Ad2dG87YB9lekOJoeGl91oHuhAOD4q5aqlxBJYcTnpXvDYX4yLNHQMrREVTpcB0
+         moE+gdHQkVVCAychzply5cu5RICrKRmreoiPP+jjmGmpK3mjzgnIT7V0uaXMhA/Zq0
+         r73QVYTpRnrJvqJUmP3RkyMSU1VvNb4Vq65SLJP5RSnVkxRYiRI3lWulIZPfW5ESGv
+         xYdVhY9V7OVEQ==
+X-Virus-Scanned: amavisd-new at mail.tapes.rs.gov.br
+Received: from mail.tapes.rs.gov.br ([127.0.0.1])
+        by localhost (mail.tapes.rs.gov.br [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Q1k9i3CQr2WB; Sat, 21 Dec 2019 20:43:36 -0300 (-03)
+Received: from mail.tapes.rs.gov.br (mail.pmtapes.com.br [172.16.207.98])
+        by mail.tapes.rs.gov.br (Postfix) with ESMTP id 9396413C3DEE;
+        Sat, 21 Dec 2019 19:49:23 -0300 (-03)
+Date:   Sat, 21 Dec 2019 20:49:22 -0200 (BRST)
+From:   Major Dennis Hornbeck <creas@tapes.rs.gov.br>
+Reply-To: Major Dennis Hornbeck <hornbeckmajordennis637@gmail.com>
+Message-ID: <2071798295.538403.1576968562967.JavaMail.zimbra@tapes.rs.gov.br>
+Subject: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [197.237.36.86]
+X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
+Thread-Index: VeKZATYP1nntMHuVwAB3fajFP5HlHA==
+Thread-Topic: 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The driver should remain in control of the LED on the PSU, even while
-off, not the PSU firmware as previously indicated.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- drivers/hwmon/pmbus/ibm-cffps.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
-index b37faf1..1c91ee1 100644
---- a/drivers/hwmon/pmbus/ibm-cffps.c
-+++ b/drivers/hwmon/pmbus/ibm-cffps.c
-@@ -47,13 +47,9 @@
- #define CFFPS_MFR_VAUX_FAULT			BIT(6)
- #define CFFPS_MFR_CURRENT_SHARE_WARNING		BIT(7)
- 
--/*
-- * LED off state actually relinquishes LED control to PSU firmware, so it can
-- * turn on the LED for faults.
-- */
--#define CFFPS_LED_OFF				0
- #define CFFPS_LED_BLINK				BIT(0)
- #define CFFPS_LED_ON				BIT(1)
-+#define CFFPS_LED_OFF				BIT(2)
- #define CFFPS_BLINK_RATE_MS			250
- 
- enum {
-@@ -436,6 +432,9 @@ static void ibm_cffps_create_led_class(struct ibm_cffps *psu)
- 	rc = devm_led_classdev_register(dev, &psu->led);
- 	if (rc)
- 		dev_warn(dev, "failed to register led class: %d\n", rc);
-+	else
-+		i2c_smbus_write_byte_data(client, CFFPS_SYS_CONFIG_CMD,
-+					  CFFPS_LED_OFF);
- }
- 
- static struct pmbus_driver_info ibm_cffps_info[] = {
--- 
-1.8.3.1
+--=20
+I am in the military unit here in Afghanistan, we have some amount of funds=
+ that we want to move out of the country. My partners and I need a good par=
+tner someone we can trust. It is risk free and legal. Reply for more detail=
+s.=C2=A0=C2=A0Regards,Major Dennis Hornbeck.
 
