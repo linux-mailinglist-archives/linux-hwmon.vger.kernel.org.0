@@ -2,100 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 680DB12963F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 23 Dec 2019 14:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B23129C9F
+	for <lists+linux-hwmon@lfdr.de>; Tue, 24 Dec 2019 03:16:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbfLWNHy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 23 Dec 2019 08:07:54 -0500
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:34613 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726680AbfLWNHy (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 23 Dec 2019 08:07:54 -0500
-Received: by mail-lf1-f65.google.com with SMTP id l18so4409015lfc.1;
-        Mon, 23 Dec 2019 05:07:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5eJH2So2Y3KqY/K1ixMNRpaPpKx0b38bhcNlkypecC0=;
-        b=N7FN0ncLXb065P3FN14ZDLucMWMpNKGbWPL84vdRLA17Kc3XtT8pnSKLjbseUPj918
-         b9yDdgKBeG55jltDFLk9cDzyCHWPNVXrw4qoKL0NK/RoO24MAp8q04nFdEJcZpgaT5BF
-         Q15J2JBVrmMrQx4zFr9FLZw/VeElcbpyV3hIkGOi1aH3of4W5V7Pz5pv99zVfEeU/F0K
-         SoqCCo4ejdPWZ5XPiDBHIxGsbm8jsgy1f4YZ0a2rDR8r1ttquMOBRfzWSCRjKNS9W/oB
-         PELHjv9r8rJchpunfS3Od1m02nbafGGlA5trUX/4PLKhVRONJM6uv5xUiPD//ox37mFL
-         dK4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5eJH2So2Y3KqY/K1ixMNRpaPpKx0b38bhcNlkypecC0=;
-        b=PWdt69KWzpEnD7AY/7sODWcRHrQjmvZQqUo9v3BCfB6qr7YNZvk+29EOm3Ua821tJ+
-         BE+CG8YXe1VVGx4DVPZli06E/rRWBmmnwsaAxsQZ1q5xtOeYGMTKVfQ1tmsa9NQRTy87
-         vQuEIQCuS1XP+lSHNQ7L43sgNayRHsqrRkOTgPbeaznDsnfADIDpq45myeI49hpL5F2f
-         yjvW73cZ63P8XXcYS/SeFSjXVyIoU363G60MdJ7Yt0EHX0ejCpAjW3cM5tYpHyUhvXsC
-         3wah0m5ZeFz/yKZxJ+QknTvg/tCMwJ5qBnPmvwEkElYfYYy5XBaJBZzCW11U4TjLykvl
-         FtFA==
-X-Gm-Message-State: APjAAAVvB1MMveyg0c/S7qajWwsCOm8QX/dEnxbxul/mgvRJvqaX4ssi
-        8/Ov7Gy+lrdjfOVWPfsLNz4FAomiyjRseJKc2Wo=
-X-Google-Smtp-Source: APXvYqx35NtG2msl9BoMH2SPDevhyYA9MZsbmqBAxBohTRg/NXhM9CHIaYC1N0ZR9f0Dh28z9OhNSEDQtt4irLWQGH0=
-X-Received: by 2002:ac2:4a89:: with SMTP id l9mr16617018lfp.121.1577106471345;
- Mon, 23 Dec 2019 05:07:51 -0800 (PST)
+        id S1726908AbfLXCQL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 23 Dec 2019 21:16:11 -0500
+Received: from mx.treblig.org ([46.43.15.161]:56642 "EHLO mx.treblig.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726871AbfLXCQL (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 23 Dec 2019 21:16:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+        ; s=bytemarkmx; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
+        :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=NzLEtdjTlqXj90V+kD13i4bSksLoslg1n6l/UDFh4MU=; b=qPNE7180sVKGTayax6cRn2LwKh
+        y38ESFKoEzN+71KQgGgRY7786zdHIvd2naGyB95unWc2PrSazhecy8/EVIT4/urOPITGQ/Ealopeo
+        i8Q7EwItSVYtPPh7wZSuvxIdHgLyixtdgJYlgbSz/gQi0b6lAHdDrS4wqo5OA5u6xHgy/tO1KNj6E
+        PfQZ5mvTDtoqH5K1mS1GJfYkus2IGEwVklxH0UooMyM5X3zsDuiLTw5Rywnsli6HQxf5ElsJbSWX/
+        DpzwuCQ4FKcMGFRva4QyhmIuADEl/O3GQXClgqT8e+iUdC1bWN7XM6vnNcLch580NLw1e5htZnkLw
+        LDB+z+Tw==;
+Received: from dg by mx.treblig.org with local (Exim 4.92)
+        (envelope-from <dg@treblig.org>)
+        id 1ijZjx-00051K-CI; Tue, 24 Dec 2019 02:16:05 +0000
+Date:   Tue, 24 Dec 2019 02:16:05 +0000
+From:   "Dr. David Alan Gilbert" <linux@treblig.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH 2/2] hwmon: (w83627ehf) convert to with_info interface
+Message-ID: <20191224021605.GA19223@gallifrey>
+References: <20191124202030.45360-1-linux@treblig.org>
+ <20191124202030.45360-3-linux@treblig.org>
+ <20191207135127.GA24852@roeck-us.net>
+ <20191207164936.GA25521@gallifrey>
 MIME-Version: 1.0
-References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
-In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
-From:   Akinobu Mita <akinobu.mita@gmail.com>
-Date:   Mon, 23 Dec 2019 22:07:39 +0900
-Message-ID: <CAC5umygqpmb0s8zHC+TFEFffQmsU4N1hUs_XWGDLtqkJEccfBw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/12] add header file for kelvin to/from Celsius
- conversion helpers
-To:     Linux NVMe Mailinglist <linux-nvme@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Sujith Thomas <sujith.thomas@intel.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191207164936.GA25521@gallifrey>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/4.19.0-5-amd64 (x86_64)
+X-Uptime: 02:15:29 up 114 days,  2:36,  1 user,  load average: 0.00, 0.00,
+ 0.00
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Andrew,
+* Dr. David Alan Gilbert (linux@treblig.org) wrote:
+> * Guenter Roeck (linux@roeck-us.net) wrote:
+> > On Sun, Nov 24, 2019 at 08:20:30PM +0000, Dr. David Alan Gilbert wrote:
+> > > Convert the old hwmon_device_register code to
+> > > devm_hwmon_device_register_with_info.
+> > > 
+> > > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> > 
+> > Looks good. I am sure I am missing something, given the size of the patch,
+> 
+> Thanks! I couldn't see an obvious way to split it and keep it working
+> bisectably.
+> 
+> > but I am going to apply this to hwmon-next.
+> 
+> Great.
+> 
+> > Side note: At some point we should drop support for nct6775 and nct6776
+> > from this driver.
+> 
+> Hehe it would have probably easier to do that first!  Oh well,
+> I've added it to a TODO, that means nothing about if/when I'll actually
+> get around to it!
 
-Could you take a look at this series, and consider including into -mm tree?
+I've started looking at this.
 
-2019=E5=B9=B412=E6=9C=8815=E6=97=A5(=E6=97=A5) 14:16 Akinobu Mita <akinobu.=
-mita@gmail.com>:
->
-> There are several helper macros to convert kelvin to/from Celsius in
-> <linux/thermal.h> for thermal drivers.  These are useful for any other
-> drivers or subsystems, but it's odd to include <linux/thermal.h> just for
-> the helpers.
->
-> This adds a new <linux/units.h> that provides the equivalent inline
-> functions for any drivers or subsystems, and switches all the users of
-> conversion helpers in <linux/thermal.h> to use <linux/units.h>
-> helpers.
+Dave
+
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
