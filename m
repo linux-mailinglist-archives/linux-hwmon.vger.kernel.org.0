@@ -2,109 +2,68 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F878130398
-	for <lists+linux-hwmon@lfdr.de>; Sat,  4 Jan 2020 17:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E894313077C
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jan 2020 11:58:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbgADQaz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 4 Jan 2020 11:30:55 -0500
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:33010 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbgADQaz (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 4 Jan 2020 11:30:55 -0500
-Received: by mail-pj1-f65.google.com with SMTP id u63so3469876pjb.0;
-        Sat, 04 Jan 2020 08:30:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=SF6jQ6Us3Rm1ak3vLMeXdgaGr4D7O4/vI9dVN14WAWU=;
-        b=knC3R+JzRicRScYWvNV/GJT03sMkk14T/0w/QorA2Kf+KmidJJ/YxlUNA6fyjXj4b3
-         xmn4nUJhBUDBBaAMR5HIf8Udb17co8B7dmoE/35G8RRhnaPHpUYqu3i+Q5YvooOOx0N5
-         OnmBqeP8lbmWKGIY1L8ys3B1lljJLjz1cPUuc7Vz2Qn6CxtEXuzynRLUjL/3tfFVJG1X
-         uw7ehhIE849UzlniFvsToVnhVsHno6y2ekKwVbdahtRFFCK/XGWeJNGmVt1L6CwLhvPm
-         isy554OKMzQMMqdBSb+uHGeY5mpNu06+d6ebXHsorKuepWaSYKbYwQT1ojvLUYuTMOIZ
-         6URQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=SF6jQ6Us3Rm1ak3vLMeXdgaGr4D7O4/vI9dVN14WAWU=;
-        b=GDFD5tBvqWE4HxhgSjk+iSuqpUSoDDnDp0lfyT/HRJ8RFLaWLzgeVIyLfnnYKrBitC
-         MtrfKq6MaAxZ7zluH9gyC7To/cQ8WwfWcBeO0FRGbPsU1755eNO49McY6YQvNwiptCh5
-         AX8Nq1ZdjsvFz0hUvQ2Gnnul7oAA7u5UZW0NE4HGE4QFqk53m3lmjyu6uNDsAAdx1peQ
-         T5rSTPzvY6xsayq72h9wCjJZMDpTeb+7Jc9nI9FCf4eM8kdrgHbmeriUC9N0Tl8FVLaH
-         f1pEmrMiDUZkaV419FEpT2r28R2TcDJzNYkJuOpQPzmlS8CUM4VDirw7CZH18edb7xWd
-         hfKA==
-X-Gm-Message-State: APjAAAUbOMWpMtZOxzUR0lffoecNi6x1uyTzzVxnALZ7ru5akKzc0HMJ
-        cTnOXxcgDuTpxNrYbciF/kM=
-X-Google-Smtp-Source: APXvYqxE2Qu80RJuBDvv94/ffMEz1m48VFn6ZRy8UdkbTXgNv2eYpFmBVzLVQ/TpBl+7BacWiq703Q==
-X-Received: by 2002:a17:902:6b8a:: with SMTP id p10mr82430814plk.47.1578155454710;
-        Sat, 04 Jan 2020 08:30:54 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y20sm7049393pfe.107.2020.01.04.08.30.54
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 04 Jan 2020 08:30:54 -0800 (PST)
-Date:   Sat, 4 Jan 2020 08:30:53 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jdelvare@suse.com, bjwyman@gmail.com
-Subject: Re: [PATCH 3/3] hwmon: (pmbus/ibm-cffps) Fix the LED behavior when
- turned off
-Message-ID: <20200104163053.GA13266@roeck-us.net>
-References: <1576788607-13567-1-git-send-email-eajames@linux.ibm.com>
- <1576788607-13567-4-git-send-email-eajames@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1576788607-13567-4-git-send-email-eajames@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        id S1725990AbgAEK6m (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 5 Jan 2020 05:58:42 -0500
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:45653 "EHLO
+        mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725930AbgAEK6l (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jan 2020 05:58:41 -0500
+Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
+        with ESMTPS (AES256-SHA encrypted); 5 Jan 2020 12:58:35 +0200
+Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
+        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 005AwYmM020934;
+        Sun, 5 Jan 2020 12:58:34 +0200
+From:   Vadim Pasternak <vadimp@mellanox.com>
+To:     linux@roeck-us.net, robh+dt@kernel.org, vijaykhemka@fb.com
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        Vadim Pasternak <vadimp@mellanox.com>
+Subject: [RFC PATCH hwmon-next v1 0/5] hwmon: (pmbus) Add support for vid mode calculation per page bases
+Date:   Sun,  5 Jan 2020 10:58:28 +0000
+Message-Id: <20200105105833.30196-1-vadimp@mellanox.com>
+X-Mailer: git-send-email 2.11.0
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Dec 19, 2019 at 02:50:07PM -0600, Eddie James wrote:
-> The driver should remain in control of the LED on the PSU, even while
-> off, not the PSU firmware as previously indicated.
-> 
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Currently "pmbus" infrastructure does not build for support reading
+"vout" in "vid" mode, for cases when device is configured with the
+different modes per page bases.
+However some devices could be configured in such way.
+The patchset includes:
+Patch#1 allows selection mode per pmbus page bases, by extending
+	"vrm_version" field to per page array and modify the drivers
+	using this field.
+Patch#2 introduces support for "vrm" mode "IMVP9".
+Patch#3 makes use of "IMVP9" mode for "tps53679" driver.
+Patch#4 extends binding documentation for trivial devices.
+Patch#5 extends "tps53679" driver with support of the additional
+devices:
+	Texas Instruments Dual channel DCAP+ multiphase controllers:
+	TPS53688, SN1906016.
+	Infineon Multi-phase Digital VR Controller Sierra controllers
+	XDPE12286C, XDPE12284C, XDPE12283C, XDPE12254C and XDPE12250C.
 
-Applied to hwmon-next.
+Vadim Pasternak (5):
+  hwmon: (pmbus/core) Add support for vid mode detection per page bases
+  hwmon: (pmbus/core) Add support for Intel IMVP9 specification
+  hwmon: (pmbus/tps53679) Allow support for Intel IMVP9 specification
+  dt-bindings: Add TI and Infineon VR Controllers as trivial devices
+  hwmon: (pmbus/tps53679) Extend device list supported by driver
 
-Thanks,
-Guenter
+ .../devicetree/bindings/trivial-devices.yaml       | 16 ++++++
+ drivers/hwmon/pmbus/Kconfig                        |  5 +-
+ drivers/hwmon/pmbus/max20751.c                     |  2 +-
+ drivers/hwmon/pmbus/pmbus.c                        |  5 +-
+ drivers/hwmon/pmbus/pmbus.h                        |  4 +-
+ drivers/hwmon/pmbus/pmbus_core.c                   |  6 ++-
+ drivers/hwmon/pmbus/pxe1610.c                      | 44 ++++++++-------
+ drivers/hwmon/pmbus/tps53679.c                     | 62 ++++++++++++++--------
+ 8 files changed, 95 insertions(+), 49 deletions(-)
 
-> ---
->  drivers/hwmon/pmbus/ibm-cffps.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
-> index b37faf1..1c91ee1 100644
-> --- a/drivers/hwmon/pmbus/ibm-cffps.c
-> +++ b/drivers/hwmon/pmbus/ibm-cffps.c
-> @@ -47,13 +47,9 @@
->  #define CFFPS_MFR_VAUX_FAULT			BIT(6)
->  #define CFFPS_MFR_CURRENT_SHARE_WARNING		BIT(7)
->  
-> -/*
-> - * LED off state actually relinquishes LED control to PSU firmware, so it can
-> - * turn on the LED for faults.
-> - */
-> -#define CFFPS_LED_OFF				0
->  #define CFFPS_LED_BLINK				BIT(0)
->  #define CFFPS_LED_ON				BIT(1)
-> +#define CFFPS_LED_OFF				BIT(2)
->  #define CFFPS_BLINK_RATE_MS			250
->  
->  enum {
-> @@ -436,6 +432,9 @@ static void ibm_cffps_create_led_class(struct ibm_cffps *psu)
->  	rc = devm_led_classdev_register(dev, &psu->led);
->  	if (rc)
->  		dev_warn(dev, "failed to register led class: %d\n", rc);
-> +	else
-> +		i2c_smbus_write_byte_data(client, CFFPS_SYS_CONFIG_CMD,
-> +					  CFFPS_LED_OFF);
->  }
->  
->  static struct pmbus_driver_info ibm_cffps_info[] = {
+-- 
+2.11.0
+
