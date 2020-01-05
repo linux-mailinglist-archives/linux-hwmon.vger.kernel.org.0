@@ -2,27 +2,27 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D145130777
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jan 2020 11:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6B35130781
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jan 2020 11:58:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726188AbgAEK6l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 5 Jan 2020 05:58:41 -0500
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:45663 "EHLO
+        id S1726212AbgAEK6q (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 5 Jan 2020 05:58:46 -0500
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:45705 "EHLO
         mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726143AbgAEK6l (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jan 2020 05:58:41 -0500
+        with ESMTP id S1726029AbgAEK6q (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jan 2020 05:58:46 -0500
 Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
-        with ESMTPS (AES256-SHA encrypted); 5 Jan 2020 12:58:39 +0200
+        with ESMTPS (AES256-SHA encrypted); 5 Jan 2020 12:58:40 +0200
 Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 005AwYmQ020934;
-        Sun, 5 Jan 2020 12:58:39 +0200
+        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 005AwYmR020934;
+        Sun, 5 Jan 2020 12:58:40 +0200
 From:   Vadim Pasternak <vadimp@mellanox.com>
 To:     linux@roeck-us.net, robh+dt@kernel.org, vijaykhemka@fb.com
 Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
         Vadim Pasternak <vadimp@mellanox.com>
-Subject: [RFC PATCH hwmon-next v1 4/5] dt-bindings: Add TI and Infineon VR Controllers as trivial devices
-Date:   Sun,  5 Jan 2020 10:58:32 +0000
-Message-Id: <20200105105833.30196-5-vadimp@mellanox.com>
+Subject: [RFC PATCH hwmon-next v1 5/5] hwmon: (pmbus/tps53679) Extend device list supported by driver
+Date:   Sun,  5 Jan 2020 10:58:33 +0000
+Message-Id: <20200105105833.30196-6-vadimp@mellanox.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20200105105833.30196-1-vadimp@mellanox.com>
 References: <20200105105833.30196-1-vadimp@mellanox.com>
@@ -31,50 +31,70 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add Texas Instruments Dual channel DCAP+ multiphase controllers:
-TPS53679, TPS53688, SN1906016 and Infineon Multi-phase Digital VR
-controllers XDPE12286C, XDPE12284C, XDPE12283C, XDPE12254C, XDPE12250C
-as trivial devices.
+Extends driver with support of the additional devices:
+Texas Instruments Dual channel DCAP+ multiphase controllers: TPS53688,
+SN1906016.
+Infineon Multi-phase Digital VR Controller Sierra devices
+XDPE12286C, XDPE12284C, XDPE12283C, XDPE12254C and XDPE12250C.
+
+Extend Kconfig with added devices.
 
 Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
 ---
- Documentation/devicetree/bindings/trivial-devices.yaml | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/hwmon/pmbus/Kconfig    |  5 +++--
+ drivers/hwmon/pmbus/tps53679.c | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 765fd1c170df..dbd71d01ede0 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -104,6 +104,16 @@ properties:
-           - infineon,slb9645tt
-             # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
-           - infineon,tlv493d-a1b6
-+            # Infineon Multi-phase Digital VR Controller xdpe12283c
-+          - infineon,xdpe12283c
-+            # Infineon Multi-phase Digital VR Controller xdpe12250c
-+          - infineon,xdpe12250c
-+            # Infineon Multi-phase Digital VR Controller xdpe12254c
-+          - infineon,xdpe12254c
-+            # Infineon Multi-phase Digital VR Controller xdpe12284c
-+          - infineon,xdpe12284c
-+            # Infineon Multi-phase Digital VR Controller xdpe12286c
-+          - infineon,xdpe12286c
-             # Inspur Power System power supply unit version 1
-           - inspur,ipsps1
-             # Intersil ISL29028 Ambient Light and Proximity Sensor
-@@ -354,6 +364,12 @@ properties:
-           - ti,tmp103
-             # Digital Temperature Sensor
-           - ti,tmp275
-+            # TI Dual channel DCAP+ multiphase controller TPS53679
-+          - ti,tps53679
-+            # TI Dual channel DCAP+ multiphase controller TPS53688
-+          - ti,tps53688
-+            # TI Dual channel DCAP+ multiphase controller SN1906016
-+          - ti,sn1906016
-             # Winbond/Nuvoton H/W Monitor
-           - winbond,w83793
-             # i2c trusted platform module (TPM)
+diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
+index 59859979571d..9e3d197d5322 100644
+--- a/drivers/hwmon/pmbus/Kconfig
++++ b/drivers/hwmon/pmbus/Kconfig
+@@ -200,10 +200,11 @@ config SENSORS_TPS40422
+ 	  be called tps40422.
+ 
+ config SENSORS_TPS53679
+-	tristate "TI TPS53679"
++	tristate "TI TPS53679, TPS53688, SN1906016, Infineon XDPE122xxx family"
+ 	help
+ 	  If you say yes here you get hardware monitoring support for TI
+-	  TPS53679.
++	  TPS53679, PS53688, SN1906016 and Infineon XDPE12286C, XDPE12284C,
++	  XDPE12283C, XDPE12254C, XDPE12250C devices.
+ 
+ 	  This driver can also be built as a module. If so, the module will
+ 	  be called tps53679.
+diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
+index 7ce2fca4acde..f38eb116735b 100644
+--- a/drivers/hwmon/pmbus/tps53679.c
++++ b/drivers/hwmon/pmbus/tps53679.c
+@@ -89,6 +89,13 @@ static int tps53679_probe(struct i2c_client *client,
+ 
+ static const struct i2c_device_id tps53679_id[] = {
+ 	{"tps53679", 0},
++	{"tps53688", 0},
++	{"sn1906016", 0},
++	{"xdpe12283c", 0},
++	{"xdpe12250c", 0},
++	{"xdpe12254c", 0},
++	{"xdpe12284c", 0},
++	{"xdpe12286c", 0},
+ 	{}
+ };
+ 
+@@ -96,6 +103,13 @@ MODULE_DEVICE_TABLE(i2c, tps53679_id);
+ 
+ static const struct of_device_id __maybe_unused tps53679_of_match[] = {
+ 	{.compatible = "ti,tps53679"},
++	{.compatible = "ti,tps53688"},
++	{.compatible = "ti,sn1906016"},
++	{.compatible = "infineon,xdpe12283c"},
++	{.compatible = "infineon,xdpe12250c"},
++	{.compatible = "infineon,xdpe12254c"},
++	{.compatible = "infineon,xdpe12284c"},
++	{.compatible = "infineon,xdpe12286c"},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, tps53679_of_match);
 -- 
 2.11.0
 
