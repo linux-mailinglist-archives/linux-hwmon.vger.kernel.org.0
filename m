@@ -2,27 +2,27 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C2C130780
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jan 2020 11:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D145130777
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jan 2020 11:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbgAEK6l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        id S1726188AbgAEK6l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
         Sun, 5 Jan 2020 05:58:41 -0500
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:45659 "EHLO
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:45663 "EHLO
         mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725897AbgAEK6l (ORCPT
+        with ESMTP id S1726143AbgAEK6l (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jan 2020 05:58:41 -0500
 Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
-        with ESMTPS (AES256-SHA encrypted); 5 Jan 2020 12:58:38 +0200
+        with ESMTPS (AES256-SHA encrypted); 5 Jan 2020 12:58:39 +0200
 Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 005AwYmP020934;
-        Sun, 5 Jan 2020 12:58:37 +0200
+        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 005AwYmQ020934;
+        Sun, 5 Jan 2020 12:58:39 +0200
 From:   Vadim Pasternak <vadimp@mellanox.com>
 To:     linux@roeck-us.net, robh+dt@kernel.org, vijaykhemka@fb.com
 Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
         Vadim Pasternak <vadimp@mellanox.com>
-Subject: [RFC PATCH hwmon-next v1 3/5] hwmon: (pmbus/tps53679) Allow support for Intel IMVP9 specification
-Date:   Sun,  5 Jan 2020 10:58:31 +0000
-Message-Id: <20200105105833.30196-4-vadimp@mellanox.com>
+Subject: [RFC PATCH hwmon-next v1 4/5] dt-bindings: Add TI and Infineon VR Controllers as trivial devices
+Date:   Sun,  5 Jan 2020 10:58:32 +0000
+Message-Id: <20200105105833.30196-5-vadimp@mellanox.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20200105105833.30196-1-vadimp@mellanox.com>
 References: <20200105105833.30196-1-vadimp@mellanox.com>
@@ -31,35 +31,50 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Allow driver to Intel IMVP9 specification.
+Add Texas Instruments Dual channel DCAP+ multiphase controllers:
+TPS53679, TPS53688, SN1906016 and Infineon Multi-phase Digital VR
+controllers XDPE12286C, XDPE12284C, XDPE12283C, XDPE12254C, XDPE12250C
+as trivial devices.
 
 Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
 ---
- drivers/hwmon/pmbus/tps53679.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/trivial-devices.yaml | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
-index 163e8c6aaa8e..7ce2fca4acde 100644
---- a/drivers/hwmon/pmbus/tps53679.c
-+++ b/drivers/hwmon/pmbus/tps53679.c
-@@ -15,6 +15,7 @@
- 
- #define TPS53679_PROT_VR12_5MV		0x01 /* VR12.0 mode, 5-mV DAC */
- #define TPS53679_PROT_VR12_5_10MV	0x02 /* VR12.5 mode, 10-mV DAC */
-+#define TPS53679_PROT_IMVP9_10MV	0x03 /* IMVP9 mode, 10-mV DAC */
- #define TPS53679_PROT_VR13_10MV		0x04 /* VR13.0 mode, 10-mV DAC */
- #define TPS53679_PROT_IMVP8_5MV		0x05 /* IMVP8 mode, 5-mV DAC */
- #define TPS53679_PROT_VR13_5MV		0x07 /* VR13.0 mode, 5-mV DAC */
-@@ -44,6 +45,9 @@ static int tps53679_identify(struct i2c_client *client,
- 		case TPS53679_PROT_IMVP8_5MV:
- 			info->vrm_version[i] = vr12;
- 			break;
-+		case TPS53679_PROT_IMVP9_10MV:
-+			info->vrm_version[i] = imvp9;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 765fd1c170df..dbd71d01ede0 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -104,6 +104,16 @@ properties:
+           - infineon,slb9645tt
+             # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
+           - infineon,tlv493d-a1b6
++            # Infineon Multi-phase Digital VR Controller xdpe12283c
++          - infineon,xdpe12283c
++            # Infineon Multi-phase Digital VR Controller xdpe12250c
++          - infineon,xdpe12250c
++            # Infineon Multi-phase Digital VR Controller xdpe12254c
++          - infineon,xdpe12254c
++            # Infineon Multi-phase Digital VR Controller xdpe12284c
++          - infineon,xdpe12284c
++            # Infineon Multi-phase Digital VR Controller xdpe12286c
++          - infineon,xdpe12286c
+             # Inspur Power System power supply unit version 1
+           - inspur,ipsps1
+             # Intersil ISL29028 Ambient Light and Proximity Sensor
+@@ -354,6 +364,12 @@ properties:
+           - ti,tmp103
+             # Digital Temperature Sensor
+           - ti,tmp275
++            # TI Dual channel DCAP+ multiphase controller TPS53679
++          - ti,tps53679
++            # TI Dual channel DCAP+ multiphase controller TPS53688
++          - ti,tps53688
++            # TI Dual channel DCAP+ multiphase controller SN1906016
++          - ti,sn1906016
+             # Winbond/Nuvoton H/W Monitor
+           - winbond,w83793
+             # i2c trusted platform module (TPM)
 -- 
 2.11.0
 
