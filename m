@@ -2,87 +2,78 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAFF1132A2F
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2020 16:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 260B413301C
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2020 20:56:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728236AbgAGPlR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 7 Jan 2020 10:41:17 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:21248 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727559AbgAGPlR (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 7 Jan 2020 10:41:17 -0500
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 007Fcsdd111382;
-        Tue, 7 Jan 2020 10:40:49 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2xb8p0e0cb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 07 Jan 2020 10:40:49 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 007FcMw0019021;
-        Tue, 7 Jan 2020 15:40:48 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-        by ppma03dal.us.ibm.com with ESMTP id 2xajb7bdku-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 07 Jan 2020 15:40:48 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 007FelIi7340376
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 7 Jan 2020 15:40:47 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3C0906A057;
-        Tue,  7 Jan 2020 15:40:47 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CADF46A051;
-        Tue,  7 Jan 2020 15:40:46 +0000 (GMT)
-Received: from talon7.ibm.com (unknown [9.41.103.158])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Tue,  7 Jan 2020 15:40:46 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, jdelvare@suse.com,
-        linux@roeck-us.net, dan.carpenter@oracle.com,
-        Eddie James <eajames@linux.ibm.com>
-Subject: [PATCH] hwmon: (pmbus/ibm-cffps) Prevent writing on_off_config with bad data
-Date:   Tue,  7 Jan 2020 09:40:40 -0600
-Message-Id: <1578411640-16929-1-git-send-email-eajames@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-07_05:2020-01-07,2020-01-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 mlxscore=0 clxscore=1015 phishscore=0 spamscore=0
- priorityscore=1501 suspectscore=1 bulkscore=0 adultscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001070130
+        id S1728722AbgAGT4o (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 7 Jan 2020 14:56:44 -0500
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:36985 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728726AbgAGT4j (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 7 Jan 2020 14:56:39 -0500
+Received: by mail-ed1-f66.google.com with SMTP id cy15so635359edb.4
+        for <linux-hwmon@vger.kernel.org>; Tue, 07 Jan 2020 11:56:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
+         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
+         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
+         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
+         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
+         ABpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=XDTlFF6qiK5KRhx1JyATii+o/NWZGoQfWnxoYZS8JJo51RernultkZ0R7Owx39SfNE
+         yfjrh3VAsHghh39b8sMw/LWoQyzygR1v5eyt18b0s7EpQPKcbqyB1tSRB2y0Y2ECtmmR
+         LQfU/ZTE9He9UOwTIie00TUHa0bXjUWqXyXXXGlPIODj+1FSZJzdenPZGmlnVdReBJO1
+         Fkfc/E+i3nuFvsYjuUE747jeO8m5S6pt/1VvOnkKov4TtA/D1N3f2MxTARSYYas1MD4m
+         yAapFzPoZaq6ISUVroXqXJjkcR7XOLnHwg3fUIAatMqpXUwn1j64TfD82Ho5FjckrCp6
+         6yAg==
+X-Gm-Message-State: APjAAAUp+tGdB3hNv0emBm7rVPNcaPgcI0XC09aS4dW3YmXi8WygtACV
+        H07Nk+61zuda+M2jqj0QGxyH682zj+rCJlcRg7I=
+X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
+X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
+ Tue, 07 Jan 2020 11:56:35 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
+From:   "Dr. William Johnson" <currency1000000@gmail.com>
+Date:   Tue, 7 Jan 2020 20:56:34 +0100
+Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
+Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
+ worth $15.8Million US DOLLARS now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-If the user write parameters resulted in no bytes being written to the
-temporary buffer, then ON_OFF_CONFIG will be written with uninitialized
-data. Prevent this by bailing out in this case.
-
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- drivers/hwmon/pmbus/ibm-cffps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
-index 1c91ee1f9926..3795fe55b84f 100644
---- a/drivers/hwmon/pmbus/ibm-cffps.c
-+++ b/drivers/hwmon/pmbus/ibm-cffps.c
-@@ -250,7 +250,7 @@ static ssize_t ibm_cffps_debugfs_write(struct file *file,
- 		pmbus_set_page(psu->client, 0);
- 
- 		rc = simple_write_to_buffer(&data, 1, ppos, buf, count);
--		if (rc < 0)
-+		if (rc <= 0)
- 			return rc;
- 
- 		rc = i2c_smbus_write_byte_data(psu->client,
--- 
-2.24.0
-
+ATTN Dear Beneficiary.
+Goodnews
+I have Registered your Prepaid ATM Master Card
+worth $15.800,000.00 US DOLLARS with Courier company
+asigned to deliver it to you today.
+So contact Dhl office New York to receive your Prepaid ATM Master Card
+worth $15.8Million US DOLLARS now.
+Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
+Email. dhlexpresscouriercompany.nyusa@gmail.com
+Call the office +(202) 890-8752
+Rec-Confirmed your mailing address to the office as I listed below.
+Your Full Name--------------
+House Address-----------
+Your working Phone Number----------------
+ID copy-------------------------
+Sex-----------------------------
+Note,delivery fee to your address is only $25.00. send it to this
+company urgent on itunes card today so that DHL will deliver this
+Prepaid ATM Master Card to you today according to our finally
+agreement.
+Thanks for coperations,
+Dr. William Johnson
