@@ -2,78 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 260B413301C
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2020 20:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B6D013384B
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jan 2020 02:12:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728722AbgAGT4o (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 7 Jan 2020 14:56:44 -0500
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36985 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728726AbgAGT4j (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 7 Jan 2020 14:56:39 -0500
-Received: by mail-ed1-f66.google.com with SMTP id cy15so635359edb.4
-        for <linux-hwmon@vger.kernel.org>; Tue, 07 Jan 2020 11:56:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
-        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
-         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
-         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
-         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
-         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
-         ABpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
-        b=XDTlFF6qiK5KRhx1JyATii+o/NWZGoQfWnxoYZS8JJo51RernultkZ0R7Owx39SfNE
-         yfjrh3VAsHghh39b8sMw/LWoQyzygR1v5eyt18b0s7EpQPKcbqyB1tSRB2y0Y2ECtmmR
-         LQfU/ZTE9He9UOwTIie00TUHa0bXjUWqXyXXXGlPIODj+1FSZJzdenPZGmlnVdReBJO1
-         Fkfc/E+i3nuFvsYjuUE747jeO8m5S6pt/1VvOnkKov4TtA/D1N3f2MxTARSYYas1MD4m
-         yAapFzPoZaq6ISUVroXqXJjkcR7XOLnHwg3fUIAatMqpXUwn1j64TfD82Ho5FjckrCp6
-         6yAg==
-X-Gm-Message-State: APjAAAUp+tGdB3hNv0emBm7rVPNcaPgcI0XC09aS4dW3YmXi8WygtACV
-        H07Nk+61zuda+M2jqj0QGxyH682zj+rCJlcRg7I=
-X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
-X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
- Tue, 07 Jan 2020 11:56:35 -0800 (PST)
+        id S1725996AbgAHBMk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 7 Jan 2020 20:12:40 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:44054 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbgAHBMj (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 7 Jan 2020 20:12:39 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00819CZL120969;
+        Wed, 8 Jan 2020 01:12:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=3ydrE+T/CSID+gARHjnF6wd1bt90Yw9xO2VGOIXAOBQ=;
+ b=Y7pVuVhowbYc0FayjzkOX8nnmUIQLHS0mEO1OMmW+zr81/HQMzywLj2upnP+DBa18nAZ
+ NPIK41ZHR0JMgYbycFkryGBv3GapPJfdiYs66lr1PMWSoj/srJzyKnifU1W3g02aB40X
+ 42YnLMl72IxH5/tk5vlwI9WRVJsuNF4f8BGsrCIu2gvkqDlJoA3LDCpKwxF1l0WhZCgz
+ m3wl2ITtxNihtCAKExT1qq7ud8Oaen3TnNNdyzzyiixqvst5pIfxZQ2b8vSC6OnzNPhp
+ l/BQ4fMTbuChkjMDgeTLmJQ6LbN2Qxlg2sCCCoOoSplsllh/JXYEeLAQB2vPTVZn0ViI jA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2xaj4u12w2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jan 2020 01:12:11 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 008199Z9128871;
+        Wed, 8 Jan 2020 01:12:11 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2xcpcrg2p0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jan 2020 01:12:10 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0081C9j3002068;
+        Wed, 8 Jan 2020 01:12:09 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jan 2020 17:12:09 -0800
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
+        Chris Healy <cphealy@gmail.com>
+Subject: Re: [PATCH v2] hwmon: Driver for temperature sensors on SATA drives
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191215174509.1847-1-linux@roeck-us.net>
+        <20191215174509.1847-2-linux@roeck-us.net>
+        <yq1r211dvck.fsf@oracle.com>
+        <b22a519c-8f26-e731-345f-9deca1b2150e@roeck-us.net>
+Date:   Tue, 07 Jan 2020 20:12:06 -0500
+In-Reply-To: <b22a519c-8f26-e731-345f-9deca1b2150e@roeck-us.net> (Guenter
+        Roeck's message of "Wed, 1 Jan 2020 09:46:23 -0800")
+Message-ID: <yq1sgkq21ll.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
- -0800 (PST)
-Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
-From:   "Dr. William Johnson" <currency1000000@gmail.com>
-Date:   Tue, 7 Jan 2020 20:56:34 +0100
-Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
-Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
- worth $15.8Million US DOLLARS now.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9493 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=894
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001080009
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9493 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=955 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001080009
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTN Dear Beneficiary.
-Goodnews
-I have Registered your Prepaid ATM Master Card
-worth $15.800,000.00 US DOLLARS with Courier company
-asigned to deliver it to you today.
-So contact Dhl office New York to receive your Prepaid ATM Master Card
-worth $15.8Million US DOLLARS now.
-Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
-Email. dhlexpresscouriercompany.nyusa@gmail.com
-Call the office +(202) 890-8752
-Rec-Confirmed your mailing address to the office as I listed below.
-Your Full Name--------------
-House Address-----------
-Your working Phone Number----------------
-ID copy-------------------------
-Sex-----------------------------
-Note,delivery fee to your address is only $25.00. send it to this
-company urgent on itunes card today so that DHL will deliver this
-Prepaid ATM Master Card to you today according to our finally
-agreement.
-Thanks for coperations,
-Dr. William Johnson
+
+Guenter,
+
+> Any idea how I might be able to reproduce this ? So far I have been
+> unsuccessful.
+>
+> Building drivetemp into the kernel, with ahci and everything SCSI
+> built as module, doesn't trigger the crash for me. This is with the
+> drivetemp patch (v3) as well as commit d188b0675b ("scsi: core: Add
+> sysfs attributes for VPD pages 0h and 89h") applied on top of v5.4.7.
+
+This is with 5.5-rc1. I'll try another kernel.
+
+My repro is:
+
+# modprobe drivetemp
+# modprobe <any SCSI driver, including ahci>
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
