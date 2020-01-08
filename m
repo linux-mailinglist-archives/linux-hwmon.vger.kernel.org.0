@@ -2,77 +2,115 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BA9E1344AD
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jan 2020 15:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE1C134640
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jan 2020 16:32:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728761AbgAHOLw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 8 Jan 2020 09:11:52 -0500
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:50807 "EHLO
-        mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728766AbgAHOLv (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jan 2020 09:11:51 -0500
-Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
-        with ESMTPS (AES256-SHA encrypted); 8 Jan 2020 16:11:48 +0200
-Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 008EBgZK030061;
-        Wed, 8 Jan 2020 16:11:48 +0200
-From:   Vadim Pasternak <vadimp@mellanox.com>
-To:     linux@roeck-us.net, robh+dt@kernel.org, vijaykhemka@fb.com
-Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        Vadim Pasternak <vadimp@mellanox.com>
-Subject: [RFC PATCH hwmon-next v1 5/5] dt-bindings: Add TI and Infineon VR Controllers as trivial devices
-Date:   Wed,  8 Jan 2020 14:11:40 +0000
-Message-Id: <20200108141140.2175-6-vadimp@mellanox.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20200108141140.2175-1-vadimp@mellanox.com>
-References: <20200108141140.2175-1-vadimp@mellanox.com>
+        id S1728464AbgAHPc0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 8 Jan 2020 10:32:26 -0500
+Received: from mail-pj1-f65.google.com ([209.85.216.65]:34180 "EHLO
+        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726556AbgAHPc0 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jan 2020 10:32:26 -0500
+Received: by mail-pj1-f65.google.com with SMTP id s94so6437378pjc.1;
+        Wed, 08 Jan 2020 07:32:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=1SOA3Ah7Rg4qtqYtLQcb6jr3zIfhzYvMEvCqqOZp10s=;
+        b=hcH8HddzSr1Lo2BeOG/EscmmwduKGPUQti+1Ls3aYlbDVwLieDuKmKNFQ7tZ5dur8p
+         uCLBqkSgM+YmReBEn67r9b9fP3qU+se7HvNsNxWOmKKmED0dk3rcxbGGpUIEi7PLjwl9
+         cW0D1BMPhGHhc7l7hHqpS3AC9E7JHvqe1UQxUZrFJEvUwZP3Kh6n6W90WhlHBgVIGSKc
+         BXI0Ojcnlz5awvU8Al7d06rFjOvxJH/npCCtVZN3kpIhZQ/5bMSy6/3BfXAIZgrgj85o
+         L2D/byLXUGhhEWVIZnGOGlm1r/J+gz6o/FpZDYOi9f2jdqIU2CmCbVik0tn8FqTUfQ8w
+         COmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1SOA3Ah7Rg4qtqYtLQcb6jr3zIfhzYvMEvCqqOZp10s=;
+        b=oZhu++31zZE5xQ/xr9iBQODsm/XFTOiDDY+X6euhLpEqk1XqszdkxontDNg1xjlNEc
+         l7sCdKEM74csW0nQ/RlM4mvdtuqIY5SvyslC0IQllmXsqajdhZJ+o6gSfhl0Z5a21Cnc
+         g4NKEh3e0pZ6BBo6yLjIhoYVoAc5o+VINY8MFJs3cD5+YTKxuDp5D5GlzkluzcRkqavb
+         aBkSrw05ArgNVb3y2Nx78nJAWqt/Ldc/VCVGwb4aZzlN2vdli2tbNUlC40yRRF1Xjjp0
+         p8oc538ZzWYYv01ZU0pGrtWNlOnEmKyDg0Tf7wGTN0akYKh0EdQYaSlcHQuOg71WPaUM
+         fxug==
+X-Gm-Message-State: APjAAAXOaDXIPCIcgpPoXTZO0KIWzaCzLMT8tdndnDbNegM8503etHG2
+        kQRTAsSCIXMUOpg/vVuTwVA=
+X-Google-Smtp-Source: APXvYqx0Zlx7AqZ48rQaShfquzyMapi4bxSa5qydlFyXVoGn4oFYV20TZyAhgNrStbY5tlGCbex9RA==
+X-Received: by 2002:a17:90a:bd10:: with SMTP id y16mr5007799pjr.108.1578497545665;
+        Wed, 08 Jan 2020 07:32:25 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l66sm3782432pga.30.2020.01.08.07.32.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 08 Jan 2020 07:32:24 -0800 (PST)
+Date:   Wed, 8 Jan 2020 07:32:22 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
+        Chris Healy <cphealy@gmail.com>
+Subject: Re: [PATCH v2] hwmon: Driver for temperature sensors on SATA drives
+Message-ID: <20200108153222.GA28530@roeck-us.net>
+References: <20191215174509.1847-1-linux@roeck-us.net>
+ <20191215174509.1847-2-linux@roeck-us.net>
+ <yq1r211dvck.fsf@oracle.com>
+ <20191219003256.GA28144@roeck-us.net>
+ <yq17e233o0o.fsf@oracle.com>
+ <d42990af-78e4-e6c4-37ae-8043d27e565a@roeck-us.net>
+ <yq1o8ve20sb.fsf@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq1o8ve20sb.fsf@oracle.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add Texas Instruments Dual channel DCAP+ multiphase controllers:
-TPS53679, TPS53688, and Infineon Multi-phase Digital VR controllers
-XDPE12286, XDPE12284, XDPE12283, XDPE12254, XDPE12250 as trivial
-devices.
+Hi Martin,
 
-Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
----
- Documentation/devicetree/bindings/trivial-devices.yaml | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+On Tue, Jan 07, 2020 at 08:29:40PM -0500, Martin K. Petersen wrote:
+> 
+> Guenter,
+> 
+> > "scsi-8-140" is created by libsensors, so any change in that would
+> > have to be made there, not in the kernel driver.
+> 
+> Yes. Something like the patch below which will produce actual SCSI
+> device instance names:
+> 
+> 	drivetemp-scsi-7:0:29:0
+> 	drivetemp-scsi-8:0:30:0
+> 	drivetemp-scsi-8:0:15:0
+> 	drivetemp-scsi-7:0:24:0
+> 
+> Instead of the current:
+> 
+> 	drivetemp-scsi-7-1d0
+> 	drivetemp-scsi-8-1e0
+> 	drivetemp-scsi-8-f0
+> 	drivetemp-scsi-7-180
+> 
+> Other question: Does hwmon have any notion of sensor topology? As I
+> mentioned earlier, SCSI installations typically rely on SAF-TE or SES
+> instead of the physical drive sensors. SES also includes monitoring of
+> fans, power supplies, etc. And more importantly, it provides a
+> representation of the location of a given component. E.g.: Tray number
+> #4, disk drive bay #5.
+> 
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 765fd1c170df..815400b63bc2 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -104,6 +104,16 @@ properties:
-           - infineon,slb9645tt
-             # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
-           - infineon,tlv493d-a1b6
-+            # Infineon Multi-phase Digital VR Controller xdpe12250
-+          - infineon,xdpe12250
-+            # Infineon Multi-phase Digital VR Controller xdpe12254
-+          - infineon,xdpe12254
-+            # Infineon Multi-phase Digital VR Controller xdpe12283
-+          - infineon,xdpe12283
-+            # Infineon Multi-phase Digital VR Controller xdpe12284
-+          - infineon,xdpe12284
-+            # Infineon Multi-phase Digital VR Controller xdpe12286
-+          - infineon,xdpe12286
-             # Inspur Power System power supply unit version 1
-           - inspur,ipsps1
-             # Intersil ISL29028 Ambient Light and Proximity Sensor
-@@ -354,6 +364,10 @@ properties:
-           - ti,tmp103
-             # Digital Temperature Sensor
-           - ti,tmp275
-+            # TI Dual channel DCAP+ multiphase controller TPS53679
-+          - ti,tps53679
-+            # TI Dual channel DCAP+ multiphase controller TPS53688
-+          - ti,tps53688
-             # Winbond/Nuvoton H/W Monitor
-           - winbond,w83793
-             # i2c trusted platform module (TPM)
--- 
-2.11.0
+Please go ahead and submit the patch for libsensors.
 
+> So it would be helpful if libsensors had a way to represent sensors in a
+> way that mimics the physical device layout reported by SES.
+> 
+
+I guess it would be up to you to come up with a proposal.
+
+Thanks,
+Guenter
