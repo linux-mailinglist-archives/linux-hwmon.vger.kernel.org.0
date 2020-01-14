@@ -2,149 +2,114 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C8913A83B
-	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Jan 2020 12:21:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 059D013ABD3
+	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Jan 2020 15:04:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729499AbgANLVY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 14 Jan 2020 06:21:24 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:58410 "EHLO
-        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725820AbgANLVX (ORCPT
+        id S1728828AbgANOEe (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 14 Jan 2020 09:04:34 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:35326 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726115AbgANOEe (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 14 Jan 2020 06:21:23 -0500
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00EBKOEY020023;
-        Tue, 14 Jan 2020 06:20:34 -0500
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2177.outbound.protection.outlook.com [104.47.56.177])
-        by mx0b-00128a01.pphosted.com with ESMTP id 2xfbvb7cg8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jan 2020 06:20:34 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ULIF6rgXZ5cYoxn+rM7z1+hgw0MSAbGmu+O/pNGtfvfQ4DzFooXKnHVvqbRUKstuIXCtKEbmDEft8EUYhQV2hEeMCjYcZoMMwok3HEF/jnJQN8stNBk3fk0uUI5Hlf1xaHMkARgOigCZFInvp0Nz6mHBQHkJ/pkwFE2PTO4uvtN6VIETbjK8S17azvQ6wrFce6wFxUYZ1VFhwaTMZexXHvm1CkM7XuQnuQ6lG8Qa+ZSG0D0Pl6ldP+xel5cHR5XLyZTIoWNsp9uOrEA7+AHWkiYmGbQzAj7X42FAaWBDwgXO+Rb4CY8HWpxY91FinUU0ceNdiA36yTQw5GjeeHIeUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5lkDrglQDq4DZ3v+4XrZM8Gv+2b+I/k5mQsIIR3j7zw=;
- b=AiJQaguStJ6eF6qw+31+opyPh68X46KE+bXnsLem9BkkgCdUocEtmSvF9IhSZi8f8HhpHaTLwEB+G+8AwdpJvZ0gSOm5y2nrX4+lGD8ykwRZBvtGrqSPZdPeztoJ9VGThFR7/Fl51NV/G4BkhjOjclSqFFNVzlVO5qrrNbzhWPi4X0NBnMlVNQxCzM1mkB4tfKP/JatkpxsNr/SXBDZKJzev5aHO8AMH5DwTwpboCDLC4vcT5hywgJbxM2Jm2yFffG3irQlawAaldFKUGPIwlEahR/pV+GkM+ecub56SCSh/x9A9H2n19teOLC4du2cCafXP9285lF9+QpA89EuARA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 137.71.25.57) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
- dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
- not signed); arc=none
+        Tue, 14 Jan 2020 09:04:34 -0500
+Received: by mail-pl1-f194.google.com with SMTP id g6so5291519plt.2;
+        Tue, 14 Jan 2020 06:04:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5lkDrglQDq4DZ3v+4XrZM8Gv+2b+I/k5mQsIIR3j7zw=;
- b=b7U4dGqXmcG/tZNLLUCCNzuhLghzaIeVOVL2cQh+4JfntYOghOvxNNIPGbUe4neeMceNACichMf+0TWfeT3yg6ZqK2tkZDpO0a2llzaVew+kEUuow8pajKMLJeP900sgXuwLDhJhTvCWVuCJpRuCN0M+OJU+Y9aun8iovJWSL6o=
-Received: from CH2PR03CA0004.namprd03.prod.outlook.com (2603:10b6:610:59::14)
- by DM6PR03MB4682.namprd03.prod.outlook.com (2603:10b6:5:15f::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2623.13; Tue, 14 Jan
- 2020 11:20:33 +0000
-Received: from BL2NAM02FT007.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e46::201) by CH2PR03CA0004.outlook.office365.com
- (2603:10b6:610:59::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.18 via Frontend
- Transport; Tue, 14 Jan 2020 11:20:33 +0000
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
-Received: from nwd2mta2.analog.com (137.71.25.57) by
- BL2NAM02FT007.mail.protection.outlook.com (10.152.77.46) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2623.9
- via Frontend Transport; Tue, 14 Jan 2020 11:20:32 +0000
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id 00EBKW7K007127
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=FAIL);
-        Tue, 14 Jan 2020 03:20:32 -0800
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 14 Jan
- 2020 06:20:31 -0500
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 14 Jan 2020 06:20:31 -0500
-Received: from ben-Latitude-E6540.ad.analog.com ([10.48.65.231])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 00EBKJnM022085;
-        Tue, 14 Jan 2020 06:20:28 -0500
-From:   Beniamin Bia <beniamin.bia@analog.com>
-To:     <linux-hwmon@vger.kernel.org>
-CC:     <Michael.Hennerich@analog.com>, <linux-kernel@vger.kernel.org>,
-        <jdelvare@suse.com>, <linux@roeck-us.net>, <mark.rutland@arm.com>,
-        <lgirdwood@gmail.com>, <broonie@kernel.org>,
-        <devicetree@vger.kernel.org>, <biabeniamin@outlook.com>,
-        Beniamin Bia <beniamin.bia@analog.com>
-Subject: [PATCH v4 3/3] MAINTAINERS: add entry for ADM1177 driver
-Date:   Tue, 14 Jan 2020 13:21:59 +0200
-Message-ID: <20200114112159.25998-3-beniamin.bia@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200114112159.25998-1-beniamin.bia@analog.com>
-References: <20200114112159.25998-1-beniamin.bia@analog.com>
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=KSJiQv5EH8uw9CtliQf9CJHwVlGgkZAi69kID9fXKZs=;
+        b=O5mdVxD58pz2HsG5OXcxiK7iBPzNc60dpNT6NgYDYHYUD4N7aV+RqWEbLtbpnMZILT
+         eeqtUlymThQZ98QE7+rDL5UL2ZQ4LK7G53CA+SzAyFIVgBWMZ4DZVdbeHMAzZQQWhyPq
+         A9YtxiXhK8MDF6E3BKRn7UnNirRiO6HUumxwWAv0CIrtxoCdFXilYWw7+uYsVkNGwXjX
+         CtyWWUkSwJY/4nNG6COPoMp/PpBNQSMwVfCeti2Qvio+GmssfyY+OQtxMMA2569Tj40w
+         KwYzlYZMGeiwV8PGogBIe9OPZ/KVgwUMiPrGSoBT/GjU5gZRa8uVI74DEEGATgJ5XdYZ
+         odeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KSJiQv5EH8uw9CtliQf9CJHwVlGgkZAi69kID9fXKZs=;
+        b=HG7s+DZOtdQt1fzFi946QUySRGnfygbGNTI4kreipVH+JnSnAh/jz9XG/jCp3Pnvts
+         aeWOm42JDn/XrJdeyGoQ1UT2tBiByn+E4T6lQeuW5Q0lM92uxqVCsMunrkK/kPqLcAVY
+         4pwMXrSLSW4fUq3aE/0cezKqm+HAzl6eqc7DmgkOXLOIwB+CvQTXT8bwNokDcgE7diy6
+         RKbkF8RntqEkkCm1Ag5peKXS2k7is3M4BHIu9GQvxvSv9M15PxltutoLdMDC62dxYxRG
+         21m9W1GVcgINpgEMbix047ZX2wHq4vTnOdfgjpsEWOZMWT9Xwxgw9XF6MZUvOXiD4pDX
+         xoEQ==
+X-Gm-Message-State: APjAAAUgToIYBRKsTyEO9slJQaSntPDuGjGWMaRrNikRceE/mGmV0AhJ
+        ijISNkLLdxj/T7uAQCNGS6w=
+X-Google-Smtp-Source: APXvYqxxwWiDTo9PZQtO0UJ5Rb4CZTZ3JfWAISkiWemVyIWT2sqk0oVpekanhYU36oWjaoc9KdxOCA==
+X-Received: by 2002:a17:902:82c9:: with SMTP id u9mr20060329plz.264.1579010673849;
+        Tue, 14 Jan 2020 06:04:33 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id u26sm17524067pfn.46.2020.01.14.06.04.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 14 Jan 2020 06:04:21 -0800 (PST)
+Date:   Tue, 14 Jan 2020 06:04:19 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Vadim Pasternak <vadimp@mellanox.com>
+Cc:     robh+dt@kernel.org, vijaykhemka@fb.com,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH hwmon-next v1 5/6] dt-bindings: Add TI and Infineon VR
+ Controllers as trivial devices
+Message-ID: <20200114140419.GA18109@roeck-us.net>
+References: <20200113150841.17670-1-vadimp@mellanox.com>
+ <20200113150841.17670-6-vadimp@mellanox.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(346002)(136003)(396003)(39860400002)(376002)(189003)(199004)(36756003)(6916009)(2616005)(7636002)(2906002)(246002)(336012)(478600001)(26005)(8676002)(44832011)(966005)(70586007)(70206006)(4326008)(426003)(4744005)(1076003)(86362001)(7696005)(107886003)(8936002)(186003)(5660300002)(316002)(54906003)(356004)(6666004);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR03MB4682;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;MX:1;A:1;
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ac529bf5-7761-4db3-3ba4-08d798e3c539
-X-MS-TrafficTypeDiagnostic: DM6PR03MB4682:
-X-Microsoft-Antispam-PRVS: <DM6PR03MB46821E4939E8C751C28B6FD2F0340@DM6PR03MB4682.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1303;
-X-Forefront-PRVS: 028256169F
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7rfaPcitBn6CjnmmRqivbW1bCYIwR6TqbZJzk0IjqEAYaLOyRTaXlqOtqG0i7AEvWaccuQtPw54MjnD1luYRLqihK/JoxEDZbX+rq8I0jM1tD1RRY1NiKRitqJhro80j+899eDjEdPtqcAyuB+pRXTO/ass2umjmeyJ2ehs46X1Y/UVLyGBohaE66PUl18tISYNX3/f5KvBAESUXXfPutU6ITqgTsb7w3nPyBMRxnCpTmUP0C5+8TOxzWcW9nRXOtF1GcNrTkywjnksg5wWxsif1bC+gmLAr7MpM/33c8TpSRq7Mf2B6HUzsKv7ivXHvMijBguJtAkTykzfAQmCVJW8vDiGpbE9JpRVCQJovdgq09mlZFBiud+aakqauCuMS5uywWhGSgjr+o2Rko2uz1bS6x5Ikg5FMI5xfhjbaQbLgF8QU7B0o3B8w5tTC1tWXfU+7AYKSRumSZDFRMFWevUBHHQezo58wfv2LrZrbl0xr4hjed/ihwwNGqHs8l7vm+Cbr707gemu8DSDtorHIQg==
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2020 11:20:32.9594
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac529bf5-7761-4db3-3ba4-08d798e3c539
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4682
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-14_03:2020-01-13,2020-01-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- adultscore=0 spamscore=0 phishscore=0 suspectscore=1 bulkscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001140101
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200113150841.17670-6-vadimp@mellanox.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add Beniamin Bia and Michael Hennerich as a maintainer for ADM1177 ADC.
+On Mon, Jan 13, 2020 at 03:08:40PM +0000, Vadim Pasternak wrote:
+> Add Texas Instruments Dual channel DCAP+ multiphase controllers:
+> TPS53679, TPS53688, and Infineon Multi-phase Digital VR controllers
+> XDPE12284, XDPE12254 as trivial devices.
+> 
+> Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
 
-Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-Changes in v4:
--nothing changed 
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+I assume this patch will be pushed through the devicetree branch. If not,
+let me know and I'll apply it to hwmon-next.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bd5847e802de..a71f56d3b891 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -975,6 +975,15 @@ W:	http://ez.analog.com/community/linux-device-drivers
- F:	drivers/iio/imu/adis16460.c
- F:	Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
- 
-+ANALOG DEVICES INC ADM1177 DRIVER
-+M:	Beniamin Bia <beniamin.bia@analog.com>
-+M:	Michael Hennerich <Michael.Hennerich@analog.com>
-+L:	linux-hwmon@vger.kernel.org
-+W:	http://ez.analog.com/community/linux-device-drivers
-+S:	Supported
-+F:	drivers/hwmon/adm1177.c
-+F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
-+
- ANALOG DEVICES INC ADP5061 DRIVER
- M:	Stefan Popa <stefan.popa@analog.com>
- L:	linux-pm@vger.kernel.org
--- 
-2.17.1
-
+> ---
+> RFC-v1:
+>  Changes added by Vadim:
+>  - Drop others than xdpe12284, xdpe12254 devices, since there is not
+>    clear confirmation from Infineon regarding availability of the
+>    others.
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index 765fd1c170df..dfe22e0a82eb 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -104,6 +104,10 @@ properties:
+>            - infineon,slb9645tt
+>              # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
+>            - infineon,tlv493d-a1b6
+> +            # Infineon Multi-phase Digital VR Controller xdpe12254
+> +          - infineon,xdpe12254
+> +            # Infineon Multi-phase Digital VR Controller xdpe12284
+> +          - infineon,xdpe12284
+>              # Inspur Power System power supply unit version 1
+>            - inspur,ipsps1
+>              # Intersil ISL29028 Ambient Light and Proximity Sensor
+> @@ -354,6 +358,10 @@ properties:
+>            - ti,tmp103
+>              # Digital Temperature Sensor
+>            - ti,tmp275
+> +            # TI Dual channel DCAP+ multiphase controller TPS53679
+> +          - ti,tps53679
+> +            # TI Dual channel DCAP+ multiphase controller TPS53688
+> +          - ti,tps53688
+>              # Winbond/Nuvoton H/W Monitor
+>            - winbond,w83793
+>              # i2c trusted platform module (TPM)
