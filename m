@@ -2,37 +2,37 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E3D213E987
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Jan 2020 18:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43FBC13EC15
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Jan 2020 18:54:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393343AbgAPRi2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 16 Jan 2020 12:38:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54318 "EHLO mail.kernel.org"
+        id S2405911AbgAPRoi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 16 Jan 2020 12:44:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35656 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405019AbgAPRi2 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:38:28 -0500
+        id S2405903AbgAPRog (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:44:36 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 688A8246B1;
-        Thu, 16 Jan 2020 17:38:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F41902474F;
+        Thu, 16 Jan 2020 17:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196306;
+        s=default; t=1579196676;
         bh=IP02OrS0oqRKKzPOtb089VRTRAzmnUzERC6g3EaicoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ePTVqTQqhGxoMCyVJDub5h8Qpxem6PmpU2HiqUeqHfojAcPxAoWgI6CguwNlu1TGi
-         7w5Vcyy5gczGtiUSbUrg1uu65Tb5L6mSQrHzlEZScQwVKK76MogsHTOYKzsfnYb+en
-         2nC44tBPgvvN4xn5/KGT8fbpxp/CCMXYhSyWSqBM=
+        b=Mym3iBnfdVlGcve6mp7jABqWkL/nvkJNH4eBOpAcfuT0eYiAGBOVtYIj/Si/EugS+
+         GLPuWsxPhaGQtb5agJ/2RPL+b3npn9tzkEQ77v0yh3AVOszLiOuF1s8YZAKBLKl2+V
+         m7OeLVwW4geBCNoJgZwAv73Yjd6+cS7M9LfxFpew=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 115/251] hwmon: (w83627hf) Use request_muxed_region for Super-IO accesses
-Date:   Thu, 16 Jan 2020 12:34:24 -0500
-Message-Id: <20200116173641.22137-75-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 075/174] hwmon: (w83627hf) Use request_muxed_region for Super-IO accesses
+Date:   Thu, 16 Jan 2020 12:41:12 -0500
+Message-Id: <20200116174251.24326-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
-References: <20200116173641.22137-1-sashal@kernel.org>
+In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
+References: <20200116174251.24326-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
