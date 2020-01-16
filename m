@@ -2,34 +2,36 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E02A13F14A
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Jan 2020 19:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB02913EFD7
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Jan 2020 19:18:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403923AbgAPR0W (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 16 Jan 2020 12:26:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35064 "EHLO mail.kernel.org"
+        id S2436548AbgAPSRb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 16 Jan 2020 13:17:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40722 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403906AbgAPR0V (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:26:21 -0500
+        id S2404275AbgAPR3H (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:29:07 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 704E5246C8;
-        Thu, 16 Jan 2020 17:26:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 38E03246E3;
+        Thu, 16 Jan 2020 17:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579195581;
-        bh=oZge8qcjmLHr1FyJzPzSH7Q+rLT/brvpKPHpjdJPLY0=;
+        s=default; t=1579195746;
+        bh=ph0/DmkLrU2MxmllNz6y/Cami81wqHmTZ91zEKci1+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GbCxzbLMc/3cLD44HFNeGODjFZIxqPbVWq2zMtkTsWP4t16pgllRc+qyKNXKABpve
-         wVd8qZcaxuL0rHLpt0SFHp1Sy33PXHPe3+vBLE8RsvJBRRWfAlpkWQjd0GH1DyXoMo
-         7stxqKXCLX+ytrwo0i94gsVRYrDJvYIvqRh8vI7g=
+        b=SRQnPVoLtvxtuLHOwGKMPcn53uhsSWbKomz1MwSbROxSY4cDUYhnYwgAMNUGGYL8Y
+         BE7QD6S0Tr3ijymNHJmL2dOi4/O2NSAD18k0qR/Lg9x324WDZ215cb20IVVicr36fL
+         Kfvt5deD9kitIBIDWVCUDIdPwMZOlajV3gof8poY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 162/371] hwmon: (w83627hf) Use request_muxed_region for Super-IO accesses
-Date:   Thu, 16 Jan 2020 12:20:34 -0500
-Message-Id: <20200116172403.18149-105-sashal@kernel.org>
+        Iker Perez del Palomar Sustatxa 
+        <iker.perez@codethink.co.uk>, Sasha Levin <sashal@kernel.org>,
+        linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 280/371] hwmon: (lm75) Fix write operations for negative temperatures
+Date:   Thu, 16 Jan 2020 12:22:32 -0500
+Message-Id: <20200116172403.18149-223-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
 References: <20200116172403.18149-1-sashal@kernel.org>
@@ -44,117 +46,36 @@ X-Mailing-List: linux-hwmon@vger.kernel.org
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit e95fd518d05bfc087da6fcdea4900a57cfb083bd ]
+[ Upstream commit 7d82fcc9d9e81241778aaa22fda7be753e237d86 ]
 
-Super-IO accesses may fail on a system with no or unmapped LPC bus.
+Writes into limit registers fail if the temperature written is negative.
+The regmap write operation checks the value range, regmap_write accepts
+an unsigned int as parameter, and the temperature value passed to
+regmap_write is kept in a variable declared as long. Negative values
+are converted large unsigned integers, which fails the range check.
+Fix by type casting the temperature to u16 when calling regmap_write().
 
-Also, other drivers may attempt to access the LPC bus at the same time,
-resulting in undefined behavior.
-
-Use request_muxed_region() to ensure that IO access on the requested
-address space is supported, and to ensure that access by multiple drivers
-is synchronized.
-
-Fixes: b72656dbc491 ("hwmon: (w83627hf) Stop using globals for I/O port numbers")
+Cc: Iker Perez del Palomar Sustatxa <iker.perez@codethink.co.uk>
+Fixes: e65365fed87f ("hwmon: (lm75) Convert to use regmap")
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/w83627hf.c | 42 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 5 deletions(-)
+ drivers/hwmon/lm75.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/w83627hf.c b/drivers/hwmon/w83627hf.c
-index 8ac89d0781cc..a575e1cdb81a 100644
---- a/drivers/hwmon/w83627hf.c
-+++ b/drivers/hwmon/w83627hf.c
-@@ -130,17 +130,23 @@ superio_select(struct w83627hf_sio_data *sio, int ld)
- 	outb(ld,  sio->sioaddr + 1);
+diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
+index 005ffb5ffa92..1737bb5fbaaf 100644
+--- a/drivers/hwmon/lm75.c
++++ b/drivers/hwmon/lm75.c
+@@ -165,7 +165,7 @@ static int lm75_write(struct device *dev, enum hwmon_sensor_types type,
+ 	temp = DIV_ROUND_CLOSEST(temp  << (resolution - 8),
+ 				 1000) << (16 - resolution);
+ 
+-	return regmap_write(data->regmap, reg, temp);
++	return regmap_write(data->regmap, reg, (u16)temp);
  }
  
--static inline void
-+static inline int
- superio_enter(struct w83627hf_sio_data *sio)
- {
-+	if (!request_muxed_region(sio->sioaddr, 2, DRVNAME))
-+		return -EBUSY;
-+
- 	outb(0x87, sio->sioaddr);
- 	outb(0x87, sio->sioaddr);
-+
-+	return 0;
- }
- 
- static inline void
- superio_exit(struct w83627hf_sio_data *sio)
- {
- 	outb(0xAA, sio->sioaddr);
-+	release_region(sio->sioaddr, 2);
- }
- 
- #define W627_DEVID 0x52
-@@ -1278,7 +1284,7 @@ static DEVICE_ATTR_RO(name);
- static int __init w83627hf_find(int sioaddr, unsigned short *addr,
- 				struct w83627hf_sio_data *sio_data)
- {
--	int err = -ENODEV;
-+	int err;
- 	u16 val;
- 
- 	static __initconst char *const names[] = {
-@@ -1290,7 +1296,11 @@ static int __init w83627hf_find(int sioaddr, unsigned short *addr,
- 	};
- 
- 	sio_data->sioaddr = sioaddr;
--	superio_enter(sio_data);
-+	err = superio_enter(sio_data);
-+	if (err)
-+		return err;
-+
-+	err = -ENODEV;
- 	val = force_id ? force_id : superio_inb(sio_data, DEVID);
- 	switch (val) {
- 	case W627_DEVID:
-@@ -1644,9 +1654,21 @@ static int w83627thf_read_gpio5(struct platform_device *pdev)
- 	struct w83627hf_sio_data *sio_data = dev_get_platdata(&pdev->dev);
- 	int res = 0xff, sel;
- 
--	superio_enter(sio_data);
-+	if (superio_enter(sio_data)) {
-+		/*
-+		 * Some other driver reserved the address space for itself.
-+		 * We don't want to fail driver instantiation because of that,
-+		 * so display a warning and keep going.
-+		 */
-+		dev_warn(&pdev->dev,
-+			 "Can not read VID data: Failed to enable SuperIO access\n");
-+		return res;
-+	}
-+
- 	superio_select(sio_data, W83627HF_LD_GPIO5);
- 
-+	res = 0xff;
-+
- 	/* Make sure these GPIO pins are enabled */
- 	if (!(superio_inb(sio_data, W83627THF_GPIO5_EN) & (1<<3))) {
- 		dev_dbg(&pdev->dev, "GPIO5 disabled, no VID function\n");
-@@ -1677,7 +1699,17 @@ static int w83687thf_read_vid(struct platform_device *pdev)
- 	struct w83627hf_sio_data *sio_data = dev_get_platdata(&pdev->dev);
- 	int res = 0xff;
- 
--	superio_enter(sio_data);
-+	if (superio_enter(sio_data)) {
-+		/*
-+		 * Some other driver reserved the address space for itself.
-+		 * We don't want to fail driver instantiation because of that,
-+		 * so display a warning and keep going.
-+		 */
-+		dev_warn(&pdev->dev,
-+			 "Can not read VID data: Failed to enable SuperIO access\n");
-+		return res;
-+	}
-+
- 	superio_select(sio_data, W83627HF_LD_HWM);
- 
- 	/* Make sure these GPIO pins are enabled */
+ static umode_t lm75_is_visible(const void *data, enum hwmon_sensor_types type,
 -- 
 2.20.1
 
