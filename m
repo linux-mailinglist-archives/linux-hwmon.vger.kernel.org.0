@@ -2,191 +2,78 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 287F213F03C
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Jan 2020 19:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A4CD13F342
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Jan 2020 19:41:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388441AbgAPSTa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 16 Jan 2020 13:19:30 -0500
-Received: from mga04.intel.com ([192.55.52.120]:56960 "EHLO mga04.intel.com"
+        id S2390823AbgAPSll (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 16 Jan 2020 13:41:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53086 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388440AbgAPST3 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 16 Jan 2020 13:19:29 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Jan 2020 10:19:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,327,1574150400"; 
-   d="scan'208";a="257472389"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 16 Jan 2020 10:19:27 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1is9jr-0006pj-36; Fri, 17 Jan 2020 02:19:27 +0800
-Date:   Fri, 17 Jan 2020 02:19:09 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 1bbc9a9c2e941a889e72407620084ce8cbf3d597
-Message-ID: <5e20a91d./4X6RBNQABoFdw7a%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2390000AbgAPRLp (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:11:45 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C768324694;
+        Thu, 16 Jan 2020 17:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579194705;
+        bh=ChIPeAG1dGINkg+Fp76gMqPv0W47WaRVmtClRrlqMlk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NzHGfVqlS8AcooFVrCL9CW7ByURxciFWbjpWcfllD3ItFv3omI8fDq0m0voHuUIqq
+         LAoCNwK5abg1EE3OOb7wizZmccsCccWuYkk7PVNYQiM+B49qrkH9PM1vnG5YDS/FlK
+         qyNGilMq1mU3pjLpkGurJMvTMJagv6RwB2UiD8bk=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dan Robertson <dan@dlrobertson.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 544/671] hwmon: (shtc1) fix shtc1 and shtw1 id mask
+Date:   Thu, 16 Jan 2020 12:03:02 -0500
+Message-Id: <20200116170509.12787-281-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
+References: <20200116170509.12787-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
-branch HEAD: 1bbc9a9c2e941a889e72407620084ce8cbf3d597  MAINTAINERS: add entry for ADM1177 driver
+From: Dan Robertson <dan@dlrobertson.com>
 
-elapsed time: 686m
+[ Upstream commit fdc7d8e829ec755c5cfb2f5a8d8c0cdfb664f895 ]
 
-configs tested: 136
-configs skipped: 0
+Fix an error in the bitmaskfor the shtc1 and shtw1 bitmask used to
+retrieve the chip ID from the ID register. See section 5.7 of the shtw1
+or shtc1 datasheet for details.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-parisc                            allnoconfig
-parisc                            allyesonfig
-parisc                         b180_defconfig
-parisc                        c3000_defconfig
-parisc                              defconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-ia64                                defconfig
-powerpc                             defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-alpha                               defconfig
-csky                                defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-alpha                randconfig-a001-20200116
-m68k                 randconfig-a001-20200116
-mips                 randconfig-a001-20200116
-nds32                randconfig-a001-20200116
-parisc               randconfig-a001-20200116
-riscv                randconfig-a001-20200116
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                               rhel-7.6
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-i386                             alldefconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-arc                  randconfig-a001-20200116
-arm                  randconfig-a001-20200116
-arm64                randconfig-a001-20200116
-ia64                 randconfig-a001-20200116
-powerpc              randconfig-a001-20200116
-sparc                randconfig-a001-20200116
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64               randconfig-d001-20200116
-x86_64               randconfig-d002-20200116
-x86_64               randconfig-d003-20200116
-i386                 randconfig-d001-20200116
-i386                 randconfig-d002-20200116
-i386                 randconfig-d003-20200116
-arc                  randconfig-a001-20200117
-arm                  randconfig-a001-20200117
-arm64                randconfig-a001-20200117
-ia64                 randconfig-a001-20200117
-powerpc              randconfig-a001-20200117
-sparc                randconfig-a001-20200117
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-x86_64               randconfig-d001-20200117
-x86_64               randconfig-d002-20200117
-x86_64               randconfig-d003-20200117
-i386                 randconfig-d001-20200117
-i386                 randconfig-d002-20200117
-i386                 randconfig-d003-20200117
-alpha                randconfig-a001-20200117
-m68k                 randconfig-a001-20200117
-mips                 randconfig-a001-20200117
-nds32                randconfig-a001-20200117
-parisc               randconfig-a001-20200117
-riscv                randconfig-a001-20200117
-x86_64               randconfig-b001-20200116
-x86_64               randconfig-b002-20200116
-x86_64               randconfig-b003-20200116
-i386                 randconfig-b001-20200116
-i386                 randconfig-b002-20200116
-i386                 randconfig-b003-20200116
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-
+Fixes: 1a539d372edd9832444e7a3daa710c444c014dc9 ("hwmon: add support for Sensirion SHTC1 sensor")
+Signed-off-by: Dan Robertson <dan@dlrobertson.com>
+Link: https://lore.kernel.org/r/20190905014554.21658-3-dan@dlrobertson.com
+[groeck: Reordered to be first in series and adjusted accordingly]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+ drivers/hwmon/shtc1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
+index decd7df995ab..2a18539591ea 100644
+--- a/drivers/hwmon/shtc1.c
++++ b/drivers/hwmon/shtc1.c
+@@ -38,7 +38,7 @@ static const unsigned char shtc1_cmd_read_id_reg[]	       = { 0xef, 0xc8 };
+ 
+ /* constants for reading the ID register */
+ #define SHTC1_ID	  0x07
+-#define SHTC1_ID_REG_MASK 0x1f
++#define SHTC1_ID_REG_MASK 0x3f
+ 
+ /* delays for non-blocking i2c commands, both in us */
+ #define SHTC1_NONBLOCKING_WAIT_TIME_HPM  14400
+-- 
+2.20.1
+
