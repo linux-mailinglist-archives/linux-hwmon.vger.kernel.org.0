@@ -2,63 +2,105 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C33D141F7C
-	for <lists+linux-hwmon@lfdr.de>; Sun, 19 Jan 2020 19:44:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8BFC141FCD
+	for <lists+linux-hwmon@lfdr.de>; Sun, 19 Jan 2020 20:38:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728928AbgASSoi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 19 Jan 2020 13:44:38 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:44902 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728895AbgASSoi (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 19 Jan 2020 13:44:38 -0500
-Received: by mail-il1-f196.google.com with SMTP id z12so25473016iln.11
-        for <linux-hwmon@vger.kernel.org>; Sun, 19 Jan 2020 10:44:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
-        b=gmKBxPx84PXNKr5CdAEsBl4o6OI0Ul1T9kdeNuOonXVMsPZvHaiVfrF6wsqmkO6amC
-         OhpUNNF3SMjaFtPDB5q+oWHWGLwTM1KQcLAEAJsxead1wkkS8vgEkLcKKIbpXv93k89C
-         Il/b6fig8uFQ2ful9dClSdBh6ES0WHCRI487g5LzaF7Sg904xrrN8vXROMW6UBU7S6v1
-         1KY36Pw5SyxrOXfagNts4/xbaFFgof1/AzREyQlil09RYVWfcnHmKvyC/eKHTr8xAdVR
-         8OHIBUIT1uRPI/WtlHnD2gmL8PhGi3ea1Do5nFE3xaprr/6eI7i7Fk2drMcN+8BwExKd
-         ZFxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
-        b=YX7f3xcSwCtWCthDxyy4r1zmJl7GD5IwKTlYXXvXPE7UBBz8j4fg+yT7ozBiA9QGgF
-         mlpcsWm+1IQELQSQa+UTTBu0Dm0GFtWxtehJCVUtsCNS+LW3QDngkyTlSQCjaRH7uqOr
-         uyGMdryJHpGyEHQor438loWKcC1WyXhjJ6PngAbyPW7nrbwRL9xod3gBvLwl43AZ9Ei3
-         Kkf5bkYreXX2001ZZ9bPwvZvK8wmi+6rGczxsh+JQg18EAOqinlmbXZPj7cSrF9oXZEX
-         tijlJtZmhzMf5SOVrL7XGhUd+xpt1/ih8w8onViiPNIePbIBhP7efiA6oyhDtli6D8Mk
-         8GBQ==
-X-Gm-Message-State: APjAAAXJdeinUb0U3M8R89BqQpliSs+AqczFOJLSDHWrnnkj6l0iOB/0
-        U1JEfIOzPWOdyKAg1DzG8SMpyHPf6XIUE5b5VkM=
-X-Google-Smtp-Source: APXvYqw0/+WGODIUvKkziyHBLuQsuF4sA8inGcr6D1fE0jlGptJu92UkXoVDxAQCBYSMyoJXI0/9BUQNIZC+z8C9ask=
-X-Received: by 2002:a92:5c52:: with SMTP id q79mr7225189ilb.11.1579459477506;
- Sun, 19 Jan 2020 10:44:37 -0800 (PST)
+        id S1727144AbgASTiU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 19 Jan 2020 14:38:20 -0500
+Received: from the.earth.li ([46.43.34.31]:37740 "EHLO the.earth.li"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727138AbgASTiT (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 19 Jan 2020 14:38:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
+         s=the; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=Ppj9LMtNCeV2J3j303cgKBSHum8gMjnB9xEbdvnn2/8=; b=xc1aDSVCgywFQ4hFGNEm9nOsQe
+        Xn85YtEyufN7RDXzN5wyMnm77JDbwKocEdBXC2oRhbUGr+JIdU9iTT4rkqVhCIYbY3BjqjHOIRJaU
+        81eHYUOPmlj6UgwlL21BZpb3Su7y2sL36d2oK3lpRqG8d+U/1jlKprbjELrjjrJNburJ0G4lVB4lF
+        nBxkpgwH41dyntQFd1AGUqQl3n8QOMAy9ttBUyV1TtExoid7z5R6sizHXhSn6z6KagtaCmfJbiMvE
+        3cE76pUA0j2NdGWjb5SOBlgoLfWy2ToXW9rcE5eQD6sVBRg5SwVcu24A3JiUZWZeO52xGPjx2qcAS
+        WqYTHFRg==;
+Received: from noodles by the.earth.li with local (Exim 4.92)
+        (envelope-from <noodles@earth.li>)
+        id 1itGOn-0005Ah-I1; Sun, 19 Jan 2020 19:38:17 +0000
+Date:   Sun, 19 Jan 2020 19:38:17 +0000
+From:   Jonathan McDowell <noodles@earth.li>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ken Moffat <zarniwhoop73@googlemail.com>
+Subject: Re: [PATCH v2 0/5] hwmon: k10temp driver improvements
+Message-ID: <20200119193817.GM15976@earth.li>
+References: <20200119101855.GA15446@earth.li>
+ <f9bb13a7-60ba-37f1-9e22-3237e35cf4e5@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:a02:95c8:0:0:0:0:0 with HTTP; Sun, 19 Jan 2020 10:44:37
- -0800 (PST)
-Reply-To: favordens@email.com
-From:   Favor Desmond <contecindy5@gmail.com>
-Date:   Sun, 19 Jan 2020 18:44:37 +0000
-Message-ID: <CAOfCPNxP6Zd30BF2yc=mXgSsiq_K60AW+CVH-5JzXJEsBrwaJA@mail.gmail.com>
-Subject: HELLO
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f9bb13a7-60ba-37f1-9e22-3237e35cf4e5@roeck-us.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello Dear
-Greetings to you,I am Favor Desmond from Ivory coast currently living
-in  Togo Republic,I would like to know you more, so that i can tell
-you little amount myself and my photo, email address is
-favordens@email.com
-Thanks
-Favor
+On Sun, Jan 19, 2020 at 07:46:11AM -0800, Guenter Roeck wrote:
+> On 1/19/20 2:18 AM, Jonathan McDowell wrote:
+> > 
+> > In article <20200118172615.26329-1-linux@roeck-us.net> (earth.lists.linux-kernel) you wrote:
+> > > This patch series implements various improvements for the k10temp driver.
+> > ...
+> > > The voltage and current information is limited to Ryzen CPUs. Voltage
+> > > and current reporting on Threadripper and EPYC CPUs is different, and the
+> > > reported information is either incomplete or wrong. Exclude it for the time
+> > > being; it can always be added if/when more information becomes available.
+> > 
+> > > Tested with the following Ryzen CPUs:
+> > 
+> > Tested-By: Jonathan McDowell <noodles@earth.li>
+> > 
+> Thanks!
+> 
+> > Tested on a Ryzen 7 2700 (patched on top of 5.4.13):
+> > 
+> > | k10temp-pci-00c3
+> > | Adapter: PCI adapter
+> > | Vcore:        +0.80 V
+> > | Vsoc:         +0.81 V
+> > | Tdie:         +37.0°C
+> > | Tctl:         +37.0°C
+> > | Icore:        +8.31 A
+> > | Isoc:         +6.86 A
+> > 
+> > Like the 1300X case I see a discrepancy compared to what the nct6779
+> > driver says Vcore is:
+> > 
+> > | nct6779-isa-0290
+> > | Adapter: ISA adapter
+> > | Vcore:                  +0.33 V  (min =  +0.00 V, max =  +1.74 V)
+> 
+> I see that on all of my boards as well (3900X, different boards and board vendors),
+> with temperatures reported by the Super-IO chip sometimes as low as 0.18V (!).
+> Yet, there is a clear correlation of that voltage with CPU load.
+> I suspect the measurement by the Super-IO chip is a different voltage.
+> 
+> I don't think there is anything we can do about that without access to more
+> information.
+...
+> The problem with Ken's board is that idle current and voltage are very high.
+> The idle voltage claims to be higher than the voltage under load, which
+> doesn't really make sense. This is only reflected in the voltage and current
+> reported by the CPU, but not by the voltage reported by the Super-IO chip.
+
+I see clear correlation between load/Vcore/Icore/Tdie from your patched
+k10temp driver which leads me to believe these numbers are valid for the
+2700. Vsoc is fairly consistent and Isoc doesn't vary much either
+(6.3-8.1A range over the past 8 hours).
+
+J.
+
+-- 
+... "f u cn rd ths, u cn gt a gd jb n cmptr prgrmmng." -- Simon Cozens,
+    ox.os.linux
