@@ -2,83 +2,97 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A223115A49C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 12 Feb 2020 10:25:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BD815B20A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 12 Feb 2020 21:43:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728698AbgBLJZw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 12 Feb 2020 04:25:52 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:46857 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728696AbgBLJZw (ORCPT
+        id S1727947AbgBLUn0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 12 Feb 2020 15:43:26 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:33204 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727548AbgBLUn0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 12 Feb 2020 04:25:52 -0500
-Received: by mail-lf1-f68.google.com with SMTP id z26so1049578lfg.13;
-        Wed, 12 Feb 2020 01:25:50 -0800 (PST)
+        Wed, 12 Feb 2020 15:43:26 -0500
+Received: by mail-pg1-f194.google.com with SMTP id 6so1836360pgk.0;
+        Wed, 12 Feb 2020 12:43:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=d8raYA2U8NHy+i0YP44rQhzEQ4l87sJ/u6a7isIV0dQ=;
+        b=DytT3aj+ejmTlv3SwFQTus74drk/f/yKVxfJ0H5BgH7J4jtkAJSyGWZRSiSICDXqZP
+         TVREodoR7KFwovelFeU+00kROq3sxO3r6cG2JeBSHyuIpCp21uXGCYUNq+kBOepP23KX
+         qus7Rmwxs8No6GpH8xgg4uQKX1uHitCqS1XR1ZWx9qZCVR8r0z6OilU/eppiTL1OE9S2
+         Dsf7lWOCpk4DMAPMciWOwmbS6WN080PQRW7F2FDSInpHBhJQY1ICtNZzxr6uYQmRbwn5
+         zmiKuMDj4Xzs3agog11qkmDUvbgNi4wP55gyzZ8vnlznhBNGxDfl3j3VMycdfuuVXIql
+         u5eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ifVBoElaw72KKsiNn+qqQmzu9vHWs2oOvtGDepzDH9Q=;
-        b=Y6h1p4DF+nTqOjvv06cYn3RwyH6maa2KNziVQJvl8aR5CL8thTqG+ReUbXdh99GV2V
-         BbLdUCQKdivn3REus/Kvcjcv42Wv7BzN2HUJXhqTjLN8+KP52/WHMj8zBkJbuMnX/igQ
-         UrkR/TQreFKgu32vbX5tHDKwVh8fDIQ7KIvNd3lEKurAFPJqLP2l2BrNmlTkRw0xT/+K
-         frqliF+mwBa538tvN1rbHj7h+rqYRmTIcN8Mpj1mBfgtjv1/OJx7Lj4meLEocORUzuhY
-         uRKcet4Uu43yeJxOth4lf+v4fQvwURNN70LpvxXk+/o58HfnpBBbp0KZGd6zwE0P3nKo
-         n5hQ==
-X-Gm-Message-State: APjAAAW961CvKuH/QUv1L/t1sA3uZwcQ+nufKH+r0xQCjO5saZES1qyG
-        8rz+2YHhfz5M+YU+q71gXAw=
-X-Google-Smtp-Source: APXvYqxzeMI7No4vh6JimUYiC7TU1It0zng2DzQfioWK6SV1tPvit6H57afYyo0U1T08X8qtvv4MAg==
-X-Received: by 2002:ac2:54b5:: with SMTP id w21mr6199085lfk.175.1581499549950;
-        Wed, 12 Feb 2020 01:25:49 -0800 (PST)
-Received: from xi.terra (c-12aae455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.170.18])
-        by smtp.gmail.com with ESMTPSA id 14sm3156520lfz.47.2020.02.12.01.25.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2020 01:25:49 -0800 (PST)
-Received: from johan by xi.terra with local (Exim 4.92.3)
-        (envelope-from <johan@xi.terra>)
-        id 1j1oHE-0006Gm-9H; Wed, 12 Feb 2020 10:25:48 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=d8raYA2U8NHy+i0YP44rQhzEQ4l87sJ/u6a7isIV0dQ=;
+        b=mW7ti0VO1Jv2bZlntx+sGxjNfrjVT2c7JdfcsF7OgsEgBWJYFwBwWM31iIDEPohILx
+         lUKhziZTGqne7NNSa0R8NR9exUzZwONvHlkQiVg0xGAr/dJytwsoZ0ZWAowegiA9XqUO
+         U8C1Zr1vKnB2bngnxoN2l2DH0uzsDxlIAT6TPLN/LduNAjzn9iahUyF1AcL/drLD8Oiu
+         Sr2TtzzC44tjBGZhr1qIuwKXrRVNlnbneliUNLYlBZWu4LA8DVmoH0iHmc+GZhtkbURI
+         Qd7N9GyvXWFH57NVl3xYajFODOcizG5Ah56WgnTCLNbOuT47SLyZ4yjKjGXNXKwQD9Zu
+         bUzg==
+X-Gm-Message-State: APjAAAUcSz3hcAUbXOcvKRK618O7A9VO1aMPlBo6IS1JZhIJ3eoQOn1f
+        v0Kncw7OwEttkZ5v0R33HvjA4z7M
+X-Google-Smtp-Source: APXvYqyqQcjZj46BabcxFEe4W4htaAy+lMWGakEh1TAVciTCIg7ra3RT2/Qn3leqoLH8jXg7Te73Ig==
+X-Received: by 2002:a63:3c08:: with SMTP id j8mr14329831pga.223.1581540204184;
+        Wed, 12 Feb 2020 12:43:24 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 64sm127034pfd.48.2020.02.12.12.43.21
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Feb 2020 12:43:22 -0800 (PST)
+Date:   Wed, 12 Feb 2020 12:43:20 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Johan Hovold <johan@kernel.org>
 Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>,
         Vadim Pasternak <vadimp@mellanox.com>
-Subject: [PATCH] hwmon: (pmbus/xdpe12284): fix typo in compatible strings
-Date:   Wed, 12 Feb 2020 10:24:26 +0100
-Message-Id: <20200212092426.24012-1-johan@kernel.org>
-X-Mailer: git-send-email 2.24.1
+Subject: Re: [PATCH] hwmon: (pmbus/xdpe12284): fix typo in compatible strings
+Message-ID: <20200212204320.GA7035@roeck-us.net>
+References: <20200212092426.24012-1-johan@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200212092426.24012-1-johan@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Make sure that the driver compatible strings matches the binding by
-removing the space between the manufacturer and model.
+On Wed, Feb 12, 2020 at 10:24:26AM +0100, Johan Hovold wrote:
+> Make sure that the driver compatible strings matches the binding by
+> removing the space between the manufacturer and model.
+> 
+> Fixes: aaafb7c8eb1c ("hwmon: (pmbus) Add support for Infineon Multi-phase xdpe122 family controllers")
+> Cc: Vadim Pasternak <vadimp@mellanox.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Fixes: aaafb7c8eb1c ("hwmon: (pmbus) Add support for Infineon Multi-phase xdpe122 family controllers")
-Cc: Vadim Pasternak <vadimp@mellanox.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/hwmon/pmbus/xdpe12284.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Applied.
 
-diff --git a/drivers/hwmon/pmbus/xdpe12284.c b/drivers/hwmon/pmbus/xdpe12284.c
-index 3d47806ff4d3..ecd9b65627ec 100644
---- a/drivers/hwmon/pmbus/xdpe12284.c
-+++ b/drivers/hwmon/pmbus/xdpe12284.c
-@@ -94,8 +94,8 @@ static const struct i2c_device_id xdpe122_id[] = {
- MODULE_DEVICE_TABLE(i2c, xdpe122_id);
- 
- static const struct of_device_id __maybe_unused xdpe122_of_match[] = {
--	{.compatible = "infineon, xdpe12254"},
--	{.compatible = "infineon, xdpe12284"},
-+	{.compatible = "infineon,xdpe12254"},
-+	{.compatible = "infineon,xdpe12284"},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, xdpe122_of_match);
--- 
-2.24.1
+Thanks,
+Guenter
 
+> ---
+>  drivers/hwmon/pmbus/xdpe12284.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/xdpe12284.c b/drivers/hwmon/pmbus/xdpe12284.c
+> index 3d47806ff4d3..ecd9b65627ec 100644
+> --- a/drivers/hwmon/pmbus/xdpe12284.c
+> +++ b/drivers/hwmon/pmbus/xdpe12284.c
+> @@ -94,8 +94,8 @@ static const struct i2c_device_id xdpe122_id[] = {
+>  MODULE_DEVICE_TABLE(i2c, xdpe122_id);
+>  
+>  static const struct of_device_id __maybe_unused xdpe122_of_match[] = {
+> -	{.compatible = "infineon, xdpe12254"},
+> -	{.compatible = "infineon, xdpe12284"},
+> +	{.compatible = "infineon,xdpe12254"},
+> +	{.compatible = "infineon,xdpe12284"},
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, xdpe122_of_match);
