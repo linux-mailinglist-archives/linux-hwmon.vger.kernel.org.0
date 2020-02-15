@@ -2,63 +2,41 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1691D15FA3B
-	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Feb 2020 00:14:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2035515FC0D
+	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Feb 2020 02:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbgBNXOb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 14 Feb 2020 18:14:31 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:37514 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727458AbgBNXOb (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 14 Feb 2020 18:14:31 -0500
-Received: by mail-lf1-f68.google.com with SMTP id b15so7856753lfc.4
-        for <linux-hwmon@vger.kernel.org>; Fri, 14 Feb 2020 15:14:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=eiYFAQ9FVt8jcVYu+ZT5hOykBWAkW1wwCi5U7K3PKgE=;
-        b=LPksELiKe+0F/KqN+vDIMakr66sSPTVU49PfPWpdQvOYIHYj8ZmfRKp/ze393rF/8I
-         e0/bqVV7JXobS0bRxgXSdPAGd8Sbccawic9XkWxfjBTaZMXDohBIF6vKOEvCINd4ToSy
-         N8U8SZB4izSgdBDG7ZGTslZkZrTqk7B70sLphD3Q1Zm9VFkd9eqI8ucMhRwkMxM8RiXU
-         6unY9jVOHL31JB9RTAIrXnq0Qe52Y3XM25KjVudzAPOC3UNLPV0Bpu/Qq6dSfIdpjzAD
-         X/X4HAmdcGhbkCt4TVO6yLo9Vf9iqPpW4en/LlnohKJAG7RkQ4YF5rY9tG2UGFDQ+t70
-         wBOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=eiYFAQ9FVt8jcVYu+ZT5hOykBWAkW1wwCi5U7K3PKgE=;
-        b=cbqGVwqkZxi2lh306oqYmEF393dqHQTb6Ho73SDNdkzj+3qitFiTdEfCYY7VmJEa9e
-         /h0ZRsHdrSpuo1PJFzVXS/ZU6BJZ2kM6XmvaPUWJ+S4db08AODPj4mm10BNVV6VhQOaB
-         J0LxQsZymw71Q/C4xyCWatFXGP02qE6TXy4yPZgVCCoauj2IwthbpbxUpMgZ1EcDqtOZ
-         YDI2Utj/XT4q0dzpx6GIiy/lbNhaVF+nofPFbIPTVuNlBBha7D7+K4BRVILsEJLncgQw
-         yyeXVg52pBOFu/eVIh+MJQUs6PypoK30Pk01/hzFSQOWUrE9q0TwFH0bvB9upYkh4rAS
-         xzqg==
-X-Gm-Message-State: APjAAAVVVd5ZUmPZ2gm7H7bhEu8Az37cQX7Xz91sBH4HVUWVDvj8XtAd
-        qffsBi+Pn8HhpEqXpTUaeCkG5igu5tiWlUXe6lc=
-X-Google-Smtp-Source: APXvYqz50tsef5PRKUjBOrfm2+cqZrzh6OpVgr9qSPKmMsRAtGaYv1NQJf0VF41Pc/77BYSsi8Oh2MJSxuAkW0wnZVY=
-X-Received: by 2002:ac2:46c2:: with SMTP id p2mr2659650lfo.139.1581722069182;
- Fri, 14 Feb 2020 15:14:29 -0800 (PST)
+        id S1727572AbgBOBe2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-hwmon@lfdr.de>); Fri, 14 Feb 2020 20:34:28 -0500
+Received: from l37-192-35-170.novotelecom.ru ([37.192.35.170]:14436 "EHLO
+        glpak.ru" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727639AbgBOBe2 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 14 Feb 2020 20:34:28 -0500
+Received: from alex.glpak.ru (localhost [127.0.0.1])
+        by glpak.ru (Postfix) with ESMTP id 1EC47A3DEDF
+        for <linux-hwmon@vger.kernel.org>; Sat, 15 Feb 2020 08:09:05 +0700 (NOVT)
+X-Virus-Scanned: amavisd-new at glpak.ru
+Received: from glpak.ru ([127.0.0.1])
+        by alex.glpak.ru (glpak.ru [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id oht0hTmHIsmC for <linux-hwmon@vger.kernel.org>;
+        Sat, 15 Feb 2020 08:09:04 +0700 (NOVT)
+Received: from [192.168.88.250] (unknown [185.248.13.181])
+        by glpak.ru (Postfix) with ESMTPA id 918AEA3DE9C
+        for <linux-hwmon@vger.kernel.org>; Sat, 15 Feb 2020 08:09:04 +0700 (NOVT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:ab3:614a:0:0:0:0:0 with HTTP; Fri, 14 Feb 2020 15:14:28
- -0800 (PST)
-Reply-To: offficcemuo@gmail.com
-From:   Blake Arnold <honoyakouba@gmail.com>
-Date:   Sat, 15 Feb 2020 00:14:28 +0100
-Message-ID: <CAP3TGmn3PWz7d+0zHCA3Ft5Bsgcfy8b6g8QEOO_DmK1SA9P2ZQ@mail.gmail.com>
-Subject: Hello...
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: zionitld3@gmail.com
+To:     linux-hwmon@vger.kernel.org
+From:   anna@glpak.ru
+Date:   Fri, 14 Feb 2020 17:10:49 -0800
+Reply-To: zionitld3@gmail.com
+X-Antivirus: Avast (VPS 200214-0, 02/14/2020), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20200215010905.1EC47A3DEDF@glpak.ru>
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello.
-
-I have emailed you earlier without a response. Get back to me for a
-mutual benefit transaction.
-
-Best regards.
-Mr. Blake Arnold
+Hello, We from Zion Finance Group currently offers loans to customers at a low interest rate of 3%. This is an opportunity that you cannot miss. We have a few questions to ask; Do you have debts? Do you want to pay off your debts? Do you want to be financially equipped? If so, request a loan today from Zion Finance Group. Interested, customers are expected to contact zionitld3@gmail.com for more information. We wish to assist you with a loan. Greetings, Mr. Bernard.
