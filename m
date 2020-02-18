@@ -2,127 +2,101 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F4072161E02
-	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Feb 2020 00:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFC4161E32
+	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Feb 2020 01:32:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726353AbgBQXrF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 17 Feb 2020 18:47:05 -0500
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:48823 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726231AbgBQXrF (ORCPT
+        id S1726002AbgBRAcp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 17 Feb 2020 19:32:45 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36600 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725997AbgBRAco (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 17 Feb 2020 18:47:05 -0500
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id BD63B891AC;
-        Tue, 18 Feb 2020 12:47:00 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1581983220;
-        bh=Qcs5L20LNgbbFFaZG63R6OuduRgEp8/3wC+dSc2nhA8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=fMOLdjrZw+oVl9UKJeFT48MXGyeHCAqKxbztTP5CFC0s096+7Wu0CY/Th7eTVWQW0
-         CZmZuIsoZLJttuo/WQwjyZByPuRr3YHvMiy34AICWibyaqLphhw145r1uagjM1f3MD
-         zYlAo43t7sKDXG8NS2txEYdMZZiJS43ENPtScUTo3aOoCZWpas8u9XX+uVXIWIfusj
-         fH50s0/ksLS8JVEaJPCoItf3p/xi2BZz9wdILrMOVNhBNLvVhtx7tbZo5cOVygo1jT
-         EoH4VwEwHHePhSAidLjQDLFcBgaVdbt8lOVmxRy6/t29K4StZvDNO3gKJhB1/hOAZJ
-         PDZ/pv5cuqXkw==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5e4b25f40001>; Tue, 18 Feb 2020 12:47:00 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
-        by smtp (Postfix) with ESMTP id 1CA5613EED4;
-        Tue, 18 Feb 2020 12:47:00 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-        id 8B6BF28006C; Tue, 18 Feb 2020 12:47:00 +1300 (NZDT)
-From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
-To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        mark.rutland@arm.com
+        Mon, 17 Feb 2020 19:32:44 -0500
+Received: by mail-pg1-f194.google.com with SMTP id d9so10065064pgu.3;
+        Mon, 17 Feb 2020 16:32:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=YkbCybzk75m/DwfgLQS+k1c3Zj35iCw6kglMnXwvNH4=;
+        b=UV5oq9wT6hVRcrADinmMSfqbJY3tQAss1lJyHmbizX8sMZ44RpJ2KQmvtGFReRluNf
+         WfZhCpP5uSZ51pqmsXdU+Q+btYZgZHQQ3vUGKWWPMB8XQf7FbCa60fCxXS3rqJx3nFyT
+         ZQkXSvWYl29/Nu2UwBGY7AFZCwsVOx68Z+Zq+ugRzHHsQh/EeQ/a7HgowEHm3+/ee6Xn
+         HRZipdm2N+jw0EGme4oasVgpHWGnyoOzMFJ1NwsS7mVJRyokRTu08R8Mi78li3sks6BH
+         9Nifri85WPwR0jc6SQCOb9oVw1rPeRn+vdPQq29r7ZG9oziZ/qKkVWdvvpnCVpsRx5+q
+         wtRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=YkbCybzk75m/DwfgLQS+k1c3Zj35iCw6kglMnXwvNH4=;
+        b=g71NaxNpGHcix9sh7jx8pUrugN9dc9bVMuygbT0H2bfS0Q0sMzubL3CDV4zYKKEDuy
+         QG5av/22avrNo3WZgOtOZrL9sm74Yv7A0oAvlgXBKu0gOsTPWsGKRDmxOuoKyCMxcEqM
+         vbzwHBQb1iWpDp3VUhymvH+jy2gjmNvHCaf9Sq6DyCzVDQz9b9CEsB46ETD5CsUzO05F
+         Ucl0VIn/Dg464lvVGqWnypDr+KGk1su76PXgDqHfTDYO76rF2Tqmd1B4Sfphg0LJw5In
+         BKx/tLQoLcx6UCyEv8sSFxCR77/eIhwZfr1o+BmybYhMtyMM6dMFDN3d1GmqPf9xhERl
+         0Hxg==
+X-Gm-Message-State: APjAAAXHNi/IbMzV19gl3t92LuMgeVW2XurRCGZXBz9f3o/OI2/MeZI5
+        RS7MAxaf+FUvIggt/UZi0vbogaqU
+X-Google-Smtp-Source: APXvYqyU4HpyhuNG2Pk7898Kn5kHYBovyU41eVWfl/5GZVfjEERppXeSfSatnk3cMQ5MQeSmMmMfOQ==
+X-Received: by 2002:a63:1044:: with SMTP id 4mr20823772pgq.412.1581985963803;
+        Mon, 17 Feb 2020 16:32:43 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id q8sm596672pje.2.2020.02.17.16.32.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Feb 2020 16:32:42 -0800 (PST)
+Subject: Re: [PATCH 0/5] hwmon: (adt7475) attenuator bypass and pwm invert
+To:     Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        jdelvare@suse.com, robh+dt@kernel.org, mark.rutland@arm.com
 Cc:     logan.shaw@alliedtelesis.co.nz, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH 5/5] hwmon: (adt7475) Add support for inverting pwm output
-Date:   Tue, 18 Feb 2020 12:46:57 +1300
-Message-Id: <20200217234657.9413-6-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200217234657.9413-1-chris.packham@alliedtelesis.co.nz>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20200217234657.9413-1-chris.packham@alliedtelesis.co.nz>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <bb029a57-e7d2-c35c-f2e2-276e2373787b@roeck-us.net>
+Date:   Mon, 17 Feb 2020 16:32:41 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+In-Reply-To: <20200217234657.9413-1-chris.packham@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add a "invert-pwm" device-tree property to allow hardware designs to use
-inverted logic on the PWM output. Preserve the invert PWM output bit if
-the property is not found to allow for bootloaders/bios which may have
-configured this earlier.
+On 2/17/20 3:46 PM, Chris Packham wrote:
+> I've picked up Logan's changes[1] and am combining them with an old series of
+> mine[2] to hopefully get them both over the line.
+> 
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
- drivers/hwmon/adt7475.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+No change log and/or history, so I guess your expectation is that it will be up
+to me to figure out what may have changed and if previous comments have been
+addressed or not.
 
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 4a62d633a2f5..dccb1c78a57d 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1509,6 +1509,41 @@ static int load_attenuators(const struct i2c_clien=
-t *client, int chip,
- 	return 0;
- }
-=20
-+static int adt7475_set_pwm_polarity(struct i2c_client *client)
-+{
-+	char *prop;
-+	int ret, i;
-+	u8 val;
-+
-+	for (i =3D 0; i < ADT7475_PWM_COUNT; i++) {
-+		ret =3D adt7475_read(PWM_CONFIG_REG(i));
-+		if (ret < 0)
-+			return ret;
-+		val =3D ret;
-+		switch (i) {
-+		case 0:
-+			prop =3D "invert-pwm1";
-+			break;
-+		case 1:
-+			prop =3D "invert-pwm2";
-+			break;
-+		case 2:
-+			prop =3D "invert-pwm3";
-+			break;
-+		}
-+
-+		ret =3D set_property_bit(client, prop, &val, 4);
-+		if (ret)
-+			continue;
-+
-+		ret =3D i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(i), val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int adt7475_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1617,6 +1652,10 @@ static int adt7475_probe(struct i2c_client *client=
-,
- 	for (i =3D 0; i < ADT7475_PWM_COUNT; i++)
- 		adt7475_read_pwm(client, i);
-=20
-+	ret =3D adt7475_set_pwm_polarity(client);
-+	if (ret)
-+		dev_err(&client->dev, "Error configuring pwm polarity");
-+
- 	/* Start monitoring */
- 	switch (chip) {
- 	case adt7475:
---=20
-2.25.0
+Guenter
+
+> This series updates the binding documentation for the adt7475 and adds two new
+> sets of properties.
+> 
+> [1] - https://lore.kernel.org/linux-hwmon/20191219033213.30364-1-logan.shaw@alliedtelesis.co.nz/
+> [2] - https://lore.kernel.org/linux-hwmon/20181107040010.27436-1-chris.packham@alliedtelesis.co.nz/
+> 
+> Chris Packham (2):
+>    dt-bindings: hwmon: Document adt7475 invert-pwm property
+>    hwmon: (adt7475) Add support for inverting pwm output
+> 
+> Logan Shaw (3):
+>    dt-bindings: hwmon: Document adt7475 binding
+>    dt-bindings: hwmon: Document adt7475 bypass-attenuator property
+>    hwmon: (adt7475) Add attenuator bypass support
+> 
+>   .../devicetree/bindings/hwmon/adt7475.yaml    |  82 ++++++++++++++
+>   .../devicetree/bindings/trivial-devices.yaml  |   8 --
+>   drivers/hwmon/adt7475.c                       | 100 +++++++++++++++++-
+>   3 files changed, 179 insertions(+), 11 deletions(-)
+>   create mode 100644 Documentation/devicetree/bindings/hwmon/adt7475.yaml
+> 
 
