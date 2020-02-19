@@ -2,124 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E87163717
-	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Feb 2020 00:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52C56163AAB
+	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Feb 2020 04:02:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727944AbgBRXYK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 18 Feb 2020 18:24:10 -0500
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:51432 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727933AbgBRXYK (ORCPT
+        id S1728196AbgBSDCj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 18 Feb 2020 22:02:39 -0500
+Received: from sonic317-27.consmr.mail.bf2.yahoo.com ([74.6.129.82]:45299 "EHLO
+        sonic317-27.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728202AbgBSDCj (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 18 Feb 2020 18:24:10 -0500
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id C7A8D886BF;
-        Wed, 19 Feb 2020 12:24:07 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1582068247;
-        bh=6t+e/RsRgfdAcDmlsU3QxJ2+V7OGhdSiiYQ3RKAgTrU=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To;
-        b=fu58/or8zFopa5G2lRK5pnNUMXagVElGNLXNjFJm2qCuYqlF/Mc1JP07naK2BOnri
-         Opv/r93DN3AC2kLQX9G5OBEZl4jDCmRLs4YPtFrgJWGN4BfLVNjEtercDBfY6M4jRC
-         rR7MQ5hm2XlKRoHSobuyDkFsnhFMqb1q9mQj8eJkCA0RpGelJ5ZLhBF6QycTKa3U2W
-         Mq7NYR7K2icmF59xb+GcBZSN14u5VXfwVanxRZh2v7RcIY0wfAGo1sMb+YI71drM0l
-         ztREwU2jPJZe1Ciuo8GgAXQKcdTVt/qIR0EzrMjDuKSJqnnhAw3uVDwPQVzlnPEnjz
-         THY6eXYNwo2KA==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5e4c72160001>; Wed, 19 Feb 2020 12:24:06 +1300
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 19 Feb 2020 12:24:07 +1300
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Wed, 19 Feb 2020 12:24:07 +1300
-From:   Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To:     "robh@kernel.org" <robh@kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Logan Shaw <Logan.Shaw@alliedtelesis.co.nz>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux@roeck-us.net" <linux@roeck-us.net>,
-        "jdelvare@suse.com" <jdelvare@suse.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-Subject: Re: [PATCH 2/5] dt-bindings: hwmon: Document adt7475
- bypass-attenuator property
-Thread-Topic: [PATCH 2/5] dt-bindings: hwmon: Document adt7475
- bypass-attenuator property
-Thread-Index: AQHV5eyMFqQvqYyHpEKmw/ncMf3GS6ggjRyAgAAH0QCAACpSAA==
-Date:   Tue, 18 Feb 2020 23:24:07 +0000
-Message-ID: <c933b9341a90717fa87e3b862fcfa89799accfca.camel@alliedtelesis.co.nz>
-References: <20200217234657.9413-1-chris.packham@alliedtelesis.co.nz>
-         <20200217234657.9413-3-chris.packham@alliedtelesis.co.nz>
-         <20200218202439.GA4617@bogus>
-         <5d081c13807da1b64060ed56460a47d459ac3e55.camel@alliedtelesis.co.nz>
-In-Reply-To: <5d081c13807da1b64060ed56460a47d459ac3e55.camel@alliedtelesis.co.nz>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [2001:df5:b000:22:bdbc:9a4b:8324:c013]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <43D8687BE1AAA14B9C8003E1918339B8@atlnz.lc>
-Content-Transfer-Encoding: base64
+        Tue, 18 Feb 2020 22:02:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1582081356; bh=EoSOra7a2saN4Rx9MPg7CnNKAW+5S8RlMnV+0g1PH1E=; h=Date:From:Reply-To:Subject:References:From:Subject; b=BiX8ahnRmPK8cadSBG4tyrkSqwjZIfiWj1w4JR/hsmkTKps+9OmJSjrH/V0LY+iE3fxfbk2VOpYJM6FejXAPGTsX2M9ARxC4ZiGXdiIw9bjXK23iHmj3Kng8KNa+31FeDQl16AxyzmPEKiLCpyU6XxfBVCnfTl3OAh/k411DaI6V6NiBNvHnCnvSYwDbjDfyXy7ZRpzh3d6s1coUERcq0cXNe5zLpv8gAlwuMg3Y6e5JDoQfvV3OQ7iEEd3VGTkmdvh6sTZg9QBvNEAzYQH5ifnEY4iShw8WyCNNSPe/VkuEqVeVkjGQW6nhUuhwgSJJzyBGRIWjMqgIgpWQEe4EUA==
+X-YMail-OSG: ZvaGY5UVM1kc0cLLk9X6svFfqeg_QIRz2JZUFUmz1NE5kW5BQhe6mdBmuW427V2
+ HQkkLBbwVl.egNdkkruWa9pAlNmrxUV1G210kH0QwbQDdz22G.lCJavXFq7zxonLlCZDc60JOj3G
+ enT68L8bhEIo.KBufvmIzreSIt6O5kB1le_MnhlA1XkWy_sLg7N55eJWTrXlKlLp0yrc5z8k9k60
+ TySS2_h2FqOzXDu_IBOe6ux2_zNZQ0yv_P943GgcImXe4vVq3MGOWqklvFzS.bJLlPyLvM_q5jrx
+ LA35s_DgR1NfReVySVqD9q.yDiz0vhtzFbnJwtVTPqVq3Grqhyooe.atlNB4yd223MCCPPMBSGNC
+ eQY0waG5L3ASs38qSBE6_hc7MkujbMHP1BjHQNAsKuDIswOBPYaBhZo3yfrEdBvBUHbZylJo4sgx
+ 4CF1JQPubQwG11CPx37ZDcqLl9v2H_0qQAlGHs3IGVetCRoXmm7eVz11Tup8EWco6DVx6_IQRiwj
+ KTEzQqRkQwBdX2S7.ge575iOwdn8Ol0WxD.LgIMP6eOPNLAIAfdoWhY4QFgmqthetMul6njnm5yb
+ ZZCMs3ZOtBzLnmgwWQ3LVjilUm7HLiirqyMaSm1iT6MZr84MNhmXJhj97JVUBIEXGqx1f.8LPvVw
+ JY6WBCZB9mIdSVNwGfhyUYUdTMsjDyKRrdnyiv1L617D6jeYuSLbfszuEME1XxSoi7LfhnB3BhfS
+ Mvx1sP.OXGB6EAXuw9jWuMn82dW26D0VDEqA0R4T5jWFKfsgwZFIpXyD.MX9Ru3RvY2aC4y2Q98u
+ XNnEjv8Il7Elh_iLpl7f7e6YvgL2W1.QSsuzJcGoiQH3q7ADaQE0gEZx24tmL0HPfUOC0UxWKs1w
+ _kfiu.hRE6.sSxF_pDUpuMobIoLEi1WGUCx.L0MhB.hUn6A8YAklsuG6cwj_cfaNK09IWkmHKgrC
+ 2F2wYtCfI8MhYYHxr7V6xwHYcrSGq8KwRBpo_uFd8teWG45rRVJVTQQoXPD1Bm5Kp_uJTxUnsCrj
+ .UG.hE4.o50IQNTMVpbNtSOWH0nKpmncvRPJOFjhFkmpjeX5N_JQQLfrqR6vrDD9aO3i0z15W.gh
+ 2BS6ukDs05IXJM1V1ntQk4PR3arsVbM2vHntJRCgP3.O45u3k2o4l1hyZeXb65zw50byv19F8r_5
+ zK92Fd2xQpETQaPUXTby0Fw72k.YEotyG8w.IIN2ESSX8wG65UQ5bns2PgQ3Gb4URE0Haec7HR4w
+ qVkjh40nl405oAtwSWuAN82O8NvYmR_fqG2YbSTKJFPXR9sqUpW92Z.OYl2u.NgqZur0C0ClbKgi
+ 0
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Wed, 19 Feb 2020 03:02:36 +0000
+Date:   Wed, 19 Feb 2020 03:02:32 +0000 (UTC)
+From:   Mohaiyani Binti <mohaiyanibintis100@gmail.com>
+Reply-To: mohaiyanibintis100@gmail.com
+Message-ID: <1132317950.3564766.1582081352266@mail.yahoo.com>
+Subject: Dear Sir or Madam
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1132317950.3564766.1582081352266.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15199 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:73.0) Gecko/20100101 Firefox/73.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-T24gV2VkLCAyMDIwLTAyLTE5IGF0IDA5OjUyICsxMzAwLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0K
-PiBPbiBUdWUsIDIwMjAtMDItMTggYXQgMTQ6MjQgLTA2MDAsIFJvYiBIZXJyaW5nIHdyb3RlOg0K
-PiA+IE9uIFR1ZSwgMTggRmViIDIwMjAgMTI6NDY6NTQgKzEzMDAsIENocmlzIFBhY2toYW0gd3Jv
-dGU6DQo+ID4gPiANCj4gPiA+IEZyb206IExvZ2FuIFNoYXcgPGxvZ2FuLnNoYXdAYWxsaWVkdGVs
-ZXNpcy5jby5uej4NCj4gPiA+IA0KPiA+ID4gQWRkIGRvY3VtZW50YXRpb24gZm9yIHRoZSBieXBh
-c3MtYXR0ZW51YXRvci1pblswLTRdIHByb3BlcnR5Lg0KPiA+ID4gDQo+ID4gPiBTaWduZWQtb2Zm
-LWJ5OiBMb2dhbiBTaGF3IDxsb2dhbi5zaGF3QGFsbGllZHRlbGVzaXMuY28ubno+DQo+ID4gPiBT
-aWduZWQtb2ZmLWJ5OiBDaHJpcyBQYWNraGFtIDxjaHJpcy5wYWNraGFtQGFsbGllZHRlbGVzaXMu
-Y28ubno+DQo+ID4gPiAtLS0NCj4gPiA+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9od21vbi9h
-ZHQ3NDc1LnlhbWwgICAgICAgICAgfCAxMyArKysrKysrKysrKysrDQo+ID4gPiAgMSBmaWxlIGNo
-YW5nZWQsIDEzIGluc2VydGlvbnMoKykNCj4gPiA+IA0KPiA+IA0KPiA+IE15IGJvdCBmb3VuZCBl
-cnJvcnMgcnVubmluZyAnbWFrZSBkdF9iaW5kaW5nX2NoZWNrJyBvbiB5b3VyIHBhdGNoOg0KPiA+
-IA0KPiA+IC9idWlsZHMvcm9iaGVycmluZy9saW51eC1kdC1yZXZpZXcvRG9jdW1lbnRhdGlvbi9k
-ZXZpY2V0cmVlL2JpbmRpbmdzL2h3bW9uL2FkdDc0NzUueWFtbDogcGF0dGVyblByb3BlcnRpZXM6
-XmJ5cGFzcy1hdHRlbnVhdG9yLWluWzAtNF0kOm1heGltdW06IEZhbHNlIHNjaGVtYSBkb2VzIG5v
-dCBhbGxvdyAxDQo+ID4gL2J1aWxkcy9yb2JoZXJyaW5nL2xpbnV4LWR0LXJldmlldy9Eb2N1bWVu
-dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaHdtb24vYWR0NzQ3NS55YW1sOiBwYXR0ZXJuUHJv
-cGVydGllczpeYnlwYXNzLWF0dGVudWF0b3ItaW5bMC00XSQ6bWluaW11bTogRmFsc2Ugc2NoZW1h
-IGRvZXMgbm90IGFsbG93IDANCj4gPiBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mv
-TWFrZWZpbGU6MTI6IHJlY2lwZSBmb3IgdGFyZ2V0ICdEb2N1bWVudGF0aW9uL2RldmljZXRyZWUv
-YmluZGluZ3MvaHdtb24vYWR0NzQ3NS5leGFtcGxlLmR0cycgZmFpbGVkDQo+ID4gbWFrZVsxXTog
-KioqIFtEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaHdtb24vYWR0NzQ3NS5leGFt
-cGxlLmR0c10gRXJyb3IgMQ0KPiA+IE1ha2VmaWxlOjEyNjM6IHJlY2lwZSBmb3IgdGFyZ2V0ICdk
-dF9iaW5kaW5nX2NoZWNrJyBmYWlsZWQNCj4gPiBtYWtlOiAqKiogW2R0X2JpbmRpbmdfY2hlY2td
-IEVycm9yIDINCj4gPiANCj4gDQo+IEkgc3RpbGwgbXVzdCBiZSBkb2luZyBzb21ldGhpbmcgd3Jv
-bmcuIEkgZGlkIHJ1biANCj4gDQo+ICAgbWFrZSBtcnByb3Blcg0KPiAgIG1ha2UgQVJDSD1hcm0g
-ZGVmY29uZmlnDQo+ICAgbWFrZSBBUkNIPWFybSBkdF9iaW5kaW5nX2NoZWNrIERUX1NDSEVNQV9G
-SUxFUz1Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaHdtb24vYWR0NzQ3NS55YW1s
-DQo+IA0KPiB3aGljaCBwYXNzZXMgd2l0aG91dCBlcnJvci4NCj4gDQo+IFdoZW4gSSBydW4gDQo+
-IA0KPiAgIG1ha2UgbXJwcm9wZXINCj4gICBtYWtlIEFSQ0g9YXJtIGRlZmNvbmZpZw0KPiAgIG1h
-a2UgQVJDSD1hcm0gZHRfYmluZGluZ19jaGVjaw0KPiANCj4gSSBnZXQgZXJyb3JzIGluIHVucmVs
-YXRlZCBmaWxlcw0KPiANCj4gZS5nLg0KPiANCj4gICAvaG9tZS9jaHJpc3Avc3JjL2xpbnV4L0Rv
-Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9jbG9jay9hbGx3aW5uZXIsc3VuNGktYTEw
-LWFwYjEtY2xrLnlhbWw6IEFkZGl0aW9uYWwgcHJvcGVydGllcyBhcmUgbm90IGFsbG93ZWQgKCdk
-ZXByZWNhdGVkJyB3YXMgdW5leHBlY3RlZCkNCj4gICBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUv
-YmluZGluZ3MvTWFrZWZpbGU6MTI6IHJlY2lwZSBmb3IgdGFyZ2V0ICdEb2N1bWVudGF0aW9uL2Rl
-dmljZXRyZWUvYmluZGluZ3MvY2xvY2svYWxsd2lubmVyLHN1bjRpLWExMC1hcGIxLWNsay5leGFt
-cGxlLmR0cycgZmFpbGVkDQo+ICAgbWFrZVsxXTogKioqIFtEb2N1bWVudGF0aW9uL2RldmljZXRy
-ZWUvYmluZGluZ3MvY2xvY2svYWxsd2lubmVyLHN1bjRpLWExMC1hcGIxLWNsay5leGFtcGxlLmR0
-c10gRXJyb3IgMQ0KPiAgIE1ha2VmaWxlOjEyNjI6IHJlY2lwZSBmb3IgdGFyZ2V0ICdkdF9iaW5k
-aW5nX2NoZWNrJyBmYWlsZWQNCj4gDQo+IE15IGxvY2FsIGJyYW5jaCBpcyBiYXNlZCBvbiBjb21t
-aXQgMGE2NzllMTNlYTMwICgiTWVyZ2UgYnJhbmNoICdmb3ItDQo+IDUuNi1maXhlcycgb2YgZ2l0
-Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RqL2Nncm91cCIpDQo+
-IGRvIEkgbmVlZCB0byBiZSBydW5uaW5nIGFnYWluc3Qgc29tZXRoaW5nIGVsc2U/DQo+IA0KDQpB
-aCBJIHRoaW5rIEkndmUgZ290IGl0DQoNCnBpcDMgaW5zdGFsbCAtLXVzZXIgZ2l0K2h0dHBzOi8v
-Z2l0aHViLmNvbS9kZXZpY2V0cmVlLW9yZy9kdC1zY2hlbWEuZ2l0QG1hc3Rlcg0KDQpMZXQncyBt
-ZSBzZWUgdGhlIGVycm9ycy4gTm93IEkganVzdCBuZWVkIHRvIHVuZGVyc3RhbmQgdGhlbSA6KS4N
-Cg0KPiA+IFNlZSBodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL3BhdGNoLzEyMzk2OTQNCj4g
-PiBQbGVhc2UgY2hlY2sgYW5kIHJlLXN1Ym1pdC4NCg==
+Dear Sir or Madam
+
+I am Mohaiyani binti Shamsudin, who works in ADB (BURKINA FASO) as a non-independent non-executive Director and President of AFRICAN DEVELOPMENT BANK.
+During our last banking audits, we discovered that an account abandoned belongs to one of our deceased foreign clients, the Mr. Wang Jian, co-founder and co-chair of the HNA Group, a conglomerate Chinese with important real estate properties throughout the US UU. in a accident during a business trip in France on Tuesday.
+
+Go to this link: https://observer.com/2018/07/wang-jian-hna-founder-dies-tragic-fall/
+
+I am writing to request your assistance to transfer the sum of $ 15,000,000.00 (fifteen million United States dollars) at its counts as Wang Jian's last foreign business partner, which I plan use the fund to invest in public benefit as follows
+
+1. Establish an orphanage home to help orphaned children.
+2. Build a hospital to help the poor.
+3. Build an asylum for the elderly and homeless.
+
+Meanwhile, before contacting you, I did an investigation staff to locate one of the relatives of the late Mr. Wang Jian who knows the account, but I didn't succeed. However, I took this decision to support orphans and less privileged children with this fund, because I don't want this fund transferred to our Account of Government treasury as unclaimed fund. I am willing to offer you the 40% of the fund for your support and assistant to transfer the fund to your account.
+
+More detailed information will be sent to the disaggregation explaining how The fund will be transferred to you. Please continue to achieve the purpose.
+
+Waiting for your urgent response.
+Attentively
+Mohaiyani Binti Shamsudin.
