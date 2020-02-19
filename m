@@ -2,74 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7266B16485F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Feb 2020 16:19:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A48165208
+	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Feb 2020 23:01:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgBSPTq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 19 Feb 2020 10:19:46 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:42082 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726634AbgBSPTq (ORCPT
+        id S1727291AbgBSWBN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 19 Feb 2020 17:01:13 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:36083 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726760AbgBSWBM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 19 Feb 2020 10:19:46 -0500
-Received: by mail-ot1-f66.google.com with SMTP id 66so451537otd.9;
-        Wed, 19 Feb 2020 07:19:45 -0800 (PST)
+        Wed, 19 Feb 2020 17:01:12 -0500
+Received: by mail-ot1-f68.google.com with SMTP id j20so1730448otq.3;
+        Wed, 19 Feb 2020 14:01:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=x+3HypG8MPZlCVq8NF/1pnld6WhQ7Qev4G7MICGX0f8=;
-        b=WSaMJJsP7rWhOWay5xlXBaHJD5L2LWXd7q6zIfYxVPr+BohbJON0l6FvuSQQvgakrN
-         IYLs7SORO34or30OlLxvWzYqjxVOLG9r+U0pO3DqGjzRCE713O6h3JDQGyNNXn/fFM7z
-         9sH06QnpbTtuu9fFZhn+C6rEMy2GKZ0y+AaFagDtXcdjYFvFZJbP0h3vYDR006tRqWTh
-         0yca4e/c4fomNmRKbIP75dLvphR05eT80vcpk8DAGGce8SpjeYoVNqWtbm2+r2v6n6cg
-         j2WrHfmGRMKi62j9j/Cku0fuJOJM9TmwQ/ko3T6xHgFr0M8f3n2SStgvCiFspvHDneYH
-         Tl3Q==
-X-Gm-Message-State: APjAAAVfwkPkQpvL84xB1P+YmjncbYQBk/t8V1/KSlR6IQpfLY2GaIR6
-        ZenwlxMDzce/THBeTUdDVg==
-X-Google-Smtp-Source: APXvYqw7Q2E+ee6dnEwhNr85ShyimLpqfNxeaNDxSohaDwUzJ4J+PAU14izexHidqelCTonX3S8O6Q==
-X-Received: by 2002:a9d:ec7:: with SMTP id 65mr20412335otj.309.1582125585559;
-        Wed, 19 Feb 2020 07:19:45 -0800 (PST)
+        bh=pGyOjkge91SQbfrzXim9rbGo7PLjTkG0M1L94MYw0r8=;
+        b=OWFYf8kDu5dL7O5QjP98UYJ3WghQq/L8Z6fj10VWfG2msbX5dstECQ9o+2bQZ9soyh
+         JlfuuXrnKLv2QsMnirdciKm+ErLpL+z5CZ1CvpuZ6ccTj/mpHPa8zSRKN9MU7pq5fmre
+         NvaSqRUOA2WgDyEJjqdCW48x4/F6POSoFJ1e0OSRKykK6p79QB5yMnQd5u+fQS0w12NW
+         RXMrHLXiuDxL5n8urIyE2YbKlysddMhEuJkUjX+VHIoy/V8KubhG4RpukaANY/Wow+nU
+         noaWmpd1FMX6CTqm4mWURwlc6zs95pKqhqAAKKR6+NNMNMn4YYLgdzZ2EPvNVjeCWG9n
+         S9tg==
+X-Gm-Message-State: APjAAAVvPVobx3xtjgdNVgEsItTGno/DstYiusX0a5GLsDqz0fS8Cf17
+        HINC+eT4rPGp5dZI2jGg0hobIaY=
+X-Google-Smtp-Source: APXvYqy51NRJch2sHB4+XDMbzjUA1EEZ5/PvXRCgza6XulwmduWMFpSBLhIi0HIfrADNWHh7u9SpCQ==
+X-Received: by 2002:a9d:6a2:: with SMTP id 31mr20777530otx.313.1582149671782;
+        Wed, 19 Feb 2020 14:01:11 -0800 (PST)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 67sm62827oid.30.2020.02.19.07.19.44
+        by smtp.gmail.com with ESMTPSA id l207sm409515oih.25.2020.02.19.14.01.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2020 07:19:45 -0800 (PST)
-Received: (nullmailer pid 9942 invoked by uid 1000);
-        Wed, 19 Feb 2020 15:19:44 -0000
-Date:   Wed, 19 Feb 2020 09:19:44 -0600
+        Wed, 19 Feb 2020 14:01:11 -0800 (PST)
+Received: (nullmailer pid 14284 invoked by uid 1000);
+        Wed, 19 Feb 2020 22:01:10 -0000
+Date:   Wed, 19 Feb 2020 16:01:10 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Henry Shen <henry.shen@alliedtelesis.co.nz>
-Cc:     robh+dt@kernel.org, mark.rutland@arm.com,
-        guillaume.ligneul@gmail.com, jdelvare@suse.com, linux@roeck-us.net,
-        trivial@kernel.org, venture@google.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Henry Shen <henry.shen@alliedtelesis.co.nz>
-Subject: Re: [PATCH v2 1/2] dt-bindings: Add TI LM73 as a trivial device
-Message-ID: <20200219151944.GA9881@bogus>
-References: <20200212030615.28537-1-henry.shen@alliedtelesis.co.nz>
- <20200212030615.28537-2-henry.shen@alliedtelesis.co.nz>
+To:     Mike Jones <michael-a1.jones@analog.com>
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux@roeck-us.net, jdelvare@suse.com, robh+dt@kernel.org,
+        corbet@lwn.net, Mike Jones <michael-a1.jones@analog.com>
+Subject: Re: [PATCH 2/2] bindings: (hwmon/ltc2978.txt): add support for more
+ parts.
+Message-ID: <20200219220110.GA14227@bogus>
+References: <1581032654-4330-1-git-send-email-michael-a1.jones@analog.com>
+ <1581032654-4330-2-git-send-email-michael-a1.jones@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200212030615.28537-2-henry.shen@alliedtelesis.co.nz>
+In-Reply-To: <1581032654-4330-2-git-send-email-michael-a1.jones@analog.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, 12 Feb 2020 16:06:14 +1300, Henry Shen wrote:
+On Thu,  6 Feb 2020 16:44:14 -0700, Mike Jones wrote:
+> LTC2972, LTC2979, LTC3884, LTC3889, LTC7880, LTM4664, LTM4677,
+> LTM4678, LTM4680, LTM4700.
 > 
-> The Texas Instruments LM73 is a digital temperature sensor with 2-wire
-> interface. Add LM73 as a trivial device.
-> 
-> Signed-off-by: Henry Shen <henry.shen@alliedtelesis.co.nz>
+> Signed-off-by: Mike Jones <michael-a1.jones@analog.com>
 > ---
-> Changes in v2:
-> - add missing sign-off
-> 
->  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>  .../devicetree/bindings/hwmon/ltc2978.txt          | 22 ++++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>
