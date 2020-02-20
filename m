@@ -2,272 +2,81 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EB01654B5
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Feb 2020 02:56:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 984AA165A8C
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Feb 2020 10:54:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727224AbgBTB4L (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 19 Feb 2020 20:56:11 -0500
-Received: from mga07.intel.com ([134.134.136.100]:8854 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727125AbgBTB4L (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 19 Feb 2020 20:56:11 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Feb 2020 17:56:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,462,1574150400"; 
-   d="scan'208";a="408632560"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 19 Feb 2020 17:56:08 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1j4b4R-0000ph-H3; Thu, 20 Feb 2020 09:56:07 +0800
-Date:   Thu, 20 Feb 2020 08:17:33 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- a9a99b1b786b6aabea325c24aa928a0f0b6e7ca8
-Message-ID: <5e4dd01d.tY1uceI4/c4uMAO/%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726989AbgBTJyj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 20 Feb 2020 04:54:39 -0500
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:42738 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726799AbgBTJyi (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 20 Feb 2020 04:54:38 -0500
+Received: by mail-pf1-f195.google.com with SMTP id 4so1664434pfz.9
+        for <linux-hwmon@vger.kernel.org>; Thu, 20 Feb 2020 01:54:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=KfNWW2kcqvTW/9/08hTLogIqobA7bvlKpQJoYHafvufqDMAEJNGTi16kdgjiBPR6K2
+         IBu4QoBeoD1zPK+mAFEFCyGoW7vmbfnnJRoF3S1jn953AwhHjpsb61lJNKtC5Cd4w3ly
+         LyXVFblZTrGK4xKB1acSQvvf0L0W5gtLLv17Nc8u08V8JuGNOrki7Hu4hIn889cOrocf
+         OI7ofI/Ba26rlHcp25+n0dtCNsZNHdepJpLTvIgblIc5oB7MwKt85sd2HkDRZ6GK9GOZ
+         1AD79o4ZcYs/IVxzGoSLwT+BZX2xrTfctgg/ehk24p/tiuqY5cUAh9nbhz8Oq+hbCjua
+         K5DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=faPzcEQbt3rUYVToipw+wFLdxxa4j0C3FxWOBHGO5LeWlplNHanNtHlqccSrWI9gng
+         PeeORQfdnZlp2i62aDS7xqcvLSc1v6YwfX9Z+PgYSjZxgBr+oFEu02XzuQoVv0AEUG3D
+         kK/4apEkx0JMQaKbRrThDUWF/8We41hhe9w/V+ofkg1v/yMbKmjx6HNqEui/Unpu4LmH
+         n2f6kIzqML0nvRB5y7R+BaXqzsPoEPcZfOzu6wRf1db7MFo+zAP9UVrnG8RwVJlJ51Mf
+         bMOSh/qHbeUDszAHTdwdPeYwxo7rLI84Frlnm6qNp+SOvrSaGD7YGmOQIoW/6H9HTtHr
+         jdnw==
+X-Gm-Message-State: APjAAAXzKnzF4CWvzrMT4+vtxn26a1hoS9cPT0jDbG53lB4tGPiNTws8
+        oKdAidBhMkuB5H7qPP3al0wlSLOY65WqTRMZLds=
+X-Google-Smtp-Source: APXvYqySoCSJ82A8OuYPdZOTOSzwsgpIu/3GOYLR3uHjrSC8cVSsXETPeL8PxFF00bDBm0liDA2StN1CChwALXKR/tU=
+X-Received: by 2002:a62:5bc7:: with SMTP id p190mr30655380pfb.16.1582192477900;
+ Thu, 20 Feb 2020 01:54:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 01:54:37
+ -0800 (PST)
+Reply-To: cagesusan199@gmail.com
+From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
+Date:   Thu, 20 Feb 2020 01:54:37 -0800
+Message-ID: <CALjo5=_qROtCiT4u8zj8ta2R612eUBzRGz6aZpKsD-fVmmvMXA@mail.gmail.com>
+Subject: Attention:Beneficiary
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
-branch HEAD: a9a99b1b786b6aabea325c24aa928a0f0b6e7ca8  hwmon: (pmbus/tps53679) Add documentation
+-- 
+Dearest Friend,
 
-elapsed time: 2880m
+Sorry for invading your privacy, my name is Susan S. Cage I am 81
+years, citizen of United States and presently in hospital undergoing
+chromatography for bronchogenic carcinomas (Lung cancer) which
+affected both Lungs. The doctors said I have few days to live because
+the cancer has now affected my brain.
 
-configs tested: 217
-configs skipped: 0
+My late husband left Fifteen Million, Five Hundred British Pounds
+Sterling in my account, I want to transfer the money to you and I want
+you to use it as a donate for charitable and help the needy,
+motherless, less privileged and widows within your location.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I need your assurance that you will use the fund for charity, once I a
+favorable reply from you, will inform my Bank through my lawyer to
+transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
+I receive your response, I will inform my bank in writing through my
+lawyer.
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-ia64                              allnoconfig
-openrisc                 simple_smp_defconfig
-s390                             allmodconfig
-nios2                         10m50_defconfig
-microblaze                    nommu_defconfig
-m68k                           sun3_defconfig
-sparc64                             defconfig
-riscv                    nommu_virt_defconfig
-ia64                             allmodconfig
-nds32                               defconfig
-ia64                             alldefconfig
-powerpc                             defconfig
-ia64                                defconfig
-riscv                               defconfig
-sh                               allmodconfig
-c6x                        evmc6678_defconfig
-i386                                defconfig
-um                           x86_64_defconfig
-mips                      malta_kvm_defconfig
-riscv                             allnoconfig
-mips                              allnoconfig
-alpha                               defconfig
-csky                                defconfig
-h8300                    h8300h-sim_defconfig
-i386                             alldefconfig
-i386                              allnoconfig
-i386                             allyesconfig
-ia64                             allyesconfig
-c6x                              allyesconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-nds32                             allnoconfig
-h8300                     edosk2674_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-powerpc                           allnoconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-x86_64               randconfig-a001-20200218
-x86_64               randconfig-a002-20200218
-x86_64               randconfig-a003-20200218
-i386                 randconfig-a001-20200218
-i386                 randconfig-a002-20200218
-i386                 randconfig-a003-20200218
-x86_64               randconfig-a001-20200219
-x86_64               randconfig-a002-20200219
-x86_64               randconfig-a003-20200219
-i386                 randconfig-a001-20200219
-i386                 randconfig-a002-20200219
-i386                 randconfig-a003-20200219
-alpha                randconfig-a001-20200219
-m68k                 randconfig-a001-20200219
-nds32                randconfig-a001-20200219
-parisc               randconfig-a001-20200219
-riscv                randconfig-a001-20200219
-c6x                  randconfig-a001-20200219
-h8300                randconfig-a001-20200219
-microblaze           randconfig-a001-20200219
-nios2                randconfig-a001-20200219
-sparc64              randconfig-a001-20200219
-csky                 randconfig-a001-20200219
-openrisc             randconfig-a001-20200219
-s390                 randconfig-a001-20200219
-xtensa               randconfig-a001-20200219
-sh                   randconfig-a001-20200219
-x86_64               randconfig-b001-20200219
-x86_64               randconfig-b002-20200219
-x86_64               randconfig-b003-20200219
-i386                 randconfig-b001-20200219
-i386                 randconfig-b002-20200219
-i386                 randconfig-b003-20200219
-x86_64               randconfig-b001-20200218
-x86_64               randconfig-b002-20200218
-x86_64               randconfig-b003-20200218
-i386                 randconfig-b001-20200218
-i386                 randconfig-b002-20200218
-i386                 randconfig-b003-20200218
-x86_64               randconfig-c001-20200219
-x86_64               randconfig-c002-20200219
-x86_64               randconfig-c003-20200219
-i386                 randconfig-c001-20200219
-i386                 randconfig-c002-20200219
-i386                 randconfig-c003-20200219
-x86_64               randconfig-c001-20200218
-x86_64               randconfig-c002-20200218
-x86_64               randconfig-c003-20200218
-i386                 randconfig-c001-20200218
-i386                 randconfig-c002-20200218
-i386                 randconfig-c003-20200218
-x86_64               randconfig-d001-20200219
-x86_64               randconfig-d002-20200219
-x86_64               randconfig-d003-20200219
-i386                 randconfig-d001-20200219
-i386                 randconfig-d002-20200219
-i386                 randconfig-d003-20200219
-x86_64               randconfig-d001-20200218
-x86_64               randconfig-d002-20200218
-x86_64               randconfig-d003-20200218
-i386                 randconfig-d001-20200218
-i386                 randconfig-d002-20200218
-i386                 randconfig-d003-20200218
-x86_64               randconfig-d001-20200220
-x86_64               randconfig-d002-20200220
-x86_64               randconfig-d003-20200220
-i386                 randconfig-d001-20200220
-i386                 randconfig-d002-20200220
-i386                 randconfig-d003-20200220
-x86_64               randconfig-e001-20200219
-x86_64               randconfig-e002-20200219
-x86_64               randconfig-e003-20200219
-i386                 randconfig-e001-20200219
-i386                 randconfig-e002-20200219
-i386                 randconfig-e003-20200219
-x86_64               randconfig-f001-20200218
-x86_64               randconfig-f002-20200218
-x86_64               randconfig-f003-20200218
-i386                 randconfig-f001-20200218
-i386                 randconfig-f002-20200218
-i386                 randconfig-f003-20200218
-x86_64               randconfig-f001-20200219
-x86_64               randconfig-f002-20200219
-x86_64               randconfig-f003-20200219
-i386                 randconfig-f001-20200219
-i386                 randconfig-f002-20200219
-i386                 randconfig-f003-20200219
-x86_64               randconfig-f001-20200220
-x86_64               randconfig-f002-20200220
-x86_64               randconfig-f003-20200220
-i386                 randconfig-f001-20200220
-i386                 randconfig-f002-20200220
-i386                 randconfig-f003-20200220
-x86_64               randconfig-g001-20200218
-x86_64               randconfig-g002-20200218
-x86_64               randconfig-g003-20200218
-i386                 randconfig-g001-20200218
-i386                 randconfig-g002-20200218
-i386                 randconfig-g003-20200218
-x86_64               randconfig-g001-20200219
-x86_64               randconfig-g002-20200219
-x86_64               randconfig-g003-20200219
-i386                 randconfig-g001-20200219
-i386                 randconfig-g002-20200219
-i386                 randconfig-g003-20200219
-x86_64               randconfig-h001-20200219
-x86_64               randconfig-h002-20200219
-x86_64               randconfig-h003-20200219
-i386                 randconfig-h001-20200219
-i386                 randconfig-h002-20200219
-i386                 randconfig-h003-20200219
-x86_64               randconfig-h001-20200218
-x86_64               randconfig-h002-20200218
-x86_64               randconfig-h003-20200218
-i386                 randconfig-h001-20200218
-i386                 randconfig-h002-20200218
-i386                 randconfig-h003-20200218
-arc                  randconfig-a001-20200219
-arm                  randconfig-a001-20200219
-arm64                randconfig-a001-20200219
-ia64                 randconfig-a001-20200219
-powerpc              randconfig-a001-20200219
-sparc                randconfig-a001-20200219
-riscv                            allmodconfig
-riscv                            allyesconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-um                                  defconfig
-um                             i386_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+Thank you and God bless you.
+
+Mrs. Susan S. Cage
