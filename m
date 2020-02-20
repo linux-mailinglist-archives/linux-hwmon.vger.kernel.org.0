@@ -2,81 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 984AA165A8C
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Feb 2020 10:54:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E34D165CC4
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Feb 2020 12:28:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726989AbgBTJyj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 20 Feb 2020 04:54:39 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:42738 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726799AbgBTJyi (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 20 Feb 2020 04:54:38 -0500
-Received: by mail-pf1-f195.google.com with SMTP id 4so1664434pfz.9
-        for <linux-hwmon@vger.kernel.org>; Thu, 20 Feb 2020 01:54:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=KfNWW2kcqvTW/9/08hTLogIqobA7bvlKpQJoYHafvufqDMAEJNGTi16kdgjiBPR6K2
-         IBu4QoBeoD1zPK+mAFEFCyGoW7vmbfnnJRoF3S1jn953AwhHjpsb61lJNKtC5Cd4w3ly
-         LyXVFblZTrGK4xKB1acSQvvf0L0W5gtLLv17Nc8u08V8JuGNOrki7Hu4hIn889cOrocf
-         OI7ofI/Ba26rlHcp25+n0dtCNsZNHdepJpLTvIgblIc5oB7MwKt85sd2HkDRZ6GK9GOZ
-         1AD79o4ZcYs/IVxzGoSLwT+BZX2xrTfctgg/ehk24p/tiuqY5cUAh9nbhz8Oq+hbCjua
-         K5DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=faPzcEQbt3rUYVToipw+wFLdxxa4j0C3FxWOBHGO5LeWlplNHanNtHlqccSrWI9gng
-         PeeORQfdnZlp2i62aDS7xqcvLSc1v6YwfX9Z+PgYSjZxgBr+oFEu02XzuQoVv0AEUG3D
-         kK/4apEkx0JMQaKbRrThDUWF/8We41hhe9w/V+ofkg1v/yMbKmjx6HNqEui/Unpu4LmH
-         n2f6kIzqML0nvRB5y7R+BaXqzsPoEPcZfOzu6wRf1db7MFo+zAP9UVrnG8RwVJlJ51Mf
-         bMOSh/qHbeUDszAHTdwdPeYwxo7rLI84Frlnm6qNp+SOvrSaGD7YGmOQIoW/6H9HTtHr
-         jdnw==
-X-Gm-Message-State: APjAAAXzKnzF4CWvzrMT4+vtxn26a1hoS9cPT0jDbG53lB4tGPiNTws8
-        oKdAidBhMkuB5H7qPP3al0wlSLOY65WqTRMZLds=
-X-Google-Smtp-Source: APXvYqySoCSJ82A8OuYPdZOTOSzwsgpIu/3GOYLR3uHjrSC8cVSsXETPeL8PxFF00bDBm0liDA2StN1CChwALXKR/tU=
-X-Received: by 2002:a62:5bc7:: with SMTP id p190mr30655380pfb.16.1582192477900;
- Thu, 20 Feb 2020 01:54:37 -0800 (PST)
+        id S1726825AbgBTL2F (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 20 Feb 2020 06:28:05 -0500
+Received: from mx2.cyber.ee ([193.40.6.72]:39920 "EHLO mx2.cyber.ee"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726501AbgBTL2F (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 20 Feb 2020 06:28:05 -0500
+X-Greylist: delayed 562 seconds by postgrey-1.27 at vger.kernel.org; Thu, 20 Feb 2020 06:28:04 EST
+From:   Meelis Roos <mroos@linux.ee>
+Subject: w83627ehf crash in 5.6.0-rc2-00055-gca7e1fd1026c
+To:     linux-hwmon@vger.kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        "Dr. David Alan Gilbert" <linux@treblig.org>,
+        Chen Zhou <chenzhou10@huawei.com>
+Message-ID: <434212bb-4eb9-7366-3255-79826d0e65bc@linux.ee>
+Date:   Thu, 20 Feb 2020 13:18:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 01:54:37
- -0800 (PST)
-Reply-To: cagesusan199@gmail.com
-From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
-Date:   Thu, 20 Feb 2020 01:54:37 -0800
-Message-ID: <CALjo5=_qROtCiT4u8zj8ta2R612eUBzRGz6aZpKsD-fVmmvMXA@mail.gmail.com>
-Subject: Attention:Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+While reading w83627ehf sensors output on D425KT mainboard, I consistently get NULL dereference as below.
+
+5.5.0 worked OK but gave a warning on driver load:
+[  104.514954] w83627ehf: Found W83627DHG-P chip at 0x290
+[  104.515634] w83627ehf w83627ehf.656: hwmon_device_register() is deprecated. Please convert the driver to use hwmon_device_register_with_info().
+
+This is dmesg from current git (loading the driver and reading sensors with lm-sensors - no driver loading warning any more):
+
+[  764.718192] w83627ehf: Found W83627DHG-P chip at 0x290
+[  774.574874] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  774.574889] #PF: supervisor read access in kernel mode
+[  774.574895] #PF: error_code(0x0000) - not-present page
+[  774.574901] PGD 0 P4D 0
+[  774.574909] Oops: 0000 [#1] SMP NOPTI
+[  774.574917] CPU: 0 PID: 604 Comm: sensors Not tainted 5.6.0-rc2-00055-gca7e1fd1026c #29
+[  774.574923] Hardware name:  /D425KT, BIOS MWPNT10N.86A.0132.2013.0726.1534 07/26/2013
+[  774.574939] RIP: 0010:w83627ehf_read_string+0x27/0x70 [w83627ehf]
+[  774.574947] Code: 00 00 00 55 53 48 8d 64 24 f0 83 fa 15 48 8b 5f 78 75 29 83 fe 01 75 24 48 63 c9 48 8b 6b 58 48 83 f9 03 77 24 0f b6 44 0b 50 <48> 8b 44 c5 00 49 89 00 48 8d 64 24 10 5b 31 c0 5d c3 48 8d 64 24
+[  774.574958] RSP: 0018:ffffb95980657df8 EFLAGS: 00010293
+[  774.574965] RAX: 0000000000000000 RBX: ffff96caaa7f5218 RCX: 0000000000000000
+[  774.574972] RDX: 0000000000000015 RSI: 0000000000000001 RDI: ffff96caa736ec08
+[  774.574978] RBP: 0000000000000000 R08: ffffb95980657e20 R09: 0000000000000001
+[  774.574985] R10: ffff96caaa635cc0 R11: 0000000000000000 R12: ffff96caa9f7cf00
+[  774.574991] R13: ffff96caa9ec3d00 R14: ffff96caa9ec3d28 R15: ffff96caa9ec3d40
+[  774.574999] FS:  00007fbc7c4e2740(0000) GS:ffff96caabc00000(0000) knlGS:0000000000000000
+[  774.575008] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  774.575015] CR2: 0000000000000000 CR3: 0000000129d58000 CR4: 00000000000006f0
+[  774.575021] Call Trace:
+[  774.575036]  ? cp_new_stat+0x12d/0x160
+[  774.575048]  hwmon_attr_show_string+0x37/0x70 [hwmon]
+[  774.575060]  dev_attr_show+0x14/0x50
+[  774.575071]  sysfs_kf_seq_show+0xb5/0x1b0
+[  774.575081]  seq_read+0xcf/0x460
+[  774.575091]  vfs_read+0x9b/0x150
+[  774.575100]  ksys_read+0x5f/0xe0
+[  774.575111]  do_syscall_64+0x48/0x190
+[  774.575121]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  774.575130] RIP: 0033:0x7fbc7c715871
+[  774.575138] Code: fe ff ff 50 48 8d 3d 76 e5 09 00 e8 e9 ef 01 00 66 0f 1f 84 00 00 00 00 00 48 8d 05 69 3b 0d 00 8b 00 85 c0 75 13 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 57 c3 66 0f 1f 44 00 00 48 83 ec 28 48 89 54
+[  774.575151] RSP: 002b:00007ffe5092d848 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[  774.575161] RAX: ffffffffffffffda RBX: 00005630bdfb1330 RCX: 00007fbc7c715871
+[  774.575168] RDX: 0000000000001000 RSI: 00007ffe5092d8e0 RDI: 0000000000000003
+[  774.575175] RBP: 00007fbc7c7e5560 R08: 0000000000000003 R09: 00007fbc7c7e43b0
+[  774.575182] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000001000
+[  774.575190] R13: 00007ffe5092d8e0 R14: 0000000000000d68 R15: 00007fbc7c7e4960
+[  774.575199] Modules linked in: w83627ehf hwmon_vid snd_hda_codec_realtek snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hwdep snd_pcsp snd_hda_core ir_rc6_decoder rc_rc6_mce uas r8169 mceusb snd_pcm
+iTCO_wdt rc_core snd_timer iTCO_vendor_support realtek snd libphy soundcore i2c_i801 lpc_ich parport_pc mfd_core parport coretemp hwmon autofs4
+[  774.575247] CR2: 0000000000000000
+[  774.575254] ---[ end trace 607462057ab8a988 ]---
+[  774.575264] RIP: 0010:w83627ehf_read_string+0x27/0x70 [w83627ehf]
+[  774.575273] Code: 00 00 00 55 53 48 8d 64 24 f0 83 fa 15 48 8b 5f 78 75 29 83 fe 01 75 24 48 63 c9 48 8b 6b 58 48 83 f9 03 77 24 0f b6 44 0b 50 <48> 8b 44 c5 00 49 89 00 48 8d 64 24 10 5b 31 c0 5d c3 48 8d 64 24
+[  774.575287] RSP: 0018:ffffb95980657df8 EFLAGS: 00010293
+[  774.575294] RAX: 0000000000000000 RBX: ffff96caaa7f5218 RCX: 0000000000000000
+[  774.575301] RDX: 0000000000000015 RSI: 0000000000000001 RDI: ffff96caa736ec08
+[  774.575308] RBP: 0000000000000000 R08: ffffb95980657e20 R09: 0000000000000001
+[  774.575316] R10: ffff96caaa635cc0 R11: 0000000000000000 R12: ffff96caa9f7cf00
+[  774.575323] R13: ffff96caa9ec3d00 R14: ffff96caa9ec3d28 R15: ffff96caa9ec3d40
+[  774.575331] FS:  00007fbc7c4e2740(0000) GS:ffff96caabc00000(0000) knlGS:0000000000000000
+[  774.575340] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  774.575347] CR2: 0000000000000000 CR3: 0000000129d58000 CR4: 00000000000006f0
+
+
 -- 
-Dearest Friend,
-
-Sorry for invading your privacy, my name is Susan S. Cage I am 81
-years, citizen of United States and presently in hospital undergoing
-chromatography for bronchogenic carcinomas (Lung cancer) which
-affected both Lungs. The doctors said I have few days to live because
-the cancer has now affected my brain.
-
-My late husband left Fifteen Million, Five Hundred British Pounds
-Sterling in my account, I want to transfer the money to you and I want
-you to use it as a donate for charitable and help the needy,
-motherless, less privileged and widows within your location.
-
-I need your assurance that you will use the fund for charity, once I a
-favorable reply from you, will inform my Bank through my lawyer to
-transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
-I receive your response, I will inform my bank in writing through my
-lawyer.
-
-
-
-Thank you and God bless you.
-
-Mrs. Susan S. Cage
+Meelis Roos <mroos@linux.ee>
