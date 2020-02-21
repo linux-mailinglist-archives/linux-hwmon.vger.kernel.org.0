@@ -2,662 +2,113 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3513A168987
-	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Feb 2020 22:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 265191689C6
+	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Feb 2020 23:05:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728384AbgBUVsW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 21 Feb 2020 16:48:22 -0500
-Received: from lists.gateworks.com ([108.161.130.12]:52809 "EHLO
-        lists.gateworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727635AbgBUVsW (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 21 Feb 2020 16:48:22 -0500
-Received: from 68-189-91-139.static.snlo.ca.charter.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-        by lists.gateworks.com with esmtp (Exim 4.82)
-        (envelope-from <tharvey@gateworks.com>)
-        id 1j5Fr8-00018b-KW; Fri, 21 Feb 2020 21:29:06 +0000
-From:   Tim Harvey <tharvey@gateworks.com>
-To:     Lee Jones <lee.jones@linaro.org>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Robert Jones <rjones@gateworks.com>
-Cc:     Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH v4 3/3] hwmon: add Gateworks System Controller support
-Date:   Fri, 21 Feb 2020 13:27:56 -0800
-Message-Id: <1582320476-1098-4-git-send-email-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1582320476-1098-1-git-send-email-tharvey@gateworks.com>
-References: <1582320476-1098-1-git-send-email-tharvey@gateworks.com>
+        id S1726787AbgBUWE7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 21 Feb 2020 17:04:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49572 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726725AbgBUWE7 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 21 Feb 2020 17:04:59 -0500
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 58CD72072C;
+        Fri, 21 Feb 2020 22:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582322698;
+        bh=ixkaQsOyXc65L7U5cAzBy/t7QDxhcFt3SZW7c7F25dw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=hE+MPvG/9HlApVb7a1C28KlYECMfNuRDiN5O/RjQeGCMCTPwZif/S/YvJ3If4HBTr
+         Zcf5e4RSkOSoTbbHRzOeqS1MPWOHar1v8y4TTptGKAnNkZlw4pcEM412p0OvN5oN2S
+         N6+5cm3k6Gaukxa1iLXjUVY1CJuM9VvipF3t7LrA=
+Received: by mail-qt1-f181.google.com with SMTP id n17so2428773qtv.2;
+        Fri, 21 Feb 2020 14:04:58 -0800 (PST)
+X-Gm-Message-State: APjAAAX5ccd/wo+Yi5RqNKmlZzcMfwAwJfJdzxQBsrVW/Yt432JeySLU
+        q5OnmIU6fMdpNPPyoR4nERzfkFpV0GbVVluKLA==
+X-Google-Smtp-Source: APXvYqzIdyYmWrgE2znfgfwuWRqr27wwCfU9j74qwfxNfJB8wFPqCO8UUY9xs6KKGgpRQQM31GBK5HGN7l7/vsKP0xo=
+X-Received: by 2002:aed:2344:: with SMTP id i4mr34521971qtc.136.1582322697489;
+ Fri, 21 Feb 2020 14:04:57 -0800 (PST)
+MIME-Version: 1.0
+References: <20200221041631.10960-1-chris.packham@alliedtelesis.co.nz>
+ <20200221041631.10960-4-chris.packham@alliedtelesis.co.nz>
+ <CAL_JsqK+jKyRr98_YX1GGwk-rHrLMOq_v7Z_57dQWYYQPuLS7A@mail.gmail.com> <20200221155259.GA11868@roeck-us.net>
+In-Reply-To: <20200221155259.GA11868@roeck-us.net>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 21 Feb 2020 16:04:45 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqK5MqD9vqS0A1oTDkMvVkBFM83_fLAp7M7zR5uEv+NEJw@mail.gmail.com>
+Message-ID: <CAL_JsqK5MqD9vqS0A1oTDkMvVkBFM83_fLAp7M7zR5uEv+NEJw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] dt-bindings: hwmon: Document adt7475 invert-pwm property
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Jean Delvare <jdelvare@suse.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Linux HWMON List <linux-hwmon@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Logan Shaw <logan.shaw@alliedtelesis.co.nz>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The Gateworks System Controller has a hwmon sub-component that exposes
-up to 16 ADC's, some of which are temperature sensors, others which are
-voltage inputs. The ADC configuration (register mapping and name) is
-configured via device-tree and varies board to board.
+On Fri, Feb 21, 2020 at 9:53 AM Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> On Fri, Feb 21, 2020 at 09:40:00AM -0600, Rob Herring wrote:
+> > On Thu, Feb 20, 2020 at 10:16 PM Chris Packham
+> > <chris.packham@alliedtelesis.co.nz> wrote:
+> > >
+> > > Add binding information for the invert-pwm property.
+> > >
+> > > Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> > > ---
+> > >
+> > > Notes:
+> > >     Changes in v4:
+> > >     - use $ref uint32 and enum
+> > >     - add adi vendor prefix
+> > >
+> > >     Cahnges in v3:
+> > >     - new
+> > >
+> > >  Documentation/devicetree/bindings/hwmon/adt7475.yaml | 12 ++++++++++++
+> > >  1 file changed, 12 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/hwmon/adt7475.yaml b/Documentation/devicetree/bindings/hwmon/adt7475.yaml
+> > > index e40612ee075f..6a358b30586c 100644
+> > > --- a/Documentation/devicetree/bindings/hwmon/adt7475.yaml
+> > > +++ b/Documentation/devicetree/bindings/hwmon/adt7475.yaml
+> > > @@ -50,6 +50,17 @@ patternProperties:
+> > >       - $ref: /schemas/types.yaml#/definitions/uint32
+> > >       - enum: [0, 1]
+> > >
+> > > +  "^adi,invert-pwm[1-3]$":
+> > > +    description: |
+> > > +      Configures the pwm output to use inverted logic. If set to 1
+> > > +      the pwm uses a logic low output for 100% duty cycle. If set
+> > > +      to 0 the pwm uses a logic high output for 100% duty cycle.
+> > > +      If the property is absent the pwm retains it's configuration
+> > > +      from the bios/bootloader.
+> >
+> > I believe we already have an inverted flag for consumers. That doesn't
+> > work if you don't have a consumer described in DT, but then the
+> > question is should you? Or is this something the user will want to
+> > configure from userspace.
+> >
+>
+> Normally that is a system property. It is difficult to imagine
+> that it would ever have to be configured from userspace at runtime.
+> Most of the time users won't have any idea, and the board datasheet
+> (if avaible) won't list such information.
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Yes, I agree and for those cases I'd expect the consumer is described
+in DT too. I read and refreshed my memory on this binding after
+sending this. I believe this is for a fan which I'd expect to be in DT
+as fans need power and there's different types.
 
-v4:
-- adjust for uV offset from device-tree
-- remove unnecessary optional write function
-- remove register range check
-- change dev_err prints to use gsc dev
-- hard-code resolution/scaling for raw adcs
-- describe units of ADC resolution
-- move to using pwm<n>_auto_point<m>_{pwm,temp} for FAN PWM
-- ensure space before/after operators
-- remove unnecessary parens
-- remove more debugging
-- add default case and comment for type_voltage
-- remove unnecessary index bounds checks for channel
-- remove unnecessary clearing of struct fields
-- added Documentation/hwmon/gsc-hwmon.rst
+The userspace case I was thinking of was more the hobbyist boards with
+PWM to a connector.
 
-v3:
-- add voltage_raw input type and supporting fields
-- add channel validation to is_visible function
-- remove unnecessary channel validation from read/write functions
-
-v2:
-- change license comment style
-- remove DEBUG
-- simplify regmap_bulk_read err check
-- remove break after returns in switch statement
-- fix fan setpoint buffer address
-- remove unnecessary parens
-- consistently use struct device *dev pointer
-- change license/comment block
-- add validation for hwmon child node props
-- move parsing of of to own function
-- use strlcpy to ensure null termination
-- fix static array sizes and removed unnecessary initializers
-- dynamically allocate channels
-- fix fan input label
-- support platform data
-- fixed whitespace issues
-
-merge with hwmon
-
-merge with hwmon
-
-scale by uV offset
----
- Documentation/hwmon/gsc-hwmon.rst       |  51 +++++
- Documentation/hwmon/index.rst           |   1 +
- MAINTAINERS                             |   3 +
- drivers/hwmon/Kconfig                   |   9 +
- drivers/hwmon/Makefile                  |   1 +
- drivers/hwmon/gsc-hwmon.c               | 387 ++++++++++++++++++++++++++++++++
- include/linux/platform_data/gsc_hwmon.h |  45 ++++
- 7 files changed, 497 insertions(+)
- create mode 100644 Documentation/hwmon/gsc-hwmon.rst
- create mode 100644 drivers/hwmon/gsc-hwmon.c
- create mode 100644 include/linux/platform_data/gsc_hwmon.h
-
-diff --git a/Documentation/hwmon/gsc-hwmon.rst b/Documentation/hwmon/gsc-hwmon.rst
-new file mode 100644
-index 00000000..194a8e6
---- /dev/null
-+++ b/Documentation/hwmon/gsc-hwmon.rst
-@@ -0,0 +1,51 @@
-+Kernel driver gsc-hwmon
-+=======================
-+
-+Supported chips: Gateworks GSC
-+Datasheet: http://trac.gateworks.com/wiki/gsc
-+Author: Tim Harvey <tharvey@gateworks.com>
-+
-+Description:
-+------------
-+
-+This driver supports hardware monitoring for the temperature sensor,
-+various ADC's connected to the GSC, and optional FAN controller available
-+on some boards.
-+
-+
-+Voltage Monitoring
-+------------------
-+
-+The voltage inputs are scaled either internally or by the driver depending
-+on the GSC version and firmware. The values returned by the driver do not need
-+further scaling. The voltage input labels provide the voltage rail name:
-+
-+inX_input                  Measured voltage (mV).
-+inX_label                  Name of voltage rail.
-+
-+
-+Temperature Monitoring
-+----------------------
-+
-+Temperatures are measured with 12-bit or 10-bit resolution and are scaled
-+either internally or by the driver depending on the GSC version and firmware.
-+The values returned by the driver reflect millidegree Celcius:
-+
-+tempX_input                Measured temperature.
-+tempX_label                Name of temperature input.
-+
-+
-+PWM Output Control
-+------------------
-+
-+The GSC features 1 PWM output that operates in automatic mode where the
-+PWM value will be scalled depending on 6 temperature boundaries.
-+The tempeature boundaries are read-write and in millidegree Celcius and the
-+read-only PWM values range from 0 (off) to 255 (full speed).
-+Fan speed will be set to minimum (off) when the temperature sensor reads
-+less than pwm1_auto_point1_temp and maximum when the temperature sensor
-+equals or exceeds pwm1_auto_point6_temp.
-+
-+pwm1_auto_point1_pwm       PWM value.
-+pwm1_auto_point1_temp      Temperature boundary.
-+
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 43cc605..a4fab69 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -58,6 +58,7 @@ Hardware Monitoring Kernel Drivers
-    ftsteutates
-    g760a
-    g762
-+   gsc-hwmon
-    gl518sm
-    hih6130
-    ibmaem
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bb79b60..19c0add 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6846,6 +6846,9 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
- F:	drivers/mfd/gateworks-gsc.c
- F:	include/linux/mfd/gsc.h
-+F:	Documentation/hwmon/gsc-hwmon
-+F:	drivers/hwmon/gsc-hwmon.c
-+F:	include/linux/platform_data/gsc_hwmon.h
- 
- GCC PLUGINS
- M:	Kees Cook <keescook@chromium.org>
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 23dfe84..99dae13 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -494,6 +494,15 @@ config SENSORS_F75375S
- 	  This driver can also be built as a module. If so, the module
- 	  will be called f75375s.
- 
-+config SENSORS_GSC
-+        tristate "Gateworks System Controller ADC"
-+        depends on MFD_GATEWORKS_GSC
-+        help
-+          Support for the Gateworks System Controller A/D converters.
-+
-+	  To compile this driver as a module, choose M here:
-+	  the module will be called gsc-hwmon.
-+
- config SENSORS_MC13783_ADC
-         tristate "Freescale MC13783/MC13892 ADC"
-         depends on MFD_MC13XXX
-diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index 6db5db9..259cba7 100644
---- a/drivers/hwmon/Makefile
-+++ b/drivers/hwmon/Makefile
-@@ -71,6 +71,7 @@ obj-$(CONFIG_SENSORS_G760A)	+= g760a.o
- obj-$(CONFIG_SENSORS_G762)	+= g762.o
- obj-$(CONFIG_SENSORS_GL518SM)	+= gl518sm.o
- obj-$(CONFIG_SENSORS_GL520SM)	+= gl520sm.o
-+obj-$(CONFIG_SENSORS_GSC)	+= gsc-hwmon.o
- obj-$(CONFIG_SENSORS_GPIO_FAN)	+= gpio-fan.o
- obj-$(CONFIG_SENSORS_HIH6130)	+= hih6130.o
- obj-$(CONFIG_SENSORS_ULTRA45)	+= ultra45_env.o
-diff --git a/drivers/hwmon/gsc-hwmon.c b/drivers/hwmon/gsc-hwmon.c
-new file mode 100644
-index 00000000..e38fcc8
---- /dev/null
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -0,0 +1,387 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for Gateworks System Controller Hardware Monitor module
-+ *
-+ * Copyright (C) 2020 Gateworks Corporation
-+ */
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
-+#include <linux/mfd/gsc.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+
-+#include <linux/platform_data/gsc_hwmon.h>
-+
-+#define GSC_HWMON_MAX_TEMP_CH	16
-+#define GSC_HWMON_MAX_IN_CH	16
-+
-+#define GSC_HWMON_RESOLUTION	12
-+#define GSC_HWMON_VREF		2500
-+
-+struct gsc_hwmon_data {
-+	struct gsc_dev *gsc;
-+	struct device *dev;
-+	struct gsc_hwmon_platform_data *pdata;
-+	const struct gsc_hwmon_channel *temp_ch[GSC_HWMON_MAX_TEMP_CH];
-+	const struct gsc_hwmon_channel *in_ch[GSC_HWMON_MAX_IN_CH];
-+	u32 temp_config[GSC_HWMON_MAX_TEMP_CH + 1];
-+	u32 in_config[GSC_HWMON_MAX_IN_CH + 1];
-+	struct hwmon_channel_info temp_info;
-+	struct hwmon_channel_info in_info;
-+	const struct hwmon_channel_info *info[4];
-+	struct hwmon_chip_info chip;
-+};
-+
-+static ssize_t show_pwm_auto_point_temp(struct device *dev,
-+					struct device_attribute *devattr,
-+					char *buf)
-+{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-+	u8 reg = hwmon->pdata->fan_base + (2 * attr->index);
-+	u8 regs[2];
-+	int ret;
-+
-+	ret = regmap_bulk_read(hwmon->gsc->regmap_hwmon, reg, regs, 2);
-+	if (ret)
-+		return ret;
-+
-+	ret = regs[0] | regs[1] << 8;
-+	return sprintf(buf, "%d\n", ret * 10);
-+}
-+
-+static ssize_t set_pwm_auto_point_temp(struct device *dev,
-+				       struct device_attribute *devattr,
-+				       const char *buf, size_t count)
-+{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-+	u8 reg = hwmon->pdata->fan_base + (2 * attr->index);
-+	u8 regs[2];
-+	long temp;
-+	int err;
-+
-+	if (kstrtol(buf, 10, &temp))
-+		return -EINVAL;
-+
-+	temp = clamp_val(temp, 0, 10000);
-+	temp = DIV_ROUND_CLOSEST(temp, 10);
-+
-+	regs[0] = temp & 0xff;
-+	regs[1] = (temp >> 8) & 0xff;
-+	err = regmap_bulk_write(hwmon->gsc->regmap_hwmon, reg, regs, 2);
-+	if (err)
-+		return err;
-+
-+	return count;
-+}
-+
-+static ssize_t show_pwm_auto_point_pwm(struct device *dev,
-+				       struct device_attribute *devattr,
-+				       char *buf)
-+{
-+	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-+
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
-+}
-+
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point1_pwm, S_IRUGO,
-+			  show_pwm_auto_point_pwm, NULL, 0);
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point1_temp, S_IRUGO | S_IWUSR,
-+			  show_pwm_auto_point_temp, set_pwm_auto_point_temp, 0);
-+
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point2_pwm, S_IRUGO,
-+			  show_pwm_auto_point_pwm, NULL, 1);
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point2_temp, S_IRUGO | S_IWUSR,
-+			  show_pwm_auto_point_temp, set_pwm_auto_point_temp, 1);
-+
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point3_pwm, S_IRUGO,
-+			  show_pwm_auto_point_pwm, NULL, 2);
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point3_temp, S_IRUGO | S_IWUSR,
-+			  show_pwm_auto_point_temp, set_pwm_auto_point_temp, 2);
-+
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point4_pwm, S_IRUGO,
-+			  show_pwm_auto_point_pwm, NULL, 3);
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point4_temp, S_IRUGO | S_IWUSR,
-+			  show_pwm_auto_point_temp, set_pwm_auto_point_temp, 3);
-+
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point5_pwm, S_IRUGO,
-+			  show_pwm_auto_point_pwm, NULL, 4);
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point5_temp, S_IRUGO | S_IWUSR,
-+			  show_pwm_auto_point_temp, set_pwm_auto_point_temp, 4);
-+
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point6_pwm, S_IRUGO,
-+			  show_pwm_auto_point_pwm, NULL, 5);
-+static SENSOR_DEVICE_ATTR(pwm1_auto_point6_temp, S_IRUGO | S_IWUSR,
-+			  show_pwm_auto_point_temp, set_pwm_auto_point_temp, 5);
-+
-+static struct attribute *gsc_hwmon_attributes[] = {
-+	&sensor_dev_attr_pwm1_auto_point1_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point1_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point2_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point2_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point3_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point3_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point4_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point4_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point5_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point5_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point6_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point6_temp.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group gsc_hwmon_group = {
-+	.attrs = gsc_hwmon_attributes,
-+};
-+__ATTRIBUTE_GROUPS(gsc_hwmon);
-+
-+static int
-+gsc_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-+	       int channel, long *val)
-+{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+	const struct gsc_hwmon_channel *ch;
-+	int sz, ret;
-+	u8 buf[3];
-+
-+	switch (type) {
-+	case hwmon_in:
-+		ch = hwmon->in_ch[channel];
-+		break;
-+	case hwmon_temp:
-+		ch = hwmon->temp_ch[channel];
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	sz = (ch->type == type_voltage) ? 3 : 2;
-+	ret = regmap_bulk_read(hwmon->gsc->regmap_hwmon, ch->reg, buf, sz);
-+	if (ret)
-+		return ret;
-+
-+	*val = 0;
-+	while (sz-- > 0)
-+		*val |= (buf[sz] << (8 * sz));
-+
-+	switch (ch->type) {
-+	case type_temperature:
-+		if (*val > 0x8000)
-+			*val -= 0xffff;
-+		break;
-+	case type_voltage_raw:
-+		*val = clamp_val(*val, 0, BIT(GSC_HWMON_RESOLUTION));
-+		/* scale based on ref voltage and ADC resolution */
-+		*val *= GSC_HWMON_VREF;
-+		*val /= BIT(GSC_HWMON_RESOLUTION);
-+		/* scale based on optional voltage divider */
-+		if (ch->vdiv[0] && ch->vdiv[1]) {
-+			*val *= (ch->vdiv[0] + ch->vdiv[1]);
-+			*val /= ch->vdiv[1];
-+		}
-+		/* adjust by uV offset */
-+		*val += (ch->voffset / 1000);
-+		break;
-+	case type_voltage:
-+		/* no adjustment needed */
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+gsc_hwmon_read_string(struct device *dev, enum hwmon_sensor_types type,
-+		      u32 attr, int channel, const char **buf)
-+{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+
-+	switch (type) {
-+	case hwmon_in:
-+		*buf = hwmon->in_ch[channel]->name;
-+		break;
-+	case hwmon_temp:
-+		*buf = hwmon->temp_ch[channel]->name;
-+		break;
-+	default:
-+		return -ENOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+static umode_t
-+gsc_hwmon_is_visible(const void *_data, enum hwmon_sensor_types type, u32 attr,
-+		     int ch)
-+{
-+	switch (type) {
-+	case hwmon_temp:
-+		return S_IRUGO;
-+	case hwmon_in:
-+		return S_IRUGO;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static const struct hwmon_ops gsc_hwmon_ops = {
-+	.is_visible = gsc_hwmon_is_visible,
-+	.read = gsc_hwmon_read,
-+	.read_string = gsc_hwmon_read_string,
-+};
-+
-+static struct gsc_hwmon_platform_data *
-+gsc_hwmon_get_devtree_pdata(struct device *dev)
-+{
-+	struct gsc_hwmon_platform_data *pdata;
-+	struct gsc_hwmon_channel *ch;
-+	struct fwnode_handle *child;
-+	const char *type;
-+	int nchannels;
-+
-+	nchannels = device_get_child_node_count(dev);
-+	if (nchannels == 0)
-+		return ERR_PTR(-ENODEV);
-+
-+	pdata = devm_kzalloc(dev,
-+			     sizeof(*pdata) + nchannels * sizeof(*ch),
-+			     GFP_KERNEL);
-+	if (!pdata)
-+		return ERR_PTR(-ENOMEM);
-+	ch = (struct gsc_hwmon_channel *)(pdata + 1);
-+	pdata->channels = ch;
-+	pdata->nchannels = nchannels;
-+
-+	device_property_read_u32(dev, "gw,fan-base", &pdata->fan_base);
-+
-+	/* allocate structures for channels and count instances of each type */
-+	device_for_each_child_node(dev, child) {
-+		if (fwnode_property_read_string(child, "label", &ch->name)) {
-+			dev_err(dev, "channel without label\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (fwnode_property_read_u32(child, "reg", &ch->reg)) {
-+			dev_err(dev, "channel without reg\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (fwnode_property_read_string(child, "type", &type)) {
-+			dev_err(dev, "channel without type\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (!strcasecmp(type, "temperature"))
-+			ch->type = type_temperature;
-+		else if (!strcasecmp(type, "voltage"))
-+			ch->type = type_voltage;
-+		else if (!strcasecmp(type, "voltage-raw"))
-+			ch->type = type_voltage_raw;
-+		else {
-+			dev_err(dev, "channel without type\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+
-+		fwnode_property_read_u32(child, "gw,voltage-offset",
-+			&ch->voffset);
-+		fwnode_property_read_u32_array(child, "gw,voltage-divider",
-+			ch->vdiv, ARRAY_SIZE(ch->vdiv));
-+		ch++;
-+	}
-+
-+	return pdata;
-+}
-+
-+static int gsc_hwmon_probe(struct platform_device *pdev)
-+{
-+	struct gsc_dev *gsc = dev_get_drvdata(pdev->dev.parent);
-+	struct device *dev = &pdev->dev;
-+	struct gsc_hwmon_platform_data *pdata = dev_get_platdata(dev);
-+	struct gsc_hwmon_data *hwmon;
-+	const struct attribute_group **groups;
-+	int i, i_in, i_temp;
-+
-+	if (!pdata) {
-+		pdata = gsc_hwmon_get_devtree_pdata(dev);
-+		if (IS_ERR(pdata))
-+			return PTR_ERR(pdata);
-+	}
-+
-+	hwmon = devm_kzalloc(dev, sizeof(*hwmon), GFP_KERNEL);
-+	if (!hwmon)
-+		return -ENOMEM;
-+	hwmon->gsc = gsc;
-+	hwmon->pdata = pdata;
-+
-+	for (i = 0, i_in = 0, i_temp = 0; i < hwmon->pdata->nchannels; i++) {
-+		const struct gsc_hwmon_channel *ch = &pdata->channels[i];
-+
-+		switch (ch->type) {
-+		case type_temperature:
-+			if (i_temp == GSC_HWMON_MAX_TEMP_CH) {
-+				dev_err(gsc->dev, "too many temp channels\n");
-+				return -EINVAL;
-+			}
-+			hwmon->temp_ch[i_temp] = ch;
-+			hwmon->temp_config[i_temp] = HWMON_T_INPUT |
-+						     HWMON_T_LABEL;
-+			i_temp++;
-+			break;
-+		case type_voltage:
-+		case type_voltage_raw:
-+			if (i_in == GSC_HWMON_MAX_IN_CH) {
-+				dev_err(gsc->dev, "too many input channels\n");
-+				return -EINVAL;
-+			}
-+			hwmon->in_ch[i_in] = ch;
-+			hwmon->in_config[i_in] =
-+				HWMON_I_INPUT | HWMON_I_LABEL;
-+			i_in++;
-+			break;
-+		default:
-+			dev_err(gsc->dev, "invalid type: %d\n", ch->type);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* setup config structures */
-+	hwmon->chip.ops = &gsc_hwmon_ops;
-+	hwmon->chip.info = hwmon->info;
-+	hwmon->info[0] = &hwmon->temp_info;
-+	hwmon->info[1] = &hwmon->in_info;
-+	hwmon->temp_info.type = hwmon_temp;
-+	hwmon->temp_info.config = hwmon->temp_config;
-+	hwmon->in_info.type = hwmon_in;
-+	hwmon->in_info.config = hwmon->in_config;
-+
-+	groups = pdata->fan_base ? gsc_hwmon_groups : NULL;
-+	hwmon->dev = devm_hwmon_device_register_with_info(dev,
-+							  KBUILD_MODNAME, hwmon,
-+							  &hwmon->chip, groups);
-+	return PTR_ERR_OR_ZERO(hwmon->dev);
-+}
-+
-+static const struct of_device_id gsc_hwmon_of_match[] = {
-+	{ .compatible = "gw,gsc-hwmon", },
-+	{}
-+};
-+
-+static struct platform_driver gsc_hwmon_driver = {
-+	.driver = {
-+		.name = "gsc-hwmon",
-+		.of_match_table = gsc_hwmon_of_match,
-+	},
-+	.probe = gsc_hwmon_probe,
-+};
-+
-+module_platform_driver(gsc_hwmon_driver);
-+
-+MODULE_AUTHOR("Tim Harvey <tharvey@gateworks.com>");
-+MODULE_DESCRIPTION("GSC hardware monitor driver");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/platform_data/gsc_hwmon.h b/include/linux/platform_data/gsc_hwmon.h
-new file mode 100644
-index 00000000..fab1ec9
---- /dev/null
-+++ b/include/linux/platform_data/gsc_hwmon.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _GSC_HWMON_H
-+#define _GSC_HWMON_H
-+
-+enum gsc_hwmon_type {
-+	type_temperature,
-+	type_voltage,
-+	type_voltage_raw,
-+	type_fan,
-+};
-+
-+/**
-+ * struct gsc_hwmon_channel - configuration parameters
-+ * @reg:  I2C register offset
-+ * @type: channel type
-+ * @name: channel name
-+ * @voffset: voltage offset (mV)
-+ * @vdiv: voltage divider array (2 resistor values in ohms)
-+ */
-+struct gsc_hwmon_channel {
-+	unsigned int reg;
-+	unsigned int type;
-+	const char *name;
-+	unsigned int voffset;
-+	unsigned int vdiv[2];
-+};
-+
-+/**
-+ * struct gsc_hwmon_platform_data - platform data for gsc_hwmon driver
-+ * @channels:	pointer to array of gsc_hwmon_channel structures
-+ *		describing channels
-+ * @nchannels:	number of elements in @channels array
-+ * @vreference: voltage reference (mV)
-+ * @resolution: ADC bit resolution
-+ * @fan_base: register base for FAN controller
-+ */
-+struct gsc_hwmon_platform_data {
-+	const struct gsc_hwmon_channel *channels;
-+	int nchannels;
-+	unsigned int resolution;
-+	unsigned int vreference;
-+	unsigned int fan_base;
-+};
-+
-+#endif
--- 
-2.7.4
-
+Rob
