@@ -2,135 +2,147 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC11166E59
-	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Feb 2020 05:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BD61168102
+	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Feb 2020 15:59:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729718AbgBUEQr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 20 Feb 2020 23:16:47 -0500
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:58154 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729615AbgBUEQq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 20 Feb 2020 23:16:46 -0500
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 3B4EE891AB;
-        Fri, 21 Feb 2020 17:16:44 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1582258604;
-        bh=RwLHepCx03CNEZvF3kbx50mD0JOEcmY6pn/SjTogwSg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=jR/pmPxdWw38ncgsejH7KkxLbNfeEt8pCw1DgbTuET8+Uuk9YGsOPxykPk2QzYiVu
-         POQZBqWT/DgyTOM2Y+Z9PHov6EuQrUMfPYvgTytH8au24H1ZHiN+EaEzHlc94YuUd5
-         zjjqeKJOWP5QPRh77uIfl3JvrDmL/5DSBvWC+gC3z0YnQjAz4b0lHtCM85cl3pnvMO
-         LJnokr4OaYK0iTtCU4vEyPRRJz2sH44brrtoYJTsrfwHya9ok+eoElwXaSSbOQ2lMn
-         6iILQifkIfUMFwxFTrVNONEK9ffKdQDJqL5RNCLDjofcbG7OASI4bk+d0CANs6bDjb
-         ejEKo+Cwb6Obg==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5e4f59ac0004>; Fri, 21 Feb 2020 17:16:44 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
-        by smtp (Postfix) with ESMTP id 7BFB813EECD;
-        Fri, 21 Feb 2020 17:16:43 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-        id 1001028006D; Fri, 21 Feb 2020 17:16:44 +1300 (NZDT)
-From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
-To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, logan.shaw@alliedtelesis.co.nz,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v4 5/5] hwmon: (adt7475) Add support for inverting pwm output
-Date:   Fri, 21 Feb 2020 17:16:31 +1300
-Message-Id: <20200221041631.10960-6-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200221041631.10960-1-chris.packham@alliedtelesis.co.nz>
-References: <20200221041631.10960-1-chris.packham@alliedtelesis.co.nz>
+        id S1728804AbgBUO7i (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 21 Feb 2020 09:59:38 -0500
+Received: from mx.treblig.org ([46.43.15.161]:35714 "EHLO mx.treblig.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728712AbgBUO7i (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 21 Feb 2020 09:59:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+        ; s=bytemarkmx; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
+        :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=vFIv1dwmLEvctUlA21Frce+XlkNxhaPdEpGbDXRNUVM=; b=P3BVQdI+Z4D8f9Tl4ivnRpx4Jg
+        my8Az1quXUcL2Mo4b4SiOKUhlhtb7QPsJFaqtfrlRKKWN5BCkkdaEo8t0yC5RR4legXRsRL0IVYAs
+        zDIQo0/zv7nxnoZ/BDGfmGfojei5N1Y1Llqv/1dSPuuv2E15zZxc6Qexs0DZshDx+dPdPCGEk/GEe
+        uvyWSJaSZ57wy1ltArl9AqF4cA5QwnZO9t/b0UPOYwfa+L+o/jnPEGvmAehsFBiGyaNnUsxOgRBp/
+        XTEQT7WmhAgviJXZi/3RWmUkd7MRto6IygnUT278fQ467Xu/HfG2gbdXfpIgYC3K789g11VsnLoZG
+        xgNaSpnw==;
+Received: from dg by mx.treblig.org with local (Exim 4.92)
+        (envelope-from <dg@treblig.org>)
+        id 1j59mB-0005Jw-Np; Fri, 21 Feb 2020 14:59:35 +0000
+Date:   Fri, 21 Feb 2020 14:59:35 +0000
+From:   "Dr. David Alan Gilbert" <linux@treblig.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Hardware Monitoring <linux-hwmon@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>, Meelis Roos <mroos@linux.ee>
+Subject: Re: [PATCH] hwmon: (w83627ehf) Fix crash seen with W83627DHG-P
+Message-ID: <20200221145935.GA8422@gallifrey>
+References: <20200220143744.10278-1-linux@roeck-us.net>
+ <20200220201642.GD18071@gallifrey>
+ <20200220203937.GA23969@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200220203937.GA23969@roeck-us.net>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/4.19.0-5-amd64 (x86_64)
+X-Uptime: 14:58:14 up 173 days, 15:18,  1 user,  load average: 0.09, 0.08,
+ 0.02
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add a "invert-pwm" device-tree property to allow hardware designs to use
-inverted logic on the PWM output. Preserve the invert PWM output bit if
-the property is not found to allow for bootloaders/bios which may have
-configured this earlier.
+* Guenter Roeck (linux@roeck-us.net) wrote:
+> On Thu, Feb 20, 2020 at 08:16:42PM +0000, Dr. David Alan Gilbert wrote:
+> > * Guenter Roeck (linux@roeck-us.net) wrote:
+> > > Loading the driver on a system with W83627DHG-P crashes as follows.
+> > > 
+> > > w83627ehf: Found W83627DHG-P chip at 0x290
+> > > BUG: kernel NULL pointer dereference, address: 0000000000000000
+> > > PGD 0 P4D 0
+> > > Oops: 0000 [#1] SMP NOPTI
+> > > CPU: 0 PID: 604 Comm: sensors Not tainted 5.6.0-rc2-00055-gca7e1fd1026c #29
+> > > Hardware name:  /D425KT, BIOS MWPNT10N.86A.0132.2013.0726.1534 07/26/2013
+> > > RIP: 0010:w83627ehf_read_string+0x27/0x70 [w83627ehf]
+> > > Code: [... ]
+> > > RSP: 0018:ffffb95980657df8 EFLAGS: 00010293
+> > > RAX: 0000000000000000 RBX: ffff96caaa7f5218 RCX: 0000000000000000
+> > > RDX: 0000000000000015 RSI: 0000000000000001 RDI: ffff96caa736ec08
+> > > RBP: 0000000000000000 R08: ffffb95980657e20 R09: 0000000000000001
+> > > R10: ffff96caaa635cc0 R11: 0000000000000000 R12: ffff96caa9f7cf00
+> > > R13: ffff96caa9ec3d00 R14: ffff96caa9ec3d28 R15: ffff96caa9ec3d40
+> > > FS:  00007fbc7c4e2740(0000) GS:ffff96caabc00000(0000) knlGS:0000000000000000
+> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > CR2: 0000000000000000 CR3: 0000000129d58000 CR4: 00000000000006f0
+> > > Call Trace:
+> > >  ? cp_new_stat+0x12d/0x160
+> > >  hwmon_attr_show_string+0x37/0x70 [hwmon]
+> > >  dev_attr_show+0x14/0x50
+> > >  sysfs_kf_seq_show+0xb5/0x1b0
+> > >  seq_read+0xcf/0x460
+> > >  vfs_read+0x9b/0x150
+> > >  ksys_read+0x5f/0xe0
+> > >  do_syscall_64+0x48/0x190
+> > >  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> > > ...
+> > > 
+> > > Temperature labels are not always present. Adjust sysfs attribute
+> > > visibility accordingly.
+> > > 
+> > > Reported-by: Meelis Roos <mroos@linux.ee>
+> > > Cc: Meelis Roos <mroos@linux.ee>
+> > > Cc: Dr. David Alan Gilbert <linux@treblig.org>
+> > > Fixes: 266cd5835947 ("hwmon: (w83627ehf) convert to with_info interface")
+> > > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> > 
+> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> > 
+> That would be Reviewed-by:, not Signed-off-by:. See
+> Documentation/process/submitting-patches.rst.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
+OK, I did Signed-Off because it was mostly the code I'd posted.
 
-Notes:
-    Changes in v4:
-    - use vendor prefix for new property
-   =20
-    Changes in v3:
-    - New
+> Note that I added "Suggested-by:" to reflect that you provided
+> the suggested solution.
 
- drivers/hwmon/adt7475.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+Sure,
+Reviewed-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 3649b18359dc..13267181dde6 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1509,6 +1509,41 @@ static int load_attenuators(const struct i2c_clien=
-t *client, int chip,
- 	return 0;
- }
-=20
-+static int adt7475_set_pwm_polarity(struct i2c_client *client)
-+{
-+	char *prop;
-+	int ret, i;
-+	u8 val;
-+
-+	for (i =3D 0; i < ADT7475_PWM_COUNT; i++) {
-+		ret =3D adt7475_read(PWM_CONFIG_REG(i));
-+		if (ret < 0)
-+			return ret;
-+		val =3D ret;
-+		switch (i) {
-+		case 0:
-+			prop =3D "adi,invert-pwm1";
-+			break;
-+		case 1:
-+			prop =3D "adi,invert-pwm2";
-+			break;
-+		case 2:
-+			prop =3D "adi,invert-pwm3";
-+			break;
-+		}
-+
-+		ret =3D set_property_bit(client, prop, &val, 4);
-+		if (ret)
-+			continue;
-+
-+		ret =3D i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(i), val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int adt7475_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1617,6 +1652,10 @@ static int adt7475_probe(struct i2c_client *client=
-,
- 	for (i =3D 0; i < ADT7475_PWM_COUNT; i++)
- 		adt7475_read_pwm(client, i);
-=20
-+	ret =3D adt7475_set_pwm_polarity(client);
-+	if (ret)
-+		dev_err(&client->dev, "Error configuring pwm polarity");
-+
- 	/* Start monitoring */
- 	switch (chip) {
- 	case adt7475:
---=20
-2.25.0
 
+> Thanks,
+> Guenter
+> 
+> > > ---
+> > >  drivers/hwmon/w83627ehf.c | 7 ++++++-
+> > >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+> > > index 7ffadc2da57b..5a5120121e50 100644
+> > > --- a/drivers/hwmon/w83627ehf.c
+> > > +++ b/drivers/hwmon/w83627ehf.c
+> > > @@ -1346,8 +1346,13 @@ w83627ehf_is_visible(const void *drvdata, enum hwmon_sensor_types type,
+> > >  		/* channel 0.., name 1.. */
+> > >  		if (!(data->have_temp & (1 << channel)))
+> > >  			return 0;
+> > > -		if (attr == hwmon_temp_input || attr == hwmon_temp_label)
+> > > +		if (attr == hwmon_temp_input)
+> > >  			return 0444;
+> > > +		if (attr == hwmon_temp_label) {
+> > > +			if (data->temp_label)
+> > > +				return 0444;
+> > > +			return 0;
+> > > +		}
+> > >  		if (channel == 2 && data->temp3_val_only)
+> > >  			return 0;
+> > >  		if (attr == hwmon_temp_max) {
+> > > -- 
+> > > 2.17.1
+> > > 
+> > -- 
+> >  -----Open up your eyes, open up your mind, open up your code -------   
+> > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+> > \        dave @ treblig.org |                               | In Hex /
+> >  \ _________________________|_____ http://www.treblig.org   |_______/
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
