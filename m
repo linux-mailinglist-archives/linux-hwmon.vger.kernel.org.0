@@ -2,27 +2,27 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4874916A706
+	by mail.lfdr.de (Postfix) with ESMTP id C798416A707
 	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Feb 2020 14:13:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727378AbgBXNNG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        id S1727299AbgBXNNG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
         Mon, 24 Feb 2020 08:13:06 -0500
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:49644 "EHLO
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:49645 "EHLO
         mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727299AbgBXNNF (ORCPT
+        with ESMTP id S1727348AbgBXNNF (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Mon, 24 Feb 2020 08:13:05 -0500
 Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
-        with ESMTPS (AES256-SHA encrypted); 24 Feb 2020 15:13:00 +0200
+        with ESMTPS (AES256-SHA encrypted); 24 Feb 2020 15:13:01 +0200
 Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 01ODCxTE012666;
-        Mon, 24 Feb 2020 15:13:00 +0200
+        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 01ODCxTF012666;
+        Mon, 24 Feb 2020 15:13:01 +0200
 From:   Vadim Pasternak <vadimp@mellanox.com>
 To:     linux@roeck-us.net
 Cc:     linux-hwmon@vger.kernel.org, Vadim Pasternak <vadimp@mellanox.com>
-Subject: [hwmon-next v1 1/2] hwmon: (pmbus/core) Add callback for register to data conversion
-Date:   Mon, 24 Feb 2020 13:12:56 +0000
-Message-Id: <20200224131257.28176-2-vadimp@mellanox.com>
+Subject: [hwmon-next v1 2/2] hwmon: (pmbus/xdpe12284) Add custom format for vout limits conversion
+Date:   Mon, 24 Feb 2020 13:12:57 +0000
+Message-Id: <20200224131257.28176-3-vadimp@mellanox.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20200224131257.28176-1-vadimp@mellanox.com>
 References: <20200224131257.28176-1-vadimp@mellanox.com>
@@ -31,47 +31,58 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add callback reg2data() to allow device specific formatting for
-particular registers.
-Currently there is an assumption that 'limits' and 'history' registers
-are inherited conversion format from the relevant sensor class.
-But there are some devices, which for example, provides 'vout'
-register reading in 'vid' format, while 'limits' or 'history'
-registers for 'vout' are provided in linear format.
+Provide callback for overvoltage and undervoltage output readouts
+conversion. These registers are presented in 'slinear11' format, while
+default conversion for 'vout' class for the devices is 'vid'. It is
+resulted in wrong conversion in pmbus_reg2data() for in{3-4}_lcrit and
+in{3-4}_crit attributes.
 
 Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
 ---
- drivers/hwmon/pmbus/pmbus.h      | 1 +
- drivers/hwmon/pmbus/pmbus_core.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/hwmon/pmbus/xdpe12284.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
-index 18e06fc6c53f..7acd75303c7f 100644
---- a/drivers/hwmon/pmbus/pmbus.h
-+++ b/drivers/hwmon/pmbus/pmbus.h
-@@ -427,6 +427,7 @@ struct pmbus_driver_info {
- 	int (*write_word_data)(struct i2c_client *client, int page, int reg,
- 			       u16 word);
- 	int (*write_byte)(struct i2c_client *client, int page, u8 value);
-+	int (*reg2data)(u16 reg, int data, long *val);
- 	/*
- 	 * The identify function determines supported PMBus functionality.
- 	 * This function is only necessary if a chip driver supports multiple
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index 8d321bf7d15b..e1f88d362549 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -747,6 +747,10 @@ static long pmbus_reg2data(struct pmbus_data *data, struct pmbus_sensor *sensor)
- 	if (!sensor->convert)
- 		return sensor->data;
+diff --git a/drivers/hwmon/pmbus/xdpe12284.c b/drivers/hwmon/pmbus/xdpe12284.c
+index ecd9b65627ec..751c8e18c881 100644
+--- a/drivers/hwmon/pmbus/xdpe12284.c
++++ b/drivers/hwmon/pmbus/xdpe12284.c
+@@ -18,6 +18,28 @@
+ #define XDPE122_AMD_625MV		0x10 /* AMD mode 6.25mV */
+ #define XDPE122_PAGE_NUM		2
  
-+	if (data->info->reg2data &&
-+	    data->info->reg2data(sensor->reg, sensor->data, &val) != -ENODATA)
-+		return val;
++static int xdpe122_reg2data(u16 reg, int data, long *val)
++{
++	s16 exponent;
++	s32 mantissa;
 +
- 	switch (data->info->format[sensor->class]) {
- 	case direct:
- 		val = pmbus_reg2data_direct(data, sensor);
++	switch (reg) {
++	case PMBUS_VOUT_OV_FAULT_LIMIT:
++	case PMBUS_VOUT_UV_FAULT_LIMIT:
++		/* Convert to LINEAR11. */
++		exponent = ((s16)data) >> 11;
++		mantissa = ((s16)((data & GENMASK(10, 0)) << 5)) >> 5;
++		*val = mantissa * 1000L;
++		if (exponent >= 0)
++			*val <<= exponent;
++		else
++			*val >>= -exponent;
++		return 0;
++	default:
++		return -ENODATA;
++	}
++}
++
+ static int xdpe122_identify(struct i2c_client *client,
+ 			    struct pmbus_driver_info *info)
+ {
+@@ -70,6 +92,7 @@ static struct pmbus_driver_info xdpe122_info = {
+ 		PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP |
+ 		PMBUS_HAVE_POUT | PMBUS_HAVE_PIN | PMBUS_HAVE_STATUS_INPUT,
+ 	.identify = xdpe122_identify,
++	.reg2data = xdpe122_reg2data,
+ };
+ 
+ static int xdpe122_probe(struct i2c_client *client,
 -- 
 2.11.0
 
