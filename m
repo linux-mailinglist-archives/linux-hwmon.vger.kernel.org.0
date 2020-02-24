@@ -2,127 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB99816B48E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Feb 2020 23:52:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C69E16B568
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Feb 2020 00:27:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727459AbgBXWwH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Feb 2020 17:52:07 -0500
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:49762 "EHLO
-        mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726651AbgBXWwG (ORCPT
+        id S1728527AbgBXX1F (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 24 Feb 2020 18:27:05 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:50284 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727976AbgBXX1D (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Feb 2020 17:52:06 -0500
-Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
-        with ESMTPS (AES256-SHA encrypted); 25 Feb 2020 00:52:05 +0200
-Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 01OMq4sg003653;
-        Tue, 25 Feb 2020 00:52:04 +0200
-From:   Vadim Pasternak <vadimp@mellanox.com>
-To:     linux@roeck-us.net
-Cc:     linux-hwmon@vger.kernel.org, Vadim Pasternak <vadimp@mellanox.com>
-Subject: [hwmon-next v3] hwmon: (pmbus/xdpe12284) Add callback for vout limits conversion
-Date:   Tue, 25 Feb 2020 00:52:02 +0200
-Message-Id: <20200224225202.19576-1-vadimp@mellanox.com>
-X-Mailer: git-send-email 2.11.0
+        Mon, 24 Feb 2020 18:27:03 -0500
+Received: by mail-wm1-f66.google.com with SMTP id a5so1111953wmb.0;
+        Mon, 24 Feb 2020 15:27:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=8NVlvzE3Tm6P+gLHVWoR+a8t0nwDLWG0p5mfxUKacM8=;
+        b=RsqzdoQe89nHPyKET3qT33aLg5yAxbgQswsmIDvzPvSW7D6bHtfMRpm0nbYYuP4Gtt
+         B9UsEgE7n86ChF4Dm6CIHlaSOhB5/4iMGOzhwM49ofX6YupnwF+7Qvhl4TF4+CiJr4S4
+         gLAuRlDJS6BS6BWZVUrvXnLV2pIPM2RinXRL5M1SyZqy5zoNxw4qPmPH1IXpoy0Avgcd
+         JMoKZKKULwgWohALQ2Y4RnbO6yAUZ6ozphw0I7QDihAmUW7SiDK56UfXHlbjAOsdsiuF
+         ipYwR+jDXaNnHyRfHBAu5Hs5SLJZaactWOr2h572/bjV0WUAH+P8DGZ6D9Y0pXgz8coa
+         rg6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8NVlvzE3Tm6P+gLHVWoR+a8t0nwDLWG0p5mfxUKacM8=;
+        b=D5iotJNP3zLFJQ0xnxCNUUm7xYMcO2lssrHNCDQhO1+7gW6DYeSVdIX1Mb7fN+IF9G
+         xIJ9xXeLNUvJkXSe1089NcnaxRPXhE8aVRtkMBTgYvaeDeAQqorB98bmRoN4JVPVDIAO
+         ix5Ty7O0kIejFyiddP+5y4qaZZv+RwAt+v7BxeMPTb/+wjVBNk2R044Et9/2+q4ZTRA4
+         uX7NEODcmFEfSCEh1+l6VEx9DibUxo1+EHlnK2DiwjGm3VkL2EfJzYjM9Y7/0EFz5+de
+         gSGZKDsSDyZ564H2uAtsZgdsCUwNp8DAx1w/Az150yjRV48TyKzGi+G+3SlfymZ8e0sJ
+         n5yA==
+X-Gm-Message-State: APjAAAVkd/hCDxzYCr35S+rQ0kEcHpDkhj3ZPHMxU2Pk5FtOTEITfkax
+        JRm99z97G+MXFJwVKAjeeYo=
+X-Google-Smtp-Source: APXvYqwLkmHUUFun+m9+BvTzVsQnD+kGQ4DuAT8WzcyXQYxIMaZPQS9XVg5KG8cUpMT9brJIkdK1/w==
+X-Received: by 2002:a1c:a952:: with SMTP id s79mr1369235wme.83.1582586820935;
+        Mon, 24 Feb 2020 15:27:00 -0800 (PST)
+Received: from buildbot.home (217-149-167-12.nat.highway.telekom.at. [217.149.167.12])
+        by smtp.googlemail.com with ESMTPSA id g25sm1971099wmh.3.2020.02.24.15.26.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2020 15:27:00 -0800 (PST)
+From:   Franz Forstmayr <forstmayr.franz@gmail.com>
+To:     forstmayr.franz@gmail.com
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Subject: [PATCH 1/3] dt-bindings: hwmon: Add compatible for ti,ina260
+Date:   Tue, 25 Feb 2020 00:26:45 +0100
+Message-Id: <20200224232647.29213-1-forstmayr.franz@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Provide read_word_data() callback for overvoltage and undervoltage
-output readouts conversion. These registers are presented in
-'slinear11' format, while default conversion for 'vout' class for the
-devices is 'vid'. It is resulted in wrong conversion in pmbus_reg2data()
-for in{3-4}_lcrit and in{3-4}_crit attributes.
-)
-Fixes: aaafb7c8eb1c ("hwmon: (pmbus) Add support for Infineon Multi-phase xdpe122 family controllers")
-Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
----
-v1->v2:
- Comments pointed out by Guenter:
- - Drop reg2data() callback, provide conversion through
-   read_word_data() callback instead.
-v2->v3:
- Comments pointed out by Guenter:
- - Fix wrong conversion.
- - Add missed returns.
----
- drivers/hwmon/pmbus/xdpe12284.c | 55 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+Add initial support for power/current monitor INA260
 
-diff --git a/drivers/hwmon/pmbus/xdpe12284.c b/drivers/hwmon/pmbus/xdpe12284.c
-index ecd9b65627ec..d5103fc9e269 100644
---- a/drivers/hwmon/pmbus/xdpe12284.c
-+++ b/drivers/hwmon/pmbus/xdpe12284.c
-@@ -18,6 +18,60 @@
- #define XDPE122_AMD_625MV		0x10 /* AMD mode 6.25mV */
- #define XDPE122_PAGE_NUM		2
+Signed-off-by: Franz Forstmayr <forstmayr.franz@gmail.com>
+---
+ Documentation/devicetree/bindings/hwmon/ina2xx.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/hwmon/ina2xx.txt b/Documentation/devicetree/bindings/hwmon/ina2xx.txt
+index 02af0d94e921..92983a224109 100644
+--- a/Documentation/devicetree/bindings/hwmon/ina2xx.txt
++++ b/Documentation/devicetree/bindings/hwmon/ina2xx.txt
+@@ -8,6 +8,7 @@ Required properties:
+ 	- "ti,ina226" for ina226
+ 	- "ti,ina230" for ina230
+ 	- "ti,ina231" for ina231
++	- "ti,ina260" for ina260
+ - reg: I2C address
  
-+static int xdpe122_read_word_data(struct i2c_client *client, int page,
-+				  int phase, int reg)
-+{
-+	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-+	long val;
-+	s16 exponent;
-+	s32 mantissa;
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_VOUT_OV_FAULT_LIMIT:
-+	case PMBUS_VOUT_UV_FAULT_LIMIT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* Convert register value to LINEAR11 data. */
-+		exponent = ((s16)ret) >> 11;
-+		mantissa = ((s16)((ret & GENMASK(10, 0)) << 5)) >> 5;
-+		val = mantissa * 1000L;
-+		if (exponent >= 0)
-+			val <<= exponent;
-+		else
-+			val >>= -exponent;
-+
-+		/* Convert data to VID register. */
-+		switch (info->vrm_version[page]) {
-+		case vr13:
-+			if (val >= 500)
-+				return 1 + DIV_ROUND_CLOSEST(val - 500, 10);
-+			return 0;
-+		case vr12:
-+			if (val >= 250)
-+				return 1 + DIV_ROUND_CLOSEST(val - 250, 5);
-+			return 0;
-+		case imvp9:
-+			if (val >= 200)
-+				return 1 + DIV_ROUND_CLOSEST(val - 200, 10);
-+			return 0;
-+		case amd625mv:
-+			if (val >= 200 && val <= 1550)
-+				return DIV_ROUND_CLOSEST((1550 - val) * 100,
-+							 625);
-+			return 0;
-+		default:
-+			return -EINVAL;
-+		}
-+	default:
-+		return -ENODATA;
-+	}
-+
-+	return 0;
-+}
-+
- static int xdpe122_identify(struct i2c_client *client,
- 			    struct pmbus_driver_info *info)
- {
-@@ -70,6 +124,7 @@ static struct pmbus_driver_info xdpe122_info = {
- 		PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP |
- 		PMBUS_HAVE_POUT | PMBUS_HAVE_PIN | PMBUS_HAVE_STATUS_INPUT,
- 	.identify = xdpe122_identify,
-+	.read_word_data = xdpe122_read_word_data,
- };
- 
- static int xdpe122_probe(struct i2c_client *client,
+ Optional properties:
 -- 
-2.11.0
+2.17.1
 
