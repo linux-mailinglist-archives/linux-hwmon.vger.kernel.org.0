@@ -2,27 +2,27 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D5816F28C
-	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Feb 2020 23:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CEE516F297
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Feb 2020 23:29:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgBYWXt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 25 Feb 2020 17:23:49 -0500
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:34518 "EHLO
+        id S1728806AbgBYW3Y (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 25 Feb 2020 17:29:24 -0500
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:39056 "EHLO
         mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726130AbgBYWXt (ORCPT
+        with ESMTP id S1727227AbgBYW3Y (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 25 Feb 2020 17:23:49 -0500
-Received: from Internal Mail-Server by MTLPINE2 (envelope-from vadimp@mellanox.com)
-        with ESMTPS (AES256-SHA encrypted); 26 Feb 2020 00:23:46 +0200
+        Tue, 25 Feb 2020 17:29:24 -0500
+Received: from Internal Mail-Server by MTLPINE1 (envelope-from vadimp@mellanox.com)
+        with ESMTPS (AES256-SHA encrypted); 26 Feb 2020 00:29:20 +0200
 Received: from r-build-lowlevel.mtr.labs.mlnx. (r-build-lowlevel.mtr.labs.mlnx [10.209.0.190])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 01PMNkFA009115;
-        Wed, 26 Feb 2020 00:23:46 +0200
+        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 01PMTKJh011668;
+        Wed, 26 Feb 2020 00:29:20 +0200
 From:   Vadim Pasternak <vadimp@mellanox.com>
 To:     linux@roeck-us.net
 Cc:     linux-hwmon@vger.kernel.org, Vadim Pasternak <vadimp@mellanox.com>
-Subject: [hwmon-next v2] hwmon: (pmbus/tps53679) Add support for historical registers for TPS53688
-Date:   Wed, 26 Feb 2020 00:23:44 +0200
-Message-Id: <20200225222344.29992-1-vadimp@mellanox.com>
+Subject: [hwmon-next v3] hwmon: (pmbus/tps53679) Add support for historical registers for TPS53688
+Date:   Wed, 26 Feb 2020 00:29:11 +0200
+Message-Id: <20200225222911.30274-1-vadimp@mellanox.com>
 X-Mailer: git-send-email 2.11.0
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
@@ -48,6 +48,9 @@ This patch is required patch:
 "hwmon: (pmbus/core) Add callback for register to data conversion".
 
 Signed-off-by: Vadim Pasternak <vadimp@mellanox.com>
+v2->v3:
+ Fix added by Vadim:
+ - Fix offsets for read buffer.
 v1->v2:
  Comments pointed out by Guenter:
  - Drop tps53688_reg2data();
@@ -63,7 +66,7 @@ v1->v2:
  1 file changed, 241 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
-index 157c99ffb52b..0d90f1a67f04 100644
+index 157c99ffb52b..dc2a32307f2a 100644
 --- a/drivers/hwmon/pmbus/tps53679.c
 +++ b/drivers/hwmon/pmbus/tps53679.c
 @@ -34,6 +34,226 @@ enum chips {
@@ -78,8 +81,8 @@ index 157c99ffb52b..0d90f1a67f04 100644
 +#define TPS53688_IIN_PEAK		0xd6
 +#define TPS53688_PIN_PEAK		0xd7
 +#define TPS53688_POUT_PEAK		0xd8
-+#define TPS53688_HISTORY_REG_MIN_OFFSET	3
-+#define TPS53688_HISTORY_REG_MAX_OFFSET	1
++#define TPS53688_HISTORY_REG_MIN_OFFSET	2
++#define TPS53688_HISTORY_REG_MAX_OFFSET	0
 +
 +const static u8 tps53688_reset_logging[] = { 0x00, 0x01, 0x00, 0x00 };
 +const static u8 tps53688_resume_logging[] = { 0x20, 0x00, 0x00, 0x00 };
