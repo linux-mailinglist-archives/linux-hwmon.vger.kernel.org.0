@@ -2,85 +2,83 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3F416F591
-	for <lists+linux-hwmon@lfdr.de>; Wed, 26 Feb 2020 03:16:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAA2816FFD6
+	for <lists+linux-hwmon@lfdr.de>; Wed, 26 Feb 2020 14:21:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729498AbgBZCQX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 25 Feb 2020 21:16:23 -0500
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:54156 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727809AbgBZCQX (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 25 Feb 2020 21:16:23 -0500
-Received: by mail-pj1-f68.google.com with SMTP id n96so579858pjc.3;
-        Tue, 25 Feb 2020 18:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Y8tea9QEMr0iNCjcooNustc07FFjz5OLLARL8p+OKU0=;
-        b=AAxTeZYs7StrnRAz7zTUOcTj/eVOM8S5GJpuv2sfSKJvdowIHcle/pyJgBKWzO4k1k
-         253V7sTzYfxtmLIWstH6rR7ykht8aVTV4hfdc5s2x3BwDxUPq4iNwH9Lfa5CrQz+bdRB
-         gnRaBrj3RnNZBRgO0gU/kRKMc2bhRe7BzCdWAL32M+hrRU24cJX+TAa4Fx2HlKGUYsm4
-         fFO2rd/EkDAEqQGos59MItNM1iOJOzBQ0bAGGNYGwS9JIvggLqkaQ/GVs5YHupn0OvQ6
-         uHbxcbRga6MEa/CxLmrrsYznqfLeNawiFKSuEqPpNTkTkVbVbJAQUZbxuSL5yTPehR+t
-         9Cfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Y8tea9QEMr0iNCjcooNustc07FFjz5OLLARL8p+OKU0=;
-        b=kcrx8z0TM6GkgEW+vFKHqTdiI4b6y23d4lH4+n3twPmpKEFXKqfb8ybqVFPmCLG9m9
-         b7ete2UE2ondJGs6aEaktfneIIb+R1ytemdNYWBF5e8jHA634DXM1WgwcHYNqZyDi69V
-         TwqljVUCia4Mv5Z9FNLsxIuhiQJwIPlpOywJfNk9hcp7Pw2P27UEWZIy5NbZ0fFOqU4j
-         N0XOxUw/RBO2cvGH1jPW319Dn6HamZRAWlzN/p8juqGnDQT5WcQZbOS35+bCit1Mvo/5
-         9jEvODfwl6+54IV2x3btmnh7gbEifn5ecP3fQVTxkAFrKKg0AkC5iU1izblYqlPp+pPA
-         DKrA==
-X-Gm-Message-State: APjAAAXRFw3d0wlilcWEWpBq4hscZ23K3LuVAGY14sBKzzH4j6Z/st3l
-        /0s4SoCccpPQ05vXtfPvTFhcqVxQ
-X-Google-Smtp-Source: APXvYqwN64XLm4UBZIiSsolCHUzAopIGIZIYT9ipIlQaRoboFPbd6+E2cEjuKJ3Wp0RDIBQIhs6DXg==
-X-Received: by 2002:a17:90a:e996:: with SMTP id v22mr2390374pjy.53.1582683381992;
-        Tue, 25 Feb 2020 18:16:21 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a36sm302764pga.32.2020.02.25.18.16.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2020 18:16:21 -0800 (PST)
-Subject: Re: [PATCH 3/3] hwmon: (ina2xx) Add support for ina260
-To:     Franz Forstmayr <forstmayr.franz@gmail.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org
-References: <20200224232647.29213-1-forstmayr.franz@gmail.com>
- <20200224232647.29213-3-forstmayr.franz@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <a78bbb40-9a0c-8acc-841e-7a51447d4dbc@roeck-us.net>
-Date:   Tue, 25 Feb 2020 18:16:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1726892AbgBZNVi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 26 Feb 2020 08:21:38 -0500
+Received: from mga06.intel.com ([134.134.136.31]:39882 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726525AbgBZNV2 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 26 Feb 2020 08:21:28 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Feb 2020 05:21:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,488,1574150400"; 
+   d="scan'208";a="231395660"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 26 Feb 2020 05:21:23 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 94465252; Wed, 26 Feb 2020 15:21:22 +0200 (EET)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Wolfram Sang <wsa@the-dreams.de>
+Cc:     Martin Volf <martin.volf.42@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] i2c: i801: Fix iTCO_wdt resource creation if PMC is not present
+Date:   Wed, 26 Feb 2020 16:21:19 +0300
+Message-Id: <20200226132122.62805-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <20200224232647.29213-3-forstmayr.franz@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 2/24/20 3:26 PM, Franz Forstmayr wrote:
-> Add initial support for INA260 power monitor with integrated shunt.
-> Registers are different from other INA2xx devices, that's why a small
-> translation table is used.
-> 
-> Signed-off-by: Franz Forstmayr <forstmayr.franz@gmail.com>
+Hi all,
 
-I think the chip is sufficiently different to other chips that a separate
-driver would make much more sense than adding support to the existing driver.
-There is no calibration, registers are different, the retry logic is
-not needed. A new driver could use the with_info API and would be much
-simpler while at the same time not messing up the existing driver.
+This series aims to fix the issue reported by Martin Volf [1] that prevents
+the nct6775 driver from loading.
 
-Guenter
+I added Fixes tag to the last patch but not stable tag because the other
+two patches it depends are not really stable material IMO. Please let me
+know if there is a better way to organize these :)
+
+I tested this on Intel Whiskey Lake based system (CNL derived) and on Comet
+Lake-V based system (SPT derived and the iTCO_wdt still works and I can see
+the expected resources in /proc/ioports and /proc/iomem.
+
+The previous version of the patch series can be found here:
+
+  https://lore.kernel.org/linux-hwmon/20200225123802.88984-1-mika.westerberg@linux.intel.com/
+
+Changes from the previous version:
+
+  * Call request_region() also for iTCO_vendorsupport
+  * Drop the core populating ICH_RES_IO_SMI completely from i2c-i801.c
+
+[1] https://lore.kernel.org/linux-hwmon/CAM1AHpQ4196tyD=HhBu-2donSsuogabkfP03v1YF26Q7_BgvgA@mail.gmail.com/
+
+Mika Westerberg (3):
+  watchdog: iTCO_wdt: Export vendorsupport
+  watchdog: iTCO_wdt: Make ICH_RES_IO_SMI optional
+  i2c: i801: Do not add ICH_RES_IO_SMI for the iTCO_wdt device
+
+ drivers/i2c/busses/i2c-i801.c          | 45 +++++++-------------------
+ drivers/watchdog/iTCO_vendor.h         |  2 ++
+ drivers/watchdog/iTCO_vendor_support.c | 16 +++++----
+ drivers/watchdog/iTCO_wdt.c            | 28 +++++++++-------
+ 4 files changed, 39 insertions(+), 52 deletions(-)
+
+-- 
+2.25.0
+
