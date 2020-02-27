@@ -2,83 +2,80 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A3921704CE
-	for <lists+linux-hwmon@lfdr.de>; Wed, 26 Feb 2020 17:48:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 443731712E3
+	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Feb 2020 09:47:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727311AbgBZQsn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 26 Feb 2020 11:48:43 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:37700 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726151AbgBZQsn (ORCPT
+        id S1728480AbgB0IrJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 27 Feb 2020 03:47:09 -0500
+Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:40252 "EHLO
+        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728688AbgB0Iqy (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 26 Feb 2020 11:48:43 -0500
-Received: by mail-oi1-f194.google.com with SMTP id q84so165779oic.4;
-        Wed, 26 Feb 2020 08:48:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jHw4ngjVXB8T2PU45eGKR13llpnjZ9TB1h6gXwWneRQ=;
-        b=jhNLElVZc699qbYoDEW6WoRA9wVUpDndXwlG6JeOUp3zTvv0Z8iIdKwXskBhI+Yq24
-         dueZYAQeHg39YkGBgf0yWwdtoX0VWO+HVsll28BWZ9agU1strllnJ9W5ub3QW6Y24vNM
-         qK9uUUqECY2ZYV06/DHnxYNzZylb3ms22sAkKfeDwWSIVyaw9FRXD0O6aO36pADXQYqW
-         9KHtHC6sMSGBDAsvl/t9JIQ6Bw+62N0x5bBphoYSU9aasQIOYXl7B8H0QKJ+gQaiHOXo
-         gsfcTav7/UjcMVMblQpTu6Oot7UM56g5aOswm7UEO7t6m3k3rmdOcKG5q2KnmJ+d0J1S
-         NnJg==
-X-Gm-Message-State: APjAAAXk++NltWLUEq7rxaHIzuT9bXLptgPdxMOfByB5+TKMmIpJS9h+
-        rvkirAszrGfv2aTrz3E7JQ==
-X-Google-Smtp-Source: APXvYqx18Z/v/4iN8R6CZrp92Er0P2zNbyeqssC0LiTbHDTS1rfusrMZHEu4FappFe1fTYPGsU/aeg==
-X-Received: by 2002:aca:fc0c:: with SMTP id a12mr3791106oii.118.1582735722218;
-        Wed, 26 Feb 2020 08:48:42 -0800 (PST)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 15sm968900ois.20.2020.02.26.08.48.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2020 08:48:41 -0800 (PST)
-Received: (nullmailer pid 20572 invoked by uid 1000);
-        Wed, 26 Feb 2020 16:48:41 -0000
-Date:   Wed, 26 Feb 2020 10:48:41 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        mark.rutland@arm.com, linux-hwmon@vger.kernel.org,
+        Thu, 27 Feb 2020 03:46:54 -0500
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id E32BC891AA;
+        Thu, 27 Feb 2020 21:46:51 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1582793211;
+        bh=5ZvCK32jhVQkZ7Gq7Zp6sPOjMydghcdRlycwIcqf2vE=;
+        h=From:To:Cc:Subject:Date;
+        b=FXhxleGj98+teUVM0Rjd7VSVSZOxwFawHAQ0eKuaW1/QdsJlZ/FMSotg7/0CFlQAA
+         b5ldf3Chd8AbtM3BM0dpPsB+bZHT6WdWFUEpPEQlxf3RvTPkoXApEmblymA6iWJPUL
+         v8qsLRBbyUfBm5BMIdntlCmqYt1gwnlo1H2vN04PUw4QVkMKo6lOMLXOIafYB1qeBh
+         0hkZi7djR+bev9z0HIj9sDVcb8pSp9BunP13E5nrV7lkXl3ORgnsYH/yvYQi/tgkad
+         t7VW7/pDsOJ9PB2eYnDEKOg8VkaEtY1i30OsSS9xPcX1AOFyEsDCEHFVGofhS+LjKx
+         e/Y7r8aoVSiDw==
+Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
+        id <B5e5781fb0000>; Thu, 27 Feb 2020 21:46:51 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
+        by smtp (Postfix) with ESMTP id C170013EECD;
+        Thu, 27 Feb 2020 21:46:50 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+        id 83E0D280072; Thu, 27 Feb 2020 21:46:51 +1300 (NZDT)
+From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
+To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
+        mark.rutland@arm.com
+Cc:     logan.shaw@alliedtelesis.co.nz, linux-hwmon@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        logan.shaw@alliedtelesis.co.nz,
         Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: Re: [PATCH v4 2/5] dt-bindings: hwmon: Document adt7475
- bypass-attenuator property
-Message-ID: <20200226164841.GA20519@bogus>
-References: <20200221041631.10960-1-chris.packham@alliedtelesis.co.nz>
- <20200221041631.10960-3-chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v5 0/5] hwmon: (adt7475) attenuator bypass and pwm invert
+Date:   Thu, 27 Feb 2020 21:46:37 +1300
+Message-Id: <20200227084642.7057-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200221041631.10960-3-chris.packham@alliedtelesis.co.nz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+x-atlnz-ls: pat
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, 21 Feb 2020 17:16:28 +1300, Chris Packham wrote:
-> 
-> From: Logan Shaw <logan.shaw@alliedtelesis.co.nz>
-> 
-> Add documentation for the bypass-attenuator-in[0-4] property.
-> 
-> Signed-off-by: Logan Shaw <logan.shaw@alliedtelesis.co.nz>
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> ---
-> 
-> Notes:
->     Changes in v4:
->     - use $ref uint32 and enum
->     - add 'adi' vendor prefix
->     
->     Changes in v3:
->     - separated addition of new properties from conversion to yaml
-> 
->  .../devicetree/bindings/hwmon/adt7475.yaml          | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
+I've picked up Logan's changes[1] and am combining them with an old serie=
+s of
+mine[2] to hopefully get them both over the line.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+[1] - https://lore.kernel.org/linux-hwmon/20191219033213.30364-1-logan.sh=
+aw@alliedtelesis.co.nz/
+[2] - https://lore.kernel.org/linux-hwmon/20181107040010.27436-1-chris.pa=
+ckham@alliedtelesis.co.nz/
+
+Chris Packham (2):
+  dt-bindings: hwmon: Document adt7475 pwm-active-state property
+  hwmon: (adt7475) Add support for inverting pwm output
+
+Logan Shaw (3):
+  dt-bindings: hwmon: Document adt7475 binding
+  dt-bindings: hwmon: Document adt7475 bypass-attenuator property
+  hwmon: (adt7475) Add attenuator bypass support
+
+ .../devicetree/bindings/hwmon/adt7475.yaml    | 84 ++++++++++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |  8 --
+ drivers/hwmon/adt7475.c                       | 95 ++++++++++++++++++-
+ 3 files changed, 176 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/adt7475.yaml
+
+--=20
+2.25.1
+
