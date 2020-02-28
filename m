@@ -2,132 +2,107 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD5D1712D8
-	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Feb 2020 09:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41402173DDA
+	for <lists+linux-hwmon@lfdr.de>; Fri, 28 Feb 2020 18:03:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728738AbgB0Iqz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 27 Feb 2020 03:46:55 -0500
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:40292 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728720AbgB0Iqz (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 27 Feb 2020 03:46:55 -0500
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 793B6891AE;
-        Thu, 27 Feb 2020 21:46:52 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1582793212;
-        bh=7ES6tEyEz8XnCzXTzvkZrM7yYWWqjmJ6wjX0UjtGUNo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=UYQM+VkgT40nWUTOK56c3OPmdy3/3eNIkjCExJgaJJAg1Y8xboPo5QXITBC4whZdx
-         ZkvJcMuRonwPWu4l5dNkvf+zOIq6IR5dl8cfI1GAsTzKsADT8ewSYguM3zUsTsOtQw
-         UVbXC9v1JJOdhjFL6GdeudfQ3u3yKw8UY4UtQOafVfjz1aTEYj6cTa+WlG723FlYO1
-         stK/R0GBvixN6w4ipNWwzSCM28e+BZcNAcsqBEVZOhMTZI1hOjmlhpqtebCa8EvidO
-         uNbvo5N8x+aZGncym8w8VLn+/7ED5vUMeHOoD6pki/WO3Nog6NdEGOaSpszkjmzhV5
-         XV21vfKa8+UkQ==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5e5781fb0005>; Thu, 27 Feb 2020 21:46:51 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
-        by smtp (Postfix) with ESMTP id 810C913EECD;
-        Thu, 27 Feb 2020 21:46:51 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-        id 4713C280072; Thu, 27 Feb 2020 21:46:52 +1300 (NZDT)
-From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
-To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Cc:     logan.shaw@alliedtelesis.co.nz, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v5 5/5] hwmon: (adt7475) Add support for inverting pwm output
-Date:   Thu, 27 Feb 2020 21:46:42 +1300
-Message-Id: <20200227084642.7057-6-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200227084642.7057-1-chris.packham@alliedtelesis.co.nz>
-References: <20200227084642.7057-1-chris.packham@alliedtelesis.co.nz>
+        id S1726277AbgB1RDp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 28 Feb 2020 12:03:45 -0500
+Received: from sauhun.de ([88.99.104.3]:59882 "EHLO pokefinder.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725876AbgB1RDp (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 28 Feb 2020 12:03:45 -0500
+Received: from localhost (p54B3301B.dip0.t-ipconnect.de [84.179.48.27])
+        by pokefinder.org (Postfix) with ESMTPSA id D2A142C1E8B;
+        Fri, 28 Feb 2020 18:03:42 +0100 (CET)
+Date:   Fri, 28 Feb 2020 18:03:42 +0100
+From:   Wolfram Sang <wsa@the-dreams.de>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Martin Volf <martin.volf.42@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-i2c@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] i2c: i801: Fix iTCO_wdt resource creation if PMC
+ is not present
+Message-ID: <20200228170342.GC1130@ninjato>
+References: <20200226132122.62805-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="da4uJneut+ArUgXk"
+Content-Disposition: inline
+In-Reply-To: <20200226132122.62805-1-mika.westerberg@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add a "adi,pwm-active-state" device-tree property to allow hardware
-designs to use inverted logic on the PWM output.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
+--da4uJneut+ArUgXk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Notes:
-    Changes in v5:
-    - change to adi,pwm-active-state
-    - uint32 array
-   =20
-    Changes in v4:
-    - use vendor prefix for new property
-   =20
-    Changes in v3:
-    - New
+On Wed, Feb 26, 2020 at 04:21:19PM +0300, Mika Westerberg wrote:
+> Hi all,
+>=20
+> This series aims to fix the issue reported by Martin Volf [1] that preven=
+ts
+> the nct6775 driver from loading.
+>=20
+> I added Fixes tag to the last patch but not stable tag because the other
+> two patches it depends are not really stable material IMO. Please let me
+> know if there is a better way to organize these :)
+>=20
+> I tested this on Intel Whiskey Lake based system (CNL derived) and on Com=
+et
+> Lake-V based system (SPT derived and the iTCO_wdt still works and I can s=
+ee
+> the expected resources in /proc/ioports and /proc/iomem.
+>=20
+> The previous version of the patch series can be found here:
+>=20
+>   https://lore.kernel.org/linux-hwmon/20200225123802.88984-1-mika.westerb=
+erg@linux.intel.com/
+>=20
+> Changes from the previous version:
+>=20
+>   * Call request_region() also for iTCO_vendorsupport
+>   * Drop the core populating ICH_RES_IO_SMI completely from i2c-i801.c
+>=20
+> [1] https://lore.kernel.org/linux-hwmon/CAM1AHpQ4196tyD=3DHhBu-2donSsuoga=
+bkfP03v1YF26Q7_BgvgA@mail.gmail.com/
 
- drivers/hwmon/adt7475.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+I can take this series via I2C. Just wanted to let you know that I am
+aiming for rc5, because I'd like to have this in linux-next for a week
+to make sure we don't regress again (despite all precautions) somewhere
+else.
 
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 3649b18359dc..142a4fec688b 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1509,6 +1509,36 @@ static int load_attenuators(const struct i2c_clien=
-t *client, int chip,
- 	return 0;
- }
-=20
-+static int adt7475_set_pwm_polarity(struct i2c_client *client)
-+{
-+	u32 states[ADT7475_PWM_COUNT];
-+	int ret, i;
-+	u8 val;
-+
-+	ret =3D of_property_read_u32_array(client->dev.of_node,
-+					 "adi,pwm-active-state", states,
-+					 ARRAY_SIZE(states));
-+	if (ret)
-+		return ret;
-+
-+	for (i =3D 0; i < ADT7475_PWM_COUNT; i++) {
-+		ret =3D adt7475_read(PWM_CONFIG_REG(i));
-+		if (ret < 0)
-+			return ret;
-+		val =3D ret;
-+		if (states[i])
-+			val &=3D ~BIT(4);
-+		else
-+			val |=3D BIT(4);
-+
-+		ret =3D i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(i), val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int adt7475_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1617,6 +1647,10 @@ static int adt7475_probe(struct i2c_client *client=
-,
- 	for (i =3D 0; i < ADT7475_PWM_COUNT; i++)
- 		adt7475_read_pwm(client, i);
-=20
-+	ret =3D adt7475_set_pwm_polarity(client);
-+	if (ret && ret !=3D -EINVAL)
-+		dev_err(&client->dev, "Error configuring pwm polarity\n");
-+
- 	/* Start monitoring */
- 	switch (chip) {
- 	case adt7475:
---=20
-2.25.1
+Thanks to everyone to get this regression handled in such a concentrated
+manner!
 
+
+--da4uJneut+ArUgXk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl5ZR+4ACgkQFA3kzBSg
+Kbb29A//YUY3JKyYa6plCWxNQj6H12cc6EdXrS4lOnESwx89pq9ITm98Juu/VPqe
+41Y0idzm2RNeq9ez7J6lxzGfYul5TkAxex+FGirUlp5GwrtrpRq2WFptcCR66Vx3
+Tx4hw4bnValX5pWvQegGpvCX0kvFvMu4/Lv47C8nCWEljm0L0j144MTgXfgzCRKb
+1iElopnX9Y7c0p5SaJUmM13WjHi9Y4TloOjmeIcGjOpEcQ0YzdsPeFfuGpn17FhX
+Ninbdux+DM94gWEuK6e3Xc3HAyz3zQDN9b1MR0A/0UqjoeEUspa2yvSOEOcNcDDH
+KyD7No8DbVNc6n8dLmncQqf+jZ4yN2hPMy/6YaJGhjk40hJI8M1cYC3jVqj8bnYA
+ItjrjV7QANSUwP+Kne2qCf5rQ10P18SJXaDd8s8cWXBmOh1Y6U9XsaDRrbfuXBO1
+t0Lr6ssJZ3/RCu+X8wVMAIqgBQkhV57T0HItN8xeNhS8HpSopXank5tKVhQaUx7N
+vy4E8AoTO/T/mkNdjiUFfhDCxRqUElM5V5gtYJEl+B5Bx//2f1doGMBa0A+UIOk4
+oMsevqtEXyPacx7U7gaXbverDoLwppf2zNclJ9aSopCDoyHUBTjbvIw2aHQA3oyz
+uvhVF1Re0owL3aqfAuXbPQtUdLMdJRELXEIa0dcwOi89leiCdmc=
+=71Zy
+-----END PGP SIGNATURE-----
+
+--da4uJneut+ArUgXk--
