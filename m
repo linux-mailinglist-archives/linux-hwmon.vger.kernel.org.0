@@ -2,79 +2,59 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D5C180DAC
-	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Mar 2020 02:41:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE666180EED
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Mar 2020 05:30:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728033AbgCKBlp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 Mar 2020 21:41:45 -0400
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:26789 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727950AbgCKBl0 (ORCPT
+        id S1726160AbgCKEaR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 Mar 2020 00:30:17 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:52969 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725958AbgCKEaR (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 Mar 2020 21:41:26 -0400
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 10 Mar 2020 18:41:24 -0700
-Received: from gurus-linux.qualcomm.com ([10.46.162.81])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP; 10 Mar 2020 18:41:24 -0700
-Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
-        id 03880107B; Tue, 10 Mar 2020 18:41:23 -0700 (PDT)
-From:   Guru Das Srinagesh <gurus@codeaurora.org>
-To:     linux-pwm@vger.kernel.org
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        Kamil Debski <kamil@wypas.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH v8 03/12] hwmon: pwm-fan: Use 64-bit division macro
-Date:   Tue, 10 Mar 2020 18:41:12 -0700
-Message-Id: <237b1b5ae59d072b576d300cdc0c2a1242b18516.1583889178.git.gurus@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <cover.1583889178.git.gurus@codeaurora.org>
-References: <cover.1583889178.git.gurus@codeaurora.org>
-In-Reply-To: <cover.1583889178.git.gurus@codeaurora.org>
-References: <cover.1583889178.git.gurus@codeaurora.org>
+        Wed, 11 Mar 2020 00:30:17 -0400
+Received: by mail-wm1-f68.google.com with SMTP id 11so596134wmo.2
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 Mar 2020 21:30:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=wWZ8LSgQok2030dJExD3dyzeUfwe6PjYJQ9NMe251wI=;
+        b=e3Mq+w712te6VGapy4AW7YyIsBfT/C807T5ZPuifG4ygzCW/bLH2Wf8YNp61ADAw+Q
+         KxdLQj8cK3QednaXqltlm2dQKRDf2dPEg06b0wfiHQxAVu9x4p2qdjwCYBe6YmXE3P62
+         hX0ZSdilZZdewp0pnQVy6XQCvo2tGKur7p3Fn+RQUrbYy4Nrvb7KG1W3IwKmE9efmnLk
+         UpXFobl6AB/tz7HQfo/F9Kk4GqFso8aWd3GXcdvIvdwYUrzTybuSauijbiCi46VSlHiy
+         cq5rVRWdvLa2CMHwmZ/WwmgfDFI3C6ZXLtumG4yOB3uC8B4cQb35l2UgKd7EjqBGKlaj
+         eriw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=wWZ8LSgQok2030dJExD3dyzeUfwe6PjYJQ9NMe251wI=;
+        b=ofs+4SJ52oq2HFckJeBq7ASWAJfnXxuFOHGfgYBXlnVPAqsX1cxH1EAOJwu+De/8P7
+         LR7UHNKeuQ4XN7qYkoVp2HiDtXns1OtXjR7MmtbSQN5G/mClmBbHW5s7dP6gXC9JlSpg
+         ebnhPtzzK6rZNFZaGpiTHHrXqxpu6Xz1CxjmjbVLQy99sSHlXBpsb9ko/D7sUhnuJ3sz
+         NYvVvEbbqym6/jOR5oyFOPPC5BTpj0g5fElrpyK7LrcKQxyQnCdR5pgbOgo8aGCPrFYW
+         bd52RoLuuZYOvs0AKiTAZUDDgv78Y+a7TklsS2ZmKMgS7zHj9CsPWwe5jw8HxqrPFOn4
+         UXsw==
+X-Gm-Message-State: ANhLgQ0Oy5DsU8eCbXXb1clWOjJqVRo5BFHCDunV+DThswS5EMHTm4ve
+        GS4gXX/CDcvKYwyQBzp2laOmGBIwl3FJvtsTczY=
+X-Google-Smtp-Source: ADFU+vsLqG6XvBIL03AvRqMI2Yc7hfF3tGlAAT9yf7r3/2rWWoEdm5dVrhRQl24334i07fjD5Iau5+9LkuzVCLtg8RM=
+X-Received: by 2002:a1c:a584:: with SMTP id o126mr1337719wme.49.1583901015408;
+ Tue, 10 Mar 2020 21:30:15 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:adf:a1cf:0:0:0:0:0 with HTTP; Tue, 10 Mar 2020 21:30:14
+ -0700 (PDT)
+Reply-To: cfffdfd8brahim4@yandex.com
+From:   Salah Ibrahim <michaeledward340@gmail.com>
+Date:   Tue, 10 Mar 2020 21:30:14 -0700
+Message-ID: <CANtN=Ad8D4tfhTp5xfdBo=FhS2WAqjRwhY1zdtE0MhvnrOo2kQ@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Since the PWM framework is switching struct pwm_args.period's datatype
-to u64, prepare for this transition by using DIV_ROUND_UP_ULL to handle
-a 64-bit dividend.
-
-Cc: Kamil Debski <kamil@wypas.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-hwmon@vger.kernel.org
-
-Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
----
- drivers/hwmon/pwm-fan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-index 42ffd2e..283423a 100644
---- a/drivers/hwmon/pwm-fan.c
-+++ b/drivers/hwmon/pwm-fan.c
-@@ -437,7 +437,7 @@ static int pwm_fan_resume(struct device *dev)
- 		return 0;
- 
- 	pwm_get_args(ctx->pwm, &pargs);
--	duty = DIV_ROUND_UP(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
-+	duty = DIV_ROUND_UP_ULL(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
- 	ret = pwm_config(ctx->pwm, duty, pargs.period);
- 	if (ret)
- 		return ret;
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
-
+I Am Mr. Nor Salah Ibrahim,I have a business
+proposal of  $35 Million USD which i want to transact with you  get
+back for more details.Best Regards Salah Ibrahim
