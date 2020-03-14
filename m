@@ -2,203 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAD3818513F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2020 22:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 108AF185964
+	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Mar 2020 03:49:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726637AbgCMVhi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 13 Mar 2020 17:37:38 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:33518 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726480AbgCMVhi (ORCPT
+        id S1727415AbgCOCtu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 14 Mar 2020 22:49:50 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:40556 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727374AbgCOCtu (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 13 Mar 2020 17:37:38 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 30AB68030886;
-        Fri, 13 Mar 2020 21:37:35 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id LfFfD9Iglqyl; Sat, 14 Mar 2020 00:37:34 +0300 (MSK)
-Date:   Sat, 14 Mar 2020 00:36:53 +0300
-From:   Sergey Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Rob Herring <robh@kernel.org>
-CC:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Maxim Kaurkin <maxim.kaurkin@baikalelectronics.ru>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Burton <paulburton@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: hwmon: Add Baikal-T1 PVT sensor bindings
-Message-ID: <20200313213652.tfw257cce6sshz2j@ubsrv2.baikal.int>
-References: <20200306132604.14312-1-Sergey.Semin@baikalelectronics.ru>
- <20200306132620.4ADCF8030702@mail.baikalelectronics.ru>
- <20200312221304.GA31909@bogus>
+        Sat, 14 Mar 2020 22:49:50 -0400
+Received: by mail-pf1-f195.google.com with SMTP id l184so7725115pfl.7
+        for <linux-hwmon@vger.kernel.org>; Sat, 14 Mar 2020 19:49:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
+        b=sYgn5elmUDO5uZ/fMSAUxFVaeywOMqToMYdBcHXQ3NTKeAzVJhXLXyOaF3BrSD4BqO
+         5UV6XMxjKOVNmfFsZDzzTj9qa6YW2BQ7mV/12OjB8jG9aPVyLNqi21Ab9AEUit+HRCno
+         9Ra4JTgZO05D8FmR1caDZV9nUhftgeWd9Z4h3MJ08MRvl680DqDVDgx8t37S4oKUAstp
+         2FOQ7rwpz1ScpcJ7aZVjNv+lJjSPov3S9ibEgJ5aX9P3eGCWe82b/YGbWaYTuHGWnQqx
+         h4Eo+UeFwBRrklnWrrTVpK++m8SrqZSs9PjgG0/YNYThUoKGoxi5J1cZtbANuxrqPROv
+         If9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
+        b=LNnxF/8kWypNRXzpbTfDyV47yQPfEjw2hXItfqai/T177gy7di72fB6QiJsP5wYk6Q
+         N41D0FcLcClDigUgdTJZIo8NkGaCBGdYzAWDflRZ9i9fvKqTFvLFNnnbwqOKUfcKriUL
+         5/Su1uEqR21zi8LJnCWIvWaMjdFdSqxsC4oxHQMqSGPaS/D9HYrEEVInox9YTLQz+DIt
+         OvROokEZRD4NLDtEC6RBGGbxmHEDgPHgFEwEr7hEUri400tEBKPdO1D7fcGsU2iUGPWo
+         EXzN2KCvXMsMgInWYH1IRugsEXPtGUAbXe2lEN79INellpQQ7CyNdx6BkUPtgwB/h418
+         ea0w==
+X-Gm-Message-State: ANhLgQ2tFDcj/mAhgzlxLWIdWj+HlOjNFBmZPsj9aBVqadpEOrT6yUEM
+        0IhivKeGs0QCKxnoZHQ+RSsXGdmurVycW/ZTkNxjVIX1
+X-Google-Smtp-Source: ADFU+vvQjbMqpyd1i6FWi+Ntfw7OW0UHKja3v2unEsJC4od3bFsv/vTqTsIhbP/8XYLwoAJH1uwnvJRLYgGlP6tuDqk=
+X-Received: by 2002:a92:d842:: with SMTP id h2mr17949783ilq.34.1584206428751;
+ Sat, 14 Mar 2020 10:20:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20200312221304.GA31909@bogus>
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Received: by 2002:a02:63c1:0:0:0:0:0 with HTTP; Sat, 14 Mar 2020 10:20:28
+ -0700 (PDT)
+From:   Omar Ousman <omarousman25@gmail.com>
+Date:   Sat, 14 Mar 2020 18:20:28 +0100
+X-Google-Sender-Auth: VNfZ5GidMpY66VRDRhna379s7FA
+Message-ID: <CAOdk3H=iqtzP9LMZSea9eyACfmkiPiG9wKD-_H9R1g2DpwKnkg@mail.gmail.com>
+Subject: You received my last mail,,,,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 05:13:04PM -0500, Rob Herring wrote:
-> On Fri, Mar 06, 2020 at 04:26:03PM +0300, Sergey.Semin@baikalelectronics.ru wrote:
-> > From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> > 
-> > Baikal-T1 SoC is equipped with an embedded process, voltage and
-> > temperature sensor to monitor the chip internal environment like
-> > temperature, supply voltage and transistors performance.
-> > 
-> > This bindings describes the external Baikal-T1 PVT control interfaces
-> > like MMIO registers space, interrupt request number and clocks source.
-> > These are then used by the corresponding hwmon device driver to
-> > implement the sysfs files-based access to the sensors functionality.
-> > 
-> > Signed-off-by: Maxim Kaurkin <maxim.kaurkin@baikalelectronics.ru>
-> > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> > Signed-off-by: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-> > Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> > Cc: Paul Burton <paulburton@kernel.org>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > ---
-> >  .../devicetree/bindings/hwmon/be,bt1-pvt.yaml | 100 ++++++++++++++++++
-> >  1 file changed, 100 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/hwmon/be,bt1-pvt.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/hwmon/be,bt1-pvt.yaml b/Documentation/devicetree/bindings/hwmon/be,bt1-pvt.yaml
-> > new file mode 100644
-> > index 000000000000..d575d124d538
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/hwmon/be,bt1-pvt.yaml
-> > @@ -0,0 +1,100 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> 
-> Dual license
-> 
+I am Mr.Omar Ousman, a regional managing director (CORIS BANK
+INTERNATIONAL) Ouagadougou Burkina Faso, in my department we have
+US$9,500.0000 million united state dollars, to transfer into your
+account as a dormant fund.If you are interested to use this fund to
+help the orphans around the world contact and send me your personal
+information for more details to my email omarousman25@gmail.com
 
-Ok. I'll add BSD-2-Clause here.
+Your full names..........
+Your country of origin..........
+Your occupation..........
+Your Age..........
+Your Mobile Number..........
 
-> > +#
-> > +# Copyright (C) 2019 BAIKAL ELECTRONICS, JSC
-> > +#
-> > +# Baikal-T1 Process, Voltage, Temperature Sensor Device Tree Bindings.
-> 
-> drop
-> 
-
-Ok.
-
-> > +#
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/hwmon/be,bt1-pvt.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Baikal-T1 PVT Sensor Device Tree Bindings
-> > +
-> > +maintainers:
-> > +  - Serge Semin <fancer.lancer@gmail.com>
-> > +
-> > +description: |
-> > +  Baikal-T1 SoC provides an embedded process, voltage and temperature
-> > +  sensor to monitor an internal SoC environment (chip temperature, supply
-> > +  voltage and process monitor) and on time detect critical situations,
-> > +  which may cause the system instability and even damages. The IP-block
-> > +  is based on the Analog Bits PVT sensor, but is equipped with a dedicated
-> > +  control wrapper, which provides a MMIO registers-based access to the
-> > +  sensor core functionality (APB3-bus based) and exposes an additional
-> > +  functions like thresholds/data ready interrupts, its status and masks,
-> > +  measurements timeout. Its internal structure is depicted on the next
-> > +  diagram:
-> > +     Analog Bits core                     Bakal-T1 PVT control block
-> > +  +--------------------+                  +------------------------+
-> > +  | Temperature sensor |-+         +------| Sensors control        |
-> > +  |--------------------| |<---En---|      |------------------------|
-> > +  | Voltage sensor     |-|<--Mode--| +--->| Sampled data           |
-> > +  |--------------------| |<--Trim--+ |    |------------------------|
-> > +  | Low-Vt sensor      |-|           | +--| Thresholds comparator  |
-> > +  |--------------------| |---Data----| |  |------------------------|
-> > +  | High-Vt sensor     |-|           | +->| Interrupts status      |
-> > +  |--------------------| |--Valid--+-+ |  |------------------------|
-> > +  | Standard-Vt sensor |-+         +---+--| Interrupts mask        |
-> > +  +--------------------+                  |------------------------|
-> > +           ^                              | Interrupts timeout     |
-> > +           |                              +------------------------+
-> > +           |                                        ^  ^
-> > +  Rclk-----+----------------------------------------+  |
-> > +  APB3-------------------------------------------------+
-> > +
-> > +  This bindings describes the external Baikal-T1 PVT control interfaces
-> > +  like MMIO registers space, interrupt request number and clocks source.
-> > +  These are then used by the corresponding hwmon device driver to
-> > +  implement the sysfs files-based access to the sensors functionality.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: be,bt1-pvt
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description: PVT reference clock.
-> > +      - description: APB3 interface clock.
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: ref
-> > +      - const: pclk
-> > +
-> > +  "#thermal-sensor-cells":
-> > +      description: Baikal-T1 can be referenced as the CPU thermal-sensor.
-> > +      const: 0
-> > +
-> > +additionalProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - clocks
-> > +  - clock-names
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/mips-gic.h>
-> > +    #include <dt-bindings/clock/bt1-ccu.h>
-> > +
-> > +    pvt: pvt@1F200000 {
-> 
-> lowercase hex
-> 
-
-Ok. I'll also remove the bt1-ccu.h inclusion here, since that header
-doesn't exist in the kernel source tree at the moment.
-
-Regards,
--Sergey
-
-> > +      compatible = "be,bt1-pvt";
-> > +      reg = <0x1F200000 0x1000>;
-> > +      #thermal-sensor-cells = <0>;
-> > +
-> > +      interrupts = <GIC_SHARED 31 IRQ_TYPE_LEVEL_HIGH>;
-> > +
-> > +      clocks = <&ccu_sys CCU_SYS_PVT_CLK>,
-> > +               <&ccu_sys CCU_SYS_APB_CLK>;
-> > +      clock-names = "ref", "pclk";
-> > +    };
-> > +...
-> > -- 
-> > 2.25.1
-> > 
+Best Regards,
