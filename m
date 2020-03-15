@@ -2,70 +2,130 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 108AF185964
-	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Mar 2020 03:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 521DA185CB5
+	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Mar 2020 14:37:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727415AbgCOCtu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 14 Mar 2020 22:49:50 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:40556 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727374AbgCOCtu (ORCPT
+        id S1728600AbgCONhs (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 15 Mar 2020 09:37:48 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:33495 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726498AbgCONhs (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 14 Mar 2020 22:49:50 -0400
-Received: by mail-pf1-f195.google.com with SMTP id l184so7725115pfl.7
-        for <linux-hwmon@vger.kernel.org>; Sat, 14 Mar 2020 19:49:49 -0700 (PDT)
+        Sun, 15 Mar 2020 09:37:48 -0400
+Received: by mail-pg1-f195.google.com with SMTP id m5so8023283pgg.0;
+        Sun, 15 Mar 2020 06:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
-        b=sYgn5elmUDO5uZ/fMSAUxFVaeywOMqToMYdBcHXQ3NTKeAzVJhXLXyOaF3BrSD4BqO
-         5UV6XMxjKOVNmfFsZDzzTj9qa6YW2BQ7mV/12OjB8jG9aPVyLNqi21Ab9AEUit+HRCno
-         9Ra4JTgZO05D8FmR1caDZV9nUhftgeWd9Z4h3MJ08MRvl680DqDVDgx8t37S4oKUAstp
-         2FOQ7rwpz1ScpcJ7aZVjNv+lJjSPov3S9ibEgJ5aX9P3eGCWe82b/YGbWaYTuHGWnQqx
-         h4Eo+UeFwBRrklnWrrTVpK++m8SrqZSs9PjgG0/YNYThUoKGoxi5J1cZtbANuxrqPROv
-         If9g==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=sGsiabnvYJgDg5bMlZVXSiwfT9aWoEex6cdeiesm9ec=;
+        b=KJst+aJutKoD+SX2/hrgjRtvVoJwOraSJcsiJF+SUJura0MEmRNHj3PaKthSwF08SN
+         oO28t6Zim6Rt6UBai41Yjc3ENoUmpYUA8qAyCd1FcQRBIdaYlHO2NrIHkYGZD/7R0fdV
+         ppc1AA4cl0Jdi+VXaRGctx0YC8cCuveC1FAQtFjogYhlGB6u6F+uES1Oc9VbkKKbkeT4
+         agbpE8phexvFDt3UrHmYAT026G468SF+Amqywcgc9vR5CK5aTkHomAwZhXnOY1YtKtFv
+         CYyFld0z0ICYhgJ98fEB9FdWYusIxUa4DsL9lO7Hber4We7OK2gO2xGwhtVZIhfcPwaV
+         CIEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
-        b=LNnxF/8kWypNRXzpbTfDyV47yQPfEjw2hXItfqai/T177gy7di72fB6QiJsP5wYk6Q
-         N41D0FcLcClDigUgdTJZIo8NkGaCBGdYzAWDflRZ9i9fvKqTFvLFNnnbwqOKUfcKriUL
-         5/Su1uEqR21zi8LJnCWIvWaMjdFdSqxsC4oxHQMqSGPaS/D9HYrEEVInox9YTLQz+DIt
-         OvROokEZRD4NLDtEC6RBGGbxmHEDgPHgFEwEr7hEUri400tEBKPdO1D7fcGsU2iUGPWo
-         EXzN2KCvXMsMgInWYH1IRugsEXPtGUAbXe2lEN79INellpQQ7CyNdx6BkUPtgwB/h418
-         ea0w==
-X-Gm-Message-State: ANhLgQ2tFDcj/mAhgzlxLWIdWj+HlOjNFBmZPsj9aBVqadpEOrT6yUEM
-        0IhivKeGs0QCKxnoZHQ+RSsXGdmurVycW/ZTkNxjVIX1
-X-Google-Smtp-Source: ADFU+vvQjbMqpyd1i6FWi+Ntfw7OW0UHKja3v2unEsJC4od3bFsv/vTqTsIhbP/8XYLwoAJH1uwnvJRLYgGlP6tuDqk=
-X-Received: by 2002:a92:d842:: with SMTP id h2mr17949783ilq.34.1584206428751;
- Sat, 14 Mar 2020 10:20:28 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=sGsiabnvYJgDg5bMlZVXSiwfT9aWoEex6cdeiesm9ec=;
+        b=sYlySQzKCdNBgliWwWjx82PNvGfCuOM0FfKxSzzgGFa3QfZewrqn0qJCxcAOww16NT
+         pxSi1T3BusEM5ZBrPyt44L7lEMP++uipVQqA2SRA1/ZHVM69szX16G5c9dO4kuPeRXJs
+         GB1DX8AVu/O+bAHdFTATfR9Z4+NXpd6qF/M4QOZsU7KKAyvw69zxTjxvpx8mmfrRIJAH
+         s8CvjGajqJRoY/cFnqTLJ2oNa4y6GmDO2nGqcFlI03s3kE0uh7zN1jx8PQlTQo5vF9Op
+         Hk/hHcItUYfzsDIZquaPPqZPWlRh15nt5jQGI51L8P/NeApYa6pi1IzOdQPmgd8m2C0n
+         w+aw==
+X-Gm-Message-State: ANhLgQ0jIav2BkGlON3XzrCA0hOtJ4zmDuipjXfXoFF9GGB8sC5OBKdn
+        C5a7wk1dKtZ6DpobOnZD4LE=
+X-Google-Smtp-Source: ADFU+vuxMefB6GRJAXG9rvoVrO2J5AcWaeJAoVfmHdT5mJVo+eSlzuzIGCH/asMFs7298rzG3SHZ7Q==
+X-Received: by 2002:aa7:99c8:: with SMTP id v8mr8166051pfi.151.1584279467732;
+        Sun, 15 Mar 2020 06:37:47 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d6sm12744301pfn.214.2020.03.15.06.37.46
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 15 Mar 2020 06:37:47 -0700 (PDT)
+Date:   Sun, 15 Mar 2020 06:37:45 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Amy.Shih@advantech.com.tw
+Cc:     she90122@gmail.com, Jean Delvare <jdelvare@suse.com>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        oakley.ding@advantech.com.tw, jia.sui@advantech.com.cn,
+        yuechao.zhao@advantech.com.cn
+Subject: Re: [v1,1/1] Fix the incorrect quantity for fan & temp attributes.
+Message-ID: <20200315133745.GA6049@roeck-us.net>
+References: <20200312024934.3533-1-Amy.Shih@advantech.com.tw>
 MIME-Version: 1.0
-Received: by 2002:a02:63c1:0:0:0:0:0 with HTTP; Sat, 14 Mar 2020 10:20:28
- -0700 (PDT)
-From:   Omar Ousman <omarousman25@gmail.com>
-Date:   Sat, 14 Mar 2020 18:20:28 +0100
-X-Google-Sender-Auth: VNfZ5GidMpY66VRDRhna379s7FA
-Message-ID: <CAOdk3H=iqtzP9LMZSea9eyACfmkiPiG9wKD-_H9R1g2DpwKnkg@mail.gmail.com>
-Subject: You received my last mail,,,,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200312024934.3533-1-Amy.Shih@advantech.com.tw>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-I am Mr.Omar Ousman, a regional managing director (CORIS BANK
-INTERNATIONAL) Ouagadougou Burkina Faso, in my department we have
-US$9,500.0000 million united state dollars, to transfer into your
-account as a dormant fund.If you are interested to use this fund to
-help the orphans around the world contact and send me your personal
-information for more details to my email omarousman25@gmail.com
+On Thu, Mar 12, 2020 at 02:49:34AM +0000, Amy.Shih@advantech.com.tw wrote:
+> From: Amy Shih <amy.shih@advantech.com.tw>
+> 
+> nct7904d supports 12 fan tachometers input and 13 temperatures
+> (TEMP_CH1~4 and LTD + DTS TCPU1~8), fix the quantity for fan & temp
+> attributes.
+> 
+> Signed-off-by: Amy Shih <amy.shih@advantech.com.tw>
 
-Your full names..........
-Your country of origin..........
-Your occupation..........
-Your Age..........
-Your Mobile Number..........
+Applied.
 
-Best Regards,
+Thanks,
+Guenter
+
+> ---
+>  drivers/hwmon/nct7904.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
+> index 281c81e..1f5743d 100644
+> --- a/drivers/hwmon/nct7904.c
+> +++ b/drivers/hwmon/nct7904.c
+> @@ -7,6 +7,11 @@
+>   *
+>   * Copyright (c) 2019 Advantech
+>   * Author: Amy.Shih <amy.shih@advantech.com.tw>
+> + *
+> + * Supports the following chips:
+> + *
+> + * Chip        #vin  #fan  #pwm  #temp  #dts  chip ID
+> + * nct7904d     20    12    4     5      8    0xc5
+>   */
+>  
+>  #include <linux/module.h>
+> @@ -820,6 +825,10 @@ static int nct7904_detect(struct i2c_client *client,
+>  			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+>  			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+>  			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+> +			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+> +			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+> +			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+> +			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM,
+>  			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_ALARM),
+>  	HWMON_CHANNEL_INFO(pwm,
+>  			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
+> @@ -853,6 +862,18 @@ static int nct7904_detect(struct i2c_client *client,
+>  			   HWMON_T_CRIT_HYST,
+>  			   HWMON_T_INPUT | HWMON_T_ALARM | HWMON_T_MAX |
+>  			   HWMON_T_MAX_HYST | HWMON_T_TYPE | HWMON_T_CRIT |
+> +			   HWMON_T_CRIT_HYST,
+> +			   HWMON_T_INPUT | HWMON_T_ALARM | HWMON_T_MAX |
+> +			   HWMON_T_MAX_HYST | HWMON_T_TYPE | HWMON_T_CRIT |
+> +			   HWMON_T_CRIT_HYST,
+> +			   HWMON_T_INPUT | HWMON_T_ALARM | HWMON_T_MAX |
+> +			   HWMON_T_MAX_HYST | HWMON_T_TYPE | HWMON_T_CRIT |
+> +			   HWMON_T_CRIT_HYST,
+> +			   HWMON_T_INPUT | HWMON_T_ALARM | HWMON_T_MAX |
+> +			   HWMON_T_MAX_HYST | HWMON_T_TYPE | HWMON_T_CRIT |
+> +			   HWMON_T_CRIT_HYST,
+> +			   HWMON_T_INPUT | HWMON_T_ALARM | HWMON_T_MAX |
+> +			   HWMON_T_MAX_HYST | HWMON_T_TYPE | HWMON_T_CRIT |
+>  			   HWMON_T_CRIT_HYST),
+>  	NULL
+>  };
