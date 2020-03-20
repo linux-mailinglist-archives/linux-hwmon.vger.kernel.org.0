@@ -2,70 +2,81 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0416C18C489
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 02:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79F9518C4BC
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 02:41:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726950AbgCTBNk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Mar 2020 21:13:40 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:11451 "EHLO
+        id S1727500AbgCTBl2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 19 Mar 2020 21:41:28 -0400
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:44241 "EHLO
         alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726726AbgCTBNk (ORCPT
+        by vger.kernel.org with ESMTP id S1727488AbgCTBl1 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Mar 2020 21:13:40 -0400
+        Thu, 19 Mar 2020 21:41:27 -0400
 Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 19 Mar 2020 18:13:39 -0700
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 19 Mar 2020 18:41:26 -0700
 Received: from gurus-linux.qualcomm.com ([10.46.162.81])
-  by ironmsg02-sd.qualcomm.com with ESMTP; 19 Mar 2020 18:13:38 -0700
+  by ironmsg02-sd.qualcomm.com with ESMTP; 19 Mar 2020 18:41:25 -0700
 Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
-        id 0BD724B30; Thu, 19 Mar 2020 18:13:38 -0700 (PDT)
-Date:   Thu, 19 Mar 2020 18:13:38 -0700
+        id 8636A4940; Thu, 19 Mar 2020 18:41:25 -0700 (PDT)
 From:   Guru Das Srinagesh <gurus@codeaurora.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+To:     linux-pwm@vger.kernel.org
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org, Kamil Debski <kamil@wypas.org>,
+        linux-kernel@vger.kernel.org,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        Kamil Debski <kamil@wypas.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v10 02/12] hwmon: pwm-fan: Use 64-bit division macro
-Message-ID: <20200320011338.GA12892@codeaurora.org>
-References: <cover.1584650604.git.gurus@codeaurora.org>
- <b8d8e51723f99844abc6a3f637ac42be3e084709.1584650604.git.gurus@codeaurora.org>
- <4c99e36b-4705-a6a2-0769-301b5e9b5006@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c99e36b-4705-a6a2-0769-301b5e9b5006@roeck-us.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Subject: [PATCH v11 02/12] hwmon: pwm-fan: Use 64-bit division macro
+Date:   Thu, 19 Mar 2020 18:41:13 -0700
+Message-Id: <f3f3be8f8f0132e3f1f227e3bbf02b61a9e04cbd.1584667964.git.gurus@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <cover.1584667964.git.gurus@codeaurora.org>
+References: <cover.1584667964.git.gurus@codeaurora.org>
+In-Reply-To: <cover.1584667964.git.gurus@codeaurora.org>
+References: <cover.1584667964.git.gurus@codeaurora.org>
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 02:12:02PM -0700, Guenter Roeck wrote:
-> On 3/19/20 1:50 PM, Guru Das Srinagesh wrote:
-> > Since the PWM framework is switching struct pwm_args.period's datatype
-> > to u64, prepare for this transition by using DIV_ROUND_UP_ULL to handle
-> > a 64-bit dividend.
-> > 
-> > Cc: Kamil Debski <kamil@wypas.org>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: Jean Delvare <jdelvare@suse.com>
-> > Cc: Guenter Roeck <linux@roeck-us.net>
-> > Cc: Liam Girdwood <lgirdwood@gmail.com>
-> > Cc: Mark Brown <broonie@kernel.org>
-> > Cc: linux-hwmon@vger.kernel.org
-> > 
-> > Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> 
-> https://patchwork.kernel.org/patch/11430549/
-> 
-> includes my previous Ack. v9 included it, in v10 it is dropped.
-> I don't see a change in the patch. Please explain.
+Since the PWM framework is switching struct pwm_args.period's datatype
+to u64, prepare for this transition by using DIV_ROUND_UP_ULL to handle
+a 64-bit dividend.
 
-Sorry, I missed adding the Acked-by and Reviewed-by tags for the all the
-patches that have received them in this v10 patchset. I will add them
-back and re-push.
+Cc: Kamil Debski <kamil@wypas.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-hwmon@vger.kernel.org
+
+Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/pwm-fan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
+index 42ffd2e..283423a 100644
+--- a/drivers/hwmon/pwm-fan.c
++++ b/drivers/hwmon/pwm-fan.c
+@@ -437,7 +437,7 @@ static int pwm_fan_resume(struct device *dev)
+ 		return 0;
+ 
+ 	pwm_get_args(ctx->pwm, &pargs);
+-	duty = DIV_ROUND_UP(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
++	duty = DIV_ROUND_UP_ULL(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
+ 	ret = pwm_config(ctx->pwm, duty, pargs.period);
+ 	if (ret)
+ 		return ret;
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
+
