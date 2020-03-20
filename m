@@ -2,93 +2,143 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8632A18D961
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 21:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E80B318D975
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 21:36:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726855AbgCTUdJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 20 Mar 2020 16:33:09 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:37119 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726829AbgCTUdJ (ORCPT
+        id S1726925AbgCTUf6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 20 Mar 2020 16:35:58 -0400
+Received: from lists.gateworks.com ([108.161.130.12]:58105 "EHLO
+        lists.gateworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726829AbgCTUf6 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 20 Mar 2020 16:33:09 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jFOJf-0003W5-B3; Fri, 20 Mar 2020 21:32:27 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id A95431039FC; Fri, 20 Mar 2020 21:32:26 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        "maintainer\:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Gross <mgross@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        linux-edac@vger.kernel.org,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
+        Fri, 20 Mar 2020 16:35:58 -0400
+Received: from 68-189-91-139.static.snlo.ca.charter.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+        by lists.gateworks.com with esmtp (Exim 4.82)
+        (envelope-from <tharvey@gateworks.com>)
+        id 1jFOOS-0004rF-93; Fri, 20 Mar 2020 20:37:24 +0000
+From:   Tim Harvey <tharvey@gateworks.com>
+To:     Lee Jones <lee.jones@linaro.org>, Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Takashi Iwai <tiwai@suse.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-crypto <linux-crypto@vger.kernel.org>
-Subject: Re: [patch 08/22] ACPI: Convert to new X86 CPU match macros
-In-Reply-To: <CAHp75VcK3tL0YayjF=CSkSkHiOpg2zOV3rdkXQWJmLZ9fmevpg@mail.gmail.com>
-References: <20200320131345.635023594@linutronix.de> <20200320131509.467730627@linutronix.de> <CAHp75VcK3tL0YayjF=CSkSkHiOpg2zOV3rdkXQWJmLZ9fmevpg@mail.gmail.com>
-Date:   Fri, 20 Mar 2020 21:32:26 +0100
-Message-ID: <87bloqpy1x.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+        linux-hwmon@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Robert Jones <rjones@gateworks.com>
+Cc:     Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH v7 0/3] Add support for the Gateworks System Controller
+Date:   Fri, 20 Mar 2020 13:35:47 -0700
+Message-Id: <1584736550-7520-1-git-send-email-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+This series adds support for the Gateworks System Controller used on Gateworks
+Laguna, Ventana, and Newport product families.
 
-> On Fri, Mar 20, 2020 at 3:19 PM Thomas Gleixner <tglx@linutronix.de> wrote:
->>
->> The new macro set has a consistent namespace and uses C99 initializers
->> instead of the grufty C89 ones.
->>
->> Rename the local macro wrapper to X86_MATCH for consistency. It stays for
->> readability sake.
->
->> +       X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,     NULL),
->> +       X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,        NULL),
->
->> -#define ICPU(model)    { X86_VENDOR_INTEL, 6, model, X86_FEATURE_ANY, }
->> +#define X86_MATCH(model)       X86_MATCH_INTEL_FAM6_MODEL(model, NULL)
->
-> Maybe we can do a generic macro to avoid all these ', NULL' repetitions?
+The GSC is an MSP430 I2C slave controller whose firmware embeds the following
+features:
+ - I/O expander (16 GPIO's emulating a PCA955x)
+ - EEPROM (enumating AT24)
+ - RTC (enumating DS1672)
+ - HWMON
+ - Interrupt controller with tamper detect, user pushbotton
+ - Watchdog controller capable of full board power-cycle
+ - Power Control capable of full board power-cycle
 
-I opted for having the data argument everywhere to keep the macro maze
-small. And we have enough places where data is actually used.
+see http://trac.gateworks.com/wiki/gsc for more details
+---
+v7:
+ - dt-bindings: change divider from mili-ohms to ohms
+ - dt-bindings: add constraints for voltage divider and offset
+ - dt-bindings: remove unnecessary ref for offset
+ - dt-bindings: renamed fan to fan-controller and changed base prop to reg
+ - mfd:  remove irq from private data struct
+ - hwmon: fix whitespace in Kconfig
+ - hwmon: remove unnecessary device pointer in private data
+ - hwmon: change divider from mili-ohms to ohms
+ - hwmon: move fan base property to reg
 
-Thanks,
+v6:
+ - hwmon: fix size of info field
+ - hwmon: improve pwm output control documentation
+ - hwmon: include unit suffix in divider and offset
+ - hwmon: change subnode name to gsc-adc
+ - hwmon: change to fan subnode
+ - hwmon: fix voltage offset
+ - dt-bindings: fix commit message typo
+ - dt-bindings: drop invalid description from #interrupt-cells property
+ - dt-bindings: fix adc pattern property
+ - dt-bindings: add unit suffix
+ - dt-bindings: replace hwmon/adc with adc/channel
+ - dt-bindings: changed adc type to gw,mode
+ - dt-bindings: add unit suffix and drop ref for voltage-divider
+ - dt-bindings: add unit suffix for voltage-offset
+ - dt-bindings: moved fan to its own subnode with base register
 
-        tglx
+v5:
+ - fix checkpatch issues
+ - fix dt_binding_check issues
+ - address feedback from v4
+
+v4:
+ - hwmon: move to using pwm<n>_auto_point<m>_{pwm,temp} for FAN PWM
+ - hwmon: remove unncessary resolution/scaling properties for ADCs
+ - bindings: update to yaml Documentation
+ - removed watchdog driver
+
+v3:
+ - removed unnecessary input driver
+ - added wdt driver
+ - bindings: encorporated feedback from mailng list
+ - hwmon:
+ - encoroprated feedback from mailng list
+ - added support for raw ADC voltage input used in newer GSC firmware
+
+v2:
+ - change license comment block style
+ - remove COMPILE_TEST
+ - fixed whitespace issues
+ - replaced a printk with dev_err
+ - remove DEBUG
+ - simplify regmap_bulk_read err check
+ - remove break after returns in switch statement
+ - fix fan setpoint buffer address
+ - remove unnecessary parens
+ - consistently use struct device *dev pointer
+ - add validation for hwmon child node props
+ - move parsing of of to own function
+ - use strlcpy to ensure null termination
+ - fix static array sizes and removed unnecessary initializers
+ - dynamically allocate channels
+ - fix fan input label
+ - support platform data
+
+Tim Harvey (3):
+  dt-bindings: mfd: Add Gateworks System Controller bindings
+  mfd: add Gateworks System Controller core driver
+  hwmon: add Gateworks System Controller support
+
+ .../devicetree/bindings/mfd/gateworks-gsc.yaml     | 173 ++++++++++
+ Documentation/hwmon/gsc-hwmon.rst                  |  53 +++
+ Documentation/hwmon/index.rst                      |   1 +
+ MAINTAINERS                                        |  11 +
+ drivers/hwmon/Kconfig                              |   9 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/gsc-hwmon.c                          | 372 +++++++++++++++++++++
+ drivers/mfd/Kconfig                                |  10 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/gateworks-gsc.c                        | 291 ++++++++++++++++
+ include/linux/mfd/gsc.h                            |  71 ++++
+ include/linux/platform_data/gsc_hwmon.h            |  44 +++
+ 12 files changed, 1037 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
+ create mode 100644 Documentation/hwmon/gsc-hwmon.rst
+ create mode 100644 drivers/hwmon/gsc-hwmon.c
+ create mode 100644 drivers/mfd/gateworks-gsc.c
+ create mode 100644 include/linux/mfd/gsc.h
+ create mode 100644 include/linux/platform_data/gsc_hwmon.h
+
+-- 
+2.7.4
+
