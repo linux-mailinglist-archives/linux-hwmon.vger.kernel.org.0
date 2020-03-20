@@ -2,299 +2,79 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 290CF18C59A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 04:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA0A18CCC8
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 12:22:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726596AbgCTDPS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Mar 2020 23:15:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37532 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726103AbgCTDPS (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Mar 2020 23:15:18 -0400
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E68AD20732;
-        Fri, 20 Mar 2020 03:15:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584674117;
-        bh=Qy4Drd2ux8KYY4KgJCZdJOObAhqMSo77y6zNWn+q4MM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=w3GKc92cnRRSzt66icI55KS0YEpfwJqCiylsk1UA/e0G2dtEuTFM3ktG48tXpJvQH
-         RUqJDJyM6DfJjtqBLJ5d/7Iv/23jWn4gz1/qanH0EYx3PWYHQZ5NnQOzLXVoT7V7yP
-         pa/AWhK78n39Pbt4bzMzZAspmVtoVHhhot1C7FLo=
-Received: by mail-qt1-f180.google.com with SMTP id d22so3881277qtn.0;
-        Thu, 19 Mar 2020 20:15:16 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ2RuSClpIGjk4Ol/gbJ7iJHsGYum2kCfd2o9VuF3OvTt+9X2Zws
-        x+3Vhu6Q89az0ImCEVdkqVNYO7MufTDXJVc4GA==
-X-Google-Smtp-Source: ADFU+vvbZ0m/eqkTFt+PYD8TMf6wIaTyZ1u2Jmh0zj6G5M05l2SrNwBvEVQ1sjhQ0kcRpDTwXiW7ElZTToN7kZFliKg=
-X-Received: by 2002:ac8:1b33:: with SMTP id y48mr6410475qtj.136.1584674115935;
- Thu, 19 Mar 2020 20:15:15 -0700 (PDT)
+        id S1726925AbgCTLWW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 20 Mar 2020 07:22:22 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:38183 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727014AbgCTLWV (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 20 Mar 2020 07:22:21 -0400
+Received: by mail-ot1-f68.google.com with SMTP id t28so5592645ott.5
+        for <linux-hwmon@vger.kernel.org>; Fri, 20 Mar 2020 04:22:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
+        b=Pf/weUAfOIiJrSxirpBihZi6rDPdhyQPdqV31VjwvFYCZrXzvBkOQEdBeDD+fX+N79
+         qt9tmCm3FjbnRdoqGWpCa20Uk5e1bhGZ/0wJS+wlw72uJad71tcUBjcoeSwEUuruvXcA
+         84tRSqCB2Tph2tBoxOjpJV1x/Ea/J8W5HzqXPv65IQxNfJKY1At/wswC5dSURMa29aoD
+         8zo4+xruOlzLz3L4vwtTRqRx9ghKaKGisLI9y4mD1Sh4zDOfgU90m4NEBHVFFDUWfnA4
+         NQH6UOJvtwAQlpwMApniIE8f8/D2Yc9OrACifoz9y0lKr31XZXe0ZPRAGdpIASeffTj+
+         mh1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
+        b=E2u+rlytpr6xkZRBvkG6H4N/gGViA9HXyqLWolU/Z9LyWTlgTngoIqqM4LaOAAaexJ
+         qLXjj5VzcxxoPrjPKRgiWIovKVN6UFA8l0rb3Tf2lEPqqfRlOUz3hIMMT4Gl75VAXwnp
+         32+Z+DrBxMGAwEEu4n0FyAfHVaXLDJnKgnl+NYugggi/imwaAZUUweLFZ7+xbydlK8IX
+         0hwE4Dcf8Ncr557wTQuuHU2drhNxSelc6kH1D5Ju7narkzG6K//A3jpcSbXVZUoo2mGM
+         Ea/BVbslgHcOJhsSfaWXk2W5mZKtMvid0FQ3JVVnSWni+D7xxcbkGA8nHLn0W9t+kk9M
+         tA7w==
+X-Gm-Message-State: ANhLgQ07ABZgcV6YtR6mGi6N/wRlL6cHi+uHMkQ4bMv72Mzg4nMcSxjg
+        NXZkrNkAgn+10D89zJ6QLGqCTlsvDJFN9lR4b1k=
+X-Google-Smtp-Source: ADFU+vsduRj3hrCf9DhK2bNvKDpHo5/uVyU9cffULt+Uh+xPEULP1CtCYadaVmwGXRoaldTKMt0qeMlG0eCXLSlrUpo=
+X-Received: by 2002:a05:6830:3151:: with SMTP id c17mr6555852ots.310.1584703339020;
+ Fri, 20 Mar 2020 04:22:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <1584464453-28200-1-git-send-email-tharvey@gateworks.com> <1584464453-28200-2-git-send-email-tharvey@gateworks.com>
-In-Reply-To: <1584464453-28200-2-git-send-email-tharvey@gateworks.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 19 Mar 2020 21:15:04 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqK8isY1ymi6Kk=uDC-uLR5QZUYUUQJ3z=SJ6ToC5aTbjg@mail.gmail.com>
-Message-ID: <CAL_JsqK8isY1ymi6Kk=uDC-uLR5QZUYUUQJ3z=SJ6ToC5aTbjg@mail.gmail.com>
-Subject: Re: [PATCH v6 1/3] dt-bindings: mfd: Add Gateworks System Controller bindings
-To:     Tim Harvey <tharvey@gateworks.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Linux HWMON List <linux-hwmon@vger.kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Robert Jones <rjones@gateworks.com>
+Received: by 2002:a05:6838:40c6:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:22:18
+ -0700 (PDT)
+From:   ECOWAS COMMITEE <ecowasmonitoringcommitteeabj@gmail.com>
+Date:   Fri, 20 Mar 2020 11:22:18 +0000
+Message-ID: <CAHHubrYe0Tme3z6y4=35rwkeKtHK_aNvGc957sh9eWYyPOf1Vg@mail.gmail.com>
+Subject: HAPPY SURVIVAL OF CORONAVIRUS
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Mar 17, 2020 at 11:01 AM Tim Harvey <tharvey@gateworks.com> wrote:
->
-> This patch adds documentation of device-tree bindings for the
-> Gateworks System Controller (GSC).
->
-> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-> ---
-> v6:
->  - fix commit message typo
->  - drop invalid description from #interrupt-cells property
->  - fix adc pattern property
->  - add unit suffix
->  - replace hwmon/adc with adc/channel
->  - changed adc type to gw,mode
->  - add unit suffix and drop ref for voltage-divider
->  - add unit suffix for voltage-offset
->  - moved fan to its own subnode with base register
->
-> v5:
->  - resolve dt_binding_check issues
->
-> v4:
->  - move to using pwm<n>_auto_point<m>_{pwm,temp} for FAN PWM
->  - remove unncessary resolution/scaling properties for ADCs
->  - update to yaml
->  - remove watchdog
->
-> v3:
->  - replaced _ with -
->  - remove input bindings
->  - added full description of hwmon
->  - fix unit address of hwmon child nodes
-> ---
->  .../devicetree/bindings/mfd/gateworks-gsc.yaml     | 172 +++++++++++++++++++++
->  1 file changed, 172 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
->
-> diff --git a/Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml b/Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
-> new file mode 100644
-> index 00000000..e921e67
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
-> @@ -0,0 +1,172 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/gateworks-gsc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Gateworks System Controller multi-function device
-> +
-> +description: |
-> +  The GSC is a Multifunction I2C slave device with the following submodules:
-> +   - Watchdog Timer
-> +   - GPIO
-> +   - Pushbutton controller
-> +   - Hardware Monitor with ADC's for temperature and voltage rails and
-> +     fan controller
-> +
-> +maintainers:
-> +  - Tim Harvey <tharvey@gateworks.com>
-> +  - Robert Jones <rjones@gateworks.com>
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: "gsc@[0-9a-f]{1,2}"
-> +  compatible:
-> +    const: gw,gsc
-> +
-> +  reg:
-> +    description: I2C device address
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 1
-> +
-> +  adc:
-> +    type: object
-> +    description: Optional Hardware Monitoring module
-> +
-> +    properties:
-> +      compatible:
-> +        const: gw,gsc-adc
-> +
-> +      "#address-cells":
-> +        const: 1
-> +
-> +      "#size-cells":
-> +        const: 0
-> +
-> +    patternProperties:
-> +      "^channel@[0-9]+$":
-> +        type: object
-> +        description: |
-> +          Properties for a single ADC which can report cooked values
-> +          (ie temperature sensor based on thermister), raw values
-> +          (ie voltage rail with a pre-scaling resistor divider).
-> +
-> +        properties:
-> +          reg:
-> +            description: Register of the ADC
-> +            maxItems: 1
-> +
-> +          label:
-> +            description: Name of the ADC input
-> +
-> +          gw,mode:
-> +            description: |
-> +              conversion mode:
-> +                0 - temperature, in C*10
-> +                1 - pre-scaled voltage value
-> +                2 - scaled voltage based on an optional resistor divider
-> +                    and optional offset
-> +            allOf:
-> +              - $ref: /schemas/types.yaml#/definitions/uint32
-> +            enum: [0, 1, 2]
-> +
-> +          gw,voltage-divider-milli-ohms:
-> +            description: values of resistors for divider on raw ADC input
-> +            items:
-> +              - description: R1
-> +              - description: R2
+Dear Sir/Madam
 
-Aren't there some constraints on the values? You could do something like this:
+HAPPY SURVIVAL OF CORONAVIRUS
 
-            maxItems: 2
-            items:
-              minimum: 1
-              maximum: 2000
+We the West African Monitoring Committee of the West African Economic
+Community(ECOWAS)are contacting you for a business transaction which
+we feel will be of great interest to you.
 
-I know I said the way you have it is fine, but the example fails with
-it like this. It's related to how we encode the DT data for validation
-and some schema fixups we do to cut down on some boilerplate. We could
-just fix the example (with <> around each value), but having
-constraints is better.
+Our duty is to see to the coming in and out of funds into this sub
+region.There is a fund which we confiscated worth of $12.5 million
+dollars.We will like you to receive this fund on your name in your
+account and as well helping us in the investment.
 
-> +
-> +          gw,voltage-offset-microvolt:
-> +            $ref: /schemas/types.yaml#/definitions/uint32
+You are advised to contact us as soon as you get this message for
+details of the transaction if you find it interesting.
 
-Can drop this as .*-microvolt has a defined type.
+Best Regards,
 
-Are there some constraints?
+Mr John Aka
 
-> +            description: |
-> +              A positive voltage offset to apply to a raw ADC
-> +              (ie to compensate for a diode drop).
-> +
-> +        required:
-> +          - gw,mode
-> +          - reg
-> +          - label
-> +
-> +    required:
-> +      - compatible
-> +      - "#address-cells"
-> +      - "#size-cells"
-> +
-> +  fan:
-
-fan-controller
-
-Save 'fan' for if/when we have a node representing the fan itself.
-
-> +    type: object
-> +    description: Optional FAN controller
-> +
-> +    properties:
-> +      compatible:
-> +        const: gw,gsc-fan
-> +
-> +      base:
-
-What happened to 'reg'? While inconsistent that adc doesn't have an
-address, better that than inventing your own address property.
-
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description: The fan controller base address
-> +        maxItems: 1
-> +
-> +    required:
-> +      - compatible
-> +      - base
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - interrupt-controller
-> +  - "#interrupt-cells"
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        gsc@20 {
-> +            compatible = "gw,gsc";
-> +            reg = <0x20>;
-> +            interrupt-parent = <&gpio1>;
-> +            interrupts = <4 GPIO_ACTIVE_LOW>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <1>;
-> +
-> +            adc {
-> +                compatible = "gw,gsc-adc";
-> +                #address-cells = <1>;
-> +                #size-cells = <0>;
-> +
-> +                channel@0 { /* A0: Board Temperature */
-> +                    gw,mode = <0>;
-> +                    reg = <0x00>;
-> +                    label = "temp";
-> +                };
-> +
-> +                channel@2 { /* A1: Input Voltage (raw ADC) */
-> +                    gw,mode = <1>;
-> +                    reg = <0x02>;
-> +                    label = "vdd_vin";
-> +                    gw,voltage-divider-milli-ohms = <22100 1000>;
-> +                    gw,voltage-offset-microvolt = <800000>;
-> +                };
-> +
-> +                channel@b { /* A2: Battery voltage */
-> +                    gw,mode = <1>;
-> +                    reg = <0x0b>;
-> +                    label = "vdd_bat";
-> +                };
-> +            };
-> +
-> +            fan {
-> +                compatible = "gw,gsc-fan";
-> +                base = <0x2c>;
-> +            };
-> +        };
-> +    };
-> --
-> 2.7.4
->
+Chairman
+ECOWAS
+West African Monitoring Committee
+Tel 00225 6716 6756
+Abidjan Cote D'Ivoire
