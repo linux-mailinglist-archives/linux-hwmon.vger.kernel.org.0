@@ -2,81 +2,81 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F9518C4BC
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 02:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 875AA18C58D
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2020 04:02:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727500AbgCTBl2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Mar 2020 21:41:28 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:44241 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727488AbgCTBl1 (ORCPT
+        id S1726614AbgCTDCp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 19 Mar 2020 23:02:45 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:40065 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726596AbgCTDCp (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Mar 2020 21:41:27 -0400
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 19 Mar 2020 18:41:26 -0700
-Received: from gurus-linux.qualcomm.com ([10.46.162.81])
-  by ironmsg02-sd.qualcomm.com with ESMTP; 19 Mar 2020 18:41:25 -0700
-Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
-        id 8636A4940; Thu, 19 Mar 2020 18:41:25 -0700 (PDT)
-From:   Guru Das Srinagesh <gurus@codeaurora.org>
-To:     linux-pwm@vger.kernel.org
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        Kamil Debski <kamil@wypas.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH v11 02/12] hwmon: pwm-fan: Use 64-bit division macro
-Date:   Thu, 19 Mar 2020 18:41:13 -0700
-Message-Id: <f3f3be8f8f0132e3f1f227e3bbf02b61a9e04cbd.1584667964.git.gurus@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <cover.1584667964.git.gurus@codeaurora.org>
-References: <cover.1584667964.git.gurus@codeaurora.org>
-In-Reply-To: <cover.1584667964.git.gurus@codeaurora.org>
-References: <cover.1584667964.git.gurus@codeaurora.org>
+        Thu, 19 Mar 2020 23:02:45 -0400
+Received: by mail-pl1-f194.google.com with SMTP id h11so1905341plk.7;
+        Thu, 19 Mar 2020 20:02:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Wy2Rb8SY1Pz/c/o65ADYdzfkIZ3xe9SUJygVcDWd17g=;
+        b=jsy9jEofnUXn+21zXMtuprVG8J+jXN9DsDWkV7vIF9V1EdUcihkMN+d4eP06Tpi6eK
+         wYEp1qQpvtf/1sigok9t5ii//EZ3lnljCAMuvSdnm60Y6cVNHB1HWOxxZN7y92km4M2d
+         kmjxngCkGCPpzYazTLN6agsyIvbWZfsebekdqaAMblIzUPZrPgj04EDlQBhV6cp3k2rp
+         SIh85/aB2P9iVHIytGoPZHC2eInGAXBmfPrW/zaSWdiYxu4hr9I8++Ec+YCtBZoWkmLn
+         um7TlH+J+dDqO69OjZ+IBKbg+lVj1MAqsGTGtfVLydktKxdqEwdGGPx52vdBddM94z97
+         wqJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Wy2Rb8SY1Pz/c/o65ADYdzfkIZ3xe9SUJygVcDWd17g=;
+        b=Rn9d2gJeDQHU2Q44aQkgqR+l/qlz6WphGhNIY1UPZicsPXP2X9Xih7Advgt+y87qhV
+         GG4ge65Pzdtd5ZaItRbTretPvjw7eV0DqAjDtvLmqZv7hnjAYHMDPctzE84ZMAOEd+XX
+         EHgvve2s7MrXfAi8uEPBOZwtr+FMfTujuXc8RBYGrUjDDItTSTq1BMKQqs3SBqG2QiPx
+         KTV163pYwTE7JxwZs/5W4LxF5L+E90Mgh1wbhujAgJmlDlUwuv8gh2Nib/vUoh8+6+hg
+         doAczwIDVIWdoG8+VH6o18Yic/WOraWrW7jO4gkWfhaMT3Pu2u+KgVoCdTPz65M5/EFS
+         Xfew==
+X-Gm-Message-State: ANhLgQ1OZaVIY8XHOApbwzsBMbrjDUY2Nc1s/8ve0QRxSanX+2MT3oAj
+        qSu7sadFyggzZE1kqPtYBhPOL3Fs
+X-Google-Smtp-Source: ADFU+vvO1H5mOGiH2ZWVqkt7aaUa2qpKhOVWG7PztaPxglK0QHDboUuqvypYeRa1ogJRj5kGF3ZqFg==
+X-Received: by 2002:a17:902:b198:: with SMTP id s24mr6209268plr.89.1584673364104;
+        Thu, 19 Mar 2020 20:02:44 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 5sm3752191pfw.98.2020.03.19.20.02.43
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 19 Mar 2020 20:02:43 -0700 (PDT)
+Date:   Thu, 19 Mar 2020 20:02:42 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Grant Peltier <grantpeltier93@gmail.com>
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        adam.vaughn.xh@renesas.com
+Subject: Re: [PATCH v2 1/2] hwmon: (pmbus) add support for 2nd Gen Renesas
+ digital multiphase
+Message-ID: <20200320030242.GA2413@roeck-us.net>
+References: <cover.1584568073.git.grantpeltier93@gmail.com>
+ <10f2ef1746e5d079ac3b3c6054ffd2bbfc314572.1584568073.git.grantpeltier93@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10f2ef1746e5d079ac3b3c6054ffd2bbfc314572.1584568073.git.grantpeltier93@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Since the PWM framework is switching struct pwm_args.period's datatype
-to u64, prepare for this transition by using DIV_ROUND_UP_ULL to handle
-a 64-bit dividend.
+On Thu, Mar 19, 2020 at 10:49:50AM -0500, Grant Peltier wrote:
+> Extend the isl68137 driver to provide support for 2nd generation Renesas
+> digital multiphase voltage regulators.
+> 
+> Signed-off-by: Grant Peltier <grantpeltier93@gmail.com>
 
-Cc: Kamil Debski <kamil@wypas.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-hwmon@vger.kernel.org
+I hate to (have to) say that, but there are lots of checkpatch errors and
+warnings in this patch.
 
-Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
----
- drivers/hwmon/pwm-fan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+total: 7 errors, 4 warnings, 182 lines checked
 
-diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-index 42ffd2e..283423a 100644
---- a/drivers/hwmon/pwm-fan.c
-+++ b/drivers/hwmon/pwm-fan.c
-@@ -437,7 +437,7 @@ static int pwm_fan_resume(struct device *dev)
- 		return 0;
- 
- 	pwm_get_args(ctx->pwm, &pargs);
--	duty = DIV_ROUND_UP(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
-+	duty = DIV_ROUND_UP_ULL(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
- 	ret = pwm_config(ctx->pwm, duty, pargs.period);
- 	if (ret)
- 		return ret;
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+That is really unnecessary. Please fix and resubmit.
 
+Thanks,
+Guenter
