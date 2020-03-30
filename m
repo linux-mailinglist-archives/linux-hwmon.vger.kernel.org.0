@@ -2,270 +2,68 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2472119785B
-	for <lists+linux-hwmon@lfdr.de>; Mon, 30 Mar 2020 12:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8111A1979DD
+	for <lists+linux-hwmon@lfdr.de>; Mon, 30 Mar 2020 12:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728640AbgC3KG6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 30 Mar 2020 06:06:58 -0400
-Received: from [58.211.163.100] ([58.211.163.100]:64725 "EHLO
-        mail.advantech.com.cn" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729181AbgC3KG6 (ORCPT
+        id S1729627AbgC3Kwp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 30 Mar 2020 06:52:45 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:39873 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729427AbgC3Kwo (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 30 Mar 2020 06:06:58 -0400
-Received: from ACNMB2.ACN.ADVANTECH.CORP (unverified [172.21.128.148]) by ACN-SWEEPER01.ACN.ADVANTECH.CORP
- (Clearswift SMTPRS 5.6.0) with ESMTP id <Tde39040d7fac1580301704@ACN-SWEEPER01.ACN.ADVANTECH.CORP>;
- Mon, 30 Mar 2020 18:01:46 +0800
-Received: from ADVANTECH.CORP (172.17.10.69) by ACNMB2.ACN.ADVANTECH.CORP
- (172.21.128.148) with Microsoft SMTP Server (TLS) id 15.0.1395.4; Mon, 30 Mar
- 2020 18:01:45 +0800
-From:   <yuechao.zhao@advantech.com.cn>
-To:     <345351830@qq.com>
-CC:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <amy.shih@advantech.com.tw>, <oakley.ding@advantech.com.tw>,
-        <jia.sui@advantech.com.cn>, <shengkui.leng@advantech.com.cn>,
-        Yuechao Zhao <yuechao.zhao@advantech.com.cn>
-Subject: [v3,1/1] hwmon: (nct7904) Add watchdog function
-Date:   Mon, 30 Mar 2020 09:59:12 +0000
-Message-ID: <20200330095912.10827-1-yuechao.zhao@advantech.com.cn>
-X-Mailer: git-send-email 2.17.1
+        Mon, 30 Mar 2020 06:52:44 -0400
+Received: by mail-vs1-f65.google.com with SMTP id j128so10661108vsd.6
+        for <linux-hwmon@vger.kernel.org>; Mon, 30 Mar 2020 03:52:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=I2bZK+Edwp7f1bl38ZDsYZ8gkHoLOp7N+SgwKjOSdbsqnWhmYlKKFyWTTwwdBuA4Vg
+         rwBHnP7ed1EksF/Uo6wi0daOtai1jA53B5b9RrMCwInP8fTj6xlf+N87Jxy7Sxa+QbUF
+         l2GP0Lv6JzwuZiPJAzgKXNfvaR6mAHzPBfBvakflfZ8B4h5bL4zPFQy+qXgn4TFvbTXz
+         A1ohkR077EumDiarvC1dhS/fXXyUHKbnnxfkdMVlwSlZiAQJvL50ZQklv05R+GT0yrBC
+         3q/4vjuGZ1FGpK3Ogg0O4Ce18OqauZECfFoMpKCzkd0qt9LKtlmIkWUwZqPjuntycFFN
+         I7DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=82B0OONv9gwbZlPp43NzThDz2fRV+KRFwafOQ16joDw=;
+        b=MA90rPpUMOO0EiyQ8jUQM7fVbQsMXFSyYbso5F2tPzAF2n8/ZxHTySSVO/upZlLiyU
+         KobvMojoJPL86PUuoMFx5E90vBACZvJvNqodTRVzriZjlICXRmSO0Jxnpp1TrFmCtXYG
+         3T3jmpK34T2HBUtZ5wDOzX/4UX4G9mUUSVlGcZUAiLdCiPGvcIgWy1FJHOdAMiPjghJq
+         4coBIQh1J4UX/gCg5XxaG2uRkuqqVq6e5Jz2sPtM9OlEdl5A7Otj4SQdQw5xrmfvUOEj
+         0NYc7BIe3rjL2vcFWM+nPtZwYhgPsr9lrV5bwlcMuVZaUbOFReoFfGGVfrk5+AvZu2b3
+         S1wA==
+X-Gm-Message-State: AGi0PubUXlw7WLVERKMCBjc6ALAsojEgvuk0REkpPE5+qo5mCbGXRBwk
+        tyqYg3gsTnIN7QBtO0P+OpH8i9Fje/vj0d6T+Gs=
+X-Google-Smtp-Source: APiQypIWKERkhJyfw3nllppwlKx4Kg5tACX7YV91IKVmdYpKGJw8tan3l05zjbxOy64C+jzvYjD6e0YtF987t4KsIjw=
+X-Received: by 2002:a67:e24c:: with SMTP id w12mr8442912vse.153.1585565563772;
+ Mon, 30 Mar 2020 03:52:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.17.10.69]
-X-ClientProxiedBy: ACLDAG.ADVANTECH.CORP (172.20.2.88) To
- ACNMB2.ACN.ADVANTECH.CORP (172.21.128.148)
+Received: by 2002:a67:c005:0:0:0:0:0 with HTTP; Mon, 30 Mar 2020 03:52:43
+ -0700 (PDT)
+Reply-To: maryalice00.12@postribe.com
+From:   Maryalice Williams <maryalicewilliams730@gmail.com>
+Date:   Mon, 30 Mar 2020 08:52:43 -0200
+Message-ID: <CAKwdjsr+YKgJk7z-UHX7Zo55cx5RUN3-bw03sWcArP4vbM2B5g@mail.gmail.com>
+Subject: Reply For More Details.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Yuechao Zhao <yuechao.zhao@advantech.com.cn>
-
-implement watchdong functionality into the "hwmon/nct7904.c"
-
-Signed-off-by: Yuechao Zhao <yuechao.zhao@advantech.com.cn>
----
-v2:
-- Modify dependency of NC7904 into "drivers/hwmon/Kconfig".
-
-v3:
-- Delete useless message(noise).
-- Delete useless variable 'ret'.
-- Delete 'ping_timeout'.
-- Use 'wdt->timeout' as basis for setting the chip timeout
-- Implement a get_timeout function
-- Use devm_watchdog_register_device() instead of watchdog_register_device().
-- Use watchdog_stop_on_unregister() when driver remove.
-- Delete nct7904_remove() function.
-- Fix typos. 
----
- drivers/hwmon/Kconfig   |   6 ++-
- drivers/hwmon/nct7904.c | 132 +++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 135 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 05a3083..cd0ae82 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -1340,10 +1340,12 @@ config SENSORS_NCT7802
- 
- config SENSORS_NCT7904
- 	tristate "Nuvoton NCT7904"
--	depends on I2C
-+	depends on I2C && WATCHDOG
-+	select WATCHDOG_CORE
- 	help
- 	  If you say yes here you get support for the Nuvoton NCT7904
--	  hardware monitoring chip, including manual fan speed control.
-+	  hardware monitoring chip, including manual fan speed control
-+	  and support for the integrated watchdog.
- 
- 	  This driver can also be built as a module. If so, the module
- 	  will be called nct7904.
-diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
-index 1f5743d..13ac880 100644
---- a/drivers/hwmon/nct7904.c
-+++ b/drivers/hwmon/nct7904.c
-@@ -8,6 +8,9 @@
-  * Copyright (c) 2019 Advantech
-  * Author: Amy.Shih <amy.shih@advantech.com.tw>
-  *
-+ * Copyright (c) 2020 Advantech
-+ * Author: Yuechao Zhao <yuechao.zhao@advantech.com.cn>
-+ *
-  * Supports the following chips:
-  *
-  * Chip        #vin  #fan  #pwm  #temp  #dts  chip ID
-@@ -20,6 +23,7 @@
- #include <linux/i2c.h>
- #include <linux/mutex.h>
- #include <linux/hwmon.h>
-+#include <linux/watchdog.h>
- 
- #define VENDOR_ID_REG		0x7A	/* Any bank */
- #define NUVOTON_ID		0x50
-@@ -87,18 +91,42 @@
- #define FANCTL1_FMR_REG		0x00	/* Bank 3; 1 reg per channel */
- #define FANCTL1_OUT_REG		0x10	/* Bank 3; 1 reg per channel */
- 
-+#define WDT_LOCK_REG		0xE0	/* W/O Lock Watchdog Register */
-+#define WDT_EN_REG		0xE1	/* R/O Watchdog Enable Register */
-+#define WDT_STS_REG		0xE2	/* R/O Watchdog Status Register */
-+#define WDT_TIMER_REG		0xE3	/* R/W Watchdog Timer Register */
-+#define WDT_SOFT_EN		0x55	/* Enable soft watchdog timer */
-+#define WDT_SOFT_DIS		0xAA	/* Disable soft watchdog timer */
-+
- #define VOLT_MONITOR_MODE	0x0
- #define THERMAL_DIODE_MODE	0x1
- #define THERMISTOR_MODE		0x3
- 
- #define ENABLE_TSI	BIT(1)
- 
-+#define WATCHDOG_TIMEOUT	1	/* 1 minute default timeout */
-+
-+/*The timeout range is 1-255 minutes*/
-+#define MIN_TIMEOUT		(1 * 60)
-+#define MAX_TIMEOUT		(255 * 60)
-+
-+static int timeout = WATCHDOG_TIMEOUT;
-+module_param(timeout, int, 0);
-+MODULE_PARM_DESC(timeout, "Watchdog timeout in minutes. 1 <= timeout <= 255, default="
-+			__MODULE_STRING(WATCHODOG_TIMEOUT) ".");
-+
-+static bool nowayout = WATCHDOG_NOWAYOUT;
-+module_param(nowayout, bool, 0);
-+MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started once started (default="
-+			__MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
-+
- static const unsigned short normal_i2c[] = {
- 	0x2d, 0x2e, I2C_CLIENT_END
- };
- 
- struct nct7904_data {
- 	struct i2c_client *client;
-+	struct watchdog_device wdt;
- 	struct mutex bank_lock;
- 	int bank_sel;
- 	u32 fanin_mask;
-@@ -889,6 +917,87 @@ static int nct7904_detect(struct i2c_client *client,
- 	.info = nct7904_info,
- };
- 
-+/*
-+ * Watchdog Function
-+ */
-+static int nct7904_wdt_start(struct watchdog_device *wdt)
-+{
-+	struct nct7904_data *data = watchdog_get_drvdata(wdt);
-+
-+	/* Enable soft watchdog timer */
-+	return nct7904_write_reg(data, BANK_0, WDT_LOCK_REG, WDT_SOFT_EN);
-+}
-+
-+static int nct7904_wdt_stop(struct watchdog_device *wdt)
-+{
-+	struct nct7904_data *data = watchdog_get_drvdata(wdt);
-+
-+	return nct7904_write_reg(data, BANK_0, WDT_LOCK_REG, WDT_SOFT_DIS);
-+}
-+
-+static int nct7904_wdt_set_timeout(struct watchdog_device *wdt,
-+				   unsigned int timeout)
-+{
-+	struct nct7904_data *data = watchdog_get_drvdata(wdt);
-+
-+	wdt->timeout = timeout;
-+
-+	return nct7904_write_reg(data, BANK_0, WDT_TIMER_REG,
-+				 wdt->timeout / 60);
-+}
-+
-+static int nct7904_wdt_ping(struct watchdog_device *wdt)
-+{
-+	/*
-+	 * Note:
-+	 * NCT7904 does not support refreshing WDT_TIMER_REG register when
-+	 * the watchdog is active. Please disable watchdog before feeding
-+	 * the watchdog and enable it again.
-+	 */
-+	struct nct7904_data *data = watchdog_get_drvdata(wdt);
-+	int ret;
-+
-+	/* Disable soft watchdog timer */
-+	ret = nct7904_write_reg(data, BANK_0, WDT_LOCK_REG, WDT_SOFT_DIS);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* feed watchdog */
-+	ret = nct7904_write_reg(data, BANK_0, WDT_TIMER_REG, wdt->timeout / 60);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Enable soft watchdog timer */
-+	return nct7904_write_reg(data, BANK_0, WDT_TIMER_REG, WDT_SOFT_EN);
-+}
-+
-+static unsigned int nct7904_wdt_get_timeleft(struct watchdog_device *wdt)
-+{
-+	struct nct7904_data *data = watchdog_get_drvdata(wdt);
-+	int ret;
-+
-+	ret = nct7904_read_reg(data, BANK_0, WDT_TIMER_REG);
-+	if (ret < 0)
-+		return 0;
-+
-+	return (unsigned int)ret;
-+}
-+
-+static const struct watchdog_info nct7904_wdt_info = {
-+	.options	= WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING |
-+				WDIOF_MAGICCLOSE,
-+	.identity	= "nct7904 watchdog",
-+};
-+
-+static const struct watchdog_ops nct7904_wdt_ops = {
-+	.owner		= THIS_MODULE,
-+	.start		= nct7904_wdt_start,
-+	.stop		= nct7904_wdt_stop,
-+	.ping		= nct7904_wdt_ping,
-+	.set_timeout	= nct7904_wdt_set_timeout,
-+	.get_timeleft	= nct7904_wdt_get_timeleft,
-+};
-+
- static int nct7904_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -1012,7 +1121,28 @@ static int nct7904_probe(struct i2c_client *client,
- 	hwmon_dev =
- 		devm_hwmon_device_register_with_info(dev, client->name, data,
- 						     &nct7904_chip_info, NULL);
--	return PTR_ERR_OR_ZERO(hwmon_dev);
-+	ret = PTR_ERR_OR_ZERO(hwmon_dev);
-+	if (ret)
-+		return ret;
-+
-+	/* Watchdog initialization */
-+	data->wdt.ops = &nct7904_wdt_ops;
-+	data->wdt.info = &nct7904_wdt_info;
-+
-+	data->wdt.timeout = timeout * 60; /* in seconds */
-+	data->wdt.min_timeout = MIN_TIMEOUT;
-+	data->wdt.max_timeout = MAX_TIMEOUT;
-+	data->wdt.parent = &client->dev;
-+
-+	watchdog_init_timeout(&data->wdt, timeout * 60, &client->dev);
-+	watchdog_set_nowayout(&data->wdt, nowayout);
-+	watchdog_set_drvdata(&data->wdt, data);
-+
-+	watchdog_stop_on_unregister(&data->wdt);
-+
-+	i2c_set_clientdata(client, data);
-+
-+	return devm_watchdog_register_device(dev, &data->wdt);
- }
- 
- static const struct i2c_device_id nct7904_id[] = {
 -- 
-1.8.3.1
+My dear,
 
+I am Mrs Maryalice Williams, I want to send you donation of two
+million seven hundred thousand Dollars ($2.7M) for volunteer projects
+in your country due to my ill health that could not permit me. Kindly
+reply for more details, and also send me the following details, as per
+below, your full Name ..........,  Address...........,
+Age...............,  Occupation ...............
+
+Remain blessed,
+Mrs. Maryalice Williams.
