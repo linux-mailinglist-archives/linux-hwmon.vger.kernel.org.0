@@ -2,70 +2,69 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7303D19A136
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2020 23:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D70F19A23E
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Apr 2020 01:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731570AbgCaVtv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 31 Mar 2020 17:49:51 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:36634 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731565AbgCaVtv (ORCPT
+        id S1731424AbgCaXHE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 31 Mar 2020 19:07:04 -0400
+Received: from latitanza.investici.org ([82.94.249.234]:50137 "EHLO
+        latitanza.investici.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731259AbgCaXHE (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 31 Mar 2020 17:49:51 -0400
-Received: by mail-il1-f193.google.com with SMTP id p13so20986757ilp.3;
-        Tue, 31 Mar 2020 14:49:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=XGaSzuYBrzwb5Afzco535xjNeNm7VCR01D0e+KSHlBU=;
-        b=gTneFJeCBSFloAJlZJlDtxRj3bW2AXRuMrV3hivTuEN9jFL7o6GuUnif9YkRGLcnCr
-         MFg8p3WXk4SPgjTDrjS0fbF75kqSieyGZxiydG+qbAJjqrvCFdQXMSI/f5URBcin3WZh
-         EzewSDfAU9ucpnjdvdELKuRocahNElwIFzWJSNSmrSQzXDwnWAjqySx29PSRk/rERJiD
-         Wti2YWUpbZwma02otcv2FI1GeB4Ryll0zJNs6vDyirwfe4XVj/RQRi5ezxg+wCvCXdQl
-         LsZAiLFvocwd8bsf86/icukiromC00VI6UKUNOH7qKstS0bfcs7J6M0P2agxgPCjeWEs
-         5HSg==
-X-Gm-Message-State: ANhLgQ0jmoIIjVVI/FZvGrELP4/31RZsP70ltRzXW+0XjB4lZrZ6w4ag
-        Zm0GTpUg5w3wUnZp7eEhVMTNZoarkw==
-X-Google-Smtp-Source: ADFU+vtLiLqlrFPVsFsHqZpYWIdxcsfYWlyNB3SkdVLs9VJv60/GvpmZRG/1ep91VBksmL/cQASE2g==
-X-Received: by 2002:a92:d582:: with SMTP id a2mr16558293iln.37.1585691389269;
-        Tue, 31 Mar 2020 14:49:49 -0700 (PDT)
-Received: from rob-hp-laptop ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id l25sm34133ild.61.2020.03.31.14.49.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2020 14:49:48 -0700 (PDT)
-Received: (nullmailer pid 486 invoked by uid 1000);
-        Tue, 31 Mar 2020 21:49:47 -0000
-Date:   Tue, 31 Mar 2020 15:49:47 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     alexandru.tachici@analog.com
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org, linux@roeck-us.net,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: hwmon: Add bindings for ADM1266
-Message-ID: <20200331214947.GA446@bogus>
-References: <20200325130605.2420-1-alexandru.tachici@analog.com>
- <20200325130605.2420-3-alexandru.tachici@analog.com>
+        Tue, 31 Mar 2020 19:07:04 -0400
+X-Greylist: delayed 578 seconds by postgrey-1.27 at vger.kernel.org; Tue, 31 Mar 2020 19:07:03 EDT
+Received: from mx3.investici.org (unknown [127.0.0.1])
+        by latitanza.investici.org (Postfix) with ESMTP id 3CF54120163;
+        Tue, 31 Mar 2020 22:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=autistici.org;
+        s=stigmate; t=1585695444;
+        bh=EUVPNT4aWgWrg4j90L25aIYTU9A26GlX+O+Qitb1IOA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=b81fIVXgf+sftvdkV3DQPKqaYQjX/wzNeGmXyoJM4CHmve+kgCQZZMVfFJ3bBPEl5
+         CU1Fp57DP2S0K4Ryo4ZbQ7kQ5Yl8GPw4fNDqHwI829R5S5Scu9mGIyQLL6AlOuK9R4
+         FAx+qnZKjvPOzWTCfC4gullJf7dcLeBjyiPl/cno=
+Received: from [82.94.249.234] (mx3.investici.org [82.94.249.234]) (Authenticated sender: mikefender@cryptolab.net) by localhost (Postfix) with ESMTPSA id AB5E612015F;
+        Tue, 31 Mar 2020 22:57:23 +0000 (UTC)
+From:   Michele Sorcinelli <michelesr@autistici.org>
+To:     =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali.rohar@gmail.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-hwmon@vger.kernel.org,
+        Michele Sorcinelli <michelesr@autistici.org>
+Subject: [PATCH] drivers/hwmon/dell-smm-hwmon.c: fix blank line
+Date:   Tue, 31 Mar 2020 23:57:08 +0100
+Message-Id: <20200331225708.52822-1-michelesr@autistici.org>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200325130605.2420-3-alexandru.tachici@analog.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, 25 Mar 2020 15:06:05 +0200, <alexandru.tachici@analog.com> wrote:
-> From: Alexandru Tachici <alexandru.tachici@analog.com>
-> 
-> Add bindings for the Analog Devices ADM1266 sequencer.
-> 
-> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
-> ---
->  .../bindings/hwmon/adi,adm1266.yaml           | 57 +++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-> 
+Fix missing blank line after declaration: reported by checkpatch.pl
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+There are other missing blank lines reported in the declaration of
+struct smm_regs fields (line 120) but they are probably false positives
+so I don't think they need to be changed.
+
+Signed-off-by: Michele Sorcinelli <michelesr@autistici.org>
+---
+ drivers/hwmon/dell-smm-hwmon.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index ab719d372b0d..7b61b613aff6 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1276,6 +1276,7 @@ static int __init i8k_probe(void)
+ 	id = dmi_first_match(i8k_dmi_table);
+ 	if (id && id->driver_data) {
+ 		const struct i8k_config_data *conf = id->driver_data;
++
+ 		if (!fan_mult && conf->fan_mult)
+ 			fan_mult = conf->fan_mult;
+ 		if (!fan_max && conf->fan_max)
+-- 
+2.26.0
+
