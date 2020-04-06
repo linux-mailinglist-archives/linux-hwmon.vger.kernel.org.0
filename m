@@ -2,91 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB94E19FE82
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Apr 2020 21:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE931A01E5
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Apr 2020 01:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgDFTy4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 6 Apr 2020 15:54:56 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:42056 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbgDFTy4 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Apr 2020 15:54:56 -0400
-Received: by mail-pf1-f196.google.com with SMTP id 22so8087824pfa.9
-        for <linux-hwmon@vger.kernel.org>; Mon, 06 Apr 2020 12:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Jg8B/Sp5i4yCMsW1rtXO30Rguhxmo5vfTtXfDgeTq0c=;
-        b=k6TC4rglXTA3SOSbVGs76Erz2YGg/+GCJ2KDSfKRU8Lrnv87oGUyO7J0m+/7/gH5CT
-         7tRsnSe/Kp/DWLHLQbu1pMXMqKX8MekHwiiLd2MKstlN6BB5ym8XN3pEjdrm4DcbX/TK
-         Hrtsrgsu4jZPuNBodD7KOukaVClHE36GeqPmu1uUH96aA1/BikU/G8dqZ32kHOsJibBO
-         sSdVixalVBjxJak7rcog5/5w7jqk3IlAETme7q/apt1gMxTLM0dC3zB+oNRuLj8VrWQy
-         J4MzD/a2gnyIWMgCwxbXQQwxqHVBNaO2XCywavUXSYLUdX46At0TEkfkQRQ6w/9XbODv
-         Agew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Jg8B/Sp5i4yCMsW1rtXO30Rguhxmo5vfTtXfDgeTq0c=;
-        b=pUa7YmKBSzKhh+m/6wa6QNKBFYluA01RbvVMschTeYKm/WveaEu0U1bwIvXzNoA1Ne
-         474GfwHocacknSCdTKgKU6fkLo3drX8NHyfl6D2qoV8YDANtZyvkjikDU/ZvQiUPVyVT
-         By4KmGyWtcB7kISg7IzgZJEuKfx9WVBs42NW95fuiu3HavOHFTFJE8Uh8UjCbYF6ZJYw
-         3+Hdnya43xcV1urNYk12BsC5kmPrM8GG5MLjG+zJ5hgI9K7KL1h38VdrW9h4tUmEP7lh
-         f9plerA668RJp8f5U9O+yJfrGYy9Af/1IV/aEWj7wo6shf11rrO7D8UixIF00qWjVowp
-         9tMA==
-X-Gm-Message-State: AGi0PubnRKScSH5puiJ1eIji8W9ehc7c4nWehWqILjHFD6oXAj/Jkmym
-        PUcz/u8PxyesLtQ6RaGBL2AZfjx3Zwhoy1mp5Ec=
-X-Google-Smtp-Source: APiQypKsSuyW0BXWqOEWJk2OEyIJMjemg2FN0He9E+3eRR332hHj5iNDWXQ5jt5gfJgG6D4UbwBczHrwjYGDWerDAqE=
-X-Received: by 2002:a63:180c:: with SMTP id y12mr794696pgl.104.1586202895117;
- Mon, 06 Apr 2020 12:54:55 -0700 (PDT)
+        id S1726303AbgDFX5u (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 6 Apr 2020 19:57:50 -0400
+Received: from mout.gmx.net ([212.227.15.18]:51931 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726287AbgDFX5u (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 6 Apr 2020 19:57:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1586217445;
+        bh=tkaalPzWoW0YHaTyWgNGeG93WVc+U8cfsK4hFndJWVM=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=g1NUA6xsWGTiiGIFo/cVKU8d8DBt/6F42mFBM5c1vIFlU1A0dYnTzWaYuv61W48Xk
+         CF0Imgj+gPRUQfHwwHLAG+qZrpS6fzt4d0LXtXKc88gzLWZkgZaOoM3ZEeGpOKy+98
+         PB9vrm/ha6QonJMZM4cRfIGsa2QdW9NF+w12joAY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from bedhanger.strangled.net ([188.194.167.134]) by mail.gmx.com
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MRCOE-1jiemX225c-00NCQt; Tue, 07 Apr 2020 01:57:25 +0200
+From:   Ann T Ropea <bedhanger@gmx.de>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Cc:     Ann T Ropea <bedhanger@gmx.de>
+Subject: [PATCH] hwmon: use drivetemp's true module name in Kconfig section
+Date:   Tue,  7 Apr 2020 01:55:21 +0200
+Message-Id: <20200406235521.185309-1-bedhanger@gmx.de>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Received: by 2002:a17:90a:2525:0:0:0:0 with HTTP; Mon, 6 Apr 2020 12:54:54
- -0700 (PDT)
-Reply-To: mrsrosebanneth9@gmail.com
-From:   Mrs Rose Banneth <mrs.zyanabanneth002@gmail.com>
-Date:   Mon, 6 Apr 2020 12:54:54 -0700
-Message-ID: <CANcKv56qgK8a3avnbJAbgJ5HMVQokf0PwB_XFX1wEuU=Z+Px4Q@mail.gmail.com>
-Subject: From Mrs Rose,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2uQm2b0yoBv/vQNX01JaS+xrVY0PPtP831dmKU2/St4RYmTMCyn
+ eaWQOMjm8010ola8NwUXJKmK6/WSJW6okc4n6ub0Jc/oEoy5CuIboct6pLjgQSppbnKLjCP
+ YUnBF+eei4vQGEzE8ulItmwdfojQikogZnIVX3A8pklI3pBc9i9/BaFNVZIfouEcON5U1PR
+ Eac7dRb0jQojhTzSexXuw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:bt0V8O8LW0M=:gjz3a15jz6dl4rTDGaXf13
+ x4Lk1BJcMyML3Z+iHXpqo5kUElEStU3C24GVYZaDRGnT+77oL3A1XmjRN4rBghFrUKV3Hsg61
+ DnwYUZew3h+R0NxMt6RM9D1D1zXNiNC/CDSHDw19Md/9eBGP9uC8m+Cue7ul+dexx9nMroL2p
+ XGhaGG3u/r3SmvBeoRx3ROzotNudDgCDRqQZeucpUqp2aApZz16i5Zfcr2YjiZ54LUL71J2/r
+ EdXjSRoHqLWey03P3eO4x1FWz6y/hFhbgXkuGyLVVYJ9G1y4dPOOmzoLmaMmMB7JwfEQKtaWJ
+ ob9Hc489TGhODm+SiAdaQq6wREaLP2HbUXV/GQDR1j1N31ITAXNw7PY1edKkfgQtZFVusmPBh
+ WpTGIXvjsL0GdkXVYErnx7oBCnBM3bnAur2gt4i79tLiBIHo8IJ5VyQcemBEYOdHQQozWHLQJ
+ gyttI65z9WgkMv2zHBjaceTSp+RJMzaX6usSMkEtthU8gBOqdL7L4q05hSIm3eDbmBNhpJyH7
+ EiugRvFIbvnMlNhMe3XF6brh0fs5D6Qe8qoq6rq+wxOKa/T7ZEzHrAeYsAWrRDU96qQ3CUD6v
+ bH6lglrUrQzlmmc0/eFcRjSXU8S9HOUa+qGldl1JpE1cbw8CcGYsxlW5RP6P2G2d1W7LOBaXv
+ kMR59XwDH2j7oPyNsuIIZ1vqd7cunwCXiGNQEywN3PL/6vOxyRgBNkleNG4Em0E4RK65eQuTv
+ B9WrKhmMZAMzQkKg81Xf4FPtVt4JJjWTT0vh3XopAv9D8HnfCgGIEKQMoPuJ0wri+bIS7CFTy
+ sMIWuj/X/pTRuusYxUs6KYiJuMR3EfdWEbQL3K7QnFq2uBxBdWqHwLJkbS7HaqqgfSMujtek6
+ Kq2bXd6q8lRBhRB3drFD55b/RoQL0GjOIalPRwXv6HiK1RRy13x/QbCk0A0450mrHHIspe74f
+ XLS68a1IBRFpeJRSqPisCrCaijCvvGjzAvc5panZvHHgPONzRco7z8vOKgbFiOJOd3lt6QJ7z
+ zmYfeN5U/JDVe9nS4CVpEiB8TU7UchcMoPUk6cHrMEAzqBIgN2VQguwTfyz0pXfpzaiTYc+Ze
+ Ar8bz4uxgCOyewYpLoJ30jS3g1iHswrJGmbFgzsmIlCuSOxAgJkk1GIJwuVdCBv2io3Ft9Atx
+ ktT4e6XDDGs+EmSEyvEbPjcAC7457Z9ZJS3jlGQ1bT09T0Qii5kAjuL/aX7S9Tba5G92ll6ur
+ LJL7XRL+kXgwt924V
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear friend,
+The addition of the support for reading the temperature of ATA drives as
+per commit 5b46903d8bf3 ("hwmon: Driver for disk and solid state drives
+with temperature sensors") lists in the respective Kconfig section the
+name of the module to be optionally built as "satatemp".
 
-Can you join me and help people?
+However, building the kernel modules with "CONFIG_SENSORS_DRIVETEMP=3Dm",
+does not generate a file named "satatemp.ko".
 
-It's my pleasure to have contact with you, based on the critical
-condition I find myself and my desire to will part of my property to
-the Orphans, Disable, blind, Old and poor people who have nothing to
-eat, although, it's not financial problem I have but my health, you
-might have know that cancer is not what to talk  about at home I have
-been in the hospital for 5 months now I am Mrs Rose Banneth and I am
-married to Mr. Abaulkarim banneth who worked with Tunisia embassy in
-Burkina Faso for nine years before he died in the year 2008.We were
-married for eleven years without a child. He died after a brief
-illness that lasted for five days.
+Instead, the rest of the original commit uses the term "drivetemp" and
+a file named "drivetemp.ko" ends up in the kernel's modules directory.
+This file has the right ingredients:
 
-Since his death I decided not to remarry. When my late husband was
-alive he deposited the sum of US$ 8.2million  (Eight million two
-hundred thousand dollars)  in a bank in Burkina Faso for me, Presently
-this money is still in bank. I want you to help me use this money for
-the poor people around you in your Country it is the Almighty God
-direction that I choose you to do this with your heart.
+	$ strings /path/to/drivetemp.ko | grep ^description
+	description=3DHard drive temperature monitor
 
-My Doctors told me that I don't have much time to live because of the
-cancer problem and i don t want to live this money in the bank for
-Government instead I decided to use it for Old people who cannot work
-again and Orphans who have nothing to eat because i am Orphan, Having
-known my condition I decided to hand over this fund to a responsible
-person that have fear of God to receive this money and use  it for the
-needy instead of this money be forgotten to the bank. Can you have the
-time to do this? If so please, i want you to contact me here my
-private email address mrsrosebanneth9@gmail.com
+and modprobing it produces the expected result:
 
-I wait for your response.
-My regards,
-Mrs Rose Banneth
-written from Hospital
+	# drivetemp is not loaded
+	$ sensors -u drivetemp-scsi-4-0
+	Specified sensor(s) not found!
+	$ sudo modprobe drivetemp
+	$ sensors -u drivetemp-scsi-4-0
+	drivetemp-scsi-4-0
+	Adapter: SCSI adapter
+	temp1:
+	  temp1_input: 35.000
+	  temp1_max: 60.000
+	  temp1_min: 0.000
+	  temp1_crit: 70.000
+	  temp1_lcrit: -40.000
+	  temp1_lowest: 20.000
+	  temp1_highest: 36.000
+
+Fix Kconfig by referring to the true name of the module.
+
+Fixes: 5b46903d8bf3 ("hwmon: Driver for disk and solid state drives with t=
+emperature sensors")
+Signed-off-by: Ann T Ropea <bedhanger@gmx.de>
+=2D--
+ drivers/hwmon/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 05a30832c6ba..4c62f900bf7e 100644
+=2D-- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -412,7 +412,7 @@ config SENSORS_DRIVETEMP
+ 	  hard disk drives.
+
+ 	  This driver can also be built as a module. If so, the module
+-	  will be called satatemp.
++	  will be called drivetemp.
+
+ config SENSORS_DS620
+ 	tristate "Dallas Semiconductor DS620"
+=2D-
+2.24.1
+
