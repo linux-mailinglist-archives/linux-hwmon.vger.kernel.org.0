@@ -2,80 +2,144 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C991A0641
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Apr 2020 07:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A3A1A0BE7
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Apr 2020 12:30:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726917AbgDGFMv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 7 Apr 2020 01:12:51 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33297 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726924AbgDGFMm (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 7 Apr 2020 01:12:42 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 22so1881637otf.0
-        for <linux-hwmon@vger.kernel.org>; Mon, 06 Apr 2020 22:12:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
-         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
-         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
-         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
-         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
-         DmdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
-        b=gWq+HeUj25WvsKyLs1GINfW/rJ+UkNrxIxdLfkti51pISmyEW0R1l2FZ9Y9tqGeiNY
-         KdQTmVMhcucNp/qCwGQN6W2vuBSkqF3UJe4/pBsYG2GztiS8R0l6p1R7L3KKTiN+eIJS
-         Jz/Tx5Sro0IyCEK9Euw0Q0YDGHbln7sxY2N1x6qBuIzySi7qe2xNy+AbFhtybViLeXKd
-         yCom2EIHsTk04zOBzF7rK80RijDgKrqEAFx3Qs1qfg7UqfBdOiHT1C7SeOvq3+pJ98VE
-         u5atJIQApp5wEiRSYQltCN+tmlLst5cCbOXADNIPI611TF7Oq+k14l+Ij+Sx8YG4jPTZ
-         MKYA==
-X-Gm-Message-State: AGi0Pubh3tzi+Pj1bsJdoBSzQxca09TpFHlEgKTO6MSYg+9Uid9MAELH
-        ObbwkhxA6r02XKmEbWA+qlGXi8KGuCl10kgPqeMlzxdb4xI=
-X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
-X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
- 06 Apr 2020 22:12:41 -0700 (PDT)
+        id S1728176AbgDGKWm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 7 Apr 2020 06:22:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60204 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725883AbgDGKWl (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 7 Apr 2020 06:22:41 -0400
+Received: from pali.im (pali.im [31.31.79.79])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4281720771;
+        Tue,  7 Apr 2020 10:22:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586254960;
+        bh=juQKuUZDgyyxGgsF7uNhckuR4k0PFa3vOdCv8igXe0Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sgYqeamJWAiaBCp2NFSD03QPo70At2AUr/IUVrprBg+Ml5NDCfoPAKTNJYYXNX6an
+         vAQ7e3e2LWUeFyKv98p4GoBGzkyh2TeRFOvdvOm18bZZP3vlg38k0CTydolrBFmEWu
+         29LGMbGbHOxwLRXzrU3Ok29lE8bw89yC7XaBAWNk=
+Received: by pali.im (Postfix)
+        id 418C85F1; Tue,  7 Apr 2020 12:22:38 +0200 (CEST)
+Date:   Tue, 7 Apr 2020 12:22:38 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Thomas Hebb <tommyhebb@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v2] hwmon: (dell-smm) Use one DMI match for all XPS models
+Message-ID: <20200407102238.zweh7s7t6rn5cwhf@pali>
+References: <5d7e498b83e89ce7c41a449b61919c65d0770b73.1586033337.git.tommyhebb@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
-From:   SANDRA DEWI <dewisandra154@gmail.com>
-Date:   Tue, 7 Apr 2020 05:12:40 +0000
-Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
-Subject: whether this is your correct email address or not
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5d7e498b83e89ce7c41a449b61919c65d0770b73.1586033337.git.tommyhebb@gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear ,Pastor
+Hi!
 
+On Saturday 04 April 2020 16:49:00 Thomas Hebb wrote:
+> Currently, each new XPS has to be added manually for module autoloading
+> to work. Since fan multiplier autodetection should work fine on all XPS
+> models, just match them all with one block like is done for Precision
+> and Studio.
 
+It makes sense. We already load driver for all Inspirion, Latitude,
+Precision, Vostro and Studio models so I do not see reason why not to
+load it also for all XPS models. I doubt that Dell uses one base
+firmware for all mentioned models and second one specially for XPS.
 
-I have a client who is an oil business man and he made a fixed deposit
-of $26 million USD in my bank, where I am the director of the branch,
-My client died with his entire family in Jordanian
+> The only match we replace that doesn't already use autodetection is
+> "XPS13" which, according to Google, only matches the XPS 13 9333. (All
+> other XPS 13 models have "XPS" as its own word, surrounded by spaces.)
+> According to the thread at [1], autodetection works for the XPS 13 9333,
+> meaning this shouldn't regress it. I do not own one to confirm with,
+> though.
+> 
+> Tested on an XPS 13 9350 and confirmed the module now autoloads and
+> reports reasonable-looking data. I am using BIOS 1.12.2 and do not see
+> any freezes when querying fan speed.
+> 
+> [1] https://lore.kernel.org/patchwork/patch/525367/
 
-50% of the fund will be for the church  for the work of God,the
-balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
-50% for me
+I guess that these two tests are enough based on the fact that lot of
+XPS models are already whitelisted.
 
-intervention in the Syrian Civil War 2014 leaving behind no next of
-kin. I Propose to present you as next of kin to claim the funds, if
-interested reply me for full details and how we are to
+Guenter, it is fine for you now? Or is something else needed?
 
+> Signed-off-by: Thomas Hebb <tommyhebb@gmail.com>
 
+Acked-by: Pali Rohár <pali@kernel.org>
 
-proceed to close this deal.
-
-
-
-
-Mrs. Sandra Dewi
-
-
-
-Email  mrsdewi@gmx.com
+> ---
+> 
+> Changes in v2:
+> - Remove another now-redundant XPS entry that I'd missed.
+> 
+>  drivers/hwmon/dell-smm-hwmon.c | 26 ++------------------------
+>  1 file changed, 2 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+> index d4c83009d625..ca30bf903ec7 100644
+> --- a/drivers/hwmon/dell-smm-hwmon.c
+> +++ b/drivers/hwmon/dell-smm-hwmon.c
+> @@ -1072,13 +1072,6 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
+>  			DMI_MATCH(DMI_PRODUCT_NAME, "Vostro"),
+>  		},
+>  	},
+> -	{
+> -		.ident = "Dell XPS421",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "XPS L421X"),
+> -		},
+> -	},
+>  	{
+>  		.ident = "Dell Studio",
+>  		.matches = {
+> @@ -1087,14 +1080,6 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
+>  		},
+>  		.driver_data = (void *)&i8k_config_data[DELL_STUDIO],
+>  	},
+> -	{
+> -		.ident = "Dell XPS 13",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "XPS13"),
+> -		},
+> -		.driver_data = (void *)&i8k_config_data[DELL_XPS],
+> -	},
+>  	{
+>  		.ident = "Dell XPS M140",
+>  		.matches = {
+> @@ -1104,17 +1089,10 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
+>  		.driver_data = (void *)&i8k_config_data[DELL_XPS],
+>  	},
+>  	{
+> -		.ident = "Dell XPS 15 9560",
+> -		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "XPS 15 9560"),
+> -		},
+> -	},
+> -	{
+> -		.ident = "Dell XPS 15 9570",
+> +		.ident = "Dell XPS",
+>  		.matches = {
+>  			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> -			DMI_MATCH(DMI_PRODUCT_NAME, "XPS 15 9570"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "XPS"),
+>  		},
+>  	},
+>  	{ }
+> -- 
+> 2.25.2
+> 
