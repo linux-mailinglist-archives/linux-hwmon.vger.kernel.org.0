@@ -2,80 +2,103 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0931B1A3798
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Apr 2020 17:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C65F1A3A14
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Apr 2020 20:59:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728081AbgDIP6d (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 9 Apr 2020 11:58:33 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:42766 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727865AbgDIP6c (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 9 Apr 2020 11:58:32 -0400
-Received: by mail-pf1-f195.google.com with SMTP id 22so4300064pfa.9;
-        Thu, 09 Apr 2020 08:58:32 -0700 (PDT)
+        id S1726641AbgDIS7k (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 9 Apr 2020 14:59:40 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:42195 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725970AbgDIS7k (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 9 Apr 2020 14:59:40 -0400
+Received: by mail-il1-f196.google.com with SMTP id f16so702914ilj.9
+        for <linux-hwmon@vger.kernel.org>; Thu, 09 Apr 2020 11:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=4HttX7fnLVCaSn2ezS9sZMy4gjMZf1fmvfPjQPq5pBk=;
-        b=GL7pvYxPnMFE/RUkudbo0OnaSeJX1Z9cEfl12pKTTNNPaEUvrY93DOa4hnpQhip+e0
-         mCNYLWoIvaEid3RqLowMU173EkQBW74a/4wj53gJrjtu5iGvyQ4V4Uizsth5YR49eHI+
-         Pi23TvOOKtPWsCPmuTvsMHPw/iJt8VjSbg9aOk0gnjKpR3Pc89dnA5UrVY1pzPrelNv3
-         FEqDD9d5myKczUnzW+7ctfz0DFtavg66cJY3dj43wzXgcPJSBC2NOc4CZYlBlA6rUALw
-         4+yEEGfzuLkWPjCynyLa/wn+TNV0/JiWxQ7GSdpYCRp2Y3XtjuOJmuiXzhezb6EghIvE
-         Aayg==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=XapjivXGkGsUmtlpUpEqP8y7iiz+mzopvTm3cK2sD+c=;
+        b=VOVPND08BpC28BgAGXOAhRLNjSN53Jd1vGntIRkopRH+0s+GgEIJ3xswzqvnuJ9boB
+         gAyNB7zYQA1872hnVRtAFZ3ewNKwstGPl5ea2GtrX/ZUmkOimH8Y2q6ll9cSa+tDnzcB
+         3jVaXvY5zHEj4bknf115cViBKLOY+1BD7TUUZU6MffawcTbvuL+QTOS+3rQQSfzf2VrY
+         h9haJOM9MHN4/KYXNXnGrdFFXnWx/M+divtrdiFb462BpFipyARaiiGFaGrO/hbKwog8
+         qjbQcpmg+6gOgB2tiSxrRndRccohGDtt2FpRj4yRwcHG925khGSB9t+exkOTwBqQswlE
+         m70g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4HttX7fnLVCaSn2ezS9sZMy4gjMZf1fmvfPjQPq5pBk=;
-        b=t2qiPD++V8PkVF04t3WLrUWuAa/9Ml3l9M6lj5ZtYAed8x6QABFvgiK3L1bFwM8xM5
-         12wxJ9LTGrceTRYEvcuaFkUteoN3OnsElzoOQHaC+ynVTpfxOKfR320BJFw/Xwn/Db23
-         waGdPyTmR0o8RJZ+rN8GVcGQQUYnHqj6r6Johd3dSoZqjbOeP0tCcnzVDrZyK7Ckfq4c
-         eamqd+i96bpl0Qqzi8XtqWu2wz01QQ1uLdyzZpaRWCmAbqdBUW5HrIIdLyARFYTFJNRp
-         GYSnBUfV+u4PwjfTGmRG9Ec/wkGqbh7pz3hovBFiJZG6bNMhbJrMVnOUkRHaF3v9VGTD
-         tNsg==
-X-Gm-Message-State: AGi0Puao0Xa6g3Fn9MU/CEbixAI0sIno/rW0fxvaddVy7Zqlza7JMidY
-        wTblXS2bNIit3ANSR/hSPVs=
-X-Google-Smtp-Source: APiQypJ8B3DMZmM2Yv12592zLTV5MRsJQH0aU8e2WQ3tTwqMDsenkDCcW/skwUVPy3VLGpAepFxE/A==
-X-Received: by 2002:a63:b954:: with SMTP id v20mr136164pgo.100.1586447912058;
-        Thu, 09 Apr 2020 08:58:32 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id m14sm2564094pje.19.2020.04.09.08.58.31
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 09 Apr 2020 08:58:31 -0700 (PDT)
-Date:   Thu, 9 Apr 2020 08:58:30 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Jason Yan <yanaijie@huawei.com>
-Cc:     clemens@ladisch.de, jdelvare@suse.com, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] hwmon: (k10temp) make some symbols static
-Message-ID: <20200409155830.GA99897@roeck-us.net>
-References: <20200409084502.42126-1-yanaijie@huawei.com>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=XapjivXGkGsUmtlpUpEqP8y7iiz+mzopvTm3cK2sD+c=;
+        b=l7BgIkyq/iyD3KonBAaHKD4cz7JfHF3JP4pRVVA5hGLdsWIghVstd0DaHtH/MtvZoP
+         LQfPnqV7AMTA2Gov6dT+686xTbwutaDXo6D28AvCRsL6jfvVefCSP22L/Oj41rx+FCSl
+         87odq+n+/ZUCtE4fQXFcZdPLkD8pHaMkM+Adu5L7Kw/Zd0PebYB8Nd3G3ahCpXyJLF4y
+         nlAEqI5Eu3TojoJXYmEZOrPCJ69cJjnm3heVh0NcjjalZRQdf9iwfrAPReFBvD2yoixj
+         7gK316MiUNFTX5eMiu5frEod+/qbqeuM0nEPpYymN4HvVlv/2HaledQ0QJIZMSDI0FU9
+         DZfg==
+X-Gm-Message-State: AGi0PuYfaznsusqtXe7NO1K+28LqOmbENIPti9/I8u3sGob6mTV7alLc
+        FQZEXhVEPWcc9fD3fPAm3yWqNv2lnruW7lhDHyE=
+X-Google-Smtp-Source: APiQypJaSC/8XzcAZlDWxucArJTFMZ6ivB3lJq/s1ZBA/YigwvX8Xy6CjkxVO2eqoMyuz3EveCKbBut+eGC+JZ+VHTM=
+X-Received: by 2002:a92:1596:: with SMTP id 22mr1236840ilv.89.1586458778253;
+ Thu, 09 Apr 2020 11:59:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200409084502.42126-1-yanaijie@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:a6b:5c0d:0:0:0:0:0 with HTTP; Thu, 9 Apr 2020 11:59:37 -0700 (PDT)
+From:   Mohamed Abdullah <mohabdu0011@gmail.com>
+Date:   Thu, 9 Apr 2020 11:59:37 -0700
+X-Google-Sender-Auth: TjvITrC-Jtrtw7mvUYoxWsfYDJk
+Message-ID: <CAP6GkrimFCB-yNRG_-FDtq3tMM58k_1bk2f2TXP-UtnEY4V66g@mail.gmail.com>
+Subject: ASSALAMU ALAIKUM
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Apr 09, 2020 at 04:45:02PM +0800, Jason Yan wrote:
-> Fix the following sparse warning:
-> 
-> drivers/hwmon/k10temp.c:189:12: warning: symbol 'k10temp_temp_label' was
-> not declared. Should it be static?
-> drivers/hwmon/k10temp.c:202:12: warning: symbol 'k10temp_in_label' was
-> not declared. Should it be static?
-> drivers/hwmon/k10temp.c:207:12: warning: symbol 'k10temp_curr_label' was
-> not declared. Should it be static?
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Dearest Friend,
 
-Applied.
+I am Mohamed Abdullah, I want to seek your assistance after my
+discovery during auditing in my bank as I'm the manager of Bill and
+Exchange at the Foreign Remittance Department in Banque Centrale des
+Etats de l'Afrique de l'Ouest (BCEAO) Ouagadougou Burkina Faso.
 
-Thanks,
-Guenter
+In my department we discovered a sum of $27.500.000 million in an
+account that belonged to one of our foreign customer. Upon maturity,
+we sent a routine notifications to his forwarding addresses but got no
+response. After some months, we sent a reminder and finally discovered
+that our customer died from an automobile accident. On further
+investigation, I found out that he did not leave a will and all
+attempts to trace his next of kin were fruitless, I therefore, i want
+to used my position at the Bill and Exchange Manager to have the fund
+transferred out of the deceased account to your account, I therefore
+made further investigation and discovered that the person did not
+declare any next of kin in all his official documents, including his
+bank deposit paperwork.
+
+It is therefore upon this discovery that I decided as the head of my
+department to make this business proposal to you, to apply for the
+money as the next of kin or relation to the deceased for safety and
+subsequent disbursement, and you will be given 35% of the total
+amount, 60% will be for me and my colleague in my bank, while 5% will
+be for expenses both parties might have incurred during the process of
+transferring. We will conclude this operation within 21 banking days
+based on the amount of co-operation you will contribute.
+
+You will apply and start the first transfer with Eleven million
+[$11,000.000] upon successful transaction without any disappoint from
+your side, then you shall re-apply for the payment of the remaining
+amount to your account.
+
+upon your positive response and once I am convinced that you are
+capable and will meet up with instruction of a key bank official who
+is deeply involved with me in this business. I need your strong
+assurance that you will never,never let me down. With my influence and
+the position of the bank official we can transfer this money to any
+foreigner's reliable account which you can provide with assurance that
+this money will be intact pending my physical arrival in your country
+for sharing.
+
+Thank you for your understanding as I await your urgent response in
+order to give you more details,
+
+
+Yours faithfully,
+Mohamed Abdullah.
