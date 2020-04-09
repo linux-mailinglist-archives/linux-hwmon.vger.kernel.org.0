@@ -2,197 +2,80 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB531A3720
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Apr 2020 17:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0931B1A3798
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Apr 2020 17:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728176AbgDIP3E (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 9 Apr 2020 11:29:04 -0400
-Received: from mail-mw2nam10on2053.outbound.protection.outlook.com ([40.107.94.53]:43200
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728191AbgDIP3D (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 9 Apr 2020 11:29:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aL5sSfklqrjvpsy+TNyl0qJKI07jvupY0ryJIlpZQc5C+G+5yblKn+3v3XfDNcpH0eHF3LXo4rzXmRJzBHKiBkf+tS7Je9okQgKwCAeMlhEctRHTAp+XatxezKKZczbnUguuN8xeH4WkJwxA3zg/Mw4hdgZQmRbuYdAmrLEPpicLh0TdMEuPbqXOBwKVvWeNJ1LV3JRgFcfKb1tG1bHhQ87es9oH7hr7+Wg3YUTZRTHAJe7ZSzOZJrWepMRGFAOHOWqNdLOftLRXD4Flr42deuXL6SnQJI6eA7nXgLzeu3YbwAZNFLZPSfB/X1ybQHfdALCf/Tg9nVzYBmvb4a/yzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M/gvqdYYDKfsnKoD8kG074sso9YPNG7+j6s3/u0bOOA=;
- b=mGCbIqkW9UtcNU6yDCpAwFXDbG9uLTFUQfV+GfDzIIV9SAtdZs41w56ItCG0Zxqm258TUR1YIGuv02z0JutwjlDTM5tZLOmogQw1XOXYwVwVjLUswtRopj3jVVMRqVF3jz1VRWfuCVhhV8aNxCCHdeGYYNh0N0E1ft0lYMHefdgvmr5LFP4y8dXuZp3UxcggI9sGd0LZ6+SXdHoyXUiNGdc7FvGsASq1vTogHUaABZozG6FbYTq3F004OiY1CPf4iEyJRZMlO7ssf73NoWO0R/GPdndoNL8eloghdBTo8Tq/WoZA+A1AowvO1J+yjIvkxTLwA+8k3vMYN8dMJPojuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+        id S1728081AbgDIP6d (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 9 Apr 2020 11:58:33 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:42766 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727865AbgDIP6c (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 9 Apr 2020 11:58:32 -0400
+Received: by mail-pf1-f195.google.com with SMTP id 22so4300064pfa.9;
+        Thu, 09 Apr 2020 08:58:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M/gvqdYYDKfsnKoD8kG074sso9YPNG7+j6s3/u0bOOA=;
- b=n5QBJLLl43rzHuyqlMkhzNgSY2Nx1HaAvhV3Mi3tISOqsABUIWzPe/phrjZIUa1bVlPII179yYfcJOV+Pi6QLfOvNYPIDo6+tcSdVzKinOfyX+Zkqtd9luFijOm4+HYRZ5YKHp1pp/qZ39bhEiL81MjK4kNZwsSnLXaIWq1kPEk=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=NaveenKrishna.Chatradhi@amd.com; 
-Received: from BY5PR12MB4212.namprd12.prod.outlook.com (2603:10b6:a03:202::8)
- by BY5PR12MB3922.namprd12.prod.outlook.com (2603:10b6:a03:195::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.16; Thu, 9 Apr
- 2020 15:28:53 +0000
-Received: from BY5PR12MB4212.namprd12.prod.outlook.com
- ([fe80::5d3c:938e:1015:8270]) by BY5PR12MB4212.namprd12.prod.outlook.com
- ([fe80::5d3c:938e:1015:8270%7]) with mapi id 15.20.2878.021; Thu, 9 Apr 2020
- 15:28:53 +0000
-From:   Naveen Krishna Chatradhi <nchatrad@amd.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     naveenkrishna.ch@gmail.com,
-        Naveen Krishna Chatradhi <nchatrad@amd.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 2/2] hwmon: (amd_energy) Add documentation
-Date:   Thu,  9 Apr 2020 21:09:39 +0530
-Message-Id: <20200409153939.38730-2-nchatrad@amd.com>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20200409153939.38730-1-nchatrad@amd.com>
-References: <20200409153939.38730-1-nchatrad@amd.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MAXPR01CA0098.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::16) To BY5PR12MB4212.namprd12.prod.outlook.com
- (2603:10b6:a03:202::8)
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=4HttX7fnLVCaSn2ezS9sZMy4gjMZf1fmvfPjQPq5pBk=;
+        b=GL7pvYxPnMFE/RUkudbo0OnaSeJX1Z9cEfl12pKTTNNPaEUvrY93DOa4hnpQhip+e0
+         mCNYLWoIvaEid3RqLowMU173EkQBW74a/4wj53gJrjtu5iGvyQ4V4Uizsth5YR49eHI+
+         Pi23TvOOKtPWsCPmuTvsMHPw/iJt8VjSbg9aOk0gnjKpR3Pc89dnA5UrVY1pzPrelNv3
+         FEqDD9d5myKczUnzW+7ctfz0DFtavg66cJY3dj43wzXgcPJSBC2NOc4CZYlBlA6rUALw
+         4+yEEGfzuLkWPjCynyLa/wn+TNV0/JiWxQ7GSdpYCRp2Y3XtjuOJmuiXzhezb6EghIvE
+         Aayg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=4HttX7fnLVCaSn2ezS9sZMy4gjMZf1fmvfPjQPq5pBk=;
+        b=t2qiPD++V8PkVF04t3WLrUWuAa/9Ml3l9M6lj5ZtYAed8x6QABFvgiK3L1bFwM8xM5
+         12wxJ9LTGrceTRYEvcuaFkUteoN3OnsElzoOQHaC+ynVTpfxOKfR320BJFw/Xwn/Db23
+         waGdPyTmR0o8RJZ+rN8GVcGQQUYnHqj6r6Johd3dSoZqjbOeP0tCcnzVDrZyK7Ckfq4c
+         eamqd+i96bpl0Qqzi8XtqWu2wz01QQ1uLdyzZpaRWCmAbqdBUW5HrIIdLyARFYTFJNRp
+         GYSnBUfV+u4PwjfTGmRG9Ec/wkGqbh7pz3hovBFiJZG6bNMhbJrMVnOUkRHaF3v9VGTD
+         tNsg==
+X-Gm-Message-State: AGi0Puao0Xa6g3Fn9MU/CEbixAI0sIno/rW0fxvaddVy7Zqlza7JMidY
+        wTblXS2bNIit3ANSR/hSPVs=
+X-Google-Smtp-Source: APiQypJ8B3DMZmM2Yv12592zLTV5MRsJQH0aU8e2WQ3tTwqMDsenkDCcW/skwUVPy3VLGpAepFxE/A==
+X-Received: by 2002:a63:b954:: with SMTP id v20mr136164pgo.100.1586447912058;
+        Thu, 09 Apr 2020 08:58:32 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id m14sm2564094pje.19.2020.04.09.08.58.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 09 Apr 2020 08:58:31 -0700 (PDT)
+Date:   Thu, 9 Apr 2020 08:58:30 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     clemens@ladisch.de, jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] hwmon: (k10temp) make some symbols static
+Message-ID: <20200409155830.GA99897@roeck-us.net>
+References: <20200409084502.42126-1-yanaijie@huawei.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from SLES15.amd.com (165.204.156.251) by MAXPR01CA0098.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:5d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.15 via Frontend Transport; Thu, 9 Apr 2020 15:28:51 +0000
-X-Mailer: git-send-email 2.16.4
-X-Originating-IP: [165.204.156.251]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: d3d5816c-140a-4f15-7f22-08d7dc9ab5bd
-X-MS-TrafficTypeDiagnostic: BY5PR12MB3922:|BY5PR12MB3922:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB39227C404D3C7AD99FA58292E8C10@BY5PR12MB3922.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-Forefront-PRVS: 0368E78B5B
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4212.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(346002)(39860400002)(396003)(136003)(366004)(376002)(2906002)(956004)(2616005)(16526019)(186003)(478600001)(81156014)(1076003)(4326008)(6666004)(81166007)(6486002)(26005)(5660300002)(6916009)(54906003)(66946007)(66556008)(316002)(7696005)(52116002)(36756003)(8936002)(8676002)(66476007);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: IImqRJd9KrScit+mNGpWTcwJVD0v+Dyow8Q0zhsDJiL4bch3LyJcevR4nQGsoI5dTB+MhNFrtnrAQoTn0l7JjTxK0JhYFINskHD7nXfYamVgtieYvWAVKgEC3uJ8KLzHLnvryFwEwma9nNqDzd2v7g1tcLvAnhhZ1G+y82eaNKcgPXN+Yjkn7eDkgOPsR7gDcBoeVC1ZmfJf53Yy+GZWBYhKS4VCVH5pOdxvpGbHELcNnLJK0A3wKD/xOKug1/8xSlCsLZm1oEeeKsDcT2LUPK0TxLoRSXHRduxMXY71q933tjMr0BpS+Eid7ai7OVI+61kwZOwEfotmKkbG2+EK307UpHGpan+j0gfN94wM93/hk6N+Jtndj+8g1H+iRD9CAcSPy68ngxXt/P2EgekJ6b38YfugHdUMQYkVYhHNEAnJcNyja7wvE4Q/aN5DtOHN
-X-MS-Exchange-AntiSpam-MessageData: Ppqx9W4IEPmQRpK2FnXBkrrGFq6kPs9XRKFPNzmfWqRcByEvvI1N3Hu/NqWKMsx6ZwK6lUFz4ev3GX4vJY1aJEga0HhND/h5xABkvEagiYI9gJBZgVHr4jhfjn7uG5+3yZeoDLjwj4AV84X1Rt45vg==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3d5816c-140a-4f15-7f22-08d7dc9ab5bd
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2020 15:28:53.2067
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: imtmVEmfAEPYHc1HY3rNlNTg6l6xPpTSCoqn8S7Z1osj7DQw9F8VG8YFKNfOyW3P3Iv7+iFB4hKmLpiI+XW5cw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB3922
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200409084502.42126-1-yanaijie@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Document amd_energy driver with all chips supported by it.
+On Thu, Apr 09, 2020 at 04:45:02PM +0800, Jason Yan wrote:
+> Fix the following sparse warning:
+> 
+> drivers/hwmon/k10temp.c:189:12: warning: symbol 'k10temp_temp_label' was
+> not declared. Should it be static?
+> drivers/hwmon/k10temp.c:202:12: warning: symbol 'k10temp_in_label' was
+> not declared. Should it be static?
+> drivers/hwmon/k10temp.c:207:12: warning: symbol 'k10temp_curr_label' was
+> not declared. Should it be static?
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
----
- Documentation/hwmon/amd_energy.rst | 78 ++++++++++++++++++++++++++++++++++++++
- Documentation/hwmon/index.rst      |  1 +
- 2 files changed, 79 insertions(+)
- create mode 100644 Documentation/hwmon/amd_energy.rst
+Applied.
 
-diff --git a/Documentation/hwmon/amd_energy.rst b/Documentation/hwmon/amd_energy.rst
-new file mode 100644
-index 000000000000..516694d3c1e0
---- /dev/null
-+++ b/Documentation/hwmon/amd_energy.rst
-@@ -0,0 +1,78 @@
-+Kernel driver amd_energy
-+==========================
-+
-+Supported chips:
-+
-+* AMD Family 17h Processors
-+
-+  Prefix: 'amd_energy'
-+
-+  Addresses used:  RAPL MSRs
-+
-+  Datasheets:
-+
-+  - Processor Programming Reference (PPR) for
-+        AMD Family 17h Model 01h, Revision B1 Processors
-+  - Preliminary Processor Programming Reference (PPR) for
-+        AMD Family 17h Model 31h, Revision B0 Processors
-+
-+Author: Naveen Krishna Chatradhi <nchatrad@amd.com>
-+
-+Description
-+-----------
-+
-+The Energy driver exposes the energy counters that are
-+reported via the Running Average Power Limit (RAPL)
-+Model-specific Registers (MSRs) via the hardware monitor
-+(HWMON) sysfs interface.
-+
-+1. Power, Energy and Time Units
-+  * MSR_RAPL_POWER_UNIT/ C001_0299:
-+    -> 32-bit(RO), Configured in BIOS
-+    -> shared with all cores in the socket
-+
-+  * A sysfs entry "energy_units" is created to show the
-+    [ESU] energy units in joules
-+
-+2. Energy consumed by each Core
-+  * MSR_CORE_ENERGY_STATUS/ C001_029A:
-+    -> 32-bitRO, Accumulator, core-level power reporting
-+
-+  * A sysfs entry "core_energy%d_input" for each core is
-+    created to show the core energy counter value.
-+
-+3. Energy consumed by Socket
-+  * MSR_PACKAGE_ENERGY_STATUS/ C001_029B:
-+    -> 32-bitRO, Accumulator, socket-level power reporting,
-+    -> shared with all cores in socket
-+
-+  * A sysfs entry "socket_energy%d_input" for each socket
-+    is created to show the socket energy counter value.
-+
-+Energy Caluclation:
-+
-+Energy information (in Joules) is based on the multiplier,
-+1/2^ESU; where ESU is an unsigned integer read from
-+MSR_RAPL_POWER_UNIT register. Default value is 10000b,
-+indicating energy status unit is 15.3 micro-Joules increment.
-+
-+These registers are updated every 1ms and cleared on
-+reset of the system.
-+
-+Users calculate power for a given domain by calculating
-+	dEnergy/dTime for that domain.
-+
-+Sysfs attributes
-+----------------
-+
-+======================= =================================
-+
-+core_energy[N]_input	Measured input core energy
-+			[one sysfs entry for each core]
-+
-+socket_energy[N]_input	Measured input socket energy
-+			[one sysfs entry for each socket]
-+
-+energy_units		ESU Energy Status Units.
-+
-+======================= ==================================
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 8ef62fd39787..fc4b89810e67 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -39,6 +39,7 @@ Hardware Monitoring Kernel Drivers
-    adt7470
-    adt7475
-    amc6821
-+   amd_energy
-    asb100
-    asc7621
-    aspeed-pwm-tacho
--- 
-2.16.4
-
+Thanks,
+Guenter
