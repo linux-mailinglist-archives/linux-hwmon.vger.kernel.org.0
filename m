@@ -2,71 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB7531A72E9
-	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Apr 2020 07:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B8951A7575
+	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Apr 2020 10:08:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405441AbgDNFSn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 14 Apr 2020 01:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        id S2406970AbgDNIIQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 14 Apr 2020 04:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2405440AbgDNFSn (ORCPT
+        by vger.kernel.org with ESMTP id S2406955AbgDNIIH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 14 Apr 2020 01:18:43 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D59E5C0A3BDC
-        for <linux-hwmon@vger.kernel.org>; Mon, 13 Apr 2020 22:18:42 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id ca21so13000532edb.7
-        for <linux-hwmon@vger.kernel.org>; Mon, 13 Apr 2020 22:18:42 -0700 (PDT)
+        Tue, 14 Apr 2020 04:08:07 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601A0C0A3BE2
+        for <linux-hwmon@vger.kernel.org>; Tue, 14 Apr 2020 01:08:07 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id h9so13208783wrc.8
+        for <linux-hwmon@vger.kernel.org>; Tue, 14 Apr 2020 01:08:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=1RixQWRGBRCKP95c35mO4zNDicD1IhXHzQMmV09qSmg=;
-        b=cqongf6aS46ORDXmz1twIzA7EoFXjQ+xYTgSM8ToDVJbK5jw2J7rrRGG8jEu9cHDdm
-         8q6n0m/WQIe6TCXyXvo77KKtWXpy+SfG6ClqdibtxRtiBl7TbpdDjbUnkCWZgTP4MEfZ
-         Nr9Xeie7iyiIGgYi4mPjrY1i/s3a00RUklHWFw1/g1ERcLEjNOclnKUqjbBRW6wZETrZ
-         5xRU3db/NEqqYovjuO315qOZh87GBAyuVrK7QV+9mbhEIH7Ku5c1GSFrXJJ+mIOoRD8D
-         BvCCe3jb2RP5wVkSdkVlEDtSp4hQndwaFNYEart2+Oc8Dr6q3xLrQyCEQPXWG3O6052/
-         MexA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=Of87X/gGHd7WK7J8InDBiy0jDOtLSnaghXrcb3fjgfk=;
+        b=Qi+aAYqVu1eN15qmGiNzA8fNa4lIaXjb7w8Ocp8Gc0hvk+JIaKlkVXzyxUG8n0kj+r
+         UO5wQRuYWMusYRen73PY8mnpxj7c2gEagVixnKH7uYpOo25BzIAhsiy4AwByxwVKgDTX
+         3usXFCaxp+gOky+4ixr3sYj7SJeR2HTcyBG8WdE5NSYpwB+WADiE6Jvju2AScK2TrryU
+         m0Nbcv9ajXflZubAOOw8jM1w57tWTxiDu8rNj7uzuriDtcDYZAa3eT9hU0TcjfE4Hm8v
+         K5mfMgvUSBew+h/w06khwgn9kCDZAA34fzfhg7vHcnzLGX4BOXe2yx/so+jE4QPF1o8e
+         YT5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=1RixQWRGBRCKP95c35mO4zNDicD1IhXHzQMmV09qSmg=;
-        b=Ef79IJ3ga3KOA9CEgUPbrkiy9ezQvCWvkkVnj8x/e9CudUw0xhboMrdzzxwm6596FZ
-         thbeEUeTcsCX63k+9vPz8ZN/0aDSxcU8/CHetI7lJ7MdEqL5hAB8GoCZbKYbRrsNvhzL
-         rQmX1feMrl9N6kTmuKfaSdxapi+ENGrWYe04wSmwgvWq9EZH/JK3Xwa/zrZHtHBcE4Qe
-         YdtYymLjM/H/MKXsEU1TI84HQZ05ypbdwwnx7FVE42AILhFoUD93KrxkOo3SOAMgyZ5Z
-         FfgPfbYooy013T6cVfrfnrmuvu7fnNA3NJ3/zOIsLz/qo3wUe27H6XRW3dQbsgR0ETFe
-         SIMg==
-X-Gm-Message-State: AGi0PubZDSLyXxiVP4hIVxxyPRPjK/t6hE/UvmcmiAxX2aJ0Fh3aiUmi
-        1fAZQwMz0k1f+lf+SoywEMQpYgCQBFCMuFy59+s=
-X-Google-Smtp-Source: APiQypJuyz7zxGG2suPOlCLdGiJxoJam5H27fMmQVIcle9fAQsaQgoOhl+nzLFaSoITxLpRKzqcyAf0QsyrB4skQ8nk=
-X-Received: by 2002:a17:906:9494:: with SMTP id t20mr17705344ejx.51.1586841521381;
- Mon, 13 Apr 2020 22:18:41 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=Of87X/gGHd7WK7J8InDBiy0jDOtLSnaghXrcb3fjgfk=;
+        b=eO6LNcOMlwR5LJuIYADsibwEQh1KC1MgmEKAp6Xf5fYyCML+APagI2YPgWbHVSsTaK
+         685obyJ6ibm68MclhyQaBI3Y9rwsU8xizTX0QNNy8k9dzFGXgL9/7XPrqRJ0BzGqXwnF
+         BXipcicn7BZf5YRxl0U7CjXish8kozoyqOIVz9eE9qf2nzqltITnJeoqC1ppr9G6suNR
+         NBfUHC7grD2ulZG4sdlW64Z4crA2grCbuZuQ8snYIxlrV9mB45koDSq4RMkuLzR+wqjW
+         3YjRH7IKX0iqvxLGmGQrnzQkXQbirDgyYeQ+1NZiUB+h9plbHpK4Au2x/x2vWkqNCGjQ
+         9oCw==
+X-Gm-Message-State: AGi0PuYVyYCVhYAHW5TTEmVdj6tddmOKbMAcchGaGPhQXMt6OeVUOhjW
+        82RWvZUL/NIG2P9Nnx1963DQvQ==
+X-Google-Smtp-Source: APiQypLIN3SbXV7PM0uFFyvMDh857863ygqy9yht/XtufvHAtOL8FPNIeAgdp7UPDBUQOVQgcQy0GQ==
+X-Received: by 2002:a5d:4286:: with SMTP id k6mr10371255wrq.222.1586851685895;
+        Tue, 14 Apr 2020 01:08:05 -0700 (PDT)
+Received: from dell ([95.149.164.124])
+        by smtp.gmail.com with ESMTPSA id f63sm17383374wma.47.2020.04.14.01.08.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2020 01:08:05 -0700 (PDT)
+Date:   Tue, 14 Apr 2020 09:09:05 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Tim Harvey <tharvey@gateworks.com>
+Cc:     Linux HWMON List <linux-hwmon@vger.kernel.org>,
+        Robert Jones <rjones@gateworks.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Device Tree Mailing List <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v8 2/3] mfd: add Gateworks System Controller core driver
+Message-ID: <20200414080905.GC2167633@dell>
+References: <1585341214-25285-1-git-send-email-tharvey@gateworks.com>
+ <1585341214-25285-3-git-send-email-tharvey@gateworks.com>
+ <CAJ+vNU1GWFKv8f-ihhoVTWgD8G5UyupOek1fmBPaU0QXKC1qHw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a54:3dc9:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 22:18:40
- -0700 (PDT)
-From:   Mrs Aisha Gaddafi <2007aisha2007@gmail.com>
-Date:   Mon, 13 Apr 2020 22:18:40 -0700
-X-Google-Sender-Auth: kpTKKsW5LEJ5J3wYsGGbCiR0v6s
-Message-ID: <CAHduVn3GKqHJ3w0MW6D0K3K_ohcZwQ41U2hbR76iEXBZUthmWA@mail.gmail.com>
-Subject: ASSALAMU ALAIKUM
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ+vNU1GWFKv8f-ihhoVTWgD8G5UyupOek1fmBPaU0QXKC1qHw@mail.gmail.com>
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-QXNzYWxhbXUgYWxhaWt1bSwNCg0KSSBoYXZlIGEgYnVzaW5lc3MgUHJvcG9zYWwgZm9yIHlvdSBh
-bmQgSSBuZWVkIG11dHVhbCByZXNwZWN0LCB0cnVzdCwNCmhvbmVzdHksIHRyYW5zcGFyZW5jeSwg
-YWRlcXVhdGUgc3VwcG9ydCBhbmQgYXNzaXN0YW5jZSwgSG9wZSB0byBoZWFyDQpmcm9tIHlvdSBm
-b3IgbW9yZSBkZXRhaWxzLg0KDQpXYXJtZXN0IHJlZ2FyZHMNCk1ycyBBaXNoYSBHYWRkYWZpDQoN
-Ctin2YTYs9mE2KfZhSDYudmE2YrZg9mF2IwNCg0K2YTYr9mKINin2YLYqtix2KfYrSDYudmF2YQg
-2YTZgyDZiNij2K3Yqtin2Kwg2KXZhNmJINin2YTYp9it2KrYsdin2YUg2KfZhNmF2KrYqNin2K/Z
-hCDZiNin2YTYq9mC2Kkg2YjYp9mE2LXYr9mCINmI2KfZhNi02YHYp9mB2YrYqQ0K2YjYp9mE2K/Y
-udmFINin2YTZg9in2YHZiiDZiNin2YTZhdiz2KfYudiv2Kkg2Iwg2YjZhtij2YXZhCDYo9mGINmG
-2LPZhdi5INmF2YbZgyDZhNmF2LLZitivINmF2YYg2KfZhNiq2YHYp9i12YrZhC4NCg0K2KPYrdix
-INin2YTYqtit2YrYp9iqDQrYp9mE2LPZitiv2Kkg2LnYp9im2LTYqSDYp9mE2YLYsNin2YHZig0K
+On Wed, 08 Apr 2020, Tim Harvey wrote:
+
+> On Fri, Mar 27, 2020 at 1:33 PM Tim Harvey <tharvey@gateworks.com> wrote:
+> >
+> > The Gateworks System Controller (GSC) is an I2C slave controller
+> > implemented with an MSP430 micro-controller whose firmware embeds the
+> > following features:
+> >  - I/O expander (16 GPIO's) using PCA955x protocol
+> >  - Real Time Clock using DS1672 protocol
+> >  - User EEPROM using AT24 protocol
+> >  - HWMON using custom protocol
+> >  - Interrupt controller with tamper detect, user pushbotton
+> >  - Watchdog controller capable of full board power-cycle
+> >  - Power Control capable of full board power-cycle
+> >
+> > see http://trac.gateworks.com/wiki/gsc for more details
+> >
+> > Cc: Randy Dunlap <rdunlap@infradead.org>
+> > Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> > ---
+> >  MAINTAINERS                 |   8 ++
+> >  drivers/mfd/Kconfig         |  10 ++
+> >  drivers/mfd/Makefile        |   1 +
+> >  drivers/mfd/gateworks-gsc.c | 288 ++++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/mfd/gsc.h     |  73 +++++++++++
+> >  5 files changed, 380 insertions(+)
+> >  create mode 100644 drivers/mfd/gateworks-gsc.c
+> >  create mode 100644 include/linux/mfd/gsc.h
+
+[...]
+
+Please clip your responses.
+
+> Lee,
+> 
+> Do you have time to look at this? Rob has reviewed the dt-bindings and
+> Guenter has reviewed the hwmon driver so this is the only patch
+> remaining in the series that needs review/sign-off.
+
+It's on the list.
+
+Please bear in mind that the merge-window has been open for the past 2
+weeks.  Usually reviewing cadence slows down during this period.  It
+should be ramping up again this week.
+
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
