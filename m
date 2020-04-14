@@ -2,110 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D22E1A664C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Apr 2020 14:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7531A72E9
+	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Apr 2020 07:18:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbgDMMZY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 13 Apr 2020 08:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729179AbgDMLtu (ORCPT
+        id S2405441AbgDNFSn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 14 Apr 2020 01:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2405440AbgDNFSn (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 13 Apr 2020 07:49:50 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ADDAC0A3BDC
-        for <linux-hwmon@vger.kernel.org>; Mon, 13 Apr 2020 04:41:09 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id y25so2098778pfn.5
-        for <linux-hwmon@vger.kernel.org>; Mon, 13 Apr 2020 04:41:09 -0700 (PDT)
+        Tue, 14 Apr 2020 01:18:43 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D59E5C0A3BDC
+        for <linux-hwmon@vger.kernel.org>; Mon, 13 Apr 2020 22:18:42 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id ca21so13000532edb.7
+        for <linux-hwmon@vger.kernel.org>; Mon, 13 Apr 2020 22:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
+        h=mime-version:sender:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
-        b=HxOaFJZljqXQIeSLw7dw+YeTIVe76Yo57NkC3rYQjPPsruaWLZEetJYgTw7mDA7iYw
-         4KM/sQKuVdxfTyBgHy0QGrcgvhBAp/s2WR+7lhwMEms7c5U3ARzlxX4w9gHN6kyIVCTo
-         InVjjBwajQbgYMLlLr/dGAnfAOq75HLmi2bmQShdg5UrDH6ZNHdmpjirCjsFE3E+W3lI
-         4HPNdhIk9GHy3wOVy8qt79oLhQ3V0WJ+l2R8YfTk5No8OB207Mc1ssyzLdiNdU6iDIon
-         HSnId1sWR9JHq8BkscMOY+TVCS7WuDDdfTSRJRDObUGUY3pKdsd/NGq97n4qtv5szVJr
-         IEMQ==
+        bh=1RixQWRGBRCKP95c35mO4zNDicD1IhXHzQMmV09qSmg=;
+        b=cqongf6aS46ORDXmz1twIzA7EoFXjQ+xYTgSM8ToDVJbK5jw2J7rrRGG8jEu9cHDdm
+         8q6n0m/WQIe6TCXyXvo77KKtWXpy+SfG6ClqdibtxRtiBl7TbpdDjbUnkCWZgTP4MEfZ
+         Nr9Xeie7iyiIGgYi4mPjrY1i/s3a00RUklHWFw1/g1ERcLEjNOclnKUqjbBRW6wZETrZ
+         5xRU3db/NEqqYovjuO315qOZh87GBAyuVrK7QV+9mbhEIH7Ku5c1GSFrXJJ+mIOoRD8D
+         BvCCe3jb2RP5wVkSdkVlEDtSp4hQndwaFNYEart2+Oc8Dr6q3xLrQyCEQPXWG3O6052/
+         MexA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
-        b=it+CMqNHt+JfSAU61ljjChSa7CLIWUiBvOuCw9KJl1QaVTngQBiHQAEH992G0U4cWC
-         hgi6ld2Dno3P51jIyef95lTT+iW3/47c+zW2aFWlCin//79mboWVDup4BzK6Y9nVP8IY
-         DtI5NVh3or7FCE5qu+8IiPkd77dsBQnHhEvST/qerBcXAgNr6dJkHssiYF3boJZ2FpiM
-         aNM2xa/I7YD7aGRbpoGaj4oTd8E/mlaM82gM5S5XcLuN4xP1aJn/qer2wknjVmSfkG1K
-         kJnqZ9Tu1bPco0ySNR/UTwFArfU0kvn4nhXHuhne87gP/1PgoGp+MGDcETdzZ0wgI9Nt
-         xQpw==
-X-Gm-Message-State: AGi0PuaJOGbfmBljgsJ9bsplsVcWIylqgzaRksnebPiDCfpzThvU5nuj
-        lqEbR211p+EVs2ixDr8dtZU1wgKBswfM24SAGgJLylE=
-X-Google-Smtp-Source: APiQypJ8Xf5JZIaJmuakcegBHklRN/w3ObzOY1fG2hZhiF0393fUgrxf6qaSVcLD5pLEm/4TEQgoj9oGK8tQ5EeyGAU=
-X-Received: by 2002:a05:6e02:c8f:: with SMTP id b15mr14965961ile.35.1586778068198;
- Mon, 13 Apr 2020 04:41:08 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=1RixQWRGBRCKP95c35mO4zNDicD1IhXHzQMmV09qSmg=;
+        b=Ef79IJ3ga3KOA9CEgUPbrkiy9ezQvCWvkkVnj8x/e9CudUw0xhboMrdzzxwm6596FZ
+         thbeEUeTcsCX63k+9vPz8ZN/0aDSxcU8/CHetI7lJ7MdEqL5hAB8GoCZbKYbRrsNvhzL
+         rQmX1feMrl9N6kTmuKfaSdxapi+ENGrWYe04wSmwgvWq9EZH/JK3Xwa/zrZHtHBcE4Qe
+         YdtYymLjM/H/MKXsEU1TI84HQZ05ypbdwwnx7FVE42AILhFoUD93KrxkOo3SOAMgyZ5Z
+         FfgPfbYooy013T6cVfrfnrmuvu7fnNA3NJ3/zOIsLz/qo3wUe27H6XRW3dQbsgR0ETFe
+         SIMg==
+X-Gm-Message-State: AGi0PubZDSLyXxiVP4hIVxxyPRPjK/t6hE/UvmcmiAxX2aJ0Fh3aiUmi
+        1fAZQwMz0k1f+lf+SoywEMQpYgCQBFCMuFy59+s=
+X-Google-Smtp-Source: APiQypJuyz7zxGG2suPOlCLdGiJxoJam5H27fMmQVIcle9fAQsaQgoOhl+nzLFaSoITxLpRKzqcyAf0QsyrB4skQ8nk=
+X-Received: by 2002:a17:906:9494:: with SMTP id t20mr17705344ejx.51.1586841521381;
+ Mon, 13 Apr 2020 22:18:41 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:41:07
+Received: by 2002:a54:3dc9:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 22:18:40
  -0700 (PDT)
-Reply-To: mgbenin903@gmail.com
-From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Mon, 13 Apr 2020 13:41:07 +0200
-Message-ID: <CABHzvrm3rWryg1yAooKeHwdxzrKD47PRAEfC+ay1A6i5z3Wdiw@mail.gmail.com>
-Subject: I have already sent you first payment US$5000.00 this morning through
- MONEY Gram service.it is available to pick up in address now.
+From:   Mrs Aisha Gaddafi <2007aisha2007@gmail.com>
+Date:   Mon, 13 Apr 2020 22:18:40 -0700
+X-Google-Sender-Auth: kpTKKsW5LEJ5J3wYsGGbCiR0v6s
+Message-ID: <CAHduVn3GKqHJ3w0MW6D0K3K_ohcZwQ41U2hbR76iEXBZUthmWA@mail.gmail.com>
+Subject: ASSALAMU ALAIKUM
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTN DEAR BENEFICIARY.
-
-GOOD NEWS.
-
-I have already sent you first payment US$5000.00 this morning through
-MONEY Gram service.it is available to pick up in address now.
-
-So we advise you to Contact This Money Gram office to pick up your
-transfer $US5000.00 today.
-
-
-Note that your compensation payment funds is total amount $US2.800,000
-Million Dollars.We have instructed the Money Gram Agent,Mr. James
-Gadner to keep sending the transfer to you daily, but the maximum
-amount you will be receiving everyday is US$5000.00. Contact Agent now
-to pick up your first payment $US5000.00 immediately.
-
-Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
-Email: mgbenin903@gmail.com
-Telephone Numbers: +229 62819378/ +229 98477762
-
-HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
-
-Track View Website link:
-https://secure.moneygram.com/track
-Sender=E2=80=99s First name: David
-Sender=E2=80=99s Last Name: Joiner
-Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
-
-Contact the Mmoney Gram Urgent and reconfirm your address to the
-office before, they will allow you to pick up the transfer today.
-
-HERE IS WHAT REQUIRED OF YOU.
-
-YOUR FULL NAME---------
-ADDRESS--------------
-COUNTRY-----------------------------
-TELEPHONE NUMBERS-----------------
-
-Note, I paid the transfer fee for you, but only you are required to
-send to the office is $75 only,Been Your Payment File activation fee,
-Send once you contact the office,before you can able to pick up your
-transfer today.
-
-Let me know once you pick up first payment today.
-
-Barrister Robert Richter UN-Attorney at Law Court-Benin
+QXNzYWxhbXUgYWxhaWt1bSwNCg0KSSBoYXZlIGEgYnVzaW5lc3MgUHJvcG9zYWwgZm9yIHlvdSBh
+bmQgSSBuZWVkIG11dHVhbCByZXNwZWN0LCB0cnVzdCwNCmhvbmVzdHksIHRyYW5zcGFyZW5jeSwg
+YWRlcXVhdGUgc3VwcG9ydCBhbmQgYXNzaXN0YW5jZSwgSG9wZSB0byBoZWFyDQpmcm9tIHlvdSBm
+b3IgbW9yZSBkZXRhaWxzLg0KDQpXYXJtZXN0IHJlZ2FyZHMNCk1ycyBBaXNoYSBHYWRkYWZpDQoN
+Ctin2YTYs9mE2KfZhSDYudmE2YrZg9mF2IwNCg0K2YTYr9mKINin2YLYqtix2KfYrSDYudmF2YQg
+2YTZgyDZiNij2K3Yqtin2Kwg2KXZhNmJINin2YTYp9it2KrYsdin2YUg2KfZhNmF2KrYqNin2K/Z
+hCDZiNin2YTYq9mC2Kkg2YjYp9mE2LXYr9mCINmI2KfZhNi02YHYp9mB2YrYqQ0K2YjYp9mE2K/Y
+udmFINin2YTZg9in2YHZiiDZiNin2YTZhdiz2KfYudiv2Kkg2Iwg2YjZhtij2YXZhCDYo9mGINmG
+2LPZhdi5INmF2YbZgyDZhNmF2LLZitivINmF2YYg2KfZhNiq2YHYp9i12YrZhC4NCg0K2KPYrdix
+INin2YTYqtit2YrYp9iqDQrYp9mE2LPZitiv2Kkg2LnYp9im2LTYqSDYp9mE2YLYsNin2YHZig0K
