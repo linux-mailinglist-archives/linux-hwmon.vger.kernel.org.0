@@ -2,201 +2,217 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9451AE56C
-	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Apr 2020 21:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CD231AE5CC
+	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Apr 2020 21:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbgDQTFX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 17 Apr 2020 15:05:23 -0400
-Received: from mail-bn7nam10on2082.outbound.protection.outlook.com ([40.107.92.82]:40225
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727845AbgDQTFX (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 17 Apr 2020 15:05:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hj3rHN5hgW1By+WCuhbkB/aEF9jdK6Fdlmx9rZIMKfHrCAE9oik/GhmgKM0VBclODfjPmKwKvjTk99tFBP9dpGOE6jJ6QDhwTHxzqaG4LRHlVsAqTiNI/IbrJOpWBFzE7TaZVepXV80JtOh00k/WxOeH0H6GoH19vIpMbJRWoWeT8slWBNToGwAhvrVpY3Wc2Ad8R+wpdAMaYHfwrmXKl+cHTuRSOvEgp561uULu5cHWQhv6ONyS8o+gCAXeuZ/hfrQfTXFWWuud+2TWLlDR2dK9I9rd0kravvmtpdQqfVUeFr0UHkytl15s+YEnmlMsrPr3mQFCNBRBhsqeiV4EXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jISL0y4o3Du+RxdFEJRo7qctwVyvXwdv4Tb/6l64bEE=;
- b=htuQPVarWWftPtUZhpO38+UOt8b7yi3cF47AUecAaDwBqsaY2ah0n/9VBUlNbnyXpbMMN0xbpxb7WfHqn4PkEECtp03Im/x/7dAfHJog4nyLqtqoOBbBQKhSmAtrIM/DziIj+qgzdYQrrKaG9IguuIpa7nGtunSoPZhRXVahpO/AzX/4+7S1DWQ9+xLriXetXE3BgDREiAYA1Qc3+VChVQ8ySEVTwQUv7BI4sWzgdfYweHVBRwG38P2Mog2eo0hFh6KPxMNpUI1F5s8r19vE2L4OUNcSeH5fYM4c8usEuv5ODFWKX/nNJweG7VjHfv1PliA3gZIyprmaoHDZA5S6Aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jISL0y4o3Du+RxdFEJRo7qctwVyvXwdv4Tb/6l64bEE=;
- b=voGzHGUXHoGyQQarA+8Kh80XkAoJukzwtPVsrPx1f1fS1FmCXpDLUwBrtqJ9BOQR2UcGo7QfIsLYExjxsxjeP2tWPNI9A2k1qazO+y3GBgE3ejkR6qyAkApwqy869dKU/W/CPqHuU7/rFI8vtF8hz3asciya/3UXT6RQT2R56fU=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=NaveenKrishna.Chatradhi@amd.com; 
-Received: from DM6PR12MB4219.namprd12.prod.outlook.com (2603:10b6:5:217::14)
- by DM6PR12MB2939.namprd12.prod.outlook.com (2603:10b6:5:18b::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.29; Fri, 17 Apr
- 2020 19:05:19 +0000
-Received: from DM6PR12MB4219.namprd12.prod.outlook.com
- ([fe80::58f0:5661:ff16:c269]) by DM6PR12MB4219.namprd12.prod.outlook.com
- ([fe80::58f0:5661:ff16:c269%3]) with mapi id 15.20.2921.027; Fri, 17 Apr 2020
- 19:05:19 +0000
-From:   Naveen Krishna Chatradhi <nchatrad@amd.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Naveen Krishna Chatradhi <nchatrad@amd.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v2 2/2] hwmon: (amd_energy) Add documentation
-Date:   Sat, 18 Apr 2020 00:34:59 +0530
-Message-Id: <20200417190459.233179-2-nchatrad@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200417190459.233179-1-nchatrad@amd.com>
-References: <20200417190459.233179-1-nchatrad@amd.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MA1PR01CA0099.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:1::15) To DM6PR12MB4219.namprd12.prod.outlook.com
- (2603:10b6:5:217::14)
+        id S1730413AbgDQT3T (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 17 Apr 2020 15:29:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730063AbgDQT3S (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 17 Apr 2020 15:29:18 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA1FC061A10;
+        Fri, 17 Apr 2020 12:29:17 -0700 (PDT)
+Received: from apollo.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:6257:18ff:fec4:ca34])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id D792523058;
+        Fri, 17 Apr 2020 21:29:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1587151754;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=xQGI6RECM8CGglVwJZboptE0gLfAM+KqsH6P6ueOYAo=;
+        b=eBU2pk7Gs9pOnv+ZlU65YAeyDFbR31HWcnUaZgfyaOlRmRRFEDEhkYZy5/FDSWUi26hycf
+        hQvo/iR3KcY/YjyHtCYgB3P1IFqq2NzSx/1ebBVisSWxtBhs2V/2cbYP4kS9LHwBSzYKTZ
+        yOKrvVUY2UmFz3OhL/uxhsdeiqu9ZNo=
+From:   Michael Walle <michael@walle.cc>
+To:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S . Miller" <davem@davemloft.net>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH net-next 1/3] net: phy: broadcom: add helper to write/read RDB registers
+Date:   Fri, 17 Apr 2020 21:28:56 +0200
+Message-Id: <20200417192858.6997-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from milan-ETHANOL-X.amd.com (165.204.156.251) by MA1PR01CA0099.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:1::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.25 via Frontend Transport; Fri, 17 Apr 2020 19:05:17 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [165.204.156.251]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 38c26788-9b7f-456d-7c08-08d7e3024554
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2939:|DM6PR12MB2939:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR12MB29392627644D9EFB217B0F57E8D90@DM6PR12MB2939.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-Forefront-PRVS: 0376ECF4DD
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4219.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(376002)(396003)(136003)(39860400002)(366004)(346002)(5660300002)(2906002)(6916009)(1076003)(6666004)(36756003)(6486002)(8936002)(54906003)(316002)(8676002)(4326008)(478600001)(81156014)(16526019)(7696005)(52116002)(26005)(66476007)(956004)(2616005)(66556008)(66946007)(186003)(966005)(24770200002);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7hR2Dd6BfDcSxjuCt4Rco+lsCrFJBzHG6wwOQGfgeU0ExgO1VHvrJ0AoESjOr73hfnaQKoRM0xhp+BPqwABTsb+9ndItoyddNCmqYfrGdQSa9/B+YuyMxNjZGZ9FINR8XmYe5pUsiCq+fFk4pqAtG9xQR/KgrqMXSbvm+lrCmAQc5WId709By+PI2uuQwqV6IYb9qpX4yOG7YkYKkzE2LuPGzE7QeK1ydzHsxJHb/X6Z8nZdDrIX3WaT6msDn6b807tJtQAdc3alOMiJ3fYeYsx3g4tGdc+kbr2BKljieoWN/8OpYJfRfVmjAeOWMILyO/GW03J34E/jTjkVp6A24VTWp9jq7aeWgNxMPA1zw6i4Qq1CW5cRn4Vg27GIGuxLIPvBOwL8FZW5t+yW4mq2LXh3T9nzNZ66OkqoMulmO1gGi4lw79lHwzsupDKqK22RZjZjJgbPcCeQQp+BaGYUJqyyXD9TzoJDU8j0mMW+O42mb8MiFZGg27hUDKgxwe702Wi/gmSd0GpQBJKpgQh4UYq3Ko8j/cMc+MipSPTh86CgiOEULxuIlneXAuIOV9ZFYVaEX9l5LJ0m/xp1QugHHw==
-X-MS-Exchange-AntiSpam-MessageData: lN0PjLyInk1LIVgiCNKG7hz5X/a5IkNcbtdB1+7ifbR+t0YJY+RSLN75qfndsdrtlV4jj2Kjf6W8FShDP6Y8Pl/S2oOn4vnSTP6SqfJnEtiYRTlc1sEKTrLp52hPLDA11kGW74O3wcJ6axZ0sgNykw==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38c26788-9b7f-456d-7c08-08d7e3024554
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2020 19:05:18.9685
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: daud5GYmxvsD1gxzMEZyFJHjUj/+5hV9p9OQuzWTiHSN8dic1vLGGh7gMR5LVFN6zgN1kPec1b8eg84lLDGGCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2939
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: ++++++
+X-Spam-Level: ******
+X-Rspamd-Server: web
+X-Spam-Status: Yes, score=6.40
+X-Spam-Score: 6.40
+X-Rspamd-Queue-Id: D792523058
+X-Spamd-Result: default: False [6.40 / 15.00];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         R_MISSING_CHARSET(2.50)[];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com];
+         TAGGED_RCPT(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         BROKEN_CONTENT_TYPE(1.50)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         NEURAL_SPAM(0.00)[0.942];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[11];
+         MID_CONTAINS_FROM(1.00)[];
+         RCVD_COUNT_ZERO(0.00)[0];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         ASN(0.00)[asn:31334, ipnet:2a02:810c:8000::/33, country:DE];
+         FREEMAIL_CC(0.00)[suse.com,roeck-us.net,lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,walle.cc];
+         SUSPICIOUS_RECIPS(1.50)[]
+X-Spam: Yes
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Document amd_energy driver with all chips supported by it.
+RDB regsiters are used on newer Broadcom PHYs. Add helper to read, write
+and modify these registers.
 
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
+Signed-off-by: Michael Walle <michael@walle.cc>
 ---
- Documentation/hwmon/amd_energy.rst | 83 ++++++++++++++++++++++++++++++
- Documentation/hwmon/index.rst      |  1 +
- 2 files changed, 84 insertions(+)
- create mode 100644 Documentation/hwmon/amd_energy.rst
+ drivers/net/phy/bcm-phy-lib.c | 80 +++++++++++++++++++++++++++++++++++
+ drivers/net/phy/bcm-phy-lib.h |  9 ++++
+ include/linux/brcmphy.h       |  3 ++
+ 3 files changed, 92 insertions(+)
 
-diff --git a/Documentation/hwmon/amd_energy.rst b/Documentation/hwmon/amd_energy.rst
-new file mode 100644
-index 000000000000..3bd5855b4a6b
---- /dev/null
-+++ b/Documentation/hwmon/amd_energy.rst
-@@ -0,0 +1,83 @@
-+Kernel driver amd_energy
-+==========================
+diff --git a/drivers/net/phy/bcm-phy-lib.c b/drivers/net/phy/bcm-phy-lib.c
+index e77b274a09fd..d5f9a2701989 100644
+--- a/drivers/net/phy/bcm-phy-lib.c
++++ b/drivers/net/phy/bcm-phy-lib.c
+@@ -155,6 +155,86 @@ int bcm_phy_write_shadow(struct phy_device *phydev, u16 shadow,
+ }
+ EXPORT_SYMBOL_GPL(bcm_phy_write_shadow);
+ 
++int __bcm_phy_read_rdb(struct phy_device *phydev, u16 rdb)
++{
++	int val;
 +
-+Supported chips:
++	val = __phy_write(phydev, MII_BCM54XX_RDB_ADDR, rdb);
++	if (val < 0)
++		return val;
 +
-+* AMD Family 17h Processors
++	return __phy_read(phydev, MII_BCM54XX_RDB_DATA);
++}
++EXPORT_SYMBOL_GPL(__bcm_phy_read_rdb);
 +
-+  Prefix: 'amd_energy'
++int bcm_phy_read_rdb(struct phy_device *phydev, u16 rdb)
++{
++	int ret;
 +
-+  Addresses used:  RAPL MSRs
++	phy_lock_mdio_bus(phydev);
++	ret = __bcm_phy_read_rdb(phydev, rdb);
++	phy_unlock_mdio_bus(phydev);
 +
-+  Datasheets:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(bcm_phy_read_rdb);
 +
-+  - Processor Programming Reference (PPR) for AMD Family 17h Model 01h, Revision B1 Processors
++int __bcm_phy_write_rdb(struct phy_device *phydev, u16 rdb, u16 val)
++{
++	int ret;
 +
-+	https://developer.amd.com/wp-content/resources/55570-B1_PUB.zip
++	ret = __phy_write(phydev, MII_BCM54XX_RDB_ADDR, rdb);
++	if (ret < 0)
++		return ret;
 +
-+  - Preliminary Processor Programming Reference (PPR) for AMD Family 17h Model 31h, Revision B0 Processors
++	return __phy_write(phydev, MII_BCM54XX_RDB_DATA, val);
++}
++EXPORT_SYMBOL_GPL(__bcm_phy_write_rdb);
 +
-+	https://developer.amd.com/wp-content/resources/56176_ppr_Family_17h_Model_71h_B0_pub_Rev_3.06.zip
++int bcm_phy_write_rdb(struct phy_device *phydev, u16 rdb, u16 val)
++{
++	int ret;
 +
-+Author: Naveen Krishna Chatradhi <nchatrad@amd.com>
++	phy_lock_mdio_bus(phydev);
++	ret = __bcm_phy_write_rdb(phydev, rdb, val);
++	phy_unlock_mdio_bus(phydev);
 +
-+Description
-+-----------
++	return ret;
++}
++EXPORT_SYMBOL_GPL(bcm_phy_write_rdb);
 +
-+The Energy driver exposes the energy counters that are
-+reported via the Running Average Power Limit (RAPL)
-+Model-specific Registers (MSRs) via the hardware monitor
-+(HWMON) sysfs interface.
++int __bcm_phy_modify_rdb(struct phy_device *phydev, u16 rdb, u16 mask, u16 set)
++{
++	int new, ret;
 +
-+1. Power, Energy and Time Units
-+  * MSR_RAPL_POWER_UNIT/ C001_0299:
-+    -> shared with all cores in the socket
++	ret = __phy_write(phydev, MII_BCM54XX_RDB_ADDR, rdb);
++	if (ret < 0)
++		return ret;
 +
-+2. Energy consumed by each Core
-+  * MSR_CORE_ENERGY_STATUS/ C001_029A:
-+    -> 32-bitRO, Accumulator, core-level power reporting
++	ret = __phy_read(phydev, MII_BCM54XX_RDB_DATA);
++	if (ret < 0)
++		return ret;
 +
-+3. Energy consumed by Socket
-+  * MSR_PACKAGE_ENERGY_STATUS/ C001_029B:
-+    -> 32-bitRO, Accumulator, socket-level power reporting,
-+    -> shared with all cores in socket
++	new = (ret & ~mask) | set;
++	if (new == ret)
++		return 0;
 +
-+These registers are updated every 1ms and cleared on
-+reset of the system.
++	return __phy_write(phydev, MII_BCM54XX_RDB_DATA, new);
++}
++EXPORT_SYMBOL_GPL(__bcm_phy_modify_rdb);
 +
-+Energy Caluclation
-+------------------
++int bcm_phy_modify_rdb(struct phy_device *phydev, u16 rdb, u16 mask, u16 set)
++{
++	int ret;
 +
-+Energy information (in Joules) is based on the multiplier,
-+1/2^ESU; where ESU is an unsigned integer read from
-+MSR_RAPL_POWER_UNIT register. Default value is 10000b,
-+indicating energy status unit is 15.3 micro-Joules increment.
++	phy_lock_mdio_bus(phydev);
++	ret = __bcm_phy_modify_rdb(phydev, rdb, mask, set);
++	phy_unlock_mdio_bus(phydev);
 +
-+Reported values are scaled as per the formula
++	return ret;
++}
++EXPORT_SYMBOL_GPL(bcm_phy_modify_rdb);
 +
-+scaled value = ((1/2^ESU) * (Raw value) * 1000000UL) in Joules
+ int bcm_phy_enable_apd(struct phy_device *phydev, bool dll_pwr_down)
+ {
+ 	int val;
+diff --git a/drivers/net/phy/bcm-phy-lib.h b/drivers/net/phy/bcm-phy-lib.h
+index 129df819be8c..4d3de91cda6c 100644
+--- a/drivers/net/phy/bcm-phy-lib.h
++++ b/drivers/net/phy/bcm-phy-lib.h
+@@ -48,6 +48,15 @@ int bcm_phy_write_shadow(struct phy_device *phydev, u16 shadow,
+ 			 u16 val);
+ int bcm_phy_read_shadow(struct phy_device *phydev, u16 shadow);
+ 
++int __bcm_phy_write_rdb(struct phy_device *phydev, u16 rdb, u16 val);
++int bcm_phy_write_rdb(struct phy_device *phydev, u16 rdb, u16 val);
++int __bcm_phy_read_rdb(struct phy_device *phydev, u16 rdb);
++int bcm_phy_read_rdb(struct phy_device *phydev, u16 rdb);
++int __bcm_phy_modify_rdb(struct phy_device *phydev, u16 rdb, u16 mask,
++			 u16 set);
++int bcm_phy_modify_rdb(struct phy_device *phydev, u16 rdb, u16 mask,
++		       u16 set);
 +
-+Users calculate power for a given domain by calculating
-+	dEnergy/dTime for that domain.
+ int bcm_phy_ack_intr(struct phy_device *phydev);
+ int bcm_phy_config_intr(struct phy_device *phydev);
+ 
+diff --git a/include/linux/brcmphy.h b/include/linux/brcmphy.h
+index 6462c5447872..e14f78b3c8a4 100644
+--- a/include/linux/brcmphy.h
++++ b/include/linux/brcmphy.h
+@@ -114,6 +114,9 @@
+ #define MII_BCM54XX_SHD_VAL(x)	((x & 0x1f) << 10)
+ #define MII_BCM54XX_SHD_DATA(x)	((x & 0x3ff) << 0)
+ 
++#define MII_BCM54XX_RDB_ADDR	0x1e
++#define MII_BCM54XX_RDB_DATA	0x1f
 +
-+Sysfs attributes
-+----------------
-+
-+=============== ========  =====================================
-+Attribute	Label	  Description
-+===============	========  =====================================
-+
-+* For index N between [1] and [nr_cpus]
-+
-+===============	========  ======================================
-+energy[N]_input EcoreX	  Core Energy   X = [0] to [nr_cpus - 1]
-+			  Measured input core energy
-+===============	========  ======================================
-+
-+* For N between [nr_cpus] and [nr_cpus + nr_socks]
-+
-+===============	========  ======================================
-+energy[N]_input EsocketX  Socket Energy X = [0] to [nr_socks -1]
-+			  Measured input socket energy
-+=============== ========  ======================================
-+
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 8ef62fd39787..fc4b89810e67 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -39,6 +39,7 @@ Hardware Monitoring Kernel Drivers
-    adt7470
-    adt7475
-    amc6821
-+   amd_energy
-    asb100
-    asc7621
-    aspeed-pwm-tacho
+ /*
+  * AUXILIARY CONTROL SHADOW ACCESS REGISTERS.  (PHY REG 0x18)
+  */
 -- 
-2.17.1
+2.20.1
 
