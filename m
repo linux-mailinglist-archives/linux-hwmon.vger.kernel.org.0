@@ -2,118 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FA481B62B1
-	for <lists+linux-hwmon@lfdr.de>; Thu, 23 Apr 2020 19:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A12841B63AD
+	for <lists+linux-hwmon@lfdr.de>; Thu, 23 Apr 2020 20:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729991AbgDWRuu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 23 Apr 2020 13:50:50 -0400
-Received: from mail-dm6nam10on2066.outbound.protection.outlook.com ([40.107.93.66]:37720
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729889AbgDWRuu (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 23 Apr 2020 13:50:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WHSYfDa1VnVoUyJMuaLRcDziH8C5qvZiRBZDb8gjIGzz4hxr5/y9wpC6ONoeUlEvbOhLnguKm2K/BFezCA3+t5NsdzJAQwlMXkR0gFahWhdSi3TyxzxcHrHXu3sPaHH84G+1FJVVb9Aas5FFK/xk4XHkmkeK9zllnQVCGEAYc7wxQwZN9e+wsJcAmxwV0Aj/otIpa1Om4Yme1Kp2gVFV1hpWHBCSO3+uSYI6TAz9wD8VBn9cU8f02/EgXQ8+1K65tQduUGxGKRYORmG+1EQ+snqaKE4i8E6IR9mvbT8sbGBZZtXoEyDRxnLTaGwvCSZ2qDZU4/sT4BMULdlF9b24IA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zmnHVP8/Cf4A7kvvGzRySXAfvfDw3jSBTzl+ia89Sqg=;
- b=GHC6LFHJDQ+k8K8mpwKt3S6KbnI48rdVvEnZBwnQTVG8EQw2hMjpvWtrvuQkUADiTMhGAAX8AuuzlRgaLMu7SBHahhWM18x/U1S7RUx1hKr3uUAN845DI7/6V0fD51mgeCDfYseqqvGVoR0nWqo0htn4tyi3lJllGZB+oSlPWdbg1Qc1qh75UhymUHDSmVjAsDLgvk2sTZdXn9blX7FYVBOKKk/f3edJ48ZfKhXO92z9UWQUXr7sGKfs+QA8RHRTT8AckO/Qq4AFN+1T2QFKx19povV5q8reNSpM188IcwNgpg6PRh5DGIywvKPXocfRSU0WxNdjWD6lSrIvZH/icQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+        id S1730278AbgDWS1l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 23 Apr 2020 14:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730285AbgDWS0w (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 23 Apr 2020 14:26:52 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68263C09B052
+        for <linux-hwmon@vger.kernel.org>; Thu, 23 Apr 2020 11:26:51 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id x77so3393306pfc.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 23 Apr 2020 11:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zmnHVP8/Cf4A7kvvGzRySXAfvfDw3jSBTzl+ia89Sqg=;
- b=y8Gm8tbxLOBgnuK/ph9uIuakoiFipB2x3jHMvyugBoZlUuFcjnNtGD1mIUUXV3+NWfuRlMzpSp6S9Xvn0lHF/vt3UHZZM+c6GPj/+BNCHnTMaBhFQOJ4zxcq4Hz6XHOjdnCIcRrhx/T5PqkELV1CA3i+xuxrTX8MleeYtD4XSX0=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=NaveenKrishna.Chatradhi@amd.com; 
-Received: from BY5PR12MB4212.namprd12.prod.outlook.com (2603:10b6:a03:202::8)
- by BY5PR12MB4049.namprd12.prod.outlook.com (2603:10b6:a03:201::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.26; Thu, 23 Apr
- 2020 17:50:48 +0000
-Received: from BY5PR12MB4212.namprd12.prod.outlook.com
- ([fe80::9ce:3ab2:f0ee:47b2]) by BY5PR12MB4212.namprd12.prod.outlook.com
- ([fe80::9ce:3ab2:f0ee:47b2%5]) with mapi id 15.20.2921.030; Thu, 23 Apr 2020
- 17:50:48 +0000
-From:   Naveen Krishna Chatradhi <nchatrad@amd.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Naveen Krishna Chatradhi <nchatrad@amd.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v3 3/3] MAINTAINERS: add entry for AMD energy driver
-Date:   Thu, 23 Apr 2020 23:20:05 +0530
-Message-Id: <20200423175005.9072-3-nchatrad@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200423175005.9072-1-nchatrad@amd.com>
-References: <20200423175005.9072-1-nchatrad@amd.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MAXPR01CA0090.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:49::32) To BY5PR12MB4212.namprd12.prod.outlook.com
- (2603:10b6:a03:202::8)
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
+        b=g40sBMuaO0eKdotmx6qgQBl63DKBmrekz5bvyEQHA4wVZtcqrxc+aFVgh/QD84O9VQ
+         7GeGJGwCstc5CQBYUut5JFB/SR9hiHRBoNucBdQ5+M/xcZE7LYnQNVriX94nlJDQQ53M
+         WWNnGuPMmJMtuCxOc6M3BOG48McWyi9pwkfv1qCbwmDhh95byI3UmcGK9ZJ59xQm/kqA
+         giNgZwxUHu+XTIAoqn/uu1orK63Ur+6hMBQW2TB101zb0oJ5HpVThkCq6id/TjpQtg27
+         HPMb1DcYsj7bM6wQaeV1UkPK6mgUhECRFNV10F5zDhvx1RXP4ikb8uuEIGMKOSNWVb51
+         vLew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
+        b=iUcCJDJAntYX//bG1vrQWQr5aDnxAXFxzVGwxIrTMlKpG7T+MZ6/+aDHBGqMk0OFYz
+         z3d2Ro1Cf36PKhh3vDKfEzixI1SGjPM4FBVtzV0l09fXMbMMlVayL4REFlppFkykhszf
+         5iOguc5MZLLhxAQgqpqHyRx2YlZ9RomexJyrg+dEGDYdd3TEeUlUhCr/yGQy8rbVSw3t
+         NMkVi40rK+PMhQRrfDlY1FRCNAhQaz50cbx+/hMXK9n9T7yt2Tl/UU+RkT7WzEJYIavi
+         q9+cctrkKY1zGmRfp6O4lrtLzq7pVgqSQnfkR9s18nwNwr1HklU7FCHobcLthw5EMKer
+         8KKQ==
+X-Gm-Message-State: AGi0PuZE49lzbK8ytqxSQ4zIOj8RAaXSFc4VYw1tudrkpJ90HeJMFKJU
+        PeR0PfPl4L1DAVFmiyNDRaQ7uP8k+cit6H+R0G6zg2U=
+X-Google-Smtp-Source: APiQypKZ88CB7WlyCjo0k9+cU4PX0VcggKkKtzSKgRJHkcPGizF0yZXAjzEMBgo6XH4xzBXv0KAOMjPM9p1sgpp6/70=
+X-Received: by 2002:a5e:9416:: with SMTP id q22mr2547966ioj.93.1587666410194;
+ Thu, 23 Apr 2020 11:26:50 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from milan-ETHANOL-X.amd.com (165.204.156.251) by MAXPR01CA0090.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:49::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Thu, 23 Apr 2020 17:50:46 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [165.204.156.251]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 1d2d3ef3-6559-4afc-525e-08d7e7aedac1
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4049:|BY5PR12MB4049:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB4049C4A7EEBC244377401758E8D30@BY5PR12MB4049.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1227;
-X-Forefront-PRVS: 03827AF76E
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4212.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(136003)(376002)(396003)(39860400002)(346002)(366004)(16526019)(81156014)(54906003)(2616005)(66946007)(956004)(478600001)(4326008)(4744005)(6666004)(8676002)(8936002)(1076003)(26005)(2906002)(7696005)(52116002)(316002)(6916009)(186003)(5660300002)(36756003)(66556008)(6486002)(66476007);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Q0Gv8j1IW35hyN9RxWV5SMUUEcWBaLraZKTjg+E5IjQBeAnkQT9ersWrpW8GKTiErzFgQD2/R4sWhME+yZOnA+FVTMrWSvOZE/Gzbj5GZWMijp5C1fKz21avT39y1u/ZETdcDTodPsuu4cY0TXKcy5MjuvEFlvtiMxSkmZ/IJbrMfI+DxCCy3RUiqzy+zlZwsSj1HwR3vdemZ+paXfDoq3O3d9ZpOCgGY0HNabQayDNcl21D51XXPFTBQJN/gmhmca/H6PZ3fa9fHSx/6Pg2dAFx5YwZbC6BDGVnmGCoWDq5xcRqg7YaO4KcstSqJg82y4nvFfTeigBUmi8O3/0lR1/O1VMgwEt9O6KEnbpkFmcELQjY1eNfUOycnyBj15ZSvqVHiCs+VGdJztVjWyvSa7fYonjKZ6HvGTv00CTzukNy1eDlzXwZGqCo8PkoR9xT
-X-MS-Exchange-AntiSpam-MessageData: wxRzlut7OpeDH4bn3N2wd+G26z2U1RJXifGqjbSqC7zedxcNgmdKTcsUGuXvJ7f5Qg+/Z1EhZCXDag5450Hjp9V5Y+EpDynvt5wqFvN+6jiIswTFiN3uU/I85aFQHhnobb4IrQgoRx+diXJev7auug==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d2d3ef3-6559-4afc-525e-08d7e7aedac1
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2020 17:50:48.0665
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k55uEGSnf6sKnWk8aPMU873RBvjxsk8yBORX5ConToZk3AEuZtst9WjbN5l2wrW52Dbbc+jlReZiBuuguerJsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4049
+Received: by 2002:a02:c845:0:0:0:0:0 with HTTP; Thu, 23 Apr 2020 11:26:49
+ -0700 (PDT)
+Reply-To: boa.benin107@yahoo.com
+From:   "Mrs. Angella Michelle" <info.zennitbankplcnigerian@gmail.com>
+Date:   Thu, 23 Apr 2020 20:26:49 +0200
+Message-ID: <CABHzvr=N78snvtMHePMOa+RLFdcZEjXLPkuhkojt4VoZGNzBsQ@mail.gmail.com>
+Subject: Contact Bank of Africa-Benin to receive your payment funds transfer
+ amount of $12.800.000,00 Million USD,approved this morning by IMF.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The kernel driver is part of HWMON subsystem.
-
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
----
-Changes in v3: Update MAINTAINERS
-
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c1175fc0aadb..112ffd7742aa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -842,6 +842,13 @@ S:	Supported
- T:	git git://people.freedesktop.org/~agd5f/linux
- F:	drivers/gpu/drm/amd/display/
- 
-+AMD ENERGY DRIVER
-+M:	Naveen Krishna Chatradhi <nchatrad@amd.com>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/amd_energy.rst
-+F:	drivers/hwmon/amd_energy.c
-+
- AMD FAM15H PROCESSOR POWER MONITORING DRIVER
- M:	Huang Rui <ray.huang@amd.com>
- L:	linux-hwmon@vger.kernel.org
--- 
-2.17.1
-
+Attn Dear.
+Contact Bank of Africa-Benin to receive your payment funds transfer amount =
+of
+$12.800.000,00 Million USD,approved this morning by IMF.
+Happy to inform you, we have finally deposited your payment funds
+$12.8 million us dollars with the Paying Bank of Africa-Benin
+to transfer the payment amount of $12.800,000,00 Million Us Dollars to you
+Contact the bank immediately you receive this email now.
+Director Bank of Africa-Benin: Dr. Festus Obiara
+Email id:  boa.benin107@yahoo.com
+Tel/mobile, (229) 62819378
+BOA-BENIN | GROUPE BANK OF AFRICA, boa-benin
+Avenue Jean-Paul II - 08 BP 0879 - Cotonou - B=C3=A9nin
+Phone:(229) 62819378.
+2020 GROUPE BANK OF AFRICA
+Be advised to re-confirm your bank details to this bank as listed.
+Your account Holder's name----------------
+Bank Name----------------------------------------------------------
+Bank address----------------------------------------------
+Account Numbers---------------------------------------
+Rounting-----------------------------------------------------------------
+Your direct Phone Numbers----------------------------------------------
+Note,I have paid the deposit and insurance fees for you
+But the only money you are to send to this bank is $150.00 us dollars
+Been for the wire transfer fees of your funds
+Contact Him now to receive your transfer deposited this morning
+I wait for your reply upon confirmation
+Mrs. Angella Michelle
+Editor, Zenith Bank- Companies Benin
+mrsa9389@gmail.com
