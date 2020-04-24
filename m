@@ -2,120 +2,107 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D67F21B6BDB
-	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Apr 2020 05:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24FB21B755A
+	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Apr 2020 14:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726027AbgDXDV1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 23 Apr 2020 23:21:27 -0400
-Received: from mail-eopbgr680056.outbound.protection.outlook.com ([40.107.68.56]:10979
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725884AbgDXDV0 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 23 Apr 2020 23:21:26 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UTQd4Qqldl+0xT8fD1qbJ5Duz9Y54Y4NfhvqJaZes8dW4+GM2VzdXHRqE+vkCpddSEMl5Dc7hXlXWU3bYBHkamSwATADMu9EgsKD6n8DMD+z1+CB6H0VjfyIpLmq9rR5A5lCdg5RKdF8tmoUciL9aeveQRnvPuVBTsw0McZv1EFK56tFxz/VC2dSA5n6wLlMi3wGsmPothi9QGjELAcsRrjvRQPwb66pEqtIKjswrc0/X6fa0jzbGlqiz24J6AvRU/aDJtfUQlJyiwBj8ecY5ZWpIjkQ4iDriBmX1ZZcFM+0D0aHu0PCYpwuAckr6I7FFPn4gXDC0Z1H2CN/zqBDTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WQu+yqJA0IuYA0rOk+WOVsOYlL/zuXxW1+McOfixBzI=;
- b=LeJ6Qno3vSlcviFiDTD9MIYHD4ug0T/DZ9kYREwjIy006XibelcDeXeCwSieuUp9P5UJUe0J/eyvvY2+/b4QejsC3T2agaTPtnoRJjR5RTupvQMBwJxM774lI6YgAYfFFmBBHC02YELIG9o5l+vDY+nIl1uZmRYRI+DG2TAM86WnEt0ZjwWSnYU8JaUjHRJGOxHW7tNybxAIBNRK/sH8cKAAIznC5cC3DOLxgV3w4T3/eU0oiu8SyyT+edop/M4yLWjjHBWFZslb2i3jQnJbdAqKDb67ZwNegKu0SDiU1d5PCRCpDIltGUMZOgKk1nmSDcQkOLBuTHUf48jA69WQAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WQu+yqJA0IuYA0rOk+WOVsOYlL/zuXxW1+McOfixBzI=;
- b=skWc1iR8z+AM2FnQxTGgoaWBGg3xz0joUuz4shim2T1B94E6pk84SBBybIYzROPLTwgw0gKTuORWhdT8Vp31cPwsk1mw4yvxlIVHCsFm4wLGrK4+uLmDriukPacvSP+KCq8A9hiH3MpojgtZ7YZbZzY5Qla48W2vx1bZOLHR160=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=NaveenKrishna.Chatradhi@amd.com; 
-Received: from BY5PR12MB4212.namprd12.prod.outlook.com (2603:10b6:a03:202::8)
- by BY5PR12MB3826.namprd12.prod.outlook.com (2603:10b6:a03:1a1::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2921.29; Fri, 24 Apr
- 2020 03:21:24 +0000
-Received: from BY5PR12MB4212.namprd12.prod.outlook.com
- ([fe80::9ce:3ab2:f0ee:47b2]) by BY5PR12MB4212.namprd12.prod.outlook.com
- ([fe80::9ce:3ab2:f0ee:47b2%5]) with mapi id 15.20.2921.030; Fri, 24 Apr 2020
- 03:21:24 +0000
-From:   Naveen Krishna Chatradhi <nchatrad@amd.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     naveenkrishna.ch@gmail.com,
-        Naveen Krishna Chatradhi <nchatrad@amd.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v4 3/3] MAINTAINERS: add entry for AMD energy driver
-Date:   Fri, 24 Apr 2020 08:50:56 +0530
-Message-Id: <20200424032056.16287-3-nchatrad@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200424032056.16287-1-nchatrad@amd.com>
-References: <20200424032056.16287-1-nchatrad@amd.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MA1PR01CA0107.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:1::23) To BY5PR12MB4212.namprd12.prod.outlook.com
- (2603:10b6:a03:202::8)
+        id S1726969AbgDXMWo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 24 Apr 2020 08:22:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51876 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727038AbgDXMWo (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 24 Apr 2020 08:22:44 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C4D542087E;
+        Fri, 24 Apr 2020 12:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587730963;
+        bh=mdQmb9MY40kZXt9reDoHxPqXLcnVg4QMo5kwsMaw1y0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=VLKf6glMWqi6r9dgnSJqpNYdy+13/fZlg0u5mTXM9CVDAJqA77fWvYYns5eKzAJmp
+         0X7VA7YTdK6rByoo78G+5WfvKe2LiB7rUk8SLEq+stU1BeiBjU4fuY4Oci9lmWiG4C
+         DAiz+mo3E/8NPqB+sZZe1De/KjnWkve1zcXaPGr0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ann T Ropea <bedhanger@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 05/38] hwmon: (drivetemp) Use drivetemp's true module name in Kconfig section
+Date:   Fri, 24 Apr 2020 08:22:03 -0400
+Message-Id: <20200424122237.9831-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200424122237.9831-1-sashal@kernel.org>
+References: <20200424122237.9831-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from milan-ETHANOL-X.amd.com (165.204.156.251) by MA1PR01CA0107.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:1::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Fri, 24 Apr 2020 03:21:22 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [165.204.156.251]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: e0a926a6-29ac-460b-c4c7-08d7e7fe9134
-X-MS-TrafficTypeDiagnostic: BY5PR12MB3826:|BY5PR12MB3826:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB3826468DAF4B1EFF3212292FE8D00@BY5PR12MB3826.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1227;
-X-Forefront-PRVS: 03838E948C
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4212.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(4636009)(396003)(376002)(39860400002)(346002)(136003)(366004)(1076003)(6916009)(4326008)(54906003)(2906002)(2616005)(316002)(26005)(8676002)(6666004)(52116002)(478600001)(81156014)(66476007)(186003)(66556008)(7696005)(956004)(5660300002)(36756003)(16526019)(66946007)(4744005)(8936002)(6486002);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: h4Vx2U4xLiR1K3UyHY6ootk+7RyLIlNR/0pC0Bylxo4RPCUNxg2RM9b7dN2cqcrFPbiHpkcy3ho1m1/kxlc5a7LqqUOtKnqzN62DZhpnDMmhLlLPvk625jSl9EwAETNRBiN9jCZwRp9AC4SgtlseWElcKlYrWAecV54Aw9ZuiMn9S4dZxQoTDxe9tRAYRWK5WRTh4/TbOId30oLo4FCQaKi9VQ4vH30tlv/YkSXA95yigxoTnfVUMvCrr7E8ccrtqizt0krZpFb5ARysSxNuOj+i8R5TELC8kt281zUHvsxmyEr7xbh4eyEDRZDglYnvEIxx/+wlKEwtKI5KMGq+6Ap+a4nzSIY+DkoVS1WIL2sDxHPFlJgwbO1DIYpvsLc4yfPXe/QTU9ydrybIW62G4/215WqE7tLPEUPGx1Na+xIYhRdY11KNZrDxutQXOC1r
-X-MS-Exchange-AntiSpam-MessageData: yhdzSmkKY7pF836TFPhtIhRi5QDVa2P2xKKRMdjRql73kSzcr9grOOuWrDettf+PdXMb0oJ+/vLP7T04vHocWFSv8pfL0Xpq5YCBQZ0cw0QPhIZqvwNfr79IbdxkGR5cf9CNqDN+efBUgAaE7tQXxw==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0a926a6-29ac-460b-c4c7-08d7e7fe9134
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2020 03:21:24.4329
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ax7cwJ66ihVfAgonqUVgzFqgOiZEtmms9AcepEBlpXu+kwI/YgpgUv6Gp2nzkMk8LDJqyy5vBVMavJX8kQqmEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB3826
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The kernel driver is part of HWMON subsystem.
+From: Ann T Ropea <bedhanger@gmx.de>
 
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
+[ Upstream commit 6bdf8f3efe867c5893e27431a555e41f54ed7f9a ]
+
+The addition of the support for reading the temperature of ATA drives as
+per commit 5b46903d8bf3 ("hwmon: Driver for disk and solid state drives
+with temperature sensors") lists in the respective Kconfig section the
+name of the module to be optionally built as "satatemp".
+
+However, building the kernel modules with "CONFIG_SENSORS_DRIVETEMP=m",
+does not generate a file named "satatemp.ko".
+
+Instead, the rest of the original commit uses the term "drivetemp" and
+a file named "drivetemp.ko" ends up in the kernel's modules directory.
+This file has the right ingredients:
+
+	$ strings /path/to/drivetemp.ko | grep ^description
+	description=Hard drive temperature monitor
+
+and modprobing it produces the expected result:
+
+	# drivetemp is not loaded
+	$ sensors -u drivetemp-scsi-4-0
+	Specified sensor(s) not found!
+	$ sudo modprobe drivetemp
+	$ sensors -u drivetemp-scsi-4-0
+	drivetemp-scsi-4-0
+	Adapter: SCSI adapter
+	temp1:
+	  temp1_input: 35.000
+	  temp1_max: 60.000
+	  temp1_min: 0.000
+	  temp1_crit: 70.000
+	  temp1_lcrit: -40.000
+	  temp1_lowest: 20.000
+	  temp1_highest: 36.000
+
+Fix Kconfig by referring to the true name of the module.
+
+Fixes: 5b46903d8bf3 ("hwmon: Driver for disk and solid state drives with temperature sensors")
+Signed-off-by: Ann T Ropea <bedhanger@gmx.de>
+Link: https://lore.kernel.org/r/20200406235521.185309-1-bedhanger@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v4:
-None
+ drivers/hwmon/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c1175fc0aadb..112ffd7742aa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -842,6 +842,13 @@ S:	Supported
- T:	git git://people.freedesktop.org/~agd5f/linux
- F:	drivers/gpu/drm/amd/display/
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 47ac20aee06fc..4c1c61aa4b82e 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -403,7 +403,7 @@ config SENSORS_DRIVETEMP
+ 	  hard disk drives.
  
-+AMD ENERGY DRIVER
-+M:	Naveen Krishna Chatradhi <nchatrad@amd.com>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/amd_energy.rst
-+F:	drivers/hwmon/amd_energy.c
-+
- AMD FAM15H PROCESSOR POWER MONITORING DRIVER
- M:	Huang Rui <ray.huang@amd.com>
- L:	linux-hwmon@vger.kernel.org
+ 	  This driver can also be built as a module. If so, the module
+-	  will be called satatemp.
++	  will be called drivetemp.
+ 
+ config SENSORS_DS620
+ 	tristate "Dallas Semiconductor DS620"
 -- 
-2.17.1
+2.20.1
 
