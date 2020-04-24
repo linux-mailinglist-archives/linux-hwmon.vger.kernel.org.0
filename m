@@ -2,38 +2,38 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4F371B7521
-	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Apr 2020 14:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE2A1B74E3
+	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Apr 2020 14:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727784AbgDXMbL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 24 Apr 2020 08:31:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53098 "EHLO mail.kernel.org"
+        id S1728193AbgDXMXz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 24 Apr 2020 08:23:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54106 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727944AbgDXMXV (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 24 Apr 2020 08:23:21 -0400
+        id S1728190AbgDXMXy (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 24 Apr 2020 08:23:54 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 881852087E;
-        Fri, 24 Apr 2020 12:23:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E760820706;
+        Fri, 24 Apr 2020 12:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587731001;
+        s=default; t=1587731033;
         bh=PtDDryNXCt/9ihdYD2ZXT+uVLrhInNakO1Houm02HMs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=15hz3TXrSVCI1xdp6a43GdWQjJ2F+dww1c3LxXd7OFtlhm31mchGBny6EaqkT4J3j
-         swFUcOj8k78h/ysIOCEXJ4dWZTbhDFCpjEh6N2DurS0VpNT2CsezANMG+eYzKF1yyx
-         vnvveCpqvz7ETj4RFA+KubeiIx7G4H5mrS5RINcA=
+        b=ze+jnc3sIU0XgPHPoBdXPizwyYz67A1Fz1jz/d5DGaGqVXD6ZYlytEicbuH93Dvl2
+         w8+w5/XgW9ZDVJtBSX3NhJ4qs/+l7HHrqvKD5FBbAIhNhEaMfCVV+P/og2VMGMVjfl
+         MPZ4blyeQuy9VA3J2znI9IM9F+nSmV4ALomlb74E=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 38/38] hwmon: (jc42) Fix name to have no illegal characters
-Date:   Fri, 24 Apr 2020 08:22:36 -0400
-Message-Id: <20200424122237.9831-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 26/26] hwmon: (jc42) Fix name to have no illegal characters
+Date:   Fri, 24 Apr 2020 08:23:23 -0400
+Message-Id: <20200424122323.10194-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200424122237.9831-1-sashal@kernel.org>
-References: <20200424122237.9831-1-sashal@kernel.org>
+In-Reply-To: <20200424122323.10194-1-sashal@kernel.org>
+References: <20200424122323.10194-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
