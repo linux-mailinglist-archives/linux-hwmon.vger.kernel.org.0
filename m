@@ -2,54 +2,54 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3071C4B34
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 May 2020 02:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CA081C4B35
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 May 2020 03:00:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbgEEA72 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 4 May 2020 20:59:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37752 "EHLO
+        id S1727093AbgEEBAA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 4 May 2020 21:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726531AbgEEA70 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 May 2020 20:59:26 -0400
-Received: from mail-qk1-x74a.google.com (mail-qk1-x74a.google.com [IPv6:2607:f8b0:4864:20::74a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE63FC061A0F
-        for <linux-hwmon@vger.kernel.org>; Mon,  4 May 2020 17:59:24 -0700 (PDT)
-Received: by mail-qk1-x74a.google.com with SMTP id l4so598316qke.2
-        for <linux-hwmon@vger.kernel.org>; Mon, 04 May 2020 17:59:24 -0700 (PDT)
+        with ESMTP id S1726641AbgEEBAA (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 May 2020 21:00:00 -0400
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5261C061A0F
+        for <linux-hwmon@vger.kernel.org>; Mon,  4 May 2020 17:59:58 -0700 (PDT)
+Received: by mail-qt1-x849.google.com with SMTP id x24so5471qta.4
+        for <linux-hwmon@vger.kernel.org>; Mon, 04 May 2020 17:59:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
         bh=ZRc01jWZxTETX7I9TZ563+3JwSY2Ac8QdsDwbh/L0Go=;
-        b=snD9oeKiHuRErrbgdP/5qJJB2DzwZKY9GOsLiTDuv7xWC9BAIjvv58gef4/rUgVUcE
-         PppVbK33THuYWCtRXz5EHTeD2IT5NbPrMIhC6PFpi+hICfuBz26vw1O1+R9CpwwsyRGc
-         U+x8uC9MJFY3Y6CHZ0bV8gwpulIX96opi96yZN+SWw1kNWYU5/Lp5yUN4i7UbFeF/4jv
-         PLd7yin/dDXLTgY9bHFsdvyJNyO4BklUvgkMoEEmS4tb7AcJTdi0G8hj/58jRedCVIKn
-         gY0DS2P6L6ELGXmM+93kyiu/H7YpLdfLj25Vpa8ZYoU9qv89boXz3tpU1aZ13nKpJVBa
-         IGCg==
+        b=TT5ZLgRJe0IWb7adTrB3H6KTSQ94rgU8nLAGl5jhfcK00g2IuKN/jYwF9KO8cZKxu+
+         kYhxaY43iNvfyvIO5IDqqUtzJjNVStMIzg/GAkgZeHn/q3ChDo/4ASeVZGcwnC06n8xD
+         YvRllww+Lc4uBEzejMtH8Vd3CNcRqsVJY71F9GiRqOSfyDvdE3Z1IyrUTmkO8mlwFhhM
+         /WOZMBqAib9AVayJWXNMEHxPS2hK4oNWMlzO/SoQGZh3lRmc5Bk1phdneLhf024ro0g1
+         71UTNxyNdoq5pyfm9a8ICPGh48BeoolvyxpJEkCQCp2ibcX/+qCx6KE9n+FVRFukCo+o
+         w7yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
         bh=ZRc01jWZxTETX7I9TZ563+3JwSY2Ac8QdsDwbh/L0Go=;
-        b=KQvn0PfS20Hwhsj28E0yjsJLlkXLIs6DYMXcPzE+FUsjQnaKPF4zSlUfXHGiIbM4Fu
-         k/gqXm0zy4q+pd/XTiX3ZlCvt99XL9g0tkemrjGF3wbmk7DOSMy3VasIzm/wND4RV5Qw
-         7pGlSDFXHlMZRlm/Aw0cO7Nh7C9Up1R96Vn87FlbWQ84gUHdphrGb65FAcyCIQ+N/TO+
-         SoKWmze7EHlSsYg/hYpC7D7ZhdkX4MVs0o/T09KDpMAhAuxKm5/fjfsb1ADONCz/b0wv
-         40l1BC5vUmnZaPhfAGWpDH4XR9qDgvOxdB2wvvroScD2uYonZU1ZGXWPQl2YlsTJobkX
-         PvCw==
-X-Gm-Message-State: AGi0PuZzYSe0eaeEbfq4JVbRIXBayXyivlQwMA9h5jYVuepOjMwBg/Ry
-        vJdVDfYruKdAViEXGKpZPqmbFs4v
-X-Google-Smtp-Source: APiQypIv5cc3hIntaT4rrXzm4xlEt8w4Qo/zWZGpI/ylEZsrT2+mDdyCC9mQmVCEGmirjGRPDicVudPd
-X-Received: by 2002:ad4:4e84:: with SMTP id dy4mr358228qvb.139.1588640364128;
- Mon, 04 May 2020 17:59:24 -0700 (PDT)
-Date:   Mon,  4 May 2020 17:59:04 -0700
+        b=UyRA+wGTswKJ0EhCKDi36WHMZpRR/Ax+NHdV2mbwRLerwb0u0tszb31PZGaSnGYNUK
+         Bal9dC9N0QqWgY+o/zqnORINzC2XWoP+Uo1SMFGwceMXzLQJs/aWiWqAgh5DzzoU/Zgt
+         nyFJv41p33i0JEenP9QeOc98v9tTm1OcV0425r15P0621VTsriU7xY8NZUbyMnl9mgXK
+         OVHYXG5/T5ahwmMelDK7vNs0027kpXxbYDstRi1tFxf7Zyl3pcPQzrirBudQ8XS6mA87
+         3bm8qJFlTO0BtY5nBP7ZKgWMZIaGsxgpnus0CtKbWoz53JJi0CLvBQVRyzRSSqTkTuA6
+         IVlQ==
+X-Gm-Message-State: AGi0PuYwaQdG4zx0t/j6ha57sG4Kov1EiQ1OEclbA8hgux3zv+pkOc4U
+        EKkqPalHXOoUitxYIFGi8DuOvxHT
+X-Google-Smtp-Source: APiQypJb6tNxVMvi+wPK4pQgdeBaimLuT330+AhVGn2zNQADUExkOyU0SaYXMTV4EBTkG++c3hBOUPSP
+X-Received: by 2002:a05:6214:1402:: with SMTP id n2mr406085qvx.104.1588640397829;
+ Mon, 04 May 2020 17:59:57 -0700 (PDT)
+Date:   Mon,  4 May 2020 17:59:44 -0700
 In-Reply-To: <20200504235428.GA122247@roeck-us.net>
-Message-Id: <20200505005904.227491-1-xqiu@google.com>
+Message-Id: <20200505005945.228561-1-xqiu@google.com>
 Mime-Version: 1.0
 References: <20200504235428.GA122247@roeck-us.net>
 X-Mailer: git-send-email 2.26.2.526.g744177e7f7-goog
-Subject: 
+Subject: [PATCH v2] hwmon: (ina2xx) Implement alert functions
 From:   Alex Qiu <xqiu@google.com>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org
