@@ -2,64 +2,105 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 246071C8ADB
-	for <lists+linux-hwmon@lfdr.de>; Thu,  7 May 2020 14:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E86F01C981B
+	for <lists+linux-hwmon@lfdr.de>; Thu,  7 May 2020 19:44:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbgEGMdz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 7 May 2020 08:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59348 "EHLO
+        id S1726467AbgEGRoM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 7 May 2020 13:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726736AbgEGMdy (ORCPT
+        by vger.kernel.org with ESMTP id S1726393AbgEGRoL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 7 May 2020 08:33:54 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FCA6C05BD0A
-        for <linux-hwmon@vger.kernel.org>; Thu,  7 May 2020 05:33:54 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id y19so2498113qvv.4
-        for <linux-hwmon@vger.kernel.org>; Thu, 07 May 2020 05:33:54 -0700 (PDT)
+        Thu, 7 May 2020 13:44:11 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD00FC05BD43
+        for <linux-hwmon@vger.kernel.org>; Thu,  7 May 2020 10:44:11 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id t11so3137617pgg.2
+        for <linux-hwmon@vger.kernel.org>; Thu, 07 May 2020 10:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=2g85G5ybwBY9F8qs92fdTgNM3lOP1yok0XGVaoE6J+k=;
-        b=rVheal11Tr2vCpMlj+L+fGl+I5zYmR74GjRa3Hib+BHV9eAvjPUtNARXalEEn6otSP
-         GvAok1/oRnqLEi0rFCfbRePxhPDMJKCRX5SqRPqKPCKTJxPv9ey7GXxc+ikKce/vOy1T
-         lAVCF/DNOJPmKQoqsgbBQjLXYqQ6yZkNG0FR3x62c1bUpBynYau0sUxMPh+8SBpkzlQ0
-         N022zxxttJy8vR2diR7HMhVJijMBDBrYxfu2UpQpupzv/igqe9OTfSYprMW/DWmRo3l2
-         6S9OBD4j7m6A8LO5WIuOx5Y3zHb9xp7LrObzV2oEBZ5AG0V4dSpYF59g1jPxkNs8BGZI
-         lVQQ==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=6+lthxw1RcC6O9714Ly8gtNuZI1rivcqg7mcqA94vPM=;
+        b=XFwcqLroivgc4Bter9SF1NkmmDAfxV1CxqFlun5dlcAFS/DULGCQ2vKX9oAlXsxXfW
+         QIrIXa63lmGCbaGJfaG4rT0VbMSLStLB9hA8XOj5LFUqKS6R0642xAJpnCodIJ87wBu/
+         3ng/v+0KXuFsk2nR2GeIwgH1pDCFwDkhpD3XXE30+9Z3o4icaIc/MZEkyj1qbNm4GBbO
+         dVPAwFMLBC5ktkfx4IxgF6lJ/7aRmQbDC8Swj8Fdzy5G/xB0kIqNEgzZHP1PKp59C6lo
+         aDoTqdFDYihjNPoMWVLcH/jFJ3FZoH+fiAOAckGFCHRwwfFfdodRWeF5l+1Q/dcOY97/
+         tcmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=2g85G5ybwBY9F8qs92fdTgNM3lOP1yok0XGVaoE6J+k=;
-        b=J7hM2lv2cNHibQ6H0YpRIYCnr1sru9ZHMdJJFWZZJoxpxE2dCVroy193msVHb71Kfl
-         SVKyCX7Fo8xcXyAYGCqZXZdkKQ64Vy8TYk7TRU7I5YUesfEtmaC7ZCXCrQOHm6i5+/df
-         JHQMx2TQv6FmUlu693AKWaxwI4+6KG0Md2n7qkh15KKDZcMkilG/tGLfkmQ9e+7EJS12
-         LP4+D+jSOfxye5AlSdwdVtjSCSfwd7AIy0o2pzalUQgDPQ9QeNrpAAAwcZQT0Dz0NW43
-         YJOyd0o+2/Nm/kYelMYrjCH30AOxtdG5KYI+6m38Lc6xMwwF/euW5xB33/WxtmgBO/GN
-         v4Kg==
-X-Gm-Message-State: AGi0PuYr9Co26Az1Mle7Mlp5XrsjhaEkAmRPB8+dwjO00b0mAroc3kOo
-        YABBeccoKfUyOZ2byT5xwC/0htebOC9/rjqBO5k=
-X-Google-Smtp-Source: APiQypKDUt4YBlqN321fIghuGillMzVdeSkKnMS8ol4XuSLr9Su6fWV88rZrIOam/O0KjwVQmcU1uXkgwG+mAbs6zbQ=
-X-Received: by 2002:a05:6214:9ce:: with SMTP id dp14mr13306160qvb.142.1588854833589;
- Thu, 07 May 2020 05:33:53 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a0c:e98a:0:0:0:0:0 with HTTP; Thu, 7 May 2020 05:33:53 -0700 (PDT)
-Reply-To: mf.barbrafred@gmail.com
-From:   BarbraAfiFred BENSON <barbraafifred@gmail.com>
-Date:   Thu, 7 May 2020 12:33:53 +0000
-Message-ID: <CAB9FVvuVF=SDOQmMuZJwghnOvkHCKwD_jJZdn00Yg5kUWfD96A@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=6+lthxw1RcC6O9714Ly8gtNuZI1rivcqg7mcqA94vPM=;
+        b=aDySMbNiNouVK7RvArO7JrhiqA7Ek+ZiLSDsxY/znEfES+t9XjV/CEY2k+5Xewkjlk
+         445Wcnxqw1pJz6YieKh1ppQ7PB9mHjygjxsE26jsGo8PZzC8Oy1X9gjecdsekCg59WtD
+         ZlzcGTnI8KJ+Qj+DmqD2I6stLjfeo3An45eTwNbDJ4zKxD7u5L1kl5XfoUxFFmB44/Wv
+         SxadYCKUWbPfDRr7zUoF8zuL55m0pp3W1WAe9H2AZbP0DAQU3sL25IF6T+sfIyrfhoAy
+         pyZ3ioztuUV9KOIvmnnsunOpUWBg+BsH5/s/tbg2rskwRNKycRb/i5zVXtRyT9Y60SXm
+         JQug==
+X-Gm-Message-State: AGi0PuZCgEATKaUcyrefnku4wlCbxK/8bU7GD3BnSOe2IqVZHcmPy3xb
+        va8mcgYY5V6ijZSWbC49BoZmiCSn
+X-Google-Smtp-Source: APiQypKveulk8Wi3napClfHoR6KRkwl5dj9nrvrvWfC9tiDSCzV6bxFG7j7QMBkyfJw31DN4lI94zg==
+X-Received: by 2002:a62:1a0d:: with SMTP id a13mr14554261pfa.229.1588873450929;
+        Thu, 07 May 2020 10:44:10 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 10sm5430631pfn.204.2020.05.07.10.44.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 07 May 2020 10:44:10 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, Alex Qiu <xqiu@google.com>
+Subject: [PATCH] hwmon: (pmbus) Improve initialization of 'currpage' and 'currphase'
+Date:   Thu,  7 May 2020 10:44:07 -0700
+Message-Id: <20200507174407.36576-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Good day to you,  this is the second times which I am sending this
-same message to you , I have good news for you but I will like us to
-know each other a little  first of all before I will tell you all
-about the good news which I have to share with you,
-With love from.
-Barbra
+The 'currpage' and 'currphase' variables in struct pmbus_data are used by
+the PMBus core to determine if the phase or page value has changed. Both
+are initialized with values which are never expected to be set in the code
+to ensure that the first page/phase write operation is actually performed.
+
+This is not well explained and occasionally causes confusion. Change the
+type of both variables to s16 and initialize with -1 to ensure that the
+initial value never matches a requested value, and clarify that this
+value means "unknown/unset".
+
+Cc: Alex Qiu <xqiu@google.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 8d321bf7d15b..a420877ba533 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -109,8 +109,8 @@ struct pmbus_data {
+ 	bool has_status_word;		/* device uses STATUS_WORD register */
+ 	int (*read_status)(struct i2c_client *client, int page);
+ 
+-	u8 currpage;
+-	u8 currphase;	/* current phase, 0xff for all */
++	s16 currpage;	/* current page, -1 for unknown/unset */
++	s16 currphase;	/* current phase, 0xff for all, -1 for unknown/unset */
+ };
+ 
+ struct pmbus_debugfs_entry {
+@@ -2529,8 +2529,8 @@ int pmbus_do_probe(struct i2c_client *client, const struct i2c_device_id *id,
+ 	if (pdata)
+ 		data->flags = pdata->flags;
+ 	data->info = info;
+-	data->currpage = 0xff;
+-	data->currphase = 0xfe;
++	data->currpage = -1;
++	data->currphase = -1;
+ 
+ 	ret = pmbus_init_common(client, data, info);
+ 	if (ret < 0)
+-- 
+2.17.1
+
