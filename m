@@ -2,80 +2,85 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC111CB12A
-	for <lists+linux-hwmon@lfdr.de>; Fri,  8 May 2020 15:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 704D81CC484
+	for <lists+linux-hwmon@lfdr.de>; Sat,  9 May 2020 22:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728162AbgEHNz0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 8 May 2020 09:55:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42562 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727841AbgEHNz0 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 8 May 2020 09:55:26 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B32C05BD09
-        for <linux-hwmon@vger.kernel.org>; Fri,  8 May 2020 06:55:25 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id e8so1455514ilm.7
-        for <linux-hwmon@vger.kernel.org>; Fri, 08 May 2020 06:55:25 -0700 (PDT)
+        id S1727834AbgEIUUg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 9 May 2020 16:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725960AbgEIUUg (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 9 May 2020 16:20:36 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61BF5C061A0C
+        for <linux-hwmon@vger.kernel.org>; Sat,  9 May 2020 13:20:36 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id p25so2740401pfn.11
+        for <linux-hwmon@vger.kernel.org>; Sat, 09 May 2020 13:20:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Y9qeYS77awcXKXnbUv+cj5nzUb83V6esqPketlEQr3o=;
-        b=sXt08uyT0I7OOE76XwRQpSo71S7RU2x+zvSjiWcvSy3ZHWw6WMIHRVuJyA0UqImiOd
-         S+vk3I02j72c/nYJa39Bj8YQ8W0L579RNM/R6QT2qfM1Y0j+O2mKKaUA5krL+CbiDZQB
-         H+tshRXO97pXb9hndAK3VXT2B5g5iKRQvbAB9lHdm9h9s93yRR9QnCeplRucZt3/a3cL
-         MWIrkwyb5oMnaRrjGZSKjnGQBlHZ9/kEacbkPKNUWB24JsxFD1b9W4QB3ci6wYgbVjT7
-         mI7Z8FpDnmqo2Ym3ovl3yVCEwPPvrVXA83RgiaTO8RNF1Vn3aTdbO2V6YZBXgF1h0Yuk
-         SJPQ==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=2Fvz5LV+bnOvF+wHDBzQk+opaej/1gtelj+GALj08JU=;
+        b=t/n8eC9s5syk9Gh14ssdQ/vzkZr6fyaX1CVebwBUDkQqVe45lgPdkA4AXvVrzCNMUk
+         0LSZdqBiY0/1DzqtOf7PDFvZpFaXmUrPwNXRLo2/wp5epCcwuZaqaadhc41hEYuGx6mI
+         Z6Nqk17uMnlYWjwl10EVR0Pn+KPhXBy2lMzKDOkM+trFgJHvdi70IxDj9FiGGUlAGGS4
+         YDAOZhvvCAQD9rgr0spLPBMOOvaq8Lpme/Ve1Rkd8GeWNF5JXy+6F0d8JYkoYuyYsNMl
+         X5nfgLHUikEp5XkElMd09QnPaxxQ2KT1xZ5B63VGngLjgbQmS/Z29Ufh0wqQThoFwVdn
+         NS4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Y9qeYS77awcXKXnbUv+cj5nzUb83V6esqPketlEQr3o=;
-        b=B02Ttc1XmaDN9oviy7kWYhsI/xchza62lkgvYe/8cbc8azaUKlLwYg1L29Z6pDBtdm
-         h4chlmEAbvRAz4QV0DxVPfq+paKASKOBVJCMJ2QiJ7FVbG7eYuK5MvIaOqQS9LwaroCy
-         CQ3AFOOPXcr+U5NuKODtvoT3DGAi/5jS9dOhWkS/gVoM2CGJPF5OpLx3PwlTU4YsVYQE
-         eKazWAbV53gQa27gtmnyWO2wF2opkxcPgXV1AlmuYwjgi3pUuvwRWdNplSfcq/QFUrQI
-         KOHbb8c1LWfaPNeb1mISiMNHwSt0+RDK0pdkvWBkm0aMHDlYUgM+mDMLv2dIArSnZUm0
-         K3lQ==
-X-Gm-Message-State: AGi0Pua5LfIwVLylzvsuzED0SU+WzkTpZvBammKW6UbwyUN7lqGe30QV
-        QhdTBfJzbwEAfG+iGNn+qR/5xcF2IpKKEyGshWg=
-X-Google-Smtp-Source: APiQypLA0PBCeIi7MeAytiLgMr9Sxt7Rm5LezsdvDtbqscEuycqh8SzIt9+ta8lrWeRAUcnjpffh8jH9ZZeTRCxHn9Y=
-X-Received: by 2002:a92:d443:: with SMTP id r3mr2945687ilm.293.1588946124318;
- Fri, 08 May 2020 06:55:24 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a02:1783:0:0:0:0:0 with HTTP; Fri, 8 May 2020 06:55:23 -0700 (PDT)
-Reply-To: mrsannabruun111@gmail.com
-From:   "Mrs. Anna H. Bruun " <mrs.kishmichael18@gmail.com>
-Date:   Fri, 8 May 2020 13:55:23 +0000
-Message-ID: <CAKWzOLzMK08ieQ=kyiT-pVdpq=fLyh70gQEo8bM58_2+mcT9SA@mail.gmail.com>
-Subject: GOOD DAY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=2Fvz5LV+bnOvF+wHDBzQk+opaej/1gtelj+GALj08JU=;
+        b=Ft/HtfJIH2YVB+MsARTXMK6zEfoAwI2qcE4tQul/L6zU9tAQpUkCsX2j0gYz+1g+s+
+         cCZoJIm9YT/z1C+aCV5dYwiWDoqlG1b/qOXzOkm+/KdBpgDP956nAUgdTpF7v8VD9QZA
+         23AVeYBTYqpWX4w2HmJMlasToSDQkhS+6NjiJNkwxvcvwsXew8zXZXQFxEH92FDPkIth
+         kyLYt2Q5z/QjXxlQC6rkDzS36mwoybi0vXvq8x2g9ke4lmaJYS6y4xhIC/F49scHGgNu
+         eC1GyWseN2SniqdQ6FJRJwIT5BCcE2i9icdjGNvzT9ABlrWRm8uspwmqAj1bYR+QoHCE
+         /hSg==
+X-Gm-Message-State: AGi0PuZm0ZJFuhwfkUgQ+jsVHHaDzzw1EYUQQOwtnGj94MPFiRTBGgnC
+        E5/HXX/AzzQ4e9S0MPfpWdlDvwOk
+X-Google-Smtp-Source: APiQypLcJw2nT7IWC4HO479DnFC0fpvZ26MHFKnCCxUMhA+wLBK1K63M2Zh4y/oMqe03jKNqathopw==
+X-Received: by 2002:a63:a043:: with SMTP id u3mr7478999pgn.287.1589055635823;
+        Sat, 09 May 2020 13:20:35 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p64sm5660137pjp.7.2020.05.09.13.20.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 09 May 2020 13:20:35 -0700 (PDT)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] hwmon: (drivetemp) Fix SCT support if SCT data tables are not supported
+Date:   Sat,  9 May 2020 13:20:32 -0700
+Message-Id: <20200509202032.202455-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello Dear,
+If SCT is supported but SCT data tables are not, the driver unnecessarily
+tries to fall back to SMART. Use SCT without data tables instead in this
+situation.
 
-Am Mrs. Anna H. Bruun I know that this message will be a surprise to
-you. Firstly, I am married to Mr. Patrick Bruun, A gold merchant who
-owns a small gold mine in Burkina Faso; He died of Cardiovascular
-Disease in mid-March 2011. During his lifetime, he deposited the sum
-of Eight million, Five hundred thousand Euros. in a bank in
-Ouagadougou the capital city of Burkina Faso in West Africa. The
-deposited money was from the sale of the shares, death benefits
-payment and entitlements of my deceased husband by his company.
+Fixes: 5b46903d8bf3 ("hwmon: Driver for disk and solid state drives with temperature sensors")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/drivetemp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I am sending this message to you praying that it will reach you in
-good health since I am not in good health condition in which I sleep
-every night without knowing if I may be alive to see the next day. I
-am suffering from long time cancer and presently I am partially
-suffering from a stroke illness which has become almost impossible for
-me to move around. I need your urgent answer to know if you will be
-able to execute this project, and I will give you more information on
-how the fund will be transferred to your bank account.
+diff --git a/drivers/hwmon/drivetemp.c b/drivers/hwmon/drivetemp.c
+index 9179460c2d9d..0d4f3d97ffc6 100644
+--- a/drivers/hwmon/drivetemp.c
++++ b/drivers/hwmon/drivetemp.c
+@@ -346,7 +346,7 @@ static int drivetemp_identify_sata(struct drivetemp_data *st)
+ 	st->have_temp_highest = temp_is_valid(buf[SCT_STATUS_TEMP_HIGHEST]);
+ 
+ 	if (!have_sct_data_table)
+-		goto skip_sct;
++		goto skip_sct_data;
+ 
+ 	/* Request and read temperature history table */
+ 	memset(buf, '\0', sizeof(st->smartdata));
+-- 
+2.17.1
 
-Thanks
-Mrs. Anna H.
