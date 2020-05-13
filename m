@@ -2,276 +2,113 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0CC1D1608
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2020 15:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2831D18CC
+	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2020 17:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387904AbgEMNl4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 13 May 2020 09:41:56 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:34801 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727792AbgEMNl4 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 13 May 2020 09:41:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1589377315; x=1620913315;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lw1dDpuogFHf2FXc0xqaRt0YHXMCAsmOeJxn562Quvk=;
-  b=jXs7M1Rgn2fmcuNFTr4KSh5Yu1EFdexNS16vELgi/+8WXHNZTl6d6DvP
-   8LCfB61PwBZvwv1VJMes5VGD1o6HcKSHbrPQnI16ktPPVhidyDvyrELkT
-   ERBHpu7g+HCAaPTZweh9TlS+EdKcs9ZO7IgZJwdIllvQZiM6jf4kH37K/
-   OqNCSe4voGqJSaCVjfDvlAyWG0nAU95UZm3zHgnblk2nrHnsHg4MRvSD7
-   zqrhByEs5OWAbdPo3THB7s5WV7c5M9Wtwcq6UOF6CJ9sBG4Db53ZAyb4h
-   hg9CKfp93TCviSei55eI5HYnQXA+DD4MyvI1Ru2jVFNDbGpjy+gmdYTPJ
-   w==;
-IronPort-SDR: yV4k+9QFy+k3Ts5oaxqE0ZeJXVWPqYeCqITv4qiO/sKLQjDV8C8FekeimAIb7pq/UgsNARE/+w
- jAj/8HpzRQeQgEfCD4QPCzOu7xodxTNBWCIfvahTdonlIEUqlLVpE+diJcTwsWVLqrmEMnREWi
- 0yxD4+DXHLSeN7elWznfDOYzmv8arizYyTYgOcTd2fo7NDebHYoFO6WAB/LFD6kKaYfFSM4siS
- iECgI32e8fN7RoDQ1dnfW3ZZajEEZ96J1bpvRmt/qTraaumP41LpgLST9ci9zPJUYB8ufOCAvi
- oFo=
-X-IronPort-AV: E=Sophos;i="5.73,387,1583218800"; 
-   d="scan'208";a="76504510"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 May 2020 06:41:55 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 13 May 2020 06:41:55 -0700
-Received: from soft-dev15.microsemi.net (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.1713.5 via Frontend Transport; Wed, 13 May 2020 06:41:55 -0700
-From:   Lars Povlsen <lars.povlsen@microchip.com>
-To:     Guenter Roeck <linux@roeck-us.net>, SoC Team <soc@kernel.org>
-CC:     Lars Povlsen <lars.povlsen@microchip.com>,
+        id S1728742AbgEMPKi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 13 May 2020 11:10:38 -0400
+Received: from mail-bn8nam12on2065.outbound.protection.outlook.com ([40.107.237.65]:6214
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727778AbgEMPKh (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 13 May 2020 11:10:37 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oBhVM4LBtxgz9BbvhKegp21wDubsPdjfXu5991sEIYNgwQAPZgJrRtPO4ejp0fE8QzFsVEDNeSB9W+l/2ZNE12dehU0I8msPOpv0ka22xVnGE0prBPmDKLnBrBXbjxYrnV6h7AUa7WtJe9OOhLt/wtGij7TM7MVC+W7BjlrDntonvF2XcC06qgIVIqJEfro9a41ohLOQFRlD6yTk377N4HauvHAydug1QXZ3OPpyA/kLrp8d8HfNMwIC6DWRNeItbo/eM7doY54pUmXp8adizPDyBs9yCF+3z/jCMgSQP+u3jk/rKgl0iJyHuuV1d76ixmo50bBT1LvWxh+2om1YTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h3zjfUighGDyaqVMfmgLCv8MTKS3Bl1r/VH72/cdp+c=;
+ b=HAN0rSb5fmdmkOiI2kFk9R2tFSyLibdqKxriK+VG8VvZpV6PY4IqeseJSqu6Bcs1Egr6LSpkR52miC4XdqQ9CdpiUZDvT9Lb2p5eIjrfJb2eA4kAeER0LOZ36PyEBCR78DnhUw55YM0/d2n7szdk+OxniJuvNmdgwtz5cbEycT6JH39n0WAQHC+M3r1j8OgHOi3fbJP8HwIzNlzwt33TuSQsVZZdCYEQ8QmfUDCuRCxGFsrmGxpTkGRqGDlTSjb1UAHdJh8eMgU0Y1EX2OYlTQFbd7NDOKl27XytATzbzTUgEIyWmIITKYp/YTcVH4Z/iSPawsKdGgYXDcs8VTs/lw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h3zjfUighGDyaqVMfmgLCv8MTKS3Bl1r/VH72/cdp+c=;
+ b=0N5b9urI1b0JsUx+H+svm3cs7mPOpzsung5ZXTi+HWwrwTWHJKvAVm6X49oYnmURHXEnYGf6ts3UW3UgJhN7cnkcw8Oh8eKpxQm8sfAwGsx63ycNQs8e8tNVRbgRrPHUFDxAmUQOhw6zaatgigFGunTHATOutUdk39iuUwtzORI=
+Authentication-Results: ispras.ru; dkim=none (message not signed)
+ header.d=none;ispras.ru; dmarc=none action=none header.from=amd.com;
+Received: from BN6PR12MB1218.namprd12.prod.outlook.com (2603:10b6:404:1b::7)
+ by BN6PR12MB1393.namprd12.prod.outlook.com (2603:10b6:404:18::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.34; Wed, 13 May
+ 2020 15:10:33 +0000
+Received: from BN6PR12MB1218.namprd12.prod.outlook.com
+ ([fe80::b021:d7f2:52aa:1fc]) by BN6PR12MB1218.namprd12.prod.outlook.com
+ ([fe80::b021:d7f2:52aa:1fc%8]) with mapi id 15.20.2979.033; Wed, 13 May 2020
+ 15:10:33 +0000
+Date:   Wed, 13 May 2020 10:10:25 -0500
+From:   Yazen Ghannam <yazen.ghannam@amd.com>
+To:     Alexander Monakov <amonakov@ispras.ru>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Brian Woods <brian.woods@amd.com>,
+        Clemens Ladisch <clemens@ladisch.de>,
         Jean Delvare <jdelvare@suse.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 3/3] hwmon: sparx5: Add Sparx5 SoC temperature driver
-Date:   Wed, 13 May 2020 15:41:40 +0200
-Message-ID: <20200513134140.25357-4-lars.povlsen@microchip.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200513134140.25357-1-lars.povlsen@microchip.com>
-References: <20200513134140.25357-1-lars.povlsen@microchip.com>
+        Guenter Roeck <linux@roeck-us.net>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>
+Subject: Re: [PATCH 1/3] x86/amd_nb: add AMD family 17h model 60h PCI IDs
+Message-ID: <20200513151025.GA3283032@yaz-nikka.amd.com>
+References: <20200510204842.2603-1-amonakov@ispras.ru>
+ <20200510204842.2603-2-amonakov@ispras.ru>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200510204842.2603-2-amonakov@ispras.ru>
+X-ClientProxiedBy: DM5PR21CA0026.namprd21.prod.outlook.com
+ (2603:10b6:3:ed::12) To BN6PR12MB1218.namprd12.prod.outlook.com
+ (2603:10b6:404:1b::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from yaz-nikka.amd.com (165.204.78.1) by DM5PR21CA0026.namprd21.prod.outlook.com (2603:10b6:3:ed::12) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.5 via Frontend Transport; Wed, 13 May 2020 15:10:32 +0000
+X-Originating-IP: [165.204.78.1]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 10749e55-6dc4-474d-aa97-08d7f74fc88f
+X-MS-TrafficTypeDiagnostic: BN6PR12MB1393:|BN6PR12MB1393:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BN6PR12MB1393E3F60259623C33307C7EF8BF0@BN6PR12MB1393.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-Forefront-PRVS: 0402872DA1
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8smOx9my65ZX8xsdDQRTeiKyhvuG6oj6T0WEdbOLX4iScleRBnmPcANDKlXf12TfmWBLq29W+OdOWk7qo14XrVqzLEjsbpciBlWHQE4brRL90JJ1iTJPsTiq6PJt+Zw44R31yviN+/pgYPFzQYaVUP9L3+aYmSbAgg5q97Fd4b4WEWAPdC0+5uXky5KuZDZO/jaqO5kW16w3kCs6zE8Qd36cRCmX8XVabPIoomSzkTvjThAJYGBOoh0wSDrXX501lDplyoeWoiz+LBqkEkKx+vuPRuZGD1VeAuCnJhnpKjMYd9xsWe8Q/Xzd4VQYHSd8cD6lMDU1oD0abr3YOGDh82j3hVQd94ksWMauDqu73TsWbeSEjCfmJS16b/WprOXuciw/V+YhQGQ5N4QwJtyD1GIqnrGEyea6aN+xMK7y74zhMegsz6OoeDBr8leiv50WPESj1R5Fpuu06H8dZNiSMCRxQclBaTYlshzCWX8ELwOHWKUpsexwmwrcnjlMku+qXGt7D7Ff7es5+9zEJXUMVg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR12MB1218.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(376002)(346002)(136003)(396003)(366004)(33430700001)(52116002)(66556008)(33656002)(44832011)(8676002)(5660300002)(16526019)(26005)(2906002)(4744005)(186003)(55016002)(1076003)(7696005)(86362001)(478600001)(66946007)(6666004)(66476007)(8936002)(4326008)(33440700001)(316002)(6916009)(7416002)(54906003)(956004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: +F8A6MrQVLAh3HMbSiE/ucuYlX4A/7/ny8r3AbZrxWQW6zJFLCwWCfihHPyuUOVZGKfD8i9HnMvlwKAJrYSiW0IfoJ7ZtQPwPb/vpBhkQEMbNi2mHHtAhKrS3K22Nkh3+snAqPyDXx4TZ1nEjeqgWJ1zPyWvteGFM3ogn6PaHtqV7BKekhV2vkoeZtaqYTFDqqWzhNKb8FlLfiDPLAwe7tw09uijRGZL40anRckg52vwx4+QrPM1oOXQ6SDe6i5/1UeGjsP+mtHALM8TEn6oeki13yXGznSwXerqLYnXwEL7DChpqiOpG07cLQ+9S56jYF+Y4Bwm2a0cG0BmqhQwWLRhJB2lpwtrSnI5tMvXCeajSaIMrLWN1jWGaAoKuP/Lk4HvBE/djFmg83k/TJtB4M/VJeUxpMGUWZFuP65AmM4s1pjwFd3dPtC34OMBqrhMQ/Q6qQ5+U/EYBODegvjT4SyRbQy90zDSqgu40Ec1hxQ=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10749e55-6dc4-474d-aa97-08d7f74fc88f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2020 15:10:33.8128
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PkuPtawZZbfWRWQ/4m3x+Xb+133izr333EggAxv75WAvNm2Zj3iBrNTvIuN5o8dC3ajee5yOdDstoJA+04sGaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR12MB1393
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This patch adds a temperature sensor driver to the Sparx5 SoC.
+On Sun, May 10, 2020 at 04:48:40PM -0400, Alexander Monakov wrote:
+> Add PCI IDs for AMD Renoir (4000-series Ryzen CPUs). This is necessary
+> to enable support for temperature sensors via the k10temp module.
+> 
+> Signed-off-by: Alexander Monakov <amonakov@ispras.ru>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+> Cc: Brian Woods <brian.woods@amd.com>
+> Cc: Clemens Ladisch <clemens@ladisch.de>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-hwmon@vger.kernel.org
+> Cc: linux-edac@vger.kernel.org
 
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
----
- drivers/hwmon/Kconfig       |  10 +++
- drivers/hwmon/Makefile      |   2 +-
- drivers/hwmon/sparx5-temp.c | 154 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 165 insertions(+), 1 deletion(-)
- create mode 100644 drivers/hwmon/sparx5-temp.c
+Acked-by: Yazen Ghannam <yazen.ghannam@amd.com>
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 4c62f900bf7e8..130cb1f1748ff 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -480,6 +480,16 @@ config SENSORS_I5K_AMB
- 	  This driver can also be built as a module. If so, the module
- 	  will be called i5k_amb.
-
-+config SENSORS_SPARX5
-+	tristate "Sparx5 SoC temperature sensor"
-+	depends on ARCH_SPARX5
-+	help
-+	  If you say yes here you get support for temperature monitoring
-+	  with the Microchip Sparx5 SoC.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called sparx5-temp.
-+
- config SENSORS_F71805F
- 	tristate "Fintek F71805F/FG, F71806F/FG and F71872F/FG"
- 	depends on !PPC
-diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index b0b9c8e571762..28a09986b7a62 100644
---- a/drivers/hwmon/Makefile
-+++ b/drivers/hwmon/Makefile
-@@ -64,6 +64,7 @@ obj-$(CONFIG_SENSORS_DS1621)	+= ds1621.o
- obj-$(CONFIG_SENSORS_EMC1403)	+= emc1403.o
- obj-$(CONFIG_SENSORS_EMC2103)	+= emc2103.o
- obj-$(CONFIG_SENSORS_EMC6W201)	+= emc6w201.o
-+obj-$(CONFIG_SENSORS_SPARX5)	+= sparx5-temp.o
- obj-$(CONFIG_SENSORS_F71805F)	+= f71805f.o
- obj-$(CONFIG_SENSORS_F71882FG)	+= f71882fg.o
- obj-$(CONFIG_SENSORS_F75375S)	+= f75375s.o
-@@ -190,4 +191,3 @@ obj-$(CONFIG_SENSORS_OCC)	+= occ/
- obj-$(CONFIG_PMBUS)		+= pmbus/
-
- ccflags-$(CONFIG_HWMON_DEBUG_CHIP) := -DDEBUG
--
-diff --git a/drivers/hwmon/sparx5-temp.c b/drivers/hwmon/sparx5-temp.c
-new file mode 100644
-index 0000000000000..bf9dd102a9825
---- /dev/null
-+++ b/drivers/hwmon/sparx5-temp.c
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* Sparx5 SoC temperature sensor driver
-+ *
-+ * Copyright (C) 2020 Lars Povlsen <lars.povlsen@microchip.com>
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+
-+#define TEMP_CTRL		0
-+#define TEMP_CFG		4
-+#define  TEMP_CFG_CYCLES	GENMASK(24, 15)
-+#define  TEMP_CFG_CYCLES_OFF	15
-+#define  TEMP_CFG_ENA		BIT(0)
-+#define TEMP_STAT		8
-+#define  TEMP_STAT_VALID	BIT(12)
-+#define  TEMP_STAT_TEMP		GENMASK(11, 0)
-+
-+struct s5_hwmon {
-+	void __iomem *base;
-+};
-+
-+static void s5_temp_enable(struct s5_hwmon *hwmon)
-+{
-+	u32 val = readl(hwmon->base + TEMP_CFG);
-+	u32 clk = 250;
-+
-+	val &= ~TEMP_CFG_CYCLES;
-+	val |= (clk << TEMP_CFG_CYCLES_OFF);
-+	val |= TEMP_CFG_ENA;
-+
-+	writel(val, hwmon->base + TEMP_CFG);
-+}
-+
-+static void s5_temp_disable(void *data)
-+{
-+	struct s5_hwmon *hwmon = data;
-+	u32 val = readl(hwmon->base + TEMP_CFG);
-+
-+	val &= ~TEMP_CFG_ENA;
-+
-+	writel(val, hwmon->base + TEMP_CFG);
-+}
-+
-+static int s5_read(struct device *dev, enum hwmon_sensor_types type,
-+		   u32 attr, int channel, long *temp)
-+{
-+	struct s5_hwmon *hwmon = dev_get_drvdata(dev);
-+	int rc = 0, value;
-+	u32 stat;
-+
-+	switch (attr) {
-+	case hwmon_temp_input:
-+		stat = readl_relaxed(hwmon->base + TEMP_STAT);
-+		if (stat & TEMP_STAT_VALID) {
-+			value = (stat & TEMP_STAT_TEMP);
-+			value = DIV_ROUND_CLOSEST(value * 3522, 4096) - 1094;
-+			value *= 100;
-+			*temp = value;
-+		} else
-+			rc = -EINVAL;
-+		break;
-+	default:
-+		rc = -EOPNOTSUPP;
-+	}
-+
-+	return rc;
-+}
-+
-+static umode_t s5_is_visible(const void *_data, enum hwmon_sensor_types type,
-+			     u32 attr, int channel)
-+{
-+	if (type != hwmon_temp)
-+		return 0;
-+
-+	switch (attr) {
-+	case hwmon_temp_input:
-+		return 0444;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static const struct hwmon_channel_info *s5_info[] = {
-+	HWMON_CHANNEL_INFO(chip,
-+			   HWMON_C_REGISTER_TZ),
-+	HWMON_CHANNEL_INFO(temp,
-+			   HWMON_T_INPUT),
-+	NULL
-+};
-+
-+static const struct hwmon_ops s5_hwmon_ops = {
-+	.is_visible = s5_is_visible,
-+	.read = s5_read,
-+};
-+
-+static const struct hwmon_chip_info s5_chip_info = {
-+	.ops = &s5_hwmon_ops,
-+	.info = s5_info,
-+};
-+
-+static int s5_temp_probe(struct platform_device *pdev)
-+{
-+	struct device *hwmon_dev;
-+	struct s5_hwmon *hwmon;
-+	int err = 0;
-+
-+	hwmon = devm_kzalloc(&pdev->dev, sizeof(*hwmon), GFP_KERNEL);
-+	if (!hwmon)
-+		return -ENOMEM;
-+
-+	hwmon->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(hwmon->base))
-+		return PTR_ERR(hwmon->base);
-+
-+	err = devm_add_action(&pdev->dev, s5_temp_disable, hwmon);
-+	if (err)
-+		return err;
-+
-+	s5_temp_enable(hwmon);
-+
-+	hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev,
-+							 "s5_temp",
-+							 hwmon,
-+							 &s5_chip_info,
-+							 NULL);
-+
-+	return PTR_ERR_OR_ZERO(hwmon_dev);
-+}
-+
-+const struct of_device_id s5_temp_match[] = {
-+	{ .compatible = "microchip,sparx5-temp" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, s5_temp_match);
-+
-+static struct platform_driver s5_temp_driver = {
-+	.probe = s5_temp_probe,
-+	.driver = {
-+		.name = "sparx5-temp",
-+		.of_match_table = s5_temp_match,
-+	},
-+};
-+
-+module_platform_driver(s5_temp_driver);
-+
-+MODULE_AUTHOR("Lars Povlsen <lars.povlsen@microchip.com>");
-+MODULE_DESCRIPTION("Sparx5 SoC temperature sensor driver");
-+MODULE_LICENSE("GPL");
---
-2.26.2
+Thanks,
+Yazen
