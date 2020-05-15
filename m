@@ -2,699 +2,567 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B311D5880
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2020 19:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EBAB1D597E
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2020 20:52:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726696AbgEOR5Z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 15 May 2020 13:57:25 -0400
-Received: from lists.gateworks.com ([108.161.130.12]:58804 "EHLO
-        lists.gateworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726719AbgEOR5X (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 15 May 2020 13:57:23 -0400
-Received: from 068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-        by lists.gateworks.com with esmtp (Exim 4.82)
-        (envelope-from <tharvey@gateworks.com>)
-        id 1jZecn-0004Pt-N2; Fri, 15 May 2020 17:59:57 +0000
-From:   Tim Harvey <tharvey@gateworks.com>
-To:     Lee Jones <lee.jones@linaro.org>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Robert Jones <rjones@gateworks.com>
-Cc:     Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH 3/3] hwmon: add Gateworks System Controller support
-Date:   Fri, 15 May 2020 10:57:08 -0700
-Message-Id: <1589565428-28886-4-git-send-email-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1589565428-28886-1-git-send-email-tharvey@gateworks.com>
-References: <1589565428-28886-1-git-send-email-tharvey@gateworks.com>
+        id S1726023AbgEOSwz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 15 May 2020 14:52:55 -0400
+Received: from mail-co1nam11on2083.outbound.protection.outlook.com ([40.107.220.83]:58624
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726144AbgEOSwy (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 15 May 2020 14:52:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DRDXF1zxbRn4RQgURAF+8s/13stEfjwplPsia8CdF9zoK7etndTtuIS+5u4YJgbtL3zY5YyJEJwxug5actThfILnR/RHjroDaGp5KMoyc9bRPbfMmItX9aHSWUgoc+3m7SWOZqx6mliD+wINBGqEoEIRndXlARZM9G4rIELdrxN38rLMaY8Uh9addKLlVFXKcmHDzBRQQjgnhMEFdJTqgaJefo/VybMjxnNKCuLBDXUfbYtDS5i9QJUhyEI4G4IGlPq/za/JNYnl3wAWN5IaXNwFS+ka6dFXMKrC3TmhanO7KabpjGn2DzqoemNhvZMrAs55B79VqaVyJFXfjQAgZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sy+rbwKbDpfBhGh3/LBKLt84hueo9PL2UoD11571M3E=;
+ b=gbd9br+qzYtLGdfqI0W66+eZZm+kgLvq/CmNXa/B7LipT/qB+yGhPVmYoJToSqSRHRr4uTP+7Ao31i8dF4FF8NGMRyLAijIFoEuEWyCxo9yOLn7cvh9Az9GvMOsgVBqI/3SICZUdUjjRbQDQSoJR5Ta+tNDZohL1Ue54ZyaPqC/oQZ700N+uKTFYe90B3z34nlHeMqmtlVzbZnlHkTk2FNwvlDVLVV4UClUKgejMIn+1pb5Qv6Q3f7EkHIkqCcAxF7ckJUTo5x1aNOgIMgruw+No2YM2Ihc0jIEwK2Pr7R4VhsRgnKZW0ZDOl9nUo41EaP3EqyiUI3NSMzoc3eC01g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sy+rbwKbDpfBhGh3/LBKLt84hueo9PL2UoD11571M3E=;
+ b=k+CvVpGdHjakD0jwGXDeosfxeTEmVzkBCiyM/jGW5+WJqr6qW7t1laGB3tKuz5HW767oLAIBXbr7SKHdtGOK/hZyq1amoZKMuSa6BiWLucFwQRTuRx/5Tqr885zmyHgTflkXeJG8dxz16fSjSpVKGHlhVrT5FStB3zLHxZZbKFE=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from BY5PR12MB4212.namprd12.prod.outlook.com (2603:10b6:a03:202::8)
+ by BY5PR12MB3891.namprd12.prod.outlook.com (2603:10b6:a03:1a3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.20; Fri, 15 May
+ 2020 18:52:50 +0000
+Received: from BY5PR12MB4212.namprd12.prod.outlook.com
+ ([fe80::9ce:3ab2:f0ee:47b2]) by BY5PR12MB4212.namprd12.prod.outlook.com
+ ([fe80::9ce:3ab2:f0ee:47b2%5]) with mapi id 15.20.3000.016; Fri, 15 May 2020
+ 18:52:50 +0000
+From:   Naveen Krishna Chatradhi <nchatrad@amd.com>
+To:     linux-hwmon@vger.kernel.org
+Cc:     naveenkrishna.ch@gmail.com,
+        Naveen Krishna Chatradhi <nchatrad@amd.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 1/3 v6] hwmon: Add amd_energy driver to report energy counters
+Date:   Sat, 16 May 2020 00:22:32 +0530
+Message-Id: <20200515185234.30687-1-nchatrad@amd.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA1PR0101CA0034.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:22::20) To BY5PR12MB4212.namprd12.prod.outlook.com
+ (2603:10b6:a03:202::8)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from milan-ETHANOL-X.amd.com (165.204.156.251) by MA1PR0101CA0034.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:22::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.20 via Frontend Transport; Fri, 15 May 2020 18:52:48 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [165.204.156.251]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 3156ab32-0fc4-46b5-1705-08d7f9012aaa
+X-MS-TrafficTypeDiagnostic: BY5PR12MB3891:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BY5PR12MB38914100F7E7C660DCF7DFB4E8BD0@BY5PR12MB3891.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:338;
+X-Forefront-PRVS: 04041A2886
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: h1Qmit3aK9Wght5AtCV+qEpGoYLqcFj93R5+x/PKlZ1aInXS9jIFPBKxeT9er+b4SKdabWO9/nfp4NsFj3yCPnmcPwY3L9nIlKQ3ytiR/DUDD++R7/7Aw9Sn6V72wLU7B4wS7tWeYuh1amTR2WoNONdNPnWXup6sRVRkGCVfhZjldK2ctG1flnlZt9uCmRxClQZOxqRl7fCkYh/MtjjW+Oxq4eCbJ09tZt/O/hNJyjqohweUT7vtZYoNHK4A9XRCeJBXkMtOX9BNmjLphRWh2wPY2VaUMzVXE08WaIoFhCgSVgvyO96golje7XKvwi2Bo2rriKnPlTu1IarTA3lCfG+bWNrA6avk06bDEjJ+XuIrrpSHI2wt6vMt4J1jvFWvuOJ9rYs0w/8ca39MvVbQUxNBpc/GmXDyReHb4b+v7tHvNR+RnMZu9ZQ4A++tfvlxuzawPv+WhFPlJlAA9F5n4l3qKJSa40/Z2Rj1g84ksnHyfTKUGBpu6AhH3OwcZ4NG
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4212.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(136003)(346002)(396003)(39860400002)(366004)(6486002)(52116002)(7696005)(8676002)(8936002)(36756003)(478600001)(5660300002)(26005)(30864003)(316002)(2616005)(66556008)(66476007)(16526019)(2906002)(6916009)(956004)(54906003)(1076003)(66946007)(6666004)(186003)(4326008)(6606295002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: tUhssKCxSXs18g+tbNQyhFVYV/f4YbLo0vzbdYDwFY2g5mIVCpWFTFWt61Dq2nLpKNPAD+jjuBJBsDEa7FgqSOMcsTts8iZgq067vTR7krx9ZRyZkNVVWEccb6feOAF3lq6JT8RD8zL219+rrsUUEqe0u1ePmUvl9GgHDO1SVnIngqSzKqfQr+V15QttUilGwG6153gNSJJULvtyX2kCINQC8Fcqgbo43Axm9LQGPNWF83GpE5pj/oZL2qehQboAzjURgEIe4yhwrvyURs6HjyHvZQ7A2YX2lgYtoADEvbeXZY2JtzL5Rc+8PFR0V4KdRibl5AYG61nPJ9/Mf/y5QGlcVZcLA3Lw1vt9K6HPAP2BopeeDOzyPozNHLD0mQFindPGcSxFTIB6J57z9lCkp9WPa7Y1TcZZtBrGAPHaLevPfSVlZtur3VgxYgusVAL/4lK1oB+eEVrUWLh8IcxDDyOyqlprdYmx5zHSsP3hKZhEXZgq13YPPNb5yAlTIfvr
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3156ab32-0fc4-46b5-1705-08d7f9012aaa
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2020 18:52:50.4408
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6lChcxw+LhPtY8adlt6hOVa6KG0RG8iKMu+YJ2QRE6WKFuDuvCrFOtTGGqsmaKUZtfUIjdhmfFXH5FizYqx6og==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB3891
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The Gateworks System Controller has a hwmon sub-component that exposes
-up to 16 ADC's, some of which are temperature sensors, others which are
-voltage inputs. The ADC configuration (register mapping and name) is
-configured via device-tree and varies board to board.
+This patch adds hwmon based amd_energy driver support for
+family 17h processors from AMD.
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+The driver provides following interface to the userspace
+1. Reports the per core consumption
+	* file: "energy%d_input", label: "Ecore%03d"
+2. Reports per socket energy consumption
+	* file: "energy%d_input", label: "Esocket%d"
+3. To, increase the wrap around time of the socket energy
+   counters, a 64bit accumultor is implemented.
+4. Reports scaled energy value in Joules.
+
+Cc: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
 ---
-v11:
-- no change
+Changes in v6:
+1. Implement core accumulation
+2. Remove enumurating sibling threads
+3. Fix bug in accumulation
+4. Few other minor comments addressed
 
-v10:
-- no change
+ drivers/hwmon/Kconfig      |  10 +
+ drivers/hwmon/Makefile     |   1 +
+ drivers/hwmon/amd_energy.c | 413 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 424 insertions(+)
+ create mode 100644 drivers/hwmon/amd_energy.c
 
-v9:
-- use exported gsc_{read,write}
-- added Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
-v8:
-- move regmap init to hwmon
-
-v7:
-- fix whitespace in Kconfig
-- remove unnecessary device pointer in private data
-- change divider from mili-ohms to ohms
-- move fan base property to reg
-
-v6:
-- fix size of info field
-- improve pwm output control documentation
-- include unit suffix in divider and offset
-- change subnode name to gsc-adc
-- change to fan subnode
-- fix voltage offset
-
-v5:
-- fix various checkpatch issues
-- correct gsc-hwmon.rst in MAINTAINERS
-- encorporate Gunter's feedback:
- - switch to SENSOR_DEVICE_ATTR_{RW,RO}
- - use tmp value to avoid excessive pointer deference
- - simplify shift operation
- - scale voffset once
- - simplify is_visible function
- - remove empty line at end of file
-
-v4:
-- adjust for uV offset from device-tree
-- remove unnecessary optional write function
-- remove register range check
-- change dev_err prints to use gsc dev
-- hard-code resolution/scaling for raw adcs
-- describe units of ADC resolution
-- move to using pwm<n>_auto_point<m>_{pwm,temp} for FAN PWM
-- ensure space before/after operators
-- remove unnecessary parens
-- remove more debugging
-- add default case and comment for type_voltage
-- remove unnecessary index bounds checks for channel
-- remove unnecessary clearing of struct fields
-- added Documentation/hwmon/gsc-hwmon.rst
-
-v3:
-- add voltage_raw input type and supporting fields
-- add channel validation to is_visible function
-- remove unnecessary channel validation from read/write functions
-
-v2:
-- change license comment style
-- remove DEBUG
-- simplify regmap_bulk_read err check
-- remove break after returns in switch statement
-- fix fan setpoint buffer address
-- remove unnecessary parens
-- consistently use struct device *dev pointer
-- change license/comment block
-- add validation for hwmon child node props
-- move parsing of of to own function
-- use strlcpy to ensure null termination
-- fix static array sizes and removed unnecessary initializers
-- dynamically allocate channels
-- fix fan input label
-- support platform data
-- fixed whitespace issues
----
- Documentation/hwmon/gsc-hwmon.rst       |  53 +++++
- Documentation/hwmon/index.rst           |   1 +
- MAINTAINERS                             |   3 +
- drivers/hwmon/Kconfig                   |   9 +
- drivers/hwmon/Makefile                  |   1 +
- drivers/hwmon/gsc-hwmon.c               | 390 ++++++++++++++++++++++++++++++++
- include/linux/platform_data/gsc_hwmon.h |  44 ++++
- 7 files changed, 501 insertions(+)
- create mode 100644 Documentation/hwmon/gsc-hwmon.rst
- create mode 100644 drivers/hwmon/gsc-hwmon.c
- create mode 100644 include/linux/platform_data/gsc_hwmon.h
-
-diff --git a/Documentation/hwmon/gsc-hwmon.rst b/Documentation/hwmon/gsc-hwmon.rst
-new file mode 100644
-index 00000000..ffac392
---- /dev/null
-+++ b/Documentation/hwmon/gsc-hwmon.rst
-@@ -0,0 +1,53 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver gsc-hwmon
-+=======================
-+
-+Supported chips: Gateworks GSC
-+Datasheet: http://trac.gateworks.com/wiki/gsc
-+Author: Tim Harvey <tharvey@gateworks.com>
-+
-+Description:
-+------------
-+
-+This driver supports hardware monitoring for the temperature sensor,
-+various ADC's connected to the GSC, and optional FAN controller available
-+on some boards.
-+
-+
-+Voltage Monitoring
-+------------------
-+
-+The voltage inputs are scaled either internally or by the driver depending
-+on the GSC version and firmware. The values returned by the driver do not need
-+further scaling. The voltage input labels provide the voltage rail name:
-+
-+inX_input                  Measured voltage (mV).
-+inX_label                  Name of voltage rail.
-+
-+
-+Temperature Monitoring
-+----------------------
-+
-+Temperatures are measured with 12-bit or 10-bit resolution and are scaled
-+either internally or by the driver depending on the GSC version and firmware.
-+The values returned by the driver reflect millidegree Celcius:
-+
-+tempX_input                Measured temperature.
-+tempX_label                Name of temperature input.
-+
-+
-+PWM Output Control
-+------------------
-+
-+The GSC features 1 PWM output that operates in automatic mode where the
-+PWM value will be scalled depending on 6 temperature boundaries.
-+The tempeature boundaries are read-write and in millidegree Celcius and the
-+read-only PWM values range from 0 (off) to 255 (full speed).
-+Fan speed will be set to minimum (off) when the temperature sensor reads
-+less than pwm1_auto_point1_temp and maximum when the temperature sensor
-+equals or exceeds pwm1_auto_point6_temp.
-+
-+pwm1_auto_point[1-6]_pwm       PWM value.
-+pwm1_auto_point[1-6]_temp      Temperature boundary.
-+
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 8ef62fd..1c02aa6 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -60,6 +60,7 @@ Hardware Monitoring Kernel Drivers
-    ftsteutates
-    g760a
-    g762
-+   gsc-hwmon
-    gl518sm
-    hih6130
-    ibmaem
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c78a014..7f8ece8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7035,6 +7035,9 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
- F:	drivers/mfd/gateworks-gsc.c
- F:	include/linux/mfd/gsc.h
-+F:	Documentation/hwmon/gsc-hwmon.rst
-+F:	drivers/hwmon/gsc-hwmon.c
-+F:	include/linux/platform_data/gsc_hwmon.h
- 
- GASKET DRIVER FRAMEWORK
- M:	Rob Springer <rspringer@google.com>
 diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 4c62f90..5549906 100644
+index 4c62f900bf7e..e165e10c49ef 100644
 --- a/drivers/hwmon/Kconfig
 +++ b/drivers/hwmon/Kconfig
-@@ -523,6 +523,15 @@ config SENSORS_F75375S
+@@ -324,6 +324,16 @@ config SENSORS_FAM15H_POWER
  	  This driver can also be built as a module. If so, the module
- 	  will be called f75375s.
+ 	  will be called fam15h_power.
  
-+config SENSORS_GSC
-+	tristate "Gateworks System Controller ADC"
-+	depends on MFD_GATEWORKS_GSC
++config SENSORS_AMD_ENERGY
++	tristate "AMD RAPL MSR based Energy driver"
++	depends on X86
 +	help
-+	  Support for the Gateworks System Controller A/D converters.
++	  If you say yes here you get support for core and package energy
++	  sensors, based on RAPL MSR for AMD family 17h and above CPUs.
 +
-+	  To compile this driver as a module, choose M here:
-+	  the module will be called gsc-hwmon.
++	  This driver can also be built as a module. If so, the module
++	  will be called as amd_energy.
 +
- config SENSORS_MC13783_ADC
-         tristate "Freescale MC13783/MC13892 ADC"
-         depends on MFD_MC13XXX
+ config SENSORS_APPLESMC
+ 	tristate "Apple SMC (Motion sensor, light sensor, keyboard backlight)"
+ 	depends on INPUT && X86
 diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index b0b9c8e..a6564d0 100644
+index b0b9c8e57176..318f89dc7133 100644
 --- a/drivers/hwmon/Makefile
 +++ b/drivers/hwmon/Makefile
-@@ -74,6 +74,7 @@ obj-$(CONFIG_SENSORS_G760A)	+= g760a.o
- obj-$(CONFIG_SENSORS_G762)	+= g762.o
- obj-$(CONFIG_SENSORS_GL518SM)	+= gl518sm.o
- obj-$(CONFIG_SENSORS_GL520SM)	+= gl520sm.o
-+obj-$(CONFIG_SENSORS_GSC)	+= gsc-hwmon.o
- obj-$(CONFIG_SENSORS_GPIO_FAN)	+= gpio-fan.o
- obj-$(CONFIG_SENSORS_HIH6130)	+= hih6130.o
- obj-$(CONFIG_SENSORS_ULTRA45)	+= ultra45_env.o
-diff --git a/drivers/hwmon/gsc-hwmon.c b/drivers/hwmon/gsc-hwmon.c
+@@ -45,6 +45,7 @@ obj-$(CONFIG_SENSORS_ADT7411)	+= adt7411.o
+ obj-$(CONFIG_SENSORS_ADT7462)	+= adt7462.o
+ obj-$(CONFIG_SENSORS_ADT7470)	+= adt7470.o
+ obj-$(CONFIG_SENSORS_ADT7475)	+= adt7475.o
++obj-$(CONFIG_SENSORS_AMD_ENERGY) += amd_energy.o
+ obj-$(CONFIG_SENSORS_APPLESMC)	+= applesmc.o
+ obj-$(CONFIG_SENSORS_ARM_SCMI)	+= scmi-hwmon.o
+ obj-$(CONFIG_SENSORS_ARM_SCPI)	+= scpi-hwmon.o
+diff --git a/drivers/hwmon/amd_energy.c b/drivers/hwmon/amd_energy.c
 new file mode 100644
-index 00000000..2137bc6
+index 000000000000..f2cd5e2e1339
 --- /dev/null
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -0,0 +1,390 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/drivers/hwmon/amd_energy.c
+@@ -0,0 +1,413 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
 +/*
-+ * Driver for Gateworks System Controller Hardware Monitor module
-+ *
-+ * Copyright (C) 2020 Gateworks Corporation
++ * Copyright (C) 2020 Advanced Micro Devices, Inc.
 + */
++#include <asm/cpu_device_id.h>
++
++#include <linux/bits.h>
++#include <linux/cpu.h>
++#include <linux/cpumask.h>
++#include <linux/delay.h>
++#include <linux/device.h>
 +#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
-+#include <linux/mfd/gsc.h>
++#include <linux/kernel.h>
++#include <linux/kthread.h>
++#include <linux/list.h>
 +#include <linux/module.h>
-+#include <linux/of.h>
++#include <linux/mutex.h>
++#include <linux/processor.h>
 +#include <linux/platform_device.h>
-+#include <linux/regmap.h>
++#include <linux/sched.h>
 +#include <linux/slab.h>
++#include <linux/topology.h>
++#include <linux/types.h>
 +
-+#include <linux/platform_data/gsc_hwmon.h>
++#define DRVNAME			"amd_energy"
 +
-+#define GSC_HWMON_MAX_TEMP_CH	16
-+#define GSC_HWMON_MAX_IN_CH	16
++#define ENERGY_PWR_UNIT_MSR	0xC0010299
++#define ENERGY_CORE_MSR		0xC001029A
++#define ENERGY_PKG_MSR		0xC001029B
 +
-+#define GSC_HWMON_RESOLUTION	12
-+#define GSC_HWMON_VREF		2500
++#define AMD_ENERGY_UNIT_MASK	0x01F00
++#define AMD_ENERGY_MASK		0xFFFFFFFF
 +
-+struct gsc_hwmon_data {
-+	struct gsc_dev *gsc;
-+	struct gsc_hwmon_platform_data *pdata;
-+	struct regmap *regmap;
-+	const struct gsc_hwmon_channel *temp_ch[GSC_HWMON_MAX_TEMP_CH];
-+	const struct gsc_hwmon_channel *in_ch[GSC_HWMON_MAX_IN_CH];
-+	u32 temp_config[GSC_HWMON_MAX_TEMP_CH + 1];
-+	u32 in_config[GSC_HWMON_MAX_IN_CH + 1];
-+	struct hwmon_channel_info temp_info;
-+	struct hwmon_channel_info in_info;
-+	const struct hwmon_channel_info *info[3];
++struct amd_energy_data {
++	struct hwmon_channel_info energy_info;
++	const struct hwmon_channel_info *info[2];
 +	struct hwmon_chip_info chip;
++	/* Lock around the accumulator */
++	struct mutex lock;
++	/* Energy Status Units */
++	u64 energy_units;
++	/* An accumulator for each socket */
++	u64 *sock_energy_ctrs;
++	u64 *core_energy_ctrs;
++	u64 *sock_prev_value;
++	u64 *core_prev_value;
 +};
 +
-+static struct regmap_bus gsc_hwmon_regmap_bus = {
-+	.reg_read = gsc_read,
-+	.reg_write = gsc_write,
-+};
++static struct task_struct *wrap_accumulate;
++static int nr_cpus, nr_socks;
++static char buf[10];
 +
-+static const struct regmap_config gsc_hwmon_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.cache_type = REGCACHE_NONE,
-+};
-+
-+static ssize_t pwm_auto_point_temp_show(struct device *dev,
-+					struct device_attribute *devattr,
-+					char *buf)
++static int amd_energy_read_labels(struct device *dev,
++				  enum hwmon_sensor_types type,
++				  u32 attr, int channel,
++				  const char **str)
 +{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-+	u8 reg = hwmon->pdata->fan_base + (2 * attr->index);
-+	u8 regs[2];
++	if (channel >= nr_cpus)
++		scnprintf(buf, 10, "Esocket%u", channel - nr_cpus);
++	else
++		scnprintf(buf, 10, "Ecore%03u", channel);
++
++	*str = buf;
++
++	return 0;
++}
++
++static int get_energy_units(struct amd_energy_data *data)
++{
++	u64 rapl_units;
 +	int ret;
 +
-+	ret = regmap_bulk_read(hwmon->regmap, reg, regs, 2);
++	ret = rdmsrl_safe(ENERGY_PWR_UNIT_MSR, &rapl_units);
 +	if (ret)
 +		return ret;
 +
-+	ret = regs[0] | regs[1] << 8;
-+	return sprintf(buf, "%d\n", ret * 10);
++	data->energy_units = (rapl_units & AMD_ENERGY_UNIT_MASK) >> 8;
++	return 0;
 +}
 +
-+static ssize_t pwm_auto_point_temp_store(struct device *dev,
-+					 struct device_attribute *devattr,
-+					 const char *buf, size_t count)
++static void amd_accumulate_delta(struct amd_energy_data *data,
++				 u64 input, int cu, bool is_core)
 +{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-+	u8 reg = hwmon->pdata->fan_base + (2 * attr->index);
-+	u8 regs[2];
-+	long temp;
-+	int err;
++	input &= AMD_ENERGY_MASK;
 +
-+	if (kstrtol(buf, 10, &temp))
-+		return -EINVAL;
++	mutex_lock(&data->lock);
++	if (!is_core) {
++		if (input >= data->sock_prev_value[cu])
++			data->sock_energy_ctrs[cu] +=
++				input - data->sock_prev_value[cu];
++		else
++			data->sock_energy_ctrs[cu] += UINT_MAX -
++				data->sock_prev_value[cu] + input;
 +
-+	temp = clamp_val(temp, 0, 10000);
-+	temp = DIV_ROUND_CLOSEST(temp, 10);
++		data->sock_prev_value[cu] = input;
++	} else {
++		if (input >= data->core_prev_value[cu])
++			data->core_energy_ctrs[cu] +=
++				input - data->core_prev_value[cu];
++		else
++			data->core_energy_ctrs[cu] += UINT_MAX -
++				data->core_prev_value[cu] + input;
 +
-+	regs[0] = temp & 0xff;
-+	regs[1] = (temp >> 8) & 0xff;
-+	err = regmap_bulk_write(hwmon->regmap, reg, regs, 2);
-+	if (err)
-+		return err;
-+
-+	return count;
++		data->core_prev_value[cu] = input;
++	}
++	mutex_unlock(&data->lock);
 +}
 +
-+static ssize_t pwm_auto_point_pwm_show(struct device *dev,
-+				       struct device_attribute *devattr,
-+				       char *buf)
++static int read_accumulate(struct amd_energy_data *data)
 +{
-+	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
++	int ret, cu;
++	u64 input = 0, core_input = 0;
++	static int core_id;
 +
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
-+}
++	for (cu = 0; cu < nr_socks; cu++) {
++		int cpu;
 +
-+static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
-+static SENSOR_DEVICE_ATTR_RW(pwm1_auto_point1_temp, pwm_auto_point_temp, 0);
++		cpu = cpumask_first_and(cpu_online_mask,
++					cpumask_of_node(cu));
 +
-+static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point2_pwm, pwm_auto_point_pwm, 1);
-+static SENSOR_DEVICE_ATTR_RW(pwm1_auto_point2_temp, pwm_auto_point_temp, 1);
++		ret = rdmsrl_safe_on_cpu(cpu, ENERGY_PKG_MSR, &input);
++		if (ret)
++			return ret;
 +
-+static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point3_pwm, pwm_auto_point_pwm, 2);
-+static SENSOR_DEVICE_ATTR_RW(pwm1_auto_point3_temp, pwm_auto_point_temp, 2);
-+
-+static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point4_pwm, pwm_auto_point_pwm, 3);
-+static SENSOR_DEVICE_ATTR_RW(pwm1_auto_point4_temp, pwm_auto_point_temp, 3);
-+
-+static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point5_pwm, pwm_auto_point_pwm, 4);
-+static SENSOR_DEVICE_ATTR_RW(pwm1_auto_point5_temp, pwm_auto_point_temp, 4);
-+
-+static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point6_pwm, pwm_auto_point_pwm, 5);
-+static SENSOR_DEVICE_ATTR_RW(pwm1_auto_point6_temp, pwm_auto_point_temp, 5);
-+
-+static struct attribute *gsc_hwmon_attributes[] = {
-+	&sensor_dev_attr_pwm1_auto_point1_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point1_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point2_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point2_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point3_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point3_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point4_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point4_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point5_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point5_temp.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point6_pwm.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_auto_point6_temp.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group gsc_hwmon_group = {
-+	.attrs = gsc_hwmon_attributes,
-+};
-+__ATTRIBUTE_GROUPS(gsc_hwmon);
-+
-+static int
-+gsc_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-+	       int channel, long *val)
-+{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+	const struct gsc_hwmon_channel *ch;
-+	int sz, ret;
-+	long tmp;
-+	u8 buf[3];
-+
-+	switch (type) {
-+	case hwmon_in:
-+		ch = hwmon->in_ch[channel];
-+		break;
-+	case hwmon_temp:
-+		ch = hwmon->temp_ch[channel];
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
++		amd_accumulate_delta(data, input, cu, false);
 +	}
 +
-+	sz = (ch->mode == mode_voltage) ? 3 : 2;
-+	ret = regmap_bulk_read(hwmon->regmap, ch->reg, buf, sz);
++	if (core_id >= nr_cpus)
++		core_id = 0;
++
++	if (!cpu_online(core_id)) {
++		ret = -ENODEV;
++		goto out;
++	}
++
++	ret = rdmsrl_safe_on_cpu(core_id, ENERGY_CORE_MSR, &core_input);
 +	if (ret)
-+		return ret;
++		goto out;
 +
-+	tmp = 0;
-+	while (sz-- > 0)
-+		tmp |= (buf[sz] << (8 * sz));
++	amd_accumulate_delta(data, core_input, core_id, true);
 +
-+	switch (ch->mode) {
-+	case mode_temperature:
-+		if (tmp > 0x8000)
-+			tmp -= 0xffff;
-+		break;
-+	case mode_voltage_raw:
-+		tmp = clamp_val(tmp, 0, BIT(GSC_HWMON_RESOLUTION));
-+		/* scale based on ref voltage and ADC resolution */
-+		tmp *= GSC_HWMON_VREF;
-+		tmp >>= GSC_HWMON_RESOLUTION;
-+		/* scale based on optional voltage divider */
-+		if (ch->vdiv[0] && ch->vdiv[1]) {
-+			tmp *= (ch->vdiv[0] + ch->vdiv[1]);
-+			tmp /= ch->vdiv[1];
-+		}
-+		/* adjust by uV offset */
-+		tmp += ch->mvoffset;
-+		break;
-+	case mode_voltage:
-+		/* no adjustment needed */
-+		break;
++out:
++	core_id++;
++	return ret;
++}
++
++static void amd_add_delta(struct amd_energy_data *data,
++			  u64 *input, int ch, bool is_core)
++{
++	mutex_lock(&data->lock);
++	if (!is_core) {
++		if (*input >= data->sock_prev_value[ch])
++			*input += data->sock_energy_ctrs[ch] -
++				  data->sock_prev_value[ch];
++		else
++			*input += UINT_MAX - data->sock_prev_value[ch] +
++				  data->sock_energy_ctrs[ch];
++	} else {
++		if (*input >= data->core_prev_value[ch])
++			*input += data->core_energy_ctrs[ch] -
++				 data->core_prev_value[ch];
++		else
++			*input += UINT_MAX - data->core_prev_value[ch] +
++				 data->core_energy_ctrs[ch];
++	}
++	mutex_unlock(&data->lock);
++}
++
++static int amd_energy_read(struct device *dev,
++			   enum hwmon_sensor_types type,
++			   u32 attr, int channel, long *val)
++{
++	struct amd_energy_data *data = dev_get_drvdata(dev);
++	int ret, cpu;
++	u64 input;
++	bool is_core;
++
++	if (channel >= nr_cpus) {
++		is_core = false;
++		channel = channel - nr_cpus;
++		cpu = cpumask_first_and(cpu_online_mask,
++					cpumask_of_node
++					(channel));
++		ret = rdmsrl_safe_on_cpu(cpu, ENERGY_PKG_MSR, &input);
++		if (ret)
++			return -EAGAIN;
++	} else {
++		is_core = true;
++		cpu = channel;
++		if (!cpu_online(cpu))
++			return -ENODEV;
++
++		ret = rdmsrl_safe_on_cpu(cpu, ENERGY_CORE_MSR, &input);
++		if (ret)
++			return -EAGAIN;
 +	}
 +
-+	*val = tmp;
++	input &= AMD_ENERGY_MASK;
++	amd_add_delta(data, &input, channel, is_core);
++
++	if (data->energy_units == 0 && get_energy_units(data))
++		return -EAGAIN;
++
++	/* Energy consumed = (1/(2^ESU) * RAW * 1000000UL) μJoules */
++	*val = (long)div64_ul(input * 1000000UL,
++				      BIT(data->energy_units));
 +
 +	return 0;
 +}
 +
-+static int
-+gsc_hwmon_read_string(struct device *dev, enum hwmon_sensor_types type,
-+		      u32 attr, int channel, const char **buf)
-+{
-+	struct gsc_hwmon_data *hwmon = dev_get_drvdata(dev);
-+
-+	switch (type) {
-+	case hwmon_in:
-+		*buf = hwmon->in_ch[channel]->name;
-+		break;
-+	case hwmon_temp:
-+		*buf = hwmon->temp_ch[channel]->name;
-+		break;
-+	default:
-+		return -ENOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+static umode_t
-+gsc_hwmon_is_visible(const void *_data, enum hwmon_sensor_types type, u32 attr,
-+		     int ch)
++static umode_t amd_energy_is_visible(const void *_data,
++				     enum hwmon_sensor_types type,
++				     u32 attr, int channel)
 +{
 +	return 0444;
 +}
 +
-+static const struct hwmon_ops gsc_hwmon_ops = {
-+	.is_visible = gsc_hwmon_is_visible,
-+	.read = gsc_hwmon_read,
-+	.read_string = gsc_hwmon_read_string,
++static int energy_accumulator(void *p)
++{
++	struct amd_energy_data *data = (struct amd_energy_data *)p;
++
++	while (!kthread_should_stop()) {
++		/*
++		 * Ignoring the conditions such as
++		 * cpu being offline or rdmsr failure
++		 */
++		read_accumulate(data);
++
++		set_current_state(TASK_INTERRUPTIBLE);
++		if (kthread_should_stop())
++			break;
++
++		/*
++		 * On a 240W system, with default resolution the
++		 * Socket Energy status register may wrap around in
++		 * 2^32*15.3 e-6/240 = 273.8041 secs (~4.5 mins)
++		 *
++		 * let us accumulate for every 100secs
++		 */
++		schedule_timeout(msecs_to_jiffies(100000));
++	}
++	return 0;
++}
++
++static const struct hwmon_ops amd_energy_ops = {
++	.is_visible = amd_energy_is_visible,
++	.read = amd_energy_read,
++	.read_string = amd_energy_read_labels,
 +};
 +
-+static struct gsc_hwmon_platform_data *
-+gsc_hwmon_get_devtree_pdata(struct device *dev)
++static int amd_create_sensor(struct device *dev,
++			     struct amd_energy_data *data,
++			     u8 type, u32 config)
 +{
-+	struct gsc_hwmon_platform_data *pdata;
-+	struct gsc_hwmon_channel *ch;
-+	struct fwnode_handle *child;
-+	struct device_node *fan;
-+	int nchannels;
++	int i, num_siblings;
++	u32 *s_config;
++	struct hwmon_channel_info *info = &data->energy_info;
 +
-+	nchannels = device_get_child_node_count(dev);
-+	if (nchannels == 0)
-+		return ERR_PTR(-ENODEV);
++	/* Identify the number of siblings per core */
++	num_siblings = ((cpuid_ebx(0x8000001e) >> 8) & 0xff) + 1;
 +
-+	pdata = devm_kzalloc(dev,
-+			     sizeof(*pdata) + nchannels * sizeof(*ch),
-+			     GFP_KERNEL);
-+	if (!pdata)
-+		return ERR_PTR(-ENOMEM);
-+	ch = (struct gsc_hwmon_channel *)(pdata + 1);
-+	pdata->channels = ch;
-+	pdata->nchannels = nchannels;
++	nr_socks = num_possible_nodes();
 +
-+	/* fan controller base address */
-+	fan = of_find_compatible_node(dev->parent->of_node, NULL, "gw,gsc-fan");
-+	if (fan && of_property_read_u32(fan, "reg", &pdata->fan_base)) {
-+		dev_err(dev, "fan node without base\n");
-+		return ERR_PTR(-EINVAL);
-+	}
++	/*
++	 * Energy counter register is accessed at core level.
++	 * Hence, filterout the siblings.
++	 */
++	nr_cpus = num_present_cpus()/num_siblings;
 +
-+	/* allocate structures for channels and count instances of each type */
-+	device_for_each_child_node(dev, child) {
-+		if (fwnode_property_read_string(child, "label", &ch->name)) {
-+			dev_err(dev, "channel without label\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (fwnode_property_read_u32(child, "reg", &ch->reg)) {
-+			dev_err(dev, "channel without reg\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (fwnode_property_read_u32(child, "gw,mode", &ch->mode)) {
-+			dev_err(dev, "channel without mode\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+		if (ch->mode > mode_max) {
-+			dev_err(dev, "invalid channel mode\n");
-+			fwnode_handle_put(child);
-+			return ERR_PTR(-EINVAL);
-+		}
-+
-+		if (!fwnode_property_read_u32(child,
-+					      "gw,voltage-offset-microvolt",
-+					      &ch->mvoffset))
-+			ch->mvoffset /= 1000;
-+		fwnode_property_read_u32_array(child,
-+					       "gw,voltage-divider-ohms",
-+					       ch->vdiv, ARRAY_SIZE(ch->vdiv));
-+		ch++;
-+	}
-+
-+	return pdata;
-+}
-+
-+static int gsc_hwmon_probe(struct platform_device *pdev)
-+{
-+	struct gsc_dev *gsc = dev_get_drvdata(pdev->dev.parent);
-+	struct device *dev = &pdev->dev;
-+	struct device *hwmon_dev;
-+	struct gsc_hwmon_platform_data *pdata = dev_get_platdata(dev);
-+	struct gsc_hwmon_data *hwmon;
-+	const struct attribute_group **groups;
-+	int i, i_in, i_temp;
-+
-+	if (!pdata) {
-+		pdata = gsc_hwmon_get_devtree_pdata(dev);
-+		if (IS_ERR(pdata))
-+			return PTR_ERR(pdata);
-+	}
-+
-+	hwmon = devm_kzalloc(dev, sizeof(*hwmon), GFP_KERNEL);
-+	if (!hwmon)
++	s_config = devm_kcalloc(dev, nr_cpus + nr_socks,
++				sizeof(u32), GFP_KERNEL);
++	if (!s_config)
 +		return -ENOMEM;
-+	hwmon->gsc = gsc;
-+	hwmon->pdata = pdata;
 +
-+	hwmon->regmap = devm_regmap_init(dev, &gsc_hwmon_regmap_bus,
-+					 gsc->i2c_hwmon,
-+					 &gsc_hwmon_regmap_config);
-+	if (IS_ERR(hwmon->regmap))
-+		return PTR_ERR(hwmon->regmap);
++	data->sock_energy_ctrs = devm_kcalloc(dev, nr_socks,
++				sizeof(u64), GFP_KERNEL);
++	if (!data->sock_energy_ctrs)
++		return -ENOMEM;
 +
-+	for (i = 0, i_in = 0, i_temp = 0; i < hwmon->pdata->nchannels; i++) {
-+		const struct gsc_hwmon_channel *ch = &pdata->channels[i];
++	data->core_energy_ctrs = devm_kcalloc(dev, nr_cpus,
++				sizeof(u64), GFP_KERNEL);
++	if (!data->core_energy_ctrs)
++		return -ENOMEM;
 +
-+		switch (ch->mode) {
-+		case mode_temperature:
-+			if (i_temp == GSC_HWMON_MAX_TEMP_CH) {
-+				dev_err(gsc->dev, "too many temp channels\n");
-+				return -EINVAL;
-+			}
-+			hwmon->temp_ch[i_temp] = ch;
-+			hwmon->temp_config[i_temp] = HWMON_T_INPUT |
-+						     HWMON_T_LABEL;
-+			i_temp++;
-+			break;
-+		case mode_voltage:
-+		case mode_voltage_raw:
-+			if (i_in == GSC_HWMON_MAX_IN_CH) {
-+				dev_err(gsc->dev, "too many input channels\n");
-+				return -EINVAL;
-+			}
-+			hwmon->in_ch[i_in] = ch;
-+			hwmon->in_config[i_in] =
-+				HWMON_I_INPUT | HWMON_I_LABEL;
-+			i_in++;
-+			break;
-+		default:
-+			dev_err(gsc->dev, "invalid mode: %d\n", ch->mode);
-+			return -EINVAL;
-+		}
-+	}
++	data->sock_prev_value = devm_kcalloc(dev, nr_socks,
++				sizeof(u64), GFP_KERNEL);
++	if (!data->sock_prev_value)
++		return -ENOMEM;
 +
-+	/* setup config structures */
-+	hwmon->chip.ops = &gsc_hwmon_ops;
-+	hwmon->chip.info = hwmon->info;
-+	hwmon->info[0] = &hwmon->temp_info;
-+	hwmon->info[1] = &hwmon->in_info;
-+	hwmon->temp_info.type = hwmon_temp;
-+	hwmon->temp_info.config = hwmon->temp_config;
-+	hwmon->in_info.type = hwmon_in;
-+	hwmon->in_info.config = hwmon->in_config;
++	data->core_prev_value = devm_kcalloc(dev, nr_cpus,
++				sizeof(u64), GFP_KERNEL);
++	if (!data->core_prev_value)
++		return -ENOMEM;
 +
-+	groups = pdata->fan_base ? gsc_hwmon_groups : NULL;
-+	hwmon_dev = devm_hwmon_device_register_with_info(dev,
-+							 KBUILD_MODNAME, hwmon,
-+							 &hwmon->chip, groups);
-+	return PTR_ERR_OR_ZERO(hwmon_dev);
++	info->type = type;
++	info->config = s_config;
++
++	for (i = 0; i < nr_cpus + nr_socks; i++)
++		s_config[i] = config;
++
++	return 0;
 +}
 +
-+static const struct of_device_id gsc_hwmon_of_match[] = {
-+	{ .compatible = "gw,gsc-adc", },
++static int amd_energy_probe(struct platform_device *pdev)
++{
++	struct device *hwmon_dev;
++	struct amd_energy_data *data;
++	struct device *dev = &pdev->dev;
++	int ret;
++
++	data = devm_kzalloc(dev,
++			    sizeof(struct amd_energy_data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->chip.ops = &amd_energy_ops;
++	data->chip.info = data->info;
++
++	/* Populate per-core energy reporting */
++	data->info[0] = &data->energy_info;
++	amd_create_sensor(dev, data,  hwmon_energy,
++			  HWMON_E_INPUT | HWMON_E_LABEL);
++
++	mutex_init(&data->lock);
++
++	ret = get_energy_units(data);
++	if (ret)
++		return ret;
++
++	hwmon_dev = devm_hwmon_device_register_with_info(dev, DRVNAME,
++							 data,
++							 &data->chip,
++							 NULL);
++	if (IS_ERR(hwmon_dev))
++		return PTR_ERR(hwmon_dev);
++
++	wrap_accumulate = kthread_run(energy_accumulator, data,
++				      "%s", dev_name(hwmon_dev));
++	if (IS_ERR(wrap_accumulate))
++		return PTR_ERR(wrap_accumulate);
++
++	return PTR_ERR_OR_ZERO(wrap_accumulate);
++}
++
++static int amd_energy_remove(struct platform_device *pdev)
++{
++	if (wrap_accumulate)
++		kthread_stop(wrap_accumulate);
++
++	return 0;
++}
++
++static const struct platform_device_id amd_energy_ids[] = {
++	{ .name = DRVNAME, },
 +	{}
 +};
++MODULE_DEVICE_TABLE(platform, amd_energy_ids);
 +
-+static struct platform_driver gsc_hwmon_driver = {
++static struct platform_driver amd_energy_driver = {
++	.probe = amd_energy_probe,
++	.remove	= amd_energy_remove,
++	.id_table = amd_energy_ids,
 +	.driver = {
-+		.name = "gsc-hwmon",
-+		.of_match_table = gsc_hwmon_of_match,
++		.name = DRVNAME,
 +	},
-+	.probe = gsc_hwmon_probe,
 +};
 +
-+module_platform_driver(gsc_hwmon_driver);
++static struct platform_device *amd_energy_platdev;
 +
-+MODULE_AUTHOR("Tim Harvey <tharvey@gateworks.com>");
-+MODULE_DESCRIPTION("GSC hardware monitor driver");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/platform_data/gsc_hwmon.h b/include/linux/platform_data/gsc_hwmon.h
-new file mode 100644
-index 00000000..ec1611a
---- /dev/null
-+++ b/include/linux/platform_data/gsc_hwmon.h
-@@ -0,0 +1,44 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _GSC_HWMON_H
-+#define _GSC_HWMON_H
-+
-+enum gsc_hwmon_mode {
-+	mode_temperature,
-+	mode_voltage,
-+	mode_voltage_raw,
-+	mode_max,
++static const struct x86_cpu_id cpu_ids[] __initconst = {
++	X86_MATCH_VENDOR_FAM(AMD, 0x17, NULL),
++	{}
 +};
++MODULE_DEVICE_TABLE(x86cpu, cpu_ids);
 +
-+/**
-+ * struct gsc_hwmon_channel - configuration parameters
-+ * @reg:  I2C register offset
-+ * @mode: channel mode
-+ * @name: channel name
-+ * @mvoffset: voltage offset
-+ * @vdiv: voltage divider array (2 resistor values in milli-ohms)
-+ */
-+struct gsc_hwmon_channel {
-+	unsigned int reg;
-+	unsigned int mode;
-+	const char *name;
-+	unsigned int mvoffset;
-+	unsigned int vdiv[2];
-+};
++static int __init amd_energy_init(void)
++{
++	int ret;
 +
-+/**
-+ * struct gsc_hwmon_platform_data - platform data for gsc_hwmon driver
-+ * @channels:	pointer to array of gsc_hwmon_channel structures
-+ *		describing channels
-+ * @nchannels:	number of elements in @channels array
-+ * @vreference: voltage reference (mV)
-+ * @resolution: ADC bit resolution
-+ * @fan_base: register base for FAN controller
-+ */
-+struct gsc_hwmon_platform_data {
-+	const struct gsc_hwmon_channel *channels;
-+	int nchannels;
-+	unsigned int resolution;
-+	unsigned int vreference;
-+	unsigned int fan_base;
-+};
-+#endif
++	if (!x86_match_cpu(cpu_ids))
++		return -ENODEV;
++
++	ret = platform_driver_register(&amd_energy_driver);
++	if (ret)
++		return ret;
++
++	amd_energy_platdev = platform_device_alloc(DRVNAME, 0);
++	if (!amd_energy_platdev)
++		return -ENOMEM;
++
++	ret = platform_device_add(amd_energy_platdev);
++	if (ret) {
++		platform_device_put(amd_energy_platdev);
++		platform_driver_unregister(&amd_energy_driver);
++		return ret;
++	}
++
++	return ret;
++}
++
++static void __exit amd_energy_exit(void)
++{
++	platform_device_unregister(amd_energy_platdev);
++	platform_driver_unregister(&amd_energy_driver);
++}
++
++module_init(amd_energy_init);
++module_exit(amd_energy_exit);
++
++MODULE_DESCRIPTION("Driver for AMD Energy reporting from RAPL MSR via HWMON interface");
++MODULE_AUTHOR("Naveen Krishna Chatradhi <nchatrad@amd.com>");
++MODULE_LICENSE("GPL");
 -- 
-2.7.4
+2.17.1
 
