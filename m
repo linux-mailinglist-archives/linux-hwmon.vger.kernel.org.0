@@ -2,280 +2,178 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78DCF1D4BB6
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2020 12:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 981A41D5420
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2020 17:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726610AbgEOKyl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 15 May 2020 06:54:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57280 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726242AbgEOKyk (ORCPT
+        id S1726889AbgEOPSZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 15 May 2020 11:18:25 -0400
+Received: from lists.gateworks.com ([108.161.130.12]:58520 "EHLO
+        lists.gateworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726263AbgEOPSX (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 15 May 2020 06:54:40 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F835C05BD0A
-        for <linux-hwmon@vger.kernel.org>; Fri, 15 May 2020 03:54:40 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id g12so2155793wmh.3
-        for <linux-hwmon@vger.kernel.org>; Fri, 15 May 2020 03:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=IwrZ0WdoI5tZaZzzOBHL3SSlbNqaieIG8m76ANK/LD8=;
-        b=MBp8l35N8cKa9fTo/EyMr3FAsY3MQBon2114fVllM/wNd3CGTCAFUUlZAphgy5RCCy
-         ghj+obFDAoKbTJqw4oE8AryLhZT6uxGd3xAx4IoKKrPHqLs679Iyvr8k5U6k5o2v3RBr
-         2sV/5PVNAIP1LcYIEg6pqF8Avscb2kMgK6d9/fvRUYWef7VKipRs6M4IQigW01T2boG2
-         Py4huMMZrexFmDFRF6i7bGE8FzueSLDOphT2qW9q9fg+9atNbtT1pIRBMbG9h8N4gYgE
-         moXyl+1xyPlKAVm4JJr+At7nxv+16u9ouH+WSD4ePVjddrzrGB6j7//B0TN4CSapwohb
-         vBPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=IwrZ0WdoI5tZaZzzOBHL3SSlbNqaieIG8m76ANK/LD8=;
-        b=OMSBBz3u9ahWrpa4ibUC7xzIaeCwfOO8Ep3pdvAnQTJiLK6Z0vIWNLbSV3gKqglGiH
-         OABf4e05RU0VReaI1Nr6HvkR10ETn6A1SyUwSh5LM4mDzrDdnjYHo13Y1uqs3p6u9E56
-         K4H23L41d9uAgHo3UH/qXYh9cbrn1BxJRzDhVFbgJmuV2NZA6Nf3CT4HduJpSzzt6r0A
-         IdBqU+EpaUCWzQalmPFVDLjzg3Osn+hnS/PqdndmYpT+CrhZsw4qogOAOK2XsYbAbHma
-         QsYSma3hpI5bElxx7+wcQ4n0S/eATbrBXJcon53oqZfXTcEEbZrvEmcUSsCWWTsamqBb
-         077Q==
-X-Gm-Message-State: AOAM531KoULhoSrzkNLRoQIrcaECcoafql6pL+f9UegkCEpUYol48GTn
-        fd4US1gxBUddnvWC28CPVdYU7w==
-X-Google-Smtp-Source: ABdhPJx+z4WBxH2HwMhoKEV3PPTzm/r8BuYaChb1qiTcaH/Ubdn66OddDUT3aEyOp6gk2w/z6HiMFg==
-X-Received: by 2002:a05:600c:29a:: with SMTP id 26mr3595042wmk.151.1589540078883;
-        Fri, 15 May 2020 03:54:38 -0700 (PDT)
-Received: from dell ([2.31.163.63])
-        by smtp.gmail.com with ESMTPSA id m82sm3215702wmf.3.2020.05.15.03.54.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2020 03:54:38 -0700 (PDT)
-Date:   Fri, 15 May 2020 11:54:36 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Tim Harvey <tharvey@gateworks.com>
-Cc:     Jean Delvare <jdelvare@suse.com>,
+        Fri, 15 May 2020 11:18:23 -0400
+Received: from 068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+        by lists.gateworks.com with esmtp (Exim 4.82)
+        (envelope-from <tharvey@gateworks.com>)
+        id 1jZc8s-0004Ex-88; Fri, 15 May 2020 15:20:54 +0000
+From:   Tim Harvey <tharvey@gateworks.com>
+To:     Lee Jones <lee.jones@linaro.org>, Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
         linux-hwmon@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Robert Jones <rjones@gateworks.com>
-Subject: Re: [PATCH v9 2/3] mfd: add Gateworks System Controller core driver
-Message-ID: <20200515105436.GL271301@dell>
-References: <1588259247-15536-1-git-send-email-tharvey@gateworks.com>
- <1588259247-15536-3-git-send-email-tharvey@gateworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1588259247-15536-3-git-send-email-tharvey@gateworks.com>
+Cc:     Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH v10 0/3] Add support for the Gateworks System Controller
+Date:   Fri, 15 May 2020 08:18:08 -0700
+Message-Id: <1589555891-16502-1-git-send-email-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, 30 Apr 2020, Tim Harvey wrote:
+This series adds support for the Gateworks System Controller used on Gateworks
+Laguna, Ventana, and Newport product families.
 
-> The Gateworks System Controller (GSC) is an I2C slave controller
-> implemented with an MSP430 micro-controller whose firmware embeds the
-> following features:
->  - I/O expander (16 GPIO's) using PCA955x protocol
->  - Real Time Clock using DS1672 protocol
->  - User EEPROM using AT24 protocol
->  - HWMON using custom protocol
->  - Interrupt controller with tamper detect, user pushbotton
->  - Watchdog controller capable of full board power-cycle
->  - Power Control capable of full board power-cycle
-> 
-> see http://trac.gateworks.com/wiki/gsc for more details
-> 
-> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-> ---
-> v9:
-> - rebase against 5.7-rc2
-> - cleanup gsc_powerdown() by using BIT(), put_unaligned_le32(), and avoid
->   unnecessary assignments
-> - rename GSC_CTRL_1 SLEEP related defines to simplify
-> - add better description and sub-module info to driver description
-> - whitespace changes per review
-> - remove unused irq_data pointer in ddata
-> - remove unnecesary i2c_set_clientdata
-> - use devm_i2c_new_dummy_device to avoid need of free's
-> - change regsiter definitions to enum
-> - export gsc_{read,write} instead of sharing them via ddata
-> 
-> v8:
-> - whitespace fixes
-> - describe sub-devices in Kconfig
-> - add error print for invalid command
-> - update copyright
-> - use devm_of_platform_populate
-> - use probe_new
-> - move hwmon's regmap init to hwmon
-> 
-> v7:
-> - remove irq from private data struct
-> 
-> v6:
-> - remove duplicate signature and fix commit log
-> 
-> v5:
-> - simplify powerdown function
-> 
-> v4:
-> - remove hwmon max reg check/define
-> - fix powerdown function
-> 
-> v3:
-> - rename gsc->gateworks-gsc
-> - remove uncecessary include for linux/mfd/core.h
-> - upercase I2C in comments
-> - remove i2c debug
-> - remove uncecessary comments
-> - don't use KBUILD_MODNAME for name
-> - remove unnecessary v1/v2/v3 tracking
-> - unregister hwmon i2c adapter on remove
-> 
-> v2:
-> - change license comment block style
-> - remove COMPILE_TEST (Randy)
-> - fixed whitespace issues
-> - replaced a printk with dev_err
-> ---
->  MAINTAINERS                 |   8 ++
->  drivers/mfd/Kconfig         |  16 +++
->  drivers/mfd/Makefile        |   1 +
->  drivers/mfd/gateworks-gsc.c | 284 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/gsc.h     |  76 ++++++++++++
->  5 files changed, 385 insertions(+)
->  create mode 100644 drivers/mfd/gateworks-gsc.c
->  create mode 100644 include/linux/mfd/gsc.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b816a45..035dfb9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7032,6 +7032,14 @@ F:	kernel/futex.c
->  F:	tools/perf/bench/futex*
->  F:	tools/testing/selftests/futex/
->  
-> +GATEWORKS SYSTEM CONTROLLER (GSC) DRIVER
-> +M:	Tim Harvey <tharvey@gateworks.com>
-> +M:	Robert Jones <rjones@gateworks.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
-> +F:	drivers/mfd/gateworks-gsc.c
-> +F:	include/linux/mfd/gsc.h
-> +
->  GASKET DRIVER FRAMEWORK
->  M:	Rob Springer <rspringer@google.com>
->  M:	Todd Poynor <toddpoynor@google.com>
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 0a59249..d7546cd 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -407,6 +407,22 @@ config MFD_EXYNOS_LPASS
->  	  Select this option to enable support for Samsung Exynos Low Power
->  	  Audio Subsystem.
->  
-> +config MFD_GATEWORKS_GSC
-> +	tristate "Gateworks System Controller"
-> +	depends on (I2C && OF)
-> +	select MFD_CORE
-> +	select REGMAP_I2C
-> +	select REGMAP_IRQ
-> +	help
-> +	  Enable support for the Gateworks System Controller (GSC) found
-> +	  on Gateworks Single Board Computers supporting system system
+The GSC is an MSP430 I2C slave controller whose firmware embeds the following
+features:
+ - I/O expander (16 GPIO's emulating a PCA955x)
+ - EEPROM (enumating AT24)
+ - RTC (enumating DS1672)
+ - HWMON
+ - Interrupt controller with tamper detect, user pushbotton
+ - Watchdog controller capable of full board power-cycle
+ - Power Control capable of full board power-cycle
 
-"system"
+see http://trac.gateworks.com/wiki/gsc for more details
 
-> +	  functions such as pushbutton monitor, multiple ADC's for voltage
+v10:
+ - mfd: fix typo and gramatical errors in Kconfig and comment block
+ - mfd: drop unused i2c device-id table
+ - mfd: added Lee's ack in s-o-b
 
-"push-button"
-
-> +	  and temperature, fan controller, and watchdog monitor. This
-
-"voltage and temperature" what?
-
-Monitoring, adjusting, guessing, mixing, matching?
-
-I'd drop the pre-and comma myself.
-
-> +	  driver provides common support for accessing the device and
-
-Turn the "and" into a full-stop.
-
-> +	  additional drivers must be enabled in order to use the
-> +	  functionality of the device:
-> +		gsc-hwmon for ADC readings and fan controller support
-
-What does this line represent?  Is it an example?
-
->  config MFD_MC13XXX
->  	tristate
->  	depends on (SPI_MASTER || I2C)
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index f935d10..ed433ae 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -15,6 +15,7 @@ obj-$(CONFIG_MFD_BCM590XX)	+= bcm590xx.o
->  obj-$(CONFIG_MFD_BD9571MWV)	+= bd9571mwv.o
->  obj-$(CONFIG_MFD_CROS_EC_DEV)	+= cros_ec_dev.o
->  obj-$(CONFIG_MFD_EXYNOS_LPASS)	+= exynos-lpass.o
-> +obj-$(CONFIG_MFD_GATEWORKS_GSC)	+= gateworks-gsc.o
->  
->  obj-$(CONFIG_HTC_PASIC3)	+= htc-pasic3.o
->  obj-$(CONFIG_HTC_I2CPLD)	+= htc-i2cpld.o
-> diff --git a/drivers/mfd/gateworks-gsc.c b/drivers/mfd/gateworks-gsc.c
-> new file mode 100644
-> index 00000000..796effb
-> --- /dev/null
-> +++ b/drivers/mfd/gateworks-gsc.c
-> @@ -0,0 +1,284 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * The Gateworks System Controller (GSC) is a multi-function
-> + * device designed for use in Gateworks Single Board Computers.
-> + * The control interface is I2C, with an interrupt. The device supports
-> + * system functions such as pushbutton monitoring, multiple ADC's for
-> + * voltage and temperature, fan controller, and watchdog monitor.
-
-As above.
-
-> + * Copyright (C) 2020 Gateworks Corporation
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/i2c.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/mfd/gsc.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/of.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +
-> +#include <asm/unaligned.h>
-
-[...]
-
-> +static const struct i2c_device_id gsc_id_table[] = {
-> +	{ "gsc", GSC_MISC },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, gsc_id_table);
-
-Using probe_new means you can omit this unused table.
-
-Once all of the above has been fixed, please add my:
+v9:
+ - rebase against 5.7-rc2
+ - dt-binding: remove allOf: see https://lkml.org/lkml/2020/4/15/1930
+ - dt-binding: encorporate Lee's review comments for item descriptions
+ - dt-binding: added Reviewed-by: Rob Herring <robh@kernel.org>
+ - mfd: cleanup gsc_powerdown() by using BIT(), put_unaligned_le32(), and
+   avoid unnecessary assignments
+ - mfd: rename GSC_CTRL_1 SLEEP related defines to simplify
+ - mfd: add better description and sub-module info to driver description
+ - mfd: whitespace changes per review
+ - mfd: remove unused irq_data pointer in ddata
+ - mfd: remove unnecesary i2c_set_clientdata
+ - mfd: use devm_i2c_new_dummy_device to avoid need of free's
+ - mfd: change regsiter definitions to enum
+ - mfd: export gsc_{read,write} instead of sharing them via ddata
+ - hwmon: use exported gsc_{read,write}
+ - hwmon: added Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
 
-For my own reference (apply this as-is to your sign-off block):
+v8:
+ - mfd: whitespace fixes
+ - mfd: describe sub-devices in Kconfig
+ - mfd: add error print for invalid command
+ - mfd: update copyright
+ - mfd: use devm_of_platform_populate
+ - mfd: use probe_new
+ - mfd: move hwmon's regmap init to hwmon
+ - hwmon: move hwmon's regmap init to hwmon
+ - dt-bindings: add register to fan-controller node name
 
-  Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+v7:
+ - dt-bindings: change divider from mili-ohms to ohms
+ - dt-bindings: add constraints for voltage divider and offset
+ - dt-bindings: remove unnecessary ref for offset
+ - dt-bindings: renamed fan to fan-controller and changed base prop to reg
+ - mfd:  remove irq from private data struct
+ - hwmon: fix whitespace in Kconfig
+ - hwmon: remove unnecessary device pointer in private data
+ - hwmon: change divider from mili-ohms to ohms
+ - hwmon: move fan base property to reg
+
+v6:
+ - hwmon: fix size of info field
+ - hwmon: improve pwm output control documentation
+ - hwmon: include unit suffix in divider and offset
+ - hwmon: change subnode name to gsc-adc
+ - hwmon: change to fan subnode
+ - hwmon: fix voltage offset
+ - dt-bindings: fix commit message typo
+ - dt-bindings: drop invalid description from #interrupt-cells property
+ - dt-bindings: fix adc pattern property
+ - dt-bindings: add unit suffix
+ - dt-bindings: replace hwmon/adc with adc/channel
+ - dt-bindings: changed adc type to gw,mode
+ - dt-bindings: add unit suffix and drop ref for voltage-divider
+ - dt-bindings: add unit suffix for voltage-offset
+ - dt-bindings: moved fan to its own subnode with base register
+
+v5:
+ - fix checkpatch issues
+ - fix dt_binding_check issues
+ - address feedback from v4
+
+v4:
+ - hwmon: move to using pwm<n>_auto_point<m>_{pwm,temp} for FAN PWM
+ - hwmon: remove unncessary resolution/scaling properties for ADCs
+ - bindings: update to yaml Documentation
+ - removed watchdog driver
+
+v3:
+ - removed unnecessary input driver
+ - added wdt driver
+ - bindings: encorporated feedback from mailng list
+ - hwmon:
+ - encoroprated feedback from mailng list
+ - added support for raw ADC voltage input used in newer GSC firmware
+
+v2:
+ - change license comment block style
+ - remove COMPILE_TEST
+ - fixed whitespace issues
+ - replaced a printk with dev_err
+ - remove DEBUG
+ - simplify regmap_bulk_read err check
+ - remove break after returns in switch statement
+ - fix fan setpoint buffer address
+ - remove unnecessary parens
+ - consistently use struct device *dev pointer
+ - add validation for hwmon child node props
+ - move parsing of of to own function
+ - use strlcpy to ensure null termination
+ - fix static array sizes and removed unnecessary initializers
+ - dynamically allocate channels
+ - fix fan input label
+ - support platform data
+
+Tim Harvey (3):
+  dt-bindings: mfd: Add Gateworks System Controller bindings
+  mfd: add Gateworks System Controller core driver
+  hwmon: add Gateworks System Controller support
+
+ .../devicetree/bindings/mfd/gateworks-gsc.yaml     | 196 +++++++++++
+ Documentation/hwmon/gsc-hwmon.rst                  |  53 +++
+ Documentation/hwmon/index.rst                      |   1 +
+ MAINTAINERS                                        |  11 +
+ drivers/hwmon/Kconfig                              |   9 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/gsc-hwmon.c                          | 390 +++++++++++++++++++++
+ drivers/mfd/Kconfig                                |  15 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/gateworks-gsc.c                        | 278 +++++++++++++++
+ include/linux/mfd/gsc.h                            |  76 ++++
+ include/linux/platform_data/gsc_hwmon.h            |  44 +++
+ 12 files changed, 1075 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml
+ create mode 100644 Documentation/hwmon/gsc-hwmon.rst
+ create mode 100644 drivers/hwmon/gsc-hwmon.c
+ create mode 100644 drivers/mfd/gateworks-gsc.c
+ create mode 100644 include/linux/mfd/gsc.h
+ create mode 100644 include/linux/platform_data/gsc_hwmon.h
 
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.7.4
+
