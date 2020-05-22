@@ -2,38 +2,38 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C423B1DEAEB
-	for <lists+linux-hwmon@lfdr.de>; Fri, 22 May 2020 16:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 687851DEA81
+	for <lists+linux-hwmon@lfdr.de>; Fri, 22 May 2020 16:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730747AbgEVOul (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 22 May 2020 10:50:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52022 "EHLO mail.kernel.org"
+        id S1730956AbgEVOvQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 22 May 2020 10:51:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53042 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730760AbgEVOuj (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 22 May 2020 10:50:39 -0400
+        id S1730951AbgEVOvP (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 22 May 2020 10:51:15 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5DBF72247F;
-        Fri, 22 May 2020 14:50:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CAEC722409;
+        Fri, 22 May 2020 14:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590159039;
+        s=default; t=1590159075;
         bh=hu3+Cu1mobOMU0osGTqGMIyMafxT7FTy0kESiJ1M/lw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fammMrLirTc5lzIQUGKZo7zLbakTOjFESi8mpYY2Sw+u7cqdNTPIk2zOdElkWOm93
-         M4/EDzFY89lwN0sTABsM/2b43cCBcmaDzba9PhQ4eN6Ofm8N8+K5RkpW3s1UlS5QFL
-         de0JGVz+NGzB9sC6VB+vq2YtYDrYV2IgO7QYG8co=
+        b=EkPHO2k4e2bXlRR9qq6KARoWbQ7DXt84iE6cXl973pOg55CD6fysbbSjE/ZOy9xbC
+         lu3MbG2jCPHchjyxR61Yiqk6Xy2rkWJG6L0tYuQft6OcdbJk44Cb0r4N2AhBwG+xVq
+         VM0T/JmfmxjBzZiZ5Vi73tzuToJoovya1LONvSds=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Amy Shih <amy.shih@advantech.com.tw>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 36/41] hwmon: (nct7904) Fix incorrect range of temperature limit registers
-Date:   Fri, 22 May 2020 10:49:53 -0400
-Message-Id: <20200522144959.434379-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 28/32] hwmon: (nct7904) Fix incorrect range of temperature limit registers
+Date:   Fri, 22 May 2020 10:50:40 -0400
+Message-Id: <20200522145044.434677-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200522144959.434379-1-sashal@kernel.org>
-References: <20200522144959.434379-1-sashal@kernel.org>
+In-Reply-To: <20200522145044.434677-1-sashal@kernel.org>
+References: <20200522145044.434677-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
