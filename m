@@ -2,85 +2,63 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 687851DEA81
-	for <lists+linux-hwmon@lfdr.de>; Fri, 22 May 2020 16:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1BA1DECBB
+	for <lists+linux-hwmon@lfdr.de>; Fri, 22 May 2020 18:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730956AbgEVOvQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 22 May 2020 10:51:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53042 "EHLO mail.kernel.org"
+        id S1730687AbgEVQDF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 22 May 2020 12:03:05 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:45830 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730951AbgEVOvP (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 22 May 2020 10:51:15 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1730434AbgEVQDE (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 22 May 2020 12:03:04 -0400
+Received: from zn.tnic (p200300ec2f0d4900b09f96a43b2d9a69.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:4900:b09f:96a4:3b2d:9a69])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CAEC722409;
-        Fri, 22 May 2020 14:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590159075;
-        bh=hu3+Cu1mobOMU0osGTqGMIyMafxT7FTy0kESiJ1M/lw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EkPHO2k4e2bXlRR9qq6KARoWbQ7DXt84iE6cXl973pOg55CD6fysbbSjE/ZOy9xbC
-         lu3MbG2jCPHchjyxR61Yiqk6Xy2rkWJG6L0tYuQft6OcdbJk44Cb0r4N2AhBwG+xVq
-         VM0T/JmfmxjBzZiZ5Vi73tzuToJoovya1LONvSds=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Amy Shih <amy.shih@advantech.com.tw>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 28/32] hwmon: (nct7904) Fix incorrect range of temperature limit registers
-Date:   Fri, 22 May 2020 10:50:40 -0400
-Message-Id: <20200522145044.434677-28-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200522145044.434677-1-sashal@kernel.org>
-References: <20200522145044.434677-1-sashal@kernel.org>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C2261EC02DD;
+        Fri, 22 May 2020 18:03:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1590163383;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=csSB0914Hrh/0IU4/pqgjvgE7wKnM+aJVmgN6mu2PUQ=;
+        b=FDO1NMHhN1dknm/vy0RpBLWpZYWFufOWVu2bVB1sePypQCadpOXztqhqu+7sx3RTw1gavi
+        i1RzOmCOPmTYw06gocNmrJXdCdgyso28Byssl5uXjK7zUuQ4Vo+/mVjf+NHdIkAFuYcoHO
+        CPfxrRSGN5WXwWhSl9KIGu71H7qV3XU=
+Date:   Fri, 22 May 2020 18:02:55 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Alexander Monakov <amonakov@ispras.ru>,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        x86@kernel.org, Yazen Ghannam <yazen.ghannam@amd.com>,
+        Brian Woods <brian.woods@amd.com>,
+        Clemens Ladisch <clemens@ladisch.de>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-edac@vger.kernel.org
+Subject: Re: [PATCH 1/3] x86/amd_nb: add AMD family 17h model 60h PCI IDs
+Message-ID: <20200522160255.GG28750@zn.tnic>
+References: <20200510204842.2603-1-amonakov@ispras.ru>
+ <20200510204842.2603-2-amonakov@ispras.ru>
+ <20200522144527.GA172805@roeck-us.net>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200522144527.GA172805@roeck-us.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Amy Shih <amy.shih@advantech.com.tw>
+On Fri, May 22, 2020 at 07:45:27AM -0700, Guenter Roeck wrote:
+> I didn't see a response from any of the x86 maintainers,
 
-[ Upstream commit 7b2fd270af27edaf02acb41a7babe805a9441914 ]
+It is on a TODO list and will be handled soon.
 
-The format of temperature limitation registers are 8-bit 2's complement
-and the range is -128~127.
-Converts the reading value to signed char to fix the incorrect range
-of temperature limitation registers.
+Thx.
 
-Signed-off-by: Amy Shih <amy.shih@advantech.com.tw>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/nct7904.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
-index 281c81edabc6..dfb122b5e1b7 100644
---- a/drivers/hwmon/nct7904.c
-+++ b/drivers/hwmon/nct7904.c
-@@ -356,6 +356,7 @@ static int nct7904_read_temp(struct device *dev, u32 attr, int channel,
- 	struct nct7904_data *data = dev_get_drvdata(dev);
- 	int ret, temp;
- 	unsigned int reg1, reg2, reg3;
-+	s8 temps;
- 
- 	switch (attr) {
- 	case hwmon_temp_input:
-@@ -461,7 +462,8 @@ static int nct7904_read_temp(struct device *dev, u32 attr, int channel,
- 
- 	if (ret < 0)
- 		return ret;
--	*val = ret * 1000;
-+	temps = ret;
-+	*val = temps * 1000;
- 	return 0;
- }
- 
 -- 
-2.25.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
