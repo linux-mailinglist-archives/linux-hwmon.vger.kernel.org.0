@@ -2,66 +2,151 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B00651DF9E1
-	for <lists+linux-hwmon@lfdr.de>; Sat, 23 May 2020 20:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB11C1E03C6
+	for <lists+linux-hwmon@lfdr.de>; Mon, 25 May 2020 00:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388056AbgEWSAb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 23 May 2020 14:00:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387957AbgEWSAV (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 23 May 2020 14:00:21 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B961C02A19E
-        for <linux-hwmon@vger.kernel.org>; Sat, 23 May 2020 11:00:20 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id ci23so6447852pjb.5
-        for <linux-hwmon@vger.kernel.org>; Sat, 23 May 2020 11:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=DLUdlLdqK1bsV3DbEuTTyBWxouo7TOwyxri4APWQD3NqiMSIjirU+KuWgkxjC+SPXd
-         U5bKcUrFxXkujPWjXtLFF/k/nfilKzP5EjBajrS/8510fneO07cpMqdcHCxwrpi40/q7
-         /O0e1HoJlTbh5NB1junI0CHT5u7OlL96wLc3EVtoU1jy6h6mu/94Ij3+HmmWjDrdLWVh
-         jTwO4Rc/jE6wel14tPJDJsn6k0/UDkI9Or/XCFS691xyvyogoxyI2h7yK06Suh6ePv/U
-         +lZz7VywgsFgSxYL/B5mLPOXcZ0fktkIkUnyPxHg9tbmvqat4Bb8GZAodniIxvBVB3XB
-         mJxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=SIYU6BdToBtXA1jzCJDIYuDM82q3FJgtWn3UeCOxoIUm+q4YMgAfKbwVl933OsZVtW
-         H0FIRBTqZsr9o1h81el/xQshDmY+RcoPN+4JMJb84i09po0/iRB96kUiQlYuADE7OkzV
-         Q+44gYgwqOe6esQUt26XUD2i/8ca9kParYr13KXGjitg1GZ8KYFung2Zeu2xRLOrFiO0
-         2q55uDgOO7XlcWcrOkLPdtgpgEsVI5ZPxOfN8Q3/1ghEF2+DbIGg+mS8f+ls89OvRwl9
-         ECsuPD7+ISXKPk99PYsCQIwRox0SKW81E4WQp7svK5Bk/cGdfo1I4X0c8RfVfdzQEle9
-         vnAg==
-X-Gm-Message-State: AOAM5336hrIVmhAgWVus72gtAhMB+8aNTV/NVxX93TceyTSmXyzZe4W/
-        1QR4EL1cQndHXZVAZkVR2z8C332wdT++/LNkv4nY33ly
-X-Google-Smtp-Source: ABdhPJxI0GNvtYFRzubiNKehFnBmeNa8IdxO7hQ3TxAldsg7mTxyy0v9X6v2Fayhxp/lnxt7tCbB9QFJVJ60H98MgEQ=
-X-Received: by 2002:a0c:ed4b:: with SMTP id v11mr9120627qvq.179.1590256818769;
- Sat, 23 May 2020 11:00:18 -0700 (PDT)
+        id S2388412AbgEXWoi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 24 May 2020 18:44:38 -0400
+Received: from mga18.intel.com ([134.134.136.126]:49128 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388407AbgEXWoi (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 24 May 2020 18:44:38 -0400
+IronPort-SDR: snBMxoxdYhWOz6yxXG3REqh805lpmxejnB6xmHASb2YPVGZ5yE8ydQ0I9uIqZPE+bSD8+5gzjd
+ 3x9KF7KYblPQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2020 15:44:37 -0700
+IronPort-SDR: DEaRfanRYDu8MQrLuodPyL/84ha0y3TVRqfr+V7SFYhrM1FttYa1jIkX0xSIJzjOZ7PyUG30tJ
+ vdsYLWzYwOBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,431,1583222400"; 
+   d="scan'208";a="290695618"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 24 May 2020 15:44:36 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jczMB-0003hU-Ba; Mon, 25 May 2020 06:44:35 +0800
+Date:   Mon, 25 May 2020 06:44:11 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [hwmon:hwmon-next] BUILD SUCCESS
+ 8054eadca71492f1c9421bcd58ac40f61d5e6e61
+Message-ID: <5ecaf8bb.Yr/pld6G7GNIB6U3%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Received: by 2002:aed:3ac5:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:18
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   mrs chantal <mrs.chantaltwo@gmail.com>
-Date:   Sat, 23 May 2020 18:00:18 +0000
-Message-ID: <CAGVwK0UnqGdMqCxvjeR06i5Ca=SScOHB3E1kfQEUa4_tgZN-cQ@mail.gmail.com>
-Subject: jjCompliment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
+branch HEAD: 8054eadca71492f1c9421bcd58ac40f61d5e6e61  Merge tag 'ib-mfd-hwmon-v5.8' into hwmon-next
+
+elapsed time: 3323m
+
+configs tested: 92
+configs skipped: 1
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+mips                             allyesconfig
+m68k                             allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+sh                               allmodconfig
+arc                              allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+i386                 randconfig-a001-20200524
+i386                 randconfig-a004-20200524
+i386                 randconfig-a006-20200524
+i386                 randconfig-a003-20200524
+i386                 randconfig-a002-20200524
+i386                 randconfig-a005-20200524
+i386                 randconfig-a001-20200521
+i386                 randconfig-a004-20200521
+i386                 randconfig-a006-20200521
+i386                 randconfig-a003-20200521
+i386                 randconfig-a002-20200521
+i386                 randconfig-a005-20200521
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+x86_64                              defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                                allnoconfig
+um                                  defconfig
+um                               allmodconfig
+um                               allyesconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
