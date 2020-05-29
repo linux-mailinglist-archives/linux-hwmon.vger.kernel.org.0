@@ -2,139 +2,114 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C96771E7DED
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2020 15:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098101E7EB7
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2020 15:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727098AbgE2NGY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 29 May 2020 09:06:24 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:30178 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727089AbgE2NGY (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 29 May 2020 09:06:24 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04TCxZN1028270;
-        Fri, 29 May 2020 09:06:05 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 316wp8c215-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 May 2020 09:06:05 -0400
-Received: from SCSQMBX11.ad.analog.com (scsqmbx11.ad.analog.com [10.77.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 04TD63m0003743
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 29 May 2020 09:06:04 -0400
-Received: from SCSQCASHYB7.ad.analog.com (10.77.17.133) by
- SCSQMBX11.ad.analog.com (10.77.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 29 May 2020 06:06:02 -0700
-Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by
- SCSQCASHYB7.ad.analog.com (10.77.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 29 May 2020 06:06:02 -0700
-Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
- (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Fri, 29 May 2020 06:06:02 -0700
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 04TD5pKS026894;
-        Fri, 29 May 2020 09:06:00 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <robh+dt@kernel.org>, <linux@roeck-us.net>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH v3 6/6] dt-bindings: hwmon: Add bindings for ADM1266
-Date:   Fri, 29 May 2020 16:05:06 +0300
-Message-ID: <20200529130506.73511-7-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200529130506.73511-1-alexandru.tachici@analog.com>
-References: <20200529130506.73511-1-alexandru.tachici@analog.com>
+        id S1726924AbgE2N3p (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 29 May 2020 09:29:45 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55040 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726629AbgE2N3p (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 29 May 2020 09:29:45 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id B89CEAF30;
+        Fri, 29 May 2020 13:29:42 +0000 (UTC)
+Date:   Fri, 29 May 2020 15:29:37 +0200
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     "Darrick J. Wong" <darrick.wong@oracle.com>,
+        linux-hwmon@vger.kernel.org,
+        Joshua Scott <joshua.scott@alliedtelesis.co.nz>,
+        Axel Lin <axel.lin@ingics.com>
+Subject: Re: Questions about adt7470 driver
+Message-ID: <20200529152937.08898e73@endymion>
+In-Reply-To: <4ddb3fb5-8461-8269-5fa1-ca8421342903@roeck-us.net>
+References: <20200526112259.4356fb2f@endymion>
+        <20200527224252.GB89212@roeck-us.net>
+        <20200527233334.GL252930@magnolia>
+        <20200528120256.63023d63@endymion>
+        <4ddb3fb5-8461-8269-5fa1-ca8421342903@roeck-us.net>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-29_07:2020-05-28,2020-05-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015
- malwarescore=0 mlxscore=0 lowpriorityscore=0 cotscore=-2147483648
- spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005290104
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Thu, 28 May 2020 06:52:37 -0700, Guenter Roeck wrote:
+> On 5/28/20 3:02 AM, Jean Delvare wrote:
+> > Well it's still in use and apparently at least one user cares enough to
+> > report a bug and propose a candidate fix.
+>
+> ... but at the same time that user doesn't have any temperature sensors
+> installed and won't be able to test any changes.
 
-Add bindings for the Analog Devices ADM1266 sequencer.
+They would be able to test the rest of the driver still. Plus I have a
+register dump which I am feeding i2c-stub with, and that lets me test
+the driver to some extent. God bless Mark M. Hoffman!
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- .../bindings/hwmon/adi,adm1266.yaml           | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
+What I can't test are timing issues, and hardware misbehavior as
+described by Darrick.
 
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-new file mode 100644
-index 000000000000..76b62be48d56
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/adi,adm1266.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADM1266 Cascadable Super Sequencer with Margin
-+  Control and Fault Recording
-+
-+maintainers:
-+  - Alexandru Tachici <alexandru.tachici@analog.com>
-+
-+description: |
-+  Analog Devices ADM1266 Cascadable Super Sequencer with Margin
-+  Control and Fault Recording.
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ADM1266.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adm1266
-+
-+  reg:
-+    description: |
-+      I2C address of slave device.
-+    items:
-+      minimum: 0x40
-+      maximum: 0x4F
-+
-+  avcc-supply:
-+    description: |
-+      Phandle to the Avcc power supply.
-+
-+  adi,master-adm1266:
-+    description: |
-+      Represents phandle of a master ADM1266 device cascaded through the IDB.
-+    $ref: "/schemas/types.yaml#/definitions/phandle"
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    i2c0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adm1266@40 {
-+                compatible = "adi,adm1266";
-+                reg = <0x40>;
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+        };
-+    };
-+...
+> > (...)
+> > 4* Why are you calling msleep_interruptible() in
+> > adt7470_read_temperatures() to wait for the temperature conversions? We
+> > return -EAGAIN if that happens, but then ignore that error code, and we
+> > log a cryptic error message. Do I understand correctly that the only
+> > case where this should happen is when the user unloads the kernel
+> > driver, in which case we do not care about having been interrupted? I
+> > can't actually get the error message to be logged when rmmod'ing the
+> > module so I don't know what it would take to trigger it.
+> 
+> Not sure if rmmod generates a signal.
+
+I tested and it doesn't seem so. I expected rmmod to call
+adt7470_remove(), in turn calling kthread_stop() and I thought this
+would interrupt the thread. But the interrupt message never gets logged.
+
+"modprobe adt7470 && rmmod adt7470" takes 2 seconds, so I assume that
+rmmod gives the thread all the time it wants to exit on its own
+(through kthread_should_stop()).
+
+> In theory you could possibly
+> keep writing -1 into the num_temp_sensors attribute, execute the
+> sensors command (or just read a temperature), and interrupt the
+> sequence.
+
+Interrupt how? I tried Ctrl+C while "sensors" is waiting for the driver
+to update the values, but it waits for completion before actually
+exiting.
+
+So far I couldn't find any way to get this msleep_interruptible() to
+actually get interrupted.
+
+> (...)
+> The datasheet says nothing about the need to run such a thread for
+> automatic mode either.
+
+But that at least makes some sense due to the external nature of the
+thermal sensors. The data needs to be fetched from the slaves somehow
+before you can read it from the ADT7470's registers.
+
+On the other hand, having to change PWM configuration registers for
+temperature readings to be correct (/if/ that's what is happening
+here... not sure) is highly unexpected.
+
+> As I understand it, the chip is supposed to
+> repeat temperature measurements automatically once configuration
+> register 1 bit 7 is set. Of course that is difficult if not
+> impossible to confirm without access to the chip.
+
+Well there's clearly a huge design mistake for that chip, sharing a
+pin between FULL_SPEED and TMP_START makes it pretty much impossible
+for automatic temperature monitoring to be implemented without a
+software loop. And a hardware monitor device that can't run on its own
+is just asking for trouble. Oh well.
+
 -- 
-2.20.1
-
+Jean Delvare
+SUSE L3 Support
