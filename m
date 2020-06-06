@@ -2,122 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E62CC1F068B
-	for <lists+linux-hwmon@lfdr.de>; Sat,  6 Jun 2020 14:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A50C1F08F0
+	for <lists+linux-hwmon@lfdr.de>; Sun,  7 Jun 2020 00:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728751AbgFFMpu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 6 Jun 2020 08:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60762 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728102AbgFFMpt (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 6 Jun 2020 08:45:49 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF62C03E96A;
-        Sat,  6 Jun 2020 05:45:49 -0700 (PDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 999A322EE3;
-        Sat,  6 Jun 2020 14:45:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1591447546;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gM7IewjQCAkSDvRzyGMjXyQ6q6nkyRovpb2OhFZgErU=;
-        b=KuYGZZ03XJdDL/35fA1elmt+MIj+rU+0eKSys+0i1Gm2egVv5RXaD3aFB3MbhRgnovcamY
-        4aT7AEghDPLkUWLir3HVwjqlo7DG4MYmumZOnXR3FIRnd/DzSgbqimwkYeeY+6keWPjTC2
-        uwzuGiRic8TGrOkkEq19V8gU90hnB3Y=
+        id S1728510AbgFFW1C (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 6 Jun 2020 18:27:02 -0400
+Received: from sonic305-3.consmr.mail.bf2.yahoo.com ([74.6.133.42]:38460 "EHLO
+        sonic305-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728432AbgFFW1B (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 6 Jun 2020 18:27:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591482419; bh=DPYuw2gUpgtMJzJhlH/AVmRGu2wSKCY1C+f8nOCoxu0=; h=Date:From:Reply-To:Subject:References:From:Subject; b=PtfqudswW1nCDe1VpNYZY04a8KcNT85+Cmcc774wZkHN5g0moPPCxPcGYOo3Xd1jEaUNmQmrztFLrfL2jtx7yrfmiTxvgMs9MrUxA7SretjEHZU4C3uejZo8B6d6He9ial/Y0dMEl+wafmuSl19axQov7WQfmtgvpedRpIpoCo362Wn9wY9G3PUfz0qEL6vAh66ydLMa0x2sBFpFBUcwtU9cKJbilcb6FzJn1T+ivkkA6eLR+1k19ETtSbK046y9buAbId5kK56bp73LE5Qr1ypyY82TUG7cRnHxLj8Nbx7iJ043YPvO97KTSCcuJLjxSeGeP+UChdqIzv2hpHrY+g==
+X-YMail-OSG: 1kSXqlkVM1nMBM7tTLJ0qvEeqtzeeSlwUgz70Hu6rHGEUOfB0zsL214zRxNDBWP
+ ypUUyShRjHlBbuIRNFPONbvhNeePjU1dicggFrZ6MUlfWZwVZOc22ls4AUMUhdPcOGDbR8Pf6HTb
+ baRgZOpquR29BFLY0xt3k0oLGMnq3VC1E1g37wIedzk._6LH5zvsupqX85nWUlSNipWqup_zfSzX
+ VY_ZM0f6U38rsxcAGBcUa.jktzdjapp1pCqRxhjx9t.0d5BuqtV3cHpn_US_bBYpj.OmC8o4jehW
+ jIIdh3lEVf4F1sF.KBtjxgX39NgZJmuAxRw4PNg8wzGGXEXFLjZMptoHIV8zhmL.OgZ7VuksdzP5
+ zhQAJ.rVomlJOHsICpmRpG_4ImAI9YNo0VLSBLLLsPd.QXeA19fV6YLfxh7gG00XxHNnJwC1wq1x
+ xPx0Dl2MfmNyFZqn2bKGAW6DhfQzKlJwr6ijumb8Ns7ER4hWkIP0A3iB4wGqwsqeVQd4cuTGplBt
+ syg2GHHQmsMaSfne9eS8j_5QUAS9bHRW39SPDFPlPoGCLyR1fGjMsdEnJOS9hCoawSrjNJVGxnxv
+ f0wBstREAmfaLxMs2oMtacS5i_yCQgoavR2fswsjNagJ0ZcLm0k9CvaQO6lNFdicbBq9EaqipEHf
+ .LbcbooHXiMVorGlGM2_trM63EGYxuD87YHQbb2cGkgrKusw9enY.3JAJhbYFlpNMdnKkr196rWJ
+ m.sscjts7ERdE0mpHHN6DBQG5yINpW2RlEjgebSefIak3SALYeHwbaWsVm4HjC8Ld6A9L1UnG8Yt
+ 7qdhpIPJ69nMyXmeRT8iUtwms4q3zNNrxxTzTu2G_rk07pkm65tJvI6lauX2R_wB5bTOFCvdXSay
+ QtXi4FZqEWJwHIL.Bt.iW.P6GOYOKlK.3umo.6zS3n.nw8eUUBfvUpBkdQBAyoWWOUQsPEReVJQ7
+ IzEplPKwXh9aYS15BKx5f8qR6q2qiEExAiThn3gJYZP6bP5hSi_J3vWYp1jhEUgdCF1d7dO6G3MJ
+ IFWXpfS.OGvtaG4uFd3xn8AofGHfhdJPmUzs9.wa_xjswZFlH1GdKYbXbGGE1vniaGbEK0LWo3H2
+ PIuLAVA1Qhl5R01VowT8QP7AOOmBs0V.f9NenSIrssz_PcvSX.0o9W8bGzoswef6lfUqsaWTr64B
+ IQGeDQha68V3PQB4OOMGHODNQUQJH2PCT1Ti3t0RB0m4ArlsusLk.1H5Vp.OXL740C48M4ZXIaRs
+ fDoOdhT7U57rGgbooiKJB4Rua52MqI8GuDCBFNNJznI6HlWoPAASag1LDl6jo22J0GwKRg.5FEH0
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Sat, 6 Jun 2020 22:26:59 +0000
+Date:   Sat, 6 Jun 2020 22:26:54 +0000 (UTC)
+From:   "Mrs. Mina A. Brunel" <mrsminaabrunel2334@gmail.com>
+Reply-To: mrsminaabrunel57044@gmail.com
+Message-ID: <599783602.261033.1591482414173@mail.yahoo.com>
+Subject: My Dear in the lord
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Sat, 06 Jun 2020 14:45:38 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Lee Jones <lee.jones@linaro.org>, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v4 02/11] mfd: Add support for Kontron sl28cpld management
- controller
-In-Reply-To: <20200606114645.GB2055@sirena.org.uk>
-References: <20200604211039.12689-1-michael@walle.cc>
- <20200604211039.12689-3-michael@walle.cc> <20200605065709.GD3714@dell>
- <20200605105026.GC5413@sirena.org.uk>
- <c5632bfab3956265e90fc2fb6c0b3cae@walle.cc>
- <20200606114645.GB2055@sirena.org.uk>
-User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <dc052a5c77171014ecc465b1da8b7ef8@walle.cc>
-X-Sender: michael@walle.cc
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+References: <599783602.261033.1591482414173.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16072 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:76.0) Gecko/20100101 Firefox/76.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Am 2020-06-06 13:46, schrieb Mark Brown:
-> On Fri, Jun 05, 2020 at 10:07:36PM +0200, Michael Walle wrote:
->> Am 2020-06-05 12:50, schrieb Mark Brown:
-> 
->> > I have no idea what you are thinking of when you say "simple-regmap" so
->> > it is difficult to comment.
-> 
->> I guess, Lee is suggesting to be able to create a regmap instance via
->> device tree (and populate its child nodes?). Like
->>   compatible = "syscon", "simple-mfd";
->> but for any regmap, not just MMIO.
-> 
-> I don't understand why this would be anything separate to
-> simple-mfd.
 
-Don't just simple-mfd tells the of core, to probe the children this
-node? Where does the regmap then come from?
 
-> 
->> But, there is more in my driver:
->>  (1) there is a version check
->>  (2) there is another function for which there is no suitable linux
->>      subsystem I'm aware of and thus which I'd like to us sysfs
->>      attributes for: This controller supports 16 non-volatile
->>      configuration bits. (this is still TBD)
-> 
-> TBH I'd also say that the enumeration of the subdevices for this
-> device should be in the device rather than the DT, they don't
-> seem to be things that exist outside of this one device.
+My Dear in the lord
 
-We're going circles here, formerly they were enumerated in the MFD.
-Yes, they are devices which aren't likely be used outside a
-"sl28cpld", but there might there might be other versions of the
-sl28cpld with other components on different base addresses. I
-don't care if they are enumerated in DT or MFD, actually, I'd
-prefer the latter. _But_ I would like to have the device tree
-properties for its subdevices, e.g. the ones for the watchdog or
-whatever components there might be in the future. MFD core can
-match a device tree node today; but only one per unique compatible
-string. So what should I use to differentiate the different
-subdevices? Rob suggested the internal offset, which I did here.
-But then, there is less use in duplicating the offsets in the MFD
-just to have the MFD enumerate the subdevices and then match
-the device tree nodes against it. I can just use
-of_platform_populate() to enumerate the children and I won't
-have to duplicate the base addresses.
 
-So here we are, any ideas appreciated.
+My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in Burki=
+na Faso, I am married to Mr. Brunel Patrice, a politicians who owns a small=
+ gold company in Burkina Faso; He died of Leprosy and Radesyge, in year Feb=
+ruary 2010, During his lifetime he deposited the sum of =E2=82=AC 8.5 Milli=
+on Euro) Eight million, Five hundred thousand Euros in a bank in Ouagadougo=
+u the capital city of of Burkina in West Africa. The money was from the sal=
+e of his company and death benefits payment and entitlements of my deceased=
+ husband by his company.
 
--michael
+I am sending you this message with heavy tears in my eyes and great sorrow =
+in my heart, and also praying that it will reach you in good health because=
+ I am not in good health, I sleep every night without knowing if I may be a=
+live to see the next day. I am suffering from long time cancer and presentl=
+y I am partially suffering from Leprosy, which has become difficult for me =
+to move around. I was married to my late husband for more than 6 years with=
+out having a child and my doctor confided that I have less chance to live, =
+having to know when the cup of death will come, I decided to contact you to=
+ claim the fund since I don't have any relation I grew up from an orphanage=
+ home.
+
+I have decided to donate this money for the support of helping Motherless b=
+abies/Less privileged/Widows and churches also to build the house of God be=
+cause I am dying and diagnosed with cancer for about 3 years ago. I have de=
+cided to donate from what I have inherited from my late husband to you for =
+the good work of Almighty God; I will be going in for an operation surgery =
+soon.
+
+Now I want you to stand as my next of kin to claim the funds for charity pu=
+rposes. Because of this money remains unclaimed after my death, the bank ex=
+ecutives or the government will take the money as unclaimed fund and maybe =
+use it for selfishness and worthless ventures, I need a very honest person =
+who can claim this money and use it for Charity works, for orphanages, wido=
+ws and also build schools and churches for less privilege that will be name=
+d after my late husband and my name.
+
+I need your urgent answer to know if you will be able to execute this proje=
+ct, and I will give you more information on how the fund will be transferre=
+d to your bank account or online banking.
+
+Thanks
+Mrs. Mina A. Brunel
