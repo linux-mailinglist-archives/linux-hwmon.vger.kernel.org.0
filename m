@@ -2,84 +2,73 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA3E1F2EA2
-	for <lists+linux-hwmon@lfdr.de>; Tue,  9 Jun 2020 02:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 912561F3251
+	for <lists+linux-hwmon@lfdr.de>; Tue,  9 Jun 2020 04:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731092AbgFIAnp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 8 Jun 2020 20:43:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59544 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729061AbgFHXMN (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:12:13 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4EF57208C3;
-        Mon,  8 Jun 2020 23:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591657933;
-        bh=s/0fHWJWsk3CSOvkSF0fCcWuzyXf2QbMKemiARoezHU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=RG5LeXWbK0ZO8i+dpF7A7R+y/hq7YNvsfh9KJ37QQXHY3MKpIxMCrKVgN/DadnBAB
-         NkgjHC5ObsQvn+HtcpkbH6EwH0e1huKXE3x/3pHOCxIYKMYU42g4E8EaPhzAqOMObA
-         sgKi3fPMRQgS4xcUUA18tIftm1MV8azzkIJH601g=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Samu Nuutamo <samu.nuutamo@vincit.fi>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 001/606] hwmon: (da9052) Synchronize access with mfd
-Date:   Mon,  8 Jun 2020 19:02:06 -0400
-Message-Id: <20200608231211.3363633-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
+        id S1726933AbgFIChK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 8 Jun 2020 22:37:10 -0400
+Received: from smtp-as-01-05.vtxnet.net ([194.38.175.134]:48759 "EHLO
+        smtp-as-01.vtxnet.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726909AbgFIChJ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 8 Jun 2020 22:37:09 -0400
+X-Greylist: delayed 618 seconds by postgrey-1.27 at vger.kernel.org; Mon, 08 Jun 2020 22:37:08 EDT
+X-Spam-Flag: NO
+X-Spam-Score: 0.104
+X-Spam-Level: 
+X-Spam-Status: No, score=0.104 tagged_above=-999 required=999
+        tests=[BAYES_00=-1.5, FREEMAIL_FORGED_REPLYTO=1.204,
+        KHOP_HELO_FCRDNS=0.4] autolearn=no
+Received: from smtp-01.datacomm.ch (smtp-01-5.datacomm.ch [212.40.2.33])
+        by smtp-as-01.vtxnet.net (Postfix) with ESMTP id 98F8F4142B;
+        Tue,  9 Jun 2020 04:26:47 +0200 (CEST)
+Received: from webmail.vtx.ch (bas-flu-webmail-02.vtxnet.net [212.40.2.42])
+        by smtp-01.datacomm.ch (VTX Datacomm AG) with ESMTP id B915D1DC03C;
+        Tue,  9 Jun 2020 04:26:46 +0200 (CEST)
+Received: from [197.210.70.107]
+ by webmail.vtx.ch
+ with HTTP (HTTP/1.1 POST); Tue, 09 Jun 2020 04:26:46 +0200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+Date:   Tue, 09 Jun 2020 04:26:46 +0200
+From:   Ocean Finance <geb.zimmermann@vtxmail.ch>
+To:     undisclosed-recipients:;
+Subject: Dringendes Darlehensangebot!
+Reply-To: oceanfin_consultant@hotmail.com
+Mail-Reply-To: oceanfin_consultant@hotmail.com
+Message-ID: <ec2a25ae1c56b65888a14df3779c9a97@vtxmail.ch>
+X-Sender: geb.zimmermann@vtxmail.ch
+User-Agent: Roundcube Webmail/1.2.10
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Samu Nuutamo <samu.nuutamo@vincit.fi>
 
-[ Upstream commit 333e22db228f0bd0c839553015a6a8d3db4ba569 ]
 
-When tsi-as-adc is configured it is possible for in7[0123]_input read to
-return an incorrect value if a concurrent read to in[456]_input is
-performed. This is caused by a concurrent manipulation of the mux
-channel without proper locking as hwmon and mfd use different locks for
-synchronization.
-
-Switch hwmon to use the same lock as mfd when accessing the TSI channel.
-
-Fixes: 4f16cab19a3d5 ("hwmon: da9052: Add support for TSI channel")
-Signed-off-by: Samu Nuutamo <samu.nuutamo@vincit.fi>
-[rebase to current master, reword commit message slightly]
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/da9052-hwmon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hwmon/da9052-hwmon.c b/drivers/hwmon/da9052-hwmon.c
-index 53b517dbe7e6..4af2fc309c28 100644
---- a/drivers/hwmon/da9052-hwmon.c
-+++ b/drivers/hwmon/da9052-hwmon.c
-@@ -244,9 +244,9 @@ static ssize_t da9052_tsi_show(struct device *dev,
- 	int channel = to_sensor_dev_attr(devattr)->index;
- 	int ret;
- 
--	mutex_lock(&hwmon->hwmon_lock);
-+	mutex_lock(&hwmon->da9052->auxadc_lock);
- 	ret = __da9052_read_tsi(dev, channel);
--	mutex_unlock(&hwmon->hwmon_lock);
-+	mutex_unlock(&hwmon->da9052->auxadc_lock);
- 
- 	if (ret < 0)
- 		return ret;
 -- 
-2.25.1
+Schönen Tag.
+Benötigen Sie einen dringenden Kredit?
+Wir sind derzeit Kredite an Privatpersonen und Firmen für die 
+Geschäftsausweitung, Projekte und Investitionen auf 1,3% Zinssatz zu 
+geben.
+Sie erhalten sofort eine Kreditgenehmigung von uns und erhalten Ihr 
+Darlehen innerhalb von 24 Stunden
 
+Bewerben Sie sich unten für weitere Bestätigungen.
+
+Vollständiger Name:
+Land:
+Darlehensbetrag:
+Darlehen Zweck:
+Leihdauer:
+Telefon:
+
+Wir warten auf deine Antwort
+
+Mit freundlichen Grüßen.
+
+Michael Davidson
+Finanzbeamter,
+Ocean Finance UK.
