@@ -2,118 +2,60 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E84522018BD
-	for <lists+linux-hwmon@lfdr.de>; Fri, 19 Jun 2020 19:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 326B1201994
+	for <lists+linux-hwmon@lfdr.de>; Fri, 19 Jun 2020 19:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393389AbgFSQwF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 19 Jun 2020 12:52:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44710 "EHLO
+        id S1733014AbgFSRh1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 19 Jun 2020 13:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393343AbgFSQwD (ORCPT
+        with ESMTP id S1732998AbgFSRh0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 19 Jun 2020 12:52:03 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D7CC06174E;
-        Fri, 19 Jun 2020 09:52:03 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id d66so4664905pfd.6;
-        Fri, 19 Jun 2020 09:52:03 -0700 (PDT)
+        Fri, 19 Jun 2020 13:37:26 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EBDDC06174E
+        for <linux-hwmon@vger.kernel.org>; Fri, 19 Jun 2020 10:37:26 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id q198so1877104qka.2
+        for <linux-hwmon@vger.kernel.org>; Fri, 19 Jun 2020 10:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=MojqGVMm/N36ukD1qQOzNiKEH9Yim97rUfkXtpM0HIo=;
-        b=lOWhq/zJNBjesFgxGkSn+BtJRwxdpQomhyNHZjlONsvkEN01tr66aBIeORJjSlwrzc
-         FU5LcMVd9PShZF8KF7qWB2r9nJTDNzbUQFTIbtZEygCCvfx2SoWdYi3G4ThYpquzn7du
-         VjTaDYtDXrCRuMgvTdYBl0LSsSxePM1iVhw0O+4kHjzM9oruFsWA+9t6pDoSSEeytMUq
-         ztebVmkrP6goQODaIFcGYuFPm9xXGNRapQ4dceWSPlj7VfBr3vZitoPI5lAVO03aVVvO
-         7w9bYuIMXzVmT0/+BmyJmMycx1Ctm9cPdZiWG8cDdpIyaj+6wWD9lfbEGHobj4s5ya5g
-         pTkA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=XKnYG1VteUnCe7T0BSjdURw7+uKW1Wsha/eamThKYOduXxgc8sP3bWSPEza4zXMIYJ
+         UJnE+xP5rbkJ9m0j9jJuCCBTN41X3ZVLlknMzJ38Dq7G/hX2SgwP1GsmSYoQhQD6z6oY
+         IX2Nsv87Z6LB9nR2tbb7fdIURpj/OLCvf8vHjgqPjC+vhgwzRWNEb82wLC6bKM1Muvtm
+         Vx3EHn/Dn4EUCxE4+uW4iOKfVmHtgV5VvMByFGtrXwL9du3aS0OMtRPIaC+KsTg0hh+J
+         LheQ2PA+cGvwhWrj/xvE7MnVTBlqrop/mtSNabBLiVRhlG2AUDq3caMY0PAGgJfRbpjJ
+         yEqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=MojqGVMm/N36ukD1qQOzNiKEH9Yim97rUfkXtpM0HIo=;
-        b=I5y4PQgEslVtNK+tqqx6lsmdWsJBAfI7qA0B/xyekGA25h54hWNTBYr0za34Z83UVB
-         uHTQ9Lvdc6Q60pP1byG7WcoJ7R9PR4ogPGlkD+Xrf79yJIXDdbG7AglejkGJIH7+Kh1V
-         oio2GCkhxx+vcCMy+CWSisYjkVPATt3CTRmIgU/cBIhm+4MsMWLks0hZiN6FrvlyYP6s
-         KpNVsqWGKAl0Bph3V8KpSUkfeW6JG4zQst6cC5Swkpb3R/7wBU57XoC8fN6ug4xJdhP/
-         +pEJUNoATrX8+q+dDJ8J7XXGFWf8V1q+QFP9+3j39wis+ZbugW5Pq8cE7VQThRaa3pY3
-         vnVA==
-X-Gm-Message-State: AOAM530mZG5qYzzDwTouwFF1zvtIawDutB8ZV3zTOlScdZA/xSltP67m
-        i0WQ5UI46tlEM6R5iDrMTJnwKV2/psc=
-X-Google-Smtp-Source: ABdhPJxQLpIde5crNDljO1wbiI8PDd931pTpWT7w4Fpd3YuE5eJBQnt/XfFKVMlmlaSaxcOe7PD3Rg==
-X-Received: by 2002:a62:8095:: with SMTP id j143mr8678422pfd.62.1592585522685;
-        Fri, 19 Jun 2020 09:52:02 -0700 (PDT)
-Received: from cnn ([112.133.236.100])
-        by smtp.gmail.com with ESMTPSA id w18sm5580656pgj.31.2020.06.19.09.51.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jun 2020 09:52:02 -0700 (PDT)
-Date:   Fri, 19 Jun 2020 22:21:54 +0530
-From:   Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     saipsdasari@fb.com, patrickw3@fb.com, vijaykhemka@fb.com,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        manikandan.e@hcl.com
-Subject: [PATCH v4] hwmon:(adm1275) Enable adm1278 ADM1278_TEMP1_EN
-Message-ID: <20200619165154.GA20461@cnn>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=pLxdAelEnryf14kJJAsBhW4B+vRX7JygbBcZ7oM5qM7GhgEbNJE2yl+ZkEl4oQa62o
+         R4ZtL+BonPuq657CgAxyKpJ2Uo0S7ctElM8sFH/DDTQuDcZl2g3c943gcZCziuwLMKqW
+         jXMOLINM1Lpfv8Y/OT45htzSVkGqkOTI4KI66MZr2jcVr09TEOvhsn8lkNO90F2u+9q4
+         cfABmMkAAp42O3IJeG7t8F7/wi0tNzXSeGOF44k6+BTfyzCG9qPitLFh8xBo5lgH6jCo
+         KQ6tmF8N7mElJFqyLjzA2wAt/1ikkLECfSPDNg/I4ET9L+LPQCUW6InkyGVLoj/4ScCd
+         xMfw==
+X-Gm-Message-State: AOAM532LGtRVjpVkEFpqZAXuqBiYqbPZdWj8o8OnOmT+pcmBX29vnlE3
+        AiF6l8utZdofCJb7Ucytp/LB26ZETKEttsjuNg==
+X-Google-Smtp-Source: ABdhPJwlye5MYfSvItNi0p0iLRrkhAvzHBHFoRg9mbYHnIcIIbPbokzoLxbw2b/yrt1a17Wq+5Jr3O1HcDLCd+nhB14=
+X-Received: by 2002:a37:434c:: with SMTP id q73mr4365546qka.56.1592588245341;
+ Fri, 19 Jun 2020 10:37:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Received: by 2002:ac8:3f2e:0:0:0:0:0 with HTTP; Fri, 19 Jun 2020 10:37:24
+ -0700 (PDT)
+Reply-To: barr.xaviergbesse@outlook.com
+From:   From Xavier Gbesse <xaviervives77@gmail.com>
+Date:   Fri, 19 Jun 2020 18:37:24 +0100
+Message-ID: <CAPB_yMTuCwamyA33jTVXygF9JATq_48LR8CN1x007gmgcdsW6w@mail.gmail.com>
+Subject: Kei te kite koe i taku karere i tukuna e ahau ki a koe?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The adm1278 temp attribute need it for openbmc platform .
-This feature not enabled by default, so PMON_CONFIG needs to enable it.
-
-Signed-off-by: Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>
----
----    v4 -Reported-by: kernel test robot <lkp@intel.com>
----    v3 -fix invalid signed-off.
----       -removed checkpath warnings.
----       -write ADM1278_TEMP1_EN and ADM1278_VOUT_EN conf in single line operation.
----    v2 -add Signed-off-by.
----       -removed ADM1278_TEMP1_EN check.
----
----
- drivers/hwmon/pmbus/adm1275.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/hwmon/pmbus/adm1275.c b/drivers/hwmon/pmbus/adm1275.c
-index 5caa37fb..d4e1925 100644
---- a/drivers/hwmon/pmbus/adm1275.c
-+++ b/drivers/hwmon/pmbus/adm1275.c
-@@ -666,11 +666,12 @@ static int adm1275_probe(struct i2c_client *client,
- 		tindex = 3;
- 
- 		info->func[0] |= PMBUS_HAVE_PIN | PMBUS_HAVE_STATUS_INPUT |
--			PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT;
-+			PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
-+			PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP;
- 
--		/* Enable VOUT if not enabled (it is disabled by default) */
--		if (!(config & ADM1278_VOUT_EN)) {
--			config |= ADM1278_VOUT_EN;
-+		/* Enable VOUT & TEMP1 if not enabled (disabled by default) */
-+		if ((config & (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) != (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) {
-+			config |= ADM1278_VOUT_EN | ADM1278_TEMP1_EN;
- 			ret = i2c_smbus_write_byte_data(client,
- 							ADM1275_PMON_CONFIG,
- 							config);
-@@ -681,9 +682,6 @@ static int adm1275_probe(struct i2c_client *client,
- 			}
- 		}
- 
--		if (config & ADM1278_TEMP1_EN)
--			info->func[0] |=
--				PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP;
- 		if (config & ADM1278_VIN_EN)
- 			info->func[0] |= PMBUS_HAVE_VIN;
- 		break;
--- 
-2.7.4
 
