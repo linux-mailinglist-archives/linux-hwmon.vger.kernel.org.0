@@ -2,60 +2,100 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 326B1201994
-	for <lists+linux-hwmon@lfdr.de>; Fri, 19 Jun 2020 19:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD3C201A05
+	for <lists+linux-hwmon@lfdr.de>; Fri, 19 Jun 2020 20:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733014AbgFSRh1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 19 Jun 2020 13:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51666 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732998AbgFSRh0 (ORCPT
+        id S2394603AbgFSSKF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-hwmon@lfdr.de>); Fri, 19 Jun 2020 14:10:05 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:24456 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732434AbgFSSKE (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 19 Jun 2020 13:37:26 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EBDDC06174E
-        for <linux-hwmon@vger.kernel.org>; Fri, 19 Jun 2020 10:37:26 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id q198so1877104qka.2
-        for <linux-hwmon@vger.kernel.org>; Fri, 19 Jun 2020 10:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=XKnYG1VteUnCe7T0BSjdURw7+uKW1Wsha/eamThKYOduXxgc8sP3bWSPEza4zXMIYJ
-         UJnE+xP5rbkJ9m0j9jJuCCBTN41X3ZVLlknMzJ38Dq7G/hX2SgwP1GsmSYoQhQD6z6oY
-         IX2Nsv87Z6LB9nR2tbb7fdIURpj/OLCvf8vHjgqPjC+vhgwzRWNEb82wLC6bKM1Muvtm
-         Vx3EHn/Dn4EUCxE4+uW4iOKfVmHtgV5VvMByFGtrXwL9du3aS0OMtRPIaC+KsTg0hh+J
-         LheQ2PA+cGvwhWrj/xvE7MnVTBlqrop/mtSNabBLiVRhlG2AUDq3caMY0PAGgJfRbpjJ
-         yEqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=pLxdAelEnryf14kJJAsBhW4B+vRX7JygbBcZ7oM5qM7GhgEbNJE2yl+ZkEl4oQa62o
-         R4ZtL+BonPuq657CgAxyKpJ2Uo0S7ctElM8sFH/DDTQuDcZl2g3c943gcZCziuwLMKqW
-         jXMOLINM1Lpfv8Y/OT45htzSVkGqkOTI4KI66MZr2jcVr09TEOvhsn8lkNO90F2u+9q4
-         cfABmMkAAp42O3IJeG7t8F7/wi0tNzXSeGOF44k6+BTfyzCG9qPitLFh8xBo5lgH6jCo
-         KQ6tmF8N7mElJFqyLjzA2wAt/1ikkLECfSPDNg/I4ET9L+LPQCUW6InkyGVLoj/4ScCd
-         xMfw==
-X-Gm-Message-State: AOAM532LGtRVjpVkEFpqZAXuqBiYqbPZdWj8o8OnOmT+pcmBX29vnlE3
-        AiF6l8utZdofCJb7Ucytp/LB26ZETKEttsjuNg==
-X-Google-Smtp-Source: ABdhPJwlye5MYfSvItNi0p0iLRrkhAvzHBHFoRg9mbYHnIcIIbPbokzoLxbw2b/yrt1a17Wq+5Jr3O1HcDLCd+nhB14=
-X-Received: by 2002:a37:434c:: with SMTP id q73mr4365546qka.56.1592588245341;
- Fri, 19 Jun 2020 10:37:25 -0700 (PDT)
+        Fri, 19 Jun 2020 14:10:04 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05JI2jZX097339
+        for <linux-hwmon@vger.kernel.org>; Fri, 19 Jun 2020 14:10:04 -0400
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.66])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 31rkgk1vxe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-hwmon@vger.kernel.org>; Fri, 19 Jun 2020 14:10:03 -0400
+Received: from localhost
+        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+        for <linux-hwmon@vger.kernel.org> from <miltonm@us.ibm.com>;
+        Fri, 19 Jun 2020 18:10:03 -0000
+Received: from us1a3-smtp03.a3.dal06.isc4sb.com (10.106.154.98)
+        by smtp.notes.na.collabserv.com (10.106.227.127) with smtp.notes.na.collabserv.com ESMTP;
+        Fri, 19 Jun 2020 18:09:55 -0000
+Received: from us1a3-mail228.a3.dal06.isc4sb.com ([10.146.103.71])
+          by us1a3-smtp03.a3.dal06.isc4sb.com
+          with ESMTP id 2020061918095479-734599 ;
+          Fri, 19 Jun 2020 18:09:54 +0000 
+In-Reply-To: <20200619165154.GA20461@cnn>
+From:   "Milton Miller II" <miltonm@us.ibm.com>
+To:     Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, manikandan.e@hcl.com,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        vijaykhemka@fb.com, saipsdasari@fb.com, patrickw3@fb.com
+Date:   Fri, 19 Jun 2020 18:09:55 +0000
 MIME-Version: 1.0
-Received: by 2002:ac8:3f2e:0:0:0:0:0 with HTTP; Fri, 19 Jun 2020 10:37:24
- -0700 (PDT)
-Reply-To: barr.xaviergbesse@outlook.com
-From:   From Xavier Gbesse <xaviervives77@gmail.com>
-Date:   Fri, 19 Jun 2020 18:37:24 +0100
-Message-ID: <CAPB_yMTuCwamyA33jTVXygF9JATq_48LR8CN1x007gmgcdsW6w@mail.gmail.com>
-Subject: Kei te kite koe i taku karere i tukuna e ahau ki a koe?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20200619165154.GA20461@cnn>
+X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
+ SCN1812108_20180501T0841_FP65 April 15, 2020 at 09:48
+X-LLNOutbound: False
+X-Disclaimed: 37575
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+x-cbid: 20061918-4409-0000-0000-00000305A032
+X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.424974; ST=0; TS=0; UL=0; ISC=; MB=0.000960
+X-IBM-SpamModules-Versions: BY=3.00013312; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000295; SDB=6.01393884; UDB=6.00746056; IPR=6.01176167;
+ MB=3.00032629; MTD=3.00000008; XFM=3.00000015; UTC=2020-06-19 18:10:01
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2020-06-19 16:54:29 - 6.00011502
+x-cbparentid: 20061918-4410-0000-0000-00006256AC0D
+Message-Id: <OFB20C104E.283BBF6D-ON0025858C.0062CC5B-0025858C.0063C8F2@notes.na.collabserv.com>
+Subject: Re:  [PATCH v4] hwmon:(adm1275) Enable adm1278 ADM1278_TEMP1_EN
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-19_20:2020-06-19,2020-06-19 signatures=0
+X-Proofpoint-Spam-Reason: orgsafe
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On : 06/19/2020 abiout 12:46PM in some timezone,  Manikandan Elumalai  wrote:
+
+>The adm1278 temp attribute need it for openbmc platform .
+>This feature not enabled by default, so PMON_CONFIG needs to enable
+>it.
+>
+>Signed-off-by: Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>
+>---
+>---    v4 -Reported-by: kernel test robot <lkp@intel.com>
+
+Thie above tag should be Adjacent to the Signed-off-by.
+
+>---    v3 -fix invalid signed-off.
+>---       -removed checkpath warnings.
+>---       -write ADM1278_TEMP1_EN and ADM1278_VOUT_EN conf in single
+>line operation.
+>---    v2 -add Signed-off-by.
+>---       -removed ADM1278_TEMP1_EN check.
+>---
+
+The canonical format is to have a line of 3 dashes then the trailing changelog 
+
+Please read the documentation at 
+
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#the-canonical-patch-format
+
+milton
 
