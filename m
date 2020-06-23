@@ -2,139 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C65B2058B7
-	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 19:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F2120670D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 24 Jun 2020 00:15:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733095AbgFWRfQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 23 Jun 2020 13:35:16 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:13814 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1733078AbgFWRfP (ORCPT
+        id S2387840AbgFWWPV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 23 Jun 2020 18:15:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387609AbgFWWPV (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 23 Jun 2020 13:35:15 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05NHNRAN031405;
-        Tue, 23 Jun 2020 13:35:13 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 31uk3grq2x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 23 Jun 2020 13:35:13 -0400
-Received: from ASHBMBX8.ad.analog.com (ashbmbx8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 05NHZCa6031594
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 23 Jun 2020 13:35:12 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 23 Jun 2020 13:35:11 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 23 Jun 2020 13:35:11 -0400
-Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Tue, 23 Jun 2020 13:35:11 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 05NHYxMW017521;
-        Tue, 23 Jun 2020 13:35:08 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <robh+dt@kernel.org>, <linux@roeck-us.net>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH v4 7/7] dt-bindings: hwmon: Add bindings for ADM1266
-Date:   Tue, 23 Jun 2020 20:36:59 +0300
-Message-ID: <20200623173659.41358-8-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200623173659.41358-1-alexandru.tachici@analog.com>
-References: <20200623173659.41358-1-alexandru.tachici@analog.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRoutedOnPrem: True
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-23_11:2020-06-23,2020-06-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- bulkscore=0 spamscore=0 mlxscore=0 phishscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006120000 definitions=main-2006230123
+        Tue, 23 Jun 2020 18:15:21 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E545BC061573
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 15:15:20 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id a188so96855ybg.20
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 15:15:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=qRMlJH1Uuw7Z2l9FlYbE1GYm8Q7568m+yPgI5PuYm+I=;
+        b=ohnfFuCiG3/qAUh2hncsEai9UcdDRTrmj2d+LUBkYoyAaC4chUUimCW9C10iKL3Ypt
+         vWVvTDtLOyoiYAEWNVYvlbH6HbDnp23VHo+l7Cg3C5tvRZvcRPqYbUnnL/lcepVEbKeL
+         KcVrQ7EKXGecFGBFWdvmKL9WuEZuH2Zz1SRaIJJ3Hxfx02aIKOi+zba8qAOTlkgA96L4
+         HvidAP04Te/Te4s/JgAHzApPo4Ofjuyyq8uhun8PXTsQMhSzHh6yRFgAe30AUBFMAkmZ
+         JznHqab2QaiNKoDD/uPR+1pldmdn3d5gJWbONSMWLwdpcK1QrcjVoEwgPt5Vm+qoEtid
+         4lKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=qRMlJH1Uuw7Z2l9FlYbE1GYm8Q7568m+yPgI5PuYm+I=;
+        b=A/5qCk+EFmZnK1DOc5v7cMfVTYqmoNaXgDXNqMgt+uJ50+DkgVYn20Idx2GxGzyYdM
+         js1OxA9eaPW9KGy80T0rN0pfyFeWuy5mmKPmVh4pCzUMnFmempdTP1b/EJQ7pdQQlgmO
+         xaCcRUX5uGwlftzACAzvExID77K0jY2uea9NrIC3zs78u8WPEsRYBaqWs3EmqwFerEyT
+         fzTJVxE2viIoXmKA8T2YJlm98+V2S0gm70bbwPRem0SqS+c73kGEUdfHOHIuvVuXeWLj
+         LzBK1DgXgIIvUNHJ8zGfEdvU36CIPQsMsCHmMNGQiLXWPCAVD9shvqkfdcIsPOxW42Y9
+         deDw==
+X-Gm-Message-State: AOAM530I+jmDa0T4j5ipVD5oWWtcMK48pcvXtaWhILewgQ17DRDMluvQ
+        OK7ecoata04gyYOXABdETXh6ap52l2benl1m
+X-Google-Smtp-Source: ABdhPJwGyYjPnXfPWO/nS5Di83f24FKkz8fyiX7pScZtFdZh3irMDE5UsxkgLEJ6jc71R01NS0iwCLHShFEXXHlt
+X-Received: by 2002:a25:2415:: with SMTP id k21mr40830266ybk.349.1592950520116;
+ Tue, 23 Jun 2020 15:15:20 -0700 (PDT)
+Date:   Tue, 23 Jun 2020 22:13:08 +0000
+In-Reply-To: <Chu Lin <linchuyuan@google.com>
+Message-Id: <20200623221305.198214-1-linchuyuan@google.com>
+Mime-Version: 1.0
+References: <Chu Lin <linchuyuan@google.com>
+X-Mailer: git-send-email 2.27.0.111.gc72c7da667-goog
+Subject: [PATCH] hwmon:max6697: Make sure the OVERT mask is set correctly
+From:   Chu Lin <linchuyuan@google.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     linux-hwmon@vger.kernel.org, Chu Lin <linchuyuan@google.com>,
+        Jason Ling <jasonling@google.com>,
+        Kais Belgaied <belgaied@google.com>,
+        Zhongqi Li <zhongqil@google.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+Per the datasheet for max6697, OVERT mask and ALERT mask is different.
+For example, the 7th bit of OVERT is the local channel but for alert
+mask, the 6th bit is the local channel. Therefore, we can't apply the
+same mask for both reg. In addition to that, max6697 driver is suppose
+to be compatibale with different models. I mannually went over all the
+listed chip and made sure all the chip type has the same layout.
 
-Add bindings for the Analog Devices ADM1266 sequencer.
+Testing;
+    mask value of 0x9 should map to 0x44 for ALERT and 0x84 for OVERT.
+I used iotool to read the reg value back to verify. I only tested this
+change on max6581
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+Reference:
+https://datasheets.maximintegrated.com/en/ds/MAX6581.pdf
+https://datasheets.maximintegrated.com/en/ds/MAX6697.pdf
+https://datasheets.maximintegrated.com/en/ds/MAX6699.pdf
+
+Signed-off-by: Chu Lin <linchuyuan@google.com>
 ---
- .../bindings/hwmon/adi,adm1266.yaml           | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
+ drivers/hwmon/max6697.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-new file mode 100644
-index 000000000000..76b62be48d56
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/adi,adm1266.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADM1266 Cascadable Super Sequencer with Margin
-+  Control and Fault Recording
-+
-+maintainers:
-+  - Alexandru Tachici <alexandru.tachici@analog.com>
-+
-+description: |
-+  Analog Devices ADM1266 Cascadable Super Sequencer with Margin
-+  Control and Fault Recording.
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ADM1266.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adm1266
-+
-+  reg:
-+    description: |
-+      I2C address of slave device.
-+    items:
-+      minimum: 0x40
-+      maximum: 0x4F
-+
-+  avcc-supply:
-+    description: |
-+      Phandle to the Avcc power supply.
-+
-+  adi,master-adm1266:
-+    description: |
-+      Represents phandle of a master ADM1266 device cascaded through the IDB.
-+    $ref: "/schemas/types.yaml#/definitions/phandle"
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    i2c0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adm1266@40 {
-+                compatible = "adi,adm1266";
-+                reg = <0x40>;
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+        };
-+    };
-+...
+diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
+index 743752a2467a..64122eb38060 100644
+--- a/drivers/hwmon/max6697.c
++++ b/drivers/hwmon/max6697.c
+@@ -38,8 +38,9 @@ static const u8 MAX6697_REG_CRIT[] = {
+  * Map device tree / platform data register bit map to chip bit map.
+  * Applies to alert register and over-temperature register.
+  */
+-#define MAX6697_MAP_BITS(reg)	((((reg) & 0x7e) >> 1) | \
++#define MAX6697_ALERT_MAP_BITS(reg)	((((reg) & 0x7e) >> 1) | \
+ 				 (((reg) & 0x01) << 6) | ((reg) & 0x80))
++#define MAX6697_OVERT_MAP_BITS(reg) (((reg) >> 1) | (((reg) & 0x01) << 7))
+ 
+ #define MAX6697_REG_STAT(n)		(0x44 + (n))
+ 
+@@ -562,12 +563,12 @@ static int max6697_init_chip(struct max6697_data *data,
+ 		return ret;
+ 
+ 	ret = i2c_smbus_write_byte_data(client, MAX6697_REG_ALERT_MASK,
+-					MAX6697_MAP_BITS(pdata->alert_mask));
++				MAX6697_ALERT_MAP_BITS(pdata->alert_mask));
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret = i2c_smbus_write_byte_data(client, MAX6697_REG_OVERT_MASK,
+-				MAX6697_MAP_BITS(pdata->over_temperature_mask));
++			MAX6697_OVERT_MAP_BITS(pdata->over_temperature_mask));
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
-2.20.1
+2.27.0.111.gc72c7da667-goog
 
