@@ -2,136 +2,83 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB112056BF
-	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 18:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCA21205851
+	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 19:13:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732224AbgFWQE7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 23 Jun 2020 12:04:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41132 "EHLO
+        id S1733082AbgFWRNU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 23 Jun 2020 13:13:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728472AbgFWQE7 (ORCPT
+        with ESMTP id S1732408AbgFWRNT (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 23 Jun 2020 12:04:59 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130C2C061573;
-        Tue, 23 Jun 2020 09:04:59 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id u8so1651847pje.4;
-        Tue, 23 Jun 2020 09:04:59 -0700 (PDT)
+        Tue, 23 Jun 2020 13:13:19 -0400
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C65C5C061796
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 10:13:17 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id a21so19461142oic.8
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 10:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=do86B9M5tGDDUUM7bCWck23OCEcGEf6z7sPQe5ReWXM=;
-        b=Djp5eFF2KkXJL5N4FbrLUF77gAhDcV09R7NzL5ZiUZr7l493GiFUA9Jc9AJumWB0JL
-         ob3ddMttwYvBHNdejMqGHn4zkWNutODfSMB1EYsuy7gK0ctmTFc2MucxUSEHeAx0FXRo
-         Kc1JsWyaBntbk3noEF/ZwfLnuWgOuxuAjUAJ3u2kdl9BDCczgLdYM1cAMaf1mGZVTDJR
-         1AZ/IpnFSy2MIaiM9hm44WqPnMmLUBPcaxrGp/M09wKoBVJ70nzZx3c9GzJPM6aiFMBt
-         2uKdTE+BtxVANIedKeQAVxL8ZgHHg5iw/HM72G98bbBmF0Oas6EoWDZUEfPaByY66sGa
-         waeA==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=J0VpeRSOJK/TFNJp5yzWMw9fGCcpvggw0aTUG92BVzQ=;
+        b=i0uoYXqFKhL3vc8tp9C6K5GgpytnAnuC0fZClT3jh84RWiGoFjDxz39WaUpuVkv5Kt
+         SmAD30H1WPcvgrd6SExLkc0wvDrspPtVH+1PQMYezhVKK7bR7gTWCpGypXQPIWL4m5P/
+         UFpcHIAwKZqa5DVah79cTZgEa934aGrR1pZyyekUT2C2Q3FXfvUm+RudX5svn6pptMTT
+         YUdPBGfzBWetaC2UbBaKbhgDQiwJdAeAt9IEos/JG/Wjt1Ikco+AIihtHk/64mwRaTkM
+         tERL1Y9s4p6ROcotdBqAWRPz8pvuk7rPYGNRk0ct0p7vzFJC0SJE00MV5zGFRmcqW5F+
+         R6tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=do86B9M5tGDDUUM7bCWck23OCEcGEf6z7sPQe5ReWXM=;
-        b=SmGsIAvL9puj6f0otNmKbCB5YVO2b0VJBt4BJ+uN0iq1uJOPvvo4hb3cSmlHYv8N/C
-         jwyOdMs7ufcqVId7AimAedh6AZBzoU8gx0EbdQ34r3e/3YfjWRUHpeXpxK1OHO5svlkc
-         a5uM3uxvA+E6ao+6LAzek5Bp+eZb9oBvnx2cUpX63vLPzkrtmzf1x9uX3wxjZLugbyGw
-         gtFGwtDQBbDLJAs147qRsbhP+nVVriTFekC6Qg9Q77+Apd24G9uw0AJW4lMzht9o9JFY
-         cC4syvrG/pCK3CS41Hn20Te5bpHQnNmF9KrJbyM73Xok4KeaeB1duXPU/ImHiOr2PyF4
-         8PLg==
-X-Gm-Message-State: AOAM530byh2ur0PbYXaT5lsoAHcbLApePQTxWQ2SO5nra2o/ygcFQC7/
-        oGvOjYbgLyDokNzgytjZ2ZU=
-X-Google-Smtp-Source: ABdhPJyYsFWWdMFAKz+pYWcsYlvkUt6KuY+lCjjy9egaWFdNP/Yb85qwbsEGoOOjI/3ToguBhuO5zQ==
-X-Received: by 2002:a17:902:326:: with SMTP id 35mr24612675pld.301.1592928297950;
-        Tue, 23 Jun 2020 09:04:57 -0700 (PDT)
-Received: from cnn ([112.133.236.83])
-        by smtp.gmail.com with ESMTPSA id 25sm17287060pfi.7.2020.06.23.09.04.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Jun 2020 09:04:54 -0700 (PDT)
-Date:   Tue, 23 Jun 2020 21:34:44 +0530
-From:   Manikandan <manikandan.hcl.ers.epl@gmail.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     miltonm@us.ibm.com, Jean Delvare <jdelvare@suse.com>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        saipsdasari@fb.com, patrickw3@fb.com, vijaykhemka@fb.com,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        manikandan.e@hcl.com
-Subject: Re: [PATCH v6] hwmon:(adm1275) Enable adm1278 ADM1278_TEMP1_EN
-Message-ID: <20200623160444.GA8945@cnn>
-References: <20200622153727.GA9347@cnn>
- <20200623140711.GA208792@roeck-us.net>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=J0VpeRSOJK/TFNJp5yzWMw9fGCcpvggw0aTUG92BVzQ=;
+        b=DMjVq0krx2mMwDrSLXoifNR6PDq/iE5wtOfpspBl/cAt3u0zTkX73GQdqgDrHI2hV7
+         X3JnL9wuBbifP0yJSbR563ZErFsgaitWRtO9U9FCOP5xFIcK2j0aUiNrAcqO3q2J3p1D
+         wbiNj8IgnxXpo/ItCkzjlqaNv/qbSaD+UYspqllJ0+AxDtuac4tJ8q0zVC31gt8e2+nA
+         JbW4OMr8riD3SpWOx7p60M9CH/pdvCKEGH2Pn99uNd9txii8Gi0sYGh42p7KzXDfk2SJ
+         ifBjLQxbwymZFV9VscGfeHDBWLliF4bdnEPH4y431BikTWqLC9jnnkvp1hoqLvZGyEF3
+         azdg==
+X-Gm-Message-State: AOAM533qtKJumvjiyJ6rgZm39o3BB1lR5Ztj179ZMRjHLHD4hkw8/WCU
+        +1gQHqz8I7IEF/N/XnCBAyu5K+6Cm2PUtwTaTis=
+X-Google-Smtp-Source: ABdhPJwFGNvc68tznvvGeV1jsg/GTZ4Rd/39o97OHBEKjwSpMzIvEuOyGqbhcOFMrzUuf9xgPL++CJubuneMvIUBBhk=
+X-Received: by 2002:a05:6808:3d3:: with SMTP id o19mr17543391oie.63.1592932396880;
+ Tue, 23 Jun 2020 10:13:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200623140711.GA208792@roeck-us.net>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Received: by 2002:a9d:1d03:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 10:13:15
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <jesseomar11@gmail.com>
+Date:   Tue, 23 Jun 2020 10:13:15 -0700
+Message-ID: <CAJs48TCdF4yNPxK7idLt-8=zPqaO9MudVK-snWMwrGxb6HXbZw@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Jun 23, 2020 at 07:07:11AM -0700, Guenter Roeck wrote:
-> On Mon, Jun 22, 2020 at 09:07:27PM +0530, Manikandan Elumalai wrote:
-> > The adm1278 temp attribute need it for openbmc platform .
-> > This feature not enabled by default, so PMON_CONFIG needs to enable it.
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Manikandan Elumalai <manikandan.hcl.ers.epl@gmail.com>
-> 
-> Applied.
+Dear Friend,
+I'm Mr. Scott Donald a Successful business Man. dealing with
+Exportation, I got your mail contact through search to let you know my
+Ugly Situation Am a dying Man here in Los Angeles California Hospital
+Bed in (USA), I Lost my Wife and my only Daughter for Covid-19 I'm
+dying with same symptoms. my Doctor open-up to me that I don't have
+enough time to live anymore, I have a project that I am about to hand
+over to you. I have already instructed the Barclays Bank of London to
+transfer my fund sum of =C2=A33,7M GBP to you as to enable you to give 50%
+to Charitable Home and take 50% I have given all I have here in
+America to Charitable home I ask my Doctor to help me keep you notice
+when I'm no more please, allow me to see you on my Doctor whats-app
+video call very urgent please, here is my Doctor Whats-app Number for
+urgent notice +13019692737
 
-    Thanks Guenter.
-> 
-> Thanks,
-> Guenter
-> 
-> > ---
-> > v5 -> v6: 
-> > add Reported-by in commit log
-> > align commit and change log as per guidelines.
-> > v4 -> v5: 
-> > align commit and change log. 
-> > v3 -> v4: 
-> > kernel test robot CI warning
-> > v2 -> v3: 
-> > fix invalid signed-off.
-> > removed checkpath warnings.
-> > write ADM1278_TEMP1_EN and ADM1278_VOUT_EN conf in single line operation.
-> > v1 -> v2: 
-> > add Signed-off-by.
-> > removed ADM1278_TEMP1_EN check.
-> > 
-> >  drivers/hwmon/pmbus/adm1275.c | 12 +++++-------
-> >  1 file changed, 5 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/drivers/hwmon/pmbus/adm1275.c b/drivers/hwmon/pmbus/adm1275.c
-> > index 5caa37fb..d4e1925 100644
-> > --- a/drivers/hwmon/pmbus/adm1275.c
-> > +++ b/drivers/hwmon/pmbus/adm1275.c
-> > @@ -666,11 +666,12 @@ static int adm1275_probe(struct i2c_client *client,
-> >  		tindex = 3;
-> >  
-> >  		info->func[0] |= PMBUS_HAVE_PIN | PMBUS_HAVE_STATUS_INPUT |
-> > -			PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT;
-> > +			PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
-> > +			PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP;
-> >  
-> > -		/* Enable VOUT if not enabled (it is disabled by default) */
-> > -		if (!(config & ADM1278_VOUT_EN)) {
-> > -			config |= ADM1278_VOUT_EN;
-> > +		/* Enable VOUT & TEMP1 if not enabled (disabled by default) */
-> > +		if ((config & (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) != (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) {
-> > +			config |= ADM1278_VOUT_EN | ADM1278_TEMP1_EN;
-> >  			ret = i2c_smbus_write_byte_data(client,
-> >  							ADM1275_PMON_CONFIG,
-> >  							config);
-> > @@ -681,9 +682,6 @@ static int adm1275_probe(struct i2c_client *client,
-> >  			}
-> >  		}
-> >  
-> > -		if (config & ADM1278_TEMP1_EN)
-> > -			info->func[0] |=
-> > -				PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP;
-> >  		if (config & ADM1278_VIN_EN)
-> >  			info->func[0] |= PMBUS_HAVE_VIN;
-> >  		break;
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
+
+My Regards.
+
+Mr. Scott Donald
+CEO
