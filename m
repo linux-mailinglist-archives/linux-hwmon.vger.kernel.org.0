@@ -2,66 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 496A9205259
-	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 14:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3032A205412
+	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 16:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732502AbgFWMYi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 23 Jun 2020 08:24:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35236 "EHLO
+        id S1732732AbgFWODF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 23 Jun 2020 10:03:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729611AbgFWMYh (ORCPT
+        with ESMTP id S1732730AbgFWODF (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 23 Jun 2020 08:24:37 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FBFC061796
-        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 05:24:37 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id q5so7916947wru.6
-        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 05:24:37 -0700 (PDT)
+        Tue, 23 Jun 2020 10:03:05 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26BD1C061573
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 07:03:05 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id cm23so1543049pjb.5
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 07:03:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=o5Cy37IaJn8rK6ccU0pt492AlG7pxvyV7X75zkdVjFkcbhm14uxIbuIOMbrW60GuyK
-         HR5K4E1H/yOqNVdU22tNnrvac1Ap1WBj4iZIIxPN6D/HAIeNMJVO3p6yiSlyqw/CnpM9
-         veS0D/nN2qN2EAORR6Hll36prv6W/+mvkPGdkqcrwXGVa9UdZUabnI7mihT4990F9JvQ
-         2gGhwqNrcZkXJzjCVBALAuvVHdlveC7QM3dHaXhiQjQn7J8MUzrkioc/bX9yRqh5b+Zd
-         zBPJ8+3fQYnrqgagk2OhbpZVdVpC4bdYU2Wr7QkJFCpjFWa685Iu2ya9ROqRCNnnmEaC
-         wd4Q==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=jMoFAToMDg+lotTVOU5AnXVuta2czv/olJh4qsNbtuc=;
+        b=jNAmswDtYoipSw3rsKPdcQRRSpUjDUGTk7rfWJi+KlhEHCpdfqYkCw1+H9WFeEprgQ
+         s99N27/YT+9GPMu2sfjwy+t8VodeGssEoNb83bYyCeXO4Tg+A8MJOsJph8Le9GuaqbEO
+         UJUKm/soneHBakoJIK7UsU4B2VJ/ljFy9JunXn0hRZzzUg23sHC++x8ol8HQtZhw3q6o
+         S1Okgf0bH9Zg4zn9R0EOPsn2HtIOs7TFWaIwa6LX2AA6qKv3Wzc+e6iyb5QlmdCBHs0d
+         GqUwURLv3AFEP8Gr5veJuaR59MgFhv0i/5IT6Zydp+pDyKwtaxQiqMw9Y6H/VMf7eAZ3
+         d1XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=Sz1CNv8lfXfOtsh8I969TgDONSoaCkzm3RL6elnS2VAADuQhmm8rc/lpuV+mFrbFx+
-         8gpjRllDCwtLh9t+5qbVFe0+oBYTFE+kjnMibJq7hWLQ1eVNZhCnUBq1aZVkz9fvbXyu
-         UwdjEy2xD9eJintYY/n6MJnlFluOYF5KqD8vHihs91vedBPv5KA5uUr6ywCAWYCqL/4N
-         I/VcTVGsVtu7ZevFMPEoNort9za4L4UYRxwCOwbKsYynt1LYE3KolEYS08WKcFvuqVdm
-         TtOcL0Mqul69u9NEWSDJwb393TOhMkqohMhdcgyPsaU0iPAbPCT0FmEO9H35labrl+So
-         +AMA==
-X-Gm-Message-State: AOAM531IxVYIfy+UNRr2bAF/VpN4qfO2KiekVYN54X5VIx+vXLfWQNi/
-        OiX3l4vfM9bD2Drr+E+Bxh+DEwluRfGcpH0anDI=
-X-Google-Smtp-Source: ABdhPJxnsFGg1B2OMPCgzzI44ZZu8qnbaweO4pJIt4XR6I5HrJiUlR1YZ2Xlu22Aci/hSdDMAwnG1p5hr3MnK2YczaE=
-X-Received: by 2002:adf:ed49:: with SMTP id u9mr24541523wro.414.1592915076557;
- Tue, 23 Jun 2020 05:24:36 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=jMoFAToMDg+lotTVOU5AnXVuta2czv/olJh4qsNbtuc=;
+        b=tQz5n2ri06hrXKIxZismJrziAHd1rg3pYFkcRdu/v8bex6WnytQghuNBGeKlXALuzj
+         kyhx6RSeDpIatQsJsHT0K8BTat+OO4OZYOjU7KZJhtEqBWv0JFZ/6bk5U/LfsXu3IkV3
+         XQ/mZjaZ5DWTVhrPIWEbgqa1IyiMgPnH32ATW19wV1mMaaaD9NMMRnZz5tuO7U2+64qZ
+         mki4z83wHbR9aIklsN4Om9wbdkfkvlznlbRGRsajHi1VafNACAjKdR0aqx1bC+oSeLSg
+         UZbVn3A6Wp1z2WsWi/yIBSER6EeSDMaYdPfVdNdNYmWJdYgNiSodI4cObKjh2dO8EmfE
+         IUIA==
+X-Gm-Message-State: AOAM533sCph22rhG+jLpBw7tUUGUjC3O9EALgpZMcvt+9zv1RotC6dhC
+        n3qDMbba2L/yfPUHRLFELhQ=
+X-Google-Smtp-Source: ABdhPJwQOy4kYeC2vX8R9voWdvMjg1L9/JLnLnsHCRBbJLIotKFom7r7aVbX3Tlt9+QcD9/tDB17PQ==
+X-Received: by 2002:a17:90b:801:: with SMTP id bk1mr23288788pjb.28.1592920984570;
+        Tue, 23 Jun 2020 07:03:04 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id g17sm2563990pju.11.2020.06.23.07.03.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 23 Jun 2020 07:03:03 -0700 (PDT)
+Date:   Tue, 23 Jun 2020 07:03:02 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat@cesnet.cz>
+Cc:     linux-hwmon@vger.kernel.org, Vadim Pasternak <vadimp@mellanox.com>
+Subject: Re: [PATCH] hwmon: (pmbus) Fix page vs. register when accessing fans
+Message-ID: <20200623140302.GA73558@roeck-us.net>
+References: <449bc9e6c0e4305581e45905ce9d043b356a9932.1592904387.git.jan.kundrat@cesnet.cz>
 MIME-Version: 1.0
-Received: by 2002:a5d:42c4:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:24:36
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bariskamx@gmail.com>
-Date:   Tue, 23 Jun 2020 05:24:36 -0700
-Message-ID: <CABZeqGcH266ZqA3Q9Y1PAA2ofO1_nEsH23uYYrLUWhwY4hXRSg@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <449bc9e6c0e4305581e45905ce9d043b356a9932.1592904387.git.jan.kundrat@cesnet.cz>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+On Tue, Jun 23, 2020 at 09:47:39AM +0200, Jan Kundrát wrote:
+> Commit 16358542f32f added support for multi-phase pmbus devices.
+> However, when calling pmbus_add_sensor() for fans, the patch swapped
+> the `page` and `reg` attributes. As a result, the fan speeds were
+> reported as 0 RPM on my device.
+> 
+> Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+> Fixes: 16358542f32f hwmon: (pmbus) Implement multi-phase support
+
+Applied.
+
+Thanks,
+Guenter
+
+> ---
+>  a/drivers/hwmon/pmbus/pmbus_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+> index 8d321bf7d15b..e721a016f3e7 100644
+> --- a/drivers/hwmon/pmbus/pmbus_core.c
+> +++ b/drivers/hwmon/pmbus/pmbus_core.c
+> @@ -1869,7 +1869,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+>  	struct pmbus_sensor *sensor;
+>  
+>  	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
+> -				  PMBUS_VIRT_FAN_TARGET_1 + id, 0xff, PSC_FAN,
+> +				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
+>  				  false, false, true);
+>  
+>  	if (!sensor)
+> @@ -1880,14 +1880,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
+>  		return 0;
+>  
+>  	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
+> -				  PMBUS_VIRT_PWM_1 + id, 0xff, PSC_PWM,
+> +				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
+>  				  false, false, true);
+>  
+>  	if (!sensor)
+>  		return -ENOMEM;
+>  
+>  	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
+> -				  PMBUS_VIRT_PWM_ENABLE_1 + id, 0xff, PSC_PWM,
+> +				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
+>  				  true, false, false);
+>  
+>  	if (!sensor)
+> @@ -1929,7 +1929,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
+>  				continue;
+>  
+>  			if (pmbus_add_sensor(data, "fan", "input", index,
+> -					     page, pmbus_fan_registers[f], 0xff,
+> +					     page, 0xff, pmbus_fan_registers[f],
+>  					     PSC_FAN, true, true, true) == NULL)
+>  				return -ENOMEM;
+>  
