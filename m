@@ -2,83 +2,129 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA21205851
-	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 19:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B133C2059D8
+	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 19:44:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733082AbgFWRNU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 23 Jun 2020 13:13:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732408AbgFWRNT (ORCPT
+        id S1733105AbgFWRfW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 23 Jun 2020 13:35:22 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:23920 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1733045AbgFWRfV (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 23 Jun 2020 13:13:19 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C65C5C061796
-        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 10:13:17 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id a21so19461142oic.8
-        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 10:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=J0VpeRSOJK/TFNJp5yzWMw9fGCcpvggw0aTUG92BVzQ=;
-        b=i0uoYXqFKhL3vc8tp9C6K5GgpytnAnuC0fZClT3jh84RWiGoFjDxz39WaUpuVkv5Kt
-         SmAD30H1WPcvgrd6SExLkc0wvDrspPtVH+1PQMYezhVKK7bR7gTWCpGypXQPIWL4m5P/
-         UFpcHIAwKZqa5DVah79cTZgEa934aGrR1pZyyekUT2C2Q3FXfvUm+RudX5svn6pptMTT
-         YUdPBGfzBWetaC2UbBaKbhgDQiwJdAeAt9IEos/JG/Wjt1Ikco+AIihtHk/64mwRaTkM
-         tERL1Y9s4p6ROcotdBqAWRPz8pvuk7rPYGNRk0ct0p7vzFJC0SJE00MV5zGFRmcqW5F+
-         R6tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=J0VpeRSOJK/TFNJp5yzWMw9fGCcpvggw0aTUG92BVzQ=;
-        b=DMjVq0krx2mMwDrSLXoifNR6PDq/iE5wtOfpspBl/cAt3u0zTkX73GQdqgDrHI2hV7
-         X3JnL9wuBbifP0yJSbR563ZErFsgaitWRtO9U9FCOP5xFIcK2j0aUiNrAcqO3q2J3p1D
-         wbiNj8IgnxXpo/ItCkzjlqaNv/qbSaD+UYspqllJ0+AxDtuac4tJ8q0zVC31gt8e2+nA
-         JbW4OMr8riD3SpWOx7p60M9CH/pdvCKEGH2Pn99uNd9txii8Gi0sYGh42p7KzXDfk2SJ
-         ifBjLQxbwymZFV9VscGfeHDBWLliF4bdnEPH4y431BikTWqLC9jnnkvp1hoqLvZGyEF3
-         azdg==
-X-Gm-Message-State: AOAM533qtKJumvjiyJ6rgZm39o3BB1lR5Ztj179ZMRjHLHD4hkw8/WCU
-        +1gQHqz8I7IEF/N/XnCBAyu5K+6Cm2PUtwTaTis=
-X-Google-Smtp-Source: ABdhPJwFGNvc68tznvvGeV1jsg/GTZ4Rd/39o97OHBEKjwSpMzIvEuOyGqbhcOFMrzUuf9xgPL++CJubuneMvIUBBhk=
-X-Received: by 2002:a05:6808:3d3:: with SMTP id o19mr17543391oie.63.1592932396880;
- Tue, 23 Jun 2020 10:13:16 -0700 (PDT)
+        Tue, 23 Jun 2020 13:35:21 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05NHNRKr031355;
+        Tue, 23 Jun 2020 13:35:04 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 31uk3grq2a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Jun 2020 13:35:03 -0400
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 05NHZ202031562
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 23 Jun 2020 13:35:02 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Tue, 23 Jun
+ 2020 13:35:01 -0400
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Tue, 23 Jun 2020 13:35:01 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 05NHYxMP017521;
+        Tue, 23 Jun 2020 13:34:59 -0400
+From:   <alexandru.tachici@analog.com>
+To:     <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <robh+dt@kernel.org>, <linux@roeck-us.net>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: [PATCH v4 0/7] hwmon: pmbus: adm1266: add support
+Date:   Tue, 23 Jun 2020 20:36:52 +0300
+Message-ID: <20200623173659.41358-1-alexandru.tachici@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:a9d:1d03:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 10:13:15
- -0700 (PDT)
-Reply-To: sctnld11170@tlen.pl
-From:   "Mr. Scott Donald" <jesseomar11@gmail.com>
-Date:   Tue, 23 Jun 2020 10:13:15 -0700
-Message-ID: <CAJs48TCdF4yNPxK7idLt-8=zPqaO9MudVK-snWMwrGxb6HXbZw@mail.gmail.com>
-Subject: Hello, Please
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-23_11:2020-06-23,2020-06-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ bulkscore=0 spamscore=0 mlxscore=0 phishscore=0 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006120000 definitions=main-2006230123
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear Friend,
-I'm Mr. Scott Donald a Successful business Man. dealing with
-Exportation, I got your mail contact through search to let you know my
-Ugly Situation Am a dying Man here in Los Angeles California Hospital
-Bed in (USA), I Lost my Wife and my only Daughter for Covid-19 I'm
-dying with same symptoms. my Doctor open-up to me that I don't have
-enough time to live anymore, I have a project that I am about to hand
-over to you. I have already instructed the Barclays Bank of London to
-transfer my fund sum of =C2=A33,7M GBP to you as to enable you to give 50%
-to Charitable Home and take 50% I have given all I have here in
-America to Charitable home I ask my Doctor to help me keep you notice
-when I'm no more please, allow me to see you on my Doctor whats-app
-video call very urgent please, here is my Doctor Whats-app Number for
-urgent notice +13019692737
+From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-Hope To Hear From You. I'm sending this email to you for the second
-time yet no response from you.
+Add PMBus probing driver for the adm1266 Cascadable
+Super Sequencer with Margin Control and Fault Recording.
+Driver is using the pmbus_core, creating sysfs files
+under hwmon for inputs: vh1->vh4 and vp1->vp13.
 
-My Regards.
+1. Add PMBus probing driver for inputs vh1->vh4
+and vp1->vp13.
 
-Mr. Scott Donald
-CEO
+2. Add Block Write-Read Process Call command.
+A PMBus specific implementation was required because
+block write with I2C_SMBUS_PROC_CALL flag allows a
+maximum of 32 bytes to be received.
+
+3. This makes adm1266 driver expose GPIOs
+to user-space. Currently are read only. Future
+developments on the firmware will allow
+them to be writable.
+
+4. Add two ioctl commands for issuing GO_COMMAND
+and reading the state of the adm1266 sequencer.
+
+5. Blackboxes are 64 bytes of chip state related data
+that is generated on faults. Use the nvmem kernel api
+to expose the blackbox chip functionality to userspace.
+
+6. Expose BLACKBOX_INFO register through debugfs.
+
+7. Device tree bindings for ADM1266.
+
+Alexandru Tachici (7):
+  hwmon: pmbus: adm1266: add support
+  hwmon: pmbus: adm1266: Add Block process call
+  hwmon: pmbus: adm1266: Add support for GPIOs
+  hwmon: pmbus: adm1266: Add ioctl commands
+  hwmon: pmbus: adm1266: read blackbox
+  hwmon: pmbus: adm1266: debugfs for blackbox info
+  dt-bindings: hwmon: Add bindings for ADM1266
+
+Changelog v3 -> v4:
+- moved pmbus_block_wr (pmbus process call) from pmbus_core.
+to adm1266.c and renamed to pmbus_block_xfer
+- in pmbus_block_xfer: fixed buffer size bug (from 255 to 257)
+- in adm1266_gpio_get_multiple: handle pdios and gpios one at a time
+to lower allocated space on stack
+- in adm1266_gpio_dbg_show: replaced write_buf with u8 write_cmd var
+- in adm1266_gpio_dbg_show: check number of bytes received from device
+returned by pmbus_block_xfer.
+- now use ioctl to send GO_COMMAND and retrieve current state of adm1266
+- split blackbox commit into blackbox nvmem implementation and debugfs
+blackbox info debugfs
+- create adm1266 debugfs dir under /sys/kernel/debug/pmbus/hwmon for
+blackbox_info
+
+ .../bindings/hwmon/adi,adm1266.yaml           |  56 ++
+ Documentation/hwmon/adm1266.rst               |  50 ++
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ drivers/hwmon/pmbus/Kconfig                   |  10 +
+ drivers/hwmon/pmbus/Makefile                  |   1 +
+ drivers/hwmon/pmbus/adm1266.c                 | 657 ++++++++++++++++++
+ include/uapi/linux/adm1266.h                  |  16 +
+ 7 files changed, 791 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
+ create mode 100644 Documentation/hwmon/adm1266.rst
+ create mode 100644 drivers/hwmon/pmbus/adm1266.c
+ create mode 100644 include/uapi/linux/adm1266.h
+
+-- 
+2.20.1
+
