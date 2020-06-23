@@ -2,101 +2,105 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A822204E0B
-	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 11:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80C36205088
+	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Jun 2020 13:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731997AbgFWJei (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 23 Jun 2020 05:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36828 "EHLO
+        id S1732538AbgFWLRZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 23 Jun 2020 07:17:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731947AbgFWJeh (ORCPT
+        with ESMTP id S1732519AbgFWLQx (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 23 Jun 2020 05:34:37 -0400
-X-Greylist: delayed 341 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 23 Jun 2020 02:34:37 PDT
-Received: from office2.cesnet.cz (office2.cesnet.cz [IPv6:2001:718:1:101::144:244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1911C061573
-        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 02:34:37 -0700 (PDT)
-Received: from localhost (ip-78-45-210-6.net.upcbroadband.cz [78.45.210.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by office2.cesnet.cz (Postfix) with ESMTPSA id 9965D40005D;
-        Tue, 23 Jun 2020 11:28:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cesnet.cz;
-        s=office2-2020; t=1592904532;
-        bh=Lgwx5V24Fe1mdJ5m8CIJFlXu+h9v3t0FiohwRlciIjw=;
-        h=Resent-Date:Resent-From:Resent-To:Resent-Cc:From:Date:Subject:To:
-         Cc;
-        b=c9E6g28tAzGn9ZnP0siwpugat6Km0weRMdXPy5W5I6kmpWRD8Yv5gyr1dqdASSSA3
-         quBD6U9AqNaCSzCVSiELgGXifEj2yorqv7QWJfsUPL38J0QU9oQB1DzFjzB1r24yHv
-         qvW7HzlYl0YJg/rZdVgvxVcL9IAhFPsI46HdzqQ/qJGW1JYNd1lISrHmK0tOpJcWjw
-         Wf6PuCudzLC+H/vHAej8me7TwUJ7mX6L2SWzBNRpqf0Z47VILdU1IzQtFtmtkOGatY
-         Qf+qJAwG6AJrlbE88ognwuGA59hfMyfAT8DjETLV2RjZzRpNgfgrGq3jIKTVe1HgLi
-         7X1BH5DTwo13g==
-Message-Id: <449bc9e6c0e4305581e45905ce9d043b356a9932.1592904387.git.jan.kundrat@cesnet.cz>
-From:   =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
-Date:   Tue, 23 Jun 2020 09:47:39 +0200
-Subject: [PATCH] hwmon: (pmbus) Fix page vs. register when accessing fans
+        Tue, 23 Jun 2020 07:16:53 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E329C0617BB
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 04:16:51 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id q5so7704456wru.6
+        for <linux-hwmon@vger.kernel.org>; Tue, 23 Jun 2020 04:16:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=E6E/hlNpiM6PnoAOVZ+7voPc9wpxPmWA12rEiYoj/bAUsYe0AJbyTzI9pZwPUUDdPP
+         2sshPYcb9oIsA99JTikTl0u76qfHNPIW2jIbz6C+DLselDK71HuKa++SqaGTSZ4p4+te
+         gTQ9UTEVmk4+r2eFXVbrvBf8ptXVBuknudxlYS3vrFAv18ZetPr28ECYav3lG+E2L5JM
+         St9yzES6OGBMLQpZbQAQLmSOp9Akg+wflxGB71dvTLo/TJoexQV6LE+g+JoBlfC2QAg7
+         b+ja973yyVQOwbfrTF90BaaIQGUXchEhek4sdIUmlBpL8Ak1D79EOMoTbcuGCplWvTHT
+         W4hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=drFzsqdGUhJ1q+wkB0puN1prvKMYIF0NHKHznvZ2tll01IOpetDg/O4VKurk8QZrB7
+         9jdCHB+uso4PV2gUPsQRGytQ+Xft1dOmlfRklG7fQdi9oY2S6ZM7WL1xwYEF89ASvD5V
+         ybQbEv2WC4R6X+YrLsKxx0o65ZfUM5UdTnzGBhd2T0N3iGl8wMQ3vZjPNICMhKYEOmF5
+         lKq7/nZDOhELgG7vN9xSzqHX+grjQkZEmF9U6JqLKdfsP/PnhGJJegTC1Q//ana/IGok
+         NeKUOJ+aRJb84xBo4n4GD9kai9XliYdYATsov83SdD4w9UEa1S5IbN9Nf3BTpdEvMq+q
+         6Fiw==
+X-Gm-Message-State: AOAM530H9X4gStu6MbfARHYF3bPS1eon6Cgyj1OPstI8rCbykk07bnJa
+        AmSjYfvyvEPXgkkw2zLdGYRLq9IQ7nu/zyWi3vI=
+X-Google-Smtp-Source: ABdhPJzZ1QWBbLEVEJDiR8ozgNL3BKht/bHhiiCQZFbEUfR5i8VLBKqhwlX7a4NXmF6FqxDOEk5UW9nntOQTLpvDlps=
+X-Received: by 2002:a5d:62d1:: with SMTP id o17mr24071305wrv.162.1592911009833;
+ Tue, 23 Jun 2020 04:16:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, Vadim Pasternak <vadimp@mellanox.com>
+Received: by 2002:a1c:f002:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:16:49
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <paulwiliam782@gmail.com>
+Date:   Tue, 23 Jun 2020 12:16:49 +0100
+Message-ID: <CAHqcnY16ZzcoYpU31SEco0sXeb2W5Dq2VVpzQr8ZENW9eKiFTA@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Commit 16358542f32f added support for multi-phase pmbus devices.
-However, when calling pmbus_add_sensor() for fans, the patch swapped
-the `page` and `reg` attributes. As a result, the fan speeds were
-reported as 0 RPM on my device.
+Greetings From Mrs. Sarah Koffi
 
-Signed-off-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Fixes: 16358542f32f hwmon: (pmbus) Implement multi-phase support
----
- drivers/hwmon/pmbus/pmbus_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-diff --git drivers/hwmon/pmbus/pmbus_core.c drivers/hwmon/pmbus/pmbus_core.c
-index 8d321bf7d15b..e721a016f3e7 100644
---- drivers/hwmon/pmbus/pmbus_core.c
-+++ drivers/hwmon/pmbus/pmbus_core.c
-@@ -1869,7 +1869,7 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 	struct pmbus_sensor *sensor;
- 
- 	sensor = pmbus_add_sensor(data, "fan", "target", index, page,
--				  PMBUS_VIRT_FAN_TARGET_1 + id, 0xff, PSC_FAN,
-+				  0xff, PMBUS_VIRT_FAN_TARGET_1 + id, PSC_FAN,
- 				  false, false, true);
- 
- 	if (!sensor)
-@@ -1880,14 +1880,14 @@ static int pmbus_add_fan_ctrl(struct i2c_client *client,
- 		return 0;
- 
- 	sensor = pmbus_add_sensor(data, "pwm", NULL, index, page,
--				  PMBUS_VIRT_PWM_1 + id, 0xff, PSC_PWM,
-+				  0xff, PMBUS_VIRT_PWM_1 + id, PSC_PWM,
- 				  false, false, true);
- 
- 	if (!sensor)
- 		return -ENOMEM;
- 
- 	sensor = pmbus_add_sensor(data, "pwm", "enable", index, page,
--				  PMBUS_VIRT_PWM_ENABLE_1 + id, 0xff, PSC_PWM,
-+				  0xff, PMBUS_VIRT_PWM_ENABLE_1 + id, PSC_PWM,
- 				  true, false, false);
- 
- 	if (!sensor)
-@@ -1929,7 +1929,7 @@ static int pmbus_add_fan_attributes(struct i2c_client *client,
- 				continue;
- 
- 			if (pmbus_add_sensor(data, "fan", "input", index,
--					     page, pmbus_fan_registers[f], 0xff,
-+					     page, 0xff, pmbus_fan_registers[f],
- 					     PSC_FAN, true, true, true) == NULL)
- 				return -ENOMEM;
- 
--- 
-2.26.0
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
