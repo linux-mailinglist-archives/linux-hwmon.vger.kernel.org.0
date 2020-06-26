@@ -2,80 +2,94 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D5620B296
-	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2020 15:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E84A620B66E
+	for <lists+linux-hwmon@lfdr.de>; Fri, 26 Jun 2020 18:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728592AbgFZNgK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 26 Jun 2020 09:36:10 -0400
-Received: from ms-10.1blu.de ([178.254.4.101]:42184 "EHLO ms-10.1blu.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728320AbgFZNgJ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 26 Jun 2020 09:36:09 -0400
-Received: from [78.43.71.214] (helo=marius.localnet)
-        by ms-10.1blu.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <mail@mariuszachmann.de>)
-        id 1jooWO-0002Ol-Vf; Fri, 26 Jun 2020 15:36:00 +0200
-From:   Marius Zachmann <mail@mariuszachmann.de>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jean Delvare <jdelvare@suse.com>, Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
-Subject: Re: [PATCH v7] hwmon: add Corsair Commander Pro driver
-Date:   Fri, 26 Jun 2020 15:36:00 +0200
-Message-ID: <1840543.YiJnzbJd1b@marius>
-In-Reply-To: <20200626132135.GA122231@roeck-us.net>
-References: <20200626132135.GA122231@roeck-us.net>
+        id S1726750AbgFZQzz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 26 Jun 2020 12:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726735AbgFZQzy (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 26 Jun 2020 12:55:54 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9102C03E97A
+        for <linux-hwmon@vger.kernel.org>; Fri, 26 Jun 2020 09:55:53 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id l17so9471712wmj.0
+        for <linux-hwmon@vger.kernel.org>; Fri, 26 Jun 2020 09:55:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YwEfQvmcAp1OzhHgbrf29ByeeRHA8D4QLJumMWlGdMY=;
+        b=D1mB/+jjoHrmpzacMbrIPZbzyNR9c53DNmMqrnXYRh1ji4kj8KMh1BFxfXv+E3S3l/
+         zE1ygnczed681pTpSj45J9PmD8Kljg4O1mxIskO0RbUq66weejJ7ltMYmR61WwiazY08
+         wFM9S5AJtQmmX3cgoyCS5mk01HGvXtAlSB1At87hGWdmWEBT/FGfSwiAD5yEEqZswC+5
+         5A3mqUXdDvGnF2J/fsdf28xc5qrA5VgQO3vidHdEI87VseGQOSxVGI0Yo9FQ7noYzqag
+         OYyLeTHsfWbZhsnSVUbaXbBJRC/ConjEmK2/ZLLVgVu+YQFgALAkXSk/OkbYgWJu3Ovn
+         UBGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YwEfQvmcAp1OzhHgbrf29ByeeRHA8D4QLJumMWlGdMY=;
+        b=Ya/GjBfmRPV9O/9tssj0hQ3w5By564xq16pIe7ywmqeLRCE0ca66paOrDj/dzfrYnO
+         TvPGkd0Liq9HbWWCcSHTbVd3oP7clA7G5PPNIopqaE4o7gbxE0Eq1n9ZNfZxVPJhsREc
+         QEG4gM4PPzLqRoLYGsvdHUGUoLHYwj3z3qgnQ/2d2bqhXVL9BnJODeRiYizZ4oJN8nTO
+         tYUp4tPwbcoiyb0fiwQYYWQBGhsL/gWwKMgQQ0N0fl5omKwudrXWkZfJ4nFhd7+07iSa
+         oPej5qvip7t66UkKuYiOtnAs++NgRGp0gubBuGTCMZo0RVaApdw8xTaFJ7zvB9y61AtF
+         GkoA==
+X-Gm-Message-State: AOAM533768/z0OToTbNa602K7B6p25ESHvcT6s3A3GjWXLxUuwekoxwy
+        ZfP0+JB5tlYLpQF9vohEWttlUA==
+X-Google-Smtp-Source: ABdhPJy08XREFDSmhdAEr3SYzJ2t9HnXgtq5h0IAaCZA65lnqgXMhF90VUJGb0CaBUmmjn+39KSZWg==
+X-Received: by 2002:a7b:c18f:: with SMTP id y15mr4457933wmi.85.1593190552393;
+        Fri, 26 Jun 2020 09:55:52 -0700 (PDT)
+Received: from localhost.localdomain (lfbn-nic-1-65-232.w2-15.abo.wanadoo.fr. [2.15.156.232])
+        by smtp.gmail.com with ESMTPSA id x5sm18654706wmg.2.2020.06.26.09.55.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2020 09:55:51 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH 0/5] devres: provide and use devm_krealloc()
+Date:   Fri, 26 Jun 2020 18:55:30 +0200
+Message-Id: <20200626165535.7662-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Con-Id: 241080
-X-Con-U: 0-mail
-X-Originating-IP: 78.43.71.214
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 26.06.20 at 15:21:35 CEST, Guenter Roeck wrote
-> On Fri, Jun 26, 2020 at 07:59:36AM +0200, Marius Zachmann wrote:
-> > This is v7 of a driver for the Corsair Commander Pro.
-> 
-> Note to self: Reword when applying.
-> 
-> > It provides sysfs attributes for:
-> > - Reading fan speed
-> > - Reading temp sensors
-> > - Reading voltage values
-> > - Writing pwm and reading last written pwm
-> > - Reading fan and temp connection status
-> > 
-> > It is an usb driver, so it needs to be ignored by usbhid.
-> > The Corsair Commander Pro is a fan controller and provides
-> > no means for user interaction.
-> > The two device numbers are there, because there is a slightly
-> > different version of the same device. (Only difference
-> > seem to be in some presets.)
-> > 
-> > This is based on the staging/hwmon tree.
-> > 
-> > Signed-off-by: Marius Zachmann <mail@mariuszachmann.de>
-> 
-> Looks good. For my reference:
-> 
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> 
-> We'll have to wait for an ACK from a HID maintainer before I can apply it.
-> 
-> Thanks,
-> Guenter
-> 
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Thank you very much for your reviews and time!
+Regular krealloc() obviously can't work with managed memory. This series
+implements devm_krealloc() and adds the first user with hope that this
+helper will be adopted by other drivers currently using non-managed
+krealloc().
 
-Marius
+Some cosmetic changes to the code modified by main patches are included.
 
+Bartosz Golaszewski (5):
+  devres: remove stray space from devm_kmalloc() definition
+  devres: move the size check from alloc_dr() into a separate function
+  device: remove 'extern' attribute from function prototypes in device.h
+  devres: provide devm_krealloc()
+  hwmon: pmbus: use more devres helpers
 
+ .../driver-api/driver-model/devres.rst        |   1 +
+ drivers/base/devres.c                         |  58 ++++-
+ drivers/hwmon/pmbus/pmbus_core.c              |  27 +--
+ include/linux/device.h                        | 225 +++++++++---------
+ 4 files changed, 173 insertions(+), 138 deletions(-)
 
+-- 
+2.26.1
 
