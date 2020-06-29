@@ -2,52 +2,52 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AC0120E0B9
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jun 2020 23:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E24E20E22E
+	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Jun 2020 00:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731050AbgF2Usy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 29 Jun 2020 16:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43354 "EHLO
+        id S2388417AbgF2VDF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 29 Jun 2020 17:03:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731515AbgF2TNs (ORCPT
+        with ESMTP id S1731155AbgF2TMt (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:13:48 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A3CC08ECAF
-        for <linux-hwmon@vger.kernel.org>; Sun, 28 Jun 2020 23:50:21 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id z15so4063485wrl.8
-        for <linux-hwmon@vger.kernel.org>; Sun, 28 Jun 2020 23:50:21 -0700 (PDT)
+        Mon, 29 Jun 2020 15:12:49 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ABD0C08ECB3
+        for <linux-hwmon@vger.kernel.org>; Sun, 28 Jun 2020 23:50:22 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id r12so15277371wrj.13
+        for <linux-hwmon@vger.kernel.org>; Sun, 28 Jun 2020 23:50:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=HQLZ+jko03ajYiEU9tKzGTq9iSv1zZX+07bBcjYcbLA=;
-        b=FYmhjDIXqE+19n161Ij01cT38yTbnnKTVcBm5nfxvt0mQoxdX8jT5GCNuSmoKGQ2il
-         zlOMuHkFhRAhof+11xURpM5Ke9pgsEcriQuwBOd7e7VKbccssUwJ9KxNsQDeqO4m5yuT
-         CgkHnWe1BxhBEASU/SLGzD8cRrDNVjdIEF+BGPRnD7hDJ2xzsV1jeWo7vkuqUQmaNAZ6
-         Gm84ZPAyV54o4Y60vwDt0COyyKKs3duQp77LiMGGjUsxBO+z7tCOdsozVT9eEkf+ahFl
-         Idog53/4Cl4F2ELArDr6T+/8gsp/dA2WV2zXGEzT00o2WxhlEeOg4DIy1JjL+7hu6hvP
-         BimA==
+        bh=aJcoTCCNzlFqdkD2IQ5/+inRuV3iTmw7U1wrbHYsCXY=;
+        b=yQNBIfth1iVmJ6MlsArzRkfMw8p3OlqAJFnPjZ9jDWZ8Ckq89NZ8HbCJp70g7E8YCL
+         2JY3b42faBfp+pI9Wj+q3iC3i4AZyTUy1GEkfEUcBsqlmw8y8AvYgv5WcS2C2MW5u0JL
+         zpbB9ruLU8gyxebla6lw8iGRWOyQDsCc5QzcNd8GacOCDvBNnYL3QOwwMzM23Zf9QFs2
+         Iv5wKlZhCSNSPWT5AoW8QvVFYWoTZNDQbgoayzreAzhHe2dFIE9MQe0QbnDRPPdsflBy
+         ssKY8pQVsk/0DwYidUKAHysQwmVOmtON7Mggt89l+RXLWxm7hlhn5VM7hDk0VhHUwDrK
+         t9uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HQLZ+jko03ajYiEU9tKzGTq9iSv1zZX+07bBcjYcbLA=;
-        b=RAIge4/LGof4XCqgkUtkVQYLLaisSRVTFJYC2bem/Zx+cHiO05wIt8IDKmYS42Qkis
-         Ix8/3dUfbrAL796jN/aHO/1XUtvW95M4Ukpc2bkhSDr1yBD27MkMemYtkl8MXdUxfViy
-         eovmo9rM9M3L07HvNJJUogSNst+SYbUkgAQjYKL6ie0KsFiEEgJ80duUAs+pC5op7MA6
-         oFWYZ6GvyteR2y9bRd0lsprNE0HxAmw8kYGPZk+f5o85+4/ONNHV+ENUbaNdlkIGTwC3
-         BdAZB4O4Nd4t3jeNOMdxSbVF8OCwS9SwogulG8DoljqcZ/yXsn/p1UQZMqt6Vih3N77Z
-         Qo4w==
-X-Gm-Message-State: AOAM532H7MY03KfU9yoWxwSDVpIgktn18B1FTBExxst85YIyD4IbfEao
-        o2CLYnGjQJB7e/H+NAoiHhd9tA==
-X-Google-Smtp-Source: ABdhPJx4pF05M7pSnBLMBSCCL5/gux2FQqGxkWxH+G1Fjsdujj7JidMEWyZnEHhaT+WmVt1X6gqXvg==
-X-Received: by 2002:adf:f8d1:: with SMTP id f17mr15609276wrq.59.1593413420219;
-        Sun, 28 Jun 2020 23:50:20 -0700 (PDT)
+        bh=aJcoTCCNzlFqdkD2IQ5/+inRuV3iTmw7U1wrbHYsCXY=;
+        b=IHwYGIOQd45YavFlvTng3Nfbf3lW6yKWd71rybUk+Seee9LM1fSMy+gTzCfPSnsmoP
+         bRG+rOiRp4b9mHtIk/Nn+vCakhZpdD2+Bsrj1JQmMd4KotR+/f/H/YmO4xYvG0OCMK5S
+         c+L1IsmfLUKB/7b3jahFqARrAyuceNO8dT0ueSmkchiVHR5DhF+qbwXbBKIeMASYUG10
+         6HMzwSfYZ/wT7nUX0naAFE928YAyLwFsf4C9aWphKXb0L0c0WsxoeKt/XAE7cBKyOxEY
+         bZg4aFvgBOtGvepEdVhm7WZE/1wrqZSmUw2NFdmPKz4ZuQRMEhGI/9YlFf7AMnS/ixX2
+         7dxA==
+X-Gm-Message-State: AOAM5319fIpJ66Cekv2ksA5F74VQNzK0ZImjp7Otlwt5KJYThXCxBaHb
+        ubnCqTWyLIzvdTNPivDMA094eA==
+X-Google-Smtp-Source: ABdhPJzt8Ln/xndbl27Fr/QEAXZT87zNp1KC2QGgpukfa3lZmG8mDlVvRIemD49AvoDQJ3zM4pnmjg==
+X-Received: by 2002:a5d:6786:: with SMTP id v6mr15360274wru.258.1593413421366;
+        Sun, 28 Jun 2020 23:50:21 -0700 (PDT)
 Received: from localhost.localdomain (lfbn-nic-1-65-232.w2-15.abo.wanadoo.fr. [2.15.156.232])
-        by smtp.gmail.com with ESMTPSA id z25sm26400850wmk.28.2020.06.28.23.50.19
+        by smtp.gmail.com with ESMTPSA id z25sm26400850wmk.28.2020.06.28.23.50.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2020 23:50:19 -0700 (PDT)
+        Sun, 28 Jun 2020 23:50:20 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -57,9 +57,9 @@ To:     Jonathan Corbet <corbet@lwn.net>,
 Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hwmon@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v2 5/6] devres: provide devm_krealloc()
-Date:   Mon, 29 Jun 2020 08:50:07 +0200
-Message-Id: <20200629065008.27620-6-brgl@bgdev.pl>
+Subject: [PATCH v2 6/6] hwmon: pmbus: use more devres helpers
+Date:   Mon, 29 Jun 2020 08:50:08 +0200
+Message-Id: <20200629065008.27620-7-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200629065008.27620-1-brgl@bgdev.pl>
 References: <20200629065008.27620-1-brgl@bgdev.pl>
@@ -72,105 +72,90 @@ X-Mailing-List: linux-hwmon@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Implement the managed variant of krealloc(). This function works with
-all memory allocated by devm_kmalloc() (or devres functions using it
-implicitly like devm_kmemdup(), devm_kstrdup() etc.).
-
-Managed realloc'ed chunks can be manually released with devm_kfree().
+Shrink pmbus code by using devm_hwmon_device_register_with_groups()
+and devm_krealloc() instead of their non-managed variants.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 ---
- .../driver-api/driver-model/devres.rst        |  1 +
- drivers/base/devres.c                         | 50 +++++++++++++++++++
- include/linux/device.h                        |  2 +
- 3 files changed, 53 insertions(+)
+ drivers/hwmon/pmbus/pmbus_core.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-index e0b58c392e4f..0a2572c3813c 100644
---- a/Documentation/driver-api/driver-model/devres.rst
-+++ b/Documentation/driver-api/driver-model/devres.rst
-@@ -352,6 +352,7 @@ MEM
-   devm_kfree()
-   devm_kmalloc()
-   devm_kmalloc_array()
-+  devm_krealloc()
-   devm_kmemdup()
-   devm_kstrdup()
-   devm_kvasprintf()
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index ed615d3b9cf1..4b8870ef6a3f 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -837,6 +837,56 @@ void *devm_kmalloc(struct device *dev, size_t size, gfp_t gfp)
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index a420877ba533..225d0ac162c7 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -1022,9 +1022,9 @@ static int pmbus_add_attribute(struct pmbus_data *data, struct attribute *attr)
+ {
+ 	if (data->num_attributes >= data->max_attributes - 1) {
+ 		int new_max_attrs = data->max_attributes + PMBUS_ATTR_ALLOC_SIZE;
+-		void *new_attrs = krealloc(data->group.attrs,
+-					   new_max_attrs * sizeof(void *),
+-					   GFP_KERNEL);
++		void *new_attrs = devm_krealloc(data->dev, data->group.attrs,
++						new_max_attrs * sizeof(void *),
++						GFP_KERNEL);
+ 		if (!new_attrs)
+ 			return -ENOMEM;
+ 		data->group.attrs = new_attrs;
+@@ -2538,7 +2538,7 @@ int pmbus_do_probe(struct i2c_client *client, const struct i2c_device_id *id,
+ 
+ 	ret = pmbus_find_attributes(client, data);
+ 	if (ret)
+-		goto out_kfree;
++		return ret;
+ 
+ 	/*
+ 	 * If there are no attributes, something is wrong.
+@@ -2546,35 +2546,27 @@ int pmbus_do_probe(struct i2c_client *client, const struct i2c_device_id *id,
+ 	 */
+ 	if (!data->num_attributes) {
+ 		dev_err(dev, "No attributes found\n");
+-		ret = -ENODEV;
+-		goto out_kfree;
++		return -ENODEV;
+ 	}
+ 
+ 	data->groups[0] = &data->group;
+ 	memcpy(data->groups + 1, info->groups, sizeof(void *) * groups_num);
+-	data->hwmon_dev = hwmon_device_register_with_groups(dev, client->name,
+-							    data, data->groups);
++	data->hwmon_dev = devm_hwmon_device_register_with_groups(dev,
++					client->name, data, data->groups);
+ 	if (IS_ERR(data->hwmon_dev)) {
+-		ret = PTR_ERR(data->hwmon_dev);
+ 		dev_err(dev, "Failed to register hwmon device\n");
+-		goto out_kfree;
++		return PTR_ERR(data->hwmon_dev);
+ 	}
+ 
+ 	ret = pmbus_regulator_register(data);
+ 	if (ret)
+-		goto out_unregister;
++		return ret;
+ 
+ 	ret = pmbus_init_debugfs(client, data);
+ 	if (ret)
+ 		dev_warn(dev, "Failed to register debugfs\n");
+ 
+ 	return 0;
+-
+-out_unregister:
+-	hwmon_device_unregister(data->hwmon_dev);
+-out_kfree:
+-	kfree(data->group.attrs);
+-	return ret;
  }
- EXPORT_SYMBOL_GPL(devm_kmalloc);
+ EXPORT_SYMBOL_GPL(pmbus_do_probe);
  
-+void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
-+{
-+	struct devres *old_dr, *new_dr;
-+	struct list_head old_head;
-+	unsigned long flags;
-+	void *ret = NULL;
-+	size_t tot_size;
-+
-+	if (unlikely(!new_size)) {
-+		devm_kfree(dev, ptr);
-+		return ZERO_SIZE_PTR;
-+	}
-+
-+	if (unlikely(ZERO_OR_NULL_PTR(ptr)))
-+		return devm_kmalloc(dev, new_size, gfp);
-+
-+	if (WARN_ON(is_kernel_rodata((unsigned long)ptr)))
-+		/*
-+		 * We cannot reliably realloc a const string returned by
-+		 * devm_kstrdup_const().
-+		 */
-+		return NULL;
-+
-+	if (!check_dr_size(new_size, &tot_size))
-+		return NULL;
-+
-+	spin_lock_irqsave(&dev->devres_lock, flags);
-+
-+	old_dr = find_dr(dev, devm_kmalloc_release, devm_kmalloc_match, ptr);
-+	if (WARN_ON(!old_dr))
-+		/* Memory chunk not managed or managed by a different device. */
-+		goto out;
-+
-+	old_head = old_dr->node.entry;
-+
-+	new_dr = krealloc(old_dr, tot_size, gfp);
-+	if (!new_dr)
-+		goto out;
-+
-+	if (new_dr != old_dr)
-+		list_replace(&old_head, &new_dr->node.entry);
-+
-+	ret = new_dr->data;
-+
-+out:
-+	spin_unlock_irqrestore(&dev->devres_lock, flags);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(devm_krealloc);
-+
- /**
-  * devm_kstrdup - Allocate resource managed space and
-  *                copy an existing string into that.
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 9cadb647cacc..228063c6392c 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -201,6 +201,8 @@ int devres_release_group(struct device *dev, void *id);
+@@ -2584,8 +2576,6 @@ int pmbus_do_remove(struct i2c_client *client)
  
- /* managed devm_k.alloc/kfree for device drivers */
- void *devm_kmalloc(struct device *dev, size_t size, gfp_t gfp) __malloc;
-+void *devm_krealloc(struct device *dev, void *ptr, size_t size,
-+		    gfp_t gfp) __must_check;
- __printf(3, 0) char *devm_kvasprintf(struct device *dev, gfp_t gfp,
- 				     const char *fmt, va_list ap) __malloc;
- __printf(3, 4) char *devm_kasprintf(struct device *dev, gfp_t gfp,
+ 	debugfs_remove_recursive(data->debugfs);
+ 
+-	hwmon_device_unregister(data->hwmon_dev);
+-	kfree(data->group.attrs);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pmbus_do_remove);
 -- 
 2.26.1
 
