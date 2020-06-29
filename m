@@ -2,84 +2,73 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7941B20D46D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jun 2020 21:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1290D20D543
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jun 2020 21:16:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730259AbgF2TIW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 29 Jun 2020 15:08:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41736 "EHLO
+        id S1731645AbgF2TQH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 29 Jun 2020 15:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730518AbgF2TCm (ORCPT
+        with ESMTP id S1731800AbgF2TQF (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:02:42 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13FAC030F1F;
-        Mon, 29 Jun 2020 09:32:53 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id u185so6088212pfu.1;
-        Mon, 29 Jun 2020 09:32:53 -0700 (PDT)
+        Mon, 29 Jun 2020 15:16:05 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4BDC08C5FC
+        for <linux-hwmon@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id j12so8294035pfn.10
+        for <linux-hwmon@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=da39VVe9VP5T/e+C8JHxMlj+Kybnqkg4N1aw6KhL+T4=;
-        b=sT8xhrOECEHRXKWwOR2jxn87IGYL2kJ1l4F2kL7ZD8FLaUxwLTYUitf4r5KXgba7es
-         2SnRQW0LEpMlgpuCu8aHX3SEnFDMkEn7TnIWKaZv78S0hlUUkPsMIgjs/61BWPw0CG5J
-         2ZWj+DWzNjdOzxlwrblgNHO8VW9UU+1h8VwHH7H2txpLbVssWHbCUbv9EKi504IfyZjR
-         /tD1K1PoD5yJQTYuTykPekiAmWV7G8JvOXnczhyXUcatx/jcJEbr50NYgI7HdDn38uha
-         AunMBNxqmPqNPwDAqehx+oCKqCRiPeEqkl74hCQjq2pk93CR3s+C0tW3LbhWKP5qM3lM
-         Z/bw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=E57soH+fAZU9oM/uuDn4bCNx2wALmvA7rwFsDeo/VdmyR4hSt+vRDMPW0qpAcJ9V/h
+         UbYJ9fIR9BUAZrS+1TfrEzBoFSxbLFUBB/IIzj7rfy4Y1SyxPmM/cs9fEremwVWV5m5u
+         b9v38myIgTBJNjasjLIOUO/K2CJS7vPJsURIlWBEC7RA0ax+vZbkexDjvFbqaAUgNm/w
+         yj4NkgHNxXLdKOO4AZsIv5vnXx8YMl4s3e1fTXh2Hp6rhwVI9k4nzVvvlc/OSvXrfpbl
+         +6DOlsrKa8IKCRxKxdcbetpm2uz+ZUKJBnziwlMhGJ11qW6bGQPIDGjYXF06+gry04Zz
+         3NGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=da39VVe9VP5T/e+C8JHxMlj+Kybnqkg4N1aw6KhL+T4=;
-        b=J5sz/PrOTaptIdrklWtBjHsPqKYd57QwuvQ3DS7ufLtGlEyGzP5HnhyxYDJ6jdwYbF
-         27oywj2dR5ReDLdp2u4gs1GxsRru4ORkZ2YJbmsVfCajD+1bKhIP+7tpp1UHMzF4SdP3
-         kbwQNT+j5Z315Ob8UPS2YB9jLA2cVJWfXx9T0mP3Nzxu0QzvR8wM8MIlKmZG1HzreQ1M
-         BIA6avPkZKcpl7QmYTIQEMP0tKDoejPQ3nCs598Xm1f3KqOIBQ5LrDQ4Tv8uqQ/xJw3p
-         D8SL4+Gk09YdVrexUlriymKKOq0D2p5Ks+CwRsHcBfcKxkgCBnwcQjY791beNcH6ekhZ
-         dYZw==
-X-Gm-Message-State: AOAM532dZWEH4h88PcmccelCfGSgjn/Lxk/f13DDMdR0OE9ekbPfA1jO
-        xpcVxTfUxuGCkrUd/5wI5Os=
-X-Google-Smtp-Source: ABdhPJywWQc6qI3490FIO81xYxyg6Iwnhb79XiLfzm1JW/pzgcHctYxrVXg7XCyAWghyw/PXZgzecQ==
-X-Received: by 2002:a62:2743:: with SMTP id n64mr14828108pfn.163.1593448373261;
-        Mon, 29 Jun 2020 09:32:53 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h9sm74743pjs.50.2020.06.29.09.32.52
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 29 Jun 2020 09:32:52 -0700 (PDT)
-Date:   Mon, 29 Jun 2020 09:32:51 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v2 6/6] hwmon: pmbus: use more devres helpers
-Message-ID: <20200629163251.GA113813@roeck-us.net>
-References: <20200629065008.27620-1-brgl@bgdev.pl>
- <20200629065008.27620-7-brgl@bgdev.pl>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=p8nHIJuU1j3lM9/oHB+mVU0Q7S0CMnn15p/dq34hvm3njZ+Xvf/SitmYImHaBoi9yQ
+         qOeuAVhGY0SuVJ/eh6yXbgTMq+oOY8Ohj14ZjRWSs1IXMzIrPSpCp69Xf+fcax2D7fCF
+         g3mqyk57OG+y3NZ/hji7k+48dr6VWkJb3wcvH2xBs/E6euVvCgSXPnC2EQOBMIDPyIzK
+         w0MoWCezyF8ISqrA6abAup80+5EyLS4a9Jyv1gFvpvsVa9jFd+FUsbwRLyXKTlwMQpw4
+         XssnbWW7RryWAPsaFxXyCr6V4Lu0VejDK9R+NYXycGmuvmPWZcp8ZnvwzU7k3+OBI3Kf
+         q39A==
+X-Gm-Message-State: AOAM531xPLvP/OLT5q6iRuiSQnu7nnf+xoojrpquTyHOrvT1GOWDvaVD
+        TCTMHHRxU6WVRXJn/pYuRsNWAJ7E/oW3Iw98LTSrfv6L1KA=
+X-Google-Smtp-Source: ABdhPJyNR5zXZ8o09DSJzsSA3OSccnAxM/c9AxKQjYYOZlXvOMCiHs1YW/1gQi1Sa70TQ2VOPtabshfviWRkV7+ICnM=
+X-Received: by 2002:a6b:db17:: with SMTP id t23mr18236117ioc.4.1593458159284;
+ Mon, 29 Jun 2020 12:15:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200629065008.27620-7-brgl@bgdev.pl>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:a05:6602:1588:0:0:0:0 with HTTP; Mon, 29 Jun 2020 12:15:58
+ -0700 (PDT)
+Reply-To: mrs.victoria.alexander2@gmail.com
+From:   "mrs.victoria alexander" <markalexandermilley321@gmail.com>
+Date:   Mon, 29 Jun 2020 12:15:58 -0700
+Message-ID: <CAP7XNCwEGQ+-Q==u4yk4yvJdk1X+gsfSU6pUV_hROjmF=p-DHw@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Jun 29, 2020 at 08:50:08AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> Shrink pmbus code by using devm_hwmon_device_register_with_groups()
-> and devm_krealloc() instead of their non-managed variants.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Dear friend,
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-Thanks,
-Guenter
+I have a business container transaction what that some of( $13million dollars)
+
+ I would like to discuss with you. If you are interested, please
+contact my email
+
+address (mrs.victoria.alexander2@gmail.com)
+
+My WhatsApp number but only message (+19293737780)
+
+Please do not reply if you are not ready
+Thanks
