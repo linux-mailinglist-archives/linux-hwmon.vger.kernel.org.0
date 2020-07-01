@@ -2,182 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 001882109D8
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jul 2020 12:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE672111B9
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jul 2020 19:15:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729987AbgGAK7O (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 1 Jul 2020 06:59:14 -0400
-Received: from mga06.intel.com ([134.134.136.31]:57478 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730015AbgGAK7M (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 1 Jul 2020 06:59:12 -0400
-IronPort-SDR: zZ3919SiuOhR8azL/yRC3NdjucDyEgKPtfUXHFjuycQEJBC5GLwV0B3tvLT8ihlD2WL41LpaGe
- e5ebcsCXXkHg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9668"; a="208042336"
-X-IronPort-AV: E=Sophos;i="5.75,300,1589266800"; 
-   d="scan'208";a="208042336"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2020 03:59:11 -0700
-IronPort-SDR: /n49syykUyKKe6GZRww2QMFRoDLOIyDdW6Y45zEb/WMZ+eGBQi0K5ZYgOzCCjT4Ngsdg8+M0/3
- arOGHRKKbBgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,300,1589266800"; 
-   d="scan'208";a="312652701"
-Received: from lkp-server01.sh.intel.com (HELO 28879958b202) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 01 Jul 2020 03:59:09 -0700
-Received: from kbuild by 28879958b202 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jqaSL-0002yx-1s; Wed, 01 Jul 2020 10:59:09 +0000
-Date:   Wed, 01 Jul 2020 18:58:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:watchdog-next] BUILD SUCCESS
- 3587dc7372a454812acb75080a540b237e39d740
-Message-ID: <5efc6c4d.IEUIwUfCq6aiurxw%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1732681AbgGARPq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 1 Jul 2020 13:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48670 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732655AbgGARPp (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Jul 2020 13:15:45 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8DDFC08C5DF
+        for <linux-hwmon@vger.kernel.org>; Wed,  1 Jul 2020 10:15:44 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id u17so19045618qtq.1
+        for <linux-hwmon@vger.kernel.org>; Wed, 01 Jul 2020 10:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=4ctMXEvTixjKM6olI5YVhvCcO1778vVFj3shNrjFepw=;
+        b=lBpDnHWcDJl71ZJIsRCV+yrtgnERN7dcOwOyxdOvdSb0eDM9XgLeE8/nGqyx9FU/ie
+         g7Yi+Q98cTY04KVy/KmbRigQscosM1rOyx1jmcuZl0bNTeXh6FG4ruysTeDTkJ8LEn07
+         GFDbMx6ZUYE7f+u39Alw+CE5goRDBdkmC0U3jcU/8FY8c/3gi9EefKYyX6c+3dZ5cTnX
+         ulaJTaIk0cQL+PrdHNhqtoSGOo6gXPiwRv/2aWy8sOisbx90RcNUSOfwieamFESNBUSh
+         fOZypppX0wVX11KaIXtK9dvXIoTWj9EhcsVYTIPTSFipxVAn4IIBdUB7Q5qYsPoNyObY
+         kkHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=4ctMXEvTixjKM6olI5YVhvCcO1778vVFj3shNrjFepw=;
+        b=Td4/nU7cL2FNRrGcQtTi4wN6PQDQSNRp2uyBtBIXQDgCILGmnAvfKx1iYu6w0J7krO
+         L8FhdnRZW2MovGH21PUrsD6ZM2ReSfkPpWcSpMboSlWFUg1R9VnahLPGP7APT3V3nsz7
+         3Rd5s1MrBq9U90mZc4Wved7TmhOm9+sod0/Sl4cgnJ0iPCMyxxPraxeyqbpzS1E9t44x
+         jiFWDFYQDxg0n47akq5V5CeLq6xPXa3WdMY/W3505Nl83yvbFWSbDp591v8RWB/oN3j6
+         S2Hujnpt9Ror+zR9MRt6H1tNKgEXntmx8F/XWTO55Aw1ikKg8Ib7QnAZBWpulUGZfb3y
+         nWxA==
+X-Gm-Message-State: AOAM532bwafKcQH2NU+P/8WFnS9aU2T6yMNgfFY/lSAeo7pfWfpPeWf1
+        Nc+njA7qoAfTs0OtuL7UB4JmFaraXCSjaVynczM=
+X-Google-Smtp-Source: ABdhPJxCZGOQA1sE0GTZcNlT5J+mnHwZ+HmwbvcFtcg1r2/DVJCtgLJB17Non53tqk2KyoXfeBJggopyDJFptQmXaqY=
+X-Received: by 2002:ac8:44ad:: with SMTP id a13mr20092678qto.387.1593623743883;
+ Wed, 01 Jul 2020 10:15:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ac8:16ac:0:0:0:0:0 with HTTP; Wed, 1 Jul 2020 10:15:43 -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <missjankipkalya@gmail.com>
+Date:   Wed, 1 Jul 2020 10:15:43 -0700
+Message-ID: <CANYA1jSf2Apk+FwV4sS83-Nhr-+4mSNKqaK_8ysz-VykUZr0Dg@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  watchdog-next
-branch HEAD: 3587dc7372a454812acb75080a540b237e39d740  watchdog: f71808e_wdt: do stricter parameter validation
+Dear Friend,
+I'm Mr. Scott Donald a Successful business Man dealing with
+Exportation, I got your mail contact through search to let you know my
+Ugly Situation Am a dying Man here in Los Angeles California Hospital
+Bed in (USA), I Lost my Wife and my only Daughter for Covid-19 I'm
+dying with same symptoms. my Doctor open-up to me that he is Afraid to
+tell me my Condition and inside me, I already know that I'm not going
+to survive this alone in this Health,
 
-elapsed time: 721m
+I have a project that I am about to hand over to you. I have already
+instructed the Bank to make the transfer to you as soon as the Account
+Manager hears from you. the bank will commence the fund transfer into
+your account. I want you to give 50% to Charitable Home and take 50%
+Please, don't think otherwise and why would anybody send someone you
+barely know a huge amount of money is this real or what? please do as
+I said there was someone from your State that I deeply love so very
+very much and I miss her so very very much I have no means to reach
+any Charitable Home there. that is why I go for a personal search of
+the Country and State and I got your mail contact through search to
+let you know my Bitterness and please, help me is getting Dark I ask
+my Doctor to help me keep you notice failure for me to reach you in
+person Your urgent Response, here is my Doctor Whats-app Number for
+urgent notice +13019692737
 
-configs tested: 120
-configs skipped: 5
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+My Regards.
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-xtensa                generic_kc705_defconfig
-sh                ecovec24-romimage_defconfig
-powerpc                      ppc6xx_defconfig
-arm                  colibri_pxa270_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                   rts7751r2dplus_defconfig
-riscv                    nommu_k210_defconfig
-i386                             alldefconfig
-mips                        vocore2_defconfig
-powerpc                         ps3_defconfig
-arm                         ebsa110_defconfig
-sparc64                          allmodconfig
-sh                          sdk7780_defconfig
-m68k                          amiga_defconfig
-arm                         lpc32xx_defconfig
-m68k                            mac_defconfig
-arm                            dove_defconfig
-mips                          ath79_defconfig
-alpha                            alldefconfig
-arc                         haps_hs_defconfig
-powerpc                    gamecube_defconfig
-arm                           tegra_defconfig
-arm                         orion5x_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200701
-i386                 randconfig-a001-20200701
-i386                 randconfig-a006-20200701
-i386                 randconfig-a005-20200701
-i386                 randconfig-a004-20200701
-i386                 randconfig-a003-20200701
-x86_64               randconfig-a012-20200701
-x86_64               randconfig-a016-20200701
-x86_64               randconfig-a014-20200701
-x86_64               randconfig-a011-20200701
-x86_64               randconfig-a015-20200701
-x86_64               randconfig-a013-20200701
-i386                 randconfig-a011-20200701
-i386                 randconfig-a015-20200701
-i386                 randconfig-a014-20200701
-i386                 randconfig-a016-20200701
-i386                 randconfig-a012-20200701
-i386                 randconfig-a013-20200701
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Mr. Scott Donald
+CEO
