@@ -2,74 +2,131 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23EDA219483
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jul 2020 01:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96DF52194AB
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jul 2020 01:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbgGHXnZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 8 Jul 2020 19:43:25 -0400
-Received: from sonic315-14.consmr.mail.bf2.yahoo.com ([74.6.134.124]:45885
-        "EHLO sonic315-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725978AbgGHXnY (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 8 Jul 2020 19:43:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1594251803; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=HN/tC86bgd9/bl0s6IeF7/tTIZBIL2DEL9PrwfD4kVUQ1LMi5I6lm6FBpl/KwSFQtXb2wamnZsFd3+s5GQLHbvZWMPE6bXjI4LmWKNNPYvKpNYd3sAjlI0CyjTzL7o7u1puNU63WnQ1Z8M2eFD+rWQf552GdEtjWNou67aqixJruaCX5ShsT3Z4RDlSHK5DpnRLtjFprtIRwEAypKTAIpUorNSa6zq1lHcRWnnXxxYQ9EbLBfXzINd6YFYAXmFhNLal23cmRn1UKz9oOCp9M6AfdyUoMonpp1c/aM3uh4Jcp4jFAzT1qY+KjeNt92/9HQmgroPrObTyzEMWxbOrsvw==
-X-YMail-OSG: ApNgELwVM1n3OnKggDcyUQbs6uDdswzcjNLrTQsL0FqezVfk.7hmyNK3PaHUDN0
- Fsn_WbNiwszR6kSu31R5FivOmyuuv5HGWx7vVuii.TR2HlbiqUHnb2KlzsMgqhZpOc3bxngF3ZCb
- cRjUjqmEL8x7NK8_4CuBWKPmJONtXQdP6eEwuDdUqOBPmVdR.7ypGNjMG1VPKsScoWSt.7A5yhmA
- J43kLhp5ahK4mBMGvU4.JR_o3BDIyEiyYpP3hYwKLhNZK.D0iQPAM7a4rtxwY_eo1HUr3NkIaPe6
- hHQJnz4C_f5CUkrRKBS0TnQToQZaHceZkWlXIX2BYt67EZOf7exqrdPpkvFKJNNurrFMativbm7X
- mDXGcmqxGMtQO8p73kIrkugcvVcw6pfCffrhiWGa2CLPDzIwnvPrSrl2Dyz2kYJ2B3sMdkxTAzTw
- UFTNsjiosfnJ.muRTIuR463gJ7tynb1k5Z5DIoLMsfL9dDSAvLUE702q_dBjQWU8z9aajFL6CDHT
- AyvbVuTSdgZq0CN5KRXbBvvj7uy6wbMPnx9VyUWk7NAojM1w6lQZFJI.NUthoUq55vNMf3ue3myr
- uxEPLl7ZoENxjrNGXG3iGP1P3AGS96G_cdX9.huM.nOj6zxwcCPQzm03LSrzYfrEQgc_q.4Sw29h
- jaRgIuE4P6Txfrt7l5y78zYidR5.RsJC8yPOW0qLiXET0L_UkE4635ZZ70R2osfK8SXGb4f2ByOO
- Qiq4qs.nhY69m.8HhZirKOGzF3jnx.Gf54jlYPBvtoaHa3Y4d1avdZEWyd_iXIIuyxNSqS0nXIhl
- R7iNuM0QE6INCccjK5ALf1tW2lGzPRzn.wOCu5ySSbaY25yvW9iWs1bnoHCgOcYtvAC6Ku.9_e.H
- .Fqo8q9u34mG.Ww1bEN.DwwPqGsyEULUCHgDKKNlTqacYTYcagUuCGpVLsrXh3Vd5TNpP2bF_tOu
- N_NsaloNmJi3Fcsoqq46HpiAUjUN0sVCqRQjwQR8i9LDWRTPJv0XeLIdvdb8m8pedbVouWwB8iF5
- Mjiol6S3IovfHEv0DTZh2t6wHqLYaYU62.5LKz9LnUIX5zrxV_a_fhNrSJlEKXOTHfiRsQbRo80z
- QAZV6cXio6GnJdpJ4kCPiTI1mjTSsjTESifKh6OaTfQv6XxQEkTd_8eWqcp39icC4_ZN5Y84J6Gi
- 8DNCP5uG8pt.XHkpGgCgH8tIaYmf3oGqfeNRNsXJwKM39QT0VlSQmitMO.GAQgiNj4.MYWZJjSGf
- O1bJiE05RUl6IpfNcgWdLfbcZBBCS8vZ_CJis5oFQSjO3KymQlAYmNw.76xleRyiGZtJHSPx5AG7
- A
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.bf2.yahoo.com with HTTP; Wed, 8 Jul 2020 23:43:23 +0000
-Date:   Wed, 8 Jul 2020 23:43:20 +0000 (UTC)
-From:   Ms lisa Hugh <lisahugh531@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <538527762.4633085.1594251800761@mail.yahoo.com>
-Subject: MASSAGE FROM(Ms Lisa hugh).
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <538527762.4633085.1594251800761.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726261AbgGHXxR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 8 Jul 2020 19:53:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbgGHXxR (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jul 2020 19:53:17 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC34FC08C5C1
+        for <linux-hwmon@vger.kernel.org>; Wed,  8 Jul 2020 16:53:16 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id n11so647127ybg.15
+        for <linux-hwmon@vger.kernel.org>; Wed, 08 Jul 2020 16:53:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=M2lcNVP94N8u6USIJ7AI5Qz5okLgXQaJjZNQE9lbfRc=;
+        b=CKm1RkVD6K4ooS61a228xaZr75GB9hLf0fHlO58oPTurh0494FLajl7CK8KdyG/r9C
+         i2KuVbqWajTP4HyPRqRylfewgic30VtOjyOCtPYTJvJpLtva30H1rQR5Y5UDF3q9tu9X
+         98mpCTu3TDUIphgG+obN7E6EVmNqRh/mvuCyVwAgwldR0fJgFl1KvV7i3edj6gzGR/lw
+         jTTLXvzTcJLnSg/7vLITTf1cnf5CHDkYF83jUBS+31bAlMJ0D7uOyJAvz/rypoSlMdJk
+         KuWAqBgSsBz+thacrjncSabmgN2s2yBqr93JN4I7Qe7FXOi2q5/HAH82oSLN/y4rHEo5
+         z72A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=M2lcNVP94N8u6USIJ7AI5Qz5okLgXQaJjZNQE9lbfRc=;
+        b=RjoXYYi0xh84NnPrgXF6Fjohp8EkaVlmgYLL5+J1Skc7jdN1Db8WS7Pm1x34aZ7aWy
+         62KSG/vjnIkZyWxvrRWCTfa/++B6G7ZfhKomXN5rD2oHXm3eBywAvIrqF+RGnlHgUlxB
+         KkpIz+ZIr3D+kLOMhxGStDuhfRQGIg3Ig3inTl6pTT6mWWozaDzUg3vWsKylpa06xT+N
+         XQ7dLu1d4C8Yvff+KJAdeiDCA+ZSvHXcUURo4mZfpIKWZ9+a1Pmg0sXlhkyvUdnbTgw/
+         MpfZzURHF2H/KKR9DPwUJvOAxQ6AnZtMJt07aZbBoQhLnA8PgCuXYNKhJy6L5WwS7Uml
+         eqKQ==
+X-Gm-Message-State: AOAM533xGRPTdtsjnibrrORHUxdQeKLNg2+cP7GXTNqPFv6Q/tEWAGcO
+        eUb91lyzPu7MW0js2edGlL/7yhIlKIE8xsdD
+X-Google-Smtp-Source: ABdhPJwd2/RUXP/5g8Uy5Ix/1E9qm1pzxeXjlaJOOjXjlP/vRc2x87LBrIMMyKVkH+cZG0XxN8RTMVyO5zpk6fwF
+X-Received: by 2002:a25:c705:: with SMTP id w5mr100537620ybe.206.1594252395998;
+ Wed, 08 Jul 2020 16:53:15 -0700 (PDT)
+Date:   Wed,  8 Jul 2020 23:53:06 +0000
+Message-Id: <20200708235306.3854404-1-linchuyuan@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.27.0.383.g050319c2ae-goog
+Subject: [PATCH] hwmon: adm1275: Make sure we are reading enough data for
+ different chips
+From:   Chu Lin <linchuyuan@google.com>
+To:     linux@roeck-us.net
+Cc:     belgaied@google.com, jasonling@google.com, jdelvare@suse.com,
+        linchuyuan@google.com, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, zhongqil@google.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Issue:
+When binding adm1272 to the adm1275 driver, PEC error is reported.
+See blow:
+adm1275: probe of xxxx failed with error -74
 
+Diagnosis:
+Per the datasheet of adm1272 and adm1278 (www.analog.com),
+PMON_CONFIG (0xd4) is 16bits wide. On the other hand,
+PMON_CONFIG (0xd4) for adm1275 is 8bits wide.
+The driver should not assume everything is 8bits wide and read only
+8bits from it.
 
-Dear Friend,
+Solution:
+if it is adm1272 or adm1278, use i2c_read_word. Else, use i2c_read_byte
 
-I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
+Signed-off-by: Chu Lin <linchuyuan@google.com>
+---
+ drivers/hwmon/pmbus/adm1275.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+diff --git a/drivers/hwmon/pmbus/adm1275.c b/drivers/hwmon/pmbus/adm1275.c
+index e25f541227da..a0d547d20358 100644
+--- a/drivers/hwmon/pmbus/adm1275.c
++++ b/drivers/hwmon/pmbus/adm1275.c
+@@ -472,6 +472,7 @@ static int adm1275_probe(struct i2c_client *client,
+ 	struct adm1275_data *data;
+ 	const struct i2c_device_id *mid;
+ 	const struct coefficients *coefficients;
++	s32 (*config_read_fn_ptr)(const struct i2c_client *client, u8 reg);
+ 	int vindex = -1, voindex = -1, cindex = -1, pindex = -1;
+ 	int tindex = -1;
+ 	u32 shunt;
+@@ -510,14 +511,6 @@ static int adm1275_probe(struct i2c_client *client,
+ 			   "Device mismatch: Configured %s, detected %s\n",
+ 			   id->name, mid->name);
+ 
+-	config = i2c_smbus_read_byte_data(client, ADM1275_PMON_CONFIG);
+-	if (config < 0)
+-		return config;
+-
+-	device_config = i2c_smbus_read_byte_data(client, ADM1275_DEVICE_CONFIG);
+-	if (device_config < 0)
+-		return device_config;
+-
+ 	data = devm_kzalloc(&client->dev, sizeof(struct adm1275_data),
+ 			    GFP_KERNEL);
+ 	if (!data)
+@@ -532,6 +525,21 @@ static int adm1275_probe(struct i2c_client *client,
+ 
+ 	data->id = mid->driver_data;
+ 
++	/* adm1272 and adm1278 supports temperature monitoring.  The config and device config
++	 * are 16bits wide for these two devices. On the other hand, other devices are 8 bits wide
++	 */
++	if (data->id == adm1272 || data->id == adm1278)
++		config_read_fn_ptr = &i2c_smbus_read_word_data;
++	else
++		config_read_fn_ptr = &i2c_smbus_read_byte_data;
++	config = config_read_fn_ptr(client, ADM1275_PMON_CONFIG);
++	if (config < 0)
++		return config;
++
++	device_config = config_read_fn_ptr(client, ADM1275_DEVICE_CONFIG);
++	if (device_config < 0)
++		return device_config;
++
+ 	info = &data->info;
+ 
+ 	info->pages = 1;
+-- 
+2.27.0.383.g050319c2ae-goog
 
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
-
-Note/ 50% for you why 50% for me after success of the transfer to your bank account.
-
-Below information is what i need from you so will can be reaching each other
-
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa hugh.
