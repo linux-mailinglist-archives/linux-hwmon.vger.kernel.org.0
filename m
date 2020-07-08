@@ -2,126 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 451F0217DEC
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jul 2020 06:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 141DF21814B
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jul 2020 09:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729082AbgGHEH5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 8 Jul 2020 00:07:57 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:45412 "EHLO
-        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1728401AbgGHEH4 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jul 2020 00:07:56 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id B3B8C20001F5;
-        Wed,  8 Jul 2020 12:07:54 +0800 (HKT)
-X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
-Received: from mail.gtsys.com.hk ([127.0.0.1])
-        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 0TXAqsA29Xuz; Wed,  8 Jul 2020 12:07:54 +0800 (HKT)
-Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 99462200E20A;
-        Wed,  8 Jul 2020 12:07:54 +0800 (HKT)
-Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
-        by s01.gtsys.com.hk (Postfix) with ESMTP id 96052C01B68;
-        Wed,  8 Jul 2020 12:07:54 +0800 (HKT)
-Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
-        id 91DF820031F; Wed,  8 Jul 2020 12:07:54 +0800 (HKT)
-From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Cc:     Jack Lo <jack.lo@gtsys.com.hk>, devicetree@vger.kernel.org,
+        id S1725446AbgGHHfi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 8 Jul 2020 03:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726151AbgGHHff (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jul 2020 03:35:35 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BEDC08E876
+        for <linux-hwmon@vger.kernel.org>; Wed,  8 Jul 2020 00:35:34 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id c11so26271716lfh.8
+        for <linux-hwmon@vger.kernel.org>; Wed, 08 Jul 2020 00:35:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BR6f0/BqJCEN1CVfcKyyqFPGBwWk+T779U9WQ9pd+T8=;
+        b=XmHSa0UzMCoKN/tnYpRpf1kVvmOC6ZnhRaRiqN4dhekdDS+dYRV4tKqjXeotjjk6CM
+         0MOlfsqx2ohqnb6RqR6ienmLqhlOgV5HpjXxdnuF+2RNshU0o9RIAIhUZSGaeqwlgB4C
+         gUW8FyQX+VrymFES8f5hJ2kMWkTZXksc4SuBtTUoukp8gzsIOf9gOetUEQ9GKiXZ9aEU
+         cTaQ5sIe+t/aBH6d25PGmD5Ym6EFRxjCK4D01B+XFLYt6JFtN/HdUdeQ6VoTnNi1Qi+J
+         7eBpWDqvtLxhJ+XWohhbbsQWumjK6uhfievDT2eH1knqhrEDjvihiHsulNpgkNzY+qj6
+         CMLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BR6f0/BqJCEN1CVfcKyyqFPGBwWk+T779U9WQ9pd+T8=;
+        b=Oyr1ipnx6IBjeAgDklNpv16d2VHA3li7MTe6g3iWE9k4AXd1/nqfwjumnNILqAbRZR
+         WoMhasxTUiH0HeyNrrf2ZaW3wSZiQpsFtANihnClphiYwwFmjwq10XTLz3BpVtVqd69l
+         CK+QcCxt27gkt+TxySUPEwSmUliLdp4e0+ZmKABavdGG9yy5lkAHttsu/tsyD0ULbl0A
+         gjpNbuixhdlMEWL3zyGOE5EOTzLpmLEA7g3r13XhkUZfoyTyXbcdByIf+vnZku8qaCEN
+         ADfa3wOh8UOBXsRGMToJsbQpURLo2ntylGKWMd4QLjPLdt+6ahy9pCEruV7kTniWFa+p
+         TIxA==
+X-Gm-Message-State: AOAM53107QwIuqXNiWncJ9sfFBaQXT1OmjyjhDb9KNoWBo/yhXctu070
+        ubTsD9vZN0dPJistCS5DN+MtrMF8mu0TUZk+IIOEnQ==
+X-Google-Smtp-Source: ABdhPJyJ+eDL/+RhcnG7xcn/RKZTuk4K1j7DdGcaDL2nOuPTPOOM3n5gq5c736mD3TdGBOD+yswnwtLJpQbCLuN0+7s=
+X-Received: by 2002:ac2:47ed:: with SMTP id b13mr35325021lfp.21.1594193732803;
+ Wed, 08 Jul 2020 00:35:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200706175353.16404-1-michael@walle.cc> <20200706175353.16404-9-michael@walle.cc>
+In-Reply-To: <20200706175353.16404-9-michael@walle.cc>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 8 Jul 2020 09:35:21 +0200
+Message-ID: <CACRpkda=C1XxLEJrVb8oMdrt1CgVyfDn7=cf7UdK0AJJwt+0Yg@mail.gmail.com>
+Subject: Re: [PATCH v5 08/13] gpio: add support for the sl28cpld GPIO controller
+To:     Michael Walle <michael@walle.cc>
+Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] devicetree: hwmon: shtc1: Add sensirion,shtc1.yaml
-Date:   Wed,  8 Jul 2020 12:07:47 +0800
-Message-Id: <20200708040748.9014-3-chris.ruehl@gtsys.com.hk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200708040748.9014-1-chris.ruehl@gtsys.com.hk>
-References: <20200708040748.9014-1-chris.ruehl@gtsys.com.hk>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add documentation for the newly added DTS support in the shtc1 driver.
-To align with the drivers logic to have high precision by default
-a boolean sensirion,low_precision is used to switch to low precision.
+On Mon, Jul 6, 2020 at 7:57 PM Michael Walle <michael@walle.cc> wrote:
 
-Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
----
- .../bindings/hwmon/sensirion,shtc1.yaml       | 60 +++++++++++++++++++
- 1 file changed, 60 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
+> Add support for the GPIO controller of the sl28 board management
+> controller. This driver is part of a multi-function device.
+>
+> A controller has 8 lines. There are three different flavors:
+> full-featured GPIO with interrupt support, input-only and output-only.
+>
+> Signed-off-by: Michael Walle <michael@walle.cc>
+> ---
+> Changes since v4:
 
-diff --git a/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml b/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
-new file mode 100644
-index 000000000000..6725a7b646b7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
-@@ -0,0 +1,60 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/sensirion,shtc1.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sensirion SHTC1 Humidity and Temperature Sensor IC
-+
-+maintainers:
-+  - chris.ruehl@gtsys.com.hk
-+
-+description: |
-+  The SHTC1, SHTW1 and SHTC3 are digital humidity and temperature sensor
-+  designed especially for battery-driven high-volume consumer electronics
-+  applications.
-+  For further information refere to Documentation/hwmon/shtc1.rst
-+
-+  This binding document describes the binding for the hardware monitor
-+  portion of the driver.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - sensirion,shtc1
-+      - sensirion,shtw1
-+      - sensirion,shtc3
-+
-+  reg:
-+    maxItems: 1
-+    description: I2C address 0x70
-+
-+  sensirion,blocking_io:
-+    $ref: /schemas/types.yaml#definitions/flag
-+    description:
-+      If set the i2c bus hold until measure finished.
-+
-+  sensirion,low_precision:
-+    $ref: /schemas/types.yaml#definitions/flag
-+    description:
-+      If set aquire data with low precision (not recommended).
-+      The driver aquire data with high precision by default.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    i2c1 {
-+      status = "okay";
-+      clock-frequency = <400000>;
-+
-+      shtc3@70 {
-+        compatible = "sensirion,shtc3";
-+        reg = <0x70>
-+        sensirion,blocking_io;
-+        status = "okay";
-+      };
-+    };
-+...
--- 
-2.20.1
+This is awesomely elegant now.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+I suppose it needs merging through MFD with the rest.
+
+Yours,
+Linus Walleij
