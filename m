@@ -2,123 +2,174 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC7B421ACFD
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2020 04:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08EF721ADD5
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Jul 2020 06:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727074AbgGJCPz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 9 Jul 2020 22:15:55 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:50862 "EHLO
-        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726973AbgGJCPz (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 9 Jul 2020 22:15:55 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 1034320160CA;
-        Fri, 10 Jul 2020 10:15:53 +0800 (HKT)
-X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
-Received: from mail.gtsys.com.hk ([127.0.0.1])
-        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id r28K9n0KtGAZ; Fri, 10 Jul 2020 10:15:52 +0800 (HKT)
-Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id EC14F20160B5;
-        Fri, 10 Jul 2020 10:15:52 +0800 (HKT)
-Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
-        by s01.gtsys.com.hk (Postfix) with ESMTP id E909DC01FBA;
-        Fri, 10 Jul 2020 10:15:52 +0800 (HKT)
-Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
-        id E4B5E202299; Fri, 10 Jul 2020 10:15:52 +0800 (HKT)
-From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Cc:     Jack Lo <jack.lo@gtsys.com.hk>, devicetree@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5 2/2] devicetree: hwmon: shtc1: Add sensirion,shtc1.yaml
-Date:   Fri, 10 Jul 2020 10:15:35 +0800
-Message-Id: <20200710021536.27544-3-chris.ruehl@gtsys.com.hk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200710021536.27544-1-chris.ruehl@gtsys.com.hk>
-References: <20200710021536.27544-1-chris.ruehl@gtsys.com.hk>
+        id S1725777AbgGJEUZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 10 Jul 2020 00:20:25 -0400
+Received: from mga07.intel.com ([134.134.136.100]:2398 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725802AbgGJEUZ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 10 Jul 2020 00:20:25 -0400
+IronPort-SDR: rC8txTGDhlaKWXcsbGMTpzXzBl8mzAae0WCjvJnc1fBHWjC4x/orNW+2OXPXk/2omCzgzeAe9O
+ +2a4Ma1Wfzwg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9677"; a="213037937"
+X-IronPort-AV: E=Sophos;i="5.75,334,1589266800"; 
+   d="scan'208";a="213037937"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2020 21:20:24 -0700
+IronPort-SDR: XzD85jDbMlVwS3uGC79c6WRzwm6QRfTjMMMB01vV2UNYE5dEHF9Wkh2dxNtNDzkzeGkhOUXeL7
+ n0G3m49+Qg+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,334,1589266800"; 
+   d="scan'208";a="389363856"
+Received: from lkp-server02.sh.intel.com (HELO 0fc60ea15964) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 09 Jul 2020 21:20:23 -0700
+Received: from kbuild by 0fc60ea15964 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jtkWM-000012-SV; Fri, 10 Jul 2020 04:20:22 +0000
+Date:   Fri, 10 Jul 2020 12:19:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [hwmon:hwmon] BUILD SUCCESS
+ 6d1d41c075a1a54ba03370e268171fec20e06563
+Message-ID: <5f07ec6d.1A+P4LJ0Z6tEeeIM%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add documentation for the newly added DTS support in the shtc1 driver.
-To align with the drivers logic to have high precision by default
-a boolean sensirion,low_precision is used to switch to low precision.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon
+branch HEAD: 6d1d41c075a1a54ba03370e268171fec20e06563  hwmon: (adm1275) Make sure we are reading enough data for different chips
 
-Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+elapsed time: 725m
+
+configs tested: 112
+configs skipped: 9
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                               defconfig
+mips                         rt305x_defconfig
+sh                                  defconfig
+nios2                            alldefconfig
+m68k                         apollo_defconfig
+mips                        omega2p_defconfig
+powerpc                     mpc512x_defconfig
+arm                        spear6xx_defconfig
+m68k                       m5249evb_defconfig
+arm                        multi_v7_defconfig
+powerpc                       holly_defconfig
+x86_64                              defconfig
+arm                        shmobile_defconfig
+m68k                          atari_defconfig
+mips                        maltaup_defconfig
+powerpc                    gamecube_defconfig
+arm                         nhk8815_defconfig
+arm                         ebsa110_defconfig
+ia64                                defconfig
+csky                                defconfig
+sh                          rsk7264_defconfig
+mips                      bmips_stb_defconfig
+arm                        vexpress_defconfig
+m68k                          hp300_defconfig
+powerpc                  mpc866_ads_defconfig
+powerpc64                           defconfig
+um                             i386_defconfig
+openrisc                         allyesconfig
+sh                        edosk7705_defconfig
+sh                             espt_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20200709
+i386                 randconfig-a001-20200709
+i386                 randconfig-a006-20200709
+i386                 randconfig-a005-20200709
+i386                 randconfig-a004-20200709
+i386                 randconfig-a003-20200709
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                                  defconfig
+um                               allyesconfig
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
 ---
- .../bindings/hwmon/sensirion,shtc1.yaml       | 57 +++++++++++++++++++
- 1 file changed, 57 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
-
-diff --git a/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml b/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
-new file mode 100644
-index 000000000000..140cf3043a27
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
-@@ -0,0 +1,57 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/sensirion,shtc1.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sensirion SHTC1 Humidity and Temperature Sensor IC
-+
-+maintainers:
-+  - chris.ruehl@gtsys.com.hk
-+
-+description: |
-+  The SHTC1, SHTW1 and SHTC3 are digital humidity and temperature sensor
-+  designed especially for battery-driven high-volume consumer electronics
-+  applications.
-+  For further information refere to Documentation/hwmon/shtc1.rst
-+
-+  This binding document describes the binding for the hardware monitor
-+  portion of the driver.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - sensirion,shtc1
-+      - sensirion,shtw1
-+      - sensirion,shtc3
-+
-+  reg:
-+    const: 0x70
-+
-+  sensirion,blocking-io:
-+    $ref: /schemas/types.yaml#definitions/flag
-+    description:
-+      If set, the driver hold the i2c bus until measurement is finished.
-+
-+  sensirion,low-precision:
-+    $ref: /schemas/types.yaml#definitions/flag
-+    description:
-+      If set, the sensor aquire data with low precision (not recommended).
-+      The driver aquire data with high precision by default.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    i2c1 {
-+      clock-frequency = <400000>;
-+
-+      shtc3@70 {
-+        compatible = "sensirion,shtc3";
-+        reg = <0x70>
-+        sensirion,blocking-io;
-+      };
-+    };
-+...
--- 
-2.20.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
