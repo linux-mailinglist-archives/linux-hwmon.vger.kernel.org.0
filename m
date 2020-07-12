@@ -2,107 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC91321C6C4
-	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Jul 2020 01:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0549021C759
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Jul 2020 06:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726948AbgGKX7I (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 11 Jul 2020 19:59:08 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:53228 "EHLO
+        id S1728112AbgGLEoU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 12 Jul 2020 00:44:20 -0400
+Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:37130 "EHLO
         mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726939AbgGKX7I (ORCPT
+        with ESMTP id S1728010AbgGLEoT (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 11 Jul 2020 19:59:08 -0400
+        Sun, 12 Jul 2020 00:44:19 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 45DBA200080F;
-        Sun, 12 Jul 2020 07:59:05 +0800 (HKT)
+        by mail.gtsys.com.hk (Postfix) with ESMTP id E985C201411B;
+        Sun, 12 Jul 2020 12:44:16 +0800 (HKT)
 X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
 Received: from mail.gtsys.com.hk ([127.0.0.1])
         by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Mk8KdIFMvSK7; Sun, 12 Jul 2020 07:59:05 +0800 (HKT)
+        with ESMTP id c7g4X1_s4bSX; Sun, 12 Jul 2020 12:44:16 +0800 (HKT)
 Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 1F2C6200029E;
-        Sun, 12 Jul 2020 07:59:05 +0800 (HKT)
-Received: from [10.128.2.32] (unknown [124.217.189.79])
-        by s01.gtsys.com.hk (Postfix) with ESMTPSA id BF109C019F4;
-        Sun, 12 Jul 2020 07:59:04 +0800 (HKT)
-Subject: Re: [PATCH v5 2/2] devicetree: hwmon: shtc1: Add sensirion,shtc1.yaml
+        by mail.gtsys.com.hk (Postfix) with ESMTP id C447C2014570;
+        Sun, 12 Jul 2020 12:44:16 +0800 (HKT)
+Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
+        by s01.gtsys.com.hk (Postfix) with ESMTP id B41AEC019F4;
+        Sun, 12 Jul 2020 12:44:16 +0800 (HKT)
+Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
+        id 7C210202299; Sun, 12 Jul 2020 12:44:16 +0800 (HKT)
 From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>, Jack Lo <jack.lo@gtsys.com.hk>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>, devicetree@vger.kernel.org
-References: <20200710021536.27544-1-chris.ruehl@gtsys.com.hk>
- <20200710021536.27544-3-chris.ruehl@gtsys.com.hk>
- <20200710163153.GA2760091@bogus>
- <d45ba090-a09b-dd51-4645-bc62e90cb9bc@gtsys.com.hk>
-Message-ID: <4189dcf7-fc67-29c4-6357-646071d7ded0@gtsys.com.hk>
-Date:   Sun, 12 Jul 2020 07:59:03 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     Jack Lo <jack.lo@gtsys.com.hk>, devicetree@vger.kernel.org,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/2] shtc1: add support for device tree bindings
+Date:   Sun, 12 Jul 2020 12:44:08 +0800
+Message-Id: <20200712044411.23323-1-chris.ruehl@gtsys.com.hk>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <d45ba090-a09b-dd51-4645-bc62e90cb9bc@gtsys.com.hk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Morning,
+Add support for DTS bindings to the shtc driver
+The patches add the compatible table and of_property_read_bool to the
+shtc1.c. Newly created Yaml document has been released to the
+Documentation/devicetree/hwmon/sensirion,shtc1.yaml
 
-On 11/7/2020 6:05 pm, Chris Ruehl wrote:
-> 
-> On 11/7/2020 12:31 am, Rob Herring wrote:
->> On Fri, 10 Jul 2020 10:15:35 +0800, Chris Ruehl wrote:
->>> Add documentation for the newly added DTS support in the shtc1 driver.
->>> To align with the drivers logic to have high precision by default
->>> a boolean sensirion,low_precision is used to switch to low precision.
->>>
->>> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
->>> ---
->>>   .../bindings/hwmon/sensirion,shtc1.yaml       | 57 +++++++++++++++++++
->>>   1 file changed, 57 insertions(+)
->>>   create mode 100644 
->>> Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
->>>
->>
->>
->> My bot found errors running 'make dt_binding_check' on your patch:
->>
->> Error: 
->> Documentation/devicetree/bindings/hwmon/sensirion,shtc1.example.dts:25.13-14 
->> syntax error
->> FATAL ERROR: Unable to parse input tree
->> scripts/Makefile.lib:315: recipe for target 
->> 'Documentation/devicetree/bindings/hwmon/sensirion,shtc1.example.dt.yaml' failed
->> make[1]: *** 
->> [Documentation/devicetree/bindings/hwmon/sensirion,shtc1.example.dt.yaml] Error 1
->> make[1]: *** Waiting for unfinished jobs....
->> Makefile:1347: recipe for target 'dt_binding_check' failed
->> make: *** [dt_binding_check] Error 2
->>
->>
->> See https://patchwork.ozlabs.org/patch/1326414
->>
->> If you already ran 'make dt_binding_check' and didn't see the above
->> error(s), then make sure dt-schema is up to date:
->>
->> pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
->>
->> Please check and re-submit.
->>
-> 
-> Hi Rob,
-> 
-> I did run the test and didn't had any Error. dt-schema 2020.06 installed from 
-> git. pip3 install -e.
-> 
-> Can you help?
-> 
-> Chris
-
-Solved, missing ";" behind reg = <0x70>
-
-will resend.
+Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+---
+ Version 6
+    fix dt_binding_check: missing ';' in examples
+ Version 5
+    devicetree/driver-source: name conversion sensirion,low-precision sensirion,blocking-io
+	use const: 0x70 with the reg:
+ Version 4
+	Fix errors report by make dt_binding_check (devicetree)
+	Set maintainers for the yaml document to my own.
+ Version 3
+	Fix errors report with checkpatch.pl
+	Correct logic, add (!) when check for sensirion,low_precision
+ Version 2
+	remove the #ifdef CONFIG_OF
+	ignore platform data if dev->of_node is valid
+	use boolean only therefor use sensirion,low_precise to fit the logic
+	add missing driver.of_match_table entry
+ Version 1
+	initial version
