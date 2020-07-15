@@ -2,96 +2,74 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F056122076B
-	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Jul 2020 10:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71611220890
+	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Jul 2020 11:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbgGOIe7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 15 Jul 2020 04:34:59 -0400
-Received: from out4-smtp.messagingengine.com ([66.111.4.28]:58477 "EHLO
-        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730120AbgGOIe6 (ORCPT
+        id S1730602AbgGOJTb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 15 Jul 2020 05:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730598AbgGOJTb (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 15 Jul 2020 04:34:58 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 8DF555C0138;
-        Wed, 15 Jul 2020 04:34:57 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 15 Jul 2020 04:34:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=WEafkFKlZif10zVrKpRgSxKOWc7
-        Ljh7MyeD0Tj3dL2Q=; b=sKka4REmgrKh4GchAIbzt3cK6A0BD/I6u0rm9IoQYDc
-        K6KiYEpMn/qBM8XIoNyn64QYUomODQw2zA0J5baBGL8pg4uo/ka8Dqwwzy/TQ4xf
-        aqprn7jkC7/AHAc7mlnpgRWd7yJcONmGKkREtgxS/Ko4ERIYiPhjM0zH3qW6u2ih
-        PdGXTARLG98Ei+/1fDbPKXzZbIPmz2C9levCSMggVceiihOEFDGgXXGJU0hTVPxx
-        B0bWXR1fZ9siYAAfJ1ijtie/R/PEaZupNFfL2qvu61EtOCXD6o44l/0cnGv9C+Xg
-        Ka+6YvC4YGbdVcRuABin416XSOWcfYr1sE1QGpgcFFw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=WEafkF
-        KlZif10zVrKpRgSxKOWc7Ljh7MyeD0Tj3dL2Q=; b=szvXy0KYTYwisUfZJjnvD5
-        /W1NxfoledISdSUK2MQg2f6VI/KaVC9P21ToeZ/Mw7MPX63LlG4jsPpmQKz0ZDKJ
-        eEqFVvvRH+zgNmZmVpThyt81nNJztPQ6f0MlAeWrJi5cJbU5f3trLTogq8gJGDfT
-        DbZpLoMg/3gRiH8yAs95Pa1QraML+UneY0oGziOHpRn+MOwUnUql2vmwc0o4kooG
-        1oxGIskcoJ73t8yERPWmGb7WeQQil5Qsp4uo386e39qWpmw6Uvv/HnjNknrq2yEh
-        HK5DbYivRPsiQICf1YVABN3e4OvsAl3pd8B3bw9Tk0VNIutR6oLeHawTpx20v1lw
-        ==
-X-ME-Sender: <xms:sb8OXySvdjKttMWgY8J9SX2qnYlq-WckJAfEYOt4akaAIjVaIl8j6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrfedvgddthecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeuheejgf
-    ffgfeivddukedvkedtleelleeghfeljeeiueeggeevueduudekvdetnecukfhppeekfedr
-    keeirdekledruddtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:sb8OX3wGCRN_PYeZfAsJm1PPPsPc2axM7_DwA506OIn6AmZb3e8xHw>
-    <xmx:sb8OX_2CW7AHUQabGkpEdsCGK1rpKXRu5i1-S_R-eq7fJKWzrm7sEA>
-    <xmx:sb8OX-B_xbr725mt2d1XCAutiffpvr6tGa2UR5gOIa32aFrGK9ONeg>
-    <xmx:sb8OX-uirIbhBWF6j5hrT68819H35tuWLQ_6QbPFOZM3MiRVwT4HPw>
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        by mail.messagingengine.com (Postfix) with ESMTPA id A45EF3280060;
-        Wed, 15 Jul 2020 04:34:56 -0400 (EDT)
-Date:   Wed, 15 Jul 2020 10:34:52 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     jaap aarts <jaap.aarts1@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        linux-usb@vger.kernel.org, Marius Zachmann <mail@mariuszachmann.de>
-Subject: Re: [PATCH] hwmon: add fan/pwm driver for corsair h100i platinum
-Message-ID: <20200715083452.GC2716443@kroah.com>
-References: <20200714100337.48719-1-jaap.aarts1@gmail.com>
- <20200715030740.GB164279@roeck-us.net>
+        Wed, 15 Jul 2020 05:19:31 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85037C08C5C1
+        for <linux-hwmon@vger.kernel.org>; Wed, 15 Jul 2020 02:19:30 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id a1so1399516ejg.12
+        for <linux-hwmon@vger.kernel.org>; Wed, 15 Jul 2020 02:19:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=iUX4eJkJP3599QIwuB3jr/yNqzXPDJl1eSfE5xIVy3Y=;
+        b=A8rGn9csdqrlNA5nGl29lblz9QpjyRWhCwfbQejT4tqqXyV9UvSBFAF/7JqZJPD0ZD
+         42CtF4ETsgwJV2+N2r41LKjoraCIeHdFM0Qxxdfir57sIY6H1ccOVoDjQcbS3RkZn7Vq
+         CpXQihK1nVdpzM8XbvHUkreIFLt9pI3IuRXp2iUOH9el0FI0JN0eyVld9Xm/7KlJltqV
+         25bv2SHkzsO9oVA2MD8jHaJ4OaJWEdjNlFLduuds807mMZpnNp6Tzp4pZuXMhD/5Qvke
+         zd0HsPKiMV46M85FQ4Ld1ozEg0BbFnj+TTRVY0OZpT1bPbFyL0KDnAhpfIxI6xfme8oL
+         /xkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=iUX4eJkJP3599QIwuB3jr/yNqzXPDJl1eSfE5xIVy3Y=;
+        b=XL/Z5BtJzBsNKLUlDMSpkwQpwdR6vBYwGH0CvbIOwcz8TfGyMMjb+aqb5KnuH4b/tY
+         kt4pykxvKwSmVjLGJ1IQ+0Q5WSK7xWX8Bj7BLCoR9QDTKOMmeAInql64uhDsoPo0amIy
+         qo2XoCek0x8n6bgmNowo7q/j8XHg24hBXitNWrM4sQiCXXofqHhfArT3ZRdBtLx6XA9r
+         EctAbGHhtbVHteAjm0RX123RYcL4gKS0WY7bk9lCF0FxKKn4R9C7vYMP4gdwgAtD+X6h
+         ub2v0o439lyQeCmVKb4r76bRvDzj+5uock7+EYyU5485ewFx8GQUe47QrsDafoi3yxzm
+         8khA==
+X-Gm-Message-State: AOAM532+Uhv8isOVeg74YOqp/Zk9ijRR1RW55PmrHZ9N4fMPTHnkM6ri
+        XjYz/kJVvAN9y0e6ATWl73TOQ5jUNzWUhsqdZ5Q=
+X-Google-Smtp-Source: ABdhPJyM1sd5QEPq8NHDOUgSJr3p63Fy+sKW1Q5wYfu6TSkFibeL1vFCfcr3FIz0lanx+ndiNc+jeQg1lf4V+6dszkc=
+X-Received: by 2002:a17:906:8595:: with SMTP id v21mr8575117ejx.333.1594804769298;
+ Wed, 15 Jul 2020 02:19:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200715030740.GB164279@roeck-us.net>
+Received: by 2002:a17:906:1fc5:0:0:0:0 with HTTP; Wed, 15 Jul 2020 02:19:28
+ -0700 (PDT)
+Reply-To: bambakamara4@gmail.com
+From:   Bamba kamara <bambakamara2@gmail.com>
+Date:   Wed, 15 Jul 2020 09:19:28 +0000
+Message-ID: <CAFs=SV+Ub4ro6ZAi3L4O8+j7-oXNyxJyd-QG8UUZky50PZC4GQ@mail.gmail.com>
+Subject: Urgent Assistance
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Jul 14, 2020 at 08:07:40PM -0700, Guenter Roeck wrote:
-> On Tue, Jul 14, 2020 at 12:03:38PM +0200, jaap aarts wrote:
-> > Adds fan/pwm support for H1000i platinum.
-> > Custom temp/fan curves are not supported, however
-> > the presets found in the proprietary drivers are avaiable.
-> > 
-> > Signed-off-by: Jaap Aarts <jaap.aarts1@gmail.com>
-> 
-> +Marius Zachmann for input.
-> 
-> Questions:
-> - Does this really have to be a different driver or can it be merged into
->   the corsair-cpro driver ?
-> - What about HID vs. USB driver ?
-> - is the kref complexity really needed ?
-
-At first glance, I can't tell what the kref is trying to keep track of.
-
-So I would say no, it's not. :)
-
-thanks,
-
-greg k-h
+My name is Mr. Bamba Kamara, a Banker here in Togo, I occupy the
+position of an accountant in this branch office, it is with good
+spirit of heart I opened up this great opportunity to you.
+A deceased client of mine ,that bears the same last name with you,
+died as the result of a heart-related condition on March 12th 2005.
+His heart condition was due to the death of all the members of his
+family in the tsunami disaster on the 26th December2004 in
+umatra Indonesia
+My late Client has a deposit ($18.5MILLION) Eighteen Million And Five
+Hundred Thousand Dollar) left behind,i contacted you so i can present
+you as my late client next of kin,so the money can be transferred to
+your account,and we will share it together.
+Contact me for more information.
+bambakamara4@gmail.com
+Best regards
