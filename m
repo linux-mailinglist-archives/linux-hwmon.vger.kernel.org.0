@@ -2,49 +2,154 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 664D222C91E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Jul 2020 17:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7520022D5FD
+	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Jul 2020 10:14:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726854AbgGXP3e (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 24 Jul 2020 11:29:34 -0400
-Received: from [125.140.134.231] ([125.140.134.231]:53505 "EHLO
-        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726842AbgGXP3d (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 24 Jul 2020 11:29:33 -0400
-Received: from User ([66.154.113.229]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
-         Sat, 25 Jul 2020 00:23:30 +0900
-Reply-To: <christopherwang36@gmail.com>
-From:   "CHRISTOPHER WANG" <christopherwang36@gmail.com>
-Subject: INVESTMENT
-Date:   Fri, 24 Jul 2020 08:23:47 -0700
+        id S1726591AbgGYIOL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 25 Jul 2020 04:14:11 -0400
+Received: from mga04.intel.com ([192.55.52.120]:16105 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725944AbgGYIOL (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 25 Jul 2020 04:14:11 -0400
+IronPort-SDR: IjYGUtAu/BGQDb5/jNzHQwMd3IJVufBg+G+cxzpOXZ3lZP6JO5TYTtYfTeOA3xjjkh8mrJuk69
+ HAJPr+aWLHjg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9692"; a="148308216"
+X-IronPort-AV: E=Sophos;i="5.75,392,1589266800"; 
+   d="scan'208";a="148308216"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2020 01:14:09 -0700
+IronPort-SDR: OCjD7Xp7QpDE+FYdEAC8XcEzUq5FyAIzX9RV5GtghTQCza9v6BqAAjy3W0po5pvPNxWeE7GHb/
+ xX8n6FixALiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,392,1589266800"; 
+   d="scan'208";a="272788586"
+Received: from lkp-server01.sh.intel.com (HELO df0563f96c37) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 25 Jul 2020 01:14:08 -0700
+Received: from kbuild by df0563f96c37 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1jzFJn-0000pt-Un; Sat, 25 Jul 2020 08:14:07 +0000
+Date:   Sat, 25 Jul 2020 16:13:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [hwmon:hwmon-next] BUILD SUCCESS
+ 2fdf8f7f086712bbe296d1d4d4049ca88e7a662d
+Message-ID: <5f1be999.mQpM9lBqL+lv3MXW%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WIN-DAONO245HJFccxl008ef90c@WIN-DAONO245HJF>
-X-OriginalArrivalTime: 24 Jul 2020 15:23:30.0473 (UTC) FILETIME=[62EAF190:01D661CE]
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
+branch HEAD: 2fdf8f7f086712bbe296d1d4d4049ca88e7a662d  hwmon: (sparx5) Make symbol 's5_temp_match' static
 
+elapsed time: 1014m
 
-Good day,
+configs tested: 92
+configs skipped: 1
 
-You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-       The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days.
-      
-       The total value of the bond is 100million pounds sterling, in a million pound denominations.
-      
-        If you can handle this, do contact me at your earliest convenience via my email christopherwang36@gmail.com
-So we can discuss the final details Thank you.
- 
-Mr CHRISTOPHER WANG
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20200724
+i386                 randconfig-a005-20200724
+i386                 randconfig-a004-20200724
+i386                 randconfig-a006-20200724
+i386                 randconfig-a002-20200724
+i386                 randconfig-a001-20200724
+x86_64               randconfig-a014-20200724
+x86_64               randconfig-a016-20200724
+x86_64               randconfig-a015-20200724
+x86_64               randconfig-a012-20200724
+x86_64               randconfig-a013-20200724
+x86_64               randconfig-a011-20200724
+i386                 randconfig-a016-20200725
+i386                 randconfig-a013-20200725
+i386                 randconfig-a012-20200725
+i386                 randconfig-a015-20200725
+i386                 randconfig-a014-20200725
+i386                 randconfig-a011-20200725
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                                    lkp
+x86_64                              fedora-25
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
