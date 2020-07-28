@@ -2,114 +2,65 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C94B230DB4
-	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 17:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE95230FFE
+	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 18:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730701AbgG1P0T (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 28 Jul 2020 11:26:19 -0400
-Received: from mail.prodrive-technologies.com ([212.61.153.67]:59094 "EHLO
-        mail.prodrive-technologies.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730669AbgG1P0T (ORCPT
+        id S1731493AbgG1QlL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 28 Jul 2020 12:41:11 -0400
+Received: from sonic312-24.consmr.mail.ne1.yahoo.com ([66.163.191.205]:34320
+        "EHLO sonic312-24.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731472AbgG1QlL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 28 Jul 2020 11:26:19 -0400
-X-Greylist: delayed 350 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Jul 2020 11:26:17 EDT
-Received: from mail.prodrive-technologies.com (localhost.localdomain [127.0.0.1])
-        by localhost (Email Security Appliance) with SMTP id 784D732EBC_F20423AB;
-        Tue, 28 Jul 2020 15:20:26 +0000 (GMT)
-Received: from mail.prodrive-technologies.com (mdb-dag.prodrive.nl [10.1.1.212])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "mail.prodrive-technologies.com", Issuer "GlobalSign RSA OV SSL CA 2018" (verified OK))
-        by mail.prodrive-technologies.com (Sophos Email Appliance) with ESMTPS id E7900303C1_F20422AF;
-        Tue, 28 Jul 2020 15:20:10 +0000 (GMT)
-Received: from lnxclnt2222.Prodrive.nl (10.130.5.194) by EXC03.bk.prodrive.nl
- (10.1.1.212) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1913.5; Tue, 28
- Jul 2020 17:20:10 +0200
-From:   Roy van Doormaal <roy.van.doormaal@prodrive-technologies.com>
-To:     <linux-hwmon@vger.kernel.org>
-CC:     Roy van Doormaal <roy.van.doormaal@prodrive-technologies.com>,
-        "Jean Delvare" <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: [PATCH] hwmon: (adc128d818) Fix advanced configuration register init
-Date:   Tue, 28 Jul 2020 17:18:45 +0200
-Message-ID: <20200728151846.231785-1-roy.van.doormaal@prodrive-technologies.com>
-X-Mailer: git-send-email 2.25.0
+        Tue, 28 Jul 2020 12:41:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1595954470; bh=eVWQE8aO6isO2IoHTAvouja63Qo1x862VnNlRn9e1Ww=; h=Date:From:Reply-To:Subject:References:From:Subject; b=OZn+t2LbyM4B0l3/ATMCPsKWCjBCA1w1ooQvwhWx374whiQJJokLoCY0jILpNuNZR2NkDAXYiN4/6JGt+J1HmqvXJ/JMibxEKOzOSl104kkNC9da1C0itsh7gfVVwi6MvPu/8uVcN5Rwcp6jmYOkjN/VmWHKNv5QdEzkJZNlerD4WTAVv2R747SydNdcCt1OuCFdSd4hDAGsSLLp7dD8wkqoenkr4RT+JZ0IlfoU3dxX54VRAQc1rhV00DSmoK1IESx8ddIVdrEe/uP5MLpeu3ZrDLjijGR0r21x1+Iy+2cOpAWcgOLb3fAI7InPyBE52eC6p7ScgK7pJ8IlLPz60g==
+X-YMail-OSG: TEAAKX0VM1k6R9W15W66b53tvXs5VAgr_xBqI8BooFKTDKsAdIBKcuQScGcyYw_
+ Sp.kr1SC5PCIXnF_FdQGuetXPyTq.pDc5oA77wSKaKZpKNZP2nV5gpaKxGAriKfyqJ5AaXVqwNoS
+ w3y9iyFBPoviJwc554fDlYIz6q7HOZH8dk57un1nbMfihY9DwK_DmEe7HoIxFfUKJLZawpJFnxxn
+ EHt2SNDGnIXyEUijugxfMF.6Z9UanQP1ofOEmQu4qRlmKdafXW3t3rxB5yMiud2Dl5gJrJy.ZJPp
+ yr3_fDgtsKMB1Wcqes3mwcdgjrIulo6NeIti2uWji5wabeDndzcx1iT_NVAGQEzGoG6AfUQm91Wk
+ vETJc_Vf_7RMnaZLLggVNNHfvNWS99LhGaBnYjeBYSRsCp3igpTUS0NdodprhOkDOKTa1bV6cb4F
+ rErZ6sTmy7qOIQm6YTsgvaLet9CmOioiVevqzhWSguf0aw3.X4slNe4bArv79BKbF_WMe49LGsee
+ UdrhAReig_sVgV8XWJgagZJLENNVo7vsjQecVEQwbfKfZphldcRvfbseM.NvzOIMG0qhNdrD.liI
+ A3WTO872jrlglid9k5zcldMZDqfwzT.mItOuYMnn6jG8UY41Pf5QK8jwdXcDl64N1.vMr5..t7dW
+ J7lG3C1lvO6TP3oBJaVCSvkkYBzx90A.XS2DHMJEgHn50ib3VGYC7aRUu3YdPGmyEjgmD8Io5i0w
+ EEGkR11RHdCuoH6v9WhpNsahmqQjohNx.L9z3goky6.7KewdDQARh0Nuxbb0nAfjIV9jW.y6xykQ
+ CFTUT6iCTy_3kwQ6QJ86nZJML9uum.jvZHABdl7fEKoEm04A4sEkYUkiJ6t5uP.Wa6Z6m0ZSjxQS
+ q0BSOmlPNQRPbttuSle7IUHge5RfH6eRP.ScJrJ1lhLIPa0NEptLfT2c49hwlvDv4CqdVQoqVlnG
+ RAaPmEbmXiA65R68xNT_XuEN0uPm9Wp.cQXHNtTR3ZvGTaPHU2Nboh7rXbq47uCC7_T3AxuHWNQG
+ 7zwUBuIYL5YcEhxA50zYPYJHLnFBAzAa69lyY_5dXS0Wady9vDvFMKimdeOq5of2pxZbiUfZPWe2
+ kEdTLUv5zPAyrC76A1GsEWUK6OrZkLT0wyKPXqiR125zq6VhxpGcPEmCha0ZJY04yqkxKmG.AeeD
+ khm844Lg1IKh1AX85bvZQ3Xg2mz1RT_d_TSrQhPHSdrs03vIG8nUY_zld6YxY4jEYRHK7eEzooVQ
+ CnG7_jgFgtUoqaQwtONPSKxhurT4cm2XuE7IVGWW40oR0qM6pKaAOg5zssKx1SoScjxz_YwEeiJk
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ne1.yahoo.com with HTTP; Tue, 28 Jul 2020 16:41:10 +0000
+Date:   Tue, 28 Jul 2020 16:41:08 +0000 (UTC)
+From:   BILL Exchange manager & Audit Department 
+        <mrahmadmikhail@gmail.com>
+Reply-To: karimore245@gmail.com
+Message-ID: <910665150.8413934.1595954468931@mail.yahoo.com>
+Subject: URGENT RESPONSE
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ClientProxiedBy: EXC03.bk.prodrive.nl (10.1.1.212) To EXC03.bk.prodrive.nl
- (10.1.1.212)
-X-SASI-RCODE: 200
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <910665150.8413934.1595954468931.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16271 YMailNodin Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-If the operation mode is non-zero and an external reference voltage is set,
-first the operation mode is written to the advanced configuration register,
-followed by the externel reference enable bit,
-resetting the configuration mode to 0.
 
-To fix this, first compose the value of the advanced configuration register
-based on the configuration mode and the external reference voltage.
-The advanced configuration register is then written to the device,
-if it is different from the default register value (0x0).
 
-Signed-off-by: Roy van Doormaal <roy.van.doormaal@prodrive-technologies.com>
----
- drivers/hwmon/adc128d818.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
-index f9edec195c35..571d5454c6b2 100644
---- a/drivers/hwmon/adc128d818.c
-+++ b/drivers/hwmon/adc128d818.c
-@@ -393,6 +393,7 @@ static int adc128_init_client(struct adc128_data *data)
- {
- 	struct i2c_client *client = data->client;
- 	int err;
-+	u8 regval = 0x0;
- 
- 	/*
- 	 * Reset chip to defaults.
-@@ -403,10 +404,17 @@ static int adc128_init_client(struct adc128_data *data)
- 		return err;
- 
- 	/* Set operation mode, if non-default */
--	if (data->mode != 0) {
--		err = i2c_smbus_write_byte_data(client,
--						ADC128_REG_CONFIG_ADV,
--						data->mode << 1);
-+	if (data->mode != 0)
-+		regval |= data->mode << 1;
-+
-+	/* If external vref is selected, configure the chip to use it */
-+	if (data->regulator)
-+		regval |= 0x01;
-+
-+	/* Write advanced configuration register */
-+	if (regval != 0x0) {
-+		err = i2c_smbus_write_byte_data(client, ADC128_REG_CONFIG_ADV,
-+						regval);
- 		if (err)
- 			return err;
- 	}
-@@ -416,14 +424,6 @@ static int adc128_init_client(struct adc128_data *data)
- 	if (err)
- 		return err;
- 
--	/* If external vref is selected, configure the chip to use it */
--	if (data->regulator) {
--		err = i2c_smbus_write_byte_data(client,
--						ADC128_REG_CONFIG_ADV, 0x01);
--		if (err)
--			return err;
--	}
--
- 	return 0;
- }
- 
--- 
-2.20.1
+Dear Friend,
 
+I am Mr. KARIM TRAORE Working with a reputable bank here in Burkina Faso as the manager in audit department. During our last banking audits we discovered an abandoned account belongs to one of our deceased customer, late Mr. Hamid Amine Razzaq, a billionaire businessman.
+
+Meanwhile, before i contacted you i have done personal investigation in locating any of his relatives who knows about the account, but i came out unsuccessful. I am writing to request your assistance in transferring the sum of 10.500.000.00 (Ten million Five Hundred Thousand Dollars) into your account.
+
+I decided to contact you to act as his foreign business partner so that my bank will accord you the recognition and have the fund transfer into your account. More details information will be forwarded to you.
+
+I am expecting to read from you soon.
+Best Regards
+Mr. KARIM TRAORE.
