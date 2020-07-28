@@ -2,85 +2,114 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E14A92308F5
-	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 13:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C94B230DB4
+	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 17:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729175AbgG1LiZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 28 Jul 2020 07:38:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729174AbgG1LiS (ORCPT
+        id S1730701AbgG1P0T (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 28 Jul 2020 11:26:19 -0400
+Received: from mail.prodrive-technologies.com ([212.61.153.67]:59094 "EHLO
+        mail.prodrive-technologies.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730669AbgG1P0T (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 28 Jul 2020 07:38:18 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EB7C08C5E0
-        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 04:38:16 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id dk23so8425905ejb.11
-        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 04:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=z88eUg589kIPbwfcJkBbHKFa4QR0wOZWGk2diK1jFPM=;
-        b=b8/14qSmtpua6DExDbiZQujm3FVCJQWOEnGYc8m39CT4QhCFHb7H/8m/Mr+GJhki5y
-         D26KeL8e5wwIhpqswED7Iyj8LNXjLx29RYfhZ1pPRjvkmM3zHNDeTF1tCFcQE9cmRh/R
-         raunFxUrBwUmVbHiIcNmDsAsXlg0feXUzfnq5cUO9m3PCR65DPFX0ENqSsff92XlzdML
-         2lZ1DHEdMBJRJ7G/JmLQNbN9a0xCfCCdIavasCRbfc1GMLbxrWB9YQiD4Jx827i+wgQH
-         uvPy2fXgy98qEeiaY5zYJY4YAm1gQLhdwyYSQS3qfKNnqXIVHUgDrgxJy+XFocnlCNnt
-         WweQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=z88eUg589kIPbwfcJkBbHKFa4QR0wOZWGk2diK1jFPM=;
-        b=LG5YLKBdAyixs3RiXhN8O/IzTc2G8M+inZUzsIjjcl3qn8qG2fQ8fHZPBU8H/Trh8M
-         4of7T/BTHAGzyPYwrAMYLWgqALAEtq+106kRV6TJembvgmtNIW5XWhWZSto2uCr5nOj4
-         5aGFhhvamyrPUkjyGL3KHDPrPJZfIXbv3Aia/YO2zXM5aMnWKHMzaorYt4xLRxmytE//
-         6crBSQSDE5W0ittqWkaxDg+5r406Z95snlGgP8HN+vOfQh9KpL7chb+wj3LGXkBShcr6
-         Nn2gPkhQd9gP7/8rii5v8wL9cJr3LnWZABZmrtd8SYy5QoT/f+GPomOCzvlNIjMTb9ho
-         QCuQ==
-X-Gm-Message-State: AOAM530rE72ZqBLXCzMO5Tjd05+bW1azoJtNvwBgcXsHddIThYk4BmYO
-        Hn6UpjvFicOlzu4IB1KUIVwks8Wx2rynisAe/DPYONTlcLw=
-X-Google-Smtp-Source: ABdhPJxf3Z6j28ZJZ91yE+38HygJgiTtZMyB/VSeYng0agg0J+nv4s0qzz48SwEN7D8BizofBLS128ELYqeZWTC2zc4=
-X-Received: by 2002:a5d:5746:: with SMTP id q6mr24649773wrw.59.1595936294234;
- Tue, 28 Jul 2020 04:38:14 -0700 (PDT)
+        Tue, 28 Jul 2020 11:26:19 -0400
+X-Greylist: delayed 350 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Jul 2020 11:26:17 EDT
+Received: from mail.prodrive-technologies.com (localhost.localdomain [127.0.0.1])
+        by localhost (Email Security Appliance) with SMTP id 784D732EBC_F20423AB;
+        Tue, 28 Jul 2020 15:20:26 +0000 (GMT)
+Received: from mail.prodrive-technologies.com (mdb-dag.prodrive.nl [10.1.1.212])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "mail.prodrive-technologies.com", Issuer "GlobalSign RSA OV SSL CA 2018" (verified OK))
+        by mail.prodrive-technologies.com (Sophos Email Appliance) with ESMTPS id E7900303C1_F20422AF;
+        Tue, 28 Jul 2020 15:20:10 +0000 (GMT)
+Received: from lnxclnt2222.Prodrive.nl (10.130.5.194) by EXC03.bk.prodrive.nl
+ (10.1.1.212) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1913.5; Tue, 28
+ Jul 2020 17:20:10 +0200
+From:   Roy van Doormaal <roy.van.doormaal@prodrive-technologies.com>
+To:     <linux-hwmon@vger.kernel.org>
+CC:     Roy van Doormaal <roy.van.doormaal@prodrive-technologies.com>,
+        "Jean Delvare" <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: [PATCH] hwmon: (adc128d818) Fix advanced configuration register init
+Date:   Tue, 28 Jul 2020 17:18:45 +0200
+Message-ID: <20200728151846.231785-1-roy.van.doormaal@prodrive-technologies.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Received: by 2002:a5d:65cb:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 04:38:13
- -0700 (PDT)
-From:   Rashid Al-Wahaibi <pdlarsen550@gmail.com>
-Date:   Tue, 28 Jul 2020 12:38:13 +0100
-Message-ID: <CAE00X2F5SUiQf0qCZYq3Yx353S0Esu1hA3RH4THqOM0WZMKHFQ@mail.gmail.com>
-Subject: Your Partnership
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: EXC03.bk.prodrive.nl (10.1.1.212) To EXC03.bk.prodrive.nl
+ (10.1.1.212)
+X-SASI-RCODE: 200
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+If the operation mode is non-zero and an external reference voltage is set,
+first the operation mode is written to the advanced configuration register,
+followed by the externel reference enable bit,
+resetting the configuration mode to 0.
+
+To fix this, first compose the value of the advanced configuration register
+based on the configuration mode and the external reference voltage.
+The advanced configuration register is then written to the device,
+if it is different from the default register value (0x0).
+
+Signed-off-by: Roy van Doormaal <roy.van.doormaal@prodrive-technologies.com>
+---
+ drivers/hwmon/adc128d818.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
+index f9edec195c35..571d5454c6b2 100644
+--- a/drivers/hwmon/adc128d818.c
++++ b/drivers/hwmon/adc128d818.c
+@@ -393,6 +393,7 @@ static int adc128_init_client(struct adc128_data *data)
+ {
+ 	struct i2c_client *client = data->client;
+ 	int err;
++	u8 regval = 0x0;
+ 
+ 	/*
+ 	 * Reset chip to defaults.
+@@ -403,10 +404,17 @@ static int adc128_init_client(struct adc128_data *data)
+ 		return err;
+ 
+ 	/* Set operation mode, if non-default */
+-	if (data->mode != 0) {
+-		err = i2c_smbus_write_byte_data(client,
+-						ADC128_REG_CONFIG_ADV,
+-						data->mode << 1);
++	if (data->mode != 0)
++		regval |= data->mode << 1;
++
++	/* If external vref is selected, configure the chip to use it */
++	if (data->regulator)
++		regval |= 0x01;
++
++	/* Write advanced configuration register */
++	if (regval != 0x0) {
++		err = i2c_smbus_write_byte_data(client, ADC128_REG_CONFIG_ADV,
++						regval);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -416,14 +424,6 @@ static int adc128_init_client(struct adc128_data *data)
+ 	if (err)
+ 		return err;
+ 
+-	/* If external vref is selected, configure the chip to use it */
+-	if (data->regulator) {
+-		err = i2c_smbus_write_byte_data(client,
+-						ADC128_REG_CONFIG_ADV, 0x01);
+-		if (err)
+-			return err;
+-	}
+-
+ 	return 0;
+ }
+ 
 -- 
-Good day,
-My name is Rashid Al-Wahaibi, I am from Oman but base here in the UK
-and a Managing Partner of BP Partnership Ltd, a Financial Consultancy
-Firm with office in the United Kingdom. I am contacting you based on
-the request of Ms Rosmah Mansor Najib Razak, wife of Najib Razak, the
-immediate past Malaysian Prime Minister.
+2.20.1
 
-I found your profile satisfying and decided to contact you based on Ms
-Rosmah Mansor Najib Razak desire to invest in any viable project in
-your region.
-
-I need you to guide me on the type of investment that will be of best
-interest and provide good return on investment in your country and
-also act as her investment manager. She is ready to invest $25m to
-$50m USD
-
-I will explain further detail of this business proposal when you reply
-to this email indicating your interest.
-
-
-Regards,
-
-Rashid Al-Wahaibi,
-Bp Partnership Ltd
-60 Raglan Road
-Reigate, ENG RH2 0HN,
-United Kingdom
