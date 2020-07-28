@@ -2,134 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B032306D9
-	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 11:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1641230715
+	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 11:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728345AbgG1Jr0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 28 Jul 2020 05:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48508 "EHLO
+        id S1728251AbgG1JxL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 28 Jul 2020 05:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728050AbgG1Jr0 (ORCPT
+        with ESMTP id S1728491AbgG1JxH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 28 Jul 2020 05:47:26 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E732CC061794
-        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 02:47:25 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1k0MCf-0006Wm-VV; Tue, 28 Jul 2020 11:47:21 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1k0MCe-00025Z-98; Tue, 28 Jul 2020 11:47:20 +0200
-Date:   Tue, 28 Jul 2020 11:47:20 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Michael Walle <michael@walle.cc>
-Cc:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH v6 06/13] pwm: add support for sl28cpld PWM controller
-Message-ID: <20200728094720.x6pucwxsfwvz6nvv@pengutronix.de>
-References: <20200725231834.25642-1-michael@walle.cc>
- <20200725231834.25642-7-michael@walle.cc>
- <20200728074352.ckyfso5zwsfgupjx@pengutronix.de>
- <58b53cacc5289f17f669159beeeada03@walle.cc>
+        Tue, 28 Jul 2020 05:53:07 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9218FC0619D7
+        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 02:53:07 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id j8so7728507ioe.9
+        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 02:53:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=F08oeD2vpzf26eJV+e9uuXuUitIIoXTQkLFpWIuJYZY=;
+        b=NDRcWvbPX8+El0Hm8l2zZRi86BlKHdkPPc/1aSj6c5ks7mWo7/RH3hvlqSSRZYF/2v
+         bSD19PJrd/r/ylbeaXvjz3NjXT8iEFAq7I+w20pTCDHWCN8tsLgMlTrA7e26bUnqBlYV
+         Qs5jGM+SRfAMjqBAZjCsSIGFKjoZDBht7XW0DnlRLNwAyOViFaB+iM8x6wF+NGCPHNx7
+         QPtrvdBYm8oR4PzaFDvo/4G2MSglJ4DHJ1+O104X+gpwkdyN71QYWkxIgA81eF4bd0R9
+         TUNipWoQVzCANXLVYnz6L3tZ5El3+8M670KfcFI09N5b04376SLfguKX5zaVABSH3e8Y
+         LEOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=F08oeD2vpzf26eJV+e9uuXuUitIIoXTQkLFpWIuJYZY=;
+        b=OcT1zcb/7e36/MlKeFhDy1wOF3PYH3PeeCziSEn/MaSaXGj6SqfLq9GQgtdoRxtV6c
+         puECE3qATXfBbBhgSjH2J2O2No03apri0ZG/ypqMMdrT5YtT6S7aBIWPjNV5rC3HsIc5
+         c1NRd1Xqt4drZDxjmt8CIQT8T+mP4HyGTKFIqSVQdlJNKUJnsaLhpUKmGIU4kKWxn0uN
+         rwpi0VsMt1n8bCCfi6WbXCbQsKWAclvjtGQHgh3AZrde/FFk+20geMU6tIrUFmG2IT/b
+         xgkSygdrLLTayTIz6+Ywm1Gw9p5JpmEigaip7ejxwZTA7fVn7M2NT0i+5NcjBjMv+Fna
+         hhOA==
+X-Gm-Message-State: AOAM533nd2fOei3ocbIKfP8VNpr0JdQkkNKZTUmbEo3Ztz1YmXh1UtWd
+        Orulqbd9sJyNEKQmmnvJaOylKmXdF7VnUQxy+2Y=
+X-Google-Smtp-Source: ABdhPJzhWJlCvn4qx2MUmVaGupk22vNSFYQeS0FishwxF0sVk8aV8kiI0mWh7AVgUKYHjazJhYb4AqWtoflXBOmkn8w=
+X-Received: by 2002:a6b:e211:: with SMTP id z17mr21271891ioc.82.1595929986745;
+ Tue, 28 Jul 2020 02:53:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="htulbp2bdc2ny5pv"
-Content-Disposition: inline
-In-Reply-To: <58b53cacc5289f17f669159beeeada03@walle.cc>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
+Received: by 2002:ac0:8a88:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 02:53:06
+ -0700 (PDT)
+Reply-To: mrsjaneyzachary4@gmail.com
+From:   "Mrs.Janey Zachary" <thompsonclark699@gmail.com>
+Date:   Tue, 28 Jul 2020 09:53:06 +0000
+Message-ID: <CAFmscFbBVk+R5CwuGF_1_QbfbY2zUYHz1Bg7ZC+96Ph+i_wbCQ@mail.gmail.com>
+Subject: HI
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-
---htulbp2bdc2ny5pv
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hallo,
-
-On Tue, Jul 28, 2020 at 10:21:22AM +0200, Michael Walle wrote:
-> Am 2020-07-28 09:43, schrieb Uwe Kleine-K=F6nig:
-> > On Sun, Jul 26, 2020 at 01:18:27AM +0200, Michael Walle wrote:
-> > > +static int sl28cpld_pwm_probe(struct platform_device *pdev)
-> > > +{
-> > > +	struct sl28cpld_pwm *priv;
-> > > +	struct pwm_chip *chip;
-> > > +	int ret;
-> > > +
-> > > +	if (!pdev->dev.parent)
-> > > +		return -ENODEV;
-> > > +
-> > > +	priv =3D devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> > > +	if (!priv)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	priv->regmap =3D dev_get_regmap(pdev->dev.parent, NULL);
-> > > +	if (!priv->regmap)
-> >=20
-> > Error message here?
->=20
-> This shouldn't really happen and I put it into the same category
-> as the two above and report no error. But I can add it.
-
-For kzalloc it is right to not emit an error because a failing kzalloc
-is already loud on its own. I missed the first error path, that should
-get a message, too.
-
-> Generally, it looked to me that more and more drivers don't
-> really report errors anymore, but just return with an -EWHATEVER.
-> So if someone can shed some light here, I'm all ears.
-
-IMHO it's wrong not to add error messages. At one point in time it will
-fail and then you're happy if you don't have to add printks all over the
-place first to debug that.
-
-Best regards
-Uwe
-
 --=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---htulbp2bdc2ny5pv
-Content-Type: application/pgp-signature; name="signature.asc"
+Dear Beloved,
 
------BEGIN PGP SIGNATURE-----
+I=E2=80=99m Mrs.Benson Safia, 69years old affected with breast cancer, the =
+wife of
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl8f9CUACgkQwfwUeK3K
-7AlkpAf9GX/MdqMREp3J4dX8H7TLp3wVx7/FOTFnrRDTkszIftG16IG7J9g1qiyY
-lN54gRXDEtuTo7PfeKcJ09lh/jT2xRPE/Y6kHSW6BQKNw2C0S74Pv2UMc1aYWsvZ
-GlE/2BL1tB7F7+OLVIFRhL5N5O0QKaBO5bxaC/DKd4ZAnvbLPloAcysP0kHzqvXP
-H72qdOstHSP5znm4z6+Vcb7xiI9XiT9GWgnumpwo1f6s58SEGsbQUiLRLXIkRURN
-LKzxXtqSMbW1n+U34jSgI6BI+wyDAGQz0iJ0WxKV6DUa5IO7IqucION92J9s7w32
-ntP5cEULmXHKeTvOGXgM59juqdxEtg==
-=KNkY
------END PGP SIGNATURE-----
+late Benson Safia,  the Director of High River Gold Mines Ltd Burkina Faso
 
---htulbp2bdc2ny5pv--
+West Africa. I am contacting you because of my health condition,i need a
+
+reliable person, who will handle this project accordingly, accomplish my
+
+heart desire and utilize this fund. I have decided to donate the sum
+
+Twenty-Five Million Two Hundred Thousand United State Dollars Only
+
+($25,200,000.00) to Charity Organizations or to support the Orphans,
+
+Motherless Babies,Less privileged and free Medical & Medicine Poor
+
+People's around the World since I don t have any child and do not want the
+
+bank take over the fund. I don't really know if i am going to survive this
+
+stage, therefore if you ready to handle this project, kindly response so
+
+that i will instruct the bank to transfer the fund to your account.
+
+Contact my private email only if you are interested
+
+(mrs.bensonsafia1@gmail.com)
+
+Remain blessed in the name of the Lord.
+
+Regards
+
+Mrs.Benson Safia,
