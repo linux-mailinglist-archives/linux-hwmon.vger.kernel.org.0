@@ -2,136 +2,85 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A3D123081E
-	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 12:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14A92308F5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Jul 2020 13:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728904AbgG1Kv0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 28 Jul 2020 06:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
+        id S1729175AbgG1LiZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 28 Jul 2020 07:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728898AbgG1KvZ (ORCPT
+        with ESMTP id S1729174AbgG1LiS (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 28 Jul 2020 06:51:25 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A78AC0619D2
-        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 03:51:25 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id 88so17812253wrh.3
-        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 03:51:25 -0700 (PDT)
+        Tue, 28 Jul 2020 07:38:18 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EB7C08C5E0
+        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 04:38:16 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id dk23so8425905ejb.11
+        for <linux-hwmon@vger.kernel.org>; Tue, 28 Jul 2020 04:38:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=LzOc135fINoaOyyxwY4N4SP5+/4WZUgI3XQn3ZBQrDA=;
-        b=vDkkyU+5XaTOEmRQYW0CYyR4mlMX1mtnZDopRBrR16WWZAymHLppooL3WbRsemUOlF
-         7JAG9CCFFBkNo1ck8oAFsHnGGCFpddbJZI4FvPPe/5vgXZIxS7pdXreW0pAmXl4fefVk
-         uemgsa2HPMS2pgMJSiY5gsoUuJ22Uc9FFMkDS50upr4Y5t/bruJsOn96uJd/Xej/4+wJ
-         r3z4kV7L9g728y5x+aNOBIj6JRK/2vA+lFuGJCCKMNnmmCY7vsMSYcIdJpOO1Lj/2Nk6
-         unQbNqxObw8nTIlx8MnFNeMtUIVxddRTqJvHuyaU1npKp/UQnousCC6p6CUsu9YCp0JA
-         N8gg==
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=z88eUg589kIPbwfcJkBbHKFa4QR0wOZWGk2diK1jFPM=;
+        b=b8/14qSmtpua6DExDbiZQujm3FVCJQWOEnGYc8m39CT4QhCFHb7H/8m/Mr+GJhki5y
+         D26KeL8e5wwIhpqswED7Iyj8LNXjLx29RYfhZ1pPRjvkmM3zHNDeTF1tCFcQE9cmRh/R
+         raunFxUrBwUmVbHiIcNmDsAsXlg0feXUzfnq5cUO9m3PCR65DPFX0ENqSsff92XlzdML
+         2lZ1DHEdMBJRJ7G/JmLQNbN9a0xCfCCdIavasCRbfc1GMLbxrWB9YQiD4Jx827i+wgQH
+         uvPy2fXgy98qEeiaY5zYJY4YAm1gQLhdwyYSQS3qfKNnqXIVHUgDrgxJy+XFocnlCNnt
+         WweQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=LzOc135fINoaOyyxwY4N4SP5+/4WZUgI3XQn3ZBQrDA=;
-        b=ZU8Ol8elBYSR5Y2w8sez2xSzVr3Lsmry1kg9XpGQQxnHmXATcwk+BMW6/vkNplJxGy
-         cK9Gyj7Ez4Wz/FKRIElbjstcwNdP24Dzw2IrhW4rwI5aGnLZomxTDG58rP2GCtbF94zP
-         1j6z5jPDjh1EIGoCmhLLOZNNJX6aSPmPTZe4SaWoJoRddtWjYL6QvHS6SArjMvgzeOc4
-         daIHYutLR+CVoDVhGx1Pu5dp+fHEbPjfsrCvXowrTQgGQb5XhEs0SUeto5f5TovxfI6w
-         hh59GxHtuRjM5+dzMSgjNcqOJlxHLUy5K+nfTLTwWWXGuesUPu0WcBSuZ2JJ4J9jhKqi
-         jo8w==
-X-Gm-Message-State: AOAM531Eg7iFXTPoImVZPmKA8vOcKQxFl7e0aIB50+NmSv41EQh7lGBM
-        kPsPRx43Q1wSg3FNdIIRemyJlA==
-X-Google-Smtp-Source: ABdhPJyXBEeI4zvLVf/tRWpqopuL2jSNCu4L9LZnKQaZP1mCTaWKou6fjAB0L+zVU5NonfUp5NxoSw==
-X-Received: by 2002:a5d:4a90:: with SMTP id o16mr23540803wrq.87.1595933483925;
-        Tue, 28 Jul 2020 03:51:23 -0700 (PDT)
-Received: from dell ([2.27.167.73])
-        by smtp.gmail.com with ESMTPSA id y189sm4194196wmd.27.2020.07.28.03.51.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2020 03:51:23 -0700 (PDT)
-Date:   Tue, 28 Jul 2020 11:51:21 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Michael Walle <michael@walle.cc>, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH v6 06/13] pwm: add support for sl28cpld PWM controller
-Message-ID: <20200728105121.GG2419169@dell>
-References: <20200725231834.25642-1-michael@walle.cc>
- <20200725231834.25642-7-michael@walle.cc>
- <20200728074352.ckyfso5zwsfgupjx@pengutronix.de>
- <58b53cacc5289f17f669159beeeada03@walle.cc>
- <20200728094720.x6pucwxsfwvz6nvv@pengutronix.de>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=z88eUg589kIPbwfcJkBbHKFa4QR0wOZWGk2diK1jFPM=;
+        b=LG5YLKBdAyixs3RiXhN8O/IzTc2G8M+inZUzsIjjcl3qn8qG2fQ8fHZPBU8H/Trh8M
+         4of7T/BTHAGzyPYwrAMYLWgqALAEtq+106kRV6TJembvgmtNIW5XWhWZSto2uCr5nOj4
+         5aGFhhvamyrPUkjyGL3KHDPrPJZfIXbv3Aia/YO2zXM5aMnWKHMzaorYt4xLRxmytE//
+         6crBSQSDE5W0ittqWkaxDg+5r406Z95snlGgP8HN+vOfQh9KpL7chb+wj3LGXkBShcr6
+         Nn2gPkhQd9gP7/8rii5v8wL9cJr3LnWZABZmrtd8SYy5QoT/f+GPomOCzvlNIjMTb9ho
+         QCuQ==
+X-Gm-Message-State: AOAM530rE72ZqBLXCzMO5Tjd05+bW1azoJtNvwBgcXsHddIThYk4BmYO
+        Hn6UpjvFicOlzu4IB1KUIVwks8Wx2rynisAe/DPYONTlcLw=
+X-Google-Smtp-Source: ABdhPJxf3Z6j28ZJZ91yE+38HygJgiTtZMyB/VSeYng0agg0J+nv4s0qzz48SwEN7D8BizofBLS128ELYqeZWTC2zc4=
+X-Received: by 2002:a5d:5746:: with SMTP id q6mr24649773wrw.59.1595936294234;
+ Tue, 28 Jul 2020 04:38:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200728094720.x6pucwxsfwvz6nvv@pengutronix.de>
+Received: by 2002:a5d:65cb:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 04:38:13
+ -0700 (PDT)
+From:   Rashid Al-Wahaibi <pdlarsen550@gmail.com>
+Date:   Tue, 28 Jul 2020 12:38:13 +0100
+Message-ID: <CAE00X2F5SUiQf0qCZYq3Yx353S0Esu1hA3RH4THqOM0WZMKHFQ@mail.gmail.com>
+Subject: Your Partnership
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 28 Jul 2020, Uwe Kleine-König wrote:
-> On Tue, Jul 28, 2020 at 10:21:22AM +0200, Michael Walle wrote:
-> > Am 2020-07-28 09:43, schrieb Uwe Kleine-König:
-> > > On Sun, Jul 26, 2020 at 01:18:27AM +0200, Michael Walle wrote:
-> > > > +static int sl28cpld_pwm_probe(struct platform_device *pdev)
-> > > > +{
-> > > > +	struct sl28cpld_pwm *priv;
-> > > > +	struct pwm_chip *chip;
-> > > > +	int ret;
-> > > > +
-> > > > +	if (!pdev->dev.parent)
-> > > > +		return -ENODEV;
-> > > > +
-> > > > +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> > > > +	if (!priv)
-> > > > +		return -ENOMEM;
-> > > > +
-> > > > +	priv->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-> > > > +	if (!priv->regmap)
-> > > 
-> > > Error message here?
-> > 
-> > This shouldn't really happen and I put it into the same category
-> > as the two above and report no error. But I can add it.
-> 
-> For kzalloc it is right to not emit an error because a failing kzalloc
-> is already loud on its own. I missed the first error path, that should
-> get a message, too.
-> 
-> > Generally, it looked to me that more and more drivers don't
-> > really report errors anymore, but just return with an -EWHATEVER.
-> > So if someone can shed some light here, I'm all ears.
-> 
-> IMHO it's wrong not to add error messages. At one point in time it will
-> fail and then you're happy if you don't have to add printks all over the
-> place first to debug that.
-
-Error messages should only be omitted for -ENOMEM and if something is
-already being printed out, ideally by the sub-system API.
-
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Good day,
+My name is Rashid Al-Wahaibi, I am from Oman but base here in the UK
+and a Managing Partner of BP Partnership Ltd, a Financial Consultancy
+Firm with office in the United Kingdom. I am contacting you based on
+the request of Ms Rosmah Mansor Najib Razak, wife of Najib Razak, the
+immediate past Malaysian Prime Minister.
+
+I found your profile satisfying and decided to contact you based on Ms
+Rosmah Mansor Najib Razak desire to invest in any viable project in
+your region.
+
+I need you to guide me on the type of investment that will be of best
+interest and provide good return on investment in your country and
+also act as her investment manager. She is ready to invest $25m to
+$50m USD
+
+I will explain further detail of this business proposal when you reply
+to this email indicating your interest.
+
+
+Regards,
+
+Rashid Al-Wahaibi,
+Bp Partnership Ltd
+60 Raglan Road
+Reigate, ENG RH2 0HN,
+United Kingdom
