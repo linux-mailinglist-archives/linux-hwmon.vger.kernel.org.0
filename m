@@ -2,74 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 250772316A7
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Jul 2020 02:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0414234BB8
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 Jul 2020 21:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730284AbgG2AMz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 28 Jul 2020 20:12:55 -0400
-Received: from smtp-as-02-06.vtxnet.net ([194.38.175.145]:36455 "EHLO
-        smtp-as-02.vtxnet.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728236AbgG2AMz (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 28 Jul 2020 20:12:55 -0400
-X-Greylist: delayed 532 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Jul 2020 20:12:54 EDT
-X-Spam-Flag: NO
-X-Spam-Score: 1.599
-X-Spam-Level: *
-X-Spam-Status: No, score=1.599 tagged_above=-999 required=999
-        tests=[FREEMAIL_FORGED_REPLYTO=1.199, KHOP_HELO_FCRDNS=0.4]
-        autolearn=no autolearn_force=no
-Received: from smtp-02.datacomm.ch (smtp-02-5.datacomm.ch [212.40.2.22])
-        by smtp-as-02.vtxnet.net (Postfix) with ESMTP id 2631D40D77;
-        Wed, 29 Jul 2020 02:04:00 +0200 (CEST)
-Received: from webmail.vtx.ch (bas-flu-webmail-01.vtxnet.net [212.40.2.41])
-        by smtp-02.datacomm.ch (VTX Datacomm AG) with ESMTP id 57323120051;
-        Wed, 29 Jul 2020 02:03:59 +0200 (CEST)
-Received: from [197.210.227.121]
- by webmail.vtx.ch
- with HTTP (HTTP/1.1 POST); Wed, 29 Jul 2020 02:03:59 +0200
+        id S1725804AbgGaTrC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 31 Jul 2020 15:47:02 -0400
+Received: from mga05.intel.com ([192.55.52.43]:60165 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725767AbgGaTrC (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 31 Jul 2020 15:47:02 -0400
+IronPort-SDR: bO2FJhRd2EsI9XieMv4BiVIF3TJja+ctaJ7tW2exRXyg8JvcsRT6W0F01zq1z5kHWvQhZ7lN3K
+ hrDftPLt6jeA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="236723881"
+X-IronPort-AV: E=Sophos;i="5.75,419,1589266800"; 
+   d="scan'208";a="236723881"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2020 12:47:00 -0700
+IronPort-SDR: qBaEML052tdCHwaheOYNRqazZtds7eNGiCg37+AGNG3fdM9RXlgXtw1UzdieIrOX/85nPMCl33
+ 2LTOG6tG2Dsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,419,1589266800"; 
+   d="scan'208";a="305032472"
+Received: from linux.intel.com ([10.54.29.200])
+  by orsmga002.jf.intel.com with ESMTP; 31 Jul 2020 12:47:00 -0700
+Received: from zlukwins-pc.igk.intel.com (zlukwins-pc.igk.intel.com [10.91.127.224])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by linux.intel.com (Postfix) with ESMTPS id 404C958027C;
+        Fri, 31 Jul 2020 12:46:59 -0700 (PDT)
+From:   Zbigniew Lukwinski <zbigniew.lukwinski@linux.intel.com>
+To:     linux-hwmon@vger.kernel.org
+Cc:     linux@roeck-us.net,
+        Zbigniew Lukwinski <zbigniew.lukwinski@linux.intel.com>
+Subject: [PATCH 0/3] Extending hwmon ABI with attributes for rated values
+Date:   Fri, 31 Jul 2020 21:37:14 +0200
+Message-Id: <1596224237-32280-1-git-send-email-zbigniew.lukwinski@linux.intel.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Date:   Wed, 29 Jul 2020 02:03:59 +0200
-From:   Ocean Finance <vonwattenwyl@vtxmail.ch>
-To:     undisclosed-recipients:;
-Subject: Dringendes Darlehensangebot!
-Reply-To: oceanfin_consultant@hotmail.com
-Mail-Reply-To: oceanfin_consultant@hotmail.com
-Message-ID: <cb412b9f3daed8bf4329974fce0916af@vtxmail.ch>
-X-Sender: vonwattenwyl@vtxmail.ch
-User-Agent: Roundcube Webmail/1.2.10
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+This patch series is about extending hwmon ABI with new attributes
+for rated values. All of that is to cover PMBus specification which
+provides registers reporting rated values:
+PMBus Power System Mgt Protocol Specification - Part II – Revision 1.3.1,
+chapters: 22.3.1 - 22.3.10, 22.3.15
 
+Zbigniew Lukwinski (3):
+  docs: hwmon: Add attributes to report rated values
+  hwmon: (core) Add support for rated attributes
+  hwmon: (pmbus/core) Add support for rated attributes
+
+ Documentation/hwmon/pmbus.rst           | 15 ++++++-
+ Documentation/hwmon/sysfs-interface.rst | 70 +++++++++++++++++++++++++++++++++
+ drivers/hwmon/hwmon.c                   | 10 +++++
+ drivers/hwmon/pmbus/pmbus.h             | 13 ++++++
+ drivers/hwmon/pmbus/pmbus_core.c        | 49 +++++++++++++++++++----
+ include/linux/hwmon.h                   | 20 ++++++++++
+ 6 files changed, 168 insertions(+), 9 deletions(-)
 
 -- 
-Schönen Tag.
-Benötigen Sie einen dringenden Kredit?
-Wir sind derzeit Kredite an Privatpersonen und Firmen für die 
-Geschäftsausweitung, Projekte und Investitionen auf 1,3% Zinssatz zu 
-geben.
-Sie erhalten sofort eine Kreditgenehmigung von uns und erhalten Ihr 
-Darlehen innerhalb von 24 Stunden
+2.7.4
 
-Bewerben Sie sich unten für weitere Bestätigungen.
-
-Vollständiger Name:......................
-Land:......................
-Darlehensbetrag:......................
-Darlehen Zweck:......................
-Leihdauer:......................
-Telefon:......................
-
-Wir warten auf deine Antwort
-
-Mit freundlichen Grüßen.
-
-Michael Davidson
-Finanzbeamter,
-Ocean Finance UK.
