@@ -2,122 +2,68 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 492F923A1F0
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Aug 2020 11:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7858423A5B7
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Aug 2020 14:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbgHCJmz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 3 Aug 2020 05:42:55 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:44577 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726707AbgHCJmq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Aug 2020 05:42:46 -0400
-Received: from mwalle01.sab.local. (unknown [213.135.10.150])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 7A60C23E52;
-        Mon,  3 Aug 2020 11:42:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1596447764;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FD8R5v259HaQ4ECWV5Hx71Eg8JRggizA9m7r3kudZP4=;
-        b=TPjWWO7r5Q2P+dXWzXXQAkTIpjA5yZN/oRCvpH/AqwSYO3d8VDVCB8IamtAENaVvvXx2jK
-        83Y3il/alxlqIl84wV0N1cgpSA5/kg3ASuFQXZ1Lt5CcAHNr8+bRgQ9f45GOZcLrd0+QbO
-        gllT5Fc4FdNCugBca9Ojv9fYLbUMLHg=
-From:   Michael Walle <michael@walle.cc>
-To:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Michael Walle <michael@walle.cc>
-Subject: [PATCH v7 13/13] arm64: defconfig: enable the sl28cpld board management controller
-Date:   Mon,  3 Aug 2020 11:35:59 +0200
-Message-Id: <20200803093559.12289-14-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200803093559.12289-1-michael@walle.cc>
-References: <20200803093559.12289-1-michael@walle.cc>
+        id S1728352AbgHCMl0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 3 Aug 2020 08:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727004AbgHCMlW (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Aug 2020 08:41:22 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A22C06174A
+        for <linux-hwmon@vger.kernel.org>; Mon,  3 Aug 2020 05:41:22 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id l23so13386308edv.11
+        for <linux-hwmon@vger.kernel.org>; Mon, 03 Aug 2020 05:41:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=NT09iQGGOwcZxIATkyfpEyFjPA4EJJ8PA1v8ZW9JTYY=;
+        b=K45gb1PqZf2Ida2uosj+/+lJ7biDHnch9fCMpmQoGh8aiuMhHZFzNLVF03TUIlfiOq
+         afCv7zWZmDjphP9aGqJS/ZPoGL1bXRqItDAGADZxtTwYGPfl9U+T8XYdP6S3KHsokTLO
+         tnywJAEFXHOsFNd0HY/+fQ0JOX0U/LAk9G+xDEWtkQAFPoQc0lCR8v8tWA497iLfM3b+
+         xisbrxQBdgtocZwXW5dCFHV0ofYB7ay2DSM16/XMUVY35iywIpShBjVQrtMopnZ4E1s5
+         FY+Z8Vma7/ncVdbthOMGyy1Y+L7ZsMXTv4YkALGZVYQ6Yx4/RbX9n8bOXUIxnCAsFliR
+         YMCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=NT09iQGGOwcZxIATkyfpEyFjPA4EJJ8PA1v8ZW9JTYY=;
+        b=bzRT46dhHhiXQXKsXb5tAV58Y8DpAxvhfs33xxSxXjdtP2a99JlO3RsLBKWvt0aciM
+         LZOuqjSwwDXxDcy5F2rqehP+SwsydYJ+3YBFwDrTAuae2tvjrEGx2B5rpLVGbOjWdhV2
+         3UXHQfRWrdAtGaBWRFFdaEQQdgsqAH5GvJJHITZ2n8Tnf2f7Upj47mPsBHr1x+g+pgun
+         Dzpy7xXlUxM3XWhWRGQwwYVGLa+J1o+9Pa9Fv3R2mz3V24QMrbTgEDo3FHSRE5F2oIye
+         G4JbI90ZXWO4MQ6qY5r6Dlcw+sAC3TQPyFhTPVYwqq4bwV1Ei9Bh3zOq2+pweB3l2Ey8
+         Klzw==
+X-Gm-Message-State: AOAM533dWTlfWehwcSAUiQXWkFCITEF/IAaT3kIuhdhBjpm1/SyNU/PV
+        QYJhL02WLHCuC7ymDtBZdOA96Hm2f8OvFxF3FAg=
+X-Google-Smtp-Source: ABdhPJzIOBn1jnj7dESqs6hy3rJ6l/8U0eM4hzsyLKbL2hl58vIiIiMRX46bDsdBv6SqhQQSUTnCt40bVM5loUK5l7Y=
+X-Received: by 2002:a05:6402:1f0:: with SMTP id i16mr3085996edy.309.1596458481046;
+ Mon, 03 Aug 2020 05:41:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam: Yes
+Received: by 2002:a50:d303:0:0:0:0:0 with HTTP; Mon, 3 Aug 2020 05:41:20 -0700 (PDT)
+Reply-To: tijanlibra87@gmail.com
+From:   "DR. TIJANI IBRA" <sdo185325@gmail.com>
+Date:   Mon, 3 Aug 2020 05:41:20 -0700
+Message-ID: <CAKum-LuZ05w4MKpdznBojU2xdJCUsgJS4N_wqQ+ROFjPD=PaPQ@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Enable the kernel modules for the board management controller "sl28cpld"
-which is used on the SMARC-sAL28 board.
+Greetings,
 
-Signed-off-by: Michael Walle <michael@walle.cc>
----
-Changes since v6:
- - none
+I wonder why you continue neglecting my emails. Please, acknowledge
+the receipt of this message in reference to the subject above as I
+intend to send to you the details of the mail. Sometimes, try to check
+your spam box because most of these correspondences fall out sometimes
+in SPAM folder.
 
-Changes since v5:
- - new patch
+Best regards,
 
- arch/arm64/configs/defconfig | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 500b782b92df..dd1a8b9856b5 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -500,6 +500,7 @@ CONFIG_GPIO_PCA953X=y
- CONFIG_GPIO_PCA953X_IRQ=y
- CONFIG_GPIO_BD9571MWV=m
- CONFIG_GPIO_MAX77620=y
-+CONFIG_GPIO_SL28CPLD=m
- CONFIG_POWER_AVS=y
- CONFIG_QCOM_CPR=y
- CONFIG_ROCKCHIP_IODOMAIN=y
-@@ -513,6 +514,7 @@ CONFIG_SENSORS_ARM_SCPI=y
- CONFIG_SENSORS_LM90=m
- CONFIG_SENSORS_PWM_FAN=m
- CONFIG_SENSORS_RASPBERRYPI_HWMON=m
-+CONFIG_SENSORS_SL28CPLD=m
- CONFIG_SENSORS_INA2XX=m
- CONFIG_SENSORS_INA3221=m
- CONFIG_THERMAL_GOV_POWER_ALLOCATOR=y
-@@ -535,6 +537,7 @@ CONFIG_QCOM_TSENS=y
- CONFIG_QCOM_SPMI_TEMP_ALARM=m
- CONFIG_UNIPHIER_THERMAL=y
- CONFIG_WATCHDOG=y
-+CONFIG_SL28CPLD_WATCHDOG=m
- CONFIG_ARM_SP805_WATCHDOG=y
- CONFIG_ARM_SBSA_WATCHDOG=y
- CONFIG_ARM_SMC_WATCHDOG=y
-@@ -935,8 +938,10 @@ CONFIG_PWM_MESON=m
- CONFIG_PWM_RCAR=m
- CONFIG_PWM_ROCKCHIP=y
- CONFIG_PWM_SAMSUNG=y
-+CONFIG_PWM_SL28CPLD=m
- CONFIG_PWM_SUN4I=m
- CONFIG_PWM_TEGRA=m
-+CONFIG_SL28CPLD_INTC=y
- CONFIG_QCOM_PDC=y
- CONFIG_RESET_QCOM_AOSS=y
- CONFIG_RESET_QCOM_PDC=m
--- 
-2.20.1
-
+DR. TIJANI IBRA
