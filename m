@@ -2,68 +2,63 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7858423A5B7
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Aug 2020 14:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28CEF23B9F2
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Aug 2020 13:51:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728352AbgHCMl0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 3 Aug 2020 08:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
+        id S1730430AbgHDLuz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 4 Aug 2020 07:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727004AbgHCMlW (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Aug 2020 08:41:22 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A22C06174A
-        for <linux-hwmon@vger.kernel.org>; Mon,  3 Aug 2020 05:41:22 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id l23so13386308edv.11
-        for <linux-hwmon@vger.kernel.org>; Mon, 03 Aug 2020 05:41:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=NT09iQGGOwcZxIATkyfpEyFjPA4EJJ8PA1v8ZW9JTYY=;
-        b=K45gb1PqZf2Ida2uosj+/+lJ7biDHnch9fCMpmQoGh8aiuMhHZFzNLVF03TUIlfiOq
-         afCv7zWZmDjphP9aGqJS/ZPoGL1bXRqItDAGADZxtTwYGPfl9U+T8XYdP6S3KHsokTLO
-         tnywJAEFXHOsFNd0HY/+fQ0JOX0U/LAk9G+xDEWtkQAFPoQc0lCR8v8tWA497iLfM3b+
-         xisbrxQBdgtocZwXW5dCFHV0ofYB7ay2DSM16/XMUVY35iywIpShBjVQrtMopnZ4E1s5
-         FY+Z8Vma7/ncVdbthOMGyy1Y+L7ZsMXTv4YkALGZVYQ6Yx4/RbX9n8bOXUIxnCAsFliR
-         YMCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=NT09iQGGOwcZxIATkyfpEyFjPA4EJJ8PA1v8ZW9JTYY=;
-        b=bzRT46dhHhiXQXKsXb5tAV58Y8DpAxvhfs33xxSxXjdtP2a99JlO3RsLBKWvt0aciM
-         LZOuqjSwwDXxDcy5F2rqehP+SwsydYJ+3YBFwDrTAuae2tvjrEGx2B5rpLVGbOjWdhV2
-         3UXHQfRWrdAtGaBWRFFdaEQQdgsqAH5GvJJHITZ2n8Tnf2f7Upj47mPsBHr1x+g+pgun
-         Dzpy7xXlUxM3XWhWRGQwwYVGLa+J1o+9Pa9Fv3R2mz3V24QMrbTgEDo3FHSRE5F2oIye
-         G4JbI90ZXWO4MQ6qY5r6Dlcw+sAC3TQPyFhTPVYwqq4bwV1Ei9Bh3zOq2+pweB3l2Ey8
-         Klzw==
-X-Gm-Message-State: AOAM533dWTlfWehwcSAUiQXWkFCITEF/IAaT3kIuhdhBjpm1/SyNU/PV
-        QYJhL02WLHCuC7ymDtBZdOA96Hm2f8OvFxF3FAg=
-X-Google-Smtp-Source: ABdhPJzIOBn1jnj7dESqs6hy3rJ6l/8U0eM4hzsyLKbL2hl58vIiIiMRX46bDsdBv6SqhQQSUTnCt40bVM5loUK5l7Y=
-X-Received: by 2002:a05:6402:1f0:: with SMTP id i16mr3085996edy.309.1596458481046;
- Mon, 03 Aug 2020 05:41:21 -0700 (PDT)
+        with ESMTP id S1730289AbgHDLuI (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 4 Aug 2020 07:50:08 -0400
+Received: from forward103j.mail.yandex.net (forward103j.mail.yandex.net [IPv6:2a02:6b8:0:801:2::106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 983A2C06174A;
+        Tue,  4 Aug 2020 04:50:07 -0700 (PDT)
+Received: from forward101q.mail.yandex.net (forward101q.mail.yandex.net [IPv6:2a02:6b8:c0e:4b:0:640:4012:bb98])
+        by forward103j.mail.yandex.net (Yandex) with ESMTP id DBBA36741E52;
+        Tue,  4 Aug 2020 14:50:01 +0300 (MSK)
+Received: from mxback3q.mail.yandex.net (mxback3q.mail.yandex.net [IPv6:2a02:6b8:c0e:39:0:640:4545:437c])
+        by forward101q.mail.yandex.net (Yandex) with ESMTP id D940BCF40010;
+        Tue,  4 Aug 2020 14:50:01 +0300 (MSK)
+Received: from localhost (localhost [::1])
+        by mxback3q.mail.yandex.net (mxback/Yandex) with ESMTP id t0F3STMGqu-o1jWF1lR;
+        Tue, 04 Aug 2020 14:50:01 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1596541801;
+        bh=NVBrXkwf3kegsa/pq5ECHrAXws4O4jVGyY/yJcfMDwM=;
+        h=Date:Message-Id:Cc:Subject:To:From;
+        b=oVNZg1UZbksm5HuWjcb3lvhNY/ujFqUmNlk+zcvICd8Hm2llTyk/Xe6KwSpxkLhzb
+         FQMxWQCxzmVQ0pisRCz268xMJCWdf5f7HXIIcwSl08EcMlNVKVVGfdQI7Qu68W7cwe
+         40HEuBrTtUqmHYq9E80ua4ouAdT3St7qLnscSq58=
+Authentication-Results: mxback3q.mail.yandex.net; dkim=pass header.i=@yandex.ru
+Received: by vla1-058d120ab76c.qloud-c.yandex.net with HTTP;
+        Tue, 04 Aug 2020 14:50:01 +0300
+From:   Evgeny Novikov <novikov@ispras.ru>
+Envelope-From: eugenenovikov@yandex.ru
+To:     Jean Delvare <jdelvare@suse.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: hwmon: (sis5595) potential null pointer dereference in probe
 MIME-Version: 1.0
-Received: by 2002:a50:d303:0:0:0:0:0 with HTTP; Mon, 3 Aug 2020 05:41:20 -0700 (PDT)
-Reply-To: tijanlibra87@gmail.com
-From:   "DR. TIJANI IBRA" <sdo185325@gmail.com>
-Date:   Mon, 3 Aug 2020 05:41:20 -0700
-Message-ID: <CAKum-LuZ05w4MKpdznBojU2xdJCUsgJS4N_wqQ+ROFjPD=PaPQ@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date:   Tue, 04 Aug 2020 14:50:01 +0300
+Message-Id: <856951596540762@mail.yandex.ru>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Greetings,
+sis5595_pci_probe() registers platform driver callbacks and just then
+initializes global pointer variable s_bridge. sis5595_probe() may
+dereference it before this happens that can result in null pointer
+dereference.
 
-I wonder why you continue neglecting my emails. Please, acknowledge
-the receipt of this message in reference to the subject above as I
-intend to send to you the details of the mail. Sometimes, try to check
-your spam box because most of these correspondences fall out sometimes
-in SPAM folder.
+We can not swap registration of platform driver callbacks with
+initialization of s_bridge since sm_sis5595_exit() assumes the
+current order. Perhaps it has sense to implement a pci_driver.remove
+callback that will take care about deregistration of platform driver
+callbacks.
 
-Best regards,
+Found by Linux Driver Verification project (linuxtesting.org).
 
-DR. TIJANI IBRA
