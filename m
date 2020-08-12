@@ -2,105 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75AB2241CC9
-	for <lists+linux-hwmon@lfdr.de>; Tue, 11 Aug 2020 16:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 937A7242B4D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 12 Aug 2020 16:20:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728801AbgHKO5M (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 11 Aug 2020 10:57:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55094 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728802AbgHKO5M (ORCPT
+        id S1726834AbgHLOUL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 12 Aug 2020 10:20:11 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:11692 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726485AbgHLOUK (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 11 Aug 2020 10:57:12 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54360C06174A
-        for <linux-hwmon@vger.kernel.org>; Tue, 11 Aug 2020 07:57:12 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id t10so6924359plz.10
-        for <linux-hwmon@vger.kernel.org>; Tue, 11 Aug 2020 07:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=HiRyyvPWTm8b2GQeXXjpsfAovyJaui0eVELYWeqdZUk=;
-        b=cW36UHO4Gup4UNNIFjGJayEXDnAASuM0vq9VvzLILhqyVF7rAx4XAKpwiqSY0jNWKz
-         GJxmsj339VwraLgT+IxMLNN0fyLJWW3Yw1vQ4kKIojVASX3M6i9QyFplfXgvE/Pd5i8V
-         t84IEFW++AorrHU+uQRbz+P+nhIHFntEF45FCPZR8Lv4rV01xjRqhTeAfp+X/ALKwIsf
-         et2t/v0uNh4j2CQBD5o0hF8YzYt/Vm1MPtEVftizj3gi/a8MmrVVLG3j9sJMVMG7LkKL
-         9ESJX1LcO43Vs2wMHLcVbDbbi4mUp0EBoZnw84fpsM7/W5e6yhbxN0wnXHh3kj81GShE
-         7cyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=HiRyyvPWTm8b2GQeXXjpsfAovyJaui0eVELYWeqdZUk=;
-        b=YKT6sbYwfiWs7HlxqD26FGGhRjApNiYy4JdS0KkH8VHPQru0ruGusJYAKYd5At11oP
-         zmUp8khzh7mORTGOGVRRsb88UwqGS2NUvMSFxHBWGa2WYpZpGA+yczb8cgp8NPZ7SoMw
-         W498geFAkPFP6W0uWtA9UhuZI9ACuWEC+Y3cATwIx+bwL3Y/CS3gwxQigCZKLWqVKLnb
-         nvnYttulF/Qq4Z3z75yMiAZlcQWzgHocgDk1zZJzPabckIPxAlNBC+iPvtHr27IzFgh+
-         fdm3nASW2rtpQMTT9Qp59kC1m3n4Z2VX6bUV6kugAauEUEkYIJMr8+ZRX1q25MzyLCnz
-         bKyQ==
-X-Gm-Message-State: AOAM533QTc7JQcMdbBL4RYTehYte8l7yRkVvRbkudQ0TMQbN4HmDmvde
-        sZR5Rh23n8trBQqOouvPo0MOX11X
-X-Google-Smtp-Source: ABdhPJwwwACHgJUW8oO9/ezJ7AitNAfOTwy66kahSJSDE67ZebRbi7GEty3JcVbxTlvLwY9vspAKSg==
-X-Received: by 2002:a17:90a:e107:: with SMTP id c7mr1513960pjz.100.1597157831568;
-        Tue, 11 Aug 2020 07:57:11 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f77sm27344976pfa.216.2020.08.11.07.57.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 11 Aug 2020 07:57:11 -0700 (PDT)
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Peter Sulyok <peter@sulyok.net>
-Subject: [PATCH] hwmon: (drivetemp) Add usage not describing impact on drive spin-down
-Date:   Tue, 11 Aug 2020 07:57:09 -0700
-Message-Id: <20200811145709.55940-1-linux@roeck-us.net>
+        Wed, 12 Aug 2020 10:20:10 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07CECJGZ020952;
+        Wed, 12 Aug 2020 10:19:56 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 32sry4drt8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 12 Aug 2020 10:19:56 -0400
+Received: from SCSQMBX10.ad.analog.com (scsqmbx10.ad.analog.com [10.77.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 07CEJsFZ003645
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 12 Aug 2020 10:19:55 -0400
+Received: from SCSQMBX10.ad.analog.com (10.77.17.5) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Wed, 12 Aug
+ 2020 07:19:53 -0700
+Received: from zeus.spd.analog.com (10.64.82.11) by SCSQMBX10.ad.analog.com
+ (10.77.17.5) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 12 Aug 2020 07:19:53 -0700
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 07CEJoSt020255;
+        Wed, 12 Aug 2020 10:19:51 -0400
+From:   <alexandru.tachici@analog.com>
+To:     <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <robh+dt@kernel.org>, <linux@roeck-us.net>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: [PATCH v8 0/6] hwmon: pmbus: adm1266: add support
+Date:   Wed, 12 Aug 2020 17:20:49 +0300
+Message-ID: <20200812142055.9213-1-alexandru.tachici@analog.com>
 X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-12_06:2020-08-11,2020-08-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 adultscore=0
+ phishscore=0 suspectscore=0 impostorscore=0 malwarescore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008120101
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On some drives, reading the drive temperature resets the drive's
-spin-down timer. If the drive temperature is read too often, affected
-drives will never spin down. Add this information as usage note to
-the driver documentation.
+From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-Reported-by: Peter Sulyok <peter@sulyok.net>
-Cc: Peter Sulyok <peter@sulyok.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
- Documentation/hwmon/drivetemp.rst | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Add PMBus probing driver for the adm1266 Cascadable
+Super Sequencer with Margin Control and Fault Recording.
+Driver is using the pmbus_core, creating sysfs files
+under hwmon for inputs: vh1->vh4 and vp1->vp13.
 
-diff --git a/Documentation/hwmon/drivetemp.rst b/Documentation/hwmon/drivetemp.rst
-index 2d37d049247f..0b1cf2f912c5 100644
---- a/Documentation/hwmon/drivetemp.rst
-+++ b/Documentation/hwmon/drivetemp.rst
-@@ -30,6 +30,24 @@ Transport is not supported, the driver uses SMART attributes to read
- the drive temperature.
- 
- 
-+Usage Note
-+----------
-+
-+Reading the drive temperature may reset the spin down timer on some drives.
-+This has been observed with WD120EFAX drives, but may be seen with other
-+drives as well. The same behavior is observed if the 'hdtemp' or 'smartd'
-+tools are used to access the drive.
-+With the WD120EFAX drive, reading the drive temperature using the drivetemp
-+driver is still possible _after_ it transitioned to standby mode, and
-+reading the drive temperature in this mode will not cause the drive to
-+change its mode (meaning the drive will not spin up). It is unknown if other
-+drives experience similar behavior.
-+
-+A known workaround for WD120EFAX drives is to read the drive temperature at
-+intervals larger than twice the spin-down time. Otherwise affected drives
-+will never spin down.
-+
-+
- Sysfs entries
- -------------
- 
+1. Add PMBus probing driver for inputs vh1->vh4
+and vp1->vp13.
+
+2. Add Block Write-Read Process Call command.
+A PMBus specific implementation was required because
+block write with I2C_SMBUS_PROC_CALL flag allows a
+maximum of 32 bytes to be received.
+
+3. This makes adm1266 driver expose GPIOs
+to user-space. Currently are read only. Future
+developments on the firmware will allow
+them to be writable.
+
+4. Allow the current sate of the sequencer to be read
+through debugfs.
+
+5. Blackboxes are 64 bytes of chip state related data
+that is generated on faults. Use the nvmem kernel api
+to expose the blackbox chip functionality to userspace.
+
+6. DT bindings for ADM1266.
+
+Alexandru Tachici (6):
+  hwmon: pmbus: adm1266: add support
+  hwmon: pmbus: adm1266: Add Block process call
+  hwmon: pmbus: adm1266: Add support for GPIOs
+  hwmon: pmbus: adm1266: add debugfs for states
+  hwmon: pmbus: adm1266: read blackbox
+  dt-bindings: hwmon: Add bindings for ADM1266
+
+Changelog v7 -> v8:
+  - removed firmware/config programming
+  - in adm1266_pmbus_block_xfer unlock buf mutex on error paths
+  - added "depends on GPIOLIB" in kconfig ("select GPIOLIB" triggers a
+  recursive dependency error)
+  - removed cell access check (only blackbox cell will be used)
+  - removed #if IS_ENABLED(CONFIG_NVMEM)
+  - dt-bindings: removed adi,master-adm1266 property
+
+ .../bindings/hwmon/adi,adm1266.yaml           |  51 ++
+ Documentation/hwmon/adm1266.rst               |  37 ++
+ Documentation/hwmon/index.rst                 |   1 +
+ drivers/hwmon/pmbus/Kconfig                   |  11 +
+ drivers/hwmon/pmbus/Makefile                  |   1 +
+ drivers/hwmon/pmbus/adm1266.c                 | 513 ++++++++++++++++++
+ 6 files changed, 614 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
+ create mode 100644 Documentation/hwmon/adm1266.rst
+ create mode 100644 drivers/hwmon/pmbus/adm1266.c
+
 -- 
-2.17.1
+2.20.1
 
