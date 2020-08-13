@@ -2,40 +2,41 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A08D243DC3
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Aug 2020 18:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB5E243DAA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Aug 2020 18:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726192AbgHMQ4i (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 Aug 2020 12:56:38 -0400
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]:44562 "EHLO
-        15.mo1.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726174AbgHMQ4h (ORCPT
+        id S1726142AbgHMQq6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 Aug 2020 12:46:58 -0400
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]:43382 "EHLO
+        5.mo3.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726131AbgHMQq6 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 Aug 2020 12:56:37 -0400
-Received: from player696.ha.ovh.net (unknown [10.108.42.66])
-        by mo1.mail-out.ovh.net (Postfix) with ESMTP id 5767B1D26FC
-        for <linux-hwmon@vger.kernel.org>; Thu, 13 Aug 2020 18:19:02 +0200 (CEST)
+        Thu, 13 Aug 2020 12:46:58 -0400
+X-Greylist: delayed 600 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Aug 2020 12:46:57 EDT
+Received: from player716.ha.ovh.net (unknown [10.110.208.203])
+        by mo3.mail-out.ovh.net (Postfix) with ESMTP id B624A25CB6E
+        for <linux-hwmon@vger.kernel.org>; Thu, 13 Aug 2020 18:27:12 +0200 (CEST)
 Received: from sk2.org (82-65-25-201.subs.proxad.net [82.65.25.201])
         (Authenticated sender: steve@sk2.org)
-        by player696.ha.ovh.net (Postfix) with ESMTPSA id 6818515474814;
-        Thu, 13 Aug 2020 16:18:56 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-106R006d263d468-f464-43ed-bd99-473694ab4806,
+        by player716.ha.ovh.net (Postfix) with ESMTPSA id 41802152A09F7;
+        Thu, 13 Aug 2020 16:27:07 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-105G006859e978a-6936-4e1d-aa48-8a114369f44c,
                     E10370F5499BCD549250CF93A1A6372B2A4BB833) smtp.auth=steve@sk2.org
 From:   Stephen Kitt <steve@sk2.org>
-To:     Rudolf Marek <r.marek@assembler.cz>,
+To:     Steve Glendinning <steve.glendinning@shawell.net>,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Stephen Kitt <steve@sk2.org>
-Subject: [PATCH] drivers/hwmon/w83793.c: use simple i2c probe
-Date:   Thu, 13 Aug 2020 18:18:45 +0200
-Message-Id: <20200813161845.1511261-1-steve@sk2.org>
+Subject: [PATCH] drivers/hwmon/emc2103.c: use simple i2c probe
+Date:   Thu, 13 Aug 2020 18:27:04 +0200
+Message-Id: <20200813162704.1517951-1-steve@sk2.org>
 X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 7491175034432343545
+X-Ovh-Tracer-Id: 7629097772879269159
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrleehgdejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepteegudfgleekieekteeggeetveefueefteeugfduieeitdfhhedtfeefkedvfeefnecukfhppedtrddtrddtrddtpdekvddrieehrddvhedrvddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheileeirdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdprhgtphhtthhopehlihhnuhigqdhhfihmohhnsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrleehgdejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepteegudfgleekieekteeggeetveefueefteeugfduieeitdfhhedtfeefkedvfeefnecukfhppedtrddtrddtrddtpdekvddrieehrddvhedrvddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejudeirdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdprhgtphhtthhopehlihhnuhigqdhhfihmohhnsehvghgvrhdrkhgvrhhnvghlrdhorhhg
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
@@ -47,42 +48,31 @@ probe function, so it can trivially be converted to the simple
 
 Signed-off-by: Stephen Kitt <steve@sk2.org>
 ---
- drivers/hwmon/w83793.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/hwmon/emc2103.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/w83793.c b/drivers/hwmon/w83793.c
-index 3f59f2a1a5e3..e7d0484eabe4 100644
---- a/drivers/hwmon/w83793.c
-+++ b/drivers/hwmon/w83793.c
-@@ -283,8 +283,7 @@ static void w83793_release_resources(struct kref *ref)
+diff --git a/drivers/hwmon/emc2103.c b/drivers/hwmon/emc2103.c
+index 924c02c1631d..e4c95ca9e19f 100644
+--- a/drivers/hwmon/emc2103.c
++++ b/drivers/hwmon/emc2103.c
+@@ -551,7 +551,7 @@ static const struct attribute_group emc2103_temp4_group = {
+ };
  
- static u8 w83793_read_value(struct i2c_client *client, u16 reg);
- static int w83793_write_value(struct i2c_client *client, u16 reg, u8 value);
--static int w83793_probe(struct i2c_client *client,
--			const struct i2c_device_id *id);
-+static int w83793_probe(struct i2c_client *client);
- static int w83793_detect(struct i2c_client *client,
- 			 struct i2c_board_info *info);
- static int w83793_remove(struct i2c_client *client);
-@@ -303,7 +302,7 @@ static struct i2c_driver w83793_driver = {
- 	.driver = {
- 		   .name = "w83793",
- 	},
--	.probe		= w83793_probe,
-+	.probe_new	= w83793_probe,
- 	.remove		= w83793_remove,
- 	.id_table	= w83793_id,
- 	.detect		= w83793_detect,
-@@ -1646,8 +1645,7 @@ static int w83793_detect(struct i2c_client *client,
- 	return 0;
- }
- 
--static int w83793_probe(struct i2c_client *client,
--			const struct i2c_device_id *id)
-+static int w83793_probe(struct i2c_client *client)
+ static int
+-emc2103_probe(struct i2c_client *client, const struct i2c_device_id *id)
++emc2103_probe(struct i2c_client *client)
  {
- 	struct device *dev = &client->dev;
- 	static const int watchdog_minors[] = {
+ 	struct emc2103_data *data;
+ 	struct device *hwmon_dev;
+@@ -653,7 +653,7 @@ static struct i2c_driver emc2103_driver = {
+ 	.driver = {
+ 		.name	= "emc2103",
+ 	},
+-	.probe		= emc2103_probe,
++	.probe_new	= emc2103_probe,
+ 	.id_table	= emc2103_ids,
+ 	.detect		= emc2103_detect,
+ 	.address_list	= normal_i2c,
 -- 
 2.25.4
 
