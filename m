@@ -2,88 +2,79 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7794F2453CD
-	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Aug 2020 00:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A1D2454A2
+	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Aug 2020 00:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729398AbgHOWFu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 15 Aug 2020 18:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48460 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729648AbgHOWFn (ORCPT
+        id S1728994AbgHOWce (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 15 Aug 2020 18:32:34 -0400
+Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:34692 "EHLO
+        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1728678AbgHOWcM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 15 Aug 2020 18:05:43 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0675EC03D1C4;
-        Sat, 15 Aug 2020 14:00:40 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id w14so13444628ljj.4;
-        Sat, 15 Aug 2020 14:00:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=aEUHVux8podF75099EdSiDpHB6gvV6ZW5+1Tq9t2oHc=;
-        b=XhnN+Z+95DqoLCzEMSlJ7VD6x/9+UHP9MvB5yWTDRQFY7GJ7BLnuhgNYcarGxhqDFE
-         1aZrTPzWssf0aAvfh6s1X9wI3Bep43LnRtYlOndZ3pfAjrZ2lYgSVFp9eg9KMqWDI8D0
-         pDHS5pvX+RFzF/iyjN/eGW90XmKerhotGP0082Xmt1r/LSSEFSJp8jmXY6UBREGVllt+
-         cK7GQRQk/yaV5Ed9PV2Y9fZvmjJ07Xz1lv0vAU714eT92goF9HO/joOtgUBVk3/fRLah
-         s7K/ju+2bjAE0ick+dFZe/2y5yJw69zuasi4GKv7LRyW0LqmTp8WJjNyAouLhoNnIEDp
-         0hnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=aEUHVux8podF75099EdSiDpHB6gvV6ZW5+1Tq9t2oHc=;
-        b=bpVQlxqE4KddJr3QfgaWol8SKgrOHBjO2u4X8arlDgi80GdTh4xRbvEoQqbmbFux88
-         Lcn+zKkHdBxht3njoSoURKEl38THOmSzQQbyYQcrMBY259NLimsQBbMCoVYZhmKP/P7D
-         8sbNGeAi1DoRW8/Oo1cTS51EXzXYM51NpfvppFWYmz1RE310lqJOgxcf/Iq003cH4Qjo
-         tVpFtfn53zXsYtY1zcZzTwPlGAkMd20ZdrnN1ndjB/Xwt2o0f1LQmF08BiTtehe1qbRm
-         adq9mhuZnAS8atfk3rArM3DzJicDt4arA52MnL+/jZaQ1RkxXG5cZzfdHpIiLHVaVuY+
-         StdQ==
-X-Gm-Message-State: AOAM532AQVjdl2Xv/WhV9KS/Se+Z5mLfEWOASxSxMjGjfHliGIaGgI7h
-        +lx16x40vLiPv/xa5U7/DGbL5cl3wRDNNoMsqzc=
-X-Google-Smtp-Source: ABdhPJy/zYDNJ9BK05LF+dL/HHQOHLTm7T4hmi+Dt0XsDsX6ZxFJ2pH6s2knQ6OgnOb6bmV0Cdzt2MuvV+WVP5jZ2mw=
-X-Received: by 2002:a2e:3817:: with SMTP id f23mr3821650lja.118.1597525239014;
- Sat, 15 Aug 2020 14:00:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200814194202.327141-1-jaap.aarts1@gmail.com>
- <4hk1tR-p2Dc2UbnNVCvFg4AJsucTKOwY0-Kc934bQ8VJSIhiTm-iw1qb03jNb9mGDBqWhXwlnzwB6vxKNLZf6Sv7ozKSigS9IHInXizzmE0=@protonmail.com>
- <CACtzdJ2cPfz7b6bEUsLB5k+JzXFPLLKxxaYRheFPAwV3UQiu5Q@mail.gmail.com>
- <92GG6DNvh8x8K43ZGnot6ASLNHBD7l6R6RiI-4jv-Lfki4_tM3IJxPYbp-xajRqMV84Nyw4sp3hZft36ulU2QnxCyhf52kEr6OYe9iujBTk=@protonmail.com>
- <CACtzdJ0Rdh5L_JEA0GN37AOyYOUGRf4yfbXD+AJCvxZdYdKQcg@mail.gmail.com>
- <CACtzdJ1tgbDVxYkcWstkGkz3=E0BTugUT7B5OrxVo15YPU+M4A@mail.gmail.com> <jFeUSolwYuVcf_sROUuSk8EovBBGXiIIQeL7RsDcdjt7kTszfpNIG6ZqD2COx2u5LPojn2BEthfaMqbHmQwUcwPbYc2U7rqDrJDlTkg2Gf8=@protonmail.com>
-In-Reply-To: <jFeUSolwYuVcf_sROUuSk8EovBBGXiIIQeL7RsDcdjt7kTszfpNIG6ZqD2COx2u5LPojn2BEthfaMqbHmQwUcwPbYc2U7rqDrJDlTkg2Gf8=@protonmail.com>
-From:   jaap aarts <jaap.aarts1@gmail.com>
-Date:   Sat, 15 Aug 2020 23:00:27 +0200
-Message-ID: <CACtzdJ03xEMg+F6R+A0O0obS3Sw1wo0WaaZmSdYv-CfQQpb3HA@mail.gmail.com>
-Subject: Re: [PATCH V3] hwmon: add fan/pwm driver for corsair h100i platinum
-To:     =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>
-Cc:     Jean Delvare <jdelvare@suse.com>,
+        Sat, 15 Aug 2020 18:32:12 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id 2C36E20160C8;
+        Sat, 15 Aug 2020 09:22:35 +0800 (HKT)
+X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
+Received: from mail.gtsys.com.hk ([127.0.0.1])
+        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id YW0sX-jF3NJj; Sat, 15 Aug 2020 09:22:35 +0800 (HKT)
+Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
+        by mail.gtsys.com.hk (Postfix) with ESMTP id 0C8F220160B5;
+        Sat, 15 Aug 2020 09:22:35 +0800 (HKT)
+Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
+        by s01.gtsys.com.hk (Postfix) with ESMTP id F2AA9C019F4;
+        Sat, 15 Aug 2020 09:22:34 +0800 (HKT)
+Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
+        id B813A20046C; Sat, 15 Aug 2020 09:22:34 +0800 (HKT)
+From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     Jack Lo <jack.lo@gtsys.com.hk>, devicetree@vger.kernel.org,
+        Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v8 0/2] shtc1: add support for device tree bindings
+Date:   Sat, 15 Aug 2020 09:22:25 +0800
+Message-Id: <20200815012227.32538-1-chris.ruehl@gtsys.com.hk>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-oh oops, it must have gotten in my head differently then how I
-interpreted it at the time.
->
-> I don't recall ever asking about sizes. I said in my previous email
-> that I meant "type", not "size". 'bulk_out_buffer' was 'unsigned char*',
-> but 'bulk_in_buffer' was 'char*' in the patch. That's what I referred to.
->
-> 2020. augusztus 15., szombat 22:44 keltez=C3=A9ssel, jaap aarts <jaap.aar=
-ts1@gmail.com> =C3=ADrta:
-> > sorry forgot to reply to the question about the buffer sizes.
-> > The reason they are different sizes (in theory) is because
-> > I get the size for each buffer from usb_endpoint_maxp.
-> > I do not know whether or not these are the same. If you have
-> > any experience with these functions and know they are always
-> > the same I am willing to make them the same size.
-> >
-> > [...]
->
->
+Add support for DTS bindings to the shtc driver
+The patches add the compatible table and of_property_read_bool to the
+shtc1.c. Newly created Yaml document has been released to the
+Documentation/devicetree/hwmon/sensirion,shtc1.yaml
+
+Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+---
+ Version 8
+	sensirion,shtc1.yaml:
+    Correction in commit text s/_/-/ (sensirion,low-precision)
+	Maintainer my full name
+	Add additionalProperties: false
+	Simplify example i2c1 { -> i2c {
+ Version 7
+	make dt_binding_check warnings, missing #address-cells, #size-cells in example
+	dtschema-2020.7.dev3+g8fd8ce7
+ Version 6
+    fix dt_binding_check: missing ';' in examples
+ Version 5
+    devicetree/driver-source: name conversion sensirion,low-precision sensirion,blocking-io
+	use const: 0x70 with the reg:
+ Version 4
+	Fix errors report by make dt_binding_check (devicetree)
+	Set maintainers for the yaml document to my own.
+ Version 3
+	Fix errors report with checkpatch.pl
+	Correct logic, add (!) when check for sensirion,low_precision
+ Version 2
+	remove the #ifdef CONFIG_OF
+	ignore platform data if dev->of_node is valid
+	use boolean only therefor use sensirion,low_precise to fit the logic
+	add missing driver.of_match_table entry
+ Version 1
+	initial version
