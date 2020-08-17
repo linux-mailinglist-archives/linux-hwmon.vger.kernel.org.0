@@ -2,28 +2,28 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42DBA245CB3
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Aug 2020 08:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A78245CC9
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Aug 2020 09:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbgHQGyg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 17 Aug 2020 02:54:36 -0400
-Received: from ms-10.1blu.de ([178.254.4.101]:55070 "EHLO ms-10.1blu.de"
+        id S1726682AbgHQHBF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 17 Aug 2020 03:01:05 -0400
+Received: from ms-10.1blu.de ([178.254.4.101]:40302 "EHLO ms-10.1blu.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726196AbgHQGyf (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 17 Aug 2020 02:54:35 -0400
+        id S1726613AbgHQHAr (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 17 Aug 2020 03:00:47 -0400
 Received: from [78.43.71.214] (helo=marius.fritz.box)
         by ms-10.1blu.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.90_1)
         (envelope-from <mail@mariuszachmann.de>)
-        id 1k7Z2O-0005sJ-9z; Mon, 17 Aug 2020 08:54:32 +0200
+        id 1k7Z8N-00009O-MZ; Mon, 17 Aug 2020 09:00:43 +0200
 From:   Marius Zachmann <mail@mariuszachmann.de>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Marius Zachmann <mail@mariuszachmann.de>,
         Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: corsair-cpro: fix ccp_probe, add delay
-Date:   Mon, 17 Aug 2020 08:54:28 +0200
-Message-Id: <20200817065428.5974-1-mail@mariuszachmann.de>
+Subject: [PATCH v2] hwmon: corsair-cpro: fix ccp_probe, add delay
+Date:   Mon, 17 Aug 2020 09:00:40 +0200
+Message-Id: <20200817070040.7952-1-mail@mariuszachmann.de>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,19 +36,23 @@ List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
 Possibly because of the changes in usbhid/hid-core.c the first
-raw input report is not received during ccp_probe function and it will timeout.
-I am not sure, whether this behaviour is expected after hid_device_io_start or if I
-am missing something.
-As a solution this adds msleep(50) to ccp_probe so that all initial input reports can
-be received.
+raw input report is not received during ccp_probe function and it will
+timeout. I am not sure, whether this behaviour is expected after
+hid_device_io_start or if I am missing something.
+As a solution this adds msleep(50) to ccp_probe so that all initial
+input reports can be received.
 
 Signed-off-by: Marius Zachmann <mail@mariuszachmann.de>
 ---
- drivers/hwmon/corsair-cpro.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v2:
+- fix accidentally deleted comment
+
+---
+ drivers/hwmon/corsair-cpro.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 591929ec217a..6359409e6c71 100644
+index 591929ec217a..c04fac1d820f 100644
 --- a/drivers/hwmon/corsair-cpro.c
 +++ b/drivers/hwmon/corsair-cpro.c
 @@ -10,6 +10,7 @@
@@ -59,15 +63,13 @@ index 591929ec217a..6359409e6c71 100644
  #include <linux/hid.h>
  #include <linux/hwmon.h>
  #include <linux/kernel.h>
-@@ -513,8 +514,8 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+@@ -513,6 +514,7 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
  	init_completion(&ccp->wait_input_report);
 
  	hid_device_io_start(hdev);
-+	msleep(50); /* make sure, events can be received */
++	msleep(50); /* wait before events can be received */
 
--	/* temp and fan connection status only updates when device is powered on */
+ 	/* temp and fan connection status only updates when device is powered on */
  	ret = get_temp_cnct(ccp);
- 	if (ret)
- 		goto out_hw_close;
 --
 2.28.0
