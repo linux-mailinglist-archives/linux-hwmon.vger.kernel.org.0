@@ -2,94 +2,173 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E2A0249F0F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Aug 2020 15:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28DA824BE38
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Aug 2020 15:24:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726609AbgHSNFj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 19 Aug 2020 09:05:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37218 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728203AbgHSNFd (ORCPT
+        id S1728559AbgHTNVy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 20 Aug 2020 09:21:54 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25973 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729117AbgHTNTm (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 19 Aug 2020 09:05:33 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46772C061757
-        for <linux-hwmon@vger.kernel.org>; Wed, 19 Aug 2020 06:05:32 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id t23so25311705ljc.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 19 Aug 2020 06:05:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=UOr65DEC+2TW/zt7uOWWliltVKZ89UsSxVAE/jQE1oM=;
-        b=ig0Gowk5bmmRlwDUQnO4y6TgS8TPTr7rVwwcxXCQXtPl9HhW8NkXHIv6B+duOf3lp+
-         gZutF2zFShkzk3CYvXCAeuEulGsoslBHGNBCkbZ0TFRBc/2Ut0qPqg866dt7JyzfnpIJ
-         68MXFvQRcMsKqEVR4y3VTJ8rtpMbgZLWt9J6jDkIWlQW65MyZaERS9MyqVWX9fy2Isez
-         xsZ5vi3MHowaVKhMg33qFIcX7/quCIco+02R77UBUKxvHC/xluOIqC/Lr5qYci7AMVZf
-         PyXAFBj4/F7uT7Y3iuvrL7XB97GjkJ7iLwjZ3dF8czzNndQEsJq65DDKMcngHG6f3kPe
-         i80g==
+        Thu, 20 Aug 2020 09:19:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1597929580;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=EYEbh/d854a4Cvi1ZmxUctES1NziyUONjpMTuL++zu0=;
+        b=KdG67+296sUS/O13+DONjGFaD2c0ki3U1m7m7GME2wVW1Po0iaIxDewcGkTsbWO44sH2cZ
+        ec+mIy4nro0yifSDNqUfFpSubq3CE9GEkGR9Pv6H++ZCU0iJmyOTtXi4rR6ixb6TbjtULA
+        n1uEOzFSwZ85M+Oo1TWra6v42F9v0vs=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-269-FUeuprS0MqG7t_nXsP9mNg-1; Thu, 20 Aug 2020 09:19:39 -0400
+X-MC-Unique: FUeuprS0MqG7t_nXsP9mNg-1
+Received: by mail-qt1-f198.google.com with SMTP id z5so1524082qtc.2
+        for <linux-hwmon@vger.kernel.org>; Thu, 20 Aug 2020 06:19:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=UOr65DEC+2TW/zt7uOWWliltVKZ89UsSxVAE/jQE1oM=;
-        b=NlhoVd/OCeHYpftgIEmCotJQeD0i2FYUR2yQY8iRhCpd+p0jHO5aJuz4yFqTpJQeX7
-         1C0CKqoMOts1U+qyEFUJMYP4YYJ/OSmALqZqcobzK9q0xankgTtgbijrP9pK4YeSM9Pj
-         /wopk+o/d7jg+eRYcXX2d2qOQSz0TCTdRpc/xIzW7ov9x+G69rAFad5oNkEgrEbYtFqy
-         EULHD66caiOqNko6Qdt1DlXT0J5KLyFRdNug0PWTnML6eAJ0/VFCqbvewvyrWC5W+Fsv
-         D3oW4eAjEcytFg+UQMkZax9BHOPP4gCKz/pr6+5m2vR7nY2FNbeXEUiDusSXZcQLhezU
-         970w==
-X-Gm-Message-State: AOAM531aFrlDtjLB4bgJO6wAgMc+L0A5UWYN/SYH8BjmR+nL9lh7bPkz
-        8VLdFHINCVvqaW/XaMoCr5yrv3H2TpZk9KbsFy0=
-X-Google-Smtp-Source: ABdhPJzTFitFWyqH5VgBxrEeiqQ4A1POexli1AXmA+RrBIO5haBPhDqi2mygN5Tr7sNOxSaOFMqW2cDUGzlZZDUdK9Y=
-X-Received: by 2002:a2e:9ed4:: with SMTP id h20mr12179547ljk.82.1597842330702;
- Wed, 19 Aug 2020 06:05:30 -0700 (PDT)
-MIME-Version: 1.0
-Reply-To: mrahmedmuzashah@gmail.com
-Received: by 2002:a19:4c57:0:0:0:0:0 with HTTP; Wed, 19 Aug 2020 06:05:29
- -0700 (PDT)
-From:   "Mr.Ahmed Muzashah" <ahmedmuzashah@gmail.com>
-Date:   Wed, 19 Aug 2020 14:05:29 +0100
-X-Google-Sender-Auth: lVrhDL8Mzkfaw7v4sU_7WkA5sWQ
-Message-ID: <CA+ANWpm8x4guuGELAxYevxXhqEEr=BWtq6-82y7LV1LmfG2PzQ@mail.gmail.com>
-Subject: =?UTF-8?B?U2Now7ZuZW4gVGFn?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=EYEbh/d854a4Cvi1ZmxUctES1NziyUONjpMTuL++zu0=;
+        b=bHgMZI3Z5H+HtII7T9gXBIv+wv13ya1DC5CAny09MwzBfGFrmeyDjdLjKDgmQvXju4
+         Coy1yW1eV2Vddke07Tab9clNIWMwJlXwrnYTfcWP3kDBcbzSzlNwQKLw6LZejDsKEw8w
+         qvGr8TOGgA2s3mzVLdqoo8/OMqBJDlDDvCZwLpTuONXxwor0qc6D0UhIe/M5ABGp2jnD
+         kVjOsgmP/g+TXLfRh+qk7F3fHd0RZyJy4kt/G80fShR6emD+HyYDmS9asOcoREod6WV7
+         VNK/7IH5xkQZM2feiSCDgZISk2wBw8a17UH+uUdMyOTJ1svH1ryWz8YrljR9bUvZRfw2
+         I5+Q==
+X-Gm-Message-State: AOAM533Vi9Lc+YYPEvQwwvhIcbFnpk3z4iOfJvghjcrQfkY1lHgyQQzN
+        5qMmFgNj3d0v1ezBiv6zJYTOnRsMoSA9yLWR4JNf6KOog0ELbg3kvaSiW3xOy4dAODatkA6B1gq
+        NaXhf2rIzb6MkrKrXz/GL0Ak=
+X-Received: by 2002:ac8:71d6:: with SMTP id i22mr2532263qtp.371.1597929578429;
+        Thu, 20 Aug 2020 06:19:38 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJylmGEqva8k65GQbvrfrvomBJaM4CqPY7z4t1eMT+zT+dmuDhYUfv1MeCKO+nFkDiWH+W8K5w==
+X-Received: by 2002:ac8:71d6:: with SMTP id i22mr2532245qtp.371.1597929578139;
+        Thu, 20 Aug 2020 06:19:38 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id b37sm3022312qtk.85.2020.08.20.06.19.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 06:19:37 -0700 (PDT)
+From:   trix@redhat.com
+To:     rydberg@bitmath.org, jdelvare@suse.com, linux@roeck-us.net
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] hwmon: applesmc: check status earlier.
+Date:   Thu, 20 Aug 2020 06:19:32 -0700
+Message-Id: <20200820131932.10590-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.1
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Sch=C3=B6nen Tag,
+From: Tom Rix <trix@redhat.com>
 
-Bitte entschuldigen Sie, dass Sie einen =C3=9Cberraschungsbrief geschrieben
-haben. Ich bin Herr Ahmed Muzashah, Account Manager bei einer
-Investmentbank hier in Burkina Faso. Ich habe ein sehr wichtiges
-Gesch=C3=A4ft, das ich mit Ihnen besprechen m=C3=B6chte. In meinem Konto is=
-t ein
-Kontoentwurf er=C3=B6ffnet Ich habe die M=C3=B6glichkeit, den verbleibenden
-Fonds (15,8 Millionen US-Dollar) von f=C3=BCnfzehn Millionen
-achthunderttausend US-Dollar eines meiner Bankkunden zu =C3=BCbertragen,
-der beim Zusammenbruch der Welt gestorben ist Handelszentrum in den
-Vereinigten Staaten am 11. September 2001.
+clang static analysis reports this representative problem
 
-Ich m=C3=B6chte diese Mittel investieren und Sie unserer Bank f=C3=BCr dies=
-en
-Deal vorstellen. Alles, was ich ben=C3=B6tige, ist Ihre ehrliche
-Zusammenarbeit und ich garantiere Ihnen, dass dies unter einer
-legitimen Vereinbarung durchgef=C3=BChrt wird, die uns vor
-Gesetzesverst=C3=B6=C3=9Fen sch=C3=BCtzt Ich bin damit einverstanden, dass =
-40% dieses
-Geldes f=C3=BCr Sie als meinen ausl=C3=A4ndischen Partner, 50% f=C3=BCr mic=
-h und 10%
-f=C3=BCr die Schaffung der Grundlage f=C3=BCr die weniger Privilegien in Ih=
-rem
-Land bestimmt sind. Wenn Sie wirklich an meinem Vorschlag interessiert
-sind, werden weitere Einzelheiten der =C3=9Cbertragung ber=C3=BCcksichtigt =
-Sie
-werden an Sie weitergeleitet, sobald ich Ihre Bereitschaftsmail f=C3=BCr
-eine erfolgreiche =C3=9Cberweisung erhalte.
+applesmc.c:758:10: warning: 1st function call argument is an
+  uninitialized value
+        left = be16_to_cpu(*(__be16 *)(buffer + 6)) >> 2;
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Dein,
-Mr.Ahmed Muzashah,
+buffer is filled by the earlier call
+
+	ret = applesmc_read_key(LIGHT_SENSOR_LEFT_KEY, ...
+
+This problem is reported because a goto skips the status check.
+Other similar problems use data from applesmc_read_key before checking
+the status.  So move the checks to before the use.
+
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/hwmon/applesmc.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/hwmon/applesmc.c b/drivers/hwmon/applesmc.c
+index 316618409315..a18887990f4a 100644
+--- a/drivers/hwmon/applesmc.c
++++ b/drivers/hwmon/applesmc.c
+@@ -753,15 +753,18 @@ static ssize_t applesmc_light_show(struct device *dev,
+ 	}
+ 
+ 	ret = applesmc_read_key(LIGHT_SENSOR_LEFT_KEY, buffer, data_length);
++	if (ret)
++		goto out;
+ 	/* newer macbooks report a single 10-bit bigendian value */
+ 	if (data_length == 10) {
+ 		left = be16_to_cpu(*(__be16 *)(buffer + 6)) >> 2;
+ 		goto out;
+ 	}
+ 	left = buffer[2];
++
++	ret = applesmc_read_key(LIGHT_SENSOR_RIGHT_KEY, buffer, data_length);
+ 	if (ret)
+ 		goto out;
+-	ret = applesmc_read_key(LIGHT_SENSOR_RIGHT_KEY, buffer, data_length);
+ 	right = buffer[2];
+ 
+ out:
+@@ -810,12 +813,11 @@ static ssize_t applesmc_show_fan_speed(struct device *dev,
+ 		  to_index(attr));
+ 
+ 	ret = applesmc_read_key(newkey, buffer, 2);
+-	speed = ((buffer[0] << 8 | buffer[1]) >> 2);
+-
+ 	if (ret)
+ 		return ret;
+-	else
+-		return snprintf(sysfsbuf, PAGE_SIZE, "%u\n", speed);
++
++	speed = ((buffer[0] << 8 | buffer[1]) >> 2);
++	return snprintf(sysfsbuf, PAGE_SIZE, "%u\n", speed);
+ }
+ 
+ static ssize_t applesmc_store_fan_speed(struct device *dev,
+@@ -851,12 +853,11 @@ static ssize_t applesmc_show_fan_manual(struct device *dev,
+ 	u8 buffer[2];
+ 
+ 	ret = applesmc_read_key(FANS_MANUAL, buffer, 2);
+-	manual = ((buffer[0] << 8 | buffer[1]) >> to_index(attr)) & 0x01;
+-
+ 	if (ret)
+ 		return ret;
+-	else
+-		return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", manual);
++
++	manual = ((buffer[0] << 8 | buffer[1]) >> to_index(attr)) & 0x01;
++	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", manual);
+ }
+ 
+ static ssize_t applesmc_store_fan_manual(struct device *dev,
+@@ -872,10 +873,11 @@ static ssize_t applesmc_store_fan_manual(struct device *dev,
+ 		return -EINVAL;
+ 
+ 	ret = applesmc_read_key(FANS_MANUAL, buffer, 2);
+-	val = (buffer[0] << 8 | buffer[1]);
+ 	if (ret)
+ 		goto out;
+ 
++	val = (buffer[0] << 8 | buffer[1]);
++
+ 	if (input)
+ 		val = val | (0x01 << to_index(attr));
+ 	else
+@@ -951,13 +953,12 @@ static ssize_t applesmc_key_count_show(struct device *dev,
+ 	u32 count;
+ 
+ 	ret = applesmc_read_key(KEY_COUNT_KEY, buffer, 4);
+-	count = ((u32)buffer[0]<<24) + ((u32)buffer[1]<<16) +
+-						((u32)buffer[2]<<8) + buffer[3];
+-
+ 	if (ret)
+ 		return ret;
+-	else
+-		return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", count);
++
++	count = ((u32)buffer[0]<<24) + ((u32)buffer[1]<<16) +
++						((u32)buffer[2]<<8) + buffer[3];
++	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", count);
+ }
+ 
+ static ssize_t applesmc_key_at_index_read_show(struct device *dev,
+-- 
+2.18.1
+
