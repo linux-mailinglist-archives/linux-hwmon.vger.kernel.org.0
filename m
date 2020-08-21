@@ -2,77 +2,77 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD9524DFB6
-	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Aug 2020 20:35:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593B424DFD0
+	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Aug 2020 20:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726435AbgHUSfC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 21 Aug 2020 14:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
+        id S1726336AbgHUSjf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 21 Aug 2020 14:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726387AbgHUSfB (ORCPT
+        with ESMTP id S1725768AbgHUSjf (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 21 Aug 2020 14:35:01 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6AC0C061573;
-        Fri, 21 Aug 2020 11:35:00 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id h2so1275454plr.0;
-        Fri, 21 Aug 2020 11:35:00 -0700 (PDT)
+        Fri, 21 Aug 2020 14:39:35 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BB0C061575;
+        Fri, 21 Aug 2020 11:39:34 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id p37so1407464pgl.3;
+        Fri, 21 Aug 2020 11:39:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=JoIejRu3GXVmKj8cMY9UV1I6PbZ8S3Q6ft2ghX7hxTw=;
-        b=NBu/8zocZGDiGrG4E9Aunx3MiMWHQ/DbqnIZIIGUKj+gwLiaY5Zm3Tzsr6kkC34xZ8
-         vQdXF4/3m2OJs4+OSFUKebs+ayxf+nJB99UAL647l4jH5SXXstv/qQgLQqLMpP5daEyQ
-         wwYPxPCSE+fwFwXWRPTzqgwfznjCR0dMgQrDdPchjISPXdmBamy3qNywXA/EvN6As5+h
-         TNN7NWQuobO8fKNuyUpQOzePfjQDttdyBz5j1C6uT/h8qYLjQ5xJ87ofFhfQIncCL8ts
-         1wz18zn/Y/sM8Bw+/KIqWqssMkpdWswLCOQ3GCihK+nhzjduPnsKtw9xt/kKb6kP5i3m
-         /9ig==
+        bh=6Wed+2KJiJXbDusUkvqx9osbk9K/bLB8+KZ5CEx8UTo=;
+        b=iNmJIDej7pY5YB0Gkj2suBA3Jwl9t7ZD0OZiL9fSPDX24XiLDEM0e95Wyn/8DSpqfX
+         zz7BjmOcvExJ8GwToRQ/le6hkexWWAnQqw8uvs2UDOBYyFUzEqPLT1AL1ErNxKqezEoe
+         LLm8hIFrN0NhqhkQOC/F2g0+GXhFbFfZnlkkTZzfYmnclUc2eJ1v2U9xTMLMViGVtm1j
+         RzF/tQwAqQhmBA4hQPqDgSH8gDK4RCI6dgEHI4JnH4guOiQEJ8U0kBA7K7xWwkVKY+zv
+         J52bpXUFixeHW5YG3B/Kb+ctBXeZArUrQO/f4pOdcUVCRpdMrYrt8pDfUw9heiB5BVLr
+         BaRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=JoIejRu3GXVmKj8cMY9UV1I6PbZ8S3Q6ft2ghX7hxTw=;
-        b=Q3R8yMnVYL7HFUbBXIRW/WqcYevVt8MpjD0sZMC5sX9b0xbVcfLyoDxHlNiYNYh3LW
-         WuiB5cIBHQjo6BUauFz1blS54KfNJa5nAh5V2h2MWGicinI6aov8vVxNR552de16aRau
-         DPd+HOu+FTl/BPoZgOCJP8f1ObuaAUicSdHFYQ5Mfd04w9pak/KxJ4YQtYoJGfvwd6Bf
-         CWSUqcobTQhu+q+wWunFVWbA1rJznF8tjgjrHKmQyAZrLt3b0CVTuH+wfF9veq1uXq4z
-         hwDB3fpIxyCodPXqpj9m5zDtL05GP4sLpHOLdWpAK33t7ldmktxN9BdL39ktletZjcqz
-         tcfg==
-X-Gm-Message-State: AOAM5329eOQr7gGc1di75yenfwQgpj+Uq9yMc+MJEXda1gJlR59oLxgm
-        h4WG5hIe74gIOBqNzUvYESSe3emsQ9k=
-X-Google-Smtp-Source: ABdhPJwMME1R8UpmQwpatqgtNJLOgW7AEaHEo7Fv5uD2w2wCDXArBFMv6cumaqUQigIUpIOeQiPcVA==
-X-Received: by 2002:a17:902:ed4a:: with SMTP id y10mr3496148plb.106.1598034900348;
-        Fri, 21 Aug 2020 11:35:00 -0700 (PDT)
+        bh=6Wed+2KJiJXbDusUkvqx9osbk9K/bLB8+KZ5CEx8UTo=;
+        b=aRzdelHFp3ZyUcgW35z9YCJfaPywJAlaEOFRIh7PSUfDohZ2jhBBvg0NnVCDokpjy+
+         2H8oLLM+AOVkg7Y0jp2x8R4OFp/yclqQL6lp1yYzaCPZWxVVO8IrwMzAOM6y35cttUL4
+         WTL80AVHkxpLpWwXhTT1ydh760ynu9YonoGaV1P2vU3Xy2kkLgffYWFX8EXmB0fsBj4u
+         umoC3Om3Cy5gUxoCAOqHIAMh57OXSlfXGEreJCut8P0UcyhHcYTa8f8qMo5fZHOEXaoL
+         TMQ0aGyftW6sA04BSMZ5w1a9CetmYS3MvPgQxfVNcZBm+SM9zfDESGPKkAs3P83RD11A
+         eP1A==
+X-Gm-Message-State: AOAM53306pQcr8+TnLlgML8lYmnPk6xndgKnh+cyWH3DxHFqASG56n0T
+        DNTOc8/IINt+n8UC/AzJKV3gmOp+FUM=
+X-Google-Smtp-Source: ABdhPJwC0gExCDD5JxS1RpIHUTpceynmzw1eAoWQwOyTleiFyrZ/PfXx94gZCIzS9MB/9eaST4SHRg==
+X-Received: by 2002:a63:4557:: with SMTP id u23mr3120859pgk.197.1598035173716;
+        Fri, 21 Aug 2020 11:39:33 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t28sm2841570pgn.81.2020.08.21.11.34.59
+        by smtp.gmail.com with ESMTPSA id h193sm2843300pgc.42.2020.08.21.11.39.32
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Aug 2020 11:34:59 -0700 (PDT)
-Date:   Fri, 21 Aug 2020 11:34:59 -0700
+        Fri, 21 Aug 2020 11:39:33 -0700 (PDT)
+Date:   Fri, 21 Aug 2020 11:39:31 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     Anson Huang <Anson.Huang@nxp.com>
-Cc:     kamil@wypas.org, b.zolnierkie@samsung.com, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux-imx@nxp.com
-Subject: Re: [PATCH] hwmon: pwm-fan: Use dev_err_probe() to simplify error
- handling
-Message-ID: <20200821183459.GA198234@roeck-us.net>
-References: <1597649673-22329-1-git-send-email-Anson.Huang@nxp.com>
+To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Cc:     Jack Lo <jack.lo@gtsys.com.hk>, devicetree@vger.kernel.org,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 1/2] hwmon: shtc1: add support for device tree bindings
+Message-ID: <20200821183931.GA245345@roeck-us.net>
+References: <20200815012227.32538-1-chris.ruehl@gtsys.com.hk>
+ <20200815012227.32538-2-chris.ruehl@gtsys.com.hk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1597649673-22329-1-git-send-email-Anson.Huang@nxp.com>
+In-Reply-To: <20200815012227.32538-2-chris.ruehl@gtsys.com.hk>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Aug 17, 2020 at 03:34:33PM +0800, Anson Huang wrote:
-> dev_err_probe() can reduce code size, uniform error handling and record the
-> defer probe reason etc., use it to simplify the code.
+On Sat, Aug 15, 2020 at 09:22:26AM +0800, Chris Ruehl wrote:
+> Add support for DTS bindings for the sensirion shtc1,shtw1 and shtc3.
 > 
-> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+> Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
 Applied.
 
@@ -80,27 +80,66 @@ Thanks,
 Guenter
 
 > ---
->  drivers/hwmon/pwm-fan.c | 10 ++--------
->  1 file changed, 2 insertions(+), 8 deletions(-)
+>  v8: no change
 > 
-> diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-> index 17bb642..bdba214 100644
-> --- a/drivers/hwmon/pwm-fan.c
-> +++ b/drivers/hwmon/pwm-fan.c
-> @@ -293,14 +293,8 @@ static int pwm_fan_probe(struct platform_device *pdev)
->  	mutex_init(&ctx->lock);
+>  drivers/hwmon/shtc1.c | 25 ++++++++++++++++++++++---
+>  1 file changed, 22 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
+> index a0078ccede03..7993a5ff8768 100644
+> --- a/drivers/hwmon/shtc1.c
+> +++ b/drivers/hwmon/shtc1.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/err.h>
+>  #include <linux/delay.h>
+>  #include <linux/platform_data/shtc1.h>
+> +#include <linux/of.h>
 >  
->  	ctx->pwm = devm_of_pwm_get(dev, dev->of_node, NULL);
-> -	if (IS_ERR(ctx->pwm)) {
-> -		ret = PTR_ERR(ctx->pwm);
-> -
-> -		if (ret != -EPROBE_DEFER)
-> -			dev_err(dev, "Could not get PWM: %d\n", ret);
-> -
-> -		return ret;
-> -	}
-> +	if (IS_ERR(ctx->pwm))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->pwm), "Could not get PWM\n");
+>  /* commands (high precision mode) */
+>  static const unsigned char shtc1_cmd_measure_blocking_hpm[]    = { 0x7C, 0xA2 };
+> @@ -196,6 +197,7 @@ static int shtc1_probe(struct i2c_client *client,
+>  	enum shtcx_chips chip = id->driver_data;
+>  	struct i2c_adapter *adap = client->adapter;
+>  	struct device *dev = &client->dev;
+> +	struct device_node *np = dev->of_node;
 >  
->  	platform_set_drvdata(pdev, ctx);
+>  	if (!i2c_check_functionality(adap, I2C_FUNC_I2C)) {
+>  		dev_err(dev, "plain i2c transactions not supported\n");
+> @@ -233,8 +235,14 @@ static int shtc1_probe(struct i2c_client *client,
+>  	data->client = client;
+>  	data->chip = chip;
 >  
+> -	if (client->dev.platform_data)
+> -		data->setup = *(struct shtc1_platform_data *)dev->platform_data;
+> +	if (np) {
+> +		data->setup.blocking_io = of_property_read_bool(np, "sensirion,blocking-io");
+> +		data->setup.high_precision = !of_property_read_bool(np, "sensicon,low-precision");
+> +	} else {
+> +		if (client->dev.platform_data)
+> +			data->setup = *(struct shtc1_platform_data *)dev->platform_data;
+> +	}
+> +
+>  	shtc1_select_command(data);
+>  	mutex_init(&data->update_lock);
+>  
+> @@ -257,8 +265,19 @@ static const struct i2c_device_id shtc1_id[] = {
+>  };
+>  MODULE_DEVICE_TABLE(i2c, shtc1_id);
+>  
+> +static const struct of_device_id shtc1_of_match[] = {
+> +	{ .compatible = "sensirion,shtc1" },
+> +	{ .compatible = "sensirion,shtw1" },
+> +	{ .compatible = "sensirion,shtc3" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, shtc1_of_match);
+> +
+>  static struct i2c_driver shtc1_i2c_driver = {
+> -	.driver.name  = "shtc1",
+> +	.driver = {
+> +		.name = "shtc1",
+> +		.of_match_table = shtc1_of_match,
+> +	},
+>  	.probe        = shtc1_probe,
+>  	.id_table     = shtc1_id,
+>  };
