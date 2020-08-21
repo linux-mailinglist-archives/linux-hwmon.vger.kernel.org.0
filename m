@@ -2,83 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A35624DFC6
-	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Aug 2020 20:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA16A24DFA2
+	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Aug 2020 20:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725883AbgHUSgr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 21 Aug 2020 14:36:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54376 "EHLO
+        id S1726894AbgHUSbL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 21 Aug 2020 14:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbgHUSgN (ORCPT
+        with ESMTP id S1726706AbgHUSbH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 21 Aug 2020 14:36:13 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560A1C06179A;
-        Fri, 21 Aug 2020 11:29:20 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id x6so1377371pgx.12;
-        Fri, 21 Aug 2020 11:29:20 -0700 (PDT)
+        Fri, 21 Aug 2020 14:31:07 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075B2C06179B;
+        Fri, 21 Aug 2020 11:31:07 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id y10so1250470plr.11;
+        Fri, 21 Aug 2020 11:31:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=9Bt6z66I01y6R+MC1lpHyARTzFhlNekN+fweHpFeiRY=;
-        b=nT9c5r+Q6fDehXqVZ/+uTpIZGgpq5nhijpywnWh7GU9ASwhKa1F3JaCokPiFhddRAG
-         3UwVyd+hPhAMg79BUcaMk/ZiE8xMb9RRtXo2/+HaYRSt4wvxQKhMkSJeDHJByvmi9dBQ
-         R7yXMUiJJLHQBEirWO7jVkb8YjgCRBiLPzyDfGXbaRR85I9/pmMDdLdKAz2/HNCDN4js
-         UUEYEfnMuMHaOGnzBLQ/7g04RH6bstvrCviRTcpwT/0sr8DRffxm3Y9CW0mY+Qy5MZGR
-         OxnLAP4l29UZvV0n8aq6roysj4teUIDuDsZ6Hk+hixBNxlMl/pU+aXUKbSibjHR4ypHe
-         5wtw==
+        bh=fs0kdQgLFops5C+Q5YuWanPWdeCPY1nAvwr21o3lh9E=;
+        b=pOjcfMhi9NIQKBZ6ypeUifTHdrqrhUSBM3X5AWK9Xkbjel5xQNQqGuLm2C3t3TN9bj
+         Zx44C4kaA3IAUpB4bbXgTLb62Evet1+fBdUCP2hRLkKFk7y9iUmSxrM2xA6LiUThJL+I
+         mf2ov2uLvp3U7KW+u+USVo/RUcUeBcCSLPuR+eKnRQBtJ/owkHll6SSQoYnb40dkMkvx
+         B24HSyxoeJgCgRrOzrAi2hfzZLsmj3Y03XZ0W+B9fmO38hNUv6CD8O0oKVs6xbWJCxO1
+         HRqBuoQITmR/GejEbp2QaJIp2c+3qIpb3YFvhMZadjDRghJoyR6fAQMDEiCwrtRwj2hi
+         Wq1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9Bt6z66I01y6R+MC1lpHyARTzFhlNekN+fweHpFeiRY=;
-        b=eIApBCahwgCCpJTpHuIIy33BgWxau/g0zqROP5J2LxQQHTTvYoBTeMzC+uBpObTuV1
-         4dqt7vUcjsBQlXBj4eQAeXwiS4bRp2dYYjNhH5hZglTXcx85GXNZIwnDJl31bIaqoVsg
-         SuGNZtzWTBFC2lvY6kbK249oiFsdGhHtZRSxwyeYnd0PaQZqLxAcDqZXdTSDk2lJAnnO
-         iBX+FWj7PAhsz+XQ1nxWLr0+v5j264f7sQ7OC9sYH2Zf4wNjsJSsXNbmgniLWb3wgqVm
-         JKLtP+kVf4jZf7BGYsGAgn3jErdG7EyBmEqE2DvU/mFPNG6rHqtGSXuE/0zol7EI1hEK
-         ov2Q==
-X-Gm-Message-State: AOAM532JC1LNyibH3WDre7zp3wOzuF3YZpEUwuBd1IJFSwkv23NB0Dmc
-        RQDXmC494dg8qmNby4uC3B+BEGS8h6Q=
-X-Google-Smtp-Source: ABdhPJyrjHoD4PTfhL9LxNfoHoiNJ605iO5FR5xgDRpd0asbp22NLAZliZJ8j2+1CBR2INmCwlvYkA==
-X-Received: by 2002:a05:6a00:c9:: with SMTP id e9mr3485560pfj.224.1598034559865;
-        Fri, 21 Aug 2020 11:29:19 -0700 (PDT)
+        bh=fs0kdQgLFops5C+Q5YuWanPWdeCPY1nAvwr21o3lh9E=;
+        b=NSEu42qUdPx/3sGjFwzFW1+nqJ7J9SSGFR1f1mDO5UjEgI9qpu9xtEFXyEXg5hPTfW
+         9NWRi+qXpHulq2J33tCyyZ6RgxxNkdyOUP2tnyseWV5C5eq5CvRgPnVWkieXsHWx69Aa
+         h8PgjCvGhgScLjOKfv1QqbOMgV8CuwLIVu1jpj9E4mcgEaBmSpntv/n2gcuCZKmhtwOH
+         VfGK6R9U2He9Od/r1qWVIRnaXZK3oR7XMnnUCUpoBIjeQ8ykKWlRy/DJ39Hpdq1FsyoU
+         1RNyxJj6cugZM0uZtV51qFJpFewzCNQpJ5FG3wfgeIhpF3S8lW9rZDFe7hOIi1FW2gqG
+         Zhdw==
+X-Gm-Message-State: AOAM533q1TbV7bDjkmTxe20/YAOhQPe4OkCTKz4LB1SGLB/WSY6druaA
+        cpIOr2+VIlO/e+G2PEfjE+4=
+X-Google-Smtp-Source: ABdhPJwCMvLZ8gso1ZPwMBsuitV3m26hGK4fikp7rhuUhZwxSIsy7HDZtvYonJj2lr4Lti1NSyuH/g==
+X-Received: by 2002:a17:902:728c:: with SMTP id d12mr3300178pll.141.1598034666575;
+        Fri, 21 Aug 2020 11:31:06 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z26sm2656806pgc.44.2020.08.21.11.29.19
+        by smtp.gmail.com with ESMTPSA id k125sm2848682pga.48.2020.08.21.11.31.05
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Aug 2020 11:29:19 -0700 (PDT)
-Date:   Fri, 21 Aug 2020 11:29:18 -0700
+        Fri, 21 Aug 2020 11:31:06 -0700 (PDT)
+Date:   Fri, 21 Aug 2020 11:31:05 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Stephen Kitt <steve@sk2.org>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: use simple i2c probe function
-Message-ID: <20200821182918.GA26770@roeck-us.net>
-References: <20200821160354.594715-1-steve@sk2.org>
+Cc:     Riku Voipio <riku.voipio@iki.fi>, Jean Delvare <jdelvare@suse.com>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (f75375s) use simple i2c probe
+Message-ID: <20200821183105.GA74215@roeck-us.net>
+References: <20200821160159.591293-1-steve@sk2.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200821160354.594715-1-steve@sk2.org>
+In-Reply-To: <20200821160159.591293-1-steve@sk2.org>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 06:03:54PM +0200, Stephen Kitt wrote:
-> Many hwmon drivers don't use the id information provided by the old
-> i2c probe function, and the remainder can easily be adapted to the new
-> form ("probe_new") by calling i2c_match_id explicitly.
-> 
-> This avoids scanning the identifier tables during probes.
-> 
-> Drivers which didn't use the id are converted as-is; drivers which did
-> are modified to call i2c_match_id() with the same level of
-> error-handling (if any) as before.
-> 
-> This patch wraps up the transition for hwmon, with four stragglers not
-> included in the previous large patch.
+On Fri, Aug 21, 2020 at 06:01:59PM +0200, Stephen Kitt wrote:
+> As part of the ongoing i2c transition to the simple probe
+> ("probe_new"), this patch uses i2c_match_id to retrieve the
+> driver_data for the probed device. The id parameter is thus no longer
+> necessary and the simple probe can be used instead.
 > 
 > Signed-off-by: Stephen Kitt <steve@sk2.org>
 
@@ -88,122 +80,48 @@ Thanks,
 Guenter
 
 > ---
->  drivers/hwmon/adc128d818.c | 5 ++---
->  drivers/hwmon/ads7828.c    | 9 +++++----
->  drivers/hwmon/lm87.c       | 4 ++--
->  drivers/hwmon/w83795.c     | 9 +++++----
->  4 files changed, 14 insertions(+), 13 deletions(-)
+>  drivers/hwmon/f75375s.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
-> index f9edec195c35..80511d316845 100644
-> --- a/drivers/hwmon/adc128d818.c
-> +++ b/drivers/hwmon/adc128d818.c
-> @@ -427,8 +427,7 @@ static int adc128_init_client(struct adc128_data *data)
->  	return 0;
+> diff --git a/drivers/hwmon/f75375s.c b/drivers/hwmon/f75375s.c
+> index eb847a7d6b83..3e567be60fb1 100644
+> --- a/drivers/hwmon/f75375s.c
+> +++ b/drivers/hwmon/f75375s.c
+> @@ -113,8 +113,7 @@ struct f75375_data {
+>  
+>  static int f75375_detect(struct i2c_client *client,
+>  			 struct i2c_board_info *info);
+> -static int f75375_probe(struct i2c_client *client,
+> -			const struct i2c_device_id *id);
+> +static int f75375_probe(struct i2c_client *client);
+>  static int f75375_remove(struct i2c_client *client);
+>  
+>  static const struct i2c_device_id f75375_id[] = {
+> @@ -130,7 +129,7 @@ static struct i2c_driver f75375_driver = {
+>  	.driver = {
+>  		.name = "f75375",
+>  	},
+> -	.probe = f75375_probe,
+> +	.probe_new = f75375_probe,
+>  	.remove = f75375_remove,
+>  	.id_table = f75375_id,
+>  	.detect = f75375_detect,
+> @@ -814,8 +813,7 @@ static void f75375_init(struct i2c_client *client, struct f75375_data *data,
+>  
 >  }
 >  
-> -static int adc128_probe(struct i2c_client *client,
-> -			const struct i2c_device_id *id)
-> +static int adc128_probe(struct i2c_client *client)
+> -static int f75375_probe(struct i2c_client *client,
+> -		const struct i2c_device_id *id)
+> +static int f75375_probe(struct i2c_client *client)
 >  {
->  	struct device *dev = &client->dev;
->  	struct regulator *regulator;
-> @@ -524,7 +523,7 @@ static struct i2c_driver adc128_driver = {
->  		.name	= "adc128d818",
->  		.of_match_table = of_match_ptr(adc128_of_match),
->  	},
-> -	.probe		= adc128_probe,
-> +	.probe_new	= adc128_probe,
->  	.remove		= adc128_remove,
->  	.id_table	= adc128_id,
->  	.detect		= adc128_detect,
-> diff --git a/drivers/hwmon/ads7828.c b/drivers/hwmon/ads7828.c
-> index d895b73fde6f..7246198f0901 100644
-> --- a/drivers/hwmon/ads7828.c
-> +++ b/drivers/hwmon/ads7828.c
-> @@ -99,8 +99,9 @@ static const struct regmap_config ads2830_regmap_config = {
->  	.val_bits = 8,
->  };
->  
-> -static int ads7828_probe(struct i2c_client *client,
-> -			 const struct i2c_device_id *id)
-> +static const struct i2c_device_id ads7828_device_ids[];
-> +
-> +static int ads7828_probe(struct i2c_client *client)
->  {
->  	struct device *dev = &client->dev;
->  	struct ads7828_platform_data *pdata = dev_get_platdata(dev);
-> @@ -141,7 +142,7 @@ static int ads7828_probe(struct i2c_client *client,
->  		chip = (enum ads7828_chips)
->  			of_device_get_match_data(&client->dev);
->  	else
-> -		chip = id->driver_data;
-> +		chip = i2c_match_id(ads7828_device_ids, client)->driver_data;
->  
->  	/* Bound Vref with min/max values */
->  	vref_mv = clamp_val(vref_mv, ADS7828_EXT_VREF_MV_MIN,
-> @@ -207,7 +208,7 @@ static struct i2c_driver ads7828_driver = {
->  	},
->  
->  	.id_table = ads7828_device_ids,
-> -	.probe = ads7828_probe,
-> +	.probe_new = ads7828_probe,
->  };
->  
->  module_i2c_driver(ads7828_driver);
-> diff --git a/drivers/hwmon/lm87.c b/drivers/hwmon/lm87.c
-> index ad501ac4a594..24cb8a1c3381 100644
-> --- a/drivers/hwmon/lm87.c
-> +++ b/drivers/hwmon/lm87.c
-> @@ -912,7 +912,7 @@ static int lm87_init_client(struct i2c_client *client)
->  	return 0;
->  }
->  
-> -static int lm87_probe(struct i2c_client *client, const struct i2c_device_id *id)
-> +static int lm87_probe(struct i2c_client *client)
->  {
->  	struct lm87_data *data;
->  	struct device *hwmon_dev;
-> @@ -994,7 +994,7 @@ static struct i2c_driver lm87_driver = {
->  		.name	= "lm87",
->  		.of_match_table = lm87_of_match,
->  	},
-> -	.probe		= lm87_probe,
-> +	.probe_new	= lm87_probe,
->  	.id_table	= lm87_id,
->  	.detect		= lm87_detect,
->  	.address_list	= normal_i2c,
-> diff --git a/drivers/hwmon/w83795.c b/drivers/hwmon/w83795.c
-> index 44f68b965aec..9cff2e399f1d 100644
-> --- a/drivers/hwmon/w83795.c
-> +++ b/drivers/hwmon/w83795.c
-> @@ -2134,8 +2134,9 @@ static void w83795_apply_temp_config(struct w83795_data *data, u8 config,
->  	}
->  }
->  
-> -static int w83795_probe(struct i2c_client *client,
-> -			const struct i2c_device_id *id)
-> +static const struct i2c_device_id w83795_id[];
-> +
-> +static int w83795_probe(struct i2c_client *client)
->  {
->  	int i;
->  	u8 tmp;
-> @@ -2148,7 +2149,7 @@ static int w83795_probe(struct i2c_client *client,
->  		return -ENOMEM;
+>  	struct f75375_data *data;
+>  	struct f75375s_platform_data *f75375s_pdata =
+> @@ -832,7 +830,7 @@ static int f75375_probe(struct i2c_client *client,
 >  
 >  	i2c_set_clientdata(client, data);
-> -	data->chip_type = id->driver_data;
-> +	data->chip_type = i2c_match_id(w83795_id, client)->driver_data;
->  	data->bank = i2c_smbus_read_byte_data(client, W83795_REG_BANKSEL);
 >  	mutex_init(&data->update_lock);
+> -	data->kind = id->driver_data;
+> +	data->kind = i2c_match_id(f75375_id, client)->driver_data;
 >  
-> @@ -2256,7 +2257,7 @@ static struct i2c_driver w83795_driver = {
->  	.driver = {
->  		   .name = "w83795",
->  	},
-> -	.probe		= w83795_probe,
-> +	.probe_new	= w83795_probe,
->  	.remove		= w83795_remove,
->  	.id_table	= w83795_id,
->  
+>  	err = sysfs_create_group(&client->dev.kobj, &f75375_group);
+>  	if (err)
