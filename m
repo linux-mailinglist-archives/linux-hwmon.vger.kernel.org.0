@@ -2,78 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5228B24DF9A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Aug 2020 20:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9353824DFC5
+	for <lists+linux-hwmon@lfdr.de>; Fri, 21 Aug 2020 20:36:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725804AbgHUSaR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 21 Aug 2020 14:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53420 "EHLO
+        id S1726617AbgHUSgV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 21 Aug 2020 14:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbgHUSaQ (ORCPT
+        with ESMTP id S1725831AbgHUSgI (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 21 Aug 2020 14:30:16 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04371C06179B;
-        Fri, 21 Aug 2020 11:30:16 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id h12so1390317pgm.7;
-        Fri, 21 Aug 2020 11:30:15 -0700 (PDT)
+        Fri, 21 Aug 2020 14:36:08 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E777C061797;
+        Fri, 21 Aug 2020 11:27:47 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id mw10so1174829pjb.2;
+        Fri, 21 Aug 2020 11:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=zP47110S/VhRjoKqw44D0J+M/2tpqI2WT8Gl3dFgMLU=;
-        b=FHJhuIIIl2pjvt5gC0n9ebYyiLz7oPCyOoZ204GanM2l+Dt/AZK351tSCFaXcetIgB
-         B0QuwgtbOLYh3yinGuPNmEMuTnVlomUiZvIknKW5OINsVq95f5P/8IfYpOvTztpQk7wj
-         5rKQx4S3UkuY6qUu7yzqikp5pMBrC0C27wlZZgHZ0vmAdgusHDxAyG5sy7EtJNqSH6Wl
-         OQ9tZfCKlVWZju4ne50ug0G12g6VyTIGBO2fmhyEgM8OAZohfuG6Zn2pIJdtYfRPmDME
-         ho6FzKYOww8DX4s00jUzULiSihELcvDbmTArHDtqj9RyazRKS6cbNpGU0eNKfS/zzlyr
-         dl2g==
+        bh=8xc10arX40icxxQcUsOxR4h/Lwk3EmXkYYk/LGjN5Rs=;
+        b=LJQpigmSBCDcm8qAm0XRvGg/2ZtEUEX0Y0+v2XbGnMiD6A464yzdzhMlozIAzPUQea
+         WMwKak5n1qFA3dLoijjuE4mvSqWexBb6pEw+926GqFZwvdw3ku5NAWYsT7VI5SIpNUbI
+         uNQQEmr6U+9/Aq3xirXEtUU2g0Cco+jxv9I+oDr8H5XCK9Yu1rG3Knh6t+4L5OfGAAKb
+         8han44H2xAlv0XcQ80XBDQ6dnEabrxQk1/Q26YleBMQRGYLp8ly34OR5d7PFm9OyxPcF
+         PjLKydbgvxngq7hPGv+PRZ/xHhxFVKmX40rM8y8z+AOB0KW+sJ/CDA05cSVl0GgmMW13
+         xCVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=zP47110S/VhRjoKqw44D0J+M/2tpqI2WT8Gl3dFgMLU=;
-        b=YDEg1cIfjTG4m+gm5YVQ7pZEt2GVuNbk4TlbNx9FXbo5qDz1aVaui1WD4KHp58iBNp
-         vXRVh9ktSHODWT9txJCt4VTECC23BjFhjTCKFa5+5t7TUEK104LamnXe3NTmYK7WKshw
-         wp33tg58VJm6/huMU3dgAIrkePAm+oPmXL/B8b54co2QZnzCrXZTMnO9RhP5N8n0SS01
-         k0XwBKXaEKPqpvy4fKWto3X/LWTe322gwc6bP40m2EpDLNKL3PGHOKBiygo5aQJHDHA4
-         t6ft3B7Fu2rwcy7ZiqtfvmbIzE4U1F3apgVVCf85+EjRp/ZfOu09DA/X70epAswKm2gF
-         xxyg==
-X-Gm-Message-State: AOAM531rZzvKfXFmXGHjsOTYo5agichd/C7YEdgMRTv9hcq82c0NbnG8
-        OJen07qGX3g4wqmnMbvVRVw=
-X-Google-Smtp-Source: ABdhPJxp1f9fXlscpv6Qe1ELd6qPs9/3TfsCbJWXquPOKCpMw0FIPwawnTMfQ9II/Phab4f9G10iHw==
-X-Received: by 2002:aa7:8b18:: with SMTP id f24mr3453731pfd.301.1598034615578;
-        Fri, 21 Aug 2020 11:30:15 -0700 (PDT)
+        bh=8xc10arX40icxxQcUsOxR4h/Lwk3EmXkYYk/LGjN5Rs=;
+        b=PkuHIKzCwL0OAKOxyX9V4lpA68Gk7ct8qokaQVEE+/LfSoloG5fCJ17vmFiB+LyQt1
+         9GI8AQ7qtJBm68vn7tt6WBVyEsQdVec/4BXKa2WAjAWJR+5urtlhiZTA/Q2PRslkf46l
+         z8/guzCRUxYfPWMEyTAA77WpMHtYgdvmp25NVppGMB1DBaDjxKjji0Vi19e25W7ohxfY
+         sbIuYDv9JRJHFiYV54VRVRkjzNbvy45V4f/6u5iOvwQNLYqG02ivqd0L5VKJAeG/Z1yV
+         mMyxfoM1m/g5WKkvRzqj1RqqcrVCz7kYOfggSCtLGillI1zH0Q6rS3qBXoHpv35zaMao
+         ZvbQ==
+X-Gm-Message-State: AOAM530NaSirGjyadw3iPQBcWS9vQOGvd7GW3+MwR8xScxmAhlWsozZf
+        ykdjHxRjWsGGzloy08azN/w=
+X-Google-Smtp-Source: ABdhPJzONm6RAFMCRqyPKAERTFjMbnDq63hbFRpSlL8f3fkbfMyAJgQGgrBGSKC2NyF9Jy0JwbUESw==
+X-Received: by 2002:a17:90b:110a:: with SMTP id gi10mr3477473pjb.206.1598034467071;
+        Fri, 21 Aug 2020 11:27:47 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c207sm3072159pfc.64.2020.08.21.11.30.14
+        by smtp.gmail.com with ESMTPSA id v11sm2648184pgs.22.2020.08.21.11.27.45
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 21 Aug 2020 11:30:15 -0700 (PDT)
-Date:   Fri, 21 Aug 2020 11:30:13 -0700
+        Fri, 21 Aug 2020 11:27:46 -0700 (PDT)
+Date:   Fri, 21 Aug 2020 11:27:45 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     Stephen Kitt <steve@sk2.org>
-Cc:     Eric Tremblay <etremblay@distech-controls.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+To:     Jason Baron <jbaron@akamai.com>
+Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (tmp513) use simple i2c probe
-Message-ID: <20200821183013.GA61218@roeck-us.net>
-References: <20200821160231.592571-1-steve@sk2.org>
+Subject: Re: [PATCH] hwmon: (nct7904) Correct divide by 0
+Message-ID: <20200821182745.GA236235@roeck-us.net>
+References: <1598026814-2604-1-git-send-email-jbaron@akamai.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200821160231.592571-1-steve@sk2.org>
+In-Reply-To: <1598026814-2604-1-git-send-email-jbaron@akamai.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Aug 21, 2020 at 06:02:31PM +0200, Stephen Kitt wrote:
-> As part of the ongoing i2c transition to the simple probe
-> ("probe_new"), this patch uses i2c_match_id to retrieve the
-> driver_data for the probed device. The id parameter is thus no longer
-> necessary and the simple probe can be used instead.
+On Fri, Aug 21, 2020 at 12:20:14PM -0400, Jason Baron wrote:
+> We hit a kernel panic due to a divide by 0 in nct7904_read_fan() for
+> the hwmon_fan_min case. Extend the check to hwmon_fan_input case as well
+> for safety.
 > 
-> Signed-off-by: Stephen Kitt <steve@sk2.org>
+> [ 1656.545650] divide error: 0000 [#1] SMP PTI
+> [ 1656.545779] CPU: 12 PID: 18010 Comm: sensors Not tainted 5.4.47 #1
+> [ 1656.546065] RIP: 0010:nct7904_read+0x1e9/0x510 [nct7904]
+> ...
+> [ 1656.546549] RAX: 0000000000149970 RBX: ffffbd6b86bcbe08 RCX: 0000000000000000
+> ...
+> [ 1656.547548] Call Trace:
+> [ 1656.547665]  hwmon_attr_show+0x32/0xd0 [hwmon]
+> [ 1656.547783]  dev_attr_show+0x18/0x50
+> [ 1656.547898]  sysfs_kf_seq_show+0x99/0x120
+> [ 1656.548013]  seq_read+0xd8/0x3e0
+> [ 1656.548127]  vfs_read+0x89/0x130
+> [ 1656.548234]  ksys_read+0x7d/0xb0
+> [ 1656.548342]  do_syscall_64+0x48/0x110
+> [ 1656.548451]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> 
+> Signed-off-by: Jason Baron <jbaron@akamai.com>
 
 Applied.
 
@@ -81,47 +95,28 @@ Thanks,
 Guenter
 
 > ---
->  drivers/hwmon/tmp513.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  drivers/hwmon/nct7904.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-> index df66e0bc1253..9f5885b0eb74 100644
-> --- a/drivers/hwmon/tmp513.c
-> +++ b/drivers/hwmon/tmp513.c
-> @@ -709,8 +709,7 @@ static int tmp51x_configure(struct device *dev, struct tmp51x_data *data)
->  	return 0;
->  }
->  
-> -static int tmp51x_probe(struct i2c_client *client,
-> -			const struct i2c_device_id *id)
-> +static int tmp51x_probe(struct i2c_client *client)
->  {
->  	struct device *dev = &client->dev;
->  	struct tmp51x_data *data;
-> @@ -724,7 +723,7 @@ static int tmp51x_probe(struct i2c_client *client,
->  	if (client->dev.of_node)
->  		data->id = (enum tmp51x_ids)device_get_match_data(&client->dev);
->  	else
-> -		data->id = id->driver_data;
-> +		data->id = i2c_match_id(tmp51x_id, client)->driver_data;
->  
->  	ret = tmp51x_configure(dev, data);
->  	if (ret < 0) {
-> @@ -751,7 +750,7 @@ static int tmp51x_probe(struct i2c_client *client,
->  	if (IS_ERR(hwmon_dev))
->  		return PTR_ERR(hwmon_dev);
->  
-> -	dev_dbg(dev, "power monitor %s\n", id->name);
-> +	dev_dbg(dev, "power monitor %s\n", client->name);
->  
->  	return 0;
->  }
-> @@ -761,7 +760,7 @@ static struct i2c_driver tmp51x_driver = {
->  		.name	= "tmp51x",
->  		.of_match_table = of_match_ptr(tmp51x_of_match),
->  	},
-> -	.probe		= tmp51x_probe,
-> +	.probe_new	= tmp51x_probe,
->  	.id_table	= tmp51x_id,
->  };
->  
+> diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
+> index b042569..242ff8b 100644
+> --- a/drivers/hwmon/nct7904.c
+> +++ b/drivers/hwmon/nct7904.c
+> @@ -231,7 +231,7 @@ static int nct7904_read_fan(struct device *dev, u32 attr, int channel,
+>  		if (ret < 0)
+>  			return ret;
+>  		cnt = ((ret & 0xff00) >> 3) | (ret & 0x1f);
+> -		if (cnt == 0x1fff)
+> +		if (cnt == 0 || cnt == 0x1fff)
+>  			rpm = 0;
+>  		else
+>  			rpm = 1350000 / cnt;
+> @@ -243,7 +243,7 @@ static int nct7904_read_fan(struct device *dev, u32 attr, int channel,
+>  		if (ret < 0)
+>  			return ret;
+>  		cnt = ((ret & 0xff00) >> 3) | (ret & 0x1f);
+> -		if (cnt == 0x1fff)
+> +		if (cnt == 0 || cnt == 0x1fff)
+>  			rpm = 0;
+>  		else
+>  			rpm = 1350000 / cnt;
