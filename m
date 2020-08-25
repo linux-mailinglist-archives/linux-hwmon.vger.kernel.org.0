@@ -2,184 +2,144 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7BC92508BD
-	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Aug 2020 21:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E7B25112A
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Aug 2020 06:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726413AbgHXTGe (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Aug 2020 15:06:34 -0400
-Received: from mga04.intel.com ([192.55.52.120]:57300 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725976AbgHXTGd (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Aug 2020 15:06:33 -0400
-IronPort-SDR: p94QifUHNUMWrZ9Q6FQrgr0m7waPe3VT1FXuHCzFeY6KkP6new3KYz+xvHopweIiU9HCV0rnqQ
- dFLjkriSzgsg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9723"; a="153386380"
-X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
-   d="scan'208";a="153386380"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2020 12:06:32 -0700
-IronPort-SDR: CbnTWqu4gPuxBXMnxtcNhkag0c7Cb4p8XKT2JKphXnzO8p4l3UvcDYYnpLFlou7XYsRokHdoFZ
- UqtHSazOVshQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
-   d="scan'208";a="338539624"
-Received: from lkp-server01.sh.intel.com (HELO c420d4f0765f) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 24 Aug 2020 12:06:29 -0700
-Received: from kbuild by c420d4f0765f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kAHnZ-0000Ml-5P; Mon, 24 Aug 2020 19:06:29 +0000
-Date:   Tue, 25 Aug 2020 03:05:42 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 314119a5380374a2a1c1edbc7e0a055ee1e3f2fb
-Message-ID: <5f440f86.zo7Z/k4exvhFw4iH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728571AbgHYE4u (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 25 Aug 2020 00:56:50 -0400
+Received: from smtprelay0018.hostedemail.com ([216.40.44.18]:35610 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725792AbgHYE4q (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 25 Aug 2020 00:56:46 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id B846B180A9F54;
+        Tue, 25 Aug 2020 04:56:42 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:541:857:966:967:973:988:989:1260:1311:1314:1345:1437:1515:1535:1544:1711:1730:1747:1777:1792:1801:2196:2199:2393:2525:2560:2563:2682:2685:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3865:3867:3868:3870:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:4385:4395:4605:5007:6119:6261:6737:6742:7875:9025:10004:10848:11026:11473:11658:11914:12043:12048:12050:12297:12438:12555:12679:12895:12986:13161:13229:13894:14096:14181:14394:14721:21080:21433:21451:21627:21740:21773:30054:30056,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: chalk60_631385f27059
+X-Filterd-Recvd-Size: 5825
+Received: from joe-laptop.perches.com (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf08.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 25 Aug 2020 04:56:38 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     Jiri Kosina <trivial@kernel.org>, oprofile-list@lists.sf.net,
+        linux-ide@vger.kernel.org, drbd-dev@lists.linbit.com,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
+        linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-bcache@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-fbdev@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: [PATCH 00/29] treewide: Convert comma separated statements
+Date:   Mon, 24 Aug 2020 21:55:57 -0700
+Message-Id: <cover.1598331148.git.joe@perches.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
-branch HEAD: 314119a5380374a2a1c1edbc7e0a055ee1e3f2fb  dt-bindings: hwmon: Add bindings for ADM1266
+There are many comma separated statements in the kernel.
+See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
 
-elapsed time: 722m
+Convert the comma separated statements that are in if/do/while blocks
+to use braces and semicolons.
 
-configs tested: 122
-configs skipped: 8
+Many comma separated statements still exist but those are changes for
+another day.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Joe Perches (29):
+  coding-style.rst: Avoid comma statements
+  alpha: Avoid comma separated statements
+  ia64: Avoid comma separated statements
+  sparc: Avoid comma separated statements
+  ata: Avoid comma separated statements
+  drbd: Avoid comma separated statements
+  lp: Avoid comma separated statements
+  dma-buf: Avoid comma separated statements
+  drm/gma500: Avoid comma separated statements
+  drm/i915: Avoid comma separated statements
+  hwmon: (scmi-hwmon): Avoid comma separated statements
+  Input: MT - Avoid comma separated statements
+  bcache: Avoid comma separated statements
+  media: Avoid comma separated statements
+  mtd: Avoid comma separated statements
+  8390: Avoid comma separated statements
+  fs_enet: Avoid comma separated statements
+  wan: sbni: Avoid comma separated statements
+  s390/tty3270: Avoid comma separated statements
+  scai/arm: Avoid comma separated statements
+  media: atomisp: Avoid comma separated statements
+  video: fbdev: Avoid comma separated statements
+  fuse: Avoid comma separated statements
+  reiserfs: Avoid comma separated statements
+  lib/zlib: Avoid comma separated statements
+  lib: zstd: Avoid comma separated statements
+  ipv6: fib6: Avoid comma separated statements
+  sunrpc: Avoid comma separated statements
+  tools: Avoid comma separated statements
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                      tqm8xx_defconfig
-nios2                         10m50_defconfig
-m68k                        m5407c3_defconfig
-powerpc                          g5_defconfig
-arm                    vt8500_v6_v7_defconfig
-sh                           se7206_defconfig
-arm                       imx_v6_v7_defconfig
-ia64                            zx1_defconfig
-m68k                                defconfig
-sh                     magicpanelr2_defconfig
-mips                           jazz_defconfig
-c6x                         dsk6455_defconfig
-arm                         lpc32xx_defconfig
-arm                      integrator_defconfig
-arm                           sunxi_defconfig
-xtensa                         virt_defconfig
-powerpc                      mgcoge_defconfig
-ia64                          tiger_defconfig
-sh                        dreamcast_defconfig
-xtensa                           alldefconfig
-mips                     loongson1b_defconfig
-m68k                             allmodconfig
-arm                         mv78xx0_defconfig
-sh                          landisk_defconfig
-powerpc                     ep8248e_defconfig
-mips                       rbtx49xx_defconfig
-m68k                           sun3_defconfig
-sh                   rts7751r2dplus_defconfig
-sh                          polaris_defconfig
-powerpc                 mpc8272_ads_defconfig
-powerpc                     mpc83xx_defconfig
-mips                      loongson3_defconfig
-arm                            zeus_defconfig
-arm                              zx_defconfig
-arc                              alldefconfig
-arm                          badge4_defconfig
-h8300                     edosk2674_defconfig
-mips                            ar7_defconfig
-c6x                        evmc6472_defconfig
-c6x                        evmc6474_defconfig
-sh                          sdk7780_defconfig
-sh                          r7785rp_defconfig
-arm                             rpc_defconfig
-h8300                    h8300h-sim_defconfig
-powerpc                         ps3_defconfig
-riscv                    nommu_k210_defconfig
-sparc                               defconfig
-arc                        nsimosci_defconfig
-sh                           se7721_defconfig
-m68k                            q40_defconfig
-arm                           stm32_defconfig
-x86_64                           alldefconfig
-sparc                       sparc64_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a002-20200823
-i386                 randconfig-a004-20200823
-i386                 randconfig-a003-20200823
-i386                 randconfig-a005-20200823
-i386                 randconfig-a006-20200823
-i386                 randconfig-a001-20200823
-i386                 randconfig-a002-20200824
-i386                 randconfig-a004-20200824
-i386                 randconfig-a005-20200824
-i386                 randconfig-a003-20200824
-i386                 randconfig-a006-20200824
-i386                 randconfig-a001-20200824
-x86_64               randconfig-a015-20200824
-x86_64               randconfig-a016-20200824
-x86_64               randconfig-a012-20200824
-x86_64               randconfig-a014-20200824
-x86_64               randconfig-a011-20200824
-x86_64               randconfig-a013-20200824
-i386                 randconfig-a013-20200824
-i386                 randconfig-a012-20200824
-i386                 randconfig-a011-20200824
-i386                 randconfig-a016-20200824
-i386                 randconfig-a015-20200824
-i386                 randconfig-a014-20200824
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+ Documentation/process/coding-style.rst        |  17 +
+ arch/alpha/kernel/pci_iommu.c                 |   8 +-
+ arch/alpha/oprofile/op_model_ev4.c            |  22 +-
+ arch/alpha/oprofile/op_model_ev5.c            |   8 +-
+ arch/ia64/kernel/smpboot.c                    |   7 +-
+ arch/sparc/kernel/smp_64.c                    |   7 +-
+ drivers/ata/pata_icside.c                     |  21 +-
+ drivers/block/drbd/drbd_receiver.c            |   6 +-
+ drivers/char/lp.c                             |   6 +-
+ drivers/dma-buf/st-dma-fence.c                |   7 +-
+ drivers/gpu/drm/gma500/mdfld_intel_display.c  |  44 ++-
+ drivers/gpu/drm/i915/gt/gen8_ppgtt.c          |   8 +-
+ drivers/gpu/drm/i915/gt/intel_gt_requests.c   |   6 +-
+ .../gpu/drm/i915/gt/selftest_workarounds.c    |   6 +-
+ drivers/gpu/drm/i915/intel_runtime_pm.c       |   6 +-
+ drivers/hwmon/scmi-hwmon.c                    |   6 +-
+ drivers/input/input-mt.c                      |  11 +-
+ drivers/md/bcache/bset.c                      |  12 +-
+ drivers/md/bcache/sysfs.c                     |   6 +-
+ drivers/media/i2c/msp3400-kthreads.c          |  12 +-
+ drivers/media/pci/bt8xx/bttv-cards.c          |   6 +-
+ drivers/media/pci/saa7134/saa7134-video.c     |   7 +-
+ drivers/mtd/devices/lart.c                    |  10 +-
+ drivers/net/ethernet/8390/axnet_cs.c          |  19 +-
+ drivers/net/ethernet/8390/lib8390.c           |  14 +-
+ drivers/net/ethernet/8390/pcnet_cs.c          |   6 +-
+ .../ethernet/freescale/fs_enet/fs_enet-main.c |  11 +-
+ drivers/net/wan/sbni.c                        | 101 +++---
+ drivers/s390/char/tty3270.c                   |   6 +-
+ drivers/scsi/arm/cumana_2.c                   |  19 +-
+ drivers/scsi/arm/eesox.c                      |   9 +-
+ drivers/scsi/arm/powertec.c                   |   9 +-
+ .../media/atomisp/pci/atomisp_subdev.c        |   6 +-
+ drivers/video/fbdev/tgafb.c                   |  12 +-
+ fs/fuse/dir.c                                 |  24 +-
+ fs/reiserfs/fix_node.c                        |  36 ++-
+ lib/zlib_deflate/deftree.c                    |  49 ++-
+ lib/zstd/compress.c                           | 120 ++++---
+ lib/zstd/fse_compress.c                       |  24 +-
+ lib/zstd/huf_compress.c                       |   6 +-
+ net/ipv6/ip6_fib.c                            |  12 +-
+ net/sunrpc/sysctl.c                           |   6 +-
+ tools/lib/subcmd/help.c                       |  10 +-
+ tools/power/cpupower/utils/cpufreq-set.c      |  14 +-
+ tools/testing/selftests/vm/gup_benchmark.c    |  18 +-
+ tools/testing/selftests/vm/userfaultfd.c      | 296 +++++++++++-------
+ 46 files changed, 694 insertions(+), 382 deletions(-)
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+2.26.0
+
