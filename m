@@ -2,39 +2,39 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5244C257D0E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Aug 2020 17:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECB8257D02
+	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Aug 2020 17:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728064AbgHaPd1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 31 Aug 2020 11:33:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43178 "EHLO mail.kernel.org"
+        id S1728598AbgHaPc6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 31 Aug 2020 11:32:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43530 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729008AbgHaPby (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 31 Aug 2020 11:31:54 -0400
+        id S1729049AbgHaPcF (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 31 Aug 2020 11:32:05 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 79448215A4;
-        Mon, 31 Aug 2020 15:31:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D22EA21655;
+        Mon, 31 Aug 2020 15:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598887914;
+        s=default; t=1598887924;
         bh=T6IXcbTZtskK1L7YVm0OiBCn2pW7sfMMpBbYy0pK7wk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpfFz8RqeVD9cY5+/NamWv1XnaRgPoIhXl+ojtti2ZeNkVj87oGMbAqMOUyEErC21
-         Na1Vgpn1vvWmtLgYq0bgO5RhFsj2rD7gH9xICc2RT2BWJ1z8b8dXMo7ND98RMyqS9a
-         8QeStr6s6xvgfn3/1/4KnxP01hgMJLoLxLL5SGh8=
+        b=LpQYratYUZY4s74Z+LiurR58y2AhNCW/Ey3DIOSzgjTXCnSLMzmNf6x46Fto1yDy7
+         aLWniseInGHR1LxB42HEOGBcg/RBI7b9h06ufi2Hiqngzy+l27SUzk++qujRAHRvfN
+         jl50CAhDJ6t+2Mdh23XUJ29n1rfCcW/8LQ1HII/0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tom Rix <trix@redhat.com>, Henrik Rydberg <rydberg@bitmath.org>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org,
         clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.9 2/6] hwmon: (applesmc) check status earlier.
-Date:   Mon, 31 Aug 2020 11:31:45 -0400
-Message-Id: <20200831153150.1024799-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 2/5] hwmon: (applesmc) check status earlier.
+Date:   Mon, 31 Aug 2020 11:31:57 -0400
+Message-Id: <20200831153200.1024898-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200831153150.1024799-1-sashal@kernel.org>
-References: <20200831153150.1024799-1-sashal@kernel.org>
+In-Reply-To: <20200831153200.1024898-1-sashal@kernel.org>
+References: <20200831153200.1024898-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
