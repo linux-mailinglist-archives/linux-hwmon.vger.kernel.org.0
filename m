@@ -2,69 +2,147 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27C9A25B728
-	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Sep 2020 01:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 229F025C255
+	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Sep 2020 16:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726618AbgIBXL5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 2 Sep 2020 19:11:57 -0400
-Received: from smtp-as-01.vtxnet.net ([194.38.175.130]:37443 "EHLO
-        smtp-as-01.vtxnet.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726247AbgIBXL5 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Sep 2020 19:11:57 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Wed, 02 Sep 2020 19:11:55 EDT
-X-Spam-Flag: NO
-X-Spam-Score: 1.599
-X-Spam-Level: *
-X-Spam-Status: No, score=1.599 tagged_above=-999 required=999
-        tests=[FREEMAIL_FORGED_REPLYTO=1.199, KHOP_HELO_FCRDNS=0.4]
-        autolearn=no autolearn_force=no
-Received: from smtp-02.datacomm.ch (smtp-02-5.datacomm.ch [212.40.2.22])
-        by smtp-as-01.vtxnet.net (Postfix) with ESMTP id E820A40AAD;
-        Thu,  3 Sep 2020 01:01:51 +0200 (CEST)
-Received: from webmail.vtx.ch (bas-flu-webmail-01.vtxnet.net [212.40.2.41])
-        by smtp-02.datacomm.ch (VTX Datacomm AG) with ESMTP id 0D888120052;
-        Thu,  3 Sep 2020 01:01:51 +0200 (CEST)
-Received: from [105.112.108.101]
- by webmail.vtx.ch
- with HTTP (HTTP/1.1 POST); Thu, 03 Sep 2020 01:01:51 +0200
+        id S1729245AbgICOSC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 3 Sep 2020 10:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34134 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729248AbgICORO (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 3 Sep 2020 10:17:14 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33206C061A26;
+        Thu,  3 Sep 2020 06:52:17 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id 67so2178276pgd.12;
+        Thu, 03 Sep 2020 06:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=eP8C1kVZZxt11Sf0zJDVbKncpALpNlPQEX3E8lh+iF0=;
+        b=JxpkoelXNWCqp6u5q7mSb8Ea36118kf2EtLltycHrz4XoZd1Vzio1OfjmLMYTvOx3q
+         I1SO+2iyIrTAEsdQbH5gRuX1SyKpSGce94o7j2s8X2DeQgqg26TWd5xIU9GKz2BMY/1r
+         w91rj7fZ7CUnktg0pCC/f2dTcf1YRE/dmi3gDkHVePJfdL5dbNjVmeqvblhXb3SI0ivX
+         B2wBukozLKnTEZCgseuGPWALkCfehYCLO8nNQ4TxxDc6m49QbytwdBxu2DG6+ce4r+xQ
+         aFtwBJiBLpRIm6SVy66I/A0wrzN9DolmPmjeILtfSycvy3eDhxLmqop07MwtllZ5ncLe
+         QEkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=eP8C1kVZZxt11Sf0zJDVbKncpALpNlPQEX3E8lh+iF0=;
+        b=mfo0PT/fBh71V31wMuukgOKFnre/eo2OxUimy1X7h/KgYbEEBstMsPQX/EN37oz1fc
+         V+bGGPaHRAzQ7zjV0H/0BwosE84ZpFTAbL0tOWDWzQw6lwZnc9K/ZCort0BATx26LpXj
+         2TTkJoawlRmQZpkQ/Kn0hYNGP7+XeWOkRLbipz1Pg8tvD1zbnZrDfpS1NkwPVYjl5hz6
+         76vfAW27vcsGBgegAZQrY5AA3Mdygok43oEu1Nqgkl+TV2zN07CJd9/Kb6ceC4u2YaRd
+         n0nkwP7O3Furjv6QJPjOrtMQQDsPzbxES0CqNO29nHsmIpG0G4GPNqz6KY9Z7DHZ11EH
+         qd0w==
+X-Gm-Message-State: AOAM531u+nrvan+kLiLXdEwCnXOnS3mpbAZtCULANTf7MmA8FKhJgWBp
+        9N3sRIMXo3xo8ei0UaAtFPu3l+g8ZbE=
+X-Google-Smtp-Source: ABdhPJwAUBfN3SLnPrAApvYUcSY4xnVp1lHWN5NkIavFbDbEHXDdMIf1IIbrsGOdLzwV0LefvyaqSQ==
+X-Received: by 2002:a17:902:7045:: with SMTP id h5mr4024342plt.4.1599141131217;
+        Thu, 03 Sep 2020 06:52:11 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id g7sm3557440pfr.150.2020.09.03.06.52.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2020 06:52:10 -0700 (PDT)
+Subject: Re: [PATCH] hwmon: sparx5: Fix initial reading of temperature
+To:     Lars Povlsen <lars.povlsen@microchip.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20200903134704.8949-1-lars.povlsen@microchip.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <8ca270c9-5561-3176-61cf-7a9fbee10d1f@roeck-us.net>
+Date:   Thu, 3 Sep 2020 06:52:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Date:   Thu, 03 Sep 2020 01:01:51 +0200
-From:   Intesa Sanpaolo SPA <elektrogarage@vtxmail.ch>
-To:     undisclosed-recipients:;
-Subject: Investitions- und Projektfinanzierungen
-Reply-To: intesa_sanpaolo_loans@hotmail.com
-Mail-Reply-To: intesa_sanpaolo_loans@hotmail.com
-Message-ID: <33beb41e531546fe031cac7fb52bdcfc@vtxmail.ch>
-X-Sender: elektrogarage@vtxmail.ch
-User-Agent: Roundcube Webmail/1.2.10
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200903134704.8949-1-lars.povlsen@microchip.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On 9/3/20 6:47 AM, Lars Povlsen wrote:
+> If the temperature is read before the internal calibration is
+> completed, the driver returns -EIO. Instead it should return -EAGAIN
+> to encourage repeating the operation.
+> 
+> Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
+> ---
+>  drivers/hwmon/sparx5-temp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/sparx5-temp.c b/drivers/hwmon/sparx5-temp.c
+> index 1a2b1026b026..98be48e3a22a 100644
+> --- a/drivers/hwmon/sparx5-temp.c
+> +++ b/drivers/hwmon/sparx5-temp.c
+> @@ -56,7 +56,7 @@ static int s5_read(struct device *dev, enum hwmon_sensor_types type,
+>  	case hwmon_temp_input:
+>  		stat = readl_relaxed(hwmon->base + TEMP_STAT);
+>  		if (!(stat & TEMP_STAT_VALID))
+> -			return -EIO;
+> +			return -EAGAIN;
 
+The problem is that this may result in a hard loop and effectively hang the system,
+or at least the calling process. It may be better to return -ENODATA in this situation.
 
--- 
-Schönen Tag,
-Benötigen Sie ein Darlehen für Investitionen oder Projektfinanzierung?
-Kontaktieren Sie uu bei Intesa Sanpaolo und erhalten Sie innerhalb 
-weniger Arbeitstage ein Darlehen zu einem Zinssatz von 2%.
-Wir stellen Ihnen alle rechtlichen Dokumente für die Abwicklung Ihrer 
-Transaktion zur Verfügung und garantieren eine 100% ige Garantie, um ein 
-Darlehen von uns zu erhalten.
+Guenter
 
-Kontaktieren Sie uns und senden Sie uns Ihre Informationen zur 
-Kreditanfrage.
-
-Darlehensbetrag:
-Darlehen Zweck:
-Leihdauer:
-
-Wir warten auf Ihre schnelle Antwort, damit wir Ihnen weitere Details 
-zusenden können.
-
-Marco Giovanni.
-Intesa Sanpaolo SPA Italien.
+>  		value = stat & TEMP_STAT_TEMP;
+>  		/*
+>  		 * From register documentation:
+> --
+> 2.27.0
+> 
