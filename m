@@ -2,75 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C747925E6BE
-	for <lists+linux-hwmon@lfdr.de>; Sat,  5 Sep 2020 11:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D771C25E7AD
+	for <lists+linux-hwmon@lfdr.de>; Sat,  5 Sep 2020 15:05:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726888AbgIEJ3e (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 5 Sep 2020 05:29:34 -0400
-Received: from sonic307-53.consmr.mail.ir2.yahoo.com ([87.248.110.30]:42225
-        "EHLO sonic307-53.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726564AbgIEJ3e (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 5 Sep 2020 05:29:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1599298173; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=DKRKLwtUNyEyetYfPSnrJKCuwRnGf5ri44xzezS60dxLpPiihPxrj+SJ0xDU0wd95SiA2LDWaYmaESzywdhr/TM+6Snhp/Tw+ARkZVI+D/y7RtJLNlp+1805px2GRrA/4CZJuslA1GtYbv3SLQ9iL2VWxDhHtDJEh8+pw0twVpi1rL4zB7vThUz5wdBPKAEwDkiidrP8q2ZlBmHyYn1ucII6LUgrMkefco5jKpi/RakpG4KXjYQ9Ts+NkdYcaxhWnDZorYuh0iAMwCEFRoXKcks6FdTgywc/saMyhTiNp7vguK4icA61orANQMdKS/tAgkdwvsuxQNJtWxg6Kcq1VA==
-X-YMail-OSG: wM8ZSq4VM1kmGNO3eax4S9QX93T_p9s0w5abNUTrEUMRanSy5MtA9wxO5Oxo5CI
- P_QYgPYm3QiQZeH7dAHKj2M_7Apt7EbPjkqI5KrM3sWMUkPbrz2__Krl7MBMCQjFYVMXlLJc1D50
- XlM5XNukDYM4jd_q8nB5oJQnSd35rm8LTNycUX2QhW7O3X.Q0DUDJK6QpSlVk14mxfMRU4WTO3g4
- vkKfL65Vno6h2axmAlgrnyYZnuGORsaKCXBVOxmHRBdSiyVvtu7OcQncosVCZ29BzGaOWC01gL1p
- Z05q5VMwCh_k0wvZaZi35ZOu23ekVmuFPOQ1bDJ9CSVXE2RthrNpI8I1bSI96okS4a7b51xZmTkn
- MnAa_Okd_9r43qXHlQbaHQvvFMtsBXJcz5e99GXTplEwNTpXPLuqzgq5nQ3Dabp8fbn4Nmg3YbLY
- u8abZP0n41vDPNwzR9tOrXpIsC_QRIv_Y_3QjXjNZtvqFdzPlCJzmahlI_P6rAo3bA4rs78aF7FD
- OUZxLJ_LccTs5uZmCzPBSrlmOL3pnFc0XARHfStZke7v08OJ6PEJGWYE21pXQAmWmLdyKlT7O8FV
- zoTXnw6i_K0o5bFM7AwY.VsRauHaNKbVTDcdGYgOjUtoXWCwTNtO5NnNAub2K8M7zhJ2bSgLxRSx
- KGWtSKD4oLuxOROSiuWOdBdTNNcpBJRDd8BXC3vsyaJ3uAJyp6XV1PdcbSDQMBHcg6zstF4DQ1.4
- 3Qs1SjTfhXvbuzgOTOpwG6jCA4R.jiaOKBncagLL6qryZIfsEUT0lSI2BY3edd2MAeu_S3zDEM.0
- hPxcZ4y_VTlK.koTOfbH92YbjzDvbbQix3a956LXAESaTChK6OR_xI19A5mqmyOPWZxIzhAveKgQ
- M36MVSHXne8JKrQ5qs798xsEDpI3iCW_Uc8Eu9RsnB35SzsGYNMRXzocnyjyuUHczjD_o2HadlFg
- STubDJQyoPGcCpLDGtwns8pQ6MGbUwxGGfhQ3PYHKvw4Tqa9RK50ap.B84S.Vm_diHEuOWjz.JBV
- eii7Wfs3p8XwPvtyi.g0iOXkbv5zy.kNX1VYDEYDvVIevYcARPVTa1Zl4qRB2gD38uUFRYLZXzCL
- qikmo.f6B1kYtiuuHBKXA3VpYRo0Yyp9NmP0e7g7GNOO.dQlChkARE0e29eVcHM0DaeGxRqWECWb
- WAOIPx.QySkbk6nkAzmBIwLE8v6gTOhCYH4ZH7VxVIcqVbwitCpHv77RsQVBjQv1bqL9Ttetj7OM
- dH9LLYSNeVzUV.Z9FIdTfWcbsNjnSqPs2VaOuMq5YbEIpq8syL8TAkzSKqkZA3qWLt.B2MoIPDA9
- srGMn0s06k3tOTOGF4pTpsIcRq6GkrpIuYMPa9IPr_FYw33f.64pOhAJvA4BnMerJ.oDC.Hxqg4B
- wZLUAaDLSgTcArDLjphn.PNDSiQNXSr.MsOIeFYx5uMwDNA--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Sat, 5 Sep 2020 09:29:33 +0000
-Date:   Sat, 5 Sep 2020 09:29:32 +0000 (UTC)
-From:   Ms Lisa Hugh <lisa.hugh0000@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <1137909115.4407550.1599298172358@mail.yahoo.com>
-Subject: REPLY TO MY EMAIL FOR BUSINESS(Ms Lisa hugh).
+        id S1726261AbgIENFg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 5 Sep 2020 09:05:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726591AbgIENFf (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 5 Sep 2020 09:05:35 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94F4EC061245
+        for <linux-hwmon@vger.kernel.org>; Sat,  5 Sep 2020 06:05:33 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id i22so12082928eja.5
+        for <linux-hwmon@vger.kernel.org>; Sat, 05 Sep 2020 06:05:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura-hr.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pjbRvbzQYX8+5j4uAJTuhnE/qBNrVlyoM0TpetFlM1Q=;
+        b=d+/NisIVaIakFDZSkmgTgQ7Wh5nZKj7D93Q+ZZ0KED00elEpXzdO1HV/JGcHPsoECW
+         CGCONpf/by9+sal0O40iUyZi2yM5dVCDadPPcTMNhOSF82VMjbUBMqj8jkARyDZYxgj2
+         Z4K1fRLcVtV0+c7k0ZVuHHUjLOtNrnCJLGx7lyQExE2zs14P2MpFOSKxcrzLEOZ4y51l
+         ebljnHVjHeDqe0Es2Q4FWnb87bdcZwhaMZ0d7N1DjTGuY4NiLhdgHaNiAJF2Hmf1KlN9
+         NdN4wBGOS5uQgk2AuI39aVXigCLjlDyRkSBD99x8oWKuAglZZhwZ9z7Y82zRFOIlzsRh
+         0NHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pjbRvbzQYX8+5j4uAJTuhnE/qBNrVlyoM0TpetFlM1Q=;
+        b=BtfXm5pAEZgGoEyaDNosTUmfh231Pt2QgxecjjHsVbGVVTHf/fXU5+lsgdPR1xVHIB
+         zHmCU52TB8VodV2J8duWckr5kRmjrkqqZ4lh+Xden2GT/83hCh33yB8t7qdXX56x+OC6
+         O8Mxl6w5LGaRInHWbksxJ6WHDCeiTzOnKqQeuZQEILOszePbd3vxXajiFwa3mSjuN2Te
+         NWOC+ZHOXf5GNUoj/H+VsLc3SkuXSWVvENJj0c0PCILa5lCwdRrYITCETV4sOOZQ4Sj5
+         toph0K+14I8C6a9n1Sy8R+oPGJATtbbJCV/EHSmUbHXoin3rXbLUpOa01tkUkI1kYF0r
+         Wgyg==
+X-Gm-Message-State: AOAM530jyRUk0lIE8VlYwniIU22XjAdWHZyfKjCeATUF0YRnZnXJjNt7
+        h5c9z5YMqLqWBa4pukaD+rZ1Pw==
+X-Google-Smtp-Source: ABdhPJw4qncjAf7blDg/PkStkUNmbheZclSDB3J/kfBUdRf5F8d3FOMK9ZcAdfbpLaq8vm8hDfEx0g==
+X-Received: by 2002:a17:906:cb98:: with SMTP id mf24mr12916030ejb.90.1599311132444;
+        Sat, 05 Sep 2020 06:05:32 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:ee2:4b0d:3002:290:faff:fe54:449c])
+        by smtp.gmail.com with ESMTPSA id s18sm9372655ejd.54.2020.09.05.06.05.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2020 06:05:31 -0700 (PDT)
+From:   Luka Kovacic <luka.kovacic@sartura.hr>
+To:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-leds@vger.kernel.org
+Cc:     lee.jones@linaro.org, pavel@ucw.cz, dmurphy@ti.com,
+        robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+        andrew@lunn.ch, jason@lakedaemon.net, gregory.clement@bootlin.com,
+        luka.perkov@sartura.hr, Luka Kovacic <luka.kovacic@sartura.hr>
+Subject: [PATCH 0/7] Add support for the iEi Puzzle-M801 board
+Date:   Sat,  5 Sep 2020 15:03:29 +0200
+Message-Id: <20200905130336.967622-1-luka.kovacic@sartura.hr>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1137909115.4407550.1599298172358.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16565 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+This patchset adds support for the iEi Puzzle-M801 1U Rackmount Network
+Appliance and for the iEi WT61P803 PUZZLE microcontroller, which enables
+some board specific features like fan and LED control, system power
+management and temperature sensor reading.
 
+The platform is based on the popular Marvell Armada 8040 SoC and supports
+up to 16 GB of DDR4 2400 MHz ECC RAM.
+It has a PCIe x16 slot (x2 lanes only) and an M.2 type B slot.
 
-Dear Friend,
+External chassis ports:
+2x 10 GbE SFP+
+4x 1 GbE (Marvell 88E1512P)
+2x USB 3.0
+1x RJ45 serial port
 
-I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
+All notable board components are supported in this patchset.
 
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+Luka Kovacic (7):
+  dt-bindings: Add iEi vendor prefix and iEi WT61P803 PUZZLE driver
+    bindings
+  drivers: mfd: Add a driver for iEi WT61P803 PUZZLE MCU
+  drivers: hwmon: Add the iEi WT61P803 PUZZLE HWMON driver
+  drivers: leds: Add the iEi WT61P803 PUZZLE LED driver
+  Documentation/ABI: Add iei-wt61p803-puzzle driver sysfs interface
+    documentation
+  MAINTAINERS: Add an entry for the iEi WT61P803 PUZZLE driver
+  arm64: dts: marvell: Add a device tree for the iEi Puzzle-M801 board
 
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
+ .../stable/sysfs-driver-iei-wt61p803-puzzle   |   65 +
+ .../hwmon/iei,wt61p803-puzzle-hwmon.yaml      |   41 +
+ .../leds/iei,wt61p803-puzzle-leds.yaml        |   48 +
+ .../bindings/mfd/iei,wt61p803-puzzle.yaml     |   82 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |    2 +
+ MAINTAINERS                                   |   13 +
+ arch/arm64/boot/dts/marvell/Makefile          |    1 +
+ .../dts/marvell/armada-8040-puzzle-m801.dts   |  519 +++++++
+ drivers/hwmon/Kconfig                         |    8 +
+ drivers/hwmon/Makefile                        |    1 +
+ drivers/hwmon/iei-wt61p803-puzzle-hwmon.c     |  613 ++++++++
+ drivers/leds/Kconfig                          |    8 +
+ drivers/leds/Makefile                         |    1 +
+ drivers/leds/leds-iei-wt61p803-puzzle.c       |  184 +++
+ drivers/mfd/Kconfig                           |    8 +
+ drivers/mfd/Makefile                          |    1 +
+ drivers/mfd/iei-wt61p803-puzzle.c             | 1242 +++++++++++++++++
+ include/linux/mfd/iei-wt61p803-puzzle.h       |   27 +
+ 18 files changed, 2864 insertions(+)
+ create mode 100644 Documentation/ABI/stable/sysfs-driver-iei-wt61p803-puzzle
+ create mode 100644 Documentation/devicetree/bindings/hwmon/iei,wt61p803-puzzle-hwmon.yaml
+ create mode 100644 Documentation/devicetree/bindings/leds/iei,wt61p803-puzzle-leds.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/iei,wt61p803-puzzle.yaml
+ create mode 100644 arch/arm64/boot/dts/marvell/armada-8040-puzzle-m801.dts
+ create mode 100644 drivers/hwmon/iei-wt61p803-puzzle-hwmon.c
+ create mode 100644 drivers/leds/leds-iei-wt61p803-puzzle.c
+ create mode 100644 drivers/mfd/iei-wt61p803-puzzle.c
+ create mode 100644 include/linux/mfd/iei-wt61p803-puzzle.h
 
-Note/ 50% for you why 50% for me after success of the transfer to your bank account.
+-- 
+2.20.1
 
-Below information is what i need from you so will can be reaching each other
-
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa hugh.
