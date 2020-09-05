@@ -2,101 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A69F025DFE4
-	for <lists+linux-hwmon@lfdr.de>; Fri,  4 Sep 2020 18:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C747925E6BE
+	for <lists+linux-hwmon@lfdr.de>; Sat,  5 Sep 2020 11:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726270AbgIDQkx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 4 Sep 2020 12:40:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52414 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725966AbgIDQkv (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 4 Sep 2020 12:40:51 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 167DEC061244;
-        Fri,  4 Sep 2020 09:40:51 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id u128so4899344pfb.6;
-        Fri, 04 Sep 2020 09:40:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=wxaOHZ/W1bVPPlxPYI5KsnVzXfiQ47igg0n361NfZVU=;
-        b=YYMIgsumLdhBj/Uz4ivpuN1T8qckEYHF5ibmSzT6XM8nIJeoLtEfMPAwstTBRyx8ux
-         XzRWyjQsIDt1vRYxng/Kb4Q4jaMy8HWc+0LYoEgbGY7qvRxh2MI7prC+4B7wX/LPK2Bf
-         5EhGX0jH48u9WUNq2eo7zEOYU9VhKlSaMTnLsojzC8CUnK9hogywvDpdQco0tdkSi6An
-         LqFNvRaOo36VBS4w6mpwOM92+J5i1dolqU0jO3dmLbMzSj4uU1XZ71BYAV8Xyxttv4LY
-         KAwcI569arZ6HeP++Atg/6h9k5GKUD7GIxKCFwHMLaxZbvocWcWn7SDBEWihIwZ/0nxn
-         VjQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=wxaOHZ/W1bVPPlxPYI5KsnVzXfiQ47igg0n361NfZVU=;
-        b=FasfeJF3U2l5dt9y8Y4Ba7301hU6v9D2pM3gtFkEvJBUvKALBWGQkOEg0wPOn4Hq4n
-         ZSo4WknWA28vtC0nj8zqDKUtggZHiRb7cZo62wfgHocB7dlCs4VMI021g+bA2JQecCIP
-         voJ6bu2dxhnRMBtxB1viNCKA4d6p026kkv6fobHPXeGo0WtRDLIZACFH69EYFe+1rLhH
-         9tp/TRK7g0DMztYw3iNImlcJXaB1zM6e3D+uI/UzivQCwOapEQjYt561l3LzDBXsiYIb
-         DwfZehPlL0Bq802aPX1Trl5sGGWywc/+wFA6xjMuxTx5Wx8m+AVtcqxstxEfHU9dN0bj
-         6DmQ==
-X-Gm-Message-State: AOAM530vwSTT/FAXoiZyTvCbUjqrHtPbEPGjpj1nps8LsqiC8NKpVlDn
-        sqbL+HCxA77wfVLzSC8+Om8=
-X-Google-Smtp-Source: ABdhPJyxnXlyyApI5AYlSrIq+cwIZjdS/B/NM81GNpsZ9HImOzNeZz5Q3xFV/SocTAxCWUFC6shKug==
-X-Received: by 2002:a63:f09:: with SMTP id e9mr7987808pgl.334.1599237650528;
-        Fri, 04 Sep 2020 09:40:50 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j19sm7105220pfi.51.2020.09.04.09.40.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 04 Sep 2020 09:40:49 -0700 (PDT)
-Date:   Fri, 4 Sep 2020 09:40:48 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Lars Povlsen <lars.povlsen@microchip.com>
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: sparx5: Fix initial reading of temperature
-Message-ID: <20200904164048.GA74175@roeck-us.net>
-References: <20200903134704.8949-1-lars.povlsen@microchip.com>
+        id S1726888AbgIEJ3e (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 5 Sep 2020 05:29:34 -0400
+Received: from sonic307-53.consmr.mail.ir2.yahoo.com ([87.248.110.30]:42225
+        "EHLO sonic307-53.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726564AbgIEJ3e (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 5 Sep 2020 05:29:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1599298173; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=DKRKLwtUNyEyetYfPSnrJKCuwRnGf5ri44xzezS60dxLpPiihPxrj+SJ0xDU0wd95SiA2LDWaYmaESzywdhr/TM+6Snhp/Tw+ARkZVI+D/y7RtJLNlp+1805px2GRrA/4CZJuslA1GtYbv3SLQ9iL2VWxDhHtDJEh8+pw0twVpi1rL4zB7vThUz5wdBPKAEwDkiidrP8q2ZlBmHyYn1ucII6LUgrMkefco5jKpi/RakpG4KXjYQ9Ts+NkdYcaxhWnDZorYuh0iAMwCEFRoXKcks6FdTgywc/saMyhTiNp7vguK4icA61orANQMdKS/tAgkdwvsuxQNJtWxg6Kcq1VA==
+X-YMail-OSG: wM8ZSq4VM1kmGNO3eax4S9QX93T_p9s0w5abNUTrEUMRanSy5MtA9wxO5Oxo5CI
+ P_QYgPYm3QiQZeH7dAHKj2M_7Apt7EbPjkqI5KrM3sWMUkPbrz2__Krl7MBMCQjFYVMXlLJc1D50
+ XlM5XNukDYM4jd_q8nB5oJQnSd35rm8LTNycUX2QhW7O3X.Q0DUDJK6QpSlVk14mxfMRU4WTO3g4
+ vkKfL65Vno6h2axmAlgrnyYZnuGORsaKCXBVOxmHRBdSiyVvtu7OcQncosVCZ29BzGaOWC01gL1p
+ Z05q5VMwCh_k0wvZaZi35ZOu23ekVmuFPOQ1bDJ9CSVXE2RthrNpI8I1bSI96okS4a7b51xZmTkn
+ MnAa_Okd_9r43qXHlQbaHQvvFMtsBXJcz5e99GXTplEwNTpXPLuqzgq5nQ3Dabp8fbn4Nmg3YbLY
+ u8abZP0n41vDPNwzR9tOrXpIsC_QRIv_Y_3QjXjNZtvqFdzPlCJzmahlI_P6rAo3bA4rs78aF7FD
+ OUZxLJ_LccTs5uZmCzPBSrlmOL3pnFc0XARHfStZke7v08OJ6PEJGWYE21pXQAmWmLdyKlT7O8FV
+ zoTXnw6i_K0o5bFM7AwY.VsRauHaNKbVTDcdGYgOjUtoXWCwTNtO5NnNAub2K8M7zhJ2bSgLxRSx
+ KGWtSKD4oLuxOROSiuWOdBdTNNcpBJRDd8BXC3vsyaJ3uAJyp6XV1PdcbSDQMBHcg6zstF4DQ1.4
+ 3Qs1SjTfhXvbuzgOTOpwG6jCA4R.jiaOKBncagLL6qryZIfsEUT0lSI2BY3edd2MAeu_S3zDEM.0
+ hPxcZ4y_VTlK.koTOfbH92YbjzDvbbQix3a956LXAESaTChK6OR_xI19A5mqmyOPWZxIzhAveKgQ
+ M36MVSHXne8JKrQ5qs798xsEDpI3iCW_Uc8Eu9RsnB35SzsGYNMRXzocnyjyuUHczjD_o2HadlFg
+ STubDJQyoPGcCpLDGtwns8pQ6MGbUwxGGfhQ3PYHKvw4Tqa9RK50ap.B84S.Vm_diHEuOWjz.JBV
+ eii7Wfs3p8XwPvtyi.g0iOXkbv5zy.kNX1VYDEYDvVIevYcARPVTa1Zl4qRB2gD38uUFRYLZXzCL
+ qikmo.f6B1kYtiuuHBKXA3VpYRo0Yyp9NmP0e7g7GNOO.dQlChkARE0e29eVcHM0DaeGxRqWECWb
+ WAOIPx.QySkbk6nkAzmBIwLE8v6gTOhCYH4ZH7VxVIcqVbwitCpHv77RsQVBjQv1bqL9Ttetj7OM
+ dH9LLYSNeVzUV.Z9FIdTfWcbsNjnSqPs2VaOuMq5YbEIpq8syL8TAkzSKqkZA3qWLt.B2MoIPDA9
+ srGMn0s06k3tOTOGF4pTpsIcRq6GkrpIuYMPa9IPr_FYw33f.64pOhAJvA4BnMerJ.oDC.Hxqg4B
+ wZLUAaDLSgTcArDLjphn.PNDSiQNXSr.MsOIeFYx5uMwDNA--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Sat, 5 Sep 2020 09:29:33 +0000
+Date:   Sat, 5 Sep 2020 09:29:32 +0000 (UTC)
+From:   Ms Lisa Hugh <lisa.hugh0000@gmail.com>
+Reply-To: ms.lisahugh000@gmail.com
+Message-ID: <1137909115.4407550.1599298172358@mail.yahoo.com>
+Subject: REPLY TO MY EMAIL FOR BUSINESS(Ms Lisa hugh).
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200903134704.8949-1-lars.povlsen@microchip.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1137909115.4407550.1599298172358.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16565 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Sep 03, 2020 at 03:47:04PM +0200, Lars Povlsen wrote:
-> If the temperature is read before the internal calibration is
-> completed, the driver returns -EIO. Instead it should return -EAGAIN
-> to encourage repeating the operation.
-> 
-> Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
 
-Applied. I added a note stating that I would prefer -ENODATA, and why,
-but that this is not feasible due to thermal subsystem requirements. 
 
-Thanks,
-Guenter
+Dear Friend,
 
-> ---
->  drivers/hwmon/sparx5-temp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --
-> 2.27.0
-> 
-> diff --git a/drivers/hwmon/sparx5-temp.c b/drivers/hwmon/sparx5-temp.c
-> index 1a2b1026b026..98be48e3a22a 100644
-> --- a/drivers/hwmon/sparx5-temp.c
-> +++ b/drivers/hwmon/sparx5-temp.c
-> @@ -56,7 +56,7 @@ static int s5_read(struct device *dev, enum hwmon_sensor_types type,
->  	case hwmon_temp_input:
->  		stat = readl_relaxed(hwmon->base + TEMP_STAT);
->  		if (!(stat & TEMP_STAT_VALID))
-> -			return -EIO;
-> +			return -EAGAIN;
->  		value = stat & TEMP_STAT_TEMP;
->  		/*
->  		 * From register documentation:
+I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
+
+Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+
+I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
+
+Note/ 50% for you why 50% for me after success of the transfer to your bank account.
+
+Below information is what i need from you so will can be reaching each other
+
+1)Full name ...
+2)Private telephone number...
+3)Age...
+4)Nationality...
+5)Occupation ...
+
+
+Thanks.
+
+Ms Lisa hugh.
