@@ -2,1010 +2,228 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D339F26040A
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Sep 2020 20:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E9026069F
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Sep 2020 23:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728925AbgIGSCD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 7 Sep 2020 14:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
+        id S1728082AbgIGVkn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 7 Sep 2020 17:40:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728916AbgIGSB6 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Sep 2020 14:01:58 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABF4AC061573;
-        Mon,  7 Sep 2020 11:01:55 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id k25so4445184ljk.0;
-        Mon, 07 Sep 2020 11:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LzbUe0TjVckY9Uxm4qZGSw6LPoqfUndzWY+aHlCfpNs=;
-        b=g4CsrdQaSqTRqv2u3Xz8+2iHK2pzsMXRCDn1rQQB9JoKOXMeBN2iVlmNWGF/M0E/R8
-         bN/8OCPWevAv/3YOAzVwdxdnf73a2NagU6pfzlYqqhYm+5dtJFmMRIw07n8NRQbZGu84
-         Ww9To1b9LNre4ZCk2njYKqyzwadL+c46CWbBr7RyqxALZYKu7qpIrW5ZkyoXOPk7TrIi
-         t+zefnJIju3Xr5foQyEB83eA1oyzSy2IIC39pW+wntizs7XNl/3CXM7YlEZmddbNRtET
-         +aaK3+sCl1UV1qUqtWL9Is5OD+NWAH14XSo3ws38uuWEicV6OtoUTFbxKj6vBpgHdv9I
-         iUgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=LzbUe0TjVckY9Uxm4qZGSw6LPoqfUndzWY+aHlCfpNs=;
-        b=qIib4dI/yBblgAWg7yBgHWbTeey0j3PX5EqiLpgWaHzmZezoGw7xxynufG4dzlR6x4
-         HXzwrQq7M3DmOEo+dluq2xo6QtSGJ0Sem6eer8IYEY/VcfOlX6yFYp8r5F/vrmLQOxGT
-         M+8nldXCtuIdDQY3Tziah1BBc40d//S8zM3eHLgsBC/l6gQVnJDelXNCEQy951WMotL4
-         9buw8XOllKciwdv0qKiXIJUROBaIZ6qP6xvIo2/D0fflbfiOu2recmVTqDqSUuQ3CNlq
-         kD+he/k2NiQsAL51WSK1YS+i0YKIm6OeCZN19eMY1DTbyutkSUdxtQWGR7ehOt834LvT
-         6H/w==
-X-Gm-Message-State: AOAM532B18QaLeiHXciu0/WiYp1jtZ2520+rWxXSFSllYlWlLfdQ4Fwy
-        CSpZYAk/svHkLDkzL6moX2a5LBdjr6RN0zQWC8M=
-X-Google-Smtp-Source: ABdhPJxkLhy8mzQt7rYLqSLwZ3Zl/gPC+OThqS/jmVGOqHT/RI1CMkJ22ncS1OS8deatiTSQEgodZbacXp1nGCUggl8=
-X-Received: by 2002:a2e:6a09:: with SMTP id f9mr4786434ljc.432.1599501711146;
- Mon, 07 Sep 2020 11:01:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200822104401.60648-1-jaap.aarts1@gmail.com>
-In-Reply-To: <20200822104401.60648-1-jaap.aarts1@gmail.com>
-From:   jaap aarts <jaap.aarts1@gmail.com>
-Date:   Mon, 7 Sep 2020 20:01:40 +0200
-Message-ID: <CACtzdJ3oOV5AtBV_nrEUntemLfrb3QCRssB7nr4EVbU+-nLpsQ@mail.gmail.com>
-Subject: Re: [PATCH V7] hwmon: add fan/pwm driver for corsair h100i platinum
-To:     Guenter Roeck <linux@roeck-us.net>,
+        with ESMTP id S1727851AbgIGViV (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Sep 2020 17:38:21 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97980C061575;
+        Mon,  7 Sep 2020 14:38:20 -0700 (PDT)
+Received: from apollo.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:6257:18ff:fec4:ca34])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 7CAF923078;
+        Mon,  7 Sep 2020 23:38:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1599514693;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=8wGXzYnnzcl6WCLIhd06uoOF6oOEUvWo5HhfAsa2jiU=;
+        b=ftTQAtxlE20M4tnwCseKzxUXY8GVqvZJ68wRs63LxEd7LyuSFcQmJqiRZDBANnp1k9yymS
+        A7Zmu/DmjcIvO+m+8ZwDfyU1PWl2ncBL03KuceYTq3wSiyYA6EWVVdYKVQp5NQmDb3y5Ck
+        lGl7jdVFGFJ+UJ+mj8BjDwaS1OQQ0es=
+From:   Michael Walle <michael@walle.cc>
+To:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Jean Delvare <jdelvare@suse.com>,
-        =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Guenter Roeck <linux@roeck-us.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH v9 00/13] Add support for Kontron sl28cpld
+Date:   Mon,  7 Sep 2020 23:37:49 +0200
+Message-Id: <20200907213802.26745-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello guenter and/or Barnab=C3=A1s (+ others),
+The Kontron sl28cpld is a board management chip providing gpio, pwm, fan
+monitoring and an interrupt controller. For now this controller is used on
+the Kontron SMARC-sAL28 board. But because of its flexible nature, it
+might also be used on other boards in the future. The individual blocks
+(like gpio, pwm, etc) are kept intentionally small. The MFD core driver
+then instantiates different (or multiple of the same) blocks. It also
+provides the register layout so it might be updated in the future without a
+device tree change; and support other boards with a different layout or
+functionalities.
 
-Sorry for me being slow on my last patch, since the previous reviews ware
-done within a week I just wanted to make sure this patch didnt slip under t=
-he
-radar.
+See also [1] for more information.
 
-Let me know if there is anything still to do, I couldnt find anything
-I needed to do
-on my end once everything is satisfying, but if there is some final step I =
-would
-appreciate if you let me know what that would be.
+This is my first take of a MFD driver. I don't know whether the subsystem
+maintainers should only be CCed on the patches which affect the subsystem
+or on all patches for this series. I've chosen the latter so you can get a
+more complete picture.
 
-Kind redards,
+[1] https://lore.kernel.org/linux-devicetree/0e3e8204ab992d75aa07fc36af7e4ab2@walle.cc/
 
-Jaap Aarts
+Changes for v4 and above are tracked in the patches, suggested by Lee.
 
+Changes since v3:
+ - use of_platform_populate() to populate internal devices using the
+   internal register offsets as unit-addresses
+ - because we don't use mfd_cells anymore, we cannot use IORESOURCE_REG,
+   but instead parse the reg property in each individual driver
+ - dropped the following patches because they were already merged:
+     gpiolib: Introduce gpiochip_irqchip_add_domain()
+     gpio: add a reusable generic gpio_chip using regmap
+ - dropped the following patches because they are no longer needed:
+     include/linux/ioport.h: add helper to define REG resource constructs
+     mfd: mfd-core: Don't overwrite the dma_mask of the child device
+     mfd: mfd-core: match device tree node against reg property
+ - rephrase commit messages, as suggested by Thomas Gleixner
 
-On Sat, 22 Aug 2020 at 12:47, jaap aarts <jaap.aarts1@gmail.com> wrote:
->
-> Adds fan/pwm support for H100i platinum.
-> Custom temp/fan curves are not supported.
->
-> v7:
->  - redo memory management with regards to device setup. (no more use afte=
-r
->    free, double frees, fixed sizeof)
->  - add myself to MAINTAINERS
->  - add documentation for this driver
->
-> Signed-off-by: Jaap Aarts <jaap.aarts1@gmail.com>
-> ---
->  Documentation/hwmon/corsair_hydro_i_pro.rst |  54 ++
->  MAINTAINERS                                 |   6 +
->  drivers/hwmon/Kconfig                       |   7 +
->  drivers/hwmon/Makefile                      |   1 +
->  drivers/hwmon/corsair_hydro_i_pro.c         | 719 ++++++++++++++++++++
->  5 files changed, 787 insertions(+)
->  create mode 100644 Documentation/hwmon/corsair_hydro_i_pro.rst
->  create mode 100644 drivers/hwmon/corsair_hydro_i_pro.c
->
-> diff --git a/Documentation/hwmon/corsair_hydro_i_pro.rst b/Documentation/=
-hwmon/corsair_hydro_i_pro.rst
-> new file mode 100644
-> index 000000000000..17d90d1b8e33
-> --- /dev/null
-> +++ b/Documentation/hwmon/corsair_hydro_i_pro.rst
-> @@ -0,0 +1,54 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +Kernel driver corsair_hydro_i_pro
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> +
-> +Supported devices:
-> +
-> +  * Corsair H100i pro
-> +
-> +Author: Jaap Aarts
-> +
-> +Description
-> +-----------
-> +
-> +This driver implements the hwmon interface for the corsair H100i pro.
-> +Suppor for more All In One liquid coolers(AIOs) from this product range
-> +should be supported, only testing and a new config should be required.
-> +These AIOs can be controlled via USB, with control over fans, pumps, RGB
-> +lighting, and temperature sensors.
-> +Currently only fans are supported, but no custom fan curves are supporte=
-d.
-> +There is always one pump and 1-3 fans.
-> +
-> +The H100i pro configuration:
-> +fans: 2
-> +minrpm: 200,
-> +maxrpm: 3000,
-> +maxpwm 100,
-> +device name: "corsair_H100i_pro",
-> +
-> +Usage Notes
-> +-----------
-> +
-> +Since it is a USB device, hotswapping is possible. The device is autodet=
-ected.
-> +
-> +Sysfs entries
-> +-------------
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +fan[1-2]_input         Connected fan rpm.
-> +fan[1-2]_target                Sets fan speed target rpm, when writing a=
-nd if fan_mode is not
-> +                       set to one returns -EINVAL.
-> +                       When reading, it reports the last value if it was=
- set by the driver.
-> +                       When the mode is not set to 1 (manual) read value=
- will be 0.
-> +                       Otherwise returns an error.
-> +fan[1-2]_min           Reports the minimum rpm value. for the H100i pro =
-this is 200
-> +fan[1-2]_max           Reports the maximum rpm value. for the H100i pro =
-this is 3000
-> +
-> +pwm[1-2]                       Sets the fan speed. Values from 0-100, wh=
-en writing and if
-> +                       fan_mode is not set to one returns -EINVAL.
-> +pwm[1-2]_enable                Set the mode for the fan.
-> +                       0: no fan speed control (i.e. default fan profile=
-)
-> +                       1: manual fan control
-> +                       2: default fan profile
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f0068bceeb61..0e7553a0e2e5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4461,6 +4461,12 @@ L:       linux-hwmon@vger.kernel.org
->  S:     Maintained
->  F:     drivers/hwmon/corsair-cpro.c
->
-> +CORSAIR-HYDRO-I-PRO HARDWARE MONITOR DRIVER
-> +M:     Jaap Aarts <jaap.aarts1>@gmail.com>
-> +L:     linux-hwmon@vger.kernel.org
-> +S:     Maintained
-> +F:     drivers/hwmon/corsair_hydro_i_pro.c
-> +
->  COSA/SRP SYNC SERIAL DRIVER
->  M:     Jan "Yenya" Kasprzak <kas@fi.muni.cz>
->  S:     Maintained
-> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> index 8dc28b26916e..9a721659313f 100644
-> --- a/drivers/hwmon/Kconfig
-> +++ b/drivers/hwmon/Kconfig
-> @@ -378,6 +378,13 @@ config SENSORS_ARM_SCPI
->           and power sensors available on ARM Ltd's SCP based platforms. T=
-he
->           actual number and type of sensors exported depend on the platfo=
-rm.
->
-> +config SENSORS_CORSAIR_HYDRO_I_PRO
-> +       tristate "Corsair hydro HXXXi pro driver"
-> +       depends on USB
-> +       help
-> +         If you say yes here you get support for the corsair hydro HXXXi=
- pro
-> +         range of devices.
-> +
->  config SENSORS_ASB100
->         tristate "Asus ASB100 Bach"
->         depends on X86 && I2C
-> diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-> index a8f4b35b136b..3bad054054fe 100644
-> --- a/drivers/hwmon/Makefile
-> +++ b/drivers/hwmon/Makefile
-> @@ -20,6 +20,7 @@ obj-$(CONFIG_SENSORS_W83793)  +=3D w83793.o
->  obj-$(CONFIG_SENSORS_W83795)   +=3D w83795.o
->  obj-$(CONFIG_SENSORS_W83781D)  +=3D w83781d.o
->  obj-$(CONFIG_SENSORS_W83791D)  +=3D w83791d.o
-> +obj-$(CONFIG_SENSORS_CORSAIR_HYDRO_I_PRO)      +=3D corsair_hydro_i_pro.=
-o
->
->  obj-$(CONFIG_SENSORS_AB8500)   +=3D abx500.o ab8500.o
->  obj-$(CONFIG_SENSORS_ABITUGURU)        +=3D abituguru.o
-> diff --git a/drivers/hwmon/corsair_hydro_i_pro.c b/drivers/hwmon/corsair_=
-hydro_i_pro.c
-> new file mode 100644
-> index 000000000000..42869f32a7bd
-> --- /dev/null
-> +++ b/drivers/hwmon/corsair_hydro_i_pro.c
-> @@ -0,0 +1,719 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * A hwmon driver for all corsair hyxro HXXXi pro all-in-one liquid cool=
-ers.
-> + * Copyright (c) Jaap Aarts 2020
-> + *
-> + * Protocol partially reverse engineered by audiohacked
-> + * https://github.com/audiohacked/OpendriverLink
-> + */
-> +
-> +/*
-> + * Supports following liquid coolers:
-> + * H100i platinum
-> + *
-> + * Other products should work with this driver with slight modification.
-> + *
-> + * Note: platinum is the codename name for pro within the driver, so H10=
-0i platinum =3D H100i pro.
-> + * But some products are actually called platinum, these are not intende=
-d to be supported (yet).
-> + *
-> + * Note: fan curve control has not been implemented
-> + */
-> +
-> +#include <linux/errno.h>
-> +#include <linux/hwmon.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/slab.h>
-> +#include <linux/usb.h>
-> +
-> +struct device_config {
-> +       const u16 vendor_id;
-> +       const u16 product_id;
-> +       const u8 fancount;
-> +       const u16 rpm_min;
-> +       const u16 rpm_max;
-> +       const u8 pwm_max;
-> +       const char *name;
-> +       const struct hwmon_channel_info **hwmon_info;
-> +};
-> +
-> +struct hydro_i_pro_device {
-> +       struct usb_device *udev;
-> +
-> +       const struct device_config *config;
-> +
-> +       unsigned char *bulk_out_buffer;
-> +       unsigned char *bulk_in_buffer;
-> +       size_t bulk_out_size;
-> +       size_t bulk_in_size;
-> +       char bulk_in_endpointAddr;
-> +       char bulk_out_endpointAddr;
-> +
-> +       struct usb_interface *interface; /* the interface for this device=
- */
-> +       struct mutex io_mutex;
-> +};
-> +
-> +#define MAX_FAN_COUNT 2
-> +#define MAX_PWM_CHANNEL_COUNT MAX_FAN_COUNT
-> +
-> +struct hwmon_data {
-> +       struct hydro_i_pro_device *hdev;
-> +       u8 channel_count;
-> +       void *channel_data[MAX_PWM_CHANNEL_COUNT];
-> +};
-> +
-> +struct curve_point {
-> +       u8 temp;
-> +       u8 pwm;
-> +};
-> +
-> +#define FAN_CURVE_COUNT 7
-> +
-> +struct hwmon_fan_data {
-> +       u8 fan_channel;
-> +       u16 fan_target;
-> +       u8 fan_pwm_target;
-> +       u8 mode;
-> +       struct curve_point curve[FAN_CURVE_COUNT];
-> +};
-> +
-> +static struct curve_point quiet_curve[FAN_CURVE_COUNT] =3D {
-> +       {
-> +               .temp =3D 0x1F,
-> +               .pwm =3D 0x15,
-> +       },
-> +       {
-> +               .temp =3D 0x21,
-> +               .pwm =3D 0x1E,
-> +       },
-> +       {
-> +               .temp =3D 0x24,
-> +               .pwm =3D 0x25,
-> +       },
-> +       {
-> +               .temp =3D 0x27,
-> +               .pwm =3D 0x2D,
-> +       },
-> +       {
-> +               .temp =3D 0x29,
-> +               .pwm =3D 0x38,
-> +       },
-> +       {
-> +               .temp =3D 0x2C,
-> +               .pwm =3D 0x4A,
-> +       },
-> +       {
-> +               .temp =3D 0x2F,
-> +               .pwm =3D 0x64,
-> +       },
-> +};
-> +
-> +#define DEFAULT_CURVE quiet_curve
-> +
-> +static const struct hwmon_channel_info *dual_fan[] =3D {
-> +       HWMON_CHANNEL_INFO(
-> +               fan, HWMON_F_INPUT | HWMON_F_TARGET | HWMON_F_MIN | HWMON=
-_F_MAX,
-> +               HWMON_F_INPUT | HWMON_F_TARGET | HWMON_F_MIN | HWMON_F_MA=
-X),
-> +       HWMON_CHANNEL_INFO(pwm, HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
-> +                          HWMON_PWM_INPUT | HWMON_PWM_ENABLE),
-> +       NULL
-> +};
-> +
-> +static const struct device_config config_table[] =3D {
-> +       {
-> +               .fancount =3D 2,
-> +               .rpm_min =3D 200,
-> +               .rpm_max =3D 3000,
-> +               .pwm_max =3D 100,
-> +               .name =3D "corsair_H100i_pro",
-> +               .hwmon_info =3D dual_fan,
-> +       },
-> +};
-> +
-> +#define BULK_TIMEOUT 100
-> +
-> +enum opcodes {
-> +       PWM_FAN_CURVE_CMD =3D 0x40,
-> +       PWM_GET_CURRENT_CMD =3D 0x41,
-> +       PWM_FAN_TARGET_CMD =3D 0x42,
-> +       RPM_FAN_TARGET_CMD =3D 0x43,
-> +};
-> +
-> +#define SUCCES_LENGTH 3
-> +#define SUCCES_CODE 0x12, 0x34
-> +
-> +static bool check_succes(enum opcodes command, char ret[static SUCCES_LE=
-NGTH])
-> +{
-> +       char success[SUCCES_LENGTH] =3D { command, SUCCES_CODE };
-> +
-> +       return memcmp(ret, success, SUCCES_LENGTH) =3D=3D 0;
-> +}
-> +
-> +static int acquire_lock(struct hydro_i_pro_device *hdev)
-> +{
-> +       int retval =3D usb_autopm_get_interface(hdev->interface);
-> +
-> +       if (retval)
-> +               return retval;
-> +
-> +       return mutex_lock_interruptible(&hdev->io_mutex);
-> +}
-> +
-> +static int transfer_usb(struct hydro_i_pro_device *hdev,
-> +                       unsigned char *send_buf, unsigned char *recv_buf,
-> +                       int send_len, int recv_len)
-> +{
-> +       int retval;
-> +       int wrote;
-> +       int sndpipe =3D usb_sndbulkpipe(hdev->udev, hdev->bulk_out_endpoi=
-ntAddr);
-> +       int rcvpipe =3D usb_rcvbulkpipe(hdev->udev, hdev->bulk_in_endpoin=
-tAddr);
-> +
-> +       retval =3D usb_bulk_msg(hdev->udev, sndpipe, send_buf, send_len, =
-&wrote,
-> +                             BULK_TIMEOUT);
-> +       if (retval)
-> +               return retval;
-> +       if (wrote !=3D send_len)
-> +               return -EIO;
-> +
-> +       retval =3D usb_bulk_msg(hdev->udev, rcvpipe, recv_buf, recv_len, =
-&wrote,
-> +                             BULK_TIMEOUT);
-> +       if (retval)
-> +               return retval;
-> +       if (wrote !=3D recv_len)
-> +               return -EIO;
-> +
-> +       return 0;
-> +}
-> +
-> +static int set_fan_pwm_curve(struct hydro_i_pro_device *hdev,
-> +                            struct hwmon_fan_data *fan_data,
-> +                            struct curve_point point[static FAN_CURVE_CO=
-UNT])
-> +{
-> +       int retval;
-> +       unsigned char *send_buf =3D hdev->bulk_out_buffer;
-> +       unsigned char *recv_buf =3D hdev->bulk_in_buffer;
-> +
-> +       send_buf[0] =3D PWM_FAN_CURVE_CMD;
-> +       send_buf[1] =3D fan_data->fan_channel;
-> +       send_buf[2] =3D point[0].temp;
-> +       send_buf[3] =3D point[1].temp;
-> +       send_buf[4] =3D point[2].temp;
-> +       send_buf[5] =3D point[3].temp;
-> +       send_buf[6] =3D point[4].temp;
-> +       send_buf[7] =3D point[5].temp;
-> +       send_buf[8] =3D point[6].temp;
-> +       send_buf[9] =3D point[0].pwm;
-> +       send_buf[10] =3D point[1].pwm;
-> +       send_buf[11] =3D point[2].pwm;
-> +       send_buf[12] =3D point[3].pwm;
-> +       send_buf[13] =3D point[4].pwm;
-> +       send_buf[14] =3D point[5].pwm;
-> +       send_buf[15] =3D point[6].pwm;
-> +
-> +       retval =3D transfer_usb(hdev, send_buf, recv_buf, 16, 3);
-> +       if (retval)
-> +               return retval;
-> +
-> +       if (!check_succes(send_buf[0], recv_buf)) {
-> +               dev_warn(
-> +                       &hdev->udev->dev,
-> +                       "failed setting fan pwm/temp curve for %s on chan=
-nel %d %d,%d,%d\n",
-> +                       hdev->config->name, fan_data->fan_channel, recv_b=
-uf[0],
-> +                       recv_buf[1], recv_buf[2]);
-> +               return -EINVAL;
-> +       }
-> +
-> +       memcpy(fan_data->curve, point, sizeof(fan_data->curve));
-> +
-> +       return 0;
-> +}
-> +
-> +static int set_fan_target_rpm(struct hydro_i_pro_device *hdev,
-> +                             struct hwmon_fan_data *fan_data, u16 val)
-> +{
-> +       int retval;
-> +       unsigned char *send_buf =3D hdev->bulk_out_buffer;
-> +       unsigned char *recv_buf =3D hdev->bulk_in_buffer;
-> +
-> +       send_buf[0] =3D RPM_FAN_TARGET_CMD;
-> +       send_buf[1] =3D fan_data->fan_channel;
-> +       send_buf[2] =3D (val >> 8);
-> +       send_buf[3] =3D val;
-> +
-> +       retval =3D transfer_usb(hdev, send_buf, recv_buf, 4, 3);
-> +       if (retval)
-> +               return retval;
-> +
-> +       if (!check_succes(send_buf[0], recv_buf)) {
-> +               dev_warn(
-> +                       &hdev->udev->dev,
-> +                       "failed setting fan rpm for %s on channel %d %d,%=
-d,%d\n",
-> +                       hdev->config->name, fan_data->fan_channel, recv_b=
-uf[0],
-> +                       recv_buf[1], recv_buf[2]);
-> +               return -EINVAL;
-> +       }
-> +       fan_data->fan_target =3D val;
-> +       fan_data->fan_pwm_target =3D 0;
-> +
-> +       return 0;
-> +}
-> +
-> +static int get_fan_current_rpm(struct hydro_i_pro_device *hdev,
-> +                              struct hwmon_fan_data *fan_data, long *val=
-)
-> +{
-> +       int retval;
-> +       unsigned char *send_buf =3D hdev->bulk_out_buffer;
-> +       unsigned char *recv_buf =3D hdev->bulk_in_buffer;
-> +
-> +       send_buf[0] =3D PWM_GET_CURRENT_CMD;
-> +       send_buf[1] =3D fan_data->fan_channel;
-> +
-> +       retval =3D transfer_usb(hdev, send_buf, recv_buf, 2, 6);
-> +       if (retval)
-> +               return retval;
-> +
-> +       if (!check_succes(send_buf[0], recv_buf) ||
-> +           recv_buf[3] !=3D fan_data->fan_channel) {
-> +               dev_warn(
-> +                       &hdev->udev->dev,
-> +                       "failed retrieving fan pwm for %s on channel %d %=
-d,%d,%d/%d\n",
-> +                       hdev->config->name, fan_data->fan_channel, recv_b=
-uf[0],
-> +                       recv_buf[1], recv_buf[2], recv_buf[3]);
-> +               return -EINVAL;
-> +       }
-> +
-> +       *val =3D ((recv_buf[4]) << 8) + recv_buf[5];
-> +       return 0;
-> +}
-> +
-> +static int set_fan_target_pwm(struct hydro_i_pro_device *hdev,
-> +                             struct hwmon_fan_data *fan_data, u8 val)
-> +{
-> +       int retval;
-> +       unsigned char *send_buf =3D hdev->bulk_out_buffer;
-> +       unsigned char *recv_buf =3D hdev->bulk_in_buffer;
-> +
-> +       send_buf[0] =3D PWM_FAN_TARGET_CMD;
-> +       send_buf[1] =3D fan_data->fan_channel;
-> +       send_buf[2] =3D val;
-> +
-> +       retval =3D transfer_usb(hdev, send_buf, recv_buf, 3, 3);
-> +       if (retval)
-> +               return retval;
-> +
-> +       if (!check_succes(send_buf[0], recv_buf)) {
-> +               dev_warn(
-> +                       &hdev->udev->dev,
-> +                       "failed setting fan pwm for %s on channel %d %d,%=
-d,%d\n",
-> +                       hdev->config->name, fan_data->fan_channel, recv_b=
-uf[0],
-> +                       recv_buf[1], recv_buf[2]);
-> +               return -EINVAL;
-> +       }
-> +       fan_data->fan_target =3D 0;
-> +       fan_data->fan_pwm_target =3D val;
-> +
-> +       return 0;
-> +}
-> +
-> +static umode_t hwmon_is_visible(const void *d, enum hwmon_sensor_types t=
-ype,
-> +                               u32 attr, int channel)
-> +{
-> +       switch (type) {
-> +       case hwmon_fan:
-> +               switch (attr) {
-> +               case hwmon_fan_input:
-> +                       return 0444;
-> +               case hwmon_fan_target:
-> +                       return 0644;
-> +               case hwmon_fan_min:
-> +                       return 0444;
-> +               case hwmon_fan_max:
-> +                       return 0444;
-> +               default:
-> +                       break;
-> +               }
-> +               break;
-> +       case hwmon_pwm:
-> +               switch (attr) {
-> +               case hwmon_pwm_input:
-> +                       return 0200;
-> +               case hwmon_pwm_enable:
-> +                       return 0644;
-> +               default:
-> +                       break;
-> +               }
-> +               break;
-> +       default:
-> +               break;
-> +       }
-> +       return 0;
-> +}
-> +
-> +static int hwmon_write(struct device *dev, enum hwmon_sensor_types type,
-> +                      u32 attr, int channel, long val)
-> +{
-> +       struct hwmon_data *data =3D dev_get_drvdata(dev);
-> +       struct hydro_i_pro_device *hdev =3D data->hdev;
-> +       struct hwmon_fan_data *fan_data;
-> +       int retval =3D 0;
-> +
-> +       switch (type) {
-> +       case hwmon_fan:
-> +               switch (attr) {
-> +               case hwmon_fan_target:
-> +                       fan_data =3D data->channel_data[channel];
-> +                       if (fan_data->mode !=3D 1)
-> +                               return -EINVAL;
-> +
-> +                       val =3D clamp_val(val, hdev->config->rpm_min,
-> +                                       hdev->config->rpm_max);
-> +
-> +                       retval =3D acquire_lock(hdev);
-> +                       if (retval)
-> +                               goto exit;
-> +
-> +                       retval =3D set_fan_target_rpm(hdev, fan_data, val=
-);
-> +                       if (retval)
-> +                               goto cleanup;
-> +
-> +                       break;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +               break;
-> +       case hwmon_pwm:
-> +               switch (attr) {
-> +               case hwmon_pwm_input:
-> +                       fan_data =3D data->channel_data[channel];
-> +                       if (fan_data->mode !=3D 1)
-> +                               return -EINVAL;
-> +
-> +                       val =3D clamp_val(val, 0, hdev->config->pwm_max);
-> +                       retval =3D acquire_lock(hdev);
-> +                       if (retval)
-> +                               goto exit;
-> +
-> +                       retval =3D set_fan_target_pwm(hdev, fan_data, val=
-);
-> +                       if (retval)
-> +                               goto cleanup;
-> +
-> +                       break;
-> +               case hwmon_pwm_enable:
-> +                       fan_data =3D data->channel_data[channel];
-> +
-> +                       switch (val) {
-> +                       case 2:
-> +                       case 0:
-> +                               retval =3D acquire_lock(hdev);
-> +                               if (retval)
-> +                                       goto exit;
-> +
-> +                               retval =3D set_fan_pwm_curve(hdev, fan_da=
-ta,
-> +                                                          DEFAULT_CURVE)=
-;
-> +                               if (retval)
-> +                                       goto cleanup;
-> +                               fan_data->mode =3D val;
-> +                               break;
-> +                       case 1:
-> +                               retval =3D acquire_lock(hdev);
-> +                               if (retval)
-> +                                       goto exit;
-> +
-> +                               if (fan_data->fan_target !=3D 0) {
-> +                                       retval =3D set_fan_target_rpm(
-> +                                               hdev, fan_data,
-> +                                               fan_data->fan_target);
-> +                                       if (retval)
-> +                                               goto cleanup;
-> +                               } else if (fan_data->fan_pwm_target !=3D =
-0) {
-> +                                       retval =3D set_fan_target_pwm(
-> +                                               hdev, fan_data,
-> +                                               fan_data->fan_pwm_target)=
-;
-> +                                       if (retval)
-> +                                               goto cleanup;
-> +                               }
-> +                               fan_data->mode =3D 1;
-> +                               break;
-> +                       default:
-> +                               return -EINVAL;
-> +                       }
-> +                       break;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +               break;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +
-> +cleanup:
-> +       mutex_unlock(&hdev->io_mutex);
-> +       usb_autopm_put_interface(hdev->interface);
-> +exit:
-> +       return retval;
-> +}
-> +
-> +static int hwmon_read(struct device *dev, enum hwmon_sensor_types type,
-> +                     u32 attr, int channel, long *val)
-> +{
-> +       struct hwmon_data *data =3D dev_get_drvdata(dev);
-> +       struct hydro_i_pro_device *hdev =3D data->hdev;
-> +       struct hwmon_fan_data *fan_data;
-> +       int retval =3D 0;
-> +
-> +       switch (type) {
-> +       case hwmon_fan:
-> +               switch (attr) {
-> +               case hwmon_fan_input:
-> +                       fan_data =3D data->channel_data[channel];
-> +
-> +                       retval =3D acquire_lock(hdev);
-> +                       if (retval)
-> +                               goto exit;
-> +
-> +                       retval =3D get_fan_current_rpm(hdev, fan_data, va=
-l);
-> +                       break;
-> +               case hwmon_fan_target:
-> +                       fan_data =3D data->channel_data[channel];
-> +                       if (fan_data->mode !=3D 1) {
-> +                               *val =3D 0;
-> +                               goto exit;
-> +                       }
-> +                       *val =3D fan_data->fan_target;
-> +                       goto exit;
-> +               case hwmon_fan_min:
-> +                       *val =3D hdev->config->rpm_min;
-> +                       goto exit;
-> +               case hwmon_fan_max:
-> +                       *val =3D hdev->config->rpm_max;
-> +                       goto exit;
-> +
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +               break;
-> +       case hwmon_pwm:
-> +               switch (attr) {
-> +               case hwmon_pwm_enable:
-> +                       fan_data =3D data->channel_data[channel];
-> +                       *val =3D fan_data->mode;
-> +                       goto exit;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +               goto exit;
-> +
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +
-> +       mutex_unlock(&hdev->io_mutex);
-> +       usb_autopm_put_interface(hdev->interface);
-> +exit:
-> +       return retval;
-> +}
-> +
-> +static const struct hwmon_ops i_pro_ops =3D {
-> +       .is_visible =3D hwmon_is_visible,
-> +       .read =3D hwmon_read,
-> +       .write =3D hwmon_write,
-> +};
-> +
-> +static int hwmon_init(struct hydro_i_pro_device *hdev)
-> +{
-> +       u8 fan_id;
-> +       struct device *hwmon_dev;
-> +       struct hwmon_fan_data *fan;
-> +       struct hwmon_data *data;
-> +       struct hwmon_chip_info *hwmon_info;
-> +
-> +       data =3D devm_kzalloc(&hdev->udev->dev, sizeof(*data), GFP_KERNEL=
-);
-> +       if (!data)
-> +               return -ENOMEM;
-> +       hwmon_info =3D
-> +               devm_kzalloc(&hdev->udev->dev, sizeof(*hwmon_info), GFP_K=
-ERNEL);
-> +       if (!hwmon_info) {
-> +               devm_kfree(&hdev->udev->dev, data);
-> +               return -ENOMEM;
-> +       }
-> +
-> +       /* You did something bad!! Either adjust  MAX_FAN_COUNT or the fa=
-ncount for the config!*/
-> +       WARN_ON(hdev->config->fancount >=3D MAX_PWM_CHANNEL_COUNT);
-> +       data->channel_count =3D
-> +               clamp_val(hdev->config->fancount, 0, MAX_PWM_CHANNEL_COUN=
-T);
-> +
-> +       /* For each fan create a data channel a fan config entry and a pw=
-m config entry */
-> +       for (fan_id =3D 0; fan_id < data->channel_count; fan_id++) {
-> +               fan =3D devm_kzalloc(&hdev->udev->dev, sizeof(fan), GFP_K=
-ERNEL);
-> +               if (!fan)
-> +                       return -ENOMEM;
-> +
-> +               fan->fan_channel =3D fan_id;
-> +               fan->mode =3D 0;
-> +               data->channel_data[fan_id] =3D fan;
-> +       }
-> +
-> +       hwmon_info->ops =3D &i_pro_ops;
-> +       hwmon_info->info =3D hdev->config->hwmon_info;
-> +
-> +       data->hdev =3D hdev;
-> +       hwmon_dev =3D devm_hwmon_device_register_with_info(
-> +               &hdev->udev->dev, hdev->config->name, data, hwmon_info, N=
-ULL);
-> +       if (IS_ERR(hwmon_dev))
-> +               return PTR_ERR(hwmon_dev);
-> +
-> +       dev_info(&hdev->udev->dev, "setup hwmon for %s\n", hdev->config->=
-name);
-> +       return 0;
-> +}
-> +
-> +#define USB_VENDOR_ID_CORSAIR 0x1b1c
-> +#define USB_PRODUCT_ID_H100I_PRO 0x0c15
-> +/*
-> + * Devices that work with this driver.
-> + * More devices should work, however none have been tested.
-> + */
-> +static const struct usb_device_id astk_table[] =3D {
-> +       { USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_PRODUCT_ID_H100I_PRO),
-> +         .driver_info =3D (kernel_ulong_t)&config_table[0] },
-> +       {},
-> +};
-> +
-> +MODULE_DEVICE_TABLE(usb, astk_table);
-> +
-> +static int init_device(struct usb_device *udev)
-> +{
-> +       int retval;
-> +
-> +       /*
-> +        * This is needed because when running windows in a vm with propr=
-ietary driver
-> +        * and you switch to this driver, the device will not respond unl=
-ess you run this.
-> +        */
-> +       retval =3D usb_control_msg(udev, usb_sndctrlpipe(udev, 0), 0x00, =
-0x40,
-> +                                0xffff, 0x0000, 0, 0, 0);
-> +
-> +       /*this always returns error, but it required for propper initiali=
-sation*/
-> +       if (retval !=3D -EPIPE)
-> +               return retval;
-> +
-> +       return usb_control_msg(udev, usb_sndctrlpipe(udev, 0), 0x02, 0x40=
-,
-> +                              0x0002, 0x0000, 0, 0, 0);
-> +}
-> +
-> +static int deinit_device(struct usb_device *udev)
-> +{
-> +       return usb_control_msg(udev, usb_sndctrlpipe(udev, 0), 0x02, 0x40=
-,
-> +                              0x0004, 0x0000, 0, 0, 0);
-> +}
-> +
-> +static void astk_delete(struct hydro_i_pro_device *hdev)
-> +{
-> +       usb_put_intf(hdev->interface);
-> +       mutex_destroy(&hdev->io_mutex);
-> +       usb_put_dev(hdev->udev);
-> +}
-> +
-> +static int astk_probe(struct usb_interface *interface,
-> +                     const struct usb_device_id *id)
-> +{
-> +       struct usb_device *udev =3D usb_get_dev(interface_to_usbdev(inter=
-face));
-> +       struct hydro_i_pro_device *hdev;
-> +       int retval;
-> +       struct usb_endpoint_descriptor *bulk_in, *bulk_out;
-> +
-> +       hdev =3D devm_kzalloc(&udev->dev, sizeof(*hdev), GFP_KERNEL);
-> +
-> +       if (!hdev) {
-> +               retval =3D -ENOMEM;
-> +               goto exit;
-> +       }
-> +
-> +       hdev->config =3D (const struct device_config *)id->driver_info;
-> +       /* You should set the driver_info to a pointer to the correct con=
-figuration!!*/
-> +       WARN_ON(!hdev->config);
-> +
-> +       hdev->udev =3D udev;
-> +       hdev->interface =3D usb_get_intf(interface);
-> +       mutex_init(&hdev->io_mutex);
-> +
-> +       retval =3D usb_find_common_endpoints(interface->cur_altsetting, &=
-bulk_in,
-> +                                          &bulk_out, NULL, NULL);
-> +       if (retval) {
-> +               astk_delete(hdev);
-> +               goto exit;
-> +       }
-> +
-> +       /*
-> +        * set up the endpoint information
-> +        * use only the first bulk-in and bulk-out endpoints
-> +        */
-> +       hdev->bulk_in_size =3D usb_endpoint_maxp(bulk_in);
-> +       hdev->bulk_in_buffer =3D
-> +               devm_kzalloc(&hdev->udev->dev, hdev->bulk_in_size, GFP_KE=
-RNEL);
-> +       hdev->bulk_in_endpointAddr =3D bulk_in->bEndpointAddress;
-> +       if (!hdev->bulk_in_buffer) {
-> +               astk_delete(hdev);
-> +               goto exit;
-> +       }
-> +
-> +       hdev->bulk_out_size =3D usb_endpoint_maxp(bulk_out);
-> +       hdev->bulk_out_buffer =3D
-> +               devm_kzalloc(&hdev->udev->dev, hdev->bulk_out_size, GFP_K=
-ERNEL);
-> +       hdev->bulk_out_endpointAddr =3D bulk_out->bEndpointAddress;
-> +       if (!hdev->bulk_out_buffer) {
-> +               astk_delete(hdev);
-> +               goto exit;
-> +       }
-> +
-> +       retval =3D init_device(hdev->udev);
-> +       if (retval) {
-> +               astk_delete(hdev);
-> +               goto exit;
-> +       }
-> +
-> +       retval =3D hwmon_init(hdev);
-> +       if (retval) {
-> +               astk_delete(hdev);
-> +               goto exit;
-> +       }
-> +
-> +       usb_set_intfdata(interface, hdev);
-> +exit:
-> +       return retval;
-> +}
-> +
-> +static void astk_disconnect(struct usb_interface *interface)
-> +{
-> +       struct hydro_i_pro_device *hdev =3D usb_get_intfdata(interface);
-> +
-> +       dev_info(&hdev->udev->dev, "removed hwmon for %s\n",
-> +                hdev->config->name);
-> +       deinit_device(hdev->udev);
-> +       usb_set_intfdata(interface, NULL);
-> +       astk_delete(hdev);
-> +}
-> +
-> +static int astk_resume(struct usb_interface *intf)
-> +{
-> +       return 0;
-> +}
-> +
-> +static int astk_suspend(struct usb_interface *intf, pm_message_t message=
-)
-> +{
-> +       return 0;
-> +}
-> +
-> +static struct usb_driver hydro_i_pro_driver =3D {
-> +       .name =3D "hydro_i_pro_device",
-> +       .id_table =3D astk_table,
-> +       .probe =3D astk_probe,
-> +       .disconnect =3D astk_disconnect,
-> +       .resume =3D astk_resume,
-> +       .suspend =3D astk_suspend,
-> +       .supports_autosuspend =3D 1,
-> +};
-> +
-> +module_usb_driver(hydro_i_pro_driver);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Jaap Aarts <jaap.aarts1@gmail.com>");
-> +MODULE_DESCRIPTION("Corsair HXXXi pro device driver");
-> --
-> 2.28.0
->
+Changes since v2:
+As suggested by Guenter Roeck:
+ - added sl28cpld.rst to index.rst
+ - removed sl28cpld_wdt_status()
+ - reverse christmas tree local variable ordering
+ - assign device_property_read_bool() retval directly
+ - introduce WDT_DEFAULT_TIMEOUT and use it if the hardware reports
+   0 as timeout.
+ - set WDOG_HW_RUNNING if applicable
+ - remove platform_set_drvdata() leftover
+
+As suggested by Bartosz Golaszewski:
+ - don't export gpio_regmap_simple_xlate()
+ - combine local variable declaration of the same type
+ - drop the "struct gpio_regmap_addr", instead use -1 to force an address
+   offset of zero
+ - fix typo
+ - use "struct gpio_regmap_config" pattern, keep "struct gpio_regmap"
+   private. this also means we need a getter/setter for the driver_data
+   element.
+
+As suggested by Linus Walleij:
+ - don't store irq_domain in gpio-regmap. drop to_irq() altogether for now.
+   Instead there is now a new patch which lets us set the irqdomain of the
+   gpiochip_irqchip and use its .to_irq() function. This way we don't have
+   to expose the gpio_chip inside the gpio-regmap to the user.
+
+Changes since v1:
+ - use of_match_table in all drivers, needed for automatic module loading,
+   when using OF_MFD_CELL()
+ - add new gpio-regmap.c which adds a generic regmap gpio_chip
+   implementation
+ - new patch for reqmap_irq, so we can reuse its implementation
+ - remove almost any code from gpio-sl28cpld.c, instead use gpio-regmap and
+   regmap-irq
+ - change the handling of the mfd core vs device tree nodes; add a new
+   property "of_reg" to the mfd_cell struct which, when set, is matched to
+   the unit-address of the device tree nodes.
+ - fix sl28cpld watchdog when it is not initialized by the bootloader.
+   Explicitly set the operation mode.
+ - also add support for kontron,assert-wdt-timeout-pin in sl28cpld-wdt.
+
+As suggested by Bartosz Golaszewski:
+ - define registers as hex
+ - make gpio enum uppercase
+ - move parent regmap check before memory allocation
+ - use device_property_read_bool() instead of the of_ version
+ - mention the gpio flavors in the bindings documentation
+
+As suggested by Guenter Roeck:
+ - cleanup #includes and sort them
+ - use devm_watchdog_register_device()
+ - use watchdog_stop_on_reboot()
+ - provide a Documentation/hwmon/sl28cpld.rst
+ - cleaned up the weird tristate->bool and I2C=y issue. Instead mention
+   that the MFD driver is bool because of the following intc patch
+ - removed the SL28CPLD_IRQ typo
+
+As suggested by Rob Herring:
+ - combine all dt bindings docs into one patch
+ - change the node name for all gpio flavors to "gpio"
+ - removed the interrupts-extended rule
+ - cleaned up the unit-address space, see above
+
+Michael Walle (13):
+  mfd: add simple regmap based I2C driver
+  dt-bindings: mfd: Add bindings for sl28cpld
+  mfd: simple-mfd-i2c: add sl28cpld support
+  irqchip: add sl28cpld interrupt controller support
+  watchdog: add support for sl28cpld watchdog
+  pwm: add support for sl28cpld PWM controller
+  gpio: add support for the sl28cpld GPIO controller
+  hwmon: add support for the sl28cpld hardware monitoring controller
+  arm64: dts: freescale: sl28: enable sl28cpld
+  arm64: dts: freescale: sl28: map GPIOs to input events
+  arm64: dts: freescale: sl28: enable LED support
+  arm64: dts: freescale: sl28: enable fan support
+  arm64: defconfig: enable the sl28cpld board management controller
+
+ .../bindings/gpio/kontron,sl28cpld-gpio.yaml  |  54 ++++
+ .../hwmon/kontron,sl28cpld-hwmon.yaml         |  27 ++
+ .../kontron,sl28cpld-intc.yaml                |  54 ++++
+ .../bindings/mfd/kontron,sl28cpld.yaml        | 153 ++++++++++
+ .../bindings/pwm/kontron,sl28cpld-pwm.yaml    |  35 +++
+ .../watchdog/kontron,sl28cpld-wdt.yaml        |  35 +++
+ Documentation/hwmon/index.rst                 |   1 +
+ Documentation/hwmon/sl28cpld.rst              |  36 +++
+ .../fsl-ls1028a-kontron-kbox-a-230-ls.dts     |  18 ++
+ .../fsl-ls1028a-kontron-sl28-var3-ads2.dts    |   9 +
+ .../freescale/fsl-ls1028a-kontron-sl28.dts    | 134 +++++++++
+ arch/arm64/configs/defconfig                  |   6 +
+ drivers/gpio/Kconfig                          |  12 +
+ drivers/gpio/Makefile                         |   1 +
+ drivers/gpio/gpio-sl28cpld.c                  | 161 +++++++++++
+ drivers/hwmon/Kconfig                         |  10 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/sl28cpld-hwmon.c                | 142 +++++++++
+ drivers/irqchip/Kconfig                       |   8 +
+ drivers/irqchip/Makefile                      |   1 +
+ drivers/irqchip/irq-sl28cpld.c                |  96 +++++++
+ drivers/mfd/Kconfig                           |  22 ++
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/simple-mfd-i2c.c                  |  57 ++++
+ drivers/pwm/Kconfig                           |  10 +
+ drivers/pwm/Makefile                          |   1 +
+ drivers/pwm/pwm-sl28cpld.c                    | 269 ++++++++++++++++++
+ drivers/watchdog/Kconfig                      |  11 +
+ drivers/watchdog/Makefile                     |   1 +
+ drivers/watchdog/sl28cpld_wdt.c               | 229 +++++++++++++++
+ 30 files changed, 1595 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/kontron,sl28cpld-gpio.yaml
+ create mode 100644 Documentation/devicetree/bindings/hwmon/kontron,sl28cpld-hwmon.yaml
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/kontron,sl28cpld-intc.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/kontron,sl28cpld.yaml
+ create mode 100644 Documentation/devicetree/bindings/pwm/kontron,sl28cpld-pwm.yaml
+ create mode 100644 Documentation/devicetree/bindings/watchdog/kontron,sl28cpld-wdt.yaml
+ create mode 100644 Documentation/hwmon/sl28cpld.rst
+ create mode 100644 drivers/gpio/gpio-sl28cpld.c
+ create mode 100644 drivers/hwmon/sl28cpld-hwmon.c
+ create mode 100644 drivers/irqchip/irq-sl28cpld.c
+ create mode 100644 drivers/mfd/simple-mfd-i2c.c
+ create mode 100644 drivers/pwm/pwm-sl28cpld.c
+ create mode 100644 drivers/watchdog/sl28cpld_wdt.c
+
+-- 
+2.20.1
+
