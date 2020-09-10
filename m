@@ -2,85 +2,140 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 190DF2639BA
-	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Sep 2020 04:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2638F263A0F
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Sep 2020 04:19:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730166AbgIJCBP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 9 Sep 2020 22:01:15 -0400
-Received: from mga07.intel.com ([134.134.136.100]:48226 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730168AbgIJBz2 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 9 Sep 2020 21:55:28 -0400
-IronPort-SDR: UBjyZnaigtKh3SFRnmBWkZhiaFa8iNsLYRoBjmlkC/ciRD/UsfRkjMx4+vPxfgr7kTHl3roQeO
- uyQBqxhfYHzg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9739"; a="222629768"
-X-IronPort-AV: E=Sophos;i="5.76,410,1592895600"; 
-   d="scan'208";a="222629768"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2020 15:46:16 -0700
-IronPort-SDR: FK1JiY7CqZ8OSgjQCphzeYsOxEkpiYaRSrhC0H+0mSPCcrkwMuY6b4+qNBbcEDxAeGS4GFuAKv
- vL0VllT++24w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,410,1592895600"; 
-   d="scan'208";a="344051183"
-Received: from lkp-server01.sh.intel.com (HELO 12ff3cf3f2e9) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 09 Sep 2020 15:46:14 -0700
-Received: from kbuild by 12ff3cf3f2e9 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kG8qz-0000cL-Vz; Wed, 09 Sep 2020 22:46:13 +0000
-Date:   Thu, 10 Sep 2020 06:45:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     kbuild-all@lists.01.org, Clemens Ladisch <clemens@ladisch.de>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: fix ptr_ret.cocci warnings
-Message-ID: <20200909224557.GA8954@4a0a5de1ca44>
-References: <202009100651.UfTNs7Q7%lkp@intel.com>
+        id S1730636AbgIJCR5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 9 Sep 2020 22:17:57 -0400
+Received: from out5-smtp.messagingengine.com ([66.111.4.29]:36745 "EHLO
+        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730699AbgIJCMi (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 9 Sep 2020 22:12:38 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 37C485C00DB;
+        Wed,  9 Sep 2020 22:11:36 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 09 Sep 2020 22:11:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=from
+        :to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm3; bh=7OJIUNnPof5fmS9W9OyrAXXYxm
+        fDhwOyhBDHLSmMoF4=; b=jKjG0D483XpbWMCqQqhQ62Pws1McbdPwT4Y13IHGT8
+        8t97bt99NNL+Kyttrc1f17CLRmxsuKZR1c3PV1E8Drv9zUkGNUoSq/uzMYVoKyEu
+        16TuYcXoLhfQDBKWuU5vqXjlN9k5wTAdfbq8FMIxX3nYslzaaW9ZeNbhZPM+iASg
+        ZvS5Byb5ToxOT2iM3Tl1zRiollkyxoj3avqIYE857+u405omFJqMpuysQBFgHlb0
+        GM5repbCpLBk4XNUHILwY9DJR0Di/mEUDcMRUxUZHLAGvE8JVigwc3bhVNkHmmMx
+        FL0qU9eD8sJJ2y56NAUB1NtgUSVwm4vMhPujQwi2Kehw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=7OJIUNnPof5fmS9W9
+        OyrAXXYxmfDhwOyhBDHLSmMoF4=; b=IsiCXqALfyi3KjRzWkdG++rytARB47IZ7
+        +4kW2+1T9GhFEVIIoFRebiKTLIV2rhBxwTqNomu34vRkHRXJfC44u/eUMbifUdMe
+        lCKoQ92Apepcge6RrLLv3mchSs47euk1iSIiTUYo5RHVG2qgfelrqmrTpfSkGf4N
+        0uNESTQ8Rx4mUU78eNLA4U6p4X6iNihipmWzZPaq95gZKPQrzucj9EL/faznhF72
+        HGGPxtKfC0hiCmX5ozRehFQc+7bjREvf40/ifTZB1dN7qcFg6onvX44GeSf/QPZb
+        Xvp6ZWAr6+iQTzlNaVnk1rcchPoNqbHfAh7C62rgC2cBzGNTDKW6A==
+X-ME-Sender: <xms:V4tZX623OP3Wqg1ROXmmU5Rhmoo81SNwofosRv6V8qsMbqQZaZNwYA>
+    <xme:V4tZX9G-nWfTflmTH8Ac6EqPaEs6slpJBUVTi8JRGBDlObaRzDgKPp4qjvtk80N0r
+    hjJyEOQFFDrqKrlBQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrudehiedgheehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
+    dttdenucfhrhhomheptehnughrvgifucflvghffhgvrhihuceorghnughrvgifsegrjhdr
+    ihgurdgruheqnecuggftrfgrthhtvghrnhepkefhieffjeevfeevhedtieeihfefvdejle
+    dvvddthefftedujeethfeuueelfedtnecukfhppedugedrvddruddtledrkeehnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvgifse
+    grjhdrihgurdgruh
+X-ME-Proxy: <xmx:V4tZXy5dpvVK5nECQbpXcFTv_EYNaeBY1S2dj1DWB7ftqVJNvaki_A>
+    <xmx:V4tZX71s2B5VR9pXDGiubUzkNUIZZWgEPouPP9GXfx4XHVB9lYufNA>
+    <xmx:V4tZX9HeV_TBLKKV32f6jfhXX8jAnM-YCCDPPBnvXYHCfmyF7Bt9xw>
+    <xmx:WItZX7NyF5vWI4yXswxvVqB5VkxoCPLUB5JQ3O_3ln1ED0ZgqTTZXQ>
+Received: from mistburn.lan (ppp14-2-109-85.adl-apt-pir-bras32.tpg.internode.on.net [14.2.109.85])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 093AB328005D;
+        Wed,  9 Sep 2020 22:11:33 -0400 (EDT)
+From:   Andrew Jeffery <andrew@aj.id.au>
+To:     linux-hwmon@vger.kernel.org
+Cc:     linux@roeck-us.net, jdelvare@suse.com, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] hwmon: (pmbus) Expose PEC debugfs attribute
+Date:   Thu, 10 Sep 2020 11:41:06 +0930
+Message-Id: <20200910021106.2958382-1-andrew@aj.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202009100651.UfTNs7Q7%lkp@intel.com>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: kernel test robot <lkp@intel.com>
+Enable runtime debug control of whether the PEC byte is exchanged with
+the PMBus device.
 
-drivers/hwmon/k10temp.c:548:1-3: WARNING: PTR_ERR_OR_ZERO can be used
+Some manufacturers have asked for the PEC to be disabled as part of
+debugging driver communication issues with devices.
 
-
- Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
-
-Generated by: scripts/coccinelle/api/ptr_ret.cocci
-
-Fixes: 11ba5c19102a ("hwmon: (k10temp) Take out debugfs code")
-Signed-off-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
 ---
+ drivers/hwmon/pmbus/pmbus_core.c | 39 ++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   7204eaa2c1f509066486f488c9dcb065d7484494
-commit: 11ba5c19102a4b08f0549026f5491948d4f33d9d [6027/6354] hwmon: (k10temp) Take out debugfs code
-
- k10temp.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
---- a/drivers/hwmon/k10temp.c
-+++ b/drivers/hwmon/k10temp.c
-@@ -545,10 +545,7 @@ static int k10temp_probe(struct pci_dev
- 	hwmon_dev = devm_hwmon_device_register_with_info(dev, "k10temp", data,
- 							 &k10temp_chip_info,
- 							 NULL);
--	if (IS_ERR(hwmon_dev))
--		return PTR_ERR(hwmon_dev);
--
--	return 0;
-+	return PTR_ERR_OR_ZERO(hwmon_dev);
- }
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 44535add3a4a..9e7d5f7f0cd0 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -2346,6 +2346,42 @@ static int pmbus_debugfs_get_status(void *data, u64 *val)
+ DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_status, pmbus_debugfs_get_status,
+ 			 NULL, "0x%04llx\n");
  
- static const struct pci_device_id k10temp_id_table[] = {
++static int pmbus_debugfs_get_pec(void *data, u64 *val)
++{
++	struct i2c_client *client = data;
++
++	*val = !!(client->flags & I2C_CLIENT_PEC);
++
++	return 0;
++}
++
++static int pmbus_debugfs_set_pec(void *data, u64 val)
++{
++	int rc;
++	struct i2c_client *client = data;
++
++	if (!val) {
++		client->flags &= ~I2C_CLIENT_PEC;
++		return 0;
++	}
++
++	if (val != 1)
++		return -EINVAL;
++
++	rc = i2c_smbus_read_byte_data(client, PMBUS_CAPABILITY);
++	if (rc < 0)
++		return rc;
++
++	if (!(rc & PB_CAPABILITY_ERROR_CHECK))
++		return -EOPNOTSUPP;
++
++	client->flags |= I2C_CLIENT_PEC;
++
++	return 0;
++}
++DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_pec, pmbus_debugfs_get_pec,
++			 pmbus_debugfs_set_pec, "%1llu\n");
++
+ static int pmbus_init_debugfs(struct i2c_client *client,
+ 			      struct pmbus_data *data)
+ {
+@@ -2374,6 +2410,9 @@ static int pmbus_init_debugfs(struct i2c_client *client,
+ 	if (!entries)
+ 		return -ENOMEM;
+ 
++	debugfs_create_file("pec", 0664, data->debugfs, client,
++			    &pmbus_debugfs_ops_pec);
++
+ 	for (i = 0; i < data->info->pages; ++i) {
+ 		/* Check accessibility of status register if it's not page 0 */
+ 		if (!i || pmbus_check_status_register(client, i)) {
+-- 
+2.25.1
+
