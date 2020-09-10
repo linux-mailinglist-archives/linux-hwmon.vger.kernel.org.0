@@ -2,145 +2,189 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65BFE2639F3
-	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Sep 2020 04:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 306DF263A71
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Sep 2020 04:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728663AbgIJCPH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 9 Sep 2020 22:15:07 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:39691 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730469AbgIJCNA (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 9 Sep 2020 22:13:00 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id A4DA95C00C9;
-        Wed,  9 Sep 2020 22:12:56 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute3.internal (MEProxy); Wed, 09 Sep 2020 22:12:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm3; bh=HckUuM4up1+hrv2p57Agpc2r033Xop1
-        H6JnAlq3zBCU=; b=Scp8KEq5+XaNWIzu37zalER5/GfPwnWsWzBFti5s9JUxI10
-        hQrJCy49sDfEp27lbGO8wcpv7CxmWoBaU9Oy/PCEoi0yUNu0eIURk68sLMLGUzoi
-        9N/d5zk3MfRO5hiTpjGPiuSO82b6NX9e2i8C5wdXgDM/8bBAYVLmgd6hruERI2OD
-        oCywMdn8R2ZPq6BFgikOMGrcDRieyA60pxZKIf2827kvJGbsSnzwcpSNNAlsKFC0
-        /ux0Etc/WqKm/z4GysjIE4ChctSDGX7wxab3z78Kw5pu37Ocs2w7I7mTJRBJU5r4
-        MnDix4ecAnCQWRGjB3MrpHU6jGYfJrSTiPEnY8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=HckUuM
-        4up1+hrv2p57Agpc2r033Xop1H6JnAlq3zBCU=; b=C8wmE0Zea0bG/Bt8GaSfDu
-        Rlwzj6x3tzrTmjKnzI+cbLG/EakziIC7s7Fyy9EWd306zcoqjpoZD9IGy8neGh3i
-        r9kRgLkxNAKR86bkhXM9gvprLuxlPNmEzZP0yE4BPGrDr+tNgQRuBE9lt6Xy7p5J
-        aUPII/xl6EQb8gHSGJJuMADQXN8xg5bSLwWaRG/VOAVeOVP4vB55TQLXE7siLthd
-        UlJljhN8OnrMgZVJKP0ZkQDXiC/akXOyhcBW+omKTcf8lX9eKlI3g0JLqcpjMeYh
-        fUOTZ5uOJQLDnnWr2YKC39XHf5pP7nhE8h3m6ePBFURwLlGfyqcXN4fryuwmzimg
-        ==
-X-ME-Sender: <xms:qItZX5WM5w6enPhs6qvO7yX49dJTnCL-aBeahzS81Dv8uTszTsf-AQ>
-    <xme:qItZX5nVNnhkCsXvAugBA0SD5uImoKe61o_Svli1ZXL2hNd1S1OsdUmTWGW4Esr8p
-    S315KM5NgD1Kot2JA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrudehiedgheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecuggftrf
-    grthhtvghrnhephefhfeekgfekudevheffheeihedujeefjeevjeefudfgfeeutdeuvdeh
-    hfevueffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghnughrvgifsegrjhdrihgurdgruh
-X-ME-Proxy: <xmx:qItZX1bArAFZacrRP9hUGq0qBEEN4VZOGfnT8zjA7dWYiTebE7Pb3g>
-    <xmx:qItZX8WUhhMfF1y2RQQCgwW37xvW-f-x6vv-oFy3QRE3UkKyvI02qw>
-    <xmx:qItZXzka1nGTmfJzAxeIYqairg07nR58UnHCw9Vi7TZ3aVAftT8KaQ>
-    <xmx:qItZX4zV6pQG4Sw0faCDmFym-y3ZBRXnjDTmS1QAySeVMlHd0YGDag>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id AF09DE00A6; Wed,  9 Sep 2020 22:12:55 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.3.0-259-g88fbbfa-fm-20200903.003-g88fbbfa3
-Mime-Version: 1.0
-Message-Id: <9eea0291-f225-466a-ba01-df3210bd8ead@www.fastmail.com>
-In-Reply-To: <4f2de881-1391-b1b1-18b3-8d3a06653da9@roeck-us.net>
-References: <20200909132411.2906159-1-andrew@aj.id.au>
- <4f2de881-1391-b1b1-18b3-8d3a06653da9@roeck-us.net>
-Date:   Thu, 10 Sep 2020 11:42:34 +0930
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Guenter Roeck" <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Cc:     "Jean Delvare" <jdelvare@suse.com>, openbmc@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (pmbus) Expose PEC debugfs attribute
-Content-Type: text/plain
+        id S1729719AbgIJC3S (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 9 Sep 2020 22:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56356 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729449AbgIJC06 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 9 Sep 2020 22:26:58 -0400
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C91BC0613ED;
+        Wed,  9 Sep 2020 19:26:57 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id u126so4447081oif.13;
+        Wed, 09 Sep 2020 19:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=czynTSoQR8aIdTOVXc0g2LHocKM0BXA9TRAb/a5XiJw=;
+        b=qYqMY/9ih2OwAN/LzfIuv4PW7CNc568H0JC2PHiBFHG5lX7DXx4SJfjA6MU6E9QaIq
+         Qu/AGKeWOZv84jmdcFQ/Dld/ttlppIJxSBwGQjrHvWetcObSAc1MOq2luvVG6MJMEmLc
+         MumFKf32HAZJWcOAah8dLf8MsxVg1osg3L3gCgAVnTuSISWw6MVGmL7orXg9/3l89Uj9
+         uezVSjyoGO02Jlp/p3JlDQE46NTqUcrF0RKihk12N3zXOJFIH5C0xZVvhzg9GGmu5LBG
+         XUtWfa0a9Pp7GY3UDC38w5UYFf32sOSIq5RXArFQLMsCkOrTHkm0LARbVVmxWASOhkaf
+         ubAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=czynTSoQR8aIdTOVXc0g2LHocKM0BXA9TRAb/a5XiJw=;
+        b=Z6DbgZs/gqrJ6wV484d+1DT9JP0iYgLIWKO0KLhMHrtXBcH0cKrj0oxC6/j5lArvNw
+         +3N7/U3VpNQmqizPILrE/c32KhfQJ/f7ksx38E/yjKGpiICuD1w5UBrPzjduwaMAP3TO
+         vwDeAit0EeEmuuUMDaNSgItG8fNIteq61v1GofBrpPObgEChBxNfPoUQQYmKfGM/yEwY
+         wNQtoZdUs3+Z3eLYrmV8LAkgqJS+VP+q8j57Oa0JmjZLbnz9SJKD9Mud8K9WF4wEbE8v
+         z8KLWgjJCG6SHisivFlVq9g6w07F2XP2DDui18WRqjR412gOvzIKjqU3+H2o15dVKJ+R
+         iVVw==
+X-Gm-Message-State: AOAM533I1xzS+EAArsazS3Xs4vpkYtsONsqny+x3V7qHY9O34IQqRCFO
+        vQPFI9/Vj1aaM5pQyFjEtg4Olhz14BQ=
+X-Google-Smtp-Source: ABdhPJwwZ/0h3XhnkbLjp3gEQDmCnakuLLp2/IqOj1JVVTy9Iu1QTaNVb3iX7gJnTUjZXPyp84D2nw==
+X-Received: by 2002:a54:4e95:: with SMTP id c21mr2319903oiy.118.1599704816446;
+        Wed, 09 Sep 2020 19:26:56 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 187sm726618oie.42.2020.09.09.19.26.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Sep 2020 19:26:55 -0700 (PDT)
+Subject: Re: [PATCH v2] hwmon: (pmbus) Expose PEC debugfs attribute
+To:     Andrew Jeffery <andrew@aj.id.au>, linux-hwmon@vger.kernel.org
+Cc:     jdelvare@suse.com, linux-kernel@vger.kernel.org
+References: <20200910021106.2958382-1-andrew@aj.id.au>
+From:   Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <06000105-9438-6803-1ef9-0bfec7c09360@roeck-us.net>
+Date:   Wed, 9 Sep 2020 19:26:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20200910021106.2958382-1-andrew@aj.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-
-
-On Thu, 10 Sep 2020, at 01:01, Guenter Roeck wrote:
-> On 9/9/20 6:24 AM, Andrew Jeffery wrote:
-> > Enable runtime debug control of whether the PEC byte is exchanged with
-> > the PMBus device.
-> > 
-> > Some manufacturers have asked for the PEC to be disabled as part of
-> > debugging driver communication issues with devices.
-> > 
-> > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> > ---
-> >  drivers/hwmon/pmbus/pmbus_core.c | 39 ++++++++++++++++++++++++++++++++
-> >  1 file changed, 39 insertions(+)
-> > 
-> > diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-> > index 44535add3a4a..51c8502b35e9 100644
-> > --- a/drivers/hwmon/pmbus/pmbus_core.c
-> > +++ b/drivers/hwmon/pmbus/pmbus_core.c
-> > @@ -2346,6 +2346,42 @@ static int pmbus_debugfs_get_status(void *data, u64 *val)
-> >  DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_status, pmbus_debugfs_get_status,
-> >  			 NULL, "0x%04llx\n");
-> >  
-> > +static int pmbus_debugfs_get_pec(void *data, u64 *val)
-> > +{
-> > +	struct i2c_client *client = data;
-> > +
-> > +	*val = !!(client->flags & I2C_CLIENT_PEC);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int pmbus_debugfs_set_pec(void *data, u64 val)
-> > +{
-> > +	int rc;
-> > +	struct i2c_client *client = data;
-> > +
-> > +	if (!val) {
-> > +		client->flags &= ~I2C_CLIENT_PEC;
-> > +		return 0;
-> > +	}
-> > +
-> > +	if (val != 1)
-> > +		return -EINVAL;
-> > +
-> > +	rc = i2c_smbus_read_byte_data(client, PMBUS_CAPABILITY);
-> > +	if (rc < 0)
-> > +		return rc;
-> > +
-> > +	if (!(rc & PB_CAPABILITY_ERROR_CHECK))
-> > +		return -ENOTSUPP;
+On 9/9/20 7:11 PM, Andrew Jeffery wrote:
+> Enable runtime debug control of whether the PEC byte is exchanged with
+> the PMBus device.
 > 
-> WARNING: ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP
+> Some manufacturers have asked for the PEC to be disabled as part of
+> debugging driver communication issues with devices.
 > 
-> > +
-> > +	client->flags |= I2C_CLIENT_PEC;
-> > +
-> > +	return 0;
-> > +}
-> > +DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_pec, pmbus_debugfs_get_pec,
-> > +			 pmbus_debugfs_set_pec, "0x%1llu\n");
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+
+Applied.
+
+Thanks,
+Guenter
+
+> ---
+>  drivers/hwmon/pmbus/pmbus_core.c | 39 ++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
 > 
-> ERROR: Prefixing 0x with decimal output is defective
+> diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+> index 44535add3a4a..9e7d5f7f0cd0 100644
+> --- a/drivers/hwmon/pmbus/pmbus_core.c
+> +++ b/drivers/hwmon/pmbus/pmbus_core.c
+> @@ -2346,6 +2346,42 @@ static int pmbus_debugfs_get_status(void *data, u64 *val)
+>  DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_status, pmbus_debugfs_get_status,
+>  			 NULL, "0x%04llx\n");
+>  
+> +static int pmbus_debugfs_get_pec(void *data, u64 *val)
+> +{
+> +	struct i2c_client *client = data;
+> +
+> +	*val = !!(client->flags & I2C_CLIENT_PEC);
+> +
+> +	return 0;
+> +}
+> +
+> +static int pmbus_debugfs_set_pec(void *data, u64 val)
+> +{
+> +	int rc;
+> +	struct i2c_client *client = data;
+> +
+> +	if (!val) {
+> +		client->flags &= ~I2C_CLIENT_PEC;
+> +		return 0;
+> +	}
+> +
+> +	if (val != 1)
+> +		return -EINVAL;
+> +
+> +	rc = i2c_smbus_read_byte_data(client, PMBUS_CAPABILITY);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	if (!(rc & PB_CAPABILITY_ERROR_CHECK))
+> +		return -EOPNOTSUPP;
+> +
+> +	client->flags |= I2C_CLIENT_PEC;
+> +
+> +	return 0;
+> +}
+> +DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_pec, pmbus_debugfs_get_pec,
+> +			 pmbus_debugfs_set_pec, "%1llu\n");
+> +
+>  static int pmbus_init_debugfs(struct i2c_client *client,
+>  			      struct pmbus_data *data)
+>  {
+> @@ -2374,6 +2410,9 @@ static int pmbus_init_debugfs(struct i2c_client *client,
+>  	if (!entries)
+>  		return -ENOMEM;
+>  
+> +	debugfs_create_file("pec", 0664, data->debugfs, client,
+> +			    &pmbus_debugfs_ops_pec);
+> +
+>  	for (i = 0; i < data->info->pages; ++i) {
+>  		/* Check accessibility of status register if it's not page 0 */
+>  		if (!i || pmbus_check_status_register(client, i)) {
 > 
-> (since the displayed value is a boolean, it is also quite useless).
 
-Indeed. I overlooked running checkpatch, sorry for the noise.
-
-I've sent v2 which checkpatch claims to be clean.
-
-Andrew
