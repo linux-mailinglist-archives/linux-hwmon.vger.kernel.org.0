@@ -2,147 +2,229 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A18AF269608
-	for <lists+linux-hwmon@lfdr.de>; Mon, 14 Sep 2020 22:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6556726982D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 14 Sep 2020 23:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726072AbgINUHa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 14 Sep 2020 16:07:30 -0400
-Received: from mail-dm6nam10on2051.outbound.protection.outlook.com ([40.107.93.51]:10369
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726043AbgINUH1 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 14 Sep 2020 16:07:27 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dfQ3ZlNK57KcX7IMk1UFbI2WJLj6QemYl5nXNjfevnmDCAcve8ZxT3ZAsIkHSyUWe8XLHftCAyF61ge4Oyodb1F9kwGQLbUC1m2KMhl9Yx2dFbp/fpk/W7YPzY7lSJTYqjgzIun5ghM+cGdnHX23FaSTgyPH+NCo50MykdFMJlz6aw8B+YLP6CwzwEYUO9hYn3IaU//2kxiEb0oaebers/tBNu5r4vZfFgbWrJHrdzg7WYWIzPmH5gDrijEtiAYUY5ZbULqDfo7752AUYCeovkEf1eYtWKhk3auQYXr/sOFdde4yV2dOSzxfdfPghhQmbSJ4RaqkN6f3jFxqwsuZjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pT68a0tB5Mgosyuh3j2uymPxA/LZrENiFw5Du0OLcXg=;
- b=Nyo03ACLEdo2lhGyudnQ7jq3VqFZKIaXgzjl+yRyY+ojxZ5CEslEIUh/AUSjQXELU4hbznFJSj+Yf0u7Scx4Ci5G/Zuzh3RauFdBRvj+/hL7t+fdU1xEKf7y6QTKvj3uqUJH1QD6ukUJ78ZJdYoYQhX6M4leJYiX9l3Vni8wCoYnpDhrdujmJrzmdv4iyB+uXSNMArvHFGd5kWYmj4XyEp594j3iyYpFXyFj80BjYIx9hOIimKivvZPHNP6u3q6YxozSGpRs2qjgo2FJEfVbEP08TPXDHm6Mi7yH0SALkgrjJIuOmEh1m5iXyASyRRbqwd3S3wPOhMdf5OBEb61jzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pT68a0tB5Mgosyuh3j2uymPxA/LZrENiFw5Du0OLcXg=;
- b=TTKilA3N1cMSORpreI5Wp8t8aB9WE8pioQE9wXLmVJhtPdGZGrmAIE3EKPLuoUv0ipCPN52sCfesPKjxNMo1CqCoMM/an0XmjtiAZpIFFZETODHvsdGNCv/AaGfalhy1Wg3zUOYIkSv6mk0PTTWaytMpK6XfvGWI4HH+w7OEVS0=
-Authentication-Results: roeck-us.net; dkim=none (message not signed)
- header.d=none;roeck-us.net; dmarc=none action=none header.from=amd.com;
-Received: from CY4PR12MB1494.namprd12.prod.outlook.com (2603:10b6:910:f::22)
- by CY4PR1201MB0168.namprd12.prod.outlook.com (2603:10b6:910:1d::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Mon, 14 Sep
- 2020 20:07:23 +0000
-Received: from CY4PR12MB1494.namprd12.prod.outlook.com
- ([fe80::9067:e60d:5698:51d8]) by CY4PR12MB1494.namprd12.prod.outlook.com
- ([fe80::9067:e60d:5698:51d8%12]) with mapi id 15.20.3370.019; Mon, 14 Sep
- 2020 20:07:23 +0000
-From:   Wei Huang <wei.huang2@amd.com>
-To:     linux@roeck-us.net
-Cc:     jdelvare@suse.com, clemens@ladisch.de, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, wei.huang2@amd.com
-Subject: [PATCH 1/1] hwmon: (k10temp) Add support for Zen3 CPUs
-Date:   Mon, 14 Sep 2020 15:07:15 -0500
-Message-Id: <20200914200715.1997757-1-wei.huang2@amd.com>
-X-Mailer: git-send-email 2.24.1
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: DM6PR08CA0041.namprd08.prod.outlook.com
- (2603:10b6:5:1e0::15) To CY4PR12MB1494.namprd12.prod.outlook.com
- (2603:10b6:910:f::22)
+        id S1726068AbgINVoD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 14 Sep 2020 17:44:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725986AbgINVn7 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 14 Sep 2020 17:43:59 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26F4C06174A;
+        Mon, 14 Sep 2020 14:43:58 -0700 (PDT)
+Received: from apollo.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:6257:18ff:fec4:ca34])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id EBE47226E9;
+        Mon, 14 Sep 2020 23:43:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1600119835;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=XX02BKoMUj4hyhEKowdvyL3b5wm5POTyW7wCv2sRBm4=;
+        b=vrpe8hyktcSBLGxo2XscbCec/SIgY4lEQ0FYRXj5b0U6Y/Clyc3gz146GSFwYpak5zCfbH
+        ffh/f5yvU3nA54NO/tVaEl00PfXXsaqD/Yax5oiaZMobg3pwDnQI3xefT2TOQdxDqa64gF
+        XvLhmgCderjzuk+9FQSGMKuySMjn1DU=
+From:   Michael Walle <michael@walle.cc>
+To:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH v10 00/13] Add support for Kontron sl28cpld
+Date:   Mon, 14 Sep 2020 23:43:28 +0200
+Message-Id: <20200914214341.14268-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from weiserver.amd.com (165.204.77.1) by DM6PR08CA0041.namprd08.prod.outlook.com (2603:10b6:5:1e0::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16 via Frontend Transport; Mon, 14 Sep 2020 20:07:21 +0000
-X-Mailer: git-send-email 2.24.1
-X-Originating-IP: [165.204.77.1]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 717dbf1e-4541-482c-c76e-08d858e9cab9
-X-MS-TrafficTypeDiagnostic: CY4PR1201MB0168:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CY4PR1201MB0168678C60907EF1DE08107DCF230@CY4PR1201MB0168.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jF7ligxqpVnZgO4EhLCMXfMHh7OmR0pEW38tVOmEGPAOG5eU7XV27GV6pPXqREirLb3tl30IfkkR8yx2B6bxl/6Ws8/3sAgRbPVT5Fxq5ZSzrTC3pEo9HZAizUVmVmMAmqAE6cQcIZDsI8UZcZ4pULTd09qc7g7j6QJ5R3rzI82S4A+G8lrHozz+u4IEqItqoJgN+cAvy3wuQc79pAG+Q3dusL1kruLJvi9+4CfnNqlJEwtIBFEcwTHjaWmY+u9iMiaqQOWtWKqW/FXCPYYt3cZVaTktr7E/cMul65wB4W8sTQvJ5gCvukCjsNWGupD4
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR12MB1494.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(396003)(366004)(136003)(376002)(346002)(8676002)(36756003)(316002)(2906002)(4326008)(8936002)(6666004)(5660300002)(186003)(66946007)(7696005)(52116002)(2616005)(86362001)(6486002)(16526019)(66476007)(956004)(66556008)(26005)(478600001)(1076003)(6916009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: bsRoUwOPAdhC3Zdp/oGeAU8TF+MbY6nE2xRFQTgxUaFIau8rfEM5tLq70HijWd7wH1RLN1RxNf4Sl8xWYsouhn8FstNAkAhppVm0YXfYvE17Dx2d2qHwas5Cm453ANQq9D1tF1PNSctb0fCcOGftigWw6mjn5+iQwG6TkPnLpp2aVIaZObjq3mmPhMXtc8Nu3iqrSyV/QoUHsF1AC37Ya3jUyidfrM37xhg1fmLN1OtH/IPJD4Nile5WEIJtiKGUliOznXUGCl3Ejx/nrFMD2zZWi+MRds9UFYZH2O3/w8oWv4YyFRVF+ujqZFWHvDRD23AIlaMQfmVSjl5YLCzM1HvVwUqT1YwVfv6kmxVsTpTzTuntyGJnP+nxh1F+603WNoKwldflRykJ6vIzpyDP04kutF0WOX93m5ETpLVOgEpWLdrpND0PU1H1N5Rbt+fAq03u5PV4Z3c77qXoClpB9+JGGED6L/PamSZXZPa8yJWwlakR/oymUCSaRFJMxXgQ3wtg3l1d2W+/nT+fsrGykbQmLzp7qHNGtFHKxa/9hGQVsw1kqkhBS+V1c1jdoVs42GhaDQ6iOSoFjjSL/Q4BcbN0pcgNLsblybn8gGkwocoorDTWtkpTrta0IIt1Iu5zkkgZWzK9sHW38181QVkYVQ==
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 717dbf1e-4541-482c-c76e-08d858e9cab9
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR12MB1494.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2020 20:07:23.0494
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PycXT7UjGyYNrqHZ2E4HFq8RHU+DKWLgXP7eN2RNZ1OjS3jkmWa6KkllkJ4d6hd6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1201MB0168
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Sender: linux-hwmon-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Zen3 thermal info is supported via a new PCI device ID. Also the voltage
-telemetry registers and the current factors need to be defined. k10temp
-driver then searches for CPU family 0x19 and configures k10temp_data
-accordingly.
+The Kontron sl28cpld is a board management chip providing gpio, pwm, fan
+monitoring and an interrupt controller. For now this controller is used on
+the Kontron SMARC-sAL28 board. But because of its flexible nature, it
+might also be used on other boards in the future. The individual blocks
+(like gpio, pwm, etc) are kept intentionally small. The MFD core driver
+then instantiates different (or multiple of the same) blocks. It also
+provides the register layout so it might be updated in the future without a
+device tree change; and support other boards with a different layout or
+functionalities.
 
-Signed-off-by: Wei Huang <wei.huang2@amd.com>
----
- drivers/hwmon/k10temp.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+See also [1] for more information.
 
-diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-index 49e8ebf8da32..a250481b5a97 100644
---- a/drivers/hwmon/k10temp.c
-+++ b/drivers/hwmon/k10temp.c
-@@ -95,6 +95,13 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
- #define F17H_M31H_CFACTOR_ICORE			1000000	/* 1A / LSB	*/
- #define F17H_M31H_CFACTOR_ISOC			310000	/* 0.31A / LSB	*/
- 
-+/* F19h thermal registers through SMN */
-+#define F19H_M01_SVI_TEL_PLANE0			(ZEN_SVI_BASE + 0x14)
-+#define F19H_M01_SVI_TEL_PLANE1			(ZEN_SVI_BASE + 0x10)
-+
-+#define F19H_M01H_CFACTOR_ICORE			1000000	/* 1A / LSB	*/
-+#define F19H_M01H_CFACTOR_ISOC			310000	/* 0.31A / LSB	*/
-+
- struct k10temp_data {
- 	struct pci_dev *pdev;
- 	void (*read_htcreg)(struct pci_dev *pdev, u32 *regval);
-@@ -527,6 +534,22 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 			k10temp_get_ccd_support(pdev, data, 8);
- 			break;
- 		}
-+	} else if (boot_cpu_data.x86 == 0x19) {
-+		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
-+		data->read_tempreg = read_tempreg_nb_zen;
-+		data->show_temp |= BIT(TDIE_BIT);
-+		data->is_zen = true;
-+
-+		switch (boot_cpu_data.x86_model) {
-+		case 0x0 ... 0x1:	/* Zen3 */
-+			data->show_current = true;
-+			data->svi_addr[0] = F19H_M01_SVI_TEL_PLANE0;
-+			data->svi_addr[1] = F19H_M01_SVI_TEL_PLANE1;
-+			data->cfactor[0] = F19H_M01H_CFACTOR_ICORE;
-+			data->cfactor[1] = F19H_M01H_CFACTOR_ISOC;
-+			k10temp_get_ccd_support(pdev, data, 8);
-+			break;
-+		}
- 	} else {
- 		data->read_htcreg = read_htcreg_pci;
- 		data->read_tempreg = read_tempreg_pci;
-@@ -564,6 +587,7 @@ static const struct pci_device_id k10temp_id_table[] = {
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M60H_DF_F3) },
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
-+	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
- 	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
- 	{}
- };
+This is my first take of a MFD driver. I don't know whether the subsystem
+maintainers should only be CCed on the patches which affect the subsystem
+or on all patches for this series. I've chosen the latter so you can get a
+more complete picture.
+
+[1] https://lore.kernel.org/linux-devicetree/0e3e8204ab992d75aa07fc36af7e4ab2@walle.cc/
+
+Changes for v4 and above are tracked in the patches, suggested by Lee.
+
+Changes since v3:
+ - use of_platform_populate() to populate internal devices using the
+   internal register offsets as unit-addresses
+ - because we don't use mfd_cells anymore, we cannot use IORESOURCE_REG,
+   but instead parse the reg property in each individual driver
+ - dropped the following patches because they were already merged:
+     gpiolib: Introduce gpiochip_irqchip_add_domain()
+     gpio: add a reusable generic gpio_chip using regmap
+ - dropped the following patches because they are no longer needed:
+     include/linux/ioport.h: add helper to define REG resource constructs
+     mfd: mfd-core: Don't overwrite the dma_mask of the child device
+     mfd: mfd-core: match device tree node against reg property
+ - rephrase commit messages, as suggested by Thomas Gleixner
+
+Changes since v2:
+As suggested by Guenter Roeck:
+ - added sl28cpld.rst to index.rst
+ - removed sl28cpld_wdt_status()
+ - reverse christmas tree local variable ordering
+ - assign device_property_read_bool() retval directly
+ - introduce WDT_DEFAULT_TIMEOUT and use it if the hardware reports
+   0 as timeout.
+ - set WDOG_HW_RUNNING if applicable
+ - remove platform_set_drvdata() leftover
+
+As suggested by Bartosz Golaszewski:
+ - don't export gpio_regmap_simple_xlate()
+ - combine local variable declaration of the same type
+ - drop the "struct gpio_regmap_addr", instead use -1 to force an address
+   offset of zero
+ - fix typo
+ - use "struct gpio_regmap_config" pattern, keep "struct gpio_regmap"
+   private. this also means we need a getter/setter for the driver_data
+   element.
+
+As suggested by Linus Walleij:
+ - don't store irq_domain in gpio-regmap. drop to_irq() altogether for now.
+   Instead there is now a new patch which lets us set the irqdomain of the
+   gpiochip_irqchip and use its .to_irq() function. This way we don't have
+   to expose the gpio_chip inside the gpio-regmap to the user.
+
+Changes since v1:
+ - use of_match_table in all drivers, needed for automatic module loading,
+   when using OF_MFD_CELL()
+ - add new gpio-regmap.c which adds a generic regmap gpio_chip
+   implementation
+ - new patch for reqmap_irq, so we can reuse its implementation
+ - remove almost any code from gpio-sl28cpld.c, instead use gpio-regmap and
+   regmap-irq
+ - change the handling of the mfd core vs device tree nodes; add a new
+   property "of_reg" to the mfd_cell struct which, when set, is matched to
+   the unit-address of the device tree nodes.
+ - fix sl28cpld watchdog when it is not initialized by the bootloader.
+   Explicitly set the operation mode.
+ - also add support for kontron,assert-wdt-timeout-pin in sl28cpld-wdt.
+
+As suggested by Bartosz Golaszewski:
+ - define registers as hex
+ - make gpio enum uppercase
+ - move parent regmap check before memory allocation
+ - use device_property_read_bool() instead of the of_ version
+ - mention the gpio flavors in the bindings documentation
+
+As suggested by Guenter Roeck:
+ - cleanup #includes and sort them
+ - use devm_watchdog_register_device()
+ - use watchdog_stop_on_reboot()
+ - provide a Documentation/hwmon/sl28cpld.rst
+ - cleaned up the weird tristate->bool and I2C=y issue. Instead mention
+   that the MFD driver is bool because of the following intc patch
+ - removed the SL28CPLD_IRQ typo
+
+As suggested by Rob Herring:
+ - combine all dt bindings docs into one patch
+ - change the node name for all gpio flavors to "gpio"
+ - removed the interrupts-extended rule
+ - cleaned up the unit-address space, see above
+
+Michael Walle (13):
+  mfd: add simple regmap based I2C driver
+  dt-bindings: mfd: Add bindings for sl28cpld
+  mfd: simple-mfd-i2c: add sl28cpld support
+  irqchip: add sl28cpld interrupt controller support
+  watchdog: add support for sl28cpld watchdog
+  pwm: add support for sl28cpld PWM controller
+  gpio: add support for the sl28cpld GPIO controller
+  hwmon: add support for the sl28cpld hardware monitoring controller
+  arm64: dts: freescale: sl28: enable sl28cpld
+  arm64: dts: freescale: sl28: map GPIOs to input events
+  arm64: dts: freescale: sl28: enable LED support
+  arm64: dts: freescale: sl28: enable fan support
+  arm64: defconfig: enable the sl28cpld board management controller
+
+ .../bindings/gpio/kontron,sl28cpld-gpio.yaml  |  54 ++++
+ .../hwmon/kontron,sl28cpld-hwmon.yaml         |  27 ++
+ .../kontron,sl28cpld-intc.yaml                |  54 ++++
+ .../bindings/mfd/kontron,sl28cpld.yaml        | 153 ++++++++++
+ .../bindings/pwm/kontron,sl28cpld-pwm.yaml    |  35 +++
+ .../watchdog/kontron,sl28cpld-wdt.yaml        |  35 +++
+ Documentation/hwmon/index.rst                 |   1 +
+ Documentation/hwmon/sl28cpld.rst              |  36 +++
+ .../fsl-ls1028a-kontron-kbox-a-230-ls.dts     |  18 ++
+ .../fsl-ls1028a-kontron-sl28-var3-ads2.dts    |   9 +
+ .../freescale/fsl-ls1028a-kontron-sl28.dts    | 134 +++++++++
+ arch/arm64/configs/defconfig                  |   6 +
+ drivers/gpio/Kconfig                          |  12 +
+ drivers/gpio/Makefile                         |   1 +
+ drivers/gpio/gpio-sl28cpld.c                  | 161 +++++++++++
+ drivers/hwmon/Kconfig                         |  10 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/sl28cpld-hwmon.c                | 142 +++++++++
+ drivers/irqchip/Kconfig                       |   8 +
+ drivers/irqchip/Makefile                      |   1 +
+ drivers/irqchip/irq-sl28cpld.c                |  96 +++++++
+ drivers/mfd/Kconfig                           |  22 ++
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/simple-mfd-i2c.c                  |  57 ++++
+ drivers/pwm/Kconfig                           |  10 +
+ drivers/pwm/Makefile                          |   1 +
+ drivers/pwm/pwm-sl28cpld.c                    | 270 ++++++++++++++++++
+ drivers/watchdog/Kconfig                      |  11 +
+ drivers/watchdog/Makefile                     |   1 +
+ drivers/watchdog/sl28cpld_wdt.c               | 229 +++++++++++++++
+ 30 files changed, 1596 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/kontron,sl28cpld-gpio.yaml
+ create mode 100644 Documentation/devicetree/bindings/hwmon/kontron,sl28cpld-hwmon.yaml
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/kontron,sl28cpld-intc.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/kontron,sl28cpld.yaml
+ create mode 100644 Documentation/devicetree/bindings/pwm/kontron,sl28cpld-pwm.yaml
+ create mode 100644 Documentation/devicetree/bindings/watchdog/kontron,sl28cpld-wdt.yaml
+ create mode 100644 Documentation/hwmon/sl28cpld.rst
+ create mode 100644 drivers/gpio/gpio-sl28cpld.c
+ create mode 100644 drivers/hwmon/sl28cpld-hwmon.c
+ create mode 100644 drivers/irqchip/irq-sl28cpld.c
+ create mode 100644 drivers/mfd/simple-mfd-i2c.c
+ create mode 100644 drivers/pwm/pwm-sl28cpld.c
+ create mode 100644 drivers/watchdog/sl28cpld_wdt.c
+
 -- 
-2.24.1
+2.20.1
 
