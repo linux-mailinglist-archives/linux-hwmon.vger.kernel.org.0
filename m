@@ -2,75 +2,160 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB4826E63E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Sep 2020 22:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3991026E6AC
+	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Sep 2020 22:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726392AbgIQUH7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 17 Sep 2020 16:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55086 "EHLO
+        id S1726589AbgIQUXA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 17 Sep 2020 16:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbgIQUH7 (ORCPT
+        with ESMTP id S1726234AbgIQUW7 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 17 Sep 2020 16:07:59 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFC3C06174A
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Sep 2020 12:20:12 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id nw23so4837861ejb.4
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Sep 2020 12:20:12 -0700 (PDT)
+        Thu, 17 Sep 2020 16:22:59 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0D9C06178C
+        for <linux-hwmon@vger.kernel.org>; Thu, 17 Sep 2020 12:25:19 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id z4so3253055wrr.4
+        for <linux-hwmon@vger.kernel.org>; Thu, 17 Sep 2020 12:25:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=KTYE0XXOdahIxSIlBimaUFCHC4U8RNXGJMzPYWu7VNI=;
-        b=BARXbLn8JpmuBD1zl3GhF0iK1qtxjkTdChcfESqbScFKwdiUA2bv5hmQvREiPNDBEv
-         59aLSGJYs+V8NnbhLmERMSTKq5BtJGqZzol7GryZ1FDoWooeoE0WXq4/cuS2QpTkYzBy
-         YQHAofMYgoYycJGVm4bHnUgBMq3MwJq7/f7kO3PQJQgsjH6thyj9QZAUo3T6eTCvJlj8
-         glKHdIO1/GiuDczy9b2+2vVCLSEWSlMbyVJTiv2cp3Zv/jOOHXaBcRhDnsmU4RCnoJKE
-         jwlRivf87xNW4r9ukZrw5q9KXPerRKk59j7IW5ClnyF9DfQ+BqgIT1CqhLDtdw4uNM1F
-         /PYw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=fnNtIiw2rIjrsGeETGQ4HVhLgof6IApfDCKNZB0rtx4=;
+        b=FnbmoKzn7ml3hNVC5JMySDeca53lTjtdCXoL4cxAwzsEJrHzyEDKiOIljY35+rHymp
+         jt5GwmgM0shyZllOsgSZwY1CN+167LFzIGjPBmfNcdzVLaAOviH2qCxmpdLIINnBYKdr
+         Nenh/eU1pcNo7H7CYh7JbOgBzXixsAvVANZjgbmMpOdpEOqoSWQOaJdn0OEkqXMoKEDM
+         Q0SNuv4Q5KZUIK5oUfQtO9Gcy3oo5OvaZ3rbJ7eOSHvaN8c1rIBr1TUyzLh0jx/opgMg
+         Syx8dKN4xhP81GhQDlmyDEUOhNv4IH6zDXnd2mrLTjbJp/76i8olBPS0b7cja4sPq5o/
+         fzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=KTYE0XXOdahIxSIlBimaUFCHC4U8RNXGJMzPYWu7VNI=;
-        b=e4Z8oVh3+gb0ZRuNCGnBeWPVfniM/FmBCMWul5CPMgJ8+hvgU8D0hysMyS7zKI7iN0
-         z2ixf9Nq8I8FmaT5kGqb668oWxDPRkbEIrG79gmaXry3rOGlFo5dbowSCQUzgfoJVdTD
-         Kf7btMWczlNJR73V8kthxdzOV5PO1BZDzZbxGYDkO0ZoUN4zDD1zWeq2SyfIpOKelP9R
-         po6Zp7UHRl6gd91rp2nciLsx2ZbnwtnCsCuQq1FQWGMg/3qpEmGab1eFvKk89Dp6LewO
-         4HLhKSDJOoFEz82Iqa8Ftb4krtXCiRkOJ+nwrzLvrDYLopiWv0d7Q7EKRP78UJ4hbLeD
-         B5gA==
-X-Gm-Message-State: AOAM531ezqf5hjwuziS3PNoI9bWojDOFv6n0aRZPzv7BsYIcdnjd1cfs
-        uWB7W+HtO2x0/sTVkE05mTYBO/iTwOXOKuFLs4E=
-X-Google-Smtp-Source: ABdhPJzG3fYT+wXhNHMAsFAywrjvcX7fzLzHwGWSs504W1Cc50s/IO81O0OavTu4xCFmSHkDDwJWUeNp15iAG9sYdhQ=
-X-Received: by 2002:a17:906:14d3:: with SMTP id y19mr31482611ejc.453.1600370410238;
- Thu, 17 Sep 2020 12:20:10 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=fnNtIiw2rIjrsGeETGQ4HVhLgof6IApfDCKNZB0rtx4=;
+        b=siRObF3DchlWOG/D/+dP/VGc4tkHUHinO6nPf4t3LVJvL+Aae+qmZdU9rdQQiUIply
+         azMzBYSLLhjwQiFkDShKe/9YeM9HdQmCWyZGItttHtEDumu4x+Inl/V8cOupkw2XKTgo
+         JKXz6yzS4q0RUxANIMCCwF0bfeoXMMcALoiNWuknlkcXp8riyshZBWcVQlEoDoSktsFP
+         fCzGtubrdFaAWQP52+7HDuCDUStSoZOtF77h2iUdruTtbu0//79waIcF0FJFatfgZXWH
+         6NQk8zlN2URAdfrf8fTYZIkUaX9XS6HSnj0pqcpj/SlJSnb9lMsm9KKoR7KtsbHed1uG
+         /vgg==
+X-Gm-Message-State: AOAM531TiQOgiUWrrc0wCQ55j1Inx/5EsC7t2PGWXyGvGXtRHzorlw6e
+        3WaXvb59QLdEYQ3hTzl4X5ty6Q==
+X-Google-Smtp-Source: ABdhPJwHQNEGKQiK5VaKpdrHxxRlNDliXhK+3vSwtgJ/Fr7no0AtL6d27HAF4oliOiP95GvT8d67qQ==
+X-Received: by 2002:a05:6000:100c:: with SMTP id a12mr36101704wrx.115.1600370717856;
+        Thu, 17 Sep 2020 12:25:17 -0700 (PDT)
+Received: from dell ([91.110.221.204])
+        by smtp.gmail.com with ESMTPSA id i6sm970270wra.1.2020.09.17.12.25.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2020 12:25:16 -0700 (PDT)
+Date:   Thu, 17 Sep 2020 20:25:14 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Michael Walle <michael@walle.cc>
+Cc:     linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Pavel Machek <pavel@ucw.cz>
+Subject: [GIT PULL] Immutable branch between MFD, HWMON, GPIO, IRQChip, PWM
+ and Watchdog due for the v5.10 merge window
+Message-ID: <20200917192514.GF4678@dell>
+References: <20200914214341.14268-1-michael@walle.cc>
 MIME-Version: 1.0
-Reply-To: dennissacco01@gmail.com
-Received: by 2002:a17:906:259:0:0:0:0 with HTTP; Thu, 17 Sep 2020 12:20:09
- -0700 (PDT)
-From:   Sacco Dennis <dennissacco01@gmail.com>
-Date:   Thu, 17 Sep 2020 19:20:09 +0000
-X-Google-Sender-Auth: YJ7vjsdNInJYi-lhISFtPwRceUI
-Message-ID: <CAAT317YYpes+ZOn=146+X-dCQDAO7Uj8h4t85CxrAYYiftrQfw@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200914214341.14268-1-michael@walle.cc>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-I am Mr.Sacco,i work as an accountant in a bank, i am contacting you
-in regards to a business transfer of a huge sum of money from a
-deceased account. I need your urgent assistance in transferring the
-sum of $11.6million dollars to your private bank  account,the fund
-belongs to one of our foreign customer who died along with his entire
-family since July 22, 2003.The money has been here in our Bank lying
-dormant for years now without anybody coming for the claim of it.
+Enjoy!
 
-I now seek your permission to have you stand in as the deceased
-relative to enable the funds be released in your favor as the
-beneficiary and the next of kin to our deceased customer,the Banking
-laws here does not allow such money to stay more than 19years,because
-the money will be recalled to the Bank treasury account as unclaimed
-fund.I am ready to share with you 40% for you and 60% will be kept for
-me, by indicating your interest i will send you the full details on
-how the business will be executed.
+The following changes since commit 9123e3a74ec7b934a4a099e98af6a61c2f80bbf5:
+
+  Linux 5.9-rc1 (2020-08-16 13:04:57 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-gpio-hwmon-irqchip-pwm-watchdog-v5.10
+
+for you to fetch changes up to 3f697027bcb0959d7c24d59550ab1da07c2dd609:
+
+  hwmon: Add support for the sl28cpld hardware monitoring controller (2020-09-17 16:02:42 +0100)
+
+----------------------------------------------------------------
+Immutable branch between MFD, HWMON, GPIO, IRQChip, PWM and Watchdog due for the v5.10 merge window
+
+----------------------------------------------------------------
+Michael Walle (8):
+      mfd: Add simple regmap based I2C driver
+      dt-bindings: mfd: Add bindings for sl28cpld
+      mfd: simple-mfd-i2c: Add sl28cpld support
+      irqchip: Add sl28cpld interrupt controller support
+      watchdog: add support for sl28cpld watchdog
+      pwm: Add support for sl28cpld PWM controller
+      gpio: Add support for the sl28cpld GPIO controller
+      hwmon: Add support for the sl28cpld hardware monitoring controller
+
+ .../bindings/gpio/kontron,sl28cpld-gpio.yaml       |  54 +++++
+ .../bindings/hwmon/kontron,sl28cpld-hwmon.yaml     |  27 +++
+ .../kontron,sl28cpld-intc.yaml                     |  54 +++++
+ .../devicetree/bindings/mfd/kontron,sl28cpld.yaml  | 153 ++++++++++++
+ .../bindings/pwm/kontron,sl28cpld-pwm.yaml         |  35 +++
+ .../bindings/watchdog/kontron,sl28cpld-wdt.yaml    |  35 +++
+ Documentation/hwmon/index.rst                      |   1 +
+ Documentation/hwmon/sl28cpld.rst                   |  36 +++
+ drivers/gpio/Kconfig                               |  12 +
+ drivers/gpio/Makefile                              |   1 +
+ drivers/gpio/gpio-sl28cpld.c                       | 161 ++++++++++++
+ drivers/hwmon/Kconfig                              |  10 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/sl28cpld-hwmon.c                     | 142 +++++++++++
+ drivers/irqchip/Kconfig                            |   8 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-sl28cpld.c                     |  96 ++++++++
+ drivers/mfd/Kconfig                                |  22 ++
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/simple-mfd-i2c.c                       |  57 +++++
+ drivers/pwm/Kconfig                                |  10 +
+ drivers/pwm/Makefile                               |   1 +
+ drivers/pwm/pwm-sl28cpld.c                         | 270 +++++++++++++++++++++
+ drivers/watchdog/Kconfig                           |  11 +
+ drivers/watchdog/Makefile                          |   1 +
+ drivers/watchdog/sl28cpld_wdt.c                    | 229 +++++++++++++++++
+ 26 files changed, 1429 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gpio/kontron,sl28cpld-gpio.yaml
+ create mode 100644 Documentation/devicetree/bindings/hwmon/kontron,sl28cpld-hwmon.yaml
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/kontron,sl28cpld-intc.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/kontron,sl28cpld.yaml
+ create mode 100644 Documentation/devicetree/bindings/pwm/kontron,sl28cpld-pwm.yaml
+ create mode 100644 Documentation/devicetree/bindings/watchdog/kontron,sl28cpld-wdt.yaml
+ create mode 100644 Documentation/hwmon/sl28cpld.rst
+ create mode 100644 drivers/gpio/gpio-sl28cpld.c
+ create mode 100644 drivers/hwmon/sl28cpld-hwmon.c
+ create mode 100644 drivers/irqchip/irq-sl28cpld.c
+ create mode 100644 drivers/mfd/simple-mfd-i2c.c
+ create mode 100644 drivers/pwm/pwm-sl28cpld.c
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
