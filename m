@@ -2,107 +2,91 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3F22716DD
-	for <lists+linux-hwmon@lfdr.de>; Sun, 20 Sep 2020 20:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E14271ACD
+	for <lists+linux-hwmon@lfdr.de>; Mon, 21 Sep 2020 08:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726657AbgITSKA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 20 Sep 2020 14:10:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726333AbgITSKA (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 20 Sep 2020 14:10:00 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F366CC061755
-        for <linux-hwmon@vger.kernel.org>; Sun, 20 Sep 2020 11:09:59 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id l15so10147114wmh.1
-        for <linux-hwmon@vger.kernel.org>; Sun, 20 Sep 2020 11:09:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=U/3y8aL8xjaXoF5g8eBJHDwrEWSj6qaH/5qg/WgNfb4=;
-        b=ZW7d3oqIcEZauhNIVxQ4aPHCTYU5uxTbAVNygwKqonp6VJewXYz+IVpRcB75KKT4aC
-         sYaSYu12Z9rs8y3JuDXtHPeSs/1aVEZcqr2qdY+xNuoQr1SGL5JPKUWV2jedZDILWHBe
-         phFrC9wZQUiEI4mS0qC9ftRG7EwOBHE83b/hE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=U/3y8aL8xjaXoF5g8eBJHDwrEWSj6qaH/5qg/WgNfb4=;
-        b=sH6eYNgCO84zN8cyPfWJuBYCsio4p9LbzcWy6TRfqEi7/E4Z21xi3HBQyqcTR/7p2K
-         WtjO2wJ93fe2EGPJBUh2hKqeCrrgGhkb/bgupaP2gS6pn4Eusd3DB7iHohuOwXVwv1kG
-         xxrZStOmt1Gu8yft1X9XDzD8d5Z2zmZbgGq6AzPJGcduLwJ5dKoOU2kd8liAVDoV39tA
-         PSlVZ9iOpyvVE0sZ+zyLwYkF5QU3eEtoAJTdTKYrmxAsLonM+u090REs7c+F2p/7ZzTX
-         p9p4DwLQVIaniRXkuC/pBkUhYaZhyzIwevVoPPWZKpM/fl4T+yaXcOzWIIE5uq3smq+y
-         hMew==
-X-Gm-Message-State: AOAM531R9GPxfXbnZHyao3jsx0bxzE/dvx2GEwnQ7Bgh/XJ5AgAUbAUg
-        qc8SOH8gs8B6CGpb48/3G5Nr2VlmHLTHjQ==
-X-Google-Smtp-Source: ABdhPJxTSoh6uhWTEEQhAiaFxpDd3IF2UtVH5inGnGlS0fLIY5EA8zmnLM+Bz1V1NIs5P7uaDMnO0w==
-X-Received: by 2002:a1c:f20b:: with SMTP id s11mr27041641wmc.144.1600625398666;
-        Sun, 20 Sep 2020 11:09:58 -0700 (PDT)
-Received: from ar2.home.b5net.uk ([213.48.11.149])
-        by smtp.gmail.com with ESMTPSA id h186sm15823702wmf.24.2020.09.20.11.09.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2020 11:09:58 -0700 (PDT)
-From:   Paul Barker <pbarker@konsulko.com>
-To:     Kamil Debski <kamil@wypas.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Paul Barker <pbarker@konsulko.com>, linux-hwmon@vger.kernel.org
-Subject: [PATCH 2/2] hwmon: pwm-fan: Fix RPM calculation
-Date:   Sun, 20 Sep 2020 19:09:43 +0100
-Message-Id: <20200920180943.352526-5-pbarker@konsulko.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200920180943.352526-1-pbarker@konsulko.com>
-References: <20200920180943.352526-1-pbarker@konsulko.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726297AbgIUGWa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 21 Sep 2020 02:22:30 -0400
+Received: from mga04.intel.com ([192.55.52.120]:4790 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726011AbgIUGWa (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 21 Sep 2020 02:22:30 -0400
+IronPort-SDR: ODueQ2Vgsi8hp8/LxDpk5PlWKrslcGGLqP4fLCHigf5JkEMoDx0mQe0Yc9rLN80+nIAB6owra/
+ /vE5ddTAfiyQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9750"; a="157703146"
+X-IronPort-AV: E=Sophos;i="5.77,285,1596524400"; 
+   d="scan'208";a="157703146"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2020 23:22:29 -0700
+IronPort-SDR: UKrKTMhbaahAv9WpDlD2qnVoNECMqmJXcCG0BJgDVOSXMUypO2FZPaA6z6HLhS6nrpw0pmHaxD
+ RHgFnxUk/idg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,285,1596524400"; 
+   d="scan'208";a="510437549"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.141])
+  by fmsmga005.fm.intel.com with ESMTP; 20 Sep 2020 23:22:26 -0700
+From:   Xu Yilun <yilun.xu@intel.com>
+To:     lee.jones@linaro.org, linux@roeck-us.net, jdelvare@suse.com,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     trix@redhat.com, yilun.xu@intel.com,
+        matthew.gerlach@linux.intel.com, russell.h.weight@intel.com,
+        lgoncalv@redhat.com, hao.wu@intel.com, mdf@kernel.org
+Subject: [PATCH v3 0/2] add Intel MAX 10 BMC MFD driver & hwmon sub driver
+Date:   Mon, 21 Sep 2020 14:17:49 +0800
+Message-Id: <1600669071-26235-1-git-send-email-yilun.xu@intel.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-To convert the number of pulses counted into an RPM estimation, we need
-to divide by the width of our measurement interval instead of
-multiplying by it.
+I recently realized that maintainers may have trouble to apply patches to
+their trees if the patches depend on other being-reviewed patches. So I'm
+trying to wrapper the 2 patches into one patchset and let all the
+maintainers see the dependencies.
 
-We also don't need to do 64-bit division, with 32-bits we can handle a
-fan running at over 4 million RPM.
+But the patch version is then not aligned between the 2 patches. I'm not
+sure how to handle it. I just picked the smaller number on Subject, but
+you could still see their own version changes in commit message of each
+patch. Sorry if it makes confusing.
 
-Signed-off-by: Paul Barker <pbarker@konsulko.com>
----
- drivers/hwmon/pwm-fan.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-index d7f8c11b4543..2649f6bf1a26 100644
---- a/drivers/hwmon/pwm-fan.c
-+++ b/drivers/hwmon/pwm-fan.c
-@@ -65,19 +65,18 @@ static void sample_timer(struct timer_list *t)
- {
- 	struct pwm_fan_ctx *ctx = from_timer(ctx, t, rpm_timer);
- 	ktime_t now = ktime_get();
-+	unsigned int delta = ktime_ms_delta(now, ctx->sample_start);
- 	int i;
- 
- 	for (i = 0; i < ctx->tach_count; i++) {
- 		struct pwm_fan_tach *tach;
--		int pulses;
--		u64 tmp;
-+		unsigned int pulses;
- 
- 		tach = &ctx->tachs[i];
- 		pulses = atomic_read(&tach->pulses);
- 		atomic_sub(pulses, &tach->pulses);
--		tmp = (u64)pulses * ktime_ms_delta(now, ctx->sample_start) * 60;
--		do_div(tmp, tach->pulses_per_revolution * 1000);
--		tach->rpm = tmp;
-+		tach->rpm = (pulses * 1000 * 60) /
-+			(tach->pulses_per_revolution * delta);
- 	}
- 
- 	ctx->sample_start = now;
+Patch #1 implements the basic functions of the BMC chip for some Intel
+FPGA PCIe Acceleration Cards (PAC). The BMC is implemented using the
+Intel MAX 10 CPLD.
+
+This BMC chip is connected to the FPGA by a SPI bus. To provide direct
+register access from the FPGA, the "SPI slave to Avalon Master Bridge"
+(spi-avmm) IP is integrated in the chip. It converts encoded streams of
+bytes from the host to the internal register read/write on the Avalon
+bus. So This driver uses the regmap-spi-avmm for register accessing.
+
+Patch #2 adds support for the hwmon sub device in Intel MAX 10 BMC
+
+
+Xu Yilun (2):
+  mfd: intel-m10-bmc: add Intel MAX 10 BMC chip support for Intel FPGA
+    PAC
+  hwmon: intel-m10-bmc-hwmon: add hwmon support for Intel MAX 10 BMC
+
+ .../ABI/testing/sysfs-driver-intel-m10-bmc         |  15 +
+ Documentation/hwmon/index.rst                      |   1 +
+ Documentation/hwmon/intel-m10-bmc-hwmon.rst        |  78 +++++
+ drivers/hwmon/Kconfig                              |  11 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/intel-m10-bmc-hwmon.c                | 334 +++++++++++++++++++++
+ drivers/mfd/Kconfig                                |  13 +
+ drivers/mfd/Makefile                               |   2 +
+ drivers/mfd/intel-m10-bmc.c                        | 164 ++++++++++
+ include/linux/mfd/intel-m10-bmc.h                  |  65 ++++
+ 10 files changed, 684 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-driver-intel-m10-bmc
+ create mode 100644 Documentation/hwmon/intel-m10-bmc-hwmon.rst
+ create mode 100644 drivers/hwmon/intel-m10-bmc-hwmon.c
+ create mode 100644 drivers/mfd/intel-m10-bmc.c
+ create mode 100644 include/linux/mfd/intel-m10-bmc.h
+
 -- 
-2.28.0
+2.7.4
 
