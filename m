@@ -2,89 +2,85 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5810B277A6A
-	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Sep 2020 22:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B373277B53
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Sep 2020 23:54:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbgIXUaD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 24 Sep 2020 16:30:03 -0400
-Received: from [125.140.134.231] ([125.140.134.231]:59260 "EHLO
-        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726606AbgIXUaA (ORCPT
+        id S1726638AbgIXVyv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 24 Sep 2020 17:54:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41942 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726280AbgIXVyv (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 24 Sep 2020 16:30:00 -0400
-Received: from User ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
-         Fri, 25 Sep 2020 05:26:36 +0900
-Reply-To: <samthong5555@yahoo.com>
-From:   "SAM THONG" <samthong5555@gmail.com>
-Subject: Business Acquisition 1
-Date:   Thu, 24 Sep 2020 13:26:36 -0700
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WIN-DAONO245HJFR4fa00e70a06@WIN-DAONO245HJF>
-X-OriginalArrivalTime: 24 Sep 2020 20:26:36.0694 (UTC) FILETIME=[005C8B60:01D692B1]
-To:     unlisted-recipients:; (no To-header on input)
+        Thu, 24 Sep 2020 17:54:51 -0400
+Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com [IPv6:2607:f8b0:4864:20::749])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80640C0613CE
+        for <linux-hwmon@vger.kernel.org>; Thu, 24 Sep 2020 14:54:50 -0700 (PDT)
+Received: by mail-qk1-x749.google.com with SMTP id w126so622725qka.5
+        for <linux-hwmon@vger.kernel.org>; Thu, 24 Sep 2020 14:54:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:date:message-id:mime-version:subject:from:to;
+        bh=qYY4Jfs6qYbQPsjI6DWBpW/IJmQf+EIEdurNQROlCNU=;
+        b=Ldc1k8npZKQRcmL481jci0BdoRIHXEYC2TVi6qlwEVobiA2KHMCLoTqLrWdH5bLEoh
+         LqvnnyPj+Ga85w7//EMDaN4Qpooa/TxJnu5IFJRuwP/fDwe647Tw5CEAR9MoJRXr/OZP
+         wnLoMRkzEoz2A2cq//xRpnjWbui2Gul4Il7jKnirECPhx0QA6p9sjRfJM2b5Zbj0MCH3
+         xK+DdUDu/KtcvZiNb/xm/L/jybvpLDtzlMGYEUNGkSV1Djup1DugZEceQ1yttLq+Ic+2
+         KZcfohPc8iByq1k6oIiHj2v8Yld90Mjh8BQnWCfAZNt2NJ8EN83AjO5ze4V4GQOVf1jZ
+         EC3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
+         :to;
+        bh=qYY4Jfs6qYbQPsjI6DWBpW/IJmQf+EIEdurNQROlCNU=;
+        b=HFN/ANy5GAV0LbH5iPqiEES5tMlYDhQt2gJXElYaExIQjhmIF7umvJ/d2KkWikYsz8
+         cxrnWP9stmLRrQj2+HduAE2itx3ENwtn9jxEsKuasxh6Tl5ETuft4MC3cXhkVMtqkmP1
+         1aCBo+AEcUmtKo592f3554L6yJM9hCxV6NXt0t65T2BTcrViMV5I3btNRD9EUwRowgWH
+         hqyJ6joKQsNxYJMBTxyq1bAaU7Pe/E7jLG8QuGHLxhxLn4wjsWEIMboc+ocxsRQXrFjR
+         EVqBgwNNs7o1xGn4qR34s2eczqf80DveNXNcaeo8+MB8YlJiM1XeA00U5R8pVwjHX2Kl
+         3BcA==
+X-Gm-Message-State: AOAM532CSnXcZrPJff1Jby30ATNuDUH04WMyxWjMSkHHr9fF+B/r7ZgZ
+        /aaQBZSAi5IN9ibolH/bG9ZsIGvoHrEoILEp
+X-Google-Smtp-Source: ABdhPJw3fZTPsUlkZqs9MovY3nYObZdbRRuCz8QrgDICNhujIUYPFiaV/POn6PRZaUwOwcF7jAfn5ZqEUwiw3YnX
+Sender: "linchuyuan via sendgmr" <linchuyuan@chu-dev.c.googlers.com>
+X-Received: from chu-dev.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:3cfb])
+ (user=linchuyuan job=sendgmr) by 2002:ad4:4af4:: with SMTP id
+ cp20mr1419432qvb.40.1600984489668; Thu, 24 Sep 2020 14:54:49 -0700 (PDT)
+Date:   Thu, 24 Sep 2020 21:54:42 +0000
+Message-Id: <20200924215444.2865885-1-linchuyuan@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.28.0.681.g6f77f65b4e-goog
+Subject: [PATCH v3 0/2] hwmon: pmbus: max20730: adjust the vout base on
+From:   Chu Lin <linchuyuan@google.com>
+To:     linchuyuan@google.com, jdelvare@suse.com, linux@roeck-us.net,
+        robh+dt@kernel.org, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        qiongwang@google.com, zhongqil@google.com, jasonling@google.com,
+        belgaied@google.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+The patchset includes:
+Patch #1 - Implmentation of adjusting vout base on voltage divider
+Patch #2 - device tree binding documentation
 
+ChangeLog v1 -> v2
+  - Don't do anything to the ret if an error is returned from pmbus_read_word
+  - avoid overflow when doing multiplication
 
-Dear sir
+ChangeLog v2 -> v3
+  - Provide the binding documentation in yaml format
 
-Our underwriter company is seeking the attention of genuine and reliable persons, companies
+Chu Lin (2):
+  dt-bindings: hwmon: max20730: adding device tree doc for max20730
+  hwmon: pmbus: max20730: adjust the vout reading given voltage divider
 
-who are indeed in need of funds as investment capital or business expansion in form of a
+ .../bindings/hwmon/maxim,max20730.yaml        | 63 +++++++++++++++++++
+ drivers/hwmon/pmbus/max20730.c                | 18 ++++++
+ 2 files changed, 81 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/maxim,max20730.yaml
 
-direct loan to partner with us and benefit in our new Loan and Project funding programs.
-
-
-
-We offer flexible loans and funding for various projects at very affordable low interest
-
-rate of 3% annually for a period of 1-15 years on Non collateral loan/funding . We offer
-
-loan/funding from a minimum of Euro ? / USD$ 1 Million to Euro ? / USD$ 1 Billion. Max,
-
-depending on the nature of business/project.
-
-We are currently funding for:-
-
-
-
-* Starting up a Franchise
-
-* Business Acquisition
-
-* Business Expansion
-
-* Commercial Real Estate purchase
-
-* Consultancy and Contract Execution, Marine , ETC.
-
-
-
-Kindly get in touch for further details and procedure. samthong5555@yahoo.com 
-
-
-
-Respectfully,
-
-
-SAM THONG
-
-
-
-
-
-
-
-	
-
-
+-- 
+2.28.0.681.g6f77f65b4e-goog
 
