@@ -2,98 +2,128 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6194276CE1
-	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Sep 2020 11:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC11277444
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Sep 2020 16:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727333AbgIXJPB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 24 Sep 2020 05:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37448 "EHLO
+        id S1728285AbgIXOrL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 24 Sep 2020 10:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727318AbgIXJPB (ORCPT
+        with ESMTP id S1727889AbgIXOrL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 24 Sep 2020 05:15:01 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4643FC0613D7
-        for <linux-hwmon@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id b12so2588601edz.11
-        for <linux-hwmon@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
+        Thu, 24 Sep 2020 10:47:11 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02502C0613CE;
+        Thu, 24 Sep 2020 07:47:11 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id n61so3354208ota.10;
+        Thu, 24 Sep 2020 07:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=blIPJEbomAKiMgTEwz666YDx51JxK5KUKkCacV2k5DGrYF1dgoN3TPlbCce3UdPyqn
-         l+sjX0//ZpWoRSpXvagCpGylKqMTkNMo/2HAZJY28dwC1rti3ofKw4Z1RDbjcvxMDnbn
-         DBnAhALu6UdIa4wCDzo7dIv9qp2U03O4u7rDCQdwmjFPbrVpv5bepecSdGtwKnTJB9rH
-         nH/oGusFJ6JM43Xna+7eDdLYcEoJL8AsTmou4kcpDb2UtDY0KPfodc/NGQ4TUEcOm3hs
-         6cMsgEJtG/d3gouoUvTe4+Wy9RSjcJnO5Ygg3P7zVsSedlaT/hDy9teH4tkT8r3LGB8W
-         6cvg==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=K1ZZ0pT/WIW6zRbkjcCA32PZ6NuKc6zLQ2bXMQ8ym4U=;
+        b=CvKyj2Wv6mHnggy+SJ7FJ5OSbuEnq7ou8OsQNyH5HIB5jDk6XbTzJa5tUlsRFSTYux
+         EQpyAsiKIHGP7RlNJqYGfNXF9g8sMuhTbXqrFX/NNdyDzA+sZqOgXPr9KuMF690B9m9v
+         2byJyxZUgglw6e4SpRWS1D8XxW0yW3xEGYX4ZJCzqud/r8l6IfLdsB4WpAJT/JBI5pP/
+         uy4jDIyMnfXfmOJO6KsJQ909s+3eO8ri0bifpktad+Xok5dfYLkygtJBEmT0TARt5unU
+         tLb4C2teGO727k7/GPS7+UsRORx05Shw9v308GvLvOo/28rfPzBK8y5ukM9OgjTxhamE
+         WMEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=lu/ql/+PuH/cNRLnqpCKHbHO58fBu/HXHBb8yxmDD++oTuIu28HFosmlwpnjbhkXga
-         TxDrOWNVAMcObBjOoCFKXFMQ+PiQTF0eb7P3/ToPI2IQzxMJym4qBG5vaLoF9KGTAyyL
-         CaUHyIIOr0tUso/ret92UwLkvI5g6KNTT0Fi8V9wr/FoW16rzsCSplZafJ5wFYzLICdL
-         lfwlfkIiF1023Kx6eFRIJYU+Kx71yfcbjSZ8QraKOHtlxZoZa+ep6fUWC0tzQLaZ5Xec
-         ecEDAjIsd4pBQsD9gSjIBUsU+F/vSlPWHTFbNHngXaCKRTmcNQx3bydx54Y9ShceuQ5I
-         yLAw==
-X-Gm-Message-State: AOAM531CJu0UGGn86FLak9eO4ZfARAtxbI/TOsmEomyvu3WU7FaUmNv0
-        QsBfsbVPiVk1MwtfDshmMRbfpjZ/ifbllSFbNlg=
-X-Google-Smtp-Source: ABdhPJyTPH8PP/2mieNLbOyLqms9pUviMKvSeTWD9wb8h+Pr7H1ZfKMbyjpiQTFtDXkxINcaJ73NV9FfmSogeqXajbU=
-X-Received: by 2002:a05:6402:c15:: with SMTP id co21mr1946edb.268.1600938899597;
- Thu, 24 Sep 2020 02:14:59 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=K1ZZ0pT/WIW6zRbkjcCA32PZ6NuKc6zLQ2bXMQ8ym4U=;
+        b=qD8SlWa76jky0D7qA7dj2IQifE79RyjAE77d0JPLhuN79W+AXxlKzBD4ksrZt6S2Ba
+         OfyACUhvy0q37o4FEYYWQ1Vmc55mq+EF6pIRvN/p/btAm3PSScnKYAqCSShKAjPVjVKw
+         lO6iw4VlI+pliTZPCF9B8r7uV729RLZGxwzKL07dP5mETffEAGJ6SI71vSN0+AwA1td/
+         28LAfSt0CeCDEu7CO3L0xW7BPPqsL1Upq8dK2bRBKDFCHqNFNJ2NiYfZguprxaPuxmMK
+         Gn7lVMswchcLx11bYkpVcEiRbnZYhphdo1fPOYGOEPI78QjQLqAXeq2gxii0AiTT4Plu
+         HX8Q==
+X-Gm-Message-State: AOAM531uBHEu/MPV2V81M9MfDsZcKNWQB8zHNQCz+RHeulQhS6c64wkW
+        WEWeK511SFgLLir3jBw42vc+I1PLFW8=
+X-Google-Smtp-Source: ABdhPJz/uE8+tpT+Jr0O8gYcOa/jXMLcC7MBHeMjH9d7Efh4hjJOKY+pJbzBxdpUe7dL21ChOoG8Zg==
+X-Received: by 2002:a05:6830:2104:: with SMTP id i4mr14567otc.266.1600958830385;
+        Thu, 24 Sep 2020 07:47:10 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id g21sm921049oos.36.2020.09.24.07.47.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 24 Sep 2020 07:47:09 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Thu, 24 Sep 2020 07:47:08 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] hwmon: (adm9240) Use loops to avoid duplicated code
+Message-ID: <20200924144708.GA191738@roeck-us.net>
+References: <20200924085102.15219-1-chris.packham@alliedtelesis.co.nz>
+ <20200924085102.15219-2-chris.packham@alliedtelesis.co.nz>
 MIME-Version: 1.0
-Received: by 2002:a54:2811:0:0:0:0:0 with HTTP; Thu, 24 Sep 2020 02:14:58
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <floradarpin.d@gmail.com>
-Date:   Thu, 24 Sep 2020 02:14:58 -0700
-Message-ID: <CAPX4zWxG6--oZzPaoMmta9n5fWHajuiA-wFBP=cbGe-CKGcWaw@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200924085102.15219-2-chris.packham@alliedtelesis.co.nz>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+Hi Chris,
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
+On Thu, Sep 24, 2020 at 08:51:00PM +1200, Chris Packham wrote:
+> Use loops for reading temp_max and initialising FAN_MIN/TEMP_MAX rather
+> than duplicating code.
+> 
+> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+Series applied (and module tested).
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
+Thanks a lot for the clean submission.
 
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
+Guenter
 
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
-
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
+> ---
+>  drivers/hwmon/adm9240.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/hwmon/adm9240.c b/drivers/hwmon/adm9240.c
+> index 496d47490e10..f95dde1b9c7f 100644
+> --- a/drivers/hwmon/adm9240.c
+> +++ b/drivers/hwmon/adm9240.c
+> @@ -223,10 +223,10 @@ static struct adm9240_data *adm9240_update_device(struct device *dev)
+>  			data->fan_min[i] = i2c_smbus_read_byte_data(client,
+>  					ADM9240_REG_FAN_MIN(i));
+>  		}
+> -		data->temp_max[0] = i2c_smbus_read_byte_data(client,
+> -				ADM9240_REG_TEMP_MAX(0));
+> -		data->temp_max[1] = i2c_smbus_read_byte_data(client,
+> -				ADM9240_REG_TEMP_MAX(1));
+> +		for (i = 0; i < 2; i++) {
+> +			data->temp_max[i] = i2c_smbus_read_byte_data(client,
+> +					ADM9240_REG_TEMP_MAX(i));
+> +		}
+>  
+>  		/* read fan divs and 5-bit VID */
+>  		i = i2c_smbus_read_byte_data(client, ADM9240_REG_VID_FAN_DIV);
+> @@ -687,14 +687,14 @@ static void adm9240_init_client(struct i2c_client *client)
+>  			i2c_smbus_write_byte_data(client,
+>  					ADM9240_REG_IN_MAX(i), 255);
+>  		}
+> -		i2c_smbus_write_byte_data(client,
+> -				ADM9240_REG_FAN_MIN(0), 255);
+> -		i2c_smbus_write_byte_data(client,
+> -				ADM9240_REG_FAN_MIN(1), 255);
+> -		i2c_smbus_write_byte_data(client,
+> -				ADM9240_REG_TEMP_MAX(0), 127);
+> -		i2c_smbus_write_byte_data(client,
+> -				ADM9240_REG_TEMP_MAX(1), 127);
+> +		for (i = 0; i < 2; i++) {
+> +			i2c_smbus_write_byte_data(client,
+> +					ADM9240_REG_FAN_MIN(i), 255);
+> +		}
+> +		for (i = 0; i < 2; i++) {
+> +			i2c_smbus_write_byte_data(client,
+> +					ADM9240_REG_TEMP_MAX(i), 127);
+> +		}
+>  
+>  		/* start measurement cycle */
+>  		i2c_smbus_write_byte_data(client, ADM9240_REG_CONFIG, 1);
