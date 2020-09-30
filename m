@@ -2,130 +2,68 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C69B927F39A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Sep 2020 22:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B5B727F559
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Oct 2020 00:44:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725372AbgI3Uww (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Sep 2020 16:52:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35940 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725355AbgI3Uwv (ORCPT
+        id S1730326AbgI3WoR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Sep 2020 18:44:17 -0400
+Received: from sonic308-18.consmr.mail.ir2.yahoo.com ([77.238.178.146]:44996
+        "EHLO sonic308-18.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729980AbgI3WoQ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Sep 2020 16:52:51 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC1D6C061755;
-        Wed, 30 Sep 2020 13:52:51 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id u126so3195965oif.13;
-        Wed, 30 Sep 2020 13:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=nYY0TFDmxyVWyJBUckQyfQlvGWR4n04F0Nkv0zc7eVg=;
-        b=ILXpOZKBIzWSP+0zFt5yGa7wpW89MxCBJgHKX4ZvGrg9mlkiGGalDgi8t9yWawzYdc
-         9WWlWBYaGhf9/3RQsDEfkD7G5fXXd1W2Axj4iCBovnNbUtzJm/htl/L5qXudnnDtkDdA
-         +Y9idv6QrKc99So8SXcZl7po5e3X1g8wY8zCi+jZ8K+1WC4k/euXiamBQTjsG9bxL23f
-         XIM3xgg7+wnB7Yz3y6ikSP/2J4lhD0JhVUeo8ucxYuHnj+Yd3Lv5uogMXCnBlkBzei6R
-         cGqGdkroxlLeICGK8b8QNKSDOg84J9XLHREGm5zsUDF4FJtdlhrRa9uxdeW6b8by77Qo
-         rQJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nYY0TFDmxyVWyJBUckQyfQlvGWR4n04F0Nkv0zc7eVg=;
-        b=mekKS9M0mkh8k7pxgItau02FHBwT2nZoocJZPeENJWWqDkCbJBn+516+7gC8aav6xD
-         GfLQCctkg2tiYS1Mbh9NSLTMvhsj+BY236FhJaVWvrBSf/Qns8WmZiOhaSGZaEVucUUO
-         2mLnN/c9OZJifEdyR3vfm50Vwjsj4w0x9OzEs8q9vpE27sX60IIGftP6EK045/fX1CPg
-         CZjTOmMWeCMZQbNjsylnGeqDRTizPeVwAL9jpW/8LPFBRFJruML95Y29tQMtYTz/TNsd
-         AcrvuFOS760ZJLOXIn00NuUzp6C2qIGyPFNrcEtJBNev5TVnHW7RX4d/rF7C1x5OA9Ad
-         7+sA==
-X-Gm-Message-State: AOAM533DKp6zfQF1FN8nvLNtAn5ei9KhC0iIqI5yQ1+PvXL99KaPp7EK
-        KiI6XI6VSWmkxKMvK2qE58o=
-X-Google-Smtp-Source: ABdhPJzR6kME7SQeBZ3yxFfEaWo1jp5AaxRoFulozfb5gLrOrzKlDugVr9YnTvqkiHy7PdJOHrelIQ==
-X-Received: by 2002:a05:6808:a05:: with SMTP id n5mr2498022oij.154.1601499171063;
-        Wed, 30 Sep 2020 13:52:51 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c19sm684125ooq.35.2020.09.30.13.52.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 30 Sep 2020 13:52:50 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 30 Sep 2020 13:52:49 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Xu Yilun <yilun.xu@intel.com>
-Cc:     lee.jones@linaro.org, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        trix@redhat.com, matthew.gerlach@linux.intel.com,
-        russell.h.weight@intel.com, lgoncalv@redhat.com, hao.wu@intel.com,
-        mdf@kernel.org
-Subject: Re: [PATCH v3 0/2] add Intel MAX 10 BMC MFD driver & hwmon sub driver
-Message-ID: <20200930205249.GA241905@roeck-us.net>
-References: <1600669071-26235-1-git-send-email-yilun.xu@intel.com>
+        Wed, 30 Sep 2020 18:44:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1601505854; bh=mZFdy6s88lY1OfVHZCNBCNs7w/HtpGg9ZKvG/5VhQN8=; h=Date:From:Reply-To:Subject:References:From:Subject; b=gqaZiWiIPyKlMonA1iYrBqYrixNbd3tColEXuC8qmQomrFqvz16wUBManTTlWfOIq2LUJ0e67WgxLgY5CCbFMJi8q2d0FC8lHnP6iL/bj0FZoBzBrbj2+kob3qBqqJadjbevPPa+KAbxmW+21rZX3jZ8dg2kkQ/Go5VlnXV5f0kgQjzLHlksNBKUZqhYL4KYMtxb+G0+L43bX7+CR0OrCr8wt6YQrd2Wl9GpmNah5PMcrX+nrBtBWDySGl0zMoL/NghbwvD6HYPws2JhMZGmnQTmXJ51iPBACNMFc4ZbNzXbqcHL0gEb0xccI6UfSxl8vpwEHO26DT3MdRGw8nCQGg==
+X-YMail-OSG: d5kLJboVM1m93ysVigflb5VD9DToM2ZN53PNbiJAazKdOHCwy7cnjaOp8w3XCIb
+ vLNzvyCbHepNHd4x4NoWPEgFS44pE75THERUk3SMRq1os2GEgTwpBtIG4xUcd7ZiOoE_xJcu_FWQ
+ 5t_TNjPjoOGq0KixXWoW9pVXx6EFHH9I1wh.YHQGhT2802bPKkpnH0ZDdOCqd0x_7UTmav2VKgkY
+ Ztq2C8ye_p_sQ8dQfRdjO.w3HmXKbHIKo7HEC_iVvySpv8kSZ4BllsLKm3JKwwzTVGoZYEc_u0C6
+ k_5NrT.WJoUWdM6VyF5uRRMxR8X2gS01HxkO8CogI.ZpJrEIoZn70ObEd7wsjaiB5SgYtnJm.KHz
+ YsCjUmKAhq4WJ8abv9zL6t4hjPvUJIK_eAE9Up_kX12JZG3cLgnALYoU0pRMAZgCB7JvtHU6hQR7
+ DB1OPT0CiBy8oBjI80KXcgznPER9rOS7G5AFd_OeeGg4WnfZlpFgkqIOWnBf2d0tfU4D36lIwhhX
+ FWzh57_KRebedQKOvBOl3q1sxDYMW6Bp3jjcuiDQC7kyrh.MLZnB8aRiS9QDzguKbaXD8ZixUOJF
+ Wwpi9yVLDYzUtHg9d7QU7jXHe7rOUYn.xYdUti5DxF7jROGT8kn_RSL9XB6nX1ieZR49vKDiQMlr
+ uZBnVvmAPM8L3c_0PIhD1339rL4OMAW3b8RzN.FMpkpMy37U5rQA_aFM5duRiKxqESwztXlrBVU6
+ MfQrcdG4HSqjRezPQOJONvJmcI0N.8qHerzM0Hw5HSEos2SNdglpgEZaAmsd_WlbWC_YeoqwNbs7
+ _bCzlwyP4euERJ4etL.q.5vIM7kUk0JR5nKANL944ta4ZRvQ1nXBKwN56b8BrTyxea852.bsIhXl
+ fdyyPv_ig61s8nbipGfkzvV6YY9zUto5zhn006nEWcjw0AHju4aQqBfSZ0BDRKx3a0y.2c_uxBVN
+ b6uY2IWiLkRTcYGSl7b95z72affPheLAz741PPfVFhzx7p0z88N_qOUDm9msa2fdu56p.pjUB.fS
+ el4pi89y7lfLMkZVUNGMIx6djApeLdL4we6gh18G2VwM84DGMa2Kf6M1flY8Oxgsiwcsc6ZBVqhe
+ anWp8296Y2iBuZ0nPunxomZl.M5lGs7qrLqIrvmxkMYrMMLExBCPgQfpHEomV8SfdorNcJ1Dvv_D
+ R7K.7xUEenNmSmMdcum81.O4HQ8_D2ZYQSLGH3SeucQWLkdLwFAektxoGxjfih3eVTv4GUGNUQoN
+ q5J6LAGy4.KPs54f_kqLviZ5JNfhiE.8veBn6KoKbFbVN4rHcRAlyc.aZ6xGmq_Qv4ycRSULpYsJ
+ Rvk61oN6Qbv3a53S9TM1M7vK.YbViqc5hIAXRKQptyJI93FykARVW_IlUhLDWfxbtEEQznKCPrTa
+ LqD4StpJGq3Ehfl3ed5TE4R0Z5pE.36KRukSKJIQdK64kCiryKCSTSfg-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Wed, 30 Sep 2020 22:44:14 +0000
+Date:   Wed, 30 Sep 2020 22:44:11 +0000 (UTC)
+From:   Sophia Lucas <sophialucaspatrick@gmail.com>
+Reply-To: sophialucaspatrick@gmail.com
+Message-ID: <1200852621.725502.1601505851501@mail.yahoo.com>
+Subject: Very Urgent
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1600669071-26235-1-git-send-email-yilun.xu@intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1200852621.725502.1601505851501.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16718 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Sep 21, 2020 at 02:17:49PM +0800, Xu Yilun wrote:
-> I recently realized that maintainers may have trouble to apply patches to
-> their trees if the patches depend on other being-reviewed patches. So I'm
-> trying to wrapper the 2 patches into one patchset and let all the
-> maintainers see the dependencies.
-> 
-> But the patch version is then not aligned between the 2 patches. I'm not
-> sure how to handle it. I just picked the smaller number on Subject, but
-> you could still see their own version changes in commit message of each
-> patch. Sorry if it makes confusing.
-> 
 
-If you started with separate patches, it would be much better to pick
-the larger number, and add a note into the individual patch(es) stating
-the reason for the gap. Everything else is highly confusing. I would not
-be surprised if no one in the mfd world even looks at the mfd patch
-since it went back from v6 (?) to v3 according to its subject line.
 
-Thanks,
-Guenter
 
-> 
-> Patch #1 implements the basic functions of the BMC chip for some Intel
-> FPGA PCIe Acceleration Cards (PAC). The BMC is implemented using the
-> Intel MAX 10 CPLD.
-> 
-> This BMC chip is connected to the FPGA by a SPI bus. To provide direct
-> register access from the FPGA, the "SPI slave to Avalon Master Bridge"
-> (spi-avmm) IP is integrated in the chip. It converts encoded streams of
-> bytes from the host to the internal register read/write on the Avalon
-> bus. So This driver uses the regmap-spi-avmm for register accessing.
-> 
-> Patch #2 adds support for the hwmon sub device in Intel MAX 10 BMC
-> 
-> 
-> Xu Yilun (2):
->   mfd: intel-m10-bmc: add Intel MAX 10 BMC chip support for Intel FPGA
->     PAC
->   hwmon: intel-m10-bmc-hwmon: add hwmon support for Intel MAX 10 BMC
-> 
->  .../ABI/testing/sysfs-driver-intel-m10-bmc         |  15 +
->  Documentation/hwmon/index.rst                      |   1 +
->  Documentation/hwmon/intel-m10-bmc-hwmon.rst        |  78 +++++
->  drivers/hwmon/Kconfig                              |  11 +
->  drivers/hwmon/Makefile                             |   1 +
->  drivers/hwmon/intel-m10-bmc-hwmon.c                | 334 +++++++++++++++++++++
->  drivers/mfd/Kconfig                                |  13 +
->  drivers/mfd/Makefile                               |   2 +
->  drivers/mfd/intel-m10-bmc.c                        | 164 ++++++++++
->  include/linux/mfd/intel-m10-bmc.h                  |  65 ++++
->  10 files changed, 684 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-driver-intel-m10-bmc
->  create mode 100644 Documentation/hwmon/intel-m10-bmc-hwmon.rst
->  create mode 100644 drivers/hwmon/intel-m10-bmc-hwmon.c
->  create mode 100644 drivers/mfd/intel-m10-bmc.c
->  create mode 100644 include/linux/mfd/intel-m10-bmc.h
-> 
-> -- 
-> 2.7.4
-> 
+My Dear
+
+
+My name is Mrs. Sophia Lucas I am a Norway Citizen who is living in Burkina Faso, I am married to Mr. Lucas Patrice, a politician who owns a small gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year February 2010, During his lifetime he deposited the sum of (Eleven Million Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in West Africa. The money was from the sale of his company and death benefits payment and entitlements of my deceased husband by his company.
+
+I am sending you this message with heavy tears in my eyes and great sorrow in my heart, and also praying that it will reach you in good health because I am not in good health, I sleep every night without knowing if I may be alive to see the next day. I am suffering from long time cancer and presently I am partially suffering from Leprosy, which has become difficult for me to move around. I was married to my late husband for more than 6 years without having a child and my doctor confided that I have less chance to live, having to know when the cup of death will come, I decided to contact you to claim the fund since I don't have any relation I grew up from an orphanage home.
+
+I have decided to donate this money for the support of helping Motherless babies/Less privileged/Widows and churches also to build the house of God because I am dying and diagnosed with cancer for about 3 years ago. I have decided to donate from what I have inherited from my late husband to you for the good work of Almighty God; I will be going in for an operation surgery soon.
+
+Now I want you to stand as my next of kin to claim the funds for charity purposes. Because of this money remains unclaimed after my death, the bank executives or the government will take the money as unclaimed fund and maybe use it for selfishness and worthless ventures, I need a very honest person who can claim this money and use it for Charity works, for orphanages, widows and also build schools and churches for less privilege that will be named after my late husband and my name.
+
+I need your urgent answer to know if you will be able to execute this project, and I will give you more information on how the fund will be transferred to your bank account or online banking.
+
+Thanks
+Mrs. Sophia Lucas Patrice
