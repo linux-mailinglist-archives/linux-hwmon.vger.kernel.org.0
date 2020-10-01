@@ -2,68 +2,217 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B5B727F559
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Oct 2020 00:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 622AA27FBF9
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Oct 2020 10:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730326AbgI3WoR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Sep 2020 18:44:17 -0400
-Received: from sonic308-18.consmr.mail.ir2.yahoo.com ([77.238.178.146]:44996
-        "EHLO sonic308-18.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729980AbgI3WoQ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Sep 2020 18:44:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1601505854; bh=mZFdy6s88lY1OfVHZCNBCNs7w/HtpGg9ZKvG/5VhQN8=; h=Date:From:Reply-To:Subject:References:From:Subject; b=gqaZiWiIPyKlMonA1iYrBqYrixNbd3tColEXuC8qmQomrFqvz16wUBManTTlWfOIq2LUJ0e67WgxLgY5CCbFMJi8q2d0FC8lHnP6iL/bj0FZoBzBrbj2+kob3qBqqJadjbevPPa+KAbxmW+21rZX3jZ8dg2kkQ/Go5VlnXV5f0kgQjzLHlksNBKUZqhYL4KYMtxb+G0+L43bX7+CR0OrCr8wt6YQrd2Wl9GpmNah5PMcrX+nrBtBWDySGl0zMoL/NghbwvD6HYPws2JhMZGmnQTmXJ51iPBACNMFc4ZbNzXbqcHL0gEb0xccI6UfSxl8vpwEHO26DT3MdRGw8nCQGg==
-X-YMail-OSG: d5kLJboVM1m93ysVigflb5VD9DToM2ZN53PNbiJAazKdOHCwy7cnjaOp8w3XCIb
- vLNzvyCbHepNHd4x4NoWPEgFS44pE75THERUk3SMRq1os2GEgTwpBtIG4xUcd7ZiOoE_xJcu_FWQ
- 5t_TNjPjoOGq0KixXWoW9pVXx6EFHH9I1wh.YHQGhT2802bPKkpnH0ZDdOCqd0x_7UTmav2VKgkY
- Ztq2C8ye_p_sQ8dQfRdjO.w3HmXKbHIKo7HEC_iVvySpv8kSZ4BllsLKm3JKwwzTVGoZYEc_u0C6
- k_5NrT.WJoUWdM6VyF5uRRMxR8X2gS01HxkO8CogI.ZpJrEIoZn70ObEd7wsjaiB5SgYtnJm.KHz
- YsCjUmKAhq4WJ8abv9zL6t4hjPvUJIK_eAE9Up_kX12JZG3cLgnALYoU0pRMAZgCB7JvtHU6hQR7
- DB1OPT0CiBy8oBjI80KXcgznPER9rOS7G5AFd_OeeGg4WnfZlpFgkqIOWnBf2d0tfU4D36lIwhhX
- FWzh57_KRebedQKOvBOl3q1sxDYMW6Bp3jjcuiDQC7kyrh.MLZnB8aRiS9QDzguKbaXD8ZixUOJF
- Wwpi9yVLDYzUtHg9d7QU7jXHe7rOUYn.xYdUti5DxF7jROGT8kn_RSL9XB6nX1ieZR49vKDiQMlr
- uZBnVvmAPM8L3c_0PIhD1339rL4OMAW3b8RzN.FMpkpMy37U5rQA_aFM5duRiKxqESwztXlrBVU6
- MfQrcdG4HSqjRezPQOJONvJmcI0N.8qHerzM0Hw5HSEos2SNdglpgEZaAmsd_WlbWC_YeoqwNbs7
- _bCzlwyP4euERJ4etL.q.5vIM7kUk0JR5nKANL944ta4ZRvQ1nXBKwN56b8BrTyxea852.bsIhXl
- fdyyPv_ig61s8nbipGfkzvV6YY9zUto5zhn006nEWcjw0AHju4aQqBfSZ0BDRKx3a0y.2c_uxBVN
- b6uY2IWiLkRTcYGSl7b95z72affPheLAz741PPfVFhzx7p0z88N_qOUDm9msa2fdu56p.pjUB.fS
- el4pi89y7lfLMkZVUNGMIx6djApeLdL4we6gh18G2VwM84DGMa2Kf6M1flY8Oxgsiwcsc6ZBVqhe
- anWp8296Y2iBuZ0nPunxomZl.M5lGs7qrLqIrvmxkMYrMMLExBCPgQfpHEomV8SfdorNcJ1Dvv_D
- R7K.7xUEenNmSmMdcum81.O4HQ8_D2ZYQSLGH3SeucQWLkdLwFAektxoGxjfih3eVTv4GUGNUQoN
- q5J6LAGy4.KPs54f_kqLviZ5JNfhiE.8veBn6KoKbFbVN4rHcRAlyc.aZ6xGmq_Qv4ycRSULpYsJ
- Rvk61oN6Qbv3a53S9TM1M7vK.YbViqc5hIAXRKQptyJI93FykARVW_IlUhLDWfxbtEEQznKCPrTa
- LqD4StpJGq3Ehfl3ed5TE4R0Z5pE.36KRukSKJIQdK64kCiryKCSTSfg-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Wed, 30 Sep 2020 22:44:14 +0000
-Date:   Wed, 30 Sep 2020 22:44:11 +0000 (UTC)
-From:   Sophia Lucas <sophialucaspatrick@gmail.com>
-Reply-To: sophialucaspatrick@gmail.com
-Message-ID: <1200852621.725502.1601505851501@mail.yahoo.com>
-Subject: Very Urgent
+        id S1730902AbgJAIyk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Oct 2020 04:54:40 -0400
+Received: from mga09.intel.com ([134.134.136.24]:32211 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730378AbgJAIyk (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 1 Oct 2020 04:54:40 -0400
+IronPort-SDR: xo1p9I0zkGm9agyZQq/GqAS7PmyfIA7Yybool53R/Skr52gSSdRBi1UXNDLgB6PHZJKOO/PhwL
+ h2RChVCbraCQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9760"; a="163532040"
+X-IronPort-AV: E=Sophos;i="5.77,323,1596524400"; 
+   d="scan'208";a="163532040"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2020 01:54:39 -0700
+IronPort-SDR: rtnzp0ckK+2NkDqyqsA/Ekp7xUyePskoFqoTxta+f6NcO9cMy6wN+3i37AQRwLyDikLNZYgMT4
+ YCMHTPVxZjzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,323,1596524400"; 
+   d="scan'208";a="339464171"
+Received: from lkp-server02.sh.intel.com (HELO de448af6ea1b) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 01 Oct 2020 01:54:37 -0700
+Received: from kbuild by de448af6ea1b with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kNuMH-0000ZV-Aa; Thu, 01 Oct 2020 08:54:37 +0000
+Date:   Thu, 01 Oct 2020 16:53:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [hwmon:hwmon-next] BUILD SUCCESS
+ ba1a48575989dbba2782fad861c51d586dc20eb6
+Message-ID: <5f75991e.xniuEPkoaf2T6vU5%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-References: <1200852621.725502.1601505851501.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16718 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
+branch HEAD: ba1a48575989dbba2782fad861c51d586dc20eb6  dt-bindings: Add MP2975 voltage regulator device
 
+elapsed time: 721m
 
+configs tested: 153
+configs skipped: 3
 
-My Dear
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+h8300                            allyesconfig
+arm                         shannon_defconfig
+arm                  colibri_pxa300_defconfig
+mips                          ath25_defconfig
+sh                        edosk7705_defconfig
+powerpc                 mpc8540_ads_defconfig
+powerpc                 linkstation_defconfig
+c6x                         dsk6455_defconfig
+powerpc64                        alldefconfig
+m68k                             allmodconfig
+powerpc                 canyonlands_defconfig
+mips                          ath79_defconfig
+alpha                               defconfig
+c6x                        evmc6457_defconfig
+powerpc                     asp8347_defconfig
+arm                         mv78xx0_defconfig
+arm                           tegra_defconfig
+sh                           se7619_defconfig
+mips                        bcm63xx_defconfig
+nds32                            alldefconfig
+nios2                         10m50_defconfig
+powerpc                     rainier_defconfig
+xtensa                       common_defconfig
+sh                           sh2007_defconfig
+powerpc                  iss476-smp_defconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                          simpad_defconfig
+microblaze                    nommu_defconfig
+sparc                            allyesconfig
+arm                          pcm027_defconfig
+sh                              ul2_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                   motionpro_defconfig
+arm                          gemini_defconfig
+powerpc                 mpc837x_mds_defconfig
+xtensa                           alldefconfig
+arm                         nhk8815_defconfig
+arm                         bcm2835_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                  storcenter_defconfig
+microblaze                      mmu_defconfig
+m68k                             allyesconfig
+powerpc                    mvme5100_defconfig
+arc                            hsdk_defconfig
+m68k                           sun3_defconfig
+arm                          pxa910_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                    sam440ep_defconfig
+sh                          sdk7786_defconfig
+xtensa                          iss_defconfig
+powerpc                      ppc44x_defconfig
+sh                           se7750_defconfig
+m68k                            q40_defconfig
+arm                        multi_v5_defconfig
+arm                          lpd270_defconfig
+arm                        trizeps4_defconfig
+powerpc                      chrp32_defconfig
+arm                           stm32_defconfig
+x86_64                              defconfig
+mips                      loongson3_defconfig
+powerpc                      makalu_defconfig
+arm                       imx_v6_v7_defconfig
+arc                    vdk_hs38_smp_defconfig
+mips                        bcm47xx_defconfig
+arm                             pxa_defconfig
+mips                           ip28_defconfig
+arm                         hackkit_defconfig
+sh                          rsk7269_defconfig
+m68k                         apollo_defconfig
+arm                              zx_defconfig
+sh                           se7343_defconfig
+arm                            dove_defconfig
+mips                        nlm_xlr_defconfig
+mips                        jmr3927_defconfig
+powerpc                      katmai_defconfig
+powerpc                           allnoconfig
+sh                          rsk7203_defconfig
+sh                   sh7724_generic_defconfig
+sh                             espt_defconfig
+csky                                defconfig
+arm                          iop32x_defconfig
+powerpc                 mpc837x_rdb_defconfig
+sh                      rts7751r2d1_defconfig
+sh                           se7724_defconfig
+arc                        nsim_700_defconfig
+arm                         palmz72_defconfig
+c6x                        evmc6474_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+i386                 randconfig-a003-20200930
+i386                 randconfig-a002-20200930
+i386                 randconfig-a006-20200930
+i386                 randconfig-a005-20200930
+i386                 randconfig-a004-20200930
+i386                 randconfig-a001-20200930
+x86_64               randconfig-a015-20200930
+x86_64               randconfig-a013-20200930
+x86_64               randconfig-a012-20200930
+x86_64               randconfig-a016-20200930
+x86_64               randconfig-a014-20200930
+x86_64               randconfig-a011-20200930
+i386                 randconfig-a011-20200930
+i386                 randconfig-a015-20200930
+i386                 randconfig-a012-20200930
+i386                 randconfig-a014-20200930
+i386                 randconfig-a016-20200930
+i386                 randconfig-a013-20200930
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-My name is Mrs. Sophia Lucas I am a Norway Citizen who is living in Burkina Faso, I am married to Mr. Lucas Patrice, a politician who owns a small gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year February 2010, During his lifetime he deposited the sum of (Eleven Million Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in West Africa. The money was from the sale of his company and death benefits payment and entitlements of my deceased husband by his company.
+clang tested configs:
+x86_64               randconfig-a001-20200930
+x86_64               randconfig-a005-20200930
+x86_64               randconfig-a003-20200930
+x86_64               randconfig-a004-20200930
+x86_64               randconfig-a002-20200930
+x86_64               randconfig-a006-20200930
 
-I am sending you this message with heavy tears in my eyes and great sorrow in my heart, and also praying that it will reach you in good health because I am not in good health, I sleep every night without knowing if I may be alive to see the next day. I am suffering from long time cancer and presently I am partially suffering from Leprosy, which has become difficult for me to move around. I was married to my late husband for more than 6 years without having a child and my doctor confided that I have less chance to live, having to know when the cup of death will come, I decided to contact you to claim the fund since I don't have any relation I grew up from an orphanage home.
-
-I have decided to donate this money for the support of helping Motherless babies/Less privileged/Widows and churches also to build the house of God because I am dying and diagnosed with cancer for about 3 years ago. I have decided to donate from what I have inherited from my late husband to you for the good work of Almighty God; I will be going in for an operation surgery soon.
-
-Now I want you to stand as my next of kin to claim the funds for charity purposes. Because of this money remains unclaimed after my death, the bank executives or the government will take the money as unclaimed fund and maybe use it for selfishness and worthless ventures, I need a very honest person who can claim this money and use it for Charity works, for orphanages, widows and also build schools and churches for less privilege that will be named after my late husband and my name.
-
-I need your urgent answer to know if you will be able to execute this project, and I will give you more information on how the fund will be transferred to your bank account or online banking.
-
-Thanks
-Mrs. Sophia Lucas Patrice
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
