@@ -2,211 +2,200 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 627842801E1
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Oct 2020 16:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 094F52802A9
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Oct 2020 17:24:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732718AbgJAO6D (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Oct 2020 10:58:03 -0400
-Received: from mail-eopbgr140093.outbound.protection.outlook.com ([40.107.14.93]:5942
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732346AbgJAO6C (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 1 Oct 2020 10:58:02 -0400
+        id S1732584AbgJAPYJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Oct 2020 11:24:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38128 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732346AbgJAPYI (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Oct 2020 11:24:08 -0400
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA2DC0613D0;
+        Thu,  1 Oct 2020 08:24:07 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id t76so5944259oif.7;
+        Thu, 01 Oct 2020 08:24:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=l2task.onmicrosoft.com; s=selector1-l2task-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YrSrq0jBHQsBcnWZCkQUDE/BkZm+8J9JZlDyrMpuITo=;
- b=oAuW4ta4y4SBzGyIszTAkiPd5hG+iMV4oYd3ovdVQrxqWdHPcHyZeWuEW14XOlyp77XDSfc72RS0QhA8sPXRKyKJeTVynMDAiQjb39skLBa9/W5sFTL0CzzclvH9NsjGsAPswCyONDe7T+cpjjY5Ju5Ogf0jJXkCGRLAEbWDCEo=
-Received: from AM5PR04CA0035.eurprd04.prod.outlook.com (2603:10a6:206:1::48)
- by DB6PR1001MB1432.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:4:a8::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.35; Thu, 1 Oct
- 2020 14:57:56 +0000
-Received: from AM5EUR03FT016.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:206:1:cafe::60) by AM5PR04CA0035.outlook.office365.com
- (2603:10a6:206:1::48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.34 via Frontend
- Transport; Thu, 1 Oct 2020 14:57:56 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 52.169.0.179)
- smtp.mailfrom=aerq.com; vger.kernel.org; dkim=fail (body hash did not verify)
- header.d=l2task.onmicrosoft.com;vger.kernel.org; dmarc=none action=none
- header.from=aerq.com;
-Received-SPF: Fail (protection.outlook.com: domain of aerq.com does not
- designate 52.169.0.179 as permitted sender) receiver=protection.outlook.com;
- client-ip=52.169.0.179; helo=eu2.smtp.exclaimer.net;
-Received: from eu2.smtp.exclaimer.net (52.169.0.179) by
- AM5EUR03FT016.mail.protection.outlook.com (10.152.16.142) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.3433.34 via Frontend Transport; Thu, 1 Oct 2020 14:57:56 +0000
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (104.47.1.54) by
-         eu2.smtp.exclaimer.net (52.169.0.179) with Exclaimer Signature Manager
-         ESMTP Proxy eu2.smtp.exclaimer.net (tlsversion=TLS12,
-         tlscipher=TLS_ECDHE_WITH_AES256_SHA384); Thu, 1 Oct 2020 14:57:56 +0000
-X-ExclaimerHostedSignatures-MessageProcessed: true
-X-ExclaimerProxyLatency: 14769244
-X-ExclaimerImprintLatency: 666080
-X-ExclaimerImprintAction: 699df22015724b938393615ba1b30463
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C73GAz62vGvBno0vE2LvRSktYZQwBysNgBLjA4OvWJmzotPFCErb52MmOFgHyKD8h+Rx9ZLA2PTv20ScEfwByc2dffbKTl1LeVGP3j9kNskoU9HdaJ5/Wrm7FyM9l3F0WNLBKaK/zWKJ95xGGHgRVhwpHfSUsTuz8upcz39CK090b9LlcdFJlkJsjQicxNmBI8WJmFfHOmBcKtectW2fHZqwoHZqQ8fQ5JEdNEGzxRv/MwR6wa5OWV8JPzkGsVRPOZpNfA+niUfVvz2kXCdoHaQwp+YO7cpazZoYfBTeqfwkji6EfvJLqqJyKBUaRfgkJ9cdLpY0XvMVUXMaKxQ0iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mZCzGttv3NXhc2gWdM9N0P0SPKv/oQKx1ybTKGqbab0=;
- b=j8J+mFZA3JPK9BZ9AA4BuM0/pyVUwaUbB6zTRIy816LY/VstEUf7ZZdDtLvZ2WkbiokaCgmES3QKpjiR/B62zSy8v6+AeM2hjumK0gxpjxVA/Oq94Hth1/djv8XNVsVk+jnJDc8gRGlmcpmxb/EV4BejrSDgsktO4i89ri0rzfRMOq36PhOifsRl9ymRaeo1fA0ftEMOkDjcgAPrKKysFsLAIsSzxQT9pMjhsEA71wia4mg0mfB86o6htfjB6dD1IB7yhYrO0QEyJCbgHgSJDy0Xz8caWA4k+OSJmfkJMnyNfS49PYNxZ6otRrmF7iWZnbpJLQRk7cMxqLQ9/4WqSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aerq.com; dmarc=pass action=none header.from=aerq.com;
- dkim=pass header.d=aerq.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=l2task.onmicrosoft.com; s=selector1-l2task-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mZCzGttv3NXhc2gWdM9N0P0SPKv/oQKx1ybTKGqbab0=;
- b=o3XNPWhEZORRVJKqzuxD61N4fYw27Ib+F2WAKoZetkBy8eCGJw2FzEhbuW0VTFaIq+cfEKAPahQjy58Hloa/Sz52l7jg576MH2DINy6WgmszpyT2Cvd9FPHQguuPB5TUKIs99FeReZy+RRmQd9EN/VigDhnBPkvzsSe3pZnftLs=
-Authentication-Results-Original: vger.kernel.org; dkim=none (message not
- signed) header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=aerq.com;
-Received: from AM0PR10MB3428.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:161::27)
- by AM0PR10MB2417.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:d5::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.37; Thu, 1 Oct
- 2020 14:57:49 +0000
-Received: from AM0PR10MB3428.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::4c24:8830:7ae8:87a4]) by AM0PR10MB3428.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::4c24:8830:7ae8:87a4%7]) with mapi id 15.20.3433.032; Thu, 1 Oct 2020
- 14:57:49 +0000
-From:   Alban Bedel <alban.bedel@aerq.com>
-To:     linux-hwmon@vger.kernel.org
-CC:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Alban Bedel <alban.bedel@aerq.com>
-Subject: [PATCH v4 3/3] hwmon: (lm75) Add regulator support
-Date:   Thu,  1 Oct 2020 16:57:38 +0200
-Message-ID: <20201001145738.17326-4-alban.bedel@aerq.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201001145738.17326-1-alban.bedel@aerq.com>
-References: <20201001145738.17326-1-alban.bedel@aerq.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-Originating-IP: [87.123.201.111]
-X-ClientProxiedBy: AM0PR06CA0121.eurprd06.prod.outlook.com
- (2603:10a6:208:ab::26) To AM0PR10MB3428.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:161::27)
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=KJ0lcODlDXw8TFpUzIZHU1NHT1e5m+pkkR44QXUX9D8=;
+        b=UpqkncCVYPBk6CEngOjcFt8TV1ZK9ulJhVAmhQvJnFNtjlcukqTAXXm2h1A4FRvCCE
+         6FcRVuIH4PMTqkmUfWVs8GICsGHffaGS6A68OLWyT0NB0K8fUY9+3U9EmiCd3RTwZlaz
+         6xsYenFK9PvKPTVyhd9/TsJFBW4Nvij2VmdfzOcRnbpo0H6dmO3Sq7xaO5kDQ8VvzHtS
+         jHBbKwSNlsxg3E3keDVO5nU0EZKN1J0UO7Dxl3fez5IGXgAYnnsHiSCPLTDmhDX2BfIU
+         bxpu4booygmdYXPpOkLgK2rnv/kQaPd9V8PtN6PB+dAnzkrCJ3PSAmtzFfxLb/nPIkiv
+         luIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=KJ0lcODlDXw8TFpUzIZHU1NHT1e5m+pkkR44QXUX9D8=;
+        b=bKNNyJ50nNcl4jYvnll1L0UBetUzBgIRLtFvJ7GwCklXu2fRQlU5NZ8jqFHW+L6TUb
+         EjH93AX+SxMU9i+CQm8LbprOZBjamwFxwEVCoOA8Rzepu4vmlVDaSwPwoEswzmb/slwX
+         TP8pCxIDorBbEZk8f2+dwAgMVtePSNGAcooSej5pl0l6tXNB8W3xZ9ZJnm4SJFD4Qsz0
+         0ThHd58g0dy05d3dVzt5cK+W39PwOSEzXR5zeY8ZNJ5tRwlSZQ+5YSe8QfAv0HGFzkRr
+         Wx2s1p1s8Gf1p3aRKbad8QiOJeOzq2D46x9f/S7+iu4C7bQLJRHMAoUn1DiLC1HMQvFr
+         6sJA==
+X-Gm-Message-State: AOAM533YxCJL/QnBXpiLMWXCvXHg3PM2/bOLsdxvKg2xsX1/SMPkBJA4
+        IQZwDyJlnqvecnJNdt++AXA=
+X-Google-Smtp-Source: ABdhPJwrpGPqLMVfM2wcRhHnTEJGUs34nIG7oRnCQU6ATzSRekySaGpLjxWH4Uu/emYANCCDEtHBmg==
+X-Received: by 2002:aca:dd42:: with SMTP id u63mr280800oig.135.1601565847127;
+        Thu, 01 Oct 2020 08:24:07 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y24sm1373351ooq.38.2020.10.01.08.24.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2020 08:24:06 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Subject: Re: [PATCH v3 0/2] add Intel MAX 10 BMC MFD driver & hwmon sub driver
+To:     Xu Yilun <yilun.xu@intel.com>
+Cc:     lee.jones@linaro.org, jdelvare@suse.com,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        trix@redhat.com, matthew.gerlach@linux.intel.com,
+        russell.h.weight@intel.com, lgoncalv@redhat.com, hao.wu@intel.com,
+        mdf@kernel.org
+References: <1600669071-26235-1-git-send-email-yilun.xu@intel.com>
+ <20200930205249.GA241905@roeck-us.net>
+ <20201001140834.GA5471@yilunxu-OptiPlex-7050>
+From:   Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <9f4ce33a-38b6-fc51-7632-27196b2947b3@roeck-us.net>
+Date:   Thu, 1 Oct 2020 08:24:04 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aerq-nb-1030.dotsec.gv (87.123.201.111) by AM0PR06CA0121.eurprd06.prod.outlook.com (2603:10a6:208:ab::26) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32 via Frontend Transport; Thu, 1 Oct 2020 14:57:49 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0edca079-2850-4b1f-5466-08d8661a61bc
-X-MS-TrafficTypeDiagnostic: AM0PR10MB2417:|DB6PR1001MB1432:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DB6PR1001MB14322EC3F113498CF63286A296300@DB6PR1001MB1432.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;OLM:5236;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: eB5h7Q3A50T3k3+iowFPaqEFSQ+Vy8k8aOI295jPQx7Q286vf07Qc5JV+vB7mOqqrHSufo/M2QC2X5jvr5E4q2LF15Q0+7pe9toVM3R3FcZ+FbvguxKZ9x71g5XKWXQegem9tpUKgCkEhL52wuyUFVFQrV4wJ8OTzrGUQufprUbRpt0llfFUGdhml+E7nsCerxuIcWgqcOU3Dm0BVGzGZJNuCqhHKhOeVpFbSsRDTFJgJR6Yjxa1ePnr6c23x4qXuIXxx3r3ktISoLgh17sMPdsr7w0P1VnjY3zkuRZyT2qCgCydAsSzh5n/vY+sZ8oLau+I1szZnYPOOfKMvcuSvw==
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR10MB3428.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(396003)(39840400004)(366004)(136003)(346002)(376002)(8936002)(26005)(4326008)(36756003)(5660300002)(54906003)(8676002)(2616005)(86362001)(186003)(478600001)(16526019)(6486002)(52116002)(6506007)(44832011)(66946007)(2906002)(6666004)(6916009)(316002)(956004)(6512007)(1076003)(66556008)(66476007)(107886003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: K9qQjZmC5VRV0mZmPqD68M2Y5+wGYTUqPXNWOoXWbWOawQu8Dxg9TOzeMrhQYve4wpdSQ2AbJfd8xEubcBEX3XiDiknBH5e/vWvP76AOMuoMGy6zVNVxHnRDhqRC3y4+kuV4kvy/cxXWT3IbeLhxcU6iLGS4+mpJTGABmCYVDB5lSgRe6Fu3gWqyrAeWJfb4s0yRuyMsdC52HodL1Hs8zdOoXoGfs2tHobXVnxh3CgGVzmINJyc/V0ZNB/5MPdoxdsN4u4484gcD2IwKCCD2OgiuYrFQFfO2eJKrWmo+zQtQv10/aMkdd1+wOS1rEE6syX1RQ/T0/bgsX0+H3aaaXERyJRggETbO2nmfCWlnp0AjwmtQKdpV4GO1F7G9Yje9EN7+2Sou7qud18Mar6nLxOGUwfgWt7EpzLnVxu80OfSSDqs/I9W9UVgXOtfkqrxnVltCcgseisrhkyeg+KtfhbEHlw1kRp0sEm0DCNOPBgxVaqk2XF/VTU+TvovjIUP2MqptQXnd5t5ncKYEthKUxYoZgFVh5kY1+r6aihlYKqgREgivI5vIZIf9FFqJ6pH9+7fOe9OlxWUMEpIUoUaH4qCM0kCnPJhYPXwwlDz+y7DS7AYU0rFbzxpkWvzMCcEvJIfIGjREPsbiQ3B8NiGNPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB2417
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: AM5EUR03FT016.eop-EUR03.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: fe81bc17-a9e0-442a-d028-08d8661a5d57
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OOvHNa8qgy4IsUDHzOQOne8i58EDen8N0+pEJGtSzUuk3lCuBCtUJlaIs3bALVru/hASWYy4x12IyEiCjlUIHAP+Dm8fjsO5XULG3Js6n1cBOiqiq+871n8imoETzl/3Ay05TEVIAQwA7/ihgiX1LwZ/U1TZk6OLrBgpcNAN7KY/jNrug7C8InoGAGenP480OcXVmCT0e8C5Rz1Ccu8JYHLqfUo26xATeniVLgVaaoem7SN2dELrN9aZ1O6BxwKdrDG/trkqTvny3ZUfMTpQE1CeG8YdtA6ZZiD5sq97943D23RmjjoGlx0ikiMulAPNIPoU+DIFS/c3DVuWWNkoJZKuOCmlrq9+T5e7sO/pXpL8kQJfYVVDiF06iFo/VhHj3n92BH2WV3gIq8YObn+s+DlEcxYolM0z7felxqJlsTdMg+NyFBfF+zsqE1hy777G
-X-Forefront-Antispam-Report: CIP:52.169.0.179;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:eu2.smtp.exclaimer.net;PTR:eu2.smtp.exclaimer.net;CAT:NONE;SFS:(346002)(39840400004)(376002)(396003)(136003)(46966005)(16526019)(316002)(26005)(6486002)(186003)(47076004)(7636003)(478600001)(356005)(33310700002)(70586007)(7596003)(107886003)(44832011)(54906003)(70206006)(2906002)(6916009)(6512007)(6666004)(4326008)(1076003)(956004)(2616005)(6506007)(86362001)(336012)(36756003)(8936002)(5660300002)(8676002)(82310400003);DIR:OUT;SFP:1102;
-X-OriginatorOrg: aerq.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2020 14:57:56.0173
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0edca079-2850-4b1f-5466-08d8661a61bc
-X-MS-Exchange-CrossTenant-Id: bf24ff3e-ad0a-4c79-a44a-df7092489e22
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bf24ff3e-ad0a-4c79-a44a-df7092489e22;Ip=[52.169.0.179];Helo=[eu2.smtp.exclaimer.net]
-X-MS-Exchange-CrossTenant-AuthSource: AM5EUR03FT016.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR1001MB1432
+In-Reply-To: <20201001140834.GA5471@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add regulator support for boards where the sensor first need to be
-powered up before it can be used.
+On 10/1/20 7:08 AM, Xu Yilun wrote:
+> Hi Guenter,
+> 
+> On Wed, Sep 30, 2020 at 01:52:49PM -0700, Guenter Roeck wrote:
+>> On Mon, Sep 21, 2020 at 02:17:49PM +0800, Xu Yilun wrote:
+>>> I recently realized that maintainers may have trouble to apply patches to
+>>> their trees if the patches depend on other being-reviewed patches. So I'm
+>>> trying to wrapper the 2 patches into one patchset and let all the
+>>> maintainers see the dependencies.
+>>>
+>>> But the patch version is then not aligned between the 2 patches. I'm not
+>>> sure how to handle it. I just picked the smaller number on Subject, but
+>>> you could still see their own version changes in commit message of each
+>>> patch. Sorry if it makes confusing.
+>>>
+>>
+>> If you started with separate patches, it would be much better to pick
+>> the larger number, and add a note into the individual patch(es) stating
+>> the reason for the gap. Everything else is highly confusing. I would not
+>> be surprised if no one in the mfd world even looks at the mfd patch
+>> since it went back from v6 (?) to v3 according to its subject line.
+> 
+> I got it. Thanks for your guide.
+> 
+> Fortunately, the mfd maintainer has replied and applied the mfd patch
+> (the previous separate one). And I see you added a Reviewed-by for the hwmon
+> patch, so I assume I don't have to do anything more, is it?
+> 
+Thanks for letting me know. I applied the hwmon driver.
 
-Signed-off-by: Alban Bedel <alban.bedel@aerq.com>
----
-v2: Rely on dummy regulators instead of explicitly handling missing
-    regulator
-v3: Use a devm action to handle disabling the regulator
----
- drivers/hwmon/lm75.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Thanks,
+Guenter
 
-diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-index ba0be48aeadd..e9c1f55b2706 100644
---- a/drivers/hwmon/lm75.c
-+++ b/drivers/hwmon/lm75.c
-@@ -17,6 +17,7 @@
- #include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/util_macros.h>
-+#include <linux/regulator/consumer.h>
- #include "lm75.h"
-=20
- /*
-@@ -101,6 +102,7 @@ static const unsigned short normal_i2c[] =3D { 0x48, 0x=
-49, 0x4a, 0x4b, 0x4c,
- struct lm75_data {
- 	struct i2c_client		*client;
- 	struct regmap			*regmap;
-+	struct regulator		*vs;
- 	u8				orig_conf;
- 	u8				current_conf;
- 	u8				resolution;	/* In bits, 9 to 16 */
-@@ -534,6 +536,13 @@ static const struct regmap_config lm75_regmap_config =
-=3D {
- 	.use_single_write =3D true,
- };
-=20
-+static void lm75_disable_regulator(void *data)
-+{
-+	struct lm75_data *lm75 =3D data;
-+
-+	regulator_disable(lm75->vs);
-+}
-+
- static void lm75_remove(void *data)
- {
- 	struct lm75_data *lm75 =3D data;
-@@ -567,6 +576,10 @@ lm75_probe(struct i2c_client *client, const struct i2c=
-_device_id *id)
- 	data->client =3D client;
- 	data->kind =3D kind;
-=20
-+	data->vs =3D devm_regulator_get(dev, "vs");
-+	if (IS_ERR(data->vs))
-+		return PTR_ERR(data->vs);
-+
- 	data->regmap =3D devm_regmap_init_i2c(client, &lm75_regmap_config);
- 	if (IS_ERR(data->regmap))
- 		return PTR_ERR(data->regmap);
-@@ -581,6 +594,17 @@ lm75_probe(struct i2c_client *client, const struct i2c=
-_device_id *id)
- 	data->sample_time =3D data->params->default_sample_time;
- 	data->resolution =3D data->params->default_resolution;
-=20
-+	/* Enable the power */
-+	err =3D regulator_enable(data->vs);
-+	if (err) {
-+		dev_err(dev, "failed to enable regulator: %d\n", err);
-+		return err;
-+	}
-+
-+	err =3D devm_add_action_or_reset(dev, lm75_disable_regulator, data);
-+	if (err)
-+		return err;
-+
- 	/* Cache original configuration */
- 	status =3D i2c_smbus_read_byte_data(client, LM75_REG_CONF);
- 	if (status < 0) {
---=20
-2.25.1
+> I'll take care of the version number next time.
+> 
+> Thanks,
+> Yilun
+> 
+>>
+>> Thanks,
+>> Guenter
+>>
+>>>
+>>> Patch #1 implements the basic functions of the BMC chip for some Intel
+>>> FPGA PCIe Acceleration Cards (PAC). The BMC is implemented using the
+>>> Intel MAX 10 CPLD.
+>>>
+>>> This BMC chip is connected to the FPGA by a SPI bus. To provide direct
+>>> register access from the FPGA, the "SPI slave to Avalon Master Bridge"
+>>> (spi-avmm) IP is integrated in the chip. It converts encoded streams of
+>>> bytes from the host to the internal register read/write on the Avalon
+>>> bus. So This driver uses the regmap-spi-avmm for register accessing.
+>>>
+>>> Patch #2 adds support for the hwmon sub device in Intel MAX 10 BMC
+>>>
+>>>
+>>> Xu Yilun (2):
+>>>   mfd: intel-m10-bmc: add Intel MAX 10 BMC chip support for Intel FPGA
+>>>     PAC
+>>>   hwmon: intel-m10-bmc-hwmon: add hwmon support for Intel MAX 10 BMC
+>>>
+>>>  .../ABI/testing/sysfs-driver-intel-m10-bmc         |  15 +
+>>>  Documentation/hwmon/index.rst                      |   1 +
+>>>  Documentation/hwmon/intel-m10-bmc-hwmon.rst        |  78 +++++
+>>>  drivers/hwmon/Kconfig                              |  11 +
+>>>  drivers/hwmon/Makefile                             |   1 +
+>>>  drivers/hwmon/intel-m10-bmc-hwmon.c                | 334 +++++++++++++++++++++
+>>>  drivers/mfd/Kconfig                                |  13 +
+>>>  drivers/mfd/Makefile                               |   2 +
+>>>  drivers/mfd/intel-m10-bmc.c                        | 164 ++++++++++
+>>>  include/linux/mfd/intel-m10-bmc.h                  |  65 ++++
+>>>  10 files changed, 684 insertions(+)
+>>>  create mode 100644 Documentation/ABI/testing/sysfs-driver-intel-m10-bmc
+>>>  create mode 100644 Documentation/hwmon/intel-m10-bmc-hwmon.rst
+>>>  create mode 100644 drivers/hwmon/intel-m10-bmc-hwmon.c
+>>>  create mode 100644 drivers/mfd/intel-m10-bmc.c
+>>>  create mode 100644 include/linux/mfd/intel-m10-bmc.h
+>>>
+>>> -- 
+>>> 2.7.4
+>>>
 
