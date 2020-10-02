@@ -2,81 +2,64 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD53281AAD
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Oct 2020 20:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4988B281BCC
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Oct 2020 21:23:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387688AbgJBSNk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 2 Oct 2020 14:13:40 -0400
-Received: from mga12.intel.com ([192.55.52.136]:13505 "EHLO mga12.intel.com"
+        id S2388360AbgJBTXT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-hwmon@lfdr.de>); Fri, 2 Oct 2020 15:23:19 -0400
+Received: from mx.metalurgs.lv ([81.198.125.103]:65054 "EHLO mx.metalurgs.lv"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726017AbgJBSNk (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 2 Oct 2020 14:13:40 -0400
-IronPort-SDR: uNlKQPiu3XFayxxg1r46oUUSpU8JimzfwK7/e+fJxkgDQdf2nNuceys53nMPmzFcJAfvIZV1oa
- OTekc8lHrFng==
-X-IronPort-AV: E=McAfee;i="6000,8403,9762"; a="142438986"
-X-IronPort-AV: E=Sophos;i="5.77,328,1596524400"; 
-   d="scan'208";a="142438986"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2020 11:13:13 -0700
-IronPort-SDR: sqBVUTZY/QMV4+DTdD+AaFtzRWUyVljfVSB8nPqZaakwZyUhBkyuCcDP1rHYzY2QajlOBmYmow
- m2kgkEyo2fvw==
-X-IronPort-AV: E=Sophos;i="5.77,328,1596524400"; 
-   d="scan'208";a="385932222"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2020 11:13:10 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1kOPYG-003nRj-P4; Fri, 02 Oct 2020 21:13:04 +0300
-Date:   Fri, 2 Oct 2020 21:13:04 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Rahul Tanwar <rahul.tanwar@linux.intel.com>
-Cc:     jdelvare@suse.com, linux@roeck-us.net, p.zabel@pengutronix.de,
-        linux-hwmon@vger.kernel.org, robh+dt@kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        songjun.Wu@intel.com, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com, rtanwar@maxlinear.com
-Subject: Re: [PATCH v4 2/2] Add hardware monitoring driver for Moortec
- MR75203 PVT controller
-Message-ID: <20201002181304.GJ3956970@smile.fi.intel.com>
-References: <cover.1601621983.git.rahul.tanwar@linux.intel.com>
- <e8c462ffc826d06c108aac45f8476083097cfa55.1601621983.git.rahul.tanwar@linux.intel.com>
- <20201002181135.GI3956970@smile.fi.intel.com>
+        id S2388574AbgJBTXP (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 2 Oct 2020 15:23:15 -0400
+X-Greylist: delayed 532 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:23:15 EDT
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 62B0062AC9
+        for <linux-hwmon@vger.kernel.org>; Fri,  2 Oct 2020 22:14:17 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+        by mx.metalurgs.lv (Postfix) with ESMTP id 3E1FB62A54
+        for <linux-hwmon@vger.kernel.org>; Fri,  2 Oct 2020 22:14:17 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+        id E833D62A9B; Fri,  2 Oct 2020 22:14:14 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+        (Authenticated sender: admin)
+        by mx.metalurgs.lv (Postfix) with ESMTPA id AFB5461E8C;
+        Fri,  2 Oct 2020 22:14:08 +0300 (EEST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201002181135.GI3956970@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Description: Mail message body
+To:     Recipients <financialcapability6@gmail.com>
+From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date:   Fri, 02 Oct 2020 16:14:02 -0300
+Reply-To: binmurrah@gmail.com
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191414.E833D62A9B@mx.metalurgs.lv>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20140401 #7726142, check: 20201002 notchecked
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Oct 02, 2020 at 09:11:35PM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 02, 2020 at 03:04:27PM +0800, Rahul Tanwar wrote:
+Hello Dear,
 
-...
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
 
-> > +	case hwmon_in:
-> > +		if (attr == hwmon_in_input)
-> > +			return 0444;
-> 
-> > +		return 0;
-> 
-> > +	default:
-> 
-> > +		return 0;
-> 
-> break here and
-> 
-> > +	}
-> 
-> return 0; here only once.
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
 
-This probably makes little sense.
+Please get back to me if you are interested for more
+details.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Yours faithfully,
+Hashim Bin 
