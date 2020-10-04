@@ -2,145 +2,85 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8EF282854
-	for <lists+linux-hwmon@lfdr.de>; Sun,  4 Oct 2020 05:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0FD282933
+	for <lists+linux-hwmon@lfdr.de>; Sun,  4 Oct 2020 08:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726499AbgJDDO4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 3 Oct 2020 23:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726497AbgJDDOz (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 3 Oct 2020 23:14:55 -0400
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A31C0613E7
-        for <linux-hwmon@vger.kernel.org>; Sat,  3 Oct 2020 20:14:55 -0700 (PDT)
-Received: by mail-pg1-x549.google.com with SMTP id b13so638151pgr.4
-        for <linux-hwmon@vger.kernel.org>; Sat, 03 Oct 2020 20:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:in-reply-to:message-id:mime-version:references:subject
-         :from:to;
-        bh=LhQBM6coR58Co/ZAPA0BFc3M4Mk5vH1MxVZJV9ls2vA=;
-        b=bAzh9QPy/8+oA04boCqNdkX9voAP/+Gg756k4vP8HjMlDBZ2nMYJSINilK52c1NBez
-         q31UZmbwzvjug2Q0mmo/iOB0pErHbhLKpnX7RpVvOUjq+adQfQHjzgPFvaNwzE8USvMZ
-         Guh8IPPr51x8M9+F6QYQjsbzHNOjGopcZaSZaur+vqIN53nJWpTlwkj73EXl9dcvbrTG
-         eqquSXE5F0qaVh8hIOxHPuOP7hhHirFxcXaWA7ovnvMdC3D1O8KhQUoLKFZhasL2iKtC
-         0WBHitfyKkreWL0ePFIGykj+vZuGJRaN8kvVoh3CneyY8Puw69/q9TcplQdVm9mMAqEa
-         InTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to;
-        bh=LhQBM6coR58Co/ZAPA0BFc3M4Mk5vH1MxVZJV9ls2vA=;
-        b=UmnxxVy68TtkYCJQxKXahBngDvyLNwjMmRW1sBivhGIF+i+fjTZziVpxZApio37Nb2
-         Nfim8MPVyn4WwzwMnyFvMaQa4XkOUf1eJJ/7EgjxsapYCxDHuPjrRdr9iYTksnaqQn2v
-         5tbxT8otjdOhJlAMEEKhq/N4WhhW7Y/7xWUoz1r1VwEsomKr0Llh3DjZtOMz+oy93b4K
-         W3/FyxLvJP2mGoTlp8Us8srPquHWh2AQBeaN0/QQqJ41cirj9Qw1tNFYadihyBpPUZyJ
-         WkNWf6f/9QW01UWo8w2DmBLQSOVwU190DXJfY9/GkyTiz0EyZXzskOJZP9Y1kb0gm22D
-         cPKg==
-X-Gm-Message-State: AOAM531MjDt/MIJgPY1jBIrAC929g2Xgy3osDmEqJ6rcJ8nU2SBQZKqo
-        8x/XBoSrPKrWAbf6fGfk1OnrpRWY4dWDQ94T
-X-Google-Smtp-Source: ABdhPJwzzMxNDTk6r9V6wNabUs9CJ15rB1Am55ZHxJYf8iqp+g/GkSnAUj9Ajd4XZxCWHO/XflZpBBlIIstATRSz
-Sender: "linchuyuan via sendgmr" <linchuyuan@chu-dev.c.googlers.com>
-X-Received: from chu-dev.c.googlers.com ([fda3:e722:ac3:10:24:72f4:c0a8:3cfb])
- (user=linchuyuan job=sendgmr) by 2002:a17:90a:990c:: with SMTP id
- b12mr233850pjp.0.1601781294305; Sat, 03 Oct 2020 20:14:54 -0700 (PDT)
-Date:   Sun,  4 Oct 2020 03:14:45 +0000
-In-Reply-To: <20201004031445.2321090-1-linchuyuan@google.com>
-Message-Id: <20201004031445.2321090-3-linchuyuan@google.com>
-Mime-Version: 1.0
-References: <20201004031445.2321090-1-linchuyuan@google.com>
-X-Mailer: git-send-email 2.28.0.806.g8561365e88-goog
-Subject: [PATCH v4 2/2] hwmon: pmbus: max20730: adjust the vout reading given
- voltage divider
-From:   Chu Lin <linchuyuan@google.com>
-To:     linchuyuan@google.com, jdelvare@suse.com, linux@roeck-us.net,
-        robh+dt@kernel.org, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S1725846AbgJDGij (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 4 Oct 2020 02:38:39 -0400
+Received: from mga02.intel.com ([134.134.136.20]:50463 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725822AbgJDGij (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 4 Oct 2020 02:38:39 -0400
+IronPort-SDR: oRkwN+tksBQpBG3gpnd9M1QRPwcYPWC/+Hlq/ricmBeU+ZYcweNWw4uExoto5WKwZK0NseLBZZ
+ qMcF833tkoXg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9763"; a="150898396"
+X-IronPort-AV: E=Sophos;i="5.77,334,1596524400"; 
+   d="scan'208";a="150898396"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2020 23:38:34 -0700
+IronPort-SDR: EIqaZYua/mXODrDO2YZWX+rDJErjwmrYUpwAUumB7CXC5SFCkeoTcnPNTy0qLmGdVpVTHb0jOs
+ t3o05X+7hOnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,334,1596524400"; 
+   d="scan'208";a="295760758"
+Received: from lkp-server02.sh.intel.com (HELO b5ae2f167493) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 03 Oct 2020 23:38:32 -0700
+Received: from kbuild by b5ae2f167493 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kOxfD-0000Mc-Ch; Sun, 04 Oct 2020 06:38:31 +0000
+Date:   Sun, 4 Oct 2020 14:37:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Naveen Krishna Chatradhi <nchatrad@amd.com>
+Cc:     kbuild-all@lists.01.org, linux-hwmon@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: fix ptr_ret.cocci warnings
+Message-ID: <20201004063755.GA47627@fe6c56ecaa6d>
+References: <202010041453.4f94XEJB-lkp@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202010041453.4f94XEJB-lkp@intel.com>
+X-Patchwork-Hint: ignore
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Problem:
-We use voltage dividers so that the voltage presented at the voltage
-sense pins is confusing. We might need to convert these readings to more
-meaningful readings given the voltage divider.
+From: kernel test robot <lkp@intel.com>
 
-Solution:
-Read the voltage divider resistance from dts and convert the voltage
-reading to a more meaningful reading.
+drivers/hwmon/amd_energy.c:302:1-3: WARNING: PTR_ERR_OR_ZERO can be used
 
-Testing:
-max20730 with voltage divider
 
-Signed-off-by: Chu Lin <linchuyuan@google.com>
+ Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
+
+Generated by: scripts/coccinelle/api/ptr_ret.cocci
+
+Fixes: 911766432fd2 ("hwmon: (amd_energy) Improve the accumulation logic")
+CC: Naveen Krishna Chatradhi <nchatrad@amd.com>
+Signed-off-by: kernel test robot <lkp@intel.com>
 ---
-ChangeLog v1 -> v2
-  hwmon: pmbus: max20730:
-  - Don't do anything to the ret if an error is returned from pmbus_read_word
-  - avoid overflow when doing multiplication
 
-ChangeLog v2 -> v3
-  dt-bindings: hwmon: max20730:
-  - Provide the binding documentation in yaml format
-  hwmon: pmbus: max20730:
-  - No change
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+head:   78a28192e301da58ac408f2e98fa30aebafbfda0
+commit: 911766432fd2a6054d9813845ad3f48120bd649c [45/55] hwmon: (amd_energy) Improve the accumulation logic
 
-ChangeLog v3 -> v4
-  dt-bindings: hwmon: max20730:
-  - Fix highefficiency to high efficiency in description
-  - Fix presents to present in vout-voltage-divider
-  - Add additionalProperties: false
-  hwmon: pmbus: max20730:
-  - No change
+ amd_energy.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
- drivers/hwmon/pmbus/max20730.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/hwmon/pmbus/max20730.c b/drivers/hwmon/pmbus/max20730.c
-index a151a2b588a5..fbf2f1e6c969 100644
---- a/drivers/hwmon/pmbus/max20730.c
-+++ b/drivers/hwmon/pmbus/max20730.c
-@@ -31,6 +31,7 @@ struct max20730_data {
- 	struct pmbus_driver_info info;
- 	struct mutex lock;	/* Used to protect against parallel writes */
- 	u16 mfr_devset1;
-+	u32 vout_voltage_divider[2];
- };
+--- a/drivers/hwmon/amd_energy.c
++++ b/drivers/hwmon/amd_energy.c
+@@ -299,10 +299,7 @@ static int amd_energy_probe(struct platf
  
- #define to_max20730_data(x)  container_of(x, struct max20730_data, info)
-@@ -114,6 +115,14 @@ static int max20730_read_word_data(struct i2c_client *client, int page,
- 		max_c = max_current[data->id][(data->mfr_devset1 >> 5) & 0x3];
- 		ret = val_to_direct(max_c, PSC_CURRENT_OUT, info);
- 		break;
-+	case PMBUS_READ_VOUT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret > 0 && data->vout_voltage_divider[0] && data->vout_voltage_divider[1]) {
-+			u64 temp = DIV_ROUND_CLOSEST_ULL((u64)ret * data->vout_voltage_divider[1],
-+							 data->vout_voltage_divider[0]);
-+			ret = clamp_val(temp, 0, 0xffff);
-+		}
-+		break;
- 	default:
- 		ret = -ENODATA;
- 		break;
-@@ -364,6 +373,15 @@ static int max20730_probe(struct i2c_client *client,
- 	data->id = chip_id;
- 	mutex_init(&data->lock);
- 	memcpy(&data->info, &max20730_info[chip_id], sizeof(data->info));
-+	if (of_property_read_u32_array(client->dev.of_node, "vout-voltage-divider",
-+				       data->vout_voltage_divider,
-+				       ARRAY_SIZE(data->vout_voltage_divider)) != 0)
-+		memset(data->vout_voltage_divider, 0, sizeof(data->vout_voltage_divider));
-+	if (data->vout_voltage_divider[1] < data->vout_voltage_divider[0]) {
-+		dev_err(dev,
-+			"The total resistance of voltage divider is less than output resistance\n");
-+		return -ENODEV;
-+	}
+ 	data->wrap_accumulate = kthread_run(energy_accumulator, data,
+ 					    "%s", dev_name(hwmon_dev));
+-	if (IS_ERR(data->wrap_accumulate))
+-		return PTR_ERR(data->wrap_accumulate);
+-
+-	return 0;
++	return PTR_ERR_OR_ZERO(data->wrap_accumulate);
+ }
  
- 	ret = i2c_smbus_read_word_data(client, MAX20730_MFR_DEVSET1);
- 	if (ret < 0)
--- 
-2.28.0.806.g8561365e88-goog
-
+ static int amd_energy_remove(struct platform_device *pdev)
