@@ -2,74 +2,166 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A2B282AB0
-	for <lists+linux-hwmon@lfdr.de>; Sun,  4 Oct 2020 14:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E9C282B7B
+	for <lists+linux-hwmon@lfdr.de>; Sun,  4 Oct 2020 17:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726064AbgJDMuw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 4 Oct 2020 08:50:52 -0400
-Received: from sonic312-20.consmr.mail.bf2.yahoo.com ([74.6.128.82]:34886 "EHLO
-        sonic312-20.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725840AbgJDMuw (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 4 Oct 2020 08:50:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1601815850; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=eoTPGJxPBqq4NWrTzqfV1fjlj2AmyjXiYKzrLL2pbTNVxw0z43SKkaUQ3nzdGbFsUkcXO6t/t/PcsbhHurAvJ8Gr3UB3iZy7c5dWDbQCog3fY60j3Oslyme8AOz5pOYy1uW04d0x1cWBpv1aBhgxgfg2eiuEu9EBUmx+p8ZTGelavaGEFq17Qu4ZXfadqqzhfmYrTd2XJCzeFwXn9rW30znkC9KW5do2XycccbPpZHjEed1YB3+EEIdI3mgmWCftk93Pmu4VXlvtQhlSyKMxPPUKNvYQpgQb43YeQ0c7KiDKUGc504xl5T1dL0XGCHvNAscTKoNtStSkVK+VB2tMOA==
-X-YMail-OSG: ujUgNYoVM1k7mn0FN6fa7q8y5IQILZWRMIs49q1Gsza_fP7_kjyoicaOloUMEmX
- Fzbdx_COEmkhYGsnzp2obQ2CQOEXgCiVWikgmZBPKqm2T7exqRGZOm9M6CaB68wOCsVpvedExuvn
- QdIQ6Pipq4H1BzELiNQsQKPZs6K.4oXyBIsZescDnkan77SobIICIm5AYlZVoIH872Fc3mqoo0AL
- rKvjMFOqC84LXe9ewl1ZRsI1WyOVxhJwoKS4_hUfz1jo6Rydp9CShlTbk83bhTonhqnLbgnlo3OT
- 2Cz2bsw8ArXTiLkAcpBp6LiLZWHWKmAzhgPyz2ZVbq.fFMKvF8RIPc8swVIIw3jWKaUyqRP8rxmp
- 3OY_EhsIIgsm8jYaTQ39feN5QK0.HH175WtQl1XwgdRfUR62ZRt68ag7G9G1056DGIEBvFA52Eqj
- zNv.hcGqgAQDU1ltJjosKIJXPIPGogvoiffDXI8PE5xv9dhD1M42DfINZ.gn_iRoVWmatJbsbW9.
- Lgu5qy2XGduC2Ga7vQaJo5YLCKoRzroeZgHnNsKhV7NMCLdLlLQBID4nBZbp3BiiPuh8aThfhsOI
- 8Cy1Bb3YxRkGkUbQbjlaOC3LezYjO0ZN_iziIB.IpDp5ZZj1n_Mr0ONF8NjkpUIZiYG7.HaOHP8s
- lifvLQAgCu9n0L9_xIwnzUBbfdLskW_YDmI4E6lh4W2_DI2STVnWkS245utf_UTDDjnAIvNDgJsr
- SiaCN78QCl9q5Dga4FmRDGPNRLT1VsOBNABBYmzjg54S72eP5TGQU2iamTMb3GY70Q7wwzfvNx.4
- dyHb.UyK8drc.0Ajp_P42DAxL6clHjSf7yWrYp4Mmx4_zBLCw_piqwb4Jhfhlo4ffz17lCSxJ5T6
- lVIX94qjpzewD_e8ThIaGoK.HarTbIxTRIJ4LFWQGpN7HYrgL4sVrQ9NLUZOoiX.c58WDjao.y5R
- KlmJZccO_2mxudqMEMJyHReqL3CdPLQhS9XEvu31UJ3WNoI5g0TQYqeB8KasYXgyNeUNYscv.TBL
- J7XgQjwpvFckQ.MrUYq7Vvf22lkIM.9JoQXJpN7jaMcBIrK5BrXXgw0bEsMPyyiXGKX3EWuGVhAy
- 2N05gHswM02cHvRWiltHMrKIXryl52eFs7gy1oEqLaFckoBCryLbTzt2a09XKlQ03XMokdjo88_p
- DjC2DfSRl4gSw0dIzk3SWbKds4rtBagZyqz_9_WI131Ox_IYo1r4xyJ98PYKp1Po9WODfvrLFAWs
- 2bFlVb400WYvCb7gEluD59jv43FBIK_9vSt04VBYjRCqiMd5n7j3Uta04vYBFnHFXUXAMFEw2vbW
- w0e59QXbJZMARkFDwhcL9FqN_m73EkhSdSltQnd8ggo8kDj0AxeOlorvObrYWD6hDAH9Ut5b5fVE
- qu7Ka1HkUrmAprBJAX1yRu6ZRtZLhqglz2FltybwN1h_RrQ--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.bf2.yahoo.com with HTTP; Sun, 4 Oct 2020 12:50:50 +0000
-Date:   Sun, 4 Oct 2020 12:46:54 +0000 (UTC)
-From:   Ms Lisa Hugh <lisa.hugh111@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <1490295133.1570366.1601815614446@mail.yahoo.com>
-Subject: BUSINESS CO-OPERATION BENEFIT(Ms Lisa Hugh).
+        id S1725830AbgJDPiL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 4 Oct 2020 11:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbgJDPiK (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 4 Oct 2020 11:38:10 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E59C0613CE
+        for <linux-hwmon@vger.kernel.org>; Sun,  4 Oct 2020 08:38:10 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id s66so6236292otb.2
+        for <linux-hwmon@vger.kernel.org>; Sun, 04 Oct 2020 08:38:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=MllTX5lkyinbm+9yd8QINpn755lrC2Ssw7XGJkixoPU=;
+        b=bMHsZV7zJvknt6MlnmQZj1QZFOULSOytMO9kOZ8u44StFv5DSdBU0hcLMSStuBtZVn
+         mdO9ELr0xwadh/3OkGTrHR7my7dvXgsAAB+QBUqF9zLPm3Hlam5sqUkSe6F+qkkh1uq9
+         uzTEUY9J+DBA0aQlbY7iJNfPcEazZT381E0f0UCwYm1SjOc2yFySOhdJjvPgwdy8iIF1
+         HOa4tYaVqynmqlWb1xHpMmfovJVan4OmLBQw2Yzs/iOapzW6cgJ7KH10GPKftaWJJQip
+         omyPMv21zlUTjJZBPGj17457rWVdRwQJfOSpPertKeB1RLJmm2JrSPb26XQ103JCrcPF
+         +SVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=MllTX5lkyinbm+9yd8QINpn755lrC2Ssw7XGJkixoPU=;
+        b=Fn/y6Z8N0xSgdsmsu6lTiprqbY5bgN76U2DIny4uZF2u3padeGZcju/l9RECB14wyY
+         CHwoEdjBWhDUNeCA58KGANW8bwu5l8ZOdOOpUh+xXYMMa+FxFggjkijoKFGRuupKXUgQ
+         P9uapDIiIFs8V6On/eWMpeovVoF1KRzPx15UTJjJF5XOhJvfXhuEFTD9enOKnuqcI4d/
+         NyP3p2kr6VLMJvDp+E2LaZnyH1pgdR9PhBnZBTPw5GNZAOxrKAdgb+vjQTbVa+ryR05f
+         AClnameVRvUFanAbbwG/tsEZmWQEvDUFHnbJKIwS8BXQYgxp9gtjbMkHTnNadUc6Mc/N
+         3tkg==
+X-Gm-Message-State: AOAM5327clVNXQqEg6LtaXCJyD1vVI7sYJu5m42fNqaeMERGcbjwB1C/
+        qAsjBUZDTglquYBrj7QFQZpoxkwaSmI=
+X-Google-Smtp-Source: ABdhPJzdBtKn281OTt72n8T4glUimsxK6kKuS6iL1Q9zHqt8Uf0d5XpfG6wthNgvRDk22W7IJCpPbw==
+X-Received: by 2002:a9d:a65:: with SMTP id 92mr8336851otg.264.1601825889613;
+        Sun, 04 Oct 2020 08:38:09 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l1sm2244499ooe.20.2020.10.04.08.38.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Oct 2020 08:38:09 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Subject: Re: [PATCH 0/2] pwm-fan: Support multiple tach inputs & fix RPM calc
+To:     Paul Barker <pbarker@konsulko.com>, Kamil Debski <kamil@wypas.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     linux-hwmon@vger.kernel.org
+References: <20200920180943.352526-1-pbarker@konsulko.com>
+ <20200920180943.352526-3-pbarker@konsulko.com>
+ <CAM9ZRVs=33NJGEn783BMEhZxKwuhSSuaTW1QtX3E7wz0mLGiaw@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
+ nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
+ hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
+ c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
+ 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
+ GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
+ sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
+ Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
+ HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
+ BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
+ l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
+ J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
+ cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
+ wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
+ hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
+ nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
+ QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
+ trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
+ WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
+ HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <c972365d-25c6-add8-bcd6-93dc76c59fa4@roeck-us.net>
+Date:   Sun, 4 Oct 2020 08:38:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1490295133.1570366.1601815614446.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16718 YMailNodin Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:81.0) Gecko/20100101 Firefox/81.0
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <CAM9ZRVs=33NJGEn783BMEhZxKwuhSSuaTW1QtX3E7wz0mLGiaw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On 10/4/20 1:49 AM, Paul Barker wrote:
+> On Sun, 20 Sep 2020 at 19:09, Paul Barker <pbarker@konsulko.com> wrote:
+>>
+>> These changes were made to support a custom board where one PWM output
+>> is routed to two fans, each of which has a tachometer signal routed to a
+>> GPIO input on the SoC. While debugging on this board it was found that
+>> the RPM readings were being overestimated due to a bug in the
+>> calculation code so I've included a fix for that.
+>>
+>> As the custom board doesn't currently support the latest mainline kernel
+>> I've tested these changes on a SanCloud BeagleBone Enhanced using an
+>> oscilloscope to check the PWM output and a signal generator to simulate
+>> the fan tachometer signals. I've tested variants of the device tree with
+>> 0, 1 and 2 fan tachometer inputs configured to ensure the logic in the
+>> probe function is correct.
+>>
+>> The device tree bindings changes have been submitted in a separate
+>> patch.
+>>
+>> These changes can also be pulled from:
+>>
+>>   https://gitlab.com/pbarker.dev/staging/linux.git
+>>   tag: for-hwmon/pwm-fan_2020-09-20
+>>
+>> Paul Barker (2):
+>>   hwmon: pwm-fan: Support multiple tachometer inputs
+>>   hwmon: pwm-fan: Fix RPM calculation
+>>
+>>  drivers/hwmon/pwm-fan.c | 164 ++++++++++++++++++++++++----------------
+>>  1 file changed, 100 insertions(+), 64 deletions(-)
+>>
+>>
+>> base-commit: 2835d860d3fcc3e4829e96987544e811d35dee48
+> 
+> Ping on these, I've not had any feedback for 2 weeks.
+> 
 
+Unfortunately the patches are a bit difficult to understand,
+and I did not have the time to fully analyze them. One thing I can say
+is that the order should be reversed - the bug fix should come first.
+Also, patch 2 adds a potential divide by 0 problem, if 'delta'
+happens to be 0.
 
-Dear Friend,
+There are little details, such as replacing 'int pulses' with
+'unsigned int pulses', which make things more difficult to review.
+atomic_t is int. Assigning it to an unsigned int _should_ not matter
+here, but again such little changes make it more difficult to review
+a patch because they require extra scrutiny.
 
-I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
-
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
-
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
-
-Note/ 50% for you why 50% for me after success of the transfer to your bank account.
-
-Below information is what i need from you so will can be reaching each other
-
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa hugh.
+Guenter
