@@ -2,66 +2,74 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3127C2851C7
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Oct 2020 20:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFF71285311
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Oct 2020 22:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726874AbgJFSlg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 6 Oct 2020 14:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46284 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726843AbgJFSl2 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 6 Oct 2020 14:41:28 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F93C0613D8
-        for <linux-hwmon@vger.kernel.org>; Tue,  6 Oct 2020 11:41:27 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id u8so19153070ejg.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 06 Oct 2020 11:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=C8GBCgQbcL72bHfuvAY+Zdl7rDxtS++c+cKqr1GrZYs=;
-        b=DjuJ/p24mQDEl/vbTYnWHBbmgNI9BSc0YKBExESfRytQ6pfYduML0M70l4DO6jipI2
-         zaX+9OrKjTaumELrIGwrKGRM2EXzuMkBrJnSRljYKOHVmkQ6E/cLd3MK4KvQ8oAnqJbm
-         UpxCAUlOuV7STQXFSNMIEdRxiwdEW36wXZThR9e6+j6jXEVPG/GcIb7QBPh9EiTy7Tu3
-         8GhHeU4/UQhsP5UREXADAaMQ2TaQeTtuRgxCYGYxoRhYGaWu0PwEr++ETasnNHi+M2k4
-         j3FoRYxuc5fexqm8AS9165nxSRcnGJezi56zpM2HsiZcbEp+jCVj0TvMO8izM05Sz+VK
-         Scrg==
+        id S1727280AbgJFU0s (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 6 Oct 2020 16:26:48 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:42101 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727181AbgJFU0r (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 6 Oct 2020 16:26:47 -0400
+Received: by mail-oi1-f196.google.com with SMTP id 16so6408495oix.9;
+        Tue, 06 Oct 2020 13:26:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=C8GBCgQbcL72bHfuvAY+Zdl7rDxtS++c+cKqr1GrZYs=;
-        b=uNLqFn2owNJ34YEwz22kgPbvC8fagtJ0bPvKKtfv/7VlHQyjRRmLnLifQoDnGMXPP4
-         JhH1Ax6MSYfIkAr1qkJWCZT62j43eZ+Wblt5rYN4rIiTyWxAY284kj2R5PQoqqZudYXZ
-         XXjOxFXUqUdpZG7CcGVu82OJjFDftkxZ8j2KTm+nk1W5DtHWxqwzFsX9C1mYi0TPIEmJ
-         fCHnCRZ/ofGLHmRiqKoVyMU18BlzzzR5M/lvrawUpPU+pA/aC6urZuwuun/V3PNX5oDi
-         qQm7t4vBJL8WdoEYrCRA0459cPciAgvdCZ8C+cCiaHlT7lkGAB589Yj8k3z5S4xuKB5N
-         FAZQ==
-X-Gm-Message-State: AOAM532SY9X2VL74mM/6gwYYsUH75LVXKppomksxjONsxn3K18iwnJYc
-        mz8UHTihca77l9W/0tiHCamWbfh5YJpBiN7yfC8=
-X-Google-Smtp-Source: ABdhPJwxxh6PGu/CiD43ih/QOxChqReyXCVpm+S5i7eBm5XszzzFBNZYupRSu3v7y35kr7/OJFx65zzal/TZxdtBGKc=
-X-Received: by 2002:a17:906:a51:: with SMTP id x17mr945268ejf.137.1602009686244;
- Tue, 06 Oct 2020 11:41:26 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=DB0x0/dmfpTqmbKH0+qVY91nKVQu4n12ZP0ID6+Du8Q=;
+        b=RdqjiVrFKfJJUKqgry00f3Gwd5dNcxMj2B5DketFyYGKon4hD4Qe5WSispl47zIJs1
+         GalrEzRnoqI20OBarO0qYF1jYHm9BPQQbLKUwXOMkPlbEJlu3xf1YRa7XfsN5ieyhe6n
+         J0dHSrz0MftY8X6JmaQBydTQ3LfSUrf2bgXd+K8LR6og5QcnmXifszIDHnviOha4KzMc
+         01I5dDAIycu4LK/OV2/sttsOrCTN59BMOfqgXIJzyS/n+Y+7/a1IjKANpdZwpemQ2HAx
+         eOLrCAro9kFN0XLTHvqb8uidNLjCABtOsyr2kA9rH0XGIYVcmtvwe6LR1h+XojEN+2rD
+         fX/A==
+X-Gm-Message-State: AOAM531UJYDZH0CnYQRVfrh22Lu+6XxhIPp19qsEBCgcUudYRTyRN2jN
+        cNdS2VkjT9l0VQj+1ULQiA==
+X-Google-Smtp-Source: ABdhPJyrW+3gr9x1StQlh78JeTO44pdGMm7KWZV8fPILGkz61BGd+IxJuslQ+caB0ZBOYW/0U/yfPw==
+X-Received: by 2002:aca:53c8:: with SMTP id h191mr1295oib.173.1602016006173;
+        Tue, 06 Oct 2020 13:26:46 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id p8sm1703377oip.29.2020.10.06.13.26.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2020 13:26:45 -0700 (PDT)
+Received: (nullmailer pid 2777606 invoked by uid 1000);
+        Tue, 06 Oct 2020 20:26:44 -0000
+Date:   Tue, 6 Oct 2020 15:26:44 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Alban Bedel <alban.bedel@aerq.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 1/3] dt-bindings: hwmon: Convert lm75 bindings to yaml
+Message-ID: <20201006202644.GA2777554@bogus>
+References: <20201001145738.17326-1-alban.bedel@aerq.com>
+ <20201001145738.17326-2-alban.bedel@aerq.com>
 MIME-Version: 1.0
-Received: by 2002:a17:906:bc55:0:0:0:0 with HTTP; Tue, 6 Oct 2020 11:41:24
- -0700 (PDT)
-Reply-To: mfdp@tlen.pl
-From:   Mr Bill T Winters <missfavourkip@gmail.com>
-Date:   Tue, 6 Oct 2020 11:41:24 -0700
-Message-ID: <CAJc0UUnUJvey7LoCQ_rsx28BKJ4u1pYKARah2rS2M9ttjqHKkg@mail.gmail.com>
-Subject: Good Morning!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201001145738.17326-2-alban.bedel@aerq.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Greetings,
-I Mr Bill T, did you Receive the (FUND), that was paid to you?
-Let me know with your full name:...  immediately,
+On Thu, 01 Oct 2020 16:57:36 +0200, Alban Bedel wrote:
+> In order to automate the verification of DT nodes convert lm75.txt to
+> lm75.yaml.
+> 
+> Signed-off-by: Alban Bedel <alban.bedel@aerq.com>
+> ---
+> v2: Fix the example to pass `make dt_binding_check`
+> v4: Add the missing additionalProperties: false
+> ---
+>  .../devicetree/bindings/hwmon/lm75.txt        | 39 ------------
+>  .../devicetree/bindings/hwmon/lm75.yaml       | 62 +++++++++++++++++++
+>  2 files changed, 62 insertions(+), 39 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/hwmon/lm75.txt
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/lm75.yaml
+> 
 
-Sincerely Yours, Respectfully,
-
-Mr Bill T Winters,
-Group Chief Executive Officer & Executive Director,
+Reviewed-by: Rob Herring <robh@kernel.org>
