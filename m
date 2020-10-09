@@ -2,309 +2,142 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E21F288CAF
-	for <lists+linux-hwmon@lfdr.de>; Fri,  9 Oct 2020 17:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2770A289C1C
+	for <lists+linux-hwmon@lfdr.de>; Sat, 10 Oct 2020 01:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389314AbgJIPax (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 9 Oct 2020 11:30:53 -0400
-Received: from mx2.suse.de ([195.135.220.15]:34476 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389297AbgJIPaw (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 9 Oct 2020 11:30:52 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 767AAAF30;
-        Fri,  9 Oct 2020 15:30:50 +0000 (UTC)
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     f.fainelli@gmail.com, linux@roeck-us.net, jdelvare@suse.com,
-        wahrenst@gmx.net,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Eric Anholt <eric@anholt.net>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>
-Cc:     linux-hwmon@vger.kernel.org, robh+dt@kernel.org,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] pwm: Add Raspberry Pi Firmware based PWM bus
-Date:   Fri,  9 Oct 2020 17:30:30 +0200
-Message-Id: <20201009153031.986-4-nsaenzjulienne@suse.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201009153031.986-1-nsaenzjulienne@suse.de>
-References: <20201009153031.986-1-nsaenzjulienne@suse.de>
+        id S1727046AbgJIX02 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 9 Oct 2020 19:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727032AbgJIXZr (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 9 Oct 2020 19:25:47 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E791C0613D2
+        for <linux-hwmon@vger.kernel.org>; Fri,  9 Oct 2020 16:25:55 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id l16so10751030ilt.13
+        for <linux-hwmon@vger.kernel.org>; Fri, 09 Oct 2020 16:25:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura-hr.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bdQJAu4yF5dce0DD49SyLKXgzP39u50c+umqE0FLgBU=;
+        b=1GLphmj5/R5BqAlFnPGRnzhsW3asqG+CCFd5rKI5mUooAraedSiE4OyXexCuybI9ab
+         xUnuGU5fG5NdgE+d1dDkiQfGVYhCMKbYNMXtqGIAnWGaB1u4aOHTG/PypcuMTIALyA4b
+         BEM9UVh5gDdrzbW6+zKMfdJXnVr5UyYiirF6OCXsG8SQCp0Om0/6ATaL5bEK0g6/mBYr
+         Qtrvz/63nBPc38xo69uBkPbUPWWTlP2SmmPRjMZckmiqMQN4xoBAxIwgGebnbT8LLlD7
+         4fKKgoVmdyOwDvmfC5OnplL/lF0NLIV5XfGQiq7dnu/UB6/cb2PFf0uU6wNBjhb/jOqJ
+         03CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bdQJAu4yF5dce0DD49SyLKXgzP39u50c+umqE0FLgBU=;
+        b=JuUWbEB/kDjokZjUw/7lZDBiKNnhRzcuEFTPAcgR9HQYhnod5bklSWNO+HmtBwmK4A
+         owz+LMZiY73BlrRdURjAyg23CQ2CBs5O6xecV6eNDvAyJYKpVlcfPSkY+o2ajxQ4mzeI
+         H6C+Iv1BmWRkeVWVPT08gRkRiRf4XD/ty6DVSwWrwi9Q3mW9rPUctTG5SHhqiezR53Zo
+         mNJgOXagBu+K/lDSFRQTSLIBO1OGRZS3/56i4f8XyfhTgUmAdTypBBAjGj4wR8w8vnXF
+         s/NuYIz0eWqeUZFWbaZBUJWkitoRfgKOLARmaf8VgdRjsL0OsZqzbyz8LUWGqpPmSXTO
+         M4Yw==
+X-Gm-Message-State: AOAM531QTy4FrKODEh3v/6jYOhrBObrJ6Mrkuk0Rxc4h1z4eVRSCj3KU
+        zhHkzSU86yK7b3ZyWfOBCbzpPEDvxy2mHAG7x0AlJA==
+X-Google-Smtp-Source: ABdhPJxP+j1e3PZosu12MlCEp2JiKAfso8sX9UH9nEzXe5UARh1wrbVACQBg+/qhTwIeyoCWuBJU5G9A5iggmiUld6A=
+X-Received: by 2002:a92:6811:: with SMTP id d17mr11954140ilc.145.1602285954971;
+ Fri, 09 Oct 2020 16:25:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201007004901.39859-1-luka.kovacic@sartura.hr>
+ <20201007004901.39859-5-luka.kovacic@sartura.hr> <20201007112756.GD12224@duo.ucw.cz>
+In-Reply-To: <20201007112756.GD12224@duo.ucw.cz>
+From:   Luka Kovacic <luka.kovacic@sartura.hr>
+Date:   Sat, 10 Oct 2020 01:25:43 +0200
+Message-ID: <CADZsf3Y=Z9pys=g1QtN=+vhLDV=NVK=rbF14Duv50expF=gzeA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/6] drivers: leds: Add the iEi WT61P803 PUZZLE LED driver
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-hwmon@vger.kernel.org,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, Dan Murphy <dmurphy@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Marek Behun <marek.behun@nic.cz>,
+        Luka Perkov <luka.perkov@sartura.hr>,
+        Robert Marko <robert.marko@sartura.hr>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Adds support to control the PWM bus available in official Raspberry Pi
-PoE HAT. Only RPi's co-processor has access to it, so commands have to
-be sent through RPi's firmware mailbox interface.
+On Wed, Oct 7, 2020 at 1:27 PM Pavel Machek <pavel@ucw.cz> wrote:
+>
+> Hi!
+>
+> > Add support for the iEi WT61P803 PUZZLE LED driver.
+> > Currently only the front panel power LED is supported.
+> >
+> > This driver depends on the iEi WT61P803 PUZZLE MFD driver.
+>
+> > +static int iei_wt61p803_puzzle_led_brightness_set_blocking(struct led_classdev *cdev,
+> > +                                                        enum led_brightness brightness)
+> > +{
+> > +     struct iei_wt61p803_puzzle_led *priv = cdev_to_iei_wt61p803_puzzle_led(cdev);
+> > +     unsigned char *resp_buf = priv->response_buffer;
+> > +     unsigned char led_power_cmd[5] = {
+> > +             IEI_WT61P803_PUZZLE_CMD_HEADER_START,
+> > +             IEI_WT61P803_PUZZLE_CMD_LED,
+> > +             IEI_WT61P803_PUZZLE_CMD_LED_POWER,
+> > +             (char)IEI_LED_OFF
+> > +     };
+> > +     size_t reply_size;
+> > +
+> > +     mutex_lock(&priv->lock);
+> > +     if (brightness == LED_OFF) {
+> > +             led_power_cmd[3] = (char)IEI_LED_OFF;
+> > +             priv->led_power_state = LED_OFF;
+> > +     } else {
+> > +             led_power_cmd[3] = (char)IEI_LED_ON;
+> > +             priv->led_power_state = LED_ON;
+> > +     }
+> > +     mutex_unlock(&priv->lock);
+>
+> Are you sure you need the mutex?
+>
+> > +     ret = devm_led_classdev_register_ext(dev, &priv->cdev, &init_data);
+> > +     if (ret) {
+> > +             dev_err(dev, "Could not register LED\n");
+> > +             goto err_child_node;
+> > +     }
+> > +     return 0;
+> > +err_child_node:
+> > +     fwnode_handle_put(child);
+> > +     return ret;
+> > +}
+>
+> Is the fwnode_handle_put(child); missing in non-error path somewhere?
+>
+> > +MODULE_LICENSE("GPL");
+>
+> Make sure this is consistent with file header. GPLv2+, if you can.
+>
+> Best regards,
+>
+>                                                                         Pavel
+> --
+> (english) http://www.livejournal.com/~pavelmachek
+> (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
 
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
----
- drivers/pwm/Kconfig           |   7 ++
- drivers/pwm/Makefile          |   1 +
- drivers/pwm/pwm-raspberrypi.c | 216 ++++++++++++++++++++++++++++++++++
- 3 files changed, 224 insertions(+)
- create mode 100644 drivers/pwm/pwm-raspberrypi.c
+Hi Pavel,
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 63be5362fd3a..a76997ca37d0 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -379,6 +379,13 @@ config PWM_PXA
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called pwm-pxa.
- 
-+config PWM_RASPBERRYPI
-+	tristate "Raspberry Pi Firwmware PWM support"
-+	depends on RASPBERRYPI_FIRMWARE || (COMPILE_TEST && !RASPBERRYPI_FIRMWARE)
-+	help
-+	  Enable Raspberry Pi firmware controller PWM bus used to control the
-+	  official RPI PoE hat
-+
- config PWM_RCAR
- 	tristate "Renesas R-Car PWM support"
- 	depends on ARCH_RENESAS || COMPILE_TEST
-diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-index cbdcd55d69ee..b557b549d9f3 100644
---- a/drivers/pwm/Makefile
-+++ b/drivers/pwm/Makefile
-@@ -35,6 +35,7 @@ obj-$(CONFIG_PWM_MXS)		+= pwm-mxs.o
- obj-$(CONFIG_PWM_OMAP_DMTIMER)	+= pwm-omap-dmtimer.o
- obj-$(CONFIG_PWM_PCA9685)	+= pwm-pca9685.o
- obj-$(CONFIG_PWM_PXA)		+= pwm-pxa.o
-+obj-$(CONFIG_PWM_RASPBERRYPI)	+= pwm-raspberrypi.o
- obj-$(CONFIG_PWM_RCAR)		+= pwm-rcar.o
- obj-$(CONFIG_PWM_RENESAS_TPU)	+= pwm-renesas-tpu.o
- obj-$(CONFIG_PWM_ROCKCHIP)	+= pwm-rockchip.o
-diff --git a/drivers/pwm/pwm-raspberrypi.c b/drivers/pwm/pwm-raspberrypi.c
-new file mode 100644
-index 000000000000..1ccff6b1ae34
---- /dev/null
-+++ b/drivers/pwm/pwm-raspberrypi.c
-@@ -0,0 +1,216 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2020 Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/pwm.h>
-+
-+#include <soc/bcm2835/raspberrypi-firmware.h>
-+#include <dt-bindings/pwm/raspberrypi,firmware-pwm.h>
-+
-+#define RPI_PWM_MAX_DUTY		255
-+#define RPI_PWM_PERIOD_NS		80000 /* 12.5KHz */
-+
-+#define RPI_PWM_CUR_DUTY_REG		0x0
-+#define RPI_PWM_DEF_DUTY_REG		0x1
-+
-+struct raspberrypi_pwm {
-+	struct rpi_firmware *firmware;
-+	struct pwm_chip chip;
-+	unsigned int duty_cycle;
-+};
-+
-+struct raspberrypi_pwm_prop {
-+	__le32 reg;
-+	__le32 val;
-+	__le32 ret;
-+} __packed;
-+
-+static inline struct raspberrypi_pwm *to_raspberrypi_pwm(struct pwm_chip *chip)
-+{
-+	return container_of(chip, struct raspberrypi_pwm, chip);
-+}
-+
-+static int raspberrypi_pwm_set_property(struct rpi_firmware *firmware,
-+					u32 reg, u32 val)
-+{
-+	struct raspberrypi_pwm_prop msg = {
-+		.reg = cpu_to_le32(reg),
-+		.val = cpu_to_le32(val),
-+	};
-+	int ret;
-+
-+	ret = rpi_firmware_property(firmware, RPI_FIRMWARE_SET_POE_HAT_VAL,
-+				    &msg, sizeof(msg));
-+	if (ret)
-+		return ret;
-+	else if (msg.ret)
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+static int raspberrypi_pwm_get_property(struct rpi_firmware *firmware,
-+					u32 reg, u32 *val)
-+{
-+	struct raspberrypi_pwm_prop msg = {
-+		.reg = reg
-+	};
-+	int ret;
-+
-+	ret = rpi_firmware_property(firmware, RPI_FIRMWARE_GET_POE_HAT_VAL,
-+				    &msg, sizeof(msg));
-+	if (ret)
-+		return ret;
-+	else if (msg.ret)
-+		return -EIO;
-+
-+	*val = le32_to_cpu(msg.val);
-+
-+	return 0;
-+}
-+
-+static void raspberrypi_pwm_get_state(struct pwm_chip *chip,
-+				      struct pwm_device *pwm,
-+				      struct pwm_state *state)
-+{
-+	struct raspberrypi_pwm *pc = to_raspberrypi_pwm(chip);
-+
-+	state->period = RPI_PWM_PERIOD_NS;
-+	state->duty_cycle = pc->duty_cycle * RPI_PWM_PERIOD_NS / RPI_PWM_MAX_DUTY;
-+	state->enabled = !!(pc->duty_cycle);
-+	state->polarity = PWM_POLARITY_NORMAL;
-+}
-+
-+static int raspberrypi_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
-+			         const struct pwm_state *state)
-+{
-+	struct raspberrypi_pwm *pc = to_raspberrypi_pwm(chip);
-+	unsigned int duty_cycle;
-+	int ret;
-+
-+	if (!state->enabled)
-+		duty_cycle = 0;
-+	else
-+		duty_cycle = state->duty_cycle * RPI_PWM_MAX_DUTY /
-+			     RPI_PWM_PERIOD_NS;
-+
-+	if (duty_cycle == pc->duty_cycle)
-+		return 0;
-+
-+	pc->duty_cycle = duty_cycle;
-+	ret = raspberrypi_pwm_set_property(pc->firmware, RPI_PWM_CUR_DUTY_REG,
-+					   pc->duty_cycle);
-+	if (ret) {
-+		dev_err(chip->dev, "Failed to set duty cycle: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = raspberrypi_pwm_set_property(pc->firmware, RPI_PWM_CUR_DUTY_REG,
-+					   pc->duty_cycle);
-+	if (ret) {
-+		dev_err(chip->dev, "Failed to set default duty cycle: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct pwm_ops raspberrypi_pwm_ops = {
-+	.get_state = raspberrypi_pwm_get_state,
-+	.apply = raspberrypi_pwm_apply,
-+	.owner = THIS_MODULE,
-+};
-+
-+static struct pwm_device *raspberrypi_pwm_xlate(struct pwm_chip *pc,
-+					const struct of_phandle_args *args)
-+{
-+	struct pwm_device *pwm;
-+
-+	if (args->args[0] >= pc->npwm)
-+		return ERR_PTR(-EINVAL);
-+
-+	pwm = pwm_request_from_chip(pc, args->args[0], NULL);
-+	if (IS_ERR(pwm))
-+		return pwm;
-+
-+	/* Firmwre won't let us change the period */
-+	pwm->args.period = RPI_PWM_PERIOD_NS;
-+
-+	return pwm;
-+}
-+
-+static int raspberrypi_pwm_probe(struct platform_device *pdev)
-+{
-+	struct device_node *firmware_node;
-+	struct device *dev = &pdev->dev;
-+	struct rpi_firmware *firmware;
-+	struct raspberrypi_pwm *pc;
-+	int ret;
-+
-+	firmware_node = of_get_parent(dev->of_node);
-+	if (!firmware_node) {
-+		dev_err(dev, "Missing firmware node\n");
-+		return -ENOENT;
-+	}
-+
-+	firmware = rpi_firmware_get(firmware_node);
-+	of_node_put(firmware_node);
-+	if (!firmware)
-+		return -EPROBE_DEFER;
-+
-+	pc = devm_kzalloc(&pdev->dev, sizeof(*pc), GFP_KERNEL);
-+	if (!pc)
-+		return -ENOMEM;
-+
-+	pc->firmware = firmware;
-+
-+	pc->chip.dev = dev;
-+	pc->chip.ops = &raspberrypi_pwm_ops;
-+	pc->chip.of_xlate = raspberrypi_pwm_xlate;
-+	pc->chip.of_pwm_n_cells = 1;
-+	pc->chip.base = -1;
-+	pc->chip.npwm = RASPBERRYPI_FIRMWARE_PWM_NUM;
-+
-+	platform_set_drvdata(pdev, pc);
-+
-+	ret = raspberrypi_pwm_get_property(pc->firmware, RPI_PWM_CUR_DUTY_REG,
-+					   &pc->duty_cycle);
-+	if (ret) {
-+		dev_err(dev, "Failed to get duty cycle: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return pwmchip_add(&pc->chip);
-+}
-+
-+static int raspberrypi_pwm_remove(struct platform_device *pdev)
-+{
-+	struct raspberrypi_pwm *pc = platform_get_drvdata(pdev);
-+
-+	return pwmchip_remove(&pc->chip);
-+}
-+
-+static const struct of_device_id raspberrypi_pwm_of_match[] = {
-+	{ .compatible = "raspberrypi,firmware-pwm", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, raspberrypi_pwm_of_match);
-+
-+static struct platform_driver raspberrypi_pwm_driver = {
-+	.driver = {
-+		.name = "raspberrypi-pwm",
-+		.of_match_table = raspberrypi_pwm_of_match,
-+	},
-+	.probe = raspberrypi_pwm_probe,
-+	.remove = raspberrypi_pwm_remove,
-+};
-+module_platform_driver(raspberrypi_pwm_driver);
-+
-+MODULE_AUTHOR("Nicolas Saenz Julienne <nsaenzjulienne@suse.de>");
-+MODULE_DESCRIPTION("Raspberry Pi Firwmare Based PWM Bus Driver");
-+MODULE_LICENSE("GPL v2");
-+
--- 
-2.28.0
+The mutex is locked in
+iei_wt61p803_puzzle_led_brightness_set_blocking(), as concurrent
+access to the same private structure member should be possible, when
+reading the state
+from iei_wt61p803_puzzle_led_brightness_get().
 
+It does look like I missed the final fwnode_handle_put(child) here.
+
+My understanding regarding the license is that when
+MODULE_LICENSE("GPL") is used
+the SPDX identifier can either be GPL-2.0-only or GPL-2.0-or-later.
+
+Kind regards,
+Luka
