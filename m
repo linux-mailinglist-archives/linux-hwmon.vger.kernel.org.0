@@ -2,149 +2,158 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6443528CDFC
-	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Oct 2020 14:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C0828CE33
+	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Oct 2020 14:18:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727558AbgJMMPg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 13 Oct 2020 08:15:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41132 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727002AbgJMMO5 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 13 Oct 2020 08:14:57 -0400
-Received: from mail.kernel.org (ip5f5ad5b2.dynamic.kabel-deutschland.de [95.90.213.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1EB4222266;
-        Tue, 13 Oct 2020 12:14:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602591295;
-        bh=ZaTen0FVonGz3YfAKiTProfR+cBfv2hpCSbt+ubcKlE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UmsrD5gE8Ycf86mMMEFcLZ13ziCA3Ha7gK5X/BS5/xZEvmMooRMuXr8kPhrTQldDA
-         3Af9REZuyDlBxbii/wwZnjngDQ+HHZ46JQrtWL897pLT5rhVCnJIDBfhq7ekdWiHn7
-         ILn2Zd1rLbiut9QCM01196coCv94H7/85uLi0+Uw=
-Received: from mchehab by mail.kernel.org with local (Exim 4.94)
-        (envelope-from <mchehab@kernel.org>)
-        id 1kSJCf-006CoS-4k; Tue, 13 Oct 2020 14:14:53 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Vadim Pasternak <vadimp@nvidia.com>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 17/24] docs: hwmon: mp2975.rst: address some html build warnings
-Date:   Tue, 13 Oct 2020 14:14:44 +0200
-Message-Id: <8418e2062b82314ceae5da7404fad7b2d3a3fa9a.1602590106.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1602590106.git.mchehab+huawei@kernel.org>
-References: <cover.1602590106.git.mchehab+huawei@kernel.org>
+        id S1726476AbgJMMSR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 13 Oct 2020 08:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726719AbgJMMSQ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 13 Oct 2020 08:18:16 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0BCC0613D2
+        for <linux-hwmon@vger.kernel.org>; Tue, 13 Oct 2020 05:18:16 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1kSJFf-000448-Ju; Tue, 13 Oct 2020 14:17:59 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1kSJFe-0007iN-NI; Tue, 13 Oct 2020 14:17:58 +0200
+Date:   Tue, 13 Oct 2020 14:17:58 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc:     f.fainelli@gmail.com, linux@roeck-us.net, jdelvare@suse.com,
+        wahrenst@gmx.net, Eric Anholt <eric@anholt.net>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-pwm@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
+        robh+dt@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] pwm: Add Raspberry Pi Firmware based PWM bus
+Message-ID: <20201013121758.gl6ni4b47ei2bhdf@pengutronix.de>
+References: <20201009153031.986-1-nsaenzjulienne@suse.de>
+ <20201009153031.986-4-nsaenzjulienne@suse.de>
+ <20201012070626.fzjhp3tkmgglqnm4@pengutronix.de>
+ <7899e490543723c97ffad6f42942907f8db6b9b4.camel@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xntkxwoajyvakbba"
+Content-Disposition: inline
+In-Reply-To: <7899e490543723c97ffad6f42942907f8db6b9b4.camel@suse.de>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-    .../Documentation/hwmon/mp2975.rst:25: WARNING: Unexpected indentation.
-    .../Documentation/hwmon/mp2975.rst:27: WARNING: Block quote ends without a blank line; unexpected unindent.
-    .../Documentation/hwmon/mp2975.rst:69: WARNING: Unexpected indentation.
-    .../Documentation/hwmon/mp2975.rst:70: WARNING: Block quote ends without a blank line; unexpected unindent.
-    .../Documentation/hwmon/mp2975.rst:72: WARNING: Bullet list ends without a blank line; unexpected unindent.
-    .../Documentation/hwmon/mp2975.rst: WARNING: document isn't included in any toctree
 
-List blocks should have blank lines before and after them,
-in order to be properly parsed.
+--xntkxwoajyvakbba
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 4beb7a028e9f ("hwmon: (pmbus) Add support for MPS Multi-phase mp2975 controller")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/hwmon/index.rst  |  1 +
- Documentation/hwmon/mp2975.rst | 14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+Hello Nicolas,
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index e6b91ab12978..b797db738225 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -132,6 +132,7 @@ Hardware Monitoring Kernel Drivers
-    mcp3021
-    menf21bmc
-    mlxreg-fan
-+   mp2975
-    nct6683
-    nct6775
-    nct7802
-diff --git a/Documentation/hwmon/mp2975.rst b/Documentation/hwmon/mp2975.rst
-index 5b0609c62f48..81d816b71490 100644
---- a/Documentation/hwmon/mp2975.rst
-+++ b/Documentation/hwmon/mp2975.rst
-@@ -20,6 +20,7 @@ This driver implements support for Monolithic Power Systems, Inc. (MPS)
- vendor dual-loop, digital, multi-phase controller MP2975.
- 
- This device:
-+
- - Supports up to two power rail.
- - Provides 8 pulse-width modulations (PWMs), and can be configured up
-   to 8-phase operation for rail 1 and up to 4-phase operation for rail
-@@ -32,10 +33,12 @@ This device:
-   10-mV DAC, IMVP9 mode with 5-mV DAC.
- 
- Device supports:
-+
- - SVID interface.
- - AVSBus interface.
- 
- Device complaint with:
-+
- - PMBus rev 1.3 interface.
- 
- Device supports direct format for reading output current, output voltage,
-@@ -45,11 +48,14 @@ Device supports VID and direct formats for reading output voltage.
- The below VID modes are supported: VR12, VR13, IMVP9.
- 
- The driver provides the next attributes for the current:
-+
- - for current in: input, maximum alarm;
- - for current out input, maximum alarm and highest values;
- - for phase current: input and label.
--attributes.
-+  attributes.
-+
- The driver exports the following attributes via the 'sysfs' files, where
-+
- - 'n' is number of telemetry pages (from 1 to 2);
- - 'k' is number of configured phases (from 1 to 8);
- - indexes 1, 1*n for "iin";
-@@ -65,11 +71,14 @@ The driver exports the following attributes via the 'sysfs' files, where
- **curr[1-{2n+k}]_label**
- 
- The driver provides the next attributes for the voltage:
-+
- - for voltage in: input, high critical threshold, high critical alarm, all only
-   from page 0;
- - for voltage out: input, low and high critical thresholds, low and high
-   critical alarms, from pages 0 and 1;
-+
- The driver exports the following attributes via the 'sysfs' files, where
-+
- - 'n' is number of telemetry pages (from 1 to 2);
- - indexes 1 for "iin";
- - indexes n+1, n+2 for "vout";
-@@ -87,9 +96,12 @@ The driver exports the following attributes via the 'sysfs' files, where
- **in[2-{n+1}1_lcrit_alarm**
- 
- The driver provides the next attributes for the power:
-+
- - for power in alarm and input.
- - for power out: highest and input.
-+
- The driver exports the following attributes via the 'sysfs' files, where
-+
- - 'n' is number of telemetry pages (from 1 to 2);
- - indexes 1 for "pin";
- - indexes n+1, n+2 for "pout";
--- 
-2.26.2
+On Tue, Oct 13, 2020 at 01:20:00PM +0200, Nicolas Saenz Julienne wrote:
+> On Mon, 2020-10-12 at 09:06 +0200, Uwe Kleine-K=F6nig wrote:
+> > > +	depends on RASPBERRYPI_FIRMWARE || (COMPILE_TEST && !RASPBERRYPI_FI=
+RMWARE)
+> >=20
+> > This is more complicated than necessary.
+> >=20
+> > 	depends on RASPBERRYPI_FIRMWARE || COMPILE_TEST
+> >=20
+> > is logically equivalent.
+>=20
+> It's not exactly the same, see patch 7ed915059c300 ("gpio: raspberrypi-ex=
+t: fix
+> firmware dependency ") which explains why this pattern is needed.
 
+Hmm, this is strange, but if Arnd doesn't know a better solution, then
+be it so. Is this idiom usual enough to not justify a comment?
+
+> > What happens if duty_cycle happens to be bigger than RPI_PWM_MAX_DUTY?
+> >=20
+> > I think the right thing to do here is:
+> >=20
+> > 	if (state->period < RPI_PWM_PERIOD_NS ||
+>=20
+> Why not using state->period !=3D RPI_PWM_PERIOD_NS here?
+
+=46rom the consumer's point of view having to hit the only correct period
+is hard. So the usual convention is to provide the biggest period not
+bigger than the requested one. (The idea for the future is to provide a
+pwm_round_state() function which allows to find out the effect of
+pwm_apply_state() with the same arguments. This then allows to
+efficiently find the best setting for the consumer.)
+
+> > Huh, why do you have to do this twice, just with different error
+> > messages? I assume you want to set RPI_PWM_DEF_DUTY_REG? What is the
+> > effect of writing this property?
+>=20
+> Obviously, I failed to change the register name.
+>=20
+> This is supposed to set the default duty cycle after resetting the board.=
+ I
+> added it so as to keep compatibility with the downstream version of this.
+>=20
+> I'll add a comment to explain this.
+
+fine.
+
+> > > +	int ret;
+> > > +
+> > > +	firmware_node =3D of_get_parent(dev->of_node);
+> > > +	if (!firmware_node) {
+> > > +		dev_err(dev, "Missing firmware node\n");
+> > > +		return -ENOENT;
+> > > +	}
+> > > +
+> > > +	firmware =3D rpi_firmware_get(firmware_node);
+> > > +	of_node_put(firmware_node);
+> > > +	if (!firmware)
+> > > +		return -EPROBE_DEFER;
+> >=20
+> > I don't see a mechanism that prevents the driver providing the firmware
+> > going away while the PWM is still in use.
+>=20
+> There isn't an explicit one. But since you depend on a symbol from the fi=
+rmware
+> driver you won't be able to remove the kernel module before removing the =
+PMW
+> one.
+
+this prevents the that the module is unloaded, but not that the driver
+is unbound.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--xntkxwoajyvakbba
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl+FmvMACgkQwfwUeK3K
+7Alr6QgAoSvGO1utwKB8imjfhuiIKqO6D57vwFc/bGxPmKrIYCfqkAMhITgHDlGX
+lwyzgxZhJ19q6k/DpQ+H7L6LuQv0X1uKjSyiJtjBSxIVySGOhfdBmKq0rPpfduXa
+0wIj5ioSxBotq1KPo1lGbx2NNi8+V5s0Sf1LQjduMaOLKZtwj1z63AJMnsA6thzb
+mTa40+dNb2TPtpIZBpBJS3G5H82l/iccRvBWCLXipOS8TEHG5dDEmjwRwJK6Zkfl
+2G1vLDe1hxn2VWkTwtkIAPfa+yF3q5RwJW85MBIN0sh6GK9MkV0rJ5tJ9D3q0ID5
+WdUQqTE27kuilbmMhsIsTMLJIT7qjg==
+=+cRP
+-----END PGP SIGNATURE-----
+
+--xntkxwoajyvakbba--
