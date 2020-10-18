@@ -2,68 +2,124 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A4FD2917E2
-	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Oct 2020 16:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB8B72918ED
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Oct 2020 20:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726635AbgJROdy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 18 Oct 2020 10:33:54 -0400
-Received: from sonic308-1.consmr.mail.bf2.yahoo.com ([74.6.130.40]:42222 "EHLO
-        sonic308-1.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725776AbgJROdy (ORCPT
+        id S1726357AbgJRSuu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 18 Oct 2020 14:50:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726075AbgJRSut (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 18 Oct 2020 10:33:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603031632; bh=Q/AmPmR0e9CXxQBYbB2SR9aRfA51ls0ZhJJ5ujjkgjM=; h=Date:From:Reply-To:Subject:References:From:Subject; b=PqGcOZ0rKJvSRCTnivMHdgwlMQkRrGKpx4miZ6nPJ73xvQYqjKeqAH2PwStwcyFLiy7l6ZfEyTXVHZLRGxazptcJ6zSd5R7gqJFlof4VLxCX8F+ExvkC5CtDwVntLebKiIPRG6hz29y0MK3s25rjjzDiEOaM7LjDidCgLTkwJp8UhJKZrXIXo+7xVUnAUwcrNKaQc3oHNKogKyPoSba+/4SqgBzjlIei84BuK7B5BLK5Qx1qrEP3k++QXd5x+Uj2v2xU3M4WCy+XxGIThJ/wYBsSvyGD57rNjGnK3x1D8PgHXgvixretVcYnOn15Vw7EAvBMQ2t/SbmfwBpbqWLwkg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603031632; bh=cZOaYebzwup1cRw7uYhkASwqmlMRFHI/duI4124bEvp=; h=Date:From:Subject; b=SaUct65kityI7bACeiy9GEw3WVptWwJdQNM+Rn5olWz32mD0Vcw/Cq47ddG6V/mcXp3TNXvbTwHzPX2yNdMD7kI7CtjE/spZvJC9/4JZlu7Ea15dVJ/iTA5/4J91gFEy9bEnzt0OKTCOsz5QueYg5CpSOVjDrXOVKTsKkiF8L+AY6ErWojJONjBRe+1asMFLNLWvWlaYQRRGyAaHBTl7h8YBJQ1R76QxSt9f1sCWw5vPdHhlLZaqB/hnQ9ru8rJ7VlRo6/a+jagG4Vh87JZ9GiP5Yf7Rv6Y38jXKhnPr3nkmcJlDA8EeYm39CQGm/QCs5dC+BQgO1XcsjCiBdhDWRQ==
-X-YMail-OSG: Bb60kcAVM1mPc2zq.cXN4re.jS3qHKXEp7AJwCqNz8P5OqWFcmDEbpwKzGOqeYY
- TYE_0etggmmfaOfFu_YYvfdsfTxF1dTCIUWaX5lXBJPaBXmkHkPMyBwvu6_.ielPSKoW7A794bMA
- dtmMOF0_4EPGz1xHSo216hG5827NU7wYiXxv9C.A7YOCSo89ERcd5Yf075jbivMMpMXEwOLOFyU1
- CFU.9gw3K72DnA7AoHlf28gwNEoJ3mcYnHX1wYUg_sEhTT1UKKZIQYs7Fmsmjak51Oh3_O5RSst6
- 1RvPpV1ybjmrO2Z6CRIsBY1lV.XrZTObaP848YBV5yhzTTGarI24M3xBkM_B4eGnzpqG_AjggwrX
- eKecWaqe0rLUJJJO1CzseZrozNIzQ3ljj1mKJldI1_90.ONyYoWeSYCsiulu3Pk87H4PTO2.YzWm
- 3pPMpgXEB2.aAVoMKAyfJdE_rnZEnwaQ47KW5lXMsD02tuWqEP5h1dDGrQsyf1BocCWWHzse_A59
- _KhIaMTkK0dUOnRwwQU7Dl9ahBWS0lRVcTwvGLIUio1YV.hLPVeSfVEZWGPVf.5s0i2TsiM3N1mb
- msWkYtOmjJDloJY25_IZqPEP.9W.8LJUbrxiFHLwJkfPbUI9EFrVb50XwPy3n84XdGoUBCh.Wt6M
- f8eLWHl4i3Aj72jSAIpzEcywgMB0VzkG2F8prSkUC3f2yUwZqYMA1Udx.HUw_Qnyc5afR81SfPX7
- yrne819t2YTd4_oEL5ZY12CcjS7b2aMPSiDF1yilaNLQHW16GM.Q0UEX0HcRLzwuyvcGWDalqvUg
- UeOb.tsIEuYNKrHIXdnoJFy5uO_1b_U29B2xL8vrluH3A32GVlPkraNfFsgFDwztcC2pJ5f2bJrc
- GSGfZsrdRdCip6bXmfZhK9rusNGcNr1l_fLEmR3tizJFnxLs5Wq5O6kLdKB0NuSihayFdsiH4f2L
- Wps0ocS_5MC1zcAhhPonlNb.FYKez4bYL2eJp3A5xb0HqXRMoWiSqbqBOLNi4M2trk7OT51fEGI.
- A.UQQRQU5AVbv0l1qjbEEFvzBMYkwMK1jTF.Mx3l8q8nxIjXagF9lLP514fIjoDByti3nvYDayQW
- usD4RSBFm8OsNgzvCAViNwz2iPJYSkO0NjLcgWK5nY8NHdtAKovJh8bPHLM9NGTVpIxkgDl1BDvF
- sM2ZOgym2T4RNnZBjfS4bSCpe.KTKa1EW4bSFrpDiFKvMVRQO69v0zu_YHCJ70E95x0Ghi8kE9Vq
- J3bHIoAO1pPx3UvQW1SzIKfZjN3b.KI483gg6lZZF5HCMo8iFZO6jZlSN8YDm2N47ZeN1McY75wz
- lUmFMHK_9KQK2cJlVLL36ndG4Y3Rdf.Yrj3F8fW4ud.MU311yFklcBFhfgc3YhKfi1nfIyMaRplq
- LxNZmQVl4H1D9Wnx1p7Not1vu2clWcKmNBMoAa7KzaDUDjClxWHw-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.bf2.yahoo.com with HTTP; Sun, 18 Oct 2020 14:33:52 +0000
-Date:   Sun, 18 Oct 2020 14:33:49 +0000 (UTC)
-From:   Mrs Aisha Al-Qaddafi <mrsashaalqaddfi147@gmail.com>
-Reply-To: mrsashaalqaddfi147@gmail.com
-Message-ID: <1613684402.501962.1603031629393@mail.yahoo.com>
-Subject: Dear I Need An Investment Partner
+        Sun, 18 Oct 2020 14:50:49 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D50F7C061755;
+        Sun, 18 Oct 2020 11:50:49 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id a1so4332722pjd.1;
+        Sun, 18 Oct 2020 11:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=p3YiCTiAFbX/Gmg1awU3t3P6S3a7w4v1beKYXNj4/dQ=;
+        b=dx/uHL8qWS0dPYXJuEsdGYld4HjBmg+zX+pY4wuXDMEl+Anl+J5SNH2CD8LM1DuiM5
+         R6Gu2o4EMoL/60NcgZz8CRgG1Fiig6T+CZKuHWzwz/8R2vn5bahLKz/MZ7sPKAv4APUK
+         IJzsOI3cpJpSa0ob8qgb3t8RXzy/WFYdf5vbH4J4IvFk8I40uRW7yjUS5unGGhfBg7Ih
+         JdThp74pR463jt7An/sGTzBPQ54Bxc6EvgivcIDcFLxXgpuGYRm6O4guWGx+GLj28iTx
+         fzK78LU13eP6SWa30blxU+GRMOYqZuMi7BAE+8ScCNJ1VeeBH0/td9sT4dV2xUIdJoer
+         fRmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=p3YiCTiAFbX/Gmg1awU3t3P6S3a7w4v1beKYXNj4/dQ=;
+        b=AD/IHRSNcsLMu4thr8dG+lF7lVMO0HshO0G0nDRQXg0At683oyxcjj9s89Yfib/KPr
+         33Y2QdfHE1AgVJiKo9QCorIJZ2A2aEPyZyWritIBS43IlEaZxRqimszvH8TesmzVPPsm
+         uIhGPY6PMarFJdPt//F/gEO9bfDuVBc8sBpqa9zBHnbK4pPAc0ZJRgsTHJWy/L7ulPqY
+         4VY7ISDKJqcy8MGEnRzgv7kl843X1RQ73kT673kHyLNSu6hqWEb5qBIjDkKnb5zxkrSX
+         yTZM9XtOPVssJ/ng49JOLi3gWwsKku++HULSatECMLrRxoxKrjTxNWMiWlPXm7FNbpGF
+         nc1A==
+X-Gm-Message-State: AOAM531K63IE2V7bA6sGUnHEbFAtHmTDdGG62zkNJE1anndLvcVTpQQX
+        8gVRsukNQORFWu+mNcbohrkytOitVTe+60syhVI=
+X-Google-Smtp-Source: ABdhPJx7KOXioaWsrCOKqX/TfV9NiRJ7ADS9suogUzjnMYiwt3jpQTA2AJIMtPIxVj94oN68ppD7hwpmjJf+gxwYllA=
+X-Received: by 2002:a17:90a:fb92:: with SMTP id cp18mr14588785pjb.228.1603047049318;
+ Sun, 18 Oct 2020 11:50:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1613684402.501962.1603031629393.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16868 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+References: <20201017211035.257110-1-luka.kovacic@sartura.hr> <20201017211035.257110-5-luka.kovacic@sartura.hr>
+In-Reply-To: <20201017211035.257110-5-luka.kovacic@sartura.hr>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 18 Oct 2020 21:50:33 +0300
+Message-ID: <CAHp75VdQnNXdhs52+WFt4bQKwZ3u5euFd3d65XU+-sMSFjt8jA@mail.gmail.com>
+Subject: Re: [PATCH v5 4/6] drivers: leds: Add the iEi WT61P803 PUZZLE LED driver
+To:     Luka Kovacic <luka.kovacic@sartura.hr>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-hwmon@vger.kernel.org,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, Pavel Machek <pavel@ucw.cz>,
+        Dan Murphy <dmurphy@ti.com>, Rob Herring <robh+dt@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        =?UTF-8?B?TWFyZWsgQmVow7pu?= <marek.behun@nic.cz>,
+        luka.perkov@sartura.hr, robert.marko@sartura.hr
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Sun, Oct 18, 2020 at 12:18 AM Luka Kovacic <luka.kovacic@sartura.hr> wrote:
+>
+> Add support for the iEi WT61P803 PUZZLE LED driver.
+> Currently only the front panel power LED is supported.
+>
+> This driver depends on the iEi WT61P803 PUZZLE MFD driver.
 
+...
 
-Dear I Need An Investment Partner
+> +/**
+> + * struct iei_wt61p803_puzzle_led - MCU LED Driver
+> + *
+> + * @mcu:               MCU struct pointer
+> + * @response_buffer    Global MCU response buffer allocation
+> + * @lock:              General mutex lock to protect simultaneous R/W access to led_power_state
+> + * @led_power_state:   State of the front panel power LED
+> + * @cdev:              LED classdev
+> + */
+> +struct iei_wt61p803_puzzle_led {
+> +       struct iei_wt61p803_puzzle *mcu;
+> +       unsigned char *response_buffer;
+> +       struct mutex lock;
+> +       int led_power_state;
 
-Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh
+> +       struct led_classdev cdev;
 
-Dear Friend,
+If you are using container_of() and move this member to be first, you
+will effectively make the container_of() a no-op.
 
-I came across your e-mail contact prior to a private search while in need of your assistance. I am Aisha Al-Qaddafi, the only biological Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a single Mother and a Widow with three Children.
+> +};
+> +
+> +static inline struct iei_wt61p803_puzzle_led *cdev_to_iei_wt61p803_puzzle_led
+> +       (struct led_classdev *led_cdev)
+> +{
+> +       return dev_get_drvdata(led_cdev->dev->parent);
 
-I have investment funds worth Twenty Seven Million Five Hundred Thousand United State Dollar ($27.500.000.00 ) and i need a trusted investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in your country, may be from there, we can build business relationship in the nearest future. I am willing to negotiate an investment/business profit sharing ratio with you based on the future investment earning profits.
+Why not simply call container_of()
 
-If you are willing to handle this project on my behalf kindly reply urgently to enable me to provide you more information about the investment funds. Your Urgent Reply Will Be Appreciated
+> +}
 
-Best Regards
-Mrs Aisha Al-Qaddafi
+...
+
+> +       ret = fwnode_property_read_u32(child, "reg", &reg);
+> +       if (ret || reg > 1) {
+> +               dev_err(dev, "Could not register 'reg' (%lu)\n", (unsigned long)reg);
+
+When you cast explicitly during printf() you are doing something wrong
+in 99.9% cases.
+What's wrong with %u in this case?
+
+> +               ret = -EINVAL;
+> +               goto err_child_node;
+> +       }
+
+-- 
+With Best Regards,
+Andy Shevchenko
