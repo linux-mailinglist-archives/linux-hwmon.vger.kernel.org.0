@@ -2,49 +2,49 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B672916C7
-	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Oct 2020 11:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A4FD2917E2
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Oct 2020 16:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbgJRJp1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 18 Oct 2020 05:45:27 -0400
-Received: from sonic316-13.consmr.mail.bf2.yahoo.com ([74.6.130.123]:40139
-        "EHLO sonic316-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725320AbgJRJp0 (ORCPT
+        id S1726635AbgJROdy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 18 Oct 2020 10:33:54 -0400
+Received: from sonic308-1.consmr.mail.bf2.yahoo.com ([74.6.130.40]:42222 "EHLO
+        sonic308-1.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725776AbgJROdy (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 18 Oct 2020 05:45:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603014325; bh=mZFdy6s88lY1OfVHZCNBCNs7w/HtpGg9ZKvG/5VhQN8=; h=Date:From:Reply-To:Subject:References:From:Subject; b=ABmwWex0sP0lYEIcIjTjs4drZf70Z4qv9FFzC0ONk90X+by8EkvuAFFWGpBGzH/sUJTOGD8mZ3MaZQ796khTGBAvOXq7JLENN2DBanHWxPJRJFfTspgKV9Y59z+jF4n0wsw9wYJUAbRJDXtmKcZhsHdmPTmXZtVTKZj9sjLkICRYhx43eaODlN3RkD4OuMlb5Zyg+glOC654mMbUMcWhvcBWYPGHfj+gTaGK1hoK4uaQ17HwXzypiuZUwuXAc7bcE06cjg8JBEReG9JbHJhi+kV3cMyh90+kKizAJkPU16eWisvtyGmZVZavUAR0YPaJN6HerG9w/dYiVPLbuWEWEg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603014325; bh=0i3HJgI/64gk4mOdXlaKEFQW7nHlT+VtUnODfRu+t58=; h=Date:From:Subject; b=nOHZfmDv6S7C1omjaoGmElZNBRnAyyosgPsZiwv48W0KHBmjDBQ9RWV/V6TXcaSXEdK/HFHPZSbWHy3DEh68vnPFNNGaBvHoKZL6UCUkZEk3b0j1+F0LReZDGmnXNLCd1SMBNbkNpVeAX1MraT04I8WKexqxJQcr0ofSJmUSVe7rqWOzj+wL2tG0LYweJdohbIkvmw6ch65zmTNnXnc3MGP2BfwxJO2+ghRE0FuCeXNGGEt07FXMQlfgQDnnIFD1iPGxiPrc+lOVMEQeoMTdrfBkXKN2T1sKQJo80jlrI7DiR5QBQe1k3H18zlmlAf5KfYdKPvC2B9luZ6lOJBtZyQ==
-X-YMail-OSG: WxRIYnQVM1n2pOnIKkzcLOqvU4v02tfRC3wdeZYQ8AP6mdfMwAqThuXBspOOJFU
- doKqhhypCw7RL3PgG.M5f358vjBjgIE3FzqGCSN67I3hp7YmQtObPX.uHyhjQObPDx5O9OY1NmO2
- fb7tAAx4tv9muymMpIHZPfb8CT9eppxEur5jt2hFcsHMbDJUIOz3hwic02Xf36LslmTjmTnOmjHy
- SDLJbzWTDZI2rSjHjoD1pijDmX0yeInsYUvg9pTerG0UdNnbPg9f0aEAPL6ApIl_v6gWqhTHedVU
- Qf_aOmOADeRSgXvmECbyarBGX_rXtZoE4UtRaGhCWiUQSH.FS9nVsvzMMZyjLHI5ef7zbAfCj08C
- DLAQr3hiJio9UsHFKqSl1rEiUZp26nZJ_6qwhZPyFjXVx.0RRjr.wkj0lJIldJtXU47Xvo4s.8i2
- xdbNdFBZQ7W5p7SakNOSJ9O.B9UL0fZKlL3vmJivPoaEI7D3T8oAXuAqopkr1uCix.fBXjBbFyss
- p2PZZk1zy5VaWBE5QK9Bd5aJobHkxJtE2EIUvpKNAX4FKdS8w7h2vDrQu7iiimEp_2KBs.kNkfch
- wq__3dX0G1QD_ezfB59ES.8VXt3R8OTNMafhpe6CKD8VOkecKltECmKejYxAFtpTtcN7HEAzXolD
- ZVjea37gnB31n1esewCj.i._dTbdyFxGr.Ci3DY2mom6AkYoPX1x.oba4MhSfaoA3sugK.7An4hZ
- 2Bv8YtiHvzGweJ6YVXwsOnEpsQtK5SVrxL6050BRNJ85JdKW2Ahn_h5dUy9HJcAoQo3Ed4dNSl.j
- Vw8sYXcAthJSFN44vg0BYHBB4RMlZlltWBmiGnass76AoVoy8J2l6FKI78kpEzm7wptjr0b6V9CS
- ApdNxrmtNU14UL6H2j5AHoDNfK5bvWj7qey_PsDG8oicpmdrO5FTpfKLOXNCtEPpzbz2HbQxj.s0
- rtjubxn961ojzvUut.OfBgYBqOHuOsOTYNOR7KR263Kv_8diEA290Z.PwyzmIbgNMM0qZ1sEanGf
- rpxCJ3spTV2MybLoO6uTVbuDYEajTnju5jSVicmGMs89JNCMhcutpmE4_konh6wRsTn2qsBgkv58
- iLrcB6VVS53O_XrFJkMpK4qgmfn1cJHymOfNBGK3TRqjmjqSxevco725r9ulRJPoNCP5jJ2mTTP.
- 3_FhqJ1kFTTK7xmcdzQtqzvWo_6AE5uHbkkeP9igXhJpHKOBjg6ItoodF.cOBl_ih0CT.roWX9zQ
- DcnyqE4wBTs.2LBndSo2SSKlZ1rH2psJfGXkboXbMzMVfuDiyaRTYzFok4HO9X8LQAodcQ9D0gko
- w4ZYwuGapAzaY375tiIfy1_CdKMo2e06rhTM9dPW9h4Ia8bym7DfwYzS3NKVj9CTpdCCtI4jyyKB
- XEwqudz0hns8HOmRkB1wMnyT5sUDZ2.a6u5WIDNhDZ6BpJYA-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sun, 18 Oct 2020 09:45:25 +0000
-Date:   Sun, 18 Oct 2020 09:45:21 +0000 (UTC)
-From:   Sophia Lucas <sophialucaspatrick@gmail.com>
-Reply-To: sophialucaspatrick@gmail.com
-Message-ID: <2143131016.472886.1603014321772@mail.yahoo.com>
-Subject: Very Urgent
+        Sun, 18 Oct 2020 10:33:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603031632; bh=Q/AmPmR0e9CXxQBYbB2SR9aRfA51ls0ZhJJ5ujjkgjM=; h=Date:From:Reply-To:Subject:References:From:Subject; b=PqGcOZ0rKJvSRCTnivMHdgwlMQkRrGKpx4miZ6nPJ73xvQYqjKeqAH2PwStwcyFLiy7l6ZfEyTXVHZLRGxazptcJ6zSd5R7gqJFlof4VLxCX8F+ExvkC5CtDwVntLebKiIPRG6hz29y0MK3s25rjjzDiEOaM7LjDidCgLTkwJp8UhJKZrXIXo+7xVUnAUwcrNKaQc3oHNKogKyPoSba+/4SqgBzjlIei84BuK7B5BLK5Qx1qrEP3k++QXd5x+Uj2v2xU3M4WCy+XxGIThJ/wYBsSvyGD57rNjGnK3x1D8PgHXgvixretVcYnOn15Vw7EAvBMQ2t/SbmfwBpbqWLwkg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603031632; bh=cZOaYebzwup1cRw7uYhkASwqmlMRFHI/duI4124bEvp=; h=Date:From:Subject; b=SaUct65kityI7bACeiy9GEw3WVptWwJdQNM+Rn5olWz32mD0Vcw/Cq47ddG6V/mcXp3TNXvbTwHzPX2yNdMD7kI7CtjE/spZvJC9/4JZlu7Ea15dVJ/iTA5/4J91gFEy9bEnzt0OKTCOsz5QueYg5CpSOVjDrXOVKTsKkiF8L+AY6ErWojJONjBRe+1asMFLNLWvWlaYQRRGyAaHBTl7h8YBJQ1R76QxSt9f1sCWw5vPdHhlLZaqB/hnQ9ru8rJ7VlRo6/a+jagG4Vh87JZ9GiP5Yf7Rv6Y38jXKhnPr3nkmcJlDA8EeYm39CQGm/QCs5dC+BQgO1XcsjCiBdhDWRQ==
+X-YMail-OSG: Bb60kcAVM1mPc2zq.cXN4re.jS3qHKXEp7AJwCqNz8P5OqWFcmDEbpwKzGOqeYY
+ TYE_0etggmmfaOfFu_YYvfdsfTxF1dTCIUWaX5lXBJPaBXmkHkPMyBwvu6_.ielPSKoW7A794bMA
+ dtmMOF0_4EPGz1xHSo216hG5827NU7wYiXxv9C.A7YOCSo89ERcd5Yf075jbivMMpMXEwOLOFyU1
+ CFU.9gw3K72DnA7AoHlf28gwNEoJ3mcYnHX1wYUg_sEhTT1UKKZIQYs7Fmsmjak51Oh3_O5RSst6
+ 1RvPpV1ybjmrO2Z6CRIsBY1lV.XrZTObaP848YBV5yhzTTGarI24M3xBkM_B4eGnzpqG_AjggwrX
+ eKecWaqe0rLUJJJO1CzseZrozNIzQ3ljj1mKJldI1_90.ONyYoWeSYCsiulu3Pk87H4PTO2.YzWm
+ 3pPMpgXEB2.aAVoMKAyfJdE_rnZEnwaQ47KW5lXMsD02tuWqEP5h1dDGrQsyf1BocCWWHzse_A59
+ _KhIaMTkK0dUOnRwwQU7Dl9ahBWS0lRVcTwvGLIUio1YV.hLPVeSfVEZWGPVf.5s0i2TsiM3N1mb
+ msWkYtOmjJDloJY25_IZqPEP.9W.8LJUbrxiFHLwJkfPbUI9EFrVb50XwPy3n84XdGoUBCh.Wt6M
+ f8eLWHl4i3Aj72jSAIpzEcywgMB0VzkG2F8prSkUC3f2yUwZqYMA1Udx.HUw_Qnyc5afR81SfPX7
+ yrne819t2YTd4_oEL5ZY12CcjS7b2aMPSiDF1yilaNLQHW16GM.Q0UEX0HcRLzwuyvcGWDalqvUg
+ UeOb.tsIEuYNKrHIXdnoJFy5uO_1b_U29B2xL8vrluH3A32GVlPkraNfFsgFDwztcC2pJ5f2bJrc
+ GSGfZsrdRdCip6bXmfZhK9rusNGcNr1l_fLEmR3tizJFnxLs5Wq5O6kLdKB0NuSihayFdsiH4f2L
+ Wps0ocS_5MC1zcAhhPonlNb.FYKez4bYL2eJp3A5xb0HqXRMoWiSqbqBOLNi4M2trk7OT51fEGI.
+ A.UQQRQU5AVbv0l1qjbEEFvzBMYkwMK1jTF.Mx3l8q8nxIjXagF9lLP514fIjoDByti3nvYDayQW
+ usD4RSBFm8OsNgzvCAViNwz2iPJYSkO0NjLcgWK5nY8NHdtAKovJh8bPHLM9NGTVpIxkgDl1BDvF
+ sM2ZOgym2T4RNnZBjfS4bSCpe.KTKa1EW4bSFrpDiFKvMVRQO69v0zu_YHCJ70E95x0Ghi8kE9Vq
+ J3bHIoAO1pPx3UvQW1SzIKfZjN3b.KI483gg6lZZF5HCMo8iFZO6jZlSN8YDm2N47ZeN1McY75wz
+ lUmFMHK_9KQK2cJlVLL36ndG4Y3Rdf.Yrj3F8fW4ud.MU311yFklcBFhfgc3YhKfi1nfIyMaRplq
+ LxNZmQVl4H1D9Wnx1p7Not1vu2clWcKmNBMoAa7KzaDUDjClxWHw-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.bf2.yahoo.com with HTTP; Sun, 18 Oct 2020 14:33:52 +0000
+Date:   Sun, 18 Oct 2020 14:33:49 +0000 (UTC)
+From:   Mrs Aisha Al-Qaddafi <mrsashaalqaddfi147@gmail.com>
+Reply-To: mrsashaalqaddfi147@gmail.com
+Message-ID: <1613684402.501962.1603031629393@mail.yahoo.com>
+Subject: Dear I Need An Investment Partner
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-References: <2143131016.472886.1603014321772.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16868 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 UBrowser/5.5.8807.1010 Safari/537.36
+References: <1613684402.501962.1603031629393.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16868 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36
 To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
@@ -52,19 +52,18 @@ X-Mailing-List: linux-hwmon@vger.kernel.org
 
 
 
- 
-My Dear
+Dear I Need An Investment Partner
 
+Assalamu Alaikum Wa Rahmatullahi Wa Barakatuh
 
-My name is Mrs. Sophia Lucas I am a Norway Citizen who is living in Burkina Faso, I am married to Mr. Lucas Patrice, a politician who owns a small gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year February 2010, During his lifetime he deposited the sum of (Eleven Million Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in West Africa. The money was from the sale of his company and death benefits payment and entitlements of my deceased husband by his company.
+Dear Friend,
 
-I am sending you this message with heavy tears in my eyes and great sorrow in my heart, and also praying that it will reach you in good health because I am not in good health, I sleep every night without knowing if I may be alive to see the next day. I am suffering from long time cancer and presently I am partially suffering from Leprosy, which has become difficult for me to move around. I was married to my late husband for more than 6 years without having a child and my doctor confided that I have less chance to live, having to know when the cup of death will come, I decided to contact you to claim the fund since I don't have any relation I grew up from an orphanage home.
+I came across your e-mail contact prior to a private search while in need of your assistance. I am Aisha Al-Qaddafi, the only biological Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a single Mother and a Widow with three Children.
 
-I have decided to donate this money for the support of helping Motherless babies/Less privileged/Widows and churches also to build the house of God because I am dying and diagnosed with cancer for about 3 years ago. I have decided to donate from what I have inherited from my late husband to you for the good work of Almighty God; I will be going in for an operation surgery soon.
+I have investment funds worth Twenty Seven Million Five Hundred Thousand United State Dollar ($27.500.000.00 ) and i need a trusted investment Manager/Partner because of my current refugee status,
+however, I am interested in you for investment project assistance in your country, may be from there, we can build business relationship in the nearest future. I am willing to negotiate an investment/business profit sharing ratio with you based on the future investment earning profits.
 
-Now I want you to stand as my next of kin to claim the funds for charity purposes. Because of this money remains unclaimed after my death, the bank executives or the government will take the money as unclaimed fund and maybe use it for selfishness and worthless ventures, I need a very honest person who can claim this money and use it for Charity works, for orphanages, widows and also build schools and churches for less privilege that will be named after my late husband and my name.
+If you are willing to handle this project on my behalf kindly reply urgently to enable me to provide you more information about the investment funds. Your Urgent Reply Will Be Appreciated
 
-I need your urgent answer to know if you will be able to execute this project, and I will give you more information on how the fund will be transferred to your bank account or online banking.
-
-Thanks
-Mrs. Sophia Lucas Patrice
+Best Regards
+Mrs Aisha Al-Qaddafi
