@@ -2,105 +2,69 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4542914A5
-	for <lists+linux-hwmon@lfdr.de>; Sat, 17 Oct 2020 23:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34B672916C7
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Oct 2020 11:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439520AbgJQVLE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 17 Oct 2020 17:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439522AbgJQVLC (ORCPT
+        id S1726179AbgJRJp1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 18 Oct 2020 05:45:27 -0400
+Received: from sonic316-13.consmr.mail.bf2.yahoo.com ([74.6.130.123]:40139
+        "EHLO sonic316-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725320AbgJRJp0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 17 Oct 2020 17:11:02 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7781C0613DA
-        for <linux-hwmon@vger.kernel.org>; Sat, 17 Oct 2020 14:11:01 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id b8so7283499wrn.0
-        for <linux-hwmon@vger.kernel.org>; Sat, 17 Oct 2020 14:11:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura-hr.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=L1eT9+f8E9Rdu5LlhMetVCscQccHc6i1e7dX0+vR0H0=;
-        b=QvBPgA4zMo1Ac5XxV3ZS7OrTFr9zWbKxigEzLhBUqPUEkK3SeyaObNvqGbqgWbVeo7
-         bj0HezSRSt0p0rsgWnEPdGaFRB9wfUaGSDgKzjA57D9pEoT+y/mCI/1LsTXggp5FRrLe
-         2HOv/LHkKx/C7wzB8BWJ0sKVRfFGJRIf4x1iQaXHD6idU80otNstDmK+T8bZ4EEBAhsA
-         TI7oAu1aDMzLFvpKnofhoCVOf1ke1QJgSLaHmYwZsWxKhWiFm1JWi4OTy9TiDdJ/JOY0
-         V5/XxV4FIj56PgmsSWdFRTK+VT/EJ9st1PiTy1GBzwDADeSvwF8cmM0/umh05lm2CtcD
-         hdrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=L1eT9+f8E9Rdu5LlhMetVCscQccHc6i1e7dX0+vR0H0=;
-        b=D42vLFZ3tCTE7kC4Eiwybl3Hv3s227v+cPzIJI16i5YSpCfE48/a6gkKd50Yjj2w3k
-         xAquO0dIcwOuRHU2vpz7kIsiNUOYyLSKc+Hb/FdrpYGdUkKxlhqXcSR6ffFWUFlE1Aj1
-         9jJDo6ADUXhXN10RRqYAo1i6DjxFbISkdZjmVNkOZ2gbnZGd7RwZAvjjTtKEmskKPeab
-         787Mo9HwOHWUg6lLBS7hLwlJ1FL5g4bwGwp5NhSu1f8e2tdCda4CoN4tXp5YU18voHKn
-         muI9+F/2DNYiPVl0WMet7q/OPinSrbV3mjJmZkO3Fno7BZmzYFwq9uj2Csl9i6FCd1Tk
-         Trkg==
-X-Gm-Message-State: AOAM532mPZLEzpPOI4vgDMav4HmC8vgB4wUlMq1jTBLv9zD+UQR20PcI
-        JbiVU9YI3hEOH71qMFEWGCO0PA==
-X-Google-Smtp-Source: ABdhPJx8y3SLQ40fKimn0jlNfNZaMx9fbCDfNHNse9V3wrQi+N67/Ius/D0M/Bfg1ceGPrLwzIe0eQ==
-X-Received: by 2002:adf:f101:: with SMTP id r1mr12435330wro.392.1602969060563;
-        Sat, 17 Oct 2020 14:11:00 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:ee2:4b0d:3001:fbc5:498b:ed6d:cfac])
-        by smtp.gmail.com with ESMTPSA id w11sm10337137wrs.26.2020.10.17.14.10.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2020 14:10:59 -0700 (PDT)
-From:   Luka Kovacic <luka.kovacic@sartura.hr>
-To:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-leds@vger.kernel.org
-Cc:     lee.jones@linaro.org, pavel@ucw.cz, dmurphy@ti.com,
-        robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
-        marek.behun@nic.cz, luka.perkov@sartura.hr,
-        robert.marko@sartura.hr, Luka Kovacic <luka.kovacic@sartura.hr>
-Subject: [PATCH v5 6/6] MAINTAINERS: Add an entry for the iEi WT61P803 PUZZLE driver
-Date:   Sat, 17 Oct 2020 23:10:35 +0200
-Message-Id: <20201017211035.257110-7-luka.kovacic@sartura.hr>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201017211035.257110-1-luka.kovacic@sartura.hr>
-References: <20201017211035.257110-1-luka.kovacic@sartura.hr>
+        Sun, 18 Oct 2020 05:45:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603014325; bh=mZFdy6s88lY1OfVHZCNBCNs7w/HtpGg9ZKvG/5VhQN8=; h=Date:From:Reply-To:Subject:References:From:Subject; b=ABmwWex0sP0lYEIcIjTjs4drZf70Z4qv9FFzC0ONk90X+by8EkvuAFFWGpBGzH/sUJTOGD8mZ3MaZQ796khTGBAvOXq7JLENN2DBanHWxPJRJFfTspgKV9Y59z+jF4n0wsw9wYJUAbRJDXtmKcZhsHdmPTmXZtVTKZj9sjLkICRYhx43eaODlN3RkD4OuMlb5Zyg+glOC654mMbUMcWhvcBWYPGHfj+gTaGK1hoK4uaQ17HwXzypiuZUwuXAc7bcE06cjg8JBEReG9JbHJhi+kV3cMyh90+kKizAJkPU16eWisvtyGmZVZavUAR0YPaJN6HerG9w/dYiVPLbuWEWEg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603014325; bh=0i3HJgI/64gk4mOdXlaKEFQW7nHlT+VtUnODfRu+t58=; h=Date:From:Subject; b=nOHZfmDv6S7C1omjaoGmElZNBRnAyyosgPsZiwv48W0KHBmjDBQ9RWV/V6TXcaSXEdK/HFHPZSbWHy3DEh68vnPFNNGaBvHoKZL6UCUkZEk3b0j1+F0LReZDGmnXNLCd1SMBNbkNpVeAX1MraT04I8WKexqxJQcr0ofSJmUSVe7rqWOzj+wL2tG0LYweJdohbIkvmw6ch65zmTNnXnc3MGP2BfwxJO2+ghRE0FuCeXNGGEt07FXMQlfgQDnnIFD1iPGxiPrc+lOVMEQeoMTdrfBkXKN2T1sKQJo80jlrI7DiR5QBQe1k3H18zlmlAf5KfYdKPvC2B9luZ6lOJBtZyQ==
+X-YMail-OSG: WxRIYnQVM1n2pOnIKkzcLOqvU4v02tfRC3wdeZYQ8AP6mdfMwAqThuXBspOOJFU
+ doKqhhypCw7RL3PgG.M5f358vjBjgIE3FzqGCSN67I3hp7YmQtObPX.uHyhjQObPDx5O9OY1NmO2
+ fb7tAAx4tv9muymMpIHZPfb8CT9eppxEur5jt2hFcsHMbDJUIOz3hwic02Xf36LslmTjmTnOmjHy
+ SDLJbzWTDZI2rSjHjoD1pijDmX0yeInsYUvg9pTerG0UdNnbPg9f0aEAPL6ApIl_v6gWqhTHedVU
+ Qf_aOmOADeRSgXvmECbyarBGX_rXtZoE4UtRaGhCWiUQSH.FS9nVsvzMMZyjLHI5ef7zbAfCj08C
+ DLAQr3hiJio9UsHFKqSl1rEiUZp26nZJ_6qwhZPyFjXVx.0RRjr.wkj0lJIldJtXU47Xvo4s.8i2
+ xdbNdFBZQ7W5p7SakNOSJ9O.B9UL0fZKlL3vmJivPoaEI7D3T8oAXuAqopkr1uCix.fBXjBbFyss
+ p2PZZk1zy5VaWBE5QK9Bd5aJobHkxJtE2EIUvpKNAX4FKdS8w7h2vDrQu7iiimEp_2KBs.kNkfch
+ wq__3dX0G1QD_ezfB59ES.8VXt3R8OTNMafhpe6CKD8VOkecKltECmKejYxAFtpTtcN7HEAzXolD
+ ZVjea37gnB31n1esewCj.i._dTbdyFxGr.Ci3DY2mom6AkYoPX1x.oba4MhSfaoA3sugK.7An4hZ
+ 2Bv8YtiHvzGweJ6YVXwsOnEpsQtK5SVrxL6050BRNJ85JdKW2Ahn_h5dUy9HJcAoQo3Ed4dNSl.j
+ Vw8sYXcAthJSFN44vg0BYHBB4RMlZlltWBmiGnass76AoVoy8J2l6FKI78kpEzm7wptjr0b6V9CS
+ ApdNxrmtNU14UL6H2j5AHoDNfK5bvWj7qey_PsDG8oicpmdrO5FTpfKLOXNCtEPpzbz2HbQxj.s0
+ rtjubxn961ojzvUut.OfBgYBqOHuOsOTYNOR7KR263Kv_8diEA290Z.PwyzmIbgNMM0qZ1sEanGf
+ rpxCJ3spTV2MybLoO6uTVbuDYEajTnju5jSVicmGMs89JNCMhcutpmE4_konh6wRsTn2qsBgkv58
+ iLrcB6VVS53O_XrFJkMpK4qgmfn1cJHymOfNBGK3TRqjmjqSxevco725r9ulRJPoNCP5jJ2mTTP.
+ 3_FhqJ1kFTTK7xmcdzQtqzvWo_6AE5uHbkkeP9igXhJpHKOBjg6ItoodF.cOBl_ih0CT.roWX9zQ
+ DcnyqE4wBTs.2LBndSo2SSKlZ1rH2psJfGXkboXbMzMVfuDiyaRTYzFok4HO9X8LQAodcQ9D0gko
+ w4ZYwuGapAzaY375tiIfy1_CdKMo2e06rhTM9dPW9h4Ia8bym7DfwYzS3NKVj9CTpdCCtI4jyyKB
+ XEwqudz0hns8HOmRkB1wMnyT5sUDZ2.a6u5WIDNhDZ6BpJYA-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sun, 18 Oct 2020 09:45:25 +0000
+Date:   Sun, 18 Oct 2020 09:45:21 +0000 (UTC)
+From:   Sophia Lucas <sophialucaspatrick@gmail.com>
+Reply-To: sophialucaspatrick@gmail.com
+Message-ID: <2143131016.472886.1603014321772@mail.yahoo.com>
+Subject: Very Urgent
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <2143131016.472886.1603014321772.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16868 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 UBrowser/5.5.8807.1010 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add an entry for the iEi WT61P803 PUZZLE driver (MFD, HWMON, LED drivers).
 
-Signed-off-by: Luka Kovacic <luka.kovacic@sartura.hr>
-Cc: Luka Perkov <luka.perkov@sartura.hr>
-Cc: Robert Marko <robert.marko@sartura.hr>
----
- MAINTAINERS | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 867157311dc8..d56fdc300066 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8460,6 +8460,20 @@ F:	include/net/nl802154.h
- F:	net/ieee802154/
- F:	net/mac802154/
  
-+IEI WT61P803 M801 MFD DRIVER
-+M:	Luka Kovacic <luka.kovacic@sartura.hr>
-+M:	Luka Perkov <luka.perkov@sartura.hr>
-+L:	linux-kernel@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/ABI/stable/sysfs-driver-iei-wt61p803-puzzle
-+F:	Documentation/devicetree/bindings/hwmon/iei,wt61p803-puzzle-hwmon.yaml
-+F:	Documentation/devicetree/bindings/leds/iei,wt61p803-puzzle-leds.yaml
-+F:	Documentation/devicetree/bindings/mfd/iei,wt61p803-puzzle.yaml
-+F:	drivers/hwmon/iei-wt61p803-puzzle-hwmon.c
-+F:	drivers/leds/leds-iei-wt61p803-puzzle.c
-+F:	drivers/mfd/iei-wt61p803-puzzle.c
-+F:	include/linux/mfd/iei-wt61p803-puzzle.h
-+
- IFE PROTOCOL
- M:	Yotam Gigi <yotam.gi@gmail.com>
- M:	Jamal Hadi Salim <jhs@mojatatu.com>
--- 
-2.26.2
+My Dear
 
+
+My name is Mrs. Sophia Lucas I am a Norway Citizen who is living in Burkina Faso, I am married to Mr. Lucas Patrice, a politician who owns a small gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year February 2010, During his lifetime he deposited the sum of (Eleven Million Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in West Africa. The money was from the sale of his company and death benefits payment and entitlements of my deceased husband by his company.
+
+I am sending you this message with heavy tears in my eyes and great sorrow in my heart, and also praying that it will reach you in good health because I am not in good health, I sleep every night without knowing if I may be alive to see the next day. I am suffering from long time cancer and presently I am partially suffering from Leprosy, which has become difficult for me to move around. I was married to my late husband for more than 6 years without having a child and my doctor confided that I have less chance to live, having to know when the cup of death will come, I decided to contact you to claim the fund since I don't have any relation I grew up from an orphanage home.
+
+I have decided to donate this money for the support of helping Motherless babies/Less privileged/Widows and churches also to build the house of God because I am dying and diagnosed with cancer for about 3 years ago. I have decided to donate from what I have inherited from my late husband to you for the good work of Almighty God; I will be going in for an operation surgery soon.
+
+Now I want you to stand as my next of kin to claim the funds for charity purposes. Because of this money remains unclaimed after my death, the bank executives or the government will take the money as unclaimed fund and maybe use it for selfishness and worthless ventures, I need a very honest person who can claim this money and use it for Charity works, for orphanages, widows and also build schools and churches for less privilege that will be named after my late husband and my name.
+
+I need your urgent answer to know if you will be able to execute this project, and I will give you more information on how the fund will be transferred to your bank account or online banking.
+
+Thanks
+Mrs. Sophia Lucas Patrice
