@@ -2,176 +2,95 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EDE32958CD
-	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Oct 2020 09:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC64A29651A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Oct 2020 21:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505121AbgJVHIu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 22 Oct 2020 03:08:50 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:59882 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2505120AbgJVHIu (ORCPT
+        id S369968AbgJVTNu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 22 Oct 2020 15:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438462AbgJVTNs (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 22 Oct 2020 03:08:50 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M6n0hG131210;
-        Thu, 22 Oct 2020 07:08:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=8n5vlAtX37x347X0jG0ppw6eCz7rq6geXfy1ORIKtZQ=;
- b=Z4wVTtsPrxA3kyP9dp+vPMsKMbHRJm//LKbO0FWGOmhblTSVCGv81nwIRHlm5PCNGErm
- 4IXR2OFEdaYIkwr5o9uYV+fD9wUhcyZVMoStQmIxkON4/nAvsuiG3G2xdE0vlR7qRBvZ
- m2Sn6km1dlgz1liwioP6qx2H7548sdvFe/q+RSyyQOCS6C71r+1D2xdSptc0kO20lWBg
- TPO0aG60DrvKPh+nGJRaPzoF/dYM8V5GHYko8QBFSBDlLomyUkc0ycLXQn94BrQwwumW
- OSJK773bz18KW7kKITv8GtmLVW45VbSIhJjtvDn2sT5891taBkjhGC6jWW7HV0UG9fCZ kA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 347p4b4arh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 22 Oct 2020 07:08:33 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M6p22D100154;
-        Thu, 22 Oct 2020 07:08:32 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 348ahyew2f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 22 Oct 2020 07:08:32 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09M78UG6012245;
-        Thu, 22 Oct 2020 07:08:30 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 22 Oct 2020 00:08:30 -0700
-Date:   Thu, 22 Oct 2020 10:08:24 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Ugur Usug <Ugur.Usug@maximintegrated.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] hwmon: (pmbus/max20730) use scnprintf() instead of snprintf()
-Message-ID: <20201022070824.GC2817762@mwanda>
+        Thu, 22 Oct 2020 15:13:48 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DA9C0613CE
+        for <linux-hwmon@vger.kernel.org>; Thu, 22 Oct 2020 12:13:48 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1kVg1W-0003bD-VQ; Thu, 22 Oct 2020 21:13:18 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1kVg1T-0002r3-R2; Thu, 22 Oct 2020 21:13:15 +0200
+Date:   Thu, 22 Oct 2020 21:13:14 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Andrzej Hajda <a.hajda@samsung.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Kamil Debski <kamil@wypas.org>
+Subject: Re: [PATCH 1/4] MAINTAINERS: move Kamil Debski to credits
+Message-ID: <20201022191314.plesyizmczgdmodr@pengutronix.de>
+References: <20201016151528.7553-1-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nfibopfctijostvi"
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
- malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010220044
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
- clxscore=1011 malwarescore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010220044
+In-Reply-To: <20201016151528.7553-1-krzk@kernel.org>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The snprintf() function returns the number of characters which would
-have been printed if there were enough space, but the scnprintf()
-returns the number of characters which were actually printed.  If the
-buffer is not large enough, then using snprintf() would result in a
-read overflow and an information leak.
 
-Fixes: 8910c0bd533d ("hwmon: (pmbus/max20730) add device monitoring via debugfs")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/hwmon/pmbus/max20730.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+--nfibopfctijostvi
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/hwmon/pmbus/max20730.c b/drivers/hwmon/pmbus/max20730.c
-index 57923d72490c..be83b98411c7 100644
---- a/drivers/hwmon/pmbus/max20730.c
-+++ b/drivers/hwmon/pmbus/max20730.c
-@@ -122,8 +122,8 @@ static ssize_t max20730_debugfs_read(struct file *file, char __user *buf,
- 	switch (idx) {
- 	case MAX20730_DEBUGFS_VOUT_MIN:
- 		ret = VOLT_FROM_REG(data->mfr_voutmin * 10000);
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d.%d\n",
--			       ret / 10000, ret % 10000);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d.%d\n",
-+				ret / 10000, ret % 10000);
- 		break;
- 	case MAX20730_DEBUGFS_FREQUENCY:
- 		val = (data->mfr_devset1 & MAX20730_MFR_DEVSET1_FSW_MASK)
-@@ -141,7 +141,7 @@ static ssize_t max20730_debugfs_read(struct file *file, char __user *buf,
- 			ret = 800;
- 		else
- 			ret = 900;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_PG_DELAY:
- 		val = (data->mfr_devset1 & MAX20730_MFR_DEVSET1_TSTAT_MASK)
-@@ -223,7 +223,7 @@ static ssize_t max20730_debugfs_read(struct file *file, char __user *buf,
- 	case MAX20730_DEBUGFS_OC_PROTECT_MODE:
- 		ret = (data->mfr_devset2 & MAX20730_MFR_DEVSET2_OCPM_MASK)
- 			>> MAX20730_MFR_DEVSET2_OCPM_BIT_POS;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_SS_TIMING:
- 		val = (data->mfr_devset2 & MAX20730_MFR_DEVSET2_SS_MASK)
-@@ -241,32 +241,32 @@ static ssize_t max20730_debugfs_read(struct file *file, char __user *buf,
- 	case MAX20730_DEBUGFS_IMAX:
- 		ret = (data->mfr_devset2 & MAX20730_MFR_DEVSET2_IMAX_MASK)
- 			>> MAX20730_MFR_DEVSET2_IMAX_BIT_POS;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_OPERATION:
- 		ret = i2c_smbus_read_byte_data(psu->client, PMBUS_OPERATION);
- 		if (ret < 0)
- 			return ret;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_ON_OFF_CONFIG:
- 		ret = i2c_smbus_read_byte_data(psu->client, PMBUS_ON_OFF_CONFIG);
- 		if (ret < 0)
- 			return ret;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_SMBALERT_MASK:
- 		ret = i2c_smbus_read_word_data(psu->client,
- 					       PMBUS_SMB_ALERT_MASK);
- 		if (ret < 0)
- 			return ret;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_VOUT_MODE:
- 		ret = i2c_smbus_read_byte_data(psu->client, PMBUS_VOUT_MODE);
- 		if (ret < 0)
- 			return ret;
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX, "%d\n", ret);
- 		break;
- 	case MAX20730_DEBUGFS_VOUT_COMMAND:
- 		ret = i2c_smbus_read_word_data(psu->client, PMBUS_VOUT_COMMAND);
-@@ -274,8 +274,8 @@ static ssize_t max20730_debugfs_read(struct file *file, char __user *buf,
- 			return ret;
- 
- 		ret = VOLT_FROM_REG(ret * 10000);
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX,
--			       "%d.%d\n", ret / 10000, ret % 10000);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX,
-+				"%d.%d\n", ret / 10000, ret % 10000);
- 		break;
- 	case MAX20730_DEBUGFS_VOUT_MAX:
- 		ret = i2c_smbus_read_word_data(psu->client, PMBUS_VOUT_MAX);
-@@ -283,8 +283,8 @@ static ssize_t max20730_debugfs_read(struct file *file, char __user *buf,
- 			return ret;
- 
- 		ret = VOLT_FROM_REG(ret * 10000);
--		len = snprintf(tbuf, DEBUG_FS_DATA_MAX,
--			       "%d.%d\n", ret / 10000, ret % 10000);
-+		len = scnprintf(tbuf, DEBUG_FS_DATA_MAX,
-+				"%d.%d\n", ret / 10000, ret % 10000);
- 		break;
- 	default:
- 		len = strlcpy(tbuf, "Invalid\n", DEBUG_FS_DATA_MAX);
--- 
-2.28.0
+Hello,
 
+this series doesn't seem to be applied and looking at the list of people
+this mail was sent "To:" it's not obvious who is expected to take it. I
+assume it is not for us linux-pwm guys and will tag it as
+"not-applicable" in our patchwork.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--nfibopfctijostvi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl+R2cYACgkQwfwUeK3K
+7Am7/Qf9Hn6byJ62M3y6PE5RGyKzaYDnB59RFDxPEc+foN2XgL9eGE6txkcRPCR3
+4nyd7vpJXREQGZRm754DpuRDs8y1jr7Wt0DocUIGQVBEaV6B8kZwN2w1PyoTuX/K
+77Vh6t1J98gUmK7JJwFIID8l4lJ4WTiL4ZTY+VXSUJx3cDsLSOOvGNTRqC2jFC8v
+NVTccHDumhNn2D+LNgFy5Bzo8q53C+/LPNXX1iGEy8O58XzVsgBaYzpguY4wI9oO
+8QrSTGV9UCAHZoWtWNp2xPN69C8eFZAWU3qKzviXlccnIor0v1tr2kBrNhRFeeIU
+zpmYKGyotNbjgXdEoQtdAZNXk9GZ7w==
+=JdiK
+-----END PGP SIGNATURE-----
+
+--nfibopfctijostvi--
