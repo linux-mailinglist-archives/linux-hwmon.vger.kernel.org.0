@@ -2,62 +2,97 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C228294A55
-	for <lists+linux-hwmon@lfdr.de>; Wed, 21 Oct 2020 11:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E96632958D1
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Oct 2020 09:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437576AbgJUJQ7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 21 Oct 2020 05:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45106 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437437AbgJUJQ7 (ORCPT
+        id S2505132AbgJVHJZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 22 Oct 2020 03:09:25 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:56234 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2505125AbgJVHJZ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 21 Oct 2020 05:16:59 -0400
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB63AC0613CF
-        for <linux-hwmon@vger.kernel.org>; Wed, 21 Oct 2020 02:16:58 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id k9so1642238qki.6
-        for <linux-hwmon@vger.kernel.org>; Wed, 21 Oct 2020 02:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PJI/s8RRF5eYrZNwApVBWYrkyguBgEsYn1LTe29DpYE=;
-        b=rmiR7JvJW9ZArCmCMOUGOZXx49AY0ndpDFhfZI7pJ3jnmnK5xvWEuXG+6iZvi8Z5he
-         9DA6uvesbeJPz2QByZJWUkUdIHMXf1iVa9wyHFyWth27KCCMbORSmHywwp6ZRcoEr9uX
-         t6k7oJPZIOrWv+5+LLZINFEpBMKswLnXCJtfwy7CZ+iPIP/XLWCE4nrArnLPFncg40Y2
-         EcKjoms63d8NRlUkJhFJ+Yo99SrRecTSiWFaZiK+0E6ByTxrkIx980CNn1WYG9Oux5/c
-         zb+8qLb4uZWOxYowbZT7FAmUGMij6mhLOJS2sVz8mxM2H+oT/tnb1EuxeZCGF9b7pKIN
-         2cIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=PJI/s8RRF5eYrZNwApVBWYrkyguBgEsYn1LTe29DpYE=;
-        b=Ay374f0SToLLbEJneY03KVIXeyZU4VFSE7B255kwto3LG8O9GyDAaB8gFJptVqgMu2
-         WJZtG8Awbyi1QIUtJdZRz0EPjgutouEyOuUbzdCmYJO2B/cud19VaLsHw5tsYDbB1uVY
-         8sBkFy6NhF3DZQ6SrIt3zNvqb9zYtfGQPYOF8e88/qQdQAqoixQDkCHRPjsNp0daIoIs
-         X1CJZLmf3dtxM+Ma9Y3AZ+xIfpXKmuU3vODdldJXry0V1q0/aShT25pRWlPl5LlSLgxj
-         9gDqmO4/x/+CmDG17/+D2LtKUU8VXhO+VLmjLbkAcvicnQopJhqdeLgcvt5Vj4iTLqmT
-         ywXg==
-X-Gm-Message-State: AOAM533rIAYsSb21R5UnXtKsbP4mww6brT77yO6SKscIhtGiYmsG9Enz
-        OxWv+lLWPEX+Bar6KTCNKKOQggD1KPVkPV3zQhk=
-X-Google-Smtp-Source: ABdhPJwZVqoGctWKPuKW3l9xq/sA3ZxvnbCrGeRZOXggWGIB4u1habgqSwDVwxAmuo1ike916Af/Px+RyoEcQ+POgQs=
-X-Received: by 2002:a05:620a:127a:: with SMTP id b26mr2295143qkl.166.1603271818080;
- Wed, 21 Oct 2020 02:16:58 -0700 (PDT)
+        Thu, 22 Oct 2020 03:09:25 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M6oSOL032033;
+        Thu, 22 Oct 2020 07:09:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=H/7ut3HZ9Mm0LqMb92CGy2Gtz3YqHfFYbBgQ+jFKH3o=;
+ b=Sv+/OHM9MVdrjDUg7ZMKdb7BIgxStDG/iyFjazjK4Sm58io6MjmxUUmVydwnA6JhzRg0
+ WqVWnSox1+gasBsNLDpfOzhaHHmtFWQyHwUQtIGlw8Y0OowtrE7EdeqxuPnyGdS50CAE
+ y8z55kLol77xsjmqmtt+2aCxn081WbKMvMs58V1KAOGUPLoX9COewhvCDtfP0jsBszB4
+ EswimcAV2abs0H4kILfkeZpb6bcmGXv0z3IAwj58BtjZ2EFhfp4e9YVZBhmm9Ra7EqpH
+ wIRN+LndQ25CEctI9zQkwZV5EXhcX6JiU5fV+Cmw/LeVH/mAVn/kMfPym4y4/lurg3Zp 6g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 34ak16mhq0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 22 Oct 2020 07:09:07 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M6njYN037158;
+        Thu, 22 Oct 2020 07:07:07 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 348ah0h1n5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 22 Oct 2020 07:07:07 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09M776Pl010394;
+        Thu, 22 Oct 2020 07:07:06 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 22 Oct 2020 00:07:05 -0700
+Date:   Thu, 22 Oct 2020 10:06:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Ugur Usug <Ugur.Usug@maximintegrated.com>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] hwmon: (pmbus/max20730) delete some dead code
+Message-ID: <20201022070659.GA2817762@mwanda>
 MIME-Version: 1.0
-Received: by 2002:ac8:3264:0:0:0:0:0 with HTTP; Wed, 21 Oct 2020 02:16:57
- -0700 (PDT)
-Reply-To: cecelee144@gmail.com
-From:   "Ce.Lia.H" <henryonwujiobi@gmail.com>
-Date:   Wed, 21 Oct 2020 09:16:57 +0000
-Message-ID: <CA+iw9dqw1ygaaGd8XX5RARuJztxSMTC2E-iXUnyPN6cYzhv=KA@mail.gmail.com>
-Subject: re;
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010220044
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 malwarescore=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010220044
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello, Greeting.
-How are you doing today, i contact you about my project detail and issue okay.
+The debugfs_create_dir() function never returns NULL.  Normal users are
+not supposed to check the return value so the correct fix is just to
+delete this check.
 
-Get back for more information.
+In the case where the debugfs_create_dir() fails, the function returns
+NULL.  The other debugfs function check for NULL directory and handle
+it.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/hwmon/pmbus/max20730.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/hwmon/pmbus/max20730.c b/drivers/hwmon/pmbus/max20730.c
+index be83b98411c7..00fea16acab4 100644
+--- a/drivers/hwmon/pmbus/max20730.c
++++ b/drivers/hwmon/pmbus/max20730.c
+@@ -328,8 +328,6 @@ static int max20730_init_debugfs(struct i2c_client *client,
+ 		return -ENOENT;
+ 
+ 	max20730_dir = debugfs_create_dir(client->name, debugfs);
+-	if (!max20730_dir)
+-		return -ENOENT;
+ 
+ 	for (i = 0; i < MAX20730_DEBUGFS_NUM_ENTRIES; ++i)
+ 		psu->debugfs_entries[i] = i;
+-- 
+2.28.0
+
