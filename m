@@ -2,155 +2,93 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1115529E7A6
-	for <lists+linux-hwmon@lfdr.de>; Thu, 29 Oct 2020 10:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A71F529F01A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 29 Oct 2020 16:37:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbgJ2JqA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 29 Oct 2020 05:46:00 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:62026 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726607AbgJ2Jp7 (ORCPT
+        id S1728152AbgJ2PhC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 29 Oct 2020 11:37:02 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:44192 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728396AbgJ2PgI (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 29 Oct 2020 05:45:59 -0400
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09T9jXpK005056;
-        Thu, 29 Oct 2020 05:45:46 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com with ESMTP id 34ce462q0f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 29 Oct 2020 05:45:45 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 09T9ji32023819
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 29 Oct 2020 05:45:44 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Thu, 29 Oct
- 2020 05:45:43 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Thu, 29 Oct 2020 05:45:43 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 09T9jcAM008861;
-        Thu, 29 Oct 2020 05:45:42 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC:     <robh+dt@kernel.org>, <linux@roeck-us.net>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH 3/3] dt-binding: hwmon: Add documentation for ltc2992
-Date:   Thu, 29 Oct 2020 11:49:11 +0200
-Message-ID: <20201029094911.79173-4-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201029094911.79173-1-alexandru.tachici@analog.com>
+        Thu, 29 Oct 2020 11:36:08 -0400
+Received: by mail-ot1-f65.google.com with SMTP id m26so2587076otk.11;
+        Thu, 29 Oct 2020 08:36:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pYhNMIk7qOW8fzlPIb6mwbR/RjaOX4ALpVWt9vbGPp4=;
+        b=BrVxa5UiOx5kR/0jO5IesBft/NM+eHzZtoV0ibgiqVYlzaaQlX3hOcyXctVyPN7yJ/
+         HUfUfNhhazJNdKG62iahtZWbFgr985EfNHQ5Tvytuivock8U644Q9CapQjS3PlS8OggZ
+         UX71LUeLKUAo1Lt7iNaLnQMbqNJigaL8935nHAVb1lgjP4JpieGEenoQSWIm7cDSJQ47
+         bmfNYD2AMiVXHeyjMFnwgHUEctYX4L7WH51AJLD4BclHgQ+Vshu+MylnyuodPoeWl7A1
+         bseWwF8lpT5hvkUiFDsaha3nEP/Vnqt0RBEnoJYcvChl1FHU2pJCzcLt0sClF9OWGGfF
+         zNxA==
+X-Gm-Message-State: AOAM530QX6SESV0oOtPK6uJH41LkrJfEJfCYt4tVVE9oEQcqXCjljQ6u
+        fs8A4xyH+7xYGbrRKCvZdw==
+X-Google-Smtp-Source: ABdhPJy7+Dy/GtcnO7U2Vrvmm/n1381d2/qROf8vZtBudP2OEw4K3ND9BPfhzrMSTTMrbLJ3cylRlw==
+X-Received: by 2002:a9d:d01:: with SMTP id 1mr3802468oti.16.1603985765503;
+        Thu, 29 Oct 2020 08:36:05 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id v185sm680470ooa.31.2020.10.29.08.36.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2020 08:36:04 -0700 (PDT)
+Received: (nullmailer pid 1914957 invoked by uid 1000);
+        Thu, 29 Oct 2020 15:36:04 -0000
+Date:   Thu, 29 Oct 2020 10:36:04 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     alexandru.tachici@analog.com
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org, linux@roeck-us.net
+Subject: Re: [PATCH 3/3] dt-binding: hwmon: Add documentation for ltc2992
+Message-ID: <20201029153604.GA1914153@bogus>
 References: <20201029094911.79173-1-alexandru.tachici@analog.com>
+ <20201029094911.79173-4-alexandru.tachici@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-10-29_03:2020-10-29,2020-10-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- spamscore=0 malwarescore=0 impostorscore=0 adultscore=0 mlxlogscore=999
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010290070
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201029094911.79173-4-alexandru.tachici@analog.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Thu, 29 Oct 2020 11:49:11 +0200, alexandru.tachici@analog.com wrote:
+> From: Alexandru Tachici <alexandru.tachici@analog.com>
+> 
+> Add documentation for ltc2992.
+> 
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+> ---
+>  .../bindings/hwmon/adi,ltc2992.yaml           | 78 +++++++++++++++++++
+>  1 file changed, 78 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
+> 
 
-Add documentation for ltc2992.
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- .../bindings/hwmon/adi,ltc2992.yaml           | 78 +++++++++++++++++++
- 1 file changed, 78 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
+My bot found errors running 'make dt_binding_check' on your patch:
 
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml b/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
-new file mode 100644
-index 000000000000..1b603026ed2d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
-@@ -0,0 +1,78 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/adi,ltc2992.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Linear Technology 2992 Power Monitor
-+
-+maintainers:
-+  - Alexandru Tachici <alexandru.tachici@analog.com>
-+
-+description: |
-+  Linear Technology 2992 Dual Wide Range Power Monitor
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2992.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ltc2992
-+
-+  reg:
-+    maxItems: 1
-+
-+  avcc-supply: true
-+
-+patternProperties:
-+  "^channel@([0-1])$":
-+    type: object
-+    description: |
-+      Represents the two supplies to be monitored.
-+
-+    properties:
-+      reg:
-+        description: |
-+          The channel number. LTC2992 can monitor two supplies.
-+        items:
-+         minimum: 0
-+         maximum: 1
-+
-+      shunt-resistor-micro-ohms:
-+        description:
-+          The value of curent sense resistor in microohms.
-+  required:
-+    - reg
-+
-+  additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c1 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ltc2992@6F {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                compatible = "adi,ltc2992";
-+                reg = <0x6F>;
-+
-+                channel@0 {
-+                        reg = <0x0>;
-+                        shunt-resistor-micro-ohms = <10000>;
-+                };
-+
-+                channel@1 {
-+                        reg = <0x1>;
-+                        shunt-resistor-micro-ohms = <10000>;
-+                };
-+        };
-+    };
-+...
--- 
-2.20.1
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml:37:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml: patternProperties:required: ['reg'] is not of type 'object', 'boolean'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml: patternProperties: {'enum': ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'deprecated', 'description', 'else', 'enum', 'if', 'items', 'maxItems', 'maximum', 'minItems', 'minimum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'propertyNames', 'required', 'then', 'unevaluatedProperties']} is not allowed for 'required'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml: patternProperties: {'enum': ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'deprecated', 'description', 'else', 'enum', 'if', 'items', 'maxItems', 'maximum', 'minItems', 'minimum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'propertyNames', 'required', 'then', 'unevaluatedProperties']} is not allowed for 'additionalProperties'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml: ignoring, error in schema: patternProperties: required
+warning: no schema found in file: ./Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
+
+
+See https://patchwork.ozlabs.org/patch/1390001
+
+The base for the patch is generally the last rc1. Any dependencies
+should be noted.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
