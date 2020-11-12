@@ -2,113 +2,130 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F221D2B025E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Nov 2020 10:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 515A72B07ED
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Nov 2020 15:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbgKLJ5d (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 12 Nov 2020 04:57:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44896 "EHLO
+        id S1728210AbgKLO5Z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 12 Nov 2020 09:57:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726671AbgKLJ5X (ORCPT
+        with ESMTP id S1727035AbgKLO5Z (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 12 Nov 2020 04:57:23 -0500
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC2BC0613D1
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 01:57:22 -0800 (PST)
-Received: by mail-wr1-x442.google.com with SMTP id o15so5321229wru.6
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 01:57:22 -0800 (PST)
+        Thu, 12 Nov 2020 09:57:25 -0500
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E713C0613D1
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 06:57:25 -0800 (PST)
+Received: by mail-ot1-x343.google.com with SMTP id z16so5811197otq.6
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 06:57:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=iYp4liH6QtuFMXY8fnKB9zBXABbAMYcv+7gF3AlAZms=;
-        b=bdUZdwS1oHyphT4MiY5fuJuSHleFsAMvbaM8db1XRxOT716qg1IRdUoVmUzFlpT+nG
-         9gCJlWNx2qumzMjuLRaz6pMapA8jN5KX/onENKyLqd8fmWQVqlLv37M7yNBMdHrkRG8m
-         Ce5OzzdiOlLVY5UjDV4pXwSRUItbhrlVDg2LMZJkR3fMJMD8oE5J2qgMS78nCx1CGaSu
-         QH/hVQwngfaP/pn80wu7WMQGUpJEHXNzTqFbiT4wzU+ewGsAccit57KiJOKZopKSq/eF
-         f1X0STlN0+kct9AkS2v16Wwuo7yx6CR8xbmba8GcKm/9xfrIrx5jEKCM+6P7rSDFqHZO
-         l/sA==
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=cpTtNvq4ZhxMlLNfqNd0XNUjhBDz3O7BvGq+ZKB+XM8=;
+        b=ioIBfqd1X76KzfbUifXYfBrr1+byKv/QatTWNxYyy7ZWSbdxIONgxA31rKzdaQDAGC
+         S0s/fXc05UagUWzrY4M237BjQoKSNawbmbWaELroSqfij5hEt8JULeYbTVzRWZFhw7jj
+         dasYityHDHY0vvL217QwF/eW9tR0X9NKmkI4ow78bDoZNQc3NXmCEDDyBQ2K//vjylmZ
+         nh4Tm3p0Sf9RKLMiN6+cv2kbzBmv+BwgpFMYNSNr+wF6ONWsJOmpDZ8JGZVgmDjaWN/R
+         s49fqE7oEtut7DDKRQH6UNsu1XonVGRdYEUutqvcwZQf+wyyGRVXv8Is0p5O3/ppJdZr
+         uYHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=iYp4liH6QtuFMXY8fnKB9zBXABbAMYcv+7gF3AlAZms=;
-        b=E9tF5uXps+P3QDxmL7e4vIsxt25NgJpMBIGSYLAj6A0qnKihlJ7PtZGr3caQlblcGo
-         /8+/NTswZj8bEMIf8FqaXglyhhCGfJZ6O1+Je54XzG40RghktKoj5PJVQN7pExA1lvA9
-         wXC9+Vioc+Vrps31EOpb4YaxdRZX6KGGjnlsL874mgaWvAjSSkNk5Fg2+dFY39EsMu0D
-         6lPOddkfaEvJZi6HxUzR6v79egi8gbgM9ER8D5KxigH0erOHfksrubN4J80M1t4+Riqp
-         VeKL319ez0HKcaJfQgNfOHZhUew/BIZYGSxR8LPvMkyHUq0eHI7yUwffpBU4tDoxIo5c
-         RMEA==
-X-Gm-Message-State: AOAM530RGXs7KP/ZZLj5rK5PLIBxblrvj1dCxhVdWmzQFTiAuTtrcf/U
-        5KpZPZBey7F6tKx4UxsZdN5TUw==
-X-Google-Smtp-Source: ABdhPJxKfGioiUbjQWMEIpOjWDSlwsWsdf+ZB/gdqtMiJ065DaMLD1p6GwzO8zDSAzKlSqTxRNVq+Q==
-X-Received: by 2002:a5d:488b:: with SMTP id g11mr20538303wrq.210.1605175041676;
-        Thu, 12 Nov 2020 01:57:21 -0800 (PST)
-Received: from dell.default ([91.110.221.159])
-        by smtp.gmail.com with ESMTPSA id n15sm6138792wrq.48.2020.11.12.01.57.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2020 01:57:20 -0800 (PST)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     jdelvare@suse.com, linux@roeck-us.net
-Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Neelesh Gupta <neelegup@linux.vnet.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] hwmon: ibmpowernv: Silence strncpy() warning
-Date:   Thu, 12 Nov 2020 09:57:15 +0000
-Message-Id: <20201112095715.1993117-4-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201112095715.1993117-1-lee.jones@linaro.org>
-References: <20201112095715.1993117-1-lee.jones@linaro.org>
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=cpTtNvq4ZhxMlLNfqNd0XNUjhBDz3O7BvGq+ZKB+XM8=;
+        b=U6TFLv3yEgTQiAKj+VRCM7tQHT/W/LXwATpREwlPRYg+ceMqFmUfaSyjfHCgS7XP/O
+         gFypLlAvDu17ri0YutUUC6wWZmhJ52Fco0pXT1ssIJ9xjFqW/AYPzhky4RhuDddmufJH
+         UUcWOlhXukyqa+2L+gTzSO+pKJsNpZ+YR1F4yKHhh0jGHAXafbUSmhLU0ToPFexVD+dP
+         GlDvO38qHoqmW8y0X441x0lpZ+pxp26EAl9QET/rkg/UqUBdefGTLagL7FHB0qffORx2
+         2luwMFpFRC7AHwVHnwRjcssssK6o5IWpkgeJ3m8/78LEX6cJmtI9+ozA+VW3H5/4Lmew
+         mu6A==
+X-Gm-Message-State: AOAM531GZ/QD7cxEfXnaRV3klLp/R6Tn8hbXd8+klYKuqM34lNT535oH
+        wmxqBLPW+hLVS01vMXRZLvU=
+X-Google-Smtp-Source: ABdhPJygjjFhcjusmSr8eB3vUWGgYu3/L2+dC8TvwJEICM3AHxYoWnz3Lj9HU5e6FbwQbXiazbgCMg==
+X-Received: by 2002:a9d:4716:: with SMTP id a22mr20848547otf.82.1605193044587;
+        Thu, 12 Nov 2020 06:57:24 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id n21sm1153080oie.15.2020.11.12.06.57.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 12 Nov 2020 06:57:23 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Thu, 12 Nov 2020 06:57:21 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Paul Barker <pbarker@konsulko.com>
+Cc:     Kamil Debski <kamil@wypas.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v5] hwmon: pwm-fan: Fix RPM calculation
+Message-ID: <20201112145721.GA238476@roeck-us.net>
+References: <20201111164643.7087-1-pbarker@konsulko.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201111164643.7087-1-pbarker@konsulko.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+On Wed, Nov 11, 2020 at 04:46:43PM +0000, Paul Barker wrote:
+> To convert the number of pulses counted into an RPM estimation, we need
+> to divide by the width of our measurement interval instead of
+> multiplying by it. If the width of the measurement interval is zero we
+> don't update the RPM value to avoid dividing by zero.
+> 
+> We also don't need to do 64-bit division, with 32-bits we can handle a
+> fan running at over 4 million RPM.
+> 
+> Signed-off-by: Paul Barker <pbarker@konsulko.com>
 
- from drivers/hwmon/ibmpowernv.c:11:
- In function ‘strncpy’,
- inlined from ‘get_sensor_index_attr’ at drivers/hwmon/ibmpowernv.c:243:2,
- inlined from ‘create_device_attrs’ at drivers/hwmon/ibmpowernv.c:280:8:
- include/linux/string.h:297:30: warning: ‘__builtin_strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
- 297 | #define __underlying_strncpy __builtin_strncpy
- | ^
- include/linux/string.h:307:9: note: in expansion of macro ‘__underlying_strncpy’
- 307 | return __underlying_strncpy(p, q, size);
- | ^~~~~~~~~~~~~~~~~~~~
+Applied.
 
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Neelesh Gupta <neelegup@linux.vnet.ibm.com>
-Cc: linux-hwmon@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/hwmon/ibmpowernv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Guenter
 
-diff --git a/drivers/hwmon/ibmpowernv.c b/drivers/hwmon/ibmpowernv.c
-index a750647e66a47..8e3724728cce0 100644
---- a/drivers/hwmon/ibmpowernv.c
-+++ b/drivers/hwmon/ibmpowernv.c
-@@ -240,7 +240,7 @@ static int get_sensor_index_attr(const char *name, u32 *index, char *attr)
- 	if (err)
- 		return err;
- 
--	strncpy(attr, dash_pos + 1, MAX_ATTR_LEN);
-+	strscpy(attr, dash_pos + 1, MAX_ATTR_LEN);
- 
- 	return 0;
- }
--- 
-2.25.1
-
+> ---
+> 
+>   Changes from v4:
+> 
+>     * Don't update ctx->sample_start if delta=0.
+> 
+>   Changes from v2:
+> 
+>     * Don't update the RPM value if delta=0.
+> 
+>  drivers/hwmon/pwm-fan.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
+> 
+> 
+> base-commit: f8394f232b1eab649ce2df5c5f15b0e528c92091
+> 
+> diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
+> index bdba2143021a..1f63807c0399 100644
+> --- a/drivers/hwmon/pwm-fan.c
+> +++ b/drivers/hwmon/pwm-fan.c
+> @@ -54,16 +54,18 @@ static irqreturn_t pulse_handler(int irq, void *dev_id)
+>  static void sample_timer(struct timer_list *t)
+>  {
+>  	struct pwm_fan_ctx *ctx = from_timer(ctx, t, rpm_timer);
+> +	unsigned int delta = ktime_ms_delta(ktime_get(), ctx->sample_start);
+>  	int pulses;
+> -	u64 tmp;
+>  
+> -	pulses = atomic_read(&ctx->pulses);
+> -	atomic_sub(pulses, &ctx->pulses);
+> -	tmp = (u64)pulses * ktime_ms_delta(ktime_get(), ctx->sample_start) * 60;
+> -	do_div(tmp, ctx->pulses_per_revolution * 1000);
+> -	ctx->rpm = tmp;
+> +	if (delta) {
+> +		pulses = atomic_read(&ctx->pulses);
+> +		atomic_sub(pulses, &ctx->pulses);
+> +		ctx->rpm = (unsigned int)(pulses * 1000 * 60) /
+> +			(ctx->pulses_per_revolution * delta);
+> +
+> +		ctx->sample_start = ktime_get();
+> +	}
+>  
+> -	ctx->sample_start = ktime_get();
+>  	mod_timer(&ctx->rpm_timer, jiffies + HZ);
+>  }
+>  
