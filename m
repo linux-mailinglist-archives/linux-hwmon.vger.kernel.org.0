@@ -2,100 +2,110 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 315C72B0265
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Nov 2020 10:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 392CA2B0259
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Nov 2020 10:57:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725928AbgKLJ5m (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 12 Nov 2020 04:57:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44892 "EHLO
+        id S1727702AbgKLJ5W (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 12 Nov 2020 04:57:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727672AbgKLJ5V (ORCPT
+        with ESMTP id S1726671AbgKLJ5V (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Thu, 12 Nov 2020 04:57:21 -0500
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7406AC0613D4
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 01:57:19 -0800 (PST)
-Received: by mail-wm1-x344.google.com with SMTP id c16so4903848wmd.2
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 01:57:19 -0800 (PST)
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF28C0613D6
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 01:57:20 -0800 (PST)
+Received: by mail-wm1-x342.google.com with SMTP id h2so4733692wmm.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 Nov 2020 01:57:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=SJdlB8xXslxrXWz+83yO6rq8sfEN0xtnjkNe/5k6q8o=;
-        b=xC0FljWqdDp0JYyC2N6sRxyC4M5oR8YfJDzzWjOcUUI2nmbP1cPJsYPk+zSNsuZl91
-         I2y+3FjkSM/lnfwZcAbKvd4jRftxtMK66fC2xdbI14LiJtQl2H83DDZOATO4jAtyEz1K
-         CEr728uOPMjJeqsa239TbdxYsFO6ufLh9/bPVnMS+etRZ5NA6kQBhBbrbESm5lkO1q/S
-         xMQjty3iW7tgKcYqnKYaU5RnAcGeNs838Z9B5bRVoVjrZYv3hJeuZzLeFB06ZW+msqOQ
-         m1/0uQsgIPTLp6+nN0v/N82+WrU7N66Kfk4TRwhLvXwgZGcLpyjmSoSzoybIjwE5u9Tv
-         QKWg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=yQkw2l9WIpkjYhKP7Ul2HuGuzOBTh63oL9grzgjK3CQ=;
+        b=bcdviuqNSoOpm26doGhfbZW/J0FexDO8vOQFu7IWvGhijr7A8u/sPf4yBz6G5YiI8/
+         6aTv7L3ClS2xuaXAsY0DOqQoIazieic2n99F8+j9ilpSKk7v5cpwI8/fG7yqnKA24x4D
+         DDWg32nUnf3syXxMho4jlWnvBvGVEIe++06+6/CgScMkH/UkslPVucVVyCGTeEKIEnMh
+         r8i7rHwEqz7bdohi9sIpIPSmNNfKVyNw2gKygfM9pMQPSGQKAdYKihwFb0oaoynZBCul
+         4Loctrxsw4UvrekgGLLjiUPjTR6R0Vr2mVddTXWJyZK0Q9Xrk5MBRUlDKr1nyBFVMXyt
+         yhcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=SJdlB8xXslxrXWz+83yO6rq8sfEN0xtnjkNe/5k6q8o=;
-        b=Bcdd/xCRFUi7cPkLKg4h/tBrENyHdPJt76mJD5lfkaPblCLzX+fr4lwHzFcQHtYjeU
-         WRGiTjgdOUR5h4+F+KB8Dkycbhii+ro2PrwQ/RxMhO/uBjcNjZH8Gygu8HanZWXjHhkU
-         x39PFkF4PJeS9Lsczd7rfwSi2JC2Tj+CugIr7h1PFAo80pZzp69fUy6snZl+ByQrVGw+
-         k48WBLKky/fwmbnf/snjbBiOKdEK75sd7cAw5sIJQ/yRU/9Nh9+qujZymY47CkE0tGn9
-         zqeRJpaKzVSHD8sQIOo5DLUz6s3khgEV4mWYOV8F8xN58DVRc21KCQhzEKhTl4JT+fVS
-         +uQA==
-X-Gm-Message-State: AOAM530ujsbZkWmvqniWSl1Wvfem62x4V0BZtETdp9xvdfuu6HbGMt0g
-        Zrc6oI7ij9MO6uaayWGwXt+chw==
-X-Google-Smtp-Source: ABdhPJxg3Ef2Soll0LH/c+2LR15Uk1TaaSB8m0drUb+pvQ4sDVM8xS9tns/UgMX2m4xG1FCkRr4LAQ==
-X-Received: by 2002:a7b:c2f7:: with SMTP id e23mr8872342wmk.100.1605175038192;
-        Thu, 12 Nov 2020 01:57:18 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=yQkw2l9WIpkjYhKP7Ul2HuGuzOBTh63oL9grzgjK3CQ=;
+        b=Eqc5MMPF3JA+BY9duTIFHB4hgKOXFUfwy6vndPW4ejpApv63UA/OqfEZnwGBYN15pV
+         QTV2BuagQdlXjdK54iWgdt7O69VHpDwwwHCjlbN8SVyPlOX5t2nQnAWV5SgAdd3nPp9d
+         PAi3jawuMBk1izL/Hqh1rfjdgXcf0KrrD42AsZM/RPXR2lDysxEXmM7pFURkOzUoid34
+         zSsWmgwOGtXRwHo0O4vTUYUAOSpeZMxzJ8oOathL38TNv7AfMdbwRFC+RoG7D90wM9/L
+         fOThiwZlY8phPPnqpT99cEyTA+issS3hTlJbqMCTJ/wFQ8ShoDHSAYMhhjDFeE7FmLOC
+         z8gw==
+X-Gm-Message-State: AOAM531lh1/F5eHlkkzRdPbh9fAxZC71TAt+Fb3LrhgoGf5fDsE/w/io
+        yqjeBkmkjAsGMq2GU9FJ2uhVTQ==
+X-Google-Smtp-Source: ABdhPJxoLAGJ14e0h61QfThiqt5zvB6EWwk8u8Mxfn0uS/id1tAexeu96ZnmI6IHXqr8oGCebTjY5A==
+X-Received: by 2002:a7b:c77a:: with SMTP id x26mr8804584wmk.63.1605175039365;
+        Thu, 12 Nov 2020 01:57:19 -0800 (PST)
 Received: from dell.default ([91.110.221.159])
-        by smtp.gmail.com with ESMTPSA id n15sm6138792wrq.48.2020.11.12.01.57.17
+        by smtp.gmail.com with ESMTPSA id n15sm6138792wrq.48.2020.11.12.01.57.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2020 01:57:17 -0800 (PST)
+        Thu, 12 Nov 2020 01:57:18 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     jdelvare@suse.com, linux@roeck-us.net
 Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
         Lee Jones <lee.jones@linaro.org>,
-        "Andrew F. Davis" <afd@ti.com>,
         Beniamin Bia <beniamin.bia@analog.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Neelesh Gupta <neelegup@linux.vnet.ibm.com>,
-        Paul Mackerras <paulus@samba.org>
-Subject: [PATCH 0/3] Rid W=1 warnings from HWMON
-Date:   Thu, 12 Nov 2020 09:57:12 +0000
-Message-Id: <20201112095715.1993117-1-lee.jones@linaro.org>
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: [PATCH 1/3] hwmon: adm1177: Fix kerneldoc attribute formatting
+Date:   Thu, 12 Nov 2020 09:57:13 +0000
+Message-Id: <20201112095715.1993117-2-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201112095715.1993117-1-lee.jones@linaro.org>
+References: <20201112095715.1993117-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This set is part of a larger effort attempting to clean-up W=1
-kernel builds, which are currently overwhelmingly riddled with
-niggly little warnings.
+Kerneldoc expects attributes/parameters to be in '@*.: ' format.
 
-Lee Jones (3):
-  hwmon: adm1177: Fix kerneldoc attribute formatting
-  hwmon: ina3221: Demote seemingly unintentional kerneldoc header
-  hwmon: ibmpowernv: Silence strncpy() warning
+Also fix repeated word "the the".
 
- drivers/hwmon/adm1177.c    | 10 +++++-----
- drivers/hwmon/ibmpowernv.c |  2 +-
- drivers/hwmon/ina3221.c    |  2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+Fixes the following W=1 kernel build warning(s):
 
-Cc: "Andrew F. Davis" <afd@ti.com>
+ drivers/hwmon/adm1177.c:40: warning: Function parameter or member 'client' not described in 'adm1177_state'
+ drivers/hwmon/adm1177.c:40: warning: Function parameter or member 'reg' not described in 'adm1177_state'
+ drivers/hwmon/adm1177.c:40: warning: Function parameter or member 'r_sense_uohm' not described in 'adm1177_state'
+ drivers/hwmon/adm1177.c:40: warning: Function parameter or member 'alert_threshold_ua' not described in 'adm1177_state'
+ drivers/hwmon/adm1177.c:40: warning: Function parameter or member 'vrange_high' not described in 'adm1177_state'
+
 Cc: Beniamin Bia <beniamin.bia@analog.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: linux-hwmon@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-Cc: Neelesh Gupta <neelegup@linux.vnet.ibm.com>
-Cc: Paul Mackerras <paulus@samba.org>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/hwmon/adm1177.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
+index 6e8bb661894b9..0c5dbc5e33b46 100644
+--- a/drivers/hwmon/adm1177.c
++++ b/drivers/hwmon/adm1177.c
+@@ -25,11 +25,11 @@
+ 
+ /**
+  * struct adm1177_state - driver instance specific data
+- * @client		pointer to i2c client
+- * @reg			regulator info for the the power supply of the device
+- * @r_sense_uohm	current sense resistor value
+- * @alert_threshold_ua	current limit for shutdown
+- * @vrange_high		internal voltage divider
++ * @client:		pointer to i2c client
++ * @reg:		regulator info for the power supply of the device
++ * @r_sense_uohm:	current sense resistor value
++ * @alert_threshold_ua:	current limit for shutdown
++ * @vrange_high:	internal voltage divider
+  */
+ struct adm1177_state {
+ 	struct i2c_client	*client;
 -- 
 2.25.1
 
