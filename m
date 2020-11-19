@@ -2,75 +2,109 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44A662B8E68
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Nov 2020 10:09:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BCD2B96C9
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Nov 2020 16:53:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725944AbgKSJJP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Nov 2020 04:09:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725936AbgKSJJO (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Nov 2020 04:09:14 -0500
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34DBCC0613CF
-        for <linux-hwmon@vger.kernel.org>; Thu, 19 Nov 2020 01:09:13 -0800 (PST)
-Received: by mail-pg1-x543.google.com with SMTP id j19so3648248pgg.5
-        for <linux-hwmon@vger.kernel.org>; Thu, 19 Nov 2020 01:09:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=lQ5BMhTT6sUhSQ/EPRyzVv3ta5aqXji4ylypU+yg43o=;
-        b=gSiXkRcwaNSblU0yAwjkKlpouYSJZpLVnVBYEHkbaU95Mpd8uSbmrOCKKtV9Y1ut+2
-         xqA8+ELTg4j7EBjEWbjS8vo7937zi4tGkcmrhsdLZsB1BsJa3x6m55Y+LP5ChIHqBxba
-         AEfGLUKpSM51yRxsfBvUFkqOzNwA6GglDdXjBvX+3+CjeiztArUQUqBXMAVl6wscpI+X
-         wDEF0pl60Na1D/dH4hnSCh7Up82AA0a6dzsWa+Lnt5EXJips/L8nRxACMGnd2cCGmh6T
-         /Six3PG1kBpIJYOUzAg+kMrg4ANITfiFqsME2xn/i55VctvUxzROzliZg3GU62TN5VYe
-         Cnzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=lQ5BMhTT6sUhSQ/EPRyzVv3ta5aqXji4ylypU+yg43o=;
-        b=inye/GD/NIC3CWgpQVA49+OGX8551v/B1mKzXu+IGvJ8az8BKw9s+aadJt3nN/MABc
-         gmaAQEWfzlaWT4LYD8vCJP+GUKFQeo22BLJ/tbrLSoWLXbM6ErzrRJzNUZCm7K6JtmYC
-         zoRKzDfkc8PJb5DXcYHwiQkwrzuEV7zp0k/0REQqgi1Zz09tFX1jT6uRvXRjvG9OdPzO
-         zWIMrkRKb9HzQU6xdORdsmIr7fUeT/kH1oShUIERoAxBTGNgSzfftTAEeQILYBUVDwva
-         evgxIPZDEySem+3M+WhF4krQlQktLt40yibBHvB1NGOvE6BF1uC6IVTGN3ouPgSvFyaS
-         uYCQ==
-X-Gm-Message-State: AOAM533vOYcVd36L6aZ0GoDUXOOPQRES7wcu8TshFWWzH3pf00CnDqvl
-        zRraRzmQulkCjZKVRaMcAJUY1OedYgCtFCa43jw=
-X-Google-Smtp-Source: ABdhPJznxIA/hHcrtjqGQA90xogIUlHrNGPYpLd9qdFhVwlLsuDPeXgQkFkY31sMstTd2XmWJcbdi7hxezYz5wBbd9k=
-X-Received: by 2002:aa7:9209:0:b029:196:710e:a283 with SMTP id
- 9-20020aa792090000b0290196710ea283mr8328455pfo.7.1605776952813; Thu, 19 Nov
- 2020 01:09:12 -0800 (PST)
+        id S1728910AbgKSPqi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 19 Nov 2020 10:46:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42152 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728583AbgKSPqh (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 19 Nov 2020 10:46:37 -0500
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown [163.114.132.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 813182224A;
+        Thu, 19 Nov 2020 15:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605800796;
+        bh=ZvKprxlPeDR11nAv0IeB4RNZKc7/A57CYBYK8dwYGvA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=eJFgy/ERDAHnV44gummxbYRBsX1kbc6TtE7RiXMtxbNIkKe7OhRg5AJfcPrxFKqjD
+         RvGoJEuoxmZSF+VACQj2A8eU2SVNDpagHniFKlgF8AkQdfRkaQSpgD5aLptwItPHad
+         ogoqmgOfEn08wfYIcOdiAOnWKZDBDMa2FN3swJpI=
+Date:   Thu, 19 Nov 2020 07:46:34 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Tao Ren <rentao.bupt@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Jean Delvare <jdelvare@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, openbmc@lists.ozlabs.org, taoren@fb.com,
+        mikechoi@fb.com
+Subject: Re: [PATCH v2 0/2] hwmon: (max127) Add Maxim MAX127 hardware
+ monitoring
+Message-ID: <20201119074634.2e9cb21b@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <20201119012653.GA249502@roeck-us.net>
+References: <20201118230929.18147-1-rentao.bupt@gmail.com>
+        <20201118232719.GI1853236@lunn.ch>
+        <20201118234252.GA18681@taoren-ubuntu-R90MNF91>
+        <20201119010119.GA248686@roeck-us.net>
+        <20201119012653.GA249502@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:4045:0:0:0:0 with HTTP; Thu, 19 Nov 2020 01:09:12
- -0800 (PST)
-Reply-To: morrisball102@gmail.com
-From:   Morris Ball <abdulsaladino101@gmail.com>
-Date:   Thu, 19 Nov 2020 10:09:12 +0100
-Message-ID: <CACoN8T3Q29vo+9d6FzDf6E=0bW1q4Gz7inNOo1Op4vezQAC+Bg@mail.gmail.com>
-Subject: Good day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear Good day,
+On Wed, 18 Nov 2020 17:26:53 -0800 Guenter Roeck wrote:
+> On Wed, Nov 18, 2020 at 05:01:19PM -0800, Guenter Roeck wrote:
+> > On Wed, Nov 18, 2020 at 03:42:53PM -0800, Tao Ren wrote:  
+> > > On Thu, Nov 19, 2020 at 12:27:19AM +0100, Andrew Lunn wrote:  
+> > > > On Wed, Nov 18, 2020 at 03:09:27PM -0800, rentao.bupt@gmail.com wrote:  
+> > > > > From: Tao Ren <rentao.bupt@gmail.com>
+> > > > > 
+> > > > > The patch series adds hardware monitoring driver for the Maxim MAX127
+> > > > > chip.  
+> > > > 
+> > > > Hi Tao
+> > > > 
+> > > > Why are using sending a hwmon driver to the networking mailing list?
+> > > > 
+> > > >     Andrew  
+> > > 
+> > > Hi Andrew,
+> > > 
+> > > I added netdev because the mailing list is included in "get_maintainer.pl
+> > > Documentation/hwmon/index.rst" output. Is it the right command to find
+> > > reviewers? Could you please suggest? Thank you.  
+> > 
+> > I have no idea why running get_maintainer.pl on
+> > Documentation/hwmon/index.rst returns such a large list of mailing
+> > lists and people. For some reason it includes everyone in the XDP
+> > maintainer list. If anyone has an idea how that happens, please
+> > let me know - we'll want to get this fixed to avoid the same problem
+> > in the future.
+> 
+> I found it. The XDP maintainer entry has:
+> 
+> K:    xdp
+> 
+> This matches Documentation/hwmon/index.rst.
+> 
+> $ grep xdp Documentation/hwmon/index.rst
+>    xdpe12284
+> 
+> It seems to me that a context match such as "xdp" in MAINTAINERS isn't
+> really appropriate. "xdp" matches a total of 348 files in the kernel.
+> The large majority of those is not XDP related. The maintainers
+> of XDP (and all the listed mailing lists) should not be surprised
+> to get a large number of odd review requests if they want to review
+> every single patch on files which include the term "xdp".
 
-Please accept my apologies I do not intend to invade your privacy, I
-wrote to you earlier, but no answer, in my first post I told you about
-my late client's untimely death, I received several letters from his
-bank, where he made a deposit of ($7.5 million Dollars) before his
-death, the bank asked me to provide his next of kin or any of his
-relatives, who will stand for this claim, otherwise it will be
-confiscated by the bank due to lack of claims from his relatives hence
-I contacted you to present you as his new beneficiary next of kin.
-After your reply I shall give you more details and procedures of this
-transaction, waiting for your reply
+Agreed, we should fix this. For maintainers with high patch volume life
+would be so much easier if people CCed the right folks to get reviews,
+so we should try our best to fix get_maintainer.
 
-Best Regards,
-Mr.Morris Ball.
-E-mai
+XDP folks, any opposition to changing the keyword / filename to:
+
+	[^a-z0-9]xdp[^a-z0-9]
+
+?
