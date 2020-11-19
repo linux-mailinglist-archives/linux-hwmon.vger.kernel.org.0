@@ -2,137 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9FDB2B8C34
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Nov 2020 08:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A662B8E68
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Nov 2020 10:09:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbgKSHWf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 19 Nov 2020 02:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54402 "EHLO
+        id S1725944AbgKSJJP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 19 Nov 2020 04:09:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726107AbgKSHWf (ORCPT
+        with ESMTP id S1725936AbgKSJJO (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 19 Nov 2020 02:22:35 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511D5C0613CF;
-        Wed, 18 Nov 2020 23:22:35 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id t8so3591602pfg.8;
-        Wed, 18 Nov 2020 23:22:35 -0800 (PST)
+        Thu, 19 Nov 2020 04:09:14 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34DBCC0613CF
+        for <linux-hwmon@vger.kernel.org>; Thu, 19 Nov 2020 01:09:13 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id j19so3648248pgg.5
+        for <linux-hwmon@vger.kernel.org>; Thu, 19 Nov 2020 01:09:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1RR09oXTHNj5D+VKWnXusC3Un6VRBPlQtmYv6ZSUsVI=;
-        b=SykaFT23R/hVbaREPLzvW2AP15wUqLT+sWT6x4PeBzYCErRpZXTA1blPK8ZCNOSxv9
-         z/GwsF9uEXlQR2OLiRYvAzouSE8DSpnE24YnQkxJFQONJa7luOgYcXwZfdJkrPRxT0Gu
-         kAX5lmyGFh/3df3LBvVhI0+6/LIPvbIGmYYzvt4o3biOa5rKpVjRcdwg7aaiduza9Zn3
-         MWwUrm3AVbMFTJQ+S/Gqgn/bvoan5rIB3N8hHg5cEdFqJck0lIQdUHrcn9fM33vEMfKj
-         oyTr57Bz8FN2o1sYa+eyj3Rv2XZ7eh5TCuPjJRLUHeX+M+SCVAu8CDYTYdIZOvwfUr0P
-         UfFw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=lQ5BMhTT6sUhSQ/EPRyzVv3ta5aqXji4ylypU+yg43o=;
+        b=gSiXkRcwaNSblU0yAwjkKlpouYSJZpLVnVBYEHkbaU95Mpd8uSbmrOCKKtV9Y1ut+2
+         xqA8+ELTg4j7EBjEWbjS8vo7937zi4tGkcmrhsdLZsB1BsJa3x6m55Y+LP5ChIHqBxba
+         AEfGLUKpSM51yRxsfBvUFkqOzNwA6GglDdXjBvX+3+CjeiztArUQUqBXMAVl6wscpI+X
+         wDEF0pl60Na1D/dH4hnSCh7Up82AA0a6dzsWa+Lnt5EXJips/L8nRxACMGnd2cCGmh6T
+         /Six3PG1kBpIJYOUzAg+kMrg4ANITfiFqsME2xn/i55VctvUxzROzliZg3GU62TN5VYe
+         Cnzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1RR09oXTHNj5D+VKWnXusC3Un6VRBPlQtmYv6ZSUsVI=;
-        b=Z6+1QJDmvtgTvkwfz3hdv7wIIKH9ec2a+LAFH4/zMADv8giAnJ6KGHvzcMmz2x8tAU
-         wTiQSZqcs9CTft6po5WIiwOPv/US8nHl4wa97c1W7YqUf/39rh8EwCQzkZ2Tii4lLtAt
-         iAIqnF6kvepN/TcueR9RQl8kg9eLETOUGNHNDD9Yg+/e8tSyvTu6QkizzX2+RDEjFcGX
-         /D/6Gcaslz1go0gL49MnWViUzUh+blWmv5a8MjH20oAp3rKuXsj6RG9wZon8sqGmhzRc
-         1ZvfDAXKmFaEcJpJL+AgJodCF6I/RAFnAXnUsDEqb3E/Tdo7RB0INcOcI0YjPRJGOZk3
-         O67Q==
-X-Gm-Message-State: AOAM5308NFDH5ua9OWuRC5WCJZJNFKArwV5ltmyusUOWNZI/i1K6bnwp
-        C1Cby87MbBMPCPpWn7NtJaw=
-X-Google-Smtp-Source: ABdhPJwSM7bcPvfkrjRN4rBPjOShGGjdnAqFCLalTUBjlOLyt6Pi2bllffDYwvcM9ExJ8zAEz39WSQ==
-X-Received: by 2002:a17:90a:8d03:: with SMTP id c3mr3172717pjo.100.1605770554821;
-        Wed, 18 Nov 2020 23:22:34 -0800 (PST)
-Received: from taoren-ubuntu-R90MNF91 (c-73-252-146-110.hsd1.ca.comcast.net. [73.252.146.110])
-        by smtp.gmail.com with ESMTPSA id v191sm27585931pfc.19.2020.11.18.23.22.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 18 Nov 2020 23:22:34 -0800 (PST)
-Date:   Wed, 18 Nov 2020 23:22:26 -0800
-From:   Tao Ren <rentao.bupt@gmail.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, openbmc@lists.ozlabs.org, taoren@fb.com,
-        mikechoi@fb.com
-Subject: Re: [PATCH v2 0/2] hwmon: (max127) Add Maxim MAX127 hardware
- monitoring
-Message-ID: <20201119072225.GA19877@taoren-ubuntu-R90MNF91>
-References: <20201118230929.18147-1-rentao.bupt@gmail.com>
- <20201118232719.GI1853236@lunn.ch>
- <20201118234252.GA18681@taoren-ubuntu-R90MNF91>
- <20201119010119.GA248686@roeck-us.net>
- <20201119012653.GA249502@roeck-us.net>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=lQ5BMhTT6sUhSQ/EPRyzVv3ta5aqXji4ylypU+yg43o=;
+        b=inye/GD/NIC3CWgpQVA49+OGX8551v/B1mKzXu+IGvJ8az8BKw9s+aadJt3nN/MABc
+         gmaAQEWfzlaWT4LYD8vCJP+GUKFQeo22BLJ/tbrLSoWLXbM6ErzrRJzNUZCm7K6JtmYC
+         zoRKzDfkc8PJb5DXcYHwiQkwrzuEV7zp0k/0REQqgi1Zz09tFX1jT6uRvXRjvG9OdPzO
+         zWIMrkRKb9HzQU6xdORdsmIr7fUeT/kH1oShUIERoAxBTGNgSzfftTAEeQILYBUVDwva
+         evgxIPZDEySem+3M+WhF4krQlQktLt40yibBHvB1NGOvE6BF1uC6IVTGN3ouPgSvFyaS
+         uYCQ==
+X-Gm-Message-State: AOAM533vOYcVd36L6aZ0GoDUXOOPQRES7wcu8TshFWWzH3pf00CnDqvl
+        zRraRzmQulkCjZKVRaMcAJUY1OedYgCtFCa43jw=
+X-Google-Smtp-Source: ABdhPJznxIA/hHcrtjqGQA90xogIUlHrNGPYpLd9qdFhVwlLsuDPeXgQkFkY31sMstTd2XmWJcbdi7hxezYz5wBbd9k=
+X-Received: by 2002:aa7:9209:0:b029:196:710e:a283 with SMTP id
+ 9-20020aa792090000b0290196710ea283mr8328455pfo.7.1605776952813; Thu, 19 Nov
+ 2020 01:09:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201119012653.GA249502@roeck-us.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:a05:6a10:4045:0:0:0:0 with HTTP; Thu, 19 Nov 2020 01:09:12
+ -0800 (PST)
+Reply-To: morrisball102@gmail.com
+From:   Morris Ball <abdulsaladino101@gmail.com>
+Date:   Thu, 19 Nov 2020 10:09:12 +0100
+Message-ID: <CACoN8T3Q29vo+9d6FzDf6E=0bW1q4Gz7inNOo1Op4vezQAC+Bg@mail.gmail.com>
+Subject: Good day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Nov 18, 2020 at 05:26:53PM -0800, Guenter Roeck wrote:
-> On Wed, Nov 18, 2020 at 05:01:19PM -0800, Guenter Roeck wrote:
-> > On Wed, Nov 18, 2020 at 03:42:53PM -0800, Tao Ren wrote:
-> > > On Thu, Nov 19, 2020 at 12:27:19AM +0100, Andrew Lunn wrote:
-> > > > On Wed, Nov 18, 2020 at 03:09:27PM -0800, rentao.bupt@gmail.com wrote:
-> > > > > From: Tao Ren <rentao.bupt@gmail.com>
-> > > > > 
-> > > > > The patch series adds hardware monitoring driver for the Maxim MAX127
-> > > > > chip.
-> > > > 
-> > > > Hi Tao
-> > > > 
-> > > > Why are using sending a hwmon driver to the networking mailing list?
-> > > > 
-> > > >     Andrew
-> > > 
-> > > Hi Andrew,
-> > > 
-> > > I added netdev because the mailing list is included in "get_maintainer.pl
-> > > Documentation/hwmon/index.rst" output. Is it the right command to find
-> > > reviewers? Could you please suggest? Thank you.
-> > 
-> > I have no idea why running get_maintainer.pl on
-> > Documentation/hwmon/index.rst returns such a large list of mailing
-> > lists and people. For some reason it includes everyone in the XDP
-> > maintainer list. If anyone has an idea how that happens, please
-> > let me know - we'll want to get this fixed to avoid the same problem
-> > in the future.
-> > 
-> 
-> I found it. The XDP maintainer entry has:
-> 
-> K:    xdp
-> 
-> This matches Documentation/hwmon/index.rst.
-> 
-> $ grep xdp Documentation/hwmon/index.rst
->    xdpe12284
-> 
-> It seems to me that a context match such as "xdp" in MAINTAINERS isn't
-> really appropriate. "xdp" matches a total of 348 files in the kernel.
-> The large majority of those is not XDP related. The maintainers
-> of XDP (and all the listed mailing lists) should not be surprised
-> to get a large number of odd review requests if they want to review
-> every single patch on files which include the term "xdp".
-> 
-> Guenter
+Dear Good day,
 
-Thanks Guenter and Andrew. Given xdp maintainers were included by
-mistake, I will remove them from the future discussions of this hwmon
-patch series.
+Please accept my apologies I do not intend to invade your privacy, I
+wrote to you earlier, but no answer, in my first post I told you about
+my late client's untimely death, I received several letters from his
+bank, where he made a deposit of ($7.5 million Dollars) before his
+death, the bank asked me to provide his next of kin or any of his
+relatives, who will stand for this claim, otherwise it will be
+confiscated by the bank due to lack of claims from his relatives hence
+I contacted you to present you as his new beneficiary next of kin.
+After your reply I shall give you more details and procedures of this
+transaction, waiting for your reply
 
-
-Cheers,
-
-Tao
+Best Regards,
+Mr.Morris Ball.
+E-mai
