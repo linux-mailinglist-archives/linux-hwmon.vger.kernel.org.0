@@ -2,97 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FD1F2BBE78
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Nov 2020 11:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B052BC108
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Nov 2020 18:21:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727241AbgKUKZA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 21 Nov 2020 05:25:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727217AbgKUKZA (ORCPT
+        id S1726562AbgKURVD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 21 Nov 2020 12:21:03 -0500
+Received: from gproxy8-pub.mail.unifiedlayer.com ([67.222.33.93]:55979 "EHLO
+        gproxy8-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726305AbgKURVC (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 21 Nov 2020 05:25:00 -0500
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D46C0613CF
-        for <linux-hwmon@vger.kernel.org>; Sat, 21 Nov 2020 02:25:00 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id j23so12631473iog.6
-        for <linux-hwmon@vger.kernel.org>; Sat, 21 Nov 2020 02:24:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=uXQlljv/L1No8Bc9sqdobVCzJDTud5q/jvMSUKwM1qE=;
-        b=lAplVxVZ9nLMhByRwxGqhLSs7G6VKF3FfKA5bYcRJRW9hf9+EM2x9Uz+mXUNdRWsGL
-         /dWl+3V0pGDA+Ob2tNtWKCwiPPp0SYf3wmvSvTIEzhTL2sZVvI9OVolAh2aYVxGjwdc4
-         fPxA9XdOTU1k8Y985sBrg0V+mV1Au25lNgPsIIMhsOHinzY+2C0rGvSuYQfoHJYCSqRe
-         xBvRMXHUR+2M0BPdXmIJQX2mw7Zg59fY/MOi42hhanoTo5Nf8Voo4ZgQjBf3hwUsZu3j
-         rrmSVnssAGmxnTJyF6LLmsYn2SaArZcUm0xopgMwvIMuqIMVm2Xmflvs0WXxYJBFTGaK
-         8zbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=uXQlljv/L1No8Bc9sqdobVCzJDTud5q/jvMSUKwM1qE=;
-        b=FQaV1lmrpjeJEz6z+ugoYArgJPY9lLeX0NK8kcEhuAtWFvKBHo4KzlBUHcIbFczNCe
-         +TTk2OxKiiDLuvjGPC0fHccLi1pOY3pHjDLsU00q29OkJZ/NKDfb8XSR7W8A6FwELAb/
-         eVErpwB7uAsGkx+aQpxvqiBU/XeLgZ0R/KAfIk9X7xgyEMR/YMZeBXvpky3M3pJYdf2z
-         dNaf69xJsuDe0Arr2jgzjJL6cqToj9tesdSp8/31MQr6CueXJ43ybAp/m3dv+KRcpImZ
-         2nKa04na981aaHqY+XpQx9H1Xqw1t1B5Fa42mpeKixRNOJ56KkTL2aZBaPJ89CU2k7Mc
-         E/1g==
-X-Gm-Message-State: AOAM5333xv59cm59nXHwaR5GrnvnG754BUldDdILyQldUAueiygAxNtg
-        igCdnUYlxe25q48MGCilGvNkXtia9Su5fp+flSE=
-X-Google-Smtp-Source: ABdhPJzYVunpSNTJTAbZcuzpbqsUzMK0MT7Wm7ZqLZC/fmbLquf3UF4j6tBbfJsfbGPZASGOg4t8XY0wXptaZ8/n9mA=
-X-Received: by 2002:a02:bc9:: with SMTP id 192mr123818jad.50.1605954299260;
- Sat, 21 Nov 2020 02:24:59 -0800 (PST)
+        Sat, 21 Nov 2020 12:21:02 -0500
+X-Greylist: delayed 1315 seconds by postgrey-1.27 at vger.kernel.org; Sat, 21 Nov 2020 12:21:02 EST
+Received: from cmgw14.unifiedlayer.com (unknown [10.9.0.14])
+        by gproxy8.mail.unifiedlayer.com (Postfix) with ESMTP id 6B8251AB092
+        for <linux-hwmon@vger.kernel.org>; Sat, 21 Nov 2020 09:59:06 -0700 (MST)
+Received: from bh-25.webhostbox.net ([208.91.199.152])
+        by cmsmtp with ESMTP
+        id gWE5kQjATwNNlgWE6keHWp; Sat, 21 Nov 2020 09:59:06 -0700
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.3 cv=BoezP7f5 c=1 sm=1 tr=0
+ a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=kj9zAlcOel0A:10:nop_charset_1
+ a=nNwsprhYR40A:10:nop_rcvd_month_year
+ a=evQFzbml-YQA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=_jlGtV7tAAAA:8 a=7CQSdrXTAAAA:8 a=2M5tUyfAVdibolAbR3cA:9
+ a=CjuIK1q_8ugA:10:nop_charset_2 a=AjGcO6oz07-iQ99wixmX:22
+ a=nlm17XC03S6CtCLSeiRr:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
+        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=2vcIO4pCUjm64D/qilEE5CXFzPfD8btnRxk3dxvAE4o=; b=r28lvndeQOQuEL2MB/HRk6Gzqb
+        UeifVyeOYK5hQQvF/rYzNwV+DGDJ9/Ww8q6L5EthecJRUq6NrKbJfd/2m2Vx6wVChYKHBYBGRlxZx
+        NJhykulrKthvigzlrqtOtWwTVXjCSVxDVAR5PHknNNRuzsP0ls/8vwZhHPVr0ZJSCN2J0h/cRQje/
+        UINtlqfn7t4CJBg2y9vpnmeLdoLBspI8wuq4IxpwhrskkZj77NMyWOCZ1yvdSCriePtbkrWzNRg8h
+        bSRSRP3wnmkcWMo8Cri4ER+LG3pHKubEMMum2q+i1pMyNgSxR+JwBfdUnXosCQ8ildxyC7oaeSwCQ
+        /l3PhI5w==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:40692 helo=localhost)
+        by bh-25.webhostbox.net with esmtpa (Exim 4.93)
+        (envelope-from <linux@roeck-us.net>)
+        id 1kgWE4-002Xca-I4; Sat, 21 Nov 2020 16:59:04 +0000
+Date:   Sat, 21 Nov 2020 08:59:03 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Cristian Marussi <cristian.marussi@arm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        sudeep.holla@arm.com, lukasz.luba@arm.com,
+        james.quinlan@broadcom.com, Jonathan.Cameron@Huawei.com,
+        egranata@google.com, jbhayana@google.com,
+        peter.hilber@opensynergy.com, mikhail.golubev@opensynergy.com,
+        Igor.Skalkin@opensynergy.com, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v4 3/6] hwmon: scmi: update hwmon internal scale data type
+Message-ID: <20201121165903.GA111877@roeck-us.net>
+References: <20201119174906.43862-1-cristian.marussi@arm.com>
+ <20201119174906.43862-4-cristian.marussi@arm.com>
 MIME-Version: 1.0
-Received: by 2002:a02:c55a:0:0:0:0:0 with HTTP; Sat, 21 Nov 2020 02:24:58
- -0800 (PST)
-Reply-To: jaslin.ikhsan11@gmail.com
-From:   Jaslin Ikhsan <jaslin.ikhsan10@gmail.com>
-Date:   Sat, 21 Nov 2020 10:24:58 +0000
-Message-ID: <CAFVR8=buzieLro27enQW1DQ_RduW8XiJBbimB8v1FqzZ+x-i1A@mail.gmail.com>
-Subject: Dear God's Select,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201119174906.43862-4-cristian.marussi@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1kgWE4-002Xca-I4
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:40692
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 1
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear God's Select,
+On Thu, Nov 19, 2020 at 05:49:03PM +0000, Cristian Marussi wrote:
+> Use an int to calculate scale values inside scmi_hwmon_scale() to match
+> the updated scale data type in struct scmi_sensor_info.
+> 
+> Cc: linux-hwmon@vger.kernel.org
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
 
-I am writing this mail to you with heavy tears In my eyes and great
-sorrow in my heart, My Name is Mrs.Jaslin Ikhsan, and I am contacting
-you from my country Tunisia I want to tell you this because I don't
-have any other option than to tell you as I was touched to open up to
-you, I married to Mr. Ouedrago Daisy Brown who worked with Tunisia
-embassy in Burkina Faso for nine years before he died in the year
-2008.We were married for eleven years without a child.
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-He died after a brief illness that lasted for only five days. Since
-his death I decided not to remarry, When my late husband was alive he
-deposited the sum of US$ 8.5m (Eight Million Five hundred Thousand
-Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in
-west Africa Presently this money is still in bank. He made this money
-available for exportation of Gold from Burkina Faso mining.
+[ Assuming this will be pushed togesther with the other patches in the series ]
 
-Recently, My Doctor told me that I would not last for the period of
-seven months due to cancer problem. The one that disturbs me most is
-my stroke sickness .Having known my condition I decided to hand you
-over this money to take care of the less-privileged people, you will
-utilize this money the way I am going to instruct herein.
+Guenter
 
-I want you to take 30 Percent of the total money for your personal use
-While 70% of the money will go to charity" people in the street and
-helping the orphanage. I grew up as an Orphan and I don't have any
-body as my family member, just to endeavour that the house of God is
-maintained. Am doing this so that God will forgive my sins and accept
-my soul because these sicknesses have suffered me so much.
-
-As soon a s I receive your reply I shall give you the contact of the
-bank in Burkina Faso and I will also instruct the Bank Manger to issue
-you an authority letter that will prove you the present beneficiary of
-the money in the bank that is if you assure me that you will act
-accordingly as I Stated herein.
-
-Always reply to my alternative for security purposes.
-Hoping to receive your reply:
-From Mrs. Jaslin Ikhsan
+> ---
+>  drivers/hwmon/scmi-hwmon.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/scmi-hwmon.c b/drivers/hwmon/scmi-hwmon.c
+> index 09ce30cba54b..17d064e58938 100644
+> --- a/drivers/hwmon/scmi-hwmon.c
+> +++ b/drivers/hwmon/scmi-hwmon.c
+> @@ -30,7 +30,7 @@ static inline u64 __pow10(u8 x)
+>  
+>  static int scmi_hwmon_scale(const struct scmi_sensor_info *sensor, u64 *value)
+>  {
+> -	s8 scale = sensor->scale;
+> +	int scale = sensor->scale;
+>  	u64 f;
+>  
+>  	switch (sensor->type) {
+> -- 
+> 2.17.1
+> 
