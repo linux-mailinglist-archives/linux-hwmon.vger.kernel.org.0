@@ -2,111 +2,104 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1F952BC1AE
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Nov 2020 20:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E80BE2BC1E0
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Nov 2020 21:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728146AbgKUTLD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 21 Nov 2020 14:11:03 -0500
-Received: from gproxy5-pub.mail.unifiedlayer.com ([67.222.38.55]:34998 "EHLO
-        gproxy5-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728055AbgKUTLC (ORCPT
+        id S1728404AbgKUUAe (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 21 Nov 2020 15:00:34 -0500
+Received: from smtprelay0129.hostedemail.com ([216.40.44.129]:59716 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728402AbgKUUAe (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 21 Nov 2020 14:11:02 -0500
-X-Greylist: delayed 1234 seconds by postgrey-1.27 at vger.kernel.org; Sat, 21 Nov 2020 14:11:02 EST
-Received: from cmgw10.unifiedlayer.com (unknown [10.9.0.10])
-        by gproxy5.mail.unifiedlayer.com (Postfix) with ESMTP id 00EEF140430
-        for <linux-hwmon@vger.kernel.org>; Sat, 21 Nov 2020 11:50:28 -0700 (MST)
-Received: from bh-25.webhostbox.net ([208.91.199.152])
-        by cmsmtp with ESMTP
-        id gXxrki8jcDlydgXxrkXk49; Sat, 21 Nov 2020 11:50:27 -0700
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.3 cv=CLQEoyjD c=1 sm=1 tr=0
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=kj9zAlcOel0A:10:nop_charset_1
- a=nNwsprhYR40A:10:nop_rcvd_month_year
- a=evQFzbml-YQA:10:endurance_base64_authed_username_1 a=iH7RfIX4AAAA:20
- a=VwQbUJbxAAAA:8 a=_jlGtV7tAAAA:8 a=8y_7F0WFO_vNhfgCrDoA:9
- a=CjuIK1q_8ugA:10:nop_charset_2 a=AjGcO6oz07-iQ99wixmX:22
- a=nlm17XC03S6CtCLSeiRr:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=CO3ZopLurYfZ1yt43p5M9cveWYTt3s3J5YWhtvV2Bno=; b=q1i2JhEV44laI+W5Pque6fhyXe
-        c/xFxb+fjL0cpHFVRYnOEZVSHSxao/rSInqJOEVXKqvajFvfwwOrzBg1eE7vDMT+y3XoIXTm/6x7Q
-        vqpfFAEpB/j1lZh5Trzk57IZP8jSpyFpJnimctiO/eZqjte+UjXSnB6ACaAj1SJ7Wcch+VYTsy4Qg
-        41efHNdSH1GJUprQRhyzYA6GI4BgtuZ9IezCwDVJWdjsCjSjuAbl4gz3EkRf4yhu3IKAOuWUAKbQg
-        8kbLo0NvgQO6z36Pp3ox/IPEgZgRc1SrlhZQjF9D5NpbdevtFhveg2PrQFw75s9ECyzimlgCUgiWh
-        ygvVPMQQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:40994 helo=localhost)
-        by bh-25.webhostbox.net with esmtpa (Exim 4.93)
-        (envelope-from <linux@roeck-us.net>)
-        id 1kgXxr-003Cdf-1e; Sat, 21 Nov 2020 18:50:27 +0000
-Date:   Sat, 21 Nov 2020 10:50:26 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        Sat, 21 Nov 2020 15:00:34 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 993CC100E7B42;
+        Sat, 21 Nov 2020 20:00:32 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2560:2563:2682:2685:2828:2859:2902:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3870:3872:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:7903:9025:10004:10400:10848:11026:11232:11658:11914:12043:12295:12297:12555:12740:12895:13069:13161:13229:13311:13357:13439:13894:14181:14659:14721:21080:21451:21627:21939:21990:30012:30054:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: band36_01089c827356
+X-Filterd-Recvd-Size: 2643
+Received: from XPS-9350.home (unknown [47.151.128.180])
+        (Authenticated sender: joe@perches.com)
+        by omf18.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 21 Nov 2020 20:00:31 +0000 (UTC)
+Message-ID: <7456d8ffa0e980e52964c539081228dff4627ae3.camel@perches.com>
+Subject: Re: [PATCH 086/141] hwmon: (corsair-cpro) Fix fall-through warnings
+ for Clang
+From:   Joe Perches <joe@perches.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Marius Zachmann <mail@mariuszachmann.de>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 087/141] hwmon: (max6621) Fix fall-through warnings for
- Clang
-Message-ID: <20201121185026.GC114144@roeck-us.net>
+Date:   Sat, 21 Nov 2020 12:00:30 -0800
+In-Reply-To: <20201121185010.GB114144@roeck-us.net>
 References: <cover.1605896059.git.gustavoars@kernel.org>
- <e59b39ab11a5d8c2a2ec86c15eabc00b5a056c15.1605896060.git.gustavoars@kernel.org>
+         <be5c59f9bc4bac8c968bbd7443d08eaaf8a28ef8.1605896060.git.gustavoars@kernel.org>
+         <20201121185010.GB114144@roeck-us.net>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e59b39ab11a5d8c2a2ec86c15eabc00b5a056c15.1605896060.git.gustavoars@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1kgXxr-003Cdf-1e
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:40994
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 68
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Nov 20, 2020 at 12:36:09PM -0600, Gustavo A. R. Silva wrote:
-> In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
-> by explicitly adding a break statement instead of letting the code fall
-> through to the next case.
+On Sat, 2020-11-21 at 10:50 -0800, Guenter Roeck wrote:
+> On Fri, Nov 20, 2020 at 12:36:04PM -0600, Gustavo A. R. Silva wrote:
+> > In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
+> > by explicitly adding a break statement instead of letting the code fall
+> > through to the next case.
+> > 
+> > Link: https://github.com/KSPP/linux/issues/115
+> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > 
-> Link: https://github.com/KSPP/linux/issues/115
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Acked-by: Guenter Roeck <linux@roeck-us.net>
+[]
+> > diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+[]
+> > @@ -310,6 +310,7 @@ static int ccp_write(struct device *dev, enum hwmon_sensor_types type,
+> >  		default:
+> >  			break;
+> >  		}
+> > +		break;
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+The
+		default:
+			break;
 
-> ---
->  drivers/hwmon/max6621.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/max6621.c b/drivers/hwmon/max6621.c
-> index 367855d5edae..7821132e17fa 100644
-> --- a/drivers/hwmon/max6621.c
-> +++ b/drivers/hwmon/max6621.c
-> @@ -156,7 +156,7 @@ max6621_is_visible(const void *data, enum hwmon_sensor_types type, u32 attr,
->  		default:
->  			break;
->  		}
-> -
-> +		break;
->  	default:
->  		break;
->  	}
-> -- 
-> 2.27.0
-> 
+bit above (but not below as it's a switch on an enum) could also be deleted no?
+
+> >  	default:
+> >  		break;
+> >  	}
+
+---
+ drivers/hwmon/corsair-cpro.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 591929ec217a..580173fca0f6 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -299,17 +299,14 @@ static int ccp_write(struct device *dev, enum hwmon_sensor_types type,
+ 		switch (attr) {
+ 		case hwmon_pwm_input:
+ 			return set_pwm(ccp, channel, val);
+-		default:
+-			break;
+ 		}
+ 		break;
+ 	case hwmon_fan:
+ 		switch (attr) {
+ 		case hwmon_fan_target:
+ 			return set_target(ccp, channel, val);
+-		default:
+-			break;
+ 		}
++		break;
+ 	default:
+ 		break;
+ 	}
+
+
