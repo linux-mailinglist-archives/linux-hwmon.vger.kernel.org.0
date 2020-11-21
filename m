@@ -2,126 +2,97 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E45AD2BB8D9
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Nov 2020 23:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FD1F2BBE78
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Nov 2020 11:25:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728704AbgKTWVb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 20 Nov 2020 17:21:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S1727241AbgKUKZA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 21 Nov 2020 05:25:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728362AbgKTWV3 (ORCPT
+        with ESMTP id S1727217AbgKUKZA (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 20 Nov 2020 17:21:29 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED15C061A04;
-        Fri, 20 Nov 2020 14:21:29 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id 10so9964113ybx.9;
-        Fri, 20 Nov 2020 14:21:29 -0800 (PST)
+        Sat, 21 Nov 2020 05:25:00 -0500
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D46C0613CF
+        for <linux-hwmon@vger.kernel.org>; Sat, 21 Nov 2020 02:25:00 -0800 (PST)
+Received: by mail-io1-xd43.google.com with SMTP id j23so12631473iog.6
+        for <linux-hwmon@vger.kernel.org>; Sat, 21 Nov 2020 02:24:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=29/AaAKKWIjlxKBDiu42mXe16/c3LUzQvTdn0Wctw9g=;
-        b=th/UjqVcversiy9gEUr46cKRrhHywr0iTgf9mzUejm+T3/Jtu2c6ftjob7N1dnOe2S
-         rGVMit/4Gqy7ZDqW+do8x9wI8RCPt/cmuWncILsoBuux3CBAtfG8gT+eTL8wiBVSM5EH
-         rDgxqkIvK+vUXnfhgj71GxYIUQH1hInVNMbCl5+3prik9RGhi+hsmul85xXuf9uJVr2L
-         NGLQGWDmOXXHg4l9XujW0HrVyacbE3Q1QSLAkLJ0BjE5AdFqhLyeU3T8/6+nJ9hH0JSR
-         o1vAVeqr6Bt+/W6rGIwrn7PuvAvMGRmk1Avx4k6vjCg8etglRiDTMnimrqKcX/KEsNCP
-         0CAw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=uXQlljv/L1No8Bc9sqdobVCzJDTud5q/jvMSUKwM1qE=;
+        b=lAplVxVZ9nLMhByRwxGqhLSs7G6VKF3FfKA5bYcRJRW9hf9+EM2x9Uz+mXUNdRWsGL
+         /dWl+3V0pGDA+Ob2tNtWKCwiPPp0SYf3wmvSvTIEzhTL2sZVvI9OVolAh2aYVxGjwdc4
+         fPxA9XdOTU1k8Y985sBrg0V+mV1Au25lNgPsIIMhsOHinzY+2C0rGvSuYQfoHJYCSqRe
+         xBvRMXHUR+2M0BPdXmIJQX2mw7Zg59fY/MOi42hhanoTo5Nf8Voo4ZgQjBf3hwUsZu3j
+         rrmSVnssAGmxnTJyF6LLmsYn2SaArZcUm0xopgMwvIMuqIMVm2Xmflvs0WXxYJBFTGaK
+         8zbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=29/AaAKKWIjlxKBDiu42mXe16/c3LUzQvTdn0Wctw9g=;
-        b=g6dF/T3IXVX8QT4MfDxe+zp+ZIZ9xHCuMvUBvTX6zqjs95vMoZCWRjOR8ZvnplwSFE
-         MpW7FRJ+Cocr8Ai+2u86hCuhUCXhzTl/KKj91vXaqYUhzxnR9kkROQOnLFCEmRZKla1D
-         /TWlHYZvWd31yby8t+xuOaetfQfCA2rnKbYtvImZQoEgF4bMcyOH0wDgheWTNO/AQcgq
-         vKJHu61yvY4IK3yHPMgnP62czhvJ3I6HVNj4LuPzgNFrgnx06uPJAt0tvxIYKvpgGW+N
-         wvCFfMuDeRyb4r/j+b87COnXbi+be8kDhPqdSYEtYbeDyH//DWkZBm0w3V06nDyXNEdi
-         ds0A==
-X-Gm-Message-State: AOAM533E6x8M4HleYo3hGWOidsXyMY+wptATrgMwyVNBk+Ieg+ndwvCB
-        qvPHidvB8XuYLS48BjmsDU0X4FK8+hiPxZdptxg=
-X-Google-Smtp-Source: ABdhPJzYUhkcjTyH5GIcOV5fWMsl+OUdzem471zLY9usW3RhV8izQIRbyESMTmZwFikqgbfOQQqVvSSQCZzBPJX4q90=
-X-Received: by 2002:a5b:40e:: with SMTP id m14mr22113400ybp.33.1605910888617;
- Fri, 20 Nov 2020 14:21:28 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=uXQlljv/L1No8Bc9sqdobVCzJDTud5q/jvMSUKwM1qE=;
+        b=FQaV1lmrpjeJEz6z+ugoYArgJPY9lLeX0NK8kcEhuAtWFvKBHo4KzlBUHcIbFczNCe
+         +TTk2OxKiiDLuvjGPC0fHccLi1pOY3pHjDLsU00q29OkJZ/NKDfb8XSR7W8A6FwELAb/
+         eVErpwB7uAsGkx+aQpxvqiBU/XeLgZ0R/KAfIk9X7xgyEMR/YMZeBXvpky3M3pJYdf2z
+         dNaf69xJsuDe0Arr2jgzjJL6cqToj9tesdSp8/31MQr6CueXJ43ybAp/m3dv+KRcpImZ
+         2nKa04na981aaHqY+XpQx9H1Xqw1t1B5Fa42mpeKixRNOJ56KkTL2aZBaPJ89CU2k7Mc
+         E/1g==
+X-Gm-Message-State: AOAM5333xv59cm59nXHwaR5GrnvnG754BUldDdILyQldUAueiygAxNtg
+        igCdnUYlxe25q48MGCilGvNkXtia9Su5fp+flSE=
+X-Google-Smtp-Source: ABdhPJzYVunpSNTJTAbZcuzpbqsUzMK0MT7Wm7ZqLZC/fmbLquf3UF4j6tBbfJsfbGPZASGOg4t8XY0wXptaZ8/n9mA=
+X-Received: by 2002:a02:bc9:: with SMTP id 192mr123818jad.50.1605954299260;
+ Sat, 21 Nov 2020 02:24:59 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1605896059.git.gustavoars@kernel.org>
-In-Reply-To: <cover.1605896059.git.gustavoars@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 20 Nov 2020 23:21:17 +0100
-Message-ID: <CANiq72=E_gEVvqUUTSqU4zegC2=yZSTM4b=4G-iofp6d3=UgWQ@mail.gmail.com>
-Subject: Re: [PATCH 000/141] Fix fall-through warnings for Clang
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        alsa-devel@alsa-project.org, amd-gfx@lists.freedesktop.org,
-        bridge@lists.linux-foundation.org, ceph-devel@vger.kernel.org,
-        cluster-devel@redhat.com, coreteam@netfilter.org,
-        devel@driverdev.osuosl.org, dm-devel@redhat.com,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        keyrings@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-acpi@vger.kernel.org, linux-afs@lists.infradead.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net,
-        linux-block@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-cifs@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-decnet-user@lists.sourceforge.net,
-        Ext4 Developers List <linux-ext4@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-geode@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
-        linux-mtd@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
-        op-tee@lists.trustedfirmware.org, oss-drivers@netronome.com,
-        patches@opensource.cirrus.com, rds-devel@oss.oracle.com,
-        reiserfs-devel@vger.kernel.org, samba-technical@lists.samba.org,
-        selinux@vger.kernel.org, target-devel@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        usb-storage@lists.one-eyed-alien.net,
-        virtualization@lists.linux-foundation.org,
-        wcn36xx@lists.infradead.org,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org, linux-hardening@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Joe Perches <joe@perches.com>,
-        Kees Cook <keescook@chromium.org>
+Received: by 2002:a02:c55a:0:0:0:0:0 with HTTP; Sat, 21 Nov 2020 02:24:58
+ -0800 (PST)
+Reply-To: jaslin.ikhsan11@gmail.com
+From:   Jaslin Ikhsan <jaslin.ikhsan10@gmail.com>
+Date:   Sat, 21 Nov 2020 10:24:58 +0000
+Message-ID: <CAFVR8=buzieLro27enQW1DQ_RduW8XiJBbimB8v1FqzZ+x-i1A@mail.gmail.com>
+Subject: Dear God's Select,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Gustavo,
+Dear God's Select,
 
-On Fri, Nov 20, 2020 at 7:21 PM Gustavo A. R. Silva
-<gustavoars@kernel.org> wrote:
->
-> Hi all,
->
-> This series aims to fix almost all remaining fall-through warnings in
-> order to enable -Wimplicit-fallthrough for Clang.
+I am writing this mail to you with heavy tears In my eyes and great
+sorrow in my heart, My Name is Mrs.Jaslin Ikhsan, and I am contacting
+you from my country Tunisia I want to tell you this because I don't
+have any other option than to tell you as I was touched to open up to
+you, I married to Mr. Ouedrago Daisy Brown who worked with Tunisia
+embassy in Burkina Faso for nine years before he died in the year
+2008.We were married for eleven years without a child.
 
-Thanks for this.
+He died after a brief illness that lasted for only five days. Since
+his death I decided not to remarry, When my late husband was alive he
+deposited the sum of US$ 8.5m (Eight Million Five hundred Thousand
+Dollars) in a bank in Ouagadougou the capital city of Burkina Faso in
+west Africa Presently this money is still in bank. He made this money
+available for exportation of Gold from Burkina Faso mining.
 
-Since this warning is reliable in both/all compilers and we are
-eventually getting rid of all the cases, what about going even further
-and making it an error right after?
+Recently, My Doctor told me that I would not last for the period of
+seven months due to cancer problem. The one that disturbs me most is
+my stroke sickness .Having known my condition I decided to hand you
+over this money to take care of the less-privileged people, you will
+utilize this money the way I am going to instruct herein.
 
-Cheers,
-Miguel
+I want you to take 30 Percent of the total money for your personal use
+While 70% of the money will go to charity" people in the street and
+helping the orphanage. I grew up as an Orphan and I don't have any
+body as my family member, just to endeavour that the house of God is
+maintained. Am doing this so that God will forgive my sins and accept
+my soul because these sicknesses have suffered me so much.
+
+As soon a s I receive your reply I shall give you the contact of the
+bank in Burkina Faso and I will also instruct the Bank Manger to issue
+you an authority letter that will prove you the present beneficiary of
+the money in the bank that is if you assure me that you will act
+accordingly as I Stated herein.
+
+Always reply to my alternative for security purposes.
+Hoping to receive your reply:
+From Mrs. Jaslin Ikhsan
