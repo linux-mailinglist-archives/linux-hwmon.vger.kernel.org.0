@@ -2,161 +2,198 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FAB2C707E
-	for <lists+linux-hwmon@lfdr.de>; Sat, 28 Nov 2020 19:18:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F8A2C740A
+	for <lists+linux-hwmon@lfdr.de>; Sat, 28 Nov 2020 23:18:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgK1R76 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 28 Nov 2020 12:59:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33780 "EHLO
+        id S2387673AbgK1Vtp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 28 Nov 2020 16:49:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733041AbgK1R56 (ORCPT
+        with ESMTP id S1732387AbgK1TAO (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 28 Nov 2020 12:57:58 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5A5C0A3BE1
-        for <linux-hwmon@vger.kernel.org>; Sat, 28 Nov 2020 09:49:14 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id i2so9088762wrs.4
-        for <linux-hwmon@vger.kernel.org>; Sat, 28 Nov 2020 09:49:14 -0800 (PST)
+        Sat, 28 Nov 2020 14:00:14 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38564C0613D4
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Nov 2020 21:38:15 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id w8so6361240ilg.12
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Nov 2020 21:38:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=OWJXix7etR7ol53lyfN4QIUMtYkbtgEfChWSHg07ktY=;
-        b=iYhPCMnMdlVRhexYkd0/KP72eUm5RdgTEGFH1v985ukMif/uQdPo/8mVjRhSErj0YS
-         j7mCwlyDiRI1pUFcAd9u1RX7+hxYGdV937CflKZwlnlWylyY1wsyP/lnicxVYxEJnz7i
-         7y6XcnR6vNgpTYx1NBGP34nW2CVOLz2EFbZt0=
+        d=protocubo.io; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pF+WanDM3+n5VS7vO2na0YoqHjiGdR7Nzt5UHYS4/7w=;
+        b=DMUyzeznkOiL3SXvEQmp+v3efBNMN44KDRXUVwKdDMAm0P2nNYkARiH6yf6CZUp17c
+         U89lzgR9bUOWcflTQZ1ZfrIIs8ZHMkuuMI+5o1CFlOheVX98NYhThNweZJG27BVQVtMY
+         txowg/yxq3sYmhbEyIkMMx5l2+o4dDNL0yeF+pQ4cNAwwVYXAOhhBe0+Za7+3+MCVrVq
+         /JzylqqzwAaO8+NGfZyAGzwCBo8bqT4s/eo5wkd+S3dKxmnUN6RBszvtMigpjYLEGOTa
+         eRumsGNcYzPApEOVb4t6loGegu8OKxhhetd6MmFtMRUAh1iUXPfcBVZEWRw6XK1mMvTO
+         Z7cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=OWJXix7etR7ol53lyfN4QIUMtYkbtgEfChWSHg07ktY=;
-        b=nFsgMF/vZZkZKORHK0QirlrIe6xulPxMPgt7p3MzxEuwZsHz/FVsVUu6X+wM4XV+k4
-         mgSiplZkXoiI0khmH0cAN2blJHQpZb3MWVb4FLgUoNTZVBOSLYP87lmj2S6QmQHOsYa1
-         IjdB2nSPCYqO5wpAuXss7mp0wt5Q4ZtszAOV2WYIh+ZYMbeMm6XPsah8cRaTqjWcErg1
-         vRP6vksIwK3B+ke2hoYqPD6u67V99hKBNqhn67XjQOYQ+WBJpBPzUxh4A/JDmFyyLbo/
-         xiLmZ4Lq1rIvujfCLaLDdK7CuOJCPzDAoiqdW7ffI3xqPoM9S+NNKnJjyHV9eMhwHQt4
-         T7JA==
-X-Gm-Message-State: AOAM53114aaTjML2JZMcKFIZdAy6UZ1FI7c0gC5QGmoSOrKB0xvR1jUT
-        eNvKChq1ibmXyDa5yipv+1nkHw==
-X-Google-Smtp-Source: ABdhPJyDX2d7BqdCwbUplmhK34PZyJU6RoJc8Rk9rsdget8jgjgJTGIQvxAhDoxRBpBdz98t177YbA==
-X-Received: by 2002:adf:ed12:: with SMTP id a18mr18762767wro.5.1606585753319;
-        Sat, 28 Nov 2020 09:49:13 -0800 (PST)
-Received: from alpha.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
-        by smtp.gmail.com with ESMTPSA id s133sm17991481wmf.38.2020.11.28.09.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Nov 2020 09:49:12 -0800 (PST)
-From:   Paul Barker <pbarker@konsulko.com>
-To:     Kamil Debski <kamil@wypas.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Paul Barker <pbarker@konsulko.com>, linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 1/2] hwmon: pwm-fan: Refactor pwm_fan_probe
-Date:   Sat, 28 Nov 2020 17:49:08 +0000
-Message-Id: <20201128174909.26687-2-pbarker@konsulko.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201128174909.26687-1-pbarker@konsulko.com>
-References: <20201128174909.26687-1-pbarker@konsulko.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pF+WanDM3+n5VS7vO2na0YoqHjiGdR7Nzt5UHYS4/7w=;
+        b=FqzJdLp90O19J1ECWP3q3UJPXP9hF4dqFgXWpHfj/P5OSOKIeeX9chu4DUuXQpqfIa
+         dwa6oKKE5oeN4DF4USkN0fRr/9aVg8caX4jkelRcwDBkhFYSkPzCjZbZWcA3xkYCp1lf
+         88jt2syJLWB1kQ1D2J3RCn7Ky8Ecl0LjoaUkTrPToQaSWxFGl2FJvaMf5c5FbQrYsrsZ
+         2V0pwV6f6X2Vv+yAzRF6rz8xmv2o+1pgXRvpb17eczjPf6FrU9EOn7UcVL0B3itgI4WJ
+         +jfP7zNVH6pIewq9W0XOZraeRluGRQ/LSH4nf4Jts82z3tU+kypyIEfOVBD92J/mmVD/
+         0gJg==
+X-Gm-Message-State: AOAM531gdTzPGzwHBxSh10OY+TeKwsZfWXTpvn+C7nRnZ4fKIZDGRwpt
+        +ivwkjNqkLfnDwBT796Zjqn4Mrd1+pAFhsT2KQ0Rlg==
+X-Google-Smtp-Source: ABdhPJx4WQS1Qjj+g5p2TJZkeNaN4v/ySdPNfqA+ov5oQ2g+E+ySfBfLgllAq3/F3aSMRZ522oVvuvWZ2Nf55vqqdHc=
+X-Received: by 2002:a92:d68d:: with SMTP id p13mr9440062iln.27.1606541894358;
+ Fri, 27 Nov 2020 21:38:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <X7+T4aZSUuzfsf7H@monster.powergraphx.local>
+In-Reply-To: <X7+T4aZSUuzfsf7H@monster.powergraphx.local>
+From:   Jonas Malaco <jonas@protocubo.io>
+Date:   Sat, 28 Nov 2020 02:37:38 -0300
+Message-ID: <CANS_-EN8rgFEyE5rDw3=JLUYNwLQexafn7efvMC_=+4s2h1R6Q@mail.gmail.com>
+Subject: Re: [PATCH] hwmon: corsair-psu: update supported devices
+To:     Wilken Gottwalt <wilken.gottwalt@posteo.net>
+Cc:     linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Use platform_irq_count to determine the number of fan tachometer inputs
-configured in the device tree. At this stage we support either 0 or 1
-inputs.
+On Thu, Nov 26, 2020 at 8:43 AM Wilken Gottwalt
+<wilken.gottwalt@posteo.net> wrote:
+>
+> Adds support for another Corsair PSUs series: AX760i, AX860i, AX1200i,
+> AX1500i and AX1600i. The first 3 power supplies are supported through
+> the Corsair Link USB Dongle which is some kind of USB/Serial/TTL
+> converter especially made for the COM ports of these power supplies.
+> There are 3 known revisions of these adapters. The AX1500i power supply
+> has revision 3 built into the case and AX1600i is the only one in that
+> series, which has an unique usb hid id like the RM/RX series.
 
-Once we have this information we only need to read the
-pulses-per-revolution value if a fan tachometer is actually configured
-via an IRQ value.
+Can I ask what AXi power supplies were tested?
 
-Also add a debug print of the IRQ number and the pulses-per-revolution
-value to aid in investigating issues.
+I ask because, based on the user-space implementations I am aware of,
+the AXi dongle protocol appears to be different from the RMi/HXi series.
 
-Signed-off-by: Paul Barker <pbarker@konsulko.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
----
- drivers/hwmon/pwm-fan.c | 50 +++++++++++++++++++++++++++--------------
- 1 file changed, 33 insertions(+), 17 deletions(-)
+AXi dongle:
+ - https://github.com/ka87/cpsumon
 
-diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-index 1f63807c0399..efe2764f42d3 100644
---- a/drivers/hwmon/pwm-fan.c
-+++ b/drivers/hwmon/pwm-fan.c
-@@ -286,7 +286,7 @@ static int pwm_fan_probe(struct platform_device *pdev)
- 	struct device *hwmon;
- 	int ret;
- 	struct pwm_state state = { };
--	u32 ppr = 2;
-+	int tach_count;
- 
- 	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx)
-@@ -300,10 +300,6 @@ static int pwm_fan_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, ctx);
- 
--	ctx->irq = platform_get_irq_optional(pdev, 0);
--	if (ctx->irq == -EPROBE_DEFER)
--		return ctx->irq;
--
- 	ctx->reg_en = devm_regulator_get_optional(dev, "fan");
- 	if (IS_ERR(ctx->reg_en)) {
- 		if (PTR_ERR(ctx->reg_en) != -ENODEV)
-@@ -339,20 +335,40 @@ static int pwm_fan_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	of_property_read_u32(dev->of_node, "pulses-per-revolution", &ppr);
--	ctx->pulses_per_revolution = ppr;
--	if (!ctx->pulses_per_revolution) {
--		dev_err(dev, "pulses-per-revolution can't be zero.\n");
--		return -EINVAL;
--	}
-+	tach_count = platform_irq_count(pdev);
-+	if (tach_count < 0)
-+		return dev_err_probe(dev, tach_count,
-+				     "Could not get number of fan tachometer inputs\n");
-+
-+	if (tach_count > 0) {
-+		u32 ppr = 2;
-+
-+		ctx->irq = platform_get_irq(pdev, 0);
-+		if (ctx->irq == -EPROBE_DEFER)
-+			return ctx->irq;
-+		if (ctx->irq > 0) {
-+			ret = devm_request_irq(dev, ctx->irq, pulse_handler, 0,
-+					       pdev->name, ctx);
-+			if (ret) {
-+				dev_err(dev,
-+					"Failed to request interrupt: %d\n",
-+					ret);
-+				return ret;
-+			}
-+		}
- 
--	if (ctx->irq > 0) {
--		ret = devm_request_irq(dev, ctx->irq, pulse_handler, 0,
--				       pdev->name, ctx);
--		if (ret) {
--			dev_err(dev, "Failed to request interrupt: %d\n", ret);
--			return ret;
-+		of_property_read_u32(dev->of_node,
-+				     "pulses-per-revolution",
-+				     &ppr);
-+		ctx->pulses_per_revolution = ppr;
-+		if (!ctx->pulses_per_revolution) {
-+			dev_err(dev, "pulses-per-revolution can't be zero.\n");
-+			return -EINVAL;
- 		}
-+
-+		dev_dbg(dev, "tach: irq=%d, pulses_per_revolution=%d\n",
-+			ctx->irq, ctx->pulses_per_revolution);
-+
- 		ctx->sample_start = ktime_get();
- 		mod_timer(&ctx->rpm_timer, jiffies + HZ);
- 	}
--- 
-2.26.2
+RMi/HXi:
+ - https://github.com/jonasmalacofilho/liquidctl
+ - https://github.com/audiohacked/OpenCorsairLink
+ - https://github.com/notaz/corsairmi
 
+One additional concern is that the non-HID AXi dongles may only have bulk
+USB endpoints, and this is a HID driver.[1]
+
+Thanks,
+Jonas
+
+[1] https://github.com/ka87/cpsumon/issues/4
+
+
+>
+> The patch also changes the usb hid ids to use upper case letters to be
+> consistent with the rest of the hex numbers in the driver and updates
+> the hwmon documentation.
+>
+> This patch adds:
+> - hwmon/corsair-psu documentation update
+> - corsair-psu driver update
+>
+> Signed-off-by: Wilken Gottwalt <wilken.gottwalt@posteo.net>
+> ---
+>  Documentation/hwmon/corsair-psu.rst | 10 +++++++++
+>  drivers/hwmon/Kconfig               |  7 +++---
+>  drivers/hwmon/corsair-psu.c         | 33 +++++++++++++++++++----------
+>  3 files changed, 36 insertions(+), 14 deletions(-)
+>
+> diff --git a/Documentation/hwmon/corsair-psu.rst b/Documentation/hwmon/corsair-psu.rst
+> index 396b95c9a76a..6227e9046d73 100644
+> --- a/Documentation/hwmon/corsair-psu.rst
+> +++ b/Documentation/hwmon/corsair-psu.rst
+> @@ -7,6 +7,16 @@ Supported devices:
+>
+>  * Corsair Power Supplies
+>
+> +  Corsair AX760i (by Corsair Link USB Dongle)
+> +
+> +  Corsair AX860i (by Corsair Link USB Dongle)
+> +
+> +  Corsair AX1200i (by Corsair Link USB Dongle)
+> +
+> +  Corsair AX1500i (by builtin Corsair Link USB Dongle)
+> +
+> +  Corsair AX1600i
+> +
+>    Corsair HX550i
+>
+>    Corsair HX650i
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index 716df51edc87..3c059fc23cd6 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
+> @@ -453,11 +453,12 @@ config SENSORS_CORSAIR_PSU
+>         tristate "Corsair PSU HID controller"
+>         depends on HID
+>         help
+> -         If you say yes here you get support for Corsair PSUs with a HID
+> +         If you say yes here you get support for Corsair PSUs with an USB HID
+>           interface.
+>           Currently this driver supports the (RM/HX)550i, (RM/HX)650i,
+> -         (RM/HX)750i, (RM/HX)850i, (RM/HX)1000i and HX1200i power supplies
+> -         by Corsair.
+> +         (RM/HX)750i, (RM/HX)850i, (RM/HX)1000i, HX1200i and AX1600i power
+> +         supplies by Corsair. The AX760i, AX860i, AX1200i and AX1500i
+> +         power supplies are supported through the Corsair Link USB Dongle.
+>
+>           This driver can also be built as a module. If so, the module
+>           will be called corsair-psu.
+> diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
+> index 99494056f4bd..0146dda3e2c3 100644
+> --- a/drivers/hwmon/corsair-psu.c
+> +++ b/drivers/hwmon/corsair-psu.c
+> @@ -571,17 +571,28 @@ static int corsairpsu_raw_event(struct hid_device *hdev, struct hid_report *repo
+>  }
+>
+>  static const struct hid_device_id corsairpsu_idtable[] = {
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c03) }, /* Corsair HX550i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c04) }, /* Corsair HX650i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c05) }, /* Corsair HX750i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c06) }, /* Corsair HX850i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c07) }, /* Corsair HX1000i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c08) }, /* Corsair HX1200i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c09) }, /* Corsair RM550i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c0a) }, /* Corsair RM650i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c0b) }, /* Corsair RM750i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c0c) }, /* Corsair RM850i */
+> -       { HID_USB_DEVICE(0x1b1c, 0x1c0d) }, /* Corsair RM1000i */
+> +       /*
+> +        * The Corsair USB/COM Dongles appear in at least 3 different revisions, where rev 1 and 2
+> +        * are commonly used with the AX760i, AX860i and AX1200i, while rev3 is rarely seen with
+> +        * these PSUs. Rev3 is also build into the AX1500i, while the AX1600i is the first PSU of
+> +        * this series which has an unique usb hid id. Though, the actual device name is part of
+> +        * the HID message protocol, so it doesn't matter which dongle is connected.
+> +        */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C00) }, /* Corsair Link USB/COM Dongle rev1 */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C01) }, /* Corsair Link USB/COM Dongle rev2 */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C02) }, /* Corsair Link USB/COM Dongle rev3 (AX1500i) */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C03) }, /* Corsair HX550i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C04) }, /* Corsair HX650i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C05) }, /* Corsair HX750i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C06) }, /* Corsair HX850i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C07) }, /* Corsair HX1000i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C08) }, /* Corsair HX1200i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C09) }, /* Corsair RM550i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C0A) }, /* Corsair RM650i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C0B) }, /* Corsair RM750i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C0C) }, /* Corsair RM850i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C0D) }, /* Corsair RM1000i */
+> +       { HID_USB_DEVICE(0x1B1C, 0x1C11) }, /* Corsair AX1600i */
+>         { },
+>  };
+>  MODULE_DEVICE_TABLE(hid, corsairpsu_idtable);
+> --
+> 2.29.2
+>
