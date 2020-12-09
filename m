@@ -2,158 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4280C2D391B
-	for <lists+linux-hwmon@lfdr.de>; Wed,  9 Dec 2020 04:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D0E02D3D02
+	for <lists+linux-hwmon@lfdr.de>; Wed,  9 Dec 2020 09:11:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbgLIDG2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 8 Dec 2020 22:06:28 -0500
-Received: from mga04.intel.com ([192.55.52.120]:64288 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727065AbgLIDG2 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 8 Dec 2020 22:06:28 -0500
-IronPort-SDR: KZYqAhFuHUm4NTE8Euk4SC/aSb7v7RKHRafQ7NizPPK4La+5S21fg3ofmoJZB1LzF5f9O4tGIl
- FS/M7NF1hkHg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9829"; a="171438029"
-X-IronPort-AV: E=Sophos;i="5.78,404,1599548400"; 
-   d="scan'208";a="171438029"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2020 19:05:48 -0800
-IronPort-SDR: otlTCn3oDdVzFTAVspPZFsWwwTHb9QM6vh41Gtx839r0TKv+5TnU/vku33xQs4NP139gKSPfQf
- d+T+XgQ1uuJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,404,1599548400"; 
-   d="scan'208";a="337832631"
-Received: from lkp-server01.sh.intel.com (HELO 4e633a5ce5ea) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 08 Dec 2020 19:05:47 -0800
-Received: from kbuild by 4e633a5ce5ea with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kmpnW-00006b-Cm; Wed, 09 Dec 2020 03:05:46 +0000
-Date:   Wed, 09 Dec 2020 11:05:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 682f936ba21b673ed4082ba4203abef0b4ac79e1
-Message-ID: <5fd03f09.MppyQqtAGeZitcqc%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728458AbgLIICb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 9 Dec 2020 03:02:31 -0500
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:46458 "EHLO
+        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728437AbgLIICa (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 9 Dec 2020 03:02:30 -0500
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 0B97uUSR009070;
+        Wed, 9 Dec 2020 15:56:30 +0800 (GMT-8)
+        (envelope-from troy_lee@aspeedtech.com)
+Received: from TroyLee-PC.localdomain (192.168.100.253) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 9 Dec
+ 2020 15:59:25 +0800
+From:   Troy Lee <troy_lee@aspeedtech.com>
+To:     <openbmc@lists.ozlabs.org>, Jean Delvare <jdelvare@suse.com>,
+        "Guenter Roeck" <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:ARM/ASPEED MACHINE SUPPORT" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/ASPEED MACHINE SUPPORT" 
+        <linux-aspeed@lists.ozlabs.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
+CC:     <leetroy@gmail.com>, <troy_lee@aspeedtech.com>,
+        <ryan_chen@aspeedtech.com>, <chiawei_wang@aspeedtech.com>,
+        <billy_tsai@aspeedtech.com>
+Subject: [PATCH 0/4] hwmon: aspeed2600-pwm-tacho: Add driver support
+Date:   Wed, 9 Dec 2020 15:59:16 +0800
+Message-ID: <20201209075921.26689-1-troy_lee@aspeedtech.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [192.168.100.253]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 0B97uUSR009070
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git  hwmon-next
-branch HEAD: 682f936ba21b673ed4082ba4203abef0b4ac79e1  dt-bindings: hwmon: convert AD ADM1275 bindings to dt-schema
+Aspeed AST2600 is a server management SoC which has 16 PWM channels and 
+16 fan tacho channel.
 
-elapsed time: 725m
+This series of patch provides AST2600 PWM/Fan tacho support in hwmon class.
 
-configs tested: 96
-configs skipped: 2
+The driver provides a sysfs interface, and user can configure PWM duty cycle
+and read current FAN speed in RPM.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Troy Lee (4):
+  dt-bindings: hwmon: Add Aspeed AST2600 PWM/Fan
+  ARM: dts: aspeed: Add Aspeed AST2600 PWM/Fan node in devicetree
+  hwmon: Add Aspeed AST2600 support
+  hwmon: Support Aspeed AST2600 PWM/Fan tachometer
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                       maple_defconfig
-arm                             rpc_defconfig
-parisc                generic-32bit_defconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                        warp_defconfig
-sh                          lboxre2_defconfig
-sh                          rsk7264_defconfig
-arc                     haps_hs_smp_defconfig
-sh                           se7724_defconfig
-powerpc                     ep8248e_defconfig
-arm                         assabet_defconfig
-mips                        omega2p_defconfig
-arm                            dove_defconfig
-mips                          ath79_defconfig
-powerpc                     kmeter1_defconfig
-mips                      maltaaprp_defconfig
-powerpc                      mgcoge_defconfig
-arc                            hsdk_defconfig
-xtensa                              defconfig
-powerpc                      pmac32_defconfig
-sh                           se7721_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20201208
-i386                 randconfig-a005-20201208
-i386                 randconfig-a001-20201208
-i386                 randconfig-a002-20201208
-i386                 randconfig-a006-20201208
-i386                 randconfig-a003-20201208
-i386                 randconfig-a013-20201208
-i386                 randconfig-a014-20201208
-i386                 randconfig-a011-20201208
-i386                 randconfig-a015-20201208
-i386                 randconfig-a012-20201208
-i386                 randconfig-a016-20201208
-x86_64               randconfig-a004-20201208
-x86_64               randconfig-a006-20201208
-x86_64               randconfig-a005-20201208
-x86_64               randconfig-a001-20201208
-x86_64               randconfig-a002-20201208
-x86_64               randconfig-a003-20201208
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+ .../bindings/hwmon/aspeed2600-pwm-tacho.txt   |   69 ++
+ Documentation/hwmon/aspeed_pwm_tachometer.rst |   24 +
+ Documentation/hwmon/index.rst                 |    1 +
+ arch/arm/boot/dts/aspeed-ast2600-evb.dts      |  149 +++
+ arch/arm/boot/dts/aspeed-g6.dtsi              |   10 +
+ drivers/hwmon/Kconfig                         |   10 +
+ drivers/hwmon/Makefile                        |    1 +
+ drivers/hwmon/aspeed2600-pwm-tacho.c          | 1053 +++++++++++++++++
+ 8 files changed, 1317 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed2600-pwm-tacho.txt
+ create mode 100644 Documentation/hwmon/aspeed_pwm_tachometer.rst
+ create mode 100644 drivers/hwmon/aspeed2600-pwm-tacho.c
 
-clang tested configs:
-x86_64               randconfig-a016-20201208
-x86_64               randconfig-a012-20201208
-x86_64               randconfig-a013-20201208
-x86_64               randconfig-a014-20201208
-x86_64               randconfig-a015-20201208
-x86_64               randconfig-a011-20201208
+-- 
+2.17.1
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
