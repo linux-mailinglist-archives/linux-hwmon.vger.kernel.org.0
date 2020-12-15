@@ -2,84 +2,94 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A59782DA9A1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Dec 2020 10:05:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA552DA9FB
+	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Dec 2020 10:22:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgLOJE0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 15 Dec 2020 04:04:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48438 "EHLO
+        id S1727815AbgLOJVw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 15 Dec 2020 04:21:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727727AbgLOJEU (ORCPT
+        with ESMTP id S1727984AbgLOJVa (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 15 Dec 2020 04:04:20 -0500
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E80C0617A6
-        for <linux-hwmon@vger.kernel.org>; Tue, 15 Dec 2020 01:04:04 -0800 (PST)
-Received: by mail-ot1-x335.google.com with SMTP id o11so18636140ote.4
-        for <linux-hwmon@vger.kernel.org>; Tue, 15 Dec 2020 01:04:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8Os33hzl1I4JrVcBc2NboLIV9AXajTqEGTG/MO5gIIA=;
-        b=JSyKIzas5kymBH6tBxEg4KYgJIS7B1ABlQS0ZgbHcDVUhMtOJOIBkUG8oVUf2xyE38
-         Yi/DwKl/rcy7yjH3AulYbMJTt0+ojd4c4GkFRfUDBUXDhhdGL1N0TDOAvVIxD+4+acjU
-         mONy013pwy8tLKUjRRdsuZz+CRSx1++cmK49I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8Os33hzl1I4JrVcBc2NboLIV9AXajTqEGTG/MO5gIIA=;
-        b=m+awyAMYxCqCiVpsSDuIBPABKGWwS8sx8lbz5bWor1DdGyBIGV7l7Y3F6HsExCVXym
-         0wKzIQFI166ja8dOhWeZj32NEO/jcy4zqC1E6B0iHbwdPfDYDmI7qYX945keqfpn/JJV
-         PRUsCGhqHhpVUWNYDHZC4CV+Tu6BoC7qOrplde8uuaTmp4Zc2XeeSDVveNS4lbFKozlQ
-         AR102Ntc+xEieNm2KtXIcM+ZpFzIy+AMpd/WxBikmZ5RDQFo9PjNhzuafF/G8ZlQ8SGn
-         jl49EhXWR9Re1Y6Y5blqQr0h2hYvQP2XELSLIiwqs6V/9DFMWrcTuu6Kn8zb0mB+pca4
-         VUlg==
-X-Gm-Message-State: AOAM530qkxkelqt+OYKStd1g+CkiwOxA68Y/2Fi/IsLuvkCNhiw7MCKh
-        8OngP2TfAnqTds4KvLvfED4JGffqHiY595tJnGgB9GmiERw=
-X-Google-Smtp-Source: ABdhPJyFYzqWRHlZ726aYfoNePEegTQzd/kmmERgpbYpHGtgjMjXkYZ33v0YYXoHy1iJRlrBAen1+2smr+YM4qBD52o=
-X-Received: by 2002:a9d:7a4b:: with SMTP id z11mr22482636otm.305.1608023044378;
- Tue, 15 Dec 2020 01:04:04 -0800 (PST)
+        Tue, 15 Dec 2020 04:21:30 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B11DC0617A6
+        for <linux-hwmon@vger.kernel.org>; Tue, 15 Dec 2020 01:20:50 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1kp6Vd-0007FP-Ny; Tue, 15 Dec 2020 10:20:41 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1kp6Vb-00020G-W6; Tue, 15 Dec 2020 10:20:39 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
+        linux-pwm@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH 1/2] hwmon: pwm-fan: Ensure that calculation doesn't discard big period values
+Date:   Tue, 15 Dec 2020 10:20:30 +0100
+Message-Id: <20201215092031.152243-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <20201214213044.27252-1-linux@roeck-us.net> <CAM9ZRVs3gBoYYQ+M1qUiLpuFTD0c_vxdNgDTXoXisne-Y8ZwQg@mail.gmail.com>
- <20201215005406.GA232073@roeck-us.net>
-In-Reply-To: <20201215005406.GA232073@roeck-us.net>
-From:   Paul Barker <pbarker@konsulko.com>
-Date:   Tue, 15 Dec 2020 09:03:55 +0000
-Message-ID: <CAM9ZRVvdPTK79m-fRJ=++3=hUy2onApMVP8EQ2PaYcdVuq_irw@mail.gmail.com>
-Subject: Re: [GIT PULL] hwmon updates for v5.11
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-hwmon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 15 Dec 2020 at 00:54, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On Mon, Dec 14, 2020 at 10:06:23PM +0000, Paul Barker wrote:
-> > On Mon, 14 Dec 2020 at 21:32, Guenter Roeck <linux@roeck-us.net> wrote:
-> > >
-> > > Paul Barker (3):
-> > >       dt-bindings: hwmon: pwm-fan: Support multiple fan tachometer inputs
-> >
-> > Should this one go in at this stage? The patches to implement support
-> > for multiple fan tachometer inputs are still outstanding. So the
-> > dt-binding will be left documenting a feature which isn't yet
-> > supported.
-> >
-> I don't see a problem with that, the patch has been in -next for weeks,
-> and I announced that I applied it.
->
-> Is that a formal objection ?
+With MAX_PWM being defined to 255 the code
 
-No, you know the process better than me, I just wanted to ensure the
-status was clear. If the patch is ok to be included in this state then
-I'm happy.
+	unsigned long period;
+	...
+	period = ctx->pwm->args.period;
+	state.duty_cycle = DIV_ROUND_UP(pwm * (period - 1), MAX_PWM);
 
+calculates a too small value for duty_cycle if the configured period is
+big (either by discarding the 64 bit value ctx->pwm->args.period or by
+overflowing the multiplication). As this results in a too slow fan and
+so maybe an overheating machine better be safe than sorry and error out
+in .probe.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/hwmon/pwm-fan.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
+index 1f63807c0399..ec171f2b684a 100644
+--- a/drivers/hwmon/pwm-fan.c
++++ b/drivers/hwmon/pwm-fan.c
+@@ -324,8 +324,18 @@ static int pwm_fan_probe(struct platform_device *pdev)
+ 
+ 	ctx->pwm_value = MAX_PWM;
+ 
+-	/* Set duty cycle to maximum allowed and enable PWM output */
+ 	pwm_init_state(ctx->pwm, &state);
++	/*
++	 * __set_pwm assumes that MAX_PWM * (period - 1) fits into an unsigned
++	 * long. Check this here to prevent the fan running at a too low
++	 * frequency.
++	 */
++	if (state.period > ULONG_MAX / MAX_PWM + 1) {
++		dev_err(dev, "Configured period too big\n");
++		return -EINVAL;
++	}
++
++	/* Set duty cycle to maximum allowed and enable PWM output */
+ 	state.duty_cycle = ctx->pwm->args.period - 1;
+ 	state.enabled = true;
+ 
+
+base-commit: 2c85ebc57b3e1817b6ce1a6b703928e113a90442
 -- 
-Paul Barker
-Konsulko Group
+2.29.2
+
