@@ -2,195 +2,175 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A0F2DA9FA
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Dec 2020 10:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D5EA2DAA16
+	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Dec 2020 10:29:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727689AbgLOJVq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 15 Dec 2020 04:21:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727815AbgLOJVa (ORCPT
+        id S1727658AbgLOJ3C (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 15 Dec 2020 04:29:02 -0500
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:47471 "EHLO
+        twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727189AbgLOJ26 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 15 Dec 2020 04:21:30 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53396C06179C
-        for <linux-hwmon@vger.kernel.org>; Tue, 15 Dec 2020 01:20:50 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1kp6Ve-0007Fq-F8; Tue, 15 Dec 2020 10:20:42 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1kp6Ve-00020J-4a; Tue, 15 Dec 2020 10:20:42 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tue, 15 Dec 2020 04:28:58 -0500
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 0BF9MoOT076087;
+        Tue, 15 Dec 2020 17:22:50 +0800 (GMT-8)
+        (envelope-from troy_lee@aspeedtech.com)
+Received: from aspeedtech.com (192.168.100.253) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 15 Dec
+ 2020 17:26:06 +0800
+Date:   Tue, 15 Dec 2020 17:25:46 +0800
+From:   Troy Lee <troy_lee@aspeedtech.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
         Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
-        linux-pwm@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 2/2] hwmon: pwm-fan: stop using legacy PWM functions and some cleanups
-Date:   Tue, 15 Dec 2020 10:20:31 +0100
-Message-Id: <20201215092031.152243-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201215092031.152243-1-u.kleine-koenig@pengutronix.de>
-References: <20201215092031.152243-1-u.kleine-koenig@pengutronix.de>
+        Guenter Roeck <linux@roeck-us.net>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:ARM/ASPEED MACHINE SUPPORT" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/ASPEED MACHINE SUPPORT" 
+        <linux-aspeed@lists.ozlabs.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "leetroy@gmail.com" <leetroy@gmail.com>,
+        "Ryan Chen" <ryan_chen@aspeedtech.com>,
+        ChiaWei Wang <chiawei_wang@aspeedtech.com>,
+        Billy Tsai <billy_tsai@aspeedtech.com>
+Subject: Re: [PATCH 1/4] dt-bindings: hwmon: Add Aspeed AST2600 PWM/Fan
+Message-ID: <20201215092545.GA24903@aspeedtech.com>
+References: <20201209075921.26689-1-troy_lee@aspeedtech.com>
+ <20201209075921.26689-2-troy_lee@aspeedtech.com>
+ <20201211032612.GA3565720@robh.at.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20201211032612.GA3565720@robh.at.kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Originating-IP: [192.168.100.253]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 0BF9MoOT076087
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-pwm_apply_state() does what the legacy functions pwm_config() and
-pwm_{en,dis}able() do in a single function call. This simplifies error
-handling and is more efficient for new-style PWM hardware drivers.
+The 12/11/2020 11:26, Rob Herring wrote:
+> On Wed, Dec 09, 2020 at 03:59:17PM +0800, Troy Lee wrote:
+> > For supporting a new AST2600 PWM/Fan hwmon driver, we add a new binding.
+> > 
+> > Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+> > ---
+> >  .../bindings/hwmon/aspeed2600-pwm-tacho.txt   | 69 +++++++++++++++++++
+> 
+> Bindings are in DT schema format now.
+> 
+I'll submit a new binding with DT schema.
 
-Instead of repeatedly querying the PWM framework about the initial PWM
-configuration, cache the settings in driver data.
+> >  1 file changed, 69 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed2600-pwm-tacho.txt
+> > 
+> > diff --git a/Documentation/devicetree/bindings/hwmon/aspeed2600-pwm-tacho.txt b/Documentation/devicetree/bindings/hwmon/aspeed2600-pwm-tacho.txt
+> > new file mode 100644
+> > index 000000000000..61b11914352f
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/hwmon/aspeed2600-pwm-tacho.txt
+> > @@ -0,0 +1,69 @@
+> > +ASPEED AST2600 PWM and Fan Tacho controller device driver
+> > +
+> > +The ASPEED PWM controller can support upto 16 PWM outputs. The ASPEED Fan Tacho
+> > +controller can support upto 16 Fan tachometer inputs.
+> > +
+> > +There can be upto 16 fans supported. Each fan can have one PWM output and
+> > +one Fan tach inputs.
+> > +
+> > +Required properties for pwm-tacho node:
+> > +- #address-cells : should be 1.
+> > +
+> > +- #size-cells : should be 0.
+> > +
+> > +- #cooling-cells: should be 2.
+> > +
+> > +- reg : address and length of the register set for the device.
+> > +
+> > +- pinctrl-names : a pinctrl state named "default" must be defined.
+> > +
+> > +- pinctrl-0 : phandle referencing pin configuration of the PWM ports.
+> > +
+> > +- compatible : should be "aspeed,ast2600-pwm-tachometer".
+> > +
+> > +- clocks : phandle to clock provider with the clock number in the second cell
+> > +
+> > +- resets : phandle to reset controller with the reset number in the second cell
+> > +
+> > +fan subnode format:
+> > +===================
+> > +Under fan subnode there can upto 16 child nodes, with each child node
+> > +representing a fan. There are 16 fans each fan can have one PWM port and one
+> > +Fan tach inputs.
+> > +For PWM port can be configured cooling-levels to create cooling device.
+> > +Cooling device could be bound to a thermal zone for the thermal control.
+> > +
+> > +Required properties for each child node:
+> > +- reg : should specify PWM source port.
+> > +	integer value in the range 0x00 to 0x0f with 0x00 indicating PWM port 0
+> > +	and 0x0f indicating PWM port F.
+> > +
+> > +- cooling-levels: PWM duty cycle values in a range from 0 to 255
+> > +                  which correspond to thermal cooling states.
+> > +
+> > +- aspeed,fan-tach-ch : should specify the Fan tach input channel.
+> > +                integer value in the range 0 through 15, with 0 indicating
+> > +		Fan tach channel 0 and 15 indicating Fan tach channel 15.
+> > +		Atleast one Fan tach input channel is required.
+> 
+> Already has 'fan-tach-ch' in npcm750-pwm-fan.txt.
+> 
+OK.
 
-Also use __set_pwm() in .probe() to have the algorithm calculating the PWM
-state in a single place.
+> > +
+> > +- aspeed,target-pwm : Specify the frequency of PWM. The value range from 24 to
+> > +		      780000. Default value will be set to 25000.
+> > +
+> > +- aspeed,pulse-pr : Specify tacho pulse per revolution of the fan. A general
+> > +		    parameter of pulse-pr is 2.
+> 
+> Already have 'pulses-per-revolution' property in pwm-fan.txt. Use that.
+> 
+OK.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/hwmon/pwm-fan.c | 47 +++++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
+> Really, all these should be in a common fan schema that you reference.
+> 
+Are you suggesting that I should also update these properties into
+pwm-fan.txt with a separeated patch, perhaps?
 
-diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-index ec171f2b684a..4ccad5a87019 100644
---- a/drivers/hwmon/pwm-fan.c
-+++ b/drivers/hwmon/pwm-fan.c
-@@ -25,6 +25,7 @@
- struct pwm_fan_ctx {
- 	struct mutex lock;
- 	struct pwm_device *pwm;
-+	struct pwm_state pwm_state;
- 	struct regulator *reg_en;
- 
- 	int irq;
-@@ -73,18 +74,17 @@ static int  __set_pwm(struct pwm_fan_ctx *ctx, unsigned long pwm)
- {
- 	unsigned long period;
- 	int ret = 0;
--	struct pwm_state state = { };
-+	struct pwm_state *state = &ctx->pwm_state;
- 
- 	mutex_lock(&ctx->lock);
- 	if (ctx->pwm_value == pwm)
- 		goto exit_set_pwm_err;
- 
--	pwm_init_state(ctx->pwm, &state);
--	period = ctx->pwm->args.period;
--	state.duty_cycle = DIV_ROUND_UP(pwm * (period - 1), MAX_PWM);
--	state.enabled = pwm ? true : false;
-+	period = state->period;
-+	state->duty_cycle = DIV_ROUND_UP(pwm * (period - 1), MAX_PWM);
-+	state->enabled = pwm ? true : false;
- 
--	ret = pwm_apply_state(ctx->pwm, &state);
-+	ret = pwm_apply_state(ctx->pwm, state);
- 	if (!ret)
- 		ctx->pwm_value = pwm;
- exit_set_pwm_err:
-@@ -274,7 +274,9 @@ static void pwm_fan_regulator_disable(void *data)
- static void pwm_fan_pwm_disable(void *__ctx)
- {
- 	struct pwm_fan_ctx *ctx = __ctx;
--	pwm_disable(ctx->pwm);
-+
-+	ctx->pwm_state.enabled = false;
-+	pwm_apply_state(ctx->pwm, &ctx->pwm_state);
- 	del_timer_sync(&ctx->rpm_timer);
- }
- 
-@@ -285,7 +287,6 @@ static int pwm_fan_probe(struct platform_device *pdev)
- 	struct pwm_fan_ctx *ctx;
- 	struct device *hwmon;
- 	int ret;
--	struct pwm_state state = { };
- 	u32 ppr = 2;
- 
- 	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-@@ -324,22 +325,20 @@ static int pwm_fan_probe(struct platform_device *pdev)
- 
- 	ctx->pwm_value = MAX_PWM;
- 
--	pwm_init_state(ctx->pwm, &state);
-+	pwm_init_state(ctx->pwm, &ctx->pwm_state);
-+
- 	/*
- 	 * __set_pwm assumes that MAX_PWM * (period - 1) fits into an unsigned
- 	 * long. Check this here to prevent the fan running at a too low
- 	 * frequency.
- 	 */
--	if (state.period > ULONG_MAX / MAX_PWM + 1) {
-+	if (ctx->pwm_state.period > ULONG_MAX / MAX_PWM + 1) {
- 		dev_err(dev, "Configured period too big\n");
- 		return -EINVAL;
- 	}
- 
- 	/* Set duty cycle to maximum allowed and enable PWM output */
--	state.duty_cycle = ctx->pwm->args.period - 1;
--	state.enabled = true;
--
--	ret = pwm_apply_state(ctx->pwm, &state);
-+	ret = __set_pwm(ctx, MAX_PWM);
- 	if (ret) {
- 		dev_err(dev, "Failed to configure PWM: %d\n", ret);
- 		return ret;
-@@ -399,17 +398,16 @@ static int pwm_fan_probe(struct platform_device *pdev)
- static int pwm_fan_disable(struct device *dev)
- {
- 	struct pwm_fan_ctx *ctx = dev_get_drvdata(dev);
--	struct pwm_args args;
- 	int ret;
- 
--	pwm_get_args(ctx->pwm, &args);
--
- 	if (ctx->pwm_value) {
--		ret = pwm_config(ctx->pwm, 0, args.period);
-+		/* keep ctx->pwm_state unmodified for pwm_fan_resume() */
-+		struct pwm_state state = ctx->pwm_state;
-+		state.duty_cycle = 0;
-+		state.enabled = false;
-+		ret = pwm_apply_state(ctx->pwm, &state);
- 		if (ret < 0)
- 			return ret;
--
--		pwm_disable(ctx->pwm);
- 	}
- 
- 	if (ctx->reg_en) {
-@@ -437,8 +435,6 @@ static int pwm_fan_suspend(struct device *dev)
- static int pwm_fan_resume(struct device *dev)
- {
- 	struct pwm_fan_ctx *ctx = dev_get_drvdata(dev);
--	struct pwm_args pargs;
--	unsigned long duty;
- 	int ret;
- 
- 	if (ctx->reg_en) {
-@@ -452,12 +448,7 @@ static int pwm_fan_resume(struct device *dev)
- 	if (ctx->pwm_value == 0)
- 		return 0;
- 
--	pwm_get_args(ctx->pwm, &pargs);
--	duty = DIV_ROUND_UP_ULL(ctx->pwm_value * (pargs.period - 1), MAX_PWM);
--	ret = pwm_config(ctx->pwm, duty, pargs.period);
--	if (ret)
--		return ret;
--	return pwm_enable(ctx->pwm);
-+	return pwm_apply_state(ctx->pwm, &ctx->pwm_state);
- }
- #endif
- 
--- 
-2.29.2
+> > +
+> > +Examples:
+> > +
+> > +&pwm_tacho {
+> > +	status = "okay";
+> 
+> Don't show status in examples.
+> 
+Understood, it will be removed in v2.
 
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pinctrl_pwm0_default &pinctrl_tach0_default>;
+> > +
+> > +	fan@0 {
+> > +		reg = <0x00>;
+> > +		aspeed,target-pwm = <25000>;
+> > +		cooling-levels = /bits/ 8 <125 151 177 203 229 255>;
+> > +		aspeed,fan-tach-ch = /bits/ 8 <0x00>;
+> > +		aspeed,pulse-pr = <2>;
+> > +	};
+> > +};
+> > -- 
+> > 2.17.1
+> > 
