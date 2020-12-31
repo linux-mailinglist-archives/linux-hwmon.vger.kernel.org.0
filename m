@@ -2,74 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A7C2E7FD2
-	for <lists+linux-hwmon@lfdr.de>; Thu, 31 Dec 2020 13:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 519FB2E800D
+	for <lists+linux-hwmon@lfdr.de>; Thu, 31 Dec 2020 13:52:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726230AbgLaMJL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 31 Dec 2020 07:09:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54608 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726071AbgLaMJL (ORCPT
+        id S1726354AbgLaMwL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 31 Dec 2020 07:52:11 -0500
+Received: from aclms1.advantech.com.tw ([61.58.41.199]:52393 "EHLO
+        aclms1.advantech.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726348AbgLaMwK (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 31 Dec 2020 07:09:11 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88287C061573
-        for <linux-hwmon@vger.kernel.org>; Thu, 31 Dec 2020 04:08:30 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id m12so43659425lfo.7
-        for <linux-hwmon@vger.kernel.org>; Thu, 31 Dec 2020 04:08:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=A8YfmrkPt06S2wB4h546eXOdcb3JZ5qR24+QCgl/+1I=;
-        b=YadZY7XKpyjdAjy4r379JEqa8l2gmRkg6QgQ5DoEsAhurYd1RORtWO3abMe/uplfa6
-         r7iDDeSNrVh+7DOWizn9xPfdYrHXYWY+AG+wGDXFPqmuPInRjwURrJ+Z5sRSeZtNhaqR
-         TDVZPGIpvyEF2YUIBmLeT1iAWhRty3KheKrlWcLlJPfZ1m/NF+3G2JGHNP9SS+K3Xv3h
-         Jmxo/dV69Nig91vExGu4feFgPWCA8Kp94sW7XWut9i3LgdDa8wy9QB90q2Qa0giQZV+3
-         YtLYBh9ctFX8FDTdOQIJYC2mvOo4AxMicQrMJ4RpMEk8Lq8hqLoh+GbwZHIExNjLbDdT
-         RSZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=A8YfmrkPt06S2wB4h546eXOdcb3JZ5qR24+QCgl/+1I=;
-        b=S7+oiAeA/e+v1CwSkjmyfFlFKRWN9p4epL+AYwnPsWLEB1mZTC2qjEx1iqp/1UymRZ
-         lTCX0ayj7Ahgqc7ST1VUhHF1r1C+zuMdGvTCo6FpFx/++VdFd7Z6inN56Og7ndvz9CC0
-         qLjww4uWeWs27OS+KBu/MQlMTBkJfUoMlPsesEGq8JRbXiEDO29o/QxuJ67KC0HpwopY
-         nKRr/0a0414fkCqp58ViMOBTKZZPBucSiHdUUNrgLVXSHvWvTDp8ZWjQk5XBY+QvLQ/7
-         K+6/LsZ2wD9uvG80JNWktZVxX/KN+u03ngrJxEQ4ByKDtj0Ho8mh5tj8DE9A/JD1I1sY
-         HIJw==
-X-Gm-Message-State: AOAM5325qIMThj/uy9qhIzJ251md0nHPED7PFKZUpfM3mRtEiBKIqsax
-        ZfsHELHrJSuOBkIueAWJQjP99ONkVeS1bmg62z4gPtPeqEg=
-X-Google-Smtp-Source: ABdhPJxWH0Sb0w0In3sEfI6fTYks4V/H+/NKqogifvJQmPb7TovtPTVcXEWEp0+uR0GwJTb4aFCc3d8NKukXCUhukTs=
-X-Received: by 2002:a2e:85d1:: with SMTP id h17mr26761742ljj.438.1609416508928;
- Thu, 31 Dec 2020 04:08:28 -0800 (PST)
+        Thu, 31 Dec 2020 07:52:10 -0500
+X-Greylist: delayed 686 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Dec 2020 07:52:09 EST
+Received: from taipei09.ADVANTECH.CORP (unverified [172.20.0.236]) by ACLMS2.ADVANTECH.CORP
+ (Clearswift SMTPRS 5.6.0) with ESMTP id <Te3c6efff9fac14014b2650@ACLMS2.ADVANTECH.CORP>;
+ Thu, 31 Dec 2020 20:39:53 +0800
+Received: from localhost (172.16.12.146) by taipei09.ADVANTECH.CORP
+ (172.20.0.236) with Microsoft SMTP Server (TLS) id 15.0.1395.4; Thu, 31 Dec
+ 2020 20:40:03 +0800
+From:   Campion Kang <campion.kang@advantech.com.tw>
+To:     <linux-kernel@vger.kernel.org>, Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        <linux-hwmon@vger.kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        <linux-watchdog@vger.kernel.org>,
+        AceLan Kao <chia-lin.kao@canonical.com>,
+        Campion Kang <campion.kang@advantech.com.tw>
+Subject: [PATCH v5 1/6] MAINTAINERS: Add Advantech AHC1 embedded controller entry
+Date:   Thu, 31 Dec 2020 20:39:43 +0800
+Message-ID: <20201231123948.10473-1-campion.kang@advantech.com.tw>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20201223211319.937757-1-linus.walleij@linaro.org> <20201230161249.GA101363@roeck-us.net>
-In-Reply-To: <20201230161249.GA101363@roeck-us.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 31 Dec 2020 13:08:18 +0100
-Message-ID: <CACRpkdYs-_EdKNSjSaSBK-Uc7-ghHZHBzgwFD08a4WL2jTZxiQ@mail.gmail.com>
-Subject: Re: [PATCH v2] hwmon: (abx500): Decomission abx500 driver
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [172.16.12.146]
+X-ClientProxiedBy: aclcas3.ADVANTECH.CORP (172.20.1.12) To
+ taipei09.ADVANTECH.CORP (172.20.0.236)
+X-TM-SNTS-SMTP: DC59C5B75EFFC2C1B12861D66EBDBD8A25B1FB9FCF13927189C1CD79B162027F2000:8
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Dec 30, 2020 at 5:12 PM Guenter Roeck <linux@roeck-us.net> wrote:
+Add Advantech AHC1 embedded controller entry
 
-> Looks like my response didn't make it to the list. Sigh.
-> Continuously struggling with e-mail servers believing that
-> I am a spammer.
+Signed-off-by: Campion Kang <campion.kang@advantech.com.tw>
+---
+ MAINTAINERS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Oh I got it anyways.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 546aa66428c9..20766da2e794 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -562,6 +562,16 @@ S:	Maintained
+ F:	Documentation/scsi/advansys.rst
+ F:	drivers/scsi/advansys.c
+ 
++ADVANTECH EMBEDDED CONTROLLER DRIVER
++M:	Campion Kang <campion.kang@advantech.com.tw>
++L:	linux-kernel@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/mfd/ahc1ec0.yaml
++F:	drivers/hwmon/ahc1ec0-hwmon.c
++F:	drivers/mfd/ahc1ec0.c
++F:	drivers/watchdog/ahc1ec0-wdt.c
++F:	include/dt-bindings/mfd/ahc1ec0-dt.h
++
+ ADXL34X THREE-AXIS DIGITAL ACCELEROMETER DRIVER (ADXL345/ADXL346)
+ M:	Michael Hennerich <michael.hennerich@analog.com>
+ S:	Supported
+-- 
+2.17.1
 
-> Anyway, I applied v1 and fixed everything up there (Makefile,
-> Kconfig, and removed documentation). No need to resend.
-
-OK thanks a lot, sorry for all of my screwups.
-
-Yours,
-Linus Walleij
