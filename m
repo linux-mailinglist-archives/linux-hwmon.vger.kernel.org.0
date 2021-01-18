@@ -2,365 +2,142 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD3C92FA01C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Jan 2021 13:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA7382FA7D9
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Jan 2021 18:47:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404141AbhARMlG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 18 Jan 2021 07:41:06 -0500
-Received: from aclms3.advantech.com.tw ([125.252.70.86]:57706 "EHLO
-        aclms3.advantech.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404147AbhARMkr (ORCPT
+        id S2436746AbhARRqo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Jan 2021 12:46:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407197AbhARRjr (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 18 Jan 2021 07:40:47 -0500
-Received: from taipei09.ADVANTECH.CORP (unverified [172.20.0.236]) by ACLMS4.ADVANTECH.CORP
- (Clearswift SMTPRS 5.6.0) with ESMTP id <Te423a1714fac1401c812dc@ACLMS4.ADVANTECH.CORP>;
- Mon, 18 Jan 2021 20:38:46 +0800
-Received: from localhost (172.16.12.146) by taipei09.ADVANTECH.CORP
- (172.20.0.236) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 18 Jan
- 2021 20:39:01 +0800
-From:   Campion Kang <campion.kang@advantech.com.tw>
-To:     Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Mon, 18 Jan 2021 12:39:47 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE29C0613D3
+        for <linux-hwmon@vger.kernel.org>; Mon, 18 Jan 2021 09:38:59 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id q18so17285797wrn.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 18 Jan 2021 09:38:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=9DsbzojBVFKuQ48xkTo4URNA+UO51ULaaDoVeAXSBBA=;
+        b=P8YxMFky/mImBavbpo7nJwdUt/1ifWSE4KBf/sPnkT27LpA0jX50OVfzcgYE3urnZm
+         /zIzAmTU+AffMrzt0s0DAw+P7SsU2INfZnLvfwmJLOd+Mh8CyyZdXTsXGoZnwuy72WGj
+         cZXqT5I+WLIWRhIXvI6pXoAHV4BIk4byowE5X+6kRfSfrxkO5WYc9xwkQyeDKSJjrVvO
+         60AicgS6UW0FTFUl5rmuHTtkW5iAY+MfSNHdfrsqgIzQa7UcxvPYqahyXujM0CfRceuX
+         bECOxxao6O1vJZJaQOkXpEkHCG7Bo/m2+HidxOw1ZO+nvXEOsllmTf8zpi9D/O+vt2El
+         PwMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=9DsbzojBVFKuQ48xkTo4URNA+UO51ULaaDoVeAXSBBA=;
+        b=sktb0e4EGG7AK/giulYlX40//srr1Kpe4Y6czLG40o0oYtOz3v4F9UK8htv4twi3iN
+         1TdZDt8+AEiuGXWCsFXuxBad3m1f5qxrGMaiSvp4xUkMac4l0jx57dPswNZXPhZmsbd4
+         PL/2YF0Ys6FlXXZryopFq2mIft/IFbvy/kanOr/uUoe//Uk8x22/g4RunfCtUElY848I
+         Jt5arpP5oNPNZcKBH3gu+I2irXeSqe81Fab9/6miFJ1YXD2witWhiaT3VvtnoFn+Bi8P
+         SvCJfqZbNpFDLDIsr5jjRYoe/oigyo9Fq3duBY3wHxwLa+r16skqUhUfaJFw8ukRNi62
+         L71w==
+X-Gm-Message-State: AOAM532MIZyB+uDMX3m7gk0nix0f6ldGbz58RXxO4Zk5+pv67UiI3e3S
+        KiP1vVvC/YNYDfEGeHh0Bq40IA==
+X-Google-Smtp-Source: ABdhPJyq2aDkR1RLYe+jp7iO6xkLOP6P057ChtKd77qUmfHOQxOSPMkiPb9UzfN72DeGoGnHUzowUg==
+X-Received: by 2002:a5d:4882:: with SMTP id g2mr541856wrq.273.1610991537677;
+        Mon, 18 Jan 2021 09:38:57 -0800 (PST)
+Received: from localhost.localdomain (lns-bzn-59-82-252-148-144.adsl.proxad.net. [82.252.148.144])
+        by smtp.gmail.com with ESMTPSA id o8sm30042848wrm.17.2021.01.18.09.38.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Jan 2021 09:38:56 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     daniel.lezcano@linaro.org, rui.zhang@intel.com
+Cc:     Guenter Roeck <linux@roeck-us.net>, Kamil Debski <kamil@wypas.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        <linux-hwmon@vger.kernel.org>, <linux-watchdog@vger.kernel.org>,
-        AceLan Kao <chia-lin.kao@canonical.com>,
-        Campion Kang <campion.kang@advantech.com.tw>
-Subject: [PATCH v6 6/6] watchdog: ahc1ec0-wdt: Add sub-device watchdog for Advantech embedded controller
-Date:   Mon, 18 Jan 2021 20:37:49 +0800
-Message-ID: <20210118123749.4769-6-campion.kang@advantech.com.tw>
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        linux-hwmon@vger.kernel.org (open list:PWM FAN DRIVER),
+        linux-kernel@vger.kernel.org (open list),
+        linux-amlogic@lists.infradead.org (open list:KHADAS MCU MFD DRIVER),
+        linux-pm@vger.kernel.org (open list:THERMAL)
+Subject: [PATCH v2] thermal/core: Make cooling device state change private
+Date:   Mon, 18 Jan 2021 18:38:24 +0100
+Message-Id: <20210118173824.9970-1-daniel.lezcano@linaro.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210118123749.4769-1-campion.kang@advantech.com.tw>
-References: <20210118123749.4769-1-campion.kang@advantech.com.tw>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.16.12.146]
-X-ClientProxiedBy: ACLCAS4.ADVANTECH.CORP (172.20.2.20) To
- taipei09.ADVANTECH.CORP (172.20.0.236)
-X-TM-SNTS-SMTP: CE6D4BFE29C6B1349ADD14CA04192102ABFADF1D27100920852D4F69D64D178F2000:8
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This is one of sub-device driver for Advantech embedded controller
-AHC1EC0. This driver provide watchdog functionality for Advantech
-related applications to restart the system.
+The change of the cooling device state should be used by the governor
+or at least by the core code, not by the drivers themselves.
 
-Changed since V5:
-	- remove unnecessary header files
-	- bug fixed: reboot halt if watchdog enabled
-	- Kconfig: add "AHC1EC0" string to clearly define the EC name
+Remove the API usage and move the function declaration to the internal
+headers.
 
-Signed-off-by: Campion Kang <campion.kang@advantech.com.tw>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/watchdog/Kconfig       |  11 ++
- drivers/watchdog/Makefile      |   1 +
- drivers/watchdog/ahc1ec0-wdt.c | 261 +++++++++++++++++++++++++++++++++
- 3 files changed, 273 insertions(+)
- create mode 100644 drivers/watchdog/ahc1ec0-wdt.c
+ drivers/hwmon/pwm-fan.c          | 1 -
+ drivers/thermal/khadas_mcu_fan.c | 1 -
+ drivers/thermal/thermal_core.h   | 2 ++
+ include/linux/thermal.h          | 3 ---
+ 4 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 7ff941e71b79..1a27836883ac 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1636,6 +1636,17 @@ config NIC7018_WDT
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called nic7018_wdt.
+diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
+index bdba2143021a..0b1159ceac9b 100644
+--- a/drivers/hwmon/pwm-fan.c
++++ b/drivers/hwmon/pwm-fan.c
+@@ -378,7 +378,6 @@ static int pwm_fan_probe(struct platform_device *pdev)
+ 			return ret;
+ 		}
+ 		ctx->cdev = cdev;
+-		thermal_cdev_update(cdev);
+ 	}
  
-+config AHC1EC0_WDT
-+	tristate "Advantech AHC1EC0 Watchdog Function"
-+	depends on MFD_AHC1EC0
-+	help
-+	  This is sub-device for Advantech AHC1EC0 embedded controller.
-+
-+	  This driver provide watchdog functionality for Advantech related
-+	  applications to restart the system.
-+	  To compile thie driver as a module, choose M here: the module will be
-+	  called ahc1ec0-wdt.
-+
- # M68K Architecture
+ 	return 0;
+diff --git a/drivers/thermal/khadas_mcu_fan.c b/drivers/thermal/khadas_mcu_fan.c
+index 9eadd2d6413e..d35e5313bea4 100644
+--- a/drivers/thermal/khadas_mcu_fan.c
++++ b/drivers/thermal/khadas_mcu_fan.c
+@@ -100,7 +100,6 @@ static int khadas_mcu_fan_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 	ctx->cdev = cdev;
+-	thermal_cdev_update(cdev);
  
- config M54xx_WATCHDOG
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index 5c74ee19d441..7190811b1e50 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -145,6 +145,7 @@ obj-$(CONFIG_INTEL_MID_WATCHDOG) += intel-mid_wdt.o
- obj-$(CONFIG_INTEL_MEI_WDT) += mei_wdt.o
- obj-$(CONFIG_NI903X_WDT) += ni903x_wdt.o
- obj-$(CONFIG_NIC7018_WDT) += nic7018_wdt.o
-+obj-$(CONFIG_AHC1EC0_WDT) += ahc1ec0-wdt.o
- obj-$(CONFIG_MLX_WDT) += mlx_wdt.o
+ 	return 0;
+ }
+diff --git a/drivers/thermal/thermal_core.h b/drivers/thermal/thermal_core.h
+index 90f9a80c8b23..86b8cef7310e 100644
+--- a/drivers/thermal/thermal_core.h
++++ b/drivers/thermal/thermal_core.h
+@@ -65,6 +65,8 @@ static inline bool cdev_is_power_actor(struct thermal_cooling_device *cdev)
+ 		cdev->ops->power2state;
+ }
  
- # M68K Architecture
-diff --git a/drivers/watchdog/ahc1ec0-wdt.c b/drivers/watchdog/ahc1ec0-wdt.c
-new file mode 100644
-index 000000000000..4497b6106b24
---- /dev/null
-+++ b/drivers/watchdog/ahc1ec0-wdt.c
-@@ -0,0 +1,261 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Watchdog Driver for Advantech Embedded Controller chip AHC1EC0
-+ *
-+ * Copyright 2020, Advantech IIoT Group
-+ *
-+ */
++void thermal_cdev_update(struct thermal_cooling_device *);
 +
-+#include <linux/errno.h>
-+#include <linux/kernel.h>
-+#include <linux/mfd/ahc1ec0.h>
-+#include <linux/module.h>
-+#include <linux/notifier.h>
-+#include <linux/platform_device.h>
-+#include <linux/reboot.h>
-+#include <linux/types.h>
-+#include <linux/watchdog.h>
-+
-+#define DRV_NAME      "ahc1ec0-wdt"
-+
-+struct ec_wdt_data {
-+	struct watchdog_device wdtdev;
-+	struct adv_ec_platform_data *adv_ec_data;
-+	struct notifier_block reboot_nb;
-+	struct mutex lock_ioctl;
-+	int is_enable;
-+	int current_timeout;
-+};
-+
-+#define EC_WDT_MIN_TIMEOUT 1	/* The watchdog devices minimum timeout value (in seconds). */
-+#define EC_WDT_MAX_TIMEOUT 600  /* The watchdog devices maximum timeout value (in seconds) */
-+#define EC_WDT_DEFAULT_TIMEOUT 45
-+
-+static int set_delay(struct adv_ec_platform_data *adv_ec_data, unsigned short delay_timeout_in_ms)
-+{
-+	if (write_hw_ram(adv_ec_data, EC_RESET_DELAY_TIME_L, delay_timeout_in_ms & 0x00FF)) {
-+		pr_err("Failed to set Watchdog Retset Time Low byte.");
-+		return -EINVAL;
-+	}
-+
-+	if (write_hw_ram(adv_ec_data, EC_RESET_DELAY_TIME_H, (delay_timeout_in_ms & 0xFF00) >> 8)) {
-+		pr_err("Failed to set Watchdog Retset Time Hight byte.");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int advwdt_set_heartbeat(unsigned long t)
-+{
-+	if (t < 1 || t > 6553) {
-+		pr_err("%s: the input timeout is out of range.",  __func__);
-+		pr_err("Please choose valid data between 1 ~ 6553.");
-+		return -EINVAL;
-+	}
-+
-+	return (t * 10);
-+}
-+
-+/* Notifier for system down */
-+static int advwdt_notify_sys(struct notifier_block *nb, unsigned long code, void *data)
-+{
-+	if (code == SYS_DOWN || code == SYS_HALT) {
-+		struct ec_wdt_data *ec_wdt_data;
-+
-+		ec_wdt_data = container_of(nb, struct ec_wdt_data, reboot_nb);
-+		if (!ec_wdt_data)
-+			return NOTIFY_BAD;
-+
-+		/* Turn the WDT off */
-+		if (write_hwram_command(ec_wdt_data->adv_ec_data, EC_WDT_STOP)) {
-+			pr_err("Failed to set Watchdog stop.");
-+			return -EINVAL;
-+		}
-+		ec_wdt_data->is_enable = 0;
-+		pr_info("%s: notify sys shutdown", __func__);
-+	}
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int ec_wdt_start(struct watchdog_device *wdd)
-+{
-+	int ret;
-+	int timeout, timeout_in_ms;
-+	struct ec_wdt_data *ec_wdt_data = watchdog_get_drvdata(wdd);
-+	struct adv_ec_platform_data *adv_ec_data;
-+
-+	dev_dbg(wdd->parent, "%s\n", __func__);
-+
-+	adv_ec_data = ec_wdt_data->adv_ec_data;
-+	timeout = wdd->timeout; /* The watchdog devices timeout value (in seconds). */
-+
-+	mutex_lock(&ec_wdt_data->lock_ioctl);
-+
-+	timeout_in_ms = advwdt_set_heartbeat(timeout);
-+	if (timeout_in_ms < 0) {
-+		mutex_unlock(&ec_wdt_data->lock_ioctl);
-+		return timeout_in_ms;
-+	}
-+
-+	ret = set_delay(adv_ec_data, (unsigned short)(timeout_in_ms-1));
-+	if (ret) {
-+		dev_err(wdd->parent, "Failed to set Watchdog delay (ret=%x).\n", ret);
-+		mutex_unlock(&ec_wdt_data->lock_ioctl);
-+		return ret;
-+	}
-+	ret = write_hwram_command(adv_ec_data, EC_WDT_STOP);
-+	ret = write_hwram_command(adv_ec_data, EC_WDT_START);
-+	if (ret) {
-+		dev_err(wdd->parent, "Failed to set Watchdog start (ret=%x).\n", ret);
-+		mutex_unlock(&ec_wdt_data->lock_ioctl);
-+		return ret;
-+	}
-+	ec_wdt_data->is_enable = 1;
-+	ec_wdt_data->current_timeout = timeout_in_ms/10;
-+
-+	mutex_unlock(&ec_wdt_data->lock_ioctl);
-+	return 0;
-+}
-+
-+static int ec_wdt_stop(struct watchdog_device *wdd)
-+{
-+	int ret;
-+	struct ec_wdt_data *ec_wdt_data = watchdog_get_drvdata(wdd);
-+	struct adv_ec_platform_data *adv_ec_data;
-+
-+	dev_dbg(wdd->parent, "%s\n", __func__);
-+
-+	adv_ec_data = ec_wdt_data->adv_ec_data;
-+
-+	mutex_lock(&ec_wdt_data->lock_ioctl);
-+	ret = write_hwram_command(adv_ec_data, EC_WDT_STOP);
-+	mutex_unlock(&ec_wdt_data->lock_ioctl);
-+	if (ret)
-+		pr_err("Failed to set Watchdog stop.");
-+	else
-+		ec_wdt_data->is_enable = 0;
-+
-+	return ret;
-+}
-+
-+static int ec_wdt_ping(struct watchdog_device *wdd)
-+{
-+	int ret;
-+	struct ec_wdt_data *ec_wdt_data = watchdog_get_drvdata(wdd);
-+	struct adv_ec_platform_data *adv_ec_data;
-+
-+	dev_dbg(wdd->parent, "%s\n", __func__);
-+
-+	adv_ec_data = ec_wdt_data->adv_ec_data;
-+
-+	mutex_lock(&ec_wdt_data->lock_ioctl);
-+	ret = write_hwram_command(adv_ec_data, EC_WDT_RESET);
-+	mutex_unlock(&ec_wdt_data->lock_ioctl);
-+	if (ret) {
-+		pr_err("Failed to set Watchdog reset.");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ec_wdt_set_timeout(struct watchdog_device *wdd,
-+				unsigned int timeout)
-+{
-+	dev_dbg(wdd->parent, "%s, timeout=%d\n", __func__, timeout);
-+
-+	wdd->timeout = timeout;
-+
-+	if (watchdog_active(wdd))
-+		return ec_wdt_start(wdd);
-+
-+	return 0;
-+}
-+
-+static const struct watchdog_info ec_watchdog_info = {
-+	.options = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE,
-+	.identity = "AHC1EC0 Watchdog",
-+};
-+
-+static const struct watchdog_ops ec_watchdog_ops = {
-+	.owner = THIS_MODULE,
-+	.start = ec_wdt_start,
-+	.stop = ec_wdt_stop,
-+	.ping = ec_wdt_ping,
-+	.set_timeout = ec_wdt_set_timeout,
-+};
-+
-+static int adv_ec_wdt_probe(struct platform_device *pdev)
-+{
-+	int ret;
-+	struct device *dev = &pdev->dev;
-+	struct adv_ec_platform_data *adv_ec_data;
-+	struct ec_wdt_data *ec_wdt_data;
-+	struct watchdog_device *wdd;
-+
-+	dev_info(dev, "watchdog probe start\n");
-+
-+	adv_ec_data = dev_get_drvdata(dev->parent);
-+	if (!adv_ec_data)
-+		return -EINVAL;
-+
-+	ec_wdt_data = devm_kzalloc(dev, sizeof(struct ec_wdt_data), GFP_KERNEL);
-+	if (!ec_wdt_data)
-+		return -ENOMEM;
-+
-+	mutex_init(&ec_wdt_data->lock_ioctl);
-+
-+	ec_wdt_data->adv_ec_data = adv_ec_data;
-+	wdd = &ec_wdt_data->wdtdev;
-+
-+	watchdog_init_timeout(&ec_wdt_data->wdtdev, 0, dev);
-+
-+	//watchdog_set_nowayout(&ec_wdt_data->wdtdev, WATCHDOG_NOWAYOUT);
-+	watchdog_set_drvdata(&ec_wdt_data->wdtdev, ec_wdt_data);
-+	platform_set_drvdata(pdev, ec_wdt_data);
-+
-+	wdd->info = &ec_watchdog_info;
-+	wdd->ops = &ec_watchdog_ops;
-+	wdd->min_timeout = EC_WDT_MIN_TIMEOUT;
-+	wdd->max_timeout = EC_WDT_MAX_TIMEOUT;
-+	wdd->parent = dev;
-+
-+	ec_wdt_data->wdtdev.timeout = EC_WDT_DEFAULT_TIMEOUT;
-+	ec_wdt_data->is_enable = 0;
-+	ec_wdt_data->current_timeout = EC_WDT_DEFAULT_TIMEOUT;
-+
-+	watchdog_stop_on_unregister(wdd);
-+
-+	ec_wdt_data->reboot_nb.notifier_call = advwdt_notify_sys;
-+	ret = devm_register_reboot_notifier(dev, &ec_wdt_data->reboot_nb);
-+	if (ret) {
-+		dev_err(dev, "watchdog%d: Cannot register reboot notifier (%d)\n",
-+			wdd->id, ret);
-+		return ret;
-+	}
-+
-+	ret = devm_watchdog_register_device(dev, wdd);
-+	if (ret != 0)
-+		dev_err(dev, "watchdog_register_device() failed: %d\n",
-+			ret);
-+
-+	dev_info(dev, "watchdog register success\n");
-+
-+	return 0;
-+}
-+
-+static struct platform_driver adv_wdt_drv = {
-+	.driver = {
-+		.name = DRV_NAME,
-+	},
-+	.probe = adv_ec_wdt_probe,
-+};
-+module_platform_driver(adv_wdt_drv);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:" DRV_NAME);
-+MODULE_DESCRIPTION("Advantech Embedded Controller Watchdog Driver.");
-+MODULE_AUTHOR("Campion Kang <campion.kang@advantech.com.tw>");
-+MODULE_VERSION("1.0");
+ /**
+  * struct thermal_trip - representation of a point in temperature domain
+  * @np: pointer to struct device_node that this trip point was created from
+diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+index 1e686404951b..6ac7bb1d2b1f 100644
+--- a/include/linux/thermal.h
++++ b/include/linux/thermal.h
+@@ -390,7 +390,6 @@ int thermal_zone_get_temp(struct thermal_zone_device *tz, int *temp);
+ int thermal_zone_get_slope(struct thermal_zone_device *tz);
+ int thermal_zone_get_offset(struct thermal_zone_device *tz);
+ 
+-void thermal_cdev_update(struct thermal_cooling_device *);
+ void thermal_notify_framework(struct thermal_zone_device *, int);
+ int thermal_zone_device_enable(struct thermal_zone_device *tz);
+ int thermal_zone_device_disable(struct thermal_zone_device *tz);
+@@ -437,8 +436,6 @@ static inline int thermal_zone_get_offset(
+ 		struct thermal_zone_device *tz)
+ { return -ENODEV; }
+ 
+-static inline void thermal_cdev_update(struct thermal_cooling_device *cdev)
+-{ }
+ static inline void thermal_notify_framework(struct thermal_zone_device *tz,
+ 	int trip)
+ { }
 -- 
 2.17.1
 
