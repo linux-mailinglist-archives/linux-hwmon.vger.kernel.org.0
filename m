@@ -2,118 +2,90 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF772FB3F8
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Jan 2021 09:25:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25CE82FBCC8
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Jan 2021 17:46:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729531AbhASIYk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 19 Jan 2021 03:24:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58846 "EHLO
+        id S1730743AbhASQqH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 19 Jan 2021 11:46:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730884AbhASIYX (ORCPT
+        with ESMTP id S2389193AbhASQlJ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 19 Jan 2021 03:24:23 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42739C061574
-        for <linux-hwmon@vger.kernel.org>; Tue, 19 Jan 2021 00:23:43 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id d26so18777084wrb.12
-        for <linux-hwmon@vger.kernel.org>; Tue, 19 Jan 2021 00:23:43 -0800 (PST)
+        Tue, 19 Jan 2021 11:41:09 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C149AC061575
+        for <linux-hwmon@vger.kernel.org>; Tue, 19 Jan 2021 08:40:40 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id a10so12786359ejg.10
+        for <linux-hwmon@vger.kernel.org>; Tue, 19 Jan 2021 08:40:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=0o446r/7sfNrNMbiwlFxGJePev96CeNNzqsH+vREsX8=;
-        b=I+pBsb0vAWfUoTHY7RYJ6yNwT7cwg2JIs/IprcYa7Jzjnxdqdpn2CwBtUjTwRo4XM8
-         uyIxI/Ggh9GSR8awn0b5sPWRSJ6KeHwcuc4V3KOQtFbLoo91T/73rswe0bX4MOgtFIIq
-         ZGSHMQaKXk0g37CDxvDds7AOnm+lJVqQiA8kil11Bj3iT+HcRtNi3LkzM+W0rIu2yY5l
-         wYQ2dW8NeBCzjwnly/8/Evir6hbxKdfoTmtw8ACc/5C0nweEREnUNSjhfoxL146bZiLg
-         Aw0Xg9rkmpOGYX/qwx16LkK3/KSXweJF8f1Ja+42rbAaqhrWjHyujQ/j/QaJohd5V6CQ
-         +kbg==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=0glewqOhdJUGhjdqT1cc8lALerxah4psdNWcuOaSc/s=;
+        b=B0QnJDUCK+f2I5J8PQLCOTOjDigc6tjLUaS8sso9FvZtMVHa/TLhgtO/oI2g240YmN
+         93sawkzM17WbPfCG62cW0qwv61scYqm3YvG1oWSZrzUQ7aYw23TFV984GtzIpBqMYd/V
+         5DNl/5pTdgJkjVrelRO6TDJTk/IM0y9iJNJBTuMkhgnEYuwdn9IyfWBSrEwCFyIQOLaG
+         VRBzvXzZLKRet5AkCL2dVz2IkbdbWd+GZhmCZF3+SLlb24lhgsx6GmTfJYAXmseq6TLc
+         dOaCfoLhNMOBeATDQLKPkMFdUaLtrQxvbsNGEuS0sE4R5UlVeJ7CRfRz5bRSLmwvLPSc
+         b5XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=0o446r/7sfNrNMbiwlFxGJePev96CeNNzqsH+vREsX8=;
-        b=t0oDLS3hLLk2p03MmmfOd2u5UAva1c/EMlHLd/whWqk94ACJiWD9W4/3p9TSmnLRwV
-         xBEuK805ccXBPz9gA8KQ4Z6OgjxMwt6mAqd1n4LW/Xpz1aUHGsPovm+ysVEjR5+LYWRy
-         2TazAGFQYzUD7PKT0Mxggv+RzrH81mukb33eBeE77+Adq7JMc2gT+NLYcbipVrrM2CTn
-         NVVyq5dP//MKP2ZUcOnHd9vWXocv/E7AN4ZtgPA8g3fj3wfUQ+MF9wle/Z+zRICuh4Z9
-         MSttMDqqX6zsZEif5v6O2e3TcTZ9bh4LoYQ7dsxFH79D9AQByemJ1xv49sM0pON1I0Up
-         ms4g==
-X-Gm-Message-State: AOAM532POtFvx1E4voJI1StcHXIsk4LkYw2pV68fDzb0Jk5LjvXokp/W
-        vy4Ho0DmX8mqc+xgbZ/idCP7Gg==
-X-Google-Smtp-Source: ABdhPJy40W+PZAbNiUmSORK+HY3by6NS2OcSzoL5kUbSYa1SMUjm7J9uhh20bQCKaiilyG3zYfMTCA==
-X-Received: by 2002:a5d:6289:: with SMTP id k9mr3282521wru.200.1611044621936;
-        Tue, 19 Jan 2021 00:23:41 -0800 (PST)
-Received: from dell ([91.110.221.158])
-        by smtp.gmail.com with ESMTPSA id y14sm29847493wru.96.2021.01.19.00.23.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jan 2021 00:23:41 -0800 (PST)
-Date:   Tue, 19 Jan 2021 08:23:39 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     AceLan Kao <chia-lin.kao@canonical.com>
-Cc:     Campion Kang <campion.kang@advantech.com.tw>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-hwmon@vger.kernel.org, linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH v6 4/6] mfd: ahc1ec0: Add support for Advantech embedded
- controller
-Message-ID: <20210119082339.GI4903@dell>
-References: <20210118123749.4769-1-campion.kang@advantech.com.tw>
- <20210118123749.4769-4-campion.kang@advantech.com.tw>
- <CAFv23QngmvuKZb0_pK7RBa=VX=2ypabg5p1+vSqrT36CNdJhgw@mail.gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=0glewqOhdJUGhjdqT1cc8lALerxah4psdNWcuOaSc/s=;
+        b=oRhx463cxZx3v2BiL7BNrG/KfED6CzHzAphGvEF2aRXYbU8lGBvc1Bg4OS33tne8eT
+         XSw+C39hIynYJxUWrlv9IWTVZ3fbvLYtJnhdGH74f33z+dFf3tB66SzEyYsrJ3vVpdB9
+         SfQqAFOWmRH/lc85+1/nrqht6psCztPR9OuY24B9xtBgXLaZGZMq+emtoeRGVAr3pKRq
+         nCUZSIjWtScXCkpgP2DR1Dje7XyMKJIS+7bjdZRjCyQw6D2HczXb7aZL8WH22545LrGA
+         pvX+BHuCTgOPr9H7oYKsigylxeKuLejSHrNOpSsQ6X0x7+xeum7TKTpOqYvuyRQSlEKI
+         ww5Q==
+X-Gm-Message-State: AOAM530NcQJQWqS8k3/Vl8fMmicY2FDZP1O1l4yQUAcoBiqFIFffKv71
+        cAQo9yFaE9JljtNhELc0a1aGIhsP6MBHs4ultGI=
+X-Google-Smtp-Source: ABdhPJzqd/FMaA8K9HiFl/kzMm09IsJ1PW9e9fe2/lkGPe/2O5PFHmw+Fci46W7Wh5e9tu3ab4S686AZzvGBJ6V+Qp8=
+X-Received: by 2002:a17:906:1c4b:: with SMTP id l11mr3598157ejg.155.1611074439491;
+ Tue, 19 Jan 2021 08:40:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFv23QngmvuKZb0_pK7RBa=VX=2ypabg5p1+vSqrT36CNdJhgw@mail.gmail.com>
+Reply-To: veronicwilliams7o@outlook.fr
+Sender: ibrahim.kabore1985@gmail.com
+Received: by 2002:a50:458a:0:0:0:0:0 with HTTP; Tue, 19 Jan 2021 08:40:39
+ -0800 (PST)
+From:   MRS VERONICA WILLIAMS <mrsveronicawilli@gmail.com>
+Date:   Tue, 19 Jan 2021 17:40:39 +0100
+X-Google-Sender-Auth: c3AVogfiAcKDIgz4kBcERo1EOKY
+Message-ID: <CAMumKk=9qjJrhVz6RsO6zctrWVp5OU81VmrF261WwgnVoE=eJA@mail.gmail.com>
+Subject: FUND DONATION FOR CHARITY AND NEEDY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 19 Jan 2021, AceLan Kao wrote:
+MY WARM GREETINGS,
 
-> Campion Kang <campion.kang@advantech.com.tw> 於 2021年1月18日 週一 下午8:37寫道：
-> >
-> > AHC1EC0 is the embedded controller driver for Advantech industrial
-> > products. This provides sub-devices such as hwmon and watchdog, and also
-> > expose functions for sub-devices to read/write the value to embedded
-> > controller.
-> >
-> > Changed since V5:
-> >         - Kconfig: add "AHC1EC0" string to clearly define the EC name
-> >         - fix the code according to reviewer's suggestion
-> >         - remove unnecessary header files
-> >         - change the structure name to lower case, align with others
-> > naming
-> >
-> > Signed-off-by: Campion Kang <campion.kang@advantech.com.tw>
-> > ---
-> >  drivers/mfd/Kconfig         |  10 +
-> >  drivers/mfd/Makefile        |   2 +
-> >  drivers/mfd/ahc1ec0.c       | 808 ++++++++++++++++++++++++++++++++++++
-> >  include/linux/mfd/ahc1ec0.h | 276 ++++++++++++
-> >  4 files changed, 1096 insertions(+)
-> >  create mode 100644 drivers/mfd/ahc1ec0.c
-> >  create mode 100644 include/linux/mfd/ahc1ec0.h
+I AM MRS. VERONICA WILLIAMS , I DECIDED TO DONATE WHAT I HAVE TO YOU
+FOR INVESTMENT TOWARDS THE GOOD WORK OF CHARITY ORGANIZATION, AND ALSO
+TO HELP THE MOTHERLESS AND THE LESS PRIVILEGED ONES AND TO CARRY OUT A
+CHARITABLE WORKS IN YOUR COUNTRY AND AROUND THE WORLD ON MY BEHALF.
 
-[...]
+I AM DIAGNOSING OF THROAT CANCER, HOSPITALIZE FOR GOOD 2 YEARS AND
+SOME MONTHS NOW AND QUITE OBVIOUS THAT I HAVE FEW DAYS TO LIVE, AND I
+AM A WIDOW NO CHILD; I DECIDED TO WILL/DONATE THE SUM OF $5.8 MILLION
+PRIVILEGE AND ALSO FORTH ASSISTANCE OF THE WIDOWS. AT THE MOMENT I
+CANNOT TAKE ANY TELEPHONE CALLS RIGHT NOW DUE TO THE FACT THAT MY
+RELATIVES (THAT HAVE SQUANDERED THE FUNDS FOR THIS PURPOSE BEFORE) ARE
+AROUND ME AND MY HEALTH STATUS ALSO. I HAVE ADJUSTED MY WILL AND MY
+BANK IS AWARE.
 
-NB: Snipped 1000 lines.
+I HAVE WILLED THOSE PROPERTIES TO YOU BY QUOTING MY PERSONAL FILE
+ROUTING AND ACCOUNT INFORMATION. AND I HAVE ALSO NOTIFIED THE BANK
+THAT I AM WILLING THAT PROPERTIES TO YOU FOR A GOOD, EFFECTIVE AND
+PRUDENT WORK. IT IS RIGHT TO SAY THAT I HAVE BEEN DIRECTED TO DO THIS
+BY GOD. I WILL BE GOING IN FOR A SURGERY SOON AND I WANT TO MAKE SURE
+THAT I MAKE THIS DONATION BEFORE UNDERGOING THIS SURGERY.
 
-> Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+I WILL NEED YOUR SUPPORT TO MAKE THIS DREAM COME THROUGH, COULD YOU
+LET ME KNOW YOUR INTEREST TO ENABLE ME GIVE YOU FURTHER INFORMATION.
 
-Would you be kind enough to snip your replies please AceLan?
+AND I HEREBY ADVICE TO CONTACT ME BY THIS EMAIL ADDRESS.
 
-It would have the benefit of saving a lot of people a little time.
-
-TIA.
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+WAITING YOUR REPLY
+MRS. VERONICA WILLIAMS
