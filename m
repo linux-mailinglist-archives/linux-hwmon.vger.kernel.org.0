@@ -2,173 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 018F42FAE5D
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Jan 2021 02:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72DA22FB1E8
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Jan 2021 07:50:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392270AbhASBiN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-hwmon@lfdr.de>); Mon, 18 Jan 2021 20:38:13 -0500
-Received: from mga17.intel.com ([192.55.52.151]:22878 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729202AbhASBiN (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 18 Jan 2021 20:38:13 -0500
-IronPort-SDR: wlOK/UyGXgNp/srMc05MbBEkpaq2VK64eJgqznsoak1P2Lp+r42Ue504HQz/jrH6/G+MO5K+Xt
- pn8Qjjid72PA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9868"; a="158638312"
-X-IronPort-AV: E=Sophos;i="5.79,357,1602572400"; 
-   d="scan'208";a="158638312"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 17:37:29 -0800
-IronPort-SDR: IMpdu4T63VIM+bChb5MYAewAOXgHALm0u+c7vuT9WUL14I53PJrMyd3+He/PiceT1Gl45+nd4p
- fGu69FRltqRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,357,1602572400"; 
-   d="scan'208";a="347022832"
-Received: from fmsmsx604.amr.corp.intel.com ([10.18.126.84])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Jan 2021 17:37:29 -0800
-Received: from shsmsx605.ccr.corp.intel.com (10.109.6.215) by
- fmsmsx604.amr.corp.intel.com (10.18.126.84) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 18 Jan 2021 17:37:28 -0800
-Received: from shsmsx603.ccr.corp.intel.com (10.109.6.143) by
- SHSMSX605.ccr.corp.intel.com (10.109.6.215) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Tue, 19 Jan 2021 09:37:27 +0800
-Received: from shsmsx603.ccr.corp.intel.com ([10.109.6.143]) by
- SHSMSX603.ccr.corp.intel.com ([10.109.6.143]) with mapi id 15.01.1713.004;
- Tue, 19 Jan 2021 09:37:27 +0800
-From:   "Zhang, Rui" <rui.zhang@intel.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CC:     Guenter Roeck <linux@roeck-us.net>, Kamil Debski <kamil@wypas.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        "open list:PWM FAN DRIVER" <linux-hwmon@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:KHADAS MCU MFD DRIVER" <linux-amlogic@lists.infradead.org>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>
-Subject: RE: [PATCH v2] thermal/core: Make cooling device state change private
-Thread-Topic: [PATCH v2] thermal/core: Make cooling device state change
- private
-Thread-Index: AQHW7cDP1uLeJF14xUSIfMisXKv/LaouK6iQ
-Date:   Tue, 19 Jan 2021 01:37:27 +0000
-Message-ID: <2514d8a204c04b4695da7b73bd2ff848@intel.com>
-References: <20210118173824.9970-1-daniel.lezcano@linaro.org>
-In-Reply-To: <20210118173824.9970-1-daniel.lezcano@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [10.239.127.36]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
+        id S1732236AbhASFfm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 19 Jan 2021 00:35:42 -0500
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24]:51933 "EHLO
+        wout1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389808AbhASFOY (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 19 Jan 2021 00:14:24 -0500
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+        by mailout.west.internal (Postfix) with ESMTP id 654B711E8;
+        Tue, 19 Jan 2021 00:13:02 -0500 (EST)
+Received: from imap5 ([10.202.2.55])
+  by compute2.internal (MEProxy); Tue, 19 Jan 2021 00:13:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mxxn.io; h=
+        mime-version:message-id:date:from:to:subject:content-type
+        :content-transfer-encoding; s=fm1; bh=0spCGCoqY7KSGH8CarOZcNA+Cq
+        9FEwb8V5as/niMdZs=; b=UFRKbJKYisucCyLX1gesl+FUldemdrorrD0TscO67A
+        SxcAdG1vw9SdXswvyZCwE/EaHHFLonCXTv6chqe53uHfXsClmecN4XeNe/z0m5Xa
+        xLsZn9vOjtaYZZA7318fdvkQyIruEsjahUfY3l806pTzDsv5Aeo7MEJYxEpEh6go
+        S0sr2Ijoe+Ym1MrQNT7IoT/FW2v5qi2mCl5z2Lt0uns/mn9HT0t26NTJ8O4uNPLq
+        D8cKMMpFm5sp8vhiOHHibwpPY63wx4b5GyME1IpNN1yU9fyNDa1MagNiYR+/xapb
+        BsMAKcP2C0WGm6Pv4W9IRGZShyXVEpG07aXOtKf72HFw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=content-transfer-encoding:content-type
+        :date:from:message-id:mime-version:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=0spCGC
+        oqY7KSGH8CarOZcNA+Cq9FEwb8V5as/niMdZs=; b=icJ7eWaGv656IdHEAV8AA/
+        oyN7tUyJURpiCK3FjucdGEvjbPKrILvxo9fusRPSOaMwhlBKc4VuAbOZ575qKbbi
+        udKRL8uVjedGruffUGwvMQHb6uM1PPoLCL0SoBR2q3EEtHMc0+NBPE+uOAhWkoM9
+        Qcbr2mibvQRo+ewzNm8GUfgOFLu/T6QmpOKhz3JnUIq/DVXpOTWBuSa3p4ChUNbb
+        qR6FeDB+zajIoA++P4D5Gtmf7bOm5yWFNMgdvLIf+yttPBxO2csZLMFSzLKjclNa
+        J7NppR+6YyTYshTZEedib1g6GERbrOh3dS32OnQVH9ROTamZ5W3dHIxlH54dGe4w
+        ==
+X-ME-Sender: <xms:XWoGYIwK8c_g9sl9lJq1odeclKSPyDiZQ2GjyAyyiT7_qhMlxyMzYA>
+    <xme:XWoGYMRhIYKjQDVqtB62-sC5As8zh5DDGL0RdcbKF0RFWx2OmK-SFIZ2_qJwYck_E
+    1BZf_-F5yGi7aq7Zg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrtdelgdejkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfffhffvufgtgfesthhqredtreerjeenucfhrhhomhepuehlrgkkpgfj
+    rhgrshhtnhhikhcuoegslhgriiesmhiggihnrdhioheqnecuggftrfgrthhtvghrnhepvd
+    etkeeludeiudduvdeijedvheevfffhveejveektdefieduudeffeevveelhfdvnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghlrgiisehmgi
+    ignhdrihho
+X-ME-Proxy: <xmx:XWoGYKUQHXa0LOfEYSC5Uk3p1l8R-TWqYI6GIl5BtUt-LijmMnT-9g>
+    <xmx:XWoGYGjAUxrQHTPuBtb5lMmncr46Sru0BuupPAPBlUslj6HUJ_ZWNQ>
+    <xmx:XWoGYKAgqkDewB3hx41QZkHOAWu5XZwmquf1pHDGtjph8oEaXD95UA>
+    <xmx:XmoGYFOCF0HrG7CQey2qedB3nVguKnJDKc8xQj-MW8Pvm2z2L6eNnQ>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 71F765C0099; Tue, 19 Jan 2021 00:13:01 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.5.0-alpha0-45-g4839256-fm-20210104.001-g48392560
+Mime-Version: 1.0
+Message-Id: <b08d641c-3fb5-4845-85f7-e1753149cd7d@www.fastmail.com>
+Date:   Tue, 19 Jan 2021 14:12:41 +0900
+From:   =?UTF-8?Q?Bla=C5=BE_Hrastnik?= <blaz@mxxn.io>
+To:     "Jean Delvare" <jdelvare@suse.com>,
+        "Guenter Roeck" <linux@roeck-us.net>,
+        "Jonathan Corbet" <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: hwmon: (nct6683) Support ASRock boards.
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Tested with ASRock X570 Phantom Gaming-ITX/TB3. It also appears
+on other ASRock boards.
 
+Signed-off-by: Bla=C5=BE Hrastnik <blaz@mxxn.io>
+---
+ Documentation/hwmon/nct6683.rst | 1 +
+ drivers/hwmon/nct6683.c         | 3 +++
+ 2 files changed, 4 insertions(+)
 
-> -----Original Message-----
-> From: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Sent: Tuesday, January 19, 2021 1:38 AM
-> To: daniel.lezcano@linaro.org; Zhang, Rui <rui.zhang@intel.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>; Kamil Debski <kamil@wypas.org>;
-> Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>; Jean Delvare
-> <jdelvare@suse.com>; Neil Armstrong <narmstrong@baylibre.com>; Amit
-> Kucheria <amitk@kernel.org>; open list:PWM FAN DRIVER <linux-
-> hwmon@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>; open
-> list:KHADAS MCU MFD DRIVER <linux-amlogic@lists.infradead.org>; open
-> list:THERMAL <linux-pm@vger.kernel.org>
-> Subject: [PATCH v2] thermal/core: Make cooling device state change private
-> Importance: High
-> 
-> The change of the cooling device state should be used by the governor or at
-> least by the core code, not by the drivers themselves.
-> 
-> Remove the API usage and move the function declaration to the internal
-> headers.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-
-Acked-by: Zhang Rui <rui.zhang@intel.com>
-
-Thanks,
-rui
-> ---
->  drivers/hwmon/pwm-fan.c          | 1 -
->  drivers/thermal/khadas_mcu_fan.c | 1 -
->  drivers/thermal/thermal_core.h   | 2 ++
->  include/linux/thermal.h          | 3 ---
->  4 files changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c index
-> bdba2143021a..0b1159ceac9b 100644
-> --- a/drivers/hwmon/pwm-fan.c
-> +++ b/drivers/hwmon/pwm-fan.c
-> @@ -378,7 +378,6 @@ static int pwm_fan_probe(struct platform_device
-> *pdev)
->  			return ret;
->  		}
->  		ctx->cdev = cdev;
-> -		thermal_cdev_update(cdev);
->  	}
-> 
->  	return 0;
-> diff --git a/drivers/thermal/khadas_mcu_fan.c
-> b/drivers/thermal/khadas_mcu_fan.c
-> index 9eadd2d6413e..d35e5313bea4 100644
-> --- a/drivers/thermal/khadas_mcu_fan.c
-> +++ b/drivers/thermal/khadas_mcu_fan.c
-> @@ -100,7 +100,6 @@ static int khadas_mcu_fan_probe(struct
-> platform_device *pdev)
->  		return ret;
->  	}
->  	ctx->cdev = cdev;
-> -	thermal_cdev_update(cdev);
-> 
->  	return 0;
->  }
-> diff --git a/drivers/thermal/thermal_core.h
-> b/drivers/thermal/thermal_core.h index 90f9a80c8b23..86b8cef7310e 100644
-> --- a/drivers/thermal/thermal_core.h
-> +++ b/drivers/thermal/thermal_core.h
-> @@ -65,6 +65,8 @@ static inline bool cdev_is_power_actor(struct
-> thermal_cooling_device *cdev)
->  		cdev->ops->power2state;
->  }
-> 
-> +void thermal_cdev_update(struct thermal_cooling_device *);
-> +
->  /**
->   * struct thermal_trip - representation of a point in temperature domain
->   * @np: pointer to struct device_node that this trip point was created from
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h index
-> 1e686404951b..6ac7bb1d2b1f 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -390,7 +390,6 @@ int thermal_zone_get_temp(struct
-> thermal_zone_device *tz, int *temp);  int thermal_zone_get_slope(struct
-> thermal_zone_device *tz);  int thermal_zone_get_offset(struct
-> thermal_zone_device *tz);
-> 
-> -void thermal_cdev_update(struct thermal_cooling_device *);  void
-> thermal_notify_framework(struct thermal_zone_device *, int);  int
-> thermal_zone_device_enable(struct thermal_zone_device *tz);  int
-> thermal_zone_device_disable(struct thermal_zone_device *tz); @@ -437,8
-> +436,6 @@ static inline int thermal_zone_get_offset(
->  		struct thermal_zone_device *tz)
->  { return -ENODEV; }
-> 
-> -static inline void thermal_cdev_update(struct thermal_cooling_device
-> *cdev) -{ }  static inline void thermal_notify_framework(struct
-> thermal_zone_device *tz,
->  	int trip)
->  { }
-> --
-> 2.17.1
+diff --git a/Documentation/hwmon/nct6683.rst b/Documentation/hwmon/nct66=
+83.rst
+index 8646ad519..2e1408d17 100644
+--- a/Documentation/hwmon/nct6683.rst
++++ b/Documentation/hwmon/nct6683.rst
+@@ -61,5 +61,6 @@ Board		Firmware version
+ Intel DH87RL	NCT6683D EC firmware version 1.0 build 04/03/13
+ Intel DH87MC	NCT6683D EC firmware version 1.0 build 04/03/13
+ Intel DB85FL	NCT6683D EC firmware version 1.0 build 04/03/13
++ASRock X570	NCT6683D EC firmware version 1.0 build 06/28/19
+ MSI B550	NCT6687D EC firmware version 1.0 build 05/07/20
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+diff --git a/drivers/hwmon/nct6683.c b/drivers/hwmon/nct6683.c
+index 7f7e30f0d..a23047a3b 100644
+--- a/drivers/hwmon/nct6683.c
++++ b/drivers/hwmon/nct6683.c
+@@ -169,6 +169,7 @@ superio_exit(int ioreg)
+ #define NCT6683_CUSTOMER_ID_INTEL	0x805
+ #define NCT6683_CUSTOMER_ID_MITAC	0xa0e
+ #define NCT6683_CUSTOMER_ID_MSI		0x201
++#define NCT6683_CUSTOMER_ID_ASROCK		0xe2c
+=20
+ #define NCT6683_REG_BUILD_YEAR		0x604
+ #define NCT6683_REG_BUILD_MONTH		0x605
+@@ -1225,6 +1226,8 @@ static int nct6683_probe(struct platform_device *p=
+dev)
+ 		break;
+ 	case NCT6683_CUSTOMER_ID_MSI:
+ 		break;
++	case NCT6683_CUSTOMER_ID_ASROCK:
++		break;
+ 	default:
+ 		if (!force)
+ 			return -ENODEV;
+--=20
+2.29.2
 
