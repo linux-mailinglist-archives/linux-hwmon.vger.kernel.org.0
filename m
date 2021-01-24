@@ -2,158 +2,115 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D6930199D
-	for <lists+linux-hwmon@lfdr.de>; Sun, 24 Jan 2021 06:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D134D301D8C
+	for <lists+linux-hwmon@lfdr.de>; Sun, 24 Jan 2021 17:47:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726054AbhAXFLc (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 24 Jan 2021 00:11:32 -0500
-Received: from mga03.intel.com ([134.134.136.65]:55952 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726475AbhAXFLa (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 24 Jan 2021 00:11:30 -0500
-IronPort-SDR: tvW1OLGAjHp0uNdtb2XySLq3qdzwI2sC+zc1ym0RvNYer03ngB/HeAEkCiHyw/dmRXvC/oBsSU
- 2rZ0ccqaBHjQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9873"; a="179677363"
-X-IronPort-AV: E=Sophos;i="5.79,370,1602572400"; 
-   d="scan'208";a="179677363"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2021 21:10:47 -0800
-IronPort-SDR: Z0MlVR9V7xijB3t86PaObyZBehF4h9MAJlPvkM9KdWWwW35uA2fE3Ld1AxQUmDNMDpZIqb1fVr
- DQF4C2Up8qQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,370,1602572400"; 
-   d="scan'208";a="405268474"
-Received: from lkp-server01.sh.intel.com (HELO 27c4e0a4b6d9) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 23 Jan 2021 21:10:45 -0800
-Received: from kbuild by 27c4e0a4b6d9 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l3Xfg-00002s-SU; Sun, 24 Jan 2021 05:10:44 +0000
-Date:   Sun, 24 Jan 2021 13:10:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 0d3771d52ed50b39db55d6577aa2c1aa7e7c86a5
-Message-ID: <600d014b.0DJQruohl7rJuBuX%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725948AbhAXQq7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 24 Jan 2021 11:46:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725798AbhAXQq4 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 24 Jan 2021 11:46:56 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08414C061573;
+        Sun, 24 Jan 2021 08:46:16 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id j25so6730740oii.0;
+        Sun, 24 Jan 2021 08:46:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=UiTpXgmVqFrHSdksd6Jn05Y0HoKR56zNJyN5+XF3nCs=;
+        b=Fw+JGRqwt19HNU2/fqZw9PWWTu0xTJ1b3IqyG75mQiaGieUCDIDG1ocXgC07bwp3Kw
+         OX7TAeN7G4Zzeq/objdWirVByqKeJyYR/ts/Rnk1U96fz33uH3ghyMLcgM3wL1N3Gcdx
+         yiOEZXKh1Tf0r3y1keYMReB+GrqfTi6liOS5Of3SJ92pgqNRAyL1Ax3NR3XFpDut42Ou
+         ZK6mr6DOF0TPs0qCCK4APs0kkUUZHKZzwEAnsbTWy9iyjoNHJsFKFrdnOaEv9V/T9j72
+         oV8i5bBdImxzIjuX+v0ZfliIpX0pZNSYmJ7+U2nvd3lFxzq099juJiEBm8Y0bWyaCeOO
+         F5YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=UiTpXgmVqFrHSdksd6Jn05Y0HoKR56zNJyN5+XF3nCs=;
+        b=HXxvnBBW9GcAZNrP0JF0TCydvj5YkzUESv5IRYU4O3OpmWJlgRXXz6s/x1aXNche7W
+         j9Ffl9+XkXbNMWJtT1dtVj90AOIo8PVaFH2wKNYlxO3dkE07O9cLZE54i4oApLcPUzLa
+         bSg9UNPlXunlQpG7C5C2V3iVrqsUp3n38qN4DOeiEigFXVPIYYXbE/6ra2LRPWQd/E6f
+         Xf4RYhGOGEcMBIZglGrXmG1nPVnuITo0fRCw6VadgIiXil6kPJOqtVuPmMN2bhRqc0hM
+         o5UX/bUPdtAJ76l11vtUcoygAGhmoW8nWYXPvS4cFsEpVMzAABq5lI4DzyDudRLcU1rB
+         jEIQ==
+X-Gm-Message-State: AOAM530gJLxS/M4YKur6QWz/s+taw7KCWrYurKVr6oXi7TFrMsIdMX2d
+        /ksY1ky17PNdNrmejb4eJao=
+X-Google-Smtp-Source: ABdhPJxnJZMo/BCEeC7qhTl/foakowuDozCp3pXfrSEjihqt3hMw3AzneTvOsOjynkK2ZiQk1P/L7g==
+X-Received: by 2002:aca:60d6:: with SMTP id u205mr937823oib.82.1611506774487;
+        Sun, 24 Jan 2021 08:46:14 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id q6sm3053243ota.44.2021.01.24.08.46.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 24 Jan 2021 08:46:13 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sun, 24 Jan 2021 08:46:12 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Thomas Hebb <tommyhebb@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Bob Hepple <bob.hepple@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (dell-smm) Add XPS 15 L502X to fan control
+ blacklist
+Message-ID: <20210124164612.GA136698@roeck-us.net>
+References: <a09eea7616881d40d2db2fb5fa2770dc6166bdae.1611456351.git.tommyhebb@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <a09eea7616881d40d2db2fb5fa2770dc6166bdae.1611456351.git.tommyhebb@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 0d3771d52ed50b39db55d6577aa2c1aa7e7c86a5  hwmon: (applesmc) Assign boolean values to a bool variable
+On Sat, Jan 23, 2021 at 06:46:08PM -0800, Thomas Hebb wrote:
+> It has been reported[0] that the Dell XPS 15 L502X exhibits similar
+> freezing behavior to the other systems[1] on this blacklist. The issue
+> was exposed by a prior change of mine to automatically load
+> dell_smm_hwmon on a wider set of XPS models. To fix the regression, add
+> this model to the blacklist.
+> 
+> [0] https://bugzilla.kernel.org/show_bug.cgi?id=211081
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=195751
+> 
+> Fixes: b8a13e5e8f37 ("hwmon: (dell-smm) Use one DMI match for all XPS models")
+> Cc: stable@vger.kernel.org
+> Reported-by: Bob Hepple <bob.hepple@gmail.com>
+> Tested-by: Bob Hepple <bob.hepple@gmail.com>
+> Signed-off-by: Thomas Hebb <tommyhebb@gmail.com>
 
-elapsed time: 3308m
+Applied.
 
-configs tested: 98
-configs skipped: 2
+Thanks,
+Guenter
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                    amigaone_defconfig
-mips                malta_qemu_32r6_defconfig
-mips                        maltaup_defconfig
-powerpc                     tqm8560_defconfig
-powerpc                 mpc8315_rdb_defconfig
-xtensa                         virt_defconfig
-arm                        shmobile_defconfig
-sparc                       sparc32_defconfig
-microblaze                      mmu_defconfig
-sh                  sh7785lcr_32bit_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                       holly_defconfig
-powerpc                  storcenter_defconfig
-powerpc                     taishan_defconfig
-powerpc                     redwood_defconfig
-arm                             rpc_defconfig
-arc                        nsim_700_defconfig
-arm                       versatile_defconfig
-sh                           se7712_defconfig
-mips                        bcm47xx_defconfig
-arm                        spear3xx_defconfig
-mips                         tb0287_defconfig
-mips                      pic32mzda_defconfig
-arm                            pleb_defconfig
-sparc                            alldefconfig
-sh                        apsh4ad0a_defconfig
-powerpc                      makalu_defconfig
-sh                         ap325rxa_defconfig
-arc                            hsdk_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a002-20210121
-x86_64               randconfig-a003-20210121
-x86_64               randconfig-a001-20210121
-x86_64               randconfig-a005-20210121
-x86_64               randconfig-a006-20210121
-x86_64               randconfig-a004-20210121
-i386                 randconfig-a001-20210121
-i386                 randconfig-a002-20210121
-i386                 randconfig-a004-20210121
-i386                 randconfig-a006-20210121
-i386                 randconfig-a005-20210121
-i386                 randconfig-a003-20210121
-i386                 randconfig-a013-20210121
-i386                 randconfig-a011-20210121
-i386                 randconfig-a012-20210121
-i386                 randconfig-a014-20210121
-i386                 randconfig-a015-20210121
-i386                 randconfig-a016-20210121
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> ---
+> 
+>  drivers/hwmon/dell-smm-hwmon.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+> index ec448f5f2dc3..73b9db9e3aab 100644
+> --- a/drivers/hwmon/dell-smm-hwmon.c
+> +++ b/drivers/hwmon/dell-smm-hwmon.c
+> @@ -1159,6 +1159,13 @@ static struct dmi_system_id i8k_blacklist_fan_support_dmi_table[] __initdata = {
+>  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS13 9333"),
+>  		},
+>  	},
+> +	{
+> +		.ident = "Dell XPS 15 L502X",
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Dell System XPS L502X"),
+> +		},
+> +	},
+>  	{ }
+>  };
+>  
