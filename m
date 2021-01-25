@@ -2,192 +2,233 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3CE304695
-	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Jan 2021 19:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A514E3047A8
+	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Jan 2021 20:12:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390822AbhAZRW3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 26 Jan 2021 12:22:29 -0500
-Received: from mga01.intel.com ([192.55.52.88]:10568 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726384AbhAZIfr (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 26 Jan 2021 03:35:47 -0500
-IronPort-SDR: KMJ0H5xIABgvHg+PcCC4NuTGG3MuAW0mC7Bvg2GrQkOAZuzIrhUFxiRCm/me03IpipcLUtOUjf
- uY/nfowVH9CQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9875"; a="198653392"
-X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
-   d="scan'208";a="198653392"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2021 00:34:58 -0800
-IronPort-SDR: SFywgcck+E8lcIlmPoPgamupJ9cf4PmZzAAtc1adIpmePrp6QqHhU0LHHZwrtAD0ozNGZOCl2K
- Gy8e7FHXkD5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
-   d="scan'208";a="387745231"
-Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 26 Jan 2021 00:34:56 -0800
-Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l4JoN-0000ls-Hq; Tue, 26 Jan 2021 08:34:55 +0000
-Date:   Tue, 26 Jan 2021 16:34:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 5d868b73601ad76261693ae409d6d3cf3ad31c71
-Message-ID: <600fd40d.xlFShTSN7wCjCnCp%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        id S1727154AbhAZF6P (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 26 Jan 2021 00:58:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731335AbhAYSyZ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 25 Jan 2021 13:54:25 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FBFC06174A
+        for <linux-hwmon@vger.kernel.org>; Mon, 25 Jan 2021 10:53:44 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id h192so15911468oib.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 25 Jan 2021 10:53:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=HnU2bO+drhOcatmgfN+je2bmDI88lH9P/h+ro/ydtv8=;
+        b=rgqFHGf8w75xkwLf1+n+POK6o6q1kBOb2XvSnG2/RifIARMjddiTIBo6kcYksAjFpt
+         qJUEpBkzUnJL80Kk0Wdq0hrUKkLIkrvu1ZxIYeYT9yY5Fv8xvLsS80my80ClKtKtqpRA
+         sCt8tsZYMcsDE1CqEi5MMasQd3Kp2xtyILZ93hCtW883bdWMBxQZVZJtAWxzCRKCpwNp
+         jph81UXXfzAeFGD+Y9ucUdx3ZFjkA7ufuvnsg1i00cvtv+7mN8aD9fJRwWPJSTQCe2LE
+         AytmAoguoH0lSZ81OroHikbqLKegWRBbExG3J1d7Rx5ksl6kvkuy2Vv+384JHdZVOvlD
+         3uqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=HnU2bO+drhOcatmgfN+je2bmDI88lH9P/h+ro/ydtv8=;
+        b=hi3F14VNdL5Z6FOCGdycbZgK3iH5l5ATPDgtQ4fDS7Vjz4DISC33rH0wzJGHbVTzsv
+         E9NTrvDLYgCTz0qfkwgG5S1MFovCE5xOZ9ypvjTC1VZBc1Vkvnl3dWAB4lWZ+W5jidHZ
+         bUPbZqnjpiTUNX7wbx89RD7aWB5oyBup3K05Z0WPIsIS4beUdGL4lAHYc44WgCkSjFz1
+         RTw9Vek+s7cxzgagvnLwX1MW/7mup12tlDpi0TU5hzzVlq3lnUu+3MoL8ELsrqMNFObr
+         vx+aD29VeTRsCK4kDU8SI6i9uv8HbF7NsKZHHVu4V5i1ZhtQFOFH5oQ+uhOHjDD8EGxf
+         A3xQ==
+X-Gm-Message-State: AOAM530Hz/YDxq35koDoqy6TnjPhutfUACS3H0zE2DGNMzbul9BS09Ho
+        EC6fhXNpxZ/zGmFJfvVA/GTFzw0qsvE=
+X-Google-Smtp-Source: ABdhPJywNy0YabYxLLLCvYWMQNW08Ce/eUebKP05o8Hg9E6ThMSMPjswiYFV8I9BLdOLMymnRfOEXA==
+X-Received: by 2002:aca:5290:: with SMTP id g138mr1028453oib.44.1611600823846;
+        Mon, 25 Jan 2021 10:53:43 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y22sm1560984oot.7.2021.01.25.10.53.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 25 Jan 2021 10:53:42 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, Alex Qiu <xqiu@google.com>,
+        Ugur Usug <Ugur.Usug@maximintegrated.com>
+Subject: [PATCH 1/2] hwmon: (pmbus/max16601) Determine and use number of populated phases
+Date:   Mon, 25 Jan 2021 10:53:26 -0800
+Message-Id: <20210125185327.93282-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 5d868b73601ad76261693ae409d6d3cf3ad31c71  hwmon: (pwm-fan) stop using legacy PWM functions and some cleanups
+The MAX16601 can report the number of populated phases. Use this
+information to only create sysfs attributes for populated phases.
 
-elapsed time: 722m
-
-configs tested: 130
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                       mainstone_defconfig
-sh                           se7712_defconfig
-arm                        keystone_defconfig
-powerpc                     ksi8560_defconfig
-sh                          rsk7201_defconfig
-powerpc                   bluestone_defconfig
-arm                  colibri_pxa270_defconfig
-riscv                             allnoconfig
-sh                           se7722_defconfig
-mips                         db1xxx_defconfig
-m68k                       m5249evb_defconfig
-powerpc                          g5_defconfig
-sh                           se7343_defconfig
-ia64                             allyesconfig
-mips                         rt305x_defconfig
-powerpc                      arches_defconfig
-mips                        omega2p_defconfig
-mips                          ath25_defconfig
-powerpc                     skiroot_defconfig
-powerpc                 mpc8315_rdb_defconfig
-s390                             allyesconfig
-powerpc                       holly_defconfig
-arm                            u300_defconfig
-powerpc                     ppa8548_defconfig
-nios2                               defconfig
-powerpc                   motionpro_defconfig
-i386                             alldefconfig
-mips                  maltasmvp_eva_defconfig
-sh                   sh7770_generic_defconfig
-arm                         bcm2835_defconfig
-powerpc                      walnut_defconfig
-c6x                              allyesconfig
-mips                  decstation_64_defconfig
-sh                          lboxre2_defconfig
-arm                         lpc18xx_defconfig
-sh                        sh7763rdp_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                    amigaone_defconfig
-mips                      fuloong2e_defconfig
-arm                       aspeed_g5_defconfig
-arm                         nhk8815_defconfig
-sh                               alldefconfig
-sh                               j2_defconfig
-mips                       capcella_defconfig
-mips                      pistachio_defconfig
-openrisc                    or1ksim_defconfig
-sh                          polaris_defconfig
-arm                           corgi_defconfig
-arm                        mvebu_v7_defconfig
-mips                         mpc30x_defconfig
-m68k                            q40_defconfig
-mips                malta_qemu_32r6_defconfig
-arm                        multi_v7_defconfig
-m68k                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20210125
-x86_64               randconfig-a002-20210125
-x86_64               randconfig-a001-20210125
-x86_64               randconfig-a005-20210125
-x86_64               randconfig-a006-20210125
-x86_64               randconfig-a004-20210125
-i386                 randconfig-a002-20210125
-i386                 randconfig-a004-20210125
-i386                 randconfig-a005-20210125
-i386                 randconfig-a003-20210125
-i386                 randconfig-a001-20210125
-i386                 randconfig-a006-20210125
-x86_64               randconfig-a012-20210126
-x86_64               randconfig-a016-20210126
-x86_64               randconfig-a015-20210126
-x86_64               randconfig-a011-20210126
-x86_64               randconfig-a013-20210126
-x86_64               randconfig-a014-20210126
-i386                 randconfig-a013-20210125
-i386                 randconfig-a015-20210125
-i386                 randconfig-a011-20210125
-i386                 randconfig-a012-20210125
-i386                 randconfig-a014-20210125
-i386                 randconfig-a016-20210125
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a012-20210125
-x86_64               randconfig-a016-20210125
-x86_64               randconfig-a015-20210125
-x86_64               randconfig-a011-20210125
-x86_64               randconfig-a013-20210125
-x86_64               randconfig-a014-20210125
-
+Cc: Alex Qiu <xqiu@google.com>
+Cc: Ugur Usug <Ugur.Usug@maximintegrated.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ Documentation/hwmon/max16601.rst | 98 ++++++++++----------------------
+ drivers/hwmon/pmbus/max16601.c   | 17 +++++-
+ 2 files changed, 45 insertions(+), 70 deletions(-)
+
+diff --git a/Documentation/hwmon/max16601.rst b/Documentation/hwmon/max16601.rst
+index 346e74674c51..93d25dfa028e 100644
+--- a/Documentation/hwmon/max16601.rst
++++ b/Documentation/hwmon/max16601.rst
+@@ -60,75 +60,35 @@ curr1_input		VCORE input current, derived from duty cycle and output
+ curr1_max		Maximum input current.
+ curr1_max_alarm		Current high alarm.
+ 
+-curr2_label		"iin1.0"
+-curr2_input		VCORE phase 0 input current.
+-
+-curr3_label		"iin1.1"
+-curr3_input		VCORE phase 1 input current.
+-
+-curr4_label		"iin1.2"
+-curr4_input		VCORE phase 2 input current.
+-
+-curr5_label		"iin1.3"
+-curr5_input		VCORE phase 3 input current.
+-
+-curr6_label		"iin1.4"
+-curr6_input		VCORE phase 4 input current.
+-
+-curr7_label		"iin1.5"
+-curr7_input		VCORE phase 5 input current.
+-
+-curr8_label		"iin1.6"
+-curr8_input		VCORE phase 6 input current.
+-
+-curr9_label		"iin1.7"
+-curr9_input		VCORE phase 7 input current.
+-
+-curr10_label		"iin2"
+-curr10_input		VCORE input current, derived from sensor element.
+-
+-curr11_label		"iin3"
+-curr11_input		VSA input current.
+-
+-curr12_label		"iout1"
+-curr12_input		VCORE output current.
+-curr12_crit		Critical output current.
+-curr12_crit_alarm	Output current critical alarm.
+-curr12_max		Maximum output current.
+-curr12_max_alarm	Output current high alarm.
+-
+-curr13_label		"iout1.0"
+-curr13_input		VCORE phase 0 output current.
+-
+-curr14_label		"iout1.1"
+-curr14_input		VCORE phase 1 output current.
+-
+-curr15_label		"iout1.2"
+-curr15_input		VCORE phase 2 output current.
+-
+-curr16_label		"iout1.3"
+-curr16_input		VCORE phase 3 output current.
+-
+-curr17_label		"iout1.4"
+-curr17_input		VCORE phase 4 output current.
+-
+-curr18_label		"iout1.5"
+-curr18_input		VCORE phase 5 output current.
+-
+-curr19_label		"iout1.6"
+-curr19_input		VCORE phase 6 output current.
+-
+-curr20_label		"iout1.7"
+-curr20_input		VCORE phase 7 output current.
+-
+-curr21_label		"iout3"
+-curr21_input		VSA output current.
+-curr21_highest		Historical maximum VSA output current.
+-curr21_reset_history	Write any value to reset curr21_highest.
+-curr21_crit		Critical output current.
+-curr21_crit_alarm	Output current critical alarm.
+-curr21_max		Maximum output current.
+-curr21_max_alarm	Output current high alarm.
++curr[P+2]_label		"iin1.P"
++curr[P+2]_input		VCORE phase P input current.
++
++curr[N+2]_label		"iin2"
++curr[N+2]_input		VCORE input current, derived from sensor element.
++			'N' is the number of enabled/populated phases.
++
++curr[N+3]_label		"iin3"
++curr[N+3]_input		VSA input current.
++
++curr[N+4]_label		"iout1"
++curr[N+4]_input		VCORE output current.
++curr[N+4]_crit		Critical output current.
++curr[N+4]_crit_alarm	Output current critical alarm.
++curr[N+4]_max		Maximum output current.
++curr[N+4]_max_alarm	Output current high alarm.
++
++curr[N+P+5]_label	"iout1.P"
++curr[N+P+5]_input	VCORE phase P output current.
++
++curr[2*N+5]_label	"iout3"
++curr[2*N+5]_input	VSA output current.
++curr[2*N+5]_highest	Historical maximum VSA output current.
++curr[2*N+5]_reset_history
++			Write any value to reset curr21_highest.
++curr[2*N+5]_crit	Critical output current.
++curr[2*N+5]_crit_alarm	Output current critical alarm.
++curr[2*N+5]_max		Maximum output current.
++curr[2*N+5]_max_alarm	Output current high alarm.
+ 
+ power1_label		"pin1"
+ power1_input		Input power, derived from duty cycle and output current.
+diff --git a/drivers/hwmon/pmbus/max16601.c b/drivers/hwmon/pmbus/max16601.c
+index a960b86e72d2..efe6da3bc8d0 100644
+--- a/drivers/hwmon/pmbus/max16601.c
++++ b/drivers/hwmon/pmbus/max16601.c
+@@ -31,6 +31,7 @@
+ 
+ #include "pmbus.h"
+ 
++#define REG_DEFAULT_NUM_POP	0xc4
+ #define REG_SETPT_DVID		0xd1
+ #define  DAC_10MV_MODE		BIT(4)
+ #define REG_IOUT_AVG_PK		0xee
+@@ -40,6 +41,8 @@
+ #define  CORE_RAIL_INDICATOR	BIT(7)
+ #define REG_PHASE_REPORTING	0xf4
+ 
++#define MAX16601_NUM_PHASES	8
++
+ struct max16601_data {
+ 	struct pmbus_driver_info info;
+ 	struct i2c_client *vsa;
+@@ -195,6 +198,18 @@ static int max16601_identify(struct i2c_client *client,
+ 	else
+ 		info->vrm_version[0] = vr12;
+ 
++	reg = i2c_smbus_read_byte_data(client, REG_DEFAULT_NUM_POP);
++	if (reg < 0)
++		return reg;
++
++	/*
++	 * If REG_DEFAULT_NUM_POP returns 0, we don't know how many phases
++	 * are populated. Stick with the default in that case.
++	 */
++	reg &= 0x0f;
++	if (reg && reg <= MAX16601_NUM_PHASES)
++		info->phases[0] = reg;
++
+ 	return 0;
+ }
+ 
+@@ -216,7 +231,7 @@ static struct pmbus_driver_info max16601_info = {
+ 	.func[2] = PMBUS_HAVE_IIN | PMBUS_HAVE_STATUS_INPUT |
+ 		PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT |
+ 		PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP | PMBUS_PAGE_VIRTUAL,
+-	.phases[0] = 8,
++	.phases[0] = MAX16601_NUM_PHASES,
+ 	.pfunc[0] = PMBUS_HAVE_IIN | PMBUS_HAVE_IOUT | PMBUS_HAVE_TEMP,
+ 	.pfunc[1] = PMBUS_HAVE_IIN | PMBUS_HAVE_IOUT,
+ 	.pfunc[2] = PMBUS_HAVE_IIN | PMBUS_HAVE_IOUT | PMBUS_HAVE_TEMP,
+-- 
+2.17.1
+
