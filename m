@@ -2,94 +2,69 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E3C7311C77
-	for <lists+linux-hwmon@lfdr.de>; Sat,  6 Feb 2021 10:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEE4C311E1F
+	for <lists+linux-hwmon@lfdr.de>; Sat,  6 Feb 2021 15:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbhBFJ4I (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 6 Feb 2021 04:56:08 -0500
-Received: from lnfm1.sai.msu.ru ([93.180.26.255]:39770 "EHLO lnfm1.sai.msu.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229539AbhBFJ4H (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 6 Feb 2021 04:56:07 -0500
-Received: from dragon.sai.msu.ru (dragon.sai.msu.ru [93.180.26.172])
-        by lnfm1.sai.msu.ru (8.14.1/8.12.8) with ESMTP id 1169ph2D029783;
-        Sat, 6 Feb 2021 12:51:48 +0300
-Received: from oak.local (unknown [83.167.113.121])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by dragon.sai.msu.ru (Postfix) with ESMTPSA id 348F87B645;
-        Sat,  6 Feb 2021 12:51:44 +0300 (MSK)
-From:   "Matwey V. Kornilov" <matwey@sai.msu.ru>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Matwey V. Kornilov" <matwey@sai.msu.ru>
-Subject: [PATCH v4 4/4] hwmon: lm75: Handle broken device nodes gracefully
-Date:   Sat,  6 Feb 2021 12:51:21 +0300
-Message-Id: <20210206095121.20625-5-matwey@sai.msu.ru>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210206095121.20625-1-matwey@sai.msu.ru>
-References: <2588ea5c-630e-6509-689d-4c8fea358e9b@roeck-us.net>
- <20210206095121.20625-1-matwey@sai.msu.ru>
+        id S230103AbhBFO4o (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 6 Feb 2021 09:56:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55632 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229839AbhBFO4g (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 6 Feb 2021 09:56:36 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860A1C06121E
+        for <linux-hwmon@vger.kernel.org>; Sat,  6 Feb 2021 06:55:44 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id lg21so17670384ejb.3
+        for <linux-hwmon@vger.kernel.org>; Sat, 06 Feb 2021 06:55:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
+        b=gX+uAlXAcTbYPVh4eqgaek2lWFFUGmokRtCTdCjj756HQL0Q6Ly61L7rA25y7OuIZB
+         /Xe42gkuSKf1lEXnd6vJLiW9R3JvuqwTBQapghf/0PcJuaiuKxHcRblIMnYrkDtYs96h
+         mgUXGK+VNlTHSvOtLDPCNBbvLfA+ZXwwNeYK/lm0KTOeCXNK6BFJ24rknoBJdmErtusK
+         Vw/R15BCXedZlkDy0kY1rxviWjvEZlIzF4aQKfL3ZErb2LlYtTVu2B56D7432MgtYc54
+         KCN1nd+SaMbauhpSD1Z4nwN3+Ka0qYAEoTgHF5GyRRafMLcGSY25cW4srrMhIFsNKUpd
+         E/0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
+        b=pIrfJQTNXRTWNxX7zxuhgu2YGzRGh/aSWAR89QdpJXZh7/dHGzJQUk952FAuwZvOlh
+         vt2GgSCdHi69xWpFmgmA0+7QoYSZrrKTTgpcK3Vp80z4d2L/lk4Yf0msDYq1umyCDDQR
+         svJCqyaKeBqw9XfMMQ/Q6HTiBnrUSIMJg9cwgb3PaqSXc0qMrR/8q1zmD/m/XHX0jJSP
+         gkyygvxw2Q06KgaE1rRSW/rIWyqz0Yy+cZqVzBYyyGrGUm4A8bFEO8t+4/F8uKMSgKWK
+         IfdyB4CKJ2a22ng4kOwBd6lhIVutasVaZwdn/jQMAt6rlM7L8DUaEFVVaXVhjYTCv0Nr
+         sLig==
+X-Gm-Message-State: AOAM5305OqunlE2fruVITBgvAry35tgAdFYj8R01lB/mxk6497K8ir9W
+        qwETsP2bHtYBlE0mm9QghybsBY0h3IMugFiiyW4=
+X-Google-Smtp-Source: ABdhPJyjBYmoF9c/5ZDuA38hqJ7IDlTMAP9VRpOSDatHycnayDkv1NRA8n9QC4BB4ElIAIUrxtRnicDhQ2qXUjdWCZQ=
+X-Received: by 2002:a17:906:a1c2:: with SMTP id bx2mr9421163ejb.138.1612623343336;
+ Sat, 06 Feb 2021 06:55:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:906:25d0:0:0:0:0 with HTTP; Sat, 6 Feb 2021 06:55:42
+ -0800 (PST)
+Reply-To: lawyer.nba@gmail.com
+From:   Barrister Daven Bango <stephennbada9@gmail.com>
+Date:   Sat, 6 Feb 2021 15:55:42 +0100
+Message-ID: <CAGSHw-DrY3pwyNp6CdRrcj62QnhAsZMc3PZWWQAauNkiXTmwgg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-There is a logical flaw in lm75_probe() function introduced in
+--=20
+Korisnik fonda =C4=8Destitanja, Va=C5=A1a sredstva za naknadu od 850.000,00
+ameri=C4=8Dkih dolara odobrila je Me=C4=91unarodna monetarna organizacija (=
+MMF)
+u suradnji s (FBI) nakon mnogo istraga. =C4=8Cekamo da se obratimo za
+dodatne informacije
 
-    e97a45f1b460 ("hwmon: (lm75) Add OF device ID table")
-
-Note, that of_device_get_match_data() returns NULL when no match
-is found. This is the case when OF node exists but has unknown
-compatible line, while the module is still loaded via i2c
-detection.
-
-arch/powerpc/boot/dts/fsl/p2041rdb.dts:
-
-    lm75b@48 {
-    	compatible = "nxp,lm75a";
-    	reg = <0x48>;
-    };
-
-In this case, the sensor is mistakenly considered as ADT75 variant.
-
-Fixes: e97a45f1b460 ("hwmon: (lm75) Add OF device ID table")
-Signed-off-by: Matwey V. Kornilov <matwey@sai.msu.ru>
----
- drivers/hwmon/lm75.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-index 3e4374aa2f99..cd2cda4f557a 100644
---- a/drivers/hwmon/lm75.c
-+++ b/drivers/hwmon/lm75.c
-@@ -567,10 +567,17 @@ static int lm75_probe(struct i2c_client *client)
- 	int status, err;
- 	enum lm75_type kind;
- 
--	if (client->dev.of_node)
--		kind = (enum lm75_type)of_device_get_match_data(&client->dev);
--	else
-+	if (dev->of_node) {
-+		const struct of_device_id *match =
-+			of_match_device(dev->driver->of_match_table, dev);
-+
-+		if (!match)
-+			return -ENODEV;
-+
-+		kind = (enum lm75_type)(match->data);
-+	} else {
- 		kind = i2c_match_id(lm75_ids, client)->driver_data;
-+	}
- 
- 	if (!i2c_check_functionality(client->adapter,
- 			I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA))
--- 
-2.26.2
-
+Advokat: Daven Bango
+Telefon: +22891667276
+(URED MMF-a LOME TOGO)
