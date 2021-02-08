@@ -2,73 +2,66 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9FB3123BB
-	for <lists+linux-hwmon@lfdr.de>; Sun,  7 Feb 2021 12:13:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9273E312BD5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Feb 2021 09:34:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbhBGLN1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 7 Feb 2021 06:13:27 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:12081 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbhBGLN0 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 7 Feb 2021 06:13:26 -0500
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DYRKY3MdlzMWRN;
-        Sun,  7 Feb 2021 19:10:57 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.498.0; Sun, 7 Feb 2021 19:12:37 +0800
-From:   Tian Tao <tiantao6@hisilicon.com>
-To:     <jdelvare@suse.com>, <linux@roeck-us.net>,
-        <thierry.reding@gmail.com>, <lee.jones@linaro.org>
-CC:     <openbmc@lists.ozlabs.org>, <linux-hwmon@vger.kernel.org>,
-        <linux-pwm@vger.kernel.org>
-Subject: [PATCH] hwmon: (npcm750-pwm-fan): replace spin_lock_irqsave by spin_lock in hard IRQ
-Date:   Sun, 7 Feb 2021 19:12:13 +0800
-Message-ID: <1612696333-50502-1-git-send-email-tiantao6@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
+        id S230192AbhBHIad (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 8 Feb 2021 03:30:33 -0500
+Received: from smtp-18d.idc2.mandic.com.br ([177.70.124.135]:21031 "EHLO
+        smtp-18.idc2.mandic.com.br" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229564AbhBHIaK (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 8 Feb 2021 03:30:10 -0500
+Received: by smtp-18.smtp.mandic.prv (Postfix, from userid 491)
+        id 5BC52607E9FB; Mon,  8 Feb 2021 05:29:22 -0300 (-03)
+Received: from smtp-18.idc2.mandic.com.br (ifsmtp2 [192.168.1.38])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPS id C1044607AAA4;
+        Mon,  8 Feb 2021 05:29:16 -0300 (-03)
+Received: from User (unknown [52.235.38.23])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPA id 78375465E268;
+        Mon,  8 Feb 2021 05:26:42 -0300 (-03)
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <stefy@macrometrica.com.br>
+Subject: Re:reply
+Date:   Mon, 8 Feb 2021 08:29:15 -0000
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mandic-Auth: DYB6x5JcyVot9snxiAasWC73cfc93V+pC3vUrorm87+eXbqAUeEHL0ZNPgpM50IYQeUbiYx0PkMIK2oavHcOOA==
+X-Mandic-Sender: stefy@macrometrica.com.br
+Message-Id: <20210208082916.C1044607AAA4@smtp-18.smtp.mandic.prv>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The code has been in a irq-disabled context since it is hard IRQ. There
-is no necessity to do it again.
+Hello,
 
-Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
----
- drivers/hwmon/npcm750-pwm-fan.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-diff --git a/drivers/hwmon/npcm750-pwm-fan.c b/drivers/hwmon/npcm750-pwm-fan.c
-index 11a2860..6c27af1 100644
---- a/drivers/hwmon/npcm750-pwm-fan.c
-+++ b/drivers/hwmon/npcm750-pwm-fan.c
-@@ -481,12 +481,11 @@ static inline void npcm7xx_check_cmp(struct npcm7xx_pwm_fan_data *data,
- static irqreturn_t npcm7xx_fan_isr(int irq, void *dev_id)
- {
- 	struct npcm7xx_pwm_fan_data *data = dev_id;
--	unsigned long flags;
- 	int module;
- 	u8 flag;
- 
- 	module = irq - data->fan_irq[0];
--	spin_lock_irqsave(&data->fan_lock[module], flags);
-+	spin_lock(&data->fan_lock[module]);
- 
- 	flag = ioread8(NPCM7XX_FAN_REG_TICTRL(data->fan_base, module));
- 	if (flag > 0) {
-@@ -496,7 +495,7 @@ static irqreturn_t npcm7xx_fan_isr(int irq, void *dev_id)
- 		return IRQ_HANDLED;
- 	}
- 
--	spin_unlock_irqrestore(&data->fan_lock[module], flags);
-+	spin_unlock(&data->fan_lock[module]);
- 
- 	return IRQ_NONE;
- }
--- 
-2.7.4
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
