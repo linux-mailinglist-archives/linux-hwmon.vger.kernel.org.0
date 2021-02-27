@@ -2,149 +2,60 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A685326C8A
-	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Feb 2021 10:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62AF6326F47
+	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Feb 2021 23:36:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbhB0Jfn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 27 Feb 2021 04:35:43 -0500
-Received: from mout02.posteo.de ([185.67.36.66]:55261 "EHLO mout02.posteo.de"
+        id S230165AbhB0WfC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 27 Feb 2021 17:35:02 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:42077 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230084AbhB0Jfm (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 27 Feb 2021 04:35:42 -0500
-Received: from submission (posteo.de [89.146.220.130]) 
-        by mout02.posteo.de (Postfix) with ESMTPS id A845D2400FB
-        for <linux-hwmon@vger.kernel.org>; Sat, 27 Feb 2021 10:34:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-        t=1614418484; bh=T3uT0JzZPYyjoGWasIVLI3FyG8lnKf8d/mRQUMH5fYA=;
-        h=Date:From:To:Cc:Subject:From;
-        b=TXlLfeWvygYLJQFG1nO723+G4Htz2DXqYmM6NbEnJT5G4s3zr+2J484U2VfCohtBb
-         cADH617vqTA0XF6I/3knDd4rL4FgZBkcE+Jcjru3RGxRBoqfg6mCWvur692wThg8H5
-         yQQwh9e4r1OLGSmziBhLUdvRN86bJ8WcaWz70bryMY8FsrYXnJNy7jbV5JJPWUPtDW
-         V61WFBywanNH2Qh4OlPRpa8sVXfoDWEojgKmJyA6uMWOrTyEi3w3nse1vVz/ZYb3vm
-         Fhd0BF0Qm4y28v62NaCEFs0mzDrKgbokYFz7Xz5/cWuaJwEccfIWzs2qX4MvmneazS
-         3xUAQrKYuXhSg==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4DnhFH63bYz6tmG;
-        Sat, 27 Feb 2021 10:34:43 +0100 (CET)
-Date:   Sat, 27 Feb 2021 10:34:42 +0100
-From:   Wilken Gottwalt <wilken.gottwalt@posteo.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org
-Subject: [PATCH] hwmon: corsair-psu: update calculation of LINEAR11 values
-Message-ID: <YDoSMqFbgoTXyoru@monster.powergraphx.local>
+        id S230001AbhB0We7 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 27 Feb 2021 17:34:59 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Sat, 27 Feb 2021 14:33:46 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Sat, 27 Feb 2021
+ 14:33:32 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Sat, 27 Feb 2021 22:33:46 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <837a988e66554c5d95b18ae85648d3d7@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Changes the way how LINEAR11 values are calculated. The new method
-increases the precision of 2-3 digits.
+Hello,
 
-old method:
-	corsairpsu-hid-3-1
-	Adapter: HID adapter
-	v_in:        230.00 V
-	v_out +12v:   12.00 V
-	v_out +5v:     5.00 V
-	v_out +3.3v:   3.00 V
-	psu fan:        0 RPM
-	vrm temp:     +44.0°C
-	case temp:    +37.0°C
-	power total: 152.00 W
-	power +12v:  112.00 W
-	power +5v:    38.00 W
-	power +3.3v:   5.00 W
-	curr in:          N/A
-	curr +12v:     9.00 A
-	curr +5v:      7.00 A
-	curr +3.3v:  1000.00 mA
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-new method:
-	corsairpsu-hid-3-1
-	Adapter: HID adapter
-	v_in:        230.00 V
-	v_out +12v:   12.16 V
-	v_out +5v:     5.01 V
-	v_out +3.3v:   3.30 V
-	psu fan:        0 RPM
-	vrm temp:     +44.5°C
-	case temp:    +37.8°C
-	power total: 148.00 W
-	power +12v:  108.00 W
-	power +5v:    37.00 W
-	power +3.3v:   4.50 W
-	curr in:          N/A
-	curr +12v:     9.25 A
-	curr +5v:      7.50 A
-	curr +3.3v:    1.50 A
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Co-developed-by: Jack Doan <me@jackdoan.com>
-Signed-off-by: Jack Doan <me@jackdoan.com>
-Signed-off-by: Wilken Gottwalt <wilken.gottwalt@posteo.net>
----
- drivers/hwmon/corsair-psu.c | 30 ++++++++----------------------
- 1 file changed, 8 insertions(+), 22 deletions(-)
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
-index 99494056f4bd..b0953eeeb2d3 100644
---- a/drivers/hwmon/corsair-psu.c
-+++ b/drivers/hwmon/corsair-psu.c
-@@ -119,27 +119,13 @@ struct corsairpsu_data {
- };
- 
- /* some values are SMBus LINEAR11 data which need a conversion */
--static int corsairpsu_linear11_to_int(const int val)
-+static int corsairpsu_linear11_to_int(const u16 val, const int scale)
- {
--	int exp = (val & 0xFFFF) >> 0x0B;
--	int mant = val & 0x7FF;
--	int i;
--
--	if (exp > 0x0F)
--		exp -= 0x20;
--	if (mant > 0x3FF)
--		mant -= 0x800;
--	if ((mant & 0x01) == 1)
--		++mant;
--	if (exp < 0) {
--		for (i = 0; i < -exp; ++i)
--			mant /= 2;
--	} else {
--		for (i = 0; i < exp; ++i)
--			mant *= 2;
--	}
-+	const int exp = ((s16)val) >> 11;
-+	const int mant = (((s16)(val & 0x7ff)) << 5) >> 5;
-+	const int result = mant * scale;
- 
--	return mant;
-+	return (exp >= 0) ? (result << exp) : (result >> -exp);
- }
- 
- static int corsairpsu_usb_cmd(struct corsairpsu_data *priv, u8 p0, u8 p1, u8 p2, void *data)
-@@ -249,14 +235,14 @@ static int corsairpsu_get_value(struct corsairpsu_data *priv, u8 cmd, u8 rail, l
- 	case PSU_CMD_RAIL_AMPS:
- 	case PSU_CMD_TEMP0:
- 	case PSU_CMD_TEMP1:
--		*val = corsairpsu_linear11_to_int(tmp & 0xFFFF) * 1000;
-+		*val = corsairpsu_linear11_to_int(tmp & 0xFFFF, 1000);
- 		break;
- 	case PSU_CMD_FAN:
--		*val = corsairpsu_linear11_to_int(tmp & 0xFFFF);
-+		*val = corsairpsu_linear11_to_int(tmp & 0xFFFF, 1);
- 		break;
- 	case PSU_CMD_RAIL_WATTS:
- 	case PSU_CMD_TOTAL_WATTS:
--		*val = corsairpsu_linear11_to_int(tmp & 0xFFFF) * 1000000;
-+		*val = corsairpsu_linear11_to_int(tmp & 0xFFFF, 1000000);
- 		break;
- 	case PSU_CMD_TOTAL_UPTIME:
- 	case PSU_CMD_UPTIME:
--- 
-2.30.1
-
+Regards,
+Ms. Reem.
