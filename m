@@ -2,121 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 352FA33055E
-	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Mar 2021 01:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A04C3305E2
+	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Mar 2021 03:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233392AbhCHAc1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 7 Mar 2021 19:32:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46620 "EHLO
+        id S233441AbhCHC1X (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 7 Mar 2021 21:27:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233391AbhCHAcO (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 7 Mar 2021 19:32:14 -0500
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C227C06175F
-        for <linux-hwmon@vger.kernel.org>; Sun,  7 Mar 2021 16:32:14 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id j6so4038387plx.6
-        for <linux-hwmon@vger.kernel.org>; Sun, 07 Mar 2021 16:32:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=6AB1N2CEv1uO/OWrbLkb4xKVAC6/jBjIAgWr7ep8KF8=;
-        b=VWCy9+1/e5XxIB5MV5Fe6l/NkVtBF4cfC/CBa/LEuWFw3r6BLsS/aDIpIm63a8hPKl
-         aPuvyhRk8mXB8MaILrw+/ZAjQLybx0l6eCHkmT90dUtnX24x26H8L1CZZdILX669T4T8
-         Dm4pnYOeBos6qSeXIKfODtYT24qVqR1LqjwPqhgooxgl8aXGoouPAxklz3y6LtDgIHkr
-         ZkF84qXR7xxR3LphlVxFjGCHnfsppio2JBBHezbkuaQfUNB/02MdAi8nDzNjhAwX0eln
-         tJH/EWF8w+8NYBUjGc0c8peNae4mnpFjUU2EQ85dxcdeRn+NHgID5oneV621X2iII52z
-         9Nbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=6AB1N2CEv1uO/OWrbLkb4xKVAC6/jBjIAgWr7ep8KF8=;
-        b=AYeTSa6VmZ4NIDD/aam9w8d5X46jc5vcvYronj+RrTb/N27vCfJjIkCCFlrL1o6PGb
-         l4x+1SupkQyWUCZcJO7kbOgTvm0mESQi2IFQMc4EzF/ALHLyEzHFVXpyv7KSM+wgHTlv
-         XF5T8CuklA2MbjU6OXWwddDJWOjPASPBrDoDiHXVvg9KMgDxCcPASZZCrad6ndiugS8I
-         WNWGwFdMdv8UOKjWODMBeal1yCB+BmYKNvpknvElaPDdzgyIThCsC2vlE6qvfJ7IFBzc
-         Zrcz5MeNT0imRz+4deZguhXaz1g99SURUUpPxHUEhmYSuHizkcU6D1X37qXTsYjzF7rt
-         ixpw==
-X-Gm-Message-State: AOAM532ZV4J4B/KRDUtHX9hiUyJ+ql7meB7OaAWVYKB349xQ9dQo7vFu
-        eOyU2MEeJZhMvY0TsOpxZxMNmlwkkZRxnV5/EMI=
-X-Google-Smtp-Source: ABdhPJzfHsNxLA0ripzLurNnF1DJTwCR3kO75BM4+RaQZg28pSu1AfWDDMA3U6njWVx8/porMrW+mmqltwJR85t5QHU=
-X-Received: by 2002:a17:902:7401:b029:e4:5992:e64a with SMTP id
- g1-20020a1709027401b02900e45992e64amr18449001pll.75.1615163533483; Sun, 07
- Mar 2021 16:32:13 -0800 (PST)
+        with ESMTP id S233669AbhCHC1N (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 7 Mar 2021 21:27:13 -0500
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [IPv6:2001:df5:b000:5::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC4DC06174A
+        for <linux-hwmon@vger.kernel.org>; Sun,  7 Mar 2021 18:27:13 -0800 (PST)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 84FD0891AE;
+        Mon,  8 Mar 2021 15:27:09 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1615170429;
+        bh=8TTBWL5utY8uZBsZ4tFU35d2pW7P5yfQ2UnFv+biqjw=;
+        h=From:To:CC:Subject:Date:References:In-Reply-To;
+        b=GZN8oS/5i1bbZaQIE7DkfSyPoTe76Uhi5rzI8ucUba1VdcOb1yFHTCFu2NXZ0EEBz
+         pvIdpDOJJ+P/eq6i1+gIuLt7+d++N3MRCi7XfUe0Zjg3cp7L1tHbpdeTVybKYiIDdB
+         o28UaEtmq8cCYySTKjKgnFDnMge/sJFd7PC5fFGOcNuQLXmkIt5AG3QFfa7rFBHorh
+         J3aNLiMreqEvh1Lph5C9cC+b7GQCcOjBPL60T1egqRiu7u0aJAuymnZmmSkvVBQG9a
+         Gx7OG3uLb8zlS0pr0VpVG7+4WeQYmPPTbPmZ9rtNvlEbfc2c7GXGldY8awlVSIL1/k
+         r2En9West3/PQ==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B60458b7d0001>; Mon, 08 Mar 2021 15:27:09 +1300
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
+ svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Mon, 8 Mar 2021 15:27:09 +1300
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.012; Mon, 8 Mar 2021 15:27:09 +1300
+From:   Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        "jdelvare@suse.com" <jdelvare@suse.com>
+CC:     "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: Errant readings on LM81 with T2080 SoC
+Thread-Topic: Errant readings on LM81 with T2080 SoC
+Thread-Index: AQHXE6SbssdAOSHgwE+zIRhtn11Sk6p4Y2sAgAAgcAA=
+Date:   Mon, 8 Mar 2021 02:27:08 +0000
+Message-ID: <4a1b1494-df96-2d8c-9323-beb2c2ba706b@alliedtelesis.co.nz>
+References: <8e0a88ba-01e9-9bc1-c78b-20f26ce27d12@alliedtelesis.co.nz>
+ <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
+In-Reply-To: <96d660bc-17ab-4e0e-9a94-bce1737a8da1@roeck-us.net>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FAFDE576A0F6124782240ADE8CFC3BF3@atlnz.lc>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Sender: mrsnadiaemaan5@gmail.com
-Received: by 2002:a17:90a:1182:0:0:0:0 with HTTP; Sun, 7 Mar 2021 16:32:13
- -0800 (PST)
-From:   Mrs Nadia Emaan <mrsnadiaemaan50@gmail.com>
-Date:   Mon, 8 Mar 2021 00:32:13 +0000
-X-Google-Sender-Auth: JeiXtIsroKRF3y0orwM9kIW__5s
-Message-ID: <CAOg3cV2YyHY=-mumg8bq5owAptO=8grRnQi0hv6Lf+khYHSLGQ@mail.gmail.com>
-Subject: May the peace of Almighty God be with You.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=C7uXNjH+ c=1 sm=1 tr=0 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10 a=IkcTkHD0fZMA:10 a=dESyimp9J3IA:10 a=NoFIIjjUkg5N47f6R0kA:9 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-May God Bless you,
-
-I am contacting you through this means because I need your urgent
-assistance and also help me to carry a charity project in your
-country. I found your email address as a true child of God for past
-few days now that I have been praying to know if you are really the
-chosen one for this great charity project, according to God's
-direction, after all prayers I am convinced, and I have decided to
-contact you. Please, i want you use the funds for the Lord's work,
-with confidence, read and respond now.
-
-
-My name is Ms. Nadia Emaan Faroul , a widow, but currently based in West
-Africa since my life with my late husband, who was a businessman in
-this country before dying some years ago. We were married to many
-years without a child. He died after a brief illness that lasted only
-six days and I myself have been suffering from an ovarian cancer
-disease. At this moment I am about to finish the race in this way
-because the disease has reached a very bad stage, without any family
-member and without children. I hope you do not expose or betray this
-trust and I am sure that I am about to trust you for the mutual
-benefit of orphans and the less privileged. I have some funds that I
-inherited from my late husband, the total sum of ($ 12,500,000.00)
-deposited at a bank here in Burkina Faso. After knowing my current
-state of health, I decided to trust you with this fund, believing that
-you will use it in the way I will instruct here.
-
-
-you will use this $12.5 Million for public benefit as follows;
-
-1. Establish An Orphanage Home To Help The Orphanages Children.
-2. Build A Hospital To Help The Poor.
-3. Build A Nursing Home For Elderly People Need Care & Meal.
-
-You will named them after my late husband.Therefore, I need you to
-help me and claim this money and use it for charities, for orphanages
-and provide justice and help to the poor, needy and to promote the
-words of God and the effort to maintain the house of God, according to
-the bible in the book of. Jeremiah 22: 15-16, without minding our
-different religions.
-
-It will be a pleasure to compensate with 40% percent of the total
-money for your effort in handling the transaction, while 60% of the
-money will go to charity project.
-
-All I need from you is sincerity and ability to complete the task of
-God without any failure. It will be my pleasure to see that the bank
-has finally released and transferred the fund to your bank account in
-the country, even before I die here in the hospital, due to my current
-state of health, everything must be processed as soon as possible.
-
-I am waiting for your immediate response, if you are only interested
-in obtaining more details about the transaction and execution of this
-humanitarian project for the glory and honor of God.
-
-Sorry if you received this letter in your spam, is due to recent
-connection/network error here in the country.
-
-Please I am waiting for your urgent reply now.
-
-May God Bless you,
-Mrs. Nadia Emaan Faroul .
+DQpPbiA4LzAzLzIxIDE6MzEgcG0sIEd1ZW50ZXIgUm9lY2sgd3JvdGU6DQo+IE9uIDMvNy8yMSAy
+OjUyIFBNLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPj4gSGksDQo+Pg0KPj4gSSd2ZSBnb3QgYSBz
+eXN0ZW0gdXNpbmcgYSBQb3dlclBDIFQyMDgwIFNvQyBhbmQgYW1vbmcgb3RoZXIgdGhpbmdzIGhh
+cw0KPj4gYW4gTE04MSBod21vbiBjaGlwLg0KPj4NCj4+IFVuZGVyIGEgaGlnaCBDUFUgbG9hZCB3
+ZSBzZWUgZXJyYW50IHJlYWRpbmdzIGZyb20gdGhlIExNODEgYXMgd2VsbCBhcw0KPj4gYWN0dWFs
+IGZhaWx1cmVzLiBJdCdzIHRoZSBlcnJhbnQgcmVhZGluZ3MgdGhhdCBjYXVzZSB0aGUgbW9zdCBj
+b25jZXJuDQo+PiBzaW5jZSB3ZSBjYW4gZWFzaWx5IGlnbm9yZSB0aGUgcmVhZCBlcnJvcnMgaW4g
+b3VyIG1vbml0b3JpbmcgYXBwbGljYXRpb24NCj4+IChhbHRob3VnaCBpdCB3b3VsZCBiZSBiZXR0
+ZXIgaWYgdGhleSB3ZXJlbid0IHRoZXJlIGF0IGFsbCkuDQo+Pg0KPj4gSSdtIGFibGUgdG8gcmVw
+cm9kdWNlIHRoaXMgd2l0aCBhIHRlc3QgYXBwbGljYXRpb25bMF0gdGhhdCBhcnRpZmljaWFsbHkN
+Cj4+IGNyZWF0ZXMgYSBoaWdoIENQVSBsb2FkIHRoZW4gYnkgcmVwZWF0ZWRseSBjaGVja2luZyBm
+b3IgdGhlIGFsbC0xcw0KPj4gdmFsdWVzIGZyb20gdGhlIExNODEgZGF0YXNoZWV0WzFdKHBhZ2Ug
+MTcpLiBUaGUgYWxsLTFzIHJlYWRpbmdzIHN0aWNrDQo+PiBvdXQgYXMgdGhleSBhcmUgb2J2aW91
+c2x5IGhpZ2hlciB0aGFuIHRoZSB2b2x0YWdlIHJhaWxzIHRoYXQgYXJlDQo+PiBjb25uZWN0ZWQg
+YW5kIGRpc2FncmVlIHdpdGggbWVhc3VyZW1lbnRzIHRha2VuIHdpdGggYSBtdWx0aW1ldGVyLg0K
+Pj4NCj4+IEhlcmUncyB0aGUgb3V0cHV0IGZyb20gbXkgZGV2aWNlDQo+Pg0KPj4gW3Jvb3RAbGlu
+dXhib3ggfl0jIGNwdWxvYWQgOTAmDQo+PiBbcm9vdEBsaW51eGJveCB+XSMgKHdoaWxlIHRydWU7
+IGRvIGNhdCAvc3lzL2NsYXNzL2h3bW9uL2h3bW9uMC9pbipfaW5wdXQNCj4+IHwgZ3JlcCAnMzMy
+MFx8NDM4M1x8NjY0MVx8MTU5MzBcfDM1ODYnOyBzbGVlcCAxOyBkb25lKSYNCj4+IDM1ODYNCj4+
+IDM1ODYNCj4+IGNhdDogcmVhZCBlcnJvcjogTm8gc3VjaCBkZXZpY2Ugb3IgYWRkcmVzcw0KPj4g
+Y2F0OiByZWFkIGVycm9yOiBObyBzdWNoIGRldmljZSBvciBhZGRyZXNzDQo+PiAzMzIwDQo+PiAz
+MzIwDQo+PiAzNTg2DQo+PiAzNTg2DQo+PiA2NjQxDQo+PiA2NjQxDQo+PiA0MzgzDQo+PiA0Mzgz
+DQo+Pg0KPj4gRnVuZGFtZW50YWxseSBJIHRoaW5rIHRoaXMgaXMgYSBwcm9ibGVtIHdpdGggdGhl
+IGZhY3QgdGhhdCB0aGUgTE04MSBpcw0KPj4gYW4gU01CdXMgZGV2aWNlIGJ1dCB0aGUgVDIwODAg
+KGFuZCBvdGhlciBGcmVlc2NhbGUgU29DcykgdXNlcyBpMmMgYW5kIHdlDQo+PiBlbXVsYXRlIFNN
+QnVzLiBJIHN1c3BlY3QgdGhlIGVycmFudCByZWFkaW5ncyBhcmUgd2hlbiB3ZSBkb24ndCBnZXQg
+cm91bmQNCj4+IHRvIGNvbXBsZXRpbmcgdGhlIHJlYWQgd2l0aGluIHRoZSB0aW1lb3V0IHNwZWNp
+ZmllZCBieSB0aGUgU01CdXMNCj4+IHNwZWNpZmljYXRpb24uIERlcGVuZGluZyBvbiB3aGVuIHRo
+YXQgaGFwcGVucyB3ZSBlaXRoZXIgZmFpbCB0aGUNCj4+IHRyYW5zZmVyIG9yIGludGVycHJldCB0
+aGUgcmVzdWx0IGFzIGFsbC0xcy4NCj4+DQo+IFRoYXQgaXMgcXVpdGUgdW5saWtlbHkuIE1hbnkg
+c2Vuc29yIGNoaXBzIGFyZSBTTUJ1cyBjaGlwcyBjb25uZWN0ZWQgdG8NCj4gaTJjIGJ1c3Nlcy4g
+SXQgaXMgbXVjaCBtb3JlIGxpa2VseSB0aGF0IHRoZXJlIGlzIGEgYnVnIGluIHRoZSBUMjA4MCBp
+MmMgZHJpdmVyLA0KPiB0aGF0IHRoZSBjaGlwIGRvZXNuJ3QgbGlrZSB0aGUgYnVsayByZWFkIGNv
+bW1hbmQgaXNzdWVkIHRocm91Z2ggcmVnbWFwLCB0aGF0DQo+IHRoZSBjaGlwIGhhcyBwcm9ibGVt
+cyB3aXRoIHRoZSBpMmMgYnVzIHNwZWVkLCBvciB0aGF0IHRoZSBpMmMgYnVzIGlzIG5vaXN5Lg0K
+UGVyaGFwcyBzb21ldGhpbmcgZ2V0cyB1cHNldCB3aGVuIGludGVycnVwdCBwcm9jZXNzaW5nIGlz
+IGRlbGF5ZWQgDQpiZWNhdXNlIG9mIENQVSBsb2FkLiBJIGRvbid0IHNlZSB0aGUgcHJvYmxlbSB3
+aGVuIHRoZXJlIGlzbid0IGEgQ1BVIGxvYWQgDQpzbyBJIHRoaW5rIHRoYXQgZWxpbWluYXRlcyBi
+b2FyZCBpc3N1ZXMuDQo+IEluIHRoaXMgY29udGV4dCwgdGhlICJObyBzdWNoIGRldmljZSBvciBh
+ZGRyZXNzIiByZXNwb25zZXMgYXJlIHZlcnkgc3VzcGljaW91cy4NCj4gVGhvc2UgYXJlIHJlcG9y
+dGVkIGJ5IHRoZSBpMmMgZHJpdmVyLCBub3QgYnkgdGhlIGh3bW9uIGRyaXZlciwgYW5kIHN1Z2dl
+c3QNCj4gdGhhdCB0aGUgY2hpcCBkaWQgbm90IHJlc3BvbmQgdG8gYSByZWFkIHJlcXVlc3QuIE1h
+eWJlIGl0IGhlbHBzIHRvIGVuYWJsZQ0KPiBkZWJ1Z2dpbmcgdG8gdGhlIGkyYyBkcml2ZXIgdG8g
+c2VlIGlmIGl0IHJlcG9ydHMgYW55dGhpbmcgdXNlZnVsLiBFdmVuDQo+IGJldHRlciBtaWdodCBi
+ZSB0byBjb25uZWN0IGFuIGkyYyBidXMgYW5hbHl6ZXIgdG8gdGhlIGkyYyBidXMgYW5kIGNoZWNr
+DQo+IHdoYXQgaXMgZ29pbmcgb24uDQpUaGF0J3MgZnJvbSAtRU5YSU8gd2hpY2ggaXMgdXNlZCBp
+biBvbmx5IG9uZSBwbGFjZSBpbiBpMmMtbXBjLmMuIEknbGwgDQplbmFibGUgc29tZSBkZWJ1ZyBh
+bmQgc2VlIHdoYXQgd2UgZ2V0Lg0KPg0KPiBHdWVudGVy
