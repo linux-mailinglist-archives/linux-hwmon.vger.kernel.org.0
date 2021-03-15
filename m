@@ -2,71 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC51433A897
-	for <lists+linux-hwmon@lfdr.de>; Sun, 14 Mar 2021 23:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C1933AEDA
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Mar 2021 10:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbhCNWhR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 14 Mar 2021 18:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44482 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbhCNWg7 (ORCPT
+        id S229624AbhCOJan (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 15 Mar 2021 05:30:43 -0400
+Received: from out3-smtp.messagingengine.com ([66.111.4.27]:52847 "EHLO
+        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229684AbhCOJad (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 14 Mar 2021 18:36:59 -0400
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D55EC061574
-        for <linux-hwmon@vger.kernel.org>; Sun, 14 Mar 2021 15:36:59 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id h6-20020a0568300346b02901b71a850ab4so4232866ote.6
-        for <linux-hwmon@vger.kernel.org>; Sun, 14 Mar 2021 15:36:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=tlf8w447PnkWDa8Ig8yXLZ5c7078B/Fouco3NbjfaNQ=;
-        b=Hk1EV1NsKXhhTA3EidUsb0LYhZ5KxBWm9k/rKVsf4zJLFKRMKkCbnu57wG/vz88TNG
-         V9kNZov2FPb0XlSOeZ71dh5WUXynXGCB9WwOLzpdstF1TYxUOc4RtzQWfRNZgUiS18NN
-         byh/O0efPKeZfOLpyek3MGYlx8QP6VSOh7qfq5aB4m21BMbDisv98ZjDjjRpruGKf09F
-         lBrI3MTqJ0a+2kqwhLM78v/CKaeslz5z8Yrw4LrDOXTwr3pR8QdhQzydYl0e96K1sJi7
-         re17lBvsHyHA3GPvsUkUgJReZTzIAKAjGU09F6MLqXvYAPKWZuCHjf2N84znMkTHB+i9
-         RU+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=tlf8w447PnkWDa8Ig8yXLZ5c7078B/Fouco3NbjfaNQ=;
-        b=KXFulCCQu9Tzq2UYZb5o4IJ9QA6pbbyfoLx8wtiLv/XgXc18baQ64NbG71v2B84dNC
-         deAg78xwPBpzarwPu1OXAzwAK7oJiVRodR7ZPku6S4Aohrpb94H7vq6Om6U9FldJzNeT
-         qtM4L6OpJB5uaup7c3x+tIecMryptLO9NcStU2MZGu9PN9ah3AaehUhkFlm9C9GfkhzV
-         jcUxPdt21CzJ+BLOvgx4mP4Tig2pUvL7S8UZXcyox/tzvGrjKM1A7mROiZk0KhVzcVDd
-         1pPeq2PQ4gYzc7VVLQK6tGNXXvBYWqrbizFAcB0n7B3OBIQ6mt3Dq64kb/iOhgetcKhP
-         KTuQ==
-X-Gm-Message-State: AOAM532jKOvJUI6BRVUxwB1tymSIYZvxO9/jrE5m9q45gZ09zYaHsWvo
-        a2/1vCd88YekjYWRuvHETmPNZiURO04PRtfECLiqxfu/xNlgOg==
-X-Google-Smtp-Source: ABdhPJwx9JxXfmqqZS+5F5TjukdGHZ2LH5Bz33nUrMBkhXNUK8csea646d8LrVjkFdIjKmt6Bqo1fE+bEEztwC8+eOA=
-X-Received: by 2002:a9d:4b9a:: with SMTP id k26mr11775888otf.326.1615761418955;
- Sun, 14 Mar 2021 15:36:58 -0700 (PDT)
+        Mon, 15 Mar 2021 05:30:33 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 3F2A85C013F;
+        Mon, 15 Mar 2021 05:30:33 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 15 Mar 2021 05:30:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=4JEfYRelNflwp7QTABnwYzy8bpa
+        KghL4PcFJAiB+uMo=; b=ZpLfl8dykp5pOGw+EEiT9AJJ1K6kwe9d3fdiYzsQ8rw
+        yZ5dpR/iV/pjglUtHb5B9q+W2szmOJ/nXRLouyhaEs1o2ogC6HGL+bx288YYGhGB
+        e0R/rIqZATlLHHsZlLjiMUBopSi5fd1vUgihfQsWHoRBPIdARgx99hfqpsFbzhF4
+        BJOzsWhb/bCQozBfaDO7V7bhi46p5DtxCx9KOvKWi/UvMoumeNsLcX1tNUE1J4s8
+        lSEI4DPE1q+MKi3OQ1zSmxbJ1KGj5u8TRMK6bMHi8MyaUzTSjTL//J/Qe+P4H9MT
+        kthI3uDL1gZPBiKe9oPqjTy2HnU0bzQrzRtgQJOYDig==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=4JEfYR
+        elNflwp7QTABnwYzy8bpaKghL4PcFJAiB+uMo=; b=c50L4+J/FaohsSs+bErf7s
+        0ESWlojD3JxdQE5Vh2v5FFi6d7uG10ocxJQLwcBz0ue3jpya4WBib9aymXYrx8kD
+        FakkE76RDYAaHswvk0vWfK46XpxZ4wRCboO9teFvUY9QRsWwkp99Ept8Je0Z8Zzt
+        dnlhR+BhmiF0CHdG9tDViQFJ4hEisWKobhm1jgFoT4yk/7w7jOccBqguJLsRSEIe
+        oLBt4MF5FvXApMDKaIDCNWKOEAW+iHZc1oh3TkbZyq78tlxrzIkf+IvUSKmic3Rw
+        FuIVadRrp7x6kEGgWz4spCp7WhWifmpbRtaGjkD3FipH9S5a5By68FXZZm6FU13A
+        ==
+X-ME-Sender: <xms:OClPYEmTjswaBIhRRpBCzohSW9tfmu65n2Y_cZC1k1WgTgq3jfpr5g>
+    <xme:OClPYD1oSo4mUUtyRzqAf47WV7-UTx51D76TThVj5-DWcwm_KGrzxc7ZCKPR36djA
+    KTT8nsLzW99nQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledruddvledgtdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
+    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucfkphepkeef
+    rdekiedrjeegrdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:OClPYCqI8WS1AkMW5DC__eOIHixOBhSMq6r7D0nhCckG55iPqggF2g>
+    <xmx:OClPYAkiyDKWmziPnKlEgFzT7-qzBzZfnOZcD3sLFvLOZ8y8-QWB1Q>
+    <xmx:OClPYC1YWtjKjgBw29jW7He39B37qdlCQ94wHEb9wXeG5IuKTXL9Hg>
+    <xmx:OSlPYFSfD2JBkq_xYp4nhhyaLNcCrnQnawuRLSzcgVjIlBLX9Jd2yw>
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 67A2C240054;
+        Mon, 15 Mar 2021 05:30:32 -0400 (EDT)
+Date:   Mon, 15 Mar 2021 10:30:30 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Paul Menzel <pmenzel@molgen.mpg.de>, stable@vger.kernel.org,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        Guohan Lu <lguohan@gmail.com>, Boyang Yu <byu@arista.com>
+Subject: Re: hwmon: (lm90) Fix max6658 sporadic wrong temperature reading
+Message-ID: <YE8pNiyFWxKy228+@kroah.com>
+References: <20210304153832.19275-1-pmenzel@molgen.mpg.de>
+ <20210311221556.GA38026@roeck-us.net>
+ <9243482c-0a34-d6d1-1955-bee00a75554f@molgen.mpg.de>
+ <d4756f39-3a4b-7348-c49b-25701e31f99b@roeck-us.net>
+ <02b9c3fe-5961-6a23-3fd0-6d7687867fb1@molgen.mpg.de>
+ <20210312192457.GA17220@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:ac9:61c8:0:0:0:0:0 with HTTP; Sun, 14 Mar 2021 15:36:58
- -0700 (PDT)
-Reply-To: stephenbordeaux@yahoo.com
-From:   Stephen Bordeaux <awereoufaya@gmail.com>
-Date:   Sun, 14 Mar 2021 23:36:58 +0100
-Message-ID: <CAOzKD-Oh1AqxH6yL0pVfm1ckr49igUM=Pnw2VPN60jBTt-uXCA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210312192457.GA17220@roeck-us.net>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Ich habe mich aufgrund der mit dieser Frage verbundenen Dringlichkeit
-entschlossen, Sie zu kontaktieren. Ich bin Stephen Bordeaux,
-Rechtsanwalt. Ich pers=C3=B6nlich bin ein Treuhandagent von Dr. Edwin,
-einem weithin bekannten unabh=C3=A4ngigen Auftragnehmer hier in Lome Togo,
-der mit seiner Frau und seiner einzigen Tochter bei einem Autounfall
-ums Leben kam. Ich habe Sie kontaktiert, um mich bei der R=C3=BCckf=C3=BChr=
-ung
-des Fondsverm=C3=B6gens zu unterst=C3=BCtzen. Acht Millionen f=C3=BCnfhunde=
-rttausend
-Dollar auf Ihr Konto. Bitte kontaktieren Sie mich f=C3=BCr weitere
-Informationen zu diesem Thema.
+On Fri, Mar 12, 2021 at 11:24:57AM -0800, Guenter Roeck wrote:
+> On Fri, Mar 12, 2021 at 05:53:49PM +0100, Paul Menzel wrote:
+> > Dear Linux folks,
+> > 
+> > 
+> > Could you please apply commit 62456189f3292c62f87aef363f204886dc1d4b48 to
+> > the Linux 4.19 stable series?
+> > 
+> 
+> v4.9.y..v1.19.y, actually, please.
+
+Now done, thanks.
+
+greg k-h
