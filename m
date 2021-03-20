@@ -2,21 +2,21 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F789342BBC
-	for <lists+linux-hwmon@lfdr.de>; Sat, 20 Mar 2021 12:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C703C342C57
+	for <lists+linux-hwmon@lfdr.de>; Sat, 20 Mar 2021 12:40:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229967AbhCTLMg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 20 Mar 2021 07:12:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39276 "EHLO
+        id S230095AbhCTLj7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 20 Mar 2021 07:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230042AbhCTLMN (ORCPT
+        with ESMTP id S229849AbhCTLjc (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 20 Mar 2021 07:12:13 -0400
+        Sat, 20 Mar 2021 07:39:32 -0400
 Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2495BC0610D0
-        for <linux-hwmon@vger.kernel.org>; Sat, 20 Mar 2021 03:56:28 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id j7so8799920qtx.5
-        for <linux-hwmon@vger.kernel.org>; Sat, 20 Mar 2021 03:56:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C4DC0613E4
+        for <linux-hwmon@vger.kernel.org>; Fri, 19 Mar 2021 23:29:55 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id a11so8553161qto.2
+        for <linux-hwmon@vger.kernel.org>; Fri, 19 Mar 2021 23:29:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=protocubo.io; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
@@ -33,14 +33,14 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
         bh=iQYzfriQFS4iM4QGzjdYe/EwNKnei3uiMSlE8+pjoTw=;
-        b=Pm9uTnTL2Y8c8Md9j1ek9yVS5FPwUyFaXeyvPQvu1XOSSH8NE0Pe4KXepwNo/XmHM5
-         gv8wZm3NJfI0Kk43Z7/5Uih/aSvWKbjgH9PEwBihyxRxFGjlqdTBYm1dbEpfrw9yi/8s
-         PB7SkQ2j+7ii9ale9h1iMYO6ZbpfodaNmEZpnoiwgmuIIF6F+D7HNJ6lYUmOioRi1vDt
-         iY2dZwbqkPPSonJyLCvXdQf5Udk4DUv4sdiWq20B61/Pc2KA6otrG0KMlhGhxABCHonu
-         izzLY3xEYKeH9yVoE1jPK2Dy6DnHzdj2DyRB9Grj3cb0mr8KaJDJ2t9noL2alJ9qyDVL
-         iOoA==
-X-Gm-Message-State: AOAM533nOAR9vAWBEkgy9YZ/OIppnT1RfiXGtreIZ4pqhpdllY1YDRCy
-        z+KBECtqOUHqziwImRZfZY5e2BpRWT2WZvCL
+        b=FnqqK/PIvQjRbUmdiJuw0+l1HS+Ueth0Op4JgEAYM+U2A88ccfjsQUT0K+arQyVWac
+         IGbNX4m06Q4Lbm3HnsYLWbSdpO7sPI7dVV9ejvP/5Uuzb4hFD1fMkuvh3YZEunb6A83i
+         GKYfuOawNmhI40vkx53AH+PFXbIaOKVXR74xSccQUz0hGwJ6csT8lbNX3wKnLlUr9d4F
+         kj1pjG/E+6nbPd4hmaUCPq1oV8t2tQ5fh418ToD2032hILNtwzQznXvvG0ViM3YvtQ3Y
+         iaZGaX4T3BXkA+wUtFIUphctc/hFAs+0NY9/bx9YaLimcy701BYMY7teH+SfkMlPQjj+
+         pSNA==
+X-Gm-Message-State: AOAM530dqPFImrjCJ2M3gskcK5+/KfvpoBURl1upT/Zb4F2PTGZHsMsz
+        NkKQ6aY/J22QSYMrKOrqzpoRhA==
 X-Google-Smtp-Source: ABdhPJz1FMB/45PEuvrU181x6rcn5zNT04hOB3ou2ijZjBDr0Pz7vi5oxJeBK04ql8fXnQDDp8PZqg==
 X-Received: by 2002:aed:2ce3:: with SMTP id g90mr1873788qtd.308.1616221794679;
         Fri, 19 Mar 2021 23:29:54 -0700 (PDT)
