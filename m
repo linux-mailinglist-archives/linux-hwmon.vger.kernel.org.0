@@ -2,65 +2,97 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BA843451E1
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Mar 2021 22:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F1E53456E5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 23 Mar 2021 05:35:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbhCVVhl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 22 Mar 2021 17:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57092 "EHLO
+        id S229931AbhCWEfJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 23 Mar 2021 00:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbhCVVhV (ORCPT
+        with ESMTP id S230034AbhCWEfA (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 22 Mar 2021 17:37:21 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC15FC061574
-        for <linux-hwmon@vger.kernel.org>; Mon, 22 Mar 2021 14:37:17 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id b83so23579479lfd.11
-        for <linux-hwmon@vger.kernel.org>; Mon, 22 Mar 2021 14:37:17 -0700 (PDT)
+        Tue, 23 Mar 2021 00:35:00 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5953C061574;
+        Mon, 22 Mar 2021 21:34:59 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id t5so9858083qvs.5;
+        Mon, 22 Mar 2021 21:34:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ZoFi747BMIBv44jVyJA6Rbtux2kDlDRfb4aXNCXPk+M=;
-        b=QlRQtQeI4ZV7lQzXLvmvFc1WUPSEXgoiB1LJnFurhE7BZ7/Xlkjfai6EBLHn6bzXxT
-         ztjaYzPUfR27AxnjA8Lb908Cojm7QjyDDCN3fIOqILyLxX3pST0UPLZY/bGlbNII9HLS
-         jOQAHrwIsxOoFb5JJsKyAnJRxewmuG3TOEoCplLVKZFvId2dgD7NUcrw1PqkUOK9bZ8/
-         TRtq48tSsy+iQBzS3nqHR9mwxbjDWLqMLDJk99LFlpW4O1c7oE7P0k5OeQTHDrFyfFJm
-         DezcDMpO17k868C2TPAQTK4s1RxetdpcxeMDvePEON3jdAtTXmX51A9CTtgAYhQ/06pS
-         YljA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=W098yLvagYSO9A4rP3vOMS7ghgfO5xcNeYh53cseJdc=;
+        b=Zy5wxp0ZTHydAknLKeFU20M4bgDpcQRNfbsDhC0lRJSVo8hLFsIAKvdvkN3drmVT/o
+         JsNAxYiIg8ydzaJjPuvgHA2N/gDCv4F+mGy20WVZwgaNghwiX087+wunDTFebeFxlDhj
+         ULoLCFtU9nGiW2JCqKf3U1c2rC0iIGxbHDzobfwq8TaRU64tZ0MVZBtdLSne/wxvTrYY
+         gJUQ5zki2QLAetxh+MFkowvhy934kMc3r+fKrQphuu7OYEnUHX6IfSunagjpVd7a7eiX
+         uUoz6SOTBGx/ZmEhCJ+ZQzq3A7Jm1BUdYJeuNlWBilTw2jhKGFxDzvwEZOqc+eUOBfA4
+         bldg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ZoFi747BMIBv44jVyJA6Rbtux2kDlDRfb4aXNCXPk+M=;
-        b=cZRf01gTUeP3btw4bpuQVf5Vy/CVRYZhakIpGFZVthjPcoBuFR5ah7ClBi6yrOrO6x
-         xmg/l2iTT87mnJY/MgV3YpvfuD84xkyFh9d+O+AjNjsVuNdT3FG7JEQKZAs8z1X0mFvD
-         uCCAZDw8GrFwC6dTetmjjghVwLaMmVywym6A+FAgbBKo0ZEThnELJSonpk7Dj1h+IgIZ
-         0I8X9QkVHZ0f/UhMSASAI9VKg3gDGIKopaxEhhMNuvVw8/KVK+Jhd3x30Zj4qN442MYc
-         9W77IdwO3bQha72uhDQN54Bh2+g7WvisBw3T+Yt2vEZIKPQs99gZL6zC2IQ3cLDDnwg4
-         nwjg==
-X-Gm-Message-State: AOAM532tfVuGjg/PNBo+bdoG765FwvQxCzjAIs2KZO2ctkZJAS5/j8HD
-        3AJXd5fz+JQjdNxQM4PXNBSSW8CmCWgNnjfKydU=
-X-Google-Smtp-Source: ABdhPJxdrfVoso/faa/HnxPnKi8sq7OUuceT3q4dqr6gSfkbIBOYQZmUnm6BonWc3X/4ULf7VM8odlaf6L61ftORZFg=
-X-Received: by 2002:a05:6512:31d6:: with SMTP id j22mr706467lfe.637.1616449036422;
- Mon, 22 Mar 2021 14:37:16 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=W098yLvagYSO9A4rP3vOMS7ghgfO5xcNeYh53cseJdc=;
+        b=i0zCovh2O/vOXHVwcgWGbE3ZKSuGDRC8ZOPcvE4MXVsg5tRrRYIQSJXu4F/VaZrVx/
+         kTvf+Ieg9MEY7dfQ9aqVfIZfiQpPkW956v6QvvxYbFT/UJHED28MRsbHNj79+k4EO89b
+         SM4t3B+IkMdNbKbtt9Qd1AolFJhFtMP3aYfG/jnVcQtT6vxCUB4u4MTWUHyI2V0dngY3
+         4ty4ZIKuE/uU7JTee3BsQ87Qa6AAxJyDmto7QHI0HGZ6f3+cTqyqHbirPkR/G77iyXNQ
+         Mg0DfPu+0VIq9rXivw9BZKrZx83FOiM51n/kPPg91WtM2gu/5Vl/cUrppoGkyvfJPaAh
+         2hMg==
+X-Gm-Message-State: AOAM532uWVmaIawSxpWouGAFcTOxyVqmxrnXfkuttSn4ouB8PAFfnPum
+        jjoZNLsjnIUcPwmINBHdUzI=
+X-Google-Smtp-Source: ABdhPJw7ODDKafOUVKaaZ3KR2haoG6wrpunG/GfsBBVtWn/oO/zBql5bOnLObu65Q8Nj0yleMARTRA==
+X-Received: by 2002:ad4:45e4:: with SMTP id q4mr3039822qvu.11.1616474099282;
+        Mon, 22 Mar 2021 21:34:59 -0700 (PDT)
+Received: from localhost.localdomain ([156.146.54.208])
+        by smtp.gmail.com with ESMTPSA id k7sm10142104qtm.10.2021.03.22.21.34.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Mar 2021 21:34:58 -0700 (PDT)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] hwmon: (ftsteutates): Rudimentary typo fixes
+Date:   Tue, 23 Mar 2021 10:04:38 +0530
+Message-Id: <20210323043438.1321903-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-Received: by 2002:a05:6504:6025:0:0:0:0 with HTTP; Mon, 22 Mar 2021 14:37:15
- -0700 (PDT)
-Reply-To: blakeanold@outlook.com
-From:   Blake Arnold <offficcemun@gmail.com>
-Date:   Mon, 22 Mar 2021 22:37:15 +0100
-Message-ID: <CAPNDa7GX1Raqun=eJf=RLxA9QLbQ8noRzAvmMaerFOVZstMb1A@mail.gmail.com>
-Subject: Greetings!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello,
 
-I have sent you mails, but still have not received a response. Kindly
-get back to me for a mutual benefit transaction.
+s/Temprature/Temperature/
+s/revsion/revision/
 
-Thank you.
-Blake Arnold
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ drivers/hwmon/ftsteutates.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/hwmon/ftsteutates.c b/drivers/hwmon/ftsteutates.c
+index ef88a156efc2..ceffc76a0c51 100644
+--- a/drivers/hwmon/ftsteutates.c
++++ b/drivers/hwmon/ftsteutates.c
+@@ -509,7 +509,7 @@ fan_alarm_store(struct device *dev, struct device_attribute *devattr,
+ /* SysFS structs							     */
+ /*****************************************************************************/
+
+-/* Temprature sensors */
++/* Temperature sensors */
+ static SENSOR_DEVICE_ATTR_RO(temp1_input, temp_value, 0);
+ static SENSOR_DEVICE_ATTR_RO(temp2_input, temp_value, 1);
+ static SENSOR_DEVICE_ATTR_RO(temp3_input, temp_value, 2);
+@@ -713,7 +713,7 @@ static int fts_detect(struct i2c_client *client,
+ {
+ 	int val;
+
+-	/* detection works with revsion greater or equal to 0x2b */
++	/* detection works with revision greater or equal to 0x2b */
+ 	val = i2c_smbus_read_byte_data(client, FTS_DEVICE_REVISION_REG);
+ 	if (val < 0x2b)
+ 		return -ENODEV;
+--
+2.31.0
+
