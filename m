@@ -2,87 +2,100 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D870F353230
-	for <lists+linux-hwmon@lfdr.de>; Sat,  3 Apr 2021 05:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE01C353C31
+	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Apr 2021 09:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234908AbhDCDQk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 2 Apr 2021 23:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42068 "EHLO
+        id S232358AbhDEHhn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 5 Apr 2021 03:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbhDCDQk (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 2 Apr 2021 23:16:40 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5745AC0613E6
-        for <linux-hwmon@vger.kernel.org>; Fri,  2 Apr 2021 20:16:37 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id a8so6565510oic.11
-        for <linux-hwmon@vger.kernel.org>; Fri, 02 Apr 2021 20:16:37 -0700 (PDT)
+        with ESMTP id S231523AbhDEHhm (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Apr 2021 03:37:42 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A5CC0613E6
+        for <linux-hwmon@vger.kernel.org>; Mon,  5 Apr 2021 00:37:35 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id dd20so4403800edb.12
+        for <linux-hwmon@vger.kernel.org>; Mon, 05 Apr 2021 00:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=4cDrnUm/gOLpuDpGFvDwo5vYW28tkUnX6Z1Eoe8spRM=;
-        b=ilREV680qTtb8alkUKyyDP/aSe5Fcf11L1Ah6T67rEfqjfGNS5mNuC4ntwc5D6sjRC
-         02pprrSOMKgV9kRmmsUjUe7L0eD+yvwG5RFS1Ffpb4KHvMK4ZN8ReGYr0caamd18c40F
-         JNdF9OfL3ViNstxT1VG9A6LBLHxHSRCCvp9g/DYnBNvk4iV1TgeQzsuUioeVDkSrN5/+
-         igu/Hs6b38beLiMUoXVm1BjR5XMpOW0R4jBnrWhoj8rVPQtWZp3VchmjtT7ZhKj74Ztu
-         YzPRsoaF5L8K473kEdEkqAsa7SzIatrVGnzYcv3fCoe6vS7E8UVLqP1ivVc//dt25xnp
-         hcRQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=irvAfDqJe1hQB3fJxlaJ3x9w9qp/XEy9b8ACpfP/PLU=;
+        b=Zj3YKEZPqWQzrbdT6bTk47osuUMEHiQZ9n7qwpwmFX1PZUBCe7S7K+Tj4pJa3tto+K
+         og0Oj57R0bhHHBoAro78rkt402NIZq8kegcyDf/JvKtg1nTu+S1Ro1tL/HcsWH9pppNv
+         oa9cciQOUtHVhwKP8wXHCn3JmW3xllVLY74NSVCBh8LgmZZ+Vrtw+lj2jfsP8EG8zMsV
+         GJLjYEO2I28wYI02+RM12TcBjrR0y2Q6tWnsclWj2nUytnqA40JoEwt9umfIO6J7SYxs
+         9RWfx2Edzt7ejtToBnVxPBr5YAcqLxm8/fiwG/983p8BLFqMzww6fIFwciqkQxEDXUVF
+         B2wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4cDrnUm/gOLpuDpGFvDwo5vYW28tkUnX6Z1Eoe8spRM=;
-        b=SvYt6GRvr34OeqKQZiaC2bUwFesW9ZJLGYSuC1HQTeJEiKk9tl4deU6BoZ44qZ/mn2
-         ghMZUYM/iMpQVS98k4OBqCybIxh4LB6Wn2MSs7RAQg9opY50GhfxyoagtLvbKeLyDjh/
-         IKn8wdmwvkXA3yGwKWpWTlxP0ALEbveWq/pccPi1uEx5+tWFrZXIL6sOfRr321qySkuc
-         YySW9k46ddjexCKvbJ6tOero+26RC6lXKnBJn56AFykqFay6EjktjwlkV5/2oPkiI8ct
-         ABVNNEejOx2ICQOESVhcoWJvGYQLDYx0p6TJ71OxANySpditUy6iRrmeQnfPqoZUHrvN
-         Byww==
-X-Gm-Message-State: AOAM533v/NF2NWZuXNwJ4u+b4Ybi6icRlje8CGT2gVG2KoySpTuKS2er
-        uJDaGK3C1+TSMTt05zN8H/Gkmdd4KZY=
-X-Google-Smtp-Source: ABdhPJyf9iEhNs/GqOR2fUXblnnDa0cGSQgAiZEsIuVkP/sXJT+VC78O0/t2VNG5MOiRXCvjm4B8Mg==
-X-Received: by 2002:aca:4888:: with SMTP id v130mr12014862oia.3.1617419796607;
-        Fri, 02 Apr 2021 20:16:36 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u23sm2097587oof.17.2021.04.02.20.16.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 02 Apr 2021 20:16:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 2 Apr 2021 20:16:33 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     zlukwins <zbigniew.lukwinski@linux.intel.com>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: Re: Energy counters for PMBUS
-Message-ID: <20210403031633.GA230259@roeck-us.net>
-References: <ea24de03-1ef8-fdb8-f4cb-9e06a0090dcf@linux.intel.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=irvAfDqJe1hQB3fJxlaJ3x9w9qp/XEy9b8ACpfP/PLU=;
+        b=jKlxDEg8FmdvElg5OVhdTzFP9PGA0Ilej0zKdo+YYv9Xy5EDvflceKeWCx+TmZ95+Z
+         3YtyPWQmuCrH/ehDWbJRalZXOO3d/ScD6egT+FEwnLC2CoByKAvBXZ2u3k89dz8OsR73
+         kG7PYijjMp1nRKZe+GeGvs+X5iUxh6g1gMK/8DI4c30LX9qrdJ6UZ1lQHbBFd0i1UfCp
+         cT8JrJdJMwaIbu0mfa+1ChrwYUCZG/OWmnW5ipHOECGgr6OOI/OHngwLIL8nT/PmW4eP
+         WdZKu3BoVQTfriD21GF2/hOX4MndcEuKmNln1tRv9+gXDzxQEDMg+CdXDjlkz+kbXBuj
+         cmXg==
+X-Gm-Message-State: AOAM532MexI4b7BXEgg6oAKjFGEbwVsQoC0xuU171AwTVP9M6fqvhEuU
+        6X4S/V4+Vq2yY4ncuDFlZN+8GmKDK18F/6bgUbA=
+X-Google-Smtp-Source: ABdhPJzQwoLN5aVMDM/PeGa46T3CbVdNQoK8dwDXPNPOoM9PghO4aTH+b/IWpKBr++HhfHAlmSMDuoGFTtCJSwc7oxU=
+X-Received: by 2002:aa7:d841:: with SMTP id f1mr29623167eds.286.1617608253933;
+ Mon, 05 Apr 2021 00:37:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ea24de03-1ef8-fdb8-f4cb-9e06a0090dcf@linux.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:a17:906:2ed7:0:0:0:0 with HTTP; Mon, 5 Apr 2021 00:37:33
+ -0700 (PDT)
+Reply-To: LishaHaman225@gmail.com
+From:   Miss Lisha Haman <rhamatouwashidha55@gmail.com>
+Date:   Mon, 5 Apr 2021 00:37:33 -0700
+Message-ID: <CA+iwAOiGuGkqsyvRDyViZVxCVfNd26TfHFkX56VSx-HyYkU2iQ@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Apr 02, 2021 at 03:19:40PM +0200, zlukwins wrote:
-> Hi,
-> 
-> 
-> I am OpenBMC FW developer. We have a use cases which require PSU devices
-> energy counters reading. Looks like hwmon:pmbus does not support that right
-> now.
-> 
-> Hwmon sysfs (https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface)
-> already supports energy counter (energy[1-*]_input).
-> 
-> PMBus standard (revision 1.3.1) provides API for getting energy -
-> READ_EIN/READ_EOUT commands.
-> 
-> So I am wondering whether we could just add this implementation to the
-> hwmon/pmbus/pmbus_core.c? Or maybe there are some constraints?
-> 
+My dear I am Miss Lisha Haman 23 years of age , I am the only daughter
+to Dr Abdul Haman from France-Paris who work with (SEMAFO) the biggest
+Canadian gold producer here in West Africa Burkina Faso,
 
-Sure, go ahead. The only reason for not implementing it was that I did
-not have access to a chip supporting it when I wrote the code.
+Unfortunately my father was a victim on the deadliest attack by the
+jihadist On the 6 November 2019 when gunmen ambushed a convoy
+transporting workers of the Canadian mining firm Semafo, it is my sad
+moment each time I think about this, but the reason why I contacted
+you is that I have my late father receipt of deposit he made with a
+bank in abroad with my name as next of kin, The total amount deposited
+was 3.7 million United Stated dollars,
 
-Guenter
+Now I decided to travel for the money but embassy here deny me visa
+due to the Corona virus outbreak,
+
+I talk to the bank regarding my visa problem and they advise me to
+look for my relative trusted bank account so that they will transfer
+the total fund in there, But I am the only daughter of my father and
+have no relative to present, that is why I want to present you to the
+bank as my relative who will receive the total fund on my behalf and
+also take care of me as well,
+
+I attached my picture  with this mail please send me your complete
+full details such as, Your Full Name:
+
+Home and Office Addresses:
+
+Telephone Number:
+
+Occupation:
+
+Country of Residence:
+
+Your Bank account number where the bank will remit the fund
+
+Once I received your details, I will give you the bank contact so that
+you can contact them directly to discuss how they can transfer the
+total fund in your bank account so that you can relocate me to join
+you over there in your country,
+
+Sincerely
+
+Lisha Haman
