@@ -2,77 +2,124 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDC3E363263
-	for <lists+linux-hwmon@lfdr.de>; Sat, 17 Apr 2021 23:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1FCF363261
+	for <lists+linux-hwmon@lfdr.de>; Sat, 17 Apr 2021 23:09:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231555AbhDQVKZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 17 Apr 2021 17:10:25 -0400
-Received: from mout.gmx.net ([212.227.15.15]:47403 "EHLO mout.gmx.net"
+        id S236987AbhDQVKX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 17 Apr 2021 17:10:23 -0400
+Received: from mout.gmx.net ([212.227.15.15]:40151 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237013AbhDQVKY (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 17 Apr 2021 17:10:24 -0400
+        id S231555AbhDQVKW (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 17 Apr 2021 17:10:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1618693777;
-        bh=ojGOTwiZ0TAqFyV94PloAmr0A5htvtdqD89L/ZaTIC4=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=NJ367+l7wWmhZmPiU/MTg1WOeWqjNCJy1ojPnWUsX8AvWx5ykpcaHHIN4VyXe3T04
-         4inRW6cAPmfNMRq4yJLDHu3m9ti/eJy73zaGt2bN07rNRmSAhfrclKU+oNr38kyymj
-         N1VYJ0u6S+DJEu6xF63ZvaKVwdGwwOOzKgR3YxQQ=
+        s=badeba3b8450; t=1618693779;
+        bh=jAoqA7m8iMS8WjedqXzF7H2/yBtx6xhjdzDye3VdXF0=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=KhSn+82iQIZC2R3FEiae7euZJd61fbYaMa7zkV0SMgnSRP9w7NEXLtXJU6uqCHDgo
+         XmdQeWgOz4dXe9KmeS0RHMum4Ql3ILlKYk7nlmdmThJLqrs7rkCHCg0f38yXL42kHR
+         H1cvxTr0SJZ+Wic1/zmAAdaJkzA/+vtHjIQPlAZ4=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from esprimo-mx.fritz.box ([84.154.212.143]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1M2wL0-1lWlCe3VyW-003Pum; Sat, 17 Apr 2021 23:09:36 +0200
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MTzay-1l6tA843d4-00Qzdf; Sat, 17 Apr 2021 23:09:39 +0200
 From:   W_Armin@gmx.de
 To:     hdegoede@redhat.com
 Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org
-Subject: [PATCH 0/2] hwmon: (sch5627) Use devres function
-Date:   Sat, 17 Apr 2021 23:09:18 +0200
-Message-Id: <20210417210920.15496-1-W_Armin@gmx.de>
+Subject: [PATCH 1/2] hwmon: (sch5627) Use devres function
+Date:   Sat, 17 Apr 2021 23:09:19 +0200
+Message-Id: <20210417210920.15496-2-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210417210920.15496-1-W_Armin@gmx.de>
+References: <20210417210920.15496-1-W_Armin@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:qXiDdRLcVazLeBsk//kOnIA4JJ+7orW9mzxIxc6m2rTjGWgsSzX
- wA0RAMveKsqXLm/gfScJ/w01AFvJbM5/U+BC9BD/XQTNpLgZZ+Yt1Ujb9R/SsMqaAdsHGXX
- f8DtKB1p4wjEjB6itw9O2cCzHKoTTWTqZlLTIsKRhdM3RpJLIVqC2dqrzHYWMLI+fnIad8Z
- ALR2OqtgjkROAP+oPVLqw==
+X-Provags-ID: V03:K1:wGtZ56NeL5tD67x88s4Lrq07e8x0uAeYW1SPCZeAF7PSNhfZTPt
+ VV1SHqkrMjeTqEqo+2C/m+P14dPNrkVV+bOOK/TmMXNS3qHSGheFPYrUMRYgcRVKUKxVp2D
+ ckNthI4IXS6Vtb6hoSWaAzpNVAmnRdccs61aaEg00706Q4qC5jVAz229UfVFLzcEu6Ccc7m
+ 514S9GmDzTZT8zqSL1GwQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6AqpbzXXSMs=:rT5pKasQ2RFWgX7pDpAG4W
- hJseA07FPQzMLzHndDfxdR7BrYiILB+ZsGc8u9LHm7C1ZBYCobWWX1Nt4Reqbo4xjnWRdB3I2
- RHAjZqsKLOKa2NIYlbmnR1X0iolURxiFqZBMUJjk3HUOfG/qX231PEcTuEq78Ns92+8cL58pa
- BBc8hi007OyqBdMOeb3qWMatziAFtBIro46/7QOb+Jld8+RmCsbXRiGbd9pHQMWLMUIZjlJcj
- uhX0gvceR61W3xcCjZepX1K6pyAcVE6VjcFGSI4vlvo8JZ6TW16JJBO1bfQslW4b/GbWoMEQe
- NO+XwdwB3u6dS23nkfK0O4bkgfeqvfrrDHDEFI9DSknWJHqCGdH3rup2OYIeKevIXC9ZlVm3b
- WrVmBFPaQ94m3BpQcs6QB/lr+SgnfYWNCIckaic3RESAZxnNfCnkJqt8Tx22oJP/ZTj87zrkX
- PSyzKIQlrWBq4dTy8nhD1flP2qrK8Bo8Dazu8wh3rA6kYH91MlrTPi8rxIIkjLcc6qdW5Dy6b
- c+tGTp82mH+r857HqCdzRgHMj/FZyQnZcfVCOYyZgtm5r+o6UQphOseFqXti/mmZJ3AvB61m4
- +J0el5fPGPXql0+9AxdzJRCoqfsU4x/bhrsSg1OVIS0JJwmwjNumoh0bRlARMZPgDqUdscBWR
- ZFplWuNc3dBZ5ycjVkh9N2lLIQREq/rJJWsE/cOIls940I1nj3HMmQpslFmcrOhs6WhoPC6zL
- htwv/I9i7wYOR1FtDUMDG6u8+V3jxlLsXlhDx5YYL2AdVfVjeKq+Xi7/gmmPKlGco/nqlzQ4G
- g6jRZ3rzRxMwx/Ka1NWaZLYvpjN5zQsU50cC5xPedO7KQoI4HkHpX4rs/63zXBqtmCcdvX0Lk
- wgnWYNdDhev1CBz+vmO8dNkdNo0mZTiHiKqRDWfCVpzr/WATx/kU+hZYuFD1g4g+F5ZSl6JPZ
- ANAPaYRkKAU2BMZanuPCBneTbEYSvW2iSGeefV7IhrBdFEA/ICA/aPKpYft3gPZhkgsTb7fLp
- +Nzlp+/LWwTJo0bfWhsJ/5e4HEqYWzjjHf5i8/jnNAw7xyf3B+CXt6QxkoL4Zy6M7+q66CrqN
- pgK6KBtEzPIYlpI93H7p3qntKlL9fUgoBG10t/q41hW0A0G1QDh0ly9+vH3qA5PpHZz11Aghf
- ekhySDv+4n2q/YFd6UWNboMM77p04Ccq3Z4nBfCkczE+UxJDB8BXwi7nMEVbxfxXXAz14=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:b/aWvU4jFsk=:jYGyHzNiUlwfx4No69gT9s
+ RAcJ6/OurBtA2lvCzFo6Q16rgTnJoY4tQYXbWpnV+zqPc/E0iqfovEUEcMnWlDUXGwYeyR5qc
+ EuMQKhTbMuJ+vmAZA/ohV/Pp1BB/Y57CBHgvpDJKzH57UNtyQgYnf7JLIZQ1piyrSGpWdrXgb
+ IoTDxDbGIidj1Y8llbtxGt8dVFJyTyt3NKRtXIYjit+loAtdPv/ZfY994oLDayZdF/numYi8X
+ cRc+c6ayrRwFV9e5pRhqI+g878FRjTaenZJYwfGhDQDU2zbY8LFdzUg9/sLnfC5IJXYiH65GI
+ vrmHovij8Py0pd8eTJXTHSoSer1RF8yRWj0MraptKkuvR13azqsctfHjJKU7gUzT0OQUgeSp3
+ LAImQW84ZReFa/uGRnFbNHLd4X/HNeAO3vLWs4aq9C98kn9J0rm/WXwxXILRuubVDRhuT4SQ8
+ R39F6bDoHITlcC6UR11AaZ0IoKoixpDGLK7YsQ/SnfHSjyQ7y9ZkfciXFZN4BITD90ObYwXCc
+ fnP5V3lHYK8nyXraLufYxbVoVUipW1OQUN1vp+Vs2pHiDKPNctaR8kAY9i2HYqkL3b5CV0StB
+ uSipfAlTLz3KFHfwmyDH54W57OhLfbFkfkykSc0yX+9Tg+4lK0tVFb2NynWlLgDxnoqrenoaV
+ Cy7kPZwHTq43D5Lve3mN2j2ovuChTpOT/p8EJCDJVXCtAwc+0d3JoukNlDTbmB8oPH2OOSPvz
+ /JK3MLe8vQYS0JnVo2qe0ulZUD7AEuwE5KHqF7YRVLSv669cnkcUQGgZRp/VdQgH9OPpSF6rz
+ /FrfYZygZ//3dNPrpSp1RrgviqvYwPfsVEKizi/t8eAWqDy4AG4F1IdNTOWRG3B3EPDnCg2uv
+ Dh4Oc6DgrSMqYKGqsysSzrLH9DI2EyZcbypmoWMIc/GTdnnKOJyOiPvvLh7lmR5bzaMbIzsGi
+ 0QKUJ7W8StfZxl5PrDmyoKkXbfW6Lyl+M9lxBe/b1Pz4TaI7D7eBFYf3LpU+Wi7eJtQpxSUhn
+ iJeT82wsaRoCqBVAvJn/+1VM6eF6VghiH1eHRLqsybjBbstmhCHxTOzIS7RLCcNJo+yomr7ok
+ 8vGveCzekNfwZo0jvl2Ae7hd8ITlAdmdvbE0u/+f61lszMq1SVtD0QuGEp2lgwIaFT+B4ylQ+
+ y/Wb0lklOFGbGtgC8oAKBE/BufTQOB4djjAsnFzruCSpa2byih1s0aB2vcAe/ND34smic=
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-Use devm_hwmon_device_register_with_info() to simplify
-the source code and remove an unnecessary error path
-in sch5627_probe as it performs nothing useful when
-using the devres function.
+Use devm_hwmon_device_register_with_info() and remove hwmon_dev
+from sch5627_data struct as it is not needed anymore.
 
-Tested on a Fujitsu Esprimo P720.
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/hwmon/sch5627.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-Armin Wolf (2):
-  hwmon: (sch5627) Use devres function
-  hwmon: (sch5627) Remove unnecessary error path
+diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
+index 8be339ae5f7d..ea042a6dae58 100644
+=2D-- a/drivers/hwmon/sch5627.c
++++ b/drivers/hwmon/sch5627.c
+@@ -64,7 +64,6 @@ static const char * const SCH5627_IN_LABELS[SCH5627_NO_I=
+N] =3D {
 
- drivers/hwmon/sch5627.c | 81 ++++++++++++++---------------------------
- 1 file changed, 28 insertions(+), 53 deletions(-)
+ struct sch5627_data {
+ 	unsigned short addr;
+-	struct device *hwmon_dev;
+ 	struct sch56xx_watchdog_data *watchdog;
+ 	u8 control;
+ 	u8 temp_max[SCH5627_NO_TEMPS];
+@@ -365,15 +364,13 @@ static int sch5627_remove(struct platform_device *pd=
+ev)
+ 	if (data->watchdog)
+ 		sch56xx_watchdog_unregister(data->watchdog);
+
+-	if (data->hwmon_dev)
+-		hwmon_device_unregister(data->hwmon_dev);
+-
+ 	return 0;
+ }
+
+ static int sch5627_probe(struct platform_device *pdev)
+ {
+ 	struct sch5627_data *data;
++	struct device *hwmon_dev;
+ 	int err, build_code, build_id, hwmon_rev, val;
+
+ 	data =3D devm_kzalloc(&pdev->dev, sizeof(struct sch5627_data),
+@@ -471,12 +468,10 @@ static int sch5627_probe(struct platform_device *pde=
+v)
+ 	pr_info("firmware build: code 0x%02X, id 0x%04X, hwmon: rev 0x%02X\n",
+ 		build_code, build_id, hwmon_rev);
+
+-	data->hwmon_dev =3D hwmon_device_register_with_info(&pdev->dev, DEVNAME,=
+ data,
+-							  &sch5627_chip_info,
+-							  NULL);
+-	if (IS_ERR(data->hwmon_dev)) {
+-		err =3D PTR_ERR(data->hwmon_dev);
+-		data->hwmon_dev =3D NULL;
++	hwmon_dev =3D devm_hwmon_device_register_with_info(&pdev->dev, DEVNAME, =
+data,
++							 &sch5627_chip_info, NULL);
++	if (IS_ERR(hwmon_dev)) {
++		err =3D PTR_ERR(hwmon_dev);
+ 		goto error;
+ 	}
 
 =2D-
 2.20.1
