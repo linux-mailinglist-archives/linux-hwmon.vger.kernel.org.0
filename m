@@ -2,212 +2,98 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91CC1363262
-	for <lists+linux-hwmon@lfdr.de>; Sat, 17 Apr 2021 23:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513EF363551
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Apr 2021 14:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237017AbhDQVKY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 17 Apr 2021 17:10:24 -0400
-Received: from mout.gmx.net ([212.227.15.18]:52325 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231555AbhDQVKY (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 17 Apr 2021 17:10:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1618693780;
-        bh=qyeSftwHhlJr8VhQb+3EsUzoelRx0yOVZ4SIuUCgZSE=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=P0FKz12kuQEjcsWMjcUlJQjZkESUn0OPLKje/vsBOFwDrPfUwx99Lbk+HAVhw2Eta
-         kFofLiv8FIrsOxWJr2s6jbeGQTvatx60kRg9cIZAkE7lVvI56kvQxMiE3MayyBaefn
-         UY7f95d17PxCsR9suDptOtIDnwyjrdzwqdyaMOsk=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.fritz.box ([84.154.212.143]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MRCK6-1lCv1k1rts-00N7lt; Sat, 17 Apr 2021 23:09:40 +0200
-From:   W_Armin@gmx.de
-To:     hdegoede@redhat.com
+        id S229848AbhDRMtH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 18 Apr 2021 08:49:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38536 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229826AbhDRMtG (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 18 Apr 2021 08:49:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618750118;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Y+S2/x07nW084blgtn2sJiJs/0vwiKP0AJ8mIk+ULkw=;
+        b=M0nHv9QstXMAZC86p73FcihOGMTalDw/KNgeo1hjgZm/GFKk62WC47ML7k4uHLjjxi6Qq+
+        gNl13hSVsXKkq3RsSNQRel07Ym8ghwb5/iI/UZenT7vzHVRy12SYFURdDlF8Ej/lUGiSJB
+        dtIm6RQIof5J6OUaW1VBgUpM7KJGkWM=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-15-dA7v9NrCNc6jDgEVkhwM4Q-1; Sun, 18 Apr 2021 08:48:36 -0400
+X-MC-Unique: dA7v9NrCNc6jDgEVkhwM4Q-1
+Received: by mail-ed1-f72.google.com with SMTP id i18-20020aa7c7120000b02903853032ef71so632536edq.22
+        for <linux-hwmon@vger.kernel.org>; Sun, 18 Apr 2021 05:48:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Y+S2/x07nW084blgtn2sJiJs/0vwiKP0AJ8mIk+ULkw=;
+        b=CxfXdHhtrCQvVKSRxy6vo20VWnK7TJ3QE4NHBCY5rHq1Gxnw9wSsgVuAwWtNTjUBXU
+         lUeyfGGGiXn9F/T2DJJ9Vok19YGC3qD6tcwvI3xQkbUMWbpLHohDLe6VwB5H2DKaOAQA
+         F3IkwPYIyJkbYaxlZhKs2kj4C4nHNW1b2oJ/MzaxTdv7SeuYNtAdKXHjSS/O5Kit7Ayg
+         ZCnTaq35+TDmV7nL9MXSI0Zr8rUfGFzagLyBtaZQDueaUtHvBRHbqfuE5tBHbLmgxnOe
+         B9GGiFX+Skjt50OVajsvb+ucWhbnYnBl9QPzQfaInhy3oueGk6S+MJ3g1uyrF4u/gK8O
+         OGMg==
+X-Gm-Message-State: AOAM532PvUU/KTnocmW0EyqYCn9Malr3V1Sa8RdChzjCsej/wBRZrDOj
+        TGN69GeubBlIorF0P9YI8lp5OWSoTa6Q4oL7dr1hRumVqdQTU9oI241EpJtCSEGFMkPuA0YihFJ
+        53yTc/E9r2xbPZiuR/KwFFLT9kotkW8uP1bhpyD3Oti5ovNcjtQtQKF3Y9g9BVm6pXd8tM3fyT5
+        w=
+X-Received: by 2002:a17:906:b754:: with SMTP id fx20mr17339310ejb.69.1618750115227;
+        Sun, 18 Apr 2021 05:48:35 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzdVqcUxxQ5VUhxCKkzaTWHQTOJpU+iIPRcI1JbytNa1Ff3uxVCqCsZPK3N79izmf95Xxtuig==
+X-Received: by 2002:a17:906:b754:: with SMTP id fx20mr17339302ejb.69.1618750115076;
+        Sun, 18 Apr 2021 05:48:35 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id gz10sm3778858ejc.25.2021.04.18.05.48.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Apr 2021 05:48:34 -0700 (PDT)
+Subject: Re: [PATCH 0/2] hwmon: (sch5627) Use devres function
+To:     W_Armin@gmx.de
 Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org
-Subject: [PATCH 2/2] hwmon: (sch5627) Remove unnecessary error path
-Date:   Sat, 17 Apr 2021 23:09:20 +0200
-Message-Id: <20210417210920.15496-3-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210417210920.15496-1-W_Armin@gmx.de>
 References: <20210417210920.15496-1-W_Armin@gmx.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <c974f1f3-b315-612d-d24a-4030df29b2b5@redhat.com>
+Date:   Sun, 18 Apr 2021 14:48:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Qlf+J+MASFkPkFz2TZxYSBmuTWHQP36UX7dA4W4OOlDg/xJcR6m
- LgU4nGmFsaLD7p5f5BrabLvZVXEGb15BPBoEC242P9o1OW5atHcQOJI3/tHbFMfDiFT8yyT
- 26+bDPT24Z3e9/wke+eEUHFjExD3J4rVcyp3aLeMNextpa/HuiKMxTyE8xxRWun8iWs91X8
- WHXhr2Llj+3kSKo3PRsUQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UH4Fd8ogrUE=:tzS9oy2sZ0Zae56mZiXw0U
- /fNrIKMYUKBxQUjmZOpY5DapHqPyyIJlX2nt2dlpelGuOVpOwOLmmVcH0pgvlNk5SQtizOXXA
- QDZbhA8k/r3w5EIXxFK7TffMGZDnzqEvIlqAwdNh/9S6oyjR6WCsegFJTTSF9V5+FKTre7IzJ
- ut+xYesLviU0xx7Vr4yrjzwttLDMOGrtsCHJM/JBRb1GvGb8UkSvhk88ROK1y75cHkdkGKPi8
- 0xtm4EKWzKafgNKwXWU/6G4DwmPD4NQuz0bsLdi8K9iyu3JjRKiL9T189GzE8xrrK32sjxMmP
- SXXbG5irnlssxskqwcKzJ0Zy9IOZENxseb5RJ0vtVnbnQy1SIIrwbDiIowo4P7hViK5fa6ZX+
- pGuQzXP2ebExcsxuFjV7xS1O5QqV1SpoedLRFVcOSse0OERsFIJPJG5pVEzVz/8pPPGPCUSsh
- 9Pzw1CAuxjkhRlr6Ta1cKZB0sMR+XT27DKcj4DQJ3WyKIBuJvvXu8gdBdvqV9IDD5NmC+Q6dh
- CvhLAC5qPkbwvg9okYsB8Uqx0MZxGq5Aa22UGgxJavEtSxagmnBjbJikS1LVC5CX8x4XexHqa
- K+R4sZmkvfrOjftsYYEjRUXPoyHl5GUw+1ijhXOVarxD25DEV4o0R/uyJigobvrLIb1J+4BtC
- M2o6FJfVYYm52nfzghxUAEC0d4cw1vFmQsiRFmNl/cQn/raV0rOpQU8B0X1iWvO5GrfKqikTh
- kDWTuk+zp+sBHslg5OSOn+BEeW4rVlB2NIOQ4Qc/Vcevh8i2dyw2AejJ6F0XuTAVaYsMPut2P
- gjNsm1UdgJwyZXyr3trJaWVaFCysO4FUZzoIUJ2rihMInaP8oE0feF6To6COcLk3KfkR2qsZd
- o0HOWFzdXH/2ZwObf4jPs1GIStl/Dqe/Ii1U0ii4jaT6SJgPy00TuQAbg+3u7Vvd0X5q3hGF2
- IXxyUV+DWLfELKkWGDXbhm52uMRrFwbtPUuBMwO82DlcqThJUVIKglXXLw5Kf4PdpJEIkmNwV
- 18xOP/0eh6ElaPaBMO4SuqFjAYe79naAOY+DHAKkfMXRA6IjmEAWOjpWd0pYSbjjsUvn8s0JN
- BFHOa+6SnJx8pdtF3FLJ16gX64JpBPZkdFwfEYwEvIeuGoRCFj7O6wq/CJmL7KW2oxRD0BeLT
- LqsduGvXMPjJ5CB7bqlt+sAFiSua3idInHHK5bBrNAXxJjWuLjh+TtTGV5Ir5+nb4f0/0=
+In-Reply-To: <20210417210920.15496-1-W_Armin@gmx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+Hi,
 
-Calling remove() on error whould have only unregistered
-the watchdog, and since a failure in registering him
-is considered non-fatal and happens last, remove the
-error path and return the error codes directly.
+On 4/17/21 11:09 PM, W_Armin@gmx.de wrote:
+> From: Armin Wolf <W_Armin@gmx.de>
+> 
+> Use devm_hwmon_device_register_with_info() to simplify
+> the source code and remove an unnecessary error path
+> in sch5627_probe as it performs nothing useful when
+> using the devres function.
+> 
+> Tested on a Fujitsu Esprimo P720.
+> 
+> Armin Wolf (2):
+>   hwmon: (sch5627) Use devres function
+>   hwmon: (sch5627) Remove unnecessary error path
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/sch5627.c | 70 +++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 45 deletions(-)
+Thanks, both patches looks good to me:
 
-diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
-index ea042a6dae58..4324a5dbc968 100644
-=2D-- a/drivers/hwmon/sch5627.c
-+++ b/drivers/hwmon/sch5627.c
-@@ -383,72 +383,58 @@ static int sch5627_probe(struct platform_device *pde=
-v)
- 	platform_set_drvdata(pdev, data);
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
- 	val =3D sch56xx_read_virtual_reg(data->addr, SCH5627_REG_HWMON_ID);
--	if (val < 0) {
--		err =3D val;
--		goto error;
--	}
-+	if (val < 0)
-+		return val;
-+
- 	if (val !=3D SCH5627_HWMON_ID) {
- 		pr_err("invalid %s id: 0x%02X (expected 0x%02X)\n", "hwmon",
- 		       val, SCH5627_HWMON_ID);
--		err =3D -ENODEV;
--		goto error;
-+		return -ENODEV;
- 	}
+For the series.
 
- 	val =3D sch56xx_read_virtual_reg(data->addr, SCH5627_REG_COMPANY_ID);
--	if (val < 0) {
--		err =3D val;
--		goto error;
--	}
-+	if (val < 0)
-+		return val;
-+
- 	if (val !=3D SCH5627_COMPANY_ID) {
- 		pr_err("invalid %s id: 0x%02X (expected 0x%02X)\n", "company",
- 		       val, SCH5627_COMPANY_ID);
--		err =3D -ENODEV;
--		goto error;
-+		return -ENODEV;
- 	}
+Regards,
 
- 	val =3D sch56xx_read_virtual_reg(data->addr, SCH5627_REG_PRIMARY_ID);
--	if (val < 0) {
--		err =3D val;
--		goto error;
--	}
-+	if (val < 0)
-+		return val;
-+
- 	if (val !=3D SCH5627_PRIMARY_ID) {
- 		pr_err("invalid %s id: 0x%02X (expected 0x%02X)\n", "primary",
- 		       val, SCH5627_PRIMARY_ID);
--		err =3D -ENODEV;
--		goto error;
-+		return -ENODEV;
- 	}
-
- 	build_code =3D sch56xx_read_virtual_reg(data->addr,
- 					      SCH5627_REG_BUILD_CODE);
--	if (build_code < 0) {
--		err =3D build_code;
--		goto error;
--	}
-+	if (build_code < 0)
-+		return build_code;
-
- 	build_id =3D sch56xx_read_virtual_reg16(data->addr,
- 					      SCH5627_REG_BUILD_ID);
--	if (build_id < 0) {
--		err =3D build_id;
--		goto error;
--	}
-+	if (build_id < 0)
-+		return build_id;
-
- 	hwmon_rev =3D sch56xx_read_virtual_reg(data->addr,
- 					     SCH5627_REG_HWMON_REV);
--	if (hwmon_rev < 0) {
--		err =3D hwmon_rev;
--		goto error;
--	}
-+	if (hwmon_rev < 0)
-+		return hwmon_rev;
-
- 	val =3D sch56xx_read_virtual_reg(data->addr, SCH5627_REG_CTRL);
--	if (val < 0) {
--		err =3D val;
--		goto error;
--	}
-+	if (val < 0)
-+		return val;
-+
- 	data->control =3D val;
- 	if (!(data->control & 0x01)) {
- 		pr_err("hardware monitoring not enabled\n");
--		err =3D -ENODEV;
--		goto error;
-+		return -ENODEV;
- 	}
- 	/* Trigger a Vbat voltage measurement, so that we get a valid reading
- 	   the first time we read Vbat */
-@@ -462,7 +448,7 @@ static int sch5627_probe(struct platform_device *pdev)
- 	 */
- 	err =3D sch5627_read_limits(data);
- 	if (err)
--		goto error;
-+		return err;
-
- 	pr_info("found %s chip at %#hx\n", DEVNAME, data->addr);
- 	pr_info("firmware build: code 0x%02X, id 0x%04X, hwmon: rev 0x%02X\n",
-@@ -470,10 +456,8 @@ static int sch5627_probe(struct platform_device *pdev=
-)
-
- 	hwmon_dev =3D devm_hwmon_device_register_with_info(&pdev->dev, DEVNAME, =
-data,
- 							 &sch5627_chip_info, NULL);
--	if (IS_ERR(hwmon_dev)) {
--		err =3D PTR_ERR(hwmon_dev);
--		goto error;
--	}
-+	if (IS_ERR(hwmon_dev))
-+		return PTR_ERR(hwmon_dev);
-
- 	/* Note failing to register the watchdog is not a fatal error */
- 	data->watchdog =3D sch56xx_watchdog_register(&pdev->dev, data->addr,
-@@ -481,10 +465,6 @@ static int sch5627_probe(struct platform_device *pdev=
-)
- 			&data->update_lock, 1);
-
- 	return 0;
--
--error:
--	sch5627_remove(pdev);
--	return err;
- }
-
- static struct platform_driver sch5627_driver =3D {
-=2D-
-2.20.1
+Hans
 
