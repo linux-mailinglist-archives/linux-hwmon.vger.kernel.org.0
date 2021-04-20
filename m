@@ -2,59 +2,64 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1143365218
-	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Apr 2021 08:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5BE365243
+	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Apr 2021 08:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbhDTGJi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 20 Apr 2021 02:09:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
+        id S229831AbhDTGTg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 20 Apr 2021 02:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbhDTGJg (ORCPT
+        with ESMTP id S229577AbhDTGTg (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 20 Apr 2021 02:09:36 -0400
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4A3C061763
-        for <linux-hwmon@vger.kernel.org>; Mon, 19 Apr 2021 23:09:04 -0700 (PDT)
-Received: by mail-oo1-xc30.google.com with SMTP id c6-20020a4aacc60000b02901e6260b12e2so5760952oon.3
-        for <linux-hwmon@vger.kernel.org>; Mon, 19 Apr 2021 23:09:04 -0700 (PDT)
+        Tue, 20 Apr 2021 02:19:36 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A892AC06174A
+        for <linux-hwmon@vger.kernel.org>; Mon, 19 Apr 2021 23:19:04 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id v6so10120711oiv.3
+        for <linux-hwmon@vger.kernel.org>; Mon, 19 Apr 2021 23:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id;
-        bh=DxS2T6SCOzKw3P1jhRjh2EcCf6lyiDck+j5B0ooO0TE=;
-        b=lZ1qT4xzaIjzFrzlm5r0mxj1mbqWnDRhzSU2nCbuehXdBWuqM7GwzyrMqjml7uspWI
-         gA5+DJFIw8RWgwwrHS/z/zmvews5Pz08SDt9zZpTV/D83dyOnc3ym+pHRipp6jMB2gQ7
-         cG2QkLMuN+KTMo9/CGawpKwV1FkeAS4Hwz24+gjv2oDX0TFoVPTLCrLta/Ab8T9DQejR
-         NgYMFyeqsqa7Ebth533s+8x8yhU+CxALnozFQ0NoWc6LWpYqC6zJHx+I0mcBb30t6i2Z
-         VXpsZrycW8d7E3NwTyx+A81PyBkpyRMmi0TFGO37lqMhcSL4Y+AocvqGPNE/yGizlrTv
-         ydwA==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7t/pmHpGCYV7roLy2oPNna7D4LYIm6zD+rQ1W8126rg=;
+        b=bVqOZrRwAhBpYcKsGtuLTfOUnygehdRQKj+1a9A4d9oqKAYeYcAKaPRmcgAFHwX4vW
+         VsClqGiEvenkgrRQVlNxKQIRe9q3+L/++Wy40UGXzI5aRI5ZSELVWWoIWpvyKJuQawSq
+         QmjGsYrMYvMefoTbpyVTk/wB3xhNrzkFT5UFnxRTwaMGThU5JN47Z5Nvzwy5tiHBXJLb
+         y02haekTZegahvb45LzRhnpIxprKq8+AKhx/Yay0oNyTL6imCIiVceA4LshxwC3MSTIJ
+         EVgQN46gpeyyCRL9NXq09tSMydNxi3ePiVRpbmfdNuSL8xRamVMYxYFcW0ZWlwHQZ+eK
+         FkoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
-        bh=DxS2T6SCOzKw3P1jhRjh2EcCf6lyiDck+j5B0ooO0TE=;
-        b=OH7fvm40evaHSplZrfY4NmBp4NFHuWUqnhS/gYn0xF1wykTiofwGBnOgBSKD2eky+x
-         n3QYxOp5K8UNUNJXAa6nK+GxPa7nv9W1J0EdpIaxmKrGpLXi+R65Tkn6ZFAIVSovR/gW
-         jMya8Xct2HD1ULBRXq9TpR6kL+svdwmanx9tkzMUz9FPeP76ounrRSQ8DW8cMWJGuMwY
-         oIFxJEOh6Od3PNBmJTsKhHN4ww7xTQtPZ0gascYE8ZOl562eZh/l5/7cF4EsEW2NUAu1
-         gdiMBnvcSj/3g8wBDsz4L2/IP3vt8rMlkAYYsTk96YCcHKy83uI7Bv1/73MQ6d5iq6WA
-         V+4w==
-X-Gm-Message-State: AOAM5309cwbxFJoG5Nmk2Xwr7DDD6voD/x0tVbU3ToUPCGuNQWjA8KbG
-        xrtgKlD7PBAui1dxie7U9c65oEVZEzQ=
-X-Google-Smtp-Source: ABdhPJykaKio7nCBEJAaAqd2HMR98e5gNAdyWqnifZUD+3+VGvOKZVegVA0DFXfruT/USBLMvIyYtg==
-X-Received: by 2002:a4a:d80e:: with SMTP id f14mr13012746oov.54.1618898943952;
-        Mon, 19 Apr 2021 23:09:03 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=7t/pmHpGCYV7roLy2oPNna7D4LYIm6zD+rQ1W8126rg=;
+        b=ajXvA26/AtBum/iIITZxy47rUMP2+6ath/et3mEVOEMShuZbrdffr0Q1cKO/krFZwe
+         XuvTN06Fi1MhMJyhWvtwTejqgk0B/EExdE735uRVjgAcuZusEg6Pua7dhLkhm4fU9E4s
+         2cXHRvmvvnc/UnsDO+zaQmgtQnjw7K/kdEkCJBOn9i7pcl1TmOs35ZX5PNfqYfETY+CF
+         xFUozD6pfkrap3gN+nhSeamm0RLuIKgaH9BXd0YUlaFudbaNejfNkqxqnng7NVq1f//x
+         gAFPKhkP3Xy4jP3AEVgHlonZJLO4ES87MrkVM/vEIdk5DPuDMFuqVfdRi1oRvo908ICB
+         eYPw==
+X-Gm-Message-State: AOAM533Xym1wUBzlILSh0CZTKQirOFdca7IAxaTEXkiUAcwpLc2rZ88i
+        Eqg+as0+GGt4al5KdlNN4aiLI0bSjSk=
+X-Google-Smtp-Source: ABdhPJzL81EBCaPCZQIAnBM7mPyMsrs9Up+VHlGmmWb5bVd0JJ1KpiFleJn1/tn0JptTBQLqKRsmMw==
+X-Received: by 2002:aca:f156:: with SMTP id p83mr1941345oih.91.1618899543376;
+        Mon, 19 Apr 2021 23:19:03 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d7sm37421oib.49.2021.04.19.23.09.03
+        by smtp.gmail.com with ESMTPSA id j8sm4005023otr.28.2021.04.19.23.19.02
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 19 Apr 2021 23:09:03 -0700 (PDT)
+        Mon, 19 Apr 2021 23:19:02 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
 Cc:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH] hwmon: (pmbus) Introduce PMBUS symbol namespace
-Date:   Mon, 19 Apr 2021 23:09:01 -0700
-Message-Id: <20210420060901.179467-1-linux@roeck-us.net>
+Subject: [PATCH v2] hwmon: (pmbus) Introduce PMBUS symbol namespace
+Date:   Mon, 19 Apr 2021 23:19:00 -0700
+Message-Id: <20210420061900.196637-1-linux@roeck-us.net>
 X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -64,23 +69,281 @@ Introduce PMBUS symbol namespace to prevent misuse from other code.
 
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/hwmon/pmbus/Makefile     |  2 ++
- drivers/hwmon/pmbus/pmbus_core.c | 38 ++++++++++++++++----------------
- 2 files changed, 21 insertions(+), 19 deletions(-)
+v2: Declare MODULE_IMPORT_NS(PMBUS) in drivers using the MBUS namespace
+    exports.
 
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index f8dcc27cd56a..ef99c855e405 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -3,6 +3,8 @@
- # Makefile for PMBus chip drivers.
- #
- 
-+ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=PMBUS
-+
- obj-$(CONFIG_PMBUS)		+= pmbus_core.o
- obj-$(CONFIG_SENSORS_PMBUS)	+= pmbus.o
- obj-$(CONFIG_SENSORS_ADM1266)	+= adm1266.o
+ drivers/hwmon/pmbus/adm1266.c      |  1 +
+ drivers/hwmon/pmbus/adm1275.c      |  1 +
+ drivers/hwmon/pmbus/bel-pfe.c      |  1 +
+ drivers/hwmon/pmbus/bpa-rs600.c    |  1 +
+ drivers/hwmon/pmbus/fsp-3y.c       |  1 +
+ drivers/hwmon/pmbus/ibm-cffps.c    |  1 +
+ drivers/hwmon/pmbus/inspur-ipsps.c |  1 +
+ drivers/hwmon/pmbus/ir35221.c      |  1 +
+ drivers/hwmon/pmbus/ir36021.c      |  1 +
+ drivers/hwmon/pmbus/ir38064.c      |  1 +
+ drivers/hwmon/pmbus/irps5401.c     |  1 +
+ drivers/hwmon/pmbus/isl68137.c     |  1 +
+ drivers/hwmon/pmbus/lm25066.c      |  1 +
+ drivers/hwmon/pmbus/ltc2978.c      |  1 +
+ drivers/hwmon/pmbus/ltc3815.c      |  1 +
+ drivers/hwmon/pmbus/max15301.c     |  1 +
+ drivers/hwmon/pmbus/max16064.c     |  1 +
+ drivers/hwmon/pmbus/max16601.c     |  1 +
+ drivers/hwmon/pmbus/max20730.c     |  1 +
+ drivers/hwmon/pmbus/max20751.c     |  1 +
+ drivers/hwmon/pmbus/max31785.c     |  1 +
+ drivers/hwmon/pmbus/max34440.c     |  1 +
+ drivers/hwmon/pmbus/max8688.c      |  1 +
+ drivers/hwmon/pmbus/mp2975.c       |  1 +
+ drivers/hwmon/pmbus/pm6764tr.c     |  1 +
+ drivers/hwmon/pmbus/pmbus.c        |  1 +
+ drivers/hwmon/pmbus/pmbus_core.c   | 38 +++++++++++++++---------------
+ drivers/hwmon/pmbus/pxe1610.c      |  1 +
+ drivers/hwmon/pmbus/q54sj108a2.c   |  1 +
+ drivers/hwmon/pmbus/stpddc60.c     |  1 +
+ drivers/hwmon/pmbus/tps40422.c     |  1 +
+ drivers/hwmon/pmbus/tps53679.c     |  1 +
+ drivers/hwmon/pmbus/ucd9000.c      |  1 +
+ drivers/hwmon/pmbus/ucd9200.c      |  1 +
+ drivers/hwmon/pmbus/xdpe12284.c    |  1 +
+ drivers/hwmon/pmbus/zl6100.c       |  1 +
+ 36 files changed, 54 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+index 4d2e4ddcfbfd..ec5f932fc6f0 100644
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -510,3 +510,4 @@ module_i2c_driver(adm1266_driver);
+ MODULE_AUTHOR("Alexandru Tachici <alexandru.tachici@analog.com>");
+ MODULE_DESCRIPTION("PMBus driver for Analog Devices ADM1266");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/adm1275.c b/drivers/hwmon/pmbus/adm1275.c
+index 38a6515b0763..980a3850b2f3 100644
+--- a/drivers/hwmon/pmbus/adm1275.c
++++ b/drivers/hwmon/pmbus/adm1275.c
+@@ -805,3 +805,4 @@ module_i2c_driver(adm1275_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for Analog Devices ADM1275 and compatibles");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/bel-pfe.c b/drivers/hwmon/pmbus/bel-pfe.c
+index aed7542d7ce5..4100eefb7ac3 100644
+--- a/drivers/hwmon/pmbus/bel-pfe.c
++++ b/drivers/hwmon/pmbus/bel-pfe.c
+@@ -129,3 +129,4 @@ module_i2c_driver(pfe_pmbus_driver);
+ MODULE_AUTHOR("Tao Ren <rentao.bupt@gmail.com>");
+ MODULE_DESCRIPTION("PMBus driver for BEL PFE Family Power Supplies");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/bpa-rs600.c b/drivers/hwmon/pmbus/bpa-rs600.c
+index c4ede68b3e26..f6558ee9dec3 100644
+--- a/drivers/hwmon/pmbus/bpa-rs600.c
++++ b/drivers/hwmon/pmbus/bpa-rs600.c
+@@ -170,3 +170,4 @@ module_i2c_driver(bpa_rs600_driver);
+ MODULE_AUTHOR("Chris Packham");
+ MODULE_DESCRIPTION("PMBus driver for BluTek BPA-RS600");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/fsp-3y.c b/drivers/hwmon/pmbus/fsp-3y.c
+index 284b73aaed46..b177987286ae 100644
+--- a/drivers/hwmon/pmbus/fsp-3y.c
++++ b/drivers/hwmon/pmbus/fsp-3y.c
+@@ -251,3 +251,4 @@ module_i2c_driver(fsp3y_driver);
+ MODULE_AUTHOR("Václav Kubernát");
+ MODULE_DESCRIPTION("PMBus driver for FSP/3Y-Power power supplies");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
+index ffde5aaa5036..5668d8305b78 100644
+--- a/drivers/hwmon/pmbus/ibm-cffps.c
++++ b/drivers/hwmon/pmbus/ibm-cffps.c
+@@ -625,3 +625,4 @@ module_i2c_driver(ibm_cffps_driver);
+ MODULE_AUTHOR("Eddie James");
+ MODULE_DESCRIPTION("PMBus driver for IBM Common Form Factor power supplies");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/inspur-ipsps.c b/drivers/hwmon/pmbus/inspur-ipsps.c
+index bf593fd04a1a..0f614e8d95f6 100644
+--- a/drivers/hwmon/pmbus/inspur-ipsps.c
++++ b/drivers/hwmon/pmbus/inspur-ipsps.c
+@@ -224,3 +224,4 @@ module_i2c_driver(ipsps_driver);
+ MODULE_AUTHOR("John Wang");
+ MODULE_DESCRIPTION("PMBus driver for Inspur Power System power supplies");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ir35221.c b/drivers/hwmon/pmbus/ir35221.c
+index 3aebeb1443fd..a6cf98e49666 100644
+--- a/drivers/hwmon/pmbus/ir35221.c
++++ b/drivers/hwmon/pmbus/ir35221.c
+@@ -145,3 +145,4 @@ module_i2c_driver(ir35221_driver);
+ MODULE_AUTHOR("Samuel Mendoza-Jonas <sam@mendozajonas.com");
+ MODULE_DESCRIPTION("PMBus driver for IR35221");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ir36021.c b/drivers/hwmon/pmbus/ir36021.c
+index 4767e39cc965..4dca4767f571 100644
+--- a/drivers/hwmon/pmbus/ir36021.c
++++ b/drivers/hwmon/pmbus/ir36021.c
+@@ -77,3 +77,4 @@ module_i2c_driver(ir36021_driver);
+ MODULE_AUTHOR("Chris Packham <chris.packham@alliedtelesis.co.nz>");
+ MODULE_DESCRIPTION("PMBus driver for Infineon IR36021");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ir38064.c b/drivers/hwmon/pmbus/ir38064.c
+index 46f17c4b4873..1fb7f1248639 100644
+--- a/drivers/hwmon/pmbus/ir38064.c
++++ b/drivers/hwmon/pmbus/ir38064.c
+@@ -61,3 +61,4 @@ module_i2c_driver(ir38064_driver);
+ MODULE_AUTHOR("Maxim Sloyko <maxims@google.com>");
+ MODULE_DESCRIPTION("PMBus driver for Infineon IR38064");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/irps5401.c b/drivers/hwmon/pmbus/irps5401.c
+index 93ef6d64a33a..de3449e4d77a 100644
+--- a/drivers/hwmon/pmbus/irps5401.c
++++ b/drivers/hwmon/pmbus/irps5401.c
+@@ -63,3 +63,4 @@ module_i2c_driver(irps5401_driver);
+ MODULE_AUTHOR("Robert Hancock");
+ MODULE_DESCRIPTION("PMBus driver for Infineon IRPS5401");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
+index 2bee930d3900..40597a9e799f 100644
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -332,3 +332,4 @@ module_i2c_driver(isl68137_driver);
+ MODULE_AUTHOR("Maxim Sloyko <maxims@google.com>");
+ MODULE_DESCRIPTION("PMBus driver for Renesas digital multiphase voltage regulators");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/lm25066.c b/drivers/hwmon/pmbus/lm25066.c
+index e9a66fd9e144..d209e0afc2ca 100644
+--- a/drivers/hwmon/pmbus/lm25066.c
++++ b/drivers/hwmon/pmbus/lm25066.c
+@@ -511,3 +511,4 @@ module_i2c_driver(lm25066_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for LM25066 and compatible chips");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ltc2978.c b/drivers/hwmon/pmbus/ltc2978.c
+index 7e53fa95b92d..0127273883f0 100644
+--- a/drivers/hwmon/pmbus/ltc2978.c
++++ b/drivers/hwmon/pmbus/ltc2978.c
+@@ -883,3 +883,4 @@ module_i2c_driver(ltc2978_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for LTC2978 and compatible chips");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ltc3815.c b/drivers/hwmon/pmbus/ltc3815.c
+index e45e14d26c9a..8e13a7ddcb42 100644
+--- a/drivers/hwmon/pmbus/ltc3815.c
++++ b/drivers/hwmon/pmbus/ltc3815.c
+@@ -208,3 +208,4 @@ module_i2c_driver(ltc3815_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for LTC3815");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max15301.c b/drivers/hwmon/pmbus/max15301.c
+index 727455e5740b..0b6f88428ea8 100644
+--- a/drivers/hwmon/pmbus/max15301.c
++++ b/drivers/hwmon/pmbus/max15301.c
+@@ -187,3 +187,4 @@ module_i2c_driver(max15301_driver);
+ MODULE_AUTHOR("Erik Rosen <erik.rosen@metormote.com>");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX15301");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max16064.c b/drivers/hwmon/pmbus/max16064.c
+index d79add99083e..94f869039071 100644
+--- a/drivers/hwmon/pmbus/max16064.c
++++ b/drivers/hwmon/pmbus/max16064.c
+@@ -111,3 +111,4 @@ module_i2c_driver(max16064_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX16064");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max16601.c b/drivers/hwmon/pmbus/max16601.c
+index 0d1204c2dd54..5a226a564776 100644
+--- a/drivers/hwmon/pmbus/max16601.c
++++ b/drivers/hwmon/pmbus/max16601.c
+@@ -359,3 +359,4 @@ module_i2c_driver(max16601_driver);
+ MODULE_AUTHOR("Guenter Roeck <linux@roeck-us.net>");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX16601");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max20730.c b/drivers/hwmon/pmbus/max20730.c
+index 9dd3dd79bc18..ba39f03c6374 100644
+--- a/drivers/hwmon/pmbus/max20730.c
++++ b/drivers/hwmon/pmbus/max20730.c
+@@ -785,3 +785,4 @@ module_i2c_driver(max20730_driver);
+ MODULE_AUTHOR("Guenter Roeck <linux@roeck-us.net>");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX20710 / MAX20730 / MAX20734 / MAX20743");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max20751.c b/drivers/hwmon/pmbus/max20751.c
+index 9d42f82fdd99..2272dc8c2e38 100644
+--- a/drivers/hwmon/pmbus/max20751.c
++++ b/drivers/hwmon/pmbus/max20751.c
+@@ -51,3 +51,4 @@ module_i2c_driver(max20751_driver);
+ MODULE_AUTHOR("Guenter Roeck <linux@roeck-us.net>");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX20751");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max31785.c b/drivers/hwmon/pmbus/max31785.c
+index 17489abc49d5..95d79a64b483 100644
+--- a/drivers/hwmon/pmbus/max31785.c
++++ b/drivers/hwmon/pmbus/max31785.c
+@@ -403,3 +403,4 @@ module_i2c_driver(max31785_driver);
+ MODULE_AUTHOR("Andrew Jeffery <andrew@aj.id.au>");
+ MODULE_DESCRIPTION("PMBus driver for the Maxim MAX31785");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max34440.c b/drivers/hwmon/pmbus/max34440.c
+index dad66b3c0116..ea7609058a12 100644
+--- a/drivers/hwmon/pmbus/max34440.c
++++ b/drivers/hwmon/pmbus/max34440.c
+@@ -529,3 +529,4 @@ module_i2c_driver(max34440_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX34440/MAX34441");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/max8688.c b/drivers/hwmon/pmbus/max8688.c
+index 329dc851fc59..5e66c28c0b71 100644
+--- a/drivers/hwmon/pmbus/max8688.c
++++ b/drivers/hwmon/pmbus/max8688.c
+@@ -191,3 +191,4 @@ module_i2c_driver(max8688_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for Maxim MAX8688");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/mp2975.c b/drivers/hwmon/pmbus/mp2975.c
+index 60fbdb371332..eb94bd5f4e2a 100644
+--- a/drivers/hwmon/pmbus/mp2975.c
++++ b/drivers/hwmon/pmbus/mp2975.c
+@@ -766,3 +766,4 @@ module_i2c_driver(mp2975_driver);
+ MODULE_AUTHOR("Vadim Pasternak <vadimp@nvidia.com>");
+ MODULE_DESCRIPTION("PMBus driver for MPS MP2975 device");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/pm6764tr.c b/drivers/hwmon/pmbus/pm6764tr.c
+index d97cb6d6c87f..e0bbc8a30d21 100644
+--- a/drivers/hwmon/pmbus/pm6764tr.c
++++ b/drivers/hwmon/pmbus/pm6764tr.c
+@@ -73,3 +73,4 @@ module_i2c_driver(pm6764tr_driver);
+ MODULE_AUTHOR("Charles Hsu");
+ MODULE_DESCRIPTION("PMBus driver for  ST PM6764TR");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/pmbus.c b/drivers/hwmon/pmbus/pmbus.c
+index a1b4260e75b2..618c377664c4 100644
+--- a/drivers/hwmon/pmbus/pmbus.c
++++ b/drivers/hwmon/pmbus/pmbus.c
+@@ -246,3 +246,4 @@ module_i2c_driver(pmbus_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("Generic PMBus driver");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
 diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
 index e9e6a47f3bf7..bbd745178147 100644
 --- a/drivers/hwmon/pmbus/pmbus_core.c
@@ -253,6 +516,87 @@ index e9e6a47f3bf7..bbd745178147 100644
  
  static int __init pmbus_core_init(void)
  {
+diff --git a/drivers/hwmon/pmbus/pxe1610.c b/drivers/hwmon/pmbus/pxe1610.c
+index eb4a06003b7f..52bee5de2988 100644
+--- a/drivers/hwmon/pmbus/pxe1610.c
++++ b/drivers/hwmon/pmbus/pxe1610.c
+@@ -148,3 +148,4 @@ module_i2c_driver(pxe1610_driver);
+ MODULE_AUTHOR("Vijay Khemka <vijaykhemka@fb.com>");
+ MODULE_DESCRIPTION("PMBus driver for Infineon PXE1610, PXE1110 and PXM1310");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/q54sj108a2.c b/drivers/hwmon/pmbus/q54sj108a2.c
+index aec512766c31..b6e8b20466f1 100644
+--- a/drivers/hwmon/pmbus/q54sj108a2.c
++++ b/drivers/hwmon/pmbus/q54sj108a2.c
+@@ -420,3 +420,4 @@ module_i2c_driver(q54sj108a2_driver);
+ MODULE_AUTHOR("Xiao.Ma <xiao.mx.ma@deltaww.com>");
+ MODULE_DESCRIPTION("PMBus driver for Delta Q54SJ108A2 series modules");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/stpddc60.c b/drivers/hwmon/pmbus/stpddc60.c
+index 3e6709542b63..357b9d9d896b 100644
+--- a/drivers/hwmon/pmbus/stpddc60.c
++++ b/drivers/hwmon/pmbus/stpddc60.c
+@@ -246,3 +246,4 @@ module_i2c_driver(stpddc60_driver);
+ MODULE_AUTHOR("Erik Rosen <erik.rosen@metormote.com>");
+ MODULE_DESCRIPTION("PMBus driver for ST STPDDC60");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/tps40422.c b/drivers/hwmon/pmbus/tps40422.c
+index f7f00ab6f46c..31bb83c0ef3e 100644
+--- a/drivers/hwmon/pmbus/tps40422.c
++++ b/drivers/hwmon/pmbus/tps40422.c
+@@ -51,3 +51,4 @@ module_i2c_driver(tps40422_driver);
+ MODULE_AUTHOR("Zhu Laiwen <richard.zhu@nsn.com>");
+ MODULE_DESCRIPTION("PMBus driver for TI TPS40422");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/tps53679.c b/drivers/hwmon/pmbus/tps53679.c
+index 21ba0b18c014..81b9d813655a 100644
+--- a/drivers/hwmon/pmbus/tps53679.c
++++ b/drivers/hwmon/pmbus/tps53679.c
+@@ -308,3 +308,4 @@ module_i2c_driver(tps53679_driver);
+ MODULE_AUTHOR("Vadim Pasternak <vadimp@mellanox.com>");
+ MODULE_DESCRIPTION("PMBus driver for Texas Instruments TPS53679");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ucd9000.c b/drivers/hwmon/pmbus/ucd9000.c
+index a15e6fe3e425..75fc770c9e40 100644
+--- a/drivers/hwmon/pmbus/ucd9000.c
++++ b/drivers/hwmon/pmbus/ucd9000.c
+@@ -629,3 +629,4 @@ module_i2c_driver(ucd9000_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for TI UCD90xxx");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/ucd9200.c b/drivers/hwmon/pmbus/ucd9200.c
+index 47cc7ca9d329..6bc3273e31e7 100644
+--- a/drivers/hwmon/pmbus/ucd9200.c
++++ b/drivers/hwmon/pmbus/ucd9200.c
+@@ -209,3 +209,4 @@ module_i2c_driver(ucd9200_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for TI UCD922x, UCD924x");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/xdpe12284.c b/drivers/hwmon/pmbus/xdpe12284.c
+index f8bc0f41cd5f..b07da06a40c9 100644
+--- a/drivers/hwmon/pmbus/xdpe12284.c
++++ b/drivers/hwmon/pmbus/xdpe12284.c
+@@ -168,3 +168,4 @@ module_i2c_driver(xdpe122_driver);
+ MODULE_AUTHOR("Vadim Pasternak <vadimp@mellanox.com>");
+ MODULE_DESCRIPTION("PMBus driver for Infineon XDPE122 family");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
+diff --git a/drivers/hwmon/pmbus/zl6100.c b/drivers/hwmon/pmbus/zl6100.c
+index 69120ca7aaa8..b7d4eacdc3ef 100644
+--- a/drivers/hwmon/pmbus/zl6100.c
++++ b/drivers/hwmon/pmbus/zl6100.c
+@@ -404,3 +404,4 @@ module_i2c_driver(zl6100_driver);
+ MODULE_AUTHOR("Guenter Roeck");
+ MODULE_DESCRIPTION("PMBus driver for ZL6100 and compatibles");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(PMBUS);
 -- 
 2.17.1
 
