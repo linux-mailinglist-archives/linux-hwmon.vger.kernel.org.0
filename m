@@ -2,208 +2,81 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA35376BE2
-	for <lists+linux-hwmon@lfdr.de>; Fri,  7 May 2021 23:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A86376CA5
+	for <lists+linux-hwmon@lfdr.de>; Sat,  8 May 2021 00:26:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbhEGVoy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 7 May 2021 17:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39566 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGVox (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 7 May 2021 17:44:53 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94582C061574
-        for <linux-hwmon@vger.kernel.org>; Fri,  7 May 2021 14:43:53 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 65-20020a9d03470000b02902808b4aec6dso9149912otv.6
-        for <linux-hwmon@vger.kernel.org>; Fri, 07 May 2021 14:43:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:to:cc:references:from:subject:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zUq2Hsr1QCwCNOP3YAW/ijCHT8xuvAtDEa0riKbSYoc=;
-        b=DIE+r7dnx+XmVzkC5tkc/nWn12Vm96UiDaO6P+tecHh+V1w0xDHJwxb3730Kr9Fc4z
-         gBOzvoNUQAvdqzWQWiNEz/52h265fvORGxN3LJh+bVtC0qRevN73qDBx8DBjM7cxv966
-         k3m+VSUn8w1DIurkU1eYf3UZyL7TDm5Pw1vG8QIer9/ld64yQsjuzBisy8gsORloAJIZ
-         6qkO89bqrl34llq2E8L9BRkDfqA1TLu0nzJDdjPBjdZ+px4bA39tV0RK0d8p0+HEx+xZ
-         D64cS+gGdcf2A3S1aC+mxe1udh6Q9ysehpiBqhKZL+KM2RM7Vs2Qq++RiAZaGaI07mEy
-         V6nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:to:cc:references:from:subject:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zUq2Hsr1QCwCNOP3YAW/ijCHT8xuvAtDEa0riKbSYoc=;
-        b=Y0yj0MI6UcnlpRMzUnyOOs6InAEjjd1LXoVThv9LpoDIoW361/08OQ95JjKk6D9Il9
-         lvRR7jac88UgEeskHLTPiTsVx/2rwflp0Rz8YPD8nbV3lQR9uTKqZ8fAgDhICCJpCl6u
-         Y11Uk8hv6qxmehGhfbhrd1V/yPIUE7hL/nhMyLu4dffi7/OxBT/17TeJmvQtrdUFAZ42
-         TTAVbkyuUOS4awLCY4wwN6R78pi/P+z1r9OFNyQ9BWJFOcwELhx6NtdUPhxIcwIHRJ4V
-         Jh8FNYDc1rcTpIeqPZdEWF+f4sRfR6pw+OgO0saypjdhSK5J035vJk1NgJ4n3EsfeZJn
-         mASQ==
-X-Gm-Message-State: AOAM533QD0Z6+YeGNS/Yk0QNU5PDb4oWOeG4q2Pgs+FKuzb/3EklTaeL
-        VL63646CRWkiupLvnVua14Q=
-X-Google-Smtp-Source: ABdhPJzVP/lTrbxgYMqu0Tnd4S4RocIpVyiBgNaS+krmVNfZZkAgfgot7zHkiRTKedBBB3GUwdG6yA==
-X-Received: by 2002:a9d:bd1:: with SMTP id 75mr10019440oth.140.1620423833011;
-        Fri, 07 May 2021 14:43:53 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 64sm1305999oob.12.2021.05.07.14.43.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 May 2021 14:43:52 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-To:     W_Armin@gmx.de, hdegoede@redhat.com
-Cc:     linux-hwmon@vger.kernel.org, jdelvare@suse.com
-References: <20210507212404.6781-1-W_Armin@gmx.de>
- <20210507212404.6781-2-W_Armin@gmx.de>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 1/4] hwmon: (sch56xx) Use devres functions for watchdog
-Message-ID: <65ffae02-cef6-c3e8-6302-a0610fc4af53@roeck-us.net>
-Date:   Fri, 7 May 2021 14:43:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S229713AbhEGW1h (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 7 May 2021 18:27:37 -0400
+Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
+        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhEGW1h (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 7 May 2021 18:27:37 -0400
+X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
+Received: from bosmailscan09.eigbox.net ([10.20.15.9])
+        by bosmailout01.eigbox.net with esmtp (Exim)
+        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
+        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
+        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
+        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
+        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
+        2gI+xJSw==;
+Received: from [10.115.3.32] (helo=bosimpout12)
+        by bosmailscan09.eigbox.net with esmtp (Exim)
+        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
+Received: from boswebmail06.eigbox.net ([10.20.16.6])
+        by bosimpout12 with 
+        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
+X-EN-SP-DIR: OUT
+X-EN-SP-SQ: 1
+Received: from [127.0.0.1] (helo=homestead)
+        by boswebmail06.eigbox.net with esmtp (Exim)
+        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
+Received: from [197.239.81.229]
+ by emailmg.homestead.com
+ with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
 MIME-Version: 1.0
-In-Reply-To: <20210507212404.6781-2-W_Armin@gmx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Date:   Fri, 07 May 2021 21:54:17 +0000
+From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
+To:     undisclosed-recipients:;
+Subject: URGENT REPLY NEEDED
+Reply-To: suzara2017malingwan@gmail.com
+Mail-Reply-To: suzara2017malingwan@gmail.com
+Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
+X-Sender: fast65@godsofu4.com
+User-Agent: Roundcube Webmail/1.3.14
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-EN-AuthUser: fast65@godsofu4.com
+Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/7/21 2:24 PM, W_Armin@gmx.de wrote:
-> From: Armin Wolf <W_Armin@gmx.de>
-> 
-> Use devm_kzalloc()/devm_watchdog_register() for
-> watchdog registration since it allows us to remove
-> the sch56xx_watchdog_data struct from the drivers
-> own data structs.
-> Remove sch56xx_watchdog_unregister since devres
-> takes care of that now.
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
->   drivers/hwmon/sch5627.c        | 12 +++---------
->   drivers/hwmon/sch5636.c        |  9 ++-------
->   drivers/hwmon/sch56xx-common.c | 13 +++----------
->   3 files changed, 8 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
-> index 4324a5dbc968..8a71fba33ea0 100644
-> --- a/drivers/hwmon/sch5627.c
-> +++ b/drivers/hwmon/sch5627.c
-> @@ -64,7 +64,6 @@ static const char * const SCH5627_IN_LABELS[SCH5627_NO_IN] = {
-> 
->   struct sch5627_data {
->   	unsigned short addr;
-> -	struct sch56xx_watchdog_data *watchdog;
->   	u8 control;
->   	u8 temp_max[SCH5627_NO_TEMPS];
->   	u8 temp_crit[SCH5627_NO_TEMPS];
-> @@ -359,11 +358,6 @@ static const struct hwmon_chip_info sch5627_chip_info = {
-> 
->   static int sch5627_remove(struct platform_device *pdev)
->   {
-> -	struct sch5627_data *data = platform_get_drvdata(pdev);
-> -
-> -	if (data->watchdog)
-> -		sch56xx_watchdog_unregister(data->watchdog);
-> -
->   	return 0;
->   }
 
-This function is no longer necessary and can be dropped as well.
 
-> 
-> @@ -460,9 +454,9 @@ static int sch5627_probe(struct platform_device *pdev)
->   		return PTR_ERR(hwmon_dev);
-> 
->   	/* Note failing to register the watchdog is not a fatal error */
-> -	data->watchdog = sch56xx_watchdog_register(&pdev->dev, data->addr,
-> -			(build_code << 24) | (build_id << 8) | hwmon_rev,
-> -			&data->update_lock, 1);
-> +	sch56xx_watchdog_register(&pdev->dev, data->addr,
-> +				  (build_code << 24) | (build_id << 8) | hwmon_rev,
-> +				  &data->update_lock, 1);
-> 
->   	return 0;
->   }
-> diff --git a/drivers/hwmon/sch5636.c b/drivers/hwmon/sch5636.c
-> index 5683a38740f6..a5cd4de36575 100644
-> --- a/drivers/hwmon/sch5636.c
-> +++ b/drivers/hwmon/sch5636.c
-> @@ -54,7 +54,6 @@ static const u16 SCH5636_REG_FAN_VAL[SCH5636_NO_FANS] = {
->   struct sch5636_data {
->   	unsigned short addr;
->   	struct device *hwmon_dev;
-> -	struct sch56xx_watchdog_data *watchdog;
-> 
->   	struct mutex update_lock;
->   	char valid;			/* !=0 if following fields are valid */
-> @@ -372,9 +371,6 @@ static int sch5636_remove(struct platform_device *pdev)
->   	struct sch5636_data *data = platform_get_drvdata(pdev);
->   	int i;
-> 
-> -	if (data->watchdog)
-> -		sch56xx_watchdog_unregister(data->watchdog);
-> -
->   	if (data->hwmon_dev)
->   		hwmon_device_unregister(data->hwmon_dev);
-> 
-> @@ -495,9 +491,8 @@ static int sch5636_probe(struct platform_device *pdev)
->   	}
-> 
->   	/* Note failing to register the watchdog is not a fatal error */
-> -	data->watchdog = sch56xx_watchdog_register(&pdev->dev, data->addr,
-> -					(revision[0] << 8) | revision[1],
-> -					&data->update_lock, 0);
-> +	sch56xx_watchdog_register(&pdev->dev, data->addr, (revision[0] << 8) | revision[1],
-> +				  &data->update_lock, 0);
-> 
->   	return 0;
-> 
-> diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
-> index 6c84780e358e..9c884fd0beb2 100644
-> --- a/drivers/hwmon/sch56xx-common.c
-> +++ b/drivers/hwmon/sch56xx-common.c
-> @@ -401,7 +401,7 @@ struct sch56xx_watchdog_data *sch56xx_watchdog_register(struct device *parent,
->   		return NULL;
->   	}
-> 
-> -	data = kzalloc(sizeof(struct sch56xx_watchdog_data), GFP_KERNEL);
-> +	data = devm_kzalloc(parent, sizeof(struct sch56xx_watchdog_data), GFP_KERNEL);
->   	if (!data)
->   		return NULL;
-> 
-> @@ -438,10 +438,10 @@ struct sch56xx_watchdog_data *sch56xx_watchdog_register(struct device *parent,
+My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
+of the Philippine presently base in West Africa B/F, dealing with
+exportation of Gold, I was diagnose of blood Causal decease, and my
+doctor have announce to me that I have few days to leave due to the
+condition of my sickness.
 
-Since the return value is no longer used, the function does not need
-to return it anymore.
+I have a desire to build an orphanage home in your country of which i
+cannot execute the project myself due to my present health condition,
+I am willing to hand over the project under your care for you to help
+me fulfill my dreams and desire of building an orphanage home in your
+country.
 
->   	data->watchdog_output_enable = output_enable;
-> 
->   	watchdog_set_drvdata(&data->wddev, data);
-> -	err = watchdog_register_device(&data->wddev);
-> +	err = devm_watchdog_register_device(parent, &data->wddev);
->   	if (err) {
->   		pr_err("Registering watchdog chardev: %d\n", err);
-> -		kfree(data);
-> +		devm_kfree(parent, data);
->   		return NULL;
->   	}
-> 
-> @@ -449,13 +449,6 @@ struct sch56xx_watchdog_data *sch56xx_watchdog_register(struct device *parent,
->   }
->   EXPORT_SYMBOL(sch56xx_watchdog_register);
-> 
-> -void sch56xx_watchdog_unregister(struct sch56xx_watchdog_data *data)
-> -{
-> -	watchdog_unregister_device(&data->wddev);
-> -	kfree(data);
-> -}
-> -EXPORT_SYMBOL(sch56xx_watchdog_unregister);
-> -
->   /*
->    * platform dev find, add and remove functions
->    */
-> --
-> 2.20.1
-> 
+Reply in you are will to help so that I can direct you to my bank for
+the urgent transfer of the fund/money require for the project to your
+account as I have already made the fund/money available.
 
+With kind regards
+Mrs Suzara Maling Wan
