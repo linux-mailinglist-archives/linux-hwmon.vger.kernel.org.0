@@ -2,90 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 581133772C6
-	for <lists+linux-hwmon@lfdr.de>; Sat,  8 May 2021 17:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC61377403
+	for <lists+linux-hwmon@lfdr.de>; Sat,  8 May 2021 22:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229575AbhEHPtq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 8 May 2021 11:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48490 "EHLO
+        id S229552AbhEHUek (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 8 May 2021 16:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbhEHPtq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 8 May 2021 11:49:46 -0400
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE51C061574
-        for <linux-hwmon@vger.kernel.org>; Sat,  8 May 2021 08:48:44 -0700 (PDT)
-Received: by mail-ot1-x335.google.com with SMTP id g15-20020a9d128f0000b02902a7d7a7bb6eso10562418otg.9
-        for <linux-hwmon@vger.kernel.org>; Sat, 08 May 2021 08:48:44 -0700 (PDT)
+        with ESMTP id S229522AbhEHUej (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 8 May 2021 16:34:39 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BEDC06175F
+        for <linux-hwmon@vger.kernel.org>; Sat,  8 May 2021 13:33:32 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id i7so3735826ioa.12
+        for <linux-hwmon@vger.kernel.org>; Sat, 08 May 2021 13:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=eUylR8lC23VCN5fMG1CQsku42Pc33B0hKosEoqbjQxY=;
-        b=YJMYgWvZ7tQJP4cAC8s77ccEuqXWKGEIplchxv1NFEkOOFww6N/VY4M1b6RluD4wvD
-         bBlrz79rCNN5VZafHhp3dl2DBhUGFdX66t1KW7Ad+sEF4LeadhyMf67Xeb7a1ecyTIFm
-         FIgPFVFB33iTgTgz03VAB5/7ZR7fWkoON0+1zoIV6hn0sNjUp90e6MAPIzfnFh9OYDJ4
-         SeAO/twGRVoVvTutp7pWiLDY6fhtpy+B0s0zsdpOCW1itwhuJbUJwOBreqKTZCFMRdhi
-         gXO4GWiuwgQHzVJd8fWjgKBoe7d1K9ijwzeDcdxhb98oYUH2V3yMcj0i8ZJhUZliwp/4
-         GhYg==
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=t2PuuUA12ZEnJWsd6YLi9cc3wxXcwVJFuOyD1wnS6OM=;
+        b=uJ9s0txhIyVIeyEH9S1tRaHgz/tPNrxtHSHaNcWtd9XgkS2RD0WOFlXsTRSwYQ3vQE
+         xs4Hg4z8Pgdq6g/1XKUlJFwjLdd0vLLwfWLjRAJbHvT/oVgwjI5w4MbPy0gksJnW6To7
+         C8ey2UjvtHGOdo7gQ9DyGWg9qUtTLvvBN1nCT3A5Hmd+zjIN91iBRrUMudrovd3DwxOE
+         Z5cTthgzl+QnGZsCvX4atZVORceGuHjmEM9Ej4kbsIgGN1n488r2PTgsNqHiLi2KIQ4S
+         9ark3p7E2tYR02GOhPuDJPddaPWJ5od55JOdVveVs88BLv3Mw925DXsr2Pf7hMp+RSV3
+         yunw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:from:to:cc:references:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=eUylR8lC23VCN5fMG1CQsku42Pc33B0hKosEoqbjQxY=;
-        b=IYP6OOWL8E+NqGA/htKTcD9QfE38gTvCW5VT3vkop5fF154NIXhM0dNCCeAJtXlLON
-         3eLwJZvmbf5e/rc0qZibwVAvXgffTKBBiIFkT2m7/1mBJBCSkjNyWkqXMxrmHxv6/Arp
-         pr20jcefa6Q6uAsGDZRBwwt2e0Y+c/NQwbi4xXfJmgjW6UJh2EeA4aP4np6KOXAnMp5P
-         2z5dUPUw1Zp/CrIGTkUeqpO2YkwQPk2Lb0jLQPF9nBYwIFyZPQ+1qdQUFAFkY9Xd2hbH
-         Lz4kQRiOa1otbkj2ja4B7qOBiZjWw7tPPFgTYmLZ0WDLNUVJEQag3zBhlnJvTyyfsmx6
-         wOiA==
-X-Gm-Message-State: AOAM530unBWekBP25ddwTu/LIIQv+UDCW52b4DWcqK411H1sEC5RmlT2
-        80t/zKfthU0Da7derwjnE81QMUTUPpw=
-X-Google-Smtp-Source: ABdhPJzMfcgupA6i8QQ6NfakgBAVPIUceWO19P4Pkh0j9I6MEci+Eqh16BG2isxUBgWxUa5Wi/RTqQ==
-X-Received: by 2002:a9d:4c83:: with SMTP id m3mr13482940otf.26.1620488923529;
-        Sat, 08 May 2021 08:48:43 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a14sm1885828otl.52.2021.05.08.08.48.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 May 2021 08:48:43 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Subject: Re: [PATCH] hwmon: (max31722) Add support for MAX31722/MAX31723
- temperature sensors
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Tiberiu Breana <andrei-tiberiu.breana@nxp.com>
-Cc:     linux-hwmon@vger.kernel.org
-References: <20210508153104.GA3116801@roeck-us.net>
-Message-ID: <989935f4-0d12-e4ab-210e-c51150b8b10c@roeck-us.net>
-Date:   Sat, 8 May 2021 08:48:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=t2PuuUA12ZEnJWsd6YLi9cc3wxXcwVJFuOyD1wnS6OM=;
+        b=O6f69Ytp62ihSyosyAsJImrVghn9ED92RBw5ZGr69YIXCq1ClrGmt2n8VrwRN5jmKL
+         2KGMoue5gkuq4+oBfOFF54iz/EVc20FSsbDmT9Bf2tfrZJayGzmdXFPFSp5SnGJLTeqZ
+         BtTje+UUr2NUcuXYp5qrkqIjadEobSVy3TUZ7KcRZ4ZAFAGDvM0Reo6b9tggMMt8M5Z6
+         SpAfqJHtXXBy5dm2hNK+/hsB+J1ufWyj82QJGNvkVR/tWqwgNQtHlsQs8VqRAedM7G6U
+         fJg/yQtqqBb/4FCvvMjVIJ0RdEb3xwz3Wy5JIZN8Xzl3mJQgc6kqmCr7/v72eOsutR4X
+         lqqg==
+X-Gm-Message-State: AOAM530cwhDQaDg5e1Hrxlo++z4sE1YY8ScPucFxgmqec+P7P/w70Z5+
+        9CCBOmZn6CafSWNT897aN8GawGp6y33L5ff09vc=
+X-Google-Smtp-Source: ABdhPJzgFRYDmgk5o1ABPalGZ7ZBR4lvFlzQZnkAOgy+6y/vx3WK19bBogsfNO/mJ65ZgoeXOS/d5VGVizGboNUAO9g=
+X-Received: by 2002:a6b:dc06:: with SMTP id s6mr12899065ioc.130.1620506011591;
+ Sat, 08 May 2021 13:33:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210508153104.GA3116801@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Reply-To: mrdabirebasole@gmail.com
+Sender: drwwgosh@gmail.com
+Received: by 2002:a05:6e02:d05:0:0:0:0 with HTTP; Sat, 8 May 2021 13:33:31
+ -0700 (PDT)
+From:   "Mr. Dabire Basole" <mrdabirebasole@gmail.com>
+Date:   Sat, 8 May 2021 13:33:31 -0700
+X-Google-Sender-Auth: _ec9u4Oz6QOlN5b6clUGWrp7A-U
+Message-ID: <CACC9pScUzn=yn2e_RzXb5nYjqRYPmqv15E5KsamTzeX5Hn+bvg@mail.gmail.com>
+Subject: PERSONAL TREAT AS URGENT.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Re-sent with updated To: address.
+Dear Friend,
 
-On 5/8/21 8:31 AM, Guenter Roeck wrote:
-> Hi,
-> 
-> On Wed, Mar 30, 2016 at 07:16:24PM +0300, Tiberiu Breana wrote:
->> Add basic support for the Maxim Integrated MAX31722/MAX31723 SPI
->> temperature sensors / thermostats.
->>
->> Includes:
->>      - ACPI support;
-> 
->> +	{"MAX31722", 0},
->> +	{"MAX31723", 0},
-> 
-> Those ACPI IDs are invalid. Are they used anywhere ?  If so,
-> can you provide references ?
-> 
+Greetings!
 
-Thanks,
-Guenter
+How are you with your family today? I hope both of you are in good
+health decently, I know that this message might meet you in utmost
+surprise as we never know each other before. I am Mr. Dabire Basole a
+banker by profession, I need your urgent assist in transferring the
+sum of USD$18.6 ( Eighteen Million Six Hundred Thousand United State Dollars)
+into your account. It is 100% risk free and under this achievement you are
+entitled to receive 50% of the total cash and 50% will be for me.
+More details will be sent to you on confirmation of your interest.
+Please if you are real interest on my proposer, just providing me your
+following information details such as:
+
+(1)NAME..............
+(2)AGE:................
+(3)SEX:.....................
+(4)PHONE NUMBER:.................
+(5)OCCUPATION:................ .....
+(6)YOUR COUNTRY:.....................
+
+Yours sincerely,
+
+Mr.  Dabire Basole.
