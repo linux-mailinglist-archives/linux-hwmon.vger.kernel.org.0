@@ -2,117 +2,180 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D4A6379F6D
-	for <lists+linux-hwmon@lfdr.de>; Tue, 11 May 2021 07:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F37FC37A2CA
+	for <lists+linux-hwmon@lfdr.de>; Tue, 11 May 2021 11:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229807AbhEKF5z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 11 May 2021 01:57:55 -0400
-Received: from mail-dm6nam12on2042.outbound.protection.outlook.com ([40.107.243.42]:34400
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230160AbhEKF5y (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 11 May 2021 01:57:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kk53qE4Slf2JYt3Cm9kXDIe0bzE7jGKSzyrWcUoKA1f6Dv8L3jwKj5yBZmuL+LGgAgPgg5zYEs/uEc41nQhLoJN9UP7GYOhLi2Ao81K/WIbn+SgSuxmhly0dbd2RzJtTLwpVetgh4uly4XRvM8vbygydOzwZkE98TBf75JaTXSweK7FQ46GuXKlJ6rNaybMbERpaTf2zYW2hcHhcNLnAUTMHvSocWvZqEVG7xRHCzBVDa/TpF5pxiZ4JtRJUm8SC6l0mh79FTRl7RYgYS6whrZ7sQftk/rkLbIHYkt89HCEHRimRTMOUfFyNccVchV1LKVV9r73ssTatXlF0oCR2ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0aE7IM7iYKt/W+SKrgxBrHNiE4sXG7cvlarVT7b+AP8=;
- b=gIDGg1F7MrmU5xACRxVDpPKIwZP0g8nZ8DLTdjNtB/Vn6ivKbqEll0MCX4+QFsVwbxQVCR4E/vbOU9zhOVRMiDKu4GlR3yXTGLL50JnFcGz66xKW1coDB+r+rlxVECxZtqmEy/T5YearexPCcspPteGGyn607zEpFg0ZsI3BzPeOgnlyGS4fPmRAlCRQqkZeXcu7tMad/2Ogy6nDQF42DiJVPGx/BaXUIwAVu6mqc1nvpRGYvTftprKctp66lNTIKOUEUyNjKDzg/Fme72TMAvYsq8wus9kad4WVhHIUBZvHaQK+JlyHRmJtpm8LMzVaqtih/ve16qKucQJGbC5ycw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.112.34) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0aE7IM7iYKt/W+SKrgxBrHNiE4sXG7cvlarVT7b+AP8=;
- b=sBBxnrV4189Nvm0c3T9sg1b1BUJpuJ18SUSn08TWY0qSjKlMAQ4WlGfWOhVfTeSlxg+87OYxKxl4qAOIcQZ9J4bmll7O8BAiHjrFyy26VUwtD0VBTwJ4E4Y+2Keyrujjm9mKH3Wtlg1GaBhULPllt9tErg2KeuZN0SC3nzFxT3IYRy+VPrIQlgPF1yi6QaM6Y0Qu1d9IRHNHfpIhNwFhmhzb9WBkDrUmcD/UEw0ThDOTZDDuAS22Jp71w8s6n4t+cJolm87NDiQDSReai7iol8S9VKvn4SUZp+YiFK1GqP/D5/dB/xlxHhcfEHFd6BPzVrBwPAZiBv1kZaSxdfRHag==
-Received: from DM6PR07CA0102.namprd07.prod.outlook.com (2603:10b6:5:337::35)
- by BL0PR12MB2819.namprd12.prod.outlook.com (2603:10b6:208:8a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25; Tue, 11 May
- 2021 05:56:47 +0000
-Received: from DM6NAM11FT033.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:337:cafe::6c) by DM6PR07CA0102.outlook.office365.com
- (2603:10b6:5:337::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25 via Frontend
- Transport; Tue, 11 May 2021 05:56:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.112.34)
- smtp.mailfrom=nvidia.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.112.34 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.112.34; helo=mail.nvidia.com;
-Received: from mail.nvidia.com (216.228.112.34) by
- DM6NAM11FT033.mail.protection.outlook.com (10.13.172.221) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4108.25 via Frontend Transport; Tue, 11 May 2021 05:56:47 +0000
-Received: from dev-r-vrt-156.mtr.labs.mlnx (172.20.145.6) by
- HQMAIL107.nvidia.com (172.20.187.13) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 11 May 2021 05:56:45 +0000
-From:   Vadim Pasternak <vadimp@nvidia.com>
-To:     <linux@roeck-us.net>, <robh+dt@kernel.org>
-CC:     <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        "Vadim Pasternak" <vadimp@nvidia.com>
-Subject: [PATCH hwmon-next v7 3/3] dt-bindings: Add MP2888 voltage regulator device
-Date:   Tue, 11 May 2021 08:56:19 +0300
-Message-ID: <20210511055619.118104-4-vadimp@nvidia.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210511055619.118104-1-vadimp@nvidia.com>
-References: <20210511055619.118104-1-vadimp@nvidia.com>
+        id S231144AbhEKJBW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 11 May 2021 05:01:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57216 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230439AbhEKJBU (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 11 May 2021 05:01:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E709E611F1;
+        Tue, 11 May 2021 09:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620723613;
+        bh=ETvFtPpZWz6DN3iWb3G2WAPhojmYo6ps7EuchaChQ+E=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=PLGy/1LSbmraLJz9I+ZFpgkDxkCfvpVNiHxpQ06jZIl8i8GhyxDYM7Gy1/DkHiCt5
+         klo7h/HCiZCdE58jLyhFWvaAVP5oc9x+G/BoSRcOX7C3Tl/sTRBZmSPn8j1vcyPJNt
+         mRJS0yxqm/yCxF+CPVj6SxA/ae6jVWIEkJrXhN8oiyzJkjvRZFRVAZch9kSHP1iP93
+         oW7IG29Utyoqz+QwiX4h4Rg5Qegv470eEj7pH0f2MN9paDsUyx4y03dGzSMfb4uf2a
+         FDLqKCDGwM78HAqr/sdfeYExPB7ah8JOeYwd9qD22mRbJt8d7NaYnvORLTCVIJ25K4
+         6sDaroZmf8XGQ==
+Date:   Tue, 11 May 2021 11:00:02 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Edward Cree <ecree.xilinx@gmail.com>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
+        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
+        rcu@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 00/53] Get rid of UTF-8 chars that can be mapped as
+ ASCII
+Message-ID: <20210511110002.2f187f01@coco.lan>
+In-Reply-To: <ed65025c-1087-9672-7451-6d28e7ab8f92@gmail.com>
+References: <cover.1620641727.git.mchehab+huawei@kernel.org>
+        <2ae366fdff4bd5910a2270823e8da70521c859af.camel@infradead.org>
+        <20210510135518.305cc03d@coco.lan>
+        <df6b4567-030c-a480-c5a6-fe579830e8c0@gmail.com>
+        <YJk8LMFViV7Z3Uu7@casper.infradead.org>
+        <ed65025c-1087-9672-7451-6d28e7ab8f92@gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.20.145.6]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f436df8f-7832-4fba-726c-08d914419064
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2819:
-X-Microsoft-Antispam-PRVS: <BL0PR12MB28192600D1D4AE81FFB5BB91AF539@BL0PR12MB2819.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:296;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hWnE1a7vLOvS0ymgqAX/BNG5DaHJ2nFmLNTSkXsuFPz9dHtWeJMjJdzPLZTwAvnpRCNwtAQCiwJivTq9Dn1xp+D0zUP2FdFlnXWgF3B5tbi9AGdUMz3UBfLSRVClDsDQjyhA3JhTf3FSt5kvgKOD3roqZuUtx5Y3+yltXBqu2tk1XNMFs8tLPwk7ngFYJ8cKdjo+RG38ZtCpxCFTeTGX25EuWuT2FS/eaN1Dmhn/H+cap2Kx2Xlar2/HvybQu2Pk6EOtYhCs8/IQN8nOr43LISM32pqEOnmyyVMx1JQdmgczOndZdT2dw9Dbz2NjZCZQVeHW8uwVPaw6LtRGfG3rjWc+Bgix6mh7EOaIUVVgcjZ7sAL/+szmIAu4rhTU2Ie/Tvr4B5C/nAvnZmXafJ21JzkmV9UNGG6wlOlINBkH30S1ZfgFTm3Yoco6lOFrPgU+2IBMWvHB46cDU0WabnTFs3LWmybu1GMR4/9Zkl2t0ObH2VMRytYI2Jx0DYExdheOCZyiF3/LpNjuq/oV3eM/wywadA+vbm8YD3TcgPFm5Ak/Az0ecNDZWZKwPmtM292gOcx3+wFsPZ4vg04YmPK0iivw9llDxoVz3cOI4ECCRIHKzJiJdcWwlovK7DtzR7TnHRE8UgeEEKB9/6Vm9oDZDIyxQPXpGx5DjslihTGCZ3w=
-X-Forefront-Antispam-Report: CIP:216.228.112.34;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:schybrid03.nvidia.com;CAT:NONE;SFS:(4636009)(39860400002)(376002)(396003)(136003)(346002)(36840700001)(46966006)(82740400003)(16526019)(186003)(47076005)(36756003)(5660300002)(86362001)(54906003)(6666004)(478600001)(36906005)(110136005)(26005)(1076003)(82310400003)(8936002)(2906002)(8676002)(4744005)(426003)(70206006)(70586007)(316002)(36860700001)(356005)(336012)(7636003)(2616005)(107886003)(4326008);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2021 05:56:47.5778
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f436df8f-7832-4fba-726c-08d914419064
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.112.34];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT033.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB2819
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Monolithic Power Systems, Inc. (MPS) dual-loop, digital, multi-phase
-controller.
+Em Mon, 10 May 2021 15:33:47 +0100
+Edward Cree <ecree.xilinx@gmail.com> escreveu:
 
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Acked-by: Rob Herring <robh@kernel.org>
----
- Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+> On 10/05/2021 14:59, Matthew Wilcox wrote:
+> > Most of these
+> > UTF-8 characters come from latex conversions and really aren't
+> > necessary (and are being used incorrectly). =20
+> I fully agree with fixing those.
+> The cover-letter, however, gave the impression that that was not the
+>  main purpose of this series; just, perhaps, a happy side-effect.
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index a327130d1faa..4f6d149bfb3f 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -98,6 +98,8 @@ properties:
-           - fsl,mpl3115
-             # MPR121: Proximity Capacitive Touch Sensor Controller
-           - fsl,mpr121
-+            # Monolithic Power Systems Inc. multi-phase controller mp2888
-+          - mps,mp2888
-             # Monolithic Power Systems Inc. multi-phase controller mp2975
-           - mps,mp2975
-             # G751: Digital Temperature Sensor and Thermal Watchdog with Two-Wire Interface
--- 
-2.11.0
+Sorry for the mess. The main reason why I wrote this series is because
+there are lots of UTF-8 left-over chars from the ReST conversion.
+See:
+  - https://lore.kernel.org/linux-doc/20210507100435.3095f924@coco.lan/
 
+A large set of the UTF-8 letf-over chars were due to my conversion work,
+so I feel personally responsible to fix those ;-)
+
+Yet, this series has two positive side effects:
+
+ - it helps people needing to touch the documents using non-utf8 locales[1];
+ - it makes easier to grep for a text;
+
+[1] There are still some widely used distros nowadays (LTS ones?) that
+    don't set UTF-8 as default. Last time I installed a Debian machine
+    I had to explicitly set UTF-8 charset after install as the default
+    were using ASCII encoding (can't remember if it was Debian 10 or an
+    older version).
+
+Unintentionally, I ended by giving emphasis to the non-utf8 instead of
+giving emphasis to the conversion left-overs.
+
+FYI, this patch series originated from a discussion at linux-doc,
+reporting that Sphinx breaks when LANG is not set to utf-8[2]. That's
+why I probably ended giving the wrong emphasis at the cover letter.
+
+[2] See https://lore.kernel.org/linux-doc/20210506103913.GE6564@kitsune.sus=
+e.cz/
+    for the original report. I strongly suspect that the VM set by Michal=20
+    to build the docs was using a distro that doesn't set UTF-8 as default.
+
+    PS.:=20
+      I intend to prepare afterwards a separate fix to avoid Sphinx
+      logger to crash during Kernel doc builds when the locale charset
+      is not UTF-8, but I'm not too fluent in python. So, I need some
+      time to check if are there a way to just avoid python log crashes
+      without touching Sphinx code and without needing to trick it to=20
+      think that the machine's locale is UTF-8.
+
+See: while there was just a single document originally stored at the
+Kernel tree as a LaTeX document during the time we did the conversion
+(cdrom-standard.tex), there are several other documents stored as=20
+text that seemed to be generated by some tool like LaTeX, whose the
+original version were not preserved.=20
+
+Also, there were other documents using different markdown dialects=20
+that were converted via pandoc (and/or other similar tools). That's=20
+not to mention the ones that were converted from DocBook. Such
+tools tend to use some logic to use "neat" versions of some ASCII
+characters, like what this tool does:
+
+	https://daringfireball.net/projects/smartypants/
+
+(Sphinx itself seemed to use this tool on its early versions)
+
+All tool-converted documents can carry UTF-8 on unexpected places. See,
+on this series, a large amount of patches deal with U+A0 (NO-BREAK SPACE)
+chars. I can't see why someone writing a plain text document (or a ReST
+one) would type a NO-BREAK SPACE instead of a normal white space.
+
+The same applies, up to some sort, to curly commas: usually people just=20
+write ASCII "commas" on their documents, and use some tool like LaTeX
+or a text editor like libreoffice in order to convert them into
+ =E2=80=9Cutf-8 curly commas=E2=80=9D[3].
+
+[3] Sphinx will do such things at the produced output, doing something=20
+    similar to what smartypants does, nowadays using this:
+
+	https://docutils.sourceforge.io/docs/user/smartquotes.html
+
+    E. g.:
+      - Straight quotes (" and ') turned into "curly" quote characters;
+      - dashes (-- and ---) turned into en- and em-dash entities;
+      - three consecutive dots (... or . . .) turned into an ellipsis char.
+
+> > You seem quite knowedgeable about the various differences.  Perhaps
+> > you'd be willing to write a document for Documentation/doc-guide/
+> > that provides guidance for when to use which kinds of horizontal
+> > line?
+> I have Opinions about the proper usage of punctuation, but I also know =20
+>  that other people have differing opinions.  For instance, I place
+>  spaces around an em dash, which is nonstandard according to most
+>  style guides.  Really this is an individual enough thing that I'm not
+>  sure we could have a "kernel style guide" that would be more useful
+>  than general-purpose guidance like the page you linked.
+
+> Moreover, such a guide could make non-native speakers needlessly self-
+>  conscious about their writing and discourage them from contributing
+>  documentation at all.
+
+I don't think so. In a matter of fact, as a non-native speaker, I guess
+this can actually help people willing to write documents.
+
+>  I'm not advocating here for trying to push
+>  kernel developers towards an eats-shoots-and-leaves level of
+>  linguistic pedantry; rather, I merely think that existing correct
+>  usages should be left intact (and therefore, excising incorrect usage
+>  should only be attempted by someone with both the expertise and time
+>  to check each case).
+>=20
+> But if you really want such a doc I wouldn't mind contributing to it.
+
+IMO, a document like that can be helpful. I can help reviewing it.
+
+Thanks,
+Mauro
