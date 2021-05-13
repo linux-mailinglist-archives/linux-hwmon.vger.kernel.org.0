@@ -2,138 +2,95 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0A737FA84
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 May 2021 17:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8864137FAFA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 May 2021 17:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234783AbhEMPWk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 May 2021 11:22:40 -0400
-Received: from mga03.intel.com ([134.134.136.65]:17861 "EHLO mga03.intel.com"
+        id S229724AbhEMPra (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 May 2021 11:47:30 -0400
+Received: from mout.gmx.net ([212.227.17.21]:59659 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234610AbhEMPWf (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 May 2021 11:22:35 -0400
-IronPort-SDR: 40+lEnXPa2O/VMVOW9hUILAklwb9d6vfcIamxnd4UVjgTAtjXHVrZMBS3L3MFk0HNJu6d24cac
- Rc0eB8wAq6MA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9982"; a="200025154"
-X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; 
-   d="scan'208";a="200025154"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2021 08:21:24 -0700
-IronPort-SDR: wig3tRpGt2DUKed2QFjtXp5dTlIOm+kSoCw4LchmuQZg7tgTDMn/FG0zirODSjvJg1w0Ooerkj
- Czz9mtI8r2Mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; 
-   d="scan'208";a="542523923"
-Received: from lkp-server01.sh.intel.com (HELO ddd90b05c979) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 13 May 2021 08:21:23 -0700
-Received: from kbuild by ddd90b05c979 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lhD9O-0000Jg-OG; Thu, 13 May 2021 15:21:22 +0000
-Date:   Thu, 13 May 2021 23:20:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 38edc7847dc559f8838ab6581ccb0538db0586bb
-Message-ID: <609d43d6.MqAYD0G+6K1EVsS2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S231132AbhEMPr3 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 13 May 2021 11:47:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1620920759;
+        bh=a+6xIS9kOEOvONvM6nR2/aY9BR2LoJfzzuG6ijMIltU=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=R1RNJQhLHgAwIFZhIVaGZUsvTHBavaB8WU7vyhWT/MTH6hs4U3LrsPVinZKM+fIDn
+         sY6XGtfyZLD9lKisDAR7sO8kXVWjMi2Itpm/3bY8Ga12Yzp4cM/8LVLGfgwbpbcntp
+         u52YINieqCfHobP78sfvtYF7SHBxNAXLEvm7e54E=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from esprimo-mx.fritz.box ([84.154.212.154]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MzQgC-1lLIvf0Hpo-00vN2M; Thu, 13 May 2021 17:45:59 +0200
+From:   W_Armin@gmx.de
+To:     pali@kernel.org
+Cc:     linux-hwmon@vger.kernel.org, linux@roeck-us.net, jdelvare@suse.com
+Subject: [PATCH] hwmon: (dell-smm-hwmon) Fix index values
+Date:   Thu, 13 May 2021 17:45:46 +0200
+Message-Id: <20210513154546.12430-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LE3JUceotPiPUudwrAcTjz2+0B/ZUxnYfiYF0cxGZ+GoC/WCLH3
+ kqPgRs8895WlVQdhLgr5rc1l8SESMfasxxuLrkhziVy95KAieudUe82+PzA6zR3Ny+BrhzT
+ xJbpN2hGze51QSb2v4cIfJuvrrTkYQIufuup6C/3GuN3KvUrPoI9RUU+rM7diIewh65YZVp
+ ZxCKAb4IjgQc8wRa+KDUg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:q0+iAWEtGkQ=:62IiRFDO+bdca6cyCQFV3a
+ mLQIyA7LVH/ydurTyDqe683uiPYPYt4wEYof2amtClsUBJ3R6ctav+pOP7cIxOh/cKCJLrDV7
+ +yuEzYhvBEmtoLDACwFU/aIVNjgnR9123grxvARKtVSBwYp2iT7MnW6EE1oPJ2cyk9YAHSrHz
+ Ip7+PxTcElpnFetxb2J+GDZdquPC4D9gjoPoNQOdQT+suXiidrUaOYbE2lLqqielJFN/owhIn
+ QC5ewwJRDuh6s++kj8GoG2weBWCwdTYwfjAWPoVWBi1ARuZVigCXuE748zIZ4RarHodL2YP3O
+ k/VmPGwZlYxQhoZuNUG/x7/C0hvwcnjLFJrM3WpUGJItcG+S3kQSyPgrLAY3uP00v0tptyU2p
+ GFkbsLCVIyNhyjMb+SPv3dMa8Voy1HIYH96OuaiYxqdDTlnVgDe1USAh6n10+jEyfOnPBVtvZ
+ Z+qmXetSJJfEuWynT7XZUZVjPmC6/y4lN3x6qaRVjagOWSv0FnjvDo+2TXfyr/kW++AKrC3bb
+ +hZSjguscMVueYK0ewrHlYpNJeibKr+9pauy/beasNoyt0i0yNnk79vZ/iGnUQb/MH0guGXXB
+ AX3YewAo7ZGuh6YAfPbtS/IXz4oO8jTAa9U59nFrlInmIijCjlP0AlSaGhC8cnEmhwOwKsXnQ
+ xn86GjrZm7VdHo6SjsPlockYtfCt0p1unoCQQyFdMMuNRjkGxDbeZvvf91JCRwEs221tUA6iS
+ anFHBIkt9Qim+4YQQMWfp1yvGqhR6AlfIxCT+rnTgkZIQyXQ+QBcIzAujA1D7iZmdxpaZkARK
+ GoIwNMC/R1zdsmtN1cAKJWjVNAQXx2Gzxg6q7NI4P+zOlGwQsIMgPsAfioK5lid+gQV8QWkYi
+ GoXOSzP6AIgLRuMxgnaBG4lqhFWl6SV9HieDtvJKQ3XU1lwEKOU3cQvDf7MaSE8n3HpfflR8P
+ Arrl1ndOIYayGXJv8FZViSgj9EZ7NaleNhrX4VYxcM9aZLaOQYbRcP9q4WiMl0Dzjtzo6EfeA
+ h30gev1GQJVJ3QpZcsMQVTw9VuSAB2ZbEpE+ioYTqpCn3Rm625oRu2Yc1VSYxwtdWqf7jDsIN
+ FsGOPkQRifhXJRQDVTMddcHdcqGG11bXQNEuHVkY6NAaes2J9pk/y5PdXwXlbxGA4jQWU+ZuS
+ Dwdn7D5Ch0X9ubnSp0ll5RKX+MNd1H/+3yeDGUaipJcUfOZWKfNlDdaxeDjV4MK2xz1Is=
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 38edc7847dc559f8838ab6581ccb0538db0586bb  hwmon: (adm1275) enable adm1272 temperature reporting
+From: Armin Wolf <W_Armin@gmx.de>
 
-elapsed time: 722m
+When support for up to 10 temp sensors and for disabling automatic BIOS
+fan control was added, noone updated the index values used for
+disallowing fan support and fan type calls.
+Fix those values.
 
-configs tested: 78
-configs skipped: 2
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+Tested on a Dell Latitude C600.
+=2D--
+ drivers/hwmon/dell-smm-hwmon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
+.c
+index 2970892bed82..f2221ca0aa7b 100644
+=2D-- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -838,10 +838,10 @@ static struct attribute *i8k_attrs[] =3D {
+ static umode_t i8k_is_visible(struct kobject *kobj, struct attribute *att=
+r,
+ 			      int index)
+ {
+-	if (disallow_fan_support && index >=3D 8)
++	if (disallow_fan_support && index >=3D 20)
+ 		return 0;
+ 	if (disallow_fan_type_call &&
+-	    (index =3D=3D 9 || index =3D=3D 12 || index =3D=3D 15))
++	    (index =3D=3D 21 || index =3D=3D 25 || index =3D=3D 28))
+ 		return 0;
+ 	if (index >=3D 0 && index <=3D 1 &&
+ 	    !(i8k_hwmon_flags & I8K_HWMON_HAVE_TEMP1))
+=2D-
+2.20.1
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-h8300                       h8s-sim_defconfig
-sh                         ap325rxa_defconfig
-arm                      tct_hammer_defconfig
-powerpc                 linkstation_defconfig
-arm                           u8500_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210513
-i386                 randconfig-a001-20210513
-i386                 randconfig-a005-20210513
-i386                 randconfig-a004-20210513
-i386                 randconfig-a002-20210513
-i386                 randconfig-a006-20210513
-x86_64               randconfig-a012-20210513
-x86_64               randconfig-a015-20210513
-x86_64               randconfig-a011-20210513
-x86_64               randconfig-a013-20210513
-x86_64               randconfig-a016-20210513
-x86_64               randconfig-a014-20210513
-i386                 randconfig-a016-20210513
-i386                 randconfig-a014-20210513
-i386                 randconfig-a011-20210513
-i386                 randconfig-a015-20210513
-i386                 randconfig-a012-20210513
-i386                 randconfig-a013-20210513
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
