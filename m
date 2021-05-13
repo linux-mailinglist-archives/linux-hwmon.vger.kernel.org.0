@@ -2,115 +2,188 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E90237FA28
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 May 2021 17:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F6D37FA85
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 May 2021 17:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233075AbhEMPB5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 May 2021 11:01:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50402 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233073AbhEMPBx (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 May 2021 11:01:53 -0400
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD7BC061574;
-        Thu, 13 May 2021 08:00:39 -0700 (PDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id q5so13894826qvv.6;
-        Thu, 13 May 2021 08:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=gINGHNIp9fLgKFmTm97LYNhcTzUb6kk121jS5ZhlgcA=;
-        b=LYx2xLu8KnyfPq3uZbX8GywTEOddG7iHv6eb3hP5UBJ+Ji/n69qYoZowwHCt3N4RCP
-         9wkJLTNSCuQrG9U3eTFJhWpCV/0+YDsTWeJjG5vbZ3WR7pu+tZMeu6WRnEFm/63o1H1s
-         Qv1MIVAE6gin4h+aW7Gc0HsRz6DeDS6hpSuX7/TfC+S9rA1faHWtOdg9zWp7U5qoTfWd
-         oX0UMxk6kI8EmLujDXOcl+d6pjy47fFtJ5Mw14aLSQkDC5mx3GsZfizdTC1pHjhZ+3ea
-         OVUddAWO6UJNSryEZk75uA0+17vazX9yic9RZ1Nb/3CR08C9qV3k4WV4Gj8GLxGhXFec
-         emuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=gINGHNIp9fLgKFmTm97LYNhcTzUb6kk121jS5ZhlgcA=;
-        b=adVfv5yVSIwONIEdkTD/1n1jdjr4PulFNGG9ma3HPzEXfqXQQVl5vGJ7PwX99RLSM9
-         WbsGyTZPdDbNHWvUZE75NQzBF+Ljw9ZmpFVjThw6IK4pbI8stR+1178vThXiBwDvsB+B
-         ZOY7muWcjmY6DDYJv6U0YoktuhoJfVqzPQEIucL//FuuMiu0SKKb77XRg0U6bCEw/bLm
-         tAfkHoIFa5w+pAoorhnuNo8i/WF2vBbYUF52TpYt8Q2GhCmsyMI4bPTNuAzALNz81TW1
-         Ay7kKchdZjVZF6bGA0xpFDM95bi75hbkPnge5Sfj6hXSIsJBWvnaGv9rQ81nU5nZhfYs
-         J+hg==
-X-Gm-Message-State: AOAM531gqte8EjhcrVvtl+jw7qzHpnw5JdDLq3rxcw7wo+iAATHP96sx
-        mHNwv5/FAV+pVEhp4vcQtGmZznYrFag=
-X-Google-Smtp-Source: ABdhPJw5LU5sFHaoynPuoMZgUWAim20P1KUZSjWJ3qcZPp8a1jXzrcVE7axCcxXvARdasKpkbXHgdA==
-X-Received: by 2002:a05:6214:19ed:: with SMTP id q13mr41505413qvc.58.1620918038983;
-        Thu, 13 May 2021 08:00:38 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i9sm2735830qtg.18.2021.05.13.08.00.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 May 2021 08:00:38 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hwmon fixes for v5.13-rc2
-Date:   Thu, 13 May 2021 08:00:36 -0700
-Message-Id: <20210513150036.3199353-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.25.1
+        id S234610AbhEMPWr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 May 2021 11:22:47 -0400
+Received: from mga14.intel.com ([192.55.52.115]:1638 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234765AbhEMPWg (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 13 May 2021 11:22:36 -0400
+IronPort-SDR: FSJGXSfX9Fhq2pt8V0KPHfYX/Mt/PiXYQeP5gdk/7qB/OGOzmKlRaZ7X4DAYv0Yft6qVOqw7Et
+ EzNKgZmPeG2g==
+X-IronPort-AV: E=McAfee;i="6200,9189,9982"; a="199652330"
+X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; 
+   d="scan'208";a="199652330"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2021 08:21:25 -0700
+IronPort-SDR: XcqkedOW2/uNUiyMleczt6JEC+GbulQuXl0LdxX815728Vj7f9HteVlTk2MR7Hpgy98E1HyFpm
+ NfmDhJw14+PA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,296,1613462400"; 
+   d="scan'208";a="610410295"
+Received: from lkp-server01.sh.intel.com (HELO ddd90b05c979) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 13 May 2021 08:21:23 -0700
+Received: from kbuild by ddd90b05c979 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lhD9O-0000Jj-PF; Thu, 13 May 2021 15:21:22 +0000
+Date:   Thu, 13 May 2021 23:20:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [hwmon:hwmon] BUILD SUCCESS
+ 3b5169c2eb81e822445469a077223f8eb0729a59
+Message-ID: <609d43d5.JfPU/z6mSYg/kQI4%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Linus,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
+branch HEAD: 3b5169c2eb81e822445469a077223f8eb0729a59  hwmon: (adm9240) Fix writes into inX_max attributes
 
-Please pull hwmon fixes for Linux v5.13-rc2 from signed tag:
+elapsed time: 722m
 
-    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.13-rc2
+configs tested: 126
+configs skipped: 3
 
-Thanks,
-Guenter
-------
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                       aspeed_g4_defconfig
+powerpc                 mpc834x_itx_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                   lite5200b_defconfig
+sparc64                          alldefconfig
+sh                 kfr2r09-romimage_defconfig
+m68k                         apollo_defconfig
+sh                          r7785rp_defconfig
+arm                        mini2440_defconfig
+powerpc                   currituck_defconfig
+xtensa                              defconfig
+mips                            ar7_defconfig
+mips                             allyesconfig
+sh                        sh7763rdp_defconfig
+arm                            pleb_defconfig
+arc                            hsdk_defconfig
+arm                   milbeaut_m10v_defconfig
+powerpc                       maple_defconfig
+powerpc                 linkstation_defconfig
+powerpc                  storcenter_defconfig
+ia64                             alldefconfig
+powerpc                     powernv_defconfig
+sh                             sh03_defconfig
+powerpc                 mpc8313_rdb_defconfig
+m68k                       m5249evb_defconfig
+arm                         s5pv210_defconfig
+arc                     nsimosci_hs_defconfig
+m68k                          hp300_defconfig
+arm                      footbridge_defconfig
+sh                         ecovec24_defconfig
+powerpc                  iss476-smp_defconfig
+powerpc                       ebony_defconfig
+arm                            lart_defconfig
+m68k                           sun3_defconfig
+um                            kunit_defconfig
+riscv                          rv32_defconfig
+mips                      malta_kvm_defconfig
+arm                       imx_v6_v7_defconfig
+arm                         lubbock_defconfig
+sh                              ul2_defconfig
+sh                           se7619_defconfig
+powerpc                      tqm8xx_defconfig
+arm                       imx_v4_v5_defconfig
+h8300                     edosk2674_defconfig
+sh                          rsk7264_defconfig
+riscv             nommu_k210_sdcard_defconfig
+powerpc                 mpc832x_rdb_defconfig
+mips                          rb532_defconfig
+h8300                               defconfig
+ia64                             allyesconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210513
+i386                 randconfig-a001-20210513
+i386                 randconfig-a005-20210513
+i386                 randconfig-a004-20210513
+i386                 randconfig-a002-20210513
+i386                 randconfig-a006-20210513
+x86_64               randconfig-a012-20210513
+x86_64               randconfig-a015-20210513
+x86_64               randconfig-a011-20210513
+x86_64               randconfig-a013-20210513
+x86_64               randconfig-a016-20210513
+x86_64               randconfig-a014-20210513
+i386                 randconfig-a016-20210513
+i386                 randconfig-a014-20210513
+i386                 randconfig-a011-20210513
+i386                 randconfig-a015-20210513
+i386                 randconfig-a012-20210513
+i386                 randconfig-a013-20210513
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                      rhel-8.3-kbuiltin
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
+clang tested configs:
+x86_64               randconfig-a003-20210513
+x86_64               randconfig-a004-20210513
+x86_64               randconfig-a001-20210513
+x86_64               randconfig-a005-20210513
+x86_64               randconfig-a002-20210513
+x86_64               randconfig-a006-20210513
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v5.13-rc2
-
-for you to fetch changes up to 3b5169c2eb81e822445469a077223f8eb0729a59:
-
-  hwmon: (adm9240) Fix writes into inX_max attributes (2021-05-12 18:53:11 -0700)
-
-----------------------------------------------------------------
-hwmon fixes for v5.13-rc2
-
-Fix bugs/regressions in adm9240, ltc2992, pmbus/fsp-3y, and occ drivers,
-plus a minor cleanup in the corsair-psu driver.
-
-----------------------------------------------------------------
-Andy Shevchenko (1):
-      hwmon: (ltc2992) Put fwnode in error case during ->probe()
-
-Eddie James (1):
-      hwmon: (occ) Fix poll rate limiting
-
-Guenter Roeck (1):
-      hwmon: (adm9240) Fix writes into inX_max attributes
-
-Václav Kubernát (1):
-      hwmon: (pmbus/fsp-3y) Fix FSP-3Y YH-5151E non-compliant vout encoding
-
-Wan Jiabing (1):
-      hwmon: (corsair-psu) Remove unneeded semicolons
-
- drivers/hwmon/adm9240.c      |  2 +-
- drivers/hwmon/corsair-psu.c  |  4 ++--
- drivers/hwmon/ltc2992.c      |  8 ++++++--
- drivers/hwmon/occ/common.c   |  5 +++--
- drivers/hwmon/occ/common.h   |  2 +-
- drivers/hwmon/pmbus/fsp-3y.c | 27 +++++++++++++++++++++++++--
- 6 files changed, 38 insertions(+), 10 deletions(-)
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
