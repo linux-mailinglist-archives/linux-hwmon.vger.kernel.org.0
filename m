@@ -2,39 +2,39 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E19387729
+	by mail.lfdr.de (Postfix) with ESMTP id B18DD38772A
 	for <lists+linux-hwmon@lfdr.de>; Tue, 18 May 2021 13:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241951AbhERLMU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 18 May 2021 07:12:20 -0400
-Received: from mga05.intel.com ([192.55.52.43]:14900 "EHLO mga05.intel.com"
+        id S241229AbhERLMV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 18 May 2021 07:12:21 -0400
+Received: from mga18.intel.com ([134.134.136.126]:47170 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241330AbhERLMT (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 18 May 2021 07:12:19 -0400
-IronPort-SDR: aGirXaop55scAM7jSnmV1hECZ3VVkLVd1zR/NcCttdGVDTon4PTLDRL9l5C88m5Cp+IQBoxTob
- bR0OqA/l/qjA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9987"; a="286215324"
+        id S241943AbhERLMU (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 18 May 2021 07:12:20 -0400
+IronPort-SDR: O0XYcSa3EdfNV0VBRzKPSvl8O9v0QO+7UV9cVdOGPXrBa1IueOdFDbRQdk7e81VvFWxJZ9i2d0
+ VprNSS53Pydg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9987"; a="188092585"
 X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
-   d="scan'208";a="286215324"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2021 04:11:01 -0700
-IronPort-SDR: vJv17xykKAxfgDrdaZE/oweUIt9hrc7mnBO/j1lngB259/Ujx9JcIaSBLU0qAEE+6XVC3EGFw1
- ivEwLSuXhj3w==
+   d="scan'208";a="188092585"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2021 04:11:01 -0700
+IronPort-SDR: MW3BLZAC1pCKnYwZhOoPwy34+8i5Ri4otCBUm3bQ4OJOE8zzvv8bUYW92vRmu1SZ+PP6pyDqgD
+ NFm9TOaO8BWg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
-   d="scan'208";a="472899750"
+   d="scan'208";a="473507224"
 Received: from lkp-server01.sh.intel.com (HELO ddd90b05c979) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 18 May 2021 04:11:00 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 18 May 2021 04:11:00 -0700
 Received: from kbuild by ddd90b05c979 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1lixcp-00029p-Kk; Tue, 18 May 2021 11:10:59 +0000
-Date:   Tue, 18 May 2021 19:10:50 +0800
+        id 1lixcp-00029n-Js; Tue, 18 May 2021 11:10:59 +0000
+Date:   Tue, 18 May 2021 19:10:52 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon] BUILD SUCCESS
- f0fb26c456a30d6009faa2c9d44aa22f5bf88c90
-Message-ID: <60a3a0ba.oSOh4Jha++10rpFt%lkp@intel.com>
+Subject: [hwmon:hwmon-next] BUILD SUCCESS
+ bd22ed5bb515a10180d76b3e55cc21dbbbea6e5f
+Message-ID: <60a3a0bc.cPpGqkYEamSuiad3%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -43,10 +43,10 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
-branch HEAD: f0fb26c456a30d6009faa2c9d44aa22f5bf88c90  hwmon/pmbus: (q54sj108a2) The PMBUS_MFR_ID is actually 6 chars instead of 5
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: bd22ed5bb515a10180d76b3e55cc21dbbbea6e5f  hwmon: (adm1275) enable adm1272 temperature reporting
 
-elapsed time: 724m
+elapsed time: 723m
 
 configs tested: 124
 configs skipped: 2
