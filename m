@@ -2,60 +2,60 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E15A6391C33
-	for <lists+linux-hwmon@lfdr.de>; Wed, 26 May 2021 17:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80376391C34
+	for <lists+linux-hwmon@lfdr.de>; Wed, 26 May 2021 17:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232537AbhEZPmC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 26 May 2021 11:42:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49824 "EHLO
+        id S233940AbhEZPmI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 26 May 2021 11:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbhEZPmA (ORCPT
+        with ESMTP id S233118AbhEZPmC (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 26 May 2021 11:42:00 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53507C061574
-        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:29 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id t24so1919839oiw.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:29 -0700 (PDT)
+        Wed, 26 May 2021 11:42:02 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480A7C061574
+        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:31 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id i14-20020a9d624e0000b029033683c71999so1401305otk.5
+        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=tE7T5ILApC5dfgDC4MmLEMVtvGXvgam3HPuiam11UME=;
-        b=OLVHW15Khi36CykkB4WjRQch4cVZMtHWU0Lfyd0MbxWFo0aXMxxMYTIlovApAxTTsB
-         IfeJBOWPq9JBLLq7eaCZDNErHWWvQdk0FZSL+9qMapwmIXRUTjQNu2OcR+0b2I8/rRHf
-         Sl2TPwEGwkJQ50Jr4648HvryjWbx17JniZCdBRUsj5sGEQPBN+kQLRmRV5zmGacLnYoo
-         L6E+uTEXCqpWIdcPTaXhUIPqLBJq45BBzN4TeZOdUPx0Y8zLMOBJh8WhD/ex7/NKV02z
-         BN3VWStFgBhH2zV3/Z/8If68d8Bc9qLasCMhA4f/MjOeNzUquTm4AIRYhprF5QOkB/9S
-         shHg==
+        bh=watCmo8fCeuLjsloSdMLMz/4TONEMVWv4McrOuHPx84=;
+        b=Ss096A0X8DDg3U1oX0KIrCnuVu5FOjcRP58hndthBu/rcxUwuMPdbber12udYUb7l8
+         fy9+m10g8MHkTLqR1eWEpvGavwkuC9SW6XuXX3lR+weS8R9MR4OXRJWguuLrylzh5aM8
+         s3hHPLhKtRThIzApQkpUSrhmeuE+GIaet74sQF0Ly1Qoy/kHAsc++sM4PvqXhGPfeVa/
+         X3L+d9twcxTANPfiSoFBjSzljhrvmLT1YesPaiCnua8JH2l7sqLhr8j1irfUG8fgvd0p
+         63QKLzndzB8RLXe/s1DFF++L4AhyyblcSmr0qG9pFj+WIpCvHVFF8H9a9Xxj5TR17vdA
+         1SUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=tE7T5ILApC5dfgDC4MmLEMVtvGXvgam3HPuiam11UME=;
-        b=sQzfwBPmszRq5fzb9GxLbjdzNiilHKJt6HgadJlWRRZvoel9H6sfJDK5OmZr2vqxJ0
-         4CksjdllP3JlyAq+Mas2pvsNllFLQEcllp+A0CwmPcwo762DiyuEaI0bdL/Qkd4/2RVw
-         cE6m8EerLonBZWGVa+jJZ2Cpr4vua5kQslrfwiXm4JcokvM9N2IGB66VqT+02sREsp0J
-         uURad4I+/5fGjgC8r1i4hUhhzDSDCXYghyn9OTHFfQUD0jQo5/wAi8cdHyHqrSAxRDUx
-         +Fm6kgZnF/KHk1RFMaWjXVlGgotkMk3glkEpmm7xU12U8hbAE2o+M5wG9WrXfUGMgfhI
-         BIeA==
-X-Gm-Message-State: AOAM533QicJwfgIXd6B/Lny+hpBitPgeIliFeMGsvSsE96AMxTLph1ac
-        B7ceD8zoMkguDr8XSqZDS/5mSdRctXo=
-X-Google-Smtp-Source: ABdhPJx1GbdJgdeU4jaeQJjGjij4xDECN2WVq44NKgauJP+OdyDryYNgkxnMVwxqx6q/jYI31Sxeng==
-X-Received: by 2002:aca:e142:: with SMTP id y63mr2364756oig.57.1622043628326;
-        Wed, 26 May 2021 08:40:28 -0700 (PDT)
+        bh=watCmo8fCeuLjsloSdMLMz/4TONEMVWv4McrOuHPx84=;
+        b=hNJFHB820MQ4YyLwzfklJsy3HiL9rGVQ+qbMnVao/HZWH7QRLQ9CqAKXcvdg7gu0IQ
+         DnC71J7axtukhMdwsWSnXjJVS6Lunju8YPWM/ZoUR7JHB22oAcoPHz5LJrRwtkYhKPq0
+         n9SSdKxuCWASS05Lewi/J1B1olwIbmz0SI3zjdeDfTqLATiiFkdZAA7//np29hPTGxiy
+         c/qSnG8ZScNohtZx5jh5fXjzDvHrGiduQO2rAmDY2OMCTNYFTcdWSsH6yaE9D/TGzD2L
+         eOKQiVG4kiDVH7DE1/vq0KJsPCCWawXmTQ2a+to52oVly3zzWk/+VAbT2kEoDI0mZXVt
+         Qsfg==
+X-Gm-Message-State: AOAM532CT8dGyKA1vP9jOlUkqpsWktS74v+NpZcoFPSEnK0Zu07zBSAQ
+        ll+YraDi1GwCGhYtScZizkdey3wOxCg=
+X-Google-Smtp-Source: ABdhPJwopoN0SJKzMYHPfawmxvT3S9xeHhB5rznN1jKS8a97ICUAjkRBMgYMKN+iECl33pcNCZzSlw==
+X-Received: by 2002:a9d:7852:: with SMTP id c18mr2787034otm.115.1622043630333;
+        Wed, 26 May 2021 08:40:30 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j20sm4065741oot.29.2021.05.26.08.40.27
+        by smtp.gmail.com with ESMTPSA id x5sm4349019otg.76.2021.05.26.08.40.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 May 2021 08:40:27 -0700 (PDT)
+        Wed, 26 May 2021 08:40:29 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-hwmon@vger.kernel.org
 Cc:     Jean Delvare <jdelvare@suse.com>, jan.kundrat@cesnet.cz,
         kubernat@cesnet.cz, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 1/7] hwmon: (max31790) Fix fan speed reporting for fan7..12
-Date:   Wed, 26 May 2021 08:40:16 -0700
-Message-Id: <20210526154022.3223012-2-linux@roeck-us.net>
+Subject: [PATCH 2/7] hwmon: (max31790) Report correct current pwm duty cycles
+Date:   Wed, 26 May 2021 08:40:17 -0700
+Message-Id: <20210526154022.3223012-3-linux@roeck-us.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210526154022.3223012-1-linux@roeck-us.net>
 References: <20210526154022.3223012-1-linux@roeck-us.net>
@@ -66,37 +66,63 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Fans 7..12 do not have their own set of configuration registers.
-So far the code ignored that and read beyond the end of the configuration
-register range to get the tachometer period. This resulted in more or less
-random fan speed values for those fans.
+The MAX31790 has two sets of registers for pwm duty cycles, one to request
+a duty cycle and one to read the actual current duty cycle. Both do not
+have to be the same.
 
-The datasheet is quite vague when it comes to defining the tachometer
-period for fans 7..12. Experiments confirm that the period is the same
-for both fans associated with a given set of configuration registers.
+When reporting the pwm duty cycle to the user, the actual pwm duty cycle
+from pwm duty cycle registers needs to be reported. When setting it, the
+pwm target duty cycle needs to be written. Since we don't know the actual
+pwm duty cycle after a target pwm duty cycle has been written, set the
+valid flag to false to indicate that actual pwm duty cycle should be read
+from the chip instead of using cached values.
 
-Fixes: 54187ff9d766 ("hwmon: (max31790) Convert to use new hwmon registration API")
-Fixes: 195a4b4298a7 ("hwmon: Driver for Maxim MAX31790")
 Cc: Jan Kundrát <jan.kundrat@cesnet.cz>
 Cc: Václav Kubernát <kubernat@cesnet.cz>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/hwmon/max31790.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/hwmon/max31790.rst | 3 ++-
+ drivers/hwmon/max31790.c         | 6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/Documentation/hwmon/max31790.rst b/Documentation/hwmon/max31790.rst
+index f301385d8cef..54ff0f49e28f 100644
+--- a/Documentation/hwmon/max31790.rst
++++ b/Documentation/hwmon/max31790.rst
+@@ -39,5 +39,6 @@ fan[1-12]_input    RO  fan tachometer speed in RPM
+ fan[1-12]_fault    RO  fan experienced fault
+ fan[1-6]_target    RW  desired fan speed in RPM
+ pwm[1-6]_enable    RW  regulator mode, 0=disabled, 1=manual mode, 2=rpm mode
+-pwm[1-6]           RW  fan target duty cycle (0-255)
++pwm[1-6]           RW  read: current pwm duty cycle,
++                       write: target pwm duty cycle (0-255)
+ ================== === =======================================================
 diff --git a/drivers/hwmon/max31790.c b/drivers/hwmon/max31790.c
-index 86e6c71db685..f6d4fc0a2f13 100644
+index f6d4fc0a2f13..693497e09ac0 100644
 --- a/drivers/hwmon/max31790.c
 +++ b/drivers/hwmon/max31790.c
-@@ -170,7 +170,7 @@ static int max31790_read_fan(struct device *dev, u32 attr, int channel,
- 
- 	switch (attr) {
- 	case hwmon_fan_input:
--		sr = get_tach_period(data->fan_dynamics[channel]);
-+		sr = get_tach_period(data->fan_dynamics[channel % NR_CHANNEL]);
- 		rpm = RPM_FROM_REG(data->tach[channel], sr);
- 		*val = rpm;
- 		return 0;
+@@ -104,7 +104,7 @@ static struct max31790_data *max31790_update_device(struct device *dev)
+ 				data->tach[NR_CHANNEL + i] = rv;
+ 			} else {
+ 				rv = i2c_smbus_read_word_swapped(client,
+-						MAX31790_REG_PWMOUT(i));
++						MAX31790_REG_PWM_DUTY_CYCLE(i));
+ 				if (rv < 0)
+ 					goto abort;
+ 				data->pwm[i] = rv;
+@@ -299,10 +299,10 @@ static int max31790_write_pwm(struct device *dev, u32 attr, int channel,
+ 			err = -EINVAL;
+ 			break;
+ 		}
+-		data->pwm[channel] = val << 8;
++		data->valid = false;
+ 		err = i2c_smbus_write_word_swapped(client,
+ 						   MAX31790_REG_PWMOUT(channel),
+-						   data->pwm[channel]);
++						   val << 8);
+ 		break;
+ 	case hwmon_pwm_enable:
+ 		fan_config = data->fan_config[channel];
 -- 
 2.25.1
 
