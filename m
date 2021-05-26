@@ -2,60 +2,60 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE21391C36
-	for <lists+linux-hwmon@lfdr.de>; Wed, 26 May 2021 17:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33168391C38
+	for <lists+linux-hwmon@lfdr.de>; Wed, 26 May 2021 17:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233822AbhEZPmO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 26 May 2021 11:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49866 "EHLO
+        id S233675AbhEZPmR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 26 May 2021 11:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234193AbhEZPmK (ORCPT
+        with ESMTP id S233819AbhEZPmM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 26 May 2021 11:42:10 -0400
+        Wed, 26 May 2021 11:42:12 -0400
 Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A057FC06175F
-        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:37 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id i23-20020a9d68d70000b02902dc19ed4c15so1432067oto.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB5EC061756
+        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:39 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id 69-20020a9d0a4b0000b02902ed42f141e1so1408861otg.2
+        for <linux-hwmon@vger.kernel.org>; Wed, 26 May 2021 08:40:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=q9EkXnYEQiICfs65xThtnkdPUbxcpwn3kdqK+p3e1YY=;
-        b=KGo865HDyCs0SNFkwpp9+Su8vTBxDPvtOiiZjiZqxaWtnWgEUFXX5XFMkn6cQPGH9R
-         ICLpGo4hVyXPKrenBjStdYzIqoTp9c7FWSN+4Fz6dxN7PY06H/6r8OcG4sWcjAoRjKrc
-         JKUtrA04G/fLUGQNRd5u2tG2SwGaP8LTOcjJOXMzUJR4dPuVbXSiJGVyf5LMQpyn/bVQ
-         XNVKi9WZLSOSUiA1MBddtcrE8jTGkaJPyeb1bWcRH+lDKoGzvzqnyK+HwcY8PxIEKfII
-         t0Gzdn9nMOUUfQ9Ta7uNjtK1AzzhmLOfqgHnsDH1RLIf/1JLgNafbI5M0RJQ1fMj0CWc
-         6oCg==
+        bh=pPQLkKkMQ3uWimuyAs10pPH0N/fVipRIkvuWmS5PZNU=;
+        b=vWm1J/OQzHg0y2KCs2geYQ+ZLnvjbuqWr1HXg0wGpH7l2eY4ro6VTluvYGdr2iBmQR
+         QHTriiBejbfpHTuzFquuCuOPc6yQnmykc7DgjQ41/i+Z9+cptyp+aIeNu1B18yaJmnzd
+         7FG0IoSovzTMo6SgkAd+XVPFs/NoveHPqL0cCoHTD1J2e2k2/S8EJ2hYlL8msFK8b0R8
+         InBpsmSwulQNPUMCW+4W+03QUTKwr29ERvXonrnvFPhSxWYzJUHt2HB/00ZOEVZr0G9g
+         8UCpmfR62WMMwE1G5njRssTeDxVxraMS6H0m1PLVg/4UTjqUo8FGn1KTMYwXlHyK9KOi
+         zJqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=q9EkXnYEQiICfs65xThtnkdPUbxcpwn3kdqK+p3e1YY=;
-        b=sZl64Dq3MR4h6xElp86IVkZ5t1y/4AMZXc1l8WcdSpv2rxJ7lSDmoI2JX+G7tDcU8a
-         RYdtbGaxtjYd9UVPcmbtRC9D5Gmqp3OvE3ARHu8k6VovyqG1VaSMfIWg9WXUnrOcDqp5
-         XWaG18pWEiPsRwet6Xkc23vxGGQOveN/psGUG8j94q/zQFXu2aMO8rYVEc0KMZ8hUi58
-         uZphpPgdhHdPNkAj3o+tpDaR3POytB9+tGKMsq7kfLND6jiUMuzXWvSUMwf2S84bpbZb
-         wZUoDp2mKD/ek39d2puL0F8ZGstNzPEueehOs6Ux67FYKoJh0UdJco9wqluABf5ANh5J
-         B1zQ==
-X-Gm-Message-State: AOAM531ApYthFn32E6M5MrDVk5bHfHsCL/DDpwPnC1HXUWj3m2ajsGaw
-        Ybkr55UZl5YRnePLJqwEJWz8cERP8JI=
-X-Google-Smtp-Source: ABdhPJxC8jSkhE9B5z9QJ9BElGDlsLsnfzdbPVleYHXQC8knXt12WJWNTICbB7v5xBrUg0s8Frcoag==
-X-Received: by 2002:a05:6830:1155:: with SMTP id x21mr2820773otq.303.1622043636704;
-        Wed, 26 May 2021 08:40:36 -0700 (PDT)
+        bh=pPQLkKkMQ3uWimuyAs10pPH0N/fVipRIkvuWmS5PZNU=;
+        b=LllWcxBx5wbTUYPOWzWunEVB9Q+VJLQChHQ7w+AWFDscc0YjuuGRKGOyl9LLGiwqkn
+         PbPIJz6V2IDsFBGqtauN99zR7BQ3lNmrhAD7uBksNDCR6WnLsFwO3uWktzc0OS/stB1v
+         RsatMYRMiamcK4f+j6yCREY5TWOr7QA1Ksi0oiG/xjXfZpCnO2bV0siw75vQgHuBuRGb
+         0vrlUM7Ag9h0I1Anw+4XafWyG2dqtI5S9rzs6XHSADTw6aHttjsX4aKaN4X/sBh22NVk
+         g7fCl4cIPHioDlJhkcqVMvzKTLcB01dHIUoGd9/9jCEIZt9NZnxQYGJTJEuhIRMIOFPQ
+         c8bg==
+X-Gm-Message-State: AOAM533io4VOg1u7tgwu2XbxU/tJ6X4a1tiHS1swsseoiFVOZSEzcEDU
+        jbzH8u+xZ3TdQNAG997JwT+idWCzU0s=
+X-Google-Smtp-Source: ABdhPJwqYOpi7cR7vCz+gj7gSqbUvhmUojpu/TcXhg+Y8PgzPmXeLmX8vRvGfulRskDkq5DKW3Js6A==
+X-Received: by 2002:a05:6830:4da:: with SMTP id s26mr2857587otd.77.1622043638533;
+        Wed, 26 May 2021 08:40:38 -0700 (PDT)
 Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id q14sm4210617ota.31.2021.05.26.08.40.35
+        by smtp.gmail.com with ESMTPSA id x11sm4488944otr.36.2021.05.26.08.40.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 May 2021 08:40:36 -0700 (PDT)
+        Wed, 26 May 2021 08:40:38 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-hwmon@vger.kernel.org
 Cc:     Jean Delvare <jdelvare@suse.com>, jan.kundrat@cesnet.cz,
         kubernat@cesnet.cz, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5/7] hwmon: (max31790) Clear fan fault after reporting it
-Date:   Wed, 26 May 2021 08:40:20 -0700
-Message-Id: <20210526154022.3223012-6-linux@roeck-us.net>
+Subject: [PATCH 6/7] hwmon: (max31790) Detect and report zero fan speed
+Date:   Wed, 26 May 2021 08:40:21 -0700
+Message-Id: <20210526154022.3223012-7-linux@roeck-us.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210526154022.3223012-1-linux@roeck-us.net>
 References: <20210526154022.3223012-1-linux@roeck-us.net>
@@ -66,56 +66,43 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Fault bits in MAX31790 are sticky and have to be cleared explicitly.
-A write operation into either the 'Target Duty Cycle' register or the
-'Target Count' register is necessary to clear a fault.
-
-At the same time, we can never clear cached fault status values before
-reading them because the companion fault status for any given fan is
-cleared as well when clearing a fault.
+If a fan is not running or not connected, of if fan monitoring is disabled,
+the fan count register returns a fixed value of 0xffe0. So far this is then
+translated to a RPM value larger than 0. Since this is misleading and does
+not really make much sense, report a fan RPM of 0 in this situation.
 
 Cc: Jan Kundrát <jan.kundrat@cesnet.cz>
 Cc: Václav Kubernát <kubernat@cesnet.cz>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/hwmon/max31790.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/hwmon/max31790.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/hwmon/max31790.c b/drivers/hwmon/max31790.c
-index 19651feb40fb..8e4fd9b7c889 100644
+index 8e4fd9b7c889..91fe419b596c 100644
 --- a/drivers/hwmon/max31790.c
 +++ b/drivers/hwmon/max31790.c
-@@ -80,7 +80,7 @@ static struct max31790_data *max31790_update_device(struct device *dev)
- 				MAX31790_REG_FAN_FAULT_STATUS1);
- 		if (rv < 0)
- 			goto abort;
--		data->fault_status = rv & 0x3F;
-+		data->fault_status |= rv & 0x3F;
+@@ -40,6 +40,8 @@
+ #define FAN_RPM_MIN			120
+ #define FAN_RPM_MAX			7864320
  
- 		rv = i2c_smbus_read_byte_data(client,
- 				MAX31790_REG_FAN_FAULT_STATUS2);
-@@ -184,7 +184,21 @@ static int max31790_read_fan(struct device *dev, u32 attr, int channel,
++#define FAN_COUNT_REG_MAX		0xffe0
++
+ #define RPM_FROM_REG(reg, sr)		(((reg) >> 4) ? \
+ 					 ((60 * (sr) * 8192) / ((reg) >> 4)) : \
+ 					 FAN_RPM_MAX)
+@@ -175,7 +177,10 @@ static int max31790_read_fan(struct device *dev, u32 attr, int channel,
+ 		return 0;
+ 	case hwmon_fan_input:
+ 		sr = get_tach_period(data->fan_dynamics[channel % NR_CHANNEL]);
+-		rpm = RPM_FROM_REG(data->tach[channel], sr);
++		if (data->tach[channel] == FAN_COUNT_REG_MAX)
++			rpm = 0;
++		else
++			rpm = RPM_FROM_REG(data->tach[channel], sr);
  		*val = rpm;
  		return 0;
- 	case hwmon_fan_fault:
-+		mutex_lock(&data->update_lock);
- 		*val = !!(data->fault_status & (1 << channel));
-+		data->fault_status &= ~(1 << channel);
-+		/*
-+		 * If a fault bit is set, we need to write into one of the fan
-+		 * configuration registers to clear it. Note that this also
-+		 * clears the fault for the companion channel if enabled.
-+		 */
-+		if (*val) {
-+			int reg = MAX31790_REG_TARGET_COUNT(channel % NR_CHANNEL);
-+
-+			i2c_smbus_write_byte_data(data->client, reg,
-+						  data->target_count[channel % NR_CHANNEL] >> 8);
-+		}
-+		mutex_unlock(&data->update_lock);
- 		return 0;
- 	default:
- 		return -EOPNOTSUPP;
+ 	case hwmon_fan_target:
 -- 
 2.25.1
 
