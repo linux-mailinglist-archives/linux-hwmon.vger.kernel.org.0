@@ -2,62 +2,95 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB8239453E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 28 May 2021 17:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25A5039468B
+	for <lists+linux-hwmon@lfdr.de>; Fri, 28 May 2021 19:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbhE1Pio (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 28 May 2021 11:38:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235849AbhE1Pin (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 28 May 2021 11:38:43 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B989C061574
-        for <linux-hwmon@vger.kernel.org>; Fri, 28 May 2021 08:37:07 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id a2so5889045lfc.9
-        for <linux-hwmon@vger.kernel.org>; Fri, 28 May 2021 08:37:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=T4y7hsWkAfb8OBTEg3avGQFXXvthRmqSS1abQJErodQ=;
-        b=K7fidpaq03efJCyYCsJStsKtCFFuNHw001ylW9kuXI05DrsUonVEOifwXqv2fJpLXa
-         g+kFx29plwpeQWxofVw8jJOSbvUtgXtMMOoDdaJE+x1OXcBTdZy88xZiSNbO6uAjIEcT
-         WYc4jyB75clcQCqTz8I9NkaP62i97X30DFpa4c6z01q4KaG7yDiURIjq/WMukbAaea45
-         93ARAeT2BY8Tg221Bob3T5gj/Mv3UG6SwqH2WbKKFEnfKoyDjTL1AgCaDW4WocQe9qtI
-         pbwNDVAzrxGSuvNBfcdNV++q30t0OLV+Iq5wX9U9e/oh7N1wkZrVHGNy1RAWxxbPHaMa
-         djNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=T4y7hsWkAfb8OBTEg3avGQFXXvthRmqSS1abQJErodQ=;
-        b=tvPdy7/z1W1wER0YjKdz1qLpHyGmJs85rrraogUOAsOkxmCz2faMdGApfbqnYYWxGc
-         iZrJKsGURe+CVWyxyT+9xeDSubg2O4nRQFrqBnRPne8U68Ci/S+0PpC8uX8i2OH0VQ+O
-         cyXHl5ioFHci04msue1cJmjjEEe1hgtFaQSEcj1WXT6ygoFdYuG4oY0sOz81OW0Z3P0f
-         tVJSz9uPnUeIxAXVTGrUIOO+rzGgiF02KZpMdbJuufVbRYUne0bNeDGfwQbcnL4X0++8
-         8Z4jNm+YwqJnGzX9wKGpGQLlhg3DUuZrC/95gT7z5xCD2Lwv8PLfdpgieKwspfhqO6AO
-         kQWw==
-X-Gm-Message-State: AOAM533yesoWubZqM59o7PVIY8q164ASQ863MBj5mMxuF9HSbbJq1EEe
-        ZaKzXz96pmVo4EqB4ZqNKeMFjygdDbDxq55Hqbc=
-X-Google-Smtp-Source: ABdhPJyEe5WWPhfBZZN+RNCVMZKk1c6A1RO/P3UUG1KmWnrkPcy4qG2/9Nn4Jvox4nrFEPyPcLYoPjNMOWS1EHi415s=
-X-Received: by 2002:a05:6512:370f:: with SMTP id z15mr6193315lfr.18.1622216225891;
- Fri, 28 May 2021 08:37:05 -0700 (PDT)
+        id S229467AbhE1RjR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 28 May 2021 13:39:17 -0400
+Received: from mout.gmx.net ([212.227.17.21]:35133 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229450AbhE1RjR (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 28 May 2021 13:39:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1622223445;
+        bh=C13khoicbmPnSCv5GxXGFgKJnKo3IG99zOeQWLCiafg=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=VuFh+5XiUcwdB2cmKFQq2NyGU6QPezpyjBUQG7HVeX6gCpb/pBs5E5pwx5+bRRBKr
+         Grrj61ZOoapokqF7L63ydoDsLVcYAn3qixXmLLv0A79N3mcjNNPySI37dgzUIxPSG+
+         x6Kvp2nMrxKPvKaxzvQujFSGHJh07gTr4STKpue8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from esprimo-mx.fritz.box ([79.242.180.99]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1Md6Mt-1lDthe0ADr-00aB67; Fri, 28 May 2021 19:37:25 +0200
+From:   W_Armin@gmx.de
+To:     pali@kernel.org
+Cc:     linux@roeck-us.net, jdelvare@suse.com, linux-hwmon@vger.kernel.org
+Subject: [PATCH v2 0/6] Convert to new hwmon registration api
+Date:   Fri, 28 May 2021 19:37:10 +0200
+Message-Id: <20210528173716.10975-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: by 2002:a2e:a371:0:0:0:0:0 with HTTP; Fri, 28 May 2021 08:37:05
- -0700 (PDT)
-From:   Apelete tekoagbo <apeletetekoagbo@gmail.com>
-Date:   Fri, 28 May 2021 15:37:05 +0000
-Message-ID: <CA+DyAiwsg0XvCo9FTXsd8R+DdzCU9sAgTwqvCo8e-OGwjKMhog@mail.gmail.com>
-Subject: My belove friend
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:AD38ClvXeTxigXyP5xM0/M80vpBwoLAgo6rU7mVC85ntE1PesEv
+ IA8Ilv94o3hdExocnb2s829jYORVTlVt9fNx42AQSkpo/SMU7e7lxsF1irtLy+VNosQefLp
+ +iiNb4FH7QP0tb4HQsEPBSaaT+5pZ/Lge+Nmhb1ZpQqqj/4phg8fC/ibaVJYYmXfZ5iQmBy
+ GMeVPksk3QQXhe2McqqUg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:s2c6q2PgDQ8=:ZjFaE/CquXrXEX3MH8kDPq
+ JyEoe0Er/3TZN1Us3OZuM9SH3QPtmj/h/nerulnekOnQsOymlw+hp7htsoBeEFf94/+mr8ojT
+ q84d2cS+YPotIhm7bG1Yu5HruSqM5DYcuEoRRfVxL7hpyU2qCl3gRsfMYj7rkvCORjYeG8bis
+ l9rErbPwr5loZNxrEMjOEqC4gJ1eIJw69XdgwUhkk+FjTuS1duW2EbByblBvmMFcclCiyUxcn
+ A/ZTauoqi5g9vaDtr13xaQmtvcop6WW+n2ZK0AdmhW5RkaoPMX0x1uOSGoAN97TPHknmkkvlZ
+ wUZAeXclpE3p4UY/+rmNnewa2ZjORIsyCk+HxqGj4+JguAq/st7xDJpyiAWMHYsDPfYlgKIZa
+ sQu1xg7vfV3/2gmlI8XZrwvBL0cMAVyTigpVuXo3hmRH5g845//6rIeGSwMkDxNItdkt1eIdd
+ +uxFP4tR1s7GIWJIuzbojcWEIZCsrmdfTl+Q+5IkYrHV33+zTiuW/7f9fLXMHgsxGYc1+8nhW
+ izJ+ManT+qSPD7hq8Geb+kOAuHmWyUn/358x7+AbPcQLOsajSs7arBKN13vQvHS4rKV51l+k2
+ cPQ/o9CF1n+pMpk3mM1EQG8AzPkFGr62BRC6mRwWLZqAkreLqT7+OEmh/HrxoWZBDtdPmAerq
+ WWBXSh79c4hsja6Cis+b9tSVZs9Evu8miwtdFKt8KLrIVQlI7tIsDLyXO472OoMoi58NjBpXt
+ OjW0vRQauT4HbNLWbGCKxEK2zmY/EzpQ8P00YCbC0i1L15ykPV48SeJ8tXA3oLeFW7kqAwIZT
+ EDtP9Z6Mokt3MTbSa5+SGgFzkHj085YwcZlGoB+3bvIu0uNP1hiBRcRNSPxIEg8CRsIvC6v5p
+ nVTSrdG2EVNjoMNGh3evi9kSOHLakgWP9b+wqOmj0gxNsqOv59mBjKI0Pb/cVx+DSPjSfLE0e
+ VIR1h1DoJBpOooL7dARWTBfEEpYUXdfL0/bGxI1a6WdQa7ZarLQD2jy3s2MwSQnvzZ4i1u9mB
+ GcKNeKfe23urOu3NQzwnlY06uh7b8UKM83Ib9VPNDJZF6aQ0h9cbic5Z8Ip5Vku6uJIqJFW5s
+ czeMBoPHqTE0fwZQY/nl3Y5IbKnScsxPURx34O0gsmbYzA5XnsvqbFn0fQJAkecRibm3kejFG
+ 4FIt4D6cQ2ucvMICFnFIeIeEyrAdg7m1zKpcYoj/2rx2CXhv553UW9wp0LTgv1rtoAju4=
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi
-You received my previous message? I contacted you before but the
-message failed back, so i decided to write again. Please confirm if
-you receive this so that i can proceed.
-Regards,
-petry
+From: Armin Wolf <W_Armin@gmx.de>
+
+This patch series is converting the dell-smm-hwmon driver
+to the new hwmon registration API. In order to do so,
+it introduces a platform device in the first patch, and
+applies some optimisations in the next three patches.
+The switch to the new hwmon registration API is done in
+the last patch.
+
+The caching of the fan/temp values was modified to better fit
+the new hwmon API.
+
+The patches work fine for my Dell Latitude C600, but i whould
+appreciate someone testing the code on another model too.
+
+Changes in v2:
+- Fix coverletter title
+- Update docs regarding pwm1_enable
+
+Armin Wolf (6):
+  hwmon: (dell-smm-hwmon) Use platform device
+  hwmon: (dell-smm-hwmon) Mark functions as __init
+  hwmon: (dell-smm-hwmon) Use devm_add_action_or_reset()
+  hwmon: (dell-smm-hwmon) Move variables into a driver private data
+    structure
+  hwmon: (dell-smm-hwmon) Convert to
+    devm_hwmon_device_register_with_info()
+  hwmon: (dell-smm-hwmon) Update docs
+
+ Documentation/hwmon/dell-smm-hwmon.rst |   2 +-
+ drivers/hwmon/dell-smm-hwmon.c         | 860 ++++++++++++-------------
+ 2 files changed, 426 insertions(+), 436 deletions(-)
+
+=2D-
+2.20.1
+
