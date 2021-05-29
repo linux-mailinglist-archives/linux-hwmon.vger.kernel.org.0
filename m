@@ -2,89 +2,212 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D6FE394AD1
-	for <lists+linux-hwmon@lfdr.de>; Sat, 29 May 2021 08:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22BD8394B4E
+	for <lists+linux-hwmon@lfdr.de>; Sat, 29 May 2021 11:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbhE2GlQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 29 May 2021 02:41:16 -0400
-Received: from mout.gmx.net ([212.227.15.19]:34233 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229620AbhE2GlO (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 29 May 2021 02:41:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1622270362;
-        bh=74UcKt3Z3PoliD1LPr2DSXpjuxEdJp45FyIPj9D2SGQ=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LHdUFomaSPpAwyYIb+3Th+LSEgUyiiE1YOr8Va1F6NhK2plc1C2RluVRY4rLFiWlI
-         pX/QVsJN0alWOKFHJb1axt+Tk+9lmuFeDpu6LqFbpNSL9jDWGoc1TOCAyVLJhdS0ql
-         X5KOmU4AFypxUhAjQLXUICXlGr3oMJf3AL/B2q/M=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.fritz.box ([91.0.109.106]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtOKi-1lYwJI2MV4-00utrK; Sat, 29
- May 2021 08:39:22 +0200
-From:   W_Armin@gmx.de
-To:     pali@kernel.org
-Cc:     linux@roeck-us.net, jdelvare@suse.com, linux-hwmon@vger.kernel.org
-Subject: [PATCH v3 6/6] hwmon: (dell-smm-hwmon) Fix fan mutliplier detection for 3rd fan
-Date:   Sat, 29 May 2021 08:38:57 +0200
-Message-Id: <20210529063857.10177-7-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210529063857.10177-1-W_Armin@gmx.de>
-References: <20210529063857.10177-1-W_Armin@gmx.de>
+        id S229560AbhE2JZ1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 29 May 2021 05:25:27 -0400
+Received: from smtprelay0189.hostedemail.com ([216.40.44.189]:45248 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229559AbhE2JZ1 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 29 May 2021 05:25:27 -0400
+X-Greylist: delayed 596 seconds by postgrey-1.27 at vger.kernel.org; Sat, 29 May 2021 05:25:27 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id 00A651828A811
+        for <linux-hwmon@vger.kernel.org>; Sat, 29 May 2021 09:13:56 +0000 (UTC)
+Received: from omf20.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id CCB57100E7B42;
+        Sat, 29 May 2021 09:13:54 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf20.hostedemail.com (Postfix) with ESMTPA id E675D18A604;
+        Sat, 29 May 2021 09:13:53 +0000 (UTC)
+Message-ID: <60eedce497137eb34448c0c77e01ec9d9c972ad7.camel@perches.com>
+Subject: [PATCH] hwmon: sht4x: Fix sht4x_read_values return value
+From:   Joe Perches <joe@perches.com>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Navin Sankar Velliangiri <navin@linumiz.com>,
+        linux-hwmon@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Date:   Sat, 29 May 2021 02:13:52 -0700
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rQ5tUTNX/Vr7y9oBZVVmnl9+8Fi7T/nCiURDzWJ+BbFksfpnkD4
- ECaujjjdc83h2qMYxHMfei/vMOSgHwCrpSCoHVXGhnGcQzla489wBRIahf3BVJgDMXf8QwP
- mQQCIxSue1l1d4XDD7lqkiC5KWkbfc4Iyl43g6+oxzheW5qzGfaHOBcGZPGzpesizzCiM6V
- 2lxua217PqzTuHed47ORw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:r+T32bRam10=:Gf5dpTR4Ly8evWu6Zwocem
- G43wBUuO8EhWlxax8q8+dfF+3uHM5V+i5jfi0jPDBGzDZmd9K6U/fQu5xA/jAEiC24BecsmD5
- xw4Iibc33GjkR5T0mqjpi6kcE88XnmbfUe8/24FMyJdVlcYvVP6J3TAhzYuKvU2aqEt4bGYaW
- qYIk9Nxzk5jSIRZgehykD0qYJFroWzo+PW4h8vLlN1ZzhT8U1WWNEK2k5cdokwOEJ93dv69fk
- h+YBlzmBP3AgWYE2cgg3WH9PHASA2KlfFihy8c1lvdWVlNiDiZy9dukdp50HQAVwCYQA9+Cs/
- KqpozbNNIfWFJyr0hDkQ0S1aJtZPiqFRTNzgLqitc1d3g+7UBu1TFBOQbh9EDKrwkBkVdIxVt
- u+i3YEDxw4yu3qgdZ3OMt6UtbBJ9oFnXrFYXEth4/4vsTiunuMSmoz2+NfzvSEDTs/zPU+P7K
- UcIwSOL+lUoQwJAlPuZ3sNTJjOokQNEOr9o5dxV1c5x38PDqe8QTt8Ldm0GXvIAzIkBzpwp5G
- od3iAYMlFtp0fFkvQY0wFgZjUk9H2DtKoI40VUO2uu1k1ZHMKVEHlLMOk+IuYCf5icSx8E9re
- v4I8N34vRSKmeQEKU05q0Cxk7/cepA9mIsdLLpd86PxsrykQ4V/lzfEWGun/2/tBDOMVAvzgV
- gIFylhLw0ecqfoYGjNZAr/r5XNBIKdgHD+zwTW+YRD4vAgqO8YQk/MmR1zXH8FKTudv9RU52p
- QbBD8AigT9E8CMxCSWkcwwzpXxixC5167nH4imIFHOcRlXA7AhkNTrNxxDyQQVc6uwhrDsDkJ
- tzmIAaLGSLj/NnTntoi+Vwm0l0XlwYG4OacLBGuzGkbVHdJGRAISRdhQZ+DGC5ewmC84N8RqB
- E+GjY4zl9Ku/qToxPIYYrBVtGJW6v+xI6HIHVzaZAzlsNnXkuaFelBmo8mxBsaWUYKIWPPBO/
- K0n65G8nbxCoyPTxhQZiBynPjOMmiI9tMVUKRo/1DaLlvbOA2J3G8IvDssWUk0y62d+tNyQdF
- qTAV9ws0mzPqFg6AaRDQ6YaAQdrQY68QEvqTCtk2e8pl4Z/VoX5LBgPgKQbl2J4ZxA2eEOlt3
- KV6qaN1rNN5vO4ghZM4efzJzH3BYrr5Re6EWNwJ0YvzTlYkM9MxRJpHspmauWNfMnlUvrDbhs
- c1Pw2M90wiI8lZG3Ht2T9UZ1yWqHQf81TMQSME52aXuJH/fBZ5T+xUSYaSkFVWbbTp/FA=
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.66
+X-Stat-Signature: 4wbf4s4ypcwrmhag7pj75ocoyqzuy1bu
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: E675D18A604
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19kNQLzypCLG+19PoCGAAPXoLICf6Y7Sxo=
+X-HE-Tag: 1622279633-450579
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+Kernel doc for sht4x_read_values() shows 0 on success, 1 on failure but
+the return value on success is actually always positive as it is set to
+SHT4X_RESPONSE_LENGTH by a successful call to i2c_master_recv().
 
-There are up to three fans, but the detection omits the 3rd one.
-Fix that by using DELL_SMM_NO_FANS.
+Miscellanea:
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+o Update the kernel doc for sht4x_read_values to 0 for success or -ERRNO
+o Remove incorrectly used kernel doc /** header for other _read functions
+o Typo fix succesfull->successful
+o Reverse a test to unindent a block and use goto unlock
+o Declare cmd[SHT4X_CMD_LEN] rather than cmd[]
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index 0ef3dad74a2c..b7378f84e1bd 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1248,7 +1248,7 @@ static int __init dell_smm_probe(struct platform_dev=
-ice *pdev)
- 		 * Autodetect fan multiplier based on nominal rpm
- 		 * If fan reports rpm value too high then set multiplier to 1
- 		 */
--		for (fan =3D 0; fan < 2; ++fan) {
-+		for (fan =3D 0; fan < DELL_SMM_NO_FANS; ++fan) {
- 			ret =3D i8k_get_fan_nominal_speed(data, fan, data->i8k_fan_max);
- 			if (ret < 0)
- 				continue;
-=2D-
-2.20.1
+At least for gcc 10.2, object size is reduced a tiny bit.
+
+$ size drivers/hwmon/sht4x.o*
+   text	   data	    bss	    dec	    hex	filename
+   1752	    404	    256	   2412	    96c	drivers/hwmon/sht4x.o.new
+   1825	    404	    256	   2485	    9b5	drivers/hwmon/sht4x.o.old
+
+Signed-off-by: Joe Perches <joe@perches.com>
+---
+
+compiled, untested, no hardware
+
+ drivers/hwmon/sht4x.c | 95 ++++++++++++++++++++++++---------------------------
+ 1 file changed, 45 insertions(+), 50 deletions(-)
+
+diff --git a/drivers/hwmon/sht4x.c b/drivers/hwmon/sht4x.c
+index 1dc51ee2a72ba..09c2a0b064444 100644
+--- a/drivers/hwmon/sht4x.c
++++ b/drivers/hwmon/sht4x.c
+@@ -67,7 +67,7 @@ struct sht4x_data {
+ /**
+  * sht4x_read_values() - read and parse the raw data from the SHT4X
+  * @sht4x_data: the struct sht4x_data to use for the lock
+- * Return: 0 if succesfull, 1 if not
++ * Return: 0 if successful, -ERRNO if not
+  */
+ static int sht4x_read_values(struct sht4x_data *data)
+ {
+@@ -75,51 +75,53 @@ static int sht4x_read_values(struct sht4x_data *data)
+ 	u16 t_ticks, rh_ticks;
+ 	unsigned long next_update;
+ 	struct i2c_client *client = data->client;
+-	u8 crc, raw_data[SHT4X_RESPONSE_LENGTH],
+-	cmd[] = {SHT4X_CMD_MEASURE_HPM};
++	u8 crc;
++	u8 cmd[SHT4X_CMD_LEN] = {SHT4X_CMD_MEASURE_HPM};
++	u8 raw_data[SHT4X_RESPONSE_LENGTH];
+ 
+ 	mutex_lock(&data->lock);
+ 	next_update = data->last_updated +
+ 		      msecs_to_jiffies(data->update_interval);
+-	if (!data->valid || time_after(jiffies, next_update)) {
+-		ret = i2c_master_send(client, cmd, SHT4X_CMD_LEN);
+-		if (ret < 0)
+-			goto unlock;
+-
+-		usleep_range(SHT4X_MEAS_DELAY,
+-			     SHT4X_MEAS_DELAY + SHT4X_DELAY_EXTRA);
+-
+-		ret = i2c_master_recv(client, raw_data, SHT4X_RESPONSE_LENGTH);
+-		if (ret != SHT4X_RESPONSE_LENGTH) {
+-			if (ret >= 0)
+-				ret = -ENODATA;
+-
+-			goto unlock;
+-		}
+-
+-		t_ticks = raw_data[0] << 8 | raw_data[1];
+-		rh_ticks = raw_data[3] << 8 | raw_data[4];
+-
+-		crc = crc8(sht4x_crc8_table, &raw_data[0], SHT4X_WORD_LEN, CRC8_INIT_VALUE);
+-		if (crc != raw_data[2]) {
+-			dev_err(&client->dev, "data integrity check failed\n");
+-			ret = -EIO;
+-			goto unlock;
+-		}
+-
+-		crc = crc8(sht4x_crc8_table, &raw_data[3], SHT4X_WORD_LEN, CRC8_INIT_VALUE);
+-		if (crc != raw_data[5]) {
+-			dev_err(&client->dev, "data integrity check failed\n");
+-			ret = -EIO;
+-			goto unlock;
+-		}
+-
+-		data->temperature = ((21875 * (int32_t)t_ticks) >> 13) - 45000;
+-		data->humidity = ((15625 * (int32_t)rh_ticks) >> 13) - 6000;
+-		data->last_updated = jiffies;
+-		data->valid = true;
++
++	if (data->valid && time_before_eq(jiffies, next_update))
++		goto unlock;
++
++	ret = i2c_master_send(client, cmd, SHT4X_CMD_LEN);
++	if (ret < 0)
++		goto unlock;
++
++	usleep_range(SHT4X_MEAS_DELAY, SHT4X_MEAS_DELAY + SHT4X_DELAY_EXTRA);
++
++	ret = i2c_master_recv(client, raw_data, SHT4X_RESPONSE_LENGTH);
++	if (ret != SHT4X_RESPONSE_LENGTH) {
++		if (ret >= 0)
++			ret = -ENODATA;
++		goto unlock;
++	}
++
++	t_ticks = raw_data[0] << 8 | raw_data[1];
++	rh_ticks = raw_data[3] << 8 | raw_data[4];
++
++	crc = crc8(sht4x_crc8_table, &raw_data[0], SHT4X_WORD_LEN, CRC8_INIT_VALUE);
++	if (crc != raw_data[2]) {
++		dev_err(&client->dev, "data integrity check failed\n");
++		ret = -EIO;
++		goto unlock;
+ 	}
+ 
++	crc = crc8(sht4x_crc8_table, &raw_data[3], SHT4X_WORD_LEN, CRC8_INIT_VALUE);
++	if (crc != raw_data[5]) {
++		dev_err(&client->dev, "data integrity check failed\n");
++		ret = -EIO;
++		goto unlock;
++	}
++
++	data->temperature = ((21875 * (int32_t)t_ticks) >> 13) - 45000;
++	data->humidity = ((15625 * (int32_t)rh_ticks) >> 13) - 6000;
++	data->last_updated = jiffies;
++	data->valid = true;
++	ret = 0;
++
+ unlock:
+ 	mutex_unlock(&data->lock);
+ 	return ret;
+@@ -132,19 +134,14 @@ static ssize_t sht4x_interval_write(struct sht4x_data *data, long val)
+ 	return 0;
+ }
+ 
+-/**
+- * sht4x_interval_read() - read the minimum poll interval
+- *			   in milliseconds
+- */
++/* sht4x_interval_read() - read the minimum poll interval in milliseconds */
+ static size_t sht4x_interval_read(struct sht4x_data *data, long *val)
+ {
+ 	*val = data->update_interval;
+ 	return 0;
+ }
+ 
+-/**
+- * sht4x_temperature1_read() - read the temperature in millidegrees
+- */
++/* sht4x_temperature1_read() - read the temperature in millidegrees */
+ static int sht4x_temperature1_read(struct sht4x_data *data, long *val)
+ {
+ 	int ret;
+@@ -158,9 +155,7 @@ static int sht4x_temperature1_read(struct sht4x_data *data, long *val)
+ 	return 0;
+ }
+ 
+-/**
+- * sht4x_humidity1_read() - read a relative humidity in millipercent
+- */
++/* sht4x_humidity1_read() - read a relative humidity in millipercent */
+ static int sht4x_humidity1_read(struct sht4x_data *data, long *val)
+ {
+ 	int ret;
 
