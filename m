@@ -2,75 +2,136 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF541398E03
-	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Jun 2021 17:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D23C39903F
+	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Jun 2021 18:44:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbhFBPMS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 2 Jun 2021 11:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
+        id S229801AbhFBQpu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 2 Jun 2021 12:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231837AbhFBPMQ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Jun 2021 11:12:16 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EAFC06174A
-        for <linux-hwmon@vger.kernel.org>; Wed,  2 Jun 2021 08:10:21 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id i17so2433405ilj.11
-        for <linux-hwmon@vger.kernel.org>; Wed, 02 Jun 2021 08:10:21 -0700 (PDT)
+        with ESMTP id S229625AbhFBQpt (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Jun 2021 12:45:49 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A639C061574
+        for <linux-hwmon@vger.kernel.org>; Wed,  2 Jun 2021 09:43:57 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id k11so1373752qkk.1
+        for <linux-hwmon@vger.kernel.org>; Wed, 02 Jun 2021 09:43:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=yLUuWTNGS1KnT8fHdHJgwMCnNQ8uwH9tKJBb7oX0NdM=;
-        b=V1Ou2XAiIxxfYuPVraNEbI5S6OsnWJvbUrRRiYx70V5mkPvpAEoZXuZ71foWAV3/FJ
-         RLm0J90C2fZCoYZRb9FhedvIDlBSRiDNEe50Wb5/zDu5i0W8GvWHeFIdOSzzeRkGym+9
-         uh9Et9hhn8lGJIyOrSutNihjyXCQp5nSmriUFuGSp5avj0ePdub431Fi3QQHcXAp5tcW
-         OH1OAgJ7VEomDufCZvKIqxA9kepFYxAVSOXd5uBx9SR7l23r8Rn3Myn8McriqgS6K8Hz
-         mC6CkkEgFhLFB55NLHCzVREACvYYbQ/iNyQ0UcMNjojzE4HGtFe4KVhFmJB2hRKX7d/G
-         2PXQ==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=STaqi4LMFdeUy1OU0yxHa/C5p0olAXSBUotCP7bQmvI=;
+        b=a3jLR+z97Y5pOaMA6v7rNkFl9+suxe3V2jmEpuF804LMCRDZWLsUaZBAp5c2p7++NX
+         79fK+UsybFGOps8fhRT5MWkVjL6q5EgfYsclayR41/Yy2t3FwDIIBtJXK9jS+T8xw7RB
+         Wt1jY37GfcZXcjFqyY46cSBhWxnPoEvMjWb+UWibjyhQ3DE1Jy+M3mvy3tSfUexqrVBH
+         gS2wq5N3Uy7JSZ3uPbturcA52WotllsIFzr52FGGOyaSA1jiNOOwmXdtpgw2MvH47ZMQ
+         ePcuWwTnomR34jAIgFudWoe3uQW4/ec5WSZ58JlfM5ozaxJhe4zGGp1vulkjLS3tRO1g
+         tnJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=yLUuWTNGS1KnT8fHdHJgwMCnNQ8uwH9tKJBb7oX0NdM=;
-        b=rsMxtI/DgsW8CZ5mQ5vNoZlt07ljQ3HBIRYoSdpxyfVUyl7+jVym4aRGqkiQ35OD1L
-         Qz/u77zDE/n/pJT0Dvhs1xVIlb3W+h25YpbL6NC1uSCGQA+Fa49lZ8d1Tjf00ZoSrqgf
-         qNs86KHOiFyWgMoGOTsd6gYayird4ruzLKD25bADdXwVqX4tVx7SWGdwjBAXE380NW32
-         8HMvQF182QZnZdpJizdE5YcBvavLOVLzryOYy5W/4W2QX+3LlTpCQQTj+5lX9gGsAywo
-         +TKml+L1w2C5zXSrOVl9EBtoOdZfMl1E3q7iwyTlcqfux4nGiuFqPiRTLL2oXxCwm6zF
-         LvCA==
-X-Gm-Message-State: AOAM531bBBRztf56WoHINCGtgrazH33OsPPsbnCYDb+DMI50oSyrpeuM
-        jNflvArzDaDgAsSAG4T+QVRD6v+d7hhabjjsKb4=
-X-Google-Smtp-Source: ABdhPJyRWRVRD5W07st+hQNf9XQFSotB7lbjvBGD87Y7rHJTgHHQP2oYqZdN0SPmvpzSQN4q5/XIpn2WZPbPDnGySqo=
-X-Received: by 2002:a05:6e02:1a45:: with SMTP id u5mr14981635ilv.142.1622646620350;
- Wed, 02 Jun 2021 08:10:20 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=STaqi4LMFdeUy1OU0yxHa/C5p0olAXSBUotCP7bQmvI=;
+        b=NJUKXpoinRxMz0SeTg1aya+YvZnJn9fxoOuKRLPmSnpojJXOcoy/LEGTW9/SHoGntm
+         QpUH7DMegfBjoURYIpCZF8z4JZvmjhqsphPctSDPACVDELwB9Giu6ZLsEfx4yVUXI63P
+         NeVvjzyTP8wZG+0ilFM/lSn9q5uMAgcO8YVoVxZqSlT6BDMotJuJtiNaLEZQuuo76Q15
+         iR0SAnkCQ2zLCQDd/mKDexBKWL/LPdBvA891LNGRXbyPqjl/jsghV+QhZImCpPx+isnG
+         gtaEFH+Ph2qHa0IjISy9t8kHBDSMoSwb7R0aP8sN4TNEyX08tOLtFmen/Au1SkUnmLQr
+         792g==
+X-Gm-Message-State: AOAM53393PC8cy5aDX26QkCdku96cSVE1QO/mtBMmkLnz9Ke8dNZVWRK
+        y4hEHKe3m1+SskSV0xLiYIg6+aON5XY=
+X-Google-Smtp-Source: ABdhPJwdoOXFEyB1/zGO4wJVIKbB+RRXJ9j41c1MCPwesd/0a0aIQ+V/cu+uHU/E4UyztNinTJPVFw==
+X-Received: by 2002:a37:2cc6:: with SMTP id s189mr28492870qkh.409.1622652236422;
+        Wed, 02 Jun 2021 09:43:56 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id m14sm149826qti.12.2021.06.02.09.43.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jun 2021 09:43:55 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 2 Jun 2021 09:43:53 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Jan =?iso-8859-1?Q?Kundr=E1t?= <jan.kundrat@cesnet.cz>
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        kubernat@cesnet.cz
+Subject: Re: [PATCH 4/7] hwmon: (max31790) Add support for fanX_enable
+ attributes
+Message-ID: <20210602164353.GA2908914@roeck-us.net>
+References: <20210526154022.3223012-1-linux@roeck-us.net>
+ <20210526154022.3223012-5-linux@roeck-us.net>
+ <e073d9e2-d7d1-40fb-9717-971833cb25ca@cesnet.cz>
 MIME-Version: 1.0
-Sender: t.a.b.12april1967@gmail.com
-Received: by 2002:a05:6638:cb:0:0:0:0 with HTTP; Wed, 2 Jun 2021 08:10:19
- -0700 (PDT)
-From:   Alexandra Kelly <alexandrakelly779@gmail.com>
-Date:   Wed, 2 Jun 2021 16:10:19 +0100
-X-Google-Sender-Auth: H-AtjzpQ1ppGGJASgOW1L_EC684
-Message-ID: <CAFYH1Mn+ckT7dJPZKaNSzyHJGCGLLfZbm+zdq=wXKvGBRXiEqA@mail.gmail.com>
-Subject: Urgent Response
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e073d9e2-d7d1-40fb-9717-971833cb25ca@cesnet.cz>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear friend,
+On Wed, Jun 02, 2021 at 03:04:35PM +0200, Jan Kundrát wrote:
+> On středa 26. května 2021 17:40:19 CEST, Guenter Roeck wrote:
+> > Since pwmX_enable is now fixed and only handles pwm support instead
+> > of also enabling/disabling fan tachometers, we need an explicit means
+> > to do that.
+> > 
+> > For fan channels 7..12, display the enable status if the channel
+> > is configured for fan speed reporting. The displayed status matches
+> > the value of the companion channel but is read-only.
+> 
+> This phrasing is confusing to me. That's once again that "configured to"
+> which in this context doesn't refer to the kernel, but to an initial config
+> of the chip. I suggest the following:
+> 
+> Fan channels 7..12 are only available when the chip has been configured with
+> PWM output N-6 disabled. This configuration is outside of scope of the
+> kernel. The displayed status matches the value of the companion channel but
+> is read-only.
+> 
+> > +fan[1-12]_enable   RW  0=disable fan speed monitoring, 1=enable fan
+> > speed monitoring
+> > +                       The value is RO for companion channels (7-12).
+> > For those
+> > +                       channels, the value matches the value of the
+> > primary channel.
+> 
+> I realize that it probably doesn't belong to this patch because it affects
+> the other fan_* files, but the docs would be improved by something like:
+> 
+> Tachometer inputs monitor fan tachometer logic outputs for precise (+/-1%)
+> monitoring and control of fan RPM as well as detection of fan failure.
+> Six pins are dedicated tachometer inputs. Any of the six PWM outputs can
+> -also be configured to serve as tachometer inputs.
+> +also be reconfigured to serve as tachometer inputs by the firmware. The
+> +kernel will respect the initial configuration of the chip.
+> 
 
-I am contacting you independently of my investigation in
-my bank and no one is informed of this communication. I need your
-urgent assistance in transferring the sum of $5.3 million dollars to
-your private account,that belongs to one of our foreign customers who
-died a longtime with his supposed NEXT OF KIN since July 22, 2003. The
-money has been here in our Bank lying dormant for years now without
-anybody coming for the claim of it.
+"Precise (+/-1%)" sounds like chip advertising, which I'd rather avoid.
 
-I want to release the money to you as the relative to our deceased
-customer , the Banking laws here does not allow such money to stay
-more than 18 years, because the money will be recalled to the Bank
-treasury account as unclaimed fund. I am ready to share with you 40%
-for you and 60% will be kept for me, by indicating your interest i
-will send you the full details on how the business will be executed, i
-will be waiting for your urgent response.
+> Want an extra patch on top of this series?
+> 
+> > +	case hwmon_fan_enable:
+> > +		config = data->fan_config[channel];
+> > +		if (val == 0) {
+> > +			/* Disabling TACH_INPUT_EN has no effect in RPM_MODE */
+> > +			if (!(config & MAX31790_FAN_CFG_RPM_MODE))
+> > +				config &= ~MAX31790_FAN_CFG_TACH_INPUT_EN;
+> 
+> This means that a "nonsensical" write from userspace will be silently
+> ignored, doesn't it? I think it should return an error instead.
+> 
+Trade-off between confusing users and trying to match the ABI with somewhat
+odd chip capabilities. The above isn't exactly specified; it is the result
+of trial and error (and a reason why the configuration register must be
+treated as volatile when using regmap).
+
+One can argue one way or another. For now I'd rather keep the code as is
+because I am away from the evaluation board for the next few weeks and
+won't be able to test any functional changes until I am back.
+Given the complexity of the chip and its sometimes odd behavior I'll want
+to be able to do that kind of testing. Is this important for you ? If so,
+we can move forward with patches 1-3 of the series and leave this and
+subsequent patches for later.
+
+Thanks,
+Guenter
