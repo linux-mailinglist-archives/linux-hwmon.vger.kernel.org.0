@@ -2,166 +2,437 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 631A439D61B
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Jun 2021 09:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DDF439D9C3
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Jun 2021 12:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbhFGHgY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 7 Jun 2021 03:36:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49074 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230231AbhFGHgU (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 7 Jun 2021 03:36:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 29FEA60720;
-        Mon,  7 Jun 2021 07:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623051269;
-        bh=0ypPpkJHDs3edXD5bDeKaiim7X/xfBueG4AuE8+Qj+U=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MCZa/wfgoJSof9wCVVOv/LrdFcXdwY1vCJuTly8zaeAIwTuRDtC8rzfgyHA9r6/+g
-         NW2tP3feh93C/5Dxty7jg+vScZHZGMhUEyWQ5FgxO8vpWG7sfVd2/FVm9kFVWmNyKF
-         EQBYWqrXHDSSXIu/AIkm5+Ioyl/4Y8qqVlITSp7EP1AHAdF2gq6+t5N/EukG8nlrD5
-         /Z/7kCrp6V3McL/0xD3Opj9oSYMVR4OQwEiMuDlxNhhxICUhrFF3xy6Xf7sAtNEHPC
-         UZ6EjZnr6psnuld6cX9JYfcpHnFwEGAKkBcwq4fn3pJEE/OA/DfL7AgTqkUjjnfOU7
-         t/jaztuq+MVCA==
-Date:   Mon, 7 Jun 2021 09:34:22 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     "=?UTF-8?B?TsOtY29sYXM=?= F. R. A. Prado" <n@nfraprado.net>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        coresight@lists.linaro.org, devicetree@vger.kernel.org,
-        kunit-dev@googlegroups.com, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 00/34] docs: avoid using ReST :doc:`foo` tag
-Message-ID: <20210607093422.0a369909@coco.lan>
-In-Reply-To: <20210606225225.fz4dsyz6im4bqena@notapiano>
-References: <cover.1622898327.git.mchehab+huawei@kernel.org>
-        <20210605151109.axm3wzbcstsyxczp@notapiano>
-        <20210605210836.540577d4@coco.lan>
-        <20210606225225.fz4dsyz6im4bqena@notapiano>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S230351AbhFGKgr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 7 Jun 2021 06:36:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230219AbhFGKgq (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Jun 2021 06:36:46 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C09CC06178B
+        for <linux-hwmon@vger.kernel.org>; Mon,  7 Jun 2021 03:34:40 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id t3so19712990edc.7
+        for <linux-hwmon@vger.kernel.org>; Mon, 07 Jun 2021 03:34:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura-hr.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=S8qFjFtY77CWgD6xHMcfYVdqAsgYbpKAyPPGBYSbTi8=;
+        b=J3fNjPwy69JWrSedpDkl2rDyaK5qIRIVYAhjdMhcM+mECiYwVqoBAqnfOqq4GM7Lya
+         s/3Wz1ghGZEUMh4YUIjTZrf+nZCuAY7fNm0CMc3SA1fLwX22qm5NqAmPGDjvTqXV4+hR
+         79SbLbgj4vf91KSN+7gfbkJrEa9fsmbxRVKfztzHJv/zNFHsIL6+BDb709ejeihEfYST
+         mqgUXPeL/n1n2UtSQA7tjzTIG/0sjPhsnWrLdFWLVE9XcjU8GjysKzwIzkAyFaHqgurE
+         +DnW1Puwe7S8gVZQqbNGsFCPnqmVdG4cg0edAzBBdPvWLYctYmN2q+W6LGkGz8WZdwqK
+         VPKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=S8qFjFtY77CWgD6xHMcfYVdqAsgYbpKAyPPGBYSbTi8=;
+        b=pBEPhhHG7On+NRWVq+6IWGYJ22uufVzhfQjKxg3RQVEfSSMRMeydZqMAUJYUGa3gg9
+         OuYPAkb4vZqjnqCuSt9IEh2ormBFDz1IJWrWrgyvm07CefMhVx/YF1fVAjHX7Yyv1OXt
+         BQEqW+VjAS6BIi5dEJCoxQMrtf2wW9i9hMCu2apaehJ4STyNryBJazIqakePwDFexUX0
+         RT9DR3G9nVg7JIKgS9Bx+icpfNPnGqy24unq7vbBIEc+GQEFcGDoSDDcOtsxZ+WvnhCJ
+         l6wJC6dwnuQ6mPlHJibA6FqROED6C92ZIongWyFNzEHxtjPa2tNbrzzypU7AHhKATws+
+         g5RQ==
+X-Gm-Message-State: AOAM533/MLI4akTP7U1lpJnqQVObwFX+ZenlB/9/g1ROqi4D8GwoLtdn
+        Bq+2EWHZTWN2YZJHfbGQnxnFUw==
+X-Google-Smtp-Source: ABdhPJx7Gv0KfJS83MdjOa9ptrArD2pPYSH1jJ6YpvueYfGljkizG/xhQXX7AALRICFin5LuV0Sz6g==
+X-Received: by 2002:a05:6402:5a:: with SMTP id f26mr19271914edu.306.1623062076836;
+        Mon, 07 Jun 2021 03:34:36 -0700 (PDT)
+Received: from localhost.localdomain (dh207-96-76.xnet.hr. [88.207.96.76])
+        by smtp.googlemail.com with ESMTPSA id b25sm7521037edv.9.2021.06.07.03.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Jun 2021 03:34:36 -0700 (PDT)
+From:   Robert Marko <robert.marko@sartura.hr>
+To:     robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+        corbet@lwn.net, trivial@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc:     luka.perkov@sartura.hr, jmp@epiphyte.org, pmenzel@molgen.mpg.de,
+        buczek@molgen.mpg.de, Robert Marko <robert.marko@sartura.hr>
+Subject: [PATCH v4 1/3] hwmon: (pmbus) Add driver for Delta DPS-920AB PSU
+Date:   Mon,  7 Jun 2021 12:34:29 +0200
+Message-Id: <20210607103431.2039073-1-robert.marko@sartura.hr>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Em Sun, 6 Jun 2021 19:52:25 -0300
-N=C3=ADcolas F. R. A. Prado <n@nfraprado.net> escreveu:
+This adds support for the Delta DPS-920AB PSU.
 
-> On Sat, Jun 05, 2021 at 09:08:36PM +0200, Mauro Carvalho Chehab wrote:
-> > Em Sat, 5 Jun 2021 12:11:09 -0300
-> > N=C3=ADcolas F. R. A. Prado <n@nfraprado.net> escreveu:
-> >  =20
-> > > Hi Mauro,
-> > >=20
-> > > On Sat, Jun 05, 2021 at 03:17:59PM +0200, Mauro Carvalho Chehab wrote=
-: =20
-> > > > As discussed at:
-> > > > 	https://lore.kernel.org/linux-doc/871r9k6rmy.fsf@meer.lwn.net/
-> > > >=20
-> > > > It is better to avoid using :doc:`foo` to refer to Documentation/fo=
-o.rst, as the
-> > > > automarkup.py extension should handle it automatically, on most cas=
-es.
-> > > >=20
-> > > > There are a couple of exceptions to this rule:
-> > > >=20
-> > > > 1. when :doc:  tag is used to point to a kernel-doc DOC: markup;
-> > > > 2. when it is used with a named tag, e. g. :doc:`some name <foo>`;
-> > > >=20
-> > > > It should also be noticed that automarkup.py has currently an issue:
-> > > > if one use a markup like:
-> > > >=20
-> > > > 	Documentation/dev-tools/kunit/api/test.rst
-> > > > 	  - documents all of the standard testing API excluding mocking
-> > > > 	    or mocking related features.
-> > > >=20
-> > > > or, even:
-> > > >=20
-> > > > 	Documentation/dev-tools/kunit/api/test.rst
-> > > > 	    documents all of the standard testing API excluding mocking
-> > > > 	    or mocking related features.
-> > > > =09
-> > > > The automarkup.py will simply ignore it. Not sure why. This patch s=
-eries
-> > > > avoid the above patterns (which is present only on 4 files), but it=
- would be
-> > > > nice to have a followup patch fixing the issue at automarkup.py.   =
-=20
-> > >=20
-> > > What I think is happening here is that we're using rST's syntax for d=
-efinition
-> > > lists [1]. automarkup.py ignores literal nodes, and perhaps a definit=
-ion is
-> > > considered a literal by Sphinx. Adding a blank line after the Documen=
-tation/...
-> > > or removing the additional indentation makes it work, like you did in=
- your
-> > > 2nd and 3rd patch, since then it's not a definition anymore, although=
- then the
-> > > visual output is different as well. =20
-> >=20
-> > A literal has a different output. I think that this is not the case, bu=
-t I=20
-> > didn't check the python code from docutils/Sphinx. =20
->=20
-> Okay, I went in deeper to understand the issue and indeed it wasn't what I
-> thought. The reason definitions are ignored by automarkup.py is because t=
-he main
-> loop iterates only over nodes that are of type paragraph:
->=20
->     for para in doctree.traverse(nodes.paragraph):
->         for node in para.traverse(nodes.Text):
->             if not isinstance(node.parent, nodes.literal):
->                 node.parent.replace(node, markup_refs(name, app, node))
->=20
-> And inspecting the HTML output from your example, the definition name is =
-inside
-> a <dt> tag, and it doesn't have a <p> inside. So in summary, automarkup.p=
-y will
-> only work on elements which are inside a <p> in the output.
+Only missing feature is fan control which the PSU supports.
 
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+---
+Changes in v4:
+* Alphabetically order documentation in index.rst
+* Null terminate manufacturer and mode ID-s
+* Drop debugfs directory and I2C clients from the
+global structure, use local variables
 
-Yeah, that's what I was suspecting, based on the comments.
+Changes in v3:
+* Use generic pmbus_read/write_word_data()
+* Correct word data return code
+* Cache PMBUS_MFR_ID and PMBUS_MFR_MODEL instead
+of reading them everytime that debugfs is read
 
-Maybe something similar to the above could be done also for some
-non-paragraph data. By looking at:
+Changes in v2:
+* Check for Manufacturer and Model
+* Restrict word read/write to supported only
+* Update documentation to reflect driver changes
+* Add basic debugfs entries
 
-	https://docutils.sourceforge.io/docs/ref/doctree.html
+ Documentation/hwmon/dps920ab.rst |  73 +++++++++++
+ Documentation/hwmon/index.rst    |   1 +
+ drivers/hwmon/pmbus/Kconfig      |   9 ++
+ drivers/hwmon/pmbus/Makefile     |   1 +
+ drivers/hwmon/pmbus/dps920ab.c   | 207 +++++++++++++++++++++++++++++++
+ 5 files changed, 291 insertions(+)
+ create mode 100644 Documentation/hwmon/dps920ab.rst
+ create mode 100644 drivers/hwmon/pmbus/dps920ab.c
 
-It says that the body elements are:
+diff --git a/Documentation/hwmon/dps920ab.rst b/Documentation/hwmon/dps920ab.rst
+new file mode 100644
+index 000000000000..c33b4cdc0a60
+--- /dev/null
++++ b/Documentation/hwmon/dps920ab.rst
+@@ -0,0 +1,73 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
++Kernel driver dps920ab
++========================
++
++Supported chips:
++
++  * Delta DPS920AB
++
++    Prefix: 'dps920ab'
++
++    Addresses scanned: -
++
++Authors:
++    Robert Marko <robert.marko@sartura.hr>
++
++
++Description
++-----------
++
++This driver implements support for Delta DPS920AB 920W 54V DC single output
++power supply with PMBus support.
++
++The driver is a client driver to the core PMBus driver.
++Please see Documentation/hwmon/pmbus.rst for details on PMBus client drivers.
++
++
++Usage Notes
++-----------
++
++This driver does not auto-detect devices. You will have to instantiate the
++devices explicitly. Please see Documentation/i2c/instantiating-devices.rst for
++details.
++
++
++Sysfs entries
++-------------
++
++======================= ======================================================
++curr1_label		"iin"
++curr1_input		Measured input current
++curr1_alarm		Input current high alarm
++
++curr2_label		"iout1"
++curr2_input		Measured output current
++curr2_max		Maximum output current
++curr2_rated_max		Maximum rated output current
++
++in1_label		"vin"
++in1_input		Measured input voltage
++in1_alarm		Input voltage alarm
++
++in2_label		"vout1"
++in2_input		Measured output voltage
++in2_rated_min		Minimum rated output voltage
++in2_rated_max		Maximum rated output voltage
++in2_alarm		Output voltage alarm
++
++power1_label		"pin"
++power1_input		Measured input power
++power1_alarm		Input power high alarm
++
++power2_label		"pout1"
++power2_input		Measured output power
++power2_rated_max	Maximum rated output power
++
++temp[1-3]_input		Measured temperature
++temp[1-3]_alarm		Temperature alarm
++
++fan1_alarm		Fan 1 warning.
++fan1_fault		Fan 1 fault.
++fan1_input		Fan 1 speed in RPM.
++======================= ======================================================
+diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
+index 8d5a2df1ecb6..8abdaf440a3c 100644
+--- a/Documentation/hwmon/index.rst
++++ b/Documentation/hwmon/index.rst
+@@ -53,6 +53,7 @@ Hardware Monitoring Kernel Drivers
+    da9055
+    dell-smm-hwmon
+    dme1737
++   dps920ab
+    drivetemp
+    ds1621
+    ds620
+diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
+index 32d2fc850621..865ade0aa205 100644
+--- a/drivers/hwmon/pmbus/Kconfig
++++ b/drivers/hwmon/pmbus/Kconfig
+@@ -66,6 +66,15 @@ config SENSORS_IBM_CFFPS
+ 	  This driver can also be built as a module. If so, the module will
+ 	  be called ibm-cffps.
+ 
++config SENSORS_DPS920AB
++	tristate "Delta DPS920AB Power Supply"
++	help
++	  If you say yes here you get hardware monitoring support for Delta
++	  DPS920AB Power Supplies.
++
++	  This driver can also be built as a module. If so, the module will
++	  be called dps920ab.
++
+ config SENSORS_INSPUR_IPSPS
+ 	tristate "INSPUR Power System Power Supply"
+ 	help
+diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
+index 6a4ba0fdc1db..f59ba0123d68 100644
+--- a/drivers/hwmon/pmbus/Makefile
++++ b/drivers/hwmon/pmbus/Makefile
+@@ -9,6 +9,7 @@ obj-$(CONFIG_SENSORS_ADM1266)	+= adm1266.o
+ obj-$(CONFIG_SENSORS_ADM1275)	+= adm1275.o
+ obj-$(CONFIG_SENSORS_BEL_PFE)	+= bel-pfe.o
+ obj-$(CONFIG_SENSORS_IBM_CFFPS)	+= ibm-cffps.o
++obj-$(CONFIG_SENSORS_DPS920AB)	+= dps920ab.o
+ obj-$(CONFIG_SENSORS_INSPUR_IPSPS) += inspur-ipsps.o
+ obj-$(CONFIG_SENSORS_IR35221)	+= ir35221.o
+ obj-$(CONFIG_SENSORS_IR38064)	+= ir38064.o
+diff --git a/drivers/hwmon/pmbus/dps920ab.c b/drivers/hwmon/pmbus/dps920ab.c
+new file mode 100644
+index 000000000000..692a86cdfb6d
+--- /dev/null
++++ b/drivers/hwmon/pmbus/dps920ab.c
+@@ -0,0 +1,207 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Driver for Delta DPS920AB PSU
++ *
++ * Copyright (C) 2021 Delta Networks, Inc.
++ * Copyright (C) 2021 Sartura Ltd.
++ */
++
++#include <linux/debugfs.h>
++#include <linux/i2c.h>
++#include <linux/module.h>
++#include <linux/of_device.h>
++#include "pmbus.h"
++
++struct dps920ab_data {
++	char *mfr_model;
++	char *mfr_id;
++};
++
++static int dps920ab_read_word_data(struct i2c_client *client, int page, int phase, int reg)
++{
++	/*
++	 * This masks commands which are not supported.
++	 * PSU advertises that all features are supported,
++	 * in reality that unfortunately is not true.
++	 * So enable only those that the datasheet confirms.
++	 */
++	switch (reg) {
++	case PMBUS_FAN_COMMAND_1:
++	case PMBUS_IOUT_OC_WARN_LIMIT:
++	case PMBUS_STATUS_WORD:
++	case PMBUS_READ_VIN:
++	case PMBUS_READ_IIN:
++	case PMBUS_READ_VOUT:
++	case PMBUS_READ_IOUT:
++	case PMBUS_READ_TEMPERATURE_1:
++	case PMBUS_READ_TEMPERATURE_2:
++	case PMBUS_READ_TEMPERATURE_3:
++	case PMBUS_READ_FAN_SPEED_1:
++	case PMBUS_READ_POUT:
++	case PMBUS_READ_PIN:
++	case PMBUS_MFR_VOUT_MIN:
++	case PMBUS_MFR_VOUT_MAX:
++	case PMBUS_MFR_IOUT_MAX:
++	case PMBUS_MFR_POUT_MAX:
++		return pmbus_read_word_data(client, page, phase, reg);
++	default:
++		return -ENXIO;
++	}
++}
++
++static int dps920ab_write_word_data(struct i2c_client *client, int page, int reg,
++				    u16 word)
++{
++	/*
++	 * This masks commands which are not supported.
++	 * PSU only has one R/W register and that is
++	 * for the fan.
++	 */
++	switch (reg) {
++	case PMBUS_FAN_COMMAND_1:
++		return pmbus_write_word_data(client, page, reg, word);
++	default:
++		return -EACCES;
++	}
++}
++
++static struct pmbus_driver_info dps920ab_info = {
++	.pages = 1,
++
++	.format[PSC_VOLTAGE_IN] = linear,
++	.format[PSC_VOLTAGE_OUT] = linear,
++	.format[PSC_CURRENT_IN] = linear,
++	.format[PSC_CURRENT_OUT] = linear,
++	.format[PSC_POWER] = linear,
++	.format[PSC_FAN] = linear,
++	.format[PSC_TEMPERATURE] = linear,
++
++	.func[0] =
++		PMBUS_HAVE_VIN | PMBUS_HAVE_IIN | PMBUS_HAVE_PIN |
++		PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT | PMBUS_HAVE_POUT |
++		PMBUS_HAVE_TEMP  | PMBUS_HAVE_TEMP2 | PMBUS_HAVE_TEMP3 |
++		PMBUS_HAVE_FAN12 | PMBUS_HAVE_STATUS_FAN12 |
++		PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT |
++		PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP,
++	.read_word_data = dps920ab_read_word_data,
++	.write_word_data = dps920ab_write_word_data,
++};
++
++static int dps920ab_mfr_id_show(struct seq_file *s, void *data)
++{
++	struct dps920ab_data *priv = s->private;
++
++	seq_printf(s, "%s\n", priv->mfr_id);
++
++	return 0;
++}
++
++DEFINE_SHOW_ATTRIBUTE(dps920ab_mfr_id);
++
++static int dps920ab_mfr_model_show(struct seq_file *s, void *data)
++{
++	struct dps920ab_data *priv = s->private;
++
++	seq_printf(s, "%s\n", priv->mfr_model);
++
++	return 0;
++}
++
++DEFINE_SHOW_ATTRIBUTE(dps920ab_mfr_model);
++
++static void dps920ab_init_debugfs(struct dps920ab_data *data, struct i2c_client *client)
++{
++	struct dentry *debugfs_dir;
++	struct dentry *root;
++
++	root = pmbus_get_debugfs_dir(client);
++	if (!root)
++		return;
++
++	debugfs_dir = debugfs_create_dir(client->name, root);
++	if (!debugfs_dir)
++		return;
++
++	debugfs_create_file("mfr_id",
++			    0400,
++			    debugfs_dir,
++			    data,
++			    &dps920ab_mfr_id_fops);
++
++	debugfs_create_file("mfr_model",
++			    0400,
++			    debugfs_dir,
++			    data,
++			    &dps920ab_mfr_model_fops);
++}
++
++static int dps920ab_probe(struct i2c_client *client)
++{
++	u8 buf[I2C_SMBUS_BLOCK_MAX + 1];
++	struct dps920ab_data *data;
++	int ret;
++
++	data = devm_kzalloc(&client->dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
++	if (ret < 0) {
++		dev_err(&client->dev, "Failed to read Manufacturer ID\n");
++		return ret;
++	}
++
++	buf[ret] = '\0';
++	if (ret != 5 || strncmp(buf, "DELTA", 5)) {
++		buf[ret] = '\0';
++		dev_err(&client->dev, "Unsupported Manufacturer ID '%s'\n", buf);
++		return -ENODEV;
++	}
++	data->mfr_id = devm_kstrdup(&client->dev, buf, GFP_KERNEL);
++	if (!data->mfr_id)
++		return -ENOMEM;
++
++	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_MODEL, buf);
++	if (ret < 0) {
++		dev_err(&client->dev, "Failed to read Manufacturer Model\n");
++		return ret;
++	}
++
++	buf[ret] = '\0';
++	if (ret != 11 || strncmp(buf, "DPS-920AB", 9)) {
++		dev_err(&client->dev, "Unsupported Manufacturer Model '%s'\n", buf);
++		return -ENODEV;
++	}
++	data->mfr_model = devm_kstrdup(&client->dev, buf, GFP_KERNEL);
++	if (!data->mfr_model)
++		return -ENOMEM;
++
++	ret = pmbus_do_probe(client, &dps920ab_info);
++	if (ret)
++		return ret;
++
++	dps920ab_init_debugfs(data, client);
++
++	return 0;
++}
++
++static const struct of_device_id __maybe_unused dps920ab_of_match[] = {
++	{ .compatible = "delta,dps920ab", },
++	{}
++};
++
++MODULE_DEVICE_TABLE(of, dps920ab_of_match);
++
++static struct i2c_driver dps920ab_driver = {
++	.driver = {
++		   .name = "dps920ab",
++		   .of_match_table = of_match_ptr(dps920ab_of_match),
++	},
++	.probe_new = dps920ab_probe,
++};
++
++module_i2c_driver(dps920ab_driver);
++
++MODULE_AUTHOR("Robert Marko <robert.marko@sartura.hr>");
++MODULE_DESCRIPTION("PMBus driver for Delta DPS920AB PSU");
++MODULE_LICENSE("GPL");
+-- 
+2.31.1
 
-	admonition, attention, block_quote, bullet_list, caution, citation,=20
-	comment, compound, container, danger, definition_list, doctest_block,=20
-	enumerated_list, error, field_list, figure, footnote, hint, image,=20
-	important, line_block, literal_block, note, option_list, paragraph,=20
-	pending, raw, rubric, substitution_definition, system_message,=20
-	table, target, tip, warning
-
-So, perhaps a similar loop for definition_list would do the trick,
-but maybe automarkup should also look at other types, like enum lists,
-notes (and their variants, like error/warning) and footnotes.
-
-No idea how this would affect the docs build time, though.
-
-> Only applying the automarkup inside paragraphs seems like a good decision=
- (which
-> covers text in lists and tables as well), so unless there are other types=
- of
-> elements without paragraphs where automarkup should work, I think we shou=
-ld just
-> avoid using definition lists pointing to documents like that.
-
-Checking the code or doing some tests are needed for us to be sure about wh=
-at
-of the above types docutils don't consider a paragraph.
-
-Thanks,
-Mauro
