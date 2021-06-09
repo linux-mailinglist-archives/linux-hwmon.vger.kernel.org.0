@@ -2,41 +2,42 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 950633A1614
-	for <lists+linux-hwmon@lfdr.de>; Wed,  9 Jun 2021 15:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA873A15BF
+	for <lists+linux-hwmon@lfdr.de>; Wed,  9 Jun 2021 15:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235417AbhFINve (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 9 Jun 2021 09:51:34 -0400
-Received: from flippie-beckerswealthsa.xyz ([62.173.138.170]:43920 "EHLO
-        host.flippie-beckerswealthsa.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236785AbhFINvd (ORCPT
+        id S236432AbhFINiM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 9 Jun 2021 09:38:12 -0400
+Received: from flippie-beckerswealth-sa.xyz ([62.173.147.2]:33588 "EHLO
+        host.flippie-beckerswealth-sa.xyz" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236421AbhFINiM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 9 Jun 2021 09:51:33 -0400
-Received: from flippie-beckerswealthsa.xyz (ec2-18-118-29-154.us-east-2.compute.amazonaws.com [18.118.29.154])
-        by host.flippie-beckerswealthsa.xyz (Postfix) with ESMTPA id CA93830C3C8F
-        for <linux-hwmon@vger.kernel.org>; Wed,  9 Jun 2021 15:09:32 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealthsa.xyz CA93830C3C8F
+        Wed, 9 Jun 2021 09:38:12 -0400
+X-Greylist: delayed 4081 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 09:38:12 EDT
+Received: from flippie-beckerswealth-sa.xyz (ec2-3-131-99-163.us-east-2.compute.amazonaws.com [3.131.99.163])
+        by host.flippie-beckerswealth-sa.xyz (Postfix) with ESMTPA id B07D13120A43
+        for <linux-hwmon@vger.kernel.org>; Wed,  9 Jun 2021 15:10:27 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz B07D13120A43
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealthsa.xyz; s=default; t=1623240573;
+        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240629;
         bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
         h=Reply-To:From:To:Subject:Date:From;
-        b=jrkzOikhih1KB6ib5gWUvxVbuG0sx1uLCbERdlWsHRFDYj/hPCdf6RbFY8yhIIhcZ
-         xT3R6d+sIT/1+AuXexr55OJGlW4NGvkWgfhWhYi2w+MYE085JCmvQ75XhsRnk8Y639
-         njiBDk7MZJn1Qn5ExSj4/gSzzP5B1ZWBklwiSqbM=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealthsa.xyz CA93830C3C8F
+        b=WqPCEVHgGD6NdJS6ix1iUAPqjwT+xiSd02Lass2S3NXnzTiq+WUtcm9af3VDMdDeI
+         AGhwV29l92aUNbHPk6GZ+45v08R3l3rClHD6c1Ds8ONQ8sSFeIKuXFbYQ2a/2oX3Ag
+         OdBjErpKbOlTavhWMD7zeafzJwr5dligWHQXuL1s=
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz B07D13120A43
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealthsa.xyz; s=default; t=1623240573;
+        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240629;
         bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
         h=Reply-To:From:To:Subject:Date:From;
-        b=jrkzOikhih1KB6ib5gWUvxVbuG0sx1uLCbERdlWsHRFDYj/hPCdf6RbFY8yhIIhcZ
-         xT3R6d+sIT/1+AuXexr55OJGlW4NGvkWgfhWhYi2w+MYE085JCmvQ75XhsRnk8Y639
-         njiBDk7MZJn1Qn5ExSj4/gSzzP5B1ZWBklwiSqbM=
+        b=WqPCEVHgGD6NdJS6ix1iUAPqjwT+xiSd02Lass2S3NXnzTiq+WUtcm9af3VDMdDeI
+         AGhwV29l92aUNbHPk6GZ+45v08R3l3rClHD6c1Ds8ONQ8sSFeIKuXFbYQ2a/2oX3Ag
+         OdBjErpKbOlTavhWMD7zeafzJwr5dligWHQXuL1s=
 Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippie-beckerswealthsa.xyz>
+From:   Jotham Masuku <jmasuku40@flippie-beckerswealth-sa.xyz>
 To:     linux-hwmon@vger.kernel.org
-Subject: Projects
-Date:   09 Jun 2021 12:09:32 +0000
-Message-ID: <20210609120932.B48B4987206BA288@flippie-beckerswealthsa.xyz>
+Subject: Proposal
+Date:   09 Jun 2021 12:10:27 +0000
+Message-ID: <20210609121027.64E952F45CD241BB@flippie-beckerswealth-sa.xyz>
 Mime-Version: 1.0
 Content-Type: text/plain;
         charset="utf-8"
