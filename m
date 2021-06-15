@@ -2,38 +2,38 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 312503A852C
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Jun 2021 17:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10D983A8558
+	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Jun 2021 17:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232754AbhFOPx4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 15 Jun 2021 11:53:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46738 "EHLO mail.kernel.org"
+        id S232501AbhFOPzA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 15 Jun 2021 11:55:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47234 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232377AbhFOPw0 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 15 Jun 2021 11:52:26 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 341026191D;
-        Tue, 15 Jun 2021 15:50:08 +0000 (UTC)
+        id S232261AbhFOPxA (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 15 Jun 2021 11:53:00 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9CDEC6142E;
+        Tue, 15 Jun 2021 15:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623772209;
-        bh=4N5XB1kMClR4uHWK6xi+bP3P4je3OwE/wcElNSnGzR8=;
+        s=k20201202; t=1623772226;
+        bh=wRJuFAUKBN9IqlvNRNlL4iFilXRpZrVKLPOlZFTk0FE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rTuTLioXjVOnh8N7+yYc7Nia8m4/7naXE24r4mVPcAX6u20HyYjSrVHJVSSYmvtC5
-         lL9+JNHKftEY8zlZUTv3yz/6x5DeDE7YkS87ai8rskzpUchCtSKIRVhibV6pa/ftCy
-         jVVz268zIQsfAns5DMf0+ppPzQWgPL/t+4TQwiWFO0Mib3EK6QHBR0njtA3vqNjqXm
-         MuerTdg3b61euAMjB8ELbomJ7qgtztspC9m0DCa0ytzOPK5NnTDeny2uHlGT0z/A4h
-         bD9dTmkp5KaQutKDGXmtDG4K52odUbbiPRNUqdH5yownolzEkzwKkThrzn/ZfTpnJ2
-         vyHCtu5W7p/xw==
+        b=FOA5D6VWKFX3+NSinWuk4/INot03nc1j2aarjphbeOJx8utK8NRUwJgvmfLcFJPRK
+         E3CK80OHZeLd4A8UejcTWS5DdsZItauRtSQloIXdB2AhgMPXrXUqBlCWDyWSCisMcA
+         CJY8OQizO6PU4CprQlVZ7nUoTawwNEBRZ+MiIEK1ljQ/0CDscTFF0HiJM2OLRTAtQy
+         2ksAaIb4oG6rJl9z45A+zTdCrpx3Bm6XokpwLlFwcKJ9/bNX/RqlLjoFGA8Y8W7lCL
+         W4FcdJjxXLHrLfuvUdKfyiD/IM+tQmAF9+j+iHz8sUDU9CMVEx9+htFeV8CaoARdud
+         C5bImN2kia8sw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Riwen Lu <luriwen@kylinos.cn>, Xin Chen <chenxin@kylinos.cn>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 15/15] hwmon: (scpi-hwmon) shows the negative temperature properly
-Date:   Tue, 15 Jun 2021 11:49:47 -0400
-Message-Id: <20210615154948.62711-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 12/12] hwmon: (scpi-hwmon) shows the negative temperature properly
+Date:   Tue, 15 Jun 2021 11:50:09 -0400
+Message-Id: <20210615155009.62894-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210615154948.62711-1-sashal@kernel.org>
-References: <20210615154948.62711-1-sashal@kernel.org>
+In-Reply-To: <20210615155009.62894-1-sashal@kernel.org>
+References: <20210615155009.62894-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+)
 
 diff --git a/drivers/hwmon/scpi-hwmon.c b/drivers/hwmon/scpi-hwmon.c
-index 25aac40f2764..919877970ae3 100644
+index 7e49da50bc69..562f3e287297 100644
 --- a/drivers/hwmon/scpi-hwmon.c
 +++ b/drivers/hwmon/scpi-hwmon.c
-@@ -99,6 +99,15 @@ scpi_show_sensor(struct device *dev, struct device_attribute *attr, char *buf)
+@@ -107,6 +107,15 @@ scpi_show_sensor(struct device *dev, struct device_attribute *attr, char *buf)
  
  	scpi_scale_reading(&value, sensor);
  
