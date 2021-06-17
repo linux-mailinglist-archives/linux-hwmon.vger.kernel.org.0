@@ -2,66 +2,42 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C078F3AAA27
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Jun 2021 06:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 726323AAD29
+	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Jun 2021 09:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbhFQEgB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 17 Jun 2021 00:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbhFQEgA (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 17 Jun 2021 00:36:00 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5283C061574
-        for <linux-hwmon@vger.kernel.org>; Wed, 16 Jun 2021 21:33:52 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id b37so6900996ljr.13
-        for <linux-hwmon@vger.kernel.org>; Wed, 16 Jun 2021 21:33:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=1kfBuAN/ijHZAiV70qH1LJgS1b3E/pmKA6fcTnMDxYE=;
-        b=MvET3lJod7FqFowOhq8+4J3P6twg/j8lBKFeA6HcbQoqqkM8H1H0BdmzYdTOhHiw11
-         sUC+yyKZpPMJnLM1DUz4SfnXAy3+LtgobWyTM8+j+e8kmYAlbOBha2iui38kaTw+1kU3
-         97fOm8rr7xlMF/GepILExRenkfEA5f0VS/8X7E8go6h7GOjA2fqdHqrKI7TtMzcMMz/X
-         pidvoeHhOPp8Q0Wr4ZB1RSHbSQVgQxrpE+/9PxD2o+F9q/SkiKTfEKSvXEP7bz3Dkhg2
-         N+fmzEobMiqBILw0S+09LILGZqc0yDZz+EDZWwDzXjsBw/xZ9qvw5fkgraDMPrgBxTJr
-         mqPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=1kfBuAN/ijHZAiV70qH1LJgS1b3E/pmKA6fcTnMDxYE=;
-        b=NFRWBTagCuU6Nc1abDi/urOrrefxaVfVB0/9qNC/aKm1nlQ+JkI/XUT4MBAhv4yfes
-         3cQ01EGH4Eu0qcHPzIjeTGg/Xe9OfweIneiAz7ebOwCW4T5E7NCW6vqYZeXda+lIGRMJ
-         yzZfFpxKUDSfFzeRhnHV6SeQ5pMiZ3s1PJAkSCzCgZkJgpKZptUYNe6wW2i/gc/dwHbb
-         Iz+BbSvtYYPl2f1u6U8MCVYXAC81Up2phGDDGl0F/Npfz7CLTQE49gtuHhPMQgzhqtYq
-         h2eB3f068/wD3CA+p4f8rq0So4bmRv3KpJiglsGrv+1746Fh+zH5expp9TeWx1ZMCmDH
-         G65A==
-X-Gm-Message-State: AOAM5305twxEfh8DTXwZjOTTc16moBaFWrh2zP4tZgWaOiXc7V8b+HB+
-        0gs3s6D4LRcXm09+3+7WEy7WynMkfz2C5bDH/4k=
-X-Google-Smtp-Source: ABdhPJxvwGEckpP1T7096Q8Hrv1SlIYsvg5n/VpOR/tKihY/nHIciUH4MzJW8rdGkLKGSaBLvdo76beOZWyFtPIgqIA=
-X-Received: by 2002:a2e:2a43:: with SMTP id q64mr2778808ljq.375.1623904431131;
- Wed, 16 Jun 2021 21:33:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <CADnvcf+LhxZoZk9eRUahSWZ3xVJLkxcAt3+4dS-JCjV8gZE_0A@mail.gmail.com>
-In-Reply-To: <CADnvcf+LhxZoZk9eRUahSWZ3xVJLkxcAt3+4dS-JCjV8gZE_0A@mail.gmail.com>
-From:   Aleksandr Mezin <mezin.alexander@gmail.com>
-Date:   Thu, 17 Jun 2021 10:33:40 +0600
-Message-ID: <CADnvcfJnaco7_+2TgM-Pqo3Jpm-h6MdotF1jBNOqLMqAjOt_-g@mail.gmail.com>
+        id S229599AbhFQHQI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 17 Jun 2021 03:16:08 -0400
+Received: from ms-10.1blu.de ([178.254.4.101]:34266 "EHLO ms-10.1blu.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229515AbhFQHQH (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 17 Jun 2021 03:16:07 -0400
+X-Greylist: delayed 2790 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Jun 2021 03:16:07 EDT
+Received: from [37.209.98.109] (helo=marius.localnet)
+        by ms-10.1blu.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <mail@mariuszachmann.de>)
+        id 1ltlUt-0001ZD-Et; Thu, 17 Jun 2021 08:27:29 +0200
+From:   Marius Zachmann <mail@mariuszachmann.de>
+To:     Aleksandr Mezin <mezin.alexander@gmail.com>
+Cc:     linux-hwmon@vger.kernel.org
 Subject: Re: corsair-cpro and hidraw
-To:     Marius Zachmann <mail@mariuszachmann.de>,
-        linux-hwmon@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Date:   Thu, 17 Jun 2021 08:27:25 +0200
+Message-ID: <2199169.9u6qy3EJ5v@marius>
+In-Reply-To: <CADnvcf+LhxZoZk9eRUahSWZ3xVJLkxcAt3+4dS-JCjV8gZE_0A@mail.gmail.com>
+References: <CADnvcf+LhxZoZk9eRUahSWZ3xVJLkxcAt3+4dS-JCjV8gZE_0A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Con-Id: 241080
+X-Con-U: 0-mail
+X-Originating-IP: 37.209.98.109
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Jun 17, 2021 at 9:11 AM Aleksandr Mezin
-<mezin.alexander@gmail.com> wrote:
->
+Am Donnerstag, 17. Juni 2021, 05:11:10 CEST schrieben Sie:
 > Hello.
->
+> 
 > I've noticed that corsair-cpro communicates with the device in
 > request-reply pattern, and also exposes hidraw interface, so userspace
 > can also send requests. How does the driver figure out that the
@@ -69,13 +45,33 @@ On Thu, Jun 17, 2021 at 9:11 AM Aleksandr Mezin
 > and not for some other request from userspace? Also if userspace reads
 > from hidraw, how can it be sure that the report it read is the
 > response to its last request, and not to some driver's request?
->
+> 
 > I do not have the hardware, I was just looking at corsair-cpro as a
 > reference - I'm working on a driver for a similar device (nzxt rgb &
 > fan controller)
+> 
 
-Oops, there's a comment about this exact issue at the beginning of the
-file, and I missed it somehow. Sorry for the noise.
+Hello,
+Sadly, it doesn't. There is no way to distinguish where the reply is
+coming from. The hardware should probably use report ids in the first
+byte of the reply for something like this, but it does not.
+I thought about possibilities to stop hidraw before a request and
+restart it after the reply, but there is (as far as I know) no way
+to do this without changing the hid-driver. Maybe I should have a
+look at this idea again.
+The choice was either to allow it or block most userspace tools.
+I also tried to get false readings and it can be done, albeit
+highly unlikely.
+As a "solution" I slapped a comment at the beginning of the driver
+to point out the problem.
 
-I wonder if the driver can synchronize the access through hidraw
-somehow, i. e. make hidraw read/write block while mutex is locked.
+I do not know, what your device is doing, but the (similar) corsair-psu
+driver has the same problem. This device uses an echo of the command
+in the answer and if they don't match it returns an error. This could
+maybe lead to a false error when the replies are switched, but is
+probably preferable.
+
+Greetings
+Marius
+
+
