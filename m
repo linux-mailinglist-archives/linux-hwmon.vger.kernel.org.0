@@ -2,59 +2,110 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7707C3AD9E4
-	for <lists+linux-hwmon@lfdr.de>; Sat, 19 Jun 2021 14:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDAFF3ADADC
+	for <lists+linux-hwmon@lfdr.de>; Sat, 19 Jun 2021 18:24:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233972AbhFSMDt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 19 Jun 2021 08:03:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233887AbhFSMDr (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 19 Jun 2021 08:03:47 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADE0C061574
-        for <linux-hwmon@vger.kernel.org>; Sat, 19 Jun 2021 05:01:32 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id r9so13859953wrz.10
-        for <linux-hwmon@vger.kernel.org>; Sat, 19 Jun 2021 05:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
-        b=MyDaV9+IbHmohhyUTJiT58Xma9wfMiiVHZ7mQmRTTIFMJqPHh0223/4N3/0vZ6L85p
-         OtnSCwjHNu4gSwkVK4i8yphfFYoVenR0Ztf2gUdyMAGb/Yrxz3AxWr74VUOgZ29F/FJr
-         SP5DilBIA+ZlTFdsurfgV1n00nzdHCcS5b12pyB7K6ECiarMJ6YZ4YgqynBFBn3+KblG
-         mpIArHyqW9uEtRpLW3I3pLdeWY6On9ABDiDujXDkAvw34cF199QJ/KqoRVlAqVnjs2IJ
-         rMKEqa3JBxUNb2le9KtUa4Xoj3V2KH+ssqXLCXhG0VRJMdIj/3j6MyQorYrOjKL7xuzh
-         +nEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
-        b=WHxBIbENQZm8Z9cDVhJ3soS+xM2cokNjVvzDJRw+2TazVeS8YHlBq/rK7pBgRuy6/p
-         36s7rPIBrBldo6tyEiviXty5zBg+JkjnzSMZ4ppl0bphZTnsblczAFpc5f5Lkx1nVgYC
-         W70GhNBfGEsIdQIZm/c7ATQi5mDsFXlmIHAVj1gvHDWnNlgh38D9kT40WOtl4MAV2/pQ
-         T7ifUq42CCPyv6ugai8C4h3tFFYQNwuxA80+Ea+c3H73QnkLMl9msoBB2c2B2YKA9tvr
-         3mji0dglViUVOp3ao194e6Og6wZQRH0TptSPgcf5zMSs54/YYYgQxK1gB9YeboQ2LByT
-         X2BQ==
-X-Gm-Message-State: AOAM530tv51y97sfnzGpQvbfCE2FFWRJ1WjlXPhSvqkFWIpKtY5jgJqN
-        g1OZvDWEIy5GXLxfLKhmuFgaS0OrWvm0s7a2y44=
-X-Google-Smtp-Source: ABdhPJwryGls1vJYu7OdsnvfmWifjygGdSRXmvIqzHSb2TiIpe4Uj6122rRqIx7aTxfquhSVNfV9f096XKCSubAqRsw=
-X-Received: by 2002:a5d:6708:: with SMTP id o8mr8953502wru.9.1624104090724;
- Sat, 19 Jun 2021 05:01:30 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a7b:c8c9:0:0:0:0:0 with HTTP; Sat, 19 Jun 2021 05:01:30
- -0700 (PDT)
-Reply-To: msannamariapicarelli@gmail.com
-From:   Anna Maria <ayikutuprisca@gmail.com>
-Date:   Sat, 19 Jun 2021 12:01:30 +0000
-Message-ID: <CANtBiXT2pXYm3HJcK+h+Du5EvyzJoY2nj+0bVrdVu=61MoR15Q@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S234437AbhFSQ0a (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 19 Jun 2021 12:26:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45026 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232640AbhFSQ03 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sat, 19 Jun 2021 12:26:29 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5BE6761208;
+        Sat, 19 Jun 2021 16:24:18 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <maz@kernel.org>)
+        id 1ludlY-008chF-A9; Sat, 19 Jun 2021 17:24:16 +0100
+Date:   Sat, 19 Jun 2021 17:24:15 +0100
+Message-ID: <87bl81ddqo.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Yury Norov <yury.norov@gmail.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Russell King <linux+etnaviv@armlinux.org.uk>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Alexey Klimov <aklimov@redhat.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, etnaviv@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH 2/3] find: micro-optimize for_each_{set,clear}_bit()
+In-Reply-To: <20210618195735.55933-3-yury.norov@gmail.com>
+References: <20210618195735.55933-1-yury.norov@gmail.com>
+        <20210618195735.55933-3-yury.norov@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: yury.norov@gmail.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com, l.stach@pengutronix.de, linux+etnaviv@armlinux.org.uk, christian.gmeiner@gmail.com, airlied@linux.ie, daniel@ffwll.ch, jdelvare@suse.com, linux@roeck-us.net, andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, dwmw@amazon.co.uk, akpm@linux-foundation.org, richard.weiyang@linux.alibaba.com, geert+renesas@glider.be, aklimov@redhat.com, x86@kernel.org, linux-kernel@vger.kernel.org, etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi,I have not hear from you,Do you read my message?
+On Fri, 18 Jun 2021 20:57:34 +0100,
+Yury Norov <yury.norov@gmail.com> wrote:
+> 
+> The macros iterate thru all set/clear bits in a bitmap. They search a
+> first bit using find_first_bit(), and the rest bits using find_next_bit().
+> 
+> Since find_next_bit() is called shortly after find_first_bit(), we can
+> save few lines of I-cache by not using find_first_bit().
+
+Really?
+
+> 
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  include/linux/find.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/find.h b/include/linux/find.h
+> index 4500e8ab93e2..ae9ed52b52b8 100644
+> --- a/include/linux/find.h
+> +++ b/include/linux/find.h
+> @@ -280,7 +280,7 @@ unsigned long find_next_bit_le(const void *addr, unsigned
+>  #endif
+>  
+>  #define for_each_set_bit(bit, addr, size) \
+> -	for ((bit) = find_first_bit((addr), (size));		\
+> +	for ((bit) = find_next_bit((addr), (size), 0);		\
+
+On which architecture do you observe a gain? Only 32bit ARM and m68k
+implement their own version of find_first_bit(), and everyone else
+uses the canonical implementation:
+
+#ifndef find_first_bit
+#define find_first_bit(addr, size) find_next_bit((addr), (size), 0)
+#endif
+
+These architectures explicitly have different implementations for
+find_first_bit() and find_next_bit() because they can do better
+(whether that is true or not is another debate). I don't think you
+should remove this optimisation until it has been measured on these
+two architectures.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
