@@ -2,104 +2,59 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C7AF3AD9BF
-	for <lists+linux-hwmon@lfdr.de>; Sat, 19 Jun 2021 13:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7707C3AD9E4
+	for <lists+linux-hwmon@lfdr.de>; Sat, 19 Jun 2021 14:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233204AbhFSLM3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 19 Jun 2021 07:12:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37554 "EHLO
+        id S233972AbhFSMDt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 19 Jun 2021 08:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbhFSLM2 (ORCPT
+        with ESMTP id S233887AbhFSMDr (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 19 Jun 2021 07:12:28 -0400
-Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C608C061574;
-        Sat, 19 Jun 2021 04:10:18 -0700 (PDT)
-Received: by mail-oo1-xc31.google.com with SMTP id x22-20020a4a62160000b0290245cf6b7feeso3163220ooc.13;
-        Sat, 19 Jun 2021 04:10:18 -0700 (PDT)
+        Sat, 19 Jun 2021 08:03:47 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADE0C061574
+        for <linux-hwmon@vger.kernel.org>; Sat, 19 Jun 2021 05:01:32 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id r9so13859953wrz.10
+        for <linux-hwmon@vger.kernel.org>; Sat, 19 Jun 2021 05:01:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=jGT3JoRbOKhxxTLocr8dP2N6w63SdfEBqzsNI5J17gw=;
-        b=RBzJvnEVWK1LtFiWxScAQn6nzT0Sk5L6qO25QaDXS0rVdnGk1WFArCdAosrmR3MJnA
-         1ljimPzii8/mYU287XUObiHlFm/T/d8PrymYmnfG7nN1bcVzvF1yea86YRJw4nM/Zx2A
-         POkNmZVrd2VNnWtgFr3lxUo94T5EqGuZ4DcLJd1nZjRjEtVd6t+rEdiXMpHR5WR8Qb1f
-         k0mMaoKx1nKlTFgs+EA+PdP82pxnBmP5F2s3A6LRxqNfEAEa8LvxlgmGHQAOIky8q6Bv
-         vr6QrTpcyAPz481g9166zi0Q8qkl7bTTbANoXieGJZYWjCqMOtqOlnWkl5wg1sB7qCES
-         OT7A==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
+        b=MyDaV9+IbHmohhyUTJiT58Xma9wfMiiVHZ7mQmRTTIFMJqPHh0223/4N3/0vZ6L85p
+         OtnSCwjHNu4gSwkVK4i8yphfFYoVenR0Ztf2gUdyMAGb/Yrxz3AxWr74VUOgZ29F/FJr
+         SP5DilBIA+ZlTFdsurfgV1n00nzdHCcS5b12pyB7K6ECiarMJ6YZ4YgqynBFBn3+KblG
+         mpIArHyqW9uEtRpLW3I3pLdeWY6On9ABDiDujXDkAvw34cF199QJ/KqoRVlAqVnjs2IJ
+         rMKEqa3JBxUNb2le9KtUa4Xoj3V2KH+ssqXLCXhG0VRJMdIj/3j6MyQorYrOjKL7xuzh
+         +nEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=jGT3JoRbOKhxxTLocr8dP2N6w63SdfEBqzsNI5J17gw=;
-        b=PykxzQCdcWD1eg5OCRN01k96MChktpyIa7msKBk067dzqBigvDcJugDoGiubgfbJkr
-         vZfjxolrpr0Z5tN/vs0gcDeoI2UoNFJ0UB2Z13gk36HSz93SqybJWL1sGW9JAO+ijybM
-         CBMbYie0Vw2ILAZqvgDlUqE0pIe1u3fRfAiyjDErpK6jYlBDvHKU8ntiIP5aAbwrF8ep
-         5Ys1OGueg9yndnJEVfyZ16cF1D7H8sHUTvj3vGuaRR/xE0yVtv7mBKBP+1NnCPGYM+dV
-         5JNLSB1mZwbcyNzsi8Xic+XkkaM4B7d0NdGfJc5FXNaJw/+EsKkLuUmWuInb007BGx6W
-         FAVg==
-X-Gm-Message-State: AOAM530fczIx+oJL1+0Syg5p7lVgmaOMRZM+QibrtH8Io79JplrhwONq
-        /VVG2dXUYqudxuxrL76qXc8=
-X-Google-Smtp-Source: ABdhPJwXppZizYY6AC+p7d4cJtypRmsh1F1i0wyhnzY0E5EvdZVCOiblZthNHLTtn8GA1jEJUfknWg==
-X-Received: by 2002:a05:6820:23c:: with SMTP id j28mr12949720oob.88.1624101017470;
-        Sat, 19 Jun 2021 04:10:17 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 111sm2620855otg.25.2021.06.19.04.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jun 2021 04:10:16 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sat, 19 Jun 2021 04:10:14 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] HWMON LM90 interrupt fixes and improvements
-Message-ID: <20210619111014.GA1042635@roeck-us.net>
-References: <20210618215455.19986-1-digetx@gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
+        b=WHxBIbENQZm8Z9cDVhJ3soS+xM2cokNjVvzDJRw+2TazVeS8YHlBq/rK7pBgRuy6/p
+         36s7rPIBrBldo6tyEiviXty5zBg+JkjnzSMZ4ppl0bphZTnsblczAFpc5f5Lkx1nVgYC
+         W70GhNBfGEsIdQIZm/c7ATQi5mDsFXlmIHAVj1gvHDWnNlgh38D9kT40WOtl4MAV2/pQ
+         T7ifUq42CCPyv6ugai8C4h3tFFYQNwuxA80+Ea+c3H73QnkLMl9msoBB2c2B2YKA9tvr
+         3mji0dglViUVOp3ao194e6Og6wZQRH0TptSPgcf5zMSs54/YYYgQxK1gB9YeboQ2LByT
+         X2BQ==
+X-Gm-Message-State: AOAM530tv51y97sfnzGpQvbfCE2FFWRJ1WjlXPhSvqkFWIpKtY5jgJqN
+        g1OZvDWEIy5GXLxfLKhmuFgaS0OrWvm0s7a2y44=
+X-Google-Smtp-Source: ABdhPJwryGls1vJYu7OdsnvfmWifjygGdSRXmvIqzHSb2TiIpe4Uj6122rRqIx7aTxfquhSVNfV9f096XKCSubAqRsw=
+X-Received: by 2002:a5d:6708:: with SMTP id o8mr8953502wru.9.1624104090724;
+ Sat, 19 Jun 2021 05:01:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210618215455.19986-1-digetx@gmail.com>
+Received: by 2002:a7b:c8c9:0:0:0:0:0 with HTTP; Sat, 19 Jun 2021 05:01:30
+ -0700 (PDT)
+Reply-To: msannamariapicarelli@gmail.com
+From:   Anna Maria <ayikutuprisca@gmail.com>
+Date:   Sat, 19 Jun 2021 12:01:30 +0000
+Message-ID: <CANtBiXT2pXYm3HJcK+h+Du5EvyzJoY2nj+0bVrdVu=61MoR15Q@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Sat, Jun 19, 2021 at 12:54:51AM +0300, Dmitry Osipenko wrote:
-> Hi,
-> 
-> This series makes interrupt usable on NVIDIA Tegra devices, it also
-> switches LM90 driver to use hwmon_notify_event().
-> 
-
-Series applied.
-
-Thanks,
-Guenter
-
-> Changelog:
-> 
-> v3: - No code changes. Added changelog.
-> 
-> v2: - Dropped "hwmon: (lm90) Use edge-triggered interrupt" patch
->       and replaced it with "hwmon: (lm90) Don't override interrupt
->       trigger type", as was discussed during review of v1.
-> 
->     - Added these new patches:
-> 
->         hwmon: (lm90) Use hwmon_notify_event()
->         hwmon: (lm90) Unmask hardware interrupt
->         hwmon: (lm90) Disable interrupt on suspend
-> 
-> Dmitry Osipenko (4):
->   hwmon: (lm90) Don't override interrupt trigger type
->   hwmon: (lm90) Use hwmon_notify_event()
->   hwmon: (lm90) Unmask hardware interrupt
->   hwmon: (lm90) Disable interrupt on suspend
-> 
->  drivers/hwmon/lm90.c | 79 ++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 66 insertions(+), 13 deletions(-)
-> 
-> -- 
-> 2.30.2
-> 
+Hi,I have not hear from you,Do you read my message?
