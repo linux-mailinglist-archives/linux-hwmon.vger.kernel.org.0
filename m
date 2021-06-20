@@ -2,159 +2,104 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B9E3ADE3D
-	for <lists+linux-hwmon@lfdr.de>; Sun, 20 Jun 2021 13:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 314F03ADECB
+	for <lists+linux-hwmon@lfdr.de>; Sun, 20 Jun 2021 15:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbhFTL4G (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 20 Jun 2021 07:56:06 -0400
-Received: from mga02.intel.com ([134.134.136.20]:46864 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229580AbhFTL4F (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 20 Jun 2021 07:56:05 -0400
-IronPort-SDR: vuqm4pLqW9/OiN4ISa1VEt7GqYOdmjY8qJ6X1Dtaqd37pICmXR65EM0pz79cWarHriFpFOjn/s
- RI3ZRPlUOHyg==
-X-IronPort-AV: E=McAfee;i="6200,9189,10020"; a="193850626"
-X-IronPort-AV: E=Sophos;i="5.83,287,1616482800"; 
-   d="scan'208";a="193850626"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2021 04:53:52 -0700
-IronPort-SDR: gZfq1lil9LfiaKEE6j4HpmSBvUerfGoIhgMqYAd8/acs5HSf/Bu45v7W9P5P8G9Oze4667mFSp
- fN6m89i+WGpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,287,1616482800"; 
-   d="scan'208";a="555984953"
-Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 20 Jun 2021 04:53:51 -0700
-Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1luw1O-00045X-Jf; Sun, 20 Jun 2021 11:53:50 +0000
-Date:   Sun, 20 Jun 2021 19:53:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:watchdog-next] BUILD SUCCESS
- 31c78d620e3db073d98450fc4abb005a7e91d49f
-Message-ID: <60cf2c47.JX8l4YARsOJjBN+2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229861AbhFTNi6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 20 Jun 2021 09:38:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40566 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229756AbhFTNiu (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 20 Jun 2021 09:38:50 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF26C0617A8
+        for <linux-hwmon@vger.kernel.org>; Sun, 20 Jun 2021 06:36:16 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id k5so12609415iow.12
+        for <linux-hwmon@vger.kernel.org>; Sun, 20 Jun 2021 06:36:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=uDIEtWfgl91FDet7ZYX1u1ozW0abpKvg4acx3thqXBCDoYcWKg7eyNZSXNk+51VeuJ
+         sYbwx77CCJt/Xl1UBy7P++4/uHOQjQcptGzc4BiJd5A/7x+FLCtsFr6R08yAScCPxE/G
+         ycRitdP5UZQCPHBcljPWiYz9qooX9+o9VlIcE1iBIKjgWFsG58IfpnIZmKh5Mer/et0Q
+         Wvv2McVtUA6rn+iTugaAQulni5t+7gIBWkpgi42U+JEUmcEEUifIxcViVFyKhDEEgfNV
+         A33afccbptAYxVMQ3XRd6cg8QS8Vl2AEYQyihFbFLRpIaiCXlHMQE4BSfPfytvzUMqcd
+         FXMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=PdSaX+if3ZUJ55SlbUf7aDIDIm5Z3xuUdkGGH46yte86p24/w0Eild3jqGhIIiFPf1
+         gW3Is7qbhT0le1hwukLNdRS4BxKoYSExkmVIKzFa1BkT/B5kkPHBSHhYHcJ+Kh3WU4fG
+         zgitXT7if1ucWPFArIxVpbfMmUCVyGrZXFxjwEjLHiQzAgzDf/akSLVn8tAhUwLQhtB0
+         818ide/4zCohBnQQszUK49cQ1dGw0w6HsFZ+LYs3yiRQmjbWB6XYwFhG5chuMQLbmLiA
+         jYwm6eWqkeV4RFJhvufrV7bgkwlj4j51RECoftH1YWC03UyufkBpUNWgcr3mizPJ5U0Y
+         yGEA==
+X-Gm-Message-State: AOAM530P0qWwWtd6L7BHZFk7AVP0zDvip1Xw1x4/9KLZfEVSgHyXI0F1
+        Rxu0Pt6azLkLJB6EmUcVSKJdW09qQcHgjOZO88Q=
+X-Google-Smtp-Source: ABdhPJwOQ5lA8oaPxit1UXNypL8Kah2QWj0jtAWNuj5/Z8/Rl7T8YsfxHtOIriCZuXo1tXOWzxp5d5YlbnVjDFRsY5Q=
+X-Received: by 2002:a02:a810:: with SMTP id f16mr12630337jaj.64.1624196175568;
+ Sun, 20 Jun 2021 06:36:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6e02:1baf:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:36:14
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <sarah.koffi101@gmail.com>
+Date:   Sun, 20 Jun 2021 15:36:14 +0200
+Message-ID: <CA+ifgLE1g7jgi567M2HhZfvRSUF63Hu6stsW+ysX=3U-=qnn6Q@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
-branch HEAD: 31c78d620e3db073d98450fc4abb005a7e91d49f  watchdog: iTCO_wdt: use dev_err() instead of pr_err()
+Greetings From Mrs. Sarah Koffi
 
-elapsed time: 725m
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-configs tested: 97
-configs skipped: 2
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arc                        vdk_hs38_defconfig
-powerpc                      acadia_defconfig
-arm                        neponset_defconfig
-mips                           ci20_defconfig
-sh                          lboxre2_defconfig
-powerpc                       maple_defconfig
-arm                           stm32_defconfig
-mips                           rs90_defconfig
-arm                         assabet_defconfig
-xtensa                           allyesconfig
-arm                         shannon_defconfig
-arc                                 defconfig
-powerpc                     tqm8548_defconfig
-arm                          imote2_defconfig
-arm                           corgi_defconfig
-ia64                        generic_defconfig
-arm                        vexpress_defconfig
-arm                        magician_defconfig
-mips                  decstation_64_defconfig
-powerpc                     mpc512x_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210620
-i386                 randconfig-a002-20210620
-i386                 randconfig-a003-20210620
-i386                 randconfig-a006-20210620
-i386                 randconfig-a005-20210620
-i386                 randconfig-a004-20210620
-x86_64               randconfig-a012-20210620
-x86_64               randconfig-a016-20210620
-x86_64               randconfig-a015-20210620
-x86_64               randconfig-a014-20210620
-x86_64               randconfig-a013-20210620
-x86_64               randconfig-a011-20210620
-i386                 randconfig-a011-20210620
-i386                 randconfig-a014-20210620
-i386                 randconfig-a013-20210620
-i386                 randconfig-a015-20210620
-i386                 randconfig-a012-20210620
-i386                 randconfig-a016-20210620
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                            kunit_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
 
-clang tested configs:
-x86_64               randconfig-b001-20210620
-x86_64               randconfig-a002-20210620
-x86_64               randconfig-a001-20210620
-x86_64               randconfig-a005-20210620
-x86_64               randconfig-a003-20210620
-x86_64               randconfig-a004-20210620
-x86_64               randconfig-a006-20210620
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
