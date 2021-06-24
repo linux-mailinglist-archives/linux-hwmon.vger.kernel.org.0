@@ -2,88 +2,97 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C4A23B225D
-	for <lists+linux-hwmon@lfdr.de>; Wed, 23 Jun 2021 23:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0A83B24E8
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Jun 2021 04:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbhFWVXd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 23 Jun 2021 17:23:33 -0400
-Received: from mout.gmx.net ([212.227.17.21]:47397 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229831AbhFWVXd (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 23 Jun 2021 17:23:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1624483261;
-        bh=MAZ2RepE8pnVZ8vGpHw+h5JtFtRDpUmvqrrE3+KCZ7g=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=cPOuM+hQukhZ3xkkiHUFEAwgnxLbj1aisrkb72/BU5/tMABWXv5HpU+ninpWbWRFl
-         sI3EYgOOE9LRR0hK2cKMmiOhYGCjWll6I//cPrIRZszUJFE5b0wxSE9IbPgKu85zVW
-         3NAm8EOvEOMMGURVDeCKxiZtAyHfdOmGZUcX6pbw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.fritz.box ([79.242.184.178]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MOiHf-1lcjVC015b-00Q7i9; Wed, 23 Jun 2021 23:21:01 +0200
-From:   W_Armin@gmx.de
-To:     pali@kernel.org
-Cc:     linux@roeck-us.net, jdelvare@suse.com, linux-hwmon@vger.kernel.org
-Subject: [PATCH v5 6/6] hwmon: (dell-smm-hwmon) Fix fan mutliplier detection for 3rd fan
-Date:   Wed, 23 Jun 2021 23:20:26 +0200
-Message-Id: <20210623212026.30799-7-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210623212026.30799-1-W_Armin@gmx.de>
-References: <20210623212026.30799-1-W_Armin@gmx.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:AvGEnFynhTwXVYRis2KDLHPSAywwg0+k1WthI7eKEQYqBfgpOZe
- h77jc0Gh04xSe1e5FxyoUarabLcynhatSuSGvRhughYliNa0AS8L3FnXZfA7Lxm9LGC6bHA
- b4mUPn0dCyUqnH9eqRhrNLSIbE8PWjdHEPz1KBmMESWDkuzTlEgi8toWk4Bs2CyqG/DxvdI
- g3nUyI0P78eWy2nVqQwNw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Aoh0+r3F1vA=:c1yhDBE2w1rTQXpiPlfOWS
- KpoAERh5A9g0gA3OZ9OJkxeteJhzwD2AMLvCFbJxuHfDA/3/JEO4iwb3IsoiCxLJLy33sEiSw
- plBMD1j3c4mB3AATmRo6aUh9qlkJ60pma/cvghbyS34JAFhEEuaYdABpc6GM9/R98wBnuxOpN
- Ooi6x2DccYMBnOjb+xhyb0Y6LJOp6NTWWjywEvj1zW2Q5oErUf+eQHVbNJ23my+A4gMcu+elA
- edJ1kaHiDBY40yEkLP3QV8/FImlYDZqPTboAu1VzDVWCoaHtE7bCH/UixtMvlNUDts1mx3DLk
- 6b2icPGT/FS1Rc+R8TBGhUmRHNMA928piCGII3EZ2uorCOuR75zA4drBeK/eZLM3gmQG2pwJ1
- 1i3tuR5j1ILgrsUhaFSeJPWL3HNqJq2hZg5/A25TV/RLdtmw44691LSCWhMOgSXUuiJsTUoQZ
- NaV1fmJEvkpaBaM3rjDM5EljJfVJ0sLhaBtf53UGoxd2qijDNl02GNQKrhVL1S9swcNCCaU27
- Khkg6aZvj22NNyTQy0lfHCrgdVKuBHjK1oo/ek/q2I4/qo1/SCCXXO6qVfLvIC7ubjEiiXU03
- tey9wijHUsqeJjyOwGojb480YTT9PzCVtcUD5rqsJIRKhkwN8HHSHGw8gXYC7aMkrmDXxAx5D
- zDKFUDABOa6uRD1OIDtZHxsNsYHf/t/I60NO+4rk6xx3paqzHV11Pvqw3OpeW+ZmB+VKCHj+f
- DWLbYBda1xQxm4TrkNzD1jZ2WalLxqOXb3hxLQkr3qQ83ZHh4TLDwPgwGPATHACRiusNiYg4a
- fPzkazTzvlOIjlF7zwUC5h44nJD6ENdCazQm+omvBjGIscDnn8JN9igxwf0blDetnEdA01I8h
- 45SMu/6DntpHG7EA0xwyrDFVklukyg+XU8oGq6eFsKUDihThcPpCa3niyIKOY0vgBCoHOFgR+
- wOMNh2zPqmBB+Oflv2FnVuJoZuakEj9vWvCQtGfZThhgpoza+7zD6f6pkFz3lEaNruVsQ2+33
- 6B/KAL++z46GsZgQ/a/uc/K6plqFarcBopKPETYAfNBrEnfWHMvHEXsw6/koGxCyD36MSjCZb
- WDkFshFuc0XtFamdbrOVXU2hB8Ks0DW7Bkb
+        id S229822AbhFXC0B (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 23 Jun 2021 22:26:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229796AbhFXC0A (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 23 Jun 2021 22:26:00 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 971A2C061574;
+        Wed, 23 Jun 2021 19:23:41 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id e22so3419539pgv.10;
+        Wed, 23 Jun 2021 19:23:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Zjd6ucGsgNsjEnxATRmXPTX0CeUipetTlkbJOSv260g=;
+        b=YcdkNpHwINCYDlNVgRkVEJ1E3t8SdP1T947KRILoW1ZRZ344+K0NaDtKaPP/FMIMJM
+         BlsDffjExhFk7D+FCUNpFobpVukcq0UeukGe1Yy7AHpt+Q63Gwuo3wnFsX4bTIKO1tQa
+         a2Oou8108gkZg0bFv3CEXRT+WG+J22JnWPcTi5DVT6IkB3Zdt9OvnXKVS+ca+bA6YNK9
+         10puhcjh7GEJua6Y/o+PdfkgL0k1vgrsS8Iid1bK5c32GlIP9B6yLxUdf9TPqsrUx8t/
+         gS8tgkQVEpc/gTcJG5cK+F3eHrkMpRNhXagbxlouNmFZAv1fZVOJiNq8BHcQJfnFcyQB
+         Z4jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Zjd6ucGsgNsjEnxATRmXPTX0CeUipetTlkbJOSv260g=;
+        b=Alt2KYZsxFqpu6j0tCLR/wT/RvphJdk4tstVSWQOLPcA1afH9tWs+hLQtyUgGBl1NA
+         X0HfiZkjisJAI875lKKj1xrzlD6XRCsTTuK2eVr+jBCdW3FkvFw/bnzb+S7nYc0XGKko
+         Iv2oHc58ddLkql/rSh2GxRavsLfSpuRX6IcwW4PiBx0/rT/C6OgzzA4eW//t9bONWBSj
+         Kr2mG2TjsfodIDdsVTnM4GoTmql4Ql9VDKavuk6/+fmb4Wrr6H+4Ck3LErVC1dlluYze
+         D2leHbgseN6qjA63pfkGbzqNw+9gIPvtafL51hwevw/UN9e7puKUCpDzaujwKgQx8P3U
+         wyiA==
+X-Gm-Message-State: AOAM533bbS+5Whpwm50dsG+OwzZg2ePr1QzDmlqfaM5roO1WilNsqGxP
+        28MgKrgEyjYmcPqJmdWYdC4=
+X-Google-Smtp-Source: ABdhPJyf/WMGeWr22D0NlHfsSohYsI2b2muN91qqo21HuNGQR4BEYT760H8+43g+4/M2LhL6tg3hVg==
+X-Received: by 2002:a05:6a00:2ad:b029:303:41fb:41d7 with SMTP id q13-20020a056a0002adb029030341fb41d7mr2650252pfs.7.1624501421189;
+        Wed, 23 Jun 2021 19:23:41 -0700 (PDT)
+Received: from localhost.localdomain ([13.75.122.76])
+        by smtp.gmail.com with ESMTPSA id b6sm982443pfo.64.2021.06.23.19.23.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jun 2021 19:23:40 -0700 (PDT)
+From:   ainux.wang@gmail.com
+To:     jdelvare@suse.com, linux@roeck-us.net, corbet@lwn.net,
+        ainux.wang@gmail.com
+Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        sterlingteng@gmail.com, chenhuacai@kernel.org,
+        chenhuacai@loongson.cn
+Subject: [RFC] hwmon: (pmbus) Some questions about PMBUS_STATUS
+Date:   Thu, 24 Jun 2021 10:23:27 +0800
+Message-Id: <20210624022327.6192-1-ainux.wang@gmail.com>
+X-Mailer: git-send-email 2.18.1
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: "Ainux.Wang" <ainux.wang@gmail.com>
 
-There are up to three fans, but the detection omits the 3rd one.
-Fix that by using DELL_SMM_NO_FANS.
+There are some questions about PMBUS_STATUS in core.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Ainux.Wang <ainux.wang@gmail.com>
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index 9ae13c569e39..494a37bab4a0 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1257,7 +1257,7 @@ static int __init dell_smm_probe(struct platform_dev=
-ice *pdev)
- 		 * Autodetect fan multiplier based on nominal rpm
- 		 * If fan reports rpm value too high then set multiplier to 1
- 		 */
--		for (fan =3D 0; fan < 2; ++fan) {
-+		for (fan =3D 0; fan < DELL_SMM_NO_FANS; ++fan) {
- 			ret =3D i8k_get_fan_nominal_speed(data, fan, data->i8k_fan_max);
- 			if (ret < 0)
- 				continue;
-=2D-
-2.20.1
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index bbd745178147..e16c85997148 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -2200,6 +2200,19 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 	 * Some PMBus chips don't support PMBUS_STATUS_WORD, so try
+ 	 * to use PMBUS_STATUS_BYTE instead if that is the case.
+ 	 * Bail out if both registers are not supported.
++	 *
++	 * Question 1:
++	 *  Why bail out if both registers are not supported?
++	 *  MP2949A both registers are not supported.
++	 *
++	 * Question 2:
++	 *  Use i2c_smbus_read_word_data() or i2c_smbus_read_byte_data
++	 *  to read, the MP2949A will return undetermined value, although
++	 *  we already known this chip do not support both registers.
++	 *  What should we do?
++	 *  Can we use pmbus_read_status_byte() or pmbus_read_status_word()?
++	 *  and in MP2949A driver's .read_byte_data and .read_word_data to
++	 *  filter out both registers?
+ 	 */
+ 	data->read_status = pmbus_read_status_word;
+ 	ret = i2c_smbus_read_word_data(client, PMBUS_STATUS_WORD);
+-- 
+2.18.1
 
