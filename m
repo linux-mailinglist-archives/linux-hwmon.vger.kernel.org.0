@@ -2,174 +2,169 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E4C63BD8BA
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Jul 2021 16:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A160A3BD930
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Jul 2021 16:56:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233050AbhGFOqR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 6 Jul 2021 10:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34198 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233014AbhGFOqF (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 6 Jul 2021 10:46:05 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621FBC05BD14;
-        Tue,  6 Jul 2021 07:34:56 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id f20so11743189pfa.1;
-        Tue, 06 Jul 2021 07:34:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=WYmJLY9bc2BaxeUu/qUZgzgqMbq0sZhiO+uLD5KZhTI=;
-        b=ZNkrNEr4KGmj/2fbW0eQVTlsGzbWi+ILb/P7fMlYTTx3z8cJ4p3qPVCAK5AtpSjjkG
-         qmFt8s4FqTZquMymHNcfGjyBL39NROLfYMUK6QayOInSZxdscwD8o4f+srDi7tonnvDk
-         bdX0W38B6Rm0Y4UxV/T774m12JqoN/OC5O5ZpBZflMzHywoiIgKG4z2alTqAPqKGfmyG
-         lZtuy+PahUk7bVkk7A1Q7UdFqt1NU8jlGa25x5hB9beiJLpkKdVCaJav4eGlxl84H5R7
-         BDdhxWcTv4wuO5vUiZFs8gJ5bIhrpL2AbLKKNUoPc9pJc8StWdgnzeGQo3hV0S8Ewznq
-         Dw4w==
+        id S232244AbhGFO71 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 6 Jul 2021 10:59:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32190 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232215AbhGFO7J (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 6 Jul 2021 10:59:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1625583389;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bmTD9d3ct3Nzqp4lHcZstPNwokD1nD5SFrbRvU2bNOw=;
+        b=ZqU4PVBIKdstIHVLcG75qRN4pQP/kSm1HvjW08kcO/dN+pcG9S1OX4aF09IR9sOG5twXMT
+        tjL3R1miIKmycEH/Yy51qYl30kAfZ4WDYE43MbJIiJAhKKF8QarCpSevwF1mAW04p1toiS
+        4wohB3dgQzIhcCl21Irl2X+JhsgQUKI=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-499-azwdxy8iOrWf4fNC4T1v6A-1; Tue, 06 Jul 2021 10:56:27 -0400
+X-MC-Unique: azwdxy8iOrWf4fNC4T1v6A-1
+Received: by mail-oo1-f72.google.com with SMTP id c25-20020a4ad7990000b029020e67cc1879so10612712oou.18
+        for <linux-hwmon@vger.kernel.org>; Tue, 06 Jul 2021 07:56:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WYmJLY9bc2BaxeUu/qUZgzgqMbq0sZhiO+uLD5KZhTI=;
-        b=icWV8e4VPtKle9fieclclzzZbOj1v1UReprMNA0xb3ENjtheNQ4yIvD9fPntvjwHwI
-         WnBCI4rCW9ja+krr66NtOFeETB1Era6yTWUvXtHd7wFySZCWOqU/4I5J+V83k9Xa9yZi
-         XZX24e7v/akdIpM15Pi5y4wDZAQuP8hiyuj1foxHCgMAa6YFz2XRUpbwrzoB+ZFFIxNS
-         g5iv21WQ5biFjGzcMmqFCoWlMTrYmhk73+wwsZp5q8dgbleVIr2Z0iGaZf88+VBbUX6F
-         ijLhPmTQACffHaWnWKuXxyXtnpAyISzDlAN8OlZIb3jbHRsnSrUo9MZLKE22hc8iGWqI
-         aLvA==
-X-Gm-Message-State: AOAM533VpiDT3Iohl01fNffjio5kIkIzPHe74rWHFfE1BWZgXqQ1LEsU
-        8JaKRIDGeZlORW9RvdNQMR3aZDNjIbCSwSM8q4s=
-X-Google-Smtp-Source: ABdhPJxEIhdcXf+hrUDe0sA7qtmyBbbwvJXcsFj8Gz6ye56LODeb0rpJ8lI5n8p4reZ8UtNRbgYlHQ==
-X-Received: by 2002:a62:37c2:0:b029:2ff:f7dd:1620 with SMTP id e185-20020a6237c20000b02902fff7dd1620mr20773671pfa.33.1625582095926;
-        Tue, 06 Jul 2021 07:34:55 -0700 (PDT)
-Received: from localhost.lan ([2400:4070:175b:7500::7a7])
-        by smtp.gmail.com with ESMTPSA id e2sm19785718pgh.5.2021.07.06.07.34.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 07:34:54 -0700 (PDT)
-Received: from x2.lan (localhost [127.0.0.1])
-        by localhost.lan (Postfix) with ESMTPSA id 89D18902A2B;
-        Tue,  6 Jul 2021 14:34:52 +0000 (GMT)
-From:   Vincent Pelletier <plr.vincent@gmail.com>
-To:     Jean Delvare <jdelvare@suse.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=bmTD9d3ct3Nzqp4lHcZstPNwokD1nD5SFrbRvU2bNOw=;
+        b=eNBNK8XEw8dffUwXkndel0CVqn/0NFptNDjE/MyFNHMztvFxbzLatt4iDDzYfjzsVU
+         p2Wm0I0ij8GHFyYEuUDax0Vlqh4UfWucQM8bOqcCJSB8jcF7Qrx8/Al0iQQXQH2NTsKA
+         zP6RJXf4HcABu5DMe5KUIEMXaY7s1lEfVToL8q3W4BCROGQ8C8/SJ8WFF7ZtRIN7QdTs
+         k1YeqN77ASd4gpwajiL8d3Iiny4EpAtze5rBll0N3VVjwtnaJdgBIQYoN78JPHmsyjQJ
+         4d2GVQW8IR0U1fDEGdXBWINvN06W53mxzKpnqM0eYMgg7BaaVuOpFXfvBy1HDqp+5tV0
+         dkqQ==
+X-Gm-Message-State: AOAM5320dsSJqLPaM5gZ4Bikr5n9R6aR8tGEu1cNNDP6yx9fVcnag8OA
+        7SIx5SC+3Pnlsnrr6wBGViPt6Fc19u4Fq9Me0xiHi/kcboeH+4tUdgwQTWhnuKb4cCPFYA5nADo
+        C/KdAKcyvMNs7/KPKFWlb0Oo=
+X-Received: by 2002:a9d:39e3:: with SMTP id y90mr15636566otb.257.1625583386897;
+        Tue, 06 Jul 2021 07:56:26 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz5dETXDuVxi+74WVF9c6JzTEDL9DAQXIGplmTSwxU4guGmmD+27n0PY+BPl3Ej51FuHkIPvA==
+X-Received: by 2002:a9d:39e3:: with SMTP id y90mr15636547otb.257.1625583386688;
+        Tue, 06 Jul 2021 07:56:26 -0700 (PDT)
+Received: from localhost.localdomain (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id t5sm3289348otk.39.2021.07.06.07.56.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jul 2021 07:56:26 -0700 (PDT)
+Subject: Re: [PATCH v4 2/4] spi: spi-altera-dfl: support n5010 feature
+ revision
+To:     =?UTF-8?Q?Martin_Hundeb=c3=b8ll?= <martin@geanix.com>,
+        Wu Hao <hao.wu@intel.com>, Moritz Fischer <mdf@kernel.org>,
+        Xu Yilun <yilun.xu@intel.com>,
+        Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Opensource [Steve Twiss]" <stwiss.opensource@diasemi.com>
-Subject: [PATCH 3/3] Documentation: hwmon: New information for DA9063
-Date:   Tue,  6 Jul 2021 14:34:49 +0000
-Message-Id: <089cba74f35e1f7cb07064fa336518d853c8d569.1625581991.git.plr.vincent@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <850a353432cd676f96889cede291232abf58918d.1625581991.git.plr.vincent@gmail.com>
-References: <850a353432cd676f96889cede291232abf58918d.1625581991.git.plr.vincent@gmail.com>
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     =?UTF-8?Q?Martin_Hundeb=c3=b8ll?= <mhu@silicom.dk>,
+        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org
+References: <20210705101645.2040106-1-martin@geanix.com>
+ <20210705101645.2040106-3-martin@geanix.com>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <d6250f86-db93-bcc2-d46e-6dba30976cc4@redhat.com>
+Date:   Tue, 6 Jul 2021 07:56:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <20210705101645.2040106-3-martin@geanix.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: "Opensource [Steve Twiss]" <stwiss.opensource@diasemi.com>
 
-Addition of HWMON documentation for the DA9063 driver.
+On 7/5/21 3:16 AM, Martin Hundebøll wrote:
+> From: Martin Hundebøll <mhu@silicom.dk>
+>
+> The Max10 BMC on the Silicom n5010 PAC is slightly different than the
+> existing BMCs, so use a dedicated feature revision detect it.
+>
+> Signed-off-by: Martin Hundebøll <mhu@silicom.dk>
+> Reviewed-by: Moritz Fischer <mdf@kernel.org>
+> ---
+>
+> Changes since v3:
+>   * Changed "BMC's" to "BMCs"
+>   * Added Moritz' Reviewed-by
+>
+> Changes since v2:
+>   * None
+>
+> Changes since v1:
+>   * use feature revision from struct dfl_device instead of reading it
+>     from io-mem
+>
+>   drivers/spi/spi-altera-dfl.c | 15 +++++++++++++--
+>   1 file changed, 13 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-altera-dfl.c b/drivers/spi/spi-altera-dfl.c
+> index 3e32e4fe5895..f6cf7c8d9dac 100644
+> --- a/drivers/spi/spi-altera-dfl.c
+> +++ b/drivers/spi/spi-altera-dfl.c
+> @@ -111,6 +111,13 @@ static struct spi_board_info m10_bmc_info = {
+>   	.chip_select = 0,
+>   };
+>   
+> +static struct spi_board_info m10_n5010_bmc_info = {
+> +	.modalias = "m10-n5010",
+> +	.max_speed_hz = 12500000,
+> +	.bus_num = 0,
+> +	.chip_select = 0,
+> +};
 
-Signed-off-by: Opensource [Steve Twiss] <stwiss.opensource@diasemi.com>
+Other then the modalias, this is exactly the same as m10_bmc_info.
 
-Updated temperature formula, as of datasheet rev 2.3.
-Converted to ReStructuredText.
+Why not set platform_data?
 
-Signed-off-by: Vincent Pelletier <plr.vincent@gmail.com>
----
-Changes in v2:
-- ReST-ified
+> +
+>   static void config_spi_master(void __iomem *base, struct spi_master *master)
+>   {
+>   	u64 v;
+> @@ -130,6 +137,7 @@ static void config_spi_master(void __iomem *base, struct spi_master *master)
+>   
+>   static int dfl_spi_altera_probe(struct dfl_device *dfl_dev)
+>   {
+> +	struct spi_board_info *board_info = &m10_bmc_info;
+>   	struct device *dev = &dfl_dev->dev;
+>   	struct spi_master *master;
+>   	struct altera_spi *hw;
+> @@ -172,9 +180,12 @@ static int dfl_spi_altera_probe(struct dfl_device *dfl_dev)
+>   		goto exit;
+>   	}
+>   
+> -	if (!spi_new_device(master,  &m10_bmc_info)) {
+> +	if (dfl_dev->revision == FME_FEATURE_REV_MAX10_SPI_N5010)
+> +		board_info = &m10_n5010_bmc_info;
 
-Originally submitted by Steve Twiss in 2014:
-  https://marc.info/?l=linux-kernel&m=139560868209856&w=2
+The revision is board parameter, I think this check could be improved.
 
- Documentation/hwmon/da9063.rst | 73 ++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
- create mode 100644 Documentation/hwmon/da9063.rst
+There should be a
 
-diff --git a/Documentation/hwmon/da9063.rst b/Documentation/hwmon/da9063.rst
-new file mode 100644
-index 000000000000..aae69c58a5d6
---- /dev/null
-+++ b/Documentation/hwmon/da9063.rst
-@@ -0,0 +1,73 @@
-+Kernel driver da9063-hwmon
-+==========================
-+
-+Supported chips:
-+
-+  * Dialog Semiconductor DA9063 PMIC
-+
-+    Prefix: 'da9063'
-+
-+    Datasheet: Publicly available at the Dialog Semiconductor website:
-+
-+	http://www.dialog-semiconductor.com/products/power-management/DA9063
-+
-+Authors:
-+	- S Twiss <stwiss.opensource@diasemi.com>
-+	- Vincent Pelletier <plr.vincent@gmail.com>
-+
-+Description
-+-----------
-+
-+The DA9063 PMIC provides a general purpose ADC with 10 bits of resolution.
-+It uses track and hold circuitry with an analogue input multiplexer which
-+allows the conversion of up to 9 different inputs:
-+
-+- Channel  0: VSYS_RES	measurement of the system VDD (2.5 - 5.5V)
-+- Channel  1: ADCIN1_RES	high impedance input (0 - 2.5V)
-+- Channel  2: ADCIN2_RES	high impedance input (0 - 2.5V)
-+- Channel  3: ADCIN3_RES	high impedance input (0 - 2.5V)
-+- Channel  4: Tjunc	measurement of internal temperature sensor
-+- Channel  5: VBBAT	measurement of the backup battery voltage (0 - 5.0V)
-+- Channel  6: N/A	Reserved
-+- Channel  7: N/A	Reserved
-+- Channel  8: MON1_RES	group 1 internal regulators voltage (0 - 5.0V)
-+- Channel  9: MON2_RES	group 2 internal regulators voltage (0 - 5.0V)
-+- Channel 10: MON3_RES	group 3 internal regulators voltage (0 - 5.0V)
-+
-+The MUX selects from and isolates the 9 inputs and presents the channel to
-+be measured to the ADC input. When selected, an input amplifier on the VSYS
-+channel subtracts the VDDCORE reference voltage and scales the signal to the
-+correct value for the ADC.
-+
-+The analog ADC includes current sources at ADC_IN1, ADC_IN2 and ADC_IN3 to
-+support resistive measurements.
-+
-+Channels 1, 2 and 3 current source capability can be set through the ADC
-+thresholds ADC_CFG register and values for ADCIN1_CUR, ADCIN2_CUR and
-+ADCIN3_CUR. Settings for ADCIN1_CUR and ADCIN2_CUR are 1.0, 2.0, 10 and
-+40 micro Amps. The setting for ADCIN3_CUR is 10 micro Amps.
-+
-+Voltage Monitoring
-+------------------
-+
-+The manual measurement allows monitoring of the system voltage VSYS, the
-+auxiliary channels ADCIN1, ADCIN2 and ADCIN3, and a VBBAT measurement of
-+the backup battery voltage (0 - 5.0V). The manual measurements store 10
-+bits of ADC resolution.
-+
-+The manual ADC measurements attributes described above are supported by
-+the driver.
-+
-+The automatic ADC measurement is not supported by the driver.
-+
-+Temperature Monitoring
-+----------------------
-+
-+Temperatures are sampled by a 10 bit ADC.  Junction temperatures
-+are monitored by the ADC channels.
-+
-+The junction temperature is calculated:
-+
-+	Degrees celsius = -0.398 * (ADC_RES - T_OFFSET) + 330;
-+
-+The junction temperature attribute is supported by the driver.
--- 
-2.32.0
+#define FME_FATURE_REV_MAX10_SPI_D5005 0
+
+And it checked here instead of setting above.
+
+And -EINVAL returned if the revision is not known.
+
+> +
+> +	if (!spi_new_device(master, board_info)) {
+>   		dev_err(dev, "%s failed to create SPI device: %s\n",
+> -			__func__, m10_bmc_info.modalias);
+> +			__func__, board_info->modalias);
+
+Why isn't this error handled ?
+
+Tom
+
+>   	}
+>   
+>   	return 0;
 
