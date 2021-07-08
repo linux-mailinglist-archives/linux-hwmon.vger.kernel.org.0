@@ -2,149 +2,98 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B67B3BF2EB
-	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Jul 2021 02:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C402C3BF99F
+	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Jul 2021 13:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbhGHApz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 7 Jul 2021 20:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230000AbhGHApy (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 7 Jul 2021 20:45:54 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 198B9C061574
-        for <linux-hwmon@vger.kernel.org>; Wed,  7 Jul 2021 17:43:12 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id t17so9569785lfq.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 07 Jul 2021 17:43:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=x3IdB+0lckfquKYUdkcFWBswHa7WP0qV1V+LY9C/Jo0=;
-        b=pfgES6AXZUr6XQhydiAkoZnf2bX61EAYBjPFKs5DSDMIlKYnCZtSREAF7UmoCnVi4c
-         Cm+vZPO/McAp1cmVtvmLA4jLDHpLcbpZwvDnufZ9C+F9d7aifJTu5Y11uQcqfNYAuu1m
-         12EI569qecz2BjhZPYlAtGVuqOJih3HqUhibozNz9GmIU8u4ZVT/C3svmIqbWdiJbTiZ
-         vajoMBIrpNDoTyynm507bT8bUwLxz7p1+zWmkb3kUeBYOGx49UTUA+lq0ZdGhjU32ceW
-         bScVjevdQrugSnk1XnkduOR7XeWnVCmVtQkPCE2ZZQIEy8nUKiRWNn90jyjG6MVDMUaz
-         dBhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=x3IdB+0lckfquKYUdkcFWBswHa7WP0qV1V+LY9C/Jo0=;
-        b=Pu3/dNMcLpog8/yUCizsdKyRgy0AupA9L+1bODsgfmLpzsUcS9h26OXg0EaMsvbyQm
-         VHzyQQy0t5Li22kNSL8FvOgqB8cVQWEYyJDXpn0T783mRm7MzkDjU+nzwSrilUxgZOxX
-         v3FJEDNnfYl0LJXTyYfiuoE9m480gB/CZlniFh1sYC0aPEexg4M8Bbfv+GxL9TPidmhW
-         3+y7e5JsZs02LhY8otdQVjZe/MwPSt9DbbZl1+FqOJ2JiuIR+uYOjMVSh7sxOlNiBl8s
-         HIf0reNByqDiCEheSqbzoKiTkm5ZTIUHTyVvXZ7zwhED4bdsPImRRpup4tffDwWuBw/1
-         +lHw==
-X-Gm-Message-State: AOAM530HEWm1bEbzKpa9Lzgl6cW/nlXdczoFO62bwdA8pDp7b5yOx/NA
-        4mJJOggRUdLF8O7NKWExUdlmoc6lB9z9uauGYfZEsGpK
-X-Google-Smtp-Source: ABdhPJzXRF3hkR5SO6KhP+Fkr1eHdEQn076+PWg+KDz6r4IhLXB9SIkdQOddRZdSE0DZey7wcYsA0Kh41NYi85csFU4=
-X-Received: by 2002:ac2:4e64:: with SMTP id y4mr21780011lfs.238.1625704990477;
- Wed, 07 Jul 2021 17:43:10 -0700 (PDT)
+        id S231928AbhGHMC1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 8 Jul 2021 08:02:27 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:6988 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231472AbhGHMC1 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 8 Jul 2021 08:02:27 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 168BtqDD007919;
+        Thu, 8 Jul 2021 07:58:31 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 39nub31aw5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 08 Jul 2021 07:58:30 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 168BwT89042529
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 8 Jul 2021 07:58:29 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Thu, 8 Jul 2021
+ 07:58:28 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.858.5 via Frontend
+ Transport; Thu, 8 Jul 2021 07:58:28 -0400
+Received: from nsa.ad.analog.com ([10.44.3.58])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 168BwPtn020146;
+        Thu, 8 Jul 2021 07:58:25 -0400
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC:     Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>
+Subject: [RFC PATCH 0/6] AXI FAN new features and improvements
+Date:   Thu, 8 Jul 2021 14:01:05 +0200
+Message-ID: <20210708120111.519444-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-References: <202107080039.1680d7Eo018443@systol.god.lan>
-In-Reply-To: <202107080039.1680d7Eo018443@systol.god.lan>
-From:   Henk <henk.vergonet@gmail.com>
-Date:   Thu, 8 Jul 2021 02:42:59 +0200
-Message-ID: <CAMFK4TPNYJeEJdfu5Wti7G34m+-tcZvA2wv0N87aPsGq2eygvw@mail.gmail.com>
-Subject: Fwd: [PATCH] hwmon: nct6775: Add missing voltage reading NCT6796D
-To:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: IPi07hQf3AZuYEI9cMgLdjmp_wUqlYEh
+X-Proofpoint-ORIG-GUID: IPi07hQf3AZuYEI9cMgLdjmp_wUqlYEh
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-07-08_06:2021-07-08,2021-07-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ malwarescore=0 mlxlogscore=999 suspectscore=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107080067
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Retry with sendmail  hope this helps...
+This series adds some new features to the axi-fan-control driver. On top
+of that, the HW had some changes (basically it now starts automatically
+out of reset) so that the driver needed some minor refactoring. The
+reason I'm sending this as RFC, is mainly because of the last patch
+("hwmon: axi-fan-control: support temperature vs pwm points"). The core
+has some predefined values which define a temperature vs pwm curve [1].
+It also exposes registers so that users can change it according to their
+needs. As I could not find standard attributes in the subsystem, I'm
+proposing some "raw" sysfs files. Looking at [2], the pwm_auto_point
+stuff looked to be what I want. Obviously I might be wrong :). If this
+is accepted, I will add a proper sysfs DOC file describing the new files
+(being lazy in the RFC).
 
----
+For patch 5 ("hwmon: axi-fan-control: clear the fan fault irq at startup"),
+it's also arguable if we really need it. The main reason I have it is
+because of some userland apps that might take some drastic measures by
+just reading 1 fan_fault alarm. Obviously, we can argue that the problem
+is in the app and not in the driver. Though it's such a minimal change
+that I decided to include it (I'm more than fine in dropping the patch).
 
-Noticed in the documentation that the NCT6796D actually has 16 analog
-voltage inputs, where only 15 are configured.
+[1]: https://wiki.analog.com/resources/fpga/docs/axi_fan_control
+[2]: https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface
 
-See: https://www.nuvoton.com/resource-files/NCT6796D_Datasheet_V0_6.pdf
-page 59-60:
+Nuno Sá (6):
+  hwmon: axi-fan-control: make sure the clock is enabled
+  hwmon: axi-fan-control: add tacho devicetree properties
+  dt-bindings: axi-fan-control: add tacho properties
+  hwmon: axi-fan-control: handle irqs in natural order
+  hwmon: axi-fan-control: clear the fan fault irq at startup
+  hwmon: axi-fan-control: support temperature vs pwm points
 
-8.6.2.1. Voltage Reading
-NCT6796D has 16 voltage reading:
-....
-and the missing one in the driver:
-VIN9: Voltage reading Bank 4, Index 8F
+ .../bindings/hwmon/adi,axi-fan-control.yaml   |  12 ++
+ drivers/hwmon/axi-fan-control.c               | 160 ++++++++++++++++--
+ 2 files changed, 156 insertions(+), 16 deletions(-)
 
-This patch adds support for in15 on the NCT6796D.
----
- drivers/hwmon/nct6775.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+-- 
+2.32.0
 
-diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
-index 5bd15622a85f..385ef79d79c4 100644
---- a/drivers/hwmon/nct6775.c
-+++ b/drivers/hwmon/nct6775.c
-@@ -28,7 +28,7 @@
-  * nct6792d    15      6       6       2+6    0xc910 0xc1    0x5ca3
-  * nct6793d    15      6       6       2+6    0xd120 0xc1    0x5ca3
-  * nct6795d    14      6       6       2+6    0xd350 0xc1    0x5ca3
-- * nct6796d    14      7       7       2+6    0xd420 0xc1    0x5ca3
-+ * nct6796d    16      7       7       2+6    0xd420 0xc1    0x5ca3
-  * nct6797d    14      7       7       2+6    0xd450 0xc1    0x5ca3
-  *                                           (0xd451)
-  * nct6798d    14      7       7       2+6    0xd428 0xc1    0x5ca3
-@@ -209,14 +209,14 @@ superio_exit(int ioreg)
-
- /* Common and NCT6775 specific data */
-
--/* Voltage min/max registers for nr=7..14 are in bank 5 */
-+/* Voltage min/max registers for nr=7..15 are in bank 5 */
-
- static const u16 NCT6775_REG_IN_MAX[] = {
-        0x2b, 0x2d, 0x2f, 0x31, 0x33, 0x35, 0x37, 0x554, 0x556, 0x558, 0x55a,
--       0x55c, 0x55e, 0x560, 0x562 };
-+       0x55c, 0x55e, 0x560, 0x562, 0x564 };
- static const u16 NCT6775_REG_IN_MIN[] = {
-        0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x555, 0x557, 0x559, 0x55b,
--       0x55d, 0x55f, 0x561, 0x563 };
-+       0x55d, 0x55f, 0x561, 0x563, 0x565 };
- static const u16 NCT6775_REG_IN[] = {
-        0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x550, 0x551, 0x552
- };
-@@ -478,7 +478,7 @@ static const u16 NCT6776_REG_TEMP_CRIT[32] = {
-
- static const u16 NCT6779_REG_IN[] = {
-        0x480, 0x481, 0x482, 0x483, 0x484, 0x485, 0x486, 0x487,
--       0x488, 0x489, 0x48a, 0x48b, 0x48c, 0x48d, 0x48e };
-+       0x488, 0x489, 0x48a, 0x48b, 0x48c, 0x48d, 0x48e, 0x48f };
-
- static const u16 NCT6779_REG_ALARM[NUM_REG_ALARM] = {
-        0x459, 0x45A, 0x45B, 0x568 };
-@@ -1047,9 +1047,9 @@ div_from_reg(u8 reg)
-  * Some of the voltage inputs have internal scaling, the tables below
-  * contain 8 (the ADC LSB in mV) * scaling factor * 100
-  */
--static const u16 scale_in[15] = {
-+static const u16 scale_in[16] = {
-        800, 800, 1600, 1600, 800, 800, 800, 1600, 1600, 800, 800, 800, 800,
--       800, 800
-+       800, 800, 800
- };
-
- static inline long in_from_reg(u8 reg, u8 nr)
-@@ -1143,7 +1143,7 @@ struct nct6775_data {
-        /* Register values */
-        u8 bank;                /* current register bank */
-        u8 in_num;              /* number of in inputs we have */
--       u8 in[15][3];           /* [0]=in, [1]=in_max, [2]=in_min */
-+       u8 in[16][3];           /* [0]=in, [1]=in_max, [2]=in_min */
-        unsigned int rpm[NUM_FAN];
-        u16 fan_min[NUM_FAN];
-        u8 fan_pulses[NUM_FAN];
-@@ -4200,7 +4200,7 @@ static int nct6775_probe(struct platform_device *pdev)
-        case nct6796:
-        case nct6797:
-        case nct6798:
--               data->in_num = 15;
-+               data->in_num = (data->kind == nct6796) ? 16 : 15;
-                data->pwm_num = (data->kind == nct6796 ||
-                                 data->kind == nct6797 ||
-                                 data->kind == nct6798) ? 7 : 6;
---
-2.26.2
