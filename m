@@ -2,97 +2,47 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 898EB3BF9D7
-	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Jul 2021 14:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E832E3C146B
+	for <lists+linux-hwmon@lfdr.de>; Thu,  8 Jul 2021 15:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231437AbhGHMKx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 8 Jul 2021 08:10:53 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:50756 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231347AbhGHMKx (ORCPT
+        id S231815AbhGHNlN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 8 Jul 2021 09:41:13 -0400
+Received: from mx-n08.wc2.phx1.stabletransit.com ([207.246.242.254]:48610 "HELO
+        mx-n08.wc2.phx1.stabletransit.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S231803AbhGHNlM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 8 Jul 2021 08:10:53 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 168Bt2di004728;
-        Thu, 8 Jul 2021 07:58:36 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 39mehm2qjt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 08 Jul 2021 07:58:36 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 168BwZkl042549
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 8 Jul 2021 07:58:35 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Thu, 8 Jul 2021
- 07:58:34 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.858.5 via Frontend Transport;
- Thu, 8 Jul 2021 07:58:34 -0400
-Received: from nsa.ad.analog.com ([10.44.3.58])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 168BwPts020146;
-        Thu, 8 Jul 2021 07:58:33 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC:     Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>
-Subject: [RFC PATCH 5/6] hwmon: axi-fan-control: clear the fan fault irq at startup
-Date:   Thu, 8 Jul 2021 14:01:10 +0200
-Message-ID: <20210708120111.519444-6-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210708120111.519444-1-nuno.sa@analog.com>
-References: <20210708120111.519444-1-nuno.sa@analog.com>
+        Thu, 8 Jul 2021 09:41:12 -0400
+X-Greylist: delayed 358 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Jul 2021 09:41:12 EDT
+Received: by mx-n08.wc2.phx1.stabletransit.com (Postfix, from userid 114)
+        id ECA4BB41AF; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
+        mx-n08.wc2.phx1.stabletransit.com
+X-Spam-Level: **
+X-Spam-Status: No, score=2.6 required=6.0 tests=BAYES_50,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_SHORT,UNPARSEABLE_RELAY autolearn=no
+        autolearn_force=no version=3.4.2
+X-Spam-Virus: No
+Received: from php-v027.wc2.phx1.stabletransit.com (unknown [10.40.206.156])
+        by mx-n08.wc2.phx1.stabletransit.com (Postfix) with ESMTP id 19719B41AD
+        for <linux-hwmon@vger.kernel.org>; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
+Received: from digilu (uid 2914979)
+        (envelope-from mabeljohnson@citromail.hu)
+        id 20156
+        by php-v027.wc2.phx1.stabletransit.com (DragonFly Mail Agent v0.11);
+        Thu, 08 Jul 2021 08:32:30 -0500
+To:     linux-hwmon@vger.kernel.org
+Subject: WORK OF GOD.
+X-PHP-Originating-Script: 2914979:class.engine.php(12) : runtime-created function
+Date:   Thu, 8 Jul 2021 08:32:30 -0500
+From:   MARY JOHNSON <mabeljohnson@citromail.hu>
+Reply-To: mj224294@gmail.com
+Message-ID: <0afea7ffe79f7d7fbd9bb68260a2b8ae@jackieleestudio.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: Q8ykOz8sdWLmsg0O3Th9RWi2W7PeH1ci
-X-Proofpoint-GUID: Q8ykOz8sdWLmsg0O3Th9RWi2W7PeH1ci
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-07-08_06:2021-07-08,2021-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- phishscore=0 adultscore=0 clxscore=1015 spamscore=0 suspectscore=0
- mlxlogscore=999 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107080067
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The core might pull itself out of reset automatically which means it can
-run with invalid tacho evaluation parameters for some time. Thus, it will
-trigger a FAN FAULT interrupt as soon as we unmask it. Some userland apps
-might be sensitive to this and act drastically. Hence, we will clear it
-here and if there's something really wrong with the FAN or the evaluation
-parameters, we'll get that interrupt again...
-
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/hwmon/axi-fan-control.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
-index d4b62d54375b..59c9babb3850 100644
---- a/drivers/hwmon/axi-fan-control.c
-+++ b/drivers/hwmon/axi-fan-control.c
-@@ -379,6 +379,15 @@ static int axi_fan_control_init(struct axi_fan_control_data *ctl,
- 		      ADI_IRQ_SRC_PWM_CHANGED | ADI_IRQ_SRC_TEMP_INCREASE),
- 		    ADI_REG_IRQ_MASK, ctl);
- 
-+	/*
-+	 * The core might pull itself out of reset automatically which means it can run with
-+	 * invalid tacho evaluation parameters for some time. Thus, it will trigger a FAN
-+	 * FAULT interrupt as soon as we unmask it(and some userland apps might be sensitive to
-+	 * this). Hence, we will clear it here and if there's something really wrong with the
-+	 * FAN or the evaluation parameters, we'll get that interrupt again...
-+	 */
-+	axi_iowrite(ADI_IRQ_SRC_TACH_ERR, ADI_REG_IRQ_PENDING, ctl);
-+
- 	/* bring the device out of reset */
- 	axi_iowrite(0x01, ADI_REG_RSTN, ctl);
- 
--- 
-2.32.0
+I am Mrs. Mary Johnson,78years,an aging widow suffering from cancer, I am on admission at a hospital.I would like to willfully entrust the rest of my monetary assets to you, Kindly reply back with your full Name, cellphone, address, to enable me to send you a letter of authorization to contact my bank first inland bank nigeria plc so that they can transfer my funds to your account for the purpose of helping the poor as indicated on my WILL.
 
