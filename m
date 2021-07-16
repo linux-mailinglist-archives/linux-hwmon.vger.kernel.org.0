@@ -2,157 +2,80 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 755ED3CB992
-	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Jul 2021 17:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B59F23CBB3B
+	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Jul 2021 19:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240736AbhGPPW1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 16 Jul 2021 11:22:27 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:28024 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240251AbhGPPWY (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 16 Jul 2021 11:22:24 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16GFJ3Bh108840;
-        Fri, 16 Jul 2021 11:19:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=NaztiW8y0zbEM5BnHti1Gp6mOCctl7zpEXezAiyDpPc=;
- b=fzu/Nx2U9BMGyPnIa5m9PUkNRS/ptVWjxq96+EcYZyB+eB6n4SACTqPkEauTOUaAcatt
- JrecwOy38LkCjUxVdeaDX2FoWvAKBYJkML25P50wDnzfzYCqzW94NwyVRp3Fe4BmXnh/
- Lc0KOfrhf7r4keDvHOuCiy+KUb8nb00SF93dJFFGqa4x6O3cVWl/UtbXUM43C2CENtmK
- +WUATWNidsajWk2Zxg6K+4ot4y/nQx+OFSNyoOcuDELXQbzYZZvHeq1ENm9R3u8JrNmb
- aK9lc9UDTPiWGDyNPlecXuBqhuKop7/bNCvYu3hfM4X4qIXa0vxQ4dvI3bKqYCtVr5hw 1A== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 39tyncnbfr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Jul 2021 11:19:07 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16GFGfJS023509;
-        Fri, 16 Jul 2021 15:19:04 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-        by ppma02dal.us.ibm.com with ESMTP id 39qt3ewur7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Jul 2021 15:19:04 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 16GFJ3Gi10027486
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 16 Jul 2021 15:19:03 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 32B5BC6059;
-        Fri, 16 Jul 2021 15:19:03 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BB58CC605D;
-        Fri, 16 Jul 2021 15:19:02 +0000 (GMT)
-Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.211.92.96])
-        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Fri, 16 Jul 2021 15:19:02 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-hwmon@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-        linux@roeck-us.net, jdelvare@suse.com, jk@ozlabs.org,
-        joel@jms.id.au, alistair@popple.id.au, openbmc@lists.ozlabs.org,
-        Eddie James <eajames@linux.ibm.com>
-Subject: [PATCH 3/3] fsi: occ: Add dynamic debug to dump command and response
-Date:   Fri, 16 Jul 2021 10:18:50 -0500
-Message-Id: <20210716151850.28973-4-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210716151850.28973-1-eajames@linux.ibm.com>
-References: <20210716151850.28973-1-eajames@linux.ibm.com>
+        id S230256AbhGPRgd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 16 Jul 2021 13:36:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60288 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229803AbhGPRgd (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 16 Jul 2021 13:36:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B3381613FB;
+        Fri, 16 Jul 2021 17:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626456818;
+        bh=cf8WxUiyJPqIMeZaZvs8bmw2NGyFNYO33dlQ1WqpQrQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QhDbbSYvSCyTW3hYRZhJQb/Q8R13s9FjRMH/XFprr/6AMpWEjgsCoXhgZOxuhHzon
+         hyLnOsdx8fmBUHnicBp4dlktJuQnUaBO4BFl8A1bzRv9LcjNyXkwablWOj5cHuXNgf
+         tBxbbNQ893BphhUEtEZO8l8IgHosM9sRvKqey02Vp9zso+WmZPqsZejVl4epuEdM3y
+         aOoF/QPqXBHVZj/KCuUCv5z2WgMCPGepGSNZqBVkXPz2vVDLUpLRuq8hAlUElxyvXI
+         TSIlSSMACzMcU1SQWiIu2xPfhGR31fBDbzTaQDXcCDjnWTmTcUCB1vXTDDT8WbJ+IF
+         rUk+zSj4f5dFA==
+Date:   Fri, 16 Jul 2021 18:33:35 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Martin =?iso-8859-1?Q?Hundeb=F8ll?= <martin@geanix.com>
+Cc:     Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
+        Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Martin =?iso-8859-1?Q?Hundeb=F8ll?= <mhu@silicom.dk>,
+        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] spi: spi-altera-dfl: support n5010 feature
+ revision
+Message-ID: <20210716173335.GC4137@sirena.org.uk>
+References: <20210716135441.3235863-1-martin@geanix.com>
+ <20210716135441.3235863-3-martin@geanix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3ZpwZuyjX5mctZig_Fom-bhIZ3K76wJ3
-X-Proofpoint-ORIG-GUID: 3ZpwZuyjX5mctZig_Fom-bhIZ3K76wJ3
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-07-16_05:2021-07-16,2021-07-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
- bulkscore=0 mlxlogscore=999 phishscore=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107160092
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="raC6veAxrt5nqIoY"
+Content-Disposition: inline
+In-Reply-To: <20210716135441.3235863-3-martin@geanix.com>
+X-Cookie: do {
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Use the dynamic branching capability of the dynamic debug subsystem
-to dump the command and response with the correct OCC device name.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- drivers/fsi/fsi-occ.c | 44 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+--raC6veAxrt5nqIoY
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/fsi/fsi-occ.c b/drivers/fsi/fsi-occ.c
-index ecf738411fe2..641a6869b9df 100644
---- a/drivers/fsi/fsi-occ.c
-+++ b/drivers/fsi/fsi-occ.c
-@@ -21,6 +21,15 @@
- #include <linux/uaccess.h>
- #include <asm/unaligned.h>
- 
-+#if !defined(CONFIG_DYNAMIC_DEBUG_CORE)
-+#define DEFINE_DYNAMIC_DEBUG_METADATA(name, fmt)
-+#if defined(DEBUG)
-+#define DYNAMIC_DEBUG_BRANCH(descriptor) true
-+#else /* DEBUG */
-+#define DYNAMIC_DEBUG_BRANCH(descriptor) false
-+#endif /* DEBUG */
-+#endif /* CONFIG_DYNAMIC_DEBUG_CORE */
-+
- #define OCC_SRAM_BYTES		4096
- #define OCC_CMD_DATA_BYTES	4090
- #define OCC_RESP_DATA_BYTES	4089
-@@ -359,6 +368,20 @@ static int occ_putsram(struct occ *occ, const void *data, ssize_t len,
- 	byte_buf[len - 2] = checksum >> 8;
- 	byte_buf[len - 1] = checksum & 0xff;
- 
-+	{
-+		DEFINE_DYNAMIC_DEBUG_METADATA(ddm_occ_cmd, "OCC command");
-+
-+		if (DYNAMIC_DEBUG_BRANCH(ddm_occ_cmd)) {
-+			char prefix[64];
-+
-+			snprintf(prefix, sizeof(prefix), "%s %s: cmd ",
-+				 dev_driver_string(occ->dev),
-+				 dev_name(occ->dev));
-+			print_hex_dump(KERN_DEBUG, prefix, DUMP_PREFIX_OFFSET,
-+				       16, 4, byte_buf, len, false);
-+		}
-+	}
-+
- 	rc = sbefifo_submit(occ->sbefifo, buf, cmd_len, buf, &resp_len);
- 	if (rc)
- 		goto free;
-@@ -556,6 +579,27 @@ int fsi_occ_submit(struct device *dev, const void *request, size_t req_len,
- 	}
- 
- 	*resp_len = resp_data_length + 7;
-+
-+	{
-+		DEFINE_DYNAMIC_DEBUG_METADATA(ddm_occ_rsp,
-+					      "OCC response");
-+		DEFINE_DYNAMIC_DEBUG_METADATA(ddm_occ_full_rsp,
-+					      "OCC full response");
-+
-+		if (DYNAMIC_DEBUG_BRANCH(ddm_occ_full_rsp) ||
-+		    DYNAMIC_DEBUG_BRANCH(ddm_occ_rsp)) {
-+			char prefix[64];
-+			size_t l = DYNAMIC_DEBUG_BRANCH(ddm_occ_full_rsp) ?
-+				*resp_len : 16;
-+
-+			snprintf(prefix, sizeof(prefix), "%s %s: rsp ",
-+				 dev_driver_string(occ->dev),
-+				 dev_name(occ->dev));
-+			print_hex_dump(KERN_DEBUG, prefix, DUMP_PREFIX_OFFSET,
-+				       16, 4, resp, l, false);
-+		}
-+	}
-+
- 	rc = occ_verify_checksum(occ, resp, resp_data_length);
- 
-  done:
--- 
-2.27.0
+On Fri, Jul 16, 2021 at 03:54:40PM +0200, Martin Hundeb=F8ll wrote:
+> From: Martin Hundeb=F8ll <mhu@silicom.dk>
+>=20
+> The Max10 BMC on the Silicom n5010 PAC is slightly different than the
+> existing BMCs, so use a dedicated feature revision detect it.
 
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--raC6veAxrt5nqIoY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDxwu4ACgkQJNaLcl1U
+h9DndAf+IqeWflVSPxKlrQ2Z+7ext9oSMMuq5l/EIJZmwdXPKSImWc8J0uocAxHw
++eWOQoyg6h96X3SyocivzrmsrVMUMmRvUZqT3tLIBqN4ihciC2HMCloVXpZpO8f5
+N5Rg6IMsYqpV03IaRERfLtVt/jmXNF7SVL+1H/wdCFYJVywJDcG8XYF/Z3dtmvhW
+kmOmGYimOAejLycEEZARLBD/zrRgOJ4fxgVAlHLEdT1gzYUJRhC6mpokpxtpH3fg
+QJpNf9HNKF7r7E2jGAsC5CUjWE0KwPR9OI9E9+R2A8hEk2Nqdon+hfieZyYyhCiJ
+w7oP4OEHfZEiPJZ46zTnkN4KhHyX5A==
+=1O5g
+-----END PGP SIGNATURE-----
+
+--raC6veAxrt5nqIoY--
