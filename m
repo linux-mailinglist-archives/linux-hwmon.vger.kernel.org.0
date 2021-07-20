@@ -2,736 +2,526 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5585F3CEFF0
-	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jul 2021 01:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5AB3CF425
+	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jul 2021 07:57:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352630AbhGSWtE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 19 Jul 2021 18:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1387209AbhGST4U (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 19 Jul 2021 15:56:20 -0400
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78334C061574;
-        Mon, 19 Jul 2021 13:33:56 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 59-20020a9d0ac10000b0290462f0ab0800so19496834otq.11;
-        Mon, 19 Jul 2021 13:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=gZG5QTTbDUE4xpcECJviTidl2M8zGKRu7+yQIhUAxE0=;
-        b=ipVGO4c4liPqEMay7hoj0UwxzhbsBPyLKAF89ouSZnKBB0PD1DTQxrG/RohTohqo3g
-         QMB3soOnsExwThBV++plqG9FrC3fxsk55RqM101mt5XVyhsTTFFpQQn/wLdtLkhyBMG+
-         sro9B68FzsmIpqha1L4om8Cl1EK3X7PfLrE/aMEaZB7SxUrAMLUHq0eooTswj9kawI+v
-         EmVnK1Jp1XIfpkYNq1LFJaahLmD/Z9//f9hMZ5elywLtmjD3GrtfWp4zZbv86YNRTYUX
-         esPKOKty0B+sjpO9og3ocFM2peuAa/KlOLUuAmYYIdRqaGr3de9nj82srw+GRpKPZ+Sa
-         48BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gZG5QTTbDUE4xpcECJviTidl2M8zGKRu7+yQIhUAxE0=;
-        b=GhCj/StBKjQk/ochf6g2kclCuRnavy9MDEGHqxUSVbKTkWjdqjB8Xj5MQBs7oCX1Z4
-         Y4sK91ldLJ/+0WQ616RQHgjaTxOmLJMB9LjYkImE7cP2cPinD32mfCKf24BADWaKdnfQ
-         IQSnk3jHkclNYDtVNQAYGADADaeQUvNL6xKw1jHwQQsL1pMIFpM3f4myyuF3lD76GlaU
-         WwLO6fmeW7gp+3F9Wzeh2sidtHORoH+BkVLX2bRscXCjDk1HjGS5mqLCzuvI4qP0MpOU
-         3m40fbywvvtJGjR2TUn9QbBjQBhvjqZV2hQOIiW12nm7evoiq/B4B99lUS0NAbxQst2d
-         RJSA==
-X-Gm-Message-State: AOAM530H4wH/LXN/JFhZ+HUkzLS7qs2eu91/O4hG3ULqIaoyQ4ufzmC4
-        4KhluwVZc3iq7NXYDZM+sw4=
-X-Google-Smtp-Source: ABdhPJx/RqTfz2fkHBeIMZhhtif5abFutFlPhflj+Vm5+DywSKD6zjDbYm2Wbb/+jfEkdU8NwJ9DWw==
-X-Received: by 2002:a05:6830:23a7:: with SMTP id m7mr1407802ots.17.1626727015480;
-        Mon, 19 Jul 2021 13:36:55 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c11sm3828659otm.37.2021.07.19.13.36.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jul 2021 13:36:55 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Subject: Re: [PATCH 12/14] hwmon: peci: Add dimmtemp driver
-To:     "Winiarska, Iwona" <iwona.winiarska@intel.com>
-Cc:     "corbet@lwn.net" <corbet@lwn.net>,
-        "jae.hyun.yoo@linux.intel.com" <jae.hyun.yoo@linux.intel.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "Lutomirski, Andy" <luto@kernel.org>,
-        "Luck, Tony" <tony.luck@intel.com>,
-        "andrew@aj.id.au" <andrew@aj.id.au>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "mchehab@kernel.org" <mchehab@kernel.org>,
-        "jdelvare@suse.com" <jdelvare@suse.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "yazen.ghannam@amd.com" <yazen.ghannam@amd.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "joel@jms.id.au" <joel@jms.id.au>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "pierre-louis.bossart@linux.intel.com" 
-        <pierre-louis.bossart@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>
-References: <20210712220447.957418-1-iwona.winiarska@intel.com>
- <20210712220447.957418-13-iwona.winiarska@intel.com>
- <20210715175602.GA3043224@roeck-us.net>
- <282c092ec55034bde13c23b90516c2d543f0400d.camel@intel.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <25c9c595-de7f-5229-cec8-ab28e9e3ac49@roeck-us.net>
-Date:   Mon, 19 Jul 2021 13:36:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S236855AbhGTFRQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 20 Jul 2021 01:17:16 -0400
+Received: from mail-dm6nam08on2079.outbound.protection.outlook.com ([40.107.102.79]:65377
+        "EHLO NAM04-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S236240AbhGTFRQ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 20 Jul 2021 01:17:16 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=l4yWqL1btqMjtD8tuM5oamuPbTxqDCcyb7z0d3PdtV9hhI1AltGap9G545rxW3DLLOzBHMW6xJNGcDbjrCnnXUJsXGEEg4xUkTnJJi0611HCltjzIubF1t4h8GGkP2MkelaEHNM6jpDcwsghrxqHYVzof+9zV5NhmybF2wAChN6PeIaN4o+lQpG6dwqnma5v6jAWxp+RlboBYIQ8oIdGbggLHj2s5pnhjtz+KFzwPXkxLSKqAv8/HnRmxlfx/9EzQ+4C4qo5Cz730ZmfPK4OKliGT5oay3fNsmlrDZghZFfFkDJr/PRuHCmG/dFrSHo65bYAoaW81WnHbfECwJ0NPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DKEOkld0fjCz6p+ltpweALR1jxeAphLsmIuiLGQ1yzw=;
+ b=TqVFBUYqYI0G5o3prH1rKilNw9kUWlFzGeHTptNNYQGudQ2TcOkQDvb28/W9V7cDiGhEjgykVmSmHl6lIreVFq/7sAJtMmQL0evUVCYpzwGNsOrSRAbSAyTfu2kXQ2ntU6aFAvngaSU/Epr5ovFJYOz5OpvEeDRinCNHp8U54K6R0rp5dV0df/zM+elYhyx2vDrEgA30Okcm+f9fbVNehVhyeyFR5D3TCrq/92Rl1RHzKjkdsO/YQ4TNNLmgsFmvq+Uf0lMg3FWPomrKk0OC23k2K8EyPjPrgu+yCt696U3Ow7Scbi3qXHkQV7CbFakpOyHrk4/CJkbrPRE1Ks/oWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DKEOkld0fjCz6p+ltpweALR1jxeAphLsmIuiLGQ1yzw=;
+ b=MqeVKfIvMSFXo0qPae4dvePPNGVJ4WYCN5hGgN0wBi86lwH/pu5zUzIm9NRZWeFAeYVlgzIbqkSpQuY0uoFx2GvLj1agy6DvT+jh10zLQRxdRQBCFdn/glqjtf54fYtXnEazwM/mx041kxhOyZ46b783QAvUkI3v9MeVc/CtMNA=
+Received: from BN9PR03CA0455.namprd03.prod.outlook.com (2603:10b6:408:139::10)
+ by DM6PR12MB3868.namprd12.prod.outlook.com (2603:10b6:5:1c8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.23; Tue, 20 Jul
+ 2021 05:57:53 +0000
+Received: from BN8NAM11FT028.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:139:cafe::80) by BN9PR03CA0455.outlook.office365.com
+ (2603:10b6:408:139::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21 via Frontend
+ Transport; Tue, 20 Jul 2021 05:57:53 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT028.mail.protection.outlook.com (10.13.176.225) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4331.21 via Frontend Transport; Tue, 20 Jul 2021 05:57:53 +0000
+Received: from milan-ETHANOL-X.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Tue, 20 Jul
+ 2021 00:57:50 -0500
+From:   Naveen Krishna Chatradhi <nchatrad@amd.com>
+To:     <linux-hwmon@vger.kernel.org>
+CC:     <linux@roeck-us.net>, Akshay Gupta <Akshay.Gupta@amd.com>,
+        "Naveen Krishna Chatradhi" <nchatrad@amd.com>
+Subject: [PATCH v3 1/3] hwmon: sbrmi: Add support for sbrmi power module
+Date:   Tue, 20 Jul 2021 11:27:35 +0530
+Message-ID: <20210720055737.8666-1-nchatrad@amd.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210625132544.18094-1-nchatrad@amd.com>
+References: <20210625132544.18094-1-nchatrad@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <282c092ec55034bde13c23b90516c2d543f0400d.camel@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8eab2e98-8719-4b5f-3f80-08d94b435041
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3868:
+X-Microsoft-Antispam-PRVS: <DM6PR12MB3868FE2506AFB2818F2DA304E8E29@DM6PR12MB3868.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6LbIPGV9BqCBA3SKk5MCmUes9hThzZhYXOBmsWaqPViqFAlJtxaPGZJRcyOfk29QdrPO4lnMh97IyiZ/sUF7ZhZTNN/WGXGzBruw6K0dNOO2pd/klegwDRgTxRFZBlMGpZ+isM0CZdTTgfkQN76MGEWVlqGjWX9r4pAQzfnWB5eCB2AmijF1ItbjmMIMk7fmIh1/dBFCFzHXNi+K89Po+LbFVo5yLby/Sf11sx8WiwsJLEf4qBQ8Yp3JE9MXlBGy+bDKG4htmutfTvMDjQMBe9ODFKS8NQoqdDvjl/uMhaOAteeZzWqoBgr7ctQoKXlY8zUwdAIJ/3u7ESPIlnJsX8zRRzUOO7wU2Ypp2O0wLDODfnhNcGphSan2CzRCl4e15cDLBnecPDk6z8gEkDmhdbCYNjoByPC23Kb4Nr4a0Q+M6kvFb3LA2NMOMH8bwPEx7PhCyINcbPCVmyK9QUVGYT22blKaTld8Aft4ZMyYUtn0JP2NZ9LyZX7aRE203sdRVXqyt+7DT92s3+F2z26DQuiriklbNxPXeq5HwXo2q+5dfU8YlqKjmgYUoJaOQlMVk97WpiGhUpeCxjieBCE2S7/XgWK/QjIaU7dz/IA548InAssyt6Nvty+7ehL+w1Whd7Cz3+pi2orHSkSEKAtyKRodv0PGsM/BjBGFtCqJm/qrTGt7QBBg36JWZgyE10sR9/BsxLIgDQtDbvhVp+s7pqt4gqyFjoBMl524ZSjtHA4=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(136003)(396003)(46966006)(36840700001)(47076005)(4326008)(1076003)(2616005)(5660300002)(30864003)(426003)(8676002)(8936002)(54906003)(70586007)(6666004)(70206006)(336012)(82310400003)(316002)(36860700001)(356005)(81166007)(82740400003)(36756003)(83380400001)(2906002)(478600001)(26005)(186003)(16526019)(7696005)(6916009)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2021 05:57:53.0461
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8eab2e98-8719-4b5f-3f80-08d94b435041
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT028.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3868
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 7/19/21 1:31 PM, Winiarska, Iwona wrote:
-> On Thu, 2021-07-15 at 10:56 -0700, Guenter Roeck wrote:
->> On Tue, Jul 13, 2021 at 12:04:45AM +0200, Iwona Winiarska wrote:
->>> Add peci-dimmtemp driver for Digital Thermal Sensor (DTS) thermal
->>> readings of DIMMs that are accessible via the processor PECI interface.
->>>
->>> The main use case for the driver (and PECI interface) is out-of-band
->>> management, where we're able to obtain the DTS readings from an external
->>> entity connected with PECI, e.g. BMC on server platforms.
->>>
->>> Co-developed-by: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
->>> Signed-off-by: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
->>> Signed-off-by: Iwona Winiarska <iwona.winiarska@intel.com>
->>> Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
->>> ---
->>>   drivers/hwmon/peci/Kconfig    |  13 +
->>>   drivers/hwmon/peci/Makefile   |   2 +
->>>   drivers/hwmon/peci/dimmtemp.c | 508 ++++++++++++++++++++++++++++++++++
->>>   3 files changed, 523 insertions(+)
->>>   create mode 100644 drivers/hwmon/peci/dimmtemp.c
->>>
->>> diff --git a/drivers/hwmon/peci/Kconfig b/drivers/hwmon/peci/Kconfig
->>> index e10eed68d70a..f2d57efa508b 100644
->>> --- a/drivers/hwmon/peci/Kconfig
->>> +++ b/drivers/hwmon/peci/Kconfig
->>> @@ -14,5 +14,18 @@ config SENSORS_PECI_CPUTEMP
->>>            This driver can also be built as a module. If so, the module
->>>            will be called peci-cputemp.
->>>   
->>> +config SENSORS_PECI_DIMMTEMP
->>> +       tristate "PECI DIMM temperature monitoring client"
->>> +       depends on PECI
->>> +       select SENSORS_PECI
->>> +       select PECI_CPU
->>> +       help
->>> +         If you say yes here you get support for the generic Intel PECI hwmon
->>> +         driver which provides Digital Thermal Sensor (DTS) thermal readings
->>> of
->>> +         DIMM components that are accessible via the processor PECI
->>> interface.
->>> +
->>> +         This driver can also be built as a module. If so, the module
->>> +         will be called peci-dimmtemp.
->>> +
->>>   config SENSORS_PECI
->>>          tristate
->>> diff --git a/drivers/hwmon/peci/Makefile b/drivers/hwmon/peci/Makefile
->>> index e8a0ada5ab1f..191cfa0227f3 100644
->>> --- a/drivers/hwmon/peci/Makefile
->>> +++ b/drivers/hwmon/peci/Makefile
->>> @@ -1,5 +1,7 @@
->>>   # SPDX-License-Identifier: GPL-2.0-only
->>>   
->>>   peci-cputemp-y := cputemp.o
->>> +peci-dimmtemp-y := dimmtemp.o
->>>   
->>>   obj-$(CONFIG_SENSORS_PECI_CPUTEMP)     += peci-cputemp.o
->>> +obj-$(CONFIG_SENSORS_PECI_DIMMTEMP)    += peci-dimmtemp.o
->>> diff --git a/drivers/hwmon/peci/dimmtemp.c b/drivers/hwmon/peci/dimmtemp.c
->>> new file mode 100644
->>> index 000000000000..2fcb8607137a
->>> --- /dev/null
->>> +++ b/drivers/hwmon/peci/dimmtemp.c
->>> @@ -0,0 +1,508 @@
->>> +// SPDX-License-Identifier: GPL-2.0-only
->>> +// Copyright (c) 2018-2021 Intel Corporation
->>> +
->>> +#include <linux/auxiliary_bus.h>
->>> +#include <linux/bitfield.h>
->>> +#include <linux/bitops.h>
->>> +#include <linux/hwmon.h>
->>> +#include <linux/jiffies.h>
->>> +#include <linux/module.h>
->>> +#include <linux/peci.h>
->>> +#include <linux/peci-cpu.h>
->>> +#include <linux/units.h>
->>> +#include <linux/workqueue.h>
->>> +#include <linux/x86/intel-family.h>
->>> +
->>> +#include "common.h"
->>> +
->>> +#define DIMM_MASK_CHECK_DELAY_JIFFIES  msecs_to_jiffies(5000)
->>> +#define DIMM_MASK_CHECK_RETRY_MAX      60 /* 60 x 5 secs = 5 minutes */
->>> +
->>> +/* Max number of channel ranks and DIMM index per channel */
->>> +#define CHAN_RANK_MAX_ON_HSX   8
->>> +#define DIMM_IDX_MAX_ON_HSX    3
->>> +#define CHAN_RANK_MAX_ON_BDX   4
->>> +#define DIMM_IDX_MAX_ON_BDX    3
->>> +#define CHAN_RANK_MAX_ON_BDXD  2
->>> +#define DIMM_IDX_MAX_ON_BDXD   2
->>> +#define CHAN_RANK_MAX_ON_SKX   6
->>> +#define DIMM_IDX_MAX_ON_SKX    2
->>> +#define CHAN_RANK_MAX_ON_ICX   8
->>> +#define DIMM_IDX_MAX_ON_ICX    2
->>> +#define CHAN_RANK_MAX_ON_ICXD  4
->>> +#define DIMM_IDX_MAX_ON_ICXD   2
->>> +
->>> +#define CHAN_RANK_MAX          CHAN_RANK_MAX_ON_HSX
->>> +#define DIMM_IDX_MAX           DIMM_IDX_MAX_ON_HSX
->>> +#define DIMM_NUMS_MAX          (CHAN_RANK_MAX * DIMM_IDX_MAX)
->>> +
->>> +#define CPU_SEG_MASK           GENMASK(23, 16)
->>> +#define GET_CPU_SEG(x)         (((x) & CPU_SEG_MASK) >> 16)
->>> +#define CPU_BUS_MASK           GENMASK(7, 0)
->>> +#define GET_CPU_BUS(x)         ((x) & CPU_BUS_MASK)
->>> +
->>> +#define DIMM_TEMP_MAX          GENMASK(15, 8)
->>> +#define DIMM_TEMP_CRIT         GENMASK(23, 16)
->>> +#define GET_TEMP_MAX(x)                (((x) & DIMM_TEMP_MAX) >> 8)
->>> +#define GET_TEMP_CRIT(x)       (((x) & DIMM_TEMP_CRIT) >> 16)
->>> +
->>> +struct dimm_info {
->>> +       int chan_rank_max;
->>> +       int dimm_idx_max;
->>> +       u8 min_peci_revision;
->>> +};
->>> +
->>> +struct peci_dimmtemp {
->>> +       struct peci_device *peci_dev;
->>> +       struct device *dev;
->>> +       const char *name;
->>> +       const struct dimm_info *gen_info;
->>> +       struct delayed_work detect_work;
->>> +       struct peci_sensor_data temp[DIMM_NUMS_MAX];
->>> +       long temp_max[DIMM_NUMS_MAX];
->>> +       long temp_crit[DIMM_NUMS_MAX];
->>> +       int retry_count;
->>> +       char **dimmtemp_label;
->>> +       DECLARE_BITMAP(dimm_mask, DIMM_NUMS_MAX);
->>> +};
->>> +
->>> +static u8 __dimm_temp(u32 reg, int dimm_order)
->>> +{
->>> +       return (reg >> (dimm_order * 8)) & 0xff;
->>> +}
->>> +
->>> +static int get_dimm_temp(struct peci_dimmtemp *priv, int dimm_no)
->>> +{
->>> +       int dimm_order = dimm_no % priv->gen_info->dimm_idx_max;
->>> +       int chan_rank = dimm_no / priv->gen_info->dimm_idx_max;
->>> +       struct peci_device *peci_dev = priv->peci_dev;
->>> +       u8 cpu_seg, cpu_bus, dev, func;
->>> +       u64 offset;
->>> +       u32 data;
->>> +       u16 reg;
->>> +       int ret;
->>> +
->>> +       if (!peci_sensor_need_update(&priv->temp[dimm_no]))
->>> +               return 0;
->>> +
->>> +       ret = peci_pcs_read(peci_dev, PECI_PCS_DDR_DIMM_TEMP, chan_rank,
->>> &data);
->>> +       if (ret)
->>> +               return ret;
->>> +
->>
->> Similar to the cpu driver, the lack of mutex protection needs to be explained.
->>
-> 
-> Sure, it will be consistent for the two drivers.
-> 
->>> +       priv->temp[dimm_no].value = __dimm_temp(data, dimm_order) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +
->>> +       switch (peci_dev->info.model) {
->>> +       case INTEL_FAM6_ICELAKE_X:
->>> +       case INTEL_FAM6_ICELAKE_D:
->>> +               ret = peci_ep_pci_local_read(peci_dev, 0, 13, 0, 2, 0xd4,
->>> &data);
->>> +               if (ret || !(data & BIT(31)))
->>> +                       break; /* Use default or previous value */
->>> +
->>> +               ret = peci_ep_pci_local_read(peci_dev, 0, 13, 0, 2, 0xd0,
->>> &data);
->>> +               if (ret)
->>> +                       break; /* Use default or previous value */
->>> +
->>> +               cpu_seg = GET_CPU_SEG(data);
->>> +               cpu_bus = GET_CPU_BUS(data);
->>> +
->>> +               /*
->>> +                * Device 26, Offset 224e0: IMC 0 channel 0 -> rank 0
->>> +                * Device 26, Offset 264e0: IMC 0 channel 1 -> rank 1
->>> +                * Device 27, Offset 224e0: IMC 1 channel 0 -> rank 2
->>> +                * Device 27, Offset 264e0: IMC 1 channel 1 -> rank 3
->>> +                * Device 28, Offset 224e0: IMC 2 channel 0 -> rank 4
->>> +                * Device 28, Offset 264e0: IMC 2 channel 1 -> rank 5
->>> +                * Device 29, Offset 224e0: IMC 3 channel 0 -> rank 6
->>> +                * Device 29, Offset 264e0: IMC 3 channel 1 -> rank 7
->>> +                */
->>> +               dev = 0x1a + chan_rank / 2;
->>> +               offset = 0x224e0 + dimm_order * 4;
->>> +               if (chan_rank % 2)
->>> +                       offset += 0x4000;
->>> +
->>> +               ret = peci_mmio_read(peci_dev, 0, cpu_seg, cpu_bus, dev, 0,
->>> offset, &data);
->>> +               if (ret)
->>> +                       return ret;
->>> +
->>> +               priv->temp_max[dimm_no] = GET_TEMP_MAX(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +               priv->temp_crit[dimm_no] = GET_TEMP_CRIT(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +
->>> +               break;
->>> +       case INTEL_FAM6_SKYLAKE_X:
->>> +               /*
->>> +                * Device 10, Function 2: IMC 0 channel 0 -> rank 0
->>> +                * Device 10, Function 6: IMC 0 channel 1 -> rank 1
->>> +                * Device 11, Function 2: IMC 0 channel 2 -> rank 2
->>> +                * Device 12, Function 2: IMC 1 channel 0 -> rank 3
->>> +                * Device 12, Function 6: IMC 1 channel 1 -> rank 4
->>> +                * Device 13, Function 2: IMC 1 channel 2 -> rank 5
->>> +                */
->>> +               dev = 10 + chan_rank / 3 * 2 + (chan_rank % 3 == 2 ? 1 : 0);
->>> +               func = chan_rank % 3 == 1 ? 6 : 2;
->>> +               reg = 0x120 + dimm_order * 4;
->>> +
->>> +               ret = peci_pci_local_read(peci_dev, 2, dev, func, reg, &data);
->>> +               if (ret)
->>> +                       return ret;
->>> +
->>> +               priv->temp_max[dimm_no] = GET_TEMP_MAX(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +               priv->temp_crit[dimm_no] = GET_TEMP_CRIT(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +
->>> +               break;
->>> +       case INTEL_FAM6_BROADWELL_D:
->>> +               /*
->>> +                * Device 10, Function 2: IMC 0 channel 0 -> rank 0
->>> +                * Device 10, Function 6: IMC 0 channel 1 -> rank 1
->>> +                * Device 12, Function 2: IMC 1 channel 0 -> rank 2
->>> +                * Device 12, Function 6: IMC 1 channel 1 -> rank 3
->>> +                */
->>> +               dev = 10 + chan_rank / 2 * 2;
->>> +               func = (chan_rank % 2) ? 6 : 2;
->>> +               reg = 0x120 + dimm_order * 4;
->>> +
->>> +               ret = peci_pci_local_read(peci_dev, 2, dev, func, reg, &data);
->>> +               if (ret)
->>> +                       return ret;
->>> +
->>> +               priv->temp_max[dimm_no] = GET_TEMP_MAX(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +               priv->temp_crit[dimm_no] = GET_TEMP_CRIT(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +
->>> +               break;
->>> +       case INTEL_FAM6_HASWELL_X:
->>> +       case INTEL_FAM6_BROADWELL_X:
->>> +               /*
->>> +                * Device 20, Function 0: IMC 0 channel 0 -> rank 0
->>> +                * Device 20, Function 1: IMC 0 channel 1 -> rank 1
->>> +                * Device 21, Function 0: IMC 0 channel 2 -> rank 2
->>> +                * Device 21, Function 1: IMC 0 channel 3 -> rank 3
->>> +                * Device 23, Function 0: IMC 1 channel 0 -> rank 4
->>> +                * Device 23, Function 1: IMC 1 channel 1 -> rank 5
->>> +                * Device 24, Function 0: IMC 1 channel 2 -> rank 6
->>> +                * Device 24, Function 1: IMC 1 channel 3 -> rank 7
->>> +                */
->>> +               dev = 20 + chan_rank / 2 + chan_rank / 4;
->>> +               func = chan_rank % 2;
->>> +               reg = 0x120 + dimm_order * 4;
->>> +
->>> +               ret = peci_pci_local_read(peci_dev, 1, dev, func, reg, &data);
->>> +               if (ret)
->>> +                       return ret;
->>> +
->>> +               priv->temp_max[dimm_no] = GET_TEMP_MAX(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +               priv->temp_crit[dimm_no] = GET_TEMP_CRIT(data) *
->>> MILLIDEGREE_PER_DEGREE;
->>> +
->>> +               break;
->>> +       default:
->>> +               return -EOPNOTSUPP;
->>> +       }
->>> +
->>> +       peci_sensor_mark_updated(&priv->temp[dimm_no]);
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static int dimmtemp_read_string(struct device *dev,
->>> +                               enum hwmon_sensor_types type,
->>> +                               u32 attr, int channel, const char **str)
->>> +{
->>> +       struct peci_dimmtemp *priv = dev_get_drvdata(dev);
->>> +
->>> +       if (attr != hwmon_temp_label)
->>> +               return -EOPNOTSUPP;
->>> +
->>> +       *str = (const char *)priv->dimmtemp_label[channel];
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static int dimmtemp_read(struct device *dev, enum hwmon_sensor_types type,
->>> +                        u32 attr, int channel, long *val)
->>> +{
->>> +       struct peci_dimmtemp *priv = dev_get_drvdata(dev);
->>> +       int ret;
->>> +
->>> +       ret = get_dimm_temp(priv, channel);
->>> +       if (ret)
->>> +               return ret;
->>> +
->>> +       switch (attr) {
->>> +       case hwmon_temp_input:
->>> +               *val = priv->temp[channel].value;
->>> +               break;
->>> +       case hwmon_temp_max:
->>> +               *val = priv->temp_max[channel];
->>> +               break;
->>> +       case hwmon_temp_crit:
->>> +               *val = priv->temp_crit[channel];
->>> +               break;
->>> +       default:
->>> +               return -EOPNOTSUPP;
->>> +       }
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static umode_t dimmtemp_is_visible(const void *data, enum hwmon_sensor_types
->>> type,
->>> +                                  u32 attr, int channel)
->>> +{
->>> +       const struct peci_dimmtemp *priv = data;
->>> +
->>> +       if (test_bit(channel, priv->dimm_mask))
->>> +               return 0444;
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static const struct hwmon_ops peci_dimmtemp_ops = {
->>> +       .is_visible = dimmtemp_is_visible,
->>> +       .read_string = dimmtemp_read_string,
->>> +       .read = dimmtemp_read,
->>> +};
->>> +
->>> +static int check_populated_dimms(struct peci_dimmtemp *priv)
->>> +{
->>> +       int chan_rank_max = priv->gen_info->chan_rank_max;
->>> +       int dimm_idx_max = priv->gen_info->dimm_idx_max;
->>> +       int chan_rank, dimm_idx, ret;
->>> +       u64 dimm_mask = 0;
->>> +       u32 pcs;
->>> +
->>> +       for (chan_rank = 0; chan_rank < chan_rank_max; chan_rank++) {
->>> +               ret = peci_pcs_read(priv->peci_dev, PECI_PCS_DDR_DIMM_TEMP,
->>> chan_rank, &pcs);
->>> +               if (ret) {
->>> +                       /*
->>> +                        * Overall, we expect either success or -EINVAL in
->>> +                        * order to determine whether DIMM is populated or
->>> not.
->>> +                        * For anything else - we fall back to defering the
->>> +                        * detection to be performed at a later point in time.
->>> +                        */
->>> +                       if (ret == -EINVAL)
->>> +                               continue;
->>> +                       else
->>
->> else after continue is unnecessary.
->>
-> 
-> Ok.
-> 
->>> +                               return -EAGAIN;
->>> +               }
->>> +
->>> +               for (dimm_idx = 0; dimm_idx < dimm_idx_max; dimm_idx++)
->>> +                       if (__dimm_temp(pcs, dimm_idx))
->>> +                               dimm_mask |= BIT(chan_rank * dimm_idx_max +
->>> dimm_idx);
->>> +       }
->>> +       /*
->>> +        * It's possible that memory training is not done yet. In this case we
->>> +        * defer the detection to be performed at a later point in time.
->>> +        */
->>> +       if (!dimm_mask)
->>> +               return -EAGAIN;
->>> +
->>> +       dev_dbg(priv->dev, "Scanned populated DIMMs: %#llx\n", dimm_mask);
->>> +
->>> +       bitmap_from_u64(priv->dimm_mask, dimm_mask);
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static int create_dimm_temp_label(struct peci_dimmtemp *priv, int chan)
->>> +{
->>> +       int rank = chan / priv->gen_info->dimm_idx_max;
->>> +       int idx = chan % priv->gen_info->dimm_idx_max;
->>> +
->>> +       priv->dimmtemp_label[chan] = devm_kasprintf(priv->dev, GFP_KERNEL,
->>> +                                                   "DIMM %c%d", 'A' + rank,
->>> +                                                   idx + 1);
->>> +       if (!priv->dimmtemp_label[chan])
->>> +               return -ENOMEM;
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static const u32 peci_dimmtemp_temp_channel_config[] = {
->>> +       [0 ... DIMM_NUMS_MAX - 1] = HWMON_T_LABEL | HWMON_T_INPUT |
->>> HWMON_T_MAX | HWMON_T_CRIT,
->>> +       0
->>> +};
->>> +
->>> +static const struct hwmon_channel_info peci_dimmtemp_temp_channel = {
->>> +       .type = hwmon_temp,
->>> +       .config = peci_dimmtemp_temp_channel_config,
->>> +};
->>> +
->>> +static const struct hwmon_channel_info *peci_dimmtemp_temp_info[] = {
->>> +       &peci_dimmtemp_temp_channel,
->>> +       NULL
->>> +};
->>> +
->>> +static const struct hwmon_chip_info peci_dimmtemp_chip_info = {
->>> +       .ops = &peci_dimmtemp_ops,
->>> +       .info = peci_dimmtemp_temp_info,
->>> +};
->>> +
->>> +static int create_dimm_temp_info(struct peci_dimmtemp *priv)
->>> +{
->>> +       int ret, i, channels;
->>> +       struct device *dev;
->>> +
->>> +       ret = check_populated_dimms(priv);
->>> +       if (ret == -EAGAIN) {
->>
->> The only error returned by check_populated_dimms() is -EAGAIN. Checking for
->> specifically this error here suggests that there may be other (ignored)
->> errors. The reader has to examine check_populated_dimms() to find out
->> that -EAGAIN is indeed the only possible error. To avoid confusion, please
->> only check for ret here.
->>
-> 
-> Makes sense.
-> 
->>> +               if (priv->retry_count < DIMM_MASK_CHECK_RETRY_MAX) {
->>> +                       schedule_delayed_work(&priv->detect_work,
->>> +                                             DIMM_MASK_CHECK_DELAY_JIFFIES);
->>> +                       priv->retry_count++;
->>> +                       dev_dbg(priv->dev, "Deferred populating DIMM temp
->>> info\n");
->>> +                       return ret;
->>> +               }
->>> +
->>> +               dev_info(priv->dev, "Timeout populating DIMM temp info\n");
->>
->> If this returns an error, the message needs to be dev_err().
->>
-> 
-> We need to check each CPU, but it's completely legal that only one processor in
-> the systems has populated DIMMs.
-> I'd prefer to keep dev_info() or maybe even downgrade it to dev_dbg().
-> 
+From: Akshay Gupta <Akshay.Gupta@amd.com>
 
-If this is not an error, there should be no message....
+On AMD platforms the Out-of-band access is provided by
+Advanced Platform Management Link (APML), APML is a
+SMBus v2.0 compatible 2-wire processor client interface.
+APML is also referred as the sideband interface (SBI).
 
-> Thank you
-> -Iwona
-> 
->>> +               return -ETIMEDOUT;
+APML is used to communicate with the
+Side-Band Remote Management Interface (SB-RMI) which provides
+Soft Mailbox messages to manage power consumption and
+power limits of the CPU socket.
 
-and no error either.
+- This module add support to read power consumption,
+  power limit & max power limit and write power limit.
+- To instantiate this driver on a Board Management Controller (BMC)
+  connected to an AMD CPU with SB-RMI support, the i2c bus number
+  would be the bus connected from the BMC to the CPU.
 
-Guenter
+Signed-off-by: Akshay Gupta <Akshay.Gupta@amd.com>
+Signed-off-by: Naveen Krishna Chatradhi <nchatrad@amd.com>
+---
+Changes since v2:
+1. Modify to cache the power_limi_max during probe
+2. Enable alert during probe
+3. Use dev_err instead of pr_err
+4. Remove unnecessry bit mask
+5. Checking rmi_mailbox_xfer retrun value
 
->>> +       }
->>> +
->>> +       channels = priv->gen_info->chan_rank_max * priv->gen_info-
->>>> dimm_idx_max;
->>> +
->>> +       priv->dimmtemp_label = devm_kzalloc(priv->dev, channels * sizeof(char
->>> *), GFP_KERNEL);
->>> +       if (!priv->dimmtemp_label)
->>> +               return -ENOMEM;
->>> +
->>> +       for_each_set_bit(i, priv->dimm_mask, DIMM_NUMS_MAX) {
->>> +               ret = create_dimm_temp_label(priv, i);
->>> +               if (ret)
->>> +                       return ret;
->>> +       }
->>> +
->>> +       dev = devm_hwmon_device_register_with_info(priv->dev, priv->name,
->>> priv,
->>> +                                                  &peci_dimmtemp_chip_info,
->>> NULL);
->>> +       if (IS_ERR(dev)) {
->>> +               dev_err(priv->dev, "Failed to register hwmon device\n");
->>> +               return PTR_ERR(dev);
->>> +       }
->>> +
->>> +       dev_dbg(priv->dev, "%s: sensor '%s'\n", dev_name(dev), priv->name);
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static void create_dimm_temp_info_delayed(struct work_struct *work)
->>> +{
->>> +       struct peci_dimmtemp *priv = container_of(to_delayed_work(work),
->>> +                                                 struct peci_dimmtemp,
->>> +                                                 detect_work);
->>> +       int ret;
->>> +
->>> +       ret = create_dimm_temp_info(priv);
->>> +       if (ret && ret != -EAGAIN)
->>> +               dev_dbg(priv->dev, "Failed to populate DIMM temp info\n");
->>> +}
->>> +
->>> +static int peci_dimmtemp_probe(struct auxiliary_device *adev, const struct
->>> auxiliary_device_id *id)
->>> +{
->>> +       struct device *dev = &adev->dev;
->>> +       struct peci_device *peci_dev = to_peci_device(dev->parent);
->>> +       struct peci_dimmtemp *priv;
->>> +       int ret;
->>> +
->>> +       priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
->>> +       if (!priv)
->>> +               return -ENOMEM;
->>> +
->>> +       priv->name = devm_kasprintf(dev, GFP_KERNEL, "peci_dimmtemp.cpu%d",
->>> +                                   peci_dev->info.socket_id);
->>> +       if (!priv->name)
->>> +               return -ENOMEM;
->>> +
->>> +       dev_set_drvdata(dev, priv);
->>> +       priv->dev = dev;
->>> +       priv->peci_dev = peci_dev;
->>> +       priv->gen_info = (const struct dimm_info *)id->driver_data;
->>> +
->>> +       INIT_DELAYED_WORK(&priv->detect_work, create_dimm_temp_info_delayed);
->>> +
->>> +       ret = create_dimm_temp_info(priv);
->>> +       if (ret && ret != -EAGAIN) {
->>> +               dev_dbg(dev, "Failed to populate DIMM temp info\n");
->>> +               return ret;
->>> +       }
->>> +
->>> +       return 0;
->>> +}
->>> +
->>> +static void peci_dimmtemp_remove(struct auxiliary_device *adev)
->>> +{
->>> +       struct peci_dimmtemp *priv = dev_get_drvdata(&adev->dev);
->>> +
->>> +       cancel_delayed_work_sync(&priv->detect_work);
->>> +}
->>> +
->>> +static const struct dimm_info dimm_hsx = {
->>> +       .chan_rank_max  = CHAN_RANK_MAX_ON_HSX,
->>> +       .dimm_idx_max   = DIMM_IDX_MAX_ON_HSX,
->>> +       .min_peci_revision = 0x30,
->>> +};
->>> +
->>> +static const struct dimm_info dimm_bdx = {
->>> +       .chan_rank_max  = CHAN_RANK_MAX_ON_BDX,
->>> +       .dimm_idx_max   = DIMM_IDX_MAX_ON_BDX,
->>> +       .min_peci_revision = 0x30,
->>> +};
->>> +
->>> +static const struct dimm_info dimm_bdxd = {
->>> +       .chan_rank_max  = CHAN_RANK_MAX_ON_BDXD,
->>> +       .dimm_idx_max   = DIMM_IDX_MAX_ON_BDXD,
->>> +       .min_peci_revision = 0x30,
->>> +};
->>> +
->>> +static const struct dimm_info dimm_skx = {
->>> +       .chan_rank_max  = CHAN_RANK_MAX_ON_SKX,
->>> +       .dimm_idx_max   = DIMM_IDX_MAX_ON_SKX,
->>> +       .min_peci_revision = 0x30,
->>> +};
->>> +
->>> +static const struct dimm_info dimm_icx = {
->>> +       .chan_rank_max  = CHAN_RANK_MAX_ON_ICX,
->>> +       .dimm_idx_max   = DIMM_IDX_MAX_ON_ICX,
->>> +       .min_peci_revision = 0x40,
->>> +};
->>> +
->>> +static const struct dimm_info dimm_icxd = {
->>> +       .chan_rank_max  = CHAN_RANK_MAX_ON_ICXD,
->>> +       .dimm_idx_max   = DIMM_IDX_MAX_ON_ICXD,
->>> +       .min_peci_revision = 0x40,
->>> +};
->>> +
->>> +static const struct auxiliary_device_id peci_dimmtemp_ids[] = {
->>> +       {
->>> +               .name = "peci_cpu.dimmtemp.hsx",
->>> +               .driver_data = (kernel_ulong_t)&dimm_hsx,
->>> +       },
->>> +       {
->>> +               .name = "peci_cpu.dimmtemp.bdx",
->>> +               .driver_data = (kernel_ulong_t)&dimm_bdx,
->>> +       },
->>> +       {
->>> +               .name = "peci_cpu.dimmtemp.bdxd",
->>> +               .driver_data = (kernel_ulong_t)&dimm_bdxd,
->>> +       },
->>> +       {
->>> +               .name = "peci_cpu.dimmtemp.skx",
->>> +               .driver_data = (kernel_ulong_t)&dimm_skx,
->>> +       },
->>> +       {
->>> +               .name = "peci_cpu.dimmtemp.icx",
->>> +               .driver_data = (kernel_ulong_t)&dimm_icx,
->>> +       },
->>> +       {
->>> +               .name = "peci_cpu.dimmtemp.icxd",
->>> +               .driver_data = (kernel_ulong_t)&dimm_icxd,
->>> +       },
->>> +       { }
->>> +};
->>> +MODULE_DEVICE_TABLE(auxiliary, peci_dimmtemp_ids);
->>> +
->>> +static struct auxiliary_driver peci_dimmtemp_driver = {
->>> +       .probe          = peci_dimmtemp_probe,
->>> +       .remove         = peci_dimmtemp_remove,
->>> +       .id_table       = peci_dimmtemp_ids,
->>> +};
->>> +
->>> +module_auxiliary_driver(peci_dimmtemp_driver);
->>> +
->>> +MODULE_AUTHOR("Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>");
->>> +MODULE_AUTHOR("Iwona Winiarska <iwona.winiarska@intel.com>");
->>> +MODULE_DESCRIPTION("PECI dimmtemp driver");
->>> +MODULE_LICENSE("GPL");
->>> +MODULE_IMPORT_NS(PECI_CPU);
-> 
+ drivers/hwmon/Kconfig  |  10 ++
+ drivers/hwmon/Makefile |   1 +
+ drivers/hwmon/sbrmi.c  | 358 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 369 insertions(+)
+ create mode 100644 drivers/hwmon/sbrmi.c
+
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 87624902ea80..f489972a6309 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -1551,6 +1551,16 @@ config SENSORS_SBTSI
+ 	  This driver can also be built as a module. If so, the module will
+ 	  be called sbtsi_temp.
+ 
++config SENSORS_SBRMI
++	tristate "Emulated SB-RMI sensor"
++	depends on I2C
++	help
++	  If you say yes here you get support for emulated RMI
++	  sensors on AMD SoCs with APML interface connected to a BMC device.
++
++	  This driver can also be built as a module. If so, the module will
++	  be called sbrmi.
++
+ config SENSORS_SHT15
+ 	tristate "Sensiron humidity and temperature sensors. SHT15 and compat."
+ 	depends on GPIOLIB || COMPILE_TEST
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index 59e78bc212cf..8031acf58936 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -164,6 +164,7 @@ obj-$(CONFIG_SENSORS_PWM_FAN)	+= pwm-fan.o
+ obj-$(CONFIG_SENSORS_RASPBERRYPI_HWMON)	+= raspberrypi-hwmon.o
+ obj-$(CONFIG_SENSORS_S3C)	+= s3c-hwmon.o
+ obj-$(CONFIG_SENSORS_SBTSI)	+= sbtsi_temp.o
++obj-$(CONFIG_SENSORS_SBRMI)	+= sbrmi.o
+ obj-$(CONFIG_SENSORS_SCH56XX_COMMON)+= sch56xx-common.o
+ obj-$(CONFIG_SENSORS_SCH5627)	+= sch5627.o
+ obj-$(CONFIG_SENSORS_SCH5636)	+= sch5636.o
+diff --git a/drivers/hwmon/sbrmi.c b/drivers/hwmon/sbrmi.c
+new file mode 100644
+index 000000000000..372b099c04a0
+--- /dev/null
++++ b/drivers/hwmon/sbrmi.c
+@@ -0,0 +1,358 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * sbrmi.c - hwmon driver for a SB-RMI mailbox
++ *           compliant AMD SoC device.
++ *
++ * Copyright (C) 2020-2021 Advanced Micro Devices, Inc.
++ */
++
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/hwmon.h>
++#include <linux/i2c.h>
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/of.h>
++
++/* Do not allow setting negative power limit */
++#define SBRMI_PWR_MIN	0
++/* Mask for Status Register bit[1] */
++#define SW_ALERT_MASK	0x2
++
++/* Software Interrupt for triggering */
++#define START_CMD	0x80
++#define TRIGGER_MAILBOX	0x01
++
++/*
++ * SB-RMI supports soft mailbox service request to MP1 (power management
++ * firmware) through SBRMI inbound/outbound message registers.
++ * SB-RMI message IDs
++ */
++enum sbrmi_msg_id {
++	SBRMI_READ_PKG_PWR_CONSUMPTION = 0x1,
++	SBRMI_WRITE_PKG_PWR_LIMIT,
++	SBRMI_READ_PKG_PWR_LIMIT,
++	SBRMI_READ_PKG_MAX_PWR_LIMIT,
++};
++
++/* SB-RMI registers */
++enum sbrmi_reg {
++	SBRMI_CTRL		= 0x01,
++	SBRMI_STATUS,
++	SBRMI_OUTBNDMSG0	= 0x30,
++	SBRMI_OUTBNDMSG1,
++	SBRMI_OUTBNDMSG2,
++	SBRMI_OUTBNDMSG3,
++	SBRMI_OUTBNDMSG4,
++	SBRMI_OUTBNDMSG5,
++	SBRMI_OUTBNDMSG6,
++	SBRMI_OUTBNDMSG7,
++	SBRMI_INBNDMSG0,
++	SBRMI_INBNDMSG1,
++	SBRMI_INBNDMSG2,
++	SBRMI_INBNDMSG3,
++	SBRMI_INBNDMSG4,
++	SBRMI_INBNDMSG5,
++	SBRMI_INBNDMSG6,
++	SBRMI_INBNDMSG7,
++	SBRMI_SW_INTERRUPT,
++};
++
++/* Each client has this additional data */
++struct sbrmi_data {
++	struct i2c_client *client;
++	struct mutex lock;
++	u32 pwr_limit_max;
++};
++
++struct sbrmi_mailbox_msg {
++	u8 cmd;
++	bool read;
++	u32 data_in;
++	u32 data_out;
++};
++
++static int sbrmi_enable_alert(struct i2c_client *client)
++{
++	int ctrl;
++
++	/*
++	 * Enable the SB-RMI Software alert status
++	 * by writing 0 to bit 4 of Control register(0x1)
++	 */
++	ctrl = i2c_smbus_read_byte_data(client, SBRMI_CTRL);
++	if (ctrl < 0)
++		return ctrl;
++
++	if (ctrl & 0x10) {
++		ctrl &= ~0x10;
++		return i2c_smbus_write_byte_data(client,
++						 SBRMI_CTRL, ctrl);
++	}
++
++	return 0;
++}
++
++static int rmi_mailbox_xfer(struct sbrmi_data *data,
++			    struct sbrmi_mailbox_msg *msg)
++{
++	int i, ret, retry = 10;
++	int sw_status;
++	u8 byte;
++
++	mutex_lock(&data->lock);
++
++	/* Indicate firmware a command is to be serviced */
++	ret = i2c_smbus_write_byte_data(data->client,
++					SBRMI_INBNDMSG7, START_CMD);
++	if (ret < 0)
++		goto exit_unlock;
++
++	/* Write the command to SBRMI::InBndMsg_inst0 */
++	ret = i2c_smbus_write_byte_data(data->client,
++					SBRMI_INBNDMSG0, msg->cmd);
++	if (ret < 0)
++		goto exit_unlock;
++
++	/*
++	 * For both read and write the initiator (BMC) writes
++	 * Command Data In[31:0] to SBRMI::InBndMsg_inst[4:1]
++	 * SBRMI_x3C(MSB):SBRMI_x39(LSB)
++	 */
++	for (i = 0; i < 4; i++) {
++		byte = (msg->data_in >> i * 8) & 0xff;
++		ret = i2c_smbus_write_byte_data(data->client,
++						SBRMI_INBNDMSG1 + i, byte);
++		if (ret < 0)
++			goto exit_unlock;
++	}
++
++	/*
++	 * Write 0x01 to SBRMI::SoftwareInterrupt to notify firmware to
++	 * perform the requested read or write command
++	 */
++	ret = i2c_smbus_write_byte_data(data->client,
++					SBRMI_SW_INTERRUPT, TRIGGER_MAILBOX);
++	if (ret < 0)
++		goto exit_unlock;
++
++	/*
++	 * Firmware will write SBRMI::Status[SwAlertSts]=1 to generate
++	 * an ALERT (if enabled) to initiator (BMC) to indicate completion
++	 * of the requested command
++	 */
++	do {
++		sw_status = i2c_smbus_read_byte_data(data->client,
++						     SBRMI_STATUS);
++		if (sw_status < 0) {
++			ret = sw_status;
++			goto exit_unlock;
++		}
++		if (sw_status & SW_ALERT_MASK)
++			break;
++		usleep_range(50, 100);
++	} while (retry--);
++
++	if (retry < 0) {
++		dev_err(&data->client->dev,
++			"Firmware fail to indicate command completion\n");
++		ret = -EIO;
++		goto exit_unlock;
++	}
++
++	/*
++	 * For a read operation, the initiator (BMC) reads the firmware
++	 * response Command Data Out[31:0] from SBRMI::OutBndMsg_inst[4:1]
++	 * {SBRMI_x34(MSB):SBRMI_x31(LSB)}.
++	 */
++	if (msg->read) {
++		for (i = 0; i < 4; i++) {
++			ret = i2c_smbus_read_byte_data(data->client,
++						       SBRMI_OUTBNDMSG1 + i);
++			if (ret < 0)
++				goto exit_unlock;
++			msg->data_out |= ret << i * 8;
++		}
++	}
++
++	/*
++	 * BMC must write 1'b1 to SBRMI::Status[SwAlertSts] to clear the
++	 * ALERT to initiator
++	 */
++	ret = i2c_smbus_write_byte_data(data->client, SBRMI_STATUS,
++					sw_status | SW_ALERT_MASK);
++
++exit_unlock:
++	mutex_unlock(&data->lock);
++	return ret;
++}
++
++static int sbrmi_read(struct device *dev, enum hwmon_sensor_types type,
++		      u32 attr, int channel, long *val)
++{
++	struct sbrmi_data *data = dev_get_drvdata(dev);
++	struct sbrmi_mailbox_msg msg = { 0 };
++	int ret;
++
++	if (type != hwmon_power)
++		return -EINVAL;
++
++	msg.read = true;
++	switch (attr) {
++	case hwmon_power_input:
++		msg.cmd = SBRMI_READ_PKG_PWR_CONSUMPTION;
++		ret = rmi_mailbox_xfer(data, &msg);
++		break;
++	case hwmon_power_cap:
++		msg.cmd = SBRMI_READ_PKG_PWR_LIMIT;
++		ret = rmi_mailbox_xfer(data, &msg);
++		break;
++	case hwmon_power_cap_max:
++		msg.data_out = data->pwr_limit_max;
++		break;
++	default:
++		return -EINVAL;
++	}
++	if (ret < 0)
++		return ret;
++	/* hwmon power attributes are in microWatt */
++	*val = (long)msg.data_out * 1000;
++	return ret;
++}
++
++static int sbrmi_write(struct device *dev, enum hwmon_sensor_types type,
++		       u32 attr, int channel, long val)
++{
++	struct sbrmi_data *data = dev_get_drvdata(dev);
++	struct sbrmi_mailbox_msg msg = { 0 };
++
++	if (type != hwmon_power && attr != hwmon_power_cap)
++		return -EINVAL;
++	/*
++	 * hwmon power attributes are in microWatt
++	 * mailbox read/write is in mWatt
++	 */
++	val /= 1000;
++
++	val = clamp_val(val, SBRMI_PWR_MIN, data->pwr_limit_max);
++
++	msg.cmd = SBRMI_WRITE_PKG_PWR_LIMIT;
++	msg.data_in = val;
++	msg.read = false;
++
++	return rmi_mailbox_xfer(data, &msg);
++}
++
++static umode_t sbrmi_is_visible(const void *data,
++				enum hwmon_sensor_types type,
++				u32 attr, int channel)
++{
++	switch (type) {
++	case hwmon_power:
++		switch (attr) {
++		case hwmon_power_input:
++		case hwmon_power_cap_max:
++			return 0444;
++		case hwmon_power_cap:
++			return 0644;
++		}
++		break;
++	default:
++		break;
++	}
++	return 0;
++}
++
++static const struct hwmon_channel_info *sbrmi_info[] = {
++	HWMON_CHANNEL_INFO(power,
++			   HWMON_P_INPUT | HWMON_P_CAP | HWMON_P_CAP_MAX),
++	NULL
++};
++
++static const struct hwmon_ops sbrmi_hwmon_ops = {
++	.is_visible = sbrmi_is_visible,
++	.read = sbrmi_read,
++	.write = sbrmi_write,
++};
++
++static const struct hwmon_chip_info sbrmi_chip_info = {
++	.ops = &sbrmi_hwmon_ops,
++	.info = sbrmi_info,
++};
++
++static int sbrmi_get_max_pwr_limit(struct sbrmi_data *data)
++{
++	struct sbrmi_mailbox_msg msg = { 0 };
++	int ret;
++
++	msg.cmd = SBRMI_READ_PKG_MAX_PWR_LIMIT;
++	msg.read = true;
++	ret = rmi_mailbox_xfer(data, &msg);
++	if (ret < 0)
++		return ret;
++	data->pwr_limit_max = msg.data_out;
++
++	return ret;
++}
++
++static int sbrmi_probe(struct i2c_client *client,
++		       const struct i2c_device_id *id)
++{
++	struct device *dev = &client->dev;
++	struct device *hwmon_dev;
++	struct sbrmi_data *data;
++	int ret;
++
++	data = devm_kzalloc(dev, sizeof(struct sbrmi_data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->client = client;
++	mutex_init(&data->lock);
++
++	/* Enable alert for SB-RMI sequence */
++	ret = sbrmi_enable_alert(client);
++	if (ret < 0)
++		return ret;
++
++	/* Cache maximum power limit */
++	ret = sbrmi_get_max_pwr_limit(data);
++	if (ret < 0)
++		return ret;
++
++	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data,
++							 &sbrmi_chip_info, NULL);
++
++	return PTR_ERR_OR_ZERO(hwmon_dev);
++}
++
++static const struct i2c_device_id sbrmi_id[] = {
++	{"sbrmi", 0},
++	{}
++};
++MODULE_DEVICE_TABLE(i2c, sbrmi_id);
++
++static const struct of_device_id __maybe_unused sbrmi_of_match[] = {
++	{
++		.compatible = "amd,sbrmi",
++	},
++	{ },
++};
++MODULE_DEVICE_TABLE(of, sbrmi_of_match);
++
++static struct i2c_driver sbrmi_driver = {
++	.class = I2C_CLASS_HWMON,
++	.driver = {
++		.name = "sbrmi",
++		.of_match_table = of_match_ptr(sbrmi_of_match),
++	},
++	.probe = sbrmi_probe,
++	.id_table = sbrmi_id,
++};
++
++module_i2c_driver(sbrmi_driver);
++
++MODULE_AUTHOR("Akshay Gupta <akshay.gupta@amd.com>");
++MODULE_DESCRIPTION("Hwmon driver for AMD SB-RMI emulated sensor");
++MODULE_LICENSE("GPL");
+-- 
+2.17.1
 
