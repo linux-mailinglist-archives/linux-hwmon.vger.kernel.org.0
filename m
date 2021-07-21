@@ -2,195 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7242A3D11CB
-	for <lists+linux-hwmon@lfdr.de>; Wed, 21 Jul 2021 17:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 786B83D16D1
+	for <lists+linux-hwmon@lfdr.de>; Wed, 21 Jul 2021 21:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238276AbhGUOW1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 21 Jul 2021 10:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34858 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239449AbhGUOTt (ORCPT
+        id S239699AbhGUSWY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 21 Jul 2021 14:22:24 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:27986 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S239641AbhGUSWX (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 21 Jul 2021 10:19:49 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7338C061575;
-        Wed, 21 Jul 2021 08:00:21 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id p67so3163102oig.2;
-        Wed, 21 Jul 2021 08:00:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=yTeMlK56on+N1AKCtW09hkY78OxnEuhc6VvA4N3SswE=;
-        b=NuV5UESBaVxYqNvnAzivNi70I2pwZDfecm4WU9iBjiJaXkPGFThXEVSmru6jQS/p7g
-         UdXrAZm4v6zkc9rM0PgXJ52cCa4VGNXMSArWQDiRVvL4KaxCAhWMwIQmWoN7b9xt6i1V
-         z7ZKb4qyTJt/rCTq4jAllzl988yprwTea6YbiWKHCjLuc0ISMuJuZT8SjB7y9BTCPsDl
-         d8AbrbfVljuodt/w18WjNaNQWF3wC94cdDcIT/2yhhYcBFatytRPBebbPWrs8V7K9yIy
-         pOeGC4p38OXD6k9WubkuVS0VdIOeLVg2XpjeUibiFtbuVn3NcZ2rMJ6n/ak/fM4lHL2z
-         TvaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=yTeMlK56on+N1AKCtW09hkY78OxnEuhc6VvA4N3SswE=;
-        b=IpzdPj8zfaOQYi5dOadY2umbLwpprETnlXF2F7+UaMAnoumxzRxWmd28dUE71rxraR
-         bc1AkmSCiyrDxTeMa2+vFFIiKJAx7HLFvIi54nRAPx+vSXop7fkVK3jfly/+vWr2+cNZ
-         229ov++R6uk7x0upoh5gOOtUYSne5lclApW998mKEXrImvZAIPSvY6KpcXEudp8LOE8b
-         KbVK07a13NrBaIsY2fM3JA3v0r1cGSSt9ltvr4+r6EK7hQwAXB88co9eMAv6Kd7+HY5b
-         wAZhyFWK7vZX0IIqaKbGXJ7ha/1LwY2HtWRucgSZYeCkffjaG+cXdsGpQdzZLuAS5huR
-         F6uQ==
-X-Gm-Message-State: AOAM532jWfYEIskuKk6sljDc9I4eYeTRAG6rgFaQYW0QIlxUvfxVJj2u
-        XX3C9cg8mqewIbAGZItv7iA=
-X-Google-Smtp-Source: ABdhPJwNoIfp/c5dt4n0ucmz2RFGS3nnmNLUNjiuHzt7fCM8ZKuTwkg9K0bcaW7k0blwvmdTveqQdg==
-X-Received: by 2002:aca:4406:: with SMTP id r6mr20151282oia.50.1626879621139;
-        Wed, 21 Jul 2021 08:00:21 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a192sm372006ooc.10.2021.07.21.08.00.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jul 2021 08:00:20 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 21 Jul 2021 08:00:18 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Jean Delvare <jdelvare@suse.com>
-Subject: Re: [RFC PATCH 3/6] dt-bindings: axi-fan-control: add tacho
- properties
-Message-ID: <20210721150018.GA3446170@roeck-us.net>
-References: <20210708120111.519444-1-nuno.sa@analog.com>
- <20210708120111.519444-4-nuno.sa@analog.com>
- <20210712172656.GA2142233@robh.at.kernel.org>
- <PH0PR03MB63668564A9A7B8F5D6E5F8D499129@PH0PR03MB6366.namprd03.prod.outlook.com>
- <20210715203937.GA3182741@roeck-us.net>
- <PH0PR03MB636641D09289D1F696A64C9299119@PH0PR03MB6366.namprd03.prod.outlook.com>
- <f6d415a7-e113-1dda-727e-0d645c8114cb@roeck-us.net>
- <PH0PR03MB636618FE5E821669E224960199E19@PH0PR03MB6366.namprd03.prod.outlook.com>
+        Wed, 21 Jul 2021 14:22:23 -0400
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16LIWpFZ063690;
+        Wed, 21 Jul 2021 15:02:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=2hN3d3xDAYrSdCJbS2shpsHU44G77Y04mHM5Qdk+2Ao=;
+ b=iQ8hnUpDwtWlNm4Yns+zf/Lxhn5cUYeO1Pz2ykJaDtXlS9augoSSvrHHwykjexxuDqGq
+ LWjZRK7tAEftNPP164rT0ctZ1U81IIBXoZfa+Che8dazpZTKUEN2eFQdiPeC9kRq3nEA
+ RGuF5qKo0P6a/k5FUll8HuaAdCQEGOuxKRju93Sf7vkanK13L4xWTUjDCCqmii8ZjblY
+ uhhcf30UlVdvvMhSbbqu7XQuKfgbE8gRlv6rrXV635KolwX/zSRdpHSe+QOBmP9wcd/B
+ TpUouyFPxNF9lrfZoLQdCOFhgXQh9vD5RFEhlsIwa/tjn8pBqfR+IT/K8ugoMjSf5/k3 ZQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 39xr29abpe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Jul 2021 15:02:34 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16LIvXW6001302;
+        Wed, 21 Jul 2021 19:02:33 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+        by ppma03wdc.us.ibm.com with ESMTP id 39vqdvp49c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 21 Jul 2021 19:02:33 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+        by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 16LJ2Wds37224758
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Jul 2021 19:02:32 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 890DE28071;
+        Wed, 21 Jul 2021 19:02:32 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 85AA428059;
+        Wed, 21 Jul 2021 19:02:31 +0000 (GMT)
+Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.211.68.240])
+        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed, 21 Jul 2021 19:02:31 +0000 (GMT)
+From:   Eddie James <eajames@linux.ibm.com>
+To:     linux-fsi@lists.ozlabs.org
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        jdelvare@suse.com, linux@roeck-us.net, jk@ozlabs.org,
+        alistair@popple.id.au, joel@jms.id.au, openbmc@lists.ozlabs.org,
+        eajames@linux.ibm.com
+Subject: [PATCH v2 0/3] OCC: fsi and hwmon: Set sequence number in submit interface
+Date:   Wed, 21 Jul 2021 14:02:28 -0500
+Message-Id: <20210721190231.117185-1-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH0PR03MB636618FE5E821669E224960199E19@PH0PR03MB6366.namprd03.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PzCBHHEsz8FoP8aMWG4Qrve3ptomBbzY
+X-Proofpoint-ORIG-GUID: PzCBHHEsz8FoP8aMWG4Qrve3ptomBbzY
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-07-21_10:2021-07-21,2021-07-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=997
+ impostorscore=0 clxscore=1015 adultscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107210109
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Jul 19, 2021 at 07:46:41AM +0000, Sa, Nuno wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Guenter Roeck <groeck7@gmail.com> On Behalf Of Guenter
-> > Roeck
-> > Sent: Friday, July 16, 2021 5:04 PM
-> > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > Cc: Rob Herring <robh@kernel.org>; linux-hwmon@vger.kernel.org;
-> > devicetree@vger.kernel.org; Jean Delvare <jdelvare@suse.com>
-> > Subject: Re: [RFC PATCH 3/6] dt-bindings: axi-fan-control: add tacho
-> > properties
-> > 
-> > [External]
-> > 
-> > On 7/16/21 12:44 AM, Sa, Nuno wrote:
-> > [ ... ]
-> > >>
-> > >> Are you sure you can ever get this stable ? Each fan has its own
-> > >> properties
-> > >> and tolerances. If you replace a fan in a given system, you might get
-> > >> different RPM numbers. The RPM will differ widely from system to
-> > >> system
-> > >> and from fan to fan. Anything that assumes a specific RPM in
-> > >> devicetree
-> > >> data seems to be quite vulnerable to failures. I have experienced
-> > that
-> > >> recently with a different chip which also tries to correlate RPM and
-> > >> PWM
-> > >> and fails quite miserably.
-> > >>
-> > >> In my experience, anything other than minimum fan speed is really
-> > a
-> > >> recipe
-> > >> for instability and sporadic false failures. Even setting a minimum
-> > fan
-> > >> speed
-> > >> is tricky because it depends a lot on the fan.
-> > >
-> > > I see what you mean. So, I had to go through this process when
-> > testing
-> > > this changes because the fan I'm using is different from the default
-> > one
-> > > used to develop and stablish the default values in the IP core. The
-> > core
-> > 
-> > Exactly my point.
-> > 
-> > > provides you with a register which contains the tacho measurements
-> > in
-> > > clock cycles. You can read that for all the PWM points of interest
-> > > (with devmem2 for example) and make your own "calibration". I
-> > assume
-> > > that people have to go through this process before putting some
-> > values
-> > > in the devicetree. I'm aware this is not the neatest process but I
-> > guess it's
-> > > acceptable...
-> > >
-> > 
-> > Do you really expect everyone using a system with this chip to go
-> > through
-> > this process and update its devicetree configuration, and then repeat it
-> > whenever a fan is changed ? Given how dynamic this is, I really wonder
-> > if that information should be in devicetree in the first place.
-> > 
-> 
-> My naive assumption was that we would only do this work at evaluation
-> time. After that and after we settled with a fan for some system, I expected
-> that changing to a different fan is not that likely. From your inputs, I guess
-> this is not really the case which makes this process more cumbersome (as it
-> also implies recompiling the devicetree for your system).
-> 
-> However, even if we export these as runtime parameters, services/daemons
-> will also have an hard time doing this "calibration" in a dynamic way. The reason
-> is because the way the controller works is that it only accepts a new PWM
-> request if it is an higher value than whatever the HW has at that moment. Thus,
-> going through the calibration points might be very cumbersome. I can see some
-> ways of handling this though but not very neat...
-> 
-> Since this is a FPGA core, we might have some flexibility here. Something that
-> came to my mind would be to have a calibration mode in the HW that would
-> allow us to freely control the PWM values. In that way we could go freely over
-> the calibration points. I guess, for safety reasons, this calibration mode would
-> expire after some reasonable time (that give us enough time for doing the whole
-> thing). The best place for doing the calibration, I guess it would be directly in the
-> driver since we do receive the interrupts about new tacho measurements making
-> things easier to sync and handle. However, given the time that takes for a new
-> PWM to settle + new tacho measurements, it would not be very acceptable to do this 
-> during probe which is definitely also not ideal (we could defer this to a worker/timer).
-> 
-> I'm not sure if the above makes much sense to you and it also depends on the HW
-> guys being on board with this mechanism.
-> 
+Conflicting sequence numbers have resulted in users of the OCC interface
+getting the wrong response. For example, both the hwmon driver and an
+application might send a transfer near the same time with the same sequence
+number, and then one or both will get an incorrect respnse, but cannot tell
+because the sequence number looks correct.
+Perform the sequence numbering in the submit interface to make sure each
+transfer has a unique sequence number. This also requires that the submit
+interface perform the checksum calculation for the command. Adjust the hwmon
+driver accordingly too.
 
-I don't really know what to say or recommend here. Personally I think any
-attempt to tie PWM values to RPM are doomed to fail. Here are a couple of
-examples:
+Changes since v1:
+ - fix 0day warnings and errors.
 
-Take your test system and move the fan to a restricted place (eg close to a
-wall). You'll see the fan RPM change, potentially significantly. Put it into
-some place with airflow towards or away from the system (eg blow air into
-the system from another place, which may happen if the system is installed
-in a lab), and again you'll see fan speed changes. Open the chassis, and
-the fan speed will change. I have seen fan speeds vary by up to 50% when
-changing airflow.
+Eddie James (3):
+  fsi: occ: Force sequence numbering per OCC
+  hwmon: (occ) Remove sequence numbering and checksum calculation
+  fsi: occ: Add dynamic debug to dump command and response
 
-That doesn't even take into account that replacing a fan even with a similar
-model (eg after a fan failed) will likely result in potentially significant
-rpm changes.
+ drivers/fsi/fsi-occ.c      | 99 +++++++++++++++++++++++++++++++-------
+ drivers/hwmon/occ/common.c | 30 +++++-------
+ drivers/hwmon/occ/common.h |  3 +-
+ drivers/hwmon/occ/p8_i2c.c | 15 +++---
+ drivers/hwmon/occ/p9_sbe.c |  4 +-
+ 5 files changed, 106 insertions(+), 45 deletions(-)
 
-Ultimately, anything that does more than determine if a fan is still running
-is potentially unstable.
+-- 
+2.27.0
 
-Having said all that, it is really your call to decide how you want to detect
-fan failures. 
-
-Thanks,
-Guenter
