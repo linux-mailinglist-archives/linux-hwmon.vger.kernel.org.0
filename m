@@ -2,89 +2,129 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 921623D971A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 28 Jul 2021 22:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E047F3D9739
+	for <lists+linux-hwmon@lfdr.de>; Wed, 28 Jul 2021 23:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231719AbhG1UwZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 28 Jul 2021 16:52:25 -0400
-Received: from mout.gmx.net ([212.227.17.21]:50767 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231807AbhG1UwT (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 28 Jul 2021 16:52:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1627505520;
-        bh=pBqnwbhq2wS79c+CFpFdztPnuWDlqUQe4f4HZKsls3w=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=efPM1lilIbWY0w9uH8UQMTLy6zJbIqFQ+NAPYERQqkKH/RV9gacNTDFl/Kob5zMAN
-         fQypEWuxk6eAv6IK2WClilaCUT3T4WQQpo+BR+j+nA5UAy7KiRDLayVRufu0EO6eUR
-         rhm5c5N9ZbpT9lGqwC8ZwWwdrHMrTKWJjDdJVxbE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.fritz.box ([79.242.190.212]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MvbG2-1n15a21sf8-00sfEh; Wed, 28 Jul 2021 22:52:00 +0200
-From:   W_Armin@gmx.de
-To:     pali@kernel.org
-Cc:     linux@roeck-us.net, jdelvare@suse.com, linux-hwmon@vger.kernel.org
-Subject: [PATCH v6 6/6] hwmon: (dell-smm-hwmon) Fix fan mutliplier detection for 3rd fan
-Date:   Wed, 28 Jul 2021 22:51:42 +0200
-Message-Id: <20210728205142.8959-7-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210728205142.8959-1-W_Armin@gmx.de>
+        id S231350AbhG1VHi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 28 Jul 2021 17:07:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46196 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231126AbhG1VHh (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 28 Jul 2021 17:07:37 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B32B2C061757
+        for <linux-hwmon@vger.kernel.org>; Wed, 28 Jul 2021 14:07:35 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id h10so2404686qth.5
+        for <linux-hwmon@vger.kernel.org>; Wed, 28 Jul 2021 14:07:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=rSa9/LmcXx63TD/jf3jmKMV0aB/l77DW4pV055DYF9U=;
+        b=GFtWi2u7iNlwfrOcold7Uf2/9S0Joj/K6U7DvEbYNo8mXpVamz5QnldGb0c/+ISNQb
+         EXxw1w+o8Zfw4P7Rn/iN7pRNVH1MASGs5bpaRWuDWW9snpJRdzYjhtrHs+Z2ly9+xDUn
+         BSlVEdQIDYOXG5deHVbLjaeI8/cfy93PywxKWZrUi0j4P8Rhdi7uJyxc9qI3XojzGb5z
+         HrA3H/xfODuoRkJYorsdtYYx2NljJ04cMt3weo4yPLGN5GECX5Vx6gGZ2Ekvr5AYO3OH
+         jTZZnxy3H28w75WeupZ+0/cBQuNp1eKJylMyIyIapJBPp4o91udPIp73T5mdG4nVZRJ2
+         zoQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rSa9/LmcXx63TD/jf3jmKMV0aB/l77DW4pV055DYF9U=;
+        b=TD81vk4Sz7jdUykriosTbY108DweZbVAgUxFQ3XCZv1Fjyubu/k93wuGM874UqQldi
+         Mnw1uHJ4iAdp/mOQYjwTa1LQ5JhXtpgdgWqkYeoSCyKtl7Y3JBCJ2/Z2QTrriRWLx+2o
+         3f0XxnCvtUh+2Z1PpYIfz0Ee+/cQeHABQvsjt657WCIjaKh7ywNuzLWmZKorNAQ9x5x3
+         dhZnWOb6BgYYX+Ij/nRn3T3bgFzeziiHokyDJKWQAhT5ymfk9e+2NmhD1RT7ak3FfvBE
+         izNIUPkHSrxCTEJVy4h8jnyw4ct8Wy3hq2I1H2iR1zEVTemyMZyNzPnXlN3U5I15MedK
+         Pyiw==
+X-Gm-Message-State: AOAM533n66Jw8gpI3TUZyko1nPDxMZ0JiVTxxAissy/Ws71OWKw/iMmD
+        tkSXKrZXfDHCiCFFJiGaSG6ZwoxYSLE=
+X-Google-Smtp-Source: ABdhPJzTWM6cDwdw7iYZA6cEGawNo3gz2GGQSjX1WMzAnsBW7AJjZxQD+VuRSi7ZDVOlxO08esXH3A==
+X-Received: by 2002:ac8:5fc5:: with SMTP id k5mr1389005qta.327.1627506454492;
+        Wed, 28 Jul 2021 14:07:34 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id z23sm426122qts.96.2021.07.28.14.07.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Jul 2021 14:07:33 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Subject: Re: [PATCH v6 0/6] hwmon: (dell-smm-hwmon) Convert to new hwmon
+ registration api
+To:     W_Armin@gmx.de, pali@kernel.org
+Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org
 References: <20210728205142.8959-1-W_Armin@gmx.de>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <cb393f4a-44c6-4f67-6c1e-ba04c48a59e5@roeck-us.net>
+Date:   Wed, 28 Jul 2021 14:07:32 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hbmkCm8+mNraPO3r/PDd/wQ74KRKxJ0QPe+Frfn6/emBgZfSHbU
- BAryU3rUdBdB+8QJtJMbR6/M5BMyDNf7u6V/Eu5B+QuPQPIERXHW37TGPnG13olfLHOHAhs
- fOav0wHRHg7zaxgyYoUreH+M/4G9dMRF3ek5/gJmQck72uRwMoBnDqSHAX/WNvfutVEupFg
- Aw1Pdxs7lZbCoD9F0wJ8g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:s9r9+7BVRnU=:yPbFcStBISBvztLST5bdNs
- fvgEh3NBQTiDwpEZkDF0RuJLBx+IMwdXC7WTZ4EnX1Pckn7dwXytUx2oWP/XdUt9jipmn6i9i
- RAyCTbEFpFF71g/y51t++MgW62nt6JjRMu4sb+ol565o164V4C1EWi7/ZbMG63Y/qZ7JmUiov
- 7jEY33wANJ9PihbXtBA6Ayv1FiAFl0y6AWNv/QxHUkA+CL4ru43bziBIokqdztXWhVRaD3eAg
- pQQN++jffOlClnZb38/Fw2/wry9WPUkM4942rnWkHvBC2cVEBC8pmfcHH1qCbErac+PfcR1/n
- PNzE9uT56bILqsHetQbGmHB1UqUIin3mfydoluJV6boAJPoKNJKEPr9N5DHZzu9jsyyfxoa5n
- j3vxfeEYfyXHLerJ2HyBp5WT5Pf4ep7LOWFpZ5+abQBkJucvbjAhv7vqHbVp3KBSDb4c+RAuf
- 776juqyogO47eTiMZtKsCgbdz7AJ05j3S3V53iTw8vExjNI2EoFAd4oJfkd/FCGkWdXlYvmtX
- VW4GLBzn7OItGLNQ6UivHxuUHo/1MxPNstPWukfA8VdY0ljzdBR1218ScTmQxYhcJGSy1QRbC
- WYGF2ErpIhKnm+UQnELLnKZBr7ATtictpnje0XIXi7EQ099Cjjvblw84Qkbv4kmY6/xynM2vB
- juYmss5sZffiWwXnKee8YMNjefx1okJGC+fzHnYGTcHo5F1X47W6k5ORVKAj2RtcA5Gup7rlg
- BovV601cM9CWP2bCCNjof3JQPPEDBEpinghUC35JPq1JEckldZIBSJ3VNR2VtEiWG5LCoEII6
- QY3Sz5X57/Zw0LijTKXovbV/okx8vzSXZnRxX+KyQlZ+EY7sWboXUF6uZiD1Me76X78HFa95X
- vPOdCJpjsk9pqOPWjZsL5vZn2yEFkoP10JXFFeEaiCggRjrEAGtgIhbnngVF/XAPG7p8/ViW/
- HX4nZPdLY5clx3RnxhyV/UFW70kiQCCfNKumFTFJPWg+0prHaC8hFgo5bPK6TPvIWRciwRKdk
- j0qMdA1Gvu5C040+iry+kz7kmeGvmMoBfOlqV2NVJfFqVsnoSaBdsK82IDgR64eh/PGFTTBGK
- b9gCvijqM6l7iQZjdX56AhXw/QxOmV0QHMt
+In-Reply-To: <20210728205142.8959-1-W_Armin@gmx.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+On 7/28/21 1:51 PM, W_Armin@gmx.de wrote:
+> From: Armin Wolf <W_Armin@gmx.de>
+> 
+> This patch series is converting the dell-smm-hwmon driver
+> to the new hwmon registration API. In order to do so,
+> it introduces a platform device in the first patch, and
+> applies some optimisations in the next three patches.
+> The switch to the new hwmon registration API is done in
+> the next patch. The last patch is fixing a small bug.
+> 
+> The caching of the fan/temp values was modified to better fit
+> the new hwmon API.
+> 
+> The patches work fine for my Dell Latitude C600, but i whould
+> appreciate someone testing the code on another model too.
+> 
+> Changes in v6:
+> - Make pwm1_enable permissions write-only
 
-There are up to three fans, but the detection omits the 3rd one.
-Fix that by using DELL_SMM_NO_FANS.
+Sorry, guess I am missing something. Why ?
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Fixes: 747bc8b063ae (hwmon: (dell-smm) Detect fan with index=3D2)
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Guenter
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index e842901d770f..1305e73e6741 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1257,7 +1257,7 @@ static int __init dell_smm_probe(struct platform_dev=
-ice *pdev)
- 		 * Autodetect fan multiplier based on nominal rpm
- 		 * If fan reports rpm value too high then set multiplier to 1
- 		 */
--		for (fan =3D 0; fan < 2; ++fan) {
-+		for (fan =3D 0; fan < DELL_SMM_NO_FANS; ++fan) {
- 			ret =3D i8k_get_fan_nominal_speed(data, fan, data->i8k_fan_max);
- 			if (ret < 0)
- 				continue;
-=2D-
-2.20.1
+> - Do not test fan speed in dell_smm_is_visible()
+> 
+> Changes in v5:
+> - Fix checkpatch warning after patch 5/6
+> - Hide fanX_label if fan type calls are disallowed
+> 
+> Changes in v4:
+> - Make fan detection behave like before patch 5/6
+> - Update coverletter title
+> 
+> Changes in v3:
+> - Update description of patch 1/6 and remove empty change
+> - Let pwm1_enable remain write-only
+> - Include a small bugfix
+> 
+> Changes in v2:
+> - Fix coverletter title
+> - Update docs regarding pwm1_enable
+> 
+> Armin Wolf (6):
+>    hwmon: (dell-smm-hwmon) Use platform device
+>    hwmon: (dell-smm-hwmon) Mark functions as __init
+>    hwmon: (dell-smm-hwmon) Use devm_add_action_or_reset()
+>    hwmon: (dell-smm-hwmon) Move variables into a driver private data
+>      structure
+>    hwmon: (dell-smm-hwmon) Convert to
+>      devm_hwmon_device_register_with_info()
+>    hwmon: (dell-smm-hwmon) Fix fan mutliplier detection for 3rd fan
+> 
+>   drivers/hwmon/dell-smm-hwmon.c | 847 ++++++++++++++++-----------------
+>   1 file changed, 419 insertions(+), 428 deletions(-)
+> 
+> --
+> 2.20.1
+> 
 
