@@ -2,152 +2,86 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF443D9DA9
-	for <lists+linux-hwmon@lfdr.de>; Thu, 29 Jul 2021 08:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8103D9E50
+	for <lists+linux-hwmon@lfdr.de>; Thu, 29 Jul 2021 09:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234112AbhG2GcJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 29 Jul 2021 02:32:09 -0400
-Received: from mga17.intel.com ([192.55.52.151]:17578 "EHLO mga17.intel.com"
+        id S234544AbhG2HYT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 29 Jul 2021 03:24:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46250 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233934AbhG2GcI (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 29 Jul 2021 02:32:08 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10059"; a="193092850"
-X-IronPort-AV: E=Sophos;i="5.84,278,1620716400"; 
-   d="scan'208";a="193092850"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2021 23:32:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,278,1620716400"; 
-   d="scan'208";a="499640506"
-Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 28 Jul 2021 23:32:04 -0700
-Received: from kbuild by d053b881505b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1m8zaN-0008wN-Kk; Thu, 29 Jul 2021 06:32:03 +0000
-Date:   Thu, 29 Jul 2021 14:31:28 +0800
-From:   kernel test robot <lkp@intel.com>
+        id S234653AbhG2HYP (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 29 Jul 2021 03:24:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D7FF60ED4;
+        Thu, 29 Jul 2021 07:24:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627543452;
+        bh=btRCOCoEwu9erYklZCra4PIZGnLlon8PT8MIKLUAgtU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YGTgWu/mQy0jtU7i1pyyfT4FkgQ2QM+qw3lB6aFnChXgN6bdlrqPlBmpTMHmqM1wg
+         ohz7dcefxS1odirhtf1oFv7MGl0q9+dLQw8aZ9XdYdKznZ6G2Z4YPI06NAs25Dh95m
+         w9H60Gm8u6GGcpMOuxjacClyHLFlCoX5trMXeggo1wUZv5xXW0GzEqiB3xT073X2Nz
+         n4ynr4OyvbHaJPIsvg4jKpu6bzZhJg+qveOzfzdH9nYb+VAA2ZtbQICDLfK0q3wOyB
+         IPCkarKq8kkzra6y9g0bpDPpWZj2scshx0rdIarl+Q2fXfKhjymPvmAyhXoUcKnj1D
+         P+GHTqacFPUbg==
+Received: by pali.im (Postfix)
+        id D2F48888; Thu, 29 Jul 2021 09:24:09 +0200 (CEST)
+Date:   Thu, 29 Jul 2021 09:24:09 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
 To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [hwmon:hwmon-next] BUILD SUCCESS
- 36c4d19d52b01d8dec42d0bb27c03d9f28774462
-Message-ID: <61024b40.JxHDxw3ph02zhcIz%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     Armin Wolf <W_Armin@gmx.de>, jdelvare@suse.com,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v7 0/6] hwmon: (dell-smm-hwmon) Convert to new hwmon
+ registration api
+Message-ID: <20210729072409.vr6ieb4yitbyeijf@pali>
+References: <20210728221557.8891-1-W_Armin@gmx.de>
+ <fb82b50e-fa7d-c735-262b-0ac930c4d8ee@roeck-us.net>
+ <95502d8b-8a18-c600-4a42-9479a0f5c681@gmx.de>
+ <f63299d4-34e0-87ab-5f27-970d81281a9b@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <f63299d4-34e0-87ab-5f27-970d81281a9b@roeck-us.net>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 36c4d19d52b01d8dec42d0bb27c03d9f28774462  dt-bindings: sbrmi: Add SB-RMI hwmon driver bindings
+On Wednesday 28 July 2021 19:26:49 Guenter Roeck wrote:
+> On 7/28/21 3:49 PM, Armin Wolf wrote:
+> > Am 29.07.21 um 00:43 schrieb Guenter Roeck:
+> > > On 7/28/21 3:15 PM, W_Armin@gmx.de wrote:
+> > > > From: Armin Wolf <W_Armin@gmx.de>
+> > > > 
+> > > > This patch series is converting the dell-smm-hwmon driver
+> > > > to the new hwmon registration API. In order to do so,
+> > > > it introduces a platform device in the first patch, and
+> > > > applies some optimisations in the next three patches.
+> > > > The switch to the new hwmon registration API is done in
+> > > > the next patch. The last patch is fixing a small bug.
+> > > > 
+> > > > The caching of the fan/temp values was modified to better fit
+> > > > the new hwmon API.
+> > > > 
+> > > > The patches work fine for my Dell Latitude C600, but i whould
+> > > > appreciate someone testing the code on another model too.
+> > > > 
+> > > 
+> > > At this point I'd suggest to queue the series up in -next and see
+> > > what happens. I don't think we'll get additional feedback.
+> > > 
+> > > Thought ? Objections ?
+> > > 
+> > > Guenter
+> > > 
+> > I agree, its unlikely that the code still has big issues, it works on
+> > the C600.
+> > The only thing still untested is reading fan rpm/changing fan control, but
+> > i expect them to work.
+> 
+> Let's see if Pali has any objections. If not, I'll apply the series tomorrow.
+> 
+> Guenter
+> 
 
-elapsed time: 723m
-
-configs tested: 94
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210728
-powerpc                     kilauea_defconfig
-m68k                          multi_defconfig
-sh                          polaris_defconfig
-powerpc                 mpc8560_ads_defconfig
-powerpc                       holly_defconfig
-x86_64                              defconfig
-arm                       spear13xx_defconfig
-powerpc                     mpc5200_defconfig
-powerpc                    adder875_defconfig
-sh                          r7780mp_defconfig
-mips                           mtx1_defconfig
-m68k                             allmodconfig
-arm                        vexpress_defconfig
-mips                     loongson2k_defconfig
-sh                          rsk7264_defconfig
-sh                   sh7770_generic_defconfig
-h8300                            alldefconfig
-openrisc                 simple_smp_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20210728
-x86_64               randconfig-a003-20210728
-x86_64               randconfig-a001-20210728
-x86_64               randconfig-a004-20210728
-x86_64               randconfig-a005-20210728
-x86_64               randconfig-a002-20210728
-i386                 randconfig-a005-20210728
-i386                 randconfig-a003-20210728
-i386                 randconfig-a004-20210728
-i386                 randconfig-a002-20210728
-i386                 randconfig-a001-20210728
-i386                 randconfig-a006-20210728
-i386                 randconfig-a016-20210728
-i386                 randconfig-a012-20210728
-i386                 randconfig-a013-20210728
-i386                 randconfig-a014-20210728
-i386                 randconfig-a011-20210728
-i386                 randconfig-a015-20210728
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-c001-20210728
-x86_64               randconfig-a016-20210728
-x86_64               randconfig-a011-20210728
-x86_64               randconfig-a014-20210728
-x86_64               randconfig-a013-20210728
-x86_64               randconfig-a012-20210728
-x86_64               randconfig-a015-20210728
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Fine for me! Also I want to try to find some time to these patches on
+more Dell laptops...
