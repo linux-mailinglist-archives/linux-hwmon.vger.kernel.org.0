@@ -2,86 +2,61 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8103D9E50
-	for <lists+linux-hwmon@lfdr.de>; Thu, 29 Jul 2021 09:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FF693DA1BB
+	for <lists+linux-hwmon@lfdr.de>; Thu, 29 Jul 2021 13:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234544AbhG2HYT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 29 Jul 2021 03:24:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46250 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234653AbhG2HYP (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 29 Jul 2021 03:24:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D7FF60ED4;
-        Thu, 29 Jul 2021 07:24:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627543452;
-        bh=btRCOCoEwu9erYklZCra4PIZGnLlon8PT8MIKLUAgtU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YGTgWu/mQy0jtU7i1pyyfT4FkgQ2QM+qw3lB6aFnChXgN6bdlrqPlBmpTMHmqM1wg
-         ohz7dcefxS1odirhtf1oFv7MGl0q9+dLQw8aZ9XdYdKznZ6G2Z4YPI06NAs25Dh95m
-         w9H60Gm8u6GGcpMOuxjacClyHLFlCoX5trMXeggo1wUZv5xXW0GzEqiB3xT073X2Nz
-         n4ynr4OyvbHaJPIsvg4jKpu6bzZhJg+qveOzfzdH9nYb+VAA2ZtbQICDLfK0q3wOyB
-         IPCkarKq8kkzra6y9g0bpDPpWZj2scshx0rdIarl+Q2fXfKhjymPvmAyhXoUcKnj1D
-         P+GHTqacFPUbg==
-Received: by pali.im (Postfix)
-        id D2F48888; Thu, 29 Jul 2021 09:24:09 +0200 (CEST)
-Date:   Thu, 29 Jul 2021 09:24:09 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Armin Wolf <W_Armin@gmx.de>, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v7 0/6] hwmon: (dell-smm-hwmon) Convert to new hwmon
- registration api
-Message-ID: <20210729072409.vr6ieb4yitbyeijf@pali>
-References: <20210728221557.8891-1-W_Armin@gmx.de>
- <fb82b50e-fa7d-c735-262b-0ac930c4d8ee@roeck-us.net>
- <95502d8b-8a18-c600-4a42-9479a0f5c681@gmx.de>
- <f63299d4-34e0-87ab-5f27-970d81281a9b@roeck-us.net>
+        id S236244AbhG2LFC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 29 Jul 2021 07:05:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234178AbhG2LFB (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 29 Jul 2021 07:05:01 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7545C061765
+        for <linux-hwmon@vger.kernel.org>; Thu, 29 Jul 2021 04:04:58 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id o5so10039543ejy.2
+        for <linux-hwmon@vger.kernel.org>; Thu, 29 Jul 2021 04:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=OEHJmvASzwkFVHKW8AhLJ0gkD/FsAxYuVF7iG5WSQaQ=;
+        b=UR64IcZpbFDEm6PbJXkKYZaLynLM86cyNpALLZdN6nCfuxl/NnFTLbdKwhuKx4HA54
+         1//yk28Li5ozWoVqy1XnDB9AqZAcRZR1RPxTCB5dOir1Rf4gzfQDviEKGKwCXmqNCRtl
+         SO8o08NM6fqOfaIkLnlvsvPh8SSBbTc3+qL6UIjfdSAv3f2Sy/Ld/kceyxYULt+/7Ks/
+         2wC1SfSBWFTTWcfh2WjDSGwo6CC4uzjwL9mdtWpZiJzHxKT4JKuzWw5TTJzZUy/ec/n+
+         irUr27Dtorue70JGbeeZAiFTfDQccluD4xloPWKan/4MktTyXq+MXCp7Ae/U1qh/lfhy
+         8jwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=OEHJmvASzwkFVHKW8AhLJ0gkD/FsAxYuVF7iG5WSQaQ=;
+        b=sZRg5v/Bn6WnbtGl93+Y0AgamMo7PYJvCe/EKmAdh/FxWyslHXhcHYGS49Q6PBX+HH
+         6nrfh205WTrOpk04oiIU5SydCoCsDswgKBr/JlhjIFpV9KwQDfpuGzAvdns1JHlTspuv
+         WRnBtWM6ecIRqzyR+FsuEeXP+ow8unXDCVdoEFE1V0Mvi31lvsyyhfI7LOPRwICUX4hC
+         pf1DfB4hUH3I+INZvU+KlbNwFljYaUn2O90TAAMLCRZiOlRmF1heW88qV/9JX2ENhmMa
+         roQC4cvLt53e0pdduyX6FYj3XVhp7lCh0eGz3IZ2UVStw2hqO5ZPClTPtYzcHOjiJ/6i
+         XebA==
+X-Gm-Message-State: AOAM532NrZmi/RRqtJ6M1wEW3j3D91ggVO6HSV42rpxuRFt6lU5NmMEG
+        2y9pIQipEHu4BYpgy7EDg+9aci+vnAJ0HD/sAl8=
+X-Google-Smtp-Source: ABdhPJypra29wEFxgLC7+pnnPM4gfzMT+C88UaOg2vl+/AnWWZT/D6WIDTiBpSjGvReHb7takVNccbNUCV8XxTljw0c=
+X-Received: by 2002:a17:907:c26:: with SMTP id ga38mr4009575ejc.38.1627556697321;
+ Thu, 29 Jul 2021 04:04:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f63299d4-34e0-87ab-5f27-970d81281a9b@roeck-us.net>
-User-Agent: NeoMutt/20180716
+Received: by 2002:a17:906:7148:0:0:0:0 with HTTP; Thu, 29 Jul 2021 04:04:56
+ -0700 (PDT)
+Reply-To: ciciliathompson75@gmail.com
+From:   Madam Cecilia Thompson <danielphilipmark1@gmail.com>
+Date:   Thu, 29 Jul 2021 12:04:56 +0100
+Message-ID: <CAKnGjSJXROBzx=PUaMNOq5CzEdYDy1gY2AT6UdcWPX5_NVWxdA@mail.gmail.com>
+Subject: Did You received the last previous message I sent to you?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wednesday 28 July 2021 19:26:49 Guenter Roeck wrote:
-> On 7/28/21 3:49 PM, Armin Wolf wrote:
-> > Am 29.07.21 um 00:43 schrieb Guenter Roeck:
-> > > On 7/28/21 3:15 PM, W_Armin@gmx.de wrote:
-> > > > From: Armin Wolf <W_Armin@gmx.de>
-> > > > 
-> > > > This patch series is converting the dell-smm-hwmon driver
-> > > > to the new hwmon registration API. In order to do so,
-> > > > it introduces a platform device in the first patch, and
-> > > > applies some optimisations in the next three patches.
-> > > > The switch to the new hwmon registration API is done in
-> > > > the next patch. The last patch is fixing a small bug.
-> > > > 
-> > > > The caching of the fan/temp values was modified to better fit
-> > > > the new hwmon API.
-> > > > 
-> > > > The patches work fine for my Dell Latitude C600, but i whould
-> > > > appreciate someone testing the code on another model too.
-> > > > 
-> > > 
-> > > At this point I'd suggest to queue the series up in -next and see
-> > > what happens. I don't think we'll get additional feedback.
-> > > 
-> > > Thought ? Objections ?
-> > > 
-> > > Guenter
-> > > 
-> > I agree, its unlikely that the code still has big issues, it works on
-> > the C600.
-> > The only thing still untested is reading fan rpm/changing fan control, but
-> > i expect them to work.
-> 
-> Let's see if Pali has any objections. If not, I'll apply the series tomorrow.
-> 
-> Guenter
-> 
-
-Fine for me! Also I want to try to find some time to these patches on
-more Dell laptops...
+If you did not receive the previous message I sent to you please tell
+me so that I can send it back to you again, The issue is very urgent
+please reply very fast, MY NAME IS MRS CECILIA THOMPSON
