@@ -2,61 +2,112 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B39383E123B
-	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Aug 2021 12:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E144D3E1406
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Aug 2021 13:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240142AbhHEKKU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 5 Aug 2021 06:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38916 "EHLO
+        id S231162AbhHELkb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 5 Aug 2021 07:40:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240216AbhHEKKS (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 5 Aug 2021 06:10:18 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE444C06179F
-        for <linux-hwmon@vger.kernel.org>; Thu,  5 Aug 2021 03:10:04 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id d6so7544261edt.7
-        for <linux-hwmon@vger.kernel.org>; Thu, 05 Aug 2021 03:10:04 -0700 (PDT)
+        with ESMTP id S238127AbhHELkb (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 5 Aug 2021 07:40:31 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16ACDC0613D5
+        for <linux-hwmon@vger.kernel.org>; Thu,  5 Aug 2021 04:40:17 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id j2so6090663wrx.9
+        for <linux-hwmon@vger.kernel.org>; Thu, 05 Aug 2021 04:40:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=mi7yqQmOLKzEVXr7wZThmDGoqeJFGIgCDYiykBvaZDH33/GJ2mshOA3hFWFOAMEVTV
-         RGHdbeyE8TefpTiUekIFXfL8f6Qmwvmpk7XWI5JExFDXhij754H7PBmVgU+DZ3Caw0KD
-         KSoQGPNapPGzVsgcTMgRYRGzhtThqQtYzCnCJjAwFFtUkFM1OREvkgYWVDEzrRARMNNk
-         6I9g7jNZLp73gOrhlB9U6TP30MA3/u2HcBxT0iI535tV9n6Gs5IdX23sa+kBivMIknKi
-         vpTklzE3+XjTCg0YgVpNjd4C+MEnHMjgJBcUdb6GeieDZfU+8HNFUETz+YzllsEPIlBB
-         ensw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=+nlth2m2/8vEMrI+L6F6FH19lBWEC80x5zsmEulcRdg=;
+        b=S59FAiqlqHkiyKe+HX/Y/AwMG03IFpd+AoQDLucqSXzXwnHWZ/iC0VztQ7OIZWFher
+         K93Pc2O5O/jTdRON3ndmTxnbzUZ9mcRHvTl2EmnDez4bIlcdRbIPDLySFvFN530iaapU
+         FE4vZHhEoaGO/hbZ09VaEXxQQp/oG+4t6Qpe+dTwph2VdtT+vRcl2O0kAwWlB6duk8Ty
+         hcWzLBoIbHMOiTbq9Diix/vBTx+yaPK3oy3APIPjcc3QKrAqxqiL9LE/Z/9XbXp/2KPg
+         XKzv7VbE8qrn1iJZVzNc/ZCZj6sRqOIrmVkpVY4bqSwSUKnO2S/jnNecvLeCo1PvwCVF
+         PIwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=KNDLw7T9u/qqekXuUtFRnHDztFX1TZHihKdj+WVFZu1mMuuZF004zoqBfALlFXfxUf
-         j3HWXolifE1qbPM7TRgJ+u+XG2u8Nuw7um5sqCz2c2u/cjJ3KkxsyZz5zjnxXO9t0Qsr
-         msA41ab9vpHkvFvHmhTF/y0dDqkq+Xi9pLTBR4Pgy77Y25sWvEuhbKc2FZXleKaDYNWx
-         dR1SRHQ555clfoGpohzCHzj+U4dSB1UfjojsYmN/2tzoHfvAZkmoQyQ1d6U4FBQ6NKyT
-         Hsa39qmGz4HQ7+tdav8MqTV9xYZz4A+ZZaRQdYjnWq3P/IDev3e/Uo5RvtglrCngJJen
-         qpOA==
-X-Gm-Message-State: AOAM531YXx+xqExwmC1nb+SbOC87tthpjBtw5Yzqrj10djk9RFwMN6aH
-        uu+kLy9BA3ax/K4JjbKo33fnUnj+ez4weXS5o54=
-X-Google-Smtp-Source: ABdhPJyc6kq4jxhLPfEHrwJQcuNjuK59ctIFdrqoitA1rgwEt2xq2bVZ01pmYykWojTA+YLqXBFaxgvJXBJe8yBl6SU=
-X-Received: by 2002:aa7:c50a:: with SMTP id o10mr5420087edq.118.1628158203271;
- Thu, 05 Aug 2021 03:10:03 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=+nlth2m2/8vEMrI+L6F6FH19lBWEC80x5zsmEulcRdg=;
+        b=MyRTgnXNLBcG3eplyd1d9cjvZF9rUYQbm0XnuhYOYYBPIQTqU3h3fFoGZraiv0qsHN
+         KlobtsSV/LCOFmryT2LogIQQkEGWKnBSEttjO6PEkH4q3VxnIJcswWmBir0epAfBNvDc
+         ydyJOU4aC+UPwiGmD+zOaa67fIl4q66s2Bjb6zNTnmH+MtPCQk/umWi6B0zUGJygrVVx
+         PgLQBLnI9x6IlkKBiht9WXbajxRwBfGULKm6BgBaU8gHLtsfw03n4xFr0oaJ8J18kjk4
+         WCEmBEdATAr4y9X/Vsk+EAr9zKO/DF+KPb8Bf7HExCKs3yDOjnpgjkb4LycUGV84zooT
+         CXjg==
+X-Gm-Message-State: AOAM531mBp4niwkQjk9FLPXfUsAhTfLUPzKJp+xdi9ffsLYYm0DcK2Hp
+        Avlps5RBzUz/AnZDjrq4Bfi1VA==
+X-Google-Smtp-Source: ABdhPJzSmpuPIP2d34jUR2jqTDBFOBvYKrEVvvPQKSyNt2dSiaVP/k3rv6EG6BE3se58Rqfv/meEbw==
+X-Received: by 2002:adf:f74f:: with SMTP id z15mr4775150wrp.54.1628163615719;
+        Thu, 05 Aug 2021 04:40:15 -0700 (PDT)
+Received: from google.com ([109.180.115.228])
+        by smtp.gmail.com with ESMTPSA id y197sm9290958wmc.7.2021.08.05.04.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Aug 2021 04:40:15 -0700 (PDT)
+Date:   Thu, 5 Aug 2021 12:40:13 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Vincent Pelletier <plr.vincent@gmail.com>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Support Opensource <support.opensource@diasemi.com>,
+        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Opensource [Steve Twiss]" <stwiss.opensource@diasemi.com>
+Subject: Re: [PATCH v3 1/3] mfd: da9063: Add HWMON dependencies
+Message-ID: <YQvOHWAwG2xTIWMy@google.com>
+References: <c06db13bb5076a8ee48e38a74caf3b81e4a2d1f8.1625662290.git.plr.vincent@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6408:258c:b029:e3:fe5c:5c2d with HTTP; Thu, 5 Aug 2021
- 03:10:02 -0700 (PDT)
-Reply-To: theresabangurah3333@yahoo.com
-From:   Theresa Bangurah <mariamabah77879@gmail.com>
-Date:   Thu, 5 Aug 2021 11:10:02 +0100
-Message-ID: <CAAi==jpQpEPQWUPEqzapg6pajWjV52XxDfY2zJeX+gxNgAMo8w@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c06db13bb5076a8ee48e38a74caf3b81e4a2d1f8.1625662290.git.plr.vincent@gmail.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Wed, 07 Jul 2021, Vincent Pelletier wrote:
+
+> From: "Opensource [Steve Twiss]" <stwiss.opensource@diasemi.com>
+> 
+> Dependencies required for DA9063 HWMON support.
+> 
+> Signed-off-by: Opensource [Steve Twiss] <stwiss.opensource@diasemi.com>
+> 
+> Moved temperature offset reading to hwmon driver.
+> 
+> Signed-off-by: Vincent Pelletier <plr.vincent@gmail.com>
+
+
+Nit: Please remove the empty lines between tags.
+
+And format like this please:
+
+[vincent: Moved temperature offset reading to hwmon driver]
+
+> ---
+> Changes in v3:
+> - moved temperature offset reading to hwmon driver
+> 
+> Changes in v2:
+> - registers.h changes moved from patch 2
+> 
+> Originally submitted by Steve Twiss in 2014:
+>   https://marc.info/?l=linux-kernel&m=139560864709852&w=2
+> 
+>  include/linux/mfd/da9063/registers.h | 34 ++++++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+
+Once fixed:
+
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
 -- 
-My name is Mrs.Theresa Bangurah,i am American citizen i have something
-important to tell you.Reply me immediately you get this message.God
-bless you.
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
