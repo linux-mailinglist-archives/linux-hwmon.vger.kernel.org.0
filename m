@@ -2,86 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F9463E7BB2
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 17:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2ED3E7EC0
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 19:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241930AbhHJPGg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 Aug 2021 11:06:36 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:43014 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241917AbhHJPGf (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 Aug 2021 11:06:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-        In-Reply-To:References; bh=dtySB9rjcxH7bxKw5rZgefC4uBmGW785dtYYNm9V7pY=; b=nq
-        Hzm31SVDVhMomio9sKwpp33QpzqLna0pZOu0cYQ1ET87R9oaWvwLfH+lcywouk0338tcnnR74LTaO
-        FG7gC6c8p8szDknYV7bpH0nCxT9+lD0v691DkEZqm8k+3cHXTZdTZqK/+g4OweHINcO1tWDoShtwK
-        7b4kQcFLsHizbw4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mDTKF-00GvYZ-Ol; Tue, 10 Aug 2021 17:05:55 +0200
-Date:   Tue, 10 Aug 2021 17:05:55 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        Marek Vasut <marex@denx.de>, David Jander <david@protonic.nl>,
-        linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH net-next v1] net: phy: nxp-tja11xx: log critical health
- state
-Message-ID: <YRKV05IoqtJYr6Cj@lunn.ch>
-References: <20210810125618.20255-1-o.rempel@pengutronix.de>
+        id S233266AbhHJRfI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 Aug 2021 13:35:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232967AbhHJRec (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 10 Aug 2021 13:34:32 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36828C0611A1
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 10:33:14 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id n6so17044413ljp.9
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 10:33:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=RsiBBdA9QKOcTCF5lGXKVsjmClQ3sMV8nYRHi5UzQ6RFRdaZ6t981j56diJ7q3WLiT
+         dSrogDmRt6kwHS+J+pcIdphvlu5Vk62bOJudqb0dzEOf5Tr6sAVMWTY2NbEn++ZnSdaf
+         F4yj6h4F7VBk6uVCXN4p2StSiBpSckLhr0NJoCtUTvVh+gCrpSdvA2dss+nT8Q4XWg+b
+         4x9fMuBGMminOSzPCK8njOsWexpWsfb2omBFXa3GLhHqzUauC1r8oyB3fDvFuiS7qNjT
+         fDqijYMWxjmP3EeBvtWaIUY7Z5YEma/9OhqmI5Ya7ZKqW/5hzlkm8xAdNsqyzESz/5Xj
+         5sZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=k8lv1BnhDd2T4oCLFkyojz1gNe0SoQa2Tbp6y3nTRAHdOUnBoUah+tUW+w+5L5m3yV
+         GaYFQJQcTStMiGfuNPVC5Nl6fadfS2lqiZy04i+DvHNw0ZDLaSh/HiR5+dE6CEwR33wh
+         vAmC5fOrC3tpfRZZEuDU6lRup9EYt4feEybAcMmNP5XEMiZMrAdxEU2EYcaFGyT9pJQL
+         5mFN49bOhMm85QktPgieqTAHR/kctYciP28oys4RK55oa0Iw21xwJJo576aNA/VmYpXl
+         50T52kcvNAZ9aH5AdMPpQ97ZCaBekF8W2WNEhqRcq9cklEo+15zxQjnEUzn++W5BvftR
+         1PQQ==
+X-Gm-Message-State: AOAM5326GqgQiY+XSiaO4IWSLUyGPWHBe1TXFegnQbka4JOGMDY9mm1Z
+        aUwueUFGAYmbnMAp9PwoJHY3nL1DC4ryNRxCh8U=
+X-Google-Smtp-Source: ABdhPJw+sC+pBQw0G+0ULVvin/r/jCVVb1V7XUqN67UCoWrnBzyIXnaSzK5br1SZrCupI/L0LIZWgMfi7vhpZK+Wcm0=
+X-Received: by 2002:a05:651c:32c:: with SMTP id b12mr1745558ljp.198.1628616792032;
+ Tue, 10 Aug 2021 10:33:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210810125618.20255-1-o.rempel@pengutronix.de>
+Received: by 2002:ac2:5d2e:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:33:10
+ -0700 (PDT)
+Reply-To: majidmuzaffar8@gmail.com
+From:   Majid Muzaffar <ing.abdullabin.rishid.me@gmail.com>
+Date:   Tue, 10 Aug 2021 20:33:10 +0300
+Message-ID: <CAFsu49XXzY7ugKhGzJm5OPKe2LG1R35c-Dkp83VgS3+u27y=sQ@mail.gmail.com>
+Subject: Proposal
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Oleksij
+Salam alaikum,
 
-> @@ -89,6 +91,12 @@ static struct tja11xx_phy_stats tja11xx_hw_stats[] = {
->  	{ "phy_polarity_detect", 25, 6, BIT(6) },
->  	{ "phy_open_detect", 25, 7, BIT(7) },
->  	{ "phy_short_detect", 25, 8, BIT(8) },
-> +	{ "phy_temp_warn (temp > 155C°)", 25, 9, BIT(9) },
-> +	{ "phy_temp_high (temp > 180C°)", 25, 10, BIT(10) },
-> +	{ "phy_uv_vddio", 25, 11, BIT(11) },
-> +	{ "phy_uv_vddd_1v8", 25, 13, BIT(13) },
-> +	{ "phy_uv_vdda_3v3", 25, 14, BIT(14) },
-> +	{ "phy_uv_vddd_3v3", 25, 15, BIT(15) },
->  	{ "phy_rem_rcvr_count", 26, 0, GENMASK(7, 0) },
->  	{ "phy_loc_rcvr_count", 26, 8, GENMASK(15, 8) },
+I am the investment officer of UAE based investment company who are
+ready to fund projects outside UAE, in the form of debt finance. We
+grant loan to both Corporate and private entities at a low interest
+rate of 3% ROI per annum. The terms are very flexible and interesting.
+Kindly revert back if you have projects that needs funding for further
+discussion and negotiation.
 
-I'm not so happy abusing the statistic counters like this. Especially
-when we have a better API for temperature and voltage: hwmon.
+Thanks
 
-phy_temp_warn maps to hwmon_temp_max_alarm. phy_temp_high maps to
-either hwmon_temp_crit_alarm or hwmon_temp_emergency_alarm.
-
-The under voltage maps to hwmon_in_lcrit_alarm.
-
-> @@ -630,6 +640,11 @@ static irqreturn_t tja11xx_handle_interrupt(struct phy_device *phydev)
->  		return IRQ_NONE;
->  	}
->  
-> +	if (irq_status & MII_INTSRC_TEMP_ERR)
-> +		dev_err(dev, "Overtemperature error detected (temp > 155C°).\n");
-> +	if (irq_status & MII_INTSRC_UV_ERR)
-> +		dev_err(dev, "Undervoltage error detected.\n");
-> +
-
-These are not actual errors, in the linux sense. So dev_warn() or
-maybe dev_info().
-
-      Andrew
+investment officer
