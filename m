@@ -2,68 +2,127 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D893E82BD
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 20:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9134B3E82F0
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 20:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239256AbhHJSRg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 Aug 2021 14:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59320 "EHLO
+        id S230397AbhHJSZj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 Aug 2021 14:25:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239585AbhHJSPX (ORCPT
+        with ESMTP id S241052AbhHJSYw (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 Aug 2021 14:15:23 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 690C0C043CD5;
-        Tue, 10 Aug 2021 10:50:41 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id l18so27435804wrv.5;
-        Tue, 10 Aug 2021 10:50:41 -0700 (PDT)
+        Tue, 10 Aug 2021 14:24:52 -0400
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284CEC05177D;
+        Tue, 10 Aug 2021 11:18:09 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id v24-20020a0568300918b02904f3d10c9742so145228ott.4;
+        Tue, 10 Aug 2021 11:18:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=SoxHZc/Zn2PINfui8bjV0PjuPLOMTHSmmOThLb4Aj4VZTY1VOJmfzvoA+pdQoAZSIo
-         cmv9IcmadXdj7jQeSFVxvOBQFJYpM4jJ+sPbh3GCcQPLjNie9Z2ggUa1cEu4gFX016yT
-         xg9e8xbkbgGOnHuI5BHG7SNwjyNv6RrFXEjVaxS0kGjSv4tSeP3IRv8Y+VJrwS026kv+
-         TZb1iHA3YCbVAyk0WMi/roGEMkrL3aPOjuKo0sTHA+Qa/aBf74OWM8k1GIHjjotTt49G
-         cTfrnX3jHaQnjdygSHRF+2JWJo6PSBUANm4RSUbVPgQQG7d219p75/SDbzVi86n3EQeU
-         Q/8A==
+        h=sender:to:cc:references:from:subject:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=h9v8FYsMCG4jpPUCena7C9FCKGGo4qC1nmNGhWOqWag=;
+        b=Lqm4Wg2VjekKTEiGhZJiUMZjgOZEJdfZjcB81CJghLMwVfbwXfc+aUgW4164lx7kG5
+         iIIDFZ2HV0F2rBArYEqLzFWer1KQzqexaK3VTqHICAkmykq1blcJ0w+N9WCbAl9VcmN7
+         m/Gv6h0cwh2SHI4ULEBWV9mKFG8R+3kFUqn0X6uUoMonCUa8a2lektk2UgoXMNTH2KnT
+         4R0TdygCgmrrhhlra9tEACAYBRoA0UAkjGIG/gqpDCGy+yASA9ldHGU3TQGe28Mc1JJr
+         d1PW4THt5oZijdFc4XR+qBhC0dIx3kOJWdTF5Aw840cfa/IONgo6EZ08qOCafyh02ox5
+         qmww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=DWxCvnw4i0eJ4hYfJVkOF3SMV3RmZ8F9wvkV6NPcDqYUwUoSbZWqjc6lTLHwnvC1vd
-         ofAbZQRzl4r8EWH2Ec26/8VRSG/b5i/GggV5fnll5pUJHk12uRxk98KSYRPM0RV6pgKh
-         9k/iZnHu1Iks8+VHPUuUvdCv0tbYFZhVLDkfb+hosZ7K4eMw0wBaW2S7Uzy1Ym0gaMZR
-         gWwVx2fSX66RxXZ3Rx39iVTOZtl5QmXq1Wnr6aPwOURPdpkBE8KGICdRD+cS8ZQSwJIU
-         cZEsm/TpgYBwbE0/vGNCPWlXfJlv1OTCPxJpLTkmD1pWXmnIW2HKBOQFtnKuY8BFK6E1
-         H49Q==
-X-Gm-Message-State: AOAM53325BHgfKZaHQYHXsingit2CLOkotGaWF/kKuQE/bdgk3mxDvUB
-        pco71Xr8DwzLhYrhUzFvw64=
-X-Google-Smtp-Source: ABdhPJyvs0v5YTaZOA4CL/pGbvBJY8wTcZOXinc/WL01aq5NjKw/TrodVkAC0gnhy1PMYzHnJxn0GA==
-X-Received: by 2002:adf:fc50:: with SMTP id e16mr33558545wrs.382.1628617840074;
-        Tue, 10 Aug 2021 10:50:40 -0700 (PDT)
-Received: from [192.168.1.70] ([102.64.220.234])
-        by smtp.gmail.com with ESMTPSA id k17sm4419042wmj.0.2021.08.10.10.50.34
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Tue, 10 Aug 2021 10:50:39 -0700 (PDT)
-Message-ID: <6112bc6f.1c69fb81.b576d.9fe5@mx.google.com>
-From:   Vanina curth <curtisvani0031@gmail.com>
-X-Google-Original-From: Vanina  curth
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:sender:to:cc:references:from:subject:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=h9v8FYsMCG4jpPUCena7C9FCKGGo4qC1nmNGhWOqWag=;
+        b=pyVcp4TvVMe2MjG3UxMgwhY+mb19HbAOuv+BGdNyymXJn38bs98goPeVOq0BzZXYjt
+         ucF6iAB7Y+xBcE7YhlLD8iooZAu7Plk3GMzWsnHK3M6VR8YHeesidFYTl48iwuzGtJt8
+         34Z97GJnix1f8ZuD12GMP8K0bOayZ9GJPabqYtOfXgiYWQ1loM/xZaKgdf8j6gtfOZ7p
+         oGfNGQ8XYKxRInEx6S1LkmFqtwlT4W+zNr4AgIPSUPcmPgdyiaGb2J8eH21cr5UdPvAv
+         HUWhBwLNA/XDXqi/YTef5/B/rfrAftSHE/VHrbHPAmsDy9CuGylhPcFlUh4no1EqjnS/
+         6Stw==
+X-Gm-Message-State: AOAM533uvnl5Q9lgiaBqNWKkxOy75jaVl7xM3yacznhOp4LvciD6HUKb
+        AsIoeoFf4dBgmmcmZoT0lG13/MdRHC0=
+X-Google-Smtp-Source: ABdhPJxyFQqDyWF0WCakJ66AvTdZk+P6VVaqcMEJZ4Zz8ouIGY6Xb/TRYwJfhQ8H839Il6NzmZ3faA==
+X-Received: by 2002:a9d:6088:: with SMTP id m8mr16410613otj.70.1628619488299;
+        Tue, 10 Aug 2021 11:18:08 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b14sm4053864oic.58.2021.08.10.11.18.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Aug 2021 11:18:07 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Marek Vasut <marex@denx.de>, David Jander <david@protonic.nl>,
+        linux-hwmon@vger.kernel.org
+References: <20210810125618.20255-1-o.rempel@pengutronix.de>
+ <YRKV05IoqtJYr6Cj@lunn.ch>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH net-next v1] net: phy: nxp-tja11xx: log critical health
+ state
+Message-ID: <04df44d9-f049-e87b-81de-5a9fe888a49b@roeck-us.net>
+Date:   Tue, 10 Aug 2021 11:18:05 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Dear
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Tue, 10 Aug 2021 17:48:27 +0000
-Reply-To: curtisvani9008@gmail.com
+In-Reply-To: <YRKV05IoqtJYr6Cj@lunn.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-How are you? I'm Vanina. I'm interested to know you and I would like to kno=
-w more about you and establish relationship with you. i will wait for your =
-response. thank you.
+On 8/10/21 8:05 AM, Andrew Lunn wrote:
+> Hi Oleksij
+> 
+>> @@ -89,6 +91,12 @@ static struct tja11xx_phy_stats tja11xx_hw_stats[] = {
+>>   	{ "phy_polarity_detect", 25, 6, BIT(6) },
+>>   	{ "phy_open_detect", 25, 7, BIT(7) },
+>>   	{ "phy_short_detect", 25, 8, BIT(8) },
+>> +	{ "phy_temp_warn (temp > 155C°)", 25, 9, BIT(9) },
+>> +	{ "phy_temp_high (temp > 180C°)", 25, 10, BIT(10) },
+>> +	{ "phy_uv_vddio", 25, 11, BIT(11) },
+>> +	{ "phy_uv_vddd_1v8", 25, 13, BIT(13) },
+>> +	{ "phy_uv_vdda_3v3", 25, 14, BIT(14) },
+>> +	{ "phy_uv_vddd_3v3", 25, 15, BIT(15) },
+>>   	{ "phy_rem_rcvr_count", 26, 0, GENMASK(7, 0) },
+>>   	{ "phy_loc_rcvr_count", 26, 8, GENMASK(15, 8) },
+> 
+> I'm not so happy abusing the statistic counters like this. Especially
+> when we have a better API for temperature and voltage: hwmon.
+> 
+> phy_temp_warn maps to hwmon_temp_max_alarm. phy_temp_high maps to
+> either hwmon_temp_crit_alarm or hwmon_temp_emergency_alarm.
+> 
+> The under voltage maps to hwmon_in_lcrit_alarm.
+> 
+
+FWIW, the statistics counters in this driver are already abused
+(phy_polarity_detect, phy_open_detect, phy_short_detect), so
+I am not sure if adding more abuse makes a difference (and/or
+if such abuse is common for phy drivers in general).
+
+Guenter
+
+>> @@ -630,6 +640,11 @@ static irqreturn_t tja11xx_handle_interrupt(struct phy_device *phydev)
+>>   		return IRQ_NONE;
+>>   	}
+>>   
+>> +	if (irq_status & MII_INTSRC_TEMP_ERR)
+>> +		dev_err(dev, "Overtemperature error detected (temp > 155C°).\n");
+>> +	if (irq_status & MII_INTSRC_UV_ERR)
+>> +		dev_err(dev, "Undervoltage error detected.\n");
+>> +
+> 
+> These are not actual errors, in the linux sense. So dev_warn() or
+> maybe dev_info().
+> 
+>        Andrew
+> 
+
