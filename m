@@ -2,94 +2,139 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B46D3E5995
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 14:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F021A3E5A83
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 14:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238296AbhHJMC6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 Aug 2021 08:02:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
+        id S240971AbhHJM5D (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 Aug 2021 08:57:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238217AbhHJMC4 (ORCPT
+        with ESMTP id S241003AbhHJM5D (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 Aug 2021 08:02:56 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195D0C061798
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 05:02:35 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id u10so28447126oiw.4
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 05:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=v7+IKGzaOaTP86o8cNjHg7dyVJ+Yzed/qVBVzb882/s=;
-        b=D98xO1SVb+ehKFTOC29xYBHWUv5ahn8KTMbrqZalXVvno4gn+zyF1nqny0e+W6cttX
-         YbbhgvAKV9AYMmVxmx49tDndHBr3Qurc5U45rLTp6xnqSGEmwDoZtMSy9EKEz4LHYiGY
-         WOgLWNPA+OAH6DvKiE0Jr0lTA1t9B3DtjBwdYISIXtrPl9SAu0gb1rhv9FFnh1eo/MKB
-         n140RkAvemaeNKBeCpYApDB63XfsOi3eYPVpYBu1B2lRP/Tyn4hxV36At60y9cQel6S7
-         aknwDmQXhW69dXhLV4McP242NJ0umNyEjaDmkK7rLvEkOxraQZMhuUMLtaQRHhbuReSo
-         J7nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=v7+IKGzaOaTP86o8cNjHg7dyVJ+Yzed/qVBVzb882/s=;
-        b=d8G2R60KCeukQcAps+h+97GM8Py4T1hUnl+7hYCnNPHaOsFI2HCi0XBTB16MyPqKoi
-         PGzm0yt9oihQPja6wwQjWE+uPkdVc/0W2j0y8Q3J3DUt4tIw4iGDDaKoNZWz+HhJIQOJ
-         efSKFrYpNDhNmcVhTeTAV1rpyFLiXXWo2lo5mwd2Uauc+JIQ7l0bNxVrJC3z1GsJWTcs
-         kr7RiOab7vVcyImkpCcx9z28cS20IqmRc+J+GX8enT62r5Obj46or6sBTSki7Qr+tW5W
-         NDN6Gba3WSOsy041FG0rWbv1OxLhHS3eFDIynlPIcfYHVWF26eET2wrdEp9OIHlJnjZ5
-         ZTAA==
-X-Gm-Message-State: AOAM5312ZahKeBwEuoBfshs7rdPy+s0kMjkDN2Vj6SR608DcQtuI7V8L
-        32Z1q6lHI+MZfa3RvmPgHVLhPxE+o8YLrEhC2C0=
-X-Google-Smtp-Source: ABdhPJztTuvhTMaqNm7+akAkdQ65nWTNwS836rK/klL6RhxgRLEefF/nwJZzqPIc2FYbbg6dIZOoZAXO3Z6f6E4EeGA=
-X-Received: by 2002:a05:6808:15a1:: with SMTP id t33mr20037895oiw.102.1628596954172;
- Tue, 10 Aug 2021 05:02:34 -0700 (PDT)
+        Tue, 10 Aug 2021 08:57:03 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 103D8C0613D3
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 05:56:40 -0700 (PDT)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1mDRIs-0004SR-8w; Tue, 10 Aug 2021 14:56:22 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1mDRIp-0005Hh-Qu; Tue, 10 Aug 2021 14:56:19 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Marek Vasut <marex@denx.de>, David Jander <david@protonic.nl>,
+        linux-hwmon@vger.kernel.org
+Subject: [PATCH net-next v1] net: phy: nxp-tja11xx: log critical health state
+Date:   Tue, 10 Aug 2021 14:56:18 +0200
+Message-Id: <20210810125618.20255-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Reply-To: patzengu@outlook.com
-Sender: psantadio@gmail.com
-Received: by 2002:a9d:4589:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 05:02:33
- -0700 (PDT)
-From:   "Mr. P. Z" <rm2568590@gmail.com>
-Date:   Tue, 10 Aug 2021 14:02:33 +0200
-X-Google-Sender-Auth: gDY3v0aMO8gvjZ9OhNLsNby_saM
-Message-ID: <CAP2c95xv4Xh+f8Wr6fR1W887gzCpZqrAoUsY3oeOe7z1u+2+Bg@mail.gmail.com>
-Subject: i need your co-operation
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+TJA1102 provides interrupt notification for the critical health states
+like overtemperature and undervoltage.
+
+The overtemperature bit is set if package temperature is beyond 155C°.
+This functionality was tested by heating the package up to 200C°
+
+The undervoltage bit is set if supply voltage drops beyond some critical
+threshold. Currently not tested.
+
+In a typical use case, both of this events should be logged and stored
+(or send to some remote system) for further investigations.
+
+To make testing and troubleshooting more easier, other bits are exported
+over the ethtool phy stats interface:
+- level of overtemperature. There is no access to thermal sensor.
+- power supply line where undervoltage was detected
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/phy/nxp-tja11xx.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
+index afd7afa1f498..4c37b427a53b 100644
+--- a/drivers/net/phy/nxp-tja11xx.c
++++ b/drivers/net/phy/nxp-tja11xx.c
+@@ -47,12 +47,14 @@
+ #define MII_INTSRC_LINK_FAIL		BIT(10)
+ #define MII_INTSRC_LINK_UP		BIT(9)
+ #define MII_INTSRC_MASK			(MII_INTSRC_LINK_FAIL | MII_INTSRC_LINK_UP)
+-#define MII_INTSRC_TEMP_ERR		BIT(1)
+ #define MII_INTSRC_UV_ERR		BIT(3)
++#define MII_INTSRC_TEMP_ERR		BIT(1)
+ 
+ #define MII_INTEN			22
+ #define MII_INTEN_LINK_FAIL		BIT(10)
+ #define MII_INTEN_LINK_UP		BIT(9)
++#define MII_INTEN_UV_ERR		BIT(3)
++#define MII_INTEN_TEMP_ERR		BIT(1)
+ 
+ #define MII_COMMSTAT			23
+ #define MII_COMMSTAT_LINK_UP		BIT(15)
+@@ -89,6 +91,12 @@ static struct tja11xx_phy_stats tja11xx_hw_stats[] = {
+ 	{ "phy_polarity_detect", 25, 6, BIT(6) },
+ 	{ "phy_open_detect", 25, 7, BIT(7) },
+ 	{ "phy_short_detect", 25, 8, BIT(8) },
++	{ "phy_temp_warn (temp > 155C°)", 25, 9, BIT(9) },
++	{ "phy_temp_high (temp > 180C°)", 25, 10, BIT(10) },
++	{ "phy_uv_vddio", 25, 11, BIT(11) },
++	{ "phy_uv_vddd_1v8", 25, 13, BIT(13) },
++	{ "phy_uv_vdda_3v3", 25, 14, BIT(14) },
++	{ "phy_uv_vddd_3v3", 25, 15, BIT(15) },
+ 	{ "phy_rem_rcvr_count", 26, 0, GENMASK(7, 0) },
+ 	{ "phy_loc_rcvr_count", 26, 8, GENMASK(15, 8) },
+ };
+@@ -607,7 +615,8 @@ static int tja11xx_config_intr(struct phy_device *phydev)
+ 		if (err)
+ 			return err;
+ 
+-		value = MII_INTEN_LINK_FAIL | MII_INTEN_LINK_UP;
++		value = MII_INTEN_LINK_FAIL | MII_INTEN_LINK_UP |
++			MII_INTEN_UV_ERR | MII_INTEN_TEMP_ERR;
+ 		err = phy_write(phydev, MII_INTEN, value);
+ 	} else {
+ 		err = phy_write(phydev, MII_INTEN, value);
+@@ -622,6 +631,7 @@ static int tja11xx_config_intr(struct phy_device *phydev)
+ 
+ static irqreturn_t tja11xx_handle_interrupt(struct phy_device *phydev)
+ {
++	struct device *dev = &phydev->mdio.dev;
+ 	int irq_status;
+ 
+ 	irq_status = phy_read(phydev, MII_INTSRC);
+@@ -630,6 +640,11 @@ static irqreturn_t tja11xx_handle_interrupt(struct phy_device *phydev)
+ 		return IRQ_NONE;
+ 	}
+ 
++	if (irq_status & MII_INTSRC_TEMP_ERR)
++		dev_err(dev, "Overtemperature error detected (temp > 155C°).\n");
++	if (irq_status & MII_INTSRC_UV_ERR)
++		dev_err(dev, "Undervoltage error detected.\n");
++
+ 	if (!(irq_status & MII_INTSRC_MASK))
+ 		return IRQ_NONE;
+ 
 -- 
-My Dear Friend,
+2.30.2
 
-I am Mr.Patrice Zengu ,from Burkina Faso and i am the new bank telex
-manager of our bank here in Africa.
-
-I have the opportunity to transfer the sum of US$ 10.5Million to your
-bank account which i personally placed on an Escrow account without a
-name.
-
-I must tell you that after revision of files both old and new as the
-new telex manager ,i discovered that if these funds remains here
-without transferring it offshore,it will be lawfully recovered and
-moved to the  Government of Burkina Faso treasury as an abandoned
-funds without any name.
-
-I want to let you know that a Burkinabe cannot stand as the depositor
-of these US dollars  since we are not allowed to operate on foreign
-currency. I do not intend to work  and stay in Africa till the rest of
-my life.
-
-More so,i will not want my bank to know about these funds and if they
-happens to know probably,the funds will be moved to the Burkina Faso
-Government public treasury as an abandoned funds.
-
-I will furnish you with more details of this transfer and how it can
-be perfectly and legally executed without any hitch since i am now in
-control.
-
-I am waiting to hear from you urgently to proceed.
-
-
-Yours sincerely,
-Mr.Patrice Zengu.
