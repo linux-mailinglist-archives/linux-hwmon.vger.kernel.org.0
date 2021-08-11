@@ -2,76 +2,74 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 878E93E8319
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Aug 2021 20:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 928163E8929
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Aug 2021 06:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbhHJSnb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 Aug 2021 14:43:31 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:43368 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229480AbhHJSna (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 Aug 2021 14:43:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=vuY4CU2wqTh4MiNOaeRz1+bUXIW8uOlvfPoVeU/k6qY=; b=b7DMOqREteJbMkdZnjrSvBb+i/
-        kW+1wtYwdvcdmYrcehORUYKTu3xXLeYgTg0X8imZx2IZvFh4XxZ6h2YmJg75FknEdRWRDS9YN4YXk
-        8ULqbKcKkqG1MwuX8NsAYDVB/BKcIHRaD3kblDoU/nTXfziLorKDDfFu/pjKqghsSUlM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mDWi5-00GxZx-R1; Tue, 10 Aug 2021 20:42:45 +0200
-Date:   Tue, 10 Aug 2021 20:42:45 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        Marek Vasut <marex@denx.de>, David Jander <david@protonic.nl>,
-        linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH net-next v1] net: phy: nxp-tja11xx: log critical health
- state
-Message-ID: <YRLIpQIVgieYo1yc@lunn.ch>
-References: <20210810125618.20255-1-o.rempel@pengutronix.de>
- <YRKV05IoqtJYr6Cj@lunn.ch>
- <04df44d9-f049-e87b-81de-5a9fe888a49b@roeck-us.net>
+        id S233436AbhHKESK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 Aug 2021 00:18:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233351AbhHKESK (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 11 Aug 2021 00:18:10 -0400
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [IPv6:2001:df5:b000:5::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F815C0613D3
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 21:17:47 -0700 (PDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id A0DA8806AC;
+        Wed, 11 Aug 2021 16:17:42 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1628655462;
+        bh=bFIwFgPZTWno3sKE4bEbi+ZnJW3J5TE+GC1coFxyLYI=;
+        h=From:To:Cc:Subject:Date;
+        b=roP1rB7uTaabgCkGNpNseCUAV+1oF02ShWYT+EJfD9h8CZ1E1ATgqCATn3I7GBTUM
+         5rrT91W2KJeu5bL8Xj0+J5TRIgqvyJo/MYaOcJMmud2DL3T13vYPpQDagX8UqM8Dzp
+         evC9iB9R/Y/a/iEp3oikdO9BDbKpn5rUt9qzvN48yd7pYJii/BSI5bglVwdTCazZKu
+         WYcURZ7AlOOzCKHhMCKttQXY8GhCpe0Pk3gmpRNYsqPUo6G8YBVxGEAGUUGipwqdHa
+         9WL92rm8TIZjaQso+LhC9r1xcrV6P0ninNk4dbsmDmd+zZlEb1u4KoO5A2HuoOEX8I
+         r8MRPKZ9QAIzw==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B61134f660000>; Wed, 11 Aug 2021 16:17:42 +1200
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
+        by pat.atlnz.lc (Postfix) with ESMTP id 6332C13EEBA;
+        Wed, 11 Aug 2021 16:17:42 +1200 (NZST)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+        id 5F6AD280E9D; Wed, 11 Aug 2021 16:17:42 +1200 (NZST)
+From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
+To:     linux@roeck-us.net, jdelvare@suse.com
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 0/2] hwmon: (pmbus/bpa-rs600) cleanup and workaround
+Date:   Wed, 11 Aug 2021 16:17:36 +1200
+Message-Id: <20210811041738.15061-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <04df44d9-f049-e87b-81de-5a9fe888a49b@roeck-us.net>
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=aqTM9hRV c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=MhDmnRu9jo8A:10 a=VwQbUJbxAAAA:8 a=rgRPi9HOQUPSZn2HmNcA:9 a=AjGcO6oz07-iQ99wixmX:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-> > I'm not so happy abusing the statistic counters like this. Especially
-> > when we have a better API for temperature and voltage: hwmon.
-> > 
-> > phy_temp_warn maps to hwmon_temp_max_alarm. phy_temp_high maps to
-> > either hwmon_temp_crit_alarm or hwmon_temp_emergency_alarm.
-> > 
-> > The under voltage maps to hwmon_in_lcrit_alarm.
-> > 
-> 
-> FWIW, the statistics counters in this driver are already abused
-> (phy_polarity_detect, phy_open_detect, phy_short_detect), so
-> I am not sure if adding more abuse makes a difference (and/or
-> if such abuse is common for phy drivers in general).
+This series builds on top of the BPD-RS600 support[1] which is in Guenter=
+'s
+tree by hasn't made it to Linus' yet. They might actually cleanly apply w=
+ithout
+it since they touch different parts of the file.
 
-Hi Guenter
+[1] - https://lore.kernel.org/linux-hwmon/20210708220618.23576-1-chris.pa=
+ckham@alliedtelesis.co.nz/
 
-Abuse is not common in general. I think this is the only driver
-abusing stats to return flags.  At the time those where added, we did
-not have phy cable test support. Now we do, i would also suggest that
-the driver makes use of that infrastructure to issue a cable test
-report. These 'stats' need to stay, since they are ABI, but we should
-not add more.
+Chris Packham (2):
+  hwmon: (pmbus/bpa-rs600) Remove duplicate defininitions
+  hwmon: (pmbus/bpa-rs600) Add workaround for incorrect Pin max
 
-That is also why i said "Especially when we have a better API".
+ drivers/hwmon/pmbus/bpa-rs600.c | 44 ++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
-     Andrew
+--=20
+2.32.0
 
