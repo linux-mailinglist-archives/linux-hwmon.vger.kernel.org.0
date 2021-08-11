@@ -2,109 +2,121 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7917F3E8926
-	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Aug 2021 06:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3735C3E8A43
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Aug 2021 08:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229588AbhHKESJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 11 Aug 2021 00:18:09 -0400
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:53190 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbhHKESI (ORCPT
+        id S234929AbhHKGhy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 Aug 2021 02:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58972 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234886AbhHKGhw (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 11 Aug 2021 00:18:08 -0400
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id D22E1806B6;
-        Wed, 11 Aug 2021 16:17:42 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1628655462;
-        bh=BEuPhmjjovy2ZrSiYCSp5bi3NVx+Dvendg0uKXkTPQg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=ynr/YgWyr2celmWyJ4f3LHk3fQb/NlOlwPSoGbzx0XFs/N/0Uotvj8+J71/xdaxVt
-         S3ZlBgxyCLLPr+Sh90kfdalakmHTLHzoEloL5RwqGT8dtrfVIrr9iuT++/oGDonYjH
-         Sq9X6k2vMu52tT12JFn75PTaiUG48BpSq2BSe26dZv467Xu+JvvqYVhcF+DWPj09YD
-         rnidzefpKNW+8MnvmiIX4ntLt/xvYFDxlDH+AtjIWaUci3zQ9lsrYBklm8Pu+jPbXk
-         uX4hDfyelJOU9Ubgxy+qNDYLambLnb9icbGT4E6gXlEpR/RBj77xnPybn9p7Te2ZjD
-         OQAAbYSGIzHtw==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-        id <B61134f660002>; Wed, 11 Aug 2021 16:17:42 +1200
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
-        by pat.atlnz.lc (Postfix) with ESMTP id A4C4513EEBA;
-        Wed, 11 Aug 2021 16:17:42 +1200 (NZST)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-        id A3302280E9D; Wed, 11 Aug 2021 16:17:42 +1200 (NZST)
-From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
-To:     linux@roeck-us.net, jdelvare@suse.com
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH 2/2] hwmon: (pmbus/bpa-rs600) Add workaround for incorrect Pin max
-Date:   Wed, 11 Aug 2021 16:17:38 +1200
-Message-Id: <20210811041738.15061-3-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210811041738.15061-1-chris.packham@alliedtelesis.co.nz>
-References: <20210811041738.15061-1-chris.packham@alliedtelesis.co.nz>
+        Wed, 11 Aug 2021 02:37:52 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C13C0613D5
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 Aug 2021 23:37:29 -0700 (PDT)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1mDhrY-0007l8-5V; Wed, 11 Aug 2021 08:37:16 +0200
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1mDhrV-00058b-EE; Wed, 11 Aug 2021 08:37:13 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Marek Vasut <marex@denx.de>, David Jander <david@protonic.nl>,
+        linux-hwmon@vger.kernel.org
+Subject: [PATCH net-next v2 1/1] net: phy: nxp-tja11xx: log critical health state
+Date:   Wed, 11 Aug 2021 08:37:12 +0200
+Message-Id: <20210811063712.19695-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.3 cv=aqTM9hRV c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=MhDmnRu9jo8A:10 a=abd1TrhZvCHtb7_ZMfQA:9
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-BPD-RS600 modules running firmware v5.70 misreport the MFR_PIN_MAX.
-The indicate a maximum of 1640W instead of 700W. Detect the invalid
-reading and return a sensible value instead.
+TJA1102 provides interrupt notification for the critical health states
+like overtemperature and undervoltage.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+The overtemperature bit is set if package temperature is beyond 155C°.
+This functionality was tested by heating the package up to 200C°
+
+The undervoltage bit is set if supply voltage drops beyond some critical
+threshold. Currently not tested.
+
+In a typical use case, both of this events should be logged and stored
+(or send to some remote system) for further investigations.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/hwmon/pmbus/bpa-rs600.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/phy/nxp-tja11xx.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/bpa-rs600.c b/drivers/hwmon/pmbus/bpa-rs=
-600.c
-index d495faa89799..f4baed9ce8a4 100644
---- a/drivers/hwmon/pmbus/bpa-rs600.c
-+++ b/drivers/hwmon/pmbus/bpa-rs600.c
-@@ -65,6 +65,24 @@ static int bpa_rs600_read_vin(struct i2c_client *clien=
-t)
- 	return ret;
- }
-=20
-+/*
-+ * The firmware on some BPD-RS600 models incorrectly reports 1640W
-+ * for MFR_PIN_MAX. Deal with this by returning a sensible value.
-+ */
-+static int bpa_rs600_read_pin_max(struct i2c_client *client)
-+{
-+	int ret;
-+
-+	ret =3D pmbus_read_word_data(client, 0, 0xff, PMBUS_MFR_PIN_MAX);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ret =3D=3D 0x0b34)
-+		return 0x095e;
-+
-+	return ret;
-+}
-+
- static int bpa_rs600_read_word_data(struct i2c_client *client, int page,=
- int phase, int reg)
+diff --git a/drivers/net/phy/nxp-tja11xx.c b/drivers/net/phy/nxp-tja11xx.c
+index afd7afa1f498..9944cc501806 100644
+--- a/drivers/net/phy/nxp-tja11xx.c
++++ b/drivers/net/phy/nxp-tja11xx.c
+@@ -47,12 +47,14 @@
+ #define MII_INTSRC_LINK_FAIL		BIT(10)
+ #define MII_INTSRC_LINK_UP		BIT(9)
+ #define MII_INTSRC_MASK			(MII_INTSRC_LINK_FAIL | MII_INTSRC_LINK_UP)
+-#define MII_INTSRC_TEMP_ERR		BIT(1)
+ #define MII_INTSRC_UV_ERR		BIT(3)
++#define MII_INTSRC_TEMP_ERR		BIT(1)
+ 
+ #define MII_INTEN			22
+ #define MII_INTEN_LINK_FAIL		BIT(10)
+ #define MII_INTEN_LINK_UP		BIT(9)
++#define MII_INTEN_UV_ERR		BIT(3)
++#define MII_INTEN_TEMP_ERR		BIT(1)
+ 
+ #define MII_COMMSTAT			23
+ #define MII_COMMSTAT_LINK_UP		BIT(15)
+@@ -607,7 +609,8 @@ static int tja11xx_config_intr(struct phy_device *phydev)
+ 		if (err)
+ 			return err;
+ 
+-		value = MII_INTEN_LINK_FAIL | MII_INTEN_LINK_UP;
++		value = MII_INTEN_LINK_FAIL | MII_INTEN_LINK_UP |
++			MII_INTEN_UV_ERR | MII_INTEN_TEMP_ERR;
+ 		err = phy_write(phydev, MII_INTEN, value);
+ 	} else {
+ 		err = phy_write(phydev, MII_INTEN, value);
+@@ -622,6 +625,7 @@ static int tja11xx_config_intr(struct phy_device *phydev)
+ 
+ static irqreturn_t tja11xx_handle_interrupt(struct phy_device *phydev)
  {
- 	int ret;
-@@ -92,7 +110,8 @@ static int bpa_rs600_read_word_data(struct i2c_client =
-*client, int page, int pha
- 		ret =3D pmbus_read_word_data(client, 0, 0xff, PMBUS_MFR_IOUT_MAX);
- 		break;
- 	case PMBUS_PIN_OP_WARN_LIMIT:
--		ret =3D pmbus_read_word_data(client, 0, 0xff, PMBUS_MFR_PIN_MAX);
-+	case PMBUS_MFR_PIN_MAX:
-+		ret =3D bpa_rs600_read_pin_max(client);
- 		break;
- 	case PMBUS_POUT_OP_WARN_LIMIT:
- 		ret =3D pmbus_read_word_data(client, 0, 0xff, PMBUS_MFR_POUT_MAX);
---=20
-2.32.0
++	struct device *dev = &phydev->mdio.dev;
+ 	int irq_status;
+ 
+ 	irq_status = phy_read(phydev, MII_INTSRC);
+@@ -630,6 +634,11 @@ static irqreturn_t tja11xx_handle_interrupt(struct phy_device *phydev)
+ 		return IRQ_NONE;
+ 	}
+ 
++	if (irq_status & MII_INTSRC_TEMP_ERR)
++		dev_warn(dev, "Overtemperature error detected (temp > 155C°).\n");
++	if (irq_status & MII_INTSRC_UV_ERR)
++		dev_warn(dev, "Undervoltage error detected.\n");
++
+ 	if (!(irq_status & MII_INTSRC_MASK))
+ 		return IRQ_NONE;
+ 
+-- 
+2.30.2
 
