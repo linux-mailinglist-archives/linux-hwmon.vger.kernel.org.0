@@ -2,61 +2,67 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C113E9131
-	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Aug 2021 14:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4448C3E9428
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 Aug 2021 17:00:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbhHKMcN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 11 Aug 2021 08:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230372AbhHKMcJ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 11 Aug 2021 08:32:09 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3D4C0619EB
-        for <linux-hwmon@vger.kernel.org>; Wed, 11 Aug 2021 05:30:02 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id t128so4329773oig.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 11 Aug 2021 05:30:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=l4gMJVQR0kiw5jB7QjBwuNpfM6KgRmAnZ+U3/uWnaDOrOmeNXH1cBsuQp1/yvU/vbe
-         h7truI0tSaL01ahWzSqREXmT86UPLmMGQ2+FLEgN9spMzc4cuAIBO//Q+H5br/KBc0TV
-         kFrfyS3HAXSTLm9xum/FyUF/jALDjxDHHjAbGHdZk+wTj7O/Gvjxi495MUWK0LMLb61t
-         xWjyjzLQh6acP97vVSQvECAoNev4PY9q3zMqG/1nqsutkiyZpW2+ssMsVdYVIVzVs9ax
-         stDtdqMeOw7/9vXNfePZRksemawFwQjcQ1gGbjzrFwOEwtevs3PZsUTk25T8b2r2n2+I
-         0gBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=hCwTnNVrHYJcXYrdis6AV9JmUmKhh7QxEiXa4+TBn/KPUT/EcFFUlOMgBFKQeZe38Y
-         w1JbvzahG/IRjgI+ljTZ73Fucd4K0BhVn9zm9PHJSRw/ezeqcjXU1kCJaVnM2wGZmMR1
-         yAnrZidZsiIJXYfrubaRhyQ2flSLF4TMXNJ7sG9Ype/whdDw7vrHb1sqgasFxDJALZew
-         I0T3bS709lVnzhwPHmJLXM/kqXw/2RKnW1pS+4lDHd/9MBTdvPXUkHTriDX2C6djdJvf
-         Tcd23OZq28nU/YHI1rrnx3PrM4byi+mwieRhTa1uh7IWz0TUtr7FcWdQbI5z+1U3KtnC
-         kb4A==
-X-Gm-Message-State: AOAM5331khPFdrFujfFspagqVYoZbDMvIWSWH9+R0kqY5eUYx8DGKxJY
-        fFNE1vAvyQxkkA2bAc4eV+xd0pyVK3hQluW8EYk=
-X-Google-Smtp-Source: ABdhPJwW80yC3Jv4N7Ygd/oz/W2w0OMWMVUNvF3laMRZsfuxi/a2uJ5LPRrNJQDqCRwhEl9YwYATyhizs0DKY0HnRMk=
-X-Received: by 2002:a05:6808:1924:: with SMTP id bf36mr24189327oib.106.1628685002002;
- Wed, 11 Aug 2021 05:30:02 -0700 (PDT)
+        id S232641AbhHKPAb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 Aug 2021 11:00:31 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:45304 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232855AbhHKPA3 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Wed, 11 Aug 2021 11:00:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+        In-Reply-To:References; bh=7bQV05XnMWhdDuuxH7FMFpb9864KxRDn5zp0OhtPXvw=; b=kH
+        zTplGIEv9C7x/ovp/yn1HMn6dH3E1cwlN77Me/7Y3zrALRYHqiqHk3jNxgY99o/p57/VUj47jh0Wq
+        LMy8isa1wTtGmuSRh367mEsjqm5h6x4IcoaN7jyIiGcYUdO51ljenhlUUvAi2Mlpc3kPH/tYZs2B7
+        ham3wL0W8myUpVg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mDphw-00H8Ni-3h; Wed, 11 Aug 2021 16:59:52 +0200
+Date:   Wed, 11 Aug 2021 16:59:52 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Marek Vasut <marex@denx.de>, David Jander <david@protonic.nl>,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/1] net: phy: nxp-tja11xx: log critical
+ health state
+Message-ID: <YRPl6NVyxU9q98AS@lunn.ch>
+References: <20210811063712.19695-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Received: by 2002:a05:6830:23a5:0:0:0:0 with HTTP; Wed, 11 Aug 2021 05:30:01
- -0700 (PDT)
-Reply-To: rihabmanyang07@yahoo.com
-From:   Rihab Manyang <ndourandiogou1@gmail.com>
-Date:   Wed, 11 Aug 2021 13:30:01 +0100
-Message-ID: <CAP5_mB76a-FSZzks8OG9YWvLEFv62qfHQ6sTAFQrmH0xjgR9bw@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210811063712.19695-1-o.rempel@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-How are you?I am miss.Rihab Manyang i will like to be your friend
-please write me back on my email for more details, Thanks.
+On Wed, Aug 11, 2021 at 08:37:12AM +0200, Oleksij Rempel wrote:
+> TJA1102 provides interrupt notification for the critical health states
+> like overtemperature and undervoltage.
+> 
+> The overtemperature bit is set if package temperature is beyond 155C°.
+> This functionality was tested by heating the package up to 200C°
+> 
+> The undervoltage bit is set if supply voltage drops beyond some critical
+> threshold. Currently not tested.
+> 
+> In a typical use case, both of this events should be logged and stored
+> (or send to some remote system) for further investigations.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
