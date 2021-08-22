@@ -2,65 +2,82 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CAC3F31AF
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Aug 2021 18:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA0183F4102
+	for <lists+linux-hwmon@lfdr.de>; Sun, 22 Aug 2021 20:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbhHTQo5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 20 Aug 2021 12:44:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
+        id S229881AbhHVSxW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 22 Aug 2021 14:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229784AbhHTQo5 (ORCPT
+        with ESMTP id S229850AbhHVSxW (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 20 Aug 2021 12:44:57 -0400
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3885FC061575
-        for <linux-hwmon@vger.kernel.org>; Fri, 20 Aug 2021 09:44:19 -0700 (PDT)
-Received: by mail-ot1-x32c.google.com with SMTP id 61-20020a9d0d430000b02903eabfc221a9so15180112oti.0
-        for <linux-hwmon@vger.kernel.org>; Fri, 20 Aug 2021 09:44:19 -0700 (PDT)
+        Sun, 22 Aug 2021 14:53:22 -0400
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B727C061575
+        for <linux-hwmon@vger.kernel.org>; Sun, 22 Aug 2021 11:52:41 -0700 (PDT)
+Received: by mail-oo1-xc32.google.com with SMTP id v20-20020a4a2554000000b0028f8cc17378so1026185ooe.0
+        for <linux-hwmon@vger.kernel.org>; Sun, 22 Aug 2021 11:52:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=bUTjPqIKpreqQbaKSMRtlmP8DIXR1kRfa9R3KLCDcAU=;
-        b=GUcku5y/QAsHl/QXQjjl4cRc6p3rmTWhTnRToRXVNhx4XS/pnVB9D3TuebeLDhw7fu
-         U2KxG/K3ksERmh7d0U5RfbCS/gIu0PX0Yf/gngI+QjB6KI5ZCPn9Tcp+PupPjxHaDLXh
-         ZqLKOJMS+cdklsKfeTLnrdO1fVyfyuzFuRi+KGq2xAUg1SDw611eWkdWPLCnCLVZtm/p
-         LwncHdrZ+JYfi+Sib1ZFIwbaex8HYS50C2qjhD0yYo6XnmdBGuZHJ3SDBC1G0GkTk1sq
-         WbOGo9uTW6kGWtMBH1I5SphBnUTncLR8fO5VYKmnOz518MbLdPd+ZPZB6vttFNgQjoKH
-         nA4w==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=6zYdzp7JRQcGBxK7U8lzkKSrO6otlvZ/5IxXQ1+MB9w=;
+        b=G6E2x9zm4v4N314C1/QqK4YHbYrzCpx2CiPDQjbBy7Wvco+fEarJkbitFyZU1BnEQL
+         ZJXAZtfjn3jtlaoF1R2wjyOe687T8x6nIAl/jsbtw/0xj8Q379ykxXNbo9xDs1A6Dv0I
+         rlKQ2uuU7MX3q/MM0Qj9Lx6XRZss0uFtET846edSidO5g/kMA6rTeEnAfCm/A6+ScFU8
+         6y8H3PcsNeq9SLQBLFrVD67dFbCGS88mpY0HA8pcBoHpoXlngSnqaSj9OsPxyvwkYizh
+         OUtvE1e/E3fZsES00taYBTdpBvSDaCtUxWMKuz7n13BwEVac1/ZsTwmWV+XWggAeeQ8S
+         t75A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=bUTjPqIKpreqQbaKSMRtlmP8DIXR1kRfa9R3KLCDcAU=;
-        b=j8n4sWAD+Ni36m3rjWWEbxk+aO/DhN6n7nAvGGsesmgYkpYIWvtl7dBshkd0SUS02u
-         qLcuYW7xpqxWkoCBeCh/1toSxW4whBw3U0kGrFnmjVQtlJ6S0XjRp/SSU1FLn3OM98wq
-         QEVqE9M2/7sA4DAEtNWtWL8pDHo+ImK10wWct9zvDqPitjgrT5gIkZ8ZkrdJS9u9JLbj
-         StWvr8XfkA97KZRPvniWZ7cmM+uT+RrpmVXbpT3IZnr7RxjgXWnAz9+TYITu8RPYhD3t
-         DhpYyEU552T72JCG0ECVh7/K8I/eJThah+/RDUwSqOnMhOLw3Sq68thNFt0no7A2I2bN
-         zVbA==
-X-Gm-Message-State: AOAM532jUAiaUUhZ2m70sx/cZUiLJWFAQ8Nn2ONuv1zyQm+bUtIuaB2W
-        OQ1K39n6yq4MVpdmNJ7sdEjmtH3CKM83OtOFqsU=
-X-Google-Smtp-Source: ABdhPJyY/76/jRmnAHjvHKOFUAlEYgsOXNrFinc1KFZh0Br+1chUh+IKaJwWZAredNmsflMAx38o98kLBI7B/rAZhGQ=
-X-Received: by 2002:a05:6808:aaa:: with SMTP id r10mr3069589oij.95.1629477858667;
- Fri, 20 Aug 2021 09:44:18 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=6zYdzp7JRQcGBxK7U8lzkKSrO6otlvZ/5IxXQ1+MB9w=;
+        b=qokEZxo1RMI5eIfNMzHXnhGJSQKhRYhbt8yrXokWX56Jt/flSw9ALCHyJTQYEDPXVZ
+         1guHjYIhnYxZiwEqpjKLlriPlLCxwJX2R6DqfHVe9O62gD6LPkKh2KcfmWh0keZVS9HE
+         ACDkDi6u4BjLJB4Fo9SL2F8f0BFSAeD3BiwKBdgj0FHMTSGSLXyRwkvxgBnDpGsMIyu0
+         EPUNNni31/q2ji4ICbJHEdbD7llxhe1pVW5cUKgaxQva7pD2ocACDp5w3HqAmoUhVKj1
+         VGuU0VFL63awaAPzg0TST5R7ktAQKZ+/OC2jITfDDmVoGuoztABokK8ZWwIyYuW9COoC
+         4+ew==
+X-Gm-Message-State: AOAM533w1SmLud+muaiKvuO1izsFjJQeo1FfZHjRBIElANoWDQ8nz2u9
+        wk/YpsCdWHTjjW5ZJrNY1QYJNWtVKCHoWfDZl64=
+X-Google-Smtp-Source: ABdhPJxrpbJXaSM3umoXhZZSxupT8uzi+0zwszuHFxPysVFhqQv6lsg9kXP/sHyX2XuvcBYE5FHcuWfG2PR/jACmpGQ=
+X-Received: by 2002:a4a:94e2:: with SMTP id l31mr23328963ooi.62.1629658360106;
+ Sun, 22 Aug 2021 11:52:40 -0700 (PDT)
 MIME-Version: 1.0
-Reply-To: sgtkalamanthey@gmail.com
-Sender: akpenealeobouna@gmail.com
-Received: by 2002:a4a:b905:0:0:0:0:0 with HTTP; Fri, 20 Aug 2021 09:44:18
+Received: by 2002:a4a:be15:0:0:0:0:0 with HTTP; Sun, 22 Aug 2021 11:52:39
  -0700 (PDT)
-From:   Kayla Manthey <sgtkalamanthey@gmail.com>
-Date:   Fri, 20 Aug 2021 16:44:18 +0000
-X-Google-Sender-Auth: Nype_Kugm44heTBQq0VZjfsM-Ow
-Message-ID: <CAMaApwAH=JZq297W15YJ+b+aPHDcC6mU1ftr1ZVSQdzvgdX+Ow@mail.gmail.com>
-Subject: 
+Reply-To: mrs.suzarawanmaling@gmail.com
+From:   Mrs Suzara Maling <mrsgraceibrahim01@gmail.com>
+Date:   Mon, 23 Aug 2021 03:52:39 +0900
+Message-ID: <CAAJ3joCXF9nkRw=njpjC48Eataz3rkmG0hFVFhozG3sD8-vhZA@mail.gmail.com>
+Subject: Mrs Suzara Maling Wan
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dobr=C3=BD de=C5=88, videli ste moje dve predch=C3=A1dzaj=C3=BAce spr=C3=A1=
-vy? pros=C3=ADm
-skontroluj a ozvi sa mi v=C4=8Faka.
+I am Mrs Suzara i have a pending project of fulfillment to put in your
+hand, i will need your support to make this ream come through, could
+you let me know your interest to enable me give you further
+information, and I hereby advice that you send the below mentioned
+information
+
+Since your I decided to will/donate the sum of $4.5 Million US to, you
+for the good work of God, and also to help the motherless and less
+privilege and also forth assistance of the widows. At the moment I
+cannot take any telephone calls right now due to the fact that my
+relatives (that have squandered the funds agave them for this purpose
+before) are around me and my health status also. I have adjusted my
+will and my lawyer is aware.
+
+I have willed those properties to you by quoting my personal file
+routing and account information. And I have also notified the bank
+that I am willing that properties to you for a good, effective and
+prudent work. I know I don't know you but I have been directed to do
+this by God. ok Please contact this woman for more details you might
+not get me on line in time
+
+Thank you as i wait your reply.
+
+Mrs Suzara Maling Wan
