@@ -2,124 +2,252 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1E43F6D67
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Aug 2021 04:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 145303F7093
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Aug 2021 09:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236811AbhHYCWc (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 24 Aug 2021 22:22:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
+        id S238533AbhHYHnJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 25 Aug 2021 03:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235237AbhHYCWc (ORCPT
+        with ESMTP id S238357AbhHYHnI (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 24 Aug 2021 22:22:32 -0400
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC2DC061757
-        for <linux-hwmon@vger.kernel.org>; Tue, 24 Aug 2021 19:21:47 -0700 (PDT)
-Received: by mail-ua1-x930.google.com with SMTP id y36so13096170uad.7
-        for <linux-hwmon@vger.kernel.org>; Tue, 24 Aug 2021 19:21:47 -0700 (PDT)
+        Wed, 25 Aug 2021 03:43:08 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A20FC061757;
+        Wed, 25 Aug 2021 00:42:23 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id q17so13693297edv.2;
+        Wed, 25 Aug 2021 00:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=lbsuWCqpexA9O/HJxEnQ0Qs7qg6Jh4+LF0LjnUOab9M=;
-        b=igV3H2kLKAeF76sY0SbI2xwgtSWHDcfjjN9ag/W5s0emoR4OHZUOotUp7+lt+ls4EC
-         VAwaGyQ3ORTDjV7CFABUYfyxtUnqA1SucSfa1KckucbQzhZ+THKhzeJq0lphbkaiq3MR
-         TyBCzittY0w6Hbn/RqgtaQJS5f8lFw8jL+cYKhSbs+Z9vpxFsV9O/oCtkpSbjH6L/1Zj
-         YubErEo2ZsSk5LKCkx50uTJt1kPUi/OYe0H+G79acuJTSv7MNJXrnn4/f/3M0weInbkV
-         UpS97XGcRhCpdJ8D5RNt2NbfiIShYF4uGoUgl9hSLLU1zlgWJoyLBiTybtXYxfn1ZD1m
-         Iqlg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=tor+uQR8SHg+BzPiemjSMDBPRTBlnQe2rntkRDD09Ok=;
+        b=B2g+EyixnXPqwEgac1flrn+O7RxTP53uEyg2xmkh9KXum6e0IN77wnK6p+tJocNjPM
+         xCIzrHeb7MTJW281BcdYS9hfNlJ1Ewb6WWKaqmPDVTThrtalLi9sHPpGssR45mm7X27q
+         FpVDEj/NbO+td6voJTA4CpiyWDhwvHOLAx/gz2hP4XiXpEEUuqXwKc3vsPYU/eiKZR6L
+         Ib6HueBeOBEecVXJ8iTBQyuyCwTBTV6jybiOcE1whsUyA8DeYFXtfhA33Wr7CKYrynwA
+         mr268wWvG9Frjoci/MvEqreU/uJROt3R9KoMXFsxMNVohd4ulzxoH4aRDW2ot+ftQHzK
+         cEtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=lbsuWCqpexA9O/HJxEnQ0Qs7qg6Jh4+LF0LjnUOab9M=;
-        b=dQMbwhl8XfIOLyLl4Hyw+E6fup3ujyTNGMENUSd8mIK1xlJtKX40F80F3i8emSZ8bD
-         +DNCBF2UGvTN9LQS4pLxBj1uEXRQDqCYkBJiNmgO2I1C/JasbpQkDagbXlsc3hQbc6/O
-         0IHNVFDO9meHeDLo+uQLfJHSB4BndPGeJxW+frr3XfG0OgPwQARQ+fYRWpwQZyG6rVZe
-         O/NLM665AcNS0tH/sQYL4NXEMuBw53TqGd4BYwX+7c+speFk2clhhqf1NsdD1mhIUHdM
-         SPAJzThmyA5Q+ljm77lXwuUEfqZlCuVdOyuiiqs1HcAwZzgAv/C2QvlNNG6V+eP88KBh
-         jUFw==
-X-Gm-Message-State: AOAM5324LDmzoEducHzPDbQQoBAloNLfcAwQ1DJjf2QFRDXnp11i8Z+f
-        dkzYMr+gTvkDG2zjNWpCjdM12xTL3Ki4MUu9Q28=
-X-Google-Smtp-Source: ABdhPJwIUj/Z4H/WOp/kw/DOY1KGE4QxrJBR/OizJSWpogSlCy0icLTAZHiD7uYF/tI2qT4olI1YfwsFKhayeA22194=
-X-Received: by 2002:a67:c792:: with SMTP id t18mr31246358vsk.54.1629858105952;
- Tue, 24 Aug 2021 19:21:45 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=tor+uQR8SHg+BzPiemjSMDBPRTBlnQe2rntkRDD09Ok=;
+        b=fU2MF6IXDq4p5p/iuuuDm0fmiajirlt4BAkZ1I9vldJkxxktybqaHDHaWUFEIFVvCp
+         gGHUY82wbrKBDJxR9GuijJ9k5v5qQ70ATIKOojEf/7ywy1KM07V6clV8BAJ/UPEpa5WO
+         f3qzZcz9uiICICdFgb1JrJ2OPekIobjbWTd01OP9ZQcRSGbrv/3AKPahKjqfhVJfcagw
+         SAPlC4VcyCih3IRTYwo1hSDXswQJw91dh9K2XDkEVL/jyo4CbABuPyf5q0zSlp5tKzFT
+         dda7GxuPkTT9GNoiKqDH2eNF5emAauLef5iv1gy+CmhAtZPeWKVN1kO75JoQnXeQNKX3
+         lKVA==
+X-Gm-Message-State: AOAM530USkHpfhweSnUF1tkUV87qLRveCdWtcBK3HiwM02Np5lHfy+HQ
+        d4OyTzuA1yuPauB7ggmxGq4=
+X-Google-Smtp-Source: ABdhPJyvUn4gssr+yG6M5n8QZdCmnEuLXnrA7+p1jQ2+mEj5ucx0z+NO/TA/aVaiRB5yvcjHOwvHxw==
+X-Received: by 2002:a05:6402:1014:: with SMTP id c20mr44958017edu.71.1629877341628;
+        Wed, 25 Aug 2021 00:42:21 -0700 (PDT)
+Received: from localhost.localdomain ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id d19sm10348945ejj.122.2021.08.25.00.42.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Aug 2021 00:42:21 -0700 (PDT)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Cosmin Tanislav <demonsingur@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] hwmon: adt7410: fix hwmon sysfs attrs not being created
+Date:   Wed, 25 Aug 2021 10:42:27 +0300
+Message-Id: <20210825074228.199070-1-demonsingur@gmail.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20210824210458.GA3418169@roeck-us.net>
+References: <20210824210458.GA3418169@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:a67:8c87:0:0:0:0:0 with HTTP; Tue, 24 Aug 2021 19:21:45
- -0700 (PDT)
-Reply-To: filefileo532@gmail.com
-From:   Victor Nelson <bankofa009000@gmail.com>
-Date:   Wed, 25 Aug 2021 03:21:45 +0100
-Message-ID: <CAE3PGdiVKTaMZKhSYv0fiGyT2WvO8nq21an7z3kXa=UmVuO=ag@mail.gmail.com>
-Subject: Re: Your atm card is ready
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Attention: Beneficiary,
+sysfs attrs for adt7410 are supposed to be created under
+the hwmon device, but are being created under the i2c
+device.
+Switch to hwmon_device_register_with_groups to create
+the relevant attrs in the correct directory, and
+to also fix the deprecation warning created by
+hwmon_device_register.
 
-This is to bring to your notice that because of the impossibility of
-your fund transfer through our western union network, we have credited
-your total fund of $15,500,000.00 into an ATM VISA card,and we have
-paid the delivery fee of your ATM VISA card for you, we paid it
-because your ATM VISA card worth of $15,500,000.00 which we have
-registered for deliver, has less than 16 days to expire in the custody
-of the UPS Company and when it expires, the money will go into
-federal government treasury account.
+To achieve this, the following changes are also made.
 
-For that we decided to help you pay off the money so that your ATM
-VISA card will not expire, because we trust that when you receive this
-your ATM VISA card, definitely you must pay us back and even
-compensate us for helping you. Like we stated earlier, the delivery
-charges has been paid ,therefore the only money you were advice to
-send to them is their official security keeping fees of $25usd every
-day.
+ * pass client name from adt7410 driver to common
+   driver and use it to register hwmon device
+ * remove attribute_group declaration and use the
+   ATTRIBUTE_GROUPS macro to align with other
+   usages of hwmon_device_register_with_groups
+ * remove name attribute since it is not needed anymore
+   after moving away from hwmon_device_register
+ * store bus device into private data and use it to call
+   the i2c/spi ops both in hwmon sysfs attr contexts and
+   outside of them
 
-Like I stated earlier, the crediting re-activation, delivery and the
-company registration charges has been paid by me, but I  did not pay
-their official security keeping fees since they refused, they refused
-and the reason is that they do not know when you are going to contact
-them and the demurrage might have increased by then, They told me that
-their official  security keeping fees is $$25.00 per a day , and I
-deposited it yesterday by 10:am in the morning to their office.
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+---
+ drivers/hwmon/adt7410.c |  2 +-
+ drivers/hwmon/adt7x10.c | 56 ++++++++---------------------------------
+ 2 files changed, 12 insertions(+), 46 deletions(-)
 
-Therefore you should contact them with the below contact information;
+diff --git a/drivers/hwmon/adt7410.c b/drivers/hwmon/adt7410.c
+index 80f8a4673315..a5901ecbb347 100644
+--- a/drivers/hwmon/adt7410.c
++++ b/drivers/hwmon/adt7410.c
+@@ -46,7 +46,7 @@ static int adt7410_i2c_probe(struct i2c_client *client,
+ 			I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA))
+ 		return -ENODEV;
+ 
+-	return adt7x10_probe(&client->dev, NULL, client->irq, &adt7410_i2c_ops);
++	return adt7x10_probe(&client->dev, client->name, client->irq, &adt7410_i2c_ops);
+ }
+ 
+ static int adt7410_i2c_remove(struct i2c_client *client)
+diff --git a/drivers/hwmon/adt7x10.c b/drivers/hwmon/adt7x10.c
+index 3f03b4cf5858..5093911472e8 100644
+--- a/drivers/hwmon/adt7x10.c
++++ b/drivers/hwmon/adt7x10.c
+@@ -54,8 +54,8 @@
+ /* Each client has this additional data */
+ struct adt7x10_data {
+ 	const struct adt7x10_ops *ops;
+-	const char		*name;
+ 	struct device		*hwmon_dev;
++	struct device		*bus_dev;
+ 	struct mutex		update_lock;
+ 	u8			config;
+ 	u8			oldconfig;
+@@ -72,25 +72,25 @@ struct adt7x10_data {
+ static int adt7x10_read_byte(struct device *dev, u8 reg)
+ {
+ 	struct adt7x10_data *d = dev_get_drvdata(dev);
+-	return d->ops->read_byte(dev, reg);
++	return d->ops->read_byte(d->bus_dev, reg);
+ }
+ 
+ static int adt7x10_write_byte(struct device *dev, u8 reg, u8 data)
+ {
+ 	struct adt7x10_data *d = dev_get_drvdata(dev);
+-	return d->ops->write_byte(dev, reg, data);
++	return d->ops->write_byte(d->bus_dev, reg, data);
+ }
+ 
+ static int adt7x10_read_word(struct device *dev, u8 reg)
+ {
+ 	struct adt7x10_data *d = dev_get_drvdata(dev);
+-	return d->ops->read_word(dev, reg);
++	return d->ops->read_word(d->bus_dev, reg);
+ }
+ 
+ static int adt7x10_write_word(struct device *dev, u8 reg, u16 data)
+ {
+ 	struct adt7x10_data *d = dev_get_drvdata(dev);
+-	return d->ops->write_word(dev, reg, data);
++	return d->ops->write_word(d->bus_dev, reg, data);
+ }
+ 
+ static const u8 ADT7X10_REG_TEMP[4] = {
+@@ -315,14 +315,6 @@ static ssize_t adt7x10_alarm_show(struct device *dev,
+ 	return sprintf(buf, "%d\n", !!(ret & attr->index));
+ }
+ 
+-static ssize_t name_show(struct device *dev, struct device_attribute *da,
+-			 char *buf)
+-{
+-	struct adt7x10_data *data = dev_get_drvdata(dev);
+-
+-	return sprintf(buf, "%s\n", data->name);
+-}
+-
+ static SENSOR_DEVICE_ATTR_RO(temp1_input, adt7x10_temp, 0);
+ static SENSOR_DEVICE_ATTR_RW(temp1_max, adt7x10_temp, 1);
+ static SENSOR_DEVICE_ATTR_RW(temp1_min, adt7x10_temp, 2);
+@@ -336,9 +328,8 @@ static SENSOR_DEVICE_ATTR_RO(temp1_max_alarm, adt7x10_alarm,
+ 			     ADT7X10_STAT_T_HIGH);
+ static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, adt7x10_alarm,
+ 			     ADT7X10_STAT_T_CRIT);
+-static DEVICE_ATTR_RO(name);
+ 
+-static struct attribute *adt7x10_attributes[] = {
++static struct attribute *adt7x10_attrs[] = {
+ 	&sensor_dev_attr_temp1_input.dev_attr.attr,
+ 	&sensor_dev_attr_temp1_max.dev_attr.attr,
+ 	&sensor_dev_attr_temp1_min.dev_attr.attr,
+@@ -352,9 +343,7 @@ static struct attribute *adt7x10_attributes[] = {
+ 	NULL
+ };
+ 
+-static const struct attribute_group adt7x10_group = {
+-	.attrs = adt7x10_attributes,
+-};
++ATTRIBUTE_GROUPS(adt7x10);
+ 
+ int adt7x10_probe(struct device *dev, const char *name, int irq,
+ 		  const struct adt7x10_ops *ops)
+@@ -367,7 +356,7 @@ int adt7x10_probe(struct device *dev, const char *name, int irq,
+ 		return -ENOMEM;
+ 
+ 	data->ops = ops;
+-	data->name = name;
++	data->bus_dev = dev;
+ 
+ 	dev_set_drvdata(dev, data);
+ 	mutex_init(&data->update_lock);
+@@ -399,26 +388,11 @@ int adt7x10_probe(struct device *dev, const char *name, int irq,
+ 	if (ret)
+ 		goto exit_restore;
+ 
+-	/* Register sysfs hooks */
+-	ret = sysfs_create_group(&dev->kobj, &adt7x10_group);
+-	if (ret)
+-		goto exit_restore;
+-
+-	/*
+-	 * The I2C device will already have it's own 'name' attribute, but for
+-	 * the SPI device we need to register it. name will only be non NULL if
+-	 * the device doesn't register the 'name' attribute on its own.
+-	 */
+-	if (name) {
+-		ret = device_create_file(dev, &dev_attr_name);
+-		if (ret)
+-			goto exit_remove;
+-	}
+-
+-	data->hwmon_dev = hwmon_device_register(dev);
++	data->hwmon_dev = hwmon_device_register_with_groups(dev, name, data,
++							    adt7x10_groups);
+ 	if (IS_ERR(data->hwmon_dev)) {
+ 		ret = PTR_ERR(data->hwmon_dev);
+-		goto exit_remove_name;
++		goto exit_restore;
+ 	}
+ 
+ 	if (irq > 0) {
+@@ -433,11 +407,6 @@ int adt7x10_probe(struct device *dev, const char *name, int irq,
+ 
+ exit_hwmon_device_unregister:
+ 	hwmon_device_unregister(data->hwmon_dev);
+-exit_remove_name:
+-	if (name)
+-		device_remove_file(dev, &dev_attr_name);
+-exit_remove:
+-	sysfs_remove_group(&dev->kobj, &adt7x10_group);
+ exit_restore:
+ 	adt7x10_write_byte(dev, ADT7X10_CONFIG, data->oldconfig);
+ 	return ret;
+@@ -452,9 +421,6 @@ int adt7x10_remove(struct device *dev, int irq)
+ 		free_irq(irq, dev);
+ 
+ 	hwmon_device_unregister(data->hwmon_dev);
+-	if (data->name)
+-		device_remove_file(dev, &dev_attr_name);
+-	sysfs_remove_group(&dev->kobj, &adt7x10_group);
+ 	if (data->oldconfig != data->config)
+ 		adt7x10_write_byte(dev, ADT7X10_CONFIG, data->oldconfig);
+ 	return 0;
+-- 
+2.33.0
 
-Company name; UPS Express Customer Service.
-Contact person name: (Victor nelson)
-Email; filefileo532@gmail.com
-Logistic Manager: Mr Fransisco F,
-Phone: +229 96052450
-
-Try to contact them today and also send them the official security
-keeping charge to avoid increasing of their fee and let me know once
-you receive this your ATM VISA CARD.
-
-Contact them today with your full information requested below;
-
-Your Full Name;
-Your Country;
-Your Residence Home Address:
-Your Direct Phone :
-Your Cell:
-Age/Sex:
-
-Try to indicate all this codes to them because it will prove that you
-are the rightful person that own the ATM visa card deposited in their
-custody.
-
-Shipment Code awb :33xzs,
-ATM Card Registered Code No: xgt442
-Security Code sctc:2021dhx:567:
-Transaction Code 233:cstc:101:33028:
-Certificate Deposit code: sctc:bun.xxiv:78:01
-Depositor:Mrs. Linda Tutu
-Manager of UBA Bank Plc
-
-This is to avoid wrong delivery, do that urgent to avoid increase of
-their keeping fees and let us know once you receive your ATM VISA
-CARD.
-
-Yours sincerely
-Victor nelson
