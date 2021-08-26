@@ -2,41 +2,41 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4FD43F8E02
-	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Aug 2021 20:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D8D23F8DFF
+	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Aug 2021 20:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243261AbhHZSmS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 26 Aug 2021 14:42:18 -0400
+        id S243319AbhHZSmT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 26 Aug 2021 14:42:19 -0400
 Received: from mail-dm6nam10on2086.outbound.protection.outlook.com ([40.107.93.86]:29519
         "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S243300AbhHZSmR (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 26 Aug 2021 14:42:17 -0400
+        id S231453AbhHZSmS (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 26 Aug 2021 14:42:18 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TPU13EihSNNmhI93ZMZYbH6GtIhe7Jp4cLyRQCZrrmmHLXUZE/kiyAPKZfyUw6gcWlQI9igYQnzRgD5jkTqal1thyNVpc7140PB0e+Hq3+E/V7slOw1Ed9EjXMYZgHpaJRBdbiW8cdsFQDMh33RKxHAsSKPmVWK0UsF9Z7myIqHEWryrfdW8s7Nl4VvKY/4mgRlLsAGP0uVj2weJ8acG+GFc3OxkaY4E4Zn8LmFlQ07jHcJVtZxUt49e8GStIWB5j8zZ6B+6kLoGA6ZOchrtup9WBsmMwghBYYMan/Xt0wb2CS3KKuqm7wDU1oYvAmrm4y/s/Ioq37SAX/HGKDBPOg==
+ b=lTMqXZjklTUMW7lB1aoIHXoqgXe6bnZp1j1WtL8quUBlGUHAStmyiloaHEuz93kUoBX8pW8WlJg1thmOtk04soN/Pca3my4irKmAKEZ1HG3x6Hr7chG6uPDjZr0jerYvSIEokv0FgVYiNyeaNhLwkF/AWCqYSz2inHpr+2B8yzS8T3f2SniizHrPyvmsZbLkOszuSfwAYROM7RIttP8z3ARPAAeFJCRla98wYKsTEHwb6uNMNFkjvB1Hqxl7Tj9Zapf4Q/JRkvpKUTEoPBR7ZuuK+WiILjmx7IKz7/zYqdGTBmvQpoHx4k/jL/R2WlcNTM1e1ZSvtJLX1ggbCi3Tlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rI28x6EreQPEA5kkz3vEaDIIcMtRPdxMvAdfS8uO5+8=;
- b=D+D+pfgS6jS9p9s4+NbdniL8KoRycMVspbTdr/7cVxnfVa2Sg6WtQnJuX3Yqg950RVgSKVZVzFC6JmMfUyYA2qJHhD4Ao1SUdxZbnzfEzzVlq2fi2o5QtP7BCnM0Iakw7beRpsP0LXPx3JWY/XeYog7PCXuLCKKwlTeOCFe2cDXiLyb2e6sOLl2W+Y7VbmCCd7cApq2HmYXHLG/JYpgSEP0ONurJbrNNNf1RUOHfkX7tCfpYSWk+5PTw38Y29OH3kvzG8Si4Znp4t2yUZAiIk5db7Z2jseYshz96+D+Ue2o+L+EByWdTdBivJufigwI8lJFQfXZN3ghctqhGJucT4g==
+ bh=nFfYXLL05Vk97KY0DCc14weebU1HHauI/lcgXL+XYdU=;
+ b=Gy/1lj4QybTrV6XiB4D3NEwVfVzXKs76ZJ6v1oc2Ueyj262xj/wRbXoPPvIwcv6UcirfcoQ18plIw/MRApuI9qw3oEOKIFL2uR/gz30vRY4dQqKLQpc6Q3eq89VSl84HOMqEGSPtvylu4pKGGbwggaKvreVPh1J4qLJ6dXjYrHm/ZltQfA9uf29HsPzHLovdcf5hkKf+N1/R7nFALD9iaBzI6sYNlsnwH6j+atovvChsK7LEaUCrjTSdbASoyiflMZ5L/FS+CbPnko+58S4HKXRg8UZBjSxUeS0kOqG2ar+lnYpcbkP/+dLeILxj399HFFchBHeYGYESqXTTPEL3xQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rI28x6EreQPEA5kkz3vEaDIIcMtRPdxMvAdfS8uO5+8=;
- b=xu1zxpls+vvxd5qdpF5csTiYWSmN6eJlY5y7/4BzV9DC5OX/l7xHvdr8B0+mwq60hAAHFXIIxJYeWJyrfX1sR7C3RLVETqJfD+ltdpw5pTF9cge5a/xd6JoUciDX1oQ8LgpSIM1wnmP1JrjD5aQYSxkfmfyKJT+xaRNFTbIUXmc=
+ bh=nFfYXLL05Vk97KY0DCc14weebU1HHauI/lcgXL+XYdU=;
+ b=5dZfTTEXR0g/vN8N9hmidsKNXTn1NJIMp7uSb/Mte1FY53I9DSFgc/3MbL7++UQ7RJO4y+y5TZQd+uRRu5nwv7nw3920p1K2pag/b0YzqniLZ4PT5M5FkQKYuaPwfbjrNFOADWOwIYXWYUDj6h6TgwYnolSv+mnUN2YlmHu37wc=
 Authentication-Results: ladisch.de; dkim=none (message not signed)
  header.d=none;ladisch.de; dmarc=none action=none header.from=amd.com;
 Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
  by SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17; Thu, 26 Aug
- 2021 18:41:25 +0000
+ 2021 18:41:26 +0000
 Received: from SA0PR12MB4510.namprd12.prod.outlook.com
  ([fe80::f909:b733:33ff:e3b1]) by SA0PR12MB4510.namprd12.prod.outlook.com
  ([fe80::f909:b733:33ff:e3b1%4]) with mapi id 15.20.4457.019; Thu, 26 Aug 2021
- 18:41:25 +0000
+ 18:41:26 +0000
 From:   Mario Limonciello <mario.limonciello@amd.com>
 To:     Clemens Ladisch <clemens@ladisch.de>
 Cc:     linux-hwmon@vger.kernel.org,
@@ -44,9 +44,9 @@ Cc:     linux-hwmon@vger.kernel.org,
         Guenter Roeck <linux@roeck-us.net>,
         Wei Huang <wei.huang2@amd.com>,
         Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 2/6] x86/amd_nb: Rename PCI_DEVICE_ID_AMD_19H_DF_F3 to match specific model
-Date:   Thu, 26 Aug 2021 13:40:53 -0500
-Message-Id: <20210826184057.26428-3-mario.limonciello@amd.com>
+Subject: [PATCH 3/6] hwmon: (k10temp): Rework the temperature offset calculation
+Date:   Thu, 26 Aug 2021 13:40:54 -0500
+Message-Id: <20210826184057.26428-4-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210826184057.26428-1-mario.limonciello@amd.com>
 References: <20210826184057.26428-1-mario.limonciello@amd.com>
@@ -57,106 +57,144 @@ X-ClientProxiedBy: SA9P223CA0012.NAMP223.PROD.OUTLOOK.COM
  (2603:10b6:806:94::8)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from AUS-LX-MLIMONCI.amd.com (165.204.77.11) by SA9P223CA0012.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.20 via Frontend Transport; Thu, 26 Aug 2021 18:41:24 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (165.204.77.11) by SA9P223CA0012.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.20 via Frontend Transport; Thu, 26 Aug 2021 18:41:25 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 93224c6a-d1d6-4f94-5b7e-08d968c11b9f
+X-MS-Office365-Filtering-Correlation-Id: d26263eb-b408-4d09-07e5-08d968c11c57
 X-MS-TrafficTypeDiagnostic: SA0PR12MB4510:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB45104E405C3AE9894639FECEE2C79@SA0PR12MB4510.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1107;
+X-Microsoft-Antispam-PRVS: <SA0PR12MB451019D77C6BAD63FA72DD96E2C79@SA0PR12MB4510.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:324;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +2wxQWMsnPfumeQXmNpUWaZr8Qj/5LcbermgwEucPxJnxqWMMkTGpZMlsPplQj05Ewdgif9D3k0Tx+lRYYR2JarQwLKtuQq/14U0e27++DxO7pOB+4OyI4XfSJA9ShOyiQbQnTS1+jkfJoFRrva1+PZG1jXzTF2d1UdN4IBm2qzGc0JWrT4Gjg8vE8PBSnip22UZCfK3TExaUtYmIsCBlaaX3ADRq9qJcg+BU0HSbLlVTx6232X3TtVvlnvNbe1XhiSohvekmOsVE0v9Pro7c0YymbfeD2Pi3iGaFmrkSmZnTTqHCktLiQgz0HFNHTBuE8ZlgE1YrNI9WNas+Y306KD5vrtuysuN6QA34kSoGF6Urh3mU0RHc+ZDUiJ12HHyp85nt91kYuExYnP2H1qljG4LSWFViWc1acgLxCc3kRB7BPq2xXFCi67jIQEAM/8EEPuZIDYLVlSGchlW1qZaONQs614Apdi1fLwGG/udRC8ZMyRvHMyXY5sum6fqzJcwooyyofkjy9MrcCfqIjXIkN4dPb4FLcQpKhGdeubpZ710Ui+hWRGGdzPfVrdemzZv0riOQLgXd4meW7ZT2QXYTeQHKo/sJbelVzMgln7l/5TeVK5KFIhca/W+a5zKWE6gV7Cij+29sio2uv/nCJspMl4fVr+p26kGitC4CLOTOXPzhia68RR7lWAXlXOSBI3I77ydEyiRgXlzza6YH8/J5Q==
+X-Microsoft-Antispam-Message-Info: oTP/FQXpP9wdOWEDIMWinR/JW2ynjYBBXtLLPUsZ9/0D0/CwfEVoEdUW+YhkBBTWKSHXbwbrxd9JyM0VdQkl/WVszt3rQNjd3YEouCykKIOsH2NUKcbhxbDxrE5WZHhbGcBNYousvnqxOznkcBg5vFSyQ+hf9CEXKbatb2rIdVF4RT+mhaoCBWSAYhcIRRoNLpQJwFyG6YY4JSR/jJm1GyQOheaWaY723IsRhwB5Nmpl/07U4qJlmwLB2yZgiLy+hhwAmEOF/iSb3/GMvo5Lg83NwzB0v6RpMlKPVc/srKCFt5LvsiIMlsbKznrcvJV2wqz4H13POt+VlUHUtXngkcStuI0O5CaUOVmwS6gyZMuWS/PfiY3DFAj8qcVNCBRyruvd7OzPo2Maep4i233cI9ftz38/ZkTadbQxTwByQCAzswBa8JvkAzUWWYCjW5rEqZ03+o5Egh6JDygqQdAQKekUMx+iHuDzXHTYbl1IR+cFhtq5oVaPMsim4qq10HfAbuaebCrdqzr5OiwObMZbj8vYUqZbWTV1RlC4d9MrlEscTouAOF7Z9KNSkqDV4WPAh8Ae3B/s0NX/v8LOrf67qm8kB6zyfq1+GlEMXMHkmZqlYH8cS+Q9xU0pzm0nnlyVd62cskHLa2Ac0q5MkSvwBxw4ybiJQI4LbuKugwaaeT+vKrz68wxyID8v11FNHir6Fq1tNLj559o7RkU6Yh2oUA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(38350700002)(4326008)(38100700002)(1076003)(2906002)(44832011)(508600001)(956004)(5660300002)(66556008)(66476007)(6486002)(54906003)(66946007)(26005)(8676002)(186003)(36756003)(6666004)(2616005)(52116002)(7696005)(6916009)(86362001)(8936002)(316002)(83380400001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?88ryfvRbikFZNMQMIWYs0T4wHODAZCEqgoqSmEJX5o+WfRq1BytJkgbSg0I/?=
- =?us-ascii?Q?8abuLFDuIammpGLicRtuP+JK28cIXD1ds+lvFQzvPfMXUjX9sNO9/xmkhMy7?=
- =?us-ascii?Q?b2ph95phbNda8atW/vYj35IX761yg6kL3TpP2qK2tEvjLYFNr6taoXaWm2Bb?=
- =?us-ascii?Q?19DMJGYYBgNVGIlpp3g/m6l5gErWZsmMqTl0p/Y6bxtKIElAnXK+LdLsuX1T?=
- =?us-ascii?Q?N7kzwe42/WGefVn6ez9zqmjuxmmE3liAcge0QaQIbYW30Z2nWhj9Eg83rq4R?=
- =?us-ascii?Q?7AW82qcfVrhjhzo6aVkWKGf21Rhh1I2kSqc0T2u1Y84O8crXtVr5F4ulCJe1?=
- =?us-ascii?Q?TXJfLVShn/SW/9BjIJn/RUfGGAuTyFrPLh/+Y7GoQgK469gbYVAf/FKyKr/3?=
- =?us-ascii?Q?vvD4p8Rqle8MKBPTmxJBjNiwm1TS40yHK9An5ukL621IfpYNYrzHoL5C5uIr?=
- =?us-ascii?Q?JomaleH3LAXGHbCCNSL6P7EL8Gc5OJiSTzNZKoMwypVz3Y77khz/D+HO/krj?=
- =?us-ascii?Q?m8AebBz/WVdfAw1NRxRbsFGMfbkU9StmkKvsxktiItJhpGLSxtmdRixcVqnX?=
- =?us-ascii?Q?R6yKEa3tyZgI32iV7rQMhYmOcKhpZ3xRia0b2wZy2231qZAY3jPuKkSKOQOk?=
- =?us-ascii?Q?rpaAQ1ra1iSh0VymPgfAIz3cibRjXuKoiYC1r1fz2A3aF9z2uyLeguwaXK/R?=
- =?us-ascii?Q?R5sYYYYYpOOd3EAXQJc4fVawPUnRMR6kWbSudYTOZxRK4r5XDaWPBfHHqeqJ?=
- =?us-ascii?Q?RJf60ebWSxtqekSdaMym3gWH67NamWwLtzODOFa1gEw6KgwRuiH0N/gOep4n?=
- =?us-ascii?Q?2eyTcQXJCI4A7qGxPDjeL/tmlBZ1nExpaQ+cTCW4ED+9IRNnCab/CpDgAHau?=
- =?us-ascii?Q?0muRtbZcMRHtlkIgBU6Z/PSDp/5lpZtiSVf+0LWXdF/LS8uspQKtzMVskxzJ?=
- =?us-ascii?Q?S+12Xf8IdW7ZC4ZqfTNnsjQwCIjOw/an3E5tZlxrkVHPjmHYnuLy1AUSkrbl?=
- =?us-ascii?Q?wcbsOiMSennQqnNv3thDk1FmmRKQhT6ODL1KcFpJpY6n4NkeBx/ieOB1lPaZ?=
- =?us-ascii?Q?35Ccuvyn06E0TuVT0zWttwqdHxj/sSfvj+/H4XdQMVswu6FeOR6KelNgohCa?=
- =?us-ascii?Q?aWC/18IQCGr+CalwQzwr7/ymBLbQk08poYQZvoHGupXJmRr/1Vf97My+Vmev?=
- =?us-ascii?Q?XE9cMdwSamvTiZR8EaV7bFqUho5RJh/D0PEEs2WmrESx4kH61/Dia4v04uMi?=
- =?us-ascii?Q?y8Vs09OUjv46zhos67ASDPNaHuZ+3lTv/yelqbbDH21KsgCii080gjfMBBkt?=
- =?us-ascii?Q?5Ppn/xHxwMYHrMm2ha0Cz/Eh?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6SpNeONdTsBXkIfwDtJKf2n5L8zM5/RL/jTvcf8RveDygRiTKMNjMwA5HU9H?=
+ =?us-ascii?Q?tJ0djfgWQFPQuI+RTv3iNE4Axw2thImLITE6L0Tuw5iCJTxWP0F6neWi0XbT?=
+ =?us-ascii?Q?KIMbMrULuhilcJpoIvNR6GYfOKgOtgD5io1rZ4BMJr7sHu712mOqTIMkhq0d?=
+ =?us-ascii?Q?py0w3lSHWEuoNlwugoXKdNdSv49Wr4/JOUlCzgrLLGt/SPneRn3/LtaKdgyC?=
+ =?us-ascii?Q?v4D1Z8fqcKXuURENwJkBv4Su9zHMQa80IVdb19ukZcnoH5vEgCg+T2S4Geyo?=
+ =?us-ascii?Q?b1YYoVqkWAi6AVFQOXo5BQ6Nd7s+EuFq6WObkwNpR+YoRFi0l3S2drCvjHk8?=
+ =?us-ascii?Q?iDbTPBr4AHk84Phd/BYX+7/9NKR0c5m6w0PRNVEWoonydJBYs2NMTJ3ux8yF?=
+ =?us-ascii?Q?MvGsxwCwJcoAZz0/KygrYk2+cMVv3+jAMpeBF6Y7cVvbvdYt/LB1icPJDyPO?=
+ =?us-ascii?Q?PxrSvgjy+s82cJN+Ef73qY1XOQt75M9jsmmHW5Dev6uOAddxhPiko18ROH2w?=
+ =?us-ascii?Q?FMFzOzKaTIxzORHeTXhQ1wjKqJ9COna/E/dmjOGpjElcrohi4aos30H9UoP+?=
+ =?us-ascii?Q?Jd+bQabpr/1X+L+cYLtxu7AysNkZyjEtMUgKf0sAQlQASi89vBW7bicTrWf3?=
+ =?us-ascii?Q?cg+qEGSOlXkUgJvlTn1B9uGpZas44AcVjzl1pejJzDBeX0B2r+Gk753otNH7?=
+ =?us-ascii?Q?6Qq6VY13Rmyp07rrE4tQAMal3xMJQNNOdMy2lvtkpux0ZUkBNaxOkFItXOjG?=
+ =?us-ascii?Q?gsVwJc3vscaiqCeeJ6hBinYCrST0zbQCIDKjthVDvcrWHD+/h/Vd98njaEKI?=
+ =?us-ascii?Q?l3PSpWo8TXmm0TgfgMWNo+vJ1WJzyXEVYjgM7X8uQdVOdM0dIVDflVvZ6Aab?=
+ =?us-ascii?Q?Nw32sz2hkIKAduOKN3n44+MCKNsnqHNI9rm533j9Spp+4UNbknlufI9SHVGu?=
+ =?us-ascii?Q?aZJ46+hW/sGSe5L7pmYqxzWGyp3lV6fIuRKzEOzuGSC7MowwX5H1CkDBBOtV?=
+ =?us-ascii?Q?sHiYzXpJVVd8oTFF/eat2HxF738Xw1c3j0vVWW293/pa6SpsjuPIOeJWANnS?=
+ =?us-ascii?Q?r41B/Kd9myyPG1y/29/543uyvvLnLiKtFJhHPJNruZewAFy3QgBSqD8S3Ogv?=
+ =?us-ascii?Q?HrB+IbeXCkohjGjdJwwne99zXkcVEin7ltpy3ghHwbNRZ+1eFTeNBRE2v4dj?=
+ =?us-ascii?Q?YwplmPij2mfz3b7ZYFJGFnRN4OB9dH8+6XEsUy9L+jJb+V3wc995a+XwfF2j?=
+ =?us-ascii?Q?hIrsfflyKpjFx7JanoB73Gx54PenKWdpTHpmbhANAmyJWRLLCDWpZjmh/eLv?=
+ =?us-ascii?Q?Jfa28rj+wn0Sdi7TX/B1rozg?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93224c6a-d1d6-4f94-5b7e-08d968c11b9f
+X-MS-Exchange-CrossTenant-Network-Message-Id: d26263eb-b408-4d09-07e5-08d968c11c57
 X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2021 18:41:25.2803
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2021 18:41:26.5776
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fKYczn7l3XoHTMEixkwpRNgfy8oA86TPuB95NfsAWblUnUlOhctzDhcZBnd9OL9IqeDSOSqh6Vba3kiJkVlC1A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: +eeii95ZZ+iYBDfTDutFjvwsd9lqW8x6fOtQ8AHtpx1knS3xT8S7FcoNqZ4ax/9/OvCnOj04GkuiZQbvO6bK5w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4510
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Upcoming changes will introduce a different model in family 19h, so rename
-to disambiguate.
+Some of the existing assumptions made do not scale properly
+to new silicon in upcoming changes.  This commit should cause
+no functional changes to existing silicon.
 
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- arch/x86/kernel/amd_nb.c | 2 +-
- drivers/hwmon/k10temp.c  | 2 +-
- include/linux/pci_ids.h  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/hwmon/k10temp.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 23dda362dc0f..cf41fd7faad7 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -57,7 +57,7 @@ static const struct pci_device_id amd_nb_misc_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M60H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
--	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M01H_DF_F3) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
- 	{}
- };
 diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-index 1d3c8d319941..9e704338230d 100644
+index 9e704338230d..5c1aebf7a56d 100644
 --- a/drivers/hwmon/k10temp.c
 +++ b/drivers/hwmon/k10temp.c
-@@ -493,7 +493,7 @@ static const struct pci_device_id k10temp_id_table[] = {
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M30H_DF_F3) },
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M60H_DF_F3) },
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_17H_M70H_DF_F3) },
--	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_DF_F3) },
-+	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M01H_DF_F3) },
- 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
- 	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
- 	{}
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index fb1185155394..b2425a1574c7 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -554,7 +554,7 @@
- #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
- #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F3 0x144b
- #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
--#define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
-+#define PCI_DEVICE_ID_AMD_19H_M01H_DF_F3 0x1653
- #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F3 0x166d
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
+@@ -65,10 +65,11 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
+ #define F15H_M60H_HARDWARE_TEMP_CTRL_OFFSET	0xd8200c64
+ #define F15H_M60H_REPORTED_TEMP_CTRL_OFFSET	0xd8200ca4
+ 
+-/* Common for Zen CPU families (Family 17h and 18h) */
+-#define ZEN_REPORTED_TEMP_CTRL_OFFSET		0x00059800
++/* Common for Zen CPU families (Family 17h and 18h and 19h) */
++#define ZEN_REPORTED_TEMP_CTRL_BASE		0x00059800
+ 
+-#define ZEN_CCD_TEMP(x)				(0x00059954 + ((x) * 4))
++#define ZEN_CCD_TEMP(offset, x)			(ZEN_REPORTED_TEMP_CTRL_BASE + \
++						 offset + ((x) * 4))
+ #define ZEN_CCD_TEMP_VALID			BIT(11)
+ #define ZEN_CCD_TEMP_MASK			GENMASK(10, 0)
+ 
+@@ -103,6 +104,7 @@ struct k10temp_data {
+ 	u32 temp_adjust_mask;
+ 	u32 show_temp;
+ 	bool is_zen;
++	u32 ccd_offset;
+ };
+ 
+ #define TCTL_BIT	0
+@@ -163,7 +165,7 @@ static void read_tempreg_nb_f15(struct pci_dev *pdev, u32 *regval)
+ static void read_tempreg_nb_zen(struct pci_dev *pdev, u32 *regval)
+ {
+ 	amd_smn_read(amd_pci_dev_to_node_id(pdev),
+-		     ZEN_REPORTED_TEMP_CTRL_OFFSET, regval);
++		     ZEN_REPORTED_TEMP_CTRL_BASE, regval);
+ }
+ 
+ static long get_raw_temp(struct k10temp_data *data)
+@@ -226,7 +228,8 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
+ 			break;
+ 		case 2 ... 9:		/* Tccd{1-8} */
+ 			amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
+-				     ZEN_CCD_TEMP(channel - 2), &regval);
++				     ZEN_CCD_TEMP(data->ccd_offset, channel - 2),
++						  &regval);
+ 			*val = (regval & ZEN_CCD_TEMP_MASK) * 125 - 49000;
+ 			break;
+ 		default:
+@@ -387,7 +390,7 @@ static void k10temp_get_ccd_support(struct pci_dev *pdev,
+ 
+ 	for (i = 0; i < limit; i++) {
+ 		amd_smn_read(amd_pci_dev_to_node_id(pdev),
+-			     ZEN_CCD_TEMP(i), &regval);
++			     ZEN_CCD_TEMP(data->ccd_offset, i), &regval);
+ 		if (regval & ZEN_CCD_TEMP_VALID)
+ 			data->show_temp |= BIT(TCCD_BIT(i));
+ 	}
+@@ -434,12 +437,14 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		case 0x8:	/* Zen+ */
+ 		case 0x11:	/* Zen APU */
+ 		case 0x18:	/* Zen+ APU */
++			data->ccd_offset = 0x154;
+ 			k10temp_get_ccd_support(pdev, data, 4);
+ 			break;
+ 		case 0x31:	/* Zen2 Threadripper */
+ 		case 0x60:	/* Renoir */
+ 		case 0x68:	/* Lucienne */
+ 		case 0x71:	/* Zen2 */
++			data->ccd_offset = 0x154;
+ 			k10temp_get_ccd_support(pdev, data, 8);
+ 			break;
+ 		}
+@@ -453,6 +458,7 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		case 0x0 ... 0x1:	/* Zen3 SP3/TR */
+ 		case 0x21:		/* Zen3 Ryzen Desktop */
+ 		case 0x50 ... 0x5f:	/* Green Sardine */
++			data->ccd_offset = 0x154;
+ 			k10temp_get_ccd_support(pdev, data, 8);
+ 			break;
+ 		}
 -- 
 2.25.1
 
