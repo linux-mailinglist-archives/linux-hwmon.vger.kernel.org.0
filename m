@@ -2,121 +2,72 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38BD33F9CC1
-	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Aug 2021 18:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E00153F9D56
+	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Aug 2021 19:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbhH0Qt0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 27 Aug 2021 12:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
+        id S230021AbhH0RN0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 27 Aug 2021 13:13:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbhH0Qt0 (ORCPT
+        with ESMTP id S235318AbhH0RNZ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 27 Aug 2021 12:49:26 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81AABC061757
-        for <linux-hwmon@vger.kernel.org>; Fri, 27 Aug 2021 09:48:37 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id q39so10285017oiw.12
-        for <linux-hwmon@vger.kernel.org>; Fri, 27 Aug 2021 09:48:37 -0700 (PDT)
+        Fri, 27 Aug 2021 13:13:25 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0586C0613CF
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Aug 2021 10:12:36 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id f6so9517793iox.0
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Aug 2021 10:12:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=YrtmyI0qBKGV52TQK4NPfOaak1LrQJMv2nkkcBjxzDs=;
-        b=m2BxHvu6jl6dEHLTe4G96BD8be5FtK7+Hr+qoGnu3rE3knedA2v0E1LJSCWyU1lxl1
-         tv/bNvZMYPFvzkKXjWeVLcgjdmJ11GlCQSiZ2riXQ260hqcIjtsUoQfN2pLM2XKsppQG
-         JFEc5yCD3G08yQaQT3tYPlTfCDMGyGMHHzJyefMKCq8pvMAYHCrOSB+I35rg35FX6jY5
-         DEiyKXkMDBve07ofD5slI4/e5sZLtFFtiVJ9hHLHOr9NV3MxaNcl8n5g2M8Z+f/l1nyh
-         58+3CDagef4lx9aEdWFf7ROfqHv2guCy/XSzLVb4FpyEpHDvM9H8P3/ptz6A0clAmM3+
-         VflA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=SaQJaLQJV1tXeTErb3iEo2Jt85n+Ln12ULE3k7m2zSU=;
+        b=k5NAq+6GwnPdXldnj6zC4X9HPW5srvw7xsS8X4GuEyb1O/G/7VY0EDi6yxhOcOlZD6
+         IxePScmc3LFO3ImlsEvsS9IoTihcbqJUg+HRqzxzqYbC59KMLrKtldJNlp4Mg/JIwsGE
+         RCZ4wxXfusW0k5S1KV5NX9UVLlmVLv3OER2ADVZqKCaYSrpIywmXiIczOGUEKe74LpJi
+         HdZlWhg0xpH1iSRIoUyGBS0HtilThAnCJnsRWIA6mux/GiGklvG2XmwSZyeHqU5StW5C
+         eT41NBffB+GVZKj03u7NzL1m8ZOun6x61sRokWw7qWROf2gQtuR4d00CZD4GdVyKKuFA
+         xOcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mime-version:content-disposition;
-        bh=YrtmyI0qBKGV52TQK4NPfOaak1LrQJMv2nkkcBjxzDs=;
-        b=cF75ZvrUPdEU4QZbAeXBVve4NsNWF1tqCTQ+gcYo4E36poW1dU+KkUHYtXA/eWKRYZ
-         qSHki1k5zngDHmK3sRCp7bToQXJrna098LhTv8BZuqJ8teJHChJDnWm7t1H7whbAfD+P
-         ++ynxLVd2HOZWDFoQiQ9EdoBVvL59B29qCzl9RVil04Fux+wyLAQ3HqayouJrwaIRCSj
-         vBqmWyQlF9ZRGfjjkNeCZ82QbqsplYN5xDDUahjLtQ6jah0tfBtqRDjgXYdVjmpZuQwT
-         W3LKDMJ8kwV/ev/r01H7JSL2STa32M9H627+FygJQtSn+o//JkTbxv/XcNr4AIhmAxOf
-         /rRw==
-X-Gm-Message-State: AOAM531uiSM7xd9a/PjkNsVSrJhk/XjxgRgLYrOv5SDDJiGwu/u/PSqO
-        ++vZRR2dTDYBG64Yc0Oix6Y=
-X-Google-Smtp-Source: ABdhPJxtj7xGl9Uxu6T+k0/L8Z2OhWQIFjpv4O/NYBxR7Qz6GMao9g/LKA99IGCeXxxKHlF0YCtehw==
-X-Received: by 2002:a05:6808:46:: with SMTP id v6mr6931944oic.61.1630082916906;
-        Fri, 27 Aug 2021 09:48:36 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 14sm1383258otl.78.2021.08.27.09.48.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Aug 2021 09:48:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 27 Aug 2021 09:48:35 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Clemens Ladisch <clemens@ladisch.de>, linux-hwmon@vger.kernel.org,
-        Gabriel Craciunescu <nix.or.die@googlemail.com>,
-        Wei Huang <wei.huang2@amd.com>
-Subject: Re: [PATCH 5/6] hwmon: (k10temp): Don't show Tdie for all
- Zen/Zen2/Zen3 CPU/APU
-Message-ID: <20210827164835.GA1754417@roeck-us.net>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=SaQJaLQJV1tXeTErb3iEo2Jt85n+Ln12ULE3k7m2zSU=;
+        b=LT1MHx72gXPAWN+/17UYHNXjWTdhH8qUa+NmFriXn3JT+J8j6I14F/hXXCrPbzVW2e
+         Kfed3pd2L+qB/IhzDt0hbf7BPmSftCKvySvvHSBTBtnOCcS1DvSKu4J8ywp5kIPbmqFL
+         PgLxVGQWcjH8sT2JzWNrD4BB6PFFAx2hPfqdVDMXgxcY2H1wFlDaGc/RJ8Fbr4aHOoE1
+         vHK0ftbWWQXFwSIz8IWaisslQrS6MoeBog9ZJjOsCzAJg/ERpxxxyqlGVShxB0YRVgTn
+         MI64tmRMoLIc4951436Vznhx74HJ3v4FR72w19vLYp+ezbQ4BLM/dd+y7EEMk+wm8Pzx
+         301A==
+X-Gm-Message-State: AOAM530ObcdGvm0OVI1tOfFXjkCmTq53RJn+3qdsCw/gDlUPM+3VPw5l
+        AZqRN7hjWeS4cIvC98b85Q2bjFfVR17AnPpLQ7Y=
+X-Google-Smtp-Source: ABdhPJxYxJDt29DuDwY+BDK8UML/RVTcu1KomaWRBUeFU0khAr7HTs7/yyUW2aM0DZ/I1I62K1QgL2jwil+QUZrd9xs=
+X-Received: by 2002:a05:6638:3805:: with SMTP id i5mr9174588jav.72.1630084356121;
+ Fri, 27 Aug 2021 10:12:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: by 2002:a05:6e04:58f:0:0:0:0 with HTTP; Fri, 27 Aug 2021 10:12:35
+ -0700 (PDT)
+Reply-To: mrschantelhermans@gmail.com
+From:   Mrs Chantel Hermans <leokunkur@gmail.com>
+Date:   Fri, 27 Aug 2021 10:12:35 -0700
+Message-ID: <CACE1W5V1y0cM13WjS+k1kwPho_R0ixC9iw25VW3BdAhMwAeaNQ@mail.gmail.com>
+Subject: ATTENTION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Aug 26, 2021 at 01:40:56PM -0500, Mario Limonciello wrote:
-> Tdie is an offset calculation that should only be shown when temp_offset
-> is actually put into a table.  This is useless to show for all CPU/APU.
-> Show it only when necessary.
-> 
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+-- 
+ATTENTION
 
-Applied.
 
-I won't apply the other patches of the series because they either have issues
-or need approval from x86/pci maintainers. No reason to hold up this one
-or the first patch of the series, though.
+You have been compensated with the sum of 6.9 million dollars in this
+United Nation the payment will be issue into ATM Visa Card,
 
-Side note: I accepted this patch because it _seems_ like hwinfo64
-does something similar. I do hope, though, that the assertion made
-in the patch description is correct and that this doesn't miss CPUs
-where there is a (logical or real) difference between Tctl and Tdie.
 
-Guenter
+and send to you from the Santander Bank of Spain we need your
+Address,Passport and your whatsapp number.
 
-> ---
->  drivers/hwmon/k10temp.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-> index 41d9c0c0a1f1..e8ec0e36fc3b 100644
-> --- a/drivers/hwmon/k10temp.c
-> +++ b/drivers/hwmon/k10temp.c
-> @@ -435,7 +435,6 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	} else if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18) {
->  		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
->  		data->read_tempreg = read_tempreg_nb_zen;
-> -		data->show_temp |= BIT(TDIE_BIT);	/* show Tdie */
->  		data->is_zen = true;
->  
->  		switch (boot_cpu_data.x86_model) {
-> @@ -457,7 +456,6 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	} else if (boot_cpu_data.x86 == 0x19) {
->  		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
->  		data->read_tempreg = read_tempreg_nb_zen;
-> -		data->show_temp |= BIT(TDIE_BIT);
->  		data->is_zen = true;
->  
->  		switch (boot_cpu_data.x86_model) {
-> @@ -478,6 +476,7 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  
->  		if (boot_cpu_data.x86 == entry->model &&
->  		    strstr(boot_cpu_data.x86_model_id, entry->id)) {
-> +			data->show_temp |= BIT(TDIE_BIT);	/* show Tdie */
->  			data->temp_offset = entry->offset;
->  			break;
->  		}
-> -- 
-> 2.25.1
-> 
+
+THANKS
+Mrs Chantel Hermans
