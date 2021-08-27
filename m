@@ -2,270 +2,187 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 661BD3FA06A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Aug 2021 22:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3216C3FA07F
+	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Aug 2021 22:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231565AbhH0UQa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 27 Aug 2021 16:16:30 -0400
-Received: from mail-mw2nam12on2066.outbound.protection.outlook.com ([40.107.244.66]:21728
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        id S229591AbhH0UUs (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 27 Aug 2021 16:20:48 -0400
+Received: from mail-sn1anam02on2086.outbound.protection.outlook.com ([40.107.96.86]:40900
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231462AbhH0UQa (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 27 Aug 2021 16:16:30 -0400
+        id S231460AbhH0UUr (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 27 Aug 2021 16:20:47 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OSdH+1IVEIaTG0fh84uwOQAStVcddMKz9XL/8mJEUHGfTbeV3UW+Fj7NsLhnq5e5tY8Y5bqbs7F9ZhO7lT2j05mPVcXYWbyQWKPB5gdp/ZN9thPTbaHzjsirXtRKITNfM5laEocf1Sj20PEnyG3n5uzoiUZaoL1G7nPjRvOjBAP1Ch95uiRTl5FxpxNqXT+EFjR9miLpe31sNTc49CI+XwNT3tqvAFQHsDg+FfhQ6bM43qWzXOUPnpKEowlpNEhpxfwBzYn0k6KBPHVL3CL7pMaN9fzvDXt24mz9vRlaHEQ135jV3iVFF+rgNH5Lf5S9j7BHxpPjr4jRCaLYoi8X5Q==
+ b=P4AYiCBuiyNyjCqhp8m8tsyOJ5555wonZri4+dUxsNCvmU07ojj4YDgGXFxW6yp2Jg8VlyzrwV3FwvQGo77OeN/tChHLWqV22jw6FGV52KxMWNch91ansiZT71vs0Iyf8dtWrItwTpt34+gqoIk3UazMZkfovvfjUGvsQPyv+y8zs60irMyB7ZJ0BvYSKFHLAUVCSmhMdhipKX+VDp+FApv2+RbxFU3ihf2pyeVUNeBmIDn7nFR5hbLhnBE1ZJ1RFFi28ObhE4vTWJ9x1sTDFsp4d1Yl00PaNZstnuy4Zyjlk+2IeDk0amMHaG3eU+bJHN4nOy7jx67HgZEaM2pODw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3MmZxqMP+H3792MRYkj4eTOuKdnr1ZF+7u8jG3Kx+dk=;
- b=KGLl5rPTma6hTCzARCRLZxG290AgkPft3GtTs5WTbv/0ipuLjEUOPbzM1WTNXb6ENFmOvvyokkaA0p/Tc+z7It12A/WqcMqLnA66J12TXVW29DfDxPqZGkZMlKpm3NGdy0iTEara2RUUR/yTVajCb5J0dhHALLUqA180xvH8rcyxrVHsJnFc91WPhBsAZ2JbJRQ+y5Zicj9ub7jl0FlCZoRw+Gly0HKc1mTdJzrLQmYx72Dti7fVqRUC4fO5dYuRNpNDAMBZkV3NvmbpezxHs+yWgk1n+ikTwVg0IHecUI4RfCiNRwVyioyqdPtO2b0dmh1aHdpnPQtdtJtsyCMJSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ladisch.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=ymICswiHpwIW35Sj0I36MSwHNNi+4Zy3qz38G9x6EHc=;
+ b=WUbAcHJtESO3Im/iswh2mvyhB5fqlcJctj3DMnh/ckX3G24cthEmXFLEnnCVe609KHyMsXkw4EWlzbmu/r9/LzB8T5DHSYHy7nRYUJiSdo0O/HkPYSwbYLcO1BpBGpsfywOL7IOasGJeamKKfemuh71RliMczo9aMdiU6atYTXhCotqwLdPiTioFLWUTIPfd3Oa9jMvk3Y/ZA9ocvoBwIFGksHeWv8xus50parUSZGeCz9YGYpJyogPj5p7vhcndh53mc8Eq3+sn0qM+T1bj5sFO1kAgQufqrS7t8jmVSRJnOUpVdH4FyL+p74x96bWa2M6gPMndgiFamJ1MZjBM3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3MmZxqMP+H3792MRYkj4eTOuKdnr1ZF+7u8jG3Kx+dk=;
- b=QKxy1fZg9/3pFQMiE6trgeZOlvkqD0omryrILIjeepkdAbGSsmGWM+QH+EJzCZ1T7O1qs62OY+KizOLHGkuMwPmbCEeUM5uDjVsE0nK0Wlf6nS0BBgOm5/UgG7ZPnYQDOONW8r/LXKwONaNkeJDjbB3KdssHvGW1NAAK8lfi9NQ=
-Received: from DM5PR08CA0042.namprd08.prod.outlook.com (2603:10b6:4:60::31) by
- DM6PR12MB4171.namprd12.prod.outlook.com (2603:10b6:5:21f::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4457.20; Fri, 27 Aug 2021 20:15:38 +0000
-Received: from DM6NAM11FT031.eop-nam11.prod.protection.outlook.com
- (2603:10b6:4:60:cafe::ff) by DM5PR08CA0042.outlook.office365.com
- (2603:10b6:4:60::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.18 via Frontend
- Transport; Fri, 27 Aug 2021 20:15:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; ladisch.de; dkim=none (message not signed)
- header.d=none;ladisch.de; dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT031.mail.protection.outlook.com (10.13.172.203) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4457.17 via Frontend Transport; Fri, 27 Aug 2021 20:15:38 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.12; Fri, 27 Aug
- 2021 15:15:35 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     Clemens Ladisch <clemens@ladisch.de>
-CC:     <linux-hwmon@vger.kernel.org>,
+ bh=ymICswiHpwIW35Sj0I36MSwHNNi+4Zy3qz38G9x6EHc=;
+ b=N2ZeQsUV7y+LY94Y5phkrOLSrEGzHjMsY4jhDvtntcoWkpnIvb6kDoU6IuwN6tDxzKaZzwGW1nAls1ecz9aKU9Bp0iB2fhG2u/pG2gsIaVbce3c3GZitaXPMx6OzUu7YNkHYMtg1HN9IJRNwMr32rhVFPawDviVavyL7HLNqiAU=
+Authentication-Results: amd.com; dkim=none (message not signed)
+ header.d=none;amd.com; dmarc=none action=none header.from=amd.com;
+Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
+ by SA0PR12MB4590.namprd12.prod.outlook.com (2603:10b6:806:93::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.23; Fri, 27 Aug
+ 2021 20:19:57 +0000
+Received: from SA0PR12MB4510.namprd12.prod.outlook.com
+ ([fe80::f909:b733:33ff:e3b1]) by SA0PR12MB4510.namprd12.prod.outlook.com
+ ([fe80::f909:b733:33ff:e3b1%4]) with mapi id 15.20.4457.019; Fri, 27 Aug 2021
+ 20:19:57 +0000
+Subject: Re: [PATCH 5/6] hwmon: (k10temp): Don't show Tdie for all
+ Zen/Zen2/Zen3 CPU/APU
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Clemens Ladisch <clemens@ladisch.de>, linux-hwmon@vger.kernel.org,
         Gabriel Craciunescu <nix.or.die@googlemail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wei Huang <wei.huang2@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Jean Delvare" <jdelvare@suse.com>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 3/3] hwmon: (k10temp): Show errors failing to read
-Date:   Fri, 27 Aug 2021 15:15:27 -0500
-Message-ID: <20210827201527.24454-4-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210827201527.24454-1-mario.limonciello@amd.com>
-References: <20210827201527.24454-1-mario.limonciello@amd.com>
+        Wei Huang <wei.huang2@amd.com>
+References: <20210827164835.GA1754417@roeck-us.net>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+Message-ID: <b0e4d904-4067-4a2d-e1ae-46784a8c34d2@amd.com>
+Date:   Fri, 27 Aug 2021 15:19:53 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+In-Reply-To: <20210827164835.GA1754417@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN2PR01CA0017.prod.exchangelabs.com (2603:10b6:804:2::27)
+ To SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.254.54.68] (165.204.77.11) by SN2PR01CA0017.prod.exchangelabs.com (2603:10b6:804:2::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17 via Frontend Transport; Fri, 27 Aug 2021 20:19:56 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a10b91f0-3554-44e1-300a-08d969976ff8
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4171:
-X-Microsoft-Antispam-PRVS: <DM6PR12MB417119830BB293237468C278E2C89@DM6PR12MB4171.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
+X-MS-Office365-Filtering-Correlation-Id: 2fcd42a1-cae5-4127-4a3a-08d9699809d4
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4590:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SA0PR12MB459050EF376E973CF89C35F9E2C89@SA0PR12MB4590.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iDIiZB0h5N0ZRHUkEcpeRk7/O4/xrfEOg8zykF9/RTLDVVhF2HjbfZ/ApzCIbIB7Rnt6OOCTFY0j7fIcIN3wAGXvNoGJ4OJZfjgLOD76x9yM1I+YVago1ISRxy8Ni8GLCSbqVkON+hpe5ntC1pkRMvbN2XvJuQURIYeUoU/b6t9LlfCnMbATNoc3Goz9lsQ5VL0ojmQEodpVXypetA0Y5bhhaf3J/bRWeCRIqi2PjrEJIltknqdeDeUKvZLLR+g4oBGVvza5lYDCrWBOoU6SuqfmuiS6SoNRpEKyYySbt3uP/h3JdSdKGa5+KvSMICsDPbNP0Roc1GtVbk3lAFm+x3gJVjI7LDv41szzNe8ZROu4TR8Y/tmFBsiAdhLQPh+Xv4QYRHiG5JRWKpraA9f+xk+SfeA+UNGJXWsHgdDdGYG/0P7RrtO2K1xm55JZkF+TfWo1Hp7YEfkQkxb0ZoqbfgC7UxqE0s2E7nus4lcJbS/lC9dU2u9OvtessKoG2u19+Y4Tb7fpxF7PNPKnNgM09e4jDx5AatRzPHJDfboVAbu4GFFq6sn0N1BPhiUYuzs8YdzF0OJuUi5rcdDWmSK+IvNuQUA6aXD9GIrkdG1KPZN7OEOciXaGSj6sYv5K1H1nWr83LH/xUXGG4rajd6UfCnIUm7nNP6XhLjGM8frJNAhdJ2GaSyz27DLa44I4S3MUceuvc6pP1DeYiVYs7cJ2cwFf0en550oaAtB+32wHBKY=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(376002)(346002)(39860400002)(136003)(396003)(46966006)(36840700001)(1076003)(6666004)(356005)(8676002)(6916009)(8936002)(186003)(2906002)(16526019)(86362001)(83380400001)(7696005)(478600001)(70206006)(70586007)(81166007)(82740400003)(44832011)(316002)(36756003)(5660300002)(26005)(82310400003)(4326008)(426003)(336012)(36860700001)(2616005)(54906003)(47076005)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: DCEweVNNLeTM2m73olY0MLHwgqjzl9cC88ozsBtl0hqFl/5OozdXsg/Nqnu7dX0B9SpigYl8E3sh7vaOMWhuMQY1RHsPH4wm8vTJD1PtbaemiJq/cwjnkECICYwDWKpyhzd2QSXm9lc0x0iNXVGC3w7m3LIxviAWd8nDrirkOaiQCutb0DUgrVFLeLu1kkaDL+A2fvUxNFybBhrsQJF5qOEY/E2tmIcn43cf3c566+vi+xfzNR0/rSMmKO4TKmGJ8GEb6exa//XMdj2I+oeAmgonaYZVnaSskPEhe7Yf45uF9CQcwYGWAQGFWkp4T0+n0dqbfsUI1g1FdB5vj8cxkEFOfvRxF5dmvhRnweX2yuh+rOKLO5as31Npd/GhD67hC1EyOalD1KhW2vmtIYDMsGpN2/JiDGcCQI7eABrc/VroMH9dtod6iB5TQm97eX9X4iGF+/8tqtOQ6wOwt96E2LsLpVz6OzdTW5SU2O26UGKiyeF7DzYeXurWjJI2cz4lJE7XjfCGp31B+Dhax9kBojdqvq/TnFv99nWkHbIJUaUoX1ulQVZsCpqv2RjXgqq2K6uBrDMbCeFIWp4x15q0JEs2WcD4IPfCWuWqBVEflmteVT/8GkLVkE1zNl55uvV/BYx1FqHQL/Ud4x0ZJp/bef9vBtPr6KGf7U6p+rVhf+be0O/xq8+oeRBxlCCdmYuTt49fPv2nolUedbnJLJIzzw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(39860400002)(396003)(346002)(366004)(26005)(66476007)(36756003)(5660300002)(186003)(4326008)(66946007)(956004)(31696002)(2616005)(66556008)(16576012)(316002)(31686004)(6666004)(83380400001)(2906002)(38100700002)(54906003)(6486002)(478600001)(86362001)(8676002)(8936002)(6916009)(53546011)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVZGcTlQNmdzNW10cERwYWpuVGkyRlV3VGtML0QrTnFJQ1d0Q1VvbTFnMWN2?=
+ =?utf-8?B?SzZOS1ZRT1lRR1d0d2c5dzFXNjY4eFBpTTRkVFF5NFhWYW0xRlo0ZTNGQTBh?=
+ =?utf-8?B?U2trT09HTktwUFc4cC94YUk5NXFadTNJTmQ1TjZkRlppT21Oc1k2SjM4QkZu?=
+ =?utf-8?B?KzZWYVpuSjBBZTNqSHNvWmNLLzdVYUtDd2crMFF3MEUzL2x2RUQxZEZ2cnRL?=
+ =?utf-8?B?Z0o1Y1oxWlc3TEYvU1dQbU5HVXd0dVFiTUppcUdmYmtyTkhoZmZhTC9Edlor?=
+ =?utf-8?B?V3ZKNXhLbzhQWWFUYVdkQlQzbVRyZWFNdFVmaUhGMWQvQ0hGajNjeFV5Q0N3?=
+ =?utf-8?B?Z1d4dGFnbXNLS0xGNHhPZUYxMEUrNkFCbWRlYWpERWZka0JVVmlaMmYrSlAz?=
+ =?utf-8?B?QmpCN2R2aE04Q2VPTUloNkRtM1htOFB3Mjk4NW81RGtmSVVNVW1mS3B0dXln?=
+ =?utf-8?B?T0pTZ1dpVlhHdnA0ME41TkpIdVJoYmw1dFptbzgxTmVxU3A5TzdrVVJja2tP?=
+ =?utf-8?B?MDNMUDhqbUpjSkUvNjZMa0lPQU5hS1dzT2ZYNFVQaUd3dG00VWYrc3dsdU1l?=
+ =?utf-8?B?dmF0UVFLbVArZE4xaEQ3WC93L0VNVDdOMFdKa3ZhODg4TnF4bWRPcGVicDA4?=
+ =?utf-8?B?TGpsaTA2V2gzZGg1T2liRURwbWtjYVExQW5vZUFOeHphZlltKy9wV3oyYnFo?=
+ =?utf-8?B?RmFaWWViaVg0cUkvcWdWL1YrRDdQVU4zM0ZKNG8xZldmeWx0Wk1OVTJ4Q1hh?=
+ =?utf-8?B?MThhRUIyUlJqNGVjQ0ZQckdyb3pqcEhsQ2pvMHJYTlE0TE5BT09lSHZ3WTVN?=
+ =?utf-8?B?VE1BdWtsR1lNa2FxMkxKTEdBTnhNNkcwRUc5UmQwOVArNlZXUzNKZldxc2h0?=
+ =?utf-8?B?RWpSMkVyYWRZcHNmRllKYWsvQ2xWNGk2eXY0dFNqN3RaUWV5eUNzSnA3SGxX?=
+ =?utf-8?B?OHl4VEg4NHRLQU5sTzJzM083ZG8xeVphUGptSGpLcE4yK2ZROFhhTms4djRW?=
+ =?utf-8?B?Z09XMktPRUhvOTVBOUllRHI0WDd5aHY2cHhkM2xhNEo2Z0R2NitsdG16eUh0?=
+ =?utf-8?B?cG8vdktCQ0VmSHVFY2JXZ0NGb1V1VTE3ZWlyWlFRR1B3dHZPWkhvRVNRMU5w?=
+ =?utf-8?B?MmU0SHo1U3hRRlhPeEFpczc5bGNqV3VUd0YyNW9neWZWZXF1SnVMYzI2em1u?=
+ =?utf-8?B?aVFaS3VOaFlmZHRjaTZ5M09Ba1NHVitzS1dGUHhCM0NPQUx1Z2pXejFKQW1q?=
+ =?utf-8?B?djMxWDFpeVo5V0xOSGFTNEJ1R3ZDcllaMG5LaWZ4aVZEcmZlSXN3YU52WWx3?=
+ =?utf-8?B?RG4zeUgwdUJ2eXpHdWRDNCtWREE0RnlyS1BNZy93ZWQ0U09rd08ybTFWR2Y0?=
+ =?utf-8?B?RVY0ck9CN3BWQ0UzWHJLZ2plQXovaHpPWFczNEJZdnMzeFUwRDZ6aXhGUm5W?=
+ =?utf-8?B?SlRjampuRUY0dytvTVFDSktFSGt3ampaN2MxcUE0TGZmdHN1ZUJxdXRhenJp?=
+ =?utf-8?B?ZzVJZGNOa2NjcCs1UG5JaS8xQ0hpTDZtUUY5MmdaRzhPTkxmMjcyUDUwSzBy?=
+ =?utf-8?B?d3dWc1hFdXJNbEM1TkVJZ3R1c0wweVFONElubHRBTkxQTlhTbFE0Z2JnUUVS?=
+ =?utf-8?B?ZlE1OXpaNkVQS0Ewb296UldsMjRIemY2bTNQR2xCbmZsbElWYlBaQXhnSU9Q?=
+ =?utf-8?B?K3VidFZIcGc3aE5pZHM0YS83bE1jdmlPQXBFN1V5QjdsVndEZ0xlVmN1WXZT?=
+ =?utf-8?Q?OLG9wSSuyoKMW33ID3H4jjAlIFeFG7CfFHGdY2u?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2021 20:15:38.8120
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fcd42a1-cae5-4127-4a3a-08d9699809d4
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2021 20:19:57.1544
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a10b91f0-3554-44e1-300a-08d969976ff8
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT031.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4171
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eWXBd/1+PIKnNGzee5DWWgevVoJEGvDnCnmIXSTpnpBYN6P7Lm6Akc6769OyAbl/yWfV0PHcUoWKyToJSth+nw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4590
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Enabling Yellow Carp was initially not working "properly"
-because extra IDs were needed, but this wasn't obvious because fail values
-from `amd_smn_read` were ignored.
+On 8/27/2021 11:48, Guenter Roeck wrote:
+> On Thu, Aug 26, 2021 at 01:40:56PM -0500, Mario Limonciello wrote:
+>> Tdie is an offset calculation that should only be shown when temp_offset
+>> is actually put into a table.  This is useless to show for all CPU/APU.
+>> Show it only when necessary.
+>>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> Applied.
 
-Don't discard errors from any functions providing them, instead pass up
-to the caller.
+Really appreciate the expedient review.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/hwmon/k10temp.c | 87 ++++++++++++++++++++++++-----------------
- 1 file changed, 52 insertions(+), 35 deletions(-)
+> 
+> I won't apply the other patches of the series because they either have issues
+> or need approval from x86/pci maintainers. No reason to hold up this one
+> or the first patch of the series, though.
 
-diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
-index 38bc35ac8135..2edb49d39d22 100644
---- a/drivers/hwmon/k10temp.c
-+++ b/drivers/hwmon/k10temp.c
-@@ -98,8 +98,8 @@ static DEFINE_MUTEX(nb_smu_ind_mutex);
- 
- struct k10temp_data {
- 	struct pci_dev *pdev;
--	void (*read_htcreg)(struct pci_dev *pdev, u32 *regval);
--	void (*read_tempreg)(struct pci_dev *pdev, u32 *regval);
-+	int (*read_htcreg)(struct pci_dev *pdev, u32 *regval);
-+	int (*read_tempreg)(struct pci_dev *pdev, u32 *regval);
- 	int temp_offset;
- 	u32 temp_adjust_mask;
- 	u32 show_temp;
-@@ -129,55 +129,65 @@ static const struct tctl_offset tctl_offset_table[] = {
- 	{ 0x17, "AMD Ryzen Threadripper 29", 27000 }, /* 29{20,50,70,90}[W]X */
- };
- 
--static void read_htcreg_pci(struct pci_dev *pdev, u32 *regval)
-+static int read_htcreg_pci(struct pci_dev *pdev, u32 *regval)
- {
--	pci_read_config_dword(pdev, REG_HARDWARE_THERMAL_CONTROL, regval);
-+	return pci_read_config_dword(pdev, REG_HARDWARE_THERMAL_CONTROL, regval);
- }
- 
--static void read_tempreg_pci(struct pci_dev *pdev, u32 *regval)
-+static int read_tempreg_pci(struct pci_dev *pdev, u32 *regval)
- {
--	pci_read_config_dword(pdev, REG_REPORTED_TEMPERATURE, regval);
-+	return pci_read_config_dword(pdev, REG_REPORTED_TEMPERATURE, regval);
- }
- 
--static void amd_nb_index_read(struct pci_dev *pdev, unsigned int devfn,
-+static int amd_nb_index_read(struct pci_dev *pdev, unsigned int devfn,
- 			      unsigned int base, int offset, u32 *val)
- {
-+	int ret;
-+
- 	mutex_lock(&nb_smu_ind_mutex);
--	pci_bus_write_config_dword(pdev->bus, devfn,
--				   base, offset);
--	pci_bus_read_config_dword(pdev->bus, devfn,
--				  base + 4, val);
-+	ret = pci_bus_write_config_dword(pdev->bus, devfn,
-+					 base, offset);
-+	if (ret)
-+		goto out;
-+	ret = pci_bus_read_config_dword(pdev->bus, devfn,
-+					base + 4, val);
-+out:
- 	mutex_unlock(&nb_smu_ind_mutex);
-+	return ret;
- }
- 
--static void read_htcreg_nb_f15(struct pci_dev *pdev, u32 *regval)
-+static int read_htcreg_nb_f15(struct pci_dev *pdev, u32 *regval)
- {
--	amd_nb_index_read(pdev, PCI_DEVFN(0, 0), 0xb8,
--			  F15H_M60H_HARDWARE_TEMP_CTRL_OFFSET, regval);
-+	return amd_nb_index_read(pdev, PCI_DEVFN(0, 0), 0xb8,
-+				F15H_M60H_HARDWARE_TEMP_CTRL_OFFSET, regval);
- }
- 
--static void read_tempreg_nb_f15(struct pci_dev *pdev, u32 *regval)
-+static int read_tempreg_nb_f15(struct pci_dev *pdev, u32 *regval)
- {
--	amd_nb_index_read(pdev, PCI_DEVFN(0, 0), 0xb8,
--			  F15H_M60H_REPORTED_TEMP_CTRL_OFFSET, regval);
-+	return amd_nb_index_read(pdev, PCI_DEVFN(0, 0), 0xb8,
-+				F15H_M60H_REPORTED_TEMP_CTRL_OFFSET, regval);
- }
- 
--static void read_tempreg_nb_zen(struct pci_dev *pdev, u32 *regval)
-+static int read_tempreg_nb_zen(struct pci_dev *pdev, u32 *regval)
- {
--	amd_smn_read(amd_pci_dev_to_node_id(pdev),
--		     ZEN_REPORTED_TEMP_CTRL_BASE, regval);
-+	return amd_smn_read(amd_pci_dev_to_node_id(pdev),
-+			    ZEN_REPORTED_TEMP_CTRL_BASE, regval);
- }
- 
--static long get_raw_temp(struct k10temp_data *data)
-+static int get_raw_temp(struct k10temp_data *data, long *val)
- {
- 	u32 regval;
--	long temp;
-+	int ret;
- 
--	data->read_tempreg(data->pdev, &regval);
--	temp = (regval >> ZEN_CUR_TEMP_SHIFT) * 125;
-+	ret = data->read_tempreg(data->pdev, &regval);
-+	if (ret)
-+		return ret;
-+	*val = (regval >> ZEN_CUR_TEMP_SHIFT) * 125;
- 	if (regval & data->temp_adjust_mask)
--		temp -= 49000;
--	return temp;
-+		*val -= 49000;
-+	if (*val < 0)
-+		return -EINVAL;
-+	return 0;
- }
- 
- static const char *k10temp_temp_label[] = {
-@@ -212,24 +222,27 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
- {
- 	struct k10temp_data *data = dev_get_drvdata(dev);
- 	u32 regval;
-+	int ret;
- 
- 	switch (attr) {
- 	case hwmon_temp_input:
- 		switch (channel) {
- 		case 0:		/* Tctl */
--			*val = get_raw_temp(data);
--			if (*val < 0)
--				*val = 0;
-+			ret = get_raw_temp(data, val);
-+			if (ret)
-+				return ret;
- 			break;
- 		case 1:		/* Tdie */
--			*val = get_raw_temp(data) - data->temp_offset;
--			if (*val < 0)
--				*val = 0;
-+			ret = get_raw_temp(data, val) - data->temp_offset;
-+			if (ret)
-+				return ret;
- 			break;
- 		case 2 ... 9:		/* Tccd{1-8} */
--			amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
-+			ret = amd_smn_read(amd_pci_dev_to_node_id(data->pdev),
- 				     ZEN_CCD_TEMP(data->ccd_offset, channel - 2),
- 						  &regval);
-+			if (ret)
-+				return ret;
- 			*val = (regval & ZEN_CCD_TEMP_MASK) * 125 - 49000;
- 			break;
- 		default:
-@@ -240,11 +253,15 @@ static int k10temp_read_temp(struct device *dev, u32 attr, int channel,
- 		*val = 70 * 1000;
- 		break;
- 	case hwmon_temp_crit:
--		data->read_htcreg(data->pdev, &regval);
-+		ret = data->read_htcreg(data->pdev, &regval);
-+		if (ret)
-+			return ret;
- 		*val = ((regval >> 16) & 0x7f) * 500 + 52000;
- 		break;
- 	case hwmon_temp_crit_hyst:
--		data->read_htcreg(data->pdev, &regval);
-+		ret = data->read_htcreg(data->pdev, &regval);
-+		if (ret)
-+			return ret;
- 		*val = (((regval >> 16) & 0x7f)
- 			- ((regval >> 24) & 0xf)) * 500 + 52000;
- 		break;
--- 
-2.25.1
+Thanks.  I've sent v2 to accommodate suggested changes and to loop in 
+other maintainers on the applicable patches since as you point out some 
+files cross subsystems.
+
+> 
+> Side note: I accepted this patch because it _seems_ like hwinfo64
+> does something similar. I do hope, though, that the assertion made
+> in the patch description is correct and that this doesn't miss CPUs
+> where there is a (logical or real) difference between Tctl and Tdie.
+> 
+
+If there does turn out to be a system that these are different, then 
+showing both as the same value will certainly send a confusing message. 
+  If such a case is discovered we should be adding to the table (which 
+will bring back Tdie for those products).
+
+> Guenter
+> 
+>> ---
+>>   drivers/hwmon/k10temp.c | 3 +--
+>>   1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+>> index 41d9c0c0a1f1..e8ec0e36fc3b 100644
+>> --- a/drivers/hwmon/k10temp.c
+>> +++ b/drivers/hwmon/k10temp.c
+>> @@ -435,7 +435,6 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>>   	} else if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18) {
+>>   		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
+>>   		data->read_tempreg = read_tempreg_nb_zen;
+>> -		data->show_temp |= BIT(TDIE_BIT);	/* show Tdie */
+>>   		data->is_zen = true;
+>>   
+>>   		switch (boot_cpu_data.x86_model) {
+>> @@ -457,7 +456,6 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>>   	} else if (boot_cpu_data.x86 == 0x19) {
+>>   		data->temp_adjust_mask = ZEN_CUR_TEMP_RANGE_SEL_MASK;
+>>   		data->read_tempreg = read_tempreg_nb_zen;
+>> -		data->show_temp |= BIT(TDIE_BIT);
+>>   		data->is_zen = true;
+>>   
+>>   		switch (boot_cpu_data.x86_model) {
+>> @@ -478,6 +476,7 @@ static int k10temp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>>   
+>>   		if (boot_cpu_data.x86 == entry->model &&
+>>   		    strstr(boot_cpu_data.x86_model_id, entry->id)) {
+>> +			data->show_temp |= BIT(TDIE_BIT);	/* show Tdie */
+>>   			data->temp_offset = entry->offset;
+>>   			break;
+>>   		}
+>> -- 
+>> 2.25.1
+>>
 
