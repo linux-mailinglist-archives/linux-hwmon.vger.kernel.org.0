@@ -2,72 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 661183FBCF5
-	for <lists+linux-hwmon@lfdr.de>; Mon, 30 Aug 2021 21:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA733FBD4E
+	for <lists+linux-hwmon@lfdr.de>; Mon, 30 Aug 2021 22:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233845AbhH3Tfb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 30 Aug 2021 15:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233398AbhH3Tf3 (ORCPT
+        id S234174AbhH3UMt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 30 Aug 2021 16:12:49 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:15028 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S231499AbhH3UMt (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 30 Aug 2021 15:35:29 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB4AC061575
-        for <linux-hwmon@vger.kernel.org>; Mon, 30 Aug 2021 12:34:35 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id z19so23251128edi.9
-        for <linux-hwmon@vger.kernel.org>; Mon, 30 Aug 2021 12:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SaQJaLQJV1tXeTErb3iEo2Jt85n+Ln12ULE3k7m2zSU=;
-        b=WDtEyS2wvh99Wx+Q21ww0DSSgBLyCbnnSQNweNJpRFey81KMh6Bpztk03Z3J87+reP
-         cCJnjxiJ9OX0fNWhY06vydcfEGuJRha220GR7cKRZ+7m3J2d5fp1XKsnvtTP/84/lqL6
-         bgAGqYQtD5qNtdzCFhIFlYKp9RRFW5h6pwJ11Zval7cpkEamElPvOCIndvSIvUOTY3IR
-         13SqL5XKLgKjJN3qifk0qgbGr3qqKalsxdUoMQQOt4FoQi3sdulFCaheecaa+9iCFIjW
-         CVlx9IbpEcmKJnGCMyLmHF0diyKFMvClhURhF60OTHIdzJTfMyuuOc2MXaHJmoTCEL+f
-         BS+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SaQJaLQJV1tXeTErb3iEo2Jt85n+Ln12ULE3k7m2zSU=;
-        b=h/68xQfRDREkQGuY0EMkJT45a8QHmcbAaX/Pm6BrQtoQvRPjYrrwE/+wEky9Kts2aG
-         bA9DKieielGpcHOshcA+GEuUkH1kcI9Rqj8x4ifDyc6aPrGu6GDDDKw6MFcHRAK0K3Ws
-         GYG7edccjMV+SIP4eU4kCdlVNJummUwknHml4UV6u8HQhHltyWzLYNyvODwRgEnXlZoO
-         bo9HAd192qAln/uuLXvugaKwcp4i3xWcgsWukJpV6y7rxSTs2AuCVdpnwUEBKWgV+9eI
-         QbjCoqcWMJjcgS7aApEvf91yWmBWuKA0THdZ5ldzaCWQa91XgCXHpLDJzxMNXHPWIChX
-         urTQ==
-X-Gm-Message-State: AOAM5308MH91iTjW3Jw8MjQz4CJ/0qhMuX2FsAg3snz+GXpjQJXmz0AO
-        Vz6KpROFT8StEDm9LKjVITWJQ616mdhoedS8/qE=
-X-Google-Smtp-Source: ABdhPJxJF19FK5F/woLmwx+qHR8HyLASRpqAlqfwaa/oFHxH20WRXtknUAIpZgrD8uhFYodYUQoEBVdBP3Czz/aDiY4=
-X-Received: by 2002:a05:6402:c9:: with SMTP id i9mr25108272edu.76.1630352074023;
- Mon, 30 Aug 2021 12:34:34 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a54:2dcc:0:0:0:0:0 with HTTP; Mon, 30 Aug 2021 12:34:33
- -0700 (PDT)
-Reply-To: mrschantelhermans@gmail.com
-From:   Mrs Chantel Hermans <bellomhd922@gmail.com>
-Date:   Mon, 30 Aug 2021 12:34:33 -0700
-Message-ID: <CAB4DdoqHS0TExutFSvtWcu9zuDzHhV7yFW+mxpsbnqCErVzvTQ@mail.gmail.com>
-Subject: ATTENTION
-To:     undisclosed-recipients:;
+        Mon, 30 Aug 2021 16:12:49 -0400
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17UK4Jgj105651;
+        Mon, 30 Aug 2021 16:11:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=2SyooZdnHtual5yJhGdNvkAyvDBMpvx8pxskmvf6M+U=;
+ b=UMm4gkkrzcaHetrWw4XbE/f6J52+SpWFqEB6xlcDkooRK6T2hz/54wbC+awxcSzxzLiL
+ YUMAnO+2aiGM8UAeMholRsrMewomNtvwrG12DrHXWIkOWO6pEkEqG8WilbCTcGKFo9EP
+ ahe7dGnz1KM+O9WL1p7FX/DQb/Bo19pjUOvg2sfNudQ6Z9/AAOJkGZOKVYXJjG1zDYGH
+ tThugHK/W0qm/PzQOj8WX1M5G0EJK9euSEPSNuy43XgoHTrVEaXegcV5xB0ZKRjvp/qQ
+ QcpwX7EYP9IunMKY6/dmTrxGrL5kcy73Dwv+h6jJMOOZHXGTQ1WMuwQRWByszamFx40j EQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3as5hrguk8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Aug 2021 16:11:31 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17UK4aQe106361;
+        Mon, 30 Aug 2021 16:11:31 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3as5hrgujw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Aug 2021 16:11:31 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17UK8Z63031850;
+        Mon, 30 Aug 2021 20:11:30 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+        by ppma04wdc.us.ibm.com with ESMTP id 3aqcsb26r7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Aug 2021 20:11:30 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17UKBU8338732068
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 30 Aug 2021 20:11:30 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 24735AC067;
+        Mon, 30 Aug 2021 20:11:30 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7D4E5AC060;
+        Mon, 30 Aug 2021 20:11:29 +0000 (GMT)
+Received: from v0005c16 (unknown [9.211.63.17])
+        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon, 30 Aug 2021 20:11:29 +0000 (GMT)
+Message-ID: <e329beeb2b8efa272d2660fcd253ad5c98a37c50.camel@linux.ibm.com>
+Subject: Re: [PATCH] hwmon: (pmbus/ibm-cffps) Do not swap max_power_out
+From:   Eddie James <eajames@linux.ibm.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Brandon Wyman <bjwyman@gmail.com>
+Cc:     linux-hwmon@vger.kernel.org, openbmc@lists.ozlabs.org,
+        Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org
+Date:   Mon, 30 Aug 2021 15:11:28 -0500
+In-Reply-To: <e5916b33-8898-a483-bc69-49a08913672c@roeck-us.net>
+References: <20210827230433.3596370-1-bjwyman@gmail.com>
+         <20210828155250.GA820265@roeck-us.net>
+         <e9de99d88fb9e2e34552806fa47efa488332325c.camel@linux.ibm.com>
+         <e5916b33-8898-a483-bc69-49a08913672c@roeck-us.net>
+Organization: IBM
 Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: isaSGdNhacGxV1YlKhVVV-pytyaO5nOc
+X-Proofpoint-ORIG-GUID: epsEedaVHFX0rV-W5EMsIbXXO0Q-3Kzy
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-08-30_06:2021-08-30,2021-08-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 spamscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2107140000 definitions=main-2108300128
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-ATTENTION
+On Mon, 2021-08-30 at 08:34 -0700, Guenter Roeck wrote:
+> On 8/30/21 6:50 AM, Eddie James wrote:
+> > On Sat, 2021-08-28 at 08:52 -0700, Guenter Roeck wrote:
+> > > On Fri, Aug 27, 2021 at 11:04:33PM +0000, Brandon Wyman wrote:
+> > > > The bytes for max_power_out from the ibm-cffps devices do not
+> > > > need
+> > > > to be
+> > > > swapped.
+> > > > 
+> > > > Signed-off-by: Brandon Wyman <bjwyman@gmail.com>
+> > > 
+> > > Eddie, can you confirm this ?
+> > 
+> > This can't be true for all the power supplies supported by this
+> > driver,
+> > no. I think we need to check the version first. Brandon, I tested
+> > this
+> > on witherspoon (which is psu version 1) and get 3148 watts. If it's
+> > not
+> > swapped, that would be 19468 watts...
+> > 
+> 
+> Hmm. Eddie, can you also have a look at commit 9fed8fa99334 ("hwmon:
+> (pmbus/ibm-cffps) Fix write bits for LED control") ?
+> We need to make sure that it doesn't mess up some versions of this
+> PS.
 
+That one looks correct to me. I believe older PSUs didn't enforce this
+so I didn't catch it, but I do see that the older specifications
+mention setting bit 6 to "allow write".
 
-You have been compensated with the sum of 6.9 million dollars in this
-United Nation the payment will be issue into ATM Visa Card,
+Thanks,
+Eddie
 
+> 
+> Thanks,
+> Guenter
 
-and send to you from the Santander Bank of Spain we need your
-Address,Passport and your whatsapp number.
-
-
-THANKS
-Mrs Chantel Hermans
