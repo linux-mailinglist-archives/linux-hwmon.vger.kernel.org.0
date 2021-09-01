@@ -2,146 +2,91 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9513FD67C
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Sep 2021 11:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164263FE201
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Sep 2021 20:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243526AbhIAJUf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 1 Sep 2021 05:20:35 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:34549 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S243508AbhIAJUe (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 1 Sep 2021 05:20:34 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id D68B6580B15;
-        Wed,  1 Sep 2021 05:19:37 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 01 Sep 2021 05:19:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=fm3; bh=mn7+yExtUVJrX
-        meM8dP9smwIjAECnzjlQP6Jmb9X14A=; b=VPf0HL08brC46V0GhjbQrINnRqHoy
-        T7zBulWGgiFhR3M64UQCuTdA0Mk/R/j64HwPV8eZqmbwtknDl67oiChVQx9bEGo2
-        XF5nLdWqEMGHiJxo5avPdbRx4ElqvF689QdCccUQJJfxLUzzRkGSAgcS6GsstxKx
-        D49pnYkLqBDH5MRyppT7sMbI59FwMCshaZsVeHiqPjTWN33Y6zAl4yHm01Yp/HQ/
-        FzOGjqHHizq0GnDNzP6GIzlnXRmacgx7hYyuuyWtT5X1xzJpHDsg5X35URSGXYtm
-        J7Rf4lkY7Osmc+R53yZF/LkSbNNaZAMUAf8FGxS4I6VR2rvgNRuHbpggw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :in-reply-to:message-id:mime-version:references:subject:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; bh=mn7+yExtUVJrXmeM8dP9smwIjAECnzjlQP6Jmb9X14A=; b=RfA8xOZ6
-        i4DdAskKOyRWvLjNn0k6cYwajxPK7Kug4hQ7X60Swy27fCS9WGaQnFtDPqHoxuNG
-        66ND6lwdp05lMSKm8/LCuxz5WM5+TqZ9FqvY1xK/fo+BY9jSxMJsvTcGPsD7DV3Y
-        F1mnkp9/dndf17QtODHhIwFY9jNPHbXKBUW7les8arh3shmhfsrguguBdrPFXmu5
-        GcCTZp2zij18ms/PYPy5AZ0YOFL/iCHiQyEDt9biSAMJTQ8qcooH6r/Em4dEEHGK
-        ru28mlAc/l7r9fZN60NrMh6yoIUI2nalDrkdp/Td/ARV24z+0lnF40Uy3C9v1e6b
-        1obx+urRreNpiQ==
-X-ME-Sender: <xms:qUUvYQQXXUJd8AwP2aGPOASvD_maDDNlZrnkxaWa6IJHTruwDJOdqg>
-    <xme:qUUvYdyA9tszBIgIeRgaNUp-ny7IXQ69A5f4EoYZh2DeOSv7LeZNqWRbTFX9ewgYl
-    MOdnMwi8S8-SfXgvpY>
-X-ME-Received: <xmr:qUUvYd3d6qkiGNtB_k-dWJegBUVG9CIzFeOxkBMIt6vB9FFYJ6eSfysi9OmQ3nh-jLkUO_y7G0XSgXxELRL9DggzxJdZJjWP6eWr>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddruddvfedgudehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    govehorghsthgrlhdqhfeguddvqddtvdculdduhedtmdenucfjughrpefhvffufffkofgj
-    fhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucftihhprghrugcuoehmrg
-    igihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrghtthgvrhhnpeevjeeijedtvefg
-    fffgjeeugffguedtleetkeegteeufedtuddttdfgfffhgfeuffenucffohhmrghinhepug
-    gvvhhitggvthhrvggvrdhorhhgnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghm
-    pehmrghilhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggthh
-X-ME-Proxy: <xmx:qUUvYUBx9M4-P85ioWp67lpHAgH-DlB11HMRJyaeuUkf_G_MKFae9w>
-    <xmx:qUUvYZh8F9_k_fpugzziTOGc-X5ESsgIyGXz-4vKBmIAXmamERJjHQ>
-    <xmx:qUUvYQo590NYhsme3ITH0GpUv1EE_bIYNpS6elNyhgPs7TMhbO5_Pw>
-    <xmx:qUUvYeZkNtmOIEfPS5dG-oRum6rSzv7hVuF2zkRHn98az8NzbxqO6w>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Sep 2021 05:19:37 -0400 (EDT)
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        =?UTF-8?q?Jernej=20=C5=A0krabec?= <jernej.skrabec@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-sunxi@googlegroups.com,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 23/52] dt-bindings: hwmon: Add IIO HWMON binding
-Date:   Wed,  1 Sep 2021 11:18:23 +0200
-Message-Id: <20210901091852.479202-24-maxime@cerno.tech>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210901091852.479202-1-maxime@cerno.tech>
-References: <20210901091852.479202-1-maxime@cerno.tech>
+        id S1345010AbhIASMb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 1 Sep 2021 14:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53702 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346811AbhIASMU (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Sep 2021 14:12:20 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E07C06124C
+        for <linux-hwmon@vger.kernel.org>; Wed,  1 Sep 2021 11:11:22 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id w8so289481pgf.5
+        for <linux-hwmon@vger.kernel.org>; Wed, 01 Sep 2021 11:11:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
+        b=LD3mpzy1s09M3e/Eheelu/QMtbN6lrYJQ+S1BsYhmG4zP9OQuKOeD1zHV2lZaK7Hdt
+         vXoBMumPRACuZhnwd8TYAFIvdImPe0Zn4DA41GnzHGsnpDZPE0wUFWVFNzgpxF6bh6D8
+         CVxTiiIN7w8BVpPirFLytZKK2cFqqV6q9qR8cw4XmdYYgGZs+MdnDeP+neEr/SbnLI2h
+         mwT6gqJ8+HvNCQei5Zu6b3U+/YcUOepEDfVn6t0IkNG5YzxTV8mH8IqZ4zEsqBchdgxI
+         E/zGH3KCiuS7UdfEMBVKPbpzhhPyh4quLRALvE4iCHtswqSZDgWUuzksodIw8OWwGR1Z
+         0RlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
+        b=IQNPgCRLzXb6il53SSMUYHBinRxTXYieQU812QFy16yqWAYRsarUGbYeVAhQ9+l+lb
+         mk1wAivoY8bfUxobi4e81dk05W2qX0g7ovTEJUc/mCeKrQ9Ivm3HaoM7HmiRX3G5W20g
+         bgdkRnJXoVDBAV/lgfjz6/UiBnK1cD2R/d/kn1QTnUGL+cWbH3i2E3fQ2qKcXYDzGSgG
+         af9VNRBkAJ9E3fK9ifaY6472akmP8w2tAYcvqfE8N87UmFo0HSNodpz1s6JD+PBl7BcH
+         8dRpwQhzAetta26XV1b1HsqVlU2nWMayrn2u6djGMdYqocDi+OV1k+5aCOem1wQa0/ym
+         z0sg==
+X-Gm-Message-State: AOAM5317TnKuhlueH610LwkAMjbmy0mE8LsMhsb91RLOZqE0e5sWMT+N
+        q5IXfq11sjLPxZvaapm+pn1m5vlD/ktp4OevtXYDVC1FnGIMIA==
+X-Google-Smtp-Source: ABdhPJwbbBYGjUEQSS3Bb7EfYk34O3AVuG22pVIF78fkATQG8c+PQmeHgcc35+YrriS74Wl5STB8JbzOasp+8kCVBlk=
+X-Received: by 2002:a67:8c5:: with SMTP id 188mr1017695vsi.4.1630519870726;
+ Wed, 01 Sep 2021 11:11:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab0:740d:0:0:0:0:0 with HTTP; Wed, 1 Sep 2021 11:11:10 -0700 (PDT)
+From:   CorisBank International <corisbankintlbf@gmail.com>
+Date:   Wed, 1 Sep 2021 11:11:10 -0700
+Message-ID: <CA+25hwzjLgVdtDXYWeuqFBTvAbpc4oxK0dW54s7tjGNyU_m0ow@mail.gmail.com>
+Subject: CORISBANK INTERNATIONAL OFFICIAL NOTIFICATION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Even though we had the iio-hwmon driver for some time and a number of
-boards using it already, we never had a binding for it. Let's add it
-based on what the driver expects and the boards are providing.
+Att: Client
 
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-hwmon@vger.kernel.org
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
 
----
+CORISBANK INTERNATIONAL URGENT NOTIFICATION
 
-Changes from v1:
-  - Reduced the maximum number of io-channels, and added a comment for
-    the limitation
----
- .../devicetree/bindings/hwmon/iio-hwmon.yaml  | 37 +++++++++++++++++++
- 1 file changed, 37 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
+Notification / Notification/ Notification
 
-diff --git a/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml b/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
-new file mode 100644
-index 000000000000..f5a6cc3efd33
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
-@@ -0,0 +1,37 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/hwmon/iio-hwmon.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: ADC-attached Hardware Sensor Device Tree Bindings
-+
-+maintainers:
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description: >
-+  Bindings for hardware monitoring devices connected to ADC controllers
-+  supporting the Industrial I/O bindings.
-+
-+properties:
-+  compatible:
-+    const: iio-hwmon
-+
-+  io-channels:
-+    minItems: 1
-+    maxItems: 8 # Should be enough
-+    description: >
-+      List of phandles to ADC channels to read the monitoring values
-+
-+required:
-+  - compatible
-+  - io-channels
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+      iio-hwmon {
-+          compatible = "iio-hwmon";
-+          io-channels = <&adc 1>, <&adc 2>;
-+      };
--- 
-2.31.1
+Note, We are writing to inform you officially that Finally the Central
+Bank Financial Authority have approved to transfer your $8.2Million
+which was signed by late Mrs Rose Banneth the COVID.19 victim to
+transfer to you, Late Mrs Rose Banneth the France Lady contacted us to
+transfer her fund in our bank to you for Orphanage work before she
+died by the COVID.19
+and as it is now, you will receive your fund through our corresponding
+bank in Dubai [Emirate Investment Bank ] for security reason. Please
+you should reconfirm your details to receive the $8.2Million.
 
+Name, Country, Address, occupations, Age, Telephone number, account
+Details so that we can immediately forward to the World Bank to
+transfer the fund.
+You are advised to comply on timely manner to permit this esteem bank
+transfer your fund as scheduled.
+
+We look forward to serving you better
+Your Financial Comfort Is A Priority
+Thank you for choosing Corisbank International.
+
+Sincerely,
+
+----
+
+Mr Diakarya Ouattara
+Managing Director
+Bank Coris
+Burkina Faso
++226 556 163 37
+financial_bf_info@accountant.com
