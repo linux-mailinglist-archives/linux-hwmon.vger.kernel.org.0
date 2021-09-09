@@ -2,38 +2,38 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C01D8404C59
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Sep 2021 13:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE1F404F95
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Sep 2021 14:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240507AbhIIL4i (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 9 Sep 2021 07:56:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34406 "EHLO mail.kernel.org"
+        id S1344702AbhIIMVT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 9 Sep 2021 08:21:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56662 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244321AbhIILyc (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 9 Sep 2021 07:54:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F9EA611C3;
-        Thu,  9 Sep 2021 11:44:50 +0000 (UTC)
+        id S1347874AbhIIMRL (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:17:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EDCC361A82;
+        Thu,  9 Sep 2021 11:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631187891;
+        s=k20201202; t=1631188192;
         bh=ZMGrjSMZimhJuSbuiJ/hE2EWyRHaKnHeNyrA6L3KprY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JH4tjT1U6IH7LKoZFDlveoqjLM9sydAz4Pb7bPaH1BZs+90mLmg4k0zOZfYVvW/it
-         ll8tL313XNp/xitWpoMsKkDQ27EUF8guhP5B5EMqTrsplSvf0jmb1c1G6fw+0K7bU5
-         KoRVESeSQnJbpm1JKBK3oJlESHpnJLkIfaQ7EF6JpLl1jwBstdTF6j7oYfaptCeS3B
-         ldtg1WgS4Sg2EjyXU2pArBymJysVs0426zxhwC6OxPX5KK4kqSg8iN4ozBCt1GfNZU
-         0WacOb6scSBpgWFyoSJQq2F4+I3mgtSFBUyAem5XiEfV16ozzD93o4Uou88FWVHJXn
-         a/HAPhu7lp5qw==
+        b=VMB5c/FSSAQOKzvozxONUbb9i0SMdzwJmgS0Dbo+KrTsvq5mJtrd/XOnPbrKYaxDW
+         Tr5r66lWjRJOaXdguDZthT0VaokDHm0Lia4dxth7Vs9o0cciWvC5hZBuCZqe6tDsJ+
+         ffyyqyahBMaPoW//vIxhXGf5VlX1oBOjFQP/HBFb4KAINWXVjkMnp8pLtbbGTZcOXW
+         yDHRlnC488dBsGA16WWI9RRDN1f7pKs/MY6aoXb3ZIpbSsZuDadPTmVnqS1+Jk6Hbf
+         Dkjy/MznMxyZ5zSdQVRdjTS8cSP0DiVN3TgmnfYPv0BxMOo+2sfZ2WBO/StNQyUbjT
+         unZLLm8DX2sUg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Brandon Wyman <bjwyman@gmail.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.14 172/252] hwmon: (pmbus/ibm-cffps) Fix write bits for LED control
-Date:   Thu,  9 Sep 2021 07:39:46 -0400
-Message-Id: <20210909114106.141462-172-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.13 152/219] hwmon: (pmbus/ibm-cffps) Fix write bits for LED control
+Date:   Thu,  9 Sep 2021 07:45:28 -0400
+Message-Id: <20210909114635.143983-152-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909114106.141462-1-sashal@kernel.org>
-References: <20210909114106.141462-1-sashal@kernel.org>
+In-Reply-To: <20210909114635.143983-1-sashal@kernel.org>
+References: <20210909114635.143983-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
