@@ -2,93 +2,81 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA0C540C759
-	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Sep 2021 16:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B128F40C79B
+	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Sep 2021 16:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237755AbhIOOVj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 15 Sep 2021 10:21:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57866 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237723AbhIOOVh (ORCPT
+        id S233745AbhIOOkH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 15 Sep 2021 10:40:07 -0400
+Received: from tartarus.angband.pl ([51.83.246.204]:52044 "EHLO
+        tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233771AbhIOOkH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 15 Sep 2021 10:21:37 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C01DCC061766
-        for <linux-hwmon@vger.kernel.org>; Wed, 15 Sep 2021 07:20:18 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id x10-20020a056830408a00b004f26cead745so3717211ott.10
-        for <linux-hwmon@vger.kernel.org>; Wed, 15 Sep 2021 07:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=82FcYfugqq1vrbSPXjwtaom1nH7U/2BIZzNM8R3luWc=;
-        b=fLwgtlO1d7qkcKAGrAPVboPO6JNhZsf7EdguNA7aUgxmUCp3mzqYWhTAd4REwE8Rkn
-         gZMabGybJUs7bxnMzzPLe0B16nvhlJ5AVu79IMbXSmHcpIZBVC3craV1k/LhAc6FiW2p
-         uBzT50Gxk9DYKwytJ93DQt24H6EJs15E3abGp01gO4Jq5MQ6T8rVOwICuJ0E/nGadMar
-         0PmlxVpkVn0HC7/HKcvuTUyQHo+YltRcaaqT6IKpyTAajI1GHazHwzklt/LdfveM26gA
-         9bHnDhnv8a3beO5J0jf0XjGaRCi8+HwvmOQVQBh3i4NX4GxkWWlG7YVd2EdoShvGt4td
-         UreQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=82FcYfugqq1vrbSPXjwtaom1nH7U/2BIZzNM8R3luWc=;
-        b=e1kdtV9TN6+PNQlgSS0sXWI7DyjAtbdTlBxouYTlanXk9VTOFK5uFuPjBjJubW7ije
-         UQsQzIqYNlT6xm3bdRDub/L6kFWN7ju9hHTOcy/NVeSEgpPpMkOvluvt5/g8abxPMGhD
-         DxmJYF5Nqbio4onTvOpz05w6mBja5KKc08uP5N5rnCP4c8bcbPxSn9Oxarcxqra36uZY
-         odt0/7/O5CQUgLPGWaS16k8Be+d9F+KxLEKfgyztXUi1a/UDCr1Ih7X1QP8wik1znOsr
-         PSZeyEy9fi/Ij99k4O0nYet811vfpFBGuXxVzGZgbdjiofP6E4qkrFtyuVy63bWmRvQc
-         kKww==
-X-Gm-Message-State: AOAM533VMczsugJe5kz2ff3UEgnTMWolzGj9d/7dgzO/2D8Qcy4hw2O7
-        ZekGN6pyddpnVIcem1fCZuTM1bnKoeQ=
-X-Google-Smtp-Source: ABdhPJwUjjxGHIoCEE+Dl+gsFB8ZNQLCchh4Bk8y+PVRpKX/8QyrmGEnVi7ks1e//+fBkJb0GCb0ww==
-X-Received: by 2002:a9d:72d0:: with SMTP id d16mr126670otk.93.1631715617967;
-        Wed, 15 Sep 2021 07:20:17 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id q10sm9130otn.47.2021.09.15.07.20.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Sep 2021 07:20:17 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Subject: Re: [PATCH] hwmon: (dell-smm) Don't build the proc interface if
- there's no /proc
-To:     Adam Borowski <kilobyte@angband.pl>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Wed, 15 Sep 2021 10:40:07 -0400
+Received: from 89-73-149-240.dynamic.chello.pl ([89.73.149.240] helo=barad-dur.angband.pl)
+        by tartarus.angband.pl with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <kilobyte@angband.pl>)
+        id 1mQW3F-00Ck3l-Bt; Wed, 15 Sep 2021 16:38:32 +0200
+Received: from [2a02:a31c:8245:f980::4] (helo=valinor.angband.pl)
+        by barad-dur.angband.pl with esmtp (Exim 4.94.2)
+        (envelope-from <kilobyte@angband.pl>)
+        id 1mQW34-0003oc-Ga; Wed, 15 Sep 2021 16:38:06 +0200
+Received: from kilobyte by valinor.angband.pl with local (Exim 4.95-RC2)
+        (envelope-from <kilobyte@valinor.angband.pl>)
+        id 1mQW33-000BJ6-VE;
+        Wed, 15 Sep 2021 16:38:05 +0200
+From:   Adam Borowski <kilobyte@angband.pl>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
         Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
-References: <20210915134718.55897-1-kilobyte@angband.pl>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <7a259cc4-69a8-fc0c-e256-5d82b6f1bb35@roeck-us.net>
-Date:   Wed, 15 Sep 2021 07:20:15 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+Cc:     Adam Borowski <kilobyte@angband.pl>
+Date:   Wed, 15 Sep 2021 16:38:01 +0200
+Message-Id: <20210915143801.43419-1-kilobyte@angband.pl>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <7a259cc4-69a8-fc0c-e256-5d82b6f1bb35@roeck-us.net>
+References: <7a259cc4-69a8-fc0c-e256-5d82b6f1bb35@roeck-us.net>
 MIME-Version: 1.0
-In-Reply-To: <20210915134718.55897-1-kilobyte@angband.pl>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 89.73.149.240
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on tartarus.angband.pl
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00=-1.9,RDNS_NONE=0.793,
+        TVD_RCVD_IP=0.001,T_SPF_HELO_TEMPERROR=0.01,T_SPF_TEMPERROR=0.01
+        autolearn=no autolearn_force=no languages=en
+Subject: [PATCH v2] hwmon: (dell-smm) Don't build the proc interface if there's no /proc
+X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
+X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 9/15/21 6:47 AM, Adam Borowski wrote:
-> Signed-off-by: Adam Borowski <kilobyte@angband.pl>
-> ---
->   drivers/hwmon/dell-smm-hwmon.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-> index 774c1b0715d9..f381dfe1b427 100644
-> --- a/drivers/hwmon/dell-smm-hwmon.c
-> +++ b/drivers/hwmon/dell-smm-hwmon.c
-> @@ -403,7 +403,7 @@ static int __init i8k_get_dell_signature(int req_fn)
->   	return regs.eax == 1145651527 && regs.edx == 1145392204 ? 0 : -1;
->   }
->   
-> -#if IS_ENABLED(CONFIG_I8K)
-> +#if IS_ENABLED(CONFIG_I8K) && IS_ENABLED(CONFIG_PROCFS)
->   
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
+---
+Guenter wrote:
+> > -#if IS_ENABLED(CONFIG_I8K)
+> > +#if IS_ENABLED(CONFIG_I8K) && IS_ENABLED(CONFIG_PROCFS)
 
-This should be expressed as Kconfig dependency: I8K should depend on PROCFS.
-Otherwise the configuration flag is misleading.
+> This should be expressed as Kconfig dependency: I8K should depend on PROCFS.
+> Otherwise the configuration flag is misleading.
 
-Guenter
+Right, I did not notice I8K does nothing otherwise.
+
+ arch/x86/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 4e001bbbb425..a7365695ff72 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1253,6 +1253,7 @@ config I8K
+ 	tristate "Dell i8k legacy laptop support"
+ 	select HWMON
+ 	select SENSORS_DELL_SMM
++	depends on PROC_FS
+ 	help
+ 	  This option enables legacy /proc/i8k userspace interface in hwmon
+ 	  dell-smm-hwmon driver. Character file /proc/i8k reports bios version,
+-- 
+2.33.0
+
