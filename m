@@ -2,73 +2,72 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3650640BE0C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Sep 2021 05:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50C7940C768
+	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Sep 2021 16:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235548AbhIODOb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 14 Sep 2021 23:14:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46566 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235413AbhIODOb (ORCPT
+        id S237894AbhIOO06 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 15 Sep 2021 10:26:58 -0400
+Received: from tartarus.angband.pl ([51.83.246.204]:51850 "EHLO
+        tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233745AbhIOO05 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 14 Sep 2021 23:14:31 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7111C061574
-        for <linux-hwmon@vger.kernel.org>; Tue, 14 Sep 2021 20:13:12 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id g66-20020a9d12c8000000b0051aeba607f1so1613067otg.11
-        for <linux-hwmon@vger.kernel.org>; Tue, 14 Sep 2021 20:13:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=glsZyCid1AzmXMPQfydjWFjWCExO2YHLt4tZQfLqghs=;
-        b=YdvvjkRky+uXB9gknHYCLeE3JNrOdLO5HOrTqn5VbMG9rkiiXLU6sOf7T/Z+lvIO4e
-         rRWx5h92Vho/Ha4tnwBHhD41ljhdNxNTjabyLLBQQnXJw7jPh/XksG9g38gneX0OWpvV
-         KzbR2zeG6iRZ4fB4Sr8pbQVXK7BYs/89ZEJhlhyB0Tz0krh72AHzefTjlnPs8i85v4t9
-         JbARvHYdV68GakB9hUssYCOwlbQCO9HgBqoGMZ1+nCYN9BjExiPHiTxwgOMZw6HzqKZw
-         HDgsWwgoh4TEiyJKqmDMs8+M+zMfpwBzxMC0AtnsfvrD309jDJ73GTQf0wVlIMPmUCNb
-         BtEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=glsZyCid1AzmXMPQfydjWFjWCExO2YHLt4tZQfLqghs=;
-        b=nn9gd1e+MctDwLlKrZPgqxDVEUG+4DR+TRHhYyGElVYDyCcLZ+QAIncaEFn64NBcrj
-         FhQE+U2TDCrJrIWXyeYyVvoKe9FA4XijxcAREcd0QscJODYLaDacTE0MI5LoVpr0nt7d
-         4hb12IcROUK5TCPL6O1wISHSv58ha4S9zJVx/WLniqcTnNLQJv5Y1a92mlsGPMNJlhiV
-         8sn4MhsPnLw9DOX388DjPAv1t2+WWkcHCap25p7tOMhRb27ArQxh1U3iakVWrPLuZFGT
-         uHzioAULiUOk+xIs1ahjJrIDHrpMbZ8TyyHlNKJwlK3INE2Zx+74R4yFfpWAt5PpUY9t
-         lKVg==
-X-Gm-Message-State: AOAM530FkSkuwrMVU5hhnxI+lefPR/SZreF+10IA5UzD+U4MgKfVvbZE
-        Y15gncVZoSgVZbIUkuN+NnsDdRdzeclRXy4GLM0=
-X-Google-Smtp-Source: ABdhPJzkI9GR0tMWxkjFju6ilf5/R6Pnm9A0H9j5Jbtcj50w98ErjnJ0WtJAgCs9KoLFrGwgiioCWq2mRcrj7pzJdIM=
-X-Received: by 2002:a9d:4683:: with SMTP id z3mr17879320ote.95.1631675592350;
- Tue, 14 Sep 2021 20:13:12 -0700 (PDT)
+        Wed, 15 Sep 2021 10:26:57 -0400
+X-Greylist: delayed 2259 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Sep 2021 10:26:57 EDT
+Received: from 89-73-149-240.dynamic.chello.pl ([89.73.149.240] helo=barad-dur.angband.pl)
+        by tartarus.angband.pl with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <kilobyte@angband.pl>)
+        id 1mQVG9-00CjSL-Pz; Wed, 15 Sep 2021 15:47:48 +0200
+Received: from [2a02:a31c:8245:f980::4] (helo=valinor.angband.pl)
+        by barad-dur.angband.pl with esmtp (Exim 4.94.2)
+        (envelope-from <kilobyte@angband.pl>)
+        id 1mQVG3-0003oQ-3r; Wed, 15 Sep 2021 15:47:27 +0200
+Received: from kilobyte by valinor.angband.pl with local (Exim 4.95-RC2)
+        (envelope-from <kilobyte@valinor.angband.pl>)
+        id 1mQVFz-000EXs-KQ;
+        Wed, 15 Sep 2021 15:47:23 +0200
+From:   Adam Borowski <kilobyte@angband.pl>
+To:     =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Cc:     Adam Borowski <kilobyte@angband.pl>
+Date:   Wed, 15 Sep 2021 15:47:18 +0200
+Message-Id: <20210915134718.55897-1-kilobyte@angband.pl>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Reply-To: mrakainkarim7@gmail.com
-Sender: maroismrsnicole114@gmail.com
-Received: by 2002:a4a:2fc4:0:0:0:0:0 with HTTP; Tue, 14 Sep 2021 20:13:12
- -0700 (PDT)
-From:   Mr Akain Karim <aeyuhlmy739@gmail.com>
-Date:   Tue, 14 Sep 2021 20:13:12 -0700
-X-Google-Sender-Auth: JCmTT19m9kD_XSvcEFyOEMjbwvU
-Message-ID: <CAGmvv-bE1wnhg1BHXPdUSbbE3JK97tKeOo52aPZutUJCyAjvMg@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 89.73.149.240
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on tartarus.angband.pl
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00=-1.9,RDNS_NONE=0.793,
+        TVD_RCVD_IP=0.001,T_SPF_HELO_TEMPERROR=0.01,T_SPF_TEMPERROR=0.01
+        autolearn=no autolearn_force=no languages=en
+Subject: [PATCH] hwmon: (dell-smm) Don't build the proc interface if there's no /proc
+X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
+X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
+---
+ drivers/hwmon/dell-smm-hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-*Compliment of the day,I am Mr. Akain Karim,  I Have a Business Proposal of
-$10.5million for you and I  was compelled to use this medium due to the
-nature of this project, I have access to very vital information that can be
-used to transfer this huge amount of money, which may culminate into the
-investment of the said funds into your company or any lucrative venture in
-your country. If you will like to assist me as a partner then indicate your
-interest, after which we shall both discuss the modalities and the sharing
-percentage.Upon receipt of your reply on your expression of Interest.I will
-give you full details on how the business will be executed and I am open
-for negotiation.Thanks for your anticipated cooperation.Best RegardsMr. 	
-Akain Karim*  Please feel free to reach me on my e-mail:mrakainkarim7@gmail.com
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 774c1b0715d9..f381dfe1b427 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -403,7 +403,7 @@ static int __init i8k_get_dell_signature(int req_fn)
+ 	return regs.eax == 1145651527 && regs.edx == 1145392204 ? 0 : -1;
+ }
+ 
+-#if IS_ENABLED(CONFIG_I8K)
++#if IS_ENABLED(CONFIG_I8K) && IS_ENABLED(CONFIG_PROCFS)
+ 
+ /*
+  * Read the Fn key status.
+-- 
+2.33.0
+
