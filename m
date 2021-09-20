@@ -2,58 +2,58 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE5241237C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 20 Sep 2021 20:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B62664123BD
+	for <lists+linux-hwmon@lfdr.de>; Mon, 20 Sep 2021 20:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359525AbhITSZN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 20 Sep 2021 14:25:13 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:51066
+        id S1378533AbhITS0x (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 20 Sep 2021 14:26:53 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:51188
         "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1378104AbhITSWv (ORCPT
+        by vger.kernel.org with ESMTP id S1378512AbhITSYu (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 20 Sep 2021 14:22:51 -0400
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+        Mon, 20 Sep 2021 14:24:50 -0400
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id CE68040197
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 18:21:23 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 7FDEA402D4
+        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 18:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1632162083;
-        bh=+yYpY0bTQCprkzpDe095FfeHits+DFt9BKBgw/pr/fI=;
+        s=20210705; t=1632162085;
+        bh=aMSiOms6prdZ099C0szw2vjYvnbIcB4EP4lQR9/7bd4=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=onyEwh1fxRTW6x18akBYBr2Dm+kVidRIsThrD1tfkwmK3TTjBtGUrcDyBUrBq9Nno
-         qeYwMqEN7H5NkqxHbwAEEqWLmXDUk5qBEKrY1Hfq5WanMeJ/5KjQUhMmhDHyO0sVIO
-         vg9mhbmgAR4BV4i6VPwWP8fqtQpeBZIk3HsxIW2eDCfl5X3mEyDVqUBk7UwbsuiJsl
-         XSqJVfZSb+UX7xUlVgqZ4bPywvm4mPgP9F3BZejVH37cVkLmabEIcpTkKubGBnwNgI
-         quEEYUMI+r710pVmiGKCVt0/rxZ3FH4+sXswZ+JFFLysbVz/KCKf948m13oGY9rWRl
-         ZpVktQmEc1Etw==
-Received: by mail-wr1-f71.google.com with SMTP id i16-20020adfded0000000b001572ebd528eso6796064wrn.19
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 11:21:23 -0700 (PDT)
+        b=lIPg5hjO7jzgSsMgBd5qiL+NMygFBVM2JnTHkSfq5V12YBKF1zlh4hjAmVTbS75BQ
+         nKm53E6Dys814TvPH3rVJvTC3CxuTqQ/rGU4fhAkGBXrVAr7Zlavi/pjgmiFvYD45m
+         2n7g6oFsPPqOiyI+kV06gzLLVpBReFZizPlvfm8vEg9W2787VDisvBWiGXHYD4XE1n
+         nTxMjC8pcEet26IC87/XbHqc8NXNPjItFEBMot34UQMJIPLrASTOMAZzJ7tKMwjw6f
+         Pt8t64HMbBj7kG36ArgEKI0xGkKql18QYMhOGULUm0bs42IIKBb8laI9RuZQy/WJoj
+         /N9Dd4bdamhoA==
+Received: by mail-wr1-f70.google.com with SMTP id h5-20020a5d6885000000b0015e21e37523so6795485wru.10
+        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 11:21:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=+yYpY0bTQCprkzpDe095FfeHits+DFt9BKBgw/pr/fI=;
-        b=4xYEc8f1jnFm1X/mQIBmBN0q1WoKC5mHh2SvTwhZ6Mzh8s7+IGVPEifKrLaapmEHsy
-         1/PF4FWNWIhL7HIYx6PALC6YWiwKjTY0Vq8OWbqv3bGiq/3QShFquG1IaDF6os7K2Cby
-         SU5rm86rlpFfW8OJQA4d20XexE61tzB5n7NZRSr8ruOSCOH6qQOGQ39WKaL3M4foyKHh
-         hu6eMejHf/cyQfiAxvCZarOdVgu4aU+fGAkflIOxcEIczG3zTEZIP0cr74C1bw96kzEG
-         KYrHXrZJk0Y0MwR/iwfDnZi2jdN/ArXe67fYlB9RF1aINLFXWsZY440kMwk1FFOxZ/Cf
-         2PIA==
-X-Gm-Message-State: AOAM532YSg4+bV0Nu7lBEn1SQpjmX5CMT6ferKULzI9kyNuvVKEWclil
-        YYrclV99nCNBnV8IlgMM8MrcxLRGKbiikNzLaMax3+mbWMRSCRdxAsYaNcK5MmZgB+jSo5ezi7A
-        MK2uBO4bWiRvHbd5HtDxqlpQw0eQrlDM0zNkCW+sa
-X-Received: by 2002:adf:f884:: with SMTP id u4mr29322856wrp.411.1632162083540;
-        Mon, 20 Sep 2021 11:21:23 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz3hZvPR1xLQRHEbFwJFMfji+eLy88hIeF1v2xPgZqajAjlE0iGWvbL2fqHTmYlXmC+sI2PjQ==
-X-Received: by 2002:adf:f884:: with SMTP id u4mr29322840wrp.411.1632162083396;
-        Mon, 20 Sep 2021 11:21:23 -0700 (PDT)
+        bh=aMSiOms6prdZ099C0szw2vjYvnbIcB4EP4lQR9/7bd4=;
+        b=1OsD/DcLyr0Qj4CAt/z2cSX9tawqueSyg9hJA34zkfBfnlv977eGYbI3o0qCmZR4EC
+         Y7ZAx6oO8Or9GNJyENfiL5L5renrsjwnBHOXE4pGaRgYJ45VTwTwChW+qN5FsJMvySi7
+         4gKJrTbHaSscG/go1ZrHLjPRn6/7cfBP6iwzthM6NjeyuYwsj56fKWBY65b+CWkIyu7W
+         CraNJZRGDRkTSY54ggfUDIw0fWVD5LtSY4FTLaSGZf+4NXrZhJJlrDA7UQ+dVXmd9kz3
+         HrQx/7uBy8/YVKonCdkE9B939ronJjbeyuyXCagg6PYHLLGE1M6FlK1SbIN0cA4yPFDt
+         gSvw==
+X-Gm-Message-State: AOAM532gQYwMWiOIws8KWu8aCI61aAIGDfdjjiAj3nBoiVFgzgr0J+7m
+        laOhcpm5xRPE9il/pKPmziovhSVqHxvh3903fTs32De5WymsjT2tj2mWxyRTVlVDAouYjIGPpF2
+        NuACRylnQoDKWoRsmlABXAzbhueu/vl73queWsssJ
+X-Received: by 2002:adf:d1cf:: with SMTP id b15mr4098025wrd.181.1632162085200;
+        Mon, 20 Sep 2021 11:21:25 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw774b/B1NbEVUkHVEbXU9WEty43J69NGTEEI3VR3a+6pwFjffJn/aWJcn7R38bDYtguu4aNA==
+X-Received: by 2002:adf:d1cf:: with SMTP id b15mr4098013wrd.181.1632162085016;
+        Mon, 20 Sep 2021 11:21:25 -0700 (PDT)
 Received: from kozik-lap.lan (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id e5sm10515285wrd.1.2021.09.20.11.21.21
+        by smtp.gmail.com with ESMTPSA id e5sm10515285wrd.1.2021.09.20.11.21.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Sep 2021 11:21:22 -0700 (PDT)
+        Mon, 20 Sep 2021 11:21:24 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -63,9 +63,9 @@ To:     Jean Delvare <jdelvare@suse.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/6] dt-bindings: hwmon: dps650ab: move to trivial devices
-Date:   Mon, 20 Sep 2021 20:21:11 +0200
-Message-Id: <20210920182114.339419-3-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH 4/6] dt-bindings: hwmon: hih6130: move to trivial devices
+Date:   Mon, 20 Sep 2021 20:21:12 +0200
+Message-Id: <20210920182114.339419-4-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210920182114.339419-1-krzysztof.kozlowski@canonical.com>
 References: <20210920182114.339419-1-krzysztof.kozlowski@canonical.com>
@@ -75,46 +75,47 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The dps650ab bindings are trivial, so it can be integrated into trivial
+The hih6130 bindings are trivial, so it can be integrated into trivial
 devices bindings.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- Documentation/devicetree/bindings/hwmon/dps650ab.txt  | 11 -----------
- .../devicetree/bindings/trivial-devices.yaml          |  2 ++
- 2 files changed, 2 insertions(+), 11 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/hwmon/dps650ab.txt
+ Documentation/devicetree/bindings/hwmon/hih6130.txt  | 12 ------------
+ .../devicetree/bindings/trivial-devices.yaml         |  2 ++
+ 2 files changed, 2 insertions(+), 12 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/hwmon/hih6130.txt
 
-diff --git a/Documentation/devicetree/bindings/hwmon/dps650ab.txt b/Documentation/devicetree/bindings/hwmon/dps650ab.txt
+diff --git a/Documentation/devicetree/bindings/hwmon/hih6130.txt b/Documentation/devicetree/bindings/hwmon/hih6130.txt
 deleted file mode 100644
-index 76780e795899..000000000000
---- a/Documentation/devicetree/bindings/hwmon/dps650ab.txt
+index 2c43837af4c2..000000000000
+--- a/Documentation/devicetree/bindings/hwmon/hih6130.txt
 +++ /dev/null
-@@ -1,11 +0,0 @@
--Bindings for Delta Electronics DPS-650-AB power supply
+@@ -1,12 +0,0 @@
+-Honeywell Humidicon HIH-6130 humidity/temperature sensor
+---------------------------------------------------------
 -
--Required properties:
--- compatible : "delta,dps650ab"
--- reg        : I2C address, one of 0x58, 0x59.
+-Requires node properties:
+-- compatible : "honeywell,hi6130"
+-- reg : the I2C address of the device. This is 0x27.
 -
 -Example:
--	dps650ab@58 {
--		    compatible = "delta,dps650ab";
--		    reg = <0x58>;
+-	hih6130@27 {
+-		compatible = "honeywell,hih6130";
+-		reg = <0x27>;
 -	};
 diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 1bbfa98a85d8..b1bad299ec66 100644
+index b1bad299ec66..c9333fb81fdf 100644
 --- a/Documentation/devicetree/bindings/trivial-devices.yaml
 +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -73,6 +73,8 @@ properties:
-           - dallas,ds4510
-             # Digital Thermometer and Thermostat
-           - dallas,ds75
-+            # Delta Electronics DPS-650-AB power supply
-+          - delta,dps650ab
-           # Delta Electronics DPS920AB 920W 54V Power Supply
-           - delta,dps920ab
-             # 1/4 Brick DC/DC Regulated Power Module
+@@ -111,6 +111,8 @@ properties:
+           - mps,mp2888
+             # Monolithic Power Systems Inc. multi-phase controller mp2975
+           - mps,mp2975
++            # Honeywell Humidicon HIH-6130 humidity/temperature sensor
++          - honeywell,hi6130
+             # Infineon IR36021 digital POL buck controller
+           - infineon,ir36021
+             # Infineon IR38064 Voltage Regulator
 -- 
 2.30.2
 
