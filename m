@@ -2,114 +2,103 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D4C4123BF
-	for <lists+linux-hwmon@lfdr.de>; Mon, 20 Sep 2021 20:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECD741257D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 20 Sep 2021 20:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378512AbhITS0y (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 20 Sep 2021 14:26:54 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:51196
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1378523AbhITSYv (ORCPT
+        id S1383727AbhITSpk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 20 Sep 2021 14:45:40 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:24292 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1381830AbhITSnj (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 20 Sep 2021 14:24:51 -0400
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 5875A3F32A
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 18:21:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1632162089;
-        bh=392DGrLNIruEKZ82iDFDDSFrn2e1XRvH9Fknb6uNRpM=;
-        h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=Jqk75P3FghYeVCdAPi4EEg0+mmwyEEemFF/NITbzTRWFq20pnViRRnMxFgsE2dIXL
-         JAdBye+dnWpLdvDrm7vYGsH5/AR4Z4hZK5rCfFeYrmQudfk6rhJmmj+o2jeRkefg59
-         Askak5fAXmlTPYUbBt/5S52UQsAkKYnbLdw9EpzzLH9UZNDGUiUetEzfEV36Z7SloO
-         SK4P9OTN9QoQJh9k08hu0MZDvvEYJpmRLFfBo5wcuPrbvS3qZreYBogGhROCd/pwXx
-         Yb+Wnvyw7Mg+1yKuQoraflBL8rvGpMklGeRhYqElHBNqTpbwyzfRrJjuTT5SEKvsq7
-         hP6U7slqFAKdA==
-Received: by mail-wr1-f70.google.com with SMTP id h5-20020a5d6885000000b0015e21e37523so6795623wru.10
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 11:21:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=392DGrLNIruEKZ82iDFDDSFrn2e1XRvH9Fknb6uNRpM=;
-        b=Fjun28IKGhA7hHeXe/+4xWIdyiJaCdLHkMiC+3xcOLORcFP0KF6IzHG/h+JvyVbgCY
-         zPdyGIy2SCmmlYYZxZ+u+1CjM7DWwAoLFiqoEBUzhD8m4Fo5xF65qLAdqERhavwK8Fuj
-         BR1+FEkIHBCgovR+QOwgmKt6uZir3/F7xDF+dtb919kQnT5ULBC1qw2V+4zrIvNdY9Vz
-         nLEiLsqVjkwqapmImqikoDfeZl983oen/AvUXBh2WLExtIhBLvnorR/9ZhSIsDkVpDdr
-         wALMAZOb63+XgO7Ye13Jdj1qtuPBVn8vn84AYCGJ+RYorebwcXJreL+Jika5wUF3v0Yf
-         hQNQ==
-X-Gm-Message-State: AOAM5319iPmgvy1J0M+gGs5XziPYlJzdqKlWRjK/QNnS5fWV/xqM6b7I
-        Ts4leyevYL+UE6llw1kK3Ysr3GZemDOrhshYw4KLuqTuecQw1DIotbbOgfL6LOHKHfr3YYMRybu
-        DCCCzrwh2vypszdxszK6GnB7OyudQbydJS+1ozpq5
-X-Received: by 2002:adf:f48e:: with SMTP id l14mr30940412wro.109.1632162088996;
-        Mon, 20 Sep 2021 11:21:28 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzRMPpAIRUuFY+N/fgxtfYjgdOXqjwE/V3P9AsXXFvbBbsggZfj/+s1dljcDHu9J4kwD+8IWQ==
-X-Received: by 2002:adf:f48e:: with SMTP id l14mr30940395wro.109.1632162088862;
-        Mon, 20 Sep 2021 11:21:28 -0700 (PDT)
-Received: from kozik-lap.lan (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id e5sm10515285wrd.1.2021.09.20.11.21.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Sep 2021 11:21:28 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jiri Kosina <trivial@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] dt-bindings: hwmon: jedec,jc42: add nxp,se97b
-Date:   Mon, 20 Sep 2021 20:21:14 +0200
-Message-Id: <20210920182114.339419-6-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210920182114.339419-1-krzysztof.kozlowski@canonical.com>
-References: <20210920182114.339419-1-krzysztof.kozlowski@canonical.com>
+        Mon, 20 Sep 2021 14:43:39 -0400
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18KHTFui012846;
+        Mon, 20 Sep 2021 14:41:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=meQS/RP9xoT9soPKhLQcaeOZwMSklLYSbprnpe+jLG0=;
+ b=rqXWWlZuQ1g1KwNpDZ6oNkUV1k3ZU3b/WID/DNPna7QiHIXb9xaFHt6UVQDR901XDr9Z
+ Q6iVVEjwlhfbAiRWEiMqGVxfnjBNePaousi2TDc27ys3uux2dANvkdiGqrUlKZQgUrcN
+ fWknaluvwczGEeFF1fVH+OgHQR4vByhfn2QwI++HkiqUah3E+Jjg4Af7vrEQx7D0NCil
+ 51wdBdkn1Ub9PedsxIJgQTt3RVZYRlc2Hh5cIjaCb2VwGaWxacezD0wGbzvM/2HLm8sJ
+ pHm1j8O7AiEjw0NUrvOn1y28c0dt4I6SHadveUy/rLz6+gLtPaHUOFGFJ4Bv2fPePA83 Bg== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3b5wjy9v65-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 20 Sep 2021 14:41:45 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18KIb8Io012321;
+        Mon, 20 Sep 2021 18:41:44 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+        by ppma02wdc.us.ibm.com with ESMTP id 3b57ra6hqn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 20 Sep 2021 18:41:44 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18KIfhLk52036030
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 20 Sep 2021 18:41:43 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9D796124053;
+        Mon, 20 Sep 2021 18:41:43 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 24B1412405C;
+        Mon, 20 Sep 2021 18:41:42 +0000 (GMT)
+Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.211.87.144])
+        by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+        Mon, 20 Sep 2021 18:41:41 +0000 (GMT)
+From:   Eddie James <eajames@linux.ibm.com>
+To:     linux-fsi@lists.ozlabs.org
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        jk@ozlabs.org, joel@jms.id.au, alistair@popple.id.au,
+        linux@roeck-us.net, jdelvare@suse.com, eajames@linux.ibm.com
+Subject: [PATCH v2 0/3] occ: fsi and hwmon: Extract and provide the SBEFIFO FFDC
+Date:   Mon, 20 Sep 2021 13:41:38 -0500
+Message-Id: <20210920184141.21358-1-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: erWkY5jj-MtnCEJZLy9-uUNAKakpNgnp
+X-Proofpoint-ORIG-GUID: erWkY5jj-MtnCEJZLy9-uUNAKakpNgnp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-20_07,2021-09-20_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=681
+ spamscore=0 malwarescore=0 clxscore=1015 suspectscore=0 priorityscore=1501
+ adultscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109030001
+ definitions=main-2109200109
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Document bindings for NXP SE97B, a DDR memory module temperature sensor
-with integrated SPD and EEPROM via Atmel's AT24 interface.
+Currently, users have no way to obtain the FFDC (First Failure Data
+Capture) provided by the SBEFIFO when an operation fails. To remedy this,
+add code in the FSI OCC driver to store this FFDC in the user's response
+buffer and set the response length accordingly.
+On the hwmon side, there is a need at the application level to perform
+side-band operations in response to SBE errors. Therefore, add a new
+binary sysfs file that provides the FFDC (or lack thereof) when there is
+an SBEFIFO error. Now applications can take action when an SBE error is
+detected.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
----
- Documentation/devicetree/bindings/hwmon/jedec,jc42.yaml | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Changes since v1:
+ - Remove the magic value that indicated an SBE/SBEFIFO error with no
+   FFDC.
+ - Remove binary sysfs state management and intead just clear the error
+   flag when the whole FFDC has been read.
 
-diff --git a/Documentation/devicetree/bindings/hwmon/jedec,jc42.yaml b/Documentation/devicetree/bindings/hwmon/jedec,jc42.yaml
-index a7bb4e3a1c46..0e49b3901161 100644
---- a/Documentation/devicetree/bindings/hwmon/jedec,jc42.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/jedec,jc42.yaml
-@@ -10,6 +10,14 @@ maintainers:
-   - Jean Delvare <jdelvare@suse.com>
-   - Guenter Roeck <linux@roeck-us.net>
- 
-+select:
-+  properties:
-+    compatible:
-+      const: jedec,jc-42.4-temp
-+
-+  required:
-+    - compatible
-+
- properties:
-   compatible:
-     oneOf:
-@@ -31,6 +39,7 @@ properties:
-               - microchip,mcp98244
-               - microchip,mcp9843
-               - nxp,se97
-+              - nxp,se97b
-               - nxp,se98
-               - onnn,cat6095
-               - onnn,cat34ts02
+Eddie James (3):
+  fsi: occ: Use a large buffer for responses
+  fsi: occ: Store the SBEFIFO FFDC in the user response buffer
+  hwmon: (occ) Provide the SBEFIFO FFDC in binary sysfs
+
+ drivers/fsi/fsi-occ.c      | 163 +++++++++++++++++++------------------
+ drivers/hwmon/occ/p9_sbe.c |  86 ++++++++++++++++++-
+ include/linux/fsi-occ.h    |   2 +
+ 3 files changed, 171 insertions(+), 80 deletions(-)
+
 -- 
-2.30.2
+2.27.0
 
