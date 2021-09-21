@@ -2,58 +2,58 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA8D4413180
-	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Sep 2021 12:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22F03413183
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Sep 2021 12:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbhIUKan (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 21 Sep 2021 06:30:43 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:38526
+        id S231926AbhIUKao (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 21 Sep 2021 06:30:44 -0400
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:38556
         "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231858AbhIUKal (ORCPT
+        by vger.kernel.org with ESMTP id S231897AbhIUKan (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 21 Sep 2021 06:30:41 -0400
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+        Tue, 21 Sep 2021 06:30:43 -0400
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D63113FE01
-        for <linux-hwmon@vger.kernel.org>; Tue, 21 Sep 2021 10:29:12 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 606B940291
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Sep 2021 10:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1632220152;
-        bh=kkbd1KDb/nWZxhh/ldmlBfFp4mqYT4gxg/2gkTeLxNM=;
+        s=20210705; t=1632220154;
+        bh=1DUxWd5JqgocBkdimT7Y/A3y/8+TydWfjcWcCjG/nZs=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=PMT63a9+wUj8Ked82vumhOIP8SXCE2PuQur5KgHRFab7DbRgg11SsczmvHYVnzGxU
-         jZS/nCWhYtHkBLfGbH0+HBOQCIlQon3Sm2ussmqN5ZDV2xKXiYcBqaIgkMOozXHojf
-         Hdc8kjeCWVciWkju4YG1llymsSIK5JjllLqvFx3b8u1wcCbVYQeYXUnYb5AsGFNgF7
-         hKFF3twn+GyEf4mBruYBp24aNTx2uuqIf03zwHzw8XQRNfhQpzzAIAl4KSCvynTaRz
-         JSAhFA5BSfT0hZt3DLpZcix5muLbIw52dEd8YywZ4XhHrvsUAi9NDWhRBDQqPwFSS4
-         EYZFkfODfDXfw==
-Received: by mail-wr1-f71.google.com with SMTP id l9-20020adfc789000000b00160111fd4e8so3179466wrg.17
-        for <linux-hwmon@vger.kernel.org>; Tue, 21 Sep 2021 03:29:12 -0700 (PDT)
+        b=PEBL8Fn1GpogFpKbTMJtaiI3scJ2udPV7Y4Cy6AuOHTs23QthrjztqkJ0Q51b/oy1
+         W6RbFrYtoiqdkzO+DrTpruKzdMSU0P99VmuDAB1N+EJGI/kwn40uE4/d7JWhbW9wFL
+         GH0a83QuWSHN2TPdCD9G2ZXBjiZtxTYr/LLA1uEYEY+qvpW9qB1V/jwr3kad8Z78RV
+         8kqhjZ+bUO5mvGMNlNICYvY2y0J1fkhNDbp/XX71WWQs7wEQa8bNIIED1JvwTKcP+J
+         7wkLKyWXoX+s0JZe0V7Y425Av1QgFkeh3n1N73mJsMWFg7SvPO2Eoy9GcLUuMG0/zu
+         N1Hg4LKx1FeKg==
+Received: by mail-wr1-f69.google.com with SMTP id r7-20020a5d6947000000b0015e0f68a63bso8449835wrw.22
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Sep 2021 03:29:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=kkbd1KDb/nWZxhh/ldmlBfFp4mqYT4gxg/2gkTeLxNM=;
-        b=KUm9BGgfE8HU9qzMIphctGu8sO3dOuzMtEImfbsqZZchLWNy6UBXdqWyrzXafq8quH
-         OHD5b6uJ2u2qX1jjoIczCt6O41k0GR8qRO9IsFRB96/CikO12v2PEt2IpoFIpXiSrjAC
-         ctrcKG06o2sRmU5VfeRl3RKAZtRVCmzaQozMpQ37Yuk7D8p91k9C7bEPi5QW8RXpQqVY
-         CkOxqwHZjquo/QFNAwN6F9HIVrpjU693Nvp2CCwDTgPVY1FJgsEiOzKEMm1eDeJb79u+
-         XGdGmzrQCfddSUGrCjGJhbtNAp8Z08nyK6ntV7Zw6nj2mXuqEw25ao7a9NL7HVRZNVaJ
-         vBPA==
-X-Gm-Message-State: AOAM531vj8q64bOVS3HDWRTn6PwaJdlMfzZq/4YR3ETAhqeOzJrUwJiG
-        ZMtNAdDrPl8n3/t8oJ/qqpt2FRLTXJ2qbipay/X1h0qcNWZ2PtYshDnTVmPCuK2snxh+4g7v/b+
-        fAJaLMWoWvuDQ6gfy2ysayB3ABcFaSVJqo4OXNnkb
-X-Received: by 2002:a5d:69c8:: with SMTP id s8mr33587487wrw.330.1632220152605;
-        Tue, 21 Sep 2021 03:29:12 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJynCvd3iC/PeHFEd5pjxqSIDrSlRmcR2Me65OCSTR5w4e17865m6RoWwEe2gXcDFUzI51ZGtQ==
-X-Received: by 2002:a5d:69c8:: with SMTP id s8mr33587469wrw.330.1632220152423;
-        Tue, 21 Sep 2021 03:29:12 -0700 (PDT)
+        bh=1DUxWd5JqgocBkdimT7Y/A3y/8+TydWfjcWcCjG/nZs=;
+        b=HaJMWzvcx364uqVrfHpY44LmymKHAMvrYLobStvL/DWlho/LDpwjRsDWjKzdrIrEuX
+         DVWeuU74lucryj370zzrtPTvDdSC7N6myDC1msOHNXpIPKgsYxZECsoz6dck0eInLfwt
+         n9xAshY/0HURk6hdLsyO6PsV5j5O2NDl/OxNmRJS7RIBfmUXMzNm08F+o9GKoqPR/nIz
+         RVoID46brfJYHUqv7fKJrbbQFZwDfRGRMZAGJOGReKKd+f8AHNNonkWq6CLuSobVQX7p
+         eR8xejRLL2BNt0RY7baKnUSgLnsd9Tc8t80Li3gs369g11v8zOQ5p9GIRYgd3rpJICGK
+         q8jw==
+X-Gm-Message-State: AOAM53093ETTge6MYEUoJ4It/X5RcTugz0pLXHYOjk6ptDJWY4QtnFq4
+        h/YeDmqcBxEBTzDOLKFzKtYBpGtRs2glb9g4cWATaAnL/xoa+z04O+WimwvpZWYnQArcGAXoj0a
+        m1/3jEd02eK4do+UcrPPX+FohK2BWfSoEbE2D7tyr
+X-Received: by 2002:a5d:4f02:: with SMTP id c2mr34491879wru.10.1632220154081;
+        Tue, 21 Sep 2021 03:29:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwwRjy7wJN4+BNr8/OvaTDhceg6Yn0DsLx0lA30HZaclAHguEcpzI6IcaZ/1l4k9U+WOgBlPw==
+X-Received: by 2002:a5d:4f02:: with SMTP id c2mr34491860wru.10.1632220153891;
+        Tue, 21 Sep 2021 03:29:13 -0700 (PDT)
 Received: from localhost.localdomain (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id m29sm20072380wrb.89.2021.09.21.03.29.10
+        by smtp.gmail.com with ESMTPSA id m29sm20072380wrb.89.2021.09.21.03.29.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Sep 2021 03:29:12 -0700 (PDT)
+        Tue, 21 Sep 2021 03:29:13 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -63,9 +63,9 @@ To:     Jean Delvare <jdelvare@suse.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] dt-bindings: hwmon: ti,tmp102: add bindings and remove from trivial devices
-Date:   Tue, 21 Sep 2021 12:28:28 +0200
-Message-Id: <20210921102832.143352-2-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH 3/6] dt-bindings: hwmon: ibm,cffps: move to trivial devices
+Date:   Tue, 21 Sep 2021 12:28:29 +0200
+Message-Id: <20210921102832.143352-3-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210921102832.143352-1-krzysztof.kozlowski@canonical.com>
 References: <20210921102832.143352-1-krzysztof.kozlowski@canonical.com>
@@ -75,82 +75,78 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The TI TMP102 temperature sensor does not fit into trivial devices
-bindings due to additional properties.  Add separate bindings for it.
+The IBM Common Form Factor Power Supply Versions 1 and 2 bindings are
+trivial, so they can be integrated into trivial devices bindings.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- .../devicetree/bindings/hwmon/ti,tmp102.yaml  | 47 +++++++++++++++++++
- .../devicetree/bindings/trivial-devices.yaml  |  2 -
- 2 files changed, 47 insertions(+), 2 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/hwmon/ti,tmp102.yaml
+ .../devicetree/bindings/hwmon/ibm,cffps1.txt  | 26 -------------------
+ .../devicetree/bindings/trivial-devices.yaml  |  6 +++++
+ MAINTAINERS                                   |  1 -
+ 3 files changed, 6 insertions(+), 27 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/hwmon/ibm,cffps1.txt
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp102.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp102.yaml
-new file mode 100644
-index 000000000000..d3eff4fac107
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/ti,tmp102.yaml
-@@ -0,0 +1,47 @@
-+# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/ti,tmp102.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: TMP102 temperature sensor
-+
-+maintainers:
-+  - Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,tmp102
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  reg:
-+    maxItems: 1
-+
-+  "#thermal-sensor-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        sensor@48 {
-+            compatible = "ti,tmp102";
-+            reg = <0x48>;
-+            interrupt-parent = <&gpio7>;
-+            interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
-+            #thermal-sensor-cells = <1>;
-+        };
-+    };
+diff --git a/Documentation/devicetree/bindings/hwmon/ibm,cffps1.txt b/Documentation/devicetree/bindings/hwmon/ibm,cffps1.txt
+deleted file mode 100644
+index d9a2719f9243..000000000000
+--- a/Documentation/devicetree/bindings/hwmon/ibm,cffps1.txt
++++ /dev/null
+@@ -1,26 +0,0 @@
+-Device-tree bindings for IBM Common Form Factor Power Supply Versions 1 and 2
+------------------------------------------------------------------------------
+-
+-Required properties:
+- - compatible				: Must be one of the following:
+-						"ibm,cffps1"
+-						"ibm,cffps2"
+-						or "ibm,cffps" if the system
+-						must support any version of the
+-						power supply
+- - reg = < I2C bus address >;		: Address of the power supply on the
+-					  I2C bus.
+-
+-Example:
+-
+-    i2c-bus@100 {
+-        #address-cells = <1>;
+-        #size-cells = <0>;
+-        #interrupt-cells = <1>;
+-        < more properties >
+-
+-        power-supply@68 {
+-            compatible = "ibm,cffps1";
+-            reg = <0x68>;
+-        };
+-    };
 diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index c9333fb81fdf..6ad0628741cf 100644
+index 6ad0628741cf..791079021f1b 100644
 --- a/Documentation/devicetree/bindings/trivial-devices.yaml
 +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -317,8 +317,6 @@ properties:
-             # I2C Touch-Screen Controller
-           - ti,tsc2003
-             # Low Power Digital Temperature Sensor with SMBUS/Two Wire Serial Interface
--          - ti,tmp102
--            # Low Power Digital Temperature Sensor with SMBUS/Two Wire Serial Interface
-           - ti,tmp103
-             # Thermometer with SPI interface
-           - ti,tmp121
+@@ -113,6 +113,12 @@ properties:
+           - mps,mp2975
+             # Honeywell Humidicon HIH-6130 humidity/temperature sensor
+           - honeywell,hi6130
++            # IBM Common Form Factor Power Supply Versions (all versions)
++          - ibm,cffps
++            # IBM Common Form Factor Power Supply Versions 1
++          - ibm,cffps1
++            # IBM Common Form Factor Power Supply Versions 2
++          - ibm,cffps2
+             # Infineon IR36021 digital POL buck controller
+           - infineon,ir36021
+             # Infineon IR38064 Voltage Regulator
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 15c4d3c809e8..cc5df54bdc51 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14956,7 +14956,6 @@ S:	Maintained
+ W:	http://hwmon.wiki.kernel.org/
+ W:	http://www.roeck-us.net/linux/drivers/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+-F:	Documentation/devicetree/bindings/hwmon/ibm,cffps1.txt
+ F:	Documentation/devicetree/bindings/hwmon/ltc2978.txt
+ F:	Documentation/devicetree/bindings/hwmon/max31785.txt
+ F:	Documentation/hwmon/adm1275.rst
 -- 
 2.30.2
 
