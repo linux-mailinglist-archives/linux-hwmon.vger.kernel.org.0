@@ -2,276 +2,166 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A058C412BBB
-	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Sep 2021 04:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747D741317F
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Sep 2021 12:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349691AbhIUC1L (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 20 Sep 2021 22:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238452AbhIUB51 (ORCPT
+        id S231890AbhIUKam (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 21 Sep 2021 06:30:42 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:42808
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231849AbhIUKak (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 20 Sep 2021 21:57:27 -0400
-Received: from mail-qv1-xf49.google.com (mail-qv1-xf49.google.com [IPv6:2607:f8b0:4864:20::f49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C765C09395F
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 17:47:19 -0700 (PDT)
-Received: by mail-qv1-xf49.google.com with SMTP id e8-20020a0cf348000000b0037a350958f2so207424889qvm.7
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Sep 2021 17:47:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=cxHqMv/xmH2A4IGCtQVmbzxv9A9Lg5o0aBc9WPPWrvU=;
-        b=Tpxn5y2GMCg6OKD5WI+opZ8WdUOe50WnXxyeD1x7kmaWudH3H6qIBar58ZOT0V5UOJ
-         +RkHPldF5C91jHxvFEkcOn/VfiPxVjEGdi9wUbjUYAprDJEKLXiIJQRE9hgr0gaxr+Qr
-         DOJnX/BpineH9bTh97BvSQbO+gSrhegJyCCDKRDtGg1cFDVMEs+Xs8sFbHfeU7Wj6i5o
-         NlDLxJWpVKuNX0/5SpCjKJYWmDGQMHMki6SMwNz2/IVRp0mXc4yn4TQ5CnSWBMp1RWIQ
-         0padWYY3z3jJQmrNvgjDk/VDgBGEH4A94QEZN4f+El2pJdoXQkkwqU0P4Bbws+pSCBW7
-         iIVQ==
+        Tue, 21 Sep 2021 06:30:40 -0400
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 49FA03F32A
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Sep 2021 10:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1632220151;
+        bh=ZNH+zxmaND7rR/DGahGvaHsh9Nt1sNcf9ALxvClhLkg=;
+        h=From:To:Subject:Date:Message-Id:MIME-Version;
+        b=HN5VvmehAHiscpSf2dhdgOyEbpjuS5bvYJ/kSOtRW0YKtLMZAtyEpBqFN10ucNSte
+         7NOUwbzN1vyyUhSeu2UJr9lJ905ydJxgZEvjr0Lavnu/ln5pmm+IOC5/Dq0Bn9QIYs
+         BH/bXHKQdxSKBKOwr2da8RHIAmSvK4SPu26ut+tIyQtfFhd2sqsIE5vnAYs14t3jXF
+         izOUMt3w4R+K6W1IwRLTdi18MGnY29y8e3E5R66SswJm3bas+7nAY4P4UieWtJ/Ich
+         47HuofDexkSICFR8C6OOODoM3nXRLv58YfGENjzZ9M2J+7zXjVYrvySkn54Urupsld
+         Ol5zuz4OuuKMg==
+Received: by mail-wr1-f71.google.com with SMTP id r9-20020a5d4989000000b0015d0fbb8823so8399533wrq.18
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Sep 2021 03:29:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=cxHqMv/xmH2A4IGCtQVmbzxv9A9Lg5o0aBc9WPPWrvU=;
-        b=bv0xlf/BdQxTPDZKgH/M+ZLuHkzm/FoghrVZ/2VN7PzcRQdcgEZL3+YFu3J3oJ9ZEE
-         +1hhO59ZxnQMuv11DKADgzVR71lqgSLlbG7kUaoqjUH0oYm+5MpkI/snJyNGEDqbv/Si
-         js80Leh1mVkV9J093iFudWejswUhjYB6ucECtJOlP4Pajxxri01X3GKWBkxuP+SWDZOG
-         Absk5/xv2Jb4wFDvCQ6KIXoKwIG+7cbnmRejfAob65MUrj8+kO68P8HFwnP7Kveu+UfU
-         XhB8YJ+HJ39HETmCxd0qaRpZrtb0V7EZsW6/IkS5lZ8XRxZ+5nEW75LRmgixXPPTeZJj
-         oHmA==
-X-Gm-Message-State: AOAM531wqcVKWrXlwaeSH+4io2dz0qOSnzpSTMfycj3yQInUl6H87Izl
-        HTZM04ooadU7Wrx4vvmpb8i5Lno=
-X-Google-Smtp-Source: ABdhPJwjqvGz6Y9hHdUlqAs36jTgcQLSWWQwN+zOjHhudpZlYXT6w96aacKPwRhCSm3dez/hWTZlhqc=
-X-Received: from osk.cam.corp.google.com ([2620:0:1004:1a:fbed:324c:ca6c:1142])
- (user=osk job=sendgmr) by 2002:a05:6214:490:: with SMTP id
- ay16mr28416084qvb.25.1632185238549; Mon, 20 Sep 2021 17:47:18 -0700 (PDT)
-Date:   Mon, 20 Sep 2021 20:46:27 -0400
-In-Reply-To: <20210921004627.2786132-1-osk@google.com>
-Message-Id: <20210921004627.2786132-2-osk@google.com>
-Mime-Version: 1.0
-References: <20210921004627.2786132-1-osk@google.com>
-X-Mailer: git-send-email 2.33.0.464.g1972c5931b-goog
-Subject: [PATCH v2 2/2] hwmon: (nct7802) Make temperature sensors configurable.
-From:   Oskar Senft <osk@google.com>
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZNH+zxmaND7rR/DGahGvaHsh9Nt1sNcf9ALxvClhLkg=;
+        b=OpByUYGUymcoRCjbtuXKU3rkX5bfefYVYOQd2PWjkTbK74E1ybPpgM4SzfzhbfevXz
+         UTW+I6Adw/ocHZmbvIh6yRFVMNHQlKqLrh518to9UA2n4rFhNcj8jKLmwrrtfSlO2VRW
+         8cXh4H4hvNG2f8lCUgBzmU1Gtw1VH1s5oCJamE/lMrDFYHnQ5X4qjYTLt8u8Prvm6v3A
+         HxUwQx5lBuY5LTTKs3KiKHDIzCTwMGx+9a/CFoDzz4xTGN6ChOCwcl2hoRRxnhmpRu4B
+         JwFeSbXu+9/pJXLVrnShDDgTUskBrf/BnhJQy6wtg7u5SP9Ppc33Q9oszZ0OB+sLf8S2
+         bFEw==
+X-Gm-Message-State: AOAM5311V/2izsC/PEekrJahdrxDY91gZeJbGEqaz8n39GGIdgno3qlW
+        vc5Hhdi1TO8sFe5rv+I1Iyge/108mdgayVCRAcKBUcx1kND85ECkRqkSLmO5eietzzdRCCOZcEd
+        IRWdyp6KRmOHKfoSx/WTnedMJBBgzj4ya5GiWqAHY
+X-Received: by 2002:a5d:590a:: with SMTP id v10mr35069282wrd.87.1632220151042;
+        Tue, 21 Sep 2021 03:29:11 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzjs+OrN5dFclOS7GJVsxhqz5MGX6J2vh/0CGCqdjnmGePtDYf5XKuf5XnQlhbubwp1F7GrzQ==
+X-Received: by 2002:a5d:590a:: with SMTP id v10mr35069266wrd.87.1632220150919;
+        Tue, 21 Sep 2021 03:29:10 -0700 (PDT)
+Received: from localhost.localdomain (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
+        by smtp.gmail.com with ESMTPSA id m29sm20072380wrb.89.2021.09.21.03.29.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Sep 2021 03:29:10 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     Oskar Senft <osk@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        Jiri Kosina <trivial@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/6] dt-bindings: hwmon: ti,tmp108: convert to dtschema
+Date:   Tue, 21 Sep 2021 12:28:27 +0200
+Message-Id: <20210921102832.143352-1-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This change allows the temperature sensors (both LTD and RTD) to be
-configurable via device tree bindings. When the new settings are not
-present, the driver defaults to the previous behavior where the RTDs
-are left alone and LTD is explicitly enabled.
+Convert the TI TMP108 temperature sensor bindings to DT schema format.
 
-Signed-off-by: Oskar Senft <osk@google.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- drivers/hwmon/nct7802.c | 141 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 127 insertions(+), 14 deletions(-)
+ .../devicetree/bindings/hwmon/ti,tmp108.yaml  | 50 +++++++++++++++++++
+ .../devicetree/bindings/hwmon/tmp108.txt      | 18 -------
+ 2 files changed, 50 insertions(+), 18 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/ti,tmp108.yaml
+ delete mode 100644 Documentation/devicetree/bindings/hwmon/tmp108.txt
 
-diff --git a/drivers/hwmon/nct7802.c b/drivers/hwmon/nct7802.c
-index 604af2f6103a..ac2299b110a1 100644
---- a/drivers/hwmon/nct7802.c
-+++ b/drivers/hwmon/nct7802.c
-@@ -51,6 +51,20 @@ static const u8 REG_VOLTAGE_LIMIT_MSB_SHIFT[2][5] = {
- #define REG_CHIP_ID		0xfe
- #define REG_VERSION_ID		0xff
- 
-+/*
-+ * Resistance temperature detector (RTD) modes according to 7.2.32 Mode
-+ * Selection Register
-+ */
+diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp108.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp108.yaml
+new file mode 100644
+index 000000000000..eda55bbc172d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/ti,tmp108.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/hwmon/ti,tmp108.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#define MODE_RTD_MASK		0x3
-+#define MODE_LTD_EN		0x40
++title: TMP108 temperature sensor
 +
-+/*
-+ * Bit offset for sensors modes in REG_MODE.
-+ * Valid for index 0..2, indicating RTD1..3.
-+ */
-+#define MODE_BIT_OFFSET_RTD(index) ((index) * 2)
++maintainers:
++  - Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 +
- /*
-  * Data structures and manipulation thereof
-  */
-@@ -74,7 +88,9 @@ static ssize_t temp_type_show(struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
--	return sprintf(buf, "%u\n", (mode >> (2 * sattr->index) & 3) + 2);
-+	return sprintf(buf, "%u\n",
-+			((mode >> MODE_BIT_OFFSET_RTD(sattr->index)) &
-+				MODE_RTD_MASK) + 2);
- }
- 
- static ssize_t temp_type_store(struct device *dev,
-@@ -94,7 +110,8 @@ static ssize_t temp_type_store(struct device *dev,
- 	if (type < 3 || type > 4)
- 		return -EINVAL;
- 	err = regmap_update_bits(data->regmap, REG_MODE,
--			3 << 2 * sattr->index, (type - 2) << 2 * sattr->index);
-+			MODE_RTD_MASK << MODE_BIT_OFFSET_RTD(sattr->index),
-+			(type - 2) << MODE_BIT_OFFSET_RTD(sattr->index));
- 	return err ? : count;
- }
- 
-@@ -688,18 +705,18 @@ static umode_t nct7802_temp_is_visible(struct kobject *kobj,
- 	if (err < 0)
- 		return 0;
- 
--	if (index < 10 &&
--	    (reg & 03) != 0x01 && (reg & 0x03) != 0x02)		/* RD1 */
-+	if (index >= 0 && index < 20 &&				/* RD1, RD 2*/
-+	    ((reg >> MODE_BIT_OFFSET_RTD(index / 10)) & MODE_RTD_MASK) != 0x01 &&
-+	    ((reg >> MODE_BIT_OFFSET_RTD(index / 10)) & MODE_RTD_MASK) != 0x02)
- 		return 0;
- 
--	if (index >= 10 && index < 20 &&
--	    (reg & 0x0c) != 0x04 && (reg & 0x0c) != 0x08)	/* RD2 */
--		return 0;
--	if (index >= 20 && index < 30 && (reg & 0x30) != 0x20)	/* RD3 */
-+	if (index >= 20 && index < 30 &&			/* RD3 */
-+	    (reg >> MODE_BIT_OFFSET_RTD(index / 10) & MODE_RTD_MASK != 0x02))
- 		return 0;
- 
--	if (index >= 30 && index < 38)				/* local */
--		return attr->mode;
-+	if (index >= 30 && index < 38 &&			/* local */
-+	    (reg & MODE_LTD_EN) != MODE_LTD_EN)
-+		return 0;
- 
- 	err = regmap_read(data->regmap, REG_PECI_ENABLE, &reg);
- 	if (err < 0)
-@@ -1038,8 +1055,97 @@ static const struct regmap_config nct7802_regmap_config = {
- 	.volatile_reg = nct7802_regmap_is_volatile,
- };
- 
--static int nct7802_init_chip(struct nct7802_data *data)
-+static bool nct7802_configure_temperature_sensors_from_device_tree(
-+	struct device *dev, unsigned char *mode_mask, unsigned char *mode_val)
- {
-+	struct device_node *sensors, *sensor;
-+	int err;
-+	u8 idx;
-+	u32 type;
++properties:
++  compatible:
++    enum:
++      - ti,tmp108
 +
-+	if (!dev->of_node)
-+		return false;
++  interrupts:
++    items:
++      - description: alert interrupt
 +
-+	sensors = of_get_child_by_name(dev->of_node, "temperature-sensors");
-+	if (!sensors)
-+		return false;
++  reg:
++    maxItems: 1
 +
-+	for_each_child_of_node(sensors, sensor) {
-+		if (!strcmp(sensor->name, "ltd")) {
-+			if (!of_device_is_available(sensor)) {
-+				*mode_val &= ~MODE_LTD_EN;
-+				*mode_mask |= MODE_LTD_EN;
-+			} else {
-+				*mode_val |= MODE_LTD_EN;
-+				*mode_mask |= MODE_LTD_EN;
-+			}
-+			continue;
-+		}
++  "#thermal-sensor-cells":
++    const: 0
 +
-+		/* Check for rtdX, with X being the sensor number */
-+		if (strcmp(sensor->name, "rtd") > 0) {
-+			err = kstrtou8(
-+				sensor->name + strlen("rdt"), 10, &idx);
-+			if (err) {
-+				dev_err(dev,
-+					"Unparseable sensor number in '%s'\n",
-+					sensor->name);
-+				continue;
-+			}
++required:
++  - compatible
++  - reg
 +
-+			if (idx < 1 || idx > 3) {
-+				dev_err(dev,
-+					"Invalid sensor number in '%s'\n",
-+					sensor->name);
-+				continue;
-+			}
++additionalProperties: false
 +
-+			if (!of_device_is_available(sensor)) {
-+				*mode_val &= ~(MODE_RTD_MASK
-+					<< MODE_BIT_OFFSET_RTD(idx-1));
-+				*mode_mask |= MODE_RTD_MASK
-+					<< MODE_BIT_OFFSET_RTD(idx-1);
-+				continue;
-+			}
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
 +
-+			if (idx == 3) {
-+				/* RTD3 only supports thermistor mode */
-+				type = 4;
-+			} else if (of_property_count_u32_elems(sensor, "type")
-+				> 0) {
-+				if (of_property_read_u32_index(
-+					sensor, "type", 0, &type)) {
-+					dev_err(dev,
-+						"Could not read type property for '%s'\n",
-+						sensor->name);
-+					continue;
-+				}
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
 +
-+				/* Only current and thermistor modes are valid
-+				 * for temperature sensors.
-+				 */
-+				if (type < 3 || type > 4) {
-+					dev_err(dev,
-+						"Type %u not supported for '%s'\n",
-+						type, sensor->name);
-+					continue;
-+				}
-+			}
-+
-+			/* Everything ok, so write sensor configuration */
-+			*mode_val |= ((type - 2) & MODE_RTD_MASK)
-+				<< MODE_BIT_OFFSET_RTD(idx-1);
-+			*mode_mask |= MODE_RTD_MASK
-+				<< MODE_BIT_OFFSET_RTD(idx-1);
-+		}
-+	}
-+
-+	return true;
-+}
-+
-+static int nct7802_init_chip(struct device *dev, struct nct7802_data *data)
-+{
-+	unsigned char mode_val = 0, mode_mask = 0;
- 	int err;
- 
- 	/* Enable ADC */
-@@ -1047,8 +1153,15 @@ static int nct7802_init_chip(struct nct7802_data *data)
- 	if (err)
- 		return err;
- 
--	/* Enable local temperature sensor */
--	err = regmap_update_bits(data->regmap, REG_MODE, 0x40, 0x40);
-+	if (!nct7802_configure_temperature_sensors_from_device_tree(dev,
-+			&mode_mask, &mode_val)) {
-+		/* Enable local temperature sensor by default */
-+		mode_val |= MODE_LTD_EN;
-+		mode_mask |= MODE_LTD_EN;
-+	}
-+
-+	err = regmap_update_bits(data->regmap, REG_MODE, mode_mask,
-+		mode_val);
- 	if (err)
- 		return err;
- 
-@@ -1074,7 +1187,7 @@ static int nct7802_probe(struct i2c_client *client)
- 	mutex_init(&data->access_lock);
- 	mutex_init(&data->in_alarm_lock);
- 
--	ret = nct7802_init_chip(data);
-+	ret = nct7802_init_chip(dev, data);
- 	if (ret < 0)
- 		return ret;
- 
++        sensor@48 {
++            compatible = "ti,tmp108";
++            reg = <0x48>;
++            interrupt-parent = <&gpio1>;
++            interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
++            pinctrl-names = "default";
++            pinctrl-0 = <&tmp_alrt>;
++            #thermal-sensor-cells = <0>;
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/hwmon/tmp108.txt b/Documentation/devicetree/bindings/hwmon/tmp108.txt
+deleted file mode 100644
+index 54d4beed4ee5..000000000000
+--- a/Documentation/devicetree/bindings/hwmon/tmp108.txt
++++ /dev/null
+@@ -1,18 +0,0 @@
+-TMP108 temperature sensor
+--------------------------
+-
+-This device supports I2C only.
+-
+-Requires node properties:
+-- compatible : "ti,tmp108"
+-- reg : the I2C address of the device. This is 0x48, 0x49, 0x4a, or 0x4b.
+-
+-Optional properties:
+-- interrupts: Reference to the TMP108 alert interrupt.
+-- #thermal-sensor-cells: should be set to 0.
+-
+-Example:
+-	tmp108@48 {
+-		compatible = "ti,tmp108";
+-		reg = <0x48>;
+-	};
 -- 
-2.33.0.464.g1972c5931b-goog
+2.30.2
 
