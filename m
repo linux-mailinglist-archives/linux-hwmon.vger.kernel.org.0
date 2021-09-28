@@ -2,73 +2,87 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0436B4198DB
-	for <lists+linux-hwmon@lfdr.de>; Mon, 27 Sep 2021 18:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0A441ABE2
+	for <lists+linux-hwmon@lfdr.de>; Tue, 28 Sep 2021 11:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235430AbhI0Q3q (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 27 Sep 2021 12:29:46 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:46913 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235338AbhI0Q3q (ORCPT
+        id S239972AbhI1Jc1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 28 Sep 2021 05:32:27 -0400
+Received: from thorn.bewilderbeest.net ([71.19.156.171]:50585 "EHLO
+        thorn.bewilderbeest.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239831AbhI1JcW (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 27 Sep 2021 12:29:46 -0400
-Received: by mail-oi1-f182.google.com with SMTP id s69so26224009oie.13;
-        Mon, 27 Sep 2021 09:28:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=BmWdHyal2+SAHogeOgo0XQ9pH2xwWnNqoDfQ+wehmWo=;
-        b=rdQEEtUsZ+u9JhSBcCUJa+6kha44MrqAABmYuUOq9Rv/n108FErChN7PPbrGiQlsvV
-         EysGWoYLp34q9GFNltO7fuZHX4fHQWEAvpFhss4B4SWOv06XUO+srRgWmC9/dfE2mx7F
-         nFU78NBeXGvvXFF1nXAVkNEA4/Dcyj8UVMV+wT6TzMLV72Kz+BzWxL/i94yqsWuwmSDB
-         r1/7BAW8Vd4lfSRRpM4EaDe509UL10rSBRG5alG/uvxEw6evsOZq44px78hyJa/xq3Ga
-         JesaPHvdWGRaEX5ppOfAq6adiHcNFtZOtu77dgY7+aL8vtCgm7UgpaEd5OJbTwozcdrA
-         0QIg==
-X-Gm-Message-State: AOAM530fkjqT9e7SxoLq/XPgOqr+10U1cNNUyPMwZ3GAJpVON4KNS6dp
-        WeHIP1Dmsi3xcY0aZ2FlDg==
-X-Google-Smtp-Source: ABdhPJwGdhDClDb3vx6+dSGGvZMneq43UC63vBSpI5SCNr93JTU4B/eovY4asckQV5LoOl/TcM56Ow==
-X-Received: by 2002:a05:6808:14c9:: with SMTP id f9mr591378oiw.163.1632760087687;
-        Mon, 27 Sep 2021 09:28:07 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id o126sm3961971oig.21.2021.09.27.09.28.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Sep 2021 09:28:06 -0700 (PDT)
-Received: (nullmailer pid 3419976 invoked by uid 1000);
-        Mon, 27 Sep 2021 16:28:06 -0000
-Date:   Mon, 27 Sep 2021 11:28:06 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     devicetree@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Jiri Kosina <trivial@kernel.org>
-Subject: Re: [PATCH 3/6] dt-bindings: hwmon: ibm,cffps: move to trivial
- devices
-Message-ID: <YVHxFkb/9VwkQaA+@robh.at.kernel.org>
-References: <20210921102832.143352-1-krzysztof.kozlowski@canonical.com>
- <20210921102832.143352-3-krzysztof.kozlowski@canonical.com>
+        Tue, 28 Sep 2021 05:32:22 -0400
+Received: from hatter.bewilderbeest.net (71-212-29-146.tukw.qwest.net [71.212.29.146])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: zev)
+        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 41FDA293;
+        Tue, 28 Sep 2021 02:23:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+        s=thorn; t=1632821027;
+        bh=97KklhLeQh76YRY1Elsbf7cYcTo9pXXl9b7LWGG1VS4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=g7IOBn658cEz3nJKuSFKelzRTGj5KyBz0QVD6IXVFO2KUJR9QTtkpTdyT6Rp8ZRfP
+         vLrDpbi19J7Pgi7/Bw6ej6VsdYfNtlci/9IZMn8ox9HmwRtEToRzjUrQGlFWd1Dq4/
+         eYgW8rlW8o6IqhuWVKQOGTP49VINHTKGxHYLu7BA=
+From:   Zev Weiss <zev@bewilderbeest.net>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Zev Weiss <zev@bewilderbeest.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: [PATCH 0/8] hwmon: (pmbus/lm25066) Configurable sense resistor, other cleanups
+Date:   Tue, 28 Sep 2021 02:22:34 -0700
+Message-Id: <20210928092242.30036-1-zev@bewilderbeest.net>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210921102832.143352-3-krzysztof.kozlowski@canonical.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 21 Sep 2021 12:28:29 +0200, Krzysztof Kozlowski wrote:
-> The IBM Common Form Factor Power Supply Versions 1 and 2 bindings are
-> trivial, so they can be integrated into trivial devices bindings.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  .../devicetree/bindings/hwmon/ibm,cffps1.txt  | 26 -------------------
->  .../devicetree/bindings/trivial-devices.yaml  |  6 +++++
->  MAINTAINERS                                   |  1 -
->  3 files changed, 6 insertions(+), 27 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/hwmon/ibm,cffps1.txt
-> 
+Hello,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+I'm working with a board that uses LM25066s with sense resistor values
+significantly different than the 1mOhm assumed by the coefficients
+provided in the datasheet; the power and current readings produced by
+the existing driver are thus fairly inaccurate.
+
+This patch series started out as merely adding support for a
+shunt-resistor-micro-ohms DT property as found in the adm1275 driver,
+but along the way I noticed a number of other minor bits in the
+lm25066 driver that looked like they could use some fixes, so I've
+included those as well.
+
+Patches 1 and 2 bring the m/b/R coefficients in line with what's in
+the relevant datasheets, patches 3 through 5 are fairly generic
+(minor) code cleanups, and patches 6 through 8 add the desired OF
+support for the driver.
+
+
+Thanks,
+Zev
+
+
+Zev Weiss (8):
+  hwmon: (pmbus/lm25066) Add offset coefficients
+  hwmon: (pmbus/lm25066) Adjust lm25066 PSC_CURRENT_IN_L mantissa
+  hwmon: (pmbus/lm25066) Avoid forward declaration of lm25066_id
+  hwmon: (pmbus/lm25066) Let compiler determine outer dimension of
+    lm25066_coeff
+  hwmon: (pmbus/lm25066) Mark lm25066_coeff array const
+  hwmon: (pmbus/lm25066) Add OF device ID table
+  hwmon: (pmbus/lm25066) Support configurable sense resistor values
+  dt-bindings: hwmon/pmbus: Add ti,lm25066 power-management IC
+
+ .../bindings/hwmon/pmbus/ti,lm25066.yaml      | 54 +++++++++++
+ Documentation/hwmon/lm25066.rst               |  2 +
+ drivers/hwmon/pmbus/lm25066.c                 | 90 +++++++++++++++----
+ 3 files changed, 128 insertions(+), 18 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/ti,lm25066.yaml
+
+-- 
+2.33.0
+
