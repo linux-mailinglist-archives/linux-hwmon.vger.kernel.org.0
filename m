@@ -2,74 +2,77 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 401D241E3BA
-	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Oct 2021 00:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC35041E42B
+	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Oct 2021 00:57:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230091AbhI3WPx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 30 Sep 2021 18:15:53 -0400
-Received: from mout.gmx.net ([212.227.15.15]:43357 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229644AbhI3WPw (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 30 Sep 2021 18:15:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1633040034;
-        bh=MHewOkD+jce8+cArzxQmNojKOGLby/F4yfasEcEkkyc=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=JEnIqt5KVB5FykCUbvHHt7a1x/CmFKRalKjAiPH9ibsaLjXQysXZpkHLgRFUd4crN
-         ekDCACaMuYsS38z9S9hWmEWop9vjsuwGTonN7EfijooEw9LGMabYGhDv23cuvIAr/1
-         cJN2VUmLWPdN24EuQlyE8TBDbxA2QKVxofo3ljkE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.2.40] ([91.137.126.34]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N5G9n-1mvoIB0hPh-011AgL; Fri, 01
- Oct 2021 00:13:54 +0200
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-From:   Armin Wolf <W_Armin@gmx.de>
-Subject: i5k_amb temp_mid replacement
-Message-ID: <7aaa2734-514d-3752-01f1-fe3895718f55@gmx.de>
-Date:   Fri, 1 Oct 2021 00:13:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1348262AbhI3W7R (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 30 Sep 2021 18:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40470 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348623AbhI3W7P (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 30 Sep 2021 18:59:15 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05102C061779
+        for <linux-hwmon@vger.kernel.org>; Thu, 30 Sep 2021 15:57:32 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id b20so31787425lfv.3
+        for <linux-hwmon@vger.kernel.org>; Thu, 30 Sep 2021 15:57:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
+        b=NbyMdHEZeBs3sGq/yDHhFme6/Fat2fIEs1FbuecL1VGVLNPFVKU5MMEzqqtmtv3lrT
+         LyW5uhTxAor2u02W/ObGaIVKkso13EmNkPeqEKWvp/MUMhviRWbZ8nckHCYJ556NudOp
+         CVsQD4dF9ZylhNVdYAbBqX0A0zUyE0K2pGMLE76ziizR4sORoxcFl/sLgtHo3wxalxgg
+         zVWop8qYFvchibQzEbMROBdDHjlzHZVZJ1FRfybhb6wrSwetzJb9THEFmdLn6gkHaAVz
+         dFyBj/yMHcUaz8lAQTBNC3OUOyaayX15aeEcmR3hIb43fnzJKw76ohBZCKh7LDPECDvY
+         Mt4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
+        b=13tStd4XyWBUP/DqAFsyPjvW29+H1hv2itGUZHX1LebAVoxb86KGNcip79kAUeFv+k
+         +tVE2V+lNdGCmonWmsfXpyRn2dg/+EI0B8YLWMl3MDsgLIB9MrHGniIetPY4Va2NqT1c
+         bvg+hHb8wt0uG/ojlXM0de1iWHpkG1zbHwQV/jX9oU1taq7RxyWSqExg6EOYI2QNLh/j
+         3Rcl6DgHP3K641ATSrjbD4v4UfDfOvh7iqVqSR1oPE/8uyQLvvHD6VcmLmZa97KKTkw4
+         GvKPSCqvNvycZHIEdR7j/teMHBYjcerckUAv9SZhIswzn9PEygg/6MhZnELMvyUwnY8O
+         HWjg==
+X-Gm-Message-State: AOAM531gUg0FHOOadbaTSCybL+72E3r+wkfkOW3CNyI1omAEkoxsRCks
+        de2Yf8NgmjcG7weT7QxhXRl3WDKFOfOb4B6QKo8=
+X-Google-Smtp-Source: ABdhPJwtAjakrk22PhsocMynsw1dcpQi8Yyjww/qtw286RJir5/Sf5h95h400OE8CslcguyIOaDpjCBWapvMI27/7k0=
+X-Received: by 2002:a2e:5705:: with SMTP id l5mr8854699ljb.456.1633042649694;
+ Thu, 30 Sep 2021 15:57:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Provags-ID: V03:K1:d81SxwLXMWqZjwihDc77uy3b4b92NVknz1Q1bORh2qfl9sf4ERq
- n2ag9tvSex88GXCUvn5iDL8Kng7zLHs1mr9tz4vIM9MIWXVqDibS4VWWZ/PNnNPYATPc/pi
- E93Gr2oRLrc/dxOGC3+sE+R8UWD91YwX6kbnj9q1misrvZ9bWFLgGPbCdU0zoV9QVlnidF9
- 6qq41UeebIJyXJ57ZyB9w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:H/OQBA0qJNQ=:yzCoPMeL/BVE78tIFmsNRu
- 7jkFpsR6r3BSvxUMhKUSa8q+uyeLfkyaBlWquNvym/bsXFYJH8eWrznq29ipxx+QY65+23Tpz
- 9FImxc7oXRZPBt00DbnesKd23KWwea0FAElpoHe0fbrg/u31vWNt2nxHbMqom5nOYPPh1Tj/v
- Pvk6DYdjPjsymPTPYMnjkqdx0aRs5ok215g3I9SssltXwmDtCZzpH5XTLTxI/lyBPhP/Hn/M9
- 7ovvt/Rl+yYp6GHMMP0ahEm1yIahRptUZezs5ZfJUWuoZes3Gpuu1E1VLfJ9a8ZQJ1pwe7N7U
- WdbbQkHXVv8/8xcV/TkvUQbOzhq2M1BzvA39Sm4K8Ubr99weeQBH5C5+SHZE78Ek6mODpWqPB
- 0cgazCWXBf1M0nmnfkxQ2NEYonAhu9/5vbYQpFw8WAf4d1umIFqvIHQ+8RR82TuPjU5p0llnG
- 8y9rp9sAyE+gnyXS424Dp8tW5QXxAL0nUbpyDLqzFe4fNS0oV5TG71b6hMI7qpZkcdinFOVDL
- 9MjH/hyMZIUyJxFxY1M93n1yDaYB/Z+pNPHwv5v+CQnsRujE5r8uxftcGciQgKUDkaaX4GW02
- OLQaKjpDZtssTmEpB6vuUme20GSzYpvLFSNnSiLzfOlBgMNmKnf5y4AefmZitQzXN4+cwZ4yE
- 9S9+aTwGNnasJ5c/0oyWna8nutQTo4YzxRml6sUkTQ8kQQrzuZs7wb0xoWwFql22M+sKOVUNh
- ohtWguI+jf7ewiY/D5JfBftSE6rGkkwc6iC5LCUTVbTAAyGSeopx6SPwEk3bd2Q/0hVamYkOa
- Fxep4a2+/M9w4exOVHHaFRJN/GcEYnm0Lhd4JcRwiF4FgRUjXh+mOIr5GT0GZ+EO3RZPB+BoV
- NFFCEQw6qKCiEeAqMsDUbqmo78mpmQMzI5YqwJ0Lx1TnMmRXEQoK2jva4zoGGYml3UKex/Dz1
- 6cM7PbH7Q+Z07nf/cHuxNzHYBqcj2Bv0H/Y9nb/kxdPNxJaieeHjYzNFy9qqY2RAQ38LqDPmJ
- vQV8W59ZpTE7WswOdcWWV8DzICC+Bosf/idMgM4M6HMVWn7DLahDUTimtt2K0ppdY95T6L8Fx
- Ncm9cL/tj26++I=
+Received: by 2002:a05:6512:5d8:0:0:0:0 with HTTP; Thu, 30 Sep 2021 15:57:29
+ -0700 (PDT)
+Reply-To: southwestloanco59@gmail.com
+From:   SOUTHWESTLOANCO <saniabdullahinng2020@gmail.com>
+Date:   Thu, 30 Sep 2021 15:57:29 -0700
+Message-ID: <CA+3X9TxSf18dxD51aJOg_UrukfudS2Vv1PZk=HxC5aHG_Y0JQg@mail.gmail.com>
+Subject: Dear owner,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello,
+-- 
+Good day,
+          Do you need a loan ? We offer any kind of loan to repay in
+6months with just 2% interest
 
-while trying to convert i5k_temp to the new hwmon API to resolve
-https://bugzilla.kernel.org/show_bug.cgi?id=3D208693,
-i was asking myself whether or not temp_mid could be replaced with a
-standard sysfs attribute?
-Since afaik temp_mid and temp_max are both temperature limits, they
-could potentially be replaced with
-temp_max and temp_crit.
+Kindly Reply with below information
 
-Armin Wolf.
+NAME...............
+ADDRESS..........
+OCCUPATION....
+AGE...................
+PHONE..............
+AMOUNT NEEDED......
 
+Regards
+
+Contact  Mr Gary Edward +13182955380
+
+Remittance Department southwestloanco59@gmail.com
