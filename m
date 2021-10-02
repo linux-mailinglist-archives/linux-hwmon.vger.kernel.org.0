@@ -2,59 +2,123 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 807EA41FE54
-	for <lists+linux-hwmon@lfdr.de>; Sat,  2 Oct 2021 23:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 674AC41FE55
+	for <lists+linux-hwmon@lfdr.de>; Sat,  2 Oct 2021 23:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234103AbhJBV5l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 2 Oct 2021 17:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49620 "EHLO
+        id S234119AbhJBV6T (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 2 Oct 2021 17:58:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234051AbhJBV5l (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 2 Oct 2021 17:57:41 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7A82C061714
-        for <linux-hwmon@vger.kernel.org>; Sat,  2 Oct 2021 14:55:54 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id qe4-20020a17090b4f8400b0019f663cfcd1so5496862pjb.1
-        for <linux-hwmon@vger.kernel.org>; Sat, 02 Oct 2021 14:55:54 -0700 (PDT)
+        with ESMTP id S234118AbhJBV6S (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 2 Oct 2021 17:58:18 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD68C061714;
+        Sat,  2 Oct 2021 14:56:32 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id r75so15819533iod.7;
+        Sat, 02 Oct 2021 14:56:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vHha5gWxXInur0baYs/oAHmMCDjOw1bJaJpGIHn8yAk=;
-        b=UCMmO5Yb2PyYFpdVPh6idRaWF2/4gGDN4j59VRArHXc9lqsBI1hTsNzsI43cxF9F4r
-         a9qxkWf+JeEBI5d0VZ1IppUAHbULZ1KWovpjZrJ60BuWucVekjSmdHVwxyF2ZnhjQzjL
-         h50pRmzUBhHt3yh2e7DYlRop78AVNxBzqk6/mrLNvDt4LgaPR/0CNsav5CxYBO8m71EO
-         WAt9N8Qc1cFAVYUPrIcYSNWEbT6wrXK6WyZ3pnKM/tVKdQi6a2jfNGgv8Vlnk4CGTShp
-         sppQIJOlfM7o3J+Gb1c7ciX8Vbt+i321n2CN0xF9DKx3cMAPVgiuI2uFjRLwKbViMLFS
-         rijw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=h2DM8y7xwlyINDZajLE8dKUAZiDUpT+YKcFOLMtesDU=;
+        b=Pvjn/YqVqhJc5tod2Ko4mjutNscU7OJzUkh8EUHkN08RsaXHTVWrs01mp2Fnk4Pbun
+         mQU+8SV875f0SKHu4qVT+pdR19oIFmlvi+/4d13zF8r/nIrd/cXlwmcj1129GJVxAS7t
+         Xhz7A8gkIHbVZZe9aXxHAZT9n9zpCod+kO4hHNZW17CRqBjHeaz7OKnLToeYxdIBsHsK
+         xADr5UJe92JhTdrE1Gdy+8I6wd541lfboJA+vDFgzpWFjDCMRTe7f0dqnTW0VvL2TRGI
+         mw70W+op7HrqBUqlBld22u+rjCpscNFdxITgG63KkEKoRe16A1iU7GYfsjilergF02Br
+         nRbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vHha5gWxXInur0baYs/oAHmMCDjOw1bJaJpGIHn8yAk=;
-        b=009uJJn2yYt2n0eNhST59KvcEixSUn5JUrgIIyxC8b+VxsiPxFvficC10fib4ZyG1y
-         bKftCHHUk1ZNABHFyokmmTp/zW9iVNI9c8p2rzFHiEWuH39SFg2IQ4sMzkU2TKfKzizV
-         K5rHOfLnDWD2hyyIkxlLRtr7e5UvhfLnnW4oSPlPQqdLMiBLNIHtpMYxeWkmFYXZ2Ogn
-         7Q6sfTFdUCB2NQv0JMYcCJC2UoMAmNOIzaGURdfqnOs+jlUDj3OihS1f2roIfocCZt7L
-         bLsitOPeI5Wzthaidv4HCRWBwjgKCpXyvv6vG1KoOntqsU4MmAvpIbtzpMLhenGYLMwx
-         AlfA==
-X-Gm-Message-State: AOAM533ZNbHuwvYLwwiFljM2O0FYZ+bi7IG0Rp1D5LOQBIZRx6HgtnC8
-        2Vem8DCdax8VvM4DsojdJHuA1gWbAJL+Qk5yzrU=
-X-Google-Smtp-Source: ABdhPJzJsTtmTZwoaE+wdkk36P2CwY91tEL1lQojHBQlvoj9c1XL3/t0mF61UNq6c30M0a08jDBJnrJwgzHwrUcOeEY=
-X-Received: by 2002:a17:90a:a513:: with SMTP id a19mr28463058pjq.26.1633211754461;
- Sat, 02 Oct 2021 14:55:54 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h2DM8y7xwlyINDZajLE8dKUAZiDUpT+YKcFOLMtesDU=;
+        b=0WCe48KPiQaEUIL0VFDC4ua8dPPYq8hRN/sDJJKRmcP6c52iiv4hC1Kd4xi5ioLDTl
+         bCAOT1/erKruHL5TjTd1/FrV4gd3E0bJB+HrURdiVRFOY9jL5HmqaYc8Y31dQS8cQTbk
+         d/P+db47rgRgYpvp49K2MfWIVp2M6Di74JX7nSiF8CkwoNwOd5pFOAuVFrZR0erA1O9f
+         zyvI96TWzGcpuj6UT9WszIkuyJwQOgIlYU4k1lMMLw7VFXqpC3Kw7QDLYOt0eBKOL/SQ
+         zAA6lg7wZymR4pIaaIh8aY8Y0zRlfLBznyVFEyS2BY1dxbQh8N43Lh6LFKK+iMUp18iM
+         MQFw==
+X-Gm-Message-State: AOAM533h2+oZukUY7Lbg7OlLAjkXhxvd7+tyYX3A+G4QXIUEE7KHi+OM
+        rLl854LEYgdMj1f1IH3yk3km2LxhznVuhayIzNM=
+X-Google-Smtp-Source: ABdhPJwIfP+P3PFn1htl3SuiyBxn+mmQaerdFtDb59xXbcIUZIunIKuVOtL7KTJIvDZ4otSbTRYIIgHwNIgStr2stZI=
+X-Received: by 2002:a6b:b242:: with SMTP id b63mr3531734iof.133.1633211791501;
+ Sat, 02 Oct 2021 14:56:31 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a17:90a:5d8c:0:0:0:0 with HTTP; Sat, 2 Oct 2021 14:55:54
- -0700 (PDT)
-Reply-To: cherrykona25@hotmail.com
-From:   cherry kona <arafaeloxford@gmail.com>
-Date:   Sat, 2 Oct 2021 14:55:54 -0700
-Message-ID: <CAM=40BJwxE0XE3toP3JYX62A3jtFbPzvA-C8pPqnOmH0kbhTkQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <20211002210857.709956-1-pauk.denis@gmail.com> <20211002210857.709956-4-pauk.denis@gmail.com>
+In-Reply-To: <20211002210857.709956-4-pauk.denis@gmail.com>
+From:   Eugene Shalygin <eugene.shalygin@gmail.com>
+Date:   Sat, 2 Oct 2021 23:56:20 +0200
+Message-ID: <CAB95QASk7JGqP2_qLtkb-PXUmKPDMcOvLr_8FLrKpv3S2602mw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] hwmon: (asus_wmi_sensors) Support access via Asus WMI.
+To:     Denis Pauk <pauk.denis@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Hi, please with honesty you receive my message i send to you?
+Hi, Denis!
+
+Thank you for submitting this driver to the mainline! I have a few
+comments/suggestions, please find them below.
+
+> +#define HWMON_MAX      9
+
+There is a hwmon_max enum member, whose current value is 10.
+
+> +#define ASUS_WMI_BLOCK_READ_REGISTERS_MAX 0x10 /* from the ASUS DSDT source */
+> +/* from the ASUS_WMI_BLOCK_READ_REGISTERS_MAX value */
+> +#define ASUS_WMI_MAX_BUF_LEN 0x80
+Suggestion:
+#define ASUS_WMI_MAX_BUF_LEN 0x80 /* from the
+ASUS_WMI_BLOCK_READ_REGISTERS_MAX value */
+
+> +#define ASUSWMI_SENSORS_MAX 11
+This one is for the EC only, maybe rename it accordingly?
+
+> +struct asus_wmi_data {
+> +       int ec_board;
+> +};
+
+Duplicates the value in the asus_wmi_sensors struct. Refactoring artifact?
+
+             asus_wmi_ec_set_sensor_info(si++, "Water", hwmon_fan,
+> +                                           asus_wmi_ec_make_sensor_address(2, 0x00, 0xBC),
+> +                                           &ec->nr_registers);
+This one is named "W_FLOW" in the BIOS and ASUS software. Maybe append
+"_flow" to the label?
+
+> + * The next four functions converts to/from BRxx string argument format
+convert (remove "s")
+
+> +       // assert(len <= 30)
+Makes little sense in the kernel.
+
+> +static void asus_wmi_ec_make_block_read_query(struct asus_wmi_ec_info *ec)
+> +{
+> +       u16 registers[ASUS_EC_KNOWN_EC_REGISTERS];
+> +       u8 i, j, register_idx = 0;
+> +
+> +       /* if we can get values for all the registers in a single query,
+> +        * the query will not change from call to call
+> +        */
+> +       if (ec->nr_registers <= ASUS_WMI_BLOCK_READ_REGISTERS_MAX &&
+> +           ec->read_arg[0] > 0) {
+> +               /* no need to update */
+> +               return;
+> +       }
+> +
+I would add a test for ec->nr_registers >
+ASUS_WMI_BLOCK_READ_REGISTERS_MAX and a warning log message here.
+
+> +static int asus_wmi_probe(struct platform_device *pdev)
+
+Can we add a module alias or to load the module automatically by other
+means? For module aliases we know DMI parameters for the supported
+boards.
+
+Best regards,
+Eugene
