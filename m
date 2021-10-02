@@ -2,94 +2,83 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C66341FB30
-	for <lists+linux-hwmon@lfdr.de>; Sat,  2 Oct 2021 13:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADBAA41FB8C
+	for <lists+linux-hwmon@lfdr.de>; Sat,  2 Oct 2021 14:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232864AbhJBLry (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 2 Oct 2021 07:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56948 "EHLO
+        id S233011AbhJBMHl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 2 Oct 2021 08:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232855AbhJBLry (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 2 Oct 2021 07:47:54 -0400
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD3AC061570
-        for <linux-hwmon@vger.kernel.org>; Sat,  2 Oct 2021 04:46:08 -0700 (PDT)
-Received: by mail-ot1-x335.google.com with SMTP id o59-20020a9d2241000000b0054745f28c69so14905943ota.13
-        for <linux-hwmon@vger.kernel.org>; Sat, 02 Oct 2021 04:46:08 -0700 (PDT)
+        with ESMTP id S233020AbhJBMHk (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 2 Oct 2021 08:07:40 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 948D4C0613F0
+        for <linux-hwmon@vger.kernel.org>; Sat,  2 Oct 2021 05:05:54 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id d11so13326137ilc.8
+        for <linux-hwmon@vger.kernel.org>; Sat, 02 Oct 2021 05:05:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4s/DZFI848ly6eHUed3i3tWfaq8wYpkiltaAkxeIAEE=;
-        b=mn8BaKuyfPCUS0Pbkm3UJ/cEiyyBbpVknOk4rTj/s8WdeO2zS/3Ay3knClv4eriPY9
-         OJlM7ZokkBlO/eRhxM+sTnQqFN2zEXIv1DwGfo7hHwgEpZEL8bk1O6Zyf8M3syb72IWs
-         GZsSAiAWSHpBtJnVZDaIbqbLoroCVkEBgH38I6xQSwIhnMVIJMW3psGYlVhmo+Wsrnim
-         4FS2kwFv90YLB+fb1AmVG10sBhIrg79N3acMtEUWY6suSJOKeZABMkSc4nIYzCHIY2E/
-         RJWDmZO2FoCp+nkyI+nkkWarFaacKKxnZcW9VhTfnlfFd9Dqf0kKdUzyc0aVsUldJ44h
-         qp4A==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=mT5J/tgsvdHKNzbixMF0b8bXsjz3ofG89XtBIEYmm31DKAJqTVQnTbIBfX8t5JlCAm
+         Opjgf9WSclRRmZYAkjQxD/epAd7Be57Lkd99MvP59l8GGX8KlyEhPtYedt0NvXplBgjX
+         pECf49P18/Mbmf2mju+ev/IXAfzf+OcnFAI/6DhrXKGlFJfTFDtBD9i87Iy0J15pnXOZ
+         wHRscuxmZb9WncCxGJWn5OmzniZ/0JhwvdctqOeXs5rUDL4iSc0GnXXiVo4MDWIsdUoF
+         mNikICZvRlqzk8OVrQqc8igQ84mfgLfFjLJ6CSExD9iGVksBBxAaSPWqjMuOrlpsdQPB
+         rsUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=4s/DZFI848ly6eHUed3i3tWfaq8wYpkiltaAkxeIAEE=;
-        b=yCweiAsGKADJ9KP5yUS2/ooO2aADjXGX0N0C9kpwH9u4VWgmYADH2wZEzu97TIY0E3
-         mlGHFoMiy7Ene9ia467YUe3Ym4hajuNXzK9UqfubFtBe4ZPgv5VXsCzRbNcKsHfPHbDi
-         FuGGmkUKnZePj0WH5Ofo8Nk73RRzdj+zcOFMRZVm/JEfGCwSaFcyspHXtz6llzZ/TinR
-         eEfCUq81CEi5MBZENfCpqfZt+k2M4wDX9t+7einYIDL/S+H3gkjjTHJCnyo54WqbI7JF
-         knNS+lwqf1zwRzEtzExDpfzk7QTm9ukn5LoZrXvAlR501lbKE8nW4fcV8cbmUwxZn/Zp
-         h+Mw==
-X-Gm-Message-State: AOAM533tSdjWAhqbxBggHGstiPKxwSsAwIUODOwQ2fFLappU9T6O0gFX
-        n7I36LI09m5GW38LXm2wHTRaXIaEVpw=
-X-Google-Smtp-Source: ABdhPJxaWWiLUeU9kGsMjjJFCe7CNrW1727RwIRQG0IBsCqP09WBqcIFM5u1FrGA23pLL7MyYbyB3g==
-X-Received: by 2002:a05:6830:2781:: with SMTP id x1mr2259804otu.349.1633175168002;
-        Sat, 02 Oct 2021 04:46:08 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h91sm1682042otb.38.2021.10.02.04.46.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Oct 2021 04:46:07 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sat, 2 Oct 2021 04:46:06 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Vadim Pasternak <vadimp@nvidia.com>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH hwmon 1/1] hwmon: (pmbus/mp2975) Add missed POUT
- attribute for page 1 mp2975 controller
-Message-ID: <20211002114606.GA1279026@roeck-us.net>
-References: <20210927070740.2149290-1-vadimp@nvidia.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=swdOi/6B4VGi7+ybo7AXOXH20ODRrkwwBQJILTRxqzMVqc83JIflp59jJv1tq3qpLv
+         TfKneMN8yDI/43zmqodlitPJKtSotRyqp8CK0Nyaewipbnmkur8l/ek2VJrpqrfIEIuj
+         fy7Qkmy1JHwQh+D8penFxXKmixDTzKmeHxhXAuaXd8jugkCTSFunCUa967ADqrHXIV+C
+         TiV6Zr9Qt0MKf64zJxCg/CCs82SNnQShsJqJWIz5xSFGMn8R/W2NEzu3P6uGxil/gjGq
+         rmgBiGKjxYDpCN33iGkijUkS0vTyP3EAwbL0yHLiE9NP2mI/ed3VhoL4ZtBoYghsEZjC
+         /tbA==
+X-Gm-Message-State: AOAM530aewYsPo/d7RExWjFVIXZVol4HezomGIg2uyc6feju2UQAjcNL
+        fK5dqSNimCfkW3g4lS7iJPkaW/hvbYuuMY6L1nw=
+X-Google-Smtp-Source: ABdhPJx2Z/TM2nA5wUcQB6WcULjoMe7ab+gT2T6RTYBvc0J8X+RyTYtawkdaKMq1gSZualViA+kQI7VQTvC2tm5O+Dk=
+X-Received: by 2002:a92:ca06:: with SMTP id j6mr2338241ils.42.1633176354004;
+ Sat, 02 Oct 2021 05:05:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210927070740.2149290-1-vadimp@nvidia.com>
+Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:05:53 -0700 (PDT)
+Reply-To: unitednnation0@gmail.com
+From:   "U.n" <wadebaye33@gmail.com>
+Date:   Sat, 2 Oct 2021 00:05:53 -1200
+Message-ID: <CACE0T5U12wTpag8TzpKG7SQXE2-Lmps=PgU=pU_4uJkcXNmpjg@mail.gmail.com>
+Subject: Attention
+To:     unitednnation0@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 10:07:40AM +0300, Vadim Pasternak wrote:
-> Add missed attribute for reading POUT from page 1.
-> It is supported by device, but has been missed in initial commit.
-> 
-> Fixes: 2c6fcbb21149 ("hwmon: (pmbus) Add support for MPS Multi-phase mp2975 controller")
-> Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+--=20
 
-Applied.
 
-Thanks,
-Guenter
+Attention Sir/Madam
+This is the United Nation (UN). We the United Nations (UN) Globally
+has approved (US$2.500,000)( two Million Five hundred thousand
+dollars) compensation as part of our responsibilities for humanitarian
+Aid for fighting against CoronaVirus and you are among the lucky ones.
 
-> ---
->  drivers/hwmon/pmbus/mp2975.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/pmbus/mp2975.c b/drivers/hwmon/pmbus/mp2975.c
-> index eb94bd5f4e2a..51986adfbf47 100644
-> --- a/drivers/hwmon/pmbus/mp2975.c
-> +++ b/drivers/hwmon/pmbus/mp2975.c
-> @@ -54,7 +54,7 @@
->  
->  #define MP2975_RAIL2_FUNC	(PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT | \
->  				 PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT | \
-> -				 PMBUS_PHASE_VIRTUAL)
-> +				 PMBUS_HAVE_POUT | PMBUS_PHASE_VIRTUAL)
->  
->  struct mp2975_data {
->  	struct pmbus_driver_info info;
+
+This compensation is for the most affected countries, communities and
+families across the global. Your funds were deposited with Bank in USA
+to transfer your funds to you via Internet Banking. You have to send
+your full details as state below:with this email Address
+  ( unitednnation0@gmail.com )
+Your full names:
+Address:
+Telephone:
+Occupation:
+
+
+
+Yours Sincerely
+Mr. Ant=C3=B3nio Guterres
+United Nations (UN).
