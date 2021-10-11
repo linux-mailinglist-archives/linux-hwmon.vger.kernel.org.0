@@ -2,133 +2,214 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DAE428DDC
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Oct 2021 15:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11CA9428E6D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Oct 2021 15:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236930AbhJKNaP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 11 Oct 2021 09:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57938 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236921AbhJKNaP (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 11 Oct 2021 09:30:15 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0946DC06161C
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 Oct 2021 06:28:14 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLZ-0006fk-Rm; Mon, 11 Oct 2021 15:28:05 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLV-0003nj-Jv; Mon, 11 Oct 2021 15:28:01 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mZvLV-0000SM-IV; Mon, 11 Oct 2021 15:28:01 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        kernel@pengutronix.de, linux-hwmon@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org
-Subject: [PATCH 02/13] hwmon: adt7x10: Make adt7x10_remove() return void
-Date:   Mon, 11 Oct 2021 15:27:43 +0200
-Message-Id: <20211011132754.2479853-3-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
-References: <20211011132754.2479853-1-u.kleine-koenig@pengutronix.de>
+        id S231659AbhJKNqJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 11 Oct 2021 09:46:09 -0400
+Received: from mga04.intel.com ([192.55.52.120]:38965 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231577AbhJKNqJ (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 11 Oct 2021 09:46:09 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10133"; a="225649266"
+X-IronPort-AV: E=Sophos;i="5.85,364,1624345200"; 
+   d="scan'208";a="225649266"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 06:43:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,364,1624345200"; 
+   d="scan'208";a="490483527"
+Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 11 Oct 2021 06:43:56 -0700
+Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mZvat-0002MR-Q0; Mon, 11 Oct 2021 13:43:55 +0000
+Date:   Mon, 11 Oct 2021 21:43:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:watchdog-next] BUILD SUCCESS
+ 15203437f0b11aa0630b297c474c9b3d389f7982
+Message-ID: <61643f66.HlM17Ihz1oFJXurc%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=9He6IzxzqlwCNrbyaU2x86Wz9NsT7rj1rB/U0CelTbM=; m=sqMkzU6U6DMEQr1FURiCM0wFSKVmXZBD0WH+KO+1n50=; p=rpCXoueXF+/6M5DW7UDuOw4hNFSeIvhyHopZtckbJ3w=; g=2d545779f4e06d7b6e6fcd09bcf283a1e608db9e
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFkO2QACgkQwfwUeK3K7AkjnQgAk4b 1Rvls6cwIr+4vW5HtNajvUcDh6lULZQr6IxuFUnLBPRRn1QJTVfZ2ewagA+CZrkJ4IKVmtrbgmyYP c/nbeI7q+g3rwO5zz8bGfVuapP0XDyphhZbYzrPVeRM6LUV5eMjRapmn7oQ6e1liFg7HKwRavTu8E o1dOzdvbynwLKR0JOfqMe+P6UAWz/wqodCr2KYVkwV9lAAYjk1j3Ec8oQSpWtJrsN08alEgOd2Ur2 BkmUvURPWU4JrEx/+s3SdNcdXYC4uNieVSXLY86kQGOqtZuVA4mVniONSeBxEQ03PjwNUy/vTh986 KWM+uKI6ffi0jPn1+VNcnFSUhjsEMpQ==
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Up to now adt7x10_remove() returns zero unconditionally. Make it return
-void instead which makes it easier to see in the callers that there is
-no error to handle.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
+branch HEAD: 15203437f0b11aa0630b297c474c9b3d389f7982  watchdog: iTCO: Drop vendor support
 
-Also the return value of i2c and spi remove callbacks is ignored anyway.
+elapsed time: 723m
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+configs tested: 154
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211011
+arm                       omap2plus_defconfig
+m68k                       m5475evb_defconfig
+powerpc                   lite5200b_defconfig
+arm                          imote2_defconfig
+sh                           se7705_defconfig
+arm                      tct_hammer_defconfig
+ia64                      gensparse_defconfig
+i386                             allyesconfig
+mips                       capcella_defconfig
+m68k                           sun3_defconfig
+sh                     sh7710voipgw_defconfig
+s390                                defconfig
+powerpc                    ge_imp3a_defconfig
+arm                            qcom_defconfig
+powerpc                     powernv_defconfig
+sh                               alldefconfig
+nios2                         10m50_defconfig
+arm                        realview_defconfig
+arm                        multi_v5_defconfig
+riscv                               defconfig
+sh                     magicpanelr2_defconfig
+mips                  maltasmvp_eva_defconfig
+powerpc64                           defconfig
+powerpc                     taishan_defconfig
+powerpc                     mpc83xx_defconfig
+openrisc                    or1ksim_defconfig
+m68k                                defconfig
+arm                         at91_dt_defconfig
+arm                             mxs_defconfig
+mips                    maltaup_xpa_defconfig
+arm                          ep93xx_defconfig
+riscv             nommu_k210_sdcard_defconfig
+nios2                            alldefconfig
+powerpc                    adder875_defconfig
+sh                           se7343_defconfig
+h8300                               defconfig
+sh                          lboxre2_defconfig
+sh                                  defconfig
+sh                          r7785rp_defconfig
+arm                         lubbock_defconfig
+xtensa                           alldefconfig
+powerpc                      ppc44x_defconfig
+mips                         tb0287_defconfig
+mips                        workpad_defconfig
+arc                     haps_hs_smp_defconfig
+powerpc                     asp8347_defconfig
+arm                        mini2440_defconfig
+h8300                            alldefconfig
+powerpc                       ebony_defconfig
+arm                        keystone_defconfig
+arm                          iop32x_defconfig
+mips                            e55_defconfig
+powerpc                 mpc8315_rdb_defconfig
+arm                             pxa_defconfig
+sh                           se7206_defconfig
+sh                           se7724_defconfig
+m68k                       m5249evb_defconfig
+arm                        oxnas_v6_defconfig
+arm                     davinci_all_defconfig
+sh                          sdk7780_defconfig
+powerpc                   microwatt_defconfig
+powerpc                     mpc512x_defconfig
+sh                        sh7757lcr_defconfig
+nds32                            alldefconfig
+sh                      rts7751r2d1_defconfig
+ia64                        generic_defconfig
+xtensa                    smp_lx200_defconfig
+arm                  randconfig-c002-20211011
+x86_64               randconfig-c001-20211011
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+s390                             allmodconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20211010
+i386                 randconfig-a003-20211010
+i386                 randconfig-a004-20211010
+i386                 randconfig-a005-20211010
+i386                 randconfig-a002-20211010
+i386                 randconfig-a006-20211010
+x86_64               randconfig-a015-20211011
+x86_64               randconfig-a012-20211011
+x86_64               randconfig-a016-20211011
+x86_64               randconfig-a014-20211011
+x86_64               randconfig-a013-20211011
+x86_64               randconfig-a011-20211011
+i386                 randconfig-a016-20211011
+i386                 randconfig-a014-20211011
+i386                 randconfig-a011-20211011
+i386                 randconfig-a015-20211011
+i386                 randconfig-a012-20211011
+i386                 randconfig-a013-20211011
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                           allyesconfig
+
+clang tested configs:
+arm                  randconfig-c002-20211011
+mips                 randconfig-c004-20211011
+i386                 randconfig-c001-20211011
+s390                 randconfig-c005-20211011
+x86_64               randconfig-c007-20211011
+powerpc              randconfig-c003-20211011
+riscv                randconfig-c006-20211011
+x86_64               randconfig-a004-20211011
+x86_64               randconfig-a006-20211011
+x86_64               randconfig-a001-20211011
+x86_64               randconfig-a005-20211011
+x86_64               randconfig-a002-20211011
+x86_64               randconfig-a003-20211011
+i386                 randconfig-a001-20211011
+i386                 randconfig-a003-20211011
+i386                 randconfig-a004-20211011
+i386                 randconfig-a005-20211011
+i386                 randconfig-a002-20211011
+i386                 randconfig-a006-20211011
+hexagon              randconfig-r041-20211011
+hexagon              randconfig-r045-20211011
+
 ---
- drivers/hwmon/adt7310.c | 3 ++-
- drivers/hwmon/adt7410.c | 3 ++-
- drivers/hwmon/adt7x10.c | 3 +--
- drivers/hwmon/adt7x10.h | 2 +-
- 4 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/hwmon/adt7310.c b/drivers/hwmon/adt7310.c
-index 9fad01191620..c40cac16af68 100644
---- a/drivers/hwmon/adt7310.c
-+++ b/drivers/hwmon/adt7310.c
-@@ -90,7 +90,8 @@ static int adt7310_spi_probe(struct spi_device *spi)
- 
- static int adt7310_spi_remove(struct spi_device *spi)
- {
--	return adt7x10_remove(&spi->dev, spi->irq);
-+	adt7x10_remove(&spi->dev, spi->irq);
-+	return 0;
- }
- 
- static const struct spi_device_id adt7310_id[] = {
-diff --git a/drivers/hwmon/adt7410.c b/drivers/hwmon/adt7410.c
-index 9d80895d0266..973db057427b 100644
---- a/drivers/hwmon/adt7410.c
-+++ b/drivers/hwmon/adt7410.c
-@@ -50,7 +50,8 @@ static int adt7410_i2c_probe(struct i2c_client *client)
- 
- static int adt7410_i2c_remove(struct i2c_client *client)
- {
--	return adt7x10_remove(&client->dev, client->irq);
-+	adt7x10_remove(&client->dev, client->irq);
-+	return 0;
- }
- 
- static const struct i2c_device_id adt7410_ids[] = {
-diff --git a/drivers/hwmon/adt7x10.c b/drivers/hwmon/adt7x10.c
-index 3f03b4cf5858..e9d33aa78a19 100644
---- a/drivers/hwmon/adt7x10.c
-+++ b/drivers/hwmon/adt7x10.c
-@@ -444,7 +444,7 @@ int adt7x10_probe(struct device *dev, const char *name, int irq,
- }
- EXPORT_SYMBOL_GPL(adt7x10_probe);
- 
--int adt7x10_remove(struct device *dev, int irq)
-+void adt7x10_remove(struct device *dev, int irq)
- {
- 	struct adt7x10_data *data = dev_get_drvdata(dev);
- 
-@@ -457,7 +457,6 @@ int adt7x10_remove(struct device *dev, int irq)
- 	sysfs_remove_group(&dev->kobj, &adt7x10_group);
- 	if (data->oldconfig != data->config)
- 		adt7x10_write_byte(dev, ADT7X10_CONFIG, data->oldconfig);
--	return 0;
- }
- EXPORT_SYMBOL_GPL(adt7x10_remove);
- 
-diff --git a/drivers/hwmon/adt7x10.h b/drivers/hwmon/adt7x10.h
-index 21ad15ce3163..a1ae682eb32e 100644
---- a/drivers/hwmon/adt7x10.h
-+++ b/drivers/hwmon/adt7x10.h
-@@ -26,7 +26,7 @@ struct adt7x10_ops {
- 
- int adt7x10_probe(struct device *dev, const char *name, int irq,
- 	const struct adt7x10_ops *ops);
--int adt7x10_remove(struct device *dev, int irq);
-+void adt7x10_remove(struct device *dev, int irq);
- 
- #ifdef CONFIG_PM_SLEEP
- extern const struct dev_pm_ops adt7x10_dev_pm_ops;
--- 
-2.30.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
