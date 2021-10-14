@@ -2,217 +2,173 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4D3842C918
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 Oct 2021 20:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA6B42D380
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Oct 2021 09:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbhJMSxU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 13 Oct 2021 14:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54896 "EHLO
+        id S229967AbhJNH2H (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 14 Oct 2021 03:28:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbhJMSxT (ORCPT
+        with ESMTP id S229910AbhJNH2H (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 13 Oct 2021 14:53:19 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271AAC061570
-        for <linux-hwmon@vger.kernel.org>; Wed, 13 Oct 2021 11:51:16 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id o204so5055551oih.13
-        for <linux-hwmon@vger.kernel.org>; Wed, 13 Oct 2021 11:51:16 -0700 (PDT)
+        Thu, 14 Oct 2021 03:28:07 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF5AC061570;
+        Thu, 14 Oct 2021 00:26:02 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id ec8so20387315edb.6;
+        Thu, 14 Oct 2021 00:26:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=yXrg3+A6lEtTpa644d3Tw6Ij2wxMErKcrnK5dFU9crQ=;
-        b=Sk5FwLnh2qmnVhOCRdQsB76tpgQS4svx3Ga2nLdWTst4nm0w+1E6wvMxLT874ImDrR
-         d5k8qSer0pGcRDP3826FWF3jZoX/o6tNHGG064gEWqrKVDF1MjB9ppQ0nBpTbbyYdkQC
-         bJhfUija+iln3fomPPyQTDOzJ05oYrW2NzUyAx2vHeDfrLrhqbjHzM7zHCVaxZH956sV
-         J12iBHFNQLssFU4vO4Gsnp+10YAQfSKl3k+L8M1lhhzbK/ZLb8wUXRDko+ClrVSEpULZ
-         3pmQkVahlDIUWOpefIr4v7eWBvQGhkaf8V7GNrmXf/WSqM1+MoD0l2jZpK251SviVSfO
-         ZK+Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=d3qTxnMX3ADqt/J9bOBlE4FoV+RoUTqNQMD+qoLqjyo=;
+        b=BLMVpNxorGP0FGagmx/rK5Ow23sQILrvrXHCD0mw2DWgAHMYKxS++1kFLmO4FHL7SA
+         lr4O9DF+BvS/XSoabciFi1rySNzngSLXW/uHe+x/ny3HB4ZPIX81xh8KmTNxToNoa3ZG
+         AbMIV2nEikKnns7U+7moxc/3wr3FNWC1lftMVvwaAr7+9uKQrY6JzgCttjT0nx1cUAGF
+         VSiTjwvYkSg3vWYu4usPaC1Hb0snLXxqz+76pp9+UKN4HAb5GW2q7xuOGhrIkw793Kcr
+         cj7xTlgL9thw+mJcYP0aL3HE2XFiIQ5jLEbXk2YPKiUdmEksHWBlPaZoUJBfvEtss4pR
+         IDNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=yXrg3+A6lEtTpa644d3Tw6Ij2wxMErKcrnK5dFU9crQ=;
-        b=RlcGWrBeShcdOkTM1cDejEloJNoX8G8cxUax2O/xwE3lHj/QJhzQdPMH8TnAXhGNME
-         6vEn9DPvyerGnXEEpGZPDoFaLn0Aohigj9D2luWSCAzTZuN0LiE4XRN6oLumFCxgUiJ9
-         m8UxyUFVb20vXoIypicemJ2MoNr139w56Oeu0/t4tyllrseOmkGU9s9UcTJPwV9h3hd+
-         f+zp9jqsLjgu6uTdpaoEwoCsGhifqu/lRQX1Uja2BMtZqlM4SNVcRoy1CW2AumzOMgUu
-         jm9JLYfReSDNEtord+SZON7SYcjMQ9aiLpU9fclIJkWpw/J4on9ksMUSCF6/lln+UVhz
-         CA1A==
-X-Gm-Message-State: AOAM531OoiWiKMGve7+wO6PgjEL9KynZQCVRJ9mVUo2JhdaawWy3cEv3
-        qBIAVfeCfGaIJmXsF2jxk/k=
-X-Google-Smtp-Source: ABdhPJwNDEYjbh2dd21ti+timno+1LMojx98mAZ7SCfHaq1CI0GsPPXB7PURS1ot+WOdOohiReQfUQ==
-X-Received: by 2002:aca:f302:: with SMTP id r2mr586827oih.90.1634151075585;
-        Wed, 13 Oct 2021 11:51:15 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l45sm87562ooi.30.2021.10.13.11.51.14
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=d3qTxnMX3ADqt/J9bOBlE4FoV+RoUTqNQMD+qoLqjyo=;
+        b=SH5GA9wrMYtEHqWXfgt0uHF25Yyc7eAedIBP6v0LW4hvY1+e+oaehAn3KIafudhDIg
+         j641ZiJ+HG9WlVuc6w80KveJxLyKLZAAkwTuLHyDEtdmVNy/qje0KlA6euvBSA0TmoZw
+         kv8poaMuDBVDu1DwmZmHuJOJpxksdeuoZEueLncbvfasbL+2oXoSCEaNqITd6ch/2MXy
+         A0LWC/8xlAMBnZjYMAlFFKayKI/eaoMujE8XOUn00aaJMRoFMeOKeAIG8uFppqVKL3pA
+         SJZ47K/nWu/4/CNsXegccdIG1aSzMjhua8UPpSAXji5Tpmnx+2CGVFDtJg1gmUjFNwka
+         2i3g==
+X-Gm-Message-State: AOAM532DDPjk/AnmDn4lNgFGSP/DXKcwj93FnqXqwTdMcmhxYqEKez/8
+        jfyUbnpRxEU3Cwz3xEuwWjgp1vCu1VJ/Ag==
+X-Google-Smtp-Source: ABdhPJx50iRsp+hDLVdZa45timmdh/WpbCLcdVFgYcYLEt0NAzPmh1mYCw4bu98bc7q/Xg+jUre4wA==
+X-Received: by 2002:a17:906:a4e:: with SMTP id x14mr1735381ejf.1.1634196360837;
+        Thu, 14 Oct 2021 00:26:00 -0700 (PDT)
+Received: from localhost.localdomain ([94.179.52.32])
+        by smtp.gmail.com with ESMTPSA id z4sm1238253ejw.46.2021.10.14.00.25.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Oct 2021 11:51:15 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 13 Oct 2021 11:51:13 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     W_Armin@gmx.de
-Cc:     pali@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] hwmon: (dell-smm) Add support for fanX_min,
- fanX_max and fanX_target
-Message-ID: <20211013185113.GA3336263@roeck-us.net>
-References: <20210926221044.14327-1-W_Armin@gmx.de>
- <20210926221044.14327-2-W_Armin@gmx.de>
+        Thu, 14 Oct 2021 00:26:00 -0700 (PDT)
+From:   Denis Pauk <pauk.denis@gmail.com>
+Cc:     eugene.shalygin@gmail.com, andy.shevchenko@gmail.com,
+        pauk.denis@gmail.com, platform-driver-x86@vger.kernel.org,
+        Ed Brindley <kernel@maidavale.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/2] Update ASUS WMI supported boards
+Date:   Thu, 14 Oct 2021 10:25:33 +0300
+Message-Id: <20211014072537.190816-1-pauk.denis@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210926221044.14327-2-W_Armin@gmx.de>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 12:10:43AM +0200, W_Armin@gmx.de wrote:
-> From: Armin Wolf <W_Armin@gmx.de>
-> 
-> The nominal speed of each fan can be obtained with
-> i8k_get_fan_nominal_speed(), however the result is not available
-> from userspace.
-> Change that by adding fanX_min, fanX_max and fanX_target attributes.
-> All are RO since fan control happens over pwm.
-> 
-> Tested on a Dell Inspiron 3505 and a Dell Latitude C600.
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> Reviewed-by: Pali Rohár <pali@kernel.org>
+Add support by WMI interface privided by Asus for B550/X570 boards: 
+* PRIME X570-PRO,
+* ROG CROSSHAIR VIII HERO
+* ROG CROSSHAIR VIII DARK HERO
+* ROG CROSSHAIR VIII FORMULA
+* ROG STRIX X570-E GAMING
+* ROG STRIX B550-E GAMING
 
-Applied.
+Add support by WMI interface privided by Asus for X370/X470/
+B450/X399 boards:
+* ROG CROSSHAIR VI HERO,
+* PRIME X399-A,
+* PRIME X470-PRO,
+* ROG CROSSHAIR VI EXTREME,
+* ROG CROSSHAIR VI HERO (WI-FI AC),
+* ROG CROSSHAIR VII HERO,
+* ROG CROSSHAIR VII HERO (WI-FI),
+* ROG STRIX B450-E GAMING,
+* ROG STRIX B450-F GAMING,
+* ROG STRIX B450-I GAMING,
+* ROG STRIX X399-E GAMING,
+* ROG STRIX X470-F GAMING,
+* ROG STRIX X470-I GAMING,
+* ROG ZENITH EXTREME,
+* ROG ZENITH EXTREME ALPHA.
 
-Thanks,
-Guenter
+>There is at least one more sensor hiding in the EC address space: the
+> south bridge voltage. And it seems its value is not an integer, so the
+> conversion to mV will not be a simple get_unaligned_xx() call when we
+> locate and add it.
+@Eugene Shalygin: I have updated patch with usage separate function for 
+convert binary data to sensors value as you proposed for sensors with 
+sophisticated logic. Also I have moved quiery creation logic to sensors 
+setup function.
 
-> ---
->  Documentation/hwmon/dell-smm-hwmon.rst |  3 ++
->  drivers/hwmon/dell-smm-hwmon.c         | 61 +++++++++++++++++++++++---
->  2 files changed, 58 insertions(+), 6 deletions(-)
-> 
-> --
-> 2.20.1
-> 
-> diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
-> index 3bf77a5df995..beec88491171 100644
-> --- a/Documentation/hwmon/dell-smm-hwmon.rst
-> +++ b/Documentation/hwmon/dell-smm-hwmon.rst
-> @@ -34,6 +34,9 @@ Name				Perm	Description
->  =============================== ======= =======================================
->  fan[1-3]_input                  RO      Fan speed in RPM.
->  fan[1-3]_label                  RO      Fan label.
-> +fan[1-3]_min                    RO      Minimal Fan speed in RPM
-> +fan[1-3]_max                    RO      Maximal Fan speed in RPM
-> +fan[1-3]_target                 RO      Expected Fan speed in RPM
->  pwm[1-3]                        RW      Control the fan PWM duty-cycle.
->  pwm1_enable                     WO      Enable or disable automatic BIOS fan
->                                          control (not supported on all laptops,
-> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-> index 774c1b0715d9..476f2a74bd8c 100644
-> --- a/drivers/hwmon/dell-smm-hwmon.c
-> +++ b/drivers/hwmon/dell-smm-hwmon.c
-> @@ -76,6 +76,7 @@ struct dell_smm_data {
->  	int temp_type[DELL_SMM_NO_TEMP];
->  	bool fan[DELL_SMM_NO_FANS];
->  	int fan_type[DELL_SMM_NO_FANS];
-> +	int *fan_nominal_speed[DELL_SMM_NO_FANS];
->  };
-> 
->  MODULE_AUTHOR("Massimo Dal Zotto (dz@debian.org)");
-> @@ -673,6 +674,13 @@ static umode_t dell_smm_is_visible(const void *drvdata, enum hwmon_sensor_types
->  			if (data->fan[channel] && !data->disallow_fan_type_call)
->  				return 0444;
-> 
-> +			break;
-> +		case hwmon_fan_min:
-> +		case hwmon_fan_max:
-> +		case hwmon_fan_target:
-> +			if (data->fan_nominal_speed[channel])
-> +				return 0444;
-> +
->  			break;
->  		default:
->  			break;
-> @@ -740,6 +748,25 @@ static int dell_smm_read(struct device *dev, enum hwmon_sensor_types type, u32 a
-> 
->  			*val = ret;
-> 
-> +			return 0;
-> +		case hwmon_fan_min:
-> +			*val = data->fan_nominal_speed[channel][0];
-> +
-> +			return 0;
-> +		case hwmon_fan_max:
-> +			*val = data->fan_nominal_speed[channel][data->i8k_fan_max];
-> +
-> +			return 0;
-> +		case hwmon_fan_target:
-> +			ret = i8k_get_fan_status(data, channel);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			if (ret > data->i8k_fan_max)
-> +				ret = data->i8k_fan_max;
-> +
-> +			*val = data->fan_nominal_speed[channel][ret];
-> +
->  			return 0;
->  		default:
->  			break;
-> @@ -889,9 +916,12 @@ static const struct hwmon_channel_info *dell_smm_info[] = {
->  			   HWMON_T_INPUT | HWMON_T_LABEL
->  			   ),
->  	HWMON_CHANNEL_INFO(fan,
-> -			   HWMON_F_INPUT | HWMON_F_LABEL,
-> -			   HWMON_F_INPUT | HWMON_F_LABEL,
-> -			   HWMON_F_INPUT | HWMON_F_LABEL
-> +			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
-> +			   HWMON_F_TARGET,
-> +			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
-> +			   HWMON_F_TARGET,
-> +			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
-> +			   HWMON_F_TARGET
->  			   ),
->  	HWMON_CHANNEL_INFO(pwm,
->  			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
-> @@ -910,7 +940,7 @@ static int __init dell_smm_init_hwmon(struct device *dev)
->  {
->  	struct dell_smm_data *data = dev_get_drvdata(dev);
->  	struct device *dell_smm_hwmon_dev;
-> -	int i, err;
-> +	int i, state, err;
-> 
->  	for (i = 0; i < DELL_SMM_NO_TEMP; i++) {
->  		data->temp_type[i] = i8k_get_temp_type(i);
-> @@ -926,8 +956,27 @@ static int __init dell_smm_init_hwmon(struct device *dev)
->  		err = i8k_get_fan_status(data, i);
->  		if (err < 0)
->  			err = i8k_get_fan_type(data, i);
-> -		if (err >= 0)
-> -			data->fan[i] = true;
-> +
-> +		if (err < 0)
-> +			continue;
-> +
-> +		data->fan[i] = true;
-> +		data->fan_nominal_speed[i] = devm_kmalloc_array(dev, data->i8k_fan_max + 1,
-> +								sizeof(*data->fan_nominal_speed[i]),
-> +								GFP_KERNEL);
-> +		if (!data->fan_nominal_speed[i])
-> +			continue;
-> +
-> +		for (state = 0; state <= data->i8k_fan_max; state++) {
-> +			err = i8k_get_fan_nominal_speed(data, i, state);
-> +			if (err < 0) {
-> +				/* Mark nominal speed table as invalid in case of error */
-> +				devm_kfree(dev, data->fan_nominal_speed[i]);
-> +				data->fan_nominal_speed[i] = NULL;
-> +				break;
-> +			}
-> +			data->fan_nominal_speed[i][state] = err;
-> +		}
->  	}
-> 
->  	dell_smm_hwmon_dev = devm_hwmon_device_register_with_info(dev, "dell_smm", data,
+@Guenter Roeck: I have added both sensors to index.rst, fixed usage of 
+acpi_os_free in asus_wmi_ec_block_read and fixed 'instrnal' typo in both 
+files.
+
+Could you please review?
+
+Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
+Signed-off-by: Ed Brindley <kernel@maidavale.org>
+Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+
+---
+Changes in v6:
+- asus_wmi_ec_sensors: Generate query for all sensors on sensors setup
+- asus_wmi_ec_sensors: Move binary to sensor value logic to separate 
+  get_sensor_value (by Eugene Shalygin)
+- asus_wmi_ec_sensors: Use acpi_os_free without NULL pointer check.
+- Add asus_wmi_sensor to documentation index.
+- Add asus_wmi_ec_sensor to documentation index.
+
+Changes in v5:
+- Fixes build issue reported by kernel test robot with disabled ACPI_WMI.
+- asus_wmi_sensors: Remove sensor->name check as always evaluated to true.
+
+Changes in v4:
+ - Implement wmi driver instead platform driver.
+ - Update documentation with known issues.
+
+Changes in v3:
+ - Use MODULE_DEVICE_TABLE for match devices.
+ - asus_wmi_ec_sensors: Use get_unaligned_be32 instead incorrectly used 
+   get_unaligned_le32.
+ - Add documentaion for drivers.
+
+Changes in v2:
+ - asus_wmi_ec_sensors: Rename asus_wmi_sensors to asus_wmi_ec_sensors for 
+   B550/X570 boards.
+ - asus_wmi_ec_sensors: Use utf8s_to_utf16s/utf16s_to_utf8s instead handmade 
+   fuctions.
+ - asus_wmi_ec_sensors: Use post increment.
+ - asus_wmi_ec_sensors: Use get_unaligned* for convert values.
+ - asus_wmi_ec_sensors: Use PTR_ERR_OR_ZERO.
+ - asus_wmi_ec_sensors: Specify per-board sensors in a declarative way 
+   (by Eugene Shalygin).
+ - asus_wmi_sensors: Add support for X370/X470/B450/X399 boards.
+
+---
+
+Denis Pauk (2):
+  hwmon: (asus_wmi_ec_sensors) Support B550 Asus WMI.
+  hwmon: (asus_wmi_sensors) Support X370 Asus WMI.
+
+ Documentation/hwmon/asus_wmi_ec_sensors.rst |  35 ++
+ Documentation/hwmon/asus_wmi_sensors.rst    |  74 +++
+ Documentation/hwmon/index.rst               |   2 +
+ MAINTAINERS                                 |   8 +
+ drivers/hwmon/Kconfig                       |  22 +
+ drivers/hwmon/Makefile                      |   2 +
+ drivers/hwmon/asus_wmi_ec_sensors.c         | 637 ++++++++++++++++++++
+ drivers/hwmon/asus_wmi_sensors.c            | 621 +++++++++++++++++++
+ 8 files changed, 1401 insertions(+)
+ create mode 100644 Documentation/hwmon/asus_wmi_ec_sensors.rst
+ create mode 100644 Documentation/hwmon/asus_wmi_sensors.rst
+ create mode 100644 drivers/hwmon/asus_wmi_ec_sensors.c
+ create mode 100644 drivers/hwmon/asus_wmi_sensors.c
+
+
+base-commit: be68c4dcc659172af86e875c25d26c6a114b1afc
+-- 
+2.33.0
+
