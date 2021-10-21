@@ -2,108 +2,98 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CC634369CC
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Oct 2021 19:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 386F44369CE
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Oct 2021 19:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232169AbhJUR5f (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 21 Oct 2021 13:57:35 -0400
-Received: from mout.gmx.net ([212.227.15.18]:49797 "EHLO mout.gmx.net"
+        id S231873AbhJUR5h (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 21 Oct 2021 13:57:37 -0400
+Received: from mout.gmx.net ([212.227.15.15]:43707 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231727AbhJUR5f (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 21 Oct 2021 13:57:35 -0400
+        id S231842AbhJUR5g (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 21 Oct 2021 13:57:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1634838902;
-        bh=xdsP6gml0dd2Q0fEMW1hNJf983q2tKghr0Vd2QYvf6A=;
+        s=badeba3b8450; t=1634838903;
+        bh=6FuQuYj16NdgIbX/lw2K6OzlybkRPbtSc2HFQNbFz6M=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LTUvX6IpaxFHJclfYyrZK3JsMoh+Jx0o1WHWZDp4/MVBloXMj++YtFE1ISqs3tC4x
-         9O33HiU516rgcHtrrLujCOsuEMNZOX6FjdQMfl8QnjCtuQPOa2XkfH0lDvR8qyo1rR
-         RE/1I+zJdhJXBPOSLLV0gQ9OOxV4Ax/TXRZD4COQ=
+        b=AxKbJV2Ed0Bz/f+pFv/zG74OcYBGR8h73FocKzvXlT2C8sSjPgQfCgjYm134h43eG
+         zFC8aMqNwJoRtLmU1scWPQTZSKccId8zAd2GVmdMvRnVZrOhdsPSrZaW+tUkWETiRg
+         cpLPRuphyh2tCJKYagLos9q5jcJZ5yL2vwTHcRI0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
 Received: from esprimo-mx.fritz.box ([91.137.126.34]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MJE2D-1mOYN31BoB-00KeYA; Thu, 21 Oct 2021 19:55:02 +0200
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1M8QS2-1mZEYh2PNg-004PTx; Thu, 21 Oct 2021 19:55:03 +0200
 From:   W_Armin@gmx.de
 To:     pali@kernel.org
 Cc:     linux@roeck-us.net, jdelvare@suse.com, linux-hwmon@vger.kernel.org
-Subject: [PATCH 1/5] hwmon: (dell-smm) Sort includes in alphabetical order
-Date:   Thu, 21 Oct 2021 19:54:43 +0200
-Message-Id: <20211021175447.5380-2-W_Armin@gmx.de>
+Subject: [PATCH 2/5] hwmon: (dell-smm) Use strscpy_pad()
+Date:   Thu, 21 Oct 2021 19:54:44 +0200
+Message-Id: <20211021175447.5380-3-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20211021175447.5380-1-W_Armin@gmx.de>
 References: <20211021175447.5380-1-W_Armin@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:47SVpheqy166JFYkXJjZPNc61/pGhjvoSFuyoCqox2UkOm/5xOL
- RgFK8KDSqb3j2SrIBKsF+Nkw6GSmZBnsnKh7FuRJfs9uGL4G8RHXlaEnjXWgbUlgvol5FjB
- RRUsSkQCV7wRS/Hy6LXkZVOaWi4r7pCgD68CHvDuL7yl0flHghG0QC4nn2ijjr5pYmtl7oh
- Zj8CTf2bFQSWvCnIqCLrg==
+X-Provags-ID: V03:K1:uxCblOLguGhSrsohqK3mjt+phttuXFW9nkTtaMisNHpEqE+6Ucr
+ BDTjvYQ7qN2e3xppWvFvm4J5APioVEsROa6f0nTAGBajkM+Hy638tfmTfPbSNQ/LCuDYxEj
+ Zi5n8nIbZNRtfhW5NbBs0AZ/rqduM8gZv4XPyBfntavpPvHYL+I1PJoOzTpiPzmGC/R5klU
+ tkX8YgdIiYhmCMQfWm+Xg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cC6Wx2g7khI=:B6FPxVUg6LPpn0L4p5dtkw
- 1pf3G3RZnzeD09N+wVcIVIkYydwUcZwm+1Cynq2N2aKWhi4EHv/SMpBmjr9K1twf45y8Kk/NZ
- 0Y8SZuuEgc27D8STkjeTDONEPc44iBsIhveyk8oj+BRjrEJF4p/arggSR6UWk7DQgEXqGYteY
- UXSxme7QyMeoYjVWAiE2hOP1i1I2Ca+uVmvA4NqLzDWarqmUVeAqRgiFS1LtGOVS5BCoQj5dN
- XizCEu1xdCb+TVkpNNDXOR0gcdclLtz4ut7i898mRZX6q5hLzGy2gcRh6KuzLPfdf+MB2ce7U
- +VuqNVbJgijT8e5/Ru1mi5VShbbZn9Lb3FhEU6LTXi/nE+GPj1Cjd+Tol+dyzqYFzfqX8wM5j
- 6pKUhGvTS4XVnBQLdKg8VHyvaQuDm4AGix1Zl1S4QeULOrZzgebMAl/GEP5uO0pggyNb2TezF
- uFTGO0CFMisIj1MUJkumKY6H93VbNjxn3IqpfGeTJeqMbrAszrjGT2OI3S4jSGfy9oxempUVv
- 3RWElpbdeUQ66+FSvv0bNB/t6UAQfhycOSt1JYxXmPClOD8pQoE414HkZu20TyzhilOKpMlxh
- pvJ7hCTW4Pt+2EyiqkmM1zcEdS0oEW+KKfr+0yKHA/RUSUQ7KXg0M32cIL3KUfCHr+RLwZUhG
- Gr7Up8hFT4vBl6ckqUQdjrdSFqUt4XFvJOgcFl/7O4YHrC99X+U3tQUOYkZUZxMGxNfe4SdvG
- SCvZUe7LsZNdh0AIe+7G07JKdsC/M64zTA7cHRnHGHaphDdtW1uAwbI6uXzsRedodi5ViwcjK
- m7MTFZFzQ4Tk4ZGkv+4lu+8rW7bOBf6A44jnnMmLoalKDccF0rTv7V3/g9c2Q50bAoiVPWFYY
- Eob6WC0gAkX8jUUq2fVMrJtYsn8Tyau5w82z42hT+umKwIvi+3BwbBKH1XJywoawN4LJhSw3D
- xbbKLigFbetCmRLo6vj5RV3DBmJx8sEotUWfrePo5Py1S8NHZ/H+qJLOiSU2l403gpzIPhqS6
- x3n9Lc5Q/y2/iDUuxUGIWoMdgDVU0QKE4cMjrfLE2rdDiQHl3+4AJWpSHEX+2fXzUOot4Z32O
- afhaJ3fVbEE7FQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:L0I1iPCmAqg=:+In+6yB9ZLAhykORSQNsYl
+ 3osJQkhBV0uMWskZNxMYdTr1RMVhqar9mireQH71bDhr3by6p8/TXP61zDmDrA7hb5PlQ0YZw
+ TjciXjUe9+b6Z4kSLBc44OOut19WR3y0qeNshz5o/z/4G57zabjCrB9o8jzH2jNtFK9FMdQyF
+ VigzarlHxVYlFAs7LjCZwggCbs3dhMkjQquTuR5pf8+jNLS8Qz6IHfbOOqSWt16U86cSynWRV
+ ghMqhkXq9KuLe/W1S7dWm0AZmDorKPrYHOovQwnn7SHCNUzsb4w4OgW9LMxCi87R3YHf0KDiC
+ DCh1gPhLgh2z3E8vXpmUGlaYffAyBl73jqZiHsZi1Y7W25AwIgywBNtrioWDRcYuYTSAyvvO2
+ ER6tffCIAGDIXfoitJ/E7b+3L8FXRTz0w4l2Ft26950B78Q6XcX5urk38aA4QPzrLApJQ5G8K
+ x8cKrSjE2yNjphK2ZSfXKW8z9urYSeg2G/jGBTlwMVUYO5Pit/Ur95QjAb6VTGaQhbtECT0AR
+ P0/Sl8P2j3bUJgZVhW9WPlnMHevNaA2C6T8v6EIajUV/IEoLGdXlrbuXvqltceCaRh5XKebX1
+ cGS2W18VIeOj6hIF7mImbyZKpTRfRwfC8RWwjIL4cT+s3qvfwUkatyWdVbJQrD6gH95ETjOys
+ sBpumE4iZTBTPM/Rs97cNyr0H4/MyTYt0Q3MGmCl3qC70vFGIMxYiPuEqkxYXsTQNDgZflRyl
+ CczDvi+p6GP+R8IjKmr0Jb2PJu/TOLCKoY9GsDpbGgDQ3OJ7gxSGatpUvlDU/ymcScR/8PT33
+ AY/a1dIamoihG/iL0WrBxLTe5BwwiT8lJucVQEI2tUfyKBWMBV4yeFwPPTfghjGo+AaL1nIi6
+ RN6fV9pyJNdx/C5PYy3iB/Ub6kCP8SWetA5kRcEy0pRdmWDUwdlJj/sjwTAP9ZJI/XsjGAmgG
+ Sr+dIGWTjV8SY8BQHksF0gnzgiFWRb+lt5/u8KXFGH2nPZFu5xazcQ+9h9cVZpYdmEh25yGQI
+ rEl47osL5Py6/6FClax/p/8mlUKpTBainBWi7TdtcaCkgKuVywAB+rHjf2LRMoPaW9yceVW7e
+ xFrv0GcsHIrXNQ=
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-Sort includes for better overview.
+Using strscpy_pad() allows for fewer memory accesses
+since memset() will not unconditionally zero-out
+the whole buffer.
 
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 =2D--
- drivers/hwmon/dell-smm-hwmon.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/hwmon/dell-smm-hwmon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
 .c
-index af0d0d2b6e99..9773d6c0477a 100644
+index 9773d6c0477a..b0c591bb761a 100644
 =2D-- a/drivers/hwmon/dell-smm-hwmon.c
 +++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -12,22 +12,22 @@
-
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-
-+#include <linux/capability.h>
- #include <linux/cpu.h>
-+#include <linux/ctype.h>
- #include <linux/delay.h>
-+#include <linux/dmi.h>
- #include <linux/err.h>
-+#include <linux/hwmon.h>
-+#include <linux/init.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
+@@ -25,6 +25,7 @@
  #include <linux/platform_device.h>
--#include <linux/types.h>
--#include <linux/init.h>
  #include <linux/proc_fs.h>
  #include <linux/seq_file.h>
--#include <linux/dmi.h>
--#include <linux/capability.h>
--#include <linux/mutex.h>
--#include <linux/hwmon.h>
--#include <linux/uaccess.h>
--#include <linux/ctype.h>
++#include <linux/string.h>
  #include <linux/smp.h>
-+#include <linux/types.h>
-+#include <linux/uaccess.h>
+ #include <linux/types.h>
+ #include <linux/uaccess.h>
+@@ -472,8 +473,7 @@ i8k_ioctl_unlocked(struct file *fp, struct dell_smm_da=
+ta *data, unsigned int cmd
+ 		if (restricted && !capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
 
- #include <linux/i8k.h>
+-		memset(buff, 0, sizeof(buff));
+-		strscpy(buff, data->bios_machineid, sizeof(buff));
++		strscpy_pad(buff, data->bios_machineid, sizeof(buff));
+ 		break;
 
+ 	case I8K_FN_STATUS:
 =2D-
 2.20.1
 
