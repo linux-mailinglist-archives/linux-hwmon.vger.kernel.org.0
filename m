@@ -2,90 +2,97 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 195584376D0
-	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Oct 2021 14:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C52E437A4C
+	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Oct 2021 17:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232130AbhJVMYK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 22 Oct 2021 08:24:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53596 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231597AbhJVMYJ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 22 Oct 2021 08:24:09 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07DDC061224
-        for <linux-hwmon@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id d3so872370edp.3
-        for <linux-hwmon@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=opUIgqVWyZcHOIldu+LgQVfQLu2JLSm4eq0yRYoR8X3EkJ0jJdtgK1LJrEC4fAYG/u
-         x5QndCavFk6KrgrLKL2M04eWhmo9Ht5gsCUOTzm6BFmYlOhPKCnfQmAWRcGWJ3Kgd+Po
-         dxnzE1GzD0Fe/zdoRYGanqsnNZ7HZwcDd5jvb2P53Z7ySB2eUUW5eKcCwJjvHcLwQW3D
-         hmZMQ0WQ67mADARNZlQPTMDFACAa1pT2f55C5E+z5xU/0SGGI05AA1ys/nk/8Z7QRecx
-         rbFLK51ODld/urTp+hjZ3tCNNEiv03NL8R5n8H4ZVv1sIR3Pcfr4FSd/aUugOrtvCJBK
-         4QUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=EI5IZ7nKZCeoFGEE7hH2nUoM+04QPIU71QnvSYrv5NuVNNC42ZM8JsPfXY8HWZNjHm
-         EgkUWoqbySbrJh1yCE7rSaQAMEBN20FVDNgk6zixSX5vHzLb+OmvVaafnoNTF9296ISq
-         Ww9IksuShhsgabCQYJgjz8rJR1WT+hu0QT/FfDkzxtWpNDzjBNKlHAIAIREa8CK0Urc6
-         QewSLQm08Fr0K7kmFtcRurkPyuuBjRxMMTENoMYsPLEZSeRYkZ2mNn/r8KZIIs8Rv9FD
-         yPmPAbdW8NbCHRni7QoVN3LxdgWnMWFuhG3V8/mjkpzOhqqGjdMMBWoZvc63Mh975fvj
-         enmA==
-X-Gm-Message-State: AOAM5310FSMqQRuOgBsiSyvNIQxSRWd/ILTdvk/+OUptciMSI0hSjIXw
-        ZWjnpoLpgPuQKzBJY3P4XgNYBAoIqk9USLxNRN0=
-X-Google-Smtp-Source: ABdhPJy2Z+mCK6UsBedDHfuHLqHjOelryE6bx9xZ/OavTEghlxY+bPID2uQBe/oD5nVNF4jHf9BZTkpf3h9vpVXzB08=
-X-Received: by 2002:a17:907:1b0a:: with SMTP id mp10mr15488909ejc.29.1634905309828;
- Fri, 22 Oct 2021 05:21:49 -0700 (PDT)
+        id S230340AbhJVPvZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 22 Oct 2021 11:51:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46158 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229484AbhJVPvY (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 22 Oct 2021 11:51:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 158A860C4B;
+        Fri, 22 Oct 2021 15:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634917746;
+        bh=nCXsstYKgI+3xhqgniDO8VVojhjUGxDvkuWH892bwXc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=opQpIyC30qNKCpg6A5Y5g9lqMfcqllm0W2pppRZgX7nJKl1UIs/4l/dPwE+SSChYQ
+         qlOrAb4ASWODbEc2ChqWs6Z/bW7R/fsm9X1bGYUQ5M4pN2+eJ0LNUzRXP5XHjB2Jnp
+         6Guu7LTNcPJvWSsrEOAqjzABH/TaEYh4fV1wtaswXoPkHPnXPAztGX61/O2M9ZQDk2
+         2iVL6bengqmvIuxeGomtoWKu0fIYfu8z5/zUvDvL938oRp+/jrck7fgKtAUlaJdvbY
+         p9+JINX8k/OGQZyhLZDafJymUCYbTyV9fb5opl41LmwHUlDHzdyLw3J4aY0++W4uSd
+         5TBEZOKZV+dfA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Tim Crawford <tcrawford@system76.com>,
+        Jeremy Soller <jeremy@system76.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kate Hsuan <hpa@redhat.com>,
+        "David E. Box" <david.e.box@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
+Subject: [PATCH] platform/x86: system76_acpi: fix Kconfig dependencies
+Date:   Fri, 22 Oct 2021 17:48:40 +0200
+Message-Id: <20211022154901.904984-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Received: by 2002:a17:907:7fa7:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:21:48
- -0700 (PDT)
-Reply-To: bahadur.rayanby@gmail.com
-From:   Ryan Bahadur <dr.philposman7@gmail.com>
-Date:   Fri, 22 Oct 2021 05:21:48 -0700
-Message-ID: <CAMOT=VQ19xGMh1Soq8rNHNKaBCqZh03d0u+Nrf_Ou9bAtd-seQ@mail.gmail.com>
-Subject: CAN I TRUST YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+From: Arnd Bergmann <arnd@arndb.de>
+
+When CONFIG_INPUT is disabled, this driver now fails to link:
+
+ld.lld: error: undefined symbol: devm_input_allocate_device
+>>> referenced by system76_acpi.c
+>>>               platform/x86/system76_acpi.o:(system76_add) in archive drivers/built-in.a
+
+ld.lld: error: undefined symbol: input_set_capability
+>>> referenced by system76_acpi.c
+>>>               platform/x86/system76_acpi.o:(system76_add) in archive drivers/built-in.a
+
+ld.lld: error: undefined symbol: devm_hwmon_device_register_with_info
+>>> referenced by system76_acpi.c
+>>>               platform/x86/system76_acpi.o:(system76_add) in archive drivers/built-in.a
+
+ld.lld: error: undefined symbol: battery_hook_unregister
+>>> referenced by system76_acpi.c
+>>>               platform/x86/system76_acpi.o:(system76_remove) in archive drivers/built-in.a
+
+Add Kconfig dependencies for each of these three.
+
+Fixes: 0de30fc684b3 ("platform/x86: system76_acpi: Replace Fn+F2 function for OLED models")
+Fixes: 95563d45b5da ("platform/x86: system76_acpi: Report temperature and fan speed")
+Fixes: 76f7eba3e0a2 ("platform/x86: system76_acpi: Add battery charging thresholds")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/platform/x86/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+index 56bcf80da60a..c422ee785c56 100644
+--- a/drivers/platform/x86/Kconfig
++++ b/drivers/platform/x86/Kconfig
+@@ -923,6 +923,9 @@ config SONYPI_COMPAT
+ config SYSTEM76_ACPI
+ 	tristate "System76 ACPI Driver"
+ 	depends on ACPI
++	depends on ACPI_BATTERY
++	depends on HWMON
++	depends on INPUT
+ 	select NEW_LEDS
+ 	select LEDS_CLASS
+ 	select LEDS_TRIGGERS
 -- 
-Greetings,
+2.29.2
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
-
-I am Mr.Ryan Bahadur, I work with Cayman National Bank (Cayman Islands).
-
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
-
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
-
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-bahadur.rayanby@gmail.com}
-
-Regards
-Mr.Ryan Bahadur
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands.
