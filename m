@@ -2,92 +2,79 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13B7443BB4E
-	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Oct 2021 21:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E09643BF54
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Oct 2021 04:13:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237231AbhJZUAl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 26 Oct 2021 16:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47420 "EHLO
+        id S237733AbhJ0CPo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 26 Oct 2021 22:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239052AbhJZUAk (ORCPT
+        with ESMTP id S235291AbhJ0CPo (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 26 Oct 2021 16:00:40 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8D9C061570;
-        Tue, 26 Oct 2021 12:58:15 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id x27so1209434lfu.5;
-        Tue, 26 Oct 2021 12:58:15 -0700 (PDT)
+        Tue, 26 Oct 2021 22:15:44 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95ADC061745
+        for <linux-hwmon@vger.kernel.org>; Tue, 26 Oct 2021 19:13:19 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id c4so879689plg.13
+        for <linux-hwmon@vger.kernel.org>; Tue, 26 Oct 2021 19:13:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=G2EUbiSBFqMAbwlq+Hh6bZmWi5bhxCtnpI1o6+QMB2g=;
-        b=SoHipItjHdtWBcxrwaOJGDTQDqdCu4ryplWxTF37sBQ1eLniffJQZZh80tiRvrhWJw
-         qzhJC2dZwIRHZcVcW5I6WZOC0H5nG3gHUSB0WZSvqrau4BY2IqXUbrwyHsTmzkXlPBxA
-         rbeM4pBik8HbrF9E2CYIjhW2SLcEb5F1Qt2OUguC6UxUtoF6BaA7Td41aCHapJzUHDfQ
-         PtpX2JPiIczvqi5lEO69txh+KLUsXX/MjyU+cnlYilh/gDG3XdALHzVdA7SuzPp0rhRt
-         B7PouoYeKTm5SeHeeaXJaOg+7MaYcXlQMKgpnE2o2gzmIkwTstXWvo3GcfHchAiro5cQ
-         MWhQ==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=EG9Nsjl+Eip141PWF+gaBUl1KOWYkVWkt1OXOEZnqtckn0jrX24eTk8UDRzdanWsjC
+         9yBSsvsQJotknvFKA9EQtwg6TYbjKuB2B6TeA9FpEjuXwfev4spJrb1stelnldSVU05K
+         9gDfyUx9hxjQgXAvSoidRv5/L36SOUZnVcgUrTM9tbDStJSMOyaTK7co10bTYaslWL6G
+         KEMVQ2/UtsJj5Uhe9sAzIbF0NlCUlFDN4b2Grw7CXZCthk66H6QQ7cfpSD7pU+Ay2+Nj
+         Q0QsrrBll0HvZsVEqt8NPrW+XN3K+0FC+b/X0b9b+fJud88cD9kdaePkDe4cxFsTTvDp
+         HYfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=G2EUbiSBFqMAbwlq+Hh6bZmWi5bhxCtnpI1o6+QMB2g=;
-        b=OD7sza7vVRaQimbIS0rZ7TTEnRPEl3ID6tCvNqO6D5ZEcGFgjc4MslsOP0b9w0Zvcd
-         XyjAa55HpDKt6zwz7EQJgxpfzaowbZfrNUB8RheEZKiQWRJHKnYMdc8FUYdHvuvGFE+8
-         gwUufP8/9ZO7p1b2mjn0hF2FGsYUszqn1R9OOr6heGqFPLzYdz49OO4wW34MKnYRqNS2
-         H/OEvvXBroct5HIfoabjo/+uXQXjt3JzuAjSAZa77SsTT2d+jrbmov+Ls4npCgbdRdHr
-         ZTv6T8+thIOpaP0X0fTmC8SwjvOqu9ISLzo9NGgbxGZ5tQ+LHIsZ6ECxyMPEZTFXmFs1
-         h9JA==
-X-Gm-Message-State: AOAM532wBlpC19nsDijb+ZHhk1sx5vmv4rVj6YdcMKvxrpZWULH/SWwy
-        DdWpXOVrTTWLukihr7NmvYoFXeDohUtP6w==
-X-Google-Smtp-Source: ABdhPJzAIHsmf6jhU+O5aBG2Yjds5qCqmoR//7ADUCzjefCud9HvzJygMhzcWwpYBJ0ouhiOtkmwHA==
-X-Received: by 2002:a05:6512:3f04:: with SMTP id y4mr24721401lfa.180.1635278294066;
-        Tue, 26 Oct 2021 12:58:14 -0700 (PDT)
-Received: from penguin.lxd ([94.179.4.108])
-        by smtp.gmail.com with ESMTPSA id w26sm2436759ljh.18.2021.10.26.12.58.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Oct 2021 12:58:13 -0700 (PDT)
-Date:   Tue, 26 Oct 2021 22:58:05 +0300
-From:   Denis Pauk <pauk.denis@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     eugene.shalygin@gmail.com, platform-driver-x86@vger.kernel.org,
-        thomas@weissschuh.net, Tor Vic <torvic9@mailbox.org>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 1/3] hwmon: (asus_wmi_ec_sensors) Support B550 Asus
- WMI.
-Message-ID: <20211026225805.1504a9f9@penguin.lxd>
-In-Reply-To: <YXcKLvRu3gRm3zUF@smile.fi.intel.com>
-References: <20211022200032.23267-1-pauk.denis@gmail.com>
-        <20211022200032.23267-2-pauk.denis@gmail.com>
-        <YXcDcXrUo4a/KAsT@smile.fi.intel.com>
-        <YXcHYvleoOr6sqMK@smile.fi.intel.com>
-        <YXcKLvRu3gRm3zUF@smile.fi.intel.com>
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; aarch64-unknown-linux-gnu)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=598MeWR14vh3bVDCJ2P8gR8UkcTu1i8eq1rAprAmcyV7Uq83RvsRTbZ0hrc1KRX8w1
+         Wrfm58rPIgJENzLK/pFZWGU+VrKNdZWqTG2qTjCnc1otM/1eOmgiVBmpdCiHPhoN/+rL
+         WUMz9VwgioRwggfJXjw/SqtFUBVtzhchK0L55/24CFxmIZTFP7b7u1SLi1TDfiaabA9l
+         +Ojvm9PRBj/ORIVSWRuTfKJ/q5+baWrcKJ8FXK/0nOc9pAd6vGj+dsgqDPCqhFM4tXTn
+         FNybgM6DpAKR6VYMyasHvueEx/BjOxVCcLpqr0mPdrLaf5+JigZ+YG+cGWyGeQyVYlcG
+         zMZw==
+X-Gm-Message-State: AOAM531IN28ooymmGmjRwScYubTjIFcfuZftz+9yIuikTdZjbDvF5T0m
+        pHtrHOErCUhZ6uN35HrYlC9kmkguIcoUIFX7Idw=
+X-Google-Smtp-Source: ABdhPJzwOfSEFC+ZhBFJFbO7cJJvi3wx28mFQEmwNZmSp0wIuhE8auS2ZQZdxDxGrsxbdq14UKAhXuffjqSVAtd5Ev8=
+X-Received: by 2002:a17:90b:1c02:: with SMTP id oc2mr2782635pjb.52.1635300799308;
+ Tue, 26 Oct 2021 19:13:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Sender: officedeskofgeneral0@gmail.com
+Received: by 2002:a17:90b:4c11:0:0:0:0 with HTTP; Tue, 26 Oct 2021 19:13:18
+ -0700 (PDT)
+From:   "Mr. Mustafa Ali." <muafalia@gmail.com>
+Date:   Wed, 27 Oct 2021 03:13:18 +0100
+X-Google-Sender-Auth: -ap4vRnh22PsKG1mBvTJWKrUl0o
+Message-ID: <CAL=mczUC43H-jvBwTepLgLaj-FOUBZcvw1kdD=RpB4-U2MPw0g@mail.gmail.com>
+Subject: Greetings Dear Friend.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Andy,
+Hello Friend,
 
-Thank you, currently code has returned N/A by some reason. I will search
-place of regression.
+This message might meet you in utmost surprise. However, It's just my
+urgent need for a foreign partner that made me contact you for this
+transaction. I assured you of honesty and reliability to champion this
+business opportunity. I am a banker by profession in Turkey, and
+currently holding the post of Auditor in Standard Chartered Bank.
 
-On Mon, 25 Oct 2021 22:49:02 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-...
-> 
-> Okay, here a few additional fixes (make them symmetrical and hope that
-> it will compile now):
-> 
-...
+I have the opportunity of transferring the leftover funds ($15 Million
+Dollars) of one of my clients who died along with his entire family in
+a crisis in Myanmar Asia. I am inviting you for a business deal where
+this money can be shared between us if you agree to my business
+proposal.
 
-Best regards,
-    Denis.
+Further details of the transfer will be forwarded to you immediately
+after I receive your return letter.
+
+Best Regards,
+Mr. Mustafa Ali.
+mustafa.ali@rahroco.com
