@@ -2,129 +2,81 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CED33441351
-	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Nov 2021 06:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FBCE4414D4
+	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Nov 2021 09:06:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbhKAF6b (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 1 Nov 2021 01:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
+        id S231707AbhKAIIg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 1 Nov 2021 04:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbhKAF6b (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 1 Nov 2021 01:58:31 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5019DC061714
-        for <linux-hwmon@vger.kernel.org>; Sun, 31 Oct 2021 22:55:58 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id o26so29920325uab.5
-        for <linux-hwmon@vger.kernel.org>; Sun, 31 Oct 2021 22:55:58 -0700 (PDT)
+        with ESMTP id S231663AbhKAIIe (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 1 Nov 2021 04:08:34 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92CE1C061766
+        for <linux-hwmon@vger.kernel.org>; Mon,  1 Nov 2021 01:06:01 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id l13so34793685lfg.6
+        for <linux-hwmon@vger.kernel.org>; Mon, 01 Nov 2021 01:06:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nathanrossi.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kvDi7P1+hnhccmE+Fg1M88dx0x/Pf/SRqjD966XzXcM=;
-        b=g4RZtY0usAQVaS4ZVUUvWcPXYWdJBxsuulUx759dvzewq9gXtiSytW8sX0NqCl+89b
-         oJ+xAjo+PM8cEyk08s3gEKLbufhZHPmIt2vHRZ1uTLsnGpH27ISsN5W7toRo5uwZQ+mG
-         AM+Xk4sCLu7Ir94uMKlAh6zywABxA0i+OhYTw4vSOExyWtwaWyiF6LFuuNdjRFSl0UBt
-         WcpzBdAsIpcvjtWl0RRAFMmRtMr+iUgUEnk8KL7qsJ/3HWIy2YhASR3yF/qd5WvUtDFe
-         bvyr5NrISER0H2IvCQKoxOp71jnfWFVcEuvZOnQ+BE6H9I5HL0gxi0CnuPf+FOaHgOnU
-         GU1g==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=J/sLAHxRh6EjJh2rcjPDJLzA40VXjb4DP54UXQAr8IU=;
+        b=jTwGY7UqyQ8YIhJUDjrqZPtk3LzrWCAUOAMDPLz5M7CqLBHqNsFTo9C861qV1B25Xf
+         r5L553Wxmro5Ww3I0Kz3a52AwkmZqFToii6+0ZOhpUkOfcb53PnNGE9m6Sqik3zmhZwo
+         n/R9HTp53zn5NI3DbL08muEwIh9gH7g9lDe2tstM5tUGQD80ibC8oJ7RZsh0jabUj80l
+         TjW7jDszyj0LgBKofuNs3yAxUhi8ze1MSxaF3AEB8qSt1N3bygNegk5wBFiWacOIsTYm
+         giGQNkRW+M+En5ZqEkyuSVwtFALtbKc66CUkcVFPmwMgTZmFkWlfrtrQ91sQ12FB43ir
+         IgcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kvDi7P1+hnhccmE+Fg1M88dx0x/Pf/SRqjD966XzXcM=;
-        b=pRyF9JMJ7XqKEXGWSDyDpRInQnBfpW/ErjvLLm4kpSuz3o/ZrrGWgd2PCLJsnCmfcb
-         h6QQd8dSGOKnJ6s7coa1Y6mGPh+8pHMOIDKq1Dk2+AAaJdWPfzvEIcYfyWGYSg4jqg7F
-         lXCszC3YlCcvHG2LO8oZkoE6Eura0KBaejZ2XmdQTaTEf1PKK1CFJhcn15QnAYpbf3tl
-         /nytPja2XyhY0r6MCZ1m1sFDyrQhdBvsjnxh51A9BFh2szdq5KHD8HbcLrJW6/6B5CWU
-         tZGp8BNknz8t7HvTcCLKUFJqhNmIJjGHYNGxHno1R3sfn7P6Uh7el1ft+vKirPc19Y5B
-         Lqfw==
-X-Gm-Message-State: AOAM532Gb28y2AMquzeqK/uFClerBnEeojs2o8GmDnkt3wx8uAiAaOLd
-        ovdOAZwcGXShn2TQztI4vfDvion9E/dIzpkbwqgmvQ==
-X-Google-Smtp-Source: ABdhPJzsP6qDzEIILYFCuQw/jMFTuXBChN6P8BBNI+raeI+ULsw/DzHpN/5wIpzgscMbZkqnzrOZvwI/w/6SLAqZgns=
-X-Received: by 2002:a67:fa93:: with SMTP id f19mr26730238vsq.48.1635746157476;
- Sun, 31 Oct 2021 22:55:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=J/sLAHxRh6EjJh2rcjPDJLzA40VXjb4DP54UXQAr8IU=;
+        b=kDMFp+qzU/eTqlkAiubwVlnpgQSt8xfIPMHf/VGKIBvYyFiv1RWv6JStZOVRrSpLdh
+         aSrSPEXcaaybp2JfJLr5Wcc1qg0gY5K7ZNpu3pehX5RqMCSgavaWVy8fXC4qmOeeO43C
+         sPzjMDx1Bshjw/UO+Fck1S2GXEYc2vD25jMI4mWY+nm2o5nw8U/44TP8PtBmoBCpuY2d
+         jH7lILX05a7RxkupBgSolsiOYUrKLekGDXktv65tpJffF8UoVlf1dfNVDrctq4C7LBs4
+         c4wTnOK4WojRE7fE5mnYKQWNGksmw5VflCaDWiRXvW3tFs5Pxo+mTtzEkmSiheEhWH15
+         9ERg==
+X-Gm-Message-State: AOAM530Vsjui8vtq0V1Uqj0ft2SsQKx0SUcT3OHVUvAPseJupB4zavIg
+        p7Ot0yWJ4eOridiYVUG1pPEFoqK3LK5Eh8tAZmk=
+X-Google-Smtp-Source: ABdhPJxmqEVdpxtX6Hrcfxe4l+hmj7ibNqiYjCRoHEGQmkHQsxyv4j0y0ocCVsmwYp4ABnpO0ho1EyHAGzTI8DbI2zw=
+X-Received: by 2002:a05:6512:3696:: with SMTP id d22mr7627111lfs.659.1635753959932;
+ Mon, 01 Nov 2021 01:05:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211028081030.719265-0-nathan@nathanrossi.com>
- <20211028081030.719265-3-nathan@nathanrossi.com> <7b6764bf-4978-60ec-b1e6-8d59077c3023@roeck-us.net>
- <CA+aJhH1aGJXwYSCU8RC275G5=qGLyZRK94g9ic24wxKuRGCwEA@mail.gmail.com> <43c17bba-d4bd-1f9d-5034-1f5a9279d751@roeck-us.net>
-In-Reply-To: <43c17bba-d4bd-1f9d-5034-1f5a9279d751@roeck-us.net>
-From:   Nathan Rossi <nathan@nathanrossi.com>
-Date:   Mon, 1 Nov 2021 15:55:46 +1000
-Message-ID: <CA+aJhH0EBUjQhjQhxj-kfJzmpqGN6ZMNn_M-pAae_V9yPQhs3A@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] hwmon: Driver for Texas Instruments INA238
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Nathan Rossi <nathan.rossi@digi.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>
+Received: by 2002:a05:6512:304b:0:0:0:0 with HTTP; Mon, 1 Nov 2021 01:05:59
+ -0700 (PDT)
+Reply-To: aisha.7d@yahoo.com
+From:   Aisha AG <rbx17058@gmail.com>
+Date:   Mon, 1 Nov 2021 00:05:59 -0800
+Message-ID: <CA+KbyychNgycp0rGBpdptJEdAFJQQCku4iDOhYe4CxitYXaueA@mail.gmail.com>
+Subject: Hello Dear,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, 1 Nov 2021 at 13:48, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 10/31/21 7:20 PM, Nathan Rossi wrote:
-> [ ... ]
-> >>> +
-> >>> +     if (attr != hwmon_in_max && attr != hwmon_in_min)
-> >>> +             return -EOPNOTSUPP;
-> >>> +
-> >>> +     /* convert decimal to register value */
-> >>> +     switch (channel) {
-> >>> +     case 0:
-> >>> +             /* signed value, clamp to max range +/-163 mV */
-> >>> +             regval = clamp_val(val, -163, 163);
-> >>> +             regval = (regval * 1000L * (4 - (int)data->gain + 1)) /
-> >>
-> >> nit: The typecast "(int)" is not needed here.
-> >
-> > Due to the unsigned type of gain, it causes promotion of regval (and
-> > the rest of the numerator) to unsigned long which causes issues with
-> > negative numbers on the divide. It makes more sense for gain to be an
-> > int to begin with, I will change it to int to avoid the need for type
-> > casting.
-> >
->
-> Are you sure ? I initially thought that as well and wrote a little test
-> program with that expression, but it didn't do the promotion to unsigned.
->
+-- 
 
-It definitely calculates incorrectly at run time (on an arm 32-bit
-platform), looking at the gcc output from -fdump-tree-original reveals
-some more insight. Which is that the promotion to long overrides the
-unsigned (from the 1000L) on long=64 but not on long=32.
+Hello Dear,
 
-Where regval is int, and gain is unsigned int (u32).
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological
+Daughter of Former President of Libya Col.Muammar Al-Qaddafi.
+Am a Widow and a single Mother with three Children.
 
-regval = (regval * 1000L * (4 - gain + 1)) / 5;
--> armv7-a (invalid)
-regval = (int) ((((long unsigned int) regval * (long unsigned int) (5
-- gain)) * 1000) / 5);
--> x86-64 (valid result)
-regval = (int) ((unsigned int) (gain * 4294967096 + 1000) * (unsigned
-int) regval);
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar $27.500.000.00, and i need a trusted
+investment Manager/Partner because of my current refugee status,
+however, I am interested in you for investment project assistance in
+your country,may be from there,we can build business relationship
+in the nearest future.
 
-note: 4294967096 is -800, 1000 * (4 - gain + 1) => (-800 * gain) + 1000
+I am willing to negotiate an investment/business profit sharing ratio
+with you based on the future investment earning profits.
 
-Slight variation without the 1000 being long.
-
-regval = (regval * 1000 * (4 - gain + 1)) / 5;
--> armv7-a (invalid)
-regval = (int) ((((unsigned int) regval * (5 - gain)) * 1000) / 5);
--> x86-64 (invalid)
-regval = (int) ((((unsigned int) regval * (5 - gain)) * 1000) / 5);
-
-regval = (regval * 1000LL * (4 - gain + 1)) / 5;
--> armv7-a (valid)
-regval = (int) ((unsigned int) (gain * 4294967096 + 1000) * (unsigned
-int) regval);
--> x86-64 (valid)
-regval = (int) ((unsigned int) (gain * 4294967096 + 1000) * (unsigned
-int) regval);
-
-I think it still makes sense to change gain to be int, and avoid the
-unsigned type issues.
-
-Regards,
-Nathan
+If you are willing to handle this project on my behalf kindly reply
+urgently to enable me to provide you more information about the
+investment funds.
+Best Regards
+Mrs Aisha Al-Qaddafi.
