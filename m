@@ -2,81 +2,146 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FBCE4414D4
-	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Nov 2021 09:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4585F441CF8
+	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Nov 2021 15:57:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231707AbhKAIIg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 1 Nov 2021 04:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54068 "EHLO
+        id S231741AbhKAPAJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 1 Nov 2021 11:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231663AbhKAIIe (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 1 Nov 2021 04:08:34 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92CE1C061766
-        for <linux-hwmon@vger.kernel.org>; Mon,  1 Nov 2021 01:06:01 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id l13so34793685lfg.6
-        for <linux-hwmon@vger.kernel.org>; Mon, 01 Nov 2021 01:06:01 -0700 (PDT)
+        with ESMTP id S230261AbhKAPAI (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 1 Nov 2021 11:00:08 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A28C061714;
+        Mon,  1 Nov 2021 07:57:35 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id n13-20020a9d710d000000b005558709b70fso19193628otj.10;
+        Mon, 01 Nov 2021 07:57:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J/sLAHxRh6EjJh2rcjPDJLzA40VXjb4DP54UXQAr8IU=;
-        b=jTwGY7UqyQ8YIhJUDjrqZPtk3LzrWCAUOAMDPLz5M7CqLBHqNsFTo9C861qV1B25Xf
-         r5L553Wxmro5Ww3I0Kz3a52AwkmZqFToii6+0ZOhpUkOfcb53PnNGE9m6Sqik3zmhZwo
-         n/R9HTp53zn5NI3DbL08muEwIh9gH7g9lDe2tstM5tUGQD80ibC8oJ7RZsh0jabUj80l
-         TjW7jDszyj0LgBKofuNs3yAxUhi8ze1MSxaF3AEB8qSt1N3bygNegk5wBFiWacOIsTYm
-         giGQNkRW+M+En5ZqEkyuSVwtFALtbKc66CUkcVFPmwMgTZmFkWlfrtrQ91sQ12FB43ir
-         IgcA==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ZoWUChLrSkcmoiG2opWpA+k/rTmSsnlHqI6Ys9fdYFQ=;
+        b=YD8Fs32WPQSObOB1EMMjztceewOji595D/by2Rf3Hy9vWfEchilncMgTk30b++xVa2
+         eFpkfZL/0hN8UO8u8Xo92Y5ul4hjbYjuIj0jRnYW//6YzcVD5bC79M823HNr/scbDnAk
+         nVe2t4HdzurIDlC2625xiEap0NPGHIyVXn8ggqxNUZdYQGFGijHj/gMQn5pKiEYuX6Iz
+         ZwMsgHQ/5HUOgecViuxZeUutEKmYzUdy0BuFPFL8CaST3QFscdXjeJbxeVnvwJgJz2EI
+         HcmsH6otTWevP3/qG+q6WW+03Km7KCafSpacdolp8SX++9Tlda6f5aGcTOUK6OYKw4V7
+         xPIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J/sLAHxRh6EjJh2rcjPDJLzA40VXjb4DP54UXQAr8IU=;
-        b=kDMFp+qzU/eTqlkAiubwVlnpgQSt8xfIPMHf/VGKIBvYyFiv1RWv6JStZOVRrSpLdh
-         aSrSPEXcaaybp2JfJLr5Wcc1qg0gY5K7ZNpu3pehX5RqMCSgavaWVy8fXC4qmOeeO43C
-         sPzjMDx1Bshjw/UO+Fck1S2GXEYc2vD25jMI4mWY+nm2o5nw8U/44TP8PtBmoBCpuY2d
-         jH7lILX05a7RxkupBgSolsiOYUrKLekGDXktv65tpJffF8UoVlf1dfNVDrctq4C7LBs4
-         c4wTnOK4WojRE7fE5mnYKQWNGksmw5VflCaDWiRXvW3tFs5Pxo+mTtzEkmSiheEhWH15
-         9ERg==
-X-Gm-Message-State: AOAM530Vsjui8vtq0V1Uqj0ft2SsQKx0SUcT3OHVUvAPseJupB4zavIg
-        p7Ot0yWJ4eOridiYVUG1pPEFoqK3LK5Eh8tAZmk=
-X-Google-Smtp-Source: ABdhPJxmqEVdpxtX6Hrcfxe4l+hmj7ibNqiYjCRoHEGQmkHQsxyv4j0y0ocCVsmwYp4ABnpO0ho1EyHAGzTI8DbI2zw=
-X-Received: by 2002:a05:6512:3696:: with SMTP id d22mr7627111lfs.659.1635753959932;
- Mon, 01 Nov 2021 01:05:59 -0700 (PDT)
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ZoWUChLrSkcmoiG2opWpA+k/rTmSsnlHqI6Ys9fdYFQ=;
+        b=SyyYOdLrlURUM4cd0uIGJnUoZubYBS91yjdEDm4CY+5YSuRgpXUGKOLcMRD2tNhGjW
+         rHZEre7N+dCPQ22g4rI9DBpKCIwJXYhhCvz9zd91fR9NOLTuOu7BRH85iWwESEHvHhLT
+         +ZsgP0GW79UfMaGnVQFfaz6hT52gymJSYH4Whm26Xv+ZYKfEhYZPbxD8P2HxUWmP2Kgj
+         zCpmRoHuU05nOo5cOhmTrG+BJOmjPrEyxhAmcBfL6xctm6I4rLsklWLoZDHeT1h46M0i
+         9xvNCjlO8cW6BBrEYUzHl297t5Fj61TK6KgpC+/qSJ1lZWHL0waEVWCw6ILdIn8RNg4k
+         WM4g==
+X-Gm-Message-State: AOAM5310FD6wlrJcz0Qm/8XBZv7NnNTKEGDlVa8P8zAhPvIt91G7urST
+        BpzEYW0KNCFeD4X2GDAHvFvIJe3RfnI=
+X-Google-Smtp-Source: ABdhPJyaB53F07+sWCX8irAOTSGg96G6xPWDKZVp1NjxQGUw+Rept/0xa1fKk7G6I0rbtmxfbtnaVA==
+X-Received: by 2002:a05:6830:4033:: with SMTP id i19mr20894327ots.320.1635778654812;
+        Mon, 01 Nov 2021 07:57:34 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id q11sm1117459ota.54.2021.11.01.07.57.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Nov 2021 07:57:33 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Subject: Re: [PATCH v3 3/3] hwmon: Driver for Texas Instruments INA238
+To:     Nathan Rossi <nathan@nathanrossi.com>
+Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nathan Rossi <nathan.rossi@digi.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>
+References: <20211028081030.719265-0-nathan@nathanrossi.com>
+ <20211028081030.719265-3-nathan@nathanrossi.com>
+ <7b6764bf-4978-60ec-b1e6-8d59077c3023@roeck-us.net>
+ <CA+aJhH1aGJXwYSCU8RC275G5=qGLyZRK94g9ic24wxKuRGCwEA@mail.gmail.com>
+ <43c17bba-d4bd-1f9d-5034-1f5a9279d751@roeck-us.net>
+ <CA+aJhH0EBUjQhjQhxj-kfJzmpqGN6ZMNn_M-pAae_V9yPQhs3A@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <5569b2b8-ac67-757b-f7cb-302c9f663e80@roeck-us.net>
+Date:   Mon, 1 Nov 2021 07:57:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:a05:6512:304b:0:0:0:0 with HTTP; Mon, 1 Nov 2021 01:05:59
- -0700 (PDT)
-Reply-To: aisha.7d@yahoo.com
-From:   Aisha AG <rbx17058@gmail.com>
-Date:   Mon, 1 Nov 2021 00:05:59 -0800
-Message-ID: <CA+KbyychNgycp0rGBpdptJEdAFJQQCku4iDOhYe4CxitYXaueA@mail.gmail.com>
-Subject: Hello Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CA+aJhH0EBUjQhjQhxj-kfJzmpqGN6ZMNn_M-pAae_V9yPQhs3A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
+On 10/31/21 10:55 PM, Nathan Rossi wrote:
+> On Mon, 1 Nov 2021 at 13:48, Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> On 10/31/21 7:20 PM, Nathan Rossi wrote:
+>> [ ... ]
+>>>>> +
+>>>>> +     if (attr != hwmon_in_max && attr != hwmon_in_min)
+>>>>> +             return -EOPNOTSUPP;
+>>>>> +
+>>>>> +     /* convert decimal to register value */
+>>>>> +     switch (channel) {
+>>>>> +     case 0:
+>>>>> +             /* signed value, clamp to max range +/-163 mV */
+>>>>> +             regval = clamp_val(val, -163, 163);
+>>>>> +             regval = (regval * 1000L * (4 - (int)data->gain + 1)) /
+>>>>
+>>>> nit: The typecast "(int)" is not needed here.
+>>>
+>>> Due to the unsigned type of gain, it causes promotion of regval (and
+>>> the rest of the numerator) to unsigned long which causes issues with
+>>> negative numbers on the divide. It makes more sense for gain to be an
+>>> int to begin with, I will change it to int to avoid the need for type
+>>> casting.
+>>>
+>>
+>> Are you sure ? I initially thought that as well and wrote a little test
+>> program with that expression, but it didn't do the promotion to unsigned.
+>>
+> 
+> It definitely calculates incorrectly at run time (on an arm 32-bit
+> platform), looking at the gcc output from -fdump-tree-original reveals
+> some more insight. Which is that the promotion to long overrides the
+> unsigned (from the 1000L) on long=64 but not on long=32.
+> 
+> Where regval is int, and gain is unsigned int (u32).
+> 
+> regval = (regval * 1000L * (4 - gain + 1)) / 5;
+> -> armv7-a (invalid)
+> regval = (int) ((((long unsigned int) regval * (long unsigned int) (5
+> - gain)) * 1000) / 5);
+> -> x86-64 (valid result)
+> regval = (int) ((unsigned int) (gain * 4294967096 + 1000) * (unsigned
+> int) regval);
+> 
+> note: 4294967096 is -800, 1000 * (4 - gain + 1) => (-800 * gain) + 1000
+> 
+> Slight variation without the 1000 being long.
+> 
+> regval = (regval * 1000 * (4 - gain + 1)) / 5;
+> -> armv7-a (invalid)
+> regval = (int) ((((unsigned int) regval * (5 - gain)) * 1000) / 5);
+> -> x86-64 (invalid)
+> regval = (int) ((((unsigned int) regval * (5 - gain)) * 1000) / 5);
+> 
+> regval = (regval * 1000LL * (4 - gain + 1)) / 5;
+> -> armv7-a (valid)
+> regval = (int) ((unsigned int) (gain * 4294967096 + 1000) * (unsigned
+> int) regval);
+> -> x86-64 (valid)
+> regval = (int) ((unsigned int) (gain * 4294967096 + 1000) * (unsigned
+> int) regval);
+> 
+> I think it still makes sense to change gain to be int, and avoid the
+> unsigned type issues.
+> 
 
-Hello Dear,
+Thanks for the details. I agree, changing gain to int makes sense.
 
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological
-Daughter of Former President of Libya Col.Muammar Al-Qaddafi.
-Am a Widow and a single Mother with three Children.
-
-I have investment funds worth Twenty Seven Million Five Hundred
-Thousand United State Dollar $27.500.000.00, and i need a trusted
-investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in
-your country,may be from there,we can build business relationship
-in the nearest future.
-
-I am willing to negotiate an investment/business profit sharing ratio
-with you based on the future investment earning profits.
-
-If you are willing to handle this project on my behalf kindly reply
-urgently to enable me to provide you more information about the
-investment funds.
-Best Regards
-Mrs Aisha Al-Qaddafi.
+Thanks,
+Guenter
