@@ -2,240 +2,123 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FE5E442650
-	for <lists+linux-hwmon@lfdr.de>; Tue,  2 Nov 2021 05:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4D04426C3
+	for <lists+linux-hwmon@lfdr.de>; Tue,  2 Nov 2021 06:28:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbhKBEFz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 2 Nov 2021 00:05:55 -0400
-Received: from mga01.intel.com ([192.55.52.88]:32485 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229693AbhKBEFz (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 2 Nov 2021 00:05:55 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10155"; a="254785474"
-X-IronPort-AV: E=Sophos;i="5.87,201,1631602800"; 
-   d="scan'208";a="254785474"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 21:03:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,201,1631602800"; 
-   d="scan'208";a="488916688"
-Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 01 Nov 2021 21:03:19 -0700
-Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mhl14-0003zF-Sh; Tue, 02 Nov 2021 04:03:18 +0000
-Date:   Tue, 02 Nov 2021 12:02:23 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:watchdog-next] BUILD SUCCESS
- 132653bd1feaf2e58a1b18952f4f4b1b537e6d9d
-Message-ID: <6180b84f.YkVzsrmWjM/tZ3cO%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S230322AbhKBFa7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 2 Nov 2021 01:30:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230324AbhKBFa5 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 2 Nov 2021 01:30:57 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4E82C061714
+        for <linux-hwmon@vger.kernel.org>; Mon,  1 Nov 2021 22:28:22 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id f5so19112629pgc.12
+        for <linux-hwmon@vger.kernel.org>; Mon, 01 Nov 2021 22:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nathanrossi.com; s=google;
+        h=date:message-id:in-reply-to:references:from:to:cc:subject
+         :content-transfer-encoding:mime-version;
+        bh=lJnV+kITEwNEZxgW0EEwkSDW1MfbZOcjYoFW6kKKYcY=;
+        b=NK3AXJ9sUzOeFZfFNuCSHsmgcdy5famNh4IOfV6dhZgSoUIpg/TuKxSy7ZTYJ4U4qO
+         IebE1+JsyfP0bYZgtagN/MelZcQVHSQKmaeq5aCRBY1V6j1uO3sHLRTvcV4e+y37uf+z
+         hoRuOym/BqkyB7GQLiEvjT+ZO+CMxR5sMjWbItd3lQPd87dMjdq6JH5x4hucyNE+bwKx
+         LOEBT4XRMdTOAFh/2HaB3oMNPoNiESg/DIPZrxQZEJxITE18nJkXNLK5ymxZR++nZ98f
+         271jN5J0N+Fyh2wmq4TwusK0JmWLh49ByveFULqBPkyescoMNno6cTTY+eQYil41O3M9
+         NWdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:in-reply-to:references:from:to
+         :cc:subject:content-transfer-encoding:mime-version;
+        bh=lJnV+kITEwNEZxgW0EEwkSDW1MfbZOcjYoFW6kKKYcY=;
+        b=eronPtmY7ry22kfz7Ug23rBSEAVUsdy+4j69JX49/xWPVYBW1SYqPGYxhY2RHnUExi
+         8ZkqVb2seLXHqH61y/HhjmbEitZbn1Lr0YuzmlN1Yv88bjFLeaep1NlwDUQK4NSH2T3D
+         jughVmThA+8b0xDnLqf7y6HlaphfEG6DIpDt6wlY9up+Tz5z3L+SlPaCBXbgYDih7P+A
+         sjJ321dxPW2fV4/C9836BDj54gDK0BtVO09PQH1K3DrInduJMD0G8OTxeXaamh/geMqy
+         GRX8SnQl3ZNB/981aU5pi2Phf20DTNatrfa1V8IUiJe8heh1G2Sp0u3Ro8xz0Wzp2vaY
+         h6XA==
+X-Gm-Message-State: AOAM5334IIHUzbX5a7kSjoPFKDshMvAhABAJzVA4wmmJDnhm3VWDKNqH
+        yzI5Wq8jJF61F/OvRWUsxO389g==
+X-Google-Smtp-Source: ABdhPJy06dW+UZGRFNKjWP1TfKaeRYJreAi0Y/kXtrqrJJd8UVUeVYdEolF2DcqQvkJFgp+4ppjzvg==
+X-Received: by 2002:a63:fd03:: with SMTP id d3mr17864964pgh.199.1635830902444;
+        Mon, 01 Nov 2021 22:28:22 -0700 (PDT)
+Received: from [127.0.1.1] (117-20-69-24.751445.bne.nbn.aussiebb.net. [117.20.69.24])
+        by smtp.gmail.com with UTF8SMTPSA id mp16sm1109758pjb.1.2021.11.01.22.28.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Nov 2021 22:28:22 -0700 (PDT)
+Date:   Tue, 02 Nov 2021 05:27:54 +0000
+Message-Id: <20211102052754.817220-2-nathan@nathanrossi.com>
+In-Reply-To: <20211102052754.817220-0-nathan@nathanrossi.com>
+References: <20211102052754.817220-0-nathan@nathanrossi.com>
+From:   Nathan Rossi <nathan@nathanrossi.com>
+To:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Nathan Rossi <nathan@nathanrossi.com>,
+        Nathan Rossi <nathan.rossi@digi.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH v4 2/3] dt-bindings: hwmon: ti,ina2xx: Add ti,shunt-gain property
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
-branch HEAD: 132653bd1feaf2e58a1b18952f4f4b1b537e6d9d  watchdog: db8500_wdt: Rename symbols
+From: Nathan Rossi <nathan.rossi@digi.com>
 
-elapsed time: 728m
+Add a property to the binding to define the selected shunt voltage gain.
+This specifies the range and accuracy that applies to the shunt circuit.
+This property only applies to devices that have a selectable shunt
+voltage range via PGA or ADCRANGE register configuration.
 
-configs tested: 180
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211101
-xtensa                    xip_kc705_defconfig
-sh                         microdev_defconfig
-arm                          pcm027_defconfig
-mips                            e55_defconfig
-s390                                defconfig
-i386                             allyesconfig
-arm                       aspeed_g5_defconfig
-sh                           se7712_defconfig
-arm                       netwinder_defconfig
-sh                  sh7785lcr_32bit_defconfig
-mips                   sb1250_swarm_defconfig
-powerpc                     powernv_defconfig
-mips                            ar7_defconfig
-powerpc                   currituck_defconfig
-sh                          landisk_defconfig
-mips                          malta_defconfig
-powerpc                     tqm8555_defconfig
-arm                        cerfcube_defconfig
-mips                        bcm63xx_defconfig
-s390                       zfcpdump_defconfig
-arc                        nsim_700_defconfig
-powerpc                     sequoia_defconfig
-s390                             alldefconfig
-mips                           ip32_defconfig
-powerpc                 mpc837x_mds_defconfig
-m68k                        m5307c3_defconfig
-mips                           mtx1_defconfig
-mips                malta_qemu_32r6_defconfig
-h8300                       h8s-sim_defconfig
-powerpc                 mpc8540_ads_defconfig
-csky                                defconfig
-arm                       spear13xx_defconfig
-arm                        mvebu_v7_defconfig
-mips                      loongson3_defconfig
-mips                      maltasmvp_defconfig
-m68k                        stmark2_defconfig
-arc                          axs103_defconfig
-powerpc                   bluestone_defconfig
-arm                          moxart_defconfig
-powerpc                    sam440ep_defconfig
-arm                        shmobile_defconfig
-m68k                          atari_defconfig
-arm                            mmp2_defconfig
-mips                        jmr3927_defconfig
-arm                             ezx_defconfig
-arc                        vdk_hs38_defconfig
-powerpc                 mpc8272_ads_defconfig
-mips                           xway_defconfig
-sh                        apsh4ad0a_defconfig
-xtensa                  audio_kc705_defconfig
-m68k                             allmodconfig
-mips                           gcw0_defconfig
-arm                           corgi_defconfig
-sh                            shmin_defconfig
-arm                         s3c2410_defconfig
-powerpc                      tqm8xx_defconfig
-m68k                          hp300_defconfig
-parisc                generic-64bit_defconfig
-arm                  colibri_pxa270_defconfig
-xtensa                           alldefconfig
-s390                          debug_defconfig
-powerpc                 mpc834x_itx_defconfig
-powerpc                      acadia_defconfig
-arm                           h5000_defconfig
-arc                              alldefconfig
-sh                            hp6xx_defconfig
-m68k                            q40_defconfig
-sh                            titan_defconfig
-mips                       capcella_defconfig
-powerpc                     tqm8548_defconfig
-arm                         cm_x300_defconfig
-powerpc                 linkstation_defconfig
-mips                          ath79_defconfig
-arm                          pxa3xx_defconfig
-nds32                             allnoconfig
-mips                         bigsur_defconfig
-arm                             rpc_defconfig
-ia64                        generic_defconfig
-arm                           omap1_defconfig
-sh                           sh2007_defconfig
-sh                        sh7785lcr_defconfig
-arc                        nsimosci_defconfig
-m68k                          multi_defconfig
-sh                           se7705_defconfig
-m68k                       m5475evb_defconfig
-powerpc                      cm5200_defconfig
-arm                        mvebu_v5_defconfig
-microblaze                      mmu_defconfig
-powerpc                    gamecube_defconfig
-ia64                            zx1_defconfig
-mips                        vocore2_defconfig
-sh                           se7780_defconfig
-openrisc                         alldefconfig
-arm                         s3c6400_defconfig
-powerpc                     ep8248e_defconfig
-sh                            migor_defconfig
-arm                  randconfig-c002-20211101
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a012-20211101
-x86_64               randconfig-a015-20211101
-x86_64               randconfig-a016-20211101
-x86_64               randconfig-a013-20211101
-x86_64               randconfig-a011-20211101
-x86_64               randconfig-a014-20211101
-i386                 randconfig-a016-20211101
-i386                 randconfig-a014-20211101
-i386                 randconfig-a015-20211101
-i386                 randconfig-a013-20211101
-i386                 randconfig-a011-20211101
-i386                 randconfig-a012-20211101
-arc                  randconfig-r043-20211101
-riscv                randconfig-r042-20211101
-s390                 randconfig-r044-20211101
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                           allyesconfig
-
-clang tested configs:
-mips                 randconfig-c004-20211101
-arm                  randconfig-c002-20211101
-i386                 randconfig-c001-20211101
-s390                 randconfig-c005-20211101
-powerpc              randconfig-c003-20211101
-riscv                randconfig-c006-20211101
-x86_64               randconfig-c007-20211101
-x86_64               randconfig-a004-20211101
-x86_64               randconfig-a006-20211101
-x86_64               randconfig-a001-20211101
-x86_64               randconfig-a002-20211101
-x86_64               randconfig-a003-20211101
-x86_64               randconfig-a005-20211101
-i386                 randconfig-a005-20211101
-i386                 randconfig-a001-20211101
-i386                 randconfig-a003-20211101
-i386                 randconfig-a004-20211101
-i386                 randconfig-a006-20211101
-i386                 randconfig-a002-20211101
-hexagon              randconfig-r041-20211101
-hexagon              randconfig-r045-20211101
-
+Signed-off-by: Nathan Rossi <nathan.rossi@digi.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Changes in v2:
+- Added binding for shunt-gain
+
+Changes in v3:
+- Fix schema error, setting $ref to uint32
+- Improve the description to detail exactly how to define the property
+  and how the property affects initial device configuration and
+  calculation of values
+---
+ .../devicetree/bindings/hwmon/ti,ina2xx.yaml        | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
+index 180573f26c..47af97bb4c 100644
+--- a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
++++ b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
+@@ -36,6 +36,27 @@ properties:
+       Shunt resistor value in micro-Ohm.
+     $ref: /schemas/types.yaml#/definitions/uint32
+ 
++  ti,shunt-gain:
++    description: |
++      Programmable gain divisor for the shunt voltage accuracy and range. This
++      property only applies to devices that have configurable PGA/ADCRANGE. The
++      gain value is used configure the gain and to convert the shunt voltage,
++      current and power register values when reading measurements from the
++      device.
++
++      For devices that have a configurable PGA (e.g. INA209, INA219, INA220),
++      the gain value maps directly with the PG bits of the config register.
++
++      For devices that have ADCRANGE configuration (e.g. INA238) a shunt-gain
++      value of 1 maps to ADCRANGE=1 where no gain divisor is applied to the
++      shunt voltage, and a value of 4 maps to ADCRANGE=0 such that a wider
++      voltage range is used.
++
++      The default value is device dependent, and is defined by the reset value
++      of PGA/ADCRANGE in the respective configuration registers.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [1, 2, 4, 8]
++
+ required:
+   - compatible
+   - reg
+---
+2.33.0
