@@ -2,122 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4D31446F1D
-	for <lists+linux-hwmon@lfdr.de>; Sat,  6 Nov 2021 17:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A369B447402
+	for <lists+linux-hwmon@lfdr.de>; Sun,  7 Nov 2021 17:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233159AbhKFQyS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 6 Nov 2021 12:54:18 -0400
-Received: from mail-vk1-f174.google.com ([209.85.221.174]:35729 "EHLO
-        mail-vk1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232907AbhKFQyR (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 6 Nov 2021 12:54:17 -0400
-Received: by mail-vk1-f174.google.com with SMTP id u130so6111582vku.2;
-        Sat, 06 Nov 2021 09:51:36 -0700 (PDT)
+        id S235863AbhKGQve (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 7 Nov 2021 11:51:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35184 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234985AbhKGQvb (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 7 Nov 2021 11:51:31 -0500
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67D2C061570
+        for <linux-hwmon@vger.kernel.org>; Sun,  7 Nov 2021 08:48:47 -0800 (PST)
+Received: by mail-pj1-x1034.google.com with SMTP id o6-20020a17090a0a0600b001a64b9a11aeso6982656pjo.3
+        for <linux-hwmon@vger.kernel.org>; Sun, 07 Nov 2021 08:48:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=3KhLtwCKP93j3EcWq+BGTsAWsp8Oi4eBuXX0Ov40ah8=;
+        b=TNg4tHoQw5kKoLZkiGTAZIxJzUBBq4ejYt4ncgOecgNOvSUwtqqwittPPI+7pJVjX+
+         GpTp2M0KfhRYRUpBRXEYVXnxqP/7lqMWjwkVgxSXQTHg4r801CGBH3Cxkr2xCA8iHpDQ
+         PkNioeCtNa8D4FxZOybE5F6kFZNCXIj5SS/5dluRY9kmgQGkqsgb/0EL9qYgh0jdJYEk
+         mgqrImAxVO9xLB3ph2REOdqPQUk3eSUgj070IZGlv2zYI0h97xHGiGSssFFZrlwEHWTd
+         7gJa3FlCIyQYHI4/knwR34TShiwqFLlPcy+ypePmUlRAZLKNrHzuj6T1hpUgZdGxUgLr
+         tNtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R9PO0YzwC2Jw+Hhm1KmFXfAei65K8Unw+7A6Xi9XIdM=;
-        b=AprHLVYC68mFjVrjQ4lqLlZbTEwaVZ8CctKYpsxeijSs5JNeizPvDJp6Sex2nw1L+Y
-         T1FI2yBdNB38fAREOAL/T3TVNddik2cQShAZhIlgww6KdLx5haxAebtcRaBa9256Pmrr
-         FePYdY9wkD9KgjIvX04n0ykS/5e94WgT3FkAZgiHycbOFUujf7ajqsAtgk99VE+tsGAd
-         TH+1weKUCG0fdHLiP1Ky2MmhyqNz4NJ80bot7uJqyOy/M6ihRvssW/vAeAQx7nxGWCqJ
-         TuMUSCJiG+hBjCA4EOrxsjL6H67iYAgxDqzeECYkptglGsVHuyOv+xOuEjqYN0dRxTcf
-         AyvQ==
-X-Gm-Message-State: AOAM530rWNRZrTnbMp91MmbN+Oyx52nYiZ5NjjfAHkNkCc7xvRn2FgMP
-        ABUxEf+ijVTEvFxCKCc4xBOeO81DmFI8dA==
-X-Google-Smtp-Source: ABdhPJwSxbm0Oj00JEuVMrHoPrNeHhw6eIQl3WFx37SpxV5Y3O71w7coDZFBfqm13zx6fmL/1+4siw==
-X-Received: by 2002:a1f:2345:: with SMTP id j66mr81593322vkj.20.1636217495538;
-        Sat, 06 Nov 2021 09:51:35 -0700 (PDT)
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com. [209.85.221.174])
-        by smtp.gmail.com with ESMTPSA id r25sm1830298uab.13.2021.11.06.09.51.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Nov 2021 09:51:35 -0700 (PDT)
-Received: by mail-vk1-f174.google.com with SMTP id e64so6137640vke.4;
-        Sat, 06 Nov 2021 09:51:35 -0700 (PDT)
-X-Received: by 2002:a05:6122:20ab:: with SMTP id i43mr3542895vkd.19.1636217494892;
- Sat, 06 Nov 2021 09:51:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=3KhLtwCKP93j3EcWq+BGTsAWsp8Oi4eBuXX0Ov40ah8=;
+        b=I7MNuSPSwak4+RT8/ptWdbtyh0M9WSR4DLvenuShzePbEn7Hi7KmcW2kDgV9fUw94t
+         KXGuwXNXCzWOBlWCjwz8MWb7O/3EMUTjvyQzmCuH5SjwyVD4k10WPLNkry/kzYAWUR7N
+         ioueRuY9yusvcN61KjBePWbQR91WBFOuiM0efRxwKf8spLNtAT1rvhpTcglsRGYxb4G4
+         E2TDXCYHSmWJPDqguxByDwIwx7lyQpMx/Yb5CP2QbkS5CuDim9f1zb1LcEKPoNlpHS5c
+         TOiVeeKndtejU+IOpIZe651CRL41eq9X4sPQCg/jlMX5uao2WWIBhASj7pYeCPLdl4lI
+         yjcQ==
+X-Gm-Message-State: AOAM53258s2WY2MlqUu66XSXyqPWh7MhU7P+AxgWmcu0wUErzWRo+eiM
+        vG6GtoW2kLNLjVddh0FwPAN5RdkrkCCHR0D+3GF6Frx5owfkiQ==
+X-Google-Smtp-Source: ABdhPJxAeCOxzzTO2bC1ebInPX7TK42gu5RWx2Xb9R/R8imfArbHNs+vmtD0xqJ/WYY5NVOuLREd2E+dZSLVoRt6leo=
+X-Received: by 2002:a17:902:a60b:b0:142:7621:be0b with SMTP id
+ u11-20020a170902a60b00b001427621be0bmr4070721plq.58.1636303726736; Sun, 07
+ Nov 2021 08:48:46 -0800 (PST)
 MIME-Version: 1.0
-References: <DM6PR04MB6575F2F6841B0573560E10ADFCA49@DM6PR04MB6575.namprd04.prod.outlook.com>
- <20210927084615.1938432-1-anders.roxell@linaro.org>
-In-Reply-To: <20210927084615.1938432-1-anders.roxell@linaro.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sat, 6 Nov 2021 17:51:23 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU53qiLwkx4XdB=SvjeeXLHCjn=kTZbT45YQv6KVRfR4g@mail.gmail.com>
-Message-ID: <CAMuHMdU53qiLwkx4XdB=SvjeeXLHCjn=kTZbT45YQv6KVRfR4g@mail.gmail.com>
-Subject: Re: [PATCHv2] scsi: ufs: Kconfig: SCSI_UFS_HWMON depens on HWMON=y
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, avri.altman@wdc.com,
-        scsi <linux-scsi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-hwmon@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Received: by 2002:a05:6a10:4a14:0:0:0:0 with HTTP; Sun, 7 Nov 2021 08:48:46
+ -0800 (PST)
+Reply-To: amabenchambers00@gmail.com
+From:   Amadou Benjamin <ousmanekarim54@gmail.com>
+Date:   Sun, 7 Nov 2021 08:48:46 -0800
+Message-ID: <CAJFAt4Zwu2DZNzEx2mhTp73fqWvHNwMrUMgOFZ==TBGW8S=HkA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Anders,
+-- 
+Hello good day.
 
-On Mon, Sep 27, 2021 at 10:47 AM Anders Roxell <anders.roxell@linaro.org> wrote:
-> When building an allmodconfig kernel, the following build error shows
-> up:
->
-> aarch64-linux-gnu-ld: drivers/scsi/ufs/ufs-hwmon.o: in function `ufs_hwmon_probe':
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:177: undefined reference to `hwmon_device_register_with_info'
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:177:(.text+0x510): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `hwmon_device_register_with_info'
-> aarch64-linux-gnu-ld: drivers/scsi/ufs/ufs-hwmon.o: in function `ufs_hwmon_remove':
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:195: undefined reference to `hwmon_device_unregister'
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:195:(.text+0x5c8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `hwmon_device_unregister'
-> aarch64-linux-gnu-ld: drivers/scsi/ufs/ufs-hwmon.o: in function `ufs_hwmon_notify_event':
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:206: undefined reference to `hwmon_notify_event'
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:206:(.text+0x64c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `hwmon_notify_event'
-> aarch64-linux-gnu-ld: /home/anders/src/kernel/next/drivers/scsi/ufs/ufs-hwmon.c:209: undefined reference to `hwmon_notify_event'
-> /kernel/next/drivers/scsi/ufs/ufs-hwmon.c:209:(.text+0x66c): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `hwmon_notify_event'
->
-> Since fragment 'SCSI_UFS_HWMON' can't be build as a module,
-> 'SCSI_UFS_HWMON' has to depend on 'HWMON=y'.
->
-> Fixes: e88e2d32200a ("scsi: ufs: core: Probe for temperature notification support")
-> Also-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-> Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-> Acked-by: Avri Altman <avri.altman@wdc.com>
-> ---
->  drivers/scsi/ufs/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/scsi/ufs/Kconfig b/drivers/scsi/ufs/Kconfig
-> index 565e8aa6319d..2ca69f87e4de 100644
-> --- a/drivers/scsi/ufs/Kconfig
-> +++ b/drivers/scsi/ufs/Kconfig
-> @@ -202,7 +202,7 @@ config SCSI_UFS_FAULT_INJECTION
->
->  config SCSI_UFS_HWMON
->         bool "UFS  Temperature Notification"
-> -       depends on SCSI_UFSHCD && HWMON
-> +       depends on SCSI_UFSHCD=HWMON || HWMON=y
+I am Barrister Amadou Benjamin by name, with due respect, I am
+contacting you to help get the deposit 10.5 million Dollars, my late
+client Engineer Vasiliy left in his Bank before his sudden death on
+April 21, 2007, to avoid confiscation by Lloyds bank. Please write me
+back through this email (amabenchambers00@gmail.com)for more
+information about this transaction or send me your private email to
+Contact you myself.
 
-Which is also true if both SCSI_UFSHCD and HWMON are disabled,
-thus exposing this question to everyone?
-
-Fix sent
-"[PATCH] scsi: ufs: Wrap Universal Flash Storage drivers in SCSI_UFSHCD"
-https://lore.kernel.org/all/20211106164650.1571068-1-geert@linux-m68k.org/
-
->         help
->           This provides support for UFS hardware monitoring. If enabled,
->           a hardware monitoring device will be created for the UFS device.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Sincerely,
+Barrister Amadou Benjamin Esq
