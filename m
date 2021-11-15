@@ -2,16 +2,16 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 052F7451A22
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 00:31:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED791451D17
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 01:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349219AbhKOXeZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 15 Nov 2021 18:34:25 -0500
-Received: from sender3-of-o52.zoho.com ([136.143.184.52]:21818 "EHLO
+        id S1353620AbhKPAZH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 15 Nov 2021 19:25:07 -0500
+Received: from sender3-of-o52.zoho.com ([136.143.184.52]:21819 "EHLO
         sender3-of-o52.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349576AbhKOXR2 (ORCPT
+        with ESMTP id S1345720AbhKPAVW (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 15 Nov 2021 18:17:28 -0500
+        Mon, 15 Nov 2021 19:21:22 -0500
 ARC-Seal: i=1; a=rsa-sha256; t=1637014891; cv=none; 
         d=zohomail.com; s=zohoarc; 
         b=R4DYxJ0D7TWoJ2kUxxw6g4H1oUr+7LngUMNiKntdvD2Ks1iCkDfFCUhiKX2xEKsoBfH3M+cctLU9dtnpV3wsA9k72MQ7E6fF7YUz4+i6S3cHN3GIyaRnN5tlgSVtazjiPNhS1VBe8485oglJceTcgYPAwFU3FxFgNFJd05UGjyU=
