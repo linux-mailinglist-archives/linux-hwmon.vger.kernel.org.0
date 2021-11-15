@@ -2,263 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EEA452429
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 02:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45754452773
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 03:23:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356096AbhKPBgT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 15 Nov 2021 20:36:19 -0500
-Received: from mga11.intel.com ([192.55.52.93]:64223 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242419AbhKOSkx (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 15 Nov 2021 13:40:53 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10169"; a="230963677"
-X-IronPort-AV: E=Sophos;i="5.87,237,1631602800"; 
-   d="scan'208";a="230963677"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2021 10:31:41 -0800
-X-IronPort-AV: E=Sophos;i="5.87,237,1631602800"; 
-   d="scan'208";a="735076294"
-Received: from tkolecki-mobl.ger.corp.intel.com (HELO localhost) ([10.249.154.97])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2021 10:31:32 -0800
-From:   Iwona Winiarska <iwona.winiarska@intel.com>
-To:     linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
+        id S233074AbhKPCZd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 15 Nov 2021 21:25:33 -0500
+Received: from sender4-of-o55.zoho.com ([136.143.188.55]:21593 "EHLO
+        sender4-of-o55.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377482AbhKPCX3 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 15 Nov 2021 21:23:29 -0500
+X-Greylist: delayed 14315 seconds by postgrey-1.27 at vger.kernel.org; Mon, 15 Nov 2021 21:23:27 EST
+ARC-Seal: i=1; a=rsa-sha256; t=1637014891; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=R4DYxJ0D7TWoJ2kUxxw6g4H1oUr+7LngUMNiKntdvD2Ks1iCkDfFCUhiKX2xEKsoBfH3M+cctLU9dtnpV3wsA9k72MQ7E6fF7YUz4+i6S3cHN3GIyaRnN5tlgSVtazjiPNhS1VBe8485oglJceTcgYPAwFU3FxFgNFJd05UGjyU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1637014891; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=CSKP+pxK1OMbD7DMwbimwVntVO3vlL1NhMt2dPOplyc=; 
+        b=G8JjF2+jkYkP7S+IOuKNMNaqWJwClenk6EzSqd5YNMc1PA0bylH06a09uUneO1M3YfJBmc+G8OZlAoFbyaxT0pjGcbx417zqiDY58aCSXVeAenN00ESSWqeAUUPHnG5a4ET4rSAnivE/GMCwZBeZwWbeghHuKlcQnsdiXJdFvqQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=maidavale.org;
+        spf=pass  smtp.mailfrom=ed@maidavale.org;
+        dmarc=pass header.from=<ed@maidavale.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1637014891;
+        s=zoho; d=maidavale.org; i=ed@maidavale.org;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        bh=CSKP+pxK1OMbD7DMwbimwVntVO3vlL1NhMt2dPOplyc=;
+        b=Il+OW/KJ+qoFO7xk9trhHafNAq3xJiBMlm+HUC4KrLgvsBNjbq834a0LyTnMN1V7
+        N7oYtcDuCVk2cgGN7WFjfAUGsMypPl5VZnx/kllC4XOdrNzh8HBBmK7FOv2jyMoWzu+
+        wMkHP7wXiOhmsd5vEupLd7ozljRENZUNFXa9adDU=
+Received: from [192.168.0.8] (94.14.150.106 [94.14.150.106]) by mx.zohomail.com
+        with SMTPS id 1637014886071648.4298650141733; Mon, 15 Nov 2021 14:21:26 -0800 (PST)
+Message-ID: <fb0bfe97-41c2-8aeb-f4f2-e8a07c5fda92@maidavale.org>
+Date:   Mon, 15 Nov 2021 22:21:00 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH v11 0/2] Update ASUS WMI supported boards
+Content-Language: en-US
+To:     Denis Pauk <pauk.denis@gmail.com>
+Cc:     eugene.shalygin@gmail.com, andy.shevchenko@gmail.com,
+        platform-driver-x86@vger.kernel.org, thomas@weissschuh.net,
+        kernel@maidavale.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Borislav Petkov <bp@alien8.de>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Zev Weiss <zweiss@equinix.com>,
-        David Muller <d.mueller@elsoft.ch>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Iwona Winiarska <iwona.winiarska@intel.com>
-Subject: [PATCH v3 12/13] docs: hwmon: Document PECI drivers
-Date:   Mon, 15 Nov 2021 19:25:51 +0100
-Message-Id: <20211115182552.3830849-13-iwona.winiarska@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211115182552.3830849-1-iwona.winiarska@intel.com>
-References: <20211115182552.3830849-1-iwona.winiarska@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211115210842.11972-1-pauk.denis@gmail.com>
+From:   Ed Brindley <ed@maidavale.org>
+In-Reply-To: <20211115210842.11972-1-pauk.denis@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+On 15/11/2021 21:08, Denis Pauk wrote:
+> Add support by WMI interface provided by Asus for B550/X570 boards:
+> * PRIME X570-PRO,
+> * ROG CROSSHAIR VIII HERO
+> * ROG CROSSHAIR VIII DARK HERO
+> * ROG CROSSHAIR VIII FORMULA
+> * ROG STRIX X570-E GAMING
+> * ROG STRIX B550-I GAMING
+> * ROG STRIX B550-E GAMING
+> 
+> Add support by WMI interface provided by Asus for X370/X470/
+> B450/X399 boards:
+> * ROG CROSSHAIR VI HERO,
+> * PRIME X399-A,
+> * PRIME X470-PRO,
+> * ROG CROSSHAIR VI EXTREME,
+> * ROG CROSSHAIR VI HERO (WI-FI AC),
+> * ROG CROSSHAIR VII HERO,
+> * ROG CROSSHAIR VII HERO (WI-FI),
+> * ROG STRIX Z390-F GAMING
+> * ROG STRIX B450-E GAMING,
+> * ROG STRIX B450-F GAMING,
+> * ROG STRIX B450-I GAMING,
+> * ROG STRIX X399-E GAMING,
+> * ROG STRIX X470-F GAMING,
+> * ROG STRIX X470-I GAMING,
+> * ROG ZENITH EXTREME,
+> * ROG ZENITH EXTREME ALPHA.
+> 
+> I have added "ROG STRIX Z390-F GAMING" to list of supported boards in
+> asus_wmi_sensors.
+> 
+> Could you please review?
+> 
+I don't believe "ROG STRIX Z390-F GAMING" should be added to the driver. 
+It's an Intel board and looking at the UEFI image I don't believe it has 
+the WMI interface present.
 
-Add documentation for peci-cputemp driver that provides DTS thermal
-readings for CPU packages and CPU cores, and peci-dimmtemp driver that
-provides Temperature Sensor on DIMM readings.
-
-Signed-off-by: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-Co-developed-by: Iwona Winiarska <iwona.winiarska@intel.com>
-Signed-off-by: Iwona Winiarska <iwona.winiarska@intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
----
- Documentation/hwmon/index.rst         |  2 +
- Documentation/hwmon/peci-cputemp.rst  | 90 +++++++++++++++++++++++++++
- Documentation/hwmon/peci-dimmtemp.rst | 57 +++++++++++++++++
- MAINTAINERS                           |  2 +
- 4 files changed, 151 insertions(+)
- create mode 100644 Documentation/hwmon/peci-cputemp.rst
- create mode 100644 Documentation/hwmon/peci-dimmtemp.rst
-
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 7046bf1870d9..6ebd73a55c26 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -156,6 +156,8 @@ Hardware Monitoring Kernel Drivers
-    pcf8591
-    pim4328
-    pm6764tr
-+   peci-cputemp
-+   peci-dimmtemp
-    pmbus
-    powr1220
-    pxe1610
-diff --git a/Documentation/hwmon/peci-cputemp.rst b/Documentation/hwmon/peci-cputemp.rst
-new file mode 100644
-index 000000000000..fe0422248dc5
---- /dev/null
-+++ b/Documentation/hwmon/peci-cputemp.rst
-@@ -0,0 +1,90 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+Kernel driver peci-cputemp
-+==========================
-+
-+Supported chips:
-+	One of Intel server CPUs listed below which is connected to a PECI bus.
-+		* Intel Xeon E5/E7 v3 server processors
-+			Intel Xeon E5-14xx v3 family
-+			Intel Xeon E5-24xx v3 family
-+			Intel Xeon E5-16xx v3 family
-+			Intel Xeon E5-26xx v3 family
-+			Intel Xeon E5-46xx v3 family
-+			Intel Xeon E7-48xx v3 family
-+			Intel Xeon E7-88xx v3 family
-+		* Intel Xeon E5/E7 v4 server processors
-+			Intel Xeon E5-16xx v4 family
-+			Intel Xeon E5-26xx v4 family
-+			Intel Xeon E5-46xx v4 family
-+			Intel Xeon E7-48xx v4 family
-+			Intel Xeon E7-88xx v4 family
-+		* Intel Xeon Scalable server processors
-+			Intel Xeon D family
-+			Intel Xeon Bronze family
-+			Intel Xeon Silver family
-+			Intel Xeon Gold family
-+			Intel Xeon Platinum family
-+
-+	Datasheet: Available from http://www.intel.com/design/literature.htm
-+
-+Author: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-+
-+Description
-+-----------
-+
-+This driver implements a generic PECI hwmon feature which provides Digital
-+Thermal Sensor (DTS) thermal readings of the CPU package and CPU cores that are
-+accessible via the processor PECI interface.
-+
-+All temperature values are given in millidegree Celsius and will be measurable
-+only when the target CPU is powered on.
-+
-+Sysfs interface
-+-------------------
-+
-+======================= =======================================================
-+temp1_label		"Die"
-+temp1_input		Provides current die temperature of the CPU package.
-+temp1_max		Provides thermal control temperature of the CPU package
-+			which is also known as Tcontrol.
-+temp1_crit		Provides shutdown temperature of the CPU package which
-+			is also known as the maximum processor junction
-+			temperature, Tjmax or Tprochot.
-+temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
-+			the CPU package.
-+
-+temp2_label		"DTS"
-+temp2_input		Provides current temperature of the CPU package scaled
-+			to match DTS thermal profile.
-+temp2_max		Provides thermal control temperature of the CPU package
-+			which is also known as Tcontrol.
-+temp2_crit		Provides shutdown temperature of the CPU package which
-+			is also known as the maximum processor junction
-+			temperature, Tjmax or Tprochot.
-+temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
-+			the CPU package.
-+
-+temp3_label		"Tcontrol"
-+temp3_input		Provides current Tcontrol temperature of the CPU
-+			package which is also known as Fan Temperature target.
-+			Indicates the relative value from thermal monitor trip
-+			temperature at which fans should be engaged.
-+temp3_crit		Provides Tcontrol critical value of the CPU package
-+			which is same to Tjmax.
-+
-+temp4_label		"Tthrottle"
-+temp4_input		Provides current Tthrottle temperature of the CPU
-+			package. Used for throttling temperature. If this value
-+			is allowed and lower than Tjmax - the throttle will
-+			occur and reported at lower than Tjmax.
-+
-+temp5_label		"Tjmax"
-+temp5_input		Provides the maximum junction temperature, Tjmax of the
-+			CPU package.
-+
-+temp[6-N]_label		Provides string "Core X", where X is resolved core
-+			number.
-+temp[6-N]_input		Provides current temperature of each core.
-+
-+======================= =======================================================
-diff --git a/Documentation/hwmon/peci-dimmtemp.rst b/Documentation/hwmon/peci-dimmtemp.rst
-new file mode 100644
-index 000000000000..e562aed620de
---- /dev/null
-+++ b/Documentation/hwmon/peci-dimmtemp.rst
-@@ -0,0 +1,57 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver peci-dimmtemp
-+===========================
-+
-+Supported chips:
-+	One of Intel server CPUs listed below which is connected to a PECI bus.
-+		* Intel Xeon E5/E7 v3 server processors
-+			Intel Xeon E5-14xx v3 family
-+			Intel Xeon E5-24xx v3 family
-+			Intel Xeon E5-16xx v3 family
-+			Intel Xeon E5-26xx v3 family
-+			Intel Xeon E5-46xx v3 family
-+			Intel Xeon E7-48xx v3 family
-+			Intel Xeon E7-88xx v3 family
-+		* Intel Xeon E5/E7 v4 server processors
-+			Intel Xeon E5-16xx v4 family
-+			Intel Xeon E5-26xx v4 family
-+			Intel Xeon E5-46xx v4 family
-+			Intel Xeon E7-48xx v4 family
-+			Intel Xeon E7-88xx v4 family
-+		* Intel Xeon Scalable server processors
-+			Intel Xeon D family
-+			Intel Xeon Bronze family
-+			Intel Xeon Silver family
-+			Intel Xeon Gold family
-+			Intel Xeon Platinum family
-+
-+	Datasheet: Available from http://www.intel.com/design/literature.htm
-+
-+Author: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-+
-+Description
-+-----------
-+
-+This driver implements a generic PECI hwmon feature which provides
-+Temperature sensor on DIMM readings that are accessible via the processor PECI interface.
-+
-+All temperature values are given in millidegree Celsius and will be measurable
-+only when the target CPU is powered on.
-+
-+Sysfs interface
-+-------------------
-+
-+======================= =======================================================
-+
-+temp[N]_label		Provides string "DIMM CI", where C is DIMM channel and
-+			I is DIMM index of the populated DIMM.
-+temp[N]_input		Provides current temperature of the populated DIMM.
-+temp[N]_max		Provides thermal control temperature of the DIMM.
-+temp[N]_crit		Provides shutdown temperature of the DIMM.
-+
-+======================= =======================================================
-+
-+Note:
-+	DIMM temperature attributes will appear when the client CPU's BIOS
-+	completes memory training and testing.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0094370be6c4..0f7216644bd5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14925,6 +14925,8 @@ M:	Iwona Winiarska <iwona.winiarska@intel.com>
- R:	Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
- L:	linux-hwmon@vger.kernel.org
- S:	Supported
-+F:	Documentation/hwmon/peci-cputemp.rst
-+F:	Documentation/hwmon/peci-dimmtemp.rst
- F:	drivers/hwmon/peci/
- 
- PECI SUBSYSTEM
--- 
-2.31.1
-
+Ed Brindley
