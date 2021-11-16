@@ -2,115 +2,68 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFA9452FBF
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 12:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C06AB453074
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 12:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234677AbhKPLGw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 16 Nov 2021 06:06:52 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:57472
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234624AbhKPLFs (ORCPT
+        id S235075AbhKPLac (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 16 Nov 2021 06:30:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234960AbhKPL3q (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 16 Nov 2021 06:05:48 -0500
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com [209.85.167.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3891C3F499
-        for <linux-hwmon@vger.kernel.org>; Tue, 16 Nov 2021 11:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1637060570;
-        bh=/fhj+bVJm076Wq/VhTriJ0yxdPwTog87+Zp8k+Dl/zY=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=NUWFbxQoCZvJWjTS8Ht7e3I2J5ylWjXWPLTwiEZjiEPjjjL/l4M3yesmp8gtzBp/e
-         xKqxhssVrSmlnQXVW1Vs+sYohaZO2Tfjxb54q6nVaiGsYb+e7x7KBobbvrd5LTsSyI
-         PDljoEHz0YRdwBb4gAe7J0XuMO4djMTufpZUvBiQrtYUuYDotIQNsFmrLa99/QFInZ
-         2Mc6BR3QBS9rAew/rstubrrRJdcH+TelAsPtzagYG4uP8QhO4Q9JSetTMD4zffqz+u
-         4cVUqrHO/aFHyCLGoWjjTMSh3/D2TaPVtywzI7XC195M272gx4G2ArdjEmh2MxLoL+
-         BPT72sUXpD1qQ==
-Received: by mail-lf1-f70.google.com with SMTP id g38-20020a0565123ba600b004036147023bso8074225lfv.10
-        for <linux-hwmon@vger.kernel.org>; Tue, 16 Nov 2021 03:02:50 -0800 (PST)
+        Tue, 16 Nov 2021 06:29:46 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F41C06120E
+        for <linux-hwmon@vger.kernel.org>; Tue, 16 Nov 2021 03:26:46 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id k37-20020a05600c1ca500b00330cb84834fso1653941wms.2
+        for <linux-hwmon@vger.kernel.org>; Tue, 16 Nov 2021 03:26:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=JHkobXVvRWKPjJgpwGctsZrNZAaUXURTmWtz1PAwkjpShtnw2xIe4IxyGotDPuzibC
+         Q5mot2AR1EdZp0YszaR3r2ybEOx2FNi+mf9boXaZtQYZk2aaSxUll9YDCw62bdI1DnLQ
+         oIH4ijYH8dimZ9b18CZOM02DemPbh5TPbp0IZQP6LRYEW6CI4vBuyYF3v6dQKruXhra0
+         ISrh3nRfCz/kgnPaZL6TX2CyZGhX8FthNY6hgTSNy87Rzf6pOs269tH9u40KOKtFP2VF
+         vmbdlhp1YbM/ub4lOMlme0/ipfqvkOa6H2ey7QjU3Yr8TVzgn7XtIn6eo6g0+GjlmkU9
+         mnhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/fhj+bVJm076Wq/VhTriJ0yxdPwTog87+Zp8k+Dl/zY=;
-        b=5kX5kX78W0p3pZGcxEDO19mEbjEuTdKQUaY7kC3M3q/FruBbeDUnc8pCDqa3cE0UEt
-         OMUzMnI08PqK4D2wedMpgTCgmkefQv67nymO/NyCdErkle2qbwHTNPw99EIp2ZQELE0J
-         GilwesMIqc6xoZIYMt1Eu44PNHFScJOUZFBND6Md0XV6aQvsPELwbRHR9ehQxBRx9yrh
-         QRpL85yYISd8vusT3p8AgqPj620U7r2nF06ERmotc44I6x8GfFI0gJ8Uhg5D9qWYkxk3
-         Tk5/bEYDLQE+6BmWAbvXLiQAKztVa5lSR/nhGMyOrCJqQUFAD/+TqkkqGnmD+Yk6z7CT
-         mgsA==
-X-Gm-Message-State: AOAM530ufWPah9JJnxkAGzgcsU347zD40NYgHypfQe9H/LaslPNT94eK
-        JW3UJ9XnDWN0fFpCOtsczIbFus0ltwHBkjoUO8HWr8o0PHq3aNMp3I7HhTc5UZpUv124Ee2hvQI
-        9y4+QiWN5YqK7q9UUqZENV7Xd4XHV8FgSYUFYlAlU
-X-Received: by 2002:a05:6512:604:: with SMTP id b4mr5696000lfe.198.1637060569467;
-        Tue, 16 Nov 2021 03:02:49 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx7ajDYjXbeKcZbiXLfcr+dTx8ryW8atDeHVo7pyKw8Zx2SmbmhraxaC8+5fg6M9h4tJ5URtQ==
-X-Received: by 2002:a05:6512:604:: with SMTP id b4mr5695972lfe.198.1637060569244;
-        Tue, 16 Nov 2021 03:02:49 -0800 (PST)
-Received: from localhost.localdomain (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
-        by smtp.gmail.com with ESMTPSA id z8sm1420074ljj.86.2021.11.16.03.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Nov 2021 03:02:48 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        devicetree@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Vincent Pelletier <plr.vincent@gmail.com>
-Subject: [PATCH] dt-bindings: hwmon: add TI DC-DC converters
-Date:   Tue, 16 Nov 2021 12:02:07 +0100
-Message-Id: <20211116110207.68494-1-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=cI11tiGIgaaFoRMc4IDkbcFa6qClP/Abv3BYISI9glnm1lG5F5FBisH93GjfoYkyZN
+         BQNofXGxKjtCIihGkXKte4YWk8eQt7NJVo2v4pu9Pe4tfeu/GUt2MotUnkrWYbFkzTzK
+         NL7q4JzIMpLwYWYqi70rllyGcguhiAZrWNoY4SBbGcJB4zRPn+oeXd2kKx87u2Vj5J0D
+         IhUezNdLQyeSsI0uOS0aQ4xnb/lXdXHlzPLVk4WU9FRiQpIKgPrQqYC/DCw5RQd3zr7i
+         lDRWa4vlgxsucWZpN+eln2B32FRcJiuu3eCs7+As+b+oRpKYuRV/i+xgDFuzJ2xCFRs0
+         J0rA==
+X-Gm-Message-State: AOAM533pvjgWgpfX0tI1Gzcjlg72ktDZKJgAE0sa69sYdwpTBkWuvcd/
+        Q9IWukCaMS1fU/AXa+7Ebs9P+B1oruC4lp/3ucg=
+X-Google-Smtp-Source: ABdhPJxY17HC6nmGOHWE6iqbA8wRJP0vZMHkpbaBLpxjBs8AHHbhGKQYmexWpwcaaXI+7XwIdfO/LY/kc1YAwclgHr0=
+X-Received: by 2002:a1c:f213:: with SMTP id s19mr68487015wmc.169.1637062003979;
+ Tue, 16 Nov 2021 03:26:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:600c:3b97:0:0:0:0 with HTTP; Tue, 16 Nov 2021 03:26:43
+ -0800 (PST)
+Reply-To: ebodrdickson1020@gmail.com
+From:   "Dr.Dickson Ebo" <drdicksonelo1023@gmail.com>
+Date:   Tue, 16 Nov 2021 03:26:43 -0800
+Message-ID: <CABq-xD5cMc7YDaqm-jE=T02sHTTAJFwPRjYALiWxVYa2NbnX+Q@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Few Texas Instruments DC-DC converters on PMBus like TPS544B20 do not
-have bindings and are used only as hardware monitoring sensor.  These
-devices are actually not trivial and can receive basic configuration
-(e.g. power up mode, CNTL pin polarity, expected input voltage), however
-devicetree support for configuration was never added.
+Finance and Audit Department, Zenith Bank Plc.
 
-Therefore in current state the devices are used only in read-only mode
-and have trivial bindings, so document them to have basic dtschema
-tests.
+The President of the Federal Republic of Nigeria through the Zenith
+International Bank Nigeria PLC has released your
+Contract/Inheritance/Compensation Fund.
 
-Cc: Vincent Pelletier <plr.vincent@gmail.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
----
- Documentation/devicetree/bindings/trivial-devices.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+Kindly get back to us as soon as possible.
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 791079021f1b..3297a6480534 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -329,12 +329,19 @@ properties:
-           - ti,tmp122
-             # Digital Temperature Sensor
-           - ti,tmp275
-+            # TI DC-DC converter on PMBus
-+          - ti,tps40400
-             # TI Dual channel DCAP+ multiphase controller TPS53676 with AVSBus
-           - ti,tps53676
-             # TI Dual channel DCAP+ multiphase controller TPS53679
-           - ti,tps53679
-             # TI Dual channel DCAP+ multiphase controller TPS53688
-           - ti,tps53688
-+            # TI DC-DC converters on PMBus
-+          - ti,tps544b20
-+          - ti,tps544b25
-+          - ti,tps544c20
-+          - ti,tps544c25
-             # Winbond/Nuvoton H/W Monitor
-           - winbond,w83793
-             # i2c trusted platform module (TPM)
--- 
-2.32.0
-
+Yours faithfully,
+Dr. Dickson Ebo.
