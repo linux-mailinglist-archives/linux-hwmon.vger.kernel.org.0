@@ -2,98 +2,107 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3518452A71
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 07:22:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72073452AEA
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Nov 2021 07:29:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbhKPGZe (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 16 Nov 2021 01:25:34 -0500
-Received: from sender4-of-o55.zoho.com ([136.143.188.55]:21548 "EHLO
-        sender4-of-o55.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbhKPGZa (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 16 Nov 2021 01:25:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1637014891; cv=none; 
-        d=zohomail.com; s=zohoarc; 
-        b=R4DYxJ0D7TWoJ2kUxxw6g4H1oUr+7LngUMNiKntdvD2Ks1iCkDfFCUhiKX2xEKsoBfH3M+cctLU9dtnpV3wsA9k72MQ7E6fF7YUz4+i6S3cHN3GIyaRnN5tlgSVtazjiPNhS1VBe8485oglJceTcgYPAwFU3FxFgNFJd05UGjyU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1637014891; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=CSKP+pxK1OMbD7DMwbimwVntVO3vlL1NhMt2dPOplyc=; 
-        b=G8JjF2+jkYkP7S+IOuKNMNaqWJwClenk6EzSqd5YNMc1PA0bylH06a09uUneO1M3YfJBmc+G8OZlAoFbyaxT0pjGcbx417zqiDY58aCSXVeAenN00ESSWqeAUUPHnG5a4ET4rSAnivE/GMCwZBeZwWbeghHuKlcQnsdiXJdFvqQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-        dkim=pass  header.i=maidavale.org;
-        spf=pass  smtp.mailfrom=ed@maidavale.org;
-        dmarc=pass header.from=<ed@maidavale.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1637014891;
-        s=zoho; d=maidavale.org; i=ed@maidavale.org;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        bh=CSKP+pxK1OMbD7DMwbimwVntVO3vlL1NhMt2dPOplyc=;
-        b=Il+OW/KJ+qoFO7xk9trhHafNAq3xJiBMlm+HUC4KrLgvsBNjbq834a0LyTnMN1V7
-        N7oYtcDuCVk2cgGN7WFjfAUGsMypPl5VZnx/kllC4XOdrNzh8HBBmK7FOv2jyMoWzu+
-        wMkHP7wXiOhmsd5vEupLd7ozljRENZUNFXa9adDU=
-Received: from [192.168.0.8] (94.14.150.106 [94.14.150.106]) by mx.zohomail.com
-        with SMTPS id 1637014886071648.4298650141733; Mon, 15 Nov 2021 14:21:26 -0800 (PST)
-Message-ID: <fb0bfe97-41c2-8aeb-f4f2-e8a07c5fda92@maidavale.org>
-Date:   Mon, 15 Nov 2021 22:21:00 +0000
+        id S232903AbhKPGbm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 16 Nov 2021 01:31:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60736 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231978AbhKPG3j (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 16 Nov 2021 01:29:39 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2AA8A614C8;
+        Tue, 16 Nov 2021 06:26:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1637044002;
+        bh=AiP1xjR6qcKw8cmJ80lJrFN5bNbs0D2VyefHMyYb3z0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rAdWQ1YQxccyMONofsDbmG5JRlehNbsB99jOPJzaVFcdTRcA4ws39LiNWk3dB7uWb
+         uNAT5/M4GeN3kEnYpwksavGrmR+POUUZtsZDKXx42L9m0V4gGSyQ+y+ecJSg6h7zao
+         wwhvs9UzhWYf/FBFU0d7JfWEdkj/s1ZlCxm2+EV8=
+Date:   Tue, 16 Nov 2021 07:26:28 +0100
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     "Winiarska, Iwona" <iwona.winiarska@intel.com>
+Cc:     "corbet@lwn.net" <corbet@lwn.net>,
+        "jae.hyun.yoo@linux.intel.com" <jae.hyun.yoo@linux.intel.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "andrew@aj.id.au" <andrew@aj.id.au>,
+        "Luck, Tony" <tony.luck@intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "d.mueller@elsoft.ch" <d.mueller@elsoft.ch>,
+        "jdelvare@suse.com" <jdelvare@suse.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "olof@lixom.net" <olof@lixom.net>,
+        "rdunlap@infradead.org" <rdunlap@infradead.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "linux@roeck-us.net" <linux@roeck-us.net>,
+        "zweiss@equinix.com" <zweiss@equinix.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
+        "bp@alien8.de" <bp@alien8.de>, "joel@jms.id.au" <joel@jms.id.au>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "pierre-louis.bossart@linux.intel.com" 
+        <pierre-louis.bossart@linux.intel.com>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [PATCH v3 06/13] peci: Add device detection
+Message-ID: <YZNPFGPXfCLfJMq3@kroah.com>
+References: <20211115182552.3830849-1-iwona.winiarska@intel.com>
+ <20211115182552.3830849-7-iwona.winiarska@intel.com>
+ <YZKr1Rqfx6Cmw+Ok@kroah.com>
+ <368c990c30c5bacde15ac4bce5db8389aea3ec9c.camel@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH v11 0/2] Update ASUS WMI supported boards
-Content-Language: en-US
-To:     Denis Pauk <pauk.denis@gmail.com>
-Cc:     eugene.shalygin@gmail.com, andy.shevchenko@gmail.com,
-        platform-driver-x86@vger.kernel.org, thomas@weissschuh.net,
-        kernel@maidavale.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211115210842.11972-1-pauk.denis@gmail.com>
-From:   Ed Brindley <ed@maidavale.org>
-In-Reply-To: <20211115210842.11972-1-pauk.denis@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <368c990c30c5bacde15ac4bce5db8389aea3ec9c.camel@intel.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 15/11/2021 21:08, Denis Pauk wrote:
-> Add support by WMI interface provided by Asus for B550/X570 boards:
-> * PRIME X570-PRO,
-> * ROG CROSSHAIR VIII HERO
-> * ROG CROSSHAIR VIII DARK HERO
-> * ROG CROSSHAIR VIII FORMULA
-> * ROG STRIX X570-E GAMING
-> * ROG STRIX B550-I GAMING
-> * ROG STRIX B550-E GAMING
+On Mon, Nov 15, 2021 at 10:35:23PM +0000, Winiarska, Iwona wrote:
+> On Mon, 2021-11-15 at 19:49 +0100, Greg Kroah-Hartman wrote:
+> > On Mon, Nov 15, 2021 at 07:25:45PM +0100, Iwona Winiarska wrote:
+> > > +void peci_device_destroy(struct peci_device *device)
+> > > +{
+> > > +       bool killed;
+> > > +
+> > > +       device_lock(&device->dev);
+> > > +       killed = kill_device(&device->dev);
+> > 
+> > Eeek, why call this?
+> > 
+> > > +       device_unlock(&device->dev);
+> > > +
+> > > +       if (!killed)
+> > > +               return;
+> > 
+> > What happened if something changed after you unlocked it?
 > 
-> Add support by WMI interface provided by Asus for X370/X470/
-> B450/X399 boards:
-> * ROG CROSSHAIR VI HERO,
-> * PRIME X399-A,
-> * PRIME X470-PRO,
-> * ROG CROSSHAIR VI EXTREME,
-> * ROG CROSSHAIR VI HERO (WI-FI AC),
-> * ROG CROSSHAIR VII HERO,
-> * ROG CROSSHAIR VII HERO (WI-FI),
-> * ROG STRIX Z390-F GAMING
-> * ROG STRIX B450-E GAMING,
-> * ROG STRIX B450-F GAMING,
-> * ROG STRIX B450-I GAMING,
-> * ROG STRIX X399-E GAMING,
-> * ROG STRIX X470-F GAMING,
-> * ROG STRIX X470-I GAMING,
-> * ROG ZENITH EXTREME,
-> * ROG ZENITH EXTREME ALPHA.
+> We either killed it, or the other caller killed it.
 > 
-> I have added "ROG STRIX Z390-F GAMING" to list of supported boards in
-> asus_wmi_sensors.
+> > 
+> > Why is kill_device() required at all?  That's a very rare function to
+> > call, and one that only one "bus" calls today because it is very
+> > special (i.e. crazy and broken...)
 > 
-> Could you please review?
-> 
-I don't believe "ROG STRIX Z390-F GAMING" should be added to the driver. 
-It's an Intel board and looking at the UEFI image I don't believe it has 
-the WMI interface present.
+> It's used to avoid double-delete in case of races between peci_controller
+> unregister and "manually" removing the device using sysfs (pointed out by Dan in
+> v2). We're calling peci_device_destroy() in both callsites.
+> Other way to solve it would be to just have a peci-specific lock, but
+> kill_device seemed to be well suited for the problem at hand.
+> Do you suggest to remove it and just go with the lock?
 
-Ed Brindley
+Yes please, remove it and use the lock.
+
+Also, why are you required to have a sysfs file that can remove the
+device?  Who wants that?
+
+thanks,
+
+greg k-h
