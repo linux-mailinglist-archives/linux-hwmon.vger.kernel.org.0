@@ -2,212 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A2F455282
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Nov 2021 03:11:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21D18455C4B
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Nov 2021 14:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242458AbhKRCO3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 17 Nov 2021 21:14:29 -0500
-Received: from mga07.intel.com ([134.134.136.100]:45796 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242450AbhKRCO2 (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 17 Nov 2021 21:14:28 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10171"; a="297517451"
-X-IronPort-AV: E=Sophos;i="5.87,243,1631602800"; 
-   d="scan'208";a="297517451"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2021 18:11:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,243,1631602800"; 
-   d="scan'208";a="672626480"
-Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 17 Nov 2021 18:11:27 -0800
-Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mnWtb-0002Y4-3m; Thu, 18 Nov 2021 02:11:27 +0000
-Date:   Thu, 18 Nov 2021 10:10:48 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:watchdog-next] BUILD SUCCESS
- 1a57ba062bc2999cbeb224b38cfcf9160bcec14b
-Message-ID: <6195b628.ANmAaUbMCz9nqp5y%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229829AbhKRNKZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 18 Nov 2021 08:10:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230164AbhKRNKV (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 18 Nov 2021 08:10:21 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1194BC061766
+        for <linux-hwmon@vger.kernel.org>; Thu, 18 Nov 2021 05:07:20 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id d10so17845987ybe.3
+        for <linux-hwmon@vger.kernel.org>; Thu, 18 Nov 2021 05:07:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=0Ussvby+CdwLiWwfWb1UMUt2kjNyYCy0fCLWiBUdcLc=;
+        b=jyzA6O/k4nd1v/QwQO0vfbyne84ZUpaYxxrNOSJ6BlcATlPmBx+23pYPGzpmqeE3tX
+         jjRFbXE2Scosu1B8h2QPJiTOvFEU7qykOLp60A5U3U8dJTauubuoEzF3DvE9YiDZCigM
+         baaRHFHukY2yivX39XNDG1mFLxBCsJSPbywqNyJwLTQNb1ZFB6lhYyqLAgZu1GxuKxaM
+         2JDBFbrUZBkDcf6EG2MOSIUijVnxd7SiatVsvTz3WsPktaTNvfmEnSdw5iWtgZiFSI9Q
+         ocYvXir73a8Qp5YSRhIEyF/RgzIsPnMAAofwmcrVMRTgt2UxxJP/krERkg31Up1Iesuy
+         4cKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=0Ussvby+CdwLiWwfWb1UMUt2kjNyYCy0fCLWiBUdcLc=;
+        b=FQOsx8jiBz3YduK12jU1U4DC9vBUj8IYwBnPvySvJoOoESfKib3uOWNlCejD2Y49ai
+         OrFFsZL3Usg3VA2lorNWeUEve7L4MUf5T8s25SrDPzklDkq1nnhI2UlfXrX5teEfzTJX
+         GJB232m1zuP5yOUl5MI7iyD6bCrdu+Y8H067AiZyQZyLwvuKB9XQ2rEtzvUzo00NWSbc
+         fVC9DwJFsQfYq4i+MYhMlMnOgaM8Unz/UGorex1vB36sgPH/4ji/q0r78Yp6unMK8CaN
+         LKf+uw2iJzNTpa9N54491Hk9i475f5anoYa+vD/ZEzR0CnBhlYcM9scBLixqRd+ZA+y2
+         Pfzg==
+X-Gm-Message-State: AOAM532O4PeGA/IQO+y6Y13E3eHoHPTRRYeqgCqTLvQkLl15YvMfVr84
+        wSmiJ0tpvW8IH18pyJkBrCOJK0Op0YxItcLrV58=
+X-Google-Smtp-Source: ABdhPJzbPvOHm8lAAUOxNDiVmaf95pSSCWgef/fpXVa6kRM/uid8cZmhdpYqA5Kjdkldfek8M7j6agBWitsqNXBunVE=
+X-Received: by 2002:a25:bed1:: with SMTP id k17mr26489540ybm.215.1637240838897;
+ Thu, 18 Nov 2021 05:07:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:7010:5919:b0:1dd:1f0:a0d3 with HTTP; Thu, 18 Nov 2021
+ 05:07:18 -0800 (PST)
+Reply-To: oolivia120@yahoo.com
+From:   ritaw pauw <ritapau674@gmail.com>
+Date:   Thu, 18 Nov 2021 05:07:18 -0800
+Message-ID: <CAL9Z_Ry3uf3fcvZLuL1F8fK8LcNTucX5D5JZOWqaUR9aqSr9Rg@mail.gmail.com>
+Subject: hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
-branch HEAD: 1a57ba062bc2999cbeb224b38cfcf9160bcec14b  watchdog: Remove BCM63XX_WDT
+Hallo
 
-elapsed time: 721m
+Ich freue mich, dich online zu sehen. Mein Name ist Olivia, ich bin
+eine einzelne ehrliche Frau, die nach einem guten ehrlichen Mann
+sucht, mit dem ich den Rest meines Lebens verbringen kann Sie
+antworten, ich bin auch nicht hier, um Zeit zu verschwenden. Mein
+Traum in diesem Jahr ist es, mich mit meinem Seelenverwandten
+niederzulassen, deshalb schicke ich Ihnen diese Mail, um einen
+ehrlichen Mann zu finden, um ein gutes gemeinsames Leben zu beginnen,
+wohlgemerkt Alter, Farbe ,Entfernung,Religion ist kein Hindernis f=C3=BCr
+eine Beziehung, das Wichtigste ist die Liebe, die wir gemeinsam
+aufbauen werden /////
+danke und Gott segne uns
+Frau Olivia
 
-configs tested: 152
-configs skipped: 3
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Hello
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211117
-sh                ecovec24-romimage_defconfig
-m68k                          multi_defconfig
-powerpc                 mpc85xx_cds_defconfig
-arm                      jornada720_defconfig
-sh                          rsk7269_defconfig
-riscv                            alldefconfig
-alpha                               defconfig
-powerpc                     stx_gp3_defconfig
-arc                     nsimosci_hs_defconfig
-powerpc                      pasemi_defconfig
-mips                           jazz_defconfig
-mips                malta_qemu_32r6_defconfig
-sparc                       sparc64_defconfig
-i386                                defconfig
-sh                          kfr2r09_defconfig
-riscv                             allnoconfig
-mips                          ath79_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                    ge_imp3a_defconfig
-um                           x86_64_defconfig
-sh                   secureedge5410_defconfig
-s390                             allmodconfig
-mips                      loongson3_defconfig
-sh                   sh7724_generic_defconfig
-mips                      malta_kvm_defconfig
-powerpc                 mpc832x_mds_defconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-sh                          lboxre2_defconfig
-powerpc                     akebono_defconfig
-powerpc                      chrp32_defconfig
-powerpc                mpc7448_hpc2_defconfig
-sh                              ul2_defconfig
-powerpc                    socrates_defconfig
-powerpc                    klondike_defconfig
-sh                          sdk7786_defconfig
-arm                        mvebu_v5_defconfig
-arm                          iop32x_defconfig
-mips                      fuloong2e_defconfig
-ia64                          tiger_defconfig
-csky                             alldefconfig
-csky                                defconfig
-sh                           se7751_defconfig
-powerpc                      bamboo_defconfig
-sh                             espt_defconfig
-arm                         lubbock_defconfig
-mips                        bcm47xx_defconfig
-arm                          simpad_defconfig
-um                             i386_defconfig
-powerpc                       holly_defconfig
-xtensa                              defconfig
-arm                            mps2_defconfig
-arm                          collie_defconfig
-sh                        edosk7705_defconfig
-powerpc                      tqm8xx_defconfig
-powerpc                  mpc866_ads_defconfig
-arm                         s3c6400_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                     tqm8560_defconfig
-mips                           mtx1_defconfig
-parisc                generic-64bit_defconfig
-powerpc                     asp8347_defconfig
-arm                           stm32_defconfig
-arm                        magician_defconfig
-arm                         assabet_defconfig
-mips                         tb0287_defconfig
-powerpc64                           defconfig
-powerpc                      acadia_defconfig
-arm                       versatile_defconfig
-arm                            dove_defconfig
-arm                  randconfig-c002-20211117
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a005-20211117
-x86_64               randconfig-a003-20211117
-x86_64               randconfig-a002-20211117
-x86_64               randconfig-a001-20211117
-x86_64               randconfig-a006-20211117
-x86_64               randconfig-a004-20211117
-i386                 randconfig-a006-20211117
-i386                 randconfig-a003-20211117
-i386                 randconfig-a005-20211117
-i386                 randconfig-a001-20211117
-i386                 randconfig-a004-20211117
-i386                 randconfig-a002-20211117
-arc                  randconfig-r043-20211117
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-c007-20211117
-i386                 randconfig-c001-20211117
-arm                  randconfig-c002-20211117
-riscv                randconfig-c006-20211117
-powerpc              randconfig-c003-20211117
-s390                 randconfig-c005-20211117
-mips                 randconfig-c004-20211117
-x86_64               randconfig-a015-20211117
-x86_64               randconfig-a013-20211117
-x86_64               randconfig-a011-20211117
-x86_64               randconfig-a012-20211117
-x86_64               randconfig-a016-20211117
-x86_64               randconfig-a014-20211117
-i386                 randconfig-a014-20211117
-i386                 randconfig-a016-20211117
-i386                 randconfig-a012-20211117
-i386                 randconfig-a013-20211117
-i386                 randconfig-a011-20211117
-i386                 randconfig-a015-20211117
-hexagon              randconfig-r045-20211117
-hexagon              randconfig-r041-20211117
-s390                 randconfig-r044-20211117
-riscv                randconfig-r042-20211117
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+I am happy to see you on line my name is olivia  ,i am a single honest
+woman looning for a good honest man to spend rest of my life with, if
+you are interested reply me back, i will send you some of my photo
+when you reply,am not here for game either to waste any time my dream
+this year is to settle down with my soul mate that is why i send you
+this mail to found a honest man to start a good life together, mind
+you age, color,distance,religion is not barrier to relationship what
+most important is love that we will build together /////
+thanks and God blesss us
+Ms olivia
