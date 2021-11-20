@@ -2,50 +2,46 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C23EA45805B
-	for <lists+linux-hwmon@lfdr.de>; Sat, 20 Nov 2021 21:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B0CA45805F
+	for <lists+linux-hwmon@lfdr.de>; Sat, 20 Nov 2021 21:41:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232403AbhKTUnO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 20 Nov 2021 15:43:14 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:45630 "EHLO
+        id S233854AbhKTUoE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 20 Nov 2021 15:44:04 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:11680 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232190AbhKTUnM (ORCPT
+        with ESMTP id S232209AbhKTUoE (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 20 Nov 2021 15:43:12 -0500
+        Sat, 20 Nov 2021 15:44:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=OaW8TBJK0gAZECqvr3Ggo3aumc1hO95J3CUsj9GFMQ8=;
-        b=mabLrEzFzRJL+YYptFCeB/sz1i5hqust/baeYKzZVMPrkOTDRS7Sa0GvI2TPWMmDh3cW
-        rHkfTMeCgtTDSp8vl54XpHpdljSdQ28x2Bw8ND9CxyzLA/pHinzbWuPcghaA4nNzGwB9fe
-        fr0ysA0C54yQz8NapclIPsvxODcR+s/jzxhkVZX0Nj0GA/cBedK/smW/BpVYVBLoPgxt+6
-        xM+uKWdx5ulWNhHhST+b7Lng0LbomLR+Y/p7fEs0Z9p7I9s2xYyJcJWzVsCoM6lPxxbeos
-        jzXXJVAj4YkjndhA4lf3f2nH6cZKm7eTrN6mkDU3HYKjkGQ8kmJQUwMprgT4KJog==
-Received: by filterdrecv-55446c4d49-vth2g with SMTP id filterdrecv-55446c4d49-vth2g-1-61995BFA-4
-        2021-11-20 20:35:06.122575595 +0000 UTC m=+6905697.961899248
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=TX0xMK7GUHeUHHgqvA7VUH7LvFvvcMijgypAUYumTPY=;
+        b=PRzV3HRumRhNL2QCdqPIgcQkEHl7J8k0T/kU4bVM6FG4z0bwmcpxJGN1oCyMGNOv6vB8
+        lPiFvBZK3mcBHhsVtx2FPETym3neIwng/P9OyYYrmsG70cwnaXMkx9fejb9HxF0SE+mwXn
+        h/1156OZuNC0HkgLunphzrkYnMWhKvLoqjal/A11k6jJqihtCkw7sZ0RUZGXk85sBtpYQB
+        dtn8jT/M9jpgxl/8gGwYLUDWeIsxUcJVGyrxaDE/7BCoAAZLMQuiN4PMf9ErxmtGlJ8cPn
+        HtFSHL/GB5ppAp7SpZA3aeXEjrtZIdjDkxBlBsOhY0swEVF9rdg5raNVqd0mcCCQ==
+Received: by filterdrecv-7bf5c69d5-jxm6x with SMTP id filterdrecv-7bf5c69d5-jxm6x-1-61995D5B-7
+        2021-11-20 20:40:59.145356176 +0000 UTC m=+6906061.958094009
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-2-0 (SG)
-        with ESMTP
-        id ll3qRdD8TV28tob41iUjqA
-        Sat, 20 Nov 2021 20:35:05.984 +0000 (UTC)
+        by ismtpd0042p1las1.sendgrid.net (SG) with ESMTP
+        id BPmmfSTPSjq3FPLcfaGSbQ
+        Sat, 20 Nov 2021 20:40:59.074 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id A6B62700297; Sat, 20 Nov 2021 13:35:05 -0700 (MST)
+        id CE177700297; Sat, 20 Nov 2021 13:40:56 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH 2/2] hwmon: (sht4x) Add device tree match table and document
- it
-Date:   Sat, 20 Nov 2021 20:35:06 +0000 (UTC)
-Message-Id: <20211120203443.2299276-2-davidm@egauge.net>
+Subject: [PATCH v2 1/2] hwmon: (sht4x) Fix EREMOTEIO errors
+Date:   Sat, 20 Nov 2021 20:40:59 +0000 (UTC)
+Message-Id: <20211120204053.2299501-1-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211120203443.2299276-1-davidm@egauge.net>
-References: <20211120203443.2299276-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvOUtKsV6b3M6Ot72l?=
- =?us-ascii?Q?hFdy18UO7iblsn5FA0PxST4VBVpmeeiwiUZJ89J?=
- =?us-ascii?Q?JsNJVdX1UN2oLLAC5RMPG9Ja+z45q7ybH9RlwCx?=
- =?us-ascii?Q?kQ0=2FsxbcG=2FMFlNx9ZUFO6A01DaQl8GSq=2FH89hfU?=
- =?us-ascii?Q?S+mCvaafgAS0yxuR+sZfIYDsppr2BKVjP7SptRD?=
- =?us-ascii?Q?rwTMSxrCuPW832gsJG=2FbA=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvNCdZvxvLzeFcCF9f?=
+ =?us-ascii?Q?FHFLCDGCVt+b=2FJttFPlyMhyUXmh619RzI9X6vXj?=
+ =?us-ascii?Q?tVRfRVk2hOKpdqteH4BxVGzEi6nqXjKs9B+Mce1?=
+ =?us-ascii?Q?oMDhp=2F9uCfT9CmSWHWcyp+T+Qip=2F7X5x9hRxFHh?=
+ =?us-ascii?Q?H1uUYhxn=2FYUB3m50YKJc4g6Sc3pmpXipFAygU3B?=
+ =?us-ascii?Q?3z0JDPHQbbkz37232jczA=3D=3D?=
 To:     Navin Sankar Velliangiri <navin@linumiz.com>
 Cc:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
@@ -58,110 +54,43 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This patch enables automatic loading of the sht4x module via a device
-tree table entry.
+Per datasheet, SHT4x may need up to 8.2ms for a "high repeatability"
+measurement to complete.  Attempting to read the result too early
+triggers a NAK which then causes an EREMOTEIO error.
+
+This behavior has been confirmed with a logic analyzer while running
+the I2C bus at only 40kHz.  The low frequency precludes any
+signal-integrity issues, which was also confirmed by the absence of
+any CRC8 errors.  In this configuration, a NAK occurred on any read
+that followed the measurement command within less than 8.2ms.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../bindings/hwmon/sensirion,sht4x.yaml       | 50 +++++++++++++++++++
- arch/arm/boot/dts/egauge-cpk.dts              |  5 ++
- drivers/hwmon/sht4x.c                         |  7 +++
- 3 files changed, 62 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/sensirion,sht4x.yaml
+ drivers/hwmon/sht4x.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/sensirion,sht4x.yaml b/Documentation/devicetree/bindings/hwmon/sensirion,sht4x.yaml
-new file mode 100644
-index 000000000000..588c2e37b035
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/sensirion,sht4x.yaml
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/sensirion,sht4x.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sensirion SHT4x Humidity and Temperature Sensor IC
-+
-+maintainers:
-+  - Navin Sankar Velliangiri navin@linumiz.com
-+
-+description: |
-+  The SHT4x is a high-accuracy digital humidity and temperature sensor
-+  designed especially for battery-driven high-volume consumer
-+  electronics applications.  For further information refere to
-+  Documentation/hwmon/sht4x.rst
-+
-+  This binding document describes the binding for the hardware monitor
-+  portion of the driver.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - sensirion,sht4x
-+
-+  reg:
-+    const: 0x44
-+    description:
-+      The I2c base address of the SHT4x.  0x44 for all chip versions
-+      except for SHT41-BD1B, where it is 0x45.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      clock-frequency = <400000>;
-+
-+      sht4x@44 {
-+        compatible = "sensirion,sht4x";
-+        reg = <0x44>;
-+      };
-+    };
-+...
-diff --git a/arch/arm/boot/dts/egauge-cpk.dts b/arch/arm/boot/dts/egauge-cpk.dts
-index 17f85b2d54a2..ee8b52c92248 100644
---- a/arch/arm/boot/dts/egauge-cpk.dts
-+++ b/arch/arm/boot/dts/egauge-cpk.dts
-@@ -477,6 +477,11 @@ tmp102@48 {
- 					reg = <0x48>;
- 					pagesize = <16>;
- 				};
-+
-+				sht4x@44 {
-+					compatible = "sensirion,sht4x";
-+					reg = <0x44>;
-+				};
- 			};
- 
- 			securam: sram@f8044000 {
 diff --git a/drivers/hwmon/sht4x.c b/drivers/hwmon/sht4x.c
-index 3415d7a0e0fc..6e53d81e32d4 100644
+index 09c2a0b06444..3415d7a0e0fc 100644
 --- a/drivers/hwmon/sht4x.c
 +++ b/drivers/hwmon/sht4x.c
-@@ -281,9 +281,16 @@ static const struct i2c_device_id sht4x_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, sht4x_id);
+@@ -23,7 +23,7 @@
+ /*
+  * I2C command delays (in microseconds)
+  */
+-#define SHT4X_MEAS_DELAY	1000
++#define SHT4X_MEAS_DELAY_HPM	8200	/* see t_MEAS,h in datasheet */
+ #define SHT4X_DELAY_EXTRA	10000
  
-+static const struct of_device_id sht4x_of_match[] = {
-+	{ .compatible = "sensirion,sht4x" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, sht4x_of_match);
-+
- static struct i2c_driver sht4x_driver = {
- 	.driver = {
- 		.name = "sht4x",
-+		.of_match_table = sht4x_of_match
- 	},
- 	.probe		= sht4x_probe,
- 	.id_table	= sht4x_id,
+ /*
+@@ -90,7 +90,7 @@ static int sht4x_read_values(struct sht4x_data *data)
+ 	if (ret < 0)
+ 		goto unlock;
+ 
+-	usleep_range(SHT4X_MEAS_DELAY, SHT4X_MEAS_DELAY + SHT4X_DELAY_EXTRA);
++	usleep_range(SHT4X_MEAS_DELAY_HPM, SHT4X_MEAS_DELAY_HPM + SHT4X_DELAY_EXTRA);
+ 
+ 	ret = i2c_master_recv(client, raw_data, SHT4X_RESPONSE_LENGTH);
+ 	if (ret != SHT4X_RESPONSE_LENGTH) {
 -- 
 2.25.1
 
