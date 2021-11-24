@@ -2,108 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FA7B45C9F1
-	for <lists+linux-hwmon@lfdr.de>; Wed, 24 Nov 2021 17:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C8D45CD59
+	for <lists+linux-hwmon@lfdr.de>; Wed, 24 Nov 2021 20:36:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241963AbhKXQ2k (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 24 Nov 2021 11:28:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47448 "EHLO
+        id S242765AbhKXTjC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 24 Nov 2021 14:39:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348742AbhKXQ2k (ORCPT
+        with ESMTP id S243525AbhKXTjC (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 24 Nov 2021 11:28:40 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149D7C061574;
-        Wed, 24 Nov 2021 08:25:30 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id y13so12815270edd.13;
-        Wed, 24 Nov 2021 08:25:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=N+0513+tPJAoiuSxQyruSWrPHQwkKTbPLjcwm6Qo8Wo=;
-        b=GuLxyfcIIu5TUTlBT5R4g2Xr4EPMv4zH8Y7pUWZFR4Sti4v0kmMNYBO9Ozf0o90hYG
-         TC4RqBalXwWmfgfeaWxvWjHknJPX9NvzAD2iUrQFsz4MGD4LyriFW4aX95LttaGvgUDP
-         96fLQDa9R85Db/zpzf1boza5xvyhzTB4sXRhjVnjDQzTnr62IDOvKV3QP9v0jAL9XLd0
-         Nh6lH4KbCpL9ja+C8PircBNhYx3fjpDnjPNPXbkr52xYATY2vaiIQV1n+1BAeIB9ioyT
-         c4IxKU2ZlMRLyrFnWHbVkI3wx2aAxx8nUPFwvN1WEqay7QjN3uYIecun4cVhUTKxXPOl
-         mAPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=N+0513+tPJAoiuSxQyruSWrPHQwkKTbPLjcwm6Qo8Wo=;
-        b=hKlKEYWuV6/pFnCIXSPfqWjsPwGe/6i7mTm4N6rGkHm3iUU4HIStwGk521Uai57saT
-         yNxh2iQQ/ETVLBEuAqVe5k3EaSYa6Dg/gKOGUK1pEzWHh5eBHhM78/KyS5aPXRZrhuJ6
-         zxxq0U7obg4SuovppmRrYgcATuIk9bBAgG+evncLUUGpGVyq8LLWkm1cDpjp5g7bNOHz
-         ZJbZm2cmFMmV/YDahgTjU1vDJHmaHCRjpp15KN0i9phvj4ssOiMje79HHR8QO4jXWsZ+
-         Reg1G8oDYTqPQbA8Juo80C8Nlk5cSqGtEuNW2lP2wYLdiUTdHI1P7o/S7b0ioZc9ASyz
-         ioRw==
-X-Gm-Message-State: AOAM533TagcE9DlywU76dHme7J/hB8D9Q6MC2LmSXLll5+EM97drmbG7
-        STvjN3uAZmgRkr29Nj+ptKnDHClJeHUPC648xDy0+BIFwbY=
-X-Google-Smtp-Source: ABdhPJzrrLVjIJ9PgqdEJmBnnaAooAhDNbBsZW9KDrRRdHRgV9T0ter4KlQBRzEeuDv/uN1YH5SQ5wieaDAWu52WPl8=
-X-Received: by 2002:a05:6402:51c7:: with SMTP id r7mr26644917edd.359.1637771128594;
- Wed, 24 Nov 2021 08:25:28 -0800 (PST)
+        Wed, 24 Nov 2021 14:39:02 -0500
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC930C061574;
+        Wed, 24 Nov 2021 11:35:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Q0t2vlvXal39O8KUBbebiSGPvmsmjja+oK/ATdwZIWs=; b=eYVULo7WCY/ampnVyzdqu4sNfE
+        3+lmQOXnfng4jSiy0XvGS8o9kzDzoxc/87aKd5D1h2a5zHuhd+8ADwqu0FTIkT9Cm/u7l7Sa2cS5k
+        8AtXiB4TiMfbbYKP1fF84CTpzMqVI4k1fSMkaIIgXksXZ0cvuP25Oc/nWz7OZMUUawRQ=;
+Received: from p200300ccff0d65001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0d:6500:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mpy3J-0007MB-IZ; Wed, 24 Nov 2021 20:35:33 +0100
+Date:   Wed, 24 Nov 2021 20:35:32 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Alistair Francis <alistair23@gmail.com>,
+        Alistair Francis <alistair@alistair23.me>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>, lgirdwood@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        rui.zhang@intel.com, devicetree <devicetree@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-hwmon@vger.kernel.org, amitk@kernel.org,
+        linux-pm@vger.kernel.org, dl-linux-imx <linux-imx@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v15 3/8] mfd: simple-mfd-i2c: Enable support for the
+ silergy,sy7636a
+Message-ID: <20211124203532.30577a50@aktux>
+In-Reply-To: <00d68181-ad3b-17d2-0150-00029d399f0f@roeck-us.net>
+References: <20211110122948.188683-1-alistair@alistair23.me>
+        <20211110122948.188683-4-alistair@alistair23.me>
+        <20211116000634.767dcdc0@aktux>
+        <CAKmqyKPFOqWD7t6tC1Act97CVcY+yazrhwMLLr3j_wOyH50GTA@mail.gmail.com>
+        <00d68181-ad3b-17d2-0150-00029d399f0f@roeck-us.net>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20211122212850.321542-1-pauk.denis@gmail.com> <20211122212850.321542-4-pauk.denis@gmail.com>
- <CAHp75VeKosontsmFJSp-fbV9mPiSWJeLUCpx90=RHy1HFfBDnA@mail.gmail.com>
-In-Reply-To: <CAHp75VeKosontsmFJSp-fbV9mPiSWJeLUCpx90=RHy1HFfBDnA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 24 Nov 2021 18:24:51 +0200
-Message-ID: <CAHp75Vdr+9zoWG74d0ZfGEjj_b1xkX7gw1ka_4NkGtjmvKB73A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] hwmon: (nct6775) add MAXIMUS VII HERO.
-To:     Denis Pauk <pauk.denis@gmail.com>
-Cc:     Eugene Shalygin <eugene.shalygin@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        thomas@weissschuh.net, Olli Asikainen <olli.asikainen@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Nov 24, 2021 at 6:21 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Mon, Nov 22, 2021 at 11:29 PM Denis Pauk <pauk.denis@gmail.com> wrote:
+Hi,
 
-...
+On Tue, 23 Nov 2021 07:39:05 -0800
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-> > +               if (access == access_asuswmi &&
-> > +                   nct6775_asuswmi_read(0, NCT6775_PORT_CHIPID, &tmp)) {
-> > +                       access = access_direct;
-> > +                       pr_err("Can't read ChipID by Asus WMI.\n");
-> > +               }
-> > +
-> > +               if (access == access_asuswmi) {
-> > +                       if (tmp)
-> > +                               pr_info("Using Asus WMI to access %#x chip.\n", tmp);
-> > +                       else
-> > +                               access = access_direct;
->
-> Why not:
+> On 11/23/21 4:14 AM, Alistair Francis wrote:
+> > On Tue, Nov 16, 2021 at 9:10 AM Andreas Kemnade <andreas@kemnade.info> =
+wrote: =20
+> >>
+> >> Hi,
+> >>
+> >> this all creates a lot of question marks...
+> >> One of my main question is whether sy7636a =3D sy7636 (at least the
+> >> driver in the kobo vendor kernels does not have the "A" at the end,
+> >> whic does not necessarily mean a difference).
+> >>
+> >> https://www.silergy.com/products/panel_pmic
+> >> lists only a SY7636ARMC, so chances are good that the letters were just
+> >> stripped away by the driver developers. Printing on chip package is
+> >> cryptic so it is not that helpful. It is just "BWNBDA" =20
+> >=20
+> > I don't have a definite answer for you. But I think it's sy7636a
+> >=20
+> > The page you linked to above lists SY7636ARMC as well as SY7627RMC,
+> > SY7570RMC. That makes me think that the RMC is a generic suffix and
+> > this actual IC is the SY7636A.
+> >  =20
+>=20
+> Almost all chips have an ordering suffix, indicating things like
+> temperature range or packaging. The datasheet says:
+>=20
+yes, they have. The only question is where it starts. So did you find a
+public datasheet which you can chere
 
->         if (access == access_asuswmi) {
->                access = access_direct;
+> Ordering Information
+> SY7636 =E2=96=A1(=E2=96=A1=E2=96=A1)=E2=96=A1
+>              | Temperature Code (C)
+>           | Package Code (RM)
+>         | Optional Spec Code (A)
+>=20
+> The datasheet otherwise refers to the chip as SY7636A.
+>=20
+so there is no indication of something like this where the A really
+makes a difference:
 
-Oh, just noticed above... Looks not good due to possible confusion
-which means this part needs to be thought through and refactored,
-perhaps by intermediate variable that defines the access and then you
-assign access= to it if it satisfies the conditions.
+commit 28e64a68a2ef1c48f30e8b6803725199929069fc
+Author: Daniel Jeong <gshark.jeong@gmail.com>
+Date:   Tue Nov 12 15:08:58 2013 -0800
 
->                if (nct6775_asuswmi_read(0, NCT6775_PORT_CHIPID, &tmp))
->                        pr_err("Can't read ChipID by Asus WMI.\n");
->                if (tmp) {
->                        pr_info("Using Asus WMI to access %#x chip.\n", tmp);
->                       access = access_...; // do you have this?
->                }
->                ...
->         }
->
-> ?
+    backlight: lm3630: apply chip revision
+   =20
+    The LM3630 chip was revised by TI and chip name was also changed to
+    LM3630A.  And register map, default values and initial sequences are
+    changed.  The files, lm3630_bl.{c,h} are replaced by lm3630a_bl.{c,h} Y=
+ou
+    can find more information about LM3630A(datasheet, evm etc) at
+    http://www.ti.com/product/lm3630a
 
+That is good to know. Thanks for your investigation.=20
 
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+Andreas
