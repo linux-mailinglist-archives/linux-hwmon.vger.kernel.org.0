@@ -2,133 +2,77 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A00E6461762
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Nov 2021 15:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38462461ADA
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Nov 2021 16:28:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244687AbhK2OFb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 29 Nov 2021 09:05:31 -0500
-Received: from cpanel.siel.si ([46.19.9.99]:51550 "EHLO cpanel.siel.si"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244190AbhK2ODb (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 29 Nov 2021 09:03:31 -0500
-X-Greylist: delayed 2361 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Nov 2021 09:03:30 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-        s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-        Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=6rQeqm1gf5TyoLBH5qU0ilKudxmiHViF98acqSq9ssY=; b=Cea/k2TirYunprZoGUKfFUfRAn
-        E13DUFonSUQOINQK9cVl+Fe6ZxPeAvemm34HsS0SxWEiWL0Bid+4e4sL1JA7r+iiDw4jfbe2sK2h1
-        //Vtg7NlwnEb3M3etMyfm4e0RsNEO2R+yn6lXaDlg6wQdFd4JLixEs1PgkEI9DFgnb2HTHvq7qfkz
-        xoPplwtAKfDP5ND4shCvmWjbziF2jCB9CLSc4N/yOxeJsW5t0MrEFOqrGY2p6F58QsptIpfYJHLM7
-        9DcuLh9HJaB12Mwidq5/E+MdT/+wZYMCtBXdRnryY5j/OopFzGzQH2WFt8cEQz4u6Ua1yoVDTbi8N
-        5F13UBzA==;
-Received: from [89.212.21.243] (port=60946 helo=[192.168.69.215])
-        by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <andrej.picej@norik.com>)
-        id 1mrgaL-00FHBt-Ef; Mon, 29 Nov 2021 14:20:45 +0100
-Subject: Re: [groeck-staging:watchdog-next 25/28]
- drivers/watchdog/da9063_wdt.c:177:15: error: implicit declaration of function
- 'i2c_smbus_write_byte_data'
-To:     kernel test robot <lkp@intel.com>, Yunus Bas <y.bas@phytec.de>
-Cc:     kbuild-all@lists.01.org, linux-hwmon@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
-References: <202111292050.cwhXdxtQ-lkp@intel.com>
-From:   Andrej Picej <andrej.picej@norik.com>
-Message-ID: <46440ccf-edb9-3d35-aae0-72e60278e650@norik.com>
-Date:   Mon, 29 Nov 2021 14:20:48 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S1345085AbhK2PbR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 29 Nov 2021 10:31:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51282 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346393AbhK2P3Q (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 29 Nov 2021 10:29:16 -0500
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979C6C05290B
+        for <linux-hwmon@vger.kernel.org>; Mon, 29 Nov 2021 05:39:03 -0800 (PST)
+Received: by mail-oi1-x236.google.com with SMTP id r26so34606000oiw.5
+        for <linux-hwmon@vger.kernel.org>; Mon, 29 Nov 2021 05:39:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=NCSgregBP4vjmqVrcsaXJKge9SfifXD693b35ZcSwv0=;
+        b=XlRAzcd9d4gnBly1MT445DR9r7tj5lSoJgt0+SuhXi/tGHvhRgGbPOFePZlf10Roq6
+         mRgqrjztrk+VsPyvZfBbXlmp9Y0l4G7hbivQBCqqfNxcATvJ90uNyK2UJtzBP389gHdm
+         K0S4JQS79Vj9Y3CQqwOJ3V4cJtuLuWWZJgXYbUh9oPOn9KkL2BXjIwbMJzdIxTG8HTlK
+         Ph5EmfuJde7ocTNVuruORZ+jYZ8hjR+LpPpDLLNrTwJtWlz5gCxCRzOoLHoLRk2dkI6o
+         xBkGdez9cBI5r8nP6RZMgP2ooxcnQKDET2Ldcfby9b0d9d05dGVQdgR7SX3SP3GYLkgy
+         IJcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=NCSgregBP4vjmqVrcsaXJKge9SfifXD693b35ZcSwv0=;
+        b=qWoOS6ZkVNIlpYKpipT6gYlbhkNbmZh3/qZ/ZD79xaMeTSM3GCjusOI47WvAOKk8qk
+         t3XMRqsdpiPblSzYJGOo+GIBl3kGKZFeCz5D15ahDUf6FpmTYXsUcfLo7TLnA8Bilf3e
+         uIqp3gXDj3QudIQG773sH8Vs5rLgmIeoPprTBAJDAABzMlMFBhNiyGcMk+s/5WoyZ3OF
+         KnoLRz/MGLjNVqqG55C9rLUQgEA6YJ0RmBvivR5tRH6vfhe6Nv80CfldzlLru1dlLtyT
+         3ymG3Mwx84wjldQpsgNpPo47sBBOhSOgKnKdN3e2Mget25J0WJvyXY8ZaXmjmx/vHGbP
+         45pw==
+X-Gm-Message-State: AOAM531CppnFggeklT01tSEwNi0Ed+eYDMx/l9w/e4/DA3T1jK1tqaDT
+        4LplbQaTx76Q1d1Nl+onzrob2hAOGohc8a9k7ws=
+X-Google-Smtp-Source: ABdhPJwcTJ3ge39hMf1SuXELzM+f7/bZsod7H0HfSPD5xwJSYIRG0xfuLA/uH3DF81yAHZmrjpK8CiZUNYALflphLkQ=
+X-Received: by 2002:aca:b10a:: with SMTP id a10mr42008151oif.74.1638193143007;
+ Mon, 29 Nov 2021 05:39:03 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <202111292050.cwhXdxtQ-lkp@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Received: by 2002:a4a:3b8f:0:0:0:0:0 with HTTP; Mon, 29 Nov 2021 05:39:02
+ -0800 (PST)
+Reply-To: jennifermbaya38@gmail.com
+From:   Mrs Jennifer Mbaya <kokossousylvie@gmail.com>
+Date:   Mon, 29 Nov 2021 05:39:02 -0800
+Message-ID: <CAFBEt+ndw+RjWGQb7zTiDdpzZe8T7TycgVBABE_iu4Mh=kvrQg@mail.gmail.com>
+Subject: =?UTF-8?Q?Kedvezm=C3=A9nyezett?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi
-
-On 29. 11. 21 13:24, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
-> head:   293903b9dfe43520f01374dc1661be11d6838c49
-> commit: 5ea29919c29413c984f4ba3e04a6679d306e7a6e [25/28] watchdog: da9063: use atomic safe i2c transfer in reset handler
-> config: csky-randconfig-r032-20211128 (https://download.01.org/0day-ci/archive/20211129/202111292050.cwhXdxtQ-lkp@intel.com/config)
-> compiler: csky-linux-gcc (GCC) 11.2.0
-> reproduce (this is a W=1 build):
->          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->          chmod +x ~/bin/make.cross
->          # https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git/commit/?id=5ea29919c29413c984f4ba3e04a6679d306e7a6e
->          git remote add groeck-staging https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
->          git fetch --no-tags groeck-staging watchdog-next
->          git checkout 5ea29919c29413c984f4ba3e04a6679d306e7a6e
->          # save the config file to linux build tree
->          mkdir build_dir
->          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=csky SHELL=/bin/bash drivers/
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->     drivers/watchdog/da9063_wdt.c: In function 'da9063_wdt_restart':
->>> drivers/watchdog/da9063_wdt.c:177:15: error: implicit declaration of function 'i2c_smbus_write_byte_data' [-Werror=implicit-function-declaration]
->       177 |         ret = i2c_smbus_write_byte_data(client, DA9063_REG_CONTROL_F,
->           |               ^~~~~~~~~~~~~~~~~~~~~~~~~
->     cc1: some warnings being treated as errors
-> 
-> 
-> vim +/i2c_smbus_write_byte_data +177 drivers/watchdog/da9063_wdt.c
-> 
->     168	
->     169	static int da9063_wdt_restart(struct watchdog_device *wdd, unsigned long action,
->     170				      void *data)
->     171	{
->     172		struct da9063 *da9063 = watchdog_get_drvdata(wdd);
->     173		struct i2c_client *client = to_i2c_client(da9063->dev);
->     174		int ret;
->     175	
->     176		/* Don't use regmap because it is not atomic safe */
->   > 177		ret = i2c_smbus_write_byte_data(client, DA9063_REG_CONTROL_F,
->     178						DA9063_SHUTDOWN);
->     179		if (ret < 0)
->     180			dev_alert(da9063->dev, "Failed to shutdown (err = %d)\n",
->     181				  ret);
->     182	
->     183		/* wait for reset to assert... */
->     184		mdelay(500);
->     185	
->     186		return ret;
->     187	}
->     188	
-> 
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
-> 
-
-This should be fixed if we add hard dependency to I2C. Just like 
-44144c809e39 ("watchdog: da9062: Add dependency on I2C") fixes the 
-057b52b4b3d58 ("watchdog: da9062: make restart handler atomic safe") on 
-the da9062.
-
-I will create a patch and submit it if that's OK.
-
-Sorry for not noticing this problem before submitting the initial patch.
-
-BR,
-Andrej
+Az =C3=96n nev=C3=A9ben az Egyes=C3=BClt Nemzetek =C3=A9s az Eg=C3=A9szs=C3=
+=A9g=C3=BCgyi Vil=C3=A1gszervezet a
+nemzetk=C3=B6zi valutaalaphoz kapcsol=C3=B3dva d=C3=ADjat adom=C3=A1nyoz, a=
+melyben az =C3=96n
+e-mail c=C3=ADm=C3=A9t =C3=A9s p=C3=A9nzeszk=C3=B6z=C3=A9t =C3=A1tadtuk nek=
+=C3=BCnk az =C3=96n =C3=A1tutal=C3=A1sa =C3=A9rdek=C3=A9ben,
+k=C3=A9rj=C3=BCk, eros=C3=ADtse meg adatait az =C3=96n =C3=A1tutal=C3=A1sa =
+=C3=A9rdek=C3=A9ben.
+Azt az utas=C3=ADt=C3=A1st kaptuk, hogy minden f=C3=BCggoben l=C3=A9vo tran=
+zakci=C3=B3t vigy=C3=BCnk
+=C3=A1t a k=C3=B6vetkezo k=C3=A9t napon bel=C3=BCl, de ha megkapta az alapj=
+=C3=A1t, akkor
+hagyja figyelmen k=C3=ADv=C3=BCl ezt az =C3=BCzenetet, ha nem azonnal.
+S=C3=BCrgosen v=C3=A1laszolnia kell erre az =C3=BCzenetre, ez nem egy olyan
+internetes csal=C3=B3, ez a vil=C3=A1gj=C3=A1rv=C3=A1ny enyh=C3=ADt=C3=A9se=
+.
+Jennifer Mbaya
