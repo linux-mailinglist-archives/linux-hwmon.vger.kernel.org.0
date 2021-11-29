@@ -2,138 +2,172 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E485546144E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Nov 2021 12:53:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B94D2461590
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Nov 2021 13:55:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243184AbhK2L46 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 29 Nov 2021 06:56:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S231223AbhK2M7B (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 29 Nov 2021 07:59:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234457AbhK2Ly6 (ORCPT
+        with ESMTP id S231244AbhK2M5B (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 29 Nov 2021 06:54:58 -0500
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EDE6C08ED8A
-        for <linux-hwmon@vger.kernel.org>; Mon, 29 Nov 2021 02:57:21 -0800 (PST)
-Received: by mail-yb1-xb2f.google.com with SMTP id x32so40942677ybi.12
-        for <linux-hwmon@vger.kernel.org>; Mon, 29 Nov 2021 02:57:21 -0800 (PST)
+        Mon, 29 Nov 2021 07:57:01 -0500
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6E8C08EB19;
+        Mon, 29 Nov 2021 03:42:14 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id c3so21024818iob.6;
+        Mon, 29 Nov 2021 03:42:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/N2AzXdmQhj8cnrxf6yxwa23/wIatZRqd4goM9Q+IO8=;
-        b=ErhOpdgigBGRX0iOA2ci/LrupvuM6+6c+q9rD2B6x1di+sFL9PVYGmzafYCayO999B
-         Ex51N+if313WKcW+gK1lj/OWtPvwfLDnTT20+eAv8YxxrR4g7rLnHIdzsTIvVAz0SrpQ
-         Ch6axdbEwb+a/M3Dt2tKAFVIFy0Y8iZuOwtZqXl1J60xk4GO/CqIzkuCM++XjDrDX06p
-         089vT34nfrhei7WTrhyk/M1T035mB+FNPNQ5Hd3oBtsviAPMtLS5mvE7ZDcnz+92hK94
-         07sMoak/mgTSYg0TcRsMzWsKiITVk9cvja0ME+E02kwQTfYZNPVDhNnY35dNNYcmygLp
-         iGDg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8DiEIPxwmtabywojLIKrpLmvgw45b4iTNiO5soeMU6o=;
+        b=RlrcsJqmeIn1gVO9rhY2FMWwJ6HFT9bGSa6QJMg3W1zfgG3X6N29gUWBNoiRhMzR0H
+         OhxEEURqen1meCgpx2+/tCguWIy4qmdt6nLdr3k1jZ5KEgH9MuW3/WcQ9kUDWjL0Z5Vb
+         LZTRTNWJ+vw20DB/YX/DRkdCIctfmF+FBK19dKA4OOPAby5NuHOYnx3M2bPHMOxOoy8l
+         zeiPZPJelHREyqMNKB3VaUxahunobi9K/DleK4ipxolWqBpmCqDq1KgDE+CnhUnDjnrT
+         0Jq2Si7jcZBqaDE6WJ2P0wdTy4+Q/SQ3I2PP0MlrLorcL+mdD+MSAYdfTwx5jxcJJ+lY
+         O4HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=/N2AzXdmQhj8cnrxf6yxwa23/wIatZRqd4goM9Q+IO8=;
-        b=tcxhhop9H0j+GrVs6m00tm0KrMQaCYg8g3N+uV+3qjjHQNhuKhh4WSPOE3dV99A6YF
-         Yjh3Cd7tDqToGggixNXUIpM1Gxw+9OgeyUPawAOf+EtoLsWYV+H7m2ooMx1Q6QCYmjwZ
-         Xivae71fgHzgc8U7ju5BSfHLcmXc6SdXXeVLSm+TitmwdVEZBSpYou+v5YmVIzCjOyu+
-         MYMpb87n2+wwm3vRYYBXnozGe3dABpkpaIdUwU0pwvNxqKhExRREdSVxtONJusYr0PWQ
-         6nORA2CQX5MRGmFT6DsGGAzPunnWAL9ozotPDaDPiNCsrmfuq9QxgvBzuMELSUWipHhr
-         cOfA==
-X-Gm-Message-State: AOAM533F2s7QBwEUMt4aZjXyS9HXl1llr/lmQBZdYrenxZwpMuW9Si5b
-        1OdS7osYPGiw+fWYhi7h3jIgWRaBwYYhYewUdqM=
-X-Google-Smtp-Source: ABdhPJwDXAO1KxnCKDkkwiudCJqJuhpArYKiJQTg+eIzhjAbEBRvY4HWTqik/oBHDS4epB1bybFjcLt6vUq4kag2XME=
-X-Received: by 2002:a25:8052:: with SMTP id a18mr5454865ybn.634.1638183440729;
- Mon, 29 Nov 2021 02:57:20 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8DiEIPxwmtabywojLIKrpLmvgw45b4iTNiO5soeMU6o=;
+        b=sl07i1fD/WILNa7wDek/oTz7/tLb/vGptzxtwWlmsp69ruAiYbnrfCKPx03IpMhVnd
+         vuRHeYteMiQdFRc/hmMMlSWEVfSrodjXEQTQkycjHjnuK8PvnhfRY5sOopZScqIRP33n
+         cCCawonJyJVfqC9NBx+oDP+QKhysxeInyHsN24wPHyEQhBeRUm8eXLS4WdtyNc1xVE51
+         uU0OI5vgFH5ZrNOhyMSseMzFh2Rt4kWLtT3SCq28pRd89y7SrGTsD0Ha5iA6MJOa8Qzs
+         oZK1VJTzO2lwUtxpKKiqgNbuMWD8ZHda5FT7Sif522zX+ghGU7laZarR5+PltFkQlALN
+         WOtw==
+X-Gm-Message-State: AOAM532mbBopolcuKUPgEMtEZDi6GNpctUgrp3M8twf7NHYtP7Pahfw/
+        LiSmCk4Z1ifMQxixnBtYV4QrI856NkpMy/FXHwY=
+X-Google-Smtp-Source: ABdhPJxUPnrzd1fIgp0bQ0VcnIBdfu3Q8Kiyx+t/gkTv/ZX6M6t1J/JoW5a+5GXuOUyQJxaAnegpzFE5xO9ojxakKpk=
+X-Received: by 2002:a05:6638:32a2:: with SMTP id f34mr62596399jav.63.1638186134216;
+ Mon, 29 Nov 2021 03:42:14 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7010:178c:b0:1df:8029:4655 with HTTP; Mon, 29 Nov 2021
- 02:57:20 -0800 (PST)
-Reply-To: koffiaya202100@gmail.com
-From:   Koffi Aya <jindaratdaosornprasat2014@gmail.com>
-Date:   Mon, 29 Nov 2021 10:57:20 +0000
-Message-ID: <CAEU+xUtwV2_ndBWAkwUyRuwpTUmaYNsko=VW5FhYtsUrob4E3g@mail.gmail.com>
-Subject: Von Koffi
-To:     undisclosed-recipients:;
+References: <20211110122948.188683-1-alistair@alistair23.me>
+ <20211110122948.188683-2-alistair@alistair23.me> <20211117223950.3a7eaf7a@aktux>
+ <CAKmqyKP_gQ1qSADMPwmyf-V0TqGOYf2GitzpDXsmBUO6_iqK7Q@mail.gmail.com> <20211125235935.5a1b7d33@aktux>
+In-Reply-To: <20211125235935.5a1b7d33@aktux>
+From:   Alistair Francis <alistair23@gmail.com>
+Date:   Mon, 29 Nov 2021 21:41:48 +1000
+Message-ID: <CAKmqyKO-KUhfeeOTFtMzLrZ5MUiL2-5qov-g+VYZxC_8du=ksA@mail.gmail.com>
+Subject: Re: [PATCH v15 1/8] dt-bindings: mfd: Initial commit of silergy,sy7636a.yaml
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Alistair Francis <alistair@alistair23.me>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>, lgirdwood@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        rui.zhang@intel.com, devicetree <devicetree@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-hwmon@vger.kernel.org, amitk@kernel.org,
+        linux-pm@vger.kernel.org, dl-linux-imx <linux-imx@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=20
-Von: Koffi Aya
-Liebste,
-Guten Tag und vielen Dank f=C3=BCr Ihre Aufmerksamkeit. Bitte, ich m=C3=B6c=
-hte, dass
-Sie meine E-Mail sorgf=C3=A4ltig lesen und mir helfen, dieses Projekt zu
-bearbeiten. Ich bin Miss Koffi Aya und m=C3=B6chte Sie in aller Bescheidenh=
-eit
-um Ihre Partnerschaft und Unterst=C3=BCtzung bei der =C3=9Cbertragung und A=
-nlage
-meiner Erbschaftsgelder in H=C3=B6he von 6.500.000,00 US-Dollar (sechs Mill=
-ionen
-f=C3=BCnfhunderttausend US-Dollar) bitten, die mein verstorbener geliebter =
-Vater
-vor seinem Tod bei einer Bank hinterlegt hat.
+On Fri, Nov 26, 2021 at 8:59 AM Andreas Kemnade <andreas@kemnade.info> wrote:
+>
+> On Tue, 23 Nov 2021 23:29:26 +1000
+> Alistair Francis <alistair23@gmail.com> wrote:
+>
+> > On Thu, Nov 18, 2021 at 7:40 AM Andreas Kemnade <andreas@kemnade.info> wrote:
+> > >
+> > > On Wed, 10 Nov 2021 22:29:41 +1000
+> > > Alistair Francis <alistair@alistair23.me> wrote:
+> > >
+> > > > Initial support for the Silergy SY7636A Power Management chip
+> > > > and regulator.
+> > > >
+> > > > Signed-off-by: Alistair Francis <alistair@alistair23.me>
+> > > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > > > Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+> > > > ---
+> > > >  .../bindings/mfd/silergy,sy7636a.yaml         | 79 +++++++++++++++++++
+> > > >  1 file changed, 79 insertions(+)
+> > > >  create mode 100644 Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..0566f9498e2f
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> > > [...]
+> > > > +  regulators:
+> > > > +    type: object
+> > > > +
+> > > > +    properties:
+> > > > +      compatible:
+> > > > +        const: silergy,sy7636a-regulator
+> > > > +
+> > > > +      vcom:
+> > > > +        type: object
+> > > > +        $ref: /schemas/regulator/regulator.yaml#
+> > > > +        properties:
+> > > > +          regulator-name:
+> > > > +            const: vcom
+> > > > +
+> > > hmm, this is what? If I understand it correctly, vcom means some
+> > > voltage for compensation. On other comparable pmics (e.g. TPS65185
+> > > which has also a sane public datasheet, MAX17135) I have seen some
+> > > methods to measure a voltage while the display is doing something
+> > > defined and then program this voltage non-volatile for compensation
+> > > during manufacturing.
+> > >
+> > > If I understand the code correctly all the bunch of voltages are
+> > > powered up if this one is enabled.
+> > > So at least a description should be suitable.
+> > >
+> > > The other comparable PMICs have at least regulators named VCOM, DISPLAY
+> > > (controls several regulators, started with delays configured via
+> > > registers) and V3P3. MAX17135 source can be found in NXP kernels,
+> > > TPS65185 in Kobo vendor kernels.
+> > >
+> > > So I would expect to see something similar here and a description or at
+> > > least not such a misleading name as vcom if it is for some reason not
+> > > feasible to separate the regulators.
+> >
+> > This is a vcom in the sense of voltage for compensation. We just
+> > currently don't support setting the vcom.
+> >
+> > I had a look at the Kobo code and this is similar to
+> > https://github.com/akemnade/linux/blob/kobo/epdc-pmic-5.15/drivers/regulator/sy7636-regulator.c#L614
+> >
+> > So I think that vcom is still the appropriate name for this.
+> >
+> seems that you did not get me. If I understand the code behind it
+> correctly, it turns on all power rails (the +-15V stuff, VEE and so on)
+> with the defined delays, not just vcom because it sets
+> SY7636A_OPERATION_MODE_CRL_ONOFF. Controlling VCOM separately is possible
+> by using SY7636A_OPERATION_MODE_CRL_VCOMCTL in combintion with a
+> vcom_en gpio.
+>
+> I do not see a reason to turn on vcom only without the other higher
+> voltage rails, so the behaviour is not necessarily wrong but if I read
+> the binding documentation I would expect that just vcom is turned on.
+> That is the mismatch I am talking about.
 
-Ich m=C3=B6chte Ihnen versichern, dass dieser Fonds legal von meinem
-verstorbenen Vater erworben wurde und keinen kriminellen Hintergrund hat.
-Mein Vater hat diesen Fonds legal durch ein legitimes Gesch=C3=A4ft erworbe=
-n,
-bevor er w=C3=A4hrend seiner Gesch=C3=A4ftsreise zu Tode vergiftet wurde. D=
-er Tod
-meines Vaters wurde von seinen Verwandten, die ihn w=C3=A4hrend seiner
-Dienstreise begleiteten, vermutet. Denn nach 3 Monaten nach dem Tod meines
-Vaters begannen Seine Verwandten, alle Besitzt=C3=BCmer meines verstorbenen
-Vaters zu beanspruchen und zu verkaufen.
+Ah! Ok I understand. I'll rename it to vdd then.
 
-Die Verwandten meines verstorbenen Vaters wissen nichts von den
-6.500.000,00 US-Dollar (sechs Millionen f=C3=BCnfhunderttausend US-Dollar),=
- die
-mein verstorbener Vater auf die Bank eingezahlt hat und mein verstorbener
-Vater sagte mir heimlich, bevor er starb, dass ich in jedem Land nach einem
-ausl=C3=A4ndischen Partner suchen sollte meiner Wahl, wohin ich diese Gelde=
-r f=C3=BCr
-meine eigenen Zwecke =C3=BCberweise.
+Alistair
 
-Bitte helfen Sie mir, dieses Geld f=C3=BCr gesch=C3=A4ftliche Zwecke in Ihr=
-em Land
-auf Ihr Konto zu =C3=BCberweisen. Ich habe diese Entscheidung getroffen, we=
-il
-ich viele Dem=C3=BCtigungen von den Verwandten meines verstorbenen Vaters
-erlitten habe. Zur Zeit habe ich Kommunikation mit dem Direktor der Bank,
-bei der mein verstorbener Vater dieses Geld hinterlegt hat. Ich habe dem
-Direktor der Bank die Dringlichkeit erkl=C3=A4rt, sicherzustellen, dass das=
- Geld
-ins Ausland =C3=BCberwiesen wird, damit ich dieses Land zu meiner Sicherhei=
-t
-verlassen kann. Der Direktor der Bank hat mir zugesichert, dass das Geld
-=C3=BCberwiesen wird, sobald ich jemanden vorlege, der den Geldbetrag in me=
-inem
-Namen f=C3=BCr diesen Zweck ehrlich entgegennimmt.
-
-Seien Sie versichert, dass die Bank den Betrag auf Ihr Konto =C3=BCberweist=
- und
-es keine Probleme geben wird. Diese Transaktion ist 100% risikofrei und
-legitim. Ich bin bereit, Ihnen nach erfolgreicher =C3=9Cberweisung dieses G=
-eldes
-auf Ihr Konto 30% der Gesamtsumme als Entsch=C3=A4digung f=C3=BCr Ihren Auf=
-wand
-anzubieten. Sie werden mir auch helfen, 10% an Wohlt=C3=A4tigkeitsorganisat=
-ionen
-und Heime f=C3=BCr mutterlose Babys in Ihrem Land zu spenden.
-
-Bitte alles, was ich m=C3=B6chte, ist, dass Sie f=C3=BCr mich als mein ausl=
-=C3=A4ndischer
-Partner auftreten, damit die Bank dieses Geld auf Ihr Konto =C3=BCberweist,
-damit ich in diesem Land leben kann. Bitte, ich brauche Ihre dringende
-Hilfe wegen meines jetzigen Zustands. Mit Ihrer vollen Zustimmung, mit mir
-zu diesem Zweck zusammenzuarbeiten, bekunden Sie bitte Ihr Interesse durch
-eine R=C3=BCckantwort an mich, damit ich Ihnen die notwendigen Informatione=
-n und
-die Details zum weiteren Vorgehen gebe. Ich werde Ihnen 30% des Geldes f=C3=
-=BCr
-Ihre Hilfe anbieten und Hilfestellung, damit umzugehen.
-
-Ihre dringende Antwort wird gesch=C3=A4tzt.
-Mit freundlichen Gr=C3=BC=C3=9Fen
-Koffi Aya
+>
+> If we agree on this idea that one regulator is enabling everything, I
+> would adapt my EPDC drm driver and tps65185 driver (which are both in
+> my clean up to be upstreamable-queue).
+>
+> Just another thing to compare with:
+> https://github.com/Freescale/linux-fslc/blob/4.1-2.0.x-imx/drivers/regulator/max17135-regulator.c
+> that seems to be the starting point for kobo vendor kernel epd pmics.
+> They seem to have taken the source and modified things. There we have
+> regulators with empty ops for that step-up converted stuff, a separate
+> vcom and a display regulator which really controls all of these step-up
+> things.
+>
+> Regards,
+> Andreas
