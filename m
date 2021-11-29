@@ -2,165 +2,131 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 506F54622B0
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Nov 2021 22:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54FF0462739
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Nov 2021 23:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbhK2VDT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 29 Nov 2021 16:03:19 -0500
-Received: from mout.gmx.net ([212.227.17.20]:55815 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229649AbhK2VBS (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 29 Nov 2021 16:01:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1638219461;
-        bh=DNtADlqCD16a0p6leRSeTgFd5ERa28Gj8N49dVh2+pg=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=YQ81nweFNdzUZYSaFn1hWZQq0zH3r9P6bR1QvsNtmJMPNsKflJELhWKDytM+LliwJ
-         FW8vLu5SGv3nvahoaJLLSAuhnawlj3jmr/S24TtVnHzFu4lEQeaIZVx7YQgVkaIWag
-         StV04iT+TicCnKHrp4KOAYn0tcculpszqJj9RgCI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.2.29] ([91.137.126.34]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mqb1c-1mEHyv3CAi-00mdX7; Mon, 29
- Nov 2021 21:57:41 +0100
-Subject: Re: [PATCH 1/2] hwmon: (dell-smm) Simplify ioctl handler
-To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
-Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211120170319.72369-1-W_Armin@gmx.de>
- <20211120170319.72369-2-W_Armin@gmx.de>
- <20211123161332.discv3bfx4rkowah@pali>
-From:   Armin Wolf <W_Armin@gmx.de>
-Message-ID: <5024959a-772a-ebde-089d-0668e1e188f7@gmx.de>
-Date:   Mon, 29 Nov 2021 21:57:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S236929AbhK2XBf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 29 Nov 2021 18:01:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236562AbhK2XAZ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 29 Nov 2021 18:00:25 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0825C043AF5
+        for <linux-hwmon@vger.kernel.org>; Mon, 29 Nov 2021 12:52:53 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mrndF-0001H9-9a; Mon, 29 Nov 2021 21:52:13 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mrnd1-001nbP-Cy; Mon, 29 Nov 2021 21:51:58 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mrnd0-0003gn-Bn; Mon, 29 Nov 2021 21:51:58 +0100
+Date:   Mon, 29 Nov 2021 21:51:54 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Billy Tsai <billy_tsai@aspeedtech.com>
+Cc:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
+        joel@jms.id.au, andrew@aj.id.au, lee.jones@linaro.org,
+        thierry.reding@gmail.com, p.zabel@pengutronix.de,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org, BMC-SW@aspeedtech.com
+Subject: Re: [v13 2/2] pwm: Add Aspeed ast2600 PWM support
+Message-ID: <20211129205154.jtm4ehvvfo52toth@pengutronix.de>
+References: <20211129064329.27006-1-billy_tsai@aspeedtech.com>
+ <20211129064329.27006-3-billy_tsai@aspeedtech.com>
 MIME-Version: 1.0
-In-Reply-To: <20211123161332.discv3bfx4rkowah@pali>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Provags-ID: V03:K1:t4sNQTDSNMewwWOSx+cI2e1mkeNskLRcioK8L/S4emE+Bty8THA
- vJzDjGrPxyr9ISIKc/mwbSVAgjhSZ7WjJA8R/ce6YczPjWpAdl1JIT6nwXV8KAipbmTk3Rd
- nhwu5QM5PN/LnDUWKvhGwv19hFd3uLozIy+3d91Ibg/1xRfYUqGzQvdlGhrWOMt84R6TQkE
- jA/uAhZu1M6ljht0kgL9g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:u5DZRe+gL4o=:I9068Yw+qcpz3A9OOhXab0
- nu1NKe24BjQQ8r70SoRbS7Ug2+AgnSA4zOz1KngP2js2IbkNcYKMVS4bmP1ozmixcBXbMx1KM
- oOjP9LB1VsO0hdJowRRVoAS1BtSHumfNe6DKprAlO1VG1osAAV+MqmxUvpQzWnW+a36IvLhZV
- Z8lveNnVD3FkXpOJMaP0zUlLOX9QJcoASdHOh2vbcAMa/5T9782/fnkL8/LzebxMxDnet3BM0
- RMUmAF72ZWmXaR1Px8OLeQwsZnyaRtA4PUaB+5XZyp7dttf6qGdpQP5zTTmjYEEs/54rQ54Ns
- hEQi5CW2wsnbAEP7eY2xzWYR79EgsMWLb6P1uo67fuQaCNdRGklooZvIW4k8sZDpuinlyMBdD
- FOxnN3yJay0r9jqrmudRBRnenaEbXgUnI8I0xZVoxSet8AwWhl/yl4qn/pLd5BQHS04AEntxj
- pWCcpq/avQSJDAdAZGwHbj/XKdsY2U40QY7Kvty9KcbFwusZeCa73HX692YOxced6qJIHRh5g
- 9VcV9Fj1gxMUf12TTsdP3pGBlird/4hiXTghJ84VRsFHN1Agg7+roXyk04NtuPFx6STlmL2a6
- 76DQFIyDrNDc+wEMAIzn/ZGGbRHshg60xw505ws1/XKpiiL+tTfZCgUejvZC0tV51njohRhpt
- svL6NLzFFdUo+IqJnO2Zg+OCFECeCbdD2wV3R9zZ2YnkZeIcJMX9UcvIrLo8+PQaRy6hz9Syw
- WwFyXTRCr/AQuN/ijtELdkXqwO7ZYqku028I+oZXPQ7lQKGmxPToHTW3Io5HOK7gnFTDtPWqp
- 96AJd1jspDHbHMWX5gv7IApXst7x0PvNrEnTNU3pI30YdQv3K1czP0aCubSWM24GuUamtFOU7
- eCz19lKCU4S/vQCaoosDRm0kIaSqo4wOJ6BERsFXnsYa+OQdLyggBflYg6onVEPFMy6Q3TSSu
- ywS5L4gHmy9kGwKMgJY3UbI7hHigAb+/SEdXnVA9U0awOFud87Dw3Y4eBPQvAW1iuYTHqwRV+
- psuBCXOryqyyXDHTxGxDFcHUwBZQpHS7P8qDvPD0pCQ6RImbQg0LNqDEJQ6fGOmPMLWcWqzQN
- uL/DjGpTuN3qpQ=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ltrr7wjbtue7nf5u"
+Content-Disposition: inline
+In-Reply-To: <20211129064329.27006-3-billy_tsai@aspeedtech.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Am 23.11.21 um 17:13 schrieb Pali Roh=C3=A1r:
 
-> On Saturday 20 November 2021 18:03:18 Armin Wolf wrote:
->> The second switch-case has no real purpose:
->>
->> - for I8K_BIOS_VERSION, val does not represent a return value,
->>    making the check for error values unnecessary.
->> - for I8K_MACHINE_ID, val remains zero, so the error check is
->>    unnecessary too.
->>
->> Remove the switch-case and move the calls to copy_to_user()
->> into the first switch-case for I8K_BIOS_VERSION/_MACHINE_ID.
->> Omit buff[] since data->machineid already contains the string
-> s/->machineid/->bios_machineid/
->
->> with the necessary zero padding.
-> data is allocated by devm_kzalloc() so data->bios_machineid is really
-> zero padded.
->
->> Tested on a Dell Inspiron 3505.
->>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->> ---
->>   drivers/hwmon/dell-smm-hwmon.c | 30 +++++++++---------------------
->>   1 file changed, 9 insertions(+), 21 deletions(-)
->>
->> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hw=
-mon.c
->> index 5596c211f38d..b5d1703faa62 100644
->> --- a/drivers/hwmon/dell-smm-hwmon.c
->> +++ b/drivers/hwmon/dell-smm-hwmon.c
->> @@ -454,7 +454,6 @@ i8k_ioctl_unlocked(struct file *fp, struct dell_smm=
-_data *data, unsigned int cmd
->>   {
->>   	int val =3D 0;
->>   	int speed, err;
->> -	unsigned char buff[16];
->>   	int __user *argp =3D (int __user *)arg;
->>
->>   	if (!argp)
->> @@ -468,15 +467,19 @@ i8k_ioctl_unlocked(struct file *fp, struct dell_s=
-mm_data *data, unsigned int cmd
->>
->>   		val =3D (data->bios_version[0] << 16) |
->>   				(data->bios_version[1] << 8) | data->bios_version[2];
->> -		break;
->>
->> +		if (copy_to_user(argp, &val, 4))
->> +			return -EFAULT;
->> +
->> +		return 0;
->>   	case I8K_MACHINE_ID:
->>   		if (restricted && !capable(CAP_SYS_ADMIN))
->>   			return -EPERM;
->>
->> -		strscpy_pad(buff, data->bios_machineid, sizeof(buff));
->> -		break;
->> +		if (copy_to_user(argp, data->bios_machineid, 16))
-> What about usage of sizeof(data->bios_machineid) instead of hardcoded
-> constant 16? And maybe same for constant 4?
+--ltrr7wjbtue7nf5u
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For the string yes, but maybe i should change the int to an u32?
+Hello Billy,
 
->> +			return -EFAULT;
->>
->> +		return 0;
->>   	case I8K_FN_STATUS:
->>   		val =3D i8k_get_fn_status();
->>   		break;
->> @@ -527,23 +530,8 @@ i8k_ioctl_unlocked(struct file *fp, struct dell_sm=
-m_data *data, unsigned int cmd
->>   	if (val < 0)
->>   		return val;
->>
->> -	switch (cmd) {
->> -	case I8K_BIOS_VERSION:
->> -		if (copy_to_user(argp, &val, 4))
->> -			return -EFAULT;
->> -
->> -		break;
->> -	case I8K_MACHINE_ID:
->> -		if (copy_to_user(argp, buff, 16))
->> -			return -EFAULT;
->> -
->> -		break;
->> -	default:
->> -		if (copy_to_user(argp, &val, sizeof(int)))
->> -			return -EFAULT;
->> -
->> -		break;
->> -	}
->> +	if (copy_to_user(argp, &val, sizeof(int)))
->> +		return -EFAULT;
->>
->>   	return 0;
->>   }
->> --
->> 2.30.2
->>
+just two minor thing left to criticise:
+
+On Mon, Nov 29, 2021 at 02:43:29PM +0800, Billy Tsai wrote:
+> +	if (clk_en && duty_pt) {
+> +		dividend =3D (u64)NSEC_PER_SEC * (div_l + 1) * duty_pt
+> +				 << div_h;
+> +		state->duty_cycle =3D DIV_ROUND_UP_ULL(dividend, rate);
+> +	} else
+> +		state->duty_cycle =3D clk_en ? state->period : 0;
+
+I wonder about checkpatch not criticising this construct. See
+Documentation/process/coding-style.rst:
+
+	Do not unnecessarily use braces where a single statement will
+	do. [...] This does not apply if only one branch of a
+	conditional statement is a single statement; in the latter case
+	use braces in both branches
+
+> [...]
+> +static int aspeed_pwm_apply(struct pwm_chip *chip, struct pwm_device *pw=
+m,
+> +			    const struct pwm_state *state)
+> +{
+> +	struct device *dev =3D chip->dev;
+> +	struct aspeed_pwm_data *priv =3D aspeed_pwm_chip_to_data(chip);
+> +	u32 hwpwm =3D pwm->hwpwm, duty_pt;
+> +	unsigned long rate;
+> +	u64 div_h, div_l, divisor, expect_period;
+> +	bool clk_en;
+> +
+> +	expect_period =3D state->period;
+> +	dev_dbg(dev, "expect period: %lldns, duty_cycle: %lldns", expect_period,
+> +		state->duty_cycle);
+> +
+> +	rate =3D clk_get_rate(priv->clk);
+> +	if (expect_period > div64_u64(ULLONG_MAX, (u64)rate))
+> +		expect_period =3D div64_u64(ULLONG_MAX, (u64)rate);
+
+If you write that as
+
+	expect_period =3D min(div64_u64(ULLONG_MAX, (u64)rate), expect_period);
+
+you make sure that the division is only calculated once.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--ltrr7wjbtue7nf5u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmGlPWcACgkQwfwUeK3K
+7Ak8pwf/f38P/ANk72PoQ6XaxGN4JtL+YI2d3Fnkk/akQZog/rZXoqAqA+vpeUZN
+ZCP6kfvy1afZmpmJZ5/A7IcEVbx63vryrJDubwJBpEjW+XQ7zUEIkWviTmmfgtbf
+d4alL1S8iU6oPpM4ijAZi+AUbwOkzu0mLEW6Cvx/EPJaahmLxWTUjip+WVgEN3XW
+CbrXaQCNLjX2E+OE/ddOC2kCwGJjM8eOjoMl7xZ6gL0mEMyyQpReIxDKuUUK3PSA
+RhTGOVEP0CVoksgQaMf8X5aKQvbQqzlS0/Tpinpb2sPTeefRouahOsqb5aieNsbH
+qrCFLTc6x3uQByyGnIUj9364lD8/5A==
+=/Kh7
+-----END PGP SIGNATURE-----
+
+--ltrr7wjbtue7nf5u--
