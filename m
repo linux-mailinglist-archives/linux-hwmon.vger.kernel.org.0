@@ -2,84 +2,58 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2CD546896E
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Dec 2021 06:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AD1468A41
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Dec 2021 10:21:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbhLEFlv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 5 Dec 2021 00:41:51 -0500
-Received: from mga11.intel.com ([192.55.52.93]:8446 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229549AbhLEFlu (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 5 Dec 2021 00:41:50 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10188"; a="234676260"
-X-IronPort-AV: E=Sophos;i="5.87,288,1631602800"; 
-   d="scan'208";a="234676260"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2021 21:38:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,288,1631602800"; 
-   d="scan'208";a="478767074"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 04 Dec 2021 21:38:20 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mtkE8-000Jqm-1i; Sun, 05 Dec 2021 05:38:20 +0000
-Date:   Sun, 5 Dec 2021 13:37:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Alistair Francis <alistair@alistair23.me>, kernel@pengutronix.de,
-        robh+dt@kernel.org, lee.jones@linaro.org, lgirdwood@gmail.com,
-        broonie@kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-arm-kernel@lists.infradead.org, alistair23@gmail.com,
-        linux-hwmon@vger.kernel.org, andreas@kemnade.info,
-        s.hauer@pengutronix.de
-Subject: Re: [PATCH v16 8/8] ARM: dts: imx7d: remarkable2: Enable lcdif
-Message-ID: <202112051306.WFgQGIPH-lkp@intel.com>
-References: <20211202120758.41478-9-alistair@alistair23.me>
+        id S232771AbhLEJY2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 5 Dec 2021 04:24:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53252 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232770AbhLEJY1 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Dec 2021 04:24:27 -0500
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F11F5C061751
+        for <linux-hwmon@vger.kernel.org>; Sun,  5 Dec 2021 01:21:00 -0800 (PST)
+Received: by mail-ua1-x936.google.com with SMTP id y5so13868850ual.7
+        for <linux-hwmon@vger.kernel.org>; Sun, 05 Dec 2021 01:21:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Av10FJHZ16PNlaWBwLeHhLYMKvHi/4lm87heoggNDKA=;
+        b=l4vtkMjxLtLfkjCy5NHsc69Pv79lEBD+94ZBO+QziUUb0qR1ExFZU/UQYGtBj2xSDC
+         Gx8wtvVy22JlP1puuehnvLlMuJFuKFHZqmXdtQI7vqghJ5PZPNCvdN2a3JlUQhTumkmE
+         VGoLJUEL2a+ZOgifCJbkPAKHW5w60DCJ30IB1mgfKmqfxF/WqN4CkCwrj+rlWJnf4A5t
+         fIBqodCqewWbQBwqh9Hr22E7QeDeU6/c980jv9gL4t4Lv71Msr+FkXUv3ZMKdXee3NPt
+         bPy7F+hORk40NFQpzZZthV9vFv66XQ1Rv62tOZVoHlBJxnOs2UgR2ffgUfTxLIkTFUzG
+         PIoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Av10FJHZ16PNlaWBwLeHhLYMKvHi/4lm87heoggNDKA=;
+        b=1clEsz3funnceEMhP6WrXFNtLbKhkLWX2lvohqAMyRDjS+/HYIYMBLI4OafHhYBCM7
+         HkMurjDq/5aXKSIjlBWfpIaLp16RsH+56CWbZ/Wo8x7GqRBFtTZsKCXLp0PSuz8YKR0j
+         fawVgA2MUlsL0ubiPyCyoezNuDaD1DT2NPybXhKoSY6Au+Lutz7utJ2I3JqRjfq1lwtl
+         549EA0yUWGkjjMMg+OjMwdLILodGrBprYoM81kHhJHyrZS4MeqkQU5NQ9wHWndjoH6NM
+         a0s6F9VIxleWL51I3VIjcEJLm2ehEd5+1OFW4rTZRfa7mSm7NWpmVGlKALCdH00WH8qT
+         yLaQ==
+X-Gm-Message-State: AOAM533WcV0ttmVTNKanjq/7HVXroMiXD1uPXGwtuUUwGhTzHo9B1t7p
+        KYMTLEjgtFRx3K6DhvTWOQRXqr1QqY1MqbhPZro=
+X-Google-Smtp-Source: ABdhPJxvXACVmD6t+qBO7aXBgkTBrlFbh4/Yx4p7NWGvy18TmigtbKhoSGmaPdqaZg6wW6VZiRdZ3N1NDtKjeDLXuM0=
+X-Received: by 2002:a05:6102:3232:: with SMTP id x18mr29457876vsf.38.1638696060103;
+ Sun, 05 Dec 2021 01:21:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211202120758.41478-9-alistair@alistair23.me>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a67:c784:0:0:0:0:0 with HTTP; Sun, 5 Dec 2021 01:20:59 -0800 (PST)
+Reply-To: fionahill.usa@hotmail.com
+From:   Fiona Hill <tonyelumelu67@gmail.com>
+Date:   Sun, 5 Dec 2021 01:20:59 -0800
+Message-ID: <CAAVnhxKJxn3QoE=YKTRd=-9B8QK7pTrECMk2heZ4qxSsaToFaw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Alistair,
-
-Thank you for the patch! Yet something to improve:
-
-[auto build test ERROR on groeck-staging/hwmon-next]
-[also build test ERROR on lee-mfd/for-mfd-next robh/for-next v5.16-rc3 next-20211203]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Alistair-Francis/Add-support-for-the-silergy-sy7636a/20211202-201116
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-config: arm-randconfig-c002-20211205 (https://download.01.org/0day-ci/archive/20211205/202112051306.WFgQGIPH-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 5f1d1854eb1450d352663ee732235893c5782237)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm cross compiling tool for clang build
-        # apt-get install binutils-arm-linux-gnueabi
-        # https://github.com/0day-ci/linux/commit/690ae9a20c4cbd1aab1695c0ca6c8d7dbe1d51a6
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Alistair-Francis/Add-support-for-the-silergy-sy7636a/20211202-201116
-        git checkout 690ae9a20c4cbd1aab1695c0ca6c8d7dbe1d51a6
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> Error: arch/arm/boot/dts/imx7d-remarkable2.dts:258.3-260.5 Properties must precede subnodes
-   FATAL ERROR: Unable to parse input tree
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Hi, did you receive my message  i send to you?
