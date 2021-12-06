@@ -2,74 +2,79 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A7146ACF9
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Dec 2021 23:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 583E246AE26
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Dec 2021 00:02:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356329AbhLFWuY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 6 Dec 2021 17:50:24 -0500
-Received: from thorn.bewilderbeest.net ([71.19.156.171]:59799 "EHLO
-        thorn.bewilderbeest.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358539AbhLFWuC (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Dec 2021 17:50:02 -0500
+        id S1377726AbhLFXF3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 6 Dec 2021 18:05:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1376941AbhLFXF3 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Dec 2021 18:05:29 -0500
+X-Greylist: delayed 930 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 06 Dec 2021 15:02:00 PST
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [IPv6:2605:2700:0:5::4713:9cab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64882C061746;
+        Mon,  6 Dec 2021 15:02:00 -0800 (PST)
 Received: from hatter.bewilderbeest.net (174-21-184-96.tukw.qwest.net [174.21.184.96])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: zev)
-        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id E704265E;
-        Mon,  6 Dec 2021 14:46:31 -0800 (PST)
+        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 1052D5B1;
+        Mon,  6 Dec 2021 15:02:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
-        s=thorn; t=1638830792;
-        bh=sJGoD0KGK28NF/XGudTV7ZOesD4oG76zvYJfSvr/Mjw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dRr0ZFsYkpTJi4YZrHfW/njIhXwiebKtrwhmqu5QteZX9M1p8a1kXhb8bgUF1OcOI
-         PsX0LukgZR52Mp53Uvn3bJ0yFVdX5OcJp/U3YNHBWC/GbgPsr0fr2+bPCZtvKzIX+s
-         Rkefnn9aILmU+gTez7tC+cou0p5oAk6g2VZNj5AQ=
+        s=thorn; t=1638831720;
+        bh=4dR9lnkIOeqXCHslk6FCmGQHLEGScu+LVOdAQOP7gjk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VRaN+AHAEKHneN0mOl2+mKZXNUeUjBBkahSZESWdvXV0SZb/wValXYiZnvsXJNfWP
+         Q0PffsXQqbosY5L3EtgrwcycCGW4K5AyroiEZONp0qZevCAFoFj0qd+vYwU9pRPQy7
+         HLm9g4d5D1zXnOUW9pGZBZHrDPghtFmga7JW3Ac8=
 From:   Zev Weiss <zev@bewilderbeest.net>
 To:     linux-hwmon@vger.kernel.org
 Cc:     Guenter Roeck <linux@roeck-us.net>,
         Jean Delvare <jdelvare@suse.com>, openbmc@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, Zev Weiss <zev@bewilderbeest.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        devicetree@vger.kernel.org
-Subject: [PATCH 2/2] dt-bindings: add Delta AHE-50DC fan control module
-Date:   Mon,  6 Dec 2021 14:44:18 -0800
-Message-Id: <20211206224419.15736-3-zev@bewilderbeest.net>
+        linux-kernel@vger.kernel.org, Zev Weiss <zev@bewilderbeest.net>
+Subject: [PATCH v2 0/2] hwmon: Add driver for Delta AHE-50DC fan control module
+Date:   Mon,  6 Dec 2021 15:01:51 -0800
+Message-Id: <20211206230153.16891-1-zev@bewilderbeest.net>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211206224419.15736-1-zev@bewilderbeest.net>
-References: <20211206224419.15736-1-zev@bewilderbeest.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This is the integrated fan control module of the Delta AHE-50DC Open19
-power shelf.
+Hello,
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
----
- Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+These patches add a hwmon driver for the integrated fan control module
+in the Delta AHE-50DC Open19 power shelf.  I don't know of a datasheet
+any proper documentation for it; the register layout information came
+from an existing GPL driver [0] in a code release from LinkedIn.
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 791079021f1b..0cadfbf640b2 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -75,6 +75,8 @@ properties:
-           - dallas,ds75
-             # Delta Electronics DPS-650-AB power supply
-           - delta,dps650ab
-+            # Delta AHE-50DC Open19 power shelf fan control module
-+          - delta,ahe50dc-fan
-           # Delta Electronics DPS920AB 920W 54V Power Supply
-           - delta,dps920ab
-             # 1/4 Brick DC/DC Regulated Power Module
+(Re-sending a v2 after noticing an embarrassing oversight I missed
+before sending v1.)
+
+
+Thanks,
+Zev Weiss
+
+Changes since v1 [1]:
+ - fixed invalid name warning from __hwmon_device_register()
+
+[0] https://github.com/linkedin/o19-bmc-firmware/blob/master/meta-openbmc/meta-linkedin/meta-deltapower/recipes-kernel/fancontrol-mod/files/fancontrol.c
+
+Zev Weiss (2):
+  hwmon: add Delta AHE-50DC fan control module driver
+  dt-bindings: add Delta AHE-50DC fan control module
+
+ .../devicetree/bindings/trivial-devices.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/hwmon/Kconfig                         |  11 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/delta-ahe50dc-fan.c             | 265 ++++++++++++++++++
+ 5 files changed, 285 insertions(+)
+ create mode 100644 drivers/hwmon/delta-ahe50dc-fan.c
+
 -- 
 2.34.1
 
