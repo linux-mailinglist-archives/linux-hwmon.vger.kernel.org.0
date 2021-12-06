@@ -2,78 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46BC5468E6B
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Dec 2021 02:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 948E6468E85
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Dec 2021 02:19:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234313AbhLFBHk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 5 Dec 2021 20:07:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56982 "EHLO
+        id S230228AbhLFBWq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 5 Dec 2021 20:22:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238934AbhLFAuf (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Dec 2021 19:50:35 -0500
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC66DC061751
-        for <linux-hwmon@vger.kernel.org>; Sun,  5 Dec 2021 16:47:07 -0800 (PST)
-Received: by mail-oi1-x22a.google.com with SMTP id t23so18527971oiw.3
-        for <linux-hwmon@vger.kernel.org>; Sun, 05 Dec 2021 16:47:07 -0800 (PST)
+        with ESMTP id S230152AbhLFBWp (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Dec 2021 20:22:45 -0500
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B89C0613F8
+        for <linux-hwmon@vger.kernel.org>; Sun,  5 Dec 2021 17:19:17 -0800 (PST)
+Received: by mail-yb1-xb34.google.com with SMTP id j2so26738406ybg.9
+        for <linux-hwmon@vger.kernel.org>; Sun, 05 Dec 2021 17:19:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Alqp0Ex+vVZsJHSLYg+fQYSCqtWS3CwwxwUws0QTLr4=;
-        b=gfjEkLfRdCQ2YRhxQ5xzZFyWUNjW4a8qnQiLydEV8KHeG106tmETWpK5GiXr+48UDI
-         TO8MjqCZL3Z73ppTUGCX6/capZC0ivTwijCyijyY3c6z7QzmRp8QSKa/m5BzQqaJakEN
-         avgPf1kE4rugv1oXGz6hVWdw2jFtdDRq93M4u3MH79VFYeJy4cPuD7vFNsxV0lJSIoIo
-         PUjaN5TjGaAHH2xCbt8l/u7QnBPE1JGiViPpZ5lQS65qvyzyEQWzTMTEbh/hX7gz4aji
-         f0mXWweq4ALAamUhggMNYMQjuuS1qbMDrDBdwSWRrpLDIo8ZLfJl54GICAs5vn0tEc6a
-         VCpg==
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=E2AEBwRLDyMHXhqv25/lRU4v2xj9i67BTqDq82SAP7w=;
+        b=AXOdbfJUzrPBa1HVnobRlCmvvZwFD7vK2CzDkF/KX2nkVp6ceggHhiaamFfVDIF0gd
+         Fd+ed2TKWJjDtScKQnoc5x5B3q6NnHvpJQkIQGQxi2cOErl6TBurpeWyZMQBcfTRVxth
+         qbNg46C9ePIHNvKCEkZzdBue0jz91MkSo4xZXQ9BhKfwRViBLIOUgSQJuHIT28IFLV6E
+         ONME+DdNQCOiAzBOiiWR0LQvY2/HoAJQtFLJ3/f7Rvn6q1lxsu+eeavjb2KDiFSnjuni
+         8OnpkLRR6NG3Y0Iugqzs4MAVOX2Xfl7bViOF0IuBbn8mF0GTx2lxE/u+ASW/zT918naG
+         Xrrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Alqp0Ex+vVZsJHSLYg+fQYSCqtWS3CwwxwUws0QTLr4=;
-        b=6YduDMcPrJEm4KIumnw57CVCjuteaIl5+FzwqYIz4fw4I23jivMqP3PEDfqjc+ck0z
-         izxfTSTu8eZI7N9r9LQ2A1gbtF8YXbRZeA2CltGT2wn7m0PTEg7j6R56Pgix/CRPBxq3
-         jD2Wfgfbb6ZO6bGuV4rNR6vqCAF14oOYsK+IsI4gZmI56tcIhNySA0XnuIi2HDRpKjtw
-         7A1CFtCJ8AiHShMAMlmbUPtWOQF41gPGUllnkAYqWn8n4aLoWgZhwUkrmeo++yqcQn78
-         IArTByw5MrgXJ+CUZwjKhmnVk1KxuOa8bIlSa+Z+nDM5A1HHnPOqxh9LGb7TmI24Yj2u
-         4+ig==
-X-Gm-Message-State: AOAM532V1A/AFoKehjVAXfTwXGWuVoBSbCoLiznlhWvdrZAMcLymbKFc
-        JBsZXpswo/VtQI7TGX/4iDjaaFDARNd+1ilyhzJZ8cU5Fgo=
-X-Google-Smtp-Source: ABdhPJx1dwImggenfqbxO/tZUJiswuQ1Q5W0juhgLX2/fPkZVGLP5NixfaHF+iJ0AWjmj8UMQQWB8PkiwImMMRmkn7s=
-X-Received: by 2002:a54:4791:: with SMTP id o17mr21810264oic.114.1638751626997;
- Sun, 05 Dec 2021 16:47:06 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=E2AEBwRLDyMHXhqv25/lRU4v2xj9i67BTqDq82SAP7w=;
+        b=20FGLj4naCdsL/PBxITpyCsY48XbMQTWHH33HQaD6h/6x2fdBS6o+oMHbVMLEcwBq4
+         LwBvKu4cqbyv+/OEPZqMZ//zIUD4a95PvR5wN8L96tSyXVK4Whj8ldDYVA96rWWqUCV0
+         bGhGSagc6/UtBCSnaUEpQp7nfapOHfH/g70CSQuSWbsohbPdZOFKD9MMuL29z5HzADND
+         YA26Ltl0cXEovmpsbPdmhTgcAW4trcvo+hNT18OuJKwuQZKsQB0rm/wEjM3QzJluoOfQ
+         0vnjgI9ZSpYT/FdoJvlRque+1xr+sNX/g9SXnmeh6AacVvUaNZQh/C6DGerglKqNNRQB
+         qsKQ==
+X-Gm-Message-State: AOAM530JLxCDctAfHH0qQj9uqIsmA1stC23xJcoxk2uI/HqvRm42KyDo
+        CkOzyaaf+RWBBAN40vZaEPJdfQ/watF9OcOpJlo=
+X-Google-Smtp-Source: ABdhPJwteSaOBu+2VuZWxMAJ5YUg2U3TJrJjc0CGREQ2qx4w/t7MD0PZ8a9hC4YW2eiXNNRuoA5sO/8bqfkODaOqzQ4=
+X-Received: by 2002:a25:dc54:: with SMTP id y81mr40679275ybe.183.1638753557062;
+ Sun, 05 Dec 2021 17:19:17 -0800 (PST)
 MIME-Version: 1.0
-References: <20211205235948.4167075-1-linus.walleij@linaro.org> <cd5cf97d-95ea-081c-2763-b4c0676a729f@roeck-us.net>
-In-Reply-To: <cd5cf97d-95ea-081c-2763-b4c0676a729f@roeck-us.net>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 6 Dec 2021 01:46:55 +0100
-Message-ID: <CACRpkdbGFPUMTqHnzj9RRnMQKNg5RU7cJ+CrD5=Rq_xuZMZZqA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] hwmon: (ntc_thermistor): Inline OF data lookup in probe()
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        Peter Rosin <peda@axentia.se>,
-        Chris Lesiak <chris.lesiak@licor.com>
+Sender: mrsnadiaemaan5@gmail.com
+Received: by 2002:a05:7110:b005:b0:102:6066:97a3 with HTTP; Sun, 5 Dec 2021
+ 17:19:16 -0800 (PST)
+From:   Mrs Nadia Emaan <mrsnadiaemaan52@gmail.com>
+Date:   Mon, 6 Dec 2021 01:19:16 +0000
+X-Google-Sender-Auth: P4QwPOVIBv4grTKTsT6cpPBod10
+Message-ID: <CAOg3cV1xAKgknrORfYpgm7OTWuLt7jiKU2G_vy15LtfNwZf-JQ@mail.gmail.com>
+Subject: May the peace of God Almighty be with You:
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Dec 6, 2021 at 1:38 AM Guenter Roeck <linux@roeck-us.net> wrote:
-> On 12/5/21 3:59 PM, Linus Walleij wrote:
-> > There is no need to allocate the state container and look
-> > up DT properties in a separate function if OF is all we
-> > support. Inline it into probe().
-> >
->
-> This is POV. Old fashioned as I am, I still prefer smaller
-> functions over large ones. Is there a _technical_ reason
-> for this change ?
+May God Bless you,
 
-Mainly the *data state container should be allocated in
-probe() but I can keep the rest in a separate (renamed,
-moved) function, I can certainly respin it like such, just
-a minute!
+I am contacting you through this means because I need your urgent
+assistance and also help me to carry a charity project in your
+country. I found your email address as a true child of God for past
+few days now that I have been praying to know if you are really the
+chosen one for this great charity project, according to God's
+direction, after all prayers I am convinced, and I have decided to
+contact you. Please, i want you use the funds for the Lord's work,
+with confidence, read and respond now.
 
-Yours,
-Linus Walleij
+
+My name is  Mrs. Nadia Emman, a widow, but currently based in West
+Africa since my life with my late husband, who was a businessman in
+this country before dying some years ago. We were married to many
+years without a child. He died after a brief illness that lasted only
+six days and I myself have been suffering from an ovarian cancer
+disease. At this moment I am about to finish the race in this way
+because the disease has reached a very bad stage, without any family
+member and without children. I hope you do not expose or betray this
+trust and I am sure that I am about to trust you for the mutual
+benefit of orphans and the less privileged. I have some funds that I
+inherited from my late husband, the total sum of ($ 12,500,000.00)
+deposited at a bank here in Burkina Faso. After knowing my current
+state of health, I decided to trust you with this fund, believing that
+you will use it in the way I will instruct here.
+
+
+you will use this $12.5 Million for public benefit as follows;
+
+1. Establish An Orphanage Home To Help The Orphanages Children.
+2. Build A Hospital To Help The Poor.
+3. Build A Nursing Home For Elderly People Need Care & Meal.
+
+You will named them after my late husband.Therefore, I need you to
+help me and claim this money and use it for charities, for orphanages
+and provide justice and help to the poor, needy and to promote the
+words of God and the effort to maintain the house of God, according to
+the bible in the book of. Jeremiah 22: 15-16, without minding our
+different religions.
+
+It will be a pleasure to compensate with 40% percent of the total
+money for your effort in handling the transaction, while 60% of the
+money will go to charity project.
+
+All I need from you is sincerity and ability to complete the task of
+God without any failure. It will be my pleasure to see that the bank
+has finally released and transferred the fund to your bank account in
+the country, even before I die here in the hospital, due to my current
+state of health, everything must be processed as soon as possible.
+
+I am waiting for your immediate response, if you are only interested
+in obtaining more details about the transaction and execution of this
+humanitarian project for the glory and honor of God.
+
+Sorry if you received this letter in your spam, is due to recent
+connection/network error here in the country.
+
+Please I am waiting for your urgent reply now.
+
+May God Bless you,
+Mrs. Nadia Emman.
