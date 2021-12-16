@@ -2,93 +2,86 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97918476BFC
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Dec 2021 09:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 015FB477076
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Dec 2021 12:42:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232428AbhLPIdH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 16 Dec 2021 03:33:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44018 "EHLO
+        id S232508AbhLPLmP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 16 Dec 2021 06:42:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232397AbhLPIdH (ORCPT
+        with ESMTP id S232563AbhLPLmH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 16 Dec 2021 03:33:07 -0500
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF968C061574;
-        Thu, 16 Dec 2021 00:33:06 -0800 (PST)
-Received: by mail-lf1-x12d.google.com with SMTP id l22so48157797lfg.7;
-        Thu, 16 Dec 2021 00:33:06 -0800 (PST)
+        Thu, 16 Dec 2021 06:42:07 -0500
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BA1C061746
+        for <linux-hwmon@vger.kernel.org>; Thu, 16 Dec 2021 03:42:06 -0800 (PST)
+Received: by mail-qt1-x830.google.com with SMTP id z9so25079871qtj.9
+        for <linux-hwmon@vger.kernel.org>; Thu, 16 Dec 2021 03:42:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZeuoAPntk3hXwhFRVqNwsz2JIoOQMdkHLY6+hrxWebk=;
-        b=RBlQLIYIk3EKDUD0ddqeYK9I+MrDrQ1eTNcv1Z/II8hQcvkH39XWFW+Iu1X3rzaD8B
-         22Qrx5IqvkUzTfxtOZTSef5s/metOSUftONiv3Ms6iMSb3Fxm/i8kFz9nNMg6qpSR31q
-         LID9GC3IKbCVs3pQG5Nxogo0GmqZnjTEYEb6qUTP4qOFu+qWUb95oUD+DVlPqUPXCMHZ
-         G3IF87r9ALmyNHP3uLNZuD82SH98wKsYbPrqkhzLMAC4D9nWqWUFxAxLFlADwNE3PFkI
-         d+y3xhYI3ApO03lbv4K5eWr7i8f2kJDw18UJrTBInCYk1PQpNfAlRbRi6ErMsXb/4091
-         sVLQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=DbH1Ji01P93LyTzDoauO1Rc48sDWVtdwnBGUamxeb8T/9DnmNwFlL0JvNxtTxnIik8
+         AF4fiOnh94EFQzdZz8KJBnzwauC2lZM0yNVUv4pWHip6opgPog4u/vluZhPJXjw78vDA
+         f6sh/ed1OxoJ1g1t7gzdPodwSxTC5c4DgCybEoK61DXARfmFs8snxFiiIRa/Iu1/hNzN
+         fZIim177r1ShSprd0HKY5DfawS5hKhFwBWxLO3U7SnQ0mHNCzrBDbHpz1jt5tPoBjmr8
+         7Ae3NOwI9TZO/6l6pkdqJZg2o0eCT7Tj9ACDNqagtOISwltP3H2yXXWnIzZMI4wBc7By
+         rM9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ZeuoAPntk3hXwhFRVqNwsz2JIoOQMdkHLY6+hrxWebk=;
-        b=3C3D1mhd68esO/2qfiO7LG53wxndJilIy7Nhbuc5YNEdDT50jT+1NYtgg4uZdlKI2Y
-         uA50NmMs4LqdqQ+TaJXS5E2Ae5Kvbe5LoPCaSPqi0wi6KS7VQYdU8gj/HI91Ef4M/YsK
-         FYP7P/YnfYE9UezvlwaoUzUBOH7t/b3mp6beyPuyr5uiFI1aFZ4jdX2wdkiKIt4SSFxh
-         iM/W2KWc+qNKaP3cEQhuIGicCLsm02a87/Wco3ZDvjJ5Wj9UrnnDIZUe8BWtFQmc7KzG
-         vkEN5WA9ldjRwRisoDMv6/RnTo+zC/xnNA5nRyjH0OTaWzTrqffrCbII899GAGGi2L5Y
-         /ghA==
-X-Gm-Message-State: AOAM532stOpz8y+OCQt/qDdYwY6G/gmsnCmmYKeJgoQS2zzxrad+voeM
-        V8TL3NQsLrUFYpvxgQ9sMdKTGEHCC5ZatAu1mOo=
-X-Google-Smtp-Source: ABdhPJyy7KZQLrZ2S+3EQXDdnieeVzasTDFGA0g1IzBfGoA5XtGkI2iOXswKQ1Zx0owOoe9R8wAXdw==
-X-Received: by 2002:a05:6512:370c:: with SMTP id z12mr131328lfr.458.1639643585259;
-        Thu, 16 Dec 2021 00:33:05 -0800 (PST)
-Received: from NB-893.corp.yadro.com ([89.207.88.249])
-        by smtp.googlemail.com with ESMTPSA id d16sm993066ljj.87.2021.12.16.00.33.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Dec 2021 00:33:04 -0800 (PST)
-From:   Arseny Demidov <arsdemal@gmail.com>
-X-Google-Original-From: Arseny Demidov <a.demidov@yadro.com>
-Cc:     arsdemal@gmail.com, rahul.tanwar@linux.intel.com,
-        andriy.shevchenko@intel.com, Arseny Demidov <a.demidov@yadro.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon : (mr75203) fix macro typo
-Date:   Thu, 16 Dec 2021 11:33:02 +0300
-Message-Id: <20211216083302.986-1-a.demidov@yadro.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=VItVHJrJkytzdTUh9r5PccjCjGb4XFY+rxv49STm5m8kUPUDfPLdyNOTqp1LN0jj5r
+         WBkmYu8iMTOfKly7g7Kfp+Z/XkUnb/wzlHhqy/fbwat7H9pcJgYhwHmJJA1iOF4z4gWH
+         7KqW0Cnz6g23Xob9epnHUewqs1cMXIk1UcI6abh8GsNpVeT0ZMjXTc0YvJlXEDm+HvGj
+         LwFnVutDLXcG8eYF+UszHqmXS2zj1oYlipadyAOc6tzsSRcmddzi6+N5wUH7YUdyDFUT
+         3+RVMy6VmKceZeDIrvNCtj8TNtALW3EctHojLGfDlot/d96I5F3FloeTgZCSG7sgvMLn
+         PlQw==
+X-Gm-Message-State: AOAM533ikPo8qCNVI2I5HuIKOrfCIkbLZSXDkfvXNcqX8zYJRSxWwpEy
+        T8qxEY49FsMQptLmpyQ/SUfPocb9c5jL72vFYhc=
+X-Google-Smtp-Source: ABdhPJyrnf396a9ziJGBm+8eiYGOgUpOQ7p2/85GJukkUSbvGu1la687iolipeGN8a/w1GmTH3LvDnglSFpjsilKeBU=
+X-Received: by 2002:a05:622a:510:: with SMTP id l16mr16475505qtx.619.1639654925163;
+ Thu, 16 Dec 2021 03:42:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:04
+ -0800 (PST)
+Reply-To: selviasantiago1@gmail.com
+From:   Selvia Santiago <mariamatinez119@gmail.com>
+Date:   Thu, 16 Dec 2021 11:42:04 +0000
+Message-ID: <CAONDhKNqZ3ja5a2mdpyxiYfPYVQwq_MdxvhX-F--7sW9gxb1ZQ@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-In the file mr75203.c we have a macro named POWER_DELAY_CYCLE_256,
-the correct value should be 0x100. The register ip_tmr is expressed
-in units of IP clk cycles, in accordance with the datasheet.
-Typical power-up delays for Temperature Sensor are 256 cycles i.e. 0x100.
-
-Signed-off-by: Arseny Demidov <a.demidov@yadro.com>
----
- drivers/hwmon/mr75203.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/mr75203.c b/drivers/hwmon/mr75203.c
-index 868243dba1ee..1ba1e3145969 100644
---- a/drivers/hwmon/mr75203.c
-+++ b/drivers/hwmon/mr75203.c
-@@ -93,7 +93,7 @@
- #define VM_CH_REQ	BIT(21)
- 
- #define IP_TMR			0x05
--#define POWER_DELAY_CYCLE_256	0x80
-+#define POWER_DELAY_CYCLE_256	0x100
- #define POWER_DELAY_CYCLE_64	0x40
- 
- #define PVT_POLL_DELAY_US	20
 -- 
-2.25.1
+Urgent
 
+I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
+suffering from long time illness (Cancer), there is funds I inherited
+from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
+Million Dollars) which he deposited in bank before his death, I need a
+honest and Faithful person that can use these funds for humanity work.
+
+I took this decision because I don't have any child that will inherit
+this money and I don't want a situation where this money will be used
+in an ungodly way. That is why I am taking this decision, and my
+doctor has confirmed to me that I have less than two weeks to live,
+having known my condition I decided to donate this fund to a charity
+or individual that will utilize this money to assist the poor and the
+needy in accordance to my instructions.
+
+I want you to use 70% of this funds for orphanages, school, church,
+widows, propagating the word and other humanity works,The remaining
+30% should be yours for your efforts as the new beneficiary.
+
+Please if you would be able to use these funds for humanity work
+kindly reply me. As soon as I have received your response, I will give
+you further directives on how you are to go about the claims of the
+said funds.
+
+Remain blessed.
+Mrs Selvia Santiago.
