@@ -2,115 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B450547EE17
-	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Dec 2021 10:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C6147EF18
+	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Dec 2021 14:19:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343963AbhLXJzG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 24 Dec 2021 04:55:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48852 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343931AbhLXJzF (ORCPT
+        id S239247AbhLXNTr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 24 Dec 2021 08:19:47 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:40826 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230463AbhLXNTr (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 24 Dec 2021 04:55:05 -0500
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AEBC061401
-        for <linux-hwmon@vger.kernel.org>; Fri, 24 Dec 2021 01:55:05 -0800 (PST)
-Received: by mail-qk1-x744.google.com with SMTP id i187so5796419qkf.5
-        for <linux-hwmon@vger.kernel.org>; Fri, 24 Dec 2021 01:55:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
-        b=kFg2IHSDI6G63IDUa0kUuaO2oRhDnfezzsF+tWCoel3Wl9SPlexxwwdrIjOR0QHb7S
-         j7prHfUfmQDH5T4VWNtq1dlMQYTrXaqPQ6kiOLMX0vPxuoEwN3mFa4m/NnveHimbwIfE
-         cJLNeM7X9XLVKI/YPFXQA/N0svFuKAwTWNT6dL6c89tDL0d08tx/5kmcL8Q1lzyQr1rO
-         4UxBQZHDVYd3Io+tKAcJZevwcPxDyt5YWTyT+Pe8VSyuBSS8jCHAARehURRTVMV8Ht18
-         J3543NAtm+dOAgyhcG0wXKtVJgCb2mLk/ibO6Keva7OZIUPRPgDmBMYlGTJK+hcITdvE
-         EbqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
-        b=vqJ2cQKsLhNoZsrO+aMmYdFrW6GWRhrVbnbpLdPNH5YTr5oqU/9Lz7Aq2yme8eTpxG
-         qh5Idv8EK38QHShFtsGgHoFTVx6mTEMlVM334NDL5T3AmxlrvmF6M2wDG4wc8fjKPSKP
-         ey8W4t4YXLic2lePbYE6fSVBLpTd16RINqIuOLc/atjfIkJE2yhQ7lZeipK6VOIgMQQV
-         ARhq3ekRRgKC5h9wbG4w7n3nTW0iTFd5rFLMbvFBNOisn7J/98Cx1OVqpn8JrIwsPYdu
-         iUB9zN9lMXER9dpUmcLiyKmmpJ2UoUEuszL0cfFD9w5C7S7l6ImFos+I+2v6t5fnmoxt
-         +/0g==
-X-Gm-Message-State: AOAM5329OneFdpWS28OFDqHtioCg3QvskskdwX1zkita/owDbWQYR2F5
-        blKufiBI9Zp5fDr9A6I0fmDsk3V+/nZtcs/Fb4c=
-X-Google-Smtp-Source: ABdhPJwmz021ZddWIkcW4XQGu9BbqXBfvFunz5O5wiQ0YXHvuC5LeieYg4DIHkDheLh3jHmuWScJFlqnQp53WRs2WA0=
-X-Received: by 2002:a37:9d14:: with SMTP id g20mr4213017qke.324.1640339704915;
- Fri, 24 Dec 2021 01:55:04 -0800 (PST)
+        Fri, 24 Dec 2021 08:19:47 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B242862043;
+        Fri, 24 Dec 2021 13:19:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF53C36AE5;
+        Fri, 24 Dec 2021 13:19:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640351985;
+        bh=RRC0/259fcqHbTn1tWwd3RXhY57VSROcl0lc6qKKWdY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EEJ8KMwBUMwKQVwvE8D34Otw7cDN5W5yRIX4/F/mJXKzKsHAlFf2b/ujW+9dkkq9m
+         nvwlgHv29Gs1iv1gzJHkweZW3DN3N6qgfMmviBXMCEDKw0Dq52WZHYiyAKffwqoBb8
+         qG0kyPcnBpujUGB+4SC5+LJvN+/+bNqtuV16aaWYfkZzf/b/i0VVr51Dpi5ZGQt9Jy
+         oIshsV73npxECqQXUFaT1DRB46FwXtTWvK6Sn4e1yKxWcEn4imNsszFopXtZFNJrm2
+         pkjABeo5XycsVYISnnjbIQZK+DajbUAnL+DPZUJ7/YOTykmQJW+MQNSMFJfVlRRg46
+         wwoSQXY6bt+ng==
+Date:   Fri, 24 Dec 2021 13:19:43 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Quan Nguyen <quan@os.amperecomputing.com>
+Cc:     Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Derek Kiernan <derek.kiernan@xilinx.com>,
+        Dragan Cvetic <dragan.cvetic@xilinx.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>,
+        Open Source Submission <patches@amperecomputing.com>,
+        Phong Vo <phong@os.amperecomputing.com>,
+        "Thang Q . Nguyen" <thang@os.amperecomputing.com>
+Subject: Re: [PATCH v6 5/9] regmap: Introduces regmap lock helpers
+Message-ID: <YcXI73GKNdx/gvUb@sirena.org.uk>
+References: <20211224041352.29405-1-quan@os.amperecomputing.com>
+ <20211224041352.29405-6-quan@os.amperecomputing.com>
 MIME-Version: 1.0
-Received: by 2002:ad4:5c62:0:0:0:0:0 with HTTP; Fri, 24 Dec 2021 01:55:04
- -0800 (PST)
-Reply-To: williamsreneta2019@gmail.com
-From:   MISS WILLIAMS <info.turvateealfastar@gmail.com>
-Date:   Fri, 24 Dec 2021 01:55:04 -0800
-Message-ID: <CAM-qQYYiHFbTAdm-0MBMuoT6wJnk4-7cpYfmORp9wm1UWP2Jcw@mail.gmail.com>
-Subject: Greetings Dearest One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mlX9XU0JAkRu6gCR"
+Content-Disposition: inline
+In-Reply-To: <20211224041352.29405-6-quan@os.amperecomputing.com>
+X-Cookie: I brake for chezlogs!
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Greetings Dearest One,
 
-How are you today, together with your family?Hope fine.I would like to
-use this opportunity to introduce myself to you. I am Miss Reneta
-Williams, From Benin Republic, West Africa. And my late parents are
-Mr. and Mrs. Dikko Williams; my father was a highly reputable business
-magnet who operated in Benin Republic during his days.
+--mlX9XU0JAkRu6gCR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I am writing this mail to you with tears and sorrow from my heart.
-With due respect trust and humanity, I know this mail will come to you
-as a surprise since we haven't known or come across each other before,
-considering the fact that I sourced your email contact through the
-Internet in search of trusted person who can be trusted and will
-assist me.
+On Fri, Dec 24, 2021 at 11:13:48AM +0700, Quan Nguyen wrote:
+> This commit introduces regmap_acquire/release_lock() functions and makes
+> them available for drivers that need atomic access of regmap registers
 
-It is sad to say that he passed away mysteriously in France during one
-of his business trips abroad. Though his sudden death was linked or
-rather suspected to have been masterminded by an uncle of his who
-traveled with him at that time. But God knows the truth! My mother
-died when I was just 6yrs old, and since then my father took me so
-special.
+You've not explained what something would need this for and how
+it's expected to work - we don't provide unlocked access to the
+regmap to client drivers so I don't see how one could safely use
+this.  It's unclear to me what this would mean or why it's not
+better implemented in the client driver.
 
-Before his death, he called me and informed me that he has the sum of
-Eighteen Million Five Hundred , United State Dollar
-(USD$18.500,000.00) left in fixed deposit account in one of the
-leading banks in Africa. He further told me that he deposited the
-money in my name, and also gave me all the necessary but legal
-documents to this fund with the bank.
+--mlX9XU0JAkRu6gCR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I am 21 years old and a university undergraduate and really don't know
-what to do. Now I want an account overseas where I can transfer this
-funds and after the transaction I will come and reside permanently in
-your country till such a time that it will be convenient for me to
-return back home if I so desire.
+-----BEGIN PGP SIGNATURE-----
 
-The death of my father actually brought sorrow to my life. I also want
-to invest the fund under your care because I am ignorant of business
-world. I am in a sincere desire of your humble assistance in this
-regards. Your suggestions and ideas will be highly regarded.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmHFyO4ACgkQJNaLcl1U
+h9DaeAf+LrT+e8nVJuT7C0PxLOgU/FymUBhAX0UdyOknH3zdIG0c7DcvOXau1O1x
+Kld90ZKSql9M73A3NpWy7ZnamQwLSd+7ik25B9lSL6lY7yRK7Or2N5YL0yWWg9Tl
+fJq5v7gTLRLHk5DYQaO7OGXpW5GHKuE4VB7u2aoiWGH1/ovF1odyGVRhbFz6Yn2c
+8PaAz4+ja4FDk77vird8NbSpHWOTFVPJg1hq9Kl1ru/ylihcqcNQOlYdubCxLudc
+LZSmGUv3WYRRq6ruyjGgQblUkYdlakLVTk8lNi5LaJamD2gKBqPOi1Q1NvPGrhZi
+JIMOd8EICA6jR9Hj+s1SIxK4RJNPDQ==
+=Dgc1
+-----END PGP SIGNATURE-----
 
-Now permit me to ask these few questions:
-
-1. Can you honestly help me from your heart?
-
-2. Can I completely trust you?
-
-3. What percentage of the total amount in question will be good for
-you after the money is in your account?
-
-Please, consider this and get back to me as soon as
-possible.Immediately and confirm your willingness on this my
-email(williamsreneta2019@gmail.com), here is one of my Picture and
-also i will inform you more details involved in this matter.
-
-Regards,
-
-Miss Reneta Williams.
+--mlX9XU0JAkRu6gCR--
