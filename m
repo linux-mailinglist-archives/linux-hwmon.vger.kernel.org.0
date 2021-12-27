@@ -2,188 +2,53 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F322947F676
-	for <lists+linux-hwmon@lfdr.de>; Sun, 26 Dec 2021 11:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E504B47FB27
+	for <lists+linux-hwmon@lfdr.de>; Mon, 27 Dec 2021 09:50:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231542AbhLZKsY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 26 Dec 2021 05:48:24 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:59060 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbhLZKsX (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 26 Dec 2021 05:48:23 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A2DE8B80D90;
-        Sun, 26 Dec 2021 10:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0D8C36AE8;
-        Sun, 26 Dec 2021 10:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640515701;
-        bh=oT5Ws33u+uEvkJirlO3cCP7788EMo7C6Sjn89G3yZxk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BCrymsSROHG//3ahbn2Fr7spa4n7j6sDBaFQ5X04atm8xV99RN9sVYhxSOaKkhKL7
-         ItL08jszk2ALUaurden1T212VAdPGxdL/o4nf3TzF46VqWqDkh4QHHN7NFcDub2SBO
-         zLb7rBSfHxtxPePIySjK94N2DPzwkca+gY+SySus=
-Date:   Sun, 26 Dec 2021 11:48:18 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com, demonsingur@gmail.com,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] hwmon: add debugfs register access
-Message-ID: <YchIco5UPJs1HiMM@kroah.com>
-References: <20211221124221.2684214-1-demonsingur@gmail.com>
+        id S233002AbhL0Iuz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 27 Dec 2021 03:50:55 -0500
+Received: from mail.portyid.pl ([192.36.61.58]:37986 "EHLO mail.portyid.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232817AbhL0Iuw (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 27 Dec 2021 03:50:52 -0500
+X-Greylist: delayed 595 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Dec 2021 03:50:52 EST
+Received: by mail.portyid.pl (Postfix, from userid 1001)
+        id 701C840AE1; Mon, 27 Dec 2021 09:40:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=portyid.pl; s=mail;
+        t=1640594453; bh=RZjfFpT9KGSFHXuIOzTjcb+Gwkun4EXriv7y2I0PG0A=;
+        h=Date:From:To:Subject:From;
+        b=BXfvnCG/9+IyUH/mJpDaUZ2o8MZ86rhKz0PMhk4c49T8zcCiHkoU59HJugVsIuNVV
+         l27AUXoPIlOn7kmHnt3LS8lCM6WJP+jaj5ki6QbHaW6OdeRCc7lHzGiSfuOMR48blV
+         u0xjC99Wxd+tpenBqa9qzrnELTxNhWm/cFUiSL2kNioCpCJ3JNGVDzTQ3GgnLw1AF/
+         Xo8vGzBz4/pub3nX0Nl2oz+HHw/6/3lK3jLB1lkzEeOAG03jyKdTYlyBUdMBgHZaZe
+         XhgpnJP3UsyDSDgAxYQ2sk9nJcVoQVxaOzZ0Zj4qQ/+cet2fVOKbxf6ThIzDdbP5F7
+         zTJnTamGFYGPQ==
+Received: by mail.portyid.pl for <linux-hwmon@vger.kernel.org>; Mon, 27 Dec 2021 08:40:16 GMT
+Message-ID: <20211227084500-0.1.u.2hcc.0.19v2zeq741@portyid.pl>
+Date:   Mon, 27 Dec 2021 08:40:16 GMT
+From:   =?UTF-8?Q? "Pawe=C5=82_Jasi=C5=84ski" ?= 
+        <pawel.jasinski@portyid.pl>
+To:     <linux-hwmon@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.portyid.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211221124221.2684214-1-demonsingur@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Dec 21, 2021 at 02:42:21PM +0200, Cosmin Tanislav wrote:
-> From: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> 
-> Similar to IIO, create a device directory inside debugfs
-> mount point, and create a direct_reg_access file inside
-> that directory, if debugfs_reg_access callback is defined
-> inside hwmon_ops.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  drivers/hwmon/hwmon.c | 122 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/hwmon.h |  12 +++++
->  2 files changed, 134 insertions(+)
-> 
-> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-> index 3501a3ead4ba..a3dc785cd885 100644
-> --- a/drivers/hwmon/hwmon.c
-> +++ b/drivers/hwmon/hwmon.c
-> @@ -10,6 +10,7 @@
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->  
->  #include <linux/bitops.h>
-> +#include <linux/debugfs.h>
->  #include <linux/device.h>
->  #include <linux/err.h>
->  #include <linux/gfp.h>
-> @@ -35,6 +36,12 @@ struct hwmon_device {
->  	struct list_head tzdata;
->  	struct attribute_group group;
->  	const struct attribute_group **groups;
-> +#if defined(CONFIG_DEBUG_FS)
-> +	struct dentry *debugfs_dentry;
+Dzie=C5=84 dobry,
 
-No need to keep this, just look it up when you want to remove it.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-> +	unsigned int cached_reg_addr;
-> +	char read_buf[20];
-> +	unsigned int read_buf_len;
-> +#endif
->  };
->  
->  #define to_hwmon_device(d) container_of(d, struct hwmon_device, dev)
-> @@ -64,6 +71,113 @@ struct hwmon_thermal_data {
->  	struct thermal_zone_device *tzd;/* thermal zone device */
->  };
->  
-> +static struct dentry *hwmon_debugfs_dentry;
-> +
-> +#if defined(CONFIG_DEBUG_FS)
-> +static ssize_t hwmon_debugfs_read_reg(struct file *file, char __user *userbuf,
-> +				      size_t count, loff_t *ppos)
-> +{
-> +	struct hwmon_device *hwdev = file->private_data;
-> +	struct device *hdev = &hwdev->dev;
-> +	unsigned int val = 0;
-> +	int ret;
-> +
-> +	if (*ppos > 0)
-> +		return simple_read_from_buffer(userbuf, count, ppos,
-> +					       hwdev->read_buf,
-> +					       hwdev->read_buf_len);
-> +
-> +	ret = hwdev->chip->ops->debugfs_reg_access(hdev, hwdev->cached_reg_addr,
-> +						   0, &val);
-> +	if (ret) {
-> +		dev_err(hdev->parent, "%s: read failed\n", __func__);
-> +		return ret;
-> +	}
-> +
-> +	hwdev->read_buf_len = snprintf(hwdev->read_buf, sizeof(hwdev->read_buf),
-> +				       "0x%X\n", val);
-> +
-> +	return simple_read_from_buffer(userbuf, count, ppos, hwdev->read_buf,
-> +				       hwdev->read_buf_len);
-> +}
-> +
-> +static ssize_t hwmon_debugfs_write_reg(struct file *file,
-> +				       const char __user *userbuf,
-> +				       size_t count, loff_t *ppos)
-> +{
-> +	struct hwmon_device *hwdev = file->private_data;
-> +	struct device *hdev = &hwdev->dev;
-> +	unsigned int reg, val;
-> +	char buf[80];
-> +	int ret;
-> +
-> +	count = min_t(size_t, count, sizeof(buf) - 1);
-> +	if (copy_from_user(buf, userbuf, count))
-> +		return -EFAULT;
-> +
-> +	buf[count] = 0;
-> +
-> +	ret = sscanf(buf, "%i %i", &reg, &val);
-> +
-> +	switch (ret) {
-> +	case 1:
-> +		hwdev->cached_reg_addr = reg;
-> +		break;
-> +	case 2:
-> +		hwdev->cached_reg_addr = reg;
-> +		ret = hwdev->chip->ops->debugfs_reg_access(hdev, reg, val,
-> +							   NULL);
-> +		if (ret) {
-> +			dev_err(hdev->parent, "%s: write failed\n", __func__);
-> +			return ret;
-> +		}
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return count;
-> +}
-> +
-> +static const struct file_operations hwmon_debugfs_reg_fops = {
-> +	.open = simple_open,
-> +	.read = hwmon_debugfs_read_reg,
-> +	.write = hwmon_debugfs_write_reg,
-> +};
-> +
-> +static void hwmon_device_register_debugfs(struct hwmon_device *hwdev)
-> +{
-> +	if (IS_ERR(hwmon_debugfs_dentry))
-> +		return;
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-Why check this?
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
 
-> +
-> +	if (!hwdev->chip || !hwdev->chip->ops ||
-> +		!hwdev->chip->ops->debugfs_reg_access)
-> +		return;
-> +
-> +	hwdev->debugfs_dentry = debugfs_create_dir(dev_name(&hwdev->dev),
-> +						   hwmon_debugfs_dentry);
-> +
-> +	if (IS_ERR(hwdev->debugfs_dentry))
-> +		return;
 
-No need to check for this at all, just create the directory and move on.
-
-thanks,
-
-greg k-h
+Pozdrawiam
+Pawe=C5=82 Jasi=C5=84ski
