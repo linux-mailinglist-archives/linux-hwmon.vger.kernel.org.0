@@ -2,100 +2,132 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3567D481E31
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Dec 2021 17:36:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D55BC4828AD
+	for <lists+linux-hwmon@lfdr.de>; Sat,  1 Jan 2022 23:03:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241266AbhL3QgW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 30 Dec 2021 11:36:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39250 "EHLO
+        id S230302AbiAAWDX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 1 Jan 2022 17:03:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241297AbhL3QgT (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 30 Dec 2021 11:36:19 -0500
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD140C06175C
-        for <linux-hwmon@vger.kernel.org>; Thu, 30 Dec 2021 08:36:18 -0800 (PST)
-Received: by mail-ed1-x544.google.com with SMTP id bm14so100074040edb.5
-        for <linux-hwmon@vger.kernel.org>; Thu, 30 Dec 2021 08:36:18 -0800 (PST)
+        with ESMTP id S230239AbiAAWDX (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 1 Jan 2022 17:03:23 -0500
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8884C061574;
+        Sat,  1 Jan 2022 14:03:22 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id o7so34476765ioo.9;
+        Sat, 01 Jan 2022 14:03:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=tJuk50ldQ3muMSuXbgoS9j25a+T88Kj8cRwalO+iQW8=;
-        b=Tl2guSR4m3xEw3rpULIHJ++wqFW/SYEQmQ7WMIbnHy2zYaUoARg7cK9PknZf6cN0W3
-         Peuy4aLjRGAefGaAUwuauVVgDEtZLCzlwjNxLtx80PQlCxoGSnVjxl5sdsVysUIYKcXe
-         ZHEvY5FhgjEl58lOLJ1A9t4h30umP/Ypa+sfhqsYwU7Yrt1WkeUurBVz0ENELi+zsR3u
-         BJQNY1VfxHUUaE/8TT5cdKRGj8c4KYFh+H7dGlxuQ+DG6onDg8Jr518b+Y5yocGrGcCe
-         yh+h+XVHDxXODtQ3qlmex9RXZy1vi5EDfVkrKOrMBn882gkRab822AE3oOXEEvSNp6yc
-         Cq3A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=THNuUA/tawUOChSQp/rfs6Latr7Yv/+qgS3Y2JmuUGA=;
+        b=ZacxIIWNUo+AbuiIdxvpb5y8+2CauYGT7/ignb/84oOsyae5r5y0/6F49APuiqyCge
+         iC6ThtbrG8wvoUZj3S17tSfs8M6m8K9vrMDFIit0V/T161s8UyTpn23HQGzt8FFl8oLx
+         WeRbWB8f4UL/MdFpPF+0fnjDjRUFldX+scN+68dc4tdBYW9OalEH+xWNHAEW/B/Ubq+B
+         Fr6yfs+lO3HKMbIQ2ieISXgBBZaPg11Ma3gygL9jOT2SLfFzx+q5kma9bKNs8pRiIiwi
+         B9UCN4pmXkPwJiuWsntwI5Tcr1/kD+R2BIGLXiC66IECZfe8BtTadXdAg6AgX3ppRDpy
+         Zcrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=tJuk50ldQ3muMSuXbgoS9j25a+T88Kj8cRwalO+iQW8=;
-        b=T7NOTD7pWIpeafWGw/+Dj+9STfc1OaGQtZODbaVhU5AFZ1192hwAQlIQvlwi89xFDg
-         Bnr4NLY+E5RIScK6bzptr1cgBKV2E5w7w3n+sfqzijpICwNiUBtd83jM4PvCzGUWYTDp
-         Fb5218jCYG7Yg9mDAo4TvQzWsS8LNy0BoWmhku0IB9dACN4G4h4vGFhO/nUVzUsqLAye
-         19PtRIcePZPv6l2hWrb6FoKKt47GbaqJjjbJudfjlHvUB2vDesqaFMH5DiyDiDR5eiyD
-         XZw/jhHFpIHGYovYz8NzFZ1kxMs7bez+neAbZvIWrQGPoS2ufmc5v7tyIIdLKB+ZCi/2
-         5V4Q==
-X-Gm-Message-State: AOAM531b0FLX2HB0ahghwQ0QGxQ3NPkebVePqNtRF/iqi2Lg0lvW/ZI9
-        /Ew++op3aIOOlMSx4dqOONtaaFwY+BiwITLcbKs=
-X-Google-Smtp-Source: ABdhPJzOomp7dfsSHzp32oQmbyN2PzdvUl16PkfjdGA/zQ1JLDHrj2HPGycg1+BKCtW6WdYSjbqXMvD8Y4OnayGP3mo=
-X-Received: by 2002:a17:907:9805:: with SMTP id ji5mr25733798ejc.431.1640882176818;
- Thu, 30 Dec 2021 08:36:16 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=THNuUA/tawUOChSQp/rfs6Latr7Yv/+qgS3Y2JmuUGA=;
+        b=b7SYMqzNxkp3nSIqP56d0+yiwkXQiUB1DriZNOr2OXJpGz5cdLMDP6C48wddgaDZ1e
+         rvf3l3Rv0yZbEZNXBnT3UybFSYPio/Qbk23pTuTui879yrY1BHZADXQoldltEx97Rm0R
+         Yl8Ms65DhnKxNfXnLGQEtFKtYftz18iTBbL+62At6+kOTTjT+wB/Vdi8cLk8tx0fCzpS
+         h8heqh42CHVEjumwvpX5FHIjGpnYzprhhjuzoA2+pJIPjnrHL1Tg9WEml4LmQTNTV1+W
+         8a9LGZPv/xBG9DRMBFH09372ev7mVLsm5pcUTtIC4VgCOyHtx+c9J8l22JakTGxzEOiM
+         ttJA==
+X-Gm-Message-State: AOAM533xKfWmrY8sW0W6rleWNUTtkI+BDxHJHrbG3xq2BgTE3Hx4zBNk
+        klAl9T821PYKkgEoO2RZe/XsyLmiQG9em5I9XD0=
+X-Google-Smtp-Source: ABdhPJxcG0EXw2tagv/W5t5LK62AU4A1PFcHqm07qBTmFiz/YbDF7BDVZZrWch9dJLDeK5Yf7lZp6YvMCElQropPc50=
+X-Received: by 2002:a05:6602:140c:: with SMTP id t12mr18092473iov.187.1641074601679;
+ Sat, 01 Jan 2022 14:03:21 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6402:524a:0:0:0:0 with HTTP; Thu, 30 Dec 2021 08:36:16
- -0800 (PST)
-From:   saleem norman <norsaleem74@gmail.com>
-Date:   Thu, 30 Dec 2021 08:36:16 -0800
-Message-ID: <CALzdWh_x5jjnnv1r9eGK9qr1a48HO-KCPT0FhG6Jv8RmohjA0g@mail.gmail.com>
-Subject: DEAR FRIEND CONTACTS MY SECRETARY HIS E-MAIL nelson_salah@aol.com.
-To:     undisclosed-recipients:;
+References: <20211216122525.136139-1-alistair@alistair23.me>
+In-Reply-To: <20211216122525.136139-1-alistair@alistair23.me>
+From:   Alistair Francis <alistair23@gmail.com>
+Date:   Sun, 2 Jan 2022 08:02:55 +1000
+Message-ID: <CAKmqyKP79x-PdEiBAye3tBtYgj17T6WF6pM84vXVHYwPNXshgg@mail.gmail.com>
+Subject: Re: [PATCH v17 0/8] Add support for the silergy,sy7636a
+To:     Alistair Francis <alistair@alistair23.me>
+Cc:     Sascha Hauer <kernel@pengutronix.de>, lgirdwood@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-hwmon@vger.kernel.org, amitk@kernel.org,
+        Shawn Guo <shawnguo@kernel.org>, linux-pm@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        rui.zhang@intel.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-I'M SORRY BUT HAPPY TO INFORM YOU ABOUT MY SUCCESS IN GETTING THOSE
-FUNDS TRANSFERRED UNDER THE CO-OPERATION OF A NEW PARTNER FROM
-PARAGUAY THOUGH I TRIED MY BEST TO INVOLVE YOU IN THE GOLD/DIAMOND
-BUSINESS BUT GOD DECIDED THE WHOLE SITUATIONS. PRESENTLY AM IN UNITED
-ARAB EMIRATES FOR INVESTMENT PROJECTS WITH MY OWN SHARE OF THE TOTAL
-SUM OF THE MONEY. MEANWHILE, I DIDN'T FORGET YOU=E2=80=99RE PAST EFFORTS AN=
-D
-ATTEMPTS TO ASSIST ME IN TRANSFERRING THOSE FUNDS DESPITE THAT
-EVERYTHING FAILED US SOMEHOW. NOW CONTACT MY SECRETARY IN BURKINA
-FASO. MR. NELSON SALAH BY NAME: HIS E-MAIL nelson_salah@aol.com.
+On Thu, Dec 16, 2021 at 10:25 PM Alistair Francis
+<alistair@alistair23.me> wrote:
+>
+> v17:
+>  - Rebase and fix build issues
+> v16:
+>  - Improve vdd regulator comments
+> v15:
+>  - Address comments on the patches
+> v14:
+>  - Merge the thermal driver and hwmon
+> v13:
+>  - Address comments on thermal driver
+>  - Rebase on master (without other patches)
+> v12:
+>  - Rebase
+> v11:
+>  - Address comments on hwmon
+>  - Improve "mfd: simple-mfd-i2c: Add a Kconfig name" commit message
+> v10:
+>  - Use dev_get_regmap() instead of dev_get_drvdata()
+> v9:
+>  - Convert to use the simple-mfd-i2c instead
+>
+> Alistair Francis (8):
+>   dt-bindings: mfd: Initial commit of silergy,sy7636a.yaml
+>   mfd: simple-mfd-i2c: Add a Kconfig name
+>   mfd: simple-mfd-i2c: Enable support for the silergy,sy7636a
+>   regulator: sy7636a: Remove requirement on sy7636a mfd
+>   hwmon: sy7636a: Add temperature driver for sy7636a
+>   ARM: imx_v6_v7_defconfig: Enable silergy,sy7636a
+>   ARM: dts: imx7d-remarkable2: Enable silergy,sy7636a
+>   ARM: dts: imx7d-remarkable2: Enable lcdif
 
-ASK HIM TO SEND YOU THE VISA CARD TOTAL SUM OF $2.500, 000.00.USD
-WHICH I KEPT FOR YOUR COMPENSATION FOR ALL THE PAST EFFORTS AND
-ATTEMPT TO ASSIST ME IN THIS MATTER. I DEEPLY APPRECIATED YOUR EFFORTS
-AT THAT TIME VERY MUCH. SO FEEL FREE AND KEEP IN TOUCHED WITH MY
-SECRETARY; MR. NELSON SALAH AND INSTRUCT HIM WHERE TO SEND THE VISA
-CARD VALUE SUM OF $2.500, 000.00.USD TO YOU. NOW THIS AMOUNT IS ME AND
-THE NEW PARTNER CONTRIBUTE AND OFFER YOU THIS AMOUNT
-$1.500.000.00.USD. IS FROM MY OWN SHARE WHILE MY NEW PARTNER SUPPORTED
-YOU ALSO WITH SUM OF $ 1000000.USD. FROM HIS OWN SHARE ALSO BECAUSE I
-EXPLAIN THE WHOLE FACTS TO HIM THAT YOU ARE THE FIRST PERSON I
-CONTACTED THAT WANTED TO ASSIST ME WHILE YOU COULD NOT MAKE IT AND HE
-SAID OKAY THERE'S NO PROBLEM.
+All of the code changes have been reviewed or acked. Could some of
+these patches go into 5.17?
 
-SO YOU HAVE TO KEEP THE WHOLE SECRET ABOUT MY SUCCESS, BECAUSE I
-BELIEVE ONLY YOU KNOW HOW I MADE THIS MONEY SO TRY TO KEEP EVERYTHING
-SECRET. I HOPE YOU UNDERSTAND THE REASON WHY THIS HUGE AMOUNT OF FUNDS
-WAS KEPT FOR YOU? PLEASE DO LET ME KNOW IMMEDIATELY YOU RECEIVE THE
-VISA CARD SO THAT WE CAN SHARE THE JOY AFTER ALL THE SUFFERINGS AT
-THAT TIME; IN THIS MOMENT OF TIME, I'M VERY BUSY HERE BECAUSE OF THE
-INVESTMENT PROJECTS WHICH MYSELF AND THE NEW PARTNER ARE HAVING AT
-HAND, FINALLY;
+Alistair
 
-REMEMBER THAT I HAVE ALREADY FORWARD THE INSTRUCTION TO THE SECRETARY
-ON YOUR BEHALF TO RECEIVE THAT MONEY, SO FEEL FREE TO KEEP IN TOUCH
-WITH HIM, SO THAT HE WILL SEND THE VISA CARD VALUE SUM OF
-$2.500,000.00.USD. TWO MILLION FIVE HUNDRED THOUSAND UNITED STATE
-DOLLARS TO YOU WITHOUT ANY DELAY.
-
-BEST REGARDS,
-MR. NORMAN SALEEM.
+>
+>  .../bindings/mfd/silergy,sy7636a.yaml         |  82 +++++++++++
+>  Documentation/hwmon/index.rst                 |   1 +
+>  Documentation/hwmon/sy7636a-hwmon.rst         |  26 ++++
+>  arch/arm/boot/dts/imx7d-remarkable2.dts       | 136 ++++++++++++++++++
+>  arch/arm/configs/imx_v6_v7_defconfig          |   3 +
+>  drivers/hwmon/Kconfig                         |   9 ++
+>  drivers/hwmon/Makefile                        |   1 +
+>  drivers/hwmon/sy7636a-hwmon.c                 | 106 ++++++++++++++
+>  drivers/mfd/Kconfig                           |   2 +-
+>  drivers/mfd/simple-mfd-i2c.c                  |  11 ++
+>  drivers/regulator/Kconfig                     |   1 -
+>  drivers/regulator/sy7636a-regulator.c         |   7 +-
+>  include/linux/mfd/sy7636a.h                   |  34 +++++
+>  13 files changed, 415 insertions(+), 4 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+>  create mode 100644 Documentation/hwmon/sy7636a-hwmon.rst
+>  create mode 100644 drivers/hwmon/sy7636a-hwmon.c
+>  create mode 100644 include/linux/mfd/sy7636a.h
+>
+> --
+> 2.31.1
+>
