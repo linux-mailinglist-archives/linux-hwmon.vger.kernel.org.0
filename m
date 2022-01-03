@@ -2,139 +2,106 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE1574834EE
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jan 2022 17:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D544836B5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jan 2022 19:18:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230210AbiACQlk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 3 Jan 2022 11:41:40 -0500
-Received: from mout-y-111.mailbox.org ([91.198.250.236]:47502 "EHLO
-        mout-y-111.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230149AbiACQlk (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Jan 2022 11:41:40 -0500
-X-Greylist: delayed 418 seconds by postgrey-1.27 at vger.kernel.org; Mon, 03 Jan 2022 11:41:39 EST
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:105:465:1:4:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4JSLvD4QBgzQlLT;
-        Mon,  3 Jan 2022 17:35:04 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
-        t=1641227704;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jGg109/SdVHAGsrAmpzH9OY+vbgtukVPEWTK0WDru0U=;
-        b=JPiCmn4viCFV5AgGgiXuMVhdjihzp9zD9mToOIWkQ7kOssdUJ1uVQatFtHPjjemejZNm2m
-        jXJyqbGr54wvezf4JWOUBqZ3BwI9+Fly+lcQNTnFCBCZB5Sas++7/kIneb/bDm0sprKHs/
-        CZaZwDbd8LYSvaZIFsb0rMpgmCyLJ/wTkWCJ4Bs3yyvGCRHVsuiCzFPtFxUO2/AN6+5b5F
-        ydQDl4vJhHeTirNyUBWOah+uWAb2RhTBcVlryyt4HOe9U7Xe7xBOygEredkuIA6mc23Gtb
-        obvY8yKyyxy3Lt/jq0JDUe2NqzV/XsNFMiTlCNP6Fat+DWikEbbtjfdhb+deAA==
-From:   Marcello Sylvester Bauer <sylv@sylv.io>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Marcello Sylvester Bauer <sylv@sylv.io>,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1 4/4] hwmon: (max6639) Add devicetree support
-Date:   Mon,  3 Jan 2022 17:33:54 +0100
-Message-Id: <18f099abda66841042d71739c6ffd41c84434106.1641224715.git.sylv@sylv.io>
-In-Reply-To: <cover.1641224715.git.sylv@sylv.io>
-References: <cover.1641224715.git.sylv@sylv.io>
+        id S235372AbiACSSi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 3 Jan 2022 13:18:38 -0500
+Received: from mail-bn7nam10on2064.outbound.protection.outlook.com ([40.107.92.64]:15716
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S235437AbiACSSi (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 3 Jan 2022 13:18:38 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Sk+Xb/f/Uxew7ri0+4x8ozFWepO9eQfXJfalWefD1bfu4QoQbHfrJuJauRoS9nJaKSHSUlWznxeUQHNN/9GpfDfZQ12epKW+YQnHWe+02nQXpxsek5miF7uscNfa7tEQ8JSiRa8gYJ0HlkurLLXG0RF2/0c/Nqe+heSXkn5HukPr8+Lm9S6llTQHaN/nJtqQR034hAjwoXvfZ5GBLvE2/mv1CM9ktX+G4gzHOrJroe+hHPXHJET0OiQErg/F2ll6aRvnRQDiJ2umcX/l9qwDCUuJzQupxXcU6Ne0RVXsjAcyZsN+rGB8iHmIZkzefoiE4k3gAGnrBuQQASJU+t5/RA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wavFwBeeA1hMkl8ZJBhLpn8Qk/J5k+TS2XIw50yhYNI=;
+ b=QcnxeNTBcOWfax9ZXUmSrukkAZRYCre5UJoH+uWnco3vNcqZKok71KxOOOJvcYgmKTBiADlZxsUWH+8Kh2gpSNFAa/y6PxSrWxJuZJhKR4VeCATj0Y5y1Ll4624zZj6WOAFNbkJbsLE6yKrRlBhnpE3X6C67b/AWI3UEWrzUmJEoJthUYmUH4qpMUSYhlVBOY6fQrSska0hBK8XS7sIV7x6CmO6EqgHGwinpGn3yPCTTVPhlYJm38kS376BFr3MDLqrJApHDSZxZFRXPIyE7kRjEpAGAiTb9iiOX0Sk1rBbrPoO4LQ9J92e0FvSq2XXlS2H/OYRbOSD2pRiA93vtkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 12.22.5.238) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wavFwBeeA1hMkl8ZJBhLpn8Qk/J5k+TS2XIw50yhYNI=;
+ b=SR/6mHFUvnE+GHAkhNvzXVUnK4CYvmWL+rOuy26DHpAgiq6GnLDGpxUZMxCc76tsAISyV2cniG/d6uBcXioxtcrBTYyvFQFMOuBgYIKuT07Yc6OFHviIvaSyTbKKCwU5F3t7qfWzwLCAdTM6IBqSWb+pVE7n1VuhUzjzjRhUmOb6i6aFOaczAzVpwBp7l0xt//F5RfjHzns5OumQmqcfDyTmwlu6LviJyI48EbxBNTquAE89enUq0jX+QdonEs1CMiZ8p1W51luuCMrBtaaUdm7p3U7HlfgX0XaaWUVbtR3HqUhWnaEbKl4zeVML6jCltSNKpTMTPxJDqBVktEDZnw==
+Received: from DM5PR21CA0001.namprd21.prod.outlook.com (2603:10b6:3:ac::11) by
+ CH2PR12MB4135.namprd12.prod.outlook.com (2603:10b6:610:7c::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4844.14; Mon, 3 Jan 2022 18:18:36 +0000
+Received: from DM6NAM11FT042.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:3:ac:cafe::70) by DM5PR21CA0001.outlook.office365.com
+ (2603:10b6:3:ac::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.1 via Frontend
+ Transport; Mon, 3 Jan 2022 18:18:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 12.22.5.238)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 12.22.5.238 as permitted sender) receiver=protection.outlook.com;
+ client-ip=12.22.5.238; helo=mail.nvidia.com;
+Received: from mail.nvidia.com (12.22.5.238) by
+ DM6NAM11FT042.mail.protection.outlook.com (10.13.173.165) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.20.4844.14 via Frontend Transport; Mon, 3 Jan 2022 18:18:36 +0000
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by DRHQMAIL105.nvidia.com
+ (10.27.9.14) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Mon, 3 Jan
+ 2022 18:18:35 +0000
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Mon, 3 Jan
+ 2022 18:18:35 +0000
+Received: from dev-r-vrt-156.mtr.labs.mlnx (172.20.187.6) by mail.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server id 15.0.1497.18 via Frontend
+ Transport; Mon, 3 Jan 2022 18:18:34 +0000
+From:   <michaelsh@nvidia.com>
+To:     <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>,
+        <vadimp@nvidia.com>
+CC:     Michael Shych <michaelsh@nvidia.com>
+Subject: [PATCH v1 0/2] hwmon: powr1220: add powr104 support
+Date:   Mon, 3 Jan 2022 20:18:23 +0200
+Message-ID: <20220103181825.313067-1-michaelsh@nvidia.com>
+X-Mailer: git-send-email 2.8.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: f6aa453f-830e-4c77-3b17-08d9cee57561
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4135:EE_
+X-Microsoft-Antispam-PRVS: <CH2PR12MB4135D1B14BA2ED8DB8D73E26D4499@CH2PR12MB4135.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3173;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Q6FumkHmcQXK9O4oZTYLBvFhtW6rV6XHKdiTSgDdB6qeQZrrAYrPlbMXJJxEVsWa67iE1W79VuyctIHbC24hj11IBNp/otG2voqTpQb5gD52rvPGgTXYVhi6lRrT06IbnthuaucHc1OBafd5VJI0PB9ukAlW5x9Hmw/1riGyKlA8Y0zpv7RPzKdAKZ/L0sEU2ijU6o5M1UzwJqB2LcmwBDZPItm0yg0zUDi9T8qL4egNiZHGt0vvYJK+jzOB1yDW3iszx/OUh7SGpl8eXjVvwEZanYWT9GWv95ax//j4rG+BjLsxu981vK/tfF96N1mJt3MfFlFx0cLPSU6AYAP/ZxfZr7WyCrsHxgCwuJZxrWAkrgStigRzd4CWlURZ6wS0SSM3qTMqs+Sj0ILg8t9BjkdLAlR5BriRe+WO017RjqwA1NjS8HefCBlNWAJTWX1ZPO95IYuUo6UciIQa8vS94tibxk6PNp+itNqnNmid0jhK/ycn8dTRp++6YF2xQUacsQwcYSUCFLMAXPYswWYnPw2tkFgOivF1HNBj55Oin6YsW0SZOeXxOY3OEVTN6ATUV1hTMc3gpBUthOEbj/nrieg4sAEH37o9Gw9oAhGgrt0WWk8ZjOZ7mrhHwajS0j7ElEndsz1gPmoCWlbI4+oBSkMCg1K6FlTKkNtytXDFNxXilrIwmNaSFLXLt1H9zdg7lIdEV/8UK+fd8FmyzxpFSR2LFtsEy4jnd2esKVyS1B5wVAoGR+Ao7YHCrGKcf1s6ps7dIbfIeuQh4OHR88AO4FXreRan05WvIyO6s/fN7lQoA7NMAWnHlUvZO9PFszRz
+X-Forefront-Antispam-Report: CIP:12.22.5.238;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:mail.nvidia.com;PTR:InfoNoRecords;CAT:NONE;SFS:(4636009)(40470700002)(46966006)(36840700001)(110136005)(4326008)(8936002)(6666004)(107886003)(83380400001)(81166007)(36860700001)(36756003)(186003)(2906002)(82310400004)(2616005)(316002)(86362001)(26005)(47076005)(5660300002)(70206006)(40460700001)(4744005)(336012)(70586007)(1076003)(508600001)(6636002)(8676002)(2876002)(356005)(426003)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2022 18:18:36.0212
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6aa453f-830e-4c77-3b17-08d9cee57561
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[12.22.5.238];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT042.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4135
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Allow the driver to work with device tree support.
+From: Michael Shych <michaelsh@nvidia.com>
 
-Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
----
- drivers/hwmon/max6639.c | 47 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+This patchset adds support for Lattice POWR1014 power management device
 
-diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
-index d733c35b5bcf..f84ee4a05f80 100644
---- a/drivers/hwmon/max6639.c
-+++ b/drivers/hwmon/max6639.c
-@@ -412,6 +412,38 @@ static int rpm_range_to_reg(int range)
- 	return 1; /* default: 4000 RPM */
- }
- 
-+static struct max6639_platform_data *get_pdata_from_dt_node(struct device *dev)
-+{
-+	struct max6639_platform_data *pdata;
-+	u32 pol, ppr, rpm;
-+	int ret;
-+
-+	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
-+	if (!pdata)
-+		return ERR_PTR(-ENOMEM);
-+
-+	pdata->pwm_polarity = true;
-+	ret = of_property_read_u32(dev->of_node, "polarity", &pol);
-+	if (!ret && !pol)
-+		pdata->pwm_polarity = false;
-+
-+	ret = of_property_read_u32(dev->of_node, "pulses-per-revolution", &ppr);
-+	if (ret < 0)
-+		dev_warn(dev, "No pulses-per-revolution property\n");
-+	else
-+		pdata->ppr = ppr;
-+
-+	ret = of_property_read_u32(dev->of_node, "rpm-range", &rpm);
-+	if (ret < 0) {
-+		dev_warn(dev, "no rpm-range property\n");
-+		pdata->rpm_range = 4000;
-+	} else {
-+		pdata->rpm_range = rpm;
-+	}
-+
-+	return pdata;
-+}
-+
- static int max6639_init_client(struct i2c_client *client,
- 			       struct max6639_data *data)
- {
-@@ -421,6 +453,12 @@ static int max6639_init_client(struct i2c_client *client,
- 	int rpm_range = 1; /* default: 4000 RPM */
- 	int err;
- 
-+	if (!max6639_info && client->dev.of_node) {
-+		max6639_info = get_pdata_from_dt_node(&client->dev);
-+		if (IS_ERR(max6639_info))
-+			return PTR_ERR(max6639_info);
-+	}
-+
- 	/* Reset chip to default values, see below for GCONFIG setup */
- 	err = i2c_smbus_write_byte_data(client, MAX6639_REG_GCONFIG,
- 				  MAX6639_GCONFIG_POR);
-@@ -631,6 +669,14 @@ static const struct i2c_device_id max6639_id[] = {
- 
- MODULE_DEVICE_TABLE(i2c, max6639_id);
- 
-+#ifdef CONFIG_OF
-+static const struct of_device_id maxim_of_platform_match[] = {
-+	{.compatible = "maxim,max6639"},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, maxim_of_platform_match);
-+#endif
-+
- static SIMPLE_DEV_PM_OPS(max6639_pm_ops, max6639_suspend, max6639_resume);
- 
- static struct i2c_driver max6639_driver = {
-@@ -638,6 +684,7 @@ static struct i2c_driver max6639_driver = {
- 	.driver = {
- 		   .name = "max6639",
- 		   .pm = &max6639_pm_ops,
-+		   .of_match_table = of_match_ptr(maxim_of_platform_match),
- 		   },
- 	.probe_new = max6639_probe,
- 	.id_table = max6639_id,
+Michael Shych (2):
+  hwmon: powr1220: Upgrade driver to support hwmon info infrastructure
+  hwmon: powr1220: Add support for Lattice's POWR1014 power manager IC
+
+ drivers/hwmon/powr1220.c | 239 ++++++++++++++++++++++-------------------------
+ 1 file changed, 114 insertions(+), 125 deletions(-)
+
 -- 
-2.33.1
+2.14.1
 
