@@ -2,140 +2,123 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 571AD48996C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 10 Jan 2022 14:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8EF489E39
+	for <lists+linux-hwmon@lfdr.de>; Mon, 10 Jan 2022 18:21:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231217AbiAJNLv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 10 Jan 2022 08:11:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44360 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230399AbiAJNLr (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 10 Jan 2022 08:11:47 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F9A6C06173F
-        for <linux-hwmon@vger.kernel.org>; Mon, 10 Jan 2022 05:11:46 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id i31so44053507lfv.10
-        for <linux-hwmon@vger.kernel.org>; Mon, 10 Jan 2022 05:11:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
-        b=Bgie3w5lZXcUpEJsNUNnYT9D80sz6831OKMgWSWMpAMR4c04HQM1hwHkoZ1AqHgJ5M
-         pQJfhFBsNTGc+jfMsWTuSDXhNBe5XPwJ8/UQZKbYcWTDQ68Eu4MBBVsHf0V3Baa+27Pp
-         IUJW/950IUGNsTto2NnsTW49/Cy4Vf+KfgzDT0+KZ2gcb/QkEKg3LEIj8qPJpiII0Qbk
-         buE3CbPl0T8T6omQLXT3KYJBxN98pPIrfxDam1Qs0diPFN43pWVugWbd8LU8WaIGviK3
-         O/t/NLMKhR03EdE8rMi5c8T5epCw09Yzc4YmAU5QrO9ZaREbayNwAtpm1SWYSR1IiBuY
-         5w9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
-        b=Ew6klRWg4U9uBI8Ob+FnaTX0qQGJQrQJyJ4kPTbnjSXMX7mSSHZ5KKiXmeECH64c9r
-         cTKjPVHTE+5IAT6MrzMuKAwsL9Fq4Lr37mge1+DzVEBmH+DT5KiwHtdFdK9vff2+5tqD
-         p8j2EE/aZDP9A2awfpvxQvci2TXCUT/IKtlGpUMcP7VxAWM7s/yoxuW1aGxXbZJGYT3w
-         EjsF4vB+pzFPDggYUDYH81sxFdMpiJQltbmEfs4+7lWpp/yFz/+rDa5vdvBj4xwBojkR
-         hcozcNcmkN3wu3WuaxbB0Z78Qj9zHMtHZkjZ7l6/aMnfh9mkSPLIH6b2OOrsqQqoaXmk
-         bsUw==
-X-Gm-Message-State: AOAM530fq5jAOXRq/0ycCTMU56GGXmaC0olKDH3ELf3xq0OevYiHDnCd
-        AsnPtKBS0pDkbGsqu0YTJU0SGxgO4JvLyxWRflAAUfXNP6U=
-X-Google-Smtp-Source: ABdhPJyUuzfRq9+VAp3YIslVsNF7E8r6u+SDvjtiaFw6sfTA9uOxrmlrl9JDay/jDh10uqplhgk07a+YHTpM3Ge0znw=
-X-Received: by 2002:ac2:4c51:: with SMTP id o17mr60639917lfk.558.1641820293776;
- Mon, 10 Jan 2022 05:11:33 -0800 (PST)
+        id S234124AbiAJRVJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 10 Jan 2022 12:21:09 -0500
+Received: from mga03.intel.com ([134.134.136.65]:54195 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238145AbiAJRVH (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 10 Jan 2022 12:21:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641835267; x=1673371267;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OsRWe94tzO+v5m/hGVU/Wy1RBaj4iKDiAh/F5rmb9IY=;
+  b=Nu/2a4B5IFycMxO0DKINR+N90yaOeL+MDa6JCgxrbmiI8qsnoRkE8R+h
+   WCK0UdTqhhcyb4yVjIvVcCagpe88oBA64mNMysdxmuu+9HhnuxDxJ9BAJ
+   HcZZfP3EX/vVcX1tT4UBAmGriRz7/wGo96iuRTiARhMit5m1DEtJpNeWQ
+   lnH/eE37mPxsBa3cevmUic9JryntN6p/NGLw9ZSpR3u2XHoSuF0Luv9Yl
+   yVRkRPwLBb1MfWBUtiHmvQljmGOmdAij7v1OryGX94w/54QvC+IsCb7oJ
+   sffMk3fSxUmsrzvfOOotfDzAb3C1EoTE5M4xRipNZUKWFPDcB98w8nfgJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10222"; a="243226078"
+X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
+   d="scan'208";a="243226078"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 09:21:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
+   d="scan'208";a="622742473"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 10 Jan 2022 09:21:06 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n6yLx-0003mF-SE; Mon, 10 Jan 2022 17:21:05 +0000
+Date:   Tue, 11 Jan 2022 01:20:29 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ 00f5117c5f785b95b13663e52dcdcf684a47d4e3
+Message-ID: <61dc6add./qgm6EMCEyNhC66e%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:11:32
- -0800 (PST)
-Reply-To: gtbank107@yahoo.com
-From:   Barr Robert Richter <westernunion.benin982@gmail.com>
-Date:   Mon, 10 Jan 2022 14:11:32 +0100
-Message-ID: <CAP=nHBK9zHzp_=-EVswWQiLxEoc+HV4oqddgtnEqf-9qYab_4Q@mail.gmail.com>
-Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Attn,Dear
-I need you to know that the fear of the LORD is
-the beginning of wisdom, and knowledge of the Holy One is
-understanding. As power of God Most High. And This is the confidence
-we have in approaching God, that if we ask anything according to his
-will, he hears us. I will make you know that Slow and steady wins the race.
-It is your turn to receive your overdue compensation funds total
-amount $18.5Milion  USD.
-I actualized that you will receive your transfer today without any more delay
-No More fee OK, Believe me , I am your Attorney standing here on your favor.
-I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
-And She told me that your transfer is ready today
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: 00f5117c5f785b95b13663e52dcdcf684a47d4e3  hwmon: (nzxt-smart2) make array detect_fans_report static const
 
-So the Bank Asked you to contact them immediately by re-confirming
-your Bank details asap.
-Because this is the Only thing holding this transfer
-If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
-For we are the ones trying to protect your funds here
-and make sure that your funds is secure.
-So Promisingly, I am here to assure you, that Grate Miracle is coming on
-your way, and this funds total amount of $18.500,000 is your
-compensation, entitlement inheritance overdue funds on your name.
-Which you cannot let anything delay you from receiving your funds now,
+elapsed time: 722m
 
-Finally i advised you to try your possible best and contact Gt Bank Benin
-once you get this message to receive your transfer $18.5 USD today.
-I know that a journey of thousand miles begins with a single step.
-Always put your best foot forward
-Try as hard as you can, God give you best.
-take my advice and follow the due process of your payment, the
-transfer will be released to
-you smoothly without any hitches or hindrance.
+configs tested: 54
+configs skipped: 3
 
-Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
-transfer amount of $18.5m US Dollars
-It was deposited and registered to your name this morning.
-Contact the Bank now to know when they will transfer to your
-country today
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Email id: gtbank107@yahoo.com
-Tel/mobile, +229 99069872
-Contact person, Mrs Mary Gate,Director Gt bank-Benin.
-Among the blind the one-eyed man is king
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
-As you sow, so you shall reap, i want you to receive your funds
-Best things in life are free
-Send to her your Bank Details as i listed here.
-
-Your account name-------------
-Your Bank Name----------------
-Account Number----------
-your Bank address----------
-Country-----------
-Your private phone number---------
-Routing Numbers-------------
-Swift Code-----------
-
-Note, Your funds is %100 Percent ready for
-transfer.
-Everything you do remember that Good things come to those who wait.
-I have done this work for you with my personally effort, Honesty is
-the best policy.
-now your transfer is currently deposited with paying bank this morning.
-It is by the grace of God that I received Christ, having known the truth.
-I had no choice than to do what is lawful and justice in the
-sight of God for eternal life and in the sight of man for witness of
-God & His Mercies and glory upon my life.
-
-send this needed bank details to the bank today, so that you receive
-your transfer today as
-it is available for your confirmation today.
-Please do your best as a serious person and send the fee urgent, Note
-that this transfer of $18.500.000 M USD is a Gift from God to Bless
-you.
-
-If you did not contact the bank urgent, finally the Bank will release
-your transfer of $18.500.000M USD to  Mr. David Bollen as your
-representative.
-So not allow another to claim your Money.
-Thanks For your Understanding.
-
-Barr Robert Richter, UN Attorney At Law Court-Benin
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
