@@ -2,79 +2,142 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 572AE48D2D6
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Jan 2022 08:31:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED1A948D33B
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Jan 2022 08:57:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbiAMHbV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 Jan 2022 02:31:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbiAMHbU (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 Jan 2022 02:31:20 -0500
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD75C06173F
-        for <linux-hwmon@vger.kernel.org>; Wed, 12 Jan 2022 23:31:20 -0800 (PST)
-Received: by mail-yb1-xb2c.google.com with SMTP id h14so12473945ybe.12
-        for <linux-hwmon@vger.kernel.org>; Wed, 12 Jan 2022 23:31:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=NNLomldTLXzZkKzvhuIvT0B+QcFkXoBDwKjq+GKGx38=;
-        b=OAJ9iNPIfk6TLuxsrNtfmMZC/wUdcvdKIcf2qVEkvPdB8iyGJF+nEyOtqEBbOYosRS
-         YqGUHpNTD1uCVWuuGu+IALgeXE1wI1DPiptFFqMKmVaUPBulyh5upSlbG8cB7BesQ55g
-         w7Ro4PUosouRBtrWrZ0h0HiUsb3W/aM9Ez7qvG6tJrBDAmW2y+Zvr7C1ix978npSkLPt
-         yPI42QYZuBhZhd2z+mkgqGwh+ij7+4RGZBsdxmd5FsUVXRSgz43dYrMdKosGVYmUCREU
-         m4XRII1P3stUiUkA1dhnF0ETtJ7u500AuZBVt7zyY4XNhzl9Nfj2yK2MyG5hJ7yvs9vC
-         QuNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to;
-        bh=NNLomldTLXzZkKzvhuIvT0B+QcFkXoBDwKjq+GKGx38=;
-        b=SVU3mQ+DK+dcVcLr0sTXAJ/JeWm6Ww72CwkLW9YifE23xVurUYu6rPFdt8l1K7K2WO
-         bYR6y5KZrRTMN7XSam8E2VLEbtbtsn3pc2RSFzB3ZXymbtGmzBepBzBavTSHOlLsLfjw
-         j42Ej6zqgUZ+ho37MmrUPDsffNzP2nVlms0Fqm/OohLnNgVs/crlXu9GzsZ2MEJ3PXUh
-         vKAo36GU+10hAYqkYB8H9HAJdHhdSNAFlsqr/EkvmnivU5G9eh+3k8aHOAo+R+otFar1
-         ck/CTKsqcofE4w33HVCx9oFrXDvKrQ6h5639OaXtFP0G3Epu8LTdoZ3meTO2thrQn+z/
-         jsBg==
-X-Gm-Message-State: AOAM533kfIlZXyW9+08tpLt+ZRsp9NeXc8To4EwInlRjoecdSNuObVw4
-        MEMVBTTUqnXV94F7s9PNdnmNQRhOu/KH6q+ErQs=
-X-Google-Smtp-Source: ABdhPJzvZZ0mV9eCWkMQr4GH7YlHHxKHLiFlpnVR/xR982eeriswzp1a6hV/KMeJ+acsowVJYi+SgrGr3InATM8sOO0=
-X-Received: by 2002:a25:aae2:: with SMTP id t89mr4538610ybi.638.1642059079790;
- Wed, 12 Jan 2022 23:31:19 -0800 (PST)
+        id S232828AbiAMHyk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 Jan 2022 02:54:40 -0500
+Received: from mga04.intel.com ([192.55.52.120]:4776 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229533AbiAMHyk (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 13 Jan 2022 02:54:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1642060480; x=1673596480;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tBSjCUr5LQ/WmW8KrgBUGf3PU+8WqY/65bcLq1A2bvk=;
+  b=LOY91u2qL5NheFbGAl+yXrXoXvWKt9xQbN5wYA6pTXxyWMhq4w8MCVgo
+   0E4Y//D//4i/jAY0Teut3eUB7ENDnXDsLTD7ex2Kh05L+kdlw0yvQZ8kO
+   ecjdykkqnWDYjkvOI73rlrO8AmJOq2jCYjzf+1UbafFc+/JECCKaRrwxF
+   MQFCmXfJKdpuJcFiwbTg6dDY5icudY5J1SqsGxZ2ed+em8tU9YSyqCIJO
+   ExReC7Q7YnHNQtF/tGge+RB/Av+DG95YZ9AuVa2yJ0DrxhoqwsFqEheIN
+   nZz8WHqJa2c49IsJoLYJ6awn3AlvgmOQFT+4riOqvEPvOBkYLQQqzhQ2u
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10225"; a="242770800"
+X-IronPort-AV: E=Sophos;i="5.88,284,1635231600"; 
+   d="scan'208";a="242770800"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 23:54:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,284,1635231600"; 
+   d="scan'208";a="623769451"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 12 Jan 2022 23:54:36 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n7uwN-0006yg-Jf; Thu, 13 Jan 2022 07:54:35 +0000
+Date:   Thu, 13 Jan 2022 15:54:26 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Iwona Winiarska <iwona.winiarska@intel.com>,
+        linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Joel Stanley <joel@jms.id.au>
+Subject: Re: [PATCH v5 08/13] peci: Add support for PECI device drivers
+Message-ID: <202201131534.HcDrC30f-lkp@intel.com>
+References: <20220112230247.982212-9-iwona.winiarska@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a25:e6d4:0:0:0:0:0 with HTTP; Wed, 12 Jan 2022 23:31:18
- -0800 (PST)
-Reply-To: gabrieledgal47@gmail.com
-In-Reply-To: <CAKiB1vAqFPPk5bDz4bLDWNzGghGrmCCf_HFVd+97G4ZUrgPQ0w@mail.gmail.com>
-References: <CAKiB1vBRt2+Nf3Chr4kW3RkXJFoV21BDPA9Y8Kax=LQxXSuw8w@mail.gmail.com>
- <CAKiB1vD=ZAo_aykr2rJe=UnyHR1=KLz2N6HX8LXOvJCyoW2dzA@mail.gmail.com>
- <CAKiB1vCw-5mXVr7Kw4pH5byp3v6b-UxQVJuSsNggfr0zaVesaw@mail.gmail.com> <CAKiB1vAqFPPk5bDz4bLDWNzGghGrmCCf_HFVd+97G4ZUrgPQ0w@mail.gmail.com>
-From:   Gabriel Edgal <mrgabrieledgal875@gmail.com>
-Date:   Wed, 12 Jan 2022 23:31:18 -0800
-Message-ID: <CAKiB1vCrw3Ws0E4Y6i6YDh1+vADBgt=CvUpnNoGv=ZRg=SCFTQ@mail.gmail.com>
-Subject: NICE TO MEET
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220112230247.982212-9-iwona.winiarska@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear friend.
+Hi Iwona,
 
-I'm Mr. Gabriel Edgal, I'm the chief internal auditor of Btci Bank, I have
-an abandoned fund $ 9.5 million dollars to transfer to you, as we shall
-parts 50:50. You will only stand as a relative of my deceased client as
-bears the same surname as you, the fund was deposited in our bank for
-many years back by my deceased client who died with his whole
-family in a car accident in 2010. I would like to invite you as a foreigner
-partner to stand as the next of kin of the deceased client, so that we
-will place a claim on the deposited fund and divide it between the two
-of
-us 50:50 each. I want you to answer me immediately for more information
+I love your patch! Perhaps something to improve:
+
+[auto build test WARNING on groeck-staging/hwmon-next]
+[also build test WARNING on linux/master linus/master v5.16 next-20220112]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Iwona-Winiarska/Introduce-PECI-subsystem/20220113-071131
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+config: hexagon-randconfig-r033-20220113 (https://download.01.org/0day-ci/archive/20220113/202201131534.HcDrC30f-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project d1021978b8e7e35dcc30201ca1731d64b5a602a8)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/0c9888d465568adc8526df1407c9a75be5ce6cd4
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Iwona-Winiarska/Introduce-PECI-subsystem/20220113-071131
+        git checkout 0c9888d465568adc8526df1407c9a75be5ce6cd4
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/peci/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/peci/request.c:111:23: warning: address of array 'req->rx.buf' will always evaluate to 'true' [-Wpointer-bool-conversion]
+           if (WARN_ON(!req->rx.buf))
+                       ~~~~~~~~~^~~
+   include/asm-generic/bug.h:121:25: note: expanded from macro 'WARN_ON'
+           int __ret_warn_on = !!(condition);                              \
+                                  ^~~~~~~~~
+   1 warning generated.
 
 
-With best regards,
-Mr. Gabriel Edgal
+vim +111 drivers/peci/request.c
+
+   101	
+   102	static int peci_request_xfer_retry(struct peci_request *req)
+   103	{
+   104		long wait_interval = PECI_RETRY_INTERVAL_MIN;
+   105		struct peci_device *device = req->device;
+   106		struct peci_controller *controller = to_peci_controller(device->dev.parent);
+   107		unsigned long start = jiffies;
+   108		int ret;
+   109	
+   110		/* Don't try to use it for ping */
+ > 111		if (WARN_ON(!req->rx.buf))
+   112			return 0;
+   113	
+   114		do {
+   115			ret = peci_request_xfer(req);
+   116			if (ret) {
+   117				dev_dbg(&controller->dev, "xfer error: %d\n", ret);
+   118				return ret;
+   119			}
+   120	
+   121			if (peci_request_status(req) != -EAGAIN)
+   122				return 0;
+   123	
+   124			/* Set the retry bit to indicate a retry attempt */
+   125			req->tx.buf[1] |= PECI_RETRY_BIT;
+   126	
+   127			if (schedule_timeout_interruptible(wait_interval))
+   128				return -ERESTARTSYS;
+   129	
+   130			wait_interval = min_t(long, wait_interval * 2, PECI_RETRY_INTERVAL_MAX);
+   131		} while (time_before(jiffies, start + PECI_RETRY_TIMEOUT));
+   132	
+   133		dev_dbg(&controller->dev, "request timed out\n");
+   134	
+   135		return -ETIMEDOUT;
+   136	}
+   137	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
