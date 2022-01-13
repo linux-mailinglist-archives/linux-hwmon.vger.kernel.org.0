@@ -2,224 +2,79 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B3048D18F
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Jan 2022 05:21:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 572AE48D2D6
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Jan 2022 08:31:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232656AbiAMEOv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 12 Jan 2022 23:14:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37534 "EHLO
+        id S230386AbiAMHbV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 Jan 2022 02:31:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233102AbiAMENi (ORCPT
+        with ESMTP id S230176AbiAMHbU (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 12 Jan 2022 23:13:38 -0500
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3603AC06175B;
-        Wed, 12 Jan 2022 20:12:29 -0800 (PST)
-Received: by mail-qk1-x72e.google.com with SMTP id bl18so5882521qkb.5;
-        Wed, 12 Jan 2022 20:12:29 -0800 (PST)
+        Thu, 13 Jan 2022 02:31:20 -0500
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD75C06173F
+        for <linux-hwmon@vger.kernel.org>; Wed, 12 Jan 2022 23:31:20 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id h14so12473945ybe.12
+        for <linux-hwmon@vger.kernel.org>; Wed, 12 Jan 2022 23:31:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pbtW5GNEznZHiafA75unnHcFZvdczANI1PgQ6YwC50I=;
-        b=ibjmvFEuzUnUj0P4/dhygtlpXkwqsmCbtqtSnsfMo8cpFNuhzqPWC58ZSdU3L1JTwt
-         0JbiyhvXcxCguvtxAY6qa9hCdayN57icMXEHv5DOV32DSMkflySg0TSy0Uod6ngnhHaT
-         A+M5uaveL8e8wlbe7AJqTbAjOrKQ1vG8fia6k=
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to;
+        bh=NNLomldTLXzZkKzvhuIvT0B+QcFkXoBDwKjq+GKGx38=;
+        b=OAJ9iNPIfk6TLuxsrNtfmMZC/wUdcvdKIcf2qVEkvPdB8iyGJF+nEyOtqEBbOYosRS
+         YqGUHpNTD1uCVWuuGu+IALgeXE1wI1DPiptFFqMKmVaUPBulyh5upSlbG8cB7BesQ55g
+         w7Ro4PUosouRBtrWrZ0h0HiUsb3W/aM9Ez7qvG6tJrBDAmW2y+Zvr7C1ix978npSkLPt
+         yPI42QYZuBhZhd2z+mkgqGwh+ij7+4RGZBsdxmd5FsUVXRSgz43dYrMdKosGVYmUCREU
+         m4XRII1P3stUiUkA1dhnF0ETtJ7u500AuZBVt7zyY4XNhzl9Nfj2yK2MyG5hJ7yvs9vC
+         QuNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pbtW5GNEznZHiafA75unnHcFZvdczANI1PgQ6YwC50I=;
-        b=DCSq349x/8mLa4oBTbhmPe9amY8CCKiXSqQY2EkMvaLiFTOQE0/rYViIkX1Y652tl+
-         vH3UWVYsvRaDPFvzEIS1eTQ9QLY+mAfmUHx8y7za9oZschFQS1SALOqXBz9J3wIiCzX6
-         L+Wg1IW+iI4lvpS+XORYkK58G3LjNIQUD0RxAKGF0KtI71UjL8xgvTjaxyaRjYKuEYnG
-         WLauJ95mxDtL0VB7xKwA8LXYH3eO8vPeTb+PHLS3p0OoRvw8zMVc5e+4eLvdBw3+MzXl
-         +XoEUyMDkMr+KoywviXWaVJUP7HN6eTGvkaOh4ojGymnTynf4EcPSW9VJD2pY6Lvbaqw
-         KEtQ==
-X-Gm-Message-State: AOAM532ze74qwpbmEdKRkKuOS4rL1JIpPwTBz2H8Orr/gtXUImxuzPBB
-        czWX/QQH1g1OY/5T8a12PiQqldo5szdPS4pHibE=
-X-Google-Smtp-Source: ABdhPJwOVBaayKDH/i9TEqiJA4jUpG5Q9ZPM20KYYIs0XA0wcVXkAniMBmivwNgSlbtXPJKggVHdozQRsoV+5JJNw5E=
-X-Received: by 2002:a37:a342:: with SMTP id m63mr272966qke.347.1642047148268;
- Wed, 12 Jan 2022 20:12:28 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
+         :from:date:message-id:subject:to;
+        bh=NNLomldTLXzZkKzvhuIvT0B+QcFkXoBDwKjq+GKGx38=;
+        b=SVU3mQ+DK+dcVcLr0sTXAJ/JeWm6Ww72CwkLW9YifE23xVurUYu6rPFdt8l1K7K2WO
+         bYR6y5KZrRTMN7XSam8E2VLEbtbtsn3pc2RSFzB3ZXymbtGmzBepBzBavTSHOlLsLfjw
+         j42Ej6zqgUZ+ho37MmrUPDsffNzP2nVlms0Fqm/OohLnNgVs/crlXu9GzsZ2MEJ3PXUh
+         vKAo36GU+10hAYqkYB8H9HAJdHhdSNAFlsqr/EkvmnivU5G9eh+3k8aHOAo+R+otFar1
+         ck/CTKsqcofE4w33HVCx9oFrXDvKrQ6h5639OaXtFP0G3Epu8LTdoZ3meTO2thrQn+z/
+         jsBg==
+X-Gm-Message-State: AOAM533kfIlZXyW9+08tpLt+ZRsp9NeXc8To4EwInlRjoecdSNuObVw4
+        MEMVBTTUqnXV94F7s9PNdnmNQRhOu/KH6q+ErQs=
+X-Google-Smtp-Source: ABdhPJzvZZ0mV9eCWkMQr4GH7YlHHxKHLiFlpnVR/xR982eeriswzp1a6hV/KMeJ+acsowVJYi+SgrGr3InATM8sOO0=
+X-Received: by 2002:a25:aae2:: with SMTP id t89mr4538610ybi.638.1642059079790;
+ Wed, 12 Jan 2022 23:31:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20220112230247.982212-1-iwona.winiarska@intel.com> <20220112230247.982212-6-iwona.winiarska@intel.com>
-In-Reply-To: <20220112230247.982212-6-iwona.winiarska@intel.com>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Thu, 13 Jan 2022 04:12:16 +0000
-Message-ID: <CACPK8XewQJBvwssM6zQKQoxT=JLpk-qjGhsiTAa980OtbU7JBw@mail.gmail.com>
-Subject: Re: [PATCH v5 05/13] peci: Add peci-aspeed controller driver
-To:     Iwona Winiarska <iwona.winiarska@intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Borislav Petkov <bp@alien8.de>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Zev Weiss <zweiss@equinix.com>,
-        David Muller <d.mueller@elsoft.ch>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+Received: by 2002:a25:e6d4:0:0:0:0:0 with HTTP; Wed, 12 Jan 2022 23:31:18
+ -0800 (PST)
+Reply-To: gabrieledgal47@gmail.com
+In-Reply-To: <CAKiB1vAqFPPk5bDz4bLDWNzGghGrmCCf_HFVd+97G4ZUrgPQ0w@mail.gmail.com>
+References: <CAKiB1vBRt2+Nf3Chr4kW3RkXJFoV21BDPA9Y8Kax=LQxXSuw8w@mail.gmail.com>
+ <CAKiB1vD=ZAo_aykr2rJe=UnyHR1=KLz2N6HX8LXOvJCyoW2dzA@mail.gmail.com>
+ <CAKiB1vCw-5mXVr7Kw4pH5byp3v6b-UxQVJuSsNggfr0zaVesaw@mail.gmail.com> <CAKiB1vAqFPPk5bDz4bLDWNzGghGrmCCf_HFVd+97G4ZUrgPQ0w@mail.gmail.com>
+From:   Gabriel Edgal <mrgabrieledgal875@gmail.com>
+Date:   Wed, 12 Jan 2022 23:31:18 -0800
+Message-ID: <CAKiB1vCrw3Ws0E4Y6i6YDh1+vADBgt=CvUpnNoGv=ZRg=SCFTQ@mail.gmail.com>
+Subject: NICE TO MEET
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, 12 Jan 2022 at 23:06, Iwona Winiarska <iwona.winiarska@intel.com> wrote:
->
-> From: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
->
-> ASPEED AST24xx/AST25xx/AST26xx SoCs support the PECI electrical
-> interface (a.k.a PECI wire) that provides a communication channel with
-> Intel processors.
-> This driver allows BMC to discover devices connected to it and
-> communicate with them using PECI protocol.
->
-> Signed-off-by: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-> Co-developed-by: Iwona Winiarska <iwona.winiarska@intel.com>
-> Signed-off-by: Iwona Winiarska <iwona.winiarska@intel.com>
-> Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Dear friend.
 
-The driver looks good to me. I would be happy to see it merged in its
-current state.
+I'm Mr. Gabriel Edgal, I'm the chief internal auditor of Btci Bank, I have
+an abandoned fund $ 9.5 million dollars to transfer to you, as we shall
+parts 50:50. You will only stand as a relative of my deceased client as
+bears the same surname as you, the fund was deposited in our bank for
+many years back by my deceased client who died with his whole
+family in a car accident in 2010. I would like to invite you as a foreigner
+partner to stand as the next of kin of the deceased client, so that we
+will place a claim on the deposited fund and divide it between the two
+of
+us 50:50 each. I want you to answer me immediately for more information
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-I've a few questions below that can be followed up later if need be.
-
-> +
-> +static void aspeed_peci_init_regs(struct aspeed_peci *priv)
-> +{
-> +       u32 val;
-> +
-> +       /* Clear interrupts */
-> +       val = readl(priv->base + ASPEED_PECI_INT_STS) | ASPEED_PECI_INT_MASK;
-
-Should that be & MASK?
-
-As you're just sanitising the registers, you could clear the status
-unconditionally:
-
- writel(ASPEED_PECI_INT_MASK, priv->base + ASPEED_PECI_INT_STS);
-
-> +       writel(val, priv->base + ASPEED_PECI_INT_STS);
-> +
-> +       /* Set timing negotiation mode and enable interrupts */
-> +       val = FIELD_PREP(ASPEED_PECI_TIMING_NEGO_SEL_MASK, ASPEED_PECI_1ST_BIT_OF_ADDR_NEGO);
-
-That's a complicated way to set val to zero :)
-
-> +       val |= ASPEED_PECI_INT_MASK;
-> +       writel(val, priv->base + ASPEED_PECI_INT_CTRL);
-> +
-> +       val = FIELD_PREP(ASPEED_PECI_CTRL_SAMPLING_MASK, ASPEED_PECI_RD_SAMPLING_POINT_DEFAULT);
-> +       writel(val, priv->base + ASPEED_PECI_CTRL);
-
-This will clear the rest of the ctrl register, including the divisor
-settings. Was that your intention?
-
-Reading the rest of your driver you only call _init_regs after
-_controller_enable, so I guess you're fine.
-
-> +}
-> +
-> +static int aspeed_peci_check_idle(struct aspeed_peci *priv)
-> +{
-> +       u32 cmd_sts = readl(priv->base + ASPEED_PECI_CMD);
-> +       int ret;
-> +
-> +       /*
-> +        * Under normal circumstances, we expect to be idle here.
-> +        * In case there were any errors/timeouts that led to the situation
-> +        * where the hardware is not in idle state - we need to reset and
-> +        * reinitialize it to avoid potential controller hang.
-> +        */
-> +       if (FIELD_GET(ASPEED_PECI_CMD_STS_MASK, cmd_sts)) {
-> +               reset_control_assert(priv->rst);
-> +
-> +               ret = reset_control_deassert(priv->rst);
-> +               if (ret) {
-> +                       dev_err(priv->dev, "cannot deassert reset control\n");
-> +                       return ret;
-> +               }
-> +
-> +               aspeed_peci_init_regs(priv);
-> +
-> +               ret = clk_set_rate(priv->clk, priv->clk_frequency);
-> +               if (ret < 0) {
-> +                       dev_err(priv->dev, "cannot set clock frequency\n");
-> +                       return ret;
-> +               }
-> +
-> +               aspeed_peci_controller_enable(priv);
-> +       }
-> +
-> +       return readl_poll_timeout(priv->base + ASPEED_PECI_CMD,
-> +                                 cmd_sts,
-> +                                 !(cmd_sts & ASPEED_PECI_CMD_IDLE_MASK),
-> +                                 ASPEED_PECI_IDLE_CHECK_INTERVAL_US,
-> +                                 ASPEED_PECI_IDLE_CHECK_TIMEOUT_US);
-> +}
-> +
-> +static int aspeed_peci_xfer(struct peci_controller *controller,
-> +                           u8 addr, struct peci_request *req)
-> +{
-> +       struct aspeed_peci *priv = dev_get_drvdata(controller->dev.parent);
-> +       unsigned long timeout = msecs_to_jiffies(priv->cmd_timeout_ms);
-> +       u32 peci_head;
-> +       int ret;
-> +
-> +       if (req->tx.len > ASPEED_PECI_DATA_BUF_SIZE_MAX ||
-> +           req->rx.len > ASPEED_PECI_DATA_BUF_SIZE_MAX)
-> +               return -EINVAL;
-> +
-> +       /* Check command sts and bus idle state */
-> +       ret = aspeed_peci_check_idle(priv);
-> +       if (ret)
-> +               return ret; /* -ETIMEDOUT */
-> +
-> +       spin_lock_irq(&priv->lock);
-> +       reinit_completion(&priv->xfer_complete);
-> +
-> +       peci_head = FIELD_PREP(ASPEED_PECI_TARGET_ADDR_MASK, addr) |
-> +                   FIELD_PREP(ASPEED_PECI_WR_LEN_MASK, req->tx.len) |
-> +                   FIELD_PREP(ASPEED_PECI_RD_LEN_MASK, req->rx.len);
-> +
-> +       writel(peci_head, priv->base + ASPEED_PECI_RW_LENGTH);
-> +
-> +       memcpy_toio(priv->base + ASPEED_PECI_WR_DATA0, req->tx.buf, min_t(u8, req->tx.len, 16));
-> +       if (req->tx.len > 16)
-> +               memcpy_toio(priv->base + ASPEED_PECI_WR_DATA4, req->tx.buf + 16,
-> +                           req->tx.len - 16);
-> +
-> +#if IS_ENABLED(CONFIG_DYNAMIC_DEBUG)
-> +       dev_dbg(priv->dev, "HEAD : %#08x\n", peci_head);
-> +       print_hex_dump_bytes("TX : ", DUMP_PREFIX_NONE, req->tx.buf, req->tx.len);
-> +#endif
-
-The ifdef is unfortunate. Could you do this?
-
-dev_dbg(priv->dev, "HEAD : %#08x\n", peci_head);
-if (IS_ENABLED(CONFIG_DYNAMIC_DEBUG))
-       print_hex_dump_bytes("TX : ", DUMP_PREFIX_NONE, req->tx.buf,
-req->tx.len);
-
-Not a biggie though, don't let this hold up merging.
-
-> +       priv->status = 0;
-> +       writel(ASPEED_PECI_CMD_FIRE, priv->base + ASPEED_PECI_CMD);
-> +       spin_unlock_irq(&priv->lock);
-> +
+With best regards,
+Mr. Gabriel Edgal
