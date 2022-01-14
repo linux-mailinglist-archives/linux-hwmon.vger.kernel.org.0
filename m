@@ -2,84 +2,80 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10A0D48E062
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Jan 2022 23:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C93E748EE3E
+	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jan 2022 17:35:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237825AbiAMWhf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 Jan 2022 17:37:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34030 "EHLO
+        id S243414AbiANQfT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 14 Jan 2022 11:35:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237690AbiAMWhf (ORCPT
+        with ESMTP id S243411AbiANQfR (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 Jan 2022 17:37:35 -0500
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F62C06161C
-        for <linux-hwmon@vger.kernel.org>; Thu, 13 Jan 2022 14:37:34 -0800 (PST)
-Received: by mail-pj1-x1044.google.com with SMTP id hv15so11800615pjb.5
-        for <linux-hwmon@vger.kernel.org>; Thu, 13 Jan 2022 14:37:34 -0800 (PST)
+        Fri, 14 Jan 2022 11:35:17 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A404CC061574
+        for <linux-hwmon@vger.kernel.org>; Fri, 14 Jan 2022 08:35:16 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id w188so12819556oiw.13
+        for <linux-hwmon@vger.kernel.org>; Fri, 14 Jan 2022 08:35:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=hw2QHm9/aNktZ/qzuQXSkRUy05slaJ/WvDaiJCgGHFMXySDZvvIGzDhgSbZJUdTECM
-         MdsyglRV4bVtBlgs6NlTa2OZZQb8UXHcvDPyZenDaXGGB84cNoYGLo+l8eZZsEvrq5Im
-         0QFow4ZK52miBtwwdUrm32z8LGCqAekGP4+gI9Ckh2M8rFBHbSy7KEygQ4ef7wXS5trM
-         eFTTa4l+9bAEL29bXzLat9kocoX9b3C/W7UZsV2aG0QfATMgYjukBkx35MGQ/J/HWHpf
-         i43S30wchEYddd+UGoUtoAPFM19QSkZ6V57ux5a34QRW2VhSVilvHcgeI6HktJQ3BvcY
-         srrQ==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=akrMpU19OXDdHNyQMFBxyuOUFQYNjsWfLllPfdKrYtU=;
+        b=WZrBxUoHwWb540YMLtvBbtF6gA8/yWWPB6imvZBzHIAOoBgcazp0P1h7aLUttuDIq7
+         Wf/9oqATz2aEox5GANKEzIaTstpyKG+kxhNSYqtLC7oG5SUI3YoyiklANXQ0W7rKJu8h
+         V5UcQs2Modo0JdGtoiFwnqsNrf6+vHpXXK8ssoD9llFDBlOLGsK+I9Gd5ct2awQrPZuJ
+         W5w3/5hLw1CPBEAHWBs7TvLn7Smdnt6zRzZ+o58e8KeNtoQpir6c9mdfZHLM/SPj+UJW
+         7U+Ia9JCiFAFerU21MtNqcGgw4AxjnWCE2BUxOjXd2dTxaRBBqn07IoZNZESaZwvwpxR
+         aCyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=P6pcpAj+GF9NoJNU/pXWm+7/cNpNyQKQVPiSxOUMBo9LWwi/uX87cw5iKYPKpJYcgJ
-         vTcOQYgEAKeJdhbdF6vury2Oj4y6Ng2ctLe0fyPwYc8exsOELqINck0qV7wQE+FFQaQa
-         OdLgWbwk56wav/yQInQaFBtFxmpmgKQuZNHFxYFPSJ5pE1RBlRYXGgaFVxJC6RISJ0rR
-         sWFgRnKjwpOTmv7A7MduHkjsPCOj26c4h6d579HIygyu7NOJm9V+Hr8UAjiS8roQMcJs
-         /U9DmYODh6WKkX8ttKwqA9Tbz4Opy6s9mh2Suf0ViTXBr/8jDM5NM+wG17Mft85XTjRq
-         VPmw==
-X-Gm-Message-State: AOAM530h7l15MAUH5WbSE1oCXahaR1+0G8zz/73hnWICZc/gPmxI8HGY
-        EzfaXb+LgStFoqnuy+LkNPQWruxTTMKlA1J89es=
-X-Google-Smtp-Source: ABdhPJxxHHvBgEhkMJqFxQL/kHCrtCcslOvL/VrT0n33mBCtCD1qSBM5W9SIxZcamVWgaajkCahPxuLA483LYyDvu8U=
-X-Received: by 2002:a17:902:c443:b0:14a:30f2:95e8 with SMTP id
- m3-20020a170902c44300b0014a30f295e8mr6471213plm.43.1642113454449; Thu, 13 Jan
- 2022 14:37:34 -0800 (PST)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=akrMpU19OXDdHNyQMFBxyuOUFQYNjsWfLllPfdKrYtU=;
+        b=mRR/aCKTkIoQbJxjTj+Iz8iDviROnZiiQd3UNxMJ6+ha5IqHVOL4jpviDGIU94REJK
+         CHfps4NgwRm1vQQ13A2U9/WOOQTjRuSFvfLO1MtzUwJ+sAeEN6ez1fD3h+WICL9uqTZS
+         hNyLElXUfw+SL7YEULm9KtddnR3Q9GH6I7nHQZ1/MLToix8vtZtcZEon9xiFvH6iDz++
+         SFuLEmhZzMr2HW7yhWTBQ+zcM4KmSxWiybV9a1LcExdu+s4FF1KOdfsShITbRxMKCyTb
+         2ns5GyVBAWHL5gZXmm+HIl0zEn4D+fEuYBWlAH7i6rlL2rS3h2nBBDiI5CIVyn4BWPSG
+         xqWQ==
+X-Gm-Message-State: AOAM531umdJGCC0CJFfNUUg7iMyY2xH38wbByB5bSNnzhfcKXI8KtnpP
+        MOPghjI4CDHBXbkP9g28RnPx1eq0H2E=
+X-Google-Smtp-Source: ABdhPJx652Fi6EZIb4vc1AzCycowJFJ7/vR781Nkm+G4hwKJLyYO+RYRR5I9dwenYZtF9U1TAt1lrg==
+X-Received: by 2002:a05:6808:2108:: with SMTP id r8mr5861546oiw.118.1642178115816;
+        Fri, 14 Jan 2022 08:35:15 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id m8sm1535971otn.29.2022.01.14.08.35.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jan 2022 08:35:15 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 1/8] hwmon: (lm83) Cleanup, conversion to regmap and with_info API order
+Date:   Fri, 14 Jan 2022 08:35:04 -0800
+Message-Id: <20220114163512.1094472-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:37:33
- -0800 (PST)
-Reply-To: mchristophdaniel@gmail.com
-From:   Marcus Galois <marcus.galois@gmail.com>
-Date:   Thu, 13 Jan 2022 23:37:33 +0100
-Message-ID: <CANqBaXW+7Aw2P_8Sghn0knonQ3qJaAEAJ69RZesm9MBxFDG_5A@mail.gmail.com>
-Subject: Good News Finally.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello friend.
+Clean up driver code, use regmap and with_info API to improve readability
+and reduce code size.
 
-You might find it so difficult to remember me, though it is indeed a
-very long time, I am much delighted to contact you again after a long
-period of time, I remember you despite circumstances that made things
-not worked out as we projected then. I want to inform you that the
-transaction we're doing together then finally worked out and I decided
-to contact you and to let you know because of your tremendous effort
-to make things work out then.
+----------------------------------------------------------------
+Guenter Roeck (8):
+      hwmon: (lm83) Reorder include files to be in alphabetic order
+      hwmon: (lm83) Move lm83_id to avoid forward declaration
+      hwmon: (lm83) Replace new_client with client
+      hwmon: (lm83) Use regmap
+      hwmon: (lm83) Replace temperature conversion macros with standard functions
+      hwmon: (lm83) Demote log message if chip identification fails
+      hwmon: (lm83) Explain why LM82 may be misdetected as LM83
+      hwmon: (lm83) Convert to use with_info API
 
-Meanwhile I must inform you that I'm presently in Caribbean Island for
-numerous business negotiation with some partners. with my sincere
-heart i have decided to compensate you with USD$900,000 for your
-dedication then on our transaction, you tried so much that period and
-I appreciated your effort. I wrote a cheque/check on your name, as
-soon as you receive it, you let me know.
-
-Contact my secretary now on his email: mchristophdaniel@gmail.com
-Name: Mr. Christoph Daniel
-
-You are to forward to him your Name........ Address.......,Phone
-number......for shipment/dispatch of the cheque/Check to you
-
-Regards,
-Mr. Marcus Galois
+ drivers/hwmon/lm83.c | 476 ++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 284 insertions(+), 192 deletions(-)
