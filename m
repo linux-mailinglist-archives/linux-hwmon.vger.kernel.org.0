@@ -2,80 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79CCD492655
-	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Jan 2022 14:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892674929EF
+	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Jan 2022 16:56:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241134AbiARNCR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 18 Jan 2022 08:02:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        id S242732AbiARP41 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 18 Jan 2022 10:56:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241428AbiARNCP (ORCPT
+        with ESMTP id S230519AbiARP40 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 18 Jan 2022 08:02:15 -0500
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B30C06173E
-        for <linux-hwmon@vger.kernel.org>; Tue, 18 Jan 2022 05:02:15 -0800 (PST)
-Received: by mail-ua1-x930.google.com with SMTP id m15so36307124uap.6
-        for <linux-hwmon@vger.kernel.org>; Tue, 18 Jan 2022 05:02:14 -0800 (PST)
+        Tue, 18 Jan 2022 10:56:26 -0500
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5949C061574
+        for <linux-hwmon@vger.kernel.org>; Tue, 18 Jan 2022 07:56:26 -0800 (PST)
+Received: by mail-ot1-x331.google.com with SMTP id m8-20020a9d4c88000000b00592bae7944bso21624092otf.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 18 Jan 2022 07:56:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=kt7BSYvG+rr2bLEECwLOEMCvBVZotJIk44/4XcKD9H0=;
-        b=QZjf3k5Bq93wUEOZ8Eldxj2pOLz7gNQkmT6bwBMlFjOFlSJhiU895E02z+Yj8Ub4UV
-         eW2Zu+QbMSenJwkRyUi15bg8hYdV2086fSHFa/zhVorqqxHyMehYMwVWcMtqqCHooxgi
-         wQMPOvPzwLILyU3SVO+Sh/fhmR2/BD04HZaC1v1Ub7Y644Xdo/ze+Vy3qPGD/pe14bMf
-         xTs4kh1vJG/mrA2S1IwCBv3dXInZeVSKN/TaxSVK8qX4v8X381PhfOQapQsQVH77hWx8
-         vOR6qBan2c9ZSjav8tJynKyhzk455PII+2jijdoRDG0y4dohEFrZlreBoQ97PD35RUZn
-         p8Bg==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7hCMYoca1gx8QQkVR6nNLIIDqG5isgiaV/ZfhJpvXDQ=;
+        b=hEujCmaMn4X0TRf2AfSpPDNNukjUM2OPI9zEbhtK5oKewuA/qIhDX+rc2nIFcPuWr8
+         2pCUze22IQo8VpQipjMHhhmDUnCszg454xZzBHNNxaKAguPZGIItvdkZlE6ySB5XIha4
+         dPkfC018D9IRIKTsiAfLzT9CNxVJCktVyv0otDF8+DmbdO7Rd/JWJE57yyCkw1oFjsiF
+         C0tYwhqDlkKPaYZF1kfCRZ6JiakpPJw9ZEc+DK+tYSfiUGANineDGtRv0ZupjLKMH1hT
+         O98bzmpn3loTvB9VV8LGLoTf1B7+pY07YUb0nXTVyrALFAgirPkJHVlDS8EsRnZk2kL0
+         YiRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=kt7BSYvG+rr2bLEECwLOEMCvBVZotJIk44/4XcKD9H0=;
-        b=x5c81eHffxaAxrjcDKR+f/wcgSPXsgPRSsniHMHYkmWdfHeUIxFGqnDr/4dqpvjwUz
-         IMEv/V4JvHqxqMsVadATLm2kMI8G8dg4TZja4doCpSda/Eu19B6XuoixIQeuCmUKMAdA
-         RJRDY5lSLKET7Eh0+JrRLmIwfPdgyC717A/AtsA/zAI+4YjIhMsI4QzPOl/iXMHpW44Q
-         vHToU/5IRBxIBT/u8W8HYlwhc0cjirGRLSnPNmMwQdN8/Rp2pJ0Ksy/wssZo2Rd9T2yT
-         kq4qYT6E/7I/uv123MD+3odU5p1GSOFtGL3ZeWkoag6WZLv3EuAs4xXl7dv5U/Bw1leQ
-         o04g==
-X-Gm-Message-State: AOAM531MsxV7Zvm6AyZF5FqVgijejliWxMYyIux2YR8f+pN+CILj4YuJ
-        YTxO4xO6TSfuFfhJ7bzsGFD44Y+oKdiJmRNbP3k=
-X-Google-Smtp-Source: ABdhPJwCw9mQmToYq3jjDUEAVLaDnT/TzcALU2SDyXm7E3qsEkkMdGmFqLhZ8wpR1g3cuWTxALtyE7KZFanCZ3Qg5oQ=
-X-Received: by 2002:a67:1d03:: with SMTP id d3mr9757683vsd.5.1642510933547;
- Tue, 18 Jan 2022 05:02:13 -0800 (PST)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=7hCMYoca1gx8QQkVR6nNLIIDqG5isgiaV/ZfhJpvXDQ=;
+        b=JbRMjBVCY4m5nNXNsUJCYLxv4xdoj8cJyluwVcOwzt8nxJ6CkB6bCZCO3pH3J1cdxY
+         7DiCziy/k8Gx/fup2zGPedZItaMrW6Z3+pA37keU2YWjNgTLNwqC+MAxei9coQRQuetj
+         pE6pp2oKg4NPA+ap4Xsj7ajbvs/bvKOgyWuA3NBlWJnPPoB5UW5+Q221VZUvL7MGnVgK
+         /AA8PkEfAFNxHM5wKtmrG9IKwSYz02BSAZKU13CnkVE+zGhRaHtnfBbOXFxn9z/p4BuA
+         J6x4x3azqaG5WiHCT2qCU+RSvs1ePrkTM29g0XCjyARFNxK9rLKsYmrNY59B7h1OXy9n
+         e9fg==
+X-Gm-Message-State: AOAM531BsHYqJG9X9YoS1od6Jj+BxaSTryxK8e3z6r9Zlm6FIO5g+Q0U
+        cE6d0IpyROiQ6F3Q3zDAcg1OWoWwCRk=
+X-Google-Smtp-Source: ABdhPJwq3kOP8Rt+S8a4y3B6cU2mKhg48MDJMj1TYfOT6/TQjNIDxVhQCNEiH6hIBMYeC4z9RjUNFg==
+X-Received: by 2002:a05:6830:1e99:: with SMTP id n25mr9001025otr.344.1642521385837;
+        Tue, 18 Jan 2022 07:56:25 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s14sm2386436otd.0.2022.01.18.07.56.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jan 2022 07:56:24 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        kernel test robot <lkp@intel.com>,
+        Arthur Heymans <arthur.heymans@9elements.com>
+Subject: [PATCH] hwmon: (pmbus/ir38064) Mark ir38064_of_match as __maybe_unused
+Date:   Tue, 18 Jan 2022 07:56:22 -0800
+Message-Id: <20220118155622.4112829-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: by 2002:ab0:3793:0:0:0:0:0 with HTTP; Tue, 18 Jan 2022 05:02:13
- -0800 (PST)
-Reply-To: mohsheikhalhamed@gmail.com
-From:   bratikox <bratikox@gmail.com>
-Date:   Tue, 18 Jan 2022 14:02:13 +0100
-Message-ID: <CAFuXTSzosmZG0Y7TQ8Bjr-r0=U4N_HK=LMwCv_=B=WrC-XeX2g@mail.gmail.com>
-Subject: Salam Alaikum /ADIA LOAN OFFER
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Salam Alaikum,
+If CONFIG_PM is not enabled, the following warning is reported.
 
-We are a United Arab Emirates based investment company known as Abu
-Dhabi Investment Authority working on expanding its portfolio globally
-and financing projects.
+drivers/hwmon/pmbus/ir38064.c:54:34: warning:
+	unused variable 'ir38064_of_match'
 
-We are offering Corporate and Personal Loan at 3.5% Interest Rate for
-a duration of 5 to 10 years.
+Mark it as __maybe_unused.
 
-Please get back to us on Email: mohsheikhalhamed@gmail.com ,if you are
-interested for further embellishment.
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Arthur Heymans <arthur.heymans@9elements.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/pmbus/ir38064.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We also pay 2% commission to brokers who introduce project owners for
-finance or other opportunities.
+diff --git a/drivers/hwmon/pmbus/ir38064.c b/drivers/hwmon/pmbus/ir38064.c
+index 0ea7e1c18bdc..09276e397194 100644
+--- a/drivers/hwmon/pmbus/ir38064.c
++++ b/drivers/hwmon/pmbus/ir38064.c
+@@ -62,7 +62,7 @@ static const struct i2c_device_id ir38064_id[] = {
+ 
+ MODULE_DEVICE_TABLE(i2c, ir38064_id);
+ 
+-static const struct of_device_id ir38064_of_match[] = {
++static const struct of_device_id __maybe_unused ir38064_of_match[] = {
+ 	{ .compatible = "infineon,ir38060" },
+ 	{ .compatible = "infineon,ir38064" },
+ 	{ .compatible = "infineon,ir38164" },
+-- 
+2.33.0
 
-
- Yours truly,
- Hamed Mohammad
- (Personal Assistant)
- Abu Dhabi Investment Authority
- 211 Corniche, P.O Box 3600
- Abu Dhabi,United Arab Emirates
