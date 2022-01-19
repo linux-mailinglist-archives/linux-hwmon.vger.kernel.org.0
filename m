@@ -2,374 +2,65 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3925F4937CB
-	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Jan 2022 10:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 876C1493F86
+	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Jan 2022 19:02:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353321AbiASJzE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 19 Jan 2022 04:55:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38468 "EHLO
+        id S1356598AbiASSCz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 19 Jan 2022 13:02:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353308AbiASJym (ORCPT
+        with ESMTP id S1356605AbiASSCy (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 19 Jan 2022 04:54:42 -0500
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [IPv6:2001:67c:2050:1::465:209])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1CB1C061574
-        for <linux-hwmon@vger.kernel.org>; Wed, 19 Jan 2022 01:54:41 -0800 (PST)
-Received: from smtp1.mailbox.org (unknown [91.198.250.123])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4Jf1Fq2S2dz9sc4;
-        Wed, 19 Jan 2022 10:54:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
-        t=1642586077;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=p0BTL+s8kW9XF7g0fBo2bH2OaXAb6mfRsPzKMlYEi+k=;
-        b=yhee6vPED0GArN0AoijA5iVtvWJaMC9QR/EYTJpp2xILQ8ahR6FGYRD+SlLD29VGtBV2w9
-        EMPIp6bZiriQthdVOFMoRykouD5VaOqEoRpAuFA7r4H7yBzECnzI/uKUjGqM5FqqWvOsMl
-        9RQFxw5CZoL38QIiQyx/O5U/ekJGzrTE3FCZ2adMhB1YHvyKUA9/c/kVlnSvh9aTDFS3ys
-        C6cXat9MIAHO7RGaUu8LgCI5Pqd9bnFEhyOEF6sgWx5Lu0rZych+zYzX5st5ZlTjh4hgGV
-        9vqbbXg/2b3IQn9EuXmNJ4RTD2K456oiRfpxz8TpKx8Mu+MDKDI0SzZvTQVBkQ==
-From:   Marcello Sylvester Bauer <sylv@sylv.io>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Marcello Sylvester Bauer <sylv@sylv.io>,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v3 4/4] hwmon: (max6639) Change from pdata to dt configuration
-Date:   Wed, 19 Jan 2022 10:53:55 +0100
-Message-Id: <8da9689f45a18eedd4c6f5530fe7ec352243b301.1642585539.git.sylv@sylv.io>
-In-Reply-To: <cover.1642585539.git.sylv@sylv.io>
-References: <cover.1642585539.git.sylv@sylv.io>
+        Wed, 19 Jan 2022 13:02:54 -0500
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCBBC061401
+        for <linux-hwmon@vger.kernel.org>; Wed, 19 Jan 2022 10:02:54 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id n137so3854620iod.4
+        for <linux-hwmon@vger.kernel.org>; Wed, 19 Jan 2022 10:02:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=qfqA8kA8Eje30qyVva1BoJNliRuwDvIsTonThCcvTui45+LhFe/RMzbjt4h23R5MGD
+         +lnaJi8GB66/wO+wIVQyixW5hmbZSCf8v23qLJH1GUr8FlnGCP0nBvePPCDUtL7hR7kR
+         drJArdrtPs30rdLjZDiI+sMTaZ5Mpl7Rj4QbrFsTtpORBCJtIaDxQn/I1lcITWE/zlUW
+         4QvvlRfxZFPVSsoXMmijL1ynbuLUNWUP5rc2jVCTrW5G4Th509hothXsUeuTvyt9JT78
+         qgD8hdsQmbggr5y/g351Zv0t9d2uzsUEZOeM2uSbhn/I4fhr43ybfwMC8qWFgpFIZSDG
+         6uWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=2uuAPLzzIpFmgwKcFYpim9R2C7UR73Qv4R8slzixAnc9RYorwydNwBAAgMCl9dgLJ6
+         Jevpd0w5493BaODjpPPgduaJKWQxzVkTdVf+lNCSw4BU7J0Au2n7j/JeGr4PWOGCs2vE
+         IYtf8E30RKimb6iifSg0E6o/F5XBbqYJTX9kWC1gwuTvPDf5VghqNYdm8NbBJ3fMgWyh
+         AzfVf7SOV5BJLNulr2aE4mesTVUk3uJyiBRvHrWKkcWDTU5syRBKF1dwH/ACU5h66EQ0
+         utlLyEipGWOKXxMUt4ewfTUJiH57+zndKwgWOMBV9EDBX5bNM47DEKjoVzVG8Du79g+0
+         klvg==
+X-Gm-Message-State: AOAM530+IiQ7Cyswc9J6DDVIrnaX9J+BBDXb1l7vFZWOkV7PP0knXGD5
+        7shAbhQd5S/44Vl/OsqHRe7LFhGqaWj2ouoSiCfWzxjuJbvy1w==
+X-Google-Smtp-Source: ABdhPJxnMAPve3OWeZVI2GoSvhFhFgzkgaBoUH7wVr/EpXUK063NCMZRrkWNFsPJsvlciabwMvFOmh149q8foP73Ffs=
+X-Received: by 2002:a92:c261:: with SMTP id h1mr17355398ild.320.1642615362460;
+ Wed, 19 Jan 2022 10:02:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a4f:27c9:0:0:0:0:0 with HTTP; Wed, 19 Jan 2022 10:02:41
+ -0800 (PST)
+Reply-To: avamedicinemed3@gmail.com
+From:   Dr Ava Smith <tracymedicinemed3@gmail.com>
+Date:   Wed, 19 Jan 2022 10:02:41 -0800
+Message-ID: <CAF_XQvs--qVySOazn+kvQL-oz0DD6y2FYd4mW8=-0OuBFsFnGw@mail.gmail.com>
+Subject: From Dr Ava Smith from United States
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-max6639_platform_data is not used by any in-kernel driver and does not
-address the MAX6639 channels separately. Move to a strict device tree
-configuration with explicit properties to configure each channel.
-
-Non-DT platform can still use this module with its default
-configuration.
-
-Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
----
- drivers/hwmon/max6639.c               | 171 +++++++++++++++++++-------
- include/linux/platform_data/max6639.h |  15 ---
- 2 files changed, 128 insertions(+), 58 deletions(-)
- delete mode 100644 include/linux/platform_data/max6639.h
-
-diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
-index 14bb7726f8d7..3ff0dbfa1704 100644
---- a/drivers/hwmon/max6639.c
-+++ b/drivers/hwmon/max6639.c
-@@ -19,7 +19,6 @@
- #include <linux/hwmon-sysfs.h>
- #include <linux/err.h>
- #include <linux/mutex.h>
--#include <linux/platform_data/max6639.h>
- 
- /* Addresses to scan */
- static const unsigned short normal_i2c[] = { 0x2c, 0x2e, 0x2f, I2C_CLIENT_END };
-@@ -85,8 +84,9 @@ struct max6639_data {
- 	u8 temp_ot[2];		/* OT Temperature, 0..255 C (->_emergency) */
- 
- 	/* Register values initialized only once */
--	u8 ppr;			/* Pulses per rotation 0..3 for 1..4 ppr */
--	u8 rpm_range;		/* Index in above rpm_ranges table */
-+	u8 ppr[2];		/* Pulses per rotation 0..3 for 1..4 ppr */
-+	u8 rpm_range[2];	/* Index in above rpm_ranges table */
-+	u8 pwm_polarity[2];	/* Fans PWM polarity, 0..1 */
- 
- 	/* Optional regulator for FAN supply */
- 	struct regulator *reg;
-@@ -319,7 +319,7 @@ static ssize_t fan_input_show(struct device *dev,
- 		return PTR_ERR(data);
- 
- 	return sprintf(buf, "%d\n", FAN_FROM_REG(data->fan[attr->index],
--		       data->rpm_range));
-+		       data->rpm_range[attr->index]));
- }
- 
- static ssize_t alarm_show(struct device *dev,
-@@ -386,28 +386,26 @@ static struct attribute *max6639_attrs[] = {
- ATTRIBUTE_GROUPS(max6639);
- 
- /*
-- *  returns respective index in rpm_ranges table
-- *  1 by default on invalid range
-+ *  Get respective index in rpm_ranges table
-  */
--static int rpm_range_to_reg(int range)
-+static int rpm_range_to_index(u8 *index, int range)
- {
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(rpm_ranges); i++) {
--		if (rpm_ranges[i] == range)
--			return i;
-+		if (rpm_ranges[i] == range) {
-+			*index = i;
-+			return 0;
-+		}
- 	}
- 
--	return 1; /* default: 4000 RPM */
-+	return -EINVAL;
- }
- 
- static int max6639_init_client(struct i2c_client *client,
- 			       struct max6639_data *data)
- {
--	struct max6639_platform_data *max6639_info =
--		dev_get_platdata(&client->dev);
- 	int i;
--	int rpm_range = 1; /* default: 4000 RPM */
- 	int err;
- 
- 	/* Reset chip to default values, see below for GCONFIG setup */
-@@ -416,43 +414,25 @@ static int max6639_init_client(struct i2c_client *client,
- 	if (err)
- 		goto exit;
- 
--	/* Fans pulse per revolution is 2 by default */
--	if (max6639_info && max6639_info->ppr > 0 &&
--			max6639_info->ppr < 5)
--		data->ppr = max6639_info->ppr;
--	else
--		data->ppr = 2;
--	data->ppr -= 1;
--
--	if (max6639_info)
--		rpm_range = rpm_range_to_reg(max6639_info->rpm_range);
--	data->rpm_range = rpm_range;
--
- 	for (i = 0; i < 2; i++) {
- 
- 		/* Set Fan pulse per revolution */
- 		err = i2c_smbus_write_byte_data(client,
- 				MAX6639_REG_FAN_PPR(i),
--				data->ppr << 6);
-+				data->ppr[i] << 6);
- 		if (err)
- 			goto exit;
- 
- 		/* Fans config PWM, RPM */
- 		err = i2c_smbus_write_byte_data(client,
- 			MAX6639_REG_FAN_CONFIG1(i),
--			MAX6639_FAN_CONFIG1_PWM | rpm_range);
-+			MAX6639_FAN_CONFIG1_PWM | data->rpm_range[i]);
- 		if (err)
- 			goto exit;
- 
--		/* Fans PWM polarity high by default */
--		if (max6639_info && max6639_info->pwm_polarity == 0)
--			err = i2c_smbus_write_byte_data(client,
--				MAX6639_REG_FAN_CONFIG2a(i), 0x00);
--		else
--			err = i2c_smbus_write_byte_data(client,
--				MAX6639_REG_FAN_CONFIG2a(i), 0x02);
--		if (err)
--			goto exit;
-+		/* Fans PWM polarity */
-+		err = i2c_smbus_write_byte_data(client,
-+			MAX6639_REG_FAN_CONFIG2a(i), data->pwm_polarity[i] ? 0x00 : 0x02);
- 
- 		/*
- 		 * /THERM full speed enable,
-@@ -464,10 +444,6 @@ static int max6639_init_client(struct i2c_client *client,
- 		if (err)
- 			goto exit;
- 
--		/* Max. temp. 80C/90C/100C */
--		data->temp_therm[i] = 80;
--		data->temp_alert[i] = 90;
--		data->temp_ot[i] = 100;
- 		err = i2c_smbus_write_byte_data(client,
- 				MAX6639_REG_THERM_LIMIT(i),
- 				data->temp_therm[i]);
-@@ -483,8 +459,6 @@ static int max6639_init_client(struct i2c_client *client,
- 		if (err)
- 			goto exit;
- 
--		/* PWM 120/120 (i.e. 100%) */
--		data->pwm[i] = 120;
- 		err = i2c_smbus_write_byte_data(client,
- 				MAX6639_REG_TARGTDUTY(i), data->pwm[i]);
- 		if (err)
-@@ -524,12 +498,96 @@ static void max6639_regulator_disable(void *data)
- 	regulator_disable(data);
- }
- 
-+static int max6639_probe_child_from_dt(struct i2c_client *client,
-+				      struct device_node *child,
-+				      struct max6639_data *data)
-+
-+{
-+	struct device *dev = &client->dev;
-+	u32 i, val;
-+	int err;
-+
-+	err = of_property_read_u32(child, "reg", &i);
-+	if (err) {
-+		dev_err(dev, "missing reg property of %pOFn\n", child);
-+		return err;
-+	}
-+
-+	if (i >= 2) {
-+		dev_err(dev, "invalid reg %d of %pOFn\n", i, child);
-+		return -EINVAL;
-+	}
-+
-+	err = of_property_read_u32(child, "pulses-per-revolution", &val);
-+	if (err) {
-+		dev_err(dev, "missing pulses-per-revolution property of %pOFn\n", child);
-+		return err;
-+	}
-+
-+	if (val < 0 || val > 5) {
-+		dev_err(dev, "invalid pulses-per-revolution %d of %pOFn\n", val, child);
-+		return -EINVAL;
-+	}
-+	data->ppr[i] = val;
-+
-+	err = of_property_read_u32(child, "rpm-range", &val);
-+	if (err) {
-+		dev_err(dev, "missing rpm-range property of %pOFn\n", child);
-+		return err;
-+	}
-+
-+	err = rpm_range_to_index(&data->rpm_range[i], val);
-+	if (err) {
-+		dev_err(dev, "invalid rpm-range %d of %pOFn\n", val, child);
-+		return err;
-+	}
-+
-+	err = of_property_read_u32(child, "pwm-polarity", &val);
-+	if (err) {
-+		dev_err(dev, "missing pwm-polarity property of %pOFn\n", child);
-+		return err;
-+	}
-+
-+	if (val > 1) {
-+		dev_err(dev, "invalid pwm-polarity %d of %pOFn\n", val, child);
-+		return -EINVAL;
-+	}
-+	data->pwm_polarity[i] = val;
-+
-+	return 0;
-+}
-+
-+static int max6639_probe_from_dt(struct i2c_client *client, struct max6639_data *data)
-+{
-+	struct device *dev = &client->dev;
-+	const struct device_node *np = dev->of_node;
-+	struct device_node *child;
-+	int err;
-+
-+	/* Compatible with non-DT platforms */
-+	if (!np)
-+		return 0;
-+
-+	for_each_child_of_node(np, child) {
-+		if (strcmp(child->name, "channel"))
-+			continue;
-+
-+		err = max6639_probe_child_from_dt(client, child, data);
-+		if (err) {
-+			of_node_put(child);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int max6639_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
- 	struct max6639_data *data;
- 	struct device *hwmon_dev;
--	int err;
-+	int err, i;
- 
- 	data = devm_kzalloc(dev, sizeof(struct max6639_data), GFP_KERNEL);
- 	if (!data)
-@@ -560,6 +618,24 @@ static int max6639_probe(struct i2c_client *client)
- 
- 	mutex_init(&data->update_lock);
- 
-+	/* default values */
-+	for (i = 0; i < 2; i++) {
-+		/* 4000 RPM */
-+		data->rpm_range[i] = 1;
-+		data->ppr[i] = 2;
-+		data->pwm_polarity[i] = 1;
-+		/* Max. temp. 80C/90C/100C */
-+		data->temp_therm[i] = 80;
-+		data->temp_alert[i] = 90;
-+		data->temp_ot[i] = 100;
-+		/* PWM 120/120 (i.e. 100%) */
-+		data->pwm[i] = 120;
-+	}
-+
-+	err = max6639_probe_from_dt(client, data);
-+	if (err)
-+		return err;
-+
- 	/* Initialize the max6639 chip */
- 	err = max6639_init_client(client, data);
- 	if (err < 0)
-@@ -618,6 +694,14 @@ static const struct i2c_device_id max6639_id[] = {
- 
- MODULE_DEVICE_TABLE(i2c, max6639_id);
- 
-+#ifdef CONFIG_OF
-+static const struct of_device_id maxim_of_platform_match[] = {
-+	{.compatible = "maxim,max6639"},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, maxim_of_platform_match);
-+#endif
-+
- static SIMPLE_DEV_PM_OPS(max6639_pm_ops, max6639_suspend, max6639_resume);
- 
- static struct i2c_driver max6639_driver = {
-@@ -625,6 +709,7 @@ static struct i2c_driver max6639_driver = {
- 	.driver = {
- 		   .name = "max6639",
- 		   .pm = &max6639_pm_ops,
-+		   .of_match_table = of_match_ptr(maxim_of_platform_match),
- 		   },
- 	.probe_new = max6639_probe,
- 	.id_table = max6639_id,
-diff --git a/include/linux/platform_data/max6639.h b/include/linux/platform_data/max6639.h
-deleted file mode 100644
-index 65bfdb4fdc15..000000000000
---- a/include/linux/platform_data/max6639.h
-+++ /dev/null
-@@ -1,15 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _LINUX_MAX6639_H
--#define _LINUX_MAX6639_H
--
--#include <linux/types.h>
--
--/* platform data for the MAX6639 temperature sensor and fan control */
--
--struct max6639_platform_data {
--	bool pwm_polarity;	/* Polarity low (0) or high (1, default) */
--	int ppr;		/* Pulses per rotation 1..4 (default == 2) */
--	int rpm_range;		/* 2000, 4000 (default), 8000 or 16000 */
--};
--
--#endif /* _LINUX_MAX6639_H */
 -- 
-2.33.1
-
+Hello Dear,
+how are you today?hope you are fine
+My name is Dr Ava Smith ,Am an English and French nationalities.
+I will give you pictures and more details about me as soon as i hear from you
+Thanks
+Ava
