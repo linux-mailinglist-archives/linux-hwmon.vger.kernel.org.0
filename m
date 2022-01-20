@@ -2,65 +2,116 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 876C1493F86
-	for <lists+linux-hwmon@lfdr.de>; Wed, 19 Jan 2022 19:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD2A0494506
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Jan 2022 01:45:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356598AbiASSCz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 19 Jan 2022 13:02:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
+        id S1345148AbiATApo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 19 Jan 2022 19:45:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356605AbiASSCy (ORCPT
+        with ESMTP id S1345135AbiATApn (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 19 Jan 2022 13:02:54 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCBBC061401
-        for <linux-hwmon@vger.kernel.org>; Wed, 19 Jan 2022 10:02:54 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id n137so3854620iod.4
-        for <linux-hwmon@vger.kernel.org>; Wed, 19 Jan 2022 10:02:54 -0800 (PST)
+        Wed, 19 Jan 2022 19:45:43 -0500
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB998C061574;
+        Wed, 19 Jan 2022 16:45:42 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id t4-20020a05683022e400b00591aaf48277so5507284otc.13;
+        Wed, 19 Jan 2022 16:45:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
-        b=qfqA8kA8Eje30qyVva1BoJNliRuwDvIsTonThCcvTui45+LhFe/RMzbjt4h23R5MGD
-         +lnaJi8GB66/wO+wIVQyixW5hmbZSCf8v23qLJH1GUr8FlnGCP0nBvePPCDUtL7hR7kR
-         drJArdrtPs30rdLjZDiI+sMTaZ5Mpl7Rj4QbrFsTtpORBCJtIaDxQn/I1lcITWE/zlUW
-         4QvvlRfxZFPVSsoXMmijL1ynbuLUNWUP5rc2jVCTrW5G4Th509hothXsUeuTvyt9JT78
-         qgD8hdsQmbggr5y/g351Zv0t9d2uzsUEZOeM2uSbhn/I4fhr43ybfwMC8qWFgpFIZSDG
-         6uWw==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=pN7lFPUXFYn0Dp5HJfunzPkw56TkeXxPA5Y7ObLojS8=;
+        b=ZnOvgZEOS5BELoXMDhNsb5KgGO3zBTuHjEr0zjfl9PNJl0eu7GJcNnZD1Pm/9r3tGt
+         K89hFWkLprSpCla6SFJ/zCmSbBvim3QfIIKRasxq7emN+SIUuEm2066n+1eWmUh+32Dj
+         NR6UJ9FgJpELLkyICVC0BrRi8LPIbZVEiCnRJpcIG7r9+F8YU/j7HV65kTmAuLiLDQgR
+         j+JduPMMhl6GinFgi0Op4zPEQvUclmVR3YKsQNYNm+aJ0pCrqGedHC9KYCN0AQc0K66Y
+         0FTEyMDLL99r4oV4jNDFb9+m1t60WBg44OTtkF0HvITrkOagbDyqOPHKgAWNPj/XXjaa
+         7NxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
-        b=2uuAPLzzIpFmgwKcFYpim9R2C7UR73Qv4R8slzixAnc9RYorwydNwBAAgMCl9dgLJ6
-         Jevpd0w5493BaODjpPPgduaJKWQxzVkTdVf+lNCSw4BU7J0Au2n7j/JeGr4PWOGCs2vE
-         IYtf8E30RKimb6iifSg0E6o/F5XBbqYJTX9kWC1gwuTvPDf5VghqNYdm8NbBJ3fMgWyh
-         AzfVf7SOV5BJLNulr2aE4mesTVUk3uJyiBRvHrWKkcWDTU5syRBKF1dwH/ACU5h66EQ0
-         utlLyEipGWOKXxMUt4ewfTUJiH57+zndKwgWOMBV9EDBX5bNM47DEKjoVzVG8Du79g+0
-         klvg==
-X-Gm-Message-State: AOAM530+IiQ7Cyswc9J6DDVIrnaX9J+BBDXb1l7vFZWOkV7PP0knXGD5
-        7shAbhQd5S/44Vl/OsqHRe7LFhGqaWj2ouoSiCfWzxjuJbvy1w==
-X-Google-Smtp-Source: ABdhPJxnMAPve3OWeZVI2GoSvhFhFgzkgaBoUH7wVr/EpXUK063NCMZRrkWNFsPJsvlciabwMvFOmh149q8foP73Ffs=
-X-Received: by 2002:a92:c261:: with SMTP id h1mr17355398ild.320.1642615362460;
- Wed, 19 Jan 2022 10:02:42 -0800 (PST)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=pN7lFPUXFYn0Dp5HJfunzPkw56TkeXxPA5Y7ObLojS8=;
+        b=TdFXlSa39gn1Rpibgv3bfA/9ADwHl+wARAI8UvPJt3fkC8ETC1Vvu7Ac08YIM/yTu2
+         NWL/pLOVlUmbuUwh+W1FLILzsH1ilkVFLlTHQo3ugHW7qt/SwfOvGq3IZBzUjwe2XrPZ
+         AhcrJw/qd9TfIct6w5Xwkf9j4A+prj4No1K95Izw25rz92089NEbfl9GLnhlG/K0iYd0
+         umRoW6ozcZ1s6+JJNdAi+HnzQEMYkNvDQgHDuFEYBdNA04CD6N/a0IpzuqV1yGMjygGf
+         cKS1iJMGbnapC43fMFsUaWezuAqHrrjbi4qvnsgPC+5xj0zdreN7FfspRt9DjsIGbQMU
+         AilQ==
+X-Gm-Message-State: AOAM530Pxp32UMLZvApBKErGnvsUMzwRV6ef4oHTkF+KYA7nZJYp9RE7
+        sSDNbnOFGlmGPuZ0KbQ6x2I=
+X-Google-Smtp-Source: ABdhPJxq6e2FlZ6iUATfFQ33l9ZuXGWlXdRyUZ/yvgrjR5yKCQsaQoxB48P2EHNVUBmiJy1eyxxtrQ==
+X-Received: by 2002:a9d:7e82:: with SMTP id m2mr14113634otp.4.1642639542143;
+        Wed, 19 Jan 2022 16:45:42 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s11sm755368oig.55.2022.01.19.16.45.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jan 2022 16:45:41 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 19 Jan 2022 16:45:40 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Eugene Shalygin <eugene.shalygin@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Denis Pauk <pauk.denis@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [ASUS EC Sensors v7 1/3] hwmon: (asus-ec-sensors) add driver for
+ ASUS EC
+Message-ID: <20220120004540.GD3474033@roeck-us.net>
+References: <20220118165316.412735-1-eugene.shalygin@gmail.com>
+ <20220118165316.412735-2-eugene.shalygin@gmail.com>
+ <CAB95QATvQPZ-s4dCWeqKcSZ9Rfx9uK1AyoM9Kk3biPfvXh5r5g@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a4f:27c9:0:0:0:0:0 with HTTP; Wed, 19 Jan 2022 10:02:41
- -0800 (PST)
-Reply-To: avamedicinemed3@gmail.com
-From:   Dr Ava Smith <tracymedicinemed3@gmail.com>
-Date:   Wed, 19 Jan 2022 10:02:41 -0800
-Message-ID: <CAF_XQvs--qVySOazn+kvQL-oz0DD6y2FYd4mW8=-0OuBFsFnGw@mail.gmail.com>
-Subject: From Dr Ava Smith from United States
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAB95QATvQPZ-s4dCWeqKcSZ9Rfx9uK1AyoM9Kk3biPfvXh5r5g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Hello Dear,
-how are you today?hope you are fine
-My name is Dr Ava Smith ,Am an English and French nationalities.
-I will give you pictures and more details about me as soon as i hear from you
-Thanks
-Ava
+On Wed, Jan 19, 2022 at 04:25:41AM +0100, Eugene Shalygin wrote:
+> I did not read carefully what I committed and now two small
+> corrections are required (see inline). Should I resend again?
+> 
+
+Wait for a couple of days in case there is test coverage
+or other feedback.
+
+Guenter
+
+> On Tue, 18 Jan 2022 at 17:53, Eugene Shalygin <eugene.shalygin@gmail.com> wrote:
+> > +       DMI_EXACT_MATCH_BOARD(VENDOR_ASUS_UPPER_CASE, "ROG STRIX X570-F GAMING",
+> > +               SENSOR_SET_TEMP_CHIPSET_CPU_MB |
+> > +               SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CHIPSET
+> Redundant line break.
+> > +       ),
+> > +       DMI_EXACT_MATCH_BOARD(VENDOR_ASUS_UPPER_CASE, "ROG STRIX X570-I GAMING",
+> > +               SENSOR_TEMP_T_SENSOR | SENSOR_FAN_VRM_HS |
+> > +               SENSOR_FAN_CHIPSET | SENSOR_CURR_CPU),
+> 
+> 
+> > +struct ec_sensors_data {
+> > +       unsigned long board_sensors;
+> > +       struct ec_sensor *sensors;
+> > +       /** EC registers to read from */
+> > +       u16 *registers;
+> > +       u8 *read_buffer;
+> > +       /** sorted list of unique register banks */
+> > +       u8 banks[ASUS_EC_MAX_BANK + 1];
+> > +       /** in jiffies */
+> > +       unsigned long last_updated;
+> > +       acpi_handle aml_mutex;
+> > +       /** number of board EC sensors */
+> > +       u8 nr_sensors;
+> > +       /** number of EC registers to read (sensor might span more than 1 register) */
+> > +       u8 nr_registers;
+> > +       /** number of unique register banks */
+> > +       u8 nr_banks;
+> > +};
+> 
+> Forgot to remove doc-comments.
+> 
+> Thanks,
+> Eugene
