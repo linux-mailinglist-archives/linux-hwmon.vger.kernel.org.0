@@ -2,73 +2,89 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1C849AD27
-	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 08:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 637BF49B04C
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 10:42:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358923AbiAYHKI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 25 Jan 2022 02:10:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46816 "EHLO
+        id S1355160AbiAYJcA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 25 Jan 2022 04:32:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377420AbiAYHET (ORCPT
+        with ESMTP id S1455528AbiAYJFb (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 25 Jan 2022 02:04:19 -0500
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE7AC029820
-        for <linux-hwmon@vger.kernel.org>; Mon, 24 Jan 2022 21:41:53 -0800 (PST)
-Received: by mail-yb1-xb2f.google.com with SMTP id i62so12020843ybg.5
-        for <linux-hwmon@vger.kernel.org>; Mon, 24 Jan 2022 21:41:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=omchJdYJcVvbnbx3iWDsqNfzfvgFxRY5UV8d5JFHFd0Qxp4Fs99oOTWbnsLJvmkGLO
-         KJ9h0aIZipzZCxLYUC1EbKJQXjsTnrYD4skWPu5L6KEa7WwksJ/DgfAKn2I//FvNz16e
-         yvRSMjBJIkfJOiN7QosmIFzfX6t0OymUxXq/kzoldmt5Tk4SMXy3poAlzZfnj4tLqkCO
-         r1uVZjBjIcfKcTHUm4yIRwmNGijXGA0OAhFYRol/6hiAAZJ37V1K6a3bLM+XpGdFXGos
-         hPiIHyT9XSW8aiVFGjIdHRgRcnWLHkX21ZW87GvspRwlXlL9xuI6dXFZXWxBZnRTJWgA
-         Bk5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=IsCfOWUAaMCxWcZekZ0vO/XXwz+dOiL3w1HezzoBgv9xtQm2opq1uulOQeUG18ikvA
-         3ys71b5ek9vVkvtalmHXz1jhmRe6zHh2cmDjYKMAnphhFP3qLEKKna5NOYPA+Xa26dQ+
-         W9oLkKmsABI6s/Sox0kc3sQ+7KgFFkIWV+KGvk/J9oY+AduX9uzo3ErWvYo7bHsrcEqR
-         AN4ZbgqJ3sxanJPz5s6aPvyRADgJNHFh69GuDjTNuNECXbuv8F5n17dAi4/QuX010rkh
-         ZWtVu3LKc0XYYT1GJFbd3ONHlm0C0JBzVGhfpdt1Z1AEx6Alib3frpfifn6mNIdMtGVU
-         ATOA==
-X-Gm-Message-State: AOAM530N+jWRtRUgDCDjJSc+n6pe7zLnGIyuAW9YsQf9NijII5F/e7CL
-        5b/PS9MZ+3XPePoBQyGnDPUOcdoiks7xaRYY4HubGyayNQw=
-X-Google-Smtp-Source: ABdhPJwywiwyTtOCXfovmJIEM7Vqt+PFDzMW3tzxRj90P3fJDPhIlV2jOd/vI9WPw47eCab8Z7S4n4qldrLRD5Ly+Sc=
-X-Received: by 2002:a25:d783:: with SMTP id o125mr27594671ybg.710.1643089301256;
- Mon, 24 Jan 2022 21:41:41 -0800 (PST)
+        Tue, 25 Jan 2022 04:05:31 -0500
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [IPv6:2001:19f0:6c00:8846:5400:ff:fe0c:dfa0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C491C0612F5
+        for <linux-hwmon@vger.kernel.org>; Tue, 25 Jan 2022 00:49:36 -0800 (PST)
+Received: from spock.localnet (unknown [83.148.33.151])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 83345D845DF;
+        Tue, 25 Jan 2022 09:47:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1643100446;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uTrZfvw59gH/3yxbYSrOyea1yqewZSxFlFrA41C8gmc=;
+        b=a7E6jbTNzy5ydzDySaPbga0Kq5FR+O89hoyGtZCaMNv44l4WaoLSBJpGZszh02N2JEIdKd
+        txL5c5ClX5Vfg17nW1Fs9TFoLjO1EOsBfjvMh07Ei5syltrf1SO+TReGH1rNM9wccx7Slr
+        FDqttV1yeSHVS2SyCyKdM/yxLKRkVes=
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     eugene.shalygin@gmail.com,
+        Eugene Shalygin <eugene.shalygin@gmail.com>
+Cc:     andy.shevchenko@gmail.com, pauk.denis@gmail.com,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: Re: [ASUS EC Sensors v8 3/3] hwmon: deprecate asis_wmi_ec_sensors driver
+Date:   Tue, 25 Jan 2022 09:47:24 +0100
+Message-ID: <2614570.mvXUDI8C0e@natalenko.name>
+In-Reply-To: <20220124015658.687309-4-eugene.shalygin@gmail.com>
+References: <20220124015658.687309-1-eugene.shalygin@gmail.com> <20220124015658.687309-4-eugene.shalygin@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:ad9d:0:0:0:0 with HTTP; Mon, 24 Jan 2022 21:41:40
- -0800 (PST)
-Reply-To: danielseyba@yahoo.com
-From:   Seyba Daniel <mrssuzaramaling19@gmail.com>
-Date:   Tue, 25 Jan 2022 06:41:40 +0100
-Message-ID: <CAKN-9XgQjuMspSnu-F01fv+Bgr6eZEygpsR3pZ-5cF=m78av-Q@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello,
+On pond=C4=9Bl=C3=AD 24. ledna 2022 2:56:45 CET Eugene Shalygin wrote:
+> Deprecate the asus_wmi_ec_sensors driver in favor of the asus_ec_sensors
+>=20
+> Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+> ---
+>  drivers/hwmon/Kconfig | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index 2c16b19d2c03..38094c702e4d 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
+> @@ -2243,13 +2243,16 @@ config SENSORS_ASUS_WMI
+> =20
+>  config SENSORS_ASUS_WMI_EC
+>  	tristate "ASUS WMI B550/X570"
+> -	depends on ACPI_WMI
+> +	depends on ACPI_WMI && SENSORS_ASUS_EC=3Dn
+>  	help
+>  	  If you say yes here you get support for the ACPI embedded controller
+>  	  hardware monitoring interface found in B550/X570 ASUS motherboards.
+>  	  This driver will provide readings of fans, voltages and temperatures
+>  	  through the system firmware.
+> =20
+> +	  This driver is deprecated in favor of the ASUS EC Sensors driver
+> +	  which provides fully compatible output.
+> +
+>  	  This driver can also be built as a module. If so, the module
+>  	  will be called asus_wmi_sensors_ec.
+> =20
+>=20
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+Reviewed-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+=2D-=20
+Oleksandr Natalenko (post-factum)
 
-So please confirm interest by responding back.
 
-My dearest regards
-
-Seyba Daniel
