@@ -2,47 +2,47 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 637BF49B04C
-	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 10:42:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEEC349AF98
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 10:15:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355160AbiAYJcA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 25 Jan 2022 04:32:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47304 "EHLO
+        id S1456617AbiAYJMG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 25 Jan 2022 04:12:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1455528AbiAYJFb (ORCPT
+        with ESMTP id S1455337AbiAYJE0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 25 Jan 2022 04:05:31 -0500
+        Tue, 25 Jan 2022 04:04:26 -0500
 Received: from vulcan.natalenko.name (vulcan.natalenko.name [IPv6:2001:19f0:6c00:8846:5400:ff:fe0c:dfa0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C491C0612F5
-        for <linux-hwmon@vger.kernel.org>; Tue, 25 Jan 2022 00:49:36 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574A3C061362;
+        Tue, 25 Jan 2022 00:48:21 -0800 (PST)
 Received: from spock.localnet (unknown [83.148.33.151])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 83345D845DF;
-        Tue, 25 Jan 2022 09:47:26 +0100 (CET)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id F0923D845E3;
+        Tue, 25 Jan 2022 09:48:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1643100446;
+        s=dkim-20170712; t=1643100497;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uTrZfvw59gH/3yxbYSrOyea1yqewZSxFlFrA41C8gmc=;
-        b=a7E6jbTNzy5ydzDySaPbga0Kq5FR+O89hoyGtZCaMNv44l4WaoLSBJpGZszh02N2JEIdKd
-        txL5c5ClX5Vfg17nW1Fs9TFoLjO1EOsBfjvMh07Ei5syltrf1SO+TReGH1rNM9wccx7Slr
-        FDqttV1yeSHVS2SyCyKdM/yxLKRkVes=
+        bh=DNGmSgajX3AV7tac/NHRSny7ZKSXgCu8THN38jSPcJY=;
+        b=uVvpTJENujv89DwH1ydCqmX64nzGHF10t5qSormK78RR5uxmWBRxvlAfQ21pylsjVvnGcj
+        aJkXQBxb0eQeHVnNpV92VFOlITkBIXclTAiMTKakcLGVGwF+iYqN8UZacbblUxxCdtzqZJ
+        K6KFOu0kypEE5l0r6etqlVkwq6mr7Mk=
 From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     eugene.shalygin@gmail.com,
-        Eugene Shalygin <eugene.shalygin@gmail.com>
+To:     Eugene Shalygin <eugene.shalygin@gmail.com>
 Cc:     andy.shevchenko@gmail.com, pauk.denis@gmail.com,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: Re: [ASUS EC Sensors v8 3/3] hwmon: deprecate asis_wmi_ec_sensors driver
-Date:   Tue, 25 Jan 2022 09:47:24 +0100
-Message-ID: <2614570.mvXUDI8C0e@natalenko.name>
-In-Reply-To: <20220124015658.687309-4-eugene.shalygin@gmail.com>
-References: <20220124015658.687309-1-eugene.shalygin@gmail.com> <20220124015658.687309-4-eugene.shalygin@gmail.com>
+        Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [ASUS EC Sensors v8 2/3] hwmon: (asus-ec-sensors) update documentation
+Date:   Tue, 25 Jan 2022 09:48:15 +0100
+Message-ID: <5534652.DvuYhMxLoT@natalenko.name>
+In-Reply-To: <20220124015658.687309-3-eugene.shalygin@gmail.com>
+References: <20220124015658.687309-1-eugene.shalygin@gmail.com> <20220124015658.687309-3-eugene.shalygin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
@@ -50,39 +50,128 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On pond=C4=9Bl=C3=AD 24. ledna 2022 2:56:45 CET Eugene Shalygin wrote:
-> Deprecate the asus_wmi_ec_sensors driver in favor of the asus_ec_sensors
->=20
+On pond=C4=9Bl=C3=AD 24. ledna 2022 2:56:44 CET Eugene Shalygin wrote:
 > Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+
+I believe some commit message is desired here.
+
 > ---
->  drivers/hwmon/Kconfig | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  Documentation/hwmon/asus_ec_sensors.rst     | 52 +++++++++++++++++++++
+>  Documentation/hwmon/asus_wmi_ec_sensors.rst | 38 ---------------
+>  2 files changed, 52 insertions(+), 38 deletions(-)
+>  create mode 100644 Documentation/hwmon/asus_ec_sensors.rst
+>  delete mode 100644 Documentation/hwmon/asus_wmi_ec_sensors.rst
 >=20
-> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> index 2c16b19d2c03..38094c702e4d 100644
-> --- a/drivers/hwmon/Kconfig
-> +++ b/drivers/hwmon/Kconfig
-> @@ -2243,13 +2243,16 @@ config SENSORS_ASUS_WMI
-> =20
->  config SENSORS_ASUS_WMI_EC
->  	tristate "ASUS WMI B550/X570"
-> -	depends on ACPI_WMI
-> +	depends on ACPI_WMI && SENSORS_ASUS_EC=3Dn
->  	help
->  	  If you say yes here you get support for the ACPI embedded controller
->  	  hardware monitoring interface found in B550/X570 ASUS motherboards.
->  	  This driver will provide readings of fans, voltages and temperatures
->  	  through the system firmware.
-> =20
-> +	  This driver is deprecated in favor of the ASUS EC Sensors driver
-> +	  which provides fully compatible output.
+> diff --git a/Documentation/hwmon/asus_ec_sensors.rst b/Documentation/hwmo=
+n/asus_ec_sensors.rst
+> new file mode 100644
+> index 000000000000..b12ac7ebeb1a
+> --- /dev/null
+> +++ b/Documentation/hwmon/asus_ec_sensors.rst
+> @@ -0,0 +1,52 @@
+> +.. SPDX-License-Identifier: GPL-2.0-or-later
 > +
->  	  This driver can also be built as a module. If so, the module
->  	  will be called asus_wmi_sensors_ec.
-> =20
+> +Kernel driver asus_ec_sensors
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +Supported boards:
+> + * PRIME X570-PRO,
+> + * Pro WS X570-ACE,
+> + * ROG CROSSHAIR VIII DARK HERO,
+> + * ROG CROSSHAIR VIII FORMULA,
+> + * ROG CROSSHAIR VIII HERO,
+> + * ROG CROSSHAIR VIII IMPACT,
+> + * ROG STRIX B550-E GAMING,
+> + * ROG STRIX B550-I GAMING,
+> + * ROG STRIX X570-E GAMING,
+> + * ROG STRIX X570-F GAMING,
+> + * ROG STRIX X570-I GAMING
+> +
+> +Authors:
+> +    - Eugene Shalygin <eugene.shalygin@gmail.com>
+> +
+> +Description:
+> +------------
+> +ASUS mainboards publish hardware monitoring information via Super I/O
+> +chip and the ACPI embedded controller (EC) registers. Some of the sensors
+> +are only available via the EC.
+> +
+> +The driver is aware of and reads the following sensors:
+> +
+> +1. Chipset (PCH) temperature
+> +2. CPU package temperature
+> +3. Motherboard temperature
+> +4. Readings from the T_Sensor header
+> +5. VRM temperature
+> +6. CPU_Opt fan RPM
+> +7. VRM heatsink fan RPM
+> +8. Chipset fan RPM
+> +9. Readings from the "Water flow meter" header (RPM)
+> +10. Readings from the "Water In" and "Water Out" temperature headers
+> +11. CPU current
+> +
+> +Sensor values are read from EC registers, and to avoid race with the boa=
+rd
+> +firmware the driver acquires ACPI mutex, the one used by the WMI when its
+> +methods access the EC.
+> +
+> +Module Parameters
+> +-----------------
+> + * mutex_path: string
+> +		The driver holds path to the ACPI mutex for each board (actually,
+> +		the path is mostly identical for them). If ASUS changes this path
+> +		in a future BIOS update, this parameter can be used to override
+> +		the stored in the driver value until it gets updated.
+> diff --git a/Documentation/hwmon/asus_wmi_ec_sensors.rst b/Documentation/=
+hwmon/asus_wmi_ec_sensors.rst
+> deleted file mode 100644
+> index 1b287f229e86..000000000000
+> --- a/Documentation/hwmon/asus_wmi_ec_sensors.rst
+> +++ /dev/null
+> @@ -1,38 +0,0 @@
+> -.. SPDX-License-Identifier: GPL-2.0-or-later
+> -
+> -Kernel driver asus_wmi_ec_sensors
+> -=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> -
+> -Supported boards:
+> - * PRIME X570-PRO,
+> - * Pro WS X570-ACE,
+> - * ROG CROSSHAIR VIII DARK HERO,
+> - * ROG CROSSHAIR VIII FORMULA,
+> - * ROG CROSSHAIR VIII HERO,
+> - * ROG STRIX B550-E GAMING,
+> - * ROG STRIX B550-I GAMING,
+> - * ROG STRIX X570-E GAMING.
+> -
+> -Authors:
+> -    - Eugene Shalygin <eugene.shalygin@gmail.com>
+> -
+> -Description:
+> -------------
+> -ASUS mainboards publish hardware monitoring information via Super I/O
+> -chip and the ACPI embedded controller (EC) registers. Some of the sensors
+> -are only available via the EC.
+> -
+> -ASUS WMI interface provides a method (BREC) to read data from EC registe=
+rs,
+> -which is utilized by this driver to publish those sensor readings to the
+> -HWMON system. The driver is aware of and reads the following sensors:
+> -
+> -1. Chipset (PCH) temperature
+> -2. CPU package temperature
+> -3. Motherboard temperature
+> -4. Readings from the T_Sensor header
+> -5. VRM temperature
+> -6. CPU_Opt fan RPM
+> -7. Chipset fan RPM
+> -8. Readings from the "Water flow meter" header (RPM)
+> -9. Readings from the "Water In" and "Water Out" temperature headers
+> -10. CPU current
 >=20
 
-Reviewed-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 
 =2D-=20
 Oleksandr Natalenko (post-factum)
