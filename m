@@ -2,120 +2,208 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1DED49AAA6
-	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 05:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4224E49ACA8
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 07:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1326872AbiAYDnW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Jan 2022 22:43:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36454 "EHLO
+        id S1359686AbiAYGtb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 25 Jan 2022 01:49:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S3420425AbiAYCYS (ORCPT
+        with ESMTP id S1358766AbiAYGqY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Jan 2022 21:24:18 -0500
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D94C067A7C;
-        Mon, 24 Jan 2022 18:03:58 -0800 (PST)
-Received: by mail-oi1-x229.google.com with SMTP id s185so11715860oie.3;
-        Mon, 24 Jan 2022 18:03:58 -0800 (PST)
+        Tue, 25 Jan 2022 01:46:24 -0500
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0536FC061768;
+        Mon, 24 Jan 2022 21:08:08 -0800 (PST)
+Received: by mail-oi1-x22c.google.com with SMTP id m9so14566685oia.12;
+        Mon, 24 Jan 2022 21:08:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=sender:date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=4d+4TLddh1iILo0iPjAzyUaE64ZZAAUgPh4mjdb7zyo=;
-        b=Lc6oqAUSjft7lGStVs9/NSozsAJW50sCPctsh1WZEziI2d7idluVCBhxfWMtC4L+Xf
-         tJs6hIdkf0JYxQns/LWb5BY0wbYYlW0mKkO5jTLB5Ws0bkdVsFvHP7loaqNJ4UImpAiP
-         Wx2c+a7Lz5/KzDYHNuZYG3k3QZI4isAMvit2ZHbIJQPtc80o/3orwfySWrp2s5gwsHxF
-         b2TR/BLTP3VB6A4t95aAv4T4tWQIK1a2bKqPBRqt6akvXFT80rHAODYKpqOp/XxX/6pf
-         sOKzAV3aXcAZH/u6yTpvRxn+Qc4SbMhcK6NzBgEs16ukXtuaCPJIsQ06oak1Ldgieo6/
-         kIkw==
+        bh=3zHucago0KMMDuM1xTqy4nCKeA990ZoKYszzwxXx8QU=;
+        b=e1AGsOImoW62Z6UyZe7p2l6YPlcnvx6g/nIuSQSdi/XYa3TTV+nY9W8z6DADAP0JVE
+         VUh6Qq0HcNfWX387y7iSi1K1bt1elTu6fULQQ9W9po5JsADOF51n7OaMHkZ4wYrqL1HB
+         vaFkSwj+c/gYsX5Ju89hozmvgd0B9QBFlj4gRxmMXqHdutwMkdtN3PinQdRDce2XhnXj
+         qfdA2G363UFjEuhDdlkEJyL6cXpiIAizkpaszUN9b6D2ayq05TdGovMhlYkNo/Gdrvsu
+         aBkOjeVvg2cHdyGC01/Wh75K+D5x0rn5HQ3WDPlg8fgyXv+CFGtKZDaZYv9c0l2ymY4R
+         KPNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
          :references:mime-version:content-disposition:in-reply-to;
-        bh=4d+4TLddh1iILo0iPjAzyUaE64ZZAAUgPh4mjdb7zyo=;
-        b=FifHe7NuResyxzRfa0v/LGdH61a3n7A0FbR+LuUy8jLUD64JP96Cfcv9on84+jSVGc
-         jc0peTPbQEK657GBcQ7e7NGFsBpSHZ77DfLKejd3XsmePuk2x1nktWpxO0Bo3relHbkL
-         pkRE9/D9HbEwa82vZFnelubOHdSovLt5ZDGUh9oD4XHlojNJbYE7jBuEVPt0RcwVTGLm
-         YqMtiZCf9u8Y+FhTWXW+2O6HEmEEAxJCVQXpFDCrlY6Qu336F1koKUNCIYPdLCUPd6gX
-         1B+MYTV3hr5eFJ/C/HfMKQo1kfYBYWy2i2SVCrl7Ms3l6FchauAmGT6LCoXZ/VRsSoNj
-         R0Jw==
-X-Gm-Message-State: AOAM530hP6fWNdQiYTqmwreVqPtJ6YDcSAg+d2ENmmn8gx4FffoCZq2b
-        +MNHJCF2Maqzoc8ns0UrzeledMCXOBU=
-X-Google-Smtp-Source: ABdhPJxdUJEVns1KUuKUlAhBTewdl4UDYa5y5d4AWRYG9z57CPRk+j1G9ysAd0X250DH74alCBHGcg==
-X-Received: by 2002:aca:eb88:: with SMTP id j130mr3721074oih.75.1643076238238;
-        Mon, 24 Jan 2022 18:03:58 -0800 (PST)
+        bh=3zHucago0KMMDuM1xTqy4nCKeA990ZoKYszzwxXx8QU=;
+        b=4M21OsoPHiqqjQl11zGZbu9FbdoIQPjlfyRW0kIfFGnAO1lIcs4OycRg8XLcup/cVw
+         HweFMCAucY0dUrBkV0mGbxUPZb7J3GKjNoDTWSSHUXxv46GahNtITbVyl15EFBXt9Gn1
+         IpFuR3WyNrKf+HFWfN1Y7R709sgxkdmUGKm3GPO9quSk4jEq1IOcRr88kHzLGNDzCeoo
+         IJEDKrzdIbO9DMxwrxOYxKf1rzBslhQLzhTqAcerut5CwhuY7hlenXkaqJj8jatuwITG
+         v/qdIAHlohnOZPBRjtBLkznUHLQZHKTpV40fXjA8j8oYTohj+FMYFafmfnmLx0aLDBYl
+         +axg==
+X-Gm-Message-State: AOAM531GhaMpYym8OvVfby6k8/nJhdYDvMgR+IumpjsAjBAVDrhfmSdS
+        SaIDKEa3wAX++edxHwrZh/7EOjLXVek=
+X-Google-Smtp-Source: ABdhPJzQBU266dsrRyi7Zm+emdQWA7jSFil+VBcZsUvevT+3WEtUHcKDluHwBW7H6Yl46X0oah0TWQ==
+X-Received: by 2002:a05:6808:1a23:: with SMTP id bk35mr4282567oib.52.1643087287369;
+        Mon, 24 Jan 2022 21:08:07 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j4sm737292oon.8.2022.01.24.18.03.56
+        by smtp.gmail.com with ESMTPSA id k11sm2137125otb.68.2022.01.24.21.08.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jan 2022 18:03:57 -0800 (PST)
+        Mon, 24 Jan 2022 21:08:06 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 24 Jan 2022 18:03:55 -0800
+Date:   Mon, 24 Jan 2022 21:08:04 -0800
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     Luiz Sampaio <sampaio.ime@gmail.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH 03/31] hwmon: pmbus: changing LED_* from enum
- led_brightness to actual value
-Message-ID: <20220125020355.GA355320@roeck-us.net>
-References: <20220121165436.30956-1-sampaio.ime@gmail.com>
- <20220121165436.30956-4-sampaio.ime@gmail.com>
+To:     Marcello Sylvester Bauer <sylv@sylv.io>
+Cc:     linux-hwmon@vger.kernel.org,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Roland Stigge <stigge@antcom.de>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] dt-bindings: hwmon: Add binding for max6639
+Message-ID: <20220125050804.GA361944@roeck-us.net>
+References: <cover.1642585539.git.sylv@sylv.io>
+ <24e812dc80983ce20cd51a446c4f6d4a1db7da37.1642585539.git.sylv@sylv.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220121165436.30956-4-sampaio.ime@gmail.com>
+In-Reply-To: <24e812dc80983ce20cd51a446c4f6d4a1db7da37.1642585539.git.sylv@sylv.io>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, Jan 21, 2022 at 01:54:08PM -0300, Luiz Sampaio wrote:
-> The enum led_brightness, which contains the declaration of LED_OFF,
-> LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
-> max_brightness.
-
-There is no Signed-off-by:, so this is not not a valid/acceptable patch.
-
-> ---
->  drivers/hwmon/pmbus/ibm-cffps.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+On Wed, Jan 19, 2022 at 10:53:54AM +0100, Marcello Sylvester Bauer wrote:
+> Add Devicetree binding documentation for Maxim MAX6639 temperature
+> monitor with PWM fan-speed controller.
 > 
-> diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
-> index e3294a1a54bb..cc20a70c723b 100644
-> --- a/drivers/hwmon/pmbus/ibm-cffps.c
-> +++ b/drivers/hwmon/pmbus/ibm-cffps.c
-> @@ -382,10 +382,10 @@ static int ibm_cffps_led_brightness_set(struct led_classdev *led_cdev,
->  	u8 next_led_state;
->  	struct ibm_cffps *psu = container_of(led_cdev, struct ibm_cffps, led);
->  
-> -	if (brightness == LED_OFF) {
-> +	if (brightness == 0) {
->  		next_led_state = CFFPS_LED_OFF;
->  	} else {
-> -		brightness = LED_FULL;
-> +		brightness = 255;
+> The devicetree documentation for the SD3078 device tree.
+> 
+> Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
+> ---
+>  .../bindings/hwmon/maxim,max6639.yaml         | 112 ++++++++++++++++++
+>  1 file changed, 112 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+> new file mode 100644
+> index 000000000000..7093cbeba44b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+> @@ -0,0 +1,112 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +
+> +$id: http://devicetree.org/schemas/hwmon/maxim,max6639.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Maxim max6639
+> +
+> +maintainers:
+> +  - Roland Stigge <stigge@antcom.de>
+> +
+> +description: |
+> +  The MAX6639 is a 2-channel temperature monitor with dual, automatic, PWM
+> +  fan-speed controller.  It monitors its own temperature and one external
+> +  diode-connected transistor or the temperatures of two external diode-connected
+> +  transistors, typically available in CPUs, FPGAs, or GPUs.
+> +
+> +  Datasheets:
+> +    https://datasheets.maximintegrated.com/en/ds/MAX6639-MAX6639F.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - maxim,max6639
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "channel@0"
+> +  - "channel@1"
+> +
+> +additionalProperties: false
+> +
+> +patternProperties:
+> +  "^channel@[0-1]$":
+> +    type: object
+> +    description: |
+> +      Represents the two fans and their specific configuration.
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The fan number.
+> +        items:
+> +          minimum: 0
+> +          maximum: 1
+> +
+> +      pwm-polarity:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        enum: [0, 1]
+> +        description:
+> +          PWM output is low at 100% duty cycle when this bit is set to zero. PWM
+> +          output is high at 100% duty cycle when this bit is set to 1.
+> +
+> +      pulses-per-revolution:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        enum: [1, 2, 3, 4]
+> +        description:
+> +          Value specifying the number of pulses per revolution of the controlled
+> +          FAN.
+> +
 
-If the LED subsystem no longer likes defines, we should have local constants
-instead and not just use magic numbers. At the same time, this LED only supports
-two states, off or on. There will have to be an explanation why the full range of
-0..255 is still used and not just 0/1.
+I think the above two properties should be optional.
+pulses-per-revolution is 2 for almost all fans out there,
+and pwm polarity is positive almost all the time.
 
->  
->  		if (psu->led_state != CFFPS_LED_BLINK)
->  			next_led_state = CFFPS_LED_ON;
-> @@ -426,7 +426,7 @@ static int ibm_cffps_led_blink_set(struct led_classdev *led_cdev,
->  		return rc;
->  
->  	psu->led_state = CFFPS_LED_BLINK;
-> -	led_cdev->brightness = LED_FULL;
-> +	led_cdev->brightness = 255;
->  	*delay_on = CFFPS_BLINK_RATE_MS;
->  	*delay_off = CFFPS_BLINK_RATE_MS;
->  
-> @@ -442,7 +442,7 @@ static void ibm_cffps_create_led_class(struct ibm_cffps *psu)
->  	snprintf(psu->led_name, sizeof(psu->led_name), "%s-%02x", client->name,
->  		 client->addr);
->  	psu->led.name = psu->led_name;
-> -	psu->led.max_brightness = LED_FULL;
-> +	psu->led.max_brightness = 255;
->  	psu->led.brightness_set_blocking = ibm_cffps_led_brightness_set;
->  	psu->led.blink_set = ibm_cffps_led_blink_set;
->  
+> +      rpm-range:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        enum: [2000, 4000, 8000, 16000]
+> +        description:
+> +          Scales the tachometer counter by setting the maximum (full-scale) value
+> +          of the RPM range.
+> +
+Isn't this the maximum rpm ? Using the term "range" seems to be
+a bit misleading.
+
+> +    required:
+> +      - reg
+> +      - pwm-polarity
+> +      - pulses-per-revolution
+> +      - rpm-range
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      max6639@10 {
+> +        compatible = "maxim,max6639";
+> +        reg = <0x10>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        channel@0 {
+> +          reg = <0x0>;
+> +          pwm-polarity = <1>;
+> +          pulses-per-revolution = <2>;
+> +          rpm-range = <4000>;
+> +        };
+> +
+> +        channel@1 {
+> +          reg = <0x1>;
+> +          pwm-polarity = <1>;
+> +          pulses-per-revolution = <2>;
+> +          rpm-range = <4000>;
+> +        };
+> +      };
+> +    };
+> +...
