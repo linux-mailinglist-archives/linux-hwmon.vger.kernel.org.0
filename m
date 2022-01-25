@@ -2,190 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12EFC49AA96
-	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 05:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1DED49AAA6
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Jan 2022 05:40:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385301AbiAYDmg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Jan 2022 22:42:36 -0500
-Received: from mga09.intel.com ([134.134.136.24]:16189 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S3415309AbiAYBkN (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Jan 2022 20:40:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643074813; x=1674610813;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=o9Was9ki72grzMbUkZV5f169uo+CSki1buMNORj9WMM=;
-  b=Iosa+Kgzx0kFeJdFxfW8uK+QuingCN9G16mSMlvGKUnkajpDY+ZElQpS
-   GTLjyzf4S5hvYD4cSO61srK1b0FrNqu3BDAaUDMupzWlpuYoMHVEXbOia
-   nnlsgbCruCX2nJUzB7bm7Qasxv1DGZWmIX9YBlfbHfSon/K09AJzSwejS
-   ysFkjlUFDioS/zkmbfzDws7egrHObwjgmSNosgBTtLcC1VM2R+EySeihZ
-   86xsrGEVqNOrhtws6CHxSPOKdN8dxKe+/jdfYl62Yy3KoGD8KtcJaSctp
-   JMpgRlzhx81IeUnGsYgkzUqgJy2zVSqHG0jwV7+hHPzpUhQEeTAP4sdpH
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10237"; a="245971866"
-X-IronPort-AV: E=Sophos;i="5.88,313,1635231600"; 
-   d="scan'208";a="245971866"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2022 17:17:58 -0800
-X-IronPort-AV: E=Sophos;i="5.88,313,1635231600"; 
-   d="scan'208";a="695635197"
-Received: from kerguder-mobl.ger.corp.intel.com (HELO localhost) ([10.249.158.133])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2022 17:17:44 -0800
-From:   Iwona Winiarska <iwona.winiarska@intel.com>
-To:     linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Borislav Petkov <bp@alien8.de>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Zev Weiss <zweiss@equinix.com>,
-        David Muller <d.mueller@elsoft.ch>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Iwona Winiarska <iwona.winiarska@intel.com>
-Subject: [PATCH v6 13/13] docs: Add PECI documentation
-Date:   Tue, 25 Jan 2022 02:11:04 +0100
-Message-Id: <20220125011104.2480133-14-iwona.winiarska@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220125011104.2480133-1-iwona.winiarska@intel.com>
-References: <20220125011104.2480133-1-iwona.winiarska@intel.com>
+        id S1326872AbiAYDnW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 24 Jan 2022 22:43:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36454 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S3420425AbiAYCYS (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Mon, 24 Jan 2022 21:24:18 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D94C067A7C;
+        Mon, 24 Jan 2022 18:03:58 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id s185so11715860oie.3;
+        Mon, 24 Jan 2022 18:03:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=4d+4TLddh1iILo0iPjAzyUaE64ZZAAUgPh4mjdb7zyo=;
+        b=Lc6oqAUSjft7lGStVs9/NSozsAJW50sCPctsh1WZEziI2d7idluVCBhxfWMtC4L+Xf
+         tJs6hIdkf0JYxQns/LWb5BY0wbYYlW0mKkO5jTLB5Ws0bkdVsFvHP7loaqNJ4UImpAiP
+         Wx2c+a7Lz5/KzDYHNuZYG3k3QZI4isAMvit2ZHbIJQPtc80o/3orwfySWrp2s5gwsHxF
+         b2TR/BLTP3VB6A4t95aAv4T4tWQIK1a2bKqPBRqt6akvXFT80rHAODYKpqOp/XxX/6pf
+         sOKzAV3aXcAZH/u6yTpvRxn+Qc4SbMhcK6NzBgEs16ukXtuaCPJIsQ06oak1Ldgieo6/
+         kIkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=4d+4TLddh1iILo0iPjAzyUaE64ZZAAUgPh4mjdb7zyo=;
+        b=FifHe7NuResyxzRfa0v/LGdH61a3n7A0FbR+LuUy8jLUD64JP96Cfcv9on84+jSVGc
+         jc0peTPbQEK657GBcQ7e7NGFsBpSHZ77DfLKejd3XsmePuk2x1nktWpxO0Bo3relHbkL
+         pkRE9/D9HbEwa82vZFnelubOHdSovLt5ZDGUh9oD4XHlojNJbYE7jBuEVPt0RcwVTGLm
+         YqMtiZCf9u8Y+FhTWXW+2O6HEmEEAxJCVQXpFDCrlY6Qu336F1koKUNCIYPdLCUPd6gX
+         1B+MYTV3hr5eFJ/C/HfMKQo1kfYBYWy2i2SVCrl7Ms3l6FchauAmGT6LCoXZ/VRsSoNj
+         R0Jw==
+X-Gm-Message-State: AOAM530hP6fWNdQiYTqmwreVqPtJ6YDcSAg+d2ENmmn8gx4FffoCZq2b
+        +MNHJCF2Maqzoc8ns0UrzeledMCXOBU=
+X-Google-Smtp-Source: ABdhPJxdUJEVns1KUuKUlAhBTewdl4UDYa5y5d4AWRYG9z57CPRk+j1G9ysAd0X250DH74alCBHGcg==
+X-Received: by 2002:aca:eb88:: with SMTP id j130mr3721074oih.75.1643076238238;
+        Mon, 24 Jan 2022 18:03:58 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id j4sm737292oon.8.2022.01.24.18.03.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jan 2022 18:03:57 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 24 Jan 2022 18:03:55 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Luiz Sampaio <sampaio.ime@gmail.com>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH 03/31] hwmon: pmbus: changing LED_* from enum
+ led_brightness to actual value
+Message-ID: <20220125020355.GA355320@roeck-us.net>
+References: <20220121165436.30956-1-sampaio.ime@gmail.com>
+ <20220121165436.30956-4-sampaio.ime@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220121165436.30956-4-sampaio.ime@gmail.com>
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add a brief overview of PECI and PECI wire interface.
-The documentation also contains kernel-doc for PECI subsystem internals
-and PECI CPU Driver API.
+On Fri, Jan 21, 2022 at 01:54:08PM -0300, Luiz Sampaio wrote:
+> The enum led_brightness, which contains the declaration of LED_OFF,
+> LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
+> max_brightness.
 
-Signed-off-by: Iwona Winiarska <iwona.winiarska@intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
----
- Documentation/index.rst      |  1 +
- Documentation/peci/index.rst | 16 +++++++++++
- Documentation/peci/peci.rst  | 51 ++++++++++++++++++++++++++++++++++++
- MAINTAINERS                  |  1 +
- 4 files changed, 69 insertions(+)
- create mode 100644 Documentation/peci/index.rst
- create mode 100644 Documentation/peci/peci.rst
+There is no Signed-off-by:, so this is not not a valid/acceptable patch.
 
-diff --git a/Documentation/index.rst b/Documentation/index.rst
-index 2b4de3926858..deaa7f669fcd 100644
---- a/Documentation/index.rst
-+++ b/Documentation/index.rst
-@@ -138,6 +138,7 @@ needed).
-    scheduler/index
-    mhi/index
-    tty/index
-+   peci/index
- 
- Architecture-agnostic documentation
- -----------------------------------
-diff --git a/Documentation/peci/index.rst b/Documentation/peci/index.rst
-new file mode 100644
-index 000000000000..989de10416e7
---- /dev/null
-+++ b/Documentation/peci/index.rst
-@@ -0,0 +1,16 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+====================
-+Linux PECI Subsystem
-+====================
-+
-+.. toctree::
-+
-+   peci
-+
-+.. only::  subproject and html
-+
-+   Indices
-+   =======
-+
-+   * :ref:`genindex`
-diff --git a/Documentation/peci/peci.rst b/Documentation/peci/peci.rst
-new file mode 100644
-index 000000000000..331b1ec00e22
---- /dev/null
-+++ b/Documentation/peci/peci.rst
-@@ -0,0 +1,51 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+========
-+Overview
-+========
-+
-+The Platform Environment Control Interface (PECI) is a communication
-+interface between Intel processor and management controllers
-+(e.g. Baseboard Management Controller, BMC).
-+PECI provides services that allow the management controller to
-+configure, monitor and debug platform by accessing various registers.
-+It defines a dedicated command protocol, where the management
-+controller is acting as a PECI originator and the processor - as
-+a PECI responder.
-+PECI can be used in both single processor and multiple-processor based
-+systems.
-+
-+NOTE:
-+Intel PECI specification is not released as a dedicated document,
-+instead it is a part of External Design Specification (EDS) for given
-+Intel CPU. External Design Specifications are usually not publicly
-+available.
-+
-+PECI Wire
-+---------
-+
-+PECI Wire interface uses a single wire for self-clocking and data
-+transfer. It does not require any additional control lines - the
-+physical layer is a self-clocked one-wire bus signal that begins each
-+bit with a driven, rising edge from an idle near zero volts. The
-+duration of the signal driven high allows to determine whether the bit
-+value is logic '0' or logic '1'. PECI Wire also includes variable data
-+rate established with every message.
-+
-+For PECI Wire, each processor package will utilize unique, fixed
-+addresses within a defined range and that address should
-+have a fixed relationship with the processor socket ID - if one of the
-+processors is removed, it does not affect addresses of remaining
-+processors.
-+
-+PECI subsystem internals
-+------------------------
-+
-+.. kernel-doc:: include/linux/peci.h
-+.. kernel-doc:: drivers/peci/internal.h
-+.. kernel-doc:: drivers/peci/core.c
-+.. kernel-doc:: drivers/peci/request.c
-+
-+PECI CPU Driver API
-+-------------------
-+.. kernel-doc:: drivers/peci/cpu.c
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d821aeaaa2d3..06449cc42a10 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15112,6 +15112,7 @@ M:	Iwona Winiarska <iwona.winiarska@intel.com>
- L:	openbmc@lists.ozlabs.org (moderated for non-subscribers)
- S:	Supported
- F:	Documentation/devicetree/bindings/peci/
-+F:	Documentation/peci/
- F:	drivers/peci/
- F:	include/linux/peci-cpu.h
- F:	include/linux/peci.h
--- 
-2.31.1
+> ---
+>  drivers/hwmon/pmbus/ibm-cffps.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
+> index e3294a1a54bb..cc20a70c723b 100644
+> --- a/drivers/hwmon/pmbus/ibm-cffps.c
+> +++ b/drivers/hwmon/pmbus/ibm-cffps.c
+> @@ -382,10 +382,10 @@ static int ibm_cffps_led_brightness_set(struct led_classdev *led_cdev,
+>  	u8 next_led_state;
+>  	struct ibm_cffps *psu = container_of(led_cdev, struct ibm_cffps, led);
+>  
+> -	if (brightness == LED_OFF) {
+> +	if (brightness == 0) {
+>  		next_led_state = CFFPS_LED_OFF;
+>  	} else {
+> -		brightness = LED_FULL;
+> +		brightness = 255;
 
+If the LED subsystem no longer likes defines, we should have local constants
+instead and not just use magic numbers. At the same time, this LED only supports
+two states, off or on. There will have to be an explanation why the full range of
+0..255 is still used and not just 0/1.
+
+>  
+>  		if (psu->led_state != CFFPS_LED_BLINK)
+>  			next_led_state = CFFPS_LED_ON;
+> @@ -426,7 +426,7 @@ static int ibm_cffps_led_blink_set(struct led_classdev *led_cdev,
+>  		return rc;
+>  
+>  	psu->led_state = CFFPS_LED_BLINK;
+> -	led_cdev->brightness = LED_FULL;
+> +	led_cdev->brightness = 255;
+>  	*delay_on = CFFPS_BLINK_RATE_MS;
+>  	*delay_off = CFFPS_BLINK_RATE_MS;
+>  
+> @@ -442,7 +442,7 @@ static void ibm_cffps_create_led_class(struct ibm_cffps *psu)
+>  	snprintf(psu->led_name, sizeof(psu->led_name), "%s-%02x", client->name,
+>  		 client->addr);
+>  	psu->led.name = psu->led_name;
+> -	psu->led.max_brightness = LED_FULL;
+> +	psu->led.max_brightness = 255;
+>  	psu->led.brightness_set_blocking = ibm_cffps_led_brightness_set;
+>  	psu->led.blink_set = ibm_cffps_led_blink_set;
+>  
