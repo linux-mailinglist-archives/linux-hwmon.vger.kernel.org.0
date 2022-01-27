@@ -2,84 +2,76 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C7E949E73B
+	by mail.lfdr.de (Postfix) with ESMTP id 2295E49E739
 	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Jan 2022 17:17:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238004AbiA0QRq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        id S238147AbiA0QRq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
         Thu, 27 Jan 2022 11:17:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46830 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243566AbiA0QRo (ORCPT
+        with ESMTP id S238263AbiA0QRo (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Thu, 27 Jan 2022 11:17:44 -0500
 Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [IPv6:2001:67c:2050:1::465:209])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BBDC061748
-        for <linux-hwmon@vger.kernel.org>; Thu, 27 Jan 2022 08:17:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5666CC06173B;
+        Thu, 27 Jan 2022 08:17:44 -0800 (PST)
 Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:105:465:1:4:0])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4Jl5N45sXtz9sR8;
-        Thu, 27 Jan 2022 17:17:40 +0100 (CET)
+        by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4Jl5N653FVz9sS0;
+        Thu, 27 Jan 2022 17:17:42 +0100 (CET)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
-        t=1643300259;
+        t=1643300260;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=q6iXyVSrMGBtTfdlahBC92ITnlbOSSzzZPISPHpxkR0=;
-        b=uRg5pynHjgcfJHGtg8LrIUBGP+hjxHkgWIQaMWJdTGI3S/DAR1O8eg4bA2QIGWb+DudfY4
-        hIHKGOh9U99nDwS6rqhvvvrdk3tPM+8RIL3fgD6Bfo55CWW/jsjs33FfKPfeB2EsquZ4Kt
-        WmTu8RTD0bmx4qWvSWxhbfFhba6cWYXAkL3dEa77l/FwegttmXpJ4l7UXE3QGIM9wtlTaQ
-        LQ4TZP6zPv5RwyCi6Czl6hOplaYeT/JbPp/OAm85J64tOCOIzPLnU+5SYTLn26NTonY6D8
-        sk4nxJOo3Ux/2EvKEITm365O0zVPrxWhKUSI+lxqwce3vCwbwCTAvvhJyaQGrQ==
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=E5BL/WaisGFQOBCSiBa0uR1Z51LZ35nUt4xgeawRYiE=;
+        b=iAOdOxFMrTDDiqG2559j7AWRZ70Dhd+bymQnLv3YgW/RcrZiK5poJ2Q4vn+xVXrvd7nz3/
+        G1jRXExSoypg8yBmeYdybZE+sbTjvOv7ai7SA5GsLF86V452xG698blvpLSkbXGxE27VWI
+        GiORja+A78MBqbLdScajbiUbn7MunjQRo4bmybX+wEjZH0imbiUlTSS8EpWTSy2zIgrOgm
+        3J4Dd+YnIx86a/FTYpdslMjoOCp6mnEuLzFnwMj0yLujOIUaCcIKSxBSfgWWit2cVYnqvv
+        Mzcsw55T6Pd6GtsWlKE/hv3lNeYodjTkvl+5hzbzuB63xMZIEO3JJ4i5435KIQ==
 From:   Marcello Sylvester Bauer <sylv@sylv.io>
 To:     linux-hwmon@vger.kernel.org
 Cc:     Marcello Sylvester Bauer <sylv@sylv.io>,
         Patrick Rudolph <patrick.rudolph@9elements.com>,
         Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v4 0/4] Add max6639 regulator and devicetree support
-Date:   Thu, 27 Jan 2022 17:17:26 +0100
-Message-Id: <cover.1643299570.git.sylv@sylv.io>
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: [PATCH v4 1/4] hwmon: (max6639) Update Datasheet URL
+Date:   Thu, 27 Jan 2022 17:17:27 +0100
+Message-Id: <76025f40d2684dc0d3ec02c8899b726b07a0e7da.1643299570.git.sylv@sylv.io>
+In-Reply-To: <cover.1643299570.git.sylv@sylv.io>
+References: <cover.1643299570.git.sylv@sylv.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-these patches add devicetree support for the Maxim MAX6639.
-In addition, it includes optional regulator support for the fan-supply and
-updates the URL to the datasheet.
+The old Datasheet does not exist anymore.
 
-Changes in v4:
-- dt: rename rpm-range property to rpm-max
-- dt: make rpm-max, pulses-per-revolution, and pwm-polarity optional
+Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
+---
+ Documentation/hwmon/max6639.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v3:
-- Remove warning if devm_regulator_get_optional returns an error.
-
-Changes in v2:
-- dt: Rename polarity to pwm-polarity.
-- Remove unused platform_data header.
-- Remove regulator enable/disable calls in pwm_store due to imbalance of
-  calls.
-- Move to strict per channel dt configuration without defaults.
-
-Marcello Sylvester Bauer (4):
-  hwmon: (max6639) Update Datasheet URL
-  hwmon: (max6639) Add regulator support
-  dt-bindings: hwmon: Add binding for max6639
-  hwmon: (max6639) Change from pdata to dt configuration
-
- .../bindings/hwmon/maxim,max6639.yaml         | 112 +++++++++
- Documentation/hwmon/max6639.rst               |   2 +-
- drivers/hwmon/max6639.c                       | 224 ++++++++++++++----
- include/linux/platform_data/max6639.h         |  15 --
- 4 files changed, 286 insertions(+), 67 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
- delete mode 100644 include/linux/platform_data/max6639.h
-
+diff --git a/Documentation/hwmon/max6639.rst b/Documentation/hwmon/max6639.rst
+index 3da54225f83c..c85d285a3489 100644
+--- a/Documentation/hwmon/max6639.rst
++++ b/Documentation/hwmon/max6639.rst
+@@ -9,7 +9,7 @@ Supported chips:
+ 
+     Addresses scanned: I2C 0x2c, 0x2e, 0x2f
+ 
+-    Datasheet: http://pdfserv.maxim-ic.com/en/ds/MAX6639.pdf
++    Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX6639-MAX6639F.pdf
+ 
+ Authors:
+     - He Changqing <hechangqing@semptian.com>
 -- 
 2.34.1
 
