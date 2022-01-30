@@ -2,67 +2,93 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA4D4A33C9
-	for <lists+linux-hwmon@lfdr.de>; Sun, 30 Jan 2022 05:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B67E84A344F
+	for <lists+linux-hwmon@lfdr.de>; Sun, 30 Jan 2022 06:34:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354183AbiA3E2b (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 29 Jan 2022 23:28:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354175AbiA3E21 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 29 Jan 2022 23:28:27 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB6DC06175E
-        for <linux-hwmon@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id c6so30490779ybk.3
-        for <linux-hwmon@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=QI2firgHOSt+2ZiRAEUqBnRqfCndbuygIyUz1kdYlPzS6AXkdk+mfMubksdM+6U8hJ
-         A4UbXdfo0bhasYFmsw5ceBBj4ub2bgaEqkI+Cp5foQd/M11l9HiEax3hX9+hB29fNDF1
-         4XtAbOKK0Jrn48roHo8mUNvKaz7FG0Csy4DWdnw8Q+/oXs7GbWFZBjN+ifwhy6Rfe8k0
-         Pzhs5uXUX+5v6iQyGpPCJWV84GisQUz+5cfOraMc3PalgV6vYI9t2Z4JMkhIMshepKV2
-         BM+Zj3o1QTUTRt1Kxwo+5vz+cvvR7n44irHUjPq0LbDCW52O0lwQK7qPtMHxw7vn0Id9
-         5U2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=uU9V3zuFX5xp+h0mcCeLoR2aXUuOsThlqPgMi8yS+z4CmhXrkjsdr7XGt1AuU2gFOS
-         uc9VR8wULae2IusF8BEjZdym68Gn7q01PGmHZQoNOxC8JXgmCCGwaxKkGaoJ9vzG4q/K
-         mJLVCyOLN2gDsc2V93xZQMyv4KAxXo22Xz/YaKkrHyNONEdRhrCAjljnwfSy/DGpOtLa
-         7VctaA+8YnseWIcJtq3iiW1cdFIHiMzePRnEDGyNCwF/oWGpO+FU1EiQXW956yOeEJT/
-         a3QvYm/+PEty56nbEC+pcx2HO4MrE6lmiVPkYU0zuftBhwWgQ3Szcvmwe6E6cCZJswJD
-         JmUg==
-X-Gm-Message-State: AOAM533jfoV1k3eLXrgX95KYTc/PR0WBcrk1py3NYLlWpHDb66SqHSMG
-        6dANOOQEYvu6enR+3cNM9C8rxT9Ugz5X/aVaP+17Bd4aXMI=
-X-Google-Smtp-Source: ABdhPJz3bgso8viJFkNwiW8XigzdjL6JZBPDE3NfxKOCgEqvWjdU/qagorQKM5joSRLXylFmq9/zlHP85rUYuZ5fTGQ=
-X-Received: by 2002:a25:6d45:: with SMTP id i66mr23246397ybc.352.1643516893721;
- Sat, 29 Jan 2022 20:28:13 -0800 (PST)
+        id S235695AbiA3FeW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 30 Jan 2022 00:34:22 -0500
+Received: from mga05.intel.com ([192.55.52.43]:44438 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240678AbiA3FeW (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 30 Jan 2022 00:34:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643520862; x=1675056862;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=aduGOJcXsxcxdxjpVqpSmhbJxwuYDU745GkOwzVMwE8=;
+  b=aMbpkvJNYByF0GHXuvmUJAgbeNzMHbjNnmd4JuLVyWjYuqASAiLQMzlf
+   G9DeuM/K41gaieP4Mo7ZEJtGmxUhUCNYAf4+TZymgKt3o0uiP1hum+hEH
+   ppoK15gdKaLZHNTG2mywItJtqRk7srpCUpAWZIpYk18zVMNTDn7vk2p8q
+   TlTqQrQH1DPi/h2YgwFtiVVOqWUt6D2eCNxxloUeLGtn3xTWGKwSHQRBb
+   SMlO4ZP+mpkZt/PiORV5DD6UkX+7CVUPPY2n29wQC2qlaIsBaJK+7d60q
+   fTNqw8JMzE6tPQBstw06Q5UcWClQjogpIs3rOKIK20z0J0li57HdCLeBM
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10242"; a="333676182"
+X-IronPort-AV: E=Sophos;i="5.88,328,1635231600"; 
+   d="scan'208";a="333676182"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2022 21:34:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,328,1635231600"; 
+   d="scan'208";a="533890477"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 29 Jan 2022 21:34:20 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nE2qy-000Q6E-2p; Sun, 30 Jan 2022 05:34:20 +0000
+Date:   Sun, 30 Jan 2022 13:33:26 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-hwmon@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [groeck-staging:watchdog-next 1/4]
+ drivers/watchdog/max77620_wdt.c:18:10: fatal error: 'linux/mfd/max77714.h'
+ file not found
+Message-ID: <202201301330.qrjqfMhi-lkp@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:2312:b0:201:cd76:102e with HTTP; Sat, 29 Jan 2022
- 20:28:13 -0800 (PST)
-Reply-To: mrs.bill.chantalone01@gmail.com
-From:   "Mrs.Bill.Chantal" <grassroot309@gmail.com>
-Date:   Sun, 30 Jan 2022 05:28:13 +0100
-Message-ID: <CAO3iUMDzg_ZovNWXtuQhU6sDXk7LsNwvNc2pOb7zvX7pPCdMAw@mail.gmail.com>
-Subject: Hello....
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-You have been compensated with the sum of 9.5 million dollars in this
-united nation the payment will be issue into atm visa  card and send
-to you from the santander bank we need your address and your
-Whatsapp number  + 1 6465853907  this my email.ID
-( mrs.bill.chantal.roland@gmail.com )  contact  me
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
+head:   c00ed93a33886a91023b17f2503d72de49303063
+commit: 4b35b464fe64f6dd5bf8d5df14090961fdf63a07 [1/4] watchdog: max77620: add support for the max77714 variant
+config: i386-randconfig-a002 (https://download.01.org/0day-ci/archive/20220130/202201301330.qrjqfMhi-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project f1c18acb07aa40f42b87b70462a6d1ab77a4825c)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git/commit/?id=4b35b464fe64f6dd5bf8d5df14090961fdf63a07
+        git remote add groeck-staging https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+        git fetch --no-tags groeck-staging watchdog-next
+        git checkout 4b35b464fe64f6dd5bf8d5df14090961fdf63a07
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/watchdog/
 
-Thanks my
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-mrs bill chantal
+All errors (new ones prefixed by >>):
+
+>> drivers/watchdog/max77620_wdt.c:18:10: fatal error: 'linux/mfd/max77714.h' file not found
+   #include <linux/mfd/max77714.h>
+            ^~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+
+
+vim +18 drivers/watchdog/max77620_wdt.c
+
+  > 18	#include <linux/mfd/max77714.h>
+    19	#include <linux/platform_device.h>
+    20	#include <linux/regmap.h>
+    21	#include <linux/slab.h>
+    22	#include <linux/watchdog.h>
+    23	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
