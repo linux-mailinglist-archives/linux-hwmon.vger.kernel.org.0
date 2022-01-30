@@ -2,93 +2,67 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41BC549FE88
-	for <lists+linux-hwmon@lfdr.de>; Fri, 28 Jan 2022 17:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DA4D4A33C9
+	for <lists+linux-hwmon@lfdr.de>; Sun, 30 Jan 2022 05:28:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245610AbiA1Q7s (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 28 Jan 2022 11:59:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49986 "EHLO
+        id S1354183AbiA3E2b (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 29 Jan 2022 23:28:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245576AbiA1Q7s (ORCPT
+        with ESMTP id S1354175AbiA3E21 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 28 Jan 2022 11:59:48 -0500
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD50C061714;
-        Fri, 28 Jan 2022 08:59:48 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: usama.anjum)
-        with ESMTPSA id 660761F46376
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1643389187;
-        bh=zsFOqNJXl1POjN770OSH/AQ4HY1FlkWlk167Y5ylJlI=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=LgxMYS1GnF1HKHlWvC7pamz/kp8UyaHru3kXZzji+FL/DZ06HizwWldfi/lB17xts
-         3yDjqhn/H5jxjTl3Rs+Kv6dn2ohhqI0y65vTA0rDy1HbUtY8UEYXi9dTJ0KnTPTtt4
-         kzwUQZBbbg1bwb7j1apphwPTQzJyg7TYQEjSioqC2NKGBS+Q7R/HjuJiVDySyRewJM
-         g/JdAPTaqDbXaTcl+krXqhlGrSThU/YYsnwHCTLzoqgffkswZmAVIjHFMPOFBI1Gvr
-         lxKSOf+PmopiNVbRiQYQrU5v4dFcraIEbSV5iJkVO5yefYHsyGVE/SsF810kafr0QD
-         tAwajJvnaBvPg==
-Message-ID: <d7686623-c5ab-ce2a-386c-f35ec167ca81@collabora.com>
-Date:   Fri, 28 Jan 2022 21:59:39 +0500
+        Sat, 29 Jan 2022 23:28:27 -0500
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB6DC06175E
+        for <linux-hwmon@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id c6so30490779ybk.3
+        for <linux-hwmon@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
+        b=QI2firgHOSt+2ZiRAEUqBnRqfCndbuygIyUz1kdYlPzS6AXkdk+mfMubksdM+6U8hJ
+         A4UbXdfo0bhasYFmsw5ceBBj4ub2bgaEqkI+Cp5foQd/M11l9HiEax3hX9+hB29fNDF1
+         4XtAbOKK0Jrn48roHo8mUNvKaz7FG0Csy4DWdnw8Q+/oXs7GbWFZBjN+ifwhy6Rfe8k0
+         Pzhs5uXUX+5v6iQyGpPCJWV84GisQUz+5cfOraMc3PalgV6vYI9t2Z4JMkhIMshepKV2
+         BM+Zj3o1QTUTRt1Kxwo+5vz+cvvR7n44irHUjPq0LbDCW52O0lwQK7qPtMHxw7vn0Id9
+         5U2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
+        b=uU9V3zuFX5xp+h0mcCeLoR2aXUuOsThlqPgMi8yS+z4CmhXrkjsdr7XGt1AuU2gFOS
+         uc9VR8wULae2IusF8BEjZdym68Gn7q01PGmHZQoNOxC8JXgmCCGwaxKkGaoJ9vzG4q/K
+         mJLVCyOLN2gDsc2V93xZQMyv4KAxXo22Xz/YaKkrHyNONEdRhrCAjljnwfSy/DGpOtLa
+         7VctaA+8YnseWIcJtq3iiW1cdFIHiMzePRnEDGyNCwF/oWGpO+FU1EiQXW956yOeEJT/
+         a3QvYm/+PEty56nbEC+pcx2HO4MrE6lmiVPkYU0zuftBhwWgQ3Szcvmwe6E6cCZJswJD
+         JmUg==
+X-Gm-Message-State: AOAM533jfoV1k3eLXrgX95KYTc/PR0WBcrk1py3NYLlWpHDb66SqHSMG
+        6dANOOQEYvu6enR+3cNM9C8rxT9Ugz5X/aVaP+17Bd4aXMI=
+X-Google-Smtp-Source: ABdhPJz3bgso8viJFkNwiW8XigzdjL6JZBPDE3NfxKOCgEqvWjdU/qagorQKM5joSRLXylFmq9/zlHP85rUYuZ5fTGQ=
+X-Received: by 2002:a25:6d45:: with SMTP id i66mr23246397ybc.352.1643516893721;
+ Sat, 29 Jan 2022 20:28:13 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Cc:     usama.anjum@collabora.com, kernel@collabora.com,
-        kernel-janitors@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: Remove checks for validity of dev
-Content-Language: en-US
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>
-References: <20220128125913.1291533-1-usama.anjum@collabora.com>
- <6c0335ca-eb16-b4de-1f2c-8bdc82219b57@roeck-us.net>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <6c0335ca-eb16-b4de-1f2c-8bdc82219b57@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:7010:2312:b0:201:cd76:102e with HTTP; Sat, 29 Jan 2022
+ 20:28:13 -0800 (PST)
+Reply-To: mrs.bill.chantalone01@gmail.com
+From:   "Mrs.Bill.Chantal" <grassroot309@gmail.com>
+Date:   Sun, 30 Jan 2022 05:28:13 +0100
+Message-ID: <CAO3iUMDzg_ZovNWXtuQhU6sDXk7LsNwvNc2pOb7zvX7pPCdMAw@mail.gmail.com>
+Subject: Hello....
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 1/28/22 8:05 PM, Guenter Roeck wrote:
-> On 1/28/22 04:59, Muhammad Usama Anjum wrote:
->> dev is being dereferenced in device_property_present() which means that
->> it is valid. Don't check its validity again and simplify the code.
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->> ---
->>   drivers/hwmon/hwmon.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
->> index e36ea82da1474..aec32abd0a89f 100644
->> --- a/drivers/hwmon/hwmon.c
->> +++ b/drivers/hwmon/hwmon.c
->> @@ -822,7 +822,7 @@ __hwmon_device_register(struct device *dev, const
->> char *name, void *drvdata,
->>       hwdev->name = name;
->>       hdev->class = &hwmon_class;
->>       hdev->parent = dev;
->> -    hdev->of_node = dev ? dev->of_node : NULL;
->> +    hdev->of_node = dev->of_node;
->>       hwdev->chip = chip;
->>       dev_set_drvdata(hdev, drvdata);
->>       dev_set_name(hdev, HWMON_ID_FORMAT, id);
->> @@ -834,7 +834,7 @@ __hwmon_device_register(struct device *dev, const
->> char *name, void *drvdata,
->>         INIT_LIST_HEAD(&hwdev->tzdata);
->>   -    if (dev && dev->of_node && chip && chip->ops->read &&
->> +    if (dev->of_node && chip && chip->ops->read &&
->>           chip->info[0]->type == hwmon_chip &&
->>           (chip->info[0]->config[0] & HWMON_C_REGISTER_TZ)) {
->>           err = hwmon_thermal_register_sensors(hdev);
-> 
-> Wrong fix, sorry. While I would love to make dev mandatory, the function
-> is called with dev == NULL from at least one place, and the check is
-> (still)
-> needed. Even if/when it is removed we would have to add an early check
-> and return -EINVAL if it is NULL.
-> 
-Thank you for the reply. I've looked at the code again. You are correct.
+You have been compensated with the sum of 9.5 million dollars in this
+united nation the payment will be issue into atm visa  card and send
+to you from the santander bank we need your address and your
+Whatsapp number  + 1 6465853907  this my email.ID
+( mrs.bill.chantal.roland@gmail.com )  contact  me
 
-> Guenter
+Thanks my
+
+mrs bill chantal
