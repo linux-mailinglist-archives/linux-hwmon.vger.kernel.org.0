@@ -2,78 +2,222 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4B44A5EE2
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Feb 2022 16:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 835BB4A5F7B
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Feb 2022 16:07:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239636AbiBAPDL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 1 Feb 2022 10:03:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239679AbiBAPDL (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Feb 2022 10:03:11 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8ACC061714
-        for <linux-hwmon@vger.kernel.org>; Tue,  1 Feb 2022 07:03:10 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id p27so34528767lfa.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 01 Feb 2022 07:03:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=qq9wIiVWHN2WAUtj0B7xD2yz2moOuwSz6aN0pUPieSs=;
-        b=LqrCnJbarsrh68n+HQT7VxIn43qZYJrQ3sdMPbtj2rDvZ/jsBHr/nYf2xx/MpSIjgF
-         O4xjdeqpOHwua0C1mkYt2RodizQfJrXCEsPm7V+1SBVbASfnpV7WIQw0WGI15kB7c+PX
-         IWZd/K9XQlNmk7BDmlwtOZDKz88AR6U/9pVn2ukiivjfVcgu66g2DwzNWuQ3+QDtCa6g
-         BosB9CyHSaxwxkp5Hjj4DOc5XDP7a8rLuNdsokA8O6krFwo7Dxt0iA635wDJeQUyjKi1
-         qfg4+sMhp3uaxaIc968Z+82/xGIbDsz/Zfo8MIhGg3ewxpcwPsizXvz4kaYExXymST1D
-         PWHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=qq9wIiVWHN2WAUtj0B7xD2yz2moOuwSz6aN0pUPieSs=;
-        b=RFXFgEJ392fsaoZM7VlacrDC2cCZPJjEK/3MgcM1stCWooWPcCknhuXWqP6g7td5VJ
-         2S0llj2Uasr3HVQ/roakvUIeT6m7j7gk+ByNeE1gYTWtMAPLQbB+tLagk9xc7AAxuqPV
-         13Bs4e4OetHUKNVF4z3ggY6FdQdpaNMapF3nJI13luyyqCObYtksJISozuz9nQXj8wDE
-         FQBh9HQBiuHK7BsHBOnJ/14Pu/3fIkCyftuNKCd7zOQS4GvZhxUG6J/XzRjQHvu2ILHa
-         BqwboLtCGwcvaVcRM9TImZqarro2XC41x2DvZithEoqSVmL7LmVqjva2gaCTurF8W7FC
-         v8NA==
-X-Gm-Message-State: AOAM530JAMgGM6uIk57IagMvEjnyH15XpFlof0OHVmeiC4S2Q+5W08p+
-        uzIIboHGp6PcqwtKlJTmWMSEhHcjEr2esrJrHhM=
-X-Google-Smtp-Source: ABdhPJyksZfzpyxLp+H/EaM+utOPjIbcqkrmVFRSheullF3aFATHO5VoZ8mqHkIqcsCirXU6BJIQz8sJoBX5ODehZUM=
-X-Received: by 2002:a05:6512:c07:: with SMTP id z7mr19275046lfu.527.1643727787621;
- Tue, 01 Feb 2022 07:03:07 -0800 (PST)
+        id S240114AbiBAPHx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 1 Feb 2022 10:07:53 -0500
+Received: from mga14.intel.com ([192.55.52.115]:29086 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240166AbiBAPHv (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 1 Feb 2022 10:07:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643728071; x=1675264071;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lSOCVo5/Z5Pudu20SKBaNstiid3wdcrr31OUsvyAIfM=;
+  b=c6uoFHaoE7IilwqeyHpNmXauwtfuGfoMiF2ACghadmaUFIQZvz78Pd3t
+   2C6YTc3XGv8vix7wG/cz+LtYreMmiqmCvKxiL0n5aSC5+8kG3uXPhDU3w
+   EKQOsVAumGRQfdWWB+1ApwGQnTcIox3ROSW7lRSmZFuaYEz3sYnfgrRbg
+   5jpTD0FKEuxAxdQ5J8HrtrSfLSd0Y+GQ3G3kE6Oj5G373sC1XskcQDBOW
+   Uua5lWYTbjGRdTTPtJ2TMnyci3mSdPiL0NvKPJXmucpoGtm+urxg8smjP
+   lnS+nSNiWlZXzWY0s3sfyCKQb3DBB//OpCb3jdaLcGPxlSxLNafrPQc+c
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10244"; a="247926186"
+X-IronPort-AV: E=Sophos;i="5.88,334,1635231600"; 
+   d="scan'208";a="247926186"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 07:07:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,334,1635231600"; 
+   d="scan'208";a="599247202"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 01 Feb 2022 07:07:50 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nEul3-000TO4-IB; Tue, 01 Feb 2022 15:07:49 +0000
+Date:   Tue, 01 Feb 2022 23:07:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon] BUILD SUCCESS
+ 3c5412cdec9f6e417e7757974040e461df4a7238
+Message-ID: <61f94ca1.BL8pKIoTkFGlMfX2%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Received: by 2002:a05:6504:3067:0:0:0:0 with HTTP; Tue, 1 Feb 2022 07:03:07
- -0800 (PST)
-Reply-To: attorneyjoel4ever1@gmail.com
-From:   Felix Joel <aldewshpoi@gmail.com>
-Date:   Tue, 1 Feb 2022 15:03:07 +0000
-Message-ID: <CABv=ag52L5ycu_QkDBq6do9CYN4b5aGkLhD8N3=a400toM9OjQ@mail.gmail.com>
-Subject: =?UTF-8?Q?jeg_venter_p=C3=A5_svaret_ditt?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=20
-Hallo,
-V=C3=A6r s=C3=A5 snill, godta mine unnskyldninger. Jeg =C3=B8nsker ikke =C3=
-=A5 invadere
-privatlivet ditt, jeg er Felix Joel, en advokat av yrke. Jeg har
-skrevet en tidligere e-post til deg, men uten svar, og i min f=C3=B8rste
-e-post nevnte jeg til deg om min avd=C3=B8de klient, som har samme
-etternavn som deg. Siden hans d=C3=B8d har jeg mottatt flere brev fra
-banken hans hvor han foretok et innskudd f=C3=B8r hans d=C3=B8d, banken har=
- bedt
-meg om =C3=A5 gi hans n=C3=A6rmeste p=C3=A5r=C3=B8rende eller noen av hans =
-slektninger som
-kan gj=C3=B8re krav p=C3=A5 hans midler, ellers vil de bli konfiskert og si=
-den
-Jeg kunne ikke finne noen av hans slektninger. Jeg bestemte meg for =C3=A5
-kontakte deg for denne p=C3=A5standen, derfor har du samme etternavn som
-ham. kontakt meg snarest for mer informasjon.
-Vennlig hilsen,
-Barrister Felix Joel.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
+branch HEAD: 3c5412cdec9f6e417e7757974040e461df4a7238  pinctrl-sunxi: sunxi_pinctrl_gpio_direction_in/output: use correct offset
+
+elapsed time: 720m
+
+configs tested: 148
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+i386                 randconfig-c001-20220131
+sh                          rsk7203_defconfig
+mips                           xway_defconfig
+um                               alldefconfig
+powerpc                 mpc834x_mds_defconfig
+sh                            titan_defconfig
+m68k                           sun3_defconfig
+xtensa                       common_defconfig
+arc                        nsimosci_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                        warp_defconfig
+powerpc                     sequoia_defconfig
+arm                       multi_v4t_defconfig
+arc                          axs103_defconfig
+powerpc                    sam440ep_defconfig
+mips                      fuloong2e_defconfig
+arm                       aspeed_g5_defconfig
+mips                         tb0226_defconfig
+parisc                           alldefconfig
+m68k                       m5208evb_defconfig
+powerpc                      arches_defconfig
+arm                           stm32_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                     asp8347_defconfig
+arm                      footbridge_defconfig
+sh                          kfr2r09_defconfig
+sh                           se7724_defconfig
+ia64                        generic_defconfig
+sh                           se7343_defconfig
+sh                             shx3_defconfig
+sh                     sh7710voipgw_defconfig
+h8300                            allyesconfig
+arm                          gemini_defconfig
+powerpc                       eiger_defconfig
+powerpc                        cell_defconfig
+microblaze                      mmu_defconfig
+sh                               alldefconfig
+m68k                          sun3x_defconfig
+mips                      maltasmvp_defconfig
+arm                  randconfig-c002-20220130
+arm                  randconfig-c002-20220131
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20220131
+x86_64               randconfig-a003-20220131
+x86_64               randconfig-a001-20220131
+x86_64               randconfig-a006-20220131
+x86_64               randconfig-a005-20220131
+x86_64               randconfig-a002-20220131
+i386                 randconfig-a006-20220131
+i386                 randconfig-a005-20220131
+i386                 randconfig-a003-20220131
+i386                 randconfig-a002-20220131
+i386                 randconfig-a001-20220131
+i386                 randconfig-a004-20220131
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                randconfig-r042-20220130
+arc                  randconfig-r043-20220130
+arc                  randconfig-r043-20220131
+s390                 randconfig-r044-20220130
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+riscv                randconfig-c006-20220130
+x86_64                        randconfig-c007
+arm                  randconfig-c002-20220130
+powerpc              randconfig-c003-20220130
+mips                 randconfig-c004-20220130
+i386                          randconfig-c001
+powerpc                          allyesconfig
+arm                             mxs_defconfig
+arm                        spear3xx_defconfig
+powerpc                        fsp2_defconfig
+powerpc                          allmodconfig
+arm                  colibri_pxa270_defconfig
+arm                           spitz_defconfig
+arm                       versatile_defconfig
+arm                         orion5x_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                 mpc8560_ads_defconfig
+arm                        vexpress_defconfig
+mips                       lemote2f_defconfig
+x86_64               randconfig-a013-20220131
+x86_64               randconfig-a015-20220131
+x86_64               randconfig-a014-20220131
+x86_64               randconfig-a016-20220131
+x86_64               randconfig-a011-20220131
+x86_64               randconfig-a012-20220131
+i386                 randconfig-a011-20220131
+i386                 randconfig-a013-20220131
+i386                 randconfig-a014-20220131
+i386                 randconfig-a012-20220131
+i386                 randconfig-a015-20220131
+i386                 randconfig-a016-20220131
+riscv                randconfig-r042-20220131
+hexagon              randconfig-r045-20220130
+hexagon              randconfig-r045-20220131
+hexagon              randconfig-r041-20220130
+hexagon              randconfig-r041-20220131
+s390                 randconfig-r044-20220131
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
