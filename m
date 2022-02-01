@@ -2,129 +2,78 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 937FB4A5CA6
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Feb 2022 13:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E4B44A5EE2
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Feb 2022 16:03:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238219AbiBAM5H (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 1 Feb 2022 07:57:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32065 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229725AbiBAM5H (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 1 Feb 2022 07:57:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643720226;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KQ6uizHs+T+wChsJ+DeQUo8BHktCkFmAePt89tVO1n8=;
-        b=ADMKW1aG1TCJFDOZ01rveUJzNJcUF8cscxkn08cC7LI2DiX3TwISSm73vBYWKk1eOfaZRk
-        5iZB4/1vm1wnHE0au+jn2goEWd7vDS19Euh01jL42jniGfuhAvhmKWh/ITOrgmScUky2Bw
-        GZPmQAzaid8Ykxurd9Ldu0bcssPdo3g=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-446-Fx2BjAIrPu6iShREgEM9XQ-1; Tue, 01 Feb 2022 07:57:05 -0500
-X-MC-Unique: Fx2BjAIrPu6iShREgEM9XQ-1
-Received: by mail-ed1-f69.google.com with SMTP id v15-20020a50a44f000000b004094f4a8f3bso8672425edb.0
-        for <linux-hwmon@vger.kernel.org>; Tue, 01 Feb 2022 04:57:05 -0800 (PST)
+        id S239636AbiBAPDL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 1 Feb 2022 10:03:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239679AbiBAPDL (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Feb 2022 10:03:11 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8ACC061714
+        for <linux-hwmon@vger.kernel.org>; Tue,  1 Feb 2022 07:03:10 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id p27so34528767lfa.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 01 Feb 2022 07:03:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=qq9wIiVWHN2WAUtj0B7xD2yz2moOuwSz6aN0pUPieSs=;
+        b=LqrCnJbarsrh68n+HQT7VxIn43qZYJrQ3sdMPbtj2rDvZ/jsBHr/nYf2xx/MpSIjgF
+         O4xjdeqpOHwua0C1mkYt2RodizQfJrXCEsPm7V+1SBVbASfnpV7WIQw0WGI15kB7c+PX
+         IWZd/K9XQlNmk7BDmlwtOZDKz88AR6U/9pVn2ukiivjfVcgu66g2DwzNWuQ3+QDtCa6g
+         BosB9CyHSaxwxkp5Hjj4DOc5XDP7a8rLuNdsokA8O6krFwo7Dxt0iA635wDJeQUyjKi1
+         qfg4+sMhp3uaxaIc968Z+82/xGIbDsz/Zfo8MIhGg3ewxpcwPsizXvz4kaYExXymST1D
+         PWHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=KQ6uizHs+T+wChsJ+DeQUo8BHktCkFmAePt89tVO1n8=;
-        b=uROxQk5Lk+wZopqzUEwA8Y4IQ+YTZYIJIuGzZ5kAb8As9RcgMwJLcujgRJKUoQMtbX
-         jJmv2nZzTROJLNd+L8HpH5VjuWZxm+IovExfZxhn+ScXDhodMhjbWnFcQquEDPDZGN1u
-         cSPsFih+fKrh6hLbZgzF494+SPk0pvuwrYGL1tbzA0Mv8r+5kEdXV295sJpSB+VlYkto
-         TaP72CFjkbyxD0bRNqSKYhMdd5Bmb203Nt19IRdvmGjyNiko2uAHcj0jXlmyGdemO++/
-         P+3CGpWgTLudsZuQ/PcgrP1NoXYp72bz+BonKyLmiGDxybuauQ7DjeQnLWi+b767gKpI
-         bD0A==
-X-Gm-Message-State: AOAM532s5aB0XFjwrZgsSF2hQyfkGOVbZ9p/KRlFFSHk767CzEAsDiau
-        CuBgJCxDQsct7TtsS6Th5/+1pzmJUdHq/aZLNcJinVXk+aipp349TiyfRCMabVPwHneo5Vqq3t1
-        1PB+9N1e7j+KLPnZ1GlxVXcI=
-X-Received: by 2002:a17:907:9816:: with SMTP id ji22mr12429459ejc.749.1643720224024;
-        Tue, 01 Feb 2022 04:57:04 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwWjr5Jp9grpxqx8hkic0kbma5PCsPcdjCNZZ93EtP+eq3QIEt7zcDM5f5WOomgiSu9D2jh4A==
-X-Received: by 2002:a17:907:9816:: with SMTP id ji22mr12429451ejc.749.1643720223833;
-        Tue, 01 Feb 2022 04:57:03 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id lm6sm14439602ejb.46.2022.02.01.04.57.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Feb 2022 04:57:02 -0800 (PST)
-Message-ID: <01e51bfa-5107-fbd0-6a0b-82bca6c78e8e@redhat.com>
-Date:   Tue, 1 Feb 2022 13:57:02 +0100
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=qq9wIiVWHN2WAUtj0B7xD2yz2moOuwSz6aN0pUPieSs=;
+        b=RFXFgEJ392fsaoZM7VlacrDC2cCZPJjEK/3MgcM1stCWooWPcCknhuXWqP6g7td5VJ
+         2S0llj2Uasr3HVQ/roakvUIeT6m7j7gk+ByNeE1gYTWtMAPLQbB+tLagk9xc7AAxuqPV
+         13Bs4e4OetHUKNVF4z3ggY6FdQdpaNMapF3nJI13luyyqCObYtksJISozuz9nQXj8wDE
+         FQBh9HQBiuHK7BsHBOnJ/14Pu/3fIkCyftuNKCd7zOQS4GvZhxUG6J/XzRjQHvu2ILHa
+         BqwboLtCGwcvaVcRM9TImZqarro2XC41x2DvZithEoqSVmL7LmVqjva2gaCTurF8W7FC
+         v8NA==
+X-Gm-Message-State: AOAM530JAMgGM6uIk57IagMvEjnyH15XpFlof0OHVmeiC4S2Q+5W08p+
+        uzIIboHGp6PcqwtKlJTmWMSEhHcjEr2esrJrHhM=
+X-Google-Smtp-Source: ABdhPJyksZfzpyxLp+H/EaM+utOPjIbcqkrmVFRSheullF3aFATHO5VoZ8mqHkIqcsCirXU6BJIQz8sJoBX5ODehZUM=
+X-Received: by 2002:a05:6512:c07:: with SMTP id z7mr19275046lfu.527.1643727787621;
+ Tue, 01 Feb 2022 07:03:07 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v3 0/4] hwmon: (sch56xx) Automatically load on supported
- hardware
-Content-Language: en-US
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220131211935.3656-1-W_Armin@gmx.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220131211935.3656-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6504:3067:0:0:0:0 with HTTP; Tue, 1 Feb 2022 07:03:07
+ -0800 (PST)
+Reply-To: attorneyjoel4ever1@gmail.com
+From:   Felix Joel <aldewshpoi@gmail.com>
+Date:   Tue, 1 Feb 2022 15:03:07 +0000
+Message-ID: <CABv=ag52L5ycu_QkDBq6do9CYN4b5aGkLhD8N3=a400toM9OjQ@mail.gmail.com>
+Subject: =?UTF-8?Q?jeg_venter_p=C3=A5_svaret_ditt?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi,
-
-On 1/31/22 22:19, Armin Wolf wrote:
-> The hardware monitoring solutions supported by the sch5627 and
-> sch5636 drivers are Fujitsu-specific.
-> After some online searching, i found out that the solution used
-> with the SCH5627 is called "Antiope" by Fujitsu, just like the
-> "Theseus" solution inside the SCH5636.
-> I also found out that "Antiope" and "Theseus" are listed as
-> DMI onboard devices on supported Fujitsu devices, so the
-> sch56xx_common module can be loaded automatically an check
-> for the DMI devices. However some devices like the Esprimo C700
-> have both devices, so after verifying that at least one onboard
-> device is present, sch56xx_common still has to detect which chip
-> is present.
-> This is safe however if at least one device is present.
-> 
-> Tested on a Fujitsu Esprimo P720.
-
-Thanks, the new version of the entire series looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-for the series.
-
-Regards,
-
-Hans
-
-> 
-> ---
-> Changes in v3:
-> - fix usleep_range using the same value as msleep
-> 
-> Changes in v2:
-> - fix unused variable issue reported by the kernel test robot
-> by assinging the platform device id list in sch5627/sch5636
-> to platform_driver->id_table.
-> 
-> Armin Wolf (4):
->   hwmon: (sch56xx) Autoload modules on platform device creation
->   hwmon: (sch56xx-common) Add automatic module loading on supported
->     devices
->   hwmon: (sch56xx-common) Replace msleep() with usleep_range()
->   hwmon: (sch56xx-common) Replace WDOG_ACTIVE with WDOG_HW_RUNNING
-> 
->  drivers/hwmon/sch5627.c        | 10 ++++++++
->  drivers/hwmon/sch5636.c        | 10 ++++++++
->  drivers/hwmon/sch56xx-common.c | 44 ++++++++++++++++++++++++++++++----
->  3 files changed, 60 insertions(+), 4 deletions(-)
-> 
-> --
-> 2.30.2
-> 
-
+--=20
+Hallo,
+V=C3=A6r s=C3=A5 snill, godta mine unnskyldninger. Jeg =C3=B8nsker ikke =C3=
+=A5 invadere
+privatlivet ditt, jeg er Felix Joel, en advokat av yrke. Jeg har
+skrevet en tidligere e-post til deg, men uten svar, og i min f=C3=B8rste
+e-post nevnte jeg til deg om min avd=C3=B8de klient, som har samme
+etternavn som deg. Siden hans d=C3=B8d har jeg mottatt flere brev fra
+banken hans hvor han foretok et innskudd f=C3=B8r hans d=C3=B8d, banken har=
+ bedt
+meg om =C3=A5 gi hans n=C3=A6rmeste p=C3=A5r=C3=B8rende eller noen av hans =
+slektninger som
+kan gj=C3=B8re krav p=C3=A5 hans midler, ellers vil de bli konfiskert og si=
+den
+Jeg kunne ikke finne noen av hans slektninger. Jeg bestemte meg for =C3=A5
+kontakte deg for denne p=C3=A5standen, derfor har du samme etternavn som
+ham. kontakt meg snarest for mer informasjon.
+Vennlig hilsen,
+Barrister Felix Joel.
