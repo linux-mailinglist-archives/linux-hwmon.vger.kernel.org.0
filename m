@@ -2,190 +2,78 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2814A73E8
-	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Feb 2022 15:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 818254A7C13
+	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Feb 2022 00:58:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237610AbiBBO4Q (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 2 Feb 2022 09:56:16 -0500
-Received: from mga11.intel.com ([192.55.52.93]:31889 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236109AbiBBO4P (ORCPT <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 2 Feb 2022 09:56:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643813775; x=1675349775;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QMYVyv1FTscgpmw+LGMru7OffCk/NusVJ0zbwclwbtY=;
-  b=mvO5RLyGnkqLP+YcSHi9g5NW5sePYGpX3m8HVHGjp+NseXTk8fvol/8Y
-   l76f4N0Di2P1kLX4lzrRvGEO5r5Ylrf1VOkiZfct69aKBke17u4apw4h8
-   KoEZQNVjvIfijrzffWxqTZA5tUZ0PSo80hVrceYnmL/h76YS6j0kwM73i
-   1lTdeM08r3roQ2DsH8/TKJAk4teVOhrFdfkednmAy5aD6f7opIejbo6Oa
-   VAHL1kdMI8XuDbNNnevCWnZOoRDHa9BOyEiqOoCtmMfnQL7+EK2+UT+cf
-   vfLNL4Y6zeyed8K0+0dgcj03lY5beJGYVCycdxgGKAJtkSEXxFF4IksDb
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="245524673"
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="245524673"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:56:15 -0800
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="676456570"
-Received: from mwnuczyn-mobl.ger.corp.intel.com (HELO localhost) ([10.249.137.160])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:56:05 -0800
-From:   Iwona Winiarska <iwona.winiarska@intel.com>
-To:     linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
+        id S232656AbiBBX6a (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 2 Feb 2022 18:58:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60102 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348206AbiBBX62 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Feb 2022 18:58:28 -0500
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC6AC061714;
+        Wed,  2 Feb 2022 15:58:28 -0800 (PST)
+Received: by mail-il1-x136.google.com with SMTP id 15so742275ilg.8;
+        Wed, 02 Feb 2022 15:58:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=AdTtbIqSZjs9ClhOQAZBfTgtubt8OVGF8JKyL/jJ7V0=;
+        b=Cu1prVIBVuddk030FRqPYJCdmpLFK+ZapKsL7G8Qki5M2zVktzCjGDafHdwe+wTk7c
+         MWqzVSst22/op2BEIOcj2nOFqrz8MouzzkAJUiXrq3b1AKImg3DvshVb2QnqIGfbLp9b
+         CYnNRcu065vN1Rq0qHgECg9kkPe5aKWVIwub2L2W7nJrGPXnhm51Juo1m5BaruYju1Y4
+         1YqI6xLLPeUHJ8KqcMGDAPXaa7QAwfgDmmoWjzjqJp6Kl5/N73j4OhbUYwCfsqLUbHmD
+         gc2g/S4uqguv1TLSnHI+59C5RKfanWK7X9wF1BdgdvlZdm3P/kMrxbDR0FI3VC/9V0Ay
+         g2/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=AdTtbIqSZjs9ClhOQAZBfTgtubt8OVGF8JKyL/jJ7V0=;
+        b=ipLV7GqTfPFYdj96pbURTbnjmGcHBt23VabrbDCbHsUuzqd/iJ8rSxWWIf5B0SDjN8
+         z350t64OmESgFmS4cYhQ9gtsVMAvdfydvIz/8SIJxUjc/+O5vMv2HMPfuG2adQziIDVm
+         fyUwFL9IhL7yE8Ecw6t/fhn+jkAP8F6hqdH6JpWkZgaIp/c3wioOJ0FGcTITtwaZ5lai
+         h7T74FW2Cduyo+M/bOn44IMGAq6GbBHnVJgJhePYkwab9EXF2zIcpCYnedetf1JFoZuH
+         ww58IMBKeU4AJ5taZoutpQTnoiEqWrflC3cx6AHtk2Hm8iqOq46pPfkDTukVd+cqyxGe
+         V1EA==
+X-Gm-Message-State: AOAM5306auwAs3dgi3n+sJyOsWMBRNBIZrGtF+Q2eQBTMftUjkpPS/wW
+        eFuK/OYQQzDuUMsFPJp6DgkPGFr5INj93gB/Tyfwt8XkxcNwV0Ry
+X-Google-Smtp-Source: ABdhPJzmzB7VX5tXIealvb/Do4WUvYa0OUn0WDj3I1hGPakbCJ2Q+gYaFEZ5L+NIYPdrkd5FCWbc05TBgScswoFsKc4=
+X-Received: by 2002:a92:d350:: with SMTP id a16mr19720157ilh.187.1643846308079;
+ Wed, 02 Feb 2022 15:58:28 -0800 (PST)
+MIME-Version: 1.0
+References: <20220124015658.687309-1-eugene.shalygin@gmail.com>
+In-Reply-To: <20220124015658.687309-1-eugene.shalygin@gmail.com>
+From:   Eugene Shalygin <eugene.shalygin@gmail.com>
+Date:   Thu, 3 Feb 2022 00:58:17 +0100
+Message-ID: <CAB95QASxE8Z_z046mnOBD1Zk1oeg=xB-wS+J8Oeuj=akm8171Q@mail.gmail.com>
+Subject: Re: [ASUS EC Sensors v8 0/3]
+To:     Eugene Shalygin <eugene.shalygin@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Denis Pauk <pauk.denis@gmail.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Borislav Petkov <bp@alien8.de>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Zev Weiss <zweiss@equinix.com>,
-        David Muller <d.mueller@elsoft.ch>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Iwona Winiarska <iwona.winiarska@intel.com>
-Subject: [PATCH v7 13/13] docs: Add PECI documentation
-Date:   Wed,  2 Feb 2022 15:48:38 +0100
-Message-Id: <20220202144838.163875-14-iwona.winiarska@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220202144838.163875-1-iwona.winiarska@intel.com>
-References: <20220202144838.163875-1-iwona.winiarska@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add a brief overview of PECI and PECI wire interface.
-The documentation also contains kernel-doc for PECI subsystem internals
-and PECI CPU Driver API.
+On Mon, 24 Jan 2022 at 02:57, Eugene Shalygin <eugene.shalygin@gmail.com> w=
+rote:
+>
+> This patchset replaces the HWMON asus_wmi_ec_sensors driver with
+> an implementation that does not use WMI but queries the embedded
+> controller directly.
 
-Signed-off-by: Iwona Winiarska <iwona.winiarska@intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
----
- Documentation/index.rst      |  1 +
- Documentation/peci/index.rst | 16 +++++++++++
- Documentation/peci/peci.rst  | 51 ++++++++++++++++++++++++++++++++++++
- MAINTAINERS                  |  1 +
- 4 files changed, 69 insertions(+)
- create mode 100644 Documentation/peci/index.rst
- create mode 100644 Documentation/peci/peci.rst
+G=C3=BCnter, I would like to add support for one more board model. What
+should I do? Another version update or could you, please, merge this
+patchset already?
 
-diff --git a/Documentation/index.rst b/Documentation/index.rst
-index b58692d687f6..1988c19d9daf 100644
---- a/Documentation/index.rst
-+++ b/Documentation/index.rst
-@@ -138,6 +138,7 @@ needed).
-    scheduler/index
-    mhi/index
-    tty/index
-+   peci/index
- 
- Architecture-agnostic documentation
- -----------------------------------
-diff --git a/Documentation/peci/index.rst b/Documentation/peci/index.rst
-new file mode 100644
-index 000000000000..989de10416e7
---- /dev/null
-+++ b/Documentation/peci/index.rst
-@@ -0,0 +1,16 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+====================
-+Linux PECI Subsystem
-+====================
-+
-+.. toctree::
-+
-+   peci
-+
-+.. only::  subproject and html
-+
-+   Indices
-+   =======
-+
-+   * :ref:`genindex`
-diff --git a/Documentation/peci/peci.rst b/Documentation/peci/peci.rst
-new file mode 100644
-index 000000000000..331b1ec00e22
---- /dev/null
-+++ b/Documentation/peci/peci.rst
-@@ -0,0 +1,51 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+========
-+Overview
-+========
-+
-+The Platform Environment Control Interface (PECI) is a communication
-+interface between Intel processor and management controllers
-+(e.g. Baseboard Management Controller, BMC).
-+PECI provides services that allow the management controller to
-+configure, monitor and debug platform by accessing various registers.
-+It defines a dedicated command protocol, where the management
-+controller is acting as a PECI originator and the processor - as
-+a PECI responder.
-+PECI can be used in both single processor and multiple-processor based
-+systems.
-+
-+NOTE:
-+Intel PECI specification is not released as a dedicated document,
-+instead it is a part of External Design Specification (EDS) for given
-+Intel CPU. External Design Specifications are usually not publicly
-+available.
-+
-+PECI Wire
-+---------
-+
-+PECI Wire interface uses a single wire for self-clocking and data
-+transfer. It does not require any additional control lines - the
-+physical layer is a self-clocked one-wire bus signal that begins each
-+bit with a driven, rising edge from an idle near zero volts. The
-+duration of the signal driven high allows to determine whether the bit
-+value is logic '0' or logic '1'. PECI Wire also includes variable data
-+rate established with every message.
-+
-+For PECI Wire, each processor package will utilize unique, fixed
-+addresses within a defined range and that address should
-+have a fixed relationship with the processor socket ID - if one of the
-+processors is removed, it does not affect addresses of remaining
-+processors.
-+
-+PECI subsystem internals
-+------------------------
-+
-+.. kernel-doc:: include/linux/peci.h
-+.. kernel-doc:: drivers/peci/internal.h
-+.. kernel-doc:: drivers/peci/core.c
-+.. kernel-doc:: drivers/peci/request.c
-+
-+PECI CPU Driver API
-+-------------------
-+.. kernel-doc:: drivers/peci/cpu.c
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b7992853a427..23fba6b2609f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15117,6 +15117,7 @@ M:	Iwona Winiarska <iwona.winiarska@intel.com>
- L:	openbmc@lists.ozlabs.org (moderated for non-subscribers)
- S:	Supported
- F:	Documentation/devicetree/bindings/peci/
-+F:	Documentation/peci/
- F:	drivers/peci/
- F:	include/linux/peci-cpu.h
- F:	include/linux/peci.h
--- 
-2.34.1
-
+Thank you,
+Eugene
