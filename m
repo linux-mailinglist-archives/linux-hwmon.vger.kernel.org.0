@@ -2,99 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CB44A93AD
-	for <lists+linux-hwmon@lfdr.de>; Fri,  4 Feb 2022 06:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D5A4A952E
+	for <lists+linux-hwmon@lfdr.de>; Fri,  4 Feb 2022 09:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243479AbiBDFfz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 4 Feb 2022 00:35:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38604 "EHLO
+        id S1357038AbiBDIe4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 4 Feb 2022 03:34:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238339AbiBDFfz (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 4 Feb 2022 00:35:55 -0500
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 257A1C061714;
-        Thu,  3 Feb 2022 21:35:55 -0800 (PST)
-Received: by mail-oi1-x231.google.com with SMTP id m9so7280973oia.12;
-        Thu, 03 Feb 2022 21:35:55 -0800 (PST)
+        with ESMTP id S1357031AbiBDIez (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 4 Feb 2022 03:34:55 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A994AC061714
+        for <linux-hwmon@vger.kernel.org>; Fri,  4 Feb 2022 00:34:54 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id m4so17126914ejb.9
+        for <linux-hwmon@vger.kernel.org>; Fri, 04 Feb 2022 00:34:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=K+717NKX936wQ1aYhlbjA5VAAzQM/QdZyfYA0VeTi10=;
-        b=oUE/v0USlPhaF9IzRS9lk/8QMhs7pXCzKx30YtcCe7gFcN6f5UFMlZzer0dX6qlMaj
-         gGv4xOXpcYdozXkqo+/+hv0wnpMS3Efghlh0w1zrSLO3jRf/3R0/HvIkOuW9Qv33ptE/
-         5riQNQ5TWTokR2hbd+TgCQT5I0dw61jofJO6GeSHT+XdRHNFbqLSTs4BF0YnvVpztFjS
-         b76LPscq2NXSTydadFMHWO+ql3ludW8406u6N0viTAJ8/P1MwRr4ZxMVcgiRqr8IOGht
-         IS9FjBPPyxdPm2fW0L3CKhF9MU5bO0GVRZd/cT38Y3PeNXg91ozB2JcRkEg8mLwVZjj7
-         ocWw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=VD+T4aFdYy78LS8H2r5UIr5BT9vV7MBXc7wdXZ3ElC0=;
+        b=Wi2uAeVmV9qtR1lVgR5nm2ymbwyneGblfep3h30o6j0HOxhk291BIMz/LZVWruDlG7
+         O2f32OUqBneWksJbuwVXw41Js6tL1oqTx/LE4I157wHCmd8jmMlzVIiBW1gU9+QIi8Nh
+         TDApSckyiv+wToq1cl4smogFbKdm2XHxXKyBVlzfrNqTQbE3xaQRdhyTskFRrkZgi1XZ
+         2LX3RgA2wovyeNOX3nfgyFxdAgBirQmrzkitotXoLWkMaJWDirpBLclsUfHHSjba32KD
+         sO2LbsJdFjCd3TQthfc9Y8z5Xht+H6b03zTcPBsV30U9AYzT74qK55pNMIWEB674f5j9
+         fbCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=K+717NKX936wQ1aYhlbjA5VAAzQM/QdZyfYA0VeTi10=;
-        b=hrVpejFTtV+p0Id6wK6hqcBz/Jq7bCDvoC4x51IiNBUS105NlsFQQUGWw7+wuGZw4K
-         YXVEv6Z+CEli/iIpat9SYeRkZ4Vtnl75V6FatL/uuwPd1GRGwDmXEDPvFyZkuQ4caNQm
-         N1Lw+Qu39SgylgolDiHg4UHaBVw0o/DufIreN8+kaxo+/FtOO+/RNhUAH8iHUMNydAjp
-         wZPHa1wtXgg4usm+Ulz1Q1psIHunoTOyVI7qTtLY52oiLGIZ5Y8II5S3BFtOB9wGrTbY
-         mWhtcd5zCaaDFSJKSdPbi/d5ZHoiBLg0G0h+mOPkdo4/Q02j+3wYvjcph8pUbysOA8wQ
-         +p0g==
-X-Gm-Message-State: AOAM532O+1frp83QnHVnusVU94cXBwnRKI/YHHYV5JA7I98YiVByoX+v
-        xMvL3UbPXrCPVVMPign+E78=
-X-Google-Smtp-Source: ABdhPJxpSJ2QjgGxli1SQHTBRsLg11FwHnNq2TrL6ikekVJq6dxaC7aBqzF+Ppo30pGgGyNIqrpx3A==
-X-Received: by 2002:a54:4785:: with SMTP id o5mr585592oic.96.1643952954302;
-        Thu, 03 Feb 2022 21:35:54 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g34sm360552ooi.48.2022.02.03.21.35.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Feb 2022 21:35:53 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <40c67c87-3929-b042-0cdd-429bb002d864@roeck-us.net>
-Date:   Thu, 3 Feb 2022 21:35:51 -0800
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=VD+T4aFdYy78LS8H2r5UIr5BT9vV7MBXc7wdXZ3ElC0=;
+        b=1hWyhdCNJlFtX8OeQ0sShZEDYvaE89XruVnLry/bvVwycD0ucccLfIM6MWIClRlXHu
+         sXBRvOGAX5hszswTtBgEojixM3rKw+jt3OVtvaeetCfQnjp9mwvSqpkV0S88QlApPtWx
+         x3HKqqgapAyAzZF+l8wzAEuKDQox9Unhsx18JnpLC8NMT2arphDprWYfiotNo/2LUvqU
+         Cw63rWDmKsNJIO6o1d4ozrvoHs9GM6EpJuv9yXx0KYVS6S54eqZ0xznnL63FOlKuG9F6
+         kLZh840mQdWyv5suhGcL7PN8Uui6ECrz6/yEF/erz++64PUIcxlBkY/wO7ObsGf0148j
+         Ru5g==
+X-Gm-Message-State: AOAM532hdn1VTybqK3rJvZTHQdRtu5exjIi2NE/bUxu4z1sMkKAKuRbl
+        8nX9Q68E2ZWbaslXcxycjswH8DEM10XE3gpFZL0=
+X-Google-Smtp-Source: ABdhPJxbR65R3kv7qMlZXmbf7dXJBcc30fzfYxnWAmxkaImsA8sPQ3PiNSrnR+3+l33fx93D/8u8rNnNYCFURSAzA/I=
+X-Received: by 2002:a17:907:7da8:: with SMTP id oz40mr1586949ejc.328.1643963693009;
+ Fri, 04 Feb 2022 00:34:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] hwmon: fix documentation index
-Content-Language: en-US
-To:     Eugene Shalygin <eugene.shalygin@gmail.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220204052258.556667-1-eugene.shalygin@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20220204052258.556667-1-eugene.shalygin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:907:60c9:0:0:0:0 with HTTP; Fri, 4 Feb 2022 00:34:52
+ -0800 (PST)
+Reply-To: dhldeliverycompany065@gmail.com
+From:   "Mr. Carlo De Beneditti" <mrjamescomey2@gmail.com>
+Date:   Fri, 4 Feb 2022 08:34:52 +0000
+Message-ID: <CABukUTETdm8_AFY2YY1GWysZXrYmT7OH4=ZS0Q0itJLbaQ8yeQ@mail.gmail.com>
+Subject: Attention Please indicate Your Shipment Code awb 33xzs to Mr. Joe Goodman
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 2/3/22 21:22, Eugene Shalygin wrote:
-> Replace asus_wmi_ec_sensors with asus_ec_sensors, which should have been
-> done in d4b4bb104d12.
-> 
-> Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
-> ---
->   Documentation/hwmon/index.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-> index df20022c741f..1bad4e6116e4 100644
-> --- a/Documentation/hwmon/index.rst
-> +++ b/Documentation/hwmon/index.rst
-> @@ -43,7 +43,7 @@ Hardware Monitoring Kernel Drivers
->      asb100
->      asc7621
->      aspeed-pwm-tacho
-> -   asus_wmi_ec_sensors
-> +   asus_ec_sensors
->      asus_wmi_sensors
->      bcm54140
->      bel-pfe
+Attention Please
 
-I already did that in the original patch, and I undid the removal of
-asus_wmi_ec_sensors.
+This is to bring to your notice that I have registered your ATM CARD
+worthy the sum of US$7.4million which is from COMPENSATION AWARD COMMITTEE
+with registration code of(Shipment Code awb 33xzs) contact
 
-Guenter
+Now, your ATM CARD has been deposited with DHL Courier for delivery direct
+to your doorstep.therefore, I, want you to contact DHL Courier Company
+with your Full Contact information, so that they can deliver your ATM CARD
+to your designated address without any delay and please ask them to send
+you the tracking Number of the Package
 
+Note;the delivery charges has been paid but i did not pay their official
+keeping fees, I would have paid that but they said no because they don't
+know when you will contact them and in case of demur-rage, please Contact
+them with your receiver information and ask him to send you the tracking
+number
+
+Your Name.....
+Your Address.....
+Your Country/ City.....
+Your Nearest Air Port.....
+Your Telephone Number:.....
+
+Shipping company Office:
+Name of Mr. Joe Goodman
+E-mail:( dhldelivery930@aol.com  )
+
+
+Best Regards,
+Mr. Carlo De Beneditti
