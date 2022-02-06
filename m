@@ -2,72 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA8E4AAE41
+	by mail.lfdr.de (Postfix) with ESMTP id 590F04AAE42
 	for <lists+linux-hwmon@lfdr.de>; Sun,  6 Feb 2022 08:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbiBFHGL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        id S229436AbiBFHGL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
         Sun, 6 Feb 2022 02:06:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52778 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiBFHGL (ORCPT
+        with ESMTP id S229878AbiBFHGL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>); Sun, 6 Feb 2022 02:06:11 -0500
-X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 05 Feb 2022 23:06:09 PST
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B93C06173B
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D770BC061353
         for <linux-hwmon@vger.kernel.org>; Sat,  5 Feb 2022 23:06:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1644131169; x=1675667169;
   h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=tJpCrlYEVteUvn3o7f/3BWnHCWl15TXN37cTwxLxGa0=;
-  b=liH1u2jD/pP0W9xX+dW4ZNAm/fVrGlfISY/8fuXdtNBdfr9pexkCNI/t
-   6fJa/9NRTHjHQhAwaQOQN8tYoC19DSsAW6zLNYuM7s0d0iavLw//98NQ/
-   McSMCGN0eO9qpifno1rZa+ZQdBOqvhLPxfPaa9yCFMzL8uAxHPvaOmKRO
-   YJ8fEqk+7qC6ioSTW3Gje2KTSLng6oZT2GPSzwFgCiDEe8VENCTiKkE3b
-   OTtPEiIPvI80EwbafQ+b6hw+2MZ2gobbbLmq65Gn2HdvOz7wiLPVgYZvw
-   lwDEWp0gjosGgCXtsqPznKDXcKHsZMmZgh7REbAQnsSMORKHEC2NAtR7C
+  bh=xP1a3fphdTSSf7vsHvlAuE10fE4gmHQn3iqmtkVVDnc=;
+  b=L+pje2+hzP3++l9sF+OfHRtUj6qOVH3H5a+9e2Iq0i16VNyUtp95e1XX
+   iDSIN5o3aWEs7T4M1pEzFvbONW2uLYW64hxrUKQo1P1zju2xJOzyLvDWq
+   PMs4EJbZdHl3Ue5q6CJBISf6U71eDmtGjxkl+VhCIg+Pnp91i7i0DlQ5Z
+   UAfvWjXuc7jSot14ljNIZnhh7Hemossci2371Oqq1GQ8vdprFtpPkxd2e
+   4eRDr8gLGafrhNh32424S67YG7OgrbhnKoeCV19IDhO5Bf5wUH5Q4r0N1
+   iUX4W+O9E10EXnityrlImGcbvoKn7gvJtltJN4UH+P35mSm9pwNVYm6fh
    w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10249"; a="273073305"
+X-IronPort-AV: E=McAfee;i="6200,9189,10249"; a="248771997"
 X-IronPort-AV: E=Sophos;i="5.88,347,1635231600"; 
-   d="scan'208";a="273073305"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2022 23:05:07 -0800
+   d="scan'208";a="248771997"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2022 23:05:07 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,347,1635231600"; 
-   d="scan'208";a="498881118"
+   d="scan'208";a="484052715"
 Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 05 Feb 2022 23:05:05 -0800
+  by orsmga006.jf.intel.com with ESMTP; 05 Feb 2022 23:05:05 -0800
 Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1nGbbc-000a0l-Vi; Sun, 06 Feb 2022 07:05:04 +0000
-Date:   Sun, 06 Feb 2022 15:04:42 +0800
+        id 1nGbbc-000a0g-TY; Sun, 06 Feb 2022 07:05:04 +0000
+Date:   Sun, 06 Feb 2022 15:04:48 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- 2d894d63ecb9cef943af99c605fa87c655c2714c
-Message-ID: <61ff730a.4oACYUmdkzYO5IbS%lkp@intel.com>
+Subject: [groeck-staging:hwmon] BUILD SUCCESS
+ bb9bb9c75482aa008cfc62b5cb88681de8408fa3
+Message-ID: <61ff7310.USTJkLZlTyqPcGzO%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 2d894d63ecb9cef943af99c605fa87c655c2714c  hwmon: (asus-ec-sensors) read sensors as signed ints
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
+branch HEAD: bb9bb9c75482aa008cfc62b5cb88681de8408fa3  hwmon: (ntc_thermistor) Underscore Samsung thermistor
 
-elapsed time: 720m
+elapsed time: 721m
 
-configs tested: 125
+configs tested: 120
 configs skipped: 3
 
 The following configs have been built successfully.
@@ -75,10 +74,10 @@ More configs may be tested in the coming days.
 
 gcc tested configs:
 arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
 arm                              allyesconfig
 arm                              allmodconfig
+arm64                               defconfig
+arm64                            allyesconfig
 i386                          randconfig-c001
 m68k                          sun3x_defconfig
 powerpc                  storcenter_defconfig
@@ -99,12 +98,14 @@ arc                                 defconfig
 mips                        bcm47xx_defconfig
 mips                         tb0226_defconfig
 sh                         ecovec24_defconfig
-arm                          iop32x_defconfig
 powerpc                   motionpro_defconfig
 sparc                            alldefconfig
+arm                          iop32x_defconfig
 arc                          axs101_defconfig
 sh                      rts7751r2d1_defconfig
 openrisc                         alldefconfig
+sh                          kfr2r09_defconfig
+mips                       capcella_defconfig
 powerpc                    amigaone_defconfig
 sh                            titan_defconfig
 sparc64                             defconfig
@@ -146,9 +147,6 @@ powerpc                           allnoconfig
 x86_64                        randconfig-a006
 x86_64                        randconfig-a004
 x86_64                        randconfig-a002
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
 i386                          randconfig-a012
 i386                          randconfig-a014
 i386                          randconfig-a016
@@ -158,10 +156,10 @@ riscv                    nommu_virt_defconfig
 riscv                             allnoconfig
 riscv                          rv32_defconfig
 riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
 um                           x86_64_defconfig
 um                             i386_defconfig
 x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
 x86_64                              defconfig
 x86_64                               rhel-8.3
 x86_64                          rhel-8.3-func
@@ -183,14 +181,10 @@ powerpc                       ebony_defconfig
 mips                       rbtx49xx_defconfig
 mips                      maltaaprp_defconfig
 mips                        bcm63xx_defconfig
-arm                       versatile_defconfig
-powerpc                     powernv_defconfig
 arm                       imx_v4_v5_defconfig
 mips                     cu1830-neo_defconfig
+powerpc                     powernv_defconfig
 mips                          ath79_defconfig
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
 i386                          randconfig-a002
 i386                          randconfig-a006
 i386                          randconfig-a004
