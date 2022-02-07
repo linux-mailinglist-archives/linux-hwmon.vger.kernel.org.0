@@ -2,118 +2,388 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 071324ABD77
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Feb 2022 13:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB044AC76B
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Feb 2022 18:28:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381608AbiBGLqY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 7 Feb 2022 06:46:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
+        id S229821AbiBGR2B (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 7 Feb 2022 12:28:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359443AbiBGLOx (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Feb 2022 06:14:53 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF061C03FEE3
-        for <linux-hwmon@vger.kernel.org>; Mon,  7 Feb 2022 03:14:38 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id s7so2562601edd.3
-        for <linux-hwmon@vger.kernel.org>; Mon, 07 Feb 2022 03:14:38 -0800 (PST)
+        with ESMTP id S1345042AbiBGRUv (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Feb 2022 12:20:51 -0500
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D75C0401D5
+        for <linux-hwmon@vger.kernel.org>; Mon,  7 Feb 2022 09:20:50 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id o9-20020a9d7189000000b0059ee49b4f0fso11406621otj.2
+        for <linux-hwmon@vger.kernel.org>; Mon, 07 Feb 2022 09:20:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=VJyVQdTTOuQPU3YB2lNjqUBtKY7gFcwk8PaGpqOOFhY=;
-        b=YLTS3NDUZfbhBy/GWHNWXAfVddiTqFFAS1xZnjoqahsvp+19QlM0VXIcpdf20emUz7
-         Zllec1PlzHf+NvtkVXB/WnDg2FI3ixD1lBFq3BNiwJbunGNrB5ljO7ysv6nQwgCZoa1v
-         KpA8ENtbWDPZMUxw1qS+AkRMQgIwJOWCS5p1gRynPqOmW5xlx6etYJQmcLpWxTUwI9ra
-         xb0JhMYlwsdacWYpczn77n/Js16TGqPrxvMHyhefLtkJiJ2S5QjFZdl4m2pe5wSyQbxA
-         Ufk7lSxEtHVGfcCcWx/HtzG1+3xiWo64/gT+hEPWOosMik6jHDjryXUwzoSQlnDNEdUS
-         EL8A==
+        h=sender:message-id:date:mime-version:user-agent:content-language:to
+         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=RZfm+nBDWOz1ujhgnwivAwTA6u9XkBJI1w9HaEx3LYQ=;
+        b=jQlkukE2u6BE9rYm9fO1F/BQiSO/JcAR3h4bFWW+rItbpTD+Xas84iKYnqDDam25Q1
+         27dDzTa6GFwMp+wiX7YOdZ6FTijaXoBi3t3zXtzsFNQHzCbyTrgaLQfDhWarFUsIooGY
+         jHDl3JeINjLSxE2dS1MiG27KBcVxvacuqp6tJ9KOT8XmlBoBNpDNkiHYgQhItmsI/BpZ
+         oWO3H3i1tJ5hLBSJU0yQpQtYO83KYllejF0GOmFQxDfxP+Fb4lCqsaXEg67qxwWfZQI0
+         0CITWCkyozBzTAfyUb5O3pFMBVXXKTwpGWO8nRAZ+RoY4+Jy3ynWDiWn12WqGiLxgLU/
+         p+ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:subject:in-reply-to
          :content-transfer-encoding;
-        bh=VJyVQdTTOuQPU3YB2lNjqUBtKY7gFcwk8PaGpqOOFhY=;
-        b=Ne7F14WhtzdE12Au0ZeS5Eu5iBGI4MRmUbPS4RZC2ayEDyL9yCWF/6D5m5yZlNtFi5
-         Drmttz7bVc9hb/EawIZpaN80SffuAnh8Xvlx7V7/vZ9Vv5esuJgYMmfOEAaqhCxazaGO
-         /rQ7xNnmzwwcEQhmY//vSQ6Se/R/FKpPuuyBBoDyzytoQmPj7JUVN8sXu4Oio7zVOCRz
-         YxAyhhC43+87Q5wnzANHEuT8sRnLxUFxAHqVYT10XIuyZ0TbPcP4dr+nWmYGWlzzAjvQ
-         XOW8X1snbDvLaG+96Xo+nzxZR25DgDX8Jjuz/4bZ+43rcKb8j07Tr3Pu2Eaf7NT8Rx3V
-         PiBw==
-X-Gm-Message-State: AOAM531+5MfjO/1WAiSwCIgL6ybli/XH1wkHmNFQ7sskrWwrX0rRkrTV
-        +lcCMZ2N6ooiBPOEHkPTMvaBwUH/+o4=
-X-Google-Smtp-Source: ABdhPJyNUAWjQGvjb6xtKuoYlMBslsg7q5RtGrBIrqyM5Po3jBcXVUEOO0AZOyWu4iSdJ/ItS/Yhlw==
-X-Received: by 2002:a05:6402:4385:: with SMTP id o5mr13738108edc.48.1644232473149;
-        Mon, 07 Feb 2022 03:14:33 -0800 (PST)
-Received: from [192.168.0.182] ([79.119.107.253])
-        by smtp.gmail.com with ESMTPSA id jt17sm3561471ejb.161.2022.02.07.03.14.32
+        bh=RZfm+nBDWOz1ujhgnwivAwTA6u9XkBJI1w9HaEx3LYQ=;
+        b=guBZrpMICnz5jGXpgxwai8O2dYCX3p0WVIxFCv/KPUbPx1ygChDTuCu5D39Le13HEK
+         g9+p+dY7+BHnX3blV/ZR0yZD/Gjix5NFK7GvLd+WvwPhrfkY3bfA510wbnj1orGdKyHU
+         O6dwnZ3UAHcHrX8KoRH/xni3G3xv7L+nOJcDQv6urgnH5kFbLz8iPvjLtzT63UvAPfvr
+         s6l98JeIwFybr5ZG2s7Ekji2mr4yYCU6pW3X315gMBOi/7AEE0o2phNRQaR0EHWDrV9a
+         IB9UbmwB41TZWWoqgwhii93aJYleSxNTbZJiYHn1wxpiwRMKCol1crZi64c/Tqm3zXvO
+         ozuQ==
+X-Gm-Message-State: AOAM530DrOWQrjcth+VoZgStLEuZQc7ayz7uoyCGp+k8pUwsjwwIfne6
+        JXV9L1fUn985XG11XABrxI02Z8feInjgxw==
+X-Google-Smtp-Source: ABdhPJyLOtZSCJxpedoJbN3d8/8yDIdDLiJL4hLnvzRlzEkGkZ6Qmwm3qe9+E5fHeKTPV+UNjtHcUA==
+X-Received: by 2002:a05:6830:10d6:: with SMTP id z22mr327231oto.106.1644254449433;
+        Mon, 07 Feb 2022 09:20:49 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id bg34sm4291238oob.14.2022.02.07.09.20.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Feb 2022 03:14:32 -0800 (PST)
-Message-ID: <39e9c961-11b5-dfc3-d8c9-9c95ef22ccc0@gmail.com>
-Date:   Mon, 7 Feb 2022 13:14:33 +0200
+        Mon, 07 Feb 2022 09:20:48 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <5260ae3b-a9ec-55f8-82f4-a1fd4842b4b0@roeck-us.net>
+Date:   Mon, 7 Feb 2022 09:20:46 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH v4 1/6] hwmon: adt7x10: Refactor to use with_info API
+ Thunderbird/91.5.0
 Content-Language: en-US
-To:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+To:     Christian Lamparter <chunkeey@gmail.com>,
+        linux-hwmon@vger.kernel.org
 Cc:     Jean Delvare <jdelvare@suse.com>
-References: <20211223205219.2184104-1-linux@roeck-us.net>
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <20211223205219.2184104-1-linux@roeck-us.net>
+References: <20220206190517.303483-1-chunkeey@gmail.com>
+ <eac99325-ad4a-a636-9d96-0fa56cda35d3@roeck-us.net>
+ <6dbef8a5-6df4-ccab-ffc0-639e16b2ebf6@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v2] hwmon: (tc654) Add thermal_cooling device support
+In-Reply-To: <6dbef8a5-6df4-ccab-ffc0-639e16b2ebf6@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Everything seems to function fine after the regmap conversion.
-Thank you for taking the time to work on this.
+On 2/7/22 03:10, Christian Lamparter wrote:
+> On 07/02/2022 09:47, Guenter Roeck wrote:
+>> On 2/6/22 11:05, Christian Lamparter wrote:
+>>> Adds thermal_cooling device support to the tc654/tc655
+>>> driver. This make it possible to integrate it into a
+>>> device-tree supported thermal-zone node as a
+>>> cooling device.
+>>>
+>>> I have been using this patch as part of the Netgear WNDR4700
+>>> Centria NAS Router support within OpenWrt since 2016.
+>>>
+>>> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+>>> ---
+>>> v1 -> v2: - Drop imply THERMAL
+>>>       - aligned ( so . everything is lining up
+>>> ---
+>>>   drivers/hwmon/tc654.c | 94 +++++++++++++++++++++++++++++++++++--------
+>>>   1 file changed, 77 insertions(+), 17 deletions(-)
+>>>
+>>> diff --git a/drivers/hwmon/tc654.c b/drivers/hwmon/tc654.c
+>>> --- a/drivers/hwmon/tc654.c
+>>> +++ b/drivers/hwmon/tc654.c
+>>> @@ -367,36 +368,30 @@ static ssize_t pwm_mode_store(struct device *dev, struct device_attribute *da,
+>>>   static const int tc654_pwm_map[16] = { 77,  88, 102, 112, 124, 136, 148, 160,
+>>>                         172, 184, 196, 207, 219, 231, 243, 255};
+>>> +static int get_pwm(struct tc654_data *data)
+>>> +{
+>>> +    if (data->config & TC654_REG_CONFIG_SDM)
+>>> +        return 0;
+>>> +    else
+>>
+>> Nit: else after return is unnecessary. Sorry for not noticing before.
+>>
+> Noted.
+> 
+>>> @@ -447,6 +458,44 @@ static struct attribute *tc654_attrs[] = {
+>>>   ATTRIBUTE_GROUPS(tc654);
+>>> +/* cooling device */
+>>> +
+>>> +static int tc654_get_max_state(struct thermal_cooling_device *cdev,
+>>> +                   unsigned long *state)
+>>> +{
+>>> +    *state = 255;
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static int tc654_get_cur_state(struct thermal_cooling_device *cdev,
+>>> +                   unsigned long *state)
+>>> +{
+>>> +    struct tc654_data *data = tc654_update_client(cdev->devdata);
+>>> +
+>>> +    if (IS_ERR(data))
+>>> +        return PTR_ERR(data);
+>>> +
+>>> +    *state = get_pwm(data);
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static int tc654_set_cur_state(struct thermal_cooling_device *cdev,
+>>> +                   unsigned long state)
+>>> +{
+>>> +    struct tc654_data *data = tc654_update_client(cdev->devdata);
+>>> +
+>>> +    if (IS_ERR(data))
+>>> +        return PTR_ERR(data);
+>>> +
+>>> +    return _set_pwm(data, clamp_val(state, 0, 255));
+>>> +}
+>>
+>> Looking into this further, wouldn't it be more appropriate to limit the
+>> cooling states to [0 .. 15], or in other words use data->duty_cycle
+>> directly ? I don't know how the thermal subsystem reacts if it requests
+>> to set the state to a certain value and the actual state is set to
+>> something completely different. Also, it doesn't seem to make much sense
+>> to bother the thermal subsystem with 256 states if the chip really only
+>> supports 16 states.
+> 
+> So there's more: Yes, the chip has 16 PWM states (from Duty Cycle 0=30%
+> to Duty Cycle 15=100% - each step has a linear 4,66...% increment).
+> The chip also has a "shutdown state/mode". where the FAN(s) are all turned
+> off (only the chip's I2C interface remains active for the wake-up signal).
+> 
+> This is why even the current pwm_show() looks so funny.
+> <https://github.com/torvalds/linux/blob/master/drivers/hwmon/tc654.c#L365-L380>
+> 
+> |static ssize_t pwm_show(struct device *dev, struct device_attribute *da,
+> |            char *buf)
+> |{
+> |    struct tc654_data *data = tc654_update_client(dev);
+> |    int pwm;
+> |
+> |    if (IS_ERR(data))
+> |        return PTR_ERR(data);
+> |---- from here ----
+> |    if (data->config & TC654_REG_CONFIG_SDM)
+> |        pwm = 0;
+> |    else
+> |        pwm = tc654_pwm_map[data->duty_cycle];
+> |---- to here ----
+> |    return sprintf(buf, "%d\n", pwm);
+> |}
+> 
+> If the chip is in that TC654_REG_CONFIG_SDM (SDM=Shutdown Mode), the PWM is 0%
+> and the fan is off. If it's not in TC654_REG_CONFIG_SDM, then that duty_cycle=0
+> gives you a PWM with 30%.
+> 
+> The same goes for the pwm_store. And yes, the current behavior through the
+> hwmon sysfs interface is a bit extreme:
+> 
+> pwm_store with val=0 => SDM engaged - Fans turn off.
+> pwm_store with val=1 => Fans are on 30%. (There's a steep cliff / steep climb)
+> ...
+> pwm_store with val=~78 > Fans are on 34%
+> ...
+> pwm_store with val=255 = Fans are on 100%
+> 
+> 
+> So, I would like to keep that shutdown state in there. The Fan on the
+> WNDR4700 is annoying and only needs to run from time to time.
+> 
+> For now, I fiddled around by adding +1 and -1 here and there. Another
+> option would be to extend the tc654_pwm_map. But this has the
+> consequence that it changes the existing behavior on the hwmon interface
+> as well.
+> 
+> I've inlined a preliminary git diff patch, if you want to take a peek
+> and maybe already have comments.
+> 
 
-Tested-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-Reviewed-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Couple of comments inline.
 
-On 12/23/21 22:52, Guenter Roeck wrote:
-> V1 -> V2:
->   * add device managed action for restoring config
->   * merge multiple small related patches into a single patch
->     that converts the driver to use devm_hwmon_device_register_with_info
->   * switch to devm_request_threaded_irq after switching to
->     devm_hwmon_device_register_with_info to make sure that it is impossible
->     for the interrupt handler to access the freed hwmon device
->   * drop core driver remove callback
+> I want to test this on the hardware, before sending out a version...
+> Which I only can do on weekends (so it will be a week, hope that's ok).
 > 
-> V2 -> V3:
->   * merge patch that passes name from i2c driver into the
->     devm_hwmon_device_register_with_info patch
+
+No worries.
+
+> Thanks,
+> Christian
+> ---
+> diff --git a/drivers/hwmon/tc654.c b/drivers/hwmon/tc654.c
+> index cf2a3acd5c91..f6b6375ffeaf 100644
+> --- a/drivers/hwmon/tc654.c
+> +++ b/drivers/hwmon/tc654.c
+> @@ -15,6 +15,7 @@
+>   #include <linux/module.h>
+>   #include <linux/mutex.h>
+>   #include <linux/slab.h>
+> +#include <linux/thermal.h>
+>   #include <linux/util_macros.h>
 > 
-> v3 -> v4:
->   * Use regmap to hide chip specifics and to cache register values
->   * Various minor changes and fixes
->     * With the use of regmap, the bus device (bus_dev) is no longer needed,
->       and the patch introducing it was dropped
->     * Hysteresis value calculations depend on two values: The associated
->       register value and the hysteresis itself. All calculations must be
->       protected to ensure that one value isn't changed during calculations.
->       Add the missing locks to both the hysteresis read and write functions.
->     * Restoring the original configuration is only necessary if it was
->       actually changed. Only call devm_add_action_or_reset() if that is the
->       case. This also lets us drop the associated check in the action
->       function.
->     * Use enum to index ADT7X10_REG_TEMP[]
->     * Check all attributes in is_visible function explicitly.
->       While this is strictly speaking not necessary (the mode for
->       unsupported attributes should not be requested), I find the explicit
->       checks easier to understand and less error prone.
->     * Drop linux/hwmon-sysfs.h include and add missing linux/device.h include
->     * Squash patches 6/7 (pass hwinfo dev to irq handler) and patch 7/7
->       (use hwmon_notify_event) into a single patch; otherwise bus_dev would
->       still be needed temporarily.
+>   enum tc654_regs {
+> @@ -384,28 +385,19 @@ static ssize_t pwm_show(struct device *dev, struct device_attribute *da,
+>       return sprintf(buf, "%d\n", pwm);
+>   }
 > 
->   Note: This version of the series was module tested for ADT7410, but not
->         on real hardware, and not for ADT7310/7320/7420.
+> -static ssize_t pwm_store(struct device *dev, struct device_attribute *da,
+> -             const char *buf, size_t count)
+> +static int _set_pwm(struct tc654_data *data, unsigned long val)
+>   {
+> -    struct tc654_data *data = dev_get_drvdata(dev);
+>       struct i2c_client *client = data->client;
+> -    unsigned long val;
+>       int ret;
+> 
+> -    if (kstrtoul(buf, 10, &val))
+> -        return -EINVAL;
+> -    if (val > 255)
+> -        return -EINVAL;
+> -
+>       mutex_lock(&data->update_lock);
+> 
+> -    if (val == 0)
+> +    if (val == 0) {
+>           data->config |= TC654_REG_CONFIG_SDM;
+> -    else
+> +    } else {
+>           data->config &= ~TC654_REG_CONFIG_SDM;
+> -
+> -    data->duty_cycle = find_closest(val, tc654_pwm_map,
+> -                    ARRAY_SIZE(tc654_pwm_map));
+> +        data->duty_cycle = val - 1;
+> +    }
+
+This does change existing behavior a bit: The current code always sets
+(and thus updates) TC654_REG_DUTY_CYCLE, and sets it to 0 even when setting
+TC654_REG_CONFIG_SDM. With the above change, that is no longer the case,
+and TC654_REG_DUTY_CYCLE is kept at whatever the previous value was.
+Maybe that has no impact, but it might be safer to clear data->duty_cycle
+when setting TC654_REG_CONFIG_SDM.
+
+> 
+>       ret = i2c_smbus_write_byte_data(client, TC654_REG_CONFIG, data->config);
+>       if (ret < 0)
+> @@ -416,6 +408,24 @@ static ssize_t pwm_store(struct device *dev, struct device_attribute *da,
+> 
+>   out:
+>       mutex_unlock(&data->update_lock);
+> +    return ret;
+> +}
+> +
+> +static ssize_t pwm_store(struct device *dev, struct device_attribute *da,
+> +             const char *buf, size_t count)
+> +{
+> +    struct tc654_data *data = dev_get_drvdata(dev);
+> +    unsigned long val;
+> +    int ret;
+> +
+> +    if (kstrtoul(buf, 10, &val))
+> +        return -EINVAL;
+> +    if (val > 255)
+> +        return -EINVAL;
+> +    if (val > 0)
+> +        val = find_closest(val, tc654_pwm_map, ARRAY_SIZE(tc654_pwm_map)) + 1;
+> +
+> +    ret = _set_pwm(data, val);
+>       return ret < 0 ? ret : count;
+>   }
+> 
+> @@ -447,6 +457,56 @@ static struct attribute *tc654_attrs[] = {
+> 
+>   ATTRIBUTE_GROUPS(tc654);
+> 
+> +/* thermal cooling device functions
+
+/*
+  * Please use standard multi-line comments. This is not the networking subsystem.
+  */
+
+> + *
+> + * Account for the "ShutDown Mode (SDM)" state by offseting
+
+offsetting
+
+> + * the 16 PWM duty cycle states by 1.
+> + *
+> + * State  0 =   0% PWM | Shutdown - Fan(s) are off
+> + * State  1 =  30% PWM | duty_cycle =  0
+> + * State  2 = ~35% PWM | duty_cycle =  1
+> + * [...]
+> + * State 15 = ~95% PWM | duty_cycle = 14
+> + * State 16 = 100% PWM | duty_cycle = 15
+> + */
+> +#define TC654_MAX_COOLING_STATES    16
+
+TC654_MAX_COOLING_STATES is misleading; it is really the maximum cooling state,
+not the number of cooling states. Please drop the "S".
+
+> +
+> +static int tc654_get_max_state(struct thermal_cooling_device *cdev, unsigned long *state)
+> +{
+> +    return TC654_MAX_COOLING_STATES;
+> +}
+> +
+> +static int tc654_get_cur_state(struct thermal_cooling_device *cdev, unsigned long *state)
+> +{
+> +    struct tc654_data *data = tc654_update_client(cdev->devdata);
+> +
+> +    if (IS_ERR(data))
+> +        return PTR_ERR(data);
+> +
+> +    if (data->config & TC654_REG_CONFIG_SDM)
+> +        *state = 0;    /* FAN is off */
+> +    else
+> +        *state = data->duty_cycle + 1;    /* offset PWM States by 1 */
+> +
+> +    return 0;
+> +}
+> +
+> +static int tc654_set_cur_state(struct thermal_cooling_device *cdev, unsigned long state)
+> +{
+> +    struct tc654_data *data = tc654_update_client(cdev->devdata);
+> +
+> +    if (IS_ERR(data))
+> +        return PTR_ERR(data);
+> +
+> +    return _set_pwm(data, clamp_val(state, 0, TC654_MAX_COOLING_STATES));
+> +}
+> +
+> +static const struct thermal_cooling_device_ops tc654_fan_cool_ops = {
+> +    .get_max_state = tc654_get_max_state,
+> +    .get_cur_state = tc654_get_cur_state,
+> +    .set_cur_state = tc654_set_cur_state,
+> +};
+> +
+>   /*
+>    * device probe and removal
+>    */
+> @@ -477,7 +537,18 @@ static int tc654_probe(struct i2c_client *client)
+>       hwmon_dev =
+>           devm_hwmon_device_register_with_groups(dev, client->name, data,
+>                              tc654_groups);
+> -    return PTR_ERR_OR_ZERO(hwmon_dev);
+> +    if (IS_ERR(hwmon_dev))
+> +        return PTR_ERR(hwmon_dev);
+> +
+> +    if (IS_ENABLED(CONFIG_THERMAL)) {
+> +        struct thermal_cooling_device *cdev;
+> +
+> +        cdev = devm_thermal_of_cooling_device_register(dev, dev->of_node, client->name,
+> +                                   hwmon_dev, &tc654_fan_cool_ops);
+> +        return PTR_ERR_OR_ZERO(cdev);
+> +    }
+> +
+> +    return 0;
+>   }
+> 
+>   static const struct i2c_device_id tc654_id[] = {
+> ---
+
