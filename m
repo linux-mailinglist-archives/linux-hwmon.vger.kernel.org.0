@@ -2,40 +2,37 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE5B4AC8DE
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Feb 2022 19:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE4A4AC8F3
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Feb 2022 19:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232011AbiBGSwT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 7 Feb 2022 13:52:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33452 "EHLO
+        id S234759AbiBGS5K (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 7 Feb 2022 13:57:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235927AbiBGSva (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Feb 2022 13:51:30 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2FABC0401DA;
-        Mon,  7 Feb 2022 10:51:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=YjnxRU9OsPHWFPB45I1omyCSwPagOekaYsZVmBqtP5Y=; b=Bmva/cOPXrRluFmWOKioi5vMqp
-        DGjVCFFUfrcyOKSesEGKFY4bzyTtp+0K6F9jUhsCUgP7gzNOYDIysro5PeAcq30EsEl7tyC6l7FpE
-        HVrhcsBDkXyoWaJV5aD+fodgQ67U/bRDwGI9gXVtl2KwB1LFxoGPntTK5IJkS0G3vWM2kVC/y1gQE
-        T0qofu2kIQ5G+hLsQh0whyWK9MF+IZHCpWU4fw5tawKYtmctPczvOpmT0qD/xhhWNWnWj4RjZVvzr
-        uyFNfivxVVAlxvJZLzph92Ekss0THyo2svpr5S+4UWTbxB8caXw9hzN6CMzy1T1vI4eAdcjzmMJaw
-        7fDRj2Tw==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nH96l-001nqs-SX; Mon, 07 Feb 2022 18:51:28 +0000
-Message-ID: <d38afc1a-331f-ff0e-be81-71bec617d85c@infradead.org>
-Date:   Mon, 7 Feb 2022 10:51:22 -0800
+        with ESMTP id S236907AbiBGSxy (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Feb 2022 13:53:54 -0500
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.148])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5455C0401E0
+        for <linux-hwmon@vger.kernel.org>; Mon,  7 Feb 2022 10:53:53 -0800 (PST)
+Received: (wp-smtpd smtp.tlen.pl 9078 invoked from network); 7 Feb 2022 19:53:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1644260031; bh=C7fW8I2zJOoNbXcMCI53B+cZB01UmuIiKpOEwjmOTfs=;
+          h=Subject:To:Cc:From;
+          b=d0aTf10SHoLYHl5f1uWt9vhYjAH8ZvuwEG6b98/iqXbQPCm3xoYS8tW8zZ4PLKGnl
+           eDOz+4fvms8RQrRz6xS6+ynlISSCIANA8ASHliYZhLvNczqT9pzGNvw3V4FQWgQSxA
+           lQEn10mmymxtNtj+XBWZV/1K82VvpZsTojewJYRg=
+Received: from aaem217.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.116.217])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <linux-kernel@vger.kernel.org>; 7 Feb 2022 19:53:50 +0100
+Message-ID: <d5cedee5-5f1e-8a11-1f4d-82e43f0753ed@o2.pl>
+Date:   Mon, 7 Feb 2022 19:53:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
+ Thunderbird/91.5.1
 Subject: Re: [PATCH 1/2] x86/Kconfig: move and modify CONFIG_I8K
-Content-Language: en-US
-To:     =?UTF-8?Q?Mateusz_Jo=c5=84czyk?= <mat.jonczyk@o2.pl>,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
+Content-Language: en-GB
+To:     linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-hwmon@vger.kernel.org
 Cc:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -46,13 +43,16 @@ Cc:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>
 References: <20220207182940.242838-1-mat.jonczyk@o2.pl>
-From:   Randy Dunlap <rdunlap@infradead.org>
+From:   =?UTF-8?Q?Mateusz_Jo=c5=84czyk?= <mat.jonczyk@o2.pl>
 In-Reply-To: <20220207182940.242838-1-mat.jonczyk@o2.pl>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-WP-MailID: e0a24d67e65ad5b12b7fef12da7af879
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [8UM0]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,22 +60,17 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi--
-
-I like it. (I had a note to myself to do this also.)
-
-
-On 2/7/22 10:29, Mateusz Jończyk wrote:
+W dniu 07.02.2022 o 19:29, Mateusz Jończyk pisze:
 > In Kconfig, inside the "Processor type and features" menu, there is
 > the CONFIG_I8K option: "Dell i8k legacy laptop support". This is
 > very confusing - enabling CONFIG_I8K is not required for the kernel to
 > support old Dell laptops. This option is specific to the dell-smm-hwmon
 > driver, which mostly exports some hardware monitoring information and
 > allows the user to change fan speed.
-> 
+>
 > This option is misplaced, so move CONFIG_I8K to drivers/hwmon/Kconfig,
 > where it belongs.
-> 
+>
 > Also, modify the dependency order - change
 >         select SENSORS_DELL_SMM
 > to
@@ -83,15 +78,15 @@ On 2/7/22 10:29, Mateusz Jończyk wrote:
 > as it is just a configuration option of dell-smm-hwmon. This includes
 > changing the option type from tristate to bool. It was tristate because
 > it could select CONFIG_SENSORS_DELL_SMM=m .
-> 
+>
 > When running "make oldconfig" on configurations with
 > CONFIG_SENSORS_DELL_SMM enabled , this change will result in an
 > additional question (which could be printed several times during
 > bisecting). I think that tidying up the configuration is worth it,
 > though.
-> 
+>
 > Next patch tweaks the description of CONFIG_I8K.
-> 
+>
 > Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
 > Cc: Pali Rohár <pali@kernel.org>
 > Cc: Thomas Gleixner <tglx@linutronix.de>
@@ -106,7 +101,7 @@ On 2/7/22 10:29, Mateusz Jończyk wrote:
 >  arch/x86/Kconfig      | 17 -----------------
 >  drivers/hwmon/Kconfig | 15 +++++++++++++++
 >  2 files changed, 15 insertions(+), 17 deletions(-)
-> 
+>
 > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
 > index 9f5bd41bf660..71d4ddd48c02 100644
 > --- a/arch/x86/Kconfig
@@ -146,22 +141,16 @@ On 2/7/22 10:29, Mateusz Jończyk wrote:
 > +config I8K
 > +	bool "Dell i8k legacy laptop support"
 > +	depends on SENSORS_DELL_SMM
+
+Oops, I dropped "depends on PROC_FS". Will fix this in next revision.
+
 > +	help
 > +	  This option enables legacy /proc/i8k userspace interface in hwmon
 > +	  dell-smm-hwmon driver. Character file /proc/i8k reports bios version,
-
-	                                                          BIOS
-
 > +	  temperature and allows controlling fan speeds of Dell laptops via
 > +	  System Management Mode. For old Dell laptops (like Dell Inspiron 8000)
 > +	  it reports also power and hotkey status. For fan speed control is
 > +	  needed userspace package i8kutils.
-
-Last sentence above is awkward. How about:
-
-	  it also reports power and hotkey status. For fan speed control, the
-	  i8kutils userspace package is needed.
-
 > +
 > +	  Say Y if you intend to run this kernel on old Dell laptops or want to
 > +	  use userspace package i8kutils.
@@ -171,9 +160,7 @@ Last sentence above is awkward. How about:
 >  	tristate "Dialog DA9052/DA9053 ADC"
 >  	depends on PMIC_DA9052
 
+Greetings,
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Mateusz
 
-thanks.
--- 
-~Randy
