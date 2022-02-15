@@ -2,65 +2,55 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 008D64B75BF
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Feb 2022 21:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FBB04B753E
+	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Feb 2022 21:47:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243433AbiBOTMM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 15 Feb 2022 14:12:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54048 "EHLO
+        id S243614AbiBOTT5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 15 Feb 2022 14:19:57 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243407AbiBOTMB (ORCPT
+        with ESMTP id S243606AbiBOTT4 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 15 Feb 2022 14:12:01 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A747D001;
-        Tue, 15 Feb 2022 11:11:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1644952292;
-        bh=/eV7B6nrTJsDMEC0tTMXkXZvwysGHhyPjyGcel2jtG8=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=OYyQtFa+u82O/ty5Op/RvnngfxFHUrRzGCpNlT+e4ks0KIOqoUB8XtdLhYF4ghpK1
-         SGlux5Ms6VHy2ehKV05NDiDcpgjTvhx7e0JNNOtn68VxotjJL9PM0JZYZjbxnXxL9p
-         pYR1xy7Pfhd/a2GE9MS0kOpxM3x8du8sHOYvdfCA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1N1wlv-1oGvJF1VUn-012Kgc; Tue, 15 Feb 2022 20:11:32 +0100
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     pali@kernel.org
+        Tue, 15 Feb 2022 14:19:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6281C111FA6;
+        Tue, 15 Feb 2022 11:19:45 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2A9A61786;
+        Tue, 15 Feb 2022 19:19:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD28C340EB;
+        Tue, 15 Feb 2022 19:19:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644952784;
+        bh=cQeVp2Uorr1VqCWrtUYRdec9lyODCH6aCatH65p8hvM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cInfFJZJtE4Yu/SlazAQPEPheZIU4zU8o4fuITT5GU4mHLGWrpOty3uY+xf0beAmo
+         bZBel0LtkoCziJzxmx/PpRxIiRcs866tLJcd71L+zP6UpF0FFraB034xXR1L7w10L2
+         PTFdXN7uNPPwPOUVaPtnsZXCiALXMg6vg0oy32N1dJpq3kLc37jg4eM53xqUl05Aeh
+         d5YH16VmN4VzDaP3Vw5Qhmko4KHojTLCFA6C1sYcGM2EtiTLCg/13FSfz2Ts6DwY6y
+         MwA4+FZneMOr+mAtcmMR4nIp9Mx5Wof4cv6syhzJFPNYLerKGVxj5UMnUg5hLAb4li
+         QrejTbVH2TRHw==
+Received: by pali.im (Postfix)
+        id B0700F13; Tue, 15 Feb 2022 20:19:41 +0100 (CET)
+Date:   Tue, 15 Feb 2022 20:19:41 +0100
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Armin Wolf <W_Armin@gmx.de>
 Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] hwmon: (dell-smm) Reword and mark parameter "force" as unsafe
-Date:   Tue, 15 Feb 2022 20:11:13 +0100
-Message-Id: <20220215191113.16640-8-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220215191113.16640-1-W_Armin@gmx.de>
+Subject: Re: [PATCH 1/7] hwmon: (dell-smm) Allow for specifying fan control
+ method as module parameter
+Message-ID: <20220215191941.azk5gpcn42ahcnna@pali>
 References: <20220215191113.16640-1-W_Armin@gmx.de>
+ <20220215191113.16640-2-W_Armin@gmx.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7ISU5hKPe7evY9qmt1TMbBMXI1ApEqd0bkfnSvgIh8Lb6ZCHpuk
- moCZk5IfXhdUDyyXdbAI4LgCQQoEmfNv/Cz0+VzkNPUB+FmU60IpKRRtiQd7mUQqPgzpufE
- Q4RXsen1hWEhnzqLiqhuY6BBz1gyuLBvySErxpFbZyHWtEshuk7YrG7gOxtnYOWuDoVWYyu
- +PAUrRqmkPxE4K9xv3Ohg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Gq5iSvW7Glc=:8jfwzbfJW0xHAV0d0ZCrdk
- hLUFlDuhGiHUA34cU6vexpzsgslpsc9Yxd2ZiZc1OM0WsOQ5aVCji6qi6cHJ6g4cppleuSVmV
- QY+lwK8QAZh0BeHQpVBDNcd3+PR+Hdet0c64s9fRp5I0A3N+R+wGdi3ceeIcLGrvyr1vtqjpI
- y6bTt3WEU0v/SqLsVR7oE4iJaq/FR9F0ZbhUjaTcYZ5nrC1+FebI+Kev0Y2png2lB7slhpN5b
- OPMs3Q5LtOYVDcB90gnNnYTqZwpHwr1lfNkMw3+3QQ+S1Uwjbqy+mdsGZ/70CM1Jki+aZQgM+
- pl8eLu8aSiarETTbGl7Nm00Ncsl6icJXtbyTF8Kintir30JX8NAEckmZkvCZgMpmDGo1jkzpH
- vQehC5OhudVB/8vw4rrpYwR1iwscRFZlmfb8npLwyiRDMTXcvevkHpuhzMQSn1NzeyvZKsq2P
- 1zl2fvYKaSDYohTodeSQ8HQE4MK6U6oUSWwiQICj/VjUQhz+ohNUwVIS3H5lWh0nuddzosved
- jpv/rZ3Wau2v1s+Z2xxG8FIHTsd1CzqioCrSgYObHTBAM5kyGGeYgOFS4JyLTDk7TFTMG5PJn
- RIN7vDWDW2f7lcW6O4RMsRXgzGuLqndhfpyQfnzvDOPFF9ci1vZW6U6yvHgFUpds1I2YZGCOC
- 4NG+btVVQafohVLVJ8vnQnj5S2835O2LBeXMaRFGr0bmSUV8liY7Mmn2pY2nugtSv7LEZrW4w
- TLpe3nWWfimFDNo+/hbOdXpOwK6a8cf4WyJW3LJ8ngna/u/XhAtMYeKlQfMgmugsHd16ucm29
- Lqe/x2eXnlVR5N+iNLyIaoG3jjyFXLTHbjL9TdzGCma7INvSl02rRJhrZ8WWqz+PR5hgYSegi
- 3Koi1LdY+mJLy+NSQo5d/ybetTLRmpGvoGjB+h9g/v3+T8fCYd2PMxP58Rn1UXRZSRUmE2soU
- 4MapHt4JfcbdsMuNfbj1Kv2/Nil9v5gKe+eS1PSFMjIhWozOh26jVrttf5uaCd5/WLVVT0pKF
- wELUeFVxIoTmIObzGbqI1DVlnJZiK9Bu+k/GHOiTgO4UIvBDI44rZAJ0MDIKamsK6vz640XBo
- Kgwvj74nsPjpCI=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220215191113.16640-2-W_Armin@gmx.de>
+User-Agent: NeoMutt/20180716
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,42 +59,138 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-When enabling said module parameter, the driver ignores
-all feature blacklists on relevant models, which has the
-potential for strange side effects. Also there seems to
-be a slight chance for unsupported devices to behave
-badly when probed for features.
-In such cases, the kernel should be tainted to inform
-people that these issues might have been caused by
-the dell_smm_hwmon driver with "force" enabled.
-Also reword the parameter description to remind users
-that enabling "force" also enables blacklisted features.
+On Tuesday 15 February 2022 20:11:07 Armin Wolf wrote:
+> Right now, the only way to test if setting manual/auto fan control works
+> is to edit and recompile the module, which may be too cumbersome for
+> the average user.
 
-Tested on a Dell Inspiron 3505.
+There is also another way suitable for testing purposes which do not
+requires any kernel patch. Call iopl(3) syscall which changes I/O
+privilege level to 3 and which allows to poke I/O registers.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Allow for specifying the desired fan mode control method when loading
+> the module, but taint the kernel if so since there is the possibility
+> for strange side effects on non-whitelisted models.
+> Also update docs and kernel-parameters.txt accordingly.
+> 
+> Tested on a Dell Inspiron 3505.
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  3 +++
+>  Documentation/hwmon/dell-smm-hwmon.rst        | 21 ++++++++++------
+>  drivers/hwmon/dell-smm-hwmon.c                | 25 +++++++++++++------
+>  3 files changed, 35 insertions(+), 14 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index d68053db21cc..4f1b6c2b7ed1 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -968,6 +968,9 @@
+>  	dell_smm_hwmon.fan_max=
+>  			[HW] Maximum configurable fan speed.
+> 
+> +	dell_smm_hwmon.fan_mode_method=
+> +			[HW] Method to use for changing fan mode.
+> +
+>  	dfltcc=		[HW,S390]
+>  			Format: { on | off | def_only | inf_only | always }
+>  			on:       s390 zlib hardware support for compression on
+> diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
+> index beec88491171..564d99cda869 100644
+> --- a/Documentation/hwmon/dell-smm-hwmon.rst
+> +++ b/Documentation/hwmon/dell-smm-hwmon.rst
+> @@ -67,13 +67,16 @@ for your hardware. It is possible that codes that work for other
+>  laptops actually work for yours as well, or that you have to discover
+>  new codes.
+> 
+> -Check the list ``i8k_whitelist_fan_control`` in file
+> -``drivers/hwmon/dell-smm-hwmon.c`` in the kernel tree: as a first
+> -attempt you can try to add your machine and use an already-known code
+> -pair. If, after recompiling the kernel, you see that ``pwm1_enable``
+> -is present and works (i.e., you can manually control the fan speed),
+> -then please submit your finding as a kernel patch, so that other users
+> -can benefit from it. Please see
+> +As a first step, you can load the module with the module parameter
+> +``fan_mode_method`` set to 1 to test if your hardware works with
+> +an already know method for disabling automatic BIOS fan control.
+> +If ``pwm1_enable`` is now present and works (i.e., you can
+> +manually control the fan speed), then please submit your finding
+> +as a kernel patch, so that other users can benefit from it.
+> +Just add your model to the list ``i8k_whitelist_fan_control`` in
+> +file ``drivers/hwmon/dell-smm-hwmon.c`` in the kernel tree and use
+> +the already known code pair.
+> +Please read
+>  :ref:`Documentation/process/submitting-patches.rst <submittingpatches>`
+>  for information on submitting patches.
+> 
+> @@ -120,6 +123,10 @@ Module parameters
+>                     Maximum configurable fan speed. (default:
+>                     autodetect)
+> 
+> +* fan_mode_method:uint
+> +                   Method to use for changing fan mode (default:
+> +                   from whitelist)
+> +
+>  Legacy ``/proc`` interface
+>  --------------------------
+> 
+> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+> index 9949eeb79378..1c4cc516c8b2 100644
+> --- a/drivers/hwmon/dell-smm-hwmon.c
+> +++ b/drivers/hwmon/dell-smm-hwmon.c
+> @@ -111,6 +111,10 @@ static uint fan_max;
+>  module_param(fan_max, uint, 0);
+>  MODULE_PARM_DESC(fan_max, "Maximum configurable fan speed (default: autodetect)");
+> 
+> +static uint fan_mode_method;
+> +module_param_unsafe(fan_mode_method, uint, 0);
+> +MODULE_PARM_DESC(fan_mode_method, "Method to use for changing fan mode (default: from whitelist)");
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index 04a41d59da60..67d63932b48a 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -87,8 +87,8 @@ MODULE_LICENSE("GPL");
- MODULE_ALIAS("i8k");
+No, please really do not introduce another kernel parameter for this
+driver. There are already many and we do not need to extend this list.
 
- static bool force;
--module_param(force, bool, 0);
--MODULE_PARM_DESC(force, "Force loading without checking for supported mod=
-els");
-+module_param_unsafe(force, bool, 0);
-+MODULE_PARM_DESC(force, "Force loading without checking for supported mod=
-els and features");
-
- static bool ignore_dmi;
- module_param(ignore_dmi, bool, 0);
-=2D-
-2.30.2
-
+> +
+>  struct smm_regs {
+>  	unsigned int eax;
+>  	unsigned int ebx;
+> @@ -677,7 +681,7 @@ static umode_t dell_smm_is_visible(const void *drvdata, enum hwmon_sensor_types
+> 
+>  			break;
+>  		case hwmon_pwm_enable:
+> -			if (data->auto_fan)
+> +			if (data->auto_fan && data->manual_fan)
+>  				/*
+>  				 * There is no command for retrieve the current status
+>  				 * from BIOS, and userspace/firmware itself can change
+> @@ -1282,14 +1286,21 @@ static int __init dell_smm_probe(struct platform_device *pdev)
+>  	data->i8k_fan_max = fan_max ? : I8K_FAN_HIGH;	/* Must not be 0 */
+>  	data->i8k_pwm_mult = DIV_ROUND_UP(255, data->i8k_fan_max);
+> 
+> -	fan_control = dmi_first_match(i8k_whitelist_fan_control);
+> -	if (fan_control && fan_control->driver_data) {
+> -		const struct i8k_fan_control_data *control = fan_control->driver_data;
+> +	/* value specified via module param overrides whitelist */
+> +	if (fan_mode_method > 0 && fan_mode_method <= ARRAY_SIZE(i8k_fan_control_data)) {
+> +		data->manual_fan = i8k_fan_control_data[fan_mode_method - 1].manual_fan;
+> +		data->auto_fan = i8k_fan_control_data[fan_mode_method - 1].auto_fan;
+> +	} else {
+> +		fan_control = dmi_first_match(i8k_whitelist_fan_control);
+> +		if (fan_control && fan_control->driver_data) {
+> +			const struct i8k_fan_control_data *control = fan_control->driver_data;
+> 
+> -		data->manual_fan = control->manual_fan;
+> -		data->auto_fan = control->auto_fan;
+> -		dev_info(&pdev->dev, "enabling support for setting automatic/manual fan control\n");
+> +			data->manual_fan = control->manual_fan;
+> +			data->auto_fan = control->auto_fan;
+> +		}
+>  	}
+> +	if (data->manual_fan && data->auto_fan)
+> +		dev_info(&pdev->dev, "enabling support for setting automatic/manual fan control\n");
+> 
+>  	if (!fan_mult) {
+>  		/*
+> --
+> 2.30.2
+> 
