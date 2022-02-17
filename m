@@ -2,81 +2,58 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4274BA60C
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Feb 2022 17:36:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D94C34BA628
+	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Feb 2022 17:39:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241264AbiBQQfc (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 17 Feb 2022 11:35:32 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38658 "EHLO
+        id S243080AbiBQQkG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 17 Feb 2022 11:40:06 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243263AbiBQQfb (ORCPT
+        with ESMTP id S239518AbiBQQkG (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 17 Feb 2022 11:35:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5AA612B2E06
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Feb 2022 08:35:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1645115716;
+        Thu, 17 Feb 2022 11:40:06 -0500
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E842B2FD7;
+        Thu, 17 Feb 2022 08:39:50 -0800 (PST)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:105:465:1:3:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4K00sw4FKDz9sYX;
+        Thu, 17 Feb 2022 17:39:48 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
+        t=1645115986;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c2fq/Ny4lMJaIMatRd00hK6MYEHazev14fwhUdBFReI=;
-        b=f/ASZwQzKkhi9PI2IXiMlOH/VWH/XCCGOs7VRLaxRB5AN9aakkft+FdRpXXYfKevAeRNEW
-        ERKS8xVi0c0Md21jYZVdHZgwONevVFkcFFq7y3qpMfp0ph+urYmKwnVjtwXCdv/hRQVjxJ
-        I98EZGKbeJy/vS4J7pGdB6/QaIuVxWE=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-618-Goo2CVAKNku-7M_VOElLuw-1; Thu, 17 Feb 2022 11:35:15 -0500
-X-MC-Unique: Goo2CVAKNku-7M_VOElLuw-1
-Received: by mail-ej1-f70.google.com with SMTP id o4-20020a170906768400b006a981625756so1804914ejm.0
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Feb 2022 08:35:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=c2fq/Ny4lMJaIMatRd00hK6MYEHazev14fwhUdBFReI=;
-        b=Da3POCATEOzPdW3AHQaOqIiHE4BOIKJFwqooCPHj05rr0C8PbAMlVwZCiXS+/rAND0
-         BHWiOtq8BiSprbdMtaRIkb1zeebZK8P0T2iCklneODWWPytkYCo+ni/THLVUNnPzOtKX
-         nBgRLRG/HEDvgI6XVbbP2oXzrViaRWjaEjVg1njaYV/aIvuAkB7EpmyZTgxoAjj4Dqpf
-         sjji6annbuigIKdCJEaqxYO2DYESGQiwgLIgeEze4KznTTlK3c09BdvA1ac3n4Uk1G6E
-         JXchtxJpHAidi/MLTUFY2oZ5PPQx3Bim+EmWqzF9Tj5WCBx0K3kJlt37bdj1nXdMtycd
-         oXdQ==
-X-Gm-Message-State: AOAM530zu+3kgdhKFiAbDwEBanSUods7cwmz8Xz6r/fvIj6R5/ooEsBn
-        5rdwCLWJlAhly09Iq6qLw2afSci8O6IQlCER5+W/pacKu9zV89AGyKq3V8Owo51HzOcijeMOc88
-        XVztdb2CBlbWvPhFUb6+GhC4=
-X-Received: by 2002:a50:d79d:0:b0:410:82a0:5d76 with SMTP id w29-20020a50d79d000000b0041082a05d76mr3531292edi.130.1645115713910;
-        Thu, 17 Feb 2022 08:35:13 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwy1XOj60hZ2Xgf9leB0ov3CtVqqw7iUj8h3GXaY1TNAUOjvJWy/8ifdMYStkE127/Ixy5g6A==
-X-Received: by 2002:a50:d79d:0:b0:410:82a0:5d76 with SMTP id w29-20020a50d79d000000b0041082a05d76mr3531272edi.130.1645115713760;
-        Thu, 17 Feb 2022 08:35:13 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id q5sm1319255ejc.115.2022.02.17.08.35.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Feb 2022 08:35:13 -0800 (PST)
-Message-ID: <2482eae0-ad8c-3fda-1d0e-f8794c50192d@redhat.com>
-Date:   Thu, 17 Feb 2022 17:35:12 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] platform/x86: Add Steam Deck driver
-Content-Language: en-US
-To:     Andrey Smirnov <andrew.smirnov@gmail.com>,
-        platform-driver-x86@vger.kernel.org
-Cc:     Mark Gross <markgross@kernel.org>,
+        bh=VKMYfIYEKaO/AzJDq7YrqWp6caWHvpKI3f237QWlRnk=;
+        b=qJ7CRQ26R9aRwRfGUMDqGnjIbKh5IktR3F3AfNPngw9wmBwuwYd/GNRq/AL1EtOeAZYo4Z
+        JzcY0KZyDU4YwShOTaVEE2UQbQCbrRIZd2LiBXCqKP15W6fEICl7H0US8IzKLGBJtonSsw
+        HHwR97z2TB8mNmmufhu2lkuJ1H1ZoLJsbfB2KsiOGFionLdtKqkU7cbhbijvBzhMSafvVd
+        jqdo0vLCujR4oqP0HPJg2BFdt9EXhn5WxcbQ0SRwrnW/nl6o+IpPfpEeSss9u/2ROyHEnd
+        8hZDGqmlGfzHNwcVjuOq0g0k4WmfQ9dsAU28Yr5MVFXihqW1P7oclEdb+Ps7Tw==
+Message-ID: <246de83631dd5e165f95904d7f1628502f030e02.camel@sylv.io>
+Subject: Re: [PATCH v2 2/3] hwmon (xdpe12284): Add support for xdpe11280
+From:   sylv <sylv@sylv.io>
+To:     Guenter Roeck <linux@roeck-us.net>,
         Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-References: <20220206022023.376142-1-andrew.smirnov@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220206022023.376142-1-andrew.smirnov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-doc@vger.kernel.org
+Date:   Thu, 17 Feb 2022 17:39:41 +0100
+In-Reply-To: <f1e13a4e-2e86-1d53-f34d-a04838e8e8f9@roeck-us.net>
+References: <cover.1645108566.git.sylv@sylv.io>
+         <6103836f1116a045a25919ae3e5c18dfdc485902.1645108566.git.sylv@sylv.io>
+         <f1e13a4e-2e86-1d53-f34d-a04838e8e8f9@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,66 +61,152 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi,
+On Thu, 2022-02-17 at 07:20 -0800, Guenter Roeck wrote:
+> On 2/17/22 06:41, Marcello Sylvester Bauer wrote:
+> > Add support for another family of Infineon Multi-phase controllers.
+> > The xdpe11280 uses linear instead of vid data format for VOUT.
+> > Add the required logic to detect VOUT_MODE during identification,
+> > and set the format accordingly.
+> > 
+> This talks about the chip, but ...
 
-On 2/6/22 03:20, Andrey Smirnov wrote:
-> Add a driver exposing various bits and pieces of functionality
-> provided by Steam Deck specific VLV0100 device presented by EC
-> firmware. This includes but not limited to:
+Oh, sure. I should be more clear that it is a chip of a different
+family.
+
 > 
->     - CPU/device's fan control
->     - Read-only access to DDIC registers
->     - Battery tempreature measurements
->     - Various display related control knobs
->     - USB Type-C connector event notification
+> > Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
+> > ---
+> >   Documentation/hwmon/xdpe12284.rst | 10 +++++++---
+> >   drivers/hwmon/pmbus/xdpe12284.c   | 17 ++++++++++++++++-
+> >   2 files changed, 23 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/Documentation/hwmon/xdpe12284.rst
+> > b/Documentation/hwmon/xdpe12284.rst
+> > index 67d1f87808e5..e9a5a19b0c3d 100644
+> > --- a/Documentation/hwmon/xdpe12284.rst
+> > +++ b/Documentation/hwmon/xdpe12284.rst
+> > @@ -5,6 +5,10 @@ Kernel driver xdpe122
+> >   
+> >   Supported chips:
+> >   
+> > +  * Infineon XDPE11280
+> > +
+> > +    Prefix: 'xdpe11280'
+> > +
+> >     * Infineon XDPE12254
+> >   
+> >       Prefix: 'xdpe12254'
+> > @@ -20,9 +24,9 @@ Authors:
+> >   Description
+> >   -----------
+> >   
+> > -This driver implements support for Infineon Multi-phase XDPE122
+> > family
+> > -dual loop voltage regulators.
+> > -The family includes XDPE12284 and XDPE12254 devices.
+> > +This driver implements support for Infineon Multi-phase XDPE112
+> > and XDPE122
+> > +family dual loop voltage regulators.
+> > +These families include XDPE11280, XDPE12284 and XDPE12254 devices.
+> >   The devices from this family complaint with:
 > 
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: Mark Gross <markgross@kernel.org>
-> Cc: Jean Delvare <jdelvare@suse.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: linux-kernel@vger.kernel.org (open list)
-> Cc: platform-driver-x86@vger.kernel.org
-> Cc: linux-hwmon@vger.kernel.org
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> Hmm, s/complaint/compliant/.
 
-The .c file says: "Copyright (C) 2021-2022 Valve Corporation", yet
-you use a personal email address here. This is not really a problem,
-but it does look a bit weird.
+ack
 
-> ---
 > 
-> This driver is really a kitchen sink of various small bits. Maybe it
-> is worth splitting into an MFD + child drivers/devices?
+> Anyway, is it still correct that the XDPE11280 is compliant with the
+> Intel specifications ? The datasheet isn't public, so I can not check
+> myself
+> what the chip actually supports.
 
-With the extcon stuff thrown in the mix I think you definitely should
-go for using MFD here.
+The hardware we are testing on is an Intel Cascade Lake, which uses
+this chip. The datasheet tells us it is compliant:
 
-Then you can submit a MFD driver under drivers/mfd for registering the
-regmap + the cells + separate extcon + LED + backlight + hwmon drivers to
-their resp. subsystems.
+```
+The XDPE11280B implements a fully compliant Intel® VR 13, VR12, VR
+12.5, VR13.HC, and IMVP8 Serial VID (SVID)
+interface.
+```
 
-As drivers/platform/x86/ maintainer I would be happy to take a driver
-for a "misc" cell for any remaining bits if there are any...
+> 
+> >   
+> >   - Intel VR13 and VR13HC rev 1.3, IMVP8 rev 1.2 and IMPVP9 rev 1.3
+> > DC-DC
+> > diff --git a/drivers/hwmon/pmbus/xdpe12284.c
+> > b/drivers/hwmon/pmbus/xdpe12284.c
+> > index b07da06a40c9..ec947c697670 100644
+> > --- a/drivers/hwmon/pmbus/xdpe12284.c
+> > +++ b/drivers/hwmon/pmbus/xdpe12284.c
+> > @@ -27,6 +27,9 @@ static int xdpe122_read_word_data(struct
+> > i2c_client *client, int page,
+> >         s32 mantissa;
+> >         int ret;
+> >   
+> > +       if (info->format[PSC_VOLTAGE_OUT] == linear)
+> > +               return -ENODATA;
+> > +
+> >         switch (reg) {
+> >         case PMBUS_VOUT_OV_FAULT_LIMIT:
+> >         case PMBUS_VOUT_UV_FAULT_LIMIT:
+> > @@ -75,9 +78,19 @@ static int xdpe122_read_word_data(struct
+> > i2c_client *client, int page,
+> >   static int xdpe122_identify(struct i2c_client *client,
+> >                             struct pmbus_driver_info *info)
+> >   {
+> > -       u8 vout_params;
+> > +       u8 vout_mode, vout_params;
+> >         int i, ret;
+> >   
+> > +       ret = pmbus_read_byte_data(client, 0, PMBUS_VOUT_MODE);
+> > +       if (ret < 0)
+> > +               return ret;
+> > +
+> > +       vout_mode = ret >> 5;
+> > +       if (vout_mode == 0) {
+> > +               info->format[PSC_VOLTAGE_OUT] = linear;
+> > +               return 0;
+> > +       }
+> 
+> .... the code above is not chip dependent but this code checks the
+> mode register on page 0. At the very least this is confusing.
+> 
+> What the driver should do instead is to check the chip type during
+> probe and make the necessary changes there, ie set the output format
+> for xdpe11280 to linear and drop the pointers to the .identify
+> and .read_word_data.
 
-<snip>
+Sgtm. This sounds like a better approach indeed.
 
-> +struct steamdeck {
-> +	struct acpi_device *adev;
-> +	struct device *hwmon;
-> +	void *regmap;
+Thanks,
+Marcello
 
-That should be:
-
-	struct regmap *regmap;
-
-
-> +	long fan_target;
-> +	struct delayed_work role_work;
-> +	struct extcon_dev *edev;
-> +	struct device *dev;
-> +};
-
-Regards,
-
-Hans
+> 
+> Guenter
+> 
+> > +
+> >         for (i = 0; i < XDPE122_PAGE_NUM; i++) {
+> >                 /* Read the register with VOUT scaling value.*/
+> >                 ret = pmbus_read_byte_data(client, i,
+> > PMBUS_VOUT_MODE);
+> > @@ -140,6 +153,7 @@ static int xdpe122_probe(struct i2c_client
+> > *client)
+> >   }
+> >   
+> >   static const struct i2c_device_id xdpe122_id[] = {
+> > +       {"xdpe11280", 0},
+> >         {"xdpe12254", 0},
+> >         {"xdpe12284", 0},
+> >         {}
+> > @@ -148,6 +162,7 @@ static const struct i2c_device_id xdpe122_id[]
+> > = {
+> >   MODULE_DEVICE_TABLE(i2c, xdpe122_id);
+> >   
+> >   static const struct of_device_id __maybe_unused
+> > xdpe122_of_match[] = {
+> > +       {.compatible = "infineon,xdpe11280"},
+> >         {.compatible = "infineon,xdpe12254"},
+> >         {.compatible = "infineon,xdpe12284"},
+> >         {}
+> 
 
