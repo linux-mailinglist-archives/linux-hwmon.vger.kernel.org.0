@@ -2,99 +2,138 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C037D4C1809
-	for <lists+linux-hwmon@lfdr.de>; Wed, 23 Feb 2022 17:02:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFAEA4C18E4
+	for <lists+linux-hwmon@lfdr.de>; Wed, 23 Feb 2022 17:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242633AbiBWQC7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 23 Feb 2022 11:02:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56314 "EHLO
+        id S242945AbiBWQjH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 23 Feb 2022 11:39:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242583AbiBWQCs (ORCPT
+        with ESMTP id S242928AbiBWQjH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 23 Feb 2022 11:02:48 -0500
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4F86D39C;
-        Wed, 23 Feb 2022 08:02:19 -0800 (PST)
-Received: by mail-oo1-f42.google.com with SMTP id s203-20020a4a3bd4000000b003191c2dcbe8so22888785oos.9;
-        Wed, 23 Feb 2022 08:02:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SnHAJ2jXJaVVjE1oqZGwvuQytS4K0cKMmmVsJjHc5pk=;
-        b=cmlhd8svXculh72aqZrwvwv6LDzoc9l7X83KA0mIFJ4nMQjNbB8GJnZhWINfmOrWIu
-         RQy9GCoVDo3uT0bRQeWm+E+2Z09aQKKwlWP/veik3B5DFaoLYiRjIpJEt65B6nYXILqm
-         G/vF5ihXJ5sWir1ddrSob6MqeKmbCvPNtf7avkvLaHgGDMEtq9OT+Xew2zbxapmSAOkB
-         pbPcaqJ8e+0gAhamdhyeazmMNNwhJ+FVKukhRFliWJUzJd7skDzNezN13RMaFbAeE+e6
-         Gf4VCpa0oBKAbLhn/yTrOaTvEqUc9MJUUQqvTg0HiOrqiZvOVvH3j2+4ZJM7CvFRs1IO
-         l9VQ==
-X-Gm-Message-State: AOAM531tlxHzGRjv8HnFaPaA5G9FJ9i86nHViIyIC8to8z+82oxZoYZL
-        zyp20uIg5/r6rTgCUY/fLQ==
-X-Google-Smtp-Source: ABdhPJw8XWn4z29aClQvUF5kk1BY9mwbXLVBQPAYTLP4JVYBwZtzfi//QgYZpCES82OuILp12HV5sQ==
-X-Received: by 2002:a4a:a8c2:0:b0:319:4f4:18ea with SMTP id r2-20020a4aa8c2000000b0031904f418eamr65183oom.20.1645632138616;
-        Wed, 23 Feb 2022 08:02:18 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id w28sm9647ott.14.2022.02.23.08.02.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Feb 2022 08:02:17 -0800 (PST)
-Received: (nullmailer pid 1012060 invoked by uid 1000);
-        Wed, 23 Feb 2022 16:02:16 -0000
-Date:   Wed, 23 Feb 2022 10:02:16 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, Agathe Porte <agathe.porte@nokia.com>,
-        Jean Delvare <jdelvare@suse.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Adamski <krzysztof.adamski@nokia.com>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v6 1/2] dt-bindings: hwmon: add tmp464.yaml
-Message-ID: <YhZaiAIq7xUig+Wj@robh.at.kernel.org>
-References: <20220222220937.18728-1-linux@roeck-us.net>
+        Wed, 23 Feb 2022 11:39:07 -0500
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2114.outbound.protection.outlook.com [40.107.215.114])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7603E5717C;
+        Wed, 23 Feb 2022 08:38:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CzFcxAceP+SIryIgZk7Bp+2PmVmPmcTNUkqYovM6CvB7j79/2TjnPQ1yCRQrH5b1qfuwPoGi0rwoI3ZnHv8x4DdlrOfWmdqZnZK/wX/G/k0pgVKtJ6UrptZA5EhYaqd+LobEHFXBSTTokj1F/PDQSqA4f5VRx06G05z9OloS6h6lYtMWkHVXIXmlNMvFoa9C9PEA08DZQBe4LlKFUR/2o7vh1wQtZ/yOyxAALyo4r9d/lL/kJfAnN4vOfcYCYmNVwp30qVp3hCYBpJl4GLaV79DbySYVqWe5lYWk5bD5HBEy/nJ5w0tslcnMM/k6A0bvzvjxL4w1MYRO3r1dtP/nsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ks4+hfj3tZdjLL0SMnWiGwBqzW2sTC7AbP3/1L5chs8=;
+ b=bIxFR/dEB5pgmymMWiTizZsyRQiPm2X2jByMSntyOsvTionV6g+uzlNwHNWez+KykDeSVntgKYXtIVP6iuMXibOh2uJ8zKF+PJNWSvoIAPJL7+eGn8CdBJqkce6zTEO07SExFa7isxD+yBa3HF8qBl7Ks1lKAXL7O4XrPqTrOVl4TaisIbt7yCZ/Xra8jc6MEDhYy61dN3UQtQFQYjOG5eyLAm6dq/CjHKC2aPvfmB5Qn0ryzl9/jIujOoj860gCIjkxeSrsBsfpCb2jVwFFxRzlUqskcyxLrAabxUOQBOSbmUwGOTPRtkHgF8cb1DLmfwIkgF6g7mM/6DhLiaxfiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quantatw.com; dmarc=pass action=none header.from=quantatw.com;
+ dkim=pass header.d=quantatw.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=quantacorp.onmicrosoft.com; s=selector2-quantacorp-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ks4+hfj3tZdjLL0SMnWiGwBqzW2sTC7AbP3/1L5chs8=;
+ b=J2LY+jbSffagczVbgc1baPs5lajize9cTrDajLL8x/vj5/xxWBmXAMXv83CvhaMtqYHWMM/axCAzL7QiHCgWhy8u59+CWSahLfYdZAf9GSxdMew7fHMUmNWiBWAH0+QkL0aaQeV+QL1Q4OL5I6TMreOVjshJsk2feYccnvNHoHU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=quantatw.com;
+Received: from HK0PR04MB3282.apcprd04.prod.outlook.com (2603:1096:203:89::17)
+ by TY2PR04MB3456.apcprd04.prod.outlook.com (2603:1096:404:9b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.24; Wed, 23 Feb
+ 2022 16:38:31 +0000
+Received: from HK0PR04MB3282.apcprd04.prod.outlook.com
+ ([fe80::ec21:c033:761d:3e03]) by HK0PR04MB3282.apcprd04.prod.outlook.com
+ ([fe80::ec21:c033:761d:3e03%4]) with mapi id 15.20.4995.027; Wed, 23 Feb 2022
+ 16:38:31 +0000
+From:   Potin Lai <potin.lai@quantatw.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Patrick Williams <patrick@stwcx.xyz>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Potin Lai <potin.lai@quantatw.com>
+Subject: [PATCH 0/2] hwmon: (adm1275) Add sample averaging binding support
+Date:   Thu, 24 Feb 2022 00:38:15 +0800
+Message-Id: <20220223163817.30583-1-potin.lai@quantatw.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: HK2PR02CA0138.apcprd02.prod.outlook.com
+ (2603:1096:202:16::22) To HK0PR04MB3282.apcprd04.prod.outlook.com
+ (2603:1096:203:89::17)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220222220937.18728-1-linux@roeck-us.net>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: cd62f4ad-45dd-4b91-3a78-08d9f6eaed3e
+X-MS-TrafficTypeDiagnostic: TY2PR04MB3456:EE_
+X-Microsoft-Antispam-PRVS: <TY2PR04MB34567E4434F6F718A457CEF08E3C9@TY2PR04MB3456.apcprd04.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vuRvHYLl5T2jU/uunARZAY9t21sC6Ydn3XYaUJIme+tNdI992QKiNL68dJ8YwAD6yAt+pLwKE/6QvcABr0QUU4fDaxC7MA8unzWsz2tqiOiwRybxWMZNrgwedSy9VuqODIrZxBAHaTa7tDVrG02FaBLg7m0Yci2Njap3fkTS9F0nCigVzo+nZrObjnUQGOIYJ5fE9TIdQOYtsP0U2onJP+yk9bcujvCh3xIZ59DZAmP8rE5Qfhil2wKHnTeifNwTAURhJhpLd8tXdlkBniR1vzbLrV3NuFH/OAhp4kDOilevMIy7KqsUWGJxbLV57fR3nX4B1I77iPTy8RNhGcUoTnD68H6DlQpj9ymmdTEaO3gnUjEYZqGiZoImf94V1ncIkZXB2Vt5mS7I8OD5ggfFgTYBg6Ew7wG20Xi6vvKADuwOxmVs/Vx27V+hhOqxavKRQyY7xaCTxi9UgA/jkB5A10+OFv/Z8e6pLqYxjawDF9hGdrPuqyZnssX+7bPwRfHse6nR4rd9LVoy/DB+/rhZVlGuowTtOwGoKEbOalBjFLsehZAQyczj1NDcW8AkjS9G1rICGN5wrFTLip/DNym8kLAgKlrWWbHTLbQGIL2eZ9Smn4IvDSvXsZhMCUQ89QPp9aYPEsmQxGXoiTom149HFMmlXlziZfmzlTbUamN1X6JhTAKFFBTYGiAX+RLCm5+22alrGP6VBJpIuJLvt7OjKg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK0PR04MB3282.apcprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(2906002)(38100700002)(38350700002)(86362001)(52116002)(54906003)(36756003)(6666004)(4326008)(6486002)(2616005)(8676002)(508600001)(5660300002)(26005)(1076003)(4744005)(44832011)(8936002)(186003)(6506007)(316002)(66946007)(66556008)(66476007)(6512007)(110136005)(107886003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yqj2hKnwHhIr1o0/aQYUqYk2bZpwkWrxcubDUMCXZ16UwlRsWoH/Ed/Kv5fZ?=
+ =?us-ascii?Q?TsbilD54X/cQ0iPvmgntZt/T/DLVrst2EB2zwPSjWpp2B5J/+CGVG07l32sD?=
+ =?us-ascii?Q?mbHrv5P/fruqioVy9PUoFAzynHm88D3aSqQqOcCESu+IWqpgKPPkBZUgz1DS?=
+ =?us-ascii?Q?R2QKRabq5msmzTcXcHajAdSop5PeJx6vX602Etleylgf4Xt6+So7dRF0OMvx?=
+ =?us-ascii?Q?Oj6T7vKQfpXPz6AHJxpjnQ3n7jUE3DPUoWz6kxli9rim2nUm1Ao80y5taxWz?=
+ =?us-ascii?Q?fW+Cpt7Uk79M4tMk5fqmvN3l/x3GGOAGT9y3Xg45+dtTqKOP2jm0/HkTa8Nn?=
+ =?us-ascii?Q?gGnbXaO3m+Jpd6BLo9kwmc9SZRKVaQ9vhYel7ReyvDUwjbVzWL3yEXYdQsz9?=
+ =?us-ascii?Q?7wkCeTPPkatCOZZGCQS5k5/YRD5dRH/9hmEndK/mx9QsidMEet6VlFB8j7Qy?=
+ =?us-ascii?Q?wL3/XmM8zH2BkcH0eGICJJ34/oMSkjM5ZHEJPak1cMPfRY2vPaFdlc1+Zkmw?=
+ =?us-ascii?Q?d+t2UQxDlKgOJHTwpEsrDaWF35dfFS/FanI8fiu9DmbeK57m8DPxxf5qOJDo?=
+ =?us-ascii?Q?Pqg+2t7i19Ig0f7hSjegGZV6tSzeHdnWI+Ec820KQZOnzV1JSn+BqRTgy09J?=
+ =?us-ascii?Q?W5mBa1lEuu9rHgN56ln4xAvZ0PjygabbViDTp8juwmH4hhBUB1sdahFsJzXz?=
+ =?us-ascii?Q?JtjqL4uVF7YS4VJpdPE08oDcL43YeLeW4W1hmf7FhhpJ59nDxTbWnvZcF8PN?=
+ =?us-ascii?Q?hoNczkXHVlLahnhhx1FI1CxwkebhUVzSA2I6uRAujJLOwQPe9xqrTxbyJBoj?=
+ =?us-ascii?Q?SQBmBDqHlXrF54vrfWAS+O3zPs3TtMepsuWasdTt0TBeTBnDm6pv92Vn2bs2?=
+ =?us-ascii?Q?Lvp4truIk8zBIhPaArokr1ampnA6Hm2M6ts9atjdIr7gBdhpI/kSKV/Vp75R?=
+ =?us-ascii?Q?QUZavg8ca+Z0MZU9NEJABM/lhge3lS8jBwKzDtLyMo1c0tXSUbp14ZXDqlDj?=
+ =?us-ascii?Q?2245RogqbDk/al1MBJcnrtwZXnMRv4/Y0Pdyn+TKyC2+B+6h/niYrUoDj2Ak?=
+ =?us-ascii?Q?oaPdscMEcGXUy6ynef6681KU5kETQP4mDRAtV9X6iIKkMd/MblHjjTX6gdyA?=
+ =?us-ascii?Q?O2hA9reCBp6yNLzwqCfPtt89pooMOrOhpldy48AVL1EDBptL+uUZkMw3qHmk?=
+ =?us-ascii?Q?Tc8u5WaD5vvjQid/DwjwMussm2CXb2BMXWSTQrq0/wLFU+KUF3yJ8Qg20Faq?=
+ =?us-ascii?Q?/xvRIeHEVHNOUoXkMCLzFtBfR4kpDx4/gv8ykTCwm12M5cwBAC4oDQgsoEhZ?=
+ =?us-ascii?Q?8BtyHhs58gKWtasNH3j3vo8iR//PZe3YnaRuHdyPo0YkHtASLBEhPuSfA1jW?=
+ =?us-ascii?Q?GGfPrwqdOgbeyxwOO4M0MqUITUrpnXF1pO/crRt856n9X0y9BLJfa2cqnMfx?=
+ =?us-ascii?Q?/L/8c1S4CTIxjirwNvIERfhhIyhjEl+bUoVPoAtCtm6fCO08fs/npYMc2WRR?=
+ =?us-ascii?Q?i/iMt74lclcI4SB7YDQ8gHD0uMWiv3laG3f4AF0teKVRb9qswjyfPbco92Wk?=
+ =?us-ascii?Q?wQGc7cRc4WMRteBiBGetsIKWAl5PAQi3szskzw5G82UsP6elkdWZ+S9f6d+y?=
+ =?us-ascii?Q?Nw8HUMsZfVwtMWR7oywpDjE=3D?=
+X-OriginatorOrg: quantatw.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd62f4ad-45dd-4b91-3a78-08d9f6eaed3e
+X-MS-Exchange-CrossTenant-AuthSource: HK0PR04MB3282.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2022 16:38:31.6287
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 179b0327-07fc-4973-ac73-8de7313561b2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DsJxUx7zwD01VnyooY/MRNyoZXCUNiukUwcIt3FGLJEc1sJESazZYiGHBQwMnmEDltbW/5bK1DHzmA88s6L3OQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY2PR04MB3456
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 22 Feb 2022 14:09:36 -0800, Guenter Roeck wrote:
-> From: Agathe Porte <agathe.porte@nokia.com>
-> 
-> Add basic description of the tmp464 driver DT bindings.
-> 
-> Signed-off-by: Agathe Porte <agathe.porte@nokia.com>
-> Cc: Krzysztof Adamski <krzysztof.adamski@nokia.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> v6:
-> - Model ti,n-factor as int32 instead of int8.
-> 
-> v5:
-> - Dropped ti,n-factor from channel@0 example. Added additional
->   channel to examples to show positive ti,n-factor property.
-> 
-> v4:
-> - No changes
-> 
-> v3:
-> - Addedd support for TMP468.
-> - Changed number of channels from 0..3 (which was wrong anyway) to 0..8.
-> - Changed value range for ti,n-factor to int8, with an example for
->   a negative value.
-> - Added myself as driver maintainer.
-> 
->  .../devicetree/bindings/hwmon/ti,tmp464.yaml  | 114 ++++++++++++++++++
->  MAINTAINERS                                   |   7 ++
->  2 files changed, 121 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
-> 
+This patch series allow PWR_AVG and VI_AVG set from device tree
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Example:
+        adm1278@11 {
+                compatible = "adi,adm1278";
+                ......
+                pwr-avg = <128>;
+                vi-avg = <128>;
+        };
+
+Potin Lai (2):
+  hwmon: (adm1275) Allow setting sample averaging
+  dt-bindings: hwmon: Add sample averaging property for ADM1275
+
+ .../bindings/hwmon/adi,adm1275.yaml           | 10 ++++++++
+ drivers/hwmon/pmbus/adm1275.c                 | 25 +++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+
+-- 
+2.17.1
+
