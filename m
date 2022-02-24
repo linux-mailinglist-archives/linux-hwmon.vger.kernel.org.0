@@ -2,218 +2,146 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 141C44C23F0
-	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Feb 2022 07:12:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FBF74C302B
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Feb 2022 16:45:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231127AbiBXGND (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 24 Feb 2022 01:13:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
+        id S236595AbiBXPoX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 24 Feb 2022 10:44:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231126AbiBXGNB (ORCPT
+        with ESMTP id S233394AbiBXPoV (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 24 Feb 2022 01:13:01 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5180423400B;
-        Wed, 23 Feb 2022 22:12:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1645683134;
-        bh=z3PgjpSeI45p8e/Kj/ULmEws1DrF6f9e5OhfTUmeyrs=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LArIAWTPOrSw33/npDGbYQYcSBa1u6FQnZLZZPz5k/Erv8E2uEmjPQx9FGmOc6QF3
-         BlVR2cIIrwYNZxMeKHRPZqBRzzINkV73dQ/uBmpcqT4NW41Th7pq7zWTA8xcqzhCcQ
-         eEG8JKaXwFqD4oXSr3GGpffNZw6+xdhVH+P+heEI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MlNtP-1o63Pf36qL-00lmSA; Thu, 24 Feb 2022 07:12:14 +0100
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     hdegoede@redhat.com
-Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] hwmon: (sch5627) Add pwmX_auto_channels_temp support
-Date:   Thu, 24 Feb 2022 07:12:10 +0100
-Message-Id: <20220224061210.16452-3-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220224061210.16452-1-W_Armin@gmx.de>
-References: <20220224061210.16452-1-W_Armin@gmx.de>
+        Thu, 24 Feb 2022 10:44:21 -0500
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on20713.outbound.protection.outlook.com [IPv6:2a01:111:f400:feab::713])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3F61A39F8;
+        Thu, 24 Feb 2022 07:43:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JACSsNGUMnOAYrtkYW325fYjhP/vrVPMFTZHsHU6mZSxM2ZznbdNDm3eNftdeaYuf5H/SnqBMXKwmVoHD4JAQoxJxxxypiDGCpUgDldOKnWCvYJ8MwIyqjiJPNHrV3yyLklTqZ40NEikO/2DNvmzGOPlJpFiMeYZBsApZxAaaTN8yQphZNF7mo2lwSrVLYIb74Az945qGkW8VPQzEobJMT1q0C/MwnRFivfND+4ntfkeE9ukqSOppphGwUvrzseOjri9gjcn8XFBETbzThNYumOxJKBp0H75FKNhNQPuE5dZHIvxyPL+oPkGhlv+NaejHIgBKD33DWWZ+N5wjX05Nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=199/fMpX/48NH78pMsCHPKkIuWzSapjfoo8hrv4FeQw=;
+ b=MTInA4iQF7igblkiP3V0ICvOv6oyXwB3zLoti2HRghSsBupiWyE96XmPlJX/tm+RkV3xh9rwZFKmST8OdqadgnbZcYIoeOwVtvJDIwUJLOtMj+QgZK73yGRvoo4+mqaDjko20NPkas1d0w6s+/GCmXwLL8TmswpyI3L4WBTq1YwHgnyI5zM6sHGM5w2VbIt/0T8aLvGNVKGZfWDyLBTarW0Eui7QDe/KURRD61nUz6wSRpHMUzLaACXED6/dyYN4xAqbQyZxa7XkWTKc/iiPtndHmClpCAk2b9AgpbRmA4nuBmFaYBmYC6qOFCjwX3ITTKM/u2/kREVgJjsXUfFW9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quantatw.com; dmarc=pass action=none header.from=quantatw.com;
+ dkim=pass header.d=quantatw.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=quantacorp.onmicrosoft.com; s=selector2-quantacorp-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=199/fMpX/48NH78pMsCHPKkIuWzSapjfoo8hrv4FeQw=;
+ b=V21xwRh30Xf+KVHypZao4NCt2Bx4lGGLqhcwmE/vPtvFi/Cpm4GZKsjPLnVMJdK7Fds43HOoK/coqpGmu0+/5bEphEmXJKEP9L4/6qDJw/hokBqQ5biJWnleVJGMkPpji8PT/lU7QKRrKV5WgQUbGZeP/9qg2190f/u9kgl409g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=quantatw.com;
+Received: from HK0PR04MB3282.apcprd04.prod.outlook.com (2603:1096:203:89::17)
+ by SEYPR04MB5858.apcprd04.prod.outlook.com (2603:1096:101:6b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.22; Thu, 24 Feb
+ 2022 15:43:43 +0000
+Received: from HK0PR04MB3282.apcprd04.prod.outlook.com
+ ([fe80::ec21:c033:761d:3e03]) by HK0PR04MB3282.apcprd04.prod.outlook.com
+ ([fe80::ec21:c033:761d:3e03%4]) with mapi id 15.20.4995.027; Thu, 24 Feb 2022
+ 15:43:43 +0000
+From:   Potin Lai <potin.lai@quantatw.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Patrick Williams <patrick@stwcx.xyz>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Potin Lai <potin.lai@quantatw.com>
+Subject: [PATCH v2 0/2] wmon: (adm1275) Add sample averaging binding support
+Date:   Thu, 24 Feb 2022 23:43:27 +0800
+Message-Id: <20220224154329.9755-1-potin.lai@quantatw.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: HK2PR02CA0148.apcprd02.prod.outlook.com
+ (2603:1096:202:16::32) To HK0PR04MB3282.apcprd04.prod.outlook.com
+ (2603:1096:203:89::17)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6LzVNnlmx1VGAgyWfxK4fWce312xtxahIHUVXlu4cZNAV/3H0ZO
- BCFSfpp61O621PjFeFqR5LGPvg4J++3E41dq+6qpcWVSJ1R45SoZrp8sA55LUYbtDDVHWLv
- XN+AdfcpbccRf1xHPrp3RVoR3wFg0Lwd2TNsxM/cotVdriFDtsbMiUODzegABlhiDIbyyA4
- aNz0+l4rx5LnVnOZ0vhHQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:b7sw0nFPI0Q=:LTs5LGlmNBU7Gkp47C0ttd
- TuQGI5/CuGtGErgqXll2u9y+j2N4uzFrmlHFDq+b11mlxfwQgJ1aM2bK5Q57Io5j4S/ubB+fy
- 8fLMupuawEPLFSno2sg+mf/wMBWrmCi8SyC5pSascsq/0vWmQE6ZqogZr+sMQNGXaLWZf2vgw
- S5r8aNy4NCHh7+hUyh+F/VJV49CRoIdnrU7Ai9ov2kvBJPWr2hdR4qy5XE88bKUDtGxqKemRK
- S4JxGzMdkCMqeDNZQrlVmlmC1DEV08KvSBi0s4oEq7nWPoWwcFenIB00KN6777eozKZIcmabi
- Fp4y4LBujyMi/6GoSzqWFJrPLqGHGJclV/5vxUR2z5CoX9JF9aBmgTOkmZsmE1/sxY0dLrlfD
- ol4PWkOwK9KYRtfnJ9pV61uiIusJQMCSykWSeS7OD/M3eRkWCINzG/WnmpmVARXYKV/UyCGsq
- j4tQjnWDvYArFlbZZVA27u8ZWDMwWYK3Io/htAfyWfmCQ4wo6EQkLTwLW/YiJXVsIP+exwjO7
- /sB9iJKQ/YhDEwaIemnFWliikHXo3G7lBH3AVsTfgoCcbfHGjaVhvFVLqA7l6oJBCw2zlyxDz
- CWda8N+5s6UgoOlp8grDe2uuvdi7o7W/UV7JzCtXCSLJvpuGN5ShSjg5qNFWECqiytxNSU0i4
- dWgj2Wy7KKfRVSJL11jHP/Iy2e1OEtmQSHztvrETF2o544ZUVKi70Qf5JuYdJsKNLYzmfTQPK
- hdVtz/t+UohDbYMi1Wo2pWLhigZa2x1ucTCiI8SaxxxGieqsVi4+KaPN1YDDDehn3LwXy5AFe
- QasTuR19j0oyXVN7aQIB46DGvXfhT5ynn5oorklgmtub9cEDMgXKropQBDuZsiHUr/uEdCNa0
- vrehp6Q5rMSqU1TM7kRMEbY+203451W82zwxtAemqk91Rvui/PfaF3BAYqCYZpq4fYSE+o2Nq
- e39OXik77Z6PmrSUxGV3F+oMHe0B4sW33qm2e9ohTiOodd46LNpFweglCjSAuX88rpXlZj6k2
- +yLlmCa30xxl2g+ciAXHtDs1jlHS7elw7z/khk8ZSc9pwnXJEZvkwYGc0uTnukJC73GkM5bu7
- xJzNSpz8HF/tpA=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: e8f96bd5-5482-4a79-61d7-08d9f7ac6fe2
+X-MS-TrafficTypeDiagnostic: SEYPR04MB5858:EE_
+X-Microsoft-Antispam-PRVS: <SEYPR04MB585857F3CF2172663221494B8E3D9@SEYPR04MB5858.apcprd04.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TFEYQzLGWsqszoUuF7ehZFh6OVocLSrKdk3ZlF/CyRtS28m7ocuKB+k/sVFchJhwXxCTiKcHl6YYzhrFnH2tu77XohnSPsoezNQ7UlnFLiDs8p6LRtaXBMb7kHtZrNmvwW4DEFZG6FRm40rsx1pJtHesqbJiz5geWE4XdwPDkEJr5rG7tSiZ5JFGAqdbElZINE1TqKmvObxuh++TXp2jaYWCmtBDwKy+K9lV4TOxxHKO0oHfwmYV9yvt3D/2F067JmQlabcXFRR+1A1b1HDzNHslkuPzceau8Bt7RjPUBuG4omNx45peHapw1PztP4Gj8s+Xnuhq7DNli1ByYILIJynBfLcUJIJhdv1NngvZOUuFK8SVvI7vzsTuI55zDzTmwX4+uqvlX1WJGXTH8sFBi0Cajj5WduvZEXzS8+/GBcSXLv6lURNTKgJE0OznZ+vcg14uWfEkfTZhEC5dq2Rl7i9S6IpvUDmE81sARuA/8EypeBpz/Nl1eeq812/lU186hQ9Yt/6Pgr76JthNatIpNmPnxfr0OKZq+aLiEevjnxu1uVZeVmGirxHJpO1/uXOeuzBXEZBufe8WlvjHPtk+/2DHZsEQqPZW67LL2RTFh29haUE3+ylUCJwxgnl9duOfMn1IBYf7/DRPBCmjq6SgagurtuDmuqiAns25HBdB9yJR1vYaV4EOuRXPDyaM42F0YUi3tRDwvKtc0pB578AncH4VpFA0sJ9wJuaZgU9euP4pqeUBEP199Cavf/g3nWYWTzva+btAlTvlsSL0rzGz4nzLvWR07mit3r47zDrGXIM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK0PR04MB3282.apcprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(54906003)(316002)(110136005)(6506007)(66556008)(66476007)(6666004)(6512007)(66946007)(52116002)(38100700002)(38350700002)(86362001)(4326008)(2616005)(4744005)(107886003)(508600001)(8676002)(8936002)(1076003)(5660300002)(966005)(6486002)(26005)(186003)(44832011)(36756003)(2906002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/jdqJDu0kBEXfxQ9Gsf9Jvl2f1WakvLt+lvLDtASHyHHWYtGZs1EjDOjkvvL?=
+ =?us-ascii?Q?FnQSxNbO/a7rCAarB36E4GGB9z1rgQN0kvkeyzZEB+jpoldCv+QphCgyMLxm?=
+ =?us-ascii?Q?JtH8rDsg0dlwwnSlDgzPoETheCRK+c4OnWmVmpR2AsIg6McczLkFJelK7C8F?=
+ =?us-ascii?Q?ih4nDraLBasUV76COCDRSwD/EQy4AQW0+xLn1Z5ymR0mq0yeSA3GFYKFFKU4?=
+ =?us-ascii?Q?cblux/eSRoLd7MXREGTtWXlp5CoX0kGgC++g4Gnk15/+lwymN0Eb8oTHNc1c?=
+ =?us-ascii?Q?Re78aH/rKNP6YmPaC4gy2U+o5LDhLDQaf5J2lkOBlHr12G8HbsEZcPMN7yr+?=
+ =?us-ascii?Q?90nVsg+6CcPK+88ag8oPGBr/Rkj2HpT09RWDsn+6Q5A2juytzesk4YgiiPed?=
+ =?us-ascii?Q?MnxvCscbbYs7nGDLUoboNmJRGY4AfOZwlUQuKKQSacNEXiuKnrhELT36rFVA?=
+ =?us-ascii?Q?jRGythBP3H8Zr3Z4BR4ass34Fq0ll0Hozqjl5Az5lUYuSGQCMUGMXpHYsZPB?=
+ =?us-ascii?Q?0OsjJ1bw8WfHNl6p4DKTedPl38nH76VvTijd6qNIXpjzHZ4TRvpOkAErpLh1?=
+ =?us-ascii?Q?+7oSqivpMML1Ds9OxObiksUFlQpRlRy/lC0/foyWbxZv+vWg6xD+cm5khu2Z?=
+ =?us-ascii?Q?Ahk/wRQWF2XJn7zEDaP0ElcydNoTvBErz7WL/YuPvqrFFQZ3BNk0dgQGj1iN?=
+ =?us-ascii?Q?kRuefvuEFRW1cZv/W319SaNVHUjAF5c3Pf929Xxlbbmg+vESFMwXxy1KfCog?=
+ =?us-ascii?Q?Z9LfGqnBL3Ji5lRDu1X1doBnyRA9VGYWtOV60MPGrcehmQ51bKwHCKm/sUt0?=
+ =?us-ascii?Q?/V6VP+jE5PiQVyZEB+Z0lVmKcyO2MdHphAM+OJCAMLGH/z0owfsfZsZuF3sx?=
+ =?us-ascii?Q?i+rmM0EJZUt/qR+Yo70Yaq/mQcb9ppz9NyotKlCLf5G4W3SpBE+0OsIexod5?=
+ =?us-ascii?Q?Wv8dZ2B4M9qUCyZRUiOhdZSjjV3klbs/xZtHi0Vpj6CbTtmpLrxNL1URJtU1?=
+ =?us-ascii?Q?FSRBVTXcLWWTtmCd/Km+NPgqmQP6YD6Gnn7i2g0i/kxkKkFzPZbKKZfqS7lN?=
+ =?us-ascii?Q?aFuq7hYw7ZaoB4UXC1suKjvY26pabkCFtzK3C8VusqUCtZHvl991dwTwckAp?=
+ =?us-ascii?Q?L1YY5SoI6e57XLnZFE/ff7jD8PIUYJtv2lJr3ZxS2JchvzPLY0l3U+ueneSZ?=
+ =?us-ascii?Q?D2VYVTUlMQM2p5tA7qUvC5q1K16F3CSRdG7DzzgtuD5mQQxg5bnrasmIzAQy?=
+ =?us-ascii?Q?MaijBa3ZXeKIoIL059pfCto0FrA+t7PT60dihSoSFb8pWGf3VZ37qigb4r4I?=
+ =?us-ascii?Q?9tgGfEU4EFX6HOBlJfRFIEU95ilyutajf9n1h0WTz949ZvpuatdXSkE95ZSu?=
+ =?us-ascii?Q?zEENRH7h6w1Ml/jBTNNtS0q7NRSjpvIejvwK9l4mHL/kyuKZLMXcyv1YboCD?=
+ =?us-ascii?Q?Te1BZFpYpLbyt+gC3JTr16wcr6W/PARfvuHao8OBSQHZ4piBKsrksqWL+5sj?=
+ =?us-ascii?Q?uy/vf9VIyP2ci0dVxX+2RRRQUogZK1wkkhcwimXkH3KL+P+supCpTDn25yPT?=
+ =?us-ascii?Q?y7z7WkemqkJIgyQXw3ciS8SbG7i81QJARzxyvu9cbv9fWwQdXoX8Hum/c2Ra?=
+ =?us-ascii?Q?OP1FeLc8QlclZtr3xFLF3nk=3D?=
+X-OriginatorOrg: quantatw.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8f96bd5-5482-4a79-61d7-08d9f7ac6fe2
+X-MS-Exchange-CrossTenant-AuthSource: HK0PR04MB3282.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2022 15:43:43.4740
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 179b0327-07fc-4973-ac73-8de7313561b2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9a26dYFEmrvkAwemrZHAEpua4Zee6jpkoAnMdYnV9b31H6gHSFf1tXkKkxRBu0uMFdl6UAZzIRGPoqj3FgKFWw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR04MB5858
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-After doing some research, it seems that Fujitsu's
-hardware monitoring solution exports data describing
-which temperature sensors affect which fans, similar
-to the data in fan_source of the ftsteutates driver.
-Writing 0 into these registers forces the fans to
-full speed.
-Export this data with standard attributes.
+This patch series allow user config PWR_AVG and VI_AVG in PMON_CONF
+register by adding properties in device tree.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- Documentation/hwmon/sch5627.rst |  4 +++
- drivers/hwmon/sch5627.c         | 61 +++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+Example:
+	adm1278@11 {
+		compatible = "adi,adm1278";
+		......
+		adi,volt-curr-sample-average = /bits/ 8 <0x07>;
+		adi,power-sample-average = /bits/ 8 <0x07>;
+	};
 
-diff --git a/Documentation/hwmon/sch5627.rst b/Documentation/hwmon/sch5627=
-.rst
-index 187682e99114..ecb4fc84d045 100644
-=2D-- a/Documentation/hwmon/sch5627.rst
-+++ b/Documentation/hwmon/sch5627.rst
-@@ -20,6 +20,10 @@ Description
- SMSC SCH5627 Super I/O chips include complete hardware monitoring
- capabilities. They can monitor up to 5 voltages, 4 fans and 8 temperature=
-s.
+LINK: [v1] https://lore.kernel.org/all/20220223163817.30583-1-potin.lai@quantatw.com/
 
-+In addition, the SCH5627 exports data describing which temperature sensor=
-s
-+affect the speed of each fan. Setting pwmX_auto_channels_temp to 0 forces
-+the corresponding fan to full speed until another value is written.
-+
- The SMSC SCH5627 hardware monitoring part also contains an integrated
- watchdog. In order for this watchdog to function some motherboard specifi=
-c
- initialization most be done by the BIOS, so if the watchdog is not enable=
-d
-diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
-index 72c3f6757e34..25fbbd4c9a2b 100644
-=2D-- a/drivers/hwmon/sch5627.c
-+++ b/drivers/hwmon/sch5627.c
-@@ -52,6 +52,9 @@ static const u16 SCH5627_REG_FAN[SCH5627_NO_FANS] =3D {
- static const u16 SCH5627_REG_FAN_MIN[SCH5627_NO_FANS] =3D {
- 	0x62, 0x64, 0x66, 0x68 };
+Changes v1 --> v2:
+- use more descriptive property name
+- change property type from u32 to u8 
+- add property value check, valid range between 1 and 7
 
-+static const u16 SCH5627_REG_PWM_MAP[SCH5627_NO_FANS] =3D {
-+	0xA0, 0xA1, 0xA2, 0xA3 };
-+
- static const u16 SCH5627_REG_IN_MSB[SCH5627_NO_IN] =3D {
- 	0x22, 0x23, 0x24, 0x25, 0x189 };
- static const u16 SCH5627_REG_IN_LSN[SCH5627_NO_IN] =3D {
-@@ -223,6 +226,9 @@ static int reg_to_rpm(u16 reg)
- static umode_t sch5627_is_visible(const void *drvdata, enum hwmon_sensor_=
-types type, u32 attr,
- 				  int channel)
- {
-+	if (type =3D=3D hwmon_pwm && attr =3D=3D hwmon_pwm_auto_channels_temp)
-+		return 0644;
-+
- 	return 0444;
- }
+Potin Lai (2):
+  hwmon: (adm1275) Allow setting sample averaging
+  dt-bindings: hwmon: Add sample averaging property for ADM1275
 
-@@ -278,6 +284,23 @@ static int sch5627_read(struct device *dev, enum hwmo=
-n_sensor_types type, u32 at
- 			break;
- 		}
- 		break;
-+	case hwmon_pwm:
-+		switch (attr) {
-+		case hwmon_pwm_auto_channels_temp:
-+			mutex_lock(&data->update_lock);
-+			ret =3D sch56xx_read_virtual_reg(data->addr, SCH5627_REG_PWM_MAP[chann=
-el]);
-+			mutex_unlock(&data->update_lock);
-+
-+			if (ret < 0)
-+				return ret;
-+
-+			*val =3D ret;
-+
-+			return 0;
-+		default:
-+			break;
-+		}
-+		break;
- 	case hwmon_in:
- 		ret =3D sch5627_update_in(data);
- 		if (ret < 0)
-@@ -318,10 +341,42 @@ static int sch5627_read_string(struct device *dev, e=
-num hwmon_sensor_types type,
- 	return -EOPNOTSUPP;
- }
+ .../bindings/hwmon/adi,adm1275.yaml           | 44 +++++++++++++++++++
+ drivers/hwmon/pmbus/adm1275.c                 | 33 ++++++++++++++
+ 2 files changed, 77 insertions(+)
 
-+static int sch5627_write(struct device *dev, enum hwmon_sensor_types type=
-, u32 attr, int channel,
-+			 long val)
-+{
-+	struct sch5627_data *data =3D dev_get_drvdata(dev);
-+	int ret;
-+
-+	switch (type) {
-+	case hwmon_pwm:
-+		switch (attr) {
-+		case hwmon_pwm_auto_channels_temp:
-+			/* registers are 8 bit wide */
-+			if (val > U8_MAX || val < 0)
-+				return -EINVAL;
-+
-+			mutex_lock(&data->update_lock);
-+			ret =3D sch56xx_write_virtual_reg(data->addr, SCH5627_REG_PWM_MAP[chan=
-nel],
-+							val);
-+			mutex_unlock(&data->update_lock);
-+
-+			return ret;
-+		default:
-+			break;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- static const struct hwmon_ops sch5627_ops =3D {
- 	.is_visible =3D sch5627_is_visible,
- 	.read =3D sch5627_read,
- 	.read_string =3D sch5627_read_string,
-+	.write =3D sch5627_write,
- };
-
- static const struct hwmon_channel_info *sch5627_info[] =3D {
-@@ -342,6 +397,12 @@ static const struct hwmon_channel_info *sch5627_info[=
-] =3D {
- 			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_FAULT,
- 			   HWMON_F_INPUT | HWMON_F_MIN | HWMON_F_FAULT
- 			   ),
-+	HWMON_CHANNEL_INFO(pwm,
-+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
-+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
-+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
-+			   HWMON_PWM_AUTO_CHANNELS_TEMP
-+			   ),
- 	HWMON_CHANNEL_INFO(in,
- 			   HWMON_I_INPUT | HWMON_I_LABEL,
- 			   HWMON_I_INPUT | HWMON_I_LABEL,
-=2D-
-2.30.2
+-- 
+2.17.1
 
