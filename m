@@ -2,102 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 269034C7082
-	for <lists+linux-hwmon@lfdr.de>; Mon, 28 Feb 2022 16:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E6D64C713E
+	for <lists+linux-hwmon@lfdr.de>; Mon, 28 Feb 2022 17:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233887AbiB1P1h (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 28 Feb 2022 10:27:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38772 "EHLO
+        id S233910AbiB1QFm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 28 Feb 2022 11:05:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232172AbiB1P1g (ORCPT
+        with ESMTP id S232365AbiB1QFm (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 28 Feb 2022 10:27:36 -0500
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F897EA1F;
-        Mon, 28 Feb 2022 07:26:58 -0800 (PST)
-Received: by mail-oi1-f180.google.com with SMTP id l25so13455999oic.13;
-        Mon, 28 Feb 2022 07:26:58 -0800 (PST)
+        Mon, 28 Feb 2022 11:05:42 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75DEA41983
+        for <linux-hwmon@vger.kernel.org>; Mon, 28 Feb 2022 08:05:02 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id d3so16261660wrf.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 28 Feb 2022 08:05:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
+        b=Zkw2yyQ7PfAVAWZuSIlA+W6EHWyoP/PWUvwLSDc/3YJNlX1Ioa+nsy8V/vykCnFBWy
+         R/ZiuCxP/6t6D/vmGdBijBvj/qU00shel5E0Dkigpsj9fiSlg3eKCkqzM0M5UMDt0mkf
+         QHa9aQOvhPkyZWQ+yNGnGZK04lnZjsN3Xll9uthm9jV6sb9+M6jRnIQhAbiMzmFaa/yJ
+         9S/DCnA+Hmk8xGK/CwOk/ChoREitxq31qI3l6E75ah99Wg+GRDJzhE/gK5bvtpbBK+YF
+         uopNhclDgg7+sZGjz1yNf8emO6XPYt+X4+n+DxdBlhIPuIvt945fm5GSzzCNVkN9QBBb
+         h6Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=I87Fjts+rpNlg39YY3+tnxuJdwSRLJLguMw++XeNFIg=;
-        b=pZQVk6Q1OsBDnd6jtsXO0GseRMyEuph5nFUMF55QSKOAqa/q8AU23THpojWsSw1wBe
-         fyEPYPBHOynzU4iBPtDdYOoGJfVpPR90DqCU3m4kV+IM7RAobIHpfOqwpMKUAXoIYHzg
-         lAeREwT33nC6pRNsL/Vj0O4sdta1HdGta5lOi20ERnJdmfTH8L04p+bAwr2BdnCEkfVx
-         QxxHFRy3delX+al5S6gKtkaaeXqjCNYhauuoCXtEh/WcOFegPHZ9tnVjUyguyCPBOYQL
-         8N0YvtM058ocf0mwDzuMtwDgjxN2nIaKujhIBSzH6GpczBeqgSw8UMxQAeIqhlU4hDSr
-         bMOw==
-X-Gm-Message-State: AOAM533yMwb7PzR4xZhWbuYdCmYzSI+9CU9sN/3jq/TWiMFh2DHRzuvt
-        7NFPf76Fg08CLRU6QJqC9w==
-X-Google-Smtp-Source: ABdhPJyW4S0Ic5zGxvFgmna5a0fy2EDagMuNav85rX4OIYGZLIrUok5+XAS/lrttQvtGHYh80ZPRYw==
-X-Received: by 2002:a05:6808:903:b0:2d4:8451:d651 with SMTP id w3-20020a056808090300b002d48451d651mr9173464oih.29.1646062017625;
-        Mon, 28 Feb 2022 07:26:57 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id c1-20020a056808138100b002d4b30ab04esm6534610oiw.32.2022.02.28.07.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Feb 2022 07:26:57 -0800 (PST)
-Received: (nullmailer pid 1049704 invoked by uid 1000);
-        Mon, 28 Feb 2022 15:26:56 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Potin Lai <potin.lai@quantatw.com>
-Cc:     Patrick Williams <patrick@stwcx.xyz>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-In-Reply-To: <20220228103716.10774-3-potin.lai@quantatw.com>
-References: <20220228103716.10774-1-potin.lai@quantatw.com> <20220228103716.10774-3-potin.lai@quantatw.com>
-Subject: Re: [PATCH v3 2/2] dt-bindings: hwmon: Add sample averaging properties for ADM1275
-Date:   Mon, 28 Feb 2022 09:26:56 -0600
-Message-Id: <1646062016.577370.1049703.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
+        b=QXco6Z/snEKcPO7t6B2g6+ETRW84HBlcVRi+DMRE+8BXVZKpYb+7YZm7nG4e2DfP0y
+         t4f5pUIMi5ZeVxTphuVZBh9Ufg5ppnsGASXNc7xUO4xN3+1a50eYfNsd5zFP1bqpVg91
+         yMJrQq0EkBgjL8KMgSreuf+LQItWhDGgUIBC8hSB8KcBjWic+JwWPpJzuqu8PEnesEWN
+         cXKE8A0b+CnIIZVJSdIHozTNXBNArsW4S8ez4Z/k3EdcXFSw6m2n+YAahMm6I8YG1p50
+         F7SIkFGEs71YaJI8go7Y5pScqCAhm9H8Tg3sRJCrTcmi60QniGDs7IgRxex/7BwrQiSd
+         7AuA==
+X-Gm-Message-State: AOAM532rIOsl6UIh9RE//HtDxAQEpEoDInfG14bkwlH+DcyNOVv63XG9
+        9FEPU5deE/gRIPUC/VYZoTduLQcrgc3SfYPVX7Q=
+X-Google-Smtp-Source: ABdhPJynSaszZIyrg3cBoRlqWCZ5U/vupb31Vshs2J6mQ7VgLM8zfCba/eymKLQZ0O6fa0zmb/Lp/4ZSmuF26HJljsI=
+X-Received: by 2002:a05:6000:156c:b0:1e2:eb89:9a82 with SMTP id
+ 12-20020a056000156c00b001e2eb899a82mr15702549wrz.397.1646064300988; Mon, 28
+ Feb 2022 08:05:00 -0800 (PST)
+MIME-Version: 1.0
+Sender: adesmurs02@gmail.com
+Received: by 2002:a05:600c:3d91:0:0:0:0 with HTTP; Mon, 28 Feb 2022 08:05:00
+ -0800 (PST)
+From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
+Date:   Mon, 28 Feb 2022 17:05:00 +0100
+X-Google-Sender-Auth: jibnihSQOXQuXmMD_-w64azjU6I
+Message-ID: <CAEaqy6A9mfZyT_shGdzsgsjX0mgK2KXnnCV9nxm71W+5cygsFQ@mail.gmail.com>
+Subject: ATTENTION PLEASE,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, 28 Feb 2022 18:37:16 +0800, Potin Lai wrote:
-> Add documentation of new properties for sample averaging in PMON_CONFIG
-> register.
-> 
-> New properties:
-> - adi,volt-curr-sample-average
-> - adi,power-sample-average
-> 
-> Signed-off-by: Potin Lai <potin.lai@quantatw.com>
-> 
-> doc
-> ---
->  .../bindings/hwmon/adi,adm1275.yaml           | 39 +++++++++++++++++++
->  1 file changed, 39 insertions(+)
-> 
+ATTENTION PLEASE,
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
+Directors working with United bank for African Burkina Faso (UBA). I
+have an interesting business proposal for you that will be of immense
+benefit to both of us. Although this may be hard for you to believe,
+we stand to gain a huge amount  between us in a matter of days. Please
+grant me the benefit of doubt and hear me out. I need you to signify
+your interest by replying to my mail.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml:68:11: [warning] wrong indentation: expected 12 but found 10 (indentation)
+Honestly, i have business transaction worth the sum of
+(US$8,200,000.00) Eight Million two hundred thousand united state
+dollars to transfer to you through proper documentation in position of
+your own Account.
 
-dtschema/dtc warnings/errors:
+Most importantly, I will need you to promise to keep whatever you
+learn from me between us even if you decide not to go along with me. I
+will make more details available to you on receipt of a positive
+response from you.
 
-doc reference errors (make refcheckdocs):
+This transaction is risk-free; please urgently confirm your
+willingness and interest to assist in this deal, I am in good faith
+and with trust waiting for your Urgent respond and maximum cooperation
+for more details.
 
-See https://patchwork.ozlabs.org/patch/1598637
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Best Regards,
+Mrs Aminata Zongo.
