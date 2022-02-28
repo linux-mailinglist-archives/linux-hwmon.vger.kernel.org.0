@@ -2,254 +2,161 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0719E4C6EFB
-	for <lists+linux-hwmon@lfdr.de>; Mon, 28 Feb 2022 15:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAF804C6F48
+	for <lists+linux-hwmon@lfdr.de>; Mon, 28 Feb 2022 15:25:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237146AbiB1OKN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 28 Feb 2022 09:10:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33198 "EHLO
+        id S231901AbiB1O0b (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 28 Feb 2022 09:26:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237096AbiB1OJz (ORCPT
+        with ESMTP id S229845AbiB1O0b (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 28 Feb 2022 09:09:55 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C527EB02
-        for <linux-hwmon@vger.kernel.org>; Mon, 28 Feb 2022 06:09:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646057347; x=1677593347;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=k5wPT2IqCGTWlpy8xny2krC4hZdCEh9ZNtT/OrZMW5c=;
-  b=ImpwL6E7Bl6K3aEKHqs4EpiQ/Ba+QW5eOclKgL10kVB8DayUWlrPl6oV
-   Fyu7icD45H3EL5jKf+eTXevHS45+fRK5dRfsv7FGvd2Jve+4kwepehMip
-   txIB5S+3SRYcpp3V/qB7QGV/y744ovyq3e79H0eeCz2fYGr+7s67LRdhA
-   841scBI7e9VbZyFglDSPOWRY8oLBlpMjVrYS8P3wo9eClup6VpKa+pnpr
-   L7uC2fWgxtfKZo8A6NpH2cywIDwTIyhZQiUfiyAERIGxNelncBwfmZiuI
-   wqnqO5bQ9NwFFg7F9++dqGtWnn8NNPn+r4Mhd78WqepQfGlEOszet4dVl
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10271"; a="250470766"
-X-IronPort-AV: E=Sophos;i="5.90,142,1643702400"; 
-   d="scan'208";a="250470766"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2022 06:05:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,142,1643702400"; 
-   d="scan'208";a="640890125"
-Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 28 Feb 2022 06:05:08 -0800
-Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nOgeC-0007QL-3b; Mon, 28 Feb 2022 14:05:08 +0000
-Date:   Mon, 28 Feb 2022 22:04:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon] BUILD SUCCESS
- 686d303ee6301261b422ea51e64833d7909a2c36
-Message-ID: <621cd688.axj4l9nrS3terWbp%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Mon, 28 Feb 2022 09:26:31 -0500
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3E76AA71;
+        Mon, 28 Feb 2022 06:25:52 -0800 (PST)
+Received: by mail-ej1-f48.google.com with SMTP id p15so25117161ejc.7;
+        Mon, 28 Feb 2022 06:25:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=lAuE/qWfK53nr/4CQntZKh4zmnsfMTK0BgEe79BZdgg=;
+        b=jwjQ90dS3pg1eqsPtQnsfpqGCpAo23rMAh7ls5TWo48Rl/Xx36rdF8116v+3EFCtSI
+         R84SJTQyqRJc0qMnD/hO1HLzr9jMfWgYRASQHl0mqJ78wVLkPz8Ka+EZzqdfrYwKPL3I
+         jMYbE6c/PR9HazhCJLXVwgrVxMI19Aa+V0VyMMVqe/B5Bkv4Oax45Rv4jbWpECamHEg3
+         cP01/QYq/jS+f4Ez5Ilg22Hb521BPzbEoFR1LqDTn7TJlVDrlm2DNr0S+uI+/oQ8siQd
+         G7cvOAhP3vJcxBaBRE4D5dNOZbfA2A7VMoNdg39OVrz27h10Pnl7/7j9VCZeCxyZs+s0
+         nu7w==
+X-Gm-Message-State: AOAM5305I+uop1gbgHrXTFoQVrsG4+IzH7Ko86XbTPw/qM3Cd3oJoTCi
+        QM2kljXVeO+Fs/ub7ONmRDiv5aeJL/s=
+X-Google-Smtp-Source: ABdhPJySZ0lqLr7LKuNxlomzEKr6mkyIZMYR0oEQIrGjIlkgFoKRqnxSJJTPoXL0XXQx408yZqErPw==
+X-Received: by 2002:a17:906:2b58:b0:6d0:938:887e with SMTP id b24-20020a1709062b5800b006d00938887emr14624518ejg.644.1646058350913;
+        Mon, 28 Feb 2022 06:25:50 -0800 (PST)
+Received: from [192.168.0.135] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
+        by smtp.googlemail.com with ESMTPSA id u10-20020a50d94a000000b004131aa2525esm6213540edj.49.2022.02.28.06.25.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Feb 2022 06:25:49 -0800 (PST)
+Message-ID: <062ad1fb-269f-2a43-0f47-46894bca426c@kernel.org>
+Date:   Mon, 28 Feb 2022 15:25:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 2/2] dt-bindings: hwmon: Add sample averaging
+ properties for ADM1275
+Content-Language: en-US
+To:     Potin Lai <potin.lai@quantatw.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Patrick Williams <patrick@stwcx.xyz>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20220228103716.10774-1-potin.lai@quantatw.com>
+ <20220228103716.10774-3-potin.lai@quantatw.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20220228103716.10774-3-potin.lai@quantatw.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
-branch HEAD: 686d303ee6301261b422ea51e64833d7909a2c36  hwmon: (pmbus) Add mutex to regulator ops
+On 28/02/2022 11:37, Potin Lai wrote:
+> Add documentation of new properties for sample averaging in PMON_CONFIG
+> register.
+> 
+> New properties:
+> - adi,volt-curr-sample-average
+> - adi,power-sample-average
+> 
+> Signed-off-by: Potin Lai <potin.lai@quantatw.com>
+> 
+> doc
 
-elapsed time: 724m
+You have weirdly formatted commit msg.
 
-configs tested: 169
-configs skipped: 3
+> ---
+>  .../bindings/hwmon/adi,adm1275.yaml           | 39 +++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
+> index 223393d7cafd..bc4206b257a8 100644
+> --- a/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
+> @@ -37,6 +37,43 @@ properties:
+>      description:
+>        Shunt resistor value in micro-Ohm.
+>  
+> +  adi,volt-curr-sample-average:
+> +    description: |
+> +      Number of samples to be used to report voltage and current values.
+> +      If the configured value is not a power of 2, sample averaging number
+> +      will be configured with smaller and closest power of 2.
+> +
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 1
+> +    maximum: 128
+> +    default: 1
+> +
+> +  adi,power-sample-average:
+> +    description: |
+> +      Number of samples to be used to report power values.
+> +      If the configured value is not a power of 2, sample averaging number
+> +      will be configured with smaller and closest power of 2.
+> +
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 1
+> +    maximum: 128
+> +    default: 1
+> +
+> +if:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This should be in allOf.
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                 randconfig-c001-20220228
-i386                          randconfig-c001
-powerpc                    sam440ep_defconfig
-sparc                            allyesconfig
-mips                           xway_defconfig
-sh                        sh7785lcr_defconfig
-arm                          lpd270_defconfig
-arm                            zeus_defconfig
-mips                           ip32_defconfig
-m68k                           sun3_defconfig
-mips                      loongson3_defconfig
-arc                         haps_hs_defconfig
-arm                       aspeed_g5_defconfig
-sparc                       sparc64_defconfig
-s390                       zfcpdump_defconfig
-sparc                               defconfig
-xtensa                    smp_lx200_defconfig
-microblaze                          defconfig
-sh                          rsk7264_defconfig
-arc                     haps_hs_smp_defconfig
-openrisc                 simple_smp_defconfig
-riscv                    nommu_k210_defconfig
-openrisc                         alldefconfig
-sh                   rts7751r2dplus_defconfig
-arc                     nsimosci_hs_defconfig
-arm                        clps711x_defconfig
-sh                 kfr2r09-romimage_defconfig
-um                                  defconfig
-parisc                              defconfig
-mips                             allyesconfig
-sh                        sh7757lcr_defconfig
-arm                      integrator_defconfig
-m68k                                defconfig
-xtensa                          iss_defconfig
-sh                          r7780mp_defconfig
-mips                           jazz_defconfig
-xtensa                  cadence_csp_defconfig
-arc                          axs103_defconfig
-sh                      rts7751r2d1_defconfig
-sh                          polaris_defconfig
-sh                             sh03_defconfig
-sh                           se7705_defconfig
-arm                           h3600_defconfig
-m68k                       m5249evb_defconfig
-sh                           se7206_defconfig
-arc                        vdk_hs38_defconfig
-nds32                               defconfig
-arm                             ezx_defconfig
-powerpc                      mgcoge_defconfig
-arm                            pleb_defconfig
-arm                        multi_v7_defconfig
-arc                          axs101_defconfig
-powerpc                      chrp32_defconfig
-m68k                         amcore_defconfig
-powerpc                     taishan_defconfig
-sh                     sh7710voipgw_defconfig
-sh                          urquell_defconfig
-m68k                        mvme16x_defconfig
-powerpc                     rainier_defconfig
-arm                          pxa910_defconfig
-arm                  randconfig-c002-20220228
-arm                  randconfig-c002-20220227
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a011-20220228
-x86_64               randconfig-a015-20220228
-x86_64               randconfig-a014-20220228
-x86_64               randconfig-a013-20220228
-x86_64               randconfig-a016-20220228
-x86_64               randconfig-a012-20220228
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                 randconfig-a016-20220228
-i386                 randconfig-a012-20220228
-i386                 randconfig-a015-20220228
-i386                 randconfig-a011-20220228
-i386                 randconfig-a013-20220228
-i386                 randconfig-a014-20220228
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-s390                 randconfig-r044-20220228
-arc                  randconfig-r043-20220228
-arc                  randconfig-r043-20220227
-riscv                randconfig-r042-20220228
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+> +  not:
 
-clang tested configs:
-powerpc              randconfig-c003-20220227
-x86_64                        randconfig-c007
-arm                  randconfig-c002-20220227
-mips                 randconfig-c004-20220227
-i386                          randconfig-c001
-riscv                randconfig-c006-20220227
-s390                 randconfig-c005-20220227
-arm                          imote2_defconfig
-riscv                            alldefconfig
-mips                        qi_lb60_defconfig
-mips                          rm200_defconfig
-hexagon                          alldefconfig
-mips                   sb1250_swarm_defconfig
-mips                      bmips_stb_defconfig
-riscv                    nommu_virt_defconfig
-powerpc                     ksi8560_defconfig
-powerpc                        icon_defconfig
-powerpc                          allmodconfig
-mips                      maltaaprp_defconfig
-x86_64               randconfig-a003-20220228
-x86_64               randconfig-a005-20220228
-x86_64               randconfig-a002-20220228
-x86_64               randconfig-a006-20220228
-x86_64               randconfig-a001-20220228
-x86_64               randconfig-a004-20220228
-i386                 randconfig-a002-20220228
-i386                 randconfig-a001-20220228
-i386                 randconfig-a005-20220228
-i386                 randconfig-a003-20220228
-i386                 randconfig-a006-20220228
-i386                 randconfig-a004-20220228
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-s390                 randconfig-r044-20220227
-hexagon              randconfig-r045-20220227
-hexagon              randconfig-r041-20220227
-riscv                randconfig-r042-20220227
+Remove negation and list devices where it is not allowed.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> +    properties:
+> +      compatible:
+> +        contains:
+> +          enum:
+> +          - adi,adm1272
+> +          - adi,adm1278
+> +          - adi,adm1293
+> +          - adi,adm1294
+> +then:
+> +  properties:
+> +    adi,power-sample-average:
+> +      description: This property is not allowed.
+
+This does not work. Please test it - add not allowed property to such
+devices and look for error. I gave you the example how it should be
+done. Why doing it in a different way which does not work?
+
+
+
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -53,5 +90,7 @@ examples:
+>              compatible = "adi,adm1272";
+>              reg = <0x10>;
+>              shunt-resistor-micro-ohms = <500>;
+> +            adi,volt-curr-sample-average = <128>;
+> +            adi,power-sample-average = <128>;
+>          };
+>      };
+
+
+Best regards,
+Krzysztof
