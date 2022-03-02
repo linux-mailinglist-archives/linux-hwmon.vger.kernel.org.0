@@ -2,178 +2,82 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CEB24CA0F3
-	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Mar 2022 10:37:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D7FB4CA13E
+	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Mar 2022 10:49:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240566AbiCBJi1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 2 Mar 2022 04:38:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
+        id S240632AbiCBJuf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 2 Mar 2022 04:50:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240552AbiCBJiZ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Mar 2022 04:38:25 -0500
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AA524BE2;
-        Wed,  2 Mar 2022 01:37:41 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id d10so2383455eje.10;
-        Wed, 02 Mar 2022 01:37:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=HzvRX5aXV39P54ewUBoE5fNDbFJ/AGNr/7ZVd7EAqhU=;
-        b=xB8K0eAABiL5mdf2Ac4lhdzyh1TFFcInpgbqL/nrLFht9Wd3+5nPuX3XxGAK9op+qG
-         z5mozocLWXjamVJ5cmVJcBRjIfpH0R7eir5r0+XgQqdLZ0Uxt9tHrUVbCwLpOvSNvFgk
-         KIYDFD4G0OP25Q5UJNE5xj/jg6o5pjvZJ1NVe+CphevVVZ34Favc0TbLLlsPPF6QIWjj
-         smB/QjKeYXlsD3sM1ofrPFkwHmXKfQnMcO6tXMdnfkUlwrJsLnxx3RXdS1sdiJX2e6qT
-         xNdUrrP6x8fmjCPd+nSYRDonvFKg2wLmHsId6/Z5YWFMpdKxagWjcGmBFcE4kFcosARq
-         s45A==
-X-Gm-Message-State: AOAM5319fPH9w+Cz/ZkfklEwXlrzl10VtufXPxJTVfxmU//8/McA9gQU
-        rU2u1cZOMfKHZM7V62yenjc=
-X-Google-Smtp-Source: ABdhPJzhWPmaQ9FhPqIrZ6ZcBkbvC7QdZNYl0E13QfkwC+CTiw5paUnnb74ikJhTVqnbfURy/R+hkA==
-X-Received: by 2002:a17:906:7f09:b0:6d6:daee:566f with SMTP id d9-20020a1709067f0900b006d6daee566fmr8052781ejr.294.1646213860190;
-        Wed, 02 Mar 2022 01:37:40 -0800 (PST)
-Received: from [192.168.0.136] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
-        by smtp.googlemail.com with ESMTPSA id m22-20020a056402051600b00415a0cbd561sm1179366edv.74.2022.03.02.01.37.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Mar 2022 01:37:39 -0800 (PST)
-Message-ID: <d714ec21-b6e8-1753-1d1f-3b51bae68f35@kernel.org>
-Date:   Wed, 2 Mar 2022 10:37:38 +0100
+        with ESMTP id S239845AbiCBJue (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Mar 2022 04:50:34 -0500
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C8F7B91F4;
+        Wed,  2 Mar 2022 01:49:51 -0800 (PST)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:105:465:1:3:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4K7q8s3c4hz9spV;
+        Wed,  2 Mar 2022 10:49:49 +0100 (CET)
+From:   Marcello Sylvester Bauer <sylv@sylv.io>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
+        t=1646214587;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=WspfyhO7TC+btHOAKHVih6axBfDGuMx5FJC+LFQ2iLw=;
+        b=rgSWZUdzsZNOa6xxI87LxGuVBOXX3HTlQ4WbAyx0st3axQ5UJkvmDgPPTwXd0LcOFJdUz1
+        OkyuJL/yJ9ZJ5FqrpuEOLNJPaeMsAfJaj3TdIJ29VzQIKx82QucZ+oeXq6HECkx5jbfO3P
+        ZZRze35imxj6T0zEdk3qS5/MR2U8kiaEXpQNy6zj1tXYBvPiBJRpiTDQxHPWjxu8nWy0rR
+        iNc0TgkOMTl6SzfXmAEwSHZgO0q+IxAqvLJZiUTvOizZG+4P3y/zX4ZtjUdzIaL/Gwxtx2
+        0mEOdc/8WOATZLM+EC1/jbvGwEuGDXCBLj/dtb294YCPG+Etcu0qWjWLTGUSTw==
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Marcello Sylvester Bauer <sylv@sylv.io>
+Subject: [PATCH v4 0/3] Support XDPE112
+Date:   Wed,  2 Mar 2022 10:49:18 +0100
+Message-Id: <cover.1646214248.git.sylv@sylv.io>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v5 2/2] dt-bindings: hwmon: Add sample averaging
- properties for ADM1275
-Content-Language: en-US
-To:     Potin Lai <potin.lai@quantatw.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Patrick Williams <patrick@stwcx.xyz>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220302070831.23822-1-potin.lai@quantatw.com>
- <20220302070831.23822-3-potin.lai@quantatw.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220302070831.23822-3-potin.lai@quantatw.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 02/03/2022 08:08, Potin Lai wrote:
-> Add documentation of new properties for sample averaging in PMON_CONFIG
-> register.
-> 
-> New properties:
-> - adi,volt-curr-sample-average
-> - adi,power-sample-average
-> 
-> Signed-off-by: Potin Lai <potin.lai@quantatw.com>
-> ---
->  .../bindings/hwmon/adi,adm1275.yaml           | 69 +++++++++++++++++++
->  1 file changed, 69 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
-> index 223393d7cafd..b191abddf20b 100644
-> --- a/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
-> +++ b/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
-> @@ -37,6 +37,72 @@ properties:
->      description:
->        Shunt resistor value in micro-Ohm.
->  
-> +  adi,volt-curr-sample-average:
-> +    description: |
-> +      Number of samples to be used to report voltage and current values.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [1, 2, 4, 8, 16, 32, 64, 128]
-> +
-> +  adi,power-sample-average:
-> +    description: |
-> +      Number of samples to be used to report power values.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [1, 2, 4, 8, 16, 32, 64, 128]
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,adm1075
-> +              - adi,adm1276
-> +    then:
-> +      properties:
-> +        adi,volt-curr-sample-average:
-> +          default: 128
-> +        adi,power-sample-average-enable: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,adm1275
-> +    then:
-> +      properties:
-> +        adi,volt-curr-sample-average:
-> +          default: 16
-> +        adi,power-sample-average-enable: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,adm1272
-> +    then:
-> +      properties:
-> +        adi,volt-curr-sample-average:
-> +          default: 128
-> +        adi,power-sample-average-enable:
-> +          default: 128
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,adm1278
-> +              - adi,adm1293
-> +              - adi,adm1294
-> +    then:
-> +      properties:
-> +        adi,volt-curr-sample-average:
-> +          default: 128
-> +        adi,power-sample-average-enable:
+Add support for Infineon Multi-phase XDPE112 family regulator. The main
+difference to the XDPE122 family is it uses a different format for
+voltage out. Add the required logic to the existing xdpe12284 driver
+accordingly.
 
-This should be adi,power-sample-average?
+Changes in v4:
+- move VOUT_MODE format detection into identify function
 
-> +          default: 1
-> +
->  required:
->    - compatible
->    - reg
-> @@ -53,5 +119,8 @@ examples:
->              compatible = "adi,adm1272";
->              reg = <0x10>;
->              shunt-resistor-micro-ohms = <500>;
-> +            adi,volt-curr-sample-average = <128>;
-> +            adi,power-sample-average = <128>;
-> +            adi,power-sample-average-enable;
+Changes in v3:
+- detect VOUT_MODE during probing
+- set xdpe122_identify/xdpe122_read_word_data only if VOUT is vid
 
-This property does not exist. Did you run dt_binding_check?
+Changes in v2:
+- rebase on current hwmon-next branch
 
->          };
->      };
+Marcello Sylvester Bauer (3):
+  dt-bindings: trivial-devices: Add xdpe11280
+  hwmon (xdpe12284): Add support for xdpe11280
+  hwmon (xdpe12284): Add regulator support
 
+ .../devicetree/bindings/trivial-devices.yaml  |  2 ++
+ Documentation/hwmon/xdpe12284.rst             | 12 ++++---
+ drivers/hwmon/pmbus/Kconfig                   |  6 ++++
+ drivers/hwmon/pmbus/xdpe12284.c               | 32 +++++++++++++++++--
+ 4 files changed, 45 insertions(+), 7 deletions(-)
 
-Best regards,
-Krzysztof
+-- 
+2.35.1
+
