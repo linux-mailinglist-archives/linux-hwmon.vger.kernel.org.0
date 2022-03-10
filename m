@@ -2,74 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A9A4D3E6F
-	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Mar 2022 01:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 025574D41C0
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Mar 2022 08:23:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238660AbiCJAue (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 9 Mar 2022 19:50:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
+        id S238725AbiCJHYk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 10 Mar 2022 02:24:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234466AbiCJAue (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 9 Mar 2022 19:50:34 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3B16E56B
-        for <linux-hwmon@vger.kernel.org>; Wed,  9 Mar 2022 16:49:34 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id b15so892414edn.4
-        for <linux-hwmon@vger.kernel.org>; Wed, 09 Mar 2022 16:49:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=4SL1/qbkTptdsuZGoXAM80S4DBJva1Vt53CdfbCl4nw=;
-        b=qpSLYlZlxJ2Ofu3+FdX0ZemvE0K5Ab3JrQrOxBBs0Lm2G6sATTyCucT/7B66CsrpBn
-         5rfStNP9PPi18T0+0syhReny+1CkZdUKFU++2mTBFK1htH4WZPA/p+18USyA0CKDIB9D
-         lxa20jfMhWuxqftBK3qaYV3ANjBAKv03VaT/fbuxqjMwXpnJ5khsbMRQxUqO/TzhWo/F
-         Ws4spS2R6ich2Odnl1Ezh2kOtT7SZHRJdGSTZt4ZwharkE3Dny40y4e5hvsYZi3Rp0hQ
-         W60JYihoYiv9v2NN4H64w9HKVB2fPnlmQk38RKwGs5YRNOo1oZLj4aQSJdlHWQ/hesdJ
-         SeBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=4SL1/qbkTptdsuZGoXAM80S4DBJva1Vt53CdfbCl4nw=;
-        b=Gj9hmoyFzlrfA0AMlqbCuK3hFLpEyF2lYnyBja/AhAB9AtErilT6UtGmoY0eS4D3p5
-         rfjUzHT4+UgvJgkvDiKI1GgWrKGMX4b/5CPPe8mCkU8Rv6STE/u9iAj7+PYN7Vh6RjbP
-         8Bz9ViFNgWO3/ppi6faHWeGdpM5U/oM9Kce1y1O5odao0g4mzEQlVmsSceWOYVzSIhdY
-         sC1CdvVx1RE7iXUG4NVlaMOML3jd2Uprq8U804IzyxfmH067xL87O73wu28qewDkvENd
-         xU+afcm0AqdQRArnmrVAuxkDyv60selJOS07XbheOluzbgjRps0tSLld5WiDRnQvTOE/
-         PW7w==
-X-Gm-Message-State: AOAM533/E4fmQJnuzpReWOIutYBPlkgWrDKO/N21Mj3V3NM7yIz1HeIl
-        bHUS4n5FeJlAfBaBpBem8Nr4ivTNPQC5KO4KEvc=
-X-Google-Smtp-Source: ABdhPJxco8vs9j35aitH3PgKqcccLLaqVYgVjXt8oDK9vMU37e/6a1K96CYaWbSCA41LOJopvyNeo13S97fHSbB2V5Q=
-X-Received: by 2002:a05:6402:4414:b0:408:4dc0:3ee9 with SMTP id
- y20-20020a056402441400b004084dc03ee9mr1906044eda.203.1646873372960; Wed, 09
- Mar 2022 16:49:32 -0800 (PST)
+        with ESMTP id S238574AbiCJHYj (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Thu, 10 Mar 2022 02:24:39 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F04DF5AEFA
+        for <linux-hwmon@vger.kernel.org>; Wed,  9 Mar 2022 23:23:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646897018; x=1678433018;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=8DW4ZkjykbyMj9hKtNQeQHVqLXxJ1uy9HK9dUIuuugg=;
+  b=SMeUNKVXC2LZsP21EFm6kvMRwGuGizOB7qETTOq7vBkVWek3A7N+5gVT
+   s2mVvAORL4PZCfSuN8Iq4Ke2Nrfl/PUBA7S87lfsfqzbyW0uGwULDxygW
+   7LEv9nBqi/FmNZX4nH/5pez+vKwOasZQrKmNx+S1lYz/3iXbHebHzhyd4
+   Dl1SmMHCHJRRv4xoQb+mhaThFFFR5IknZEcBrXxN27Bcd2BjooCk8b40m
+   tvZytwvevEgRG4i60uDbWZ7zlAnFOVhyr9LfT92XK0lttCI1ym/Ukd68F
+   te9fvTlBrsEw4XlVRxOjHwYyDySBAzORHuG/U2/xmawAd6K+Nzs2zGUXa
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="252749207"
+X-IronPort-AV: E=Sophos;i="5.90,169,1643702400"; 
+   d="scan'208";a="252749207"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2022 23:23:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,169,1643702400"; 
+   d="scan'208";a="554517163"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 09 Mar 2022 23:23:36 -0800
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nSD96-0004XS-4D; Thu, 10 Mar 2022 07:23:36 +0000
+Date:   Thu, 10 Mar 2022 15:23:06 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Sam Shih <sam.shih@mediatek.com>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-hwmon@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Subject: [groeck-staging:watchdog-next 22/33]
+ drivers/watchdog/mtk_wdt.c:13:10: fatal error:
+ 'dt-bindings/reset/mt7986-resets.h' file not found
+Message-ID: <202203101530.3l4W0JyC-lkp@intel.com>
 MIME-Version: 1.0
-Sender: julianterry39@gmail.com
-Received: by 2002:a54:2346:0:0:0:0:0 with HTTP; Wed, 9 Mar 2022 16:49:32 -0800 (PST)
-From:   "Mrs. Latifa Rassim Mohamad" <rassimlatifa400@gmail.com>
-Date:   Wed, 9 Mar 2022 16:49:32 -0800
-X-Google-Sender-Auth: qwTrMVMl6dbc4eoK41LkVsoZ7VY
-Message-ID: <CA+Kqa7ci6Bo_6GXkQKFrf-Q5_bjeuYODdLb2rpW+wozbD=OSeg@mail.gmail.com>
-Subject: Hello my beloved.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,HK_NAME_FM_MR_MRS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Greetings dears,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
+head:   b6447e51682d2d364b82ba35606888e39251dfcf
+commit: 6c2b372365e1e64170e209a1e903c5cb64bebc63 [22/33] watchdog: mtk_wdt: mt7986: Add toprgu reset controller support
+config: arm-randconfig-r001-20220310 (https://download.01.org/0day-ci/archive/20220310/202203101530.3l4W0JyC-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 276ca87382b8f16a65bddac700202924228982f6)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install arm cross compiling tool for clang build
+        # apt-get install binutils-arm-linux-gnueabi
+        # https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git/commit/?id=6c2b372365e1e64170e209a1e903c5cb64bebc63
+        git remote add groeck-staging https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+        git fetch --no-tags groeck-staging watchdog-next
+        git checkout 6c2b372365e1e64170e209a1e903c5cb64bebc63
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash drivers/watchdog/
 
-Hello my dear Good evening from here this evening, how are you doing
-today? My name is Mrs.  Latifa Rassim Mohamad from Saudi Arabia, I
-have something very important and serious i will like to discuss with
-you privately, so i hope this is your private email?
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-Mrs. Latifa Rassim Mohamad.
+All errors (new ones prefixed by >>):
+
+>> drivers/watchdog/mtk_wdt.c:13:10: fatal error: 'dt-bindings/reset/mt7986-resets.h' file not found
+   #include <dt-bindings/reset/mt7986-resets.h>
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+
+
+vim +13 drivers/watchdog/mtk_wdt.c
+
+  > 13	#include <dt-bindings/reset/mt7986-resets.h>
+    14	#include <dt-bindings/reset/mt8183-resets.h>
+    15	#include <dt-bindings/reset/mt8186-resets.h>
+    16	#include <dt-bindings/reset/mt8192-resets.h>
+    17	#include <dt-bindings/reset/mt8195-resets.h>
+    18	#include <linux/delay.h>
+    19	#include <linux/err.h>
+    20	#include <linux/init.h>
+    21	#include <linux/io.h>
+    22	#include <linux/kernel.h>
+    23	#include <linux/module.h>
+    24	#include <linux/moduleparam.h>
+    25	#include <linux/of.h>
+    26	#include <linux/of_device.h>
+    27	#include <linux/platform_device.h>
+    28	#include <linux/reset-controller.h>
+    29	#include <linux/types.h>
+    30	#include <linux/watchdog.h>
+    31	#include <linux/interrupt.h>
+    32	
+
+---
+0-DAY CI Kernel Test Service
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
