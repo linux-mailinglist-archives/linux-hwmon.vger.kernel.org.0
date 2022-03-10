@@ -2,117 +2,217 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C07AB4D45BA
-	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Mar 2022 12:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B9234D4CFA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Mar 2022 16:43:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241604AbiCJLfK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 10 Mar 2022 06:35:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55218 "EHLO
+        id S233084AbiCJPha (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 10 Mar 2022 10:37:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239022AbiCJLfJ (ORCPT
+        with ESMTP id S232453AbiCJPh3 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 10 Mar 2022 06:35:09 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DB0F8BBD
-        for <linux-hwmon@vger.kernel.org>; Thu, 10 Mar 2022 03:34:09 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id bi12so11436517ejb.3
-        for <linux-hwmon@vger.kernel.org>; Thu, 10 Mar 2022 03:34:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=BGH93snULo5xdwpbNRpG9IM64xjKrM5cisVCg0+vObk=;
-        b=epzCD4K7PnDnVLzX+L/haVTGlvzMbgSlUckvHwpqyZ8AXdO8LyzmuRrWpT8MU8vd5u
-         ryR7CngL2RG7E2TTuBYZcUpDHyHA2ocDJ5CIrXUTcTgOa8kOgzBaocjnNYuJ5UyHHDLu
-         g3RTBwTbXzy9rj6At/yBwUsYIhCXhUdAhDuL3GeAbaoAqXfgle6sSwYDKK/Dlc0f9+Y1
-         F3D7TXK1Q0+o0PN4omE8JXm4Ndl9GUkgp5dyrvc491INH+8fveSAVW5WfRdDr4R+Q9kF
-         DtCejPjCpViZd0tm0v40109AseVF0KMKUsddA9mJHpMtDLBL27aEzlP2bWQ+ujLykIJP
-         6IMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=BGH93snULo5xdwpbNRpG9IM64xjKrM5cisVCg0+vObk=;
-        b=lf9V4sggXOLacXSP60+vmOr+TU15pbo0/YFwsNgP6ifXGNeEQBL/kBN7qdV+ULc1PT
-         JlvG4q3ktQHWkwjZZeYTqTLNjEGUUr5FMKdSqZ5hRbAY5c+KFm0WCdgPxOKcmJw5PZZf
-         4fA2zSnySTyiIZAKrNYZPGwpZVqs7KQ4Ctaw8wFUIOZc/83mmWMfLcRO7K//HV+b/Gul
-         wNTCH9zJsahDOFNTFg/Yvi81aTHSUMyv2uoCrk1Pjjp0azS3lZwXr5lvJlGeO4X9EfgP
-         0cdd4ZCEcY5zadbyOLsT2bGmIUmadDM6hI7dZIJ08K/iWfZMnbdntPhdsfPhHQu8T95N
-         ltdQ==
-X-Gm-Message-State: AOAM530SqbkHUVETlKRQBLwZj2JVeawD56NxzIP4xcWYoMQv9XiYP6Ej
-        0GqNEgKhjhNd0qpwaloveaLyz3YIpiGZuesnP90=
-X-Google-Smtp-Source: ABdhPJwLJqok7/HZufO/fgMnyqhFu3GEjqpZANPQJ0eTEQSoQJv9cMT+okARmwNcDAFoNV8CZOXvyX5OyhvwhJ8jnXw=
-X-Received: by 2002:a17:906:32cf:b0:6d5:83bc:e962 with SMTP id
- k15-20020a17090632cf00b006d583bce962mr3925585ejk.108.1646912047553; Thu, 10
- Mar 2022 03:34:07 -0800 (PST)
+        Thu, 10 Mar 2022 10:37:29 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D85D16AA60
+        for <linux-hwmon@vger.kernel.org>; Thu, 10 Mar 2022 07:36:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646926588; x=1678462588;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=u0lKqP9JXiz4WJBFFP1fX3YlwgsutnpMyFZM9ak5aQs=;
+  b=BIIAWpEHYSSKF+DxZuEy8vO2wTFBxilCqUd2Xt9/KG75BGFPAOlk9+Nn
+   WCo3xdh+AwE7HwTjV63pBjaZiB3V+wmWfT4bqdlOm7WSAuspHVxbILg05
+   trCK+0v7ZMC+971HRMRaq/naxe8NbqQNJK49+3xAZvKohjKcZPdoV0Qku
+   JFMYmW/2vO4sjTmWbcxVkJ0Rttpp5kytjvYasBmLUaV983oVt8EkE09IX
+   mGr0jvYvsI+UHyPFcG/Mfa02H7YH6YxTNCV0fC012nOkMLYaR+57IZ6YN
+   rGRg8c4nj9q9/w/GNZCt2r0w7ArjKnymt4yJUYxkIdx9AT4PpFtvwraEs
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="255226076"
+X-IronPort-AV: E=Sophos;i="5.90,171,1643702400"; 
+   d="scan'208";a="255226076"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 07:36:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,171,1643702400"; 
+   d="scan'208";a="642597446"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 10 Mar 2022 07:36:26 -0800
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nSKq1-000542-OX; Thu, 10 Mar 2022 15:36:25 +0000
+Date:   Thu, 10 Mar 2022 23:35:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:watchdog-next] BUILD REGRESSION
+ b6447e51682d2d364b82ba35606888e39251dfcf
+Message-ID: <622a1ad7.Q+sQJmkJGkEnRQOe%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Sender: aiish.affid@gmail.com
-Received: by 2002:a17:906:1b15:0:0:0:0 with HTTP; Thu, 10 Mar 2022 03:34:06
- -0800 (PST)
-From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
-Date:   Thu, 10 Mar 2022 12:34:06 +0100
-X-Google-Sender-Auth: EW6z6v4DZbnXwinqqfKRaEwCTaA
-Message-ID: <CAKfUuDtjGmkMfQaS5KbnCSP1XCnpHNeaT=qfUjb7C3c+a2YiNA@mail.gmail.com>
-Subject: ATTENTION PLEASE,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_NAME_FM_MR_MRS,
-        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,SUBJ_ATTENTION,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62f listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5124]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mrsaminatazongo[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        *  0.0 MILLION_USD BODY: Talks about millions of dollars
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 HK_NAME_FM_MR_MRS No description available.
-        *  0.4 SUBJ_ATTENTION ATTENTION in Subject
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION PLEASE,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
+branch HEAD: b6447e51682d2d364b82ba35606888e39251dfcf  dt-bindings: watchdog: renesas,wdt: Document RZ/V2L SoC
 
-I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
-Directors working with United bank for African Burkina Faso (UBA). I
-have an interesting business proposal for you that will be of immense
-benefit to both of us. Although this may be hard for you to believe,
-we stand to gain a huge amount  between us in a matter of days. Please
-grant me the benefit of doubt and hear me out. I need you to signify
-your interest by replying to my mail.
+Error/Warning reports:
 
-Honestly, i have business transaction worth the sum of
-(US$8,200,000.00) Eight Million two hundred thousand united state
-dollars to transfer to you through proper documentation in position of
-your own Account.
+https://lore.kernel.org/llvm/202203101530.3l4W0JyC-lkp@intel.com
 
-Most importantly, I will need you to promise to keep whatever you
-learn from me between us even if you decide not to go along with me. I
-will make more details available to you on receipt of a positive
-response from you.
+Error/Warning:
 
-Best Regards,
-Mrs Aminata Zongo.
+drivers/watchdog/mtk_wdt.c:13:10: fatal error: 'dt-bindings/reset/mt7986-resets.h' file not found
+
+Error/Warning ids grouped by kconfigs:
+
+clang_recent_errors
+|-- arm-randconfig-r001-20220310
+|   `-- drivers-watchdog-mtk_wdt.c:fatal-error:dt-bindings-reset-mt7986-resets.h-file-not-found
+`-- arm64-randconfig-r024-20220310
+    `-- drivers-watchdog-mtk_wdt.c:fatal-error:dt-bindings-reset-mt7986-resets.h-file-not-found
+
+elapsed time: 731m
+
+configs tested: 123
+configs skipped: 3
+
+gcc tested configs:
+arm                                 defconfig
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+m68k                          atari_defconfig
+alpha                            alldefconfig
+sh                 kfr2r09-romimage_defconfig
+ia64                      gensparse_defconfig
+powerpc                    sam440ep_defconfig
+arm                     eseries_pxa_defconfig
+powerpc                      makalu_defconfig
+powerpc64                           defconfig
+sparc64                          alldefconfig
+m68k                        stmark2_defconfig
+h8300                       h8s-sim_defconfig
+mips                            gpr_defconfig
+mips                 decstation_r4k_defconfig
+h8300                    h8300h-sim_defconfig
+powerpc                  storcenter_defconfig
+sh                           se7722_defconfig
+m68k                        mvme16x_defconfig
+arm                           h5000_defconfig
+mips                     loongson1b_defconfig
+um                               alldefconfig
+xtensa                    xip_kc705_defconfig
+m68k                                defconfig
+sh                     magicpanelr2_defconfig
+csky                                defconfig
+powerpc                        warp_defconfig
+ia64                         bigsur_defconfig
+arm                        oxnas_v6_defconfig
+arm                  randconfig-c002-20220310
+ia64                             allmodconfig
+ia64                             allyesconfig
+ia64                                defconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+alpha                               defconfig
+nds32                               defconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+parisc                              defconfig
+s390                                defconfig
+parisc64                            defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                   debian-10.3-kselftests
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220310
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+arm                          ixp4xx_defconfig
+arm                        vexpress_defconfig
+arm                          collie_defconfig
+arm                            mmp2_defconfig
+mips                        bcm63xx_defconfig
+arm                    vt8500_v6_v7_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                      ppc44x_defconfig
+arm                         shannon_defconfig
+mips                        maltaup_defconfig
+powerpc                     kmeter1_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220310
+hexagon              randconfig-r041-20220310
+s390                 randconfig-r044-20220310
+riscv                randconfig-r042-20220310
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
