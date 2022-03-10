@@ -2,130 +2,74 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CEE34D2DC6
-	for <lists+linux-hwmon@lfdr.de>; Wed,  9 Mar 2022 12:16:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85A9A4D3E6F
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Mar 2022 01:49:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232083AbiCILRT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 9 Mar 2022 06:17:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52642 "EHLO
+        id S238660AbiCJAue (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 9 Mar 2022 19:50:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232051AbiCILRS (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 9 Mar 2022 06:17:18 -0500
-Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [IPv6:2605:2700:0:5::4713:9cab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E38C13CEF8;
-        Wed,  9 Mar 2022 03:16:17 -0800 (PST)
-Received: from hatter.bewilderbeest.net (174-21-187-98.tukw.qwest.net [174.21.187.98])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: zev)
-        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id A5184180;
-        Wed,  9 Mar 2022 03:16:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
-        s=thorn; t=1646824576;
-        bh=2rBQwW6XLcpw4ODkOdsflYm4tk7ggmr+Vf8x3pA/P28=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fLXlT0JXfyWFQWXjSjTrNjnb29G/Q0bzDRzgGUzkFG8fwIOUlus/wLRqWAI+uJdOn
-         2AvhQ/s+b2Y9gNX0k+8to702LN4j+F7fk3iNjElxL7zRaKoEh7PKKZGXzYT06rrSvb
-         yrUsGapPgahYv00aTjW6hAVlTb+GfvukwVztwMd8=
-Date:   Wed, 9 Mar 2022 03:16:12 -0800
-From:   Zev Weiss <zev@bewilderbeest.net>
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Rob Herring <robh+dt@kernel.org>,
-        Renze Nicolai <renze@rnplus.nl>
-Subject: Re: [PATCH v2 0/6] hwmon: (nct6775) Convert to regmap, add i2c
- support
-Message-ID: <YiiMfJV3bjUmoUcV@hatter.bewilderbeest.net>
-References: <20220309005047.5107-1-zev@bewilderbeest.net>
- <05667284-42f7-0df2-8fa0-463ad6ad9601@molgen.mpg.de>
+        with ESMTP id S234466AbiCJAue (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 9 Mar 2022 19:50:34 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3B16E56B
+        for <linux-hwmon@vger.kernel.org>; Wed,  9 Mar 2022 16:49:34 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id b15so892414edn.4
+        for <linux-hwmon@vger.kernel.org>; Wed, 09 Mar 2022 16:49:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=4SL1/qbkTptdsuZGoXAM80S4DBJva1Vt53CdfbCl4nw=;
+        b=qpSLYlZlxJ2Ofu3+FdX0ZemvE0K5Ab3JrQrOxBBs0Lm2G6sATTyCucT/7B66CsrpBn
+         5rfStNP9PPi18T0+0syhReny+1CkZdUKFU++2mTBFK1htH4WZPA/p+18USyA0CKDIB9D
+         lxa20jfMhWuxqftBK3qaYV3ANjBAKv03VaT/fbuxqjMwXpnJ5khsbMRQxUqO/TzhWo/F
+         Ws4spS2R6ich2Odnl1Ezh2kOtT7SZHRJdGSTZt4ZwharkE3Dny40y4e5hvsYZi3Rp0hQ
+         W60JYihoYiv9v2NN4H64w9HKVB2fPnlmQk38RKwGs5YRNOo1oZLj4aQSJdlHWQ/hesdJ
+         SeBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=4SL1/qbkTptdsuZGoXAM80S4DBJva1Vt53CdfbCl4nw=;
+        b=Gj9hmoyFzlrfA0AMlqbCuK3hFLpEyF2lYnyBja/AhAB9AtErilT6UtGmoY0eS4D3p5
+         rfjUzHT4+UgvJgkvDiKI1GgWrKGMX4b/5CPPe8mCkU8Rv6STE/u9iAj7+PYN7Vh6RjbP
+         8Bz9ViFNgWO3/ppi6faHWeGdpM5U/oM9Kce1y1O5odao0g4mzEQlVmsSceWOYVzSIhdY
+         sC1CdvVx1RE7iXUG4NVlaMOML3jd2Uprq8U804IzyxfmH067xL87O73wu28qewDkvENd
+         xU+afcm0AqdQRArnmrVAuxkDyv60selJOS07XbheOluzbgjRps0tSLld5WiDRnQvTOE/
+         PW7w==
+X-Gm-Message-State: AOAM533/E4fmQJnuzpReWOIutYBPlkgWrDKO/N21Mj3V3NM7yIz1HeIl
+        bHUS4n5FeJlAfBaBpBem8Nr4ivTNPQC5KO4KEvc=
+X-Google-Smtp-Source: ABdhPJxco8vs9j35aitH3PgKqcccLLaqVYgVjXt8oDK9vMU37e/6a1K96CYaWbSCA41LOJopvyNeo13S97fHSbB2V5Q=
+X-Received: by 2002:a05:6402:4414:b0:408:4dc0:3ee9 with SMTP id
+ y20-20020a056402441400b004084dc03ee9mr1906044eda.203.1646873372960; Wed, 09
+ Mar 2022 16:49:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <05667284-42f7-0df2-8fa0-463ad6ad9601@molgen.mpg.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Sender: julianterry39@gmail.com
+Received: by 2002:a54:2346:0:0:0:0:0 with HTTP; Wed, 9 Mar 2022 16:49:32 -0800 (PST)
+From:   "Mrs. Latifa Rassim Mohamad" <rassimlatifa400@gmail.com>
+Date:   Wed, 9 Mar 2022 16:49:32 -0800
+X-Google-Sender-Auth: qwTrMVMl6dbc4eoK41LkVsoZ7VY
+Message-ID: <CA+Kqa7ci6Bo_6GXkQKFrf-Q5_bjeuYODdLb2rpW+wozbD=OSeg@mail.gmail.com>
+Subject: Hello my beloved.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,HK_NAME_FM_MR_MRS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Mar 09, 2022 at 12:12:32AM PST, Paul Menzel wrote:
->Dear Zev,
->
->
->Am 09.03.22 um 01:50 schrieb Zev Weiss:
->
->>This is v2 of my patches to add i2c support to the nct6775 driver.
->>
->>Changes since v1 [0]:
->>  - Added preparatory patch converting driver to regmap API [Guenter]
->>  - Replaced ENOSPC with ENOBUFS and removed WARN_ON() in
->>    nct6775_add_attr_group() [Guenter]
->>  - Added dedicated symbol namespace [Guenter]
->>  - Removed nct6775_write_temp() and nct6775_update_device() symbol
->>    exports [Guenter]
->>  - Reordered patches to put dt-bindings patch first [Krzysztof]
->>
->>The nct6775-platform and nct6775-i2c drivers have both been tested on
->>the NCT6779D in an ASRock ROMED8HM3 system and the NCT6798 [1] in an
->>ASRock X570-D4U (the latter thanks to Renze, CCed); both seem to work
->>as expected on both systems.  I don't have access to any asuswmi
->>hardware, so testing of the nct6775-platform driver on that to ensure
->>it doesn't break there would be appreciated (Oleksandr, perhaps?).
->
->I have an ASUS F2A85-M PRO with that Super I/O. (It’s running coreboot 
->right now, but I can test with the proprietary vendor firmware, if you 
->tell me what and how I can test this.
->
+Greetings dears,
 
-Hi Paul,
+Hello my dear Good evening from here this evening, how are you doing
+today? My name is Mrs.  Latifa Rassim Mohamad from Saudi Arabia, I
+have something very important and serious i will like to discuss with
+you privately, so i hope this is your private email?
 
-Thanks for offering to test!  I don't see the F2A85-M PRO listed in the 
-asus_wmi_boards array, so (unless there's some alternate model name it 
-also goes by that's in that list) I don't think it will provide coverage 
-for the asuswmi code, but additional testing of the platform driver 
-would still be good anyway.
-
-To try it out, first apply the patch series on top of Guenter's current 
-hwmon-next tree (it's based on commit 5d4a2ea96b79).  You'll need to 
-enable both the existing CONFIG_SENSORS_NCT6775 Kconfig option as well 
-as the new CONFIG_SENSORS_NCT6775_PLATFORM.  Then compile, install, and 
-boot into the resulting kernel.  If you set 
-CONFIG_SENSORS_NCT6775_PLATFORM=m (compiling it as a module) you'll need 
-to run 'modprobe nct6775-platform' to load the module, after which 
-running 'sensors' from the lm-sensors package should show sensor 
-readings from it -- if things are working right, it should behave pretty 
-much exactly as the driver did prior to these patches.
-
-However, since posting the v2 patch series I realized I bungled 
-something in the regmap conversion (patch 2 of the series), so before 
-compiling you should also apply this small fixup (which will be included 
-in subsequent versions of the patchset):
-
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index cb3958c977fa..5801aa9d60ee 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -1150,7 +1150,7 @@ static int nct6775_write_fan_div(struct nct6775_data *data, int nr)
-  	if (err)
-  		return err;
-  	reg &= 0x70 >> oddshift;
--	reg |= data->fan_div[nr] & (0x7 << oddshift);
-+	reg |= (data->fan_div[nr] & 0x7) << oddshift;
-  	return nct6775_write_value(data, fandiv_reg, reg);
-  }
-  
-
-
-Thanks,
-Zev
-
+Mrs. Latifa Rassim Mohamad.
