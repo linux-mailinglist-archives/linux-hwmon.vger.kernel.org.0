@@ -2,79 +2,86 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F28964D86B2
-	for <lists+linux-hwmon@lfdr.de>; Mon, 14 Mar 2022 15:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B394D924D
+	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Mar 2022 02:44:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242272AbiCNOTT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 14 Mar 2022 10:19:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55706 "EHLO
+        id S233348AbiCOBp1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 14 Mar 2022 21:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242258AbiCNOTR (ORCPT
+        with ESMTP id S235808AbiCOBp0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 14 Mar 2022 10:19:17 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0241717E31
-        for <linux-hwmon@vger.kernel.org>; Mon, 14 Mar 2022 07:17:59 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nTlVQ-0004zL-Eh; Mon, 14 Mar 2022 15:17:04 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nTlVI-000f2l-Q9; Mon, 14 Mar 2022 15:16:55 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nTlVG-0097af-Ma; Mon, 14 Mar 2022 15:16:54 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        Steen Hegelund <Steen.Hegelund@microchip.com>,
-        UNGLinuxDriver@microchip.com, linux-hwmon@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     linux-clk@vger.kernel.org, kernel@pengutronix.de,
-        Paul Cercueil <paul@crapouillou.net>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        =?utf-8?q?Andr=C3=A9_Gustavo_Nakagomi_Lopez?= <andregnl@usp.br>,
-        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-crypto@vger.kernel.org, linux-amlogic@lists.infradead.org
-Subject: [PATCH v8 03/16] hwmon: Make use of devm_clk_get_enabled()
-Date:   Mon, 14 Mar 2022 15:16:30 +0100
-Message-Id: <20220314141643.22184-4-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
-References: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
+        Mon, 14 Mar 2022 21:45:26 -0400
+X-Greylist: delayed 1287 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Mar 2022 18:44:16 PDT
+Received: from gateway22.websitewelcome.com (gateway22.websitewelcome.com [192.185.47.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C79B5FC4
+        for <linux-hwmon@vger.kernel.org>; Mon, 14 Mar 2022 18:44:16 -0700 (PDT)
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway22.websitewelcome.com (Postfix) with ESMTP id 03D8814426
+        for <linux-hwmon@vger.kernel.org>; Mon, 14 Mar 2022 20:22:49 -0500 (CDT)
+Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id TvtgnlIle9AGSTvtgntPkG; Mon, 14 Mar 2022 20:22:49 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:Subject:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=fc/4aRBBd782zT03Q+OtnIHUlfYCyQpFz9VTJ95xqw0=; b=Aiu4sgtrBZIxQom1IJFTXQlYMf
+        XXEPlmcOo8p2oLHBKqBakYnc/m6R2+1Bs1YAFCGPUv9wiGxMT+zfj1fDo/ctGcbyALGZyohE9Ov3k
+        m3FF6CTCZlluksBwui4rwcBUsJiAI1uvn4xsnFP5yO6bL9e0GgvRRb2ZZQZrrLL0TC+iNaGV1bxqS
+        vwnTfpixjFmG0Hludn9z+JWyMK6BDMSgPiHCn5rEOKEJtcZt6EcgSTtULEkKJftYMFjWMUXdCeA1t
+        Fig+BTUMo6mIFyW1m0EfdAI0ToWtfkNepcUoZEFBRIrdL47brqEBVLwts9JT0Jk8L9dZ7Lo7ptTlp
+        7uzqgc1A==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54266)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1nTvtg-004GEG-E6; Tue, 15 Mar 2022 01:22:48 +0000
+Message-ID: <3dac349c-6470-1673-effb-354da2b52481@roeck-us.net>
+Date:   Mon, 14 Mar 2022 18:22:47 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5520; i=uwe@kleine-koenig.org; h=from:subject; bh=yoWCqkNop/4c6OeHmiSUVdq/1kzaWm1CMWom+WTtANQ=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBiL03yCpTW66mjenPvolXbHi93VsM0yzx1/1i/xg38 JATIi6SJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYi9N8gAKCRDB/BR4rcrsCQkqB/ 9PjEPh2PyWfNPLXABv6MwOZQFQlkQEqb7Uekuh33gB2X0gHncSoOfkEhvSA3yU5f1JKsoWGktEOVRg n+3bvFwDe1hNoOS5coZgZV7FTfW8NcDdt1L55ROM501f7GHgh9/VyyqTbW9Jfg108IB6GXoVFmyiA3 zdrIOdlQb2gSicQGiLiTWR0+HZModM3RWjv+KN8b3Mz5fHJdX2rt20lVLbG6aC4fgbxgl/k2GNIq7F utAI4QGzo9+Vc41UCForfyIXi/JNyyOSfFvugrXq8ze/4V3IkxdO+/DOtDfkPum8ClhrVLXZeDmngJ RvozUy0kpU8RDShp4aDvanTK0USO9z
-X-Developer-Key: i=uwe@kleine-koenig.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Content-Language: en-US
+To:     Agathe Porte <agathe.porte@nokia.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Adamski, Krzysztof (Nokia - PL/Wroclaw)" 
+        <krzysztof.adamski@nokia.com>
+References: <20220222223610.23098-1-linux@roeck-us.net>
+ <20220222223610.23098-2-linux@roeck-us.net>
+ <51ea03f0-627b-2e9d-5972-2053fa12b9b5@nokia.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v7 2/2] hwmon: Add driver for Texas Instruments TMP464 and
+ TMP468
+In-Reply-To: <51ea03f0-627b-2e9d-5972-2053fa12b9b5@nokia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1nTvtg-004GEG-E6
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:54266
+X-Source-Auth: linux@roeck-us.net
+X-Email-Count: 16
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,191 +89,33 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Several drivers manually register a devm handler to disable their clk.
-Convert them to devm_clk_get_enabled().
+Hi Agathe,
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/hwmon/axi-fan-control.c | 15 +--------------
- drivers/hwmon/ltc2947-core.c    | 17 +----------------
- drivers/hwmon/mr75203.c         | 26 +-------------------------
- drivers/hwmon/sparx5-temp.c     | 19 +------------------
- 4 files changed, 4 insertions(+), 73 deletions(-)
+On 3/14/22 08:46, Agathe Porte wrote:
+> Hi,
+> 
+> Le 2/22/2022 à 11:36 PM, Guenter Roeck a écrit :
+>>   of_property_read_string(child,"label", &data->channel[channel].label);
+> 
+> Upon trying to merge v7 in our codebase, our static analyzer tool detected that the return code of this function was not checked.
+> 
+> As I guess putting a label is optional, maybe we should add a `(void)` on the same line just before the function call to clearly indicate that not checking the return value is intentional and that it is not a coding mistake?
+> 
+> EDIT: As I was reading the implementation of of_property_read_string [1], it will not touch the destination string in case of error. Which means that labels may sit uninitialized and contain garbage data?
+> 
 
-diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
-index d2092c17d993..ce404ed9c53e 100644
---- a/drivers/hwmon/axi-fan-control.c
-+++ b/drivers/hwmon/axi-fan-control.c
-@@ -393,11 +393,6 @@ static int axi_fan_control_init(struct axi_fan_control_data *ctl,
- 	return ret;
- }
- 
--static void axi_fan_control_clk_disable(void *clk)
--{
--	clk_disable_unprepare(clk);
--}
--
- static const struct hwmon_channel_info *axi_fan_control_info[] = {
- 	HWMON_CHANNEL_INFO(pwm, HWMON_PWM_INPUT),
- 	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_FAULT | HWMON_F_LABEL),
-@@ -477,20 +472,12 @@ static int axi_fan_control_probe(struct platform_device *pdev)
- 	if (IS_ERR(ctl->base))
- 		return PTR_ERR(ctl->base);
- 
--	clk = devm_clk_get(&pdev->dev, NULL);
-+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "clk_get failed with %ld\n", PTR_ERR(clk));
- 		return PTR_ERR(clk);
- 	}
- 
--	ret = clk_prepare_enable(clk);
--	if (ret)
--		return ret;
--
--	ret = devm_add_action_or_reset(&pdev->dev, axi_fan_control_clk_disable, clk);
--	if (ret)
--		return ret;
--
- 	ctl->clk_rate = clk_get_rate(clk);
- 	if (!ctl->clk_rate)
- 		return -EINVAL;
-diff --git a/drivers/hwmon/ltc2947-core.c b/drivers/hwmon/ltc2947-core.c
-index 5423466de697..626f5bf2c9c7 100644
---- a/drivers/hwmon/ltc2947-core.c
-+++ b/drivers/hwmon/ltc2947-core.c
-@@ -956,13 +956,6 @@ static struct attribute *ltc2947_attrs[] = {
- };
- ATTRIBUTE_GROUPS(ltc2947);
- 
--static void ltc2947_clk_disable(void *data)
--{
--	struct clk *extclk = data;
--
--	clk_disable_unprepare(extclk);
--}
--
- static int ltc2947_setup(struct ltc2947_data *st)
- {
- 	int ret;
-@@ -989,7 +982,7 @@ static int ltc2947_setup(struct ltc2947_data *st)
- 		return ret;
- 
- 	/* check external clock presence */
--	extclk = devm_clk_get_optional(st->dev, NULL);
-+	extclk = devm_clk_get_optional_enabled(st->dev, NULL);
- 	if (IS_ERR(extclk))
- 		return dev_err_probe(st->dev, PTR_ERR(extclk),
- 				     "Failed to get external clock\n");
-@@ -1007,14 +1000,6 @@ static int ltc2947_setup(struct ltc2947_data *st)
- 			return -EINVAL;
- 		}
- 
--		ret = clk_prepare_enable(extclk);
--		if (ret)
--			return ret;
--
--		ret = devm_add_action_or_reset(st->dev, ltc2947_clk_disable,
--					       extclk);
--		if (ret)
--			return ret;
- 		/* as in table 1 of the datasheet */
- 		if (rate_hz >= LTC2947_CLK_MIN && rate_hz <= 1000000)
- 			pre = 0;
-diff --git a/drivers/hwmon/mr75203.c b/drivers/hwmon/mr75203.c
-index 1ba1e3145969..0c691f291a64 100644
---- a/drivers/hwmon/mr75203.c
-+++ b/drivers/hwmon/mr75203.c
-@@ -461,24 +461,6 @@ static int pvt_get_regmap(struct platform_device *pdev, char *reg_name,
- 	return 0;
- }
- 
--static void pvt_clk_disable(void *data)
--{
--	struct pvt_device *pvt = data;
--
--	clk_disable_unprepare(pvt->clk);
--}
--
--static int pvt_clk_enable(struct device *dev, struct pvt_device *pvt)
--{
--	int ret;
--
--	ret = clk_prepare_enable(pvt->clk);
--	if (ret)
--		return ret;
--
--	return devm_add_action_or_reset(dev, pvt_clk_disable, pvt);
--}
--
- static void pvt_reset_control_assert(void *data)
- {
- 	struct pvt_device *pvt = data;
-@@ -515,16 +497,10 @@ static int mr75203_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	pvt->clk = devm_clk_get(dev, NULL);
-+	pvt->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(pvt->clk))
- 		return dev_err_probe(dev, PTR_ERR(pvt->clk), "failed to get clock\n");
- 
--	ret = pvt_clk_enable(dev, pvt);
--	if (ret) {
--		dev_err(dev, "failed to enable clock\n");
--		return ret;
--	}
--
- 	pvt->rst = devm_reset_control_get_exclusive(dev, NULL);
- 	if (IS_ERR(pvt->rst))
- 		return dev_err_probe(dev, PTR_ERR(pvt->rst),
-diff --git a/drivers/hwmon/sparx5-temp.c b/drivers/hwmon/sparx5-temp.c
-index 98be48e3a22a..04fd8505e5d6 100644
---- a/drivers/hwmon/sparx5-temp.c
-+++ b/drivers/hwmon/sparx5-temp.c
-@@ -26,13 +26,6 @@ struct s5_hwmon {
- 	struct clk *clk;
- };
- 
--static void s5_temp_clk_disable(void *data)
--{
--	struct clk *clk = data;
--
--	clk_disable_unprepare(clk);
--}
--
- static void s5_temp_enable(struct s5_hwmon *hwmon)
- {
- 	u32 val = readl(hwmon->base + TEMP_CFG);
-@@ -113,7 +106,6 @@ static int s5_temp_probe(struct platform_device *pdev)
- {
- 	struct device *hwmon_dev;
- 	struct s5_hwmon *hwmon;
--	int ret;
- 
- 	hwmon = devm_kzalloc(&pdev->dev, sizeof(*hwmon), GFP_KERNEL);
- 	if (!hwmon)
-@@ -123,19 +115,10 @@ static int s5_temp_probe(struct platform_device *pdev)
- 	if (IS_ERR(hwmon->base))
- 		return PTR_ERR(hwmon->base);
- 
--	hwmon->clk = devm_clk_get(&pdev->dev, NULL);
-+	hwmon->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(hwmon->clk))
- 		return PTR_ERR(hwmon->clk);
- 
--	ret = clk_prepare_enable(hwmon->clk);
--	if (ret)
--		return ret;
--
--	ret = devm_add_action_or_reset(&pdev->dev, s5_temp_clk_disable,
--				       hwmon->clk);
--	if (ret)
--		return ret;
--
- 	s5_temp_enable(hwmon);
- 
- 	hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev,
--- 
-2.35.1
+Thanks for the feedback.
 
+If of_property_read_string() returns an error, it will not set the pointer
+to &data->channel[channel].label, which by default is NULL because the
+data structure was allocated with devm_kzalloc(). That means tmp464_is_visible()
+will disable the label attribute. I don't see a problem with the current
+code.
+
+There are lots of examples in the kernel where the return value from
+of_property_read_string() is silently ignored. Not a single one of
+those uses a (void) typecast. I don't really want to start making
+such changes just to make static analyzers happy.
+
+Thanks,
+Guenter
