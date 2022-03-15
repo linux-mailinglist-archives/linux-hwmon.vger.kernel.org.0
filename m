@@ -2,275 +2,302 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C97EF4DA1E1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Mar 2022 19:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CBDB4DA65F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Mar 2022 00:47:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350753AbiCOSGO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 15 Mar 2022 14:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46378 "EHLO
+        id S239050AbiCOXsL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 15 Mar 2022 19:48:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245048AbiCOSGN (ORCPT
+        with ESMTP id S235842AbiCOXsK (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 15 Mar 2022 14:06:13 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39542205E8;
-        Tue, 15 Mar 2022 11:05:00 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id qx21so43187918ejb.13;
-        Tue, 15 Mar 2022 11:05:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=7bpalvhMp7syEkA5bOD6m3Hiadeq1GFGR2u5DFZQUPg=;
-        b=DFsEVIcpVFZmsLrzVsuXGfCDAOQo45HphHPPHqSlOIJqflipspyIX6nDmHEdm7p5ZN
-         qStS1Me4q0ChYcco/kXFdiYP6BFh8vXOSO+RranC2vJEEDyM2cTCdEwWsBLGXaFTO3cm
-         ZrLXhRs0Zr57Jp4HWFlA6dsjObFGsCSo2ta1XqASGUjr5h2618FD/7YtapV90aJTALFH
-         26YUJTPAW2tj1bjGYJa3B53LWudxdy+KC1sO3IaOfXY9WMLiKhQeh7CYPtaRCelYukQ0
-         ykHuhInylyATUkZelWpM9ZbZh88D3lun1+FtqQDueri5iYlC11fvs52nKVwDvhxDADZb
-         itcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=7bpalvhMp7syEkA5bOD6m3Hiadeq1GFGR2u5DFZQUPg=;
-        b=yVfeJO3gp/REeXZIAbrCfnUauoMDNukzvOt+Ib7pMTueQeZnhQIdN2WBQ9/6zyb6zw
-         xNMrU8Otvg13BeDddgnh/rZ3uOpHmbwd/NBcwex85O+R+6TRZXFxNMs1j+EauSvrnuSM
-         Pm5QX6PpavKom9jkLi7WLaXVvwer5rQdBFHCX3HHf1tJXu/6wc/vaigfg1+ivlhjUcAo
-         klmFHc9KrcZP5pjj/6oPJ9/c3T1UbHd4SUTMlcn0sClHF1DQJyWIxPV/y0Zzsi6rgxy9
-         t9h/Ej0hC89MhvoJYPmA2JISLdv1gExzoaLlKpGTGnuuiC0oMDH1Hgjy5uIQWAM/4vq7
-         Zz/A==
-X-Gm-Message-State: AOAM530Clz67FnSELuQ15ggvBCzqWF1EVfqlFx1bcpwTtteZjaDKElG3
-        eXcXRw5FmpnUrIi4XirIVp0QDNBnKzvZISRXXig=
-X-Google-Smtp-Source: ABdhPJxW6+1eFC3OcTirM9mgeDfTXvBfatrTIVC6OBa4JEN+KNKCGi5wT8QrdQtnyTpzndOFbCuPp9umJm3+8HzbnXM=
-X-Received: by 2002:a17:906:4cc7:b0:6d0:7efb:49f with SMTP id
- q7-20020a1709064cc700b006d07efb049fmr23301879ejt.639.1647367498316; Tue, 15
- Mar 2022 11:04:58 -0700 (PDT)
+        Tue, 15 Mar 2022 19:48:10 -0400
+X-Greylist: delayed 1213 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Mar 2022 16:46:57 PDT
+Received: from gateway23.websitewelcome.com (gateway23.websitewelcome.com [192.185.49.219])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7270D5C853
+        for <linux-hwmon@vger.kernel.org>; Tue, 15 Mar 2022 16:46:57 -0700 (PDT)
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway23.websitewelcome.com (Postfix) with ESMTP id CA4F818728
+        for <linux-hwmon@vger.kernel.org>; Tue, 15 Mar 2022 18:26:43 -0500 (CDT)
+Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id UGYtnG5F39AGSUGYtnMRW3; Tue, 15 Mar 2022 18:26:43 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=FMz4dv/MLCPqxMquT9pFk6KUEVB5ed9lWVOqB/G2Qsw=; b=5lgvZgsRcs9SGWnnx6JtY06wdS
+        zNXTyuY4WPr1wuvZdRXTiodbvM++DqqAvJyC19CA1efn2LGgFXA5qswXI8+H5ekOniOW4LesN/j9c
+        MOLxvpN0OUjSoIQtD2nynya5Z+MpWX7hY0+xSke5stHgb/hj87kik5FoJ+WSanS7i4229VDCICafa
+        FpS6GM3T4sp7pPNRFf1ZKKt7C2hqPvlWWwBvComWpmZ8BAlO2Uh4UK6DwxqNpaxM51BUQSCIFiM/u
+        ZNCUOiYA+JF/3hjMpkpc9Whgk7qsXtGL4Z09OfHF1aVB6HSuN8siwqS7wVzAwtMpZY6c+Z9LoMT+5
+        fWYrEG3A==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54298)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1nUGYs-002Vpc-Bh; Tue, 15 Mar 2022 23:26:42 +0000
+Message-ID: <4af362d3-999d-cc3c-50e2-5a91d888f09f@roeck-us.net>
+Date:   Tue, 15 Mar 2022 16:26:38 -0700
 MIME-Version: 1.0
-References: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 15 Mar 2022 20:03:44 +0200
-Message-ID: <CAHp75VdH4vGr57v6tfkRuxh-3agRKO8C08+DH8dsB1HnPfnz5Q@mail.gmail.com>
-Subject: Re: [PATCH v8 00/16] clk: provide new devm helpers for prepared and
- enabled clocks
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v8 03/16] hwmon: Make use of devm_clk_get_enabled()
+Content-Language: en-US
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Russell King <linux@armlinux.org.uk>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
         Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
         Lars Povlsen <lars.povlsen@microchip.com>,
         Steen Hegelund <Steen.Hegelund@microchip.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        linux-hwmon@vger.kernel.org,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        UNGLinuxDriver@microchip.com, linux-hwmon@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     linux-clk@vger.kernel.org, kernel@pengutronix.de,
         Paul Cercueil <paul@crapouillou.net>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Heiko Stuebner <heiko@sntech.de>,
         Tomislav Denis <tomislav.denis@avl.com>,
         Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
         Michal Simek <michal.simek@xilinx.com>,
-        =?UTF-8?Q?Andr=C3=A9_Gustavo_Nakagomi_Lopez?= <andregnl@usp.br>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-crypto <linux-crypto@vger.kernel.org>,
-        linux-amlogic <linux-amlogic@lists.infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>,
-        Keguang Zhang <keguang.zhang@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        linux-watchdog@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-pwm@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Amireddy Mallikarjuna reddy 
-        <mallikarjunax.reddy@linux.intel.com>,
-        dmaengine <dmaengine@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        =?UTF-8?Q?Andr=c3=a9_Gustavo_Nakagomi_Lopez?= <andregnl@usp.br>,
+        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-crypto@vger.kernel.org, linux-amlogic@lists.infradead.org
+References: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
+ <20220314141643.22184-4-u.kleine-koenig@pengutronix.de>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20220314141643.22184-4-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1nUGYs-002Vpc-Bh
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:54298
+X-Source-Auth: linux@roeck-us.net
+X-Email-Count: 24
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Mar 14, 2022 at 5:14 PM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> Hello,
->
-> this is another try to convince the relevant people that
-> devm_clk_get_enabled() is a nice idea. Compared to v7 (back in May 2021) =
-this
-> series is rebased to v5.17-rc8 and converts quite some drivers that open =
-code
-> devm_clk_get_enabled() up to now (patches #3 - #11).
->
-> A concern about devm_clk_get_enabled() in v7 was that it helps people to =
-be
-> lazy and I agree that in some situations when devm_clk_get_enabled() is u=
-sed it
-> would be more efficient and sensible to care to only enable the clk when =
-really
-> needed.
->
-> On the other hand, the function is right for some users, e.g. the watchdo=
-g
-> drivers. For the others it's not so simple to judge. Given that there are=
- a
-> lot of drivers that are lazy even if doing so is some effort (i.e. callin=
-g
-> clk_prepare_enable() and devm_add_action()) convinces me, that introducin=
-g the
-> function family is sensible. (And if you want to work on these drivers,
-> grepping for devm_clk_get_enabled gives you a few candidates once the
-> series is in :-)
+On 3/14/22 07:16, Uwe Kleine-König wrote:
+> Several drivers manually register a devm handler to disable their clk.
+> Convert them to devm_clk_get_enabled().
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-for drivers/iio
+Let's see if it goes anywhere this time.
 
-Thanks for doing this!
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-> Otherwise looking at the diffstat of this series:
->
->  48 files changed, 257 insertions(+), 851 deletions(-)
->
-> is quite convincing. Just the first two patches (which introduce the new
-> functions) account for
->
->  2 files changed, 169 insertions(+), 17 deletions(-)
->
-> . A rough third of the added lines is documentation. The rest is driver
-> updates which then has:
->
->  46 files changed, 88 insertions(+), 834 deletions(-)
->
-> which makes a really nice cleanup.
->
-> The series is build-tested on arm64, m68k, powerpc, riscv, s390, sparc64
-> and x86_64 using an allmodconfig.
->
-> Best regards
-> Uwe
->
-> Uwe Kleine-K=C3=B6nig (16):
->   clk: generalize devm_clk_get() a bit
->   clk: Provide new devm_clk helpers for prepared and enabled clocks
->   hwmon: Make use of devm_clk_get_enabled()
->   iio: Make use of devm_clk_get_enabled()
->   hwrng: meson - Don't open-code devm_clk_get_optional_enabled()
->   bus: bt1: Don't open code devm_clk_get_enabled()
->   gpio: vf610: Simplify error handling in probe
->   drm/meson: dw-hdmi: Don't open code devm_clk_get_enabled()
->   rtc: ingenic: Simplify using devm_clk_get_enabled()
->   clk: meson: axg-audio: Don't duplicate devm_clk_get_enabled()
->   watchdog: Make use of devm_clk_get_enabled()
->   pwm: atmel: Simplify using devm_clk_get_prepared()
->   rtc: at91sam9: Simplify using devm_clk_get_enabled()
->   i2c: imx: Simplify using devm_clk_get_enabled()
->   spi: davinci: Simplify using devm_clk_get_enabled()
->   dmaengine: lgm: Fix error handling
->
->  drivers/bus/bt1-apb.c                 | 23 +------
->  drivers/bus/bt1-axi.c                 | 23 +------
->  drivers/char/hw_random/meson-rng.c    | 20 +-----
->  drivers/clk/clk-devres.c              | 96 ++++++++++++++++++++++-----
->  drivers/clk/meson/axg-audio.c         | 36 ++--------
->  drivers/dma/lgm/lgm-dma.c             |  8 +--
->  drivers/gpio/gpio-vf610.c             | 45 +++----------
->  drivers/gpu/drm/meson/meson_dw_hdmi.c | 48 +++++---------
->  drivers/hwmon/axi-fan-control.c       | 15 +----
->  drivers/hwmon/ltc2947-core.c          | 17 +----
->  drivers/hwmon/mr75203.c               | 26 +-------
->  drivers/hwmon/sparx5-temp.c           | 19 +-----
->  drivers/i2c/busses/i2c-imx.c          | 12 +---
->  drivers/iio/adc/ad7124.c              | 15 +----
->  drivers/iio/adc/ad7768-1.c            | 17 +----
->  drivers/iio/adc/ad9467.c              | 17 +----
->  drivers/iio/adc/ingenic-adc.c         | 15 +----
->  drivers/iio/adc/lpc18xx_adc.c         | 18 +----
->  drivers/iio/adc/rockchip_saradc.c     | 44 +-----------
->  drivers/iio/adc/ti-ads131e08.c        | 19 +-----
->  drivers/iio/adc/xilinx-ams.c          | 15 +----
->  drivers/iio/adc/xilinx-xadc-core.c    | 18 +----
->  drivers/iio/frequency/adf4371.c       | 17 +----
->  drivers/iio/frequency/admv1013.c      | 15 +----
->  drivers/iio/frequency/adrf6780.c      | 16 +----
->  drivers/iio/imu/adis16475.c           | 15 +----
->  drivers/pwm/pwm-atmel.c               | 16 +----
->  drivers/rtc/rtc-at91sam9.c            | 22 ++----
->  drivers/rtc/rtc-jz4740.c              | 21 +-----
->  drivers/spi/spi-davinci.c             | 11 +--
->  drivers/watchdog/cadence_wdt.c        | 17 +----
->  drivers/watchdog/davinci_wdt.c        | 18 +----
->  drivers/watchdog/imgpdc_wdt.c         | 31 +--------
->  drivers/watchdog/imx2_wdt.c           | 15 +----
->  drivers/watchdog/imx7ulp_wdt.c        | 15 +----
->  drivers/watchdog/loongson1_wdt.c      | 17 +----
->  drivers/watchdog/lpc18xx_wdt.c        | 30 +--------
->  drivers/watchdog/meson_gxbb_wdt.c     | 16 +----
->  drivers/watchdog/of_xilinx_wdt.c      | 16 +----
->  drivers/watchdog/pic32-dmt.c          | 15 +----
->  drivers/watchdog/pic32-wdt.c          | 17 +----
->  drivers/watchdog/pnx4008_wdt.c        | 15 +----
->  drivers/watchdog/qcom-wdt.c           | 16 +----
->  drivers/watchdog/rtd119x_wdt.c        | 16 +----
->  drivers/watchdog/st_lpc_wdt.c         | 16 +----
->  drivers/watchdog/stm32_iwdg.c         | 31 +--------
->  drivers/watchdog/visconti_wdt.c       | 18 +----
->  include/linux/clk.h                   | 90 ++++++++++++++++++++++++-
->  48 files changed, 257 insertions(+), 851 deletions(-)
->
->
-> base-commit: 09688c0166e76ce2fb85e86b9d99be8b0084cdf9
-> --
-> 2.35.1
->
+> ---
+>   drivers/hwmon/axi-fan-control.c | 15 +--------------
+>   drivers/hwmon/ltc2947-core.c    | 17 +----------------
+>   drivers/hwmon/mr75203.c         | 26 +-------------------------
+>   drivers/hwmon/sparx5-temp.c     | 19 +------------------
+>   4 files changed, 4 insertions(+), 73 deletions(-)
+> 
+> diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
+> index d2092c17d993..ce404ed9c53e 100644
+> --- a/drivers/hwmon/axi-fan-control.c
+> +++ b/drivers/hwmon/axi-fan-control.c
+> @@ -393,11 +393,6 @@ static int axi_fan_control_init(struct axi_fan_control_data *ctl,
+>   	return ret;
+>   }
+>   
+> -static void axi_fan_control_clk_disable(void *clk)
+> -{
+> -	clk_disable_unprepare(clk);
+> -}
+> -
+>   static const struct hwmon_channel_info *axi_fan_control_info[] = {
+>   	HWMON_CHANNEL_INFO(pwm, HWMON_PWM_INPUT),
+>   	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_FAULT | HWMON_F_LABEL),
+> @@ -477,20 +472,12 @@ static int axi_fan_control_probe(struct platform_device *pdev)
+>   	if (IS_ERR(ctl->base))
+>   		return PTR_ERR(ctl->base);
+>   
+> -	clk = devm_clk_get(&pdev->dev, NULL);
+> +	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+>   	if (IS_ERR(clk)) {
+>   		dev_err(&pdev->dev, "clk_get failed with %ld\n", PTR_ERR(clk));
+>   		return PTR_ERR(clk);
+>   	}
+>   
+> -	ret = clk_prepare_enable(clk);
+> -	if (ret)
+> -		return ret;
+> -
+> -	ret = devm_add_action_or_reset(&pdev->dev, axi_fan_control_clk_disable, clk);
+> -	if (ret)
+> -		return ret;
+> -
+>   	ctl->clk_rate = clk_get_rate(clk);
+>   	if (!ctl->clk_rate)
+>   		return -EINVAL;
+> diff --git a/drivers/hwmon/ltc2947-core.c b/drivers/hwmon/ltc2947-core.c
+> index 5423466de697..626f5bf2c9c7 100644
+> --- a/drivers/hwmon/ltc2947-core.c
+> +++ b/drivers/hwmon/ltc2947-core.c
+> @@ -956,13 +956,6 @@ static struct attribute *ltc2947_attrs[] = {
+>   };
+>   ATTRIBUTE_GROUPS(ltc2947);
+>   
+> -static void ltc2947_clk_disable(void *data)
+> -{
+> -	struct clk *extclk = data;
+> -
+> -	clk_disable_unprepare(extclk);
+> -}
+> -
+>   static int ltc2947_setup(struct ltc2947_data *st)
+>   {
+>   	int ret;
+> @@ -989,7 +982,7 @@ static int ltc2947_setup(struct ltc2947_data *st)
+>   		return ret;
+>   
+>   	/* check external clock presence */
+> -	extclk = devm_clk_get_optional(st->dev, NULL);
+> +	extclk = devm_clk_get_optional_enabled(st->dev, NULL);
+>   	if (IS_ERR(extclk))
+>   		return dev_err_probe(st->dev, PTR_ERR(extclk),
+>   				     "Failed to get external clock\n");
+> @@ -1007,14 +1000,6 @@ static int ltc2947_setup(struct ltc2947_data *st)
+>   			return -EINVAL;
+>   		}
+>   
+> -		ret = clk_prepare_enable(extclk);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret = devm_add_action_or_reset(st->dev, ltc2947_clk_disable,
+> -					       extclk);
+> -		if (ret)
+> -			return ret;
+>   		/* as in table 1 of the datasheet */
+>   		if (rate_hz >= LTC2947_CLK_MIN && rate_hz <= 1000000)
+>   			pre = 0;
+> diff --git a/drivers/hwmon/mr75203.c b/drivers/hwmon/mr75203.c
+> index 1ba1e3145969..0c691f291a64 100644
+> --- a/drivers/hwmon/mr75203.c
+> +++ b/drivers/hwmon/mr75203.c
+> @@ -461,24 +461,6 @@ static int pvt_get_regmap(struct platform_device *pdev, char *reg_name,
+>   	return 0;
+>   }
+>   
+> -static void pvt_clk_disable(void *data)
+> -{
+> -	struct pvt_device *pvt = data;
+> -
+> -	clk_disable_unprepare(pvt->clk);
+> -}
+> -
+> -static int pvt_clk_enable(struct device *dev, struct pvt_device *pvt)
+> -{
+> -	int ret;
+> -
+> -	ret = clk_prepare_enable(pvt->clk);
+> -	if (ret)
+> -		return ret;
+> -
+> -	return devm_add_action_or_reset(dev, pvt_clk_disable, pvt);
+> -}
+> -
+>   static void pvt_reset_control_assert(void *data)
+>   {
+>   	struct pvt_device *pvt = data;
+> @@ -515,16 +497,10 @@ static int mr75203_probe(struct platform_device *pdev)
+>   	if (ret)
+>   		return ret;
+>   
+> -	pvt->clk = devm_clk_get(dev, NULL);
+> +	pvt->clk = devm_clk_get_enabled(dev, NULL);
+>   	if (IS_ERR(pvt->clk))
+>   		return dev_err_probe(dev, PTR_ERR(pvt->clk), "failed to get clock\n");
+>   
+> -	ret = pvt_clk_enable(dev, pvt);
+> -	if (ret) {
+> -		dev_err(dev, "failed to enable clock\n");
+> -		return ret;
+> -	}
+> -
+>   	pvt->rst = devm_reset_control_get_exclusive(dev, NULL);
+>   	if (IS_ERR(pvt->rst))
+>   		return dev_err_probe(dev, PTR_ERR(pvt->rst),
+> diff --git a/drivers/hwmon/sparx5-temp.c b/drivers/hwmon/sparx5-temp.c
+> index 98be48e3a22a..04fd8505e5d6 100644
+> --- a/drivers/hwmon/sparx5-temp.c
+> +++ b/drivers/hwmon/sparx5-temp.c
+> @@ -26,13 +26,6 @@ struct s5_hwmon {
+>   	struct clk *clk;
+>   };
+>   
+> -static void s5_temp_clk_disable(void *data)
+> -{
+> -	struct clk *clk = data;
+> -
+> -	clk_disable_unprepare(clk);
+> -}
+> -
+>   static void s5_temp_enable(struct s5_hwmon *hwmon)
+>   {
+>   	u32 val = readl(hwmon->base + TEMP_CFG);
+> @@ -113,7 +106,6 @@ static int s5_temp_probe(struct platform_device *pdev)
+>   {
+>   	struct device *hwmon_dev;
+>   	struct s5_hwmon *hwmon;
+> -	int ret;
+>   
+>   	hwmon = devm_kzalloc(&pdev->dev, sizeof(*hwmon), GFP_KERNEL);
+>   	if (!hwmon)
+> @@ -123,19 +115,10 @@ static int s5_temp_probe(struct platform_device *pdev)
+>   	if (IS_ERR(hwmon->base))
+>   		return PTR_ERR(hwmon->base);
+>   
+> -	hwmon->clk = devm_clk_get(&pdev->dev, NULL);
+> +	hwmon->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+>   	if (IS_ERR(hwmon->clk))
+>   		return PTR_ERR(hwmon->clk);
+>   
+> -	ret = clk_prepare_enable(hwmon->clk);
+> -	if (ret)
+> -		return ret;
+> -
+> -	ret = devm_add_action_or_reset(&pdev->dev, s5_temp_clk_disable,
+> -				       hwmon->clk);
+> -	if (ret)
+> -		return ret;
+> -
+>   	s5_temp_enable(hwmon);
+>   
+>   	hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev,
 
-
---=20
-With Best Regards,
-Andy Shevchenko
