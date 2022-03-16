@@ -2,93 +2,188 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E2DF4DA64C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Mar 2022 00:32:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 135254DB50D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Mar 2022 16:39:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239266AbiCOXde (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 15 Mar 2022 19:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33120 "EHLO
+        id S239846AbiCPPkT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 16 Mar 2022 11:40:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236864AbiCOXdd (ORCPT
+        with ESMTP id S1348244AbiCPPkS (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 15 Mar 2022 19:33:33 -0400
-Received: from gateway20.websitewelcome.com (gateway20.websitewelcome.com [192.185.50.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFE3A5DA55
-        for <linux-hwmon@vger.kernel.org>; Tue, 15 Mar 2022 16:32:20 -0700 (PDT)
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway20.websitewelcome.com (Postfix) with ESMTP id F31D0400C741C
-        for <linux-hwmon@vger.kernel.org>; Tue, 15 Mar 2022 18:31:17 -0500 (CDT)
-Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
-        by cmsmtp with SMTP
-        id UGdJnftTrb6UBUGdJn5nwl; Tue, 15 Mar 2022 18:31:17 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-        :Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-        :Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=HEFY99UDZaIUfCtZ9L2p6iCk1UNtORB38v8eSsiexn8=; b=Cx6QonKW/5HmkNIbG3vLPCw84t
-        48QEUx3V7Sjmfd34Jr8iorwai7194VBnbzG8pwnbzaj1ceaiEyO+G3YwQdX/SeiuJs3Cz9Z0nnGu+
-        4e/2hHtqJkPlqScJwxpTzb7tP2EzKHjgv9me0esD0rb1H+2uhIfngKh/t5z2HA4zkdXPuVA/Qs7dr
-        lU+6BZzlN0eSdmfPvG0q8phAJ2s/U8/f749Nz57ergPM6r9IVXolwXLhioZFluKDiON8+T/w35d/Y
-        g7FtWEgAJLClfGw6+6GJPeFd/MLMM+LJDdvSX09PPgN0dSYw5rJ+5uXSnX8KkyA2dj8x8mXx7W590
-        GqO2voCw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:57494 helo=localhost)
-        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@roeck-us.net>)
-        id 1nUGdJ-002Y1Q-ER; Tue, 15 Mar 2022 23:31:17 +0000
-Date:   Tue, 15 Mar 2022 16:31:16 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     cgel.zte@gmail.com
-Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH] hwmon: (scpi-hwmon): Use of_device_get_match_data()
-Message-ID: <20220315233116.GA4152815@roeck-us.net>
-References: <20220315023412.2118415-1-chi.minghao@zte.com.cn>
+        Wed, 16 Mar 2022 11:40:18 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B13834675
+        for <linux-hwmon@vger.kernel.org>; Wed, 16 Mar 2022 08:39:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647445144; x=1678981144;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Gh6RIx6JYoVZNr3PbvztJui7PIWbIxzHQjKmTG2pIJw=;
+  b=Twu0QjKnrM4QxZ7UXylCxPkWyPReCvuwSG332CTm5heh8w5vIZgleONO
+   cll7isJu5CJTdDA+NJISw7hvE/FWASNzr4PsTsbwbKIpwZiBHe3vy6Ld2
+   KiuLJDEuOAaJ6vCBV0M72+E0+wzGqEOUIbDhJF+NbvjONsrYF2v1N7AYy
+   juzUvZBiMW61TmH5qgG4x12S031RTGtexerIXGneMWEiJR6oXo77euU6j
+   COpd3O7moF2ETqSX14xtRwDXZ7VgqOPd/jqmDKvAsS8qySvl7B7dE88n4
+   lXDqw9nDqb4060n+kCxf9CeI1PQbc1P0NVhSDmnFG/kd4Fb39BmPL/On+
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="244088266"
+X-IronPort-AV: E=Sophos;i="5.90,186,1643702400"; 
+   d="scan'208";a="244088266"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2022 08:39:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,186,1643702400"; 
+   d="scan'208";a="646705577"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 16 Mar 2022 08:39:00 -0700
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nUVjn-000CZF-De; Wed, 16 Mar 2022 15:38:59 +0000
+Date:   Wed, 16 Mar 2022 23:38:15 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ fd6ca3f5b80f6dda381fe84211be3b491f28bf0f
+Message-ID: <62320467.gUswPNQhAosZYkVw%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220315023412.2118415-1-chi.minghao@zte.com.cn>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1nUGdJ-002Y1Q-ER
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:57494
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 37
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_SOFTFAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Mar 15, 2022 at 02:34:12AM +0000, cgel.zte@gmail.com wrote:
-> From: Minghao Chi <chi.minghao@zte.com.cn>
-> 
-> Use of_device_get_match_data() to simplify the code.
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-> Reviewed-by: Jean Delvare <jdelvare@suse.de>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: fd6ca3f5b80f6dda381fe84211be3b491f28bf0f  hwmon: (scpi-hwmon): Use of_device_get_match_data()
 
-Applied to hwmon-next.
+elapsed time: 752m
 
-Thanks,
-Guenter
+configs tested: 106
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+powerpc64                           defconfig
+mips                  decstation_64_defconfig
+sh                          landisk_defconfig
+powerpc                    amigaone_defconfig
+h8300                            alldefconfig
+sh                          rsk7201_defconfig
+arm                         axm55xx_defconfig
+powerpc                      pcm030_defconfig
+arm                        shmobile_defconfig
+arm                          pxa910_defconfig
+sparc                            alldefconfig
+openrisc                 simple_smp_defconfig
+powerpc                     pq2fads_defconfig
+sh                        sh7763rdp_defconfig
+sh                     sh7710voipgw_defconfig
+mips                           ci20_defconfig
+arm                  randconfig-c002-20220314
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20220314
+i386                 randconfig-a005-20220314
+i386                 randconfig-a002-20220314
+i386                 randconfig-a004-20220314
+i386                 randconfig-a006-20220314
+i386                 randconfig-a003-20220314
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arc                  randconfig-r043-20220313
+riscv                randconfig-r042-20220313
+s390                 randconfig-r044-20220313
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                                  kexec
+
+clang tested configs:
+arm                  randconfig-c002-20220313
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220313
+riscv                randconfig-c006-20220313
+mips                 randconfig-c004-20220313
+i386                          randconfig-c001
+mips                      maltaaprp_defconfig
+x86_64               randconfig-a014-20220314
+x86_64               randconfig-a015-20220314
+x86_64               randconfig-a016-20220314
+x86_64               randconfig-a012-20220314
+x86_64               randconfig-a013-20220314
+x86_64               randconfig-a011-20220314
+i386                 randconfig-a013-20220314
+i386                 randconfig-a015-20220314
+i386                 randconfig-a014-20220314
+i386                 randconfig-a011-20220314
+i386                 randconfig-a016-20220314
+i386                 randconfig-a012-20220314
+hexagon              randconfig-r045-20220313
+hexagon              randconfig-r041-20220313
+
+---
+0-DAY CI Kernel Test Service
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
