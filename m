@@ -2,120 +2,80 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E5C4E3627
-	for <lists+linux-hwmon@lfdr.de>; Tue, 22 Mar 2022 02:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F47B4E4B9C
+	for <lists+linux-hwmon@lfdr.de>; Wed, 23 Mar 2022 04:41:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235102AbiCVBt5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 21 Mar 2022 21:49:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58442 "EHLO
+        id S239156AbiCWDmh (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 22 Mar 2022 23:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235097AbiCVBt4 (ORCPT
+        with ESMTP id S241619AbiCWDmf (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 21 Mar 2022 21:49:56 -0400
-Received: from gateway20.websitewelcome.com (gateway20.websitewelcome.com [192.185.47.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C101A82A
-        for <linux-hwmon@vger.kernel.org>; Mon, 21 Mar 2022 18:48:30 -0700 (PDT)
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway20.websitewelcome.com (Postfix) with ESMTP id 1D9B9400C65DB
-        for <linux-hwmon@vger.kernel.org>; Mon, 21 Mar 2022 20:48:29 -0500 (CDT)
-Received: from 162-215-252-75.unifiedlayer.com ([208.91.199.152])
-        by cmsmtp with SMTP
-        id WTdMnvRSsRnrrWTdNnIaLc; Mon, 21 Mar 2022 20:48:29 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=uywUMPoBYXp6PjZ9nM9SBumqFsG3gbfJp1KNVLB3onA=; b=4gTC9WJ7KGNBp7piv1YTtUa3lw
-        zLkOpNlQGAfi6oNWBaU+2qz0Cwg6xK2vbmA3X9jjkzdYj3OoXdFH02dQTAdVh8aenAQ0V2c1bDASh
-        4NUTQ06Gj9ymwWxBHnonpZI1WJWHn6+iRDyCm59aaw3hxIGDZ9vP1h0Tbanq2ELpdxcRO0MeJZnNJ
-        75rqt5K+62bPy2zSXFOb74fzzOp9mDkkH+wleqpt1E+3hjMqmCm5XD+tOWEC3JzLnfEiEqdfelZZF
-        38Q4I8uQ1I1p3epGbWPnzHuetZeq3J7Tt5IL1gNVpdILyqv+tqo4E78aM/Mbz12howATwzSyAS3IO
-        DqMcCM5A==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54388)
-        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@roeck-us.net>)
-        id 1nWTdM-001yfU-Lc; Tue, 22 Mar 2022 01:48:28 +0000
-Message-ID: <b3830750-f534-0c1c-f09b-3cce7fc6208b@roeck-us.net>
-Date:   Mon, 21 Mar 2022 18:48:27 -0700
+        Tue, 22 Mar 2022 23:42:35 -0400
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [IPv6:2001:df5:b000:5::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940096C1FF
+        for <linux-hwmon@vger.kernel.org>; Tue, 22 Mar 2022 20:41:04 -0700 (PDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 479252C01AE;
+        Wed, 23 Mar 2022 03:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1648006861;
+        bh=26SGwJ/wxmtbYPSw7i0ckq0vlLega9pTWHQvr0/h3s4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Pqc91LE5lnd1WJDoNclxM5xXtZR7DJnXzsHPAgBtm9UjnLCgbaJyIib74lbnvpNgi
+         VQJgy9Z9UM9Nd9+GrT8uCrJQH2JedJ38/jAmPIgzZ79rtzzZq1/yeVSLznJPbjsaN5
+         LABwCikgupzM0grIfEQX+HPNmezej9Mhg/B6xm9uz96WzvXu0jBo9q1bAtcXJz4T+c
+         L9bVga/Cx4VWZ1aD7IAKLrrgmdOknxdEkyXkO05EtfM1vSiw/EfDHNPD7y/RfT5s5c
+         BfOFJaA80RADh3DnTId5kXWA6NC5NbzflDEfq05RamRV2cRlCQ3fqSjzGBuI4efkVL
+         CaXsDbJlpdlfg==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B623a96cc0000>; Wed, 23 Mar 2022 16:41:00 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+        by pat.atlnz.lc (Postfix) with ESMTP id DAE7C13EDD7;
+        Wed, 23 Mar 2022 16:41:00 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+        id 1ED062A2679; Wed, 23 Mar 2022 16:40:59 +1300 (NZDT)
+From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
+To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v3 0/3] hwmon: (adt7475) pin configuration
+Date:   Wed, 23 Mar 2022 16:40:53 +1300
+Message-Id: <20220323034056.260455-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [GIT PULL] hwmon updates for v5.18
-Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-hwmon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20220320231317.2171300-1-linux@roeck-us.net>
- <CAHk-=wgM1uHH1WJ47Zt5OGK5qjtFkvVCZLff+TKA2ahXAM1xQg@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <CAHk-=wgM1uHH1WJ47Zt5OGK5qjtFkvVCZLff+TKA2ahXAM1xQg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1nWTdM-001yfU-Lc
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:54388
-X-Source-Auth: linux@roeck-us.net
-X-Email-Count: 2
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=Cfh2G4jl c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=o8Y5sQTvuykA:10 a=QSAjq9e1Lu4SObBBDI8A:9
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 3/21/22 18:21, Linus Torvalds wrote:
-> On Sun, Mar 20, 2022 at 4:13 PM Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> Improvements to existing drivers:
->> - adt7x10: Convert to use regmap, convert to use with_info API,
->>    use hwmon_notify_event, and other cleanup
->> - aquacomputer_d5next: Add support for Aquacomputer Farbwerk 360
->> - asus_wmi_sensors: Add ASUS ROG STRIX B450-F GAMING II
->> - asus_wmi_ec_sensors: Support T_Sensor on Prime X570-Pro
->>    Deprecate driver (replaced by new driver)
-> [...]
-> 
-> To make my life easier, can I ask you to try to format these things a
-> bit more sanely and legibly?
-> 
-> You had this odd mix of sometimes using new lines to separate
-> different things (eg that asus_wmi_ec_sensors entry), and sometimes
-> just multiple different things in a list that then had line-breaks in
-> the middle.
-> 
-> That kind of stuff is _very_ hard to parse as anything but a random
-> jumble of words all crammed together.
-> 
-> Whitespace to separate things is good, and some kind of consistent
-> indentation makes it more legible. I edited it all up (hopefully
-> correctly), but it would be nice to get it in a readable form to begin
-> with..
-> 
-> Yeah, if everything does well, nobody will ever need to read that
-> merge message, but let's try to aim for nice and informative commit
-> messages anyway.
-> 
+This series adds support for configuring the ADT7475 based on the
+hardware description provided. The ADT7475 driver has always supported
+detecting the configuration. This adds support for configuring the chip
+based on the hardware design.
 
-Sorry for that. I'll use your reformatting as example and use
-the same format in the future.
+Chris Packham (3):
+  dt-bindings: hwmon: Document adt7475 pin-function properties
+  hwmon: (adt7475) Add support for pin configuration
+  hwmon: (adt7475) Use enum chips when loading attenuator settings
 
-Guenter
+ .../devicetree/bindings/hwmon/adt7475.yaml    |  22 ++++
+ drivers/hwmon/adt7475.c                       | 119 ++++++++++++++++--
+ 2 files changed, 128 insertions(+), 13 deletions(-)
+
+--=20
+2.35.1
+
