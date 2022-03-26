@@ -2,84 +2,94 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC194E81B3
-	for <lists+linux-hwmon@lfdr.de>; Sat, 26 Mar 2022 15:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A1F4E83B6
+	for <lists+linux-hwmon@lfdr.de>; Sat, 26 Mar 2022 20:24:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233299AbiCZOxg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 26 Mar 2022 10:53:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49822 "EHLO
+        id S234663AbiCZTZm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 26 Mar 2022 15:25:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232561AbiCZOxf (ORCPT
+        with ESMTP id S234091AbiCZTZj (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 26 Mar 2022 10:53:35 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F76F2467D3;
-        Sat, 26 Mar 2022 07:51:59 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id c62so12204361edf.5;
-        Sat, 26 Mar 2022 07:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=QC7lpceM/y6F2YdxeUftCt81nuxEH4oJpSeNcs9ScEE=;
-        b=dRJ9I0aonPR3CSesQY6EcQrKEahhdKcTcz0dA+Ahj52EFLkftPkKIq+UGdVWHvcqqe
-         Q9+8LnRB0b/lLTEmQEmh6kvdaDv+k7R3COWOs0jzfHNIqFip2f75KFTzudBnOKVnqnxe
-         w2Wq92Pxncdsr4SbOTfpx3WbKzDk38sRVwb947CsET3q6TLFhVIM5RmE4NfKJiVC2zZB
-         59weh67YjT/wDRUTMQJpOz79e5JOrq/RvLw0hQgSgEvSQGsuGeFiuTSEva7nnfTqf6Tj
-         EmPu/9DkJ0GJF4Ku1R9nv8FQ3Ray5xFi7zyEMYjs+f+1TWU/2qE2QfZn2JxJ5oDnu4mT
-         yg/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=QC7lpceM/y6F2YdxeUftCt81nuxEH4oJpSeNcs9ScEE=;
-        b=AgwHUzJrVY31DLwMJDFkUAuiqKG+DyAxnfJrIHugH0IdpsLgD8gG6hS05E36E5o2Pa
-         xjBijQdP/2MBn4L90EejZTV51hGKyJJqxMzq84k9OgdnNJZl/gD6/DxFDvcCzbZSbb+g
-         JhSYaRSD7ZzYumvRYZChc2fKunk84IIWLesKBf7BGKHAANqJXItOcdLKdYeyBDDXDQhL
-         Etw8KM7Wxkw6HffW65tkUdbuJTBUMeP5rj6OSVN7ZAsBEtoeIR16qMQIWGPUkwGIEqsA
-         N6CrtX1yxT3DvjbJ+ZcLa7JnyhDQB5t2vKJqXT6LMVVIaH0HqHqK4H/kUZfY+I0PfXG4
-         Zx7A==
-X-Gm-Message-State: AOAM531/7xuQGB73xnW14Dp48WzJOOyL8AIkXH68ttt6g4BZEkBGANiQ
-        Ba8ecn64ysw3eYrtT4oGvUc=
-X-Google-Smtp-Source: ABdhPJzIit+M7R8fykG/wzhFP7QOkIxuiqF5kA3aCKQAOYv0dyZBDF4ejeEnImnTjNRW1lhDz8TbrQ==
-X-Received: by 2002:a05:6402:3495:b0:419:1ff6:95d9 with SMTP id v21-20020a056402349500b004191ff695d9mr4914039edc.249.1648306318032;
-        Sat, 26 Mar 2022 07:51:58 -0700 (PDT)
-Received: from fedora ([95.180.24.23])
-        by smtp.gmail.com with ESMTPSA id g21-20020a056402115500b00413c824e422sm4248148edw.72.2022.03.26.07.51.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Mar 2022 07:51:57 -0700 (PDT)
-Date:   Sat, 26 Mar 2022 15:51:55 +0100
-From:   Aleksa Savic <savicaleksa83@gmail.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] hwmon: (aquacomputer_d5next) Add support for
- Aquacomputer Octo
-Message-ID: <Yj8oi/2gvMb0nsgQ@fedora>
-References: <20220326101250.8076-1-savicaleksa83@gmail.com>
- <083c2e34-dd56-07b1-543f-1627bd77acf2@roeck-us.net>
+        Sat, 26 Mar 2022 15:25:39 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C7D32983;
+        Sat, 26 Mar 2022 12:24:01 -0700 (PDT)
+Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 446CC22246;
+        Sat, 26 Mar 2022 20:23:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1648322639;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=U1ALIM523p8MqRPqP+ugG3tBGGFZ31pckruL6+qSD2I=;
+        b=oF8vTnEabgoC+nwYoxSucgQqWZCsS618tKBCeW+k+R2xWnBmiA6uPjG2eKDqQAabxLP+ZG
+        85GY+aOtFFMr1w09twyikBIvhCeB2myFKrpkYFshWBMtiy2zZGH6ql35W+tAjX3a95mz/B
+        pJpDHOykJRDZY45BiMo3Lcv1HiAb5rc=
+From:   Michael Walle <michael@walle.cc>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Michael Walle <michael@walle.cc>
+Subject: [PATCH v1 0/4] hwmon: add lan9668 driver
+Date:   Sat, 26 Mar 2022 20:23:43 +0100
+Message-Id: <20220326192347.2940747-1-michael@walle.cc>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <083c2e34-dd56-07b1-543f-1627bd77acf2@roeck-us.net>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Guenter,
+Add a temperature and fan controller driver for the Microchip LAN9668 SoC.
 
-Thanks the for the review. The missing break; statements are my
-oversight, I'd never omit them otherwise. Will fix in v3.
+The temperature sensor uses a polynomial to calculate the actual
+temperature. Fortunately, the bt1-pvt already has such a calculation.
+It seems that the LAN9668 uses the same Analog Bits sensor as the
+BT1 although with a different characteristic. To be able to reuse the
+code move it to lib/ as it seems pretty generic to calculate any
+polynomial using integers only, which might also be used by other parts
+of the kernel. Another option might be to move the code to hwmon-poly.c,
+I'm not sure. Thoughts?
 
-Yes, those should be centi-percent if I'm not mistaken... For
-example, 47.52% is read as 4752 from the device, so that's
-divided by 100 and scaled to PWM.
+I also plan on submitting patches to add temperature sensor support for
+the GPYxxx and LAN8814 PHYs which also use polynomial_calc().
 
-Aleksa
+The last two patches adds the actual driver and the dt-binding for it.
+
+Michael Walle (4):
+  lib: add generic polynomial calculation
+  hwmon: (bt1-pvt) use generic polynomial functions
+  dt-bindings: hwmon: add Microchip LAN966x bindings
+  hwmon: add driver for the Microchip LAN966x SoC
+
+ .../bindings/hwmon/microchip,lan966x.yaml     |  53 +++
+ drivers/hwmon/Kconfig                         |  12 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/bt1-pvt.c                       |  50 +--
+ drivers/hwmon/lan966x-hwmon.c                 | 384 ++++++++++++++++++
+ include/linux/polynomial.h                    |  35 ++
+ lib/Kconfig                                   |   3 +
+ lib/Makefile                                  |   2 +
+ lib/polynomial.c                              |  95 +++++
+ 9 files changed, 598 insertions(+), 37 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,lan966x.yaml
+ create mode 100644 drivers/hwmon/lan966x-hwmon.c
+ create mode 100644 include/linux/polynomial.h
+ create mode 100644 lib/polynomial.c
+
+-- 
+2.30.2
+
