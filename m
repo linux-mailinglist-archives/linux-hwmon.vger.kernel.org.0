@@ -2,114 +2,119 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7E614ECC29
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Mar 2022 20:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB504ECD5E
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Mar 2022 21:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350648AbiC3S1E (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Mar 2022 14:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33114 "EHLO
+        id S229743AbiC3TnH (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Mar 2022 15:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350535AbiC3S0n (ORCPT
+        with ESMTP id S229505AbiC3TnG (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Mar 2022 14:26:43 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C3E4AE1B
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Mar 2022 11:23:50 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-df0940c4eeso9449247fac.8
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Mar 2022 11:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
-        b=U1oUia1Thamt6Z7oWm6PGNKOk9RXK6Jv76DGrI1cLcYRcY5/d1Tt5qepQRdZm6lsyq
-         RBa/xpJM28ShOu5ibphzafHjPKptRC4OMeOVco0xYKihrCNFhnaGQOBDSvUdgHWgE3gf
-         cWTbx+dPO2nv/wujOZrrbxfJpePUzp7QZ1RCloUPxJhGXTvBKUziPieC1LSkK8oSaB+t
-         E85QJNBGnQK8HE8wei7Zq5jQSpeI5JY8kzofCGcJSUHLIHQXWsBy6ta+brl9WPLZzyWA
-         2jPBZlOFyxLxFI8awBJCcZtcLmSyu35IRMr8cJ72zb2pokIUUqe6EUB9pKUwVKwbq4my
-         ou5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
-        b=1wglCoAP9Jfo5GECs6yP6S1bCIdYV6qahckSJa9OJAUt4X5BC5yLy8xSMoQFTnMVAW
-         upGMQF0LE9gn0TTEQvhJE65jY3/dpNrWVrCxjZSZYgyghXjjTFp/IcNmM4kkC6A/RdL1
-         +MMAWRsXDL5WY6we2el+q03x77ngdbMJPKVOpDE2oK7utoQdaflm4KD7gyzhoXXObhtN
-         IuTvsW2+K3lhV28kG5bTs8G6G1nzGEugp2TE+2SACyyPpCk1TdZxr2HLxe9XzDhLXx4w
-         8gEiP8n+fo3mSpvxjCBv8SJTF1SRVP5RLqgcv+cIHeVvM8gBXiKO7jNTsY5YkCMGDRIK
-         Ba5Q==
-X-Gm-Message-State: AOAM530DNRKfMPBXNG9IpJjiV/1ZmzjkaT5hSXlti8ko42ctPocbmym7
-        rqBLgLKvfAljsL7uc1a7oY7rT3SlQVHYwkUOw4VVG6PfXxKo
-X-Google-Smtp-Source: ABdhPJzkTl+tJbylc9dRvis6ZhULbTl7j4ynIkLgm4b/Lu4YSrf6PCWjehKBvofPJCmWKHUKJGD0xbE01MjL0VC50Jo=
-X-Received: by 2002:a17:90b:3143:b0:1c7:5cee:3948 with SMTP id
- ip3-20020a17090b314300b001c75cee3948mr852445pjb.140.1648664618224; Wed, 30
- Mar 2022 11:23:38 -0700 (PDT)
+        Wed, 30 Mar 2022 15:43:06 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B0613F5F;
+        Wed, 30 Mar 2022 12:41:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=0PR2zYdjHpnbzPpGDX73PfezrreUjmJPOTEhSKYO1Pw=; b=aP7MVBYYOC3fOr70nal+KO/51m
+        fgs1qb4ZsYgXHfhoN5IOujYhXV8HWcqMADXtQLoZO8wpDxQqueubIhcTk1+HGj90A7mcMcxS8Z3ww
+        f9EGTMCdpw4jZrLXAoG3bsz+Psqt1PfWmeEF/rWLvZV1V37RCkohiYgQaZGp+119J2IDuL13p9Nr9
+        msUyKTtnZNkgwYcE1IrvgOp1J34tP1nmWz2VhM+607A28flKZjhPm4+hu7q5Bet2u9gMH4kz/yriC
+        EL7MSFc1LV28ceElh9CZwmjb2X7USUzKVHkwA1IX9Lm9WX8wqHZl4SHgu0JZG/zDErpNCsJ7hw4eo
+        jpx6RMiA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58030)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1nZeBj-0003ek-2P; Wed, 30 Mar 2022 20:41:02 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1nZeBf-0006uy-77; Wed, 30 Mar 2022 20:40:59 +0100
+Date:   Wed, 30 Mar 2022 20:40:59 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Michael Walle <michael@walle.cc>
+Cc:     Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] net: sfp: use hwmon_sanitize_name()
+Message-ID: <YkSyS1g48TlB3XpB@shell.armlinux.org.uk>
+References: <20220329160730.3265481-1-michael@walle.cc>
+ <20220329160730.3265481-4-michael@walle.cc>
 MIME-Version: 1.0
-Reply-To: isabellasayouba0@gmail.com
-Sender: 040stherchurch@gmail.com
-Received: by 2002:a05:6a20:691d:b0:76:6cf5:d552 with HTTP; Wed, 30 Mar 2022
- 11:23:37 -0700 (PDT)
-From:   Mrs Isabella Sayouba <isabellasayouba0@gmail.com>
-Date:   Wed, 30 Mar 2022 18:23:37 +0000
-X-Google-Sender-Auth: _Xe1kByDkvq-Dn04BagO7gok_qM
-Message-ID: <CAAzQq761QVaWKiKernxpKjqNCK+6V9mRKHBnOcqF8rXJO9Y+aA@mail.gmail.com>
-Subject: =?UTF-8?B?44GC44GE44GV44Gk44CC?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_99,BAYES_999,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220329160730.3265481-4-michael@walle.cc>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-44GC44GE44GV44Gk44CCDQoNCua2meOCkua1geOBl+OBquOBjOOCieOBk+OBruODoeODvOODq+OC
-kuabuOOBhOOBpuOBhOOBvuOBmeOAguengeOBruebruOBq+OBr+Wkp+OBjeOBquaCsuOBl+OBv+OB
-jOOBguOCiuOBvuOBmeOAguengeOBruWQjeWJjeOBr+OCpOOCtuODmeODqeODu+OCteODqOOCpuOD
-kOOBleOCk+OBp+OBmeOAguODgeODpeODi+OCuOOCouWHuui6q+OBp+OAgeODluODq+OCreODiuOD
-leOCoeOCveOBrueXhemZouOBi+OCiemAo+e1oeOCkuWPluOCiuOBvuOBmeOAguengeOBr+OBguOB
-quOBn+OBq+W/g+OCkumWi+OBhOOBpuaEn+WLleOBl+OBn+OBruOBp+OAgeOBguOBquOBn+OBq+ip
-seOBmeS7peWkluOBq+mBuOaKnuiCouOBr+OBguOCiuOBvuOBm+OCk+OAguengeOBr+OAgTIwMTHl
-ubTjgavkuqHjgY/jgarjgovliY3jgavjg5bjg6vjgq3jg4rjg5XjgqHjgr3jga7jg4Hjg6Xjg4vj
-grjjgqLlpKfkvb/jgag55bm06ZaT5YON44GE44Gm44GE44GfU2F5b3ViYQ0KQnJvd27msI/jgajn
-tZDlqZrjgZfjgb7jgZfjgZ/jgILlrZDkvpvjgarjgZfjgacxMeW5tOmWk+e1kOWpmuOBl+OBn+OA
-gg0KDQrlvbzjga/jgZ/jgaPjgZ815pel6ZaT57aa44GE44Gf55+t44GE55eF5rCX44Gu5b6M44Gn
-5q2744Gr44G+44GX44Gf44CC5b2844Gu5q275b6M44CB56eB44Gv5YaN5ama44GX44Gq44GE44GT
-44Go44Gr5rG644KB44G+44GX44Gf44CC5Lqh44GP44Gq44Gj44Gf5aSr44GM55Sf44GN44Gm44GE
-44Gf44Go44GN44CB5b2844Gv57eP6aGNODUw5LiH44OJ44Or44KS6aCQ44GR44G+44GX44Gf44CC
-DQrvvIg4MDDkuIc1MDAw44OJ44Or77yJ6KW/44Ki44OV44Oq44Kr44Gu44OW44Or44Kt44OK44OV
-44Kh44K944Gu6aaW6YO944Ov44Ks44OJ44Kl44Kw44O844Gu6YqA6KGM44Gn44CC54++5Zyo44CB
-44GT44Gu44GK6YeR44Gv44G+44Gg6YqA6KGM44Gr44GC44KK44G+44GZ44CC5b2844Gv44GT44Gu
-44GK6YeR44KS44OW44Or44Kt44OK44OV44Kh44K944Gu6Ymx5qWt44GL44KJ44Gu6YeR44Gu6Ly4
-5Ye644Gr5Yip55So44Gn44GN44KL44KI44GG44Gr44GX44G+44GX44Gf44CCDQoNCuacgOi/keOA
-geengeOBruWMu+iAheOBr+engeOBjOeZjOOBqOiEs+WNkuS4reOBruWVj+mhjOOBruOBn+OCgeOB
-qzfjg7bmnIjplpPjga/ntprjgYvjgarjgYTjgaDjgo3jgYbjgajnp4HjgavoqIDjgYTjgb7jgZfj
-gZ/jgILnp4HjgpLmnIDjgoLmgqnjgb7jgZvjgabjgYTjgovjga7jga/ohLPljZLkuK3jga7nl4Xm
-sJfjgafjgZnjgILnp4Hjga7nirbmhYvjgpLnn6XjgaPjgZ/jga7jgafjgIHnp4Hjga/jgZPjga7j
-gYrph5HjgpLjgYLjgarjgZ/jgavmuKHjgZfjgabjgIHmgbXjgb7jgozjgarjgYTkurrjgIXjga7k
-uJboqbHjgpLjgZnjgovjgZPjgajjgavjgZfjgb7jgZfjgZ/jgILjgYLjgarjgZ/jga/jgZPjga7j
-gYrph5HjgpLnp4HjgYzjgZPjgZPjgafmjIfnpLrjgZnjgovmlrnms5XjgafliKnnlKjjgZnjgovj
-gafjgZfjgofjgYbjgILnp4Hjga/jgYLjgarjgZ/jgavjgYLjgarjgZ/jga7lgIvkurrnmoTjgark
-vb/nlKjjga7jgZ/jgoHjgavnt4/jgYrph5Hjga4zMOODkeODvOOCu+ODs+ODiOOCkuWPluOBo+OB
-puassuOBl+OBhOOBp+OBmeOAguOBiumHkeOBrjcw77yF44Gv56eB44Gu5ZCN5YmN44Gn5a2k5YWQ
-6Zmi44KS5bu644Gm44CB6YCa44KK44Gu6LKn44GX44GE5Lq644CF44KS5Yqp44GR44KL44Gf44KB
-44Gr5L2/44GG44Gn44GX44KH44GG44CC56eB44Gv5a2k5YWQ44Go44GX44Gm6IKy44Gh44G+44GX
-44Gf44GM44CB56We44Gu5a6244KS57at5oyB44GZ44KL44Gf44KB44Gg44GR44Gr44CB5a625peP
-44Gr44Gv6Kqw44KC44GE44G+44Gb44KT44CC44GT44Gu55eF5rCX44GM56eB44KS44Go44Gm44KC
-6Ium44GX44KB44Gf44Gu44Gn44CB56We44GM56eB44Gu572q44KS6LWm44GX44CB5qW95ZyS44Gn
-56eB44Gu6a2C44KS5Y+X44GR5YWl44KM44KL44KI44GG44Gr44GT44KM44KS44GX44Gm44GE44KL
-44Gu44Gn44GZ44CCDQoNCui/lOS/oeOCkuWPl+OBkeWPluOCiuasoeesrOOAgeODluODq+OCreOD
-iuODleOCoeOCveOBrumKgOihjOOBrumAo+e1oeWFiOOCkuOBiuefpeOCieOBm+OBl+OBvuOBmeOA
-guOBvuOBn+OAgemKgOihjOOBruePvuWcqOOBruWPl+WPluS6uuOBp+OBguOCi+OBk+OBqOOCkuio
-vOaYjuOBmeOCi+aoqemZkOabuOOCkueZuuihjOOBmeOCi+OCiOOBhumKgOihjOmVt+OBq+aMh+ek
-uuOBl+OBvuOBmeOAguengeOBjOOBk+OBk+OBp+i/sOOBueOBn+OCiOOBhuOBq+OBguOBquOBn+OB
-jOOBneOCjOOBq+W/nOOBmOOBpuihjOWLleOBmeOCi+OBk+OBqOOCkuengeOBq+S/neiovOOBl+OB
-puOBj+OBoOOBleOBhOOAgg0KDQrjgqTjgrbjg5njg6njg7vjgrXjg6jjgqbjg5DlpKvkurrjgYvj
-gonjgIINCg==
+On Tue, Mar 29, 2022 at 06:07:28PM +0200, Michael Walle wrote:
+> Instead of open-coding the bad characters replacement in the hwmon name,
+> use the new hwmon_sanitize_name().
+> 
+> Signed-off-by: Michael Walle <michael@walle.cc>
+
+Assuming hwmon_sanitize_name() gets settled, then:
+
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+> ---
+>  drivers/net/phy/sfp.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index 4dfb79807823..0d5dba30444d 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -1289,7 +1289,7 @@ static const struct hwmon_chip_info sfp_hwmon_chip_info = {
+>  static void sfp_hwmon_probe(struct work_struct *work)
+>  {
+>  	struct sfp *sfp = container_of(work, struct sfp, hwmon_probe.work);
+> -	int err, i;
+> +	int err;
+>  
+>  	/* hwmon interface needs to access 16bit registers in atomic way to
+>  	 * guarantee coherency of the diagnostic monitoring data. If it is not
+> @@ -1317,16 +1317,12 @@ static void sfp_hwmon_probe(struct work_struct *work)
+>  		return;
+>  	}
+>  
+> -	sfp->hwmon_name = kstrdup(dev_name(sfp->dev), GFP_KERNEL);
+> +	sfp->hwmon_name = hwmon_sanitize_name(dev_name(sfp->dev));
+>  	if (!sfp->hwmon_name) {
+>  		dev_err(sfp->dev, "out of memory for hwmon name\n");
+>  		return;
+>  	}
+>  
+> -	for (i = 0; sfp->hwmon_name[i]; i++)
+> -		if (hwmon_is_bad_char(sfp->hwmon_name[i]))
+> -			sfp->hwmon_name[i] = '_';
+> -
+>  	sfp->hwmon_dev = hwmon_device_register_with_info(sfp->dev,
+>  							 sfp->hwmon_name, sfp,
+>  							 &sfp_hwmon_chip_info,
+> -- 
+> 2.30.2
+> 
+> 
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
