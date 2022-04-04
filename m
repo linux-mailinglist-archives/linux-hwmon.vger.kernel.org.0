@@ -2,66 +2,91 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAD684F1A51
-	for <lists+linux-hwmon@lfdr.de>; Mon,  4 Apr 2022 23:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7D484F1A5C
+	for <lists+linux-hwmon@lfdr.de>; Mon,  4 Apr 2022 23:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348457AbiDDVSU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 4 Apr 2022 17:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38906 "EHLO
+        id S1378901AbiDDVSV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 4 Apr 2022 17:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378915AbiDDQEu (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 Apr 2022 12:04:50 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B65A427D2
-        for <linux-hwmon@vger.kernel.org>; Mon,  4 Apr 2022 09:02:54 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id gt4so3321044pjb.4
-        for <linux-hwmon@vger.kernel.org>; Mon, 04 Apr 2022 09:02:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=AWQj0xMfgcrQexRXcREpVygq7xbKIh3fCnrIBlB3bPjYI5PndCdAAWiqltStEp5edN
-         sd8etuic+XyNYdX+4nTSs79JoFMnmIDmxL8cTUHCWPLOUmLdmX3q2Ck9S62M1ieKUtBz
-         fd6mDzQRENY0c/qP2QLowESbp/F+VcLAsCfw109gP0F77bHKtIhpxuvs8vVcqu6qG8uh
-         OcJ8bdamDCzFjn6uyaZbpDQuFGO7iIDKPpZLnXLwHkQoAZ18Lkp1pvoEwYvHv1w7S4vF
-         B3am6KoV74q7kKEVLRN83i4HX9BsE98v+aALedwzdT0b8iMR2h8N/cts67oaz1VWDyeB
-         hHuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=3oH/qIwfx1gx2YymK2Ck8YAVkAQStoo1RSGEc4IkBZC2ZH3mnWHwyNzbFjiCkUUzgq
-         p9eqqzAvof7qpdMiasKxJK7rn8n6AzE0lWvqJpdNCkTgwwY1/wqbKYYQ+UnDJYXMKCqB
-         iJj4EePDQ+iXEe4+fIAwpsM84aI08QAErlyzqcpaqDmJht2rDuzqzJTsFWOe9uZeZ3Mn
-         eRAA5z5kNSeXT4FsAq3utilcLhYN1fw9jg6SADMhzBWiWvTMCIf/iz7cvrDNdoBV0QLW
-         hXodq2GCL3eR5ioXxmeFHoSTkYehEsOfS2VQnKT/byLq4mtXR7Bhi7FlF/+aXua/rh/p
-         Ynrw==
-X-Gm-Message-State: AOAM532P66HWEckxF/ioLCQbnUMy4rFR1FMeHDLUFbbNbgrbbnuRbcEF
-        GYxuodvZez+FN64e8F1C4yk9AivRgQxPjrVgtIQ=
-X-Google-Smtp-Source: ABdhPJwuuaNHvJLrzxZhka72nZI5BuutVsF71qrHz1ZKY6yROxgtx1Ef65tPp7AUzY1XOPlNB1nwcLCcUKlc361We+c=
-X-Received: by 2002:a17:90a:888:b0:1ca:a9ac:c866 with SMTP id
- v8-20020a17090a088800b001caa9acc866mr529946pjc.203.1649088173724; Mon, 04 Apr
- 2022 09:02:53 -0700 (PDT)
+        with ESMTP id S1380039AbiDDSpp (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 Apr 2022 14:45:45 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706CBA1A2;
+        Mon,  4 Apr 2022 11:43:48 -0700 (PDT)
+Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id BE559221D4;
+        Mon,  4 Apr 2022 20:43:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1649097826;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=poOZKw8hZUUNnStW9clwSX8LRDw0XYQR4H0YmtmNls4=;
+        b=c1K1O2A45bQVK1v+SUa/w3i8v4mo4JH24bZs9KAztcIWIcBga5R7LRy8gA2cUDgCJrQhy6
+        RzYLV4aGJi7UP8G5xQZWuM2LqvMjSBwTG4QJ/1X1QkW/xN+CowOvYRjA+Mql+gz+9uSLmr
+        FxChOMLMZB+U7rf+znz48fJJWig/C0w=
+From:   Michael Walle <michael@walle.cc>
+To:     Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, David Laight <David.Laight@ACULAB.COM>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH v3 0/2] hwmon: introduce hwmon_sanitize()
+Date:   Mon,  4 Apr 2022 20:43:38 +0200
+Message-Id: <20220404184340.3973329-1-michael@walle.cc>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Sender: liaahilliaahilliaahil@gmail.com
-Received: by 2002:ac4:cd93:0:b0:4a1:b6d7:fb5 with HTTP; Mon, 4 Apr 2022
- 09:02:52 -0700 (PDT)
-From:   Lia Ahil <mrsliaahil070@gmail.com>
-Date:   Mon, 4 Apr 2022 16:02:52 +0000
-X-Google-Sender-Auth: Wc8Xc9LyfldK-66V1wfAG0melTo
-Message-ID: <CALfBs9G3aGKXBpPiv=CGqHa++j5u-9xNPszRdpLJ7DHXTGk3Dw@mail.gmail.com>
-Subject: Hello,Did you receive my email message
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+During development of the support for the temperature sensor on the GPY
+PHY, I've noticed that there is ususually a loop over the name to
+replace any invalid characters. Instead of open coding it in the drivers
+provide a convenience function.
+
+The last patch is marked as RFC, it should probably be reposted/applied
+to the kernel release after next (?).
+
+changes since v2:
+ - doc update
+ - dropped last three patches, the net patches will be submitted
+   seperately
+
+changes since v1:
+ - split patches
+ - add hwmon-kernel-api.rst documentation
+ - move the strdup into the hwmon core
+ - also provide a resource managed variant
+
+Michael Walle (2):
+  hwmon: introduce hwmon_sanitize_name()
+  hwmon: intel-m10-bmc-hwmon: use devm_hwmon_sanitize_name()
+
+ Documentation/hwmon/hwmon-kernel-api.rst | 16 ++++++++
+ drivers/hwmon/hwmon.c                    | 50 ++++++++++++++++++++++++
+ drivers/hwmon/intel-m10-bmc-hwmon.c      |  7 +---
+ include/linux/hwmon.h                    |  3 ++
+ 4 files changed, 70 insertions(+), 6 deletions(-)
+
+-- 
+2.30.2
 
