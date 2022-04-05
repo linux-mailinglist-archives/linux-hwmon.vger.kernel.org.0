@@ -2,134 +2,122 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A66B4F4654
-	for <lists+linux-hwmon@lfdr.de>; Wed,  6 Apr 2022 01:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 585FB4F53DD
+	for <lists+linux-hwmon@lfdr.de>; Wed,  6 Apr 2022 06:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234643AbiDEOq5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 5 Apr 2022 10:46:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43034 "EHLO
+        id S245597AbiDFDtt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 5 Apr 2022 23:49:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353710AbiDENHS (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 5 Apr 2022 09:07:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B69A5167FA
-        for <linux-hwmon@vger.kernel.org>; Tue,  5 Apr 2022 05:09:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1649160547;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wTHcEPqS4WZU3twPg6xFE08lBamScSNylvPFU0OFzg4=;
-        b=B22yoDcAQRw1Vts9MS32ITUwy6/UdIQ7uF0jPjzo2fFQaRHzVqGAn71l4WMdwI/YPiS89+
-        VvY3SfUBiwMAyAjYMm6S9kxg4PAoSF9c6EwSkPoSPbjowUITMpZVVChSxOzPRFTcT2QVh4
-        YSPIN3GXs0jObkOHHKj5boFHVd/tEDA=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-517-8jTVMF-9OQeyJrOMWwQfKA-1; Tue, 05 Apr 2022 08:09:06 -0400
-X-MC-Unique: 8jTVMF-9OQeyJrOMWwQfKA-1
-Received: by mail-qv1-f71.google.com with SMTP id jq7-20020ad45fc7000000b00443f07ce3fcso244462qvb.2
-        for <linux-hwmon@vger.kernel.org>; Tue, 05 Apr 2022 05:09:06 -0700 (PDT)
+        with ESMTP id S1573095AbiDER6G (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 5 Apr 2022 13:58:06 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D34E617F
+        for <linux-hwmon@vger.kernel.org>; Tue,  5 Apr 2022 10:56:07 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id s2so160463pfh.6
+        for <linux-hwmon@vger.kernel.org>; Tue, 05 Apr 2022 10:56:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
+        b=qsNfemz0v0GX/YhtOsQt1I1OxkAlWpdfoOMrntuX+arLQc/wxF8yi/12yFAYon5eKO
+         en7hNke0Trui61pl9hXUJIbDj34YyLN49wzVMiagdD+aEH4K6SVNFS/6x4LGv+FrRQ+5
+         CLTnwDfcxzCAXL3JAWq2Vn0zB+ufkEmiJsT6f+qMUt0m4KXsQLQlt2wevwul/mZ2vUh7
+         H5+sFaUM4qmSMNcXSNPG1YSu8XsnoX/sxGsI95rQGKmoatzY5uxR6MRMoVO0F+cQiRR7
+         EIkIxumcVcQ0IGekI2HcOWlQ0bXVHwspAuamnkwXeiP7Gf3kNyfRzom1wZ1FDDfJcFzO
+         V0jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=wTHcEPqS4WZU3twPg6xFE08lBamScSNylvPFU0OFzg4=;
-        b=PxygXRJewpdrbF9O5m7pMElmQObfLpVuxvK0ZSWuHNqmZmRNa94nSqmNpLlKrs9Vsz
-         S6O2T7kSGss16R2GoOaCtoD3KT/tAni3xKxY6MhrjZdDy+2m8MR47abNhGU0/MEHKyld
-         GdHfyCO4Xs8rWcfB8sAEfYKXgeLJ9X/RI2lVzibFJeV1d2HF30dOD99FxdL93JIn9q+n
-         ETAg7aNZ+JWQx3PoKHmM3EcRUyJz82oR+QPtIY0yIk/gqTJexhgI1EDgFl+ucDymg2vz
-         VgzkKS/bCnZxZCu+DhuM1JLnA33Y+oToj6uEM4gw2fgf501e2EU93rsbKDZza5hNK6UV
-         bTGQ==
-X-Gm-Message-State: AOAM533jYEIr+zOpmmVF86ev7p2jhJIZk2FIXrVvMn7fvswcZMuUBimg
-        la0nZUM/Q/t/8P1Hlt2KLfJuvP+yoH4n1dEQyXyg39jRzCbk+FVn6wLKuJg5Q7v4ZE2bzxLGdio
-        TbtAWMv6IQ6yKmPHlTwtDOpw=
-X-Received: by 2002:ac8:4e8b:0:b0:2e2:129b:35f1 with SMTP id 11-20020ac84e8b000000b002e2129b35f1mr2557093qtp.387.1649160546381;
-        Tue, 05 Apr 2022 05:09:06 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwX7HhPj5mEGcuqhZHuJX+RbnyZLGTfgVtl7WdedWYWbPlNoy2uZL3YMCqfNCIwWRAhYtFenA==
-X-Received: by 2002:ac8:4e8b:0:b0:2e2:129b:35f1 with SMTP id 11-20020ac84e8b000000b002e2129b35f1mr2557071qtp.387.1649160546126;
-        Tue, 05 Apr 2022 05:09:06 -0700 (PDT)
-Received: from localhost.localdomain (024-205-208-113.res.spectrum.com. [24.205.208.113])
-        by smtp.gmail.com with ESMTPSA id c20-20020a05622a059400b002e1d59e68f3sm10850768qtb.48.2022.04.05.05.09.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Apr 2022 05:09:05 -0700 (PDT)
-Subject: Re: [PATCH v4 2/2] hwmon: intel-m10-bmc-hwmon: use
- devm_hwmon_sanitize_name()
-To:     Michael Walle <michael@walle.cc>, Xu Yilun <yilun.xu@intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, David Laight <David.Laight@ACULAB.COM>
-References: <20220405092452.4033674-1-michael@walle.cc>
- <20220405092452.4033674-3-michael@walle.cc>
-From:   Tom Rix <trix@redhat.com>
-Message-ID: <155156e6-e258-78dd-441a-7faad4afde3c@redhat.com>
-Date:   Tue, 5 Apr 2022 05:09:03 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
+        b=XZ5+bO9LTC1a/PPV39vCW99hZ0XRQBeqqFMLCI42lAOg2j1ca29IpqWqaHZBDHPvrY
+         stOuydrEEsEfpzejuhyEjECi3/YwSwpY9wOXbtyNm8+Qv9R7Icy00iaNUCouWzV11DG7
+         CSlGGoJCrOkrSDmWodTHXad25HkuMuvrkQBJNuHDf53ZnbqLVAne+9bvnCa616lrzhiM
+         b4ROYufT4OXYDJFBEC+6/QUwsaNHFi2Y8hIMl5t1AdSRr/fFsIIEfri2tGRV1h1T3FyQ
+         Xw2nrwIvzxQolS6tp2pi/qDdtCjRd3cf2vwtpMZfMmj+Jr49Z4uzNujQk2cgGIEX0K7L
+         9Klw==
+X-Gm-Message-State: AOAM531kioXdHDYwbM/YPFgpzOkU2E9LeGiQjIyY8cUmMPIEHigd4KVG
+        AbdLqBIDIfdUyU+yRJ3Dq9ZFM1+tis1JWhioCjM=
+X-Google-Smtp-Source: ABdhPJzSM9VdGhPJmctVEo9V0PhjPzDtLJnPzDtjCElUjhpx3+o7Kkv4AgPjsGpFcJlnJ4qB6b/KGkkfIUBaOctHVWI=
+X-Received: by 2002:a63:7804:0:b0:398:1338:86a with SMTP id
+ t4-20020a637804000000b003981338086amr3837200pgc.575.1649181366620; Tue, 05
+ Apr 2022 10:56:06 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20220405092452.4033674-3-michael@walle.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SCC_BODY_URI_ONLY,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Sender: info.unibbf@gmail.com
+Received: by 2002:a05:6a20:8917:b0:7a:ea94:3932 with HTTP; Tue, 5 Apr 2022
+ 10:56:06 -0700 (PDT)
+From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
+Date:   Tue, 5 Apr 2022 19:56:06 +0200
+X-Google-Sender-Auth: fWs3RsVF8N-FPLl8w6MvjNwGZ1Q
+Message-ID: <CA+Ps-gJqRWth5xJ6Zi5Q9PwwyYrNurxLgu0GvR8iYSaOoXtnDg@mail.gmail.com>
+Subject: ATTENTION PLEASE,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
+        MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,SUBJ_ATTENTION,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,
+        T_US_DOLLARS_3,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:444 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5882]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [info.unibbf[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.0 T_US_DOLLARS_3 BODY: Mentions millions of $ ($NN,NNN,NNN.NN)
+        *  0.5 MILLION_USD BODY: Talks about millions of dollars
+        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+ATTENTION PLEASE,
 
-On 4/5/22 2:24 AM, Michael Walle wrote:
-> Instead of open-coding the bad characters replacement in the hwmon name,
-> use the new devm_hwmon_sanitize_name().
->
-> Signed-off-by: Michael Walle <michael@walle.cc>
-> Acked-by: Xu Yilun <yilun.xu@intel.com>
-> ---
->   drivers/hwmon/intel-m10-bmc-hwmon.c | 11 +++--------
->   1 file changed, 3 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/hwmon/intel-m10-bmc-hwmon.c b/drivers/hwmon/intel-m10-bmc-hwmon.c
-> index 7a08e4c44a4b..6e82f7200d1c 100644
-> --- a/drivers/hwmon/intel-m10-bmc-hwmon.c
-> +++ b/drivers/hwmon/intel-m10-bmc-hwmon.c
-> @@ -515,7 +515,6 @@ static int m10bmc_hwmon_probe(struct platform_device *pdev)
->   	struct intel_m10bmc *m10bmc = dev_get_drvdata(pdev->dev.parent);
->   	struct device *hwmon_dev, *dev = &pdev->dev;
->   	struct m10bmc_hwmon *hw;
-> -	int i;
->   
->   	hw = devm_kzalloc(dev, sizeof(*hw), GFP_KERNEL);
->   	if (!hw)
-> @@ -528,13 +527,9 @@ static int m10bmc_hwmon_probe(struct platform_device *pdev)
->   	hw->chip.info = hw->bdata->hinfo;
->   	hw->chip.ops = &m10bmc_hwmon_ops;
->   
-> -	hw->hw_name = devm_kstrdup(dev, id->name, GFP_KERNEL);
-> -	if (!hw->hw_name)
-> -		return -ENOMEM;
-> -
-> -	for (i = 0; hw->hw_name[i]; i++)
-> -		if (hwmon_is_bad_char(hw->hw_name[i]))
-> -			hw->hw_name[i] = '_';
-> +	hw->hw_name = devm_hwmon_sanitize_name(dev, id->name);
-> +	if (IS_ERR(hw->hw_name))
-> +		return PTR_ERR(hw->hw_name);
-Reviewed-by: Tom Rix <trix@redhat.com>
->   
->   	hwmon_dev = devm_hwmon_device_register_with_info(dev, hw->hw_name,
->   							 hw, &hw->chip, NULL);
+I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
+Directors working with United bank for African Burkina Faso (UBA). I
+have an interesting business proposal for you that will be of immense
+benefit to both of us. Although this may be hard for you to believe,
+we stand to gain a huge amount  between us in a matter of days. Please
+grant me the benefit of doubt and hear me out. I need you to signify
+your interest by replying to my mail.
 
+Honestly, i have business transaction worth the sum of
+(US$8,200,000.00) Eight Million two hundred thousand united state
+dollars to transfer to you through proper documentation in position of
+your own Account.
+
+Most importantly, I will need you to promise to keep whatever you
+learn from me between us even if you decide not to go along with me. I
+will make more details available to you on receipt of a positive
+response from you.
+
+This transaction is risk-free; please urgently confirm your
+willingness and interest to assist in this deal, I am in good faith
+and with trust waiting for your Urgent respond and maximum cooperation
+for more details.
+
+Best Regards,
+Mrs Aminata Zongo.
