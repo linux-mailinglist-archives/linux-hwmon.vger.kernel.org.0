@@ -2,189 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E15114F2106
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Apr 2022 06:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96894F2A17
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Apr 2022 12:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230334AbiDEDEO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 4 Apr 2022 23:04:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39920 "EHLO
+        id S231709AbiDEKgC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 5 Apr 2022 06:36:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbiDEDEH (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 Apr 2022 23:04:07 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32DB32441F
-        for <linux-hwmon@vger.kernel.org>; Mon,  4 Apr 2022 19:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649126623; x=1680662623;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fUyc6HYGnQILwktu1kc88f7b4Jd/7r34mziiiIDgHcg=;
-  b=Y5VNuy5m2Ru1405HXPmhxkgQ4OiCdNNEo/xcUmc67CIJW3px43XACJV3
-   srmugnYHljifMcnHS8uR0UbMLZadB4yr7B9d6hnxs79uueIqqNzitPfhf
-   JUj+0UphDNCgmSsByjhzNUR2zppY68/ws7r9jZM67z4RdkGpAZpYrebFq
-   k6lEhztoMBZzy7Va0N2n5XWhcCr1bdxDYUi3SXcD6UV/EZ5ldAhsMQyqA
-   +3jDI0ODjhJ8Kycqj1TfQZ+qZppUrdQfwnu5DGfn4kCwhiVfD0i3/P5R5
-   6pImjYRUvap8jrdBbF09cDHjeRpt5QNLZjKGk1W7NyJHYsyLFgOX7OTJN
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10307"; a="259482935"
-X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
-   d="scan'208";a="259482935"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 19:43:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
-   d="scan'208";a="657764250"
-Received: from lkp-server02.sh.intel.com (HELO a44fdfb70b94) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 04 Apr 2022 19:43:42 -0700
-Received: from kbuild by a44fdfb70b94 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nbZAT-0002ZM-Gk;
-        Tue, 05 Apr 2022 02:43:41 +0000
-Date:   Tue, 05 Apr 2022 10:43:04 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon] BUILD SUCCESS
- 4fd45cc8568e6086272d3036f2c29d61e9b776a1
-Message-ID: <624bacb8.oodm6iGMlI3AGhgX%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S243817AbiDEJkb (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 5 Apr 2022 05:40:31 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 470D5B9192;
+        Tue,  5 Apr 2022 02:25:03 -0700 (PDT)
+Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id DB5C0221D4;
+        Tue,  5 Apr 2022 11:25:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1649150701;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uk8mzQYPK6hRxrVTkR2htOw04+Yd2q9FLsv83PaJNfQ=;
+        b=Mj1y4B8wxRiPbBrSLP3Z3gfqL9Mdb+B+0hX6u8Lzk6mE+3gi002hvqLIgAnXZGx83HvG76
+        Yb9P5aBc+6P3dQ5kX7LAL/Bn8GONRzUVtZZdHsrUixUooOUcSLC3QKUEg6i0/Pf2LlL61C
+        H2eEcVKJ02EM2E7wW5c5n2bw7Ve2/tM=
+From:   Michael Walle <michael@walle.cc>
+To:     Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, David Laight <David.Laight@ACULAB.COM>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH v4 0/2] hwmon: introduce hwmon_sanitize()
+Date:   Tue,  5 Apr 2022 11:24:50 +0200
+Message-Id: <20220405092452.4033674-1-michael@walle.cc>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
-branch HEAD: 4fd45cc8568e6086272d3036f2c29d61e9b776a1  hwmon: (asus_wmi_sensors) Fix CROSSHAIR VI HERO name
+During development of the support for the temperature sensor on the GPY
+PHY, I've noticed that there is ususually a loop over the name to
+replace any invalid characters. Instead of open coding it in the drivers
+provide a convenience function.
 
-elapsed time: 726m
+changes since v3:
+ - don't return NULL but ERR_PTR(-ENOMEM)
+ - check !dev in devm_ variant
 
-configs tested: 108
-configs skipped: 3
+changes since v2:
+ - doc update
+ - dropped last three patches, the net patches will be submitted
+   seperately
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+changes since v1:
+ - split patches
+ - add hwmon-kernel-api.rst documentation
+ - move the strdup into the hwmon core
+ - also provide a resource managed variant
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                 randconfig-c001-20220404
-arm                       multi_v4t_defconfig
-powerpc                 mpc834x_mds_defconfig
-m68k                        mvme147_defconfig
-arc                        nsim_700_defconfig
-xtensa                          iss_defconfig
-arm                           corgi_defconfig
-mips                            gpr_defconfig
-arm                        multi_v7_defconfig
-powerpc                 linkstation_defconfig
-sh                               alldefconfig
-arm                        mini2440_defconfig
-arm                      integrator_defconfig
-arm                        realview_defconfig
-sh                           se7780_defconfig
-arm                        keystone_defconfig
-arm                       omap2plus_defconfig
-sh                         ap325rxa_defconfig
-sh                          rsk7201_defconfig
-m68k                       m5475evb_defconfig
-x86_64               randconfig-c001-20220404
-arm                  randconfig-c002-20220404
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-alpha                               defconfig
-csky                                defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-parisc64                            defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allyesconfig
-sparc                            allyesconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a011-20220404
-x86_64               randconfig-a013-20220404
-x86_64               randconfig-a012-20220404
-x86_64               randconfig-a015-20220404
-x86_64               randconfig-a016-20220404
-x86_64               randconfig-a014-20220404
-i386                 randconfig-a013-20220404
-i386                 randconfig-a011-20220404
-i386                 randconfig-a014-20220404
-i386                 randconfig-a012-20220404
-i386                 randconfig-a015-20220404
-i386                 randconfig-a016-20220404
-arc                  randconfig-r043-20220404
-riscv                randconfig-r042-20220404
-s390                 randconfig-r044-20220404
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                          rv32_defconfig
-riscv                            allyesconfig
-riscv                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                          rhel-8.3-func
-x86_64                               rhel-8.3
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
+Michael Walle (2):
+  hwmon: introduce hwmon_sanitize_name()
+  hwmon: intel-m10-bmc-hwmon: use devm_hwmon_sanitize_name()
 
-clang tested configs:
-powerpc                      walnut_defconfig
-arm                       cns3420vb_defconfig
-powerpc                     mpc512x_defconfig
-i386                 randconfig-a001-20220404
-i386                 randconfig-a003-20220404
-i386                 randconfig-a002-20220404
-i386                 randconfig-a004-20220404
-i386                 randconfig-a005-20220404
-i386                 randconfig-a006-20220404
-x86_64               randconfig-a003-20220404
-x86_64               randconfig-a002-20220404
-x86_64               randconfig-a005-20220404
-x86_64               randconfig-a006-20220404
-x86_64               randconfig-a001-20220404
-x86_64               randconfig-a004-20220404
-hexagon              randconfig-r045-20220404
-hexagon              randconfig-r041-20220404
+ Documentation/hwmon/hwmon-kernel-api.rst | 16 +++++++
+ drivers/hwmon/hwmon.c                    | 53 ++++++++++++++++++++++++
+ drivers/hwmon/intel-m10-bmc-hwmon.c      | 11 ++---
+ include/linux/hwmon.h                    |  3 ++
+ 4 files changed, 75 insertions(+), 8 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.30.2
+
