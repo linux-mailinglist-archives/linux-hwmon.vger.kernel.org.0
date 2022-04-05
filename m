@@ -2,221 +2,190 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18BC74F2028
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Apr 2022 01:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37B84F218E
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Apr 2022 06:09:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235026AbiDDXT2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 4 Apr 2022 19:19:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
+        id S230077AbiDEDDv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 4 Apr 2022 23:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241564AbiDDXTW (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 Apr 2022 19:19:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 00FC71CB37
-        for <linux-hwmon@vger.kernel.org>; Mon,  4 Apr 2022 16:15:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1649114101;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kTRTuL6R5chBVkZAPhvLEL9OPO5zJV1n3e4jxK5S8Ms=;
-        b=YTU70QBBLLd24iObYRQmaN92W+W5ONi+BYioijmT8cZ01TfIHt/WEOwdw/OnfuLHcCjIjV
-        rz5FM5pukPQaEWuuDjV1j8MwwmtkcQTxN4w03oqbvAe2M/1FBf+f2GJ9AzEyoKjSTEzIX/
-        2elO4Q4kxPJcrIjUv2poVSI96bShPdQ=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-589-iRujCixlMEWeBKE8yAv_zA-1; Mon, 04 Apr 2022 19:15:00 -0400
-X-MC-Unique: iRujCixlMEWeBKE8yAv_zA-1
-Received: by mail-qt1-f200.google.com with SMTP id u8-20020ac858c8000000b002e1b3ceb167so7407248qta.10
-        for <linux-hwmon@vger.kernel.org>; Mon, 04 Apr 2022 16:15:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=kTRTuL6R5chBVkZAPhvLEL9OPO5zJV1n3e4jxK5S8Ms=;
-        b=vEHDTpOCYx7d4oZceI6tLT3Ry6/9tb3Kt2Y7qMFPpQfITarLXxnNp8RdhVbLR3gVci
-         v2SmIc8lIc59B9/pI3QI8MKaLyt8CGdV421ZdCVw6VwHFP7hmh5EvFMSVny1VoTBKLpD
-         bznzURp2KGqgJk120KKleM8A7tr1oSo6uz4z8xd7SIBgDF7x5d6Fk4POeTEpNSZgoWzZ
-         FOByotrQ/85h9V8uQJpuapTjvtVUA2S5HaamQ18MrlJ9yQy+hKnRRSAGhc3+NkUBvYkc
-         WMJ47Zq3fxjFbue3y2WeGzMSCanoIOVMCBMi6NkZ3q3psssDo1WQ4QW8wVXOYu4OxR/B
-         hUWg==
-X-Gm-Message-State: AOAM530ezob6bXaQO2zwvmAGqQ8Hwlwp+mYCaJkSXE/ixPPPuaJou6w7
-        lYs/yGjzangDNEt373188huzlsoZToOAoAGhFq2xXpyeBBwSIR9msMYyBAd4nWke0TC0mScVlnV
-        Jow2MC1szzvY22VhfSTcUhc4=
-X-Received: by 2002:a05:6214:2342:b0:42d:7c8b:9eac with SMTP id hu2-20020a056214234200b0042d7c8b9eacmr575443qvb.5.1649114099538;
-        Mon, 04 Apr 2022 16:14:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwaIxVkenjRBdDOh6Wv2UMQmmTIJuEr8fmsRSmJlATQoawKgS1eJzrIMpeEK/tuHf+1jb3erQ==
-X-Received: by 2002:a05:6214:2342:b0:42d:7c8b:9eac with SMTP id hu2-20020a056214234200b0042d7c8b9eacmr575421qvb.5.1649114099261;
-        Mon, 04 Apr 2022 16:14:59 -0700 (PDT)
-Received: from localhost.localdomain (024-205-208-113.res.spectrum.com. [24.205.208.113])
-        by smtp.gmail.com with ESMTPSA id k1-20020ac85fc1000000b002e1c6420790sm10288267qta.40.2022.04.04.16.14.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Apr 2022 16:14:58 -0700 (PDT)
-Subject: Re: [PATCH v3 1/2] hwmon: introduce hwmon_sanitize_name()
-To:     Michael Walle <michael@walle.cc>, Xu Yilun <yilun.xu@intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, David Laight <David.Laight@ACULAB.COM>
-References: <20220404184340.3973329-1-michael@walle.cc>
- <20220404184340.3973329-2-michael@walle.cc>
-From:   Tom Rix <trix@redhat.com>
-Message-ID: <428c28e4-87cc-50a4-ef13-41ae36702a84@redhat.com>
-Date:   Mon, 4 Apr 2022 16:14:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S230375AbiDEDCx (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 Apr 2022 23:02:53 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D222137B1B
+        for <linux-hwmon@vger.kernel.org>; Mon,  4 Apr 2022 19:41:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649126503; x=1680662503;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hKvViH8UZKHnJtHwPEMbjzKGaOyaJ1HM1Gf4ZsBh7+4=;
+  b=d7JZu8aM5BFB6gSbfGJgJNVH2t+4KI+gNcnTAPzeNrUZdDPVUzUTfVNG
+   T+rlPaN3kRrs83hVP/ftO2Vq7M8CbmXTIDnBrXeCcniPJTENGE0w7EDGI
+   2Pa4mvzv1vo1zku/T6XZJ97QafOyHtG+OG54GSD/zdmrpcOQFhmYJ/0Uc
+   HatpHlkXQN0CQv6sxJA02iTqHZm92g9IkDv7yh0CyrYd8cg+6gvv6+SNH
+   J/0Wrd/KQ3iuT+i4KiTCDy5T4tI2Iq6Pr3MZNy7QsZ1hhJD8lUZXWNYor
+   /eMr6ld4YN8NjK1laEmkt8UbIzn5jealUmsmgkX3hilu/A82DlCWrzA+j
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10307"; a="260349104"
+X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
+   d="scan'208";a="260349104"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 19:41:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
+   d="scan'208";a="721878191"
+Received: from lkp-server02.sh.intel.com (HELO a44fdfb70b94) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 04 Apr 2022 19:41:41 -0700
+Received: from kbuild by a44fdfb70b94 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nbZ8X-0002Yd-AT;
+        Tue, 05 Apr 2022 02:41:41 +0000
+Date:   Tue, 05 Apr 2022 10:41:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ a5af7ccaf51299819dd0e5b1347d6f4d00752701
+Message-ID: <624bac49.Rd+2MgqH5DBwifnG%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20220404184340.3973329-2-michael@walle.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: a5af7ccaf51299819dd0e5b1347d6f4d00752701  hwmon: (aquacomputer_d5next) Add support for Aquacomputer Octo
 
-On 4/4/22 11:43 AM, Michael Walle wrote:
-> More and more drivers will check for bad characters in the hwmon name
-> and all are using the same code snippet. Consolidate that code by adding
-> a new hwmon_sanitize_name() function.
->
-> Signed-off-by: Michael Walle <michael@walle.cc>
-> ---
->   Documentation/hwmon/hwmon-kernel-api.rst | 16 ++++++++
->   drivers/hwmon/hwmon.c                    | 50 ++++++++++++++++++++++++
->   include/linux/hwmon.h                    |  3 ++
->   3 files changed, 69 insertions(+)
->
-> diff --git a/Documentation/hwmon/hwmon-kernel-api.rst b/Documentation/hwmon/hwmon-kernel-api.rst
-> index c41eb6108103..e2975d5caf34 100644
-> --- a/Documentation/hwmon/hwmon-kernel-api.rst
-> +++ b/Documentation/hwmon/hwmon-kernel-api.rst
-> @@ -50,6 +50,10 @@ register/unregister functions::
->   
->     void devm_hwmon_device_unregister(struct device *dev);
->   
-> +  char *hwmon_sanitize_name(const char *name);
-> +
-> +  char *devm_hwmon_sanitize_name(struct device *dev, const char *name);
-> +
->   hwmon_device_register_with_groups registers a hardware monitoring device.
->   The first parameter of this function is a pointer to the parent device.
->   The name parameter is a pointer to the hwmon device name. The registration
-> @@ -95,6 +99,18 @@ All supported hwmon device registration functions only accept valid device
->   names. Device names including invalid characters (whitespace, '*', or '-')
->   will be rejected. The 'name' parameter is mandatory.
->   
-> +If the driver doesn't use a static device name (for example it uses
-> +dev_name()), and therefore cannot make sure the name only contains valid
-> +characters, hwmon_sanitize_name can be used. This convenience function
-> +will duplicate the string and replace any invalid characters with an
-> +underscore. It will allocate memory for the new string and it is the
-> +responsibility of the caller to release the memory when the device is
-> +removed.
-> +
-> +devm_hwmon_sanitize_name is the resource managed version of
-> +hwmon_sanitize_name; the memory will be freed automatically on device
-> +removal.
-> +
->   Using devm_hwmon_device_register_with_info()
->   --------------------------------------------
->   
-> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-> index 989e2c8496dd..cc4a16a466a0 100644
-> --- a/drivers/hwmon/hwmon.c
-> +++ b/drivers/hwmon/hwmon.c
-> @@ -1057,6 +1057,56 @@ void devm_hwmon_device_unregister(struct device *dev)
->   }
->   EXPORT_SYMBOL_GPL(devm_hwmon_device_unregister);
->   
-> +static char *__hwmon_sanitize_name(struct device *dev, const char *old_name)
-> +{
-> +	char *name, *p;
-> +
-> +	if (dev)
-> +		name = devm_kstrdup(dev, old_name, GFP_KERNEL);
-> +	else
-> +		name = kstrdup(old_name, GFP_KERNEL);
-> +	if (!name)
-> +		return NULL;
-should return ERR_PTR(-ENOMEM)
-> +
-> +	for (p = name; *p; p++)
-> +		if (hwmon_is_bad_char(*p))
-> +			*p = '_';
-> +
-> +	return name;
-> +}
-> +
-> +/**
-> + * hwmon_sanitize_name - Replaces invalid characters in a hwmon name
-> + * @name: NUL-terminated name
-> + *
-> + * Allocates a new string where any invalid characters will be replaced
-> + * by an underscore. It is the responsibility of the caller to release
-> + * the memory.
-> + *
-> + * Returns newly allocated name or %NULL in case of error.
-> + */
-> +char *hwmon_sanitize_name(const char *name)
-> +{
-> +	return __hwmon_sanitize_name(NULL, name);
-> +}
-> +EXPORT_SYMBOL_GPL(hwmon_sanitize_name);
-> +
-> +/**
-> + * devm_hwmon_sanitize_name - resource managed hwmon_sanitize_name()
-> + * @dev: device to allocate memory for
-> + * @name: NUL-terminated name
-> + *
-> + * Allocates a new string where any invalid characters will be replaced
-> + * by an underscore.
-> + *
-> + * Returns newly allocated name or %NULL in case of error.
-> + */
-> +char *devm_hwmon_sanitize_name(struct device *dev, const char *name)
-> +{
-> +	return __hwmon_sanitize_name(dev, name);
-Should have a (!dev) check.
-> +}
-> +EXPORT_SYMBOL_GPL(devm_hwmon_sanitize_name);
-> +
->   static void __init hwmon_pci_quirks(void)
->   {
->   #if defined CONFIG_X86 && defined CONFIG_PCI
-> diff --git a/include/linux/hwmon.h b/include/linux/hwmon.h
-> index eba380b76d15..4efaf06fd2b8 100644
-> --- a/include/linux/hwmon.h
-> +++ b/include/linux/hwmon.h
-> @@ -461,6 +461,9 @@ void devm_hwmon_device_unregister(struct device *dev);
->   int hwmon_notify_event(struct device *dev, enum hwmon_sensor_types type,
->   		       u32 attr, int channel);
->   
-> +char *hwmon_sanitize_name(const char *name);
-> +char *devm_hwmon_sanitize_name(struct device *dev, const char *name);
-> +
->   /**
->    * hwmon_is_bad_char - Is the char invalid in a hwmon name
+elapsed time: 724m
 
-This still needed in *.h ?
+configs tested: 109
+configs skipped: 3
 
-Tom
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->    * @ch: the char to be considered
+gcc tested configs:
+arm                              allyesconfig
+arm                                 defconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20220404
+arm                       multi_v4t_defconfig
+powerpc                 mpc834x_mds_defconfig
+m68k                        mvme147_defconfig
+arc                        nsim_700_defconfig
+xtensa                          iss_defconfig
+arm                           corgi_defconfig
+mips                            gpr_defconfig
+sh                               alldefconfig
+arm                        multi_v7_defconfig
+powerpc                 linkstation_defconfig
+arm                      footbridge_defconfig
+arm                         lubbock_defconfig
+powerpc                 canyonlands_defconfig
+xtensa                           allyesconfig
+ia64                          tiger_defconfig
+arm                            mps2_defconfig
+arm                       omap2plus_defconfig
+x86_64               randconfig-c001-20220404
+arm                  randconfig-c002-20220404
+ia64                             allyesconfig
+ia64                             allmodconfig
+ia64                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+alpha                               defconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+parisc                              defconfig
+parisc64                            defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+sparc                            allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a011-20220404
+x86_64               randconfig-a013-20220404
+x86_64               randconfig-a015-20220404
+x86_64               randconfig-a014-20220404
+x86_64               randconfig-a012-20220404
+x86_64               randconfig-a016-20220404
+i386                 randconfig-a013-20220404
+i386                 randconfig-a011-20220404
+i386                 randconfig-a014-20220404
+i386                 randconfig-a012-20220404
+i386                 randconfig-a016-20220404
+i386                 randconfig-a015-20220404
+arc                  randconfig-r043-20220404
+s390                 randconfig-r044-20220404
+riscv                randconfig-r042-20220404
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                                  kexec
+x86_64                          rhel-8.3-func
+x86_64                               rhel-8.3
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
 
+clang tested configs:
+powerpc                      walnut_defconfig
+arm                       cns3420vb_defconfig
+arm                        neponset_defconfig
+powerpc                     kmeter1_defconfig
+arm                         hackkit_defconfig
+mips                        bcm63xx_defconfig
+powerpc                     mpc512x_defconfig
+i386                 randconfig-a001-20220404
+i386                 randconfig-a003-20220404
+i386                 randconfig-a002-20220404
+i386                 randconfig-a004-20220404
+i386                 randconfig-a005-20220404
+i386                 randconfig-a006-20220404
+x86_64               randconfig-a004-20220404
+x86_64               randconfig-a003-20220404
+x86_64               randconfig-a002-20220404
+x86_64               randconfig-a005-20220404
+x86_64               randconfig-a006-20220404
+x86_64               randconfig-a001-20220404
+hexagon              randconfig-r041-20220404
+hexagon              randconfig-r045-20220404
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
