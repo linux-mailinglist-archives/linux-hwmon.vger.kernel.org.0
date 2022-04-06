@@ -2,122 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 585FB4F53DD
-	for <lists+linux-hwmon@lfdr.de>; Wed,  6 Apr 2022 06:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B90494F6101
+	for <lists+linux-hwmon@lfdr.de>; Wed,  6 Apr 2022 16:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245597AbiDFDtt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 5 Apr 2022 23:49:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
+        id S234059AbiDFOGX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 6 Apr 2022 10:06:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1573095AbiDER6G (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 5 Apr 2022 13:58:06 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D34E617F
-        for <linux-hwmon@vger.kernel.org>; Tue,  5 Apr 2022 10:56:07 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id s2so160463pfh.6
-        for <linux-hwmon@vger.kernel.org>; Tue, 05 Apr 2022 10:56:07 -0700 (PDT)
+        with ESMTP id S234360AbiDFOGJ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 6 Apr 2022 10:06:09 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27E2398880;
+        Wed,  6 Apr 2022 02:36:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=qsNfemz0v0GX/YhtOsQt1I1OxkAlWpdfoOMrntuX+arLQc/wxF8yi/12yFAYon5eKO
-         en7hNke0Trui61pl9hXUJIbDj34YyLN49wzVMiagdD+aEH4K6SVNFS/6x4LGv+FrRQ+5
-         CLTnwDfcxzCAXL3JAWq2Vn0zB+ufkEmiJsT6f+qMUt0m4KXsQLQlt2wevwul/mZ2vUh7
-         H5+sFaUM4qmSMNcXSNPG1YSu8XsnoX/sxGsI95rQGKmoatzY5uxR6MRMoVO0F+cQiRR7
-         EIkIxumcVcQ0IGekI2HcOWlQ0bXVHwspAuamnkwXeiP7Gf3kNyfRzom1wZ1FDDfJcFzO
-         V0jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=XZ5+bO9LTC1a/PPV39vCW99hZ0XRQBeqqFMLCI42lAOg2j1ca29IpqWqaHZBDHPvrY
-         stOuydrEEsEfpzejuhyEjECi3/YwSwpY9wOXbtyNm8+Qv9R7Icy00iaNUCouWzV11DG7
-         CSlGGoJCrOkrSDmWodTHXad25HkuMuvrkQBJNuHDf53ZnbqLVAne+9bvnCa616lrzhiM
-         b4ROYufT4OXYDJFBEC+6/QUwsaNHFi2Y8hIMl5t1AdSRr/fFsIIEfri2tGRV1h1T3FyQ
-         Xw2nrwIvzxQolS6tp2pi/qDdtCjRd3cf2vwtpMZfMmj+Jr49Z4uzNujQk2cgGIEX0K7L
-         9Klw==
-X-Gm-Message-State: AOAM531kioXdHDYwbM/YPFgpzOkU2E9LeGiQjIyY8cUmMPIEHigd4KVG
-        AbdLqBIDIfdUyU+yRJ3Dq9ZFM1+tis1JWhioCjM=
-X-Google-Smtp-Source: ABdhPJzSM9VdGhPJmctVEo9V0PhjPzDtLJnPzDtjCElUjhpx3+o7Kkv4AgPjsGpFcJlnJ4qB6b/KGkkfIUBaOctHVWI=
-X-Received: by 2002:a63:7804:0:b0:398:1338:86a with SMTP id
- t4-20020a637804000000b003981338086amr3837200pgc.575.1649181366620; Tue, 05
- Apr 2022 10:56:06 -0700 (PDT)
+  d=axis.com; q=dns/txt; s=axis-central1; t=1649237796;
+  x=1680773796;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sKttvewg13jPI0W2V5bQyh9PjPvGiCcvTJm9/+nsTOw=;
+  b=FVSGDEeByy6YZrQAJDkMgNa7hVyMMtb+zcdSqQEFHzm6hmQkaRMDJH9u
+   R3UAoa0EIXmg+I33VRrJiLiOj7nVifpSqQ0L6TMiKsRj5RtwHzjskeBAL
+   WIbm/KEBKKTzD1q3VaMTugPAn4SlRfQTu3++jHfSQyRmbAg/4d/LBc/us
+   q0gBpwGMYkRf3Jsaz6Tv38h7pebWZLwgvyyX4FvOX/UAr4jxt/9UyszNd
+   loiXUY5H/4+PBqK9u6PFIhMm5VnTC63c0EDcaoHhO6aCpHl8T7Bhb4WWE
+   HfgWihd6UL76ZMWxd0Qvn0dShedXkT3RvNt4dxqdmlmzi7oGUxycDeYK3
+   w==;
+From:   Camel Guo <camel.guo@axis.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>
+CC:     <kernel@axis.com>, Camel Guo <camelg@axis.com>,
+        <linux-hwmon@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] hwmon: (tmp401) Support extended temperature range
+Date:   Wed, 6 Apr 2022 11:29:01 +0200
+Message-ID: <20220406092901.408861-1-camel.guo@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Sender: info.unibbf@gmail.com
-Received: by 2002:a05:6a20:8917:b0:7a:ea94:3932 with HTTP; Tue, 5 Apr 2022
- 10:56:06 -0700 (PDT)
-From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
-Date:   Tue, 5 Apr 2022 19:56:06 +0200
-X-Google-Sender-Auth: fWs3RsVF8N-FPLl8w6MvjNwGZ1Q
-Message-ID: <CA+Ps-gJqRWth5xJ6Zi5Q9PwwyYrNurxLgu0GvR8iYSaOoXtnDg@mail.gmail.com>
-Subject: ATTENTION PLEASE,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,SUBJ_ATTENTION,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,
-        T_US_DOLLARS_3,UNDISC_MONEY autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:444 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5882]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [info.unibbf[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 T_US_DOLLARS_3 BODY: Mentions millions of $ ($NN,NNN,NNN.NN)
-        *  0.5 MILLION_USD BODY: Talks about millions of dollars
-        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION PLEASE,
+From: Camel Guo <camelg@axis.com>
 
-I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
-Directors working with United bank for African Burkina Faso (UBA). I
-have an interesting business proposal for you that will be of immense
-benefit to both of us. Although this may be hard for you to believe,
-we stand to gain a huge amount  between us in a matter of days. Please
-grant me the benefit of doubt and hear me out. I need you to signify
-your interest by replying to my mail.
+This patch only applies to tmp431 and devicetree configuration.
 
-Honestly, i have business transaction worth the sum of
-(US$8,200,000.00) Eight Million two hundred thousand united state
-dollars to transfer to you through proper documentation in position of
-your own Account.
+Signed-off-by: Camel Guo <camelg@axis.com>
+---
+ Documentation/hwmon/tmp401.rst | 13 +++++++++++++
+ drivers/hwmon/tmp401.c         |  5 +++++
+ 2 files changed, 18 insertions(+)
 
-Most importantly, I will need you to promise to keep whatever you
-learn from me between us even if you decide not to go along with me. I
-will make more details available to you on receipt of a positive
-response from you.
+diff --git a/Documentation/hwmon/tmp401.rst b/Documentation/hwmon/tmp401.rst
+index 3aacf3d3bdf3..d12e9c9ba40f 100644
+--- a/Documentation/hwmon/tmp401.rst
++++ b/Documentation/hwmon/tmp401.rst
+@@ -78,3 +78,16 @@ some additional features.
+ 
+ TMP432 is compatible with TMP401 and TMP431. It supports two external
+ temperature sensors.
++
++Device tree
++-----------
++TMP431 has support for the device tree parameter "extended-range" which enables
++the extended range in the chip.
++
++Example:
++
++main-temp@4c {
++  compatible = "ti,tmp431";
++  reg = <0x4c>;
++  extended-range;
++};
+diff --git a/drivers/hwmon/tmp401.c b/drivers/hwmon/tmp401.c
+index b86d9df7105d..6efd2475ffda 100644
+--- a/drivers/hwmon/tmp401.c
++++ b/drivers/hwmon/tmp401.c
+@@ -557,6 +557,11 @@ static int tmp401_init_client(struct tmp401_data *data)
+ 	config_orig = config;
+ 	config &= ~TMP401_CONFIG_SHUTDOWN;
+ 
++	if (of_property_read_bool(data->client->dev.of_node, "extended-range")) {
++		/* Enable extended range */
++		config |= TMP401_CONFIG_RANGE;
++	}
++
+ 	data->extended_range = !!(config & TMP401_CONFIG_RANGE);
+ 
+ 	if (config != config_orig)
+-- 
+2.30.2
 
-This transaction is risk-free; please urgently confirm your
-willingness and interest to assist in this deal, I am in good faith
-and with trust waiting for your Urgent respond and maximum cooperation
-for more details.
-
-Best Regards,
-Mrs Aminata Zongo.
