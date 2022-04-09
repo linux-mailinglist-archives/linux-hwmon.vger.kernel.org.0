@@ -2,121 +2,275 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5EFF4FA812
-	for <lists+linux-hwmon@lfdr.de>; Sat,  9 Apr 2022 15:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D0B4FA94A
+	for <lists+linux-hwmon@lfdr.de>; Sat,  9 Apr 2022 17:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235474AbiDINPA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 9 Apr 2022 09:15:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53576 "EHLO
+        id S236231AbiDIPiW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 9 Apr 2022 11:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232779AbiDINO7 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 9 Apr 2022 09:14:59 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB4F92864
-        for <linux-hwmon@vger.kernel.org>; Sat,  9 Apr 2022 06:12:51 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id b15so12945496edn.4
-        for <linux-hwmon@vger.kernel.org>; Sat, 09 Apr 2022 06:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=PuWoiAuWxd/Z6LY57ALykPtpkYVF+ijDEln+h8cSfy3C6qzgYrmmwXAK/X1Xd4A+xC
-         j013bqjPLgu0vvHVzHMsNuAxwSkxUUjxKe8bAK/A9LWHBRzmV+Z8jZkKBbgEWvSRhpb2
-         NZC+O1LSmxoMwRwfgRJMkVrc4zjchrLCDsLULQmNmkh5kQlxDiLF7fKtomKxT2vqMCcg
-         DRKfrP6+6EY14DQK1+wOZfVuWBHDokVk/zUz4ZkR9K3PlouVB9MmKxoBCMwLjI1hmyK1
-         0KHXWd/x+WM9lWksGOvzn0m8zJF3I07ZV6dfac4U8J1FiVjBcEtc4qQN0wmFITk1H0bM
-         PziQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=YkvP2/mujEify+Zxalp+/VukaAxZjAwjHSZKRklYs6/rWlJzu2IsTNCiLupS+YxsEl
-         zkS7xzExRybiZCiIO5DuL0vMlRWf+IXvwnEST+hWA3Th2COfDXMin8BhG4jipY4LVQx9
-         D8nsO4EVAdWj8IiSY162DWdAJEit6qowap2QIqmwHqrWYhlma9APIu8fsfkvhP8BC354
-         4iPqKwby0m877Y3pWtJ8+fly5HPZZKNrLZU/CuhFC8vqxefmgsxTP9lD99SEl/IeHqCw
-         yXSYompakDm+o6W9myBMcjyLH4P5sGbiYGPoct2EtlmqxADiEv5m5hyg1JQLdXHArLfm
-         tSHw==
-X-Gm-Message-State: AOAM533FbeAvanjKsZ5hjI4/xjNsrw+zpUn2CTwHz5s3UQdj69C3f0hH
-        LHY2YHqxiWZ8vGej9r9omTdxKeUYKfOBxS/k5IE=
-X-Google-Smtp-Source: ABdhPJwiAR7gAWpA+6kM7UwPpA6kHn1p/iTUacC5ghURcpNNG34aqdT2iyQ/PzQDa+nvJkKsnBCiL4lO7oWHqdw7/5U=
-X-Received: by 2002:a05:6402:2682:b0:41d:2f74:7269 with SMTP id
- w2-20020a056402268200b0041d2f747269mr7179633edd.255.1649509970421; Sat, 09
- Apr 2022 06:12:50 -0700 (PDT)
+        with ESMTP id S229504AbiDIPiT (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 9 Apr 2022 11:38:19 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0732BE0;
+        Sat,  9 Apr 2022 08:36:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1649518569;
+        bh=AWSiqye97mYi6sUv586l1tMN+wWRer2Pgc3D/ECWV6A=;
+        h=X-UI-Sender-Class:Subject:From:To:References:Date:In-Reply-To;
+        b=Eeh84ME6jM7D95V5ZZUEj835vUcTsY/bM9q/AVBieGrzPleYdntWLNV0vNEHwgq4j
+         vMipLJDkH+/o43ENhD4aiakBwFS6a2CuIefP6Q+O7n8vdYcAAXd5g6NsE0PL99N5MC
+         n6ZPNDE0R7iN/YjDaWyWbNQ37ocHMDOH5P75QfC0=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6KUT-1o13T73QJF-016j0D; Sat, 09
+ Apr 2022 17:36:08 +0200
+Subject: Re: [PATCH] hwmon: (dell-smm) Add cooling device support
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     linux-hwmon@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220330163324.572437-1-W_Armin@gmx.de>
+Message-ID: <19965146-a004-aae5-4448-ec573b227edc@gmx.de>
+Date:   Sat, 9 Apr 2022 17:36:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Sender: compoeredrahmed@gmail.com
-Received: by 2002:ab4:a070:0:0:0:0:0 with HTTP; Sat, 9 Apr 2022 06:12:49 -0700 (PDT)
-From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
-Date:   Sat, 9 Apr 2022 15:12:49 +0200
-X-Google-Sender-Auth: Y_Gl3oMWCIPYRU3Oir3n3jA55vw
-Message-ID: <CAAdcN=62n9giVjwBn-JeFX+NYS18+9SMyDxmaGeJPJzBHv9wWg@mail.gmail.com>
-Subject: ATTENTION PLEASE,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_80,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,SUBJ_ATTENTION,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,
-        T_US_DOLLARS_3,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:541 listed in]
-        [list.dnswl.org]
-        *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
-        *      [score: 0.9260]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [compoeredrahmed[at]gmail.com]
-        *  0.2 MILLION_USD BODY: Talks about millions of dollars
-        *  0.0 T_US_DOLLARS_3 BODY: Mentions millions of $ ($NN,NNN,NNN.NN)
-        *  0.2 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+In-Reply-To: <20220330163324.572437-1-W_Armin@gmx.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+X-Provags-ID: V03:K1:eoIM1SRVBeOvvNBAfc8YeoLXKzA/kU9creonpmTXgNHGjcXQXim
+ ajVWENly9K27ojxeooRHG+QZqY1N15oyg1/As7bF7eYyqkBRnuZDvepnn7oqn6+hjzp8h8J
+ otcaJrIcSDVXnlqazIHd8lVOQSS/BvuGzH72xqyUq2uhzB2bOgrE7xTV0ZRqCCF+8Z8z3gi
+ 60X/L10EHsJ3IADQtj8LA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:S3Ngp4lbYw0=:m0mCMYTJgwLInxaaHQ4AXr
+ /zcg5sSIYt+tu3Wr/ruWKr0d7O2koKnp6x9N4FYVzfBhBkQ8q8pt3Rfnlc4Nv5nshYadKi9dx
+ d9EmlrBtqvm9vzwcoUIYwdE5ejj2fWggTflznrO8YKV7ntdcZQJRKH96ZltuXiacQZt+oN02H
+ a8ZU2XUDXG4iWIaIXfxo3V4/WOGoG8IvlI1e4ioIRyFp7NB8ZfspnGZULGH6lfYCavnIrDe7t
+ C8l5+N4Cz3i0z9Yhpq2fbVkhuNyY95O4R+ebWNgkWNJ/RhSn4fWH43YSVw8lzCeb3xY4iEm1L
+ dGiG1gxpmBhpP5v6ZPt+yUCIdEztTIBvcGj63a38BZN0nj92GVfejpWhOct884v8c/k3Ko6wr
+ 7GXmERuGhF8S2xB11Q2Ca+eXo9ZbVc1Z2hFES7WZKwJKi7OZWMkJbaSBcd9+6RCmjdhHMVpjj
+ TtXGacxvjtPnPRcUPVmfkiM7Wnpop+s6898NZT/hxuR2c51PgEx+vnpZSgRVTQBaipsMf1w+g
+ 1yafGoOc9SiHcBIEutH7Ng55avvTsmXl6oq95NFj1ny+LoG/oM+5wz50hNYtG53jtuc95LoqQ
+ 89bXAqD2uLED/Qc2qHG05HmheJZ5PAU7GyQiqu0zelo2Z2F0uT8nbRdV2VSJWQyhS6cpJ9KDW
+ 8N1LA3l0zlLELc9Chs9bVHM9yiCeoFzKqjttwqrl4Bpu+lY3m5cQfaDhz1BVS87dKztSF4+1Q
+ 1INaI5QyXoWdO3poYs+QgRtzHmRyOj33uu3b1TpUO79SmTcY9gLm8GYQyqWrDjV0AhgKG4VYp
+ 3/RdJ/fiCw/xjJZHhu0PPliokLdjyMQ5WOwoyfm66mA2idXIoYleBJKXx7E+g0k26V8TgwteY
+ NjD5NLvKxe3/MAE4GaxNZ05qwknWJ+STBeZmwCQupv5HNpwawyLvxUp+AVuEavwgIyiOyjERI
+ liYau8nPqPy/BREXM45AoNBfrv7zg8cFzMp3ue3JvBOmpORWPQs8TG5HxqgzaS4dqbTb3sYYM
+ a5TRdRam3iTQtpZFftHr1Glqd49PrkcSBY/iqcRDTmdup1LIrMZUF9zr0tHwc0sZuqoOdOA1o
+ +Mdj88AYbsvKiU=
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION PLEASE,
+Am 30.03.22 um 18:33 schrieb Armin Wolf:
 
-I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
-Directors working with United bank for African Burkina Faso (UBA). I
-have an interesting business proposal for you that will be of immense
-benefit to both of us. Although this may be hard for you to believe,
-we stand to gain a huge amount  between us in a matter of days. Please
-grant me the benefit of doubt and hear me out. I need you to signify
-your interest by replying to my mail.
+> Until now, only the temperature sensors where exported thru
+> the thermal subsystem. Export the fans as "dell-smm-fan[1-3]" too
+> to make them available as cooling devices.
+> Also update Documentation.
+>
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>   Documentation/hwmon/dell-smm-hwmon.rst |  7 ++
+>   drivers/hwmon/Kconfig                  |  1 +
+>   drivers/hwmon/dell-smm-hwmon.c         | 94 +++++++++++++++++++++++++-
+>   3 files changed, 99 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmo=
+n/dell-smm-hwmon.rst
+> index d3323a96665d..41839b7de2c1 100644
+> --- a/Documentation/hwmon/dell-smm-hwmon.rst
+> +++ b/Documentation/hwmon/dell-smm-hwmon.rst
+> @@ -86,6 +86,13 @@ probe the BIOS on your machine and discover the appro=
+priate codes.
+>
+>   Again, when you find new codes, we'd be happy to have your patches!
+>
+> +``thermal`` interface
+> +---------------------------
+> +
+> +The driver also exports the fans as thermal cooling devices with
+> +``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
+> +using one of the thermal governors.
+> +
+>   Module parameters
+>   -----------------
+>
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index 9ab4e9b3d27b..1175b8e38c45 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
+> @@ -498,6 +498,7 @@ config SENSORS_DS1621
+>   config SENSORS_DELL_SMM
+>   	tristate "Dell laptop SMM BIOS hwmon driver"
+>   	depends on X86
+> +	imply THERMAL
+>   	help
+>   	  This hwmon driver adds support for reporting temperature of differe=
+nt
+>   	  sensors and controls the fans on Dell laptops via System Management
+> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwm=
+on.c
+> index 84cb1ede7bc0..0c29386f4bd3 100644
+> --- a/drivers/hwmon/dell-smm-hwmon.c
+> +++ b/drivers/hwmon/dell-smm-hwmon.c
+> @@ -21,6 +21,7 @@
+>   #include <linux/errno.h>
+>   #include <linux/hwmon.h>
+>   #include <linux/init.h>
+> +#include <linux/kconfig.h>
+>   #include <linux/kernel.h>
+>   #include <linux/module.h>
+>   #include <linux/mutex.h>
+> @@ -29,6 +30,7 @@
+>   #include <linux/seq_file.h>
+>   #include <linux/string.h>
+>   #include <linux/smp.h>
+> +#include <linux/thermal.h>
+>   #include <linux/types.h>
+>   #include <linux/uaccess.h>
+>
+> @@ -80,6 +82,11 @@ struct dell_smm_data {
+>   	int *fan_nominal_speed[DELL_SMM_NO_FANS];
+>   };
+>
+> +struct dell_smm_cooling_data {
+> +	u8 fan_num;
+> +	struct dell_smm_data *data;
+> +};
+> +
+>   MODULE_AUTHOR("Massimo Dal Zotto (dz@debian.org)");
+>   MODULE_AUTHOR("Pali Roh=C3=A1r <pali@kernel.org>");
+>   MODULE_DESCRIPTION("Dell laptop SMM BIOS hwmon driver");
+> @@ -638,9 +645,50 @@ static void __init i8k_init_procfs(struct device *d=
+ev)
+>
+>   #endif
+>
+> -/*
+> - * Hwmon interface
+> - */
+> +static int dell_smm_get_max_state(struct thermal_cooling_device *dev, u=
+nsigned long *state)
+> +{
+> +	struct dell_smm_cooling_data *cdata =3D dev->devdata;
+> +
+> +	*state =3D cdata->data->i8k_fan_max;
+> +
+> +	return 0;
+> +}
+> +
+> +static int dell_smm_get_cur_state(struct thermal_cooling_device *dev, u=
+nsigned long *state)
+> +{
+> +	struct dell_smm_cooling_data *cdata =3D dev->devdata;
+> +	int ret;
+> +
+> +	ret =3D i8k_get_fan_status(cdata->data, cdata->fan_num);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*state =3D ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int dell_smm_set_cur_state(struct thermal_cooling_device *dev, u=
+nsigned long state)
+> +{
+> +	struct dell_smm_cooling_data *cdata =3D dev->devdata;
+> +	struct dell_smm_data *data =3D cdata->data;
+> +	int ret;
+> +
+> +	if (state > data->i8k_fan_max)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&data->i8k_mutex);
+> +	ret =3D i8k_set_fan(data, cdata->fan_num, (int)state);
+> +	mutex_unlock(&data->i8k_mutex);
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct thermal_cooling_device_ops dell_smm_cooling_ops =3D=
+ {
+> +	.get_max_state =3D dell_smm_get_max_state,
+> +	.get_cur_state =3D dell_smm_get_cur_state,
+> +	.set_cur_state =3D dell_smm_set_cur_state,
+> +};
+>
+>   static umode_t dell_smm_is_visible(const void *drvdata, enum hwmon_sen=
+sor_types type, u32 attr,
+>   				   int channel)
+> @@ -941,6 +989,37 @@ static const struct hwmon_chip_info dell_smm_chip_i=
+nfo =3D {
+>   	.info =3D dell_smm_info,
+>   };
+>
+> +static int __init dell_smm_init_cdev(struct device *dev, u8 fan_num)
+> +{
+> +	struct dell_smm_data *data =3D dev_get_drvdata(dev);
+> +	struct thermal_cooling_device *cdev;
+> +	struct dell_smm_cooling_data *cdata;
+> +	int ret =3D 0;
+> +	char *name;
+> +
+> +	name =3D kasprintf(GFP_KERNEL, "dell-smm-fan%u", fan_num + 1);
+> +	if (!name)
+> +		return -ENOMEM;
+> +
+> +	cdata =3D devm_kmalloc(dev, sizeof(*cdata), GFP_KERNEL);
+> +	if (cdata) {
+> +		cdata->fan_num =3D fan_num;
+> +		cdata->data =3D data;
+> +		cdev =3D devm_thermal_of_cooling_device_register(dev, NULL, name, cda=
+ta,
+> +							       &dell_smm_cooling_ops);
+> +		if (IS_ERR(cdev)) {
+> +			devm_kfree(dev, cdata);
+> +			ret =3D PTR_ERR(cdev);
+> +		}
+> +	} else {
+> +		ret =3D -ENOMEM;
+> +	}
+> +
+> +	kfree(name);
+> +
+> +	return ret;
+> +}
+> +
+>   static int __init dell_smm_init_hwmon(struct device *dev)
+>   {
+>   	struct dell_smm_data *data =3D dev_get_drvdata(dev);
+> @@ -967,6 +1046,15 @@ static int __init dell_smm_init_hwmon(struct devic=
+e *dev)
+>   			continue;
+>
+>   		data->fan[i] =3D true;
+> +
+> +		/* the cooling device it not critical, ignore failures */
+> +		if (IS_REACHABLE(CONFIG_THERMAL)) {
+> +			err =3D dell_smm_init_cdev(dev, i);
+> +			if (err < 0)
+> +				dev_err(dev, "Failed to register cooling device for fan %u\n",
+> +					i + 1);
+> +		}
+> +
+>   		data->fan_nominal_speed[i] =3D devm_kmalloc_array(dev, data->i8k_fan=
+_max + 1,
+>   								sizeof(*data->fan_nominal_speed[i]),
+>   								GFP_KERNEL);
+> --
+> 2.30.2
+>
+Any thoughts on this? I tested it on a Dell Inspiron 3505, so i can prove =
+it works.
 
-Honestly, i have business transaction worth the sum of
-(US$8,200,000.00) Eight Million two hundred thousand united state
-dollars to transfer to you through proper documentation in position of
-your own Account.
-
-Most importantly, I will need you to promise to keep whatever you
-learn from me between us even if you decide not to go along with me. I
-will make more details available to you on receipt of a positive
-response from you.
-
-This transaction is risk-free; please urgently confirm your
-willingness and interest to assist in this deal, I am in good faith
-and with trust waiting for your Urgent respond and maximum cooperation
-for more details.
-
-Best Regards,
-Mrs Aminata Zongo.
