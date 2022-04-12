@@ -2,122 +2,175 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9DEB4FC14F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Apr 2022 17:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640D64FE06B
+	for <lists+linux-hwmon@lfdr.de>; Tue, 12 Apr 2022 14:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348208AbiDKPq4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 11 Apr 2022 11:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44558 "EHLO
+        id S242786AbiDLMfn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 12 Apr 2022 08:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348203AbiDKPq3 (ORCPT
+        with ESMTP id S1345646AbiDLMf1 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 11 Apr 2022 11:46:29 -0400
-Received: from mail-oa1-x44.google.com (mail-oa1-x44.google.com [IPv6:2001:4860:4864:20::44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82558B1F9
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 Apr 2022 08:44:13 -0700 (PDT)
-Received: by mail-oa1-x44.google.com with SMTP id 586e51a60fabf-e2afb80550so5749913fac.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 Apr 2022 08:44:13 -0700 (PDT)
+        Tue, 12 Apr 2022 08:35:27 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF545DA7F
+        for <linux-hwmon@vger.kernel.org>; Tue, 12 Apr 2022 04:53:47 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id t11so9834033eju.13
+        for <linux-hwmon@vger.kernel.org>; Tue, 12 Apr 2022 04:53:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=UCGy0wR2zF82kRFIScRxIvoKC2b4Z/VBtRLO1dl4xw/o5Ah1RRS7Dcxl4vzJxZZbaK
-         t3Q/aBJ2eqAz5T/6aVgwu2M//G6zEEgqe1DM3GAC5ATJit6aEh1C3dPoOfQFC34H0gkJ
-         9FwjjGlBdyS79nMPmN6uFKziH+/D0QEieiimpDwrmUnBLEt4Qfu861Wtz379V9e2FBJV
-         bLRmpRAiS/VKiEMVoFGn3ZVEx6StJoLFyL8LQVYgHHrupGYpHg14ziB8KJB9krMFH7HU
-         h2xnNvvUqBqXFjARDF0tU1e3vmawhgKdtUav/6giBqCngtFfXgY5LTPlcSEJMGLPYtXT
-         cyGA==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=cwWMneWmYo0bsVQNTnfjzMcjYCr1j17IxDi8v2ddzV0=;
+        b=pOPSFaKNtRrc6Xfd6Mgck9tiiSqlG/jRNHohJ6jbz469ZDQEJDVr5tBlX/x+HzYwET
+         UazcNzCtzLdaFmC9tgK7KPUq7O+v+EG92zXkoHj1FlwX+809xEXwr5rOZJKRTlgzWRJb
+         LfVUVGYh6ySPN0yaBiYZXDMMoGG5bWlAEOBfIMFCnuMm8eOS/PMXVrzTVblV5IhcGbI2
+         ocGyzKdbCItAa649nhhKEpivREE2IGCbn0YXFUrMUthE1DrYQBA/g8MRXaF2P5ixtFOk
+         fB/cBcJTrOJIU5kUorcq+6d7oZCRDkUB0tnNdsEDPtBYpA389yzBbduVHLPf+NYbvrmJ
+         DFPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=U/TIWGQlRgPgaB67aBR2nGVd8RNbCdOHYF02+dBaWttARnBETRTuAF5ms+x3iOHaXE
-         8tNtZPi8qrtoDE1n0kfEwBqNiTxjVY/z+kY3nOcZfc/9oon/G/fv6whJ8X05awOI77af
-         vO0vsqB1rO/nEoNenzY+NuVDYYNuEnzXm//ZtOV+DTT/kYfTPJ1DPwJaPSubwu3jknQJ
-         AMMOLe6SSKYnpVXxskwSz+Sg0BF9i3/BgUFWB7f/uYJj54rBrPr8fcy4gFl6LFYnFx9n
-         HlDExr/dMUFOpJLgNzcE7z10cvmry4l1GERPT28vhBvpztx3HQQZ/xk5IgQTQPtTITyy
-         3lCw==
-X-Gm-Message-State: AOAM533kli6hAOPQUjKPFCfIN34J8WdHlhwIooPum3Ha1pR4DPtOALjz
-        01T4ouQwS6kBW8aM30eRcvrsZqxE9NErPScz2Y8=
-X-Google-Smtp-Source: ABdhPJxUbs4pbBsCd++hclhAL22XE3Hwe2MZjl7GZLZ1I+x+jpXGpno0EgdnTGt/ftmfj5pOoKB/a5Puprh9YBsr2/A=
-X-Received: by 2002:a05:6870:350d:b0:e2:a6e7:1f44 with SMTP id
- k13-20020a056870350d00b000e2a6e71f44mr5187783oah.168.1649691852648; Mon, 11
- Apr 2022 08:44:12 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=cwWMneWmYo0bsVQNTnfjzMcjYCr1j17IxDi8v2ddzV0=;
+        b=wNA41rSiuj6z+hTN9pZp5zVikkEPmJhxQoxDPozeS1ndWTdPEu6yZDv2S8rXFEv1K2
+         X9s+u3f5DYcd9EGzTNDzSE4AOgwjme7GQLpY0cKWJpynXtH2uVk9K9k4G72d1L1lhp53
+         T5vDgw8miBIh95DlIwQcbLo70TxFz6BoROlj2NZwjaMJepcqNiGTv3HulnF9yX+DFYPC
+         i6kVIMI4y4pbVMYtK4JaW2ifcynToZZM0LbZPkssBeqJS5YYWDSQ7YEQ2HicPMWNOa6+
+         3aTnMWI964E0mQR7C8YAQPKnp7xiDCbrjW3HTyI4XK2w+IwWXU9DvRQrRTn4O/7+FdYA
+         Vh/Q==
+X-Gm-Message-State: AOAM530d6aa1O5eQxBSZ3isnSDW0pmyQcD1ZOopYhihOf5rXRJY0PG1M
+        0kK/evlNWQniPRbulHXp4yEvbC5dTMIn9yb7
+X-Google-Smtp-Source: ABdhPJzjUIVyQeW3XuC0ld4eIJnrJZrmjsdr+XuecYgxxiG+iAXjBdVXzyJPY252GX4f3SnJi4TWGA==
+X-Received: by 2002:a17:906:99c5:b0:6df:8215:4ccd with SMTP id s5-20020a17090699c500b006df82154ccdmr34666885ejn.684.1649764426399;
+        Tue, 12 Apr 2022 04:53:46 -0700 (PDT)
+Received: from [192.168.0.195] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.gmail.com with ESMTPSA id v21-20020a1709064e9500b006e8973a14d0sm2158703eju.174.2022.04.12.04.53.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Apr 2022 04:53:45 -0700 (PDT)
+Message-ID: <c13a0f34-4938-3d56-43e0-5a9053e0bc25@linaro.org>
+Date:   Tue, 12 Apr 2022 13:53:44 +0200
 MIME-Version: 1.0
-Sender: eldristanko@gmail.com
-Received: by 2002:a4a:b682:0:0:0:0:0 with HTTP; Mon, 11 Apr 2022 08:44:12
- -0700 (PDT)
-From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
-Date:   Mon, 11 Apr 2022 17:44:12 +0200
-X-Google-Sender-Auth: rf-4_195gI7eGSmYqDD8_Ij2vDc
-Message-ID: <CALry08UyJUDX0U0aPs1BioRTXAStcwsxt4k9HDbeZ-hD1fRHoQ@mail.gmail.com>
-Subject: ATTENTION PLEASE,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_NAME_FM_MR_MRS,
-        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,SUBJ_ATTENTION,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2001:4860:4864:20:0:0:0:44 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5010]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [eldristanko[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.1 MILLION_USD BODY: Talks about millions of dollars
-        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.5 HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  2.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 1/2] dt-bindings: hwmon: Add TMP401, TMP411 and TMP43x
+Content-Language: en-US
+To:     Camel Guo <camel.guo@axis.com>, linux@roeck-us.net,
+        jdelvare@suse.com, robh+dt@kernel.org, krzk+dt@kernel.org
+Cc:     kernel@axis.com, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Camel Guo <camelg@axis.com>
+References: <20220411100329.1783432-1-camel.guo@axis.com>
+ <20220411100329.1783432-2-camel.guo@axis.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220411100329.1783432-2-camel.guo@axis.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION PLEASE,
+On 11/04/2022 12:03, Camel Guo wrote:
+> From: Camel Guo <camelg@axis.com>
+> 
+> Document the TMP401, TMP411 and TMP43x device devicetree bindings
+> 
+> Signed-off-by: Camel Guo <camelg@axis.com>
+> ---
+>  .../devicetree/bindings/hwmon/ti,tmp401.yaml  | 111 ++++++++++++++++++
+>  MAINTAINERS                                   |   1 +
+>  2 files changed, 112 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/ti,tmp401.yaml
+> 
 
-I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
-Directors working with United bank for African Burkina Faso (UBA). I
-have an interesting business proposal for you that will be of immense
-benefit to both of us. Although this may be hard for you to believe,
-we stand to gain a huge amount  between us in a matter of days. Please
-grant me the benefit of doubt and hear me out. I need you to signify
-your interest by replying to my mail.
+Thank you for your patch. There is something to discuss/improve.
 
-Honestly, i have business transaction worth the sum of
-(US$8,200,000.00) Eight Million two hundred thousand united state
-dollars to transfer to you through proper documentation in position of
-your own Account.
+> diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp401.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp401.yaml
+> new file mode 100644
+> index 000000000000..28be5cbb009b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/ti,tmp401.yaml
+> @@ -0,0 +1,111 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/hwmon/ti,tmp401.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TMP401, TPM411 and TMP43x temperature sensor
+> +
+> +maintainers:
+> +  - Guenter Roeck <linux@roeck-us.net>
+> +
+> +description: |
+> +  ±1°C Remote and Local temperature sensor
+> +
+> +  Datasheets:
+> +  https://www.ti.com/lit/ds/symlink/tmp401.pdf
+> +  https://www.ti.com/lit/ds/symlink/tmp411.pdf
+> +  https://www.ti.com/lit/ds/symlink/tmp431.pdf
+> +  https://www.ti.com/lit/ds/symlink/tmp435.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,tmp401
+> +      - ti,tmp411
+> +      - ti,tmp431
+> +      - ti,tmp432
+> +      - ti,tmp435
 
-Most importantly, I will need you to promise to keep whatever you
-learn from me between us even if you decide not to go along with me. I
-will make more details available to you on receipt of a positive
-response from you.
+Blank line, please.
 
-This transaction is risk-free; please urgently confirm your
-willingness and interest to assist in this deal, I am in good faith
-and with trust waiting for your Urgent respond and maximum cooperation
-for more details.
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  ti,extended-range-enable:
+> +    description: |
 
-Best Regards,
-Mrs Aminata Zongo.
+No need for "|". Here and in most of other cases below.
+
+> +      When set, this sensor measures over extended temperature range.
+> +    type: boolean
+> +
+> +  ti,n-factor:
+> +    description: |
+> +      The value (two's complement) to be programmed in the n-factor correction
+> +      register.
+
+Do not describe the programming model (registers) but hardware property
+instead.
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    items:
+> +      minimum: 0
+> +      maximum: 255
+> +
+> +  ti,beta-compensation:
+> +    description: |
+> +      The value to be programmed in the beta range register.
+
+The same, register values should not be stored in DT.
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    items:
+> +      minimum: 0
+> +      maximum: 15
+> +
+
+
+Best regards,
+Krzysztof
