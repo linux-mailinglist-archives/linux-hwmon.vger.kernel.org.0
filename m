@@ -2,107 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E46C5034ED
-	for <lists+linux-hwmon@lfdr.de>; Sat, 16 Apr 2022 09:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6864504E32
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Apr 2022 11:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbiDPHw7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 16 Apr 2022 03:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44130 "EHLO
+        id S237411AbiDRJKX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Apr 2022 05:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230280AbiDPHw3 (ORCPT
+        with ESMTP id S231382AbiDRJKS (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 16 Apr 2022 03:52:29 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BEE8100741
-        for <linux-hwmon@vger.kernel.org>; Sat, 16 Apr 2022 00:49:38 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id t13so10079964pgn.8
-        for <linux-hwmon@vger.kernel.org>; Sat, 16 Apr 2022 00:49:37 -0700 (PDT)
+        Mon, 18 Apr 2022 05:10:18 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E1E5B85D
+        for <linux-hwmon@vger.kernel.org>; Mon, 18 Apr 2022 02:07:40 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id 12so11857508pll.12
+        for <linux-hwmon@vger.kernel.org>; Mon, 18 Apr 2022 02:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
-         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
-         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
-         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
-         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
-         XtNg==
+        h=from:to:cc:subject:date:message-id;
+        bh=1JfjiBHa745fBq9ODwlVVyXBS/f+uswL4bgLFDFlP4o=;
+        b=DvWOeQXw4aF7mjXsJ2xB+9xvw+hMiLTFksyOjIlx3dgLODR5kycX8vgVWhJFrOZwfY
+         33QyUvKvX2SuUU76SbG8RzPn95odkWfxNsO56BIbf6HHymVBFYu6pIWO6o6MBJPch+D2
+         QLeJuQ+wRK281wJaqyUvyq/oOPEAcUAD/fdTyyUw8C2kIyly7lT1injgN+A1I3K5WISV
+         7sYlYoGLypBmGmgG5ncmYvHFo89eisyLPy731cU7IhM84t60CY5ARx96D9sghnLTd7Fd
+         FoofqpdvuDRppdH/nC0QMFT3X5v3X5VSvs69+tToBLT1WbUS6zJg6v9gKzgl1kgC/85Z
+         Uwiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=kzSPh0uZDnTVYOPe+RVkZWxraorVkfwM5b0egI1U8Tr9dmW8QdBl6loGVq289Yz0Gn
-         Iuokk+C1/uZSO7i2POUwy349pb3Ge6pYEnvs5bLo7nIguI6kSljlk8FlhskyNHL8ujWt
-         BBrV7sAl0QSgAUvJ+jS2qywBjWUBkg7NqZAJ46dUtULD0g5wxtyqdRkZDSnL35RSCVmc
-         KXQkmh2k9InKGdNaPqsLqUPBZE28inl8bbyhQ90NLpYajODbd0L/XNKZlHo/pvYN7DLd
-         wQgXMuTAjN+hcNtBeYwZpcxJtr3eqILi/h4cJ1SbYKbAuQ1P0paBbGXRf/Il63MteXPE
-         QLqw==
-X-Gm-Message-State: AOAM5315lWKnEYLqQ0XcTcIY50iHfTOfWq92ea98iKlYYoF0goan/aSq
-        ERcIBExORfXdUgXpynh8PUmcNZXmVRfOUQXnXOwvZO5KPu0=
-X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
-X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
- q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
- Apr 2022 00:49:26 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
- -0700 (PDT)
-Reply-To: daniel.seyba@yahoo.com
-From:   Seyba Daniel <royhalton13@gmail.com>
-Date:   Sat, 16 Apr 2022 09:49:26 +0200
-Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:544 listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [royhalton13[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [royhalton13[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1JfjiBHa745fBq9ODwlVVyXBS/f+uswL4bgLFDFlP4o=;
+        b=H1+j9lMGQkcAtwvQlaYUfbopzaDqvW5VUOW9twRAf9xvUXBo1MUBTeJMGwMDZmBpNZ
+         U3u8p7NoVEJGnqpqPwTrj4rPtDAZ5fcgXejGNE7ea/wXZ+gD4qHr0ZZHZpFxco28q78c
+         77EqhDiXyh8+v0X8AihIXHyo+1aXaEkyYTHshLHuSPhA989uyuPccanT+z8Xh6utqYkO
+         +o2qvXIywSsV6oqc/JaQmvaqPNswPlSC/d0GpxOAzl1k6FPlX55GrIKGNWMhTM9hOSNX
+         wM1PVaILXxjPmDV1F2B/CRa7MwWMaTyVYYdJRcOG/g0PhgfDb4yoeUW60W0FPVuts2HZ
+         J4kw==
+X-Gm-Message-State: AOAM532ovDfJz3ewDf9iHIC47lHbDQiZ4vjT09l3w8nyAAAVWJoCaBU2
+        n8esRQycWtXdpn/jsWP/lv4=
+X-Google-Smtp-Source: ABdhPJzx6gl/fMdbji5XYZEzXC0+LENFqwTs3EEiwbLTe8oFtuno9XnjYT6dzbN+A+V9GaubBAz7DQ==
+X-Received: by 2002:a17:90a:f3d6:b0:1cb:a0aa:5e60 with SMTP id ha22-20020a17090af3d600b001cba0aa5e60mr11919799pjb.161.1650272859576;
+        Mon, 18 Apr 2022 02:07:39 -0700 (PDT)
+Received: from localhost (59-120-186-245.hinet-ip.hinet.net. [59.120.186.245])
+        by smtp.gmail.com with ESMTPSA id m2-20020a17090a4d8200b001cb41f25148sm12612349pjh.17.2022.04.18.02.07.38
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 18 Apr 2022 02:07:39 -0700 (PDT)
+From:   "Ji-Ze Hong (Peter Hong)" <hpeter@gmail.com>
+X-Google-Original-From: "Ji-Ze Hong (Peter Hong)" <hpeter+linux_kernel@gmail.com>
+To:     linux@roeck-us.net
+Cc:     Menghui_Wu@aaeon.com.tw, fercerpav@gmail.com,
+        peter_hong@fintek.com.tw, acelan.kao@canonical.com,
+        linux-hwmon@vger.kernel.org,
+        "Ji-Ze Hong (Peter Hong)" <hpeter+linux_kernel@gmail.com>
+Subject: [PATCH V2 1/1] hwmon:(f71882fg) Fix minus temperature
+Date:   Mon, 18 Apr 2022 17:07:06 +0800
+Message-Id: <20220418090706.6339-1-hpeter+linux_kernel@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello,
+All temperature of Fintek superio hwmonitor that using 1-byte reg will use
+2's complement.
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+In show_temp()
+	temp = data->temp[nr] * 1000;
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+When data->temp[nr] read as 255, it indicate -1C, but this code will report
+255C to userspace. It'll be ok when change to:
+	temp = ((s8)data->temp[nr]) * 1000;
 
-So please confirm interest by responding back.
+Signed-off-by: Ji-Ze Hong (Peter Hong) <hpeter+linux_kernel@gmail.com>
+---
+ drivers/hwmon/f71882fg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-My dearest regards
+diff --git a/drivers/hwmon/f71882fg.c b/drivers/hwmon/f71882fg.c
+index 938a8b9ec70d..6830e029995d 100644
+--- a/drivers/hwmon/f71882fg.c
++++ b/drivers/hwmon/f71882fg.c
+@@ -1578,8 +1578,9 @@ static ssize_t show_temp(struct device *dev, struct device_attribute *devattr,
+ 		temp *= 125;
+ 		if (sign)
+ 			temp -= 128000;
+-	} else
+-		temp = data->temp[nr] * 1000;
++	} else {
++		temp = ((s8)data->temp[nr]) * 1000;
++	}
+ 
+ 	return sprintf(buf, "%d\n", temp);
+ }
+-- 
+2.17.1
 
-Seyba Daniel
