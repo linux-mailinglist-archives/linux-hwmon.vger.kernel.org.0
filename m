@@ -2,138 +2,250 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE095060F9
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Apr 2022 02:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 306165062E7
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Apr 2022 05:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240660AbiDSAeT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 18 Apr 2022 20:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
+        id S240334AbiDSD40 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Apr 2022 23:56:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237339AbiDSAeS (ORCPT
+        with ESMTP id S232199AbiDSD40 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 18 Apr 2022 20:34:18 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8362B252BB;
-        Mon, 18 Apr 2022 17:31:37 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id z2so12129970oic.6;
-        Mon, 18 Apr 2022 17:31:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=l3P9PjhfHuCpvqzF+ZqNPQTIIRdb3ybkqU2a6dT8SNQ=;
-        b=ZKIcCztaaPhkBFN1gl78sGCxj6Mb7Jn84jMDAql+zxv3HIpncAEJ+kuJuk8c3CY9N3
-         ih0Z4aWAbJ2ho10+w5mGoMKUt1un/O1y1rEXtVOzhFBoVPkvDRInrfF7vtnzI7Ym5ukS
-         pOsvYa16wLMpO5AlpNuMAFhsUW8tlQKkadKLlGYBpIJPIhEA9WsuSaTYBW3aSZ1b8vVF
-         48EcyUCQJaeK+xDXOakW86hlUjCGfcUrxAmgxcO7BbSmLGSt8gi/DSM5BRtbC3Llsr+t
-         EQKkd2j2VUZzmrDLiSJ3eCJL43cV/dv1mMvlRSsmIRbGQK9sQMED3kCstBQH6wGnpwts
-         Y2LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=l3P9PjhfHuCpvqzF+ZqNPQTIIRdb3ybkqU2a6dT8SNQ=;
-        b=xG9kbrEWr72mI4njrXnmwVZjrM23et4Z3zqBXA7scLqgSPd6mqxQVPRZHi6R7lqQy8
-         PUfG/e1lG8fK5U0HSd7tZVeNTFiP48WymW16Q8RFHtdXpiVk6jLQ0BvYTPRXzoW6icIX
-         6iEzAjYeXIPh1Pyjq+7Hyo2khJBtHKJ1Noyl8Se/In/6SxrObLBporjbPnsRgWoRIw+6
-         MhP6VHbdgp1cf0sbPs8+tTKeGREwcVve4k+gKu7kKaa2IH31N4ka3uLR1SwLNbCLjE/n
-         JfibPLV0xPdBpiTLljvCvncOgHi80wR8d0zuG8o/2h/l7oFqztfwrMwdriotW/oQbA8z
-         sEHw==
-X-Gm-Message-State: AOAM531xxkjSebvQx8zOncjzivXM8GeMtvjD/fVyVpQlj/U5hrJnII+2
-        GilnXGFlr8m8OGBuCTxRTJg=
-X-Google-Smtp-Source: ABdhPJwduSb9kwZxv56nBz6qFZLyepDIgaQZkBx/777OXZhLguqJzbldn5cCB1iBPakA8XT2OTe7Ow==
-X-Received: by 2002:a05:6808:ec2:b0:2f7:34db:691e with SMTP id q2-20020a0568080ec200b002f734db691emr8284352oiv.252.1650328296848;
-        Mon, 18 Apr 2022 17:31:36 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e22-20020a9d5616000000b005ceb68be2f6sm4827697oti.63.2022.04.18.17.31.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Apr 2022 17:31:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <11b9d3a6-74c0-6375-002b-ae5d2b69122d@roeck-us.net>
-Date:   Mon, 18 Apr 2022 17:31:34 -0700
+        Mon, 18 Apr 2022 23:56:26 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA791BE99
+        for <linux-hwmon@vger.kernel.org>; Mon, 18 Apr 2022 20:53:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1650340425; x=1681876425;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mPMrKVkPOGbnZ3W2JPqp4U5RftwbYPZM6C9Fbk6aoJg=;
+  b=PCeWEKxgiKNiP2QUWkYVycrGwShpGNeATaMQWBnXjLGq0pRMB4O50Wzw
+   JkvhT7cCvk6Rcic6DxUAOFqKNgvnJ+yYAC+d3c2Kwz4xxtmUWNEXKw/v/
+   7Oqe6iZAnEpK9/isnXg55t3JndM4qtSTaZzzuHa4mUaumo5N9DGC+Q2BN
+   63XItCvzKrR5MZcZ3td+x99EjjToM2JgZ8M2U9yMYJBbQtIyM7B3rKEGy
+   1EjPuGCQbabJl5bVwSij8breOT3FJLSBcyoiLoff9szpLPXULutsT7JuO
+   mv+jfwF8/JoAQ5N+NNIgnY7Ki+RVj3aa29tp6KkErTJJFyUYln5/FwDwZ
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10321"; a="250970488"
+X-IronPort-AV: E=Sophos;i="5.90,271,1643702400"; 
+   d="scan'208";a="250970488"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2022 20:53:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,271,1643702400"; 
+   d="scan'208";a="657486263"
+Received: from lkp-server01.sh.intel.com (HELO 3abc53900bec) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 18 Apr 2022 20:53:22 -0700
+Received: from kbuild by 3abc53900bec with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1ngevZ-0005JH-UI;
+        Tue, 19 Apr 2022 03:53:21 +0000
+Date:   Tue, 19 Apr 2022 11:52:28 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ a1872eb1a376272c39142da0560f2932aded6da8
+Message-ID: <625e31fc.oVsOQdbwNacRhTjd%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v4 0/4] hwmon: add lan9668 driver
-Content-Language: en-US
-To:     Michael Walle <michael@walle.cc>, Jean Delvare <jdelvare@suse.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220401214032.3738095-1-michael@walle.cc>
- <95a2e996285649dadba673f2f0614192@walle.cc>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <95a2e996285649dadba673f2f0614192@walle.cc>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 4/18/22 10:44, Michael Walle wrote:
-> Hi,
-> 
-> Am 2022-04-01 23:40, schrieb Michael Walle:
->> Add a temperature and fan controller driver for the Microchip LAN9668 SoC.
->>
->> The temperature sensor uses a polynomial to calculate the actual
->> temperature. Fortunately, the bt1-pvt already has such a calculation.
->> It seems that the LAN9668 uses the same Analog Bits sensor as the
->> BT1 although with a different characteristic. To be able to reuse the
->> code move it to lib/ as it seems pretty generic to calculate any
->> polynomial using integers only, which might also be used by other parts
->> of the kernel. Another option might be to move the code to hwmon-poly.c,
->> I'm not sure. Thoughts?
->>
->> I also plan on submitting patches to add temperature sensor support for
->> the GPYxxx and LAN8814 PHYs which also use polynomial_calc().
->>
->> The last two patches adds the actual driver and the dt-binding for it.
->>
->> changes since v3:
->>  - validate input frequency in lan966x_hwmon_write_pwm_freq()
->>  - enable sensor before registering hwmon device
->>  - automatically disable sensor when driver is removed
->>  - set the required clock devider in case someone changed the
->>    hardware default before the driver is loaded
->>  - remove extra empty lines
->>
->> changes since v2:
->>  - strip unwanted copy pasta.. oops
->>  - use "select REGMAP" instead of "depends on"
->>
->> changes since v1:
->>  - add doc string to polynomial_calc(), moved the comment
->>    into the function.
->>  - add missing "select POLYNOMIAL" to the bt1_pvt driver
->>    Kconfig symbol
->>  - add hwmon driver documentation
->>  - cache sys_clk rate during probe
->>  - add missing ERR_CAST()
->>  - adapted comment for the PPS->RPM calculation
->>  - add temporary variable in lan966x_hwmon_read_pwm_freq()
->>
->> Michael Walle (4):
->>   lib: add generic polynomial calculation
->>   hwmon: (bt1-pvt) use generic polynomial functions
->>   dt-bindings: hwmon: add Microchip LAN966x bindings
->>   hwmon: add driver for the Microchip LAN966x SoC
-> 
-> Any news here? Or did I miss anything?
-> 
-> -michael
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: a1872eb1a376272c39142da0560f2932aded6da8  hwmon: (intel-m10-bmc-hwmon) use devm_hwmon_sanitize_name()
 
+elapsed time: 728m
 
-Just way behind with everything
+configs tested: 162
+configs skipped: 5
 
-Guenter
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+mips                 randconfig-c004-20220418
+i386                 randconfig-c001-20220418
+i386                          randconfig-c001
+m68k                       m5208evb_defconfig
+mips                     decstation_defconfig
+powerpc                      ep88xc_defconfig
+h8300                       h8s-sim_defconfig
+m68k                       m5475evb_defconfig
+arm                          exynos_defconfig
+arm                          simpad_defconfig
+xtensa                  cadence_csp_defconfig
+sparc                       sparc32_defconfig
+mips                            ar7_defconfig
+powerpc                     pq2fads_defconfig
+powerpc                 mpc834x_mds_defconfig
+sparc                       sparc64_defconfig
+powerpc                 mpc8540_ads_defconfig
+sh                     magicpanelr2_defconfig
+nios2                               defconfig
+sh                           sh2007_defconfig
+arm                             ezx_defconfig
+powerpc                     tqm8555_defconfig
+openrisc                    or1ksim_defconfig
+powerpc                         wii_defconfig
+mips                       bmips_be_defconfig
+sh                          landisk_defconfig
+arm                        shmobile_defconfig
+sparc64                          alldefconfig
+ia64                          tiger_defconfig
+mips                       capcella_defconfig
+m68k                          amiga_defconfig
+sh                 kfr2r09-romimage_defconfig
+microblaze                      mmu_defconfig
+parisc                           alldefconfig
+xtensa                  nommu_kc705_defconfig
+sh                          rsk7203_defconfig
+arm                            zeus_defconfig
+powerpc                     mpc83xx_defconfig
+m68k                          hp300_defconfig
+sh                            hp6xx_defconfig
+powerpc                      pasemi_defconfig
+mips                         cobalt_defconfig
+mips                           gcw0_defconfig
+powerpc                 canyonlands_defconfig
+nios2                            alldefconfig
+s390                       zfcpdump_defconfig
+powerpc64                        alldefconfig
+sh                        edosk7760_defconfig
+sh                        apsh4ad0a_defconfig
+riscv             nommu_k210_sdcard_defconfig
+mips                             allyesconfig
+arc                    vdk_hs38_smp_defconfig
+openrisc                            defconfig
+arm                           h3600_defconfig
+arm                  randconfig-c002-20220417
+arm                  randconfig-c002-20220418
+x86_64               randconfig-c001-20220418
+ia64                             allmodconfig
+ia64                             allyesconfig
+ia64                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+arc                              allyesconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a003-20220418
+x86_64               randconfig-a004-20220418
+x86_64               randconfig-a006-20220418
+x86_64               randconfig-a001-20220418
+x86_64               randconfig-a002-20220418
+x86_64               randconfig-a005-20220418
+i386                 randconfig-a004-20220418
+i386                 randconfig-a001-20220418
+i386                 randconfig-a003-20220418
+i386                 randconfig-a005-20220418
+i386                 randconfig-a006-20220418
+i386                 randconfig-a002-20220418
+riscv                randconfig-r042-20220419
+arc                  randconfig-r043-20220419
+s390                 randconfig-r044-20220419
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                         rhel-8.3-kunit
+x86_64                               rhel-8.3
+
+clang tested configs:
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220417
+arm                  randconfig-c002-20220417
+i386                          randconfig-c001
+riscv                randconfig-c006-20220417
+powerpc              randconfig-c003-20220418
+arm                  randconfig-c002-20220418
+riscv                randconfig-c006-20220418
+x86_64               randconfig-c007-20220418
+mips                 randconfig-c004-20220418
+i386                 randconfig-c001-20220418
+mips                        maltaup_defconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                  colibri_pxa270_defconfig
+mips                     cu1000-neo_defconfig
+mips                            e55_defconfig
+arm                           spitz_defconfig
+mips                        bcm63xx_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                     kmeter1_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64               randconfig-a016-20220418
+x86_64               randconfig-a012-20220418
+x86_64               randconfig-a013-20220418
+x86_64               randconfig-a014-20220418
+x86_64               randconfig-a015-20220418
+x86_64               randconfig-a011-20220418
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                 randconfig-a011-20220418
+i386                 randconfig-a015-20220418
+i386                 randconfig-a016-20220418
+i386                 randconfig-a012-20220418
+i386                 randconfig-a013-20220418
+i386                 randconfig-a014-20220418
+riscv                randconfig-r042-20220418
+hexagon              randconfig-r041-20220417
+hexagon              randconfig-r041-20220418
+hexagon              randconfig-r045-20220417
+hexagon              randconfig-r045-20220418
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
