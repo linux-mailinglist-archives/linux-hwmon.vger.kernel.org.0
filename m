@@ -2,76 +2,48 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09CB85089DE
-	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Apr 2022 15:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF865089EA
+	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Apr 2022 15:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379234AbiDTN6t (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 20 Apr 2022 09:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45922 "EHLO
+        id S1379199AbiDTOB1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 20 Apr 2022 10:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379238AbiDTN6m (ORCPT
+        with ESMTP id S1358948AbiDTOB0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 20 Apr 2022 09:58:42 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 910503BBDD;
-        Wed, 20 Apr 2022 06:55:55 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id w127so2078932oig.10;
-        Wed, 20 Apr 2022 06:55:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=IRy0yxXRNyzDR7SN7n1UYbDK9PkCvcJTLmCT9iysKEs=;
-        b=R0q20o3vnEjtV7LFMdjT/uR5WN99pmqfuPaVmdmUWRBRzFpgaw3MPrYc2YeIWxaBam
-         9CyHCKX/pCav32Cv1yqHl+L7EYxILoIoywLLR+9P2HAqvvYkcJfy3UzE/EGBSRT5vNUC
-         830hDYQCs4669/zSIl+9kn1OOq9kPp+Db1fj7jcrnn3qSRl5F2Y6W0BL4WN1TH37rw7k
-         tIhRMoM6rrxdsMUUiYZuL0HlysAclqSpsiz8O4asO/agxWNVn3ZPyK8CQtKmgYcvOadT
-         pqhvSb8zOejcJ6VlapGJa1343ZCIO8or5dCfezVNUvb6D93oZG90s2V8D6cM3C4zxhVm
-         3uNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=IRy0yxXRNyzDR7SN7n1UYbDK9PkCvcJTLmCT9iysKEs=;
-        b=P+AOphCru9DCJQHtf2jxlsFdEsmYhKIIGNwHT+GlZnTPkPYD4fnnpbKRmKjKTkjA6R
-         rZ+znB6pY3EgvqNwVdG4ZcleMClXvEUxLBsDvPST+ToEsVa6ZKhyLsjGEwzZxng0NRNh
-         bUr7iMPbXIjoO1m+bAU0yQDktDZ2FLMM3HUUdVWgqw4gAgT4xKU+wIBccPts5GEXVltw
-         LN9ciAw2h7MaL7IKUU//k7mLjm9VOzLWiHAoT5clo7SoPCCWuGU2ddYa1VPdQKUwZ8Ji
-         RWeWZ01oCADIw4Ku2KrAaV9+MEuYg9VOwvBJXjlSVNLxRnGPzR502oEksGyMh8sBQcKd
-         ghYA==
-X-Gm-Message-State: AOAM5303WxTiNrwrOwDQ8yhSIESlonxeFqB/1qEA5Buri2qPImU7WmCE
-        el+SwsICHTef2/iUZPGFU1mXH3ITSDg=
-X-Google-Smtp-Source: ABdhPJyqMBsqrzfPhavBjk3nE6MEQivYtQbx/Yc7Oo2SCkIpY02gW+eXfx+CNliYPc7yCR18/sc0Bw==
-X-Received: by 2002:a05:6808:d51:b0:2ec:b129:1197 with SMTP id w17-20020a0568080d5100b002ecb1291197mr1867059oik.12.1650462954913;
-        Wed, 20 Apr 2022 06:55:54 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z13-20020a9d62cd000000b006056f8657ccsm109569otk.10.2022.04.20.06.55.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Apr 2022 06:55:54 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <3da420df-234e-4701-2182-1f043b9ccc56@roeck-us.net>
-Date:   Wed, 20 Apr 2022 06:55:52 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] hwmod: (pmbus) disable PEC if not enabled
-Content-Language: en-US
-To:     Adam Wujek <dev_public@wujek.eu>
+        Wed, 20 Apr 2022 10:01:26 -0400
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8E843497;
+        Wed, 20 Apr 2022 06:58:39 -0700 (PDT)
+Date:   Wed, 20 Apr 2022 13:58:26 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wujek.eu;
+        s=protonmail2; t=1650463117;
+        bh=W3/wkW5PX/t+tDDGms9gDWvuN5VQYe1ocPnfgFf/1e0=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=afmyXuz4MRjgmby80LD+4aLz25pH0kXFyUHUoiL/uOGim16NSZvi6BfBwKHzvhmhy
+         mRA6xpCdOeWtaquzBpx7of4DyW35hFDhCkSOkdRykFUsGcrFm+RrNZnP+uATy7JJYq
+         vF+d34uvt7eXhzaNwZhsO1EIYwOBMVZk/tMJHrUOMIoLETyk1qMz09Qzd2Dgdrnw7E
+         78B0bxVlQO/7RKRnqhzr3YDfKjrRvAtsxP2SrlDw9jzjYPX0G0u07uhoC0Q/iTkq2t
+         Ks+30D3H0LE6hqeaNEyG8YRWCIQINe1ZiHILScoHmxmh8637+fu3ebWjK6051oN5y3
+         2mhqMz0M6E+DA==
+To:     Guenter Roeck <linux@roeck-us.net>
+From:   wujek dev <dev_public@wujek.eu>
 Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20220419205228.303952-1-dev_public@wujek.eu>
- <d2d09fe1-dada-e844-cafa-da48424855a4@roeck-us.net>
- <20220420125421.415716-1-dev_public@wujek.eu>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20220420125421.415716-1-dev_public@wujek.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Reply-To: wujek dev <dev_public@wujek.eu>
+Subject: Re: [PATCH 2/2] hwmon: (pmbus) add MFR_* registers to debugfs
+Message-ID: <PFzjnraIDClF6umMOqlCKCzxG6q5lIhBLHpynRA6juh6gXSp5Y7SLPpzXZGNU6L7OGCEwl_F-niJn1jTflifWnqm9PX3Rcfqbtdo6rmPAT4=@wujek.eu>
+In-Reply-To: <f34ec7ac-7b34-6d98-25ad-31b13fe08c59@roeck-us.net>
+References: <20220419215326.309991-1-dev_public@wujek.eu> <20220420122128.411757-1-dev_public@wujek.eu> <f34ec7ac-7b34-6d98-25ad-31b13fe08c59@roeck-us.net>
+Feedback-ID: 23425257:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,47 +51,144 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 4/20/22 05:54, Adam Wujek wrote:
-> Explicitly disable PEC when the client does not support it.
-> The problematic scenario is the following. A device with enabled PEC
-> support is up and running, a kernel driver loaded.
-> Then the driver is unloaded (or device unbound), the HW device
-> is reconfigured externally (e.g. by i2cset) to advertise itself as not
-> supporting PEC. Without a new code, at the second load of the driver
-> (or bind) the "flags" variable is not updated to avoid PEC usage. As a
-> consequence the further communication with the device is done with
-> the PEC enabled, which is wrong.
-> 
-> Signed-off-by: Adam Wujek <dev_public@wujek.eu>
+------- Original Message -------
+On Wednesday, April 20th, 2022 at 15:53, Guenter Roeck <linux@roeck-us.net>=
+ wrote:
 
-Subject should start with hwmon:. Please version your patches,
-and provide change logs.
+>
+>
+> On 4/20/22 05:22, Adam Wujek wrote:
+>
+> > Add registers to debugfs:
+> > PMBUS_MFR_ID
+> > PMBUS_MFR_MODEL
+> > PMBUS_MFR_REVISION
+> > PMBUS_MFR_LOCATION
+> > PMBUS_MFR_DATE
+> > PMBUS_MFR_SERIAL
+> >
+> > Signed-off-by: Adam Wujek dev_public@wujek.eu
+>
+>
+> Where is patch 1/2, and why did you resend this patch ?
+>
+There should be no "1/2" since this and the second patch are unrelated.
+I resend it because I rebased it on master.
 
-> ---
->   drivers/hwmon/pmbus/pmbus_core.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-> index b2618b1d529e..0af7a3d74f47 100644
-> --- a/drivers/hwmon/pmbus/pmbus_core.c
-> +++ b/drivers/hwmon/pmbus/pmbus_core.c
-> @@ -2334,7 +2334,8 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
->   				client->flags |= I2C_CLIENT_PEC;
->   			}
->   		}
-> -	}
-> +	} else
-> +		client->flags &= ~I2C_CLIENT_PEC;
+Adam
 
-Since if() is in {}, else should be in {} as well.
-
-Guenter
-
-> 
->   	/*
->   	 * Check if the chip is write protected. If it is, we can not clear
-> --
-> 2.25.1
-> 
-> 
-
+> Guenter
+>
+> > ---
+> > drivers/hwmon/pmbus/pmbus_core.c | 84 ++++++++++++++++++++++++++++++++
+> > 1 file changed, 84 insertions(+)
+> >
+> > diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmb=
+us_core.c
+> > index 0af7a3d74f47..1dc186780ccf 100644
+> > --- a/drivers/hwmon/pmbus/pmbus_core.c
+> > +++ b/drivers/hwmon/pmbus/pmbus_core.c
+> > @@ -2625,6 +2625,30 @@ static int pmbus_debugfs_get_status(void *data, =
+u64 *val)
+> > DEFINE_DEBUGFS_ATTRIBUTE(pmbus_debugfs_ops_status, pmbus_debugfs_get_st=
+atus,
+> > NULL, "0x%04llx\n");
+> >
+> > +static ssize_t pmbus_debugfs_mfr_read(struct file *file, char __user *=
+buf,
+> > + size_t count, loff_t *ppos)
+> > +{
+> > + int rc;
+> > + struct pmbus_debugfs_entry *entry =3D file->private_data;
+> > + char data[I2C_SMBUS_BLOCK_MAX + 2] =3D { 0 };
+> > +
+> > + rc =3D i2c_smbus_read_block_data(entry->client, entry->reg, data);
+> > + if (rc < 0)
+> > + return rc;
+> > +
+> > + data[rc] =3D '\n';
+> > + rc +=3D 2;
+> > +
+> > + return simple_read_from_buffer(buf, count, ppos, data, rc);
+> > +}
+> > +
+> > +static const struct file_operations pmbus_debugfs_ops_mfr =3D {
+> > + .llseek =3D noop_llseek,
+> > + .read =3D pmbus_debugfs_mfr_read,
+> > + .write =3D NULL,
+> > + .open =3D simple_open,
+> > +};
+> > +
+> > static int pmbus_debugfs_get_pec(void *data, u64 *val)
+> > {
+> > struct i2c_client *client =3D data;
+> > @@ -2801,6 +2825,66 @@ static int pmbus_init_debugfs(struct i2c_client =
+*client,
+> > &entries[idx++],
+> > &pmbus_debugfs_ops);
+> > }
+> > +
+> > + if (pmbus_check_byte_register(client, i, PMBUS_MFR_ID)) {
+> > + entries[idx].client =3D client;
+> > + entries[idx].page =3D i;
+> > + entries[idx].reg =3D PMBUS_MFR_ID;
+> > + scnprintf(name, PMBUS_NAME_SIZE, "mfr%d_id", i);
+> > + debugfs_create_file(name, 0444, data->debugfs,
+> > + &entries[idx++],
+> > + &pmbus_debugfs_ops_mfr);
+> > + }
+> > +
+> > + if (pmbus_check_byte_register(client, i, PMBUS_MFR_MODEL)) {
+> > + entries[idx].client =3D client;
+> > + entries[idx].page =3D i;
+> > + entries[idx].reg =3D PMBUS_MFR_MODEL;
+> > + scnprintf(name, PMBUS_NAME_SIZE, "mfr%d_model", i);
+> > + debugfs_create_file(name, 0444, data->debugfs,
+> > + &entries[idx++],
+> > + &pmbus_debugfs_ops_mfr);
+> > + }
+> > +
+> > + if (pmbus_check_byte_register(client, i, PMBUS_MFR_REVISION)) {
+> > + entries[idx].client =3D client;
+> > + entries[idx].page =3D i;
+> > + entries[idx].reg =3D PMBUS_MFR_REVISION;
+> > + scnprintf(name, PMBUS_NAME_SIZE, "mfr%d_revision", i);
+> > + debugfs_create_file(name, 0444, data->debugfs,
+> > + &entries[idx++],
+> > + &pmbus_debugfs_ops_mfr);
+> > + }
+> > +
+> > + if (pmbus_check_byte_register(client, i, PMBUS_MFR_LOCATION)) {
+> > + entries[idx].client =3D client;
+> > + entries[idx].page =3D i;
+> > + entries[idx].reg =3D PMBUS_MFR_LOCATION;
+> > + scnprintf(name, PMBUS_NAME_SIZE, "mfr%d_location", i);
+> > + debugfs_create_file(name, 0444, data->debugfs,
+> > + &entries[idx++],
+> > + &pmbus_debugfs_ops_mfr);
+> > + }
+> > +
+> > + if (pmbus_check_byte_register(client, i, PMBUS_MFR_DATE)) {
+> > + entries[idx].client =3D client;
+> > + entries[idx].page =3D i;
+> > + entries[idx].reg =3D PMBUS_MFR_DATE;
+> > + scnprintf(name, PMBUS_NAME_SIZE, "mfr%d_date", i);
+> > + debugfs_create_file(name, 0444, data->debugfs,
+> > + &entries[idx++],
+> > + &pmbus_debugfs_ops_mfr);
+> > + }
+> > +
+> > + if (pmbus_check_byte_register(client, i, PMBUS_MFR_SERIAL)) {
+> > + entries[idx].client =3D client;
+> > + entries[idx].page =3D i;
+> > + entries[idx].reg =3D PMBUS_MFR_SERIAL;
+> > + scnprintf(name, PMBUS_NAME_SIZE, "mfr%d_serial", i);
+> > + debugfs_create_file(name, 0444, data->debugfs,
+> > + &entries[idx++],
+> > + &pmbus_debugfs_ops_mfr);
+> > + }
+> > }
+> >
+> > return devm_add_action_or_reset(data->dev,
+> > --
+> > 2.25.1
