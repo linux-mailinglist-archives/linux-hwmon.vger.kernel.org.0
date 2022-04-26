@@ -2,109 +2,112 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8960510973
-	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Apr 2022 22:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B51C510A34
+	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Apr 2022 22:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242279AbiDZUHG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 26 Apr 2022 16:07:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
+        id S243261AbiDZUVK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 26 Apr 2022 16:21:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354376AbiDZUHD (ORCPT
+        with ESMTP id S242807AbiDZUVG (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 26 Apr 2022 16:07:03 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792D4D39BD;
-        Tue, 26 Apr 2022 13:03:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1651003414;
-        bh=dwQ/oJsstgp3sXzO0lD5phczdkjblax81CWSGX1LRCQ=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=AMGjgK0tWjsAIT8JpKvCwz5HvtSjgvG5a8yflowv3eSJ/gLBPZxVhwSXjupcUlkgw
-         VM+ShuoHvaQnI7cMjgEAlj5iUhKeEm4WPQFpBu8KjqyKtJp12BCyuusQZ7u4ovLKQ6
-         5GrWWtqupvITnVSYMvdzSk3BWHfAiyt8emV1h0Iw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1N0oFz-1o6s8h2c9V-00wlCY; Tue, 26 Apr 2022 22:03:34 +0200
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     pali@kernel.org
-Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+        Tue, 26 Apr 2022 16:21:06 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 810F7366A7;
+        Tue, 26 Apr 2022 13:17:58 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id v65so17247170oig.10;
+        Tue, 26 Apr 2022 13:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5CTXaz+V6AADkCyMRViJwbGXG2CrQ/Q0Z8NFjTN9J94=;
+        b=WqjlarLpd346YItChEmX1w1yTnpCSQvtL62OnCdSsFFteTGymSg1O5fZ3b/6Gy9E/d
+         /EUOL1uRAjD+zJ/b3Ekm79vyfpl9c0JmDYRPS9hpUF5OXa6FNcQ8uRfp0GVbYWqNDDFD
+         lg6JGxxkzaCPbGrriu4hqDk7oZBA31wW7B9jfjaQHQJ7rWENHTK3CqbcDSANrBlBcXGr
+         3EXpAf10Cecy3nzRH39rnFeD+jDzG06J2+LiDox7Ts/7XA2ZE7bZ7q27K+g4XdPcJMnu
+         ByfgYqbh7VMCKwDtYqLheWh9KciQAHaod4LQLrOz9y0UfvgNtVd8bzmQ6qDJEzuff/4e
+         Ggag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=5CTXaz+V6AADkCyMRViJwbGXG2CrQ/Q0Z8NFjTN9J94=;
+        b=mKvSQRPN12+30ZCORhmZepdtqeH4z7Yb1pLHeiwyJe9ly0/vrNgZhSWfolrOWwIOeM
+         2po+BeZpxMZQ/NNS4KB/Rv6aS9XfDqhCQlR9vDBdnBN3BJp+DI9mhmJyrHpYRMOTafUZ
+         xecVBZ075A/DJnIks2M91Zt4t2f2HbfKXhuvdZcQSf7EFDzvlN/b/bhJh+prV0PEQuYL
+         /kh+uiWr8qd3D8LMeOUCzB+yIstMkr13xL931G+O7hxScJL8WipmB/gm8qEH5yId3HsJ
+         9vjaPPj66XAFIJ+XeDkbgjQYJvFJHrjJPpm33166zQjWG7GKuo/OUjcOzpPMjobsqRNu
+         9IuQ==
+X-Gm-Message-State: AOAM5305hEXBS2FQFz7rLqYB9SWx3f27xuCNzB7CTfEHiVqB+jNhRgB9
+        uIinizTLHA81CMycrpSijgc=
+X-Google-Smtp-Source: ABdhPJxlVQ24ZRLfHmX0K72G/7Bd7V0I9z01BMMNhFrpjI25E6aMB2ih6RvjvUQw1Qf992I1nEvEXw==
+X-Received: by 2002:a05:6808:1202:b0:2f9:c7b4:fd56 with SMTP id a2-20020a056808120200b002f9c7b4fd56mr11287188oil.55.1651004277905;
+        Tue, 26 Apr 2022 13:17:57 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k124-20020aca3d82000000b002ef4c5bb9dbsm5171253oia.0.2022.04.26.13.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Apr 2022 13:17:57 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 26 Apr 2022 13:17:55 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     pali@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] hwmon: (dell-smm) Warn if SMM call took a very long time to execute
-Date:   Tue, 26 Apr 2022 22:03:20 +0200
-Message-Id: <20220426200320.399435-4-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220426200320.399435-1-W_Armin@gmx.de>
+Subject: Re: [PATCH 3/3] hwmon: (dell-smm) Warn if SMM call took a very long
+ time to execute
+Message-ID: <20220426201755.GN4093517@roeck-us.net>
 References: <20220426200320.399435-1-W_Armin@gmx.de>
+ <20220426200320.399435-4-W_Armin@gmx.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dFp0ZNEGgx7+jRlwf66xvqbIMjDqxrW0ksKrB4Pw0HFSg0DKlg0
- iFKOn6yK3E9CNnQdfjeILpF0ZSa1l2iylFkza5Bl1c+yi+NhvAwcxIGklADKfY2FqQc9rIv
- rsxtTj3xh+RLdKVp9radulvOIDcurd0/SdqUM27w8QNrnb3fRdY2zUOiZXNSCkza0l7toYF
- Co8wuc0HclKeG0YBVh7Ug==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ddcqQL6Aifk=:cCulL3BZDhwyQyjUChxMFJ
- 9thc0V0qIR/ktzBS3Sg3jIx1okrQWRr3B23D3p6zbP/oVy5EgFYb58KY+iTCW/MmbbyIdg9zn
- /E2czd1woN9wfTS0PpB3s2cPHLaaLJVdrY1ioA+XFNvvTk0DnVe0hBeXrIAnfRBTv/Sfx/7VX
- j+x8EBmheMb5ilVulH7GQ+TRjOpMNgEv+gni3FvrawDuFTHFKH95Qr7rN0PazDWSoxvMvXJGy
- LT2EuGhBf3wH5GTK5KqZma6uuCw8kg3L8VSw1wrKnRI7T4suT+Gyk1xFBdwfFMxPwsLWCbEf+
- CNBtmq8m1g1aAncGZq3+LVkAP6cCL96m9NztICiNGwpybYekE21s1awpQGpHP6KRjWMM1DmCg
- bAqW//odPvzE6FJjwrdulD+rcqn4xhbF+lsjWOoj1AKJyV+YoNJr93Eq+0L1YwaF7ttTem5xQ
- 56X10sTHxtw5xaLfyGk0YtcQxcnSan4KmDm4BjMVXavv0NKaek8cbFWBaZTl7xjkty3WB6vTw
- uXVb1xRv7YkwIWL67eo/9AV6E3srzWJZeHjF6Ts6w2zDj4Q/34ffjf9SHnyFGEoDxaF2msq2r
- 9a17uQtiKGzmIuTto0A/Z4gwAOPyljsVYkyBYswNEyt3LIlJKi/Pv9XAQeJ7UhqadKEvJr0iE
- Z+XcqeqAwVqIx7aOAhneQiJzWU+vCYGcZ9esCtay0oeqIUt8hDM5lKKmLz1Zgok1s28VHik1x
- vqyS6+IVT7KlnpWAtKs5pX7OpdoovvbwufMkW3A4VXW4ojsg8Ps6WtqhlTbF1owE+vwuep5oW
- TkozPtvwliL9M9QFmAaBomiwefU835VYmim2eZvY5UKmjUnBirH56Dch3YUndxb4kFIoZa6xQ
- jrEYSNEyndw8VzGUn7IcspN6gJsnNgCgrEgs6jnjideQs50gjJ49o5Zd1GdnWaRvCnag39lcr
- iXIyXtZrkOlGN19G63+ffU8+HOZbjdXw7aLA3B3hnL3kkEsOhsWKP4C5CwYciuG9Z7CUjvU5o
- 81G0/1QYvTUy/13q2bZILDHOwMNPT3FPtLZjAGuh9gQ4Jqt/Iffb7r8eRQd4tMyFW3qH5poYn
- 1AyTZWByp+nEtY=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220426200320.399435-4-W_Armin@gmx.de>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-If a particular SMM call takes a very long time to execute,
-the user might experience audio problems. Print a warning
-if a particular SMM call took over 0.250 seconds to execute,
-so the user can check whether or not possible audio problems
-are caused by this driver.
+On Tue, Apr 26, 2022 at 10:03:20PM +0200, Armin Wolf wrote:
+> If a particular SMM call takes a very long time to execute,
+> the user might experience audio problems. Print a warning
+> if a particular SMM call took over 0.250 seconds to execute,
+> so the user can check whether or not possible audio problems
+> are caused by this driver.
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>  drivers/hwmon/dell-smm-hwmon.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+> index f13902414615..b960330eaded 100644
+> --- a/drivers/hwmon/dell-smm-hwmon.c
+> +++ b/drivers/hwmon/dell-smm-hwmon.c
+> @@ -49,6 +49,9 @@
+>  #define I8K_SMM_GET_DELL_SIG1	0xfea3
+>  #define I8K_SMM_GET_DELL_SIG2	0xffa3
+> 
+> +/* in usecs */
+> +#define DELL_SMM_MAX_DURATION  250000
+> +
+>  #define I8K_FAN_MULT		30
+>  #define I8K_FAN_RPM_THRESHOLD	1000
+>  #define I8K_MAX_TEMP		127
+> @@ -239,6 +242,9 @@ static int i8k_smm_func(void *par)
+>  	pr_debug("smm(0x%.4x 0x%.4x) = 0x%.4x  (took %7lld usecs)\n", eax, ebx,
+>  		 (rc ? 0xffff : regs->eax & 0xffff), duration);
+> 
+> +	if (duration > DELL_SMM_MAX_DURATION)
+> +		pr_warn("SMM call took %lld usecs!\n", duration);
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+pr_warn_once, maybe ? If this happens, it will happen a lot, and it doesn't
+add much if any value to keep reporting the problem.
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index f13902414615..b960330eaded 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -49,6 +49,9 @@
- #define I8K_SMM_GET_DELL_SIG1	0xfea3
- #define I8K_SMM_GET_DELL_SIG2	0xffa3
-
-+/* in usecs */
-+#define DELL_SMM_MAX_DURATION  250000
-+
- #define I8K_FAN_MULT		30
- #define I8K_FAN_RPM_THRESHOLD	1000
- #define I8K_MAX_TEMP		127
-@@ -239,6 +242,9 @@ static int i8k_smm_func(void *par)
- 	pr_debug("smm(0x%.4x 0x%.4x) =3D 0x%.4x  (took %7lld usecs)\n", eax, ebx=
-,
- 		 (rc ? 0xffff : regs->eax & 0xffff), duration);
-
-+	if (duration > DELL_SMM_MAX_DURATION)
-+		pr_warn("SMM call took %lld usecs!\n", duration);
-+
- 	return rc;
- }
-
-=2D-
-2.30.2
-
+Guenter
