@@ -2,97 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D09C05121AA
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Apr 2022 20:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE225123A0
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Apr 2022 22:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbiD0SzC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 27 Apr 2022 14:55:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45962 "EHLO
+        id S236200AbiD0ULL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 27 Apr 2022 16:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231996AbiD0Sxz (ORCPT
+        with ESMTP id S235985AbiD0UK7 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 27 Apr 2022 14:53:55 -0400
-Received: from smtp14.infineon.com (smtp14.infineon.com [IPv6:2a00:18f0:1e00:4::6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D84413D827A
-        for <linux-hwmon@vger.kernel.org>; Wed, 27 Apr 2022 11:40:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1651084817; x=1682620817;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=Y+29G8uYUBfj4Ivz6hVazGQtot5C+ZCnmy5ECXTC/qk=;
-  b=lyT+CFVqQHmHZjshJCGXlFPYBXM9e7h2Rv56p9qXk+M/6MLWH/qDhUzt
-   9GPkfU0dWFc27TCVA/YbKP/EyyFZB5acuLXK6lkNLDFRyBNMyNvwo+Tpw
-   sdFU8rWPohm3ww6zcJFhZLUcpmEw9GC0vXEJRPeN3wAJgJ1W8pz6EYKG8
-   I=;
-X-SBRS: None
-X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="118491656"
-X-IronPort-AV: E=Sophos;i="5.90,293,1643670000"; 
-   d="scan'208";a="118491656"
-Received: from unknown (HELO mucxv003.muc.infineon.com) ([172.23.11.20])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2022 20:40:14 +0200
-Received: from MUCSE819.infineon.com (MUCSE819.infineon.com [172.23.29.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Wed, 27 Apr 2022 16:10:59 -0400
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [IPv6:2605:2700:0:5::4713:9cab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E189E8D6B1;
+        Wed, 27 Apr 2022 13:05:15 -0700 (PDT)
+Received: from hatter.bewilderbeest.net (174-21-163-222.tukw.qwest.net [174.21.163.222])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mucxv003.muc.infineon.com (Postfix) with ESMTPS;
-        Wed, 27 Apr 2022 20:40:13 +0200 (CEST)
-Received: from MUCSE820.infineon.com (172.23.29.46) by MUCSE819.infineon.com
- (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Wed, 27 Apr
- 2022 20:40:13 +0200
-Received: from MUCSE820.infineon.com ([172.23.29.46]) by MUCSE820.infineon.com
- ([172.23.29.46]) with mapi id 15.02.0986.022; Wed, 27 Apr 2022 20:40:13 +0200
-From:   <Greg.Schwendimann@infineon.com>
-To:     <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>
-CC:     <Greg.Schwendimann@infineon.com>
-Subject: [PATCH v4 2/2] dt-bindings: trivial-devices: Add xdp152
-Thread-Topic: [PATCH v4 2/2] dt-bindings: trivial-devices: Add xdp152
-Thread-Index: AdhaZYbAD7zkzN9iSWSk88UI7yJf+w==
-Date:   Wed, 27 Apr 2022 18:40:13 +0000
-Message-ID: <871b255e183e4468a9affce6defb0292@infineon.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.23.8.247]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        (Authenticated sender: zev)
+        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 458971B3;
+        Wed, 27 Apr 2022 13:05:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+        s=thorn; t=1651089915;
+        bh=AzzWe17kKgZeNsSnsRwYyjYR0RFU8QrYdE2Ktfuuz84=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FY+xcXaWw3zGKKIyu1dm2aux8IMX2r0891MpmNdwga37mMnfzQQPk0IsR03Kf43EZ
+         CTPVVjerFH7AhswXy+mw5OZO6+fwQswlO6HEi+To0u4VpTorqVc1WziVWqLH65JOrM
+         nkUSd3AqgCkUFqrr5H9+ISEXb0uXmg/n9+DWQ2BA=
+Date:   Wed, 27 Apr 2022 13:05:11 -0700
+From:   Zev Weiss <zev@bewilderbeest.net>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Renze Nicolai <renze@rnplus.nl>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] dt-bindings: hwmon: Add nuvoton,nct6775
+Message-ID: <Ymmh93CW8nIGD0YI@hatter.bewilderbeest.net>
+References: <20220427010154.29749-1-zev@bewilderbeest.net>
+ <20220427010154.29749-2-zev@bewilderbeest.net>
+ <178b9310-a854-dfa6-a4f3-f971b608abe3@linaro.org>
+ <YmjmWNUpCAFYesyk@hatter.bewilderbeest.net>
+ <5139dc9f-96c3-9f20-4c62-feee902cb5e6@linaro.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <5139dc9f-96c3-9f20-4c62-feee902cb5e6@linaro.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Wed, Apr 27, 2022 at 09:37:20AM PDT, Krzysztof Kozlowski wrote:
+>On 27/04/2022 08:44, Zev Weiss wrote:
+>>>> +  reg:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  nuvoton,tsi-channel-mask:
+>>>> +    description:
+>>>> +      Bitmask indicating which TSI temperature sensor channels are
+>>>> +      active.  LSB is TSI0, bit 1 is TSI1, etc.
+>>>
+>>> Need a type/ref.
+>>>
+>>
+>> Ack, thanks.
+>
+>Did you test the bindings after the changes? Using reviewers time
+>instead of testing by yourself with an automated tool is quite a waste.
+>
 
-Add Infineon Digital Multi-phase xdp152 family controllers.
+Yeah, sorry about that -- with uint32 $ref added it passes dt_binding_check;
+I'll re-send with that change.
 
-Signed-off-by: Greg Schwendimann <Greg.Schwendimann@infineon.com>
----
-Separated the device tree bindings documentation
 
- Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Docum=
-entation/devicetree/bindings/trivial-devices.yaml
-index 550a2e5c9e05..fc2164c4d108 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -143,6 +143,10 @@ properties:
-           - infineon,xdpe12254
-             # Infineon Multi-phase Digital VR Controller xdpe12284
-           - infineon,xdpe12284
-+            # Infineon Multi-phase Digital VR Controller xdpe152c4
-+          - infineon,xdpe152c4
-+            # Infineon Multi-phase Digital VR Controller xdpe15284
-+          - infineon,xdpe15284
-             # Injoinic IP5108 2.0A Power Bank IC with I2C
-           - injoinic,ip5108
-             # Injoinic IP5109 2.1A Power Bank IC with I2C
---=20
-2.25.1
+Zev
 
