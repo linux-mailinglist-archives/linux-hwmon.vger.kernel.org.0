@@ -2,107 +2,123 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A6E515CDB
-	for <lists+linux-hwmon@lfdr.de>; Sat, 30 Apr 2022 14:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1B0515CE9
+	for <lists+linux-hwmon@lfdr.de>; Sat, 30 Apr 2022 14:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236535AbiD3MZn (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 30 Apr 2022 08:25:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53216 "EHLO
+        id S1359711AbiD3Mgr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 30 Apr 2022 08:36:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232836AbiD3MZm (ORCPT
+        with ESMTP id S239427AbiD3Mgq (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 30 Apr 2022 08:25:42 -0400
-X-Greylist: delayed 527 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 30 Apr 2022 05:22:20 PDT
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8527B12E;
-        Sat, 30 Apr 2022 05:22:20 -0700 (PDT)
-Date:   Sat, 30 Apr 2022 14:13:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=t-8ch.de; s=mail;
-        t=1651320808; bh=DT5/86canTZHX2ROrTMFnYpWQTQ8t6bIymKCu+253LY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L9Y6GqstX49RWzFh+5HGKKco8NsZfj3SN4p+EcvonpQAphgOVz6FfS8Wt7CuGu/Hw
-         ilTs6ccH990Ei+1wC/g9xyowAMV7dRKAtDidxpQY0NnkTm/BMQVP5dLMnyogdx/rlt
-         4eCN3Ih0FvKWM7Luybm7G/GUbgFBYos2inKltwM8=
-From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To:     Mark Pearson <markpearson@lenovo.com>
-Cc:     Lyude Paul <lyude@redhat.com>,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-        Mark Gross <markgross@kernel.org>
-Subject: Re: [External] [PATCH 1/2] platform/x86: thinkpad_acpi: Restore X1
- Carbon 9th Gen dual fan quirk
-Message-ID: <9270b2da-0cca-422f-8bf8-4b1fb9aa363c@t-8ch.de>
-References: <20220429211418.4546-1-lyude@redhat.com>
- <20220429211418.4546-2-lyude@redhat.com>
- <d3461670-a905-4956-4f4d-d847adf4289b@lenovo.com>
+        Sat, 30 Apr 2022 08:36:46 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53473532E9
+        for <linux-hwmon@vger.kernel.org>; Sat, 30 Apr 2022 05:33:24 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id z99so11846383ede.5
+        for <linux-hwmon@vger.kernel.org>; Sat, 30 Apr 2022 05:33:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=rPi59H+VU52AaZj80KkE+d86t7d/yVo/kpw5tZvldnQ=;
+        b=A6eBH4qm3EyfQg4fJ9A7p2eMKbkdS90hFWEgOwUyve9UtR1cH4fcjb9Ai3wHHRJyrD
+         UOlTEObqBY9CFynrF+JcdKvgg5QlXqHvRzMx/d22oEl6+BtKd8jHTQmuColcnbDyoov9
+         Ouzts6HnLqBOw8hk9O9kHjCtrrhIobkc0lCYv5C2+SW4KW+Vsft7f3qwNuusQWBy0m97
+         xZ1aiS04yfJJ2J85D5kUnpHT4H3fW9/ySQ/F1rJ2z6f1eaCot7KWNGDTmiDL+fI2WIvF
+         ZiS6qkQzvIudBF/3vaEzmbZ+uhW53XWFVGunuCi0d4/QHGwE9Lg+PZvQxVbNf5he5NUR
+         k7tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=rPi59H+VU52AaZj80KkE+d86t7d/yVo/kpw5tZvldnQ=;
+        b=gBd4ah5I7yju7MlbvYECpadtn+q6/fUWH/Igf4Y7N0jt1v//4ECWnHVk+pLIqvCRIB
+         1PlnewNa0159J0I+mhWbFHZb2D8ydHDbgGr1XW27FcdS+5jB94sFf42yRpcnoshcXBug
+         4WThIdP8aK6MKxH9w8lBh5jFO6idiUi+Bg8PaXQqLqJaqJDqY5uyeGlERL61dcpcL8Hs
+         e3o+yyUjmjPgKuHRgBW2AC8owmYhwa6vHtcGmj9gcyhJ4+hFtuksx3EauMQLlXfoBtL+
+         iPRL/09DhHkSWfcFe5mWnPER30oFlgWPMY6dyh8XpkeHRoNRoCjaKxRXw6xtXqQTi2OI
+         bP4Q==
+X-Gm-Message-State: AOAM53235of4qVkucCXUJcSmWjyd8tlc5RX4msTtBuM0tSV4o9Ib7Xz9
+        iucOTB7pJQfIA5ay3N3HJtdgXzB6O+G8/Yj/ks8=
+X-Google-Smtp-Source: ABdhPJxcdJmhtFayxiKInwv8L/1qFRSJ9iy8Cehb1H/azk+jme2CYxKsLHrBJfGN0WC6Fdg96qWVsd8fi186bHEHcKY=
+X-Received: by 2002:a05:6402:28b1:b0:425:c39e:b773 with SMTP id
+ eg49-20020a05640228b100b00425c39eb773mr4103155edb.237.1651322002938; Sat, 30
+ Apr 2022 05:33:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d3461670-a905-4956-4f4d-d847adf4289b@lenovo.com>
-Jabber-ID: thomas@t-8ch.de
-X-Accept: text/plain, text/html;q=0.2, text/*;q=0.1
-X-Accept-Language: en-us, en;q=0.8, de-de;q=0.7, de;q=0.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:906:e104:0:0:0:0 with HTTP; Sat, 30 Apr 2022 05:33:22
+ -0700 (PDT)
+Reply-To: infor.atmbankofafrican@gmail.com
+From:   Samuel Sam <sam697523@gmail.com>
+Date:   Sat, 30 Apr 2022 12:33:22 +0000
+Message-ID: <CAK3oMyMsM9+ZoqD8m3Q-Bt=oT3gfErs+cX4Sy6HgJxerAh0_xw@mail.gmail.com>
+Subject: Richiedi la tua carta bancomat da 1,5 milioni
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:531 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [sam697523[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [sam697523[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Mark,
+Gentile Beneficiario!
 
-On 2022-04-29 21:25-0400, Mark Pearson wrote:
-> Hi Lyude
-> 
-> On 4/29/22 17:14, Lyude Paul wrote:
-> > The new method of probing dual fan support introduced in:
-> > 
-> > bf779aaf56ea ("platform/x86: thinkpad_acpi: Add dual fan probe")
-> > 
-> > While this commit says this works on the X1 Carbon 9th Gen, it actually
-> > just results in hiding the second fan on my local machine. Additionally,
-> > I'm fairly sure this machine powers on quite often without either of the
-> > two fans spinning.
-> > 
-> > So let's fix this by adding back the dual fan quirk for the X1 Carbon 9th
-> > Gen.
-> > 
-> [..]
->
-> I just double checked this on my X1C9 - and it's working correctly. 2nd
-> fan is detected correctly.
-> 
-> I'd rather understand why it's not working on your setup then just
-> re-introduce the quirk.
-> 
-> What happens on your system when the
->   res = fan2_get_speed(&speed);
-> is called? If that is failing it means your 2nd fan isn't responding and
-> that's not supposed to happen. Could you let me know if you get an error
-> code, if it happens every boot, etc
-> I assume when the function is called later it works successfully?
+Mi chiamo la signora Kristalina Georgieva, presidente del FMI. Hai
+abbandonato i tuoi un milione e cinquecentomila dollari degli Stati
+Uniti con la banca unita dell'Africa. Qual =C3=A8 il motivo, chi sta
+cercando di ingannarti? Perch=C3=A9 questa =C3=A8 l'unica banca autorizzata=
+ con
+il signor emeka chris come agente autorizzato. Se rifiuti di
+contattare il signor emeka chris, il FMI non ti consentir=C3=A0 di ricevere
+il pagamento e continuerai a lavorare con le persone sbagliate per
+tutti i giorni della tua vita senza buone notizie. I tuoi soldi
+rimangono ancora con UBA in Togo e devi contattare il signor emeka
+chris se ti interessa la firma e l'approvazione del FMI.
 
-I have the same issue.
+Agente autorizzato: Mr. emeka chris
+Nome della banca: banca unita dell'Africa
+E-mail: info.atmbankofafrican@gmail.com
 
-To me it looks like this:
 
-Probing for the second fan calls fan2_get_speed(), this calls
-fan_select_fan2() which in turn checks that tp_features.second_fan is set.
-But at this point in the tp_features.second_fan can not yet be set because it
-is either set from quirks or *after* the probing.
+tel: +228 70072268
 
-Maybe some of the matches for the quirk TPACPI_FAN_2FAN should also have
-matched this device?
-It doesn't do so on my device.
+Questa =C3=A8 la banca approvata dalle Nazioni Unite, dal FMI, dalla Banca
+Mondiale e dall'ECOWAS e senza questa banca menzionata nessuno di
+tutto questo agente ti supporter=C3=A0 o approver=C3=A0 il pagamento per te=
+.
+Si prega di contattare la banca ora e ricevere immediatamente la carta
+bancomat del valore di 1,5 milioni di dollari.
 
-> Also please confirm which BIOS and EC version you have.
-
-Linux: 5.17.5
-BIOS Revision: 1.51
-Firmware Revision: 1.32
-
-Thomas
+Cordiali saluti
+Kristalina Georgieva
+Presidente FMI.
