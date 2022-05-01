@@ -2,105 +2,85 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE7D51610B
-	for <lists+linux-hwmon@lfdr.de>; Sun,  1 May 2022 02:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621D65164ED
+	for <lists+linux-hwmon@lfdr.de>; Sun,  1 May 2022 17:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231535AbiEAACY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 30 Apr 2022 20:02:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
+        id S1348044AbiEAPVd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 1 May 2022 11:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233313AbiEAACX (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 30 Apr 2022 20:02:23 -0400
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D7163EB9E
-        for <linux-hwmon@vger.kernel.org>; Sat, 30 Apr 2022 16:59:00 -0700 (PDT)
-Received: by mail-vs1-xe30.google.com with SMTP id a127so10792326vsa.3
-        for <linux-hwmon@vger.kernel.org>; Sat, 30 Apr 2022 16:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Cv3gl7MEYJWEadacC8fV/gZvbOujcUVg8iqWdplRPCU=;
-        b=ZDtblmLrNCHoLpn2SouDhitE6OQw2a/MmViyIt/SPlVnmyZChf7F1xdTRk6FrBxMAb
-         f2yV6QpabkDRvPwfZ25FNWrOBiYrmHUWS6UUAXQPwuaSkQLRJvhvCuk5vkQvmXa0a+cq
-         EmzHTRWlPww7j9Y8pmQz3CRrXh4EKGiETfJbcIu8Uws53Ax7/J2NupWhaRi2aNgaWsU6
-         xpW9fJo2c8OKRJIJxEpeQRWsAts+wIOgc1B7mkdwrC1IQlgLeREE+Vdew35kQwD7eqpB
-         8M/CQDKSr2SkG52k6A/C4gwcOr9l9nHpq2YAciQPL3ugtqtmt+UAE6lFtmATiKszC3nP
-         v4jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Cv3gl7MEYJWEadacC8fV/gZvbOujcUVg8iqWdplRPCU=;
-        b=HPTrxIX7AM3GB6L3onrQByDg+XBC4APfd4wBK1ZMnviNnPE6b98Abn8QuWiumuxUnj
-         FMwfkyQQUm+SO5D9gR22HaTVZtRWdQu2qaueJJi6GFDNXVHCYBUjqp/8FYvYgXoWoBFy
-         P64cPq1e8AJ+7Vf+3mDkcZx8sJ8m91x9HJyLssYLusGobSXD0QDYf4rtX1U7XOO1BZNS
-         OZltf4BxiwkuFMlQ6gIbCBLazakEmhiK1XsREEl2J2HLVgygh8+/+X2vMz+Di8TduaZ9
-         oXT3KkoipsI97XiX7Z6yKJI5Wg1OY9bZ/p98syF2/k8MgLosgM3havb+YWPU+xnAF1JI
-         fzkA==
-X-Gm-Message-State: AOAM532iOL9AhEhDDvzzOBJqCch4NoDfbrkgHBJYR7h42dkNrkcTACx6
-        AH282+qL6YQPpsWlrf6odwaOjCvPub3Eh8/7hDQ=
-X-Google-Smtp-Source: ABdhPJz/yd9K6iuDdy6v7f8HFueGGFr/xp/3d1hwEeYCT2t6334hKrnYktv34uHSPfbTSzqGi+aZrB2G2eyF36dhFz0=
-X-Received: by 2002:a67:1a87:0:b0:325:3e01:45a7 with SMTP id
- a129-20020a671a87000000b003253e0145a7mr1717832vsa.41.1651363138927; Sat, 30
- Apr 2022 16:58:58 -0700 (PDT)
+        with ESMTP id S1348033AbiEAPVb (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 1 May 2022 11:21:31 -0400
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [IPv6:2001:19f0:6c00:8846:5400:ff:fe0c:dfa0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E979DBE3E;
+        Sun,  1 May 2022 08:18:04 -0700 (PDT)
+Received: from spock.localnet (unknown [83.148.33.151])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id A6484EB7D61;
+        Sun,  1 May 2022 17:18:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1651418281;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/J2Qg4ZGrbgM3NsVfkQsNh+Hr88w3IF90qf5ZNZMp2w=;
+        b=fkfLpaOP5/1e3t2DI9GF8I86Q2n5h+eGzw/0mMs6eWFWFoX+F8t8lhAHtSOA4JZKL0lV83
+        jn2p/5Pl0Utc/wlWAoS00jyylnWb5AIoDiSS35T9ZuIL1qfpvxgkg4yQNJyWTaOLDUYRIN
+        FDU8FysoGKxcQ5HF/n7bgrSVFYilQkM=
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     Zev Weiss <zev@bewilderbeest.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Renze Nicolai <renze@rnplus.nl>, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 0/7] hwmon: (nct6775) Convert to regmap, add i2c support
+Date:   Sun, 01 May 2022 17:18:00 +0200
+Message-ID: <2508913.OsOuS879W0@natalenko.name>
+In-Reply-To: <bc46d60e-7c89-ad05-780c-9e9fd19f788e@roeck-us.net>
+References: <20220427010154.29749-1-zev@bewilderbeest.net> <bc46d60e-7c89-ad05-780c-9e9fd19f788e@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:ab0:3c46:0:0:0:0:0 with HTTP; Sat, 30 Apr 2022 16:58:58
- -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Mrs. Mimi Aminu" <mimiaminu319@gmail.com>
-Date:   Sat, 30 Apr 2022 16:58:58 -0700
-Message-ID: <CAD-C4f4aRtNcjpntf8Ejap5gUjH3kNvxQCHSuw-jrm6D0Suj=g@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:e30 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mimiaminu319[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [mimiaminu319[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Greetings,
-I'm Mrs. Mimi Aminu, how are you doing hope you are in good health,
-the Board director
-try to reach you on phone several times Meanwhile, your number was not
-connecting. before he ask me to send you an email to hear from you if
-you are fine. hope to hear you are in good Health.
+Hello.
 
-Thanks,
-Mrs. Mimi Aminu.
+On st=C5=99eda 27. dubna 2022 15:37:07 CEST Guenter Roeck wrote:
+> On 4/26/22 18:01, Zev Weiss wrote:
+> > This is v4 of my effort to add i2c support to the nct6775 hwmon
+> > driver.
+> >=20
+>=20
+> Thanks a lot for your effort.
+>=20
+> I applied patches 2..6 to hwmon-next. The first and the last
+> patch of the series will have to wait for DT maintainer approval.
+
+Zev, sorry I'm late. I've just tested what went into hwmon-next (patches 2.=
+=2E6), and it didn't affect `sensors` output for me, so I guess this confir=
+ms what you asked me to do ("I don't have access to any asuswmi hardware, s=
+o testing of the nct6775-platform driver on that to ensure it doesn't break=
+ there would be appreciated (Oleksandr, perhaps?).").
+
+Guenter, if it's not too late, please consider this as Tested-by: from me o=
+n this part of the submission.
+
+Thanks.
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+
+
