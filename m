@@ -2,45 +2,45 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C109B518286
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 May 2022 12:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9181C51836B
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 May 2022 13:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234331AbiECKvM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 3 May 2022 06:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44758 "EHLO
+        id S234821AbiECLr2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 3 May 2022 07:47:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234272AbiECKuq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 3 May 2022 06:50:46 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53B402D1F1
-        for <linux-hwmon@vger.kernel.org>; Tue,  3 May 2022 03:46:43 -0700 (PDT)
+        with ESMTP id S234783AbiECLr0 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 3 May 2022 07:47:26 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88CBF19028;
+        Tue,  3 May 2022 04:43:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1651574803;
-  x=1683110803;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=oxG0nj7wBjLD5tte31Ndw3paxaz9vJ9tvCOhJGiH67k=;
-  b=mI7J2nZARFYyzlxBqpbDJDiaIEGtIWNH0S/pT51GkeaBpojjhXY53b4g
-   qoxVvOFhPExL/FfXBdhhLY3EASiBtsBexBgf0iMKXwWuzR864G0WgkR1A
-   dh9IcpErBcNz8FXoW1ighyScLCWGVKny36alNgVjilw80wzY23v1K02FC
-   2d1zlwciE/jefs6gENf8+UOZzjs8mERewl7rnMhE0ByeugUPSbWQlbmAh
-   63zLjkhrweco6EokEx3mSzt57qWSNEtH2POSZSqIkT1KUsBbdpaZHA5i9
-   LZ3udI1BwaHoS+FgSEHNLCr6El/nrmoMVevHRatWsL3/DKWbPn7uqr5Ux
-   g==;
-From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+  d=axis.com; q=dns/txt; s=axis-central1; t=1651578235;
+  x=1683114235;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZyYaMPT3VVclWV5fER8SKt1HJ8hGTo2ZrDH3585JNPo=;
+  b=ktxJYlONQ9OiREDch5V/1HXx++AgEunWcbUuoGt6q+6CkepOSFJNtARO
+   u7r3d2/7roNlTDEvbE+YzNW/zcNDzQc4pL70iYQ7fkyi8jrJosFioAacV
+   jIKQ2FV2qaHpZ2/7AcX1gMgkCg8J82XswiZ9xwjMVuBWkALruFeIuM8dc
+   yjN9OlnH9D7lo7IlzSGuw/bVpeyzoiBgolZfzQHHOp4lG/Q3WEKdI7y2l
+   DIwZ/v/ZEeQXkBORNqQ0YQICRa0bgFiRN0GHhf0eaz+UEPB0dZbvMJxG/
+   jsfgpU/7EU6ipLC2Ljn0Ni/pfeSxMDv3ilrkhkoYDtuGTfJrqpyxZ/M0q
+   w==;
+From:   Camel Guo <camel.guo@axis.com>
 To:     Guenter Roeck <linux@roeck-us.net>,
         Jean Delvare <jdelvare@suse.com>
-CC:     <linux-hwmon@vger.kernel.org>, <kernel@axis.com>,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
-Subject: [PATCH v6 4/4] hwmon: (pmbus) Add get_voltage/set_voltage ops
-Date:   Tue, 3 May 2022 12:46:31 +0200
-Message-ID: <20220503104631.3515715-5-marten.lindahl@axis.com>
+CC:     Camel Guo <camel.guo@axis.com>, Wolfram Sang <wsa@kernel.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@axis.com>
+Subject: [PATCH v4] hwmon: (tmp401) Add OF device ID table
+Date:   Tue, 3 May 2022 13:43:33 +0200
+Message-ID: <20220503114333.456476-1-camel.guo@axis.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220503104631.3515715-1-marten.lindahl@axis.com>
-References: <20220503104631.3515715-1-marten.lindahl@axis.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -51,96 +51,74 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The pmbus core does not have operations for getting or setting voltage.
-Add functions get/set voltage for the dynamic regulator framework.
+This driver doesn't have of_match_table. This makes the kernel module
+tmp401.ko lack alias patterns (e.g: of:N*T*Cti,tmp411) to match DT node
+of the supported devices hence this kernel module will not be
+automatically loaded.
 
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+After adding of_match_table to this driver, the folllowing alias will be
+added into tmp401.ko.
+$ modinfo drivers/hwmon/tmp401.ko
+filename: drivers/hwmon/tmp401.ko
+......
+author:         Hans de Goede <hdegoede@redhat.com>
+alias:          of:N*T*Cti,tmp435C*
+alias:          of:N*T*Cti,tmp435
+alias:          of:N*T*Cti,tmp432C*
+alias:          of:N*T*Cti,tmp432
+alias:          of:N*T*Cti,tmp431C*
+alias:          of:N*T*Cti,tmp431
+alias:          of:N*T*Cti,tmp411C*
+alias:          of:N*T*Cti,tmp411
+alias:          of:N*T*Cti,tmp401C*
+alias:          of:N*T*Cti,tmp401
+......
+
+Fixes: af503716ac14 ("i2c: core: report OF style module alias for devices registered via OF")
+Signed-off-by: Camel Guo <camel.guo@axis.com>
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 66 ++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index bd143ca0c320..f2cf0439da37 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -2563,11 +2563,77 @@ static int pmbus_regulator_get_error_flags(struct regulator_dev *rdev, unsigned
+Notes:
+    v4:
+     - Rewrite commit message due to improper description in old one
+    v3:
+     - Copy commit message from commit 72fc64c68decf119466 ("hwmon: (tmp103)
+       Add OF device ID table")
+     - Add Fixes tag
+    v2:
+     - Put evidence and circumstances in commit message
+
+ drivers/hwmon/tmp401.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/hwmon/tmp401.c b/drivers/hwmon/tmp401.c
+index b86d9df7105d..52c9e7d3f2ae 100644
+--- a/drivers/hwmon/tmp401.c
++++ b/drivers/hwmon/tmp401.c
+@@ -708,10 +708,21 @@ static int tmp401_probe(struct i2c_client *client)
  	return 0;
  }
  
-+static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
-+{
-+	struct device *dev = rdev_get_dev(rdev);
-+	struct i2c_client *client = to_i2c_client(dev->parent);
-+	struct pmbus_data *data = i2c_get_clientdata(client);
-+	struct pmbus_sensor s = {
-+		.page = rdev_get_id(rdev),
-+		.class = PSC_VOLTAGE_OUT,
-+		.convert = true,
-+	};
++static const struct of_device_id __maybe_unused tmp4xx_of_match[] = {
++	{ .compatible = "ti,tmp401", },
++	{ .compatible = "ti,tmp411", },
++	{ .compatible = "ti,tmp431", },
++	{ .compatible = "ti,tmp432", },
++	{ .compatible = "ti,tmp435", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, tmp4xx_of_match);
 +
-+	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
-+	if (s.data < 0)
-+		return s.data;
-+
-+	return (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
-+}
-+
-+static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
-+					 int max_uv, unsigned int *selector)
-+{
-+	struct device *dev = rdev_get_dev(rdev);
-+	struct i2c_client *client = to_i2c_client(dev->parent);
-+	struct pmbus_data *data = i2c_get_clientdata(client);
-+	struct pmbus_sensor s = {
-+		.page = rdev_get_id(rdev),
-+		.class = PSC_VOLTAGE_OUT,
-+		.convert = true,
-+		.data = -1,
-+	};
-+	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
-+	int low, high;
-+	*selector = 0;
-+
-+	if (pmbus_check_word_register(client, s.page, PMBUS_MFR_VOUT_MIN))
-+		s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_MFR_VOUT_MIN);
-+	if (s.data < 0) {
-+		s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_VOUT_MARGIN_LOW);
-+		if (s.data < 0)
-+			return s.data;
-+	}
-+	low = pmbus_reg2data(data, &s);
-+	s.data = -1;
-+
-+	if (pmbus_check_word_register(client, s.page, PMBUS_MFR_VOUT_MAX))
-+		s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_MFR_VOUT_MAX);
-+	if (s.data < 0) {
-+		s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_VOUT_MARGIN_HIGH);
-+		if (s.data < 0)
-+			return s.data;
-+	}
-+	high = pmbus_reg2data(data, &s);
-+
-+	/* Make sure we are within margins */
-+	if (low > val)
-+		val = low;
-+	if (high < val)
-+		val = high;
-+
-+	val = pmbus_data2reg(data, &s, val);
-+
-+	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
-+}
-+
- const struct regulator_ops pmbus_regulator_ops = {
- 	.enable = pmbus_regulator_enable,
- 	.disable = pmbus_regulator_disable,
- 	.is_enabled = pmbus_regulator_is_enabled,
- 	.get_error_flags = pmbus_regulator_get_error_flags,
-+	.get_voltage = pmbus_regulator_get_voltage,
-+	.set_voltage = pmbus_regulator_set_voltage,
- };
- EXPORT_SYMBOL_NS_GPL(pmbus_regulator_ops, PMBUS);
- 
+ static struct i2c_driver tmp401_driver = {
+ 	.class		= I2C_CLASS_HWMON,
+ 	.driver = {
+ 		.name	= "tmp401",
++		.of_match_table = of_match_ptr(tmp4xx_of_match),
+ 	},
+ 	.probe_new	= tmp401_probe,
+ 	.id_table	= tmp401_id,
+
+base-commit: 38d741cb70b30741c0e802cbed7bd9cf4fd15fa4
 -- 
 2.30.2
 
