@@ -2,100 +2,100 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C734651AE9A
-	for <lists+linux-hwmon@lfdr.de>; Wed,  4 May 2022 22:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD2751B3E6
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 May 2022 02:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377858AbiEDUEC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 4 May 2022 16:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37728 "EHLO
+        id S231627AbiEEAGq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 4 May 2022 20:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377637AbiEDUEC (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 4 May 2022 16:04:02 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB111CFFB;
-        Wed,  4 May 2022 13:00:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651694425; x=1683230425;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jC2aMWUJhX29obrPq1HQfTtD2kGq5tdC3PTfWHFzxR8=;
-  b=mEavUaXik74IqPdaDCPLCpDJdGv/FsCn/MjV7kGvYRelL1ojtbMWA0f7
-   P4g0mx3u+AcfPGIo8nfSELNFBOwpHvrDAyySRK/+qTXnDOAhEN8W2zZBz
-   CFMlC/RCuHmHYHawK4eiPvR4RTwEDMBKKgCfFd9IAkV53LW0uU33wmIQb
-   RXkviN6N/ORJ01P1Vc0jqbLzYUfGyl5RAJeLpHpGXCTkVdA6CfjiA/PXX
-   dRw7BDaE8hotWriJSdKK6uHwNQLYlKiHAb8xArqCXCjvqByo3PV+EVYjE
-   V3yn2Qg2of35W75j/+NWAvVODUmdAmCGZiFemkOi+ksF6cJW9QyoyMNKd
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="354320501"
-X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; 
-   d="scan'208";a="354320501"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 13:00:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; 
-   d="scan'208";a="599683635"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 04 May 2022 13:00:22 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nmLAb-000Bk9-W3;
-        Wed, 04 May 2022 20:00:21 +0000
-Date:   Thu, 5 May 2022 04:00:00 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Corentin Labbe <clabbe@baylibre.com>, jdelvare@suse.com,
-        linux@roeck-us.net
-Cc:     kbuild-all@lists.01.org, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Corentin Labbe <clabbe@baylibre.com>
-Subject: Re: [PATCH v2 2/2] hwmon: acpi_power_meter: convert to
- hwmon_device_register_with_info
-Message-ID: <202205050310.mXK9zxb3-lkp@intel.com>
-References: <20220504103028.493155-3-clabbe@baylibre.com>
+        with ESMTP id S1349711AbiEDX6x (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 4 May 2022 19:58:53 -0400
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F40B53E04
+        for <linux-hwmon@vger.kernel.org>; Wed,  4 May 2022 16:54:12 -0700 (PDT)
+Received: by mail-yb1-xb41.google.com with SMTP id i38so5017185ybj.13
+        for <linux-hwmon@vger.kernel.org>; Wed, 04 May 2022 16:54:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
+        b=Dn1MT8x7p4Rbn+pctwVkt7IgIdUxT0LRLjox/JaF9ttsZ2N8sUUglHFRxQa3sl75aK
+         h1U1JpCoOjPff8rV+LL0edQuBh+YvYlTbZ4zx127Qa80qMcS49J0d2nS2s7mVVadwp/M
+         vGp6wV8qQhR9tMRiQjyWHIJslgvG4HigF7p24aLxixJ1l99K68kLikab9Y0HgtSpkDYW
+         0+riuhXlj9dAnGs04evyYz4sFXKtm0FlJKiBI2Dtbo7ebvKr6E7XJkxgxzCXhReMwL1D
+         yv9OUeo9KjH+/RIlVXefhsYivAQRdlwo604eWoXrrvRFVxcSgXwgPis+UtVhyLpBWx3z
+         WyWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
+        b=jpj90D7LJIE+c/dN+LXrrbvuuBQw3TGyaQWCzN/RKK4HrcjXImEgbhFBZmAU8QzNlb
+         3RlEE8efTRES8RYw6Rr87W+6lWUFwWtq6V+EjdrGSzYx9RDew37JAMB8/vWn8hOKzVNz
+         2KnXTurX3eLWg0IV+Ltv9UqBcWFdMqfcj8ALkw8EvMIhd+KYVxhd7ItqsrLhG8/6A126
+         wfJiZ8kINe9OBmQE2f7+Mgo1bXx1NoR9sgyQ6nKWufmCIDpPUXbThV6p1e7A1KaJ2WVj
+         v028rbwkHE8FqC2iRIPh+svKigT6OsdXQPYEbpW32MmRYL3cbxiAua4ZSeMzBKOXhQPu
+         J8Tg==
+X-Gm-Message-State: AOAM531hr2Xhx+TPQIWw2fmVzSCJnFaLOhLlawFGKhjCThQJ/OzXMjFf
+        293pSdRINGUNBL+6qLj+2q6h/mRRNkyF2RRCWAQqsIMuhIo6aw==
+X-Google-Smtp-Source: ABdhPJyXbFHNtxfp8+qt+M9kuv/iG7XfFeFFPd7I4/fmpdxuycMtmf6dIJw5ghtZAT2CwgvAVE/kUl0HxsirxLIU8v0=
+X-Received: by 2002:a9d:6b16:0:b0:605:e0eb:d3d6 with SMTP id
+ g22-20020a9d6b16000000b00605e0ebd3d6mr8263208otp.213.1651708440302; Wed, 04
+ May 2022 16:54:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220504103028.493155-3-clabbe@baylibre.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:53:59
+ -0700 (PDT)
+Reply-To: ortegainvestmmentforrealinvest@gmail.com
+From:   Info <joybhector64@gmail.com>
+Date:   Thu, 5 May 2022 05:23:59 +0530
+Message-ID: <CAP7KLYgH9LcKHS-KgR0zObHAgC6Fr3D+dOJSbDKurTc_12+iFw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b41 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5004]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [joybhector64[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [joybhector64[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Corentin,
-
-I love your patch! Yet something to improve:
-
-[auto build test ERROR on groeck-staging/hwmon-next]
-[also build test ERROR on v5.18-rc5 next-20220504]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Corentin-Labbe/hwmon-acpi_power_meter-convert-to-new-hwmon-API/20220504-183225
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-config: i386-randconfig-a014 (https://download.01.org/0day-ci/archive/20220505/202205050310.mXK9zxb3-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.2.0-20) 11.2.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/0287ed3436a71556d5fb79429e9ca041a0c5fe5b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Corentin-Labbe/hwmon-acpi_power_meter-convert-to-new-hwmon-API/20220504-183225
-        git checkout 0287ed3436a71556d5fb79429e9ca041a0c5fe5b
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   ld: drivers/hwmon/acpi_power_meter.o: in function `acpi_power_read':
->> acpi_power_meter.c:(.text+0x83c): undefined reference to `__udivdi3'
-
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+I am an investor. I came from the USA and I have many investments all
+over the world.
+
+I want you to partner with me to invest in your country I am into many
+investment such as real Estate or buying of properties i can also
+invest money in any of existing business with equity royalty or by %
+percentage so on,
+Warm regards
