@@ -2,124 +2,157 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FFA51DD75
-	for <lists+linux-hwmon@lfdr.de>; Fri,  6 May 2022 18:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5FD51DF22
+	for <lists+linux-hwmon@lfdr.de>; Fri,  6 May 2022 20:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354089AbiEFQWb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 6 May 2022 12:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
+        id S245555AbiEFSfM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 6 May 2022 14:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350965AbiEFQW3 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 6 May 2022 12:22:29 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5A11CB11
-        for <linux-hwmon@vger.kernel.org>; Fri,  6 May 2022 09:18:46 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id b19so10676658wrh.11
-        for <linux-hwmon@vger.kernel.org>; Fri, 06 May 2022 09:18:46 -0700 (PDT)
+        with ESMTP id S244282AbiEFSfL (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 6 May 2022 14:35:11 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D491A6D877;
+        Fri,  6 May 2022 11:31:27 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-ed8a3962f8so8065178fac.4;
+        Fri, 06 May 2022 11:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=UPOPB/1Kk6V7pDFdWC3DIYUIp36o3oxPCUUejAGfmZ7LP08eTQDG+lpaIUmJxpd/ug
-         g9PRU94ZFQRHLtW3xNBgd1BqJqbtcQ7qXoYQ0g4CH1sU65cTlt2oeIjLW3cAs3B8bVpY
-         HgzROG/ImUduhSoFXZkPKRX6hzkX7Cl01HUZeeWO32L8u7Z81vbfdMpACinKz//8K3+j
-         BXvzVrWt6Jy8B93piYjBOjlJ/0Gq5EmGWlnTpihtxqrgN+Dw2srk5B7ZgwovoFbYYlaD
-         YENTqsAKxSKYlkcoh4s8o9ct5InS15Ftf0BXugztGwVEOU9+VQh+iM11tLzYAtmpMzEo
-         3AWQ==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=hUetKZxl7Z6yBeFbQUBFPspuukeJvS16RQz0Z44BiCQ=;
+        b=m5JysbSVOuauUjUNKpeBUKW/doIc2XM4MVaH4/X7pUU5jf4TiEVEqae+gW3iCDsxy5
+         3EQ9Rvcknpu+EENa3yfm0a5ZERmPxgD6LDbA8dt4j2nsYCtBMk+r/qnzRFHsJL2edlNr
+         Z44cWQ3ZhCDXCQnKBjmWMrB9aWO5+6iZMbEnqOEySJ7sq1czLCqEhwyIcXETgV9JDgTG
+         +Bjh1mFKvHL3wmfHVamaxciKKD0Wg5wKbo/5zYmy1gIfw7O/xjU1HiroV6ATI1DMWrh9
+         iLjZyvr9RXts2gG4JbI1YG7fRqtd6feB1UD7kYEgsEUTAflAfeYIVOe2WlXvndVrdgdf
+         i0Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
-        b=IVHvw+g9C4gTC0ec2/zz+iQ1/K/HqBdxbqmHmvGJ8YzewO2Q+q8KblHj9LYfskhHqi
-         SO9RTvVloH/+L1JtDIY0BN2YrWcL8RQ3V+8vghtUaL16HtfbFqG6FN9NRs9EFHukD4jM
-         vRnjmFnk9qgMPOIdNk4s4VKfM9CQ+AXsk7LE6YJ++6EXkCBhAqR6RQdyYKWSSF2/nJC8
-         q7E6C8w/SnSkyDDZyTC87IxijYD+JxdqgVzEwEZqI1cULzBV3eXj+vH1RX7yx6lw5F6B
-         LB769kYyXvSW8vKummRwJSQnQRPpl5j7yxVU0N9F5ydv8DQgYBQq1Q8hfyNDAu27vKUv
-         W7Cg==
-X-Gm-Message-State: AOAM530R0MAJn11qkq2CRBoUaBPA1ppZVeKT4uy+ERWnudSqG1qoOc5i
-        /k/FSoUDWi9ukn2JTgoHrrsDh22WMUEoX9Ou+q0=
-X-Google-Smtp-Source: ABdhPJxLnJ05RMUN2i51B1kKbDh9KIvcRN3LmSyJ6gfESX2iibgM2bKcNZEaIqFUi4RTKuvBg9mjrKLMM/+iDQStaG0=
-X-Received: by 2002:a5d:47a6:0:b0:20c:5f07:2c5 with SMTP id
- 6-20020a5d47a6000000b0020c5f0702c5mr3373354wrb.397.1651853924955; Fri, 06 May
- 2022 09:18:44 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=hUetKZxl7Z6yBeFbQUBFPspuukeJvS16RQz0Z44BiCQ=;
+        b=FFSQ0TKMDvI+Mn4SfF95PI98qEtbQbLjUdVH7QcdHPo1kcfEvrzKbAg2RoUZS9jJK3
+         KrUGdymbp0V0vqAA5UNoRw55UHk2wbhjIR1ygPtEfAGo4PgupnhCnkLBUZxsq7OEoP73
+         z6Tn8Gy5c9dQwTWzHAGc2dx/XTrtXlNr0+tjl1CUkl0SpTtLBQzKMOIsrIr5e8uf18KF
+         vCSEWVub8v6JiqTPxLfcNIR1cy4sW4IZD1PaLlCxCg0wScrOhjF9KbSd6ToeFtMIChc7
+         cYyzmCwA7UT4Pf9wchEVqj8ismKAWQVj31u2pWkAcdaAsANm//VXWdNimSkmWFhP/ICu
+         b/zA==
+X-Gm-Message-State: AOAM5327CQH+AnaSsiV+IvZ8HgI/in1VL06pkRFn2wiDrITKkZzhVwhK
+        5BqVMgr7joELVv8TN5K++Ww=
+X-Google-Smtp-Source: ABdhPJxPK/1EqvBi7rdX83PTBmIvmy5zFUJouO8JL88esjMcooZT3pQrvkIYNYX/H83nV+FgyB4rUw==
+X-Received: by 2002:a05:6870:d5a2:b0:de:f682:6c4d with SMTP id u34-20020a056870d5a200b000def6826c4dmr1911306oao.283.1651861887149;
+        Fri, 06 May 2022 11:31:27 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id f25-20020a056870899900b000e686d13879sm1845496oaq.19.2022.05.06.11.31.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 May 2022 11:31:26 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Fri, 6 May 2022 11:31:24 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: (EXT) Re: (EXT) Re: (EXT) Re: [PATCH v2 1/1] hwmon: pwm-fan:
+ dynamically switch regulator
+Message-ID: <20220506183124.GA2997799@roeck-us.net>
+References: <20220504124551.1083383-1-alexander.stein@ew.tq-group.com>
+ <2371611.jE0xQCEvom@steina-w>
+ <20220506102301.my2tsn7kfldwqtll@pengutronix.de>
+ <3417990.V25eIC5XRa@steina-w>
+ <20220506141244.GA2990519@roeck-us.net>
+ <20220506142913.vbddyvkmhuvfd5o5@pengutronix.de>
 MIME-Version: 1.0
-Sender: adesmurs02@gmail.com
-Received: by 2002:a05:600c:20c9:0:0:0:0 with HTTP; Fri, 6 May 2022 09:18:44
- -0700 (PDT)
-From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
-Date:   Fri, 6 May 2022 18:18:44 +0200
-X-Google-Sender-Auth: Xl-zPfGRzXTwWEXgSkJysSTFV-4
-Message-ID: <CAEaqy6CCTY6sgp27w8K0ncUh0bf5wk6PJR_SEqyHY==wAJCYaQ@mail.gmail.com>
-Subject: ATTENTION PLEASE,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_95,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,HK_NAME_FM_MR_MRS,LOTS_OF_MONEY,MILLION_HUNDRED,
-        MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        SUBJ_ATTENTION,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:444 listed in]
-        [list.dnswl.org]
-        *  3.0 BAYES_95 BODY: Bayes spam probability is 95 to 99%
-        *      [score: 0.9743]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [adesmurs02[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [adesmurs02[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 MILLION_USD BODY: Talks about millions of dollars
-        *  0.9 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 HK_NAME_FM_MR_MRS No description available.
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        *  2.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220506142913.vbddyvkmhuvfd5o5@pengutronix.de>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION PLEASE,
+On Fri, May 06, 2022 at 04:29:13PM +0200, Uwe Kleine-König wrote:
+> [Dropped Bartlomiej Zolnierkiewicz from Cc:; my mailer daemon claims the
+> email address doens't exist.]
+> 
+> Hello Guenter,
+> 
+> On Fri, May 06, 2022 at 07:12:44AM -0700, Guenter Roeck wrote:
+> > On Fri, May 06, 2022 at 02:23:11PM +0200, Alexander Stein wrote:
+> > > Am Freitag, 6. Mai 2022, 12:23:01 CEST schrieb Uwe Kleine-König:
+> > > > See
+> > > > https://lore.kernel.org/linux-pwm/20180806155129.cjcc7okmwtaujf43@pengutronix.de/
+> > > > for one of the previous discussions.
+> > > 
+> > > Thanks for the link. I took a look into it. I'm on your side here, IMHO 
+> > > pwm_disable() implies that the PWM perphery is disabled, including any clocks 
+> > > or powerdomain. This is what pwm-imx27 actually does. This might lead to a, 
+> > > probably platform dependent, (undefined?) state of the PWM output pin.
+> > > This implies it is not possible to disable the PWM periphery for inverted 
+> > > signals, if the disabled state is not the inactive level. You know all about 
+> > > it already.
+> > > Then again from pwm-fan side I want be able to disable the FAN, turning of 
+> > > regulator and PWM, so powersaving is possible. That's what this patch is 
+> > > about. This is similar also what pwm_bl is doing.
+> > > Independent of the exact semantics, it makes sense to disable the regulator in 
+> > > pwm-fan as well when the fan shall be disabled.
+> > 
+> > There are fans which never stop if pwm==0, such as some CPU fans. I don't
+> 
+> I assume with pwm==0 you actually mean duty_cycle == 0?
+> 
 
-I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
-Directors working with United bank for African Burkina Faso (UBA). I
-have an interesting business proposal for you that will be of immense
-benefit to both of us. Although this may be hard for you to believe,
-we stand to gain a huge amount  between us in a matter of days. Please
-grant me the benefit of doubt and hear me out. I need you to signify
-your interest by replying to my mail.
+Correct. The "pwm" attribute sets the duty cycle.
 
-Honestly, i have business transaction worth the sum of
-(US$8,200,000.00) Eight Million two hundred thousand united state
-dollars to transfer to you through proper documentation in position of
-your own Account.
+> > think it is a good idea to force those off by turning off their power. The
+> > problem in the driver is that it treats pwm==0 as "disable pwm", not as
+> > "set pwm output to 0", Part of the probem may be that the ABI doesn't have
+> > a good representation for "disable pwm output", which is what is really
+> > wanted/needed here.
+> 
+> Disable pwm output == set pwm output to High-Z? Not all PWMs are able to
+> provide that.
+> 
 
-Most importantly, I will need you to promise to keep whatever you
-learn from me between us even if you decide not to go along with me. I
-will make more details available to you on receipt of a positive
-response from you.
+It is up to us to define whate it means exactly. If you are ok that "set duty
+cycle to 0" reflects "set duty cycle to 0, disable pwm, and turn off regulator",
+I would hope that you are ok with using the _enable attribute to do the same
+and leaving pwm==0 to do what it is supposed to do, ie to keep pwm control
+enabled and set the duty cycle to 0.
 
-This transaction is risk-free; please urgently confirm your
-willingness and interest to assist in this deal, I am in good faith
-and with trust waiting for your Urgent respond and maximum cooperation
-for more details.
+Thanks,
+Guenter
 
-Best Regards,
-Mrs Aminata Zongo.
+> > I think the best solution would be to implement and
+> > use pwmX_enable, and define in the driver documentation that pwm1_enable=0
+> > reflects "disable pwm" and pwm1_enable=1 reflects "emable manual pwm
+> > control:. At the same time, stop associating "pwm==0" with "disable pwm",
+> > but just set the pwm output value to 0.
+> 
+> Are you talking about the PWM framework here, or only the pwm-fan
+> driver?
+> 
+> I'd expect there are better names than pwm1_enable for the intended
+> semantic.
+> 
+> Best regards
+> Uwe
+> 
+> -- 
+> Pengutronix e.K.                           | Uwe Kleine-König            |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+
