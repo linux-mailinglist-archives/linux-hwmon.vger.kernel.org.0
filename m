@@ -2,154 +2,124 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89CDF51DA83
-	for <lists+linux-hwmon@lfdr.de>; Fri,  6 May 2022 16:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75FFA51DD75
+	for <lists+linux-hwmon@lfdr.de>; Fri,  6 May 2022 18:18:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238749AbiEFOdG (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 6 May 2022 10:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53538 "EHLO
+        id S1354089AbiEFQWb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 6 May 2022 12:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242403AbiEFOdG (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 6 May 2022 10:33:06 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0204269291
-        for <linux-hwmon@vger.kernel.org>; Fri,  6 May 2022 07:29:22 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nmyxI-0001fA-UR; Fri, 06 May 2022 16:29:16 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nmyxI-000iwz-AM; Fri, 06 May 2022 16:29:14 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nmyxG-007yDK-08; Fri, 06 May 2022 16:29:14 +0200
-Date:   Fri, 6 May 2022 16:29:13 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: (EXT) Re: (EXT) Re: (EXT) Re: [PATCH v2 1/1] hwmon: pwm-fan:
- dynamically switch regulator
-Message-ID: <20220506142913.vbddyvkmhuvfd5o5@pengutronix.de>
-References: <20220504124551.1083383-1-alexander.stein@ew.tq-group.com>
- <2371611.jE0xQCEvom@steina-w>
- <20220506102301.my2tsn7kfldwqtll@pengutronix.de>
- <3417990.V25eIC5XRa@steina-w>
- <20220506141244.GA2990519@roeck-us.net>
+        with ESMTP id S1350965AbiEFQW3 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 6 May 2022 12:22:29 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5A11CB11
+        for <linux-hwmon@vger.kernel.org>; Fri,  6 May 2022 09:18:46 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id b19so10676658wrh.11
+        for <linux-hwmon@vger.kernel.org>; Fri, 06 May 2022 09:18:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
+        b=UPOPB/1Kk6V7pDFdWC3DIYUIp36o3oxPCUUejAGfmZ7LP08eTQDG+lpaIUmJxpd/ug
+         g9PRU94ZFQRHLtW3xNBgd1BqJqbtcQ7qXoYQ0g4CH1sU65cTlt2oeIjLW3cAs3B8bVpY
+         HgzROG/ImUduhSoFXZkPKRX6hzkX7Cl01HUZeeWO32L8u7Z81vbfdMpACinKz//8K3+j
+         BXvzVrWt6Jy8B93piYjBOjlJ/0Gq5EmGWlnTpihtxqrgN+Dw2srk5B7ZgwovoFbYYlaD
+         YENTqsAKxSKYlkcoh4s8o9ct5InS15Ftf0BXugztGwVEOU9+VQh+iM11tLzYAtmpMzEo
+         3AWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=XtI1f9sWRZ2UC78GPu4V47vwU7sGdDfWHDLuspgulf8=;
+        b=IVHvw+g9C4gTC0ec2/zz+iQ1/K/HqBdxbqmHmvGJ8YzewO2Q+q8KblHj9LYfskhHqi
+         SO9RTvVloH/+L1JtDIY0BN2YrWcL8RQ3V+8vghtUaL16HtfbFqG6FN9NRs9EFHukD4jM
+         vRnjmFnk9qgMPOIdNk4s4VKfM9CQ+AXsk7LE6YJ++6EXkCBhAqR6RQdyYKWSSF2/nJC8
+         q7E6C8w/SnSkyDDZyTC87IxijYD+JxdqgVzEwEZqI1cULzBV3eXj+vH1RX7yx6lw5F6B
+         LB769kYyXvSW8vKummRwJSQnQRPpl5j7yxVU0N9F5ydv8DQgYBQq1Q8hfyNDAu27vKUv
+         W7Cg==
+X-Gm-Message-State: AOAM530R0MAJn11qkq2CRBoUaBPA1ppZVeKT4uy+ERWnudSqG1qoOc5i
+        /k/FSoUDWi9ukn2JTgoHrrsDh22WMUEoX9Ou+q0=
+X-Google-Smtp-Source: ABdhPJxLnJ05RMUN2i51B1kKbDh9KIvcRN3LmSyJ6gfESX2iibgM2bKcNZEaIqFUi4RTKuvBg9mjrKLMM/+iDQStaG0=
+X-Received: by 2002:a5d:47a6:0:b0:20c:5f07:2c5 with SMTP id
+ 6-20020a5d47a6000000b0020c5f0702c5mr3373354wrb.397.1651853924955; Fri, 06 May
+ 2022 09:18:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bdrve5lys2yuerjf"
-Content-Disposition: inline
-In-Reply-To: <20220506141244.GA2990519@roeck-us.net>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Sender: adesmurs02@gmail.com
+Received: by 2002:a05:600c:20c9:0:0:0:0 with HTTP; Fri, 6 May 2022 09:18:44
+ -0700 (PDT)
+From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
+Date:   Fri, 6 May 2022 18:18:44 +0200
+X-Google-Sender-Auth: Xl-zPfGRzXTwWEXgSkJysSTFV-4
+Message-ID: <CAEaqy6CCTY6sgp27w8K0ncUh0bf5wk6PJR_SEqyHY==wAJCYaQ@mail.gmail.com>
+Subject: ATTENTION PLEASE,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_95,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,HK_NAME_FM_MR_MRS,LOTS_OF_MONEY,MILLION_HUNDRED,
+        MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        SUBJ_ATTENTION,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:444 listed in]
+        [list.dnswl.org]
+        *  3.0 BAYES_95 BODY: Bayes spam probability is 95 to 99%
+        *      [score: 0.9743]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [adesmurs02[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [adesmurs02[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 MILLION_USD BODY: Talks about millions of dollars
+        *  0.9 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 HK_NAME_FM_MR_MRS No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
+        *  2.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+ATTENTION PLEASE,
 
---bdrve5lys2yuerjf
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
+Directors working with United bank for African Burkina Faso (UBA). I
+have an interesting business proposal for you that will be of immense
+benefit to both of us. Although this may be hard for you to believe,
+we stand to gain a huge amount  between us in a matter of days. Please
+grant me the benefit of doubt and hear me out. I need you to signify
+your interest by replying to my mail.
 
-[Dropped Bartlomiej Zolnierkiewicz from Cc:; my mailer daemon claims the
-email address doens't exist.]
+Honestly, i have business transaction worth the sum of
+(US$8,200,000.00) Eight Million two hundred thousand united state
+dollars to transfer to you through proper documentation in position of
+your own Account.
 
-Hello Guenter,
+Most importantly, I will need you to promise to keep whatever you
+learn from me between us even if you decide not to go along with me. I
+will make more details available to you on receipt of a positive
+response from you.
 
-On Fri, May 06, 2022 at 07:12:44AM -0700, Guenter Roeck wrote:
-> On Fri, May 06, 2022 at 02:23:11PM +0200, Alexander Stein wrote:
-> > Am Freitag, 6. Mai 2022, 12:23:01 CEST schrieb Uwe Kleine-K=F6nig:
-> > > See
-> > > https://lore.kernel.org/linux-pwm/20180806155129.cjcc7okmwtaujf43@pen=
-gutronix.de/
-> > > for one of the previous discussions.
-> >=20
-> > Thanks for the link. I took a look into it. I'm on your side here, IMHO=
-=20
-> > pwm_disable() implies that the PWM perphery is disabled, including any =
-clocks=20
-> > or powerdomain. This is what pwm-imx27 actually does. This might lead t=
-o a,=20
-> > probably platform dependent, (undefined?) state of the PWM output pin.
-> > This implies it is not possible to disable the PWM periphery for invert=
-ed=20
-> > signals, if the disabled state is not the inactive level. You know all =
-about=20
-> > it already.
-> > Then again from pwm-fan side I want be able to disable the FAN, turning=
- of=20
-> > regulator and PWM, so powersaving is possible. That's what this patch i=
-s=20
-> > about. This is similar also what pwm_bl is doing.
-> > Independent of the exact semantics, it makes sense to disable the regul=
-ator in=20
-> > pwm-fan as well when the fan shall be disabled.
->=20
-> There are fans which never stop if pwm=3D=3D0, such as some CPU fans. I d=
-on't
+This transaction is risk-free; please urgently confirm your
+willingness and interest to assist in this deal, I am in good faith
+and with trust waiting for your Urgent respond and maximum cooperation
+for more details.
 
-I assume with pwm=3D=3D0 you actually mean duty_cycle =3D=3D 0?
-
-> think it is a good idea to force those off by turning off their power. The
-> problem in the driver is that it treats pwm=3D=3D0 as "disable pwm", not =
-as
-> "set pwm output to 0", Part of the probem may be that the ABI doesn't have
-> a good representation for "disable pwm output", which is what is really
-> wanted/needed here.
-
-Disable pwm output =3D=3D set pwm output to High-Z? Not all PWMs are able to
-provide that.
-
-> I think the best solution would be to implement and
-> use pwmX_enable, and define in the driver documentation that pwm1_enable=
-=3D0
-> reflects "disable pwm" and pwm1_enable=3D1 reflects "emable manual pwm
-> control:. At the same time, stop associating "pwm=3D=3D0" with "disable p=
-wm",
-> but just set the pwm output value to 0.
-
-Are you talking about the PWM framework here, or only the pwm-fan
-driver?
-
-I'd expect there are better names than pwm1_enable for the intended
-semantic.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---bdrve5lys2yuerjf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmJ1MLYACgkQwfwUeK3K
-7AmmSAf9FO45ivkd1xLRkZ6c38qMHZSGYObdEmaViG11zaoDBirjlpg9SJFTiwaF
-ivXPjIyJmK+3gahY58iIJH+eIkNISGfKK8HXm2baaOMJsnvCjxeG/VIACduyoavf
-FrNR4sVASqQjL8wj/aTX7ugKx/XHz62KNc1Kb6rErggf7mAWY4yeGMD2Y3O/W+cj
-AuXf7mThKsGlo6AE4VHK0dvpingu1St6v3hSzcXbHMdepGGUgcg9uEeJ7SG313nw
-WIiMWHnB25hGE0w5Sfywj5ry5FJxLyl+nkpQVP11aiuepYPbQdlfwidYVCtVCUL/
-Gf1/Nnqf1oz4+ZgiK0zfM98wBZC+jg==
-=igYo
------END PGP SIGNATURE-----
-
---bdrve5lys2yuerjf--
+Best Regards,
+Mrs Aminata Zongo.
