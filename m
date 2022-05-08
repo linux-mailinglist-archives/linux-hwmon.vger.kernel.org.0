@@ -2,104 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0E5151EADB
-	for <lists+linux-hwmon@lfdr.de>; Sun,  8 May 2022 04:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6226851EE53
+	for <lists+linux-hwmon@lfdr.de>; Sun,  8 May 2022 16:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235229AbiEHCTF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 7 May 2022 22:19:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59622 "EHLO
+        id S234146AbiEHOuM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 8 May 2022 10:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237678AbiEHCTD (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 7 May 2022 22:19:03 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2236411166
-        for <linux-hwmon@vger.kernel.org>; Sat,  7 May 2022 19:15:14 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id ba17so12609348edb.5
-        for <linux-hwmon@vger.kernel.org>; Sat, 07 May 2022 19:15:13 -0700 (PDT)
+        with ESMTP id S229689AbiEHOuL (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 8 May 2022 10:50:11 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B0AA1B4;
+        Sun,  8 May 2022 07:46:20 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id z19so13586904edx.9;
+        Sun, 08 May 2022 07:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Cr4jqiwCZqgvtQ1mPAG6hA/aEXX0FhXJr8HGvR+MOF4=;
-        b=hIE5zwv2rTKn+CswdyopQHf0jMYKWFxRBF6odjeCxWBM/WRdVHzPYHl78NQfbEd29K
-         9enqxTUB9ZAvVAoyjF8AWhpC+f5IVcnJoMj+unQol6NBiW/KIRN+RPaYSq7RoP62yjw1
-         2X5NuVc9b98bRcPhXJz7ydAIkaPKYIMfoxEKnd5fu9ZsX03fmWcqseP8+bykpooAanlU
-         h5RINDqd4mWKTcsWni5bShtEPJLQkkRYT8dOneNqwF1lDvdzymwuLYp+4P1W1ToIwe8o
-         DNyWfhk7sajXrmDQAaFVYyGNgCHChouTJ3BZcW21ISZxH2nUIlO4cSJ32UEeiIotkomt
-         QV/w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yVozbydKoqpL/1R/q8/zXiCSBF+WnkNpgE75DzzSMhE=;
+        b=f1uwoG0j7PprLpJsPc7sO0GeKbuiY/c+WAkisrhcJURHL95Kn4RELVGSzkZKE5PHVk
+         w7nqXkUFatTxfveUgprKveTEuJQon6fbEWiJWjqf2OIaj8XC3TI/IBOmGa48zID7h+2Q
+         ilAFcbiXIDAg4VnhoLPclZkx44ikUzRbskouwczdJtB0CF0iq7LovY5Sh5wXOG0lD1E6
+         Ztj61VeTpHG66+G37s5sTw2DM/DBGN7tZnxVSlT35ivZNyY46iNswhNQZZRMIOHf75z6
+         kNTNGWIyxWMdh14c2f5wSrJjrimTq4jYIVX2VVuTYeJBLuDCj03AavDeyMtQPpdSZ6fm
+         ZTbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Cr4jqiwCZqgvtQ1mPAG6hA/aEXX0FhXJr8HGvR+MOF4=;
-        b=Tc3O61yrMwKBW6vE+9Tt4eNfi1CvBUuOYPF8xcKyCazk1lrhVMTxslGVgUx9usKDxy
-         Wz6qpEd3a9k8ph5IFfaLXsVjzmnFOMDao13i/OfmGDxJfazCuO3cB9vfdIhSjcA+dQJI
-         MOUbCvBeXXW9yfiKcpdA+mmr2joDMj9JRaY1gQJT3dUaX1D5UGNRGO0yTJKQHtAAsuf2
-         e8zH37f3Et56+HOlJlzWYWO9EYhoL39eoWvGtIP+CrLz70M5urvmIHOX/hZkG74iQsyY
-         RmPnpZGWCgcnA2grL8FUnaEbinkPwBps9yt6YSKLR4L7qd81aXSd0KEuK0WNDl2nZBl/
-         IzeQ==
-X-Gm-Message-State: AOAM530rIRKfQJ6O+VLHCHaWUH5neXwR8thpKcQMP7aeOCi3aC8rbvO/
-        UKrJZ8BBp07LgfsXOvCtbPvZ0eFaRIgUIPJM72g=
-X-Google-Smtp-Source: ABdhPJzTI/QqRCdwIAmphqF9OzyyYNq5Vx7Ax17gRaKdquRTzXBKHWHIi7p9/pNhdRsw+jE0joTHzv2TJm/aPiu3TUo=
-X-Received: by 2002:a50:ed0e:0:b0:425:e476:f4ed with SMTP id
- j14-20020a50ed0e000000b00425e476f4edmr10770566eds.32.1651976112082; Sat, 07
- May 2022 19:15:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yVozbydKoqpL/1R/q8/zXiCSBF+WnkNpgE75DzzSMhE=;
+        b=eN+2xwJ5kfSsGD8dvW8qv/4WbwkPLi7PVJwP17hYQYOX5TnGJ5UUObCeiqdqxv7CA5
+         +UVk4FAHlq7+0T1LwVzHO4ZpuSIS2iZQeao+5hsyytDk1Xnh4zywUCTopAzbHPPKcdEJ
+         mpTgzzU80XlBJ1pFr8EhKICSTShbXP9yMreogJb2A2n8KW818WsqqSACicsdiKtToecB
+         2d2O1eSJCwI6T/fcldj8L+Ng5bz0MN3sDmqI9PU1fwFzaZ/jNe/pyn4Hct8iRCeB5EJy
+         YA0wL46OOcSvOOVBdM9re7YfkX32qw61LCMWgcUE/0R/hRoDvG4mDY6yhcnnEbOVyn90
+         t2Kg==
+X-Gm-Message-State: AOAM531iKJXdz1GKlKPjoJU58FW+e8EtyCgFodkHzazum1zR4BOfuqC/
+        0P0KADyhl8555tiBeuQ/gSgKuHf4cHdxKA==
+X-Google-Smtp-Source: ABdhPJxbAQMyAAXvrmdZ46Lt8wonE1TP7eCF2BLaBNu1iml/9eK5lcTlqBmR8JBgnAZvzE8/LLeI5A==
+X-Received: by 2002:a05:6402:1592:b0:425:edec:992d with SMTP id c18-20020a056402159200b00425edec992dmr12699630edv.283.1652021179258;
+        Sun, 08 May 2022 07:46:19 -0700 (PDT)
+Received: from debian-gnu-linux-10.localdomain (dynamic-095-115-108-204.95.115.pool.telefonica.de. [95.115.108.204])
+        by smtp.gmail.com with ESMTPSA id p9-20020a170906140900b006f3ef214dcdsm4109383ejc.51.2022.05.08.07.46.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 May 2022 07:46:18 -0700 (PDT)
+From:   Karl Mehltretter <kmehltretter@gmail.com>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Karl Mehltretter <kmehltretter@gmail.com>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: (lm83) Remove unused include directives
+Date:   Sun,  8 May 2022 16:46:01 +0200
+Message-Id: <20220508144601.22796-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: by 2002:a50:3554:0:0:0:0:0 with HTTP; Sat, 7 May 2022 19:15:11 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Mr. David Kabore" <dkabore16@gmail.com>
-Date:   Sat, 7 May 2022 19:15:11 -0700
-Message-ID: <CANLKR0vzXK+xff8dc1NLRToAvTmMja99WOdUionm413PVRoNow@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        HK_NAME_FM_MR_MRS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:529 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [dkabore16[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [dkabore16[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 HK_NAME_FM_MR_MRS No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Hello,
-I'm Mr. David Kabore, how are you doing hope you are in good health,
-the Board irector try to reach you on phone several times Meanwhile,
-your number was not connecting. before he ask me to send you an email
-to hear from you if you are fine. hope to hear you are in good Health.
+Some include directives are no longer necessary due to previous driver
+changes. Remove them now to further improve driver code clarity.
 
-Thanks,
-Mr. David Kabore.
+Mutex usage has ceased since commit 719af4f1a40b ("hwmon: (lm83) Use
+regmap").
+
+Ever since commit a0ac840d99fa ("hwmon: (lm83) Convert to use
+devm_hwmon_device_register_with_groups") functions sysfs_create_group
+and sysfs_remove_group are no longer used by the driver.
+
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ drivers/hwmon/lm83.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/hwmon/lm83.c b/drivers/hwmon/lm83.c
+index 12370dcef..905f5689f 100644
+--- a/drivers/hwmon/lm83.c
++++ b/drivers/hwmon/lm83.c
+@@ -24,10 +24,8 @@
+ #include <linux/init.h>
+ #include <linux/hwmon.h>
+ #include <linux/module.h>
+-#include <linux/mutex.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+-#include <linux/sysfs.h>
+ 
+ /*
+  * Addresses to scan
+-- 
+2.20.1
+
