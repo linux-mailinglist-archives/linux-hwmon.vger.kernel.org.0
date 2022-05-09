@@ -2,102 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6226851EE53
-	for <lists+linux-hwmon@lfdr.de>; Sun,  8 May 2022 16:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA7851F4B6
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 May 2022 08:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234146AbiEHOuM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 8 May 2022 10:50:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59522 "EHLO
+        id S232789AbiEIGqa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 9 May 2022 02:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229689AbiEHOuL (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 8 May 2022 10:50:11 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B0AA1B4;
-        Sun,  8 May 2022 07:46:20 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id z19so13586904edx.9;
-        Sun, 08 May 2022 07:46:20 -0700 (PDT)
+        with ESMTP id S234946AbiEIGeP (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 9 May 2022 02:34:15 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F27760E1
+        for <linux-hwmon@vger.kernel.org>; Sun,  8 May 2022 23:30:19 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id i5so17921839wrc.13
+        for <linux-hwmon@vger.kernel.org>; Sun, 08 May 2022 23:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=yVozbydKoqpL/1R/q8/zXiCSBF+WnkNpgE75DzzSMhE=;
-        b=f1uwoG0j7PprLpJsPc7sO0GeKbuiY/c+WAkisrhcJURHL95Kn4RELVGSzkZKE5PHVk
-         w7nqXkUFatTxfveUgprKveTEuJQon6fbEWiJWjqf2OIaj8XC3TI/IBOmGa48zID7h+2Q
-         ilAFcbiXIDAg4VnhoLPclZkx44ikUzRbskouwczdJtB0CF0iq7LovY5Sh5wXOG0lD1E6
-         Ztj61VeTpHG66+G37s5sTw2DM/DBGN7tZnxVSlT35ivZNyY46iNswhNQZZRMIOHf75z6
-         kNTNGWIyxWMdh14c2f5wSrJjrimTq4jYIVX2VVuTYeJBLuDCj03AavDeyMtQPpdSZ6fm
-         ZTbA==
+        bh=XPNecKafbRDw+Fkqi9ISd0FBA5h3YIksvwNIY0KCyTA=;
+        b=WBuCRLM+UWc6POwKM0IitqNbvaWx79I3cHRDu9rKtkKEP3LSshmP6ZzpFyQIEbjS6w
+         +pxeTMtEToYGHaDkpH0KO4l1jt9qVN9Iwh3Js43cEkG4265+HO6HumK/3nA4JCYYwPOt
+         8zGj1+yqcLKe0qBPMtmoIVle6c6p3wWlwdZv9sMvShbPo6hn75Vf5I5dnFR36MhKQvN5
+         qF4NPvvc6HTqTdjyWof/4rzBt651d0gUI9uFX5ObMbjpTpeiL5XdoSsyXMHJIQEUNO/f
+         pSRXhz9s74ibn+76GKAv1cFrVozaEal/SiN5Hi7Qc1sLD0T7JH26LrexLNS87XzRl7cy
+         mL0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=yVozbydKoqpL/1R/q8/zXiCSBF+WnkNpgE75DzzSMhE=;
-        b=eN+2xwJ5kfSsGD8dvW8qv/4WbwkPLi7PVJwP17hYQYOX5TnGJ5UUObCeiqdqxv7CA5
-         +UVk4FAHlq7+0T1LwVzHO4ZpuSIS2iZQeao+5hsyytDk1Xnh4zywUCTopAzbHPPKcdEJ
-         mpTgzzU80XlBJ1pFr8EhKICSTShbXP9yMreogJb2A2n8KW818WsqqSACicsdiKtToecB
-         2d2O1eSJCwI6T/fcldj8L+Ng5bz0MN3sDmqI9PU1fwFzaZ/jNe/pyn4Hct8iRCeB5EJy
-         YA0wL46OOcSvOOVBdM9re7YfkX32qw61LCMWgcUE/0R/hRoDvG4mDY6yhcnnEbOVyn90
-         t2Kg==
-X-Gm-Message-State: AOAM531iKJXdz1GKlKPjoJU58FW+e8EtyCgFodkHzazum1zR4BOfuqC/
-        0P0KADyhl8555tiBeuQ/gSgKuHf4cHdxKA==
-X-Google-Smtp-Source: ABdhPJxbAQMyAAXvrmdZ46Lt8wonE1TP7eCF2BLaBNu1iml/9eK5lcTlqBmR8JBgnAZvzE8/LLeI5A==
-X-Received: by 2002:a05:6402:1592:b0:425:edec:992d with SMTP id c18-20020a056402159200b00425edec992dmr12699630edv.283.1652021179258;
-        Sun, 08 May 2022 07:46:19 -0700 (PDT)
-Received: from debian-gnu-linux-10.localdomain (dynamic-095-115-108-204.95.115.pool.telefonica.de. [95.115.108.204])
-        by smtp.gmail.com with ESMTPSA id p9-20020a170906140900b006f3ef214dcdsm4109383ejc.51.2022.05.08.07.46.18
+        bh=XPNecKafbRDw+Fkqi9ISd0FBA5h3YIksvwNIY0KCyTA=;
+        b=xWdf2iSkT/UHDCf3L6KaSFXLnOrVzd8vybLe7DHMWL6EfyGLbPF2v8QB3ORFdvTkDS
+         W5DSYoPP8qthIi9BwxQpu+WvX8Hu8mAvrc6Nw407DnytrurUmTaC9tLJTiMOq31hLbuM
+         Sy/FHLomW/sJVrAp9jD8IhROF5zPAWp2gNLE5ogfGMpK2sj0GZvNEWsBB0TEDxtXq2pE
+         hEgkgBfHckplMZd1FufMVEvuxq9SlsTFmAsd8QPkwCjfsUD+EzPvhqdJZx7+BZxJHS9Q
+         swVyjcRYuotEvdAwT8ELcoxP9pAoS4oZJldXwcNRLoD7vDLa/t9jkzLx/o+hMt98m1cH
+         emKA==
+X-Gm-Message-State: AOAM532Urpj84UNQsZeMZn2okcCFQalPvmYfeU160qvRLWaqYuDDQ/os
+        U/rA5ff2tLWv9TVsgicgheongQ==
+X-Google-Smtp-Source: ABdhPJxu8B88K+1d0U9XCw0Jxtwqb++NySgO1kBYq9LRHkJnnpf1k/fd9klqFI4y4XnJjrL5JgOIBA==
+X-Received: by 2002:a05:6000:223:b0:20a:db3a:e761 with SMTP id l3-20020a056000022300b0020adb3ae761mr12040423wrz.43.1652077817042;
+        Sun, 08 May 2022 23:30:17 -0700 (PDT)
+Received: from localhost.localdomain (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.googlemail.com with ESMTPSA id z18-20020adff1d2000000b0020c77f36b13sm10074833wro.100.2022.05.08.23.30.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 07:46:18 -0700 (PDT)
-From:   Karl Mehltretter <kmehltretter@gmail.com>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Karl Mehltretter <kmehltretter@gmail.com>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: (lm83) Remove unused include directives
-Date:   Sun,  8 May 2022 16:46:01 +0200
-Message-Id: <20220508144601.22796-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Sun, 08 May 2022 23:30:16 -0700 (PDT)
+From:   Corentin Labbe <clabbe@baylibre.com>
+To:     jdelvare@suse.com, linux@roeck-us.net
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Corentin Labbe <clabbe@baylibre.com>
+Subject: [PATCH v3 0/2] hwmon: acpi_power_meter: convert to new hwmon API
+Date:   Mon,  9 May 2022 06:30:08 +0000
+Message-Id: <20220509063010.3878134-1-clabbe@baylibre.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Some include directives are no longer necessary due to previous driver
-changes. Remove them now to further improve driver code clarity.
+Hello
 
-Mutex usage has ceased since commit 719af4f1a40b ("hwmon: (lm83) Use
-regmap").
+I dont like warning in my boot log such as:
+hwmon_device_register() is deprecated. Please convert the driver to use hwmon_device_register_with_info().
+So I did the conversion to the new API.
 
-Ever since commit a0ac840d99fa ("hwmon: (lm83) Convert to use
-devm_hwmon_device_register_with_groups") functions sysfs_create_group
-and sysfs_remove_group are no longer used by the driver.
+The patchset was tested with:
+- sensors
+- cat all values directly in sysfs (for ones not displayed by sensors like oem_info, model_number, etc..)
 
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- drivers/hwmon/lm83.c | 2 --
- 1 file changed, 2 deletions(-)
+But due to missing functionnality on my hardware some code path was not
+tested. (Like all cap_xxx)
 
-diff --git a/drivers/hwmon/lm83.c b/drivers/hwmon/lm83.c
-index 12370dcef..905f5689f 100644
---- a/drivers/hwmon/lm83.c
-+++ b/drivers/hwmon/lm83.c
-@@ -24,10 +24,8 @@
- #include <linux/init.h>
- #include <linux/hwmon.h>
- #include <linux/module.h>
--#include <linux/mutex.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
--#include <linux/sysfs.h>
- 
- /*
-  * Addresses to scan
+Regards
+
+Change since v1:
+- use really the new API
+
+Change since v2:
+- fix 32b build by using div_u64()
+
+Corentin Labbe (2):
+  hwmon: acpi_power_meter: fix style issue
+  hwmon: acpi_power_meter: convert to hwmon_device_register_with_info
+
+ drivers/hwmon/acpi_power_meter.c | 524 +++++++++++++------------------
+ 1 file changed, 227 insertions(+), 297 deletions(-)
+
 -- 
-2.20.1
+2.35.1
 
