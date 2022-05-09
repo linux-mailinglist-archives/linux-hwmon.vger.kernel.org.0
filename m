@@ -2,59 +2,61 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA7851F4B6
-	for <lists+linux-hwmon@lfdr.de>; Mon,  9 May 2022 08:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CFA51F4D5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 May 2022 08:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232789AbiEIGqa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        id S232209AbiEIGqa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
         Mon, 9 May 2022 02:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45022 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234946AbiEIGeP (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 9 May 2022 02:34:15 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F27760E1
-        for <linux-hwmon@vger.kernel.org>; Sun,  8 May 2022 23:30:19 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id i5so17921839wrc.13
-        for <linux-hwmon@vger.kernel.org>; Sun, 08 May 2022 23:30:19 -0700 (PDT)
+        with ESMTP id S234971AbiEIGec (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 9 May 2022 02:34:32 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B3D9FDE
+        for <linux-hwmon@vger.kernel.org>; Sun,  8 May 2022 23:30:32 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id u3so17955591wrg.3
+        for <linux-hwmon@vger.kernel.org>; Sun, 08 May 2022 23:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XPNecKafbRDw+Fkqi9ISd0FBA5h3YIksvwNIY0KCyTA=;
-        b=WBuCRLM+UWc6POwKM0IitqNbvaWx79I3cHRDu9rKtkKEP3LSshmP6ZzpFyQIEbjS6w
-         +pxeTMtEToYGHaDkpH0KO4l1jt9qVN9Iwh3Js43cEkG4265+HO6HumK/3nA4JCYYwPOt
-         8zGj1+yqcLKe0qBPMtmoIVle6c6p3wWlwdZv9sMvShbPo6hn75Vf5I5dnFR36MhKQvN5
-         qF4NPvvc6HTqTdjyWof/4rzBt651d0gUI9uFX5ObMbjpTpeiL5XdoSsyXMHJIQEUNO/f
-         pSRXhz9s74ibn+76GKAv1cFrVozaEal/SiN5Hi7Qc1sLD0T7JH26LrexLNS87XzRl7cy
-         mL0Q==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=vVvWe9CoZBTdNyE3eHbun0xPih5mbPe7IlFMtVIhZ0k=;
+        b=MOLzcEDMe1y6FCozVl6TnJUpB7oHIbvublW8A/Zk1jKtktM7sLQOm1XJryDMd5yJq2
+         OSZjwQvAE3HP8ZH932R5lyVc40cqAKCFi2+B+KtNA8Uvs3NNKJgQCZ76onjK9o49TiBr
+         /sKg60y+VDkNFwE7toeDnxqyAzQcEDtkggjj1EM8Lft6ING7Du+Wkg13C7vnE+kH8zHj
+         NsmzzMr0gZYau6ggCmTLKnAqUPHktuThv0HBrojoC8JBvsd9u8kOY6oIJQWQojEF2vnJ
+         BM4XNoIwyNwgJTKJEPSqbxujkRwTx/UZwpO+uw/txKREWt/gafE2gYkg5jwCpxFZCCjG
+         xA+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XPNecKafbRDw+Fkqi9ISd0FBA5h3YIksvwNIY0KCyTA=;
-        b=xWdf2iSkT/UHDCf3L6KaSFXLnOrVzd8vybLe7DHMWL6EfyGLbPF2v8QB3ORFdvTkDS
-         W5DSYoPP8qthIi9BwxQpu+WvX8Hu8mAvrc6Nw407DnytrurUmTaC9tLJTiMOq31hLbuM
-         Sy/FHLomW/sJVrAp9jD8IhROF5zPAWp2gNLE5ogfGMpK2sj0GZvNEWsBB0TEDxtXq2pE
-         hEgkgBfHckplMZd1FufMVEvuxq9SlsTFmAsd8QPkwCjfsUD+EzPvhqdJZx7+BZxJHS9Q
-         swVyjcRYuotEvdAwT8ELcoxP9pAoS4oZJldXwcNRLoD7vDLa/t9jkzLx/o+hMt98m1cH
-         emKA==
-X-Gm-Message-State: AOAM532Urpj84UNQsZeMZn2okcCFQalPvmYfeU160qvRLWaqYuDDQ/os
-        U/rA5ff2tLWv9TVsgicgheongQ==
-X-Google-Smtp-Source: ABdhPJxu8B88K+1d0U9XCw0Jxtwqb++NySgO1kBYq9LRHkJnnpf1k/fd9klqFI4y4XnJjrL5JgOIBA==
-X-Received: by 2002:a05:6000:223:b0:20a:db3a:e761 with SMTP id l3-20020a056000022300b0020adb3ae761mr12040423wrz.43.1652077817042;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=vVvWe9CoZBTdNyE3eHbun0xPih5mbPe7IlFMtVIhZ0k=;
+        b=Lcq48u2muoifUvlz/3n95SeBrxdaDcblMQi2UsfOBXFRkV/5VfJyZ+ZA4ZCAJa5VHf
+         JkWE2dP74aitBFZPJXQTsj3kXdbwxr8WaI5jYkAS/wSMj7a4hRKJSYj4Ziux/PWV0UJO
+         7pAxpV9nvAfh6hijZvPHMXDCzRIJStLH4SDWMfwvtgNXK5dxO1btsIJq1el+gPGNKhMD
+         ZJkoiu/6EfltgbVkSqpheIz7R7tyEhIzbbwbKfY9ZstIWvy5ulSjBHKByEDmAVuv6yYT
+         Epo6SrVKYv0bsmsl+gjbAuFMabJoEc/TPit6BYpewiKkVwah0mus3qY/+ZTMu4QKQl89
+         1jjw==
+X-Gm-Message-State: AOAM5321hutayqTbpYYJqMJXM8kVk9Q6OEK7DnCXj5CrEQNpZhawEzkX
+        FX7WD2PzlR/UISPaqoKs8Sm1Rg==
+X-Google-Smtp-Source: ABdhPJyKEzM+oTZA8CGO87qivdU2FEjZvFn+JGied66/bemneEPFkFYCPT1OT6Z0Ic9e8Jtdf/+yJA==
+X-Received: by 2002:a05:6000:1d98:b0:20c:c29d:76db with SMTP id bk24-20020a0560001d9800b0020cc29d76dbmr4585218wrb.710.1652077817942;
         Sun, 08 May 2022 23:30:17 -0700 (PDT)
 Received: from localhost.localdomain (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.googlemail.com with ESMTPSA id z18-20020adff1d2000000b0020c77f36b13sm10074833wro.100.2022.05.08.23.30.15
+        by smtp.googlemail.com with ESMTPSA id z18-20020adff1d2000000b0020c77f36b13sm10074833wro.100.2022.05.08.23.30.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 23:30:16 -0700 (PDT)
+        Sun, 08 May 2022 23:30:17 -0700 (PDT)
 From:   Corentin Labbe <clabbe@baylibre.com>
 To:     jdelvare@suse.com, linux@roeck-us.net
 Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
         Corentin Labbe <clabbe@baylibre.com>
-Subject: [PATCH v3 0/2] hwmon: acpi_power_meter: convert to new hwmon API
-Date:   Mon,  9 May 2022 06:30:08 +0000
-Message-Id: <20220509063010.3878134-1-clabbe@baylibre.com>
+Subject: [PATCH v3 1/2] hwmon: acpi_power_meter: fix style issue
+Date:   Mon,  9 May 2022 06:30:09 +0000
+Message-Id: <20220509063010.3878134-2-clabbe@baylibre.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220509063010.3878134-1-clabbe@baylibre.com>
+References: <20220509063010.3878134-1-clabbe@baylibre.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -67,34 +69,90 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello
+Fix style issues found by checkpatch.
 
-I dont like warning in my boot log such as:
-hwmon_device_register() is deprecated. Please convert the driver to use hwmon_device_register_with_info().
-So I did the conversion to the new API.
+Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+---
+ drivers/hwmon/acpi_power_meter.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-The patchset was tested with:
-- sensors
-- cat all values directly in sysfs (for ones not displayed by sensors like oem_info, model_number, etc..)
-
-But due to missing functionnality on my hardware some code path was not
-tested. (Like all cap_xxx)
-
-Regards
-
-Change since v1:
-- use really the new API
-
-Change since v2:
-- fix 32b build by using div_u64()
-
-Corentin Labbe (2):
-  hwmon: acpi_power_meter: fix style issue
-  hwmon: acpi_power_meter: convert to hwmon_device_register_with_info
-
- drivers/hwmon/acpi_power_meter.c | 524 +++++++++++++------------------
- 1 file changed, 227 insertions(+), 297 deletions(-)
-
+diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+index c405a5869581..d2545a1be9fc 100644
+--- a/drivers/hwmon/acpi_power_meter.c
++++ b/drivers/hwmon/acpi_power_meter.c
+@@ -481,7 +481,7 @@ static struct sensor_template meter_attrs[] = {
+ 	RO_SENSOR_TEMPLATE("power1_average_interval_max", show_val, 1),
+ 	RO_SENSOR_TEMPLATE("power1_is_battery", show_val, 5),
+ 	RW_SENSOR_TEMPLATE(POWER_AVG_INTERVAL_NAME, show_avg_interval,
+-		set_avg_interval, 0),
++			   set_avg_interval, 0),
+ 	{},
+ };
+ 
+@@ -530,6 +530,7 @@ static void remove_domain_devices(struct acpi_power_meter_resource *resource)
+ 
+ 	for (i = 0; i < resource->num_domain_devices; i++) {
+ 		struct acpi_device *obj = resource->domain_devices[i];
++
+ 		if (!obj)
+ 			continue;
+ 
+@@ -580,7 +581,7 @@ static int read_domain_devices(struct acpi_power_meter_resource *resource)
+ 	}
+ 
+ 	resource->holders_dir = kobject_create_and_add("measures",
+-					&resource->acpi_dev->dev.kobj);
++						       &resource->acpi_dev->dev.kobj);
+ 	if (!resource->holders_dir) {
+ 		res = -ENOMEM;
+ 		goto exit_free;
+@@ -590,7 +591,7 @@ static int read_domain_devices(struct acpi_power_meter_resource *resource)
+ 
+ 	for (i = 0; i < pss->package.count; i++) {
+ 		struct acpi_device *obj;
+-		union acpi_object *element = &(pss->package.elements[i]);
++		union acpi_object *element = &pss->package.elements[i];
+ 
+ 		/* Refuse non-references */
+ 		if (element->type != ACPI_TYPE_LOCAL_REFERENCE)
+@@ -603,7 +604,7 @@ static int read_domain_devices(struct acpi_power_meter_resource *resource)
+ 			continue;
+ 
+ 		res = sysfs_create_link(resource->holders_dir, &obj->dev.kobj,
+-				      kobject_name(&obj->dev.kobj));
++					kobject_name(&obj->dev.kobj));
+ 		if (res) {
+ 			acpi_dev_put(obj);
+ 			resource->domain_devices[i] = NULL;
+@@ -788,7 +789,7 @@ static int read_capabilities(struct acpi_power_meter_resource *resource)
+ 	str = &resource->model_number;
+ 
+ 	for (i = 11; i < 14; i++) {
+-		union acpi_object *element = &(pss->package.elements[i]);
++		union acpi_object *element = &pss->package.elements[i];
+ 
+ 		if (element->type != ACPI_TYPE_STRING) {
+ 			res = -EINVAL;
+@@ -868,8 +869,7 @@ static int acpi_power_meter_add(struct acpi_device *device)
+ 	if (!device)
+ 		return -EINVAL;
+ 
+-	resource = kzalloc(sizeof(struct acpi_power_meter_resource),
+-			   GFP_KERNEL);
++	resource = kzalloc(sizeof(*resource), GFP_KERNEL);
+ 	if (!resource)
+ 		return -ENOMEM;
+ 
+@@ -884,7 +884,8 @@ static int acpi_power_meter_add(struct acpi_device *device)
+ 	if (res)
+ 		goto exit_free;
+ 
+-	resource->trip[0] = resource->trip[1] = -1;
++	resource->trip[0] = -1;
++	resource->trip[1] = -1;
+ 
+ 	res = setup_attrs(resource);
+ 	if (res)
 -- 
 2.35.1
 
