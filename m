@@ -2,36 +2,36 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AFEC521FBD
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 17:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43CF3521FB4
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 17:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346490AbiEJPw3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 May 2022 11:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60784 "EHLO
+        id S1346472AbiEJPw1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 May 2022 11:52:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346948AbiEJPvq (ORCPT
+        with ESMTP id S1347030AbiEJPvx (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 May 2022 11:51:46 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA299C2CC;
-        Tue, 10 May 2022 08:46:20 -0700 (PDT)
+        Tue, 10 May 2022 11:51:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2A42457A8;
+        Tue, 10 May 2022 08:46:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DE2EBB81DF9;
-        Tue, 10 May 2022 15:46:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD94C385C2;
-        Tue, 10 May 2022 15:46:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 869CC615A5;
+        Tue, 10 May 2022 15:46:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C365C385A6;
+        Tue, 10 May 2022 15:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652197577;
+        s=k20201202; t=1652197600;
         bh=k7NdOnPBJCcgtgOHqgdMJ6TXBvkuxMVH2PFiZnYqYvk=;
         h=From:To:Cc:Subject:Date:From;
-        b=eJIPiDFzR9eZeLeJJ/LGwnY+Ja8pZwMMleHCKTXA7Z6lYn6r5jp+Bpk81pvhWR8p4
-         L652Aoh51XD/d+aaWwP6ub7N7a/LtktWLBvddJjJNnmvBdGLkkFUJDhF/3W/TY75eb
-         ZP74CnLnJp5wqTvF0vEz9OX56pxd1WcRMw+AgQs5ONgXEM0MAo6C50AYjlw10ecg1b
-         vYxDzS5m4/AENos9HTSNW5MTSgXIfDPlQiWZjTkK46p8IzcjeXZraujmMAtNpxOc/l
-         bzGaHjtlT/tZNoANCTygsWxaI7gOsYy2AOR9cL84gDo3tNfusWswt1knHCPO02tvlh
-         DGtKhLtytpQow==
+        b=A39jedJRCVvf0WCTlpOKkKm6x/DUe/y51LN4xjZrZ8KLR9Tt1mPWpfmvPOiZHOJsq
+         bhNmp0cN6cLrwMc21WLncAi+OurS/qJucQy1L/HRgc/Uf01g9YlsPsO39Qm/sTvjAE
+         MCNAHIsQZXgKXBKSlKl0DUWxtifOsfb3Gf4h4HIVYHJhlEy8h/U5FCsLQWRhQ9n03L
+         TewAGz8Dl4oOagFxbIumRofr391ijzkJq5qajeB5iBjVH70TYwrnCDt5yt2y4qz9PY
+         FRFgKtzPUHYvlLuHQxMOh/GEmN9qx3hB+KXjraKUqehajCgTFBji2L6Du71sxjw7PW
+         3dRMA14qnegcw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Ji-Ze Hong (Peter Hong)" <hpeter@gmail.com>,
@@ -39,9 +39,9 @@ Cc:     "Ji-Ze Hong (Peter Hong)" <hpeter@gmail.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>, jdelvare@suse.com,
         linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/6] hwmon: (f71882fg) Fix negative temperature
-Date:   Tue, 10 May 2022 11:46:09 -0400
-Message-Id: <20220510154614.154187-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 1/5] hwmon: (f71882fg) Fix negative temperature
+Date:   Tue, 10 May 2022 11:46:33 -0400
+Message-Id: <20220510154637.154283-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 X-stable: review
