@@ -2,83 +2,119 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA57A520F7A
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 10:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B515521B45
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 16:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237841AbiEJINY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 May 2022 04:13:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49968 "EHLO
+        id S245142AbiEJOJq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 May 2022 10:09:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237873AbiEJINV (ORCPT
+        with ESMTP id S245485AbiEJOJ1 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 May 2022 04:13:21 -0400
-Received: from inet10.abb.com (spf.hitachienergy.com [138.225.1.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E88B625A7A7
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 01:09:24 -0700 (PDT)
-Received: from gitsiv.ch.abb.com (gitsiv.keymile.net [10.41.156.251])
-        by inet10.abb.com (8.14.7/8.14.7) with SMTP id 24A892BX031566;
-        Tue, 10 May 2022 10:09:02 +0200
-Received: from ch10641.keymile.net.net (ch10641.keymile.net [172.31.40.7])
-        by gitsiv.ch.abb.com (Postfix) with ESMTP id 5B39565F90CF;
-        Tue, 10 May 2022 10:09:02 +0200 (CEST)
-From:   Holger Brunck <holger.brunck@hitachienergy.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Holger Brunck <holger.brunck@hitachienergy.com>,
-        Jean Delvare <jdelvare@suse.com>,
+        Tue, 10 May 2022 10:09:27 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D941EC66
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 06:44:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652190246; x=1683726246;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=1pt/pHlny94R0DZPx+JEPB809R+SBASuNCqgFpK1h0g=;
+  b=R5IfgeXDDv+8Hb2ZV1yygI4hmEUOKnA2z5Fg2Zr5uMz4H55EM2QUn6Ht
+   1BnKI2WMwki9vMiSjwhnnY10ZON5PWDAYAlGZ689Mj/AbHBOcVLvgOfu5
+   Jm7UztUApafBveWh+lJ1ZgxgIv/mGAok3PsU+ag+88918ZXTCfwvNB57K
+   LMU4pPUYwM96IlPHqFx91Tf6k4hf4EZHqkGzvUqVFSKQFPEA6rxEFoIOL
+   ogVtSTSw/Kl0cUOXrcHNNmg2Zots1cHmh8wYPSBF0pMc1uogtaeth5TyW
+   bMLBb40hltha8NiVRGYlLgJsGHu6S6C02F3altfMPaYFqze/ncaRL4GTP
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10342"; a="269511957"
+X-IronPort-AV: E=Sophos;i="5.91,214,1647327600"; 
+   d="scan'208";a="269511957"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2022 06:43:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,214,1647327600"; 
+   d="scan'208";a="657654008"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 10 May 2022 06:43:50 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1noQ9V-000HxQ-GZ;
+        Tue, 10 May 2022 13:43:49 +0000
+Date:   Tue, 10 May 2022 21:43:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Zev Weiss <zev@bewilderbeest.net>
+Cc:     kbuild-all@lists.01.org, linux-hwmon@vger.kernel.org,
         Guenter Roeck <linux@roeck-us.net>
-Subject: [v2 2/2] driver/hwmon/lm90: enable extended range according to DTS node
-Date:   Tue, 10 May 2022 10:09:00 +0200
-Message-Id: <20220510080900.22758-2-holger.brunck@hitachienergy.com>
-X-Mailer: git-send-email 2.35.1.871.gab1f276
-In-Reply-To: <20220510080900.22758-1-holger.brunck@hitachienergy.com>
-References: <20220510080900.22758-1-holger.brunck@hitachienergy.com>
+Subject: [groeck-staging:hwmon-next 58/60]
+ nct6775-platform.c:(.text.nct6775_wmi_reg_write+0x3c): undefined reference
+ to `nct6775_reg_is_word_sized'
+Message-ID: <202205102101.WVR7Q8TJ-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Some lm90 devices can operate in a extended temperature mode, this featur=
-e
-is now eanbled if the property is set in the corresponding device tree
-node.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+head:   ef36d83f3d676eb67ecc39c901aa3e72c59128e2
+commit: 58f1d9ebfce62344f11f191cf1415b8f74a7e7d2 [58/60] hwmon: (nct6775) Add i2c driver
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20220510/202205102101.WVR7Q8TJ-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git/commit/?id=58f1d9ebfce62344f11f191cf1415b8f74a7e7d2
+        git remote add groeck-staging https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+        git fetch --no-tags groeck-staging hwmon-next
+        git checkout 58f1d9ebfce62344f11f191cf1415b8f74a7e7d2
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
 
-Signed-off-by: Holger Brunck <holger.brunck@hitachienergy.com>
-cc: Jean Delvare <jdelvare@suse.com>
-cc: Guenter Roeck <linux@roeck-us.net>
----
- drivers/hwmon/lm90.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index 1c9493c70813..6cdbcfab9f20 100644
---- a/drivers/hwmon/lm90.c
-+++ b/drivers/hwmon/lm90.c
-@@ -1707,6 +1707,7 @@ static void lm90_restore_conf(void *_data)
-=20
- static int lm90_init_client(struct i2c_client *client, struct lm90_data =
-*data)
- {
-+	struct device_node *np =3D client->dev.of_node;
- 	int config, convrate;
-=20
- 	convrate =3D lm90_read_reg(client, LM90_REG_R_CONVRATE);
-@@ -1727,7 +1728,8 @@ static int lm90_init_client(struct i2c_client *clie=
-nt, struct lm90_data *data)
-=20
- 	/* Check Temperature Range Select */
- 	if (data->flags & LM90_HAVE_EXTENDED_TEMP) {
--		if (config & 0x04)
-+		if (config & 0x04 ||
-+		    of_property_read_bool(np, "onsemi,extended-range-enable"))
- 			data->flags |=3D LM90_FLAG_ADT7461_EXT;
- 	}
-=20
---=20
-2.35.1.871.gab1f276
+All errors (new ones prefixed by >>):
 
+   powerpc-linux-ld: drivers/hwmon/nct6775-platform.o: in function `nct6775_wmi_reg_write':
+>> nct6775-platform.c:(.text.nct6775_wmi_reg_write+0x3c): undefined reference to `nct6775_reg_is_word_sized'
+   powerpc-linux-ld: drivers/hwmon/nct6775-platform.o: in function `nct6775_wmi_reg_read':
+>> nct6775-platform.c:(.text.nct6775_wmi_reg_read+0x3c): undefined reference to `nct6775_reg_is_word_sized'
+   powerpc-linux-ld: drivers/hwmon/nct6775-platform.o: in function `nct6775_resume':
+>> nct6775-platform.c:(.text.nct6775_resume+0x460): undefined reference to `nct6775_reg_is_word_sized'
+   powerpc-linux-ld: drivers/hwmon/nct6775-platform.o: in function `nct6775_platform_probe':
+>> nct6775-platform.c:(.text.nct6775_platform_probe+0x124): undefined reference to `nct6775_probe'
+   powerpc-linux-ld: drivers/hwmon/nct6775-platform.o: in function `nct6775_reg_read':
+>> nct6775-platform.c:(.text.nct6775_reg_read+0x5c): undefined reference to `nct6775_reg_is_word_sized'
+   powerpc-linux-ld: drivers/hwmon/nct6775-platform.o: in function `nct6775_reg_write':
+>> nct6775-platform.c:(.text.nct6775_reg_write+0x5c): undefined reference to `nct6775_reg_is_word_sized'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_beep_enable+0x14): undefined reference to `nct6775_show_beep'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_beep_enable+0x18): undefined reference to `nct6775_store_beep'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_intrusion0_alarm+0x14): undefined reference to `nct6775_show_alarm'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_intrusion0_beep+0x14): undefined reference to `nct6775_show_beep'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_intrusion0_beep+0x18): undefined reference to `nct6775_store_beep'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_intrusion1_alarm+0x14): undefined reference to `nct6775_show_alarm'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_intrusion1_beep+0x14): undefined reference to `nct6775_show_beep'
+>> powerpc-linux-ld: drivers/hwmon/nct6775-platform.o:(.data.sensor_dev_attr_intrusion1_beep+0x18): undefined reference to `nct6775_store_beep'
+   powerpc-linux-ld: drivers/hwmon/nct6775-i2c.o: in function `nct6775_i2c_read':
+>> nct6775-i2c.c:(.text.nct6775_i2c_read+0xd8): undefined reference to `nct6775_reg_is_word_sized'
+   powerpc-linux-ld: drivers/hwmon/nct6775-i2c.o: in function `nct6775_i2c_probe':
+>> nct6775-i2c.c:(.text.nct6775_i2c_probe+0x10c): undefined reference to `nct6775_probe'
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for SENSORS_NCT6775
+   Depends on HWMON && !PPC && (ACPI_WMI || ACPI_WMI
+   Selected by
+   - SENSORS_NCT6775_I2C && HWMON && I2C
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
