@@ -2,122 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BA4A521CE3
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 16:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D21521F42
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 17:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344815AbiEJOwR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 May 2022 10:52:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47642 "EHLO
+        id S1346125AbiEJPrr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 May 2022 11:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345547AbiEJOvb (ORCPT
+        with ESMTP id S1346115AbiEJPrq (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 May 2022 10:51:31 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592C42685C7
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 07:12:26 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-ed9ac77cbbso18429409fac.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 07:12:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:content-language:to
-         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
-        bh=OgKELB9jRPS+5ag254sekocF8ws2fik0qJMNCEfEFu0=;
-        b=c8JhQVEZGmSNcAC7179E8LQhHA6mpnYuuss9eNpJbEHeTu19rOLLdks/aTnb5dxs97
-         /qUXS/y6BV3JeOw99KcQZcg3v1pB3lPUBOzqGyQoxSInugMgFAMcJJCRo0Gzwo7SuD0c
-         6RhdO99peHcj4uWs/NKHX/MqgKi1qhRe/nDW/94HK0SocFWyBs4OlP7XwHmBZ9ATdWfZ
-         VSvVU7OcfgiDqcIcyoN0DN9XFQ4f8u5WSEHlGWcF6n7kyRO/i7XRvTSnHgDh2K3daw9u
-         TzaZaMIx6rN26nbN044BCMi7ArcYEyJdo3iAXGDRCeRybfaQ35994pywZrxf36HAvWR4
-         6tZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :content-language:to:cc:references:from:subject:in-reply-to
-         :content-transfer-encoding;
-        bh=OgKELB9jRPS+5ag254sekocF8ws2fik0qJMNCEfEFu0=;
-        b=YOd9lJM1PNwEAjX/OZe4VbgAZcaGyaTuKlpCqNvqqRJswwPPGVQALrG8oXJ9lEkFJ4
-         NTgqT0SLfIA7ZcnR/pOy9FTuvYf4OAV4vNtBO3tULt9FwoX/QAhtuDTt8cWpjGT/zoOC
-         gt60F/TxDfq7pqwh0bYE6AJ/0iKZPf+NGQ7W/v4Adm1h2/BYgLeu+xcVbmsAweQh/Joy
-         hQzAvmJOI+jwwfAr+DaIWCxh/HyLp3B8wll8nU2WTB09qlPZdbTPksS2hXnfT1dlYu5H
-         POBPharz9yLWC9+3BQmK7p8+p03FnzBhOp+S53dMoRPdjeOzZJbAYw98V1k59k4muSUm
-         mmkA==
-X-Gm-Message-State: AOAM533iw+AJTUwAmW5aTHVkErXxIib6iQ37GmpsG/R9TLDBDtuO7f5S
-        PPxWykkRgJRwUUrBwMsUxdo=
-X-Google-Smtp-Source: ABdhPJwr7fLpFJT1JJgA8n3j9MKJRd3X7bJ0JhC/+NhRU1+h1Vq8mFMz85PULyY1si2Isoy7E6ZOKA==
-X-Received: by 2002:a05:6870:4188:b0:d9:eed0:5a41 with SMTP id y8-20020a056870418800b000d9eed05a41mr141881oac.161.1652191946148;
-        Tue, 10 May 2022 07:12:26 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id bp2-20020a056808238200b003289f51c2d7sm483803oib.34.2022.05.10.07.12.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 May 2022 07:12:25 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <804fbd8e-e665-4c9f-929a-44c5e50019ee@roeck-us.net>
-Date:   Tue, 10 May 2022 07:12:23 -0700
+        Tue, 10 May 2022 11:47:46 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6A127E3D2;
+        Tue, 10 May 2022 08:43:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 152DFCE1F39;
+        Tue, 10 May 2022 15:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C338C385A6;
+        Tue, 10 May 2022 15:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652197423;
+        bh=LtglKuDIcoTD0hbZVEoanwLub+zngdfuc7BctvOC8uc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dlbt5G4mubpZ/cKsg57ouR63FWF4S0cqs1IekadNuTTDsFfJG0bXz+ekGEhQ9DZRH
+         TSkQaDa34n38MJoQm8IM9AR0ae9knc1llwCKauNw56aQWdbM3HI2Gi8GAM/0mWbDAI
+         EkTzUIDz8sguGZGB2dpKuOnRBln93cg5K3SRGr69UwA1hf6bFO36uPnfS4epPct2ha
+         zQHdFUuGrZ/CND/FKb4bF9ZbffCmuFsna4H+vMUBogH6AF5SXpDzGr3WgaFAlAg1eV
+         HFR2KxgiH9loqVbsFMI23tVCQEPh7Ul76GKnJQySqaTwaNtBY6W3F3hU75eUe1z4zS
+         uo8L0Ilo69V8w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Denis Pauk <pauk.denis@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>, kernel@maidavale.org,
+        jdelvare@suse.com, linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 01/21] hwmon: (asus_wmi_sensors) Fix CROSSHAIR VI HERO name
+Date:   Tue, 10 May 2022 11:43:20 -0400
+Message-Id: <20220510154340.153400-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Content-Language: en-US
-To:     Holger Brunck <holger.brunck@hitachienergy.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-Cc:     Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-References: <20220509131016.29481-1-holger.brunck@hitachienergy.com>
- <af58fc2a-9d72-82b5-2cd4-8376a99e9ef5@roeck-us.net>
- <DB9PR06MB7289C1EF96CAC7554D65EC2EF7C99@DB9PR06MB7289.eurprd06.prod.outlook.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 1/2] dt-bindings: add extended-range-enable property to
- lm90.yaml
-In-Reply-To: <DB9PR06MB7289C1EF96CAC7554D65EC2EF7C99@DB9PR06MB7289.eurprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/10/22 00:19, Holger Brunck wrote:
->> On 5/9/22 06:10, Holger Brunck wrote:
->>> Add a boolean extended-range-enable to make the extented temperature
->>> feature for some lm90 devices configurable.
->>>
->>> Signed-off-by: Holger Brunck <holger.brunck@hitachienergy.com>
->>> cc: Jean Delvare <jdelvare@suse.com>
->>> cc: Guenter Roeck <linux@roeck-us.net>
->>> cc: Rob Herring <robh+dt@kernel.org>
->>> cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
->>> ---
->>>    Documentation/devicetree/bindings/hwmon/national,lm90.yaml | 4 ++++
->>>    1 file changed, 4 insertions(+)
->>>
->>> diff --git
->>> a/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
->>> b/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
->>> index 30db92977937..98d01f6c9331 100644
->>> --- a/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
->>> +++ b/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
->>> @@ -52,6 +52,10 @@ properties:
->>>      vcc-supply:
->>>        description: phandle to the regulator that provides the +VCC
->>> supply
->>>
->>> +  extended-range-enable:
->>
->> This should probably be either "onsemi,extended-range-enable" (for
->> adt7461) or "ti,extended-range-enable" (for the supported TI chips).
->>
-> 
-> I can change that, but I thought a generic name would be better as the
-> same property name is already used in drivers/hwmon/max6697.c.
-> 
+From: Denis Pauk <pauk.denis@gmail.com>
 
-That was introduced at times when things were not always reviewed
-by DT maintainers, and was wrong. I'd be open to change that to
-maxim,extended-range-enable (it isn't used in any upstream or published
-DT file). Let's wait for Rob or Krzysztof to decide.
+[ Upstream commit 4fd45cc8568e6086272d3036f2c29d61e9b776a1 ]
 
-Guenter
+CROSSHAIR VI HERO motherboard is incorrectly named as
+ROG CROSSHAIR VI HERO.
+
+Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
+Link: https://lore.kernel.org/r/20220403193455.1363-1-pauk.denis@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/asus_wmi_sensors.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/asus_wmi_sensors.c b/drivers/hwmon/asus_wmi_sensors.c
+index c80eee874b6c..49784a6ea23a 100644
+--- a/drivers/hwmon/asus_wmi_sensors.c
++++ b/drivers/hwmon/asus_wmi_sensors.c
+@@ -71,7 +71,7 @@ static const struct dmi_system_id asus_wmi_dmi_table[] = {
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("PRIME X399-A"),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("PRIME X470-PRO"),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR VI EXTREME"),
+-	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR VI HERO"),
++	DMI_EXACT_MATCH_ASUS_BOARD_NAME("CROSSHAIR VI HERO"),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR VI HERO (WI-FI AC)"),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR VII HERO"),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG CROSSHAIR VII HERO (WI-FI)"),
+-- 
+2.35.1
+
