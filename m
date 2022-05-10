@@ -2,890 +2,162 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF798520BAF
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 05:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4191520EA7
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 09:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235008AbiEJDJI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 9 May 2022 23:09:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52228 "EHLO
+        id S235611AbiEJHia (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 May 2022 03:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234844AbiEJDJG (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 9 May 2022 23:09:06 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E778D1D570B;
-        Mon,  9 May 2022 20:05:08 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id e189so17210435oia.8;
-        Mon, 09 May 2022 20:05:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7vvn06gVwkQUwV2CDJNUf8Xbe8kTMTsVrQLRrtehwfs=;
-        b=Xj0XRSp6rRLNbd1lLcU0Uzc7m+Gx2gGgOiqhGwYhsnKlHeJaT92ROJVS72unOfNi/q
-         LEtoqNRi659y6JOCP0kUGZ6z9nu2S7wjxVhF5Gd6coWhUXon3qO6MOJO/aJYly7HOVV3
-         IK10v3c3gUV7jM6GGMRzRv+KHpP1nAEkr4ydh9rwOq13JR08HaW4sCRcTS9lDeKBb4Kg
-         vXKMNH5lJKJYcVw3lU1iJOnjE1uw4w7Y03JDmighW0/Xir2grOwIQu4+azQTgFueUB7G
-         iNzyfyCVm2g+9YeXHUENSB8/TTngBX4B34VjaAEZBTh7vxnUdDJbIBt1/MuU3/PfKHxj
-         g4aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=7vvn06gVwkQUwV2CDJNUf8Xbe8kTMTsVrQLRrtehwfs=;
-        b=oW/N+Gx33UKPFZIi1Q2BE7AFmaE/4l99WNwDKwjTGdVeJdH22gsq7JxWlBC9/I03Si
-         KAx7a5E28a9ffCvgEeX+OgNM755Vo92kYI92nDPOv0dNvXZ1ReVhCRFl0S49wT0xmEoc
-         P6BUIf5azt07oeeNv0rUGLJiD4VzreMrbBf7lJviuOctpkT1fOb5OXyIX2u6FVKHOtdA
-         xi4US5eJeQWub5Uz17kNYodpWcPYtAlyTNEiOFVKojoHbvYzbuys0R2A27nueWOCzhsX
-         y4fhlYTuGUKtxFBdluhku4dvfhmlcFUes6avWy6IQfgWGG8fMkOfxUxqyRPZmWGyAXeM
-         VrBQ==
-X-Gm-Message-State: AOAM5305hhR/i+DCzOPchzX543SQgxH25ZpmM/33nQkgQB31p8zVCqkl
-        6XT4pCuKnuAs7fZmcOs6DQQ=
-X-Google-Smtp-Source: ABdhPJwjXP6OBRe50se4DQNcEOLnAbw+RcCIRgSuGPEOwJ6KRD7ZHiPZxZWtGTvVyoOzCKe0zT90wA==
-X-Received: by 2002:a05:6808:e82:b0:322:4c17:2f61 with SMTP id k2-20020a0568080e8200b003224c172f61mr8940955oil.131.1652151908071;
-        Mon, 09 May 2022 20:05:08 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l63-20020aca3e42000000b00325cda1ff9fsm5059456oia.30.2022.05.09.20.05.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 May 2022 20:05:06 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 9 May 2022 20:05:04 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Corentin Labbe <clabbe@baylibre.com>
-Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] hwmon: acpi_power_meter: convert to
- hwmon_device_register_with_info
-Message-ID: <20220510030504.GA1577548@roeck-us.net>
-References: <20220509063010.3878134-1-clabbe@baylibre.com>
- <20220509063010.3878134-3-clabbe@baylibre.com>
+        with ESMTP id S240652AbiEJHXD (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Tue, 10 May 2022 03:23:03 -0400
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-eopbgr140098.outbound.protection.outlook.com [40.107.14.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE9A02A18A0
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 00:19:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dwoBTS2bssYmbLjBPtKXwxNUEPx6Ejs/6rDFQnr3RKs1qlZwfbXkM5KQMEn0foKCzUL6hyR7pnU/r/BupVCOzr2qyKfGMsOy3t0owbs1QQGelq7FsiU0tIyt6kUQ4CrZOQ9Yb+X9KLj5Nl5+87a7kZjbK/fgaB32hDaa+PoEMO8yT/p4bXO0MQeDqLdKxxSoAiK7IyD+h1tbg2yldxpjnCe6H5zC51JqpB8VIk/qgqPwNcEHFybnKwmoQcZXLnWizgwuP9ONgQjhPVEVTxHVjDxZw3ZIgYnGlMBVIA8y6O/HIAPG5YuRx2hlXDHfX82BJlkJF3/WB6cZAlgWocgQwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v2OmK7znANLLCPpGcqHuCa+qBgAZ2r+dBzzCJrDisqM=;
+ b=Pzv7s/SzuMb0bdnsG7oayNGcGP4FDfGASOrXD5rFAxKBPxIdFSj5Qg+4kE6vVbHsJGFV8KyUChHmpxiuURgLLSEb9ulXnmAYoBRCTNlHg3EBgbMD2a/0jDIUCgQXYVZb6VoowrLsJH48w1AufllVMXTnQTzm4nvBEongkyhj/dHRUOrEZeWZo8lVDeBpLDVOC3TN5RXBfxesztj76kZokTyiQozOT8zzP86+pkEsJ7rGgbS8MJv36g3kHMwh6Q5dx9HFuhtc4uv2PyOUvbEh2s+ZbQSNGMpHBoV1A4nJ3ucdD/eMqkVyDDEVwBFeFAZDqUhPSPkrOSmL+XfkQ5HnWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hitachienergy.com; dmarc=pass action=none
+ header.from=hitachienergy.com; dkim=pass header.d=hitachienergy.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hitachienergy.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v2OmK7znANLLCPpGcqHuCa+qBgAZ2r+dBzzCJrDisqM=;
+ b=LX7gxJSr+B6GBHxkLo1Skq9oJGLuNeufUunWNqW/BEP/NM702YmkspAbWngQzDn2n0G29PfuZLqjWDoVk1LumHINDQ3QZZECoZJXF/CAmZ37XTa0L4Dru/3G6lcvrTdeeLbS6hzMviEA5Iy/fNQU2h44np2ckgkpXZLD/5mhSSex+iUKmZxnVNQ/abY9x75sMTXwhFdMceiDGWipsuI/9a68BOpyLPFQVgRA8BzRh3/xlUVc8+neHVliEhsXdhSnbchFOPI4I8/ynb2XZqW9YfiwarOigyL+lPjYZ51zMow5PKT5YLtZB/sHWSz4I50lHVWJ/IvsjUnXu7k2oM8tvQ==
+Received: from DB9PR06MB7289.eurprd06.prod.outlook.com (2603:10a6:10:218::16)
+ by AM0PR06MB5378.eurprd06.prod.outlook.com (2603:10a6:208:ff::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.20; Tue, 10 May
+ 2022 07:19:03 +0000
+Received: from DB9PR06MB7289.eurprd06.prod.outlook.com
+ ([fe80::7015:6796:8a61:93b4]) by DB9PR06MB7289.eurprd06.prod.outlook.com
+ ([fe80::7015:6796:8a61:93b4%9]) with mapi id 15.20.5227.023; Tue, 10 May 2022
+ 07:19:03 +0000
+From:   Holger Brunck <holger.brunck@hitachienergy.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
+CC:     Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: RE: [PATCH 1/2] dt-bindings: add extended-range-enable property to
+ lm90.yaml
+Thread-Topic: [PATCH 1/2] dt-bindings: add extended-range-enable property to
+ lm90.yaml
+Thread-Index: AQHYY6Ypw7E0KLjTH0+L1gk7R3M1Aa0XRfUAgABrr2A=
+Date:   Tue, 10 May 2022 07:19:03 +0000
+Message-ID: <DB9PR06MB7289C1EF96CAC7554D65EC2EF7C99@DB9PR06MB7289.eurprd06.prod.outlook.com>
+References: <20220509131016.29481-1-holger.brunck@hitachienergy.com>
+ <af58fc2a-9d72-82b5-2cd4-8376a99e9ef5@roeck-us.net>
+In-Reply-To: <af58fc2a-9d72-82b5-2cd4-8376a99e9ef5@roeck-us.net>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-processedbytemplafy: true
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=hitachienergy.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f8d740cc-ddf5-4672-6918-08da32555ca8
+x-ms-traffictypediagnostic: AM0PR06MB5378:EE_
+x-microsoft-antispam-prvs: <AM0PR06MB5378B8C6D061189DDF43BEBAF7C99@AM0PR06MB5378.eurprd06.prod.outlook.com>
+x-he-o365-outbound: HEO365Out
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: aBKzoOWDDFYRDLTeq8TYgi9AeeZGpq55XbzujvZvOko5SeoML0vsujc8Kz6ut8yR50BndQ2vz8u/rTDy3BKpO+NPrwH+BU3KC+R3Ce6E/YVPStLw3e2H+/w+nn6z8njPE4dohdci9OgZNPG9eQOt6OaMkwPwgog9dTcXt5KcO+6hWRB4aM0MfFrpY0G5jDMo0UfqPhZZCl+6bGijqO4izo6wx5VKM+Yf9yD1PqLW0NxsqIdVxTW39E5CJzA/7EjWntAmsIyskC6hHMhzJvO2CzyZWTjANmrVHx/8c3N6nFMJ4vAN+cc9ZOCrQMj2pxKb7f9FYagGuuhmeZbwlhNQxMNajp1pzCY5zLQH2sfta7ewj0dSNdbAMADzcTp34xj4Fl6IySOhonREPNIe8TBdmGppu6gQj5IYoYwMD8LTLF00qIFPwQon0wX5vDV3HZ+vb8/gKwl86/oNEFYrlXRIx7P4Ouwrqinw+yfxYP0w5LvaUnWiMyr9uuJybiKVP9VJG6BfPy2VanileCja6FpgNvvpgSYnSdXlNXU2WsRNZf88I0DexJzkzyUqpjIV6r5JoIFDeGjpw0CWUQqevcHCsqKuGqmgLozYwescuneImhOPZi7JaZQ/hN7+jYTkJAXAtS31On+0o3GgiKitCOFGhRy7ZSyOMH/RlJbIxuXxbTXXjq3tIKvWViDxsqL8CFnClxFqNUgJKX5ln9K53WM3hw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR06MB7289.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(26005)(5660300002)(86362001)(186003)(9686003)(52536014)(44832011)(82960400001)(8936002)(122000001)(2906002)(66946007)(4326008)(8676002)(66556008)(66446008)(38100700002)(38070700005)(66476007)(64756008)(76116006)(71200400001)(6506007)(33656002)(53546011)(54906003)(508600001)(7696005)(316002)(55016003)(110136005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bS9TQmoyVFAvS2ZvVkV5aU1qNHZSeEM1NmdweFVLY3FheTZYMlEwakpwbkV6?=
+ =?utf-8?B?WStPeGo5TXNmdFJoMHNvNjZmM01GNXkwUXlONFc5TjRNbE11ZXJNTTdOV2NN?=
+ =?utf-8?B?TXczemUwYWxCYnV3a3RWamN2TnFGUExCRU9MNzdsK3huWlRiYnZxd1dDaE5k?=
+ =?utf-8?B?SWU1alEwaXpSakc4T2FYVTNKWDBRNUZuNDBGOEdRbkpqTzdFbzdPc1lYRUcv?=
+ =?utf-8?B?cVk3Y3k5dGpMajltcHc1TkgyQ0ZzbWlSekxteXJOcldpRSs0cXBOdCtlTXRU?=
+ =?utf-8?B?YlkyRDMwL3lDNnFGVTlGeEQvQXYxZHJKK0lQaUsrS2lzTlBKTTJhNVdVRFlT?=
+ =?utf-8?B?b0R2QUFyQnhHQjI3bk9zam8vL2krbUdRWGlIMjczWDJ4QlRqYmw3YlJIY1hR?=
+ =?utf-8?B?R3Q3UXlDblR6M3BjQmtCTzJMYVZaQXNaM0kzdjBJdk5YKzRmR3ViQ0kwSVVK?=
+ =?utf-8?B?V0c2U2VDZG9SUnhLMjY0QW96Q0N6Q1MwZzhhM1gza1k2MmZpV1pIZ3pZU0Z1?=
+ =?utf-8?B?ampjSlVJa1RBdlVrSUpXN3ozTTlta0VuVE5pZFRMdmZPc3UwaEkxTHhxVSs0?=
+ =?utf-8?B?SnB1Zkxra3lRaDdxSEx3d2JiUVgzaGNPWjVhTHpodVhnSitCbkZEbTRHc2lV?=
+ =?utf-8?B?R2czOGRCTUZsRzhtWmZhZ3dKUGhoTldWVS9tTUsyNTVzUnR5Wk4rZm85THlp?=
+ =?utf-8?B?dzZhWFJWM21oVE1YMGhKTzFhVi9VWXNubWN3Sjd0SGVBS1lQR1VaT3U1VE5k?=
+ =?utf-8?B?WVBRcjNIUTJ5enJZcytWMU13Q0h0YnRMcGd3MDlpOTNEbzBQTkt6WWVQTVA0?=
+ =?utf-8?B?UDdla3cvTWtqU1lZY2g3b2w5TThtdkdsZzFIRWMrZWNRMjVZQktJUU5FK2pp?=
+ =?utf-8?B?V3R6ZGs1NDBJdjkzS0dGbjZwU3h1aUVEV05XeEpESWI2WnVvTGYwYmIybXVm?=
+ =?utf-8?B?Z0R3TngwMWg5Q1N2aGtDT3dJZXRhVEYwZzRURTNpeGJGcG03c2dLZFRqRXp6?=
+ =?utf-8?B?aUZzakVGVWprZGZOSmFNbnU3WE4xYVAvdG91WXFWdkxkditmNmVpcDdJajlv?=
+ =?utf-8?B?NkJRMXN4d2VwbFZ3WDc5WDVwaXJFTmxxT29kZ2sxVkp1ZE5pR3doaG53QlFj?=
+ =?utf-8?B?dUVYRnNCZVV6UmF0bG81T2Y5ZUJ6VTl2dnNyNVNBaDQ2aWRxSkxuVWpZVk1E?=
+ =?utf-8?B?Mi91ckQ1UytSM0hrZUtWeWpkN1A2SlVpbGZjL0ZyNjQ2eGtDVVI3TFlXQ0tr?=
+ =?utf-8?B?M2VUcUtBQnVqR2NBUkswVTNGeUR1S2tmM21xNVdQVXFyZEp3TDVRUHBTWGY5?=
+ =?utf-8?B?MEF4cklINVpmNllLajZpQVYvay9LVTJVTWVuazE4RFExVm9TcXZIUjlpUDUr?=
+ =?utf-8?B?Lzdpc0xoM1ZwYVl3Si8zcWp1bUdYM1pLQkx1K2k0RVJSNThoRTBjT2twOFlQ?=
+ =?utf-8?B?MDBvaHNDSEU4MmFlWFFrSHpLeWZKc1VQYVorQ2NVMzhRa2ljQzgydXI4VXBp?=
+ =?utf-8?B?V0IzcEpuY090VEgwdkg4U2tjcEVDVXJNRU1IMjJrRVVRRnZFQ20xTCt1WWg0?=
+ =?utf-8?B?YXMzendmOE9rZ3FCSnR0dU9KYTgyK0tuMkxwU0lWNW5OQ0JiOThDQ0Y5Tm5Q?=
+ =?utf-8?B?cWtuSXBGVEVHTWtTM1J2ZDFKUDFrR2lVUHp4WWZBZ2syYml1bE50cWdIU0l4?=
+ =?utf-8?B?TkxIQ1F2SHpoOVRZZW5RMXNKQTVBNXdRQXBpYUM4aHVZaFVFeHNGaGJPMUJ6?=
+ =?utf-8?B?Q3JhTlllU0pYVTBrdnhSQ1JkS0N0ZEloa0swS3pKVGZDd21zUm5NMDVPTEhG?=
+ =?utf-8?B?WE1FdVRUdE9EQ0dCK09UeGNzQXJmUVErUkFJVG1iMUNsdlM0K25CVWRaaHNV?=
+ =?utf-8?B?eDhqdlo4UDgvTU5QcDJJZ0tZK3E4NEVUN2Z0a2hNcTRWVHZTMWhzWlF3SHZp?=
+ =?utf-8?B?WEh4NFdNQU5jV2pDdjVtUjBCRElZQ1JQN1JSRFZqRHVXMEtnRlJNMzdnbTJ2?=
+ =?utf-8?B?cjR3d0dHclhhYjkwcG93Tm01Qkwyb250UVhCMzhXRkpHWkplMFRtUWxXdm9l?=
+ =?utf-8?B?V05KeDFwNjhGcjR6Q01wTkpMTWlGazZpRnovSG5mODhtUmtSMnQ2NU1wTDY2?=
+ =?utf-8?B?V1Yva2JPQmltWjRxWDlCYTdKRituUkR0WnBNK1QxdWtpTDc1TThxM2FjdzFQ?=
+ =?utf-8?B?U3IxcmNMM3I5MG51T0dXMGxOanRJL3VSQjU5anFJbXJ3N3c3Q0FKaFhCNFE2?=
+ =?utf-8?B?WHlaeEluRTJlM0dQZkZzaE93RWRpNlV4aHpVUFpWajVjMUZ5WGViQ0NEa2Z2?=
+ =?utf-8?B?MnZXbkZxeDNzYXd1V283N082UXJvbUtoSXl6MFFMdVJjeU1WclJpMXVVN215?=
+ =?utf-8?Q?+SEKT81IXAPszYrQ=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220509063010.3878134-3-clabbe@baylibre.com>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-OriginatorOrg: hitachienergy.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR06MB7289.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8d740cc-ddf5-4672-6918-08da32555ca8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 May 2022 07:19:03.3871
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7831e6d9-dc6c-4cd1-9ec6-1dc2b4133195
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kzMlrMaRnheDqInO8EnKcFRdK1LpVWvwmV0zTQlij+3kvy6Wh9pc8d9rp5qrbm6KT5MUMSpN4HSkCTQvXYBsdTGkKsULT+FeIZQD1fZcFew=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR06MB5378
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, May 09, 2022 at 06:30:10AM +0000, Corentin Labbe wrote:
-> Booting lead to a hwmon_device_register() is deprecated. Please convert the driver to use hwmon_device_register_with_info().
-> So let's convert the driver to use hwmon_device_register_with_info().
-> 
-
-This is hardly readable, and results in a checkpatch warning.
-Please rephrase.
-
-> Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
-> ---
->  drivers/hwmon/acpi_power_meter.c | 509 +++++++++++++------------------
->  1 file changed, 219 insertions(+), 290 deletions(-)
-> 
-> diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-> index d2545a1be9fc..03a144c884aa 100644
-> --- a/drivers/hwmon/acpi_power_meter.c
-> +++ b/drivers/hwmon/acpi_power_meter.c
-
-The following include files seem unnecessary.
-
-linux/hwmon-sysfs.h
-linux/kdev_t.h
-linux/sched.h
-
-On the other side,
-
-linux/kobject.h
-
-should be included.
-
-> @@ -23,7 +23,8 @@
->  #define ACPI_POWER_METER_DEVICE_NAME	"Power Meter"
->  #define ACPI_POWER_METER_CLASS		"pwr_meter_resource"
->  
-> -#define NUM_SENSORS			17
-> +#define TRIP_MIN 0
-> +#define TRIP_MAX 1
-
-Please use
-
-#define<space>DEFINE<tab>value
-
->  
->  #define POWER_METER_CAN_MEASURE	(1 << 0)
->  #define POWER_METER_CAN_TRIP	(1 << 1)
-> @@ -38,11 +39,6 @@
->  #define METER_NOTIFY_CAPPING	0x83
->  #define METER_NOTIFY_INTERVAL	0x84
->  
-> -#define POWER_AVERAGE_NAME	"power1_average"
-> -#define POWER_CAP_NAME		"power1_cap"
-> -#define POWER_AVG_INTERVAL_NAME	"power1_average_interval"
-> -#define POWER_ALARM_NAME	"power1_alarm"
-> -
->  static int cap_in_hardware;
->  static bool force_cap_on;
->  
-> @@ -85,8 +81,6 @@ struct acpi_power_meter_resource {
->  	u64		avg_interval;
->  	int			sensors_valid;
->  	unsigned long		sensors_last_updated;
-> -	struct sensor_device_attribute	sensors[NUM_SENSORS];
-> -	int			num_sensors;
->  	s64			trip[2];
->  	int			num_domain_devices;
->  	struct acpi_device	**domain_devices;
-
-Around here is struct sensor_template which is now unused.
-Please remove.
-
-> @@ -122,47 +116,32 @@ static int update_avg_interval(struct acpi_power_meter_resource *resource)
->  	return 0;
->  }
->  
-> -static ssize_t show_avg_interval(struct device *dev,
-> -				 struct device_attribute *devattr,
-> -				 char *buf)
-> +static int acpi_power_average_interval_read(struct acpi_power_meter_resource *resource)
->  {
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
-> -
->  	mutex_lock(&resource->lock);
->  	update_avg_interval(resource);
->  	mutex_unlock(&resource->lock);
->  
-> -	return sprintf(buf, "%llu\n", resource->avg_interval);
-> +	return resource->avg_interval;
->  }
->  
-> -static ssize_t set_avg_interval(struct device *dev,
-> -				struct device_attribute *devattr,
-> -				const char *buf, size_t count)
-> +static int set_average_interval(struct acpi_power_meter_resource *resource, long val)
->  {
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
->  	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
->  	struct acpi_object_list args = { 1, &arg0 };
-> -	int res;
-> -	unsigned long temp;
->  	unsigned long long data;
->  	acpi_status status;
->  
-> -	res = kstrtoul(buf, 10, &temp);
-> -	if (res)
-> -		return res;
-> -
-> -	if (temp > resource->caps.max_avg_interval ||
-> -	    temp < resource->caps.min_avg_interval)
-> +	if (val > resource->caps.max_avg_interval ||
-> +	    val < resource->caps.min_avg_interval)
->  		return -EINVAL;
-> -	arg0.integer.value = temp;
-> +	arg0.integer.value = val;
->  
->  	mutex_lock(&resource->lock);
->  	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_PAI",
->  				       &args, &data);
->  	if (ACPI_SUCCESS(status))
-> -		resource->avg_interval = temp;
-> +		resource->avg_interval = val;
->  	mutex_unlock(&resource->lock);
->  
->  	if (ACPI_FAILURE(status)) {
-> @@ -175,7 +154,7 @@ static ssize_t set_avg_interval(struct device *dev,
->  	if (data)
->  		return -EINVAL;
->  
-> -	return count;
-> +	return 0;
->  }
->  
->  /* Cap functions */
-> @@ -196,46 +175,33 @@ static int update_cap(struct acpi_power_meter_resource *resource)
->  	return 0;
->  }
->  
-> -static ssize_t show_cap(struct device *dev,
-> -			struct device_attribute *devattr,
-> -			char *buf)
-> +static int acpi_power_cap_read(struct acpi_power_meter_resource *resource,
-> +			       long *val)
->  {
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
-> -
->  	mutex_lock(&resource->lock);
->  	update_cap(resource);
->  	mutex_unlock(&resource->lock);
->  
-> -	return sprintf(buf, "%llu\n", resource->cap * 1000);
-> +	return resource->cap * 1000;
->  }
->  
-> -static ssize_t set_cap(struct device *dev, struct device_attribute *devattr,
-> -		       const char *buf, size_t count)
-> +static int set_cap(struct acpi_power_meter_resource *resource, long val)
->  {
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
->  	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
->  	struct acpi_object_list args = { 1, &arg0 };
-> -	int res;
-> -	unsigned long temp;
->  	unsigned long long data;
->  	acpi_status status;
->  
-> -	res = kstrtoul(buf, 10, &temp);
-> -	if (res)
-> -		return res;
-> -
-> -	temp = DIV_ROUND_CLOSEST(temp, 1000);
-> -	if (temp > resource->caps.max_cap || temp < resource->caps.min_cap)
-> +	val = DIV_ROUND_CLOSEST(val, 1000);
-> +	if (val > resource->caps.max_cap || val < resource->caps.min_cap)
->  		return -EINVAL;
-> -	arg0.integer.value = temp;
-> +	arg0.integer.value = val;
->  
->  	mutex_lock(&resource->lock);
->  	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_SHL",
->  				       &args, &data);
->  	if (ACPI_SUCCESS(status))
-> -		resource->cap = temp;
-> +		resource->cap = val;
->  	mutex_unlock(&resource->lock);
->  
->  	if (ACPI_FAILURE(status)) {
-> @@ -248,7 +214,7 @@ static ssize_t set_cap(struct device *dev, struct device_attribute *devattr,
->  	if (data)
->  		return -EINVAL;
->  
-> -	return count;
-> +	return 0;
->  }
->  
->  /* Power meter trip points */
-> @@ -263,12 +229,12 @@ static int set_acpi_trip(struct acpi_power_meter_resource *resource)
->  	acpi_status status;
->  
->  	/* Both trip levels must be set */
-> -	if (resource->trip[0] < 0 || resource->trip[1] < 0)
-> +	if (resource->trip[TRIP_MIN] < 0 || resource->trip[TRIP_MAX] < 0)
->  		return 0;
->  
->  	/* This driver stores min, max; ACPI wants max, min. */
-> -	arg_objs[0].integer.value = resource->trip[1];
-> -	arg_objs[1].integer.value = resource->trip[0];
-> +	arg_objs[0].integer.value = resource->trip[TRIP_MAX];
-> +	arg_objs[1].integer.value = resource->trip[TRIP_MIN];
->  
->  	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_PTP",
->  				       &args, &data);
-> @@ -285,30 +251,18 @@ static int set_acpi_trip(struct acpi_power_meter_resource *resource)
->  	return 0;
->  }
->  
-> -static ssize_t set_trip(struct device *dev, struct device_attribute *devattr,
-> -			const char *buf, size_t count)
-> +static int set_trip(struct acpi_power_meter_resource *resource, long val, int triptype)
->  {
-> -	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
->  	int res;
-> -	unsigned long temp;
->  
-> -	res = kstrtoul(buf, 10, &temp);
-> -	if (res)
-> -		return res;
-> -
-> -	temp = DIV_ROUND_CLOSEST(temp, 1000);
-> +	val = DIV_ROUND_CLOSEST(val, 1000);
->  
->  	mutex_lock(&resource->lock);
-> -	resource->trip[attr->index - 7] = temp;
-> +	resource->trip[triptype] = val;
->  	res = set_acpi_trip(resource);
->  	mutex_unlock(&resource->lock);
->  
-> -	if (res)
-> -		return res;
-> -
-> -	return count;
-> +	return res;
->  }
->  
->  /* Power meter */
-> @@ -337,33 +291,26 @@ static int update_meter(struct acpi_power_meter_resource *resource)
->  	return 0;
->  }
->  
-> -static ssize_t show_power(struct device *dev,
-> -			  struct device_attribute *devattr,
-> -			  char *buf)
-> +static int acpi_power_power_read(struct acpi_power_meter_resource *resource,
-> +				 long *val)
->  {
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
-> -
->  	mutex_lock(&resource->lock);
->  	update_meter(resource);
->  	mutex_unlock(&resource->lock);
->  
-> -	return sprintf(buf, "%llu\n", resource->power * 1000);
-> +	*val = resource->power * 1000;
-> +	return 0;
->  }
->  
->  /* Miscellaneous */
-> -static ssize_t show_str(struct device *dev,
-> -			struct device_attribute *devattr,
-> -			char *buf)
-> +static ssize_t show_str(struct device *dev, int index, char *buf)
->  {
-> -	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
-> +	struct acpi_power_meter_resource *resource = dev_get_drvdata(dev);
->  	acpi_string val;
->  	int ret;
->  
->  	mutex_lock(&resource->lock);
-> -	switch (attr->index) {
-> +	switch (index) {
->  	case 0:
->  		val = resource->model_number;
->  		break;
-> @@ -375,7 +322,7 @@ static ssize_t show_str(struct device *dev,
->  		break;
->  	default:
->  		WARN(1, "Implementation error: unexpected attribute index %d\n",
-> -		     attr->index);
-> +		     index);
->  		val = "";
->  		break;
->  	}
-> @@ -384,141 +331,138 @@ static ssize_t show_str(struct device *dev,
->  	return ret;
->  }
->  
-> -static ssize_t show_val(struct device *dev,
-> -			struct device_attribute *devattr,
-> -			char *buf)
-> +static ssize_t power1_is_battery_show(struct device *dev,
-> +				      struct device_attribute *attr,
-> +				      char *buf)
->  {
-> -	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
->  	struct acpi_device *acpi_dev = to_acpi_device(dev);
->  	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
-> -	u64 val = 0;
-> +	int val;
->  
-> -	switch (attr->index) {
-> -	case 0:
-> -		val = resource->caps.min_avg_interval;
-> +	if (resource->caps.flags & POWER_METER_IS_BATTERY)
-> +		val = 1;
-> +	else
-> +		val = 0;
-
-	val = !!(resource->caps.flags & POWER_METER_IS_BATTERY);
-
-would avoid the if()
-
-> +	return sprintf(buf, "%d\n", val);
-> +}
-> +
-> +static ssize_t power1_model_number_show(struct device *dev,
-> +					struct device_attribute *attr,
-> +					char *buf)
-> +{
-> +	return show_str(dev, 0, buf);
-> +}
-> +
-> +static ssize_t power1_serial_number_show(struct device *dev,
-> +					 struct device_attribute *attr,
-> +					 char *buf)
-> +{
-> +	return show_str(dev, 1, buf);
-> +}
-> +
-> +static ssize_t power1_oem_info_show(struct device *dev,
-> +				    struct device_attribute *attr,
-> +				    char *buf)
-> +{
-> +	return show_str(dev, 2, buf);
-> +}
-> +
-> +static int acpi_power_read(struct device *dev, enum hwmon_sensor_types type,
-> +			   u32 attr, int channel, long *val)
-> +{
-> +	struct acpi_power_meter_resource *resource = dev_get_drvdata(dev);
-> +
-> +	switch (attr) {
-> +	case hwmon_power_average:
-> +		return acpi_power_power_read(resource, val);
-> +	case hwmon_power_average_interval_min:
-> +		*val = resource->caps.min_avg_interval;
->  		break;
-> -	case 1:
-> -		val = resource->caps.max_avg_interval;
-> +	case hwmon_power_average_interval_max:
-> +		*val = resource->caps.max_avg_interval;
->  		break;
-> -	case 2:
-> -		val = resource->caps.min_cap * 1000;
-> +	case hwmon_power_cap_min:
-> +		*val = resource->caps.min_cap * 1000;
->  		break;
-> -	case 3:
-> -		val = resource->caps.max_cap * 1000;
-> +	case hwmon_power_cap_max:
-> +		*val = resource->caps.max_cap * 1000;
->  		break;
-> -	case 4:
-> +	case hwmon_power_cap:
-> +		*val = acpi_power_cap_read(resource, val);
-> +		break;
-> +	case hwmon_power_cap_hyst:
->  		if (resource->caps.hysteresis == UNKNOWN_HYSTERESIS)
-> -			return sprintf(buf, "unknown\n");
-> +			return -EINVAL;
-
-			return -ENODATA;
-
->  
-> -		val = resource->caps.hysteresis * 1000;
-> +		*val = resource->caps.hysteresis * 1000;
->  		break;
-> -	case 5:
-> -		if (resource->caps.flags & POWER_METER_IS_BATTERY)
-> -			val = 1;
-> -		else
-> -			val = 0;
-> -		break;
-> -	case 6:
-> +	case hwmon_power_alarm:
->  		if (resource->power > resource->cap)
-> -			val = 1;
-> +			*val = 1;
->  		else
-> -			val = 0;
-> +			*val = 0;
-
-		*val = !!(resource->power > resource->cap);
-
->  		break;
-> -	case 7:
-> -	case 8:
-> -		if (resource->trip[attr->index - 7] < 0)
-> -			return sprintf(buf, "unknown\n");
-> -
-> -		val = resource->trip[attr->index - 7] * 1000;
-> +	case hwmon_power_average_min:
-> +		if (resource->trip[TRIP_MIN] < 0)
-> +			return -EINVAL;
-
-			return -ENODATA;
-
-> +		*val = resource->trip[TRIP_MIN] * 1000;
-> +		break;
-> +	case hwmon_power_average_max:
-> +		if (resource->trip[TRIP_MAX] < 0)
-> +			return -EINVAL;
-
-			return -ENODATA;
-
-> +		*val = resource->trip[TRIP_MAX] * 1000;
-> +		break;
-> +	case hwmon_power_average_interval:
-> +		*val = acpi_power_average_interval_read(resource);
-> +		break;
-> +	case hwmon_power_accuracy:
-> +		*val = div_u64(resource->caps.accuracy, 1000);
->  		break;
->  	default:
->  		WARN(1, "Implementation error: unexpected attribute index %d\n",
-> -		     attr->index);
-> -		break;
-> +		     attr);
-> +		return -EOPNOTSUPP;
->  	}
->  
-> -	return sprintf(buf, "%llu\n", val);
-> -}
-> -
-> -static ssize_t show_accuracy(struct device *dev,
-> -			     struct device_attribute *devattr,
-> -			     char *buf)
-> -{
-> -	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> -	struct acpi_power_meter_resource *resource = acpi_dev->driver_data;
-> -	unsigned int acc = resource->caps.accuracy;
-> -
-> -	return sprintf(buf, "%u.%u%%\n", acc / 1000, acc % 1000);
-> +	return 0;
->  }
->  
-> -static ssize_t show_name(struct device *dev,
-> -			 struct device_attribute *devattr,
-> -			 char *buf)
-> +static int acpi_power_write(struct device *dev, enum hwmon_sensor_types type,
-> +			    u32 attr, int channel, long val)
->  {
-> -	return sprintf(buf, "%s\n", ACPI_POWER_METER_NAME);
-> -}
-> -
-> -#define RO_SENSOR_TEMPLATE(_label, _show, _index)	\
-> -	{						\
-> -		.label = _label,			\
-> -		.show  = _show,				\
-> -		.index = _index,			\
-> -	}
-> -
-> -#define RW_SENSOR_TEMPLATE(_label, _show, _set, _index)	\
-> -	{						\
-> -		.label = _label,			\
-> -		.show  = _show,				\
-> -		.set   = _set,				\
-> -		.index = _index,			\
-> +	struct acpi_power_meter_resource *resource = dev_get_drvdata(dev);
-> +
-> +	switch (attr) {
-> +	case hwmon_power_average_min:
-> +		return set_trip(resource, TRIP_MIN, val);
-> +	case hwmon_power_average_max:
-> +		return set_trip(resource, TRIP_MAX, val);
-> +	case hwmon_power_cap:
-> +		if (resource->caps.configurable_cap)
-> +			return set_cap(resource, val);
-> +		else
-
-else after return is unnecessary.
-
-> +			return -EINVAL;
-> +	case hwmon_power_average_interval:
-> +		return set_average_interval(resource, val);
-> +	default:
-> +		return -EOPNOTSUPP;
->  	}
-> +}
->  
-> -/* Sensor descriptions.  If you add a sensor, update NUM_SENSORS above! */
-> -static struct sensor_template meter_attrs[] = {
-> -	RO_SENSOR_TEMPLATE(POWER_AVERAGE_NAME, show_power, 0),
-> -	RO_SENSOR_TEMPLATE("power1_accuracy", show_accuracy, 0),
-> -	RO_SENSOR_TEMPLATE("power1_average_interval_min", show_val, 0),
-> -	RO_SENSOR_TEMPLATE("power1_average_interval_max", show_val, 1),
-> -	RO_SENSOR_TEMPLATE("power1_is_battery", show_val, 5),
-> -	RW_SENSOR_TEMPLATE(POWER_AVG_INTERVAL_NAME, show_avg_interval,
-> -			   set_avg_interval, 0),
-> -	{},
-> -};
-> -
-> -static struct sensor_template misc_cap_attrs[] = {
-> -	RO_SENSOR_TEMPLATE("power1_cap_min", show_val, 2),
-> -	RO_SENSOR_TEMPLATE("power1_cap_max", show_val, 3),
-> -	RO_SENSOR_TEMPLATE("power1_cap_hyst", show_val, 4),
-> -	RO_SENSOR_TEMPLATE(POWER_ALARM_NAME, show_val, 6),
-> -	{},
-> -};
-> -
-> -static struct sensor_template ro_cap_attrs[] = {
-> -	RO_SENSOR_TEMPLATE(POWER_CAP_NAME, show_cap, 0),
-> -	{},
-> -};
-> -
-> -static struct sensor_template rw_cap_attrs[] = {
-> -	RW_SENSOR_TEMPLATE(POWER_CAP_NAME, show_cap, set_cap, 0),
-> -	{},
-> -};
-> -
-> -static struct sensor_template trip_attrs[] = {
-> -	RW_SENSOR_TEMPLATE("power1_average_min", show_val, set_trip, 7),
-> -	RW_SENSOR_TEMPLATE("power1_average_max", show_val, set_trip, 8),
-> -	{},
-> -};
-> -
-> -static struct sensor_template misc_attrs[] = {
-> -	RO_SENSOR_TEMPLATE("name", show_name, 0),
-> -	RO_SENSOR_TEMPLATE("power1_model_number", show_str, 0),
-> -	RO_SENSOR_TEMPLATE("power1_oem_info", show_str, 2),
-> -	RO_SENSOR_TEMPLATE("power1_serial_number", show_str, 1),
-> -	{},
-> +static DEVICE_ATTR_RO(power1_is_battery);
-> +static DEVICE_ATTR_RO(power1_model_number);
-> +static DEVICE_ATTR_RO(power1_oem_info);
-> +static DEVICE_ATTR_RO(power1_serial_number);
-> +
-> +static struct attribute *acpi_power_attrs[] = {
-> +	&dev_attr_power1_is_battery.attr,
-> +	&dev_attr_power1_model_number.attr,
-> +	&dev_attr_power1_oem_info.attr,
-> +	&dev_attr_power1_serial_number.attr,
-> +	NULL
->  };
->  
-> -#undef RO_SENSOR_TEMPLATE
-> -#undef RW_SENSOR_TEMPLATE
-> +ATTRIBUTE_GROUPS(acpi_power);
->  
->  /* Read power domain data */
->  static void remove_domain_devices(struct acpi_power_meter_resource *resource)
-> @@ -621,55 +565,52 @@ static int read_domain_devices(struct acpi_power_meter_resource *resource)
->  	return res;
->  }
->  
-> -/* Registration and deregistration */
-> -static int register_attrs(struct acpi_power_meter_resource *resource,
-> -			  struct sensor_template *attrs)
-> -{
-> -	struct device *dev = &resource->acpi_dev->dev;
-> -	struct sensor_device_attribute *sensors =
-> -		&resource->sensors[resource->num_sensors];
-> -	int res = 0;
-> -
-> -	while (attrs->label) {
-> -		sensors->dev_attr.attr.name = attrs->label;
-> -		sensors->dev_attr.attr.mode = 0444;
-> -		sensors->dev_attr.show = attrs->show;
-> -		sensors->index = attrs->index;
-> -
-> -		if (attrs->set) {
-> -			sensors->dev_attr.attr.mode |= 0200;
-> -			sensors->dev_attr.store = attrs->set;
-> -		}
-> -
-> -		sysfs_attr_init(&sensors->dev_attr.attr);
-> -		res = device_create_file(dev, &sensors->dev_attr);
-> -		if (res) {
-> -			sensors->dev_attr.attr.name = NULL;
-> -			goto error;
-> -		}
-> -		sensors++;
-> -		resource->num_sensors++;
-> -		attrs++;
-> -	}
-> -
-> -error:
-> -	return res;
-> -}
-> -
-> -static void remove_attrs(struct acpi_power_meter_resource *resource)
-> +static umode_t acpi_power_is_visible(const void *data,
-> +				     enum hwmon_sensor_types type,
-> +				     u32 attr, int channel)
->  {
-> -	int i;
-> +	const struct acpi_power_meter_resource *resource = data;
->  
-> -	for (i = 0; i < resource->num_sensors; i++) {
-> -		if (!resource->sensors[i].dev_attr.attr.name)
-> -			continue;
-> -		device_remove_file(&resource->acpi_dev->dev,
-> -				   &resource->sensors[i].dev_attr);
-> +	switch (attr) {
-> +	case hwmon_power_average_min:
-> +	case hwmon_power_average_max:
-> +		if (resource->caps.flags & POWER_METER_CAN_TRIP)
-> +			return 0644;
-> +		break;
-> +	case hwmon_power_average:
-> +	case hwmon_power_accuracy:
-> +	case hwmon_power_average_interval_min:
-> +	case hwmon_power_average_interval_max:
-> +		if (resource->caps.flags & POWER_METER_CAN_MEASURE)
-> +			return 0444;
-> +		break;
-> +	case hwmon_power_average_interval:
-> +		if (resource->caps.flags & POWER_METER_CAN_MEASURE)
-> +			return 0644;
-> +		break;
-> +	case hwmon_power_cap:
-> +		if (!can_cap_in_hardware())
-> +			return 0;
-> +		if (!(resource->caps.flags & POWER_METER_CAN_CAP))
-> +			return 0;
-> +		if (resource->caps.configurable_cap)
-> +			return 0644;
-> +		return 0444;
-> +		break;
-
-Drop "break;" after return.
-
-> +	case hwmon_power_cap_min:
-> +	case hwmon_power_cap_max:
-> +	case hwmon_power_cap_hyst:
-> +	case hwmon_power_cap_alarm:
-> +		if (!can_cap_in_hardware())
-> +			return 0;
-> +		if (resource->caps.flags & POWER_METER_CAN_CAP)
-> +			return 0444;
-
-Consistency would be nice: In the above code the condition is negated.
-
-> +		break;
-> +	default:
-> +		break;
->  	}
->  
-> -	remove_domain_devices(resource);
-> -
-> -	resource->num_sensors = 0;
-> +	return 0;
->  }
->  
->  static int setup_attrs(struct acpi_power_meter_resource *resource)
-> @@ -680,47 +621,11 @@ static int setup_attrs(struct acpi_power_meter_resource *resource)
->  	if (res)
->  		return res;
->  
-> -	if (resource->caps.flags & POWER_METER_CAN_MEASURE) {
-> -		res = register_attrs(resource, meter_attrs);
-> -		if (res)
-> -			goto error;
-> +	if (resource->caps.flags & POWER_METER_CAN_CAP && !can_cap_in_hardware()) {
-> +		dev_warn(&resource->acpi_dev->dev,
-> +			 "Ignoring unsafe software power cap!\n");
->  	}
-> -
-> -	if (resource->caps.flags & POWER_METER_CAN_CAP) {
-> -		if (!can_cap_in_hardware()) {
-> -			dev_warn(&resource->acpi_dev->dev,
-> -				 "Ignoring unsafe software power cap!\n");
-> -			goto skip_unsafe_cap;
-> -		}
-> -
-> -		if (resource->caps.configurable_cap)
-> -			res = register_attrs(resource, rw_cap_attrs);
-> -		else
-> -			res = register_attrs(resource, ro_cap_attrs);
-> -
-> -		if (res)
-> -			goto error;
-> -
-> -		res = register_attrs(resource, misc_cap_attrs);
-> -		if (res)
-> -			goto error;
-> -	}
-> -
-> -skip_unsafe_cap:
-> -	if (resource->caps.flags & POWER_METER_CAN_TRIP) {
-> -		res = register_attrs(resource, trip_attrs);
-> -		if (res)
-> -			goto error;
-> -	}
-> -
-> -	res = register_attrs(resource, misc_attrs);
-> -	if (res)
-> -		goto error;
-> -
-> -	return res;
-> -error:
-> -	remove_attrs(resource);
-> -	return res;
-> +	return 0;
->  }
->  
->  static void free_capabilities(struct acpi_power_meter_resource *resource)
-> @@ -795,7 +700,6 @@ static int read_capabilities(struct acpi_power_meter_resource *resource)
->  			res = -EINVAL;
->  			goto error;
->  		}
-> -
->  		*str = kcalloc(element->string.length + 1, sizeof(u8),
->  			       GFP_KERNEL);
->  		if (!*str) {
-> @@ -836,20 +740,20 @@ static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
->  		if (res)
->  			break;
->  
-> -		remove_attrs(resource);
-> +		remove_domain_devices(resource);
->  		setup_attrs(resource);
->  		break;
->  	case METER_NOTIFY_TRIP:
-> -		sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME);
-> +		hwmon_notify_event(&device->dev, hwmon_power, hwmon_power_average, 0);
->  		break;
->  	case METER_NOTIFY_CAP:
-> -		sysfs_notify(&device->dev.kobj, NULL, POWER_CAP_NAME);
-> +		hwmon_notify_event(&device->dev, hwmon_power, hwmon_power_cap, 0);
->  		break;
->  	case METER_NOTIFY_INTERVAL:
-> -		sysfs_notify(&device->dev.kobj, NULL, POWER_AVG_INTERVAL_NAME);
-> +		hwmon_notify_event(&device->dev, hwmon_power, hwmon_power_average_interval, 0);
->  		break;
->  	case METER_NOTIFY_CAPPING:
-> -		sysfs_notify(&device->dev.kobj, NULL, POWER_ALARM_NAME);
-> +		hwmon_notify_event(&device->dev, hwmon_power, hwmon_power_alarm, 0);
->  		dev_info(&device->dev, "Capping in progress.\n");
->  		break;
->  	default:
-> @@ -861,6 +765,28 @@ static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
->  					dev_name(&device->dev), event, 0);
->  }
->  
-> +static const struct hwmon_channel_info *acpi_power_info[] = {
-> +	HWMON_CHANNEL_INFO(power,
-> +			   HWMON_P_AVERAGE | HWMON_P_AVERAGE_INTERVAL |
-> +			   HWMON_P_AVERAGE_MIN | HWMON_P_AVERAGE_MAX |
-> +			   HWMON_P_CAP | HWMON_P_CAP_HYST |
-> +			   HWMON_P_CAP_MIN | HWMON_P_CAP_MAX |
-> +			   HWMON_P_ACCURACY
-> +			   ),
-> +	NULL,
-> +};
-> +
-> +static const struct hwmon_ops acpi_power_hwmon_ops = {
-> +	.is_visible = acpi_power_is_visible,
-> +	.read = acpi_power_read,
-> +	.write = acpi_power_write,
-> +};
-> +
-> +static const struct hwmon_chip_info acpi_power_chip_info = {
-> +	.ops = &acpi_power_hwmon_ops,
-> +	.info = acpi_power_info,
-> +};
-> +
->  static int acpi_power_meter_add(struct acpi_device *device)
->  {
->  	int res;
-> @@ -891,7 +817,10 @@ static int acpi_power_meter_add(struct acpi_device *device)
->  	if (res)
->  		goto exit_free_capability;
->  
-> -	resource->hwmon_dev = hwmon_device_register(&device->dev);
-> +	resource->hwmon_dev = hwmon_device_register_with_info(&device->dev,
-> +							      ACPI_POWER_METER_NAME,
-> +							      resource, &acpi_power_chip_info,
-> +							      acpi_power_groups);
->  	if (IS_ERR(resource->hwmon_dev)) {
->  		res = PTR_ERR(resource->hwmon_dev);
->  		goto exit_remove;
-> @@ -901,7 +830,7 @@ static int acpi_power_meter_add(struct acpi_device *device)
->  	goto exit;
->  
->  exit_remove:
-> -	remove_attrs(resource);
-> +	remove_domain_devices(resource);
->  exit_free_capability:
->  	free_capabilities(resource);
->  exit_free:
-> @@ -920,7 +849,7 @@ static int acpi_power_meter_remove(struct acpi_device *device)
->  	resource = acpi_driver_data(device);
->  	hwmon_device_unregister(resource->hwmon_dev);
->  
-> -	remove_attrs(resource);
-> +	remove_domain_devices(resource);
->  	free_capabilities(resource);
->  
->  	kfree(resource);
+PiBPbiA1LzkvMjIgMDY6MTAsIEhvbGdlciBCcnVuY2sgd3JvdGU6DQo+ID4gQWRkIGEgYm9vbGVh
+biBleHRlbmRlZC1yYW5nZS1lbmFibGUgdG8gbWFrZSB0aGUgZXh0ZW50ZWQgdGVtcGVyYXR1cmUN
+Cj4gPiBmZWF0dXJlIGZvciBzb21lIGxtOTAgZGV2aWNlcyBjb25maWd1cmFibGUuDQo+ID4NCj4g
+PiBTaWduZWQtb2ZmLWJ5OiBIb2xnZXIgQnJ1bmNrIDxob2xnZXIuYnJ1bmNrQGhpdGFjaGllbmVy
+Z3kuY29tPg0KPiA+IGNjOiBKZWFuIERlbHZhcmUgPGpkZWx2YXJlQHN1c2UuY29tPg0KPiA+IGNj
+OiBHdWVudGVyIFJvZWNrIDxsaW51eEByb2Vjay11cy5uZXQ+DQo+ID4gY2M6IFJvYiBIZXJyaW5n
+IDxyb2JoK2R0QGtlcm5lbC5vcmc+DQo+ID4gY2M6IEtyenlzenRvZiBLb3psb3dza2kgPGtyenlz
+enRvZi5rb3psb3dza2krZHRAbGluYXJvLm9yZz4NCj4gPiAtLS0NCj4gPiAgIERvY3VtZW50YXRp
+b24vZGV2aWNldHJlZS9iaW5kaW5ncy9od21vbi9uYXRpb25hbCxsbTkwLnlhbWwgfCA0ICsrKysN
+Cj4gPiAgIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1n
+aXQNCj4gPiBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9od21vbi9uYXRpb25h
+bCxsbTkwLnlhbWwNCj4gPiBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9od21v
+bi9uYXRpb25hbCxsbTkwLnlhbWwNCj4gPiBpbmRleCAzMGRiOTI5Nzc5MzcuLjk4ZDAxZjZjOTMz
+MSAxMDA2NDQNCj4gPiAtLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaHdt
+b24vbmF0aW9uYWwsbG05MC55YW1sDQo+ID4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVl
+L2JpbmRpbmdzL2h3bW9uL25hdGlvbmFsLGxtOTAueWFtbA0KPiA+IEBAIC01Miw2ICs1MiwxMCBA
+QCBwcm9wZXJ0aWVzOg0KPiA+ICAgICB2Y2Mtc3VwcGx5Og0KPiA+ICAgICAgIGRlc2NyaXB0aW9u
+OiBwaGFuZGxlIHRvIHRoZSByZWd1bGF0b3IgdGhhdCBwcm92aWRlcyB0aGUgK1ZDQw0KPiA+IHN1
+cHBseQ0KPiA+DQo+ID4gKyAgZXh0ZW5kZWQtcmFuZ2UtZW5hYmxlOg0KPiANCj4gVGhpcyBzaG91
+bGQgcHJvYmFibHkgYmUgZWl0aGVyICJvbnNlbWksZXh0ZW5kZWQtcmFuZ2UtZW5hYmxlIiAoZm9y
+DQo+IGFkdDc0NjEpIG9yICJ0aSxleHRlbmRlZC1yYW5nZS1lbmFibGUiIChmb3IgdGhlIHN1cHBv
+cnRlZCBUSSBjaGlwcykuDQo+IA0KDQpJIGNhbiBjaGFuZ2UgdGhhdCwgYnV0IEkgdGhvdWdodCBh
+IGdlbmVyaWMgbmFtZSB3b3VsZCBiZSBiZXR0ZXIgYXMgdGhlDQpzYW1lIHByb3BlcnR5IG5hbWUg
+aXMgYWxyZWFkeSB1c2VkIGluIGRyaXZlcnMvaHdtb24vbWF4NjY5Ny5jLg0KDQpCZXN0IHJlZ2Fy
+ZHMNCkhvbGdlcg0KDQoNCg0KDQo=
