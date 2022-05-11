@@ -2,99 +2,132 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 813B6521FBC
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 May 2022 17:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0737E522907
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 May 2022 03:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346446AbiEJPwZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 May 2022 11:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60776 "EHLO
+        id S232943AbiEKBhj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 May 2022 21:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347184AbiEJPwD (ORCPT
+        with ESMTP id S230440AbiEKBhh (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 May 2022 11:52:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D552289BFF;
-        Tue, 10 May 2022 08:47:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6C879B81DF7;
-        Tue, 10 May 2022 15:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338AFC385A6;
-        Tue, 10 May 2022 15:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652197628;
-        bh=Xb2iH1RD9rLYp/HcvNZ8NPrqSJ1SAA5g+w9cI06BPY0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ukOl6X+c/SsN0hsstWhZKeDN8MHZ6nYlKiZzAvAsr1uNJO/cNJNX7o/zo5xSZVmcS
-         C6M64OO4Zgdjd2FC+YQ0p3Dg+n5YzqBrgd4kStmOcpquWF1Y51co4mP0asvQ272HeI
-         rOMUFzp13Jyrssyk96W5aLHX6kWaSVztN/V3Mni0TkOi+Y3nF+ywia9SVFrFu7BGPZ
-         dqrOav3XRQirXc4TYbfjDB7N55hAv+8rIDESv5CpVGmm435t6UeGJIhIvuqnJXMhzU
-         bDfim4ym4MSc9zCcf5dxxgCvG/VA3TSLP/pzSJ5NVU/W64aBBR7oua2OjvNMYj3Phe
-         Y9NZu+/qSi+xQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Ji-Ze Hong (Peter Hong)" <hpeter@gmail.com>,
-        Ji-Ze Hong <hpeter+linux_kernel@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 1/4] hwmon: (f71882fg) Fix negative temperature
-Date:   Tue, 10 May 2022 11:47:00 -0400
-Message-Id: <20220510154704.154362-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        Tue, 10 May 2022 21:37:37 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14CEC56F83
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 18:37:36 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id q8so1012358oif.13
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 18:37:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:content-language:to
+         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=TagVN3PQe7GEKWsS80IsSXJr3bH8NP92efZPFMc4XHE=;
+        b=cL75SeSl8qY5P0fW313CJdJvxqKYjlqvlMx6kNFNlW6wKN1NvIk4zN8pK1fXdnMioK
+         XsxZHCjPfFAD6hoWS1ZdKweOLG4vNGBGe6atY/EjQA3Lcp2pIcmr7vDArPmsMvIHDrgQ
+         Bq0LFXmwv6GQaozOBQbQq2GNNJ34nB7kETwBvzcgGxVB3x5QCAlSAIZHKobY2s+H1YyM
+         b9Sj/qvaoNAFH19IkquFYI1YeCPnPNjVSSwt07/2VhPiSvpH98R5/lDDFkuh0nkopXhK
+         jyHYGtO9a9a04OlbWOtfyogKJxHphlK1b8eWgBNMsoO68plpBPUt3x+Jhn5vy3qdTOlI
+         EhQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:subject:in-reply-to
+         :content-transfer-encoding;
+        bh=TagVN3PQe7GEKWsS80IsSXJr3bH8NP92efZPFMc4XHE=;
+        b=gUAnnePgYRUVhlgVHmU3qt6KX8Ks/gLO7XiltlpqsFhqLJfezYoxyR+h4jIko9w6XV
+         1tvdiXTKx3UK8F3mohPWa5BdJXtqTMeJqTR3KZlseUtR1iGcO+g25lox+znoYFNRHhzP
+         kyNDoRzLF2ISXn1WR9czSGHh/moqgKJav20vWL1mPdkL0WaWlMHTVrVSIOuIQViii4s/
+         5mk/2aHmTeSI3mBD8mwPXq+iK+LQhLQRfjCUlmQh7tAwL0HhO5oFMWbBKzV1dW4J2amn
+         vTktc8I3SVn1Mi9g6fkVzEr+soG5253JcrhpRujoe+Cxor+X+qWu+9S4+OGSCO2YLcvl
+         iRDA==
+X-Gm-Message-State: AOAM530BC4s0dBptINkiNjtjOYXHibxT+8wswkRcH4Fo/LIezQJFytI3
+        wHFYw/a6Ug7rCR0Grwbhh6E=
+X-Google-Smtp-Source: ABdhPJz/rFP9kgCvRWe5uvQzEmV8WKPwfSC5IoqFcswhX/d2uo/hp3NBAy08PxzbJ60N8om6a7jQGA==
+X-Received: by 2002:aca:a98e:0:b0:326:b029:33ef with SMTP id s136-20020acaa98e000000b00326b02933efmr1370378oie.123.1652233055490;
+        Tue, 10 May 2022 18:37:35 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e18-20020a056870d11200b000e92295f8acsm234868oac.2.2022.05.10.18.37.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 May 2022 18:37:34 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <692d5ac7-840f-49da-c06a-c2b0e0e6cf8c@roeck-us.net>
+Date:   Tue, 10 May 2022 18:37:32 -0700
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Content-Language: en-US
+To:     Holger Brunck <holger.brunck@hitachienergy.com>,
+        linux-hwmon@vger.kernel.org
+Cc:     Jean Delvare <jdelvare@suse.com>
+References: <20220510080900.22758-1-holger.brunck@hitachienergy.com>
+ <20220510080900.22758-2-holger.brunck@hitachienergy.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [v2 2/2] driver/hwmon/lm90: enable extended range according to
+ DTS node
+In-Reply-To: <20220510080900.22758-2-holger.brunck@hitachienergy.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: "Ji-Ze Hong (Peter Hong)" <hpeter@gmail.com>
+Hi,
 
-[ Upstream commit 4aaaaf0f279836f06d3b9d0ffeec7a1e1a04ceef ]
+On 5/10/22 01:09, Holger Brunck wrote:
+> Some lm90 devices can operate in a extended temperature mode, this feature
 
-All temperature of Fintek superio hwmonitor that using 1-byte reg will use
-2's complement.
+lm90 compatible ... mode. This ...
 
-In show_temp()
-	temp = data->temp[nr] * 1000;
+> is now eanbled if the property is set in the corresponding device tree
 
-When data->temp[nr] read as 255, it indicate -1C, but this code will report
-255C to userspace. It'll be ok when change to:
-	temp = ((s8)data->temp[nr]) * 1000;
+enabled
 
-Signed-off-by: Ji-Ze Hong (Peter Hong) <hpeter+linux_kernel@gmail.com>
-Link: https://lore.kernel.org/r/20220418090706.6339-1-hpeter+linux_kernel@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/f71882fg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> node.
+> 
+> Signed-off-by: Holger Brunck <holger.brunck@hitachienergy.com>
+> cc: Jean Delvare <jdelvare@suse.com>
+> cc: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/drivers/hwmon/f71882fg.c b/drivers/hwmon/f71882fg.c
-index cb28e4b4fb10..b87ca56fb774 100644
---- a/drivers/hwmon/f71882fg.c
-+++ b/drivers/hwmon/f71882fg.c
-@@ -1590,8 +1590,9 @@ static ssize_t show_temp(struct device *dev, struct device_attribute *devattr,
- 		temp *= 125;
- 		if (sign)
- 			temp -= 128000;
--	} else
--		temp = data->temp[nr] * 1000;
-+	} else {
-+		temp = ((s8)data->temp[nr]) * 1000;
-+	}
- 
- 	return sprintf(buf, "%d\n", temp);
- }
--- 
-2.35.1
+Cc: isn't really necessary or useful to list maintainers; You might want to
+use the --cc option of git send-email instead. Also, if used, it should
+be "Cc:".
 
+For the subject, please use "hwmon: (lm90) ...".
+
+> ---
+>   drivers/hwmon/lm90.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
+> index 1c9493c70813..6cdbcfab9f20 100644
+> --- a/drivers/hwmon/lm90.c
+> +++ b/drivers/hwmon/lm90.c
+> @@ -1707,6 +1707,7 @@ static void lm90_restore_conf(void *_data)
+>   
+>   static int lm90_init_client(struct i2c_client *client, struct lm90_data *data)
+>   {
+> +	struct device_node *np = client->dev.of_node;
+>   	int config, convrate;
+>   
+>   	convrate = lm90_read_reg(client, LM90_REG_R_CONVRATE);
+> @@ -1727,7 +1728,8 @@ static int lm90_init_client(struct i2c_client *client, struct lm90_data *data)
+>   
+>   	/* Check Temperature Range Select */
+>   	if (data->flags & LM90_HAVE_EXTENDED_TEMP) {
+> -		if (config & 0x04)
+> +		if (config & 0x04 ||
+> +		    of_property_read_bool(np, "onsemi,extended-range-enable"))
+>   			data->flags |= LM90_FLAG_ADT7461_EXT;
+
+Maybe I am missing something, but I don't see the matching configuration
+change. Specifying the flag in devicetree only really makes sense if the
+chip configuration is changed accordingly.
+
+Guenter
