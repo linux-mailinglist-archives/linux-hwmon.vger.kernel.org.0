@@ -2,105 +2,78 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B16522B2F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 11 May 2022 06:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6368F522C8A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 May 2022 08:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235681AbiEKEj2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 11 May 2022 00:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
+        id S242293AbiEKGpW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 May 2022 02:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238207AbiEKEj0 (ORCPT
+        with ESMTP id S240497AbiEKGpR (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 11 May 2022 00:39:26 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6957614D786
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-e5e433d66dso1486710fac.5
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
-         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
-         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
-         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
-         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
-         wrQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=1A4YGp+PCjy+vyBtq5TJBsS4gVvkU1RAzaSeyxjPNWVh9ln8EeL5KRIleLNdYT2nrI
-         +mwEe4D4QucG9ghBn0lzFKmizWvJ6HQOA6JOpZBZJDmT6kJETxq9MZuh1pifDby8n2l9
-         BQzTu/heVhx2202dQ2LpnhasIGdHB8q/9pobyHs1wfb3gZtfHQGfzkD6tYTre42tdGTw
-         dse7kOLi1Ui+Zyv/mkEbVBvUdoiSwqcy7MPp7vXFxEYCZ/R6GdLCzaGW236xqtTCzTdr
-         3exHJQVcOBbWupNreAV2+36CptxWFMXeo3AETi8q8f206NADRJUiQiJ2PCCAQAPD46ak
-         ES9w==
-X-Gm-Message-State: AOAM533Uf1gJQvP9wBQ9CrikL5wBFsWLdczK9VY+oVuQ6lPZvaYF8XrD
-        k65ohhfFCpYtBAK5wMFwxD/FJm8Qrj5a65tkpIiR6GzHKb1IEw==
-X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
-X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
- gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
- May 2022 21:39:11 -0700 (PDT)
+        Wed, 11 May 2022 02:45:17 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21EF71FD845;
+        Tue, 10 May 2022 23:45:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 4BDF1CE22C4;
+        Wed, 11 May 2022 06:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2242C385DB;
+        Wed, 11 May 2022 06:45:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652251512;
+        bh=Fx2QMCjEWeZ49x9y9ggLcnUsS1BY3UQodV4PGmGBX8c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OC8eDHtpnhpd1T5hhiDvGvZjuDaefTo3FWKpw8wMrsbbjeLLK8SUI4b2GTl89obOc
+         QOTRQNGbaXzWhU2PyWm7l70mAwcEb5yQbVFOR5OgGmJtkx3WJHkCV3Rmt5ReSiz1LW
+         3ETwi0xVb8HNKR9L/QyeqZSfoQLHBv2oWeYBOUt8=
+Date:   Wed, 11 May 2022 08:45:09 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        zbr@ioremap.net, jdelvare@suse.com, linux@roeck-us.net
+Subject: Re: [PATCH -next] drivers: w1: use kfree_sensitive()
+Message-ID: <YntbdfHLjeHzAb9/@kroah.com>
+References: <20220511064954.3401381-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
- -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:39:10 -0700
-Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220511064954.3401381-1-yangyingliang@huawei.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
+On Wed, May 11, 2022 at 02:49:54PM +0800, Yang Yingliang wrote:
+> Use kfree_sensitive() instead of open-coding it.
+> 
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> ---
+>  drivers/w1/w1.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+> index f2ae2e563dc5..a0a6c3c739d9 100644
+> --- a/drivers/w1/w1.c
+> +++ b/drivers/w1/w1.c
+> @@ -73,8 +73,7 @@ static void w1_master_release(struct device *dev)
+>  	struct w1_master *md = dev_to_w1_master(dev);
+>  
+>  	dev_dbg(dev, "%s: Releasing %s.\n", __func__, md->name);
+> -	memset(md, 0, sizeof(struct w1_master) + sizeof(struct w1_bus_master));
+> -	kfree(md);
+> +	kfree_sensitive(md);
 
-Dear Beneficiary
+Does this actually change anything?  Why is the memset being called here
+at all?
 
-Subject: An Estate of US$15.8 Million
+thanks,
 
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
-
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
-
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
-
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
-
-Our service fee of 10% will be paid to us after you have received the estate.
-
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
-
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
-
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc
+greg k-h
