@@ -2,106 +2,105 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB3D522948
-	for <lists+linux-hwmon@lfdr.de>; Wed, 11 May 2022 03:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B16522B2F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 11 May 2022 06:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240898AbiEKB5y (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 May 2022 21:57:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
+        id S235681AbiEKEj2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 11 May 2022 00:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240897AbiEKB5w (ORCPT
+        with ESMTP id S238207AbiEKEj0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 May 2022 21:57:52 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2DF849F15
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 18:57:50 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id q8so1050165oif.13
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 18:57:50 -0700 (PDT)
+        Wed, 11 May 2022 00:39:26 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6957614D786
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-e5e433d66dso1486710fac.5
+        for <linux-hwmon@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=BRzv3RY9Ga7H4cWjCS6g0LmFnAidN5ABvWdmTv/9bqI=;
-        b=Dm9lLzDJGoF17J2urWXb+YvjQzff0B3znzV8GyirjO8npYAsHQeTz5FuWcWNS/F+Ll
-         jdYAqgNpHRhYohME1uOTCMInROO7WvT5A9aXZBaWAuFykQ32mKhtAL0YoHmy6u6/G/Ru
-         0RAHXamBpqEZ+vLdMFjv20o0sri6HkLdsFszHSmp012c+ubPl8Y90ZuO9lf4oa2mExPn
-         22qmvLeqCMZlvXOZBGi+pejrBoypDkf5ic65tm4K0crN05U9m1u8B4bfwIXZWA5Q29j/
-         7D+6EFRam2qfREHQBGX2g5RR3SaLjmAocgRSwOfDW82EqG7qsOtJbY1tz3QkDelMFnOa
-         CjRw==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
+         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
+         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
+         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
+         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
+         wrQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=BRzv3RY9Ga7H4cWjCS6g0LmFnAidN5ABvWdmTv/9bqI=;
-        b=OL3euwS9CuDNxuom8j5SvwUDio0R0ryTV4TlMZc+CWPmxaOYE+rIQNxFZzZp6ONXb0
-         ZXmYOtYNfraWYGfZIdxWvj35smC6ZJkjxw77tha9f0bbrhneDbcp4nldUoXkWuPW5fwG
-         ETaeoEnQuOsrLXEwYM6izjw7kfIRb/RDE3eO5KHC+6fmSgPO87UZ6LAfVM9A71gcvOwE
-         Rqt3qooqlqb04OAs0sEM8xKJb1zKXRohsGxu1rQbruOwd3NoYvEX2HU81/7Qct1GK3cL
-         Lguv0aDPXNs6W/6wQ/ZQcnQJufHjYhXLfJfoDfykEwkbw8NhAhzn/KY5+Y1q30FaPuFd
-         darQ==
-X-Gm-Message-State: AOAM531dPD+f2Hy5qpQ9RYuCNhjzHgHo6ErNI088P/Y8awwvsDY/YJpk
-        RIL/HuwrprMoDArMaNu0ABLXmrq1elDPFw==
-X-Google-Smtp-Source: ABdhPJwfh5pyzP6PPapQFIunzfhQmHUO22az9N5qS79/JetjvRPWoI8ekc7qnrMjOYXhxGsTqr0W6g==
-X-Received: by 2002:a05:6808:ed0:b0:2f9:c6f8:8b38 with SMTP id q16-20020a0568080ed000b002f9c6f88b38mr1420087oiv.215.1652234270337;
-        Tue, 10 May 2022 18:57:50 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z29-20020a056870461d00b000e686d13876sm231831oao.16.2022.05.10.18.57.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 May 2022 18:57:49 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 10 May 2022 18:57:48 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg.Schwendimann@infineon.com
-Cc:     linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] dt-bindings: trivial-devices: Add xdp152
-Message-ID: <20220511015748.GA2324005@roeck-us.net>
-References: <871b255e183e4468a9affce6defb0292@infineon.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=1A4YGp+PCjy+vyBtq5TJBsS4gVvkU1RAzaSeyxjPNWVh9ln8EeL5KRIleLNdYT2nrI
+         +mwEe4D4QucG9ghBn0lzFKmizWvJ6HQOA6JOpZBZJDmT6kJETxq9MZuh1pifDby8n2l9
+         BQzTu/heVhx2202dQ2LpnhasIGdHB8q/9pobyHs1wfb3gZtfHQGfzkD6tYTre42tdGTw
+         dse7kOLi1Ui+Zyv/mkEbVBvUdoiSwqcy7MPp7vXFxEYCZ/R6GdLCzaGW236xqtTCzTdr
+         3exHJQVcOBbWupNreAV2+36CptxWFMXeo3AETi8q8f206NADRJUiQiJ2PCCAQAPD46ak
+         ES9w==
+X-Gm-Message-State: AOAM533Uf1gJQvP9wBQ9CrikL5wBFsWLdczK9VY+oVuQ6lPZvaYF8XrD
+        k65ohhfFCpYtBAK5wMFwxD/FJm8Qrj5a65tkpIiR6GzHKb1IEw==
+X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
+X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
+ gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
+ May 2022 21:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <871b255e183e4468a9affce6defb0292@infineon.com>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
+ -0700 (PDT)
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:39:10 -0700
+Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Apr 27, 2022 at 06:40:13PM +0000, Greg.Schwendimann@infineon.com wrote:
-> Add Infineon Digital Multi-phase xdp152 family controllers.
-> 
-> Signed-off-by: Greg Schwendimann <Greg.Schwendimann@infineon.com>
-> ---
+Our Ref: BG/WA0151/2022
 
-I just noticed that DT maintainers were not copied on this patch, so
-it is not entirely surprising that there was no feedback.
-Please resend and copy Rob Herring <robh+dt@kernel.org>,
-Krzysztof Kozlowski <krzk+dt@kernel.org>, and devicetree@vger.kernel.org.
+Dear Beneficiary
 
-Thanks,
-Guenter
+Subject: An Estate of US$15.8 Million
 
-> Separated the device tree bindings documentation
-> 
->  Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index 550a2e5c9e05..fc2164c4d108 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -143,6 +143,10 @@ properties:
->            - infineon,xdpe12254
->              # Infineon Multi-phase Digital VR Controller xdpe12284
->            - infineon,xdpe12284
-> +            # Infineon Multi-phase Digital VR Controller xdpe152c4
-> +          - infineon,xdpe152c4
-> +            # Infineon Multi-phase Digital VR Controller xdpe15284
-> +          - infineon,xdpe15284
->              # Injoinic IP5108 2.0A Power Bank IC with I2C
->            - injoinic,ip5108
->              # Injoinic IP5109 2.1A Power Bank IC with I2C
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
+
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
+
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
+
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
+
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
