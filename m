@@ -2,100 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7152E524E93
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 May 2022 15:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2962852502E
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 May 2022 16:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354590AbiELNqo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 12 May 2022 09:46:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
+        id S1355338AbiELOe7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 12 May 2022 10:34:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354583AbiELNqn (ORCPT
+        with ESMTP id S1355370AbiELOe4 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 12 May 2022 09:46:43 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3EC963536
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 May 2022 06:46:42 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id i24so4839403pfa.7
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 May 2022 06:46:42 -0700 (PDT)
+        Thu, 12 May 2022 10:34:56 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEEB2618CC
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 May 2022 07:34:55 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id h16so6863682wrb.2
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 May 2022 07:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=BKTUsOZXurokKw93pDZ/qCH4rd2yh1Ne8HUq4b8wchY=;
-        b=Y63gqBsfRrjW5Wg1/uqYlapV4UJPKvEAySHVc1O+o5rdfyAvM2PuHfdMQRqcBanwpn
-         GXeS95qUUCdS+zKdlYnkVwLfRXrNXrXS0qrhDiLkgm/sp7IKbnGI2USzMB2Ls7vBHCmC
-         XUlthZehM9dELVvDP9rF96SFUOF2U+o7gNgWiZd4kxez6dnpQ/sM+zFxMMzxjKjeVHDN
-         waZCI68CDWH8Jh8uwR9BzqLoDAjfy7Ll6lr9RCL332yQnTNgAmrHR0XtTVKhln5eoq3T
-         zm+80JagvdpuIPhyyFyCsIPVCTJlt/OBYi2SRZJZAJhSV3olCTtlQBzLHwcdrv+bYNKw
-         mTKQ==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=LuprtpJ06dq5t/dfZsOwpuZXBtU4EbDymnv83y3Wy+s=;
+        b=o/mDg4TjUzNPpNIW/8i9F6/aeJmH/CBJyZI9jwvp5rzSJMy4IPk3YDlBdnMQfS21yy
+         LqVhrTq4dmpHvq/zPNXeEUbZnyVUGaOfPo9da8zFwvgVHQwgXBZUXSKAJknTlk1LcIo8
+         +SrmkV6kbr6may6Jfa24nTw90FF4PlUVBhD+zcV2hrRJ0zhGgMVub235ZtUkO4BdWj2q
+         N7DFl/wV8Vr9ESOeBDmVY8140P55Y7w+pjTB41mpgH03af/4BOTqKxgqbpzJhkCV9DUJ
+         XeXD29JtimX8PzskSPpGszgLM0rFXcJ+q2Uz0+Vdk079By9MrnHAbxna1B0K3X+wC6v3
+         7J0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=BKTUsOZXurokKw93pDZ/qCH4rd2yh1Ne8HUq4b8wchY=;
-        b=bM83OFfB1MWjVfIpDLTFFW3JbJmvWapevnM7QDiQ9YSKM6+jlujeX6m1ZBhCKCpa17
-         O6RYdD5cxmc3ZZjDkFuxUdYi1E+BxHNiS22ELo2HvEyHVFlJGVJ2EaDsNiJwb8Pkg++z
-         njQC283HVuYvQ6MyEQ7pmx4mDvZHLoaShA5rhFojq4P/F7VV7kZdt828tSaVJZrnpbSp
-         1+DfuBrJTpiVvJHEkZrJ+3CVpM1teQxUT/ka9zt5NIo/rs2g0aIA20GsQT9gdEYWAe07
-         P2S45rYnNVI07659p0oh4RBL6EMPqTcmuJQ5t/oWKg5sPcIKTMeGopgAtIii0P4GA2xS
-         O0nw==
-X-Gm-Message-State: AOAM530j+OiaO8yvHZBPWjJfBiyxRHlRtvgJft671xlYzoN2Ufeut9W9
-        d1j9S4SHntHh6y4vJNOiHN6lx7kG0rndVUZ3PS0=
-X-Google-Smtp-Source: ABdhPJxA/liaQk8S8plDAjUxUg979oUjC+zu1NUmIntTt9lxaJpdTWjcqji/aFlbusbg3ZA8ub+Y5JQEYTxokdOoGHc=
-X-Received: by 2002:a05:6a00:a1e:b0:50d:bb0c:2e27 with SMTP id
- p30-20020a056a000a1e00b0050dbb0c2e27mr30166684pfh.49.1652363202221; Thu, 12
- May 2022 06:46:42 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=LuprtpJ06dq5t/dfZsOwpuZXBtU4EbDymnv83y3Wy+s=;
+        b=kP4IXnHqWIUb4QN+DnUL8fvdwg+Vs5oVhQwOj6cRLcI/2hjSv17E8ZZtPcZ42k+s9Z
+         Rn1eBtLzqkX/ynJ90Mmfsg0tGXkEb+xwrAS4AbVwx8yE7mcmEuZuclIesojVR0rn0iTK
+         TpZC99bLs4LjUhCmoNHpnrz8R+hbcS7GMlsk/MM8Q8qITZB6pBBaHvFuGyoviBB/bkbF
+         4gkBhtZueKYio8nFVfYNPp2767zpkguV7REWQAabZelEbKCa3i0rU5BGPRW/JebhAlN4
+         aGOYcO5DxbJ8EUUErelJEFuUMPwkCIEeDFIPY/1MZzcpHGiB8dmr2c7lr/GuAcVpf7Xs
+         9dog==
+X-Gm-Message-State: AOAM5335KF4nQN2LJ0faBEHON1sqvxU1wZQ7D/X7bm457AWKxfJnpHih
+        RBqmLxHwhU0U5jih13VEL+vl+Cudqeba+UNF
+X-Google-Smtp-Source: ABdhPJz0TUjYL2u5t8YGvfqFdxtaBsYJSXvqDpz+JJ8NWZWCyrdVUzmQm59FGzp+9PHG1T652Q7LeQ==
+X-Received: by 2002:adf:fd4a:0:b0:20a:cee3:5abf with SMTP id h10-20020adffd4a000000b0020acee35abfmr28103117wrs.522.1652366094139;
+        Thu, 12 May 2022 07:34:54 -0700 (PDT)
+Received: from [192.168.0.161] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id o12-20020a05600c4fcc00b003942a244ec8sm3137387wmq.13.2022.05.12.07.34.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 May 2022 07:34:53 -0700 (PDT)
+Message-ID: <894e5093-4ad8-dffd-c6b6-6b0a5f90814f@linaro.org>
+Date:   Thu, 12 May 2022 16:34:52 +0200
 MIME-Version: 1.0
-Received: by 2002:a05:6a20:3e0c:b0:7f:499d:4df6 with HTTP; Thu, 12 May 2022
- 06:46:41 -0700 (PDT)
-Reply-To: musadosseh1@gmail.com
-From:   David Randal <barr.musabame9@gmail.com>
-Date:   Thu, 12 May 2022 15:46:41 +0200
-Message-ID: <CACXnS-6WgcbSi9DpVems9L8U0N04T5VN9meEYuUV-6UU+TcQ+g@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:434 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [barr.musabame9[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [barr.musabame9[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [musadosseh1[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v4 2/2] dt-bindings: trivial-devices: Add xdp152
+Content-Language: en-US
+To:     Greg.Schwendimann@infineon.com, linux@roeck-us.net,
+        linux-hwmon@vger.kernel.org
+Cc:     robh+dt@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org
+References: <052c9885e92243fb99ada46e6a263c09@infineon.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <052c9885e92243fb99ada46e6a263c09@infineon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-My name is DAVID Randal from africa construction equipment operator I
-want you to work with me as an overseas partner to do business GOLD.
-If you are interested answer me.
+On 12/05/2022 15:26, Greg.Schwendimann@infineon.com wrote:
+> 
+> Add Infineon Digital Multi-phase xdp152 family controllers.
+> 
+> Signed-off-by: Greg Schwendimann <Greg.Schwendimann@infineon.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index 550a2e5c9e05..fc2164c4d108 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -143,6 +143,10 @@ properties:
+>            - infineon,xdpe12254
+>              # Infineon Multi-phase Digital VR Controller xdpe12284
+>            - infineon,xdpe12284
+> +            # Infineon Multi-phase Digital VR Controller xdpe152c4
+> +          - infineon,xdpe152c4
+> +            # Infineon Multi-phase Digital VR Controller xdpe15284
+> +          - infineon,xdpe15284
 
-Ms.David
+I guess the order is rather '8' before 'c'.
+
+
+Best regards,
+Krzysztof
