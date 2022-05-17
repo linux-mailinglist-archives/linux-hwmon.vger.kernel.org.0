@@ -2,168 +2,130 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5059652A949
-	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 19:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB21D52AC97
+	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 22:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351300AbiEQRcU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 17 May 2022 13:32:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45946 "EHLO
+        id S241786AbiEQURp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 17 May 2022 16:17:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbiEQRcT (ORCPT
+        with ESMTP id S1347953AbiEQURp (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 17 May 2022 13:32:19 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC18839BB5;
-        Tue, 17 May 2022 10:32:18 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id l16so23137358oil.6;
-        Tue, 17 May 2022 10:32:18 -0700 (PDT)
+        Tue, 17 May 2022 16:17:45 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BCEA51E63
+        for <linux-hwmon@vger.kernel.org>; Tue, 17 May 2022 13:17:44 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-e5e433d66dso46649fac.5
+        for <linux-hwmon@vger.kernel.org>; Tue, 17 May 2022 13:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=sender:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BJElMM5glBuikAlneHtVK8Xyaeh/Q6HpqJfojQYBOpY=;
-        b=THs9ZoSuwm1t8oeajABxV5sJnjaYI3vICw1E+k2fjpgH6rTc9J4wMere5w3WHkxB7s
-         GmMYjnumNA4ffTIfc/T7S3iEMRwQRgRWJiEcvz1FP2vCKohgc4L+wxW7mJBRWW8qVLgG
-         H36uUVzzyasQ3ruq8AyJHPVJ6Gc/EHyd/PWeyPjvPaMRTOpjUChJ4YTeXZ1muDawj8KN
-         FTgmiVrgfkWISpSeyyiAzXarfL5qk4yXyhAy1cPe5zqHIte5Iy8poMHup752Fjy7MK/S
-         kKnX9FwlU9LLju+gLoshZ3imXeMPX5kez6BRGumWFGGBD2IgIWc5jT2uyQ31UgKhdxiA
-         RPww==
+        bh=FxHA764ru6JwjO+ukw6Ys4prusKtB4QFPAsSxPUHX60=;
+        b=d/cJMaGfYXIu0WtgKY9VXqLgqXLkyFQsHTbXBF8j6ZGuY+M7gDfUx7T7KGoinExmxJ
+         KGpdI6SiVae27z72PjaPeUTfLKCXolXB7uWr5ytI4RXqXWN1heU/O9itSk7KwLVqcjTT
+         JlRYIE8KJ4V4nlgeN+gk4c1+WGHZOjyk87mU0M3dPfETC5jGePOiIw1fojkhk2kQiOZG
+         4eRjhH/ICb9NbWWLZVXxIEuY2baueBtpm8jCI7nW23iTo4teQ5MMwXmEj54k61o2D3Eb
+         wxatUmKW7iY35XjFnIK2ECuyN4IqX+5yj6taCl4tDqwP5Pf7Ntk0QNTyXpxAp5cHoA+F
+         6Cug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=BJElMM5glBuikAlneHtVK8Xyaeh/Q6HpqJfojQYBOpY=;
-        b=wHoaXc657zXOJhfcM6YVvwj0Kajuf+ivIriPQJa70Td1TNcn8dIW8gcT82qIobwE3g
-         jqwnifP/bZTBqA5SJjYOLJvMc29myOz8d7PIKTJDLhnjkrQVvo7uRK0nYXG1mMk5BM0e
-         gn09CVxayh2fES0Rl5J0cVJuzG7wV63+GSA6+r4j/7x7anCDzVhl7a6TFoJM1sod8AIU
-         waq3D8v71wmdLvnizyDWWm8BudPig9LUvgDdISpookWw/eiZJ/KPESn3oiKpHTJ9RN/P
-         yMJ5k2Q3EDeHBboIR2A1oCYOgAvz4T5+RsySpSloMMrbh48oaGmbFSbGEHX5OZEe1a/T
-         dsJg==
-X-Gm-Message-State: AOAM530cY6o8ugth7QYxnkhtIF4jIr0aNOxRTxndPO3ifL4ekWqwtiuc
-        Sty1ivFpy5uWFNCa+LLFISjuMwXmFpxfNg==
-X-Google-Smtp-Source: ABdhPJytQGHxVYUPBBCqbrYVfWYGdfVG5jHpZKaFfFhDgKmIFvg/Hklre3Urgxe0XYKjO1EXGOlEOQ==
-X-Received: by 2002:a05:6808:118f:b0:2d9:a01a:48be with SMTP id j15-20020a056808118f00b002d9a01a48bemr16047571oil.265.1652808738009;
-        Tue, 17 May 2022 10:32:18 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a9-20020a056870618900b000edda81f868sm15201oah.10.2022.05.17.10.32.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 May 2022 10:32:17 -0700 (PDT)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=FxHA764ru6JwjO+ukw6Ys4prusKtB4QFPAsSxPUHX60=;
+        b=qiGmkaQaPsbLMQHZAPBay70cp5w0a1iMT2LdSFLG3eHYIaoRTle3kz08ECK4crHPee
+         soEsUR5MhWjRwLd0qZpz/GggqQihUVnBzaps5wltx5V1svH/uX7b48r5RCvx9Cn/S8La
+         uclGdQgC2QvB++1tYyI5TRlgDafFEc2R6QhSBCe4kBpkA4aNubG8m79Y7sErKJ9b84JY
+         Np28Le4bA7H/QsaFBY4lw9qsU3dYumbfZzLHIK1M54E1O7T/WukkvN8dZG9lMSaBrNoQ
+         6k9UGOLcbEAHz4Ez81GOEfLtw03X3AKIMgw9pidtXXD12gkeTVqS5zLPECAm0FRlWxmQ
+         NJQw==
+X-Gm-Message-State: AOAM532oL7DmayPoqJzFMC/A2ttazEm7u8S3vu/nKQ25mzcs8gsrQ4M0
+        eLC1iIfrOrmeihPvWKNiRwAyG/esN8jTyA==
+X-Google-Smtp-Source: ABdhPJxoSlpeE30nHRZWO7MT6zPikvxKBF3ruC1GKACu/tejsoYB4oancBEf80J02HPxFdvR+vg1MA==
+X-Received: by 2002:a05:6870:434d:b0:ed:5822:c104 with SMTP id x13-20020a056870434d00b000ed5822c104mr13965375oah.236.1652818663226;
+        Tue, 17 May 2022 13:17:43 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id x17-20020a056820105100b0035ed382fb5asm177133oot.15.2022.05.17.13.17.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 May 2022 13:17:42 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <c8f3e1b3-23e4-1dcb-7da3-e21a01062e9d@roeck-us.net>
-Date:   Tue, 17 May 2022 10:32:11 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v3 6/6] hwmon: pwm-fan: Add hwmon_pwm_enable attribute
-Content-Language: en-US
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
-        linux-pwm@vger.kernel.org,
-        Markus Niebel <Markus.Niebel@ew.tq-group.com>
-References: <20220517142620.1523143-1-alexander.stein@ew.tq-group.com>
- <20220517142620.1523143-7-alexander.stein@ew.tq-group.com>
- <20220517145331.7ffab4pyjwrh5lkg@pengutronix.de>
- <194f33ea-18fa-4cb3-56b4-5d423463fa82@roeck-us.net>
- <20220517165726.trxa7lpz6kluvrg3@pengutronix.de>
 From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20220517165726.trxa7lpz6kluvrg3@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Iwona Winiarska <iwona.winiarska@intel.com>
+Subject: [PATCH] hwmon: (dimmtemp) Fix bitmap handling
+Date:   Tue, 17 May 2022 13:17:40 -0700
+Message-Id: <20220517201740.1020831-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/17/22 09:57, Uwe Kleine-König wrote:
-> Hello,
-> 
-> [dropping Bartlomiej Zolnierkiewicz from Cc as the address bounces]
-> 
-> On Tue, May 17, 2022 at 09:32:24AM -0700, Guenter Roeck wrote:
->> On 5/17/22 07:53, Uwe Kleine-König wrote:
->>> Hello,
->>>
->>> On Tue, May 17, 2022 at 04:26:20PM +0200, Alexander Stein wrote:
->>>> This adds the enable attribute which is used to differentiate if PWM duty
->>>> means to switch off regulator and PWM or to keep them enabled but
->>>> at inactive PWM output level.
->>>>
->>>> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->>>> ---
->>>>    Documentation/hwmon/pwm-fan.rst | 10 ++++
->>>>    drivers/hwmon/pwm-fan.c         | 95 +++++++++++++++++++++++++++++----
->>>>    2 files changed, 95 insertions(+), 10 deletions(-)
->>>>
->>>> diff --git a/Documentation/hwmon/pwm-fan.rst b/Documentation/hwmon/pwm-fan.rst
->>>> index 82fe96742fee..0083480068d1 100644
->>>> --- a/Documentation/hwmon/pwm-fan.rst
->>>> +++ b/Documentation/hwmon/pwm-fan.rst
->>>> @@ -18,3 +18,13 @@ the hwmon's sysfs interface.
->>>>    The fan rotation speed returned via the optional 'fan1_input' is extrapolated
->>>>    from the sampled interrupts from the tachometer signal within 1 second.
->>>> +
->>>> +The driver provides the following sensor accesses in sysfs:
->>>> +
->>>> +=============== ======= =======================================================
->>>> +fan1_input	ro	fan tachometer speed in RPM
->>>> +pwm1_enable	rw	keep enable mode, defines behaviour when pwm1=0
->>>> +			0=switch off regulator and disable PWM
->>>> +			1=keep regulator enabled and set PWM to inactive level
->>>
->>> Is the pwm1_enable supposed to be set to 0 if that only does the right
->>> thing if the PWM emits low after pwm_disable()? The question I raised in
->>> v2 about "what is the meaning of disable?" hasn't evolved, has it?
->>>
->>> I still think it's unfortunate, that "pwm1_enable" has an effect on the
->>> regulator.
->>>
->>
->> Trying to understand. Are you saying that you are ok with affecting the
->> regulator when setting pwm := 0 (even though that doesn't really mean
->> "disable pwm output"), but not with making the behavior explicit by
->> using pwm1_enable ?
-> 
-> Not sure about being ok with affecting the regulator when setting
-> pwm := 0. I don't know enough about pwm-fans to have a strong opinion
-> for that.
-> 
-> Some questions to refine the semantics and my opinion:
-> 
-> There are fans without a regulator? (I think: yes)
-> 
-> A fan with a regulator always stops if the regulator is off?
-> (Hmm, there might be problems with shared regulators that only go off
-> when all consumers are off? What about always-on regulators, these don't
-> go off on the last consumer calling disable, right?)
-> 
-> Having said that I think the sane behaviour is:
-> 
-> The intention of pwm := 0 is to stop the fan. So disabling the regulator
-> (if available) sounds right.
-> 
+Building arm:allmodconfig may fail with the following error.
 
-There are fans (eg at least some CPU fans) which never stop, even with
-pwm=0. How do you suggest to handle those ?
+In function 'fortify_memcpy_chk',
+    inlined from 'bitmap_copy' at include/linux/bitmap.h:261:2,
+    inlined from 'bitmap_copy_clear_tail' at include/linux/bitmap.h:270:2,
+    inlined from 'bitmap_from_u64' at include/linux/bitmap.h:622:2,
+    inlined from 'check_populated_dimms' at
+	drivers/hwmon/peci/dimmtemp.c:284:2:
+include/linux/fortify-string.h:344:25: error:
+	call to '__write_overflow_field' declared with attribute warning:
+	detected write beyond size of field (1st parameter)
 
-Guenter
+The problematic code is
+	bitmap_from_u64(priv->dimm_mask, dimm_mask);
 
-> I'm unsure what to reasonably expect from a disabled PWM. I think "stops
-> to oscillate" can be assumed. So I'd say: If a fan continues to rotate
-> when the PWM input is constantly active, don't call pwm_disable().
-> 
-> Best regards
-> Uwe
-> 
+dimm_mask is declared as u64, but the bitmap in priv->dimm_mask is only
+24 bit wide. On 32-bit systems, this results in writes over the end of
+the bitmap.
+
+Fix the problem by using u32 instead of u64 for dimm_mask. This is
+currently sufficient, and a compile time check to ensure that the number
+of dimms does not exceed the bit map size is already in place.
+
+Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
+Cc: Iwona Winiarska <iwona.winiarska@intel.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/peci/dimmtemp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/hwmon/peci/dimmtemp.c b/drivers/hwmon/peci/dimmtemp.c
+index 3c71b5546bcb..0a633bda3668 100644
+--- a/drivers/hwmon/peci/dimmtemp.c
++++ b/drivers/hwmon/peci/dimmtemp.c
+@@ -220,7 +220,7 @@ static int check_populated_dimms(struct peci_dimmtemp *priv)
+ 	int chan_rank_max = priv->gen_info->chan_rank_max;
+ 	int dimm_idx_max = priv->gen_info->dimm_idx_max;
+ 	u32 chan_rank_empty = 0;
+-	u64 dimm_mask = 0;
++	u32 dimm_mask = 0;
+ 	int chan_rank, dimm_idx, ret;
+ 	u32 pcs;
+ 
+@@ -279,9 +279,9 @@ static int check_populated_dimms(struct peci_dimmtemp *priv)
+ 		return -EAGAIN;
+ 	}
+ 
+-	dev_dbg(priv->dev, "Scanned populated DIMMs: %#llx\n", dimm_mask);
++	dev_dbg(priv->dev, "Scanned populated DIMMs: %#x\n", dimm_mask);
+ 
+-	bitmap_from_u64(priv->dimm_mask, dimm_mask);
++	bitmap_from_arr32(priv->dimm_mask, &dimm_mask, DIMM_NUMS_MAX);
+ 
+ 	return 0;
+ }
+-- 
+2.35.1
 
