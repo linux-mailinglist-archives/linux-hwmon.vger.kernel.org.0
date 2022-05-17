@@ -2,132 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD5652A566
-	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 16:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2051252A9BD
+	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 19:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344593AbiEQOyF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 17 May 2022 10:54:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47308 "EHLO
+        id S240180AbiEQR7i (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 17 May 2022 13:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349479AbiEQOx5 (ORCPT
+        with ESMTP id S231189AbiEQR7h (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 17 May 2022 10:53:57 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282BA48313
-        for <linux-hwmon@vger.kernel.org>; Tue, 17 May 2022 07:53:52 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nqyZt-0003hT-Iv; Tue, 17 May 2022 16:53:37 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nqyZs-002tOA-IM; Tue, 17 May 2022 16:53:35 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nqyZq-00AK4E-AN; Tue, 17 May 2022 16:53:34 +0200
-Date:   Tue, 17 May 2022 16:53:31 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
-        linux-pwm@vger.kernel.org,
-        Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Subject: Re: [PATCH v3 6/6] hwmon: pwm-fan: Add hwmon_pwm_enable attribute
-Message-ID: <20220517145331.7ffab4pyjwrh5lkg@pengutronix.de>
-References: <20220517142620.1523143-1-alexander.stein@ew.tq-group.com>
- <20220517142620.1523143-7-alexander.stein@ew.tq-group.com>
+        Tue, 17 May 2022 13:59:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778C54A3F1;
+        Tue, 17 May 2022 10:59:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1069D614B3;
+        Tue, 17 May 2022 17:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EADC385B8;
+        Tue, 17 May 2022 17:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652810375;
+        bh=XZdrlI4v+ZvAe+NF3BwYsni+wVoFODseYbMtOFnMRpM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fflH5VkNmt9j0yusExsnCvthLSaOh3KJunUZcGpUK9Mbi5eSW81PdH4f0aSFF2A5I
+         aH/5G0XHNdCl13iSQeNmhotvggmBxVRkeIIHdtEmVguS+D3E+dzYboZrIH0HZ419gz
+         AOKvIdLJ+MVWP3zR9aOcxURNQPVKrL7lBzBbRhAM=
+Date:   Tue, 17 May 2022 15:48:30 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        zbr@ioremap.net, jdelvare@suse.com, linux@roeck-us.net
+Subject: Re: [PATCH -next] drivers: w1: use kfree_sensitive()
+Message-ID: <YoOnrsEAFOclLbG2@kroah.com>
+References: <20220511064954.3401381-1-yangyingliang@huawei.com>
+ <YntbdfHLjeHzAb9/@kroah.com>
+ <2cf24169-ea56-9c72-fa95-a1e6625c8545@huawei.com>
+ <YoN2fn5zRyNEnaUT@kroah.com>
+ <16959408-3e91-774d-484f-508caff1f8f7@huawei.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lzgyb2mlekugipiz"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220517142620.1523143-7-alexander.stein@ew.tq-group.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <16959408-3e91-774d-484f-508caff1f8f7@huawei.com>
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Tue, May 17, 2022 at 09:03:43PM +0800, Yang Yingliang wrote:
+> 
+> On 2022/5/17 18:18, Greg KH wrote:
+> > On Wed, May 11, 2022 at 03:25:52PM +0800, Yang Yingliang wrote:
+> > > Hi,
+> > > 
+> > > On 2022/5/11 14:45, Greg KH wrote:
+> > > > On Wed, May 11, 2022 at 02:49:54PM +0800, Yang Yingliang wrote:
+> > > > > Use kfree_sensitive() instead of open-coding it.
+> > > > > 
+> > > > > Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> > > > > ---
+> > > > >    drivers/w1/w1.c | 3 +--
+> > > > >    1 file changed, 1 insertion(+), 2 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+> > > > > index f2ae2e563dc5..a0a6c3c739d9 100644
+> > > > > --- a/drivers/w1/w1.c
+> > > > > +++ b/drivers/w1/w1.c
+> > > > > @@ -73,8 +73,7 @@ static void w1_master_release(struct device *dev)
+> > > > >    	struct w1_master *md = dev_to_w1_master(dev);
+> > > > >    	dev_dbg(dev, "%s: Releasing %s.\n", __func__, md->name);
+> > > > > -	memset(md, 0, sizeof(struct w1_master) + sizeof(struct w1_bus_master));
+> > > > > -	kfree(md);
+> > > > > +	kfree_sensitive(md);
+> > > > Does this actually change anything?  Why is the memset being called here
+> > > > at all?
+> > > It's no functional change and I got this by
+> > > scripts/coccinelle/api/kfree_sensitive.cocci.
+> > > I'm not sure why using memset() here.
+> > I think the memset() can just be dropped.  Can you make that change and
+> > test it to verify it still works properly with that change?
+> I can make change and send a patch for this, but I don't have device to test
+> it.
 
---lzgyb2mlekugipiz
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For something like this, it would be great to test.
 
-Hello,
+thanks,
 
-On Tue, May 17, 2022 at 04:26:20PM +0200, Alexander Stein wrote:
-> This adds the enable attribute which is used to differentiate if PWM duty
-> means to switch off regulator and PWM or to keep them enabled but
-> at inactive PWM output level.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  Documentation/hwmon/pwm-fan.rst | 10 ++++
->  drivers/hwmon/pwm-fan.c         | 95 +++++++++++++++++++++++++++++----
->  2 files changed, 95 insertions(+), 10 deletions(-)
->=20
-> diff --git a/Documentation/hwmon/pwm-fan.rst b/Documentation/hwmon/pwm-fa=
-n.rst
-> index 82fe96742fee..0083480068d1 100644
-> --- a/Documentation/hwmon/pwm-fan.rst
-> +++ b/Documentation/hwmon/pwm-fan.rst
-> @@ -18,3 +18,13 @@ the hwmon's sysfs interface.
-> =20
->  The fan rotation speed returned via the optional 'fan1_input' is extrapo=
-lated
->  from the sampled interrupts from the tachometer signal within 1 second.
-> +
-> +The driver provides the following sensor accesses in sysfs:
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D =3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> +fan1_input	ro	fan tachometer speed in RPM
-> +pwm1_enable	rw	keep enable mode, defines behaviour when pwm1=3D0
-> +			0=3Dswitch off regulator and disable PWM
-> +			1=3Dkeep regulator enabled and set PWM to inactive level
-
-Is the pwm1_enable supposed to be set to 0 if that only does the right
-thing if the PWM emits low after pwm_disable()? The question I raised in
-v2 about "what is the meaning of disable?" hasn't evolved, has it?
-
-I still think it's unfortunate, that "pwm1_enable" has an effect on the
-regulator.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---lzgyb2mlekugipiz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKDtugACgkQwfwUeK3K
-7AmkAAf+Jg/NaHTE6D0cI+VGke8kConLhaiJOsAMqb3AXb4VV0yf/CA2gfogVhP9
-d1RXpe/g5iy70RWHoDnmLmIB7dHZgek/KglAiJBBYK+6CvNFC6NhvL3roX+itqg/
-Nq0LLZwyJsbpcHVyMnfVq1xckPDwv1NLGsffPQWRJO8ume2VaHkCvcZQ/ujr7ODA
-Uqw6s4N3D73vGIQm7WICurWuV+ITu9I7uLtCFK22REET614NEkFxKZgG2n01ogbF
-q7QdWe4Y1l+IjDtxf5Jf21pWM3VXsyzk+LNU40h+gzOjMxkwmQGJXmP/tsMH0Rbi
-aiT7lAub/OJwffO8MFX32QC3mXWx/A==
-=MXzg
------END PGP SIGNATURE-----
-
---lzgyb2mlekugipiz--
+greg k-h
