@@ -2,173 +2,197 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9AE5297C6
-	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 05:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E251452998D
+	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 08:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbiEQDRJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 16 May 2022 23:17:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        id S236432AbiEQG1z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 17 May 2022 02:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231709AbiEQDRI (ORCPT
+        with ESMTP id S238888AbiEQG1r (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 16 May 2022 23:17:08 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3755C2EA02;
-        Mon, 16 May 2022 20:17:07 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-edf3b6b0f2so22667941fac.9;
-        Mon, 16 May 2022 20:17:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=tbMBXgyeDNJ8XSgJOtBDgLoNW60+5QspBWo0Od9KL+g=;
-        b=h5xlq7zOdfcDnoc9qfumZtnEVtKQKZtUdD8KdqXz/YF49Eo4d8DSmnuzLWv3lYadgH
-         a6Ug3JOtnb7vl1XvQkkZN8XzibPM07YDeHJxZfEZmtjE7X1brdyBWBxDSXJEkaLmLh0g
-         lbNUd80GkGj1vajfLikopVLWdNtmNg1Orka0pgeAiSabksyyy4tUm/lB8dkBA7HbClta
-         aAqsdiWkfrRk0AO/SRINB1TznwfbmjLkzoPN4h5SbiBg8s5Tgo4c4X0IQiOi5TqQmsHj
-         efB16iv/NAlDLnmaoJoWitE9Gvh/nTZFNtDqN2qJyOxvNre1iDYTpju3gJhnUE/7iYm1
-         3KsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=tbMBXgyeDNJ8XSgJOtBDgLoNW60+5QspBWo0Od9KL+g=;
-        b=FxFe7ho+p/u3Km95r2auiY2infZZ0pYYTkFb0KV4oJcNlB9OY6KVBJVhqNPBXSLvlp
-         nxQeYaaNoiToWe+JcBAKJelxqxE40JvVwDgi2D8gOBvQalKMZIr8MifrnAmbhSWuOZZJ
-         Onaj7qbP/fiSaA+yCSGblUzOHDSzmuaIopV+ap1+mDz8S9tQ4om+xRj9RRv3Y6YrHREl
-         oBZb0jLDtA0SnBONXcwH27gEH80CvYOtsWZOBu+fjwphlJg3N2yZgCQjAKtIsxS81Hb0
-         q9bxf5J5ipdsaAqRv+LRNQuEerJoTgIQdh/hB/BDVBhcnlI/3/NRfVVouC0W9JYXGVJu
-         kOfQ==
-X-Gm-Message-State: AOAM533vLhNhwuzFXpjFC7Z2g/8w8rwhgfHWlVwN7ZVxRU8pE12MUXzc
-        sDIMRUdOr5/1QTtm6dba9QidXWTmHOEw4A==
-X-Google-Smtp-Source: ABdhPJwsWLQ21cpKDGpwu4dNMNiWcULWXcPvkKesR6Jw7SOGHRw+RZ5KdeJs2ixgqSMbC8dljtTYKg==
-X-Received: by 2002:a05:6870:a9a4:b0:e6:4451:f4b0 with SMTP id ep36-20020a056870a9a400b000e64451f4b0mr16969238oab.252.1652757426558;
-        Mon, 16 May 2022 20:17:06 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g9-20020a05683030a900b0060603221248sm4591475ots.24.2022.05.16.20.17.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 May 2022 20:17:05 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <33aedaf3-3b57-daa4-0928-d9dcaea98788@roeck-us.net>
-Date:   Mon, 16 May 2022 20:17:03 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH] hwmon: Directly use ida_alloc()/free()
+        Tue, 17 May 2022 02:27:47 -0400
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-eopbgr150101.outbound.protection.outlook.com [40.107.15.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EFF43FD82
+        for <linux-hwmon@vger.kernel.org>; Mon, 16 May 2022 23:27:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jdcMHnWWiI9SwvBvtfwOI4WGROJBNBkr4SiEUIOC4xYWpgk7yMYnKCL6fLFaSjMiIbkl/IWxk8GIMATBiqX//ksvfPeC5Vdz9qo2JR0pMFApZh/9UWJgEHd8XAUrftho50kUjW5eZQfvDefPVKle/CFH3/E2wrTrp4daBjvx1XhID6bvh1SUKIdwi9dz7fZb5bhAvg2WoS6vA4jnxTCyXCot7dH4C/K2j/VTwnEYevyYlVG5cKNfgDWxyijAOiXqeOkkyewxr/13KwjehKFR2NZEbooumd48wVrSWf4tM/gT5x9peLHvSsbmXz4cJYHqwI2TqoUAukzke3jjKbXubA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YcRfG8jtare7DEWUQJdu/80dmXnAKn3ddAvgh2NPR7k=;
+ b=LQUg/3ua+PBgfO9qMIBWf5w9XHA8tFxMG6rnpK6Ya7wNtZ+X38CzVjWWRxbGZ4Yvaq0FcGXBfEzAkZhlH412uWqG6LNQOV/Ovd/yVaA38Ojv/ncq9ZzWEq6entomLWo+GmvGFJ2/EL5oTrk73q1tDvhmnpt13Y3qIwnpbspei4+lWLz5Us7B9JAVEjD//cZ+41s3OKFQhgA6hcZjMZVxzY3kn4dAMYlDukRUAVQ1+/N/mbqn37bDvwuOAxXDeH1JKTuXFBgoHgx2gUtv9iQBKWgYsO8gCtBZK7ihCmkx2b/x5S34Lj+WzrZi/C/tU3WlLTYuSUZGGzrxqPA0b47ReA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hitachienergy.com; dmarc=pass action=none
+ header.from=hitachienergy.com; dkim=pass header.d=hitachienergy.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hitachienergy.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YcRfG8jtare7DEWUQJdu/80dmXnAKn3ddAvgh2NPR7k=;
+ b=aG0DP8vfUMk8NN6JEr5VyxlEt3khWIPiDyRFvRWb2Q9HRu+orVfyIH6KRg/b/JO3brCj5xtgHEpmGZYpkh6IzzmKm8/bq9afk7JOzps5V/A0iIogTDx/Z5T7G2NeC2UCjcaqWdn0eOCP9pZtRwyGnT1V9joixatWd6p96FuSIc0iZymA1cEyeUy15h0biOUMwY68DUw+HXNKhtRaqioVmufh77aYjowjEH5y/QE7SLHq5k1n96XXaPuQ1w/VJHRSxy+UC+m7uxnhF4P4lF2fIgaqWfwCvD9dUqP/Bt465onw+FYBclcbX0g0yZhCN9U5gir4cPfolOUUWPabzPi1Jw==
+Received: from DB9PR06MB7289.eurprd06.prod.outlook.com (2603:10a6:10:218::16)
+ by AM8PR06MB7746.eurprd06.prod.outlook.com (2603:10a6:20b:36a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.13; Tue, 17 May
+ 2022 06:27:42 +0000
+Received: from DB9PR06MB7289.eurprd06.prod.outlook.com
+ ([fe80::7015:6796:8a61:93b4]) by DB9PR06MB7289.eurprd06.prod.outlook.com
+ ([fe80::7015:6796:8a61:93b4%9]) with mapi id 15.20.5273.013; Tue, 17 May 2022
+ 06:27:42 +0000
+From:   Holger Brunck <holger.brunck@hitachienergy.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+CC:     "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>
+Subject: RE: [v2 2/2] driver/hwmon/lm90: enable extended range according to
+ DTS node
+Thread-Topic: [v2 2/2] driver/hwmon/lm90: enable extended range according to
+ DTS node
+Thread-Index: AQHYZEU3R3ThQh9j2kG9BRADVG6ii60Y5tMAgAkL/OCAAAxsAIAApRJQ
+Date:   Tue, 17 May 2022 06:27:42 +0000
+Message-ID: <DB9PR06MB7289D39850290F93698E39DDF7CE9@DB9PR06MB7289.eurprd06.prod.outlook.com>
+References: <20220510080900.22758-1-holger.brunck@hitachienergy.com>
+ <20220510080900.22758-2-holger.brunck@hitachienergy.com>
+ <692d5ac7-840f-49da-c06a-c2b0e0e6cf8c@roeck-us.net>
+ <DB9PR06MB7289A0505D42DC7151BD8517F7CF9@DB9PR06MB7289.eurprd06.prod.outlook.com>
+ <20220516203114.GA4080547@roeck-us.net>
+In-Reply-To: <20220516203114.GA4080547@roeck-us.net>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-To:     keliu <liuke94@huawei.com>, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220517024022.1980274-1-liuke94@huawei.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20220517024022.1980274-1-liuke94@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-processedbytemplafy: true
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=hitachienergy.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c3ec2ad6-a5e3-4420-8376-08da37ce5924
+x-ms-traffictypediagnostic: AM8PR06MB7746:EE_
+x-microsoft-antispam-prvs: <AM8PR06MB774613730CF88203C7331AE8F7CE9@AM8PR06MB7746.eurprd06.prod.outlook.com>
+x-he-o365-outbound: HEO365Out
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Qbk676BQoquM3K7QwX3hUzGLhFJcjJaTqdB2jn4NZcfzwkuXx6nrIfKMSOpBVCZRT8Ss6vmj7Oq1E4xMj3+/oZAjOKdRc2V4t3MN2C+wxoPiAokS5qqAxDs1iacChQbQKZAt7wcGJiAXyk7As8BJqZeFWdoKA0FkIb4+ZRappkqhVvEr4q0qjYLqvXeXsnIdC5mrLfLTd683id4dTXHvh1Jbc9T5ZYteoGV8cqffQUu3k/mbeD+8hLE+N30DsFk52MHAszMc6eD4cvM8Zy08vWZ1Kdn0a5pE3gMBzkc2sMJ9gX2xSDG12mMueEHGjYi8ueeFxIUaL41UEWNkrZwUltPz1A+xQ8RTWu3qsG2tC08y32umd2guprOqIi3VR+k8c1XBKJTfqK1VAfOlJXQBFGIoVY0DQAD0iTJdgjKm0bkvPRa1DM7JrlyLaMwz68b98I+H2Ymcy92YA9/XVh0xOexN647Dl2cBHTlRC8BI2/HzeKVl698rUO9biZ0cQYDOX6L9RzpcZK7dZgjXxg0IzlU5pir1/mrhbbpMPwCPrLvqfzQFNn5lhMQ/S3aojggxvgxzWYujbHzIVneUAjUOi4lptzNjyRUFBDDUk2RawRQIlDpI6SxS3b3pScsWSLGqhyVxRcazjB9kQy+0MjZoFzAeNBdjrfRSBeKgc+iAAeScjIDE86wZP8Cb6XKBuLb8163D9Y805d+srKvEXP847w==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR06MB7289.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(508600001)(5660300002)(66946007)(66556008)(64756008)(316002)(71200400001)(66476007)(66446008)(54906003)(6916009)(8936002)(6506007)(76116006)(44832011)(4326008)(33656002)(7696005)(86362001)(9686003)(26005)(52536014)(2906002)(83380400001)(82960400001)(186003)(55016003)(8676002)(38070700005)(38100700002)(122000001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5XKCstPIgY8gk/ct7EnPIsxrwTyZxh1gmDpMoqPtG2P6Q+uEDi5xCg4StwBJ?=
+ =?us-ascii?Q?oz1ZWuAxZ/d7T0IVKQ1+tbegZRFppup95Tlkv96U8Bx85BkiWBK2gCu+K2xH?=
+ =?us-ascii?Q?d35VIgDJNilP4Y+6Zm+wooToUZemjJ3us7OsjipmDmMMR/gyawdRdO+qgQUh?=
+ =?us-ascii?Q?yZSl/+Hw6yugy8zn+z5qklmFehCTtIHnhK+IsNsjGeYHFmKGVyD/ZZUiCREy?=
+ =?us-ascii?Q?XYYZuGnZYgYmvEI78sNEUj0sflsPrMyiGqy7NUdK3IFBHSUCqJ/MOWyzSn/T?=
+ =?us-ascii?Q?FklGbkps3hgFXUz5mbViyjL1+ht0QTdalUGmi1zEtX8SAEOeScvkHUeZDZay?=
+ =?us-ascii?Q?G67Ulp8ba/FRbmrJjxX+2PBiiZ6TBwAkPPeeyBo3ijZ+eIMFEBG2PfZY7Ayp?=
+ =?us-ascii?Q?LBKItAoQsr/0s6yy3BYLe2ocnG0nLz3aU3j/yWQDeMKlFq9MgrbUJO9NxP0E?=
+ =?us-ascii?Q?GtVkQr90r/t8oAf/HKxq1tIlIOm0dIBy0xcrhmXfuD/X/Be/VqMJ7FPugHgY?=
+ =?us-ascii?Q?uKJmqR/trSNi8yHHUOv7uAB+1WfeiXqAPc64vupB9o4yDVi7DYNTV8FUtcDP?=
+ =?us-ascii?Q?1HbXNtsB/XyNNqwwqU9nlU0Baq75ZkAG8JKwmAkHP0QTjm+6STiNZWAXiYGX?=
+ =?us-ascii?Q?3i3Gt/3jjYctQqnlGFlERpp2hScXuFLLDFjsd8tpXiaq0Lrygyz2w0CHxqVS?=
+ =?us-ascii?Q?NWps/bSh7mNGHQOKORptwLn6utuM1eKbo/bpcD9B1EvjSRY6fCG92mOs1xyz?=
+ =?us-ascii?Q?BPrtvhzXohraSAUfAIP/XlE09ZfJmm33fQ1sZu0k6Db6rtMQnx1w25lgBED7?=
+ =?us-ascii?Q?CkhJZc+nWEjfZxsnqs8VLYHSnd+aJJa7LuIA+Bj6eaDN/cYfegpbEPnE3jyB?=
+ =?us-ascii?Q?2pESw2GrJYNY+ZsnNC5nIoZ64MR0QyefGa0CPx9+OUND6z7M4MSm4fLoDtGp?=
+ =?us-ascii?Q?Qm3InsfeNST8t9pVjCKnJ25AnN8AaGR6BnhwIUJE67GHQSFOQAtCl6VrJ8Gj?=
+ =?us-ascii?Q?GdgJemDah0ZgT032r6ky0YncWgTH0gU0xl7zYnsBrVDsGHeSPOCozLH18Lj4?=
+ =?us-ascii?Q?Gm2iac+K398DNvR+6t5SlVnHI/9TpKr89/aY+NY9rUnwzkL5fe/pVEpJ/zqQ?=
+ =?us-ascii?Q?WEUVaeu7L1f3El4nYciOq2cR0rGtpBH0/Oj4/KTUFosUESwdFKS9ZxIQnhq0?=
+ =?us-ascii?Q?HkpLbhrHViKRPnxksZDYWLh3C4AqDxxrYRgAcEDSNR13QaL2BxgneAKIFXZA?=
+ =?us-ascii?Q?dFkT6nafUAbT/080fntNSqmhC8gLEaVw0JeOVsbS3LpQI8q2bKMZvq81VAZl?=
+ =?us-ascii?Q?0/kF7Dzf9VKxUUz7029xWye/HNUepfLjqw8RcFyj1OjxL/f3XvSOarXxumod?=
+ =?us-ascii?Q?yGIrGIwqDrESk0q5yZ/gQxx5Xa58VpaabkBsByD+idLTORMVekjIZtzgus8l?=
+ =?us-ascii?Q?awPQ65Dzws9h1bTC/mvng5QiUWKDtkb4X1kBYaGi3ZVF8X9COdEMhTHr1495?=
+ =?us-ascii?Q?OEHcMP9NT93N+S+JGGWNiheJbTWUajTsro18KgMuKlQ9rS7ZYAAd1GMAwmDv?=
+ =?us-ascii?Q?WaLObWsypjvIrZNGPJYrpeJf+KROYv8ROHiR/NWNnxDKevRG32+8l/c3j+UE?=
+ =?us-ascii?Q?Q/pOhX/WOSN/BvNpueDrrfpTHn9xh2dC4SfxeQm+tFQG0c7CtuTbynA7poLo?=
+ =?us-ascii?Q?OqawiFhNR31iUTZvgD0W3z/gmmwjvCvPKFQjdj7uv7RFdJujGfLO/W9edL/a?=
+ =?us-ascii?Q?mIBySbiBqUmXYBcoyLMcgpnwSAoa3GI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: hitachienergy.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR06MB7289.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3ec2ad6-a5e3-4420-8376-08da37ce5924
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2022 06:27:42.4233
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7831e6d9-dc6c-4cd1-9ec6-1dc2b4133195
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4nFquwD+oPpIM0JnyT0DDKOZjr2XSyrNFUO0yx9e3kKsonCRtOzYcPSj8oh/yA8t/+pXqA/wWm9NUeqmoRP9qW7dlAvdYYeor5OzUMm0WGA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR06MB7746
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/16/22 19:40, keliu wrote:
-> Use ida_alloc()/ida_free() instead of deprecated
-> ida_simple_get()/ida_simple_remove() .
-> 
-> Signed-off-by: keliu <liuke94@huawei.com>
-> ---
->   drivers/hwmon/hwmon.c  |  6 +++---
->   drivers/hwmon/ibmaem.c | 10 +++++-----
+> On Mon, May 16, 2022 at 08:01:34PM +0000, Holger Brunck wrote:
+> > > > diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c index
+> > > > 1c9493c70813..6cdbcfab9f20 100644
+> > > > --- a/drivers/hwmon/lm90.c
+> > > > +++ b/drivers/hwmon/lm90.c
+> > > > @@ -1707,6 +1707,7 @@ static void lm90_restore_conf(void *_data)
+> > > >
+> > > >   static int lm90_init_client(struct i2c_client *client, struct lm9=
+0_data
+> *data)
+> > > >   {
+> > > > +     struct device_node *np =3D client->dev.of_node;
+> > > >       int config, convrate;
+> > > >
+> > > >       convrate =3D lm90_read_reg(client, LM90_REG_R_CONVRATE); @@
+> > > > -1727,7 +1728,8 @@ static int lm90_init_client(struct i2c_client
+> > > > *client, struct lm90_data *data)
+> > > >
+> > > >       /* Check Temperature Range Select */
+> > > >       if (data->flags & LM90_HAVE_EXTENDED_TEMP) {
+> > > > -             if (config & 0x04)
+> > > > +             if (config & 0x04 ||
+> > > > +                 of_property_read_bool(np,
+> > > > + "onsemi,extended-range-enable"))
+> > > >                       data->flags |=3D LM90_FLAG_ADT7461_EXT;
+> > >
+> > > Maybe I am missing something, but I don't see the matching
+> > > configuration change. Specifying the flag in devicetree only really
+> > > makes sense if the chip configuration is changed accordingly.
+> > >
+> >
+> > what is confusing here for me is that in the current code we have "if
+> > (config & 0x4)" and if this is true we configure the flags
+> > accordingly. But the bit 0x4 in config is nowhere set in current code.
+> > Therefore also the flag is never set. Or do I miss something?
+> >
+> The idea is to pick up the configuration set by the BIOS/ROMMON.
+>=20
 
-One patch per file, please.
+ok.
+=20
+> > I am asking because if my assumption is correct I would replace the
+> > current (never matching) check to the new property:
+>=20
+> It does match, if set by the BIOS.
+>=20
 
-Guenter
+ok thanks.
 
->   2 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-> index 22de7a9e7ba7..2e2cd79d89eb 100644
-> --- a/drivers/hwmon/hwmon.c
-> +++ b/drivers/hwmon/hwmon.c
-> @@ -764,7 +764,7 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
->   			 "hwmon: '%s' is not a valid name attribute, please fix\n",
->   			 name);
->   
-> -	id = ida_simple_get(&hwmon_ida, 0, 0, GFP_KERNEL);
-> +	id = ida_alloc(&hwmon_ida, GFP_KERNEL);
->   	if (id < 0)
->   		return ERR_PTR(id);
->   
-> @@ -856,7 +856,7 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
->   free_hwmon:
->   	hwmon_dev_release(hdev);
->   ida_remove:
-> -	ida_simple_remove(&hwmon_ida, id);
-> +	ida_free(&hwmon_ida, id);
->   	return ERR_PTR(err);
->   }
->   
-> @@ -968,7 +968,7 @@ void hwmon_device_unregister(struct device *dev)
->   
->   	if (likely(sscanf(dev_name(dev), HWMON_ID_FORMAT, &id) == 1)) {
->   		device_unregister(dev);
-> -		ida_simple_remove(&hwmon_ida, id);
-> +		ida_free(&hwmon_ida, id);
->   	} else
->   		dev_dbg(dev->parent,
->   			"hwmon_device_unregister() failed: bad class ID!\n");
-> diff --git a/drivers/hwmon/ibmaem.c b/drivers/hwmon/ibmaem.c
-> index de6baf6ca3d1..5c4cf742f5ae 100644
-> --- a/drivers/hwmon/ibmaem.c
-> +++ b/drivers/hwmon/ibmaem.c
-> @@ -482,7 +482,7 @@ static void aem_delete(struct aem_data *data)
->   	ipmi_destroy_user(data->ipmi.user);
->   	platform_set_drvdata(data->pdev, NULL);
->   	platform_device_unregister(data->pdev);
-> -	ida_simple_remove(&aem_ida, data->id);
-> +	ida_free(&aem_ida, data->id);
->   	kfree(data);
->   }
->   
-> @@ -539,7 +539,7 @@ static int aem_init_aem1_inst(struct aem_ipmi_data *probe, u8 module_handle)
->   		data->power_period[i] = AEM_DEFAULT_POWER_INTERVAL;
->   
->   	/* Create sub-device for this fw instance */
-> -	data->id = ida_simple_get(&aem_ida, 0, 0, GFP_KERNEL);
-> +	data->id = ida_alloc(&aem_ida, GFP_KERNEL);
->   	if (data->id < 0)
->   		goto id_err;
->   
-> @@ -600,7 +600,7 @@ static int aem_init_aem1_inst(struct aem_ipmi_data *probe, u8 module_handle)
->   	platform_set_drvdata(data->pdev, NULL);
->   	platform_device_unregister(data->pdev);
->   dev_err:
-> -	ida_simple_remove(&aem_ida, data->id);
-> +	ida_free(&aem_ida, data->id);
->   id_err:
->   	kfree(data);
->   
-> @@ -679,7 +679,7 @@ static int aem_init_aem2_inst(struct aem_ipmi_data *probe,
->   		data->power_period[i] = AEM_DEFAULT_POWER_INTERVAL;
->   
->   	/* Create sub-device for this fw instance */
-> -	data->id = ida_simple_get(&aem_ida, 0, 0, GFP_KERNEL);
-> +	data->id = ida_alloc(&aem_ida, GFP_KERNEL);
->   	if (data->id < 0)
->   		goto id_err;
->   
-> @@ -740,7 +740,7 @@ static int aem_init_aem2_inst(struct aem_ipmi_data *probe,
->   	platform_set_drvdata(data->pdev, NULL);
->   	platform_device_unregister(data->pdev);
->   dev_err:
-> -	ida_simple_remove(&aem_ida, data->id);
-> +	ida_free(&aem_ida, data->id);
->   id_err:
->   	kfree(data);
->   
+> > if (of_property_read_bool(np, "ti,extended-range-enable")) {
+> >   config |=3D 0x4;
+> >   data->flags |=3D LM90_FLAG_ADT7461_EXT; }
+> >
+> > Is this ok for you?
+> >
+> Looks ok at first glance, though of course I'll have to see the entire pa=
+tch.
+>=20
+
+sure, but I need to change it as now the use case that config bit 0x4 is se=
+t even
+if the property is not set by DTS need to be covered as before. But anyhow,=
+ lets
+discuss on the update then.
+
+Best regards
+Holger
 
