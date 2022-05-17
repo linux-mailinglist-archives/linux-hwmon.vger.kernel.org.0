@@ -2,86 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F0C52A3F1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 15:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 470EA52A4D4
+	for <lists+linux-hwmon@lfdr.de>; Tue, 17 May 2022 16:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245496AbiEQN4v (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 17 May 2022 09:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45934 "EHLO
+        id S1344058AbiEQO2I (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 17 May 2022 10:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348285AbiEQN4q (ORCPT
+        with ESMTP id S1348891AbiEQO0l (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 17 May 2022 09:56:46 -0400
-Received: from inet10.abb.com (spf.hitachienergy.com [138.225.1.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BAE28E35
-        for <linux-hwmon@vger.kernel.org>; Tue, 17 May 2022 06:56:42 -0700 (PDT)
-Received: from gitsiv.ch.abb.com (gitsiv.keymile.net [10.41.156.251])
-        by inet10.abb.com (8.14.7/8.14.7) with SMTP id 24HDuGj7018265;
-        Tue, 17 May 2022 15:56:16 +0200
-Received: from ch10641.keymile.net.net (ch10641.keymile.net [172.31.40.7])
-        by gitsiv.ch.abb.com (Postfix) with ESMTP id 9A0A165EBC28;
-        Tue, 17 May 2022 15:56:16 +0200 (CEST)
-From:   Holger Brunck <holger.brunck@hitachienergy.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Jean Delvare <jdelvare@suse.com>,
+        Tue, 17 May 2022 10:26:41 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E250642A27;
+        Tue, 17 May 2022 07:26:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1652797600; x=1684333600;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mankCJOGPKu8Xonfwp415Ga9O1GdXTSLMS2WtVwqIAY=;
+  b=pS3xZM0rLPSjPs26Ury3+fx4+uUo+YJRgKtwFGnKn+3dpiPlAcqRMO9L
+   ENJv3XCZ+gUU1/0jwvtpWAFFnTuKxbg8wc+MlKkwV4O5G2ZNm6ivbKeTZ
+   S2hfpCjzcZD5zgFZHNdNYcP4/JHCWc/9IRbORxtqpO/DIRfqepkbVP9PA
+   xjLTm2evtIV/0mL1Deqrt5sHCIqaBaBVmtYJzvpaaf+GzAgQioCUN2xqa
+   gqv7x4MgytGnzYHE3dmdPhHvvs/lD7z710gj//rC/U2/G1WRvwLABUlc/
+   TMx7M1IOUYAiDmA2Joqvfjeq7jDvx2uikdXtYYx63mbunrHuKI3TgGMcZ
+   g==;
+X-IronPort-AV: E=Sophos;i="5.91,233,1647298800"; 
+   d="scan'208";a="23925930"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 17 May 2022 16:26:25 +0200
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Tue, 17 May 2022 16:26:26 +0200
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Tue, 17 May 2022 16:26:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1652797585; x=1684333585;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mankCJOGPKu8Xonfwp415Ga9O1GdXTSLMS2WtVwqIAY=;
+  b=HbyjGxwPNBRChpucPMj+nSy0awJcWWyRq5v03WFpVW0xRfbFFgaHcoiz
+   EgzgplgggDGHFXZfhxAHZb9umL3/pM+6W1z0Ys4Mz9FJndr+GFSg8yi/K
+   otjWGqGXPbWi9dETZF4TGHXk4uuXb8SUAqv87dRU/L+ONhRg0+toFNh6F
+   o/Rsitl/25GavoMhcUanDAiAy9GeaYQW1aWbI2pjLKoV6cnDao+SYhdK4
+   HUymFhXlT6U5iTYnkv/M4I9Iq/c0Y6/h7KOuVAVYixryKU9oBBAiB1yZ4
+   bLhQbXTA9hGPwYx3wGNDtJzcHvONekhPXyvQwTdGxy6gMR8SawwYcMDgp
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.91,233,1647298800"; 
+   d="scan'208";a="23925927"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 17 May 2022 16:26:25 +0200
+Received: from steina-w.tq-net.de (unknown [10.123.49.12])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id F238D280070;
+        Tue, 17 May 2022 16:26:24 +0200 (CEST)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Holger Brunck <holger.brunck@hitachienergy.com>
-Subject: [PATCH v4 2/2] hwmon: (lm90) enable extended range according to DTS node
-Date:   Tue, 17 May 2022 15:56:14 +0200
-Message-Id: <20220517135614.8185-2-holger.brunck@hitachienergy.com>
-X-Mailer: git-send-email 2.35.1.871.gab1f276
-In-Reply-To: <20220517135614.8185-1-holger.brunck@hitachienergy.com>
-References: <20220517135614.8185-1-holger.brunck@hitachienergy.com>
+        Jonathan Corbet <corbet@lwn.net>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        linux-hwmon@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Subject: [PATCH v3 0/6] hwmon: pwm-fan: switch regulator dynamically
+Date:   Tue, 17 May 2022 16:26:14 +0200
+Message-Id: <20220517142620.1523143-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Some lm90 compatible devices can operate in an extended temperature mode.
-This feature is now enabled if the property is set in the corresponding
-device tree node.
+Hello everyone,
 
-Signed-off-by: Holger Brunck <holger.brunck@hitachienergy.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
----
-changes ofr v4:=20
-  - add reviewd-by tag
+this is a new version for supporting switching off the pwm-fan regulator.
+This time it is split into several smaller patches for ease of review.
+Some organizational changes are inspired/copied by/from pwm_bl.
 
- drivers/hwmon/lm90.c | 4 ++++
- 1 file changed, 4 insertions(+)
+One big drawback form v2 was that there was no distinction bewteen when
+PWM duty == 0:
+* keep PWM on inactive level enabled (regulator as well)
+* disable PWM and regulator
 
-diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index 1c9493c70813..3820f0e61510 100644
---- a/drivers/hwmon/lm90.c
-+++ b/drivers/hwmon/lm90.c
-@@ -1707,6 +1707,7 @@ static void lm90_restore_conf(void *_data)
-=20
- static int lm90_init_client(struct i2c_client *client, struct lm90_data =
-*data)
- {
-+	struct device_node *np =3D client->dev.of_node;
- 	int config, convrate;
-=20
- 	convrate =3D lm90_read_reg(client, LM90_REG_R_CONVRATE);
-@@ -1727,6 +1728,9 @@ static int lm90_init_client(struct i2c_client *clie=
-nt, struct lm90_data *data)
-=20
- 	/* Check Temperature Range Select */
- 	if (data->flags & LM90_HAVE_EXTENDED_TEMP) {
-+		if (of_property_read_bool(np, "ti,extended-range-enable"))
-+			config |=3D 0x04;
-+
- 		if (config & 0x04)
- 			data->flags |=3D LM90_FLAG_ADT7461_EXT;
- 	}
---=20
-2.34.1
+This is accomplished by using HWMON_PWM_ENABLE attribute. Documentation is
+added accordingly.
+
+Best regards,
+Alexander
+
+Alexander Stein (6):
+  hwmon: pwm-fan: Refactor fan power on/off
+  hwmon: pwm-fan: Simplify enable/disable check
+  hwmon: pwm-fan: Dynamically switch off regulator if PWM duty is 0
+  hwmon: pwm-fan: Remove internal duplicated pwm_state
+  hwmon: pwm-fan: Move PWM enable into separate function
+  hwmon: pwm-fan: Add hwmon_pwm_enable attribute
+
+ Documentation/hwmon/pwm-fan.rst |  10 ++
+ drivers/hwmon/pwm-fan.c         | 263 ++++++++++++++++++++++----------
+ 2 files changed, 191 insertions(+), 82 deletions(-)
+
+-- 
+2.25.1
 
