@@ -2,95 +2,106 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E44785342A1
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 May 2022 20:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C677534538
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 May 2022 22:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240799AbiEYSEJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 25 May 2022 14:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39490 "EHLO
+        id S238983AbiEYUsA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 25 May 2022 16:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234793AbiEYSEJ (ORCPT
+        with ESMTP id S236068AbiEYUr7 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 25 May 2022 14:04:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F199C2EA;
-        Wed, 25 May 2022 11:04:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53E0961867;
-        Wed, 25 May 2022 18:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4CEC385B8;
-        Wed, 25 May 2022 18:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653501845;
-        bh=aXmnGc30QJGOKnN8QGtQjSLondicMdgxQV+6Gc9Sh/I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GxyodLmRuyCrpbMUZZNxFu5dlcR3qOO2YZwt9OlXqebqLiPLqG2eezzupIFfGuZYO
-         JeUmLx8IgpsVAE7NPPZiTUcWgqlh4KBdOaKsLdDUu8qL+CGMjzHe/SxlnQDkMLq5xZ
-         8y7kU1Kv179sSDj8/2yBOfKH+/O4aQjXBERYkAcFZndj2B3mXX8kVyqrDdUQMeRmIH
-         ybYeqzZIPPCMsRbCwZdkXbw2zISzAHVseQq+XBnzeko/6VVLLLIYKT1yYD63k/rq2r
-         fPyZZ11e9m5YQ6/kT6z3UYucAJOqc2Quj39F+HE2WnVj1IrJlUzS7YYBmMRHVmPTGu
-         n+SfyN62v0yzg==
-Date:   Wed, 25 May 2022 19:03:58 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Alistair Francis <alistair@alistair23.me>
-Cc:     lgirdwood@gmail.com, lee.jones@linaro.org, robh+dt@kernel.org,
-        kernel@pengutronix.de, s.hauer@pengutronix.de,
-        alistair23@gmail.com, linux-arm-kernel@lists.infradead.org,
-        andreas@kemnade.info, amitk@kernel.org, shawnguo@kernel.org,
-        linux-kernel@vger.kernel.org, geert@linux-m68k.org,
-        linux-hwmon@vger.kernel.org, linux-imx@nxp.com, linux@roeck-us.net,
-        rui.zhang@intel.com, devicetree@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v21 1/4] mfd: silergy,sy7636a: Add config option
-Message-ID: <Yo5vjlsc0J1S70zN@sirena.org.uk>
-References: <20220525115554.430971-1-alistair@alistair23.me>
- <20220525115554.430971-2-alistair@alistair23.me>
+        Wed, 25 May 2022 16:47:59 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CE0941AF
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 13:47:57 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-2ff53d86abbso208192037b3.8
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 13:47:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=+uyh4vUIYntN7Mid2B5fbgguOxBR2RiHnKBh7A4r37I=;
+        b=PnromsGSl/VyCqJRnnJHQGv2emL8SwMg8ftXDY1M1kfjEHhbW+SFcNbx3DogMg04Y9
+         /oZIr62MobI8ksksf+p9sBio2Dq2yBIBPcLJ3b1SShimWCeBsnvQbeReD0NRZ7Om0Lst
+         q1lisGYBsy1KTkD8a/a+P3V6h5TEOEvizQbKOIY52MNwlZwBpCdF++HQA7VleD8dxYmT
+         47CCQBdH112dj3BW1XZfHpBYhUz6nflHJwVhKJ1dOqZAhIGbRVTP42myeLGtiu1ATKwe
+         DXnDVSRqAyDH9FmgiIci81QGTqI4p/Sz0r5xM/GwgFW8dm98Yai8Vi1EO7F7NXK45ral
+         Mg0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=+uyh4vUIYntN7Mid2B5fbgguOxBR2RiHnKBh7A4r37I=;
+        b=qY3gWKmdfILepYc05vUvoLg01Ky+UylS4iFJ2SLf+/z2BKeoUVEN/M684Gfy0ETz+K
+         1f0n9ZYHPyRpVjZH8aP1ODDWQBcB0pe6ghIOcuQmC8fwYGq5jt10Wrh2i16SkQIWMGay
+         lGaawnRzylmWirULb6NvLrme0gOFQaGjzgUhzh1IGb4dSOOOpbK3l/tiul4TpsFm7DdV
+         B+XV9LDrIRXwqXAlDOzDMNdT2J9aflSs+CQ6wDDmQC8oseJIuHpxUmhfIxrg4YxzMbWt
+         wRyfOCBSsyiFBFLO3NNjGIEzb/uZCJvzNBBy6gROQ5wXPP3lXXEgEvEjqiWGBkYAGH+D
+         Idpw==
+X-Gm-Message-State: AOAM533tSp3HNT+taGR0a0HrwtDlPrcwycg7P2J2Ydp+CyYRF30NodXk
+        HY2UxnixO6HvO4QEr4+HLQrUIZzbmTVF/ZNXASg=
+X-Google-Smtp-Source: ABdhPJwSUXt4OSD1heOIQ3zIbqBs1JquJNu8NtOAfWl74I7duJ3I9S+mgyYgK4KvmN58QkVh9RTAkFFWkd3+8Flvjy4=
+X-Received: by 2002:a81:1f8b:0:b0:2f8:5846:445e with SMTP id
+ f133-20020a811f8b000000b002f85846445emr35075611ywf.50.1653511677047; Wed, 25
+ May 2022 13:47:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Xb1VzQtLyCGCdeJs"
-Content-Disposition: inline
-In-Reply-To: <20220525115554.430971-2-alistair@alistair23.me>
-X-Cookie: The revolution will not be televised.
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:7110:3682:b0:17b:2b7b:c035 with HTTP; Wed, 25 May 2022
+ 13:47:56 -0700 (PDT)
+From:   Colina Fernando <colinafernando724@gmail.com>
+Date:   Wed, 25 May 2022 22:47:56 +0200
+Message-ID: <CAP7Hh1-qYQ=wBUq_p5pXQrtkN1XpxJSADCpbiay82rCojSvQDg@mail.gmail.com>
+Subject: Bitte kontaktaufnahme Erforderlich !!! Please Contact Required !!!
+To:     contact@firstdiamondbk.com
+Cc:     info@firstdiamondbk.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Guten Tag,
 
---Xb1VzQtLyCGCdeJs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ich habe mich nur gefragt, ob Sie meine vorherige E-Mail bekommen
 
-On Wed, May 25, 2022 at 09:55:51PM +1000, Alistair Francis wrote:
-> Add a specific MFD_SY7636A config option.
->=20
-> As part of this change we can use MFD_SY7636A as a dependency for all
-> SY7636a components and also remove the name from MFD_SIMPLE_MFD_I2C as
-> it no longer needs to be selectable.
+haben ?
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Ich habe versucht, Sie per E-Mail zu erreichen.
 
---Xb1VzQtLyCGCdeJs
-Content-Type: application/pgp-signature; name="signature.asc"
+Kommen Sie bitte schnell zu mir zur=C3=BCck, es ist sehr wichtig.
 
------BEGIN PGP SIGNATURE-----
+Danke
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKOb40ACgkQJNaLcl1U
-h9CLMQf/SYOirRs4xevMFWKwchUx9dZjBAZGSX9cLlqyYVhhGte8LLyfNWGjO605
-bbx8N4Q8Z0itYfpdSHmROf/zzzg3X8fBeyp0MGERDD1EVQ31jT72kdKQwG0c30EH
-okNTey8mkegdzGNq0HnFc9ONLZNb2j1N7IyDlouLz4dfrLJ7cbAUoDGvm22hBBcT
-qu17BREdc4Sk0xAYeVyrVB/bqKI+lFVjhZG5sY9rJ4zR1BQo48v4ldO62Mygg+fd
-xZsupSjAH6puR6PbljGj1IHkDo29/HRuKu4ddXULcfrrrIJVIhY/+4nuCBIPTlNK
-olabG3BZiqm3ZicYMKlP3ICmtIikuw==
-=zAb/
------END PGP SIGNATURE-----
+Fernando Colina
 
---Xb1VzQtLyCGCdeJs--
+colinafernando724@gmail.com
+
+
+
+
+----------------------------------
+
+
+
+
+Good Afternoon,
+
+I was just wondering if you got my Previous E-mail
+have ?
+
+I tried to reach you by E-mail.
+
+Please come back to me quickly, it is very Important.
+
+Thanks
+
+Fernando Colina
+
+colinafernando724@gmail.com
