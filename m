@@ -1,105 +1,142 @@
 Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01262533CD2
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 May 2022 14:44:29 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 1F814533F65
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 May 2022 16:41:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236085AbiEYMoI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 25 May 2022 08:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
+        id S232246AbiEYOlx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 25 May 2022 10:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233719AbiEYMoH (ORCPT
+        with ESMTP id S241830AbiEYOlw (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 25 May 2022 08:44:07 -0400
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBDB31057F;
-        Wed, 25 May 2022 05:44:05 -0700 (PDT)
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-f2c296d320so1652668fac.8;
-        Wed, 25 May 2022 05:44:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=p5CYTgAX8K8u4bnsP29ZIWvZEA8+eTTLk6hO/pi9fro=;
-        b=731cJuKa3rE71gdNlesv4tsAnz/E3QYlVkLA067a6lKQdHY715Lh+xQJXh1Q0uWESr
-         P+9Be7/dxb1AQE4MpafNVLbyIwo0Nft0mpjvQ7nKGLdHiHY+4ytBfowSvchd8VZ7JPhd
-         3OeniONGeOAJHbDDi0YuJXmorM5n3QqzN4+FpriU0izikk6nkoFuh7VwcIk8ZGBYZJIY
-         ZKC1G4FBRiWjOXBixVTSLTN/4ABO4ER/WA1V+krL0vMowTgGBveY8cQQK29pQmHoW+qk
-         xbqrafI8YjcUNnI2qAYLcakoLuCAb4PuPZN51TCR94ydMP7Lo64hiukhj7tVxS/8mDKJ
-         72WQ==
-X-Gm-Message-State: AOAM531plWfRVBfvkp9xF04AGyEuOQ2tli9laAz/2cHS04RaJQEteufh
-        qrbyfYRMwGlDVGKy8oBzLQ==
-X-Google-Smtp-Source: ABdhPJwN33KKYR9Abvw94TG0zy2LwgIN6td85neRCKNuiTaWClSTdJBS75XpFC147g/Wt3rrf6FZRw==
-X-Received: by 2002:a05:6870:f708:b0:f2:8a04:25e5 with SMTP id ej8-20020a056870f70800b000f28a0425e5mr5537659oab.280.1653482645114;
-        Wed, 25 May 2022 05:44:05 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id s16-20020a4aa550000000b0035eb4e5a6c8sm6482022oom.30.2022.05.25.05.44.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 May 2022 05:44:04 -0700 (PDT)
-Received: (nullmailer pid 1760898 invoked by uid 1000);
-        Wed, 25 May 2022 12:44:01 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     michaelsh@nvidia.com
-Cc:     linux-hwmon@vger.kernel.org, robh+dt@kernel.org, vadimp@nvidia.com,
-        linux@roeck-us.net, devicetree@vger.kernel.org
-In-Reply-To: <20220524161755.43833-3-michaelsh@nvidia.com>
-References: <20220524161755.43833-1-michaelsh@nvidia.com> <20220524161755.43833-3-michaelsh@nvidia.com>
-Subject: Re: [PATCH hwmon-next v2 2/3] dt-bindings: hwmon: add Microchip EMC2305 fan controller.
-Date:   Wed, 25 May 2022 07:44:01 -0500
-Message-Id: <1653482641.598528.1760897.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        Wed, 25 May 2022 10:41:52 -0400
+X-Greylist: delayed 2673 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 May 2022 07:41:51 PDT
+Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com [192.185.144.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D8635AA3
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 07:41:51 -0700 (PDT)
+Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id 825791B2E94
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 08:57:17 -0500 (CDT)
+Received: from 162-215-252-169.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id trVlnBNMM0EfytrVln57ue; Wed, 25 May 2022 08:57:17 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=eKrX6kNpVLed89fPLoyVC6rMPjDh7kXs0BzGvHfT6B8=; b=B0c95fhXKWngQ6wdmaJj6lZWtP
+        8pKXzQmqK3qcqx//T7W/KOucQKt6F8O/sBg6RWUQ0NN5BhUcGk+W+oVf9lbqmCVGfTuAU3GHnXywk
+        7vJBfLjrjY9Xq4E/5ZF4/+4f8dC9JCAQrM7hLpzNiYe8r4IrY0AKzSmuEgLuypokwi91l30lcRvuB
+        64MKiwpUFYR1XsrhRWoNhnYwONNge9MFE8cqkzPDeSYjuN/d2kS0QF9F5PpEcjeNtH045j76hvoYD
+        0F4rvOXLKQ4vQco9yls2BNBJX9jQR8tCcoKB758Oe4JiOWwYVmCGrPggTzTNVhoIirR4AL+EgVLae
+        CRl1n/zw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:58264 helo=localhost)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@roeck-us.net>)
+        id 1ntrVk-000P3Y-PB; Wed, 25 May 2022 13:57:16 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     linux-hwmon@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 00/40] hwmon: (lm90) Various improvements to lm90 driver
+Date:   Wed, 25 May 2022 06:56:29 -0700
+Message-Id: <20220525135709.2899592-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1ntrVk-000P3Y-PB
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:58264
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 4
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 24 May 2022 19:17:54 +0300, michaelsh@nvidia.com wrote:
-> From: Michael Shych <michaelsh@nvidia.com>
-> 
-> Add basic description of emc2305 driver device tree binding.
-> 
-> Signed-off-by: Michael Shych <michaelsh@nvidia.com>
-> Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-> ---
-> v1->v2
-> - Fix dt binding check errors;
-> - Add descriptions;
-> - Add missing fields;
-> - Change the patch subject name;
-> - Separate pwm-min, pwm-max per PWM channel.
-> ---
->  .../bindings/hwmon/microchip,emc2305.yaml          | 87 ++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> 
+This patch series implements various improvements to the lm90 driver.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+- Generate sysfs and udev events for all alarms
+- Add support for LM84, ADM1020, ADM1021, ADT7421, ADT7481, ADT7482,
+  ADT7483A, NCT210, NCT214, NCT218, NCT72, MAX1617, MAX1617A, MAX6642,
+  NE1617, NE1617A, NE1618, GL523SM, THMC10, and MC1066
+- Explicit support for MAX6648
+- Handle differences between ADT7461 and ADT7461A
+- Individual drivers for ADM1021 and MAX6642 are now obsolete.
+- Improved PEC support. Some chips support PEC only in read operations,
+  others support PEC for both read and write operations.
+- Improved alarm handling
+- Streamlined temperature conversion functions 
+- Reorganized and improved chip detection code
 
-yamllint warnings/errors:
+----------------------------------------------------------------
+Guenter Roeck (40):
+      hwmon: (lm90) Generate sysfs and udev events for all alarms
+      hwmon: (lm90) Rework alarm/status handling
+      hwmon: (lm90) Reorder include files in alphabetical order
+      hwmon: (lm90) Reorder chip enumeration to be in alphabetical order
+      hwmon: (lm90) Use BIT macro
+      hwmon: (lm90) Move status register bit shifts to compile time
+      hwmon: (lm90) Stop using R_/W_ register prefix
+      hwmon: (lm90) Improve PEC support
+      hwmon: (lm90) Add partial PEC support for ADT7461
+      hwmon: (lm90) Enable full PEC support for ADT7461A
+      hwmon: (lm90) Add support for unsigned and signed temperatures
+      hwmon: (lm90) Only re-read registers if volatile
+      hwmon: (lm90) Support multiple temperature resolutions
+      hwmon: (lm90) Use single flag to indicate extended temperature support
+      hwmon: (lm90) Rework detect function
+      hwmon: (lm90) Add support for additional chip revision of NCT1008
+      hwmon: (lm90) Fix/Add detection of G781-1
+      hwmon: (lm90) Add flag to indicate 'alarms' attribute support
+      hwmon: (lm90) Add explicit support for MAX6648/MAX6692
+      hwmon: (lm90) Add support for ADT7481, ADT7482, and ADT7483
+      hwmon: (lm90) Strengthen chip detection for ADM1032, ADT7461(A), and NCT1008
+      hwmon: (lm90) Add support for MAX6690
+      hwmon: (lm90) Add flag to indicate support for minimum temperature limits
+      hwmon: (lm90) Add flag to indicate conversion rate support
+      hwmon: (lm90) Add support for MAX6642
+      hwmon: (lm90) Let lm90_read16() handle 8-bit read operations
+      hwmon: (lm90) Introduce 16-bit register write function
+      hwmon: (lm90) Support MAX1617 and LM84
+      hwmon: (lm90) Add support for ADM1021, ADM1021A, and ADM1023
+      hwmon: (lm90) Add remaining chips supported by adm1021 driver
+      hwmon: (lm90) Combine lm86 and lm90 configuration
+      hwmon: (lm90) Add explicit support for NCT210
+      hwmon: (lm90) Add support for ON Semiconductor NCT214 and NCT72
+      hwmon: (lm90) Add support for ON Semiconductor NCT218
+      hwmon: (lm90) Add support for ADT7421
+      hwmon: (lm90) Only disable alerts if not already disabled
+      hwmon: (lm90) Add explicit support for ADM1020
+      hwmon: (lm90) Add support and detection of Philips/NXP NE1618
+      hwmon: (lm90) Add table with supported Analog/ONSEMI devices
+      hwmon: (lm90) Support temp_samples attribute
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/hwmon/microchip,emc2305.example.dts:23.23-26.19: Warning (unit_address_vs_reg): /example-0/fan/microchip,pwms/pwm@0: node has a unit name, but no reg or ranges property
-Documentation/devicetree/bindings/hwmon/microchip,emc2305.example.dts:27.23-30.19: Warning (unit_address_vs_reg): /example-0/fan/microchip,pwms/pwm@1: node has a unit name, but no reg or ranges property
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+ Documentation/hwmon/lm90.rst |  233 +++-
+ drivers/hwmon/Kconfig        |   17 +-
+ drivers/hwmon/lm90.c         | 2415 ++++++++++++++++++++++++++++--------------
+ 3 files changed, 1832 insertions(+), 833 deletions(-)
