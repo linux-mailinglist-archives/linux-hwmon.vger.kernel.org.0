@@ -2,26 +2,25 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9ED533F02
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 May 2022 16:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A58B2533F66
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 May 2022 16:41:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231139AbiEYOVx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 25 May 2022 10:21:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
+        id S236254AbiEYOl5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 25 May 2022 10:41:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238258AbiEYOVv (ORCPT
+        with ESMTP id S229823AbiEYOl4 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 25 May 2022 10:21:51 -0400
-X-Greylist: delayed 1467 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 May 2022 07:21:49 PDT
-Received: from gateway34.websitewelcome.com (gateway34.websitewelcome.com [192.185.149.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520342612
-        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 07:21:47 -0700 (PDT)
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
-        by gateway34.websitewelcome.com (Postfix) with ESMTP id 76C5CC3F09
-        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 08:57:20 -0500 (CDT)
+        Wed, 25 May 2022 10:41:56 -0400
+Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com [192.185.144.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03863587D
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 07:41:55 -0700 (PDT)
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id 638011B4805
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 May 2022 08:57:21 -0500 (CDT)
 Received: from 162-215-252-169.unifiedlayer.com ([208.91.199.152])
         by cmsmtp with SMTP
-        id trVonBNRf0EfytrVon57zk; Wed, 25 May 2022 08:57:20 -0500
+        id trVpnCRER7PdJtrVpnsUVs; Wed, 25 May 2022 08:57:21 -0500
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=roeck-us.net; s=default; h=Content-Transfer-Encoding:MIME-Version:
@@ -29,25 +28,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=5LUB0awXMZiu8jQkcYS4v26EEkwncaXC0X8E7Z9PWUg=; b=VtMUDDSp1odfYSN6zngsMlO1KW
-        39Qfou/QfHbqhGoKH/DecuZiuF3Tt+gpuG++GiWfTBH1mD5kf6ZTOJPFCYYrtbN9d06EdD5wka3ET
-        s8fyachKXzYZ/cE7wGpTm1N1hX9Bd0f8p6vZvozT7rkEPJFqcPfh21Z++TNIT0EWlL3OY0dMbWxcz
-        NWhhXQSdUzUd623HC/LHvcdJsEngsZWHMBBjwZJ4ix7+9k3yMS6LdaQQcVTWu+9FdM99TT1bd6l+T
-        nRz8O/aUJz5dODBI/L+u8RtdBf9amJ+GiKtcBRVQWSbyTZiI2EXNB3vtUM0jpnXYcz6IdsGqC4PXp
-        IpmQKqPQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:58270 helo=localhost)
+        bh=rCKqXle6qbQe/IsqkcPkNDc9pAVJQLLMF9gxVrNillo=; b=K9uaUQOjVJ+/emlolmG8oM4At/
+        HvP6C73sk5f84+w7DPVbjB9g3W+qHKKPnYuBAoM5eCIHtugpA6S7xiWWB5BKif+34NjIcnatRGVbx
+        tkGlxkm7ObCR7tuX8xsiOdplkHoN/SmYPJKdoPP6RtSHljgEI1zkTqbO+qEi/HwbJGwrI+eYh/3HX
+        ZkhYWn5MBYxJZkIC9ApPOg3g3VJMDNpIMyRcGYg5PTNl96oBMtjd9ng1p4PKajjiDACg3SBJRzA4J
+        Jly9EkL2EaqasAuUE9/3cvfhggxrB26U9dkTGCXTU47iAA1FlvpXEmWGaHm3hY/clJEmXFh4a8hWX
+        AGsUH+Uw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:58272 helo=localhost)
         by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <linux@roeck-us.net>)
-        id 1ntrVn-000P7D-QZ; Wed, 25 May 2022 13:57:19 +0000
+        id 1ntrVo-000P8e-P0; Wed, 25 May 2022 13:57:20 +0000
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     linux-hwmon@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
         Slawomir Stepien <sst@poczta.fm>,
         Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 03/40] hwmon: (lm90) Reorder include files in alphabetical order
-Date:   Wed, 25 May 2022 06:56:32 -0700
-Message-Id: <20220525135709.2899592-4-linux@roeck-us.net>
+Subject: [PATCH 04/40] hwmon: (lm90) Reorder chip enumeration to be in alphabetical order
+Date:   Wed, 25 May 2022 06:56:33 -0700
+Message-Id: <20220525135709.2899592-5-linux@roeck-us.net>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220525135709.2899592-1-linux@roeck-us.net>
 References: <20220525135709.2899592-1-linux@roeck-us.net>
@@ -61,13 +60,13 @@ X-AntiAbuse: Sender Address Domain - roeck-us.net
 X-BWhitelist: no
 X-Source-IP: 108.223.40.66
 X-Source-L: No
-X-Exim-ID: 1ntrVn-000P7D-QZ
+X-Exim-ID: 1ntrVo-000P8e-P0
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:58270
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:58272
 X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 16
+X-Email-Count: 20
 X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
 X-Local-Domain: yes
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -80,47 +79,32 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Reorder include files in alphabetical order to reduce the chance of
-duplicates and to make it clear where new include files should be
-added. Drop the unnecessary include of linux/sysfs.h. Include
-linux/device.h instead because that is what is actually used.
-
-No functional change.
+Reorder chip enumeration in alphabetical order to make it easier to
+see which chips are supported, and to clarify where to add support
+new chip types. No functional change.
 
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- drivers/hwmon/lm90.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hwmon/lm90.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index 63ada2d0d839..b7f5b743c9f5 100644
+index b7f5b743c9f5..6728520a21ca 100644
 --- a/drivers/hwmon/lm90.c
 +++ b/drivers/hwmon/lm90.c
-@@ -80,18 +80,18 @@
-  * concern all supported chipsets, unless mentioned otherwise.
-  */
+@@ -113,8 +113,10 @@ static const unsigned short normal_i2c[] = {
+ 	0x18, 0x19, 0x1a, 0x29, 0x2a, 0x2b, 0x48, 0x49, 0x4a, 0x4b, 0x4c,
+ 	0x4d, 0x4e, 0x4f, I2C_CLIENT_END };
  
--#include <linux/module.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
- #include <linux/init.h>
--#include <linux/slab.h>
-+#include <linux/interrupt.h>
- #include <linux/jiffies.h>
--#include <linux/i2c.h>
- #include <linux/hwmon.h>
--#include <linux/err.h>
-+#include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/of_device.h>
--#include <linux/sysfs.h>
--#include <linux/interrupt.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/slab.h>
- #include <linux/workqueue.h>
+-enum chips { lm90, adm1032, lm99, lm86, max6657, max6659, adt7461, max6680,
+-	max6646, w83l771, max6696, sa56004, g781, tmp451, tmp461, max6654 };
++enum chips { adm1032, adt7461, g781, lm86, lm90, lm99,
++	max6646, max6654, max6657, max6659, max6680, max6696,
++	sa56004, tmp451, tmp461, w83l771,
++};
  
  /*
+  * The LM90 registers
 -- 
 2.35.1
 
