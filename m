@@ -2,159 +2,122 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6826D5350AF
-	for <lists+linux-hwmon@lfdr.de>; Thu, 26 May 2022 16:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8D5535354
+	for <lists+linux-hwmon@lfdr.de>; Thu, 26 May 2022 20:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235296AbiEZOcO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 26 May 2022 10:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33874 "EHLO
+        id S236049AbiEZSbd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 26 May 2022 14:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbiEZOcN (ORCPT
+        with ESMTP id S1348494AbiEZSaM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 26 May 2022 10:32:13 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A70C01145F;
-        Thu, 26 May 2022 07:32:12 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id v9so2306481oie.5;
-        Thu, 26 May 2022 07:32:12 -0700 (PDT)
+        Thu, 26 May 2022 14:30:12 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE35A4BFDA
+        for <linux-hwmon@vger.kernel.org>; Thu, 26 May 2022 11:30:11 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-e656032735so3233999fac.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 26 May 2022 11:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=E7WwcTIUlrEvSYeTJzaHsAU/jaSdTTZXA/rZJSrZ89c=;
-        b=V+WostSg9mmiVHDAg4kGF2Bpf+HT08ui2Pq3qrvdDKO8GOx2zovsBGwvylqfhL39N7
-         iEl3Px7EvsEVpz6MrtFgRDp+KDKkCfK8101idzGDu+X2dj04tuxrzzhuAI7DZYnncmeO
-         XnCQyLUXXxGNOdqNKTjhre8Mm9RqJR8NgBY6cHJ4cV2ysEu42BiyMAC2ftTXHKa8/tY5
-         JInVPYSm/g9qsXIO5KjUSfXDugtNOkqwUuB/9KY9h5YkdDRxuHaoA8h/WGMg6czd/weq
-         qFx7ybZd/5fTlIJkNoLB9xjhlnuSBZxPzn/brKDrX5omK1H+F7Wdkf7ZD3OKaboUCb8h
-         OFfw==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=Z84Bdup9uZUJxpRHP9lbnlW7sGmbecjtWJ0xsbwiA4A=;
+        b=E4MN8LUC+f20vRyy0wZf9slnvxuKxNv4XIPT1HO0N3EMYuCBfkSkSwZxh/393NXgfK
+         PZaOOCPmh+UyTtF+9DcOWMFLDwTQAMvexWREbpLVZ4q0CLWse1ZrWbaO8eFgmAH4UoZ7
+         ggJNRdqDsqJFBKrr9J0ZuNhOPA/3FQ8S/by4TMowSkgHLYDPiBq2mZ06rWke2jHtMRoo
+         vhdNxYA6KIMXJnDD/BDighGjM64odT3yEi8UqnYhTUWIbxIgFP27uS+L0V+Eqb+llJJ5
+         aleMHAlxByF1+CUXxCjDiCX46hB84U9s7kKjS7Gl3SKDXD1PMsvYHyHD3VlGBRWlGo13
+         Cb8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=E7WwcTIUlrEvSYeTJzaHsAU/jaSdTTZXA/rZJSrZ89c=;
-        b=UaH50zv8RLDVPfMbZcNr0HK2eY6CRmwyltBYWxR0HMQObMOLqN+PdPhxB5H2MdOy/K
-         bgLuBphwKnKbJI/2Vl1H+Ncct4Bk0fcvt4fOCTjtjp52Qb/h35y2s2P1YTsiLD/s6hHx
-         zPMwaRypaX0P2YO1+COSyVKTe1gXvFKokitZRdftEsg9OKBkf7wDGNTjCGeAV0oeHwMA
-         YPYuJZppKVN5Wn2OT2RKSUt1+oqr/pKIGzcaWqhqbdK9zmkpo6lHioFA2ldwU0ghqldI
-         T8zlf3eL0pfUhsM3Qi1wTuLajwkyjl13Xo5+lDO9jnaGawNr6Ksy0X2Ah2ekBwG3Qf7Q
-         2uTg==
-X-Gm-Message-State: AOAM530zqAMZg7bkaguhK6gQoGEazx8bHd9gzwtsbn8WBZ4Oyxy2UHqa
-        wKfFvfKOJ0byl/ifEttenghOgbVszuVr4g==
-X-Google-Smtp-Source: ABdhPJzeaaIoevOLo4J0cUk6UQalpJizJpZMVq8I7RPzxr+PlzLGAWYZJp1Bm9J6Dh0zDiBsgc6uPQ==
-X-Received: by 2002:a05:6808:1805:b0:32b:17e3:c7b with SMTP id bh5-20020a056808180500b0032b17e30c7bmr1313670oib.37.1653575531987;
-        Thu, 26 May 2022 07:32:11 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g18-20020a9d5f92000000b006060322127esm647788oti.78.2022.05.26.07.32.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 May 2022 07:32:11 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <a1760694-7ac7-3f31-c181-13f663bd60b0@roeck-us.net>
-Date:   Thu, 26 May 2022 07:32:09 -0700
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=Z84Bdup9uZUJxpRHP9lbnlW7sGmbecjtWJ0xsbwiA4A=;
+        b=uf3yqr0z6VyRb/OB8ghgh1X7zZ37I9Jr+bgoBuhjo5EMWtG09Nk7BFMZuk2pnklP59
+         9+yik7K6+0socs9apMvzKVlivDNCXCWcsociGId9U5YChIL6FKWYNtTAQt4lwAnxMFCH
+         eQt53ph+S8EorGfPsePYRNZslBnYnGV+9KZzU+qZNZE184EA3xm6aYXjz49/c8ip6Onk
+         grCtSMeKfu6yCZIoqFA6pf8rQb8OTyLAZOu60FEKXuREHS66iPUIPf2U2qc+6AsDK3X4
+         Z/gqEg8ybs7Kvaz+VDCktZO64uS1RcRTex2qi9dPHNzEnVg28b5IqkFxri+S7h47D0bo
+         Weyg==
+X-Gm-Message-State: AOAM531vtmzFR1q6UAqj4Q+SSoKJGptmruf42ZpIZlOKJUUbvrlFdUqg
+        +dBnnLgG+w4j2IJpwSmBEoxCtFA+iYaG3ZQGGaM=
+X-Google-Smtp-Source: ABdhPJwGzXe/TXRRB03Ggn8wQELjVZeUQf+CG5ILo8YjpGuvE+APuQG4aQIiPzOkxZ+AWQqxV3KpT7FqBtsy2iaqs48=
+X-Received: by 2002:a05:6870:e0d1:b0:f1:ad9a:8c98 with SMTP id
+ a17-20020a056870e0d100b000f1ad9a8c98mr2035368oab.168.1653589810573; Thu, 26
+ May 2022 11:30:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 13/40] hwmon: (lm90) Support multiple temperature
- resolutions
-Content-Language: en-US
-To:     Slawomir Stepien <sst@poczta.fm>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>
-References: <20220525135758.2944744-1-linux@roeck-us.net>
- <20220525135758.2944744-14-linux@roeck-us.net>
- <Yo8oWvd3ChpOyOJ7@t480s.localdomain>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <Yo8oWvd3ChpOyOJ7@t480s.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Sender: eldristanko@gmail.com
+Received: by 2002:a4a:3356:0:0:0:0:0 with HTTP; Thu, 26 May 2022 11:30:10
+ -0700 (PDT)
+From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
+Date:   Thu, 26 May 2022 20:30:10 +0200
+X-Google-Sender-Auth: Io3rIrIy94_EUUTSC-NewPhPX5g
+Message-ID: <CALry08VnT7ioqM4+wGGb0JNY7iRfwG8jVDCbbUHa=e2N+Rz2XQ@mail.gmail.com>
+Subject: ATTENTION PLEASE,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.4 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,SUBJ_ATTENTION,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:2e listed in]
+        [list.dnswl.org]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [eldristanko[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  1.7 MILLION_USD BODY: Talks about millions of dollars
+        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  1.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/26/22 00:12, Slawomir Stepien wrote:
-> On maj 25, 2022 06:57, Guenter Roeck wrote:
->> (...)
->> @@ -1477,36 +1332,36 @@ static int lm90_temp_write(struct device *dev, u32 attr, int channel, long val)
->>   
->>   	switch (attr) {
->>   	case hwmon_temp_min:
->> -		if (channel == 0)
->> -			err = lm90_set_temp8(data,
->> -					      lm90_temp_min_index[channel],
->> -					      val);
->> -		else
->> -			err = lm90_set_temp11(data,
->> -					      lm90_temp_min_index[channel],
->> -					      val);
->> +		err = lm90_set_temp(data, lm90_temp_min_index[channel],
->> +				    channel, val);
->>   		break;
->>   	case hwmon_temp_max:
->> -		if (channel == 0)
->> -			err = lm90_set_temp8(data,
->> -					     lm90_temp_max_index[channel],
->> -					     val);
->> -		else
->> -			err = lm90_set_temp11(data,
->> -					      lm90_temp_max_index[channel],
->> -					      val);
->> +		err = lm90_set_temp(data, lm90_temp_max_index[channel],
->> +				    channel, val);
->>   		break;
->>   	case hwmon_temp_crit:
->> -		err = lm90_set_temp8(data, lm90_temp_crit_index[channel], val);
->> +		err = lm90_set_temp(data, lm90_temp_crit_index[channel],
->> +				    channel, val);
->>   		break;
->>   	case hwmon_temp_crit_hyst:
->>   		err = lm90_set_temphyst(data, val);
->>   		break;
->>   	case hwmon_temp_emergency:
->> -		err = lm90_set_temp8(data, lm90_temp_emerg_index[channel], val);
->> +		err = lm90_set_temp(data, lm90_temp_emerg_index[channel],
->> +				    channel, val);
->>   		break;
->>   	case hwmon_temp_offset:
->> -		err = lm90_set_temp11(data, REMOTE_OFFSET, val);
->> +		val = lm90_temp_to_reg(0, val,
->> +				       lm90_temp_get_resolution(data, REMOTE_OFFSET));
->> +		data->temp[REMOTE_OFFSET] = val;
-> 
-> I do not understand why you do this val assignment here, before doing real i2c write. That write
-> might fail and then we have "incorrect" value in data->temp.
-> 
+ATTENTION PLEASE,
 
-No special reason. I'll move the assignment to the end of the case statement.
+I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
+Directors working with United bank for African Burkina Faso (UBA). I
+have an interesting business proposal for you that will be of immense
+benefit to both of us. Although this may be hard for you to believe,
+we stand to gain a huge amount  between us in a matter of days. Please
+grant me the benefit of doubt and hear me out. I need you to signify
+your interest by replying to my mail.
 
-Guenter
+Honestly, i have business transaction worth the sum of
+(US$8,200,000.00) Eight Million two hundred thousand united state
+dollars to transfer to you through proper documentation in position of
+your own Account.
 
->> +		err = i2c_smbus_write_byte_data(data->client,
->> +						LM90_REG_REMOTE_OFFSH,
->> +						val >> 8);
->> +		if (err)
->> +			break;
->> +		err = i2c_smbus_write_byte_data(data->client,
->> +						LM90_REG_REMOTE_OFFSL,
->> +						val & 0xff);
->>   		break;
->>   	default:
->>   		err = -EOPNOTSUPP;
->> @@ -2035,6 +1890,7 @@ static int lm90_probe(struct i2c_client *client)
->>   	 * ALERT# output
->>   	 */
->>   	data->alert_alarms = lm90_params[data->kind].alert_alarms;
->> +	data->resolution = lm90_params[data->kind].resolution ? : 11;
->>   
->>   	/* Set chip capabilities */
->>   	data->flags = lm90_params[data->kind].flags;
-> 
+I will make more details available to you on receipt of a positive
+response from you
 
+This transaction is risk-free; please urgently confirm your
+willingness and interest to assist in this deal, I am in good faith
+and with trust waiting for your Urgent respond and maximum cooperation
+for more details.
+
+Best Regards,
+Mrs Aminata Zongo.
