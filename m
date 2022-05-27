@@ -2,85 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3A115358A4
-	for <lists+linux-hwmon@lfdr.de>; Fri, 27 May 2022 07:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748E15359B1
+	for <lists+linux-hwmon@lfdr.de>; Fri, 27 May 2022 08:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238956AbiE0FIz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 27 May 2022 01:08:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
+        id S1344512AbiE0GzE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 27 May 2022 02:55:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237639AbiE0FIw (ORCPT
+        with ESMTP id S1344648AbiE0Gy7 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 27 May 2022 01:08:52 -0400
-Received: from smtpo68.interia.pl (smtpo68.interia.pl [217.74.67.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED8069CD1
-        for <linux-hwmon@vger.kernel.org>; Thu, 26 May 2022 22:08:49 -0700 (PDT)
-Received: from t480s.localdomain (unknown [80.68.225.159])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-        Fri, 27 May 2022 07:08:45 +0200 (CEST)
-Date:   Fri, 27 May 2022 07:08:42 +0200
-From:   Slawomir Stepien <sst@poczta.fm>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>
-Subject: Re: [PATCH 20/40] hwmon: (lm90) Add support for ADT7481, ADT7482,
- and ADT7483
-Message-ID: <YpBc2uOTL6G6nREp@t480s.localdomain>
-References: <20220525135758.2944744-1-linux@roeck-us.net>
- <20220525135758.2944744-21-linux@roeck-us.net>
+        Fri, 27 May 2022 02:54:59 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5CFDBCA7
+        for <linux-hwmon@vger.kernel.org>; Thu, 26 May 2022 23:54:58 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id l30so392777lfj.3
+        for <linux-hwmon@vger.kernel.org>; Thu, 26 May 2022 23:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=33H7bzlF73boyoKARvolMJlGymprQ+hHPrvlaQBxLsY=;
+        b=cFB7s0A6Vncow/pUpyHYeS5uRA3Sa1oL7zKnv4ZePJIBO1Hlol5vIxoRR8Pf9MTFN9
+         oS93ak0fZyAhEeiY9jUgF6ruvGq0YdAcUA/FlNpE9Yi9Vzbw7BtUCGUziY3UdhZZ/vaf
+         BOcIBSc1JtgDPny3sWXd1/rxfYsgb2ftoQVLZkOGNEO8qVK7fkH47I/rHZNBAPQ9aIBE
+         Ws3Q6Neg6HiOA13NJiFH+4aMsQXXH0Qtnyn5l7BDNF2MbdsXBuc2uQSh4/OKnVb6hoRD
+         /05oteHXZuuGdsvtQhqtoONPPPaSdkAusn+RjVQFzIjchroyCy7VqFLfAJAFNgzS6Elj
+         kkWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=33H7bzlF73boyoKARvolMJlGymprQ+hHPrvlaQBxLsY=;
+        b=LFL7MSOxKO7MZ/5OvbmOYK+tc2HER+VK7ZrmAegUy/BGqI+zM48O61KnK6l6ld1eAF
+         u25tN8T70TXe++Lle4rQHXrMvA8l8pL4ieFIMC4IvgkE/dlpnSX8a7ZGgUJQEda9Zndm
+         rE+2VjkoDfDNYYFrHs9dRjqe8I9PLW2rnBKtIG4KCCKCifgGcNBaYu9BmDJe+s1UHqT6
+         LfdhLYf3jewZt2BgNJK3BLJ49TTw8nAadQ+wjVI+s0Xns7CYbaoXIYd7OMQzrKx1+d0y
+         hdn3P7lvYFIIIXpU9mWUQJc1EWC9TFk6TtLkY1PY26r2yI3Y5s10CjwirpmiyGTIBpkE
+         ia/g==
+X-Gm-Message-State: AOAM533mC77iSJ1cSiKIGLYKAC0z8bnniFAhKyKLpDCLJDuDZaC5afzV
+        OdtvPrVHWsWLpKkwxoDpmn7xUJSPqxcVQe9yO/I=
+X-Google-Smtp-Source: ABdhPJxl8H0jAMQNpnwAKcBcQ33aGejJlX/037l/K5+4xKUMvuR/pjYp4WPxSC7JK7gs2uOWP4QKrWTIYDKqWUkuF1k=
+X-Received: by 2002:ac2:5a07:0:b0:478:8433:30c1 with SMTP id
+ q7-20020ac25a07000000b00478843330c1mr12757539lfn.377.1653634496714; Thu, 26
+ May 2022 23:54:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220525135758.2944744-21-linux@roeck-us.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=interia.pl;
-        s=biztos; t=1653628126;
-        bh=qjXWF2SxjaLYFYf4Ou0CUK1Dlc+PO7EjfyrTq7tBWOo=;
-        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-        b=UKroSo0dRAWXUUhdlNS0A2Fu7h4Mq1waoWVlDr2/VA/P8V+gOtcL9MnfI+8b/m7MH
-         NRs/ciX2253v8M5W4xRwf0t4D0aEw2yCWxGGxtr9Umyqu7WfLd7F0218DuuMivuX0m
-         Yx4TT1p/CN4u/OWh1WRRVqRUkCZpnkkJJCLfexBw=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6512:b84:0:0:0:0 with HTTP; Thu, 26 May 2022 23:54:56
+ -0700 (PDT)
+Reply-To: BAkermarrtin@gmail.com
+From:   Martin Baker <alfaroukkhadija@gmail.com>
+Date:   Fri, 27 May 2022 06:54:56 +0000
+Message-ID: <CAF1Q0JmVfSYK8Jf00Amkz8uT+RCvTW6Tq6L7uA8Gx=d38KfR4w@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On maj 25, 2022 06:57, Guenter Roeck wrote:
-> ADT7481, ADT7482, and ADT7483 are similar to ADT7461, but support two
-> external temperature sensors, similar to MAX6695/6696. They support an
-> extended temperature range similar to ADT7461. Registers for the second
-> external channel can be accessed directly or by using the same method as
-> used by MAX6695/6696. For simplicity, the access method implemented for
-> MAX6695/6696 is used.
-> 
-> The chips support PEC (packet error checking). Set the PEC feature flag
-> and let the user decide if it should be enabled or not (it is by default
-> disabled).
-> 
-> Even though it is only documented for ADT7483, all three chips support a
-> secondary manufacturer ID register at 0x3e and a chip ID register at 0x3f.
-> Use the contents of those registers register for improved chip detection
-> accuracy. Add the same check to the ADT7461A detection code since this chip
-> also supports the same (undocumented) registers.
-> 
-> Devicetree nodes are not added for the added chips since it is quite
-> unlikely that such old chips will ever be used in a devicetree based
-> system. They can be added later if needed.
-> 
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
->  Documentation/hwmon/lm90.rst |  38 +++++++++++
->  drivers/hwmon/Kconfig        |   3 +-
->  drivers/hwmon/lm90.c         | 119 ++++++++++++++++++++++++++---------
->  3 files changed, 129 insertions(+), 31 deletions(-)
+Hello,
 
-Reviewed-by: Slawomir Stepien <sst@poczta.fm>
 
--- 
-Slawomir Stepien
+I wrote to you this morning because I have something to tell you, please
+let me know if you read my previous post today.
