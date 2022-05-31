@@ -2,124 +2,103 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B91435386AC
-	for <lists+linux-hwmon@lfdr.de>; Mon, 30 May 2022 19:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1008B5389F5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 May 2022 04:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234383AbiE3RSj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 30 May 2022 13:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50680 "EHLO
+        id S243035AbiEaCiN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 30 May 2022 22:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232809AbiE3RSi (ORCPT
+        with ESMTP id S237072AbiEaCiM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 30 May 2022 13:18:38 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398925F8C6
-        for <linux-hwmon@vger.kernel.org>; Mon, 30 May 2022 10:18:37 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id f4so11880035iov.2
-        for <linux-hwmon@vger.kernel.org>; Mon, 30 May 2022 10:18:37 -0700 (PDT)
+        Mon, 30 May 2022 22:38:12 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F37350052;
+        Mon, 30 May 2022 19:38:09 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id bo5so11972196pfb.4;
+        Mon, 30 May 2022 19:38:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=War3Yi9zM6VCze97oOGD7euXSxWWDNMBpiFO+qJv7Ak=;
-        b=HH+ny2rcwRdv3a1W1klBn+bRg7Z1LD7VaEe7+LCPTYraayhHnOGGHvpL5e3g6Vhjxp
-         sJw2perhJ4IhYdPQWm5QxrvujNVcOBidl+yNIBqxBgnCy2WiBTxL49Rxf+i0L7RFIKJl
-         p2W/9jNp4dAM19TXHLGW/ctEPdsj6is+hzEryJ5fV9p4hOc5amkO1Qk8mFhOf6OmTuVU
-         I9CBRhgNkK31bYF13syOGCVNq7af2/tMrArjOxcV53UNoJxoIBYx0KGlar3MiCA1YJpK
-         hLFKoA8DyR1aEsEsdEElTJul7+2UyvS0tpkULztuXQCYu5LXMY/WiC1MBZ3i0TTXKm40
-         nFrA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=5L9D0CPZoOn6iRer1/Iis9Os7Lr0syhKXln0w+FamQg=;
+        b=JKLzhF1usQmkIBdH2Vxsk7pDBv1OyOocxBwl+GQaJlEQlp8y2UKmKsfLyJEhM2N/gl
+         iBpTqmHvcKayfwyif2yByQnVOdgUmbJMknASvbSKnevTqd+cWvgfp6C8JFvzJqMOC33t
+         6d3zn/BOMUCv4CLqOrvzG+XHdi2FkE+Kt+b5geEh67iTW5l+v3dBZcbAlmcZwtnXE49A
+         BGLmJvekNBrYyDQdsMrI4ajZKNbTCI+GeoO7dZPXQ/69DR59l+NI/vSXXlfGySI/wQmy
+         ssciwG49ZPJBJWcqlayW1szsi/HnLTjWnE7O/zd56W1zaFYDtyzl1+8bZPobCDdswIvC
+         ZbPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=War3Yi9zM6VCze97oOGD7euXSxWWDNMBpiFO+qJv7Ak=;
-        b=oksi50NZ+0TaPm3oyqfzCFN4LGZOkffDSLaBDwLs0+eePEvHGxPSjfmb7YhaeTTcZ2
-         1xCJcyp980207SdAaJFyd41MK2YIVHNkkGAQWCHKrI4ZLz4scOC4bHqKE4SjTwJOMcC+
-         8g7Rdjm09YLE+bITalM/cNQmo6VMtLZFVeFnCEh6B1o3v0xz+H94xuG5MZw3Y3fdjkcF
-         LAn/kXnTUzcYfyOYDJgMq+wjvBl5MtCJMTHXna+BfFGMnmFvCJGD56OgwoOg0XrYFf4W
-         +5IKjS2KMJmNc/O25TdzGPSTzlEomfrTcocstthvCxJ11qsV+K0ZCjOr0o6CMstYak82
-         /WQg==
-X-Gm-Message-State: AOAM530e/VT287dlqW9V2vY+xA54j8yF1Ihkck31StWYxNYs0Gjt8oUM
-        +cYXdvbMxAEMDbYSKp1veIO/M3UZCwajFhJ1yxg=
-X-Google-Smtp-Source: ABdhPJxqArUkBJ7wHPhmM1lW9JcCsG39xON8L2gNSx2mt1hi1cJOCKERe92UrAmIEHX8e/EYJm379Dk+RFGLCVNp+B4=
-X-Received: by 2002:a6b:b591:0:b0:668:a264:e4a9 with SMTP id
- e139-20020a6bb591000000b00668a264e4a9mr3070455iof.59.1653931116678; Mon, 30
- May 2022 10:18:36 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=5L9D0CPZoOn6iRer1/Iis9Os7Lr0syhKXln0w+FamQg=;
+        b=HYAZp0lGXeLg8FMuyPclrIN+uYFPHn2OV127p03wbOgBU1LBpVRgkeHj/+GUdJrHYT
+         AEHbI5oDaBldA5tqjaBcAaqX8HmBzIGJZzsoDly2PJsesdIoLF/wdw5leVGMb1/iNTix
+         Y+9FTSitjeN3CLqLn1fwohHOEtIWctGY6q7c56hZ5Y5LtW697uRTgdciOtgMYf/7S2Qh
+         cst0pzANUjqt2g+h+HYuMjGn7TZrQ9kln5M4qEfzU6eDwN8GqeedHc89mEeUqFZ1A8bN
+         0IzeNrQd3nNHfBXNn9iyJvnpbLQp47gBWVopX3uQcovujGfmVk6W9or2zvOCUzy9Qq3E
+         eOPA==
+X-Gm-Message-State: AOAM531hKRVjfRF3hb7reRKIypJSasBrZP7XhqM3DOB88NBYIfklx5Fh
+        53Aav2sRzAIVOdhe2o0lXcjYu1GeWDpwWA==
+X-Google-Smtp-Source: ABdhPJxO664InV+6aWDDRju8azkE7SdS5F2TwFncm+G+qhlV5ky/ruidv8wc6jADxF5vlYvOx26s1Q==
+X-Received: by 2002:a05:6a00:a03:b0:51b:5131:704e with SMTP id p3-20020a056a000a0300b0051b5131704emr7294679pfh.53.1653964688792;
+        Mon, 30 May 2022 19:38:08 -0700 (PDT)
+Received: from [192.168.43.80] (subs02-180-214-232-77.three.co.id. [180.214.232.77])
+        by smtp.gmail.com with ESMTPSA id y139-20020a626491000000b0051844a64d3dsm9484454pfb.25.2022.05.30.19.38.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 May 2022 19:38:08 -0700 (PDT)
+Message-ID: <1344ac58-f019-03ef-fab8-6e1d910514e2@gmail.com>
+Date:   Tue, 31 May 2022 09:38:03 +0700
 MIME-Version: 1.0
-Sender: centralcatholiccathedrachurch@gmail.com
-Received: by 2002:a05:6602:13c2:0:0:0:0 with HTTP; Mon, 30 May 2022 10:18:35
- -0700 (PDT)
-From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
-Date:   Mon, 30 May 2022 19:18:35 +0200
-X-Google-Sender-Auth: wAhVPTy-CXAGjDGy4x0XXYREc28
-Message-ID: <CAB6FKmqyoFU7VD=Vpsz46PMr8Qxp8d6MJ+m8dYKEVu1F6L6w1A@mail.gmail.com>
-Subject: ATTENTION PLEASE,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,SUBJ_ATTENTION,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:d35 listed in]
-        [list.dnswl.org]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [centralcatholiccathedrachurch[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        *  2.0 MILLION_USD BODY: Talks about millions of dollars
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH AUTOSEL 5.17 128/135] hwmon: Make chip parameter for
+ with_info API mandatory
+Content-Language: en-US
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     jdelvare@suse.com, corbet@lwn.net, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org
+References: <20220530133133.1931716-1-sashal@kernel.org>
+ <20220530133133.1931716-128-sashal@kernel.org>
+ <dddc2b53-62eb-fda7-4425-afdd179a7037@roeck-us.net>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <dddc2b53-62eb-fda7-4425-afdd179a7037@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION PLEASE,
+On 5/30/22 21:27, Guenter Roeck wrote:
+> On 5/30/22 06:31, Sasha Levin wrote:
+>> From: Guenter Roeck <linux@roeck-us.net>
+>>
+>> [ Upstream commit ddaefa209c4ac791c1262e97c9b2d0440c8ef1d5 ]
+>>
+>> Various attempts were made recently to "convert" the old
+>> hwmon_device_register() API to devm_hwmon_device_register_with_info()
+>> by just changing the function name without actually converting the
+>> driver. Prevent this from happening by making the 'chip' parameter of
+>> devm_hwmon_device_register_with_info() mandatory.
+>>
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> This patch should not be backported. It is only relevant for new
+> kernel releases, and may have adverse affect if applied to older
+> kernels.
 
-I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
-Directors working with United bank for African Burkina Faso (UBA). I
-have an interesting business proposal for you that will be of immense
-benefit to both of us. Although this may be hard for you to believe,
-we stand to gain a huge amount  between us in a matter of days. Please
-grant me the benefit of doubt and hear me out. I need you to signify
-your interest by replying to my mail.
+So this patch is meant to be backported to 5.18 only, right?
 
-Honestly, i have business transaction worth the sum of
-(US$8,200,000.00) Eight Million two hundred thousand united state
-dollars to transfer to you through proper documentation in position of
-your own Account
-
-Most importantly, I will need you to promise to keep whatever you
-learn from me between us even if you decide not to go along with me. I
-will make more details available to you on receipt of a positive
-response from you.
-
-This transaction is risk-free; please urgently confirm your
-willingness and interest to assist in this deal, I am in good faith
-and with trust waiting for your Urgent respond and maximum cooperation
-for more details.
-
-Best Regards,
-Mrs Aminata Zongo.
+-- 
+An old man doll... just what I always wanted! - Clara
