@@ -2,143 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14723539AC7
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jun 2022 03:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F33C539D40
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Jun 2022 08:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346983AbiFABeI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 31 May 2022 21:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
+        id S245220AbiFAGbP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 1 Jun 2022 02:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244972AbiFABeH (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 31 May 2022 21:34:07 -0400
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8789A5B3F9;
-        Tue, 31 May 2022 18:34:06 -0700 (PDT)
-Date:   Wed, 01 Jun 2022 01:34:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wujek.eu;
-        s=protonmail2; t=1654047244; x=1654306444;
-        bh=HNyDEZPUiD5WQaSU7ZB0ohB0dUGEd+n30NevK73Q/eI=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=umXE7fDg9UuUBFZhWph6ZfofMERBm05Gjwtrwv8u/71VhAYOt5IP6X+Ak3y69SKpC
-         Cqy+GMIiGV00jDMMsXQ96f/nev0j6CJC0y5uX6yCEIsYGYfykGmZsYsoi21Rsb+XMQ
-         CZ/O/8FXfaldufSLQL2Q+aIoTo3QZbRX3GqenNFmPRcHxVRD6sxwAwY8XvGqFlbRXP
-         bx2KEyJoHfmRFmTGt+Rxf4hf89XmTZHgjXSkKV/umnXuYYaIIlhWQ07PPPq510AJoN
-         IfRF/mnTPagHtAobrvM1DuFOxYnsJ5ZV/nsDEklwcGdAILWSpBUoTC/gHCOhxEirGu
-         4MmxbHDxmE7bQ==
-To:     Guenter Roeck <linux@roeck-us.net>
-From:   wujek dev <dev_public@wujek.eu>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: wujek dev <dev_public@wujek.eu>
-Subject: Re: [PATCH v2 1/2] hwmon: (pmbus) add a function to check the presence of a block register
-Message-ID: <WVehAlzjh6tqHumVgSPQaBJ2HyS2440oKiqR96qmMbXIv1Z0h_HQuGZf-6xh1KgeCXIGFmTg1Vym3ekryjnKUB8pEN3Hdm-PJBVakHg1FDo=@wujek.eu>
-In-Reply-To: <e0bfc3c0-d15f-f19e-5355-03a76ffa71ee@roeck-us.net>
-References: <20220524104307.272806-1-dev_public@wujek.eu> <e0bfc3c0-d15f-f19e-5355-03a76ffa71ee@roeck-us.net>
-Feedback-ID: 23425257:user:proton
+        with ESMTP id S239265AbiFAGbO (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Jun 2022 02:31:14 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997335F243
+        for <linux-hwmon@vger.kernel.org>; Tue, 31 May 2022 23:31:13 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id b8so761621edf.11
+        for <linux-hwmon@vger.kernel.org>; Tue, 31 May 2022 23:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=oXjrioDnfpdscFTPhwe5eTP8raXbbRL+txchizTdKpg=;
+        b=CaLiHZiD5kd6beLkeNBhjSBrtIPYSuVXjACaNxk0p13dMs2Eyihp2iNym0PHOO5k21
+         0hJpjW8xqqyxbc4SLk0YqlcUZXcsX4eIi91WrXIUnS6PhTMsUktHa0br7YZCErhHfcJB
+         gbGoPDNqth2OTjIsD/0LpZi9jGXgkhWUTouNeMynu6b/uMZb/XU98sUmCT/G5Mmj75Uh
+         4cmScLli9MR6PiiBc95mnaQXyjTn+IRCHT73OtuyKd4nBkEunTV586eAQM2Ync0sq8O9
+         hPsUw19RpKSwqKrbfd0yQ0OX784gU5/tPvkAnWuIjAJVD3wJneBIwkqrC2IPaRHf7mio
+         AoJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=oXjrioDnfpdscFTPhwe5eTP8raXbbRL+txchizTdKpg=;
+        b=e8Yb/PMOsFWak6LP8L7RPUqMJvxvOUnNIJ2k/qpLH/CZMycMx1m7YTb2VAXr2RcwqX
+         TammmxNKgSYXlvbJY0P5ji93yGwz/kSNl5WEwi8tP7gPAuDnEvu5Zm/CsKskrtWnBXaR
+         2nIcXu7LnQlpMCX6Ka24gCPx6PyxD/VNBwdZ3orcqi290wyuidfMwWsofUdkD5Ke5byp
+         eGmTOgjVY649j0/SmOB1kS6ftLFP4q9SIEzQoH1w4KyqTd/oqQKBZhUcYYWXlQre5oEd
+         N4YfTs9saFazISLD1gnbZVH/an/foKFOj38NHC/caEEbcmAFIPjGsruJJaxjb1079wPD
+         tmOg==
+X-Gm-Message-State: AOAM531HBo9MifRrc7vy1j0sX2FbRO4UaIqE0AUSL9TLk2VZnJu3Ahgj
+        WPbjKxXrRjhpDQOkl7/EMfQDApHsRER+Nn+uIdE=
+X-Google-Smtp-Source: ABdhPJwetEsgTtjnuaWYUdp7MxKZ1xYjJKRW8kbl2dPNSsDIlAQG9kFcayf2E8U1gIA1wn2HnTzzzbMpTn8Z9+MbJX4=
+X-Received: by 2002:a05:6402:d0a:b0:425:d455:452 with SMTP id
+ eb10-20020a0564020d0a00b00425d4550452mr68100231edb.259.1654065072277; Tue, 31
+ May 2022 23:31:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Sender: wedenimboma74@gmail.com
+Received: by 2002:a17:907:75c4:b0:6fe:f860:1435 with HTTP; Tue, 31 May 2022
+ 23:31:11 -0700 (PDT)
+From:   Kayla Manthey <sgtkaylamanthey612@gmail.com>
+Date:   Wed, 1 Jun 2022 06:31:11 +0000
+X-Google-Sender-Auth: PIafC5BJagIMwq6KXdYNnu5xHBM
+Message-ID: <CADTv18D8=B1bRLbyHGVOLYc6ey3D+uiWJKNHAs96Q+Dwd3M1zQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Bonjour, je n'ai pas encore re=C3=A7u de r=C3=A9ponse de votre part concern=
+ant
+mes deux e-mails pr=C3=A9c=C3=A9dents, veuillez v=C3=A9rifier et me r=C3=A9=
+pondre.
 
-On Tuesday, May 24th, 2022 at 15:32, Guenter Roeck <linux@roeck-us.net> wro=
-te:
-
-
->
->
-> On 5/24/22 03:43, Adam Wujek wrote:
->
-> > Other functions (like pmbus_check_byte_register) cannot be used to chec=
-k
-> > the presence of a block register, because it will generate error when P=
-EC
-> > is used.
-> >
-> > Signed-off-by: Adam Wujek dev_public@wujek.eu
-> > ---
-> > Notes:
-> > Changes in v2:
-> > - Use Phase 0xff when setting the page
-> >
-> > drivers/hwmon/pmbus/pmbus_core.c | 26 ++++++++++++++++++++++++++
-> > 1 file changed, 26 insertions(+)
-> >
-> > diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmb=
-us_core.c
-> > index acf78d0829d9..2ff66f133d95 100644
-> > --- a/drivers/hwmon/pmbus/pmbus_core.c
-> > +++ b/drivers/hwmon/pmbus/pmbus_core.c
-> > @@ -421,6 +421,18 @@ static int _pmbus_read_byte_data(struct i2c_client=
- *client, int page, int reg)
-> > return pmbus_read_byte_data(client, page, reg);
-> > }
-> >
-> > +static int pmbus_read_block_data(struct i2c_client *client, int page, =
-u8 reg,
-> > + char *data_buf)
-> > +{
-> > + int rv;
-> > +
-> > + rv =3D pmbus_set_page(client, page, 0xff);
-> > + if (rv < 0)
-> > + return rv;
-> > +
-> > + return i2c_smbus_read_block_data(client, reg, data_buf);
-> > +}
-> > +
-> > static struct pmbus_sensor *pmbus_find_sensor(struct pmbus_data *data, =
-int page,
-> > int reg)
-> > {
-> > @@ -558,6 +570,20 @@ bool pmbus_check_word_register(struct i2c_client *=
-client, int page, int reg)
-> > }
-> > EXPORT_SYMBOL_NS_GPL(pmbus_check_word_register, PMBUS);
-> >
-> > +static bool pmbus_check_block_register(struct i2c_client *client, int =
-page,
-> > + int reg)
-> > +{
-> > + int rv;
-> > + struct pmbus_data *data =3D i2c_get_clientdata(client);
-> > + char data_buf[I2C_SMBUS_BLOCK_MAX + 2] =3D { 0 };
->
->
-> Unnecessary initialization.
-Agree
->
-> > +
-> > + rv =3D pmbus_read_block_data(client, page, reg, data_buf);
-> > + if (rv >=3D 0 && !(data->flags & PMBUS_SKIP_STATUS_CHECK))
-> > + rv =3D pmbus_check_status_cml(client);
->
->
-> How about PMBUS_READ_STATUS_AFTER_FAILED_CHECK ?
-added in the next version
->
-> Thanks,
-> Guenter
-BR,
-Adam
->
-> > + pmbus_clear_fault_page(client, -1);
-> > + return rv >=3D 0;
-> > +}
-> > +
-> > const struct pmbus_driver_info *pmbus_get_driver_info(struct i2c_client=
- *client)
-> > {
-> > struct pmbus_data *data =3D i2c_get_clientdata(client);
-> > --
-> > 2.17.1
+Hallo, ik heb nog geen feedback van je ontvangen met betrekking tot
+mijn twee vorige e-mails, controleer en beantwoord me.
