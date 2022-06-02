@@ -2,229 +2,126 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6755E53BB17
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Jun 2022 16:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D3353BF67
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Jun 2022 22:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236179AbiFBOk6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 2 Jun 2022 10:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54146 "EHLO
+        id S237507AbiFBUL5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 2 Jun 2022 16:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236294AbiFBOkq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 2 Jun 2022 10:40:46 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C3CD285AAD
-        for <linux-hwmon@vger.kernel.org>; Thu,  2 Jun 2022 07:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1654180830;
-  x=1685716830;
-  h=date:to:cc:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to:from;
-  bh=YFmulEK8OZcJl4JjtQsEE75RRJmEAm3pwsxBY3XvUw4=;
-  b=airmU66KRP/QAuGJTpw8HdcXn1+gEcsrL8ONzShkB9jQkdhB6wOXh3Un
-   29qej8DhDOsHmaDulJHCFo6iezYohY4AwChk6LweAbx9NhuguYJ/VoWZ6
-   IxYLQZItmh+r3zi7DmpPVnkMjFqchfwjC/p2+gr6UYG/jKga5lbBfOowZ
-   VW7eSrt0SV19Y39V1ZlJyX54hcM4yJSgYKpFrKOgv28QD144GN/UFSc2O
-   8CiNzkCCeLLajQOWaJ0897Nmv2xQr2LfYVbxKgdjr7Fzs+sWOXJHWmYHG
-   HYp1uKsbWuV8M3iNP19136drC3BpTufB4ziaIEdA0YRUMTdatUEmJpVSP
-   A==;
-Date:   Thu, 2 Jun 2022 16:40:25 +0200
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        kernel <kernel@axis.com>
-Subject: Re: [PATCH v1] hwmon: (pmbus/ltc2978) Set voltage resolution
-Message-ID: <YpjL2XqBuvAE0LfH@axis.com>
-References: <20220530143446.2649282-1-marten.lindahl@axis.com>
- <20220601191256.GA1416021@roeck-us.net>
+        with ESMTP id S237940AbiFBULw (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 2 Jun 2022 16:11:52 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98618101F;
+        Thu,  2 Jun 2022 13:11:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kxiL1q/YzRGXNV2tU01EuFJjhPDNLHaDAATdpbKfJxu2PcCicHdGdICZ0AHuz67jKEGHLK6M77PJAekVnACDVruWhgFyFJGe9m5eY5G6zQ3lkQ9YxuaLyzyYiBR09/kaVyDHhvlMpmX8hX60HpRLlyl3nNr7+Yk+rUrFzaX9zgAwZGl5M1GO4U+8tWtDogzR55gXQhFmMjg9uFcwRUSbO6PVlClfUpkgMxj7QozYH8N6LJCXBE92HCm2ll1sxiDi3HeXSBxMBa4qlDXrOejZTW6eMYB4W6eLSfG1EYpsECfd9Pru1vNwJLkxENJXQoeQr5tttrizo8a/eiw+vKYBRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9ey6OZeVHXpD5mdtbms/CWNTFneWrXwgY2HCfNz0chc=;
+ b=bTnfH6Up6xXL4w/cJM8wL0SdVytj4kOJdD0jR7ByRVaySIyP5CpI+rHLn1kVBlWa8rEGvuOH1rxaQfNtp9dR2uIai6bfDjF2znpAZjR+jH1ir7SSdeUORquvgKQwBHxVAhET+NXPDq3GiofjlH8SHkEo7DP0Gjo2BSwY48+bE6MEd1jQbX5Xh1+jdnKTOw/PWWx9sPCpvtzkOTGQ/HSNytIemOSlo5bGMTtl8YOvCY5IV12oLT92yA7JA/1Qq0i5iCI/fhs+c/OSZV21oMDqs8zd8QWOzR+J/ynMzezGf1BroFaAwBAPGSUL9a215GaiQzfX3KlEaAFOwKMVaxZOcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=ladisch.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9ey6OZeVHXpD5mdtbms/CWNTFneWrXwgY2HCfNz0chc=;
+ b=cpsu5jhPwD5F9ysTJv1GCiW0fv2GCIo6A3afZrs69+WveLSPTlEwuBKuYONwMNpJAW+9WnWhnqZMCTpdSTM5lh0lgaw8untbK4bKzy9RSMHEqay+8HcUK62HwXqinrIA5cQ/FejRh6u+11lTk5VXgq+tKYLltBQyhi3CCtnoffs=
+Received: from DM5PR18CA0058.namprd18.prod.outlook.com (2603:10b6:3:22::20) by
+ BY5PR12MB4130.namprd12.prod.outlook.com (2603:10b6:a03:20b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.12; Thu, 2 Jun
+ 2022 20:11:44 +0000
+Received: from DM6NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:3:22:cafe::c9) by DM5PR18CA0058.outlook.office365.com
+ (2603:10b6:3:22::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.13 via Frontend
+ Transport; Thu, 2 Jun 2022 20:11:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT048.mail.protection.outlook.com (10.13.173.114) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5314.12 via Frontend Transport; Thu, 2 Jun 2022 20:11:43 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Thu, 2 Jun
+ 2022 15:11:39 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Clemens Ladisch <clemens@ladisch.de>
+CC:     <linux-hwmon@vger.kernel.org>, Guenter Roeck <linux@roeck-us.net>,
+        <babu.moger@amd.com>, <yazen.ghannam@amd.com>,
+        <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v2 0/6] Add support for upcoming chips to k10temp and amd_nb
+Date:   Thu, 2 Jun 2022 15:11:31 -0500
+Message-ID: <20220602201137.1415-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220601191256.GA1416021@roeck-us.net>
-From:   Marten Lindahl <martenli@axis.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 29295ea3-b129-4191-ba3e-08da44d41d18
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4130:EE_
+X-Microsoft-Antispam-PRVS: <BY5PR12MB4130D8936C43FF5BD2C4B04DE2DE9@BY5PR12MB4130.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: oOgdDzNandrlHLShgqjo5Cny7pbLtPgUzJqoekvaa+uFXfcKxmKe9OUZ7BS4xbmuIrpVepOwQBUks72QditJ+qXN0cO8PqpLFv4BWlGEGic9/aYv0LlpiWJ5PSsM/TgMrzBEAz3OHZFRiTclSC1l9BsKylPuUFEOFtp0hqpxdVS0WWlVivj1I3wD4JTmmFqywsmth1/K84Z4K4oIVnqk+d7MScrXfuQWmf0qLGnlwc755I8YYDrEuDNhawIU4utLaAsiue/O1HJ0rxg6Swc9AdTBnVqrV99LM3EFW/dndpAhP359bBKAlWCvaLFgmPrcOQGdsAtdddEQO2CzHNCvH4ZfsQ+mVDHGD3xuSQICBU9xOe7AROINemsyBBa8U/+pvw7fbg6/h99i7uaxfN6wLXO3HhYuDmFs+yf3udjYbTeiDbdmoxPqb9iB5IGfvdnjpgRlYFtulibChzD6AhZaaoZYbFRxVRJPL1FPqgvH97SmadTnampHgHReNdlKgESkMQotTxgEM5WHqVj3RZ9gntTfDGny2etE6l+toku/BC80gw81jL/k9zPtNgGxBtjXZLgF0j+o0LRSDfN+aTmdRgtEWXiydBBTxM9unDTT1h/Q+Q8bhTK3c8n+711wxw1ALdpVyuONYOBuriSYyvmHx85uxPwptGDZWvlxtoluaqkDMZcEr9KiZhROI77x4Jvx7ZBmPgeW5uvW6X2G1pacIw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(356005)(186003)(47076005)(426003)(16526019)(336012)(2906002)(7696005)(316002)(6666004)(54906003)(1076003)(6916009)(40460700003)(36756003)(86362001)(2616005)(83380400001)(8936002)(82310400005)(508600001)(26005)(36860700001)(44832011)(4744005)(81166007)(70586007)(70206006)(4326008)(5660300002)(8676002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2022 20:11:43.6543
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29295ea3-b129-4191-ba3e-08da44d41d18
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT048.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4130
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Jun 01, 2022 at 09:12:56PM +0200, Guenter Roeck wrote:
-> On Mon, May 30, 2022 at 04:34:46PM +0200, Mårten Lindahl wrote:
-> > When checking if a regulator supports a voltage range, the regulator
-> > needs to have support for listing the range or else -EINVAL will be
-> > returned.
-> > 
-> > This support does not exist for the LTC2977 regulator, so this patch
-> > adds support for list voltage to the pmbus regulators by adding
-> > regulator_list_voltage_linear to the pmbus_regulator_ops. It also
-> > defines the voltage resolution for regulators ltc2972/LTC2974/LTC2975/
-> > LTC2977/LTC2978/LTC2979/LTC2980/LTM2987 based on that they all have the
-> > same stepwise 122.07uV resolution.
-> > 
-> > Since 122.07uV resolution is very small the resolution is set to a 1mV
-> > resolution to be easier to handle.
-> > 
-> > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-> > ---
-> >  drivers/hwmon/pmbus/ltc2978.c    | 57 +++++++++++++++++++++++++++++---
-> >  drivers/hwmon/pmbus/pmbus_core.c |  1 +
-> >  2 files changed, 54 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/hwmon/pmbus/ltc2978.c b/drivers/hwmon/pmbus/ltc2978.c
-> > index 531aa674a928..cfb568c6c155 100644
-> > --- a/drivers/hwmon/pmbus/ltc2978.c
-> > +++ b/drivers/hwmon/pmbus/ltc2978.c
-> > @@ -562,7 +562,37 @@ static const struct i2c_device_id ltc2978_id[] = {
-> >  MODULE_DEVICE_TABLE(i2c, ltc2978_id);
-> >  
-> >  #if IS_ENABLED(CONFIG_SENSORS_LTC2978_REGULATOR)
-> > +#define LTC2978_ADC_RES 0xFFFF
-> > +#define LTC2978_N_ADC 122
-> > +#define LTC2978_MAX_UV (LTC2978_ADC_RES * LTC2978_N_ADC)
-> > +#define LTC2978_UV_STEP (1000)
->
+This series started as what looked like a correction to previous
+commits, but I missed that the previous commits were for a different
+family with the same chip models.  So while fixing up the series I also
+noticed that a few upcoming chips have new PCIe IDs and CCD offsets not
+yet supported, so add them to amd_nb/k10temp.
 
-Hi Guenter!
+v1->v2:
+ * Correct commit messages
+ * Add more missing chips and offsets
+ * since so much changed, do not include Bjorn's Ack.
+Mario Limonciello (6):
+  x86/amd_nb: Add AMD Family 17h A0-AF IDs
+  x86/amd_nb: Add Family 19h model 70h-7Fh IDs
+  x86/amd_nb: Add Family 19h model 60h-6Fh IDs
+  hwmon: (k10temp): Add support for family 17h models A0h-AFh
+  hwmon: (k10temp): Add support for family 19h models 70h-7Fh
+  hwmon: (k10temp): Add support for family 19h models 60h-6Fh
 
-> #define<space>DEFINE<tab>VALUE, please, and the () around 1000
-> is unnecessary.
+ arch/x86/kernel/amd_nb.c | 13 +++++++++++++
+ drivers/hwmon/k10temp.c  | 12 ++++++++++++
+ include/linux/pci_ids.h  |  3 +++
+ 3 files changed, 28 insertions(+)
 
-Ok, will fix.
+-- 
+2.34.1
 
-> 
-> Also, is the range really correct ? The valid / acceptable
-> voltages are in the range detected in pmbus_regulator_set_voltage(),
-> based on PMBUS_MFR_VOUT_MIN/PMBUS_VOUT_MARGIN_LOW and
-> PMBUS_MFR_VOUT_MAX/PMBUS_VOUT_MARGIN_HIGH, and that will likely differ
-> from the fixed number of voltages provided here.
-> 
-> That makes me wonder if it would make more sense to move this
-> functionality into the PMBus core code. Any thoughts on that ?
-
-Yes, I did think about that, but to support regulator_count_voltages
-the regulator_desc needs to have .n_voltages set and since the
-regulator_desc is const I have to set .n_voltages to the full range
-of the 16 bit adc resolution. And then I scale it to 1 mV units by the
-defines above.
-
-My understanding of the regulator core list_voltage implementation is
-that it tests if a requested range fits within this range, using the
-min_uV and max_uV limits (which can be specified in DT) to validate it.
-
-Maybe a new pmbus_regulator_list_voltage function could read the voltage
-upper and lower limits and then compare the requested range to that one?
-
-But the regulator_desc .n_voltages still needs to be preset to
-something. What should it be set to? Should I perhaps set it to the full
-ADC resolution (0xFFFF) without scaling it?
-
-Please note, I added the PMBUS_LTC2978_REGULATOR macro with included
-voltages and steps only for the chips listed in the commit msg, based on
-that they all have the same ADC resolution and ADC unit size (122 uV).
-I would prefer to not add voltages and steps to the generic
-PMBUS_REGULATOR macro in pmbus.h, as I don't have knowledge about the
-other chips.
-
-> 
-> Thanks,
-> Guenter
-> 
-> > +
-> > +#define PMBUS_LTC2978_REGULATOR(_name, _id)               \
-> > +	[_id] = {                                               \
-> > +		.name = (_name # _id),                                \
-> > +		.supply_name = "vin",                                 \
-> > +		.id = (_id),                                          \
-> > +		.of_match = of_match_ptr(_name # _id),                \
-> > +		.regulators_node = of_match_ptr("regulators"),        \
-> > +		.ops = &pmbus_regulator_ops,                          \
-> > +		.type = REGULATOR_VOLTAGE,                            \
-> > +		.owner = THIS_MODULE,                                 \
-> > +		.n_voltages = (LTC2978_MAX_UV / LTC2978_UV_STEP) + 1, \
-> > +		.uV_step = LTC2978_UV_STEP,                           \
-> > +	}
-> > +
-> >  static const struct regulator_desc ltc2978_reg_desc[] = {
-> > +	PMBUS_LTC2978_REGULATOR("vout", 0),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 1),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 2),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 3),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 4),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 5),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 6),
-> > +	PMBUS_LTC2978_REGULATOR("vout", 7),
-> > +};
-> > +
-> > +static const struct regulator_desc ltc2978_reg_desc_default[] = {
-> >  	PMBUS_REGULATOR("vout", 0),
-> >  	PMBUS_REGULATOR("vout", 1),
-> >  	PMBUS_REGULATOR("vout", 2),
-> > @@ -839,10 +869,29 @@ static int ltc2978_probe(struct i2c_client *client)
-> >  
-> >  #if IS_ENABLED(CONFIG_SENSORS_LTC2978_REGULATOR)
-> >  	info->num_regulators = info->pages;
-> > -	info->reg_desc = ltc2978_reg_desc;
-> > -	if (info->num_regulators > ARRAY_SIZE(ltc2978_reg_desc)) {
-> > -		dev_err(&client->dev, "num_regulators too large!");
-> > -		info->num_regulators = ARRAY_SIZE(ltc2978_reg_desc);
-> > +	switch (data->id) {
-> > +	case ltc2972:
-> > +	case ltc2974:
-> > +	case ltc2975:
-> > +	case ltc2977:
-> > +	case ltc2978:
-> > +	case ltc2979:
-> > +	case ltc2980:
-> > +	case ltm2987:
-> > +		info->reg_desc = ltc2978_reg_desc;
-> > +		if (info->num_regulators > ARRAY_SIZE(ltc2978_reg_desc)) {
-> > +			dev_err(&client->dev, "num_regulators too large!");
-> 
-> Let's make this a dev_warn(); it does not result in an error abort,
-> after all.
-
-Ok, will fix.
-
-> 
-> > +			info->num_regulators = ARRAY_SIZE(ltc2978_reg_desc);
-> > +		}
-> > +		break;
-> > +	default:
-> > +		info->reg_desc = ltc2978_reg_desc_default;
-> > +		if (info->num_regulators > ARRAY_SIZE(ltc2978_reg_desc_default)) {
-> > +			dev_err(&client->dev, "num_regulators too large!");
-> 
-> Same here.
-
-Ok, will fix.
-
-Thanks!
-
-Kind regards
-Mårten
-
-> 
-> > +			info->num_regulators =
-> > +			    ARRAY_SIZE(ltc2978_reg_desc_default);
-> > +		}
-> > +		break;
-> >  	}
-> >  #endif
-> >  
-> > diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-> > index f2cf0439da37..7d642b57c8b2 100644
-> > --- a/drivers/hwmon/pmbus/pmbus_core.c
-> > +++ b/drivers/hwmon/pmbus/pmbus_core.c
-> > @@ -2634,6 +2634,7 @@ const struct regulator_ops pmbus_regulator_ops = {
-> >  	.get_error_flags = pmbus_regulator_get_error_flags,
-> >  	.get_voltage = pmbus_regulator_get_voltage,
-> >  	.set_voltage = pmbus_regulator_set_voltage,
-> > +	.list_voltage = regulator_list_voltage_linear,
-> >  };
-> >  EXPORT_SYMBOL_NS_GPL(pmbus_regulator_ops, PMBUS);
-> >  
