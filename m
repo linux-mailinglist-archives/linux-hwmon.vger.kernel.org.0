@@ -2,67 +2,153 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1870753D378
-	for <lists+linux-hwmon@lfdr.de>; Sat,  4 Jun 2022 00:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F92853D8AE
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jun 2022 00:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348887AbiFCWGj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 3 Jun 2022 18:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34578 "EHLO
+        id S241239AbiFDWCb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 4 Jun 2022 18:02:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345833AbiFCWGj (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 3 Jun 2022 18:06:39 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 110412EA06
-        for <linux-hwmon@vger.kernel.org>; Fri,  3 Jun 2022 15:06:38 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id g25so9766636ljm.2
-        for <linux-hwmon@vger.kernel.org>; Fri, 03 Jun 2022 15:06:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=XNJwV6t2iwnx+lObZP90z+4kjLtVO7C183KXFCzBYuM=;
-        b=Qq1Pwb0W70h0k1Yctyg1NTdOG24aGt7wDn7gXLt428PZwd+A8MRFyT0U+pf/4M7d5U
-         RK6cMfytvr6zZO87AqOGqqrLGge+RNs5l9dcszrAoiMhiA64TCoGUgluw0mpKs36DOss
-         /TccHbwqZgKNmt8pxfbdmPYkZ2J4X/ONO1apaAxtLJJL8+QD19FZL9UrxDn8pO4gHb0b
-         E6NRzjaVZS62VZOZQkXDnhW6nMSwJijffJ11JlVPWP9FAnGxD62gTFlb9cO84SwfY4gu
-         pwfcldiZ2nJWXV8bJd87CtUIs+OfS1YNvlMVc382PDcGmCztcQEPj/JEam8NhC6sikpm
-         dHtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=XNJwV6t2iwnx+lObZP90z+4kjLtVO7C183KXFCzBYuM=;
-        b=7+rIZW04DiKkTQKNmgOChFVB8lerezKouLzsg6wgwArvr0XtneLwhfQ6Tc6tx2Ozyo
-         czMkhWbVnHinr98sHVUe4yEu6pwHz4LMdGT+c16yAzFEMQ3wl3yTxFLvxFwWYrSbPufd
-         6Yq9wdhYxcXkakeQEh3+9x/QI2/DDKF0UGx75iPusn/5oaD7RWQvwM3RlUJN0JAkjgmw
-         vf5fsLF5fvnollKWSqdGbYGByMEzfsfiGGq/N6uRDaDCXCNgBouWwhNjup6beikjJ3R8
-         NqywFFjRXgsSNxwEPmpHOqMMgHdv7btqFaMJ3bkDjVL3fSK2Dnm1RMBvfLEfmmjNLmKa
-         avxA==
-X-Gm-Message-State: AOAM531VAWb1TEDzRTXigN/H3y0/juK3rHOLZdtaG5gje72dp9g/02MK
-        GvYYhIvMBASe0YSOImcLkeDk6XdSCN+Y1Ww+7ho=
-X-Google-Smtp-Source: ABdhPJwB5H4hKuCk0M4gwtprmaRGpPhTj6kRtB3u8JNpLCt3qzgq8o9/1lTjYNA1NmnSofY1EqeA1hHuzVD3N72ut+I=
-X-Received: by 2002:a2e:8196:0:b0:255:673a:b215 with SMTP id
- e22-20020a2e8196000000b00255673ab215mr10666952ljg.338.1654293995971; Fri, 03
- Jun 2022 15:06:35 -0700 (PDT)
+        with ESMTP id S234967AbiFDWCa (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 4 Jun 2022 18:02:30 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E86C2CC86;
+        Sat,  4 Jun 2022 15:02:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1654380129;
+        bh=44yWatpj6wF86Z5uuPLeaz6RdApHV2+/i3FmWQnXmvI=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=G+kIX1qWg/0AX2kkQvT7kvb0wtWTuks1zLYqyQKLjPBB5zwvUfmDTlbtaHZIG6xF8
+         0D+byMfqolnAVXf1pjKvvkvB3Hyg7k0TY3zLOkeKcimV+FkP2fp0r6mYSudGofoVSJ
+         IXDC2m8QiasQpXFXcSnoVYK9pRpbJyZ7NIcmbpeo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1Md6R1-1nNRsg0gFv-00aACb; Sun, 05 Jun 2022 00:02:09 +0200
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     hdegoede@redhat.com
+Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: (sch56xx-common) Add DMI override table
+Date:   Sun,  5 Jun 2022 00:02:00 +0200
+Message-Id: <20220604220200.2567-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Sender: abdourahamane20180@gmail.com
-Received: by 2002:a05:6512:715:0:0:0:0 with HTTP; Fri, 3 Jun 2022 15:06:34
- -0700 (PDT)
-From:   Sherri Gallagher <sherrigallagher300@gmail.com>
-Date:   Fri, 3 Jun 2022 10:06:34 -1200
-X-Google-Sender-Auth: BryG_vuQHp0DHKMK9QFPy-ASctg
-Message-ID: <CAB+b2ShnYxXjPkqFC8-kRsnN3xOjPRLRcsK3-2Y6ao2Y4nVJWQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:DP0Yr2k96AiTqZa/hhjr79M75ptPoiB0bWzo8EKAoGumkIjVrUB
+ yQDYeSZENXdRH5kQZ4h4DpQu3d2yD6IiUMu0+Ue2TlXyvw11yu1U0Q6OegTfYlFqgC9CalE
+ h+/bsFQlVBdToR3rQl12mah2JrPz3JdYdzVZdQMBo0ZbLUzqIRRhY49TP+O69Hcr75+jRsN
+ HKWKlDbjzZvcKBwrD99QA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yXcKc3RzeoA=:kHm0lGvUkrH9CFOUS6FRz6
+ dSOu/ZDI+10/Kuri0ftZnOjsBe8NsmQXzC7kEjIBrYbY/a43NfyfEHiEtZsGOUVggNLqgXrBk
+ WpT++gnsW/jLSBQCfNA/4PhlJNwCgxTLErBrbVmuanTeJLmHNOiO1e4A45eZ3pwIQEuYacbio
+ i+9cRX8jFZDCJKdoJQlPIXhpDaAmu3VbDv1dPJzxEqEQcIDahLdUftnVqyxZBsr77ORW5P+Ct
+ O61e7APVCIzl6rrp5EI5hPJ3RkfR/L7NcrR4SkxAQ4xIYsVvGAIfCkmGZrnosB+pZVNfJzljQ
+ rb9jlHaeCe3M++W0lSrgBs0Bwb1rkcOOpeACLlmz2XiYWqSBOlVzMEKKXvjhxyWbdJzqFOavx
+ ca4/KcdFgc6Deu1GQhn7t+QB4qJnRij/2DaUx9+Tl7ZqVcybkeBjwTXhX/ey4iLD5xPb1IKEq
+ bkZqvd5kAuBbWEaQDGkFqiaOzC9m65qc6e+u8kuqYoJdU7x9VD+ppaoKjxtBGn1ZWxwTqZ7Za
+ j9ybpZc+MVDglF06U856d+LqOp8iCo7fpjsxUboqVAuN1GeEVg/LUH+0Kqab7FTkNzI7FGVXb
+ P6YdfgNiwa9AICvBYnIaCOltegyTCncJABKtJmmyhqUuiIhOd54mzmgrzMo8Arq/WRDzB65f0
+ 6UA+FEmCKg5SrKeSx1AfA2EzV+kbhoPh7q26E6Bqh/PWT3AhQsjTJoit04QWZxxYI8TB4z+aJ
+ ZYpUvAzfBfWogOC1upm6eL3mG5jG+pXsxno4eanF+HJ38gL+3OkzTh+moXGKBf47Q2yQrOvEZ
+ 9+UyCTUmRMkwFrRjexnKaNZ/r+LYtSLLerhTxXrBIq8Wfzw0CS0WrVSSc0tEK7u5FU8A/VW8c
+ XncYVPgWYKWWpY5b+77dph0fvjv4OJfF+P8mcMGAMvbpr2nXlaLFcRvYv0d2V/T4t7zyVJvtI
+ OYbYbx0iaDBlvwGAOJvhh1mEg74GljvhZlm3mYQy37zZJW79Yw25lehyUwi9CBlma439mwUoH
+ vuMkKkzqkXlRrwqXqYpSjUYOcM902IVKqmd6mECEhFdUfc525utxHlMXdH3nLf308h1N3EzPL
+ eUiyUNrWUT70JxLZYuP7V9nkzm1XyxhZjG+OW+vqpqbYC0SeWN8uaLsEw==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Greetings My name is Sherri Gallagher please reply back?
+Some devices like the Fujitsu Celsius W380 do contain
+a working sch56xx hardware monitoring device, but do
+not contain the necessary DMI onboard device.
+
+Do not check for the presence of an suitable onboard device
+on these machines. The list of affected machines was created
+using data collected by the Linux Hardware Project.
+
+Tested on a Fujitsu Esprimo P720, but sadly not on a affected
+machine.
+
+Fixes: 393935baa45e (hwmon: (sch56xx-common) Add automatic module loading =
+on supported devices)
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/hwmon/sch56xx-common.c | 44 ++++++++++++++++++++++++++--------
+ 1 file changed, 34 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common=
+.c
+index 3ece53adabd6..de3a0886c2f7 100644
+=2D-- a/drivers/hwmon/sch56xx-common.c
++++ b/drivers/hwmon/sch56xx-common.c
+@@ -523,6 +523,28 @@ static int __init sch56xx_device_add(int address, con=
+st char *name)
+ 	return PTR_ERR_OR_ZERO(sch56xx_pdev);
+ }
+
++static const struct dmi_system_id sch56xx_dmi_override_table[] __initcons=
+t =3D {
++	{
++		.matches =3D {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CELSIUS W380"),
++		},
++	},
++	{
++		.matches =3D {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO P710"),
++		},
++	},
++	{
++		.matches =3D {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO E9900"),
++		},
++	},
++	{ }
++};
++
+ /* For autoloading only */
+ static const struct dmi_system_id sch56xx_dmi_table[] __initconst =3D {
+ 	{
+@@ -543,16 +565,18 @@ static int __init sch56xx_init(void)
+ 		if (!dmi_check_system(sch56xx_dmi_table))
+ 			return -ENODEV;
+
+-		/*
+-		 * Some machines like the Esprimo P720 and Esprimo C700 have
+-		 * onboard devices named " Antiope"/" Theseus" instead of
+-		 * "Antiope"/"Theseus", so we need to check for both.
+-		 */
+-		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
+-		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
+-		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
+-		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
+-			return -ENODEV;
++		if (!dmi_check_system(sch56xx_dmi_override_table)) {
++			/*
++			 * Some machines like the Esprimo P720 and Esprimo C700 have
++			 * onboard devices named " Antiope"/" Theseus" instead of
++			 * "Antiope"/"Theseus", so we need to check for both.
++			 */
++			if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
++			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
++			    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
++			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
++				return -ENODEV;
++		}
+ 	}
+
+ 	/*
+=2D-
+2.30.2
+
