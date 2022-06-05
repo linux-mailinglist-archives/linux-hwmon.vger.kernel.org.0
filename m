@@ -2,84 +2,109 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 672DF53D8D0
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jun 2022 01:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DDB53D91C
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jun 2022 03:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242374AbiFDX2B (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 4 Jun 2022 19:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53612 "EHLO
+        id S243278AbiFEB7C (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 4 Jun 2022 21:59:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238515AbiFDX2B (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 4 Jun 2022 19:28:01 -0400
-X-Greylist: delayed 399 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 04 Jun 2022 16:27:58 PDT
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CFD462FA
-        for <linux-hwmon@vger.kernel.org>; Sat,  4 Jun 2022 16:27:57 -0700 (PDT)
-Received: (wp-smtpd smtp.wp.pl 29735 invoked from network); 5 Jun 2022 01:21:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1654384875; bh=5+W5QwKb/oQX3qx4qTmH9nnksYIviH9DLf7qcI6p+I4=;
-          h=From:To:Cc:Subject;
-          b=j8hqzrP72hAJlb7TCjGwOg1IZmDqVtSorra1v5zKeDL0XHuFSWUhJzSeJZoI2V0wp
-           uCaI/KuWelwwoll3GBpOdDuTA4gsDh8lblhmGORrSEldlBx0Ym3dbl05MUQeQwvUzh
-           4Kb6J8BTLZ6i/rHwtK6DPctGEs4IV8zVQYXgyrAQ=
-Received: from public-gprs207966.centertel.pl (HELO mocarz) (deweloper@wp.pl@[46.134.151.159])
-          (envelope-sender <deweloper@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <deweloper@wp.pl>; 5 Jun 2022 01:21:15 +0200
-Date:   Sun, 5 Jun 2022 01:21:14 +0200
-From:   Aleksander Mazur <deweloper@wp.pl>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Aleksander Mazur <deweloper@wp.pl>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: (f71882fg) Add support for F71858AD (0x0903)
-Message-ID: <20220605012114.3d85a75a@mocarz>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+        with ESMTP id S243166AbiFEB7A (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 4 Jun 2022 21:59:00 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA6B72CE0F
+        for <linux-hwmon@vger.kernel.org>; Sat,  4 Jun 2022 18:58:57 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id v106so20103146ybi.0
+        for <linux-hwmon@vger.kernel.org>; Sat, 04 Jun 2022 18:58:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=sLlIiVjOIj+IrlayL6I/MZBzwRGIE1mUMEt33xJvxRY=;
+        b=VrXTauZcG2ZxwBFo5wG3mGng0I+REWSJoYjeIjBMVS1zD1AKTagmktMv3g8f3jRjEJ
+         SZ00RFrhWLA4EAVOgU6zWCp0qxRkf7uoxhtbWj3N/rehz8LJiJlzB4Az6dOuTXZPs1Bn
+         DiHQOuagF540epTqYE6F/JpNBfCyvMbV8Ke3xaHjRaEB3qnevkXVU9hsU2XWfuiBGDr/
+         e3RCUg3bkcep3KXpAvQitLwWz1f1eSdrnqCc96xfbp7+hBd33uSbEs47twmyKV4epfnp
+         33tb2a8aS8naNSqztxvTXCRZNVDehTpvJRf3c17tRgxwu0YXRhrzQAuKSVWcXKS3icwN
+         PUhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=sLlIiVjOIj+IrlayL6I/MZBzwRGIE1mUMEt33xJvxRY=;
+        b=i8DsSmK6nrSpuBNCaeOzJ6hnKPg1c9j1WGc71v0LaK5xYrmXYZitu/bGHboTrDwpb1
+         0vJhwR+pbTrMzPAwXrIeTvPgHta+wmydf+L7z/0Al0AdBrx1EeEF1NGOw8ExLz461j5y
+         ueS5DH/sd5MIBLBZa+QNE2xQRLrqdCXTABtWD8DZ3Uh2w0pZedSwESg+N5ZfQNbYs2cr
+         Dwms9wNgFTPz0tgyazrC6UyNg9u293wBuKlTIZTVp8xXYSwjB5QeWZcP2jcmBJ37oDK8
+         KnEFfm6DYTbE74E+EDY8Crp9hzGyt4WEYFaCYrLNAGCXZWfImisayWIZg3nmwfuU9piK
+         3Pog==
+X-Gm-Message-State: AOAM530Oz/khMAdtP3U+a40Weh1Z+w1RLwCMHGpReuIZoChIXv+PF2Sj
+        cyj0Mc1B0rLNDLg8yIS6LEW7yiqygufcrESdMYg=
+X-Google-Smtp-Source: ABdhPJxrggaEFhLzcFaHvKCF+5+Dc20iDCUL0rcMV2WFM2tYeUAy4E4UqEC7ZXjqjSFaeZhA1Ma0KV8Venc2A4H5qbU=
+X-Received: by 2002:a25:dc92:0:b0:659:fcb9:4ab4 with SMTP id
+ y140-20020a25dc92000000b00659fcb94ab4mr18391285ybe.320.1654394336514; Sat, 04
+ Jun 2022 18:58:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-WP-MailID: 937c5ef75b2e3d270d89436ace9fe1d1
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [gZM0]                               
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Sender: drfranksaxxxx2@gmail.com
+Received: by 2002:a05:7108:298d:0:0:0:0 with HTTP; Sat, 4 Jun 2022 18:58:56
+ -0700 (PDT)
+From:   MRS HANNAH VANDRAD <h.vandrad@gmail.com>
+Date:   Sat, 4 Jun 2022 18:58:56 -0700
+X-Google-Sender-Auth: P9upt7AOMkTpweaHFS0KZC55RlQ
+Message-ID: <CAGnkwZ5CF++sK1Ti8bzvUe1JP0LS0yksfbJ0=U2xPj5MFO6qxw@mail.gmail.com>
+Subject: Greetings dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.9 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        LOTS_OF_MONEY,MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Treat F71858AD like F71858FG.
+Greetings dear
 
-Tested on Igel D220.
 
-Signed-off-by: Aleksander Mazur <deweloper@wp.pl>
----
- drivers/hwmon/f71882fg.c | 2 ++
- 1 file changed, 2 insertions(+)
+   This letter might be a surprise to you, But I believe that you will
+be honest to fulfill my final wish. I bring peace and love to you. It
+is by the grace of god, I had no choice than to do what is lawful and
+right in the sight of God for eternal life and in the sight of man for
+witness of god=E2=80=99s mercy and glory upon my life. My dear, I sent this
+mail praying it will find you in a good condition, since I myself am
+in a very critical health condition in which I sleep every night
+without knowing if I may be alive to see the next day. I am Mrs.Hannah
+Vandrad, a widow suffering from a long time illness. I have some
+funds I inherited from my late husband, the sum of ($11,000,000.00,)
+my Doctor told me recently that I have serious
+sickness which is a cancer problem. What disturbs me most is my stroke
+sickness. Having known my condition, I decided to donate this fund to
+a good person that will utilize it the way I am going to instruct
+herein. I need a very honest and God fearing person who can claim this
+money and use it for Charity works, for orphanages and gives justice
+and help to the poor, needy and widows says The Lord." Jeremiah
+22:15-16.=E2=80=9C and also build schools for less privilege that will be
+named after my late husband if possible and to promote the word of god
+and the effort that the house of god is maintained.
 
-diff --git a/drivers/hwmon/f71882fg.c b/drivers/hwmon/f71882fg.c
-index 6830e029995d..19b6c643059a 100644
---- a/drivers/hwmon/f71882fg.c
-+++ b/drivers/hwmon/f71882fg.c
-@@ -49,6 +49,7 @@
- #define SIO_F81768D_ID		0x1210	/* Chipset ID */
- #define SIO_F81865_ID		0x0704	/* Chipset ID */
- #define SIO_F81866_ID		0x1010	/* Chipset ID */
-+#define SIO_F71858AD_ID		0x0903	/* Chipset ID */
- #define SIO_F81966_ID		0x1502	/* Chipset ID */
- 
- #define REGION_LENGTH		8
-@@ -2638,6 +2639,7 @@ static int __init f71882fg_find(int sioaddr, struct f71882fg_sio_data *sio_data)
- 		sio_data->type = f71808a;
- 		break;
- 	case SIO_F71858_ID:
-+	case SIO_F71858AD_ID:
- 		sio_data->type = f71858fg;
- 		break;
- 	case SIO_F71862_ID:
--- 
-2.36.1
+ I do not want a situation where this money will be used in an ungodly
+manner. That's why I'm taking this decision. I'm not afraid of death,
+so I know where I'm going. I accept this decision because I do not
+have any child who will inherit this money after I die. Please I want
+your sincere and urgent answer to know if you will be able to execute
+this project, and I will give you more information on how the fund
+will be transferred to your bank account. May the grace, peace, love
+and the truth in the Word of god be with you and all those that you
+love and  care for.
 
+I am waiting for your reply.
+
+May God Bless you,
+
+ Mrs. Hannah Vandrad
