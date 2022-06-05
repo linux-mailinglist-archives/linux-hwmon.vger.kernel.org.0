@@ -2,109 +2,177 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81DDB53D91C
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jun 2022 03:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4B5053DBBE
+	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jun 2022 15:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243278AbiFEB7C (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 4 Jun 2022 21:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
+        id S1343673AbiFENtI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 5 Jun 2022 09:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243166AbiFEB7A (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 4 Jun 2022 21:59:00 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA6B72CE0F
-        for <linux-hwmon@vger.kernel.org>; Sat,  4 Jun 2022 18:58:57 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id v106so20103146ybi.0
-        for <linux-hwmon@vger.kernel.org>; Sat, 04 Jun 2022 18:58:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=sLlIiVjOIj+IrlayL6I/MZBzwRGIE1mUMEt33xJvxRY=;
-        b=VrXTauZcG2ZxwBFo5wG3mGng0I+REWSJoYjeIjBMVS1zD1AKTagmktMv3g8f3jRjEJ
-         SZ00RFrhWLA4EAVOgU6zWCp0qxRkf7uoxhtbWj3N/rehz8LJiJlzB4Az6dOuTXZPs1Bn
-         DiHQOuagF540epTqYE6F/JpNBfCyvMbV8Ke3xaHjRaEB3qnevkXVU9hsU2XWfuiBGDr/
-         e3RCUg3bkcep3KXpAvQitLwWz1f1eSdrnqCc96xfbp7+hBd33uSbEs47twmyKV4epfnp
-         33tb2a8aS8naNSqztxvTXCRZNVDehTpvJRf3c17tRgxwu0YXRhrzQAuKSVWcXKS3icwN
-         PUhQ==
+        with ESMTP id S231142AbiFENtH (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jun 2022 09:49:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6A01E19007
+        for <linux-hwmon@vger.kernel.org>; Sun,  5 Jun 2022 06:49:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1654436945;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BRPkzB0Obt6oYcl++dMZO0Ti3gSuzY9Z9516AYxuh28=;
+        b=iYbcbovqefE7uqcmV4Fa18RWImfewPAI8pDD3LTUKyX8N4gm+Ws17UdC2lDvAgKbEANYh2
+        +Ubc6SGdh6J9x+CJo2qKLpAhLDprlJjlvHnRBVlZpTJvUFBcGXcqLeongizS47NzOM01op
+        SKW/Jq3Qat4cvbujS082h4opLtKX2r8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-456-6yCaz8fkOomgNOusFEJ-8g-1; Sun, 05 Jun 2022 09:49:04 -0400
+X-MC-Unique: 6yCaz8fkOomgNOusFEJ-8g-1
+Received: by mail-ed1-f72.google.com with SMTP id z20-20020a05640235d400b0042dfc1c0e80so8307976edc.21
+        for <linux-hwmon@vger.kernel.org>; Sun, 05 Jun 2022 06:49:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=sLlIiVjOIj+IrlayL6I/MZBzwRGIE1mUMEt33xJvxRY=;
-        b=i8DsSmK6nrSpuBNCaeOzJ6hnKPg1c9j1WGc71v0LaK5xYrmXYZitu/bGHboTrDwpb1
-         0vJhwR+pbTrMzPAwXrIeTvPgHta+wmydf+L7z/0Al0AdBrx1EeEF1NGOw8ExLz461j5y
-         ueS5DH/sd5MIBLBZa+QNE2xQRLrqdCXTABtWD8DZ3Uh2w0pZedSwESg+N5ZfQNbYs2cr
-         Dwms9wNgFTPz0tgyazrC6UyNg9u293wBuKlTIZTVp8xXYSwjB5QeWZcP2jcmBJ37oDK8
-         KnEFfm6DYTbE74E+EDY8Crp9hzGyt4WEYFaCYrLNAGCXZWfImisayWIZg3nmwfuU9piK
-         3Pog==
-X-Gm-Message-State: AOAM530Oz/khMAdtP3U+a40Weh1Z+w1RLwCMHGpReuIZoChIXv+PF2Sj
-        cyj0Mc1B0rLNDLg8yIS6LEW7yiqygufcrESdMYg=
-X-Google-Smtp-Source: ABdhPJxrggaEFhLzcFaHvKCF+5+Dc20iDCUL0rcMV2WFM2tYeUAy4E4UqEC7ZXjqjSFaeZhA1Ma0KV8Venc2A4H5qbU=
-X-Received: by 2002:a25:dc92:0:b0:659:fcb9:4ab4 with SMTP id
- y140-20020a25dc92000000b00659fcb94ab4mr18391285ybe.320.1654394336514; Sat, 04
- Jun 2022 18:58:56 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=BRPkzB0Obt6oYcl++dMZO0Ti3gSuzY9Z9516AYxuh28=;
+        b=pLeoTv1DjwDqoDC+n+TGX3NQPtedfGT++ZG5L44/GJJxwFznukaB2niwwFe0noeDVI
+         b8WxBq/mZkH+CDYeaaA/PQQlzHFtpDUu5A7Yh2nFZeHZtCBIZSeikH5FUlY4K+Z5y8/n
+         HKU/FjFU1b+QGgnxXcO/Ud7pmFfAA7Fxp5iuFTtWfPZ8PHqJtc7kkMOYtqHd2mhvVyjI
+         BzLmR9rIiK/RgWvJ7Swi1YH71tGExYq11Bc9qTQCZ7ib3U7Rb+POzzmIsdTAc8FidJ1J
+         7TPRnBpzhMon1+aTKYHFvLdJUxx6iXiftk+LwnuLOdMlpFrQB1YlFTLTJwLPWERZAwM4
+         iz0Q==
+X-Gm-Message-State: AOAM532SQ0Mjdh8skauixhcFy/Snf+3CCvUPesFRnxfSJiRBYBu9Fmbv
+        X9bdYH1PsNQJLZ2thk50QzUDcUvuGEg6whlhfRCWVBqk7lAUKvf+39F7FFIk99NnuWJlATNIZI9
+        S9MIR0ezWUcyFr0JQS2/rpDI=
+X-Received: by 2002:a17:907:3fa4:b0:6fe:b83b:d667 with SMTP id hr36-20020a1709073fa400b006feb83bd667mr17092617ejc.481.1654436942636;
+        Sun, 05 Jun 2022 06:49:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwWFfGXlzscREcCMsyioSn2fmCXwK2n/wGKr/8cR3r52Gskf6dMa5m3+foLX/QTDCr1pd//kQ==
+X-Received: by 2002:a17:907:3fa4:b0:6fe:b83b:d667 with SMTP id hr36-20020a1709073fa400b006feb83bd667mr17092601ejc.481.1654436942399;
+        Sun, 05 Jun 2022 06:49:02 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id h14-20020aa7c94e000000b0042e03eed448sm5734417edt.20.2022.06.05.06.49.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Jun 2022 06:49:01 -0700 (PDT)
+Message-ID: <f50994ad-0682-960a-a566-6e143f81e258@redhat.com>
+Date:   Sun, 5 Jun 2022 15:49:01 +0200
 MIME-Version: 1.0
-Sender: drfranksaxxxx2@gmail.com
-Received: by 2002:a05:7108:298d:0:0:0:0 with HTTP; Sat, 4 Jun 2022 18:58:56
- -0700 (PDT)
-From:   MRS HANNAH VANDRAD <h.vandrad@gmail.com>
-Date:   Sat, 4 Jun 2022 18:58:56 -0700
-X-Google-Sender-Auth: P9upt7AOMkTpweaHFS0KZC55RlQ
-Message-ID: <CAGnkwZ5CF++sK1Ti8bzvUe1JP0LS0yksfbJ0=U2xPj5MFO6qxw@mail.gmail.com>
-Subject: Greetings dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.9 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        LOTS_OF_MONEY,MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH] hwmon: (sch56xx-common) Add DMI override table
+Content-Language: en-US
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220604220200.2567-1-W_Armin@gmx.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220604220200.2567-1-W_Armin@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Greetings dear
+Hi,
+
+On 6/5/22 00:02, Armin Wolf wrote:
+> Some devices like the Fujitsu Celsius W380 do contain
+> a working sch56xx hardware monitoring device, but do
+> not contain the necessary DMI onboard device.
+> 
+> Do not check for the presence of an suitable onboard device
+> on these machines. The list of affected machines was created
+> using data collected by the Linux Hardware Project.
+> 
+> Tested on a Fujitsu Esprimo P720, but sadly not on a affected
+> machine.
+> 
+> Fixes: 393935baa45e (hwmon: (sch56xx-common) Add automatic module loading on supported devices)
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
 
 
-   This letter might be a surprise to you, But I believe that you will
-be honest to fulfill my final wish. I bring peace and love to you. It
-is by the grace of god, I had no choice than to do what is lawful and
-right in the sight of God for eternal life and in the sight of man for
-witness of god=E2=80=99s mercy and glory upon my life. My dear, I sent this
-mail praying it will find you in a good condition, since I myself am
-in a very critical health condition in which I sleep every night
-without knowing if I may be alive to see the next day. I am Mrs.Hannah
-Vandrad, a widow suffering from a long time illness. I have some
-funds I inherited from my late husband, the sum of ($11,000,000.00,)
-my Doctor told me recently that I have serious
-sickness which is a cancer problem. What disturbs me most is my stroke
-sickness. Having known my condition, I decided to donate this fund to
-a good person that will utilize it the way I am going to instruct
-herein. I need a very honest and God fearing person who can claim this
-money and use it for Charity works, for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of god
-and the effort that the house of god is maintained.
+> ---
+>  drivers/hwmon/sch56xx-common.c | 44 ++++++++++++++++++++++++++--------
+>  1 file changed, 34 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
+> index 3ece53adabd6..de3a0886c2f7 100644
+> --- a/drivers/hwmon/sch56xx-common.c
+> +++ b/drivers/hwmon/sch56xx-common.c
+> @@ -523,6 +523,28 @@ static int __init sch56xx_device_add(int address, const char *name)
+>  	return PTR_ERR_OR_ZERO(sch56xx_pdev);
+>  }
+> 
+> +static const struct dmi_system_id sch56xx_dmi_override_table[] __initconst = {
+> +	{
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "CELSIUS W380"),
+> +		},
+> +	},
+> +	{
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO P710"),
+> +		},
+> +	},
+> +	{
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO E9900"),
+> +		},
+> +	},
+> +	{ }
+> +};
+> +
+>  /* For autoloading only */
+>  static const struct dmi_system_id sch56xx_dmi_table[] __initconst = {
+>  	{
+> @@ -543,16 +565,18 @@ static int __init sch56xx_init(void)
+>  		if (!dmi_check_system(sch56xx_dmi_table))
+>  			return -ENODEV;
+> 
+> -		/*
+> -		 * Some machines like the Esprimo P720 and Esprimo C700 have
+> -		 * onboard devices named " Antiope"/" Theseus" instead of
+> -		 * "Antiope"/"Theseus", so we need to check for both.
+> -		 */
+> -		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
+> -		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
+> -		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
+> -		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
+> -			return -ENODEV;
+> +		if (!dmi_check_system(sch56xx_dmi_override_table)) {
+> +			/*
+> +			 * Some machines like the Esprimo P720 and Esprimo C700 have
+> +			 * onboard devices named " Antiope"/" Theseus" instead of
+> +			 * "Antiope"/"Theseus", so we need to check for both.
+> +			 */
+> +			if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
+> +			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
+> +			    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
+> +			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
+> +				return -ENODEV;
+> +		}
+>  	}
+> 
+>  	/*
+> --
+> 2.30.2
+> 
 
- I do not want a situation where this money will be used in an ungodly
-manner. That's why I'm taking this decision. I'm not afraid of death,
-so I know where I'm going. I accept this decision because I do not
-have any child who will inherit this money after I die. Please I want
-your sincere and urgent answer to know if you will be able to execute
-this project, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of god be with you and all those that you
-love and  care for.
-
-I am waiting for your reply.
-
-May God Bless you,
-
- Mrs. Hannah Vandrad
