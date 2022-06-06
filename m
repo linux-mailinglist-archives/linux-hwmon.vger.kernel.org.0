@@ -2,140 +2,202 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCDFF53EC75
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 19:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D820753E90B
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 19:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239101AbiFFNkd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 6 Jun 2022 09:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36458 "EHLO
+        id S239474AbiFFOPi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 6 Jun 2022 10:15:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239088AbiFFNkb (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Jun 2022 09:40:31 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13AAD9CF37
-        for <linux-hwmon@vger.kernel.org>; Mon,  6 Jun 2022 06:40:30 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id r123-20020a1c2b81000000b0039c1439c33cso7937519wmr.5
-        for <linux-hwmon@vger.kernel.org>; Mon, 06 Jun 2022 06:40:29 -0700 (PDT)
+        with ESMTP id S239452AbiFFOPg (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Jun 2022 10:15:36 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA4D2D1C1;
+        Mon,  6 Jun 2022 07:15:29 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id 61-20020a9d0bc3000000b0060b9bfcfe76so10831812oth.9;
+        Mon, 06 Jun 2022 07:15:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=94FE0xqKYNBQJ8bbUNfhKNNPOc38KM25jE5hqWXLeJ4=;
-        b=VrYr5Q0tbGuZmplgrj7rj00oDDtXl8EgiKGnqAv8U714ca7+mCBHgtnSQN4/PyqI7F
-         QuZIyqTouM3V7oOVzrrycAElg5oGPeH5u0l/7c4gF4c+4UAXPGqXKHIE2Dg3DSRH2W7k
-         nbP8eSZcScq3UOWh/gp/rEYMsFb1dZirWiGri8rypuYb6WM2HmjnAmFWulJRcls31rJH
-         cB3Oe73GHVD7q+xJHqmFiuyHlFFLrcwaz0mVy+/5VFtutvhnt8JEOLqzAX76LNN4TjwW
-         +e780fpesJYIVd8G8rUZyhyp8+GBF5R3Nrp20L//FyT+9j3hQdrh1Ow0uwyRVDERkwK8
-         GiYQ==
+        h=sender:message-id:date:mime-version:user-agent:content-language:to
+         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=YE5fd2PXzgrRrp6QmDickm+mZx4l8rN3v8iuptY0YE8=;
+        b=Uf5uAcfO43BI37XVfWxFs27iKBoPVFRkbqDVTrO8B/Kc7NaQCqRUBEajc26O3UFmlp
+         d3lyZyCgCCt2wbIRc6YdNsMKxEUvQDHs1rveWTET3ZYuHUYXPP3h0VQ+FaIGH7cX4Nv6
+         Ciy2PFqn6FisnWLmuiodQNLoK8C/pRtSXZHTeUfI/kQGPWvhMdCcIwVdU8keGXmQIvZM
+         5a1/lEZ19QUYg4XOygy2kj/9Dxn93XZc0VmBzvzF0Vc0J97uZDWjMFZXs+UhyCl5IPL7
+         nMyCc+KG18R9yE4uAPzx5bequv+930NDrXWe4ToT/ATVdAj66i0/e+2pf0Wmwa0DGBy6
+         rseg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=94FE0xqKYNBQJ8bbUNfhKNNPOc38KM25jE5hqWXLeJ4=;
-        b=MBqEipaFdxG3gj6mWOzaJ1xP7GBNAl2nzTZKFZAjsCi3MpVVvMuf9J29Yem2rP3/Wj
-         ds2F3vK8JsycS94m7CIiH5lUqQlvUaJlaHW/IwAN2fXNZw8K152XTm+URAsgv3Ztn5YQ
-         Y0z+9OBjWIwlmaciQ32tF237m5UYSEtVfSgeCbX/oRSLcXQ5Guj336P6qe07kwOa8KN/
-         B2lYq2zNIm2UQ1tQXLundb30Ehj9IEgTnumwlXldNcgEM+1rb7iWpkoIeeOCg06Udh+t
-         YB78Eo4g9Wpaj6DsitxpkyLk0+7r8dqll16szVm7B9eYNBd5akzwZ97BMY27sL1TMKlg
-         N3+Q==
-X-Gm-Message-State: AOAM531A6TgCyRW/AVT1HRp7WF2lvnvEVIBqjy7EeXric8AljzFTbZVm
-        fMlgRQr8JGvjAqAfH/eDlQG5YhVhqiTqkNUcLKA=
-X-Google-Smtp-Source: ABdhPJxzNVfHC1jGUwT0sqEv2G0thos5P9r8fMaQS8c1WRn74reGkvYQUn4co293qIEPIELweEz1M98Mxcw3mQ7UFes=
-X-Received: by 2002:a05:600c:3846:b0:39c:360a:9ad9 with SMTP id
- s6-20020a05600c384600b0039c360a9ad9mr20508938wmr.179.1654522828289; Mon, 06
- Jun 2022 06:40:28 -0700 (PDT)
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:subject:in-reply-to
+         :content-transfer-encoding;
+        bh=YE5fd2PXzgrRrp6QmDickm+mZx4l8rN3v8iuptY0YE8=;
+        b=D5NsdrKrecgJpM3ocPf03fQBdliHVgP0reKy2qgxMaP+qHIX/u8SkHPu6yY+/kvitc
+         94RxG4LzZWQrgesyxlB3R6OYKTTodmvdPTWGWNhgdqODqIolsDLxBhL9iOZwt+xqBhl6
+         KFFMb03hmOyksAbfi/wO7NPFrnZulciuo3qPLPWBvsjlRubIUFid+UGufsfwxy0FPRhe
+         rsZ+AgH4PICzp4NnkwyNDENlZModnpY42JP1Sqm0YxMezdT77dimTyb7ZL/orzel0q2z
+         GHApt1FHYyraVyxZcL5YWYG5hi+FerHDFG2kRGq4Bw09zmPbpUhjtYAvC+Bgbwl7Fy3K
+         fTJg==
+X-Gm-Message-State: AOAM533YIvW8K9VL/HM4gtCxuim/Mp4f+1uHGrsoiy5Ep9I8viGM76qs
+        IudxUaaiLJHWOj+3ac2ta50=
+X-Google-Smtp-Source: ABdhPJyBJnTwOW+Pzla8e7Pjter9px3qElskKW4RQsLdwiuMW3/i5JPjGrPCN/IAY9NT258XscnfRg==
+X-Received: by 2002:a9d:76c3:0:b0:60b:9c19:2248 with SMTP id p3-20020a9d76c3000000b0060b9c192248mr10302414otl.62.1654524928871;
+        Mon, 06 Jun 2022 07:15:28 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id j6-20020a056830270600b0060603221264sm7683251otu.52.2022.06.06.07.15.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jun 2022 07:15:27 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <ec333cc5-1e49-dfe8-d5d4-8b3f3982e316@roeck-us.net>
+Date:   Mon, 6 Jun 2022 07:15:24 -0700
 MIME-Version: 1.0
-Sender: smithwilson780@gmail.com
-Received: by 2002:a05:600c:4988:0:0:0:0 with HTTP; Mon, 6 Jun 2022 06:40:27
- -0700 (PDT)
-From:   Dina Mckenna <dinamckenna1894@gmail.com>
-Date:   Mon, 6 Jun 2022 13:40:27 +0000
-X-Google-Sender-Auth: lZPim2gTZk7AB4JvvPLb_eY5JPI
-Message-ID: <CADh0mysyhvXWo57Es7YXP4VE8ZvhmXvBnFjRmjpf87y3QWJGEw@mail.gmail.com>
-Subject: Please need your urgent assistance,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_60,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:32a listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6707]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [dinamckenna1894[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [smithwilson780[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.6 URG_BIZ Contains urgent matter
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Content-Language: en-US
+To:     Slawomir Stepien <sst@poczta.fm>
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        jdelvare@suse.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, przemyslaw.cencner@nokia.com,
+        krzysztof.adamski@nokia.com, alexander.sverdlin@nokia.com,
+        slawomir.stepien@nokia.com
+References: <20220525073657.573327-1-sst@poczta.fm>
+ <20220525073657.573327-5-sst@poczta.fm>
+ <20220605180310.GA3151289@roeck-us.net> <Yp2fCO84VrrSQHbL@t480s.localdomain>
+ <5f471f82-83b1-aea4-ea25-e51c0672c8ff@roeck-us.net>
+ <Yp3vpgR8jbyzWmiq@t480s.localdomain>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 4/7] hwmon: (lm90) Add support for 2nd remote channel's
+ offset register
+In-Reply-To: <Yp3vpgR8jbyzWmiq@t480s.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello my dear.,
+On 6/6/22 05:14, Slawomir Stepien wrote:
+> On cze 05, 2022 23:50, Guenter Roeck wrote:
+>> On 6/5/22 23:30, Slawomir Stepien wrote:
+>>> On cze 05, 2022 11:03, Guenter Roeck wrote:
+>>>> On Wed, May 25, 2022 at 09:36:54AM +0200, Slawomir Stepien wrote:
+>>>>> From: Slawomir Stepien <slawomir.stepien@nokia.com>
+>>>>>
+>>>>> The ADT7461 supports offset register for both remote channels it has.
+>>>>
+>>>> ADT7481
+>>>
+>>> Oops. I will fix that in new version.
+>>>
+>>>>> Both registers have the same bit width (resolution).
+>>>>>
+>>>>> In the code, this device has LM90_HAVE_TEMP3 and LM90_HAVE_OFFSET flags,
+>>>>> but the support of second remote channel's offset is missing. Add that
+>>>>> implementation.
+>>>>>
+>>>>> Signed-off-by: Slawomir Stepien <slawomir.stepien@nokia.com>
+>>>>> ---
+>>>>>    drivers/hwmon/lm90.c | 37 ++++++++++++++++++++++++++++++++-----
+>>>>>    1 file changed, 32 insertions(+), 5 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
+>>>>> index 02b211a4e571..d226f1dea2ba 100644
+>>>>> --- a/drivers/hwmon/lm90.c
+>>>>> +++ b/drivers/hwmon/lm90.c
+>>>>> @@ -153,6 +153,8 @@ enum chips { adm1023, adm1032, adt7461, adt7461a, adt7481,
+>>>>>    #define LM90_REG_REMOTE_TEMPL		0x10
+>>>>>    #define LM90_REG_REMOTE_OFFSH		0x11
+>>>>>    #define LM90_REG_REMOTE_OFFSL		0x12
+>>>>> +#define LM90_REG_REMOTE2_OFFSH		0x34
+>>>>> +#define LM90_REG_REMOTE2_OFFSL		0x35
+>>>>
+>>>> I don't think those are needed.
+>>>
+>>> In lm90_temp_write() (unlike in lm90_update_limits()) the remote channel is *not* set. I find
+>>
+>> ... unless lm90_set_temp() is used to write the values. If I recall correctly
+>> I didn't do that because selecting the remote channel seemed unnecessary.
+> 
+> I think that modifying lm90_set_temp() to support offsets is a bit messy:
+> 
+> 1. The offset on all supported devices is always on two bytes. Unlike the temperature, where
+> sometimes it is just on one (but if more than one byte, then we set reg_remote_ext). With this also
+> 'regs' in lm90_set_temp() will be back as 2 dimensional array OR additional high and low indexes for
+> REMOTE_OFFSET and REMOTE2_OFFSET should be added (that will also caused bits glueing on write/read).
+> 
+> 2. For offset the calls lm90_temp_from/to_reg should have 0 as flags (1st argument) - that would be
+> an additional if in lm90_set_temp() OR clear&restore of the flags before&after the call..
+> 
+> Maybe, Guenter you will be happy with something like this (new functions):
+> 
+> static int lm90_get_temp_offset(struct lm90_data *data, int index)
+> {
+> 	int res = lm90_temp_get_resolution(data, index);
+> 
+> 	return lm90_temp_from_reg(0, data->temp[index], res);
+> }
+> 
+> static int lm90_set_temp_offset(struct lm90_data *data, int index, int channel, long val)
+> {
+> 	int err;
+> 	static const u8 regs[][2] = {
+> 		[REMOTE_OFFSET] = {LM90_REG_REMOTE_OFFSH, LM90_REG_REMOTE_OFFSL},
+> 		[REMOTE2_OFFSET] = {LM90_REG_REMOTE_OFFSH, LM90_REG_REMOTE_OFFSL},
+> 	};
 
- I sent this mail praying it will get to you in a good condition of
-health, since I myself are in a very critical health condition in
-which I sleep every night without knowing if I may be alive to see the
-next day. I bring peace and love to you.. It is by the grace of God, I
-had no choice than to do what is lawful and right in the sight of God
-for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
-y
-and glory upon my life. I am Mrs. Dina Howley Mckenna, a widow. I am
-suffering from a long time brain tumor, It has defiled all forms of
-medical treatment, and right now I have about a few months to leave,
-according to medical experts. The situation has gotten complicated
-recently with my inability to hear proper, am communicating with you
-with the help of the chief nurse herein the hospital, from all
-indication my conditions is really deteriorating and it is quite
-obvious that, according to my doctors they have advised me that I may
-not live too long, Because this illness has gotten to a very bad
-stage. I plead that you will not expose or betray this trust and
-confidence that I am about to repose on you for the mutual benefit of
-the orphans and the less privilege. I have some funds I inherited from
-my late husband, the sum of ($ 11,000,000.00, Eleven Million Dollars).
-Having known my condition, I decided to donate this fund to you
-believing that you will utilize it the way i am going to instruct
-herein. I need you to assist me and reclaim this money and use it for
-Charity works therein your country  for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of God
-and the effort that the house of God is maintained. I do not want a
-situation where this money will be used in an ungodly manner. That's
-why I'm taking this decision. I'm not afraid of death, so I know where
-I'm going. I accept this decision because I do not have any child who
-will inherit this money after I die.. Please I want your sincerely and
-urgent answer to know if you will be able to execute this project for
-the glory of God, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of God be with you and all those that you
-love and care for..
+That array is unnecessary.
+> 	u8 regh = regs[index][0];
+> 	u8 regl = regs[index][1];
 
-I'm waiting for your immediate reply..
+	regh = regs[0];
+	regl = regs[1];
 
-May God Bless you.,
-Mrs. Dina Howley Mckenna..
+has the same result, meaning you can just use LM90_REG_REMOTE_OFFSH
+and LM90_REG_REMOTE_OFFSL directly.
+
+... and then you can just use the direct registers and add a comment stating
+that those only work for ADT7481 and not for chips which require channel select.
+
+> 
+> 	val = lm90_temp_to_reg(0, val, lm90_temp_get_resolution(data, index));
+> 
+> 	if (channel > 1)
+> 		lm90_select_remote_channel(data, true);
+> 
+> 	err = lm90_write16(data->client, regh, regl, val);
+> 
+> 	if (channel > 1)
+> 		lm90_select_remote_channel(data, false);
+> 
+> 	if (err)
+> 		return err;
+> 
+> 	data->temp[index] = val;
+> 
+> 	return 0;
+> }
+> 
+> And new channel->index translator:
+> 
+> static const s8 lm90_temp_offset_index[MAX_CHANNELS] = {
+> 	-1, REMOTE_OFFSET, REMOTE2_OFFSET
+> };
+> 
+> Having that, we can use that functions in hwmon's read/write attrs but also while paring the
+> device-tree channel nodes.
+> 
+> Maybe I missed something and using lm90_set_temp() will not be messy?
+> What do you think?
+> 
+Using a new (simplified) function to write the registers sounds good.
+Go for it.
+
+Thanks,
+Guenter
