@@ -2,76 +2,183 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C362C53DF32
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 03:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F176A53E1E4
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 10:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243404AbiFFBBw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 5 Jun 2022 21:01:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57250 "EHLO
+        id S230155AbiFFGao (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 6 Jun 2022 02:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235315AbiFFBBv (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jun 2022 21:01:51 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012533668E
-        for <linux-hwmon@vger.kernel.org>; Sun,  5 Jun 2022 18:01:50 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id q11so2524930oih.10
-        for <linux-hwmon@vger.kernel.org>; Sun, 05 Jun 2022 18:01:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=LIYkXsh8NuZ+kWZJQV6Z3UgDflGRM7baotKUMbx/XVo=;
-        b=FZBEUhwfUDy7El98duLevmUtdExYqFmO0w0ETeOI3TL+UCyXTcQrnebDlF2ON9iRl9
-         7tXuZMb8b0H8wlaQO/AhTLhfbW68loGEKMtGWjktvkb7uw20OQ873CN3zbu47AnQ+kQ5
-         oAve3GiBJypn2nmQiFHAv9ZJHKxetb+eGwNj+bMQRAawmslK6T8cGlyc8SA/CWP6uk1b
-         ew5mkBAGx1EdwAUkPYB8JxHI+bYqiHCISGI3E32K1aP+gu8h4D0XuF+Y9GTOj/M2a3Eh
-         XECAzd6IgpdBaqYsCxORjKmUZFBX3iVaSkrkLVPIP81nytL6XHXVX5jn7JpbaH/rPTvZ
-         3JjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=LIYkXsh8NuZ+kWZJQV6Z3UgDflGRM7baotKUMbx/XVo=;
-        b=2R9svk+UxAGf/4GL0czoZ5l4770A9JheLFa99+7HDXc9Zqt8odKjMJtSFoc0NNm3Yq
-         qjtnuYCBbdCVoQw17eMComlenvCfjDSBFjBRi/7N+ebLBnsmFjYulGP9proruCKz1p0p
-         IS36KQHXUZpClmfk88fVMGBIe+A/njVUS11KaqOWDac0XSpel+m0IHKdtP4s1tCUhyOB
-         ta3vGbBRoBOSbAt6YYOSyNoiUc2EnNRYll1tL+dKX35qzpeidYfHzQV6Niyvz9Q8hwsw
-         GyLcSN3cWFxUM2/msRR7h9zE401xvVNQmux0LeW+iNeSg6dR8s18jRzcBB2Hct2HJgiG
-         iqvQ==
-X-Gm-Message-State: AOAM530QyraLTs6JDFQ68SxS/nQI5Blk6EbX4yum2+2YQGDVVOOgRp5S
-        zrbrnY9Q43ouosezNUl3np78KL6b1q3aIP/6Wag=
-X-Google-Smtp-Source: ABdhPJwd5WE4MpIsu3Y4+Fg86fCTKRqJKstdy5RR+U1xDX59TXSBIaK9N/ehp3n/3H00U71veaslYgOpd2ca6VxVEe4=
-X-Received: by 2002:a05:6808:2010:b0:32b:17fa:a7e9 with SMTP id
- q16-20020a056808201000b0032b17faa7e9mr12297544oiw.173.1654477309300; Sun, 05
- Jun 2022 18:01:49 -0700 (PDT)
+        with ESMTP id S230154AbiFFGam (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Jun 2022 02:30:42 -0400
+Received: from smtpo49.interia.pl (smtpo49.interia.pl [217.74.67.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E175F8E7
+        for <linux-hwmon@vger.kernel.org>; Sun,  5 Jun 2022 23:30:39 -0700 (PDT)
+Received: from t480s.localdomain (unknown [80.68.225.159])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
+        Mon,  6 Jun 2022 08:30:35 +0200 (CEST)
+Date:   Mon, 6 Jun 2022 08:30:32 +0200
+From:   Slawomir Stepien <sst@poczta.fm>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        jdelvare@suse.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, przemyslaw.cencner@nokia.com,
+        krzysztof.adamski@nokia.com, alexander.sverdlin@nokia.com,
+        slawomir.stepien@nokia.com
+Subject: Re: [PATCH 4/7] hwmon: (lm90) Add support for 2nd remote channel's
+ offset register
+Message-ID: <Yp2fCO84VrrSQHbL@t480s.localdomain>
+References: <20220525073657.573327-1-sst@poczta.fm>
+ <20220525073657.573327-5-sst@poczta.fm>
+ <20220605180310.GA3151289@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6358:3402:b0:a3:67f3:5d49 with HTTP; Sun, 5 Jun 2022
- 18:01:48 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Mr. KAbore Aouessian" <kiboraouessian@gmail.com>
-Date:   Sun, 5 Jun 2022 18:01:48 -0700
-Message-ID: <CALGXYcTDX_ZnM3pTt3+jOrj8vfRHND6P3=Ghh9OBB2B-3YXKjA@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220605180310.GA3151289@roeck-us.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=interia.pl;
+        s=biztos; t=1654497037;
+        bh=toD2b2Tg74PEJJgHkBqWJoLIJLPhELHi9E/qU6o4MqY=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=SWlUdDJFr3LJtFF0Z8zyQPYYNRMb63ZxcxOPI4/frthv86bGTaarhqdd777uoE624
+         o0eOeVOGJymmaDVAwF+7sQOCyHIZFLorOrJ/tQ75SqHypkArsNdoflxC71aMOzzbSa
+         0m4OBgowHztVNOQmdIesEz8+cPmbBIOUe+oa/9H0=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Greetings,
-I'm Mr. KAbore Aouessian, how are you doing hope you are in good
-health, the Board irector try to reach you on phone several times
-Meanwhile, your number was not connecting. before he ask me to send
-you an email to hear from you if you are fine. hope to hear you are in
-good Health.
+On cze 05, 2022 11:03, Guenter Roeck wrote:
+> On Wed, May 25, 2022 at 09:36:54AM +0200, Slawomir Stepien wrote:
+> > From: Slawomir Stepien <slawomir.stepien@nokia.com>
+> > 
+> > The ADT7461 supports offset register for both remote channels it has.
+> 
+> ADT7481
 
-Thanks,
-Mr. KAbore Aouessian.
+Oops. I will fix that in new version.
+
+> > Both registers have the same bit width (resolution).
+> > 
+> > In the code, this device has LM90_HAVE_TEMP3 and LM90_HAVE_OFFSET flags,
+> > but the support of second remote channel's offset is missing. Add that
+> > implementation.
+> > 
+> > Signed-off-by: Slawomir Stepien <slawomir.stepien@nokia.com>
+> > ---
+> >  drivers/hwmon/lm90.c | 37 ++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 32 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
+> > index 02b211a4e571..d226f1dea2ba 100644
+> > --- a/drivers/hwmon/lm90.c
+> > +++ b/drivers/hwmon/lm90.c
+> > @@ -153,6 +153,8 @@ enum chips { adm1023, adm1032, adt7461, adt7461a, adt7481,
+> >  #define LM90_REG_REMOTE_TEMPL		0x10
+> >  #define LM90_REG_REMOTE_OFFSH		0x11
+> >  #define LM90_REG_REMOTE_OFFSL		0x12
+> > +#define LM90_REG_REMOTE2_OFFSH		0x34
+> > +#define LM90_REG_REMOTE2_OFFSL		0x35
+> 
+> I don't think those are needed.
+
+In lm90_temp_write() (unlike in lm90_update_limits()) the remote channel is *not* set. I find
+setting it (the remote channel) in lm90_temp_write() a waste of xfers, if we can address the
+registers directly. But if you prefer to have just one set of register and setting the remote
+channel bit, then sure I can do it like that.
+
+> >  #define LM90_REG_REMOTE_HIGHH		0x07
+> >  #define LM90_REG_REMOTE_HIGHL		0x13
+> >  #define LM90_REG_REMOTE_LOWH		0x08
+> > @@ -669,6 +671,7 @@ enum lm90_temp_reg_index {
+> >  	REMOTE2_TEMP,	/* max6695/96 only */
+> >  	REMOTE2_LOW,	/* max6695/96 only */
+> >  	REMOTE2_HIGH,	/* max6695/96 only */
+> > +	REMOTE2_OFFSET,
+> >  
+> >  	TEMP_REG_NUM
+> >  };
+> > @@ -1024,6 +1027,14 @@ static int lm90_update_limits(struct device *dev)
+> >  			return val;
+> >  		data->temp[REMOTE2_HIGH] = val << 8;
+> >  
+> > +		if (data->flags & LM90_HAVE_OFFSET) {
+> > +			val = lm90_read16(client, LM90_REG_REMOTE2_OFFSH,
+> > +					  LM90_REG_REMOTE2_OFFSL, false);
+> 
+> Why not use LM90_REG_REMOTE_OFFSH and LM90_REG_REMOTE_OFFSL ?
+> The remove channel is selected here, after all.
+
+Yes, in this case I can use the regs for remote channel 1. I will fix that in new version.
+
+> > +			if (val < 0)
+> > +				return val;
+> > +			data->temp[REMOTE2_OFFSET] = val;
+> > +		}
+> > +
+> >  		lm90_select_remote_channel(data, false);
+> >  	}
+> >  
+> > @@ -1294,6 +1305,7 @@ static int lm90_temp_get_resolution(struct lm90_data *data, int index)
+> >  			return data->resolution;
+> >  		return 8;
+> >  	case REMOTE_OFFSET:
+> > +	case REMOTE2_OFFSET:
+> >  	case REMOTE2_TEMP:
+> >  		return data->resolution;
+> >  	case LOCAL_TEMP:
+> > @@ -1515,8 +1527,13 @@ static int lm90_temp_read(struct device *dev, u32 attr, int channel, long *val)
+> >  		*val = lm90_get_temphyst(data, lm90_temp_emerg_index[channel], channel);
+> >  		break;
+> >  	case hwmon_temp_offset:
+> > -		*val = lm90_temp_from_reg(0, data->temp[REMOTE_OFFSET],
+> > -					  lm90_temp_get_resolution(data, REMOTE_OFFSET));
+> > +		/* Both offset registers have the same resolution */
+> > +		int res = lm90_temp_get_resolution(data, REMOTE_OFFSET);
+> > +
+> > +		if (channel == 1)
+> > +			*val = lm90_temp_from_reg(0, data->temp[REMOTE_OFFSET], res);
+> > +		else
+> > +			*val = lm90_temp_from_reg(0, data->temp[REMOTE2_OFFSET], res);
+> 
+> I would prefer the use of lm90_temp_offset_index[] as implemented for the
+> other attributes.
+
+OK, I will try to do it like that in new version.
+
+> >  		break;
+> >  	default:
+> >  		return -EOPNOTSUPP;
+> > @@ -1556,11 +1573,19 @@ static int lm90_temp_write(struct device *dev, u32 attr, int channel, long val)
+> >  				    channel, val);
+> >  		break;
+> >  	case hwmon_temp_offset:
+> > +		/* Both offset registers have the same resolution */
+> >  		val = lm90_temp_to_reg(0, val,
+> >  				       lm90_temp_get_resolution(data, REMOTE_OFFSET));
+> > -		data->temp[REMOTE_OFFSET] = val;
+> > -		err = lm90_write16(data->client, LM90_REG_REMOTE_OFFSH,
+> > -				   LM90_REG_REMOTE_OFFSL, val);
+> > +
+> > +		if (channel == 1) {
+> > +			data->temp[REMOTE_OFFSET] = val;
+> > +			err = lm90_write16(data->client, LM90_REG_REMOTE_OFFSH,
+> > +					   LM90_REG_REMOTE_OFFSL, val);
+> > +		} else {
+> > +			data->temp[REMOTE2_OFFSET] = val;
+> > +			err = lm90_write16(data->client, LM90_REG_REMOTE2_OFFSH,
+> > +					   LM90_REG_REMOTE2_OFFSL, val);
+> > +		}
+> 
+> Same as above.
+
+OK!
+
+-- 
+Slawomir Stepien
