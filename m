@@ -2,175 +2,76 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC7A53DD8E
-	for <lists+linux-hwmon@lfdr.de>; Sun,  5 Jun 2022 20:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C362C53DF32
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 03:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244820AbiFESKO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 5 Jun 2022 14:10:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43710 "EHLO
+        id S243404AbiFFBBw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 5 Jun 2022 21:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351612AbiFESKJ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jun 2022 14:10:09 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AB9F30F68;
-        Sun,  5 Jun 2022 11:10:08 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-f2cbceefb8so16735302fac.11;
-        Sun, 05 Jun 2022 11:10:08 -0700 (PDT)
+        with ESMTP id S235315AbiFFBBv (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 5 Jun 2022 21:01:51 -0400
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012533668E
+        for <linux-hwmon@vger.kernel.org>; Sun,  5 Jun 2022 18:01:50 -0700 (PDT)
+Received: by mail-oi1-x22a.google.com with SMTP id q11so2524930oih.10
+        for <linux-hwmon@vger.kernel.org>; Sun, 05 Jun 2022 18:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=KCnX5O3mYts+FZkfkHPRAH/57Id9nVn3xpKq+JHRyKk=;
-        b=johr42mixgEb2ZAZiHuPmzO1oOrnUDhopI8JpAbf5WLtzzISuumfwlta1f7mCB+sUP
-         xRcwO6gMqynsKpX++bxM0UVe+KciwEucnAjvAJ2SNBFQTxUbR3noWz9ElP//zbMK6YxM
-         B3wMwQ/d1pPC3VgGpV9PwPeMCBIqfMjcxhB+hrNfuzNTQaQr/NNNFmtPyhhYW9Xig7DP
-         XuALUm6cMWiBSLrY3oNE0dfL7gZFzed9b2MneLCnfFNqp13rDvtL+VoXwW7uEXbo3+v4
-         +1ncIrbTgaTaX2tRSrr0iKZiUSmwBCAFkDzgsJAAtqwplrhCFBtGiJ9r9ZsRLLWbXOc3
-         i8Vw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=LIYkXsh8NuZ+kWZJQV6Z3UgDflGRM7baotKUMbx/XVo=;
+        b=FZBEUhwfUDy7El98duLevmUtdExYqFmO0w0ETeOI3TL+UCyXTcQrnebDlF2ON9iRl9
+         7tXuZMb8b0H8wlaQO/AhTLhfbW68loGEKMtGWjktvkb7uw20OQ873CN3zbu47AnQ+kQ5
+         oAve3GiBJypn2nmQiFHAv9ZJHKxetb+eGwNj+bMQRAawmslK6T8cGlyc8SA/CWP6uk1b
+         ew5mkBAGx1EdwAUkPYB8JxHI+bYqiHCISGI3E32K1aP+gu8h4D0XuF+Y9GTOj/M2a3Eh
+         XECAzd6IgpdBaqYsCxORjKmUZFBX3iVaSkrkLVPIP81nytL6XHXVX5jn7JpbaH/rPTvZ
+         3JjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=KCnX5O3mYts+FZkfkHPRAH/57Id9nVn3xpKq+JHRyKk=;
-        b=QEGwSe1W58I9J2Ax+On8dgC7DDNMsBxD/ywyCk44JFLoufrRKcpS6NGr3M0gmBCIcg
-         lQ51gmmVk+tIwdesVtvLWRQ4GFIe1NdZwTqPH7SRY9qEl7IHG1goFOCLobHOK1+nnnti
-         pjEiw+haEKkAkVXFpksjPDL1jjXGHBx5aI3bn+B0+ISkVYnijlqNtBhdBpBSyX0HhQAF
-         eHRQtaLYeTBxRBUkMIkAmx7g3o/bdwRAW9S0iULM83vZgtw01ER9q5LHVpAsgrk3D4JJ
-         727bspLw9JVyMz8dfG0OcuwzUmHBUaPUx0Cl0Io4Ntk/g4MG5lmbPzjC71/Y0wB/ZeOF
-         +8+w==
-X-Gm-Message-State: AOAM532LSv4StYFlcjP/1Hnmlj/5WPO1uBTzRC7RBFJ2/0xAWUZCg97b
-        y7yUINjpe+jzHVLpezDSTD0=
-X-Google-Smtp-Source: ABdhPJwfhV4FeBIUi1vM//sNud4msPsdd/U687UbFAvJ/ugdp5yiC5WoYlvqhjOAMRhSbDntNHzmsg==
-X-Received: by 2002:a05:6870:d1c8:b0:f3:2788:9397 with SMTP id b8-20020a056870d1c800b000f327889397mr21189373oac.283.1654452607471;
-        Sun, 05 Jun 2022 11:10:07 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d22-20020a056830045600b00608b8e6fad5sm6638663otc.76.2022.06.05.11.10.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jun 2022 11:10:06 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sun, 5 Jun 2022 11:10:05 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Slawomir Stepien <sst@poczta.fm>
-Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        jdelvare@suse.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, przemyslaw.cencner@nokia.com,
-        krzysztof.adamski@nokia.com, alexander.sverdlin@nokia.com,
-        slawomir.stepien@nokia.com
-Subject: Re: [PATCH 7/7] hwmon: (lm90) Read the channel's temperature offset
- from device-tree
-Message-ID: <20220605181005.GA3151885@roeck-us.net>
-References: <20220525073657.573327-1-sst@poczta.fm>
- <20220525073657.573327-8-sst@poczta.fm>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=LIYkXsh8NuZ+kWZJQV6Z3UgDflGRM7baotKUMbx/XVo=;
+        b=2R9svk+UxAGf/4GL0czoZ5l4770A9JheLFa99+7HDXc9Zqt8odKjMJtSFoc0NNm3Yq
+         qjtnuYCBbdCVoQw17eMComlenvCfjDSBFjBRi/7N+ebLBnsmFjYulGP9proruCKz1p0p
+         IS36KQHXUZpClmfk88fVMGBIe+A/njVUS11KaqOWDac0XSpel+m0IHKdtP4s1tCUhyOB
+         ta3vGbBRoBOSbAt6YYOSyNoiUc2EnNRYll1tL+dKX35qzpeidYfHzQV6Niyvz9Q8hwsw
+         GyLcSN3cWFxUM2/msRR7h9zE401xvVNQmux0LeW+iNeSg6dR8s18jRzcBB2Hct2HJgiG
+         iqvQ==
+X-Gm-Message-State: AOAM530QyraLTs6JDFQ68SxS/nQI5Blk6EbX4yum2+2YQGDVVOOgRp5S
+        zrbrnY9Q43ouosezNUl3np78KL6b1q3aIP/6Wag=
+X-Google-Smtp-Source: ABdhPJwd5WE4MpIsu3Y4+Fg86fCTKRqJKstdy5RR+U1xDX59TXSBIaK9N/ehp3n/3H00U71veaslYgOpd2ca6VxVEe4=
+X-Received: by 2002:a05:6808:2010:b0:32b:17fa:a7e9 with SMTP id
+ q16-20020a056808201000b0032b17faa7e9mr12297544oiw.173.1654477309300; Sun, 05
+ Jun 2022 18:01:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220525073657.573327-8-sst@poczta.fm>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:3402:b0:a3:67f3:5d49 with HTTP; Sun, 5 Jun 2022
+ 18:01:48 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Mr. KAbore Aouessian" <kiboraouessian@gmail.com>
+Date:   Sun, 5 Jun 2022 18:01:48 -0700
+Message-ID: <CALGXYcTDX_ZnM3pTt3+jOrj8vfRHND6P3=Ghh9OBB2B-3YXKjA@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, May 25, 2022 at 09:36:57AM +0200, Slawomir Stepien wrote:
-> From: Slawomir Stepien <slawomir.stepien@nokia.com>
-> 
-> Try to read the channel's temperature offset from device-tree. Having
-> offset in device-tree node is not mandatory. The offset can only be set
-> for remote channels.
-> 
-> Signed-off-by: Slawomir Stepien <slawomir.stepien@nokia.com>
-> ---
->  drivers/hwmon/lm90.c | 48 ++++++++++++++++++++++++++++++++------------
->  1 file changed, 35 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-> index 3837c4ab5833..12e8e874f1b9 100644
-> --- a/drivers/hwmon/lm90.c
-> +++ b/drivers/hwmon/lm90.c
-> @@ -1440,6 +1440,24 @@ static int lm90_set_temphyst(struct lm90_data *data, long val)
->  	return lm90_write_reg(data->client, LM90_REG_TCRIT_HYST, data->temp_hyst);
->  }
->  
-> +static int lm90_set_temp_offset(struct lm90_data *data, int channel, long val)
-> +{
-> +	/* Both offset registers have the same resolution */
-> +	int res = lm90_temp_get_resolution(data, REMOTE_OFFSET);
-> +
-> +	val = lm90_temp_to_reg(0, val, res);
-> +
-> +	if (channel == 1) {
-> +		data->temp[REMOTE_OFFSET] = val;
-> +		return lm90_write16(data->client, LM90_REG_REMOTE_OFFSH,
-> +				    LM90_REG_REMOTE_OFFSL, val);
-> +	}
-> +
-> +	data->temp[REMOTE2_OFFSET] = val;
-> +	return lm90_write16(data->client, LM90_REG_REMOTE2_OFFSH,
-> +			    LM90_REG_REMOTE2_OFFSL, val);
-> +}
-> +
->  static const u8 lm90_temp_index[MAX_CHANNELS] = {
->  	LOCAL_TEMP, REMOTE_TEMP, REMOTE2_TEMP
->  };
-> @@ -1577,19 +1595,7 @@ static int lm90_temp_write(struct device *dev, u32 attr, int channel, long val)
->  				    channel, val);
->  		break;
->  	case hwmon_temp_offset:
-> -		/* Both offset registers have the same resolution */
-> -		val = lm90_temp_to_reg(0, val,
-> -				       lm90_temp_get_resolution(data, REMOTE_OFFSET));
-> -
-> -		if (channel == 1) {
-> -			data->temp[REMOTE_OFFSET] = val;
-> -			err = lm90_write16(data->client, LM90_REG_REMOTE_OFFSH,
-> -					   LM90_REG_REMOTE_OFFSL, val);
-> -		} else {
-> -			data->temp[REMOTE2_OFFSET] = val;
-> -			err = lm90_write16(data->client, LM90_REG_REMOTE2_OFFSH,
-> -					   LM90_REG_REMOTE2_OFFSL, val);
-> -		}
-> +		err = lm90_set_temp_offset(data, channel, val);
-
-Any chance to come up with more unified handling of both channels ?
+-- 
+Greetings,
+I'm Mr. KAbore Aouessian, how are you doing hope you are in good
+health, the Board irector try to reach you on phone several times
+Meanwhile, your number was not connecting. before he ask me to send
+you an email to hear from you if you are fine. hope to hear you are in
+good Health.
 
 Thanks,
-Guenter
-
->  		break;
->  	default:
->  		err = -EOPNOTSUPP;
-> @@ -2651,6 +2657,7 @@ static int lm90_probe_channel_from_dt(struct i2c_client *client,
->  				      struct lm90_data *data)
->  {
->  	u32 id;
-> +	s32 val;
->  	int err;
->  	struct device *dev = &client->dev;
->  
-> @@ -2674,6 +2681,21 @@ static int lm90_probe_channel_from_dt(struct i2c_client *client,
->  	if (data->channel_label[id])
->  		data->channel_config[id] |= HWMON_T_LABEL;
->  
-> +	err = of_property_read_s32(child, "temperature-offset-millicelsius", &val);
-> +	if (!err) {
-> +		if (id == 0) {
-> +			dev_err(dev, "offset can't be set for internal channel\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +		err = lm90_set_temp_offset(data, id, val);
-> +		if (err) {
-> +			dev_err(dev, "can't set offset %d for channel %d (%d)\n",
-> +				val, id, err);
-> +			return err;
-> +		}
-> +	}
-> +
->  	return 0;
->  }
->  
+Mr. KAbore Aouessian.
