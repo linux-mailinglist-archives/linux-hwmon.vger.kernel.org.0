@@ -2,132 +2,140 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D6F53E66C
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 19:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCDFF53EC75
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jun 2022 19:10:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238924AbiFFNdz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 6 Jun 2022 09:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36552 "EHLO
+        id S239101AbiFFNkd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 6 Jun 2022 09:40:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238926AbiFFNdy (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Jun 2022 09:33:54 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0C341A7D31;
-        Mon,  6 Jun 2022 06:33:52 -0700 (PDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 256DBY7X017132;
-        Mon, 6 Jun 2022 13:33:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NyTJDh7PPGeAi5t+/Wm1kKgWU3Azl2FjpYMzUs8x3NU=;
- b=dz7hZx3MIIEX6kGUhwj1jlHdHYB73K+uBQSlgQsTRMJTa7SOG8dqBNKCCeqguLBI9bxl
- B4bTptLslLiffnxGfuJKxdkR0cwq7xNa4JBH3pVDCik579u8a2cxzZCZgbx4xKUmfCbH
- it3+n//HFSxLOzXVMUn3Nw35UiihbkQ/vHjvh1ojF2qUM4FRiPLjXChnLzr/8u8JiV0l
- GtYGShP50E5al0fhNkPWyHN8/PMKvUVWRquT29mkdEFQE1szyJx7WwFGBz/SrojwmSkd
- pifKVXFWWysmVx+O8mmuk0TEko0D4OU+c0cf1gtIoRPs7P//Xb/kv6U3zM3UEShVPYsc bQ== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gg2070u69-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Jun 2022 13:33:27 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 256DKAMC015353;
-        Mon, 6 Jun 2022 13:33:27 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-        by ppma05wdc.us.ibm.com with ESMTP id 3gfy19du2a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Jun 2022 13:33:27 +0000
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 256DXQC836766058
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 6 Jun 2022 13:33:26 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 260EEBE05F;
-        Mon,  6 Jun 2022 13:33:26 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4E926BE053;
-        Mon,  6 Jun 2022 13:33:25 +0000 (GMT)
-Received: from [9.160.184.8] (unknown [9.160.184.8])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Mon,  6 Jun 2022 13:33:25 +0000 (GMT)
-Message-ID: <bc88300d-9321-e4f6-4215-1754fa3a0444@linux.ibm.com>
-Date:   Mon, 6 Jun 2022 08:33:24 -0500
+        with ESMTP id S239088AbiFFNkb (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 6 Jun 2022 09:40:31 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13AAD9CF37
+        for <linux-hwmon@vger.kernel.org>; Mon,  6 Jun 2022 06:40:30 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id r123-20020a1c2b81000000b0039c1439c33cso7937519wmr.5
+        for <linux-hwmon@vger.kernel.org>; Mon, 06 Jun 2022 06:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=94FE0xqKYNBQJ8bbUNfhKNNPOc38KM25jE5hqWXLeJ4=;
+        b=VrYr5Q0tbGuZmplgrj7rj00oDDtXl8EgiKGnqAv8U714ca7+mCBHgtnSQN4/PyqI7F
+         QuZIyqTouM3V7oOVzrrycAElg5oGPeH5u0l/7c4gF4c+4UAXPGqXKHIE2Dg3DSRH2W7k
+         nbP8eSZcScq3UOWh/gp/rEYMsFb1dZirWiGri8rypuYb6WM2HmjnAmFWulJRcls31rJH
+         cB3Oe73GHVD7q+xJHqmFiuyHlFFLrcwaz0mVy+/5VFtutvhnt8JEOLqzAX76LNN4TjwW
+         +e780fpesJYIVd8G8rUZyhyp8+GBF5R3Nrp20L//FyT+9j3hQdrh1Ow0uwyRVDERkwK8
+         GiYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=94FE0xqKYNBQJ8bbUNfhKNNPOc38KM25jE5hqWXLeJ4=;
+        b=MBqEipaFdxG3gj6mWOzaJ1xP7GBNAl2nzTZKFZAjsCi3MpVVvMuf9J29Yem2rP3/Wj
+         ds2F3vK8JsycS94m7CIiH5lUqQlvUaJlaHW/IwAN2fXNZw8K152XTm+URAsgv3Ztn5YQ
+         Y0z+9OBjWIwlmaciQ32tF237m5UYSEtVfSgeCbX/oRSLcXQ5Guj336P6qe07kwOa8KN/
+         B2lYq2zNIm2UQ1tQXLundb30Ehj9IEgTnumwlXldNcgEM+1rb7iWpkoIeeOCg06Udh+t
+         YB78Eo4g9Wpaj6DsitxpkyLk0+7r8dqll16szVm7B9eYNBd5akzwZ97BMY27sL1TMKlg
+         N3+Q==
+X-Gm-Message-State: AOAM531A6TgCyRW/AVT1HRp7WF2lvnvEVIBqjy7EeXric8AljzFTbZVm
+        fMlgRQr8JGvjAqAfH/eDlQG5YhVhqiTqkNUcLKA=
+X-Google-Smtp-Source: ABdhPJxzNVfHC1jGUwT0sqEv2G0thos5P9r8fMaQS8c1WRn74reGkvYQUn4co293qIEPIELweEz1M98Mxcw3mQ7UFes=
+X-Received: by 2002:a05:600c:3846:b0:39c:360a:9ad9 with SMTP id
+ s6-20020a05600c384600b0039c360a9ad9mr20508938wmr.179.1654522828289; Mon, 06
+ Jun 2022 06:40:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] hwmon: (occ) Delete unnecessary NULL check
-Content-Language: en-US
-To:     Ziyang Xuan <william.xuanziyang@huawei.com>, jdelvare@suse.com,
-        linux@roeck-us.net, joel@jms.id.au, penberg@kernel.org,
-        akpm@linux-foundation.org, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220606131401.4053036-1-william.xuanziyang@huawei.com>
-From:   Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <20220606131401.4053036-1-william.xuanziyang@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -aXpynAMbtfUyqlf4LawYpHQQCSLItl8
-X-Proofpoint-GUID: -aXpynAMbtfUyqlf4LawYpHQQCSLItl8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-06_04,2022-06-03_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- suspectscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- clxscore=1011 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206060062
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Sender: smithwilson780@gmail.com
+Received: by 2002:a05:600c:4988:0:0:0:0 with HTTP; Mon, 6 Jun 2022 06:40:27
+ -0700 (PDT)
+From:   Dina Mckenna <dinamckenna1894@gmail.com>
+Date:   Mon, 6 Jun 2022 13:40:27 +0000
+X-Google-Sender-Auth: lZPim2gTZk7AB4JvvPLb_eY5JPI
+Message-ID: <CADh0mysyhvXWo57Es7YXP4VE8ZvhmXvBnFjRmjpf87y3QWJGEw@mail.gmail.com>
+Subject: Please need your urgent assistance,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_60,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:32a listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.6707]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [dinamckenna1894[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [smithwilson780[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.6 URG_BIZ Contains urgent matter
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Hello my dear.,
 
-On 6/6/22 08:14, Ziyang Xuan wrote:
-> kvfree(NULL) is safe. NULL check before kvfree() is not needed.
-> Delete them to simplify the code.
->
-> Generated by coccinelle script:
-> 	scripts/coccinelle/free/ifnullfree.cocci
+ I sent this mail praying it will get to you in a good condition of
+health, since I myself are in a very critical health condition in
+which I sleep every night without knowing if I may be alive to see the
+next day. I bring peace and love to you.. It is by the grace of God, I
+had no choice than to do what is lawful and right in the sight of God
+for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
+y
+and glory upon my life. I am Mrs. Dina Howley Mckenna, a widow. I am
+suffering from a long time brain tumor, It has defiled all forms of
+medical treatment, and right now I have about a few months to leave,
+according to medical experts. The situation has gotten complicated
+recently with my inability to hear proper, am communicating with you
+with the help of the chief nurse herein the hospital, from all
+indication my conditions is really deteriorating and it is quite
+obvious that, according to my doctors they have advised me that I may
+not live too long, Because this illness has gotten to a very bad
+stage. I plead that you will not expose or betray this trust and
+confidence that I am about to repose on you for the mutual benefit of
+the orphans and the less privilege. I have some funds I inherited from
+my late husband, the sum of ($ 11,000,000.00, Eleven Million Dollars).
+Having known my condition, I decided to donate this fund to you
+believing that you will utilize it the way i am going to instruct
+herein. I need you to assist me and reclaim this money and use it for
+Charity works therein your country  for orphanages and gives justice
+and help to the poor, needy and widows says The Lord." Jeremiah
+22:15-16.=E2=80=9C and also build schools for less privilege that will be
+named after my late husband if possible and to promote the word of God
+and the effort that the house of God is maintained. I do not want a
+situation where this money will be used in an ungodly manner. That's
+why I'm taking this decision. I'm not afraid of death, so I know where
+I'm going. I accept this decision because I do not have any child who
+will inherit this money after I die.. Please I want your sincerely and
+urgent answer to know if you will be able to execute this project for
+the glory of God, and I will give you more information on how the fund
+will be transferred to your bank account. May the grace, peace, love
+and the truth in the Word of God be with you and all those that you
+love and care for..
 
+I'm waiting for your immediate reply..
 
-Thanks for the patch!
-
-Reviewed-by: Eddie James <eajames@linux.ibm.com>
-
-
->
-> Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-> ---
->   drivers/hwmon/occ/p9_sbe.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/hwmon/occ/p9_sbe.c b/drivers/hwmon/occ/p9_sbe.c
-> index 42fc7b97bb34..01405ae2f9bd 100644
-> --- a/drivers/hwmon/occ/p9_sbe.c
-> +++ b/drivers/hwmon/occ/p9_sbe.c
-> @@ -55,8 +55,7 @@ static bool p9_sbe_occ_save_ffdc(struct p9_sbe_occ *ctx, const void *resp,
->   	mutex_lock(&ctx->sbe_error_lock);
->   	if (!ctx->sbe_error) {
->   		if (resp_len > ctx->ffdc_size) {
-> -			if (ctx->ffdc)
-> -				kvfree(ctx->ffdc);
-> +			kvfree(ctx->ffdc);
->   			ctx->ffdc = kvmalloc(resp_len, GFP_KERNEL);
->   			if (!ctx->ffdc) {
->   				ctx->ffdc_len = 0;
-> @@ -171,8 +170,7 @@ static int p9_sbe_occ_remove(struct platform_device *pdev)
->   	ctx->sbe = NULL;
->   	occ_shutdown(occ);
->   
-> -	if (ctx->ffdc)
-> -		kvfree(ctx->ffdc);
-> +	kvfree(ctx->ffdc);
->   
->   	return 0;
->   }
+May God Bless you.,
+Mrs. Dina Howley Mckenna..
