@@ -2,47 +2,44 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28A2A53F63E
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jun 2022 08:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61BEB53F812
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jun 2022 10:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230471AbiFGGfk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 7 Jun 2022 02:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57614 "EHLO
+        id S232043AbiFGIWA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 7 Jun 2022 04:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbiFGGff (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 7 Jun 2022 02:35:35 -0400
-Received: from smtpo49.interia.pl (smtpo49.interia.pl [217.74.67.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786D75640C
-        for <linux-hwmon@vger.kernel.org>; Mon,  6 Jun 2022 23:35:34 -0700 (PDT)
-Received: from localhost (unknown [80.68.225.159])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by www.poczta.fm (INTERIA.PL) with ESMTPSA;
-        Tue,  7 Jun 2022 08:35:31 +0200 (CEST)
-From:   Slawomir Stepien <sst@poczta.fm>
-To:     linux-hwmon@vger.kernel.org
-Cc:     jdelvare@suse.com, linux@roeck-us.net,
-        przemyslaw.cencner@nokia.com, krzysztof.adamski@nokia.com,
-        alexander.sverdlin@nokia.com, sst@poczta.fm,
-        slawomir.stepien@nokia.com
-Subject: [PATCH 2/2] hwmon: (lm90) Read the channel's temperature offset from device-tree
-Date:   Tue,  7 Jun 2022 08:35:04 +0200
-Message-Id: <20220607063504.1287855-3-sst@poczta.fm>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220607063504.1287855-1-sst@poczta.fm>
-References: <20220607063504.1287855-1-sst@poczta.fm>
+        with ESMTP id S232029AbiFGIV7 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 7 Jun 2022 04:21:59 -0400
+X-Greylist: delayed 776 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 01:21:59 PDT
+Received: from mail.forindustry.pl (mail.forindustry.pl [37.187.225.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCDECEB94
+        for <linux-hwmon@vger.kernel.org>; Tue,  7 Jun 2022 01:21:59 -0700 (PDT)
+Received: by mail.forindustry.pl (Postfix, from userid 1002)
+        id 3E754A42B5; Tue,  7 Jun 2022 08:05:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=forindustry.pl;
+        s=mail; t=1654589181;
+        bh=Vw5jk5D1DE7WK/GNf/MxRQNyAyPYcC0rMJLibxKTj58=;
+        h=Date:From:To:Subject:From;
+        b=GydOT3qbPzM57enyrAKzepCSNIa3VIQvKUnAW88llIbLqnRqFMZu3irnqVeOoUQQc
+         H9HXzTIQN71KwjlNq/ST88u/ymIbIyFfj9Qq3OEaEVx3GespnYJEOSK9+UosSWElcG
+         TP2IMnhOtpN8YQSAjlPKq5/LyMvPQ/X139LeFSwx6msBvGmjyOqTYRx5oJ39mXcn6o
+         gw3W19AUTcEQmjE9zc6r3yN1ddwwhWCLa397UUssIIwwOrraXAcWjp1NpcyqXVa3Av
+         niEvkApiAxbfcKXDQ5y35mU3NRCXZcONy7oG2EvbS3aVBqGNkJX1SYpKXXea/b6wTu
+         ayuGgiRaZbgIg==
+Received: by mail.forindustry.pl for <linux-hwmon@vger.kernel.org>; Tue,  7 Jun 2022 08:05:52 GMT
+Message-ID: <20220607064500-0.1.3o.od3d.0.qiwrcynfc5@forindustry.pl>
+Date:   Tue,  7 Jun 2022 08:05:52 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@forindustry.pl>
+To:     <linux-hwmon@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.forindustry.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=interia.pl;
-        s=biztos; t=1654583732;
-        bh=9yN5B8hFswx0Q+HUxEMWggH058LrWw8Oe3Wb8KRE7qc=;
-        h=From:To:Subject:Date:Message-Id:MIME-Version;
-        b=SlM0ZIfxYCzvq3h82eEEKr3O7OYyBxsi5hiNyhvfNAPLqILRcQDTQT2+b0CFuC0In
-         vwpEixfVTNPwT2hWnVYe2jTNC4DXpVhX8Jlo4uez2I4pcfmW9qPf5/ncX3GjJ8OSgU
-         nWixKHCn/emTRoLzUKCto9MHzoNe52x1q/Acn4Gc=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,55 +47,21 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Slawomir Stepien <slawomir.stepien@nokia.com>
+Dzie=C5=84 dobry,
 
-Try to read the channel's temperature offset from device-tree. Having
-offset in device-tree node is not mandatory. The offset can only be set
-for remote channels.
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99.
 
-Signed-off-by: Slawomir Stepien <slawomir.stepien@nokia.com>
----
-Changes since v1:
-* Use the new function lm90_set_temp_offset.
-* Update the messages in dev_err() calls.
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
- drivers/hwmon/lm90.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
-diff --git a/drivers/hwmon/lm90.c b/drivers/hwmon/lm90.c
-index ec885cb3ab92..9d878163a1f2 100644
---- a/drivers/hwmon/lm90.c
-+++ b/drivers/hwmon/lm90.c
-@@ -2666,6 +2666,7 @@ static int lm90_probe_channel_from_dt(struct i2c_client *client,
- 				      struct lm90_data *data)
- {
- 	u32 id;
-+	s32 val;
- 	int err;
- 	struct device *dev = &client->dev;
- 
-@@ -2689,6 +2690,21 @@ static int lm90_probe_channel_from_dt(struct i2c_client *client,
- 	if (data->channel_label[id])
- 		data->channel_config[id] |= HWMON_T_LABEL;
- 
-+	err = of_property_read_s32(child, "temperature-offset-millicelsius", &val);
-+	if (!err) {
-+		if (id == 0) {
-+			dev_err(dev, "temperature-offset-millicelsius can't be set for internal channel\n");
-+			return -EINVAL;
-+		}
-+
-+		err = lm90_set_temp_offset(data, lm90_temp_offset_index[id], id, val);
-+		if (err) {
-+			dev_err(dev, "can't set temperature offset %d for channel %d (%d)\n",
-+				val, id, err);
-+			return err;
-+		}
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.36.1
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
+Pozdrawiam,
+Arkadiusz Soko=C5=82owski
