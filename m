@@ -2,87 +2,130 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD405422FA
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jun 2022 08:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164C65426E8
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Jun 2022 08:58:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233188AbiFHFFW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 8 Jun 2022 01:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
+        id S229780AbiFHEvY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 8 Jun 2022 00:51:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233363AbiFHFEn (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jun 2022 01:04:43 -0400
-X-Greylist: delayed 1489 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 19:01:27 PDT
-Received: from mail-m17635.qiye.163.com (mail-m17635.qiye.163.com [59.111.176.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B6E2F74FA;
-        Tue,  7 Jun 2022 19:01:27 -0700 (PDT)
-Received: from localhost.localdomain (unknown [IPV6:240e:36a:1490:f100:3282:1bcd:4fe8:e130])
-        by mail-m17635.qiye.163.com (Hmail) with ESMTPA id 1360140025E;
-        Wed,  8 Jun 2022 09:12:32 +0800 (CST)
-From:   Yupeng Li <liyupeng@zbhlos.com>
-To:     chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
-        tsbogend@alpha.franken.de, jdelvare@suse.com, linux@roeck-us.net
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, caizp2008@163.com,
-        Yupeng Li <liyupeng@zbhlos.com>
-Subject: [PATCH 1/1] MIPS: Loongson-3: fix compile mips cpu_hwmon as module build error.
-Date:   Wed,  8 Jun 2022 09:12:29 +0800
-Message-Id: <20220608011229.2056016-1-liyupeng@zbhlos.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232732AbiFHEuB (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Jun 2022 00:50:01 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD1AC2509EC
+        for <linux-hwmon@vger.kernel.org>; Tue,  7 Jun 2022 18:14:35 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-fe023ab520so2189624fac.10
+        for <linux-hwmon@vger.kernel.org>; Tue, 07 Jun 2022 18:14:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:content-language:to
+         :references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=kBIySTAJjbizEz0lOsKHr+uK6tOPrCBwD+VayVTxzQ4=;
+        b=MCDZPQAJ1bc7E7TWI/TddSwSc40DI04iu6X924AaRYf5W/F3LaTHb1YGDUMVwF6jLB
+         ZKf7oqSVm2WMQF7YCqd4Tmnr8/v/LpJCj+LwdLJJlNlDBGf/lJC7lawn8zW+zza1/tts
+         W4tY98XaiC6q/vJVCmP8Qu/a7kW9qWM5kPgTUdlsdXIvKtkSzDFJmf/+wvBS3NNCsIZn
+         YYkjG27Bl3tXJM9E/ZzFX9oTppKe6efxyqGhPEUod94Z/ySYv4MWzA57ttEcscvjMwin
+         cOsDCijtZo+aW1NE1ZF6DDFO31qv5M7LQZwMAg3kjWj84R1xyLHfLJr+IvVphiVIt12f
+         Kj2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :content-language:to:references:from:subject:in-reply-to
+         :content-transfer-encoding;
+        bh=kBIySTAJjbizEz0lOsKHr+uK6tOPrCBwD+VayVTxzQ4=;
+        b=TXHYGQcBfSVHHTciEKb+yEy6RDVY/Y+hBs4YfUtY2lvgZD0uMV0vYHAO2BLGGtS9o0
+         +1lZX5orCPaQB5ei18GFNdbLCM76/mlXVBD12gYdlp4VrHFhQy0pS/SoNP91U1JYXy3i
+         5OJeO+ywIWiZgqzakTjWMqJr/2DN5dakpu4+lcfhxDPmd9x6TNIzoHY6tlE3EXrxJLdQ
+         1qOAnVmgEfykds0WFIdlkPKEV0IFkexB8tsJdB1nrJEVby9hZUUK4LLoxyY6gqKIJrYr
+         aBN3TfECu22EacglWvCjfH5LMD49Vuf5BzftGnGCjtMoZjp/hOUfyP6Ekp9RjdGxIrBp
+         hUfA==
+X-Gm-Message-State: AOAM530VBCZveDUlu7OhwOKjRn+kPVyyDIpA3cAKxAD7idALlJVmBen/
+        LNgEQnPWUtleiIkeKOG0KuLzZJ7gF4c=
+X-Google-Smtp-Source: ABdhPJxdWG4xXsD6AUUk8HYb3a1sp2KVyaroExaee8tgvUl2jx/z7X5ur0NHy3KnHqe+lWN8b8BGAw==
+X-Received: by 2002:a05:6870:f2a9:b0:f2:c0bc:411d with SMTP id u41-20020a056870f2a900b000f2c0bc411dmr990648oap.239.1654650814848;
+        Tue, 07 Jun 2022 18:13:34 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id m8-20020a0568080f0800b00325cda1ff94sm11165785oiw.19.2022.06.07.18.13.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jun 2022 18:13:34 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <cf1a2ff9-59b3-fb2d-62fd-bdeac57bb9c0@roeck-us.net>
+Date:   Tue, 7 Jun 2022 18:13:31 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZCBgUCR5ZQVlLVUtZV1
-        kWDxoPAgseWUFZKDYvK1lXWShZQUhPN1dZLVlBSVdZDwkaFQgSH1lBWRkfGklWTktISxoaTB4fGh
-        4dVRMBExYaEhckFA4PWVdZFhoPEhUdFFlBWU9LSFVKSktITUpVS1kG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Phg6TTo*FD00AxdPQxUMPgM5
-        OT9PCzBVSlVKTU5PTU5LTE5JTUxIVTMWGhIXVRcSAg4LHhUcOwEZExcUCFUYFBZFWVdZEgtZQVlJ
-        T0seQUhNGkFKT0JLQR1KS0tBSElDSUFKGRgfQU8dHkNBHkpIS1lXWQgBWUFJT0JKNwY+
-X-HM-Tid: 0a8140decd41d991kuws1360140025e
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Content-Language: en-US
+To:     Jim Wright <wrightj@linux.ibm.com>, linux-hwmon@vger.kernel.org,
+        joel@jms.id.au, openbmc@lists.ozlabs.org
+References: <20220607205306.145636-1-wrightj@linux.ibm.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] hwmon: (ucd9000) Add voltage monitor types
+In-Reply-To: <20220607205306.145636-1-wrightj@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-  set cpu_hwmon as a module build with loongson_sysconf, loongson_chiptemp
-  undefined error,fix cpu_hwmon compile options to be bool.Some kernel
-  compilation error information is as follows:
+On 6/7/22 13:53, Jim Wright wrote:
+> The UCD90240 and UCD90320 devices support monitor types "Input Voltage",
+> "Voltage With AVS", and "Input Voltage With AVS", add support to driver
+> to recognize these types as voltage monitors.
+> 
+> Signed-off-by: Jim Wright <wrightj@linux.ibm.com>
+> ---
+>   drivers/hwmon/pmbus/ucd9000.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/hwmon/pmbus/ucd9000.c b/drivers/hwmon/pmbus/ucd9000.c
+> index 75fc770c9e40..28cc214d4d6b 100644
+> --- a/drivers/hwmon/pmbus/ucd9000.c
+> +++ b/drivers/hwmon/pmbus/ucd9000.c
+> @@ -45,6 +45,9 @@ enum chips { ucd9000, ucd90120, ucd90124, ucd90160, ucd90320, ucd9090,
+>   #define UCD9000_MON_TEMPERATURE	2
+>   #define UCD9000_MON_CURRENT	3
+>   #define UCD9000_MON_VOLTAGE_HW	4
+> +#define UCD9000_MON_INPUT_VOLTAGE	5
+> +#define UCD9000_MON_VOLTAGE_AVS	6
+> +#define UCD9000_MON_INPUT_VOLTAGE_AVS	7
+>   
+>   #define UCD9000_NUM_FAN		4
+>   
+> @@ -566,6 +569,9 @@ static int ucd9000_probe(struct i2c_client *client)
+>   		switch (UCD9000_MON_TYPE(block_buffer[i])) {
+>   		case UCD9000_MON_VOLTAGE:
+>   		case UCD9000_MON_VOLTAGE_HW:
+> +		case UCD9000_MON_INPUT_VOLTAGE:
+> +		case UCD9000_MON_VOLTAGE_AVS:
+> +		case UCD9000_MON_INPUT_VOLTAGE_AVS:
+>   			info->func[page] |= PMBUS_HAVE_VOUT
+>   			  | PMBUS_HAVE_STATUS_VOUT;
+>   			break;
 
-  Checking missing-syscalls for N32
-  CALL    scripts/checksyscalls.sh
-  Checking missing-syscalls for O32
-  CALL    scripts/checksyscalls.sh
-  CALL    scripts/checksyscalls.sh
-  CHK     include/generated/compile.h
-  CC [M]  drivers/platform/mips/cpu_hwmon.o
-  Building modules, stage 2.
-  MODPOST 200 modules
-ERROR: "loongson_sysconf" [drivers/platform/mips/cpu_hwmon.ko] undefined!
-ERROR: "loongson_chiptemp" [drivers/platform/mips/cpu_hwmon.ko] undefined!
-make[1]: *** [scripts/Makefile.modpost:92：__modpost] 错误 1
-make: *** [Makefile:1261：modules] 错误 2
+I don't think it makes sense to claim VOUT support if the chip is
+configured to monitor input voltages. This should probably be something
+like
 
-Signed-off-by: Yupeng Li <liyupeng@zbhlos.com>
----
- drivers/platform/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+...
+ > +		case UCD9000_MON_VOLTAGE_AVS:
+ >   			info->func[page] |= PMBUS_HAVE_VOUT
+ >   			  | PMBUS_HAVE_STATUS_VOUT;
+ >   			break;
+		case UCD9000_MON_INPUT_VOLTAGE:
+		case UCD9000_MON_INPUT_VOLTAGE_AVS:
+			info->func[page] |= PMBUS_HAVE_VIN;
+  			break;
 
-diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-index d421e1482395..6b51ad01f791 100644
---- a/drivers/platform/mips/Kconfig
-+++ b/drivers/platform/mips/Kconfig
-@@ -17,7 +17,7 @@ menuconfig MIPS_PLATFORM_DEVICES
- if MIPS_PLATFORM_DEVICES
- 
- config CPU_HWMON
--	tristate "Loongson-3 CPU HWMon Driver"
-+	bool "Loongson-3 CPU HWMon Driver"
- 	depends on MACH_LOONGSON64
- 	select HWMON
- 	default y
--- 
-2.34.1
+with appropriate mapping code to map the READ_VIN command for the
+affected pages to READ_VOUT. Question is if the limit registers on
+those pages are also reporting the limits using the vout limit
+commands; if so, those should be mapped as well.
 
+Guenter
