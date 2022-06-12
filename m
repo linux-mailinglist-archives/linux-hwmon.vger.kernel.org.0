@@ -2,122 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C57A5479F1
-	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Jun 2022 13:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF703547A44
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Jun 2022 15:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236375AbiFLLcd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 12 Jun 2022 07:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50384 "EHLO
+        id S231208AbiFLNIg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 12 Jun 2022 09:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236409AbiFLLcb (ORCPT
+        with ESMTP id S237020AbiFLNI3 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 12 Jun 2022 07:32:31 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB322A424
-        for <linux-hwmon@vger.kernel.org>; Sun, 12 Jun 2022 04:32:29 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id v25so3946517eda.6
-        for <linux-hwmon@vger.kernel.org>; Sun, 12 Jun 2022 04:32:29 -0700 (PDT)
+        Sun, 12 Jun 2022 09:08:29 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07E662C1;
+        Sun, 12 Jun 2022 06:08:27 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id e9so3341120pju.5;
+        Sun, 12 Jun 2022 06:08:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=9FfohXFhB1sP403VxH1swwcmiEO4r97TnueS6gdgla0=;
-        b=HutqJca9cz10+fhpLBqF5pkCfmNuVpB/QmLPLH2RoeSpp+88FPj9DCRLsYlrV60IRI
-         yfGt8kTQJ3+U5hD05c9eQjOTUDndc3kFmmCKtoZcJTw6iEXGeaPRZUwBIb2hL10aHe3A
-         7EbObtS3e/RUerZDq6P0if6rMoEsasBL0IeuLIxwTHpNu3CceyHT/j7BTvAXuGh/jXn3
-         mZ2PnrRRlC0NrnYO4yqGRbm/BexgsBU/ybIJL5KQreT4XiaErEnB2fMcohiz3+qsoqp8
-         Xl5GKvTeAgRog3ZkHFVKaziM00o+HwG/FDCDlODVc32UellWfe2pLGmko+Rt8jRhNdyv
-         b+pA==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=AXjEz0ZJVP6RCJfwrLWHDoBIgeQ4dlHx7CyRl+zYPvk=;
+        b=ReG7pBXLCgZg56XhjnEJOOhygmDATEs1X5XKmJOxTs7Rw4Wz7DJemFRikqI6KAOeL1
+         pqtFdTnd7spZLjIJXXkWrTkqL0M3JKwu2i7iJewiBFPZee+2Kgy4p9Ni3vm+csZOcoFF
+         NEzJNwujS1dxbe34HQoQnb32XElfemGKqTOjD03vA6saVW8JOjiAxbKgsqAm9oSS6K2I
+         wDoiwJ13ILobSjDGhpxKig5Jqtb+CXTBLEIv2l6pWmkBN6nMSL4tPLyHC2IRakeeee47
+         9Fw/RaMS7WHiadrcKXthHYQtz2Vvx0uVREiWlmGQJGu46rktTLETy6jKVaBzDYiMNdal
+         eIEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=9FfohXFhB1sP403VxH1swwcmiEO4r97TnueS6gdgla0=;
-        b=ficCI9bFVY+DZRodCZ2KQdsqgwWHax0vTOogUWV8NlxAPIHMsTRxk3kL5gJ5g+20+w
-         7hgQZfKdjR//sttSxSss0aEMxkePKncrCiI1cXKGQFsfQOcCzbToBLaIBlUcPBLoAZYm
-         VzF/SCVbYRAi/WQz9LAB7YJBSy3TRAHcCq9Dji9WgVlZ23Ry3rB0gSJEN+QgWznwnZNj
-         iRUe2M4sHWycF4bqJO19AG0YH7Rm9VgPW7scDIx7/FoVnryL6GGbEaY+IP6sD6KEWHdg
-         z4e4LZqbueeAQ5GLJ4kvOY2PBm9ZtxocxURU/rEyG44YHJ1c52uQC2CdaLMUG2R0/uPU
-         n6hw==
-X-Gm-Message-State: AOAM530JcCLLx2ack2G2+JO1GOy+tsSc5cnWp09g0zYmkLryLD5SuoKC
-        N+r3nPG8N/JDuuE8GPk8QVYdCTZAheenX/YMgjU=
-X-Google-Smtp-Source: ABdhPJwdx/ts4yT81TfY9H4jSVwEQwJ2e/fPBdkfFmfsPIbmOM0FEcnF1voZtHMiIfkmIVV3xB+6Fmj8j1iYk6t89oo=
-X-Received: by 2002:a05:6402:d05:b0:425:b5c8:faeb with SMTP id
- eb5-20020a0564020d0500b00425b5c8faebmr60549161edb.273.1655033547542; Sun, 12
- Jun 2022 04:32:27 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=AXjEz0ZJVP6RCJfwrLWHDoBIgeQ4dlHx7CyRl+zYPvk=;
+        b=b4iOy3srS9ujUUV+MjwtpooagMybG1Apw+XzkxfeyUoTc8j2tuxGYBWrv3ye/T61vD
+         gvarkPO5KaYFKnwiRdfJeO4TkuK3Ca/CxFA4k6WXtEiZq82tngx0sSzFF8o8RHUNRLck
+         TXWKJDMPAI+HhdGdrjXTJ7ovvufrGYSKpCCgiqPXM16WljJbcw9AoAiWanQait1r5w9/
+         tu/dp93FWO+c+HEm/NpjLJlG1gHRth63W+W2weeW1O1V2i+7zgtCk89ncMO6/SXMWeKZ
+         X8Bq2p2I38a7QkNbRei3GR5iiWucG1s4QqXN5JPgYosXrigEBLIZ/s735iXlzSrhyacY
+         SOQA==
+X-Gm-Message-State: AOAM530bJW7S4JiY4GAevsIfgxkUDg3ZrrLVSUT/wYZfje+qbc1Mwx9k
+        VYRc4dBGoI8+CmohFXa6KvU=
+X-Google-Smtp-Source: ABdhPJxpR3XPXtwZX7CQg7M18tvgIDMCR7/pVE8gt2Hz/rE3Xm3aAiGlT8N2Ux1fxKmN8TLJXZm2dQ==
+X-Received: by 2002:a17:902:cf05:b0:156:9d:ca01 with SMTP id i5-20020a170902cf0500b00156009dca01mr53435456plg.111.1655039307230;
+        Sun, 12 Jun 2022 06:08:27 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id z28-20020a62d11c000000b0051bc44f26d9sm3234879pfg.23.2022.06.12.06.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jun 2022 06:08:25 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sun, 12 Jun 2022 06:08:23 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     pali@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (dell-smm) Add Dell XPS 13 7390 to fan control
+ whitelist
+Message-ID: <20220612130823.GA515166@roeck-us.net>
+References: <20220612041806.11367-1-W_Armin@gmx.de>
 MIME-Version: 1.0
-Sender: mariajohn0331@gmail.com
-Received: by 2002:a54:3a4a:0:0:0:0:0 with HTTP; Sun, 12 Jun 2022 04:32:26
- -0700 (PDT)
-From:   MARIA ROLAND <mariaroland74@gmail.com>
-Date:   Sun, 12 Jun 2022 04:32:26 -0700
-X-Google-Sender-Auth: Co32K8Guj2mgf2O-dHQRzwqxqMY
-Message-ID: <CAEmdD2WEq8iFu03odoUHJOLqaAfOodUu9x8Et1FumwjSBv0eHw@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_60,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:529 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6902]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [mariajohn0331[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mariaroland74[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220612041806.11367-1-W_Armin@gmx.de>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Greetings,
+On Sun, Jun 12, 2022 at 06:18:06AM +0200, Armin Wolf wrote:
+> A user reported that the program dell-bios-fan-control
+> worked on his Dell XPS 13 7390 to switch off automatic
+> fan control.
+> Since it uses the same mechanism as the dell_smm_hwmon
+> module, add this model to the fan control whitelist.
+> 
+> Compile-tested only.
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> Acked-by: Pali Rohár <pali@kernel.org>
 
-I sent this mail praying it will find you in a good condition, since I
-myself am in a very critical health condition in which I sleep every
-night  without knowing if I may be alive to see the next day. I am
-Mrs. Maria Roland, a widow suffering from a long time illness. I have
-some funds I  inherited from my late husband, the sum of
-($11,000,000.00) my Doctor told me recently that I have serious
-sickness which is a cancer problem. What disturbs me most is my stroke
-sickness. Having known my condition, I decided to donate this fund to
-a good person that will utilize it the way I am going to instruct
-herein. I need a very honest God.
+Applied to hwmon-next.
 
-fearing a person who can claim this money and use it for Charity
-works, for orphanages, widows and also build schools for less
-privileges that will be named after my late husband if possible and to
-promote the word of God and the effort that the house of God is
-maintained. I do not want a situation where this money will be used in
-an ungodly manner. That's why I' making this decision. I'm not afraid
-of death so I know where I'm going. I accept this decision because I
-do not have any child who will inherit this money after I die. Please
-I want your sincere and urgent answer to know if you will be able to
-execute this project, and I will give you more information on how the
-fund will be transferred to your bank account. I am waiting for your reply,
+Thanks,
+Guenter
 
-May God Bless you,
-
-Mrs. Maria Roland,
+> ---
+>  drivers/hwmon/dell-smm-hwmon.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> --
+> 2.30.2
+> 
+> diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+> index 071aa6f4e109..16c10ac84a91 100644
+> --- a/drivers/hwmon/dell-smm-hwmon.c
+> +++ b/drivers/hwmon/dell-smm-hwmon.c
+> @@ -1365,6 +1365,14 @@ static const struct dmi_system_id i8k_whitelist_fan_control[] __initconst = {
+>  		},
+>  		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_34A3_35A3],
+>  	},
+> +	{
+> +		.ident = "Dell XPS 13 7390",
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 13 7390"),
+> +		},
+> +		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_34A3_35A3],
+> +	},
+>  	{ }
+>  };
