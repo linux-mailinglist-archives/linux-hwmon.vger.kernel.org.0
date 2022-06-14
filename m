@@ -2,43 +2,41 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F050E54AE2A
-	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Jun 2022 12:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F0454ADF4
+	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Jun 2022 12:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353186AbiFNKSp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 14 Jun 2022 06:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35682 "EHLO
+        id S233268AbiFNKJD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 14 Jun 2022 06:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353036AbiFNKSo (ORCPT
+        with ESMTP id S239083AbiFNKIi (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 14 Jun 2022 06:18:44 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 347934198C
-        for <linux-hwmon@vger.kernel.org>; Tue, 14 Jun 2022 03:18:43 -0700 (PDT)
+        Tue, 14 Jun 2022 06:08:38 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4140F30573
+        for <linux-hwmon@vger.kernel.org>; Tue, 14 Jun 2022 03:08:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1655201923;
-  x=1686737923;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1655201317;
+  x=1686737317;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
   bh=OQeZ7dROFN7mVX6ZstoLq0E0XmOkhQAcNUc6iU4t0y0=;
-  b=FmYmKw7hsOCqeOZ9JnqzSh2sdulfrGkuMOe/X+KeCfRcbp79+O8XF3gK
-   NvPtKnLqMIbTlQZCRobqzWpzMIsUOKM3vCBmCaD4ukQKS6WzCMYmVpPUc
-   mx35q4JdTaeY/TzDNbxcm2FIxwHUn+sTsdR9wh/ElIgZteyDKqi6VkIjz
-   RWuUKXYqQHnR7MrwRPg7kwO79hFguwziDHqBmlVWzqbK5a6AvdhTLw8Cw
-   A+tKq4m6J5vdjgYr5XrGyoT8pwRQ/o3oBxRXtjxnYTkdkJk8lq0x0WxZK
-   fu0uJP3lCS3MTsq+mdEakGrPGnlarhoqGGGkzrbB38TXSLfPN+MHPGV3g
-   A==;
+  b=mO7Q0z76WKkr0OLXsjS0HS4PRCRlUAfPySKccA1A4S04HVutmyTuS3NX
+   pw4mhofI1naQkazC0l7ndyEApJTXyQ5gTk/0dVa/iF/WT9sHCnwet+6c4
+   JQkhyvfwnwZgLuga7gCUyihjpgx3dKKyGyGbPq0yGQMtswvijWl6bmUrt
+   juURdkfNOdDGXxwSR23sAU/db9TheZlx3mkTurgbs8bag0gAKbS8k9YnB
+   wS2KRJ+3CRqqww3XH9A7HH30XzJ2v6aRjjYIg789JWW3LybHaJQDzf2M/
+   tQK7My3Jsuv+uwbCI68hEt/YWzvBWTFOsBLDx9SbFKbeK/ZXMeQU1EGu9
+   g==;
 From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
 To:     Guenter Roeck <linux@roeck-us.net>,
         Jean Delvare <jdelvare@suse.com>
 CC:     <linux-hwmon@vger.kernel.org>, <kernel@axis.com>,
         =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
 Subject: [PATCH v3 3/3] hwmon: (pmbus/ltc2978) Set voltage resolution
-Date:   Tue, 14 Jun 2022 11:38:56 +0200
-Message-ID: <20220614093856.3470672-4-marten.lindahl@axis.com>
+Date:   Tue, 14 Jun 2022 11:51:44 +0200
+Message-ID: <20220614095144.3472305-1-marten.lindahl@axis.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220614093856.3470672-1-marten.lindahl@axis.com>
-References: <20220614093856.3470672-1-marten.lindahl@axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
