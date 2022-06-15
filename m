@@ -2,107 +2,120 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2AC54CC90
-	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Jun 2022 17:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C585B54D089
+	for <lists+linux-hwmon@lfdr.de>; Wed, 15 Jun 2022 19:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349327AbiFOPT3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 15 Jun 2022 11:19:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42896 "EHLO
+        id S232471AbiFOR7S (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 15 Jun 2022 13:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349368AbiFOPT2 (ORCPT
+        with ESMTP id S1357888AbiFOR6O (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 15 Jun 2022 11:19:28 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 965A13FBE2;
-        Wed, 15 Jun 2022 08:19:26 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id d129so11656934pgc.9;
-        Wed, 15 Jun 2022 08:19:26 -0700 (PDT)
+        Wed, 15 Jun 2022 13:58:14 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B9F2A413;
+        Wed, 15 Jun 2022 10:57:52 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id g16-20020a17090a7d1000b001ea9f820449so2823618pjl.5;
+        Wed, 15 Jun 2022 10:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Dohva7PorvnI7E7DeyPN96L7EkJ7Yhh9+jaMImkrHmo=;
-        b=MOyWaJhbJODvnd5BwdZEz+3fHzkpKWmX6730tstRY3pzObGb225GFsPkwRu3LVGfYD
-         Ki+7Y8i+9b1vYNyDy7OvlJvaRvgyFdLVG9NlZyUzMANXqBnoJZ1Qi1GTuR0GGiGJVT1M
-         BOpdPnAs3wOVzRW6bL0bmEgBlyKMf58ULJbzc/tZsNN0IrhWj7S2WunQtOaHVxP2ihnb
-         xxE2qmf58aDnI10yZSq81SiH3G4lzD/8mPQsThsp40SVHMmC32TMzhkDwZkRRRSO7978
-         9NWfvYJvwImYUDEsfrJANRyc+jS1kHKl2lOgdW928YArljXRoYIgQRVA/SK9eQbbm/5t
-         tbsA==
+        h=sender:message-id:date:mime-version:user-agent:content-language:to
+         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=Pdm0v/eHuTn8EFkDzG/jFCh8QYUQn580u0Hjxv+TmSs=;
+        b=O6gq5i4RqzsvkWTYJsuMFS8kKcm670FI0T+LsWRMSujkkRhttepRtBbCuuV3sdBHxN
+         ZkKf9wTiZH+763xUbde92AiQDVe8Rkf4d/gLKDxvlYd0Uxi68FfSA5rHgmyJJSX26up8
+         uuQk//BHaJJJULhr8k+0pnWJTy4DAA4b66GUVVCAC9kbEJwzyBj/XsDcbRnZzy49agjI
+         mPKoDUTSTjacxo8afX8af66SfRrc1La9rhayTXyDofnCPzDCKIVLxFcjN1QeOImSTLAS
+         4d5otv6SXN9r5HnnYp1EzNpnAe4fM4/Ii7YdbbN8xeOr7bA2HBIJwf8meWNLqGce+jDS
+         VO1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=Dohva7PorvnI7E7DeyPN96L7EkJ7Yhh9+jaMImkrHmo=;
-        b=xQ7/x7TaL0tGpOBVxEPcbIQZeNQaNQnCUGW52goaIlYcz4sxJpyYQE5W9lnBIFUDAH
-         liCjnbft9PwhP8Qg81PGd2bSEhH5R31X0WNTOt0kdk1uCyZNuIxXBWk+rGesm/Z3vLOB
-         OjU4o+uVDmpToZ8YOKZkXXXBw9oaj7yKv8C+XZ1MUYsT+qtwJEB0Q4DYgWh74gVJaqJh
-         tzNLUDnV6lNHTZKUjnfFpjQlW8fiHy7vXEgL7zGLKBsJJXkL1H2LVWfeM+56MfQdyaha
-         sKu78AcPPQRYADsh6juy17sF3amkvNIHYBPamcccZAxfYiciN2MtUwU7NLVFZgk5S48p
-         7MPw==
-X-Gm-Message-State: AJIora9KUH7xsoRC6ruDhnqp7Zn9kn1EpoI7c6Um4bOXKXG7hPjqBznh
-        6YtM2OQQBawRZaIIHCYTop+Uiii5Ow0=
-X-Google-Smtp-Source: AGRyM1uEvL8+wHYpdUUxctUgmvtYTfPNqGaeVWKqOxb+9UDRsiTTExLwelFgNSNWY2qG38AmCF6Pjw==
-X-Received: by 2002:a05:6a00:2918:b0:512:e4b5:60fb with SMTP id cg24-20020a056a00291800b00512e4b560fbmr135924pfb.50.1655306366092;
-        Wed, 15 Jun 2022 08:19:26 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 199-20020a6300d0000000b003f24d67d226sm9957420pga.92.2022.06.15.08.19.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 08:19:25 -0700 (PDT)
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:subject:in-reply-to
+         :content-transfer-encoding;
+        bh=Pdm0v/eHuTn8EFkDzG/jFCh8QYUQn580u0Hjxv+TmSs=;
+        b=ykaqRWSSoTdhkDT7EdKVELiP917YlABZkdL3jnOraWJftSXye39adoHRO89okbhA4p
+         7ff8oFsEm8lH930X+jmRNvJ8HW9igVl3VaUn3B2H1L0KA3RSH2dACH0iVf0sw9FCgrCk
+         +iivZiIMmTw4k+loe45N+DJHjApBX5W+1Mn40ZtTkjwSyQe8kudkH9z+U5Zy1WRiW+Nr
+         thiX9Dl0apza57FiB3OuEuQGB93itnW48VbuFs+craSfAjAZfHIFBZ4xWf8sqoW/QlCh
+         caZXbGihq2I+9nrCa7FxRR4OoBws0J/gwib/XT73ofkq5IS9eoOr6j4FwmygY3hSejmT
+         p79Q==
+X-Gm-Message-State: AJIora9IytRHVlA8PDUGaYX6cTq6J4drYovVzMpuoTYlixGfsXFEdPId
+        QS680cu5MjGutd1ZiWzF9XI=
+X-Google-Smtp-Source: AGRyM1tYNZ3eEVpA869lUoIGayFw5Kmo3S5lbWkKwlKXn5LAschra1zSpqfs75aKZ+F5PiYuACDC8Q==
+X-Received: by 2002:a17:90b:4f4a:b0:1e3:49c9:aab0 with SMTP id pj10-20020a17090b4f4a00b001e349c9aab0mr11518167pjb.223.1655315871910;
+        Wed, 15 Jun 2022 10:57:51 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p5-20020a170903248500b0015e8d4eb1c8sm5961816plw.18.2022.06.15.10.57.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jun 2022 10:57:51 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 15 Jun 2022 08:19:24 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Eugene Shalygin <eugene.shalygin@gmail.com>
-Cc:     Michael Carns <mike@carns.com>, Jean Delvare <jdelvare@suse.com>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] hwmon: (asus-ec-sensors) add missing comma in board
- name list.
-Message-ID: <20220615151924.GA3230585@roeck-us.net>
-References: <20220615122544.140340-1-eugene.shalygin@gmail.com>
+Message-ID: <01243e3e-f4d2-c1ba-98f5-db7bc0c62adc@roeck-us.net>
+Date:   Wed, 15 Jun 2022 10:57:49 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220615122544.140340-1-eugene.shalygin@gmail.com>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Content-Language: en-US
+To:     Liang He <windhl@126.com>, tharvey@gateworks.com,
+        rjones@gateworks.com, jdelvare@suse.com
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220615151856.3970186-1-windhl@126.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] drivers: hwmon: Add missing of_node_put() in gsc-hwmon.c
+In-Reply-To: <20220615151856.3970186-1-windhl@126.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 02:25:44PM +0200, Eugene Shalygin wrote:
-> From: Michael Carns <mike@carns.com>
-> 
-> This fixes a regression where coma lead to concatenating board names
-> and broke module loading for C8H.
-> 
-> Fixes: 5b4285c57b6f ("hwmon: (asus-ec-sensors) fix Formula VIII definition")
-> 
-> Signed-off-by: Michael Carns <mike@carns.com>
-> Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+On 6/15/22 08:18, Liang He wrote:
+> In gsc_hwmon_get_devtree_pdata(), of_find_compatible_node() will return
+> a node pointer with refcount incremented. We should use of_node_put() in
+> fail path or when it is not used anymore.
+>  > Signed-off-by: Liang He <windhl@126.com>
+> ---
 
-Applied.
+Please use proper subject lines. Here it should have been
 
-Thanks,
+hwmon: (gsc-hwmon) Add missing of_node_put()
+
+>   drivers/hwmon/gsc-hwmon.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/gsc-hwmon.c b/drivers/hwmon/gsc-hwmon.c
+> index 1fe37418ff46..34c20d13627a 100644
+> --- a/drivers/hwmon/gsc-hwmon.c
+> +++ b/drivers/hwmon/gsc-hwmon.c
+> @@ -268,10 +268,14 @@ gsc_hwmon_get_devtree_pdata(struct device *dev)
+>   
+>   	/* fan controller base address */
+>   	fan = of_find_compatible_node(dev->parent->of_node, NULL, "gw,gsc-fan");
+
+A single of_node_put(fan) here would have been be sufficient.
+
+> -	if (fan && of_property_read_u32(fan, "reg", &pdata->fan_base)) {
+> +	if (fan && of_property_read_u32(fan, "reg", &pdata->fan_base)) {		
+> +		of_node_put(fan);
+>   		dev_err(dev, "fan node without base\n");
+>   		return ERR_PTR(-EINVAL);
+>   	}
+> +	
+> +	/* if fan&&!of_property_read_u32 fail */
+
+This comment only adds confusion and does not add any value.
+
 Guenter
 
-> ---
->  drivers/hwmon/asus-ec-sensors.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-> index 886a71b4c64e..19d3ca71b360 100644
-> --- a/drivers/hwmon/asus-ec-sensors.c
-> +++ b/drivers/hwmon/asus-ec-sensors.c
-> @@ -268,7 +268,7 @@ static const struct ec_board_info board_info[] = {
->  	},
->  	{
->  		.board_names = {
-> -			"ROG CROSSHAIR VIII FORMULA"
-> +			"ROG CROSSHAIR VIII FORMULA",
->  			"ROG CROSSHAIR VIII HERO",
->  			"ROG CROSSHAIR VIII HERO (WI-FI)",
->  		},
+> +	of_node_put(fan);
+>   
+>   	/* allocate structures for channels and count instances of each type */
+>   	device_for_each_child_node(dev, child) {
+
