@@ -2,115 +2,80 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F3754F8AA
-	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Jun 2022 15:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA2D54FA95
+	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Jun 2022 17:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382500AbiFQNzc (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 17 Jun 2022 09:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35138 "EHLO
+        id S1382967AbiFQPl2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 17 Jun 2022 11:41:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382488AbiFQNzb (ORCPT
+        with ESMTP id S235707AbiFQPlY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 17 Jun 2022 09:55:31 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62523C739;
-        Fri, 17 Jun 2022 06:55:28 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id s135so4110074pgs.10;
-        Fri, 17 Jun 2022 06:55:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jvtCGkAM1wmCJxlA0vZdyo0zX0WV5pm+kkuavrn/zKs=;
-        b=Wz7ZxCav4VZ2alFJPCtf5CtzJk3EB7kW/gkiOD9wNK+AtOiuwWeugzW05S2lAOJ6cz
-         UpY2SYY73RSErSRcj8F0Qpd5T2sN/OIXmgKXt6pXz4iMxlfmH7FKcfVKk5GUhqC62jmY
-         mzwVKrpQxauM3fFXw39oOcqb5IMkF/c4Vbsam3j31ko18Qq6I5RrkuUCA8kKdkuzX89c
-         awKgaA5+A3bVZ8QOMztPB4mvhNxGxW7FGdkwTL77xr+tyRmUFsRE6N04p5EQoLi8nzBe
-         aj5cMssmgQVUOoXFq6MiJnhFlv3IDsniv6dqMlVwFN8C/9gUxsAZP+5Egbpdy7kf2JV1
-         R+Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=jvtCGkAM1wmCJxlA0vZdyo0zX0WV5pm+kkuavrn/zKs=;
-        b=Bmt3Fj6q9EgBYkOxANfZaVVGRaSTnhj8p+mImVK4Dk7p+AEGxmA5eli+Dvga9N/p/H
-         UCeyMQh/++popTG0JmJ1cyv/3An6h8bBPj6Hx6DSxG750CI6O9hdVnOMeuQrXeXL1dkK
-         PjjCoDv5siPM09wGYdYnrSUEejAo60xf9to6j/WLH7xh7VjKIkkqRn8A7BDapqWFqwTS
-         Uj3wHBjXuRrFI42MiKcdN/lBQtbMa9QyLCReARMYrgqKO/MZEKyCYiSaxZjCPTZuw2Mg
-         f0THyytfYihIoCAZwg0IJ+JpWIsk4kWz45o8X+HdgY7ROVQ30XR6K5cpUNU1KwOpPqeN
-         nPqg==
-X-Gm-Message-State: AJIora8C14hlGCLy4STRer8pjpvswdlcVnC9+9zHatzqynsiknvwZYT7
-        lIgMipT5JFr3EQa0XTfcMMN6gUrcqBI=
-X-Google-Smtp-Source: AGRyM1tsHfEwE/aR67IEmimGzulz3PEvzV2k05QxYd00cByGpPlckDHuGm7oUEQ1W4tbkrVNVhLy1A==
-X-Received: by 2002:a63:e5d:0:b0:3aa:3c53:537e with SMTP id 29-20020a630e5d000000b003aa3c53537emr9323426pgo.622.1655474128108;
-        Fri, 17 Jun 2022 06:55:28 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l198-20020a633ecf000000b003fdef4f7447sm3865112pga.6.2022.06.17.06.55.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jun 2022 06:55:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hwmon fixes for v5.19-rc3
-Date:   Fri, 17 Jun 2022 06:55:25 -0700
-Message-Id: <20220617135525.616752-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.35.1
+        Fri, 17 Jun 2022 11:41:24 -0400
+X-Greylist: delayed 903 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 08:41:21 PDT
+Received: from sv220.xserver.jp (sv220.xserver.jp [202.226.39.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A15F4F1E2;
+        Fri, 17 Jun 2022 08:41:21 -0700 (PDT)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw2.xserver.jp)
+Received: from webmail.xserver.ne.jp (webmail.xserver.ne.jp [210.188.201.183])
+        by sv220.xserver.jp (Postfix) with ESMTPA id 038CD12025F434;
+        Sat, 18 Jun 2022 00:16:31 +0900 (JST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 17 Jun 2022 23:16:31 +0800
+From:   Steve Dibenedetto <y-kitsuya@bell-group.co.jp>
+To:     undisclosed-recipients:;
+Subject: THIS IS VERY CONFIDENTIAL
+Reply-To: stevedibenedetto17@gmail.com
+Mail-Reply-To: stevedibenedetto17@gmail.com
+Message-ID: <ec1bb68d0d72aa3e007bad8b0e72f08f@bell-group.co.jp>
+X-Sender: y-kitsuya@bell-group.co.jp
+User-Agent: Roundcube Webmail/1.2.0
+X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,ODD_FREEM_REPTO,
+        SPF_HELO_PASS,SPF_SOFTFAIL,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE
         autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [stevedibenedetto17[at]gmail.com]
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.6 ODD_FREEM_REPTO Has unusual reply-to header
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Linus,
 
-Please pull hwmon fixes for Linux v5.19-rc3 from signed tag:
 
-    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v5.19-rc3
+-- 
+Hello,
 
-Thanks,
-Guenter
-------
+My name is Steve Dibenedetto.I apologize to have contacted you this way
+without a direct relationship. There is an opportunity to collaborate
+with me in the sourcing of some materials needed by our company for
+production of the different medicines we are researching.
 
-The following changes since commit f2906aa863381afb0015a9eb7fefad885d4e5a56:
+I'm aware that this might be totally outside your professional
+specialization, but it will be a great source for generating extra
+revenue. I  discovered a manufacturer who can supply us at a lower rate
+than our company's previous purchases.
+I will give you more specific details when/if I receive feedback from
+you showing interest.
 
-  Linux 5.19-rc1 (2022-06-05 17:18:54 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v5.19-rc3
-
-for you to fetch changes up to ec41c6d82056cbbd7ec8f44eed6d86fea50acf4e:
-
-  hwmon: (asus-ec-sensors) add missing comma in board name list. (2022-06-15 08:14:38 -0700)
-
-----------------------------------------------------------------
-hwmon fixes for v5.19-rc3
-
-* Add missing lock protection in occ driver
-
-* Add missing comma in board name list in asus-ec-sensors driver
-
-* Fix devicetree bindings for ti,tmp401
-
-----------------------------------------------------------------
-Eddie James (1):
-      hwmon: (occ) Lock mutex in shutdown to prevent race with occ_active
-
-Michael Carns (1):
-      hwmon: (asus-ec-sensors) add missing comma in board name list.
-
-Rob Herring (1):
-      dt-bindings: hwmon: ti,tmp401: Drop 'items' from 'ti,n-factor' property
-
- Documentation/devicetree/bindings/hwmon/ti,tmp401.yaml | 5 ++---
- drivers/hwmon/asus-ec-sensors.c                        | 2 +-
- drivers/hwmon/occ/common.c                             | 5 +++++
- 3 files changed, 8 insertions(+), 4 deletions(-)
+Warm Regards
+Steve Dibenedetto
+Production & Control Manager,
+Green Field Laboratories
+Gothic House, Barker Gate,
+Nottingham, NG1 1JU,
+United Kingdom.
