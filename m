@@ -2,107 +2,82 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92FE054FF40
-	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Jun 2022 23:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDCAA55073B
+	for <lists+linux-hwmon@lfdr.de>; Sun, 19 Jun 2022 00:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbiFQVRZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 17 Jun 2022 17:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
+        id S229776AbiFRWLq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 18 Jun 2022 18:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234724AbiFQVRY (ORCPT
+        with ESMTP id S229715AbiFRWLo (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 17 Jun 2022 17:17:24 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A50A20BDB;
-        Fri, 17 Jun 2022 14:17:21 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id i15so4876425plr.1;
-        Fri, 17 Jun 2022 14:17:21 -0700 (PDT)
+        Sat, 18 Jun 2022 18:11:44 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203CAE018
+        for <linux-hwmon@vger.kernel.org>; Sat, 18 Jun 2022 15:11:43 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id c2so11890623lfk.0
+        for <linux-hwmon@vger.kernel.org>; Sat, 18 Jun 2022 15:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=AYFvbP/LdnwHfGvJorDKl6IhipOxX+onTGL/S3ZVCIg=;
-        b=XZ/ACFYwOvqutcWmxBGbIbMauQBFuz5Zx28aTEUiE07E1U8TxwKcH8uPsJWVf9bXkK
-         qo+sibSIV6EiCtjOXeogb661GcWpCmxEF7CtC5XEBgVMRJV/isy6ZTOKQKrCmtUXAfak
-         C/+iHIsGmMq07Gatk7ASZ7PkkE094HcNThVvCbnCDrFGOeyKkeTOHwMQTpQNkZwvjAuu
-         G4leSzOTX3C9taQfSaswz1eXp+2UghFHVUi9m4+XTOA4ajZ84QPQG16vCj3ehkRYZ8kI
-         qzyqh0LOHdsmpWvWJeOeas+MRqBiwTUTpT+cjaoR9dYk1tZmYu/FiFk/ZrriW1tAwTDQ
-         hDWg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=zHIL4aukfCQ/Ay1NRTaxjLdELuM0Pnhekk1kV+ATJNk=;
+        b=ZTBl6E9KAZWEp87q5WuBiXHv1f313KlNPRM0lLt/zprwMS4DoTX+Ax+g1ZBvmn7/gH
+         xRlYzXRJu8eUvacHtGBqarqYYQWKdp1AdrSKAdo6k+ZrnBhEQbq9QGRxTguf+4o6OQbP
+         U+b1Ii1sai2nAc64Bpd5/WlzjWRG1vWO0EREcFge4eGCYjIVUXOG01nJ6sr8E17H+T8p
+         XwvtNDfzx7WEkAzGDQQPUZTaQ0rXvM0S1k7QDcOIamm6/LKbMl9c8yjPHvHVHDEwFnQZ
+         GDc6hdDs02ixa70pE3D6fpHlNTNtb1UljQfoqTWhxhOlrtjc9Ye/OSOgCY5eEEDeZx+e
+         gE/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=AYFvbP/LdnwHfGvJorDKl6IhipOxX+onTGL/S3ZVCIg=;
-        b=awKEgmLRLmhHVSt6No1qovZOrPXJEXfM1nzxrE8Tl/X5hwfLrGTCrTHyNRyn3Lvnri
-         YQKvpTWpuLHGt/YlNVnL9y1ScjcxgKsoc8C9ZEJhYk0Wwzk58Wd3vR+z1CiNKTvzlWDL
-         xRgMo2Vh6+Ymxte5tsmGmqsCOKU5AeCxX2qwwz8D7wFg6W/PyH+es1I402B4fQ/Z3BfI
-         4nvS3cY1HJgEOgF8UeKOJY+WZSeiLwB+YqDF5qiGqWx/QausiEmUP2/nLWvQVPdXW66I
-         O/0NAoxDprV6vof9m9KcVZ9eJQJzaAxAbpKnXc9W5KeLITy3nCOd+gjyJeAJBZ69O7iE
-         2HUg==
-X-Gm-Message-State: AJIora/Jhi4Lh5pn4O33bm9gE2hBAuCLkNTC+R5ThR4Zkmv6LFFsYr3Z
-        IcgW8Ga1OfWPDOaRwp9KtoiZGIzGhsk=
-X-Google-Smtp-Source: AGRyM1sgwhhem1uZHnvfzEJpbDWDQNxT5VRPqkGIkm8OL+Gc061z29B6qTti6ac80rq+BRMp1ifiug==
-X-Received: by 2002:a17:90a:5409:b0:1e8:664e:41dd with SMTP id z9-20020a17090a540900b001e8664e41ddmr12693514pjh.173.1655500641015;
-        Fri, 17 Jun 2022 14:17:21 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c3-20020a17090a8d0300b001ec84049064sm321238pjo.41.2022.06.17.14.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jun 2022 14:17:20 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 17 Jun 2022 14:17:19 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Liang He <windhl@126.com>
-Cc:     tharvey@gateworks.com, rjones@gateworks.com, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] hwmon: (gsc-hwmon) Add missing of_node_put()
-Message-ID: <20220617211719.GA632482@roeck-us.net>
-References: <20220616114024.3985770-1-windhl@126.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=zHIL4aukfCQ/Ay1NRTaxjLdELuM0Pnhekk1kV+ATJNk=;
+        b=p2553Vu92ka45Ou7Z3R1OxwsU0IxdMcubIMD7h5PAoezIBKIaf8g/teSZJ2XvqIG6D
+         UWAkrfVygLvFVHq+oTBwAbds7iK55Ysl+hW+Nh+epNPQbsbVOEqYbsrIFYKxV9DkdHLD
+         sKwxg2/14rQTX0/3BXK7GERuP/x06gFx9H+bHCK+tJ71yLseKnRCR0UJlzErMharp76x
+         VyOSyVe3SVRWwaHdFLysp4uTjbjaXCtPzFWlKuMK4I+tENZ27STQWwiVaTARpuB8QVHJ
+         4W9MIuirKHNsMu5ZHiE6lb/ebQ5zQ7dkDLOXfANtRncEc7kAGIEw45/Qz3ZcY3Yll+Cf
+         pdnw==
+X-Gm-Message-State: AJIora/Fdc9n+hcsnFSFByMJrXe7jJNdTd3G70lFw6/cDMjrVplVA/gM
+        0X53noSL72HOGb3nCkc96laCC/UZOwrD/lCyWqw=
+X-Google-Smtp-Source: AGRyM1vhOhQ9yukamq4V1PnDLXTTC4Z74zKCUGH2AOMQFCHPVQ3Zq5Fk00Yx3wGOtZUrUaf6K5/AjFv0WcZLYkbyz6Y=
+X-Received: by 2002:a05:6512:3e0c:b0:479:1d59:3e52 with SMTP id
+ i12-20020a0565123e0c00b004791d593e52mr9447310lfv.646.1655590301091; Sat, 18
+ Jun 2022 15:11:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220616114024.3985770-1-windhl@126.com>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6504:30b0:0:0:0:0 with HTTP; Sat, 18 Jun 2022 15:11:40
+ -0700 (PDT)
+Reply-To: wlisa205@yahoo.com
+From:   Lisa Williams <masaudunamalamai@gmail.com>
+Date:   Sat, 18 Jun 2022 15:11:40 -0700
+Message-ID: <CABC_ELC3rbrMiugSbxpTxfUEDCJ64L+Q7rB525CDpPDPi+Vz_g@mail.gmail.com>
+Subject: Hello Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Jun 16, 2022 at 07:40:24PM +0800, Liang He wrote:
-> In gsc_hwmon_get_devtree_pdata(), of_find_compatible_node() will return
-> a node pointer with refcount incremented. We should use of_node_put() in
-> fail path or when it is not used anymore.
-> 
-> Signed-off-by: Liang He <windhl@126.com>
+Hi Dear,
 
-Applied.
 
-Thanks,
-Guenter
+It's my pleasure to contact you for a long term relationship.I was
+just surfing through the Internet when I found your email address. I
+want to make a new and special friend. Let's keep in touch and get to
+know more about each other and see what happens in future.
 
-> ---
->  drivers/hwmon/gsc-hwmon.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/hwmon/gsc-hwmon.c b/drivers/hwmon/gsc-hwmon.c
-> index 1fe37418ff46..d64be48f1ef6 100644
-> --- a/drivers/hwmon/gsc-hwmon.c
-> +++ b/drivers/hwmon/gsc-hwmon.c
-> @@ -269,10 +269,13 @@ gsc_hwmon_get_devtree_pdata(struct device *dev)
->  	/* fan controller base address */
->  	fan = of_find_compatible_node(dev->parent->of_node, NULL, "gw,gsc-fan");
->  	if (fan && of_property_read_u32(fan, "reg", &pdata->fan_base)) {
-> +		of_node_put(fan);
->  		dev_err(dev, "fan node without base\n");
->  		return ERR_PTR(-EINVAL);
->  	}
->  
-> +	of_node_put(fan);
-> +
->  	/* allocate structures for channels and count instances of each type */
->  	device_for_each_child_node(dev, child) {
->  		if (fwnode_property_read_string(child, "label", &ch->name)) {
+
+My name is Lisa Williams,I am from the United States of America,I will
+be glad to see your reply for us to get to know each other better and
+exchange pictures and details about us.
+
+Yours
+Lisa
