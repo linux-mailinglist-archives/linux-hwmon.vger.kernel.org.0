@@ -2,59 +2,59 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE44552B36
-	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jun 2022 08:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C466D552B35
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jun 2022 08:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345877AbiFUGlr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 21 Jun 2022 02:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54520 "EHLO
+        id S1346040AbiFUGly (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 21 Jun 2022 02:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346045AbiFUGlq (ORCPT
+        with ESMTP id S1346045AbiFUGly (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 21 Jun 2022 02:41:46 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29BF1B791
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Jun 2022 23:41:42 -0700 (PDT)
+        Tue, 21 Jun 2022 02:41:54 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A011929E
+        for <linux-hwmon@vger.kernel.org>; Mon, 20 Jun 2022 23:41:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655793702; x=1687329702;
+  t=1655793711; x=1687329711;
   h=date:message-id:from:to:cc:subject:in-reply-to:
    references:mime-version;
-  bh=hYje46EBDaFdlrGMnQaMQ6Ysxoe8/yTy0r+3pYpxJGY=;
-  b=GbJeH2UihOElKXDCZpD4PrD8wuaUjiaC6V6G0wZKEFOik/QawNlqbCsC
-   nKw3fFXI0pZM8It0PBuiGTPcIbfUtHxq6F90V0cozCbCMUayreVFJIw5V
-   01bRLunJkD1JNrboskWWA2g5MfliZ6pAxVs5ESkgotj/LJa6p4/jOr3hg
-   vPME4HUesPqwBrMURcrp30+2K7SXxGWzDeBtaLMstCQDKQuOOBOCAKLIP
-   VkJp/gux9XpxMApP+829ffYkB4EQ2M2P33R4LX8W3/ehEGffQygKZ8hPg
-   +bQpiozgRuzdArO4pnepM4Vb1MLlcKl4Aj67CByOfLRMkz0k1syZBfSMN
+  bh=wSQZKdR2/Orl1YwAA4O8uFgs/DwhDSwHJD8XGUElNaA=;
+  b=buAtbGzGBJociOyerWWpuIGM1WoDhMESusCjS3sVrUZc1IJkMheY/+mN
+   kbxzwq/x4ikcoh7RvH5qLDej/d6k99j3tnVkqJDyrOV+D16KHx9N1zm3L
+   FcCQRQhDW72CVxxwIhYkHUVtv2wSHCqkcp93inlU7lzBDac5RRv1wECx+
+   8LK8tO/Lx9OLdvSCSZ2JeE3z0HT5UBgv3uOVA6BzK1Jg0lY6mXVNh6UM4
+   6vUaU4wy5UdkoEFeRCGTYcoRGTpxV5aroUfhqAWa3TW8vwDv6zXJZoy7N
+   AJHCGpw+EKCvKYXa476Ansr1M1uwihiD/2gPOeWNztBG4JUb9X1misBxb
    A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="280089488"
+X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="366365026"
 X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
-   d="scan'208";a="280089488"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2022 23:41:42 -0700
+   d="scan'208";a="366365026"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2022 23:41:51 -0700
 X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
-   d="scan'208";a="614632530"
+   d="scan'208";a="585161215"
 Received: from adixit-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com) ([10.212.238.99])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2022 23:41:41 -0700
-Date:   Mon, 20 Jun 2022 23:41:41 -0700
-Message-ID: <87bkumv7q2.wl-ashutosh.dixit@intel.com>
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2022 23:41:50 -0700
+Date:   Mon, 20 Jun 2022 23:41:50 -0700
+Message-ID: <87a6a6v7pt.wl-ashutosh.dixit@intel.com>
 From:   "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Badal Nilawar <badal.nilawar@intel.com>,
         intel-gfx@lists.freedesktop.org, anshuman.gupta@intel.com,
         jon.ewins@intel.com, riana.tauro@intel.com,
         linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH 3/4] drm/i915/hwmon: Add HWMON power sensor support
-In-Reply-To: <4277d384-147a-6de4-abe3-3b64b9dae207@roeck-us.net>
-References: <20220620204649.894703-1-badal.nilawar@intel.com>   <20220620204649.894703-4-badal.nilawar@intel.com>       <4277d384-147a-6de4-abe3-3b64b9dae207@roeck-us.net>
+Subject: Re: [PATCH 4/4] drm/i915/hwmon: Add HWMON energy support
+In-Reply-To: <e05838e5-979a-8561-174d-e06a50afafb9@roeck-us.net>
+References: <20220620204649.894703-1-badal.nilawar@intel.com>   <20220620204649.894703-5-badal.nilawar@intel.com>       <e05838e5-979a-8561-174d-e06a50afafb9@roeck-us.net>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.1 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,74 +63,23 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, 20 Jun 2022 13:58:49 -0700, Guenter Roeck wrote:
+On Mon, 20 Jun 2022 14:04:53 -0700, Guenter Roeck wrote:
 >
-
-Hi Guenter, Thanks for taking a look.
-
-> > diff --git a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> > index 24c4b7477d51..945f472dd4a2 100644
-> > --- a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> > +++ b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> > @@ -5,3 +5,23 @@ Contact:	dri-devel@lists.freedesktop.org
-> >   Description:	RO. Current Voltage in millivolt.
-> >			Only supported for particular Intel i915 graphics
-> > platforms.
-> > +
-> > +What:		/sys/devices/.../hwmon/hwmon<i>/power1_max
-> > +Date:		June 2022
-> > +KernelVersion:	5.19
-> > +Contact:	dri-devel@lists.freedesktop.org
-> > +Description:	RW. Card reactive sustained  (PL1/Tau) power limit in microwatts.
-> > +
-> > +		The power controller will throttle the operating frequency
-> > +		if the power averaged over a window (typically seconds)
-> > +		exceeds this limit.
-> > +
-> > +		Only supported for particular Intel i915 graphics platforms.
-> > +
-> > +What:		/sys/devices/.../hwmon/hwmon<i>/power1_max_default
+> > @@ -141,9 +282,12 @@ i915_power1_max_default_show(struct device *dev, struct device_attribute *attr,
+> >     static SENSOR_DEVICE_ATTR(power1_max_default, 0444,
+> >			  i915_power1_max_default_show, NULL, 0);
+> > +static SENSOR_DEVICE_ATTR(energy1_input, 0444,
+> > +			  i915_energy1_input_show, NULL, 0);
+> >     static struct attribute *hwmon_attributes[] = {
+> >	&sensor_dev_attr_power1_max_default.dev_attr.attr,
+> > +	&sensor_dev_attr_energy1_input.dev_attr.attr,
 >
-> I don't immediately see the reason for not using the standard power1_cap
-> attribute, which is described as
->
->		If power use rises above this limit, the
->                 system should take action to reduce power use.
->
-> and pretty much matches the description above.
+> Why not use HWMON_E_INPUT ?
 
-Sorry I believe you are referring to the description above which is for the
-standard power1_max attribute (as we have used it). The non-standard
-attribute is power1_max_default the description for which is below ("Card
-default power limit (default TDP setting)").
+Agreed, we will investigate switching to this. I also had a similar comment
+about this here:
 
-> > +Date:		June 2022
-> > +KernelVersion:	5.19
-> > +Contact:	dri-devel@lists.freedesktop.org
-> > +Description:	RO. Card default power limit (default TDP setting).
-
-Actually we do not want to use custom hwmon attributes as far as
-possible and are looking for some guidance on which standard attributes
-which we should use instead.
-
-These are the power attributes we are interested in: the two above and
-another one which will come in a future patch:
-
-1. PL1 (RW)
-
-   https://www.hardwaretimes.com/intel-10th-gen-cpu-power-consumption-explained-pl1-pl2-and-tau/
-
-2. TDP (RO)
-
-   https://en.wikipedia.org/wiki/Thermal_design_power
-
-3. Tau (RW)
-
-   https://www.hardwaretimes.com/intel-10th-gen-cpu-power-consumption-explained-pl1-pl2-and-tau/
-
-Would you be able to suggest if there are standard hwmon attributes which
-we would be able to use for these three? We also want to use the read/write
-permissions as shown above.
+https://patchwork.freedesktop.org/patch/487020/?series=104278&rev=1
 
 Thanks.
 --
