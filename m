@@ -2,108 +2,170 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61FCD552EDA
-	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jun 2022 11:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1260155391E
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jun 2022 19:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349554AbiFUJko (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 21 Jun 2022 05:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52190 "EHLO
+        id S233529AbiFURoa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 21 Jun 2022 13:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349227AbiFUJkK (ORCPT
+        with ESMTP id S233539AbiFURo0 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 21 Jun 2022 05:40:10 -0400
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A360F27FCB
-        for <linux-hwmon@vger.kernel.org>; Tue, 21 Jun 2022 02:39:57 -0700 (PDT)
-Received: by mail-ua1-x931.google.com with SMTP id q1so4873402uao.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 21 Jun 2022 02:39:57 -0700 (PDT)
+        Tue, 21 Jun 2022 13:44:26 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F2671CB2E
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Jun 2022 10:44:25 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id 23so7602546pgc.8
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Jun 2022 10:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
-         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
-         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
-         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
-         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
-         Q2/g==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Sac1i2UMguOZYNf/xud4fG4r8aL9I2PZA0GzUUD5kCs=;
+        b=YFCLiFg7SU+jN3yuEq9vUFYvT89N2KPsAk+2XSF8Tbb3zIG2o9xITxyNkb2KI4ylW7
+         kNJlQ0Q2a4OFKJsTtB/f5z7zg9QHE18p/MZQ9B5NOXgiKOGL9NvAN6h9/nZCvIaaMSov
+         ciziJrHkgQTLYdfHuo6+lj5HXqQCcFwwmt2o0wgU/8n0FCLo65AzHPDlcCYfwdVxYJ64
+         HwgQgjQyGY4fmkuC3auP3WVmyG8fuOBNkJy0HdIxInJiCakLWFeRg/Te/pNh3ONwtmeH
+         aKuau7zOWtp9rz0UPqXhpXB6+2fuuxLySqIyTinDYuuTpz0XQ9WsQ6fUvU6y6+xFwFFG
+         m7Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=WPALgOHEfkbUWveDKlMCkOimJZNVAESQgUYGAIWcPI23mPxcql/W0JSVpkTrogPwWx
-         /OdNteJfSrU7/AJrj3vEPDzFMcNzxDwhw2Xo0aIQHx+Wj4z43Ct/yZexQX7vsliKNKRi
-         7Rc6XMDxBqCTh0eBh0xfP47r0uj/03Lf1f1ovRc7D4xALW8deJS0KgzIeEpSVTr9vHhX
-         VOhNrRpzEiC2Az+Oale3vt+lzxpzvMHwKJuYRlxzm7qjFbaQE2Ud6LmUpg/kq/25UpF0
-         M0/Qd8ImbEsaQDLItUCiLpo2GmE7y6t7bOyjSsqvfuoi1FLux0XlEpE1+3RMaDcMmuSd
-         chzg==
-X-Gm-Message-State: AJIora+LvNTLRJEM/8HVJobP4/dC2jOCkTu9Mgf9Oqjj/h2dpu1aoZtZ
-        YmKEUpF7/OZ8C6Icm6T+MfsVPOX59BKc8FiLWNWSHli0AyVzsa1A
-X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
-X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
- z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
- Jun 2022 02:39:44 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=Sac1i2UMguOZYNf/xud4fG4r8aL9I2PZA0GzUUD5kCs=;
+        b=XEsaOVLULLHBZ1pbG6YMvoRjz8HUvhjxrHLCl9mGXF0y7djzQKXH4AUd8XRDgGjnXn
+         +fwTBezyQfqUK3VFf7jWZe9BvREWgvtDJp/CZ7SWWsi8vdnMsp4OXBFt7LnH26cLPvoR
+         VSbCWRavkxahmwCDHNXDe6hxlhIeG0CaZgZ7l7LAsj85xwqTGCTJKnMbqCo/LPQ4RWIJ
+         RWbnmsEHtcLXUFGZGONvafNTctZ9ZQrm2kgkOYW0CQUivVDUhUChnv++B99ZweRah0ar
+         xYAaN90P4GywYmh3P4OzJroVflFX7+azAcJuSGas6IrKWpkSR5t2PuTYGtdXYy4uOa/s
+         HJag==
+X-Gm-Message-State: AJIora/GveYBdvMCEKKU1YUvhr4I2aTAHRUt5lXP+iW787Mw9vTEzTvl
+        8qyP2Ix4iSDVgeko47hSBGZCcSfEo18=
+X-Google-Smtp-Source: AGRyM1vZsD3Nbhcq4xVKtu8UgO/7Ov6+sFzqOqwUupET9ZnWqXF2VmyyMWJvNseytLLl90P5cujwdA==
+X-Received: by 2002:a05:6a00:1956:b0:51c:3a0:49d2 with SMTP id s22-20020a056a00195600b0051c03a049d2mr31174737pfk.29.1655833464723;
+        Tue, 21 Jun 2022 10:44:24 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id w9-20020a62c709000000b0051ba97b788bsm11735957pfg.27.2022.06.21.10.44.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jun 2022 10:44:23 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 21 Jun 2022 10:44:21 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc:     Badal Nilawar <badal.nilawar@intel.com>,
+        intel-gfx@lists.freedesktop.org, anshuman.gupta@intel.com,
+        jon.ewins@intel.com, riana.tauro@intel.com,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH 3/4] drm/i915/hwmon: Add HWMON power sensor support
+Message-ID: <20220621174421.GA3456551@roeck-us.net>
+References: <20220620204649.894703-1-badal.nilawar@intel.com>
+ <20220620204649.894703-4-badal.nilawar@intel.com>
+ <4277d384-147a-6de4-abe3-3b64b9dae207@roeck-us.net>
+ <87bkumv7q2.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
- 02:39:44 -0700 (PDT)
-Reply-To: dimitryedik@gmail.com
-From:   Dimitry Edik <lsbthdwrds@gmail.com>
-Date:   Tue, 21 Jun 2022 02:39:44 -0700
-Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
-Subject: Dear Partner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:931 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lsbthdwrds[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87bkumv7q2.wl-ashutosh.dixit@intel.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello Dear,
+On Mon, Jun 20, 2022 at 11:41:41PM -0700, Dixit, Ashutosh wrote:
+> On Mon, 20 Jun 2022 13:58:49 -0700, Guenter Roeck wrote:
+> >
+> 
+> Hi Guenter, Thanks for taking a look.
+> 
+> > > diff --git a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
+> > > index 24c4b7477d51..945f472dd4a2 100644
+> > > --- a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
+> > > +++ b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
+> > > @@ -5,3 +5,23 @@ Contact:	dri-devel@lists.freedesktop.org
+> > >   Description:	RO. Current Voltage in millivolt.
+> > >			Only supported for particular Intel i915 graphics
+> > > platforms.
+> > > +
+> > > +What:		/sys/devices/.../hwmon/hwmon<i>/power1_max
+> > > +Date:		June 2022
+> > > +KernelVersion:	5.19
+> > > +Contact:	dri-devel@lists.freedesktop.org
+> > > +Description:	RW. Card reactive sustained  (PL1/Tau) power limit in microwatts.
+> > > +
+> > > +		The power controller will throttle the operating frequency
+> > > +		if the power averaged over a window (typically seconds)
+> > > +		exceeds this limit.
+> > > +
+> > > +		Only supported for particular Intel i915 graphics platforms.
+> > > +
+> > > +What:		/sys/devices/.../hwmon/hwmon<i>/power1_max_default
+> >
+> > I don't immediately see the reason for not using the standard power1_cap
+> > attribute, which is described as
+> >
+> >		If power use rises above this limit, the
+> >                 system should take action to reduce power use.
+> >
+> > and pretty much matches the description above.
+> 
+> Sorry I believe you are referring to the description above which is for the
+> standard power1_max attribute (as we have used it). The non-standard
+> attribute is power1_max_default the description for which is below ("Card
+> default power limit (default TDP setting)").
+> 
 
-My Name is Dimitry Edik from Russia A special assistance to my Russia
-boss who deals in oil import and export He was killed by the Ukraine
-soldiers at the border side. He supplied
-oil to the Philippines company and he was paid over 90 per cent of the
-transaction and the remaining $18.6 Million dollars have been paid into a
-Taiwan bank in the Philippines..i want a partner that will assist me
-with the claims. Is a (DEAL ) 40% for you and 60% for me
-I have all information for the claims.
-Kindly read and reply to me back is 100 per cent risk-free
+If you use power1_max to limit power consumption if exceeded, power1_cap
+might have been more appropriate.
 
-Yours Sincerely
-Dimitry Edik
+> > > +Date:		June 2022
+> > > +KernelVersion:	5.19
+> > > +Contact:	dri-devel@lists.freedesktop.org
+> > > +Description:	RO. Card default power limit (default TDP setting).
+> 
+> Actually we do not want to use custom hwmon attributes as far as
+> possible and are looking for some guidance on which standard attributes
+> which we should use instead.
+> 
+You could possibly have used power1_rated_max instead of power1_max_default.
+
+> These are the power attributes we are interested in: the two above and
+> another one which will come in a future patch:
+> 
+> 1. PL1 (RW)
+> 
+>    https://www.hardwaretimes.com/intel-10th-gen-cpu-power-consumption-explained-pl1-pl2-and-tau/
+> 
+> 2. TDP (RO)
+> 
+>    https://en.wikipedia.org/wiki/Thermal_design_power
+> 
+Not sure I understand the difference between 'default TDP' (RO),
+'TDP' (RO), and PL1.
+
+> 3. Tau (RW)
+> 
+>    https://www.hardwaretimes.com/intel-10th-gen-cpu-power-consumption-explained-pl1-pl2-and-tau/
+> 
+> Would you be able to suggest if there are standard hwmon attributes which
+> we would be able to use for these three? We also want to use the read/write
+> permissions as shown above.
+> 
+
+There are a number of standard power attributes available to set or report
+limits (cap, cap_max, cap_min, max, crit, rated_min, rated_max). I would
+suggest to pick from that list whatever you think fits best. I don't have
+a recommendation for Tau.
+
+Either case, when reporting power, make sure you don't hit any of the
+security issues which caused power reporting to be deleted for other CPUs.
+Restricting read access to hwmon attributes for non-privileged users is not
+acceptable.
+
+Thanks,
+Guenter
