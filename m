@@ -2,243 +2,194 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E84455263C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 20 Jun 2022 23:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C76B552B33
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jun 2022 08:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230366AbiFTVGo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 20 Jun 2022 17:06:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55728 "EHLO
+        id S1346092AbiFUGlr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 21 Jun 2022 02:41:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiFTVGn (ORCPT
+        with ESMTP id S1346087AbiFUGlq (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 20 Jun 2022 17:06:43 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF2F1BE8C
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Jun 2022 14:06:42 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id f16so9848642pjj.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 20 Jun 2022 14:06:42 -0700 (PDT)
+        Tue, 21 Jun 2022 02:41:46 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E97BF18E10;
+        Mon, 20 Jun 2022 23:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ePusArhi45ZTYQTZIIzh3/PrIEpmrJfgGJ+K7VsTClc=;
-        b=ATRm08hkoFmASdDndo+WfAvPZkwrcqgwalRODa/4gMSgPWPMcUM0kTxlou/R0pOxka
-         Y3YbzlBnwyUtNcpFuVK6Zi2QKSaTI4vTWOVwzoQVYG+A/Gid7aSmWk0g8CY6sIQbKsVu
-         zXD5AueLd8l68qeiOHQbDGK0jpd5QvGmC98ZLBUOEUtG+ztk68Ti2lW+/rx52vP3mcr/
-         DPEySsGDg6kT7kPuwelywu63NZrQk6yfRdof3Ne3dg/i4NaPufUWkeibQ2NK8J0cxayN
-         4XPPsmP9xLHlrPmvOuluJ7Bcg4AN6wyrFyMIqC/j/fUWf9j2gmIPL+xnGv39/iB2WP6A
-         lgrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ePusArhi45ZTYQTZIIzh3/PrIEpmrJfgGJ+K7VsTClc=;
-        b=2f25iuT3plM13oc6EmoTVQMWfVC6HbgZqJ0flrgmzIbEYL1UPtIbC2KjY9licgFgtc
-         ZyJJpQoPLq43iUOvZvpn/pTBbS+68qVzg6t5M7Gl7wmvd8MdbOraoJ537fAL8UyYRuA8
-         3O0qod7zUSH/smUSjbAMdAF0Xst7uuusR4fwiepXwZzCjAnjI5WB3EaH/bCq0xaMkAgN
-         0tXuP2t4om1MREOFH4CQNRdWpRw51byV3SWRvseTL/eYUgqUAPmQSLbpKATS0NbwvVZl
-         eDurD9TYMjTSI5ToKhZHSabm56WiEroUAkXABu3vMYD8ZWZRBEAw5FW5+WtUjQuTzZSG
-         xFCg==
-X-Gm-Message-State: AJIora8HiiYIxBaQ4p0eIrm7iRNUJ+eN4NMp+zqBuaVS8F0sVj7W07eG
-        P8spOOz6glqfiLBhQ32ee9k=
-X-Google-Smtp-Source: AGRyM1vz+Mla2mCeFFoKoWvm9gjLH5V6gPeOf+pZPzm0mkCK7ZZ1+Z9ISY6uIe0Hksdnw3mVoLHQXg==
-X-Received: by 2002:a17:902:b690:b0:169:157:1148 with SMTP id c16-20020a170902b69000b0016901571148mr24933277pls.174.1655759202081;
-        Mon, 20 Jun 2022 14:06:42 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k23-20020a17090aaa1700b001ecb5602944sm1758297pjq.28.2022.06.20.14.06.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jun 2022 14:06:41 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <5b1ec66d-b0bf-664a-0e3d-a124267ef00d@roeck-us.net>
-Date:   Mon, 20 Jun 2022 14:06:38 -0700
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1655793702; x=1687329702;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BZksM27YizkujSkjCyARUVXlm0iWUJX1Mxr22hSXOMI=;
+  b=bxT3eRp3FeqN7jvExEqpvs7xNAJ2kW3/Bnga4onYsm8ZkiYDR43oCYJW
+   zIBIWqyueT4/RbOYKPmiZKYRc7yASeJBqoGjJclv6k+/AafCdhOe0ZJNd
+   Eucofnf5X4O/SwpxMjClfJIGupbVSbhlFey7GKnNEWHRk4FnlQtbKFCTG
+   OfAqxhHr9XiFsGW0+4fJQHDg8LuLC5XtzKQMyKvGRhVxMu3c3nwxDAVh7
+   CxRlkLJ9JHflRtvDmio+J9JynsLLL8OryqAz1NQAs5f+JHu2nl7bxo/io
+   lCVMCp6sLKMUrMxWFtmlj5cU5TYvosynMpN0m8HNd3uBTXViS+GtEOSzF
+   A==;
+X-IronPort-AV: E=Sophos;i="5.92,209,1650924000"; 
+   d="scan'208";a="24563675"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 21 Jun 2022 08:41:39 +0200
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Tue, 21 Jun 2022 08:41:39 +0200
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Tue, 21 Jun 2022 08:41:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1655793699; x=1687329699;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BZksM27YizkujSkjCyARUVXlm0iWUJX1Mxr22hSXOMI=;
+  b=mRiBx1bGwW+R4sUTqpowouzwBXrFQMRlefXdXIrTLmGsyQ32wCoqqKoq
+   UVXOuKNWYz22/F5nPTWdagQxy4Y3Q/CtoEOm/LGdGWny+rW1O2LiCWzFc
+   PBRU7QqAUsBprupyuRiIRT2tM/FaR4fuPVDXhMZEiqsEnn6ah5kgp73Fv
+   BdAXR5Q4PRkD4dOpS/aTCtWFVn2JEp1mbzdJBr9xfnQTq3ROIkK31QGYd
+   wHBElqwbk2CwnVuA7mv+1f4Rv0P550xCzx04LpyzqyQVJcEFI3LwqpqTi
+   /H4IPtnWOUaJ/eGCm7qY66oYHr9+7/ZGuNHnCLcOX9J4VRhyLiKRQoWeh
+   A==;
+X-IronPort-AV: E=Sophos;i="5.92,209,1650924000"; 
+   d="scan'208";a="24563674"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 21 Jun 2022 08:41:39 +0200
+Received: from steina-w.localnet (unknown [10.123.49.12])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 9CDF8280056;
+        Tue, 21 Jun 2022 08:41:39 +0200 (CEST)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-hwmon@vger.kernel.org,
+        linux-pwm@vger.kernel.org,
+        Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Subject: Re: [PATCH v4 6/6] hwmon: pwm-fan: Remove internal duplicated pwm_state
+Date:   Tue, 21 Jun 2022 08:41:37 +0200
+Message-ID: <13043200.uLZWGnKmhe@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <aa6f8c6c-6d8f-6d23-f035-00d27e7ec0af@roeck-us.net>
+References: <20220523110513.407516-1-alexander.stein@ew.tq-group.com> <4715301.GXAFRqVoOG@steina-w> <aa6f8c6c-6d8f-6d23-f035-00d27e7ec0af@roeck-us.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 2/4] drm/i915/hwmon: Add HWMON current voltage support
-Content-Language: en-US
-To:     Badal Nilawar <badal.nilawar@intel.com>,
-        intel-gfx@lists.freedesktop.org
-Cc:     anshuman.gupta@intel.com, jon.ewins@intel.com,
-        ashutosh.dixit@intel.com, riana.tauro@intel.com,
-        linux-hwmon@vger.kernel.org
-References: <20220620204649.894703-1-badal.nilawar@intel.com>
- <20220620204649.894703-3-badal.nilawar@intel.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20220620204649.894703-3-badal.nilawar@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 6/20/22 13:46, Badal Nilawar wrote:
-> From: Riana Tauro <riana.tauro@intel.com>
-> 
-> As part of the System Managemenent Interface (SMI), use the HWMON
-> subsystem to display current voltage
-> 
-> v2:
->    - Updated date and kernel version in feature description
->    - Fixed review comments (Ashutosh)
-> 
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> ---
->   .../ABI/testing/sysfs-driver-intel-i915-hwmon |  7 +++
->   drivers/gpu/drm/i915/gt/intel_gt_regs.h       |  3 +
->   drivers/gpu/drm/i915/i915_hwmon.c             | 63 +++++++++++++++++++
->   3 files changed, 73 insertions(+)
->   create mode 100644 Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> new file mode 100644
-> index 000000000000..24c4b7477d51
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> @@ -0,0 +1,7 @@
-> +What:		/sys/devices/.../hwmon/hwmon<i>/in0_input
-> +Date:		June 2022
-> +KernelVersion:	5.19
-> +Contact:	dri-devel@lists.freedesktop.org
-> +Description:	RO. Current Voltage in millivolt.
-> +
-> +		Only supported for particular Intel i915 graphics platforms.
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> index 07ef111947b8..63a39e1e00e2 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> @@ -1487,6 +1487,9 @@
->   #define VLV_RENDER_C0_COUNT			_MMIO(0x138118)
->   #define VLV_MEDIA_C0_COUNT			_MMIO(0x13811c)
->   
-> +#define GEN12_RPSTAT1				_MMIO(0x1381b4)
-> +#define   GEN12_VOLTAGE_MASK			REG_GENMASK(10, 0)
-> +
->   #define GEN11_GT_INTR_DW(x)			_MMIO(0x190018 + ((x) * 4))
->   #define   GEN11_CSME				(31)
->   #define   GEN11_GUNIT				(28)
-> diff --git a/drivers/gpu/drm/i915/i915_hwmon.c b/drivers/gpu/drm/i915/i915_hwmon.c
-> index 2ef40b0c1e70..fc06db790243 100644
-> --- a/drivers/gpu/drm/i915/i915_hwmon.c
-> +++ b/drivers/gpu/drm/i915/i915_hwmon.c
-> @@ -14,9 +14,11 @@
->   #include "i915_hwmon.h"
->   #include "i915_drv.h"
->   #include "intel_mchbar_regs.h"
-> +#include "gt/intel_gt_regs.h"
->   
->   
->   struct i915_hwmon_reg {
-> +	i915_reg_t gt_perf_status;
->   };
->   
->   struct i915_hwmon_drvdata {
-> @@ -53,15 +55,65 @@ static const struct attribute_group *hwmon_groups[] = {
->   };
->   
->   
-> +/*
-> + * HWMON SENSOR TYPE = hwmon_in
-> + *  - Voltage Input value (in0_input)
-> + */
-> +static const u32 i915_config_in[] = {
-> +	HWMON_I_INPUT,
-> +	0
-> +};
-> +
-> +static const struct hwmon_channel_info i915_in = {
-> +	.type = hwmon_in,
-> +	.config = i915_config_in,
-> +};
-> +
->   static const struct hwmon_channel_info *i915_info[] = {
-> +	&i915_in,
->   	NULL
->   };
+Hello Guenter, Uwe,
 
-Please use the HWMON_CHANNEL_INFO macro.
+Am Montag, 23. Mai 2022, 16:18:57 CEST schrieb Guenter Roeck:
+> On 5/23/22 06:55, Alexander Stein wrote:
+> > Hi Uwe,
+> >=20
+> > Am Montag, 23. Mai 2022, 14:46:14 CEST schrieb Uwe Kleine-K=F6nig:
+> >> * PGP Signed by an unknown key
+> >>=20
+> >> Hello,
+> >>=20
+> >> On Mon, May 23, 2022 at 01:05:13PM +0200, Alexander Stein wrote:
+> >>> Each pwm device has already a pwm_state. Use this one instead of
+> >>> managing an own copy of it.
+> >>>=20
+> >>> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> >>> ---
+> >>>=20
+> >>>   drivers/hwmon/pwm-fan.c | 49 +++++++++++++++++++++++++-------------=
+=2D--
+> >>>   1 file changed, 30 insertions(+), 19 deletions(-)
+> >>>=20
+> >>> diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
+> >>> index e5d4b3b1cc49..e0ce81cdf5e0 100644
+> >>> --- a/drivers/hwmon/pwm-fan.c
+> >>> +++ b/drivers/hwmon/pwm-fan.c
+> >>> @@ -40,7 +40,6 @@ struct pwm_fan_ctx {
+> >>>=20
+> >>>   	struct mutex lock;
+> >>>   	struct pwm_device *pwm;
+> >>>=20
+> >>> -	struct pwm_state pwm_state;
+> >>>=20
+> >>>   	struct regulator *reg_en;
+> >>>   	enum pwm_fan_enable_mode enable_mode;
+> >>>   	bool regulator_enabled;
+> >>>=20
+> >>> @@ -142,7 +141,7 @@ static int pwm_fan_switch_power(struct pwm_fan_ctx
+> >>> *ctx, bool on)>
+> >>>=20
+> >>>   static int pwm_fan_power_on(struct pwm_fan_ctx *ctx)
+> >>>   {
+> >>>=20
+> >>> -	struct pwm_state *state =3D &ctx->pwm_state;
+> >>> +	struct pwm_state state;
+> >>>=20
+> >>>   	int ret;
+> >>>   =09
+> >>>   	if (ctx->enabled)
+> >>>=20
+> >>> @@ -154,8 +153,9 @@ static int pwm_fan_power_on(struct pwm_fan_ctx *c=
+tx)
+> >>>=20
+> >>>   		return ret;
+> >>>   =09
+> >>>   	}
+> >>>=20
+> >>> -	state->enabled =3D true;
+> >>> -	ret =3D pwm_apply_state(ctx->pwm, state);
+> >>> +	pwm_get_state(ctx->pwm, &state);
+> >>> +	state.enabled =3D true;
+> >>> +	ret =3D pwm_apply_state(ctx->pwm, &state);
+> >>>=20
+> >>>   	if (ret) {
+> >>>   =09
+> >>>   		dev_err(ctx->dev, "failed to enable PWM\n");
+> >>>   		goto disable_regulator;
+> >>=20
+> >> IMHO this isn't a net win. You trade the overhead of pwm_get_state
+> >> against some memory savings. I personally am not a big fan of the
+> >> get_state + modify + apply codeflow. The PWM framework does internal
+> >> caching of the last applied state, but the details are a bit ugly. (i.=
+e.
+> >> pwm_get_state returns the last applied state, unless there was no state
+> >> applied before. In that case it returns what .get_state returned during
+> >> request time, unless there is no .get_state callback ... not sure if t=
+he
+> >> device tree stuff somehow goes into that, didn't find it on a quick
+> >> glance)
+> >>=20
+> >> Also there is a (small) danger, that pwm_state contains something that
+> >> isn't intended by the driver, e.g. a wrong polarity. So I like the
+> >> consumer to fully specify what they intend and not use pwm_get_state().
+> >=20
+> > Ah, I see. I have no hard feelings for this patch. I just wondered why =
+the
+> > PWM state is duplicated. and wanted to get rid of it. If there is a
+> > specific reason for this, I'm ok with that.
+>=20
+> I don't see the value of continuous runtime overhead to save a few bytes =
+of
+> data, so I don't see a reason to _not_ cache the state locally. This is
+> similar to caching a clock frequency locally instead of calling the clock
+> subsystem again and again to read it. Sure, nowadays CPUs are more powerf=
+ul
+> than they used to be, but I don't see that as reason or argument for
+> wasting their power.
 
-Thanks,
-Guenter
+Ok, seems reasonable. I'm fully fine with patch 6 being dropped. What about=
+=20
+the other patches?
 
->   
-> +static umode_t
-> +i915_in_is_visible(const struct i915_hwmon_drvdata *ddat, u32 attr)
-> +{
-> +	struct drm_i915_private *i915 = ddat->uncore->i915;
-> +
-> +	switch (attr) {
-> +	case hwmon_in_input:
-> +		return (IS_DG1(i915) || IS_DG2(i915)) ? 0444 : 0;
-> +	default:
-> +		return 0;
-> +	}
-> +}
-> +
-> +static int
-> +i915_in_read(struct i915_hwmon_drvdata *ddat, u32 attr, long *val)
-> +{
-> +	struct i915_hwmon *hwmon = ddat->hwmon;
-> +	intel_wakeref_t wakeref;
-> +	u32 reg_value;
-> +
-> +	switch (attr) {
-> +	case hwmon_in_input:
-> +		with_intel_runtime_pm(ddat->uncore->rpm, wakeref)
-> +			reg_value = intel_uncore_read(ddat->uncore, hwmon->rg.gt_perf_status);
-> +		*val = DIV_ROUND_CLOSEST(REG_FIELD_GET(GEN12_VOLTAGE_MASK, reg_value) * 25, 10);
-> +		return 0;
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +}
-> +
->   static umode_t
->   i915_is_visible(const void *drvdata, enum hwmon_sensor_types type,
->   		u32 attr, int channel)
->   {
-> +	struct i915_hwmon_drvdata *ddat = (struct i915_hwmon_drvdata *)drvdata;
-> +
->   	switch (type) {
-> +	case hwmon_in:
-> +		return i915_in_is_visible(ddat, attr);
->   	default:
->   		return 0;
->   	}
-> @@ -71,7 +123,11 @@ static int
->   i915_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
->   	  int channel, long *val)
->   {
-> +	struct i915_hwmon_drvdata *ddat = dev_get_drvdata(dev);
-> +
->   	switch (type) {
-> +	case hwmon_in:
-> +		return i915_in_read(ddat, attr, val);
->   	default:
->   		return -EOPNOTSUPP;
->   	}
-> @@ -101,6 +157,13 @@ static const struct hwmon_chip_info i915_chip_info = {
->   static void
->   i915_hwmon_get_preregistration_info(struct drm_i915_private *i915)
->   {
-> +	struct i915_hwmon *hwmon = i915->hwmon;
-> +
-> +	if (IS_DG1(i915) || IS_DG2(i915)) {
-> +		hwmon->rg.gt_perf_status = GEN12_RPSTAT1;
-> +	} else {
-> +		hwmon->rg.gt_perf_status = INVALID_MMIO_REG;
-> +	}
->   
->   }
->   
+Best regards,
+Alexander
+
+
 
