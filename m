@@ -2,107 +2,94 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91A07562CAC
-	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Jul 2022 09:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 543085636EA
+	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Jul 2022 17:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234913AbiGAHc3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 1 Jul 2022 03:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57618 "EHLO
+        id S229906AbiGAPbA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 1 Jul 2022 11:31:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235255AbiGAHc2 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 1 Jul 2022 03:32:28 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B746D558;
-        Fri,  1 Jul 2022 00:32:27 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LZ6Lv1411zkWYH;
-        Fri,  1 Jul 2022 15:31:03 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 1 Jul 2022 15:32:25 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 1 Jul
- 2022 15:32:24 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-hwmon@vger.kernel.org>
-CC:     <linux@roeck-us.net>, <jdelvare@suse.com>
-Subject: [PATCH] hwmon: (ibmaem) don't call platform_device_del() if platform_device_add() fails
-Date:   Fri, 1 Jul 2022 15:41:53 +0800
-Message-ID: <20220701074153.4021556-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229685AbiGAPa7 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 1 Jul 2022 11:30:59 -0400
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 766042558A
+        for <linux-hwmon@vger.kernel.org>; Fri,  1 Jul 2022 08:30:58 -0700 (PDT)
+Received: by mail-io1-xd2a.google.com with SMTP id l24so2565197ion.13
+        for <linux-hwmon@vger.kernel.org>; Fri, 01 Jul 2022 08:30:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=SuAs5+SqNuiPKMk34YV4HDlfxT26nEDXVcRkJfG6AAI=;
+        b=MTTiI6Tmpy1D8yxCU54A8L/2WQhFiR88ew0OKjy+vwilUBd2q7qtihZtrfrAGEF+CT
+         woMAXWP7I0fi1u4LzPSB/JxLI/HdGv4Dt/dT+QP+p67oP7ykBxDz2DCy4N72nJztbDJH
+         HL7fab2pAXikUJwFX/hyYOqw8AuwrNV7eIiF+FwVqBubXp3U1M14WMUKUyUDwAzisQl0
+         vwZS5ojE1hLZnZModVplgQj/Rx9fzl/31Uhr0h6TyO7t3a+IKsfzTq7MUfqY+LPOFx1r
+         sOPLFoCvKsJGpFNyAGbpxKV9kbyLMmw7PBis4kHQ4YzuIYQtqp1YGcKjqG7rDDf3iOKt
+         Sacw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=SuAs5+SqNuiPKMk34YV4HDlfxT26nEDXVcRkJfG6AAI=;
+        b=8K7JOUU7QagKpg2kHUMg4KA96US0JvMW0wY6S6N/p+Ev25KUWmnFLpq0ySlWiBtskr
+         Xbl9ERkuJAcYTxeUFfKgz6K/IPZfRpSrnagOgIoode7dXl6vIfaih+XZdGymyS7kKGop
+         ubNwoj9/t66HERiXi2heThCEjWYjLLl765MRRqM1ChR4j0ln44+0zHUnA4hJgc0ywzaU
+         l1VgeF4Ec0Zt14R6+rDpi8wop5sm9E1mO0audqeWX2CFe/K3Nzsl5Gr8j38I7GTqqf3V
+         AaNeTz4pZLnmsc8+vWW59s+EGwTaz95wvZMzroN19UtAbM2AkGoTHjf98kYZxD6vhaI/
+         WZPA==
+X-Gm-Message-State: AJIora8XNIQREUcMJm9J04TgbwTUZIPXqTqxLEF4flyf9nUgKuv/3gfm
+        ouXa8iocucpB+BKPFs1AnPBfWPKIhVGG5C31nNY=
+X-Google-Smtp-Source: AGRyM1uD//V31BOcha6wGgP+ZrHSIl5YE1hjw2KsCV12Bbxa6B3htkt+u9gsGcapvyGlQKnNYGSF/vCX1Au5xhgsK9k=
+X-Received: by 2002:a05:6638:f95:b0:314:58f9:5896 with SMTP id
+ h21-20020a0566380f9500b0031458f95896mr9023981jal.228.1656689457800; Fri, 01
+ Jul 2022 08:30:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Sender: vincentgeorgeag1@gmail.com
+Received: by 2002:a05:6638:40a7:0:0:0:0 with HTTP; Fri, 1 Jul 2022 08:30:57
+ -0700 (PDT)
+From:   MRS AMINATA ZONGO <mrsaminatazongo@gmail.com>
+Date:   Fri, 1 Jul 2022 17:30:57 +0200
+X-Google-Sender-Auth: 0Zt0VGFVWvgUrpNyRCQ7u_ksyvs
+Message-ID: <CAENe5cv6zPeQ8GiHcKTuofptwic1i3XQgwpgVFN9T+fjtT432g@mail.gmail.com>
+Subject: ATTENTION PLEASE,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-If platform_device_add() fails, it no need to call platform_device_del(), split
-platform_device_unregister() into platform_device_del/put(), so platform_device_put()
-can be called separately.
+ATTENTION PLEASE,
 
-Fixes: 8808a793f052 ("ibmaem: new driver for power/energy/temp meters in IBM System X hardware")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/hwmon/ibmaem.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+I am  Mrs Aminata Zongo, a personal Accountant/Executive board of
+Directors working with United bank for African Burkina Faso (UBA). I
+have an interesting business proposal for you that will be of immense
+benefit to both of us. Although this may be hard for you to believe,
+we stand to gain a huge amount  between us in a matter of days. Please
+grant me the benefit of doubt and hear me out
 
-diff --git a/drivers/hwmon/ibmaem.c b/drivers/hwmon/ibmaem.c
-index 5c4cf742f5ae..157e232aace0 100644
---- a/drivers/hwmon/ibmaem.c
-+++ b/drivers/hwmon/ibmaem.c
-@@ -550,7 +550,7 @@ static int aem_init_aem1_inst(struct aem_ipmi_data *probe, u8 module_handle)
- 
- 	res = platform_device_add(data->pdev);
- 	if (res)
--		goto ipmi_err;
-+		goto dev_add_err;
- 
- 	platform_set_drvdata(data->pdev, data);
- 
-@@ -598,7 +598,9 @@ static int aem_init_aem1_inst(struct aem_ipmi_data *probe, u8 module_handle)
- 	ipmi_destroy_user(data->ipmi.user);
- ipmi_err:
- 	platform_set_drvdata(data->pdev, NULL);
--	platform_device_unregister(data->pdev);
-+	platform_device_del(data->pdev);
-+dev_add_err:
-+	platform_device_put(data->pdev);
- dev_err:
- 	ida_free(&aem_ida, data->id);
- id_err:
-@@ -690,7 +692,7 @@ static int aem_init_aem2_inst(struct aem_ipmi_data *probe,
- 
- 	res = platform_device_add(data->pdev);
- 	if (res)
--		goto ipmi_err;
-+		goto dev_add_err;
- 
- 	platform_set_drvdata(data->pdev, data);
- 
-@@ -738,7 +740,9 @@ static int aem_init_aem2_inst(struct aem_ipmi_data *probe,
- 	ipmi_destroy_user(data->ipmi.user);
- ipmi_err:
- 	platform_set_drvdata(data->pdev, NULL);
--	platform_device_unregister(data->pdev);
-+	platform_device_del(data->pdev);
-+dev_add_err:
-+	platform_device_put(data->pdev);
- dev_err:
- 	ida_free(&aem_ida, data->id);
- id_err:
--- 
-2.25.1
+Honestly, i have business transaction worth the sum of
+(US$8,200,000.00) Eight Million two hundred thousand united state
+dollars to transfer to you through proper documentation in position of
+your own Account
 
+Most importantly, I will need you to promise to keep whatever you
+learn from me between us even if you decide not to go along with me. I
+will make more details available to you on receipt of a positive
+response from you
+
+This transaction is risk-free; please urgently confirm your
+willingness and interest to assist in this deal, I am in good faith
+and with trust waiting for your Urgent respond and maximum cooperation
+for more details
+
+Best Regards,
+Mrs Aminata Zongo.
