@@ -2,103 +2,112 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0DFB57702A
-	for <lists+linux-hwmon@lfdr.de>; Sat, 16 Jul 2022 18:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5CB57771E
+	for <lists+linux-hwmon@lfdr.de>; Sun, 17 Jul 2022 17:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229853AbiGPQkk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 16 Jul 2022 12:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46752 "EHLO
+        id S230181AbiGQPlm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 17 Jul 2022 11:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbiGPQkk (ORCPT
+        with ESMTP id S229629AbiGQPll (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 16 Jul 2022 12:40:40 -0400
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656101D0FA
-        for <linux-hwmon@vger.kernel.org>; Sat, 16 Jul 2022 09:40:38 -0700 (PDT)
-Received: by mail-vk1-xa36.google.com with SMTP id w129so2617153vkg.10
-        for <linux-hwmon@vger.kernel.org>; Sat, 16 Jul 2022 09:40:38 -0700 (PDT)
+        Sun, 17 Jul 2022 11:41:41 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 879D1BC9;
+        Sun, 17 Jul 2022 08:41:40 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id k30so12290216edk.8;
+        Sun, 17 Jul 2022 08:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mG/QaiwlgsjyXmDGHTqTaoM+kkOKtkeGG3dxD5l5egg=;
-        b=FuS6j9TwBThyHbof401mAMj8YyXqIseZ6eekNvry8rC0oyFpQ/N6OYSdMFZrEbpZv6
-         Tjl58p+rQFJ0WNNNraPUvPScQ/xC9ywaCdO175h+iu7gu3O3bHV3KfLr3IaoB+odFjvG
-         sCUvbP8fw4DWlgiAKMitAxbnta7IIjgqXCvPMxy+gIUYx9be30a6RYHP3Ffrkq9vRRJt
-         iyJLg5V2huo42ZnZxnnpEK8yAClxRCBJ93tEG2+5ng6h2wMhUqJx0yBqoX1JQvsVPSSk
-         4MctyQVam0Ug4D54CP1+eiG/VvALYKDIz3yli0TuEsPofTN2tnQ44puYqZD0h20qQ/NX
-         PqtA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KVf7sB0l4zH/Rxpvh7W7/gvxcfaj5Mn8NQrlNnPne74=;
+        b=L8HlfeOnmQDe9wm4ZoNIAPSFWX7DVXaLkCY6zna+tOeC2pje4VGsnHanqViN4TC9/u
+         ZCTpL2iPwSYlbFecyEnd43kRy26lswwe37bpN+8d/2GqVANKu8t+fUyuo2DiZlG9sZxo
+         03igbGK/AnJH9uCdT4qKd0VCSfDJxnr1zRqA66B235IDOhpkWjmuEJlrB8+UAJ802ZAP
+         8nvVr/KyYTOTaJoSyav3Zj8X6sRjIieRi69EjMx12mbwTBr41yqxsXkkZrbpTBSZ2KIv
+         bTnaAB7S0VzJwpu75uVRWJNxCFsVGiubh+bo+NYxpAyMwmvO2g7Hf+PU9z6t57vdPUVL
+         MStw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mG/QaiwlgsjyXmDGHTqTaoM+kkOKtkeGG3dxD5l5egg=;
-        b=03v4jLZMCQMUby8mAmHlKSSXwKATM7UbIH6OGbKfypA4zLxWezrBHuHTQLDAsYS7sE
-         2ToAbLeRCiaTEKquMdXI87ThhABYde4vZBBKBNKwTUa1x0XSwIJSqoL2hXWQ6VhcRzjq
-         Z/UpmMO3c/KjDhEUw/0uDH85zPjQ+cjAe74N+kzpvl11y+6PzoxJvpazNIcZmNMg2drm
-         OdHFCOGjjQ79uDvx90NZMyjI6k/XJbanHwnuK975VBuShz++3xBorhfWyvs3pozyJkhF
-         gdsRvcQs3X7LIzE17T8c8i4GZI6mBYFaaUxBQPxwUFSH6bl1OdV4JJgowocQ08N2ydiI
-         1iZw==
-X-Gm-Message-State: AJIora/EibHqkTADloHV19P5SEtx1uWjNoncEk5VrERVONpZECOIPknK
-        g/XB3+8Eo6/JmPYK/hxTTqkRbCty0UC+g1ybHnM=
-X-Google-Smtp-Source: AGRyM1vctW2VpMiUwlqrtsJ6JupZvvJJF5fKR8mU5x4QDGGuaRpCqNxrxJovOpoHRixsCdd1Mx54mNwBtxoe4JdcD40=
-X-Received: by 2002:a05:6122:2105:b0:374:3464:d057 with SMTP id
- k5-20020a056122210500b003743464d057mr7596355vkd.10.1657989637390; Sat, 16 Jul
- 2022 09:40:37 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KVf7sB0l4zH/Rxpvh7W7/gvxcfaj5Mn8NQrlNnPne74=;
+        b=DzAPRzggD5HL7bErT36F4pcM5q6Jbq976ofRietijBc7nZfJI/ytX6X+fMzf1vq9bL
+         /gYplsKE4HY7wrp29S66HJwVbeDcOlO0pitMI/pKlOQmbjQoe/YE+KSU+m3/t4Xh2vSw
+         Mo2b6oMgOejMM7mH0IiWsu+cObM0EOZESTQU/7ZF4TXt6bo4IYAmkDQ1Jy32R1dOudHz
+         zyTUx6gYwJOEP+xS0n9dwBYpJw8TIUYowRzlSn0Q5C2iVzoIu56wQjhr1sgVZLETHmCu
+         2ixAByYSJOkHRskX6XceZezBV8Tn9jlSVHno8XW3rNQtmtE/lXOktG5KKykN9GGPShHM
+         JOZQ==
+X-Gm-Message-State: AJIora/UUrEPtbe56rkfn7krk+5Ct1XEtStBy+RW/GuXsSauZIUPrgYB
+        RfgsxflUlmqGPLkGTOn8T3RmRFcj4UJ4pQ==
+X-Google-Smtp-Source: AGRyM1ta/dXiqsjEBSHiRWRBwI40AUDaODJxfn1wN5mnUQlCE/N8V3b6RDEWViWM/0EkeMfRft9M5A==
+X-Received: by 2002:a05:6402:2b93:b0:43a:5aad:73c2 with SMTP id fj19-20020a0564022b9300b0043a5aad73c2mr31983335edb.300.1658072498706;
+        Sun, 17 Jul 2022 08:41:38 -0700 (PDT)
+Received: from DESKTOP-A98GP49.. (cable-178-148-254-8.dynamic.sbb.rs. [178.148.254.8])
+        by smtp.gmail.com with ESMTPSA id q7-20020a170906388700b0072aac7446easm4403880ejd.47.2022.07.17.08.41.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Jul 2022 08:41:38 -0700 (PDT)
+From:   Aleksa Savic <savicaleksa83@gmail.com>
+To:     linux-hwmon@vger.kernel.org
+Cc:     Aleksa Savic <savicaleksa83@gmail.com>,
+        Jack Doan <me@jackdoan.com>, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: (aquacomputer_d5next) Add D5 Next fan control support
+Date:   Sun, 17 Jul 2022 17:41:14 +0200
+Message-Id: <20220717154114.7545-1-savicaleksa83@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Received: by 2002:a05:612c:11d0:b0:2d3:f3df:d0d2 with HTTP; Sat, 16 Jul 2022
- 09:40:36 -0700 (PDT)
-Reply-To: mrs.suzarawanmaling@gmail.com
-From:   Mrs Suzara Maling Wan <wmrssuzara@gmail.com>
-Date:   Sun, 17 Jul 2022 01:40:36 +0900
-Message-ID: <CAE2wYjyyWrc_Bzrfif2iZ8eyZNA1JXJdXLXYSHh6z5D5skDfcg@mail.gmail.com>
-Subject: hello!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:a36 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5041]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [wmrssuzara[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-I am Mrs Suzara from (Philippine) but based in West Africa Country
-since eight years as a business woman dealing with gold exportation, I
-have a dream and desire of building an orphanage home in your country,
-and i have a deposit fund to the project, but presently my health
-condition we not  allow me to carry out the project my self, now my
-doctor has already told me that I have just few
+Define pump and fan speed register offsets in
+D5 Next control report, as well as its size, to expose PWM fan control.
 
-period of time to leave because of my ovarian cancer disease, can you
-help fulfill this project.
+Signed-off-by: Jack Doan <me@jackdoan.com>
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+---
+ drivers/hwmon/aquacomputer_d5next.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-With kind Regards,
-Thank you as i wait your reply.
+diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
+index 0e56cc711a26..997d72ea6182 100644
+--- a/drivers/hwmon/aquacomputer_d5next.c
++++ b/drivers/hwmon/aquacomputer_d5next.c
+@@ -71,8 +71,12 @@ static u8 secondary_ctrl_report[] = {
+ #define D5NEXT_PUMP_OFFSET		0x6c
+ #define D5NEXT_FAN_OFFSET		0x5f
+ #define D5NEXT_5V_VOLTAGE		0x39
++#define D5NEXT_CTRL_REPORT_SIZE		0x329
+ static u8 d5next_sensor_fan_offsets[] = { D5NEXT_PUMP_OFFSET, D5NEXT_FAN_OFFSET };
+ 
++/* Pump and fan speed registers in D5 Next control report (from 0-100%) */
++static u16 d5next_ctrl_fan_offsets[] = { 0x97, 0x42 };
++
+ /* Register offsets for the Farbwerk RGB controller */
+ #define FARBWERK_NUM_SENSORS		4
+ #define FARBWERK_SENSOR_START		0x2f
+@@ -667,9 +671,11 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 
+ 		priv->num_fans = D5NEXT_NUM_FANS;
+ 		priv->fan_sensor_offsets = d5next_sensor_fan_offsets;
++		priv->fan_ctrl_offsets = d5next_ctrl_fan_offsets;
+ 		priv->num_temp_sensors = D5NEXT_NUM_SENSORS;
+ 		priv->temp_sensor_start_offset = D5NEXT_COOLANT_TEMP;
+ 		priv->power_cycle_count_offset = D5NEXT_POWER_CYCLES;
++		priv->buffer_size = D5NEXT_CTRL_REPORT_SIZE;
+ 
+ 		priv->temp_label = label_d5next_temp;
+ 		priv->speed_label = label_d5next_speeds;
+-- 
+2.36.1
 
-Mrs Suzara Maling Wan
