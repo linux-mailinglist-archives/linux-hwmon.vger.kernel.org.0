@@ -2,66 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4C39581323
-	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Jul 2022 14:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A715814AF
+	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Jul 2022 15:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231395AbiGZM3l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 26 Jul 2022 08:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35496 "EHLO
+        id S239104AbiGZN7R (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 26 Jul 2022 09:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232255AbiGZM3k (ORCPT
+        with ESMTP id S239208AbiGZN7O (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 26 Jul 2022 08:29:40 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C88186C0
-        for <linux-hwmon@vger.kernel.org>; Tue, 26 Jul 2022 05:29:39 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26Q9X5c8017779;
-        Tue, 26 Jul 2022 08:29:24 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3hgau7ce2m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Jul 2022 08:29:23 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 26QCTMKp016771
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 26 Jul 2022 08:29:22 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 26 Jul
- 2022 08:29:21 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 26 Jul 2022 08:29:21 -0400
-Received: from euswvd-wpr-708.reddog.microsoft.com ([10.140.226.204])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26QCTBdc026912;
-        Tue, 26 Jul 2022 08:29:16 -0400
-From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-To:     <jdelvare@suse.com>, <linux@roeck-us.net>
-CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        <linux-hwmon@vger.kernel.org>
-Subject: [PATCH v2 2/2] docs: hwmon: add max31760 documentation
-Date:   Tue, 26 Jul 2022 12:28:57 +0000
-Message-ID: <20220726122857.116-3-Ibrahim.Tilki@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220726122857.116-1-Ibrahim.Tilki@analog.com>
-References: <20220726122857.116-1-Ibrahim.Tilki@analog.com>
+        Tue, 26 Jul 2022 09:59:14 -0400
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82667101ED;
+        Tue, 26 Jul 2022 06:59:13 -0700 (PDT)
+Received: by mail-oi1-x22e.google.com with SMTP id j70so17166312oih.10;
+        Tue, 26 Jul 2022 06:59:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3CE6r59UbZWFRPQFwsRGzWwILdcmigdGmimoBM3/j00=;
+        b=pLVkoY/T3ljaVdC9m7a8TyzJxnj9ZiqnL3DSFhSQYbL0BzS5ul69jv4gyPFUAc0N4W
+         iM1/JivjY6LCKVA/6KAKNrNw1/GVWkiQ+fWTEF5rOMKl+h8B8mlZoLJNZU3NbHx1vFGG
+         08sgN3KVZkWMCTTsGyUZNLRAq32KdZAvRg6FLeMT60ah1vaSoZjEVdEVyPrdH32rNjI5
+         GV89/Saor6vgwrDAjGDTWvY3mbjDHUSDzAtGBMARmiV7TI6iVqZofp3IeR0C8OWKUMHW
+         y1ThaFiXXi639p5buaJr28jBTfODqQbjIEK+E3Y5UVk5ctxAHicC7dktir7dkUiy4eN2
+         KGnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=3CE6r59UbZWFRPQFwsRGzWwILdcmigdGmimoBM3/j00=;
+        b=z2Ygn3w5IHTj2zqt2X8nw2nNahhQL7go1a5kli0WR4gVI3DT2ELXIzIoxD1tfbpeGg
+         D4lwMY0RxVimUZThkVEzxXhWsUVOoLy8cCT1GccGMG2/tuwGDllGb06DJxpPTvvvTXG2
+         RmoUOBnwJFe5KtOLAMWy6lvROkKFPX60S+mI5ytXeylDEde1oCsusAIUF5pYxz5Oht/2
+         xarcTB8kDfAkf738tLOerd3aNhPouo2P0zMgsdR0XaAqCRwOpP3CZxKphOwkySQo21yf
+         WLVlP3Nq+piMAGMW8O5TI8mJ9phXuD51VSH+foZ206ScFwVN1P3lHMlcYTO7cn8HzXoq
+         ILoQ==
+X-Gm-Message-State: AJIora8748IaTYnq3W1BOp+bkwIwmAt6K7XPeAChn/am+zMe6irMsLGt
+        /j/+VzLsu4wELqH5+gdOpBE=
+X-Google-Smtp-Source: AGRyM1tY0QAxhFowx0g8LT07J8LxkOMVr+l2dkYMDIsaCY9ybvV6LMjuhYC39eLOm8PspfukNdT37Q==
+X-Received: by 2002:aca:ac84:0:b0:33a:373f:878d with SMTP id v126-20020acaac84000000b0033a373f878dmr14910054oie.253.1658843952785;
+        Tue, 26 Jul 2022 06:59:12 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d24-20020a05680805d800b0032f63c4638esm6115159oij.2.2022.07.26.06.59.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jul 2022 06:59:12 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 26 Jul 2022 06:59:10 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Aleksa Savic <savicaleksa83@gmail.com>
+Cc:     linux-hwmon@vger.kernel.org, Jack Doan <me@jackdoan.com>,
+        Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (aquacomputer_d5next) Add support for reading the
+ +12V voltage sensor on D5 Next
+Message-ID: <20220726133225.GA3021073@roeck-us.net>
+References: <20220726120203.33773-1-savicaleksa83@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: EqSMJrInHcZf03e3GF8qkWgk3MBfCTSD
-X-Proofpoint-ORIG-GUID: EqSMJrInHcZf03e3GF8qkWgk3MBfCTSD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-26_04,2022-07-26_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- bulkscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 mlxscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207260047
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220726120203.33773-1-savicaleksa83@gmail.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,73 +73,58 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Adding documentation for max31760 fan speed controller
+On Tue, Jul 26, 2022 at 02:02:03PM +0200, Aleksa Savic wrote:
+> Add support for reading the +12V voltage that the D5 Next pump receives.
+> 
+> Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
 
-Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
----
- Documentation/hwmon/max31760.rst | 53 ++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
- create mode 100644 Documentation/hwmon/max31760.rst
+Applied.
 
-diff --git a/Documentation/hwmon/max31760.rst b/Documentation/hwmon/max31760.rst
-new file mode 100644
-index 000000000..11055722b
---- /dev/null
-+++ b/Documentation/hwmon/max31760.rst
-@@ -0,0 +1,53 @@
-+Kernel driver max31760
-+======================
-+
-+Supported chips:
-+  * Analog Devices MAX31760
-+
-+    Prefix: 'max31760'
-+
-+    Addresses scanned: none
-+
-+    Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX31760.pdf
-+
-+
-+Author: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-+
-+Description
-+-----------
-+
-+MAX31760 is a presicion fan speed controller with nonvolatile lookup table.
-+Device has one internal and one external temperature sensor support.
-+Controls two fans and measures their speeds.
-+Generates hardware alerts when programmable max and critical temperatures are exceeded.
-+Supports direct and temperature based automatic fan control.
-+
-+Temperature measurement range: from -55°C to 125°C
-+
-+Temperature Resolution: 11 Bits, ±0.125°C
-+
-+Please refer how to instantiate this driver: Documentation/i2c/instantiating-devices.rst
-+
-+
-+Sysfs entries
-+-------------
-+
-+=============================== ============================================================
-+fan[1-2]_input                  Fan speed (in RPM)
-+fan[1-2]_enable                 Enable fan readings and fan fault alarms
-+fan[1-2]_fault                  Fan fault status
-+temp[1-2]_label                 "Remote" and "Local" temperature channel labels
-+temp[1-2]_input                 Temperature sensor readings (in millidegrees Celsius)
-+temp1_fault                     Remote temperature sensor fault status
-+temp[1-2]_max                   Temperature max value. Asserts "ALERT" pin when exceeded
-+temp[1-2]_max_alarm             Temperature max alarm status
-+temp[1-2]_crit                  Temperature critical value. Asserts "SHDN" pin when exceeded
-+temp[1-2]_crit_alarm            Temperature critical alarm status
-+pwm1                            PWM value for direct fan control
-+pwm1_enable                     1: direct fan control, 2: temperature based auto fan control
-+pwm1_freq                       PWM frequency in hertz
-+pwm1_auto_channels_temp         Temperature source for auto fan control
-+pwm1_auto_point[1-48]_pwm       RW PWM value for LUT point
-+pwm1_auto_point[1-48]_temp      RO Temperature value for LUT point
-+pwm1_auto_point[1-48]_temp_hyst RW Temperature hysteresis value for LUT point
-+=============================== ============================================================
--- 
-2.36.1
+Thanks,
+Guenter
 
+> ---
+>  drivers/hwmon/aquacomputer_d5next.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
+> index 997d72ea6182..738a1df8eae6 100644
+> --- a/drivers/hwmon/aquacomputer_d5next.c
+> +++ b/drivers/hwmon/aquacomputer_d5next.c
+> @@ -71,6 +71,7 @@ static u8 secondary_ctrl_report[] = {
+>  #define D5NEXT_PUMP_OFFSET		0x6c
+>  #define D5NEXT_FAN_OFFSET		0x5f
+>  #define D5NEXT_5V_VOLTAGE		0x39
+> +#define D5NEXT_12V_VOLTAGE		0x37
+>  #define D5NEXT_CTRL_REPORT_SIZE		0x329
+>  static u8 d5next_sensor_fan_offsets[] = { D5NEXT_PUMP_OFFSET, D5NEXT_FAN_OFFSET };
+>  
+> @@ -114,7 +115,8 @@ static const char *const label_d5next_power[] = {
+>  static const char *const label_d5next_voltages[] = {
+>  	"Pump voltage",
+>  	"Fan voltage",
+> -	"+5V voltage"
+> +	"+5V voltage",
+> +	"+12V voltage"
+>  };
+>  
+>  static const char *const label_d5next_current[] = {
+> @@ -340,8 +342,8 @@ static umode_t aqc_is_visible(const void *data, enum hwmon_sensor_types type, u3
+>  	case hwmon_in:
+>  		switch (priv->kind) {
+>  		case d5next:
+> -			/* Special case to support voltage sensor */
+> -			if (channel < priv->num_fans + 1)
+> +			/* Special case to support +5V and +12V voltage sensors */
+> +			if (channel < priv->num_fans + 2)
+>  				return 0444;
+>  			break;
+>  		default:
+> @@ -574,6 +576,7 @@ static int aqc_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+>  	switch (priv->kind) {
+>  	case d5next:
+>  		priv->voltage_input[2] = get_unaligned_be16(data + D5NEXT_5V_VOLTAGE) * 10;
+> +		priv->voltage_input[3] = get_unaligned_be16(data + D5NEXT_12V_VOLTAGE) * 10;
+>  		break;
+>  	default:
+>  		break;
