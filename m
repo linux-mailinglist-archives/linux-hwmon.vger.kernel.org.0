@@ -2,188 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B70D55834AC
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Jul 2022 23:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC62583C83
+	for <lists+linux-hwmon@lfdr.de>; Thu, 28 Jul 2022 12:50:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235909AbiG0VFu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 27 Jul 2022 17:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55706 "EHLO
+        id S236439AbiG1Kt6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 28 Jul 2022 06:49:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234525AbiG0VFI (ORCPT
+        with ESMTP id S236260AbiG1Kt5 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 27 Jul 2022 17:05:08 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58CB5FAF0
-        for <linux-hwmon@vger.kernel.org>; Wed, 27 Jul 2022 14:04:15 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id a11so10785891wmq.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 27 Jul 2022 14:04:15 -0700 (PDT)
+        Thu, 28 Jul 2022 06:49:57 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4413C1C123
+        for <linux-hwmon@vger.kernel.org>; Thu, 28 Jul 2022 03:49:55 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id z25so2275780lfr.2
+        for <linux-hwmon@vger.kernel.org>; Thu, 28 Jul 2022 03:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linexp-org.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Mb4JyaEjxL4JDBtXDcGCWHFGP5KgiZCOnINym1JdoVI=;
-        b=13YHnvPFGlHVD3It/kAW0PC4kqnY1vTEOpiGKK/McFrXR7XO621SlHmXlO2fw7BOOg
-         4Lr85dXZoaPkOpKgj0b0uyY3fqcK1iiEc7YqZ3YXd6RbIb2OBDrqrvIwE9xSiZl3iGYL
-         3ybXBkrtAhfjlgpiFGOmFe/PMDdFN39BfJFOp6AFu2Usu/FkiICGhpR6BZFT1v1n8v3u
-         Fjb5cixwEagngCSIe4Ug3v3lsbX9G9yw4LEIPLu2z9zH33CQ5X9WbqvESwK8VolN/yLC
-         tGnwbOhpIA/ADqE9bOLpT6ad6QiDhRgb4EcqoiNoFC1c3QB/e2aDRLofIDn2e5Sf6gPd
-         cYAw==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vjovoCg99oJQSBv7Yy41PHx9jv3Xat4N5B+MMKdKhQg=;
+        b=E9grpproY293z/xbUJfZUqtOihWkdkH1a6wDjnDSP8CLBb/baxYbqH8Ut4lpGmaZgI
+         EXtXXHwnplM0AxTOwyYbhREIzVZ+dSlqaX9BtwQWAkerT1zAS1ybdx2ov6+thzVqcCKd
+         Wz4osf62MoVx4nGRb5UGK/tOZkuF/lOvdCx03/p7ABJxP4iuR0v+Fb+Yi8gSaxAzBAr5
+         E4k8tXaLmhuorTnJojSn/9SUPJ4eOi4f5xIbZNXETapQi7gudBgwsK7UcqrycKzmkEDi
+         z0I+JPqwsaRb3+to3IVieyanQ8ReJbERKqpz9iyjpLdGRIWMjhdA7zFl3gYnCj6ivNun
+         o79Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Mb4JyaEjxL4JDBtXDcGCWHFGP5KgiZCOnINym1JdoVI=;
-        b=aWH/20KhGdpy8PTYUhbEV/ARfbBT2ipIRXxtZqPqgz0Ou1/WWgj74mbseUSzTMlGoN
-         Fd1rgPOg3cTH9uPC27UJSqpeVL4DRUuVu0X279v3ip9nUYJf2QjSkFJU+n5Kni2+u23s
-         6L6OO+vl4iZT5tsWdYzrh18vvuVwONAEyRMGf6qzAMmNNVr2ZFYOuf/PmkHVKfchG1Sc
-         iQRFLT098KGRJSLRp4GZ3JFFsfXqpr7mtmhz+SpL8AXOdxLMPzE+UUqVHSzZqwngn71I
-         wZLAuAdhdInYPCEzraGyDTWAHzP7LkpqqLcXtCBkRUnYEVnsLQ6k3B1dzt4U24zhM5hf
-         zMTg==
-X-Gm-Message-State: AJIora/hWpDSWZSOeOcxiSTFWQ6CnQ9ivJBxqw6oeimbDAmtYsGNCgej
-        NZBp38A0aBM4VdB57DYf4EkjKg==
-X-Google-Smtp-Source: AGRyM1s71Y8IOIJenvi/rSkvm0EMO95yLxX5Nr+kSHCzocJU/To/zxNgOL/Q/7gYaRqMJ9G2Y3PPLQ==
-X-Received: by 2002:a1c:4c02:0:b0:3a3:160f:f1ec with SMTP id z2-20020a1c4c02000000b003a3160ff1ecmr4344701wmf.159.1658955851598;
-        Wed, 27 Jul 2022 14:04:11 -0700 (PDT)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:65a8:ebd8:4098:d9d0])
-        by smtp.gmail.com with ESMTPSA id h6-20020a05600c350600b003a38606385esm37908wmq.3.2022.07.27.14.04.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 14:04:11 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linexp.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com,
-        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
-        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
-        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
-        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
-        baolin.wang7@gmail.com, f.fainelli@gmail.com,
-        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
-        glaroque@baylibre.com, miquel.raynal@bootlin.com,
-        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
-        matthias.bgg@gmail.com, j-keerthy@ti.com,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING)
-Subject: [PATCH v3 26/32] hwmon/drivers: Switch to new of thermal API
-Date:   Wed, 27 Jul 2022 23:02:47 +0200
-Message-Id: <20220727210253.3794069-27-daniel.lezcano@linexp.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220727210253.3794069-1-daniel.lezcano@linexp.org>
-References: <20220727210253.3794069-1-daniel.lezcano@linexp.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vjovoCg99oJQSBv7Yy41PHx9jv3Xat4N5B+MMKdKhQg=;
+        b=psQqyPKHQ0ake7E+W+gL4HORcg68grX3B5plmygcv3cGMtgd6Oekwfd7QEeq8aL5c6
+         WZC271BDGBDtbOFgFPTJA3NUPTL7QG+ne4BY9Qr/l8M2TFUCeiedoP+j+EoyuBah0TGo
+         tsQKyI/Fu8JvmFguPt8Dy+M91j2DKa9cRwNU31m6yKr5hwDoQB0IihNx3Yke1Lp/KbpS
+         qS2mYAkVPvmnqtIESY8gBfUkLsk0yOcIINAQRkt5tg533eAb2qeJXT05uKfw8h2DyR9u
+         T0lMhaE6mp2ysTzmPKU06n/BBbvbXMdqeOBw+F1ycrtyEdCSzuesoMxiwtgyGRU6pIeM
+         AiVw==
+X-Gm-Message-State: AJIora/wN+umXqP2pvI7qbCT77+SZYfFwTCIdSAYlhaAj1wLq9USKxB0
+        dt+Ykc/xmNPWCHEOEH2nkkQOzOrgkZajQHycvA==
+X-Google-Smtp-Source: AGRyM1t3F5bRcz9+i1t/0IbsV5MmOa9Sw5BoHK34LbDwlj6xWLUdZHsM4qQ5V2xlt4I9T2Fd3ZemiE41K/TBwng9OGc=
+X-Received: by 2002:a05:6512:1690:b0:48a:c5b6:17cc with SMTP id
+ bu16-20020a056512169000b0048ac5b617ccmr961487lfb.375.1659005393234; Thu, 28
+ Jul 2022 03:49:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:ab3:68cc:0:b0:1d7:9e97:1618 with HTTP; Thu, 28 Jul 2022
+ 03:49:52 -0700 (PDT)
+Reply-To: michellegoodman035@gmail.com
+From:   Michelle Goodman <michellegoodman035@gmail.com>
+Date:   Thu, 28 Jul 2022 10:49:52 +0000
+Message-ID: <CAPJ5U1_D4YVFHJweALN2ww=6N3qgdGvyS2Y-W3jXh1EL+gUZ3w@mail.gmail.com>
+Subject: Hola
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.3 required=5.0 tests=BAYES_80,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-The thermal OF code has a new API allowing to migrate the OF
-initialization to a simpler approach. The ops are no longer device
-tree specific and are the generic ones provided by the core code.
+Hallo, ich hoffe, Sie haben meine Nachricht erhalten.
+Ich brauche schnelle Antworten
 
-Convert the ops to the thermal_zone_device_ops format and use the new
-API to register the thermal zone with these generic ops.
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
----
- drivers/hwmon/hwmon.c      | 14 +++++++-------
- drivers/hwmon/scpi-hwmon.c | 14 +++++++-------
- 2 files changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-index 2e2cd79d89eb..4218750d5a66 100644
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -151,9 +151,9 @@ static DEFINE_IDA(hwmon_ida);
-  * between hwmon and thermal_sys modules.
-  */
- #ifdef CONFIG_THERMAL_OF
--static int hwmon_thermal_get_temp(void *data, int *temp)
-+static int hwmon_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
- {
--	struct hwmon_thermal_data *tdata = data;
-+	struct hwmon_thermal_data *tdata = tz->devdata;
- 	struct hwmon_device *hwdev = to_hwmon_device(tdata->dev);
- 	int ret;
- 	long t;
-@@ -168,9 +168,9 @@ static int hwmon_thermal_get_temp(void *data, int *temp)
- 	return 0;
- }
- 
--static int hwmon_thermal_set_trips(void *data, int low, int high)
-+static int hwmon_thermal_set_trips(struct thermal_zone_device *tz, int low, int high)
- {
--	struct hwmon_thermal_data *tdata = data;
-+	struct hwmon_thermal_data *tdata = tz->devdata;
- 	struct hwmon_device *hwdev = to_hwmon_device(tdata->dev);
- 	const struct hwmon_chip_info *chip = hwdev->chip;
- 	const struct hwmon_channel_info **info = chip->info;
-@@ -203,7 +203,7 @@ static int hwmon_thermal_set_trips(void *data, int low, int high)
- 	return 0;
- }
- 
--static const struct thermal_zone_of_device_ops hwmon_thermal_ops = {
-+static const struct thermal_zone_device_ops hwmon_thermal_ops = {
- 	.get_temp = hwmon_thermal_get_temp,
- 	.set_trips = hwmon_thermal_set_trips,
- };
-@@ -227,8 +227,8 @@ static int hwmon_thermal_add_sensor(struct device *dev, int index)
- 	tdata->dev = dev;
- 	tdata->index = index;
- 
--	tzd = devm_thermal_zone_of_sensor_register(dev, index, tdata,
--						   &hwmon_thermal_ops);
-+	tzd = devm_thermal_of_zone_register(dev, index, tdata,
-+					    &hwmon_thermal_ops);
- 	if (IS_ERR(tzd)) {
- 		if (PTR_ERR(tzd) != -ENODEV)
- 			return PTR_ERR(tzd);
-diff --git a/drivers/hwmon/scpi-hwmon.c b/drivers/hwmon/scpi-hwmon.c
-index 5187c6dd5a4f..4d75385f7d5e 100644
---- a/drivers/hwmon/scpi-hwmon.c
-+++ b/drivers/hwmon/scpi-hwmon.c
-@@ -62,9 +62,9 @@ static void scpi_scale_reading(u64 *value, struct sensor_data *sensor)
- 	}
- }
- 
--static int scpi_read_temp(void *dev, int *temp)
-+static int scpi_read_temp(struct thermal_zone_device *tz, int *temp)
- {
--	struct scpi_thermal_zone *zone = dev;
-+	struct scpi_thermal_zone *zone = tz->devdata;
- 	struct scpi_sensors *scpi_sensors = zone->scpi_sensors;
- 	struct scpi_ops *scpi_ops = scpi_sensors->scpi_ops;
- 	struct sensor_data *sensor = &scpi_sensors->data[zone->sensor_id];
-@@ -121,7 +121,7 @@ scpi_show_label(struct device *dev, struct device_attribute *attr, char *buf)
- 	return sprintf(buf, "%s\n", sensor->info.name);
- }
- 
--static const struct thermal_zone_of_device_ops scpi_sensor_ops = {
-+static const struct thermal_zone_device_ops scpi_sensor_ops = {
- 	.get_temp = scpi_read_temp,
- };
- 
-@@ -275,10 +275,10 @@ static int scpi_hwmon_probe(struct platform_device *pdev)
- 
- 		zone->sensor_id = i;
- 		zone->scpi_sensors = scpi_sensors;
--		z = devm_thermal_zone_of_sensor_register(dev,
--							 sensor->info.sensor_id,
--							 zone,
--							 &scpi_sensor_ops);
-+		z = devm_thermal_of_zone_register(dev,
-+						  sensor->info.sensor_id,
-+						  zone,
-+						  &scpi_sensor_ops);
- 		/*
- 		 * The call to thermal_zone_of_sensor_register returns
- 		 * an error for sensors that are not associated with
--- 
-2.25.1
-
+Vielen Dank.
+Michelle
