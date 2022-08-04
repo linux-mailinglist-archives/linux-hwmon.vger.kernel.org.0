@@ -2,167 +2,134 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68BF589FFF
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Aug 2022 19:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D9A58A39D
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 Aug 2022 00:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231563AbiHDRpx (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 4 Aug 2022 13:45:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        id S240376AbiHDWzd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 4 Aug 2022 18:55:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231248AbiHDRpx (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 4 Aug 2022 13:45:53 -0400
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 233C3634F;
-        Thu,  4 Aug 2022 10:45:52 -0700 (PDT)
-Received: by mail-io1-f51.google.com with SMTP id i84so243362ioa.6;
-        Thu, 04 Aug 2022 10:45:52 -0700 (PDT)
+        with ESMTP id S240424AbiHDWyX (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 4 Aug 2022 18:54:23 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CA67437A
+        for <linux-hwmon@vger.kernel.org>; Thu,  4 Aug 2022 15:53:01 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id z16so1308907wrh.12
+        for <linux-hwmon@vger.kernel.org>; Thu, 04 Aug 2022 15:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linexp-org.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc;
+        bh=507KINL6A4/AmFndHS1iP7gQvMCv3nao7sFdYMMwu/Q=;
+        b=SXwwjHMSFBkV6d3469j+NGk8We34QnvhrAFoCUQy19G/CXiE8tYZi9XqMgsGr+jFyE
+         Xelv0ZhLlbiXuGahZu23c1X6O1vdQ6ITYqy8IvtQ/E24plUi803+XJSfWsaQ9w9nAgNZ
+         o3Zo5Re3uYnblJhzl2e/gNOmbi08DEjJQvpRg50yZMDPblEi+5mJH5JPd8SsvhRWXoK/
+         WDZA8OdIGNiK5ve1+zUq1MyrGFmF5pKr9w/6AdTAYbdc//8sLdAHJjS5VLI37KWzLb/M
+         6X3a+fSAwCkyq5qGOCu0TcGWC3SXKqsmUBU+e0oHWEmzENa8hGpbpybU2AnNvQDwQ8q+
+         Q2AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=r5fIHS4i41Nwdm/9buRQQW9UtvOL0tkeiIZZl06Sy6s=;
-        b=1tf3mfjYc3t5TjRrRmSIIClA9J7PzvVM3SVJUgeUhmNOwzf+wAnSuvO49KXJJWS2Bt
-         /EpSnBiGgiaNC2Qt0UtXUfTjAYLW6CVEbVUaeE8v2c0FixQxj+jlTYosZ9L4HWaByVSf
-         JmQJx2gXfkzzK7QL4Jxw8ecP7odSdUGJOleRPsS2Wz1H6CQ0eH5r2K0Mj9NueOsK26Ig
-         e4MW7nLIU3JOYtAF5p/5ymVH4CYVQ3Dd0sK+jnart9hv9x7Gp3Aiu9qSqXAXDKGLSsrr
-         hE0JgNJJ9BF4CN2LaOGKuhzrIOx0iazFNyMPV9VkJca2Y6IV6C50GYkYcX4hszGI2Nak
-         ispQ==
-X-Gm-Message-State: ACgBeo3p4vRjbXEuKfALlqXt8KYra2buVhnZ3/fP6j++VNFYiDDkBKry
-        zABvYMJV0XhsLuuJzxY/YY7GjDCRbg==
-X-Google-Smtp-Source: AA6agR7ttXcmRYN0gSflgLc/FXkw/VZvIl+1z383cMJZ+v/MK9q4ScFa2ZWnHCf190zAKglHVgFrig==
-X-Received: by 2002:a5e:8811:0:b0:682:8a6a:cf40 with SMTP id l17-20020a5e8811000000b006828a6acf40mr1120481ioj.136.1659635151292;
-        Thu, 04 Aug 2022 10:45:51 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id c12-20020a02330c000000b00342a03e834esm41736jae.3.2022.08.04.10.45.50
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=507KINL6A4/AmFndHS1iP7gQvMCv3nao7sFdYMMwu/Q=;
+        b=JP8Uq9X+KqyzBR1ZAKXCyKP+6My/R8jDCS8b2zYQwBbocQFe9qtESERDdON8ha2KmZ
+         93VOEQrq1k4fs8uCXDC0CY/ewPFmY8EBkRbRQWa+s4Rh1iy6MNCFoGuQseTQ9JkCFsu+
+         0+BCoWt+EXyPl5MBOm9DjUA+RRu13GyDMb7wVVQa9/3G7WSnePAxQMR4IOZkIB3mNIul
+         SDbpWo3m3LPcDuHcELk2TzdEhwF5Hq90qputxgsTvgdJVPusr3vEPyyxmQm723zkJetY
+         FebiSFSXYti1IBxHMYbNtJyJPCubrcjDZmQ+sMIXHagDmCZ6NCRFMtyfeZbw2bJnqgJb
+         ua0Q==
+X-Gm-Message-State: ACgBeo2cNqgNY62O0wY78Vik6Dt/wn3/5kojO+Fsy4Gdtxpk3dKHIPIL
+        i7xlYvozmMH+RVUhJ5kd64dzdA==
+X-Google-Smtp-Source: AA6agR5FB/1c0hMGtxm0/d0QPNlvMrEglZyNig5yfbDgVc3THf+62GhkvC52FzxRKY7DlFnXy24cQA==
+X-Received: by 2002:a05:6000:1447:b0:21d:b22b:e5d with SMTP id v7-20020a056000144700b0021db22b0e5dmr2442958wrx.189.1659653576746;
+        Thu, 04 Aug 2022 15:52:56 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:31aa:ed2c:3f7:19d])
+        by smtp.gmail.com with ESMTPSA id a16-20020a056000051000b0021f87e8945asm2495906wrf.12.2022.08.04.15.52.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Aug 2022 10:45:50 -0700 (PDT)
-Received: (nullmailer pid 96985 invoked by uid 1000);
-        Thu, 04 Aug 2022 17:45:48 -0000
-Date:   Thu, 4 Aug 2022 11:45:48 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Michael Shych <michaelsh@nvidia.com>
-Cc:     "linux@roeck-us.net" <linux@roeck-us.net>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Vadim Pasternak <vadimp@nvidia.com>
-Subject: Re: [PATCH hwmon-next v4 2/3] dt-bindings: hwmon: add Microchip
- EMC2305 fan controller.
-Message-ID: <20220804174548.GB4145453-robh@kernel.org>
-References: <20220623165217.59252-1-michaelsh@nvidia.com>
- <20220623165217.59252-3-michaelsh@nvidia.com>
- <20220630221157.GA3402568-robh@kernel.org>
- <DM6PR12MB40747C492C3197BDD64027FCD48C9@DM6PR12MB4074.namprd12.prod.outlook.com>
+        Thu, 04 Aug 2022 15:52:56 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linexp.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com,
+        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
+        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
+        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
+        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
+        baolin.wang7@gmail.com, f.fainelli@gmail.com,
+        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
+        glaroque@baylibre.com, miquel.raynal@bootlin.com,
+        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
+        matthias.bgg@gmail.com, j-keerthy@ti.com,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        linux-hwmon@vger.kernel.org (open list:PMBUS HARDWARE MONITORING
+        DRIVERS)
+Subject: [PATCH v5 26/33] hwmon/drivers/pm_bus: Switch to new of thermal API
+Date:   Fri,  5 Aug 2022 00:43:42 +0200
+Message-Id: <20220804224349.1926752-27-daniel.lezcano@linexp.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220804224349.1926752-1-daniel.lezcano@linexp.org>
+References: <20220804224349.1926752-1-daniel.lezcano@linexp.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM6PR12MB40747C492C3197BDD64027FCD48C9@DM6PR12MB4074.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 12:38:58PM +0000, Michael Shych wrote:
-> Hi,
-> 
-> Sorry for long delay in getting back to you.
-> Please see below.
-> 
-> Thanks,
->    Michael.
-> 
-> > -----Original Message-----
-> > From: Rob Herring <robh@kernel.org>
-> > Sent: Friday, July 1, 2022 1:12 AM
-> > To: Michael Shych <michaelsh@nvidia.com>
-> > Cc: linux@roeck-us.net; linux-hwmon@vger.kernel.org;
-> > devicetree@vger.kernel.org; Vadim Pasternak <vadimp@nvidia.com>
-> > Subject: Re: [PATCH hwmon-next v4 2/3] dt-bindings: hwmon: add Microchip
-> > EMC2305 fan controller.
-> > 
-> > On Thu, Jun 23, 2022 at 07:52:16PM +0300, michaelsh@nvidia.com wrote:
-> > > From: Michael Shych <michaelsh@nvidia.com>
-> > >
-> > > Add basic description of emc2305 driver device tree binding.
-> > >
-> > > Signed-off-by: Michael Shych <michaelsh@nvidia.com>
-> > > Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-> > > ---
-> > > v2->v3
-> > > Changes pointed out by Rob Herring and Guenter Roeck:
-> > > - Describe separate channels of fan-controller;
-> > > - Remove pwm_max property;
-> > > - Fix compatible property.
-> > > Changes added by Michael Shych:
-> > > - Fix dt binding check warnings.
-> > > v1->v2
-> > > - Fix dt binding check errors;
-> > > - Add descriptions;
-> > > - Add missing fields;
-> > > - Change the patch subject name;
-> > > - Separate pwm-min, pwm-max per PWM channel.
-> > > ---
-> > >  .../bindings/hwmon/microchip,emc2305.yaml          | 106
-> > +++++++++++++++++++++
-> > >  1 file changed, 106 insertions(+)
-> > >  create mode 100644
-> > > Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > >
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > > b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > > new file mode 100644
-> > > index 000000000000..d054ba46ae23
-> > > --- /dev/null
-> > > +++
-> > b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > > @@ -0,0 +1,106 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) %YAML 1.2
-> > > +---
-> > > +
-> > > +$id: http://devicetree.org/schemas/hwmon/microchip,emc2305.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Microchip EMC2305 RPM-based PWM Fan Speed Controller
-> > 
-> > RPM-based? So there is a tach signal too? Don't those need the number of
-> > pulses per revolution that the fan provides.
-> > 
-> It's not relevant. The driver implements Direct setting mode according 
-> to the Datasheet: https://www.microchip.com/en-us/product/EMC2305
-> I can add this note to the documentation patch.
+The thermal OF code has a new API allowing to migrate the OF
+initialization to a simpler approach. The ops are no longer device
+tree specific and are the generic ones provided by the core code.
 
-For the binding, it doesn't matter what a driver currently implements. 
-That's one driver at one point in time. Bindings shouldn't be evolving 
-and need to support more than 1 OS.
+Convert the ops to the thermal_zone_device_ops format and use the new
+API to register the thermal zone with these generic ops.
 
-The binding needs to be able to describe the h/w. If there's a tach 
-connection, you need to describe that and the properties of the fan's 
-tach pulses. 
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-> 
-> > To repeat what I say for every fan controller binding now, until there's a
-> > common binding to describe fan controllers, fans and their relationship to
-> > each other, I'm not signing off on any fan binding doing its own thing.
-> > 
-> I'm confused here as I thought that I already changed to common fan-controller with advice of 
-> Gunter in patch series V3.
-> Do you mean that we should use some common FAN/PWM/ TACHO etc. generic binding
-> mechanism that fits all drivers?
-> Could you advise if it's already existed and reference to example?
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 02912022853d..3b9bb2123a1a 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -1109,9 +1109,9 @@ struct pmbus_thermal_data {
+ 	struct pmbus_sensor *sensor;
+ };
+ 
+-static int pmbus_thermal_get_temp(void *data, int *temp)
++static int pmbus_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
+ {
+-	struct pmbus_thermal_data *tdata = data;
++	struct pmbus_thermal_data *tdata = tz->devdata;
+ 	struct pmbus_sensor *sensor = tdata->sensor;
+ 	struct pmbus_data *pmbus_data = tdata->pmbus_data;
+ 	struct i2c_client *client = to_i2c_client(pmbus_data->dev);
+@@ -1135,7 +1135,7 @@ static int pmbus_thermal_get_temp(void *data, int *temp)
+ 	return ret;
+ }
+ 
+-static const struct thermal_zone_of_device_ops pmbus_thermal_ops = {
++static const struct thermal_zone_device_ops pmbus_thermal_ops = {
+ 	.get_temp = pmbus_thermal_get_temp,
+ };
+ 
+@@ -1153,8 +1153,8 @@ static int pmbus_thermal_add_sensor(struct pmbus_data *pmbus_data,
+ 	tdata->sensor = sensor;
+ 	tdata->pmbus_data = pmbus_data;
+ 
+-	tzd = devm_thermal_zone_of_sensor_register(dev, index, tdata,
+-						   &pmbus_thermal_ops);
++	tzd = devm_thermal_of_zone_register(dev, index, tdata,
++					    &pmbus_thermal_ops);
+ 	/*
+ 	 * If CONFIG_THERMAL_OF is disabled, this returns -ENODEV,
+ 	 * so ignore that error but forward any other error.
+-- 
+2.25.1
 
-It doesn't exist. Probably the closest binding to something as a basis 
-for something common is npcm750-pwm-fan.txt.
-
-> If it doesn't exist, it'll be too complicated to provide such a new generic description within 
-> the submission of a driver for EMC2305 device.
-> We can just completely remove OF interface and pass the necessary configuration through
-> the platform data.
-
-That's your choice...
-
-Rob
