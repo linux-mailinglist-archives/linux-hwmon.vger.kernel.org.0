@@ -2,130 +2,95 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 769BC58C129
-	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Aug 2022 03:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE5C58C2E4
+	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Aug 2022 07:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243704AbiHHB5f (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 7 Aug 2022 21:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
+        id S231756AbiHHFeq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 8 Aug 2022 01:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244046AbiHHB4v (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 7 Aug 2022 21:56:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED4C26158;
-        Sun,  7 Aug 2022 18:40:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C306B60DF3;
-        Mon,  8 Aug 2022 01:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CABBC43470;
-        Mon,  8 Aug 2022 01:40:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659922815;
-        bh=oSHs8yHh+tNGuzhpCCqaUU0KUfU9rV/2vXRXlTwIgaI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V+pydwH87gK+NS0w2NLKYXHwtjDwgMrHO/JvpnwwxDxElDcVAONOcAsCTKadZy4kH
-         UEurA5Gx0yLVoRDZXcntnm21So+uDoeClqQdac+GxggHdzxt5LUqevlk8hlU9P6dLY
-         Lytg9+C3KBfg2z4wEN3rAZ1/1rUDHwfGS326jXPTsVnpm0Mt/OPwGmQOcVF1IMYKz/
-         Sh+ujlfPTc1pUczghBH5L8l8jc7n/iocrO30w1SsGJidiSBVi4I2X1F2E0DUiXjpkN
-         Hd8OWF0RWwo3weL5T5POY+JJgNbSxALmn1kwZ753OCFUOY55rSL9OYznNQaDrlzNhC
-         FVO8CWf+BlcVg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 6/8] hwmon: (sht15) Fix wrong assumptions in device remove callback
-Date:   Sun,  7 Aug 2022 21:40:01 -0400
-Message-Id: <20220808014005.317064-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220808014005.317064-1-sashal@kernel.org>
-References: <20220808014005.317064-1-sashal@kernel.org>
+        with ESMTP id S232118AbiHHFep (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 8 Aug 2022 01:34:45 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 078C0B1E1;
+        Sun,  7 Aug 2022 22:34:44 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id x10so7607761plb.3;
+        Sun, 07 Aug 2022 22:34:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc;
+        bh=5mx8frCO4JQPtx0aeLxBWUqJKTGhhLdcJJ3zxZKM3Zk=;
+        b=YQBW1FSvXmRBogXKLCzsWMgyT72qpOhkuBPgIBecilYJReYB0ZRJ4191vT1J/R2r/m
+         XpWR4UJuAx6KeGzyIA6an7+j8uoQ2Kju+VoVFhXnTUzp6sSIGS8nON3OH0nmVptnUsFs
+         nfI6OUMWbHh55bhElQppAsnW68yKCOS5pJHNjv05AjR/RkWMekb6rOdNoE6JT/Ufn64Y
+         G1+Mnhuz/2faEpv91CM6l4QQ93YFnr+CCTpGqJFhyFKYnRqawJij5hKwc3/PHT7Mq/wG
+         kh2zo3LOmdkx+eOsKybLLkpVK7UHUMbRJBX8x1Y9rUXnAVy7XdOfn2OhN302Rw75Dgab
+         ROtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc;
+        bh=5mx8frCO4JQPtx0aeLxBWUqJKTGhhLdcJJ3zxZKM3Zk=;
+        b=AG2MPhb5En+gDJMfo95R/rCSmuz8qByJeoDD1LYYYzbB43J7yQ6I55mwzt4bQUtx+I
+         mFLrALKhl9tYk3KTlGuZbLCgIRPurUsyI8frSOVUEnEtQPKNDw/VMWQZXGa2w4AWpKLg
+         UBl/CJ+rRL2mgBirKrJb4n/D6mS3mtyn9Bun8CMTpz2k9glEajaP9JUAKZjzuA9p7w5U
+         BiD1a7P8ETPwV51CLsJUT1P+CST8hVyEqjW+67m0vfR1XOzII7QHR3cFajINzgzTgZBM
+         0S+Q0CeSKv5Fg1K19x4WkEm4lFik+nX3rZ415JMDSWE04P44jpaFqx7napHSWlbq/ndM
+         cFIw==
+X-Gm-Message-State: ACgBeo1f43mbP0iUel3nD+7LmmDmthXDXqM09OavccQ+w4Nufacp3lof
+        Qq7g5FQPgXmn2HkMI3L31QI=
+X-Google-Smtp-Source: AA6agR4MUv5BhhH63BDimTTz91vaQdqo+mPL9JtPgeddDcU8hjwwuiFVfV1d1/LUGmfpwB5kgOYX/Q==
+X-Received: by 2002:a17:902:f551:b0:16e:d000:543b with SMTP id h17-20020a170902f55100b0016ed000543bmr16691749plf.22.1659936883497;
+        Sun, 07 Aug 2022 22:34:43 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id w79-20020a627b52000000b0052c0a9234e0sm7876006pfc.11.2022.08.07.22.34.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Aug 2022 22:34:42 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sun, 7 Aug 2022 22:34:41 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ingo Molnar <mingo@kernel.org>, Kees Cook <keescook@chromium.org>,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL] hwmon updates for v5.20
+Message-ID: <20220808053441.GA556090@roeck-us.net>
+References: <20220730022529.497941-1-linux@roeck-us.net>
+ <Yu+OzWv2JDbI89mW@gmail.com>
+ <CAHk-=wiGO=pfxyW6E7HdxCnRwWOF_STL=z7yUNwZK__DrV1WmQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiGO=pfxyW6E7HdxCnRwWOF_STL=z7yUNwZK__DrV1WmQ@mail.gmail.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+On Sun, Aug 07, 2022 at 09:45:08AM -0700, Linus Torvalds wrote:
+> Added Kees - this *looks* like it's a compiler bug.
+> 
+> On Sun, Aug 7, 2022 at 3:07 AM Ingo Molnar <mingo@kernel.org> wrote:
+> >
+> > Just a quick build regression report, i386 allmodconfig fails to build due
+> > to a 'string overread' compiler warning in drivers/hwmon/lm90.o:
+> 
+> I tried to see it here with gcc-12.1, but it's not triggering, so it's
+> presumably compiler-dependent.
+> 
 
-[ Upstream commit 7d4edccc9bbfe1dcdff641343f7b0c6763fbe774 ]
+I don't see it with gcc 11.3. either, but I do indeed see the problem
+with gcc 11.2.
 
-Taking a lock at the beginning of .remove() doesn't prevent new readers.
-With the existing approach it can happen, that a read occurs just when
-the lock was taken blocking the reader until the lock is released at the
-end of the remove callback which then accessed *data that is already
-freed then.
+The problem is in lm90_detect_nuvoton() which returns ERR_PTR(-ENODEV)
+instead of NULL on error. I'll send a patch.
 
-To actually fix this problem the hwmon core needs some adaption. Until
-this is implemented take the optimistic approach of assuming that all
-readers are gone after hwmon_device_unregister() and
-sysfs_remove_group() as most other drivers do. (And once the core
-implements that, taking the lock would deadlock.)
+Thanks, and sorry for the problem.
 
-So drop the lock, move the reset to after device unregistration to keep
-the device in a workable state until it's deregistered. Also add a error
-message in case the reset fails and return 0 anyhow. (Returning an error
-code, doesn't stop the platform device unregistration and only results
-in a little helpful error message before the devm cleanup handlers are
-called.)
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20220725194344.150098-1-u.kleine-koenig@pengutronix.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/sht15.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/hwmon/sht15.c b/drivers/hwmon/sht15.c
-index a2fdbb7d20ed..3bff2dce3123 100644
---- a/drivers/hwmon/sht15.c
-+++ b/drivers/hwmon/sht15.c
-@@ -1040,25 +1040,20 @@ static int sht15_probe(struct platform_device *pdev)
- static int sht15_remove(struct platform_device *pdev)
- {
- 	struct sht15_data *data = platform_get_drvdata(pdev);
-+	int ret;
- 
--	/*
--	 * Make sure any reads from the device are done and
--	 * prevent new ones beginning
--	 */
--	mutex_lock(&data->read_lock);
--	if (sht15_soft_reset(data)) {
--		mutex_unlock(&data->read_lock);
--		return -EFAULT;
--	}
- 	hwmon_device_unregister(data->hwmon_dev);
- 	sysfs_remove_group(&pdev->dev.kobj, &sht15_attr_group);
-+
-+	ret = sht15_soft_reset(data);
-+	if (ret)
-+		dev_err(&pdev->dev, "Failed to reset device (%pe)\n", ERR_PTR(ret));
-+
- 	if (!IS_ERR(data->reg)) {
- 		regulator_unregister_notifier(data->reg, &data->nb);
- 		regulator_disable(data->reg);
- 	}
- 
--	mutex_unlock(&data->read_lock);
--
- 	return 0;
- }
- 
--- 
-2.35.1
-
+Guenter
