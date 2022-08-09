@@ -2,106 +2,111 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6245058E2DC
-	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Aug 2022 00:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E51F58E328
+	for <lists+linux-hwmon@lfdr.de>; Wed, 10 Aug 2022 00:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbiHIWQV (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 9 Aug 2022 18:16:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37314 "EHLO
+        id S229471AbiHIWYI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 9 Aug 2022 18:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229801AbiHIWPQ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 9 Aug 2022 18:15:16 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B516620192
-        for <linux-hwmon@vger.kernel.org>; Tue,  9 Aug 2022 15:15:14 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id h138so10740613iof.12
-        for <linux-hwmon@vger.kernel.org>; Tue, 09 Aug 2022 15:15:14 -0700 (PDT)
+        with ESMTP id S229441AbiHIWYI (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 9 Aug 2022 18:24:08 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF725D0C0
+        for <linux-hwmon@vger.kernel.org>; Tue,  9 Aug 2022 15:24:06 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id f28so12060925pfk.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 09 Aug 2022 15:24:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
-         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
-         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
-         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
-         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
-         O1Rw==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=R8mxJ32ZAlbkS0Y1wysevWnDZ5/o5cvROPexUh1gSwM=;
+        b=LWExsbYPFx+b1mW6MqtQE0wg27HLVAyUGLLNH4hrTGAUOrIvRD3mqTFenPD11n5v2s
+         Oy3mE/kjhThYhG6TWzU//xBqGknvo6HQlwJZzZXumviZ2LPAOWPwV/UorYLiD2adzPmm
+         Kdl2w5J09/3ewxUixwxTdDLk2L44f9DLe5DcA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=OdjUcY5EKDLmVQ2JryuUZvi3hW7MgpsBLpMVWb2CUWtp6QP/bTPI9GfP56GykoHPSG
-         kM2PEVTlghOYLxSED8NN17wpo14+RYmiPa5Y5JnX980fUW0xCCecGbdhiMEvXe8nFvWE
-         k/VeXPg1nDYdzBTJtP/AFguF9+jQDkQa40vqLZ8z6BA8BA6ChVw0tIdigPdSput+Z5qa
-         2fuMpbW1Cp/hvN0lFahFugk/apyt5rYucwSI/WiG178DNVd76GOvpvgbyyptgfTl/3QA
-         Ql4fe0ZQ7vMOK5lcPB8F7xWlchZDmL5PXTeIb7FMCZDfT2n0bYkdvM5ZWxBxeScsnohM
-         Gz8Q==
-X-Gm-Message-State: ACgBeo2tFKIRF+KGIWLPxo9UaKDfom7RgcUCurhZABOOrXjsRUBtXrvZ
-        UvmlK5HG+qPUGbGkQR+MUMqgwXmiZblkuZka3BxnReR+aLqhhw==
-X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
-X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
- v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
- Aug 2022 15:15:03 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=R8mxJ32ZAlbkS0Y1wysevWnDZ5/o5cvROPexUh1gSwM=;
+        b=QAhezqgH6tLJe9kbvHIvwvKBH+h/VuSU/wndBVd0WxIQ4VlNjaB3Qirrd9q7I2ljXz
+         kYlVBcTMle06WYRjrRJIKq9PPhRtc/CIKkuulaJoBA/l1XhbmOrfx2gf3lGIcvP6ALHP
+         JtEmDI7V3N5x8GLOIdGa20aVH0z2l+qNiNF/G1L8mSDtGRmM9EL8c3EeWsJowU/6iu/i
+         mTRj0hA2RtLSpn6bBT4q7a3QMsSu0JJeXhwL5oowGYucZSvbJTGP2hicPEmbF9tA6IVV
+         WM4Spdm8QxcsbmevJY+sAE73lvemaunuH9pyOoV8rgZTyWdBovvz35vIy2Ctf6NWs7Y9
+         /C/Q==
+X-Gm-Message-State: ACgBeo1Xs3DwUh1QOX2M0e0JGdPycC+JvI/F4o2MInGsr/BjC3MnmjyU
+        9suqzHO44Grf1SY++P0Ft+mNMw==
+X-Google-Smtp-Source: AA6agR7SbevTC5Y48pp8A9xZb6cpqho/B0EqI2yyzNQAtEThNhuUcjF/sYHDrSLIctM83mbgxPMS8A==
+X-Received: by 2002:a63:88c8:0:b0:41d:260c:ea29 with SMTP id l191-20020a6388c8000000b0041d260cea29mr15372038pgd.284.1660083846452;
+        Tue, 09 Aug 2022 15:24:06 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id a5-20020a62d405000000b0052ab42ea0c5sm393592pfh.147.2022.08.09.15.24.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Aug 2022 15:24:05 -0700 (PDT)
+Date:   Tue, 9 Aug 2022 15:24:04 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Hardware Monitoring <linux-hwmon@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH] hwmon: (lm90) Fix error return value from detect function
+Message-ID: <202208091519.254D27B08E@keescook>
+References: <20220808101504.1933123-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
- 15:15:03 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Dr. Ali Moses" <alimoses07@gmail.com>
-Date:   Tue, 9 Aug 2022 15:15:03 -0700
-Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:d36 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [alimoses07[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [alimoses07[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220808101504.1933123-1-linux@roeck-us.net>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Mon, Aug 08, 2022 at 03:15:04AM -0700, Guenter Roeck wrote:
+> lm90_detect_nuvoton() is supposed to return NULL if it can not detect
+> a chip, or a pointer to the chip name if it does. Under some circumstances
+> it returns an error pointer instead. Some versions of gcc interpret an
+> ERR_PTR as region of size 0 and generate an error message.
+> 
+>   In function ‘__fortify_strlen’,
+>       inlined from ‘strlcpy’ at ./include/linux/fortify-string.h:159:10,
+>       inlined from ‘lm90_detect’ at drivers/hwmon/lm90.c:2550:2:
+>   ./include/linux/fortify-string.h:50:33: error:
+>       ‘__builtin_strlen’ reading 1 or more bytes from a region of size 0
+>      50 | #define __underlying_strlen     __builtin_strlen
+>         |                                 ^
+>   ./include/linux/fortify-string.h:141:24: note:
+>       in expansion of macro ‘__underlying_strlen’
+>     141 |                 return __underlying_strlen(p);
+>         |                        ^~~~~~~~~~~~~~~~~~~
+> 
+> Returning NULL instead of ERR_PTR() fixes the problem.
+> 
+> Fixes: c7cebce984a2 ("hwmon: (lm90) Rework detect function")
+> Reported-by: Ingo Molnar <mingo@kernel.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> It is interesting that some versions of gcc interpret an ERR_PTR this way.
+> It did find a real bug, though the error message is quite confusing.
+> Would it be possible to enhance the fortify functions to detect a constant
+> ERR_PTR at compile time ? I think that might be quite useful.
+
+Yeah, that should be possible. I suspect something like this might work:
+
+	BUILD_BUG_ON(__builtin_constant_p(src) && IS_ERR_VALUE(src));
+	BUILD_BUG_ON(__builtin_constant_p(dst) && IS_ERR_VALUE(dst));
+
+Though I'm not sure how it'd play with GCC value range checker.
+
 -- 
-Hello,
-We the Board Directors believe you are in good health, doing great and
-with the hope that this mail will meet you in good condition, We are
-privileged and delighted to reach you via email" And we are urgently
-waiting to hear from you. and again your number is not connecting.
-
-My regards,
-Dr. Ali Moses..
-
-Sincerely,
-Prof. Chin Guang
+Kees Cook
