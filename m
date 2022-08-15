@@ -2,103 +2,87 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE63C592A0D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Aug 2022 09:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D9E592B93
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Aug 2022 12:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233348AbiHOHEW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 15 Aug 2022 03:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37620 "EHLO
+        id S231494AbiHOJMb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 15 Aug 2022 05:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230269AbiHOHEV (ORCPT
+        with ESMTP id S231760AbiHOJMa (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 15 Aug 2022 03:04:21 -0400
-Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F801C130
-        for <linux-hwmon@vger.kernel.org>; Mon, 15 Aug 2022 00:04:19 -0700 (PDT)
-Received: by mail-vs1-xe29.google.com with SMTP id o123so6424564vsc.3
-        for <linux-hwmon@vger.kernel.org>; Mon, 15 Aug 2022 00:04:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=29acQNA8Cumm02CGyUpVCLdeAEc2jQcZ1RkMPZNG+yw=;
-        b=Qw2Wv6bFYs1f8UYCQY7a9USoky52+coKWm6+MDP8T2+vwN8pmrvMK+ZWEfFBgVj7Ff
-         s1suGNIl5pA1g9SIGkrizdNkY6vI3fN0IsK0zuhcifY7uNSlkm0nAEe8qYPWLu+/LxUd
-         +YDLOuZ6ljW/cVdLgczWv5VMTuppzVovb1jm6pJInLvB427LFJCf2X7z+Jma0R8bAwOA
-         TQxoKOoVVBDD1m1b2LIHdieVys6iWNBF/2y75/bifnS5qifXSv6b8CsiSoxdrau84bmN
-         pM3NcnIPuGi6Tb3oufuyiU9dUqAEZVIG6SPlsv8INj2dUfHGWB0JJgXnlFfTDpVcMGQG
-         KT7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=29acQNA8Cumm02CGyUpVCLdeAEc2jQcZ1RkMPZNG+yw=;
-        b=2M+rxEiu/klRFJc3A8xkk5XEJ53KBptztRAJc12+O+KG9egtKlxwAVPjZ1Z7hih4y2
-         9Rc7u0galyVncms1XU5L15klg3BieoFVQbi0bH+cgUjA+Qjvz/ZzRBsH2iS08PHRSh4X
-         2DIr4SU9wB0QTGNWnQw4WtiDsvvnLHqNNuK5pMNEcPSGUsxIkRA82ajdv8avCPquYWvD
-         U9eKsXOLA96BLOadtCzRb0NIVRib7ozIziR0u6FLtdBKg2mjtHLRqQKfQ42pGZPriIoa
-         EDZ7U4V5+GNeUKkXsLlakFk0rRLurZ5DM3V1ldlQ6NadBImm0ely+n+ZUu4U8X6wHbKd
-         R4Ow==
-X-Gm-Message-State: ACgBeo0hNvdZmtiYXhOynoDt39XdTTFnUzpMi6J2+UaauAdXxNOZZCR7
-        ZukHzc6MFiGEu2EJWQqVdJFc5mCVKB5oo+Euz+I=
-X-Google-Smtp-Source: AA6agR6ei86bw3REBpYHcx6QYhsSnZaD5/CdMO42BcXNtBuo1n2RuKIbmLBKC/ObhdLtqQQCGVEiHzmgGAD9hXP1hQM=
-X-Received: by 2002:a67:c215:0:b0:387:21f6:282a with SMTP id
- i21-20020a67c215000000b0038721f6282amr5912515vsj.30.1660547058678; Mon, 15
- Aug 2022 00:04:18 -0700 (PDT)
+        Mon, 15 Aug 2022 05:12:30 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB5621E2D;
+        Mon, 15 Aug 2022 02:12:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=TfpBC458fNMwuJim+LX9wzEgy0r+1CzNINaC0XhHYTY=; b=pv21Q2xcgWo0gE35aU+detWxmJ
+        FohGIgaoPUblYdGr+/ltk9hGqBbCgZYoJbUiUCR3FBIEhFeAIy6+4QAoed9VCpE6AEv6X0UtrNoaM
+        sTi/7pI4z/5bkAHhWl5R4R0Do75U1KZdf8I+ofdx9iDzz4CcTvk8c8k/0FPImew6PYsxqkO44881U
+        lP/Zzzifrad+Hyr8hovemYDrLtlcHv8vR2ag1gC78n6RA63/ICnhgIF3Ng4MHRdVajWOts8v5jiVV
+        3Tyunvs7yY8KRMICOkVJ7Km9HYE5d0WU/RE/euGsWlFpv3q/1uX2+KIUGCACQLObeTIQtv5Dn7CsB
+        ZoaMNKhA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oNW8X-005aEr-6K; Mon, 15 Aug 2022 09:11:53 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 55537980153; Mon, 15 Aug 2022 11:11:52 +0200 (CEST)
+Date:   Mon, 15 Aug 2022 11:11:52 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-hwmon@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+        corbet@lwn.net, fenghua.yu@intel.com, jdelvare@suse.com,
+        linux@roeck-us.net, len.brown@intel.com
+Subject: Re: [PATCH 7/7] perf/x86/intel/P4: Fix smp_num_siblings usage
+Message-ID: <YvoN2DTABnRZiJhf@worktop.programming.kicks-ass.net>
+References: <20220812164144.30829-1-rui.zhang@intel.com>
+ <20220812164144.30829-8-rui.zhang@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:612c:191:b0:2e3:20e1:d04 with HTTP; Mon, 15 Aug 2022
- 00:04:17 -0700 (PDT)
-Reply-To: avamedicinemed1@gmail.com
-From:   Dr Ava Smith <brightotabor3@gmail.com>
-Date:   Mon, 15 Aug 2022 00:04:17 -0700
-Message-ID: <CADy_4JRjf-VVVs4ipM3dOD_uaJjWxx-5_0Xs6_DzqPyJahtLWA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:e29 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5003]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [brightotabor3[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [brightotabor3[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [avamedicinemed1[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  1.8 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220812164144.30829-8-rui.zhang@intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hello Dear,
-how are you today?hope you are fine
-My name is Dr Ava Smith ,Am an English and French nationalities.
-I will give you pictures and more details about me as soon as i hear from you
-Reply me through my official email (avamedicinemed1@gmail.com)
-Thanks
-Ava
+On Sat, Aug 13, 2022 at 12:41:44AM +0800, Zhang Rui wrote:
+> smp_num_siblings can be larger than 2.
+
+Not on a P4 it can't ;-)
+
+> 
+> Any value larger than 1 suggests HT is supported.
+> 
+> Reviewed-by: Len Brown <len.brown@intel.com>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> ---
+>  arch/x86/include/asm/perf_event_p4.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/perf_event_p4.h b/arch/x86/include/asm/perf_event_p4.h
+> index 94de1a05aeba..b14e9a20a7c0 100644
+> --- a/arch/x86/include/asm/perf_event_p4.h
+> +++ b/arch/x86/include/asm/perf_event_p4.h
+> @@ -189,7 +189,7 @@ static inline int p4_ht_active(void)
+>  static inline int p4_ht_thread(int cpu)
+>  {
+>  #ifdef CONFIG_SMP
+> -	if (smp_num_siblings == 2)
+> +	if (smp_num_siblings > 1)
+>  		return cpu != cpumask_first(this_cpu_cpumask_var_ptr(cpu_sibling_map));
+>  #endif
+>  	return 0;
+
+Unless Intel plans to respin an P4 with extra siblings on, I don't think
+this qualifies for the word 'fix'.
