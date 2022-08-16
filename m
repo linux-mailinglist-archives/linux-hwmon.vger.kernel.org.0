@@ -2,165 +2,119 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BD359570C
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Aug 2022 11:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89639595800
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Aug 2022 12:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233926AbiHPJut (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 16 Aug 2022 05:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47968 "EHLO
+        id S233744AbiHPKUz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 16 Aug 2022 06:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234094AbiHPJu0 (ORCPT
+        with ESMTP id S234444AbiHPKUY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 16 Aug 2022 05:50:26 -0400
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD2BF139D93;
-        Tue, 16 Aug 2022 01:28:20 -0700 (PDT)
+        Tue, 16 Aug 2022 06:20:24 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3974116ECD;
+        Tue, 16 Aug 2022 01:24:11 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id s11so7593785qtx.6;
+        Tue, 16 Aug 2022 01:24:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1660638501; x=1692174501;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4O85Ywpsk0CWX8vVdYh3wJcHjYPaTGC/6XL8TPAGJOE=;
-  b=oY6AdOURKu2wtaB8asLWGrTpXSq5hWNp7FQx+nWXbbMFCajnthtdnbbC
-   rSHKiBHAW5Bu4YEzmk6SSAK+43mxqLH/QbITRF5Jtws6Lp+dWSVKlcthO
-   mMXP2Ghi8t97y2uUwwqDt2zkmG0vQdfVJEJ/AQL1mV6ergZkfAdVBRj2v
-   Y=;
-X-IronPort-AV: E=Sophos;i="5.93,240,1654560000"; 
-   d="scan'208";a="230105355"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2c-b09ea7fa.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2022 08:28:20 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2c-b09ea7fa.us-west-2.amazon.com (Postfix) with ESMTPS id 46F4744ABC;
-        Tue, 16 Aug 2022 08:28:18 +0000 (UTC)
-Received: from EX13D08UEE002.ant.amazon.com (10.43.62.92) by
- EX13MTAUEE002.ant.amazon.com (10.43.62.24) with Microsoft SMTP Server (TLS)
- id 15.0.1497.38; Tue, 16 Aug 2022 08:27:59 +0000
-Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
- EX13D08UEE002.ant.amazon.com (10.43.62.92) with Microsoft SMTP Server (TLS)
- id 15.0.1497.38; Tue, 16 Aug 2022 08:27:59 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP
- Server id 15.0.1497.38 via Frontend Transport; Tue, 16 Aug 2022 08:27:59
- +0000
-Received: by dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com (Postfix, from userid 14301484)
-        id 626CA4B60; Tue, 16 Aug 2022 08:27:57 +0000 (UTC)
-From:   Eliav Farber <farbere@amazon.com>
-To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
-        <mark.rutland@arm.com>, <linux-hwmon@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <farbere@amazon.com>, <talel@amazon.com>, <hhhawa@amazon.com>,
-        <jonnyc@amazon.com>, <hanochu@amazon.com>, <ronenk@amazon.com>,
-        <itamark@amazon.com>, <shellykz@amazon.com>, <shorer@amazon.com>,
-        <amitlavi@amazon.com>, <almogbs@amazon.com>, <dwmw@amazon.co.uk>,
-        <rtanwar@maxlinear.com>
-Subject: [PATCH 14/16] hwmon: (mr75203) parse thermal coefficients from device-tree
-Date:   Tue, 16 Aug 2022 08:27:55 +0000
-Message-ID: <20220816082757.11990-15-farbere@amazon.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220816082757.11990-1-farbere@amazon.com>
-References: <20220816082757.11990-1-farbere@amazon.com>
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=URNWhoG6Jht3PNpZTFjRMq9C2xuK/GPJGs5c4/qP8Qo=;
+        b=WMTSsJZCsuR2GWexgektS/N4A4uFwS5j+U4U9bXLj9a3L47qI380JV+vKz4DRgUo7m
+         JQ0ZPw6GRXuu40crI4HPnyfuU8Mwuj1qNeEIP4TcZGai2JWBghl1MLZHSVb55P06F6bx
+         B1nlcqlENsza+hf4Ohd1X2ICgnXG9gNZC7PGiYkFdA7ZFjkUfcc87MSd36YKblkLzxGa
+         2BnwA9oruaCFleVvpGTBbHY4dKpfAmqqekOjjv8m9YDssWVu8bRB/z5KMz8EGrrjZ7Sy
+         Eu4fOB4U87dlJ/FQykdL1H5XL0UdE1RlRY7jmsZJ10A3yVUtG2esLd0xOaEnLq9ua0pr
+         3xdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=URNWhoG6Jht3PNpZTFjRMq9C2xuK/GPJGs5c4/qP8Qo=;
+        b=e4x9YMl4hoo1y89HM5Ci5Jp5LKPTYqOmkNWgQFQGsjBx+NmR/0QUz+lTTckOgi277Y
+         sAPdfcHZjQVHg9hewQQXtcxUg8RTEZ0j0pQeKcviFFrL/+4ut/xbVyRtEUekQNnY2qEI
+         VzS4MtsQsQGYk0G0/k7AvC2pWn/Z/BDD8tERXZkBi74SqtUBkVnPc7OXkocfF1JTGqZo
+         ogb/nuvWjIZ5Jk8m2li+OOEKJtoKZSdhxg4OpDOjm35js34vAhrN/VQ0qsx1jRJaErS6
+         ezntuXFXJbWCkWpKmsnSXfai1RWb1MqbM3wOpdvOwxAKC90BGy1fhg0KFjiqZN132yPx
+         N4tw==
+X-Gm-Message-State: ACgBeo3Zxe0nTE8F6Trk56qb222CQX/jl1QENzmY1g7Hj5bNS+aTtykf
+        p2fkJqHSkNCgnflRw6RnvDqcOgJL2AFJiZ3AUyk=
+X-Google-Smtp-Source: AA6agR5pnQGi7oingWiXnnixDq3edlax9wsTNuhcRBi9pIKjuflZ8obEieyrcjYpsw/u/5tbgjY0kZ/rOVvlBmyXAN8=
+X-Received: by 2002:a05:622a:14cf:b0:343:5b6:68ca with SMTP id
+ u15-20020a05622a14cf00b0034305b668camr16705479qtx.195.1660638245828; Tue, 16
+ Aug 2022 01:24:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-11.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <cover.1660292316.git.mazziesaccount@gmail.com>
+ <166057828406.697572.228317501909350108.b4-ty@kernel.org> <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
+ <Yvp1Qkuh7xfeb/B2@sirena.org.uk> <YvqV9Mq6I3gXQaf2@pendragon.ideasonboard.com>
+In-Reply-To: <YvqV9Mq6I3gXQaf2@pendragon.ideasonboard.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 16 Aug 2022 11:23:29 +0300
+Message-ID: <CAHp75VcAS2Km_aWOV-XhMe9JkLER-1DYbJbkM9pa-i9yhHqsFQ@mail.gmail.com>
+Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        linux-amlogic <linux-amlogic@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Documentation List <linux-doc@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-hwmon@vger.kernel.org, linux-clk <linux-clk@vger.kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        David Airlie <airlied@linux.ie>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Use thermal coefficients from the device tree if they exist.
-Otherwise, use default values.
+On Mon, Aug 15, 2022 at 11:20 PM Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+> On Mon, Aug 15, 2022 at 05:33:06PM +0100, Mark Brown wrote:
 
-The equation used in the driver is:
-  T = G + H * (n / cal5 - 0.5) + J * F
+...
 
-With this change we can support also Mode 1 Conversion, which
-uses A instead of G, and B instead of H.
+> However, should a devm_clk_get_enable() or similar function be
+> implemented, we'll run into trouble.
 
-We can also support the series 6 equation that has different
-coefficients and has a slightly different format:
-  T = G + H * (n / cal5 - 0.5)
-by setting J to 0.
+And in 5.19 we have devm_clk_get_enable(), are we already in trouble?
 
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
- drivers/hwmon/mr75203.c | 44 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 40 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/hwmon/mr75203.c b/drivers/hwmon/mr75203.c
-index 59e2dc8fa333..79831a0d5dca 100644
---- a/drivers/hwmon/mr75203.c
-+++ b/drivers/hwmon/mr75203.c
-@@ -129,6 +129,10 @@ struct pvt_device {
- 	u32			p_num;
- 	u32			v_num;
- 	u32			ip_freq;
-+	u32			ts_coeff_h;
-+	u32			ts_coeff_g;
-+	s32			ts_coeff_j;
-+	u32			ts_coeff_cal5;
- 	u8			vm_ch_max;
- 	u8			vm_ch_total;
- };
-@@ -177,10 +181,10 @@ static int pvt_read_temp(struct device *dev, u32 attr, int channel, long *val)
- 		 * Convert the register value to degrees centigrade temperature:
- 		 * T = G + H * (n / cal5 - 0.5) + J * F
- 		 */
--		*val = PVT_G_CONST;
--		*val += PVT_H_CONST * nbs / PVT_CAL5_CONST;
--		*val -= PVT_H_CONST / 2;
--		*val += PVT_J_CONST * pvt->ip_freq / HZ_PER_MHZ;
-+		*val = pvt->ts_coeff_g;
-+		*val += pvt->ts_coeff_h * nbs / pvt->ts_coeff_cal5;
-+		*val -= pvt->ts_coeff_h / 2;
-+		*val += pvt->ts_coeff_j * pvt->ip_freq / HZ_PER_MHZ;
- 
- 		return 0;
- 	default:
-@@ -617,6 +621,38 @@ static int mr75203_probe(struct platform_device *pdev)
- 		memset32(temp_config, HWMON_T_INPUT, ts_num);
- 		pvt_temp.config = temp_config;
- 		pvt_info[index++] = &pvt_temp;
-+
-+		/*
-+		 * Incase ts-coeff-h/g/j/cal5 property is not defined, use
-+		 * default value.
-+		 */
-+		ret = of_property_read_u32(np, "ts-coeff-h", &pvt->ts_coeff_h);
-+		if (ret)
-+			pvt->ts_coeff_h = PVT_H_CONST;
-+
-+		ret = of_property_read_u32(np, "ts-coeff-g", &pvt->ts_coeff_g);
-+		if (ret)
-+			pvt->ts_coeff_g = PVT_G_CONST;
-+
-+		ret = of_property_read_s32(np, "ts-coeff-j", &pvt->ts_coeff_j);
-+		if (ret)
-+			pvt->ts_coeff_j = PVT_J_CONST;
-+
-+		ret = of_property_read_u32(np, "ts-coeff-cal5",
-+					   &pvt->ts_coeff_cal5);
-+		if (ret) {
-+			pvt->ts_coeff_cal5 = PVT_CAL5_CONST;
-+		} else {
-+			if (pvt->ts_coeff_cal5 == 0) {
-+				dev_err(dev, "invalid ts-coeff-cal5 (%u)\n",
-+					pvt->ts_coeff_cal5);
-+				return -EINVAL;
-+			}
-+		}
-+
-+		dev_dbg(dev, "ts-coeff: h = %u, g = %u, j = %d, cal5 = %u\n",
-+			pvt->ts_coeff_h, pvt->ts_coeff_g, pvt->ts_coeff_j,
-+			pvt->ts_coeff_cal5);
- 	}
- 
- 	if (pd_num) {
 -- 
-2.37.1
-
+With Best Regards,
+Andy Shevchenko
