@@ -2,61 +2,54 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A16885959E5
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Aug 2022 13:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 103785958D0
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Aug 2022 12:47:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbiHPLXO (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 16 Aug 2022 07:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54348 "EHLO
+        id S234977AbiHPKrt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 16 Aug 2022 06:47:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234261AbiHPLWu (ORCPT
+        with ESMTP id S235005AbiHPKrd (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 16 Aug 2022 07:22:50 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B75779D133;
-        Tue, 16 Aug 2022 02:47:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660643244; x=1692179244;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZB0wkmjlPdDSTA4EwQQs+F8Xlb10ueDxQGjHJOmfvkI=;
-  b=W3J8XpGSJyBR66uMLKiswwoJLPKH+jmvDYbHtT4G6Z8DND7Ona+CT3VV
-   6x7itKMAPuSvdxo0a4qS+M5CMDoEMTggEfgtMi1pz6e1DZquvANegYCtB
-   WCz0gUvB+xPgDH60fOltWQzqMRTK0QZqRDWNJkdtv3KSkKu3fn74uYn1n
-   WS74wFyeyZcc06lXucDiXQCth13I6yJTd9W97CjLP6ANgbuA4XM/RBPns
-   spIz5nMH9aOJroStMwskW8Ul49uZ5nS7PAOUcq6av1R/g6kW7SAQoSePD
-   JxrePsa5MXlZJBHP/0qVE3ejo1+TYyEu8PgOx8Agx5orI0pcFo4IPrtOr
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10440"; a="275229847"
-X-IronPort-AV: E=Sophos;i="5.93,240,1654585200"; 
-   d="scan'208";a="275229847"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2022 02:47:23 -0700
-X-IronPort-AV: E=Sophos;i="5.93,240,1654585200"; 
-   d="scan'208";a="934839368"
-Received: from rvanorma-mobl.gar.corp.intel.com ([10.213.153.166])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2022 02:47:18 -0700
-Message-ID: <8496afee057d63b83a7ff02ec7f1de8c2d0e97ae.camel@intel.com>
-Subject: Re: [PATCH V2 1/8] perf/x86/intel/P4: Fix smp_num_siblings usage
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>
+        Tue, 16 Aug 2022 06:47:33 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA610DF70;
+        Tue, 16 Aug 2022 03:09:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=6BlpTwVx92rbeofMgr6BndByubfCRJy+MP8PnqkqRTU=; b=eYxw3R0fddjtO4kCgfEOWZVfd4
+        Bx85zGpyU007xVdxqdsTrh3JXX3JK1cgrmg70Wz6sGC8i/d9q8gJEfp1DtTeuTQ9Il3lUQ/XvwjA1
+        /3HU+UcdQmp3GBF3rJLD8fc2D4qWckYf2mQtu32UL8r38MUc6hg3s71RoWogX/UCHIkPOlAL185ja
+        3L3DLjB0hft7JKww/ZZOeRagnXyMIleVsy6kLAshN4mNw8YeC76FOnWM7p3vOaNwteQrFjGa9zLdI
+        +9VaJJO7z8eh9BEzwJJWNS/20DaMCC/pOgnadM0yFkCgw1fdU8+KWMFyhhrrfRqCymOCdtwpHXwqb
+        LldqktVQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oNtVJ-006oGs-Sn; Tue, 16 Aug 2022 10:08:58 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id D3109980083; Tue, 16 Aug 2022 12:08:55 +0200 (CEST)
+Date:   Tue, 16 Aug 2022 12:08:55 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Zhang Rui <rui.zhang@intel.com>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-hwmon@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
         bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
         corbet@lwn.net, fenghua.yu@intel.com, jdelvare@suse.com,
         linux@roeck-us.net, len.brown@intel.com
-Date:   Tue, 16 Aug 2022 17:47:14 +0800
-In-Reply-To: <YvtU2VKtpGCIOes4@worktop.programming.kicks-ass.net>
+Subject: Re: [PATCH V2 1/8] perf/x86/intel/P4: Fix smp_num_siblings usage
+Message-ID: <Yvtst7ga6TaMsHeb@worktop.programming.kicks-ass.net>
 References: <20220816051633.17775-1-rui.zhang@intel.com>
-         <20220816051633.17775-2-rui.zhang@intel.com>
-         <YvtU2VKtpGCIOes4@worktop.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+ <20220816051633.17775-2-rui.zhang@intel.com>
+ <YvtU2VKtpGCIOes4@worktop.programming.kicks-ass.net>
+ <8496afee057d63b83a7ff02ec7f1de8c2d0e97ae.camel@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8496afee057d63b83a7ff02ec7f1de8c2d0e97ae.camel@intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,51 +58,31 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 2022-08-16 at 10:27 +0200, Peter Zijlstra wrote:
-> On Tue, Aug 16, 2022 at 01:16:26PM +0800, Zhang Rui wrote:
-> > smp_num_siblings can be larger than 2.
+On Tue, Aug 16, 2022 at 05:47:14PM +0800, Zhang Rui wrote:
+> On Tue, 2022-08-16 at 10:27 +0200, Peter Zijlstra wrote:
+> > On Tue, Aug 16, 2022 at 01:16:26PM +0800, Zhang Rui wrote:
+> > > smp_num_siblings can be larger than 2.
+> > > 
+> > > Any value larger than 1 suggests HT is supported.
 > > 
-> > Any value larger than 1 suggests HT is supported.
+> > Subject and Changelog are still utterly insane.
 > 
-> Subject and Changelog are still utterly insane.
+> what about this one, do I need to resend the full series?
+> 
+> thanks,
+> rui
+> 
+> From 2e368e6afa83cb73e44ac8c3cf8339207097d9e1 Mon Sep 17 00:00:00 2001
+> From: Zhang Rui <rui.zhang@intel.com>
+> Date: Tue, 28 Jun 2022 11:02:12 +0800
+> Subject: [PATCH V3 1/8] perf/x86/intel/P4: unify logic for detecting HT
+> 
+> Any value larger than 1 suggests HT is supported.
+> 
+> Although smp_num_siblings cannot be larger than 2 on P4 platform, it is
+> better to keep this logic consistent across the kernel.
+> 
+> Reviewed-by: Len Brown <len.brown@intel.com>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 
-what about this one, do I need to resend the full series?
-
-thanks,
-rui
-
-From 2e368e6afa83cb73e44ac8c3cf8339207097d9e1 Mon Sep 17 00:00:00 2001
-From: Zhang Rui <rui.zhang@intel.com>
-Date: Tue, 28 Jun 2022 11:02:12 +0800
-Subject: [PATCH V3 1/8] perf/x86/intel/P4: unify logic for detecting HT
-
-Any value larger than 1 suggests HT is supported.
-
-Although smp_num_siblings cannot be larger than 2 on P4 platform, it is
-better to keep this logic consistent across the kernel.
-
-Reviewed-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
----
- arch/x86/include/asm/perf_event_p4.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/perf_event_p4.h
-b/arch/x86/include/asm/perf_event_p4.h
-index 94de1a05aeba..b14e9a20a7c0 100644
---- a/arch/x86/include/asm/perf_event_p4.h
-+++ b/arch/x86/include/asm/perf_event_p4.h
-@@ -189,7 +189,7 @@ static inline int p4_ht_active(void)
- static inline int p4_ht_thread(int cpu)
- {
- #ifdef CONFIG_SMP
--	if (smp_num_siblings == 2)
-+	if (smp_num_siblings > 1)
- 		return cpu !=
-cpumask_first(this_cpu_cpumask_var_ptr(cpu_sibling_map));
- #endif
- 	return 0;
--- 
-2.25.1
-
-
+Yes that works for me; thanks!
