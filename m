@@ -2,54 +2,54 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90DDF598D69
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Aug 2022 22:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 456FF598D85
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Aug 2022 22:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345273AbiHRUJo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 18 Aug 2022 16:09:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43704 "EHLO
+        id S241330AbiHRUMa (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 18 Aug 2022 16:12:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240933AbiHRUJS (ORCPT
+        with ESMTP id S1345490AbiHRUMP (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 18 Aug 2022 16:09:18 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B163B9413;
-        Thu, 18 Aug 2022 13:04:14 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id pm17so2702589pjb.3;
-        Thu, 18 Aug 2022 13:04:14 -0700 (PDT)
+        Thu, 18 Aug 2022 16:12:15 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066DCD31F7;
+        Thu, 18 Aug 2022 13:07:56 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id m2so2410289pls.4;
+        Thu, 18 Aug 2022 13:07:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc;
-        bh=9PaorD7ptOW+52yf4c1JDmGGs6/j3AuHVebm2R4Z+Hk=;
-        b=pedI4ABZKurUA/d45RDd5khivUXZ8QnGeNZ/azvY3tRsY0ULVjsazPK8KceoC/7uWA
-         xheEWWmaPDm1UypPXIuGyOCp8qGQI8WkJWx0fA4ffURS5NV9l0fnjypKqpCTbO98E8bV
-         SN7+3eWFUOmhVs5+z5jRYHI6r3eUe169xmusgRfwaH0jZbPMlux1O3Yhml2g8EP83A45
-         Akx3DEnT8gCpwht646xC9TmUyDaPuQygELVCVF9qSBGncIspRCMtexDmVdJcdGUVeEsQ
-         LobdYHGdwh0eoS3IFWAI31tJH8WsLIvTitWZntpGdCWnDgpPK3cTdwxBnsBb/9RsjNic
-         ClKA==
+        bh=SHmhnKOWEnMPXTr1npqUAIqccKa9qmawwg5jERMog4k=;
+        b=dY+MC654YJKie0TQlbszc5HqEHdSZD4JcFCRHXXwd9QyR1bvRrP5uMIlIvrgCyhfTz
+         6K87i7oljTIb7BSYyX55/9upwqGa2NvJgp5dZgL3hq0+0ls9tUk2CpyhD0WZ84RTsDBF
+         ZHCyQPkDrRHCh73W0YFPt9HFQ+a4awysQS4M+NAKX76YJd2nRkDd+yqQg2cMF26PzOxP
+         PJd8zi5wPjRdwlE3/fOnD4tIaZgZAtErOoqCINemD17Pniw2rB7xXrhuC3s0yBbd/APb
+         nF+ks9TrtiyOM8QlKYvXH+TpYJ8thVd5fLohK6NIkN9omcUBapu1rDt7rCV9bQE9YTkY
+         zO1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc;
-        bh=9PaorD7ptOW+52yf4c1JDmGGs6/j3AuHVebm2R4Z+Hk=;
-        b=0PIUWfYME3zXwk2s6K+ZNhbRwFF4lZpAQePo9XkLKMeLgJs4irotY3vYkOeBW9KeMQ
-         ZZIy+Ah50UgaiCw7TYFdmI7MCFyvLUBk98V2obScy3e92zCFwt8GdFvlhPVhspwqaDLa
-         Djj7jwCrKkiLTQAKCfStJvyyx+e5wPk2XSWi9RjIvFjBzF0afehaBgnI+E5/dD849QO9
-         wo79H7Q4DomXALS7DRKem9oic8FzmHz7z19bsJSeMr61IRk2RuEjNwFCyxM+lrBfYXQS
-         863HlBmJ2k9ozcBCtLVae5CtkxzJ+q1T91KzwSUpbc1tyWTUr4rY0SWGNuYuFsacWxHj
-         fEsA==
-X-Gm-Message-State: ACgBeo1zUnEJz4dmRMI+4vZY9hOxRqi613AJ4FY+W8uC1/mUoQ1oQIgQ
-        PSZGJDOP8izb5i3Lskhdm1s=
-X-Google-Smtp-Source: AA6agR66ckJGxLP/0hrH7I8sjnhPx7o7drf2O1fuc4b+RQNt3wRKXBSG+3e0BMis36MWLZ15T3WnjA==
-X-Received: by 2002:a17:902:7b87:b0:172:8ae9:2015 with SMTP id w7-20020a1709027b8700b001728ae92015mr4002415pll.112.1660853032104;
-        Thu, 18 Aug 2022 13:03:52 -0700 (PDT)
+        bh=SHmhnKOWEnMPXTr1npqUAIqccKa9qmawwg5jERMog4k=;
+        b=wE1aR1lW8xqeIszQGZ0nOwQvo7ifIXX1yNFUuJ7Vz+xxp8LZ1Q/0lMMXtLvXAY4aTt
+         UflMJ2MCxYR8W28oEuDv6yeE7aYVvmjqm8lpAGU0F/sPIGljubWXYJWFoNhK8pS5y/tJ
+         l/206O6U0PwA1miF71GIvGFmH6grdKFxkILJVSCqg4sNzJoggsbfXI7dfS35r6Sa7NBG
+         5pfGZaP7Hx8BIYamTEn9uahDEm3VAqFVaLuDYGqB9m2AUj6MP0QW5ch9Xj8hcRbu2out
+         YEzLiAgYQJJA/MLLqhx8rT8YuS3d8olkS7ztaDLNFS9jXCMte5TCl/CHTVkfTjcNcxVc
+         kuIw==
+X-Gm-Message-State: ACgBeo08ZrGly6qXGZP1PY6mFxPIUZIqVGMkC+s/DMHnv+4sbQ4c9ylp
+        7gqkr/RNc64ZXRqYfByioKM=
+X-Google-Smtp-Source: AA6agR6zivLRd+05MWUWn3NuX3B6pr3e+82o1RPZZGqNFpjIlLsoNlJXbfdh1CKOefzRR24+LpcYqg==
+X-Received: by 2002:a17:903:41cd:b0:16e:e0c0:96d1 with SMTP id u13-20020a17090341cd00b0016ee0c096d1mr4221306ple.169.1660853275519;
+        Thu, 18 Aug 2022 13:07:55 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h7-20020a170902680700b0016d4f05eb95sm1736192plk.272.2022.08.18.13.03.50
+        by smtp.gmail.com with ESMTPSA id c10-20020aa7952a000000b005281d926733sm2003202pfp.199.2022.08.18.13.07.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Aug 2022 13:03:51 -0700 (PDT)
+        Thu, 18 Aug 2022 13:07:54 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Thu, 18 Aug 2022 13:03:50 -0700
+Date:   Thu, 18 Aug 2022 13:07:53 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
 To:     Eliav Farber <farbere@amazon.com>
 Cc:     jdelvare@suse.com, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -59,15 +59,15 @@ Cc:     jdelvare@suse.com, robh+dt@kernel.org, mark.rutland@arm.com,
         itamark@amazon.com, shellykz@amazon.com, shorer@amazon.com,
         amitlavi@amazon.com, almogbs@amazon.com, dwmw@amazon.co.uk,
         rtanwar@maxlinear.com
-Subject: Re: [PATCH v2 06/16] hwmon: (mr75203) fix multi-channel voltage
- reading
-Message-ID: <20220818200350.GA3287916@roeck-us.net>
+Subject: Re: [PATCH v2 07/16] hwmon: (mr75203) add VM active channels
+ property for Moortec PVT controller
+Message-ID: <20220818200753.GA3288506@roeck-us.net>
 References: <20220817054321.6519-1-farbere@amazon.com>
- <20220817054321.6519-7-farbere@amazon.com>
+ <20220817054321.6519-8-farbere@amazon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220817054321.6519-7-farbere@amazon.com>
+In-Reply-To: <20220817054321.6519-8-farbere@amazon.com>
 X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -79,134 +79,59 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 05:43:11AM +0000, Eliav Farber wrote:
-> - Fix voltage reading to support number of channels in VM IP (CH_NUM).
-> - Configure the ip-polling register to enable polling for all channels.
+On Wed, Aug 17, 2022 at 05:43:12AM +0000, Eliav Farber wrote:
+> Add optional "vm-active-channels" property to define the number of
+> active channels per VM.
 > 
-
-That fails to explain what is actually wrong in the current code.
-Also, one fix per patch, please.
-
 > Signed-off-by: Eliav Farber <farbere@amazon.com>
 > ---
->  drivers/hwmon/mr75203.c | 40 +++++++++++++++++++++++++++++++---------
->  1 file changed, 31 insertions(+), 9 deletions(-)
+>  .../devicetree/bindings/hwmon/moortec,mr75203.yaml       | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/drivers/hwmon/mr75203.c b/drivers/hwmon/mr75203.c
-> index bec63b611eb4..4419e481d47c 100644
-> --- a/drivers/hwmon/mr75203.c
-> +++ b/drivers/hwmon/mr75203.c
-> @@ -69,8 +69,9 @@
+> diff --git a/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml b/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml
+> index da9c3cdcb6f0..6111b5069b3c 100644
+> --- a/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml
+> @@ -49,6 +49,13 @@ properties:
+>        reset-control-skip bool property defines if obtaining a
+>        reference to a reset controller should be skipped.
 >  
->  /* VM Individual Macro Register */
->  #define VM_COM_REG_SIZE	0x200
-> -#define VM_SDIF_DONE(n)	(VM_COM_REG_SIZE + 0x34 + 0x200 * (n))
-> -#define VM_SDIF_DATA(n)	(VM_COM_REG_SIZE + 0x40 + 0x200 * (n))
-> +#define VM_SDIF_DONE(vm)	(VM_COM_REG_SIZE + 0x34 + 0x200 * (vm))
-> +#define VM_SDIF_DATA(vm, ch)	\
-> +	(VM_COM_REG_SIZE + 0x40 + 0x200 * (vm) + 0x4 * (ch))
->  
->  /* SDA Slave Register */
->  #define IP_CTRL			0x00
-> @@ -116,6 +117,7 @@ struct pvt_device {
->  	u32			t_num;
->  	u32			p_num;
->  	u32			v_num;
-> +	u32			c_num;
->  	u32			ip_freq;
->  	u8			*vm_idx;
->  };
-> @@ -181,12 +183,14 @@ static int pvt_read_in(struct device *dev, u32 attr, int channel, long *val)
->  	struct regmap *v_map = pvt->v_map;
->  	u32 n, stat;
->  	u8 vm_idx;
-> +	u8 ch_idx;
->  	int ret;
->  
-> -	if (channel >= pvt->v_num)
-> +	if (channel >= pvt->v_num * pvt->c_num)
->  		return -EINVAL;
->  
-> -	vm_idx = pvt->vm_idx[channel];
-> +	vm_idx = pvt->vm_idx[channel / pvt->c_num];
-> +	ch_idx = channel % pvt->c_num;
->  
->  	switch (attr) {
->  	case hwmon_in_input:
-> @@ -197,7 +201,7 @@ static int pvt_read_in(struct device *dev, u32 attr, int channel, long *val)
->  		if (ret)
->  			return ret;
->  
-> -		ret = regmap_read(v_map, VM_SDIF_DATA(vm_idx), &n);
-> +		ret = regmap_read(v_map, VM_SDIF_DATA(vm_idx, ch_idx), &n);
->  		if(ret < 0)
->  			return ret;
->  
-> @@ -386,6 +390,20 @@ static int pvt_init(struct pvt_device *pvt)
->  		if (ret)
->  			return ret;
->  
-> +		val = GENMASK(pvt->c_num - 1, 0) | VM_CH_INIT |
-> +		      IP_POLL << SDIF_ADDR_SFT |
-> +		      SDIF_WRN_W | SDIF_PROG;
-> +		ret = regmap_write(v_map, SDIF_W, val);
-> +		if (ret < 0)
-> +			return ret;
+> +  vm-active-channels:
+> +    description:
+> +      vm-active-channels defines the number of channels per VM
+> +      that are actually used and are connected to some source.
+> +      A value of 0 means that the entire VM sensor is nou used.
+
+not ?
+
+> +    $ref: /schemas/types.yaml#definitions/uint8-array
 > +
-> +		ret = regmap_read_poll_timeout(v_map, SDIF_STAT,
-> +					       val, !(val & SDIF_BUSY),
-> +					       PVT_POLL_DELAY_US,
-> +					       PVT_POLL_TIMEOUT_US);
-> +		if (ret)
-> +			return ret;
-> +
->  		val = CFG1_VOL_MEAS_MODE | CFG1_PARALLEL_OUT |
->  		      CFG1_14_BIT | IP_CFG << SDIF_ADDR_SFT |
->  		      SDIF_WRN_W | SDIF_PROG;
-> @@ -501,7 +519,7 @@ static int pvt_reset_control_deassert(struct device *dev, struct pvt_device *pvt
->  static int mr75203_probe(struct platform_device *pdev)
->  {
->  	const struct hwmon_channel_info **pvt_info;
-> -	u32 ts_num, vm_num, pd_num, val, index, i;
-> +	u32 ts_num, vm_num, pd_num, ch_num, val, index, i;
->  	struct device *dev = &pdev->dev;
->  	u32 *temp_config, *in_config;
->  	struct device *hwmon_dev;
-> @@ -547,9 +565,11 @@ static int mr75203_probe(struct platform_device *pdev)
->  	ts_num = (val & TS_NUM_MSK) >> TS_NUM_SFT;
->  	pd_num = (val & PD_NUM_MSK) >> PD_NUM_SFT;
->  	vm_num = (val & VM_NUM_MSK) >> VM_NUM_SFT;
-> +	ch_num = (val & CH_NUM_MSK) >> CH_NUM_SFT;
->  	pvt->t_num = ts_num;
->  	pvt->p_num = pd_num;
->  	pvt->v_num = vm_num;
-> +	pvt->c_num = ch_num;
->  	val = 0;
->  	if (ts_num)
->  		val++;
-> @@ -586,6 +606,8 @@ static int mr75203_probe(struct platform_device *pdev)
->  	}
+>  required:
+>    - compatible
+>    - reg
+> @@ -60,6 +67,7 @@ required:
+>  additionalProperties:
+>    - intel,vm-map
+>    - reset-control-skip
+> +  - vm-active-channels
 >  
->  	if (vm_num) {
-> +		u32 total_ch = ch_num * vm_num;
-> +
->  		ret = pvt_get_regmap(pdev, "vm", pvt);
->  		if (ret)
->  			return ret;
-> @@ -614,13 +636,13 @@ static int mr75203_probe(struct platform_device *pdev)
->  			pvt->v_num = i;
->  		}
->  
-> -		in_config = devm_kcalloc(dev, vm_num + 1,
-> +		in_config = devm_kcalloc(dev, total_ch + 1,
->  					 sizeof(*in_config), GFP_KERNEL);
->  		if (!in_config)
->  			return -ENOMEM;
->  
-> -		memset32(in_config, HWMON_I_INPUT, vm_num);
-> -		in_config[vm_num] = 0;
-> +		memset32(in_config, HWMON_I_INPUT, total_ch);
-> +		in_config[total_ch] = 0;
->  		pvt_in.config = in_config;
->  
->  		pvt_info[index++] = &pvt_in;
+>  examples:
+>    - |
+> @@ -73,5 +81,6 @@ examples:
+>          intel,vm-map = [03 01 04 ff ff];
+>          clocks = <&osc0>;
+>          resets = <&rcu0 0x40 7>;
+> +        vm-active-channels = [08 10 02];
+
+Is that how properties are defined nowadays ? I am left with
+no clues how this is supposed to be interpreted by a driver.
+What does "08 10 02" mean ? How does that refer to "the number of
+active channels per VM" ?
+
+Also, I am not a devicetree expert, but I am quite sure that all
+those chip specific properties would need a vendor prefix.
+
+Guenter
+
+>          #thermal-sensor-cells = <1>;
+>      };
