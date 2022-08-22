@@ -2,102 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D31459C13F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Aug 2022 16:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D3159C377
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Aug 2022 17:54:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234215AbiHVOBY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 22 Aug 2022 10:01:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46870 "EHLO
+        id S236872AbiHVPwb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 22 Aug 2022 11:52:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234651AbiHVOAW (ORCPT
+        with ESMTP id S236826AbiHVPwZ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 22 Aug 2022 10:00:22 -0400
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BB4B2DA9F;
-        Mon, 22 Aug 2022 07:00:21 -0700 (PDT)
+        Mon, 22 Aug 2022 11:52:25 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0E92B251
+        for <linux-hwmon@vger.kernel.org>; Mon, 22 Aug 2022 08:52:24 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id z25so15906959lfr.2
+        for <linux-hwmon@vger.kernel.org>; Mon, 22 Aug 2022 08:52:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1661176822; x=1692712822;
-  h=message-id:date:mime-version:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:subject;
-  bh=23Pw7AtYUTUUxaVyavtOrUwHZ9/LNGw1p2Y9Jhcb9RA=;
-  b=a4Y2bPLBrzyLCljjwj57hmTK/AONPeX+jYYUXIJwuzy1o3YTwVOu19ac
-   Qi19rfkoZOh7HJO2vNbGhvMSMTk3ED37sYygaufuwtr4NLrKk8Zuc0HO5
-   4e2LZ3sW4/pkNpzsNzTLBjFBo2iuZ7Q1XfPZOZHJQErngvZosQcd9cf2u
-   I=;
-X-IronPort-AV: E=Sophos;i="5.93,255,1654560000"; 
-   d="scan'208";a="251617938"
-Subject: Re: [PATCH v2 16/16] hwmon: (mr75203) add debugfs to read and write
- temperature coefficients
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1d-1c3c2014.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2022 13:59:51 +0000
-Received: from EX13MTAUEB002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1d-1c3c2014.us-east-1.amazon.com (Postfix) with ESMTPS id C1DBF3C008F;
-        Mon, 22 Aug 2022 13:59:48 +0000 (UTC)
-Received: from EX13D08UEB002.ant.amazon.com (10.43.60.107) by
- EX13MTAUEB002.ant.amazon.com (10.43.60.12) with Microsoft SMTP Server (TLS)
- id 15.0.1497.38; Mon, 22 Aug 2022 13:59:47 +0000
-Received: from EX13MTAUEB002.ant.amazon.com (10.43.60.12) by
- EX13D08UEB002.ant.amazon.com (10.43.60.107) with Microsoft SMTP Server (TLS)
- id 15.0.1497.38; Mon, 22 Aug 2022 13:59:47 +0000
-Received: from [10.220.236.67] (10.220.236.67) by mail-relay.amazon.com
- (10.43.60.234) with Microsoft SMTP Server id 15.0.1497.38 via Frontend
- Transport; Mon, 22 Aug 2022 13:59:43 +0000
-Message-ID: <75165e58-8601-1fe5-7bdb-98761a73701f@amazon.com>
-Date:   Mon, 22 Aug 2022 16:59:43 +0300
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=EDlMQzzVbGTvS/Xi3jfsxW5Vdl1DnbH6ryI6Z5fSkFQ=;
+        b=DcYL9ChbZJvgoDvGqox7IUaq5n/JXKEYT3aAw1DyWPy7mTWy7ug+sdWOk7iciNacAt
+         SL5LG0m6HE9jUimc2g39S1dP7doPub8Oygn5s7Unpt/MwLpxGhKN+wlSb6QFAypiu4Fp
+         bggo5Z1XoMCAHEmYufWTh21Q0uJbd3+hez2UtCxKY8A3qyOOWTdLnGzzNnMPeBeGtG+G
+         JjmOh10qlJT21VFzZNprOsGMNSAl8bpcuThXz9V4ePbV8bsvHL/wpJ8sZhRUelzfNRme
+         uLlqFdVfM4UgKtuKvu90eFVFC6KB8SAiTQV/b0ZgFMsD1UgMx0RkimQA0NCufwkhgGS6
+         1XsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=EDlMQzzVbGTvS/Xi3jfsxW5Vdl1DnbH6ryI6Z5fSkFQ=;
+        b=u1B6TqVCmVLameBYKI270Eo5a17qnp9uDIAPFYiYU5/PW5uYqj0QP08KvOLnFUBSnT
+         FrlrIijVGxfWr6SJuNUofLXUtYfBHwt4lXckQXFljqTUEn/mYYq/C/QxEdVrFJyxLdOm
+         gRpkiAW4rCSGZVETyShlB531JsVFJB45zuVWhAyQQLN0d+bJee4XQFLRMri4v4w45U9L
+         +CExDB2Eugwsuhwd75oV5A4O2yI/uhE3LvIt9r5Pswzhf9JUN3ShEpDwTw5s1IC6nLde
+         tcTrrBSX1i6/G7BqzTTAUVBQ1G/Cok4CYOCF7DBJlAnlS7nWIMBohznavK/Q7QL8ng/9
+         +hsg==
+X-Gm-Message-State: ACgBeo3on8EASHpfQdaGH/QeKmC7oPs9ouM2QrnnhaPmjMvJ8dgL55Xy
+        nSUJPw0gZ7jxQiuIiUJxoGHAcCY9K7PVuwLg4Fs=
+X-Google-Smtp-Source: AA6agR7VGKT5k3ZuWaNwQEI2m0SaQQe48PruzyrmZapwTkyeyLUUN+BIUlcaZl7p/eY8eYnKkH5n129Q1WGtxU3lnVw=
+X-Received: by 2002:a05:6512:22cc:b0:48b:115d:968e with SMTP id
+ g12-20020a05651222cc00b0048b115d968emr7883639lfu.357.1661183542696; Mon, 22
+ Aug 2022 08:52:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Content-Language: en-US
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     <jdelvare@suse.com>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <talel@amazon.com>,
-        <hhhawa@amazon.com>, <jonnyc@amazon.com>, <hanochu@amazon.com>,
-        <ronenk@amazon.com>, <itamark@amazon.com>, <shellykz@amazon.com>,
-        <shorer@amazon.com>, <amitlavi@amazon.com>, <almogbs@amazon.com>,
-        <dwmw@amazon.co.uk>, <rtanwar@maxlinear.com>,
-        "Farber, Eliav" <farbere@amazon.com>
-References: <20220817054321.6519-1-farbere@amazon.com>
- <20220817054321.6519-17-farbere@amazon.com>
- <20220818231106.GA3505191@roeck-us.net>
-From:   "Farber, Eliav" <farbere@amazon.com>
-In-Reply-To: <20220818231106.GA3505191@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-14.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6520:45cd:b0:204:fee3:9bf0 with HTTP; Mon, 22 Aug 2022
+ 08:52:21 -0700 (PDT)
+Reply-To: sgtkaylla202@gmail.com
+From:   Kayla Manthey <abhishek9504931114@gmail.com>
+Date:   Mon, 22 Aug 2022 15:52:21 +0000
+Message-ID: <CAE44iJVGvBPyfHJuAZMHM-ZhbZq9+g9OPZstCmdYR_NF4kdCVw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:12b listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4989]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [abhishek9504931114[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [sgtkaylla202[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [abhishek9504931114[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 8/19/2022 2:11 AM, Guenter Roeck wrote:
-> On Wed, Aug 17, 2022 at 05:43:21AM +0000, Eliav Farber wrote:
->> This change adds debugfs to read and write TS coefficients - g, h, j and
->> cal5.
->>
->> The coefficients can vary between product and product, so to calibrate
->> them it can be very useful to to be able to modify them on the fly.
->>
->> e.g.
->>
->> cat /sys/kernel/debug/940f23d0000.pvt/ts_coeff_cal5
->> 4096
->>
->> echo 83000 > sys/kernel/debug/940f23d0000.pvt/ts_coeff_g
->>
->
-> What happens if you write 0 into all those attributes, or 0xffffffff ?
-The driver equation is:
-T = G + H * (n / cal5 - 0.5) + J * F
-So I added protection for cal5 not being 0.
-Besides that there is no limitation on what these values can be.
-I can't really think of any other logical limitation I can apply.
-
---
-Regards, Eliav
+Bok draga, molim te jesi li primila moju prethodnu poruku, hvala.
