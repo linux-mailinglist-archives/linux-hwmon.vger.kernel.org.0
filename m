@@ -2,96 +2,139 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D3159C377
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Aug 2022 17:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26E359C3E2
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Aug 2022 18:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236872AbiHVPwb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 22 Aug 2022 11:52:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33732 "EHLO
+        id S235654AbiHVQRQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 22 Aug 2022 12:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236826AbiHVPwZ (ORCPT
+        with ESMTP id S234679AbiHVQRP (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 22 Aug 2022 11:52:25 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0E92B251
-        for <linux-hwmon@vger.kernel.org>; Mon, 22 Aug 2022 08:52:24 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id z25so15906959lfr.2
-        for <linux-hwmon@vger.kernel.org>; Mon, 22 Aug 2022 08:52:24 -0700 (PDT)
+        Mon, 22 Aug 2022 12:17:15 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24772399CF;
+        Mon, 22 Aug 2022 09:17:15 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id g18so11506936pju.0;
+        Mon, 22 Aug 2022 09:17:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=EDlMQzzVbGTvS/Xi3jfsxW5Vdl1DnbH6ryI6Z5fSkFQ=;
-        b=DcYL9ChbZJvgoDvGqox7IUaq5n/JXKEYT3aAw1DyWPy7mTWy7ug+sdWOk7iciNacAt
-         SL5LG0m6HE9jUimc2g39S1dP7doPub8Oygn5s7Unpt/MwLpxGhKN+wlSb6QFAypiu4Fp
-         bggo5Z1XoMCAHEmYufWTh21Q0uJbd3+hez2UtCxKY8A3qyOOWTdLnGzzNnMPeBeGtG+G
-         JjmOh10qlJT21VFzZNprOsGMNSAl8bpcuThXz9V4ePbV8bsvHL/wpJ8sZhRUelzfNRme
-         uLlqFdVfM4UgKtuKvu90eFVFC6KB8SAiTQV/b0ZgFMsD1UgMx0RkimQA0NCufwkhgGS6
-         1XsQ==
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc;
+        bh=SpO1ZUZxHjqkqzt3Alck94fcA4kylx6d/PVTjW+B3W0=;
+        b=goZ7b8+sezuuKxI9mWamIEjv7pl+YPwrYBbF4DPBRDTkmxfMDwq5pwPO6D2RmdaPOy
+         3Akg+DR/eKSPlb5+JoM9QDsT/wME65UKotFq07k7P6bH9mBXx7aL2gZ4TppyRZ9WLFld
+         oJkzSYoHvQ5qNnyAs+Qu0kqNKxpSjxiDmGfS9EVXrPEe2lEFI5piuhsGRidU2JMvTy9n
+         sYhkmFaac9GGygQbD3pcV9CKyIrIvH46bWSqp6eI7kQKaM4kWrQyEGTOwwM6kc60+BTw
+         P8CbkBa8pUjdYEWqPN2XA76RrpdOZKI+6VWgqBPcXe+5zd/wzZpqnm1FX4GWHxWkXDgG
+         8QxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
          :x-gm-message-state:from:to:cc;
-        bh=EDlMQzzVbGTvS/Xi3jfsxW5Vdl1DnbH6ryI6Z5fSkFQ=;
-        b=u1B6TqVCmVLameBYKI270Eo5a17qnp9uDIAPFYiYU5/PW5uYqj0QP08KvOLnFUBSnT
-         FrlrIijVGxfWr6SJuNUofLXUtYfBHwt4lXckQXFljqTUEn/mYYq/C/QxEdVrFJyxLdOm
-         gRpkiAW4rCSGZVETyShlB531JsVFJB45zuVWhAyQQLN0d+bJee4XQFLRMri4v4w45U9L
-         +CExDB2Eugwsuhwd75oV5A4O2yI/uhE3LvIt9r5Pswzhf9JUN3ShEpDwTw5s1IC6nLde
-         tcTrrBSX1i6/G7BqzTTAUVBQ1G/Cok4CYOCF7DBJlAnlS7nWIMBohznavK/Q7QL8ng/9
-         +hsg==
-X-Gm-Message-State: ACgBeo3on8EASHpfQdaGH/QeKmC7oPs9ouM2QrnnhaPmjMvJ8dgL55Xy
-        nSUJPw0gZ7jxQiuIiUJxoGHAcCY9K7PVuwLg4Fs=
-X-Google-Smtp-Source: AA6agR7VGKT5k3ZuWaNwQEI2m0SaQQe48PruzyrmZapwTkyeyLUUN+BIUlcaZl7p/eY8eYnKkH5n129Q1WGtxU3lnVw=
-X-Received: by 2002:a05:6512:22cc:b0:48b:115d:968e with SMTP id
- g12-20020a05651222cc00b0048b115d968emr7883639lfu.357.1661183542696; Mon, 22
- Aug 2022 08:52:22 -0700 (PDT)
+        bh=SpO1ZUZxHjqkqzt3Alck94fcA4kylx6d/PVTjW+B3W0=;
+        b=lGGMsSnTRyCi8evb6F0aEI84D6Ouph0ee0lzQZW8JYO8zBl/LfSKyAV8gaTU20mdQc
+         ZywBbeAlyE5s7GH2X65oW9xa5U+/i+jsCVeOoGIZDZ590vKtPnBvweNcqrAZJnt4WL4d
+         wvST367m9ymPWCW/3fGAYQosBjnXMI8RnJtwC4/YHZnOtEkfZ3oFQoiNDned3Hx02I9p
+         1adKPu3KX7/8OtAVufkrxdmIBoOZ5LUjQ/CI8aVLcy9fDwyWrKMIbzuTQLzAyXI6mvyj
+         FvsnZ5OIgHtcxL/TJyYesZsyfU1fWOqvSipovZMJV4U3x2g1+LJna+sMdSLyxMla2fS7
+         toQA==
+X-Gm-Message-State: ACgBeo05e1ty1s5LhpUlJxGtPWHhbga7TRlHo/ZAGRk1gz77tImYZL94
+        iJhvTfnDozUJaHuLXKSOI3htpiU7Ejs=
+X-Google-Smtp-Source: AA6agR5l7xd32VvovzNxuq1MOahelp+er/kaFnUnqzicC35PrwEkZorvAg5n1DCXEKV675INUcFSDA==
+X-Received: by 2002:a17:90b:3ec2:b0:1f7:3f49:17c3 with SMTP id rm2-20020a17090b3ec200b001f73f4917c3mr28930679pjb.203.1661185034526;
+        Mon, 22 Aug 2022 09:17:14 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e62-20020a621e41000000b0052da33fe7d2sm9071546pfe.95.2022.08.22.09.17.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Aug 2022 09:17:13 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 22 Aug 2022 09:17:12 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Armin Wolf <W_Armin@gmx.de>
+Cc:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, jdelvare@suse.com,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] hwmon: (dell-smm) Fail probing when cooling device
+ registration fails
+Message-ID: <20220822161712.GA4098765@roeck-us.net>
+References: <20220821151713.11198-1-W_Armin@gmx.de>
+ <20220821151713.11198-2-W_Armin@gmx.de>
+ <20220821154145.v7da76besv2qzqhj@pali>
+ <ea06f15d-cb22-1d5d-9437-59d595e24e43@gmx.de>
 MIME-Version: 1.0
-Received: by 2002:a05:6520:45cd:b0:204:fee3:9bf0 with HTTP; Mon, 22 Aug 2022
- 08:52:21 -0700 (PDT)
-Reply-To: sgtkaylla202@gmail.com
-From:   Kayla Manthey <abhishek9504931114@gmail.com>
-Date:   Mon, 22 Aug 2022 15:52:21 +0000
-Message-ID: <CAE44iJVGvBPyfHJuAZMHM-ZhbZq9+g9OPZstCmdYR_NF4kdCVw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:12b listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4989]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abhishek9504931114[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [sgtkaylla202[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [abhishek9504931114[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ea06f15d-cb22-1d5d-9437-59d595e24e43@gmx.de>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Bok draga, molim te jesi li primila moju prethodnu poruku, hvala.
+On Sun, Aug 21, 2022 at 09:11:24PM +0200, Armin Wolf wrote:
+> Am 21.08.22 um 17:41 schrieb Pali Rohár:
+> 
+> > On Sunday 21 August 2022 17:17:11 Armin Wolf wrote:
+> > > Previously, it was thought that failing to register a cooling device
+> > > would not be critical, so the probing was not aborted in such a case.
+> > > This however would lead to userspace being unable to rely on those
+> > > cooling devices, since they might not represent all fans being present.
+> > > Fix that by failing probing when cooling device registration fails.
+> > This patch does not fix address this issue fully. CONFIG_THERMAL can be
+> > disabled during compile time and then cooling device would not be
+> > registered too.
+> 
+> I though of the cooling device feature as being optional "as a whole".
+> So when CONFIG_THERMAL is disabled during compile time, the driver does
+> not create any cooling devices. If however CONFIG_THERMAL was enabled
+> during compile time, the driver should fail probing if it cannot register
+> all cooling devices.
+> 
+
+I disagree. The primary objective of this driver is to report environmental
+data. Support for the thermal subsystem is an add-on. If instantiating
+the thermal device fails, the driver should at least report temperatures
+and fan speeds, as it did before thermal support was added.
+
+Thanks,
+Guenter
+
+> Armin Wolf
+> 
+> > > Tested on a Dell Inspiron 3505.
+> > > 
+> > > Fixes: e0d3f7cb2606 ("hwmon: (dell-smm) Add cooling device support")
+> > > Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> > > ---
+> > >   drivers/hwmon/dell-smm-hwmon.c | 4 +---
+> > >   1 file changed, 1 insertion(+), 3 deletions(-)
+> > > 
+> > > diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+> > > index 7f8d95dd2717..1dab7591576a 100644
+> > > --- a/drivers/hwmon/dell-smm-hwmon.c
+> > > +++ b/drivers/hwmon/dell-smm-hwmon.c
+> > > @@ -1013,12 +1013,10 @@ static int __init dell_smm_init_hwmon(struct device *dev)
+> > > 
+> > >   		data->fan[i] = true;
+> > > 
+> > > -		/* the cooling device is not critical, ignore failures */
+> > >   		if (IS_REACHABLE(CONFIG_THERMAL)) {
+> > >   			err = dell_smm_init_cdev(dev, i);
+> > >   			if (err < 0)
+> > > -				dev_warn(dev, "Failed to register cooling device for fan %u\n",
+> > > -					 i + 1);
+> > > +				return err;
+> > >   		}
+> > > 
+> > >   		data->fan_nominal_speed[i] = devm_kmalloc_array(dev, data->i8k_fan_max + 1,
+> > > --
+> > > 2.30.2
+> > > 
