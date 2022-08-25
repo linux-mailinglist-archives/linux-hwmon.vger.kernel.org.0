@@ -2,119 +2,94 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 901425A191E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Aug 2022 20:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BDB15A1B5A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Aug 2022 23:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243509AbiHYSvo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 25 Aug 2022 14:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55014 "EHLO
+        id S232482AbiHYVoI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 25 Aug 2022 17:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243590AbiHYSve (ORCPT
+        with ESMTP id S229519AbiHYVoH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 25 Aug 2022 14:51:34 -0400
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6273BD14F;
-        Thu, 25 Aug 2022 11:51:26 -0700 (PDT)
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-11c59785966so26045016fac.11;
-        Thu, 25 Aug 2022 11:51:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=message-id:date:subject:references:in-reply-to:cc:to:from
-         :x-gm-message-state:from:to:cc;
-        bh=/mQxvQUe1gZvztnNOjvvy0GAYtv4p8n82bdrYuXSJNc=;
-        b=SmxtThvt0xullVIzo+tu58M3kfxDoeNbYY3oomu4YexB98wxnj+U11QlSSavL+gpnq
-         qVgR7UoiqMwzENeVO4p3TW+H7NefI9L0PhfNGhkdSrW7+D4D+ic3xhNtP4tHzE0ekB9R
-         YJmxOEjEeebX4OuyfQElNtV5YYbRAoa5tKCyMEJLCMeaJZo1m0JHsIt4aW1uVLBz3WSL
-         YsPBLCU2y7Bt/tE9uZ5OS5iRqjZwAJv6iYAWL8Af+FauW365zPrPX4FePzJ14vLmdKSD
-         t72jaJZsxK8dvkVfSnJATRhI1SBnxT9v0sDdELOJ961BWsEKX+wubMDT3tPxRLj0lEL2
-         POOw==
-X-Gm-Message-State: ACgBeo2foa7Cx8BHXBOjvLfxv23ooDAcliJppRIIdySI2QOZ570aU99L
-        1x1yIB+HKTba3NjRt6yMQA==
-X-Google-Smtp-Source: AA6agR7VmIvwrjdERFhI9ibJJis5Ad/n5EP/mLtA9FAraPED+0yZNGZaOa0d6weoNURMUb/qtIHNOA==
-X-Received: by 2002:a05:6871:96:b0:11d:ca1b:db19 with SMTP id u22-20020a056871009600b0011dca1bdb19mr259813oaa.74.1661453485513;
-        Thu, 25 Aug 2022 11:51:25 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id n16-20020a056870971000b0011d2ec94fcasm3737802oaq.36.2022.08.25.11.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Aug 2022 11:51:24 -0700 (PDT)
-Received: (nullmailer pid 1486944 invoked by uid 1000);
-        Thu, 25 Aug 2022 18:51:19 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     =?utf-8?q?Andreas_B=C3=B6hler?= <dev@aboehler.at>
-Cc:     linux-hwmon@vger.kernel.org, Luka Perkov <luka.perkov@sartura.hr>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Robert Marko <robert.marko@sartura.hr>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-In-Reply-To: <20220825143737.77732-1-dev@aboehler.at>
-References: <20220825143737.77732-1-dev@aboehler.at>
-Subject: Re: [PATCH v3 1/2] Documentation: devicetree: update bindings for tps23861
-Date:   Thu, 25 Aug 2022 13:51:19 -0500
-Message-Id: <1661453480.004870.1486943.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,PP_MIME_FAKE_ASCII_TEXT,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+        Thu, 25 Aug 2022 17:44:07 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15C8C13F34;
+        Thu, 25 Aug 2022 14:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1661463829;
+        bh=oHP17GZle9QsY5mloPe/0OhWATRtEk9UTdf5L/O9hTE=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=G3+dGjg7lOpBTtXrXJe4w08cgKQQvbDPooii1V3CWZgZzZFvRtpxElHPfP3IrBOZ6
+         KftbS3BM6owS6s3FgGkviysgEI5++ju1aHClks9/FOdLB+CemI9pcT/eDWloiLi8b4
+         WtkrBnWCeWhAEL2IKwWAxrathx8WUBQbXFBjYo3M=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1N3KTo-1pQ8lq42Og-010Lyy; Thu, 25 Aug 2022 23:43:49 +0200
+From:   Armin Wolf <W_Armin@gmx.de>
+To:     jdelvare@suse.com, linux@roeck-us.net
+Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] hwmon: Add include stubs
+Date:   Thu, 25 Aug 2022 23:43:39 +0200
+Message-Id: <20220825214341.2743-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:bDEkywiWyKJRY0hUSsyJZ3TvgWekNIh3hGcBkGWp46d3+gPT1r1
+ u3FXTzvMViIKqcQxpCueGjyQjk2MoaPO+pOoDwHF+VpYZOZZ7Ktmuir2Ar1KhWSitpUY2T9
+ O3rsEPHhvSIP2/ael3JEAKGJ1BF8HJhUTwAb37fxZcRvs6/l7OK6XJe73qCxFtUohD2B7LX
+ l6WF3Gi9PMMjiBQLXFYPg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:P8m4/AtiHzU=:z4MJAWVc7o2JC88N1aCGIV
+ jmtIS734FLnYERRZPdxeaqliGezhXmd38PqIAgZh4MdFRKUbhw2TaTefMNdhkgAazhVo4rB2c
+ ouTcGE8hmoMgYZ6yP/YBara5yVs6oCsGlno2hNafu6+qmawhWqNBRYs91lUyzqlOhR/bO+jeT
+ SInrDPwCQKR0+Gb8JTKE+XnbYb/kTVCht3joaR1GhuGO/hxpDI1+4FhWp6SxqeBlBSoWtP5TY
+ TLNdG7oXe9lhVgoIDhRY8Ye+sa/L4eoQr96UxFgk0m4IFNrp5FmkKuKfyXdSFX4bvlZNdUbKb
+ kZzccC4/ZgxUgS1av+tlw/KwOlfkPbdff14NEjCi3w/DtjRW56Ll3sca+UUS9eM/taPFK2359
+ pjM0cHRZwnqj3z003TCh0VKD8jTQ/5dt4FZLiIKepuU+Vby4Y9JrYwwtV7mGOaxjfp3NfjAYU
+ gr9o6AopiCBa8e3HYLvu+00qFa6PcWxWawt2cy7gY1eujGribtxFTGYGuK1M12JB8e/aecpi3
+ 5APi77CFAJPwfCYnaEeUyuuPlvKcWWFIj/dtPq7VSUhcPK15D81Bo4CqkPjXv903igbjFPsMR
+ eeLzcpe6NHhvq98XYEa12tduOcPVcKEwLkWtQEBRqaYlooIekaSVgKtDgdMDov1cYd1ljiM53
+ oePYS9wcK6vaifz8supROIPSuXP5himG8U10VCDd2YLzQk4GZjYxp0mggVFZAkhG85BTCHz+U
+ TnCtaRc6zBy94KKfGYITfKQaEeAU0qReCwInJJPKg+7AugjhC7Bl2Hmi6hIPQadfylX6YK6ho
+ le+CKScnDQ5wZlK8O/2oYnNLZhpA8UnHYa1Ug0Sp9WDCgF2CNUb+e3/R7bpRJTsmPJRp4FB9V
+ R6mOhqVAK2taiwREJywPMxLGJV5zpT4dPZpbQVITGIfEQzS3WJRgDuUiZVI7V4vSauBs9eMkc
+ I4LeQ3Ko1k8qSWFWs6iaEP6Y5Jx62ZNJl3oHqz2Uxzn3whR/TU0VRGP98P4ysBgqpkabmFJEn
+ ng/FUbdSGOffpls9Tmj2HLhJCheMU6uQdkIG47VMtH1RtnfX/1FlHsxvkQFhFK6YJ0ju8O62u
+ 7A7OgK3XIX8g2vdvdtVfAfVJ1u42Lgdgta1ly2UP9HW1aqqsZih1yrO5w==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, 25 Aug 2022 16:37:36 +0200, Andreas Böhler wrote:
-> The tps23861 driver does not initialize the chip and relies on it being
-> in auto-mode by default. On some devices, these controllers default to
-> OFF-Mode and hence cannot be used at all.
-> 
-> This brings minimal support for initializing the controller in a user-
-> defined mode.
-> 
-> Signed-off-by: Andreas Böhler <dev@aboehler.at>
-> ---
->  .../bindings/hwmon/ti,tps23861.yaml           | 76 +++++++++++++++++++
->  1 file changed, 76 insertions(+)
-> 
+Currently, hwmon.h and hwmon-vid.h provide no stub definitions
+in case hwmon/hwmon-vid support was disabled. This forces drivers
+using those functions to either select CONFIG_HWMON or to use
+lots of #ifdef to avoid compilation errors in such a case.
+One example is the ath10k driver, but radeon and amdgpu
+would also profit from being able to no longer having to select
+CONFIG_HWMON.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+The first patch adds include stubs to hwmon.h and hwmon-vid.h
+so that drivers can omit such workarounds.
 
-yamllint warnings/errors:
+The second patch fixes a minor issue in hwmon.h.
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:28.23-33: Warning (reg_format): /example-0/i2c/tps23861@30/port@0:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:36.23-33: Warning (reg_format): /example-0/i2c/tps23861@30/port@1:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:44.23-33: Warning (reg_format): /example-0/i2c/tps23861@30/port@2:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:52.23-33: Warning (reg_format): /example-0/i2c/tps23861@30/port@3:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dtb: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dtb: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dtb: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dtb: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dtb: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:27.26-33.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@0: Relying on default #address-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:27.26-33.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@0: Relying on default #size-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:35.26-41.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@1: Relying on default #address-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:35.26-41.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@1: Relying on default #size-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:43.26-49.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@2: Relying on default #address-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:43.26-49.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@2: Relying on default #size-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:51.26-57.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@3: Relying on default #address-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dts:51.26-57.21: Warning (avoid_default_addr_size): /example-0/i2c/tps23861@30/port@3: Relying on default #size-cells value
-Documentation/devicetree/bindings/hwmon/ti,tps23861.example.dtb: Warning (unique_unit_address_if_enabled): Failed prerequisite 'avoid_default_addr_size'
+Both patches where tested with CONFIG_HWMON set to y, m and n,
+and the resulting kernel was able to boot successfully.
 
-doc reference errors (make refcheckdocs):
+Armin Wolf (2):
+  hwmon: Add include stubs
+  hwmon: Use struct definitions from header files
 
-See https://patchwork.ozlabs.org/patch/
+ include/linux/hwmon-vid.h | 18 +++++++++
+ include/linux/hwmon.h     | 81 +++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 95 insertions(+), 4 deletions(-)
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+=2D-
+2.30.2
 
