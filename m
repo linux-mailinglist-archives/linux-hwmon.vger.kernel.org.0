@@ -2,233 +2,185 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA295A6D30
-	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Aug 2022 21:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2410F5A6DA7
+	for <lists+linux-hwmon@lfdr.de>; Tue, 30 Aug 2022 21:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231670AbiH3TXb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 30 Aug 2022 15:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59070 "EHLO
+        id S231696AbiH3Tne (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 30 Aug 2022 15:43:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231448AbiH3TXB (ORCPT
+        with ESMTP id S231351AbiH3TnI (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 30 Aug 2022 15:23:01 -0400
-Received: from smtp-fw-9103.amazon.com (smtp-fw-9103.amazon.com [207.171.188.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32BB77A52D;
-        Tue, 30 Aug 2022 12:22:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1661887364; x=1693423364;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Z7jW+V8MpqUAQfk+WoYCzoX7Aq0MV4Sqe7/ddtn8+sU=;
-  b=Rq9EAdLx2/723Z873MozxMAl5DJywKtkaG2Cuq5ZvrsntCBTMlN/iNlF
-   T4TyvInFfr2BKhOdxc+sAvFpQzzTDKXRlEXvLIqrTtwTchx18TUboM28W
-   INXUmW97lzjfPAGczRgnwUTY2cohv+V2BkT+YIkQaG8rJJBvPHwnB7jGO
-   Q=;
-X-IronPort-AV: E=Sophos;i="5.93,275,1654560000"; 
-   d="scan'208";a="1049655077"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-c92fe759.us-east-1.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-9103.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 19:22:42 +0000
-Received: from EX13MTAUWA001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1a-c92fe759.us-east-1.amazon.com (Postfix) with ESMTPS id CED54C091A;
-        Tue, 30 Aug 2022 19:22:38 +0000 (UTC)
-Received: from EX19D013UWA002.ant.amazon.com (10.13.138.210) by
- EX13MTAUWA001.ant.amazon.com (10.43.160.118) with Microsoft SMTP Server (TLS)
- id 15.0.1497.38; Tue, 30 Aug 2022 19:22:15 +0000
-Received: from EX13MTAUWA001.ant.amazon.com (10.43.160.58) by
- EX19D013UWA002.ant.amazon.com (10.13.138.210) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1118.12;
- Tue, 30 Aug 2022 19:22:15 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by mail-relay.amazon.com (10.43.160.118) with Microsoft SMTP
- Server id 15.0.1497.38 via Frontend Transport; Tue, 30 Aug 2022 19:22:15
- +0000
-Received: by dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com (Postfix, from userid 14301484)
-        id 640D04D4C; Tue, 30 Aug 2022 19:22:12 +0000 (UTC)
-From:   Eliav Farber <farbere@amazon.com>
-To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
-        <p.zabel@pengutronix.de>, <rtanwar@maxlinear.com>,
-        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <farbere@amazon.com>, <talel@amazon.com>, <hhhawa@amazon.com>,
-        <jonnyc@amazon.com>, <hanochu@amazon.com>, <ronenk@amazon.com>,
-        <itamark@amazon.com>, <shellykz@amazon.com>, <shorer@amazon.com>,
-        <amitlavi@amazon.com>, <almogbs@amazon.com>, <dkl@amazon.com>,
-        <rahul.tanwar@linux.intel.com>, <andriy.shevchenko@intel.com>
-Subject: [PATCH v3 19/19] hwmon: (mr75203) fix coding style space errors
-Date:   Tue, 30 Aug 2022 19:22:12 +0000
-Message-ID: <20220830192212.28570-20-farbere@amazon.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220830192212.28570-1-farbere@amazon.com>
-References: <20220830192212.28570-1-farbere@amazon.com>
+        Tue, 30 Aug 2022 15:43:08 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FD773900;
+        Tue, 30 Aug 2022 12:42:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 54AC2B81DB7;
+        Tue, 30 Aug 2022 19:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABA4C433D7;
+        Tue, 30 Aug 2022 19:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661888565;
+        bh=+cGXZMI2oEXKgWxb9ZJXDzYjbbc2gJTCUd+EAG1qVPM=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=LYpYi+hA+j838eO7PaAlm6hujUBT/ozW55UwaoOz2+nwvC/lvCzYZchAfH2IlWFtx
+         BL/C94gwh7XgqP5VAIgYmNDlAI0asdiWjkKXPxFY6f4AqPGlfEMR4ZL+SXXB4OtGOJ
+         D3oPjR4HANLtqLoltwJZvh1+0UW9ey0vQ+GMDWL3Fn+Zd/Sn9GERIYCjMxXbQ38Z+j
+         Tc1NH80aBwAE/KSjp+yQKJ8uuazJ5JsdnSJwk1PINDKVMjrkizHLfzcwKshkAbp8TA
+         VnuSHSB6lcAQ0YUoHD8HLLF0mYhQ1MtyGV9Csn8H7mCqJih2C0sTv5L9JOT3k5/SRl
+         E8CelWuDuqlTA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-11.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YvrDp32/TknqV05t@sirena.org.uk>
+References: <cover.1660292316.git.mazziesaccount@gmail.com> <166057828406.697572.228317501909350108.b4-ty@kernel.org> <YvpsRbguMXn74GhR@pendragon.ideasonboard.com> <Yvp1Qkuh7xfeb/B2@sirena.org.uk> <YvqV9Mq6I3gXQaf2@pendragon.ideasonboard.com> <20220815205857.308B1C433D6@smtp.kernel.org> <YvrDp32/TknqV05t@sirena.org.uk>
+Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        dri-devel@lists.freedesktop.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        linux-amlogic@lists.infradead.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Michael Turq uette <mturquette@baylibre.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-hwmon@vger.kernel.org, linux-clk@vger.kernel.org,
+        Nuno =?utf-8?q?S=C3=A1?= <nuno.sa@analog.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        David Airlie <airlied@linux.ie>, linux-iio@vger.kernel.org
+To:     Mark Brown <broonie@kernel.org>
+Date:   Tue, 30 Aug 2022 12:42:42 -0700
+User-Agent: alot/0.10
+Message-Id: <20220830194244.DABA4C433D7@smtp.kernel.org>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Fix: "ERROR: space required before the open parenthesis '('"
+Quoting Mark Brown (2022-08-15 15:07:35)
+> On Mon, Aug 15, 2022 at 01:58:55PM -0700, Stephen Boyd wrote:
+>=20
+> > I think the main issue is that platform drivers are being asked to do
+> > too much. We've put the burden on platform driver authors to intimately
+> > understand how their devices are integrated, and as we all know they're
+>=20
+> This is for the regulator API, it's mainly for off SoC devices so it's
+> not a question of understanding the integration of a device into a piece
+> of silicon, it's a question of understanding the integration of a chip
+> into a board which seems reasonably in scope for a chip driver and is
+> certainly the sort of thing that you'd be talking to your customers
+> about as a silicon vendor.
 
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
- drivers/hwmon/mr75203.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+Right. I'm coming from the devm_clk_get_*() APIs angle when saying that
+platform drivers don't want to know everything.
 
-diff --git a/drivers/hwmon/mr75203.c b/drivers/hwmon/mr75203.c
-index 8c30f0521452..6a19f3d2a708 100644
---- a/drivers/hwmon/mr75203.c
-+++ b/drivers/hwmon/mr75203.c
-@@ -404,7 +404,7 @@ static int pvt_read_temp(struct device *dev, u32 attr, int channel, long *val)
- 			return ret;
- 
- 		ret = regmap_read(t_map, SDIF_DATA(channel), &nbs);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		nbs &= SAMPLE_DATA_MSK;
-@@ -445,7 +445,7 @@ static int pvt_read_in(struct device *dev, u32 attr, int channel, long *val)
- 			return ret;
- 
- 		ret = regmap_read(v_map, VM_SDIF_DATA(vm_idx, ch_idx), &n);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		n &= SAMPLE_DATA_MSK;
-@@ -542,19 +542,19 @@ static int pvt_init(struct pvt_device *pvt)
- 
- 	if (t_num) {
- 		ret = regmap_write(t_map, SDIF_SMPL_CTRL, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(t_map, SDIF_HALT, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(t_map, CLK_SYNTH, clk_synth);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(t_map, SDIF_DISABLE, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_read_poll_timeout(t_map, SDIF_STAT,
-@@ -567,7 +567,7 @@ static int pvt_init(struct pvt_device *pvt)
- 		val = CFG0_MODE_2 | CFG0_PARALLEL_OUT | CFG0_12_BIT |
- 		      IP_CFG << SDIF_ADDR_SFT | SDIF_WRN_W | SDIF_PROG;
- 		ret = regmap_write(t_map, SDIF_W, val);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_read_poll_timeout(t_map, SDIF_STAT,
-@@ -580,7 +580,7 @@ static int pvt_init(struct pvt_device *pvt)
- 		val = POWER_DELAY_CYCLE_256 | IP_TMR << SDIF_ADDR_SFT |
- 			      SDIF_WRN_W | SDIF_PROG;
- 		ret = regmap_write(t_map, SDIF_W, val);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_read_poll_timeout(t_map, SDIF_STAT,
-@@ -594,39 +594,39 @@ static int pvt_init(struct pvt_device *pvt)
- 		      IP_CTRL << SDIF_ADDR_SFT |
- 		      SDIF_WRN_W | SDIF_PROG;
- 		ret = regmap_write(t_map, SDIF_W, val);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 	}
- 
- 	if (p_num) {
- 		ret = regmap_write(p_map, SDIF_HALT, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(p_map, SDIF_DISABLE, BIT(p_num) - 1);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(p_map, CLK_SYNTH, clk_synth);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 	}
- 
- 	if (v_num) {
- 		ret = regmap_write(v_map, SDIF_SMPL_CTRL, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(v_map, SDIF_HALT, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(v_map, CLK_SYNTH, clk_synth);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_write(v_map, SDIF_DISABLE, 0x0);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_read_poll_timeout(v_map, SDIF_STAT,
-@@ -654,7 +654,7 @@ static int pvt_init(struct pvt_device *pvt)
- 		      CFG1_14_BIT | IP_CFG << SDIF_ADDR_SFT |
- 		      SDIF_WRN_W | SDIF_PROG;
- 		ret = regmap_write(v_map, SDIF_W, val);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_read_poll_timeout(v_map, SDIF_STAT,
-@@ -667,7 +667,7 @@ static int pvt_init(struct pvt_device *pvt)
- 		val = POWER_DELAY_CYCLE_64 | IP_TMR << SDIF_ADDR_SFT |
- 		      SDIF_WRN_W | SDIF_PROG;
- 		ret = regmap_write(v_map, SDIF_W, val);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 
- 		ret = regmap_read_poll_timeout(v_map, SDIF_STAT,
-@@ -681,7 +681,7 @@ static int pvt_init(struct pvt_device *pvt)
- 		      IP_CTRL << SDIF_ADDR_SFT |
- 		      SDIF_WRN_W | SDIF_PROG;
- 		ret = regmap_write(v_map, SDIF_W, val);
--		if(ret < 0)
-+		if (ret < 0)
- 			return ret;
- 	}
- 
-@@ -967,7 +967,7 @@ static int mr75203_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = regmap_read(pvt->c_map, PVT_IP_CONFIG, &val);
--	if(ret < 0)
-+	if (ret < 0)
- 		return ret;
- 
- 	ts_num = (val & TS_NUM_MSK) >> TS_NUM_SFT;
--- 
-2.37.1
+>=20
+> > The basic idea is that drivers should be focused on what they're
+> > driving, not navigating the (sometimes) complex integration that's
+> > taking place around them. When a device driver probe function is called
+> > the device should already be powered on. When the driver is
+> > removed/unbound, the power should be removed after the driver's remove
+> > function is called. We're only going to be able to solve the power
+> > sequencing and ordering problem by taking away power control and
+> > sequencing from drivers.
+>=20
+> That is a sensible approach for most on SoC things but for something
+> shipped as a separate driver there's little point in separating the
+> power and clocking domain driver from the device since there's typically
+> a 1:1 mapping.  Usually either it's extremely simple (eg, turn
+> everything on and remove reset) but some devices really need to manage
+> things.  There's obviously some edge cases in SoC integration as well
+> (eg, the need to manage card supplies for SD controllers, or knowing
+> exact clock rates for things like audio controllers) so you need some
+> flex.
 
+I think we're on the same page. The clk API bridges both on SoC and off
+SoC devices, but leans more towards on SoC devices so I'm coming from
+that angle.=20
+
+I agree it doesn't make sense to rip out and move power management logic
+for off SoC devices (your chip driver), because then you get a driver
+that is split to two places. The hardware engineer for those types of
+devices has designed the chip to be more aware of the system integration
+and how their chip is powered, so that it can be easily integrated into
+various designs without their involvement. This allows it to be used on
+numerous boards and that's partly the reason why Linux doesn't have
+board files or board "drivers" because the combinatorial explosion is
+unmanageable, hence DTS and driver subsystems. The boundary of the
+combinations ends at the chip which is 1:1 with the platform driver.
+
+For on SoC devices, the hardware engineer typically isn't involved in
+the system integration at all. Instead they hand that task off to the
+SoC integrator who has to wire everything up (clks, power, resets) and
+layout the SoC. The combinatorial explosion isn't possible here, because
+only so many SoCs are ever created and customers can't rewire the
+internals of the SoC to change which clks go there (although I guess
+with FPGAs this may be possible). The boundary where the combinations
+exist is at the device level, not the SoC level, but we've encoded the
+SoC details into the compatible strings and the drivers to the point
+that the boundary is pushed to the SoC level.
+
+For these on SoC devices, we should extract and consolidate the power
+management logic away from the drivers, because we're spreading the SoC
+integration knowledge all around the drivers/ directory for every device
+class that exists in that SoC. I continue to see drivers that get
+another clk in the next SoC generation because there was some change to
+split a clk domain or they get another regulator because they split a
+power domain. The driver doesn't care, but it has to match a new
+compatible string and then get the proper list of clks or regulators
+even though it just wants to turn the thing on and get it running. This
+gunk needs to go. Runtime PM is a solution to part of the problem, but I
+think RPM ops should be about poking device registers for these on SoC
+devices, not about controlling yet another clk or regulator that got
+wired up this SoC generation.
+
+Probably we need to get away from having platform driver probe for on
+SoC devices get resources like clks, regulators, and interconnects at
+all. Instead, those should be managed by some "SoC" driver that knows
+the integration of the SoC and can make sure the proper power sequencing
+is followed. Hopefully we can do this largely via genpd and RPM, with a
+little bit of help from some SoC driver that registers genpds for
+devices under /soc. Of course there are exact clk frequencies required
+sometimes (audio rates, display link rates, serial baud rates, etc.) but
+those sorts of things could use a higher level of abstraction so that we
+don't get bogged down in the details of which clk needs to be used to
+set the clk frequency when this compatible is present. Maybe
+dev_pm_opp_set_rate() is the answer there, but then we have some drivers
+that call clk APIs like clk_round_rate() that we'll need to figure out
+how to manage.
+
+Long story short, there's a need for both approaches so that we can
+manage the combinatorial complexity at the place where it is. I hope the
+devm APIs are going to help us find that place so we can come up with a
+solution to the "drivers don't want to know" problem when we see that
+XYZ driver can use a genpd that turns on the power along with RPM to
+turn it off during suspend.
