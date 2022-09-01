@@ -2,113 +2,148 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 835CC5AA0A9
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Sep 2022 22:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81A715AA1CD
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Sep 2022 23:59:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232619AbiIAUI4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Sep 2022 16:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39170 "EHLO
+        id S233114AbiIAV6k (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Sep 2022 17:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbiIAUIy (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Sep 2022 16:08:54 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A77196764;
-        Thu,  1 Sep 2022 13:08:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662062934; x=1693598934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tEaao3foBhQw2Xuc0GTtdg6hbZmqlCpEihIK2n8Jim8=;
-  b=TJayDPsgqEjk5tiHztuG8leDRBg/al8Rz3oAz5XsGuKpf7wwwciSmPgK
-   zzAKKuTDefjKawl21R0tm2BFEGZRecURim/V76lpJgKyzl2ovWDs3RP43
-   vRTSm5k/MrpRiHr8aW06H6CDHswJ57TRD+GE5dM3++Hh9yi9HAlCq1jwO
-   FhQDKE3SwGQkaKEvNYGvVcfzaPcmKXxj1HwlJsuJnh+9jQj0bfZc5ciIi
-   ZPHqukwuLFh6nzjMbjjWCiR9Msi9q5H7LE0r5Xe1TSOTWtP3J6jM786wO
-   wMxzeNNBN74Eq41uNvsAzboWrDa/VFRNBeZzggTeDLNwsqTwCrkFINNK0
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10457"; a="382115562"
-X-IronPort-AV: E=Sophos;i="5.93,281,1654585200"; 
-   d="scan'208";a="382115562"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2022 13:08:53 -0700
-X-IronPort-AV: E=Sophos;i="5.93,281,1654585200"; 
-   d="scan'208";a="563603640"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2022 13:08:48 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1oTqUX-0071pb-2n;
-        Thu, 01 Sep 2022 23:08:45 +0300
-Date:   Thu, 1 Sep 2022 23:08:45 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     "Farber, Eliav" <farbere@amazon.com>
-Cc:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        p.zabel@pengutronix.de, rtanwar@maxlinear.com,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, talel@amazon.com, hhhawa@amazon.com,
-        jonnyc@amazon.com, hanochu@amazon.com, ronenk@amazon.com,
-        itamark@amazon.com, shellykz@amazon.com, shorer@amazon.com,
-        amitlavi@amazon.com, almogbs@amazon.com, dkl@amazon.com
-Subject: Re: [PATCH v3 12/19] hwmon: (mr75203) fix voltage equation for
- negative source input
-Message-ID: <YxERTTubyKb9oy8P@smile.fi.intel.com>
-References: <20220830192212.28570-1-farbere@amazon.com>
- <20220830192212.28570-13-farbere@amazon.com>
- <Yw9OSJogapyla1Jr@smile.fi.intel.com>
- <a05adc0e-35f8-9e77-9e3e-83de851b651b@amazon.com>
+        with ESMTP id S233034AbiIAV6h (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Sep 2022 17:58:37 -0400
+Received: from vorpal.se (vorpal.se [151.236.221.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5A179636;
+        Thu,  1 Sep 2022 14:58:34 -0700 (PDT)
+Received: by vorpal.se (Postfix) with ESMTPSA id 2999F142D4;
+        Thu,  1 Sep 2022 21:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
+        t=1662069513; bh=gNrPW0U1FSW58IPsYgYMKepiEb2EP4cQVpEuA1Qo2zo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OG45IhxgYcpVlsn6PheI8Prel5lw5v75tDT4/eK5jIzUzTbgC+KxsxFXXiVwwrkX0
+         9VW6igeQdw+BY3kB8DbTq845NCcaa0ClEiiCQp7U183lSDQmzEumwrJe975Zni+3O7
+         uSSsRvzS/PPp4ehkmUJSw2fCIsMk0+NkVM6+rclsy91K81CUILPooAEHLCIWQ/2KrM
+         uKuwZDi0HhSSE3LOAsoZRSBn/0QzLAd8n9+oVyqjALxjaPHRTzOW9Nn9E//hQMQPkr
+         bGWLcxRj1kE7EGxSIQHgfaTVJ50dH3vMnZF48wB3wVJCxFtTdVr+4GlfIoKha5DmoC
+         GYSKawN3+rOuQ==
+From:   Arvid Norlander <lkml@vorpal.se>
+To:     platform-driver-x86@vger.kernel.org
+Cc:     Azael Avalos <coproscefalo@gmail.com>, linux-hwmon@vger.kernel.org,
+        Arvid Norlander <lkml@vorpal.se>
+Subject: [PATCH v2 0/2] platform/x86: toshiba_acpi: HWMON Fan RPM support
+Date:   Thu,  1 Sep 2022 23:58:17 +0200
+Message-Id: <20220901215819.1608723-1-lkml@vorpal.se>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a05adc0e-35f8-9e77-9e3e-83de851b651b@amazon.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Sep 01, 2022 at 03:47:39PM +0300, Farber, Eliav wrote:
-> On 8/31/2022 3:04 PM, Andy Shevchenko wrote:
-> > On Tue, Aug 30, 2022 at 07:22:05PM +0000, Eliav Farber wrote:
-> > > According to Moortec Embedded Voltage Monitor (MEVM) series 3 data
-> > > sheet,
-> > > the minimum input signal is -100mv and maximum input signal is +1000mv.
-> > > When n was small enough, such that PVT_N_CONST * n < PVT_R_CONST it
-> > > resulted in n overflowing to a very large number (since n is u32 type).
-> > > 
-> > > This change fixes the problem by casting n to long and replacing shift
-> > > right with div operation.
-> > 
-> > Fixes tag?
-> 
-> For v4 I modified the commit message to (hopefully) be more
-> understandable:
-> 
-> "
-> According to Moortec Embedded Voltage Monitor (MEVM) series 3 data
-> sheet, the minimum input signal is -100mv and maximum input signal
-> is +1000mv.
-> 
-> On 64 bit machines sizeof(u32) = 4 and sizeof(long) = 8.
-> So when measuring a negative input and n is small enough, such that
-> PVT_N_CONST * n < PVT_R_CONST, it results in n overflowing to a very
-> large number which is not negative (because 4 MSB bytes of val are 0).
-> 
-> This change fixes the sign problem and supports negative values by
-> casting n to long and replacing shift right with div operation.
-> "
+Changelog
+=========
+v2: Fixed feedback on usage of HWMON interfaces in patch 2.
 
-What I meant is to add the tag of the commit which this one is fixing.
-We have Fixes tag format for that. You may see how it's done by looking
-into Git history: git log --grep Fixes:
+Fan
+===
 
+Currently /sys/bus/acpi/devices/TOS6208:00/fan allows controlling the fan
+by writing 0 (off) or 1 (on at low speed). However when reading I have
+observed values up to 64 (fan at full speed during prime95 stress test).
+
+Removing the check for "zero or one" shows that on the Z830 at least 64
+levels do indeed seem possible. In fact higher values can be written.
+
+But anything above ~50 seems to max out the RPM.
+
+I don't know how to detect the supported range, so I have not created a
+patch for this. Advice is welcome.
+
+
+Fan RPM
+=======
+
+There is a way to read Fan RPM:
+
+#define HCI_FAN_RPM 0x45
+
+This one is weird. On windows I have observed the cooling self test program
+(which supposedly verifies that the cooling is working correctly) calling
+this a few different ways. Here is a summary of what I managed to figure
+out:
+
+HCI_SET, 0x45, 0, 1, 0, 0: This sets the fan to run at max speed, but it
+will not be visible when reading /sys/bus/acpi/devices/TOS6208:00/fan.
+I will refer to this operation as "set-max-fan" below.
+
+The only way I found to stop it running at max RPM is to use HCI_FAN
+(e.g. 0 > /sys/bus/acpi/devices/TOS6208:00/fan or call the ACPI method
+directly).
+
+However the get method is more interesting:
+
+HCI_GET, 0x45, 0, 1, 0, 0 returns: {0x0, 0x45, fan_rpm, 0x1db0, 0x0, 0x0}
+
+I believe fan_rpm is accurate, without any scaling factors needed:
+* It behaves properly (higher value when fan is louder/faster/higher
+  pitched, 0 when fan is off).
+* It matches the value range reported by HwInfo64 on Windows (which seems
+  to be able to read this, I have not looked into how it does that).
+* Unfortunately there is no tool by Toshiba that exposes the numerical
+  value that I can find (that would have been ideal). Nor is it shown in
+  BIOS. The Windows tools "Toshiba PC Health Monitor" reports everything in
+  percentages. Yes even the temperatures!
+* It is definitely a loud and whiny fan, even by laptop standards, so the
+  high reported RPM range of 3540-7600 RPM could make sense. Though it did
+  seem a bit high.
+* Finally, to be sure, I borrowed a tachometer from work. Yes, the fan
+  really spins that fast. Byt it is only 30 mm, so I guess that makes
+  sense.
+
+HCI_GET 0x45, 0, 0, 0, 0 returns: {0x0, 0x45, fan_rpm, 0x0, 0x0, 0x0}
+
+The Windows software does *not* use this variant as far as I have observed.
+It appears to work the same except that it doesn't return 0x1db0 in index 3.
+
+I'm not sure, but I strongly suspect 0x1db0 could be the max RPM (7600).
+The most I have observed when using "set-max-fan" is 0x1da6 (7590 RPM),
+which is very close. Note that this is significantly more than I can get
+using just HCI_FAN, which seems to max out at 0x17ac (6060 RPM).
+
+
+Patches
+=======
+
+I'm not personally particularly interested in user space control of fan
+speed, plus the fact that there is a way to make the fan go faster than
+the *other* max speed makes me wonder about the safety of running the fan
+at that speed for prolonged periods of time. Thus, I have only added a
+read-only hwmon interface for reading the fan RPM.
+
+I elected to use the same call that the Windows code does, which fetches
+what I believe is the max RPM. I think it is safer to stay as close as
+possible to that code. However I don't currently make use of this value,
+suggestions for where to use it are welcome.
+
+Note! I assume that if the FAN RPM call do not result in an error, that
+it is in fact supported. This may not be true. I would welcome testing by
+anyone who owns a Toshiba laptop!
+
+
+Arvid Norlander (2):
+  platform/x86: toshiba_acpi: Add fan RPM reading (internals)
+  platform/x86: toshiba_acpi: Add fan RPM reading (hwmon interface)
+
+ drivers/platform/x86/Kconfig        |   1 +
+ drivers/platform/x86/toshiba_acpi.c | 102 ++++++++++++++++++++++++++++
+ 2 files changed, 103 insertions(+)
+
+
+base-commit: b90cb1053190353cc30f0fef0ef1f378ccc063c5
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.37.3
 
