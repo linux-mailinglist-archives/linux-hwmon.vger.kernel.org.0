@@ -2,166 +2,148 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2425A9AF4
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Sep 2022 16:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0F1B5A9B08
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Sep 2022 16:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233652AbiIAOzS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Sep 2022 10:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38014 "EHLO
+        id S233986AbiIAO6n (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Sep 2022 10:58:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233101AbiIAOzR (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Sep 2022 10:55:17 -0400
-X-Greylist: delayed 318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 01 Sep 2022 07:55:12 PDT
-Received: from vorpal.se (vorpal.se [151.236.221.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6311DA4A;
-        Thu,  1 Sep 2022 07:55:11 -0700 (PDT)
-Received: by vorpal.se (Postfix) with ESMTPSA id 4776C147F4;
-        Thu,  1 Sep 2022 14:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=vorpal.se; s=2019;
-        t=1662043792; bh=Ky3RZt8+jm1rZGp70aX3vdqaOEd1Zl6fs+DqlwpBbqE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dFP9ryJdYtLqHaenIrLnvfh2QoycVRybjnusu05Dd3ScL38M+Jn93Mis/lC2UIaKO
-         NtW1UlAAyKGhnZFavO4oL0qe7ox/p70Y6AUn17ZvLNfmTWBVGlUfH9VyJPjWbnePV8
-         DiUuJHEK9/moWh1PjrISgDv3fappecCDluLy+pdmGQ1cCGUtNJHt4PRgui1UZZIzUr
-         9ssXdF/VG/a2ppQ4Hkg4qkjKmt59joAdWN/XJ5m6KvJeEFmbLqtOI7ZjtbHe0Y/HAZ
-         AS0MNmISzAh6r6gRtHhgGfsRiXmSi4ucPIeqsfZGKYsOn3x0BpY1FpaG3SnZUe6qFt
-         ofsWJXvF+xtUg==
-From:   Arvid Norlander <lkml@vorpal.se>
-To:     platform-driver-x86@vger.kernel.org
-Cc:     Azael Avalos <coproscefalo@gmail.com>, linux-hwmon@vger.kernel.org,
-        Arvid Norlander <lkml@vorpal.se>
-Subject: [PATCH 2/2] [RFC] platform/x86: toshiba_acpi: Add fan RPM reading (hwmon interface)
-Date:   Thu,  1 Sep 2022 16:49:41 +0200
-Message-Id: <20220901144941.1426407-3-lkml@vorpal.se>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220901144941.1426407-1-lkml@vorpal.se>
-References: <20220901144941.1426407-1-lkml@vorpal.se>
+        with ESMTP id S234488AbiIAO6m (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Sep 2022 10:58:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5CE57A533
+        for <linux-hwmon@vger.kernel.org>; Thu,  1 Sep 2022 07:58:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1662044320;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bE0TdgbHTlPub8+p6QK52e8GGKi3CU/yaDOC4uYWKQc=;
+        b=MbMqew7jKnAwnZSw1KyqruS+AdPl4wnoft7GP5ZSMtyBEyey31y1IqUza/FZW4KEVGlAOK
+        Ru8Oks78N/xQnGs3hiho6SJvS+D9mx5Lk/VPyPZCPWj9gpmwN5HffIq3T0JBCcsUGem/K2
+        /2vDqwLpsfThkHJNZLT0L2/IEsTCG4k=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-571-CwpH2wmvMeyzbrnccbvvKg-1; Thu, 01 Sep 2022 10:58:39 -0400
+X-MC-Unique: CwpH2wmvMeyzbrnccbvvKg-1
+Received: by mail-ej1-f72.google.com with SMTP id qf22-20020a1709077f1600b00741638c5f3cso5975589ejc.23
+        for <linux-hwmon@vger.kernel.org>; Thu, 01 Sep 2022 07:58:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=bE0TdgbHTlPub8+p6QK52e8GGKi3CU/yaDOC4uYWKQc=;
+        b=F7T2SHsIYfAaoTir3d59dOUZI9qZObnRQ3cLZ5ssQFF+nsRSMzwGBOaVkatNp+781v
+         moBNuriV2WzTabnmz83vOgF+Rm/edAyuIQaugmv69O6/1vAc2m52ZfCkW1/lfSSppju8
+         KXrjySy/g1xKTXBO/GJEHV8k3hZL7894//pNkM9wChZ9RoUiiMt/O8nJV5a47H2j1T6i
+         QhRRCa3LTFYv0z7d4SKip6PtON1VXaNhuoM3kxM3UG33hJx3o6BFQJ5jWrzKcKck3nlt
+         CaMbHuVKqBKfXjk8jw6RGcCuscMGbo5FIGccYVPMVHXIhbhREchPzTEnasTD04fqpUiS
+         34zQ==
+X-Gm-Message-State: ACgBeo0RjXD4LACHr/AhztzcxoAC3XxUB2LsnJADhMieXOwiyXe9ISDC
+        upNgSUWPvblLzK2pkkXe41OLF4ZjZNEVfBrapXfoBzy1Glux/hjIPNkZYYiZhBy3hASs499z+5g
+        VlmknJIeSMV/fLunWQivBiYA=
+X-Received: by 2002:a17:906:99c1:b0:6fe:b01d:134 with SMTP id s1-20020a17090699c100b006feb01d0134mr23529858ejn.598.1662044318570;
+        Thu, 01 Sep 2022 07:58:38 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR58ylG7U3rzoPStiTD88Zrl0UoM9RaMtg4Tbq8sHhi5YXMNCfe2Ur7IUrMZc7HoxVjyrPA0Lw==
+X-Received: by 2002:a17:906:99c1:b0:6fe:b01d:134 with SMTP id s1-20020a17090699c100b006feb01d0134mr23529848ejn.598.1662044318384;
+        Thu, 01 Sep 2022 07:58:38 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id o1-20020a170906768100b0073d5e1edd1csm8506873ejm.225.2022.09.01.07.58.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Sep 2022 07:58:37 -0700 (PDT)
+Message-ID: <5bd15802-a269-420c-7071-1cae63fa6070@redhat.com>
+Date:   Thu, 1 Sep 2022 16:58:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH] asus-wmi: Increase FAN_CURVE_BUF_LEN to 32
+Content-Language: en-US
+To:     Guenter Roeck <linux@roeck-us.net>,
+        "Luke D. Jones" <luke@ljones.dev>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, markgross@kernel.org
+References: <20220828074638.5473-1-luke@ljones.dev>
+ <20220829133556.GA3766826@roeck-us.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220829133556.GA3766826@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-This expands on the previous commit, exporting the fan RPM via hwmon.
+Hi All,
 
-This will look something like the following when using the "sensors"
-command from lm_sensors:
+On 8/29/22 15:35, Guenter Roeck wrote:
+> On Sun, Aug 28, 2022 at 07:46:38PM +1200, Luke D. Jones wrote:
+>> Fix for TUF laptops returning with an -ENOSPC on calling
+>> asus_wmi_evaluate_method_buf() when fetching default curves. The TUF method
+>> requires at least 32 bytes space.
+>>
+>> This also moves and changes the pr_debug() in fan_curve_check_present() to
+>> pr_warn() in fan_curve_get_factory_default() so that there is at least some
+>> indication in logs of why it fails.
+>>
+>> Signed-off-by: Luke D. Jones <luke@ljones.dev>
+>> ---
+>>  drivers/platform/x86/asus-wmi.c | 9 ++++-----
+>>  1 file changed, 4 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+>> index 3d9fd58573f9..11203213e00d 100644
+>> --- a/drivers/platform/x86/asus-wmi.c
+>> +++ b/drivers/platform/x86/asus-wmi.c
+>> @@ -108,7 +108,7 @@ module_param(fnlock_default, bool, 0444);
+>>  #define WMI_EVENT_MASK			0xFFFF
+>>  
+>>  #define FAN_CURVE_POINTS		8
+>> -#define FAN_CURVE_BUF_LEN		(FAN_CURVE_POINTS * 2)
+>> +#define FAN_CURVE_BUF_LEN		32
+>>  #define FAN_CURVE_DEV_CPU		0x00
+>>  #define FAN_CURVE_DEV_GPU		0x01
+>>  /* Mask to determine if setting temperature or percentage */
+>> @@ -2383,8 +2383,10 @@ static int fan_curve_get_factory_default(struct asus_wmi *asus, u32 fan_dev)
+>>  	curves = &asus->custom_fan_curves[fan_idx];
+>>  	err = asus_wmi_evaluate_method_buf(asus->dsts_id, fan_dev, mode, buf,
+>>  					   FAN_CURVE_BUF_LEN);
+>> -	if (err)
+>> +	if (err) {
+>> +		pr_warn("%s (0x%08x) failed: %d\n", __func__, fan_dev, err);
+>>  		return err;
+>> +	}
+>>  
+>>  	fan_curve_copy_from_buf(curves, buf);
+>>  	curves->device_id = fan_dev;
+>> @@ -2402,9 +2404,6 @@ static int fan_curve_check_present(struct asus_wmi *asus, bool *available,
+>>  
+>>  	err = fan_curve_get_factory_default(asus, fan_dev);
+>>  	if (err) {
+>> -		pr_debug("fan_curve_get_factory_default(0x%08x) failed: %d\n",
+>> -			 fan_dev, err);
+>> -		/* Don't cause probe to fail on devices without fan-curves */
+> 
+> The pr_warn() should be here. If you want to have a message from the call
+> in fan_curve_enable_store(), add dev_err() there.
 
-toshiba_acpi_sensors-acpi-0
-Adapter: ACPI interface
-fan1:           0 RPM
+Guenter I can understand where you are coming from with the warn vs err
+thing but IMHO that is a minor concern and I'm actually a fan of pushing
+error logging closer to the first failing call so that we only have
+one place to log the error instead of having to log it separately in
+all the callers.
 
-Signed-off-by: Arvid Norlander <lkml@vorpal.se>
----
- drivers/platform/x86/Kconfig        |  1 +
- drivers/platform/x86/toshiba_acpi.c | 49 +++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+So I'm going to take this patch as is.
 
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index f2f98e942cf2..9a98974ab8bf 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -799,6 +799,7 @@ config ACPI_TOSHIBA
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
- 	depends on RFKILL || RFKILL = n
- 	depends on IIO
-+	select HWMON
- 	select INPUT_SPARSEKMAP
- 	help
- 	  This driver adds support for access to certain system settings
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index 02e3522f4eeb..2b71dac34cf0 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -39,6 +39,7 @@
- #include <linux/i8042.h>
- #include <linux/acpi.h>
- #include <linux/dmi.h>
-+#include <linux/hwmon.h>
- #include <linux/uaccess.h>
- #include <linux/miscdevice.h>
- #include <linux/rfkill.h>
-@@ -171,6 +172,7 @@ struct toshiba_acpi_dev {
- 	struct miscdevice miscdev;
- 	struct rfkill *wwan_rfk;
- 	struct iio_dev *indio_dev;
-+	struct device *hwmon_device;
- 
- 	int force_fan;
- 	int last_key_event;
-@@ -2941,6 +2943,38 @@ static int toshiba_acpi_setup_backlight(struct toshiba_acpi_dev *dev)
- 	return 0;
- }
- 
-+
-+/* HWMON support for fan */
-+static ssize_t fan_fan1_input_show(struct device *dev,
-+				   struct device_attribute *attr,
-+				   char *buf)
-+{
-+	u32 value;
-+	int ret;
-+
-+	ret = get_fan_rpm(toshiba_acpi, &value);
-+	if (ret)
-+		return ret;
-+
-+	return sysfs_emit(buf, "%u\n", value);
-+}
-+
-+static DEVICE_ATTR(fan1_input, S_IRUGO, fan_fan1_input_show, NULL);
-+
-+static struct attribute *fan_attributes[] = {
-+	&dev_attr_fan1_input.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group fan_attr_group = {
-+	.attrs = fan_attributes,
-+};
-+
-+static const struct attribute_group *toshiba_acpi_hwmon_groups[] = {
-+	&fan_attr_group,
-+	NULL,
-+};
-+
- static void print_supported_features(struct toshiba_acpi_dev *dev)
- {
- 	pr_info("Supported laptop features:");
-@@ -2995,6 +3029,9 @@ static int toshiba_acpi_remove(struct acpi_device *acpi_dev)
- 
- 	remove_toshiba_proc_entries(dev);
- 
-+	if (dev->hwmon_device)
-+		hwmon_device_unregister(dev->hwmon_device);
-+
- 	if (dev->accelerometer_supported && dev->indio_dev) {
- 		iio_device_unregister(dev->indio_dev);
- 		iio_device_free(dev->indio_dev);
-@@ -3187,6 +3224,18 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	ret = get_fan_rpm(dev, &dummy);
- 	dev->fan_rpm_supported = !ret;
- 
-+	if (dev->fan_rpm_supported) {
-+		dev->hwmon_device = hwmon_device_register_with_groups(
-+			&dev->acpi_dev->dev, "toshiba_acpi_sensors", NULL,
-+			toshiba_acpi_hwmon_groups);
-+		if (IS_ERR(dev->hwmon_device)) {
-+			ret = PTR_ERR(dev->hwmon_device);
-+			dev->hwmon_device = NULL;
-+			pr_err("unable to register hwmon device\n");
-+			goto error;
-+		}
-+	}
-+
- 	toshiba_wwan_available(dev);
- 	if (dev->wwan_supported)
- 		toshiba_acpi_setup_wwan_rfkill(dev);
--- 
-2.37.2
+Regards,
+
+Hans
 
