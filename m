@@ -2,151 +2,117 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BCEF5A9BCA
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Sep 2022 17:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F545A9DC7
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Sep 2022 19:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233225AbiIAPez (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Sep 2022 11:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
+        id S232082AbiIARJb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Sep 2022 13:09:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233576AbiIAPev (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Sep 2022 11:34:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5255027F
-        for <linux-hwmon@vger.kernel.org>; Thu,  1 Sep 2022 08:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1662046486;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EdU6kcxk31+NfDy/R26HslGdp1j7dLdIqqiHO/JJmC8=;
-        b=XUVMCgmIt7zgb1iQZn7DdvpuhJrMbmVssMFRazT7OQzsFvSO2M31mnm9UMiwfyF1ku4uay
-        QIp13hWRg61FUeF5nIc6kds+VGfLT1OpQznMn96BArBP/ZrY2guSRcAeyUDu5QYPpST1UU
-        cXvWuOHn4gjBh2IYnwYcq+S+2rzvi+I=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-564-gPJYzKOLMya8A-Huf9fJUw-1; Thu, 01 Sep 2022 11:34:45 -0400
-X-MC-Unique: gPJYzKOLMya8A-Huf9fJUw-1
-Received: by mail-ed1-f72.google.com with SMTP id v1-20020a056402348100b00448acc79177so6875036edc.23
-        for <linux-hwmon@vger.kernel.org>; Thu, 01 Sep 2022 08:34:45 -0700 (PDT)
+        with ESMTP id S231211AbiIARJa (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Sep 2022 13:09:30 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FE399B75;
+        Thu,  1 Sep 2022 10:09:29 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id f24so14908598plr.1;
+        Thu, 01 Sep 2022 10:09:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date;
+        bh=XgF6M+PesVCHLnmf4Eb7PhlD2u/USZTKAxq3q69SaJU=;
+        b=bUs4FdCTWSx5vGjXpm6LgmxaZOlRC/tQydw2BeeYM+xctCYyL+czt6AtjIpG53REJy
+         nyewjQo8axtQXv9ri4O1QBvpwbrxzVMJQVRdSpL4n+gkWOu2tbV4YpUsyJCZJfEhrCoa
+         /R9K9jyAN/gwOcR+0umcoo8IQHdh9T8/nJxYfb/5wTF+eUdkj7tS0jCGB9GWibfUhS62
+         2oguby9g4snfiHGUC3kS+Q1UA+1m4YoRcZrN+2vyjKFCMWUl8C6ebEHeu3RvgvmPBOFi
+         YUOgnt4ulbW3oFSc9ZxW86PoTVIvacKoyaHDGc5/9RWQ/Hl0DNrtQKFwV4G7zHIo8N/D
+         Tz6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=EdU6kcxk31+NfDy/R26HslGdp1j7dLdIqqiHO/JJmC8=;
-        b=T5eBfzO5W+QYh75iOvQ/7lcbNtZ6OnfoKmBBZnMxqMbBR7b1lclb3lou3pI05lOqC2
-         WtdsAsqZEWMhu479zrZo8T4+S+pdToVVKXgedBdJHsbGroAXEUwpOtVEPPPU3w3lr4gI
-         rLhy6IKCBqCZuArtfZ6KkqcowjNjp1hdxKa3YrfzLWliQz7APKc54R/iz3fL5mvnJpZV
-         vObuQnYDKJJM7SZsjFAWuNMZQj45DyKdUcDrHHQFtDZOcJG651yPBX3K/lYsl7CwVFAZ
-         U/sNSaQjNZIqgVKyOQPMCcpVfuNLpQEfL0PLBwNvSg28dhLnDQU21+Snb/4eEBucB/vx
-         k0MQ==
-X-Gm-Message-State: ACgBeo0zYyenZElNbBRTf/mh9FtGCjPTNxfGByQYgFA7XO243Rgb7d5F
-        4yaqvVwAaqeKXaExPcvnSlaDDOQGQ3arlEjUp7bOEpNcYIdX2gC8Qn1mjZBGRTjCkyoWWgvVFsw
-        bFr8CRQ6D+UWR6fqlTggC7y4=
-X-Received: by 2002:a17:907:3e06:b0:733:693:600e with SMTP id hp6-20020a1709073e0600b007330693600emr22714946ejc.410.1662046484226;
-        Thu, 01 Sep 2022 08:34:44 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6CGvsVadtU/FKpog77yx9E+0aH5YULUA3W4O38vGBKP5LbcMpEQQEm87QgPg9ZZYddq9+tLA==
-X-Received: by 2002:a17:907:3e06:b0:733:693:600e with SMTP id hp6-20020a1709073e0600b007330693600emr22714935ejc.410.1662046484002;
-        Thu, 01 Sep 2022 08:34:44 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id dy17-20020a05640231f100b0043cc66d7accsm1518518edb.36.2022.09.01.08.34.43
+         :sender:x-gm-message-state:from:to:cc:subject:date;
+        bh=XgF6M+PesVCHLnmf4Eb7PhlD2u/USZTKAxq3q69SaJU=;
+        b=CwTV1W44eU5k42cdEXq2rLU5JwHjS2q63HGDJaS4XPfLezVXaX7HsfDOyfFbVDBLiZ
+         VvRIw/egfhN5p7fZTDfnGLzgZhRxtpS7wHlqQ9lIxVKx2JstWZp4cH2enYHVV+H+BQj4
+         8uSGzmba0E/I7DTyuzbqCsZPiFNi1sZ6EJJLzbhJaSKcqL1ikdY7JebD533hZgpk+DVf
+         1lS0jB/kqI7+9jtnx9wbwNChKiQEgk0OoaU6k957etjQobXNQpjgIhfNyh6OsKm/8Ri+
+         5/3PUp78CijPYJSN2+B+4WSsrjW1gYWtvRuQbmGvp/LX3ICWfUhUn6Stq2M/ELgjX28O
+         3rOw==
+X-Gm-Message-State: ACgBeo2HuSfovfYQfCq6FgDib93QW3KQJOHABIeqy43YGTk192gJmOMg
+        PsZZAKM1Q4LbMB48piXaBds=
+X-Google-Smtp-Source: AA6agR4e6SNoTLmIBA9axTSFeTDJ7og8kmTIYzM4AhFbrB9ucFhLLgA/Jt5KVFl8sfZpx7Or349LfA==
+X-Received: by 2002:a17:90b:4a8e:b0:1fe:1df3:bb11 with SMTP id lp14-20020a17090b4a8e00b001fe1df3bb11mr162994pjb.22.1662052169238;
+        Thu, 01 Sep 2022 10:09:29 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y187-20020a6232c4000000b00537daf64e8esm12244277pfy.188.2022.09.01.10.09.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Sep 2022 08:34:43 -0700 (PDT)
-Message-ID: <c23819ae-f7be-d07d-65bc-ea2c56a85b58@redhat.com>
-Date:   Thu, 1 Sep 2022 17:34:42 +0200
+        Thu, 01 Sep 2022 10:09:27 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <4337076c-9585-9650-5646-ee3f90bd5787@roeck-us.net>
+Date:   Thu, 1 Sep 2022 10:09:25 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] asus-wmi: Increase FAN_CURVE_BUF_LEN to 32
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v3 19/19] hwmon: (mr75203) fix coding style space errors
 Content-Language: en-US
-To:     "Luke D. Jones" <luke@ljones.dev>
-Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, markgross@kernel.org
-References: <20220828074638.5473-1-luke@ljones.dev>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220828074638.5473-1-luke@ljones.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     "Farber, Eliav" <farbere@amazon.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>, jdelvare@suse.com,
+        robh+dt@kernel.org, p.zabel@pengutronix.de, rtanwar@maxlinear.com,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, talel@amazon.com, hhhawa@amazon.com,
+        jonnyc@amazon.com, hanochu@amazon.com, ronenk@amazon.com,
+        itamark@amazon.com, shellykz@amazon.com, shorer@amazon.com,
+        amitlavi@amazon.com, almogbs@amazon.com, dkl@amazon.com
+References: <20220830192212.28570-1-farbere@amazon.com>
+ <20220830192212.28570-20-farbere@amazon.com>
+ <Yw9Q5krebHnb73vC@smile.fi.intel.com>
+ <0074475d-04bc-153a-2df8-dd5f7d014c97@amazon.com>
+ <20220901144633.GC3477025@roeck-us.net>
+ <2d907196-02c5-ea25-4438-04de77282e75@amazon.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <2d907196-02c5-ea25-4438-04de77282e75@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi,
-
-On 8/28/22 09:46, Luke D. Jones wrote:
-> Fix for TUF laptops returning with an -ENOSPC on calling
-> asus_wmi_evaluate_method_buf() when fetching default curves. The TUF method
-> requires at least 32 bytes space.
+On 9/1/22 08:31, Farber, Eliav wrote:
+> On 9/1/2022 5:46 PM, Guenter Roeck wrote:
+>> On Thu, Sep 01, 2022 at 05:21:43PM +0300, Farber, Eliav wrote:
+>>> On 8/31/2022 3:15 PM, Andy Shevchenko wrote:
+>>> > On Tue, Aug 30, 2022 at 07:22:12PM +0000, Eliav Farber wrote:
+>>> > > Fix: "ERROR: space required before the open parenthesis '('"
+>>> >
+>>> > This patch may have other fixes like adding new blank lines (noted in one
+>>> > of the patches in the series), etc.
+>>> This patch fixed a specific space error which existed before my changes
+>>> and repeated many time.
+>>> I fixed the blank line I added a previous patch (but is it isn’t an error
+>>> reported by checkpatch).
+>>
+>> That should really be fixed where it was introduced, not be introduced
+>> and fixed here.
 > 
-> This also moves and changes the pr_debug() in fan_curve_check_present() to
-> pr_warn() in fan_curve_get_factory_default() so that there is at least some
-> indication in logs of why it fails.
 > 
-> Signed-off-by: Luke D. Jones <luke@ljones.dev>
-
-Thank you for your patch, I've applied this patch to my review-hans 
-branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
-
-Note it will show up in my review-hans branch once I've pushed my
-local branch there, which might take a while.
-
-Once I've run some tests on this branch the patches there will be
-added to the platform-drivers-x86/for-next branch and eventually
-will be included in the pdx86 pull-request to Linus for the next
-merge-window.
-
-Regards,
-
-Hans
-
-
-> ---
->  drivers/platform/x86/asus-wmi.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+> So what do you suggest?
+> I can drop the patch from this series and ignore it or move it to be the
+> first patch in the series, or publish it separately later on.
+> I had it because it was annoying seeing existing checkpatch errors when
+> I came to check my change.
 > 
-> diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-> index 3d9fd58573f9..11203213e00d 100644
-> --- a/drivers/platform/x86/asus-wmi.c
-> +++ b/drivers/platform/x86/asus-wmi.c
-> @@ -108,7 +108,7 @@ module_param(fnlock_default, bool, 0444);
->  #define WMI_EVENT_MASK			0xFFFF
->  
->  #define FAN_CURVE_POINTS		8
-> -#define FAN_CURVE_BUF_LEN		(FAN_CURVE_POINTS * 2)
-> +#define FAN_CURVE_BUF_LEN		32
->  #define FAN_CURVE_DEV_CPU		0x00
->  #define FAN_CURVE_DEV_GPU		0x01
->  /* Mask to determine if setting temperature or percentage */
-> @@ -2383,8 +2383,10 @@ static int fan_curve_get_factory_default(struct asus_wmi *asus, u32 fan_dev)
->  	curves = &asus->custom_fan_curves[fan_idx];
->  	err = asus_wmi_evaluate_method_buf(asus->dsts_id, fan_dev, mode, buf,
->  					   FAN_CURVE_BUF_LEN);
-> -	if (err)
-> +	if (err) {
-> +		pr_warn("%s (0x%08x) failed: %d\n", __func__, fan_dev, err);
->  		return err;
-> +	}
->  
->  	fan_curve_copy_from_buf(curves, buf);
->  	curves->device_id = fan_dev;
-> @@ -2402,9 +2404,6 @@ static int fan_curve_check_present(struct asus_wmi *asus, bool *available,
->  
->  	err = fan_curve_get_factory_default(asus, fan_dev);
->  	if (err) {
-> -		pr_debug("fan_curve_get_factory_default(0x%08x) failed: %d\n",
-> -			 fan_dev, err);
-> -		/* Don't cause probe to fail on devices without fan-curves */
->  		return 0;
->  	}
->  
 
+Sorry, you lost me. I referred to "I fixed the blank line I added
+a previous patch". That should not be fixed in this patch but be dropped
+from the patch where you introduced it. Did I misunderstand your comment ?
+
+Guenter
