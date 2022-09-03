@@ -2,93 +2,130 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB78E5ABEA1
-	for <lists+linux-hwmon@lfdr.de>; Sat,  3 Sep 2022 13:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A93215ABF13
+	for <lists+linux-hwmon@lfdr.de>; Sat,  3 Sep 2022 15:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiICLJd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 3 Sep 2022 07:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57260 "EHLO
+        id S229586AbiICNNI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 3 Sep 2022 09:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230154AbiICLJb (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 3 Sep 2022 07:09:31 -0400
-X-Greylist: delayed 532 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Sep 2022 04:09:30 PDT
-Received: from shout01.mail.de (shout01.mail.de [IPv6:2001:868:100:600::216])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BCAF64CF
-        for <linux-hwmon@vger.kernel.org>; Sat,  3 Sep 2022 04:09:29 -0700 (PDT)
-Received: from postfix02.mail.de (postfix02.bt.mail.de [10.0.121.126])
-        by shout01.mail.de (Postfix) with ESMTP id 91C01A05D8;
-        Sat,  3 Sep 2022 13:00:34 +0200 (CEST)
-Received: from smtp03.mail.de (smtp03.bt.mail.de [10.0.121.213])
-        by postfix02.mail.de (Postfix) with ESMTP id 742DCA03C1;
-        Sat,  3 Sep 2022 13:00:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mail.de;
-        s=mailde202009; t=1662202834;
-        bh=vjc28tT2au2gcsuOe39PxWXvDyeVq/2VpAwMeLHUCps=;
-        h=Message-ID:Date:Subject:To:Cc:From:From:To:CC:Subject:Reply-To;
-        b=bWeYVeCUJS5LrgBnXky3o4ulGNjvzHm272LKtDdtHyxadrsrz8gWCJ4vDKv5vXetB
-         zm72cOuzRl6k+06S9Rye5ZHwD8FVBUDhmXNidw9vtU3Vc1SBBMJ9gv7LlimYw7kxSk
-         gMmpqiOI36xFB0jAuo3T6m9q9c86jifNfb8g2JuUsAjZUoeuYcaxQXe9MZhhVggGoj
-         uWckBiTDrLCdbYPJfLWjgqhtWGe0R86VoGZ7FEvaFwbNnmuw5ZJcXXfsealmbhfbju
-         AKXwVNkhJ5TtVlc4aGIKJ5VpDd1jCyl0lEx+7tw26Sl6sm1/D6EDnJU/lbUWB+EFkr
-         8hdAJpSOitnwQ==
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp03.mail.de (Postfix) with ESMTPSA id DD181A0321;
-        Sat,  3 Sep 2022 13:00:33 +0200 (CEST)
-Message-ID: <47e41e8f-f6b2-4bc7-de3f-0c811ee6fdf7@my.mail.de>
-Date:   Sat, 3 Sep 2022 13:00:33 +0200
+        with ESMTP id S229734AbiICNNH (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 3 Sep 2022 09:13:07 -0400
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D4FA642EF
+        for <linux-hwmon@vger.kernel.org>; Sat,  3 Sep 2022 06:13:06 -0700 (PDT)
+Received: by mail-qt1-x82f.google.com with SMTP id y18so3389146qtv.5
+        for <linux-hwmon@vger.kernel.org>; Sat, 03 Sep 2022 06:13:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date;
+        bh=uuGvyW9csfm6dP0NAyjv/9DNFWOcYsoLB8ICieB12GQ=;
+        b=fNCC5nQ218MYOF1zw49tQiXbYuSKHwhfaFIDI53CmWymoY1XqYSnTsRcawdscro8gn
+         hi5fKFNj418VdOSxc+z+40Oik5c79BGl8fk3/c3W0eCeKg1HMJl17Jkv6lETu4twbB1Y
+         ZPy7Vn9v0VHZwwEsTtOVW1u/iQK/lGRKAMtw8sFDJVAC9IJsUPqyBKkZFJ12H1s++KH+
+         SpSIbfX3Z6tYr5+r01zXSzQgUCQqCCxZPAcOPxtHYFlrrRA1kXr0S7z5CsidqXhvoozi
+         5KCes7cqjd1Zhvx1HbNLCuhb5oNRd9JXFistUIxjoRF7c7oitAI09Ewn/nYgxtSyyOMp
+         3X1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=uuGvyW9csfm6dP0NAyjv/9DNFWOcYsoLB8ICieB12GQ=;
+        b=vUtFijTJvo4CVQvGbF5ftJyi/+Y1SMtHqEuUrQounfBZzmy6QV6nZEOdS6Ia3Nx758
+         7rJUKcrr8dT0uhzw30jSC2t8Qc4UdM5R+PfxXWh/dTrq0p6jihBOxDad9fHRkFfJtMiX
+         DeWvsxS2aNrmnlpiNKEIozltLF6KUP0Sd4PEMhWVwfqiXAY8DX7jHiHT5s2DwY5Cj/g2
+         Xn3FcNLZPgUJluvqr8MATmLK9RpogExUSpB0VeVeHdxuYAKXYcTMmC2cMmWgP6JYGkcr
+         ISUNsNwvsfoFg6c2+KHM3g282riELwDs3c2aTOm5meBSx3eVuSCvG8qxs/CQazMYRNrp
+         IVOw==
+X-Gm-Message-State: ACgBeo1vf5i/GBXHdyOxHTrN2dvYq7XLvBrgvkYRifkJdj3W2FUd7bq/
+        4H/eCcU+AiXJ28qBtrjzzwzdperEDdlaDTFLtFg=
+X-Google-Smtp-Source: AA6agR5TaZJ45IDzT943HzFJB7ELHh8/jxSdytkFndWtj90JsfSTiuT5e2kPzOe2nk85I2lBx6bIOlNcfmJCl9m2pHk=
+X-Received: by 2002:a05:622a:453:b0:345:2d3:1d11 with SMTP id
+ o19-20020a05622a045300b0034502d31d11mr29127604qtx.604.1662210785485; Sat, 03
+ Sep 2022 06:13:05 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Issue in asus_ec_sensors in Fedora installations and other
- distributions
-Content-Language: en-US
-References: <6026b5e2-a8f5-1058-6112-f191bde333a6@my.mail.de>
-To:     eugene.shalygin@gmail.com
-Cc:     linux-hwmon@vger.kernel.org, regressions@lists.linux.dev
-From:   Christopher Klooz <py0xc3@my.mail.de>
-In-Reply-To: <6026b5e2-a8f5-1058-6112-f191bde333a6@my.mail.de>
-X-Forwarded-Message-Id: <6026b5e2-a8f5-1058-6112-f191bde333a6@my.mail.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-purgate: clean
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-purgate-size: 905
-X-purgate-ID: 154282::1662202834-3DFFF25E-6A252C7C/0/0
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6200:5e89:b0:46b:a78:b506 with HTTP; Sat, 3 Sep 2022
+ 06:13:04 -0700 (PDT)
+Reply-To: jon768266@gmail.com
+From:   johnson <novelav950@gmail.com>
+Date:   Sat, 3 Sep 2022 13:13:04 +0000
+Message-ID: <CAPCDeFJWS5YiBmPpVj8k+bRsJU_Yamzs9Jfh2+Xpet9i4qVN7Q@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:82f listed in]
+        [list.dnswl.org]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [novelav950[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [jon768266[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [novelav950[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  1.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Eugene,
+=C3=96r=C3=B6mmel t=C3=A1j=C3=A9koztatom =C3=96nt arr=C3=B3l, hogy siker=C3=
+=BClt =C3=A1tutalnom ezeket az
+=C3=B6sszegeket egy =C3=BAj indiai partner seg=C3=ADts=C3=A9g=C3=A9vel. Jel=
+enleg vele vagyok
+Indi=C3=A1ban befektet=C3=A9si projektekben, a teljes =C3=B6sszegb=C5=91l a=
+ saj=C3=A1t
+r=C3=A9szemmel. Ek=C3=B6zben nem feledkeztem meg kor=C3=A1bbi er=C5=91fesz=
+=C3=ADt=C3=A9seir=C5=91l =C3=A9s
+k=C3=ADs=C3=A9rleteir=C5=91l, hogy seg=C3=ADtsenek nekem =C3=A1tutalni ezek=
+et a p=C3=A9nzeszk=C3=B6z=C3=B6ket,
+annak ellen=C3=A9re, hogy ez valahogy kudarcot vallott. Most l=C3=A9pjen
+kapcsolatba a Lome Tog=C3=B3-i titk=C3=A1rn=C5=91mmel, az al=C3=A1bbi el=C3=
+=A9rhet=C5=91s=C3=A9g=C3=A9vel,
+leadtam egy hiteles=C3=ADtett ATM-v=C3=ADzumk=C3=A1rty=C3=A1t, 250 000 USD =
+=C3=A9rt=C3=A9kben.
+0,00-ig hagytam n=C3=A1la, hogy k=C3=A1rp=C3=B3tl=C3=A1sul szolg=C3=A1ljon =
+mindazok=C3=A9rt a
+m=C3=BAltbeli er=C5=91fesz=C3=ADt=C3=A9sek=C3=A9rt =C3=A9s k=C3=ADs=C3=A9rl=
+etek=C3=A9rt, amelyekkel a seg=C3=ADts=C3=A9gemre
+volt ebben az =C3=BCgyben. Nagyon nagyra =C3=A9rt=C3=A9keltem az akkori
+er=C5=91fesz=C3=ADt=C3=A9seit.
+K=C3=A9rj=C3=BCk, k=C3=BCldje el neki adatait, teljes nev=C3=A9t, c=C3=ADm=
+=C3=A9t =C3=A9s el=C3=A9rhet=C5=91s=C3=A9g=C3=A9t
+az egyszer=C5=B1 kommunik=C3=A1ci=C3=B3 =C3=A9rdek=C3=A9ben, am=C3=ADg meg =
+nem kapja az
+ATM-visumk=C3=A1rty=C3=A1t. (jon768266@gmail.com)
 
-Currently, we have user reports of at least 4 Fedora installations that 
-have issues with asus_ec_sensors since 5.19.4. They remain in 5.19.6.
-
-All issues can be solved by blacklisting asus_ec_sensors.
-
-https://bugzilla.redhat.com/show_bug.cgi?id=2121844
-
-The bugzilla report contains kernel logs of two machines, one with 
-nvidia-driver and one without a tainted kernel.
-
-The report and the contained ask.fedora link contain some elaborations 
-of how the issue manifests at the users' machines. The major issue is a 
-wrong output of battery power percentage (in one case it gets stuck, in 
-the other cases is becomes erratic). Also, in one case it has effects on 
-suspending (see the report).
-
-On the Internet, there are already reports from other Linux 
-distributions noting the issue and the same solution (blacklisting).
-
-Thanks for maintaining & regards,
-
-Chris
-
+=C3=9Cdv=C3=B6zlettel
+Orlando Moris.
