@@ -2,113 +2,122 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2AEC5B06C2
-	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Sep 2022 16:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A1D5B073B
+	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Sep 2022 16:42:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbiIGOcF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 7 Sep 2022 10:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44192 "EHLO
+        id S229523AbiIGOmF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 7 Sep 2022 10:42:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbiIGObb (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 7 Sep 2022 10:31:31 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6594AAB046
-        for <linux-hwmon@vger.kernel.org>; Wed,  7 Sep 2022 07:31:16 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id lz22so9958665ejb.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 07 Sep 2022 07:31:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=boA3graP4wtJe8cwRxkMJy5rso3t9xyj4fxUFsG0Fez1aWDY0C6gZpYPvm/Hxa5tX5
-         Zk+XDE4h4sSr3Kc7gAmKt5OJ7AP3AEEipJ5m7D7tQ5BTHkXWMmIdiC/g3MqGg04yG8Wz
-         mFTYUlKwIYoLI0bvi9Q3MSV1athb174l2Ms/7z+L0TzD2CQLBWt0bOa5Jg9CBAeygplA
-         zqROn488xUY/B608ffA8/XOsolF390gA0UeCbMrgWX87LxLuf34XOCHn+1VgcYnMY7Sr
-         klavsMj/u/K0iLTegE+9syCXTdcAl7jimLLfNxQJoiGWtjh15Idxzz9bfpV/1Jhy4Wly
-         oLRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=qfoQBzZ27dt23rHomd/9yheAOpc1KDfGxLRJ/6HAIEqG9+n7C33HY4uIoVdIElWrqQ
-         gnbe1vvxcyEilpg0Zfq2g1ozwUJtX3trXHsHKndL4IKMGEG3OULOXwWbLVuEr7ptwMxA
-         4BQWoZs5/LYHkpRupoDr+FSEhuEXb/oMorCDoqer6xU6zZ87KpKoMQTadxbWhms1E9C1
-         ly4lwHxIv1QnmD0fgMuJE0cj3ScMBCMDaA+CoCblPhU6sR+QCCblkAU+XoYLlckkRjhI
-         GWt8hnsuVEfyv2vJVG91l0oR5qbSNRQYDA3p1lqn34C2vsedEK2ol0bCAhWW7KRGy8rf
-         kngA==
-X-Gm-Message-State: ACgBeo3EsK7oWkbAnS/4T3OciukKGVSz7l/kADOd+ej5mVRndBrX8pDT
-        32GPvYyrUxJNcapMvmoFdGuxhfGSb3V/6i+IJB4=
-X-Google-Smtp-Source: AA6agR7OKiKkSx+MbdKnn4tKaQhdmVzFj2krU0Vhk4MjDetoGwDDBbw+8TT3Fj+g2bgbPAiBcK/73KQpnrd5Cpv4s3c=
-X-Received: by 2002:a17:907:75ec:b0:741:484b:3ca4 with SMTP id
- jz12-20020a17090775ec00b00741484b3ca4mr2508106ejc.316.1662561074796; Wed, 07
- Sep 2022 07:31:14 -0700 (PDT)
+        with ESMTP id S229729AbiIGOll (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 7 Sep 2022 10:41:41 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5EBE95E6F;
+        Wed,  7 Sep 2022 07:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662561696; x=1694097696;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=z9h3cJwwlZiWP6oD1YHdghLTTAjUFezmqOkQ9iG3Wo4=;
+  b=Uch9xVj0hiL4w/YqrK8kmFo948zGiuyQ29oDxHxrnXmv6TweHAn8falc
+   wIQmZI3VGOX6SMpXsAUxfruzSnGBtyCGyBzK+A5Q2Y6SYek5Rt4jEu+AS
+   aEkm+GrFwukuRyuWe95iVDzx07B4dYTZV55MQvFYK5bfLIEKeVxS5stF6
+   4FBlE6GgIhewfB1zYPzcU7NRiXbONOBJWX2HFAgdC7H4XRkun3WRBmGbV
+   9c11CerJuSY1EZNWuzDi9biueyrDQ5aJ0Z0TjAM1GzP2XkfcASakvEqNc
+   6jcNdPvGKgv9HyGX5CVkr5gZyCdSbThC90W9nLu3R+OCjEQS3O1DrkoTU
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="323078779"
+X-IronPort-AV: E=Sophos;i="5.93,297,1654585200"; 
+   d="scan'208";a="323078779"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2022 07:41:36 -0700
+X-IronPort-AV: E=Sophos;i="5.93,297,1654585200"; 
+   d="scan'208";a="703621083"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2022 07:41:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1oVwF8-009gdV-1c;
+        Wed, 07 Sep 2022 17:41:30 +0300
+Date:   Wed, 7 Sep 2022 17:41:30 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     "Farber, Eliav" <farbere@amazon.com>
+Cc:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
+        p.zabel@pengutronix.de, rtanwar@maxlinear.com,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hhhawa@amazon.com, jonnyc@amazon.com
+Subject: Re: [PATCH v4 06/21] hwmon: (mr75203) fix multi-channel voltage
+ reading
+Message-ID: <Yxitmkw4sNx3328k@smile.fi.intel.com>
+References: <20220906083356.21067-1-farbere@amazon.com>
+ <20220906083356.21067-7-farbere@amazon.com>
+ <YxdU6hiwblhT2I5u@smile.fi.intel.com>
+ <229f0e46-0123-3ffb-d737-0749ffba4e13@amazon.com>
 MIME-Version: 1.0
-Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:14 -0700 (PDT)
-Reply-To: lumar.casey@outlook.com
-From:   LUMAR CASEY <miriankushrat@gmail.com>
-Date:   Wed, 7 Sep 2022 16:31:14 +0200
-Message-ID: <CAO4StN0fh9iLpvL71MAvphxmFm4ur7+Op=qm5oJuhdRZZPJ3cA@mail.gmail.com>
-Subject: ATTENTION/PROPOSAL
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:643 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5049]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [miriankushrat[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ******
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <229f0e46-0123-3ffb-d737-0749ffba4e13@amazon.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-ATTENTION
+On Wed, Sep 07, 2022 at 08:15:36AM +0300, Farber, Eliav wrote:
+> On 9/6/2022 5:10 PM, Andy Shevchenko wrote:
+> > On Tue, Sep 06, 2022 at 08:33:41AM +0000, Eliav Farber wrote:
 
-BUSINESS PARTNER,
+...
 
-I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
-MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
-PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
-DIPLOMATIC OUTLET.
+> > > +             total_ch = ch_num * vm_num;
+> > > +             in_config = devm_kcalloc(dev, total_ch + 1,
+> > >                                        sizeof(*in_config), GFP_KERNEL);
+> > 
+> > Strictly speaking this should be `size_add(size_mul(...) ...)`
+> > construction
+> > from overflow.h.
+> > 
+> >                total_ch = size_mul(ch_num, vm_num);
+> >                in_config = devm_kcalloc(dev, size_add(total_ch, 1),
+> >                                         sizeof(*in_config), GFP_KERNEL);
+> > 
+> > Alternatively before doing all these, add a check
+> > 
+> >                if (array3_size(ch_num, vm_num, sizeof(*in_config)) <
+> > SIZE_MAX - sizeof(*in_config))
+> >                        return -EOVERFLOW;
+> > 
+> > But this is a bit monstrous. Seems like the above looks and feels better.
+> > 
+> > Also for backporting purposes perhaps it's fine to do without using
+> > those macro
+> > helpers.
+> According to the driver code total_ch is a u32 variable while vm_num
+> and ch_num are both limited to a value of 31:
+> 
+> #define VM_NUM_MSK GENMASK(20, 16)
+> #define VM_NUM_SFT 16
+> #define CH_NUM_MSK GENMASK(31, 24)
+> #define CH_NUM_SFT 24
+> 
+> In addition the PVT Controller Series 3+ Specification mentions that
+> the actual maximum values are even smaller – 8 for vm_num and 16 for
+> ch_num.
+> Therefore we are very far from a scenario of an overflow.
+> Do you still think overflow protection in necessary?
 
-I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
-PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
-YOUR COUNTRY.
+Like I said "Strictly..." Means it's up to you, but allocations are
+usually be protected against the overflows.
 
-I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-REGARDS,
 
-LUMAR CASEY
