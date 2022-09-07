@@ -2,60 +2,62 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E52575AF5C6
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Sep 2022 22:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD775AF985
+	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Sep 2022 03:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbiIFUXW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 6 Sep 2022 16:23:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43290 "EHLO
+        id S229587AbiIGByN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 6 Sep 2022 21:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbiIFUXV (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 6 Sep 2022 16:23:21 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E3FD25C2
-        for <linux-hwmon@vger.kernel.org>; Tue,  6 Sep 2022 13:23:20 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id b17so6596971ilh.0
-        for <linux-hwmon@vger.kernel.org>; Tue, 06 Sep 2022 13:23:20 -0700 (PDT)
+        with ESMTP id S229549AbiIGByL (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 6 Sep 2022 21:54:11 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B59D84EFA;
+        Tue,  6 Sep 2022 18:54:08 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-12243fcaa67so32630338fac.8;
+        Tue, 06 Sep 2022 18:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=dFUtGD2CYSZCPlkfNLuOvYXYPqX89V5HFliBFkygvhw=;
-        b=IJMZ0ssNnxQMP4S9bMps8AveY/BpJyiQTTtJCLZgfQmxK2Joxpl83mMrw8qwM3GfML
-         I8UHTcDnG4R/bmhlIVbv/fQEHcx2/qe/4tnxKHQtTWSOVWNEMiT7tV4Kx5yyst6K1m1W
-         lBSCR/4tlBTewGLQwxbd5/cZOJ1UjUdDetiVjAao9HfD5YFvpydBzpzx5rK2/EMg35Ic
-         4QuXon4nO0zTIzMbTDw6jeQvL1QPhIojr+mrfrK5t73pcL3Cy9tIARsNZnJQY8SJipPN
-         MnMHs4lt175pS7pyun+MLy1rTlg8e8ZA1YirvTwoyOXRTLSJ37tNJqqgC3R5xG2P3aIa
-         XLtA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=uBXAhg5xwFy0mhOLbydMclamY/1BpuecKL5EQM7c3VY=;
+        b=eKfoAT/A0CaJroi9nBiMh4Bz1DrRiYOD1UJ1DKGpM6vroLunU65HPw7W9LEfKwMSD7
+         SjaUDrugGFOCEu4mF4zHIQHga7P/zYccd429CGaQRTZSPKnxoBSm3KYyG61jrWpOy4Gf
+         55QdufY0cP4jlHAbUfyIQk8uzRuVKjwzJsxJ78fz80bDlhuWti7mRyWoLLzRZFN5VjCR
+         zHSmx/H+gDhhBu/YS1vuBUm9CIcAFEK0PzU6ZMXdTeZuCr3/SVtl+9A9/9vxuJWr1If5
+         r2tGn0HNbuLF2K2gZah+yje69ZIWv0SNcAKO0CXKBdlRLPNC/aLJVbF0SvDYlxy5ddaF
+         aCzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=dFUtGD2CYSZCPlkfNLuOvYXYPqX89V5HFliBFkygvhw=;
-        b=flV/0Y4+IAUlycZlrhoO8hw+T77HmW2uwnJDj7hjwYHDXixnGIWh9yHGnxvV+iktKS
-         LK0TSKcYtCNuVkea0jd7jfKRSmAgrcSj/2TC1TKcjp+iJxxgX/trxbQBQtJETYetcnIv
-         h7Vj0Sxn+wkLk23yFMXL3ctMlBaNLPsmpL/ilDaUKyb76YbkwnEHF9TiTbDyuYo2mWR8
-         71o8eG6Sedox0TAsPdHtU0Rb467bnCIjEAwg4v/4fbrI5hIPyPj51knoTdfQP+/QKliM
-         tGlVsGKTOfMttcAxMjrxRLy/geYrOZYXey6NcdVfMGsuuwAdaF6GrI7OdM+jqYkRDxdA
-         f0hQ==
-X-Gm-Message-State: ACgBeo3Qk6rfHCeYT4WO1O8PW25eBhBatuxE2cfmFJpKGvnC0zPwTO+b
-        dAo2Qtuc/2EmVnee9cSmqIDbDpQsqI1N+tr2YvVPkNwr9Tv2GA==
-X-Google-Smtp-Source: AA6agR7Vb4ipPmzyR9ULsjjEpzV4TmM/HpiMiHikkCKNEoBfZGjbHsYMM1JBK9rPo8CijSdjKQXyO2SwJkYn5LW+6V4=
-X-Received: by 2002:a05:6e02:1bc9:b0:2f1:9ee8:246d with SMTP id
- x9-20020a056e021bc900b002f19ee8246dmr146712ilv.246.1662495799666; Tue, 06 Sep
- 2022 13:23:19 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=uBXAhg5xwFy0mhOLbydMclamY/1BpuecKL5EQM7c3VY=;
+        b=PuTB2YsXtdc0Xc/3dVrzvUlNEF5kU9fLPiuMzXOgaqstwT0F/ngYWsdBgoxKvAxLcy
+         HRXmrOwokjQZ5ZGZMPZLfLkcfcIreE38766wOZ+9Xtq+mJQkv+MmAclvIxwF397lBWlX
+         c2vGIQWofJIp+yrkTiI3nFHdqf5WdKjJbYuH8y5pOt0yxWzVV7+ijPFgbjRehtY/gWC0
+         zc+laH6arFCEYUlJSiyjZZb9qepPuWywq1yGZYdb63gEf7N6JGFS9Uj+g7XLQQU3hfi4
+         eAAjm7BE1WhpVIDI4abjo/cE2jfcYqDfEEBwapNvv54ZCMB6V38evhwvTst36HSio5XS
+         b/Bg==
+X-Gm-Message-State: ACgBeo2BEJZq9Mku3ZQYVpGb83SE3Hx7wrfu/m9aOGenWR9SgJWn8WhT
+        nwNNekggXPE9q5vCTqlPWfw=
+X-Google-Smtp-Source: AA6agR6hiYlQN79qU5CAlOiZnUMoPF8Cfxrxi+chj6IKfP+tqEhI7bW69QqbXrSfVtBfqlfIE5YEmA==
+X-Received: by 2002:a05:6808:140a:b0:345:7a77:2e9a with SMTP id w10-20020a056808140a00b003457a772e9amr10797191oiv.225.1662515647447;
+        Tue, 06 Sep 2022 18:54:07 -0700 (PDT)
+Received: from nuclearis3.lan (c-98-197-58-203.hsd1.tx.comcast.net. [98.197.58.203])
+        by smtp.gmail.com with ESMTPSA id d8-20020a056870e24800b0011e4c574dfcsm7951595oac.40.2022.09.06.18.54.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Sep 2022 18:54:07 -0700 (PDT)
+From:   Alexandru Gagniuc <mr.nuke.me@gmail.com>
+To:     linux@roeck-us.net, linux-hwmon@vger.kernel.org
+Cc:     robert.marko@sartura.hr, luka.perkov@sartura.hr, jdelvare@suse.com,
+        dev@aboehler.at, linux-kernel@vger.kernel.org,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Subject: [PATCH v2 2/3] hwmon: (tps23861) reduce count of i2c transactions for port_status
+Date:   Tue,  6 Sep 2022 20:54:04 -0500
+Message-Id: <20220907015405.16547-1-mr.nuke.me@gmail.com>
+X-Mailer: git-send-email 2.34.3
 MIME-Version: 1.0
-References: <6026b5e2-a8f5-1058-6112-f191bde333a6@my.mail.de>
- <47e41e8f-f6b2-4bc7-de3f-0c811ee6fdf7@my.mail.de> <20220906201035.GA3453623@roeck-us.net>
-In-Reply-To: <20220906201035.GA3453623@roeck-us.net>
-From:   Eugene Shalygin <eugene.shalygin@gmail.com>
-Date:   Tue, 6 Sep 2022 22:23:08 +0200
-Message-ID: <CAB95QAQRT5p5k=0D781aOra9uF3vw-92+T_CePd_7tzJDDH0Yg@mail.gmail.com>
-Subject: Re: Issue in asus_ec_sensors in Fedora installations and other distributions
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Christopher Klooz <py0xc3@my.mail.de>, linux-hwmon@vger.kernel.org,
-        regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -66,15 +68,152 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, 6 Sept 2022 at 22:10, Guenter Roeck <linux@roeck-us.net> wrote:
-> Are we getting any closer to fixing this problem ? If not, I'll have to start
-> reverting patches or even declare the driver as BROKEN.
+When reading the 'port_status' debugfs entry, some I2C registers were
+read more than once. This looks inefficient in an I2C trace.
 
-Out of a few workarounds I've tried, none worked. I rework the module
-autoloading back to plain dmi data. Sorry, I'm totally busy until this
-Friday and can't prepare a patch until the end of the week. If that is
-too late, removing just the module autoloading
-(MODULE_DEVICE_TABLE(acpi, ...)) will fix the problem.
+To reduce I2C traffic, update tps23861_port_status_show() to only read
+each register once. Indexing the port number from 0 instead of 1 also
+allows simplifying things a bit.
 
-Regards,
-Eugene
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+---
+Changes since v1:
+  - Do not brag about negative line count in commit message
+  - Do not change port number in port_status output
+
+ drivers/hwmon/tps23861.c | 79 ++++++++++++----------------------------
+ 1 file changed, 24 insertions(+), 55 deletions(-)
+
+diff --git a/drivers/hwmon/tps23861.c b/drivers/hwmon/tps23861.c
+index f7c59ff7ae8e..019009b71a90 100644
+--- a/drivers/hwmon/tps23861.c
++++ b/drivers/hwmon/tps23861.c
+@@ -372,29 +372,12 @@ static const struct hwmon_chip_info tps23861_chip_info = {
+ 	.info = tps23861_info,
+ };
+ 
+-static char *tps23861_port_operating_mode(struct tps23861_data *data, int port)
++static char *port_operating_mode_string(uint8_t mode_reg, unsigned int port)
+ {
+-	unsigned int regval;
+-	int mode;
++	unsigned int mode = ~0;
+ 
+-	regmap_read(data->regmap, OPERATING_MODE, &regval);
+-
+-	switch (port) {
+-	case 1:
+-		mode = FIELD_GET(OPERATING_MODE_PORT_1_MASK, regval);
+-		break;
+-	case 2:
+-		mode = FIELD_GET(OPERATING_MODE_PORT_2_MASK, regval);
+-		break;
+-	case 3:
+-		mode = FIELD_GET(OPERATING_MODE_PORT_3_MASK, regval);
+-		break;
+-	case 4:
+-		mode = FIELD_GET(OPERATING_MODE_PORT_4_MASK, regval);
+-		break;
+-	default:
+-		mode = -EINVAL;
+-	}
++	if (port < TPS23861_NUM_PORTS)
++		mode = (mode_reg >> (2 * port)) & OPERATING_MODE_PORT_1_MASK;
+ 
+ 	switch (mode) {
+ 	case OPERATING_MODE_OFF:
+@@ -410,15 +393,9 @@ static char *tps23861_port_operating_mode(struct tps23861_data *data, int port)
+ 	}
+ }
+ 
+-static char *tps23861_port_detect_status(struct tps23861_data *data, int port)
++static char *port_detect_status_string(uint8_t status_reg)
+ {
+-	unsigned int regval;
+-
+-	regmap_read(data->regmap,
+-		    PORT_1_STATUS + (port - 1),
+-		    &regval);
+-
+-	switch (FIELD_GET(PORT_STATUS_DETECT_MASK, regval)) {
++	switch (FIELD_GET(PORT_STATUS_DETECT_MASK, status_reg)) {
+ 	case PORT_DETECT_UNKNOWN:
+ 		return "Unknown device";
+ 	case PORT_DETECT_SHORT:
+@@ -448,15 +425,9 @@ static char *tps23861_port_detect_status(struct tps23861_data *data, int port)
+ 	}
+ }
+ 
+-static char *tps23861_port_class_status(struct tps23861_data *data, int port)
++static char *port_class_status_string(uint8_t status_reg)
+ {
+-	unsigned int regval;
+-
+-	regmap_read(data->regmap,
+-		    PORT_1_STATUS + (port - 1),
+-		    &regval);
+-
+-	switch (FIELD_GET(PORT_STATUS_CLASS_MASK, regval)) {
++	switch (FIELD_GET(PORT_STATUS_CLASS_MASK, status_reg)) {
+ 	case PORT_CLASS_UNKNOWN:
+ 		return "Unknown";
+ 	case PORT_CLASS_RESERVED:
+@@ -479,16 +450,9 @@ static char *tps23861_port_class_status(struct tps23861_data *data, int port)
+ 	}
+ }
+ 
+-static char *tps23861_port_poe_plus_status(struct tps23861_data *data, int port)
++static char *port_poe_plus_status_string(uint8_t poe_plus, unsigned int port)
+ {
+-	unsigned int regval;
+-
+-	regmap_read(data->regmap, POE_PLUS, &regval);
+-
+-	if (BIT(port + 3) & regval)
+-		return "Yes";
+-	else
+-		return "No";
++	return (BIT(port + 4) & poe_plus) ? "Yes" : "No";
+ }
+ 
+ static int tps23861_port_resistance(struct tps23861_data *data, int port)
+@@ -497,7 +461,7 @@ static int tps23861_port_resistance(struct tps23861_data *data, int port)
+ 	__le16 regval;
+ 
+ 	regmap_bulk_read(data->regmap,
+-			 PORT_1_RESISTANCE_LSB + PORT_N_RESISTANCE_LSB_OFFSET * (port - 1),
++			 PORT_1_RESISTANCE_LSB + PORT_N_RESISTANCE_LSB_OFFSET * port,
+ 			 &regval,
+ 			 2);
+ 
+@@ -517,14 +481,19 @@ static int tps23861_port_resistance(struct tps23861_data *data, int port)
+ static int tps23861_port_status_show(struct seq_file *s, void *data)
+ {
+ 	struct tps23861_data *priv = s->private;
+-	int i;
+-
+-	for (i = 1; i < TPS23861_NUM_PORTS + 1; i++) {
+-		seq_printf(s, "Port: \t\t%d\n", i);
+-		seq_printf(s, "Operating mode: %s\n", tps23861_port_operating_mode(priv, i));
+-		seq_printf(s, "Detected: \t%s\n", tps23861_port_detect_status(priv, i));
+-		seq_printf(s, "Class: \t\t%s\n", tps23861_port_class_status(priv, i));
+-		seq_printf(s, "PoE Plus: \t%s\n", tps23861_port_poe_plus_status(priv, i));
++	unsigned int i, mode, poe_plus, status;
++
++	regmap_read(priv->regmap, OPERATING_MODE, &mode);
++	regmap_read(priv->regmap, POE_PLUS, &poe_plus);
++
++	for (i = 0; i < TPS23861_NUM_PORTS; i++) {
++		regmap_read(priv->regmap, PORT_1_STATUS + i, &status);
++
++		seq_printf(s, "Port: \t\t%d\n", i + 1);
++		seq_printf(s, "Operating mode: %s\n", port_operating_mode_string(mode, i));
++		seq_printf(s, "Detected: \t%s\n", port_detect_status_string(status));
++		seq_printf(s, "Class: \t\t%s\n", port_class_status_string(status));
++		seq_printf(s, "PoE Plus: \t%s\n", port_poe_plus_status_string(poe_plus, i));
+ 		seq_printf(s, "Resistance: \t%d\n", tps23861_port_resistance(priv, i));
+ 		seq_putc(s, '\n');
+ 	}
+-- 
+2.34.3
+
