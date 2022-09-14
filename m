@@ -2,115 +2,113 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C95065B8649
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Sep 2022 12:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025775B8695
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Sep 2022 12:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbiINKYy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 14 Sep 2022 06:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
+        id S229959AbiINKsZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 14 Sep 2022 06:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbiINKYh (ORCPT
+        with ESMTP id S229511AbiINKsR (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 14 Sep 2022 06:24:37 -0400
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2201A3B8;
-        Wed, 14 Sep 2022 03:24:34 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 158B75C012E;
-        Wed, 14 Sep 2022 06:24:32 -0400 (EDT)
-Received: from imap41 ([10.202.2.91])
-  by compute4.internal (MEProxy); Wed, 14 Sep 2022 06:24:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=traverse.com.au;
-         h=cc:cc:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1663151072; x=1663237472; bh=4G
-        22fVvk8WenHj+MqQ5LUF2d/Do37iHoErDy2LmjSsI=; b=WoXoLduZdD0A/zwR2u
-        F46C3h7JVMPJNFXf7tyKpug5kWyz8WwHCuy1S9+AAQISvWBuGV6oIf4mnonUNnSJ
-        RK71YHXZ5RC6vMoEOk8OraLcQn9KODZ+61uVg+haHZYzsNRVHWXfcN+3NfL5KNrb
-        29kCiA1vNH+n1ChV86KToIfj7vFFImX2oyeWmTpZ/Eu/1Cl+qOISo/uqcNV3AFDy
-        wZg6ChwVRc6rp+wYwGAuSGMIxLpiZAG82acbER4k9RsNv2//o0j2rbA+JsT6KwoU
-        SuO+V9Zg7TWoZe/NA2zWk/+Ra1C7wAAkeGqacQ/00m1qE8JcyAATlMfPcm+vvBKr
-        JsFw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1663151072; x=1663237472; bh=4G22fVvk8WenHj+MqQ5LUF2d/Do3
-        7iHoErDy2LmjSsI=; b=uX4R/6iTXxay5Hge23f5YU/fR9kYxTndXlKGC4xHhUOh
-        BELyAlklBKr0mTi7nBDpbJydLAn8ccuSBhozuaw1mcKXlFgeNbiD6lvV9I4VrvQ9
-        abtaDXajji36BoPrMg5C1FW9k+aTgoKuvYE6ziwN4xvqJ66VU6iDWOo3GVcX8s6G
-        6454HfSLZmZDUfvL0DU8nzDRbenGsle9h7if+bbn9SMlrhuna0kWY3fqHqfBN7Hr
-        tGkJDrfqMf50ob/5kiTmoljtafjiVhl3vDmDStc73edCwvZvDtlpeAV/c0izckZU
-        Y8u9wErp333iTByZXgQ3s/Pe9wYuVAETtFClAvdcCw==
-X-ME-Sender: <xms:36shY4P6iPXQtg_Nb3__sIq61wZoYeAxeGVB94KlHNGlZW95BGTetw>
-    <xme:36shY-93Hm_KYMHirHZtBz8L-RNd_wkyg9i5wwpt3U6tLhCsBCkCv0fpHyzlNzVF3
-    G3gOiQfZP57PIpfnBk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeduiedgvdelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefofgggkfgjfhffhffvvefutgesth
-    dtredtreertdenucfhrhhomhepfdforghthhgvficuofgtuehrihguvgdfuceomhgrthht
-    sehtrhgrvhgvrhhsvgdrtghomhdrrghuqeenucggtffrrghtthgvrhhnpeejtdejffelke
-    ekueekueegteevjeeljeekkeffieeiudeiffeltedvkeelkeevgeenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghtthesthhrrghvvghrsh
-    gvrdgtohhmrdgruh
-X-ME-Proxy: <xmx:36shY_Qibnk0yfGHdkLQH6cB8LHg5fBADG1jaUO_mPQf98wdXf3dFg>
-    <xmx:36shYwuGH73gXmWgfqjy5JiZmbtT4oeXuRneoz-U2xuqFWqxJlwIwg>
-    <xmx:36shYwe5QTEZMmnMvqUjD0i-QWud3nJA7wQwYXYnlh_vLVmK7vqyNQ>
-    <xmx:4KshY4kqedC-PjAvgUIgtlgpmW6X8cYUGv3-FeH9GET4eHOBwYoPEg>
-Feedback-ID: i426947f3:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id C85B9234007E; Wed, 14 Sep 2022 06:24:31 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-934-g6274855a4c-fm-20220913.002-g6274855a
-Mime-Version: 1.0
-Message-Id: <7c1c705f-65b4-47d3-afae-68e70b85ab3b@www.fastmail.com>
-In-Reply-To: <20220914101207.GA938301@roeck-us.net>
-References: <20220914053030.8929-1-matt@traverse.com.au>
- <20220914101207.GA938301@roeck-us.net>
-Date:   Wed, 14 Sep 2022 20:24:12 +1000
-From:   "Mathew McBride" <matt@traverse.com.au>
-To:     "Guenter Roeck" <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] hwmon: add Microchip EMC230X fan controller driver
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 14 Sep 2022 06:48:17 -0400
+X-Greylist: delayed 1213 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 14 Sep 2022 03:48:16 PDT
+Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com [192.185.144.91])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 787F060515
+        for <linux-hwmon@vger.kernel.org>; Wed, 14 Sep 2022 03:48:16 -0700 (PDT)
+Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
+        by gateway31.websitewelcome.com (Postfix) with ESMTP id 747331FD89
+        for <linux-hwmon@vger.kernel.org>; Wed, 14 Sep 2022 05:28:03 -0500 (CDT)
+Received: from 162-215-252-169.unifiedlayer.com ([208.91.199.152])
+        by cmsmtp with SMTP
+        id YPcgonbUVSQZkYPchoGOsb; Wed, 14 Sep 2022 05:28:03 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=roeck-us.net; s=default; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=A2S4dR+8Kp5iQy6Y9kU/xD3NENSfCkstOu7cRUZu+Ys=; b=PS0VAPJNVqZNTFvYxXvFJIS3QY
+        7/cJDI8UazRqwAfC+18XE5/i31amGxFvmoTSNsn9AzxHHFduvdQh4mo1p8BEKaCyYGYFc1YkP4fnk
+        7ZTRx3lOdbe8g7cg87VAwEL4qW0EZILnDQbTG2E0UbyoOCwCWxiOBbMZFqwBsH4VuCCOfp7k6MCRn
+        vW+V+HYID8EJDfSUC2Z0x0bvra1geD/lF43NJQ9tBRl8AaO6ffoO/ZZrkHM8TouMhLt/1Qo4qY3yG
+        eddWY8vXKNqofYuiyiAARgwmA8QAoOq4bCbKcH96C3XvF5hIimClDNPpDxp6QyOprUpZTrJKVSnIF
+        Wm/Fggig==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:42516 helo=localhost)
+        by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <linux@roeck-us.net>)
+        id 1oYPcg-0045qb-Ed;
+        Wed, 14 Sep 2022 10:28:02 +0000
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Michael Shych <michaelsh@nvidia.com>
+Subject: [PATCH] hwmon: (emc2305) Remove unnecessary range check
+Date:   Wed, 14 Sep 2022 03:27:55 -0700
+Message-Id: <20220914102755.1874266-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.36.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1oYPcg-0045qb-Ed
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (localhost) [108.223.40.66]:42516
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 21
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Sep 14, 2022, at 8:12 PM, Guenter Roeck wrote:
-> On Wed, Sep 14, 2022 at 05:30:27AM +0000, Mathew McBride wrote:
-> > The Microchip EMC230X (formerly made by SMSC) family of fan controllers
-> > provide PWM control for up to 5 fans (in the EMC2305). The EMC230X is
-> > capable of maintaining (closed-loop) a target RPM speed through PWM.
-> > 
-> > This driver has been tested with the EMC2301 (on our Traverse Ten64
-> > appliance) and with the EMC2305 demo board (ADM00879).
-> > 
-> > The driver is by no means complete, for example, further work would
-> > be required to support the different PWM output frequencies for
-> > voltage-based fan speed control. (So far this driver has only been
-> > tested with direct PWM capable fans, like the 4 pin fans found
-> > in recent PCs)
-> > 
-> > The emc230x driver also has thermal subsystem integration which allows
-> > the emc230x-controlled fan(s) to be used as cooling devices.
-> 
-> I just accepted a driver or emc2301/2/3/5. Please submit improvements
-> on top of that driver if needed; we won't have competing drivers
-> for the same chip in the kernel, and replacing a just accepted driver
-> smply does not make any sense.
+Static analyzers report:
 
-My apologies, I was unaware of the separate effort! 
-Mine has been out of tree for a long time and I finally had time to work on it recently.
+drivers/hwmon/emc2305.c:194 emc2305_set_cur_state()
+	warn: impossible condition '(val > 255) => (0-255 > 255)'
 
-There are several changes I can see that need to be made to the accepted one to work for our usecase.
+'val' is u8 and thus can never be larger than 255. In theory
+the operation calculating 'val' could result in a value larger
+than 255, but this won't happen because its parameter has already
+been range checked and it is guaranteed that the result never exceeds
+255. Remove the unnecessary value check.
 
-> Guenter
-> 
+Cc: Michael Shych <michaelsh@nvidia.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/emc2305.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+index ee5ed24feab5..bb32172e07e3 100644
+--- a/drivers/hwmon/emc2305.c
++++ b/drivers/hwmon/emc2305.c
+@@ -191,8 +191,6 @@ static int emc2305_set_cur_state(struct thermal_cooling_device *cdev, unsigned l
+ 	state = max_t(unsigned long, state, data->cdev_data[cdev_idx].last_hwmon_state);
+ 
+ 	val = EMC2305_PWM_STATE2DUTY(state, data->max_state, EMC2305_FAN_MAX);
+-	if (val > EMC2305_FAN_MAX)
+-		return -EINVAL;
+ 
+ 	data->cdev_data[cdev_idx].cur_state = state;
+ 	if (data->pwm_separate) {
+-- 
+2.36.2
+
