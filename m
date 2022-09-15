@@ -2,201 +2,286 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FDB5BA01E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 15 Sep 2022 18:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B32E35BA238
+	for <lists+linux-hwmon@lfdr.de>; Thu, 15 Sep 2022 23:12:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230072AbiIOQ6y (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 15 Sep 2022 12:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
+        id S229673AbiIOVMw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 15 Sep 2022 17:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbiIOQ6v (ORCPT
+        with ESMTP id S229561AbiIOVMu (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 15 Sep 2022 12:58:51 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A8498D02;
-        Thu, 15 Sep 2022 09:58:48 -0700 (PDT)
+        Thu, 15 Sep 2022 17:12:50 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149357B7A0;
+        Thu, 15 Sep 2022 14:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663261128; x=1694797128;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=x9Mn+HpvE0jeSXXjYZwll4DXcBg002OF814G9gDrW5o=;
-  b=Uw4K5o5G0nBfUQy2kg9wEHokughc8VbQjRLDeHoClkjj85sTYM/XJ6Fo
-   yuZlOhj+sUrF96RJJMcLi6oGgxRQHJiQzWJjxoydgUCLUusC0RakVNwKu
-   KCMRtgL+iXvzQXyjJAm4jthbzSRaT0elgXs+HJlGUW2K7+g/XHkPXRHDf
-   JWw52XXmJFX0Awthh9p3H94b+gSkcPTRT7dQpOrqHTw2MPReZyxnqcr0J
-   V3b6DJTazn8Vf6Ie4n+v3UckNMaBeO7SnRFseDkOH28qubdpe4amjdYIC
-   T3IXj/zndsOm5DMAuvA2iRGm6gKMSLwfel7NRR1YpuogzQOmS0JdNmYf/
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10471"; a="385063725"
-X-IronPort-AV: E=Sophos;i="5.93,318,1654585200"; 
-   d="scan'208";a="385063725"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2022 09:58:42 -0700
+  t=1663276369; x=1694812369;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Kvh2AgwaqrMB4C+nQ1e/wLqAn9QuX+E5zGP034cyICY=;
+  b=i9hHR3KQjCB0/GU0zgH44DCcg6XvUA4zTnJv2d94wnagVWdKyKSDzm0K
+   5hXKH6A+2ee8oLMQEaJ1lIeRxrtEFd77NrV2YbtWwCtJUK3LSZWWYrEGs
+   o2Uk21OFrqEXURs2AP41BIaBJZKC81wkcZ42rHrLo6VuiXN16ZN4cLLsy
+   xJSUcwjvC+V8hEmChj2omOgt85LPf3qJTE7srLOk9sO/iYxp2kcJi4fmx
+   /xzt97NBuToKeIVc0ZlhgfutuEwtfIgCQMUjAgHhG2fRVYq8kse44oTTH
+   NGPqenblBkc4QXBYXuAqyxEikG64xISyKpR+a8auePhsyoQdkQQZRasC6
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10471"; a="298832762"
+X-IronPort-AV: E=Sophos;i="5.93,319,1654585200"; 
+   d="scan'208";a="298832762"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2022 14:12:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,318,1654585200"; 
-   d="scan'208";a="792778449"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orsmga005.jf.intel.com with ESMTP; 15 Sep 2022 09:58:41 -0700
-Received: from fmsmsx609.amr.corp.intel.com (10.18.126.89) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 15 Sep 2022 09:58:41 -0700
-Received: from fmsmsx608.amr.corp.intel.com (10.18.126.88) by
- fmsmsx609.amr.corp.intel.com (10.18.126.89) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 15 Sep 2022 09:58:40 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx608.amr.corp.intel.com (10.18.126.88) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31 via Frontend Transport; Thu, 15 Sep 2022 09:58:40 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.175)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.31; Thu, 15 Sep 2022 09:58:40 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OVB0jNRzdjuUZnbocbNvEFSHtYfMawKmokhEOn4MEPiD0jtlr4jusfoM0X4lEQ5ObBbdCJF0QrBvnYQkr5UgxPBH6a638sJFWhLP5USABiVDhzQ818OxjGZcGEY+16VLrOo5/bYbWrH98g7HjtJMo5ke3Fm4pyb5buguvixVlxmY2UpIT085Ed+/5nPELf1deYwpa02YUYt2a7+2jD8Uj9B27Gonv6OYYEZStcxfSPG6+XPwRfP7BsuAkxmORgBJjo0Xl97820NizXGd63MpRlTtK1junc9eRO31Xh3tH8ky+WBViQnmsTn77JrKAuYck8Lh/p2AWydI2+eA20lLPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wMoLjvzSrz5iPMXfdoWqzHHV6c2eiW0C+2oRsmTrV9I=;
- b=GXkLCJCEQopFgb04EHfv74c/rHjzi3FRrwSXhTRUAUgnXJdHWb0oyCy2C+3X44taPf05PUoffl+nJLlYMJdGrOxMRulrMsSP533QIccoWjsErhlXVtuOK8tmnBWcHZH67FEJhw6UTCCILNU34FZGFwlNIAOejD0q6gyKzlcKOzALndrEuVWVDatJS3E+bDJuH5nT+yFX8IX3XSXwY6bGcusdb36GYOFsPJb9f1azi1VreOtJ85A+Dweqz94REYXfMr1VQQrIg55iWYLm8CgZkNzIVKLk5yb2pxkv3oZlM9XCuTFZLojH1mGHTqRwcRdv0667sEcCw09x3JhZOxuSUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by PH0PR11MB5660.namprd11.prod.outlook.com (2603:10b6:510:d5::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.15; Thu, 15 Sep
- 2022 16:58:39 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::1967:b7cd:c851:cb91]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::1967:b7cd:c851:cb91%3]) with mapi id 15.20.5612.022; Thu, 15 Sep 2022
- 16:58:39 +0000
-Date:   Thu, 15 Sep 2022 09:58:33 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Tony Nguyen <anthony.l.nguyen@intel.com>
-CC:     "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        "John Fastabend" <john.fastabend@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <linux-hwmon@vger.kernel.org>,
-        Alexander Duyck <alexander.duyck@gmail.com>,
-        Gurucharan <gurucharanx.g@intel.com>
-Subject: Re: [RESEND PATCH] ixgbe: Don't call kmap() on page allocated with
- GFP_ATOMIC
-Message-ID: <YyNZuTlShCviTKXi@iweiny-desk3>
-References: <20220915124012.28811-1-fmdefrancesco@gmail.com>
- <96855b74-5b77-4426-891b-d638ead17cd6@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <96855b74-5b77-4426-891b-d638ead17cd6@intel.com>
-X-ClientProxiedBy: BY3PR10CA0012.namprd10.prod.outlook.com
- (2603:10b6:a03:255::17) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+X-IronPort-AV: E=Sophos;i="5.93,319,1654585200"; 
+   d="scan'208";a="706515815"
+Received: from lkp-server02.sh.intel.com (HELO 41300c7200ea) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 15 Sep 2022 14:12:46 -0700
+Received: from kbuild by 41300c7200ea with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oYwA9-000115-1c;
+        Thu, 15 Sep 2022 21:12:45 +0000
+Date:   Fri, 16 Sep 2022 05:11:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 6ce5d01e7011b32600656bf90a626b1e51fb192a
+Message-ID: <63239512.gzJmoh0vIZ1pxX6C%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|PH0PR11MB5660:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1b3ba09-1594-41b1-d42b-08da973b896d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: U3DnVmFyW2Yq1UXVfkF4lTdN7DAQJeYDpXW1x7P+SceF0jTo8bPrxf4bxZcGdUrDZZyeR9gX7irmubXT9i03R93a/sO1I5tTSNBrK12HPhG+wYqz3nGgQ7bDULtkUwEqiMKf6n0otSi14V90geUFPHrTfXo7JzlTvccFnQLZlbHNcCqLv4REY+cWKTQVADNOduEmaZd76f1H2O23lcKQpYdtsQtH4g6Q1J6FLJe8ze2dtyn1cDxNxzxWbI9Yf5bQIy674GAwICGN1aRJejhVpZ4gSHB3TGy6ukV5jH0hoeJUWqEeJqx/oPx4UrL1lRcANvb/7l55wQxoL0JrhEkbcBnPk2tlaGmdC6mnsetDQMp3ASfHlcCunyZj9omQACEJDW08mg3RXoqM55KcOL4tfFCLrbQl042SBHnXtDX2Rjfw2vacRndxCiOik0OQwQ648vi/lTkwDJMcir1LbFNPgsNiO8ceXXP3ER0pRRItkhUNR3i9kn6xA6Nxr6IobKA9jPABDHuny/WZKFERqZ2l7fGCsc6k4evpKUnWgcw+UstKKvoL2H9R0VFZ8Wm7Ae1+HOHZr+V+6RnA2T0sZrUSLQ2a2wGqOYcWwXPk7Gws6ssa/D7/Jhfu3KO+4kofswKND3pw+fpoWFPB/iLGbnveEm0KnuqPUsQOChnlmP4ldJamznBtIPHgQCmbSMkZhhFedyQ5gDfx9vcRKCuOeP9kHwmoQ0DJctaeso5T22lmi1k=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(366004)(396003)(136003)(346002)(376002)(39860400002)(451199015)(8676002)(316002)(38100700002)(82960400001)(54906003)(5660300002)(44832011)(86362001)(4326008)(7416002)(66946007)(66556008)(66476007)(8936002)(6862004)(2906002)(41300700001)(33716001)(186003)(966005)(9686003)(478600001)(6506007)(53546011)(26005)(6512007)(107886003)(6486002)(6666004)(6636002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1TGIQPOBLBQ5EO3gwJ1j9NcRI6T6yBUTwtZG53MU20QDOFLxENwF2uRZk0TI?=
- =?us-ascii?Q?AB2P3AlHHoUEBeAz8yZumSGwi8YzQqVCbyPrzoFtbiKEMEPBchS/m1xaJY+A?=
- =?us-ascii?Q?oi4jX3p1kNDDaOcMPcW5oRL9G6p6FnkmQV/B1Zp6zpiycg69+XqI4n9eYJI+?=
- =?us-ascii?Q?QcWuqo/+vjXDkU9Lb5gNGfamzbfLXBTvN+zmVzJQrSiU2h0TDmOkv6DRiAOO?=
- =?us-ascii?Q?ta3adXgadZzaTQUhFx8Ifp3GXtSZhaYizD5RYcOtQjiu5PJ4l8+1WMHSDvK9?=
- =?us-ascii?Q?6nxi/RFMflsDvPus5UQ8erYtQZaETN1m8Ye2v2iI/z2+Bg6BLuE9YaBddMQD?=
- =?us-ascii?Q?8yYS/EaX74OBIrEZQmkjSraB4oH7KKA9I129vyFcQ6GD6NvO+etdjiFKdFir?=
- =?us-ascii?Q?j7B3MqqJ+FMT1gbMYtSd+D6740gNgbpL/8vLEKGD+5hhXF7HxeXR+8hmmz6V?=
- =?us-ascii?Q?mSePJ1/6JZ8iAaRkHIAtyHF7kFN4tNrvgnlh9YXmhOeRu00vFvtSJMtyxjkP?=
- =?us-ascii?Q?QBA5Aar7k1DkQVAIhIZ5xzWnB7/bFSzhBrH7QXiD3Un0ZmFol1loXCcZDI4V?=
- =?us-ascii?Q?oHXVt9YxeFy9LT4k67GzWVnH9IhpsCVZsUNOWajSWZAnQcnQ1yOH4qDiI4+n?=
- =?us-ascii?Q?B5OkROV7f7gokEVqBgeQUfwTAva5rPsLBhvG8MNEFQFu2Tww+woellxQvde/?=
- =?us-ascii?Q?4oFf1D7J2bzR9dlAGf6zndaCIYcTgSUD+MQciUBzFZ4qcGN5ZuI0BHWvaHim?=
- =?us-ascii?Q?MGReMrZ2f5DPQNQ0TSkJ9YqZZ6kgK4f88h/W/76FAvUEo1wi/aVuwzWvbd8J?=
- =?us-ascii?Q?hcL6OcE4Da3+ornvzWm19R5G2ZhOngIhEBjkMDe7lmENc0K8QCQKWylOTZHk?=
- =?us-ascii?Q?geOH6EaKiQ8S04ouAE3EXWOhxOgeKUmIhsPS8sq7DEYq34+yg7ovrYxd1Y6G?=
- =?us-ascii?Q?+JSMwMtugMY6t7W8vBARNl24UCDzfyAhXgTnrcIK0Nrn6TaIVzfCqJUYlZHw?=
- =?us-ascii?Q?K69mdxnqoKugVAr41op34VA1BIMYgefVrFh3lZh5zOweWOU9qqFdv+yx1mN6?=
- =?us-ascii?Q?2HXY2xZECyX7EPBLuFtJojAgnYrgsIFZaZp8S6ERsuIYiCNM0jiBsm0AxbNU?=
- =?us-ascii?Q?7F3Cj8DXLfKAGb1U1uwEwKELBihZmWEfy8QagR5RSfRff++xBh95Zq/HQ/R8?=
- =?us-ascii?Q?WwqcOA7bYnuzheT/iIz2Bp9me4D99XEPkZ3t12iBJZpXILrn9VDR4usHhE4Z?=
- =?us-ascii?Q?stB/qAzRdk+lneikg8RZKKV03S1SCgm7ulrps+DzXlZ+f1mU1edX2wOZ8H0i?=
- =?us-ascii?Q?f8ahvT8ayrmvzrhL5XO/3Nd4TR544pQA4+GIz4tF99kNxvCZs/J773D8Xcwp?=
- =?us-ascii?Q?mGayLLlv0+S5+XGRBZfOU2LT9BBEruvIeZVCo2v9W4/pXfVC4v8Co9j9NRed?=
- =?us-ascii?Q?dBxXSnGgb08lnRk7TzQ2WaxWiijnfLQHr2Xe1a9kH1I/lICQKQDJty9YFpV+?=
- =?us-ascii?Q?kCv7N0tXK+vkIxCaVeMXe5h7yYE6KPeVybYr2hov5RkVii2GCTNnHqtCBTlw?=
- =?us-ascii?Q?HNaH5m567hQtiDWeZPLUS0ySrosW9ur71hMsztbu?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1b3ba09-1594-41b1-d42b-08da973b896d
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2022 16:58:39.2449
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nNZc3Bi8Z3WkZdIqmXtYM3P3h4QmMDAStXKdUvFNzELmvSz1cYZesTK5OD9ltwOPMPKG1lS+aNfn36oXCZcreQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5660
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,SUSPICIOUS_RECIPS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Sep 15, 2022 at 09:30:50AM -0700, Tony Nguyen wrote:
-> 
-> 
-> On 9/15/2022 5:40 AM, Fabio M. De Francesco wrote:
-> > Pages allocated with GFP_ATOMIC cannot come from Highmem. This is why
-> > there is no need to call kmap() on them.
-> > 
-> > Therefore, don't call kmap() on rx_buffer->page() and instead use a
-> > plain page_address() to get the kernel address.
-> > 
-> > Suggested-by: Ira Weiny <ira.weiny@intel.com>
-> > Suggested-by: Alexander Duyck <alexander.duyck@gmail.com>
-> > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> > Reviewed-by: Alexander Duyck <alexander.duyck@gmail.com>
-> > Tested-by: Gurucharan <gurucharanx.g@intel.com>
-> > Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
-> > ---
-> > 
-> > I send again this patch because it was submitted more than two months ago,
-> > Monday 4th July 2022, but for one or more (good?) reasons it has not yet
-> > reached Linus' tree. In the meantime I am also forwarding two "Reviewed-by"
-> > and one "Tested-by" tags (thanks a lot to Ira, Alexander, Gurucharan).
-> > Obviously I have not made any changes to the code.
-> 
-> Hi Fabio,
-> 
-> This is accepted into net-next already[1] and will land in the next kernel.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 6ce5d01e7011b32600656bf90a626b1e51fb192a  Add linux-next specific files for 20220915
 
-Thanks, sorry just saw this after sending my last.  :-/  :-D
+Error/Warning reports:
 
-Ira
+https://lore.kernel.org/linux-mm/202209150141.WgbAKqmX-lkp@intel.com
+https://lore.kernel.org/linux-mm/202209150959.hEWCNjXH-lkp@intel.com
+https://lore.kernel.org/llvm/202209141913.Nxzv3hwM-lkp@intel.com
 
-> 
-> Thanks,
-> Tony
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=03f51719df032637250af828f9a1ffcc5695982d
+Error/Warning: (recently discovered and may have been fixed)
+
+ERROR: modpost: "devm_ioremap_resource" [drivers/dma/fsl-edma.ko] undefined!
+ERROR: modpost: "devm_memremap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_memunmap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/char/xillybus/xillybus_of.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/clk/xilinx/clk-xlnx-clock-wizard.ko] undefined!
+ERROR: modpost: "ioremap" [drivers/net/ethernet/8390/pcnet_cs.ko] undefined!
+ERROR: modpost: "ioremap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
+ERROR: modpost: "iounmap" [drivers/net/ethernet/8390/pcnet_cs.ko] undefined!
+ERROR: modpost: "iounmap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
+arch/parisc/lib/iomap.c:363:5: warning: no previous prototype for 'ioread64_lo_hi' [-Wmissing-prototypes]
+arch/parisc/lib/iomap.c:373:5: warning: no previous prototype for 'ioread64_hi_lo' [-Wmissing-prototypes]
+arch/parisc/lib/iomap.c:448:6: warning: no previous prototype for 'iowrite64_lo_hi' [-Wmissing-prototypes]
+arch/parisc/lib/iomap.c:454:6: warning: no previous prototype for 'iowrite64_hi_lo' [-Wmissing-prototypes]
+drivers/gpu/drm/drm_atomic_helper.c:802: warning: expecting prototype for drm_atomic_helper_check_wb_connector_state(). Prototype was for drm_atomic_helper_check_wb_encoder_state() instead
+drivers/hwmon/emc2305.c:194 emc2305_set_cur_state() warn: impossible condition '(val > 255) => (0-255 > 255)'
+drivers/scsi/qla2xxx/qla_os.c:2854:23: warning: assignment to 'struct trace_array *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+drivers/scsi/qla2xxx/qla_os.c:2854:25: error: implicit declaration of function 'trace_array_get_by_name'; did you mean 'trace_array_set_clr_event'? [-Werror=implicit-function-declaration]
+drivers/scsi/qla2xxx/qla_os.c:2869:9: error: implicit declaration of function 'trace_array_put' [-Werror=implicit-function-declaration]
+make[4]: *** No rule to make target 'drivers/crypto/aspeed/aspeed_crypto.o', needed by 'drivers/crypto/aspeed/built-in.a'.
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+ERROR: modpost: "__tsan_memcpy" [arch/arm64/crypto/sha512-arm64.ko] undefined!
+ERROR: modpost: "__tsan_memcpy" [arch/arm64/crypto/sha512-ce.ko] undefined!
+ERROR: modpost: "__tsan_memcpy" [fs/binfmt_misc.ko] undefined!
+ERROR: modpost: "__tsan_memcpy" [kernel/kcsan/kcsan_test.ko] undefined!
+ERROR: modpost: "__tsan_memcpy" [mm/zsmalloc.ko] undefined!
+ERROR: modpost: "__tsan_memset" [arch/arm64/crypto/sha512-arm64.ko] undefined!
+ERROR: modpost: "__tsan_memset" [arch/arm64/crypto/sha512-ce.ko] undefined!
+ERROR: modpost: "__tsan_memset" [fs/binfmt_misc.ko] undefined!
+ERROR: modpost: "__tsan_memset" [kernel/scftorture.ko] undefined!
+ERROR: modpost: "__tsan_memset" [mm/zsmalloc.ko] undefined!
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_get_by_name
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_put
+|   `-- drivers-scsi-qla2xxx-qla_os.c:warning:assignment-to-struct-trace_array-from-int-makes-pointer-from-integer-without-a-cast
+|-- alpha-randconfig-r013-20220914
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arc-randconfig-r043-20220914
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-defconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm-randconfig-r016-20220914
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- arm64-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-defconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a003
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a012
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a014
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- i386-randconfig-a016
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- ia64-allmodconfig
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_get_by_name
+|   |-- drivers-scsi-qla2xxx-qla_os.c:error:implicit-declaration-of-function-trace_array_put
+|   `-- drivers-scsi-qla2xxx-qla_os.c:warning:assignment-to-struct-trace_array-from-int-makes-pointer-from-integer-without-a-cast
+|-- loongarch-buildonly-randconfig-r005-20220914
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- m68k-allmodconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- m68k-allyesconfig
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- m68k-randconfig-c042-20220915
+|   `-- make:No-rule-to-make-target-drivers-crypto-aspeed-aspeed_crypto.o-needed-by-drivers-crypto-aspeed-built-in.a-.
+|-- m68k-randconfig-r026-20220914
+|   `-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|-- microblaze-randconfig-m031-20220915
+|   |-- drivers-gpu-drm-display-drm_dp_helper.c-drm_dp_phy_name()-warn:unsigned-dp_phy-is-never-less-than-zero.
+|   |-- drivers-gpu-drm-drm_atomic_helper.c:warning:expecting-prototype-for-drm_atomic_helper_check_wb_connector_state().-Prototype-was-for-drm_atomic_helper_check_wb_encoder_state()-instead
+|   `-- drivers-hwmon-emc2305.c-emc2305_set_cur_state()-warn:impossible-condition-(val-)-(-)
+|-- microblaze-randconfig-r006-20220914
+clang_recent_errors
+|-- arm64-randconfig-r006-20220915
+|   |-- ERROR:__tsan_memcpy-arch-arm64-crypto-sha512-arm64.ko-undefined
+|   |-- ERROR:__tsan_memcpy-arch-arm64-crypto-sha512-ce.ko-undefined
+|   |-- ERROR:__tsan_memcpy-fs-binfmt_misc.ko-undefined
+|   |-- ERROR:__tsan_memcpy-kernel-kcsan-kcsan_test.ko-undefined
+|   |-- ERROR:__tsan_memcpy-mm-zsmalloc.ko-undefined
+|   |-- ERROR:__tsan_memset-arch-arm64-crypto-sha512-arm64.ko-undefined
+|   |-- ERROR:__tsan_memset-arch-arm64-crypto-sha512-ce.ko-undefined
+|   |-- ERROR:__tsan_memset-fs-binfmt_misc.ko-undefined
+|   |-- ERROR:__tsan_memset-kernel-scftorture.ko-undefined
+|   `-- ERROR:__tsan_memset-mm-zsmalloc.ko-undefined
+|-- arm64-randconfig-r023-20220914
+|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-function-apply_alternatives_vdso
+|-- i386-randconfig-a002
+|   |-- ERROR:___ratelimit-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__per_cpu_offset-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__phys_addr-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__ubsan_handle_out_of_bounds-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:__warn_printk-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:_printk-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:cpu_number-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:kvm_find_user_return_msr-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:kvm_spurious_fault-arch-x86-kvm-kvm-intel.ko-undefined
+|   |-- ERROR:smp_call_function_single-arch-x86-kvm-kvm-intel.ko-undefined
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- i386-randconfig-a015
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- powerpc-mpc832x_mds_defconfig
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-A_c-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-B_c-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fctiw.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fctiwz.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|   `-- arch-powerpc-math-emu-fsel.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|-- powerpc-tqm8560_defconfig
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-A_c-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-B_c-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fcmpu.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fctiw.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|   |-- arch-powerpc-math-emu-fctiwz.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|   `-- arch-powerpc-math-emu-fsel.c:error:variable-_fex-set-but-not-used-Werror-Wunused-but-set-variable
+|-- riscv-randconfig-r042-20220914
+|   |-- arch-riscv-errata-thead-errata.c:error:use-of-undeclared-identifier-riscv_cbom_block_size
+|   `-- drivers-extcon-extcon-usbc-tusb320.c:warning:expecting-prototype-for-drivers-extcon-extcon-tusb320c().-Prototype-was-for-TUSB320_REG8()-instead
+|-- s390-buildonly-randconfig-r002-20220914
+|   |-- arch-s390-mm-maccess.c:warning:no-previous-prototype-for-function-memcpy_real
+|   |-- arch-s390-mm-maccess.c:warning:no-previous-prototype-for-function-memcpy_real_init
+|   `-- arch-s390-mm-maccess.c:warning:no-previous-prototype-for-function-memcpy_real_iter
+|-- s390-randconfig-r012-20220914
+|   |-- arch-s390-mm-maccess.c:warning:no-previous-prototype-for-function-memcpy_real
+
+elapsed time: 728m
+
+configs tested: 56
+configs skipped: 3
+
+gcc tested configs:
+arc                                 defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+alpha                               defconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+m68k                             allmodconfig
+s390                                defconfig
+arc                  randconfig-r043-20220914
+arc                              allyesconfig
+powerpc                           allnoconfig
+s390                             allmodconfig
+alpha                            allyesconfig
+i386                                defconfig
+x86_64                    rhel-8.3-kselftests
+i386                          randconfig-a001
+i386                          randconfig-a014
+m68k                             allyesconfig
+x86_64                          rhel-8.3-func
+i386                          randconfig-a003
+i386                          randconfig-a012
+x86_64                              defconfig
+arm                                 defconfig
+i386                          randconfig-a016
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+s390                             allyesconfig
+x86_64                           rhel-8.3-syz
+i386                          randconfig-a005
+arm                              allyesconfig
+arc                               allnoconfig
+alpha                             allnoconfig
+riscv                             allnoconfig
+csky                              allnoconfig
+x86_64                               rhel-8.3
+sh                               allmodconfig
+x86_64                           allyesconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+arm64                            allyesconfig
+i386                             allyesconfig
+ia64                             allmodconfig
+
+clang tested configs:
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+riscv                randconfig-r042-20220914
+hexagon              randconfig-r045-20220914
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
+i386                          randconfig-a002
+hexagon              randconfig-r041-20220914
+i386                          randconfig-a004
+i386                          randconfig-a006
+s390                 randconfig-r044-20220914
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
