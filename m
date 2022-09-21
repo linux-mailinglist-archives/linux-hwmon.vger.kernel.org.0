@@ -2,88 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA1B5BFA44
-	for <lists+linux-hwmon@lfdr.de>; Wed, 21 Sep 2022 11:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8F625BFC3D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 21 Sep 2022 12:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbiIUJKN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 21 Sep 2022 05:10:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
+        id S229518AbiIUKWE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 21 Sep 2022 06:22:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbiIUJKM (ORCPT
+        with ESMTP id S230088AbiIUKV5 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 21 Sep 2022 05:10:12 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2A28275A;
-        Wed, 21 Sep 2022 02:10:10 -0700 (PDT)
-Received: (Authenticated sender: alexandre.belloni@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id BB987C0010;
-        Wed, 21 Sep 2022 09:10:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1663751409;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ed895OQapn/M3xAe79KVEVKJiuKmtlhG0e7JAHU5JmY=;
-        b=GBiOx+KG4nNKCT6sffO7R3pMwdALAyLzwOkjnEMsgGe01yESURAco7zPqgDY8shNZUbrkc
-        m6NyxElQViRi0SUeBUSWvV/32fXLk4e5AN8X2RzLKbdZwZhnzzB7ysof5Xnc4ikHbXawLX
-        z31wq1VbPMN2jnUVDsHPnPOxTkIbVY9K0MhrMqrHwPeqW2gfMegCVSQfRFYA6E1r1ze0IL
-        Eqn/PzQRdU7ivtqt/ZLUSDrnIcTkb9T60C0JeuwRRjRizyeLAFekQWoakhs5J2tYRQRQAe
-        l59AkiAqq3eg0gfEUhID59/2juRmtJZCq7zdti7Lnr18G4dGCpNXxwVO9iCMuQ==
-Date:   Wed, 21 Sep 2022 11:10:07 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, linux-rtc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH 6/6] rtc: isl12022: add support for temperature sensor
-Message-ID: <YyrU7+/vQvVYEYCv@mail.local>
-References: <20220830100152.698506-1-linux@rasmusvillemoes.dk>
- <20220830100152.698506-7-linux@rasmusvillemoes.dk>
- <YyHvXh1Zhy/wsHsD@mail.local>
- <5602da22-613e-1be9-42e8-c39b8d60f465@rasmusvillemoes.dk>
+        Wed, 21 Sep 2022 06:21:57 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AD4845997
+        for <linux-hwmon@vger.kernel.org>; Wed, 21 Sep 2022 03:21:57 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id a29so5459338pfk.5
+        for <linux-hwmon@vger.kernel.org>; Wed, 21 Sep 2022 03:21:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=j6c6RloR1f1meVJL/BrGR4Y0ez6uzlYlKHhaiRNYhs0=;
+        b=qdYmRvvAYS44bF4r2Do75MklUjsJiuijVqf47SsDZn9OTsJBQXsG5SK2Fu9SQOgpDx
+         1OSvs29ptBNXN06k1odNu/uz05VpQJ1i6yd6LeilCOXzf+y63G9To9F8S1+kOhZ7Bh4S
+         LQ+R75OpxBmGpe9dBrawZr4QGL8rI1KSybJnV2Le5NNayAkJyQn/AyCrBRH04NMkE5GK
+         xBiObQrc6gY99xrl6nDWMNEd+oRD642qbPjX6iLs8xqDWKYOXE87MoonJoSZAkoFnqJU
+         8DUxpxjkaBFSfdxuA759zNwxos/mytxzDQHBrJHsGLJZTZMT/VCUX7G9awBLQ64EOGkZ
+         IJuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=j6c6RloR1f1meVJL/BrGR4Y0ez6uzlYlKHhaiRNYhs0=;
+        b=fN5KMiDdbAnwwpr3sPSWVRw3nHe7c/MzyrKA+WB9MrqcqYYRT5JkymMcjqDdo8KHqi
+         Sl6cYJNHW45wOAXW6fV32RyI6iFt+rHc9axwequvOWLqvn2iuJpe2d19OI/XHFBEIqSf
+         c9vEMmSh6jHzfuw3wPz7WeAzEyPqH8wQt0kWDTIhUdViINb+znBkAtROXxqUrDf6rONC
+         dbikgO4l1Zq7H+3bISdvn7v+CN2WfI/YVYO7izbilm3xBDUbp3X1YgKVM1vdDkSbG69/
+         FAuQMiGtAKHouWKRvtzRJkJ9UTtSK5jHCTP7g8g3j2KtdH6njiQ1dF7DPuYSEFs+1c2r
+         FOVA==
+X-Gm-Message-State: ACrzQf0xzyCteGjRvuy/csQMGI3HSwEavkrNpgRp3z57qeQbdJtaJd0q
+        ix+QRQ361I5Dnap5cDIAqPf/rjcmI/dpucVvZic=
+X-Google-Smtp-Source: AMsMyM70vSMAUZf+f317Zb3ruK8NadjCLdLJqd3oVfImh8QnLkCcnLP3VgP2zdCrprxf5WDHYn+lc0J77kpyUfUNlD4=
+X-Received: by 2002:a62:2503:0:b0:538:426a:af11 with SMTP id
+ l3-20020a622503000000b00538426aaf11mr28756239pfl.22.1663755716421; Wed, 21
+ Sep 2022 03:21:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5602da22-613e-1be9-42e8-c39b8d60f465@rasmusvillemoes.dk>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7022:68f:b0:45:7316:c2dd with HTTP; Wed, 21 Sep 2022
+ 03:21:55 -0700 (PDT)
+Reply-To: mmrstephen16@gmail.com
+From:   "Mr. Stephen Melvin" <rossmrbruce@gmail.com>
+Date:   Wed, 21 Sep 2022 03:21:55 -0700
+Message-ID: <CAGct7GZBGbfanoUExeFxEBFB_hVUhQLHh=AwyfdotnOrjKSugg@mail.gmail.com>
+Subject: Reply and let me know if you received this email!!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 21/09/2022 09:58:16+0200, Rasmus Villemoes wrote:
-> On 14/09/2022 17.12, Alexandre Belloni wrote:
-> > On 30/08/2022 12:01:52+0200, Rasmus Villemoes wrote:
-> >> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> >> ---
-> >>  drivers/rtc/rtc-isl12022.c | 81 ++++++++++++++++++++++++++++++++++++++
-> >>  1 file changed, 81 insertions(+)
-> >>
-> >> diff --git a/drivers/rtc/rtc-isl12022.c b/drivers/rtc/rtc-isl12022.c
-> >> index b295ec92ee17..1bd72f436318 100644
-> >> --- a/drivers/rtc/rtc-isl12022.c
-> >> +++ b/drivers/rtc/rtc-isl12022.c
-> >> @@ -17,6 +17,8 @@
-> >>  #include <linux/of.h>
-> >>  #include <linux/of_device.h>
-> >>  #include <linux/regmap.h>
-> >> +#include <linux/hwmon.h>
-> >> +#include <linux/hwmon-sysfs.h>
-> > 
-> > You should keep that list ordered
-> 
-> While the three lines of context happen to be sorted, the list as a
-> whole is not. I can of course include a patch sorting it.
-> 
+Hello Dear, How are you today and your family? Want to believe you are
+all doing great.
 
-Nevermind then
+Please reply to me as fast as possible. I have important information for you.
 
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Kind Regards,
+Mr. Stephen Melvin.
