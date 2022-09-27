@@ -2,154 +2,72 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C675EBBA3
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Sep 2022 09:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB7C5EBBAD
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Sep 2022 09:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229739AbiI0HgZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 27 Sep 2022 03:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50882 "EHLO
+        id S230413AbiI0Hhl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 27 Sep 2022 03:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230237AbiI0HgI (ORCPT
+        with ESMTP id S229660AbiI0Hhe (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 27 Sep 2022 03:36:08 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F19056BB6;
-        Tue, 27 Sep 2022 00:36:02 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id t14so13596855wrx.8;
-        Tue, 27 Sep 2022 00:36:02 -0700 (PDT)
+        Tue, 27 Sep 2022 03:37:34 -0400
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD603696F5
+        for <linux-hwmon@vger.kernel.org>; Tue, 27 Sep 2022 00:37:31 -0700 (PDT)
+Received: by mail-pg1-x52d.google.com with SMTP id s26so8671976pgv.7
+        for <linux-hwmon@vger.kernel.org>; Tue, 27 Sep 2022 00:37:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
          :mime-version:from:to:cc:subject:date;
-        bh=sKmAJ34A8WrJ1xqDlpDO/oGZEw5aFDM7BTPRJDupDv4=;
-        b=drIvcpwx2WFkpTuxWzA8EBs6k5UJc7GPvMiTQghl4kmiz453uJATgLRQe7qC0kdJZi
-         3Ls0dcWehPE9QD3e7x84wd/GNpd7MbCm5DOIfY7umj0A9kL3mzX/Bvca0UPUgxK2txrZ
-         5emCH1jng6L4mOEp7zyGltQ9VnwhfQ1zu8jII=
+        bh=W2hJLXZEpV+2eqAKMNoZcDhofs3a0fuyhAGVXRo+6bw=;
+        b=HV2aiRfB7j2HuSCGbeaG8xWOrbAAAfT66diyqRtVCxff5bV/waDkXk80TCe8Agw+HR
+         n8iRedjkAZtjUPXhN5LOz1gwEyW3phDWstVjIxIy6tcfXb1IaRsaFu3kIRXlvpIrEObO
+         0zTpda8yukRNAjkYVffy5vLVqyv+YjLVM7aOvAaf2zfRAT6FTLz5IJeuM2jGHPlTP1uH
+         oHdpwUlwF9uKKijdalFx1H1XOxwJDB7fq7n0qjLXiQVlLRgvdhKo0boPDRUh7Yw0gC8w
+         qUNy9mQyGufeXvMY1HWmAJ6yt6xOcLZvnuE4UbI0AtEYgG3lNW1iblk+yYDqz4nQQ2oD
+         ewIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=sKmAJ34A8WrJ1xqDlpDO/oGZEw5aFDM7BTPRJDupDv4=;
-        b=yneWpBQFoJWrj1id2SzRvuYXE/WwnJiRV8R+7ArD4hYP09vGBlCZCQtUTrucU9wut3
-         zstYIev1tlBymErfHR0i9XwSpLigoCbTUXz8mG1m3x2tt7CfaUbg1GHsQVX0zLX6OGXM
-         9+BbWMtLAYnM5wdm6Lu1Dj1fUgZL8JGpRkcc7dAp7snWRsrR3Ah3ja3Tt51UIWTn69Bt
-         6PWVwkh5e1phoaBXq8HtUOuTrasEwBb4Qbnzpw4xwrkExyp/u78anpUBNtAcCHZwFPTW
-         7ot0JhvQwMuRR7VrcyaPtIdRkuIAGIJQ6FyaPOf6VZK1KZYnLgqJvJiKkGpezNLsZZb1
-         e1rg==
-X-Gm-Message-State: ACrzQf2+FeMXFonXjw0eQS5ntvcCXFmBxh+EeD6ebCNwYyapSg3tytAl
-        KRuciTF7yDvgenOr7Thn57U89dpXHpdBCvumhQ8=
-X-Google-Smtp-Source: AMsMyM4/JM+SnNVu6LYuec5gzT2SfX+XzA9grPlTz91or2/hfHTpXCihTm0uJTpB47xzG9i1TEHpi9UxpQkUmk5BPjQ=
-X-Received: by 2002:a5d:4688:0:b0:22a:f718:7f36 with SMTP id
- u8-20020a5d4688000000b0022af7187f36mr15515102wrq.315.1664264160648; Tue, 27
- Sep 2022 00:36:00 -0700 (PDT)
+        bh=W2hJLXZEpV+2eqAKMNoZcDhofs3a0fuyhAGVXRo+6bw=;
+        b=pLFcUB9S4SijNOcsn3WXPB6sOFrQcFyyvmnCa8h8BsjJXAAVFzYiWM1NJmB8TeDBsu
+         JRtk+5JEIG9WeZzw1U9ac58XXmBro6sGoPC5DGXXAKf6nyrq3EC0yHBaT2MGt37mCo0E
+         Gfm0xiANSOvP/tE89UGQoGNwWCJKYe1/zALOMPv8J50rewnTUccLXgNCoj4JWLCOcXcd
+         8cvHp4UQG/iijTTMmVJ/kFSwBKaRl21OaLqF0wNsB1svKhAwHADMGujqPbi8+CwdP6WU
+         3nogzsJk6EBcZkgG3nIdxWSN06iGQO9tTBuLKjwxbfZ+hc59/JrZfUHXPhXXyB3yZMyM
+         JUoQ==
+X-Gm-Message-State: ACrzQf1KoSHHCTREiHp57fksCjTYVSnSdNn3GbmavQEg+MfMuwSEadhq
+        vAwd7jUEIBzw5DGGvnPsT0uisQqs726bNpb7C3Y=
+X-Google-Smtp-Source: AMsMyM7c7wgd9OzrVTQ5mWvrzUBWwUWYdREQJQ3w3wQcWpJsQT5nlfVk3cr+S8oMWcwXLcrXHnc3Hy6DA1ypgXBrkcY=
+X-Received: by 2002:a05:6a00:1951:b0:54d:a413:7c68 with SMTP id
+ s17-20020a056a00195100b0054da4137c68mr27952396pfk.10.1664264250512; Tue, 27
+ Sep 2022 00:37:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220809200701.218059-1-eajames@linux.ibm.com>
- <20220809200701.218059-4-eajames@linux.ibm.com> <20220925180632.GA1766526@roeck-us.net>
-In-Reply-To: <20220925180632.GA1766526@roeck-us.net>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Tue, 27 Sep 2022 07:35:49 +0000
-Message-ID: <CACPK8XdkH4BZH9UCd085n=bX0EU5=2BemRfOU-zGsK2W4_SNHQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] hwmon: (occ) Check for device property for setting
- OCC active during probe
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Eddie James <eajames@linux.ibm.com>, jdelvare@suse.com,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org
+Received: by 2002:a05:7300:189c:b0:6f:2236:258 with HTTP; Tue, 27 Sep 2022
+ 00:37:29 -0700 (PDT)
+Reply-To: stefanopessia8766@hotmail.com
+From:   Stefano Pessina <georgekadatsa@gmail.com>
+Date:   Tue, 27 Sep 2022 10:37:29 +0300
+Message-ID: <CA++jw3ZGw8_chr4U3BVwdzKHa9t=ctL_47Nt-3UAPnfQ2ASrtw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.1 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Sun, 25 Sept 2022 at 18:06, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On Tue, Aug 09, 2022 at 03:07:01PM -0500, Eddie James wrote:
-> > A previous commit changed the existing behavior of the driver to skip
-> > attempting to communicate with the OCC during probe. Return to the
-> > previous default behavior of automatically communicating with the OCC
-> > and make it optional with a new device-tree property.
-> >
-> > Signed-off-by: Eddie James <eajames@linux.ibm.com>
->
-> Assuming this patch is applied as part of the series outside
-> the hwmon subsystem.
->
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-
-Thanks Guenter. I have applied it to the FSI tree.
-
-
->
-> Guenter
->
-> > ---
-> >  drivers/hwmon/occ/common.c | 11 ++++++++++-
-> >  drivers/hwmon/occ/p9_sbe.c |  9 +++++++++
-> >  2 files changed, 19 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-> > index 45407b12db4b..dd690f700d49 100644
-> > --- a/drivers/hwmon/occ/common.c
-> > +++ b/drivers/hwmon/occ/common.c
-> > @@ -10,6 +10,7 @@
-> >  #include <linux/math64.h>
-> >  #include <linux/module.h>
-> >  #include <linux/mutex.h>
-> > +#include <linux/property.h>
-> >  #include <linux/sysfs.h>
-> >  #include <asm/unaligned.h>
-> >
-> > @@ -1216,8 +1217,16 @@ int occ_setup(struct occ *occ)
-> >       occ->groups[0] = &occ->group;
-> >
-> >       rc = occ_setup_sysfs(occ);
-> > -     if (rc)
-> > +     if (rc) {
-> >               dev_err(occ->bus_dev, "failed to setup sysfs: %d\n", rc);
-> > +             return rc;
-> > +     }
-> > +
-> > +     if (!device_property_read_bool(occ->bus_dev, "ibm,no-poll-on-init")) {
-> > +             rc = occ_active(occ, true);
-> > +             if (rc)
-> > +                     occ_shutdown_sysfs(occ);
-> > +     }
-> >
-> >       return rc;
-> >  }
-> > diff --git a/drivers/hwmon/occ/p9_sbe.c b/drivers/hwmon/occ/p9_sbe.c
-> > index 4a1fe4ee8e2c..3adcf8d0b4a6 100644
-> > --- a/drivers/hwmon/occ/p9_sbe.c
-> > +++ b/drivers/hwmon/occ/p9_sbe.c
-> > @@ -7,6 +7,7 @@
-> >  #include <linux/fsi-occ.h>
-> >  #include <linux/mm.h>
-> >  #include <linux/module.h>
-> > +#include <linux/mod_devicetable.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/string.h>
-> > @@ -179,9 +180,17 @@ static int p9_sbe_occ_remove(struct platform_device *pdev)
-> >       return 0;
-> >  }
-> >
-> > +static const struct of_device_id p9_sbe_occ_of_match[] = {
-> > +     { .compatible = "ibm,p9-occ-hwmon" },
-> > +     { .compatible = "ibm,p10-occ-hwmon" },
-> > +     {}
-> > +};
-> > +MODULE_DEVICE_TABLE(of, p9_sbe_occ_of_match);
-> > +
-> >  static struct platform_driver p9_sbe_occ_driver = {
-> >       .driver = {
-> >               .name = "occ-hwmon",
-> > +             .of_match_table = p9_sbe_occ_of_match,
-> >       },
-> >       .probe  = p9_sbe_occ_probe,
-> >       .remove = p9_sbe_occ_remove,
+--=20
+Kwot=C4=99 500 000 $ przekaza=C5=82 Pa=C5=84stwu STEFANO PESSINA. Uprzejmie=
+ wr=C3=B3=C4=87 po
+wi=C4=99cej informacji przez stefanopessia8766@hotmail.com
