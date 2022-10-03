@@ -2,73 +2,113 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C865F316C
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Oct 2022 15:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5724A5F352C
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Oct 2022 20:02:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbiJCNlr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 3 Oct 2022 09:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33304 "EHLO
+        id S229675AbiJCSCW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 3 Oct 2022 14:02:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbiJCNlq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Oct 2022 09:41:46 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1264B4314B
-        for <linux-hwmon@vger.kernel.org>; Mon,  3 Oct 2022 06:41:45 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id f1so4735642ejw.7
-        for <linux-hwmon@vger.kernel.org>; Mon, 03 Oct 2022 06:41:45 -0700 (PDT)
+        with ESMTP id S229949AbiJCSCB (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Oct 2022 14:02:01 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0AC2F654
+        for <linux-hwmon@vger.kernel.org>; Mon,  3 Oct 2022 11:01:59 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id x1so10368272plv.5
+        for <linux-hwmon@vger.kernel.org>; Mon, 03 Oct 2022 11:01:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date;
-        bh=87EL5HCbLLc+SMKcWI2SMW0ZJRDyqTkrepU7eacPBXo=;
-        b=bROpYd1TRQxhngvEXGNWkS18E+DYiatO48+xhU5QOfEjeAUzEWhgS+cVsrcbnqm8Dr
-         Dv5kL210lbVcRyadxC+0GPIMXkX5sITIe9vPhGudkUYQlgMmftFMLXUf1kPtA/FwLU+j
-         Th/H3rfNDKQjooAERqLS3MK60PnFsF6+8V5JdN33P+8xZRqgp+Ew7n1n5pwHHVX7v6yk
-         7HrSD0zU6JEeoKVjV+QXtGYAqWikdZm4a5qrinZr2F23O94qvgKwAmYbIeiB/W/QDuY3
-         doporzl+Jnd4FxCKwY2IQwoZ9hAcB0huW0cgQ1A4W0gcGA+10jOpP3LO6iT1WRKRvqqL
-         AGSw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date;
+        bh=+IJJVlfV5ITrE7xp7K1NPGZMJ4r9Pu7lhyOElKgBlXk=;
+        b=d0DtxUG1mshLJd9Hz3y8cnE0a39PX/Emep0z+8gYA/nQsV/WZBYtagMxAJTQTu3PVt
+         zDw9krj3FvUwowZFjjT90UAHxxtsMJjpN5KQKAScYt5njl/mk0qaiJUc2tXAjAbQ4lgQ
+         UfFzj7tD7YFETVUBxhlr5EVuTpeUCLLfIRbcOvFIUEdfHK0pkdAs5uJwgJq4BNQrZMF3
+         87/aCFTkl6ge7l3nlGjStsu4ezGwOMf6Ib8gICVZFvJKcCUR31BvF0cao4/FbB92xXvi
+         NPkD2BE80laOH0Wrjp3liuMDrKG5w8l/FMg/n7PR5X+ZYYGTQChfBhsxJPIsrvh1wueX
+         skzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=87EL5HCbLLc+SMKcWI2SMW0ZJRDyqTkrepU7eacPBXo=;
-        b=d034jdYJy4GyDGW5HN5dXhuDThv7N/6xaP4zULtiJETQzXS7D4CC/dCWFsegWRI8b4
-         E5yuGk6TivxUyEbKPpYoXshf85PniBRguFIehbcA+0Xe5en7og742OXP/MB4oHGHzJeZ
-         RLG8iku4jnT58dMOh/YPW2TSY0tKdLyphPuNEUqycATyju5nOVNtR0M33cb/5WYELRzt
-         Y0AgxjjH66iSX2lpSWOOjXrAeMt+7IACKQyWDU1FSXvU159ThnP2XpJ+bDReCALSKuDe
-         4TQRdTZtYmgEvVmvbrbx1C6gssQgjxiY0sSDmlm67nD9TnCgWL44ZOkgHoNwZWbuhuUI
-         2CuA==
-X-Gm-Message-State: ACrzQf1cZj9cRpPNE4RoWaQD36PeL482vumUi2E3CuF1sDykGDMA2NRo
-        cqbZXYDNfP/8NpDtQTU3pLbmztcVvpoBM39z5BVPPOz1/wE=
-X-Google-Smtp-Source: AMsMyM4MtG7MaK01dm5TqTezCp4r6Y+UQZbLaKBt5WcmRnpJkUUeK1WSrB1Om9R9Xzn/SyWXSINPAK3grDK6ThKhPEk=
-X-Received: by 2002:a17:906:ef8f:b0:77e:44be:790 with SMTP id
- ze15-20020a170906ef8f00b0077e44be0790mr15082456ejb.409.1664804503195; Mon, 03
- Oct 2022 06:41:43 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=+IJJVlfV5ITrE7xp7K1NPGZMJ4r9Pu7lhyOElKgBlXk=;
+        b=yfDa5iUDtUSpHVjCVFXGvUnbWpgOU1iFe+auX04AdM+okUjOhpWu5yDZN30XOoPLnn
+         HxRgTBpoISINQz0PoFeiMFwCL/SpYOspYN/Dpkbjxq2ZgbHXdlSwkkpIYOvGFLBynK6w
+         fExCq3kya6AHZjc5MFtrwUPQbNVYBuZAXQ+o8va8GXCs6s/lsJqUAPCQdHLkOtUQKV8I
+         UTJELdoDWW+K+pDMZO+Gd73sAHDb1HSCVpEsuLfJpsJysLsbURjH9dhoyZkjcyKbbhsz
+         qjbNCqvk+wfNr1pMmkOnM6O8AaqWlylLIAOS1EqmzsMabyqMkLU2/INGBfEfpPt06wdI
+         NEmA==
+X-Gm-Message-State: ACrzQf2sLaRCl//b+gLM6XctKjaxUZaLTeBi1rUuiRTcHm/7DQgJPf5D
+        YX0wTqdG8qiXvJT+2PBTr7M=
+X-Google-Smtp-Source: AMsMyM795CBljYlT4lTzdOHFuohzVQy0/qR8wXAs413YMxHBk59f/zqxhgBg76mQjO+xerHWsYqXaA==
+X-Received: by 2002:a17:903:244d:b0:178:a0eb:d4bc with SMTP id l13-20020a170903244d00b00178a0ebd4bcmr22953290pls.33.1664820118841;
+        Mon, 03 Oct 2022 11:01:58 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e14-20020aa7980e000000b00560bb4a57f7sm3950308pfl.179.2022.10.03.11.01.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Oct 2022 11:01:58 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 3 Oct 2022 11:01:57 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Ahmad Khalifa <ahmad@khalifa.ws>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] it87: check device is valid before using force_id
+Message-ID: <20221003180157.GB1023056@roeck-us.net>
+References: <20221002174259.14609-1-ahmad@khalifa.ws>
+ <20221002174259.14609-3-ahmad@khalifa.ws>
 MIME-Version: 1.0
-Sender: aminamama100284@gmail.com
-Received: by 2002:a98:b504:0:b0:186:894d:3107 with HTTP; Mon, 3 Oct 2022
- 06:41:42 -0700 (PDT)
-From:   Tomani David <davidtomani24@gmail.com>
-Date:   Mon, 3 Oct 2022 13:41:42 +0000
-X-Google-Sender-Auth: 60x0f43PIqNx_OaJ9fcjR9valF0
-Message-ID: <CAPk9rGXnQ703HTUn01nSXG_gfOWfbmCP6dxgr9SNCQjuCV2WRQ@mail.gmail.com>
-Subject: Opportunity
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221002174259.14609-3-ahmad@khalifa.ws>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Good afternoon,
+On Sun, Oct 02, 2022 at 06:43:02PM +0100, Ahmad Khalifa wrote:
+> Check if there is a valid device before using force_id parameter value
+> in order to avoid registering two devices.
+> 
 
-I want to discuss a business with you.
+For the subject, please use "hwmon: (it87) ..."
+in the future.
 
+> Signed-off-by: Ahmad Khalifa <ahmad@khalifa.ws>
+> ---
+>  drivers/hwmon/it87.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
+> index ce579f5aebcf..6d71f6c481c8 100644
+> --- a/drivers/hwmon/it87.c
+> +++ b/drivers/hwmon/it87.c
+> @@ -2401,7 +2401,13 @@ static int __init it87_find(int sioaddr, unsigned short *address,
+>  		return err;
+>  
+>  	err = -ENODEV;
+> -	chip_type = force_id ? force_id : superio_inw(sioaddr, DEVID);
+> +	chip_type = superio_inw(sioaddr, DEVID);
+> +	/* check first so force_id doesn't register a second empty device */
 
-Regards,
-Mr. David
+The reasoning is wrong: the ID is checked to avoid registering a
+non-existing or a completely incompatible device. It doesn't matter
+if the skipped device is the first or the second device.
+
+> +	if (chip_type == 0xffff)
+> +		goto exit;
+> +
+> +	if (force_id)
+> +		chip_type = force_id;
+>  
+>  	switch (chip_type) {
+>  	case IT8705F_DEVID:
+> -- 
+> 2.30.2
+> 
