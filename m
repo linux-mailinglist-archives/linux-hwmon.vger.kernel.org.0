@@ -2,56 +2,52 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B605FDDA2
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Oct 2022 17:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B95BC5FDDA6
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Oct 2022 17:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229876AbiJMPyX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 Oct 2022 11:54:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49388 "EHLO
+        id S229890AbiJMPyl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 Oct 2022 11:54:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbiJMPyU (ORCPT
+        with ESMTP id S229559AbiJMPyk (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 Oct 2022 11:54:20 -0400
+        Thu, 13 Oct 2022 11:54:40 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C20B9100BD5
-        for <linux-hwmon@vger.kernel.org>; Thu, 13 Oct 2022 08:54:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B06DF0
+        for <linux-hwmon@vger.kernel.org>; Thu, 13 Oct 2022 08:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665676459; x=1697212459;
+  t=1665676476; x=1697212476;
   h=date:message-id:from:to:cc:subject:in-reply-to:
    references:mime-version;
-  bh=YeSfn7nIC0sOEZ9+1/uJh1GJEZWR1dKDgYzX2UYq9nU=;
-  b=gX1OKDmtC/1HEVa04Sjn/ORpkZYQYOZ4Qqq8apZlYdAGmLCRV0CJaOGc
-   QYtvgxvwz58h/JbY9dk+73iUYEzz2uD/CGjt7TWEPbRJQurlGyRA3/cFC
-   btlRufqoUjhDgD0Si7CcMfW4dxZn5ZiL7CmgG6+RmSt00YDWblh2U+42f
-   3+hSPE2x3+iOhadVH1JoTf+CsS1nqitwUP9IvacQ02W55epBFRDyeT50r
-   2W4Ud0yaUHc53gD8chJ4TbGg4sH/K/jguz1OPyaQ8yufy789J0k8nl+V7
-   y3OQrCpUdT84kDJGcinaq45tzEukuLf24qmlwSuIZtihZCzrVkspsG4RI
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="292457258"
+  bh=y9h7dWxaLMtLHek9iwwT/Jn7s8FHGzbL1rkeVrMjrCQ=;
+  b=KTZMR7a/bGnqM0S4dzwlV8EiS85Iy2TLQ3rK3Gm3FeMFSDzPbu8Ujaie
+   H0Bv5Qfrhip/FNcmvKvmV39aDEU+oDuA8yQGXlW8fnw1Bp/zuStSM32WG
+   rn2fdsxMjoaxGr7Ql1zVGXE1krPbjOKVO67o0jSTu8YYPEn6APajRLf8P
+   yyH+N2Oceir4cHNDMpMCra2YO3RmcWkz5GKlxnW30eRvh+n7lhQgY4UJz
+   5GEZw/1fs1ecl29R4G7/4wP+lDF1QGX0I+4Tf9BNlWbVouoA9AzzdMxfM
+   eauPp8mUCT2aqY4QatiJflqTVUeU/xoTJPKFEiFLicE1DHSuGGgvpYAR5
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="292457324"
 X-IronPort-AV: E=Sophos;i="5.95,182,1661842800"; 
-   d="scan'208";a="292457258"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:54:19 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="622210656"
+   d="scan'208";a="292457324"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:54:35 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="578282922"
 X-IronPort-AV: E=Sophos;i="5.95,182,1661842800"; 
-   d="scan'208";a="622210656"
+   d="scan'208";a="578282922"
 Received: from adixit-mobl.amr.corp.intel.com (HELO adixit-arch.intel.com) ([10.212.216.120])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:54:18 -0700
-Date:   Thu, 13 Oct 2022 08:54:17 -0700
-Message-ID: <87bkqfsora.wl-ashutosh.dixit@intel.com>
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:54:34 -0700
+Date:   Thu, 13 Oct 2022 08:54:34 -0700
+Message-ID: <87a65zsoqt.wl-ashutosh.dixit@intel.com>
 From:   "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To:     Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc:     Badal Nilawar <badal.nilawar@intel.com>,
-        intel-gfx@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-        andi.shyti@intel.com, tvrtko.ursulin@intel.com,
-        anshuman.gupta@intel.com, dri-devel@lists.freedesktop.org,
-        jon.ewins@intel.com, riana.tauro@intel.com,
+To:     Andi Shyti <andi.shyti@linux.intel.com>
+Cc:     Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-hwmon@vger.kernel.org,
         Jani Nikula <jani.nikula@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: Re: [PATCH 4/7] drm/i915/hwmon: Show device level energy usage
-In-Reply-To: <YzcezNGdRJnyXS3N@intel.com>
-References: <20220927055020.3499420-1-badal.nilawar@intel.com>  <20220927055020.3499420-5-badal.nilawar@intel.com>      <YzcezNGdRJnyXS3N@intel.com>
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [Intel-gfx] [PATCH 4/7] drm/i915/hwmon: Show device level energy usage
+In-Reply-To: <YztQZoHViyw2Cqch@ashyti-mobl2.lan>
+References: <20220927055020.3499420-1-badal.nilawar@intel.com>  <20220927055020.3499420-5-badal.nilawar@intel.com>      <YzcezNGdRJnyXS3N@intel.com>    <YztQZoHViyw2Cqch@ashyti-mobl2.lan>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.1 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -67,58 +63,71 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Fri, 30 Sep 2022 09:52:28 -0700, Rodrigo Vivi wrote:
+On Mon, 03 Oct 2022 14:13:10 -0700, Andi Shyti wrote:
 >
 
-Hi Rodrigo,
+Hi Andi,
 
-> On Tue, Sep 27, 2022 at 11:20:17AM +0530, Badal Nilawar wrote:
-> > From: Dale B Stimson <dale.b.stimson@intel.com>
-> >
-> > Use i915 HWMON to display device level energy input.
-> >
-> > v2: Updated the date and kernel version in feature description
-> > v3:
-> >   - Cleaned up hwm_energy function and removed unused function
-> >     i915_hwmon_energy_status_get (Ashutosh)
-> > v4: KernelVersion: 6.2, Date: February 2023 in doc (Tvrtko)
-> >
-> > Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
-> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> > Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> > Acked-by: Guenter Roeck <linux@roeck-us.net>
-> > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  .../ABI/testing/sysfs-driver-intel-i915-hwmon |   8 ++
-> >  drivers/gpu/drm/i915/i915_hwmon.c             | 107 +++++++++++++++++-
-> >  drivers/gpu/drm/i915/intel_mchbar_regs.h      |   2 +
-> >  3 files changed, 115 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> > index 16e697b1db3d..7525db243d74 100644
-> > --- a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> > +++ b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
-> > @@ -25,3 +25,11 @@ Contact:	dri-devel@lists.freedesktop.org
-> >  Description:	RO. Card default power limit (default TDP setting).
-> >
-> >		Only supported for particular Intel i915 graphics platforms.
-> > +
-> > +What:		/sys/devices/.../hwmon/hwmon<i>/energy1_input
-> > +Date:		February 2023
-> > +KernelVersion:	6.2
-> > +Contact:	dri-devel@lists.freedesktop.org
+> [...]
 >
-> I'm sorry for being late on the review here, and I know that others
-> already looked at the date and other details here in this doc.
-> So I'm curious why we have decided for the dri-devel mailing list
-> and not for the intel-gfx since intel-gfx is the only one we have
-> listed for i915 dir in the MAINTAINERS file:
-> L:      intel-gfx@lists.freedesktop.org
+> > > diff --git a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
+> > > index 16e697b1db3d..7525db243d74 100644
+> > > --- a/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
+> > > +++ b/Documentation/ABI/testing/sysfs-driver-intel-i915-hwmon
+> > > @@ -25,3 +25,11 @@ Contact:	dri-devel@lists.freedesktop.org
+> > >  Description:	RO. Card default power limit (default TDP setting).
+> > >
+> > >		Only supported for particular Intel i915 graphics platforms.
+> > > +
+> > > +What:		/sys/devices/.../hwmon/hwmon<i>/energy1_input
+> > > +Date:		February 2023
+> > > +KernelVersion:	6.2
+> > > +Contact:	dri-devel@lists.freedesktop.org
+> >
+> > I'm sorry for being late on the review here, and I know that others
+> > already looked at the date and other details here in this doc.
+> > So I'm curious why we have decided for the dri-devel mailing list
+> > and not for the intel-gfx since intel-gfx is the only one we have
+> > listed for i915 dir in the MAINTAINERS file:
+> > L:      intel-gfx@lists.freedesktop.org
+>
+> same question here.
 
-I have changed the contact to intel-gfx@lists.freedesktop.org in v9 for all
-patches.
+These have all been changed to intel-gfx.
+
+>
+> > > +Description:	RO. Energy input of device in microjoules.
+> > > +
+> > > +		Only supported for particular Intel i915 graphics platforms.
+>
+> [...]
+>
+> > > +/*
+> > > + * hwm_energy - Obtain energy value
+> > > + *
+> > > + * The underlying energy hardware register is 32-bits and is subject to
+> > > + * overflow. How long before overflow? For example, with an example
+> > > + * scaling bit shift of 14 bits (see register *PACKAGE_POWER_SKU_UNIT) and
+> > > + * a power draw of 1000 watts, the 32-bit counter will overflow in
+> > > + * approximately 4.36 minutes.
+> > > + *
+> > > + * Examples:
+> > > + *    1 watt:  (2^32 >> 14) /    1 W / (60 * 60 * 24) secs/day -> 3 days
+> > > + * 1000 watts: (2^32 >> 14) / 1000 W / 60             secs/min -> 4.36 minutes
+> > > + *
+> > > + * The function significantly increases overflow duration (from 4.36
+> > > + * minutes) by accumulating the energy register into a 'long' as allowed by
+> > > + * the hwmon API. Using x86_64 128 bit arithmetic (see mul_u64_u32_shr()),
+> > > + * a 'long' of 63 bits, SF_ENERGY of 1e6 (~20 bits) and
+> > > + * hwmon->scl_shift_energy of 14 bits we have 57 (63 - 20 + 14) bits before
+> > > + * energy1_input overflows. This at 1000 W is an overflow duration of 278 years.
+> > > + */
+> > > +static int
+> > > +hwm_energy(struct hwm_drvdata *ddat, long *energy)
+>
+> This function can just be void.
+
+Done.
 
 Thanks.
 --
