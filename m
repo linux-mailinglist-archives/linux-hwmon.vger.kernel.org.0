@@ -2,53 +2,52 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E0A5FDD97
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Oct 2022 17:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 654055FDDA3
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Oct 2022 17:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbiJMPxX (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 Oct 2022 11:53:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48944 "EHLO
+        id S229742AbiJMPyZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 Oct 2022 11:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbiJMPxW (ORCPT
+        with ESMTP id S229559AbiJMPyY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 Oct 2022 11:53:22 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82B41100BD5
-        for <linux-hwmon@vger.kernel.org>; Thu, 13 Oct 2022 08:53:21 -0700 (PDT)
+        Thu, 13 Oct 2022 11:54:24 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4956837F8F
+        for <linux-hwmon@vger.kernel.org>; Thu, 13 Oct 2022 08:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665676401; x=1697212401;
+  t=1665676464; x=1697212464;
   h=date:message-id:from:to:cc:subject:in-reply-to:
    references:mime-version;
-  bh=1FaekfIfmCYS51XaYw2eEPToJK6znIRfinHhGeoGJfM=;
-  b=BzNiqHCwxqwXvXqIiSFRFLGt4PlOR23xf8tvL+CTRRiBMT41khhjpcTk
-   gu+7q/3SUU5dTvlAcHU3cit+hGu3nYb5RzgvL0PmBZyC0M+cK/Dm5dDe+
-   55Z/8efrl8bi4DVYiEZ235xtCyCXFxeeOuHSKul9aTPes2T3nmwTo8TES
-   qK+8Y/+uLfQQHBK9CqTtNNy97JnaiP6+dPye3vJ55PDQanKs+KwVVFRp6
-   dD6MPpZgr9u0faTVo5AwoFGSY5DcJE89f+cs092gyKj/722Zo58MR2wx3
-   6rE3XPdyCdsgZdeI87zr82NEUh7ObhQmLrMMZ7udcl7ACtVrVAMteTUyD
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="306190020"
+  bh=CM9Fco5EJGl2ou0b70nvrp8JViXa3h4Vj0v8XS3ctPc=;
+  b=USjRwUso32ctXFqCmAt0XyM86VifqGX0niHMhTp7rkexZYs5FZGZVLfA
+   4BoxjZ2pDKJo4ugwPSnMgJ4W9tM4Ocse7fc/S7dzQDVVUZ7lh+Azaq66y
+   pxCfJ/GJeukgaINyGww47hDCRVc9ERfVsXRGYtuMysrL54oTsuwY1z9Lq
+   k82KlNylgx7OSz+WZja78p9O6UYgPM02jX9+j5LbdsggckSfikx1kDLyM
+   tFRU0CGLi9CbYwEfTkCD+9ockyNQpIyY7+9BetLqPiL8HZKN/10AsK9My
+   MKMNRvtwBlmrj1Uh7s61aXqrmPlxQxKR8o1BuA1W7XBgQfKx3j3at86cP
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="367132557"
 X-IronPort-AV: E=Sophos;i="5.95,182,1661842800"; 
-   d="scan'208";a="306190020"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:53:20 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="716392596"
+   d="scan'208";a="367132557"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:54:01 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10499"; a="956219232"
 X-IronPort-AV: E=Sophos;i="5.95,182,1661842800"; 
-   d="scan'208";a="716392596"
+   d="scan'208";a="956219232"
 Received: from sudhars1-mobl.amr.corp.intel.com (HELO adixit-arch.intel.com) ([10.212.216.120])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:53:20 -0700
-Date:   Thu, 13 Oct 2022 08:53:19 -0700
-Message-ID: <87edvbsosw.wl-ashutosh.dixit@intel.com>
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2022 08:54:01 -0700
+Date:   Thu, 13 Oct 2022 08:54:00 -0700
+Message-ID: <87czavsorr.wl-ashutosh.dixit@intel.com>
 From:   "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To:     "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To:     Andi Shyti <andi.shyti@linux.intel.com>
 Cc:     Badal Nilawar <badal.nilawar@intel.com>,
-        intel-gfx@lists.freedesktop.org, riana.tauro@intel.com,
-        jon.ewins@intel.com, linux-hwmon@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, intel-gfx@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 4/7] drm/i915/hwmon: Show device level energy usage
-In-Reply-To: <4062cc45-1b29-eb7b-3858-55f3d6ce17b5@intel.com>
-References: <20220916150054.807590-1-badal.nilawar@intel.com>   <20220916150054.807590-5-badal.nilawar@intel.com>       <4062cc45-1b29-eb7b-3858-55f3d6ce17b5@intel.com>
+Subject: Re: [Intel-gfx] [PATCH 3/7] drm/i915/hwmon: Power PL1 limit and TDP setting
+In-Reply-To: <YztOiqUsMTzfK4q3@ashyti-mobl2.lan>
+References: <20220927055020.3499420-1-badal.nilawar@intel.com>  <20220927055020.3499420-4-badal.nilawar@intel.com>      <YztOiqUsMTzfK4q3@ashyti-mobl2.lan>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/28.1 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -56,30 +55,64 @@ MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, 21 Sep 2022 05:02:48 -0700, Gupta, Anshuman wrote:
+On Mon, 03 Oct 2022 14:05:14 -0700, Andi Shyti wrote:
 >
-> > diff --git a/drivers/gpu/drm/i915/intel_mchbar_regs.h b/drivers/gpu/drm/i915/intel_mchbar_regs.h
-> > index b74df11977c6..1014d0b7cc16 100644
-> > --- a/drivers/gpu/drm/i915/intel_mchbar_regs.h
-> > +++ b/drivers/gpu/drm/i915/intel_mchbar_regs.h
-> > @@ -191,7 +191,9 @@
-> >     #define PCU_PACKAGE_POWER_SKU_UNIT
-> > _MMIO(MCHBAR_MIRROR_BASE_SNB + 0x5938)
-> >   #define   PKG_PWR_UNIT				REG_GENMASK(3, 0)
-> > +#define   PKG_ENERGY_UNIT                      REG_GENMASK(12, 8)
-> Please use tab here instead of space to line up with above macros.
+> Hi Badal,
+>
+> [...]
+>
+> >  hwm_get_preregistration_info(struct drm_i915_private *i915)
+> >  {
+> >	struct i915_hwmon *hwmon = i915->hwmon;
+> > +	struct intel_uncore *uncore = &i915->uncore;
+> > +	intel_wakeref_t wakeref;
+> > +	u32 val_sku_unit;
+> >
+> > -	if (IS_DG1(i915) || IS_DG2(i915))
+> > +	if (IS_DG1(i915) || IS_DG2(i915)) {
+> >		hwmon->rg.gt_perf_status = GEN12_RPSTAT1;
+> > -	else
+> > +		hwmon->rg.pkg_power_sku_unit = PCU_PACKAGE_POWER_SKU_UNIT;
+> > +		hwmon->rg.pkg_power_sku = PCU_PACKAGE_POWER_SKU;
+> > +		hwmon->rg.pkg_rapl_limit = PCU_PACKAGE_RAPL_LIMIT;
+> > +	} else {
+> >		hwmon->rg.gt_perf_status = INVALID_MMIO_REG;
+> > +		hwmon->rg.pkg_power_sku_unit = INVALID_MMIO_REG;
+> > +		hwmon->rg.pkg_power_sku = INVALID_MMIO_REG;
+> > +		hwmon->rg.pkg_rapl_limit = INVALID_MMIO_REG;
+> > +	}
+> > +
+> > +	with_intel_runtime_pm(uncore->rpm, wakeref) {
+> > +		/*
+> > +		 * The contents of register hwmon->rg.pkg_power_sku_unit do not change,
+> > +		 * so read it once and store the shift values.
+> > +		 */
+> > +		if (i915_mmio_reg_valid(hwmon->rg.pkg_power_sku_unit)) {
+> > +			val_sku_unit = intel_uncore_read(uncore,
+> > +							 hwmon->rg.pkg_power_sku_unit);
+> > +		} else {
+> > +			val_sku_unit = 0;
+> > +		}
+>
+> please remove the brackets here and, just a small nitpick:
+>
+> move val_sky_unit inside the "with_intel_runtime_pm()" and
+> initialize it to '0', you will save the else statement.
 
-Fixed in v9.
+Hi Andi, fixed in v9 of the series.
 
-> With that,
-> Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+>
+> Other than that:
+>
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
 Thanks.
+--
+Ashutosh
