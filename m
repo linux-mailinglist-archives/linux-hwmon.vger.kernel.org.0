@@ -2,98 +2,157 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A67175FEE02
-	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Oct 2022 14:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32C305FEE90
+	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Oct 2022 15:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbiJNMgj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 14 Oct 2022 08:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54966 "EHLO
+        id S229582AbiJNN0y (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 14 Oct 2022 09:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbiJNMgi (ORCPT
+        with ESMTP id S229534AbiJNN0x (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 14 Oct 2022 08:36:38 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 404A1155DA7
-        for <linux-hwmon@vger.kernel.org>; Fri, 14 Oct 2022 05:36:37 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id ot12so10234994ejb.1
-        for <linux-hwmon@vger.kernel.org>; Fri, 14 Oct 2022 05:36:37 -0700 (PDT)
+        Fri, 14 Oct 2022 09:26:53 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F491B76F6;
+        Fri, 14 Oct 2022 06:26:51 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id k9so4301642pll.11;
+        Fri, 14 Oct 2022 06:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :reply-to:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N17Ap33yi3tDlWW24g5yIV6fT/20uv+lRdSqefJyZBE=;
-        b=hbKeko8MI+KCkMPgYfQjwhttmWr59QrOw2Jun5dtnCl65HFnUChepj9Zrb8b+FyUeP
-         6wy8vB8e1LyFw5guFw91XHz9b140QJ77fE8NO9henslPCEzNnGZ7SeflMnD0aMkmCZsM
-         6r4NHcV+Zs5zx6pi87Nk4V/w40YUjHqLjjogHO/MTi5tOyZyGaLBq6WyFDkt59qhw/HL
-         wTzgb+mCZEXvH7fSgI7J1T6dnzK+ENzEhfM/f4wn31GKdMu3euwiS5gCxWQxd0b9B11x
-         4HhdJNZUkibg7Lf4KTn9kIyDVxFKekTtpwusEgFqTcBU55i85icNLyEFm/Koe0ZCRShw
-         bGRQ==
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=B85YzJa+gzD30iQI+jRM1asD652V/dJZGGt/+VYQU/o=;
+        b=T0We9qEM1OuX233DTgvvqc5j/ONlheakLJyA/6o8ap4qO839PjW2okMknbno5w2Dwa
+         YjiQevt7ClKSXV9S+51PC1WHOOAvUYLcyAbBRWEPTBbgWq60jZjAvX7R58Li/flyoMSk
+         txq/eSU/kcFeHxJtcheasqPYrAh6YSLenZU41BsBGhEaP3lXPLyfkE2xZTqiXpx5oUwS
+         7BCq6DY6TIj1bgrFgxL8xg+kpiYml2TKnbz0TngAMXwYndTckSD58rejcWoMR/Eoeuvi
+         3JKAQ/6acDfqEb4f9zZIBKjZ0S/Bw5zz/fOWRdyzZ74p6I0OeYYePqL5fWLgL7yLB7m4
+         A3gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N17Ap33yi3tDlWW24g5yIV6fT/20uv+lRdSqefJyZBE=;
-        b=6x7L8N1jFXNpVAXTRjL2b2cfPanYrd8MGtCDGjW6ZNx29mQi0w+cUlGAvDbKo+F38M
-         qcnDse2zR4eF/Lx0ngQ0l7smWFGLqEOf3fKpxKamLwVobVXr+nKS1zN3SROsHm4xSPt4
-         F652/Y6kWl7cNutmqEBeXuSr79gye3TU/YcqF27oIEoURve+rVbYJLfJMfmau8psoJwo
-         KLiaNRiJ3Apd9Ifc9kybXu6xohEjfvcM0PAv47B43rz++T9oYVJvqf1JYAVOSSKtrvPH
-         O9JTb0JRgJtsIX6c+Mq97Gc1KKOXBoCE+9iP5cO2qnUL1sHU90JKfaXMHSkAZ3vFjA/N
-         omzg==
-X-Gm-Message-State: ACrzQf3Edq8cpG9wrQmsWOQQq9W8iCuwHNGwhG0OpXz5tg0bH8Cd7JUB
-        PIbjArkMV974IEJ+Diy1HbkyK8WlI+TasegFRp4=
-X-Google-Smtp-Source: AMsMyM4eY61JQjwDCPt5TAK09WhxXdM4ZYvjK1XgqsEbnWIfpsOc6j9VZmnb91xK5TYxr31OOXlTACKRNkN7+jd92g0=
-X-Received: by 2002:a17:907:3205:b0:770:8554:c4ee with SMTP id
- xg5-20020a170907320500b007708554c4eemr3474551ejb.39.1665750995670; Fri, 14
- Oct 2022 05:36:35 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B85YzJa+gzD30iQI+jRM1asD652V/dJZGGt/+VYQU/o=;
+        b=E+b20xoahOs5awk2c0vqk9JxH63K/Hi69pNK6NnIoHUtlSYVs5VaDGlo1GooMQaLMZ
+         PYyGVzpjNKLrOgXJflHBmN8iRHFhS+I6B7YpaivQYB71M7eDgX6Jgqqncmiv6D9fl8Cv
+         rjkiykHJsC7Pjfw5LcoLvSGi5iSvsY/5xDfxKCqM9kIZE6SjH1COwXmdnMOaLh76BucB
+         q3XqBF9EAA8aXZJQSkbAdiZch6rQ1xR1SWwJjWnLNQZkwis0vr61AUkAveiCg9VE7VOi
+         ZdEMaL76O8fJiD+w4sipJ+R8wtgbFpZK0G1BwYRLymyxW/FuzfY6JYyZxqvhI2+jWDAG
+         DSzg==
+X-Gm-Message-State: ACrzQf3PYCudCoDKPJbUPOQqx9SI7ntLGfTk1nTVIqe+JGCYtunqE9AQ
+        Sk+7CLtANJBUv1Dy0belez4=
+X-Google-Smtp-Source: AMsMyM6um/5Z+wwjpyTvGnSTOSvAQomH0AZ2k5Nn7qx5rK5ZHPNVYBEYZ5yQFLl99M3+3IdsXL3TgA==
+X-Received: by 2002:a17:90a:fa85:b0:20a:ddd3:d431 with SMTP id cu5-20020a17090afa8500b0020addd3d431mr17532500pjb.210.1665754011237;
+        Fri, 14 Oct 2022 06:26:51 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b12-20020aa78ecc000000b005627470944dsm1679224pfr.189.2022.10.14.06.26.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Oct 2022 06:26:49 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <c16b8b0c-3935-4d52-eb7f-809d571142b5@roeck-us.net>
+Date:   Fri, 14 Oct 2022 06:26:48 -0700
 MIME-Version: 1.0
-Reply-To: luciadani18@gamil.com
-Sender: hugoroger6@gmail.com
-Received: by 2002:a50:3715:0:b0:1df:a555:bc4 with HTTP; Fri, 14 Oct 2022
- 05:36:35 -0700 (PDT)
-From:   "FORM MRS. LUCIA DANIEL" <luciadaniel001@gmail.com>
-Date:   Fri, 14 Oct 2022 05:36:35 -0700
-X-Google-Sender-Auth: zWXMvCrqOEXPnGMTAZjcxz_ZYgE
-Message-ID: <CAGo+4SONV-G_kQ9TgaCRsaCv1WEhZupkwquoWQz997QRqp0CuQ@mail.gmail.com>
-Subject: Hello Please I Soliciting For Your Assistance
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH V4 1/4] hwmon/coretemp: Rename indx to index
+To:     Zhang Rui <rui.zhang@intel.com>, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-hwmon@vger.kernel.org
+Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, hpa@zytor.com, peterz@infradead.org,
+        jdelvare@suse.com, len.brown@intel.com
+References: <20221014090147.1836-1-rui.zhang@intel.com>
+ <20221014090147.1836-2-rui.zhang@intel.com>
+Content-Language: en-US
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20221014090147.1836-2-rui.zhang@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Proposal
+On 10/14/22 02:01, Zhang Rui wrote:
+> Use variable name 'index' instead of 'indx' for the index in the
+> core_data[] array.
+> 
+> No functional change expected.
+> 
+> Cc: stable@vger.kernel.org
+> Suggested-by: Ingo Molnar <mingo@kernel.org>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 
-Dear Email Owner Sir/Madam,
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-I am Sorry for emphasizing your email and your privacy here online
-because we haven't met before,
+> ---
+>   drivers/hwmon/coretemp.c | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+> index ccf0af5b988a..bfdcfe8ccb34 100644
+> --- a/drivers/hwmon/coretemp.c
+> +++ b/drivers/hwmon/coretemp.c
+> @@ -515,15 +515,15 @@ coretemp_add_core(struct platform_device *pdev, unsigned int cpu, int pkg_flag)
+>   		dev_err(&pdev->dev, "Adding Core %u failed\n", cpu);
+>   }
+>   
+> -static void coretemp_remove_core(struct platform_data *pdata, int indx)
+> +static void coretemp_remove_core(struct platform_data *pdata, int index)
+>   {
+> -	struct temp_data *tdata = pdata->core_data[indx];
+> +	struct temp_data *tdata = pdata->core_data[index];
+>   
+>   	/* Remove the sysfs attributes */
+>   	sysfs_remove_group(&pdata->hwmon_dev->kobj, &tdata->attr_group);
+>   
+> -	kfree(pdata->core_data[indx]);
+> -	pdata->core_data[indx] = NULL;
+> +	kfree(pdata->core_data[index]);
+> +	pdata->core_data[index] = NULL;
+>   }
+>   
+>   static int coretemp_probe(struct platform_device *pdev)
+> @@ -647,7 +647,7 @@ static int coretemp_cpu_offline(unsigned int cpu)
+>   	struct platform_device *pdev = coretemp_get_pdev(cpu);
+>   	struct platform_data *pd;
+>   	struct temp_data *tdata;
+> -	int indx, target;
+> +	int index, target;
+>   
+>   	/*
+>   	 * Don't execute this on suspend as the device remove locks
+> @@ -661,12 +661,12 @@ static int coretemp_cpu_offline(unsigned int cpu)
+>   		return 0;
+>   
+>   	/* The core id is too big, just return */
+> -	indx = TO_ATTR_NO(cpu);
+> -	if (indx > MAX_CORE_DATA - 1)
+> +	index = TO_ATTR_NO(cpu);
+> +	if (index > MAX_CORE_DATA - 1)
+>   		return 0;
+>   
+>   	pd = platform_get_drvdata(pdev);
+> -	tdata = pd->core_data[indx];
+> +	tdata = pd->core_data[index];
+>   
+>   	cpumask_clear_cpu(cpu, &pd->cpumask);
+>   
+> @@ -677,7 +677,7 @@ static int coretemp_cpu_offline(unsigned int cpu)
+>   	 */
+>   	target = cpumask_any_and(&pd->cpumask, topology_sibling_cpumask(cpu));
+>   	if (target >= nr_cpu_ids) {
+> -		coretemp_remove_core(pd, indx);
+> +		coretemp_remove_core(pd, index);
+>   	} else if (tdata && tdata->cpu == cpu) {
+>   		mutex_lock(&tdata->update_lock);
+>   		tdata->cpu = target;
 
-My name is Madam Lucia Daniel,
-
-How are you doing? If you have a minute I would like to discuss a
-vital proposal with you for your kind consideration.
-
-I have a fund worth =E2=82=AC8,500,000.00 million Euro. Belong to my late h=
-usband.
-I need the cooperation of your assistant to make the fund transfers to you.
-I want you to present yourself as my trustee to receive the fund,
-I want you to use this fund for charity, according to the wish of my
-late husband and myself, to help disadvantaged people and orphanages.
-
-I have my reason for making this decision.
-If you are willing to help answer me.
-Please contact me back at your earliest convenience.
-
-Thank you and please stay safe.
-
-With Warm Regards
-Madam Lucia Daniel .
