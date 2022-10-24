@@ -2,203 +2,69 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9578C60B99D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Oct 2022 22:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6833460BE98
+	for <lists+linux-hwmon@lfdr.de>; Tue, 25 Oct 2022 01:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234084AbiJXUPl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Oct 2022 16:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
+        id S230510AbiJXXbl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 24 Oct 2022 19:31:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234249AbiJXUOT (ORCPT
+        with ESMTP id S231178AbiJXXbO (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Oct 2022 16:14:19 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9C0A3458;
-        Mon, 24 Oct 2022 11:32:38 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-12c8312131fso12850314fac.4;
-        Mon, 24 Oct 2022 11:32:38 -0700 (PDT)
+        Mon, 24 Oct 2022 19:31:14 -0400
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 259787AC0E
+        for <linux-hwmon@vger.kernel.org>; Mon, 24 Oct 2022 14:52:14 -0700 (PDT)
+Received: from rico.lan (unknown [159.196.93.152])
+        by mail.codeconstruct.com.au (Postfix) with ESMTPSA id D37EA2001E;
+        Mon, 24 Oct 2022 20:51:07 +0800 (AWST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fvFflD4k0dWfCuYnPUW0ROCVRGYaVIG1roLKu8FKCdY=;
-        b=BV/EmlmhOfkGh96zgpr5heGMJHF9iIPFwBo3y5qUGgPUcFUPlpNyjL3LLhMOaBsos1
-         bl5959lTbyvNix2tbCWCSovXLVh820Alq2uWTazz64wOdvTFRMJhpoozaOKZ0YitKI7j
-         lYz8O3JfL4Z2o9uondujoJ45ddY3QWMpj5ibNl8XRB1neP+MII4/U6fOB0GGRsIuWOUT
-         DoW6b/oalr6I51oONiP6/e6yjYQQ1DsqCcuB5xGmFxNCrTO+VMEYDE0JcHJwejDRMKyL
-         edS/Vw6kvdAv5EdFYUyTeNtK2lAB08CNboy0L/VRM8b2mTC2ht/xlugyAGzW3+0YDnLW
-         zXeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fvFflD4k0dWfCuYnPUW0ROCVRGYaVIG1roLKu8FKCdY=;
-        b=0hSusIEscwYF96yoHNfcTek6lfL/bx9uNwmRR4N/Sy6TmnMlggUekXAK39KU980KJr
-         EG7JbtzimPJopyL5gQBI1HkivfUwl9B3ob0oBsA2Z0G17DHLhdw3AZ+jCo1p5tYrqLUj
-         EsqjvahsjGajKL9rdfiH5bbOPLpK9MMjWVbfDMmfZzS61YxKGJ9qJKNYvQTjfdQ1vSbT
-         /23Orp7A1PyALO+39Br+EOfsZ4AGC9ltW7YnOyiHeZTOituyekDbSRZEkbsJz+PecXh+
-         rqS+LJrSHLxC70BzpZrvaLIaNM6+4npc4wOqyBw7IHqwXo9h/dKIro7PBMD6HHgoma3z
-         NGXg==
-X-Gm-Message-State: ACrzQf3xfUJ9oLNFYVDjcNRhUCvqHQzs9sIs80DncO/oa5TbJtLj0M+y
-        9DqnP1fb+GfVc1KN+FqvY4E=
-X-Google-Smtp-Source: AMsMyM4phKWoFOpnP3ROaCGKVpMoWsQCIfEncptYfxkNNKjzjEJGGH39043aBXmgttZIQymNrwcBMg==
-X-Received: by 2002:a05:6870:ec90:b0:13b:b20a:ae81 with SMTP id eo16-20020a056870ec9000b0013bb20aae81mr3500501oab.77.1666636310880;
-        Mon, 24 Oct 2022 11:31:50 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z17-20020a05683008d100b006618b23df05sm88188otg.21.2022.10.24.11.31.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 11:31:50 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 24 Oct 2022 11:31:48 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Khandelwal, Rajat" <rajat.khandelwal@intel.com>
-Cc:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jdelvare@suse.com" <jdelvare@suse.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-Subject: Re: [PATCH v5] iio: temperature: Add driver support for Maxim
- MAX30208
-Message-ID: <20221024183148.GA3170088@roeck-us.net>
-References: <20221024165658.181340-1-rajat.khandelwal@linux.intel.com>
- <20221024112829.GA2807876@roeck-us.net>
- <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
+        d=codeconstruct.com.au; s=2022a; t=1666615869;
+        bh=S/YqY0MKbB+AnFECwyRbAC+AXdrjgo7/39FIRTIQRgw=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References;
+        b=mPOwbN7xYmW30Ov8Q9roP+WiTpDaTbxtKtCZamOwiRP/4sxnLqB18iFoIa1X3imLn
+         9PNEJIg5UqdNrZELcRsLFVShK3vENrPyoT0gwE6oCrWeB231y2fU3HYmZCpfojFIZP
+         QCW1Y8xxuNJ5ghrYzDWUvZ/vtQiy5szi4DsKFt8rc4O8annqN3VpFtcPY3FD8WO1f0
+         e53uyKO21k3fIkqrQyMYT7hgw8IHmB3rPhK+eKezI5zBwuO4jULv2DwqvoEvNeOY0G
+         LjYv/FQ9sC3GrtfAhQZEeadar3+L5VS3scn8rEZu182/ABamQGYqcn8hEanTVVsYzd
+         N5bvbOmittsQw==
+Message-ID: <525cad90e1e54c7dbf10822f4a755c27a808fc6f.camel@codeconstruct.com.au>
+Subject: Re: [PATCH] hwmon/occ: OCC sensors aren't arch-specific
+From:   Jeremy Kerr <jk@codeconstruct.com.au>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Eddie James <eajames@linux.ibm.com>,
+        Joel Stanley <joel@jms.id.au>
+Date:   Mon, 24 Oct 2022 20:51:07 +0800
+In-Reply-To: <20221024113218.GA3800308@roeck-us.net>
+References: <20221024081527.3842565-1-jk@codeconstruct.com.au>
+         <20221024113218.GA3800308@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.0-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Oct 24, 2022 at 05:11:17PM +0000, Khandelwal, Rajat wrote:
-> Hi Guenter,
-> Thanks for the acknowledgement.
-> 
-> >Agreed; the sensor doesn't seem to be very useful for traditional hardware
-> >monitoring. The driver better resides in IIO.
-> Cool! I didn't know the categorical reasoning behind this but since this is 
-> accepted in IIO, I don't have to do anything more. 
+Hi Guenter,
 
-Huh. There is no "categorical" reasoning. Call it a gut feeling.
-I can not imagine anyone using this chip for hardware monitoring,
-and presumably you have an IIO use case or you would not have
-implemented an IIO driver.
+> Should the original patch be reverted instead, and should the revert
+> be backported ? In other words, is this a bug fix which needs to be
+> applied to v6.1, or is it needed for v6.2+ only ?
 
-> 
-> >I don't understand why readings are discarded. Why trigger multiple
-> >readings just to discard all but the last one ? I thought iio would
-> >be expected to return all values.
-> Ok. The plan is to trigger temperature conversion on the GPIO input also.
-> The user can trigger as many times the temperature conversion he wants (I accept unnecessary),
-> which will keep the FIFO increasing (without reading converted values) but the driver should be
-> resilient to all the erroneous zones. Also, when the user does really make a syscall to read the
-> temperature, it definitely should be the last converted reading. 
+This isn't a regression, we're just enabling this driver on a new
+hardware implementation. No need to backport either.
 
-That is your use case. I don't know how IIO drivers are normally
-implemented, but I would expect a generic driver. In this case,
-I would expect userspace to decide what it wants to with the data
-and not let the kernel driver discard most of it.
+I don't think that warrants a revert, as having a separate change means
+we keep the rationale for both changes in the git history.
 
-> 
-> >This is really pointless. The register has only one bit to set.
-> >Just write that bit; reading the register before that is pointless.
-> I think the register also has some bits which are reserved. Hence, rather than to make a number
-> for specifically the value keeping those bits the same, I read whatever is there and only store the
-> required one. 
-> 
-I personally would not accept that kind of code, but that is just
-me.
+Cheers,
 
-> >Also, the code assumes that one of the gpio input registers would be used
-> >to trigger temperature readings. Why trigger another one if this is indeed
-> >the case ? Triggering a temperature reading should only be necessary if
-> >there is no data in the fifo.
-> GPIO input triggering is yet not implemented as I would have to work on ACPI interrupts and I have
-> written the driver for now to get it included in Linux. 
-> There are 2 ways - via GPIO and making a syscall. I agree that temperature reading should be
-> necessary only when there is no data in FIFO but since we intend to keep GPIO as a trigger point,
-> user can keep triggering conversions and not reading them out. (As pointed above, driver should be
-> resilient to all erroneous zones).
 
-What does that have to do with interrupts ? Anything connected to the
-gpio pin would trigger a reading.
-
-> 
-> >The datasheet says that it can take up to 50 ms to report a result.
-> >10 retries with 50ms wait each time seems overkill.
-> That's correct. But, the response time can be up to 500 ms. Also, while debugging I had put timestamps
-> which when analyzed, indicated that time may go beyond 50 ms. 
-> 
-
-It seems to me that this would warrant an explanation in the driver.
-500ms seems hard to believe.
-
-> >And why use usleep_range() here
-> >but msleep() above ?
-> I am sorry about that. I have converted usleep_range into msleep (2 places). 
-> 
-> >This is wrong. It uses the overflow counter as data counter if it
-> >is != 0. The overflow counter counts the number of overflows, not
-> >the number of entries in the fifo.
-> So there is no such thing as 'overflow counter'. The point is if the overflow counter has
-
-Interesting statement. MAX30208_FIFO_OVF_CNTR very much
-sounds like overflow counter to me, and the datasheet
-suggests the same.
-
-> even one word, I use the data count equal to the overflow counter value. However, if it
-> has zero, then use the number of words in actual FIFO. 
-> This logic is just used to count how many values to pop to get the most recent reading.
-> 
-
-The code is
-
-+       ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
-+       if (ret < 0) {
-+               dev_err(&data->client->dev, "Error reading reg FIFO overflow counter\n");
-+               goto unlock;
-+       } else if (!ret) {
-+               ret = i2c_smbus_read_byte_data(data->client,
-+                                              MAX30208_FIFO_DATA_CNTR);
-+               if (ret < 0) {
-+                       dev_err(&data->client->dev, "Error reading reg FIFO data counter\n");
-+                       goto unlock;
-+               }
-+       }
-+
-+       data_count = ret;
-
-If reading MAX30208_FIFO_OVF_CNTR returns a value > 0, it is used as
-data_count. That does not seem correct. The data sheet says if
-MAX30208_FIFO_OVF_CNTR is != 0, data_count is 32. Maybe the datasheet
-is wrong all over the place, but at least in this case that seems
-very unlikely.
-
-> > data_count is declared as u8 and will never be < 0.
-> Data count can never be <0 as only first few bits of the 8 bits are used in the register. 
-> 
-	u8 data_count;
-...
-	data_count = i2c_smbus_read_byte_data(data->client,
-                                              MAX30208_FIFO_DATA_CNTR);
-        if (data_count < 0) {
-
-Really ? Static analyzers will have a field day with this code.
-
-Anyway, I don't really care much about this code, so I'll let
-Jonathan take it from here. I just wanted to share my observations.
-
-Thanks,
-Guenter
+Jeremy
