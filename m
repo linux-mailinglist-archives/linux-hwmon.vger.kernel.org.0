@@ -2,243 +2,119 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A50860E1A4
-	for <lists+linux-hwmon@lfdr.de>; Wed, 26 Oct 2022 15:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 563DF60E247
+	for <lists+linux-hwmon@lfdr.de>; Wed, 26 Oct 2022 15:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbiJZNMf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 26 Oct 2022 09:12:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40970 "EHLO
+        id S230327AbiJZNho (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 26 Oct 2022 09:37:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233506AbiJZNMe (ORCPT
+        with ESMTP id S232842AbiJZNhn (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 26 Oct 2022 09:12:34 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1B9FB730;
-        Wed, 26 Oct 2022 06:12:33 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29QAemMa025728;
-        Wed, 26 Oct 2022 09:12:05 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kcac8vfcq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Oct 2022 09:12:04 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 29QDC3SL001642
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 Oct 2022 09:12:03 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 26 Oct
- 2022 09:12:02 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 26 Oct 2022 09:12:02 -0400
-Received: from IST-LT-39247.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.16.24])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 29QDBY6n014246;
-        Wed, 26 Oct 2022 09:11:52 -0400
-From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-To:     <a.zummo@towertech.it>, <alexandre.belloni@bootlin.com>,
-        <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>
-CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        <linux-rtc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>
-Subject: [PATCH v2 2/2] dt-bindings: rtc: add bindings for max313xx RTCs
-Date:   Wed, 26 Oct 2022 16:11:24 +0300
-Message-ID: <20221026131124.289-3-Ibrahim.Tilki@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221026131124.289-1-Ibrahim.Tilki@analog.com>
-References: <20221026131124.289-1-Ibrahim.Tilki@analog.com>
+        Wed, 26 Oct 2022 09:37:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066FC31F87;
+        Wed, 26 Oct 2022 06:37:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B016DB8212F;
+        Wed, 26 Oct 2022 13:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA5C433D7;
+        Wed, 26 Oct 2022 13:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666791460;
+        bh=UL2LVpGMXmV0M4vv+QD2QvanVwPYtHQCP3mM8/DFWPA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Fq5bs9HS5e+GaFM8oZ9fQp/meOdajrvz46zeTC+ULT8qOkEkXYJBlfZD8vfelMLJJ
+         eNFd5WOk+QpsVZjlSHQVn0XC9dklP4XuaMvUqAkJTwE3FF1wp/ea6BfBvnd5G6r+NA
+         2iRNR875hR/DanzkFrRNgGwU5LkAnFnAos2wMg0bD1X2R0BsQg++1R/BbfQwserQbd
+         g9SB8hAGEP8Di146ESs7yu88zqIlg9/pOuqrSpc8+dctFyBJVUYnfJ6fPDcPQ2dx1k
+         AfQvh6nZULc8qV9gIaXoJFidPKiylIoAjL/vufeoGa3O/tHBnp9H5JS/xDpJzxi4Os
+         QEZ94s7A3Jxzg==
+Received: by mail-lj1-f172.google.com with SMTP id s24so11451026ljs.11;
+        Wed, 26 Oct 2022 06:37:40 -0700 (PDT)
+X-Gm-Message-State: ACrzQf03h6ZcSfXe2UHPUR0UVqTNoMGKok/X2ubBcpNZ0Ue7ucWoZbCz
+        dWW3BaMcuhjlr+sXevsbAL1CR0YEqHmkJQs7Zg==
+X-Google-Smtp-Source: AMsMyM5kpW7MAdB7VpnGWrfcHXb1OJGlN7V6fN1CwSlI6dgAnhKep1S3QF4Mt0l8icI+mQSAGvQ6t48c8gLOjFDgMl4=
+X-Received: by 2002:a2e:a44c:0:b0:26b:e70f:a026 with SMTP id
+ v12-20020a2ea44c000000b0026be70fa026mr15457816ljn.94.1666791458417; Wed, 26
+ Oct 2022 06:37:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: Cd9uiJ48XtnCxwht-Nkz_Q8ixsTspG44
-X-Proofpoint-GUID: Cd9uiJ48XtnCxwht-Nkz_Q8ixsTspG44
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-26_06,2022-10-26_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxscore=0 bulkscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210260074
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20221013094838.1529153-1-Naresh.Solanki@9elements.com>
+ <20221013094838.1529153-2-Naresh.Solanki@9elements.com> <20221024161806.GA1855651-robh@kernel.org>
+ <dcd22f70-e51c-290e-c11f-9a5ce32748c1@9elements.com>
+In-Reply-To: <dcd22f70-e51c-290e-c11f-9a5ce32748c1@9elements.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 26 Oct 2022 08:37:29 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKT52ULEZjKo9emEAt74nH2OpMO8ymLLKM_T-NzAwqGog@mail.gmail.com>
+Message-ID: <CAL_JsqKT52ULEZjKo9emEAt74nH2OpMO8ymLLKM_T-NzAwqGog@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: hwmon: fan: Add fan binding to schema
+To:     Naresh Solanki <naresh.solanki@9elements.com>
+Cc:     devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Patrick Rudolph <patrick.rudolph@9elements.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Devicetree binding documentation for Analog Devices MAX313XX RTCs
+On Tue, Oct 25, 2022 at 4:16 AM Naresh Solanki
+<naresh.solanki@9elements.com> wrote:
+>
+>
+>
+> On 24-10-2022 09:48 pm, Rob Herring wrote:
+> > So if we unload and reload the driver module, it should go back to the
+> > default?
+> This is RPM to be set during probe if desired.
+> >
+> > I think it is really, 'target RPM if not already configured' which could
+> > be keep the setting from a register (e.g. what the bootloader set) or
+> > perhaps you already have temperature information to use...
+> Yes. missed it. It should be target-rpm will correct this. in next version.
+> >
+> >> +    $ref: /schemas/types.yaml#/definitions/uint32
+> >> +  pwm-frequency:
+> >> +    description:
+> >> +      PWM frequency for fan in Hertz(Hz).
+> >> +    $ref: /schemas/types.yaml#/definitions/uint32
+> >> +
+> >> +  pwm-polarity-inverse:
+> >> +    description:
+> >> +      Inverse PWM polarity for fan.
+> >> +    type: boolean
+> > As I said before, the PWM binding handles these 2 settings. Use it. Yes,
+> > it's a bit of an overkill when the child is the consumer of the parent.
+> > Until some 'clever' h/w engineer decides to use one of the PWMs for
+> > something else like a backlight.
+> I would like you to consider this as something recommended by fan
+> datasheet for the given fan instance.
+> This info can be used by fan controller driver to configure PWM
+> source/provider accordingly.
+>
+> If you still feel that may not make sense then I'll remove this property.
 
-Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-Signed-off-by: Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>
----
- .../devicetree/bindings/rtc/adi,max313xx.yaml | 151 ++++++++++++++++++
- 1 file changed, 151 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
+You evidently don't understand my comments. My suggestion is to do this:
 
-diff --git a/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml b/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
-new file mode 100644
-index 000000000..7fa28d9d4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
-@@ -0,0 +1,151 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2022 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/rtc/adi,max313xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices MAX313XX series I2C RTCs
-+
-+maintainers:
-+  - Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-+  - Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>
-+
-+description: Analog Devices MAX313XX series I2C RTCs.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,max31328
-+      - adi,max31329
-+      - adi,max31331
-+      - adi,max31334
-+      - adi,max31341
-+      - adi,max31342
-+      - adi,max31343
-+
-+  reg:
-+    description: I2C address of the RTC
-+    items:
-+      - enum: [0x68, 0x69]
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 2
-+
-+  interrupt-names:
-+    description: |
-+      Name of the interrupt pin of the RTC used for IRQ. Not required for
-+      RTCs that only have single interrupt pin available. Some of the RTCs
-+      share interrupt pins with clock input/output pins.
-+    minItems: 1
-+    items:
-+      - enum: [INTA, INTB]
-+      - enum: [INTA, INTB]
-+
-+  "#clock-cells":
-+    description: |
-+      RTC can be used as a clock source through its clock output pin when
-+      supplied.
-+    const: 0
-+
-+  clocks:
-+    description: |
-+      RTC uses this clock for clock input when supplied. Clock has to provide
-+      one of these four frequencies: 1Hz, 50Hz, 60Hz or 32.768kHz.
-+    maxItems: 1
-+
-+  trickle-diode-disable: true
-+
-+  trickle-resistor-ohms:
-+    description: Enables trickle charger with specified resistor value.
-+    enum: [3000, 6000, 11000]
-+
-+  wakeup-source: true
-+
-+additionalProperties: false
-+
-+allOf:
-+  - $ref: rtc.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,max31328
-+              - adi,max31342
-+
-+    then:
-+      properties:
-+        trickle-diode-disable: false
-+        trickle-resistor-ohms: false
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,max31328
-+              - adi,max31331
-+              - adi,max31334
-+              - adi,max31343
-+
-+    then:
-+      properties:
-+        clocks: false
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,max31341
-+              - adi,max31342
-+
-+    then:
-+      properties:
-+        reg:
-+          items:
-+            - const: 0x69
-+
-+    else:
-+      properties:
-+        reg:
-+          items:
-+            - const: 0x68
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        rtc@68 {
-+            reg = <0x68>;
-+            compatible = "adi,max31329";
-+            clocks = <&clkin>;
-+            interrupt-parent = <&gpio>;
-+            interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
-+            interrupt-names = "INTB";
-+        };
-+    };
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        rtc@68 {
-+            reg = <0x68>;
-+            compatible = "adi,max31331";
-+            #clock-cells = <0>;
-+            interrupt-parent = <&gpio>;
-+            interrupts = <25 IRQ_TYPE_EDGE_FALLING>, <26 IRQ_TYPE_EDGE_FALLING>;
-+            interrupt-names = "INTA", "INTB";
-+        };
-+    };
--- 
-2.25.1
+fanc: fan-controller {
+  #pwm-cells = <3>;
+  ...
 
+  fan {
+    pwms = <&fanc 0 500000  PWM_POLARITY_INVERTED>;
+    ...
+  };
+};
+
+0 is PWM number and 500000 is the PWM frequency. The 3rd cell are per
+consumer flags. See pwm.txt for more details.
+
+Rob
