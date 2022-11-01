@@ -2,139 +2,95 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71C106143F4
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Nov 2022 05:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6572614738
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Nov 2022 10:52:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbiKAEoo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 1 Nov 2022 00:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33060 "EHLO
+        id S230184AbiKAJwI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 1 Nov 2022 05:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiKAEon (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Nov 2022 00:44:43 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449201741B
-        for <linux-hwmon@vger.kernel.org>; Mon, 31 Oct 2022 21:44:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667277882; x=1698813882;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+UccJlywgv6Z2jNxZ9ZTcWcf1an6JcwACquk3PGnVeE=;
-  b=JPmoKnt4dcwpJ9UKeNi0/i2y1HXE0PKOwD+n7F/vXKTvIJ7xke2xIM38
-   kWI8eNl5GnQpUXOniKt9H7y+bM5CeRj2rhco4o/5lTZGG9jaZrZ1Wz3uF
-   Ru3om4K3inPL2G5qie80Kzm5UOqPzv/fvoIn1E5cLSLyXBvrIFT86KjPA
-   p3J00vUpanJE30+BT1C981r5IQ6e6B69dSF5GLfm4GFZ46cojHuFWkQai
-   MyLSVlkqrX0nxPmy+rqEyj3f+GjWIMNb2F3SFBAYSVTPZGtRtQNvdDVYp
-   Rn+jXV+SpH7fvW/oSTfgPStit36X2DpuxhKgnpqsZZhXEOOVanNa0Tww5
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10517"; a="310159223"
-X-IronPort-AV: E=Sophos;i="5.95,229,1661842800"; 
-   d="scan'208";a="310159223"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2022 21:44:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10517"; a="963015896"
-X-IronPort-AV: E=Sophos;i="5.95,229,1661842800"; 
-   d="scan'208";a="963015896"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 31 Oct 2022 21:44:40 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1opj8i-000DKm-0H;
-        Tue, 01 Nov 2022 04:44:40 +0000
-Date:   Tue, 01 Nov 2022 12:44:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- 6b780408be034213edfb5946889882cb29f8f159
-Message-ID: <6360a424.rrR67lqHreMReSKQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229641AbiKAJwG (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Nov 2022 05:52:06 -0400
+Received: from twspam01.aspeedtech.com (twspam01.aspeedtech.com [211.20.114.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8A319031;
+        Tue,  1 Nov 2022 02:52:04 -0700 (PDT)
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 2A19RBEV025158;
+        Tue, 1 Nov 2022 17:27:11 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 1 Nov
+ 2022 17:50:21 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
+        <joel@jms.id.au>, <andrew@aj.id.au>, <lee.jones@linaro.org>,
+        <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>,
+        <p.zabel@pengutronix.de>, <billy_tsai@aspeedtech.com>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pwm@vger.kernel.org>, <BMC-SW@aspeedtech.com>,
+        <garnermic@meta.com>
+Subject: [v2 0/3] upport pwm/tach driver for aspeed ast26xx
+Date:   Tue, 1 Nov 2022 17:51:53 +0800
+Message-ID: <20221101095156.30591-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.2.149]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 2A19RBEV025158
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 6b780408be034213edfb5946889882cb29f8f159  hwmon: (pmbus/ltc2978) add support for LTC7132
+Unlike the old design that the register setting of the TACH should based
+on the configure of the PWM. In ast26xx, the dependency between pwm and
+tach controller is eliminated and becomes a separate hardware block. One
+is used to provide pwm output and another is used to monitor the frequency
+of the input. Therefore, this patch serials implements them by writing the
+two driver "pwm-aspeed-ast2600.c" and "tach-aspeed-ast2600.c". The former
+is following the pwm subsystem which can apply the existed driver to
+controller the fan(pwm-fan.c), beeper(pwm-beeper.c) and so on. The latter
+is following the sysfs interface of hwmon to creat the node for fan
+monitor.
 
-elapsed time: 839m
+Changes since v1:
+- tach:
+  - Add the document tach-aspeed-ast2600.rst
+  - Use devm_* api to simplify the error cleanup.
+  - Change hwmon register api to devm_hwmon_device_register_with_info
 
-configs tested: 57
-configs skipped: 2
+Billy Tsai (3):
+  dt-bindings: Add bindings for aspeed pwm-tach.
+  pwm: Add Aspeed ast2600 PWM support
+  hwmon: Add Aspeed ast2600 TACH support
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-ia64                             allmodconfig
-arc                                 defconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-alpha                               defconfig
-x86_64                              defconfig
-mips                             allyesconfig
-m68k                             allmodconfig
-sh                               allmodconfig
-x86_64                           allyesconfig
-arm                                 defconfig
-arc                              allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                               rhel-8.3
-arm                              allyesconfig
-s390                             allmodconfig
-alpha                            allyesconfig
-arc                  randconfig-r043-20221031
-arm64                            allyesconfig
-s390                             allyesconfig
-x86_64                          rhel-8.3-func
-s390                                defconfig
-riscv                randconfig-r042-20221031
-i386                 randconfig-a011-20221031
-arc                  randconfig-r043-20221030
-i386                 randconfig-a012-20221031
-i386                 randconfig-a013-20221031
-i386                 randconfig-a015-20221031
-i386                 randconfig-a014-20221031
-m68k                             allyesconfig
-s390                 randconfig-r044-20221031
-i386                 randconfig-a016-20221031
-i386                                defconfig
-x86_64               randconfig-a012-20221031
-x86_64               randconfig-a011-20221031
-x86_64               randconfig-a013-20221031
-x86_64               randconfig-a014-20221031
-x86_64               randconfig-a015-20221031
-x86_64               randconfig-a016-20221031
-i386                             allyesconfig
-
-clang tested configs:
-x86_64               randconfig-a003-20221031
-hexagon              randconfig-r045-20221031
-x86_64               randconfig-a002-20221031
-hexagon              randconfig-r041-20221030
-riscv                randconfig-r042-20221030
-x86_64               randconfig-a001-20221031
-x86_64               randconfig-a004-20221031
-s390                 randconfig-r044-20221030
-hexagon              randconfig-r041-20221031
-x86_64               randconfig-a005-20221031
-hexagon              randconfig-r045-20221030
-x86_64               randconfig-a006-20221031
+ .../bindings/hwmon/aspeed,ast2600-tach.yaml   |  48 ++
+ .../bindings/mfd/aspeed,ast2600-pwm-tach.yaml |  76 +++
+ .../bindings/pwm/aspeed,ast2600-pwm.yaml      |  64 +++
+ Documentation/hwmon/tach-aspeed-ast2600.rst   |  28 +
+ drivers/hwmon/Kconfig                         |   9 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/tach-aspeed-ast2600.c           | 484 ++++++++++++++++++
+ drivers/pwm/Kconfig                           |  10 +
+ drivers/pwm/Makefile                          |   1 +
+ drivers/pwm/pwm-aspeed-ast2600.c              | 325 ++++++++++++
+ 10 files changed, 1046 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed,ast2600-tach.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/aspeed,ast2600-pwm-tach.yaml
+ create mode 100644 Documentation/devicetree/bindings/pwm/aspeed,ast2600-pwm.yaml
+ create mode 100644 Documentation/hwmon/tach-aspeed-ast2600.rst
+ create mode 100644 drivers/hwmon/tach-aspeed-ast2600.c
+ create mode 100644 drivers/pwm/pwm-aspeed-ast2600.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
