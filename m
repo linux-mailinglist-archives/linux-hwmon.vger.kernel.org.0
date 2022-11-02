@@ -2,297 +2,106 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E2D2615D98
-	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Nov 2022 09:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6936615DDC
+	for <lists+linux-hwmon@lfdr.de>; Wed,  2 Nov 2022 09:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbiKBIYU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 2 Nov 2022 04:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58184 "EHLO
+        id S230376AbiKBIgU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 2 Nov 2022 04:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230254AbiKBIYT (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Nov 2022 04:24:19 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B691921804;
-        Wed,  2 Nov 2022 01:24:17 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id p21so12010482plr.7;
-        Wed, 02 Nov 2022 01:24:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3qcrKEGDyLpDf7q4E3q9Z/jt/4mPKl5O0OEp/Q/t0DI=;
-        b=EC1ENipQ3SXX+JsQ63h/efqBYGgadaa6AD28R/0X8vcLnIdmANLmZPfBuDVg4qpdeP
-         PX1Qhrid52glTAMYfLbUvRDr+sgEYiqNAC4E1QCspX+Jp428ZMT6/YMedJhBNQ2ay9E8
-         azqX9cXi4GbqtkDWMjVs/o4i+2QAUzKTMLgxFvoE+Mpf534fQtjY/X9eV2VSQhmP4EsV
-         Tgr8fEtCIRlXMcuDVCGVFXe4ZlFTvwynqFSdVJhgQNuQUfL1Dgy2QcauuP+lJtjfOy5Y
-         WMfY+zthH8NCbrRD2RcqZdJHWG8Ea/r5N2oLqS6O8xTcLysYkp3HQLgKt+dgH8Cv70ic
-         dqlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3qcrKEGDyLpDf7q4E3q9Z/jt/4mPKl5O0OEp/Q/t0DI=;
-        b=jJYlzvhkK24fj/olZ8BWukAgVPcDWHE3ioPtAJcYkLzGqJ9PxEGOHYqUZ0GRzMPcDg
-         bIs/i9V8rcUc/Lp+Oi2xR8liatOQ7dOS0895ZGAuhYz1nxoDx62VWnxy52OWEQ1/ASwU
-         +AlXf/0hHdDoAi67hgBcMRcu8U5pyNFKztNCk355kYJ02YFYZcWTqG/MkujsxV2lXIEc
-         RWB12WNValZhnC1+e9t3bQuhv96zSPVj1355LPuh2WpGp/Z9uXGj4O1DwSmeZI1eFlPg
-         7+aIPk7jy3dDnLrO+qSl4VLkfjbo94nLIehXv9k7ZgbsWEy33YJx1YJTtbUj53RgECg6
-         poTw==
-X-Gm-Message-State: ACrzQf3MS54M1cX1nplUFWRHUTCaouwYllJ6NhEZLh0Zw8PA/wRnkl7B
-        /LnaLydmJ3/FVuO1UTO9Gqw=
-X-Google-Smtp-Source: AMsMyM6+zgCMoXzuHXA7hOnNKBLzC0ECexsJFwJaUEH7i6oeCi3tUn1Y59yF4X7Lln1p6xPj3M5suw==
-X-Received: by 2002:a17:903:cd:b0:186:878e:3b08 with SMTP id x13-20020a17090300cd00b00186878e3b08mr23346141plc.93.1667377457157;
-        Wed, 02 Nov 2022 01:24:17 -0700 (PDT)
-Received: from debian.me (subs28-116-206-12-55.three.co.id. [116.206.12.55])
-        by smtp.gmail.com with ESMTPSA id k14-20020a170902d58e00b0017f59ebafe7sm7682220plh.212.2022.11.02.01.24.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Nov 2022 01:24:16 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 9226410415E; Wed,  2 Nov 2022 15:24:12 +0700 (WIB)
-Date:   Wed, 2 Nov 2022 15:24:12 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Quan Nguyen <quan@os.amperecomputing.com>
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Open Source Submission <patches@amperecomputing.com>,
-        linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Phong Vo <phong@os.amperecomputing.com>,
-        thang@os.amperecomputing.com, openbmc@lists.ozlabs.org
-Subject: Re: [PATCH] docs: hwmon: (smpro-hwmon) Improve grammar and formatting
-Message-ID: <Y2IpLCX8q2YdZ1ga@debian.me>
-References: <20221102062103.3135417-1-quan@os.amperecomputing.com>
+        with ESMTP id S230373AbiKBIgS (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 2 Nov 2022 04:36:18 -0400
+Received: from twspam01.aspeedtech.com (twspam01.aspeedtech.com [211.20.114.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A41960F1;
+        Wed,  2 Nov 2022 01:36:17 -0700 (PDT)
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 2A28BARc072662;
+        Wed, 2 Nov 2022 16:11:10 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 2 Nov
+ 2022 16:34:23 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
+        <joel@jms.id.au>, <andrew@aj.id.au>, <lee.jones@linaro.org>,
+        <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>,
+        <p.zabel@pengutronix.de>, <billy_tsai@aspeedtech.com>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pwm@vger.kernel.org>, <BMC-SW@aspeedtech.com>,
+        <garnermic@meta.com>
+Subject: [v3 0/3] Support pwm/tach driver for aspeed ast26xx
+Date:   Wed, 2 Nov 2022 16:35:58 +0800
+Message-ID: <20221102083601.10456-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0eCsNjxAaGXgxyUG"
-Content-Disposition: inline
-In-Reply-To: <20221102062103.3135417-1-quan@os.amperecomputing.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.2.149]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 2A28BARc072662
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Unlike the old design that the register setting of the TACH should based
+on the configure of the PWM. In ast26xx, the dependency between pwm and
+tach controller is eliminated and becomes a separate hardware block. One
+is used to provide pwm output and another is used to monitor the frequency
+of the input. Therefore, this patch serials implements them by writing the
+two driver "pwm-aspeed-ast2600.c" and "tach-aspeed-ast2600.c". The former
+is following the pwm subsystem which can apply the existed driver to
+controller the fan(pwm-fan.c), beeper(pwm-beeper.c) and so on. The latter
+is following the sysfs interface of hwmon to creat the node for fan
+monitor.
 
---0eCsNjxAaGXgxyUG
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changes since v2:
+- pwm:
+  - Use devm_* api to simplify the error cleanup
+  - Fix the multi-line alignment problem
+- tach:
+  - Add tach-aspeed-ast2600 to index.rst
+  - Fix the multi-line alignment problem
+  - Remove the tach enable/disable when read the rpm
+  - Fix some coding format issue
 
-On Wed, Nov 02, 2022 at 01:21:03PM +0700, Quan Nguyen wrote:
-> Improve documentation grammar and formatting for the
-> Ampere(R)'s Altra(R) SMpro hwmon driver.
->=20
-> Thanks Bagas for the changes in the link below.
->=20
-> Link: https://lore.kernel.org/lkml/Y1aHiaZ1OpHZIzS9@google.com/T/#mfea216=
-7b99384486a1b75d9304536015116c1821
-> Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
-> ---
->  Documentation/hwmon/smpro-hwmon.rst | 111 ++++++++++++++--------------
->  1 file changed, 56 insertions(+), 55 deletions(-)
->=20
-> diff --git a/Documentation/hwmon/smpro-hwmon.rst b/Documentation/hwmon/sm=
-pro-hwmon.rst
-> index 3a9b14dacf89..fb7b3665735b 100644
-> --- a/Documentation/hwmon/smpro-hwmon.rst
-> +++ b/Documentation/hwmon/smpro-hwmon.rst
-> @@ -7,39 +7,39 @@ Supported chips:
-> =20
->    * Ampere(R) Altra(R)
-> =20
-> -    Prefix: 'smpro'
-> +    Prefix: ``smpro``
-> =20
-> -    Reference: Altra SoC BMC Interface Specification
-> +    Reference: `Altra SoC BMC Interface Specification`
-> =20
->  Author: Thu Nguyen <thu@os.amperecomputing.com>
-> =20
->  Description
->  -----------
-> -This driver supports hardware monitoring for Ampere(R) Altra(R) SoC's ba=
-sed on the
-> -SMpro co-processor (SMpro).
-> -The following sensor types are supported by the driver:
-> +The smpro-hwmon driver supports hardware monitoring for Ampere(R) Altra(=
-R)
-> +SoCs based on the SMpro co-processor (SMpro).  The following sensor metr=
-ics
-> +are supported by the driver:
-> =20
->    * temperature
->    * voltage
->    * current
->    * power
-> =20
-> -The SMpro interface provides the registers to query the various sensors =
-and
-> +The interface provides the registers to query the various sensors and
->  their values which are then exported to userspace by this driver.
-> =20
->  Usage Notes
->  -----------
-> =20
-> -SMpro hwmon driver creates at least two sysfs files for each sensor.
-> +The driver creates at least two sysfs files for each sensor.
-> =20
-> -* File ``<sensor_type><idx>_label`` reports the sensor label.
-> -* File ``<sensor_type><idx>_input`` returns the sensor value.
-> +* ``<sensor_type><idx>_label`` reports the sensor label.
-> +* ``<sensor_type><idx>_input`` returns the sensor value.
-> =20
-> -The sysfs files are allocated in the SMpro root fs folder.
-> -There is one root folder for each SMpro instance.
-> +The sysfs files are allocated in the SMpro rootfs folder, with one root
-> +directory for each instance.
-> =20
-> -When the SoC is turned off, the driver will fail to read registers
-> -and return -ENXIO.
-> +When the SoC is turned off, the driver will fail to read registers and
-> +return ``-ENXIO``.
-> =20
->  Sysfs entries
->  -------------
-> @@ -48,48 +48,49 @@ The following sysfs files are supported:
-> =20
->  * Ampere(R) Altra(R):
-> =20
-> -=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D   =3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> -Name            Unit            Perm    Description
-> -temp1_input     milli Celsius   RO      SoC temperature
-> -temp2_input     milli Celsius   RO      Max temperature reported among S=
-oC VRDs
-> -temp2_crit      milli Celsius   RO      SoC VRD HOT Threshold temperature
-> -temp3_input     milli Celsius   RO      Max temperature reported among D=
-IMM VRDs
-> -temp4_input     milli Celsius   RO      Max temperature reported among C=
-ore VRDs
-> -temp5_input     milli Celsius   RO      Temperature of DIMM0 on CH0
-> -temp5_crit      milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp6_input     milli Celsius   RO      Temperature of DIMM0 on CH1
-> -temp6_crit      milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp7_input     milli Celsius   RO      Temperature of DIMM0 on CH2
-> -temp7_crit      milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp8_input     milli Celsius   RO      Temperature of DIMM0 on CH3
-> -temp8_crit      milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp9_input     milli Celsius   RO      Temperature of DIMM0 on CH4
-> -temp9_crit      milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp10_input    milli Celsius   RO      Temperature of DIMM0 on CH5
-> -temp10_crit     milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp11_input    milli Celsius   RO      Temperature of DIMM0 on CH6
-> -temp11_crit     milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp12_input    milli Celsius   RO      Temperature of DIMM0 on CH7
-> -temp12_crit     milli Celsius   RO      MEM HOT Threshold for all DIMMs
-> -temp13_input    milli Celsius   RO      Max temperature reported among R=
-CA VRDs
-> -in0_input       milli Volts     RO      Core voltage
-> -in1_input       milli Volts     RO      SoC voltage
-> -in2_input       milli Volts     RO      DIMM VRD1 voltage
-> -in3_input       milli Volts     RO      DIMM VRD2 voltage
-> -in4_input       milli Volts     RO      RCA VRD voltage
-> -cur1_input      milli Amperes   RO      Core VRD current
-> -cur2_input      milli Amperes   RO      SoC VRD current
-> -cur3_input      milli Amperes   RO      DIMM VRD1 current
-> -cur4_input      milli Amperes   RO      DIMM VRD2 current
-> -cur5_input      milli Amperes   RO      RCA VRD current
-> -power1_input    micro Watts     RO      Core VRD power
-> -power2_input    micro Watts     RO      SoC VRD power
-> -power3_input    micro Watts     RO      DIMM VRD1 power
-> -power4_input    micro Watts     RO      DIMM VRD2 power
-> -power5_input    micro Watts     RO      RCA VRD power
-> -=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D   =3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> -
-> -Example::
-> +  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D  =3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> +  Name            Unit           Perm    Description
-> +  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D  =3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> +  temp1_input     millicelsius   RO      SoC temperature
-> +  temp2_input     millicelsius   RO      Max temperature reported among =
-SoC VRDs
-> +  temp2_crit      millicelsius   RO      SoC VRD HOT Threshold temperatu=
-re
-> +  temp3_input     millicelsius   RO      Max temperature reported among =
-DIMM VRDs
-> +  temp4_input     millicelsius   RO      Max temperature reported among =
-Core VRDs
-> +  temp5_input     millicelsius   RO      Temperature of DIMM0 on CH0
-> +  temp5_crit      millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp6_input     millicelsius   RO      Temperature of DIMM0 on CH1
-> +  temp6_crit      millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp7_input     millicelsius   RO      Temperature of DIMM0 on CH2
-> +  temp7_crit      millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp8_input     millicelsius   RO      Temperature of DIMM0 on CH3
-> +  temp8_crit      millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp9_input     millicelsius   RO      Temperature of DIMM0 on CH4
-> +  temp9_crit      millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp10_input    millicelsius   RO      Temperature of DIMM0 on CH5
-> +  temp10_crit     millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp11_input    millicelsius   RO      Temperature of DIMM0 on CH6
-> +  temp11_crit     millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp12_input    millicelsius   RO      Temperature of DIMM0 on CH7
-> +  temp12_crit     millicelsius   RO      MEM HOT Threshold for all DIMMs
-> +  temp13_input    millicelsius   RO      Max temperature reported among =
-RCA VRDs
-> +  in0_input       millivolts     RO      Core voltage
-> +  in1_input       millivolts     RO      SoC voltage
-> +  in2_input       millivolts     RO      DIMM VRD1 voltage
-> +  in3_input       millivolts     RO      DIMM VRD2 voltage
-> +  in4_input       millivolts     RO      RCA VRD voltage
-> +  cur1_input      milliamperes   RO      Core VRD current
-> +  cur2_input      milliamperes   RO      SoC VRD current
-> +  cur3_input      milliamperes   RO      DIMM VRD1 current
-> +  cur4_input      milliamperes   RO      DIMM VRD2 current
-> +  cur5_input      milliamperes   RO      RCA VRD current
-> +  power1_input    microwatts     RO      Core VRD power
-> +  power2_input    microwatts     RO      SoC VRD power
-> +  power3_input    microwatts     RO      DIMM VRD1 power
-> +  power4_input    microwatts     RO      DIMM VRD2 power
-> +  power5_input    microwatts     RO      RCA VRD power
-> +  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D  =3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +  Example::
-> =20
->      # cat in0_input
->      830
+Changes since v1:
+- tach:
+  - Add the document tach-aspeed-ast2600.rst
+  - Use devm_* api to simplify the error cleanup.
+  - Change hwmon register api to devm_hwmon_device_register_with_info
 
-LGTM, thanks for picking this up.
+Billy Tsai (3):
+  dt-bindings: Add bindings for aspeed pwm-tach.
+  pwm: Add Aspeed ast2600 PWM support
+  hwmon: Add Aspeed ast2600 TACH support
 
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+ .../bindings/hwmon/aspeed,ast2600-tach.yaml   |  48 ++
+ .../bindings/mfd/aspeed,ast2600-pwm-tach.yaml |  76 +++
+ .../bindings/pwm/aspeed,ast2600-pwm.yaml      |  64 +++
+ Documentation/hwmon/index.rst                 |   1 +
+ Documentation/hwmon/tach-aspeed-ast2600.rst   |  28 ++
+ drivers/hwmon/Kconfig                         |   9 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/tach-aspeed-ast2600.c           | 476 ++++++++++++++++++
+ drivers/pwm/Kconfig                           |  10 +
+ drivers/pwm/Makefile                          |   1 +
+ drivers/pwm/pwm-aspeed-ast2600.c              | 319 ++++++++++++
+ 11 files changed, 1033 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed,ast2600-tach.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/aspeed,ast2600-pwm-tach.yaml
+ create mode 100644 Documentation/devicetree/bindings/pwm/aspeed,ast2600-pwm.yaml
+ create mode 100644 Documentation/hwmon/tach-aspeed-ast2600.rst
+ create mode 100644 drivers/hwmon/tach-aspeed-ast2600.c
+ create mode 100644 drivers/pwm/pwm-aspeed-ast2600.c
 
---=20
-An old man doll... just what I always wanted! - Clara
+-- 
+2.25.1
 
---0eCsNjxAaGXgxyUG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCY2IpJQAKCRD2uYlJVVFO
-o8gLAP9kGFzFOEAUk6wdN1UEkPZDfWgdpqE2loJV9kw+9y3ZVQEAtA51q5/WW7RO
-GpO23d72ZUpvB5t05nvAuUvzlZDIBQg=
-=ITho
------END PGP SIGNATURE-----
-
---0eCsNjxAaGXgxyUG--
