@@ -2,128 +2,146 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30FC361F08F
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Nov 2022 11:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 573D561F3A5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Nov 2022 13:47:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232072AbiKGKZF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 7 Nov 2022 05:25:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35872 "EHLO
+        id S231393AbiKGMrv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 7 Nov 2022 07:47:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231997AbiKGKY3 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Nov 2022 05:24:29 -0500
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B35AC17045
-        for <linux-hwmon@vger.kernel.org>; Mon,  7 Nov 2022 02:24:04 -0800 (PST)
-Received: by mail-vs1-xe42.google.com with SMTP id l190so10087607vsc.10
-        for <linux-hwmon@vger.kernel.org>; Mon, 07 Nov 2022 02:24:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
-         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
-         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
-         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
-         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
-         SKzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=KCac3NCDn2bSyHdYPysM8nytbSX23BZL3JIkmHJbBe0oEyzdT090B9g67lruA7w/jv
-         vGiJkjjxOZcn0Usb9pHh1IlsPVwWKczxD1jauSoYj+Sx2gM7+5rqaWO4y1GMP4sCWzPf
-         oIFiOmW4ei+iD0khvzPEfEvXkDctzC2/5n30VvA2akDeuqKmqzUojd5AgC9aWX/+8CdM
-         kt/PENbf8COL9sOd83hW9omtKLzEFKyw5pIVmT3AKAJIx5tXY/ftUq60cKLs88ib5sJ7
-         iB3JCUn934uNk9+bh/idmWdG2Q+XTtQcQHbKTJpyhEJVwW+Y9mBJb0lELgWQcLb5heuG
-         yFXw==
-X-Gm-Message-State: ACrzQf2DzkCTU1Yin/uN7u4Pja7IammizCmcxLkTp6LVc5x2DNm85W6i
-        0+9Y+SMk6cSN1PRg5+LIEiKf3fy0+YUfj8P1kvDVCEnA7sY=
-X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
-X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
- p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
- Nov 2022 02:23:52 -0800 (PST)
+        with ESMTP id S231193AbiKGMrv (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Nov 2022 07:47:51 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1119418E18
+        for <linux-hwmon@vger.kernel.org>; Mon,  7 Nov 2022 04:47:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667825266; x=1699361266;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MgrS309SOXek86FsxyAVfugr09hCqaHkr45Idv8QUpI=;
+  b=jrsQQbTuSP5Cwk4HVmhO/75+c6prHXUVjp81y23m6Z2ar/4Ue6XB0MEE
+   5vzfhVGm1n4pLClr3CqYqz6Z04sQJ5JKdir/MHCuvEY7t8dfqfxvaZi3F
+   YOZZuXES1rmvApSaWtVCcm9o7M2TvyjI8cnzqEDDEAnR2ioywv2w8xL7v
+   tMv6UPp20wk0TyFb2p5ohisZILpBZtuNHEGV8psLtkIJ65rOk4h69tjTR
+   nV2SwYlLKrjFDUYsRWJdNOdzI1ONwVN+/757ZhLyRYMZ03stYhYU1eFrC
+   2oRdNSo1vzMQJcA5P8RjZf+td5zcNH+kT14aann23HAHG0VDpku4fUK9F
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="337119832"
+X-IronPort-AV: E=Sophos;i="5.96,143,1665471600"; 
+   d="scan'208";a="337119832"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 04:47:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="725126509"
+X-IronPort-AV: E=Sophos;i="5.96,143,1665471600"; 
+   d="scan'208";a="725126509"
+Received: from lkp-server01.sh.intel.com (HELO 462403710aa9) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 07 Nov 2022 04:47:45 -0800
+Received: from kbuild by 462403710aa9 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1os1XV-0000gc-04;
+        Mon, 07 Nov 2022 12:47:45 +0000
+Date:   Mon, 07 Nov 2022 20:47:28 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ 4abf03c1fb6c1e2c347ae131b423d54c95983dc8
+Message-ID: <6368fe60.FcwfQ/PG49G8G0w7%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:23:51 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:23:51 +0100
-Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_40,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:e42 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.2262]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: 4abf03c1fb6c1e2c347ae131b423d54c95983dc8  docs: hwmon: (smpro-hwmon) Improve grammar and formatting
+
+elapsed time: 723m
+
+configs tested: 64
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+powerpc                           allnoconfig
+sh                               allmodconfig
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+s390                                defconfig
+s390                             allyesconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+i386                             allyesconfig
+i386                                defconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                 randconfig-a001-20221107
+i386                 randconfig-a006-20221107
+i386                 randconfig-a003-20221107
+i386                 randconfig-a002-20221107
+i386                 randconfig-a005-20221107
+i386                 randconfig-a004-20221107
+ia64                             allmodconfig
+i386                 randconfig-c001-20221107
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+m68k                         apollo_defconfig
+powerpc                     taishan_defconfig
+arm                         lpc18xx_defconfig
+mips                         rt305x_defconfig
+microblaze                      mmu_defconfig
+csky                             alldefconfig
+ia64                      gensparse_defconfig
+sh                     magicpanelr2_defconfig
+sh                          sdk7786_defconfig
+sh                         microdev_defconfig
+
+clang tested configs:
+i386                 randconfig-a013-20221107
+i386                 randconfig-a015-20221107
+i386                 randconfig-a016-20221107
+i386                 randconfig-a011-20221107
+i386                 randconfig-a014-20221107
+i386                 randconfig-a012-20221107
+x86_64               randconfig-a014-20221107
+x86_64               randconfig-a011-20221107
+x86_64               randconfig-a013-20221107
+x86_64               randconfig-a012-20221107
+x86_64               randconfig-a015-20221107
+x86_64               randconfig-a016-20221107
+mips                     cu1000-neo_defconfig
+arm                         orion5x_defconfig
+powerpc                    mvme5100_defconfig
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
