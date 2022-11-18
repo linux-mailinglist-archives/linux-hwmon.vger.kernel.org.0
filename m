@@ -2,94 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AAF462EAA0
-	for <lists+linux-hwmon@lfdr.de>; Fri, 18 Nov 2022 01:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 462D562ED04
+	for <lists+linux-hwmon@lfdr.de>; Fri, 18 Nov 2022 06:05:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbiKRA5O (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 17 Nov 2022 19:57:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55146 "EHLO
+        id S229500AbiKRFFl (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 18 Nov 2022 00:05:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240477AbiKRA5N (ORCPT
+        with ESMTP id S229441AbiKRFFj (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 17 Nov 2022 19:57:13 -0500
-X-Greylist: delayed 906 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Nov 2022 16:57:09 PST
-Received: from mail-mgmt.man.olsztyn.pl (mail-mgmt.man.olsztyn.pl [213.184.16.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE56F7EBE9
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Nov 2022 16:57:09 -0800 (PST)
-Received: from moskit.uwm.edu.pl (moskit.uwm.edu.pl [213.73.22.212])
-        by mail-mgmt.man.olsztyn.pl  with ESMTP id 2AI0fLqq023182-2AI0fLqs023182
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 18 Nov 2022 01:41:21 +0100
-Received: from moskit.uwm.edu.pl ([213.73.22.212]:36013)
-        by moskit.uwm.edu.pl with esmtpa (Exim 4.89 (FreeBSD))
-        (envelope-from <helena.pociechina@uwm.edu.pl>)
-        id 1ovpMS-0006mm-1a; Fri, 18 Nov 2022 01:36:04 +0100
+        Fri, 18 Nov 2022 00:05:39 -0500
+X-Greylist: delayed 604 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Nov 2022 21:05:38 PST
+Received: from scadrial.mjdsystems.ca (scadrial.mjdsystems.ca [192.99.73.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F0E769C4;
+        Thu, 17 Nov 2022 21:05:38 -0800 (PST)
+Received: from cwmtaff.localnet (107-190-58-99.cpe.teksavvy.com [107.190.58.99])
+        by scadrial.mjdsystems.ca (Postfix) with ESMTPSA id 79F87889AC01;
+        Thu, 17 Nov 2022 23:55:32 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed; d=mjdsystems.ca;
+        s=202010; t=1668747332;
+        bh=a3BoROREcq9yjP9BAHO6xJ2ZvTcePivtJqbREHTyI8Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=TbHqVeLA+nzeaHqafZycaDaINXWu+M82pvWzFWEucXz+5jG3xy9ev/SqCMTV9dURE
+         Q8qCCG7jl4Lls7L0i3UHxWgVp5zq5+sfmM2PkB+oE3pgck25xbBakn0WTg1Z9sUIgS
+         UtwA1UJ31OMPlY/oeqPNQ4TRZPNhz1+pGrDlNLKFRsQKIa5kgUb2+J9H3P6R8uUgC1
+         qSfsB6pyhOVHCrxlqaV/xGnfr54mEjVDTWjL1w8p8d9pAiEZ4vkT0KFfyNlcEfcKcx
+         xYahufgpzsFpPBsc+vLHwb438vu3Uhd9hoADNwtdsCf88FBpuxIpdKKlxUeVvCgWXq
+         vhXPGeScUcy6QEciMSKA6dCmucVOIJR9DT6uRCfFQwxcuEuN5A5axOJqME+3SuVY6v
+         0l8ig3QCKqcyhwSY9ymxEAsa3AL11FtwRG2QBYgxrUynhpwvyrJaINGHUHr4iTB3ix
+         NSfeINuSb52l5rrNDc2UPtsvsVWh7FpIZSfCv44rZjBTONKG/9HlX/AbJIj3vgygfL
+         RIAgYASafqFyM/B94o2vxvqA17n6B5b8wdwpNNC2ek3p1mDNMK4vSZuESOPSA9cNJj
+         1nDej2+j7qXaMiwub8eTdEvdsiQs8gd7zeM8c+xr4YWpJ+nTNf4WQ1lIpkJtqTIYIR
+         fBGPADEXmsWAFByux8JlOE/A=
+From:   Matthew Dawson <matthew@mjdsystems.ca>
+To:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Eugene Shalygin <eugene.shalygin@gmail.com>
+Subject: [PATCH] hwmon: (asus-ec-sensors) add definitions for ROG ZENITH II EXTREME ALPHA
+Date:   Thu, 17 Nov 2022 23:55:31 -0500
+Message-ID: <2829949.vuYhMxLoTh@cwmtaff>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Thu, 17 Nov 2022 16:36:04 -0800
-From:   Manuel Franco <edward.rogowski@gmx.de>
-To:     undisclosed-recipients:;
-Subject: =?UTF-8?Q?Sch=C3=B6nen_Tag?=
-Reply-To: admplga765@rogers.com
-Mail-Reply-To: admplga765@rogers.com
-Message-ID: <a64c94294e9135ba977dc445a34b2a67@gmx.de>
-X-Sender: edward.rogowski@gmx.de
-User-Agent: Roundcube Webmail/1.3.0 
-Sender: helena.pociechina@uwm.edu.pl
-X-Authenticated-As: helena.pociechina@uwm.edu.pl
-X-FEAS-SPF: sender-alignment=not-aligned, header from=edward.rogowski@gmx.de, spf-result=pass, ip=213.73.22.212, helo=moskit.uwm.edu.pl, mailFrom=helena.pociechina@uwm.edu.pl
-Authentication-Results: mail-mgmt.man.olsztyn.pl;
-        spf=pass (olsztyn.pl: domain of helena.pociechina@uwm.edu.pl designates 213.73.22.212 as permitted sender) smtp.mailfrom=helena.pociechina@uwm.edu.pl
-        dmarc=fail header.from=gmx.de
-X-FE-Policy-ID: 16:4:1:uwm.edu.pl
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=uwm.edu.pl; s=wariant1; c=relaxed/relaxed;
- h=mime-version:content-type:date:from:to:subject:reply-to:message-id;
- bh=yJ5S8cWnXT4nZ1W4ZxuixK59wZLY4InRooS1EsfYRuc=;
- b=Ohmkzh/c/6BF15dSqICHSYHjyoFJ0Cemo+zUN1Lj2OSXTSBbfY3XXn3sagVeWJj8AV6lu/QR6mRj
-        OhWCLYlihVqjel5DcL5lWCSUVO2tu4T71fOmhxNu7dimsAsYYpKKNRLS6btMUudvtkwyXW+wwte9
-        La/qioSnWnrgsS3Bypg=
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_80,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_REPLYTO,LOTS_OF_MONEY,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
-        *      [score: 0.8560]
-        *  1.0 HK_RANDOM_REPLYTO Reply-To username looks random
-        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
-        *      mail domains are different
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [edward.rogowski[at]gmx.de]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.0 FREEMAIL_FORGED_FROMDOMAIN 2nd level domains in From and
-        *      EnvelopeFrom freemail headers are different
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.4 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Add support for the Zenith II Extreme Alpha.  It is basically the same
+board as the Zenith II Extreme, and has a similar sensor suite.  The
+DSDT is basically the same except for some address, so use the same
+board information as the non-Alpha board.
 
+Signed-off-by: Matthew Dawson <matthew@mjdsystems.ca>
+---
+ drivers/hwmon/asus-ec-sensors.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index 81e688975c6a..ac0459be04c7 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -466,6 +466,8 @@ static const struct dmi_system_id dmi_table[] = {
+ 					&board_info_strix_z690_a_gaming_wifi_d4),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG ZENITH II EXTREME",
+ 					&board_info_zenith_ii_extreme),
++	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG ZENITH II EXTREME ALPHA",
++					&board_info_zenith_ii_extreme),
+ 	{},
+ };
+ 
 -- 
-Schönen Tag,
+2.35.1
 
-Ich schreibe, um zu bestätigen, ob Sie meine vorherige E-Mail bezüglich 
-der zwei Millionen Dollar erhalten haben, die Ihnen von Manuel Franco 
-gespendet wurden, der am 23. April 2019 den Powerball-Jackpot in Höhe 
-von 768 Millionen Dollar gewann. Bitte überprüfen Sie Ihren Posteingang 
-oder Spam-Ordner und melden Sie sich bei uns für das weitere Verfahren.
 
-Namen: Manuel Franco
+
+
