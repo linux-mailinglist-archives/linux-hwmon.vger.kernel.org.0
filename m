@@ -2,70 +2,71 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C658637404
-	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Nov 2022 09:34:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4F22637498
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Nov 2022 09:56:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbiKXIev (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 24 Nov 2022 03:34:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57882 "EHLO
+        id S229943AbiKXI4u (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 24 Nov 2022 03:56:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiKXIeu (ORCPT
+        with ESMTP id S229816AbiKXI4g (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 24 Nov 2022 03:34:50 -0500
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86522CB9EE
-        for <linux-hwmon@vger.kernel.org>; Thu, 24 Nov 2022 00:34:49 -0800 (PST)
-Received: by mail-pg1-x52c.google.com with SMTP id 6so1014804pgm.6
-        for <linux-hwmon@vger.kernel.org>; Thu, 24 Nov 2022 00:34:49 -0800 (PST)
+        Thu, 24 Nov 2022 03:56:36 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5199BA30
+        for <linux-hwmon@vger.kernel.org>; Thu, 24 Nov 2022 00:56:35 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id w4so938566plp.1
+        for <linux-hwmon@vger.kernel.org>; Thu, 24 Nov 2022 00:56:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=9elements.com; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=W5ccKx8fizG4gCscMAGllzhhGT1asbD46ZbtRMN7NAQ=;
-        b=NaWt9gAey74YX97MIcdsLCn1TP41z+UNuwg9OtGNLyX+60MqAG3WXZorgpUxG4fGR4
-         tJPrYRQhsuMC9lfocuTF19x7DKZ1PVSx5CAScNk2LVDFBUdtNO5DJMaeY38/gAd2Nh3d
-         DCIb1BSzCMukm/v/MgXpViy8d8f4Yjg8pUraZnFx8qkBagdpo/L3BAh9noM4WZx0vIt6
-         8Rh90JIbrg2fOk763xeNf81wRGJtZzIYcKk1l2WaifDPfiig9YuNceghGkjs0h+mj1JG
-         81h5JzuFYfeJZTXTQINku6Y2sK3J2imw2gTzHoQz5dkG7dM7FPR6XiQjQ4h9WK3HB51/
-         gy6w==
+        bh=y+JlTCURFbhvaQe3VOudsfUIZNYcfNLZEHpC87BXVEE=;
+        b=RVuYHCbfloxktxLMqw8zNS/LMduzjvrHQ9tEgE8Hg5Y9kP1l2ycAHmS9TSrEY01ZLt
+         aPztU0lmLF5/dgbK/S9yFb4VAEPRz3N/Zp+EdR8uyC0HLbqOqTeQx4JVwfKRbn5fps8P
+         JtrBYa7hIXjztPMZIlw5Oj7j0XphO0gsNSczbwzZ+zAL0ESf4gzrUXcmuJTv8FMq6bHU
+         /qnqswrZ2RVO1K3jiP2pEngdCF1wJY22WDcObU699AAKoqqNlp9jHetfpsmLnym0YfDb
+         1Xv5lD3lwUua3GRWAzvMtf1GBDDwDZkAIOzCJTYL5QXT9PxqtNAFmI7jjJxkbc1ozQnX
+         rhkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W5ccKx8fizG4gCscMAGllzhhGT1asbD46ZbtRMN7NAQ=;
-        b=MbAO0hOJgIQo43xKkEiQko05xe8lp0TZ1q6PkLbSoqUH2Pc66OV1wuNRAxL4lBfvj8
-         kb08V93RXn6f92t5MOWH5hRSTvkhHKq1BYquhgoA7MdIOVX7w3yLxSg9VP7vFuCFKclV
-         yLXZqsBCqjbGqjsNwyEhtYUmliAWE/7Pp8IhU+VxZA8cSgcAFrCtSPD1Q6GJWx0k1xv6
-         0Cr1O6Y9IyqDEvNp33wUZ0M3vCmzQE/yyuRcwJmcwC6vQZr3bUA6ocowNlTx/z6pnVEv
-         /SFEcmsg3XTwTm5RjSX9QHEBblXokpmPBws3yO+t3WLzeAq5uFSarHPioEGoW1jvSq4u
-         SnBA==
-X-Gm-Message-State: ANoB5pmgadktGanQ99C20WA3UqnnDH/V+BKYU7rT0RxjK87MvNLIi3h3
-        lhSbnVl1ni/RDJup1Q7UmUkHxA==
-X-Google-Smtp-Source: AA0mqf4DAzzZjePiOdegknXnqqa9pAMSzXuDf5861QUnn4iLF0a1NGsDAmotvzNuKDt77HW+x7FFOg==
-X-Received: by 2002:a62:6142:0:b0:56c:cde:1a49 with SMTP id v63-20020a626142000000b0056c0cde1a49mr13274150pfb.9.1669278888988;
-        Thu, 24 Nov 2022 00:34:48 -0800 (PST)
+        bh=y+JlTCURFbhvaQe3VOudsfUIZNYcfNLZEHpC87BXVEE=;
+        b=nv4dXSOG5SfuFf6CRIIiCNY/dH9hj9YRsHC+lY7qcfXkeUdfGpLxxYaYI5yaWy5U8U
+         aRBZZGFKaErkFFAuJEpeILjwv4NOdNAhZ2yMLy/F/UyGkxjBLGPrcTbjq/6THvddw04s
+         Y31Y0ZMRbupv+HWnKKSaXFeJph8fNwtYVcWZG6kdWmvXKQ3Va/pF7nKcEdOZ/w4Bn7IC
+         b0b9hr1yi98eTTmM83m7rg7i5K0Wq69DfnxPsF9mwIaIBvGApkmYFo+B7/C4tU3h/tHJ
+         3BsE2RKH1Y8z/LyDtF98vR8gMYktcy5t+c7qm2whT5YTU0iKZsMTmyR2wPyYefwOddj9
+         Rkxw==
+X-Gm-Message-State: ANoB5pk3SXvKxwdKg0oRkHbxLxjqVMTHBoyXDg8PkeYYqIYCqSVCBxi4
+        oVbistvFBIgIVrzI1EPMXRB+5g==
+X-Google-Smtp-Source: AA0mqf4wDtKU6FE10Kh5h9uR3I85P0FI6tiarpFlWpI7Zh6Qf7/ihXAMpOcaD24k80GlHGKrbWnSTw==
+X-Received: by 2002:a17:90a:d38a:b0:218:a7e6:60df with SMTP id q10-20020a17090ad38a00b00218a7e660dfmr21150431pju.38.1669280194819;
+        Thu, 24 Nov 2022 00:56:34 -0800 (PST)
 Received: from ?IPV6:2405:201:d02f:d899:2028:7962:400:43b6? ([2405:201:d02f:d899:2028:7962:400:43b6])
-        by smtp.gmail.com with ESMTPSA id ne12-20020a17090b374c00b00218d55b33d9sm2759511pjb.8.2022.11.24.00.34.46
+        by smtp.gmail.com with ESMTPSA id h12-20020a170902f7cc00b0018958a913a2sm657661plw.223.2022.11.24.00.56.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Nov 2022 00:34:48 -0800 (PST)
-Message-ID: <f158bc8a-8351-49a7-3246-91b8a1413ccd@9elements.com>
-Date:   Thu, 24 Nov 2022 14:04:46 +0530
+        Thu, 24 Nov 2022 00:56:34 -0800 (PST)
+Message-ID: <df8201b0-414e-4daf-0dae-bd3ce790304c@9elements.com>
+Date:   Thu, 24 Nov 2022 14:26:32 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.0
-Subject: Re: [PATCH v4] hwmon: (pmbus/core): Implement regulator get_status
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        broonie@kernel.org,
+Subject: Re: [PATCH 3/3] hwmon: (pmbus/core): Implement IRQ support
+Content-Language: en-US
+To:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     broonie@kernel.org,
         Patrick Rudolph <patrick.rudolph@9elements.com>,
         linux-kernel@vger.kernel.org
-References: <20221122090302.3053092-1-Naresh.Solanki@9elements.com>
- <20221122184828.GA554748@roeck-us.net>
-Content-Language: en-US
+References: <20221122135014.3504094-1-Naresh.Solanki@9elements.com>
+ <20221122135014.3504094-3-Naresh.Solanki@9elements.com>
+ <1724dbac-024a-2758-a030-c07352b536fc@roeck-us.net>
 From:   Naresh Solanki <naresh.solanki@9elements.com>
-In-Reply-To: <20221122184828.GA554748@roeck-us.net>
+In-Reply-To: <1724dbac-024a-2758-a030-c07352b536fc@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -79,100 +80,23 @@ X-Mailing-List: linux-hwmon@vger.kernel.org
 
 Hi Guenter,
 
-On 23-11-2022 12:18 am, Guenter Roeck wrote:
-> On Tue, Nov 22, 2022 at 10:03:02AM +0100, Naresh Solanki wrote:
+On 22-11-2022 10:32 pm, Guenter Roeck wrote:
+> On 11/22/22 05:50, Naresh Solanki wrote:
 >> From: Patrick Rudolph <patrick.rudolph@9elements.com>
 >>
->> Add get_status for pmbus_regulator_ops.
->> ---
->> Changes:
->> - use lock throughout the function
->> - Avoid line continuation upto 100 column
->> - Optimize use of & and | operator
->> - Check for VOUT, IOUT, TEMPERATURE bit in status word before checking
->>    respective status register for fault.
->> - Report regulator current status.
->> - Utilize get_error_flag to check for regulator errors.
+>> Implement IRQ support to monitor PMBUS regulator events.
 >>
 >> Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
 >> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
->> ---
->>   drivers/hwmon/pmbus/pmbus_core.c | 41 ++++++++++++++++++++++++++++++++
->>   1 file changed, 41 insertions(+)
->>
->>
->> base-commit: 27fea302952d8c90cafbdbee96bafeca03544401
->>
->> diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
->> index 7ec04934747e..5df2aee549e6 100644
->> --- a/drivers/hwmon/pmbus/pmbus_core.c
->> +++ b/drivers/hwmon/pmbus/pmbus_core.c
->> @@ -2851,6 +2851,46 @@ static int pmbus_regulator_get_error_flags(struct regulator_dev *rdev, unsigned
->>   	return 0;
->>   }
->>   
->> +static int pmbus_regulator_get_status(struct regulator_dev *rdev)
->> +{
->> +	struct device *dev = rdev_get_dev(rdev);
->> +	struct i2c_client *client = to_i2c_client(dev->parent);
->> +	struct pmbus_data *data = i2c_get_clientdata(client);
->> +	u8 page = rdev_get_id(rdev);
->> +	int status, ret;
->> +
->> +	mutex_lock(&data->update_lock);
->> +	status = pmbus_get_status(client, page, PMBUS_STATUS_WORD);
->> +	if (status < 0) {
->> +		ret = status;
->> +		goto unlock;
->> +	}
->> +
->> +	if (status & PB_STATUS_OFF) {
->> +		ret = REGULATOR_STATUS_OFF;
->> +		goto unlock;
->> +	}
->> +
->> +	/* If regulator is ON & reports power good then return ON */
->> +	if (!(status & PB_STATUS_POWER_GOOD_N)) {
->> +		ret = REGULATOR_STATUS_ON;
->> +		goto unlock;
->> +	}
->> +
->> +	if (rdev->desc->ops->get_error_flags)
->> +		ret = rdev->desc->ops->get_error_flags(rdev, &status);
->> +
 > 
-> What about checking ret ?
-Fixed in next revision.
-> 
->> +	if (status & (REGULATOR_ERROR_UNDER_VOLTAGE | REGULATOR_ERROR_OVER_CURRENT |
->> +	   REGULATOR_ERROR_REGULATION_OUT | REGULATOR_ERROR_FAIL | REGULATOR_ERROR_OVER_TEMP))
->> +		ret = REGULATOR_STATUS_ERROR;
->> +	else
->> +		ret = REGULATOR_STATUS_UNDEFINED;
-> 
-> This part has to be inside "if (rdev->desc->ops->get_error_flags)"
-> or status will still contain the status word.
-Yes. fixed in next version.
+> Adding a PMBus interrupt handler should be generic and also handle hwmon
+> specific events. It should report any status changes as sysfs attribute
+> notifications.
+This handler scope is to address regulator faults.
+
 > 
 > Guenter
 > 
->> +
->> +unlock:
->> +	mutex_unlock(&data->update_lock);
->> +	return ret;
->> +}
->> +
->>   static int pmbus_regulator_get_low_margin(struct i2c_client *client, int page)
->>   {
->>   	struct pmbus_data *data = i2c_get_clientdata(client);
->> @@ -2991,6 +3031,7 @@ const struct regulator_ops pmbus_regulator_ops = {
->>   	.disable = pmbus_regulator_disable,
->>   	.is_enabled = pmbus_regulator_is_enabled,
->>   	.get_error_flags = pmbus_regulator_get_error_flags,
->> +	.get_status = pmbus_regulator_get_status,
->>   	.get_voltage = pmbus_regulator_get_voltage,
->>   	.set_voltage = pmbus_regulator_set_voltage,
->>   	.list_voltage = pmbus_regulator_list_voltage,
 
 Regards,
 Naresh
