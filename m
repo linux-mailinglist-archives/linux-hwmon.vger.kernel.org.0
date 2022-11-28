@@ -2,112 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2152663B581
-	for <lists+linux-hwmon@lfdr.de>; Tue, 29 Nov 2022 00:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D1B63B5A5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 29 Nov 2022 00:09:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234524AbiK1XE1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 28 Nov 2022 18:04:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56454 "EHLO
+        id S234524AbiK1XJY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 28 Nov 2022 18:09:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234335AbiK1XEZ (ORCPT
+        with ESMTP id S234483AbiK1XJW (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 28 Nov 2022 18:04:25 -0500
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015632BB0D;
-        Mon, 28 Nov 2022 15:04:24 -0800 (PST)
-Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ASMCR1m017358;
-        Mon, 28 Nov 2022 23:03:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : subject :
- date : message-id : in-reply-to : references; s=pps0720;
- bh=nfZUxtQGmgTd5ihJOCHHrl5PF/vDuIdrP8MQYcb5RsU=;
- b=SSxAP57t+Q/sxkpP01TvGfTco675qOojopCfLEXGrYiWzz2OMur92C3XI/t4Yu2SSvTE
- dIOdFcmQem9lba0H8bJ64EIPurGuGjLWcABCD3LCA98GUi+HIb1/9v9UPrCgvsKroJNu
- dge3RNAKsSeCLTBpGOw6t3cpJzl2LBnxNw7qdObBDCoQm2XJ3LyVpwMkUdKhNUrmEVlx
- 4JcZHkL0tvpeTc8H0pe40aeYAjklR0YcBEWPO1gmA/ENlam/t8AjuwF4Y/jeExJ0YhI3
- 1GWRoIqpmsjrYoLc3p9aszfqgohCoozQLPDdQDV3BXORvtYvMXikJrJ6mDiPrjwMZtPV nQ== 
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3m4x6av7ph-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 28 Nov 2022 23:03:52 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 42183809F7B;
-        Mon, 28 Nov 2022 23:03:51 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id A448480C99C;
-        Mon, 28 Nov 2022 23:03:50 +0000 (UTC)
-From:   nick.hawkins@hpe.com
-To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
-        nick.hawkins@hpe.com, corbet@lwn.net, linux@armlinux.org.uk,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 6/6] MAINTAINERS: add gxp fan controller and documents
-Date:   Mon, 28 Nov 2022 17:02:19 -0600
-Message-Id: <20221128230219.39537-7-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221128230219.39537-1-nick.hawkins@hpe.com>
-References: <20221128230219.39537-1-nick.hawkins@hpe.com>
-X-Proofpoint-GUID: 661kpNRkmluiBqVMUTIXXRKPjhcQDylI
-X-Proofpoint-ORIG-GUID: 661kpNRkmluiBqVMUTIXXRKPjhcQDylI
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-28_17,2022-11-28_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211280166
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 28 Nov 2022 18:09:22 -0500
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 151D32DABA;
+        Mon, 28 Nov 2022 15:09:21 -0800 (PST)
+Received: by mail-oi1-x233.google.com with SMTP id n186so13341005oih.7;
+        Mon, 28 Nov 2022 15:09:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=FqM5bfz9gbIFiU39mN6Loti0vzFECvEswxLH6CDy5KY=;
+        b=LfwE/3O+Q7mpkz/yCwDyW3R7ricCxIUHFFl9KwAl0DoHTDQYBfS6emxXdp4Xb3RBXL
+         Xq1QDIQrFkvo/7DXfaA5k0dwDRrj6eHijK1VCr7VXgIqqc/QaAMVs5YviutkRpOBt6OB
+         QdLy58JCCFKwf8wVPsciUAZ4sg+FApByOnMSVtupEvmi6Qk/ysmWS1WUpPgFICJ3QLTD
+         F1OjgWkda/kzHinCPqy1dCXsPw5yZPZHBwzlUCLaOnyGt6Y4LOOJVOyhBDmsh7+Wmk80
+         HIGfgZkBGmmL0ukvZyDEtrO3wJkI/Rrt4ch6RXUSFqtN6kkLgYiL65ZNPLjH38J/JqvH
+         O2ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FqM5bfz9gbIFiU39mN6Loti0vzFECvEswxLH6CDy5KY=;
+        b=fhtKUdkC8I5HhVMpYjhBIDa0rNnjugPqxV8V638XLF7fNLat9qpXL7tJyWC6EyMgwC
+         zyp7qx4GY+8aPWG3tG/DktC3RyVtMdwzUNl123rjcH4IuB39SR+UHX8S8H2fNe3Wbfdd
+         Z2xwFfGR7PSytPJmhy2fKMDIiGpJGXHAcOZWqmyvtGEdBGtreBfNxwHsMQ9D9Wxd/8I8
+         Dlqqy9xOiQAl+4MMtZ/cU9N0+ff6/lc2WF1TqoEbOmTDCPoTCrygZi9qd4qn2fKAzijS
+         4C1oMkwkUubxCvgeTPoWOh+QAHpIDjkKsAu6yvXbaRx1aVePHF/1gpFxVcpC6b6KuWLQ
+         zF9g==
+X-Gm-Message-State: ANoB5pnAUdYWdsy0IBJfSnnD4X9A4E6hbv7VqwGiuUY3X0jePiEsjJLs
+        5x3Dyjfhc6gJPcre4uQ240s=
+X-Google-Smtp-Source: AA0mqf5nyYVdMtOih7vT3trcOoiAr6JmT7LlpmWa+6UtlTL//h1Ex10aesZJ5FcZIiktWEWt7MviOA==
+X-Received: by 2002:aca:d0f:0:b0:35a:2c2c:9a37 with SMTP id 15-20020aca0d0f000000b0035a2c2c9a37mr18113710oin.79.1669676960456;
+        Mon, 28 Nov 2022 15:09:20 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 68-20020a4a1d47000000b0049fd73ccf72sm4791675oog.42.2022.11.28.15.09.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Nov 2022 15:09:20 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <bda19726-74f3-b76d-c30c-eb2543979690@roeck-us.net>
+Date:   Mon, 28 Nov 2022 15:09:18 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v2 3/3] hwmon: (pmbus/core): Implement irq support
+Content-Language: en-US
+To:     Naresh Solanki <naresh.solanki@9elements.com>,
+        linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
+Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org
+References: <20221128174715.1969957-1-Naresh.Solanki@9elements.com>
+ <20221128174715.1969957-3-Naresh.Solanki@9elements.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20221128174715.1969957-3-Naresh.Solanki@9elements.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+On 11/28/22 09:47, Naresh Solanki wrote:
+> From: Patrick Rudolph <patrick.rudolph@9elements.com>
+> 
+> Implement PMBUS irq handler to notify regulator events.
+> 
+> Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
 
-Add the gxp-fan-ctrl.c and gxp-fan-ctrl.rst in hwmon
-driver/documentation.
+As I am sure I have mentioned before, this needs to primarily handle
+sysfs notifications to hwmon status attributes and to generate kobject
+events. Regulator events are secondary / optional.
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
-
----
-
-v2:
- *Added missing gxp-fan-ctrl.yaml
----
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 56ff555ed5a4..00b6ed6dd5cd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2177,13 +2177,16 @@ ARM/HPE GXP ARCHITECTURE
- M:	Jean-Marie Verdun <verdun@hpe.com>
- M:	Nick Hawkins <nick.hawkins@hpe.com>
- S:	Maintained
-+F:	Documentation/hwmon/gxp-fan-ctrl.rst
- F:	Documentation/devicetree/bindings/arm/hpe,gxp.yaml
-+F:	Documentation/devicetree/bindings/hwmon/hpe,gxp-fan-ctrl.yaml
- F:	Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
- F:	Documentation/devicetree/bindings/timer/hpe,gxp-timer.yaml
- F:	arch/arm/boot/dts/hpe-bmc*
- F:	arch/arm/boot/dts/hpe-gxp*
- F:	arch/arm/mach-hpe/
- F:	drivers/clocksource/timer-gxp.c
-+F:	drivers/hwmon/gxp-fan-ctrl.c
- F:	drivers/spi/spi-gxp.c
- F:	drivers/watchdog/gxp-wdt.c
- 
--- 
-2.17.1
+Thanks,
+Guenter
 
