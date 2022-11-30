@@ -2,104 +2,147 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BAB463DE39
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Nov 2022 19:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D9963E199
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Nov 2022 21:13:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbiK3SfK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Nov 2022 13:35:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42196 "EHLO
+        id S230169AbiK3UNd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Nov 2022 15:13:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbiK3Seu (ORCPT
+        with ESMTP id S230002AbiK3UNL (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Nov 2022 13:34:50 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D717B93A74;
-        Wed, 30 Nov 2022 10:34:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1669833268; bh=NscgIAZRMqN8AzDfYglDMPfWX6oPBec9DPODcgSPEzQ=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=YilvTdd6MPnBoZF1okZsAnOdDtlZ2xDxGftIohAFdYSH7ZJdr31o1/ZvOiNYzmnCr
-         kuWHUmeXrLXvggi0Jxwg1G4MyALqhS8dhk/JaPxXfNxMpjePwg6eqZFo2KZx56tLcX
-         IP7QsHsj0uCNOv/3+6IMmQnCHCAECJh/tW67ZkS8ujxo5y46gVP80lH6GUCafumfRx
-         zG7qcjtChipGbVgnAcFmv+yyxxCdDClZwedkDmjTRF2On8MMHGblcldzgOrNl29ew3
-         4aMh2pAjJG6nDPiWYkfDZM8x5Ur1bLTEih7fWcQ0yGRF59P5NvgbBfhIVkgZUof/1V
-         tSj6vntAhDYiw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from esprimo-mx.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1Md6R1-1oQHwt3PsZ-00aGDa; Wed, 30 Nov 2022 19:34:28 +0100
-From:   Armin Wolf <W_Armin@gmx.de>
-To:     pali@kernel.org
-Cc:     jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: (dell-smm) Move error message to make probing silent
-Date:   Wed, 30 Nov 2022 19:34:18 +0100
-Message-Id: <20221130183418.357246-1-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cl7FFu4dmz8bgye6pz2NXjuVh20/evlO5cStb+/Bwa9oYVDqVrM
- YXQuPG8DU+ayKe3fj2vQDzWCf8CKbGDGbW4FIonkW/H1FE766zTehnPllk4FAfm5rtLGxn+
- Od8j+Qh9unanFH8fAYcZqxF1eArEt3TAkI4EJu/bceTqeqwMXHsyQRB8EeeaOjySKSJSUkN
- OateN8j4KxN2xLU4zk9Rg==
-UI-OutboundReport: notjunk:1;M01:P0:cQXm5xf/vnQ=;JyxUz5l+6szKd3ShbnveZk/XmFc
- CAEWQBO0MUS8AsBaRSXVa87uSC3k+W+y7VrStbbDUDpVmWq1syWlVnhknDt116r32RWg5Idb6
- FBfmffYC6zNyE6iFnNXatcpI5OXTvuma7lROgRbBHIILC9cz1eWNZSEjDlafKAv6tTR6EAay/
- 5CEQhUkTZlsdsLHlgTUGFmeXs6lj04ROKpS6VPJizPa+m6FZMzxwcEs0R6dQK+O3++W51eP6Q
- Ix/A+9J5TGpUe/8lhhYOlD7NVsqllsS85xQBhoWTjjMg6LoMBPQYO7sUbfFWv4K0pkELK6jeJ
- tdf1OqoSwGBm5bRwfX+Erh+FCKJXmS8Qr2R8kn29O+llDWvlmW7x6VqLEqbWtnmZH40Tr8w/t
- K9P3nrxvOPejWCYboZUZrxQ0eYUrDY47k7j5iqio8pbXCYL8+/kHWrnSYShg0j+QkTggcFuvq
- zIX0+9+SPXF8VYwHTu1URbbv7ymfEbaNv/NlHwLyu+F6Cvg7MRqjP/D74N3nRh2xBlD1JPMZJ
- Le/UZ5Yq4Rt+a1IJQlRUs7Et2OHvaLPsQG3PR8vSWx61OAcuC9qFt9kDDLV/wqdgMfImsBc/l
- gZlSNJyK3zr34/dNLAGQe7KOqvNLjYEV/cIigCQiUFiQLDVnihrvBnQ0G5GeJu+gXii0fdWQH
- GpYTorNQKJ1EFHHEGBxWoCY3eO0BIROJ4Zvze5UVDvan3hg/na2dyvK3v23kLs2q2lucPiFGE
- X1W6gjxk9p7eFWolIIXM9skveoor0sfGXTPtYfa02IA636XTdgnivmIfv/VMjwBKq4uRzYmA+
- NGjNwJh4Q8tmPDc/n8D41oW+p23aXPa5aFayWtaJYHS0RLlek53fSyn/xj7CVedT8EJLrTUIi
- ii/mFigVyCPFKXJdDNCdF2hiFUdJhnPNoeXjyGCfskhYNKS0lf+OKpe5Jy717rCohOkhluEJW
- QJk3pKbFv0AtkZEiz0BwBVjUDCk=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Wed, 30 Nov 2022 15:13:11 -0500
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 923E78E593;
+        Wed, 30 Nov 2022 12:10:59 -0800 (PST)
+Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
+        by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AUJdOWX003830;
+        Wed, 30 Nov 2022 20:10:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : subject :
+ date : message-id; s=pps0720;
+ bh=NvKRpWwARiR1R6jiUA1E/7tyYTKcdAewqA3BKmUjJqc=;
+ b=WZf94o/9fxZUwiSHyhlxF8UiC7GPKaqQDGszDWSNVEd9uxrcXbX0uuTPoFJt1D8MfPlN
+ 9VqVX8TfwmNiH4WlniLzdMJ5/i+49kanKa1BXZNEXKutFzq34v1sGJcckv9duAiDipuI
+ gxLxoy3fNQNuIObSqCnzQK+VFzs5o8xiwLgqC49Nd70GAXb8S+3ado2QC+ux6YVP3vCZ
+ BNMrh2B2Jo1653atZ1McSRz6U3YZ5Ix+HB27hPaXT8+UR3yclFxyBqxtSojBmTtxbZbF
+ It00sQdnttt5P7PsUOLkpc5k+gX5qs4am04gp1w6Ood5B5+SOAQVT6D6E9f0/ao329Dh TA== 
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3m6axy1h0v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 30 Nov 2022 20:10:17 +0000
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by p1lg14880.it.hpe.com (Postfix) with ESMTPS id E429A8066DC;
+        Wed, 30 Nov 2022 20:10:16 +0000 (UTC)
+Received: from hpe.com (unknown [16.231.227.36])
+        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id BF0558097EA;
+        Wed, 30 Nov 2022 20:10:14 +0000 (UTC)
+From:   nick.hawkins@hpe.com
+To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
+        nick.hawkins@hpe.com, corbet@lwn.net, linux@armlinux.org.uk,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 0/6] ARM: Add GXP Fan and SPI controllers
+Date:   Wed, 30 Nov 2022 14:08:40 -0600
+Message-Id: <20221130200846.4226-1-nick.hawkins@hpe.com>
+X-Mailer: git-send-email 2.17.1
+X-Proofpoint-GUID: BLVa7lzsyuNhb0l9CEw7C1f_k8Hv_vYT
+X-Proofpoint-ORIG-GUID: BLVa7lzsyuNhb0l9CEw7C1f_k8Hv_vYT
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-30_04,2022-11-30_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211300142
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-If dell-smm-hwmon loads on unsupported hardware like the
-Dell XPS 17 9710, an error message is printed.
-This might confuse users, as drivers are expected to be
-silent if no supported hardware is found.
-Reorder the error message so its only printed when the
-driver is loaded with the "force" option being set.
-Also reword the error message slightly.
+From: Nick Hawkins <nick.hawkins@hpe.com>
 
-Tested on a Dell Inspiron 3505.
+The GXP SoC can support up to 16 fans through the interface provided by
+the CPLD. The fans speeds are controlled via a pwm value 0-255. The fans
+are also capable of reporting if they have failed to the CPLD which in
+turn reports the status to the GXP SoC. Based on previous feedback the
+registers required for fan control have been regmaped individualy to fan
+driver. Specifically these registers are the function 2 registers and the
+programmable logic registers from the CPLD. Additionally in this patchset
+there is support for the SPI driver which already exists as spi-gxp.c in
+the SPI driver.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+---
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index 1572b5416015..7ac778aedc68 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1447,9 +1447,10 @@ static int __init i8k_init(void)
- 	 */
- 	if (i8k_get_dell_signature(I8K_SMM_GET_DELL_SIG1) &&
- 	    i8k_get_dell_signature(I8K_SMM_GET_DELL_SIG2)) {
--		pr_err("unable to get SMM Dell signature\n");
- 		if (!force)
- 			return -ENODEV;
-+
-+		pr_err("Unable to get Dell SMM signature\n");
- 	}
+Changes since v2:
+ *Removed use of regmap in favor of __iomem
+ *Updated description on yaml documentation
+ *Simplified commit description on sysfs-class-hwmon
+ *Removed use of dev and hwmon_dev from drvdata structure
+ *Fixed missing breaks in switch statements
+ *Added check for pwm values less than 0
+ *Removed regmap and slab header file includes
 
- 	dell_smm_device =3D platform_create_bundle(&dell_smm_driver, dell_smm_pr=
-obe, NULL, 0, NULL,
-=2D-
-2.30.2
+Changes since v1:
+
+*Renamed fn2reg to fn2 in dtsi file and documentation
+*Renamed plreg to pl in dtsi file and documentation
+*Renamed fanctrl to fan-controller in dtsi file and documentation
+*Adjusted base register range for fan ctrl in dtsi
+*Changed commit description on fan-ctrl device-tree binding
+*Changed register description on fan-ctrl device-tree binding
+*Changed number of supported fans from 16 to 8 in driver code and
+ documentation
+*Modified commit description of fan code
+*Removed support for fan[0-15]_input
+*Removed PWM defines in driver code
+*Added gxp-fan-ctrl to hwmon's index.rst
+*Removed mutex in driver code
+*Added fan_enable support in fan code and documentation
+*Fixed comment in driver code presents -> present
+*Removed unecessary include files in fan code
+*Added comments to describe what power state is and
+ calculations for accessing plreg in fan code
+*Removed use of variable offsets in fan code
+*Fixed GPL header in fan code
+*Changed module description for fan controller
+*Added kfree in case of failure to initialize driver
+*Added missing yaml file to MAINTAINERS*** SUBJECT HERE ***
+
+Nick Hawkins (6):
+  hwmon: (gxp-fan-ctrl) Add GXP fan controller
+  ABI: sysfs-class-hwmon: add a description for fanY_fault
+  dt-bindings: hwmon: Add hpe,gxp-fan-ctrl
+  ARM: dts: add GXP Support for fans and SPI
+  ARM: multi_v7_defconfig: Add GXP Fan and SPI support
+  MAINTAINERS: add gxp fan controller and documents
+
+ Documentation/ABI/testing/sysfs-class-hwmon   |   9 +
+ .../bindings/hwmon/hpe,gxp-fan-ctrl.yaml      |  45 ++++
+ Documentation/hwmon/gxp-fan-ctrl.rst          |  28 ++
+ Documentation/hwmon/index.rst                 |   1 +
+ MAINTAINERS                                   |   3 +
+ arch/arm/boot/dts/hpe-bmc-dl360gen10.dts      |  58 ++++
+ arch/arm/boot/dts/hpe-gxp.dtsi                |  64 +++--
+ arch/arm/configs/multi_v7_defconfig           |   2 +
+ drivers/hwmon/Kconfig                         |   9 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/gxp-fan-ctrl.c                  | 254 ++++++++++++++++++
+ 11 files changed, 455 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/hpe,gxp-fan-ctrl.yaml
+ create mode 100644 Documentation/hwmon/gxp-fan-ctrl.rst
+ create mode 100644 drivers/hwmon/gxp-fan-ctrl.c
+
+-- 
+2.17.1
 
