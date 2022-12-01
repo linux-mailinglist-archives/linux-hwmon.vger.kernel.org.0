@@ -2,53 +2,52 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A14A763F837
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Dec 2022 20:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39F7263F846
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Dec 2022 20:31:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbiLAT3w (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Dec 2022 14:29:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52516 "EHLO
+        id S231128AbiLATbP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Dec 2022 14:31:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbiLAT3t (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Dec 2022 14:29:49 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15844C82E8
-        for <linux-hwmon@vger.kernel.org>; Thu,  1 Dec 2022 11:29:49 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id b2so6610646eja.7
-        for <linux-hwmon@vger.kernel.org>; Thu, 01 Dec 2022 11:29:49 -0800 (PST)
+        with ESMTP id S231129AbiLATak (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Dec 2022 14:30:40 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44627C8D20
+        for <linux-hwmon@vger.kernel.org>; Thu,  1 Dec 2022 11:30:32 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id td2so6625997ejc.5
+        for <linux-hwmon@vger.kernel.org>; Thu, 01 Dec 2022 11:30:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=9elements.com; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7p4ZRoKY8KyAbeLZ3D9FFno3zQClogoAoc0aT3MOswk=;
-        b=cmKp5+osxcEKb3tLLjX5pcnFM5ol/fAQnZO4HPmZBJJzl0r8kVyCNT/d9/wiRLPgnR
-         80vh9xs1IGdIvR61A03RKhTL8jlZ3bQRWCAWgF4C++Etw+u+eFH0dBZo34pp2Prtzccq
-         zcsPUfNnHLHl5JDlxhSJenqQtFCU6UVADMotPapVRkIrv+jGSvGyuiJqFIybgavAE5dT
-         xA1lxEi/f+1Zb7yEulIgSaPBBLbL57ElIiwUSt0nETKM1WyyZXxUjen8RuYherN6QjYo
-         VF7e31ZTseFdg+2zPJgcv83oYFY0etQ4O8ZMa1jQPAMwCOEiSf9e78OT32ZjS8l+NvwG
-         o45Q==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9fKvZImztyAGYKm8N5WHEv0DzFDUrZgSaslqn8pXCp4=;
+        b=EnlxFW2of+UDwHxryW+kMpzqGXuxTDwAoNmcTHslWecr9SBkZJdHuMHWFI08pKCaug
+         1vntP/acflKa9IY5WkpTy7G5Mcv2izHZGHe6BPpGPSxCG/+eyzE8f3wJEoXjNZ/QsSr+
+         VEtbfeSCQYFJwxPkqbb8gOICofHTknEtCusDwm6YpYDoy48e/MInC2BPOF4oNQ8dSvzw
+         SG+q4W/qWaSoqaadUcg51bK6Ba1y6+PtskkmmZ1ujxihHD8Q42mMektfENTMx9PrMyUk
+         cBgMwyLOauec7NlPc7jnpoUJQr7RUytiE+/uaBM0AN1VRsjJfzqgeW2qj0SSd8xBePRn
+         pv7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7p4ZRoKY8KyAbeLZ3D9FFno3zQClogoAoc0aT3MOswk=;
-        b=h5mBS9BZObTPRdqVb9kqoSZ9JHxvjrIfE4N9bcevWj8QEqrZa4kNGHnGqt3FHDvlzn
-         D2la8fd+nbdDCWr02wnjCgek6WKavhl/BIpoNwaVGSfqiFen8YW0+PiAXh78aJg8uROJ
-         a+fR+fg1Dai1Lp5F5yNsXN2QQhxtr43LnspECDnmQ3DjhOpab0+elNlukt8/DUVae84P
-         Cf4FmyvGVuwwujOTXXG9ayQjWhtgvBvRg5LVSB0484RaVm8Jr9ITh9EymTq67oCT9NM2
-         MA/FmZ7XxOOoqxRFtwTl5+b2EGJGXGf75K3iV7YLE0lFUg29HMbFUUgZybtdh+Ynl8JV
-         bnzA==
-X-Gm-Message-State: ANoB5pkYKnwE/855t2dsCcO69D38T5LVz1l73iIH8TpHFtmj/wJlewxw
-        97lrWL6U/jc+loq0jgCWwBwbWg==
-X-Google-Smtp-Source: AA0mqf6wJMguBRZ+3RDQjOzLIrbL3+wV5RnCVYcQsQFAXhVegf130StesPXX9DTehUn93DFb09aOCA==
-X-Received: by 2002:a17:906:c259:b0:7b5:9670:ae0 with SMTP id bl25-20020a170906c25900b007b596700ae0mr42906077ejb.321.1669922987667;
-        Thu, 01 Dec 2022 11:29:47 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9fKvZImztyAGYKm8N5WHEv0DzFDUrZgSaslqn8pXCp4=;
+        b=r8ZQes3fjfUky0fkvwN+N0b1zn89vgV7AcySm72QRtW2vx1YJy7YK2R8Rk1qNCuQ7D
+         I6YRHCRJfjbxohE5MZMbmDtnRNjAVlVlJXBHxKCNZFjRouwZLxt42FyeG0dP8ymI/4tj
+         bDO62QDG9S1CzDTsUEduWyOIsbtYZ6gbAiugXzvpfirLTKdUijWZjeSd3XLd6EeXy6dz
+         p3KlZJ+p+fGZecKjxyU86f0N3vOP8fI3k9lNNGsNrc8omOF7nSro9qGmHpK72LRcOtK6
+         5MK7X0O2+WskDkyw5yj0LJWm267XMZS1M7MutcAOkZ3Scw0qTfgUymV9yDsCFhqSCT/d
+         e8/g==
+X-Gm-Message-State: ANoB5pkMB1WxGVhOmPdv5y1lupQdCdkzIRskakFZh4joH/3UsRPE2fL2
+        XXueDTqWdFO4A31UR4cJNr+2cA==
+X-Google-Smtp-Source: AA0mqf4koTAajDL3O33f8A2i615xXP/JTt7Jmfrroko8lEHAPS5WgC+T5WvGS6IO0M31Ogsh1ZKGWg==
+X-Received: by 2002:a17:906:f8cc:b0:7ad:92fa:589e with SMTP id lh12-20020a170906f8cc00b007ad92fa589emr40140822ejb.668.1669923030836;
+        Thu, 01 Dec 2022 11:30:30 -0800 (PST)
 Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id i13-20020a17090639cd00b0073022b796a7sm2141380eje.93.2022.12.01.11.29.47
+        by smtp.gmail.com with ESMTPSA id g15-20020aa7c84f000000b004619f024864sm2054110edt.81.2022.12.01.11.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 11:29:47 -0800 (PST)
+        Thu, 01 Dec 2022 11:30:30 -0800 (PST)
 From:   Naresh Solanki <naresh.solanki@9elements.com>
 X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
 To:     devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
@@ -58,12 +57,10 @@ To:     devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
 Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
         Patrick Rudolph <patrick.rudolph@9elements.com>,
         Naresh Solanki <Naresh.Solanki@9elements.com>
-Subject: [PATCH v4 5/5] hwmon: (pmbus/core): Notify regulator events
-Date:   Thu,  1 Dec 2022 20:29:39 +0100
-Message-Id: <20221201192940.1584012-5-Naresh.Solanki@9elements.com>
+Subject: [PATCH v5 1/5] hwmon: (pmbus/core): Add rdev in pmbus_data struct
+Date:   Thu,  1 Dec 2022 20:30:20 +0100
+Message-Id: <20221201193025.1584365-1-Naresh.Solanki@9elements.com>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221201192940.1584012-1-Naresh.Solanki@9elements.com>
-References: <20221201192940.1584012-1-Naresh.Solanki@9elements.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -75,29 +72,61 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Notify regulator events in PMBus irq handler.
+Add regulator device in pmbus_data & initialize the same during PMBus
+regulator register.
 
 Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+
 ---
- drivers/hwmon/pmbus/pmbus_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Change in V5:
+- Fix error check for rdev
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index daf700210c68..dbdf8c8187db 100644
+index 95e95783972a..a95f998ca247 100644
 --- a/drivers/hwmon/pmbus/pmbus_core.c
 +++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -3159,6 +3159,11 @@ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
- 		if (ret)
- 			return ret;
+@@ -81,6 +81,7 @@ struct pmbus_label {
+ struct pmbus_data {
+ 	struct device *dev;
+ 	struct device *hwmon_dev;
++	struct regulator_dev **rdevs;
  
-+		if (event) {
-+			regulator_notifier_call_chain(data->rdevs[i], event, NULL);
-+			ret = IRQ_HANDLED;
-+		}
+ 	u32 flags;		/* from platform data */
+ 
+@@ -3050,9 +3051,13 @@ static int pmbus_regulator_register(struct pmbus_data *data)
+ 	struct device *dev = data->dev;
+ 	const struct pmbus_driver_info *info = data->info;
+ 	const struct pmbus_platform_data *pdata = dev_get_platdata(dev);
+-	struct regulator_dev *rdev;
+ 	int i;
+ 
++	data->rdevs = devm_kzalloc(dev, sizeof(struct regulator_dev *) * info->num_regulators,
++				  GFP_KERNEL);
++	if (!data->rdevs)
++		return -ENOMEM;
 +
- 		page = rdev_get_id(data->rdevs[i]);
- 		mutex_lock(&data->update_lock);
- 		status = pmbus_read_status_word(client, page);
+ 	for (i = 0; i < info->num_regulators; i++) {
+ 		struct regulator_config config = { };
+ 
+@@ -3062,10 +3067,10 @@ static int pmbus_regulator_register(struct pmbus_data *data)
+ 		if (pdata && pdata->reg_init_data)
+ 			config.init_data = &pdata->reg_init_data[i];
+ 
+-		rdev = devm_regulator_register(dev, &info->reg_desc[i],
++		data->rdevs[i] = devm_regulator_register(dev, &info->reg_desc[i],
+ 					       &config);
+-		if (IS_ERR(rdev))
+-			return dev_err_probe(dev, PTR_ERR(rdev),
++		if (IS_ERR(data->rdevs[i]))
++			return dev_err_probe(dev, PTR_ERR(data->rdevs[i]),
+ 					     "Failed to register %s regulator\n",
+ 					     info->reg_desc[i].name);
+ 	}
+
+base-commit: 9494c53e1389b120ba461899207ac8a3aab2632c
 -- 
 2.37.3
 
