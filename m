@@ -2,110 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6436A63E932
-	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Dec 2022 06:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C694C63EDAA
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Dec 2022 11:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229779AbiLAFIP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 1 Dec 2022 00:08:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36576 "EHLO
+        id S230207AbiLAK0l (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Dec 2022 05:26:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbiLAFIO (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Dec 2022 00:08:14 -0500
-X-Greylist: delayed 1268 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Nov 2022 21:08:13 PST
-Received: from gateway20.websitewelcome.com (gateway20.websitewelcome.com [192.185.70.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC619791B
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Nov 2022 21:08:13 -0800 (PST)
-Received: from atl1wswcm06.websitewelcome.com (unknown [50.6.129.167])
-        by atl1wswob01.websitewelcome.com (Postfix) with ESMTP id 7FA32400F018D
-        for <linux-hwmon@vger.kernel.org>; Thu,  1 Dec 2022 04:47:05 +0000 (UTC)
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-        by cmsmtp with ESMTP
-        id 0bTSpcBlIPz0t0bTUpXm6z; Thu, 01 Dec 2022 04:47:05 +0000
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-        ; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=lt9ssPxraP7AVqIsyBoSkJvYwNULAALvMmqCxZgrk6g=; b=ov+DaIALsAqMIdNaVmoS0uPcOc
-        DG4aWsV83JDARy8Lw0RcquU8bPpQ3JcBQRe8UVVSAvvVLBX6i1fiLBAU9/+Csqmtfp6Vv5UA3HdZV
-        ul3uovvv0zmQ75tax5A/K3HGs8xZqRyA7arQJN/78eohykOkRCb2hkC9dSzl8A327Unt1zTfuhNCV
-        Kxi1y2Uj61S6wBQcJ9rUtbVB5cRI+fTB57lVllGb6kqQCJUWSr2g8JglcwxiXHidYxi70lOIAJacr
-        TDrxA7+Pq0wVY+l5UmEv7cPSyGH3RnPj116qJe+G2BkzjcVf4nFJ6vZEwdQXJ0/7Gr9ePRq4R8NcA
-        3lc2s2GQ==;
-Received: from [223.187.112.123] (port=34121 helo=discovery..)
-        by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <saravanan@linumiz.com>)
-        id 1p0bTR-003t5m-Jo;
-        Thu, 01 Dec 2022 04:47:01 +0000
-From:   Saravanan Sekar <saravanan@linumiz.com>
-To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
+        with ESMTP id S230408AbiLAK0T (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Dec 2022 05:26:19 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097539FAB0
+        for <linux-hwmon@vger.kernel.org>; Thu,  1 Dec 2022 02:26:10 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id z4so1356349ljq.6
+        for <linux-hwmon@vger.kernel.org>; Thu, 01 Dec 2022 02:26:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MYT2nq0QXSxRz64AN42vH74ETqWDNSsFMko9zkH39vk=;
+        b=A2j26QK6XZeEZRd1pVoVNtq3AvjNoVgfwfmhzFjUMB5j+Zdnccpi3N8UGw2F9b7gu7
+         LgWmZdSJ3SVsAtjqXbiL+GjUX1vLBxxBV95su/i3xNZBf0NZV2lHSs3FbWLclDmnzXIE
+         9WBGBhY1KveAhn71WSIBt98bDmYZ7iIRDoiYFNftcD9yQVWcHPMrbEe1cLNjaCTgNU7U
+         3ulcTG5mxZdipYHysym39htN68RXaanTR3fQyZa3Lnv4rcUm8dx7yQMmzNzRexFHM3p5
+         qowj7BH9Xh3fJPPyCmmTwpmEJj9y0DocDG3MLBTmQ8h78yKK3+EF+g61O6nWGdY+/gg2
+         HleA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MYT2nq0QXSxRz64AN42vH74ETqWDNSsFMko9zkH39vk=;
+        b=T/HUy49pvKlFnuNrsB9Ghsw87mZiHshq4zo4sLWw6JSn3j/w712scfKJMbye50XjTT
+         zOkYmfAcm2e9ING/vc1wnN37V+NuKJ6frT1HNU00Gzqruiy9VcjY28f8TUKk/TfpoGy0
+         KmAgAXT+Fc/Z7Z2QpfYQ24sn+h45I3ridlzagfQTE4Cp8B4a22DcPCi760yNXq50wp+g
+         jm5pJnF4FLidpVc0WZScOosXdVaV4pfLO0oTZ4OErlDNJMGrOPXrdPQrVn9mCEOFnL1G
+         nGMnnyXUpwqqHK2ZqbDyxct/S1ScQQYh2Kddx1OKJc+lVTk5XENNSst1EDZ9j5dgU7ds
+         LMqw==
+X-Gm-Message-State: ANoB5plG8xERukSWyc7csyY1/YaDTJ78zu6Fh3kxwRid73R72Ei1x00m
+        XnUqGndrhCAGjnPs/QU04b4O+yx7Zht4adEl
+X-Google-Smtp-Source: AA0mqf5Qinw7ldn269i13qHU7N4BlOct4Q02ZBOfbWmzYzZyjReCeMq8uWrycdBhL3R5L2q85NNOrg==
+X-Received: by 2002:a2e:a5c4:0:b0:277:c03:a7ed with SMTP id n4-20020a2ea5c4000000b002770c03a7edmr20474278ljp.283.1669890368405;
+        Thu, 01 Dec 2022 02:26:08 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id c2-20020a056512324200b004b5478d8222sm74420lfr.184.2022.12.01.02.26.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Dec 2022 02:26:06 -0800 (PST)
+Message-ID: <bc86121f-3cc2-1e55-4c6a-02cb1644a8bd@linaro.org>
+Date:   Thu, 1 Dec 2022 11:26:05 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 2/4] dt-bindings: hwmon/pmbus: Add mps,mpq7932
+ power-management IC
+Content-Language: en-US
+To:     Saravanan Sekar <saravanan@linumiz.com>, jdelvare@suse.com,
+        linux@roeck-us.net, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, marten.lindahl@axis.com
 Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Saravanan Sekar <saravanan@linumiz.com>
-Subject: [PATCH v2 4/4] MAINTAINERS: Update the entry for MPQ7932 PMIC driver
-Date:   Thu,  1 Dec 2022 05:46:43 +0100
-Message-Id: <20221201044643.1150870-5-saravanan@linumiz.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221201044643.1150870-1-saravanan@linumiz.com>
+        linux-kernel@vger.kernel.org
 References: <20221201044643.1150870-1-saravanan@linumiz.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 223.187.112.123
-X-Source-L: No
-X-Exim-ID: 1p0bTR-003t5m-Jo
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (discovery..) [223.187.112.123]:34121
-X-Source-Auth: saravanan@linumiz.com
-X-Email-Count: 40
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJxUl8ZsjdP9KW0LvsESd/bdB+iyJJ7R2Z94+H1i/v8RzAUkzfRABLIbjmN3+UjGC4TJkEy1JHJR8KUJHxCdcLHwsM7s93w8f6Kg1Sl/9pbYHQ7/LH2h
- 0U67Jmac24Az9qeXSQFu5GBPmNQhwnFOwqFocR7LQj9z3KwpYKzs9plizi0E3GqtBIv04zVmvtzjVNqZ3Df80SoYw6pew+OAGi8=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+ <20221201044643.1150870-3-saravanan@linumiz.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221201044643.1150870-3-saravanan@linumiz.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Update the MAINTAINERS file to include the path for the MPQ7932 and
-MPQ7932 devicetree bindings documentation.
+On 01/12/2022 05:46, Saravanan Sekar wrote:
+> Document mpq7932 power-management IC
+> 
+> Signed-off-by: Saravanan Sekar <saravanan@linumiz.com>
+> ---
 
-Signed-off-by: Saravanan Sekar <saravanan@linumiz.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+This is a friendly reminder during the review process.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 379945f82a64..8e0dbf4c6cf3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13924,8 +13924,10 @@ F:	scripts/module*
- MONOLITHIC POWER SYSTEM PMIC DRIVER
- M:	Saravanan Sekar <sravanhome@gmail.com>
- S:	Maintained
-+F:	Documentation/devicetree/bindings/hwmon/pmbus/mps,mpq7932.yaml
- F:	Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
- F:	Documentation/devicetree/bindings/regulator/mps,mp*.yaml
-+F:	drivers/hwmon/pmbus/mpq7932.c
- F:	drivers/iio/adc/mp2629_adc.c
- F:	drivers/mfd/mp2629.c
- F:	drivers/power/supply/mp2629_charger.c
--- 
-2.34.1
+It seems my previous comments were not fully addressed. Maybe my
+feedback got lost between the quotes, maybe you just forgot to apply it.
+Please go back to the previous discussion and either implement all
+requested changes or keep discussing them.
+
+Thank you.
+
+Best regards,
+Krzysztof
 
