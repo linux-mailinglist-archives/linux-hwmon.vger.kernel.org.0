@@ -2,107 +2,170 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FE8F63E19E
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Nov 2022 21:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD6863E854
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Dec 2022 04:30:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbiK3UNe (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Nov 2022 15:13:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46600 "EHLO
+        id S229749AbiLADak (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Nov 2022 22:30:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229998AbiK3UNH (ORCPT
+        with ESMTP id S229515AbiLADaj (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Nov 2022 15:13:07 -0500
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7965C8E582;
-        Wed, 30 Nov 2022 12:10:58 -0800 (PST)
-Received: from pps.filterd (m0134425.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AUI1xUl032448;
-        Wed, 30 Nov 2022 20:10:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : subject :
- date : message-id : in-reply-to : references; s=pps0720;
- bh=v31ouJT0ILYVdxe0FWYT1Kx8gBsYEyTHydbZJSCDLwM=;
- b=jr6Dak9rNz4Ba0J9Poor5wJkeUCWBRUzPSHXicOQlkm4BsOv5IY+cDnxSjnCou/oRe28
- DqIdWGGEXZW82sAJg3uO4O7t3j9dja+/L3kyZ76XeWH2QuSVA3gA4frwABmwlJ7JjgAu
- xgGctr+DGQNU0gKBqJRC2UFdmxUXbq2PEQP3AbJoopogcvferqWlfsPilGWBp3CBJ/Ed
- +4iDVzgzHDKF5IUBy76/NjOVUqDHTGt5ih18mBCZnQzO/fccr9cHjWvjgvCWMm+KdF8i
- rS7q7jkSUkue3UCgn3CF1xF1M6gyM5R33isVrpe2u24Rm4WbBdBoeGa2S+JLzJSOgwP0 7Q== 
-Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3m693gjt9c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Nov 2022 20:10:21 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Wed, 30 Nov 2022 22:30:39 -0500
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC0F5BD69;
+        Wed, 30 Nov 2022 19:30:38 -0800 (PST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 7257F2FCEC;
-        Wed, 30 Nov 2022 20:10:20 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id D3EF9809E67;
-        Wed, 30 Nov 2022 20:10:19 +0000 (UTC)
-From:   nick.hawkins@hpe.com
-To:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, verdun@hpe.com,
-        nick.hawkins@hpe.com, corbet@lwn.net, linux@armlinux.org.uk,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 6/6] MAINTAINERS: add gxp fan controller and documents
-Date:   Wed, 30 Nov 2022 14:08:46 -0600
-Message-Id: <20221130200846.4226-7-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221130200846.4226-1-nick.hawkins@hpe.com>
-References: <20221130200846.4226-1-nick.hawkins@hpe.com>
-X-Proofpoint-GUID: 63SNkKx4N2rWQxXs5Vl2FYkrk4t0EJPv
-X-Proofpoint-ORIG-GUID: 63SNkKx4N2rWQxXs5Vl2FYkrk4t0EJPv
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-30_04,2022-11-30_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 clxscore=1015
- impostorscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211300142
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NN1mr3BP4z4xyCG;
+        Thu,  1 Dec 2022 11:30:36 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.40.50])
+        by mse-fl2.zte.com.cn with SMTP id 2B13UUSP049820;
+        Thu, 1 Dec 2022 11:30:30 +0800 (+08)
+        (envelope-from ye.xingchen@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+        by mapi (Zmail) with MAPI id mid31;
+        Thu, 1 Dec 2022 11:30:31 +0800 (CST)
+Date:   Thu, 1 Dec 2022 11:30:31 +0800 (CST)
+X-Zmail-TransId: 2af963881fd7ffffffffa9070c69
+X-Mailer: Zmail v1.0
+Message-ID: <202212011130317080061@zte.com.cn>
+Mime-Version: 1.0
+From:   <ye.xingchen@zte.com.cn>
+To:     <jdelvare@suse.com>
+Cc:     <linux@roeck-us.net>, <guillaume.ligneul@gmail.com>,
+        <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBod21vbjogdXNlIHN5c2ZzX2VtaXQoKSB0byBpbnN0ZWFkIG9mIHNjbnByaW50Zigp?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2B13UUSP049820
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 63881FDC.001 by FangMail milter!
+X-FangMail-Envelope: 1669865436/4NN1mr3BP4z4xyCG/63881FDC.001/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 63881FDC.001/4NN1mr3BP4z4xyCG
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
-Add the gxp-fan-ctrl.c and gxp-fan-ctrl.rst in hwmon
-driver/documentation.
+Replace the open-code with sysfs_emit() to simplify the code.
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/ds1621.c |  2 +-
+ drivers/hwmon/lm73.c   |  6 +++---
+ drivers/hwmon/sht3x.c  | 12 ++++++------
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1daadaa4d48b..00b52be102d6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2216,13 +2216,16 @@ ARM/HPE GXP ARCHITECTURE
- M:	Jean-Marie Verdun <verdun@hpe.com>
- M:	Nick Hawkins <nick.hawkins@hpe.com>
- S:	Maintained
-+F:	Documentation/hwmon/gxp-fan-ctrl.rst
- F:	Documentation/devicetree/bindings/arm/hpe,gxp.yaml
-+F:	Documentation/devicetree/bindings/hwmon/hpe,gxp-fan-ctrl.yaml
- F:	Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
- F:	Documentation/devicetree/bindings/timer/hpe,gxp-timer.yaml
- F:	arch/arm/boot/dts/hpe-bmc*
- F:	arch/arm/boot/dts/hpe-gxp*
- F:	arch/arm/mach-hpe/
- F:	drivers/clocksource/timer-gxp.c
-+F:	drivers/hwmon/gxp-fan-ctrl.c
- F:	drivers/spi/spi-gxp.c
- F:	drivers/watchdog/gxp-wdt.c
- 
+diff --git a/drivers/hwmon/ds1621.c b/drivers/hwmon/ds1621.c
+index 0886abf6ebab..e803d6393b9e 100644
+--- a/drivers/hwmon/ds1621.c
++++ b/drivers/hwmon/ds1621.c
+@@ -269,7 +269,7 @@ static ssize_t update_interval_show(struct device *dev,
+ 				    struct device_attribute *da, char *buf)
+ {
+ 	struct ds1621_data *data = dev_get_drvdata(dev);
+-	return scnprintf(buf, PAGE_SIZE, "%hu\n", data->update_interval);
++	return sysfs_emit(buf, "%hu\n", data->update_interval);
+ }
+
+ static ssize_t update_interval_store(struct device *dev,
+diff --git a/drivers/hwmon/lm73.c b/drivers/hwmon/lm73.c
+index 1346b3b3f463..b6433ae2d75c 100644
+--- a/drivers/hwmon/lm73.c
++++ b/drivers/hwmon/lm73.c
+@@ -92,7 +92,7 @@ static ssize_t temp_show(struct device *dev, struct device_attribute *da,
+ 	/* use integer division instead of equivalent right shift to
+ 	   guarantee arithmetic shift and preserve the sign */
+ 	temp = (((s16) err) * 250) / 32;
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", temp);
++	return sysfs_emit(buf, "%d\n", temp);
+ }
+
+ static ssize_t convrate_store(struct device *dev, struct device_attribute *da,
+@@ -137,7 +137,7 @@ static ssize_t convrate_show(struct device *dev, struct device_attribute *da,
+ 	int res;
+
+ 	res = (data->ctrl & LM73_CTRL_RES_MASK) >> LM73_CTRL_RES_SHIFT;
+-	return scnprintf(buf, PAGE_SIZE, "%hu\n", lm73_convrates[res]);
++	return sysfs_emit(buf, "%hu\n", lm73_convrates[res]);
+ }
+
+ static ssize_t maxmin_alarm_show(struct device *dev,
+@@ -154,7 +154,7 @@ static ssize_t maxmin_alarm_show(struct device *dev,
+ 	data->ctrl = ctrl;
+ 	mutex_unlock(&data->lock);
+
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", (ctrl >> attr->index) & 1);
++	return sysfs_emit(buf, "%d\n", (ctrl >> attr->index) & 1);
+
+ abort:
+ 	mutex_unlock(&data->lock);
+diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
+index 3f279aa1cee5..8305e44d9ab2 100644
+--- a/drivers/hwmon/sht3x.c
++++ b/drivers/hwmon/sht3x.c
+@@ -320,7 +320,7 @@ static ssize_t temp1_limit_show(struct device *dev,
+ 	u8 index = to_sensor_dev_attr(attr)->index;
+ 	int temperature_limit = data->temperature_limits[index];
+
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", temperature_limit);
++	return sysfs_emit(buf, "%d\n", temperature_limit);
+ }
+
+ static ssize_t humidity1_limit_show(struct device *dev,
+@@ -331,7 +331,7 @@ static ssize_t humidity1_limit_show(struct device *dev,
+ 	u8 index = to_sensor_dev_attr(attr)->index;
+ 	u32 humidity_limit = data->humidity_limits[index];
+
+-	return scnprintf(buf, PAGE_SIZE, "%u\n", humidity_limit);
++	return sysfs_emit(buf, "%u\n", humidity_limit);
+ }
+
+ /*
+@@ -483,7 +483,7 @@ static ssize_t temp1_alarm_show(struct device *dev,
+ 	if (ret)
+ 		return ret;
+
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", !!(buffer[0] & 0x04));
++	return sysfs_emit(buf, "%d\n", !!(buffer[0] & 0x04));
+ }
+
+ static ssize_t humidity1_alarm_show(struct device *dev,
+@@ -498,7 +498,7 @@ static ssize_t humidity1_alarm_show(struct device *dev,
+ 	if (ret)
+ 		return ret;
+
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", !!(buffer[0] & 0x08));
++	return sysfs_emit(buf, "%d\n", !!(buffer[0] & 0x08));
+ }
+
+ static ssize_t heater_enable_show(struct device *dev,
+@@ -513,7 +513,7 @@ static ssize_t heater_enable_show(struct device *dev,
+ 	if (ret)
+ 		return ret;
+
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", !!(buffer[0] & 0x20));
++	return sysfs_emit(buf, "%d\n", !!(buffer[0] & 0x20));
+ }
+
+ static ssize_t heater_enable_store(struct device *dev,
+@@ -550,7 +550,7 @@ static ssize_t update_interval_show(struct device *dev,
+ {
+ 	struct sht3x_data *data = dev_get_drvdata(dev);
+
+-	return scnprintf(buf, PAGE_SIZE, "%u\n",
++	return sysfs_emit(buf, "%u\n",
+ 			 mode_to_update_interval[data->mode]);
+ }
+
 -- 
-2.17.1
-
+2.25.1
