@@ -2,144 +2,77 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A14642D82
-	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Dec 2022 17:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 955A5642D9E
+	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Dec 2022 17:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232500AbiLEQt1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 5 Dec 2022 11:49:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47312 "EHLO
+        id S232550AbiLEQuS (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 5 Dec 2022 11:50:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232372AbiLEQtD (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Dec 2022 11:49:03 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C86071F60C
-        for <linux-hwmon@vger.kernel.org>; Mon,  5 Dec 2022 08:48:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670258880; x=1701794880;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4Q3mUQKqiUYtXHGizMb6tQwGyegfGO6CFLttue9yvz0=;
-  b=ivxdVlU9/b1KzFp9L59NndDQcWebCkluqYHDMrikPuwir5jyM/tJmV5M
-   C4SYyHd2RCUhTshBNwFZEC78xUqrwjWxUDs8JrP6NK5RHLnhxeSmkf/7X
-   48xhTowipLIFws24hGbMCdOlf7ro0u5dGNjNBIGOgPB4BUN2heGQkbvUb
-   liASV64ZW7KdoiUoVi47KEsUNZq8OPlEL7qaakQP/hC0dfyOPsmyTmgzD
-   dp9LPkmnyrogED5pJrwT2XYiahJTaInYh9yPHXphKcL9vsph0O7q9FIqK
-   ztr42lZVs4/kPVm9t1CJhWOJUMwoZi2fRwuOIekQ/dEZzdfHy3rJY7z4n
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10552"; a="380692016"
-X-IronPort-AV: E=Sophos;i="5.96,220,1665471600"; 
-   d="scan'208";a="380692016"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2022 08:48:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10552"; a="648004532"
-X-IronPort-AV: E=Sophos;i="5.96,220,1665471600"; 
-   d="scan'208";a="648004532"
-Received: from lkp-server01.sh.intel.com (HELO b3c45e08cbc1) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 05 Dec 2022 08:47:59 -0800
-Received: from kbuild by b3c45e08cbc1 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p2EdK-0000EL-1S;
-        Mon, 05 Dec 2022 16:47:58 +0000
-Date:   Tue, 06 Dec 2022 00:47:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- 688fcd047ef0f0aeee16d0fefaff065fa69eb642
-Message-ID: <638e209a.uIzh8jaUq1z9GenS%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S232132AbiLEQts (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Dec 2022 11:49:48 -0500
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE3021811
+        for <linux-hwmon@vger.kernel.org>; Mon,  5 Dec 2022 08:49:04 -0800 (PST)
+Received: by mail-wm1-x341.google.com with SMTP id o7-20020a05600c510700b003cffc0b3374so10560180wms.0
+        for <linux-hwmon@vger.kernel.org>; Mon, 05 Dec 2022 08:49:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
+        b=Z2wBWagY9UnEZ+M5YPDdGkg6nVUsQfYS1BhjpcwGEao2GhG01+Mm/qvV+1fKOq1lbu
+         EFS78qR+UGfEwXQVt6IRXk6jTGT8mo+KAwwjj0fZxBmjE1jztugOoJP4/rka0x6XFhxu
+         W6iUCvsIDO6eHcdCHFvdIDlIVpJCsES5SD3xSnapoHClZmLcHlXbjXoeix+TX99ab7ry
+         BqOOHDFzUlmJeyU3OvUitATOsPkFA0DOczbi/Afsjm9NHI/YtApk72ny0qjFhFTXO+XP
+         yKXAtBeMHMlIwSKvmuRpEfOfWiK9b959mo8P7Fx64Ot+uHxQXUUrd10S+RG2s/yWLOX2
+         BSUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
+        b=iEHN+ksefZiRmpiIUT762AV//HyUUHMFR0zJktFV1ClNftmKe7v2fkXhXMX9lFLGXp
+         ojyyMA5BcLViwjj80tbkqKvkKAKuQdBetV2VueWuKsIewKvDOCM0aluzPoXV7xovQ2wt
+         VXM1Tvf8o7uH4uAh/87J+CW8HjKF4zqaft0onTFqIY4BJqRmzyWa6oqYIk9MTGPOryEL
+         7jdigfQJXBCpvgHvk9FnBJwwYdYyM7CyN7kfBi54gXUkQAt7pN9Y4LXAEIjlCndba8VI
+         s38GL1g4dZoMLbaM0DmUjq5pw4NeRpJKTso1MrT/SNjrNrY7p5DHjFkZs2eQfginWWqH
+         DeSA==
+X-Gm-Message-State: ANoB5plC+QgDoya/gjh541tvqaHa0BMRXdt92HDP76iNjdzOIB/sYfG4
+        WTgYLP6CWmlase0TSV8UkeVhkpji8rE42FNSwgo=
+X-Google-Smtp-Source: AA0mqf6LlThRqxALxahU+d5CDCL5XgA0Iri4oQFEx6hETTBFBZxUw9iI5CXyM5b3WvWotoaM22oBvK+CwFtVO/zgxX4=
+X-Received: by 2002:a7b:c8d0:0:b0:3cf:ca91:7094 with SMTP id
+ f16-20020a7bc8d0000000b003cfca917094mr60628535wml.24.1670258943314; Mon, 05
+ Dec 2022 08:49:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6000:5c1:0:0:0:0 with HTTP; Mon, 5 Dec 2022 08:49:02
+ -0800 (PST)
+Reply-To: phmanu14@hotmail.com
+From:   Philip Manul <zagbamdjala@gmail.com>
+Date:   Mon, 5 Dec 2022 08:49:02 -0800
+Message-ID: <CAPCnorG0wZz4L65xmUUzHEvxvuhrsq0nQnSPJqno3Ah89AhSwA@mail.gmail.com>
+Subject: REP:
+To:     in <in@proposal.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 688fcd047ef0f0aeee16d0fefaff065fa69eb642  hwmon: (dell-smm) Move error message to make probing silent
-
-elapsed time: 726m
-
-configs tested: 63
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arc                                 defconfig
-alpha                               defconfig
-arc                  randconfig-r043-20221205
-s390                                defconfig
-um                             i386_defconfig
-s390                             allmodconfig
-um                           x86_64_defconfig
-s390                 randconfig-r044-20221205
-i386                                defconfig
-riscv                randconfig-r042-20221205
-arm                                 defconfig
-x86_64                              defconfig
-s390                             allyesconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-arc                              allyesconfig
-arm                              allyesconfig
-x86_64                         rhel-8.3-kunit
-i386                             allyesconfig
-ia64                             allmodconfig
-x86_64                           rhel-8.3-kvm
-arm64                            allyesconfig
-alpha                            allyesconfig
-x86_64               randconfig-a011-20221205
-x86_64               randconfig-a012-20221205
-powerpc                           allnoconfig
-x86_64               randconfig-a014-20221205
-x86_64               randconfig-a013-20221205
-x86_64               randconfig-a015-20221205
-i386                 randconfig-a014-20221205
-x86_64               randconfig-a016-20221205
-i386                 randconfig-a013-20221205
-i386                 randconfig-a012-20221205
-i386                 randconfig-a015-20221205
-i386                 randconfig-a011-20221205
-i386                 randconfig-a016-20221205
-sh                               allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-
-clang tested configs:
-x86_64               randconfig-a003-20221205
-x86_64               randconfig-a004-20221205
-arm                  randconfig-r046-20221205
-x86_64               randconfig-a001-20221205
-x86_64               randconfig-a002-20221205
-hexagon              randconfig-r041-20221205
-x86_64               randconfig-a005-20221205
-x86_64               randconfig-a006-20221205
-hexagon              randconfig-r045-20221205
-i386                 randconfig-a001-20221205
-i386                 randconfig-a002-20221205
-i386                 randconfig-a004-20221205
-i386                 randconfig-a003-20221205
-i386                 randconfig-a006-20221205
-i386                 randconfig-a005-20221205
-hexagon              randconfig-r041-20221204
-riscv                randconfig-r042-20221204
-hexagon              randconfig-r045-20221204
-s390                 randconfig-r044-20221204
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--=20
+Guten tag,
+Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
+einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
+teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
+mein verstorbener Kunde, hat hier in meinem Land einen nicht
+beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
+Verfahren.
+Philip Manul.
