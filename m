@@ -2,115 +2,137 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9CE0643233
-	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Dec 2022 20:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF8D64330E
+	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Dec 2022 20:34:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbiLETZU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 5 Dec 2022 14:25:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46490 "EHLO
+        id S234309AbiLETeC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 5 Dec 2022 14:34:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233781AbiLETYl (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Dec 2022 14:24:41 -0500
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2CD25C5D
-        for <linux-hwmon@vger.kernel.org>; Mon,  5 Dec 2022 11:19:50 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id bj12so821649ejb.13
-        for <linux-hwmon@vger.kernel.org>; Mon, 05 Dec 2022 11:19:50 -0800 (PST)
+        with ESMTP id S234129AbiLETdq (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Dec 2022 14:33:46 -0500
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3773628726
+        for <linux-hwmon@vger.kernel.org>; Mon,  5 Dec 2022 11:28:36 -0800 (PST)
+Received: by mail-pg1-x532.google.com with SMTP id q71so11363881pgq.8
+        for <linux-hwmon@vger.kernel.org>; Mon, 05 Dec 2022 11:28:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google;
+        d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YmisXUUTcc/2wLYtw2JwGMf2iLn2WSeYXglBIEeZoho=;
-        b=Y4YvMsNmXqwQtQ6fylpBqSvy3d7S0QQKyzC+msMpaJ9yJ2fXrCtlT8C6h1WiGav9r4
-         TDZ3jUw0Gsmhvma6muAvIM/saALuR5+52UawobQWBDvSS5Ew2WxebwU/YuO/PrsvpTMk
-         gfwlDJ0LQvEQkbTqdoiWwQUHgkra8WZWKwtSKF9bYjQNUshjJi73kqWZFv4Nz/hmJrz2
-         98myjXjxobhazglF9IJyWQlrhaaZpKQZ75vM0vyHYpdAAAEUdsmMn7UI7BMRAGFewOtk
-         TiRCnmEHDvo5dJ6kMIdW6pELmO5XoPZeiaCy0qVeG2Kr+Myn85Fm7lK7tBGphWc17N8v
-         DdJw==
+        bh=PMgJpPVGFf2CTmBqfB8Ron+eiO7KrRxZmO2QtEp2lsM=;
+        b=KKxbsFBFUBlxl1NFHn1WxO6k25Y6zUU02b5x8BJLQyCE1gOD8tqr9eLsGLLm4dD5J4
+         Dk208kvxuVyK0E5gWtbPHygqwlqVckRknMeMMp0R3KsFgv7M7++oFTixt/G8rjAVSDhG
+         2PsCAn5MeBiYZwy1T4pK/dVPyvMWo6K4rcWI8fjdpbV5Yn6DApjHUMQW8ab98H7D9yWO
+         iVmenHiMWpWlduoJayRDnVMMsR/3QiFTwDP1ybi4IVPwzz+5fFGVxTX8ipaujq4URhrs
+         nd6LJx4xnR4Rk65Vz9cQVquBK8OYddNTODSP+eW8KxHZ/8aHuftGBr3djzvt0HycKBjK
+         T6Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YmisXUUTcc/2wLYtw2JwGMf2iLn2WSeYXglBIEeZoho=;
-        b=UdXKU3duHwWsGuTzxNEM42bXDNOGWq77PrIqTHdWQdI2v44JL5JHHUE4EGjrH/dHFN
-         SOy+0wTVHTqiKdd3CsqKsUakxxvqJBQHbj0uooXIrDYEE8WIse/OPfUPtRaC0lCnCpDj
-         8TQKNfetI/NcoGHAAefJoLqSZ4jE/0iwrSymOAMmQlo+xgabTpM8prUd8srsDBisjvcv
-         jxo+S8ZIN2jYZn96L+1Ad0DVnaSsy8g/L5V6TA4rRYlKvbttDcNKPQ0UugIU/brvZJvA
-         /J4GeHcCZdb5gvZswwWyB68Nyo64NJQtjd1azhI3gWJcRI8LnxHjpnpYdfkU8CvmAm58
-         HV3A==
-X-Gm-Message-State: ANoB5plEJ7q9ImAvT3I6Xvb8+eW5wf4V6EOSmPyFuDoq7ZSbXOxjBnOt
-        LCZGHEzdtWSe2jLEOu/I/xojuw==
-X-Google-Smtp-Source: AA0mqf62EG0f6npo76wD2RQldxw2ZuSO3bPY8/OKQ9K9hhSaGTbejpbzJ3Z1YlSk4OWCtLd/Gmdfpg==
-X-Received: by 2002:a17:906:5156:b0:7c0:efb6:8744 with SMTP id jr22-20020a170906515600b007c0efb68744mr5950005ejc.267.1670267990223;
-        Mon, 05 Dec 2022 11:19:50 -0800 (PST)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id t16-20020aa7db10000000b0045cf4f72b04sm112739eds.94.2022.12.05.11.19.49
+        bh=PMgJpPVGFf2CTmBqfB8Ron+eiO7KrRxZmO2QtEp2lsM=;
+        b=IfdMWtKoHzFr29a8EbJAbnXlG/1mTv9d95nz9fz6H+laJl1vUGrHXM5qCstCSgYNiN
+         /9pHgfeaLkUKfQtMyLLzN1z2BwwHlS4jR0FBTi9F+Jt+4LotwR3cuvITR7EX8xloSUXH
+         yf9kSGTiTp0sgl2nBsPDdZ+it1MRrmjRGhBTiPcc+jLzTNXM/jDd1P+81CMXqQ8W+dT9
+         eumef3J7EJ33KH4ARTXIUnmHi18zztUEJ9J6JDqfQ7UUPu0i7r/6rWJ+R7Aiyiiu7cFy
+         6Rtlej1TiKiZtHhnGAd0/jfaDESD2zyIIfYW7vIevJ4c2gCkIXJMQZ/fUviE83MPRI6i
+         85Fg==
+X-Gm-Message-State: ANoB5pmQfJq4Kv2dgPUOH/91N0XYJs+4FdZLkOf3tOygqtjG7vCa9Eym
+        YLiadqy8C/7hLYLtZEnY6peGPM3UT+ekvtYkkWQ=
+X-Google-Smtp-Source: AA0mqf5hB1K85GHRxWS3DJj18gs7YP8L5r2g77hmMSGPl3S7GFCLH5EEv+nuVrfKDV9901+2ad0Ayw==
+X-Received: by 2002:a63:1f63:0:b0:460:ec46:3645 with SMTP id q35-20020a631f63000000b00460ec463645mr77906532pgm.92.1670268515498;
+        Mon, 05 Dec 2022 11:28:35 -0800 (PST)
+Received: from localhost.localdomain ([193.122.98.110])
+        by smtp.gmail.com with ESMTPSA id a10-20020a1709027e4a00b001898aa48d17sm10896614pln.185.2022.12.05.11.28.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Dec 2022 11:19:50 -0800 (PST)
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
-To:     devicetree@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Naresh Solanki <Naresh.Solanki@9elements.com>
-Subject: [PATCH v6 5/5] hwmon: (pmbus/core): Notify regulator events
-Date:   Mon,  5 Dec 2022 20:19:16 +0100
-Message-Id: <20221205191917.2614603-5-Naresh.Solanki@9elements.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221205191917.2614603-1-Naresh.Solanki@9elements.com>
-References: <20221205191917.2614603-1-Naresh.Solanki@9elements.com>
+        Mon, 05 Dec 2022 11:28:35 -0800 (PST)
+From:   Xingjiang Qiao <nanpuyue@gmail.com>
+To:     michaelsh@nvidia.com, Jean Delvare <jdelvare@suse.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Xingjiang Qiao <nanpuyue@gmail.com>,
+        linux-hwmon@vger.kernel.org
+Subject: RE: [PATCH 2/2] hwmon: (emc2305) fix pwm never being able to set lower
+Date:   Tue,  6 Dec 2022 03:28:25 +0800
+Message-Id: <20221205192825.155209-1-nanpuyue@gmail.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <DM6PR12MB40742D85F5F8932F81C8C34DD4189@DM6PR12MB4074.namprd12.prod.outlook.com>
+References: <DM6PR12MB40742D85F5F8932F81C8C34DD4189@DM6PR12MB4074.namprd12.prod.outlook.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Notify regulator events in PMBus irq handler.
+Even when the cooling state is not set by the thermal subsystem, no lower state can be set by hwmon.
 
-Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
----
- drivers/hwmon/pmbus/pmbus_core.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index 22176f266891..c8fae2a9502d 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -3154,7 +3154,7 @@ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
- {
- 	struct pmbus_data *data = pdata;
- 	struct i2c_client *client = to_i2c_client(data->dev);
--	int i, status, ret, event;
-+	int i, j, status, ret, event;
- 
- 	for (i = 0; i < data->info->pages; i++) {
- 
-@@ -3163,6 +3163,15 @@ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
- 		if (ret)
- 			return ret;
- 
-+		if (event) {
-+			for (j = 0; j < data->info->num_regulators; j++) {
-+				if (i == rdev_get_id(data->rdevs[i])) {
-+					regulator_notifier_call_chain(data->rdevs[i], event, NULL);
-+					ret = IRQ_HANDLED;
-+				}
-+			}
-+		}
-+
- 		mutex_lock(&data->update_lock);
- 		status = pmbus_read_status_word(client, i);
- 		if (status < 0) {
--- 
-2.37.3
 
+> On Tue, Dec 6, 2022 at 2:27 AM Michael Shych <michaelsh@nvidia.com> wrote:
+> Hi,
+> 
+> This is intention - to set low limit through 'hwmon'.
+> Thus, if it is set through 'hwom', cooling state is limited and not allowed to be set to a lower value.
+> If user doesn't want this feature, he is not supposed to use 'hwmon' for fan speed setting.
+> 
+> Regards,
+>    Michael.
+> 
+> > -----Original Message-----
+> > From: Xingjiang Qiao <nanpuyue@gmail.com>
+> > Sent: Monday, December 5, 2022 7:36 PM
+> > To: Guenter Roeck <linux@roeck-us.net>; Jean Delvare
+> > <jdelvare@suse.com>
+> > Cc: Michael Shych <michaelsh@nvidia.com>; Xingjiang Qiao
+> > <nanpuyue@gmail.com>; linux-hwmon@vger.kernel.org
+> > Subject: [PATCH 2/2] hwmon: (emc2305) fix pwm never being able to set
+> > lower
+> >
+> > There are fields 'last_hwmon_state' and 'last_thermal_state' in the structure
+> > 'emc2305_cdev_data', which respectively store the cooling state set by the
+> > 'hwmon' and 'thermal' subsystem, and the driver author hopes that if the
+> > state set by 'hwmon' is lower than the value set by 'thermal', the driver will
+> > just save it without actually setting the pwm. Currently, the
+> > 'last_thermal_state' also be updated by 'hwmon', which will cause the
+> > cooling state to never be set to a lower value. This patch fixes that.
+> >
+> > Signed-off-by: Xingjiang Qiao <nanpuyue@gmail.com>
+> > ---
+> >  drivers/hwmon/emc2305.c | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c index
+> > 4df84065cbfb..f51760f8aa85 100644
+> > --- a/drivers/hwmon/emc2305.c
+> > +++ b/drivers/hwmon/emc2305.c
+> > @@ -398,11 +398,9 @@ emc2305_write(struct device *dev, enum
+> > hwmon_sensor_types type, u32 attr, int ch
+> >                                * Update PWM only in case requested state
+> > is not less than the
+> >                                * last thermal state.
+> >                                */
+> > -                             if (data-
+> > >cdev_data[cdev_idx].last_hwmon_state >=
+> > +                             if (data-
+> > >cdev_data[cdev_idx].last_hwmon_state <
+> >                                   data-
+> > >cdev_data[cdev_idx].last_thermal_state)
+> > -                                     return emc2305_set_cur_state(data-
+> > >cdev_data[cdev_idx].cdev,
+> > -                                                     data-
+> > >cdev_data[cdev_idx].last_hwmon_state);
+> > -                             return 0;
+> > +                                     return 0;
+> >                       }
+> >                       return emc2305_set_pwm(dev, val, channel);
+> >               default:
+> > --
+> > 2.38.1
