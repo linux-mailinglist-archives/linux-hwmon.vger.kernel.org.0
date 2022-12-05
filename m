@@ -2,32 +2,32 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A99B6431E6
-	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Dec 2022 20:22:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BC0643256
+	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Dec 2022 20:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230381AbiLETWb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 5 Dec 2022 14:22:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46558 "EHLO
+        id S233835AbiLET0A (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 5 Dec 2022 14:26:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233504AbiLETVv (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Dec 2022 14:21:51 -0500
+        with ESMTP id S232307AbiLETZf (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Dec 2022 14:25:35 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9565164D7;
-        Mon,  5 Dec 2022 11:17:47 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF6B26110;
+        Mon,  5 Dec 2022 11:21:27 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 59F96B81201;
-        Mon,  5 Dec 2022 19:16:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95FCC433C1;
-        Mon,  5 Dec 2022 19:16:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2AEB0B81151;
+        Mon,  5 Dec 2022 19:21:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B99C433D6;
+        Mon,  5 Dec 2022 19:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1670267799;
-        bh=7uVZopgE1e0SapTb5i26gNiN1i0iX2gcULH+t0ZU+pQ=;
+        s=korg; t=1670268084;
+        bh=rI9PGfQ6gQfyrTgJVCZvwEFx9Q/k3+fmu4A3g7ICcd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=euAc01JOlvy3X0Zg+B1jq5NvaaIGta4prC58gf5Zg1fNbGNgy11XNeXaEvEODyiRj
-         UHH9bVr1KXaUu2oHOzbiT5GL019zzJ5dCf2OAzzw9AP6I9nf0F1qvGdlmZpheFcBGH
-         vvn/vMR8m5duhT9dFUex+jjC66/7BZAReVn8uXsw=
+        b=RwJUKqej6z+5B4Ts4t8EoWFnSHj+pbclOTcogbCUG+odC5/PV5EiA0UissZZKI1wr
+         2tMrjZshwyQG+DpvexGyfN8y2aZA2EjLSdZXW4qEOpwZFG+wqVkkrCHzMguKTUsgAn
+         kdH/1bNPvWGnqCVKO4UG8ZyMyRhe7LlANWk5ODYM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 56/77] hwmon: (coretemp) Check for null before removing sysfs attrs
-Date:   Mon,  5 Dec 2022 20:09:47 +0100
-Message-Id: <20221205190802.850592627@linuxfoundation.org>
+Subject: [PATCH 4.19 080/105] hwmon: (coretemp) Check for null before removing sysfs attrs
+Date:   Mon,  5 Dec 2022 20:09:52 +0100
+Message-Id: <20221205190805.865256670@linuxfoundation.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221205190800.868551051@linuxfoundation.org>
-References: <20221205190800.868551051@linuxfoundation.org>
+In-Reply-To: <20221205190803.124472741@linuxfoundation.org>
+References: <20221205190803.124472741@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -97,10 +97,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index a42744c7665b..ee35bbc1714a 100644
+index 6030cb539a7b..02711014aee7 100644
 --- a/drivers/hwmon/coretemp.c
 +++ b/drivers/hwmon/coretemp.c
-@@ -531,6 +531,10 @@ static void coretemp_remove_core(struct platform_data *pdata, int indx)
+@@ -546,6 +546,10 @@ static void coretemp_remove_core(struct platform_data *pdata, int indx)
  {
  	struct temp_data *tdata = pdata->core_data[indx];
  
