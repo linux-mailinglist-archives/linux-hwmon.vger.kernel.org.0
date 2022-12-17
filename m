@@ -2,133 +2,256 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3019364F75C
-	for <lists+linux-hwmon@lfdr.de>; Sat, 17 Dec 2022 04:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF71D64FB67
+	for <lists+linux-hwmon@lfdr.de>; Sat, 17 Dec 2022 18:50:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbiLQDah (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 16 Dec 2022 22:30:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36238 "EHLO
+        id S229843AbiLQRuu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 17 Dec 2022 12:50:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbiLQDag (ORCPT
+        with ESMTP id S229675AbiLQRuq (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 16 Dec 2022 22:30:36 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150C6275C0
-        for <linux-hwmon@vger.kernel.org>; Fri, 16 Dec 2022 19:30:35 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id 1so6322732lfz.4
-        for <linux-hwmon@vger.kernel.org>; Fri, 16 Dec 2022 19:30:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wfHIfp2PgzsPQXGTrZ1bDouqyU93n0zRql8slxBHk7o=;
-        b=HRyi+WrAMBTb/wQaQGDQCXU8bfZEnhT5TFkJDWnE8WiWIdpI6TnIoU+VoZ6///rOWn
-         VBdElP7jI06sCHXpJ/2UGxYTWAdmQbRKK0zCNVeh9PxJGdGxrxjl3tzla6sqWTiVjGt3
-         vnVTYpfIaFTWlaEVLbXllugiXTBQnyk78ijc290dBsIaWnq5G0beeUWVjeER4yvZ4XLe
-         vvCRG9WRv/QxaL/4YYhsDr90TRyMiJIIl/LAlLx+i9v4pRrtXdJs75cAR0mEKcJZo/xD
-         B9r1ZGAxFLSk4Mtt3RQodmX0VQrn/CNvVp5LbDNlTLS8Pj46n1QDjKyhae6BE4XwwLVz
-         suiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wfHIfp2PgzsPQXGTrZ1bDouqyU93n0zRql8slxBHk7o=;
-        b=T4J0kM3JxKkHdlGdecpo+mkwiWiXfECajq6Ql+BVLBYQ4jQNDkeYfokasLsmbDh0cT
-         FOZ8cDbe8lVstCl9KbYPuKuGhOkNoYYVJ0GY2Oq+86B0LY3yBDW8UbamNT9HNLFgpuhQ
-         7jDXamu8P3Wc4T1M/9KkdVZ68cC27XKJumiuE89MSE+ACt4Ui3afZ2vhq/X3a7kAnBsV
-         k5Ou5oD++aZOU2m/EIp3g9ZC/A9RWahMH4m2nzn8GtNTedOY2E17wex1LP4QadcRPkKR
-         cOvbaBMygGBwL2la0Shq7c2AX2IBqFCjpWh7aoUDJosIX+yICIK7i8kvUaLywquorXE9
-         xeEg==
-X-Gm-Message-State: ANoB5pnrZsBIr1Ak99z+lW/tNZv7g8/IO0ohvPdUAPBxq9uD/fws8H2m
-        q0ZglWsY9GMOr4KQ8d46O/UDmCbe9TYOyPPPpIA=
-X-Google-Smtp-Source: AA0mqf5dbmzGjOMCdKmW8WQ3WKjjJJ0V17EL+WG5rzswhocJ8fWYbxgCj6cNQMpbFhu2jgfIBqhpOXfapoESpiKvmpk=
-X-Received: by 2002:a05:6512:3907:b0:4aa:cd5c:4c52 with SMTP id
- a7-20020a056512390700b004aacd5c4c52mr26851626lfu.374.1671247833285; Fri, 16
- Dec 2022 19:30:33 -0800 (PST)
+        Sat, 17 Dec 2022 12:50:46 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A512DCE;
+        Sat, 17 Dec 2022 09:50:44 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 74F1AB803F3;
+        Sat, 17 Dec 2022 17:50:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D07C433EF;
+        Sat, 17 Dec 2022 17:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671299442;
+        bh=V5/tPOA23XGLvHxP7Wp2/GHmPh9tPgDd/LiGvXHHJOk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QMp+CVa1qh3/ltOTFGssk2SFTaBO5+XqoeJfLnltEJzc4Y3lnuxIuzDfMjBbO0WPo
+         nNncCVEE+vll5OUAADrhUOYf78L+/jE800U5ipsMjRjh5X+kUeuaBHeYBDxLacdPIH
+         5K1fv8vLFGiSJXgBv6unixc4SZJGGfDUCVP6+s71nN+r9AXRVACgfY196ogbbjCEtX
+         mMERdU62sp/TT88tuG51AyJKpOdm62+ht2Gr4csd6Uiar7ZF9ZBBbFGS8EPljZuDey
+         C75mRvuZm2uY0kUmjW9GpxObYmqwCA++4kIXCylts+M/Csq9I03An6M5gh5s1ttWbO
+         lecWk1rHgrIgg==
+Date:   Sat, 17 Dec 2022 17:50:38 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Corentin Labbe <clabbe@baylibre.com>
+Cc:     jdelvare@suse.com, linux@roeck-us.net, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: hwmon: gpio-fan: convert to YAML
+Message-ID: <Y54BbjoRm5z2Tlp8@spud>
+References: <20220126200350.3633576-1-clabbe@baylibre.com>
 MIME-Version: 1.0
-Received: by 2002:a05:651c:b27:0:0:0:0 with HTTP; Fri, 16 Dec 2022 19:30:32
- -0800 (PST)
-Reply-To: mrstheresaheidi8@gmail.com
-From:   "Ms. Theresa Heidi" <ogunbayobabatunde2020@gmail.com>
-Date:   Fri, 16 Dec 2022 19:30:32 -0800
-Message-ID: <CACe_CMuqJph6xLLQnHdY+GROairfZTsLpsKEEq2reXVW4w2NCg@mail.gmail.com>
-Subject: =?UTF-8?B?5oCl5LqL5rGC5Yqp?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:12c listed in]
-        [list.dnswl.org]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [ogunbayobabatunde2020[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [ogunbayobabatunde2020[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mrstheresaheidi8[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="J9cZgbLLDluj0yxy"
+Content-Disposition: inline
+In-Reply-To: <20220126200350.3633576-1-clabbe@baylibre.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-5oWI5ZaE5o2Q5qy+77yBDQoNCuivt+S7lOe7humYheivu++8jOaIkeefpemBk+i/meWwgeS/oeeh
-ruWunuWPr+iDveS8mue7meS9oOS4gOS4quaDiuWWnOOAgiDmiJHlnKjpnIDopoHkvaDluK7liqnn
-moTml7blgJnpgJrov4fnp4HkurrmkJzntKLpgYfliLDkuobkvaDnmoTnlLXlrZDpgq7ku7bogZTn
-s7vjgIINCuaIkeaAgOedgOayiemHjeeahOaCsuS8pOWGmei/meWwgemCruS7tue7meS9oO+8jOaI
-kemAieaLqemAmui/h+S6kuiBlOe9keS4juS9oOiBlOezu++8jOWboOS4uuWug+S7jeeEtuaYr+ac
-gOW/q+eahOayn+mAmuWqkuS7i+OAgg0KDQrmiJHmmK82MuWygeeahOeJueiVvuiOjirmtbfokoLl
-pKvkurrvvIznm67liY3lm6DogrrnmYzlnKjku6XoibLliJfnmoTkuIDlrrbnp4Hnq4vljLvpmaLk
-vY/pmaLmsrvnlpfjgIINCjTlubTliY3vvIzmiJHnmoTkuIjlpKvljrvkuJblkI7vvIzmiJHnq4vl
-jbPooqvor4rmlq3lh7rmgqPmnInogrrnmYzvvIzku5bmiorku5bmiYDmnInnmoTkuIDliIfpg73n
-lZnnu5nkuobmiJHjgIIg5oiR5bim552A5oiR55qE56yU6K6w5pys55S16ISR5Zyo5LiA5a625Yy7
-6Zmi6YeM77yM5oiR5LiA55u05Zyo5o6l5Y+X6IK66YOo55mM55eH55qE5rK755aX44CCDQoNCuaI
-keS7juaIkeW3suaVheeahOS4iOWkq+mCo+mHjOe7p+aJv+S6huS4gOeslOi1hOmHke+8jOWPquac
-ieS4gOeZvuS4h+S6jOWNgeS4h+e+juWFg++8iDEsMjAwLDAwMCwwMOe+juWFg++8ieOAgueOsOWc
-qOW+iOaYjuaYvu+8jOaIkeato+WcqOaOpei/keeUn+WRveeahOacgOWQjuWHoOWkqe+8jOaIkeiu
-pOS4uuaIkeS4jeWGjemcgOimgei/meeslOmSseS6huOAgg0K5oiR55qE5Yy755Sf6K6p5oiR5piO
-55m977yM55Sx5LqO6IK655mM55qE6Zeu6aKY77yM5oiR5LiN5Lya5oyB57ut5LiA5bm044CCDQoN
-Cui/meeslOmSsei/mOWcqOWbveWklumTtuihjO+8jOeuoeeQhuWxguS7peecn+ato+eahOS4u+S6
-uueahOi6q+S7veWGmeS/oee7meaIke+8jOimgeaxguaIkeWHuumdouaUtumSse+8jOaIluiAheet
-vuWPkeS4gOWwgeaOiOadg+S5pu+8jOiuqeWIq+S6uuS7o+aIkeaUtumSse+8jOWboOS4uuaIkeeU
-n+eXheS4jeiDvei/h+adpeOAgg0K5aaC5p6c5LiN6YeH5Y+W6KGM5Yqo77yM6ZO26KGM5Y+v6IO9
-5Lya5Zug5Li65L+d5oyB6L+Z5LmI6ZW/5pe26Ze06ICM6KKr5rKh5pS26LWE6YeR44CCDQoNCuaI
-keWGs+WumuS4juaCqOiBlOezu++8jOWmguaenOaCqOaEv+aEj+W5tuacieWFtOi2o+W4ruWKqeaI
-keS7juWkluWbvemTtuihjOaPkOWPlui/meeslOmSse+8jOeEtuWQjuWwhui1hOmHkeeUqOS6juaF
-iOWWhOS6i+S4mu+8jOW4ruWKqeW8seWKv+e+pOS9k+OAgg0K5oiR6KaB5L2g5Zyo5oiR5Ye65LqL
-5LmL5YmN55yf6K+a5Zyw5aSE55CG6L+Z5Lqb5L+h5omY5Z+66YeR44CCIOi/meS4jeaYr+S4gOes
-lOiiq+ebl+eahOmSse+8jOS5n+ayoeaciea2ieWPiueahOWNsemZqeaYrzEwMCXnmoTpo47pmanl
-hY3otLnkuI7lhYXliIbnmoTms5Xlvovor4HmmI7jgIINCg0K5oiR6KaB5L2g5ou/NDUl55qE6ZKx
-57uZ5L2g5Liq5Lq65L2/55So77yM6ICMNTUl55qE6ZKx5bCG55So5LqO5oWI5ZaE5bel5L2c44CC
-DQrmiJHlsIbmhJ/osKLkvaDlnKjov5nku7bkuovkuIrmnIDlpKfnmoTkv6Hku7vlkozkv53lr4bv
-vIzku6Xlrp7njrDmiJHlhoXlv4PnmoTmhL/mnJvvvIzlm6DkuLrmiJHkuI3mg7PopoHku7vkvZXk
-vJrljbHlj4rmiJHmnIDlkI7nmoTmhL/mnJvnmoTkuJzopb/jgIINCuaIkeW+iOaKseatie+8jOWm
-guaenOaCqOaUtuWIsOi/meWwgeS/oeWcqOaCqOeahOWeg+WcvumCruS7tu+8jOaYr+eUseS6juac
-gOi/keeahOi/nuaOpemUmeivr+WcqOi/memHjOeahOWbveWutuOAgg0KDQrkvaDkurLniLHnmoTl
-prnlprnjgIINCueJueiVvuiOjirmtbfokoLlpKvkuroNCg==
+
+--J9cZgbLLDluj0yxy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Jan 26, 2022 at 08:03:50PM +0000, Corentin Labbe wrote:
+> Converts hwmon/gpio-fan.txt to YAML
+>=20
+> Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+> ---
+>=20
+> I didnt found any clear maintainer and since DT yaml mandates a
+> maintainer section, I set devicetree@vger.kernel.org.
+
+Hey Corentin,
+Looks like there were only some minor comments from Rob on this patch,
+but I do not see a v2 on lore. Just never get around to sending a v2, or
+did it fall through the cracks?
+Thanks,
+Conor.
+
+>=20
+>  .../devicetree/bindings/hwmon/gpio-fan.txt    | 41 --------
+>  .../devicetree/bindings/hwmon/gpio-fan.yaml   | 96 +++++++++++++++++++
+>  2 files changed, 96 insertions(+), 41 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/hwmon/gpio-fan.txt
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/gpio-fan.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/hwmon/gpio-fan.txt b/Docum=
+entation/devicetree/bindings/hwmon/gpio-fan.txt
+> deleted file mode 100644
+> index f4cfa350f6a1..000000000000
+> --- a/Documentation/devicetree/bindings/hwmon/gpio-fan.txt
+> +++ /dev/null
+> @@ -1,41 +0,0 @@
+> -Bindings for fan connected to GPIO lines
+> -
+> -Required properties:
+> -- compatible : "gpio-fan"
+> -
+> -Optional properties:
+> -- gpios: Specifies the pins that map to bits in the control value,
+> -  ordered MSB-->LSB.
+> -- gpio-fan,speed-map: A mapping of possible fan RPM speeds and the
+> -  control value that should be set to achieve them. This array
+> -  must have the RPM values in ascending order.
+> -- alarm-gpios: This pin going active indicates something is wrong with
+> -  the fan, and a udev event will be fired.
+> -- #cooling-cells: If used as a cooling device, must be <2>
+> -  Also see:
+> -  Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
+> -  min and max states are derived from the speed-map of the fan.
+> -
+> -Note: At least one the "gpios" or "alarm-gpios" properties must be set.
+> -
+> -Examples:
+> -
+> -	gpio_fan {
+> -		compatible =3D "gpio-fan";
+> -		gpios =3D <&gpio1 14 1
+> -			 &gpio1 13 1>;
+> -		gpio-fan,speed-map =3D <0    0
+> -				      3000 1
+> -				      6000 2>;
+> -		alarm-gpios =3D <&gpio1 15 1>;
+> -	};
+> -	gpio_fan_cool: gpio_fan {
+> -		compatible =3D "gpio-fan";
+> -		gpios =3D <&gpio2 14 1
+> -			 &gpio2 13 1>;
+> -		gpio-fan,speed-map =3D	<0    0>,
+> -					<3000 1>,
+> -					<6000 2>;
+> -		alarm-gpios =3D <&gpio2 15 1>;
+> -		#cooling-cells =3D <2>; /* min followed by max */
+> -	};
+> diff --git a/Documentation/devicetree/bindings/hwmon/gpio-fan.yaml b/Docu=
+mentation/devicetree/bindings/hwmon/gpio-fan.yaml
+> new file mode 100644
+> index 000000000000..15bb5efd3cb4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/gpio-fan.yaml
+> @@ -0,0 +1,96 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/hwmon/gpio-fan.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bindings for fan connected to GPIO lines
+> +
+> +maintainers:
+> +  - OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS <devicetree@vger.ke=
+rnel.org>
+> +
+> +properties:
+> +  compatible:
+> +    const: gpio-fan
+> +
+> +  gpios:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: Specifies the pins that map to bits in the control valu=
+e,
+> +      ordered MSB-->LSB.
+> +
+> +  gpio-fan,speed-map:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +    description: A mapping of possible fan RPM speeds and the
+> +      control value that should be set to achieve them. This array
+> +      must have the RPM values in ascending order.
+> +
+> +  alarm-gpios:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: This pin going active indicates something is wrong with
+> +      the fan, and a udev event will be fired.
+> +
+> +  "#cooling-cells":
+> +    const: 2
+> +    description: If used as a cooling device, must be <2>
+> +      Also see Documentation/devicetree/bindings/thermal/thermal-cooling=
+-devices.yaml
+> +      min and max states are derived from the speed-map of the fan.
+> +
+> +anyOf:
+> +  - required:
+> +      - gpios
+> +  - required:
+> +      - alarm-gpios
+> +
+> +additionalProperties: False
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/clock/cortina,gemini-clock.h>
+> +    #include <dt-bindings/reset/cortina,gemini-reset.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    gpio1: gpio@4d000000 {
+> +      compatible =3D "cortina,gemini-gpio", "faraday,ftgpio010";
+> +      reg =3D <0x4d000000 0x100>;
+> +      interrupts =3D <22 IRQ_TYPE_LEVEL_HIGH>;
+> +      resets =3D <&syscon GEMINI_RESET_GPIO0>;
+> +      clocks =3D <&syscon GEMINI_CLK_APB>;
+> +      gpio-controller;
+> +      #gpio-cells =3D <2>;
+> +      interrupt-controller;
+> +      #interrupt-cells =3D <2>;
+> +    };
+> +    gpio_fan {
+> +      compatible =3D "gpio-fan";
+> +        gpios =3D <&gpio1 8 GPIO_ACTIVE_HIGH>;
+> +        gpio-fan,speed-map =3D <0    0>,
+> +                             <3000 1>,
+> +                             <6000 2>;
+> +        alarm-gpios =3D <&gpio1 15 GPIO_ACTIVE_HIGH>;
+> +    };
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/clock/cortina,gemini-clock.h>
+> +    #include <dt-bindings/reset/cortina,gemini-reset.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    gpio2: gpio@4d000000 {
+> +      compatible =3D "cortina,gemini-gpio", "faraday,ftgpio010";
+> +      reg =3D <0x4d000000 0x100>;
+> +      interrupts =3D <22 IRQ_TYPE_LEVEL_HIGH>;
+> +      resets =3D <&syscon GEMINI_RESET_GPIO0>;
+> +      clocks =3D <&syscon GEMINI_CLK_APB>;
+> +      gpio-controller;
+> +      #gpio-cells =3D <2>;
+> +      interrupt-controller;
+> +      #interrupt-cells =3D <2>;
+> +    };
+> +    gpio_fan_cool: gpio_fan {
+> +      compatible =3D "gpio-fan";
+> +      gpios =3D <&gpio2 8 GPIO_ACTIVE_HIGH
+> +               &gpio2 1 GPIO_ACTIVE_HIGH>;
+> +      gpio-fan,speed-map =3D <0    0
+> +                           3000 1
+> +                           6000 2>;
+> +      alarm-gpios =3D <&gpio2 15 GPIO_ACTIVE_HIGH>;
+> +      #cooling-cells =3D <2>; /* min followed by max */
+> +    };
+> --=20
+> 2.34.1
+>=20
+>=20
+
+--J9cZgbLLDluj0yxy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY54BbQAKCRB4tDGHoIJi
+0o9tAP4uLHXmJOt9syq4cRw8WtmC3czmyza6bquTAwVjIyXCnwEApwfTn9+n6yzG
+ZvvNOC+6QJbNKiyMjcs3kV9Q++41gwk=
+=eGzC
+-----END PGP SIGNATURE-----
+
+--J9cZgbLLDluj0yxy--
