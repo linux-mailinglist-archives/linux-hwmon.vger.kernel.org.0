@@ -2,81 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4044665B91E
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Jan 2023 02:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6EC965BAF4
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Jan 2023 07:51:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236718AbjACB4p (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 2 Jan 2023 20:56:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56262 "EHLO
+        id S236807AbjACGv4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 3 Jan 2023 01:51:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236766AbjACB4Z (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 2 Jan 2023 20:56:25 -0500
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD5BCE3E;
-        Mon,  2 Jan 2023 17:56:07 -0800 (PST)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-14455716674so35360381fac.7;
-        Mon, 02 Jan 2023 17:56:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=96ZA3U+4lODUN3hIoOOVli3grSMHv8whVkE4ZtfzuJM=;
-        b=KvXgqBoo9WmoGuCe5vzbMWxElgDcbFiloThShHoBMxljzX+4aV4siZiqAROHBM4128
-         2DHl0I4Fz/mmYz49C47k8fQJN3TgddLm5A83pEAOElNOxm72x4v7Ag7vZruc8/h7ODLl
-         +gAhtSug9qHjhpoRju+X/hrAAK88RT95HwR3rk97Ut92tAJff9VUb1iQ6Lkz/3RsHX99
-         Ri0t1eb/0d6/RV1UnBZqTrfZaglg9kHfOqOAM1of7MO4Ght4sRqKfOJwH6Y5I/MgBczG
-         Is1ggOpBcSHlFkKudF5qHDf6ap86WuZOe5JIAVe7f9iMrgmz0WKu8lsU5f5e32NkH/cw
-         SF3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=96ZA3U+4lODUN3hIoOOVli3grSMHv8whVkE4ZtfzuJM=;
-        b=PrWFSX6slnDndpoA4viQbpb5E28xMDVw7X1rynn7lXlMtt6o8S+XJSYzrbMS4Jq0/y
-         mQs94YZWGQlGGwe2lmEfPlqVic3pA20YTlYbU8jnmw9fV88sb0okeBwmjc1wvRQimujS
-         9v7RhV4B+0/zQZnPpdk3V+qOMgidFwMsT/bXZ1k1dsiXDnxtPmgCyNjNv6sh9ScsGhib
-         rXGAR7zGHl0vQAInIO0+8aCWwxIm33mGQvREqyIkE2DJycXJEzGmpoy2PHaDUIuY/x03
-         FREmge8/4poXgvOFrVqHf/Hp+xDRhKRKp9mKqh4+JcE2NEub912JlsfWDc1CEw7fv/xW
-         lTBg==
-X-Gm-Message-State: AFqh2kq8rf+Smct3AfngkOVAnlF+6Dh2Tx47fPYqLieYi/W7ewQ3x8lM
-        k7X08QSP0fmxxTcgY7G5Ng0=
-X-Google-Smtp-Source: AMrXdXtb4bHZ9umAo6HHJUafiGC78lfkM4bBWYxkhrmL8rbnxkgsx2BdYpvMkIIJoXpc34YlsCkINA==
-X-Received: by 2002:a05:6870:d8aa:b0:144:7eb3:c9b0 with SMTP id dv42-20020a056870d8aa00b001447eb3c9b0mr20918406oab.42.1672710962830;
-        Mon, 02 Jan 2023 17:56:02 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c9-20020a056870b28900b0014474019e50sm13663486oao.24.2023.01.02.17.56.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Jan 2023 17:56:02 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 2 Jan 2023 17:56:01 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Hal Feng <hal.feng@starfivetech.com>
-Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Conor Dooley <conor@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/4] Temperature sensor support for StarFive JH7110
- RISC-V SoC
-Message-ID: <20230103015601.GB313835@roeck-us.net>
-References: <20230103013145.9570-1-hal.feng@starfivetech.com>
+        with ESMTP id S236776AbjACGvz (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 3 Jan 2023 01:51:55 -0500
+X-Greylist: delayed 304 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 02 Jan 2023 22:51:50 PST
+Received: from ipmail06.adl3.internode.on.net (ipmail06.adl3.internode.on.net [150.101.137.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EFEA25F7F
+        for <linux-hwmon@vger.kernel.org>; Mon,  2 Jan 2023 22:51:50 -0800 (PST)
+IronPort-SDR: R8jY60ch4jtfGFHMW2Snq4VxPG1Ay1HkGBxgdRTNHUrzEQn8bn4FHARMKLD4NhNH5zFT79oNcF
+ ybJQaYsSMXy3I9lxO2Lej9GaLzzGOtErswQV+AfqOlj/PYVH0sU+x7DYwhhuy1HmTYpc+Dg4Zy
+ c+a8Wg/amXnDBt6Nr8mqLBVcHdGRt+Ib9OcFADzd6utf4MCTaVJc4+8lI9fwT5u59eVnKy9rlO
+ YLByyt4S+yRU86dqt9Krd1QhQwZadVmRECrXTZIKnjec8e0DIONg2j9Mlg9MXE70QhpDYX4PbB
+ CBvts8jNO61BxTqK8QTX9gBG
+X-SMTP-MATCH: 0
+X-IPAS-Result: =?us-ascii?q?A2BeBwAozrNjjPQc8jxaHgEBCxIMSYNzgl+1Jw8BDwEBR?=
+ =?us-ascii?q?AQBAYUFhRMmOBMBAgQBAQEBAwIDAQEBAQEBAwEBBgEBAQEBAQYEFAEBAQFAU?=
+ =?us-ascii?q?gcLUgcLWAcHgUELgWETCwMxDYZZNgENAQE3ASiBFQGDEIMjs1SBAYIIAQEGg?=
+ =?us-ascii?q?mKaZoFeCYFAi2CBEoM3gT0/gU6ED26DfIcGmRoKgT19gScOTFcDCQMHBUlAA?=
+ =?us-ascii?q?wsYDRYyChMtNRdLEBsaGweBCiooFQMEBAMCBhMDIAINKDEUBCkTDScmawkCA?=
+ =?us-ascii?q?yJmAwMEKC0JQAcmJjwHVjcFAwIPHzcGAwkDAh9RcS8SEgUDCxUqRwQINgUGU?=
+ =?us-ascii?q?hICCA8SDyxDDkI3NhMGXAEqCw4TA1BHGW8EggwKLyicBoEIgQ6BccQRg3iBU?=
+ =?us-ascii?q?J52TIFEp2CXRiChdYEYhCgCCgcWgXmBfk0fGYMiTwECAQEBDQECAQEDAQIBA?=
+ =?us-ascii?q?QEJAQEBAY4dGYITjDhhOwIHCwEBAwmJW4JIAQE?=
+IronPort-PHdr: A9a23:8hPhwRaLbfsNmQ7Nqp49zxj/LTAZhN3EVzX9orItiq5VNK+59ovsO
+ 1bTo/hokRnIUcPS9qEMgvDd5qbnX2FI+pOdqDYYfZlLSxJAiN1DkQAsWpzaAET3fvK2MHxoR
+ ZYQX1U8pyOwOhAKcPs=
+IronPort-Data: A9a23:EYeyOaMKJIt3xPXvrR2SkcFynXyQoLVcMsEvi/4bfWQNrUohhmRUz
+ GAaCGyOaPfZNmT0eY0lOYqxoRlXusfXy9QxSwU4pXs2H3kVpJaeDoWTchyobynDcsfIEhM54
+ ZgQNYLKBc1lFXW0SjWFa+i59yMgvU2rqhsQLMaeZ0idkCc9EH9JZSpLwrJ/2sgy6TSAK1vlV
+ ena+qUzBXf8s9JKGjJMg068gEsHUMTa4Fv0aXRjDRzjlAa2e0g9VPrzF4noR5fLatU88tqBe
+ gr25OrRElU1XvsaIojNfr7TKiXmS1NJVOSEoiI+t6OK2nCuqsGuu0o2HKJ0VKtZt9mGt/8rx
+ /YKk6W5cisCYr3NotgebT0BQhgraMWq+JefSZS+mcaS01aAeGHl3PtpFk1wMIgFvOd7R2hTn
+ RAaAG5VKErf3aTskPThFrUEascLdaEHOKsRoHhmzhnSF/85T5fZT+PH4MIe3Tt2j90m8fP2O
+ 5FIN2Q1NkidC/FJEg0bS7h9w8zvv2ihbGRR9V2z/Jgq51GGmWSd15C2aIGFIIbbLSlPpW6cp
+ 2Tb7yH5HRQdMvSBxjeftHGhnOnCmWX8Qo16PLm58ON6qEeUy2cQTQANE122vZGRiEKzX8xWM
+ UE84Tc1oO4580nDczXmd0Pg5STY5FtGC58KT7F88x2E1qvfpRqBCWlCRTlELtU73CMredA0/
+ nDTkPCuIwVmi5G+FWKczIuXkxfraBFAeAfuehQ4ZQcC5tDipqQ6gRTOUstvHcaJYjvdR2+YL
+ 9ei8nNWulkDsSIY/+DgpgCY2m7ESozhF1NsvF2PAApJ+yskPOaYi5qUBU/zxMsowGyxdUiNu
+ nUV8yR1xLpWVcnleMClZugSVIqu+uqFeALVhVN0d6TNGhzzozv5IdoVumE7fhs1dN0YcCPoa
+ wnPoQxQopRUOT2jcMebgr5d6ex2kcAM9vy/DZg4i+aihbArKme6ENlGPxL44owUuBFEfVsDE
+ Zmaa92wKn0RFL5qyjG7L89Ej+BxmHBinzmOGsunp/hC7VZ4TCDLIVviGAXVBt3VEIvf+W05D
+ v4FaJDRkEUHOAEASnWLodVDRbz1EZTLLcuu8JwNLL/rzvtOBHkuQ/7X3b47fYF595m5Zc+Wl
+ kxRrnRwkQKl7UAr3C3WMhiPnpuzBMgjxZ/6VARwVWuVN48LO97wtfdBJspnLNHKNoVLlJZJc
+ hXMQO3Yatwnd9gN0211gUDVoNMweRK1qxiJOib5MjEzc4Q5F17C4Nb7cAz1+G8DCzfxtMd4q
+ qD5jlHXRp8KRgJDCsfKaavxkAvo5iZBwL5/DxnSP91eWETw64w0eSb/uf8AJZ1eIxv02WrI3
+ gmbNh4UuO3RrtJn69LOn62F8dukHrImTEpXFmXW95isMize8jbxyINMSr/YLzvHXXz6/7+uI
+ +hQ0rf9PLsOgQ8S4YZ7Fr9qy4M45sfu/uEFll0/QimTM1nyU+FuOHiL28VLp5Zh/L4BtFvkQ
+ F+L9/lbJa6NZpHvHmkREwx5PO6N4u5FyDDd4MM8LFj++CIqrqGMVl9fPkfQhSFQcOl1PYciz
+ btzscIa8Vbk2BArLs3AhTpd6GqLNHBGXqA68JAWRob201J5xlZHaJ3aKyn3/JDWNYoUaxJ0f
+ mfIifqQnalYy2rDb2E3SyrH091dspJS6hpE+0BTdV2Gl+3MiuIzwBAMoy88SR5Yz0sb3u8va
+ HJnMVZ5efeH8zty35IRATjpQV0bQUfJvxatlx0SiGTFTkLuSnTCLSs2PuPL9V1AqzBQeT1S/
+ be5zmf5UG+0I5mohXVuARJo+675UNh81gzeg8T7Tc6LKJ9rMzPqj5inaXcMtxa6U9g6g1fKp
+ Lc28et9AUEh2fX8f0Hm51Gm6Ikt
+IronPort-HdrOrdr: A9a23:1LCVCqn6aPV0AwEKEVnLICBwaDrpDfIC3DAbv31ZSRFFG/Fw9/
+ rFoB3U737JYVEqKRYdcbLpAsS9qBbnmaKdjrNhXotKMDOIhILKFvAH0WKd+UyDJ8SWzIc0vp
+ uIGJIfNDSfNzZHZUmW2njfLz9Z+qjjzEmxv5al855yd3AQV0i+1XYBNu5LencGPDV7OQ==
+X-IronPort-Anti-Spam-Filtered: true
+Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
+  by ipmail06.adl3.internode.on.net with ESMTP; 03 Jan 2023 17:16:44 +1030
+Received: from agc.com.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
+        (authenticated bits=0)
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 3036kRlL2641329
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Tue, 3 Jan 2023 17:46:38 +1100
+Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 3036kRlL2641329
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
+        s=s1; t=1672728399; bh=Bbwgq2hqU7ZXey8rvM0AUpl/mIlGyl3htk5ddBRu00c=;
+        h=From:To:Cc:Subject:Date:From;
+        b=H2JxwLhSUNGz94BPXL2x/fKs6QBLuQwQ6G+uExbx8BCJP6H0qhVHdubmMxFFGcKE+
+         Qthtmbls+/Tbh1jkqtvxmM80qgYut85F/aDOpfhgCz9ueahpxD6wkwZlyTar7yAHWf
+         loS4jr4qZyuwHMq4MMtthjv8NRc335Nwlp7mk0Ldkh6dtfzwC1ba88MhmCW2G3TvW6
+         3btXFPa43wAygDfaAuEJ7+d5ivix0jEcHTt6bZkwRW6xK4F5ZYWxga6Uk0VwM1NLvF
+         XsaWhB14ywHtddquk2JdYZgVxtScyW3XP30xXheKEqVqP87FTqWa+oB9uJGy0kb7xt
+         XJNo6C5cu5c8w==
+From:   Frank Crawford <frank@crawford.emu.id.au>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org,
+        Frank Crawford <frank@crawford.emu.id.au>
+Subject: [PATCH v1 0/2] hwmon: (it87) Set second Super-IO chip in configuration mode
+Date:   Tue,  3 Jan 2023 17:46:10 +1100
+Message-Id: <20230103064612.404401-1-frank@crawford.emu.id.au>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230103013145.9570-1-hal.feng@starfivetech.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Tue, 03 Jan 2023 17:46:39 +1100 (AEDT)
+X-Virus-Scanned: clamav-milter 0.103.7 at bits.crawford.emu.id.au
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,68 +105,24 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Jan 03, 2023 at 09:31:41AM +0800, Hal Feng wrote:
-> This patch series adds temperature sensor support for StarFive JH7110 SoC.
-> The last two patches depend on series [1].
-> 
-> [1]: https://lore.kernel.org/all/20221220011247.35560-1-hal.feng@starfivetech.com/
-> 
-> Emil Renner Berthing (4):
->   dt-bindings: hwmon: Add starfive,jh71x0-temp
->   hwmon: (sfctemp) Add StarFive JH71x0 temperature sensor
->   riscv: dts: starfive: jh7110: Add temperature sensor node
->   riscv: dts: starfive: visionfive-2: Add thermal-zones
-> 
+On various Gigabyte AM4 boards (AB350, AX370), the second Super-IO chip
+(IT8792E) needs to be in configuration mode before accessing the first
+due to a bug in IT8792E which otherwise results in LPC bus access errors.
+This needs to be done before accessing the first Super-IO chip since
+the second chip may have been accessed prior to loading this driver.
 
-The hardware monitoring driver is obviously either the same
-or derived from the previous series at
-https://patchwork.kernel.org/project/linux-hwmon/list/?series=&submitter=&state=*&q=starfive
+The problem is also reported to affect IT8795E, which is used on X299 boards
+and has the same chip ID as IT8792E (0x8733). It also appears to affect
+systems with IT8790E, which is used on some Z97X-Gaming boards as well as
+Z87X-OC.
 
-Why is this not submitted as v4 of the original series ?
-What has changed, and what is the rationale for (re-)submitting
-it as v1 ?
+Frank Crawford (2):
+  Allow calling __superio_enter outside mux
+  Set second Super-IO chip in configuration mode
 
-Guenter
+ drivers/hwmon/it87.c | 71 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 67 insertions(+), 4 deletions(-)
 
->  .../bindings/hwmon/starfive,jh71x0-temp.yaml  |  75 ++++
->  Documentation/hwmon/index.rst                 |   1 +
->  Documentation/hwmon/sfctemp.rst               |  33 ++
->  MAINTAINERS                                   |   8 +
->  .../jh7110-starfive-visionfive-2.dtsi         |  28 ++
->  arch/riscv/boot/dts/starfive/jh7110.dtsi      |  13 +
->  drivers/hwmon/Kconfig                         |  10 +
->  drivers/hwmon/Makefile                        |   1 +
->  drivers/hwmon/sfctemp.c                       | 350 ++++++++++++++++++
->  9 files changed, 519 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/hwmon/starfive,jh71x0-temp.yaml
->  create mode 100644 Documentation/hwmon/sfctemp.rst
->  create mode 100644 drivers/hwmon/sfctemp.c
-> 
-> 
-> base-commit: 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
-> prerequisite-patch-id: 4dc515731ce237184553c1606ffb3afaeb51c3d8
-> prerequisite-patch-id: 09c98554df52d17ba5fd604125f8cdd62cbe80d1
-> prerequisite-patch-id: a798370d170dc2bcc79ed86f741c21c1e6d87c78
-> prerequisite-patch-id: bd9fd8b5cb2376dc7a5e08e1a1fbb969cf475926
-> prerequisite-patch-id: c57ebb83bc43ccd2a8366ff166eb499da1e1d2cf
-> prerequisite-patch-id: a1673a9e9f19d6fab5a51abb721e54e36636f067
-> prerequisite-patch-id: 94860423c7acc9025249d4bb36652a585bd0a797
-> prerequisite-patch-id: b5084253283929d9a6d0e66c350400c7c85d034d
-> prerequisite-patch-id: 6e369dbe9dca2785e4ea7d0b80e525e227a90a6e
-> prerequisite-patch-id: e08806183c152714c563f3a21c6d7b2f539c4d6e
-> prerequisite-patch-id: 79db8036abdc48fd36da227652ec62627a6b548b
-> prerequisite-patch-id: 06971b8e6bddc0e87e63bfdb0ce8bfb653bd73aa
-> prerequisite-patch-id: 16309a0e23811a2c55d2e56886de3e8eccc51554
-> prerequisite-patch-id: bf4f7ab0b6cfa90b6e49e66c7d75ed2eaaebbe78
-> prerequisite-patch-id: 38468d532e87867990055d3320679f18c5f52278
-> prerequisite-patch-id: 4710f2ac22dca0bdd9ff5d744d2c37cab3c74515
-> prerequisite-patch-id: 6bb9a780c62af3bcc2368dfd20303c7b1bc91e23
-> prerequisite-patch-id: 258ea5f9b8bf41b6981345dcc81795f25865d38f
-> prerequisite-patch-id: 8b6f2c9660c0ac0ee4e73e4c21aca8e6b75e81b9
-> prerequisite-patch-id: e3b986b9c60b2b93b7812ec174c9e1b4cfb14c97
-> prerequisite-patch-id: a2b3a9cff8a683422eb0ccf3a0850091401812d4
-> prerequisite-patch-id: e0ba7af0f8d3d41844da9fbcba14b548cbc18f55
-> prerequisite-patch-id: bc0176325c11a632c6abaa83e54e891cc92d1c74
-> -- 
-> 2.38.1
-> 
+-- 
+2.38.1
+
