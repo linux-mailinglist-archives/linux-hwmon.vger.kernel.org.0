@@ -2,142 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B743665D09B
-	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Jan 2023 11:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B99465D360
+	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Jan 2023 13:56:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbjADK0u (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 4 Jan 2023 05:26:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48066 "EHLO
+        id S237528AbjADMyv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 4 Jan 2023 07:54:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234700AbjADK0q (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 4 Jan 2023 05:26:46 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C65D010E6
-        for <linux-hwmon@vger.kernel.org>; Wed,  4 Jan 2023 02:26:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672828005; x=1704364005;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lRY6g3zJ1Ds0RxjZy3wI4MBoVHBrd9Z6Rf5BzCkoP3E=;
-  b=O1CxEb4z+JtwdSNtJ0Ry1AtYvartBxUNthPlWYxD4xly0ldpxjkAu3Xi
-   mp1zsDn680IfeKt3XH8+tomctZ7JwzbrVyKFB2YF/AWJm5eDoxOiPn0mC
-   M/n6Jo3cUFbBhIq+YlHuUixhO3RkILKF8oPAvKFhnZQgS1aaVRfZuqprg
-   is2HTPJNRNzFMCYA3fvOYeuKFbZPJZlKz06XoIyXoihzyfApVZUk+/WuA
-   +K6bKDLcwne94qaVGuuDCl0tpNpt9nwc+KvDSQtnZ8URRyKW87Jv3lBZQ
-   uz1dfXf0JixBAEw4DmkEL1kVAvXJak7PdVnc6BtqpGdNhNeNtkws9HYdd
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10579"; a="301593279"
-X-IronPort-AV: E=Sophos;i="5.96,299,1665471600"; 
-   d="scan'208";a="301593279"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2023 02:26:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10579"; a="762632464"
-X-IronPort-AV: E=Sophos;i="5.96,299,1665471600"; 
-   d="scan'208";a="762632464"
-Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 04 Jan 2023 02:26:44 -0800
-Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pD0yp-0000Fg-2H;
-        Wed, 04 Jan 2023 10:26:43 +0000
-Date:   Wed, 04 Jan 2023 18:26:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- b0587c87abc891e313d63946ff8c9f4939d1ea1a
-Message-ID: <63b5543b.sj00faMGFqBlEmps%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S234029AbjADMyp (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 4 Jan 2023 07:54:45 -0500
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BAA1DDDA
+        for <linux-hwmon@vger.kernel.org>; Wed,  4 Jan 2023 04:54:43 -0800 (PST)
+Received: by mail-qt1-x82c.google.com with SMTP id jr11so27066859qtb.7
+        for <linux-hwmon@vger.kernel.org>; Wed, 04 Jan 2023 04:54:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=BQfo1+41q2NZR57Q7BFlMODaOza2AgrRvUpAp3daCd4t1w84OEhFtXAM1g7CkVTr/y
+         mvXWkJvXCDM96Iy3cSf9E37Th3uZX5TzmwlIsHFzK3DAyLuSjJ8d3uR9drr/ahkzPGkt
+         iW+sw+gZOJCd7bumtfoM4UR2xOfXz6tdmGq2f+IJJhoSBazdofAm5Gs9PxuweXnk264c
+         knSGf1CtrqZScdeov1GoaGbl2sApMUXYjJGPCObPVA0UTlHx2t6+wdp4VOKHmsqLWM8X
+         lQt15zqigA6uJCG+q37n0r4mLK1MKtsniT1i9jhRA9qlN9E2Mf0sYN4W9Jd0n+39BoCK
+         yzWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=0ZiVq2jrsb/QVl0f9A4lbKMb2NRNGxl1QPgTbdsiGEAdNEKETa41q1h1hKpjrz9xup
+         nuxadtCxDYfaRXhuQqwr/HmPQ3otwGUr00upjFuhqAaXjgBfKEFVrqDNmLywDVSkvzkj
+         9Wq5DI3+AHJ+A2Ios5//MgAdTCD6h3nPgC301urc1Lmm3SIISQSUC9vtVsCZTz1/51Eq
+         9xgkUpDbBNI+S1r2dU2NQoGBqeKwpiSSmwHz9uH6C738gzYTMJ+LhXeHZon9aHlXnIaV
+         Z26FYo+ANmutfyNl2vAxKlydKR1jPjjA++n6gUEU4wuumTDglAYYjQK7KbgGgk4FsB6X
+         sVYA==
+X-Gm-Message-State: AFqh2kqyDmRe8dRla/bM400At0FK+Rv9QMaP5uTiw9+v3WGHsar74boS
+        uONQgtu72NmgQMYLfQkydth1JwfhSmWOtmUjwfQ=
+X-Google-Smtp-Source: AMrXdXuKXTvNK0aSB9vnyjtdhrZfKmRzvU9Jw1W0zhcD7x19AMFVNgTh5oL+8ilZBOfTDf/bL64QVz1mYULxa/ftADs=
+X-Received: by 2002:ac8:568a:0:b0:3a9:688d:fad2 with SMTP id
+ h10-20020ac8568a000000b003a9688dfad2mr1976067qta.646.1672836882017; Wed, 04
+ Jan 2023 04:54:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6200:5d91:b0:4a5:78e9:2012 with HTTP; Wed, 4 Jan 2023
+ 04:54:41 -0800 (PST)
+Reply-To: Gregdenzell9@gmail.com
+From:   Greg Denzell <mzsophie@gmail.com>
+Date:   Wed, 4 Jan 2023 12:54:41 +0000
+Message-ID: <CAEoj5=ZpJ15GRz-U33Ocbu5-P3Va+3bNv3476+mmJJ52cwx7tA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: b0587c87abc891e313d63946ff8c9f4939d1ea1a  hwmon: (coretemp) Simplify platform device handling
+Seasons Greetings!
 
-elapsed time: 727m
-
-configs tested: 61
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-s390                                defconfig
-arm                                 defconfig
-s390                             allyesconfig
-um                             i386_defconfig
-arm                              allyesconfig
-um                           x86_64_defconfig
-arm64                            allyesconfig
-powerpc                           allnoconfig
-sh                               allmodconfig
-mips                             allyesconfig
-i386                 randconfig-a004-20230102
-ia64                             allmodconfig
-i386                 randconfig-a003-20230102
-i386                 randconfig-a001-20230102
-i386                 randconfig-a002-20230102
-i386                 randconfig-a005-20230102
-x86_64                              defconfig
-i386                 randconfig-a006-20230102
-i386                                defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                           rhel-8.3-bpf
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-alpha                            allyesconfig
-powerpc                          allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-x86_64               randconfig-a003-20230102
-x86_64               randconfig-a001-20230102
-x86_64               randconfig-a004-20230102
-arc                              allyesconfig
-x86_64               randconfig-a002-20230102
-i386                             allyesconfig
-x86_64                    rhel-8.3-kselftests
-arc                  randconfig-r043-20230103
-x86_64               randconfig-a006-20230102
-riscv                randconfig-r042-20230103
-s390                 randconfig-r044-20230103
-x86_64                          rhel-8.3-func
-x86_64               randconfig-a005-20230102
-
-clang tested configs:
-i386                 randconfig-a011-20230102
-i386                 randconfig-a014-20230102
-i386                 randconfig-a013-20230102
-i386                 randconfig-a012-20230102
-i386                 randconfig-a015-20230102
-i386                 randconfig-a016-20230102
-x86_64                          rhel-8.3-rust
-x86_64               randconfig-a011-20230102
-x86_64               randconfig-a014-20230102
-x86_64               randconfig-a012-20230102
-arm                  randconfig-r046-20230103
-hexagon              randconfig-r045-20230103
-x86_64               randconfig-a013-20230102
-hexagon              randconfig-r041-20230103
-x86_64               randconfig-a015-20230102
-x86_64               randconfig-a016-20230102
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+This will remind you again that I have not yet received your reply to
+my last message to you.
