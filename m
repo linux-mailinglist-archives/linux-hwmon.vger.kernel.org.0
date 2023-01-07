@@ -2,58 +2,86 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9A2A661058
-	for <lists+linux-hwmon@lfdr.de>; Sat,  7 Jan 2023 18:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DB7661113
+	for <lists+linux-hwmon@lfdr.de>; Sat,  7 Jan 2023 19:38:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229785AbjAGRHK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-hwmon@lfdr.de>); Sat, 7 Jan 2023 12:07:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59738 "EHLO
+        id S231708AbjAGSij (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 7 Jan 2023 13:38:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjAGRHJ (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 7 Jan 2023 12:07:09 -0500
-Received: from mail.krjc.kg (unknown [212.112.113.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E987C41647
-        for <linux-hwmon@vger.kernel.org>; Sat,  7 Jan 2023 09:07:06 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.krjc.kg (Postfix) with ESMTP id 9FE21B249E0;
-        Sat,  7 Jan 2023 10:18:14 +0600 (+06)
-Received: from mail.krjc.kg ([127.0.0.1])
-        by localhost (mail.krjc.kg [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id aB4qK_LUM9gM; Sat,  7 Jan 2023 10:18:07 +0600 (+06)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.krjc.kg (Postfix) with ESMTP id 775C666E9B0;
-        Sat,  7 Jan 2023 02:09:32 +0600 (+06)
-X-Virus-Scanned: amavisd-new at krjc.kg
-Received: from mail.krjc.kg ([127.0.0.1])
-        by localhost (mail.krjc.kg [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id nLIM3ZeT_sCk; Sat,  7 Jan 2023 02:09:32 +0600 (+06)
-Received: from [192.168.100.202] (unknown [217.21.116.220])
-        by mail.krjc.kg (Postfix) with ESMTPSA id 9E5CC55E186;
-        Fri,  6 Jan 2023 19:18:12 +0600 (+06)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230092AbjAGSij (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 7 Jan 2023 13:38:39 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B16C45641
+        for <linux-hwmon@vger.kernel.org>; Sat,  7 Jan 2023 10:38:38 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id v30so6599825edb.9
+        for <linux-hwmon@vger.kernel.org>; Sat, 07 Jan 2023 10:38:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oSDH2EupTOrpEz9CCZUJ3Zv24Eo4wJFRMafxgvePobs=;
+        b=nacmK0iYUbBq9daO8Uw4P/9Lbmyx4BWsH1WQIXARTsJXsXIB2DYsxG3Bw0TeW+1pqm
+         jjR35rLGdLJEuv3Pb3pYWugWt95RIqNwZTqUBQ6C+v6Ltvr6oD1HqvInoMg7NlKTbbW9
+         mLPdA+1eVkIJkrC1A1HXNXaotDgaLNFBaMLVhChUNFC6lshb+llH7vkQ+FNYW2hmR5rO
+         mB4vjz7c63/Zn4IR4khu8hRlzLPUoJ3oxgN8Lw2BFzfHPr+pjlWpmHsh8KpgVwU97rMs
+         k8b12huBAGqUKac0In5Q42uvqZ3/8nNY3T02/G6XnLoz928ClE34TW1hbJ6M3uEZgtcm
+         rq7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oSDH2EupTOrpEz9CCZUJ3Zv24Eo4wJFRMafxgvePobs=;
+        b=W0JEObsY2hn0XeUXCxexwOy6SBQmklq/IY9BmjUe6lK9h6lUph6+nzDIWustvm1Sxj
+         vFeboP1IMzM7w2gkO+zxSUKJVDR0Pb5SoB3trMf26itke4tbfeTO1Bi1+B6GIqyhsIvj
+         GHPtS8/KG0X/1ZlPit81MIzjsf0jW4778wnXH5BP0cXrCtJZ2TYUXStjQmgBvR2usYTu
+         5QksqDulaWtB3Pi+zqGZDbHKDO5BOH2rEFU1Gb+vWrpkjfyXhEKN+UZFg9utOr5MO4YQ
+         Wh4Lov9IYTZz8plblIiO5yZWeBcbO5ru7q0QRqoqRkZcQGxxX7Dg74nhMLMHS1zVGxZD
+         QWLA==
+X-Gm-Message-State: AFqh2kr3i7kGpo9bItqgVqV109Mywb1nMBZVt0TfvdH/P2u5+KrcE2Zy
+        vZTS+tTU57Dm2VTOyMM9edT/3572HdypnQ==
+X-Google-Smtp-Source: AMrXdXvBsuzRR1ev3sV+ROLwfTexOiIL0qOi+6vs5iVV+me7sy6hBAc2TIg7ZsNPtLK2n+Y8C6Vukw==
+X-Received: by 2002:a05:6402:538f:b0:47c:4479:d60d with SMTP id ew15-20020a056402538f00b0047c4479d60dmr50379108edb.20.1673116716698;
+        Sat, 07 Jan 2023 10:38:36 -0800 (PST)
+Received: from localhost.localdomain ([46.211.83.22])
+        by smtp.googlemail.com with ESMTPSA id t32-20020a056402242000b0049148f6461dsm1704943eda.65.2023.01.07.10.38.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Jan 2023 10:38:36 -0800 (PST)
+From:   Denis Pauk <pauk.denis@gmail.com>
+To:     sebastian.arnhold@posteo.de
+Cc:     ahmad@khalifa.ws, chunkeey@gmail.com, linux-hwmon@vger.kernel.org,
+        linux@roeck-us.net, jdelvare@suse.com, jeroen@beerstra.org,
+        sst@poczta.fm, pauk.denis@gmail.com
+Subject: Re: [PATCH RFT] hwmon: (nct6755) Add support for NCT6799D
+Date:   Sat,  7 Jan 2023 20:37:39 +0200
+Message-Id: <20230107183739.2101-1-pauk.denis@gmail.com>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <767c4090-007c-a819-e047-11971ea9cc17@posteo.de>
+References: <767c4090-007c-a819-e047-11971ea9cc17@posteo.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: rahaline annetus
-To:     Recipients <Mr.Stefano@mail.krjc.kg>
-From:   Mr.Stefano@mail.krjc.kg, Pessina@mail.krjc.kg, test@mail.krjc.kg
-Date:   Fri, 06 Jan 2023 16:18:04 +0300
-Reply-To: stefanopessia755@hotmail.com
-Message-Id: <20230106131812.9E5CC55E186@mail.krjc.kg>
-X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MAY_BE_FORGED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_PDS_TO_EQ_FROM_NAME
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Summa 500 000,00 € on teile annetanud STEFANO PESSINA. Lisateabe saamiseks võtke palun tagasi aadressil stefanopessia755@hotmail.com
+Hi,
 
+Jeroen Beerstra and Slawomir Stepien have tested ASUS boards with nct6799d
+chip.
 
+I have merged your patch with rewrited wmi access patch and attached to
+https://bugzilla.kernel.org/show_bug.cgi?id=204807#c281
 
+I will send patches with updated wmi code after feedbacks from 204807
+receipients.
 
-The sum of €500,000.00 has been donated to you by STEFANO PESSINA. Kindly get back for more info via stefanopessia755@hotmail.com
+Best regards,
+             Denis.
