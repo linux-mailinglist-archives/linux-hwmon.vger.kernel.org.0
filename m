@@ -2,81 +2,61 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C72661542
-	for <lists+linux-hwmon@lfdr.de>; Sun,  8 Jan 2023 13:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E8C9662044
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Jan 2023 09:42:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232885AbjAHM4x (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 8 Jan 2023 07:56:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35802 "EHLO
+        id S236594AbjAIImA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 9 Jan 2023 03:42:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjAHM4x (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Sun, 8 Jan 2023 07:56:53 -0500
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A251DEF7
-        for <linux-hwmon@vger.kernel.org>; Sun,  8 Jan 2023 04:56:52 -0800 (PST)
-Received: by mail-ed1-x541.google.com with SMTP id s5so8675518edc.12
-        for <linux-hwmon@vger.kernel.org>; Sun, 08 Jan 2023 04:56:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IEfjnjRXE9QZTXb79EM1wVeXy9mwHMOyVXXO9n++FAQ=;
-        b=I1P9NqkE2JoAH0oUWLcJ4SQi3L7R3BtR29RXVP4BQlVXzVyD/YKIr0Vy3iDahHQRoe
-         uMkXLbQ0HTR6bpRI7lJeuUqDowJftn2o2PfAHfevGOzi8peWMZy7cD+kf4T9Sv3gByXe
-         p+P+YD8Hfa1L6IGHQQDDODMCyaNtHG63rwa0U0AmqZsvFMGjX7I3qTkJnH+KLll7XNpF
-         1V3OWBmXfQWN6Q6byQgcp24ibFuBJxSBDAQjAJCaA6A86VQJjJlToyvdgIZIOU5sgRmf
-         YFe0J8dHKevb6RCPL6QBWHr3OTOnjdEUssBOykZDuuns8fd7Fu1jGEwJfWBLGnu8Sspz
-         vHLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IEfjnjRXE9QZTXb79EM1wVeXy9mwHMOyVXXO9n++FAQ=;
-        b=RPFEM/3PyWTXuJOLsbC1wbdCh6diRJvzJkbIufC7louAGhbITfOSq4KOEQu1Y8D3Li
-         lqrROA5ii5mcT9+Jam8D69vrJp2I1BFtR1ZiNU32TumqsNZT8lx6KoAqWKYHOI7G0Mx/
-         3tBNBp6WOTziSml09yx737dkmQMYSCxpFiHwKdduKQcPfMvDJV+rDxIDIX7zqVG3vT3g
-         9jxVhgfBqn7gqvMMcLaz6N3A+SwHgrH5lsdKm9/65CgAaRB5Te25mMja9QbQ3jer4j/D
-         qYIpvkBzY/CBhCX2d0S57N2eoZn3U1QHTQtbACbAvIxXxclOISqDx0TLA66+3nXBm6od
-         M/3g==
-X-Gm-Message-State: AFqh2krIxOi0CPlIe4VEzgjwcyhFGZQGZL42KG4qiWMgB7A8Enj5EBe7
-        /ng5iq7SGJtERR+KYU9rd2XJGfDhRc/pt6OxpiiQnJ1vwLo=
-X-Google-Smtp-Source: AMrXdXvIOo3+169lCRuE5Jk8POonXmh5SMNPI+nRitQfGYRBcyrMl/GUqPtL0mQv5A3Xr37AUiX1/V07ZXuTybR6b4I=
-X-Received: by 2002:aa7:d35a:0:b0:46c:4b56:8c06 with SMTP id
- m26-20020aa7d35a000000b0046c4b568c06mr5594837edr.230.1673182252467; Sun, 08
- Jan 2023 04:50:52 -0800 (PST)
+        with ESMTP id S236754AbjAIIlS (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 9 Jan 2023 03:41:18 -0500
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4272B14006
+        for <linux-hwmon@vger.kernel.org>; Mon,  9 Jan 2023 00:41:15 -0800 (PST)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id C3528837FF; Mon,  9 Jan 2023 08:41:03 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1673253672; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=AxqIpjZ0512/HTqB3iLgvVG8oAEqOfjhhRdgUCht1gFvkLVc4AJC6c+ZVVDBAKRt+
+         nAUH7U+DMlUVuqXiomhVXr5IijZm7MGKCkVCXmvo3OYziwcemttOsSBJSoTS3gkvZE
+         Uvj8dxjlD4cV0+u8ZFZUBWKWclAEzPIl5tB64ZdxHhp9BwH2mAcJZnrwUice83E9gp
+         CZypPZvrdBTH2pKKy5hh2j6BkDeLLhClEUx662uzEza9MJH7X7V6TzNUdATfcU5956
+         qGXALQX/VfMxKEK6Omj/iCwCSPjAi/tdQytSc87C3n1q2/jIq3YM0zrkJtJQTc8U/M
+         ibnigh9RuFk0g==
+Received: by mail.lokoho.com for <linux-hwmon@vger.kernel.org>; Mon,  9 Jan 2023 08:40:48 GMT
+Message-ID: <20230109074502-0.1.3a.ko9i.0.x4njkrj2ho@lokoho.com>
+Date:   Mon,  9 Jan 2023 08:40:48 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-hwmon@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Received: by 2002:a17:906:160a:b0:84d:390c:46fb with HTTP; Sun, 8 Jan 2023
- 04:50:51 -0800 (PST)
-Reply-To: susanklatten0411@gmail.com
-From:   Susan Klatten <luiskyunguti@gmail.com>
-Date:   Sun, 8 Jan 2023 04:50:51 -0800
-Message-ID: <CAFX96k=b-0KrUncxBANeASgodUY8JdaFRV3T1VheCWGyGkhpQQ@mail.gmail.com>
-Subject: RE:
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
--- 
-Hello, I am Susanne Klatten.
+Dzie=C5=84 dobry,
 
-Do you know our company gives out Xmas loan offer, Do you need a loan?
-If yes contact for more details..
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Email : susanklatten0411@gmail.com
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Executive Chairman
-Susanne Klatten
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-click link below to know more information about us .
 
-https://en.wikipedia.org/wiki/Susanne_Klatten
-https://www.forbes.com/profile/susanne-klatten
+Pozdrawiam
+Adam Charachuta
