@@ -2,237 +2,285 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9489664C6A
-	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Jan 2023 20:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E1C664F15
+	for <lists+linux-hwmon@lfdr.de>; Tue, 10 Jan 2023 23:49:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235100AbjAJTZ4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 10 Jan 2023 14:25:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35588 "EHLO
+        id S235312AbjAJWt0 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 10 Jan 2023 17:49:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235531AbjAJTZw (ORCPT
+        with ESMTP id S234653AbjAJWsj (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 10 Jan 2023 14:25:52 -0500
-Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F58206
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 Jan 2023 11:25:49 -0800 (PST)
-Received: by mail-vk1-xa31.google.com with SMTP id s192so3800831vka.3
-        for <linux-hwmon@vger.kernel.org>; Tue, 10 Jan 2023 11:25:49 -0800 (PST)
+        Tue, 10 Jan 2023 17:48:39 -0500
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B053F6719C;
+        Tue, 10 Jan 2023 14:48:38 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id az20so13441174ejc.1;
+        Tue, 10 Jan 2023 14:48:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=criticallink.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dy23pgZjHKapLKv15Vx83fv6lGT5u7B9IA06lp5hFmg=;
-        b=ERn/higlX2dFg4WpDH2b15Lk7RSWvuEqplnHDYtm5CrkvjlOxvANu5FTN2IdUuSBt9
-         zx5Sqx1SEL/1rNzaGr7wRafi7HDAAKKTpUJbt8InQwT/ryQY6zlVwt2Uur2rCH4F6RT5
-         A3fNlzRu1wj5JmcGieozvw5cxx13veOk+6qXoyW5KBmBvshr41IlIKlcyv71FE1TkVp0
-         /Z7xMd7r4oCXngTmrBNAAP6VsUyHf9Yc8G4ogaNVhsBCMrxcZY4KHSSp/6yB9vx+XKIp
-         aQ5YjRr9b6P4Ee+DNq0zW2NmANWCuB/B7K8tQLilzW4ZnVR280LCl5pASpQb4o6Bt045
-         +5cw==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=34537CkeJxWsVZTQczdlqXJHFUpRJcXE3fQV9p0bzUg=;
+        b=PNUReIF07qSG+ocQwY+s1juEWesK6/5LrWPlYzQ21yXgQpHG/QbTpbc8KPHbfhU8e4
+         GwAMVVlIN6v1tI/NaRUHbLd8rsgUsUPBDgauXXIH7jOKYV2bR+G8KBVv0ksPW6c6R0PS
+         OncT8Vqj4Q9rLEFMuq4alVENilvR3XDc34yjQr84YOpynusT+GbSDVbYy49ZtH6K9AJ9
+         OxDbxZpBh9KW7XlU0HefKpr2rFKL4qGGsMzUJvBXc+bQwI8aMwDx4XRA+EPHgOZuH/ll
+         1W2mZa1Bh3dbkR9RB5a5Tl69KZWGt6BRGg0EWTWmq7ykmofufuqmJnmdqWF1br/NR1aL
+         rYKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Dy23pgZjHKapLKv15Vx83fv6lGT5u7B9IA06lp5hFmg=;
-        b=udBcujajpudk2Hk1kM0EPFo+auXymalkxPaT35BARVrp8sIkOnBhL7JeZ4GllqYNGE
-         zbF8cXeqX1v7iLjtN6uA0hxqhMPQE1zQuxUWhrxR/Nx9Gh2V2WhLSik+zlTyoH044olu
-         spjc5vmXWdFJWBpRd42vWo4G6UX4VHya5Bpa9ObYvIOGBVA2Fc3LpODROLqeNbowpIWG
-         47x8M7aPZ+GRm3csboJdE2KxXKQTRddmIhhGe4Uv/qV/jvz9gMYBnfTL3prpfRMDUv5l
-         7wt0IrsPcp0DmwvibyNz1vH1pMWpZSmL8ucS2yt5bAA4nTdaowfFtpruzOhqAlESg+aH
-         nCjA==
-X-Gm-Message-State: AFqh2koszNONLztxzoa4ijSirctr9KLcL7AcPfZSic4vi0ucGguyQyV9
-        XNQXfMtrq4pC77NRIGMQJpAnbHbD0Q6YheVTqIg6iF0GLeDmrQ==
-X-Google-Smtp-Source: AMrXdXte9jOvSL/EmGgpt5bvEu45qNmWyvfBgbOi2jH/VrK7IIzJmGabkCa+icpgLmCWLKqjFFs/PD9ToGZF8n0dPK4=
-X-Received: by 2002:a1f:2d08:0:b0:3d8:d753:56bb with SMTP id
- t8-20020a1f2d08000000b003d8d75356bbmr3260420vkt.39.1673378748741; Tue, 10 Jan
- 2023 11:25:48 -0800 (PST)
+        bh=34537CkeJxWsVZTQczdlqXJHFUpRJcXE3fQV9p0bzUg=;
+        b=HOm/1UTGWOMBRxCJTJ34bjixHnB82QK36PyyfH4PnxpfRuJXwg9szBzK8leqCnX5Ri
+         N++/1NRZtqbxI94Bra2s0RYVUWTjFME0M4cjjHwgvaoo9q18HU1TgrkmJGf7z651FzqO
+         a4fvCcRBsSc4C5lfLxBfGUXlQACLA5l10cVxj75WEExRcITOrpTvUr2cQzKth1XmgbML
+         uzMMht75IdtqfzJckugtwIjjO0bRcpDagv9qxK2zg6BFfTC8hSto4uo7iZewPNfMyyA4
+         3ceKnEKgblDVoQwYPmNu/StS5BFpeHNx7lSBLFh6QFI4Xj9mInlWDhhwLUiWUlDFM4bR
+         iQ/Q==
+X-Gm-Message-State: AFqh2kr4Za402jp/TDp1nBTjjkDAY8JXx3tlPxOKPnkVvfZi+X/0zNC9
+        Yj/JaWskNYzI+317JTUdR20=
+X-Google-Smtp-Source: AMrXdXtPyQ+UIS58yTdikDdyh24fXmuwCQoPersO6sapASu5nkMEgllGtSMMGT9r2bNeTDpEbENrTg==
+X-Received: by 2002:a17:907:2587:b0:7c0:ac4b:8b9 with SMTP id ad7-20020a170907258700b007c0ac4b08b9mr50615437ejc.14.1673390917289;
+        Tue, 10 Jan 2023 14:48:37 -0800 (PST)
+Received: from localhost.localdomain ([46.211.6.169])
+        by smtp.googlemail.com with ESMTPSA id d14-20020a170906304e00b0077077c62cadsm5462089ejd.31.2023.01.10.14.48.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jan 2023 14:48:36 -0800 (PST)
+From:   Denis Pauk <pauk.denis@gmail.com>
+Cc:     ahmad@khalifa.ws, chunkeey@gmail.com, greg@krypto.org,
+        hubert.banas@gmail.com, igor@svelig.com, jaap.dehaan@freenet.de,
+        jdelvare@suse.com, jeroen@beerstra.org, jonfarr87@gmail.com,
+        jwp@redhat.com, kdudka@redhat.com, kernel@melin.net,
+        kpietrzak@disroot.org, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@roeck-us.net, me@rebtoor.com,
+        metalcaedes@gmail.com, michael@theoddone.net,
+        mikhail.v.gavrilov@gmail.com, mundanedefoliation@gmail.com,
+        nephartyz@gmail.com, oleksandr@natalenko.name,
+        pauk.denis@gmail.com, pehlm@pekholm.org, renedis@hotmail.com,
+        robert@swiecki.net, sahan.h.fernando@gmail.com,
+        sebastian.arnhold@posteo.de, sst@poczta.fm, to.eivind@gmail.com,
+        torvic9@mailbox.org
+Subject: [PATCH v3 1/2] hwmon: (nct6775) Directly call ASUS ACPI WMI method
+Date:   Wed, 11 Jan 2023 00:48:22 +0200
+Message-Id: <20230110224823.14524-1-pauk.denis@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-References: <20221214220727.1350784-3-jcormier@criticallink.com>
- <20230109233534.1932370-1-jcormier@criticallink.com> <20230109233534.1932370-4-jcormier@criticallink.com>
- <d49d4b4c-e7ee-e0a1-56e6-7f193e0d1340@roeck-us.net> <CADL8D3YEkZaOjUY3mRLGT0M+b7MwN5zQZrbsw5W8Mn=PJ7PtcA@mail.gmail.com>
- <dd80ee77-3b71-ee47-2744-36b09e0ec372@roeck-us.net>
-In-Reply-To: <dd80ee77-3b71-ee47-2744-36b09e0ec372@roeck-us.net>
-From:   Jon Cormier <jcormier@criticallink.com>
-Date:   Tue, 10 Jan 2023 14:25:37 -0500
-Message-ID: <CADL8D3YksXnRkEgXkY86KZXM4nouJBemno=db5KgbCi3xmSa8Q@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] hwmon: ltc2945: Handle error case in ltc2945_value_store
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Bob Duke <bduke@criticallink.com>,
-        John Pruitt <jpruitt@criticallink.com>,
-        Dan Vincelette <dvincelette@criticallink.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Jan 10, 2023 at 1:22 PM Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 1/10/23 10:19, Jon Cormier wrote:
-> > On Mon, Jan 9, 2023 at 7:04 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> >>
-> >> On 1/9/23 15:35, Jonathan Cormier wrote:
-> >>> ltc2945_val_to_reg errors were not being handled
-> >>> which would have resulted in register being set to
-> >>> 0 (clamped) instead of being left alone.
-> >>>
-> >>> Change reg_to_val and val_to_reg to return values
-> >>> via parameters to make it more obvious when an
-> >>> error case isn't handled. Also to allow
-> >>> the regval type to be the correct sign in prep for
-> >>> next commits.
-> >>>
-> >>
-> >> Sorry, I don't see that as reason or argument for such invasive changes.
-> >> As far as I can see, a two-liner to check the return value of val_to_reg()
-> >> should have been sufficient. Most of the rest, such as splitting
-> >> the return value into two elements, is POV and just adds additional code
-> >> and complexity for zero gain.
-> > I can do that. However, you had also mentioned changing the return
-> > type to match what the calling function was expecting, an unsigned
-> > long. But I can't do that since error codes are negative so it would
-> > be a signed long which would lose precision and seemingly defeat the
-> > point of matching the variable type the caller wants.  I could make it
-> > a signed long long but that still doesn't match.  So it seemed saner
-> > to just return the error and the value separately, that way the
-> > function declaration was explicit about the types it wanted/returned,
-> > and less room for error.  Would love to know your preferred solution.
-> >
->
-> That is only true if the upper bit is actually ever set in that signed long.
-> Which means I'll have to verify if "would lose precision" is actually
-> a correct statement.
-I'd like to argue that is another reason to go with this change
-instead of working out the math of just how many bits are needed in
-the worst case and having to document it. And potentially getting that
-calculation wrong.  But I can if you'd like me to.
->
-> Guenter
->
-> >>
-> >> Guenter
-> >>
-> >>> Fixes: 6700ce035f83 ("hwmon: Driver for Linear Technologies LTC2945")
-> >>>
-> >>> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-> >>> ---
-> >>>    drivers/hwmon/ltc2945.c | 30 ++++++++++++++++++------------
-> >>>    1 file changed, 18 insertions(+), 12 deletions(-)
-> >>>
-> >>> diff --git a/drivers/hwmon/ltc2945.c b/drivers/hwmon/ltc2945.c
-> >>> index 9af3e3821152..c66acf8d2124 100644
-> >>> --- a/drivers/hwmon/ltc2945.c
-> >>> +++ b/drivers/hwmon/ltc2945.c
-> >>> @@ -70,12 +70,12 @@ static inline bool is_power_reg(u8 reg)
-> >>>    }
-> >>>
-> >>>    /* Return the value from the given register in uW, mV, or mA */
-> >>> -static long long ltc2945_reg_to_val(struct device *dev, u8 reg)
-> >>> +static int ltc2945_reg_to_val(struct device *dev, u8 reg, u64 *regval)
-> >>>    {
-> >>>        struct regmap *regmap = dev_get_drvdata(dev);
-> >>>        unsigned int control;
-> >>>        u8 buf[3];
-> >>> -     long long val;
-> >>> +     u64 val;
-> >>>        int ret;
-> >>>
-> >>>        ret = regmap_bulk_read(regmap, reg, buf,
-> >>> @@ -148,11 +148,12 @@ static long long ltc2945_reg_to_val(struct device *dev, u8 reg)
-> >>>        default:
-> >>>                return -EINVAL;
-> >>>        }
-> >>> -     return val;
-> >>> +     *regval = val;
-> >>> +     return 0;
-> >>>    }
-> >>>
-> >>>    static int ltc2945_val_to_reg(struct device *dev, u8 reg,
-> >>> -                           unsigned long val)
-> >>> +                           unsigned long val, unsigned long *regval)
-> >>>    {
-> >>>        struct regmap *regmap = dev_get_drvdata(dev);
-> >>>        unsigned int control;
-> >>> @@ -220,19 +221,21 @@ static int ltc2945_val_to_reg(struct device *dev, u8 reg,
-> >>>        default:
-> >>>                return -EINVAL;
-> >>>        }
-> >>> -     return val;
-> >>> +     *regval = val;
-> >>> +     return 0;
-> >>>    }
-> >>>
-> >>>    static ssize_t ltc2945_value_show(struct device *dev,
-> >>>                                  struct device_attribute *da, char *buf)
-> >>>    {
-> >>>        struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
-> >>> -     long long value;
-> >>> +     int ret;
-> >>> +     u64 value;
-> >>>
-> >>> -     value = ltc2945_reg_to_val(dev, attr->index);
-> >>> -     if (value < 0)
-> >>> -             return value;
-> >>> -     return sysfs_emit(buf, "%lld\n", value);
-> >>> +     ret = ltc2945_reg_to_val(dev, attr->index, &value);
-> >>> +     if (ret < 0)
-> >>> +             return ret;
-> >>> +     return sysfs_emit(buf, "%llu\n", value);
-> >>>    }
-> >>>
-> >>>    static ssize_t ltc2945_value_store(struct device *dev,
-> >>> @@ -245,7 +248,7 @@ static ssize_t ltc2945_value_store(struct device *dev,
-> >>>        unsigned long val;
-> >>>        u8 regbuf[3];
-> >>>        int num_regs;
-> >>> -     int regval;
-> >>> +     unsigned long regval;
-> >>>        int ret;
-> >>>
-> >>>        ret = kstrtoul(buf, 10, &val);
-> >>> @@ -253,7 +256,10 @@ static ssize_t ltc2945_value_store(struct device *dev,
-> >>>                return ret;
-> >>>
-> >>>        /* convert to register value, then clamp and write result */
-> >>> -     regval = ltc2945_val_to_reg(dev, reg, val);
-> >>> +     ret = ltc2945_val_to_reg(dev, reg, val, &regval);
-> >>> +     if (ret < 0)
-> >>> +             return ret;
-> >>> +
-> >>>        if (is_power_reg(reg)) {
-> >>>                regval = clamp_val(regval, 0, 0xffffff);
-> >>>                regbuf[0] = regval >> 16;
-> >>
-> >
-> >
-> > --
-> > Jonathan Cormier
-> > Software Engineer
-> >
-> > Voice:  315.425.4045 x222
-> >
-> >
-> >
-> > http://www.CriticalLink.com
-> > 6712 Brooklawn Parkway, Syracuse, NY 13211
->
+New ASUS B650/B660/X670 boards firmware have not exposed WMI monitoring
+GUID  and entrypoint method WMBD could be implemented for different device
+UID.
 
+Implement the direct call to entrypoint method for monitoring the device
+UID of B550/X570 boards.
 
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=204807
+Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
+Co-developed-by: Ahmad Khalifa <ahmad@khalifa.ws>
+Signed-off-by: Ahmad Khalifa <ahmad@khalifa.ws>
+---
+Changes:
+v1:
+  Rename each_port_arg to each_device_arg
+  Rename nct6775_find_asus_acpi to nct6775_asuswmi_device_match
+  Remove unrequired return -EEXIST, and iterate whole list of devices
+  Make asus_acpi_dev static
+v2:
+  Restore break iteration logic in nct6775_asuswmi_device_match
+  Add config check if ACPI disabled and acpi_device_* are undefined
+  Pass device_id as data parameter of acpi_bus_for_each_dev
+
+>> Also, the use of a static variable makes me wonder: would asus_acpi_dev
+   be the same for both chips if there are two Super-IO chips in the system ?
+
+Available B550/X570/B650/B660/X670 firmwares have contained only one device 
+with WMBD method and provided proxy only to 0x0270 port. Difference between 
+board generation is only in name of the such device.
+
+ drivers/hwmon/Kconfig            |  2 +-
+ drivers/hwmon/nct6775-platform.c | 97 ++++++++++++++++++++++----------
+ 2 files changed, 69 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 3176c33af6c6..300ce8115ce4 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -1516,7 +1516,7 @@ config SENSORS_NCT6775_CORE
+ config SENSORS_NCT6775
+ 	tristate "Platform driver for Nuvoton NCT6775F and compatibles"
+ 	depends on !PPC
+-	depends on ACPI_WMI || ACPI_WMI=n
++	depends on ACPI || ACPI=n
+ 	select HWMON_VID
+ 	select SENSORS_NCT6775_CORE
+ 	help
+diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
+index bf43f73dc835..082f48785999 100644
+--- a/drivers/hwmon/nct6775-platform.c
++++ b/drivers/hwmon/nct6775-platform.c
+@@ -17,7 +17,6 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+-#include <linux/wmi.h>
+ 
+ #include "nct6775.h"
+ 
+@@ -107,40 +106,48 @@ struct nct6775_sio_data {
+ 	void (*sio_exit)(struct nct6775_sio_data *sio_data);
+ };
+ 
+-#define ASUSWMI_MONITORING_GUID		"466747A0-70EC-11DE-8A39-0800200C9A66"
++#define ASUSWMI_METHOD			"WMBD"
+ #define ASUSWMI_METHODID_RSIO		0x5253494F
+ #define ASUSWMI_METHODID_WSIO		0x5753494F
+ #define ASUSWMI_METHODID_RHWM		0x5248574D
+ #define ASUSWMI_METHODID_WHWM		0x5748574D
+ #define ASUSWMI_UNSUPPORTED_METHOD	0xFFFFFFFE
++#define ASUSWMI_DEVICE_HID		"PNP0C14"
++#define ASUSWMI_DEVICE_UID		"ASUSWMI"
++
++/*
++ * ASUS boards have only one device with WMI "WMBD" method and have provided
++ * access to only one SuperIO chip at 0x0290.
++ */
++static struct acpi_device *asus_acpi_dev;
+ 
+ static int nct6775_asuswmi_evaluate_method(u32 method_id, u8 bank, u8 reg, u8 val, u32 *retval)
+ {
+-#if IS_ENABLED(CONFIG_ACPI_WMI)
++#if IS_ENABLED(CONFIG_ACPI)
++	acpi_handle handle = acpi_device_handle(asus_acpi_dev);
+ 	u32 args = bank | (reg << 8) | (val << 16);
+-	struct acpi_buffer input = { (acpi_size) sizeof(args), &args };
+-	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
++	struct acpi_object_list input;
++	union acpi_object params[3];
++	unsigned long long result;
+ 	acpi_status status;
+-	union acpi_object *obj;
+-	u32 tmp = ASUSWMI_UNSUPPORTED_METHOD;
+-
+-	status = wmi_evaluate_method(ASUSWMI_MONITORING_GUID, 0,
+-				     method_id, &input, &output);
+ 
++	params[0].type = ACPI_TYPE_INTEGER;
++	params[0].integer.value = 0;
++	params[1].type = ACPI_TYPE_INTEGER;
++	params[1].integer.value = method_id;
++	params[2].type = ACPI_TYPE_BUFFER;
++	params[2].buffer.length = sizeof(args);
++	params[2].buffer.pointer = (void *)&args;
++	input.count = 3;
++	input.pointer = params;
++
++	status = acpi_evaluate_integer(handle, ASUSWMI_METHOD, &input, &result);
+ 	if (ACPI_FAILURE(status))
+ 		return -EIO;
+ 
+-	obj = output.pointer;
+-	if (obj && obj->type == ACPI_TYPE_INTEGER)
+-		tmp = obj->integer.value;
+-
+ 	if (retval)
+-		*retval = tmp;
+-
+-	kfree(obj);
++		*retval = (u32)result & 0xFFFFFFFF;
+ 
+-	if (tmp == ASUSWMI_UNSUPPORTED_METHOD)
+-		return -ENODEV;
+ 	return 0;
+ #else
+ 	return -EOPNOTSUPP;
+@@ -1099,6 +1106,46 @@ static const char * const asus_wmi_boards[] = {
+ 	"TUF GAMING Z490-PLUS (WI-FI)",
+ };
+ 
++#if IS_ENABLED(CONFIG_ACPI)
++/*
++ * Callback for acpi_bus_for_each_dev() to find the right device
++ * by _UID and _HID and return 1 to stop iteration.
++ */
++static int nct6775_asuswmi_device_match(struct device *dev, void *data)
++{
++	struct acpi_device *adev = to_acpi_device(dev);
++	const char *uid = acpi_device_uid(adev);
++	const char *hid = acpi_device_hid(adev);
++
++	if (hid && !strcmp(hid, ASUSWMI_DEVICE_HID) &&
++		uid && !strcmp(uid, data)) {
++		asus_acpi_dev = adev;
++		return 1;
++	}
++
++	return 0;
++}
++#endif
++
++static enum sensor_access nct6775_determine_access(const char *device_uid)
++{
++#if IS_ENABLED(CONFIG_ACPI)
++	u8 tmp;
++
++	acpi_bus_for_each_dev(nct6775_asuswmi_device_match, (void *)device_uid);
++	if (!asus_acpi_dev)
++		return access_direct;
++
++	/* if reading chip id via ACPI succeeds, use WMI "WMBD" method for access */
++	if (!nct6775_asuswmi_read(0, NCT6775_PORT_CHIPID, &tmp) && tmp) {
++		pr_debug("Using Asus WMBD method of %s to access %#x chip.\n", device_uid, tmp);
++		return access_asuswmi;
++	}
++#endif
++
++	return access_direct;
++}
++
+ static int __init sensors_nct6775_platform_init(void)
+ {
+ 	int i, err;
+@@ -1109,7 +1156,6 @@ static int __init sensors_nct6775_platform_init(void)
+ 	int sioaddr[2] = { 0x2e, 0x4e };
+ 	enum sensor_access access = access_direct;
+ 	const char *board_vendor, *board_name;
+-	u8 tmp;
+ 
+ 	err = platform_driver_register(&nct6775_driver);
+ 	if (err)
+@@ -1122,15 +1168,8 @@ static int __init sensors_nct6775_platform_init(void)
+ 	    !strcmp(board_vendor, "ASUSTeK COMPUTER INC.")) {
+ 		err = match_string(asus_wmi_boards, ARRAY_SIZE(asus_wmi_boards),
+ 				   board_name);
+-		if (err >= 0) {
+-			/* if reading chip id via WMI succeeds, use WMI */
+-			if (!nct6775_asuswmi_read(0, NCT6775_PORT_CHIPID, &tmp) && tmp) {
+-				pr_info("Using Asus WMI to access %#x chip.\n", tmp);
+-				access = access_asuswmi;
+-			} else {
+-				pr_err("Can't read ChipID by Asus WMI.\n");
+-			}
+-		}
++		if (err >= 0)
++			access = nct6775_determine_access(ASUSWMI_DEVICE_UID);
+ 	}
+ 
+ 	/*
+
+base-commit: b0587c87abc891e313d63946ff8c9f4939d1ea1a
 -- 
-Jonathan Cormier
-Software Engineer
+2.39.0
 
-Voice:  315.425.4045 x222
-
-
-
-http://www.CriticalLink.com
-6712 Brooklawn Parkway, Syracuse, NY 13211
