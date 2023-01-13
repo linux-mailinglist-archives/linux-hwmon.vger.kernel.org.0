@@ -2,101 +2,92 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A921669B13
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Jan 2023 15:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0000C66A422
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Jan 2023 21:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjAMO4f (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 13 Jan 2023 09:56:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49482 "EHLO
+        id S229718AbjAMUgT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 13 Jan 2023 15:36:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229732AbjAMO4E (ORCPT
+        with ESMTP id S229684AbjAMUgS (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 13 Jan 2023 09:56:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C068D5FD;
-        Fri, 13 Jan 2023 06:42:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8A890B82171;
-        Fri, 13 Jan 2023 14:42:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CBFC433EF;
-        Fri, 13 Jan 2023 14:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673620934;
-        bh=f9xYLBEdIZS6xHzO4ogzkto2j4CKNmGShIFM0BXcVss=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QEmS8yn2txSOdlKbJJdbxLku7cU0PZmRStyAP87J55DPSpT5bLoSZTJ4RS4RtLR4W
-         t6kYnPrwqhKS80huFweNl+qeVEpgtzWn61YFL8E2uPhU76pZ0kVmJrZI+Giq56HLrA
-         81VthUgoJyRkVfmJ4dw/I62vcnxstsrqEoSSufm+5sr4bw5BUBdKdWKiHhlK3bxauQ
-         iNePD7wwrxuQBpHNAeiQsQzgnDNFOuDpwt0ZaLczp2/8pL+SUYOBmYMKjdO/AZxbnb
-         5gl8FZqxDz2OJpkzPoqKJXwDsGE0ofX4EOjGE1Sse5iy68PhS/yQOYIbV7YT1w9yUd
-         wMM6SZITU3CGw==
-Date:   Fri, 13 Jan 2023 14:42:07 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     linux-fpga@vger.kernel.org, Xu Yilun <yilun.xu@intel.com>,
-        Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
-        Moritz Fischer <mdf@kernel.org>,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei zhang <tianfei.zhang@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Marco Pagani <marpagan@redhat.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v5 03/10] mfd: intel-m10-bmc: Split into core and spi
- specific parts
-Message-ID: <Y8Ftv3/SwNI403I3@google.com>
-References: <20221226175849.13056-1-ilpo.jarvinen@linux.intel.com>
- <20221226175849.13056-4-ilpo.jarvinen@linux.intel.com>
+        Fri, 13 Jan 2023 15:36:18 -0500
+X-Greylist: delayed 4177 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 13 Jan 2023 12:35:59 PST
+Received: from mail.dmbarone.com (mail.dmbarone.com [5.181.144.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3061B1D7;
+        Fri, 13 Jan 2023 12:35:57 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dmbarone.com (Postfix) with ESMTP id A6A2A2A56DC;
+        Fri, 13 Jan 2023 15:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673623549; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=aZlCZBThkmHI4RIfhijFhrDQnHCy/Xl7TNfW0/j1wX1qfdzwVqggHO2ETrOVEE9ox
+         5L9Zof05uKP8fn6Oz6SAqdZjOLEzkW1bNmIudiM3C/JGSJCfDMVpscJUw2BQ8k1IWV
+         kGfvZ5LRxhdcH3yPO1sXVrBpL67PNHP6E0ARFzgY=
+X-Virus-Scanned: Debian amavisd-new at ispdmbarone.kubeitalia.it
+Received: from mail.dmbarone.com ([127.0.0.1])
+        by localhost (ispdmbarone.kubeitalia.it [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id 77yDe_Wyf_gF; Fri, 13 Jan 2023 15:25:49 +0000 (UTC)
+Received: from [172.20.10.6] (unknown [129.205.124.225])
+        (Authenticated sender: admin@dmbarone.com)
+        by mail.dmbarone.com (Postfix) with ESMTPSA id B337E2A544D;
+        Fri, 13 Jan 2023 15:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673623549; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=aZlCZBThkmHI4RIfhijFhrDQnHCy/Xl7TNfW0/j1wX1qfdzwVqggHO2ETrOVEE9ox
+         5L9Zof05uKP8fn6Oz6SAqdZjOLEzkW1bNmIudiM3C/JGSJCfDMVpscJUw2BQ8k1IWV
+         kGfvZ5LRxhdcH3yPO1sXVrBpL67PNHP6E0ARFzgY=
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221226175849.13056-4-ilpo.jarvinen@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeit!!?=
+To:     Recipients <admi@dmbarone.com>
+From:   <admi@dmbarone.com>
+Date:   Fri, 13 Jan 2023 16:25:49 +0100
+Reply-To: theresasteven225@gmail.com
+X-Antivirus: Avast (VPS 230113-2, 1/13/2023), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20230113152549.A6A2A2A56DC@mail.dmbarone.com>
+X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_80,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.9291]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [129.205.124.225 listed in zen.spamhaus.org]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [5.181.144.66 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [theresasteven225[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, 26 Dec 2022, Ilpo Järvinen wrote:
+Eine Spende wurde an Sie get=E4tigt, antworten Sie f=FCr weitere Einzelheit=
+en.
 
-> Split the common code from intel-m10-bmc driver into intel-m10-bmc-core
-> and move the SPI bus parts into an interface specific file.
-> 
-> intel-m10-bmc-core becomes the core MFD functions which can support
-> multiple bus interface like SPI bus.
-> 
-> Co-developed-by: Tianfei zhang <tianfei.zhang@intel.com>
-> Signed-off-by: Tianfei zhang <tianfei.zhang@intel.com>
-> Reviewed-by: Russ Weight <russell.h.weight@intel.com>
-> Acked-by: Guenter Roeck <linux@roeck-us.net> # hwmon
-> Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> ---
->  MAINTAINERS                                   |   2 +-
->  drivers/fpga/Kconfig                          |   2 +-
->  drivers/hwmon/Kconfig                         |   2 +-
->  drivers/mfd/Kconfig                           |  30 ++--
->  drivers/mfd/Makefile                          |   4 +-
->  drivers/mfd/intel-m10-bmc-core.c              | 122 +++++++++++++++++
->  .../{intel-m10-bmc.c => intel-m10-bmc-spi.c}  | 128 +++---------------
->  include/linux/mfd/intel-m10-bmc.h             |   6 +
->  8 files changed, 172 insertions(+), 124 deletions(-)
->  create mode 100644 drivers/mfd/intel-m10-bmc-core.c
->  rename drivers/mfd/{intel-m10-bmc.c => intel-m10-bmc-spi.c} (59%)
-
-Looks okay:
-
-For my own reference (apply this as-is to your sign-off block):
-
-Acked-for-MFD-by: Lee Jones <lee@kernel.org>
+Gr=FC=DFe
+Theresia Steven
 
 -- 
-Lee Jones [李琼斯]
+This email has been checked for viruses by Avast antivirus software.
+www.avast.com
