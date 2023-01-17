@@ -2,87 +2,72 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D1266E62B
-	for <lists+linux-hwmon@lfdr.de>; Tue, 17 Jan 2023 19:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31E7F670AD0
+	for <lists+linux-hwmon@lfdr.de>; Tue, 17 Jan 2023 23:02:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233110AbjAQSgt (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 17 Jan 2023 13:36:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56122 "EHLO
+        id S229784AbjAQWCL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 17 Jan 2023 17:02:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232607AbjAQSbz (ORCPT
+        with ESMTP id S229913AbjAQWAG (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 17 Jan 2023 13:31:55 -0500
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA995399F;
-        Tue, 17 Jan 2023 10:03:46 -0800 (PST)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-15bb8ec196aso21054749fac.3;
-        Tue, 17 Jan 2023 10:03:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XsnU4SEnhYMX4K6JN06vg4T6uBL8G+Stssq81fySd1M=;
-        b=MNSI0nRjGgE6dC+a89cNENxUY0/vVd4JUd5AartSuHqzV5ypUrXyWoNO5nXE1xq0JK
-         6PbFmJ6sch3YXVDyjyxpjt9Vq7+oWZBkOk5ejMlO3LflLuVbF7y9Do9QA+YGEMFsNZUJ
-         FZCJywJihMTnaZb+Ezz9TVL50uH5dzFEPjiybwXoSlP/HDn/hpt2yqXiO2IL2SKqnRT+
-         P7muoVYPyzCaTRCodZFLpNwEybXm0xbNnKA1uQmj5sWveIosTE2Re40YM7wZ7S/WvDe7
-         AQH+h7yMmVvY4TiLEdFztBZdOUaYDqSjg9N3ZfTH0DoEbkRRu45HfQJ7P0smLd/3Os07
-         93xw==
+        Tue, 17 Jan 2023 17:00:06 -0500
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABA553FA2;
+        Tue, 17 Jan 2023 12:40:34 -0800 (PST)
+Received: by mail-oi1-f182.google.com with SMTP id p185so5875459oif.2;
+        Tue, 17 Jan 2023 12:40:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XsnU4SEnhYMX4K6JN06vg4T6uBL8G+Stssq81fySd1M=;
-        b=Mb/hxlaWhDOYOZ1NXsS9BenZ+vjS17SVEEpuYFMkheLlwj1JzB5qsyu6v4C9m4dXyq
-         g478A629OEWeLTPc5GU2bUXZFAOdjNKh44ttQvfTUrx2F2KITXQT9dWiWYLpbPBemcZL
-         C93l+X0YJFsJr34QY/RkMfPF1x/S9Uxz1AJt/9mRzhVF6rVY7Yu+pvkZXlmIXGttose1
-         s+f4bBgcnWBzh/ia8vnogX2V2XIyek67MMMDHfiTfxYG1nJWU17lypiFYlcwfwRLxoCE
-         W1G6uJbx2uD/hy+y7k/Pt7hP4k2PxRka1zK4E9b9woTwZcEfzn3xcBNmh5qBS1VWdmZ1
-         u7Ng==
-X-Gm-Message-State: AFqh2krfJNi6Hb+K2VtlX70bKgEHfFCG20h1nS5e4TlklQ2U3+zZAi2V
-        OhPe90S/liWSV/u2sn3nrzo=
-X-Google-Smtp-Source: AMrXdXtV2I3oYBqihq1mYMRhNeJS77cAyaL3KZH5Wxo0rFba8xRBNJ4jqYpVvhKgTj6+dBkQbK1E1A==
-X-Received: by 2002:a05:6870:fd91:b0:15f:140a:6e72 with SMTP id ma17-20020a056870fd9100b0015f140a6e72mr2468270oab.1.1673978623953;
-        Tue, 17 Jan 2023 10:03:43 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id v12-20020a056870b50c00b0014fc049fc0asm17034675oap.57.2023.01.17.10.03.43
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=67/7qFGKU8v+ncCe98IgRm1sBY7EEsIFhO8RWKpy1ms=;
+        b=oLwIjmnbd11o+N3onDhjd/7mDTpHICkyYMhzyFd9cv4tSiWTWEJwgk+IuMfQUrpZFH
+         R5tK3lY9XiW0Jy8D7hVkhIewhTnDlQufCOTVcnm6oq56F4KKtDduEv/pcG8x7MoDhnsQ
+         gw/yHid/NNd+bAL6K8UHJuqPhYziu6kXNj+ZuZ8/lSBVl4D4UuWx4FYHIMhw+QMwrbrE
+         gvdUg01b7ynsHVprZfhzkhaNXBAaUsvQoYtB3087c1rtj2LWg7k53pEiYxrOZZgYCkIq
+         41nFtLOK7U6uY6qxF41jV+63F8kRHJFHf2nal3lweh1kxXC/MUGYSIbsP7egq61H+Hb9
+         qGBg==
+X-Gm-Message-State: AFqh2kpwcAFaXMZw2tMreQ+37SWVx/0L7O/q/GW0YFyP0nPIFGYg5pzc
+        2pHWPNP5gD9wo37smdGfuQ==
+X-Google-Smtp-Source: AMrXdXure+5iEtDRLsla/oJrLqVm1rjH+eOc28MjSr7MGs42Rvef5APfJfN9jWPwzpWJRiZswegkGw==
+X-Received: by 2002:a05:6808:193:b0:364:3de0:f933 with SMTP id w19-20020a056808019300b003643de0f933mr11257851oic.52.1673988033446;
+        Tue, 17 Jan 2023 12:40:33 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id o9-20020a0568080f8900b0035e461d9b1bsm15272517oiw.50.2023.01.17.12.40.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jan 2023 10:03:43 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 17 Jan 2023 10:03:42 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
+        Tue, 17 Jan 2023 12:40:33 -0800 (PST)
+Received: (nullmailer pid 3669412 invoked by uid 1000);
+        Tue, 17 Jan 2023 20:40:32 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
 To:     Mario Kicherer <dev@kicherer.org>
-Cc:     linux-hwmon@vger.kernel.org, jdelvare@suse.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, corbet@lwn.net,
-        linux-doc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: hwmon: add nxp,mc34vr500
-Message-ID: <20230117180342.GD2335664@roeck-us.net>
+Cc:     linux@roeck-us.net, robh+dt@kernel.org, corbet@lwn.net,
+        linux-hwmon@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        jdelvare@suse.com, linux-doc@vger.kernel.org,
+        devicetree@vger.kernel.org
+In-Reply-To: <20230117161340.1310936-3-dev@kicherer.org>
 References: <20230117161340.1310936-1-dev@kicherer.org>
  <20230117161340.1310936-3-dev@kicherer.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117161340.1310936-3-dev@kicherer.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Message-Id: <167398779869.3664156.14251778655302872617.robh@kernel.org>
+Subject: Re: [PATCH v3 2/3] dt-bindings: hwmon: add nxp,mc34vr500
+Date:   Tue, 17 Jan 2023 14:40:32 -0600
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 05:13:39PM +0100, Mario Kicherer wrote:
+
+On Tue, 17 Jan 2023 17:13:39 +0100, Mario Kicherer wrote:
 > This patch adds dt-bindings for the NXP MC34VR500 PMIC.
-
-As with the other patches, use imperative mood.
-
-Guenter
-
 > 
 > Signed-off-by: Mario Kicherer <dev@kicherer.org>
 > ---
@@ -90,48 +75,30 @@ Guenter
 >  1 file changed, 36 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/hwmon/nxp,mc34vr500.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/hwmon/nxp,mc34vr500.yaml b/Documentation/devicetree/bindings/hwmon/nxp,mc34vr500.yaml
-> new file mode 100644
-> index 000000000000..dfbd6125e84a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/hwmon/nxp,mc34vr500.yaml
-> @@ -0,0 +1,36 @@
-> +# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/hwmon/mc34vr500.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP MC34VR500 hwmon sensor
-> +
-> +maintainers:
-> +  - Mario Kicherer <dev@kicherer.org>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,mc34vr500
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      mc34vr500@8 {
-> +        compatible = "nxp,mc34vr500";
-> +        reg = <0x08>;
-> +      };
-> +    };
-> -- 
-> 2.34.1
-> 
+
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/hwmon/nxp,mc34vr500.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/hwmon/nxp,mc34vr500.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230117161340.1310936-3-dev@kicherer.org
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
