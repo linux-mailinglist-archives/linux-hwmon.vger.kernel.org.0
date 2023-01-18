@@ -2,81 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3897C6724C2
-	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Jan 2023 18:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C41C672707
+	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Jan 2023 19:33:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjARRXE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 18 Jan 2023 12:23:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52632 "EHLO
+        id S230350AbjARSdF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 18 Jan 2023 13:33:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230048AbjARRXA (ORCPT
+        with ESMTP id S230043AbjARSdD (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 18 Jan 2023 12:23:00 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83BDF56EEC
-        for <linux-hwmon@vger.kernel.org>; Wed, 18 Jan 2023 09:22:57 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id m15so4048321wms.4
-        for <linux-hwmon@vger.kernel.org>; Wed, 18 Jan 2023 09:22:57 -0800 (PST)
+        Wed, 18 Jan 2023 13:33:03 -0500
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D4BB2B0A7
+        for <linux-hwmon@vger.kernel.org>; Wed, 18 Jan 2023 10:33:02 -0800 (PST)
+Received: by mail-vk1-xa2c.google.com with SMTP id i82so16645442vki.8
+        for <linux-hwmon@vger.kernel.org>; Wed, 18 Jan 2023 10:33:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n+gj3se4pN0NCgAKzskCuVUp0VZtTYvIF7fGegJc9t0=;
-        b=KaC505MFSY2T3hAxPpSqcf9ogLUxeffzBBOsCnq2K+zDyXd/K8RhNkvmoAwv46QzZ1
-         apK0ULkOkiyLlUk2a4FlYbu7ddcparRDwlYt4qXxoMH02Eo/CkH5xY6/xr0NAx5calMu
-         rGyQL03zT30FxeLzrhpacT8u03W04Gx87ZSeJtseBHGhMXIDrau3DOO1Bhb/b6kpTG4X
-         fEvY75hFiuaYeYHQGUMQnSc5cFJe30GydwINuy7gS4OgxTH1ibuB7cfZ+25/lYtjrlqr
-         lfVaEWts/v1o9YjU0OiqaCB0DO5mEhY4alhUtXrAnNonQqTdwwWboORRlSBrp03FnTXJ
-         v7Jw==
+        d=criticallink.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=79B2mrM6u98RtgwVRK2YijfD555WnZ5B39rU02m7674=;
+        b=g5B7qyrUaNc6oolT5docVghEpixtXxxQmEGVFsP5Y5bDqTjWVJCjUyZRX4dbXP76/C
+         5N/GBgQKjP/DtjBsuc2j974xWnwW9I45go5sewvORaC78STOhyX2AasSSIPiF2bavsNS
+         Qo3lnC5xxZLps4e5RJ8pf/WwRNOrCvGDkZYvyH6r74OF1dZ+KIz2VB3jsBFaUl5LPx7T
+         i49elfR+8eRBYIvsxt8VULh6ovHY1X0h5VWZNfXMfbp9fLHPq8MX+Hu++2CmPYHRmJuk
+         tBf2XSw70mG7UaHkT50n2vbpDbiLWH0RgpW9sV53TtOEYlTjjI/+hjmXvJyJlptOWqyr
+         kCBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n+gj3se4pN0NCgAKzskCuVUp0VZtTYvIF7fGegJc9t0=;
-        b=B3u0B50SdLw0PoseY5pnPdtJ20wjpWzTvp7p5GC2zvLdEJRHcSIwhzKRntKkIIJFPe
-         mNg08iM6ROUGL8xeiaYvbprzRfy2LAQGTTrkEfHWUCPWmo0SlbMlS3RS70VxMm/LjLdi
-         q9+ZT1KOBml8wI5zpJcbnD0OXwr9RiA1McpBUOw2gYdRXYwPtGiVl3NeAWPMjpkiaAxN
-         0FhxZafpySdrQMu6VLtDmVqCYg6eiIVrqlofgZThTPHM25tDpCYHJygnXEVyCKP/TZo+
-         ddC1c7vxcZJfMVWV3QiUsV0XtzpVdue6CDJ/64d/Gydg6sx1XnRgHch1/nSerGw36Xul
-         9tew==
-X-Gm-Message-State: AFqh2kpsgYK2RHOfgo/w0X6tGE7baRMy897Sh53kKN8AeaOFeCTF7fus
-        tjDNZS8QZMpUTiQ0ZdYXBXTlwA==
-X-Google-Smtp-Source: AMrXdXsqg630CAh0kk/75n5mvGTH9RX06dva/M4kQdarwdJ4d84aMJoVyRHOnfBDmBREWizSIFPw5g==
-X-Received: by 2002:a05:600c:502c:b0:3db:30d:deac with SMTP id n44-20020a05600c502c00b003db030ddeacmr7364875wmr.1.1674062576053;
-        Wed, 18 Jan 2023 09:22:56 -0800 (PST)
-Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id v20-20020a05600c215400b003d358beab9dsm2434746wml.47.2023.01.18.09.22.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 09:22:55 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=79B2mrM6u98RtgwVRK2YijfD555WnZ5B39rU02m7674=;
+        b=tchn+czXlZI04mXNNOehUaRW/L847FnrQTuB67ohNv/SdJmI9PYs6mdlaoarLjPjJv
+         2NJBOTjHAgE7SgV9aa9TT0HRobxK8p7dW/VmgY0DV6rrtJvFCtcXxskk3r6XFkxFVHBS
+         ptMeO1kZ3P6pbyuTZPoDTgJ/+O4KY49XSX93NvnmCANUdHUnMUVDkFwk+izjnjNosfGv
+         Q/cFha55cgzLqSKWR7l7FKYq2qkhrNZ9iHrccDXRM5EzT/zV/DSfhSd+BV4/3rmk5zMS
+         qLMKm5Pgg86fJgbjWmjQiHo4u+6rDzDXs/Zk8WNdaW9Cx/2moYFhJS4WeYeao99HMTFz
+         XnPg==
+X-Gm-Message-State: AFqh2kpoZoBalDDLhzYnDL4PEA00DB5oUTM41PViJzKqDCB3rmq+n/Dx
+        5dH9O8kx/7fWaYbgUzUsnNA4zUx0PXh27r/f2ocbfA==
+X-Google-Smtp-Source: AMrXdXulXPk/v5TNnovUqrx8h4pMJTAOQuYyjn7YpigNfB8lvbsUI8BI2RXnI8ByaCCOSUXwLRZIIy5y+4HTM87Gtec=
+X-Received: by 2002:a1f:9b4d:0:b0:3e1:722f:9a6f with SMTP id
+ d74-20020a1f9b4d000000b003e1722f9a6fmr1086514vke.1.1674066781258; Wed, 18 Jan
+ 2023 10:33:01 -0800 (PST)
+MIME-Version: 1.0
+References: <20221214220727.1350784-3-jcormier@criticallink.com>
+ <20230109233534.1932370-1-jcormier@criticallink.com> <20230109233534.1932370-4-jcormier@criticallink.com>
+ <d49d4b4c-e7ee-e0a1-56e6-7f193e0d1340@roeck-us.net> <CADL8D3YEkZaOjUY3mRLGT0M+b7MwN5zQZrbsw5W8Mn=PJ7PtcA@mail.gmail.com>
+ <dd80ee77-3b71-ee47-2744-36b09e0ec372@roeck-us.net> <CADL8D3YksXnRkEgXkY86KZXM4nouJBemno=db5KgbCi3xmSa8Q@mail.gmail.com>
+ <20230112004413.GD1991532@roeck-us.net>
+In-Reply-To: <20230112004413.GD1991532@roeck-us.net>
+From:   Jon Cormier <jcormier@criticallink.com>
+Date:   Wed, 18 Jan 2023 13:32:50 -0500
+Message-ID: <CADL8D3af+HTAbOwFKhv7h6hgwTaL=9dQDK8bv8Nkc8zuYEY+ug@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] hwmon: ltc2945: Handle error case in ltc2945_value_store
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Robert Marko <robert.marko@sartura.hr>,
-        Luka Perkov <luka.perkov@sartura.hr>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Akshay Gupta <Akshay.Gupta@amd.com>, Kun Yi <kunyi@google.com>,
-        Supreeth Venkatesh <supreeth.venkatesh@amd.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Eric Tremblay <etremblay@distech-controls.com>,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v2 2/2] dt-bindings: hwmon: correct indentation and style in examples
-Date:   Wed, 18 Jan 2023 18:22:37 +0100
-Message-Id: <20230118172237.349111-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230118172237.349111-1-krzysztof.kozlowski@linaro.org>
-References: <20230118172237.349111-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Bob Duke <bduke@criticallink.com>,
+        John Pruitt <jpruitt@criticallink.com>,
+        Dan Vincelette <dvincelette@criticallink.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -87,405 +76,67 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Fix mixed indentation to 4-spaces, remove unnecessary suffix from
-i2c node name and use lower-case hex.  No functional impact.
+Alright, I'll take another pass at it.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
+On Wed, Jan 11, 2023 at 7:44 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> On Tue, Jan 10, 2023 at 02:25:37PM -0500, Jon Cormier wrote:
+> > On Tue, Jan 10, 2023 at 1:22 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > >
+> > > On 1/10/23 10:19, Jon Cormier wrote:
+> > > > On Mon, Jan 9, 2023 at 7:04 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > >>
+> > > >> On 1/9/23 15:35, Jonathan Cormier wrote:
+> > > >>> ltc2945_val_to_reg errors were not being handled
+> > > >>> which would have resulted in register being set to
+> > > >>> 0 (clamped) instead of being left alone.
+> > > >>>
+> > > >>> Change reg_to_val and val_to_reg to return values
+> > > >>> via parameters to make it more obvious when an
+> > > >>> error case isn't handled. Also to allow
+> > > >>> the regval type to be the correct sign in prep for
+> > > >>> next commits.
+> > > >>>
+> > > >>
+> > > >> Sorry, I don't see that as reason or argument for such invasive changes.
+> > > >> As far as I can see, a two-liner to check the return value of val_to_reg()
+> > > >> should have been sufficient. Most of the rest, such as splitting
+> > > >> the return value into two elements, is POV and just adds additional code
+> > > >> and complexity for zero gain.
+> > > > I can do that. However, you had also mentioned changing the return
+> > > > type to match what the calling function was expecting, an unsigned
+> > > > long. But I can't do that since error codes are negative so it would
+> > > > be a signed long which would lose precision and seemingly defeat the
+> > > > point of matching the variable type the caller wants.  I could make it
+> > > > a signed long long but that still doesn't match.  So it seemed saner
+> > > > to just return the error and the value separately, that way the
+> > > > function declaration was explicit about the types it wanted/returned,
+> > > > and less room for error.  Would love to know your preferred solution.
+> > > >
+> > >
+> > > That is only true if the upper bit is actually ever set in that signed long.
+> > > Which means I'll have to verify if "would lose precision" is actually
+> > > a correct statement.
+> > I'd like to argue that is another reason to go with this change
+> > instead of working out the math of just how many bits are needed in
+> > the worst case and having to document it. And potentially getting that
+> > calculation wrong.  But I can if you'd like me to.
+>
+> You are turning things on its head. We don't make changes like that
+> because of maybe. It is you who has to show that the change is
+> necessary, and that there is indeed a loss of precision otherwise.
+>
+> Guenter
 
----
 
-Changes since v1:
-1. Add Rb tag
-2. Reorder patches to silence warnings.
----
- .../bindings/hwmon/adi,adm1177.yaml           | 12 ++---
- .../bindings/hwmon/adi,adm1266.yaml           |  6 +--
- .../bindings/hwmon/adi,axi-fan-control.yaml   | 20 ++++-----
- .../bindings/hwmon/adi,ltc2947.yaml           | 20 ++++-----
- .../bindings/hwmon/adi,ltc2992.yaml           | 26 +++++------
- .../devicetree/bindings/hwmon/amd,sbrmi.yaml  |  6 +--
- .../devicetree/bindings/hwmon/amd,sbtsi.yaml  |  6 +--
- .../devicetree/bindings/hwmon/iio-hwmon.yaml  |  8 ++--
- .../bindings/hwmon/national,lm90.yaml         | 44 +++++++++----------
- .../bindings/hwmon/ntc-thermistor.yaml        |  2 +-
- .../bindings/hwmon/nuvoton,nct7802.yaml       | 16 +++----
- .../devicetree/bindings/hwmon/ti,tmp513.yaml  | 22 +++++-----
- .../bindings/hwmon/ti,tps23861.yaml           | 16 +++----
- 13 files changed, 102 insertions(+), 102 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
-index d794deb08bb7..ca2b47320689 100644
---- a/Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
-@@ -52,16 +52,16 @@ examples:
-   - |
-     #include <dt-bindings/gpio/gpio.h>
-     #include <dt-bindings/interrupt-controller/irq.h>
--    i2c0 {
-+    i2c {
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
-         pwmon@5a {
--                compatible = "adi,adm1177";
--                reg = <0x5a>;
--                shunt-resistor-micro-ohms = <50000>; /* 50 mOhm */
--                adi,shutdown-threshold-microamp = <1059000>; /* 1.059 A */
--                adi,vrange-high-enable;
-+            compatible = "adi,adm1177";
-+            reg = <0x5a>;
-+            shunt-resistor-micro-ohms = <50000>; /* 50 mOhm */
-+            adi,shutdown-threshold-microamp = <1059000>; /* 1.059 A */
-+            adi,vrange-high-enable;
-         };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-index 43b4f4f57b49..4f8e11bd5142 100644
---- a/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/adi,adm1266.yaml
-@@ -39,13 +39,13 @@ additionalProperties: false
- 
- examples:
-   - |
--    i2c0 {
-+    i2c {
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
-         adm1266@40 {
--                compatible = "adi,adm1266";
--                reg = <0x40>;
-+            compatible = "adi,adm1266";
-+            reg = <0x40>;
-         };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,axi-fan-control.yaml b/Documentation/devicetree/bindings/hwmon/adi,axi-fan-control.yaml
-index f2f99afb3a3b..0cf3ed6212a6 100644
---- a/Documentation/devicetree/bindings/hwmon/adi,axi-fan-control.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/adi,axi-fan-control.yaml
-@@ -49,15 +49,15 @@ additionalProperties: false
- examples:
-   - |
-     fpga_axi: fpga-axi {
--            #address-cells = <0x2>;
--            #size-cells = <0x1>;
--
--            axi_fan_control: axi-fan-control@80000000 {
--                    compatible = "adi,axi-fan-control-1.00.a";
--                    reg = <0x0 0x80000000 0x10000>;
--                    clocks = <&clk 71>;
--                    interrupts = <0 110 0>;
--                    pulses-per-revolution = <2>;
--            };
-+        #address-cells = <0x2>;
-+        #size-cells = <0x1>;
-+
-+        axi_fan_control: axi-fan-control@80000000 {
-+            compatible = "adi,axi-fan-control-1.00.a";
-+            reg = <0x0 0x80000000 0x10000>;
-+            clocks = <&clk 71>;
-+            interrupts = <0 110 0>;
-+            pulses-per-revolution = <2>;
-+        };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-index bf04151b63d2..152935334c76 100644
---- a/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml
-@@ -87,15 +87,15 @@ additionalProperties: false
- examples:
-   - |
-     spi {
--           #address-cells = <1>;
--           #size-cells = <0>;
--
--           ltc2947_spi: ltc2947@0 {
--                   compatible = "adi,ltc2947";
--                   reg = <0>;
--                   /* accumulation takes place always for energ1/charge1. */
--                   /* accumulation only on positive current for energy2/charge2. */
--                   adi,accumulator-ctl-pol = <0 1>;
--           };
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ltc2947_spi: ltc2947@0 {
-+            compatible = "adi,ltc2947";
-+            reg = <0>;
-+            /* accumulation takes place always for energ1/charge1. */
-+            /* accumulation only on positive current for energy2/charge2. */
-+            adi,accumulator-ctl-pol = <0 1>;
-+        };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml b/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
-index ec984248219e..dba74f400bc2 100644
---- a/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/adi,ltc2992.yaml
-@@ -55,26 +55,26 @@ additionalProperties: false
- 
- examples:
-   - |
--    i2c1 {
-+    i2c {
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
-         ltc2992@6f {
--                #address-cells = <1>;
--                #size-cells = <0>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
- 
--                compatible = "adi,ltc2992";
--                reg = <0x6f>;
-+            compatible = "adi,ltc2992";
-+            reg = <0x6f>;
- 
--                channel@0 {
--                        reg = <0x0>;
--                        shunt-resistor-micro-ohms = <10000>;
--                };
-+            channel@0 {
-+                reg = <0x0>;
-+                shunt-resistor-micro-ohms = <10000>;
-+            };
- 
--                channel@1 {
--                        reg = <0x1>;
--                        shunt-resistor-micro-ohms = <10000>;
--                };
-+            channel@1 {
-+                reg = <0x1>;
-+                shunt-resistor-micro-ohms = <10000>;
-+            };
-         };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/amd,sbrmi.yaml b/Documentation/devicetree/bindings/hwmon/amd,sbrmi.yaml
-index 7598b083979c..353d81d89bf5 100644
---- a/Documentation/devicetree/bindings/hwmon/amd,sbrmi.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/amd,sbrmi.yaml
-@@ -41,13 +41,13 @@ additionalProperties: false
- 
- examples:
-   - |
--    i2c0 {
-+    i2c {
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
-         sbrmi@3c {
--                compatible = "amd,sbrmi";
--                reg = <0x3c>;
-+            compatible = "amd,sbrmi";
-+            reg = <0x3c>;
-         };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/amd,sbtsi.yaml b/Documentation/devicetree/bindings/hwmon/amd,sbtsi.yaml
-index 446b09f1ce94..75088244a274 100644
---- a/Documentation/devicetree/bindings/hwmon/amd,sbtsi.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/amd,sbtsi.yaml
-@@ -42,13 +42,13 @@ additionalProperties: false
- 
- examples:
-   - |
--    i2c0 {
-+    i2c {
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
-         sbtsi@4c {
--                compatible = "amd,sbtsi";
--                reg = <0x4c>;
-+            compatible = "amd,sbtsi";
-+            reg = <0x4c>;
-         };
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml b/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
-index e1ccbd30e0eb..c54b5986b365 100644
---- a/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/iio-hwmon.yaml
-@@ -31,7 +31,7 @@ additionalProperties: false
- 
- examples:
-   - |
--      iio-hwmon {
--          compatible = "iio-hwmon";
--          io-channels = <&adc 1>, <&adc 2>;
--      };
-+    iio-hwmon {
-+        compatible = "iio-hwmon";
-+        io-channels = <&adc 1>, <&adc 2>;
-+    };
-diff --git a/Documentation/devicetree/bindings/hwmon/national,lm90.yaml b/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
-index e1719839faf0..7b9d48d6d6da 100644
---- a/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/national,lm90.yaml
-@@ -198,30 +198,30 @@ examples:
-     };
-   - |
-     i2c {
--      #address-cells = <1>;
--      #size-cells = <0>;
--
--      sensor@4c {
--        compatible = "adi,adt7481";
--        reg = <0x4c>;
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
--        channel@0 {
--          reg = <0x0>;
--          label = "local";
--        };
--
--        channel@1 {
--          reg = <0x1>;
--          label = "front";
--          temperature-offset-millicelsius = <4000>;
--        };
--
--        channel@2 {
--          reg = <0x2>;
--          label = "back";
--          temperature-offset-millicelsius = <750>;
-+        sensor@4c {
-+            compatible = "adi,adt7481";
-+            reg = <0x4c>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            channel@0 {
-+                reg = <0x0>;
-+                label = "local";
-+            };
-+
-+            channel@1 {
-+                reg = <0x1>;
-+                label = "front";
-+                temperature-offset-millicelsius = <4000>;
-+            };
-+
-+            channel@2 {
-+                reg = <0x2>;
-+                label = "back";
-+                temperature-offset-millicelsius = <750>;
-+            };
-         };
--      };
-     };
-diff --git a/Documentation/devicetree/bindings/hwmon/ntc-thermistor.yaml b/Documentation/devicetree/bindings/hwmon/ntc-thermistor.yaml
-index 6a1920712fb9..3d0146e20d3e 100644
---- a/Documentation/devicetree/bindings/hwmon/ntc-thermistor.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ntc-thermistor.yaml
-@@ -131,7 +131,7 @@ additionalProperties: false
- 
- examples:
-   - |
--    thermistor0 {
-+    thermistor {
-       compatible = "murata,ncp18wb473";
-       io-channels = <&gpadc 0x06>;
-       pullup-uv = <1800000>;
-diff --git a/Documentation/devicetree/bindings/hwmon/nuvoton,nct7802.yaml b/Documentation/devicetree/bindings/hwmon/nuvoton,nct7802.yaml
-index 2f0620ecccc9..cd8dcd797031 100644
---- a/Documentation/devicetree/bindings/hwmon/nuvoton,nct7802.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/nuvoton,nct7802.yaml
-@@ -123,23 +123,23 @@ examples:
-             #size-cells = <0>;
- 
-             channel@0 { /* LTD */
--              reg = <0>;
-+                reg = <0>;
-             };
- 
-             channel@1 { /* RTD1 */
--              reg = <1>;
--              sensor-type = "voltage";
-+                reg = <1>;
-+                sensor-type = "voltage";
-             };
- 
-             channel@2 { /* RTD2 */
--              reg = <2>;
--              sensor-type = "temperature";
--              temperature-mode = "thermal-diode";
-+                reg = <2>;
-+                sensor-type = "temperature";
-+                temperature-mode = "thermal-diode";
-             };
- 
-             channel@3 { /* RTD3 */
--              reg = <3>;
--              sensor-type = "temperature";
-+                reg = <3>;
-+                sensor-type = "temperature";
-             };
-         };
-     };
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml
-index 1502b22c77cc..fde5225ce012 100644
---- a/Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml
-@@ -77,15 +77,15 @@ additionalProperties: false
- examples:
-   - |
-     i2c {
--          #address-cells = <1>;
--          #size-cells = <0>;
--
--          tmp513@5c {
--              compatible = "ti,tmp513";
--              reg = <0x5C>;
--              shunt-resistor-micro-ohms = <330000>;
--              ti,bus-range-microvolt = <32000000>;
--              ti,pga-gain = <8>;
--              ti,nfactor = <0x1 0xF3 0x00>;
--          };
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        tmp513@5c {
-+            compatible = "ti,tmp513";
-+            reg = <0x5c>;
-+            shunt-resistor-micro-ohms = <330000>;
-+            ti,bus-range-microvolt = <32000000>;
-+            ti,pga-gain = <8>;
-+            ti,nfactor = <0x1 0xf3 0x00>;
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,tps23861.yaml b/Documentation/devicetree/bindings/hwmon/ti,tps23861.yaml
-index 3bc8e73dfbf0..bce68a326919 100644
---- a/Documentation/devicetree/bindings/hwmon/ti,tps23861.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ti,tps23861.yaml
-@@ -40,12 +40,12 @@ additionalProperties: false
- examples:
-   - |
-     i2c {
--          #address-cells = <1>;
--          #size-cells = <0>;
--
--          tps23861@30 {
--              compatible = "ti,tps23861";
--              reg = <0x30>;
--              shunt-resistor-micro-ohms = <255000>;
--          };
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        tps23861@30 {
-+            compatible = "ti,tps23861";
-+            reg = <0x30>;
-+            shunt-resistor-micro-ohms = <255000>;
-+        };
-     };
 -- 
-2.34.1
+Jonathan Cormier
+Software Engineer
 
+Voice:  315.425.4045 x222
+
+
+
+http://www.CriticalLink.com
+6712 Brooklawn Parkway, Syracuse, NY 13211
