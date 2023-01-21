@@ -2,102 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D942676558
+	by mail.lfdr.de (Postfix) with ESMTP id BB75F676559
 	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Jan 2023 09:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbjAUI60 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 21 Jan 2023 03:58:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41742 "EHLO
+        id S229853AbjAUI61 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 21 Jan 2023 03:58:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbjAUI6Y (ORCPT
+        with ESMTP id S229795AbjAUI6Z (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 21 Jan 2023 03:58:24 -0500
+        Sat, 21 Jan 2023 03:58:25 -0500
 Received: from ipmail06.adl3.internode.on.net (ipmail06.adl3.internode.on.net [150.101.137.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AC9041E1FB
-        for <linux-hwmon@vger.kernel.org>; Sat, 21 Jan 2023 00:58:20 -0800 (PST)
-IronPort-SDR: n726zeWZaSRvGMCiQj93ptS+jeOVpPuXBen3tclTn40cfSQM+xA1CSf4yRwsrYSLFVbKi7UxpQ
- 8xW7gRJMxk2nvEzP79K0oCRJ7HlbNrnzSxbUG/nKuMvtnRXonVQz739NZNpz9wvN7Wn942E9/8
- kq6dyTLQSKUBC1MWtPX7bzh1c0nhdjt9v+cfSy8QQ7hDHugUVnwntMyo5vIR8bflUdHwGBvJU4
- uNJy0gdkT/q0jtMC6U4uuo/9wMetOexLzXpQJaHQdTofkB4TKSClwuRTTber1NDH7ek7qNQ7TH
- K2dINCk4G9w+BeFL2TZfDGS1
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BEAAE23C61
+        for <linux-hwmon@vger.kernel.org>; Sat, 21 Jan 2023 00:58:23 -0800 (PST)
+IronPort-SDR: 1VCPy/TMjot316m585NYqNr8V6IgtYtT6BFkppbA94wbnmQWIzvIzYeb+uOI3LQtOpqvTQ/wkT
+ SlTgztzXkBgCrmgpOXCZfdbIxP7RONPq0vXO5DRm0uF5CG3LG9SY3salsurU4+EOCBrFpYTVzJ
+ /qykzeSuH9YD7FeyC5fqBXcFfCXR+Gce0mOgMHEP03yoQsQVHXqdtzW/UMrMlKUnqN9dcPErBX
+ /iKJX2Bm6U7TDoT3D0zwhleX4q0j9qOOAhQOWjUyCDYtQn3mDLOQjoWg6yhpZ2ahm/vufM+09N
+ QMWqwnsMrRp9v+QhTWYVwNTV
 X-SMTP-MATCH: 0
 X-IPAS-Result: =?us-ascii?q?A2ATAQDLp8tjjPQc8jxaHQEBAQEJARIBBQUBSYE0BgELA?=
- =?us-ascii?q?YIsgl+VbZ1BgX4PAQ8BAUQEAQGFBgKFICY2Bw4BAgQBAQEBAwIDAQEBAQEBA?=
- =?us-ascii?q?wEBBgEBAQEBAQYEFAEBAQFAGAE5BwtSBwtYBweBQQuBYRMLAwQGJw2GVwIBA?=
- =?us-ascii?q?zIBDQEBNwEPGThXBgESgn6DI6tYgQGCCAEBBoJimmeBXgmBQAGLXYESgzd6Q?=
- =?us-ascii?q?z+BToEVgTyCLIQBNoZMjWiNLAqBO3yBJw5MeoESAgkCEoEgAwkDBwVJQAMLG?=
- =?us-ascii?q?A0WMgoTLTULC0orGhsHgQgqKBUDBAQDAgYTAyACDSgxFAQpEw0nJmkJAgMiX?=
- =?us-ascii?q?wUDAwQoLQk/ByYmPAdWNwYCDx83BgMJAwIfEj9xLxISBQMLFSpHBAg2BQYcN?=
- =?us-ascii?q?hICCA8SDyxDDkI3NBMGXAEpCw4RA1BHGW4EggwKBikonxtTOzCCdsJsg3qBU?=
- =?us-ascii?q?p59TIFEgjWTR5BggQotlx4ggiygb4QrAgoHFoFpC4IDTR8ZgyJPAQIBAQENA?=
- =?us-ascii?q?QIBAQMBAgEBAQkBAQEBjE6BTwwNCYIKjDhhOwIHCwEBAwmMIwEB?=
-IronPort-PHdr: A9a23:oJGM3xUjPDn7y33SGBNEn0FeLtXV8K3KAWYlg6HPw5pEc7i4uZ/4N
- VPR4u9hylLMQMPa57RNlrmeurrrDGoH55vJq3UeaNpWWhoClchTnhR1DsKJUx+kJffmPSBmQ
- 5QQDQ039HviaRpeE56hD2A=
-IronPort-Data: A9a23:08lwnKuZysV0rxdejjvcdiPuCOfnVG9YMUV32f8akzHdYApBsoF/q
- tZmKW6OPauDZWOgeNEjOtyxpEtQvMPXzIVmHVc+qy4wRHlHo5SbCI+Udkr5NC/Nc5TOHBg4v
- s5BZoLKfJo6ESHQqEmEP+m6pxGQ94nRFuKmUrKs1gOd5ONAYH184f62s7dh2uaEufDgX0XV/
- 4maT/T3YDdJ4RYtWo4pw/vrRC1H7KyaVAww5jTSVdgT1LMJvyR94Do3fMldHlOgKmVmNrfSq
- 9XrkNlVyljkEyIFUbtJpFpannoiGdY+NSDW4pZftjPLbhJq/kTe2Y5jXBYQhNs+Zzihx7hMJ
- NtxWZOYERkyeab3udUncxhSEjlDIq9cpb/MCC3q2SCT5xWun3rEyfRyFwc9J4QH9OFtDSdD8
- OFeKTxLZw3ra+Cenur9ELU2wJ5zapO3YOvzuVk5pd3dJfg8SJbAa67Q7MBW2y08wM1LALDfa
- 4wQdFKDaTycP0URYA5HVMpWcOGAgmjEMB95q06pgLsy4zD36wFb8bj3GY+AEjCNbZ4NxRbC/
- DOuE37CKhUbMsGPjDqa93WqrvHAkDm9W48IErC8sPlwjzW7wm0VFQ0+T1y2qvr8l1X4Xd9DQ
- 2QW9icqs6Eo+WSwU8LwGRa/pRa5UgU0BYIVSbFgrVvdj/CIv0CCGmEYTzUHdMQptYk9Qjls3
- 0Lhc87V6SJH6KOODnmm14aujTK4ODAoMm0YOC8PZF5QizX8m70bghXKR9dlNae6iNzpBD39q
- wxmSgBg393/auZVis2GEUD7byGE48OSHlFsum07Skr8s1ojPNb7D2C9wQKDhcusOrp1WXGog
- RDoceCl/ewIAIDleMelGr1VRNlFC96jPSKUullyA5lpyD2p9mXLQGy9yG8mYR01aINeKXqzP
- BOVoh9Y+J5YemeyYq4xaIW0Tc03pUQBKTgHfqyIBjatSsIqHONiwM2ITRTIt4wKuBJy+ZzTw
- b/BLa6R4Y8yUMyLNgaeSeYHyqMMzSsj327VTp2T5035jubEPy/JE+hfbQPmggUFAEWs/ly9H
- zF3aZbi9vmjeLeuCsUq2dRMdwFVfShT6W7e9ZQKKrDrzvVa9JEJUKeKkel7KuSJboxJjuiA/
- 3ehV1VexUaXuJE0AVviV5yXU5u2BcwXhSxhYkQR0aOAhyBLjXCHsP5BK/PavNAPqIRe8BKDZ
- 6JfI57QU60SEVwqOV01NPHAkWCrTzzz7SrmAsZvSGFXk0dIS1Ob99n6UBHo8SVSXCO7udFn8
- ++rzArET50ZS0JvCduQaf7pxk7o5SoRn+d7Xk3pJNhPeRyyr9E0en2t3646c5MWNBHO5jqGz
- ALIUx0Wkun6pdNn+tf+mvHWpoikJOJyA05GEjSJ9r2xLyTboDauzNYYAuaFdDzQTk3u/6Cma
- bkHxv3wKqRXzl1QupVyFKxni687+p3uq/lT0108TnnMal2qDJJmI2WHhJcQ7/Mcl+MI6AbvA
- xCB4NhXP7mNKfjJKl9JKVp3dPmH2NEVhiLWs6Y/LnL60ykrrrCJZloDbRCDhRtUIKZxLI54k
- /wqv9Qb6lLjhxcnboSGgyRT+zjeJ3AMSf985JsbHJStgRAi1V9Fe5CaByrrppCDLdxRaxF4L
- jiRjavEprJd2kubLSVqSymcgbsMiMRcog1OwX8DO0+NxIjPiMg36xsNoz45eRsEnBxI3tV6N
- nVvK0Aod76F+C1lhZYfUm3wSRtNAgaVph74x1cTzzeLERHtDDCXaTdtfLzRoAYC72tAfzMd4
- KmXySDuVjOsddyohnk+XktsqvrCS91t91Scx5n5TpXZTsg3MWj/n6ujRWsUsB+7U8k/s0uW9
- +Bl8dF5ZbD/KSNN8bYwDJOX1OpMRR2JTICYrSqNIE/U8bngRQyP
-IronPort-HdrOrdr: A9a23:AEQ20K+l8s/OxvvyUVxuk+ACI+orL9Y04lQ7vn2ZKSY+TiVXra
- GTdZMgpGbJYFR4YhwdcLW7VJVoLkmslqKdjbN/AV7mZniDhILKFvAF0WKd+UyDJ8SWzIc0vp
- uIMZIOb+EYZmIbsS+V2meF+1lM+qj+zEnRv5a68550d3AXV0h/1XYFNu9FKDwMeOGWbaBJbq
- ah2g==
+ =?us-ascii?q?YIsgl+zLoF+DwEPAQFEBAEBhQYChSAmNgcOAQIEAQEBAQMCAwEBAQEBAQMBA?=
+ =?us-ascii?q?QYBAQEBAQEGBBQBAQEBQBgBOQcLUgcLWAcHgUELgWETCwMxDYZXAgEDMgENA?=
+ =?us-ascii?q?QE3AQ8ZOFcGARKCfoMjq1iBAYIIAQEGgmKaZ4FeCYFAAYtdgRKDN3pDP4FOh?=
+ =?us-ascii?q?A9uiwObFAqBO3yBJw5MeoESAgkCEoEgAwkDBwVJQAMLGA0WMgoTLTULC0orG?=
+ =?us-ascii?q?hsHgQgqKBUDBAQDAgYTAyACDSgxFAQpEw0nJmkJAgMiXwUDAwQoLQk/ByYmP?=
+ =?us-ascii?q?AdWNwYCDx83BgMJAwIfUXEvEhIFAwsVKkcECDYFBhw2EgIIDxIPLEMOQjc0E?=
+ =?us-ascii?q?wZcASkLDhEDUEcZbgSCDAoGKSifG4EOgTjEWoN6gVKefUyBRKdml0sgoxuEK?=
+ =?us-ascii?q?wIKBxaBaQGCDU0fGYMiTwECAQEBDQECAQEDAQIBAQEJAQEBAY4dDA0JFYF1j?=
+ =?us-ascii?q?DhhOwIHCwEBAwmMIwEB?=
+IronPort-PHdr: A9a23:NqBAuBfuDMOTnFzCt6+laB0/lGM/hYqcDmcuAtIPgbNSaeKo5Z39M
+ kvF6bNgiUKPXImd4u8Xw+PMuPXmXmoNqY2ErGhEapFJUAMIzMQOygIsDJTXVkTyIKzmM3NqT
+ p0QBlRvpinpOkMNR67D
+IronPort-Data: A9a23:SAmcuaLD7MRejFx9FE+R6JMlxSXFcZb7ZxGr2PjKsXjdYENS0jIBn
+ DEcWD2GOvrfNjD9LYx1a4y/90MF7ZLRmIM1TAI4qi8yQisXp8OdC9qXdxuuZCrKdMSZRRw75
+ ssTYNScJ+k5HyTWzvuPGuGx9SMmiclkZVZd5MrsYH0ZqdpMEX954f5bs7dlxNYu27BVOivV0
+ T/Ii5S31GKNglaYDEpEs8pvlzs31BjCkGtwUosWOJinFHeH/5UkJMp3yZOZdhMUcaEIdgKOf
+ Nsv+Znilo/vE7bBPfv++lrzWhVirrc/pmFigFIOM0SpqkAqSiDfTs/XOdJEAXq7hQllkPhQ6
+ fsOid+KcTsJff3uovkGXT12DyxxaPguFL/veRBTsOSZzlHdNXD2yupgC1s6e4Ad56B2DSdH6
+ JT0KhhTNlbZ27jwmuL9ELUw7iggBJCD0Ic3tGtpyzLxBuwvXp7EWamM6NpFmjY8wMlTdRrbT
+ 5ZFMWQ1NUScOnWjPH8dVMolxOL5okLdWDJWlVXNlIUu4zfMmVkZPL/Fa4KOKobQFK25hH2wo
+ mPA4nS8Ag4fM9q31zWI6DSvi/XJkCe9X5gdfJW89/h3kHWJwWEYC1gLTh29rOXRokyyVtZBI
+ lYZ0jEztqV0/0uuJuQRRDXm+Dve4kRZAYoVSbFmrhqRw7bV6ECFHmcFCDVGbZovqafaWADGy
+ Heovv2qOX9ViIG1CiK/zKqPoxecJSUaeDpqiTA/cSMJ5NzqoYcWhx3JT8p+HKPdsjETMW+oq
+ 9xthHZj74j/nfLnxI3+pguX3GvwznTdZldov1+PBjzNAhZRPtbNWmC+1bTMxd99RGpzZmKQs
+ H4JiqByB8hUVcnV/MBhaMMAA/mS4OuZMHXjiFpiBPEcG9mFpSbmJ9wKpWsuYR01boAfZTb1Y
+ USVpRte5dlYO37sZLIfj2ON5yYCkfSI+TfNDKu8gj9yjn5ZLlfvEMZGPxD44owVuBJw+ZzTw
+ L/CGSpWMV4UCL580B29TPoH3Lkgy0gWnD2MGcqgnkj9juDDPBZ5rIvp1nPQN4jVC4va/W3oH
+ yp3bZviJ+h3CrKkM3aHoeb/03hUdSVnW/gaVPC7hsbYelE2QjtwYxMg6a85dMRkmbhYjOHF4
+ hmAtrxwljLCaYn8AVzSMBhLNumwNauTWFpnZUTAy370giZ/CWtuhY9DH6YKkU4Pr7Y7lq4lF
+ qReEyhCa9wWIgn6F/0mRcGVhORfmN6D3Gpi5gKpP2oyeYBOXQvM9oO2dwfj7nBeXCGtvNQwp
+ KeskA7eXNwCS0JrEZ+OOv6oylqwu1kbmf5zBhWXe4cCKRi0qoU6eTbsivIXIt0XLUuRzDWt1
+ zGQXUUSq97S8t08/9T+jKyZq5ukTrllFU1AEmiFsbu7bHGI/meqzYJafvyPeDTRCDH99Km4P
+ LUHxOv1L/MAhloMvo9hVbdni6sjvoO9q7hfxwViPXPKc1XyVOw5fCjXgJEVu/QUlLFDuAawV
+ kaewfVgOO2EaJH/DVocBAs5deDdh/sarTnl66hnKkvN+34l9bWKZkxeIh2QhXEPN7ByKo4kn
+ 7sstcNKuQyyjh0mboSPgixOrT/eJH0cSOMsrJgFDojxhkwmz0wEYJCaAzKvuMODbNBFM08LJ
+ D6IhfOc2O0ClxufKyA+RSrXwO5QpZUSoxQUnlUMEFS+nIaXjPEAw0wD+Ds6eQ1Z0xFb3r8hI
+ WNsLUB0e/mD8ms6nsRFRGzwSQhNCAfCoB6vkx5TyDecFRntDDCRanYhMPqM9wYF621dODNc+
+ feR1T+9Azrtecjw2Ao0WFJk8qK8FIIgp1Caws33Td6YG5QaYCb+hvP8b2Q/rUq1CMw8s0TLu
+ O128bsicqb8LyMR/fE2BoTyOW78k/xYyLGumc1cwZ4=
+IronPort-HdrOrdr: A9a23:llTqJKsZesz09ziIVGhiJM1q7skDrNV00zEX/kB9WHVpm6yj/f
+ xGUs576faSskdpZJlD8ersBEDkex/hHPFOkOos1NuZMzUO/VHYSL2KjrGSpQEIZReOlNK1vJ
+ 0IG8ND4Z/LfD9HZK3BgDVQfexP/DEJnZrY/ds2t00dKD2Cc5sQkzuRFDzrb3GemzM2fqbQxf
+ Knl7B6mwY=
 X-IronPort-Anti-Spam-Filtered: true
 Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
-  by ipmail06.adl3.internode.on.net with ESMTP; 21 Jan 2023 19:28:19 +1030
+  by ipmail06.adl3.internode.on.net with ESMTP; 21 Jan 2023 19:28:22 +1030
 Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
         (authenticated bits=0)
-        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 30L8vxu32985116
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 30L8vxu42985116
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sat, 21 Jan 2023 19:58:14 +1100
+        Sat, 21 Jan 2023 19:58:18 +1100
 Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 30L8vxu32985116
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 30L8vxu42985116
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-        s=s1; t=1674291494; bh=8F103dRLrYEfzlD604HLoT559+l4Xjd27vExN5AC28k=;
+        s=s1; t=1674291498; bh=SLLe+KdFoEyxxQ6Kyfu2pO+6m56C9dZgMWvHBnJAPVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FTgM89o8q4+TY1Lq2G0wXRo4h9Y3itJKgm3+R1FY8wtJ8qmtHhm8D+4yPIc2l4Vdc
-         po1DT7LjDDskTbap1eRmgwcHMl1OJldPCahppNZ2sXbVpkDEetXdxT553KnoKexr9G
-         VgsPyErgiGM1wX7vAmr8RJS3Ye5JPxq4+ZxuEy8foT87H4Hz17fKZHayQfM4j9JZgE
-         +KlabJ9as9u/2HRXOZHISCiY36DuB1Vbnt5/JVSXbGJhFygYszyLo5vMkLY6JgSYOU
-         sgNNaEiNA7uWawNDcGXViJMaeRbTsWIPhLsE9DVFi3wYOZC8pmXawvmQaUt5X9IqmM
-         3b77XOnX1CPfw==
+        b=EKGv5EerWRmhvRDcNvdQhD1uHaCKcReT5+XbkQMJyTcRY8wm+clS4Yk3Kk6DsLpic
+         nId72myM1ek2Na+vp5zsmlMCxX+dtMUGnl3SDhCPlljBJ8/4iLb6bU5xeGBquxYO2b
+         xp9WrPLJtRQ1qH0ezmUYn7DODvoL11gjynjd/b/LrdkhLCY8VOJvfSgd23jgCszWW1
+         GvfQlmSqpsoLwA/7DjFTXMhL9CxoGCYuzJaNjLCdDa2M7FY/wSoghcYnnMSf06w105
+         uYfK6cMmM92z74p2ajsalyj9D/L8KRh2MsG5YxKNnbkWTr33XO0Gfe0x50DYKjiHgs
+         1Wl6bUVMo0eNQ==
 From:   Frank Crawford <frank@crawford.emu.id.au>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org,
         Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v1 1/2] hwmon: (it87) Group all related MODULE_PARM definitions together
-Date:   Sat, 21 Jan 2023 19:57:53 +1100
-Message-Id: <20230121085754.1693336-2-frank@crawford.emu.id.au>
+Subject: [PATCH v1 2/2] hwmon: (it87) Added driver version to distinguish from dev version
+Date:   Sat, 21 Jan 2023 19:57:54 +1100
+Message-Id: <20230121085754.1693336-3-frank@crawford.emu.id.au>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230121085754.1693336-1-frank@crawford.emu.id.au>
 References: <20230121085754.1693336-1-frank@crawford.emu.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 21 Jan 2023 19:58:14 +1100 (AEDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 21 Jan 2023 19:58:18 +1100 (AEDT)
 X-Virus-Scanned: clamav-milter 0.103.7 at bits.crawford.emu.id.au
 X-Virus-Status: Clean
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -109,67 +109,45 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Group the MODULE_PARM definitions together to make them easier for
-future maintenance, rather than having them spread across the file.
+Add a driver version and log it on load, to make it easier to
+distinguish between the in-tree version and any development version from
+an external source.
 
 Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
 ---
- drivers/hwmon/it87.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/hwmon/it87.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index ee48e238e46f..a8a6a0ffee82 100644
+index a8a6a0ffee82..632ab3d50bc6 100644
 --- a/drivers/hwmon/it87.c
 +++ b/drivers/hwmon/it87.c
-@@ -65,14 +65,6 @@ enum chips { it87, it8712, it8716, it8718, it8720, it8721, it8728, it8732,
- 	     it8771, it8772, it8781, it8782, it8783, it8786, it8790,
- 	     it8792, it8603, it8620, it8622, it8628 };
+@@ -59,6 +59,8 @@
+ #include <linux/acpi.h>
+ #include <linux/io.h>
  
--static unsigned short force_id;
--module_param(force_id, ushort, 0);
--MODULE_PARM_DESC(force_id, "Override the detected device ID");
--
--static bool ignore_resource_conflict;
--module_param(ignore_resource_conflict, bool, 0);
--MODULE_PARM_DESC(ignore_resource_conflict, "Ignore ACPI resource conflict");
--
- static struct platform_device *it87_pdev[2];
++#define IT87_DRIVER_VERSION "v1.0-official"
++
+ #define DRVNAME "it87"
  
- #define	REG_2E	0x2e	/* The register to read/write */
-@@ -181,6 +173,12 @@ static inline void superio_exit(int ioreg)
- #define IT87_SIO_VID_REG	0xfc	/* VID value */
- #define IT87_SIO_BEEP_PIN_REG	0xf6	/* Beep pin mapping */
+ enum chips { it87, it8712, it8716, it8718, it8720, it8721, it8728, it8732,
+@@ -3398,6 +3400,8 @@ static int __init sm_it87_init(void)
+ 	bool found = false;
+ 	int i, err;
  
-+/* Force chip ID to specified value. Should only be used for testing */
-+static unsigned short force_id;
++	pr_info("it87 driver version %s\n", IT87_DRIVER_VERSION);
 +
-+/* ACPI resource conflicts are ignored if this parameter is set to 1 */
-+static bool ignore_resource_conflict;
-+
- /* Update battery voltage after every reading if true */
- static bool update_vbat;
- 
-@@ -3457,11 +3455,20 @@ static void __exit sm_it87_exit(void)
- 
- MODULE_AUTHOR("Chris Gauthron, Jean Delvare <jdelvare@suse.de>");
- MODULE_DESCRIPTION("IT8705F/IT871xF/IT872xF hardware monitoring driver");
-+
-+module_param(force_id, ushort, 0);
-+MODULE_PARM_DESC(force_id, "Override the detected device ID");
-+
-+module_param(ignore_resource_conflict, bool, 0);
-+MODULE_PARM_DESC(ignore_resource_conflict, "Ignore ACPI resource conflict");
-+
- module_param(update_vbat, bool, 0);
- MODULE_PARM_DESC(update_vbat, "Update vbat if set else return powerup value");
-+
- module_param(fix_pwm_polarity, bool, 0);
- MODULE_PARM_DESC(fix_pwm_polarity,
+ 	err = platform_driver_register(&it87_driver);
+ 	if (err)
+ 		return err;
+@@ -3470,6 +3474,7 @@ MODULE_PARM_DESC(fix_pwm_polarity,
  		 "Force PWM polarity to active high (DANGEROUS)");
-+
+ 
  MODULE_LICENSE("GPL");
++MODULE_VERSION(IT87_DRIVER_VERSION);
  
  module_init(sm_it87_init);
+ module_exit(sm_it87_exit);
 -- 
 2.39.0
 
