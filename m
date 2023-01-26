@@ -2,99 +2,102 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DC2667C3BE
-	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Jan 2023 05:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB8767C3BC
+	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Jan 2023 05:02:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229576AbjAZEDA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 25 Jan 2023 23:03:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
+        id S229475AbjAZECz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 25 Jan 2023 23:02:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjAZEC7 (ORCPT
+        with ESMTP id S229536AbjAZECx (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 25 Jan 2023 23:02:59 -0500
+        Wed, 25 Jan 2023 23:02:53 -0500
 Received: from ipmail06.adl3.internode.on.net (ipmail06.adl3.internode.on.net [150.101.137.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 026D99776
-        for <linux-hwmon@vger.kernel.org>; Wed, 25 Jan 2023 20:02:57 -0800 (PST)
-IronPort-SDR: JFGgLbK5uz9q7ZjaEzGHfy6uLDSxmyFo0TyIapjHcv6Pq5MzZA4rh4HK6vSfGx8Z1+fDY5WeqP
- oOM6Oyj3gs0smE+mkeYB/KXk7wYk/PV29qeqL2NX03DIpkt1CdoZOgRas1DC58G0+SFrR7ej+D
- ZnWcv4+40eMWH1nbOp7gXI0h96QkEOkAlmus0rhRjSWI0VV5fF6TaYHqjMVSSox/NfPG4muSEY
- HUsM20QM8L45FDj2l+VISmVb3C5O+OqhTCo3UsyMi2ebrE09/epP7svitH4p/i+eRvLR1ZgeoI
- 85uoJd4g1pf3qCWTStrZvwfI
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EDDAE2D72
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 Jan 2023 20:02:46 -0800 (PST)
+IronPort-SDR: ZLrEiAKOvoujCwa9n0eD60zQVbzu//um34Y27tLnrt0O0q3bRa7t+Ze/dJtApdOqe6An39yVGw
+ 6z85FN2Z+Uq88Z2k+4b3fDs3S8S5kN8qFj86Ch8PgIqjeCtzNNR6H5TCs+b8jDvGegBTEAvQwI
+ 4qlU7J24O+8u64mhhpQyUKW2+3BDvQcFX3si9yQqgywZeJuBQJBEhR4uVpxPhQxge0AnCPwfAN
+ 0vadoZZtqtZy02911P892uD03jF+SaKKAcnWAByhnG45yp/6XvxZcOkEIDKch4fF6jg8LIvbLq
+ NZh7xCmLkLbzlKNimV+RQSKR
 X-SMTP-MATCH: 0
-X-IPAS-Result: =?us-ascii?q?A2ApBgCK+tFjjPQc8jxaHgEBCxIMSYE7C4ItgmCVbZ1Ag?=
- =?us-ascii?q?X4PAQ8BAUQEAQGFBoUlJjYHDgECBAEBAQEDAgMBAQEBAQEDAQEGAQEBAQEBB?=
- =?us-ascii?q?gQUAQEBAUBSBwtSBwtYBweBQQuBYRMLAzENhlg2AQ0BATcBKIEVAYMQgyOtF?=
- =?us-ascii?q?oEBgggBAQaCYppngV4JgUCLYYEUgzeBPT+BToR9iwOBDJoyCoE5eIElDkx6g?=
- =?us-ascii?q?Q8CCQIRgSwDCQMHBUlAAwsYDRYyChMsNRZKEBsaGweBBiooFQMEBAMCBhMDI?=
- =?us-ascii?q?AINKDEUBCkTDScmaQkCAyFkAwMEKC0JPwcmJDwHVjcGAg8fNwYDCQMCH09xL?=
- =?us-ascii?q?xISBQMLFSpHBAg2BQZSEgIIDxIPLEQOQjc0EwZcASkLDhEDUEcZbgSCES8mn?=
- =?us-ascii?q?w4WQzaBJoEJOQKSc45XoWKDfIFSnn1MgUSCNaUxl00ggiygcIQrAgoHFoFoA?=
- =?us-ascii?q?YIOTR8ZO4JnTwECAQEBDQECAQEDAQIBAQEJAQEBAY4dGYITjDhhOwIHCwEBA?=
- =?us-ascii?q?wmMIwEB?=
-IronPort-PHdr: A9a23:GioImRFKHO4fMJpTYaOsyp1GfhYY04WdBeZdwpAml6kIeb6q4JrlJ
- kCZ6PBwyl7FG4zGuLpNkeGDtafmVCQb5IqZ9moPdZtQWloEkZAYkwB6UpGMAEGpIKK1P35jT
- pZJXgY9rXqwaRc9JQ==
-IronPort-Data: A9a23:Er7sj681RbcXOJvSVRsiDrUDtHiTJUtcMsCJ2f8bNWPcYEJGY0x3z
- 2tNWG3VPv+MM2PxKYx1OYq3800HucfWmtUyGwBlrSk2FXwV+cGaCY+VcRn7Mn7CcpTPEhg24
- cxCN4CdJs45EVbR90ynWlTDhSAsjfvSGtIQKwJl1gRZH1IMpPIJ0Eo78wIBqtc0x4D/WWthg
- PuqyyHlEAbNNwNcawr41YrT8HuDg9yq0N8olgRWiSdj4TcyP1FMZH4uDfnZw0nQG+G4LcbmL
- wr394xVy0uCl/sb5nJJpZ6gGqECaua60QFjERO6UYD66vRJjnRaPqrWqJPwZG8P4whlkeydx
- /1fhazzEzcVB5TgnfZFfFofEnt7EKB/reqvzXiX6aR/zmXMcmf3hf50BV44OpcUvOtyHCdP+
- boRNVjhbDjd36TsnOj9ELkq3Jh/RCXoFNp3VnVIwyvQC/UOSorKXKvN/9Me0TItwMFCW//DD
- yYcQWYzNESRP0cUZz/7DroFheWCn0TieAZCqUC3pbsTw1rZ4ShYhe2F3N39IYTRFZ8Pzy50v
- Fnu+2X/HwFfNMOazjyt7H2hnKnMkDn9VYZUE6e3ntZugVuO1kQJDxAdVh6mur+/h1LWc9BTJ
- kgK8zAjhbMv70HtRd74NyBUu1ba5ltGB4AVSb1/sl3RjLHI6hqYDS4YVjFALtchsYk/WFTGy
- 2Nlgfv7NQws6o2pcEux86XMgnD1OHIQAGI7MHpsoRQ+3/Hvp4Q6jxTqR9llEbKogtCdJd0W6
- 27TxMTZr+tO5fPnx5lX7niC2Gn8+cGVJuIhzlyKBzj9tl0RiJuNPdTA1LTN0RpXBK+kJrVrl
- EMVl86T/Yji5rnXzHTVKAnhNJek+L6+NyDAgRZQFp0s7FyQF5OLI9gVum0kYR05d5xYJXnyf
- EbPuAgX+IdcPT2haqoxap/Z5yUWIUrISYiNuhP8NIEmjn1NmOivpn8GWKJo9zqx+HXAaIlmU
- XthTe6iDGwBFYNsxyesSuEW3NcDn35hmT2MHMyhkEz3itJygUJ5r59baTNiichnscu5TPn9q
- Yc32zaikUoECbamMkE7D6ZOfQ5TdRDX+qwaW+QMLrXTeFA3cI3QI+PJzvsgfZBohaJYio/1E
- oKVBCdlJK7ErSSfc223hoVLNOuHsWBX8StlYUTB/D+AhxAeXGpYxPhCJ8BrLeh/qoSOD5dcF
- pE4RilJOdwXIhyvxtjXRcOVQFVKeEv5iASQETCiZTRjLZdsSxaQqo3vZALw+i4UAmy6sNZ4o
- rHm3x6CGcgPQAFrDcD3bvOzzgrv4iJEwbktABXFcotJZUHh0Il2MCiv3PU5FME7L0mRzDWty
- FfECBgVkuDBvosp/YSbnquDtYqoTbdzExMCTWnW5Lq7LwfA+W+nzdMSWeqEZ2mNBmju8bqsY
- v9Zifz5LbsGkBBDrtMkQbpsyKs/4frppqNbl1o7RiySNAv0VL45eyuIx8hCsKFJ14R1gwruV
- xLd4MReNJWIJNjhTgwbKj0lWeLfh/sarSaDv/06LXLz6DJz4LfaA15ZOAOBiXIBIbZ4bNElz
- OMmtJJE4gCzkEBxYNyHkjsS/H6FMXIHSalhu5QHRo7nzAM2kwkQbZvZAy7wwZeOd9QVbBZwe
- 2bP2/WciuQO3FfGfloyCWPJg7hXi6MOjxYWnlUMEEvYyNPKi8g+0ABV7TlqHB9eyQ9K0rwvN
- 2U3ZVd5I76Co2VhiMRZBDr+RVkEXkHDvxahjgFVyCvCU0C0V2eLMHUyOKCG+0Vf+n8FJmpX+
- 7SRyWDEVzf2fZivgXFrABU69KLuHY5r6wnPuMG7BMDZTZM0Vjy00KahaF0BpwbjHc5s1lbMo
- vNn/bgsZKD2XcLKT3bX12VHOWwsdS25
-IronPort-HdrOrdr: A9a23:fx/pda4J8CI4mk9xzgPXwObXdLJyesId70hD6qkQc3ZomwKj9v
- xG+85rsiMd6l4qNU3I/OrtBEDuewK+yXcY2+Ys1NSZLW3bURWTXeNfBOLZqlWKJ8SUzI5gPM
- lbHZSXh7DLfD5HZL7BkWyF+s4bsaO6Gb6T9JzjJqhWPHhXg3AJ1XYANjqm
+X-IPAS-Result: =?us-ascii?q?A2AsBgCK+tFjjPQc8jxaHQEBAQEJARIBBQUBSYFGgi2CY?=
+ =?us-ascii?q?JVtnz4PAQ8BAUQEAQGFBgKFIyY4EwECBAEBAQEDAgMBAQEBAQEDAQEGAQEBA?=
+ =?us-ascii?q?QEBBgQUAQEBAUBSBwtSBwtYBweBQQuBYRMLAzENhlYCAQMnCwENAQE3AQ8ZO?=
+ =?us-ascii?q?FcGARKCfoMjrGMzgQGCCAEBBoJimmeBXgmBQIthgRSDN3pDP4FOglGBPm6LA?=
+ =?us-ascii?q?44IjTYKgTl4gSUOTHqBDwIJAhGBLAMJAwcFSUADCxgNFjIKEyw1CwtKKxobB?=
+ =?us-ascii?q?4EGKigVAwQEAwIGEwMgAg0oMRQEKRMNJyZpCQIDIV8FAwMEKC0JPwcmJDwHV?=
+ =?us-ascii?q?jcGAg8fNwYDCQMCH09xLxISBQMLFSpHBAg2BQYcNhICCA8SDyxEDkI3NBMGX?=
+ =?us-ascii?q?AEpCw4RA1BHGW4EghEGKSaeHHKBDoFxkz8KjnuhYoN8gVKefUyBRII1k0eRa?=
+ =?us-ascii?q?pdNIINmnh6BGIQrAgoHFoF5gX5NHxmDIk8BAgEBAQ0BAgEBAwECAQEBCQEBA?=
+ =?us-ascii?q?QGOHQwNCYIKjDhhOwIHCwEBAwmMIwEB?=
+IronPort-PHdr: A9a23:6bZoOh0ZJSFp8JEvsmDPn1BlVkEcU/3cNA8J8dwskbtRfKO589LvO
+ VGZ5PkrhUKaFYzB4KdCjOzb+7vlRXRG+5uEt2wPNZ1UAhEJhZ9EwAUpDJyJVRKrfqe4PScwR
+ ZwQX1Q9oBmG
+IronPort-Data: A9a23:+gPjAag1m2m6DiPsErV1/PjSX161VBYKZh0ujC45NGQN5FlHY01je
+ htvWmnTa/uMajf2LY0jYYy3o05UvZDdzoQxGwVrrSlnQipApceZXYTJIh36b33DcZySEBM/s
+ ZlGMYGaJp9uR3PW/T6gY+PrxZVe/fjYHuCmVIYoGczQqStMEnpJZcdLwrZh6mJQqYHlRVvL4
+ 7semuWHULOf82cc3l88sspvljs/5JwehxtA1rAOTagjUIj2yhH5pLpGTU2AByOQrrt8R4ZWd
+ M6fpF2NxV41yj92Yj+TfhcXRWVRKlLaFVDmZnO7wMFOiDAazsA5+v5T2Pbx9S67hh3R9+2dx
+ umhurS0axg0OYvBwN8ZCTgDPiBVPLB80pvYdC3XXcy7lyUqclPmwul1SkosNJIW/fx7R2xL6
+ LoZJHYEc3hvhcromPThFrMq3JRldpW3VG8ckigIITXxA+wvR5PrSL/D+tFfxjt2i8VTW/fSI
+ cMEAdZqREicO00eZg1OWPrSms+EqFrlLhtmoW6SirQF/m/p9TVu1bziZY+9ltuiHp0OzhzC9
+ woq5V/RBhAcKczaySWA9XSEmODCh2X4VZgUGbn+8eRl6HWXx2oOGDUMUlaworykkQi4Vs43A
+ 04Y9y4wpLI/3Fe2VdS7VBq9yENopTZCA58KT7d/slHIkPaIpR2FD3QFRXhdcNMn8sQxQHojy
+ zdlgu8FGxRrkqKITlSQroyQ9xLpFCk+LHI4TwsbGF5tD8bYnKk/iRfGT9BGGaGzj8HoFTyY/
+ 9xshHZn71n0pZBWv5hX7WwrkBrp/cOZEVdpjunDdjv4t1khPNDNi5mAswCz0BpWEGqOZnC81
+ JTus/OP4OYDHPlhfwTXGL1VdF1Fz9CIL3XnhkNzH9Ee/jCg4BaekW14vmk7fhszd5xUPGW1P
+ AnIpQpN5ZQVIGOlbOl8ZIf3AtlCIUnc+TbNCqy8gjlmOMMZmOq7EMZGPxD44owVuBJw+ZzTw
+ L/CGSpWMV4UCL580B29TPoH3Lkgy0gWnD2MGc6klkj9juLOPxZ5rIvp1nPQN4jVC4va/W3oH
+ yp3bZriJ+h3CrKlO3KPoeb/03hXfSZiXfgaVPC7hsbYelE2QjtwYxMg6a85dMRkmbhYjOHF4
+ hmAtrxwljLCaYn8AVzSMBhehEbHAc4XQYQTYXVyYT5FGhELPe6S0UvoX8RqLeJ7pL07k5aZj
+ ZAtIq29PxiGcRyfkxx1UHU3hNYKmM2DiV3cMiy7TiI4epI8FQXF9sW9Llnk7iARAC2tuY0zp
+ qDm1w+dSIdaH1ZuC8PfafSOyVKtvCFDx7grBhCXfIVeKBf27YxnCy3tlftpccsCHhX0wGfI3
+ QihHkZKrObAlIY57d3ViP3WtIyuCeZ/QBZXEjCDv7a7PCXX5ES5xopEXLradDzRTjqkqq64b
+ PpbyOvwdvACgRBLv8x1Du8zn6454tLuoZ5czxhlRSuUNQ3yUew+fnTfhJtBrKxAwLNdqDCaY
+ EPX94kII6iNNePkDEUVelgvYNOD4vdIyDPc2utkckz16Rh+8KeDTUgPbQKHjzZQLeUpPY4on
+ bUhtcoR51DtgxYmKIzd3CpV63/KJWYJTKsgrJ1cDYr2zAsnjFhfOMSOBijz6ZCJStNNLkhzf
+ GDO3fOZ2OoAyxqQaWc3GFjMwfFZ28YEtidK+1ledV6HrcWU1PY40SpY/SkzUgkInA5M1Ph+O
+ zY3OkApd7+C+Sxk2JpKU2y2QFsTWkXcoBCrjgFZ0TeFEw+zSmXRLWZ7Jf6C/QYS9GcadyUCp
+ OOUz2PsUDDLesDt33JsBhQ88qe8E4B8pl/YhcSqP8WZBJ1mMzDrtan/N2MHpizuDd41mECa9
+ /Jh+/x9aPOnOCMdy0Hh51J2CVjNpMi4GVF/
+IronPort-HdrOrdr: A9a23:/u4soavFUJVdTxthpKv+DXUf7skDrNV00zEX/kB9WHVpm6yj/f
+ xGUs576faSskdpZJlD8ersBEDkex/hHPFOkOos1NuZMzUO/VHYSL2KjrGSpQEIZReOlNK1vJ
+ 0IG8ND4Z/LfD9HZK3BgDVQfexP/DEJnZrY/ds2t00dKD2Cc5sQkzuRFDzrb3GemzM2fqbQxf
+ Knl7B6mwY=
 X-IronPort-Anti-Spam-Filtered: true
 Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
-  by ipmail06.adl3.internode.on.net with ESMTP; 26 Jan 2023 14:32:56 +1030
+  by ipmail06.adl3.internode.on.net with ESMTP; 26 Jan 2023 14:32:43 +1030
 Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
         (authenticated bits=0)
-        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 30Q42O5T1960730
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 30Q42O5U1960730
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Thu, 26 Jan 2023 15:02:33 +1100
+        Thu, 26 Jan 2023 15:02:38 +1100
 Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 30Q42O5T1960730
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 30Q42O5U1960730
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-        s=s1; t=1674705754; bh=2lYyf6P6fOmVkga72doF9LSvkK3IZqHyvhdMrb+TDfA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Bg1T8ZnuLDWq5CNzD+4ut45epvKh/FkHpKFQHkRgTPvKTq8UPcpaMsDXSL2V0YUW8
-         ZlIyBztsdo2rjj43mujcjGqyny7B0z/6Xg48J6WdJKP0FGxkBx3Ll+W0LOylSZXWtM
-         PHjmfgdB0L94pJjOrJYSO8mP1/6FbXluQOhfo5JCRyS1LoXJuFFDDpXHWZZ4E3APRF
-         emBpjJNxKg1YHsIVwOMw9pmEkzPae5MsSwFgsWkt1XP50JbkmVTVqpXYirzslwY4LW
-         EYxMvm0jkPeDTTORkpxQJqWsPafRTEwYwmUaM9ZtVp4NHMSoDYDCcjBldiHRTkz8o2
-         vxyUviWip1jgg==
+        s=s1; t=1674705759; bh=ZEPjMNMpNNGoT3JyHGJY8+fZzD0RHKUVp9nUZ1q8/Qw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DkFZWM4l3iEQL7BWqQGC5IrBhZY4+YAaojAqwqLtMS+M1EbL/+I/kozeIWjulp/Vl
+         jQJMuyRvS1+yQyIotQa3sdsadOKGe/r4G/rZrL+divArYoyOD6HQK97fPV5H34FTY5
+         CRj9JtpVjctxC5C78Cji1JzD0FuQ0XVroqLz4qJZZPgbbapE6XmEP3TmMMfueqCPjN
+         MSbPnlT2GoMEFhFbPM78rzMWFcyEKxRmLqtQGVXqIKFaAujkzXIw4GGDmyd+nN/CdF
+         Ejk+7J0sUGrdAovMyv21LvIliLVO29w3HqjtIup3AOs10+PNsXEzcmC9NW7sYg01BB
+         p1FP2Qpy/SjVg==
 From:   Frank Crawford <frank@crawford.emu.id.au>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org,
         Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v1 0/7] hwmon: (it87) Complete handling multi-chip configuration
-Date:   Thu, 26 Jan 2023 15:02:16 +1100
-Message-Id: <20230126040223.986189-1-frank@crawford.emu.id.au>
+Subject: [PATCH v1 1/7] hwmon: (it87) Allow disabling exiting of configuration mode
+Date:   Thu, 26 Jan 2023 15:02:17 +1100
+Message-Id: <20230126040223.986189-2-frank@crawford.emu.id.au>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230126040223.986189-1-frank@crawford.emu.id.au>
+References: <20230126040223.986189-1-frank@crawford.emu.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Thu, 26 Jan 2023 15:02:34 +1100 (AEDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Thu, 26 Jan 2023 15:02:39 +1100 (AEDT)
 X-Virus-Scanned: clamav-milter 0.103.7 at bits.crawford.emu.id.au
 X-Virus-Status: Clean
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -106,30 +109,99 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Further support of multiple chips on a motherboard to disable
-exiting configuration mode, including updating existing chips and adding
-new chips that match.
+Disabling configuration mode on some chips can result in system
+hang-ups and access failures to the Super-IO chip at the
+second SIO address. Never exit configuration mode on these
+chips to avoid the problem.
 
-Allow setting multiple chip IDs for testing, and correct listed chip
-names andides, when required.
+This patch should be applied in conjunction with a previous one to
+initialise the second chip for certain mother boards.
 
-Update the system documentation.
-
+Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
 ---
+ drivers/hwmon/it87.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-Frank Crawford (7):
-  Allow disabling exiting of configuration mode
-  Disable configuration exit for certain chips
-  List full chip model name
-  Add chip_id in some info message
-  Allow multiple chip IDs for force_id
-  Add new chipset IT87952E
-  Updated documentation for recent updates to it87
-
- Documentation/hwmon/it87.rst |  47 ++++++++++++--
- drivers/hwmon/it87.c         | 117 +++++++++++++++++++++++------------
- 2 files changed, 120 insertions(+), 44 deletions(-)
-
+diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
+index a8a6a0ffee82..7049e81f5af1 100644
+--- a/drivers/hwmon/it87.c
++++ b/drivers/hwmon/it87.c
+@@ -128,10 +128,12 @@ static inline int superio_enter(int ioreg)
+ 	return 0;
+ }
+ 
+-static inline void superio_exit(int ioreg)
++static inline void superio_exit(int ioreg, bool doexit)
+ {
+-	outb(0x02, ioreg);
+-	outb(0x02, ioreg + 1);
++	if (doexit) {
++		outb(0x02, ioreg);
++		outb(0x02, ioreg + 1);
++	}
+ 	release_region(ioreg, 2);
+ }
+ 
+@@ -497,6 +499,7 @@ static const struct it87_devices it87_devices[] = {
+ struct it87_sio_data {
+ 	int sioaddr;
+ 	enum chips type;
++	u8 doexit;
+ 	/* Values read from Super-I/O config space */
+ 	u8 revision;
+ 	u8 vid_value;
+@@ -523,6 +526,8 @@ struct it87_data {
+ 	u8 peci_mask;
+ 	u8 old_peci_mask;
+ 
++	bool doexit;		/* true if exit from sio config is ok */
++
+ 	unsigned short addr;
+ 	const char *name;
+ 	struct mutex update_lock;
+@@ -2405,6 +2410,7 @@ static int __init it87_find(int sioaddr, unsigned short *address,
+ 	int err;
+ 	u16 chip_type;
+ 	const struct it87_devices *config;
++	bool doexit = true;
+ 
+ 	err = superio_enter(sioaddr);
+ 	if (err)
+@@ -2501,6 +2507,8 @@ static int __init it87_find(int sioaddr, unsigned short *address,
+ 		goto exit;
+ 	}
+ 
++	sio_data->doexit = doexit;
++
+ 	err = 0;
+ 	sio_data->sioaddr = sioaddr;
+ 	sio_data->revision = superio_inb(sioaddr, DEVREV) & 0x0f;
+@@ -2827,7 +2835,7 @@ static int __init it87_find(int sioaddr, unsigned short *address,
+ 		sio_data->skip_pwm |= dmi_data->skip_pwm;
+ 
+ exit:
+-	superio_exit(sioaddr);
++	superio_exit(sioaddr, doexit);
+ 	return err;
+ }
+ 
+@@ -3061,6 +3069,7 @@ static int it87_probe(struct platform_device *pdev)
+ 	data->addr = res->start;
+ 	data->sioaddr = sio_data->sioaddr;
+ 	data->type = sio_data->type;
++	data->doexit = sio_data->doexit;
+ 	data->features = it87_devices[sio_data->type].features;
+ 	data->peci_mask = it87_devices[sio_data->type].peci_mask;
+ 	data->old_peci_mask = it87_devices[sio_data->type].old_peci_mask;
+@@ -3213,7 +3222,7 @@ static void it87_resume_sio(struct platform_device *pdev)
+ 			     reg2c);
+ 	}
+ 
+-	superio_exit(data->sioaddr);
++	superio_exit(data->sioaddr, data->doexit);
+ }
+ 
+ static int it87_resume(struct device *dev)
 -- 
 2.39.1
 
