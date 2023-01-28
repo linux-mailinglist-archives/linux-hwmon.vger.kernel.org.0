@@ -2,141 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8914267F423
-	for <lists+linux-hwmon@lfdr.de>; Sat, 28 Jan 2023 03:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1D067F518
+	for <lists+linux-hwmon@lfdr.de>; Sat, 28 Jan 2023 07:04:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232579AbjA1CxR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 27 Jan 2023 21:53:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46388 "EHLO
+        id S232010AbjA1GEJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 28 Jan 2023 01:04:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229681AbjA1CxR (ORCPT
+        with ESMTP id S229562AbjA1GEH (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 27 Jan 2023 21:53:17 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F7010B
-        for <linux-hwmon@vger.kernel.org>; Fri, 27 Jan 2023 18:53:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674874396; x=1706410396;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vlWV317Gx+i1vDmdzIGDNddgKTHnMvVBeQW0pRLtPJU=;
-  b=B5SrWkgQpnpN/9Csd+/Abu7Rbw+D3PphM1vfP5MhMRmGveJMmkPf9cLV
-   kndtg/Tfl/y9jaX13k6YnBUZZ7nEY0hVgSNl2hCzBQI0N4OmqX+bNo/Pg
-   dGezT5GwqAuFCXeB5jP5nfx8XDUQbNn6E4tJztTkHryL7i+jijicUl+24
-   I10sonSB2JgcnBICQHi3hWHu30E7e/JX1PmB7lSj/QkeeD9AlLPy17HYh
-   oQnJiGXepnunzNTKfWB2MCnEVRg3Yt6HzpcQWUVRtxiCcjb4buyN0Fza8
-   RHsnKebwdnB7McvHQn+ZyRo7fgm3kFZrAq+7UWCLVtByEZ7pckS6NAIdW
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10603"; a="307599814"
-X-IronPort-AV: E=Sophos;i="5.97,252,1669104000"; 
-   d="scan'208";a="307599814"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 18:53:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10603"; a="640912208"
-X-IronPort-AV: E=Sophos;i="5.97,252,1669104000"; 
-   d="scan'208";a="640912208"
-Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 27 Jan 2023 18:53:14 -0800
-Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pLbL7-0000Kf-2l;
-        Sat, 28 Jan 2023 02:53:13 +0000
-Date:   Sat, 28 Jan 2023 10:52:28 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- f9b70de51c899be761b9270ca618597ecc877402
-Message-ID: <63d48dec.7Eu5CqXFhYilpVE0%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sat, 28 Jan 2023 01:04:07 -0500
+Received: from ipmail06.adl3.internode.on.net (ipmail06.adl3.internode.on.net [150.101.137.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3EC577C321
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Jan 2023 22:04:02 -0800 (PST)
+IronPort-SDR: 52Y0XfOo5RHsVxazjXy3q8wwQJTwE+ux64TV304HwrpcM/Sjy9z74e9d9kJtmhU93c5V/rh3Ux
+ C9xcjDoeRFe/LCq5PW1tuYJd4Hkhe94HOH74KRLWP7hfu1wU9TrgzTgdbORtsuflyaOsYoS90F
+ m6CRpmGtUxJpvGP3DVs2BrG/rF+UVueMrmdDDPMRYNeeN13nHhAwqFFt7PAAjcBAEPf+sFovHG
+ o2wrCiUYgypzZTT25c50mE1UCa/rhwMM0mmEFFmRoKhCzk2JgEVgxNOnoCJDCnMeMmZj9uThTC
+ J47YbAo3bS+6hjE7XeBbLr7E
+X-SMTP-MATCH: 0
+Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
+  by ipmail06.adl3.internode.on.net with ESMTP; 28 Jan 2023 16:33:31 +1030
+Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
+        (authenticated bits=0)
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 30S63Ch82973396
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Sat, 28 Jan 2023 17:03:22 +1100
+Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 30S63Ch82973396
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
+        s=s1; t=1674885803; bh=nc7AyFHXG2PGI/0dHa/FrmGKhTNpiwYijiW34AzVX9c=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DtPEHcOdWZpmb/8rp0sVqIzD4O5x7WPfqNqPRmUQT4LC8FxFWgbx+YlZ9fMtH35gq
+         Ol71wGyFh9An3RvF336vCohB15e+qrYIDi4F2jFD/xG8jQk2RAHNBBtX4s4TZ/1Ews
+         4s7Bo2z9qRK8OjwgH+g6xL1mtHdyuUXpKY4YENiz5YrEIQnnXQw+WYosVVZ+yVR3wA
+         LcCBKdfoELEbdRWLV2M08kn4bGH1z9yegNrBd6m6u6cgNNxo1sGMQ8JeQjBBKECOfG
+         1ZyNKzToulTQ7WUyN2OmAelJ4kxr+QM9iMN8ApBXjUbbDlGvYlagk/D4U/DRI2DmE0
+         NRoJvV4fgPa/g==
+From:   Frank Crawford <frank@crawford.emu.id.au>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org,
+        Frank Crawford <frank@crawford.emu.id.au>
+Subject: [PATCH v3 0/7] hwmon: (it87) Complete handling multi-chip configuration
+Date:   Sat, 28 Jan 2023 17:03:01 +1100
+Message-Id: <20230128060308.1549707-1-frank@crawford.emu.id.au>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 28 Jan 2023 17:03:23 +1100 (AEDT)
+X-Virus-Scanned: clamav-milter 0.103.7 at bits.crawford.emu.id.au
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: f9b70de51c899be761b9270ca618597ecc877402  hwmon: add initial NXP MC34VR500 PMIC monitoring support
+Further support of multiple chips on a motherboard to disable
+exiting configuration mode, including updating existing chips and adding
+new chips that match.
 
-elapsed time: 3715m
+Allow setting multiple chip IDs for testing, and correct listed chip
+names and IDs, when required.
 
-configs tested: 59
-configs skipped: 2
+Update the system documentation.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+---
 
-gcc tested configs:
-x86_64                            allnoconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-x86_64                              defconfig
-alpha                               defconfig
-m68k                             allyesconfig
-x86_64                           allyesconfig
-s390                             allyesconfig
-powerpc                           allnoconfig
-s390                                defconfig
-m68k                             allmodconfig
-s390                             allmodconfig
-powerpc                          allmodconfig
-arc                  randconfig-r043-20230123
-i386                                defconfig
-x86_64                    rhel-8.3-kselftests
-arc                              allyesconfig
-x86_64                          rhel-8.3-func
-arm                  randconfig-r046-20230123
-i386                             allyesconfig
-sh                               allmodconfig
-alpha                            allyesconfig
-mips                             allyesconfig
-i386                          randconfig-a014
-i386                 randconfig-a003-20230123
-i386                 randconfig-a002-20230123
-i386                 randconfig-a001-20230123
-i386                          randconfig-a012
-i386                 randconfig-a004-20230123
-ia64                             allmodconfig
-x86_64                               rhel-8.3
-i386                 randconfig-a005-20230123
-i386                 randconfig-a006-20230123
-i386                          randconfig-a016
-arm                                 defconfig
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-arm                              allyesconfig
-arm64                            allyesconfig
-x86_64               randconfig-a002-20230123
-x86_64               randconfig-a001-20230123
-x86_64               randconfig-a004-20230123
-x86_64               randconfig-a003-20230123
+Changes since v2:
+ * Correct possible uninitialised pointer issue.
 
-clang tested configs:
-hexagon              randconfig-r041-20230123
-x86_64                          rhel-8.3-rust
-hexagon              randconfig-r045-20230123
-s390                 randconfig-r044-20230123
-i386                          randconfig-a013
-i386                          randconfig-a011
-riscv                randconfig-r042-20230123
-i386                          randconfig-a015
-x86_64               randconfig-a013-20230123
-x86_64               randconfig-a011-20230123
-x86_64               randconfig-a012-20230123
-x86_64               randconfig-a014-20230123
-x86_64               randconfig-a016-20230123
-x86_64               randconfig-a015-20230123
+Changes since v1:
+ * Convert to use feature flag and related macros rather than a separate
+   field, as suggested in review.
+ * Reverse sense of flag in superio_exit to simplify feature macro.
+ * Improved chip description following review.
+
+Frank Crawford (7):
+  hwmon: (it87) Allow disabling exiting of configuration mode
+  hwmon: (it87) Disable configuration exit for certain chips
+  hwmon: (it87) List full chip model name
+  hwmon: (it87) Add chip_id in some info message
+  hwmon: (it87) Allow multiple chip IDs for force_id
+  hwmon: (it87) Add new chipset IT87952E
+  hwmon: (it87) Updated documentation for recent updates to it87
+
+ Documentation/hwmon/it87.rst |  47 ++++++++++++--
+ drivers/hwmon/it87.c         | 119 ++++++++++++++++++++++-------------
+ 2 files changed, 117 insertions(+), 49 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.39.1
+
