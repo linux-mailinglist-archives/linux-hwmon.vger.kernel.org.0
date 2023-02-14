@@ -2,228 +2,116 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3167697053
-	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Feb 2023 23:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D30206970C9
+	for <lists+linux-hwmon@lfdr.de>; Tue, 14 Feb 2023 23:37:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233269AbjBNWCD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 14 Feb 2023 17:02:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
+        id S232071AbjBNWg7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 14 Feb 2023 17:36:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233197AbjBNWB6 (ORCPT
+        with ESMTP id S232031AbjBNWg6 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 14 Feb 2023 17:01:58 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10943305F8;
-        Tue, 14 Feb 2023 14:01:57 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id bu23so17218940wrb.8;
-        Tue, 14 Feb 2023 14:01:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CRsF8ja+tN5dl8vKAEs9o0Dk+bv83K0UHjvvq2K1ytI=;
-        b=obMn1FX8n+MUzihMA5YMDtgm4JW0ECMx3XUTO5JWDobb0jddOwXK9G2SOvOnlbHc51
-         g7rQDcCCjKocdlM15aCRjzIX8UNY8KF4tgqyCezyQ01WwPTXDBLaE97WAa67Nojn4IRS
-         5seAeoSNblaqvVFnX8ugtuVSAlvPKzet5iZMjG+sTCGiFQNCbnkMRh7UIE+7wJpzQ1C8
-         jyFWH7qKmo8uYdLuYCYD7WVwgD4BgK/8+CMQJYa5t3KbcbC3LOAdf9SgvI1FgzfXewwU
-         MnUxJ85VVXrvDbAp2DoheTbirF+sG/mASbKHlDvJiCJt4ZrKUlrVc1jGZF8Tpm+2uH1c
-         7r6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CRsF8ja+tN5dl8vKAEs9o0Dk+bv83K0UHjvvq2K1ytI=;
-        b=KEFaXt8okGELJhw4atfWrHRMzbcfnPF0SF65CQC/lfr4IJ71gCbufLEeKhUZFiZs68
-         6poGL/lEdWWBdJAb6+mQe54Wk/F8Nl/dwhOZituqOE4jtZ4jJ+xsr84fatcrbzn0Iei1
-         VGG9VwLgBosnDViczk3NT2hAa7++EZQMB9/I/tpa2oPIvig4bIQ6N80PSrZyv/RxWxsy
-         Wg5p8BjfwX4VukR3oNLNDQcNkrfftifFIoQyyG+aHoc37SUjO9hOZDOv1fJ4mGP1s7z4
-         6CGI2I3v29s/itafI1aTQWNDLP7SAGP8YKWYBsjb97lT7SY7/BkdBP+b1oKWWWLNcM4j
-         r6yA==
-X-Gm-Message-State: AO0yUKVhYubxHU/q5d3AWPMsQO5qoZgxKCA5q+A8ZJtK6xNMF2Eia9n6
-        n37skg90MvS53nAhgLQCL77WJfCbqW6eLw==
-X-Google-Smtp-Source: AK7set971LW0ys8KLs3D13GvqB1Jwv+kgEKZLz2dcEUGq0n19QHFszxPPNCbhVN6BSVQsgPueiLcKA==
-X-Received: by 2002:adf:f80b:0:b0:2c5:4c8c:410d with SMTP id s11-20020adff80b000000b002c54c8c410dmr3289871wrp.6.1676412115485;
-        Tue, 14 Feb 2023 14:01:55 -0800 (PST)
-Received: from localhost.localdomain ([2001:9e8:20f2:3300:c2d2:a008:b022:b1e0])
-        by smtp.gmail.com with ESMTPSA id u14-20020adff88e000000b002c56046a3b5sm4033704wrp.53.2023.02.14.14.01.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 14:01:55 -0800 (PST)
-From:   Leonard Anderweit <leonard.anderweit@gmail.com>
-To:     linux-hwmon@vger.kernel.org
-Cc:     Aleksa Savic <savicaleksa83@gmail.com>,
-        Jack Doan <me@jackdoan.com>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Leonard Anderweit <leonard.anderweit@gmail.com>
-Subject: [PATCH v2 6/6] hwmon: (aquacomputer_d5next) Add fan PWM control for Aquaero
-Date:   Tue, 14 Feb 2023 23:02:21 +0100
-Message-Id: <20230214220221.15003-7-leonard.anderweit@gmail.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230214220221.15003-1-leonard.anderweit@gmail.com>
-References: <20230214220221.15003-1-leonard.anderweit@gmail.com>
+        Tue, 14 Feb 2023 17:36:58 -0500
+X-Greylist: delayed 7724 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Feb 2023 14:36:54 PST
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15F32FCE0
+        for <linux-hwmon@vger.kernel.org>; Tue, 14 Feb 2023 14:36:54 -0800 (PST)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id F2D6D2C049F;
+        Wed, 15 Feb 2023 11:36:51 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1676414211;
+        bh=cyDTL/yYDuqCMGb1II30ndoGbPuz+1qrXx6xn9H+EoU=;
+        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+        b=bYFpDGLzLZIkgkVR+s0EQFhtgEG3NKIAt5CpBBYwxNP/4OjpiKrAnH1N50xE8kDF+
+         WWLDl5XtUA2yNtZ6Ha7/UqwEqcYCZS/f0CbfLLz20rciXa4r+K3dAyiZ3r+gY4L2eA
+         xksK5CrdbW9YWKW+lYyFg2/sjeb2r1NeeuWGVnry34JE/eYrhANd0+LO7Dj2a16Tcx
+         1ja/8Qu/ZrO7h2UzM6wWd6nUxCQFq+W9/+AeFcUE6LmO6ENOVjbw6Rx2IwoG8n3pA5
+         V+mOfckKhSxXF7CIfXsotWLNBJ6Y1keGxTIfEnFMqiAnrCHprMOZu+765vesdxyxHI
+         7pTtraI0SmdVA==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B63ec0d030002>; Wed, 15 Feb 2023 11:36:51 +1300
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.45; Wed, 15 Feb 2023 11:36:51 +1300
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.045; Wed, 15 Feb 2023 11:36:51 +1300
+From:   Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        "a.zummo@towertech.it" <a.zummo@towertech.it>,
+        "jdelvare@suse.com" <jdelvare@suse.com>,
+        "linux@roeck-us.net" <linux@roeck-us.net>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>
+Subject: Re: [PATCH v3 1/2] drivers: rtc: add max313xx series rtc driver
+Thread-Topic: [PATCH v3 1/2] drivers: rtc: add max313xx series rtc driver
+Thread-Index: AQHZQLLY3ijYBbo43E6McZa87qvtIa7OHnUAgAAP3wA=
+Date:   Tue, 14 Feb 2023 22:36:51 +0000
+Message-ID: <8ffabc0d-73ca-27c6-5244-95e29901c60a@alliedtelesis.co.nz>
+References: <20221108122254.1185-1-Ibrahim.Tilki@analog.com>
+ <20221108122254.1185-2-Ibrahim.Tilki@analog.com>
+ <68ddb833-f38e-a05b-82c4-ce12330410a5@alliedtelesis.co.nz>
+ <Y+v/suob0EN1REX4@mail.local>
+In-Reply-To: <Y+v/suob0EN1REX4@mail.local>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E5D9E7D68209B645A1B54DA70F7B870B@atlnz.lc>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=U+ns8tju c=1 sm=1 tr=0 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10 a=IkcTkHD0fZMA:10 a=m04uMKEZRckA:10 a=gAnH3GRIAAAA:8 a=_pSrP_Kwfl6zvDA_82YA:9 a=QEXdDO2ut3YA:10 a=oVHKYsEdi7-vN-J5QA_j:22
+X-SEG-SpamProfiler-Score: 0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add the option to control fan PWM on Aquacomputer Aquaero. The Aquaero is the
-most complex Aquacomputer device, control is therefore more complicated then on
-already supported devices.
-Setting PWM requires multiple steps. First, an internal static PWM controller
-is set to the desired PWM value. Second, the fan is set to use that PWM
-controller. Last, the minimum and maximum accepted PWM values of the fan are
-set to allow all possible PWM values.
-
-Signed-off-by: Leonard Anderweit <leonard.anderweit@gmail.com>
----
- Documentation/hwmon/aquacomputer_d5next.rst |  3 +-
- drivers/hwmon/aquacomputer_d5next.c         | 63 +++++++++++++++++++--
- 2 files changed, 60 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/hwmon/aquacomputer_d5next.rst b/Documentation/hwmon/aquacomputer_d5next.rst
-index 618c826093a2..c604d4becb8d 100644
---- a/Documentation/hwmon/aquacomputer_d5next.rst
-+++ b/Documentation/hwmon/aquacomputer_d5next.rst
-@@ -25,7 +25,8 @@ communicate through proprietary USB HID protocols.
- 
- The Aquaero devices expose eight physical, eight virtual and four calculated
- virtual temperature sensors, as well as two flow sensors. The fans expose their
--speed (in RPM), power, voltage and current. Temperature offsets can be controlled.
-+speed (in RPM), power, voltage and current. Temperature offsets and fan speeds
-+can be controlled.
- 
- For the D5 Next pump, available sensors are pump and fan speed, power, voltage
- and current, as well as coolant temperature and eight virtual temp sensors. Also
-diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
-index 61c1ffcd8f3b..a6cff7f9cac9 100644
---- a/drivers/hwmon/aquacomputer_d5next.c
-+++ b/drivers/hwmon/aquacomputer_d5next.c
-@@ -104,6 +104,9 @@ static u8 aquaero_secondary_ctrl_report[] = {
- #define AQUAERO_NUM_CALC_VIRTUAL_SENSORS	4
- #define AQUAERO_NUM_FLOW_SENSORS		2
- #define AQUAERO_CTRL_REPORT_SIZE		0xa93
-+#define AQUAERO_CTRL_PRESET_ID			0x5c
-+#define AQUAERO_CTRL_PRESET_SIZE		0x02
-+#define AQUAERO_CTRL_PRESET_START		0x55c
- 
- /* Sensor report offsets for Aquaero fan controllers */
- #define AQUAERO_SENSOR_START			0x65
-@@ -118,6 +121,10 @@ static u16 aquaero_sensor_fan_offsets[] = { 0x167, 0x173, 0x17f, 0x18B };
- 
- /* Control report offsets for the Aquaero fan controllers */
- #define AQUAERO_TEMP_CTRL_OFFSET	0xdb
-+#define AQUAERO_FAN_CTRL_MIN_PWR_OFFSET	0x04
-+#define AQUAERO_FAN_CTRL_MAX_PWR_OFFSET	0x06
-+#define AQUAERO_FAN_CTRL_SRC_OFFSET	0x10
-+static u16 aquaero_ctrl_fan_offsets[] = { 0x20c, 0x220, 0x234, 0x248 };
- 
- /* Specs of the D5 Next pump */
- #define D5NEXT_NUM_FANS			2
-@@ -857,13 +864,22 @@ static int aqc_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
- 		*val = priv->power_input[channel];
- 		break;
- 	case hwmon_pwm:
--		if (priv->fan_ctrl_offsets) {
-+		switch (priv->kind) {
-+		case aquaero:
-+			ret = aqc_get_ctrl_val(priv, AQUAERO_CTRL_PRESET_START + channel * AQUAERO_CTRL_PRESET_SIZE,
-+					       val, AQC_BE16);
-+			if (ret < 0)
-+				return ret;
-+			*val = aqc_percent_to_pwm(*val);
-+			break;
-+		default:
- 			ret = aqc_get_ctrl_val(priv, priv->fan_ctrl_offsets[channel],
- 					       val, AQC_BE16);
- 			if (ret < 0)
- 				return ret;
- 
- 			*val = aqc_percent_to_pwm(ret);
-+			break;
- 		}
- 		break;
- 	case hwmon_in:
-@@ -922,6 +938,10 @@ static int aqc_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
- 		     long val)
- {
- 	int ret, pwm_value;
-+	/* Arrays for setting multiple values at once in the control report */
-+	int ctrl_values_offsets[4];
-+	long ctrl_values[4];
-+	int ctrl_values_types[4];
- 	struct aqc_data *priv = dev_get_drvdata(dev);
- 
- 	switch (type) {
-@@ -956,15 +976,47 @@ static int aqc_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
- 	case hwmon_pwm:
- 		switch (attr) {
- 		case hwmon_pwm_input:
--			if (priv->fan_ctrl_offsets) {
--				pwm_value = aqc_pwm_to_percent(val);
--				if (pwm_value < 0)
--					return pwm_value;
-+			pwm_value = aqc_pwm_to_percent(val);
-+			if (pwm_value < 0)
-+				return pwm_value;
- 
-+			switch (priv->kind) {
-+			case aquaero:
-+				/* Write pwm value to preset corresponding to the channel */
-+				ctrl_values_offsets[0] = AQUAERO_CTRL_PRESET_START +
-+				    channel * AQUAERO_CTRL_PRESET_SIZE;
-+				ctrl_values[0] = pwm_value;
-+				ctrl_values_types[0] = AQC_BE16;
-+
-+				/* Write preset number in fan control source */
-+				ctrl_values_offsets[1] = priv->fan_ctrl_offsets[channel] +
-+				    AQUAERO_FAN_CTRL_SRC_OFFSET;
-+				ctrl_values[1] = AQUAERO_CTRL_PRESET_ID + channel;
-+				ctrl_values_types[1] = AQC_BE16;
-+
-+				/* Set minimum power to 0 to allow the fan to turn off */
-+				ctrl_values_offsets[2] = priv->fan_ctrl_offsets[channel] +
-+				    AQUAERO_FAN_CTRL_MIN_PWR_OFFSET;
-+				ctrl_values[2] = 0;
-+				ctrl_values_types[2] = AQC_BE16;
-+
-+				/* Set maximum power to 255 to allow the fan to reach max speed */
-+				ctrl_values_offsets[3] = priv->fan_ctrl_offsets[channel] +
-+				    AQUAERO_FAN_CTRL_MAX_PWR_OFFSET;
-+				ctrl_values[3] = aqc_pwm_to_percent(255);
-+				ctrl_values_types[3] = AQC_BE16;
-+
-+				ret = aqc_set_ctrl_vals(priv, ctrl_values_offsets, ctrl_values,
-+							ctrl_values_types, 4);
-+				if (ret < 0)
-+					return ret;
-+				break;
-+			default:
- 				ret = aqc_set_ctrl_val(priv, priv->fan_ctrl_offsets[channel],
- 						       pwm_value, AQC_BE16);
- 				if (ret < 0)
- 					return ret;
-+				break;
- 			}
- 			break;
- 		default:
-@@ -1287,6 +1339,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 
- 		priv->num_fans = AQUAERO_NUM_FANS;
- 		priv->fan_sensor_offsets = aquaero_sensor_fan_offsets;
-+		priv->fan_ctrl_offsets = aquaero_ctrl_fan_offsets;
- 
- 		priv->num_temp_sensors = AQUAERO_NUM_SENSORS;
- 		priv->temp_sensor_start_offset = AQUAERO_SENSOR_START;
--- 
-2.39.1
-
+DQpPbiAxNS8wMi8yMyAxMDo0MCwgQWxleGFuZHJlIEJlbGxvbmkgd3JvdGU6DQo+IE9uIDE0LzAy
+LzIwMjMgMjA6Mjg6MDUrMDAwMCwgQ2hyaXMgUGFja2hhbSB3cm90ZToNCj4+IEhpIElicmFoaW0s
+DQo+Pg0KPj4gT24gOS8xMS8yMiAwMToyMiwgSWJyYWhpbSBUaWxraSB3cm90ZToNCj4+PiBBZGRp
+bmcgc3VwcG9ydCBmb3IgQW5hbG9nIERldmljZXMgTUFYMzEzWFggc2VyaWVzIFJUQ3MuDQo+Pj4N
+Cj4+PiBTaWduZWQtb2ZmLWJ5OiBJYnJhaGltIFRpbGtpIDxJYnJhaGltLlRpbGtpQGFuYWxvZy5j
+b20+DQo+Pj4gU2lnbmVkLW9mZi1ieTogWmV5bmVwIEFyc2xhbmJlbnplciA8WmV5bmVwLkFyc2xh
+bmJlbnplckBhbmFsb2cuY29tPg0KPj4+IC0tLQ0KPj4+ICAgIGRyaXZlcnMvcnRjL0tjb25maWcg
+ICAgICAgIHwgICAxMSArDQo+Pj4gICAgZHJpdmVycy9ydGMvTWFrZWZpbGUgICAgICAgfCAgICAx
+ICsNCj4+PiAgICBkcml2ZXJzL3J0Yy9ydGMtbWF4MzEzeHguYyB8IDEwNzAgKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrDQo+Pj4gICAgMyBmaWxlcyBjaGFuZ2VkLCAxMDgyIGlu
+c2VydGlvbnMoKykNCj4+PiAgICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9ydGMvcnRjLW1h
+eDMxM3h4LmMNCj4+IFdoYXQgaXMgdGhlIGN1cnJlbnQgc3RhdGUgb2YgdGhpcyB3b3JrPyBJIHNl
+ZSB0aGVyZSBhcmUgc29tZSBjb21tZW50cyBvbg0KPj4gdGhpcyB2MyBpdGVyYXRpb24gZnJvbSBs
+YXRlIGxhc3QgeWVhciBhbmQgSSBjb3VsZG4ndCBmaW5kIGFueSBuZXdlcg0KPj4gaXRlcmF0aW9u
+IG9uIGFueSBtYWlsaW5nIGxpc3QuIFdlJ3ZlIGdvdCBzb21lIG5ldyBoYXJkd2FyZSBhcnJpdmlu
+ZyBzb29uDQo+PiB0aGF0IHdpbGwgaGF2ZSB0aGUgTUFYMzEzMzEgUlRDIGFuZCBJJ20ga2VlbiB0
+byBzZWUgdGhpcyBwYXRjaCBzZXJpZXMNCj4+IGxhbmQuIElzIHRoZXJlIGFueXRoaW5nIEkgY2Fu
+IGRvIHRvIGhlbHAgaXQgYWxvbmc/IEkgY2FuJ3QgYmUgdmVyeQ0KPj4gc3BlY2lmaWMgYWJvdXQg
+d2hlbiBJJ2xsIHNlZSB0aGUgbmV3IGhhcmR3YXJlICh3aG8gY2FuIHRoZXNlIGRheXMpLCB0aGUN
+Cj4+IGxhc3QgdXBkYXRlIHdhcyAiYm9hcmRzIGFyZSBkdWUgaW4gTWFyY2giLg0KPj4NCj4+IEZv
+ciB0aGUgbWFpbnRhaW5lcnMgb24gdGhlIENjIGxpc3Qgb25jZSB0aGUgZHVzdCBzZXR0bGVzIGhv
+dyB3b3VsZCBJIGdldA0KPj4gdGhpcyBzdXBwb3J0ZWQgaW4gYSBMVFMga2VybmVsICh3ZSdyZSBj
+dXJyZW50bHkgdXNpbmcgdGhlIDUuMTUgc2VyaWVzKT8NCj4+IE9yIGlzIHRvdGFsbHkgb3V0IG9m
+IHRoZSBxdWVzdGlvbiBiZWNhdXNlIGl0J3Mgbm90IGp1c3QgYSBuZXcgZGV2aWNlIGlkPw0KPiBU
+aGlzIHdpbGwgbm90IGhhcHBlbiwgeW91IHdpbGwgaGF2ZSB0byB1cGRhdGUgdG8gdGhlIG5leHQg
+TFRTICh3aGljaCB5b3UNCj4gc2hvdWxkIGRvIGFueXdheSkNCkkgd2FzIGFmcmFpZCB0aGF0IHdh
+cyBnb2luZyB0byBiZSB0aGUgYW5zd2VyLiBXZSdsbCBoYXZlIHRvIGNhcnJ5IGl0IGFzIA0KYSBs
+b2NhbCBwYXRjaCB1bnRpbCB0aGVyZSBpcyBhIExUUyB2ZXJzaW9uIHdpdGggdGhlIGRyaXZlciBz
+dXBwb3J0IHdlIA0KbmVlZCBpbiBpdC4=
