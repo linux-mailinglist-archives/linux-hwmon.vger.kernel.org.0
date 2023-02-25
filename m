@@ -2,100 +2,116 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 391EA6A2872
-	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Feb 2023 10:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 794506A2A5D
+	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Feb 2023 16:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjBYJa3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 25 Feb 2023 04:30:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41446 "EHLO
+        id S229488AbjBYPCb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 25 Feb 2023 10:02:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjBYJa2 (ORCPT
+        with ESMTP id S229485AbjBYPCa (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 25 Feb 2023 04:30:28 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9494DFF2A
-        for <linux-hwmon@vger.kernel.org>; Sat, 25 Feb 2023 01:30:26 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id g12so898526pfi.0
-        for <linux-hwmon@vger.kernel.org>; Sat, 25 Feb 2023 01:30:26 -0800 (PST)
+        Sat, 25 Feb 2023 10:02:30 -0500
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB8314231;
+        Sat, 25 Feb 2023 07:02:29 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id r23-20020a05683001d700b00690eb18529fso1250849ota.1;
+        Sat, 25 Feb 2023 07:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QwJ3djsgu7EpFGFjesrarL0td1XXwZi3NukCRezNELs=;
-        b=optnimXpIydzp/+PWndFOQjbgLlMpy3vFttLCCQRdLUitavfgO3O8hWdo5CjF/sTe0
-         Wm8wrBn7zBQG+1EKFdrRWBOQ83MEHrmfryE0Szri53CrRwl0YalIfzI5VW20MAf73E++
-         6ZFFwJeLOlgkwII48SVvuntW4LeUU27IdF0RvUV4h1JsrMgMyzhc7lhpuSAxtt4VOiW0
-         v0a4/sylwTCgoyKsJZ8Zt7yEY/yEDoFjDPTjl1Mijb1Ya9yoI8hKiYua/iCVVKRScdg8
-         fBBDXNEyJ5ykM5+PslILzk8ey7LhEyOM/AdPbbfitSdV+GE3n7Rs+NztqSEQfTFb81vf
-         WZSw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=usCXqN2cCSnj4dT7GAyVtGjFUIiKD/qbjhaNX2F8edA=;
+        b=PkjIvRaioq5OxN7nl3+uGp4r8lh5lXIAnAk0fLMFSJkH5eddwAwcUytLn31PxIwkdS
+         ceMcl7Nvyw3LC07mqziDLPe+YU6W/PwgAIuYmKIjgHs6LPWKzSdg7pG4iGoO1muRgkvu
+         rimST2WaqJ67l5aJxZZhkLYNhUk8b+MQljA2n31jEDs/x+PJgcQlBth09HXqUr8dyWa9
+         l8U4TskQrMsKSdkUtnYMmK3wkWLPPcTzL7a7eH21GSuCoxQTHqwuP/c61QBJpNdIMHJS
+         SuPhWAWBK6gViJMnE1QXwozHJUn09JKaO/7tTUGVZWvTySVDQH5cuKYQsfqhz25pcYJ5
+         +3WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QwJ3djsgu7EpFGFjesrarL0td1XXwZi3NukCRezNELs=;
-        b=Thxf+Wq7peDUeurWz/tf4tp1DuJXqo8yAcbnSwb6w29SydFpyyEdjo/34hR8myHVIL
-         lcl+GfyDEGHzHu+q+H7lQxQQi/1hIWoczQZECK+B4F9T4CcOUuUGd81lJwJKOZvdQ0qZ
-         fueyOUxgwraVe1CIysnmk0et0hug0Oe3ho/kz5AVmxXaeoxn1KFKkVOFENNLb2jjE05L
-         y0bflE69jeGNzDVwB5CgmlA26QmbO0xIQdIbRuZrJLtoRm4IaB7RrYOBJz4DWThUzAGD
-         fWyRQmHZnOH/D7nqKh9vTCCXft3pTRCmJL4T1qSsnJ6Xfrebnm2+SUasz6ZpF6mMmp0v
-         0qew==
-X-Gm-Message-State: AO0yUKUGnpW7mz84eegM0eFTz8dlay4k3MQRKhkYyBc+aXLa6RpX2y3w
-        aGgKpgozUAHg4/r9dXZYJ3CGovOrweH9ucIY5bA=
-X-Google-Smtp-Source: AK7set8DjEjXobqY1+0xwn7dDh6+tMMwGXg8yycT4d+IfKsY14jRQSpBywK26Am9dX6t1Bl5lHQa8e1kSXjNvWKsErw=
-X-Received: by 2002:a05:6a00:7c8:b0:5df:9809:621f with SMTP id
- n8-20020a056a0007c800b005df9809621fmr2406272pfu.0.1677317426001; Sat, 25 Feb
- 2023 01:30:26 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=usCXqN2cCSnj4dT7GAyVtGjFUIiKD/qbjhaNX2F8edA=;
+        b=2TNHcozV+XmXw8XtRRP0eQd/WVOfuXw21fSphRMomBz/AV79IiSMY5j2DIXmEytwbT
+         qLUrPiCz/vQhMitg1FMIyx03+FHFJPzkVomty4UPL0pa1I0aghrTZpnUDR6GMsuhjyoA
+         KFpT+28f0Kzsz2gNvMiaM/qgsoKUsM9lnZZaEcBos3QyCtOjtL6RKwEkrwRXSLOF/TLL
+         RjhUVJW/9G9xfmw1F7XIt0pptRe0Ed07dNJRw8reNtvDLFySGEiWrZMeUtPlfPJV+KnA
+         C3v9E85Cw89uBLKduu5zaarWuS3DREIWmMKU1vB+ufRnjSxUIG8VdWvLrCx1GLwtsbM5
+         lIWg==
+X-Gm-Message-State: AO0yUKUqctcEqSX449IN1a6WMhYGHexq68J1fpHjFqq0QHVYGn5DyDcc
+        fs6cm5Ot2butc4Ttq5VQZmQ=
+X-Google-Smtp-Source: AK7set8hLPaL7FFVicqv2X6TyxFo2jyY+Qr0CAaC80Vl8FHE6Ug+1WtSJqPmEQRLS4/jrrOJe+lvlw==
+X-Received: by 2002:a05:6830:578:b0:68d:6b28:d92d with SMTP id f24-20020a056830057800b0068d6b28d92dmr6111792otc.18.1677337348207;
+        Sat, 25 Feb 2023 07:02:28 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id t2-20020a9d7742000000b0068d59d15a93sm684181otl.40.2023.02.25.07.02.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Feb 2023 07:02:27 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sat, 25 Feb 2023 07:02:25 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Tony O'Brien <tony.obrien@alliedtelesis.co.nz>
+Cc:     jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+        chris.packham@alliedtelesis.co.nz, hdegoede@redhat.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] hwmon: (adt7475) Display smoothing attributes in
+ correct order
+Message-ID: <20230225150225.GA3625646@roeck-us.net>
+References: <20230222005228.158661-1-tony.obrien@alliedtelesis.co.nz>
+ <20230222005228.158661-2-tony.obrien@alliedtelesis.co.nz>
 MIME-Version: 1.0
-Received: by 2002:a17:902:9a87:b0:19c:92af:ad17 with HTTP; Sat, 25 Feb 2023
- 01:30:25 -0800 (PST)
-Reply-To: lassounadage5@gmail.com
-From:   Ms Nadage Lassou <nadagelassou@gmail.com>
-Date:   Sat, 25 Feb 2023 10:30:25 +0100
-Message-ID: <CAJ97MqQUY4HeeHOPN6sWPSeFG-4bUAmVuOwd3SbU8BnrwM7Zmw@mail.gmail.com>
-Subject: YOUR URGENT ATTENTION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,SUBJ_ATTENTION,UNDISC_FREEM autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230222005228.158661-2-tony.obrien@alliedtelesis.co.nz>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:435 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lassounadage5[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nadagelassou[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Greetings.
+On Wed, Feb 22, 2023 at 01:52:27PM +1300, Tony O'Brien wrote:
+> Throughout the ADT7475 driver, attributes relating to the temperature
+> sensors are displayed in the order Remote 1, Local, Remote 2.  Make
+> temp_st_show() conform to this expectation so that values set by
+> temp_st_store() can be displayed using the correct attribute.
+> 
+> Fixes: 8f05bcc33e74 ("hwmon: (adt7475) temperature smoothing")
+> Signed-off-by: Tony O'Brien <tony.obrien@alliedtelesis.co.nz>
 
-I am Ms Nadage lassou,I have something important to tell you
-Thanks, i will send you the details once i hear from you.
-Regards.
-Ms Nadage Lassou
+Applied.
+
+Thanks,
+Guenter
+
+> ---
+> Changes in v2:
+> - None
+>  drivers/hwmon/adt7475.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
+> index 51b3d16c3223..77222c35a38e 100644
+> --- a/drivers/hwmon/adt7475.c
+> +++ b/drivers/hwmon/adt7475.c
+> @@ -556,11 +556,11 @@ static ssize_t temp_st_show(struct device *dev, struct device_attribute *attr,
+>  		val = data->enh_acoustics[0] & 0xf;
+>  		break;
+>  	case 1:
+> -		val = (data->enh_acoustics[1] >> 4) & 0xf;
+> +		val = data->enh_acoustics[1] & 0xf;
+>  		break;
+>  	case 2:
+>  	default:
+> -		val = data->enh_acoustics[1] & 0xf;
+> +		val = (data->enh_acoustics[1] >> 4) & 0xf;
+>  		break;
+>  	}
+>  
