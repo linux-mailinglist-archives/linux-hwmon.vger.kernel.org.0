@@ -2,115 +2,211 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F1A6A702C
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Mar 2023 16:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8256A7172
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Mar 2023 17:44:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbjCAPtE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 1 Mar 2023 10:49:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40666 "EHLO
+        id S229811AbjCAQo5 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 1 Mar 2023 11:44:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjCAPtC (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Mar 2023 10:49:02 -0500
-Received: from mail-oo1-xc42.google.com (mail-oo1-xc42.google.com [IPv6:2607:f8b0:4864:20::c42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06DA1FC1
-        for <linux-hwmon@vger.kernel.org>; Wed,  1 Mar 2023 07:48:47 -0800 (PST)
-Received: by mail-oo1-xc42.google.com with SMTP id bd3-20020a4aee03000000b00517affa07c0so2155705oob.7
-        for <linux-hwmon@vger.kernel.org>; Wed, 01 Mar 2023 07:48:47 -0800 (PST)
+        with ESMTP id S229701AbjCAQo4 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Mar 2023 11:44:56 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5E083525C
+        for <linux-hwmon@vger.kernel.org>; Wed,  1 Mar 2023 08:44:54 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id fm20-20020a05600c0c1400b003ead37e6588so12308478wmb.5
+        for <linux-hwmon@vger.kernel.org>; Wed, 01 Mar 2023 08:44:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMt7axMQbQeEE0CBN+7cLsm38pqjF8+UDAWISk+ju1w=;
-        b=kbILY7FOcSCRw014eicJWhDcKczXBsfCWZEYNm0lKk5uOZmV4M5r9Rnys5drhBNRWj
-         jB3K5MKOWrQhZcPqgo2Ozr9K9kUGEcjPd8pMclFayOFMtcDGMMbn8kLT6/DtIk6Ydpw1
-         aREaJeRNG1crXiLpuPfwWjcLL3TfRCTX5FPVtqYWgFE7lPtBhDI8NYEc0/a+K19y65xL
-         wIWH8oG77eNSrTSKW9FnNrvl8dbo8mOHeEjK44PPvnsyaZTpxIcIGbULxl5spfpwxTxt
-         8aIFUC1zJnBatHRmSh7T+KHCtp7PNxN4apt2x08yWpnRQj55EkpROaWGNEa7hADEmqY+
-         Br5A==
+        d=9elements.com; s=google; t=1677689093;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=80hkLcYMepouVtWKST/uM+1yiDynZV+Ko2dpZLCgqAc=;
+        b=P4o1reCqD/QGWTNLgr5aZA4KP3C1RxTCuVRypmk4rJ6L+WA/F7z2VtoVFYdVEGG8cq
+         3xtCDrs/239g2eRhN95noCAQE+U4qAmwYBaI8GuxDsitIoQjjh/rIOMnl106DEfmX5Zs
+         fXfScTG6mTLTriXZdrEURjdpeLRC1Qxxr3wb8abEyhAQhlp3rB2qf0tNyDnb7bUiGv/t
+         7eliZDk81qrg9H7ZHA1StlN4tPe/xbc+XvIsuVmvOG7swcdEgd+vu4wtphEDSA4YwqWD
+         lRdMGhfy0raeFgSiLJBVyPy39e0lneBO5giYt+CvtpkjuAX1mfCKR4nc1tZtKcGB8QBA
+         p/KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20210112; t=1677689093;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SMt7axMQbQeEE0CBN+7cLsm38pqjF8+UDAWISk+ju1w=;
-        b=shntktLYeN0qzkUUmoY9VsDYaniDR/5N7R6JgJ0q1Ot22cWWy5/gMCW2+ZWSMRR/1H
-         nCu84JTaiIL1X7B6/fanipO7PhZi35Hl1toU2Fq8LFvfpIbIIb4Lcu78y/UfkbeBQjZ+
-         jlrtfZdyfiK9wHsM+egk8vJMy9cG0GSk7KBfIVmiMVkZzHI3E6/865IGjrM4bCRTfWfK
-         ckTtnnUJewpbSGNo9Q1aECHL/KC7ELzrLdPlzt35H2N1pPSmWm0e+ekvMlHazprLW/d8
-         fs2vQi5tGLJNaI21ma3jJVWO48hbQN5N2jF77xD4NsNQlouLJwZYzooyHq1KwKu68Hv+
-         1ukA==
-X-Gm-Message-State: AO0yUKU4EUu8fQ7f73qY85wN+BnKCVYwRdVkds/9EIUiwRZZQKoDw4L6
-        5p7DCNiU9cUTZKDR34c1zKBRrKuxtFvBzJEnqHs=
-X-Google-Smtp-Source: AK7set9MFdovyisKX+94YqSaZcvV1s25I6kpZ8vTpXhKLpxW57RetF7DFLYFjkVsS4HCjxG/aMjoJOWk0KVItMfgnlA=
-X-Received: by 2002:a4a:984a:0:b0:51a:ac8f:b6f9 with SMTP id
- z10-20020a4a984a000000b0051aac8fb6f9mr2303393ooi.1.1677685727224; Wed, 01 Mar
- 2023 07:48:47 -0800 (PST)
+        bh=80hkLcYMepouVtWKST/uM+1yiDynZV+Ko2dpZLCgqAc=;
+        b=J/U0va2gx75CsAoIbgi2eV55W5x8GUjG9PxfD0ecaCQtRLY3XRuxNCfZMnsOcw3R/O
+         gc69MlAXI+ruxqLubJ7srNG9EpJe4NJnv6Wz/lTsEVCHnPAXGuSgqGD1LKi+ZV2dDuro
+         o5taUO4ipCprJuMKZIyxPTbPJNY2gT1fJmhCOjcMRlMU2Xf9aSLMhkS526UMf8q7UqK/
+         z551L+57fstsg2O34tbYKs4QOI2cwaKPm25tP71TGfyuVINw6J32thQ7zH+Pp2N8Nc+s
+         sBGYopOFnctswFOY7pxysnwbkX5OZWjQdSap2dGAf116FDg0mPQApIT/V+TfqFUNGgGL
+         +Xtg==
+X-Gm-Message-State: AO0yUKVoSY1Zxi45zsa+PWOY78rL3sR7jZE3/qxTpCMFlgyFQuH2+zjW
+        963/0idZVJ1t3D9DMM2KDabYYIT/LsTZMhq6wg8=
+X-Google-Smtp-Source: AK7set8+pWabP/pAl34UHxmLrR3scR40Q1mWUU11baHLjRK8iCBbCw7sdvcoOhKrmMV3bLQDO3dFQg==
+X-Received: by 2002:a05:600c:329a:b0:3db:5f1:53a5 with SMTP id t26-20020a05600c329a00b003db05f153a5mr6083636wmp.20.1677689093355;
+        Wed, 01 Mar 2023 08:44:53 -0800 (PST)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id p8-20020a7bcde8000000b003dc521f336esm105542wmj.14.2023.03.01.08.44.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Mar 2023 08:44:53 -0800 (PST)
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     linux-hwmon@vger.kernel.org,
+        Naresh Solanki <Naresh.Solanki@9elements.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/4] hwmon: (pmbus/core): Generalize pmbus status flag map
+Date:   Wed,  1 Mar 2023 17:44:31 +0100
+Message-Id: <20230301164434.1928237-1-Naresh.Solanki@9elements.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Received: by 2002:a05:6870:630e:b0:176:31fe:b7eb with HTTP; Wed, 1 Mar 2023
- 07:48:46 -0800 (PST)
-Reply-To: sackrobert@yandex.com
-From:   Robert Sack <issaj4559@gmail.com>
-Date:   Wed, 1 Mar 2023 16:48:46 +0100
-Message-ID: <CAF=beNu=D7UxXbGES9Qq59P_Afdi0T1LyZPQn2ewocgdQGECPw@mail.gmail.com>
-Subject: INVESTMENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:c42 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5429]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [issaj4559[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [issaj4559[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear Partner,
+The PMBus status flag map(pmbus_regulator_status_flag_map) is moved
+outside of the regulator #if block and the associated variable/struct
+name updated to reflect as generic PMBus status.
 
-My Name is Mr.Robert Sack from  the United Kingdom.
-It is my resolve to contact you for an investment proposal.
-I have a client who owns a pool of funds worth Eight Million,Five
-Hundred Thousand British Pounds(=C2=A38.5m)
-and wants to invest in any viable and profitable business that has
-good returns on investment(ROI)
-such as Manufacturing, Agriculture, Real Estate,
-Hoteling,Education,trading and others, in an effort to expand his
-business empire globally.
+This will make the PMBus status flag map more versatile and easier to
+incorporate into different contexts and functions.
 
-If you choose to partner with my client,please indicate.
+Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 94 ++++++++++++++++----------------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
 
-Thank you in anticipation as I look forward to reading your reply.
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 95e95783972a..1b70cf3be313 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -2692,6 +2692,49 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 	return 0;
+ }
+ 
++/* A PMBus status flag and the corresponding REGULATOR_ERROR_* flag */
++struct pmbus_status_assoc {
++	int pflag, rflag;
++};
++
++/* PMBus->regulator bit mappings for a PMBus status register */
++struct pmbus_status_category {
++	int func;
++	int reg;
++	const struct pmbus_status_assoc *bits; /* zero-terminated */
++};
++
++static const struct pmbus_status_category __maybe_unused pmbus_status_flag_map[] = {
++	{
++		.func = PMBUS_HAVE_STATUS_VOUT,
++		.reg = PMBUS_STATUS_VOUT,
++		.bits = (const struct pmbus_status_assoc[]) {
++			{ PB_VOLTAGE_UV_WARNING, REGULATOR_ERROR_UNDER_VOLTAGE_WARN },
++			{ PB_VOLTAGE_UV_FAULT,   REGULATOR_ERROR_UNDER_VOLTAGE },
++			{ PB_VOLTAGE_OV_WARNING, REGULATOR_ERROR_OVER_VOLTAGE_WARN },
++			{ PB_VOLTAGE_OV_FAULT,   REGULATOR_ERROR_REGULATION_OUT },
++			{ },
++		},
++	}, {
++		.func = PMBUS_HAVE_STATUS_IOUT,
++		.reg = PMBUS_STATUS_IOUT,
++		.bits = (const struct pmbus_status_assoc[]) {
++			{ PB_IOUT_OC_WARNING,    REGULATOR_ERROR_OVER_CURRENT_WARN },
++			{ PB_IOUT_OC_FAULT,      REGULATOR_ERROR_OVER_CURRENT },
++			{ PB_IOUT_OC_LV_FAULT,   REGULATOR_ERROR_OVER_CURRENT },
++			{ },
++		},
++	}, {
++		.func = PMBUS_HAVE_STATUS_TEMP,
++		.reg = PMBUS_STATUS_TEMPERATURE,
++		.bits = (const struct pmbus_status_assoc[]) {
++			{ PB_TEMP_OT_WARNING,    REGULATOR_ERROR_OVER_TEMP_WARN },
++			{ PB_TEMP_OT_FAULT,      REGULATOR_ERROR_OVER_TEMP },
++			{ },
++		},
++	},
++};
++
+ #if IS_ENABLED(CONFIG_REGULATOR)
+ static int pmbus_regulator_is_enabled(struct regulator_dev *rdev)
+ {
+@@ -2738,54 +2781,11 @@ static int pmbus_regulator_disable(struct regulator_dev *rdev)
+ 	return _pmbus_regulator_on_off(rdev, 0);
+ }
+ 
+-/* A PMBus status flag and the corresponding REGULATOR_ERROR_* flag */
+-struct pmbus_regulator_status_assoc {
+-	int pflag, rflag;
+-};
+-
+-/* PMBus->regulator bit mappings for a PMBus status register */
+-struct pmbus_regulator_status_category {
+-	int func;
+-	int reg;
+-	const struct pmbus_regulator_status_assoc *bits; /* zero-terminated */
+-};
+-
+-static const struct pmbus_regulator_status_category pmbus_regulator_flag_map[] = {
+-	{
+-		.func = PMBUS_HAVE_STATUS_VOUT,
+-		.reg = PMBUS_STATUS_VOUT,
+-		.bits = (const struct pmbus_regulator_status_assoc[]) {
+-			{ PB_VOLTAGE_UV_WARNING, REGULATOR_ERROR_UNDER_VOLTAGE_WARN },
+-			{ PB_VOLTAGE_UV_FAULT,   REGULATOR_ERROR_UNDER_VOLTAGE },
+-			{ PB_VOLTAGE_OV_WARNING, REGULATOR_ERROR_OVER_VOLTAGE_WARN },
+-			{ PB_VOLTAGE_OV_FAULT,   REGULATOR_ERROR_REGULATION_OUT },
+-			{ },
+-		},
+-	}, {
+-		.func = PMBUS_HAVE_STATUS_IOUT,
+-		.reg = PMBUS_STATUS_IOUT,
+-		.bits = (const struct pmbus_regulator_status_assoc[]) {
+-			{ PB_IOUT_OC_WARNING,    REGULATOR_ERROR_OVER_CURRENT_WARN },
+-			{ PB_IOUT_OC_FAULT,      REGULATOR_ERROR_OVER_CURRENT },
+-			{ PB_IOUT_OC_LV_FAULT,   REGULATOR_ERROR_OVER_CURRENT },
+-			{ },
+-		},
+-	}, {
+-		.func = PMBUS_HAVE_STATUS_TEMP,
+-		.reg = PMBUS_STATUS_TEMPERATURE,
+-		.bits = (const struct pmbus_regulator_status_assoc[]) {
+-			{ PB_TEMP_OT_WARNING,    REGULATOR_ERROR_OVER_TEMP_WARN },
+-			{ PB_TEMP_OT_FAULT,      REGULATOR_ERROR_OVER_TEMP },
+-			{ },
+-		},
+-	},
+-};
+-
+ static int pmbus_regulator_get_error_flags(struct regulator_dev *rdev, unsigned int *flags)
+ {
+ 	int i, status;
+-	const struct pmbus_regulator_status_category *cat;
+-	const struct pmbus_regulator_status_assoc *bit;
++	const struct pmbus_status_category *cat;
++	const struct pmbus_status_assoc *bit;
+ 	struct device *dev = rdev_get_dev(rdev);
+ 	struct i2c_client *client = to_i2c_client(dev->parent);
+ 	struct pmbus_data *data = i2c_get_clientdata(client);
+@@ -2796,8 +2796,8 @@ static int pmbus_regulator_get_error_flags(struct regulator_dev *rdev, unsigned
+ 
+ 	mutex_lock(&data->update_lock);
+ 
+-	for (i = 0; i < ARRAY_SIZE(pmbus_regulator_flag_map); i++) {
+-		cat = &pmbus_regulator_flag_map[i];
++	for (i = 0; i < ARRAY_SIZE(pmbus_status_flag_map); i++) {
++		cat = &pmbus_status_flag_map[i];
+ 		if (!(func & cat->func))
+ 			continue;
+ 
 
-Mr. Robert Sack
-International Financial Consultant
+base-commit: 58326709e8f8122df46d29981eb39896d600c7c4
+-- 
+2.39.1
+
