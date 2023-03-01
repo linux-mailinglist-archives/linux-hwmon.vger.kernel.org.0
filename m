@@ -2,144 +2,115 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D7C6A6C31
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Mar 2023 13:20:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F1A6A702C
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Mar 2023 16:49:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjCAMUy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 1 Mar 2023 07:20:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53294 "EHLO
+        id S229812AbjCAPtE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 1 Mar 2023 10:49:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbjCAMUq (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Mar 2023 07:20:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E82136DF
-        for <linux-hwmon@vger.kernel.org>; Wed,  1 Mar 2023 04:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1677673199;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BmnN/JeNC+uXvUWsMwj8af3J1VCxOStShW/lz3XRU5Y=;
-        b=h0RG+9Ja0OonvGY2Ug28ppBG40V05kjj3NuXnM0XX4jKEvrLK0AI3+0+mNnJdv/9khvU+b
-        nJIH/v4+WuZqkydi9PtXJaMgwn6yRYmvAbX/OX9SSKFBLheV6BloDpHjm8tOlf+YBwLUTb
-        hn76M3wrWhx1MLiTGUYxvtJSO2zQKA4=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-641-gncCEWWNOYOtpLZ_Cz4r1g-1; Wed, 01 Mar 2023 07:19:57 -0500
-X-MC-Unique: gncCEWWNOYOtpLZ_Cz4r1g-1
-Received: by mail-ed1-f69.google.com with SMTP id t9-20020a056402524900b004af59c073abso18854111edd.6
-        for <linux-hwmon@vger.kernel.org>; Wed, 01 Mar 2023 04:19:57 -0800 (PST)
+        with ESMTP id S229635AbjCAPtC (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Mar 2023 10:49:02 -0500
+Received: from mail-oo1-xc42.google.com (mail-oo1-xc42.google.com [IPv6:2607:f8b0:4864:20::c42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06DA1FC1
+        for <linux-hwmon@vger.kernel.org>; Wed,  1 Mar 2023 07:48:47 -0800 (PST)
+Received: by mail-oo1-xc42.google.com with SMTP id bd3-20020a4aee03000000b00517affa07c0so2155705oob.7
+        for <linux-hwmon@vger.kernel.org>; Wed, 01 Mar 2023 07:48:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=SMt7axMQbQeEE0CBN+7cLsm38pqjF8+UDAWISk+ju1w=;
+        b=kbILY7FOcSCRw014eicJWhDcKczXBsfCWZEYNm0lKk5uOZmV4M5r9Rnys5drhBNRWj
+         jB3K5MKOWrQhZcPqgo2Ozr9K9kUGEcjPd8pMclFayOFMtcDGMMbn8kLT6/DtIk6Ydpw1
+         aREaJeRNG1crXiLpuPfwWjcLL3TfRCTX5FPVtqYWgFE7lPtBhDI8NYEc0/a+K19y65xL
+         wIWH8oG77eNSrTSKW9FnNrvl8dbo8mOHeEjK44PPvnsyaZTpxIcIGbULxl5spfpwxTxt
+         8aIFUC1zJnBatHRmSh7T+KHCtp7PNxN4apt2x08yWpnRQj55EkpROaWGNEa7hADEmqY+
+         Br5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BmnN/JeNC+uXvUWsMwj8af3J1VCxOStShW/lz3XRU5Y=;
-        b=ykfni4NrmA6OJtGeuOQUWMnfTFKBgKC8bvn+upuf2KCWU677xyQPTt8AAAZXDxwAKS
-         Nwzlyfy/ui39/d7eOP+KuesI8E4ao7MHq0nvv46kVnTYpQ2SFMOZ3zyXmt1d33vQh2kM
-         EuMxS0XLLEimG/U5V6zCxlGsfTtRqYF5DvAaidpRw50oAybuNXMUsRZGWV+sPqKn5bi3
-         T/bSXPL2yjV40dX+AzYNuc1aHNn1XFMRdc4lkIqbFYn0F7Ml1MDGVYO4q2rPmwWgn6Z8
-         qW9ZVKbxXGw2dzlgBHbZxlZR0bIxWgxoeptLmAFq165Mcd7p3pOB+8/0AGrT6GYcfl+r
-         XshQ==
-X-Gm-Message-State: AO0yUKXXtBukR7oJwiwYP7m3oJNtJRps6R6F5klQoUBjVABvvtM8HN/U
-        VfJm28izob9en+5ozZlfMc76qHyIBOC6K2qSzlmfqrTokD20VzHYoP4cWRYSZFYKSPXrMD+Iqw0
-        2W1gcS7CK96b50IAWwqsEjwc=
-X-Received: by 2002:a17:906:ca12:b0:87d:eff1:acc8 with SMTP id jt18-20020a170906ca1200b0087deff1acc8mr6291655ejb.48.1677673196893;
-        Wed, 01 Mar 2023 04:19:56 -0800 (PST)
-X-Google-Smtp-Source: AK7set/kUyEn9SIqaSY0Dz+h4EG4rmJU65d2AlOikKFI6qVgT5C8p4j24U16+iVEyWf9j1c2O5n3Yw==
-X-Received: by 2002:a17:906:ca12:b0:87d:eff1:acc8 with SMTP id jt18-20020a170906ca1200b0087deff1acc8mr6291639ejb.48.1677673196647;
-        Wed, 01 Mar 2023 04:19:56 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id h11-20020a17090634cb00b008e36f9b2308sm5706107ejb.43.2023.03.01.04.19.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Mar 2023 04:19:56 -0800 (PST)
-Message-ID: <cc25ee91-5197-b694-a6d6-e7d773afb5db@redhat.com>
-Date:   Wed, 1 Mar 2023 13:19:55 +0100
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SMt7axMQbQeEE0CBN+7cLsm38pqjF8+UDAWISk+ju1w=;
+        b=shntktLYeN0qzkUUmoY9VsDYaniDR/5N7R6JgJ0q1Ot22cWWy5/gMCW2+ZWSMRR/1H
+         nCu84JTaiIL1X7B6/fanipO7PhZi35Hl1toU2Fq8LFvfpIbIIb4Lcu78y/UfkbeBQjZ+
+         jlrtfZdyfiK9wHsM+egk8vJMy9cG0GSk7KBfIVmiMVkZzHI3E6/865IGjrM4bCRTfWfK
+         ckTtnnUJewpbSGNo9Q1aECHL/KC7ELzrLdPlzt35H2N1pPSmWm0e+ekvMlHazprLW/d8
+         fs2vQi5tGLJNaI21ma3jJVWO48hbQN5N2jF77xD4NsNQlouLJwZYzooyHq1KwKu68Hv+
+         1ukA==
+X-Gm-Message-State: AO0yUKU4EUu8fQ7f73qY85wN+BnKCVYwRdVkds/9EIUiwRZZQKoDw4L6
+        5p7DCNiU9cUTZKDR34c1zKBRrKuxtFvBzJEnqHs=
+X-Google-Smtp-Source: AK7set9MFdovyisKX+94YqSaZcvV1s25I6kpZ8vTpXhKLpxW57RetF7DFLYFjkVsS4HCjxG/aMjoJOWk0KVItMfgnlA=
+X-Received: by 2002:a4a:984a:0:b0:51a:ac8f:b6f9 with SMTP id
+ z10-20020a4a984a000000b0051aac8fb6f9mr2303393ooi.1.1677685727224; Wed, 01 Mar
+ 2023 07:48:47 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2 2/2] platform/x86: dell-ddv: Fix temperature scaling
-Content-Language: en-US, nl
-To:     Armin Wolf <W_Armin@gmx.de>, markgross@kernel.org
-Cc:     jdelvare@suse.com, linux@roeck-us.net,
-        platform-driver-x86@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230218115318.20662-1-W_Armin@gmx.de>
- <20230218115318.20662-2-W_Armin@gmx.de>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230218115318.20662-2-W_Armin@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:6870:630e:b0:176:31fe:b7eb with HTTP; Wed, 1 Mar 2023
+ 07:48:46 -0800 (PST)
+Reply-To: sackrobert@yandex.com
+From:   Robert Sack <issaj4559@gmail.com>
+Date:   Wed, 1 Mar 2023 16:48:46 +0100
+Message-ID: <CAF=beNu=D7UxXbGES9Qq59P_Afdi0T1LyZPQn2ewocgdQGECPw@mail.gmail.com>
+Subject: INVESTMENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:c42 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5429]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [issaj4559[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [issaj4559[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  3.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi,
+Dear Partner,
 
-On 2/18/23 12:53, Armin Wolf wrote:
-> After using the built-in UEFI hardware diagnostics to compare
-> the measured battery temperature, i noticed that the temperature
-> is actually expressed in tenth degree kelvin, similar to the
-> SBS-Data standard. For example, a value of 2992 is displayed as
-> 26 degrees celsius.
-> Fix the scaling so that the correct values are being displayed.
-> 
-> Tested on a Dell Inspiron 3505.
-> 
-> Fixes: a77272c16041 ("platform/x86: dell: Add new dell-wmi-ddv driver")
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+My Name is Mr.Robert Sack from  the United Kingdom.
+It is my resolve to contact you for an investment proposal.
+I have a client who owns a pool of funds worth Eight Million,Five
+Hundred Thousand British Pounds(=C2=A38.5m)
+and wants to invest in any viable and profitable business that has
+good returns on investment(ROI)
+such as Manufacturing, Agriculture, Real Estate,
+Hoteling,Education,trading and others, in an effort to expand his
+business empire globally.
 
-Thanks, I've applied this patch to my review-hans branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+If you choose to partner with my client,please indicate.
 
-I'll rebase that branch once 6.3-rc1 is out and then push the rebased
-patch to the fixes branch and include it in my next 6.3 fixes pull-req
-to Linus.
+Thank you in anticipation as I look forward to reading your reply.
 
-Regards,
-
-Hans
-
-
-
-> ---
-> Changes in v2:
-> - Avoid unnecessary rounding
-> ---
->  drivers/platform/x86/dell/dell-wmi-ddv.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/platform/x86/dell/dell-wmi-ddv.c b/drivers/platform/x86/dell/dell-wmi-ddv.c
-> index eff4e9649faf..2750dee99c3e 100644
-> --- a/drivers/platform/x86/dell/dell-wmi-ddv.c
-> +++ b/drivers/platform/x86/dell/dell-wmi-ddv.c
-> @@ -17,7 +17,6 @@
->  #include <linux/kernel.h>
->  #include <linux/hwmon.h>
->  #include <linux/kstrtox.h>
-> -#include <linux/math.h>
->  #include <linux/math64.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
-> @@ -665,7 +664,8 @@ static ssize_t temp_show(struct device *dev, struct device_attribute *attr, char
->  	if (ret < 0)
->  		return ret;
-> 
-> -	return sysfs_emit(buf, "%d\n", DIV_ROUND_CLOSEST(value, 10));
-> +	/* Use 2731 instead of 2731.5 to avoid unnecessary rounding */
-> +	return sysfs_emit(buf, "%d\n", value - 2731);
->  }
-> 
->  static ssize_t eppid_show(struct device *dev, struct device_attribute *attr, char *buf)
-> --
-> 2.30.2
-> 
-
+Mr. Robert Sack
+International Financial Consultant
