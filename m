@@ -2,165 +2,101 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D42276A750E
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Mar 2023 21:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C67D56A8C33
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Mar 2023 23:51:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbjCAUQi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 1 Mar 2023 15:16:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51404 "EHLO
+        id S229453AbjCBWvJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 2 Mar 2023 17:51:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjCAUQS (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Mar 2023 15:16:18 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 917E3515FB
-        for <linux-hwmon@vger.kernel.org>; Wed,  1 Mar 2023 12:15:45 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id m25-20020a7bcb99000000b003e7842b75f2so259488wmi.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 01 Mar 2023 12:15:45 -0800 (PST)
+        with ESMTP id S230214AbjCBWun (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 2 Mar 2023 17:50:43 -0500
+Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDDB2413F
+        for <linux-hwmon@vger.kernel.org>; Thu,  2 Mar 2023 14:50:42 -0800 (PST)
+Received: by mail-ua1-x931.google.com with SMTP id f20so447287uam.3
+        for <linux-hwmon@vger.kernel.org>; Thu, 02 Mar 2023 14:50:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1677701742;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BXmjkOh9eXvrRm2J04oJvypw5mYaRO/S2JmWwbjlE4k=;
-        b=KJoDrEWTmy/NGzToMLWxtKnUldmaeCsojugTM6oVamuY0Dfznyw2ev6/AtrLpBpX78
-         FJBcL9HwqclegUuN0SGxvJMQA8Z8RFoWrdgIM4MbXyL2O/gJ+FVc6JIHoHmt0aOa6KV+
-         UQV+RSa5racDGMUvTs4/a2UEFXYl60HUx3walKVwiO8Kff5EgqZg+zCug9lnP7oOJxan
-         g5xF6BWrDb9pGfa8lMKXajNIArv2DqL3zJ6do1C/x/vVqPNlvqmtVBEZzd1TNz7aKhfs
-         OrjJFvnpNw3AG/tq6HzOCeCtbpD67dvYQE4wAkaUqep7wlYjP6vdY1zJOH0FhFkGzLk/
-         fB9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677701742;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20210112; t=1677797441;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BXmjkOh9eXvrRm2J04oJvypw5mYaRO/S2JmWwbjlE4k=;
-        b=UicAHp4lAjsTxCNKzhaDKE1mfDh4CZxjcif5q4RE6MIFHQISqAXTbhnRi3O5h7HTce
-         ojm2d11AoXfVxHN2wmlyjEx4cbofBauuc01/wC3y7HgM5NKfA/Xj3P/CJ4BeAULituBv
-         zC8izxxg+OwRk/xD8ttn55dnKHd650ZlUvHg94gDidFzhR3MF6liTahq5Hdq7gZl2PoK
-         cRCD2/1gFjFQUeMDGDCDgQG1pKqzWTRokm4K0qzwfxfc0QXqnlaYFO2QCPXmKu/72Ci0
-         PSVfz0dHXTSzEJxrZTS8b03EMDyV43W1o7y+nDNbO6xz9i/Es3ERXx13ZqWDKTKmmPoI
-         lLRw==
-X-Gm-Message-State: AO0yUKUwLsr8+9YOaM7MFhb0qPh0OAE7ZRylUf3b6FHp3sSmFIBninGu
-        sfhjAtmpgI6cfh2V9PS6g8djJw==
-X-Google-Smtp-Source: AK7set9Y+lo4lJMEQqXLfkt4NEKJYCYGDNJF8VXOADThZ4VevLaauLXcV1uozTeVimMNJB0O4WzttQ==
-X-Received: by 2002:a05:600c:310b:b0:3eb:323e:de79 with SMTP id g11-20020a05600c310b00b003eb323ede79mr5805046wmo.6.1677701741785;
-        Wed, 01 Mar 2023 12:15:41 -0800 (PST)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6ffe:ce4f:bd31:1e6d])
-        by smtp.gmail.com with ESMTPSA id x16-20020a1c7c10000000b003e70a7c1b73sm576546wmc.16.2023.03.01.12.15.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 12:15:41 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rafael@kernel.org, daniel.lezcano@linaro.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER),
-        linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING)
-Subject: [PATCH v5 12/18] thermal: Add a thermal zone id accessor
-Date:   Wed,  1 Mar 2023 21:14:40 +0100
-Message-Id: <20230301201446.3713334-13-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230301201446.3713334-1-daniel.lezcano@linaro.org>
-References: <20230301201446.3713334-1-daniel.lezcano@linaro.org>
+        bh=Rk43gdJq7ekS3uN/kF9B9dJLjB2pzj/mw4BMVJX6plA=;
+        b=BjX6Tz5sj+V5lGc+3Hd6g0AsbzaRWPTK4VdwDi6tI7EvtdPCmaKZUbFgtXGM2xqB+x
+         +4alrpLt796YKiR7esHQ3OcUxBEtssoaApnfnmTT5hqOPK8qP9um5Vq7OVPK/ArBF87T
+         cGiAM3mn/RnDWRWi1Kr//OcB5j4I/8GeG4R7hJeDeRqHDMfZaywPgf4mNGe0DWZzfxtj
+         gHc3DObM8icr5fS0lHNd+8CGoPtbq2e+ZizytytFPSuYYsRwzkbm/KlFvqc82ZbmUc7p
+         o15/fyDtsRYDDFVHcina4X+hcHVL6v9N0bpPF3ZmTm5/qS6vHXpjQZwk7A75V2m3JziJ
+         Synw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677797441;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rk43gdJq7ekS3uN/kF9B9dJLjB2pzj/mw4BMVJX6plA=;
+        b=vC4VkEQNJZqA//jIA2nV3wfQ9RKo+wKUfD/RxcWW4oIo6I1gC+XmlXth1a+DdkOnQO
+         RVQ7U/RKpSKJVQbijXPY/QY2F12myC7E9ZqFsrQGaAIYTzzOIX2wOk3genVgObANINxQ
+         QqS92UfDQ2TDWNSy8iX4C6vGtFkd27UuuY3ZINXSJwr/4ML51u/ZBxR1Xk8X+zjyKVxC
+         F5hHPUB4c7Am97zed5x3W4Btu5AIuJOpFxLl5l7DTjeItYS2G4WtA500FOVVrgjiwqRC
+         p0kIyVC8px0WJfuPeguyLz1tE3kIDdzF4LBQxr/rCThpx7z1leWodttuZTXBseeZbbIn
+         CizQ==
+X-Gm-Message-State: AO0yUKWAwhd/efbfWwQbrY3QgP0EXJytvIIJUDXrxBWi9xlHLBXcttqR
+        RvvQg/wJpySd5URxfXLiBgKyq87Q19pmh/qOAOM=
+X-Google-Smtp-Source: AK7set+oMaMpHyXWniwygp+cfQgbANl2yL3A6SyQf0sI4QOTeBGFBVkkVBas3yhPIsefpp8iPjGkBIXXSSGYct7LE1k=
+X-Received: by 2002:a1f:a9c7:0:b0:401:73f4:dfe with SMTP id
+ s190-20020a1fa9c7000000b0040173f40dfemr65106vke.3.1677797441647; Thu, 02 Mar
+ 2023 14:50:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Received: by 2002:a59:d852:0:b0:3aa:a9b5:e0ef with HTTP; Thu, 2 Mar 2023
+ 14:50:41 -0800 (PST)
+Reply-To: ab8111977@gmail.com
+From:   MS NADAGE LASSOU <nadagelassou7@gmail.com>
+Date:   Thu, 2 Mar 2023 23:50:41 +0100
+Message-ID: <CAGkZahC2-9JVFVrZAOLAG10F63OCTFUS9s8KytZmMpRhVpcZmg@mail.gmail.com>
+Subject: BUSINESS CO-OPERATION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:931 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [nadagelassou7[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [nadagelassou7[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [ab8111977[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-In order to get the thermal zone id but without directly accessing the
-thermal zone device structure, add an accessor.
+Greetings.
 
-Use the accessor in the hwmon_scmi and acpi_thermal.
-
-No functional change intented.
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c         | 2 +-
- drivers/hwmon/scmi-hwmon.c     | 2 +-
- drivers/thermal/thermal_core.c | 6 ++++++
- include/linux/thermal.h        | 6 ++++++
- 4 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 392b73b3e269..255efa73ed70 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -842,7 +842,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- 		goto acpi_bus_detach;
- 
- 	dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
--		 tz->thermal_zone->id);
-+		 thermal_zone_device_id(tz->thermal_zone));
- 
- 	return 0;
- 
-diff --git a/drivers/hwmon/scmi-hwmon.c b/drivers/hwmon/scmi-hwmon.c
-index 046ac157749d..364199b332c0 100644
---- a/drivers/hwmon/scmi-hwmon.c
-+++ b/drivers/hwmon/scmi-hwmon.c
-@@ -220,7 +220,7 @@ static int scmi_thermal_sensor_register(struct device *dev,
- 			sensor->name);
- 	} else {
- 		dev_dbg(dev, "Sensor '%s' attached to thermal zone ID:%d\n",
--			sensor->name, tzd->id);
-+			sensor->name, thermal_zone_device_id(tzd));
- 	}
- 
- 	return 0;
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 913ba9ca9792..46dedfe061df 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -1390,6 +1390,12 @@ const char *thermal_zone_device_type(struct thermal_zone_device *tzd)
- }
- EXPORT_SYMBOL_GPL(thermal_zone_device_type);
- 
-+int thermal_zone_device_id(struct thermal_zone_device *tzd)
-+{
-+	return tzd->id;
-+}
-+EXPORT_SYMBOL_GPL(thermal_zone_device_id);
-+
- /**
-  * thermal_zone_device_unregister - removes the registered thermal zone device
-  * @tz: the thermal zone device to remove
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index 21686e676b3d..eb80cee4f64f 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -367,6 +367,7 @@ thermal_zone_device_register_with_trips(const char *, struct thermal_trip *, int
- 
- void *thermal_zone_device_priv(struct thermal_zone_device *tzd);
- const char *thermal_zone_device_type(struct thermal_zone_device *tzd);
-+int thermal_zone_device_id(struct thermal_zone_device *tzd);
- 
- int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
- 				     struct thermal_cooling_device *,
-@@ -449,6 +450,11 @@ static inline const char *thermal_zone_device_type(struct thermal_zone_device *t
- 	return NULL;
- }
- 
-+static inline int thermal_zone_device_id(struct thermal_zone_device *tzd)
-+{
-+	return -ENODEV;
-+}
-+
- static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
- { return -ENODEV; }
- 
--- 
-2.34.1
-
+I am Ms Nadage lassou,I have business to discuss with you.
+i will send you the details once i hear from you.
+Thanks,
+Ms Nadage Lassou
