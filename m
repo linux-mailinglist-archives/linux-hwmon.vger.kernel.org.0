@@ -2,109 +2,130 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3629D6B601E
-	for <lists+linux-hwmon@lfdr.de>; Sat, 11 Mar 2023 20:18:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D24D6B632B
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Mar 2023 05:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjCKTSB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 11 Mar 2023 14:18:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34914 "EHLO
+        id S229694AbjCLEhK (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 11 Mar 2023 23:37:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjCKTSA (ORCPT
+        with ESMTP id S229437AbjCLEhJ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 11 Mar 2023 14:18:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A29B5E392;
-        Sat, 11 Mar 2023 11:17:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ADB360DE3;
-        Sat, 11 Mar 2023 19:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4395C4339B;
-        Sat, 11 Mar 2023 19:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678562277;
-        bh=O7mOjm53l6IyjLyVpYPf+gqdpzVKUjs+J3yfYurbqOo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hPyqMTdWr8NUbpA/5AWQp9Ohif6D8ZhxQtfopKr8OilDh3hgkLt08mtzocCCtSSPe
-         Ljh0RFNxKOIWwdfu6nAwE35zDiJydv+snQR9sHXKB1Z3c7+1tjcAlyZQnEo/pBqZ6i
-         tHy16izCAj7CP35rWCV2d93kbTof3P1UOgRSsKG+1ZBF1MeTwcTrKRQpG1KI5naqBL
-         p8Fr1EBFgh3tt1raEsC1hXPlVXLw2XVqpiCwOImcdwaeKMClU19Bg+0OVkMljeGuZj
-         5UIg4xzHun8jAc3NxvK9zVcz00laGF4Swq1f/NWf3HJuH8KFJ365QHypPa5QAIMwCa
-         t8bnm4D7bRdQA==
-Date:   Sat, 11 Mar 2023 19:18:00 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     James Clark <james.clark@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
-        michal.simek@amd.com, Jonathan Corbet <corbet@lwn.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] serial: qcom_geni: Use devm_krealloc_array
-Message-ID: <20230311191800.74ec2b84@jic23-huawei>
-In-Reply-To: <20230309150334.216760-5-james.clark@arm.com>
-References: <20230309150334.216760-1-james.clark@arm.com>
-        <20230309150334.216760-5-james.clark@arm.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        Sat, 11 Mar 2023 23:37:09 -0500
+Received: from ipmail06.adl3.internode.on.net (ipmail06.adl3.internode.on.net [150.101.137.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5D4C5940C
+        for <linux-hwmon@vger.kernel.org>; Sat, 11 Mar 2023 20:37:07 -0800 (PST)
+IronPort-SDR: 640d55be_EhRyBme+0a7icCz7p8OwCp82LWXL+iQ6ykckJ6Rk+bxjGLj
+ q/bBAzGATlFcvcdh5yMUED0ZO079bet0v1knFhQ==
+X-SMTP-MATCH: 0
+X-IPAS-Result: =?us-ascii?q?A2BPAgAwVA1kjPQc8jxagRKBRoIugk+zUIF+DwEPAQFEB?=
+ =?us-ascii?q?AEBhQWFNSY0CQ4BAgQBAQEBAwIDAQEBAQEBAwEBBgEBAQEBAQYEFAEBAQFAR?=
+ =?us-ascii?q?YVoDYZYNgENAQE3ASiBFQGDEIJdsHmBAYIIAQEGgmKaaIFeCYFAi22BFoM2g?=
+ =?us-ascii?q?Tw/gU6EfYQ3hkyYPgqBNHWBIA5Kc4EGAgkCEWuBEghogX5BAg1lCw50gWACg?=
+ =?us-ascii?q?QkDCQMHBUlAAwsYDRY6Eyw1FCFebC4SEgUDCxUqRwQIOQZPEQIIDxIPLEQOQ?=
+ =?us-ascii?q?jc0EwZcASkLDhEDT0IZbASCDgcoJJw5gQ6CacNdhASBV58TTIFGgiQBpVSXZ?=
+ =?us-ascii?q?iCjI4QrAgoHFoFighVNHxmDIk8DGQ+OOYITkVNhOwIHCwEBAwmLQwEB?=
+IronPort-PHdr: A9a23:tfS0JRwngZoW8RjXCzPpngc9DxPP853+PxIOrJE9gq1Adb6vuZnnI
+ Qre6bNkkQyBVJ/QvvRDjeeeqKX8QSoa7JOGrH1HcYQZWRMJ05dJlgUsUsLZVh2pday4ZCZjR
+ JZJXwc6l0w=
+IronPort-Data: A9a23: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
+ OR2Fqcc5fRt6soBqT4v28GG
+IronPort-HdrOrdr: A9a23:hxKoFq87byru69OrfMZuk+D2I+orL9Y04lQ7vn2ZKSY+TiVXra
+ GTdZMgpHjJYFR4YhwdcLW7VJVoLkmslqKdjbN/AV7AZniDhILXFvAB0WKK+VSJcBEWndQ86U
+ 4PScZD4FKcNykdsS+D2njcLz85+qj8zEm3v5ak856zd3ASV0mwhz0JcjqmLg==
+X-IronPort-Anti-Spam-Filtered: true
+Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
+  by ipmail06.adl3.internode.on.net with ESMTP; 12 Mar 2023 15:01:58 +1030
+Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
+        (authenticated bits=0)
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 32C4VeSI3479492
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Sun, 12 Mar 2023 15:31:49 +1100
+Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 32C4VeSI3479492
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
+        s=s1; t=1678595511; bh=ae9Zszh+M1I0LZZtGn0CD/iCpY2Xxw0dZN4boJLB4xU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Lh5/w3ZuveF0tBKaNO/CawHU1mpsbpim/sviDtew2K00KfVIg1eJZW+c7gcCrPc5j
+         WZPknEZr8qtfIlVV9Cqv0t74W5+ZwprFAEz1ioFUbWa53B3daA2MZyP7Zz30OYKx7C
+         LK3hJ56mmi1H6PqLZRkNsgIChTggqz7MHS/Q3uw1B9sSxcCesnpHO45byEHzEClYwX
+         S5+uaUtxCAM0Rg0HAS2spLuMJO4rSLdgFq9Cn9bSsAQXV4mkuh6G/XUvaiqBjGSIR8
+         zgnDZHb1u/GoZIsdJdEWfeBrnYjNQsbFKfxLf0MML/O/O9U9XtZVxs6XX04lqVZTAM
+         StlPXnMKefadA==
+From:   Frank Crawford <frank@crawford.emu.id.au>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org,
+        Frank Crawford <frank@crawford.emu.id.au>
+Subject: [PATCH v1 0/3] hwmon (it87): Support all know ADC values
+Date:   Sun, 12 Mar 2023 15:31:34 +1100
+Message-Id: <20230312043137.1744885-1-frank@crawford.emu.id.au>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sun, 12 Mar 2023 15:31:51 +1100 (AEDT)
+X-Virus-Scanned: clamav-milter 0.103.8 at bits.crawford.emu.id.au
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu,  9 Mar 2023 15:03:33 +0000
-James Clark <james.clark@arm.com> wrote:
+Add support of all know ADC values currently identified for it87 chips.
 
-> Now that it exists, use it instead of doing the multiplication manually.
-> 
-> Signed-off-by: James Clark <james.clark@arm.com>
+Generalise definitions for handling of scaled internal voltages and
+voltage labels.
 
-Hmm. I've stared at the users of this for a bit, and it's not actually obvious
-that it's being used as an array of u32.  The only typed user of this is as
-the 2nd parameter of  
-tty_insert_flip_string() which is an unsigned char *
+Apply some other minor optimistations.
 
-I wonder if that sizeof(u32) isn't a 'correct' description of where the 4 is coming
-from even if it has the right value?  Perhaps the fifo depth is just a multiple of 4?
+---
 
-Jonathan
+Frank Crawford (3):
+  Added support for 11mV ADC
+  Add scaling macro for recent ADC voltages
+  Minor optimisation of return value
 
+ drivers/hwmon/it87.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-
-> ---
->  drivers/tty/serial/qcom_geni_serial.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-> index d69592e5e2ec..23fc33d182ac 100644
-> --- a/drivers/tty/serial/qcom_geni_serial.c
-> +++ b/drivers/tty/serial/qcom_geni_serial.c
-> @@ -1056,9 +1056,9 @@ static int setup_fifos(struct qcom_geni_serial_port *port)
->  		(port->tx_fifo_depth * port->tx_fifo_width) / BITS_PER_BYTE;
->  
->  	if (port->rx_buf && (old_rx_fifo_depth != port->rx_fifo_depth) && port->rx_fifo_depth) {
-> -		port->rx_buf = devm_krealloc(uport->dev, port->rx_buf,
-> -					     port->rx_fifo_depth * sizeof(u32),
-> -					     GFP_KERNEL);
-> +		port->rx_buf = devm_krealloc_array(uport->dev, port->rx_buf,
-> +						   port->rx_fifo_depth, sizeof(u32),
-> +						   GFP_KERNEL);
->  		if (!port->rx_buf)
->  			return -ENOMEM;
->  	}
+-- 
+2.39.2
 
