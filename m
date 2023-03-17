@@ -2,68 +2,87 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F379F6BE5E4
-	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Mar 2023 10:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B0A6BE83F
+	for <lists+linux-hwmon@lfdr.de>; Fri, 17 Mar 2023 12:35:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbjCQJuz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 17 Mar 2023 05:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43120 "EHLO
+        id S229616AbjCQLfu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 17 Mar 2023 07:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229999AbjCQJuy (ORCPT
+        with ESMTP id S229603AbjCQLfu (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 17 Mar 2023 05:50:54 -0400
-Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 5911444B7
-        for <linux-hwmon@vger.kernel.org>; Fri, 17 Mar 2023 02:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
-         h=mime-version:content-type:content-transfer-encoding:date:from
-        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
-        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=DbDaLGYZWIcMiBRg+TVI5hmA
-        rgO/H0gHPQHscm9AQWeGflqy9TEKp+PesopnRYGEdafDaiTFHBQNTiiRRyC26Ik6
-        snu2bj9hTJgoih35oMsxwsDyMCLf76zNmf42I00lnRxlwE8Vs8ZYxCp60orHQa4i
-        JwH+euaLDnO7x6euqBDOeOHKBT1pcei7SfYrohcPyNqGmuaWMzgVP58yPvSEqHw8
-        gtsmCf03CdoZrRz3gfK6svAtTJ/bzTtreitJmJuodlcSTD2fwvrBRveMJB5bHb9Z
-        P5jGnWOpxlg0pxqUv0b4Dznx82Ida+sTuV58Ln7V+eFoOFlf1nV0RcGd602ByA==
-Received: (qmail 85627 invoked from network); 14 Mar 2023 21:09:32 -0000
-Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
-  by localhost with SMTP; 14 Mar 2023 21:09:32 -0000
+        Fri, 17 Mar 2023 07:35:50 -0400
+Received: from mx.dolansoft.org (s2.dolansoft.org [212.51.146.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E45B048A;
+        Fri, 17 Mar 2023 04:35:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=brun.one;
+        s=s1; h=MIME-Version:References:In-Reply-To:Message-Id:Cc:To:Subject:From:
+        Date:From:To:Subject:Date:Message-ID:Reply-To;
+        bh=C9aTotIjq9CWOwt4DF2OMCxQ6qxtlKTahgfE76R/yM0=; b=CrACuCukpK7g6mlA1qXPh4ez33
+        cP2JDTsm1r5USG7iIs+6GjflMdwD7BK2BAko9fgaw9GkM75xNR/C/ErdF9CQKN6VjZV05BhCPRcqf
+        byUE3ZMIFvH0x1MICINaZE+sYDQDBkYZK+X2xgTd9ewdoB/IQKn177JwR4BpU7bcZao19gqG82Fwr
+        40yd6xz8ySFghLD4xr1b3HGXFbJHwU1duU3fg0KPKB+pSjaQjR+7YToyWfpMW0JFlG2Ut7AvvYQPf
+        R2AsR3KpzucbcQWcXRbhVckS/ECVStVkGkj4YIL40xA3TvR6hhnRrSTB3W9y3ZxMpSIdXaXQblkIB
+        RydEQpgg==;
+Received: from [212.51.153.89] (helo=[192.168.12.42])
+        by mx.dolansoft.org with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <lorenz@dolansoft.org>)
+        id 1pd8LS-001ltX-35;
+        Fri, 17 Mar 2023 11:34:02 +0000
+Date:   Fri, 17 Mar 2023 12:33:57 +0100
+From:   Lorenz Brun <lorenz@brun.one>
+Subject: Re: [PATCH] hwmon: pwm-fan: set usage_power on PWM state
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Message-Id: <LGXNRR.0Q7OXCG5DVDQ2@brun.one>
+In-Reply-To: <ec52f540-0f78-4cf0-ae61-314cab33ac80@roeck-us.net>
+References: <20230309011009.2109696-1-lorenz@brun.one>
+        <ec52f540-0f78-4cf0-ae61-314cab33ac80@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 14 Mar 2023 14:09:31 -0700
-From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
-To:     undisclosed-recipients:;
-Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE
-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Message-ID: <7ab9ff506a58d8f5877d910b17440480@sragenkab.go.id>
-X-Sender: jurnalsukowati@sragenkab.go.id
-User-Agent: Roundcube Webmail/0.8.1
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Sender: lorenz@dolansoft.org
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Am Mi, 15. M=E4r 2023 um 19:26:26 -07:00:00 schrieb Guenter Roeck=20
+<linux@roeck-us.net>:
+> This doesn't seem to be used anywhere else. I do not understand the
+> rationale, and I do not understand the practical impact of this=20
+> change.
+> This needs to be confirmed by someone who understands what the flag is
+> supposed to be used for, its impact, and if it is indeed appropriate
+> in this context.
+>=20
+> Also, since in practice there is no such "less flexible hardware"
+> in the upstream kernel, please describe the use case in more detail.
+> The only pwm driver that supports usage_power is pwm-pca9685,
+> and that driver uses the flag for EMI reasons, not because it is
+> "less flexible hardware". I am not inclined to accept such a change
+> without specific use case or need.
 
+The reason for this is that I have a PWM-driven fan on a Mediatek=20
+MT7986a whose PWM signal is inverted by a MOSFET.
+The PWM peripheral of the MT7986a however doesn't support inverted=20
+output, at least not in a strict sense (i.e. if inverted mathematically=20
+it is out of phase). The maintainer of the PWM subsystem recommended=20
+that I only mathematically invert if usage_power is set as this means=20
+that phase doesn't matter.
 
--- 
-Greetings,
-   I am contacting you based on the Investment/Loan opportunity for 
-companies in need of financing a project/business, We have developed a 
-new method of financing that doesn't take long to receive financing from 
-our clients.
-    If you are looking for funds to finance your project/Business or if 
-you are willing to work as our agent in your country to find clients in 
-need of financing and earn commissions, then get back to me for more 
-details.
+See=20
+https://lore.kernel.org/linux-pwm/20230309010410.2106525-1-lorenz@brun.one/=
+=20
+for the PWM-side patch.
 
 Regards,
-Ibrahim Tafa
-ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
+Lorenz
+
+
