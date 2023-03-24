@@ -2,101 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C346C7812
-	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Mar 2023 07:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5766C7E0B
+	for <lists+linux-hwmon@lfdr.de>; Fri, 24 Mar 2023 13:31:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbjCXGkq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 24 Mar 2023 02:40:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
+        id S230329AbjCXMad convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-hwmon@lfdr.de>); Fri, 24 Mar 2023 08:30:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231222AbjCXGkA (ORCPT
+        with ESMTP id S231866AbjCXMaR (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 24 Mar 2023 02:40:00 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800DD1BFD
-        for <linux-hwmon@vger.kernel.org>; Thu, 23 Mar 2023 23:39:59 -0700 (PDT)
-Date:   Fri, 24 Mar 2023 06:39:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1679639994; x=1679899194;
-        bh=t8jpMN3wfbAQuj49A582R+IEs96xm9DZzn+g2KuauyU=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=BYXA0/5YuV1Mln4WmAEtlUIS+6rncvW94XSn1d6MCU2fXseNVD8VqjtVHPirutP+R
-         h2thlHKG9Djbq+BcAUAiex4HO9tNaovz4/4NptN1JDkvnEdgm47uJskbXM5KxCxxLS
-         AR5n+/9NfpE2EQJ3HEJJRzg5FVv/chmc6vSm2Y2hlelkwu/6Xae3tmCF8v3a9nfyqD
-         h5ICqSzQI6y/lCVxW864auAHwt0iPAtMmatSjYwotsn0Oe6TUT7XQ1yL0YUyLpQLzB
-         cUvl+tXxVNEEQK1VLZYZ4Vy15MxamSda9amGr7vOWHYdWOGDgsVeP1uFyZl4qg38FB
-         AY2mvMsVqwKjg==
-To:     Tom Rix <trix@redhat.com>
-From:   Juerg Haefliger <juergh@proton.me>
-Cc:     jdelvare@suse.com, linux@roeck-us.net, nathan@kernel.org,
-        ndesaulniers@google.com, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] hwmon: remove unused superio_outb function
-Message-ID: <gqQsy2yvABurRT9U-4tOiaWH2TVeWQYwyGv1404EC-DjGvEaetDVDaumJCJUrmHirk1-npBa4cVtU-19HfGJSvpF28Qmd0Qw4ANatYC-ZMo=@proton.me>
-In-Reply-To: <20230323211535.2637939-1-trix@redhat.com>
-References: <20230323211535.2637939-1-trix@redhat.com>
-Feedback-ID: 45149698:user:proton
+        Fri, 24 Mar 2023 08:30:17 -0400
+X-Greylist: delayed 7683 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Mar 2023 05:30:14 PDT
+Received: from mail.inea.gob.ve (mail.inea.gob.ve [201.248.92.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094733581;
+        Fri, 24 Mar 2023 05:30:13 -0700 (PDT)
+Received: from mail.inea.gob.ve (localhost.localdomain [127.0.0.1])
+        by mail.inea.gob.ve (Proxmox) with ESMTP id B938B45F43;
+        Fri, 24 Mar 2023 05:21:48 -0400 (-04)
+Received: from correo.inea.gob.ve (unknown [10.10.0.61])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.inea.gob.ve (Proxmox) with ESMTPS id 81A4D45EAA;
+        Fri, 24 Mar 2023 05:21:48 -0400 (-04)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.inea.gob.ve (Postfix) with ESMTP id 0C2AD6E4051E;
+        Fri, 24 Mar 2023 05:21:48 -0400 (EDT)
+Received: from correo.inea.gob.ve ([127.0.0.1])
+        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id FWd9RuKWr2Bh; Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.inea.gob.ve (Postfix) with ESMTP id 37E336E40523;
+        Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
+X-Virus-Scanned: amavisd-new at inea.gob.ve
+Received: from correo.inea.gob.ve ([127.0.0.1])
+        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id mIMaT_CCqGI8; Fri, 24 Mar 2023 05:21:47 -0400 (EDT)
+Received: from correo.inea.gob.ve (correo.inea.gob.ve [10.10.0.61])
+        by correo.inea.gob.ve (Postfix) with ESMTP id 523226E40514;
+        Fri, 24 Mar 2023 05:21:45 -0400 (EDT)
+Date:   Fri, 24 Mar 2023 05:21:45 -0400 (EDT)
+From:   Euro Millions <pledezma@inea.gob.ve>
+Reply-To: Euro Millions <3249735289@qq.com>
+Message-ID: <252123914.723735.1679649705313.JavaMail.zimbra@inea.gob.ve>
+Subject: Lottogewinn
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [176.42.137.72]
+X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
+Thread-Index: w+xXl2mCYlwNkQEi4wF9SOBxNe3vcg==
+Thread-Topic: Lottogewinn
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,
+        SPF_HELO_SOFTFAIL,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.9 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record
+        *      (softfail)
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [3249735289[at]qq.com]
+        *  1.2 MISSING_HEADERS Missing To: header
+        *  1.9 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Herzlichen Glückwunsch, Sie haben €650.000,00 bei den monatlichen Gewinnspielen von Euro Millions / Google Promo am 23.März 2023 gewonnen.
 
+Bitte geben Sie die folgenden Informationen ein, damit Ihr Gewinnbetrag an Sie überwiesen werden kann.
 
+Vollständiger Name:
+Heimatadresse:
+Geschlecht:
+Alter:
+Telefon:
 
+John Andrew
+Online-Koordinator
 
-
-------- Original Message -------
-On Thursday, March 23rd, 2023 at 22:15, Tom Rix <trix@redhat.com> wrote:
-
-
->=20
->=20
-> clang with W=3D1 reports
-> drivers/hwmon/vt1211.c:198:20: error: unused function
-> 'superio_outb' [-Werror,-Wunused-function]
-> static inline void superio_outb(int sio_cip, int reg, int val)
-> ^
-> This function is not used so remove it.
->=20
-> Signed-off-by: Tom Rix trix@redhat.com
-
-Looks good.
-
-Acked-by: Juerg Haefliger <juergh@proton.me>
-
-...Juerg
-
-=20
-> ---
-> drivers/hwmon/vt1211.c | 6 ------
-> 1 file changed, 6 deletions(-)
->=20
-> diff --git a/drivers/hwmon/vt1211.c b/drivers/hwmon/vt1211.c
-> index 4a5e911d26eb..fcd4be7a5a85 100644
-> --- a/drivers/hwmon/vt1211.c
-> +++ b/drivers/hwmon/vt1211.c
-> @@ -195,12 +195,6 @@ struct vt1211_data {
-> /* VT1211 logical device numbers /
-> #define SIO_VT1211_LDN_HWMON 0x0b / HW monitor */
->=20
-> -static inline void superio_outb(int sio_cip, int reg, int val)
-> -{
-> - outb(reg, sio_cip);
-> - outb(val, sio_cip + 1);
-> -}
-> -
-> static inline int superio_inb(int sio_cip, int reg)
-> {
-> outb(reg, sio_cip);
-> --
-> 2.27.0
