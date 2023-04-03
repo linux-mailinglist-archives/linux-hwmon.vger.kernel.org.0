@@ -2,118 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B1D6D4A17
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Apr 2023 16:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9F276D4C45
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Apr 2023 17:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233950AbjDCOoL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 3 Apr 2023 10:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59090 "EHLO
+        id S232952AbjDCPpL (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 3 Apr 2023 11:45:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233887AbjDCOn7 (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Apr 2023 10:43:59 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE68D18277;
-        Mon,  3 Apr 2023 07:43:41 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 276986600013;
-        Mon,  3 Apr 2023 15:43:39 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1680533019;
-        bh=FMW2V0QhNr9KmmQQvwTNbvMyfuMlgFqGmHE5d/N4Q98=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=gvZ0iH18UpaYkWDUm3rMoLDTk6C2iseTXbrfMpzuDazu1l5+y/6Aj+lK9K3BxosNo
-         hkBYhgAhz1vDI+UTMblPVB4QvsKwc7+jqAC0s7aAnXk6gLxl5ckVlvnZh8XwzQCqEQ
-         joqaus5x7tph+fe2sVIQLZRzhwe773G8LHxyDCWm6MYtO53H53dl9WZpKDtSxHjPJz
-         u1Cq+0V8EGIYkpiM9T8lXSstdmVOf8wiqhgzbYk4ooPYtQzYRjxEmOldei/q0DvSUR
-         RHXLJYgjEt/aYA0dVW48GsmJmWNyIPpmhzu5cBF/WyduOD1MaEg+M/rbjhc6R4hb8s
-         vRZzYwx85LhsA==
-Message-ID: <79396eed-18ab-bcee-5c7e-c3e5e61f32c3@collabora.com>
-Date:   Mon, 3 Apr 2023 16:43:36 +0200
+        with ESMTP id S232837AbjDCPpI (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 3 Apr 2023 11:45:08 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7514930E2;
+        Mon,  3 Apr 2023 08:45:03 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 333F1Aiu029177;
+        Mon, 3 Apr 2023 11:44:34 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3pphh8abk1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 03 Apr 2023 11:44:33 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 333FiWaw052626
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 3 Apr 2023 11:44:32 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 3 Apr 2023
+ 11:44:31 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 3 Apr 2023 11:44:30 -0400
+Received: from IST-LT-39247.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.16.17])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 333Fi2OP024018;
+        Mon, 3 Apr 2023 11:44:09 -0400
+From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+To:     <a.zummo@towertech.it>, <alexandre.belloni@bootlin.com>,
+        <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>
+CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        <linux-rtc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v5 0/2] drivers: rtc: add max313xx series rtc driver
+Date:   Mon, 3 Apr 2023 18:43:40 +0300
+Message-ID: <20230403154342.3108-1-Ibrahim.Tilki@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 1/2] dt-bindings: hwmon: pwm-fan: Convert to DT schema
-Content-Language: en-US
-To:     Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Rob Herring <robh@kernel.org>
-Cc:     kernel@collabora.com, linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh+dt@kernel.org>, linux-hwmon@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>,
-        Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-References: <20230403105052.426135-1-cristian.ciocaltea@collabora.com>
- <20230403105052.426135-2-cristian.ciocaltea@collabora.com>
- <168052514639.463695.9544022277060710805.robh@kernel.org>
- <dcd79e14-d9df-39c1-5465-4e9d71221659@collabora.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <dcd79e14-d9df-39c1-5465-4e9d71221659@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: Mwd0nkCv0IeITyhyo_cMXgwVbK952C8i
+X-Proofpoint-ORIG-GUID: Mwd0nkCv0IeITyhyo_cMXgwVbK952C8i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-03_12,2023-04-03_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ suspectscore=0 clxscore=1011 priorityscore=1501 mlxlogscore=535
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304030114
+X-Spam-Status: No, score=-0.7 required=5.0 tests=RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Il 03/04/23 16:32, Cristian Ciocaltea ha scritto:
-> On 4/3/23 16:10, Rob Herring wrote:
->>
->> On Mon, 03 Apr 2023 13:50:51 +0300, Cristian Ciocaltea wrote:
->>> Convert the PWM fan bindings to DT schema format.
->>>
->>> Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
->>> ---
->>>    .../devicetree/bindings/hwmon/pwm-fan.txt     |  68 +----------
->>>    .../devicetree/bindings/hwmon/pwm-fan.yaml    | 109 ++++++++++++++++++
->>>    2 files changed, 110 insertions(+), 67 deletions(-)
->>>    create mode 100644 Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
->>>
->>
->> Running 'make dtbs_check' with the schema in this patch gives the
->> following warnings. Consider if they are expected or the schema is
->> incorrect. These may not be new warnings.
->>
->> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
->> This will change in the future.
->>
->> Full log is available here: https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230403105052.426135-2-cristian.ciocaltea@collabora.com
->>
->>
->> pwm-fan: 'cooling-max-state', 'cooling-min-state' do not match any of the regexes: 'pinctrl-[0-9]+'
->> 	arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dtb
->> 	arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var3-ads2.dtb
->>
-> 
-> The only references to the offending cooling-{min|max}-state are located
-> in a few DTS files. Assuming they are obsolete, may I simply drop them?
-> 
+changelog:
+since v5:
+  - dt-binding: add enum value "2" to aux-voltage-chargable
+  - dt-binding: remove adi,trickle-diode-enable
+  - dt-binding: change description of trickle-resistor-ohms
+  - dt-binding: reorder as in example schema
+  - parse "wakeup-source" when irq not requested
+  - remove limitation on max31328 irq and clokout
+  - remove error and warning messages during trickle charger setup
 
-If they're obsolete, you can mark them as `deprecated: true` in the binding, but
-dropping them entirely would be an ABI breakage, so no, you can't.
+since v4:
+  - dt-binding: remove interrupt names.
+  - dt-binding: add description for "interrupts" property
+  - dt-binding: replace deprecated property "trickle-diode-disable"
+      by "aux-voltage-chargeable"
+  - dt-binding: add new property "adi,trickle-diode-enable"
+  - dt-binding: remove "wakeup-source"
+  - use clear_bit instead of __clear_bit
+  - use devm_of_clk_add_hw_provider instead of of_clk_add_provider
+  - use chip_desc pointer as driver data instead of enum.
 
-Regards,
-Angelo
+since v3:
+  - add "break" to fix warning: unannotated fall-through 
+    Reported-by: kernel test robot <lkp@intel.com>
 
-> $ git grep "cooling-.*-state"
-> 
-> arch/arm64/boot/dts/amlogic/meson-g12b-bananapi.dtsi: cooling-min-state = <0>;
-> arch/arm64/boot/dts/amlogic/meson-g12b-bananapi.dtsi: cooling-max-state = <3>;
-> arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts: cooling-min-state = <0>;
-> arch/arm64/boot/dts/amlogic/meson-sm1-odroid-hc4.dts: cooling-max-state = <3>;
-> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var3-ads2.dts:        cooling-min-state = <0>;
-> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var3-ads2.dts:        cooling-max-state = <3>;
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi:        cooling-min-state = <0>;
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi:        cooling-max-state = <9>;
-> 
+since v2:
+  - dt-binding: update title and description
+  - dt-binding: remove last example
+  - drop watchdog support
+  - support reading 12Hr format instead of forcing 24hr at probe time
+  - use "tm_year % 100" instead of range check
+  - refactor max313xx_init for readability
 
+Ibrahim Tilki (2):
+  drivers: rtc: add max313xx series rtc driver
+  dt-bindings: rtc: add max313xx RTCs
+
+ .../devicetree/bindings/rtc/adi,max313xx.yaml |  144 +++
+ drivers/rtc/Kconfig                           |   11 +
+ drivers/rtc/Makefile                          |    1 +
+ drivers/rtc/rtc-max313xx.c                    | 1053 +++++++++++++++++
+ 4 files changed, 1209 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
+ create mode 100644 drivers/rtc/rtc-max313xx.c
+
+-- 
+2.25.1
 
