@@ -2,426 +2,118 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8BBE6DC8AA
-	for <lists+linux-hwmon@lfdr.de>; Mon, 10 Apr 2023 17:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9CE6DC981
+	for <lists+linux-hwmon@lfdr.de>; Mon, 10 Apr 2023 18:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230082AbjDJPnC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 10 Apr 2023 11:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53380 "EHLO
+        id S229789AbjDJQsR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 10 Apr 2023 12:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbjDJPnA (ORCPT
+        with ESMTP id S229740AbjDJQsQ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 10 Apr 2023 11:43:00 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEF049EC;
-        Mon, 10 Apr 2023 08:42:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681141379; x=1712677379;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3Ym2cho9LOcQwyXbTc9OkJFyWAtaHr3Us3FO9g6jBII=;
-  b=PaHoH9EDdCTl3J1sAeODk+KuVDVk0DKSsjijcR97ArbYc08OINR9E/U6
-   DMIW9nY7NaUaMglnbJPZI+Zl0fZjgPBt0CJ7geI4sEi+Rd8MJvYfCmb1G
-   /s4xJSlZ3hqxcmpqbCuiCGPvoCzKDh65tQ9tSd654ibDr+sPpnnIrbskc
-   DYKznVb7UN942w3Eh9AMG35UbsRHLCh94MkFooJZTSReds4wRxngxc4HK
-   Gpj+yMYiVyKe/uy7pvX7B8zlnRaoEWxxWm4KhwPNuZrsJ40Iq2e4d+53a
-   joXV9hR1CjKWqNScmm0MkcgmffV3zSNZrBSUPNzMeRFzsVRwVmvMcjvOZ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10676"; a="340868175"
-X-IronPort-AV: E=Sophos;i="5.98,333,1673942400"; 
-   d="scan'208";a="340868175"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2023 08:42:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10676"; a="757482052"
-X-IronPort-AV: E=Sophos;i="5.98,333,1673942400"; 
-   d="scan'208";a="757482052"
-Received: from linux-builds1.an.intel.com ([10.122.105.32])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2023 08:42:57 -0700
-From:   dinh.nguyen@linux.intel.com
-To:     linux-hwmon@vger.kernel.org
-Cc:     dinguyen@kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-kernel@vger.kernel.org, jdelvare@suse.com,
-        linux@roeck-us.net, Dinh Nguyen <dinh.nguyen@linux.intel.com>
-Subject: [PATCH 5/5] arm64: dts: socfpga: add hwmon properties
-Date:   Mon, 10 Apr 2023 10:33:14 -0500
-Message-Id: <20230410153314.27127-5-dinh.nguyen@linux.intel.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230410153314.27127-1-dinh.nguyen@linux.intel.com>
-References: <20230410153314.27127-1-dinh.nguyen@linux.intel.com>
+        Mon, 10 Apr 2023 12:48:16 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E546E52
+        for <linux-hwmon@vger.kernel.org>; Mon, 10 Apr 2023 09:48:15 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id xi5so13810451ejb.13
+        for <linux-hwmon@vger.kernel.org>; Mon, 10 Apr 2023 09:48:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681145294;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KbCXv5qDEx3ekAoTD6YJ0lRywyUIKUCMvH54ZZXXl9U=;
+        b=emTmAfqIrfaOlyO/x2I5Pda62SsRb7jUuAW+pKK780JRJ49zC+lkHm6NdwqubC7kYE
+         AzWdaLfaWgUIHDe8FEzSMz3p5bPf9yio0um6/Aql7GzePa6/LOTbyjrC2VYJE7ZSyjWa
+         VWYzlZ5llBv6ZJ2PUOjGGXsxJVlUXCGFU+nBPKBynN/wKZy6HcmRxsI7weQdOXu771Gj
+         e0fNk25wsfXOguHaod3UYJar0u9VJXaqQISI7t1qLTKecSVqd/jwH5A+X5cXVayf9UzR
+         5oto3HrGasabD2ZQLIiL3oC83X0UNw4SkmnHXZ1mbtS/i6tjlYAeAwH/xNEzRASskRIP
+         MSSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681145294;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KbCXv5qDEx3ekAoTD6YJ0lRywyUIKUCMvH54ZZXXl9U=;
+        b=TUaYV1YOvs4FjRhXbIa9NGREv38lAIAF1Z6Cjqxm/DodOgiEnYabyYGtD65pCeQxqW
+         KxauWkr+0SVW5QcAhp6Y03OkyZUbLmWM+supw7tDY5zdONwPAT757Hv0XpRaifmFbUNO
+         RYbQ3sOKMWeLgvjd7a4zZxMKXYPohFWd58wDwtgDM8AQ5y1wlV6U76TV3Yd/9qMi88YL
+         tEl3e3kQBEIatGH3/dQpVQ0S63WDs8KG3s6kjnkSXvN3TmPWpIs3w6ZloOUBkmQY0anD
+         TL2hRE98xptGEupX2/X6M6E1mOml96Dwkb0pfJn5izNrvEEKQLh8JLb1YlLhSrN6SbLF
+         0b2w==
+X-Gm-Message-State: AAQBX9d02JDyTTlCeq7mah+Ufyf2qMRuWYxqfjggyKXMd0TPsdaBwrmA
+        48iCaS3xIyqy4k4NKnnHhXx/Wc5FTna3+/jkU8Ablg==
+X-Google-Smtp-Source: AKy350YV+onsGG9cen8vaOwiN+d2LNvm+KtD3DQ1bpm4lAS4g2yukoYS1gCoJZR9mfMZSc7MLnUAEQ==
+X-Received: by 2002:a17:906:2a48:b0:92d:145a:6115 with SMTP id k8-20020a1709062a4800b0092d145a6115mr7722620eje.38.1681145294126;
+        Mon, 10 Apr 2023 09:48:14 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:1a6c:6968:e633:48df? ([2a02:810d:15c0:828:1a6c:6968:e633:48df])
+        by smtp.gmail.com with ESMTPSA id xa10-20020a170906fd8a00b0094a4d8f1e86sm2341892ejb.190.2023.04.10.09.48.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Apr 2023 09:48:13 -0700 (PDT)
+Message-ID: <a6e07080-0c0d-0461-52a2-768d60af53c3@linaro.org>
+Date:   Mon, 10 Apr 2023 18:48:12 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH] vdpa: solidrun: constify pointers to hwmon_channel_info
+Content-Language: en-US
+To:     Guenter Roeck <linux@roeck-us.net>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Alvaro Karsz <alvaro.karsz@solid-run.com>,
+        Jason Wang <jasowang@redhat.com>,
+        virtualization@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        linux-hwmon@vger.kernel.org
+References: <20230407150130.79917-1-krzysztof.kozlowski@linaro.org>
+ <0395eff6-694e-1a2f-de78-8cb9d7b129a7@roeck-us.net>
+ <20230410055634-mutt-send-email-mst@kernel.org>
+ <2facc7cd-81fa-b8b7-6974-217392906578@roeck-us.net>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <2facc7cd-81fa-b8b7-6974-217392906578@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Dinh Nguyen <dinh.nguyen@linux.intel.com>
+On 10/04/2023 16:03, Guenter Roeck wrote:
+> On 4/10/23 02:56, Michael S. Tsirkin wrote:
+>> On Fri, Apr 07, 2023 at 04:08:30PM -0700, Guenter Roeck wrote:
+>>> On 4/7/23 08:01, Krzysztof Kozlowski wrote:
+>>>> Statically allocated array of pointed to hwmon_channel_info can be made
+>>>> const for safety.
+>>>>
+>>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>>
+>>>> ---
+>>>>
+>>>> This depends on hwmon core patch:
+>>>> https://lore.kernel.org/all/20230406203103.3011503-2-krzysztof.kozlowski@linaro.org/
+>>>>
+>>>> Therefore I propose this should also go via hwmon tree.
+>>>
+>>> I am not going to apply patches for 10+ subsystems through the hwmon tree.
+>>> This can only result in chaos. The dependent patch is available at
+>>>
+>>> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-const
+>>
+>> Doesn't it cause build errors or warnings there?
+>>
+> 
+> Are you saying that "hwmon: constify pointers to hwmon_channel_info" applied on its own
+> on top of v6.3-rc5 (as done in above branch) causes build errors or warnings ?
+> I have not seen any such reports, and I don't immediately see why that would be
+> the case. Please elaborate.
 
-Add the hardware monitoring properties for Stratix10 and Agilex.
+My tree and patches are extensively tested by kbuild and there was no
+warning reported (when the above patch is applied with above dependency).
 
-Signed-off-by: Dinh Nguyen <dinh.nguyen@linux.intel.com>
----
- .../boot/dts/altera/socfpga_stratix10.dtsi    |  4 ++
- .../dts/altera/socfpga_stratix10_socdk.dts    | 31 +++++++++
- arch/arm64/boot/dts/intel/socfpga_agilex.dtsi |  4 ++
- .../boot/dts/intel/socfpga_agilex_n6000.dts   | 66 +++++++++++++++++++
- .../boot/dts/intel/socfpga_agilex_socdk.dts   | 66 +++++++++++++++++++
- .../dts/intel/socfpga_agilex_socdk_nand.dts   | 66 +++++++++++++++++++
- .../boot/dts/intel/socfpga_n5x_socdk.dts      | 46 +++++++++++++
- 7 files changed, 283 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-index 41c9eb51d0ee..0efb570d27e5 100644
---- a/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-+++ b/arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi
-@@ -633,6 +633,10 @@ svc {
- 				fpga_mgr: fpga-mgr {
- 					compatible = "intel,stratix10-soc-fpga-mgr";
- 				};
-+
-+				temp_volt: hwmon {
-+					compatible = "intel,socfpga-hwmon";
-+				};
- 			};
- 		};
- 	};
-diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
-index 38ae674f2f02..eb0880a49f77 100644
---- a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
-+++ b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
-@@ -212,3 +212,34 @@ qspi_rootfs: partition@3FE0000 {
- 		};
- 	};
- };
-+
-+&temp_volt {
-+	voltage {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		input@2 {
-+			label = "0.8V VCC";
-+			reg = <2>;
-+		};
-+
-+		input@3 {
-+			label = "1.0V VCCIO";
-+			reg = <3>;
-+		};
-+
-+		input@6 {
-+			label = "0.9V VCCERAM";
-+			reg = <6>;
-+		};
-+	};
-+
-+	temperature {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		input@0 {
-+			label = "Main Die SDM";
-+			reg = <0x0>;
-+		};
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-index f9674cc46764..d6cc52a48599 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-@@ -666,6 +666,10 @@ svc {
- 				fpga_mgr: fpga-mgr {
- 					compatible = "intel,agilex-soc-fpga-mgr";
- 				};
-+
-+				temp_volt: hwmon {
-+					compatible = "intel,socfpga-hwmon";
-+				};
- 			};
- 		};
- 	};
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex_n6000.dts b/arch/arm64/boot/dts/intel/socfpga_agilex_n6000.dts
-index 6231a69204b1..09ce00fe42d1 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex_n6000.dts
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex_n6000.dts
-@@ -64,3 +64,69 @@ &watchdog0 {
- &fpga_mgr {
- 	status = "disabled";
- };
-+
-+&temp_volt {
-+	voltage {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		input@2 {
-+			label = "0.8V VCC";
-+			reg = <2>;
-+		};
-+
-+		input@3 {
-+			label = "1.8V VCCIO_SDM";
-+			reg = <3>;
-+		};
-+
-+		input@4 {
-+			label = "1.8V VCCPT";
-+			reg = <4>;
-+		};
-+
-+		input@5 {
-+			label = "1.2V VCCCRCORE";
-+			reg = <5>;
-+		};
-+
-+		input@6 {
-+			label = "0.9V VCCH";
-+			reg = <6>;
-+		};
-+
-+		input@7 {
-+			label = "0.8V VCCL";
-+			reg = <7>;
-+		};
-+	};
-+
-+	temperature {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		input@0 {
-+			label = "Main Die SDM";
-+			reg = <0x0>;
-+		};
-+
-+		input@10000 {
-+			label = "Main Die corner bottom left max";
-+			reg = <0x10000>;
-+		};
-+
-+		input@20000 {
-+			label = "Main Die corner top left max";
-+			reg = <0x20000>;
-+		};
-+
-+		input@30000 {
-+			label = "Main Die corner bottom right max";
-+			reg = <0x30000>;
-+		};
-+
-+		input@40000 {
-+			label = "Main Die corner top right max";
-+			reg = <0x40000>;
-+		};
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex_socdk.dts b/arch/arm64/boot/dts/intel/socfpga_agilex_socdk.dts
-index 07c3f8876613..9af029e5633e 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex_socdk.dts
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex_socdk.dts
-@@ -138,3 +138,69 @@ qspi_rootfs: partition@3FE0000 {
- 		};
- 	};
- };
-+
-+&temp_volt {
-+	voltage {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		input@2 {
-+			label = "0.8V VCC";
-+			reg = <2>;
-+		};
-+
-+		input@3 {
-+			label = "1.8V VCCIO_SDM";
-+			reg = <3>;
-+		};
-+
-+		input@4 {
-+			label = "1.8V VCCPT";
-+			reg = <4>;
-+		};
-+
-+		input@5 {
-+			label = "1.2V VCCCRCORE";
-+			reg = <5>;
-+		};
-+
-+		input@6 {
-+			label = "0.9V VCCH";
-+			reg = <6>;
-+		};
-+
-+		input@7 {
-+			label = "0.8V VCCL";
-+			reg = <7>;
-+		};
-+	};
-+
-+	temperature {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		input@0 {
-+			label = "Main Die SDM";
-+			reg = <0x0>;
-+		};
-+
-+		input@10000 {
-+			label = "Main Die corner bottom left max";
-+			reg = <0x10000>;
-+		};
-+
-+		input@20000 {
-+			label = "Main Die corner top left max";
-+			reg = <0x20000>;
-+		};
-+
-+		input@30000 {
-+			label = "Main Die corner bottom right max";
-+			reg = <0x30000>;
-+		};
-+
-+		input@40000 {
-+			label = "Main Die corner top right max";
-+			reg = <0x40000>;
-+		};
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex_socdk_nand.dts b/arch/arm64/boot/dts/intel/socfpga_agilex_socdk_nand.dts
-index 51f83f96ec65..d3576bb8b04d 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex_socdk_nand.dts
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex_socdk_nand.dts
-@@ -114,3 +114,69 @@ &usb0 {
- &watchdog0 {
- 	status = "okay";
- };
-+
-+&temp_volt {
-+	voltage {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		input@2 {
-+			label = "0.8V VCC";
-+			reg = <2>;
-+		};
-+
-+		input@3 {
-+			label = "1.8V VCCIO_SDM";
-+			reg = <3>;
-+		};
-+
-+		input@4 {
-+			label = "1.8V VCCPT";
-+			reg = <4>;
-+		};
-+
-+		input@5 {
-+			label = "1.2V VCCCRCORE";
-+			reg = <5>;
-+		};
-+
-+		input@6 {
-+			label = "0.9V VCCH";
-+			reg = <6>;
-+		};
-+
-+		input@7 {
-+			label = "0.8V VCCL";
-+			reg = <7>;
-+		};
-+	};
-+
-+	temperature {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		input@0 {
-+			label = "Main Die SDM";
-+			reg = <0x0>;
-+		};
-+
-+		input@10000 {
-+			label = "Main Die corner bottom left max";
-+			reg = <0x10000>;
-+		};
-+
-+		input@20000 {
-+			label = "Main Die corner top left max";
-+			reg = <0x20000>;
-+		};
-+
-+		input@30000 {
-+			label = "Main Die corner bottom right max";
-+			reg = <0x30000>;
-+		};
-+
-+		input@40000 {
-+			label = "Main Die corner top right max";
-+			reg = <0x40000>;
-+		};
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/intel/socfpga_n5x_socdk.dts b/arch/arm64/boot/dts/intel/socfpga_n5x_socdk.dts
-index 08c088571270..70b9f0e56cc5 100644
---- a/arch/arm64/boot/dts/intel/socfpga_n5x_socdk.dts
-+++ b/arch/arm64/boot/dts/intel/socfpga_n5x_socdk.dts
-@@ -129,3 +129,49 @@ &usb0 {
- &watchdog0 {
- 	status = "okay";
- };
-+
-+&temp_volt {
-+	voltage {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		input@2 {
-+			label = "0.8V VDD";
-+			reg = <2>;
-+		};
-+
-+		input@3 {
-+			label = "0.8V VDD_SDM";
-+			reg = <3>;
-+		};
-+
-+		input@4 {
-+			label = "1.8V VCCADC";
-+			reg = <4>;
-+		};
-+
-+		input@5 {
-+			label = "1.8V VCCPD";
-+			reg = <5>;
-+		};
-+
-+		input@6 {
-+			label = "1.8V VCCIO_SDM";
-+			reg = <6>;
-+		};
-+
-+		input@7 {
-+			label = "0.8V VDD_HPS";
-+			reg = <7>;
-+		};
-+	};
-+
-+	temperature {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		input@0 {
-+			label = "Main Die SDM";
-+			reg = <0x0>;
-+		};
-+	};
-+};
--- 
-2.40.0
+Best regards,
+Krzysztof
 
