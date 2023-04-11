@@ -2,126 +2,125 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA536DDA48
-	for <lists+linux-hwmon@lfdr.de>; Tue, 11 Apr 2023 14:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D256DD240
+	for <lists+linux-hwmon@lfdr.de>; Tue, 11 Apr 2023 07:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbjDKMI1 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 11 Apr 2023 08:08:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55674 "EHLO
+        id S229988AbjDKF50 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 11 Apr 2023 01:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbjDKMI0 (ORCPT
+        with ESMTP id S229831AbjDKF5Y (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 11 Apr 2023 08:08:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FBC44BF;
-        Tue, 11 Apr 2023 05:08:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F5B4617D4;
-        Tue, 11 Apr 2023 12:07:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75764C4339B;
-        Tue, 11 Apr 2023 12:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681214874;
-        bh=bfXxxqU7BPs2st8XCWNHLsB7FvX0a15Qddu/KMfKILw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=omsQjIkdpV5ZXNyGtnm7EwOZmqwpH0bLCSP/Ss95F5A+c9qm9GzZ6Cd3GTHjKJij9
-         t/1s6kAx6lyWAZjE4FXUbYKVXnzmzXNYWAkz0xUtXwVB4AbiVgFpRk3yoKrOcKmZaY
-         1H+/YJNIDnttz2SKSJc3/lhN9K/EnWb1Kr4TjSYFrVJvRmH/B8vv6GJXmKd7gM5REW
-         nGss0mTDSC5cUhmd6obkJd9Gv00u4d+c+B9of2XTeNzSlxZd8VfF4rlxjAjdgR5oYW
-         By5Hf3pk7TvHO1AUZqTh/hg/KkiI7758Wc4IAVr+SCe0i+GM+Bic3FyX0PeWAnYASI
-         w2AeoeKjCgbhw==
-Date:   Tue, 11 Apr 2023 13:07:49 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Naresh Solanki <naresh.solanki@9elements.com>,
-        linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        linux-kernel@vger.kernel.org, Sascha Hauer <sha@pengutronix.de>,
-        jerome Neanne <jneanne@baylibre.com>,
-        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
-Subject: Re: [PATCH v2 2/3] hwmon: (pmbus/core): Add regulator event support
-Message-ID: <74f9ebff-3e6f-496f-a776-5bd4650c566c@sirena.org.uk>
-References: <20230328150335.90238-1-Naresh.Solanki@9elements.com>
- <20230328150335.90238-2-Naresh.Solanki@9elements.com>
- <c88d3cdd-fb2f-c3ac-a9e8-e49f8e98b811@gmail.com>
- <17934bff-f728-d57a-c3c8-956634bd48c8@roeck-us.net>
- <3be67394-6082-1aeb-8a8d-90149217bdc7@gmail.com>
- <aea044ab-3a83-2369-aff7-5ef153618619@roeck-us.net>
- <0672fe4d-7293-4374-9186-29b008e5f8a2@sirena.org.uk>
- <CANhJrGO3X7pSsMBg6Gtf-q3=_JiCX4Qs=pGudL=etooM2F676g@mail.gmail.com>
- <d6a3ca82-7245-45e1-b8ff-a9970671b04f@sirena.org.uk>
- <CANhJrGMkwi1TVW_wGw=Boj1vRO_wGrd9=atOxKfbbdM4cwPGsw@mail.gmail.com>
+        Tue, 11 Apr 2023 01:57:24 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 276AC3A91;
+        Mon, 10 Apr 2023 22:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681192610; x=1712728610;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EF3DS2gvz2bYEhotwKHn4GGVCCEzg7c8/8/hl25mbs4=;
+  b=nT7boguw3zlPBEYBxPmB9IplCdf9PpF+iXPPA14SnLIVpBFxNIGNE9HS
+   pCCDzJ68h91BaXDVAZPFDITxCvPHZZlDfJZ+305sNwGgbiVZb1S3WZ+w0
+   zeTe56EwtgkEVFvSrg5TewZ44Er69LAp8NPzz0Drv2SdOvBs346UJaVcj
+   xHSdXJkVavdsvK7m6HE7UcrscuiOeMFidApRzQnBoFSBYZ9XOuf+UVJSZ
+   iz+fIyc6Xb1GytAzjhGPnH1Xmf58rPQBmv3e0t981xxyStoYtFX9gjipH
+   OExxUOBQ0/88G3kIMMX5DTi6cHBMnloJn1dsGWEzhqftSAbQE9TGqaAug
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10676"; a="343535100"
+X-IronPort-AV: E=Sophos;i="5.98,335,1673942400"; 
+   d="scan'208";a="343535100"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2023 22:56:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10676"; a="757692648"
+X-IronPort-AV: E=Sophos;i="5.98,335,1673942400"; 
+   d="scan'208";a="757692648"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmsmga004.fm.intel.com with ESMTP; 10 Apr 2023 22:56:17 -0700
+Date:   Tue, 11 Apr 2023 13:57:00 +0000
+From:   Xu Yilun <yilun.xu@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
+        Moritz Fischer <mdf@kernel.org>, linux-fpga@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH] fpga: dfl-fme: constify pointers to hwmon_channel_info
+Message-ID: <ZDVnLDpnkycl+Uz8@yilunxu-OptiPlex-7050>
+References: <20230407150112.79854-1-krzysztof.kozlowski@linaro.org>
+ <0e41f48f-229d-389f-1dec-7230f13e1600@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iSZ5n5zgM2M88gcl"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANhJrGMkwi1TVW_wGw=Boj1vRO_wGrd9=atOxKfbbdM4cwPGsw@mail.gmail.com>
-X-Cookie: In the war of wits, he's unarmed.
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <0e41f48f-229d-389f-1dec-7230f13e1600@roeck-us.net>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DATE_IN_FUTURE_06_12,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On 2023-04-07 at 16:08:45 -0700, Guenter Roeck wrote:
+> On 4/7/23 08:01, Krzysztof Kozlowski wrote:
+> > Statically allocated array of pointed to hwmon_channel_info can be made
+> > const for safety.
+> > 
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > 
+> > ---
+> > 
+> > This depends on hwmon core patch:
+> > https://lore.kernel.org/all/20230406203103.3011503-2-krzysztof.kozlowski@linaro.org/
+> > 
+> > Therefore I propose this should also go via hwmon tree.
+> 
+> I am not going to apply patches for 10+ subsystems through the hwmon tree.
+> This can only result in chaos. The dependent patch is available at
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-const
+> 
+> or wait until after the next commit window to apply this patch.
 
---iSZ5n5zgM2M88gcl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+OK, I could apply this patch to linux-fpga in next cycle.
 
-On Mon, Apr 10, 2023 at 11:19:41AM +0300, Matti Vaittinen wrote:
-> to 6. huhtik. 2023 klo 16.43 Mark Brown (broonie@kernel.org) kirjoitti:
+Thanks,
+Yilun
 
-> > I'm not sure what you're expecting there?  A device working with itself
-> > shouldn't disrupt any other users.
-
-> I have no concrete idea, just a vague uneasy feeling knowing that
-> devices tend to interact with each other. I guess it is more about the
-> amount of uncertainty caused by my lack of knowledge regarding what
-> could be done by these handlers. So, as I already said - if no one
-> else is bothered by this then I definitely don't want to block the
-> series. Still, if the error handling should be kept internal to PMBus
-> - then we should probably either say that consumer drivers must not
-> (forcibly) turn off the supply when receiving these notifications - or
-> not send these notifications from PMBus and allow PMBus to decide
-> error handling internally. (Again, I don't know if any in-tree
-> consumer drivers do turn off the supply regulator in error handlers -
-> but I don't think it is actually forbidden). Or am I just making  a
-> problem that does not exist?
-
-I think you are making a problem that doesn't exist.
-
-> > Like I say I'm not sure how much practical difference it makes to think
-> > too hard about differentiating the errors.
-
-> I would do at least two classes.
-
-> 1) critical class - it is Ok for the consumer to forcibly shut down
-> the regulator, or maybe the whole system.
-> 2) warning class - it is not Ok to forcibly shut down the regulator.
-
-How severe an issue bad power is will be partly determined by what the
-consumer is doing with the power, it's going to be in a fairly narrow
-range but there is a range.
-
---iSZ5n5zgM2M88gcl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQ1TZQACgkQJNaLcl1U
-h9Ducwf9EHoKpcYxaSwEKyyQvCAmCsWGuRLaCXvkIox6rsTHBWQh6U5fsRdaTHBm
-6lmAvzXd5fW9OBRiDUngGOEjLtJzQw/KqdgTDB82HKxvmEqWLgDbdLTsmSJLJF+O
-/nZ7/KC3+DWgetyLVj5C7j71qnXU6Z/bxkiBwjCEF0dBCRM6unbY/visToQCgPeS
-CFlojNzqr8Eu4JWyxdPivheYQKPcfrGvBCpka2rEiv6ywc7BdrnOQOAp8r3FOUJK
-qyQ7Ef+tsCjQUxI9ZX+Zc9mukIAPbbI51cEOcCTNykd1ZTVE+0uIWv/Pq16+wR2c
-r7SSDYC9AQM7xocLnAYt4+cI/O5G0g==
-=/CrN
------END PGP SIGNATURE-----
-
---iSZ5n5zgM2M88gcl--
+> 
+> Thanks,
+> Guenter
+> 
+> > 
+> > Cc: Jean Delvare <jdelvare@suse.com>
+> > Cc: Guenter Roeck <linux@roeck-us.net>
+> > Cc: linux-hwmon@vger.kernel.org
+> > ---
+> >   drivers/fpga/dfl-fme-main.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/fpga/dfl-fme-main.c b/drivers/fpga/dfl-fme-main.c
+> > index 77ea04d4edbe..bcb5d34b3b82 100644
+> > --- a/drivers/fpga/dfl-fme-main.c
+> > +++ b/drivers/fpga/dfl-fme-main.c
+> > @@ -265,7 +265,7 @@ static const struct hwmon_ops thermal_hwmon_ops = {
+> >   	.read = thermal_hwmon_read,
+> >   };
+> > -static const struct hwmon_channel_info *thermal_hwmon_info[] = {
+> > +static const struct hwmon_channel_info * const thermal_hwmon_info[] = {
+> >   	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_EMERGENCY |
+> >   				 HWMON_T_MAX   | HWMON_T_MAX_ALARM |
+> >   				 HWMON_T_CRIT  | HWMON_T_CRIT_ALARM),
+> > @@ -465,7 +465,7 @@ static const struct hwmon_ops power_hwmon_ops = {
+> >   	.write = power_hwmon_write,
+> >   };
+> > -static const struct hwmon_channel_info *power_hwmon_info[] = {
+> > +static const struct hwmon_channel_info * const power_hwmon_info[] = {
+> >   	HWMON_CHANNEL_INFO(power, HWMON_P_INPUT |
+> >   				  HWMON_P_MAX   | HWMON_P_MAX_ALARM |
+> >   				  HWMON_P_CRIT  | HWMON_P_CRIT_ALARM),
+> 
