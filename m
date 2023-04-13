@@ -2,84 +2,88 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 926806E0E84
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Apr 2023 15:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4636E1621
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Apr 2023 22:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231274AbjDMN1I (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 13 Apr 2023 09:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53922 "EHLO
+        id S229754AbjDMUvd (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 13 Apr 2023 16:51:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231176AbjDMN1G (ORCPT
+        with ESMTP id S229493AbjDMUvc (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 13 Apr 2023 09:27:06 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55D52697;
-        Thu, 13 Apr 2023 06:27:00 -0700 (PDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33DDOdE1031521;
-        Thu, 13 Apr 2023 13:26:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=lACip7+EkKWDEeQBT2iYREjHR0TDo6jILmW0mTPMejc=;
- b=r9qLy0K1CkxZy/9wcPgtoMVR8QXHLuHlDj2XWWZtmCvyLLxXECnrI7eYkXT5PXutJTZk
- cYhqeXMSBStKVd0cVBvQK3ssnY+Rw5e7BlNvv6za9EzI928Ga8oVH7jUiIwHDLSSoJfE
- nIQirsMlCEuSCDBOHhFun3OiWe6DoGr2/jOxbQVPHFhZktjpFp7p6gCl8pEm/xHngpV1
- eMPHgTwg9TbCDRBJQlbUVcp2utRLsjbegW2tzcCYn1d4o2KW0v/yTDe6jHaL0OijI6o/
- C9yngNJ6eAdpR6T00SexjqwsWKOP/nZzdUkUOOvupBEyroAANsfkgLY/DvIzqjbcox0h MQ== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pxgvn43t5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Apr 2023 13:26:37 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-        by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33DCuweE028289;
-        Thu, 13 Apr 2023 13:26:36 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-        by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3pu0frbq6m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Apr 2023 13:26:36 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33DDQZGt38404466
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Apr 2023 13:26:35 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 41F165806F;
-        Thu, 13 Apr 2023 13:26:35 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 321B95806D;
-        Thu, 13 Apr 2023 13:26:35 +0000 (GMT)
-Received: from gfwa600.aus.stglabs.ibm.com (unknown [9.3.84.101])
-        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-        Thu, 13 Apr 2023 13:26:35 +0000 (GMT)
-Received: by gfwa600.aus.stglabs.ibm.com (Postfix, from userid 181152)
-        id B3719745150; Thu, 13 Apr 2023 08:26:34 -0500 (CDT)
-From:   Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-To:     robh+dt@kernel.org, linux@roeck-us.net, jdelvare@suse.com,
-        krzysztof.kozlowski+dt@linaro.org, joel@jms.id.au, andrew@aj.id.au,
-        eajames@linux.ibm.com
-Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Subject: [PATCH v7 5/5] ARM: dts: aspeed: p10bmc: Change power supply info
-Date:   Thu, 13 Apr 2023 08:26:27 -0500
-Message-Id: <20230413132627.3444119-6-lakshmiy@us.ibm.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230413132627.3444119-1-lakshmiy@us.ibm.com>
-References: <20230413132627.3444119-1-lakshmiy@us.ibm.com>
+        Thu, 13 Apr 2023 16:51:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FE7793
+        for <linux-hwmon@vger.kernel.org>; Thu, 13 Apr 2023 13:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1681419046;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=KmQxpMzSuEyk+3REh88Siq0gb5rqCSxABB+pkkoj8lI=;
+        b=HxkvCkJPlF4Hs93oHeK1O8L0Mg1SbCXa4sWSrxCwxDfB8GfArz0/w1d39YKcomF9tnyqVi
+        ko+ZyPogPQCCfoQsG+W+mOheuh6nT1x9FBkatPsvSLWYRLzzT3Xoz/FoH9uw58ORSpSvfE
+        YirKDJAhdX3Az0EtiyRMCHBtJWlUx5Q=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-TK-8yof5Oiae6ZkJ9qSAzw-1; Thu, 13 Apr 2023 16:50:45 -0400
+X-MC-Unique: TK-8yof5Oiae6ZkJ9qSAzw-1
+Received: by mail-qk1-f199.google.com with SMTP id s190-20020ae9dec7000000b00746b7fae197so16407348qkf.12
+        for <linux-hwmon@vger.kernel.org>; Thu, 13 Apr 2023 13:50:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681419045; x=1684011045;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KmQxpMzSuEyk+3REh88Siq0gb5rqCSxABB+pkkoj8lI=;
+        b=lC3ecusS/wRjfGafHsuUk3Bfz81HfGR7qfE/IVendRW0091aa+TIaFerSFnlxCqCzY
+         hpwCXNNceRfQKfVHpyP89DfAdIw2KIg9RRo7mdmTP9FikuAapAJt8JqEhV87pGEuvjQh
+         GuQDxHSdFEVjiMiMrFHjeE7ACdZtRJ8sj7L7fzCZRcN+9MvApZYXOzqBuRe00aJ3T36w
+         RB7iOrFJexY9pSd5tmNbgOL875ktJ2yW5T4yrS/OFx94Jo2fOzz7wg3pZkL2eSd8E5VR
+         88hDyu2zXfDSn6Mg5t19yM30pcY3Uo6ymjgnpfodmAWwwmUA23VeK/LjYFbVmMht+G8f
+         0sHg==
+X-Gm-Message-State: AAQBX9fRh4CEz/8NtzhH6OkCuwn514yZ8E8/DmH5CuRvdF2saQJQfPrc
+        E5c26iuf5u0PF+5JOyMgfcZT9APMxpyRyCmkrbNAVaIN9UM+y1wMlSQfBzx+iIy8504b1J6dx3e
+        DcE8N8cBN43tpFPNgNOjk8hM=
+X-Received: by 2002:a05:622a:178f:b0:3d2:7950:f790 with SMTP id s15-20020a05622a178f00b003d27950f790mr5567161qtk.62.1681419044906;
+        Thu, 13 Apr 2023 13:50:44 -0700 (PDT)
+X-Google-Smtp-Source: AKy350b12qT4nXWBVHubQJPdBC5iGLT75vNx2WB6Tcl30hDHb8I1dl6zwV8CoKpd3QHFzc9a8KqSHw==
+X-Received: by 2002:a05:622a:178f:b0:3d2:7950:f790 with SMTP id s15-20020a05622a178f00b003d27950f790mr5567138qtk.62.1681419044690;
+        Thu, 13 Apr 2023 13:50:44 -0700 (PDT)
+Received: from ?IPv6:2600:4040:5c62:8200::feb? ([2600:4040:5c62:8200::feb])
+        by smtp.gmail.com with ESMTPSA id a24-20020ac84358000000b003e64303bd2dsm739869qtn.63.2023.04.13.13.50.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Apr 2023 13:50:44 -0700 (PDT)
+Message-ID: <61cccdbc80bfcaa2222c274e40c329ed84d41e55.camel@redhat.com>
+Subject: Re: [PATCH 2/2] drm/nouveau: constify pointers to hwmon_channel_info
+From:   Lyude Paul <lyude@redhat.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Date:   Thu, 13 Apr 2023 16:50:43 -0400
+In-Reply-To: <20230407150031.79749-2-krzysztof.kozlowski@linaro.org>
+References: <20230407150031.79749-1-krzysztof.kozlowski@linaro.org>
+         <20230407150031.79749-2-krzysztof.kozlowski@linaro.org>
+Organization: Red Hat Inc.
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: R4Hj-2SDmrpHUTXwHqKx7w8ezevAHEdu
-X-Proofpoint-ORIG-GUID: R4Hj-2SDmrpHUTXwHqKx7w8ezevAHEdu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-13_08,2023-04-13_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 mlxlogscore=852
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304130116
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,41 +91,47 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Bonnell system supports new ACBEL FSG032 power supply on
-I2C addresses 5A and 5B. Update the device tree with new
-power supply information and device addresses.
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 
-Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Reviewed-by: Eddie James <eajames@linux.ibm.com>
----
- arch/arm/boot/dts/aspeed-bmc-ibm-bonnell.dts | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+On Fri, 2023-04-07 at 17:00 +0200, Krzysztof Kozlowski wrote:
+> Statically allocated array of pointed to hwmon_channel_info can be made
+> const for safety.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>=20
+> ---
+>=20
+> This depends on hwmon core patch:
+> https://lore.kernel.org/all/20230406203103.3011503-2-krzysztof.kozlowski@=
+linaro.org/
+>=20
+> Therefore I propose this should also go via hwmon tree.
+>=20
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-hwmon@vger.kernel.org
+> ---
+>  drivers/gpu/drm/nouveau/nouveau_hwmon.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_hwmon.c b/drivers/gpu/drm/no=
+uveau/nouveau_hwmon.c
+> index e844be49e11e..db30a4c2cd4d 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_hwmon.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_hwmon.c
+> @@ -211,7 +211,7 @@ static const struct attribute_group temp1_auto_point_=
+sensor_group =3D {
+> =20
+>  #define N_ATTR_GROUPS   3
+> =20
+> -static const struct hwmon_channel_info *nouveau_info[] =3D {
+> +static const struct hwmon_channel_info * const nouveau_info[] =3D {
+>  	HWMON_CHANNEL_INFO(chip,
+>  			   HWMON_C_UPDATE_INTERVAL),
+>  	HWMON_CHANNEL_INFO(temp,
 
-diff --git a/arch/arm/boot/dts/aspeed-bmc-ibm-bonnell.dts b/arch/arm/boot/dts/aspeed-bmc-ibm-bonnell.dts
-index a5be0ee048ec..4f959a4f8b58 100644
---- a/arch/arm/boot/dts/aspeed-bmc-ibm-bonnell.dts
-+++ b/arch/arm/boot/dts/aspeed-bmc-ibm-bonnell.dts
-@@ -552,14 +552,14 @@ ucd90160@64 {
- &i2c3 {
- 	status = "okay";
- 
--	power-supply@58 {
--		compatible = "ibm,cffps";
--		reg = <0x58>;
-+	power-supply@5a {
-+		compatible = "acbel,fsg032";
-+		reg = <0x5a>;
- 	};
- 
--	power-supply@59 {
--		compatible = "ibm,cffps";
--		reg = <0x59>;
-+	power-supply@5b {
-+		compatible = "acbel,fsg032";
-+		reg = <0x5b>;
- 	};
- };
- 
--- 
-2.37.2
+--=20
+Cheers,
+ Lyude Paul (she/her)
+ Software Engineer at Red Hat
 
