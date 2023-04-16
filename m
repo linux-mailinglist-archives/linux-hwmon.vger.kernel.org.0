@@ -2,108 +2,109 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F88C6E34EF
-	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Apr 2023 06:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 363116E34F1
+	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Apr 2023 06:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229462AbjDPEZm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 16 Apr 2023 00:25:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
+        id S229967AbjDPEZo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 16 Apr 2023 00:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbjDPEZk (ORCPT
+        with ESMTP id S229894AbjDPEZn (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 16 Apr 2023 00:25:40 -0400
+        Sun, 16 Apr 2023 00:25:43 -0400
 Received: from ipmail03.adl2.internode.on.net (ipmail03.adl2.internode.on.net [150.101.137.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 73D832D4C
-        for <linux-hwmon@vger.kernel.org>; Sat, 15 Apr 2023 21:25:38 -0700 (PDT)
-IronPort-SDR: 643b78bc_346VmSdYT6N+7JQEOH1quHds0GXE6/TOou35kH2FZ4+rfAL
- WQglDyjH97FtK57y6FX0ReI3Pkeaudw4Cc8DL+w==
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61339271C
+        for <linux-hwmon@vger.kernel.org>; Sat, 15 Apr 2023 21:25:40 -0700 (PDT)
+IronPort-SDR: 643b78bf_TGXoHZXixJXO1ZUxpr+aFARaGwKPQT6GJydCcocVxMfx9yo
+ cUUSO+6Zc7WUNpS1jtPyRO0hdLsorOP4qDd00Dg==
 X-SMTP-MATCH: 0
-X-IPAS-Result: =?us-ascii?q?A2CwAACkdztkjPQc8jxaGwEBAQEBAQEBBQEBARIBAQEDA?=
- =?us-ascii?q?wEBAUmBRoIugk+uCIdXDwEPAQFEBAEBhQYChTwmOBMBAgQBAQEBAwIDAQEBA?=
- =?us-ascii?q?QEBAwEBBgEBAQEBAQYEFAEBAQFARYVoDYYEAgEDJwsBDQEBNwEPGThXBgESg?=
- =?us-ascii?q?n6CXa8EM4EBgggBAQaCYppqgV4JgUGLdYEWgzZ6Qj+BToEVgTyCLYEPiXeaV?=
- =?us-ascii?q?oE0doEgDkpygQQCCQIRa4EQCGp+e0ACDWQLDm+BSYMqBAIURA5UAwkDBwVJQ?=
- =?us-ascii?q?AMLGA0WOhMsNRQgXGwtEhIFAwsVKkcECDgGGzQRAggPEg8sRAxCNzMTBlwBK?=
- =?us-ascii?q?QgDDhEDTkIZbASCCgYBJiSfGQd7E5VVA7EQhAiBWZ8UTYFGp3wul0kgohKBG?=
- =?us-ascii?q?IQsAgoHFoF6gX5NHxmDIk8DGQ+OIAwNCYIKkVFjPQIHCwEBAwmLRQEB?=
-IronPort-PHdr: A9a23:dpOUbhF+7JKGZ+z47qaOTp1GfhYY04WdBeZdwpAml6kIeb6q4JrlJ
- kCZ6PBwyl7FG4zGuLpNkeGDtafmVCQb5IqZ9moPdZtQWloEkZAYkwB6UpGMAEGpIKK1P35jT
- pZJXgY9rXqwaRc9JQ==
-IronPort-Data: A9a23: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
- psLzxUc5PRqLk1BHo7/PsCGvNo=
-IronPort-HdrOrdr: A9a23:x3NlJatXpRn6UcqQI1lX3kM/7skDrNV00zEX/kB9WHVpm6yj/f
- xGUs576faSskdpZJlD8ersBEDkex/hHPFOkOos1NuZMzUO/VHYSL2KjrGSpQEIZReOlNK1vJ
- 0IG8ND4Z/LfD9HZK3BgDVQfexP/DEJnZrY/ds2t00dKD2Cc5sQkzuRFDzrb3GemzM2fqbQxf
- Knl7B6mwY=
-X-Talos-CUID: 9a23:5WWwS2/n/tYcd0Qh776Vv1c7Fcd1SFKH9lzzHGS4BmUzQeC6Y0DFrQ==
-X-Talos-MUID: 9a23:tAAvdwk5PcSgWCxwzq3gdnpuHedSxvSoJXxOroUUuMeFKHJ/JG202WE=
+X-IPAS-Result: =?us-ascii?q?A2C6AACkdztkjPQc8jxaHQEBAQEJARIBBQUBSYE1BQELA?=
+ =?us-ascii?q?YItgk+WAp9dDwEPAQFEBAEBhQYChTwmNwYOAQIEAQEBAQMCAwEBAQEBAQMBA?=
+ =?us-ascii?q?QYBAQEBAQEGBBQBAQEBQEWFaA2GBAIBAycLAQ0BATcBDxk4VwYBEoJ+gl2vB?=
+ =?us-ascii?q?DOBAYIIAQEGgmKaaoFeCYFBAYt0gRaDNnpCP4FOgRWBPIIthByGappWgTR2g?=
+ =?us-ascii?q?SAOSnKBBAIJAhFrgRAIaoF5QAINZAsOb4FJgyoEAhREDlQDCQMHBUlAAwsYD?=
+ =?us-ascii?q?RY6Eyw1FCBcbC0SEgUDCxUqRwQIOAYbNBECCA8SDyxEDEI3MxMGXAEpCw4RA?=
+ =?us-ascii?q?05CGWwEggoGASYknyABWAE0MIF5B0oskjEBB7EJhAiBWZ8UTYFGgjeTUZF0L?=
+ =?us-ascii?q?pdJIIIun2Qta4QsAgoHFoF5gX9NHxmDIk8DGQ+OIAwNCYIKkVFjPQIHCwEBA?=
+ =?us-ascii?q?wmIbYJYAQE?=
+IronPort-PHdr: A9a23:jRBV0hPX93bZqLRrVVwl6nczWUAX0o4cdiYf64Y8zblUe7ut+I7ue
+ kHa+LNsgBnAQNaT4uhP3uzRta2oQmkc+dCbvXUFbJEJVgdQh8kaxV5/CceJW0Gnc664Nn5oF
+ 84bDA1u9CnkWXU=
+IronPort-Data: A9a23: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
+ NUC4TflC3BdGH2yqTo7vZRXWdta+84=
+IronPort-HdrOrdr: A9a23:kcmRMamL8Wn38dBgV4IvDpyNw3DpDfL23DAbv31ZSRFFG/Fw9/
+ rFoB3U737JYVEqKQgdcbLpAsS9qBbnmaKdjrNhXotKMDOIhILsFvAH0WKA+UyHJ8SBzJ8+6U
+ 4IScEXY+EYT2IK6voSizPZLz9P+re6GC/Ev5an854Ud3AOV0h51XYENu+EKDwKeOCYP+tDKH
+ JMjvA33QadRQ==
+X-Talos-CUID: 9a23:n7yNDG1yJHdtA5CHdmkORbxfF9wuWyH2ljDsJl6WFUlFGbuoCgav9/Yx
+X-Talos-MUID: 9a23:zU9VbQTftOtbFPTiRXTPrW49OdYr5p+zUhwVmM1duOKDFwp/bmI=
 X-IronPort-Anti-Spam-Filtered: true
 Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
-  by ipmail03.adl2.internode.on.net with ESMTP; 16 Apr 2023 13:55:33 +0930
+  by ipmail03.adl2.internode.on.net with ESMTP; 16 Apr 2023 13:55:36 +0930
 Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
         (authenticated bits=0)
-        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 33G4PCj33415316
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 33G4PCj43415316
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sun, 16 Apr 2023 14:25:28 +1000
+        Sun, 16 Apr 2023 14:25:32 +1000
 Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 33G4PCj33415316
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 33G4PCj43415316
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-        s=s1; t=1681619128; bh=JbYOTgMbk5IKKqjYsYlQvml8l3PzjdpEW1kEeeNYd3w=;
+        s=s1; t=1681619132; bh=FzLyzpQ8eY6cpJNDC9SCzOjYHhQ33c38JIvf7wUhPdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pBXOJOYn84PmU0cSv3FzUQbN/GARSr6OUDecwDKFKY4b6i6MP0RwIthqCXswxsufc
-         XSNk/6hUtxV0jJwWa+BmiWuEuO5PY0muOiRR6mWbRbELIzZstNVGveI6Q9bdsjIfg9
-         kaXjkQNkYj7Ah1nkM57m/wWDebBupUz2egHjnKvAEca7XOY+ze5XxJ3Re2CspM5/3Y
-         aJSZszFPBXREVEq75exmY96rl7g8XVn/0aUdqoX4Z4ryAOvIs9fUrEQq3huekjLr2p
-         JAVHqCUAR1m3Xnm0UE6L6jaB5b1+tXHtkdhLmIvKG79XgJypkI3VLzZVH75PzDDRpm
-         51Q+Ww5UeePSA==
+        b=MaChyRLquVUUdovLoNuluJ4IcmgHNLeC8/smVf+QQtGkzOzXygUjyXpuereR1CURE
+         /sVArnvR59fh3DBLu5Jle6WLXxDJJU0UB3GLk56x9yizaoIfpZYtEy5ahQ3Im9asbX
+         ln81KeQZFGzU/0l/3d1DbC8z33FpcRaE9VMx8BZbvgSsHXJAO8LclRcjlN69DQBGvz
+         v4yMHBzNA0OJ/7Hry3NXuaDCJQL2QlY+cxQOo+epvKMWXVdk7AzavDXuw0hJ3k2G1M
+         3EWwBzee+EWjmtMDG09YIgua2mIdXTY90JxdjqHym0cIyKHk8O7ODMbEYy3wFzkXBU
+         LLPxZl5L2vTgg==
 From:   Frank Crawford <frank@crawford.emu.id.au>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org,
         Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v2 2/4] hwmon: (it87) Test for error in it87_update_device
-Date:   Sun, 16 Apr 2023 14:25:08 +1000
-Message-Id: <20230416042510.1929077-3-frank@crawford.emu.id.au>
+Subject: [PATCH v2 3/4] hwmon: (it87) Add calls to smbus_enable/smbus_disable as required
+Date:   Sun, 16 Apr 2023 14:25:09 +1000
+Message-Id: <20230416042510.1929077-4-frank@crawford.emu.id.au>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230416042510.1929077-1-frank@crawford.emu.id.au>
 References: <20230416042510.1929077-1-frank@crawford.emu.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sun, 16 Apr 2023 14:25:28 +1000 (AEST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sun, 16 Apr 2023 14:25:32 +1000 (AEST)
 X-Virus-Scanned: clamav-milter 0.103.8 at bits.crawford.emu.id.au
 X-Virus-Status: Clean
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -116,183 +117,555 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Handle errors from it87_update_device(), which currently only occurs if
-SMBus access locking fails.
+Disable/re-enable access through SMBus for chip registers when they are
+are being read or written.
+
+For simple cases this is done at the same time as when a mutex is set,
+however, within loops or during initialisation it is done separately.
 
 Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
 ---
 
 v2:
  * Reorder patches within patchset.
+ * Remove spaces before tab.
 
 ---
- drivers/hwmon/it87.c | 48 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ drivers/hwmon/it87.c | 181 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 135 insertions(+), 46 deletions(-)
 
 diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index b74dd861f0fe..920fb9b6b2e2 100644
+index 920fb9b6b2e2..2922f551b717 100644
 --- a/drivers/hwmon/it87.c
 +++ b/drivers/hwmon/it87.c
-@@ -942,6 +942,9 @@ static ssize_t show_in(struct device *dev, struct device_attribute *attr,
+@@ -746,6 +746,7 @@ static int smbus_enable(struct it87_data *data)
+ 
+ /*
+  * Must be called with data->update_lock held, except during initialization.
++ * Must be called with SMBus accesses disabled.
+  * We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,
+  * would slow down the IT87 access and should not be necessary.
+  */
+@@ -757,6 +758,7 @@ static int it87_read_value(struct it87_data *data, u8 reg)
+ 
+ /*
+  * Must be called with data->update_lock held, except during initialization.
++ * Must be called with SMBus accesses disabled.
+  * We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,
+  * would slow down the IT87 access and should not be necessary.
+  */
+@@ -816,15 +818,39 @@ static void it87_update_pwm_ctrl(struct it87_data *data, int nr)
+ 	}
+ }
+ 
++static int it87_lock(struct it87_data *data)
++{
++	int err;
++
++	mutex_lock(&data->update_lock);
++	err = smbus_disable(data);
++	if (err)
++		mutex_unlock(&data->update_lock);
++	return err;
++}
++
++static void it87_unlock(struct it87_data *data)
++{
++	smbus_enable(data);
++	mutex_unlock(&data->update_lock);
++}
++
+ static struct it87_data *it87_update_device(struct device *dev)
+ {
+ 	struct it87_data *data = dev_get_drvdata(dev);
++	struct it87_data *ret = data;
++	int err;
+ 	int i;
+ 
+ 	mutex_lock(&data->update_lock);
+ 
+ 	if (time_after(jiffies, data->last_updated + HZ + HZ / 2) ||
+-	    !data->valid) {
++		       !data->valid) {
++		err = smbus_disable(data);
++		if (err) {
++			ret = ERR_PTR(err);
++			goto unlock;
++		}
+ 		if (update_vbat) {
+ 			/*
+ 			 * Cleared after each update, so reenable.  Value
+@@ -927,11 +953,11 @@ static struct it87_data *it87_update_device(struct device *dev)
+ 		}
+ 		data->last_updated = jiffies;
+ 		data->valid = true;
++		smbus_enable(data);
+ 	}
+-
++unlock:
+ 	mutex_unlock(&data->update_lock);
+-
+-	return data;
++	return ret;
+ }
+ 
+ static ssize_t show_in(struct device *dev, struct device_attribute *attr,
+@@ -956,17 +982,21 @@ static ssize_t set_in(struct device *dev, struct device_attribute *attr,
  	int index = sattr->index;
  	int nr = sattr->nr;
+ 	unsigned long val;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtoul(buf, 10, &val) < 0)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	return sprintf(buf, "%d\n", in_from_reg(data, nr, data->in[nr][index]));
+ 	data->in[nr][index] = in_to_reg(data, nr, val);
+ 	it87_write_value(data,
+ 			 index == 1 ? IT87_REG_VIN_MIN(nr)
+ 				    : IT87_REG_VIN_MAX(nr),
+ 			 data->in[nr][index]);
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
  
-@@ -1030,6 +1033,9 @@ static ssize_t show_temp(struct device *dev, struct device_attribute *attr,
- 	int index = sattr->index;
- 	struct it87_data *data = it87_update_device(dev);
+@@ -1048,11 +1078,14 @@ static ssize_t set_temp(struct device *dev, struct device_attribute *attr,
+ 	struct it87_data *data = dev_get_drvdata(dev);
+ 	long val;
+ 	u8 reg, regval;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
- 	return sprintf(buf, "%d\n", TEMP_FROM_REG(data->temp[nr][index]));
+ 	if (kstrtol(buf, 10, &val) < 0)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
+ 
+ 	switch (index) {
+ 	default:
+@@ -1075,7 +1108,7 @@ static ssize_t set_temp(struct device *dev, struct device_attribute *attr,
+ 
+ 	data->temp[nr][index] = TEMP_TO_REG(val);
+ 	it87_write_value(data, reg, data->temp[nr][index]);
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
  
-@@ -1107,6 +1113,9 @@ static ssize_t show_temp_type(struct device *dev, struct device_attribute *attr,
- 	u8 reg = data->sensor;	    /* In case value is updated while used */
- 	u8 extra = data->extra;
+@@ -1135,10 +1168,15 @@ static ssize_t set_temp_type(struct device *dev, struct device_attribute *attr,
+ 	struct it87_data *data = dev_get_drvdata(dev);
+ 	long val;
+ 	u8 reg, extra;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
- 	if ((has_temp_peci(data, nr) && (reg >> 6 == nr + 1)) ||
- 	    (has_temp_old_peci(data, nr) && (extra & 0x80)))
- 		return sprintf(buf, "6\n");  /* Intel PECI */
-@@ -1197,6 +1206,9 @@ static ssize_t show_fan(struct device *dev, struct device_attribute *attr,
- 	int speed;
- 	struct it87_data *data = it87_update_device(dev);
+ 	if (kstrtol(buf, 10, &val) < 0)
+ 		return -EINVAL;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	speed = has_16bit_fans(data) ?
- 		FAN16_FROM_REG(data->fan[nr][index]) :
- 		FAN_FROM_REG(data->fan[nr][index],
-@@ -1211,6 +1223,9 @@ static ssize_t show_fan_div(struct device *dev, struct device_attribute *attr,
- 	struct it87_data *data = it87_update_device(dev);
+ 	reg = it87_read_value(data, IT87_REG_TEMP_ENABLE);
+ 	reg &= ~(1 << nr);
+ 	reg &= ~(8 << nr);
+@@ -1161,17 +1199,19 @@ static ssize_t set_temp_type(struct device *dev, struct device_attribute *attr,
+ 		reg |= (nr + 1) << 6;
+ 	else if (has_temp_old_peci(data, nr) && val == 6)
+ 		extra |= 0x80;
+-	else if (val != 0)
+-		return -EINVAL;
++	else if (val != 0) {
++		count = -EINVAL;
++		goto unlock;
++	}
+ 
+-	mutex_lock(&data->update_lock);
+ 	data->sensor = reg;
+ 	data->extra = extra;
+ 	it87_write_value(data, IT87_REG_TEMP_ENABLE, data->sensor);
+ 	if (has_temp_old_peci(data, nr))
+ 		it87_write_value(data, IT87_REG_TEMP_EXTRA, data->extra);
+ 	data->valid = false;	/* Force cache refresh */
+-	mutex_unlock(&data->update_lock);
++unlock:
++	it87_unlock(data);
+ 	return count;
+ }
+ 
+@@ -1287,12 +1327,15 @@ static ssize_t set_fan(struct device *dev, struct device_attribute *attr,
+ 
+ 	struct it87_data *data = dev_get_drvdata(dev);
+ 	long val;
++	int err;
+ 	u8 reg;
+ 
+ 	if (kstrtol(buf, 10, &val) < 0)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
+ 
+ 	if (has_16bit_fans(data)) {
+ 		data->fan[nr][index] = FAN16_TO_REG(val);
+@@ -1319,7 +1362,7 @@ static ssize_t set_fan(struct device *dev, struct device_attribute *attr,
+ 				 data->fan[nr][index]);
+ 	}
+ 
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
+ }
+ 
+@@ -1330,13 +1373,16 @@ static ssize_t set_fan_div(struct device *dev, struct device_attribute *attr,
+ 	struct it87_data *data = dev_get_drvdata(dev);
  	int nr = sensor_attr->index;
+ 	unsigned long val;
+-	int min;
++	int min, err;
+ 	u8 old;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtoul(buf, 10, &val) < 0)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	return sprintf(buf, "%lu\n", DIV_FROM_REG(data->fan_div[nr]));
+ 	old = it87_read_value(data, IT87_REG_FAN_DIV);
+ 
+ 	/* Save fan min limit */
+@@ -1364,7 +1410,7 @@ static ssize_t set_fan_div(struct device *dev, struct device_attribute *attr,
+ 	data->fan[nr][1] = FAN_TO_REG(min, DIV_FROM_REG(data->fan_div[nr]));
+ 	it87_write_value(data, IT87_REG_FAN_MIN[nr], data->fan[nr][1]);
+ 
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
  
-@@ -1221,6 +1236,9 @@ static ssize_t show_pwm_enable(struct device *dev,
- 	struct it87_data *data = it87_update_device(dev);
+@@ -1405,6 +1451,7 @@ static ssize_t set_pwm_enable(struct device *dev, struct device_attribute *attr,
+ 	struct it87_data *data = dev_get_drvdata(dev);
  	int nr = sensor_attr->index;
+ 	long val;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
- 	return sprintf(buf, "%d\n", pwm_mode(data, nr));
+ 	if (kstrtol(buf, 10, &val) < 0 || val < 0 || val > 2)
+ 		return -EINVAL;
+@@ -1415,7 +1462,9 @@ static ssize_t set_pwm_enable(struct device *dev, struct device_attribute *attr,
+ 			return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
+ 
+ 	if (val == 0) {
+ 		if (nr < 3 && data->type != it8603) {
+@@ -1466,7 +1515,7 @@ static ssize_t set_pwm_enable(struct device *dev, struct device_attribute *attr,
+ 		}
+ 	}
+ 
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
  
-@@ -1231,6 +1249,9 @@ static ssize_t show_pwm(struct device *dev, struct device_attribute *attr,
- 	struct it87_data *data = it87_update_device(dev);
+@@ -1477,11 +1526,15 @@ static ssize_t set_pwm(struct device *dev, struct device_attribute *attr,
+ 	struct it87_data *data = dev_get_drvdata(dev);
  	int nr = sensor_attr->index;
+ 	long val;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtol(buf, 10, &val) < 0 || val < 0 || val > 255)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	return sprintf(buf, "%d\n",
- 		       pwm_from_reg(data, data->pwm_duty[nr]));
+ 	it87_update_pwm_ctrl(data, nr);
+ 	if (has_newer_autopwm(data)) {
+ 		/*
+@@ -1489,8 +1542,8 @@ static ssize_t set_pwm(struct device *dev, struct device_attribute *attr,
+ 		 * is read-only so we can't write the value.
+ 		 */
+ 		if (data->pwm_ctrl[nr] & 0x80) {
+-			mutex_unlock(&data->update_lock);
+-			return -EBUSY;
++			count = -EBUSY;
++			goto unlock;
+ 		}
+ 		data->pwm_duty[nr] = pwm_to_reg(data, val);
+ 		it87_write_value(data, IT87_REG_PWM_DUTY[nr],
+@@ -1507,7 +1560,8 @@ static ssize_t set_pwm(struct device *dev, struct device_attribute *attr,
+ 					 data->pwm_ctrl[nr]);
+ 		}
+ 	}
+-	mutex_unlock(&data->update_lock);
++unlock:
++	it87_unlock(data);
+ 	return count;
  }
-@@ -1244,6 +1265,9 @@ static ssize_t show_pwm_freq(struct device *dev, struct device_attribute *attr,
- 	unsigned int freq;
- 	int index;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
- 	if (has_pwm_freq2(data) && nr == 1)
- 		index = (data->extra >> 4) & 0x07;
- 	else
-@@ -1531,6 +1555,9 @@ static ssize_t show_pwm_temp_map(struct device *dev,
+@@ -1518,6 +1572,7 @@ static ssize_t set_pwm_freq(struct device *dev, struct device_attribute *attr,
+ 	struct it87_data *data = dev_get_drvdata(dev);
  	int nr = sensor_attr->index;
- 	int map;
+ 	unsigned long val;
++	int err;
+ 	int i;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtoul(buf, 10, &val) < 0)
+@@ -1532,7 +1587,10 @@ static ssize_t set_pwm_freq(struct device *dev, struct device_attribute *attr,
+ 			break;
+ 	}
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	map = data->pwm_temp_map[nr];
- 	if (map >= 3)
- 		map = 0;	/* Should never happen */
-@@ -1595,6 +1622,9 @@ static ssize_t show_auto_pwm(struct device *dev, struct device_attribute *attr,
- 	int nr = sensor_attr->nr;
+ 	if (nr == 0) {
+ 		data->fan_ctl = it87_read_value(data, IT87_REG_FAN_CTL) & 0x8f;
+ 		data->fan_ctl |= i << 4;
+@@ -1542,7 +1600,7 @@ static ssize_t set_pwm_freq(struct device *dev, struct device_attribute *attr,
+ 		data->extra |= i << 4;
+ 		it87_write_value(data, IT87_REG_TEMP_EXTRA, data->extra);
+ 	}
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 
+ 	return count;
+ }
+@@ -1575,6 +1633,7 @@ static ssize_t set_pwm_temp_map(struct device *dev,
+ 	struct it87_data *data = dev_get_drvdata(dev);
+ 	int nr = sensor_attr->index;
+ 	long val;
++	int err;
+ 	u8 reg;
+ 
+ 	if (kstrtol(buf, 10, &val) < 0)
+@@ -1597,7 +1656,10 @@ static ssize_t set_pwm_temp_map(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
++
+ 	it87_update_pwm_ctrl(data, nr);
+ 	data->pwm_temp_map[nr] = reg;
+ 	/*
+@@ -1609,7 +1671,7 @@ static ssize_t set_pwm_temp_map(struct device *dev,
+ 						data->pwm_temp_map[nr];
+ 		it87_write_value(data, IT87_REG_PWM[nr], data->pwm_ctrl[nr]);
+ 	}
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
+ }
+ 
+@@ -1639,18 +1701,22 @@ static ssize_t set_auto_pwm(struct device *dev, struct device_attribute *attr,
  	int point = sensor_attr->index;
+ 	int regaddr;
+ 	long val;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtol(buf, 10, &val) < 0 || val < 0 || val > 255)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	return sprintf(buf, "%d\n",
- 		       pwm_from_reg(data, data->auto_pwm[nr][point]));
+ 	data->auto_pwm[nr][point] = pwm_to_reg(data, val);
+ 	if (has_newer_autopwm(data))
+ 		regaddr = IT87_REG_AUTO_TEMP(nr, 3);
+ 	else
+ 		regaddr = IT87_REG_AUTO_PWM(nr, point);
+ 	it87_write_value(data, regaddr, data->auto_pwm[nr][point]);
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
-@@ -1631,6 +1661,9 @@ static ssize_t show_auto_pwm_slope(struct device *dev,
+ 
+@@ -1675,15 +1741,19 @@ static ssize_t set_auto_pwm_slope(struct device *dev,
  	struct sensor_device_attribute *sensor_attr = to_sensor_dev_attr(attr);
  	int nr = sensor_attr->index;
+ 	unsigned long val;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtoul(buf, 10, &val) < 0 || val > 127)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	return sprintf(buf, "%d\n", data->auto_pwm[nr][1] & 0x7f);
+ 	data->auto_pwm[nr][1] = (data->auto_pwm[nr][1] & 0x80) | val;
+ 	it87_write_value(data, IT87_REG_AUTO_TEMP(nr, 4),
+ 			 data->auto_pwm[nr][1]);
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
  
-@@ -1664,6 +1697,9 @@ static ssize_t show_auto_temp(struct device *dev, struct device_attribute *attr,
+@@ -1718,11 +1788,15 @@ static ssize_t set_auto_temp(struct device *dev, struct device_attribute *attr,
  	int point = sensor_attr->index;
+ 	long val;
  	int reg;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	if (kstrtol(buf, 10, &val) < 0 || val < -128000 || val > 127000)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
 +
- 	if (has_old_autopwm(data) || point)
- 		reg = data->auto_temp[nr][point];
+ 	if (has_newer_autopwm(data) && !point) {
+ 		reg = data->auto_temp[nr][1] - TEMP_TO_REG(val);
+ 		reg = clamp_val(reg, 0, 0x1f) | (data->auto_temp[nr][0] & 0xe0);
+@@ -1735,7 +1809,7 @@ static ssize_t set_auto_temp(struct device *dev, struct device_attribute *attr,
+ 			point--;
+ 		it87_write_value(data, IT87_REG_AUTO_TEMP(nr, point), reg);
+ 	}
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
+ }
+ 
+@@ -1944,13 +2018,16 @@ static ssize_t clear_intrusion(struct device *dev,
+ 			       size_t count)
+ {
+ 	struct it87_data *data = dev_get_drvdata(dev);
+-	int config;
++	int err, config;
+ 	long val;
+ 
+ 	if (kstrtol(buf, 10, &val) < 0 || val != 0)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
++
+ 	config = it87_read_value(data, IT87_REG_CONFIG);
+ 	if (config < 0) {
+ 		count = config;
+@@ -1960,8 +2037,7 @@ static ssize_t clear_intrusion(struct device *dev,
+ 		/* Invalidate cache to force re-read */
+ 		data->valid = false;
+ 	}
+-	mutex_unlock(&data->update_lock);
+-
++	it87_unlock(data);
+ 	return count;
+ }
+ 
+@@ -2003,18 +2079,22 @@ static ssize_t set_beep(struct device *dev, struct device_attribute *attr,
+ 	int bitnr = to_sensor_dev_attr(attr)->index;
+ 	struct it87_data *data = dev_get_drvdata(dev);
+ 	long val;
++	int err;
+ 
+ 	if (kstrtol(buf, 10, &val) < 0 || (val != 0 && val != 1))
+ 		return -EINVAL;
+ 
+-	mutex_lock(&data->update_lock);
++	err = it87_lock(data);
++	if (err)
++		return err;
++
+ 	data->beeps = it87_read_value(data, IT87_REG_BEEP_ENABLE);
+ 	if (val)
+ 		data->beeps |= BIT(bitnr);
  	else
-@@ -1884,6 +1920,9 @@ static ssize_t alarms_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct it87_data *data = it87_update_device(dev);
- 
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
- 	return sprintf(buf, "%u\n", data->alarms);
- }
- static DEVICE_ATTR_RO(alarms);
-@@ -1894,6 +1933,9 @@ static ssize_t show_alarm(struct device *dev, struct device_attribute *attr,
- 	struct it87_data *data = it87_update_device(dev);
- 	int bitnr = to_sensor_dev_attr(attr)->index;
- 
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
- 	return sprintf(buf, "%u\n", (data->alarms >> bitnr) & 1);
+ 		data->beeps &= ~BIT(bitnr);
+ 	it87_write_value(data, IT87_REG_BEEP_ENABLE, data->beeps);
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 	return count;
  }
  
-@@ -1949,6 +1991,9 @@ static ssize_t show_beep(struct device *dev, struct device_attribute *attr,
- 	struct it87_data *data = it87_update_device(dev);
- 	int bitnr = to_sensor_dev_attr(attr)->index;
+@@ -3177,6 +3257,7 @@ static int it87_probe(struct platform_device *pdev)
+ 	struct it87_sio_data *sio_data = dev_get_platdata(dev);
+ 	int enable_pwm_interface;
+ 	struct device *hwmon_dev;
++	int err;
  
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
+ 	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
+ 	if (!devm_request_region(&pdev->dev, res->start, IT87_EC_EXTENT,
+@@ -3222,15 +3303,21 @@ static int it87_probe(struct platform_device *pdev)
+ 		break;
+ 	}
+ 
+-	/* Now, we do the remaining detection. */
+-	if ((it87_read_value(data, IT87_REG_CONFIG) & 0x80) ||
+-	    it87_read_value(data, IT87_REG_CHIPID) != 0x90)
+-		return -ENODEV;
+-
+ 	platform_set_drvdata(pdev, data);
+ 
+ 	mutex_init(&data->update_lock);
+ 
++	err = smbus_disable(data);
++	if (err)
++		return err;
 +
- 	return sprintf(buf, "%u\n", (data->beeps >> bitnr) & 1);
- }
- 
-@@ -2022,6 +2067,9 @@ static ssize_t cpu0_vid_show(struct device *dev,
- {
- 	struct it87_data *data = it87_update_device(dev);
- 
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
++	/* Now, we do the remaining detection. */
++	if ((it87_read_value(data, IT87_REG_CONFIG) & 0x80) ||
++			     it87_read_value(data, IT87_REG_CHIPID) != 0x90) {
++		smbus_enable(data);
++		return -ENODEV;
++	}
 +
- 	return sprintf(buf, "%ld\n", (long)vid_from_reg(data->vid, data->vrm));
- }
- static DEVICE_ATTR_RO(cpu0_vid);
+ 	/* Check PWM configuration */
+ 	enable_pwm_interface = it87_check_pwm(dev);
+ 	if (!enable_pwm_interface)
+@@ -3291,6 +3378,8 @@ static int it87_probe(struct platform_device *pdev)
+ 	/* Initialize the IT87 chip */
+ 	it87_init_device(pdev);
+ 
++	smbus_enable(data);
++
+ 	if (!sio_data->skip_vid) {
+ 		data->has_vid = true;
+ 		data->vrm = vid_which_vrm();
+@@ -3358,7 +3447,7 @@ static int it87_resume(struct device *dev)
+ 
+ 	it87_resume_sio(pdev);
+ 
+-	mutex_lock(&data->update_lock);
++	it87_lock(data);
+ 
+ 	it87_check_pwm(dev);
+ 	it87_check_limit_regs(data);
+@@ -3371,7 +3460,7 @@ static int it87_resume(struct device *dev)
+ 	/* force update */
+ 	data->valid = false;
+ 
+-	mutex_unlock(&data->update_lock);
++	it87_unlock(data);
+ 
+ 	it87_update_device(dev);
+ 
 -- 
 2.39.2
 
