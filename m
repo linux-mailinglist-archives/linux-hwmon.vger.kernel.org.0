@@ -2,153 +2,204 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 820C96E4669
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Apr 2023 13:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A71B6E4566
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Apr 2023 12:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjDQL2b (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 17 Apr 2023 07:28:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50204 "EHLO
+        id S229669AbjDQKks (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 17 Apr 2023 06:40:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjDQL2a (ORCPT
+        with ESMTP id S230248AbjDQKkr (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 17 Apr 2023 07:28:30 -0400
-X-Greylist: delayed 3389 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Apr 2023 04:27:39 PDT
-Received: from shakotay.alphanet.ch (shakotay.alphanet.ch [46.140.72.222])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CB4BB
-        for <linux-hwmon@vger.kernel.org>; Mon, 17 Apr 2023 04:27:38 -0700 (PDT)
-Received: by shakotay.alphanet.ch (Postfix, from userid 33)
-        id 2CB5E1240A19; Mon, 17 Apr 2023 12:29:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alphanet.ch; s=mail;
-        t=1681727381; bh=tGVabKiTyLNLcpqRbvLRD8w8Mz8MUvsELSvZxVBR3ag=;
-        h=Subject:From:Reply-To:In-Reply-To:References:CC:Date:From;
-        b=Q4JhiZxYOQKE7ORfd1XUmu7U8rz2uOUu9Tp0r5ttXN/QfWtiF9Q6pOfqNka0kcx2S
-         s7+JkF/obGUI5A3jAUgFihZuZzU9dEGf2SgTFYVeAsOz0ddFj0/coGG8ZK6QAmF4af
-         urvxS9J/IVsl1y0X8oJDzyoR3+qn464xX9hWL1jyXKPLXAlOzqlFKcrSKFlNudWEwU
-         SPZdgYNKjI1qGNtWhwdoMgPoxc21gMPmECGHMkZC3ePTFux/fN6BoVPu+Td9dHfTO3
-         CzV1BUttvr3Kbuu+1QgX+5l6UXaFLfwm47vbig70aHgDJhD5WI0pSdRGdM9zEDvr4L
-         mJzgTAaBkENXw==
-Subject: [rt.alphanet.ch #1198] bullseye apu2 sensor fail power (FIXED)
-From:   "Marc SCHAEFER via RT" <rt@alphanet.ch>
-Reply-To: rt@alphanet.ch
-In-Reply-To: <rt-4.4.3-2+deb10u2-22784-1666105012-1929.1198-6-0@alphanet.ch>
-References: <RT-Ticket-1198@alphanet.ch>
- <20221018145600.GA7483@alphanet.ch>
- <rt-4.4.3-2+deb10u2-22784-1666105012-1929.1198-6-0@alphanet.ch>
-Message-ID: <rt-4.4.3-2+deb10u2-8364-1681727380-114.1198-6-0@alphanet.ch>
-X-RT-Loop-Prevention: rt.alphanet.ch
-X-RT-Ticket: rt.alphanet.ch #1198
-X-Managed-BY: RT 4.4.3-2+deb10u2 (http://www.bestpractical.com/rt/)
-X-RT-Originator: schaefer@alphanet.ch
-CC:     adomjan@horus.ch, aurel32@debian.org, support@pcengines.ch,
-        linux-hwmon@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-RT-Original-Encoding: utf-8
-Date:   Mon, 17 Apr 2023 12:29:41 +0200
+        Mon, 17 Apr 2023 06:40:47 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BD44EEE
+        for <linux-hwmon@vger.kernel.org>; Mon, 17 Apr 2023 03:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681727998; x=1713263998;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ijyVABiDRvsXhuMNoNUPL0bkRltTyohWgCHV1135WEM=;
+  b=fYh2UMKAAekN/7iwQqhv2fKmjfL4G7idauI5NCGsn09X4Tgdwl4qFEuE
+   Ne7PnhBVGway6XBFWw2918VcP3PNdwxrzLrB+EsE3Ys7PxCVrYta6LcQw
+   ZSjce0Eott7NdRCKHXPCte8hvN1fu248inID9fg0wowYopsiDa0UmmV1p
+   xyrheOhIFliTOT6j28xBRU1Y3cTIzwNegmxBhH/bzSaVsvpQT1C1Rx7rY
+   mKg/QarHOQVAf96NgyMbLAIzJlLJ+Yk4UKLk9MZp85k+U4EzR+ynLkRrF
+   /KJdIVSAHUCFnZge7Ek63m1idLYVdTId1dq5ruWqogUzv2zuRjYhkpxQP
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="410069916"
+X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
+   d="scan'208";a="410069916"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 03:38:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="936780750"
+X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
+   d="scan'208";a="936780750"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 17 Apr 2023 03:38:41 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1poMFs-000cHz-29;
+        Mon, 17 Apr 2023 10:38:40 +0000
+Date:   Mon, 17 Apr 2023 18:38:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:watchdog-next] BUILD SUCCESS
+ 831f5e20e6c349406e0deeca1d4bd54b07412b5f
+Message-ID: <643d2193.mWksPXi6yMDy0n2F%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Aurelien,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git watchdog-next
+branch HEAD: 831f5e20e6c349406e0deeca1d4bd54b07412b5f  watchdog: loongson1_wdt: Implement restart handler
 
-Remember this bug with bullseye and power sensors on the apu2 platform on
-idle?
+elapsed time: 723m
 
-It is fixed with the latest firmware from pcengines.ch (apu2_v4.17.0.3.rom). 
-Funnily it never appeared on Debian buster nor older releases, only on Debian
-bullseye (actually it happened with kernel 5 only).
+configs tested: 123
+configs skipped: 11
 
-The good news it is fixed.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-root@fake-router:~# while :; do sleep 5; sensors | grep power1; done
-power1:        1.63 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.36 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        1.76 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.19 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        1.81 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.24 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        1.86 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.67 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        1.41 W  (interval =   0.01 s, crit =   6.00 W)
-power1:      932.00 uW (interval =   0.01 s, crit =   6.00 W)
-power1:      687.00 uW (interval =   0.01 s, crit =   6.00 W)
-power1:        2.32 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        1.86 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.28 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.04 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.08 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.24 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.48 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.43 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.54 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.92 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.50 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.47 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.54 W  (interval =   0.01 s, crit =   6.00 W)
-power1:        2.67 W  (interval =   0.01 s, crit =   6.00 W)
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r004-20230417   gcc  
+arc                  randconfig-r043-20230416   gcc  
+arc                  randconfig-r043-20230417   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                        oxnas_v6_defconfig   gcc  
+arm                  randconfig-r046-20230416   clang
+arm                  randconfig-r046-20230417   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r021-20230417   clang
+csky         buildonly-randconfig-r006-20230416   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r003-20230417   gcc  
+hexagon              randconfig-r001-20230417   clang
+hexagon              randconfig-r014-20230417   clang
+hexagon              randconfig-r023-20230417   clang
+hexagon              randconfig-r036-20230417   clang
+hexagon              randconfig-r041-20230416   clang
+hexagon              randconfig-r041-20230417   clang
+hexagon              randconfig-r045-20230416   clang
+hexagon              randconfig-r045-20230417   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a011-20230417   clang
+i386                 randconfig-a012-20230417   clang
+i386                 randconfig-a013-20230417   clang
+i386                 randconfig-a014-20230417   clang
+i386                 randconfig-a015-20230417   clang
+i386                 randconfig-a016-20230417   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r003-20230416   gcc  
+ia64                 randconfig-r006-20230417   gcc  
+ia64                 randconfig-r033-20230416   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r002-20230416   gcc  
+loongarch    buildonly-randconfig-r005-20230416   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r034-20230416   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r005-20230416   gcc  
+m68k                 randconfig-r015-20230417   gcc  
+m68k                 randconfig-r022-20230417   gcc  
+m68k                 randconfig-r024-20230417   gcc  
+microblaze           randconfig-r001-20230416   gcc  
+microblaze           randconfig-r012-20230417   gcc  
+microblaze           randconfig-r031-20230416   gcc  
+microblaze           randconfig-r034-20230417   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r023-20230416   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r033-20230417   gcc  
+nios2                randconfig-r035-20230417   gcc  
+openrisc     buildonly-randconfig-r003-20230416   gcc  
+openrisc             randconfig-r011-20230416   gcc  
+openrisc             randconfig-r016-20230416   gcc  
+openrisc             randconfig-r035-20230416   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r026-20230417   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                      ep88xc_defconfig   gcc  
+powerpc              randconfig-r025-20230416   gcc  
+powerpc              randconfig-r031-20230417   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r002-20230417   gcc  
+riscv                randconfig-r022-20230416   gcc  
+riscv                randconfig-r026-20230416   gcc  
+riscv                randconfig-r042-20230416   gcc  
+riscv                randconfig-r042-20230417   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r015-20230416   gcc  
+s390                 randconfig-r036-20230416   clang
+s390                 randconfig-r044-20230416   gcc  
+s390                 randconfig-r044-20230417   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r013-20230416   gcc  
+sh                   randconfig-r025-20230417   gcc  
+sh                   randconfig-r032-20230416   gcc  
+sh                           sh2007_defconfig   gcc  
+sparc        buildonly-randconfig-r004-20230416   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r012-20230416   gcc  
+sparc                randconfig-r013-20230417   gcc  
+sparc64              randconfig-r032-20230417   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230417   gcc  
+x86_64               randconfig-a002-20230417   gcc  
+x86_64               randconfig-a003-20230417   gcc  
+x86_64               randconfig-a004-20230417   gcc  
+x86_64               randconfig-a005-20230417   gcc  
+x86_64               randconfig-a006-20230417   gcc  
+x86_64               randconfig-a011-20230417   clang
+x86_64               randconfig-a012-20230417   clang
+x86_64               randconfig-a013-20230417   clang
+x86_64               randconfig-a014-20230417   clang
+x86_64               randconfig-a015-20230417   clang
+x86_64               randconfig-a016-20230417   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r002-20230416   gcc  
+xtensa               randconfig-r021-20230416   gcc  
 
-
-Have a nice day.
-
-For reference, my complete old mail:
-On Tue Oct 18 16:56:52 2022, schaefer wrote:
-
-    Salut Aurélien,
-    Hi Aurelien,
-
-    I am writing to you directly instead of creating a bug report, to have
-    an idea where to look, first.
-
-    The problem
-
-    On an apu2 platform, buster:
-
-       schaefer@apu2-ds-01:~$ uname -a
-      Linux apu2-ds-01 4.19.0-22-amd64 #1 SMP Debian 4.19.260-1 (2022-09-29) x86_64 GNU/Linux
-
-       schaefer@apu2-ds-01:~$ sensors
-       fam15h_power-pci-00c4
-       Adapter: PCI adapter
-       power1:        6.40 W  (interval =   0.01 s, crit =   6.00 W)
-
-       k10temp-pci-00c3
-       Adapter: PCI adapter
-       temp1:        +51.8 C  (high = +70.0 C)
-                              (crit = +105.0 C, hyst = +104.0 C)
-
-    Those two above values are coherent with direct measurements.
-
-    On bullseye:
-
-       Linux apu2-test 5.10.0-18-amd64 #1 SMP Debian 5.10.140-1 (2022-09-02) x86_64 GNU/Linux
-
-       fam15h_power-pci-00c4
-       Adapter: PCI adapter
-       power1:       97.78 W  (interval =   0.01 s, crit =   6.00 W)
-
-       k10temp-pci-00c3
-       Adapter: PCI adapter
-       temp1:        +54.6 C  (high = +70.0 C)
-                              (crit = +105.0 C, hyst = +104.0 C)
-
-    Temperature looks ok, wattage is wrong.
-
-    I did not see much in the Debian changelog nor upstream changelog for
-    lm-sensors (added additional versions of the AMD chips). Also, I diffed
-    the kernel source for fam15h_power (without Debian patches!) between
-    those two kernel releases and I saw nothing (except a few defines,
-    kept their values but were migrated to include files).
-
-    Do you have any idea where to look (kernel or lm-sensors)?
-
-    Thank you for any pointer.
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
