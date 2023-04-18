@@ -2,111 +2,115 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BCC06E6834
-	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Apr 2023 17:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 554A96E6931
+	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Apr 2023 18:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232331AbjDRPcM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 18 Apr 2023 11:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47964 "EHLO
+        id S232191AbjDRQRo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 18 Apr 2023 12:17:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjDRPcK (ORCPT
+        with ESMTP id S232336AbjDRQRl (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 18 Apr 2023 11:32:10 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE2C3125B1;
-        Tue, 18 Apr 2023 08:32:08 -0700 (PDT)
-Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33IBHK90013970;
-        Tue, 18 Apr 2023 15:31:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : subject :
- date : message-id : in-reply-to : references; s=pps0720;
- bh=dAIIzQaU+Kiqn9GnVIQkPXlXHdyWvMYyRuSKEZVxqpw=;
- b=eV8QatR6OZ46jcsfGDjYtnEm3WWs6/ECPhsgN9abctszN66wrieQLuMwybL+uqlUhguS
- sgZaT1R6YFi0+pb1kEYFt4TNZWSgh0fVHQxNK8tBUviIBksoX9caiS4xgyAsi6WOD12W
- nztcq9y8egggARHhODm9vj/CWxHMUNtZNw5imSiiEhE837mQXiy0r5Rdv/PyFRPne4Js
- JE1oBGUCz/ATP8qmEuv//LMevgTB9FHjgZ8UIWbOdWc04o6JxWw138m6MuDIZZukJdVI
- OJ8MIlMRiXFREPeGimH3gFmDCgdSbuXl7SDRwBu3kz9BSnW3ywAa02XtR7vt0hklzVxr zQ== 
-Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3q1t6pj428-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Apr 2023 15:31:42 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 8726913059;
-        Tue, 18 Apr 2023 15:31:41 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 8AD4B81532D;
-        Tue, 18 Apr 2023 15:31:40 +0000 (UTC)
-From:   nick.hawkins@hpe.com
-To:     verdun@hpe.com, nick.hawkins@hpe.com, linus.walleij@linaro.org,
-        brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jdelvare@suse.com,
-        linux@roeck-us.net, linux@armlinux.org.uk,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v1 9/9] MAINTAINERS: hpe: Add GPIO, PSU
-Date:   Tue, 18 Apr 2023 10:28:24 -0500
-Message-Id: <20230418152824.110823-10-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230418152824.110823-1-nick.hawkins@hpe.com>
-References: <20230418152824.110823-1-nick.hawkins@hpe.com>
-X-Proofpoint-GUID: D-5jxxe18OTKk68YzM-A06-LVUnk68gS
-X-Proofpoint-ORIG-GUID: D-5jxxe18OTKk68YzM-A06-LVUnk68gS
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-18_11,2023-04-18_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999
- priorityscore=1501 adultscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2304180132
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 18 Apr 2023 12:17:41 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC0D7D87
+        for <linux-hwmon@vger.kernel.org>; Tue, 18 Apr 2023 09:17:35 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id xi5so74602049ejb.13
+        for <linux-hwmon@vger.kernel.org>; Tue, 18 Apr 2023 09:17:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681834653; x=1684426653;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=42KJEhE8WliDXadlwGw31IE1RyZkhHqOOOmNpPRT+PM=;
+        b=KCkD5CmQO+t1OWUIJ85aTWtdR5nQVPCXThrtU2ULddBE8e55fIcm8G/6X+Q4FKMe4y
+         /Cbj5yfUWNiLTjsezRegm89xel2eo/Qp9prVAL9S6+iXiFCaiqaq23dK2zI3CAS/uVMN
+         AbwJZVGYLN/41maNVhvHPyCHNstzksL12POramTmvIP1zGhW/86guIamUiGrprf3oKkC
+         ywDIGZPVlnxcR1rHVbAmK1NmHdSWmUn/ENLvc6QRp1m+rKoEBlxYhr4O5adG2m+0oe9c
+         fu641DM9rWcBHmsO+KaQxGyZuw21UKh/O/ihKVt2jSoD0/7Ff4nvgtSZeyCEz8av1dMi
+         zstg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681834653; x=1684426653;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=42KJEhE8WliDXadlwGw31IE1RyZkhHqOOOmNpPRT+PM=;
+        b=kL77r7/tKk17Av/33JwsyWZl8r27/66R6bskbdbas4BbpWlMErhyIUjmZVI+qHCCVS
+         iKSe/x+Lz7MrmT+HK32/Hanp7Bwq4/7sQYWUokEOy7tAnhML5zGib334QyiK6Zc12IHi
+         khjBuitZWK6UfNqIkmwzCh3l6Kxr7WQMi378OVNJ2rgTDqxN6PWu048qtI9Rk7a658fE
+         lV/JR3vF5tSH3pHB/P9m6cFD2o8/3KpnMcFozcw4Jw0Pltv1oaoUfmjxCfbTp0uEUSAT
+         52LE3kQux9qd1EN0uoC0drmG8zfw+XgIxg9UZyhzgsmSwG2SJ2Eca+Wty/gbj9blreIv
+         /gOg==
+X-Gm-Message-State: AAQBX9fhQNxslO6Q3+tb3BwxjDDb/GyyfHTiMuDCF6/SovCROein/DGH
+        544p/aAV4rXU+qaVD/sy3ACrnw==
+X-Google-Smtp-Source: AKy350aBHyNXgj+nK+6tmXt0ir6hXeImF1Efi4IRwoEL7JHqQ/WlQDxsQIHb363ensKzw8OJfVFgWA==
+X-Received: by 2002:a17:906:f14f:b0:94a:171:83b1 with SMTP id gw15-20020a170906f14f00b0094a017183b1mr11331041ejb.2.1681834653685;
+        Tue, 18 Apr 2023 09:17:33 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:a276:7d35:5226:1c77? ([2a02:810d:15c0:828:a276:7d35:5226:1c77])
+        by smtp.gmail.com with ESMTPSA id v26-20020aa7dbda000000b00506b0b80786sm2020992edt.36.2023.04.18.09.17.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Apr 2023 09:17:33 -0700 (PDT)
+Message-ID: <742f546b-3952-32f4-9f20-3a355785d162@linaro.org>
+Date:   Tue, 18 Apr 2023 18:17:32 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 1/2] dt-bindings: hwmon: Add binding for max6639
+Content-Language: en-US
+To:     Naresh Solanki <naresh.solanki@9elements.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230418113217.781524-1-Naresh.Solanki@9elements.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230418113217.781524-1-Naresh.Solanki@9elements.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+On 18/04/2023 13:32, Naresh Solanki wrote:
+> Add Devicetree binding documentation for Maxim MAX6639 temperature
+> monitor with PWM fan-speed controller.
 
-List the files added for GPIO and PSU support.
+Subject: drop second/last, redundant "binding for". The "dt-bindings"
+prefix is already stating that these are bindings.
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
----
- MAINTAINERS | 4 ++++
- 1 file changed, 4 insertions(+)
+> 
+> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+> ---
+>  .../bindings/hwmon/maxim,max6639.yaml         | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+> new file mode 100644
+> index 000000000000..20b28cd36555
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+> @@ -0,0 +1,55 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a3b14ec33830..6df959ebf523 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2239,7 +2239,9 @@ M:	Nick Hawkins <nick.hawkins@hpe.com>
- S:	Maintained
- F:	Documentation/hwmon/gxp-fan-ctrl.rst
- F:	Documentation/devicetree/bindings/arm/hpe,gxp.yaml
-+F:	Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml
- F:	Documentation/devicetree/bindings/hwmon/hpe,gxp-fan-ctrl.yaml
-+F:	Documentation/devicetree/bindings/hwmon/hpe,gxp-psu.yaml
- F:	Documentation/devicetree/bindings/i2c/hpe,gxp-i2c.yaml
- F:	Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
- F:	Documentation/devicetree/bindings/timer/hpe,gxp-timer.yaml
-@@ -2247,7 +2249,9 @@ F:	arch/arm/boot/dts/hpe-bmc*
- F:	arch/arm/boot/dts/hpe-gxp*
- F:	arch/arm/mach-hpe/
- F:	drivers/clocksource/timer-gxp.c
-+F:	drivers/gpio/gpio-gxp.c
- F:	drivers/hwmon/gxp-fan-ctrl.c
-+F:	drivers/hwmon/gxp-psu.c
- F:	drivers/i2c/busses/i2c-gxp.c
- F:	drivers/spi/spi-gxp.c
- F:	drivers/watchdog/gxp-wdt.c
--- 
-2.17.1
+Drop blank line
+
+This is v9. Where is the changelog? Where is previous authorship? At
+least some parts of it? Why this has less properties than old one? Why
+this has more mistakes than the old one? Go to previous patch... or fix
+everything which was already fixed.
+
+Best regards,
+Krzysztof
 
