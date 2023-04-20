@@ -2,71 +2,61 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEB2E6E9250
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Apr 2023 13:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 622316E95DA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Apr 2023 15:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233846AbjDTLVW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 20 Apr 2023 07:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47212 "EHLO
+        id S231261AbjDTN2p (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 20 Apr 2023 09:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234335AbjDTLVA (ORCPT
+        with ESMTP id S231259AbjDTN2p (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 20 Apr 2023 07:21:00 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30C8B44C
-        for <linux-hwmon@vger.kernel.org>; Thu, 20 Apr 2023 04:19:03 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f17edbc15eso5560245e9.3
-        for <linux-hwmon@vger.kernel.org>; Thu, 20 Apr 2023 04:19:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1681989485; x=1684581485;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m4k5Fd94R9nLjCjAwI4E4MAJpGxclTYpMwHmMXByQv0=;
-        b=cdLVhWQoxAkHBYdXzMuuUwNvj15Zc8MDSC5ep0imZVcVoFvKyF/XeNtvFIc3omyM0t
-         0l2kDkuyMSca5eyhK3Cyzy2Nl0mNt1VrOd1rUDpDRhTZ0nEQtzTxiMf67nn3A4eo572h
-         655YJumRKYb8iGxpO94vSuf+XtmE0ukB+WK2Hlo/tWin7aTjC6oITEvKNpbQHMDlJ/Ez
-         mg/RXOloIXJPIvk9mH6zz3IbeMLhbUwDgsBntAV1nF37Ag7pSsVYNT6o4nLwDP7yjwf6
-         YSdN8XmTqXx7OyUYXXfefLQQvH1YGl4bGJd++JgsHH38R1MKDy+JDyBC0mgJLG+HKURR
-         nxqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681989485; x=1684581485;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m4k5Fd94R9nLjCjAwI4E4MAJpGxclTYpMwHmMXByQv0=;
-        b=PF+w27UYMDh5FU/JPKBXUFmIi6lD4NZX2YGQt5m/3a7Ee2GC+vARMO9n++BidsMzp3
-         q5F4uJ1TuYW+QEgGU3thhEMfjOI2mWMBxQPAdjNqwV2Wl66tOm+afO7BWLWxkgbUehiL
-         OSw76aWt6K86Em8dVR6UdIppA7PqNXRUIpex/dnNKmgAmB8MZkmBl0T0Yu7XJ79xnicO
-         qPYrUDWJlJhtjmsH4pI7UNCldA9KFRlk5ua/mx/IUPdekZGY1oMZsTFfO2ZNCTepcTRY
-         ZyFPwBB43JO/vJw/hNKvwCowwJ+fiS/U6UFKbyk9tj5eaZ+ubE0CCtzGnrgFXWy7dY0n
-         P3fw==
-X-Gm-Message-State: AAQBX9dTiuJ7tlZ9PLmos7nt7gaAPLheYJo2uVSaq36Xgia9dpL+d+xz
-        aMmeXa+K//xgHv2C6DdPLdMz3g==
-X-Google-Smtp-Source: AKy350byrrnVOJNt/Cuj6UEUIsfXADX07C+ZOFJV8Pt6UBM80NkWQ8m8g8Ir0J51KPl6jttGn4icrw==
-X-Received: by 2002:adf:e84b:0:b0:2fc:37be:af9c with SMTP id d11-20020adfe84b000000b002fc37beaf9cmr986687wrn.71.1681989484931;
-        Thu, 20 Apr 2023 04:18:04 -0700 (PDT)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id h3-20020a5d5043000000b002c70ce264bfsm1680980wrt.76.2023.04.20.04.18.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Apr 2023 04:18:04 -0700 (PDT)
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Naresh Solanki <Naresh.Solanki@9elements.com>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] hwmon: (max6639) Add compatible string
-Date:   Thu, 20 Apr 2023 13:17:58 +0200
-Message-Id: <20230420111759.2687001-2-Naresh.Solanki@9elements.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230420111759.2687001-1-Naresh.Solanki@9elements.com>
-References: <20230420111759.2687001-1-Naresh.Solanki@9elements.com>
+        Thu, 20 Apr 2023 09:28:45 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E8444AD
+        for <linux-hwmon@vger.kernel.org>; Thu, 20 Apr 2023 06:28:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681997324; x=1713533324;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NP+kf8Nbir0XU/kpyf0JX6fo/DphW+8Lg1eNEvZ4Zdk=;
+  b=Phdagazh8N+NQl0IWyPmxSQ1voUih4KJEnb76FBTorjwbJnTncucq6Xy
+   rxlMm3ldBHeyoBaCaMxWHUHhS8sB+iqg3LU3+l3NCwunrmeMP+EJUt8M8
+   x7hwx49CWLfO+IWjcOse5JBZAnfaFkta6QGLdM//OJ44mXZRwr4XecT54
+   boMNvHbrOi0U4dmxNSNYt2PQqZ/KWF52kk7wxc2dYkZMYeWKwJOn5/wZ4
+   Fj9B0QohZRBlU8ToNnncY2nsoAZUaifV2BnKr/hcinFbFY6CRyH2qAxq7
+   GgcQQZ1MMXTboP4WyEOUsDeIPEZpGEa/mrcJhKdmj2vUiO0grkLBz/xiT
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="326061983"
+X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
+   d="scan'208";a="326061983"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 06:28:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="816015067"
+X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
+   d="scan'208";a="816015067"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 20 Apr 2023 06:28:42 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ppUL3-000frQ-2S;
+        Thu, 20 Apr 2023 13:28:41 +0000
+Date:   Thu, 20 Apr 2023 21:28:26 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon] BUILD SUCCESS
+ 0c072385348e3ac5229145644055d3e2afb5b3db
+Message-ID: <64413dfa.5cJ1I+kRqKyaq/ku%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,38 +64,111 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Use maxim,max6639 as compatible string for the driver.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
+branch HEAD: 0c072385348e3ac5229145644055d3e2afb5b3db  hwmon: (k10temp) Check range scale when CUR_TEMP register is read-write
 
-Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
-...
-Changes in V2:
-- None, Updated DT patch
----
- drivers/hwmon/max6639.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+elapsed time: 1269m
 
-diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
-index 9b895402c80d..ada410bfb7b6 100644
---- a/drivers/hwmon/max6639.c
-+++ b/drivers/hwmon/max6639.c
-@@ -618,11 +618,17 @@ MODULE_DEVICE_TABLE(i2c, max6639_id);
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(max6639_pm_ops, max6639_suspend, max6639_resume);
- 
-+static const struct of_device_id max6639_of_match[] = {
-+	{ .compatible = "maxim,max6639", },
-+	{ },
-+};
-+
- static struct i2c_driver max6639_driver = {
- 	.class = I2C_CLASS_HWMON,
- 	.driver = {
- 		   .name = "max6639",
- 		   .pm = pm_sleep_ptr(&max6639_pm_ops),
-+		   .of_match_table = max6639_of_match,
- 		   },
- 	.probe_new = max6639_probe,
- 	.id_table = max6639_id,
+configs tested: 92
+configs skipped: 7
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r006-20230417   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r002-20230416   gcc  
+arm                  randconfig-r046-20230416   clang
+arm                  randconfig-r046-20230418   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r004-20230417   gcc  
+arm64                randconfig-r022-20230416   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r024-20230416   gcc  
+hexagon              randconfig-r041-20230416   clang
+hexagon              randconfig-r041-20230417   clang
+hexagon              randconfig-r041-20230418   clang
+hexagon              randconfig-r045-20230416   clang
+hexagon              randconfig-r045-20230417   clang
+hexagon              randconfig-r045-20230418   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230417   gcc  
+i386                 randconfig-a002-20230417   gcc  
+i386                 randconfig-a003-20230417   gcc  
+i386                 randconfig-a004-20230417   gcc  
+i386                 randconfig-a005-20230417   gcc  
+i386                 randconfig-a006-20230417   gcc  
+i386                 randconfig-a011-20230417   clang
+i386                 randconfig-a012-20230417   clang
+i386                 randconfig-a013-20230417   clang
+i386                 randconfig-a014-20230417   clang
+i386                 randconfig-a015-20230417   clang
+i386                 randconfig-a016-20230417   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r004-20230416   gcc  
+m68k                 randconfig-r024-20230417   gcc  
+m68k                 randconfig-r026-20230417   gcc  
+microblaze           randconfig-r004-20230418   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r025-20230417   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r001-20230416   gcc  
+nios2                randconfig-r003-20230418   gcc  
+openrisc             randconfig-r005-20230418   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r005-20230417   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                    gamecube_defconfig   clang
+powerpc              randconfig-r026-20230416   gcc  
+powerpc                    sam440ep_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230417   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230417   clang
+sh                               allmodconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r023-20230417   gcc  
+sparc64              randconfig-r003-20230416   gcc  
+sparc64              randconfig-r021-20230416   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a011-20230417   clang
+x86_64               randconfig-a012-20230417   clang
+x86_64               randconfig-a013-20230417   clang
+x86_64               randconfig-a014-20230417   clang
+x86_64               randconfig-a015-20230417   clang
+x86_64               randconfig-a016-20230417   clang
+x86_64                               rhel-8.3   gcc  
+
 -- 
-2.39.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
