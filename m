@@ -2,138 +2,106 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F34C86E977E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Apr 2023 16:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980CA6E8C27
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Apr 2023 10:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232420AbjDTOq3 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 20 Apr 2023 10:46:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
+        id S234010AbjDTIHE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 20 Apr 2023 04:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbjDTOq2 (ORCPT
+        with ESMTP id S233822AbjDTIHE (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 20 Apr 2023 10:46:28 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A845244A0;
-        Thu, 20 Apr 2023 07:46:27 -0700 (PDT)
+        Thu, 20 Apr 2023 04:07:04 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755C513E;
+        Thu, 20 Apr 2023 01:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682001987; x=1713537987;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=llG0vdmQ3GbbFQezbra+B4SwkMPYTwzKiy7sh3sn9Fs=;
-  b=EVzQ7I0ptt9wxb+pBii/1+KbPm4O2Awl3pEosZ4bicfT9OLNbIQYYyMI
-   jmG2SyMuYJ8aP44UyOQ5n6tWMBmvOBhY4lyG8xRim4Ctr8pbtr6luhyX8
-   45taG984eyjRLqvcGbqPZJzMN0tz3UC4NmkK5ANMUkQc7V8UiF1bCCew5
-   +qbmp56/YtHBZn3fWpcJjXFlaxSo/9OaE7Mbu3PKvTCXH8acEemmPuSWb
-   rV/Xhak5ZoLkoxy8vQjAHfv2dH7ERPPIUEGMqQV/sszHN1sk9ebAiEiOq
-   QdrgVI4UZE6xqslYiHMhvOyHT3pzz3Hdhb0ZALsXymdn8NfpL9wb/Hk4h
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="373656941"
-X-IronPort-AV: E=Sophos;i="5.99,213,1677571200"; 
-   d="scan'208";a="373656941"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 07:46:26 -0700
+  t=1681978023; x=1713514023;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=IWgTUakXo/so+EUi19BYPXwPdQE5MJLPRo4AH1Tqv8E=;
+  b=cQE1FGXcUVrkTgHsGSiISeQ0nqDmYKpsqGdNvNYemb9tG+C+/Rl5+hfx
+   g/q3wJYommZ+9B2aSmF7YNofc2EC7Z/TlR1ikEY3hnAsHl1MziEfAade2
+   BUZ4v0Qk3bZOpjV/uWytXTQYwJkLstWRW7Cwk7ispJnzl77zBLXt+DXo+
+   f2qHnkjn22mCXKXNAEolK8cFBiPOR4/r3uWF10EJYfc7V7roZ6SPAsy0+
+   uybKe16+o8O5A6SJuLyuJ92w8v618NTtGOvSAcfxGPB4Cs2f1L267ZnQa
+   amoZRZPjupPEFY+iqvMVB0VL7MKL0WYV6XodXZvkRVkJoitXmFC2NJfju
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="334494756"
+X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
+   d="scan'208";a="334494756"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 01:07:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="642163287"
-X-IronPort-AV: E=Sophos;i="5.99,213,1677571200"; 
-   d="scan'208";a="642163287"
-Received: from shwetag-mobl4.amr.corp.intel.com (HELO [10.209.147.40]) ([10.209.147.40])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 07:46:22 -0700
-Message-ID: <f6e4a78d-0199-3135-f85d-800457a731b0@linux.intel.com>
-Date:   Thu, 20 Apr 2023 09:46:20 -0500
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="722283330"
+X-IronPort-AV: E=Sophos;i="5.99,212,1677571200"; 
+   d="scan'208";a="722283330"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orsmga008.jf.intel.com with ESMTP; 20 Apr 2023 01:06:59 -0700
+Date:   Fri, 21 Apr 2023 00:07:30 +0800
+From:   Xu Yilun <yilun.xu@intel.com>
+To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
+        Moritz Fischer <mdf@kernel.org>, linux-fpga@vger.kernel.org,
+        Lee Jones <lee@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Russ Weight <russell.h.weight@intel.com>,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] mfd: intel-m10-bmc: Manage access to MAX 10 fw
+ handshake registers
+Message-ID: <ZEFjQtOCQCvQJ1k/@yilunxu-OptiPlex-7050>
+References: <20230417092653.16487-1-ilpo.jarvinen@linux.intel.com>
+ <20230417092653.16487-5-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 3/5] hwmon: (socfpga) Add hardware monitoring support on
- SoCFPGA platforms
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
-        dinguyen@kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-kernel@vger.kernel.org, jdelvare@suse.com
-References: <20230410153314.27127-1-dinh.nguyen@linux.intel.com>
- <20230410153314.27127-3-dinh.nguyen@linux.intel.com>
- <09730359-8731-e21e-3335-bf60ba7f1280@roeck-us.net>
- <a3e966f8-8e9d-7081-1665-9d2e87acb310@linux.intel.com>
- <8d158880-1e6a-5fdd-dae7-a7647794eb60@roeck-us.net>
- <a1a34c32-dbd4-7a77-ab7e-5e34af85900f@linux.intel.com>
- <ZD/UsuzhZmK3AFJn@smile.fi.intel.com>
-Content-Language: en-US
-From:   Dinh Nguyen <dinh.nguyen@linux.intel.com>
-In-Reply-To: <ZD/UsuzhZmK3AFJn@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230417092653.16487-5-ilpo.jarvinen@linux.intel.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On 2023-04-17 at 12:26:53 +0300, Ilpo J�rvinen wrote:
+> On some MAX 10 cards, the BMC firmware is not available to service
+> handshake registers during secure update erase and write phases at
+> normal speeds. This problem affects at least hwmon driver. When the MAX
+> 10 hwmon driver tries to read the sensor values during a secure update,
+> the reads are slowed down (e.g., reading all D5005 sensors takes ~24s
+> which is magnitudes worse than the normal <0.02s).
+> 
+> Manage access to the handshake registers using a rw semaphore and a FW
+> state variable to prevent accesses during those secure update phases
+> and return -EBUSY instead.
+> 
+> If handshake_sys_reg_nranges == 0, don't update bwcfw_state as it is not
+> used. This avoids the locking cost.
+> 
+> Co-developed-by: Russ Weight <russell.h.weight@intel.com>
+> Signed-off-by: Russ Weight <russell.h.weight@intel.com>
+> Co-developed-by: Xu Yilun <yilun.xu@intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@intel.com>
+> Signed-off-by: Ilpo J�rvinen <ilpo.jarvinen@linux.intel.com>
 
-On 4/19/2023 6:46 AM, Andy Shevchenko wrote:
-> On Tue, Apr 18, 2023 at 12:29:40PM -0500, Dinh Nguyen wrote:
->> On 4/17/2023 4:51 PM, Guenter Roeck wrote:
->>> On 4/17/23 13:55, Dinh Nguyen wrote:
-> ...
->
->>> ... and this contradict each other. If bit 31 indicates an error,
->>> this can not be a signed 32-bit value.
->>>
->> You're right! I've re-read the spec and should have the the code look for
->> the specific error values:
->>
->> 0x80000000 - inactive
->> 0x80000001 - old value
->> 0x80000002 - invalid channel
->> 0x80000003 -  corrupted.
-> No, they are not hex. Probably you need to define an error space with it, but
-> at least just use signed _decimal_ values.
->
-> Instead of BIT(31) this should go as
->
-> #define ..._ERR_BASE   INT_MIN // or equivalent if the type is not int
-> #define ..._ERR_MAX ... // or whatever name is better
->
-> Then in your code
->
-> 	if (value >= _ERR_MAX)
-> 		return 0;
->
-> 	err = _ERR_MAX - value;
-> 	switch (err) {
-> 		...
-> 	}
->
-> P.S. I asked during internal review if the values are bit fielded when errors.
-> AFAIU that time they are, now it seems different.
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
 
-Can I ask what's wrong with this simple implementation?
+Hi Lee:
 
-static int socfpga_hwmon_err_to_errno(struct socfpga_hwmon_priv *priv)
-{
-         int value = priv->temperature.value;
+Could the fpga part also been applied to mfd tree when everyone is good?
 
-         switch (value) {
-         case ETEMP_NOT_PRESENT:
-                 return -ENOENT;
-         case ETEMP_CORRUPT:
-         case ETEMP_NOT_INITIALIZED:
-                 return -ENODATA;
-         case ETEMP_BUSY:
-                 return -EBUSY;
-         case ETEMP_INACTIVE:
-         case ETEMP_TIMEOUT:
-         case ETEMP_TOO_OLD:
-                 return -EAGAIN;
-         default:
-                 /* No error */
-                 return 0;
-         }
-}
+Thanks,
+Yilun
 
-Dinh
-
+> ---
+>  drivers/fpga/intel-m10-bmc-sec-update.c | 17 +++++--
+>  drivers/mfd/intel-m10-bmc-core.c        | 67 ++++++++++++++++++++++++-
+>  drivers/mfd/intel-m10-bmc-spi.c         | 14 ++++++
+>  include/linux/mfd/intel-m10-bmc.h       | 28 +++++++++++
+>  4 files changed, 121 insertions(+), 5 deletions(-)
