@@ -2,75 +2,83 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FBFE6EB8DD
-	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Apr 2023 13:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A96C6EBDEB
+	for <lists+linux-hwmon@lfdr.de>; Sun, 23 Apr 2023 10:17:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjDVLpI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 22 Apr 2023 07:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
+        id S229560AbjDWIRq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 23 Apr 2023 04:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbjDVLpH (ORCPT
+        with ESMTP id S229564AbjDWIRp (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 22 Apr 2023 07:45:07 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 289CC1FC8
-        for <linux-hwmon@vger.kernel.org>; Sat, 22 Apr 2023 04:45:05 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2a8c51ba511so23824921fa.1
-        for <linux-hwmon@vger.kernel.org>; Sat, 22 Apr 2023 04:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682163903; x=1684755903;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6e2fI4p1pI3so2b6bQ/X7YEL5cKkaSbVraLHj6ERLpk=;
-        b=WzEvC7/CEX3B/T0wmhrOsTiWnIfVEghCdmNDNnm7Wg1vhGzHHNtlRZtyjrIgbR04ko
-         g/QkaPCxtB30Yj2vdh5u/mK/ZdOrELAELF7HjYkM2V1L3u3AOoY0F59JKyI6FJ+c4HbY
-         ZndV+W5eRikTL55oeTC3BRSSg88UTdRqiBdfIjpBdHkWvLhEci34C6/uZiHzLgaJ53F+
-         /3ntn0yUnPGNUsy1JGcvqSlZdeXVDxgaQ+/d4/nd8NSq+VCnCIijK23LBrWNMJcIYC3F
-         uwdcEiSVB2g8EdD4yDEPvwb+NVxCbKDcb5vRp9hOLaF/a3T72/jEuA4ryVoYyUuUdExK
-         P2Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682163903; x=1684755903;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6e2fI4p1pI3so2b6bQ/X7YEL5cKkaSbVraLHj6ERLpk=;
-        b=GYV7sDf/5XAnG5I5MTUYkXAwxt1d5V9liR2fFf6dEy2gQcK5H1Lb4d3eX1IK+1BMGQ
-         rhI3MfjNOYbXIlcJyOEr4HzjNnEfzcNqNrUJVa03pnQFPk43aXI4boQaw/I47jWVCiq3
-         upo8Ad56a+2kMvF3JYVQndxyC/pt4tXYAJEPq7rqobaPx3HMKTzX5lIO419OHjjzq2fy
-         VEhyb+anmdriSpJR+u29qfTZZvcvHsASgILAfaIG4c0yUa/h8Xqw+QKbiBrqMktqKzNd
-         70g0rEfl39RWWF21ApbzRE+aqucldVvTfJk6pYdEVWNWDSMdbFbI0cHbH/iwz6bQtNRA
-         yn3g==
-X-Gm-Message-State: AAQBX9djK0p3DOvL8vRjCYFUFfX7JRD6q3id9vc1enXPtKrYZCJellPB
-        h12GmXpSx2iOKUyofH6zaZJ+vhSXY71tE7YqfR4=
-X-Google-Smtp-Source: AKy350b2rj+PCyu8w3vSrLAKEARlM5xoF2QKqVM480od5ukukEqfD1wajkite2xsEuEJ43Kmj6XEfH/e4vKe2FKprwA=
-X-Received: by 2002:a2e:9b93:0:b0:2a8:a5b8:1856 with SMTP id
- z19-20020a2e9b93000000b002a8a5b81856mr1300580lji.10.1682163903323; Sat, 22
- Apr 2023 04:45:03 -0700 (PDT)
+        Sun, 23 Apr 2023 04:17:45 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Apr 2023 01:17:44 PDT
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0F43719BD
+        for <linux-hwmon@vger.kernel.org>; Sun, 23 Apr 2023 01:17:43 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id qUnQpJWEt3pfeqUnQpzkaa; Sun, 23 Apr 2023 10:10:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1682237412;
+        bh=eUw6lwCqRPFGvEY7KIEtjH9lv7Qyusv4qg87RM8p+Os=;
+        h=From:To:Cc:Subject:Date;
+        b=ba51sbsnfIixWqGK5DHuJtf4xIHn7siFvpLbbsut35d2LZflItCMtJxXNagucBove
+         /zVsrmifLGr0fmdPLXwp4uR7xFLHtb4Mlg3gQubufLRNCUGj3ZtecOUCWGdlgi2K59
+         Wt5uMSCYPBMpkWY1fZaeTeS87dqKC0Ocx8/lHCUXOTSfx6CJnOtAo08+Q7y4nhhn0S
+         Xd5CgZo6E8dKic7bYuLgA6K8w5EwZUrtb3PgwXARyFRIhSNDneaoEOdyG7puE4wiSJ
+         TNkPCzsBKDfGLdO2ztWV3/OQeTw9n6Gj5d0xACkL/1OxvBlpFKz/Zh8L+7wauB0/zK
+         4c5FZ2++bSFQw==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 23 Apr 2023 10:10:12 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        patches@opensource.cirrus.com, linux-hwmon@vger.kernel.org
+Subject: [PATCH] hwmon: lochnagar: Remove the unneeded include <linux/i2c.h>
+Date:   Sun, 23 Apr 2023 10:10:07 +0200
+Message-Id: <df555e724d1b52bd9958c0bd729a774dfe0cf150.1682237387.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a05:6520:3431:b0:25b:7e95:d4d1 with HTTP; Sat, 22 Apr 2023
- 04:45:02 -0700 (PDT)
-Reply-To: wormer.amos@aol.com
-From:   wormer Amos <rolsbaraye@gmail.com>
-Date:   Sat, 22 Apr 2023 11:45:02 +0000
-Message-ID: <CAGkCXQjpWVcbWOCM4isjTRT4xUy1ZZAW+O7+EgMC5AkwwmcFaQ@mail.gmail.com>
-Subject: Good Request
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-My good friend. i kindly want to know if you're capable for investment
-project in
-your country. i
-need a serious partnership with good background, kindly reply
-me to discuss details immediately. i will appreciate you to contact me
-on this email address Thanks and awaiting your quick response,
+This driver does not use i2c, so there is no point in including
+<linux/i2c.h>
 
-Wormer,
+Remove it.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/hwmon/lochnagar-hwmon.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/hwmon/lochnagar-hwmon.c b/drivers/hwmon/lochnagar-hwmon.c
+index 9948e2f7208d..6350904a8a8b 100644
+--- a/drivers/hwmon/lochnagar-hwmon.c
++++ b/drivers/hwmon/lochnagar-hwmon.c
+@@ -11,7 +11,6 @@
+ #include <linux/delay.h>
+ #include <linux/hwmon.h>
+ #include <linux/hwmon-sysfs.h>
+-#include <linux/i2c.h>
+ #include <linux/math64.h>
+ #include <linux/mfd/lochnagar.h>
+ #include <linux/mfd/lochnagar2_regs.h>
+-- 
+2.34.1
+
