@@ -2,79 +2,62 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F826EC92D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Apr 2023 11:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8366D6EC981
+	for <lists+linux-hwmon@lfdr.de>; Mon, 24 Apr 2023 11:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229941AbjDXJnC (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 24 Apr 2023 05:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39356 "EHLO
+        id S231344AbjDXJx7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 24 Apr 2023 05:53:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjDXJnB (ORCPT
+        with ESMTP id S231248AbjDXJx6 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 24 Apr 2023 05:43:01 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FEFB213B
-        for <linux-hwmon@vger.kernel.org>; Mon, 24 Apr 2023 02:43:00 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-506bf4cbecbso6046608a12.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 24 Apr 2023 02:43:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682329379; x=1684921379;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sTC30/cz84+6KAee/oGkWJA1JugNorQ2NhQ6WARnGE0=;
-        b=rtXWuf3JNfkAHAfAmA2cEYMt2sdc9jR4Np+5Kb6vSaHsvgYP0eCOgfvbZ7EpzUe5qh
-         0aAifedgOIbLeCg/woGiS4eDLparxUgHXtonnp2Pc0LvYnp/hSZb01nG/Lvngez8L6BH
-         3U3RhEV315jDBzxVmjH7taP6NMQlWO4nCqKgxgJSxGrYNJMMdE3exov5zgFOv9yO41LC
-         9Uq1pT96vyqPopct5Y7iY558ZhrF6vjqh90YMSHNELRgMAyZKpJolY0pRu3/RvtEHzrF
-         gQDrXhyFLSaxni8K7W4aS+VpmSUS42MENZbyOtjGOIw0hJG4qKzfdv8JaOdu2NXKJp3u
-         eLgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682329379; x=1684921379;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sTC30/cz84+6KAee/oGkWJA1JugNorQ2NhQ6WARnGE0=;
-        b=juOeiKONTKf0Gc92HanY6nPD2XwKY/15NlqJgBZKZ0XT/RKpLxVM6VMxOpZRWY0R60
-         jD5xDdVyMoQ+4gw1ttbP1quDYLRFz+9JnBdWA8EcLCbtbcEkVgzHgNFHklt+8pwmHEZu
-         FpPx83Lz7AkEEhFBU01xn4sSCmzD5VxbfOR1srltDmRwgLED7Ake6eLn1K7/gv2ARKSC
-         PJ2JaE9KfN0bh+LZcJigUCEw4fPvaW1XOAslTJ4CbtAmkbWtrZNSo5Mi1jdLUL1y3mJB
-         948er7Q0nIuAuykWZ9FIqfLwf9Huvb6QBR0CkS7bcwSyVetvXKCbmZeQ3OYsV3bzYWED
-         W+5g==
-X-Gm-Message-State: AAQBX9em/0pRvkXoR4f272m1JsijjKNdxO9RlZ5DIeOv8V7b9Be8uBaw
-        gs33B95kZkCr4i94mGZebQbHAw==
-X-Google-Smtp-Source: AKy350YAXqslb6hk6tvtZLyLLmjKobEKe0JFksRkukozW2c/onCbo7bLelBLsbcyrHZmm2SkaAaDXQ==
-X-Received: by 2002:aa7:cd7c:0:b0:4fc:3777:f630 with SMTP id ca28-20020aa7cd7c000000b004fc3777f630mr10401509edb.0.1682329378898;
-        Mon, 24 Apr 2023 02:42:58 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:fcdb:bf53:d053:3a52? ([2a02:810d:15c0:828:fcdb:bf53:d053:3a52])
-        by smtp.gmail.com with ESMTPSA id e17-20020aa7d7d1000000b00508480633bdsm4561189eds.74.2023.04.24.02.42.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 02:42:58 -0700 (PDT)
-Message-ID: <be129c4f-3ad7-c54b-936e-08b142608ebc@linaro.org>
-Date:   Mon, 24 Apr 2023 11:42:57 +0200
+        Mon, 24 Apr 2023 05:53:58 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0571FC0;
+        Mon, 24 Apr 2023 02:53:57 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 33O9rZte060868;
+        Mon, 24 Apr 2023 04:53:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1682330015;
+        bh=1dbXWi9KKyWCUVrlsQWfh2myKejUVwt83Bg2Xprp4nY=;
+        h=From:To:CC:Subject:Date;
+        b=N6neAnWopJoMomiGhST25n2bghSPu025bqeZs7+RvoC1mqV0o5KhA2CUlVjYMkVcz
+         2y7ghvM9fNVCSoIAxrfWXTaZS7AkXAk4hmycovNW5HPSIcKFzYCPuKVf/dH1xo7MBv
+         FkS+qv8P9QQxp/8gIBxr19lAXh5a0ri2hX5qQ2JU=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 33O9rZOi033929
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 24 Apr 2023 04:53:35 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16; Mon, 24
+ Apr 2023 04:53:35 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.16 via
+ Frontend Transport; Mon, 24 Apr 2023 04:53:35 -0500
+Received: from ula0497641.dhcp.ti.com (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 33O9rV9q009313;
+        Mon, 24 Apr 2023 04:53:32 -0500
+From:   Neha Malcom Francis <n-francis@ti.com>
+To:     <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <jdelvare@suse.com>,
+        <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>
+CC:     <n-francis@ti.com>, <nm@ti.com>, <vigneshr@ti.com>,
+        <u-kumar1@ti.com>, <kristo@kernel.org>
+Subject: [PATCH v3 0/3] Add support for ESM
+Date:   Mon, 24 Apr 2023 15:23:28 +0530
+Message-ID: <20230424095331.45351-1-n-francis@ti.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: hwmon: Add max6639
-To:     Naresh Solanki <naresh.solanki@9elements.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Marcello Sylvester Bauer <sylv@sylv.io>,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230420111759.2687001-1-Naresh.Solanki@9elements.com>
- <76e57634-75dd-01e8-9c56-36ed7de17812@linaro.org>
- <c8d1b5db-318e-3401-0834-b89769831eca@9elements.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <c8d1b5db-318e-3401-0834-b89769831eca@9elements.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,80 +65,34 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 24/04/2023 11:18, Naresh Solanki wrote:
+ESM (Error Signaling Module) is a fundamental IP responsible for
+handling safety events. The driver currently present in U-Boot is
+responsible for configuring ESM. This patch series adds dt-binding and
+nodes for J721E and J7200. This goes towards end goal of having DTB sync
+with that of U-Boot as well as ensuring completeness of hardware
+description in devicetree.
 
->>> Changes in V2:
->>> - Update subject
->>> - Drop blank lines
->>> ---
->>>   .../bindings/hwmon/maxim,max6639.yaml         | 52 +++++++++++++++++++
->>>   1 file changed, 52 insertions(+)
->>>   create mode 100644 Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
->>> new file mode 100644
->>> index 000000000000..1aaedfd7cee0
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
->>> @@ -0,0 +1,52 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/hwmon/maxim,max6639.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Maxim max6639
->>
->> What is this device? fan controller?
-> Yes Fan controller.
-> Do you want me to update the title here as:
-> "Maxim MAC6639 2 channel fan controller & temperature monitor" ?
+Changes in v3:
+	- formatting changes in dt-binding
+	- modified example in dt-binding cbass_main -> bus
 
-Enough would be:
-Maxim MAX6639 Fan Controller
+Changes in v2:
+	- misc/esm-k3.yaml -> hwmon/ti,j721e-esm.yaml
+	- formatting changes in dt-binding
+	- modified example in dt-binding
 
+Neha Malcom Francis (3):
+  dt-bindings: misc: esm: Add ESM support for TI K3 devices
+  arm64: dts: ti: k3-j721e: Add ESM support
+  arm64: dts: ti: k3-j7200: Add ESM support
 
-> 
->>
->>> +
->>> +maintainers:
->>> +  - Naresh Solanki <Naresh.Solanki@9elements.com>
->>> +
->>> +description: |
->>> +  The MAX6639 is a 2-channel temperature monitor with dual, automatic, PWM
->>> +  fan-speed controller.  It monitors its own temperature and one external
->>> +  diode-connected transistor or the temperatures of two external diode-connected
->>> +  transistors, typically available in CPUs, FPGAs, or GPUs.
->>> +
->>> +  Datasheets:
->>> +    https://datasheets.maximintegrated.com/en/ds/MAX6639-MAX6639F.pdf
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - maxim,max6639
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  '#address-cells':
->>> +    const: 1
->>> +
->>> +  '#size-cells':
->>> +    const: 0
->>
->> Why do you need these two properties?
-> Ack. Will remove them.
->>
->> Anyway, the binding looks incomplete. Where are the supplies? Interrupts?
-> This patch just adds basic support to the existing platform driver.
-> Intention is to be able to call the driver from DT with basic 
-> initialization from driver the existing driver.
+ .../bindings/hwmon/ti,j721e-esm.yaml          | 53 +++++++++++++++++++
+ arch/arm64/boot/dts/ti/k3-j7200-main.dtsi     |  6 +++
+ arch/arm64/boot/dts/ti/k3-j7200.dtsi          |  1 +
+ arch/arm64/boot/dts/ti/k3-j721e.dtsi          |  1 +
+ 4 files changed, 61 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/ti,j721e-esm.yaml
 
-Bindings should be rather complete. Here the datasheet is accessible and
-few properties quite obvious, so I don't see a reason to skip them.
-
-
-Best regards,
-Krzysztof
+-- 
+2.34.1
 
