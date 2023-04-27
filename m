@@ -2,101 +2,75 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E44256F0438
-	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Apr 2023 12:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691636F0796
+	for <lists+linux-hwmon@lfdr.de>; Thu, 27 Apr 2023 16:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243512AbjD0KdA (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 27 Apr 2023 06:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33922 "EHLO
+        id S243743AbjD0OhF (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 27 Apr 2023 10:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243051AbjD0Kc7 (ORCPT
+        with ESMTP id S243906AbjD0OhE (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 27 Apr 2023 06:32:59 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F67A4ECA;
-        Thu, 27 Apr 2023 03:32:58 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-63b78b344d5so6552442b3a.1;
-        Thu, 27 Apr 2023 03:32:58 -0700 (PDT)
+        Thu, 27 Apr 2023 10:37:04 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FBD211B
+        for <linux-hwmon@vger.kernel.org>; Thu, 27 Apr 2023 07:37:03 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-552a6357d02so102399027b3.3
+        for <linux-hwmon@vger.kernel.org>; Thu, 27 Apr 2023 07:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682591578; x=1685183578;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=DVMLhU0hiYSd+fr7Je0IleGr0eMFrfhOsxolYP3fJaU=;
-        b=G0zUEGkAaKc2HlPFV4pY3YsdQdEAP1FtHnsGJUZeupHeXr/HiQL8rmwXBtxeQHy4Kj
-         7sv1E7nPjROoGOtWTJeFLeSQbzjGVylWOsnNdPqw99AgbLh1Oo70SWsGnXCzyLhWVFFU
-         loeG8CgFtFxTY4V2Je1IqLKfLRn7fGmcGvf8hchsljk8gRcGfa6qkmm4kvzdOOj4Xl8m
-         s7qYfGQQN2LxzAX9YKExmeNWXB/EUAt78QcjvT+piah4U5Crrc09IH+zYe+eZ9GPkbQX
-         U4w+MoZPGEO66bzFlsAKEr6zWwgikN6tW8/wqEhPUunpq5dFYcyeAKAPOfoJkxzT0xTI
-         qXjA==
+        d=gmail.com; s=20221208; t=1682606222; x=1685198222;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=EncXQsgNXqqTP5Ekpl5U92VwHsDJ4C7+tZw6asVq8X6g3Ttfv21/xm2H7Lcy31OzHN
+         uaQQ8hPvN5UhHn3xnNfrh8lWP3zKoTHUBKvkGTuhLi39UOGvc9dnZOku6Bhntp+crngW
+         uxE4PlOaGT6TPhYuPWZY+FoMTzGDrp3ODnBkrIiAbS1NgMyLX9r1ZJASIXb8T2+TKIGW
+         hlGyKzpS8mxOSnDvBIx2sSHyp4tKH7kk0SzD/G/A08wo+e8uyZfc8nxd/PG9n63mUMt2
+         Uq3CUYEM8kMF5CAyN56xcwaRU1AXwabXJg9Ct655k/FS1sWMVRb+omSY0mr6roOlBlCB
+         BM0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682591578; x=1685183578;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DVMLhU0hiYSd+fr7Je0IleGr0eMFrfhOsxolYP3fJaU=;
-        b=ZLobZXpVQJzs+Az/vj774IGgnwpyoRML4zVoE6k2Qv1tkPkyr6DLKvUDg+Q0HxesAw
-         BMZLqS7+/CWxV3i41bTc48zvNU4a/g/pkb1SjsXVGaZWQkomAQ/o3R8R3+KtRsm1lwiH
-         FDkcTh3asdjCJC8CILgiYehSmPKY4wXTfP/KN2i8Z6/DsT22txSRPc10Ymw1rIQm7hg9
-         J2t35GBBjkzEYMGJdeXeRBI5bL+12q2tNCPcNRJ1CFasSQUn/45PUV6ht9g4tQqnIX8I
-         pDiFNXocFqyVc3858u4rh+4AZZA4opljk7UxIeqOUsXoJkXGpV6WMqbvrVtLDJiwA9lX
-         c41w==
-X-Gm-Message-State: AC+VfDzfnpo2GXngzvnyY4YnH5GhZo727GDOq4OaoFXFIJ7naF6GNvYs
-        T/5IpbA9MrshPw2537Dh7YONyA7yekk=
-X-Google-Smtp-Source: ACHHUZ6h2JThXBDqhO/KGL11JzIMOttNSgTGB4+kgT71CaSPY5QgWg5nhOBoC8ogaNGCMGh4GrGbfA==
-X-Received: by 2002:a05:6a20:938e:b0:f8:8879:747e with SMTP id x14-20020a056a20938e00b000f88879747emr1292896pzh.59.1682591577960;
-        Thu, 27 Apr 2023 03:32:57 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l18-20020a62be12000000b0063b7b811ce8sm12815072pff.205.2023.04.27.03.32.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Apr 2023 03:32:57 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <406dbcfb-7a08-8067-d717-3472e42e19e6@roeck-us.net>
-Date:   Thu, 27 Apr 2023 03:32:56 -0700
+        d=1e100.net; s=20221208; t=1682606222; x=1685198222;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=DITzSmIGKihX5yhlBQhf2j/CujsqTFr7PXeOKai3ZFHjS8WcSq9L9tYpTahM6S18v7
+         4kMtj6QkL2EKub4SfW+HdM0roQQxGL2V5RSMYHIzMnoOpwPhQN9r7TUZivOKGbhA/7z1
+         6KlBcEV6SB08CSVLEsfqfaabP+T7o9H0qh53SddymLwjMAgsnHMzTGHvUXUBR+wWBGb7
+         O1diQ7EoFxrxY6w7rtcYWg3sj+EoPMbfpXAYFXwhn184mu0MSZ7SpQ3y3p30MSkCNZsH
+         7v1eLz+Op8CHomsR4nkqBREPMvsOQLgaRfvIU5i3S98MRlN6TXAp9wwVSSeTgWpyNZ1m
+         vZfQ==
+X-Gm-Message-State: AC+VfDwA7kI5WPq9Ub89uE11G1XmuJR6kpwQBSlBN/gWfIF3goQIKzfq
+        xKmTisCScaplUjV2ukeT5CiWf6TvdEw+Wq2x/eM=
+X-Google-Smtp-Source: ACHHUZ4P1tuPGHp/72E4vO+jigj/eB/+kNoW7L28GLytjszEvYYAc6AFeLTCVyc4j9/n6c6RFVtAI9yoby660yNQc0w=
+X-Received: by 2002:a81:7584:0:b0:556:1182:958a with SMTP id
+ q126-20020a817584000000b005561182958amr1216806ywc.24.1682606222417; Thu, 27
+ Apr 2023 07:37:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] hwmon: (max597x) Add Maxim Max597x
-Content-Language: en-US
-To:     Naresh Solanki <naresh.solanki@9elements.com>
-Cc:     Jean Delvare <jdelvare@suse.com>,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-References: <20230426090356.745979-1-Naresh.Solanki@9elements.com>
- <2579ed08-b21d-489e-8a40-8310efdfa1c4@roeck-us.net>
- <5104bcd2-4203-e4f3-ac58-310fa4d45c7b@9elements.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <5104bcd2-4203-e4f3-ac58-310fa4d45c7b@9elements.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:6701:b0:348:dc97:ae8a with HTTP; Thu, 27 Apr 2023
+ 07:37:01 -0700 (PDT)
+Reply-To: dravasmith27@gmail.com
+From:   Dr Ava Smith <gracebanneth@gmail.com>
+Date:   Thu, 27 Apr 2023 07:37:01 -0700
+Message-ID: <CABo=7A3jP7zG=eFXjEaGsHagDYf53McFM3CVbRZh-viTqUrecQ@mail.gmail.com>
+Subject: GREETINGS FROM DR AVA SMITH
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 4/27/23 02:50, Naresh Solanki wrote:
-> Hi Guenter,
-> 
-[ ... ]
-
->> Again, I think it would make much more sense to add hwmon support
->> to the regulator driver than having a separate driver since there
->> is lots of overlap. For example, the regulator driver already
->> sets and monitors limits.
-> I agree. But the chip also has led functionality. I got review feedback to make it MFD. So when rewriting as MFD driver made separate driver based on subsystem. I'm not sure if it is ok to use hwmon subsytem in regulator driver. Will once check with maintainer on this.
-
-LED has completely different functionality. Overlap between regulator and
-hwmon is substantial because the regulator code handles limits and alarms.
-Sure, you kind of bypassed (ignored) that by not implementing limit and alarm
-support in the hwmon driver, but that is really just avoiding the problem,
-not solving it.
-
-Guenter
-
+-- 
+Hello Dear,
+how are you today?hope you are fine
+My name is Dr Ava Smith ,Am an English and French nationalities.
+I will give you pictures and more details about me as soon as i hear from you
+Thanks
+Ava
