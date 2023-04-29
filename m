@@ -2,108 +2,107 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC7C6F2480
-	for <lists+linux-hwmon@lfdr.de>; Sat, 29 Apr 2023 13:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B496F247F
+	for <lists+linux-hwmon@lfdr.de>; Sat, 29 Apr 2023 13:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjD2Lwj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        id S229658AbjD2Lwj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
         Sat, 29 Apr 2023 07:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34338 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjD2Lwh (ORCPT
+        with ESMTP id S229458AbjD2Lwh (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Sat, 29 Apr 2023 07:52:37 -0400
 Received: from ipmail03.adl6.internode.on.net (ipmail03.adl6.internode.on.net [150.101.137.143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C20B21BFE
-        for <linux-hwmon@vger.kernel.org>; Sat, 29 Apr 2023 04:52:35 -0700 (PDT)
-IronPort-SDR: 644d04fc_o0lfV1zJOpiWGh59bvyvKWLwB6F2qzzH6PYUHi41ZHG3t91
- Re4/m99W2hYtEsE40ze8PKWI7kRnrVUrIYugX+g==
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8ED991FC0
+        for <linux-hwmon@vger.kernel.org>; Sat, 29 Apr 2023 04:52:36 -0700 (PDT)
+IronPort-SDR: 644d04fe_tNoqGhUZiFDVF5hcL3wc0lbeUyHpwGQUl9NFgvVvl0GYmbJ
+ Bgt3mW1Tq3dEMnkLnQz/nU68VjORH1iyn8Ald1A==
 X-SMTP-MATCH: 0
 X-IPAS-Result: =?us-ascii?q?A2AYAgBQBE1kjPQc8jxaHAEBAQEBAQcBARIBAQQEAQFJg?=
- =?us-ascii?q?UaCLoJPlgefXg8BDwEBRAQBAYUGAoVAJjgTAQIEAQEBAQMCAwEBAQEBAQMBA?=
- =?us-ascii?q?QYBAQEBAQEGBBQBAQEBQEWFaA2GBAIBAycLAQ0BATcBDxk4VwYBEoJ+gl2xO?=
- =?us-ascii?q?DOBAYIIAQEGgmSaaoFeCYFBjA6BFoM3ekI/gU6ED2+LBpc0gTN0gSc/b4EEA?=
- =?us-ascii?q?gkCEWuBEAhogXNAAg1kCwttgUSBRIFQBAIUQgwUXQJrGwYIFQEYAwcHAgFpA?=
- =?us-ascii?q?wkDBwVJQAMLGA0WOhEsNRQfS4ELGGMEggIGASUkmDlzAYENgXF4kkkusRWEC?=
- =?us-ascii?q?IFZnxNNgUanfZd7IKMshC0CCgcWgXqBfk0fGYMiTwMZD44gDA0JggqRUWM9A?=
- =?us-ascii?q?gcLAQEDCYtFAQE?=
-IronPort-PHdr: A9a23:CYIW7BWbFxHA+cQ0V5/4ZUc+Z8jV8K3KAWYlg6HPw5pEc7i4uZ/4N
+ =?us-ascii?q?UaCLoJPtWUPAQ8BAUQEAQGFBgKFQCY4EwECBAEBAQEDAgMBAQEBAQEDAQEGA?=
+ =?us-ascii?q?QEBAQEBBgQUAQEBAUBFhWgNhgQCAQMnCwENAQE3AQ8ZOFcGARKCfoJdsTgzg?=
+ =?us-ascii?q?QGCCAEBBoJkmmqBXgmBQYwOgRaDN3pCP4FOhA9viwaXNIEzdIEnP2+BBAIJA?=
+ =?us-ascii?q?hFrgRAIaIFzQAINZAsLbYFEgxQEAhRCDBRdAmsbBggVARgDBwcCAWkDCQMHB?=
+ =?us-ascii?q?UlAAwsYDRY6ESw1FB9LgQsYYwSCAgYBJSSYOnKBDoJpxAyECIFZnxNNgUanf?=
+ =?us-ascii?q?Zd7IKMshC0CCgcWgXqBfk0fGYMiTwMZD44gGYITkVFjPQIHCwEBAwmLRQEB?=
+IronPort-PHdr: A9a23:ro9z/xU2olIbg40GwpmhhVARu3DV8K3KAWYlg6HPw5pEc7i4uZ/4N
  VPR4u9hylLMQMPa57RNlrmeurrrDGoH55vJq3UeaNpWWhoClchTnhR1DsKJUx+kJffmPSBmQ
  5QQDQ039HviaRpeE56hD2A=
-IronPort-Data: A9a23:O2OevK4cYnm41dKeW6klOwxRtCzDchMFZxGqfqrLsTDasY5as4F+v
- mJOWzyFPvbYNmvyfo90bo3i/RxTuJPUztBlHAprqH9jEysboMbJXouUcxqrZ3jIIpObFxpus
- csXMofNd81lHif1q0b2ONANj1ElhfnSHOaU5M0om8xVbVU5IMv0oUs7w4bVuqYx3Z7jRVnlV
- era+6X3IEWi1yN/LlUa4qeCrAIHlPnpsVv0hHRnDRx2lAa2e0c9XMp3yZ6ZdxMUcqEMdsamS
- uDKyq2O/2+x13/B3fv4+lpTWhRiro/6ZWBiuFIPM0SRqkQqShgJ70oOHKF0hXG7Ktm+t4sZJ
- N1l7fRcQOqyV0HGsLx1vxJwS0mSMUDakVPKCSDXjCCd86HJW0TizegtDx45BtZboPlHHUBH7
- dkpBAlYO3hvh8ruqF66YuNtmt9lJ9PiI40YoH0mwDTES/cqB5neK0nIzYEAmm1s3IYUTbCEO
- 5ZxhTlHNXwsZzVBIF4RC7o1hu63iH7lf3tVrU/TpKZx6nW7IAlZium8boqJJYPRLSlTtn68v
- iGZwVXUOUwxO867imad4mj2tsaayEsXX6pJTOborKQ76LGJ/UQXCRsLRR67vvy+jGagVN9Fb
- U8Z4Cwjqe417kPDZt38WQCoiGSDsxUfHsdLVes39GmlyKbZ5xiQHGUsVSNaZZots8peeNAx/
- gHR2om1X3k14PjPFS7b7audsTK5fzQNIm5EbigBCwIYizX+nG0tpi3BQMsgE/G6tYa2Qy7A3
- xGDtA0Pq4xG2KbnyJ6H1VzAhjutoL3AQQg0+hjbUwqZAuVROdDNi2uAtAiz0BpQEGqKZhza5
- yhbwpT2APQmVMzUznTVHo3hCZnzv5643CvgbUlHNqRJG96FwG+ve41BiN2VDB0xap5sldPBR
- kLM8ThW+YNTdESjaaJsC79d5ux0le26SY6gDKCRNIYSJINtfROG92dyfUGRmWvqlQ4ljMnT2
- Kt3k+7wUB726ow9l1JaotvxNpdymUgDKZv7H8yT8vhe+eP2iISpYbkEKkCSSesy8bmJpg7Ym
- /4GaZvQlE0BDrevOHSOmWL2EbzsBSVkbXwRg5EHHtNv3iI8QgnN9teLnulwKtw190irvr6Zo
- yngMqOn9LYPrSafclXQMCELhELHQY5w5XM9ISE2O1u0s0XPkq7xhJrzg6AfJOF9nNGPONYoF
- 5Hpje3cW6oTItkGkhxBBaTAQHtKL0z221neYXP/MFDSvfdIHmT0xzMtRSO3nAFmM8Z9nZFWT
- 2SIh1qHE6kQDR9vFtjXY/+Jxla89ypV0uFrUkeCZpEZdEzw+cI4Y2b8n90mEfEqcB/j/zq90
- xrJIBE6oeKWnZQ53uOUjo+5rqCoMdBEIGxkI0fh442bDxLqpliY/dcYUcKjXyzsa2fvyaDzO
- cRX167dNdMErnZrsq19MbRgyIxl1d6+to1xkwBuLEjWZmuSF4JQH3ii9utMv51r2bV2l1aXW
- EWO298CIpSPGprvP2AwLTofTNao9K8riBzNy88qMWP4ziNT15iWY3V4ZhWjpnRUE+poDdkD3
- +wkhv8z1yW+rRgbavC9kSFe8jW3HEwqCqkImMkTP972t1AN1FpHXJ37Dx326rGpb/FnEBEjA
- h2QtZr4q4Vs/GjwWFttKiGVxstYv4oEhz5SxlxbJ1ippMvMtsVq4DJvqwYIXiZn5TQZ9dIrI
- WV6FVxHFYPX9RdSucVzdWSNGQZAOR6nxnLM22Y5zG33c2T4V0jmDnEMBuKWzUVIr0NeZmd6+
- Z+b+kbEUBHrXsD47hEgfUtDus3TQdl7rS/BvMWZA8i+QoEISmfljpSPfksNkQPsWukqtX3Ep
- M5r3ed+UrL6PiguuJ8GC5GW+LATaRKcLklQaKhF0IJTOE+EYxC0+zyFC37pS/N3P/aQrHOJU
- Z1/FPxARzGV9XiorAlCIYUuPrUtvvoixORaS4PRPWRc7oeu9Gt4gqnxqBr7qnQgGeh1sMAHL
- YjUSTKOP0qQiVZQmE7PtMN0AXW5U/ZVeDzD2P2Jz8tRG6IhqO1MdWQA4omwtViRMypl+Euah
- xOcRqn0y+c5959gsbGxGYp+BiK1C+jJasK2zC6Jve5zMOz/afX1i1tNq33MHRhnAr8KatEmy
- ZWPqIHW2W3GjpYXUkfYuZuKEocS18DjTdh8b8b9HERHlBS7Rf7c3hon0EK7IKxvj9lyyJSGR
- Qy5Sc3obv8TeY5X60N0YhhkMSQ2KvrIfIL/gxiivtKOIBQ5+i7WHuONrHPGQzlSSX4VBsfYF
- ATxhceL2vlZi4Z9XDk/GPBsBs5DEm/JAKcJWYX4imiFMzOOnFiHh7rFkCgg4xHtDl2vMp7zw
- bDBdyjEWCWCgoP65/AHjNUqpTwSNmh3vscodEFE+9JWtSGzPFRbEcsja6c5GrNmuQ2s8qGha
- D/0OT5oTW23WDlfahzz7ejyRgrVVKREJt79ISdv5E+OLTu/AISbGrZ66yN8+DFMdyD+yP28Y
- 8QrkpEq0sNdHrkyLQrL2sGGvA==
-IronPort-HdrOrdr: A9a23:YEqTMa9u2+behhOH/Dduk+ACI+orL9Y04lQ7vn2ZKSY+TiVXra
- GTdZMgpGbJYFR4YhwdcLW7VJVoLkmslqKdjbN/AV7mZniDhILKFvAF0WKd+UyDJ8SWzIc0vp
- uIMZIOb+EYZmIbsS+V2meF+1lM+qj+zEnRv5a68550d3AXV0h/1XYFNu9FKDwMeOGWbaBJbq
- ah2g==
-X-Talos-CUID: 9a23:cfO4oWyqTS/nLVVIiI0YBgUrFM44MX6Cw0yLYBWnOXpIQaWweHOprfY=
-X-Talos-MUID: 9a23:sX2YaQiIlhuJ+x1yUa6bfcMpDONwoPuQOW02zL4Jqe3HaTRgIW2tpWHi
+IronPort-Data: A9a23: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
+ QryJlWrVvRp/qxUeA==
+IronPort-HdrOrdr: A9a23:CzjfyaDyLM5DucvlHel255DYdb4zR+YMi2TDt3oadfWaSK2lfq
+ eV7Y0mPX2dslsssRQb9exoV5PwIk80maQb3WBVB8bHYOCEghrPEGgd1/qB/9SIIUSXndK1l5
+ 0QFJSWY+eRMbEVt6jHCIbUKadZ/DD+ytHMuQ7H9QYQceh1UdAc0+6nMHfhLqWmLDM2f6YEKA
+ ==
+X-Talos-CUID: 9a23:Q+G0WmOl0ShBz+5DBAg592BTC58ZSlLmnUXaOXWyGUhWV+jA
+X-Talos-MUID: 9a23:4iMZPAQnOg/I6USpRXTcliE7Bv1v2p2VJ1JOmooWkfinGAlJbmI=
 X-IronPort-Anti-Spam-Filtered: true
 Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
-  by ipmail03.adl6.internode.on.net with ESMTP; 29 Apr 2023 21:22:29 +0930
+  by ipmail03.adl6.internode.on.net with ESMTP; 29 Apr 2023 21:22:31 +0930
 Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
         (authenticated bits=0)
-        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 33TBq71G3093879
+        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 33TBq71H3093879
         (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sat, 29 Apr 2023 21:52:22 +1000
+        Sat, 29 Apr 2023 21:52:27 +1000
 Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 33TBq71G3093879
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 33TBq71H3093879
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-        s=s1; t=1682769143; bh=ld54a3dnRE0d4ymq1ttpoiuT3UQaVnk8L6QFCH9fTHo=;
+        s=s1; t=1682769147; bh=bSojTUSDDl0fjBG1iY8i0/SwL7mKh3cuXl3AY8oloXQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XGHQlfugCZJBbxCMfNkenn3+5p4opBEuRdlE2Lz8uGo5L3A4rLh8M4fRFsZm4bnmh
-         080lB32Sb8A/Irkj1znrrw4GeKKJMyj16zQ4VAZODTCneTJ0CX49CChaRVDpDDa4HA
-         Z/Bg/v9U0b6av3ZbI926V7WB2DR7+C3pZzcPHaZ4dfXhWzrIOFhXJtESgf50pP2Wa1
-         jVIuUwe6M/N47gpuBroMcHDqE45zFk3w3umJtM0CWjvW5jkKvTTraru3RlcMzTjCFf
-         LA83BkRaDZefUpbS6jGuVt8tPhvl/+UdzP972ArquvNkxP4QSvTsdmYBYmTY0OgMKq
-         u7mwsa6oCFiHA==
+        b=EAMeuFKc1Gn/R1qVgkkjW4LLdG+0/RRx4SQaa2Cz+3Uz60aSv7wjj7RLeCyBmbFaC
+         xJ4hZ4N/UDgX6uKIkiWkedx1ekQe8hCI8w+7a7UIXDwX3hByPe2iPp1YcfMiQq4mxd
+         5xpemTtTIAK+T1mWipjE1ApdU/rDJCpKxEw2urp+NWZoEKlxKb94tpk4tn+8IXQgx9
+         mgfcpVbt9rzy1rl+TSPJ5OfNexcKjUJsCA89ywXgPWqWXMJB2O0y+/GlDbo8D5LZcK
+         KptYCc1L/tnsx8MI6SdQvRkOO5RJ4gGHO4RnbGqxsab6FDOFfBC4ptUh11lmHI4pAv
+         xVM09wuRAbnrQ==
 From:   Frank Crawford <frank@crawford.emu.id.au>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org,
         Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v1 1/3] hwmon: (it87) Add controls for chips with only 4 fans
-Date:   Sat, 29 Apr 2023 21:52:03 +1000
-Message-Id: <20230429115205.1547251-2-frank@crawford.emu.id.au>
+Subject: [PATCH v1 2/3] hwmon: (it87) Add controls for chips with only 4 PWMs
+Date:   Sat, 29 Apr 2023 21:52:04 +1000
+Message-Id: <20230429115205.1547251-3-frank@crawford.emu.id.au>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230429115205.1547251-1-frank@crawford.emu.id.au>
 References: <20230429115205.1547251-1-frank@crawford.emu.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 29 Apr 2023 21:52:23 +1000 (AEST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 29 Apr 2023 21:52:27 +1000 (AEST)
 X-Virus-Scanned: clamav-milter 0.103.8 at bits.crawford.emu.id.au
 X-Virus-Status: Clean
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -116,68 +115,51 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add feature and support for chips with only 4 fans.
-
-Reorder macro definitions to bring all fan definitions together.
+Add feature and support for chips with only 4 PWMs.
 
 Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
 ---
- drivers/hwmon/it87.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/hwmon/it87.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index eb38f54ebeb6..bd9a24942e70 100644
+index bd9a24942e70..d5482c6ed18f 100644
 --- a/drivers/hwmon/it87.c
 +++ b/drivers/hwmon/it87.c
-@@ -317,6 +317,7 @@ struct it87_devices {
-  * chips to avoid the problem.
+@@ -318,6 +318,7 @@ struct it87_devices {
   */
  #define FEAT_CONF_NOEXIT	BIT(19)	/* Chip should not exit conf mode */
-+#define FEAT_FOUR_FANS		BIT(20)	/* Supports four fans */
+ #define FEAT_FOUR_FANS		BIT(20)	/* Supports four fans */
++#define FEAT_FOUR_PWM		BIT(21)	/* Supports four fan controls */
  
  static const struct it87_devices it87_devices[] = {
  	[it87] = {
-@@ -508,11 +509,14 @@ static const struct it87_devices it87_devices[] = {
- 				(((data)->features & FEAT_TEMP_OLD_PECI) && \
- 				 ((data)->old_peci_mask & BIT(nr)))
- #define has_fan16_config(data)	((data)->features & FEAT_FAN16_CONFIG)
-+#define has_four_fans(data)	((data)->features & (FEAT_FOUR_FANS | \
-+						     FEAT_FIVE_FANS | \
-+						     FEAT_SIX_FANS))
- #define has_five_fans(data)	((data)->features & (FEAT_FIVE_FANS | \
- 						     FEAT_SIX_FANS))
-+#define has_six_fans(data)	((data)->features & FEAT_SIX_FANS)
+@@ -518,8 +519,11 @@ static const struct it87_devices it87_devices[] = {
  #define has_vid(data)		((data)->features & FEAT_VID)
  #define has_in7_internal(data)	((data)->features & FEAT_IN7_INTERNAL)
--#define has_six_fans(data)	((data)->features & FEAT_SIX_FANS)
  #define has_avcc3(data)		((data)->features & FEAT_AVCC3)
- #define has_five_pwm(data)	((data)->features & (FEAT_FIVE_PWM \
- 						     | FEAT_SIX_PWM))
-@@ -3169,16 +3173,14 @@ static void it87_init_device(struct platform_device *pdev)
- 	it87_check_tachometers_16bit_mode(pdev);
+-#define has_five_pwm(data)	((data)->features & (FEAT_FIVE_PWM \
+-						     | FEAT_SIX_PWM))
++#define has_four_pwm(data)	((data)->features & (FEAT_FOUR_PWM | \
++						     FEAT_FIVE_PWM | \
++						     FEAT_SIX_PWM))
++#define has_five_pwm(data)	((data)->features & (FEAT_FIVE_PWM | \
++						     FEAT_SIX_PWM))
+ #define has_six_pwm(data)	((data)->features & FEAT_SIX_PWM)
+ #define has_pwm_freq2(data)	((data)->features & FEAT_PWM_FREQ2)
+ #define has_six_temp(data)	((data)->features & FEAT_SIX_TEMP)
+@@ -2734,8 +2738,10 @@ static int __init it87_find(int sioaddr, unsigned short *address,
+ 	else
+ 		sio_data->skip_in |= BIT(9);
  
- 	/* Check for additional fans */
--	if (has_five_fans(data)) {
--		tmp = it87_read_value(data, IT87_REG_FAN_16BIT);
--
--		if (tmp & BIT(4))
--			data->has_fan |= BIT(3); /* fan4 enabled */
--		if (tmp & BIT(5))
--			data->has_fan |= BIT(4); /* fan5 enabled */
--		if (has_six_fans(data) && (tmp & BIT(2)))
--			data->has_fan |= BIT(5); /* fan6 enabled */
--	}
-+	tmp = it87_read_value(data, IT87_REG_FAN_16BIT);
-+
-+	if (has_four_fans(data) && (tmp & BIT(4)))
-+		data->has_fan |= BIT(3); /* fan4 enabled */
-+	if (has_five_fans(data) && (tmp & BIT(5)))
-+		data->has_fan |= BIT(4); /* fan5 enabled */
-+	if (has_six_fans(data) && (tmp & BIT(2)))
-+		data->has_fan |= BIT(5); /* fan6 enabled */
+-	if (!has_five_pwm(config))
++	if (!has_four_pwm(config))
+ 		sio_data->skip_pwm |= BIT(3) | BIT(4) | BIT(5);
++	else if (!has_five_pwm(config))
++		sio_data->skip_pwm |= BIT(4) | BIT(5);
+ 	else if (!has_six_pwm(config))
+ 		sio_data->skip_pwm |= BIT(5);
  
- 	/* Fan input pins may be used for alternative functions */
- 	data->has_fan &= ~sio_data->skip_fan;
 -- 
 2.40.0
 
