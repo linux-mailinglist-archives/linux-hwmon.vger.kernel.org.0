@@ -2,177 +2,163 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 018256F2481
-	for <lists+linux-hwmon@lfdr.de>; Sat, 29 Apr 2023 13:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 608576F2508
+	for <lists+linux-hwmon@lfdr.de>; Sat, 29 Apr 2023 16:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbjD2Lwk (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 29 Apr 2023 07:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        id S229708AbjD2O16 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 29 Apr 2023 10:27:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229709AbjD2Lwj (ORCPT
+        with ESMTP id S229476AbjD2O15 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 29 Apr 2023 07:52:39 -0400
-Received: from ipmail03.adl6.internode.on.net (ipmail03.adl6.internode.on.net [150.101.137.143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 976F11BF0
-        for <linux-hwmon@vger.kernel.org>; Sat, 29 Apr 2023 04:52:37 -0700 (PDT)
-IronPort-SDR: 644d0502_YQeac/yOTJCvtMhaQIVI2i1IRqAdhdIIHMZIgBfSoTje0fb
- ZGq1ckHNw2CvGQkuLykBi4jR6saZ/ek2+nAFOgA==
-X-SMTP-MATCH: 0
-X-IPAS-Result: =?us-ascii?q?A2AYAgBQBE1kjPQc8jxaHAEBAQEBAQcBARIBAQQEAQFJg?=
- =?us-ascii?q?UaCLoJPtWUPAQ8BAUQEAQGFBgKFQCY4EwECBAEBAQEDAgMBAQEBAQEDAQEGA?=
- =?us-ascii?q?QEBAQEBBgQUAQEBAUBFhWgNhgQCAQMnCwENAQE3AQ8ZOFcGARKCfoJdsTgzg?=
- =?us-ascii?q?QGCCAEBBoJkmmqBXgmBQYwOZy+DN3pCP4FOgRWCem+BBYMGhnuXNIEzdIEnP?=
- =?us-ascii?q?2+BBAIJAhFrgRAIaHp5QAINZAsLbYFEgxQEAhRCDBRdAmsbBggVARgDBwcCA?=
- =?us-ascii?q?WkDCQMHBUlAAwsYDRY6ESw1FB9LgQsYYwSCAgYBJSSYOnIBgQ2CacQMhAiBW?=
- =?us-ascii?q?Z8TTYFGgjelRpd7IIIuoH6ELQIKBxaBeoF+TR8ZgyJPAxkPjiAXAoITkVFjP?=
- =?us-ascii?q?QIHCwEBAwmIbIJZAQE?=
-IronPort-PHdr: A9a23:WFaHHxBTPt/wz6Xsf4clUyQVWBdPi9zP1kY94Js7kPRFaK288ZP4M
- ArS4OgrjVOPVJiIo/tegL/QtKbtEXcF/Y7Hqn0Hd4BBEh4d3Msak1ZyX8eMBR/3cKG6PXVoT
- s9IDQc39HrjbiBo
-IronPort-Data: A9a23:FnsjzaPqZIAuWnTvrR2xk8FynXyQoLVcMsEvi/4bfWQNrUp01jdWm
- DFMWWGCPqncZzChfdt+aNzg/UtSsMfWn4U2QFRtqytjRS8aoJPMD97BIBeoYH3IcZzIHB42t
- J1AN4nNBc1lFXW0SjWFa+i59yMgvU2rqhsQLMaeZ0idkCc9EH9JZSpLwrJ/2Mgy6TSAK1vlk
- cvopMHCM0OS1TdxM2YFg4qOsxoHUM7a4Vv0g3RnDRx1lA+G/5UqJMp3yZGZdxPQXoRSF+imc
- OfPpJnRErTxon/Bovv8+lrKWhViroz6ZGBiuVIKM0SWuSWukwRpukoN2FvwXm8M49mBt4gZJ
- NygLvVcQy9xVkHHsLx1vxW1j0iSMIUekIIrL0RTvuSS6Gn2Q0H9mM4/L1wXJM483M9oCktRo
- KlwxDAlNnhvhsq8wa6gDOJ2j9stK9Pneo4apzdhwXfQEJ7KQ7idG+OQuYUehmd23JwSdRrdT
- 5NxhT5HYg7JZR5nMU0eF5w5huvui3ziNTxU7luIzUYyyzKCnVIhjOeybbI5fPTaT9VRuB2Bt
- 1v44l7SJDInL/+j6QKapyfEaujnxnugCNhIRdVU7MVChFyV23xWCAITUl2Tv/a0kAi9VshZJ
- khS/TAhxYA29Uq2XvHnWBCzozuZpVgaVsY4O+825QWTw7DZyx2EHWVCRTlEAOHKr+doHXlwi
- gXMxYOsX2Az9qaJQG6c/fGItTyzfyMSKCkLeEfoUDfp/fHih6UDvijeFe0yM7OUl57RPxjvy
- BqV+X1Wa6ooseYH0KCy/Fbiij2qp4TUQgNd2ukxdj/7hu+eTNP1D7FE+WQ3/t4Fd93JEQDd1
- JQQs5HDtbpWVc/leDmlGr1lIV2/2xqSGBTh6bKFN6Iw+zKg6hZPlqgKuGkmTKuFGuAJZnfSZ
- 1LPuUtu7ZteJxOXgUJfPdr0UZhwiPKwUI65CrbPctNSY5M3aBeI/WdlYkvW1n2FfKkQfUMXZ
- crznSWEVy1y5UFbIN2eHrh17FPT7npirV4/vLiip/hd7ZKQZWSOVZAOO0aUY+Yy4cus+VuFq
- YkHaZXQmk8CCYUShxU7F6ZOcjjmylBmVfjLRzB/LLTrzvdOQj57Wq6BkdvNhaQ8zvkNy48kA
- U1RqmcDkAGv3yeWQel7Qmx7Z/vuW4pyt3Q2IUQR0aWAhRAejXKUxP5HLfMKkUwPqLQLIQhcE
- 6BbJ61tw51nFlz6xtjqRcKl8dI5JEry31Lm0ujMSGFXQqOMjjfhorfMFjYDPgFXZsZunZpn/
- ++TxUnATIAdRg9vKs/TZbj9hxmypHUR0qY6FUfBPtAZKg2m/ZlIOh7BqKY9A/gNDhHfmRqc9
- QKdWikDqcf3/oQazdjuhIK/lbmPLddQJERgIjTk3e6EDhWCpmuH6q1cYdmMZgHYBT/V+r39R
- OB7zMPcEfwgnXRIuI9SSIRunLMMzIbrrY9n0w1bJWj6X2mqLphCIXC2+9ZFmYMQ571euCqwA
- lmu/PsDM5q3GcrVKnwjDyt7UfamytcvhSj07945BG7Y9R1H1uOLfmsKNibdlREHCqV+Nb0U5
- NsIuekU2lSZsQUrONPXtRJk3T2AAVJYWpp2q6xAJpHgjzcq7VRwYZb8LCvSy7PXYvVuNngaG
- BOltJDgtZ99mHWbK2ESEELT19VznZ4N4RBG7GETLmSzx+bquKUF4w1zwx8WECJllg5KwsBiC
- FhNbkdVH5iDzx1spcpEXl2vJT1/OQ2kyhTx5mYNxULkTBiOd23SLWcCF/6H02IH/kl9IDVK3
- rGq51z0cDTtffCq/Cs+A3x7oPnaUO5Or1TmncSkO8GrRrg7fjvXrau8bkUYqxbcIJ0QhW+Wg
- cJI7epPeanAGipImJICCq6ezqY1ZC2fAW5zXsFa46ICGF/DdAGI2TShL167fuVPLafo9XCUJ
- tNPJMUVcTiDzweL8y4mAJATL49OnPIG4MQIfpXpLzUkt5qdtj9Yj4LCxBPhhWMEQ8RcruhlE
- 9n/Lwm9K223gWdYv0Tvr8MeY2qxXoQiVT3Gheuw9L0EKoIHvORSanoN67qTvUvEFCt8/hmRg
- hHPWL+O8cxm1rZXvtXNFodtOlyKDO3dBcWyzRCLktVRbNnwH9/EmCELp3LGYQlHH7sjdO5mt
- LaKse/y2BvOres0WGX3wKuERrh7zpi2VtpqL8vIFWRrrRaDfOTO4BIz3X+yBrIUsdFa5+ihH
- xCZbunpf/Eret5t/l9nQAkALAQ4FILMcbbGpwmxi9+uGyot+1XLA/3//EC4cFwBUDEDPqPPL
- zPdutGs14h+l5tNDhpVPMNWKcZ0D3G7UJR3auCrkyeTC1SppVawurHCsx4EwhOTA1mmFPfK2
- 770diLcRj+T5p6RlMp4trZstCI5FHx+2Ok8XnwM8u5M1gyVMjQ0EvQ/A74nVLdkyyD87cStL
- nWFJm4vEj70Ujl4YA3xqoarFBuWAusVfMz1PHo19keTcD27H56EHKAnzCp7/nNqYXH2+YlL8
- z3FFqHYZXBdGq1UeNs=
-IronPort-HdrOrdr: A9a23:lE8KhaDZW3A08FrlHel255DYdb4zR+YMi2TDt3oadfWaSK2lfq
- eV7Y0mPX2dslsssRQb9exoV5PwIk80maQb3WBVB8bHYOCEghrPEGgd1/qB/9SIIUSXndK1l5
- 0QFJSWY+eRMbEVt6jHCIbUKadZ/DD+ytHMuQ7H9QYQceh1UdAc0+6nMHfhLqWmLDM2f6YEKA
- ==
-X-Talos-CUID: 9a23:ELnrXGFMub7+4qYeqmJm02okKvo0KUaM72rxOgycL092Q5eKHAo=
-X-Talos-MUID: =?us-ascii?q?9a23=3AfGflYQ0GePgBvdUuTKa3ZdKD4TUjs66+DGZWiIQ?=
- =?us-ascii?q?/hdS+HgpTBiy+sBSPXdpy?=
-X-IronPort-Anti-Spam-Filtered: true
-Received: from 60-242-28-244.static.tpgi.com.au (HELO bits.crawford.emu.id.au) ([60.242.28.244])
-  by ipmail03.adl6.internode.on.net with ESMTP; 29 Apr 2023 21:22:35 +0930
-Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
-        (authenticated bits=0)
-        by bits.crawford.emu.id.au (8.17.1/8.17.1) with ESMTPSA id 33TBq71I3093879
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sat, 29 Apr 2023 21:52:30 +1000
-Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 33TBq71I3093879
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-        s=s1; t=1682769151; bh=lh7htZDRdQRdVj2OwYmBtbcAVqi5YPAll5Lv5O9bkNQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GCgVu7t6PjsxaOD5M80Qi8PvQdxqwwwaNXKLeKTLjHyX4sN8US2cC8eUA+Q2Q7S32
-         4T49EvsVCwitVBUxyZ+Emiwja+AlfUyg02F/SF9lxykfk89PvbG76yEPNrVU1WOUDQ
-         /AH2DodlqOB9oq8JG/im0JAYCcJP/iDxNyuNii4UXb1j+p7Es+uE28/PMxCAnGxjOc
-         VNUR4LXXwyd7nA7Wx4SWiMOKU84zRorUoN0SyFHhoxAm06+00mozY/hbaCsXwWoVkh
-         h/rx1e+8pXXASqlvheXhSZeAJC88rvzhghBnr0o5zJd7VkL9cmaEiXrS5A+Qqs95eE
-         kDQ8umFGpM4kA==
-From:   Frank Crawford <frank@crawford.emu.id.au>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org,
-        Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v1 3/3] hwmon: (it87) Update IT8732F chip for 4 fans and PWMs
-Date:   Sat, 29 Apr 2023 21:52:05 +1000
-Message-Id: <20230429115205.1547251-4-frank@crawford.emu.id.au>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230429115205.1547251-1-frank@crawford.emu.id.au>
-References: <20230429115205.1547251-1-frank@crawford.emu.id.au>
+        Sat, 29 Apr 2023 10:27:57 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554551715;
+        Sat, 29 Apr 2023 07:27:56 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6a60460a23dso780854a34.0;
+        Sat, 29 Apr 2023 07:27:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682778475; x=1685370475;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N9uC0SS41b6yxLBt/231cxXgMxHtj2I+ZiOhX6bBzxs=;
+        b=hRs/AUua/dEWfpJ/IvJmanuHY6C9jVBmqUR7gDLzL3xOh0OEXT1DtywaoMEhUKYkbB
+         eKJEnnMMLuPnfM1ekIkhzczWTjsOiE2z+qdQO97penAhrCLHmDfgND1s922NFE2rPPuU
+         LRDAftmm9PajGKP5MLxnLyzAI8zFTfROISgfiHWyVbn5a9JqMirRxSPmo9lxb9RbAgXC
+         NQmURL19OCddlHUbC28qY9OQrliVtSjbeA7Pn4eiI+yWLV8/ZASfZnO48OYS3gjBYw0G
+         ca16pkXQVotZbZgRGDHT/bRkinOjhpQ3crGULWp4/47W7ZVDN6GNE3JPvephvwvP4FOr
+         i8+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682778475; x=1685370475;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N9uC0SS41b6yxLBt/231cxXgMxHtj2I+ZiOhX6bBzxs=;
+        b=gQr/ek13cd+oYAVql1xFx43g8S0qGIURA652OzR0+Xrq6tPOIuzuhoZUoDx/LJSu8q
+         CexRXzKPSqNmgENEePtrcVZx0JEaNC13o44khVEwZ/1MNP1oRQAulWJPALl69qqPzuYm
+         EJLQ/17YtLgWsN6fen6uGc9bE92Xx5fIOkY6ue8CGUAJzbr4pVThE6sg/ub8wMiUd7w+
+         0YGFLCJSbJ0bA2SuVI+0QjeEuJiicPf30tS7t3cfy2azc8xHxb9dTn7mC7v4t/U/Q2vL
+         Sz1lYe8gtglp5/EJ/vFciJGyaQCrV35kxJs6fdxT94fClR46E1VHZkrfZ2TP2Ubk+86s
+         Llww==
+X-Gm-Message-State: AC+VfDylfKpCwlfecTVz+6bScHqjlmDBqmO9KuGVFV5pOodExOGaLsJZ
+        oiSS4NE9zXsNARqvaLD7ENg=
+X-Google-Smtp-Source: ACHHUZ6ccwg0e13o650LE02Q7+Z2Q1SnE7kJm/cIYSza08okHqJ/IGZqbpChz5oRGt4Yxo0RVDeOWg==
+X-Received: by 2002:a9d:7a43:0:b0:6a7:ad05:3669 with SMTP id z3-20020a9d7a43000000b006a7ad053669mr4409549otm.33.1682778475572;
+        Sat, 29 Apr 2023 07:27:55 -0700 (PDT)
+Received: from smeagol.fibertel.com.ar ([201.235.4.68])
+        by smtp.gmail.com with ESMTPSA id h7-20020a9d6a47000000b0069f1774cde8sm8428217otn.71.2023.04.29.07.27.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Apr 2023 07:27:55 -0700 (PDT)
+From:   =?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= 
+        <samsagax@gmail.com>
+To:     linux@roeck-us.net
+Cc:     =?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= 
+        <samsagax@gmail.com>, derekjohn.clark@gmail.com, jdelvare@suse.com,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: (oxp-sensors) Use less convoluted enum cast
+Date:   Sat, 29 Apr 2023 11:25:48 -0300
+Message-Id: <20230429142547.328125-1-samsagax@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 29 Apr 2023 21:52:31 +1000 (AEST)
-X-Virus-Scanned: clamav-milter 0.103.8 at bits.crawford.emu.id.au
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add support for 4 fans and 4 PWMs to chipset IT8732F.
+Change
 
-Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
+  .driver_data = (void *) &(enum type) {enum_literal};
+
+to more readable form:
+
+  .driver_data = (void *) enum_literal;
+
+and corresponding cast usage as board type flag.
+
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 ---
- drivers/hwmon/it87.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+This should be patched after https://lore.kernel.org/linux-hwmon/20230426184420.99945-1-samsagax@gmail.com/
+---
+ drivers/hwmon/oxp-sensors.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index d5482c6ed18f..96c17660ff0f 100644
---- a/drivers/hwmon/it87.c
-+++ b/drivers/hwmon/it87.c
-@@ -377,7 +377,8 @@ static const struct it87_devices it87_devices[] = {
- 		.model = "IT8732F",
- 		.features = FEAT_NEWER_AUTOPWM | FEAT_16BIT_FANS
- 		  | FEAT_TEMP_OFFSET | FEAT_TEMP_OLD_PECI | FEAT_TEMP_PECI
--		  | FEAT_10_9MV_ADC | FEAT_IN7_INTERNAL,
-+		  | FEAT_10_9MV_ADC | FEAT_IN7_INTERNAL | FEAT_FOUR_FANS
-+		  | FEAT_FOUR_PWM,
- 		.peci_mask = 0x07,
- 		.old_peci_mask = 0x02,	/* Actually reports PCH */
+diff --git a/drivers/hwmon/oxp-sensors.c b/drivers/hwmon/oxp-sensors.c
+index 9093c608dee0..7828c1d36695 100644
+--- a/drivers/hwmon/oxp-sensors.c
++++ b/drivers/hwmon/oxp-sensors.c
+@@ -62,49 +62,49 @@ static const struct dmi_system_id dmi_table[] = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AOKZOE"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "AOKZOE A1 AR07"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {aok_zoe_a1},
++		.driver_data = (void *)aok_zoe_a1,
  	},
-@@ -2932,6 +2933,34 @@ static int __init it87_find(int sioaddr, unsigned short *address,
- 		if (!(reg & BIT(0)))
- 			sio_data->skip_in |= BIT(9);
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "AYANEO 2"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {aya_neo_2},
++		.driver_data = (void *)aya_neo_2,
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "AIR"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {aya_neo_air},
++		.driver_data = (void *)aya_neo_air,
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "AIR Pro"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {aya_neo_air_pro},
++		.driver_data = (void *)aya_neo_air_pro,
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "GEEK"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {aya_neo_geek},
++		.driver_data = (void *)aya_neo_geek,
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "ONE XPLAYER"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {oxp_mini_amd},
++		.driver_data = (void *)oxp_mini_amd,
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ONE-NETBOOK"),
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "ONEXPLAYER Mini Pro"),
+ 		},
+-		.driver_data = (void *) &(enum oxp_board) {oxp_mini_amd_pro},
++		.driver_data = (void *)oxp_mini_amd_pro,
+ 	},
+ 	{},
+ };
+@@ -296,7 +296,7 @@ static int oxp_platform_probe(struct platform_device *pdev)
+ 	if (!dmi_entry || boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
+ 		return -ENODEV;
  
-+		sio_data->beep_pin = superio_inb(sioaddr,
-+						 IT87_SIO_BEEP_PIN_REG) & 0x3f;
-+	} else if (sio_data->type == it8732) {
-+		int reg;
-+
-+		superio_select(sioaddr, GPIO);
-+
-+		/* Check for pwm2, fan2 */
-+		reg = superio_inb(sioaddr, IT87_SIO_GPIO5_REG);
-+		if (reg & BIT(1))
-+			sio_data->skip_pwm |= BIT(1);
-+		if (reg & BIT(2))
-+			sio_data->skip_fan |= BIT(1);
-+
-+		/* Check for pwm3, fan3, fan4 */
-+		reg = superio_inb(sioaddr, IT87_SIO_GPIO3_REG);
-+		if (reg & BIT(6))
-+			sio_data->skip_pwm |= BIT(2);
-+		if (reg & BIT(7))
-+			sio_data->skip_fan |= BIT(2);
-+		if (reg & BIT(5))
-+			sio_data->skip_fan |= BIT(3);
-+
-+		/* Check if AVCC is on VIN3 */
-+		reg = superio_inb(sioaddr, IT87_SIO_PINX2_REG);
-+		if (reg & BIT(0))
-+			sio_data->internal |= BIT(0);
-+
- 		sio_data->beep_pin = superio_inb(sioaddr,
- 						 IT87_SIO_BEEP_PIN_REG) & 0x3f;
- 	} else {
+-	board = *((enum oxp_board *) dmi_entry->driver_data);
++	board = (enum oxp_board)dmi_entry->driver_data;
+ 
+ 	hwdev = devm_hwmon_device_register_with_info(dev, "oxpec", NULL,
+ 						     &oxp_ec_chip_info, NULL);
 -- 
-2.40.0
+2.40.1
 
