@@ -2,493 +2,173 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E686F6708
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 May 2023 10:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C313B6F6935
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 May 2023 12:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbjEDIOW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 4 May 2023 04:14:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55644 "EHLO
+        id S229962AbjEDKkh (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 4 May 2023 06:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjEDIMx (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 4 May 2023 04:12:53 -0400
-Received: from m228-4.mailgun.net (m228-4.mailgun.net [159.135.228.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16BA40D7
-        for <linux-hwmon@vger.kernel.org>; Thu,  4 May 2023 01:10:30 -0700 (PDT)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=equiv.tech; q=dns/txt;
- s=mx; t=1683187830; x=1683195030; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Subject: Cc: To: To:
- From: From: Sender: Sender; bh=ASc5HhJn/HU0yPFLW+gOwv9LjjchW0gxLnNsBeAyJh8=;
- b=rY2WXHt/FQ0cIep2cdTXhkwO5ZBTGWtrMPGDOD2zLo/+HJEnXPynguaH8i+e3bS6jFWfCG52Hi1iPah5m7DaI6Gu/W3RsVuGQXUxdA27MOCoaMKSnofV1Ek1be7bxAszzqN8DFkw/si9ec7+r2ZIVbEe8xpACbDC9j4+mgERharQtT7bqOM4GPjHylcdHKixPZ2ZGxKQVDJrIBK/MDDiXmRAZlWbPevk0AnWHJx7nsRrjODN8C948yeyCrjf/Iglt4/iNUeWIlGOpfOkLIDLHtPGJfyl9Q84zGG/nL1uzksdDazLI7Q1r9omOD3caPxfghPeVarkdOE5w66IeB/bww==
-X-Mailgun-Sending-Ip: 159.135.228.4
-X-Mailgun-Sid: WyJkOWUwNSIsImxpbnV4LWh3bW9uQHZnZXIua2VybmVsLm9yZyIsIjkzZDVhYiJd
-Received: from mail.equiv.tech (equiv.tech [142.93.28.83]) by ffb17371f780 with SMTP id
- 64536600621871856c3f65e6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 04 May 2023 08:00:00 GMT
-Sender: james@equiv.tech
-From:   James Seo <james@equiv.tech>
-To:     Jean Delvare <jdelvare@suse.com>,
+        with ESMTP id S229915AbjEDKkf (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 4 May 2023 06:40:35 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BABDB4EDC;
+        Thu,  4 May 2023 03:40:33 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3449XJjr026664;
+        Thu, 4 May 2023 06:40:15 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3qca678amw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 04 May 2023 06:40:14 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 344AeD0o056870
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 4 May 2023 06:40:13 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 4 May 2023 06:40:12 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 4 May 2023 06:40:12 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 4 May 2023 06:40:12 -0400
+Received: from daniel-Precision-5530.ad.analog.com ([10.48.65.214])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 344AdtQJ012745;
+        Thu, 4 May 2023 06:39:58 -0400
+From:   Daniel Matyas <daniel.matyas@analog.com>
+CC:     Daniel Matyas <daniel.matyas@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     James Seo <james@equiv.tech>, linux-hwmon@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC 11/11] ABI: sysfs-class-hwmon: Add missing hwmon standard attributes
-Date:   Thu,  4 May 2023 00:57:52 -0700
-Message-Id: <20230504075752.1320967-12-james@equiv.tech>
-In-Reply-To: <20230504075752.1320967-1-james@equiv.tech>
-References: <20230504075752.1320967-1-james@equiv.tech>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: [PATCH v4 1/2] dt-bindings: hwmon: add MAX31827
+Date:   Thu, 4 May 2023 12:39:30 +0300
+Message-ID: <20230504093933.70660-1-daniel.matyas@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: mgnzufv0GoJSOMbELjfVOl1xHWPiTpa5
+X-Proofpoint-ORIG-GUID: mgnzufv0GoJSOMbELjfVOl1xHWPiTpa5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-04_06,2023-05-04_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 mlxlogscore=999 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2305040086
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add definitions for the following non-deprecated standard
-attributes implemented in the API and mentioned in the sysfs
-interface spec but not found in the ABI documentation.
+MAX31827 is a low-power temperature switch with I2C interface.
 
-Alarm attributes:
-* inY_alarm, inY_min_alarm, inY_max_alarm,
-  inY_lcrit_alarm, inY_crit_alarm
-* currY_alarm, currY_min_alarm, currY_max_alarm,
-  currY_lcrit_alarm, currY_crit_alarm
-* powerY_alarm, powerY_cap_alarm,
-  powerY_max_alarm, powerY_crit_alarm
-* fanY_alarm, fanY_min_alarm, fanY_max_alarm
-* tempY_alarm, tempY_min_alarm, tempY_max_alarm,
-  tempY_lcrit_alarm, tempY_emergency_alarm
-  (tempY_crit_alarm already existed)
+The device is a ±1°C accuracy from -40°C to +125°C
+(12 bits) local temperature switch and sensor with I2C/SM-
+Bus interface. The combination of small 6-bump wafer-lev-
+el package (WLP) and high accuracy makes this temper-
+ature sensor/switch ideal for a wide range of applications.
 
-Beep attributes:
-beep_enable, inY_beep, currY_beep, fanY_beep, tempY_beep
-
-Sample average attributes:
-samples, in_samples, power_samples, temp_samples, curr_samples
-
-Fault attributes:
-tempY_fault (fanY_fault already existed)
-
-Signed-off-by: James Seo <james@equiv.tech>
+Signed-off-by: Daniel Matyas <daniel.matyas@analog.com>
 ---
- Documentation/ABI/testing/sysfs-class-hwmon | 358 +++++++++++++++++++-
- 1 file changed, 344 insertions(+), 14 deletions(-)
+ .../bindings/hwmon/adi,max31827.yaml          | 54 +++++++++++++++++++
+ MAINTAINERS                                   |  7 +++
+ 2 files changed, 61 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
 
-diff --git a/Documentation/ABI/testing/sysfs-class-hwmon b/Documentation/ABI/testing/sysfs-class-hwmon
-index 7fc914bc70e2..2f6884874812 100644
---- a/Documentation/ABI/testing/sysfs-class-hwmon
-+++ b/Documentation/ABI/testing/sysfs-class-hwmon
-@@ -33,6 +33,23 @@ Description:
+diff --git a/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml b/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
+new file mode 100644
+index 000000000000..2dc8b07b4d3b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/hwmon/adi,max31827.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices MAX31827, MAX31828, MAX31829 Low-Power Temperature Switch
++
++maintainers:
++  - Daniel Matyas <daniel.matyas@analog.com>
++
++description: |
++  Analog Devices MAX31827, MAX31828, MAX31829 Low-Power Temperature Switch with
++  I2C Interface
++  https://www.analog.com/media/en/technical-documentation/data-sheets/MAX31827-MAX31829.pdf
++
++properties:
++  compatible:
++    oneOf:
++      - const: adi,max31827
++      - items:
++          - enum:
++              - adi,max31828
++              - adi,max31829
++          - const: adi,max31827
++
++  reg:
++    maxItems: 1
++
++  vref-supply:
++    description:
++      Must have values in the interval (1.6V; 3.6V) in order for the device to
++      function correctly.
++
++required:
++  - compatible
++  - reg
++  - vref-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        temperature-sensor@42 {
++            compatible = "adi,max31827";
++            reg = <0x42>;
++            vref-supply = <&reg_vdd>;
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c6545eb54104..0997a0490c97 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12535,6 +12535,13 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
+ F:	drivers/media/i2c/max2175*
+ F:	include/uapi/linux/max2175.h
  
- 		RW
- 
-+What:		/sys/class/hwmon/hwmonX/beep_enable
-+Description:
-+		Enable or disable beeps.
-+
-+		- 0: No beeps
-+		- 1: Beeps
-+
-+		RW
-+
-+What:		/sys/class/hwmon/hwmonX/samples
-+Description:
-+		Samples in calculated average.
-+
-+		Applies to all types of channels.
-+
-+		RW
-+
- What:		/sys/class/hwmon/hwmonX/inY_min
- Description:
- 		Voltage min value.
-@@ -194,6 +211,76 @@ Description:
- 
- 		RO
- 
-+What:		/sys/class/hwmon/hwmonX/inY_alarm
-+Description:
-+		Voltage channel alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/inY_min_alarm
-+Description:
-+		Voltage min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/inY_max_alarm
-+Description:
-+		Voltage max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/inY_lcrit_alarm
-+Description:
-+		Voltage critical min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/inY_crit_alarm
-+Description:
-+		Voltage critical max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/inY_beep
-+Description:
-+		Voltage channel beep.
-+
-+		- 0: Disable
-+		- 1: Enable
-+
-+		RW
-+
-+What:		/sys/class/hwmon/hwmonX/in_samples
-+Description:
-+		Voltage samples in calculated average.
-+
-+		RW
-+
- What:		/sys/class/hwmon/hwmonX/fanY_min
- Description:
- 		Fan minimum value.
-@@ -283,6 +370,48 @@ Description:
- 
- 		RW
- 
-+What:		/sys/class/hwmon/hwmonX/fanY_alarm
-+Description:
-+		Fan channel alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/fanY_min_alarm
-+Description:
-+		Fan min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/fanY_max_alarm
-+Description:
-+		Fan max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/fanY_beep
-+Description:
-+		Fan channel beep.
-+
-+		- 0: Disable
-+		- 1: Enable
-+
-+		RW
-+
- What:		/sys/class/hwmon/hwmonX/fanY_fault
- Description:
- 		Fan channel fault indicator.
-@@ -468,20 +597,6 @@ Description:
- 
- 		RW
- 
--What:		/sys/class/hwmon/hwmonX/tempY_crit_alarm
--Description:
--		Temperature critical max alarm indicator.
--
--		Contrary to regular alarm flags which clear themselves
--		automatically when read, this one sticks until cleared by
--		the user. This is done by writing 0 to the file. Writing
--		other values is unsupported.
--
--		- 0: No alarm
--		- 1: Alarm
--
--		RW
--
- What:		/sys/class/hwmon/hwmonX/tempY_crit_hyst
- Description:
- 		Temperature hysteresis value for critical limit.
-@@ -645,6 +760,101 @@ Description:
- 
- 		RO
- 
-+What:		/sys/class/hwmon/hwmonX/tempY_alarm
-+Description:
-+		Temperature channel alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_min_alarm
-+Description:
-+		Temperature min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_max_alarm
-+Description:
-+		Temperature max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_lcrit_alarm
-+Description:
-+		Temperature critical min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_crit_alarm
-+Description:
-+		Temperature critical max alarm indicator.
-+
-+		Contrary to regular alarm flags which clear themselves
-+		automatically when read, this one sticks until cleared by
-+		the user. This is done by writing 0 to the file. Writing
-+		other values is unsupported.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RW
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_emergency_alarm
-+Description:
-+		Temperature emergency max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_beep
-+Description:
-+		Temperature channel beep.
-+
-+		- 0: Disable
-+		- 1: Enable
-+
-+		RW
-+
-+What:		/sys/class/hwmon/hwmonX/tempY_fault
-+Description:
-+		Temperature channel fault indicator.
-+
-+		Indicates whether a temperature sensor has reported failure.
-+
-+		- 0: OK
-+		- 1: Failed
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/temp_samples
-+Description:
-+		Temperature samples in calculated average.
-+
-+		RW
-+
- What:		/sys/class/hwmon/hwmonX/currY_max
- Description:
- 		Current max value.
-@@ -748,6 +958,76 @@ Description:
- 
- 		RO
- 
-+What:		/sys/class/hwmon/hwmonX/currY_alarm
-+Description:
-+		Current channel alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/currY_min_alarm
-+Description:
-+		Current min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/currY_max_alarm
-+Description:
-+		Current max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/currY_lcrit_alarm
-+Description:
-+		Current critical min alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/currY_crit_alarm
-+Description:
-+		Current critical max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/currY_beep
-+Description:
-+		Current channel beep.
-+
-+		- 0: Disable
-+		- 1: Enable
-+
-+		RW
-+
-+What:		/sys/class/hwmon/hwmonX/curr_samples
-+Description:
-+		Current samples in calculated average.
-+
-+		RW
-+
- What:		/sys/class/hwmon/hwmonX/powerY_average
- Description:
- 		Average power use.
-@@ -950,6 +1230,56 @@ Description:
- 
- 		RO
- 
-+What:		/sys/class/hwmon/hwmonX/powerY_alarm
-+Description:
-+		Power channel alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/powerY_cap_alarm
-+Description:
-+		Power reduction alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/powerY_max_alarm
-+Description:
-+		Power max alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/powerY_crit_alarm
-+Description:
-+		Power critical reduction alarm indicator.
-+
-+		Clears itself when read.
-+
-+		- 0: No alarm
-+		- 1: Alarm
-+
-+		RO
-+
-+What:		/sys/class/hwmon/hwmonX/power_samples
-+Description:
-+		Power samples in calculated average.
-+
-+		RW
-+
- What:		/sys/class/hwmon/hwmonX/energyY_input
- Description:
- 		Cumulative energy use.
++MAX31827 TEMPERATURE SWITCH DRIVER
++M:	Daniel Matyas <daniel.matyas@analog.com>
++L:	linux-hwmon@vger.kernel.org
++S:	Supported
++W:	http://ez.analog.com/community/linux-device-drivers
++F:	Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
++
+ MAX6650 HARDWARE MONITOR AND FAN CONTROLLER DRIVER
+ L:	linux-hwmon@vger.kernel.org
+ S:	Orphan
 -- 
 2.34.1
 
