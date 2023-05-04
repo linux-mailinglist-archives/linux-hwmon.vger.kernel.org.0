@@ -2,61 +2,59 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CE26F6C43
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 May 2023 14:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F9B6F6CDC
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 May 2023 15:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230054AbjEDMtP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 4 May 2023 08:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35982 "EHLO
+        id S230415AbjEDNWf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 4 May 2023 09:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbjEDMtO (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 4 May 2023 08:49:14 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BCC46BC;
-        Thu,  4 May 2023 05:49:12 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1aaea43def7so2758395ad.2;
-        Thu, 04 May 2023 05:49:12 -0700 (PDT)
+        with ESMTP id S230116AbjEDNWe (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 4 May 2023 09:22:34 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ECFB7287;
+        Thu,  4 May 2023 06:22:32 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1aae5c2423dso4198485ad.3;
+        Thu, 04 May 2023 06:22:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683204552; x=1685796552;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=3eTx8//Xlq98RhegbKOFCwEKS6An67n30e6DTdIdf/s=;
-        b=RX+xe3/tFv2H00KARY7JR976csVy4Ps03Qll6tetmq+bU94GpMcCDKMwctZSS8qWaP
-         8Z5NZ1EL2RNhUySojkPdwxt9pkZ1KSmwDIBugCyJYgHqEo00pggCfEuLf2lnLqzt98B4
-         xHJG/d8aemBrYvnUkqqUnyxJzd+sG52BN1bSJj2uuD7Yz675S+XuJnUC6zCp2hEzAUKm
-         ESmxyQkLpU4ojPfPRC93yy4qMCdt94y/nILkviDADuJP2xxsmgiBk1DXOFZ79NMS59ZQ
-         dBNA8FXM6wXyPATozl7znsK8BkioGvyDKp/PUuXaOpjWRrSvIAJ3VFrbr/rfT1ycqAuw
-         yReQ==
+        d=gmail.com; s=20221208; t=1683206552; x=1685798552;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u14w9Db8FRnRiYl/W2vTJzJDW7gWiV35+3dlhbVjvP0=;
+        b=R4tTppS3KooIO5vQVGnhJJDadAUMGVU39uYhwS2D0wsr0g9BBKLS0BactC5EYZz/St
+         j5vuDQhALF3V78OVMXwW2WrhZi55nBMXMALghydYbn22n+ZiIyuU8n1ZHW80HYyUVVup
+         nr/ypDAXALuBd7zjhm+rVtUg56wQb/vaNjoLwO0OcHhyvutLvrJj91qHbHV9P5dNupXZ
+         IkGioN4feZRZ0QBdjlb1llkJne/+7SDr7R9nP7QLge5D6pZMeCJGro/r/sb7fksdt7cC
+         hb3fWsJSdJqmvuotXqQjSCeAcLDBsnQDgmH+rEVow0hCuz5/rG0knc5RwxsbvxswzxFp
+         t19w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683204552; x=1685796552;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3eTx8//Xlq98RhegbKOFCwEKS6An67n30e6DTdIdf/s=;
-        b=EUtTN+WZUJHz2chZWqd37DBzaDIAyxA89/YC+9HyeiGJ5j3VLzQ6kaDkuPIuGQxyJz
-         8DW6ZfZfnWYttUAXwltee7XpKm9zQuRh8nLjT1I4t08doY7TfKv0O4x/Rmdug02uCAt4
-         MnPJk9vrjfhHHc5Q8JOzQ+wwztw7Itis4xbafL+HYb2jxYJGdgSMNH5wNtSYIs8zQmXa
-         uAuPNBLqC462fjQSKDY9SqxCwZ5XuanO9nPG6zOTy8kuLvGP193nCWW5eK3UwYJgpimb
-         thPhUxeh4u8XPZeFMNyBzm45fkQWh5YRqPo8MlnH25pcbZs8Ksbu031c9WoQZjI1fqSV
-         zNrA==
-X-Gm-Message-State: AC+VfDwqwncW4ne7TF7ZuEg9D0Itg7cDEAA/5bU+Tl+U4uq31JpzVCd0
-        q79b7XVGgIKFxfquZgXtNiE=
-X-Google-Smtp-Source: ACHHUZ6YjD63LVluTvhKWFdhd3g8wHAqPS09Nx27vrwSvNZszsR+OmxttTgWYqzfsznJP1GXJDZ0zg==
-X-Received: by 2002:a17:902:aa81:b0:1aa:f53a:5e47 with SMTP id d1-20020a170902aa8100b001aaf53a5e47mr2865082plr.16.1683204552056;
-        Thu, 04 May 2023 05:49:12 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683206552; x=1685798552;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u14w9Db8FRnRiYl/W2vTJzJDW7gWiV35+3dlhbVjvP0=;
+        b=K5ZbADO08pZs92aMmxSg+WFIIB5iVLVlKOQL8/JQe41DQN/B2GwfLscHS9s67xtkfr
+         1Ka/wFVeGbhvPXOYn1Q7qaEaU9Sgf0+xrxomYnryJ87Rx9bZFgEWfjsr674gkoRF5hZ4
+         xAlg6b0y3C9/erN34LSlk2CiL4F7ZWRxWPYmr0tIY8fQ7fm9mQwreB+Bc2MEEl2ydtu7
+         XJnKONxAAMkTqGwcdcRqSFqjFnQDvhnC/FFzhJiBGQ0v5kgBP/+NT4d3nhi5dhQdm2xS
+         yDBLf5nivdAPj528eXo2ZVm3nkBLY7lRUG1+ZE4PvujRYW7WKwJNyNsZR14yGriOmR3n
+         990A==
+X-Gm-Message-State: AC+VfDykunbzvjyP9n12KLGg7Sd3nIP2azdU7Uc5C5aPgNhlHyFrkQRy
+        OpnR2ohvA1MFzBMr86/Tudw=
+X-Google-Smtp-Source: ACHHUZ7Kw9K14MJHpSQreseEaiLBnuBwTzp5natlpenI9iy0iauRJa6eWxvSafJaNHb940efDYhhgw==
+X-Received: by 2002:a17:903:190:b0:1a5:167f:620f with SMTP id z16-20020a170903019000b001a5167f620fmr4569738plg.15.1683206551491;
+        Thu, 04 May 2023 06:22:31 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id w4-20020a170902904400b001aaf7927003sm7267273plz.210.2023.05.04.05.49.10
+        by smtp.gmail.com with ESMTPSA id q15-20020a170902dacf00b001a9becbd9c3sm11913406plx.134.2023.05.04.06.22.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 May 2023 05:49:11 -0700 (PDT)
+        Thu, 04 May 2023 06:22:30 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <bceeb864-0639-bcf9-495f-8aa1de299a86@roeck-us.net>
-Date:   Thu, 4 May 2023 05:49:09 -0700
+Message-ID: <350d7329-aeb1-2661-2b76-17e0a395ce0c@roeck-us.net>
+Date:   Thu, 4 May 2023 06:22:28 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v4 2/2] hwmon: max31827: add MAX31827 driver
 Content-Language: en-US
 To:     Daniel Matyas <daniel.matyas@analog.com>
 Cc:     Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
@@ -67,6 +65,7 @@ Cc:     Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
 References: <20230504093933.70660-1-daniel.matyas@analog.com>
  <20230504093933.70660-2-daniel.matyas@analog.com>
 From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v4 2/2] hwmon: max31827: add MAX31827 driver
 In-Reply-To: <20230504093933.70660-2-daniel.matyas@analog.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
@@ -93,10 +92,8 @@ On 5/4/23 02:39, Daniel Matyas wrote:
 > 
 > Signed-off-by: Daniel Matyas <daniel.matyas@analog.com>
 
-Please provide change logs with your patches.
-
-Thanks,
-Guenter
+Thanks to missing change log, this review is incomplete
+and just mentions a few obvious problems.
 
 > ---
 >   Documentation/hwmon/index.rst    |   1 +
@@ -306,8 +303,23 @@ Guenter
 > +
 > +#define LONG_MASK	0xFFFFFFFFFFFFFFFF
 > +
+
+This would be ULLONG_MAX, but I don't really see ..
+
 > +#define MAX31827_16_BIT_TO_M_DGR(x)	((long)(~(~(x) & LONG_MASK)) * 1000 >> 4)
+
+... the point here. Masking anything against 0xFFFFFFFFFFFFFFFF doesn't do
+any good, and the register values are really 13 bit wide with the upper 4 bit
+reflecting the sign. Using one of the sign_extend() variants would be more
+appropriate to calculate the temperature. I also don't understand
+the shift since temperature values are supposedly - per datasheet -
+aligned to bit 0.
+
 > +#define MAX31827_M_DGR_TO_16_BIT(x)	(((x) << 4) / 1000)
+
+Same here. This seems to drop the lower 4 temperature bits (fractions)
+for no good reason.
+
 > +#define MAX31827_DEVICE_ENABLE(x)	((x) ? 0xA : 0x0)
 > +
 > +struct max31827_state {
@@ -347,9 +359,16 @@ Guenter
 > +	if (!st->enable)
 > +		return regmap_write(st->regmap, reg, val);
 > +
+
+Hang guaranteed here.
+
 > +	ret = regmap_read(st->regmap, MAX31827_CONFIGURATION_REG, &cfg);
 > +	if (ret)
 > +		return ret;
+
+... and here and everywhere else where the function returns without
+releasing the mutex.
+
 > +
 > +	tmp = cfg & ~(MAX31827_CONFIGURATION_1SHOT_MASK |
 > +		      MAX31827_CONFIGURATION_CNV_RATE_MASK);
@@ -430,6 +449,9 @@ Guenter
 > +							 1);
 > +				if (ret)
 > +					return ret;
+
+Another hang due to lacking mutex_unlock().
+
 > +
 > +				msleep(MAX31827_12_BIT_CNV_TIME);
 > +			}
@@ -521,6 +543,12 @@ Guenter
 > +		return ret;
 > +
 > +	return 0;
+
+just
+	return ret;
+
+would do the same.
+
 > +}
 > +
 > +static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
@@ -590,6 +618,9 @@ Guenter
 > +
 > +			if (!val)
 > +				return -EOPNOTSUPP;
+
+Might as well return from default: above.
+
 > +
 > +			val = FIELD_PREP(MAX31827_CONFIGURATION_CNV_RATE_MASK,
 > +					 val);
