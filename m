@@ -2,108 +2,103 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D80DD6F7C2C
-	for <lists+linux-hwmon@lfdr.de>; Fri,  5 May 2023 07:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD1AD6F8058
+	for <lists+linux-hwmon@lfdr.de>; Fri,  5 May 2023 11:48:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbjEEFDf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 5 May 2023 01:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47910 "EHLO
+        id S231871AbjEEJsm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 5 May 2023 05:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjEEFDe (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 5 May 2023 01:03:34 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026EC3C3A;
-        Thu,  4 May 2023 22:03:33 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-52c6504974dso1108874a12.2;
-        Thu, 04 May 2023 22:03:32 -0700 (PDT)
+        with ESMTP id S231790AbjEEJsg (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 5 May 2023 05:48:36 -0400
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5E219D42
+        for <linux-hwmon@vger.kernel.org>; Fri,  5 May 2023 02:48:28 -0700 (PDT)
+Received: by mail-qv1-xf41.google.com with SMTP id 6a1803df08f44-619bebafb65so7586146d6.0
+        for <linux-hwmon@vger.kernel.org>; Fri, 05 May 2023 02:48:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683263012; x=1685855012;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9P08im9sPfCiPnd7jByL05GkSqJFCFxG7xsuCu021rc=;
-        b=q8HM1T5uCbzfzDlEbKV08u3a/aqw6+7ouKpsUrq6qyKhR3gal0y6Jm7vCM7S71lmYj
-         1oLYzPZDJhW/0oHO/F9cbDWz5BbeYFRCF6v4GsjMYusdmk421xKWysoGoH/Go7yYjmKd
-         EXsqMc8LDx4MqJ674Wp4DnosnjSssZTakDFftrLvwNPNqh+dkuE4y4W2hgfi++Vy07Zo
-         MtS6zMw9sEOE9WP1JXj2PjHGbdil6b2xclggUURoHF4aEpxg9w9Afic3N5K8kaNEAaWs
-         FoJJvHBrJcSBKosFCFW1epkWYwZYH2KfuC3ONx2zOPgHB4Xa4SAJEKJjqLeqFasZHxj/
-         2GZw==
+        d=gmail.com; s=20221208; t=1683280107; x=1685872107;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MFG1KNlvf1Axxy9iiCRuF2Wv9mzsHvQM12J2RA1vN6Q=;
+        b=fJzWOHnqtVxlrWcvLkxqRGarsb9pr2QrY0Jrv9Wx3k3NxzSEJ2lZ94r66xs6Y/N2ry
+         5e+RSNx1WzmJ6sg/syA7zxkKTYeO278gGR5SUbh4ax+Rh18iuE6V3FEWVSSu7ikcwlMA
+         oOVtbeCtbZzYCYcAOuQRIEncM6SXAMyFcASWwyTvixyegzFS6tiQKMqrMDNLszlNh3kJ
+         ia/JnSkwONojZMfFowEWARnu4qPssfx6i4YvdYHGleK1CCgO4XUpSQIQIJbhEECMOhTf
+         WGE3CYJ2UjCShqBHIqiANBum1HDeyyNt0UN/YGnQXCkqO8fIy8FbxkGv/iPHR+JH8+Ay
+         F3bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683263012; x=1685855012;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9P08im9sPfCiPnd7jByL05GkSqJFCFxG7xsuCu021rc=;
-        b=WeXLNppndkfrZyZnZxm5qdeXr6UfaQddNEEM6ZPNv6h617PaLKOumq3+ITCrn+RuoQ
-         76U4FBY7jNlVFJ5EeIxEOr0wL1kxFkEE6dPR66EkgmsFOpm8KmMzhODnkj0CGZ4QxsrW
-         LKgR0IBIrNcyZYIRgy8uwxzqe8NesWBElHQi98HjZ/BRp0ZEL0FfNQ0QpSxuhSvKhHA7
-         lM7+N1q4lsMDXdDvn8fa/2IB2U9xBKW8VfhjFvN4yyNgrf7iE23XpWWdvd97dAoV1+Dq
-         Kgn8y4QqEF/UHJ3biyeYwyEq0kEM1DqmQmH5aYUYVsIx8GSPZL/24ua0OJFrOLGHb2j1
-         aDYw==
-X-Gm-Message-State: AC+VfDwKbOFjtUxH7iAI4r1r4UXF5uPyWzWz0kxaFH/YcS4IolETRt+L
-        qIfAkpwf5Z/rhPXHYPjMxhk=
-X-Google-Smtp-Source: ACHHUZ7UEaifxFSFaaQhmiKJiRCxXq6tFGzRcH07iM296lkhN/Rk5255PRVQMiXSh6OYEGdCn2MJ/A==
-X-Received: by 2002:a05:6a20:1608:b0:f2:c2a3:3a1 with SMTP id l8-20020a056a20160800b000f2c2a303a1mr274751pzj.43.1683263012397;
-        Thu, 04 May 2023 22:03:32 -0700 (PDT)
-Received: from debian.me (subs03-180-214-233-25.three.co.id. [180.214.233.25])
-        by smtp.gmail.com with ESMTPSA id t9-20020a635f09000000b00514256c05c2sm665250pgb.7.2023.05.04.22.03.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 May 2023 22:03:31 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 3A353106861; Fri,  5 May 2023 12:03:29 +0700 (WIB)
-Date:   Fri, 5 May 2023 12:03:29 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     James Seo <james@equiv.tech>, Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC 08/11] Documentation/hwmon: Revise userspace tools
- documentation
-Message-ID: <ZFSOIXLCnd01ofBv@debian.me>
-References: <20230504075752.1320967-1-james@equiv.tech>
- <20230504075752.1320967-9-james@equiv.tech>
+        d=1e100.net; s=20221208; t=1683280107; x=1685872107;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MFG1KNlvf1Axxy9iiCRuF2Wv9mzsHvQM12J2RA1vN6Q=;
+        b=iGVrgO6FZNr9aHwKvpzH0t/G4dsmtiuBuhEnapbRzi2gZ73Y5wUnD+q57mMVqUHUb7
+         gOwYb+bCGO8/RkGESBmojcTJQGpfWqHdHEpq1OQzOLLvNSzkAt2YVYpiBxn6Xd53yLMW
+         vXqDwSsasvUZ0p5lREeZO1CsZDmJzKG/vxDOgp/Ihurmb+mGo8Sj7pHOye38AZ21xSwq
+         GkMGHnONTLXSjetKSWet55CmSm6ZzliLCaS+/9VhmHfUisrCeXft75dI1k5XVK1kvuBu
+         BSvAlgSfVYCyYbF2HYg3Ybv7iWYUK6+yO81SbNT27MeguhtNcLGxemyfCqELGLUYIQeP
+         UEPA==
+X-Gm-Message-State: AC+VfDytqM6t9D5t012iMs1pddtW61ZqnETHGVIFUsp34Fvlf45w6fGA
+        h7AxsZMu1L0BaORGvBHWGH+5KepV0Q2fqGiaZDA=
+X-Google-Smtp-Source: ACHHUZ66bqyCJ3lPilgel0p6T0TsqfwnwHbphiLK8KBs4adNaRspwJz9GJu5L9uqYtm4VuQtcsyhdwULqhp8G2MLxkw=
+X-Received: by 2002:a05:6214:d04:b0:61a:d6af:cb00 with SMTP id
+ 4-20020a0562140d0400b0061ad6afcb00mr1048488qvh.9.1683280107112; Fri, 05 May
+ 2023 02:48:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230504075752.1320967-9-james@equiv.tech>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a0c:8b81:0:b0:5e9:aa07:4602 with HTTP; Fri, 5 May 2023
+ 02:48:26 -0700 (PDT)
+Reply-To: lschantal86@gmail.com
+From:   "L.S Chantal" <okorita23@gmail.com>
+Date:   Fri, 5 May 2023 09:48:26 +0000
+Message-ID: <CAAOeSbRfoPozaiutacs7mQT4coJt2=2+orwinUJ_FCNprTA_Bw@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,HK_SCAM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:f41 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [okorita23[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [okorita23[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [lschantal86[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  1.5 HK_SCAM No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, May 04, 2023 at 12:57:49AM -0700, James Seo wrote:
-> +If needed, sources may be found at https://hwmon.wiki.kernel.org/lm_sensors.
-> +Basic compilation, installation, and uninstallation may be accomplished with
-> +``make all``, ``make install``, and ``make uninstall``, respectively.
-> +
+SANTANDER BANK COMPENSATION UNIT, IN AFFILIATION WITH THE UNITED NATION.
+Your compensation fund of =E2=82=AC5.1 million is ready for payment
+contact me for more details.
 
-The sources is on GitHub:
-
----- >8 ----
-diff --git a/Documentation/hwmon/userspace-tools.rst b/Documentation/hwmon/userspace-tools.rst
-index 79c932954e4af5..fd96ea92f72eea 100644
---- a/Documentation/hwmon/userspace-tools.rst
-+++ b/Documentation/hwmon/userspace-tools.rst
-@@ -44,9 +44,9 @@ Most Linux distributions provide the ``lm-sensors`` suite as a package.
- It is recommended that you use this package for ease of installation.
- Please consult your Linux distribution's documentation for more information.
- 
--If needed, sources may be found at https://hwmon.wiki.kernel.org/lm_sensors.
--Basic compilation, installation, and uninstallation may be accomplished with
--``make all``, ``make install``, and ``make uninstall``, respectively.
-+If the distribution package isn't available, sources can be obtained at
-+`GitHub <https://github.com/lm-sensors/lm-sensors>`_.
-+See ``INSTALL`` in the sources for how to build the suite.
- 
- Usage
- -----
-
-Thanks.
-
--- 
-An old man doll... just what I always wanted! - Clara
+Thanks
