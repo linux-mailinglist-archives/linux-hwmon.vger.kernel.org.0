@@ -2,112 +2,269 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71152718625
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 May 2023 17:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EC087187A8
+	for <lists+linux-hwmon@lfdr.de>; Wed, 31 May 2023 18:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234479AbjEaPXv (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 31 May 2023 11:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48264 "EHLO
+        id S229862AbjEaQmz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 31 May 2023 12:42:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231978AbjEaPXr (ORCPT
+        with ESMTP id S229520AbjEaQmy (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 31 May 2023 11:23:47 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9EDE124;
-        Wed, 31 May 2023 08:23:39 -0700 (PDT)
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-        by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34VELxD3009600;
-        Wed, 31 May 2023 15:23:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : subject :
- date : message-id : in-reply-to : references; s=pps0720;
- bh=jkoniqcaQ3QwA/dNTCAEkwMUccz2KwMfrVwhC5MWvFE=;
- b=e8DCK/1UjL4HAuY3VomQE+UxqKDfafSihfCkLwQRp6/bZKix+6xdakijyce28XLqQM6N
- QXq3vCo8tgTTMbNIpFi2/kjf/o3koNL3uz/JUIbBmkIlek0FtfKPnazaGzY/CVSUr7mp
- ppFmRc9gc7XwV9dyoEm/x5S2T2MJkWiDwmY7cQ3dn4bmhNc0VAhkeY3cTCEV9cHQxedQ
- LDmReM45XLmeEbzzs08gkSAN0eluWbQUvIxFDtx1fyGiNBgEJpaMI7jWUJ1zwhObQxpd
- nsZ1UmyC4Ld7t4A3gN3RZtT1cp2Wg2qPdo+dCvDiRWovPjeeczDsWR0Ko4lODJMSfxjQ 4Q== 
-Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
-        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3qwne9stek-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 31 May 2023 15:23:15 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id EC04514791;
-        Wed, 31 May 2023 15:23:14 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 64CF9806B4C;
-        Wed, 31 May 2023 15:23:14 +0000 (UTC)
-From:   nick.hawkins@hpe.com
-To:     verdun@hpe.com, nick.hawkins@hpe.com, linus.walleij@linaro.org,
+        Wed, 31 May 2023 12:42:54 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041FA12C;
+        Wed, 31 May 2023 09:42:53 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-64d44b198baso926101b3a.0;
+        Wed, 31 May 2023 09:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685551372; x=1688143372;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hp1iyYuSXGdZgXFgvFkqzrcL5409CMPQscypykwCUa0=;
+        b=qtpBDa4wfXFgH6cnSME8/dDLkC3F5WPDX7HhJ3E/ShmbLSFQJFmHm1Kak1DX3gwApi
+         AwELC0HkXlPQ59iLnDaV/e3JOjSCSdZyHrfAlHIHTdBaXhcgpASivcSzzL6uguzQvxXL
+         PSIwy3V7TMIQYlEQuZ9N9Fqrgm0vsX4RgVJ9QVlZ7wcGG9levJ1vJjAKaJbwsGiuFMRF
+         f+BoLkd2ng6ihAU+0Ig1w0LSXO2dhsLpoJbmLUuhaFymiReo9EdggLSZX6ECpWfj0GNp
+         jDyYklYxuYe6Hj0u+GQqlIhpgqYiFDdPLz1XFeR/LmiH9kfD+VJe7l1n095KNLlrrfUs
+         1VMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685551372; x=1688143372;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hp1iyYuSXGdZgXFgvFkqzrcL5409CMPQscypykwCUa0=;
+        b=JhiL+hSIycd44NxobC2RBgCZH7+G/HrkIfsHUHxanwZSltQwM8Q0CwnGAuuvZr5SeG
+         yQsc4w+mQFayy/zZrGkKK0FPpezQtIJK4c7c1k7W5y/XD1e7jcszctGowqF49jKaVGmM
+         4+IqTDaapkbIBnkJPgF6425RTn96RhU/9puPo/dX9CL80HjZ1bbXQUNG9teonL7kIMrA
+         4PoTfx3/moLnhSGihuPxpVeOpofMBYqgMU2xgyPMITW2m8Wikj82xzCb74fRq5QE8uQF
+         kMqgb+ufpM4bpR1V8slU2Dk7yYBG4tvsHS4+4t3CL+locuUdtGxDNfW1lfTv5voEa5ua
+         dUcw==
+X-Gm-Message-State: AC+VfDy4L7r7BwhcgKEKG5AofxdOjuScX0DgMuVrs3xsEu1BV9KPQLZe
+        A3oA1kVE6liHBCNEvGHIzOU=
+X-Google-Smtp-Source: ACHHUZ42qUfIN6ffalR9gqA9UAUPucFU/LVgXATHaxj44L16PTCJII+lWPKCm+NCxM1ASwC5MshzTw==
+X-Received: by 2002:a05:6a00:1509:b0:5a8:9858:750a with SMTP id q9-20020a056a00150900b005a89858750amr6846557pfu.13.1685551372220;
+        Wed, 31 May 2023 09:42:52 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l6-20020a654486000000b0050927cb606asm1388351pgq.13.2023.05.31.09.42.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 May 2023 09:42:51 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <07b2a2f7-5ddc-0f10-6b1f-184dc21fa580@roeck-us.net>
+Date:   Wed, 31 May 2023 09:42:48 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To:     nick.hawkins@hpe.com, verdun@hpe.com, linus.walleij@linaro.org,
         brgl@bgdev.pl, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, jdelvare@suse.com,
-        linux@roeck-us.net, andy.shevchenko@gmail.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: [PATCH v2 5/5] MAINTAINERS: hpe: Add GPIO
-Date:   Wed, 31 May 2023 10:19:18 -0500
-Message-Id: <20230531151918.105223-6-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230531151918.105223-1-nick.hawkins@hpe.com>
+        andy.shevchenko@gmail.com, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
 References: <20230531151918.105223-1-nick.hawkins@hpe.com>
-X-Proofpoint-GUID: 2vS5v5J3RwbX9yq7goRn6V6fvxGKeCS3
-X-Proofpoint-ORIG-GUID: 2vS5v5J3RwbX9yq7goRn6V6fvxGKeCS3
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_10,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 clxscore=1015 adultscore=0 spamscore=0 mlxlogscore=948
- priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305310131
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+ <20230531151918.105223-5-nick.hawkins@hpe.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v2 4/5] hwmon: (gxp_fan_ctrl) Provide fan info via gpio
+In-Reply-To: <20230531151918.105223-5-nick.hawkins@hpe.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+On 5/31/23 08:19, nick.hawkins@hpe.com wrote:
+> From: Nick Hawkins <nick.hawkins@hpe.com>
+> 
+> The fan driver now receives fan data from GPIO via a shared variable.
 
-List the files added for GPIO.
+No, it is not necessary. The driver can and should get the GPIO data using
+the gpio API.
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+> This is a necessity as the Host and the driver need access to the same
+> information. Part of the changes includes removing a system power check
+> as the GPIO driver needs it to report power state to host.
+> 
+> Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
+> 
+> ---
+> 
+> v2:
+>   *Removed use of shared functions to GPIO in favor of a shared variable
+>   *Added build dependency on GXP GPIO driver.
+> ---
+>   drivers/hwmon/Kconfig        |  2 +-
+>   drivers/hwmon/gxp-fan-ctrl.c | 61 +++++-------------------------------
+>   drivers/hwmon/gxp-gpio.h     | 13 ++++++++
+>   3 files changed, 21 insertions(+), 55 deletions(-)
+>   create mode 100644 drivers/hwmon/gxp-gpio.h
+> 
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index 5b3b76477b0e..5c606bea31f9 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
+> @@ -716,7 +716,7 @@ config SENSORS_GPIO_FAN
+>   
+>   config SENSORS_GXP_FAN_CTRL
+>   	tristate "HPE GXP fan controller"
+> -	depends on ARCH_HPE_GXP || COMPILE_TEST
+> +	depends on (ARCH_HPE_GXP  && GPIO_GXP_PL) || COMPILE_TEST
 
----
+Compile test will fail badly unless those external variables
+are declared.
 
-v2:
- *Removed reference to PSU changes as they have been discarded.
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a3b14ec33830..6157d9466a58 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2239,6 +2239,7 @@ M:	Nick Hawkins <nick.hawkins@hpe.com>
- S:	Maintained
- F:	Documentation/hwmon/gxp-fan-ctrl.rst
- F:	Documentation/devicetree/bindings/arm/hpe,gxp.yaml
-+F:	Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml
- F:	Documentation/devicetree/bindings/hwmon/hpe,gxp-fan-ctrl.yaml
- F:	Documentation/devicetree/bindings/i2c/hpe,gxp-i2c.yaml
- F:	Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
-@@ -2247,6 +2248,7 @@ F:	arch/arm/boot/dts/hpe-bmc*
- F:	arch/arm/boot/dts/hpe-gxp*
- F:	arch/arm/mach-hpe/
- F:	drivers/clocksource/timer-gxp.c
-+F:	drivers/gpio/gpio-gxp.c
- F:	drivers/hwmon/gxp-fan-ctrl.c
- F:	drivers/i2c/busses/i2c-gxp.c
- F:	drivers/spi/spi-gxp.c
--- 
-2.17.1
+>   	help
+>   	  If you say yes here you get support for GXP fan control functionality.
+>   
+> diff --git a/drivers/hwmon/gxp-fan-ctrl.c b/drivers/hwmon/gxp-fan-ctrl.c
+> index 0014b8b0fd41..8555231328d7 100644
+> --- a/drivers/hwmon/gxp-fan-ctrl.c
+> +++ b/drivers/hwmon/gxp-fan-ctrl.c
+> @@ -1,5 +1,5 @@
+>   // SPDX-License-Identifier: GPL-2.0-only
+> -/* Copyright (C) 2022 Hewlett-Packard Enterprise Development Company, L.P. */
+> +/* Copyright (C) 2023 Hewlett-Packard Enterprise Development Company, L.P. */
+>   
+>   #include <linux/bits.h>
+>   #include <linux/err.h>
+> @@ -8,51 +8,28 @@
+>   #include <linux/module.h>
+>   #include <linux/of_device.h>
+>   #include <linux/platform_device.h>
+> +#include "gxp-gpio.h"
+>   
+>   #define OFS_FAN_INST	0 /* Is 0 because plreg base will be set at INST */
+>   #define OFS_FAN_FAIL	2 /* Is 2 bytes after base */
+> -#define OFS_SEVSTAT	0 /* Is 0 because fn2 base will be set at SEVSTAT */
+> -#define POWER_BIT	24
+>   
+>   struct gxp_fan_ctrl_drvdata {
+> -	void __iomem	*base;
+> -	void __iomem	*plreg;
+> -	void __iomem	*fn2;
+> +	void __iomem *base;
+>   };
+>   
+>   static bool fan_installed(struct device *dev, int fan)
+>   {
+> -	struct gxp_fan_ctrl_drvdata *drvdata = dev_get_drvdata(dev);
+> -	u8 val;
+> -
+> -	val = readb(drvdata->plreg + OFS_FAN_INST);
+> -
+> -	return !!(val & BIT(fan));
+> +	return !!(fan_presence & BIT(fan));
+>   }
+>   
+>   static long fan_failed(struct device *dev, int fan)
+>   {
+> -	struct gxp_fan_ctrl_drvdata *drvdata = dev_get_drvdata(dev);
+> -	u8 val;
+> -
+> -	val = readb(drvdata->plreg + OFS_FAN_FAIL);
+> -
+> -	return !!(val & BIT(fan));
+> +	return !!(fan_fail & BIT(fan));
+>   }
+>   
+>   static long fan_enabled(struct device *dev, int fan)
+>   {
+> -	struct gxp_fan_ctrl_drvdata *drvdata = dev_get_drvdata(dev);
+> -	u32 val;
+> -
+> -	/*
+> -	 * Check the power status as if the platform is off the value
+> -	 * reported for the PWM will be incorrect. Report fan as
+> -	 * disabled.
+> -	 */
+> -	val = readl(drvdata->fn2 + OFS_SEVSTAT);
+> -
+> -	return !!((val & BIT(POWER_BIT)) && fan_installed(dev, fan));
+> +	return !!(fan_installed(dev, fan));
+
+Unnecessary () around function call.
+
+>   }
+>   
+>   static int gxp_pwm_write(struct device *dev, u32 attr, int channel, long val)
+> @@ -98,20 +75,8 @@ static int gxp_fan_read(struct device *dev, u32 attr, int channel, long *val)
+>   static int gxp_pwm_read(struct device *dev, u32 attr, int channel, long *val)
+>   {
+>   	struct gxp_fan_ctrl_drvdata *drvdata = dev_get_drvdata(dev);
+> -	u32 reg;
+>   
+> -	/*
+> -	 * Check the power status of the platform. If the platform is off
+> -	 * the value reported for the PWM will be incorrect. In this case
+> -	 * report a PWM of zero.
+> -	 */
+> -
+> -	reg = readl(drvdata->fn2 + OFS_SEVSTAT);
+> -
+> -	if (reg & BIT(POWER_BIT))
+> -		*val = fan_installed(dev, channel) ? readb(drvdata->base + channel) : 0;
+> -	else
+> -		*val = 0;
+> +	*val = fan_installed(dev, channel) ? readb(drvdata->base + channel) : 0;
+>   
+>   	return 0;
+>   }
+> @@ -212,18 +177,6 @@ static int gxp_fan_ctrl_probe(struct platform_device *pdev)
+>   		return dev_err_probe(dev, PTR_ERR(drvdata->base),
+>   				     "failed to map base\n");
+>   
+> -	drvdata->plreg = devm_platform_ioremap_resource_byname(pdev,
+> -							       "pl");
+> -	if (IS_ERR(drvdata->plreg))
+> -		return dev_err_probe(dev, PTR_ERR(drvdata->plreg),
+> -				     "failed to map plreg\n");
+> -
+> -	drvdata->fn2 = devm_platform_ioremap_resource_byname(pdev,
+> -							     "fn2");
+> -	if (IS_ERR(drvdata->fn2))
+> -		return dev_err_probe(dev, PTR_ERR(drvdata->fn2),
+> -				     "failed to map fn2\n");
+> -
+>   	hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev,
+>   							 "hpe_gxp_fan_ctrl",
+>   							 drvdata,
+> diff --git a/drivers/hwmon/gxp-gpio.h b/drivers/hwmon/gxp-gpio.h
+> new file mode 100644
+> index 000000000000..88abe60bbe83
+> --- /dev/null
+> +++ b/drivers/hwmon/gxp-gpio.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/* Copyright (C) 2023 Hewlett-Packard Enterprise Development Company, L.P. */
+> +
+> +#ifndef __GPIO_GXP_H__
+> +#define __GPIO_GXP_H__
+> +
+> +#include <linux/err.h>
+> +
+> +/* Data provided by GPIO */
+> +extern u8 fan_presence;
+> +extern u8 fan_fail;
+> +
+
+This is not acceptable. It is way too generic for a global variable, and it
+does not use the gpio API. Besides, the variables would have to be declared
+in an include file associated with the code introducing them.
+
+If you want to use gpio pins in the hwmon driver, use the gpio API
+([devm_]gpiod_get() and associated functions). There are lots of examples
+in the kernel showing how to do that.
+
+Guenter
+
+> +#endif /* __GPIO_GXP_H__ */
 
