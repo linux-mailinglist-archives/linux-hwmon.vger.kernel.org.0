@@ -2,77 +2,63 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67D9D71893A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 May 2023 20:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47F9D7189ED
+	for <lists+linux-hwmon@lfdr.de>; Wed, 31 May 2023 21:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbjEaSSQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 31 May 2023 14:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54812 "EHLO
+        id S229588AbjEaTQp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 31 May 2023 15:16:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjEaSSO (ORCPT
+        with ESMTP id S229476AbjEaTQo (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 31 May 2023 14:18:14 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4002112F;
-        Wed, 31 May 2023 11:18:08 -0700 (PDT)
-Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
-        by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34VE7JYl017051;
-        Wed, 31 May 2023 18:17:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pps0720;
- bh=WCUHh6bQCpvhpuDXWe5YchsWDcxgTNxY2iglOEYnSiQ=;
- b=Fcc7yC69rFe7NyYnzlLn2RJXBvsn0BeLl6sL2tSLUOt6SbsjA/AdqgkDMLNKAhwYZHVS
- kuNHjhxIwvYAbAQzPFrAdJ292lq7QkuIT1lzuvMRGsdZ+dpp2EattRqzc5YsQxg3Gkgs
- gmKLpD3bFkQnJ0ufr18Fp/yIKxMqtQv19vCGytYgV46vF3SNPeTRwzK4qsTtC3x0jgmO
- 2VtTLFytdDiCNDC91se7922M1PsztiMvFur1VqA3k2pH3egMRkxlkeQXpMn6IfmgVub0
- Eezkx0jipSHlUFDod5xvcs+RhFDYlogGbmmaZDnSeNzxndcgDUWUaUa+0ReuqzHcexBg Mw== 
-Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
-        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3qx7qdt2fu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 31 May 2023 18:17:33 +0000
-Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 108BE80018F;
-        Wed, 31 May 2023 18:17:33 +0000 (UTC)
-Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
- p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 31 May 2023 06:17:32 -1200
-Received: from p1wg14924.americas.hpqcorp.net (10.119.18.113) by
- p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 31 May 2023 06:17:32 -1200
-Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
- p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42
- via Frontend Transport; Wed, 31 May 2023 06:17:32 -1200
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (192.58.206.38)
- by edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 31 May 2023 18:17:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KFeoyb1QrM0zTHycBdolbnGDR767hpVf1m/evIA4Ab/ytxAyanBgs4RKf0bmFAAmnZAlDp/OapMHArXK8wu0+/ldgxh85lquhmS5z0KDa9AbGM1+x/LMX4YJaScGRW3lLOWPchCubWktnvkGNZPTw9o3T3jvLupILir5BvD9TALUb41RW+tu2C59p/OcgecY8Gko4Zc9Q7XL01wT7xETxfm1RqEnmOz5MpJNCgtAw4Fp2o0VXPlxqy7gyZX62MYDr2igzeHfdMHzM+upH8h1YD/6sSssLqORlFUjtMEzu2k5Dn82xPZ5Mvf9KW9htZcZXLnkeYphoGc6wJc9ZY3CEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WCUHh6bQCpvhpuDXWe5YchsWDcxgTNxY2iglOEYnSiQ=;
- b=aWtBT7Vsoi83OQvmnPQ7nCGAmXX9WYB9XscCdDJ/UUS8Lanqgbfm42Cp8cjcIqA3+n/WCQKE1FFUAdRPmmRAfQouHtUCEN+9JAZX4WzZIe0i6ddrXTMIrYAVe+EG4DSuoy2guyZGV7wZplu3Xb1o7FPLRkmaVk37A6UwTCZH5TkOFAVPZJFnj4+Fs3YT7T2OEqOv6Jy6hTux0QKffnr6aUbrm8Aw75c2hWIdY3bkyo2qX4dm9mOl/4fcBNPzukfkFX2fzjZG7FjDPoxiFVeKo8bBbbqf/2LCbc2nBeJ1Fpin3Sy1gVrgvfN/T34BPmqosMh7yDnZ3MHC/SWTWaLb7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Received: from DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4e::10) by
- MW4PR84MB1417.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:303:1a4::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6433.23; Wed, 31 May 2023 18:17:30 +0000
-Received: from DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2a07:1ac6:6523:8682]) by DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2a07:1ac6:6523:8682%5]) with mapi id 15.20.6455.020; Wed, 31 May 2023
- 18:17:30 +0000
-From:   "Hawkins, Nick" <nick.hawkins@hpe.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-CC:     "Verdun, Jean-Marie" <verdun@hpe.com>,
+        Wed, 31 May 2023 15:16:44 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA2F123;
+        Wed, 31 May 2023 12:16:43 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b02085bf8dso297405ad.0;
+        Wed, 31 May 2023 12:16:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685560603; x=1688152603;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ltfS0BB7wJ01OSCaP3DNx6PnS23q4qJcef8LZjDK1NA=;
+        b=eFHQWNhnZvTTE1EzR+Qkky5D3rM6kxveg0Kf9c8gw5xGMIpWbsQqKOdNYHi+4TIgaQ
+         1mGcyWitcgS3S6k96Qy3D5P6rTNf62pp4N8085jDC8KEyJ1z32vC3jyibsuk03g7GztF
+         bP5Y8oLUvaiH815dH0ckfSeW238lf225WwQ/3SATQg9Lx/fct2lgbrZ7keFIHaqJe9Zw
+         L+5pwgbLSQzkyAqnZMfV84TEUSQaNOJgZkUWVYqZuHw0fIOg3SwEGPry8UcY9defn2aC
+         fgXwxPb6lfysT9naFw1AD2zM5KeQkGf+vrPPq+SH6sB9U8uCGJfIcoFvv8PH3wpqvSmz
+         ZafA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685560603; x=1688152603;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ltfS0BB7wJ01OSCaP3DNx6PnS23q4qJcef8LZjDK1NA=;
+        b=YVa751nDgWnmQ70rUqVZ8huOEs/sQfDq41YTK8yxW51JpwawzCtDVgPeZgvGqbs8kv
+         yExkMEa0p/U4wZ11t+wJ6ea1NAK9RFCDF6Tz+ZHTozWXuYQKKZ+VtrV77jUO69NnlSd2
+         MD+fBFZSGkGwmugnqT1BKQ4jQzx3W+5a9E7puZIua9yuBUTSPJLmavq1qsmm17WacgBg
+         4AtGY/UPfg9p8GbuP2UdoqXI2x6fATyp7A/WGUNhfWdoHfcnBtpfpoh2s7Pehph9L5Ux
+         EahFlvT50RVDMDPBltF3DTCaHCIHYN+rUoIOIpUquTMQFmwheWHw9VZw6702Mb27OF5x
+         F/YQ==
+X-Gm-Message-State: AC+VfDwGAH97qbrHy4hthpbupxiCG5mfNKiZpavzaQbC3M6ya/3ApL4h
+        oh6uwowcGZ80kXe7BzUvFy4=
+X-Google-Smtp-Source: ACHHUZ6nJG5XpFvBudEgkiMwrGyB9Pv9nUCyG25GjlmM7UiqeEqOJsFBEnAMuiu5/HbU6oHec3zsMA==
+X-Received: by 2002:a17:903:18c:b0:1ae:50cc:45b with SMTP id z12-20020a170903018c00b001ae50cc045bmr5218924plg.36.1685560602593;
+        Wed, 31 May 2023 12:16:42 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id g23-20020a1709029f9700b001b077301b15sm1757956plq.156.2023.05.31.12.16.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 May 2023 12:16:41 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <b1d8f851-4e87-333c-229c-b9dc37ea3c40@roeck-us.net>
+Date:   Wed, 31 May 2023 12:16:39 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To:     "Hawkins, Nick" <nick.hawkins@hpe.com>
+Cc:     "Verdun, Jean-Marie" <verdun@hpe.com>,
         "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
         "brgl@bgdev.pl" <brgl@bgdev.pl>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
@@ -84,121 +70,76 @@ CC:     "Verdun, Jean-Marie" <verdun@hpe.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-Subject: RE: [PATCH v2 4/5] hwmon: (gxp_fan_ctrl) Provide fan info via gpio
-Thread-Topic: [PATCH v2 4/5] hwmon: (gxp_fan_ctrl) Provide fan info via gpio
-Thread-Index: AQHZk9PWKQUBcQjeO0mLSJz9z8PkXK90ljUAgAAVFxA=
-Date:   Wed, 31 May 2023 18:17:29 +0000
-Message-ID: <DM4PR84MB19274F575858CBCB2FA5C23E88489@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
 References: <20230531151918.105223-1-nick.hawkins@hpe.com>
  <20230531151918.105223-5-nick.hawkins@hpe.com>
  <07b2a2f7-5ddc-0f10-6b1f-184dc21fa580@roeck-us.net>
-In-Reply-To: <07b2a2f7-5ddc-0f10-6b1f-184dc21fa580@roeck-us.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR84MB1927:EE_|MW4PR84MB1417:EE_
-x-ms-office365-filtering-correlation-id: 50809032-29ee-4ac3-0207-08db62034bca
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MfckyVRsitqW8JW76clpS9661ytbSZHUY9K1WLQJfDUAtYqKhexM4EI5yzUKitJ9vJxWaZqyLGUfLWpT2J+nZuiEHUt4yI7moiAnWBVq++4p7SM1D+rQG7j+B9zSsYYyBG1vWpixG3ZjUsDFi8/hzy6XrOoN0wnrhK0qQx9NT5mAZF8eeT937Qj+FecRsxqYy4f98zQGESrMcbbgh0o4R5d/UhzHkIZ57fToRWJfqPqxwlKi/JTPejW+Mm/ei00ku/MJCKFCV2EGTsBzya9cpFk0zpRWYK49bfxQUcrXoK/cXLt2sHBm5F/pk17NEPXuzTa4ppeskMGN/SQQeTZumcM71ECfIbmM5k+TtbzI/32w0EuF5/HPnnfkqco38Dh1sLTbPz4swJktPzs4h9VsvEN3ocmRzag+G9pqFE66Dj3im4kpvGDM8bQ600fQ2H4GMLGZcopxLHD52ysoGkT4M0FI7hvvgcRZ5mRrp2lja06Ff2MtrjuY9CrSXhlq7zNHetmnqqaq6oXlbN5rWoT75u8qKceC0YRdj+A1oKN8TuqV2m/maqtGlfpaevrOuIP71ZPUFTy+XFk3uWG/L8Ezr4itJlpEUoDfFVlDzxm6G5I=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(39860400002)(396003)(376002)(366004)(451199021)(33656002)(86362001)(66446008)(4326008)(478600001)(54906003)(38070700005)(316002)(66476007)(45080400002)(966005)(64756008)(66946007)(66556008)(76116006)(6916009)(7696005)(55016003)(71200400001)(5660300002)(8936002)(41300700001)(8676002)(7416002)(2906002)(38100700002)(82960400001)(122000001)(52536014)(26005)(6506007)(55236004)(9686003)(186003)(83380400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NGExWkRwMjh4Y01ockVFelpUcWd4Um5vTGMxUTBnWTZ3NFpldWtuYTlGQjZ4?=
- =?utf-8?B?NDlJRTZaNVRxUzdSUWdBUDVpQ0ZUMnpOdlgxbVovMVFQdXEzVnBONHlmM3Fi?=
- =?utf-8?B?RjQ5NDU4NktVeFZNRXlEWjQ1eWg3MFphdEt0VlhRUkNMZWtXQU9hV0lJWWJ2?=
- =?utf-8?B?RklGb01ISkJIbElVdFBCVHcxRVJicWhPTVJqQzY3SjZJcHJCS2ZCVUcwN21T?=
- =?utf-8?B?VkswMkNhQlFuVzc2OGJXcGZRWDFseWQyMEJwbzhjRzhJYjhkSjV0TTlGSWls?=
- =?utf-8?B?dUt3bmMrU1Z2MDdYSzB4bDE5R0Z6amRNWk9UL3VQMFZCRExSUEpvSXpmZGUv?=
- =?utf-8?B?RkdFL01OVERmbnlHMHFXZnFPbUx5VTJvRG9RQmxiNGNMWnM5NWFqSUgzWVhU?=
- =?utf-8?B?djIwVEpuRFBBeU9WMnVHQ0VsNnM5eHEyVnprRDQ5UWhEcDBCZUlLV0hocWZE?=
- =?utf-8?B?TW5xMG1rbFFXbHY1bk9aM2w5SEhKbWYyMUEzOStkc2Z4WGZTbWk4d0ZYMnJB?=
- =?utf-8?B?NWhsaUNONDhnM2psbjNFRjg3SWo1SnhmVXR0ZTFTOVB5dkhvTGpuYnlmZWZ6?=
- =?utf-8?B?VlgrbVdjQ2NkTndqTlhGck16MytneC9KQmxEZ3V5ajFQY0NQUVllQ09SZWRX?=
- =?utf-8?B?bUZpVk80WFFvMkJ0OUVGMkZpYVU4ZnJVN3F1blk0b3Y5Z21rL2JKUlF3SzBq?=
- =?utf-8?B?czN6VmtpdzNCS0VDT2l3bTNtY0tKVDdSY1RCRHI1V2trczZ5eUloN2RiOUJL?=
- =?utf-8?B?YmxhUXpwYk9OMThrdmZaSGJ4RnBCRGZaN3pKNHRCZXBvei9jMVpQL2s5VXJz?=
- =?utf-8?B?dGRBek9EYUcvK2ViMG5mNUFaSnJlZFlVS1Q2MTZLZ3V4ZXI0TlJnODFDU0hk?=
- =?utf-8?B?WlJqVnFhaUJYdGpZVmFLSm0yQWI5Sk9EZ1JOU1dSNEFKaU1aRVBnTFp1S0lC?=
- =?utf-8?B?c0twSzl3R0VqVXlqeFIxQzY1c0VCdGw1a3pxeHFkQ1k5YkNsTEV5NUFhaVAz?=
- =?utf-8?B?UnB0Vk9CTndOemRoZVJsK3EyN2liUXVsdEtEM0lMckR5WEEwSjJ2cHMvbzZ5?=
- =?utf-8?B?U0pGR1Y4SXhiNndKMFhWVUNlK053aU1UdTlCYW1XeTFORjdLcGUwV0g1U2hV?=
- =?utf-8?B?V2gyQk40amIzK25ZSnJGaGZjRCtZV0VldVh6Y1lkS2ZOMTd2aUYvcnBhdGU3?=
- =?utf-8?B?VzBJbHk3cldvMjJURmdiaUZrTzVCSmM1cWRjN3gzWGMrNzlxM0pnMHJpbzZN?=
- =?utf-8?B?YndhSWJXWjVnMHQzcmJhZFdxcHV4bFlUMUh6ZmVQKzlqYXk1NlB6LzZFUDlL?=
- =?utf-8?B?N3RFQ0tYdEJIRGxiWFowcEhNTWhsR0JrS0pObzVZeHJ6eHBMdXBRdEgrcHdj?=
- =?utf-8?B?Z3o4aG91L2pncGFMeFJEakVIbHlyblRVM0hGelFHaTJhbjFpdTdvNnFTRS9I?=
- =?utf-8?B?M3VjL1FqZ2FOY0tDeGk2VE9Odm92ZnlKR2hoa1lxRWl1bXVZS3BDYkw2UG84?=
- =?utf-8?B?SURIUGs0M3hjeFYzbFc3N0J2b0JqSUh0OVpaZGJMYzF5SkdaK1E4RzRXeG8w?=
- =?utf-8?B?WVFHalNzeHBCdzN5b1dUOWJJQVhjalFLa3dWZXBBVTVZWUFENEpjUVZnazVz?=
- =?utf-8?B?R2xRaHZzR0hNOXl4MHJORzhlL3JjZXFCbzZEalBxZ1hEQzR2T1dzL1pMT1pR?=
- =?utf-8?B?TDk0cDNtaEptRXVnUDdvZjdDRFNvQTh0aWxJemlnWTdPdThNNmxYcTRteWE2?=
- =?utf-8?B?M3hXQXJqNkpyNHNWckdYTHpYME8yL2pIdEVBTGFGMTFrZ1JuaXhrb2J2UDU0?=
- =?utf-8?B?Y3FVdVR0N2l6WFpMRjYzZ040d1lueUNEZDhpeDZsSUtUWVJwMkl0d2FPVHhT?=
- =?utf-8?B?N3V4dDkyeTYvbEZLcWI0NGpmUWt2T3BudkMxbHlmNkM2dFk1alBnR3VoNkdo?=
- =?utf-8?B?S215SnZTMkVCczRQV1FkY2F1Smd0RG91S0ZBcVRqOUVETmVEeFA4azRzR3Yw?=
- =?utf-8?B?b1RGQy9GSWFOTjY2M0x1VzdVNWQxWjZCY1Nkb2xLVlNLYU5kMTJDTUEzanJi?=
- =?utf-8?B?NGE5aG1RUlVCa3VLUFJIckdFYWJ0QnVERzM4SEI5a3A5Q2Q4Z2Z5SGtNZ0VX?=
- =?utf-8?Q?UaF6X7/ZPrP59la8pMMWfJjFV?=
-Content-Type: text/plain; charset="utf-8"
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50809032-29ee-4ac3-0207-08db62034bca
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 May 2023 18:17:29.8444
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tvPb3HScRkxnP32qUO9Ox8ZKgAIaMMegow6Ccls1r9GFyHja520sGY3sEtIfsfD5+eo2zAYAB7jRLxWea86Pqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR84MB1417
-X-OriginatorOrg: hpe.com
-X-Proofpoint-ORIG-GUID: MBJSG0jYa4Wfrvq0VLhnjoE09zq_aCOb
-X-Proofpoint-GUID: MBJSG0jYa4Wfrvq0VLhnjoE09zq_aCOb
-Content-Transfer-Encoding: base64
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_13,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=849 bulkscore=0
- mlxscore=0 adultscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305310153
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+ <DM4PR84MB19274F575858CBCB2FA5C23E88489@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v2 4/5] hwmon: (gxp_fan_ctrl) Provide fan info via gpio
+In-Reply-To: <DM4PR84MB19274F575858CBCB2FA5C23E88489@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-PiBUaGlzIGlzIG5vdCBhY2NlcHRhYmxlLiBJdCBpcyB3YXkgdG9vIGdlbmVyaWMgZm9yIGEgZ2xv
-YmFsIHZhcmlhYmxlLCBhbmQgaXQNCj4gZG9lcyBub3QgdXNlIHRoZSBncGlvIEFQSS4gQmVzaWRl
-cywgdGhlIHZhcmlhYmxlcyB3b3VsZCBoYXZlIHRvIGJlIGRlY2xhcmVkDQo+IGluIGFuIGluY2x1
-ZGUgZmlsZSBhc3NvY2lhdGVkIHdpdGggdGhlIGNvZGUgaW50cm9kdWNpbmcgdGhlbS4NCg0KPiBJ
-ZiB5b3Ugd2FudCB0byB1c2UgZ3BpbyBwaW5zIGluIHRoZSBod21vbiBkcml2ZXIsIHVzZSB0aGUg
-Z3BpbyBBUEkNCj4gKFtkZXZtX11ncGlvZF9nZXQoKSBhbmQgYXNzb2NpYXRlZCBmdW5jdGlvbnMp
-LiBUaGVyZSBhcmUgbG90cyBvZiBleGFtcGxlcw0KPiBpbiB0aGUga2VybmVsIHNob3dpbmcgaG93
-IHRvIGRvIHRoYXQuDQoNCkhpIEd1ZW50ZXIsDQoNClRoYW5rIHlvdSBmb3IgdGhlIGZlZWRiYWNr
-LiBJIGRpZCB0cnkgYW5kIGNyZWF0ZSBhIGRyaXZlciBmb3IgYm90aCB0aGUgZmFuDQphbmQgdGhl
-IHBzdSBidXQgSSBoYWQgYW4gaXNzdWUgd2hlcmUgdGhlIGhvc3QgYW5kIGxpbnV4IGRyaXZlciBi
-b3RoDQpuZWVkIHRvIG1vbml0b3IgYW5kIGFjY2VzcyBpdC4NCg0KSSBtYWRlIGEgYnJpZWYgcXVl
-cnkgYWJvdXQgaXQgaGVyZSB0byB0aGUgbWFpbGluZyBsaXN0Lg0KKEFwb2xvZ2llcyBpZiB0aGlz
-IGlzIHRoZSBpbmNvcnJlY3Qgd2F5IHRvIHNoYXJlIGEgbGluaykNCmh0dHBzOi8vbG9yZS5rZXJu
-ZWwub3JnL2FsbC9ETTRQUjg0TUIxOTI3NDgxN0MyRDhBNzUxRTMyMThGNDg4ODc1OUBETTRQUjg0
-TUIxOTI3Lk5BTVBSRDg0LlBST0QuT1VUTE9PSy5DT00vDQoNCkkgYW0gb3BlbiBmb3IgdHJ5aW5n
-IGEgZGlmZmVyZW50IGFwcHJvYWNoLCBJIGFtIGp1c3Qgbm90IHN1cmUgd2hhdCBpcw0KdGhlIGNv
-cnJlY3Qgd2F5IHRvIHByb2NlZWQuDQoNCklzIHRoZXJlIGEgd2F5IGZvciB0aGUgZHJpdmVyIHRv
-IHRlbXBvcmFyaWx5IHRha2UgdGhlIEdQSU8gYXdheSBmcm9tIHRoZQ0KSG9zdCBhbmQgcmV0dXJu
-IGl0PyBUaGUgaG9zdCBpcyB3YW50aW5nIHRvIGhvbGQgdGhlIEdQSU8gYWxsIHRoZSB0aW1lIHRv
-DQptb25pdG9yIGZvciBjaGFuZ2UuDQoNCkFub3RoZXIgdGhvdWdodCBJIGhhZCB3YXMgcGVyaGFw
-cyBoYXZpbmcgc29tZSBkdXBsaWNhdGUgSS9PcyB3aGVyZQ0KdGhlcmUgaXMgb25lIGZvciB0aGUg
-aG9zdCBjb25zdW1wdGlvbiBhbmQgdGhlIG90aGVyIGZvciBsaW51eCBrZXJuZWwNCmRyaXZlciBj
-b25zdW1wdGlvbi4NCg0KVGhhbmsgeW91IGZvciB0aGUgYXNzaXN0YW5jZSwNCg0KLU5pY2sgSGF3
-a2lucw0K
+On 5/31/23 11:17, Hawkins, Nick wrote:
+>> This is not acceptable. It is way too generic for a global variable, and it
+>> does not use the gpio API. Besides, the variables would have to be declared
+>> in an include file associated with the code introducing them.
+> 
+>> If you want to use gpio pins in the hwmon driver, use the gpio API
+>> ([devm_]gpiod_get() and associated functions). There are lots of examples
+>> in the kernel showing how to do that.
+> 
+> Hi Guenter,
+> 
+> Thank you for the feedback. I did try and create a driver for both the fan
+> and the psu but I had an issue where the host and linux driver both
+> need to monitor and access it.
+> 
+> I made a brief query about it here to the mailing list.
+> (Apologies if this is the incorrect way to share a link)
+> https://lore.kernel.org/all/DM4PR84MB19274817C2D8A751E3218F4888759@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM/
+> 
+> I am open for trying a different approach, I am just not sure what is
+> the correct way to proceed.
+> 
+> Is there a way for the driver to temporarily take the GPIO away from the
+> Host and return it? The host is wanting to hold the GPIO all the time to
+
+I don't think so.
+
+> monitor for change.
+> 
+
+If the host wants to own the fan status from gpio pins, it has to live up to
+it and own it entirely. The kernel hwmon driver does not have access in that
+case.
+
+In a more "normal" world, the hwmon driver would "own" the gpio pin(s)
+and user space would listen to associated hwmon attribute events (presumably
+fan_enable and fan_fault), either by listening for sysfs attribute events
+or via udev or both. Again, if you don't want to do that, and want user space
+to have access to the raw gpio pins, you'll have to live with the consequences.
+I don't see the need to bypass existing mechanisms just because user space
+programmers want direct access to gpio pins.
+
+> Another thought I had was perhaps having some duplicate I/Os where
+> there is one for the host consumption and the other for linux kernel
+> driver consumption.
+> 
+
+I neither think this is a good idea nor that it is really necessary.
+Again, the desire to have direct user space access to gpio pins is
+something you _want_, not something that is really needed.
+
+Guenter
+
