@@ -2,144 +2,271 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F9D7189ED
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 May 2023 21:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 395A8719391
+	for <lists+linux-hwmon@lfdr.de>; Thu,  1 Jun 2023 08:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229588AbjEaTQp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 31 May 2023 15:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49292 "EHLO
+        id S231418AbjFAGwp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 1 Jun 2023 02:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjEaTQo (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 31 May 2023 15:16:44 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA2F123;
-        Wed, 31 May 2023 12:16:43 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b02085bf8dso297405ad.0;
-        Wed, 31 May 2023 12:16:43 -0700 (PDT)
+        with ESMTP id S229589AbjFAGwo (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 1 Jun 2023 02:52:44 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F100D11F
+        for <linux-hwmon@vger.kernel.org>; Wed, 31 May 2023 23:52:42 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-514ab6cb529so3788984a12.1
+        for <linux-hwmon@vger.kernel.org>; Wed, 31 May 2023 23:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685560603; x=1688152603;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
+        d=linaro.org; s=google; t=1685602361; x=1688194361;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ltfS0BB7wJ01OSCaP3DNx6PnS23q4qJcef8LZjDK1NA=;
-        b=eFHQWNhnZvTTE1EzR+Qkky5D3rM6kxveg0Kf9c8gw5xGMIpWbsQqKOdNYHi+4TIgaQ
-         1mGcyWitcgS3S6k96Qy3D5P6rTNf62pp4N8085jDC8KEyJ1z32vC3jyibsuk03g7GztF
-         bP5Y8oLUvaiH815dH0ckfSeW238lf225WwQ/3SATQg9Lx/fct2lgbrZ7keFIHaqJe9Zw
-         L+5pwgbLSQzkyAqnZMfV84TEUSQaNOJgZkUWVYqZuHw0fIOg3SwEGPry8UcY9defn2aC
-         fgXwxPb6lfysT9naFw1AD2zM5KeQkGf+vrPPq+SH6sB9U8uCGJfIcoFvv8PH3wpqvSmz
-         ZafA==
+        bh=lwHjtYUJdsrG0msa7NqJ4u/zdOc48mf7/9J/cZ8t3qw=;
+        b=f6HY72hazd+X+w8farWypvyNbzn6fqFqVLPC+t+g+O4NhxBfngmkXaub5dH0qzzFav
+         i46eAnYCIN0GrS8xebB8w5+rKb7m9j+xIBPzVpppQUiC0D7afBzciV3nhYr/gJmlD7xC
+         X3VeT92JdBVAH8xbxAc8dk36PzXNcaaL7hXII8Q1AJn4muBAbeoAFbSYqfy1uJOpvIzB
+         YV8C1jEet5WRgebAbtLdOtczF+hYQWM25KfOBfaqkBP+9Oi8AGY6zNWYBAf5OpgmVcFr
+         cmMgK83OtSQZKOEKspcYmgsG1Vv6p1mShW/3i3j/8ZhvGlYK9rtwbOfWmClN71bAw7mb
+         rrRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685560603; x=1688152603;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
+        d=1e100.net; s=20221208; t=1685602361; x=1688194361;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ltfS0BB7wJ01OSCaP3DNx6PnS23q4qJcef8LZjDK1NA=;
-        b=YVa751nDgWnmQ70rUqVZ8huOEs/sQfDq41YTK8yxW51JpwawzCtDVgPeZgvGqbs8kv
-         yExkMEa0p/U4wZ11t+wJ6ea1NAK9RFCDF6Tz+ZHTozWXuYQKKZ+VtrV77jUO69NnlSd2
-         MD+fBFZSGkGwmugnqT1BKQ4jQzx3W+5a9E7puZIua9yuBUTSPJLmavq1qsmm17WacgBg
-         4AtGY/UPfg9p8GbuP2UdoqXI2x6fATyp7A/WGUNhfWdoHfcnBtpfpoh2s7Pehph9L5Ux
-         EahFlvT50RVDMDPBltF3DTCaHCIHYN+rUoIOIpUquTMQFmwheWHw9VZw6702Mb27OF5x
-         F/YQ==
-X-Gm-Message-State: AC+VfDwGAH97qbrHy4hthpbupxiCG5mfNKiZpavzaQbC3M6ya/3ApL4h
-        oh6uwowcGZ80kXe7BzUvFy4=
-X-Google-Smtp-Source: ACHHUZ6nJG5XpFvBudEgkiMwrGyB9Pv9nUCyG25GjlmM7UiqeEqOJsFBEnAMuiu5/HbU6oHec3zsMA==
-X-Received: by 2002:a17:903:18c:b0:1ae:50cc:45b with SMTP id z12-20020a170903018c00b001ae50cc045bmr5218924plg.36.1685560602593;
-        Wed, 31 May 2023 12:16:42 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g23-20020a1709029f9700b001b077301b15sm1757956plq.156.2023.05.31.12.16.40
+        bh=lwHjtYUJdsrG0msa7NqJ4u/zdOc48mf7/9J/cZ8t3qw=;
+        b=Ev6xFxQVknJEuKHdo+51UruLC+v1ewSyWYFhqpCZGRmhMqIPPJkWRcBdjegACJY+5x
+         ocJdPa9flmANsFYppO1qglTDRJnNOHrdCspZ2mC3Xz5RaNLYgBVIYlaT0QiwenQhR07k
+         mltsfEN2xyS6IoPTmWZ8nNTfTpGqKzwjnXXazfr0SRuCPcReBbURiCKXg/5OssErEuvk
+         MJyXJWGGLrMfMKEB3BgH9LVvKFL/+bWoirJNx/iHBmmqZZR+7kVnmA22C9NVe41wEkaq
+         XqoNYHyLceo9YK5wg/mdPvmTctsil/x+JXjFYYaCyGbylBMqIKw4SDPcTlbKJBjeXCyD
+         CPkQ==
+X-Gm-Message-State: AC+VfDwjdtcGCsv8TAnMjzoOXnhqKcAx2r+jz6vUQz+o8vCsiTIaWiAP
+        8uWA6K6aMhS12hGQxEVgNGUIIg==
+X-Google-Smtp-Source: ACHHUZ5X8WXupXGClZmCaYhvGoANbWJPo9nSu6RiGguENudLRzJcQf0nyid7qvw/WFo2NpWqsVwGXw==
+X-Received: by 2002:a17:907:7b95:b0:96f:8afc:b310 with SMTP id ne21-20020a1709077b9500b0096f8afcb310mr954904ejc.3.1685602361435;
+        Wed, 31 May 2023 23:52:41 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.199.204])
+        by smtp.gmail.com with ESMTPSA id b7-20020a1709062b4700b0096f6a131b9fsm9980710ejg.23.2023.05.31.23.52.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 May 2023 12:16:41 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <b1d8f851-4e87-333c-229c-b9dc37ea3c40@roeck-us.net>
-Date:   Wed, 31 May 2023 12:16:39 -0700
+        Wed, 31 May 2023 23:52:41 -0700 (PDT)
+Message-ID: <d8ee85b8-464b-1302-ecc9-e6c39d0f3eaf@linaro.org>
+Date:   Thu, 1 Jun 2023 08:52:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/5] dt-bindings: gpio: Add HPE GXP GPIO
 Content-Language: en-US
-To:     "Hawkins, Nick" <nick.hawkins@hpe.com>
-Cc:     "Verdun, Jean-Marie" <verdun@hpe.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "brgl@bgdev.pl" <brgl@bgdev.pl>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "jdelvare@suse.com" <jdelvare@suse.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
+To:     nick.hawkins@hpe.com, verdun@hpe.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jdelvare@suse.com,
+        linux@roeck-us.net, andy.shevchenko@gmail.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
 References: <20230531151918.105223-1-nick.hawkins@hpe.com>
- <20230531151918.105223-5-nick.hawkins@hpe.com>
- <07b2a2f7-5ddc-0f10-6b1f-184dc21fa580@roeck-us.net>
- <DM4PR84MB19274F575858CBCB2FA5C23E88489@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 4/5] hwmon: (gxp_fan_ctrl) Provide fan info via gpio
-In-Reply-To: <DM4PR84MB19274F575858CBCB2FA5C23E88489@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20230531151918.105223-2-nick.hawkins@hpe.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230531151918.105223-2-nick.hawkins@hpe.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 5/31/23 11:17, Hawkins, Nick wrote:
->> This is not acceptable. It is way too generic for a global variable, and it
->> does not use the gpio API. Besides, the variables would have to be declared
->> in an include file associated with the code introducing them.
+On 31/05/2023 17:19, nick.hawkins@hpe.com wrote:
+> From: Nick Hawkins <nick.hawkins@hpe.com>
 > 
->> If you want to use gpio pins in the hwmon driver, use the gpio API
->> ([devm_]gpiod_get() and associated functions). There are lots of examples
->> in the kernel showing how to do that.
+> Provide access to the register regions and interrupt for GPIO. There
+> will be two drivers available. The first driver under the hpe,gxp-gpio
+> binding will provide GPIO information for the VUHC, CSM, and FN2
+> host interfaces. The second driver under the hpe,gxp-gpio-pl will
+> provide GPIO information from the CPLD interface. The main difference
+> and need for two separate bindings is they have different interrupt
+> parents. The other is hpe,gxp-gpio is a combination of physical
+> and virtual GPIOs where as hpe,gxp-gpio-pl are all physical
+> GPIOs from the CPLD.
 > 
-> Hi Guenter,
+> Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
 > 
-> Thank you for the feedback. I did try and create a driver for both the fan
-> and the psu but I had an issue where the host and linux driver both
-> need to monitor and access it.
+> ---
 > 
-> I made a brief query about it here to the mailing list.
-> (Apologies if this is the incorrect way to share a link)
-> https://lore.kernel.org/all/DM4PR84MB19274817C2D8A751E3218F4888759@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM/
-> 
-> I am open for trying a different approach, I am just not sure what is
-> the correct way to proceed.
-> 
-> Is there a way for the driver to temporarily take the GPIO away from the
-> Host and return it? The host is wanting to hold the GPIO all the time to
+> v2:
+>  *Put binding patch before the driver in the series
+>  *Improved patch description
+>  *Removed oneOf and items in compatible definition
+>  *Moved additionalProperties definition to correct spot in file
+>  *Fixed indentation on example
 
-I don't think so.
+I don't think it was fixed.
 
-> monitor for change.
+>  *Improved description in .yaml
+> ---
+>  .../bindings/gpio/hpe,gxp-gpio.yaml           | 190 ++++++++++++++++++
+>  1 file changed, 190 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml b/Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml
+> new file mode 100644
+> index 000000000000..b92b7d72d39b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml
+> @@ -0,0 +1,190 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/gpio/hpe,gxp-gpio.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: HPE GXP gpio controllers
+> +
+> +maintainers:
+> +  - Nick Hawkins <nick.hawkins@hpe.com>
+> +
+> +description:
+> +  Interruptable GPIO drivers for the HPE GXP that covers multiple interfaces
+> +  of both physical and virtual GPIO pins.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - hpe,gxp-gpio
+> +      - hpe,gxp-gpio-pl
+> +
+> +  reg:
+> +    minItems: 2
+> +    maxItems: 6
+> +
+> +  reg-names:
+> +    minItems: 2
+> +    maxItems: 6
+> +
+> +  gpio-controller: true
+> +
+> +  "#gpio-cells":
+> +    const: 2
+> +
+> +  gpio-line-names:
+> +    minItems: 80
+> +    maxItems: 300
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - gpio-controller
+> +  - "#gpio-cells"
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - hpe,gxp-gpio
+> +    then:
+> +      properties:
+> +        reg:
+> +          items:
+> +            - description: CSM GPIO interface
+> +            - description: fn2 virtual button GPIO
+> +            - description: fn2 system status GPIO
+> +            - description: vuhc GPIO status interface
+> +        reg-names:
+> +          items:
+> +            - const: csm
+> +            - const: fn2-vbtn
+> +            - const: fn2-stat
+> +            - const: vuhc
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - hpe,gxp-gpio-pl
+> +    then:
+> +      properties:
+> +        reg:
+> +          items:
+> +            - description: Programmable logic device GPIO
+> +            - description: Programmable logic device interrupt GPIO
+> +        reg-names:
+> +          items:
+> +            - const: base
+> +            - const: interrupt
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    gpio@0 {
+> +        compatible = "hpe,gxp-gpio";
+> +        reg = <0x0 0x400>, <0x200046 0x1>, <0x200070 0x08>, <0x400064 0x80>;
+> +        reg-names = "csm", "fn2-vbtn", "fn2-stat", "vuhc";
+> +        gpio-controller;
+> +        #gpio-cells = <2>;
+> +        interrupt-parent = <&vic0>;
+> +        interrupts = <10>;
+> +        gpio-line-names = "IOP_LED1", "IOP_LED2",
+> +        "IOP_LED3", "IOP_LED4",
 
-If the host wants to own the fan status from gpio pins, it has to live up to
-it and own it entirely. The kernel hwmon driver does not have access in that
-case.
+Broken indentation. This is aligned with opening " in previous line.
 
-In a more "normal" world, the hwmon driver would "own" the gpio pin(s)
-and user space would listen to associated hwmon attribute events (presumably
-fan_enable and fan_fault), either by listening for sysfs attribute events
-or via udev or both. Again, if you don't want to do that, and want user space
-to have access to the raw gpio pins, you'll have to live with the consequences.
-I don't see the need to bypass existing mechanisms just because user space
-programmers want direct access to gpio pins.
+> +        "IOP_LED5", "IOP_LED6",
+> +        "IOP_LED7", "IOP_LED8",
+> +        "FAN1_INST", "FAN2_INST",
+> +        "FAN3_INST", "FAN4_INST",
+> +        "FAN5_INST", "FAN6_INST",
+> +        "FAN7_INST", "FAN8_INST",
+> +        "FAN1_FAIL", "FAN2_FAIL",
+> +        "FAN3_FAIL", "FAN4_FAIL",
+> +        "FAN5_FAIL", "FAN6_FAIL",
+> +        "FAN7_FAIL", "FAN8_FAIL",
+> +        "FAN1_ID", "FAN2_ID",
+> +        "FAN3_ID", "FAN4_ID",
+> +        "FAN5_ID", "FAN6_ID",
+> +        "FAN7_ID", "FAN8_ID",
+> +        "IDENTIFY", "HEALTH_RED",
+> +        "HEALTH_AMBER", "POWER_BUTTON",
+> +        "UID_PRESS", "SLP",
+> +        "NMI_BUTTON", "RESET_BUTTON",
+> +        "SIO_S5", "SO_ON_CONTROL",
+> +        "PSU1_INST", "PSU2_INST",
+> +        "PSU3_INST", "PSU4_INST",
+> +        "PSU5_INST", "PSU6_INST",
+> +        "PSU7_INST", "PSU8_INST",
+> +        "PSU1_AC", "PSU2_AC",
+> +        "PSU3_AC", "PSU4_AC",
+> +        "PSU5_AC", "PSU6_AC",
+> +        "PSU7_AC", "PSU8_AC",
+> +        "PSU1_DC", "PSU2_DC",
+> +        "PSU3_DC", "PSU4_DC",
+> +        "PSU5_DC", "PSU6_DC",
+> +        "PSU7_DC", "PSU8_DC",
+> +        "", "",
+> +        "", "",
+> +        "", "",
+> +        "", "",
+> +        "", "",
+> +        "", "",
+> +        "", "";
+> +    };
+> +
+> +  - |
+> +    gpio@51000300 {
+> +        compatible = "hpe,gxp-gpio-pl";
+> +        reg = <0x51000300 0x40>, <0x51000380 0x10>;
+> +        reg-names = "base", "interrupt";
 
-> Another thought I had was perhaps having some duplicate I/Os where
-> there is one for the host consumption and the other for linux kernel
-> driver consumption.
-> 
+One example is enough, because this almost does not differ from previous.
 
-I neither think this is a good idea nor that it is really necessary.
-Again, the desire to have direct user space access to gpio pins is
-something you _want_, not something that is really needed.
-
-Guenter
+Best regards,
+Krzysztof
 
