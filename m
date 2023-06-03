@@ -2,138 +2,255 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A838720B0F
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Jun 2023 23:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 072A9720F63
+	for <lists+linux-hwmon@lfdr.de>; Sat,  3 Jun 2023 12:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236556AbjFBVif (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 2 Jun 2023 17:38:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44202 "EHLO
+        id S232110AbjFCKjc (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sat, 3 Jun 2023 06:39:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236547AbjFBVie (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Fri, 2 Jun 2023 17:38:34 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27731B9;
-        Fri,  2 Jun 2023 14:38:32 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-64d24136685so2007766b3a.1;
-        Fri, 02 Jun 2023 14:38:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685741912; x=1688333912;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jOxmmoChgGmmbkHXT5M4NYNn9GSH3yiIHwZaw748eEU=;
-        b=LuRX98zJpZv5/62lSU0Rz8wc7Nn9jAM1gsQ+T1ZPV5ta0Wg59SMYJDlq7gQgUbkNdk
-         coiiff54b4vj11EnEgZ9JBt6keF7hFjpSKEYEO7MoguDkWsfh8GYkn3B/xDI8yED5Q3b
-         jGCgsTwYCsyXAndT1UqCUbcGR8u6LDPQwsCS7DAA65uAKxOIUL7kuNexIB9HyB9C+PuP
-         trbIEanSeNDaJzwaHVWtjSv2dPY4PG2foJ8WA/l2x92MFkRDKWuYIXNMYX7ApEJdXzhu
-         uMjdC7BaJPqjldsHaLqcSNwn04/FI0LY/MW8Z8Gkz99fuMV0ZJeHEi55UFJRUVR48Pbp
-         Y18A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685741912; x=1688333912;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jOxmmoChgGmmbkHXT5M4NYNn9GSH3yiIHwZaw748eEU=;
-        b=KS6ubgNMogEaCv07Oz43EXuWeJb1AkuYBXwlaZXe2w/44koHu8q7GZcX0xbz7JAcuE
-         NWGeN80E0qQCHDKuev3AVilBkVYTDMN/XTlstYls3H1+DjDt2ZeGwqI9OaLgfEFHMMIZ
-         gkmashUReeBLlxSRL8d6ZS+PI5DdkyWmnDR9qC3UhgAxOpJGqgyKpnwHyVnG6NMuDmi7
-         5yglCwB5wAqTQLzpFbu73WXAweZ7W8ErezgU2kBUID2SELX1+ypGaZcBi7KoANYPr7bh
-         oFv1TAUEmhR2/Io+bxrevryzwwOEspigBgo87G83f+WRaMGoembPV1+E/aIulN0xqr4C
-         r7rQ==
-X-Gm-Message-State: AC+VfDy0EIJmM//eGuKsfdakknVhuWY1kwQcbajIZULzUx8DhCYM8vBo
-        nfuK8slsIct1BfxBOj5b+WI=
-X-Google-Smtp-Source: ACHHUZ55XmHcQvakmsg1pHCvPItWTYcdK/wkx9Rwsh3rx8Y14ZpNkcR5EdRaoYUI0gcJInUlge1gbw==
-X-Received: by 2002:a05:6a00:130c:b0:64c:a099:8924 with SMTP id j12-20020a056a00130c00b0064ca0998924mr6324982pfu.10.1685741912361;
-        Fri, 02 Jun 2023 14:38:32 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a14-20020a62bd0e000000b0064ceb16a1a8sm1404186pff.33.2023.06.02.14.38.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 14:38:31 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 2 Jun 2023 14:38:30 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     James Seo <james@equiv.tech>, Jean Delvare <jdelvare@suse.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-hwmon@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: hp-wmi-sensors: fix debugfs check
-Message-ID: <b444388f-585e-4798-a3a0-7d8b1996e5b1@roeck-us.net>
-References: <20230601213216.3220550-1-arnd@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601213216.3220550-1-arnd@kernel.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229753AbjFCKjb (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Sat, 3 Jun 2023 06:39:31 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F1981B7
+        for <linux-hwmon@vger.kernel.org>; Sat,  3 Jun 2023 03:39:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685788770; x=1717324770;
+  h=date:from:to:cc:subject:message-id;
+  bh=tvMbNZ3RCZg/peWHtQciNkKNb4V2Vp9ggeiPACAd6xA=;
+  b=bosaX1hSM/0pZLl5eL8wshKwHTDRP0y1w20sUb7N4Qpax/scGprRk2N2
+   0hAEzp4vZLDm/V74He9RiqCpneXMQasUwUsUemzcyQtffG75zrEXX4OYK
+   FsJiDpYTTVKHzhcmr4FiStIT3/HFIOidQtcGKPHDFk2v2JXsStxw2QLV0
+   nrlOdKZUduJ8qDa5rG93WUPGPQj92stw7ui5acKhnqolE8i53xb2ADuik
+   Gn3zeaE/l/8schMee9D7I66T1l+Zy3RYwTZAMY8gLM2HpCqwuZ/4iQ9hK
+   552FbxWGlVoHNlE7ZNfR68BvQZvNBozAIfXSrNeTuhvyoUJZKd+bEHFJr
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="335677193"
+X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
+   d="scan'208";a="335677193"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2023 03:38:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="737824189"
+X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
+   d="scan'208";a="737824189"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 03 Jun 2023 03:38:30 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q5OeT-0001Wh-1j;
+        Sat, 03 Jun 2023 10:38:29 +0000
+Date:   Sat, 03 Jun 2023 18:38:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ 473595b01086f98e63e597b4821a965f02033129
+Message-ID: <20230603103807.HbRou%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 11:31:54PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Checking for Kconfig symbols with #if is wrong:
-> 
-> drivers/hwmon/hp-wmi-sensors.c:1141:5: error: "CONFIG_DEBUG_FS" is not defined, evaluates to 0 [-Werror=undef]
-> 
-> This could be an #ifdef, but an IS_ENABLED() check is even better to
-> give the best compile coverage.
-> 
-> Fixes: 602bef0fa281 ("hwmon: add HP WMI Sensors driver")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: James Seo <james@equiv.tech>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: 473595b01086f98e63e597b4821a965f02033129  hwmon: (hp-wmi-sensors) fix debugfs check
 
-Applied.
+elapsed time: 720m
 
-Thanks,
-Guenter
+configs tested: 179
+configs skipped: 10
 
-> ---
->  drivers/hwmon/hp-wmi-sensors.c | 15 ++-------------
->  1 file changed, 2 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/hwmon/hp-wmi-sensors.c b/drivers/hwmon/hp-wmi-sensors.c
-> index 7218945bd03fc..ebe2fb5134805 100644
-> --- a/drivers/hwmon/hp-wmi-sensors.c
-> +++ b/drivers/hwmon/hp-wmi-sensors.c
-> @@ -1138,8 +1138,6 @@ static int hp_wmi_update_info(struct hp_wmi_sensors *state,
->  	return ret;
->  }
->  
-> -#if CONFIG_DEBUG_FS
-> -
->  static int basic_string_show(struct seq_file *seqf, void *ignored)
->  {
->  	const char *str = seqf->private;
-> @@ -1341,16 +1339,6 @@ static void hp_wmi_debugfs_init(struct device *dev, struct hp_wmi_info *info,
->  	}
->  }
->  
-> -#else
-> -
-> -static void hp_wmi_debugfs_init(struct device *dev, struct hp_wmi_info *info,
-> -				struct hp_wmi_platform_events *pevents,
-> -				u8 icount, u8 pcount, bool is_new)
-> -{
-> -}
-> -
-> -#endif
-> -
->  static umode_t hp_wmi_hwmon_is_visible(const void *drvdata,
->  				       enum hwmon_sensor_types type,
->  				       u32 attr, int channel)
-> @@ -1959,7 +1947,8 @@ static int hp_wmi_sensors_init(struct hp_wmi_sensors *state)
->  	if (err)
->  		return err;
->  
-> -	hp_wmi_debugfs_init(dev, info, pevents, icount, pcount, is_new);
-> +	if (IS_ENABLED(CONFIG_DEBUG_FS))
-> +		hp_wmi_debugfs_init(dev, info, pevents, icount, pcount, is_new);
->  
->  	if (!count)
->  		return 0;	/* No connected sensors; debugfs only. */
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r015-20230601   gcc  
+alpha                randconfig-r033-20230602   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs101_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230531   gcc  
+arc                           tb10x_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                          collie_defconfig   clang
+arm                     davinci_all_defconfig   clang
+arm                                 defconfig   gcc  
+arm                  randconfig-r024-20230531   gcc  
+arm                  randconfig-r046-20230531   gcc  
+arm                             rpc_defconfig   gcc  
+arm                           sama7_defconfig   clang
+arm                           spitz_defconfig   clang
+arm                           sunxi_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r031-20230602   gcc  
+arm64                randconfig-r036-20230602   gcc  
+csky         buildonly-randconfig-r005-20230531   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r023-20230531   gcc  
+hexagon              randconfig-r016-20230601   clang
+hexagon              randconfig-r022-20230531   clang
+hexagon              randconfig-r041-20230531   clang
+hexagon              randconfig-r045-20230531   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230531   gcc  
+i386                 randconfig-i002-20230531   gcc  
+i386                 randconfig-i003-20230531   gcc  
+i386                 randconfig-i004-20230531   gcc  
+i386                 randconfig-i005-20230531   gcc  
+i386                 randconfig-i006-20230531   gcc  
+i386                 randconfig-i011-20230603   gcc  
+i386                 randconfig-i012-20230603   gcc  
+i386                 randconfig-i013-20230603   gcc  
+i386                 randconfig-i014-20230603   gcc  
+i386                 randconfig-i015-20230603   gcc  
+i386                 randconfig-i016-20230603   gcc  
+i386                 randconfig-i051-20230531   gcc  
+i386                 randconfig-i051-20230602   gcc  
+i386                 randconfig-i052-20230531   gcc  
+i386                 randconfig-i052-20230602   gcc  
+i386                 randconfig-i053-20230531   gcc  
+i386                 randconfig-i053-20230602   gcc  
+i386                 randconfig-i054-20230531   gcc  
+i386                 randconfig-i054-20230602   gcc  
+i386                 randconfig-i055-20230531   gcc  
+i386                 randconfig-i055-20230602   gcc  
+i386                 randconfig-i056-20230531   gcc  
+i386                 randconfig-i056-20230602   gcc  
+i386                 randconfig-i061-20230531   gcc  
+i386                 randconfig-i062-20230531   gcc  
+i386                 randconfig-i063-20230531   gcc  
+i386                 randconfig-i064-20230531   gcc  
+i386                 randconfig-i065-20230531   gcc  
+i386                 randconfig-i066-20230531   gcc  
+i386                 randconfig-r003-20230531   gcc  
+i386                 randconfig-r035-20230602   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r004-20230531   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r002-20230531   gcc  
+loongarch            randconfig-r023-20230531   gcc  
+m68k                             allmodconfig   gcc  
+m68k                         amcore_defconfig   gcc  
+m68k                          atari_defconfig   gcc  
+m68k         buildonly-randconfig-r001-20230531   gcc  
+m68k                                defconfig   gcc  
+m68k                       m5249evb_defconfig   gcc  
+m68k                        m5307c3_defconfig   gcc  
+m68k                 randconfig-r013-20230601   gcc  
+m68k                 randconfig-r014-20230601   gcc  
+m68k                 randconfig-r016-20230601   gcc  
+m68k                 randconfig-r034-20230602   gcc  
+m68k                        stmark2_defconfig   gcc  
+m68k                          sun3x_defconfig   gcc  
+microblaze                      mmu_defconfig   gcc  
+microblaze           randconfig-r021-20230531   gcc  
+microblaze           randconfig-r022-20230531   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                          ath79_defconfig   clang
+mips         buildonly-randconfig-r003-20230531   clang
+mips                           ci20_defconfig   gcc  
+mips                     decstation_defconfig   gcc  
+mips                       lemote2f_defconfig   clang
+mips                 randconfig-r001-20230531   clang
+mips                          rm200_defconfig   clang
+nios2                            alldefconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r012-20230601   gcc  
+nios2                randconfig-r026-20230531   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r011-20230601   gcc  
+parisc               randconfig-r036-20230531   gcc  
+parisc64                            defconfig   gcc  
+powerpc                    adder875_defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                   bluestone_defconfig   clang
+powerpc                      ep88xc_defconfig   gcc  
+powerpc                    ge_imp3a_defconfig   clang
+powerpc                        icon_defconfig   clang
+powerpc                      mgcoge_defconfig   gcc  
+powerpc                   motionpro_defconfig   gcc  
+powerpc                 mpc836x_rdk_defconfig   clang
+powerpc                      pcm030_defconfig   gcc  
+powerpc                      ppc44x_defconfig   clang
+powerpc                      ppc6xx_defconfig   gcc  
+powerpc              randconfig-r012-20230601   gcc  
+powerpc              randconfig-r025-20230531   clang
+powerpc              randconfig-r032-20230602   gcc  
+powerpc                     tqm8560_defconfig   clang
+powerpc                        warp_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r006-20230531   clang
+riscv                               defconfig   gcc  
+riscv                randconfig-r034-20230531   gcc  
+riscv                randconfig-r042-20230531   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r011-20230601   gcc  
+s390                 randconfig-r044-20230531   clang
+sh                               allmodconfig   gcc  
+sh           buildonly-randconfig-r002-20230531   gcc  
+sh                        edosk7760_defconfig   gcc  
+sh                             espt_defconfig   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                 kfr2r09-romimage_defconfig   gcc  
+sh                            migor_defconfig   gcc  
+sh                   randconfig-r015-20230601   gcc  
+sh                   randconfig-r033-20230531   gcc  
+sh                          rsk7264_defconfig   gcc  
+sh                          rsk7269_defconfig   gcc  
+sh                           se7722_defconfig   gcc  
+sh                             sh03_defconfig   gcc  
+sh                          urquell_defconfig   gcc  
+sparc        buildonly-randconfig-r002-20230531   gcc  
+sparc        buildonly-randconfig-r006-20230531   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r025-20230531   gcc  
+sparc64              randconfig-r032-20230531   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230531   gcc  
+x86_64               randconfig-a002-20230531   gcc  
+x86_64               randconfig-a003-20230531   gcc  
+x86_64               randconfig-a004-20230531   gcc  
+x86_64               randconfig-a005-20230531   gcc  
+x86_64               randconfig-a006-20230531   gcc  
+x86_64               randconfig-a011-20230603   gcc  
+x86_64               randconfig-a012-20230603   gcc  
+x86_64               randconfig-a013-20230603   gcc  
+x86_64               randconfig-a014-20230603   gcc  
+x86_64               randconfig-a015-20230603   gcc  
+x86_64               randconfig-a016-20230603   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r004-20230531   gcc  
+xtensa               randconfig-r031-20230531   gcc  
+xtensa               randconfig-r035-20230531   gcc  
+xtensa                    xip_kc705_defconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
