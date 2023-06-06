@@ -2,113 +2,109 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F16767234C6
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Jun 2023 03:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFBE723796
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 Jun 2023 08:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234100AbjFFBrT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 5 Jun 2023 21:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34800 "EHLO
+        id S235105AbjFFGXz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 6 Jun 2023 02:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234018AbjFFBrL (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 5 Jun 2023 21:47:11 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A6D196;
-        Mon,  5 Jun 2023 18:46:54 -0700 (PDT)
-Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
-        by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 355K9M3p028783;
-        Tue, 6 Jun 2023 01:46:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : subject :
- date : message-id : in-reply-to : references; s=pps0720;
- bh=xvkw3Lsix1pEQ13DPdZhGV5WNJRpv6i2oLO2iDOOmRY=;
- b=E6ah9mCzsjV/UjnmCBRMLTIZckRdDWhEcbd3hUHzZlxh439ddVqzgGX6iVm0xcVIwoRD
- Y4ntDrwDQTOG+TGap/ydEBmleYwgLXLgkIhOxlXxLGFWUOOKu6acwObLh9+wCbixi0lo
- jFrZAgs/kp9R05IExrrBPeBWxvC0fAXmhPhG+NMlFRR0yaIen+sxoQtcR2fJcRGUvqAR
- /56Ox2Om3HSb5L5Dj2cSnyV5tAoBf1vNIGwjF3m5fbEo6KHbwZKcPjHsECuOlqmawBCb
- e8a19tq/WHtWLoEQ1gCIXMsEbWY8kqz3y0QxKnQ1HnQ41ymaRuvzaokRCSFCJVfC3nPR bw== 
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-        by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3r1pg3sqrs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Jun 2023 01:46:34 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by p1lg14881.it.hpe.com (Postfix) with ESMTPS id C772C804DD9;
-        Tue,  6 Jun 2023 01:46:33 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-        by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 23DD980A256;
-        Tue,  6 Jun 2023 01:46:33 +0000 (UTC)
-From:   nick.hawkins@hpe.com
-To:     verdun@hpe.com, nick.hawkins@hpe.com, linus.walleij@linaro.org,
-        brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jdelvare@suse.com,
-        linux@roeck-us.net, andy.shevchenko@gmail.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: [PATCH v3 5/5] MAINTAINERS: hpe: Add GPIO
-Date:   Mon,  5 Jun 2023 20:42:34 -0500
-Message-Id: <20230606014234.29491-6-nick.hawkins@hpe.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230606014234.29491-1-nick.hawkins@hpe.com>
-References: <20230606014234.29491-1-nick.hawkins@hpe.com>
-X-Proofpoint-ORIG-GUID: WJTcWNn644XUUJYRLuAdAKVbsw2GRVKe
-X-Proofpoint-GUID: WJTcWNn644XUUJYRLuAdAKVbsw2GRVKe
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-05_35,2023-06-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- phishscore=0 mlxlogscore=957 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 impostorscore=0 suspectscore=0 spamscore=0
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306060014
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S235135AbjFFGXg (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 6 Jun 2023 02:23:36 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6091BFF
+        for <linux-hwmon@vger.kernel.org>; Mon,  5 Jun 2023 23:22:28 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-977ed383b8aso176564166b.3
+        for <linux-hwmon@vger.kernel.org>; Mon, 05 Jun 2023 23:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686032546; x=1688624546;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=awyPqVAflJ9HW7mRusvVZFjRIMdP5oGweyBZiHENeLc=;
+        b=HREL2QlbSNI55ddaivjqqQYDRAsordq18Ce41nZK8NNcZ0E+Qu0nBM6LjzFjBpOjz1
+         8nc6/233uTZNDMOERCxjsLH4/n7sxno888oZ1x+W3QRY/6RcoYDr590Qju+kfa1EHU/I
+         VGSJcd/umzLBH5Kqg5gd+XcKWzM/4ix6CKLz2Se1IUNDLZ0b4YMmucBI2mhIJIYeHpZy
+         Iyth1qVfMPh/Gq3dTJJ9+ldDPEs3IJSXAUeocQBVhJ78pTj/GKX11zOpvHcPf6GzGD0Q
+         pcd4emFAMIgNxxFMhNSYIHKh03KUpI/wTyo8fpom6B3rsSCzYBWKbS/P/aGv2/8rDVdv
+         EN9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686032546; x=1688624546;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=awyPqVAflJ9HW7mRusvVZFjRIMdP5oGweyBZiHENeLc=;
+        b=ViK+FR8A8kQFJetRWycBkctRwU2rMvmkqMmra2YsV9coviNx5uYe0woa61xICUQqL8
+         AYeOxABr5pSeXI8u4AL1LI0Fko5v2jq7hQ/6ukQcDkEmdGvPxfTd8i/BZ9QOgprsTeoS
+         D6p4yn640I+4r696JGS3GXD3Bqp+crfQYquHJmWBxUl9h9eYku7nD1VHRjY6AE3EfttO
+         ZV72MrcCBrS9A/T0ph/dQ+J/31jOQ1OaVBYj4iA8OiL6FwwMJDA0X5PmGt+jef7ix0GJ
+         ijvKlON9Im1vXdKwZBIOaPPeWl2uDF6VhqFtXJe5FZuoMyOuXNidpMnN2+IOFCOEwDpH
+         zOZA==
+X-Gm-Message-State: AC+VfDzEY4Z7am/m/yvx9F1JFcC0MqqDCqyTAQ7EOrxYE/Usk21gV3Sw
+        v7vAHDHnCzz+W1oyunEFvCgXpg==
+X-Google-Smtp-Source: ACHHUZ4lQQLCUHb0etGsOAcpL6rQaxYC2rekThP+u2yThClAae5wuLBDKidMXKm5OdkorlU2aQ+dtg==
+X-Received: by 2002:a17:907:97cd:b0:973:d84a:33a4 with SMTP id js13-20020a17090797cd00b00973d84a33a4mr1234857ejc.6.1686032546349;
+        Mon, 05 Jun 2023 23:22:26 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id u23-20020aa7d897000000b0050cc4461fc5sm4622224edq.92.2023.06.05.23.22.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jun 2023 23:22:25 -0700 (PDT)
+Message-ID: <29b720ab-4b9f-c415-3caa-e4c1b04aa568@linaro.org>
+Date:   Tue, 6 Jun 2023 08:22:24 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2 3/5] dt-bindings: hwmon: hpe,gxp-fanctrl: remove fn2
+ and pl regs
+Content-Language: en-US
+To:     "Hawkins, Nick" <nick.hawkins@hpe.com>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>
+Cc:     "jdelvare@suse.com" <jdelvare@suse.com>,
+        "linux@roeck-us.net" <linux@roeck-us.net>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "Verdun, Jean-Marie" <verdun@hpe.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "brgl@bgdev.pl" <brgl@bgdev.pl>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+References: <20230531151918.105223-1-nick.hawkins@hpe.com>
+ <20230531151918.105223-4-nick.hawkins@hpe.com>
+ <d2232369-c7e9-c572-8528-243800f0bc08@linaro.org>
+ <DM4PR84MB1927707FA782DC565C22B8A2884DA@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <DM4PR84MB1927707FA782DC565C22B8A2884DA@DM4PR84MB1927.NAMPRD84.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Nick Hawkins <nick.hawkins@hpe.com>
+On 05/06/2023 18:52, Hawkins, Nick wrote:
+>>> Remove the fn2 register and pl register references as these memory areas
+>>> are now consumed by the GXP GPIO driver. The fan driver now gathers fan
+>>> information from GPIO driver.
+> 
+>> How is it expressed in bindings? I don't see it.
+> 
+> Greetings Krzysztof,
+> 
+> Thanks for the feedback. Just to confirm: Is this comment referring to the
+> content of the patch description? For the third version I want to make sure
+> I address your concern.
 
-List the files added for GPIO.
+The concern was that one of your drivers have clear dependency on other.
+How do you solve probe ordering and dependency?
 
-Signed-off-by: Nick Hawkins <nick.hawkins@hpe.com>
-
----
-
-v3:
- *No change
-v2:
- *Removed reference to PSU changes as they have been discarded.
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a3b14ec33830..6157d9466a58 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2239,6 +2239,7 @@ M:	Nick Hawkins <nick.hawkins@hpe.com>
- S:	Maintained
- F:	Documentation/hwmon/gxp-fan-ctrl.rst
- F:	Documentation/devicetree/bindings/arm/hpe,gxp.yaml
-+F:	Documentation/devicetree/bindings/gpio/hpe,gxp-gpio.yaml
- F:	Documentation/devicetree/bindings/hwmon/hpe,gxp-fan-ctrl.yaml
- F:	Documentation/devicetree/bindings/i2c/hpe,gxp-i2c.yaml
- F:	Documentation/devicetree/bindings/spi/hpe,gxp-spifi.yaml
-@@ -2247,6 +2248,7 @@ F:	arch/arm/boot/dts/hpe-bmc*
- F:	arch/arm/boot/dts/hpe-gxp*
- F:	arch/arm/mach-hpe/
- F:	drivers/clocksource/timer-gxp.c
-+F:	drivers/gpio/gpio-gxp.c
- F:	drivers/hwmon/gxp-fan-ctrl.c
- F:	drivers/i2c/busses/i2c-gxp.c
- F:	drivers/spi/spi-gxp.c
--- 
-2.17.1
+Best regards,
+Krzysztof
 
