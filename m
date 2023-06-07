@@ -2,124 +2,91 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7EFB7258D3
-	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Jun 2023 10:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 159FA725B8F
+	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Jun 2023 12:25:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239617AbjFGI4d (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 7 Jun 2023 04:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54638 "EHLO
+        id S239480AbjFGKYs (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 7 Jun 2023 06:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239626AbjFGI4M (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 7 Jun 2023 04:56:12 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811931BFB
-        for <linux-hwmon@vger.kernel.org>; Wed,  7 Jun 2023 01:55:13 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-516a008e495so369614a12.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 07 Jun 2023 01:55:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686128112; x=1688720112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RTpA5qOAPRS8MQZfyN8Ss9cXLKE3reuQWNe17eVOs98=;
-        b=D2ESwCvV3EMJ4Ca9Xo0YrNr2h8zDu3w8UAFRDTvjKd+CzOHysYAMrUv95WmgXW6pef
-         PsKk6OT+GE3LhG59KbziqQ8SX2zQaEPT9u8GVDR84WIwdNAJaeEZI0k91AdVnjG4fkba
-         7QfIE+0YEtfGCqwMJjmHD0uUn7sG3yGccZKVA9w7gvuWa2pSa7UzCkUG/q57UumGb1EA
-         4OKi4guQJOqGhlKfXqujVgAzpzyCQ7hJotGxoUFQ9FHVd4N13KRLYrRg+JJE1C5Pxxon
-         yqRiF+kOeMILJ7ArRRRzkzEFaxvUjTteQsnxlZPRwwLMcnLuFClt6rOtK1yjIsDrIlmd
-         ftfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686128112; x=1688720112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RTpA5qOAPRS8MQZfyN8Ss9cXLKE3reuQWNe17eVOs98=;
-        b=lPH7N/KVdrg/t9RRjFch+H9EuG+LFQCkQVFKEM2g8Az0cdNt+SK3o/+KGoJT9dTH9T
-         DuPVL7FDGChgVonyAOWmxGj6PpcpwlPgSChggCu9Inkg0QFserlaFeLPZs1ryNw3V9MZ
-         ENcXTzr+/+ilfaWJonUTYfxd96NLr2vF0YvyTvQrrYn5NCvBG/3QRa51eViDJK2V9oll
-         QwjJro4smNAJY4mwZyqBItebvJ7/bxYjoG3uLrCFwahpn64f/hfOxAM/xMs1GR5m3NFk
-         lrfd0S3r2qcJgfz3t4QEglkJOaOXV0H+qV60W+/s8Wdv9vfjN//vvpVjwHuGBuemUbcl
-         qAeg==
-X-Gm-Message-State: AC+VfDxnbGkh4kZjYknDWiHa0KXEuzfCNvKF1yhB9bpfoh6Yjmh1VBLD
-        VdPYliu9GXOsk+GMQUY2dw6EwA==
-X-Google-Smtp-Source: ACHHUZ68EljsPgkNMfLt/pjzYCbcf3rch3Eqf0hQ739bCBHvP3l1XP1YD46PoScoXp1Rg3YgbqRIWg==
-X-Received: by 2002:aa7:c59a:0:b0:514:9e47:4319 with SMTP id g26-20020aa7c59a000000b005149e474319mr4990483edq.5.1686128111991;
-        Wed, 07 Jun 2023 01:55:11 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id u6-20020aa7d0c6000000b0050488d1d376sm5951735edo.0.2023.06.07.01.55.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 01:55:11 -0700 (PDT)
-Message-ID: <c8fe71a4-f8bb-d0a5-a227-14040fa024a9@linaro.org>
-Date:   Wed, 7 Jun 2023 10:55:08 +0200
+        with ESMTP id S239150AbjFGKYn (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 7 Jun 2023 06:24:43 -0400
+X-Greylist: delayed 359 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Jun 2023 03:24:40 PDT
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [IPv6:2605:2700:0:5::4713:9cab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE581BD7;
+        Wed,  7 Jun 2023 03:24:40 -0700 (PDT)
+Received: from hatter.bewilderbeest.net (174-21-172-149.tukw.qwest.net [174.21.172.149])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: zev)
+        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id BABEB162;
+        Wed,  7 Jun 2023 03:18:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+        s=thorn; t=1686133121;
+        bh=0TfKAE2mXeDg/EY6rDRVQQvsbIYkCkGyx5BPV2spMFs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=b4TLOcB37/0nxLpzUUE8WBcCVlpZz09Tysqn0Nd/sY2Q9uLtyvayxJcam+YOjN4AC
+         zccDOktu7kTn3jpE9vkl86sjvHQNeiZDoyIJTcLfPGqxkuGHGOly3HWGI2lOUbqZiE
+         P1JrwuCJs3BRrqSsrF6wgJQIdGht5B+XwXB+PfVk=
+From:   Zev Weiss <zev@bewilderbeest.net>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     Zev Weiss <zev@bewilderbeest.net>, devicetree@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+        openbmc@lists.ozlabs.org
+Subject: [PATCH 0/2] Nuvoton NCT7362 driver & dt-binding
+Date:   Wed,  7 Jun 2023 03:18:28 -0700
+Message-ID: <20230607101827.8544-4-zev@bewilderbeest.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [v5 3/5] dt-bindings: mfd: Add aspeed pwm-tach binding
-Content-Language: en-US
-To:     Billy Tsai <billy_tsai@aspeedtech.com>,
-        Patrick Williams <patrick@stwcx.xyz>
-Cc:     "jdelvare@suse.com" <jdelvare@suse.com>,
-        "linux@roeck-us.net" <linux@roeck-us.net>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "joel@jms.id.au" <joel@jms.id.au>,
-        "andrew@aj.id.au" <andrew@aj.id.au>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "corbet@lwn.net" <corbet@lwn.net>,
-        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-References: <20230606094535.5388-1-billy_tsai@aspeedtech.com>
- <20230606094535.5388-4-billy_tsai@aspeedtech.com>
- <35bf0a69-bcf6-ae35-eb3c-e74cfcf9c571@linaro.org>
- <ZH89fXknZlhGmM_H@heinlein.vulture-banana.ts.net>
- <c28f963e-d13c-6b5c-c389-996e986f81d5@linaro.org>
- <SG2PR06MB33652E18980E9CF8E4F0894D8B53A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <SG2PR06MB33652E18980E9CF8E4F0894D8B53A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 07/06/2023 08:26, Billy Tsai wrote:
->         >>
->         >> He felt what he was trying to accomplish met the documented
->         >> expectations.  Are there some changes that need to be done in mfd.txt to
->         >> further clarify when to use it and when not to?
-> 
->         > I think mfd.txt clearly states:
->         > "For more complex devices, when the nexus driver has to
->         > probe registers to figure out what child devices exist etc, this should
->         > not be used. In the latter case the child devices will be determined by
->         > the operating system."
-> 
-> About the mfd:
-> For our pwm and tach devices, there is no need to check/apply any hardware register from parent to determine child’s existence or functional.
-> They don’t have any dependency on the parent node. In fact, it doesn’t require a specific driver to bind with the "aspeed,ast2600-pwm-tach" label. Their purpose is solely to share the same clock, reset phandle and base address. The main reason for using simple-mfd in this case is because these two independent devices share the same base address.
+Hello,
 
-Actually one more thoughts. I have doubt that you have two independent
-devices. If you share the clock, reset line and register address space,
-this means *you do not have two independent devices*.
+This patch series adds support for the Nuvoton NCT7362 fan/GPIO
+controller.  The chip provides 16 pins that can be individually
+configured for PWM, tach, or GPIO functionality, and is controlled via
+an I2C interface.
 
-You have most likely only one device.
+There is a sibling NCT7360 chip covered by the same datasheet that's
+very similar but only provides 8 fan/tach/gpio pins instead of 16; it
+could be supported fairly easily with minor adjustments to the same
+driver, but since I don't have an instance of it to test against I've
+only implemented support for the NCT7362.
 
-Best regards,
-Krzysztof
+The first patch adds a DT binding, and the second adds a hwmon driver
+with optional GPIO support enabled via CONFIG_SENSORS_NCT7362_GPIO.
+
+Thanks,
+Zev
+
+
+Zev Weiss (2):
+  dt-bindings: hwmon: Add Nuvoton NCT7362Y binding
+  hwmon: (nct7362) Add nct7362 driver
+
+ .../bindings/hwmon/nuvoton,nct7362.yaml       | 123 ++++
+ MAINTAINERS                                   |   7 +
+ drivers/hwmon/Kconfig                         |  18 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/nct7362.c                       | 697 ++++++++++++++++++
+ 5 files changed, 846 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/nuvoton,nct7362.yaml
+ create mode 100644 drivers/hwmon/nct7362.c
+
+-- 
+2.40.0.5.gf6e3b97ba6d2.dirty
 
