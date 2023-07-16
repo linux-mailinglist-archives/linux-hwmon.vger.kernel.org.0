@@ -2,152 +2,207 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54729754BEA
-	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Jul 2023 22:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CE8754DEE
+	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Jul 2023 10:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbjGOUDI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sat, 15 Jul 2023 16:03:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
+        id S229450AbjGPIzZ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 16 Jul 2023 04:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbjGOUDH (ORCPT
+        with ESMTP id S229483AbjGPIzY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sat, 15 Jul 2023 16:03:07 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B07268B
-        for <linux-hwmon@vger.kernel.org>; Sat, 15 Jul 2023 13:03:03 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1b89cfb4571so25057195ad.3
-        for <linux-hwmon@vger.kernel.org>; Sat, 15 Jul 2023 13:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689451383; x=1692043383;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QI+H1yn3w+/q4ipMcAe/GImKHbFi63VXw6xveJYj2II=;
-        b=rbTcbG55VFdG8rSqrF6MMadu5E50S0PvvDCivnK/y7s4GBtrRcZWnZO5mAPBvuQV3m
-         xbOWx16GkR1Ov8BBf8VIv5BDDDLG1fDRn9UIobR1V/XgDqdCaJgyN5lpIuc9fJsDO+5p
-         bNnDZV/XjAdrhkbrdrBk7A3iupVE3ae0fnIXDJh+EhB6ZnvCPHkwakqZngJzJL2XIdYK
-         I1dl1sDPCQWuAmak6cUNPZlTaI3cd2cf08C4yOrupHMDW6fhctntNlQ8J6I//j0JNmvI
-         JvN7ahH2CDSg4b1RIq3V5ikloTQkDczxohtfTb3W6gV8jop+MKuskwR7lXK9XRy2kGNd
-         +2Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689451383; x=1692043383;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QI+H1yn3w+/q4ipMcAe/GImKHbFi63VXw6xveJYj2II=;
-        b=D0DBbFJ9dWl5VNPe8H+q3H43nWd4LqOFoCWI9zoBioD5E5peodwU1kHzD+R9Tq12Y8
-         x7B8nGK0VQO1MNzNT9U2cAxAlig1dQOxsVKubccWxWRIEEcE7qsO92uVtE9CUjzEhSgB
-         eNAeAjtFi6cEShhCBnRGgxtzU1CbvSgDIcNX/wqQxXMy/HA3H27+ELcUmVBjYtLZ+fpt
-         BJ9KWbV3FPtpN4Y6SmbYwxI/J9uiw2INxgRaqatley2WaE0WSiEIOanaxyJlQMqHsZKI
-         r74HxWDOtIl2zmUOjMPk8gkmXLNXzZt9ZwmLTeK9/RYqNp7raaUxwqimmFThWJ2fytCP
-         9wRQ==
-X-Gm-Message-State: ABy/qLYmwEPiX1N8hLa0Scj1i/RFs8wzM6xTrW3cC0DMUYOwviNOWS1P
-        jLVDwiSwvLvrMqW/Yq2wOis=
-X-Google-Smtp-Source: APBJJlEOo+VdSGNNp/4TdSKe/OiioM2Pmxji5shtBQblf8KpiiiqfgHqXcpdnFqibT4i+ZIsQATZbg==
-X-Received: by 2002:a17:902:f549:b0:1b8:4f93:b210 with SMTP id h9-20020a170902f54900b001b84f93b210mr10689513plf.45.1689451383123;
-        Sat, 15 Jul 2023 13:03:03 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j6-20020a633c06000000b0051b36aee4f6sm9677496pga.83.2023.07.15.13.03.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Jul 2023 13:03:02 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sat, 15 Jul 2023 13:03:01 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Ahmad Khalifa <ahmad@khalifa.ws>
+        Sun, 16 Jul 2023 04:55:24 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE46115
+        for <linux-hwmon@vger.kernel.org>; Sun, 16 Jul 2023 01:55:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689497724; x=1721033724;
+  h=date:from:to:cc:subject:message-id;
+  bh=zywiKHOYrkMeNVPE1R5/Ph66o4g21MBPXnNEksq/6g0=;
+  b=Ivb2DgoCww2nyZz6pm68hSnW4AEOURB+mLnc0GLa3H2MDKE3Ip2pcn3d
+   2gDxHuWY1IV6k3edKy6omYubBBv7xPhkrhyoVAYw+8jIKQw3kVtIXcVee
+   PAnJThVhNPC6zt4Zp4RCrh8p5nRiZ7KbqFFk8mPyWc2pCffSOZJdZ7aRe
+   RTnC1efgwKXsyASaocMXQ5LStbufZ9fWKiP+aqaFW3E/SvOCi8d8ETKSx
+   DHd8iZJvJvia4fLwZitOAVncshQ+q/8jH3lmZ7rGrhYoQbTccKbioNkqe
+   mi37lbxqTYlEUX4t8SK7fjKmQU8ByooV8Bp6YG4G5dyA5OsqeMNWASw6/
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10772"; a="363203953"
+X-IronPort-AV: E=Sophos;i="6.01,210,1684825200"; 
+   d="scan'208";a="363203953"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2023 01:55:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10772"; a="722868868"
+X-IronPort-AV: E=Sophos;i="6.01,210,1684825200"; 
+   d="scan'208";a="722868868"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 16 Jul 2023 01:55:21 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qKxXE-0008kx-2x;
+        Sun, 16 Jul 2023 08:55:20 +0000
+Date:   Sun, 16 Jul 2023 16:54:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v2] hwmon: (nct6775) Change labels for nct6799
-Message-ID: <7efc779a-88e3-46d4-b3f0-592f6d6fd0c1@roeck-us.net>
-References: <20230715195244.1334723-1-ahmad@khalifa.ws>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230715195244.1334723-1-ahmad@khalifa.ws>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ 96e4fb748d758f01e136932028f06cbf8d8a0a50
+Message-ID: <202307161644.fgDY6k8f-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Sat, Jul 15, 2023 at 08:52:44PM +0100, Ahmad Khalifa wrote:
-> nct6799d-r and nct6796d-s are very similar and chip_id is only
-> different in the version nibblet.
-> 
-> Since both will be detected by the driver anyway due to the
-> chipid mask, they should be labeled together for dmesg msg.
-> 
-> Signed-off-by: Ahmad Khalifa <ahmad@khalifa.ws>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: 96e4fb748d758f01e136932028f06cbf8d8a0a50  hwmon: (nct6775) Change labels for nct6799
 
-Applied. Please add change logs to future versions of your patches.
+elapsed time: 721m
 
-Thanks,
-Guenter
+configs tested: 130
+configs skipped: 2
 
-> ---
->  Documentation/hwmon/nct6775.rst  | 11 ++++++++++-
->  drivers/hwmon/nct6775-core.c     |  3 ++-
->  drivers/hwmon/nct6775-platform.c |  2 +-
->  3 files changed, 13 insertions(+), 3 deletions(-)
-> 
-> 
-> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-> prerequisite-patch-id: 36e3467bd9ea72cb3ad2bef638a8389a9537d111
-> 
-> diff --git a/Documentation/hwmon/nct6775.rst b/Documentation/hwmon/nct6775.rst
-> index 5ba8276aad4b..9d7a10de61a7 100644
-> --- a/Documentation/hwmon/nct6775.rst
-> +++ b/Documentation/hwmon/nct6775.rst
-> @@ -80,7 +80,13 @@ Supported chips:
->  
->      Datasheet: Available from Nuvoton upon request
->  
-> +  * Nuvoton NCT6796D-S/NCT6799D-R
->  
-> +    Prefix: 'nct6799'
-> +
-> +    Addresses scanned: ISA address retrieved from Super I/O registers
-> +
-> +    Datasheet: Available from Nuvoton upon request
->  
->  Authors:
->  
-> @@ -277,4 +283,7 @@ will not reflect a usable value. It often reports unreasonably high
->  temperatures, and in some cases the reported temperature declines if the actual
->  temperature increases (similar to the raw PECI temperature value - see PECI
->  specification for details). CPUTIN should therefore be ignored on ASUS
-> -boards. The CPU temperature on ASUS boards is reported from PECI 0.
-> +boards. The CPU temperature on ASUS boards is reported from PECI 0 or TSI 0.
-> +
-> +NCT6796D-S and NCT6799D-R chips are very similar and their chip_id indicates
-> +they are different versions. This driver treats them the same way.
-> diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-> index 236dc97f4d22..029344b933ed 100644
-> --- a/drivers/hwmon/nct6775-core.c
-> +++ b/drivers/hwmon/nct6775-core.c
-> @@ -33,7 +33,8 @@
->   *                                           (0xd451)
->   * nct6798d    14      7       7       2+6    0xd428 0xc1    0x5ca3
->   *                                           (0xd429)
-> - * nct6799d    14      7       7       2+6    0xd802 0xc1    0x5ca3
-> + * nct6796d-s  18      7       7       6+2    0xd801 0xc1    0x5ca3
-> + * nct6799d-r  18      7       7       6+2    0xd802 0xc1    0x5ca3
->   *
->   * #temp lists the number of monitored temperature sources (first value) plus
->   * the number of directly connectable temperature sensors (second value).
-> diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
-> index a409d7a0b813..81bf03dad6bb 100644
-> --- a/drivers/hwmon/nct6775-platform.c
-> +++ b/drivers/hwmon/nct6775-platform.c
-> @@ -35,7 +35,7 @@ static const char * const nct6775_sio_names[] __initconst = {
->  	"NCT6796D",
->  	"NCT6797D",
->  	"NCT6798D",
-> -	"NCT6799D",
-> +	"NCT6796D-S/NCT6799D-R",
->  };
->  
->  static unsigned short force_id;
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r012-20230716   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230716   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                       aspeed_g4_defconfig   clang
+arm                          collie_defconfig   clang
+arm                                 defconfig   gcc  
+arm                       imx_v4_v5_defconfig   clang
+arm                          ixp4xx_defconfig   clang
+arm                  randconfig-r004-20230716   clang
+arm                  randconfig-r022-20230716   gcc  
+arm                  randconfig-r023-20230716   gcc  
+arm                  randconfig-r033-20230716   clang
+arm                  randconfig-r034-20230716   clang
+arm                  randconfig-r046-20230716   gcc  
+arm                         s3c6400_defconfig   gcc  
+arm                        spear6xx_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r011-20230716   clang
+arm64                randconfig-r036-20230716   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r003-20230716   gcc  
+csky                 randconfig-r031-20230716   gcc  
+hexagon              randconfig-r002-20230716   clang
+hexagon              randconfig-r041-20230716   clang
+hexagon              randconfig-r045-20230716   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230716   gcc  
+i386         buildonly-randconfig-r005-20230716   gcc  
+i386         buildonly-randconfig-r006-20230716   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230716   gcc  
+i386                 randconfig-i002-20230716   gcc  
+i386                 randconfig-i003-20230716   gcc  
+i386                 randconfig-i004-20230716   gcc  
+i386                 randconfig-i005-20230716   gcc  
+i386                 randconfig-i006-20230716   gcc  
+i386                 randconfig-i011-20230716   clang
+i386                 randconfig-i012-20230716   clang
+i386                 randconfig-i013-20230716   clang
+i386                 randconfig-i014-20230716   clang
+i386                 randconfig-i015-20230716   clang
+i386                 randconfig-i016-20230716   clang
+i386                 randconfig-r001-20230716   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                            mac_defconfig   gcc  
+m68k                 randconfig-r026-20230716   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                           ci20_defconfig   gcc  
+mips                           jazz_defconfig   gcc  
+mips                      maltaaprp_defconfig   clang
+mips                           mtx1_defconfig   clang
+mips                        qi_lb60_defconfig   clang
+mips                 randconfig-r014-20230716   gcc  
+mips                 randconfig-r024-20230716   gcc  
+mips                 randconfig-r025-20230716   gcc  
+mips                 randconfig-r032-20230716   clang
+nios2                               defconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                      ep88xc_defconfig   gcc  
+powerpc               mpc834x_itxgp_defconfig   clang
+powerpc                     tqm8541_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                    nommu_k210_defconfig   gcc  
+riscv                randconfig-r005-20230716   gcc  
+riscv                randconfig-r006-20230716   gcc  
+riscv                randconfig-r016-20230716   clang
+riscv                randconfig-r042-20230716   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r035-20230716   gcc  
+s390                 randconfig-r044-20230716   clang
+sh                               allmodconfig   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                         microdev_defconfig   gcc  
+sh                   randconfig-r013-20230716   gcc  
+sh                   randconfig-r021-20230716   gcc  
+sh                           se7724_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          alldefconfig   gcc  
+um                               alldefconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r015-20230716   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230716   gcc  
+x86_64       buildonly-randconfig-r002-20230716   gcc  
+x86_64       buildonly-randconfig-r003-20230716   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-x001-20230716   clang
+x86_64               randconfig-x002-20230716   clang
+x86_64               randconfig-x003-20230716   clang
+x86_64               randconfig-x004-20230716   clang
+x86_64               randconfig-x005-20230716   clang
+x86_64               randconfig-x006-20230716   clang
+x86_64               randconfig-x011-20230716   gcc  
+x86_64               randconfig-x012-20230716   gcc  
+x86_64               randconfig-x013-20230716   gcc  
+x86_64               randconfig-x014-20230716   gcc  
+x86_64               randconfig-x015-20230716   gcc  
+x86_64               randconfig-x016-20230716   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
