@@ -2,73 +2,58 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E38276966B
-	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Jul 2023 14:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C7376979B
+	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Jul 2023 15:29:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232359AbjGaMeo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 31 Jul 2023 08:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55834 "EHLO
+        id S230244AbjGaN27 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 31 Jul 2023 09:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229922AbjGaMen (ORCPT
+        with ESMTP id S229965AbjGaN26 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 31 Jul 2023 08:34:43 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1123139;
-        Mon, 31 Jul 2023 05:34:41 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1690806879;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=26bNPteWLKWX+IXb6CXn0F6iXGIdt9GmgAnDVbyNoUc=;
-        b=uDXkw2Ay5rxDMiOgBXNnZOMctMLa1CZfO0YQ8FiSGypGhqCA3YfCB8QO2bcWKTBHwXPon1
-        4SG2jZnu7h2E7IgvCIIkNvArtILo3wCcp3CKPy5vKXHlEu9kl9xoiEgt2/OZrSk5zQt9qK
-        hhyYL1L7z2rvJwtBDzahacKFKUkKRQhzoI1+IG3DQTmICoVIKPsVfm8lRHhcYiLm/X/Yck
-        xPrqyPUakMrE+ZKueCEgPUEM1omfO9aN/m3xm7S88c+ATcmuN5rTFRnaSriVrj6PapaEe7
-        2T704/PZ4VFKJNeIGkqSvC/L8Han350umiQssr78hOhSnZRAm3MGYcH6f02J6g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1690806879;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=26bNPteWLKWX+IXb6CXn0F6iXGIdt9GmgAnDVbyNoUc=;
-        b=1w9HP+LRa/uXwBirEj5ZNjtThhek9E5qaTN8T6DYClnfLEm8+4TGDNsMvPGktEuJjF8s8B
-        56/kKbxH3Nbb1oCQ==
-To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     "x86@kernel.org" <x86@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Arjan van de Ven <arjan@linux.intel.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        James Smart <james.smart@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Huang Rui <ray.huang@amd.com>, Juergen Gross <jgross@suse.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Mike Travis <mike.travis@hpe.com>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Russ Anderson <russ.anderson@hpe.com>
-Subject: RE: [patch v2 21/38] x86/cpu: Provide cpu_init/parse_topology()
-In-Reply-To: <BYAPR21MB16889FD224344B1B28BE22A1D705A@BYAPR21MB1688.namprd21.prod.outlook.com>
-References: <20230728105650.565799744@linutronix.de>
- <20230728120930.839913695@linutronix.de>
- <BYAPR21MB16889FD224344B1B28BE22A1D705A@BYAPR21MB1688.namprd21.prod.outlook.com>
-Date:   Mon, 31 Jul 2023 14:34:39 +0200
-Message-ID: <871qgop8dc.ffs@tglx>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Mon, 31 Jul 2023 09:28:58 -0400
+Received: from mgamail.intel.com (unknown [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5C2199
+        for <linux-hwmon@vger.kernel.org>; Mon, 31 Jul 2023 06:28:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690810137; x=1722346137;
+  h=date:from:to:cc:subject:message-id;
+  bh=7V/iVWwmKJD4SusqlxG6qy18a8Jsl5OXJGm+GiBORLM=;
+  b=D3YRLLCtVeT6PLbQn3B3UPVvRhm0M9Tshhl7E5upopmheEtZfmFhmCEs
+   kpsv9ARdJSoB5j+z+kjHztGJY5GJF6n+g0vQ49LVm3hO1jLnU+JnhUamV
+   KIfpQDum4mnNk6hdOCNabHdbU7ekjGx3Q8snJnLxEMjf0VlcYtbtxmlGS
+   rDw/1y8RvK3jBw05/ElvqGNI9IW8XWUZEyi3X82vpnkSb1BwEMy4Y1dqh
+   aGEmz6zSPQA3qzNSXTiLujm9C+3aKn3ClclAk9HcOgmi8swzCj+Ncw0lm
+   3SqL2Cc35mBcOiSwBbofqaRpFirtDPT44K7sgD6bKDlaU5Ew6ImvcsMXs
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="371727107"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
+   d="scan'208";a="371727107"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 06:27:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="763395119"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
+   d="scan'208";a="763395119"
+Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 31 Jul 2023 06:27:26 -0700
+Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qQSva-00058N-38;
+        Mon, 31 Jul 2023 13:27:17 +0000
+Date:   Mon, 31 Jul 2023 21:26:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ cb7022b8976e3c4d12cea2e7bb820a2944e2fd7b
+Message-ID: <202307312140.ceIr9wGG-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,123 +61,139 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Mon, Jul 31 2023 at 04:05, Michael Kelley wrote:
->> +	/*
->> +	 * The initial invocation from early_identify_cpu() happens before
->> +	 * the APIC is mapped or X2APIC enabled. For establishing the
->> +	 * topology, that's not required. Use the initial APIC ID.
->> +	 */
->> +	if (early)
->> +		c->topo.apicid =3D c->topo.initial_apicid;
->> +	else
->> +		c->topo.apicid =3D read_apic_id();
->
-> Using the value from the local APIC ID reg turns out to cause a problem in
-> some Hyper-V VM configurations.  If a VM has multiple L3 caches (probably
-> due to multiple NUMA nodes) and the # of CPUs in the span of the L3 cache
-> is not a power of 2, the APIC IDs for the CPUs in the span of the 1st L3 =
-cache
-> are sequential starting with 0.  But then there is a gap before starting =
-the
-> APIC IDs for the CPUs in the span of the 2nd L3 cache.  The gap is
-> repeated if there are additional L3 caches.
->
-> The CPUID instruction executed on a guest vCPU correctly reports the APIC
-> IDs.  However, the ACPI MADT assigns the APIC IDs sequentially with no
-> gaps, and the guest firmware sets the APIC_ID register for each local APIC
-> to match the MADT.  When parse_topology() sets the apicid field based on
-> reading the local APIC ID register, the value it sets is different from t=
-he
-> initial_apicid value for CPUs in the span of the 2nd and subsequent L3
-> caches, because there's no gap in the APIC IDs read from the local APIC.
-> Linux boots and runs, but the topology is set up with the wrong span for
-> the L3 cache and for the associated scheduling domains.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: cb7022b8976e3c4d12cea2e7bb820a2944e2fd7b  hwmon: Add driver for Renesas HS3001
 
-TBH. That's an insanity. MADT and the actual APIC ID determine the
-topology. So the gaps should be reflected in MADT and the actual APIC
-IDs should be set correctly if the intent is to provide topology
-information.
+elapsed time: 853m
 
-Just for the record. This hack works only on Intel today, because AMD
-init sets topo.apicid =3D read_apic_id() unconditionally. So this is
-inconsistent already, no?
+configs tested: 120
+configs skipped: 5
 
-> The old code derives the apicid from the initial_apicid via the
-> phys_pkg_id() callback, so these bad Hyper-V VM configs skate by.  The
-> wrong value in the local APIC ID register and MADT does not affect
-> anything, except that the check in validate_apic_and_package_id() fails
-> during boot, and a set of "Firmware bug:" messages is correctly
-> output.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-So instead of fixing the firmware bugs, hyper-v just moves on and
-pretends that everything works fine, right?
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r034-20230731   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r023-20230731   gcc  
+arc                  randconfig-r043-20230731   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         axm55xx_defconfig   gcc  
+arm                                 defconfig   gcc  
+arm                         nhk8815_defconfig   gcc  
+arm                  randconfig-r005-20230731   clang
+arm                  randconfig-r046-20230731   gcc  
+arm                        realview_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r036-20230731   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230731   clang
+hexagon              randconfig-r045-20230731   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230731   gcc  
+i386         buildonly-randconfig-r005-20230731   gcc  
+i386         buildonly-randconfig-r006-20230731   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230731   gcc  
+i386                 randconfig-i002-20230731   gcc  
+i386                 randconfig-i003-20230731   gcc  
+i386                 randconfig-i004-20230731   gcc  
+i386                 randconfig-i005-20230731   gcc  
+i386                 randconfig-i006-20230731   gcc  
+i386                 randconfig-i011-20230731   clang
+i386                 randconfig-i012-20230731   clang
+i386                 randconfig-i013-20230731   clang
+i386                 randconfig-i014-20230731   clang
+i386                 randconfig-i015-20230731   clang
+i386                 randconfig-i016-20230731   clang
+i386                 randconfig-r035-20230731   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r004-20230731   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                          hp300_defconfig   gcc  
+m68k                 randconfig-r002-20230731   gcc  
+m68k                 randconfig-r014-20230731   gcc  
+microblaze           randconfig-r006-20230731   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         db1xxx_defconfig   gcc  
+mips                      fuloong2e_defconfig   gcc  
+mips                           jazz_defconfig   gcc  
+mips                    maltaup_xpa_defconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r021-20230731   gcc  
+openrisc             randconfig-r031-20230731   gcc  
+openrisc             randconfig-r032-20230731   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                    klondike_defconfig   gcc  
+powerpc                     sequoia_defconfig   gcc  
+powerpc                     stx_gp3_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r013-20230731   clang
+riscv                randconfig-r025-20230731   clang
+riscv                randconfig-r042-20230731   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r022-20230731   clang
+s390                 randconfig-r044-20230731   clang
+sh                               allmodconfig   gcc  
+sh                           se7751_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r011-20230731   gcc  
+sparc                randconfig-r012-20230731   gcc  
+sparc64                             defconfig   gcc  
+sparc64              randconfig-r015-20230731   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r026-20230731   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230731   gcc  
+x86_64       buildonly-randconfig-r002-20230731   gcc  
+x86_64       buildonly-randconfig-r003-20230731   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-x001-20230731   clang
+x86_64               randconfig-x002-20230731   clang
+x86_64               randconfig-x003-20230731   clang
+x86_64               randconfig-x004-20230731   clang
+x86_64               randconfig-x005-20230731   clang
+x86_64               randconfig-x006-20230731   clang
+x86_64               randconfig-x011-20230731   gcc  
+x86_64               randconfig-x012-20230731   gcc  
+x86_64               randconfig-x013-20230731   gcc  
+x86_64               randconfig-x014-20230731   gcc  
+x86_64               randconfig-x015-20230731   gcc  
+x86_64               randconfig-x016-20230731   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa               randconfig-r003-20230731   gcc  
+xtensa               randconfig-r024-20230731   gcc  
 
-> Three thoughts:
->
-> 1)  Are Hyper-V VMs the only place where the local APIC ID register might
-> have a bogus value?  Probably so, but you never know what might crawl
-> out.
-
-Define bogus. MADT is the primary source of information because that's
-how we know how many CPUs (APICs) are there and what their APIC ID is
-which we can use to wake them up. So there is a reasonable expectation
-that this information is consistent with the rest of the system.
-
-The Intel SDM clearly says in Vol 3A section 9.4.5 Identifying Logical
-Processors in an MP System:
-
-  "After the BIOS has completed the MP initialization protocol, each
-   logical processor can be uniquely identified by its local APIC
-   ID. Software can access these APIC IDs in either of the following
-   ways:"
-
-These ways include read from APIC, read MADT, read CPUID and implies
-that this must be consistent. For X2APIC it's actually written out:
-
-  "If the local APIC unit supports x2APIC and is operating in x2APIC
-   mode, 32-bit APIC ID can be read by executing a RDMSR instruction to
-   read the processor=E2=80=99s x2APIC ID register. This method is equivale=
-nt to
-   executing CPUID leaf 0BH described below."
-
-AMD has not been following that in the early 64bit systems as they moved
-the APIC ID space to start at 32 for the first CPU in the first socket
-for whatever reasons. But since then the kernel reads back the APIC ID
-on AMD systems into topo.apicid. But that was long ago and can easily be
-dealt with because at least the real APIC ID and the MADT/MPTABLE
-entries are consistent.
-
-Hypervisors have their own CPUID space to override functionality with
-their own magic stuff, but imposing their nutbolt ideas on the
-architectural part of the system is not only wrong, it's disrespectful
-against the OS developers who try to keep their system sane.
-
-> 2) The natural response is "Well, fix Hyper-V!"  I first had this convers=
-ation
-> with the Hyper-V team about 5 years ago.  Some cases of the problem were
-> fixed, but some cases remain unfixed.  It's a long story.
->
-> 3)  Since Hyper-V code in Linux already has an override for the apic->rea=
-d()
-> function, it's possible to do a hack in that override so that apicid gets=
- set to
-> the same value as initial_apicid, which matches the old code.  Here's the=
- diff:
-
-This collides massively with the other work I'm doing, which uses the
-MADT provided information to actually evaluate various topology related
-things upfront and later during bringup. Thats badly needed because lots
-of todays infrastructure is based on heuristics and guesswork.
-
-But it seems I wasted a month on reworking all of this just to be
-stopped cold in the tracks by completely undocumented and unnecessary
-hyper-v abuse.
-
-So if Hyper-V insists on abusing the initial APIC ID as read from CPUID
-for topology information related to L3, then hyper-v should override the
-cache topology mechanism and not impose this insanity on the basic
-topology evaluation infrastructure.
-
-Yours seriously grumpy
-
-      tglx
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
