@@ -2,152 +2,142 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A046B76B9BB
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Aug 2023 18:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E22D076BCDF
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Aug 2023 20:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231181AbjHAQgW (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 1 Aug 2023 12:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59248 "EHLO
+        id S231766AbjHASqp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 1 Aug 2023 14:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbjHAQgW (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Aug 2023 12:36:22 -0400
-Received: from wp534.webpack.hosteurope.de (wp534.webpack.hosteurope.de [80.237.130.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B2D1BFD;
-        Tue,  1 Aug 2023 09:36:17 -0700 (PDT)
-Received: from [2001:a61:6215:d040:c80a:ff:fe00:409d] (helo=cs-wrt.lan.local); authenticated
-        by wp534.webpack.hosteurope.de running ExIM with esmtpa
-        id 1qQsM0-0007BE-KR; Tue, 01 Aug 2023 18:36:12 +0200
-From:   =?UTF-8?q?Carsten=20Spie=C3=9F?= <mail@carsten-spiess.de>
-To:     =?UTF-8?q?Carsten=20Spie=C3=9F?= <mail@carsten-spiess.de>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>
-Cc:     linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v3 2/2] dt-bindings: hwmon: add renesas,isl28022
-Date:   Tue,  1 Aug 2023 18:35:46 +0200
-Message-Id: <20230801163546.3170-3-mail@carsten-spiess.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230801163546.3170-1-mail@carsten-spiess.de>
-References: <20230801163546.3170-1-mail@carsten-spiess.de>
+        with ESMTP id S232027AbjHASqi (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 1 Aug 2023 14:46:38 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D3A2682
+        for <linux-hwmon@vger.kernel.org>; Tue,  1 Aug 2023 11:46:16 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-686f94328a4so88487b3a.0
+        for <linux-hwmon@vger.kernel.org>; Tue, 01 Aug 2023 11:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1690915575; x=1691520375;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kvbZ9yYuWoTSFKJEhKENxSCBKtYpxpK0EzXBfLVY1p0=;
+        b=IRoyV4Ead+c/d0ks99Zg14YSdO0tXd9vDFI5zWCjNpslgPTEqbT/ERBlexp7Q/JUUA
+         jqDuqlMcyQ/nTpjEo/dQrnCBIwPk8V5i5hq3sMJxHatN1C99Z1yggSsvw7u+RwJLoIFO
+         BUp5lZMfwE7b4BXasRkBB5pG83fbHRP8c13xQJEsMDQOlZ8D4GrW/wB4yixSGwfFQeBH
+         Hy6JMROsMrIzoKN8QS9Z6/zQAOZTfLZPigos5R1dJFfb+DLxLT3cJHesifEklP3RzZAW
+         n4b4fQJeBkaVEyNA7qedDXw1aOR4HZEV7UljyvTmgEGhHhbsLi8d+A/+rBY4ETcDyFBk
+         BZWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690915575; x=1691520375;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kvbZ9yYuWoTSFKJEhKENxSCBKtYpxpK0EzXBfLVY1p0=;
+        b=VKDm7l4GNLO0SVQ5VikeE1ZgID8Zm9j7sMYRSWAllpK0RrkNu4HefjIU0YAFRSHq9T
+         Kuxor98/v59VPd9BJS6szEiOcebodGEekQAqaInAJXsIgnmyD/kal1b/1ERE/aUahsVy
+         YTa13vHFc1BWYy7eFl22xcQ1VBLKI9SWFT7xREA4+7nZ5VfLsNpQKs7La98yoh8z5rEo
+         /tO25uyFFq4JGG4P9zQWIDatCJTZHsKV3DulQ+SSuGpXLAttAlPxyO6mRFe1HuepAI21
+         X5EC4D7gxJVf9SzDkr/IehwTNckbBafJ7QdyN+iq87iCVgoDf2y2aZH8yuEldiR892YI
+         UHWw==
+X-Gm-Message-State: ABy/qLaSeOxTFOMTCNbaN4goStg6vaRp0CtxGzNRPhyiQUecKMKVAcZW
+        om9GfKJydLDnR94vEphA3sU4Te0rNggwTnhwSPqj/fD/Trtc7RSkoxDZ0Q==
+X-Google-Smtp-Source: APBJJlGn2yOBxuyGstntxTVsDJptbHmBTnZxJFLFSa58BxRZujPCSMKq7eDJRr06xgq825y3alknqiVR75AV0LTwJZ4=
+X-Received: by 2002:a17:90b:23ce:b0:262:e589:678f with SMTP id
+ md14-20020a17090b23ce00b00262e589678fmr17592816pjb.10.1690915574722; Tue, 01
+ Aug 2023 11:46:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;mail@carsten-spiess.de;1690907778;8db166c8;
-X-HE-SMSGID: 1qQsM0-0007BE-KR
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,
-        T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230727091358.3274620-1-Naresh.Solanki@9elements.com>
+ <20230727091358.3274620-2-Naresh.Solanki@9elements.com> <41a8ae4b-0f96-9f26-f25b-b1554b2695d6@roeck-us.net>
+ <CABqG17jKoJ8FJdA-vpX8uda9yi_ir3f2FxFAiE7GTaVM7Mb2aA@mail.gmail.com> <b4097ed6-95d6-b11b-9c9e-edd6e8c51d00@roeck-us.net>
+In-Reply-To: <b4097ed6-95d6-b11b-9c9e-edd6e8c51d00@roeck-us.net>
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+Date:   Wed, 2 Aug 2023 00:16:04 +0530
+Message-ID: <CABqG17iAsx2nysBSX10PTCK=fTpvaz2456a-s6CBwQjuJduWQw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] hwmon: (pmbus/tda38640) Add workaround for bug in
+ SVID mode
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Jean Delvare <jdelvare@suse.com>,
+        krzysztof.kozlowski+dt@linaro.org, linux-hwmon@vger.kernel.org,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add dt-bindings for Renesas ISL28022 power monitor.
+Hi Guenter,
 
-Signed-off-by: Carsten Spieß <mail@carsten-spiess.de>
----
-v3:
-- changelog added
-v2/v3:
-- schema errors fixed
-- properties reworked
-- shunt-resistor minimum and default value added
----
- .../bindings/hwmon/renesas,isl28022.yaml      | 65 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 66 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/renesas,isl28022.yaml
+>
+> On 8/1/23 05:34, Naresh Solanki wrote:
+>
+> [ ... ]
+>
+> >>> +     if (IS_ENABLED(CONFIG_SENSORS_TDA38640_REGULATOR) || svid) {
+> >>
+> >> If you hide this behind IS_ENABLED(CONFIG_SENSORS_TDA38640_REGULATOR), reading
+> >> svid outside the if() statement has no value.
+> > svid mode check is needed only when regulator is enabled for on/off
+> > control later.
+> > Will align the code such that if svid_mode check is done only when
+> > REGULATOR config is enabled
+> > & if it is in svid mode then apply the WA.
+> >
+> >>
+> >>> +             /*
+> >>> +              * Apply ON_OFF_CONFIG workaround as enabling the regulator using the
+> >>> +              * OPERATION register doesn't work in SVID mode.
+> >>> +              *
+> >>> +              * One should configure PMBUS_ON_OFF_CONFIG here, but
+> >>> +              * PB_ON_OFF_CONFIG_POWERUP_CONTROL and PB_ON_OFF_CONFIG_EN_PIN_REQ
+> >>> +              * are ignored by the device.
+> >>> +              * Only PB_ON_OFF_CONFIG_POLARITY_HIGH has an effect.
+> >>
+> >> Hmm, maybe I start to understand. This is really weird, since it changes
+> >> the polarity of the EN input pin, effectively reverting its value.
+> >> In other words, what really happens is that it is not possible to disable
+> >> the chip with PMBUS_ON_OFF_CONFIG in SVID mode, and that reverting
+> >> the EN pin polarity effectively simulates turning the chip on or off by
+> >> software. Maybe software enable is disabled on purpose in VID mode.
+> >> Is that really a bug or is it a feature, and is it really a good idea to
+> >> override it ?
+> > By design, SVID mode only has HW control enabled.
+> > This was with the assumption that PGOOD will be used for controlling
+> > Enable of another rail in Hardware.
+> >
+> > Since my use case needs the complete PMBUS based control,
+> > EN pin polarity flipping can be used for controlling output.
+> >
+>
+> So, effectively, this is not really a bug. It is working around chip functionality.
+>
+> That means we can not just enable this unconditionally in SVID mode after all.
+> Sorry, but it has to be configurable after all, with appropriate explanation.
+By 'configurable' you mean add a dt-property like 'en-svid-control' to have this
+enabled ?
 
-diff --git a/Documentation/devicetree/bindings/hwmon/renesas,isl28022.yaml b/Documentation/devicetree/bindings/hwmon/renesas,isl28022.yaml
-new file mode 100644
-index 000000000000..1e0971287941
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/renesas,isl28022.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/renesas,isl28022.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Renesas ISL28022 power monitor
-+
-+maintainers:
-+  - Carsten Spieß <mail@carsten-spiess.de>
-+
-+description: |
-+  The ISL28022 is a power monitor with I2C interface. The device monitors
-+  voltage, current via shunt resistor and calculated power.
-+
-+  Datasheets:
-+    https://www.renesas.com/us/en/www/doc/datasheet/isl28022.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - renesas,isl28022
-+
-+  reg:
-+    maxItems: 1
-+
-+  shunt-resistor-micro-ohms:
-+    description: |
-+      Shunt resistor value in micro-Ohm
-+    minimum: 800
-+    default: 10000
-+
-+  renesas,shunt-range-microvolt:
-+    description: |
-+      Maximal shunt voltage range of +/- 40 mV, 80 mV, 160 mV or 320 mV
-+    default: 320000
-+    enum: [40000, 80000, 160000, 320000]
-+
-+  renesas,average-samples:
-+    description: |
-+      Number of samples to be used to report voltage, current and power values.
-+    default: 1
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 4, 8, 16, 32, 64, 128]
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        power-monitor@40 {
-+            compatible = "renesas,isl28022";
-+            reg = <0x40>;
-+            shunt-resistor-micro-ohms = <8000>;
-+            renesas,shunt-range-microvolt = <40000>;
-+            renesas,average-samples = <128>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b02e3b991676..23b8e8183ece 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11069,6 +11069,7 @@ ISL28022 HARDWARE MONITORING DRIVER
- M:	Carsten Spieß <mail@carsten-spiess.de>
- L:	linux-hwmon@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/hwmon/renesas,isl28022.yaml
- F:	Documentation/hwmon/isl28022.rst
- F:	drivers/hwmon/isl28022.c
- 
--- 
-2.34.1
-
+Regards,
+Naresh
+>
+> Guenter
+>
+> >>
+> >> AN_2203_PL12_2204_184108 might really help here.
+> >>
+> >> Guenter
+> >>
+> >>> +              */
+> >>> +             data->info.read_byte_data = tda38640_read_byte_data;
+> >>> +             data->info.write_byte_data = tda38640_write_byte_data;
+> >>> +     }
+> >>> +     return pmbus_do_probe(client, &data->info);
+> >>>    }
+> >>>
+> >>>    static const struct i2c_device_id tda38640_id[] = {
+> >>
+>
