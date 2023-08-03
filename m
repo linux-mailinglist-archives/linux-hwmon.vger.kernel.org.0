@@ -2,102 +2,165 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E015876ECEF
-	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Aug 2023 16:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE9D76ECF7
+	for <lists+linux-hwmon@lfdr.de>; Thu,  3 Aug 2023 16:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234493AbjHCOnp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 3 Aug 2023 10:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50580 "EHLO
+        id S235880AbjHCOof (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 3 Aug 2023 10:44:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237069AbjHCOnY (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 3 Aug 2023 10:43:24 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6AA535A8
-        for <linux-hwmon@vger.kernel.org>; Thu,  3 Aug 2023 07:42:56 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1bba2318546so9094865ad.1
-        for <linux-hwmon@vger.kernel.org>; Thu, 03 Aug 2023 07:42:56 -0700 (PDT)
+        with ESMTP id S235916AbjHCOoZ (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Thu, 3 Aug 2023 10:44:25 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B37D4236
+        for <linux-hwmon@vger.kernel.org>; Thu,  3 Aug 2023 07:44:07 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-98377c5d53eso145894066b.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 03 Aug 2023 07:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691073776; x=1691678576;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/iXV4w46hA0Jqf1gWu4mX128k+v2+T1g85VgxHyXF9w=;
-        b=LYECZnQLIDitoml1p/1SH/RqAt5ZH3eipgabaYtbili1lk3SlL8CiheI79U8SvKtGB
-         p4cMD7tTKCK69O8g/L5vPzxX0zRvYykq6rN5DeGrrVfcwudK/wjnfwMRrcc04M4IWV+9
-         RvbOJwc9weW9o0xOLJsOf4w7N/hEEhwuMjdZobogBhPDGe5qXs9fKadmgj7jVcEbhm1B
-         CcLSIDiJT2XTpc+dXulpmRpWYhRWjGkISKGjVYd/8SDoqLoVKsNGKTNWkUkImgh3kNNx
-         DswvzMZhz7z380O1mQj7dNXWu0aYIqAPT5djDrj5mfrMlT6Ca6XE4YavtEr6N70oqqxk
-         rR1Q==
+        d=9elements.com; s=google; t=1691073845; x=1691678645;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jJQoP+OlQsep7JicKgaIdwHZRhxScdcgkq1/BfxKseY=;
+        b=QaXj4huY5XwJDj5dgKYPotJmlo6vd/UT1VwxEm6+zSboBzFWXaftbcixNgcNP/0Bhe
+         jcJr4LgYdkNdTdy4P4pXBCUtbiBDxwzDWSLY4wb2rC8rdCTqrNXcvwnrrlpb3QIgCdGK
+         FZlyfOwdf9XbCsqjr17Fqdppk3LAXTphgv3h498VIF5cD2Kt5YRa01zYumasyM9q+2cX
+         eJfcPAOVACXJD7Upx/stiZmeKaLx04qF8vMCSo5Q5NxjvI6JP+TMY3fBSkc8brHQ7hKI
+         WiX9O6K9UXzARZsILMIATPYro5c9VSsXLQ4gjIJf4gX8G9XiJ0knPECRhz5i9uDKEwKG
+         uawQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691073776; x=1691678576;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/iXV4w46hA0Jqf1gWu4mX128k+v2+T1g85VgxHyXF9w=;
-        b=Yli4etyLCqCY+7EfUhHp7/gaA3z9vCEftLzvFSnQeSfsviZL0EtvBDYHWPnSh1k1Of
-         N4yyjB6OSlhnPXU7nRSPDgUFt4gc2/pb8iBhUfku7sl4OqZhwiA9YJZtwoQ9L+A0Uh9b
-         CUIE3f9ahlfG2szXiyeilEQs75S0DjB9RM4dalVYpu9/XqPyqoJkzrxnXOos2+Z1znC7
-         GFeesJag0VpSc0JVZHnZqHcSlAX3i1qgmLZ620rY58dlsTU3vYenhW06EDag/t43KyYd
-         9XUE2LckHlUE886JTX5S6qb28ECzufQr6zwxhw9XnpNiC9LUDsPi7McMzEkn2LKl0rpJ
-         1kZA==
-X-Gm-Message-State: ABy/qLbBQwKWJ8pCVIYnacGtyCOPPV03ri+9kI9p0ntSzp3uGGOkCgo+
-        aUSYCvKTwlOpyX0Ns7fcVolb6Ct1rnA=
-X-Google-Smtp-Source: APBJJlEPFg8KhLAhwoi/HLdYK5NW4PQVM83gFimq4/PuNWuSljNelKfblDaq00MVTgpmlfsJON8MEA==
-X-Received: by 2002:a17:902:ba8d:b0:1bc:2d43:c741 with SMTP id k13-20020a170902ba8d00b001bc2d43c741mr6310345pls.66.1691073776143;
-        Thu, 03 Aug 2023 07:42:56 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id jn15-20020a170903050f00b001aadd0d7364sm14438680plb.83.2023.08.03.07.42.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Aug 2023 07:42:55 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <6644e516-f401-fd2a-8007-85e23cf69aee@roeck-us.net>
-Date:   Thu, 3 Aug 2023 07:42:54 -0700
+        d=1e100.net; s=20221208; t=1691073845; x=1691678645;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jJQoP+OlQsep7JicKgaIdwHZRhxScdcgkq1/BfxKseY=;
+        b=YHo96xslCxnvu7A6lRrVr64Tx8GZwPylVi7AEwzzSwKNH3uxC9Of+/pes0OZqSa8G0
+         kYsq4ojtmc+m2sPtmHnUrqYoaIty2bQ91Ge9SMm39+CdCYiUMoG8iHa53rYZvnLQWm9q
+         gtdejwbndPYy83d+3b3YVdFmLBkGH8C5Cmn/hQR83i5iWzhKoxJQlPKG4MwMDPuxZgc2
+         Iyz0tYMHfhzJkdqqIUNT01u2zp0YPXMHA3Q4IAQpLdJLrNOBuZA4AQpuuOhjiJPebksl
+         iorP5dLii9uFUy9w23aDXpEYKJr4JEy0ypHMHKfNoEUnyt/k3cO7LbYuWY6oHYMsQwaL
+         pZ/w==
+X-Gm-Message-State: ABy/qLbsAxbJbBobTPNo/gWa+624m1305nne3TyG/gx3EwMqG/VGZ55o
+        INqOG/zUK1UztiUaWRHj4hkm/A==
+X-Google-Smtp-Source: APBJJlHA72M4h9rUEVgI/0cQsSvxZ4JN4xSFaGyCja+X/exWwEliU7yU+RAtXwl+xIWyYpBBAKrQ7Q==
+X-Received: by 2002:a17:906:77d6:b0:992:b3a3:81f4 with SMTP id m22-20020a17090677d600b00992b3a381f4mr8361117ejn.50.1691073845548;
+        Thu, 03 Aug 2023 07:44:05 -0700 (PDT)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id t26-20020a1709064f1a00b0099bd86f9248sm10629859eju.63.2023.08.03.07.44.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 07:44:05 -0700 (PDT)
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        krzysztof.kozlowski+dt@linaro.org,
+        Jean Delvare <jdelvare@suse.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>
+Cc:     Marcello Sylvester Bauer <sylv@sylv.io>,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] dt-bindings: hwmon: Add MAX6639
+Date:   Thu,  3 Aug 2023 16:43:59 +0200
+Message-ID: <20230803144401.1151065-1-Naresh.Solanki@9elements.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To:     "Nilawar, Badal" <badal.nilawar@intel.com>,
-        intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc:     anshuman.gupta@intel.com, ashutosh.dixit@intel.com,
-        andi.shyti@linux.intel.com, riana.tauro@intel.com,
-        matthew.brost@intel.com
-References: <20230802135241.458855-1-badal.nilawar@intel.com>
- <20230802135241.458855-6-badal.nilawar@intel.com>
- <fb6ed7c9-1a1e-bd0d-0954-7ebd8d38a3f4@roeck-us.net>
- <7e4da467-e4f6-1a1b-1fbe-dd97d54a337a@intel.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v3 5/6] drm/xe/hwmon: Expose hwmon energy attribute
-In-Reply-To: <7e4da467-e4f6-1a1b-1fbe-dd97d54a337a@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 8/2/23 23:34, Nilawar, Badal wrote:
+From: Marcello Sylvester Bauer <sylv@sylv.io>
 
->>
->> There should be just one hardware monitoring device. Just use energyN
->> and reference the input with an appropriate sensor label.
-> Idea was to expose energy attributes under saperate hwmon folder with device names xe_gtN. But with channel/label approach it will look like energyN_input (energy1_input - device, energy_2,3input - gt0/gt1) with appropriate energyN_label (energy1_label = "energy device", energy_2,3 = "energy gt0/gt1". With this approach we can avoid using 2 structures xe_hwmon and xe_hwmon_data.
-> 
+Add binding documentation for Maxim MAX6639 fan-speed controller.
 
-There is really no such thing as "energy device". I'd suggest to find a better name,
-such as "Package energy" or just "Package".
+Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
+Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+---
+Changes in V3:
+- Update title
+- Add pulses-per-revolution, supplies & interrupts
+Changes in V2:
+- Update subject
+- Drop blank lines
+---
+ .../bindings/hwmon/maxim,max6639.yaml         | 60 +++++++++++++++++++
+ 1 file changed, 60 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
 
-Anyway, your code is flawed: It claims to handle energy overflows, but it doesn't
-really do that reliably. The returned numbers are only reliable if read at least
-once within an overflow interval. Making it reliable would require introducing
-a worker or kernel thread which reads the data from the chip in regular intervals
-and accumulates independently of attribute reads.
+diff --git a/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+new file mode 100644
+index 000000000000..b3292061ca58
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/maxim,max6639.yaml
+@@ -0,0 +1,60 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/hwmon/maxim,max6639.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Maxim MAX6639 Fan Controller
++
++maintainers:
++  - Naresh Solanki <Naresh.Solanki@9elements.com>
++
++description: |
++  The MAX6639 is a 2-channel temperature monitor with dual, automatic, PWM
++  fan-speed controller.  It monitors its own temperature and one external
++  diode-connected transistor or the temperatures of two external diode-connected
++  transistors, typically available in CPUs, FPGAs, or GPUs.
++
++  Datasheets:
++    https://datasheets.maximintegrated.com/en/ds/MAX6639-MAX6639F.pdf
++
++properties:
++  compatible:
++    enum:
++      - maxim,max6639
++
++  reg:
++    maxItems: 1
++
++  fan-supply:
++    description: Phandle to the regulator that provides power to the fan.
++
++  interrupts:
++    maxItems: 1
++
++  pulses-per-revolution:
++    description:
++      Define the number of pulses per fan revolution for each tachometer
++      input as an integer.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [1, 2, 3, 4]
++    default: 2
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      fan-controller@10 {
++        compatible = "maxim,max6639";
++        reg = <0x10>;
++      };
++    };
++...
 
-Guenter
+base-commit: cb7022b8976e3c4d12cea2e7bb820a2944e2fd7b
+-- 
+2.41.0
 
