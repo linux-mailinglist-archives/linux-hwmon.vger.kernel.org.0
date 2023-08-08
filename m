@@ -2,122 +2,96 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83163773C7B
-	for <lists+linux-hwmon@lfdr.de>; Tue,  8 Aug 2023 18:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EA377472C
+	for <lists+linux-hwmon@lfdr.de>; Tue,  8 Aug 2023 21:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231761AbjHHQGp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 8 Aug 2023 12:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40034 "EHLO
+        id S234622AbjHHTK2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 8 Aug 2023 15:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231426AbjHHQFe (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 8 Aug 2023 12:05:34 -0400
+        with ESMTP id S233734AbjHHTKI (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 8 Aug 2023 15:10:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49FE30C7;
-        Tue,  8 Aug 2023 08:45:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A96B30A40;
+        Tue,  8 Aug 2023 09:31:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E0F86259F;
-        Tue,  8 Aug 2023 14:28:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D866C433C7;
-        Tue,  8 Aug 2023 14:28:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42BDB6242E;
+        Tue,  8 Aug 2023 08:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7D8C433C8;
+        Tue,  8 Aug 2023 08:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691504894;
-        bh=qMriDtXrpLpfOWzb5+F5aOCYEZhH3+5fP0nhoxADdxA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tV/68gEXuyvM/3aR/Qp/99bWWBgEJWNV2ioFTuNK7maHxoA1B+jr4legADPGIpFmC
-         TdlpfRfEciPYC863Fr1g9haSn9B6FuQ3YFQQcWcYtAr3XM1PDaDLeJYHG3t47A4Chw
-         UePvtRvh7fol4x07yLv8vsqeQn8LoyKEuJWEzMceYnNDdk/UBRmeCnS3r3upT33N7F
-         wef4uKoHfk0fO2u7TR874aKZ8TochZneW8BekRHnLwTLS+D9DmohjHcNFHmugnARaT
-         Cmqda5nh8N4n+7M0qOsDiPlx8rWolfpIt/xBVePqjkzPi25YffJO9H1VE4N+DFwxnH
-         oZQs+tSbh3JXA==
-Date:   Tue, 8 Aug 2023 15:28:10 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Naresh Solanki <naresh.solanki@9elements.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        krzysztof.kozlowski+dt@linaro.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-hwmon@vger.kernel.org,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: hwmon: Add Infineon TDA38640
-Message-ID: <20230808-esquire-epidemic-f9bd74ffde25@spud>
-References: <20230802193155.2170935-1-Naresh.Solanki@9elements.com>
- <20230808-stand-cheddar-b76b0b7509a0@spud>
- <eced746a-1181-bd8f-6828-4a4eeb79727c@roeck-us.net>
+        s=k20201202; t=1691482231;
+        bh=S2XJDdh0DarfOWU0otgnt+QQKAmvWNfqK2c/4JVKZ1o=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=q7YVjgYHCPEvv9Mgunx2m9+gZ8OZEE/udTwzkebBLO3w4e11UgTWdA134OtMlyNVk
+         VEq0hsRs2KL5R1WfHxBMbg4BPHSL4OX0poTmNLFBogaO0lCSONPtWr3hqFFGa96NZD
+         +k12kmSI9JuPPeyTBqMFx5S/txOhKF7MRWfd1g9jxJN6oWm7f8ZsoiIItJ3FI76aGq
+         XtVwMzclF7Moinrik4wRG6j3Xx6bFI07YFDtmh0F/gFrlpPxzGapZ2woPOVLPPC13V
+         sbbG84GC1XclyzWrQNC9X4oh1BWC88sPT6n5pgfxYuR5E/WOxqGzdr2HNLb+E1v1qz
+         KUWQKjFmkzOYA==
+Message-ID: <4c682c3d-7066-108f-4e40-8127adf160e0@kernel.org>
+Date:   Tue, 8 Aug 2023 10:10:26 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XfJu5TZS5xk5xqji"
-Content-Disposition: inline
-In-Reply-To: <eced746a-1181-bd8f-6828-4a4eeb79727c@roeck-us.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 1/2] hwmon: Add driver for EMC181x temperature sensors
+Content-Language: en-US
+To:     Mathew McBride <matt@traverse.com.au>,
+        Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+References: <20230808013157.80913-1-mark.tomlinson@alliedtelesis.co.nz>
+ <0248d597-b72a-5b7c-63a4-6d72384f9854@kernel.org>
+ <b84c2fba-1bbe-4842-a861-525784d8a361@app.fastmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <b84c2fba-1bbe-4842-a861-525784d8a361@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On 08/08/2023 09:54, Mathew McBride wrote:
+> Hi Krzysztof,
+> 
+> On Tue, Aug 8, 2023, at 5:38 PM, Krzysztof Kozlowski wrote:
+>> On 08/08/2023 03:31, Mark Tomlinson wrote:
+>>> This patch adds a HWMON driver for the EMC1812, EMC1813, EMC1814,
+>>> EMC1815 and EMC1833 temperature sensor chips from microchip. Does not
+>>> currently support the alert outputs.
+>>>
+>>> Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+>>> Co-developed-by: Mathew McBride <matt@traverse.com.au>
+>>> Signed-off-by: Mathew McBride <matt@traverse.com.au>
+>>
+>> The order of these tags is clearly not correct. It says Mathew is
+>> sending, but you are not Mathew?
+> 
+> Just to clarify, Mark has developed this version based off something I wrote a while ago:
+> 
+> https://gitlab.com/traversetech/ls1088firmware/traverse-sensors/-/blob/master/emc181x/emc181x.c?ref_type=heads
+> 
+> Hence my copyright is listed in the header.
+> 
+> I advised him to list the authors in that order following the example in the kernel's "submitting patches" guide [2] which provides an example of such a situation:
+> 
+> https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
 
---XfJu5TZS5xk5xqji
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The last entry is:
+Signed-off-by: From Author <from@author.example.org>
 
-On Tue, Aug 08, 2023 at 07:10:08AM -0700, Guenter Roeck wrote:
-> On 8/8/23 04:46, Conor Dooley wrote:
-> > On Wed, Aug 02, 2023 at 09:31:51PM +0200, Naresh Solanki wrote:
-> > > From: Patrick Rudolph <patrick.rudolph@9elements.com>
-> > >=20
-> > > The TDA38640 chip has different output control mechanisms depending on
-> > > its mode of operation. When the chip is in SVID mode, only
-> > > hardware-based output control is supported via ENABLE pin. However, w=
-hen
-> > > it operates in PMBus mode, software control works perfectly.
-> > >=20
-> > > To enable software control as a workaround in SVID mode, add the DT
-> > > property 'infineon,en-svid-control'. This property will enable the
-> > > workaround, which utilizes ENABLE pin polarity flipping for output wh=
-en
-> > > the chip is in SVID mode.
-> >=20
-> > Why do you need a custom property for this? How come it is not possible
-> > to determine what bus you are on?
-> >=20
->=20
-> That is not the point. Yes, it can be detected if the control method is
-> PMBus or SVID. However, in SVID mode, SVID is supposed to control the
-> output, not PMBUs. This is bypassed by controlling the polarity of the
-> (physical) output enable signal. We do _not_ want this enabled automatica=
-lly
-> in SVID mode. Its side effects on random boards using this chip are unkno=
-wn.
-> Thus, this needs a property which specifically enables this functionality
-> for users who _really_ need to use it and (hopefully) know what they are
-> doing.
+So it is expected to be Mark.
 
-Hmm, reading this it makes a lot more sense why this is a property - I
-guess I just struggled to understand the commit message here,
-particularly what the benefit of using the workaround is. I'm still
-having difficulty parsing the commit & property text though - its
-unclear to me when you would need to use it - so I will stay out
-of the way & let Rob or Krzysztof handle things.
+Best regards,
+Krzysztof
 
---XfJu5TZS5xk5xqji
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNJQ+gAKCRB4tDGHoIJi
-0rsaAP4p4HX4bMrdis5l4TikUX588o40cMUso+iMzqcRc+4sBQEAiZOIdiIzqofV
-HE+wZrIM/ImGNTwKIwWUHO0dKzccKg8=
-=+V64
------END PGP SIGNATURE-----
-
---XfJu5TZS5xk5xqji--
