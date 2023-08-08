@@ -2,58 +2,59 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8503A772D7C
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Aug 2023 20:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BFA87735F7
+	for <lists+linux-hwmon@lfdr.de>; Tue,  8 Aug 2023 03:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbjHGSFT (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 7 Aug 2023 14:05:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49012 "EHLO
+        id S229598AbjHHBc7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 7 Aug 2023 21:32:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbjHGSFS (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Aug 2023 14:05:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D46F91726
-        for <linux-hwmon@vger.kernel.org>; Mon,  7 Aug 2023 11:05:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S230052AbjHHBcz (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 7 Aug 2023 21:32:55 -0400
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8554E1FEB
+        for <linux-hwmon@vger.kernel.org>; Mon,  7 Aug 2023 18:32:32 -0700 (PDT)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64ACB620BC
-        for <linux-hwmon@vger.kernel.org>; Mon,  7 Aug 2023 18:05:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABFFC433CA;
-        Mon,  7 Aug 2023 18:05:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691431514;
-        bh=IgjbFevivCXo4ewfMKN+yGUOMJi1tDfFv5Sz4EP/Oic=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=scqfgbyH4mg1GH1zj6iqJmY+JgRjXz6n8cFt+7p23WVjbJ8tASw4HqEDBQHWMGoAJ
-         AzYX17gleOwHxfwbh+fr/G2L/l0K/BUq2zI+nDHG/zjdwOZxiyowuLQn2WRW6Q6HXT
-         AkIexrAVpjOKcPg1NtLweJV/J+uf4jArlbm+3DZMTs3QKiWuXLoXMUfFwNldY+1MpC
-         /FF5p3bvS6NnPAA7uan0Fevv+6dkLFvaAYig3zQxqAG7j/SpM+kGbMHCHZ5AStdXeA
-         Wap24+StCxhDEEocCSjRj9YCKBmIBjS0DGntCSeKjvypoiP0tE/Gou+PVVVxtekDM0
-         ePaI0v6c5/l+A==
-From:   Saeed Mahameed <saeed@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>
-Cc:     Saeed Mahameed <saeedm@nvidia.com>, netdev@vger.kernel.org,
-        Tariq Toukan <tariqt@nvidia.com>, linux-hwmon@vger.kernel.org,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Adham Faris <afaris@nvidia.com>, Gal Pressman <gal@nvidia.com>
-Subject: [PATCH net-next V2 2/2] net/mlx5: Expose NIC temperature via hardware monitoring kernel API
-Date:   Mon,  7 Aug 2023 11:05:07 -0700
-Message-ID: <20230807180507.22984-3-saeed@kernel.org>
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 68AFC2C023C;
+        Tue,  8 Aug 2023 13:32:23 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+        s=mail181024; t=1691458343;
+        bh=odut2rMybDUaZwiPlXJk/jPXgTPLSa53DePx4z5p/hs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BvZYiafPFnXHdRPanRiCO1KOgc/lfBA+CAAwzgk58AsILf3fCAr7ahZgbe3QvEWU4
+         27z7PYDx9BY8kFgdnUzthXgU9A5I7v7jRvoGaKcolzZ44Y6HqfhkkJIDcrFFxoZOOa
+         GKgm8aEGuxHgGWgm2ZF8VGsFoHIeY4Y/rptV7c6kfaKfRdQppHWM0AaCH0UT0JViYa
+         mcDEY5GNTWdgFRakxT+6ldwSJ77n/I4uJt87xp4o2Qb7NaH7cI9TFw2M0jFm3iKXk2
+         f40WTfW23VLOUGjqt80dK1dw8H0yJA/ouaXK+WESNLJJ2h/gDUAWWTfPDXWDLf924D
+         St4u/daosoN3w==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+        id <B64d19b270000>; Tue, 08 Aug 2023 13:32:23 +1200
+Received: from markto-dl.ws.atlnz.lc (markto-dl.ws.atlnz.lc [10.33.23.10])
+        by pat.atlnz.lc (Postfix) with ESMTP id 43A4F13ED7B;
+        Tue,  8 Aug 2023 13:32:23 +1200 (NZST)
+Received: by markto-dl.ws.atlnz.lc (Postfix, from userid 1155)
+        id 4702644495; Tue,  8 Aug 2023 13:32:23 +1200 (NZST)
+From:   Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+To:     Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Mathew McBride <matt@traverse.com.au>,
+        Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Subject: [PATCH 1/2] hwmon: Add driver for EMC181x temperature sensors
+Date:   Tue,  8 Aug 2023 13:31:56 +1200
+Message-ID: <20230808013157.80913-1-mark.tomlinson@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230807180507.22984-1-saeed@kernel.org>
-References: <20230807180507.22984-1-saeed@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=boIy+3Si c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=UttIx32zK-AA:10 a=X7RGDZ3zAAAA:8 a=BH4MrEww_7vcI7yO7vkA:9 a=gtnApEKZh2gql3vmNaCt:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,808 +62,359 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Adham Faris <afaris@nvidia.com>
+This patch adds a HWMON driver for the EMC1812, EMC1813, EMC1814,
+EMC1815 and EMC1833 temperature sensor chips from microchip. Does not
+currently support the alert outputs.
 
-Expose NIC temperature by implementing hwmon kernel API, which turns
-current thermal zone kernel API to redundant.
-
-For each one of the supported and exposed thermal diode sensors, expose
-the following attributes:
-1) Input temperature.
-2) Highest temperature.
-3) Temperature label:
-   Depends on the firmware capability, if firmware doesn't support
-   sensors naming, the fallback naming convention would be: "sensorX",
-   where X is the HW spec (MTMP register) sensor index.
-4) Temperature critical max value:
-   refers to the high threshold of Warning Event. Will be exposed as
-   `tempY_crit` hwmon attribute (RO attribute). For example for
-   ConnectX5 HCA's this temperature value will be 105 Celsius, 10
-   degrees lower than the HW shutdown temperature).
-5) Temperature reset history: resets highest temperature.
-
-For example, for dualport ConnectX5 NIC with a single IC thermal diode
-sensor will have 2 hwmon directories (one for each PCI function)
-under "/sys/class/hwmon/hwmon[X,Y]".
-
-Listing one of the directories above (hwmonX/Y) generates the
-corresponding output below:
-
-$ grep -H -d skip . /sys/class/hwmon/hwmon0/*
-
-Output
-=======================================================================
-/sys/class/hwmon/hwmon0/name:mlx5
-/sys/class/hwmon/hwmon0/temp1_crit:105000
-/sys/class/hwmon/hwmon0/temp1_highest:48000
-/sys/class/hwmon/hwmon0/temp1_input:46000
-/sys/class/hwmon/hwmon0/temp1_label:asic
-grep: /sys/class/hwmon/hwmon0/temp1_reset_history: Permission denied
-
-In addition, displaying the sensors data via lm_sensors generates the
-corresponding output below:
-
-$ sensors
-
-Output
-=======================================================================
-mlx5-pci-0800
-Adapter: PCI adapter
-asic:         +46.0°C  (crit = +105.0°C, highest = +48.0°C)
-
-mlx5-pci-0801
-Adapter: PCI adapter
-asic:         +46.0°C  (crit = +105.0°C, highest = +48.0°C)
-
-CC: linux-hwmon@vger.kernel.org
-CC: Jean Delvare <jdelvare@suse.com>
-CC: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Adham Faris <afaris@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Co-developed-by: Mathew McBride <matt@traverse.com.au>
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
 ---
- .../net/ethernet/mellanox/mlx5/core/Kconfig   |   1 +
- .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
- .../net/ethernet/mellanox/mlx5/core/hwmon.c   | 418 ++++++++++++++++++
- .../net/ethernet/mellanox/mlx5/core/hwmon.h   |  24 +
- .../net/ethernet/mellanox/mlx5/core/main.c    |   8 +-
- .../net/ethernet/mellanox/mlx5/core/thermal.c | 114 -----
- .../net/ethernet/mellanox/mlx5/core/thermal.h |  20 -
- include/linux/mlx5/driver.h                   |   3 +-
- include/linux/mlx5/mlx5_ifc.h                 |  14 +-
- 9 files changed, 463 insertions(+), 141 deletions(-)
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
- delete mode 100644 drivers/net/ethernet/mellanox/mlx5/core/thermal.c
- delete mode 100644 drivers/net/ethernet/mellanox/mlx5/core/thermal.h
+ drivers/hwmon/Kconfig   |  10 ++
+ drivers/hwmon/Makefile  |   1 +
+ drivers/hwmon/emc181x.c | 296 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 307 insertions(+)
+ create mode 100644 drivers/hwmon/emc181x.c
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-index bb1d7b039a7e..d537d517cabe 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-@@ -12,6 +12,7 @@ config MLX5_CORE
- 	depends on MLXFW || !MLXFW
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	depends on PCI_HYPERV_INTERFACE || !PCI_HYPERV_INTERFACE
-+	depends on HWMON || !HWMON
- 	help
- 	  Core driver for low level functionality of the ConnectX-4 and
- 	  Connect-IB cards by Mellanox Technologies.
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Makefile b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
-index 63a2f2bb80a6..946310390659 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/Makefile
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
-@@ -82,7 +82,7 @@ endif
- mlx5_core-$(CONFIG_MLX5_BRIDGE)    += esw/bridge.o esw/bridge_mcast.o esw/bridge_debugfs.o \
- 				      en/rep/bridge.o
- 
--mlx5_core-$(CONFIG_THERMAL)        += thermal.o
-+mlx5_core-$(CONFIG_HWMON)          += hwmon.o
- mlx5_core-$(CONFIG_MLX5_MPFS)      += lib/mpfs.o
- mlx5_core-$(CONFIG_VXLAN)          += lib/vxlan.o
- mlx5_core-$(CONFIG_PTP_1588_CLOCK) += lib/clock.o
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-new file mode 100644
-index 000000000000..353f81dccd1c
---- /dev/null
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-@@ -0,0 +1,418 @@
-+// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
-+// Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 307477b8a371..196d91494536 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -1820,6 +1820,16 @@ config SENSORS_EMC1403
+ 	  Threshold values can be configured using sysfs.
+ 	  Data from the different diodes are accessible via sysfs.
+=20
++config SENSORS_EMC181X
++	tristate "SMSC EMC181X thermal sensor"
++	depends on I2C
++	select REGMAP_I2C
++	help
++	  If you say yes here you get support for the SMSC EMC181X
++	  temperature monitoring chip.
 +
++	  Data from the different diodes are accessible via sysfs.
++
+ config SENSORS_EMC2103
+ 	tristate "SMSC EMC2103"
+ 	depends on I2C
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index 3f4b0fda0998..bcea887dfe17 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -69,6 +69,7 @@ obj-$(CONFIG_SENSORS_DRIVETEMP)	+=3D drivetemp.o
+ obj-$(CONFIG_SENSORS_DS620)	+=3D ds620.o
+ obj-$(CONFIG_SENSORS_DS1621)	+=3D ds1621.o
+ obj-$(CONFIG_SENSORS_EMC1403)	+=3D emc1403.o
++obj-$(CONFIG_SENSORS_EMC181X)	+=3D emc181x.o
+ obj-$(CONFIG_SENSORS_EMC2103)	+=3D emc2103.o
+ obj-$(CONFIG_SENSORS_EMC2305)	+=3D emc2305.o
+ obj-$(CONFIG_SENSORS_EMC6W201)	+=3D emc6w201.o
+diff --git a/drivers/hwmon/emc181x.c b/drivers/hwmon/emc181x.c
+new file mode 100644
+index 000000000000..364d2bfb15ca
+--- /dev/null
++++ b/drivers/hwmon/emc181x.c
+@@ -0,0 +1,296 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Driver for the Microchip/SMSC EMC181x Temperature monitor
++ *
++ * Copyright (C) 2018-2019 Traverse Technologies
++ * Author: Mathew McBride <matt@traverse.com.au>
++ *
++ * Copyright (C) 2023 Allied Telesis Labs
++ * Author: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
++ *
++ */
++
++#include <linux/err.h>
 +#include <linux/hwmon.h>
-+#include <linux/bitmap.h>
-+#include <linux/mlx5/device.h>
-+#include <linux/mlx5/mlx5_ifc.h>
-+#include <linux/mlx5/port.h>
-+#include "mlx5_core.h"
-+#include "hwmon.h"
++#include <linux/hwmon-sysfs.h>
++#include <linux/of_device.h>
++#include <linux/i2c.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
 +
-+#define CHANNELS_TYPE_NUM 2 /* chip channel and temp channel */
-+#define CHIP_CONFIG_NUM 1
++#define EMC1812_ID	0x81
++#define EMC1813_ID	0x87
++#define EMC1814_ID	0x84
++#define EMC1815_ID	0x85
++#define EMC1833_ID	0x83
 +
-+/* module 0 is mapped to sensor_index 64 in MTMP register */
-+#define to_mtmp_module_sensor_idx(idx) (64 + (idx))
++#define MICROCHIP_ID	0x54
 +
-+/* All temperatures retrieved in units of 0.125C. hwmon framework expect
-+ * it in units of millidegrees C. Hence multiply values by 125.
-+ */
-+#define mtmp_temp_to_mdeg(temp) ((temp) * 125)
++#define EMC181X_STATUS_REG	0x02
++#define EMC181X_CONFIG_REG	0x03
++#define EMC181X_DIODE_DATA_BASE	0x60
++#define EMC181X_PID_REG		0xfd
++#define EMC181X_SMSC_ID_REG	0xfe
++#define EMC181X_REVISION_REG	0xff
 +
-+struct temp_channel_desc {
-+	u32 sensor_index;
-+	char sensor_name[32];
++/* Adjustable address type is 0x7c, 0x5c, 0x4c, 0x6c, 0x1c, 0x3c */
++/* Fixed address is either 0x4c or 0x45 */
++static const unsigned short emc181x_address_list[] =3D {
++	0x7c, 0x5c, 0x4c, 0x6c, 0x1c, 0x3c, 0x45, I2C_CLIENT_END
 +};
 +
-+/* chip_channel_config and channel_info arrays must be 0-terminated, hence + 1 */
-+struct mlx5_hwmon {
-+	struct mlx5_core_dev *mdev;
-+	struct device *hwmon_dev;
-+	struct hwmon_channel_info chip_info;
-+	u32 chip_channel_config[CHIP_CONFIG_NUM + 1];
-+	struct hwmon_channel_info temp_info;
-+	u32 *temp_channel_config;
-+	const struct hwmon_channel_info *channel_info[CHANNELS_TYPE_NUM + 1];
-+	struct hwmon_chip_info chip;
-+	struct temp_channel_desc *temp_channel_desc;
-+	u32 asic_platform_scount;
-+	u32 module_scount;
++enum chips {
++	emc1812, emc1813,
++	emc1814, emc1815,
++	emc1833,
 +};
 +
-+static int mlx5_hwmon_query_mtmp(struct mlx5_core_dev *mdev, u32 sensor_index, u32 *mtmp_out)
++struct emc181x_data {
++	struct i2c_client *i2c;
++	enum chips type;
++	bool is_extended_range;
++};
++
++static int emc181x_read(struct device *dev, enum hwmon_sensor_types type=
+,
++			u32 attr, int channel, long *val)
 +{
-+	u32 mtmp_in[MLX5_ST_SZ_DW(mtmp_reg)] = {};
++	struct emc181x_data *data =3D dev_get_drvdata(dev);
++	struct i2c_client *i2c =3D data->i2c;
 +
-+	MLX5_SET(mtmp_reg, mtmp_in, sensor_index, sensor_index);
++	u8 channel_reg =3D 0;
++	s32 channel_deg =3D 0;
++	s32 channel_frac =3D 0;
 +
-+	return mlx5_core_access_reg(mdev, mtmp_in,  sizeof(mtmp_in),
-+				    mtmp_out, MLX5_ST_SZ_BYTES(mtmp_reg),
-+				    MLX5_REG_MTMP, 0, 0);
-+}
-+
-+static int mlx5_hwmon_reset_max_temp(struct mlx5_core_dev *mdev, int sensor_index)
-+{
-+	u32 mtmp_out[MLX5_ST_SZ_DW(mtmp_reg)] = {};
-+	u32 mtmp_in[MLX5_ST_SZ_DW(mtmp_reg)] = {};
-+
-+	MLX5_SET(mtmp_reg, mtmp_in, sensor_index, sensor_index);
-+	MLX5_SET(mtmp_reg, mtmp_in, mtr, 1);
-+
-+	return mlx5_core_access_reg(mdev, mtmp_in,  sizeof(mtmp_in),
-+				    mtmp_out, sizeof(mtmp_out),
-+				    MLX5_REG_MTMP, 0, 0);
-+}
-+
-+static int mlx5_hwmon_enable_max_temp(struct mlx5_core_dev *mdev, int sensor_index)
-+{
-+	u32 mtmp_out[MLX5_ST_SZ_DW(mtmp_reg)] = {};
-+	u32 mtmp_in[MLX5_ST_SZ_DW(mtmp_reg)] = {};
-+	int err;
-+
-+	err = mlx5_hwmon_query_mtmp(mdev, sensor_index, mtmp_in);
-+	if (err)
-+		return err;
-+
-+	MLX5_SET(mtmp_reg, mtmp_in, mte, 1);
-+	return mlx5_core_access_reg(mdev, mtmp_in,  sizeof(mtmp_in),
-+				    mtmp_out, sizeof(mtmp_out),
-+				    MLX5_REG_MTMP, 0, 1);
-+}
-+
-+static int mlx5_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-+			   int channel, long *val)
-+{
-+	struct mlx5_hwmon *hwmon = dev_get_drvdata(dev);
-+	u32 mtmp_out[MLX5_ST_SZ_DW(mtmp_reg)] = {};
-+	int err;
-+
-+	if (type != hwmon_temp)
++	if (type !=3D hwmon_temp)
 +		return -EOPNOTSUPP;
++	if (channel > 4)
++		return -EINVAL;
 +
-+	err = mlx5_hwmon_query_mtmp(hwmon->mdev, hwmon->temp_channel_desc[channel].sensor_index,
-+				    mtmp_out);
-+	if (err)
-+		return err;
++	channel_reg =3D EMC181X_DIODE_DATA_BASE + (channel * 0x02);
++	channel_deg =3D i2c_smbus_read_byte_data(i2c, channel_reg);
++	if (channel_deg < 0)
++		return channel_deg;
++	if (data->is_extended_range)
++		channel_deg -=3D 64;
 +
-+	switch (attr) {
-+	case hwmon_temp_input:
-+		*val = mtmp_temp_to_mdeg(MLX5_GET(mtmp_reg, mtmp_out, temperature));
-+		return 0;
-+	case hwmon_temp_highest:
-+		*val = mtmp_temp_to_mdeg(MLX5_GET(mtmp_reg, mtmp_out, max_temperature));
-+		return 0;
-+	case hwmon_temp_crit:
-+		*val = mtmp_temp_to_mdeg(MLX5_GET(mtmp_reg, mtmp_out, temp_threshold_hi));
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
++	channel_frac =3D i2c_smbus_read_byte_data(i2c, channel_reg + 0x01);
++	if (channel_frac < 0)
++		return channel_frac;
++
++	*val =3D ((channel_deg << 3) | (channel_frac >> 5)) * 125;
++	return 0;
 +}
 +
-+static int mlx5_hwmon_write(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-+			    int channel, long val)
++static umode_t emc181x_is_visible(const void *drvdata, enum hwmon_sensor=
+_types type,
++				  u32 attr, int channel)
 +{
-+	struct mlx5_hwmon *hwmon = dev_get_drvdata(dev);
-+
-+	if (type != hwmon_temp || attr != hwmon_temp_reset_history)
-+		return -EOPNOTSUPP;
-+
-+	return mlx5_hwmon_reset_max_temp(hwmon->mdev,
-+				hwmon->temp_channel_desc[channel].sensor_index);
-+}
-+
-+static umode_t mlx5_hwmon_is_visible(const void *data, enum hwmon_sensor_types type, u32 attr,
-+				     int channel)
-+{
-+	if (type != hwmon_temp)
-+		return 0;
-+
-+	switch (attr) {
-+	case hwmon_temp_input:
-+	case hwmon_temp_highest:
-+	case hwmon_temp_crit:
-+	case hwmon_temp_label:
++	if (type =3D=3D hwmon_temp && attr =3D=3D hwmon_temp_input)
 +		return 0444;
-+	case hwmon_temp_reset_history:
-+		return 0200;
++	else
++		return 0;
++}
++
++static const struct hwmon_channel_info *emc1812_info[] =3D {
++	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
++	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT, HWMON_T_INPUT),
++	NULL
++};
++
++static const struct hwmon_channel_info *emc1813_info[] =3D {
++	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
++	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT, HWMON_T_INPUT, HWMON_T_INPUT),
++	NULL
++};
++
++static const struct hwmon_channel_info *emc1814_info[] =3D {
++	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
++	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT, HWMON_T_INPUT, HWMON_T_INPUT,
++			   HWMON_T_INPUT),
++	NULL
++};
++
++static const struct hwmon_channel_info *emc1815_info[] =3D {
++	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
++	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT, HWMON_T_INPUT, HWMON_T_INPUT,
++			   HWMON_T_INPUT, HWMON_T_INPUT),
++	NULL
++};
++
++static const struct hwmon_ops emc181x_ops =3D {
++	.is_visible =3D emc181x_is_visible,
++	.read =3D emc181x_read,
++};
++
++static const struct hwmon_chip_info emc181x_chip_info[] =3D {
++	[emc1812] =3D {
++		.ops =3D &emc181x_ops,
++		.info =3D emc1812_info,
++	},
++	[emc1813] =3D {
++		.ops =3D &emc181x_ops,
++		.info =3D emc1813_info,
++	},
++	[emc1814] =3D {
++		.ops =3D &emc181x_ops,
++		.info =3D emc1814_info,
++	},
++	[emc1815] =3D {
++		.ops =3D &emc181x_ops,
++		.info =3D emc1815_info,
++	},
++	[emc1833] =3D {
++		.ops =3D &emc181x_ops,
++		.info =3D emc1813_info,
++	},
++};
++
++static const struct i2c_device_id emc181x_i2c_id[] =3D {
++	{ "emc1812", emc1812 },
++	{ "emc1813", emc1813 },
++	{ "emc1814", emc1814 },
++	{ "emc1815", emc1815 },
++	{ "emc1833", emc1833 },
++	{}
++};
++
++MODULE_DEVICE_TABLE(i2c, emc181x_i2c_id);
++
++/* Return 0 if detection is successful, -ENODEV otherwise */
++static int emc181x_i2c_detect(struct i2c_client *client,
++		       struct i2c_board_info *info)
++{
++	struct i2c_adapter *adapter =3D client->adapter;
++	int pid, id, rev;
++	const char *name;
++
++	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA |
++				     I2C_FUNC_SMBUS_WORD_DATA))
++		return -ENODEV;
++
++	/* Determine the chip type */
++	id =3D i2c_smbus_read_byte_data(client, EMC181X_SMSC_ID_REG);
++	if (id < 0)
++		return id;
++	if (id !=3D MICROCHIP_ID)
++		return -ENODEV;
++	pid =3D i2c_smbus_read_byte_data(client, EMC181X_PID_REG);
++	if (pid < 0)
++		return pid;
++	rev =3D i2c_smbus_read_byte_data(client, EMC181X_REVISION_REG);
++	if (rev < 0)
++		return rev;
++
++	switch (pid) {
++	case EMC1812_ID:
++		name =3D emc181x_i2c_id[emc1812].name;
++		break;
++	case EMC1813_ID:
++		name =3D emc181x_i2c_id[emc1813].name;
++		break;
++	case EMC1814_ID:
++		name =3D emc181x_i2c_id[emc1814].name;
++		break;
++	case EMC1815_ID:
++		name =3D emc181x_i2c_id[emc1815].name;
++		break;
++	case EMC1833_ID:
++		name =3D emc181x_i2c_id[emc1833].name;
++		break;
 +	default:
-+		return 0;
++		return -ENODEV;
 +	}
-+}
++	strscpy(info->type, name, I2C_NAME_SIZE);
 +
-+static int mlx5_hwmon_read_string(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-+				  int channel, const char **str)
-+{
-+	struct mlx5_hwmon *hwmon = dev_get_drvdata(dev);
++	dev_dbg(&client->dev,
++		"Detected device %s at 0x%02x with COMPANY: 0x%02x and PID: 0x%02x REV=
+: 0x%02x\n",
++		name, client->addr, id, pid, rev);
 +
-+	if (type != hwmon_temp || attr != hwmon_temp_label)
-+		return -EOPNOTSUPP;
-+
-+	*str = (const char *)hwmon->temp_channel_desc[channel].sensor_name;
 +	return 0;
 +}
 +
-+static const struct hwmon_ops mlx5_hwmon_ops = {
-+	.read = mlx5_hwmon_read,
-+	.read_string = mlx5_hwmon_read_string,
-+	.is_visible = mlx5_hwmon_is_visible,
-+	.write = mlx5_hwmon_write,
++static int emc181x_i2c_probe(struct i2c_client *client)
++{
++	struct device *dev =3D &client->dev;
++	struct device *hwmon_dev;
++	struct emc181x_data *data;
++	s32 regval;
++	u8 config;
++
++	data =3D devm_kzalloc(dev, sizeof(struct emc181x_data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->i2c =3D client;
++	if (dev_fwnode(dev)) {
++		data->type =3D (enum chips)device_get_match_data(dev);
++		data->is_extended_range =3D device_property_present(dev, "emc181x,exte=
+nded-range");
++	} else
++		data->type =3D i2c_match_id(emc181x_i2c_id, client)->driver_data;
++
++	regval =3D i2c_smbus_read_byte_data(client, EMC181X_CONFIG_REG);
++	if (regval < 0) {
++		dev_dbg(dev, "Failed to read config reg %d", regval);
++		return regval;
++	}
++
++	/* By default, extended range is disabled in the EMC181X,
++	 * if enabled we need to set this in the CONFIG register.
++	 */
++	config =3D regval & ~0x04;
++	if (data->is_extended_range)
++		config |=3D 0x04;
++
++	dev_dbg(dev, "EMC181X setting CONFIG to %d\n", config);
++	if (config !=3D regval)
++		i2c_smbus_write_byte_data(client, EMC181X_CONFIG_REG, config);
++
++	hwmon_dev =3D devm_hwmon_device_register_with_info(dev,
++			client->name,
++			data,
++			&emc181x_chip_info[data->type],
++			NULL);
++
++	return PTR_ERR_OR_ZERO(hwmon_dev);
++}
++
++static const struct of_device_id __maybe_unused emc181x_of_match[] =3D {
++	{
++		.compatible =3D "microchip,emc1812",
++		.data =3D (void *)emc1812
++	},
++	{
++		.compatible =3D "microchip,emc1813",
++		.data =3D (void *)emc1813
++	},
++	{
++		.compatible =3D "microchip,emc1814",
++		.data =3D (void *)emc1814
++	},
++	{
++		.compatible =3D "microchip,emc1815",
++		.data =3D (void *)emc1815
++	},
++	{
++		.compatible =3D "microchip,emc1833",
++		.data =3D (void *)emc1833
++	},
++	{ },
++};
++MODULE_DEVICE_TABLE(of, emc181x_of_match);
++
++static struct i2c_driver emc181x_i2c_driver =3D {
++	.driver =3D {
++		.name =3D "emc181x",
++		.of_match_table =3D of_match_ptr(emc181x_of_match),
++	},
++	.probe =3D emc181x_i2c_probe,
++	.id_table =3D emc181x_i2c_id,
++	.detect =3D emc181x_i2c_detect,
++	.address_list =3D emc181x_address_list,
 +};
 +
-+static int mlx5_hwmon_init_channels_names(struct mlx5_hwmon *hwmon)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < hwmon->asic_platform_scount + hwmon->module_scount; i++) {
-+		u32 mtmp_out[MLX5_ST_SZ_DW(mtmp_reg)] = {};
-+		char *sensor_name;
-+		int err;
-+
-+		err = mlx5_hwmon_query_mtmp(hwmon->mdev, hwmon->temp_channel_desc[i].sensor_index,
-+					    mtmp_out);
-+		if (err)
-+			return err;
-+
-+		sensor_name = MLX5_ADDR_OF(mtmp_reg, mtmp_out, sensor_name_hi);
-+		if (!*sensor_name) {
-+			snprintf(hwmon->temp_channel_desc[i].sensor_name,
-+				 sizeof(hwmon->temp_channel_desc[i].sensor_name), "sensor%u",
-+				 hwmon->temp_channel_desc[i].sensor_index);
-+			continue;
-+		}
-+
-+		memcpy(&hwmon->temp_channel_desc[i].sensor_name, sensor_name,
-+		       MLX5_FLD_SZ_BYTES(mtmp_reg, sensor_name_hi) +
-+		       MLX5_FLD_SZ_BYTES(mtmp_reg, sensor_name_lo));
-+	}
-+
-+	return 0;
-+}
-+
-+static int mlx5_hwmon_get_module_sensor_index(struct mlx5_core_dev *mdev, u32 *module_index)
-+{
-+	int module_num;
-+	int err;
-+
-+	err = mlx5_query_module_num(mdev, &module_num);
-+	if (err)
-+		return err;
-+
-+	*module_index = to_mtmp_module_sensor_idx(module_num);
-+
-+	return 0;
-+}
-+
-+static int mlx5_hwmon_init_sensors_indexes(struct mlx5_hwmon *hwmon, u64 sensor_map)
-+{
-+	DECLARE_BITMAP(smap, BITS_PER_TYPE(sensor_map));
-+	unsigned long bit_pos;
-+	int err = 0;
-+	int i = 0;
-+
-+	bitmap_from_u64(smap, sensor_map);
-+
-+	for_each_set_bit(bit_pos, smap, BITS_PER_TYPE(sensor_map)) {
-+		hwmon->temp_channel_desc[i].sensor_index = bit_pos;
-+		i++;
-+	}
-+
-+	if (hwmon->module_scount)
-+		err = mlx5_hwmon_get_module_sensor_index(hwmon->mdev,
-+							 &hwmon->temp_channel_desc[i].sensor_index);
-+
-+	return err;
-+}
-+
-+static void mlx5_hwmon_channel_info_init(struct mlx5_hwmon *hwmon)
-+{
-+	int i;
-+
-+	hwmon->channel_info[0] = &hwmon->chip_info;
-+	hwmon->channel_info[1] = &hwmon->temp_info;
-+
-+	hwmon->chip_channel_config[0] = HWMON_C_REGISTER_TZ;
-+	hwmon->chip_info.config = (const u32 *)hwmon->chip_channel_config;
-+	hwmon->chip_info.type = hwmon_chip;
-+
-+	for (i = 0; i < hwmon->asic_platform_scount + hwmon->module_scount; i++)
-+		hwmon->temp_channel_config[i] = HWMON_T_INPUT | HWMON_T_HIGHEST | HWMON_T_CRIT |
-+					     HWMON_T_RESET_HISTORY | HWMON_T_LABEL;
-+
-+	hwmon->temp_info.config = (const u32 *)hwmon->temp_channel_config;
-+	hwmon->temp_info.type = hwmon_temp;
-+}
-+
-+static int mlx5_hwmon_is_module_mon_cap(struct mlx5_core_dev *mdev, bool *mon_cap)
-+{
-+	u32 mtmp_out[MLX5_ST_SZ_DW(mtmp_reg)];
-+	u32 module_index;
-+	int err;
-+
-+	err = mlx5_hwmon_get_module_sensor_index(mdev, &module_index);
-+	if (err)
-+		return err;
-+
-+	err = mlx5_hwmon_query_mtmp(mdev, module_index, mtmp_out);
-+	if (err)
-+		return err;
-+
-+	if (MLX5_GET(mtmp_reg, mtmp_out, temperature))
-+		*mon_cap = true;
-+
-+	return 0;
-+}
-+
-+static int mlx5_hwmon_get_sensors_count(struct mlx5_core_dev *mdev, u32 *asic_platform_scount)
-+{
-+	u32 mtcap_out[MLX5_ST_SZ_DW(mtcap_reg)] = {};
-+	u32 mtcap_in[MLX5_ST_SZ_DW(mtcap_reg)] = {};
-+	int err;
-+
-+	err = mlx5_core_access_reg(mdev, mtcap_in,  sizeof(mtcap_in),
-+				   mtcap_out, sizeof(mtcap_out),
-+				   MLX5_REG_MTCAP, 0, 0);
-+	if (err)
-+		return err;
-+
-+	*asic_platform_scount = MLX5_GET(mtcap_reg, mtcap_out, sensor_count);
-+
-+	return 0;
-+}
-+
-+static void mlx5_hwmon_free(struct mlx5_hwmon *hwmon)
-+{
-+	if (!hwmon)
-+		return;
-+
-+	kfree(hwmon->temp_channel_config);
-+	kfree(hwmon->temp_channel_desc);
-+	kfree(hwmon);
-+}
-+
-+static struct mlx5_hwmon *mlx5_hwmon_alloc(struct mlx5_core_dev *mdev)
-+{
-+	struct mlx5_hwmon *hwmon;
-+	bool mon_cap = false;
-+	u32 sensors_count;
-+	int err;
-+
-+	hwmon = kzalloc(sizeof(*mdev->hwmon), GFP_KERNEL);
-+	if (!hwmon)
-+		return ERR_PTR(-ENOMEM);
-+
-+	err = mlx5_hwmon_get_sensors_count(mdev, &hwmon->asic_platform_scount);
-+	if (err)
-+		goto err_free_hwmon;
-+
-+	/* check if module sensor has thermal mon cap. if yes, allocate channel desc for it */
-+	err = mlx5_hwmon_is_module_mon_cap(mdev, &mon_cap);
-+	if (err)
-+		goto err_free_hwmon;
-+
-+	hwmon->module_scount = mon_cap ? 1 : 0;
-+	sensors_count = hwmon->asic_platform_scount + hwmon->module_scount;
-+	hwmon->temp_channel_desc = kcalloc(sensors_count, sizeof(*hwmon->temp_channel_desc),
-+					   GFP_KERNEL);
-+	if (!hwmon->temp_channel_desc) {
-+		err = -ENOMEM;
-+		goto err_free_hwmon;
-+	}
-+
-+	/* sensors configuration values array, must be 0-terminated hence, + 1 */
-+	hwmon->temp_channel_config = kcalloc(sensors_count + 1, sizeof(*hwmon->temp_channel_config),
-+					     GFP_KERNEL);
-+	if (!hwmon->temp_channel_config) {
-+		err = -ENOMEM;
-+		goto err_free_temp_channel_desc;
-+	}
-+
-+	hwmon->mdev = mdev;
-+
-+	return hwmon;
-+
-+err_free_temp_channel_desc:
-+	kfree(hwmon->temp_channel_desc);
-+err_free_hwmon:
-+	kfree(hwmon);
-+	return ERR_PTR(err);
-+}
-+
-+static int mlx5_hwmon_dev_init(struct mlx5_hwmon *hwmon)
-+{
-+	u32 mtcap_out[MLX5_ST_SZ_DW(mtcap_reg)] = {};
-+	u32 mtcap_in[MLX5_ST_SZ_DW(mtcap_reg)] = {};
-+	int err;
-+	int i;
-+
-+	err =  mlx5_core_access_reg(hwmon->mdev, mtcap_in,  sizeof(mtcap_in),
-+				    mtcap_out, sizeof(mtcap_out),
-+				    MLX5_REG_MTCAP, 0, 0);
-+	if (err)
-+		return err;
-+
-+	mlx5_hwmon_channel_info_init(hwmon);
-+	mlx5_hwmon_init_sensors_indexes(hwmon, MLX5_GET64(mtcap_reg, mtcap_out, sensor_map));
-+	err = mlx5_hwmon_init_channels_names(hwmon);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < hwmon->asic_platform_scount + hwmon->module_scount; i++) {
-+		err = mlx5_hwmon_enable_max_temp(hwmon->mdev,
-+						 hwmon->temp_channel_desc[i].sensor_index);
-+		if (err)
-+			return err;
-+	}
-+
-+	hwmon->chip.ops = &mlx5_hwmon_ops;
-+	hwmon->chip.info = (const struct hwmon_channel_info **)hwmon->channel_info;
-+
-+	return 0;
-+}
-+
-+int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev)
-+{
-+	struct device *dev = mdev->device;
-+	struct mlx5_hwmon *hwmon;
-+	int err;
-+
-+	if (!MLX5_CAP_MCAM_REG(mdev, mtmp))
-+		return 0;
-+
-+	hwmon = mlx5_hwmon_alloc(mdev);
-+	if (IS_ERR(hwmon))
-+		return PTR_ERR(hwmon);
-+
-+	err = mlx5_hwmon_dev_init(hwmon);
-+	if (err)
-+		goto err_free_hwmon;
-+
-+	hwmon->hwmon_dev = hwmon_device_register_with_info(dev, "mlx5",
-+							   hwmon,
-+							   &hwmon->chip,
-+							   NULL);
-+	if (IS_ERR(hwmon->hwmon_dev)) {
-+		err = PTR_ERR(hwmon->hwmon_dev);
-+		goto err_free_hwmon;
-+	}
-+
-+	mdev->hwmon = hwmon;
-+	return 0;
-+
-+err_free_hwmon:
-+	mlx5_hwmon_free(hwmon);
-+	return err;
-+}
-+
-+void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev)
-+{
-+	struct mlx5_hwmon *hwmon = mdev->hwmon;
-+
-+	if (!hwmon)
-+		return;
-+
-+	hwmon_device_unregister(hwmon->hwmon_dev);
-+	mlx5_hwmon_free(hwmon);
-+	mdev->hwmon = NULL;
-+}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-new file mode 100644
-index 000000000000..999654a9b9da
---- /dev/null
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
-+ * Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved
-+ */
-+#ifndef __MLX5_HWMON_H__
-+#define __MLX5_HWMON_H__
-+
-+#include <linux/mlx5/driver.h>
-+
-+#if IS_ENABLED(CONFIG_HWMON)
-+
-+int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev);
-+void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev);
-+
-+#else
-+static inline int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev)
-+{
-+	return 0;
-+}
-+
-+static inline void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev) {}
-+
-+#endif
-+
-+#endif /* __MLX5_HWMON_H__ */
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index db2e8e4f848d..0389e84f9815 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -49,7 +49,6 @@
- #include <linux/version.h>
- #include <net/devlink.h>
- #include "mlx5_core.h"
--#include "thermal.h"
- #include "lib/eq.h"
- #include "fs_core.h"
- #include "lib/mpfs.h"
-@@ -73,6 +72,7 @@
- #include "sf/dev/dev.h"
- #include "sf/sf.h"
- #include "mlx5_irq.h"
-+#include "hwmon.h"
- 
- MODULE_AUTHOR("Eli Cohen <eli@mellanox.com>");
- MODULE_DESCRIPTION("Mellanox 5th generation network adapters (ConnectX series) core driver");
-@@ -1930,9 +1930,9 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (err)
- 		dev_err(&pdev->dev, "mlx5_crdump_enable failed with error code %d\n", err);
- 
--	err = mlx5_thermal_init(dev);
-+	err = mlx5_hwmon_dev_register(dev);
- 	if (err)
--		dev_err(&pdev->dev, "mlx5_thermal_init failed with error code %d\n", err);
-+		mlx5_core_err(dev, "mlx5_hwmon_dev_register failed with error code %d\n", err);
- 
- 	pci_save_state(pdev);
- 	devlink_register(devlink);
-@@ -1964,7 +1964,7 @@ static void remove_one(struct pci_dev *pdev)
- 	mlx5_drain_health_wq(dev);
- 	devlink_unregister(devlink);
- 	mlx5_sriov_disable(pdev, false);
--	mlx5_thermal_uninit(dev);
-+	mlx5_hwmon_dev_unregister(dev);
- 	mlx5_crdump_disable(dev);
- 	mlx5_uninit_one(dev);
- 	mlx5_pci_close(dev);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/thermal.c b/drivers/net/ethernet/mellanox/mlx5/core/thermal.c
-deleted file mode 100644
-index 52199d39657e..000000000000
---- a/drivers/net/ethernet/mellanox/mlx5/core/thermal.c
-+++ /dev/null
-@@ -1,114 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
--// Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES.
--
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/device.h>
--#include <linux/thermal.h>
--#include <linux/err.h>
--#include <linux/mlx5/driver.h>
--#include "mlx5_core.h"
--#include "thermal.h"
--
--#define MLX5_THERMAL_POLL_INT_MSEC	1000
--#define MLX5_THERMAL_NUM_TRIPS		0
--#define MLX5_THERMAL_ASIC_SENSOR_INDEX	0
--
--/* Bit string indicating the writeablility of trip points if any */
--#define MLX5_THERMAL_TRIP_MASK	(BIT(MLX5_THERMAL_NUM_TRIPS) - 1)
--
--struct mlx5_thermal {
--	struct mlx5_core_dev *mdev;
--	struct thermal_zone_device *tzdev;
--};
--
--static int mlx5_thermal_get_mtmp_temp(struct mlx5_core_dev *mdev, u32 id, int *p_temp)
--{
--	u32 mtmp_out[MLX5_ST_SZ_DW(mtmp_reg)] = {};
--	u32 mtmp_in[MLX5_ST_SZ_DW(mtmp_reg)] = {};
--	int err;
--
--	MLX5_SET(mtmp_reg, mtmp_in, sensor_index, id);
--
--	err = mlx5_core_access_reg(mdev, mtmp_in,  sizeof(mtmp_in),
--				   mtmp_out, sizeof(mtmp_out),
--				   MLX5_REG_MTMP, 0, 0);
--
--	if (err)
--		return err;
--
--	*p_temp = MLX5_GET(mtmp_reg, mtmp_out, temperature);
--
--	return 0;
--}
--
--static int mlx5_thermal_get_temp(struct thermal_zone_device *tzdev,
--				 int *p_temp)
--{
--	struct mlx5_thermal *thermal = thermal_zone_device_priv(tzdev);
--	struct mlx5_core_dev *mdev = thermal->mdev;
--	int err;
--
--	err = mlx5_thermal_get_mtmp_temp(mdev, MLX5_THERMAL_ASIC_SENSOR_INDEX, p_temp);
--
--	if (err)
--		return err;
--
--	/* The unit of temp returned is in 0.125 C. The thermal
--	 * framework expects the value in 0.001 C.
--	 */
--	*p_temp *= 125;
--
--	return 0;
--}
--
--static struct thermal_zone_device_ops mlx5_thermal_ops = {
--	.get_temp = mlx5_thermal_get_temp,
--};
--
--int mlx5_thermal_init(struct mlx5_core_dev *mdev)
--{
--	char data[THERMAL_NAME_LENGTH];
--	struct mlx5_thermal *thermal;
--	int err;
--
--	if (!mlx5_core_is_pf(mdev) && !mlx5_core_is_ecpf(mdev))
--		return 0;
--
--	err = snprintf(data, sizeof(data), "mlx5_%s", dev_name(mdev->device));
--	if (err < 0 || err >= sizeof(data)) {
--		mlx5_core_err(mdev, "Failed to setup thermal zone name, %d\n", err);
--		return -EINVAL;
--	}
--
--	thermal = kzalloc(sizeof(*thermal), GFP_KERNEL);
--	if (!thermal)
--		return -ENOMEM;
--
--	thermal->mdev = mdev;
--	thermal->tzdev = thermal_zone_device_register_with_trips(data,
--								 NULL,
--								 MLX5_THERMAL_NUM_TRIPS,
--								 MLX5_THERMAL_TRIP_MASK,
--								 thermal,
--								 &mlx5_thermal_ops,
--								 NULL, 0, MLX5_THERMAL_POLL_INT_MSEC);
--	if (IS_ERR(thermal->tzdev)) {
--		err = PTR_ERR(thermal->tzdev);
--		mlx5_core_err(mdev, "Failed to register thermal zone device (%s) %d\n", data, err);
--		kfree(thermal);
--		return err;
--	}
--
--	mdev->thermal = thermal;
--	return 0;
--}
--
--void mlx5_thermal_uninit(struct mlx5_core_dev *mdev)
--{
--	if (!mdev->thermal)
--		return;
--
--	thermal_zone_device_unregister(mdev->thermal->tzdev);
--	kfree(mdev->thermal);
--}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/thermal.h b/drivers/net/ethernet/mellanox/mlx5/core/thermal.h
-deleted file mode 100644
-index 7d752c122192..000000000000
---- a/drivers/net/ethernet/mellanox/mlx5/core/thermal.h
-+++ /dev/null
-@@ -1,20 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
-- * Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES.
-- */
--#ifndef __MLX5_THERMAL_DRIVER_H
--#define __MLX5_THERMAL_DRIVER_H
--
--#if IS_ENABLED(CONFIG_THERMAL)
--int mlx5_thermal_init(struct mlx5_core_dev *mdev);
--void mlx5_thermal_uninit(struct mlx5_core_dev *mdev);
--#else
--static inline int mlx5_thermal_init(struct mlx5_core_dev *mdev)
--{
--	mdev->thermal = NULL;
--	return 0;
--}
--
--static inline void mlx5_thermal_uninit(struct mlx5_core_dev *mdev) { }
--#endif
--
--#endif /* __MLX5_THERMAL_DRIVER_H */
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index fa70c25423b2..3134dbc398a5 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -134,6 +134,7 @@ enum {
- 	MLX5_REG_PCAM		 = 0x507f,
- 	MLX5_REG_NODE_DESC	 = 0x6001,
- 	MLX5_REG_HOST_ENDIANNESS = 0x7004,
-+	MLX5_REG_MTCAP		 = 0x9009,
- 	MLX5_REG_MTMP		 = 0x900A,
- 	MLX5_REG_MCIA		 = 0x9014,
- 	MLX5_REG_MFRL		 = 0x9028,
-@@ -805,7 +806,7 @@ struct mlx5_core_dev {
- 	struct mlx5_rsc_dump    *rsc_dump;
- 	u32                      vsc_addr;
- 	struct mlx5_hv_vhca	*hv_vhca;
--	struct mlx5_thermal	*thermal;
-+	struct mlx5_hwmon	*hwmon;
- 	u64			num_block_tc;
- 	u64			num_block_ipsec;
- };
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index b3ad6b9852ec..87fd6f9ed82c 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -10196,7 +10196,9 @@ struct mlx5_ifc_mcam_access_reg_bits {
- 	u8         mrtc[0x1];
- 	u8         regs_44_to_32[0xd];
- 
--	u8         regs_31_to_0[0x20];
-+	u8         regs_31_to_10[0x16];
-+	u8         mtmp[0x1];
-+	u8         regs_8_to_0[0x9];
- };
- 
- struct mlx5_ifc_mcam_access_reg_bits1 {
-@@ -10949,6 +10951,15 @@ struct mlx5_ifc_mrtc_reg_bits {
- 	u8         time_l[0x20];
- };
- 
-+struct mlx5_ifc_mtcap_reg_bits {
-+	u8         reserved_at_0[0x19];
-+	u8         sensor_count[0x7];
-+
-+	u8         reserved_at_20[0x20];
-+
-+	u8         sensor_map[0x40];
-+};
-+
- struct mlx5_ifc_mtmp_reg_bits {
- 	u8         reserved_at_0[0x14];
- 	u8         sensor_index[0xc];
-@@ -11036,6 +11047,7 @@ union mlx5_ifc_ports_control_registers_document_bits {
- 	struct mlx5_ifc_mfrl_reg_bits mfrl_reg;
- 	struct mlx5_ifc_mtutc_reg_bits mtutc_reg;
- 	struct mlx5_ifc_mrtc_reg_bits mrtc_reg;
-+	struct mlx5_ifc_mtcap_reg_bits mtcap_reg;
- 	struct mlx5_ifc_mtmp_reg_bits mtmp_reg;
- 	u8         reserved_at_0[0x60e0];
- };
--- 
++module_i2c_driver(emc181x_i2c_driver);
++
++MODULE_DESCRIPTION("EMC181X Sensor Driver");
++MODULE_AUTHOR("Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>");
++MODULE_LICENSE("GPL");
+--=20
 2.41.0
 
