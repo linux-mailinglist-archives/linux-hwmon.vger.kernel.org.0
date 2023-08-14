@@ -2,88 +2,107 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0F777B289
-	for <lists+linux-hwmon@lfdr.de>; Mon, 14 Aug 2023 09:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 630AC77B44E
+	for <lists+linux-hwmon@lfdr.de>; Mon, 14 Aug 2023 10:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbjHNHc7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 14 Aug 2023 03:32:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
+        id S232026AbjHNIkp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 14 Aug 2023 04:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234225AbjHNHco (ORCPT
+        with ESMTP id S230138AbjHNIkM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 14 Aug 2023 03:32:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66EE210DD
-        for <linux-hwmon@vger.kernel.org>; Mon, 14 Aug 2023 00:32:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04DD362FE1
-        for <linux-hwmon@vger.kernel.org>; Mon, 14 Aug 2023 07:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87632C433C9;
-        Mon, 14 Aug 2023 07:32:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691998357;
-        bh=5tA3xTayC8ofbt1Rb24vV70E/QCmVN/BXD/kCaTHfuc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=fohFUl3QfAhgPZDZC8jbcrTTT59FWOqDynSPmEtk2LaR61vCltpk+Exliz6sB1UKS
-         lUCGwr0uP4loKvFD2eHcwUgWdtGl6e/5EPxDUQg9wlhN9cQlqFZmFHeoxqJbfN64O4
-         uSObZvla5mWvaol8O5BAqPZfd0F9gspIVYZIaYbD7OydFOYlZiXmNFHQfBxTrgeNaZ
-         vtvoEYKXaRptEMnQ989rh2lgDRSTsVazK6JjAapIona18qAC8AylP8nrn5Aqp3UBir
-         yuKEVj2RUuli0a/ONJbdX8ZlQj8Ta00FqoeRMSX/cLyAvBMgO6xyAJCL7NpXmMBVcK
-         AialSiRgF5Ksg==
-Message-ID: <c17c144f-d455-76bb-9b84-e4a392bccb58@kernel.org>
-Date:   Mon, 14 Aug 2023 09:32:33 +0200
+        Mon, 14 Aug 2023 04:40:12 -0400
+X-Greylist: delayed 2603 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Aug 2023 01:40:10 PDT
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD1FBF;
+        Mon, 14 Aug 2023 01:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=2P1CtK0EpHYNB0bkUEbNbkfg4BjOcYJ3BMKesAvDyvc=;
+        t=1692002410; x=1693212010; b=b+lgM10B1Ch71jXvK0waAeTapoeUIh1e1FLcgFiR3ksab1x
+        01x3rbg8flpkCpRWXbk6srcmQmZEEXG4S/84J8KtgtEf7Z+qbAjBDdtigVXjxrTu1n8ckaze/cddn
+        Ju5e9frlbN1K2Nq7H8Lx2q5l1V+ePpa7pkoyDSa14USbLK3ogWvZNWOoD7Kl/kmVmTlv4HkbPl+Rm
+        2WnwtHNTMJMmU4pK56Sv2qR1jD1wm143bkG3ErhIhPlZtRItZ8nTHhAtZlq1Ef053aYIPwEK81qII
+        ECxyiiYrv7BxdMwt7F+Wz87khGXXDipoS6smf8cvm8Jlb29EbFy2sgfkB/jUjJNA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qVSQ8-006VTj-1d;
+        Mon, 14 Aug 2023 09:55:24 +0200
+Message-ID: <8c6d19da5c4c38062b7a4e500de1d5dc1280fbc8.camel@sipsolutions.net>
+Subject: Re: [PATCH v1 net] page_pool: Cap queue size to 32k.
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ratheesh Kannoth <rkannoth@marvell.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+        hawk@kernel.org, john.fastabend@gmail.com, jiawenwu@trustnetic.com,
+        mengyuanlou@net-swift.com, yang.lee@linux.alibaba.com,
+        error27@gmail.com, linyunsheng@huawei.com,
+        linux-hyperv@vger.kernel.org, kys@microsoft.com,
+        haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+        longli@microsoft.com, shradhagupta@linux.microsoft.com,
+        linux-hwmon@vger.kernel.org, michael.chan@broadcom.com,
+        richardcochran@gmail.com, jdelvare@suse.com, linux@roeck-us.net,
+        yisen.zhuang@huawei.com, salil.mehta@huawei.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, nbd@nbd.name, john@phrozen.org,
+        sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
+        lorenzo@kernel.org, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, linux@armlinux.org.uk,
+        linux-rdma@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
+        gerhard@engleder-embedded.com, maciej.fijalkowski@intel.com,
+        alexanderduyck@fb.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
+        xiaoning.wang@nxp.com, linux-imx@nxp.com, lgirdwood@gmail.com,
+        broonie@kernel.org, jaswinder.singh@linaro.org,
+        ilias.apalodimas@linaro.org, UNGLinuxDriver@microchip.com,
+        horatiu.vultur@microchip.com, linux-omap@vger.kernel.org,
+        grygorii.strashko@ti.com, simon.horman@corigine.com,
+        vladimir.oltean@nxp.com, aleksander.lobakin@intel.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        alexandre.torgue@foss.st.com, joabreu@synopsys.com,
+        mcoquelin.stm32@gmail.com, p.zabel@pengutronix.de,
+        thomas.petazzoni@bootlin.com, mw@semihalf.com,
+        sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+        hkelam@marvell.com, xen-devel@lists.xenproject.org,
+        jgross@suse.com, sstabellini@kernel.org,
+        oleksandr_tyshchenko@epam.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, shayne.chen@mediatek.com, kvalo@kernel.org,
+        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org
+Date:   Mon, 14 Aug 2023 09:54:56 +0200
+In-Reply-To: <20230814060411.2401817-1-rkannoth@marvell.com>
+References: <20230814060411.2401817-1-rkannoth@marvell.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v1 2/2] dt-bindings: hwmon: add adi,ltc4271
-Content-Language: en-US
-To:     Lothar Felten <lothar.felten@gmail.com>,
-        linux-hwmon@vger.kernel.org
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux@roeck-us.net, jdelvare@suse.com
-References: <20230811083222.15978-1-lothar.felten@gmail.com>
- <20230811083222.15978-2-lothar.felten@gmail.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20230811083222.15978-2-lothar.felten@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 11/08/2023 10:32, Lothar Felten wrote:
-> Add dt-bindings for Analog Devices LTC4271 PoE PSE.
-> 
-> Signed-off-by: Lothar Felten <lothar.felten@gmail.com>
-> ---
->  .../bindings/hwmon/adi,ltc4271.example.dts    | 28 ++++++++++
+On Mon, 2023-08-14 at 11:34 +0530, Ratheesh Kannoth wrote:
+> Clamp to 32k instead of returning error.
+>=20
+> Please find discussion at
+> https://lore.kernel.org/lkml/
+> CY4PR1801MB1911E15D518A77535F6E51E2D308A@CY4PR1801MB1911.
+> namprd18.prod.outlook.com/T/
+>=20
 
-No, there are no such files.
+I'm not the one who's going to apply this, but honestly, I don't think
+that will work as a commit message for such a change ...
 
-And standard boilerplate:
+Sure, link to it by all means, but also summarize it and make sense of
+it for the commit message?
 
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
-
-You missed at least DT list (maybe more), so this won't be tested by
-automated tooling. Performing review on untested code might be a waste
-of time, thus I will skip this patch entirely till you follow the
-process allowing the patch to be tested.
-
-Please kindly resend and include all necessary To/Cc entries.
-
-
-Best regards,
-Krzysztof
-
+johannes
