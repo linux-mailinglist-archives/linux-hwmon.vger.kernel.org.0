@@ -2,153 +2,129 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 407A177F32E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Aug 2023 11:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7057477F5D6
+	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Aug 2023 14:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349527AbjHQJZy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 17 Aug 2023 05:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45768 "EHLO
+        id S1350577AbjHQMA4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 17 Aug 2023 08:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349566AbjHQJZh (ORCPT
+        with ESMTP id S1350607AbjHQMAk (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 17 Aug 2023 05:25:37 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3AF2D63
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Aug 2023 02:25:35 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fe45481edfso75956395e9.1
-        for <linux-hwmon@vger.kernel.org>; Thu, 17 Aug 2023 02:25:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1692264334; x=1692869134;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X3jIyUrd5GzfmWvpSZW4U6VKePA4YO/cn1PhySd1hkU=;
-        b=diCldWqXec2nuRPwhbv8dnOOSVxtSlg1mqcdOIQtloIOxaXTZTDs7QzWXrxm3ahT/J
-         EwbXFkKoREOC9iYAj7p1HumhRuByqiIx++aY0vqwOOLpMUnregLOdlUbm/wb+X9iZgkb
-         Ae2czXdYfpHz2lsTUe7SK7LLElOTK/A+LmjzIOyeONYIaNelle11qLLgw2tR8yTkCZAV
-         pMFKUnkMo7Q2VwpvlVTM0JR12bIZx1AbHKTNXNPrURP4XpZoxmowiKX1yym/72vksaDh
-         V/Uu6dVMTXeWOUc9kUwK7EDoI828pzRb3M4ozw0f2+bI0VkDSe1Wl0ZSmUG9vbpONYz5
-         tkyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692264334; x=1692869134;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X3jIyUrd5GzfmWvpSZW4U6VKePA4YO/cn1PhySd1hkU=;
-        b=KgXf0u4pzqJVtXs+2GmyJ+o9AeEp9SDfikYETyPPOaGeCNM5zjYOIxu9eiZjMlKbGi
-         EJoLTDe87lgv5JfRE2aJa5Uh4BhlCbapCaq+zalNvhjfSZiPI6jpNGb/8rjMwfzxZgg7
-         Qj6AptLNQz+Tmkty0CvRmlJhpypC1Vg/eVeWuuJx3DKgIuAOLLt+3hVco084ZAmchOM7
-         0gqPGGeIE5Uc463huJIOAw0t1gZ5/LKu6OvSSwYYR+XSH3Gxvv1VmOvyi8nP+QL86wOQ
-         Y6m3Wqw2t/+yylMaj49Heeh8M+1BekcfBjT/VGwMmN3ieFgF3jrkYayxacs2Qf9HvuD0
-         Z+RQ==
-X-Gm-Message-State: AOJu0Yw6L5/KEXf8ohw/YawpmSbl/698vk9QWxcatOwIY/DsZXnfeW3y
-        jfehRJhdcXCJtfWdF5BJyNNLXQ==
-X-Google-Smtp-Source: AGHT+IFq50pyoIZbPhhzBj0EePyDPVFwUgBYXowAlhP/0dG8YPEoXUU9dCUuA2LlPbazK2I1HTwJoQ==
-X-Received: by 2002:a1c:750a:0:b0:3fd:2d35:b96a with SMTP id o10-20020a1c750a000000b003fd2d35b96amr3489743wmc.39.1692264334303;
-        Thu, 17 Aug 2023 02:25:34 -0700 (PDT)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id x10-20020a05600c2a4a00b003fc00892c13sm2227934wme.35.2023.08.17.02.25.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Aug 2023 02:25:33 -0700 (PDT)
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
-To:     Guenter Roeck <linux@roeck-us.net>,
-        Jean Delvare <jdelvare@suse.com>
-Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Naresh Solanki <Naresh.Solanki@9elements.com>,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] hwmon: pmbus: Fix -EIO seen on pli1209
-Date:   Thu, 17 Aug 2023 11:25:26 +0200
-Message-ID: <20230817092527.808631-3-Naresh.Solanki@9elements.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230817092527.808631-1-Naresh.Solanki@9elements.com>
-References: <20230817092527.808631-1-Naresh.Solanki@9elements.com>
+        Thu, 17 Aug 2023 08:00:40 -0400
+Received: from TWMBX03.aspeed.com (mail.aspeedtech.com [211.20.114.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25CDF2112;
+        Thu, 17 Aug 2023 05:00:37 -0700 (PDT)
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 17 Aug
+ 2023 20:00:31 +0800
+Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 17 Aug 2023 20:00:31 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <joel@jms.id.au>,
+        <andrew@aj.id.au>, <corbet@lwn.net>, <thierry.reding@gmail.com>,
+        <u.kleine-koenig@pengutronix.de>, <p.zabel@pengutronix.de>,
+        <billy_tsai@aspeedtech.com>, <linux-hwmon@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <BMC-SW@aspeedtech.com>, <patrick@stwcx.xyz>
+Subject: [PATCH v7 0/2] Support pwm/tach driver for aspeed ast26xx
+Date:   Thu, 17 Aug 2023 20:00:27 +0800
+Message-ID: <20230817120029.221484-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_FAIL,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Patrick Rudolph <patrick.rudolph@9elements.com>
+Unlike the old design that the register setting of the TACH should based
+on the configure of the PWM. In ast26xx, the dependency between pwm and
+tach controller is eliminated and becomes a separate hardware block. One
+is used to provide pwm output and another is used to monitor the frequency
+of the input. This driver implements them by exposing two kernel
+subsystems: PWM and HWMON. The PWM subsystem can be utilized alongside
+existing drivers for controlling elements such as fans (pwm-fan.c),
+beepers (pwm-beeper.c) and so on. Through the HWMON subsystem, the driver
+provides sysfs interfaces for fan.
 
-After doing performance optimizations the pli1209 driver failed to
-probe with a probabilty of 2%. It wasn't able to read the PMBUS_OPERATION
-register due to an -EIO error.
+Changes since v6:
+Consolidate the PWM and TACH functionalities into a unified driver.
 
-An investigation showed that the PLI1209 takes 230 usec to execute the
-CLEAR_FAULTS command. During that time it's busy and NACKs all requests
-on the SMBUS interface. It also NACKs reads on PMBUS_STATUS_BYTE
-making it impossible to poll the BUSY flag.
+Changes since v5:
+- pwm/tach:
+  - Remove the utilization of common resources from the parent node.
+  - Change the concept to 16 PWM/TACH controllers, each with one channel,
+  instead of 1 PWM/TACH controller with 16 channels.
+- dt-binding:
+  - Eliminate the usage of simple-mfd.
 
-Add a custom write_data function to just wait for not BUSY unconditionally
-after sending a CLEAR_FAULTS command.
+Changes since v4:
+- pwm:
+  - Fix the return type of get_status function.
+- tach:
+  - read clk source once and re-use it
+  - Remove the constants variables
+  - Allocate tach_channel as array
+  - Use dev->parent
+- dt-binding:
+  - Fix the order of the patches
+  - Add example and description for tach child node
+  - Remove pwm extension property
 
-TEST: Verified using an I2C bus analyser that no more NACKs are seen after
-      sending a CLEAR_FAULTS command.
+Changes since v3:
+- pwm:
+  - Remove unnecessary include header
+  - Fix warning Prefer "GPL" over "GPL v2"
+- tach:
+  - Remove the paremeter min_rpm and max_rpm and return the tach value 
+  directly without any polling or delay.
+  - Fix warning Prefer "GPL" over "GPL v2"
+- dt-binding:
+  - Replace underscore in node names with dashes
+  - Split per subsystem
 
-Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
-Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
----
- drivers/hwmon/pmbus/pli1209bc.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Changes since v2:
+- pwm:
+  - Use devm_* api to simplify the error cleanup
+  - Fix the multi-line alignment problem
+- tach:
+  - Add tach-aspeed-ast2600 to index.rst
+  - Fix the multi-line alignment problem
+  - Remove the tach enable/disable when read the rpm
+  - Fix some coding format issue
 
-diff --git a/drivers/hwmon/pmbus/pli1209bc.c b/drivers/hwmon/pmbus/pli1209bc.c
-index 7d8bd3167b21..c95433790b11 100644
---- a/drivers/hwmon/pmbus/pli1209bc.c
-+++ b/drivers/hwmon/pmbus/pli1209bc.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2022 9elements GmbH
-  */
- 
-+#include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/pmbus.h>
-@@ -53,6 +54,30 @@ static int pli1209bc_read_word_data(struct i2c_client *client, int page,
- 	}
- }
- 
-+static int pli1209bc_write_byte(struct i2c_client *client, int page, u8 reg)
-+{
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_CLEAR_FAULTS:
-+		ret = pmbus_write_byte(client, page, reg);
-+		/*
-+		 * PLI1209 takes 230 usec to execute the CLEAR_FAULTS command.
-+		 * During that time it's busy and NACKs all requests on the
-+		 * SMBUS interface. It also NACKs reads on PMBUS_STATUS_BYTE
-+		 * making it impossible to poll the BUSY flag.
-+		 *
-+		 * Just wait for not BUSY unconditionally.
-+		 */
-+		usleep_range(250, 300);
-+		break;
-+	default:
-+		ret = -ENODATA;
-+		break;
-+	}
-+	return ret;
-+}
-+
- #if IS_ENABLED(CONFIG_SENSORS_PLI1209BC_REGULATOR)
- static const struct regulator_desc pli1209bc_reg_desc = {
- 	.name = "vout2",
-@@ -102,6 +127,7 @@ static struct pmbus_driver_info pli1209bc_info = {
- 	    | PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP
- 	    | PMBUS_HAVE_STATUS_IOUT | PMBUS_HAVE_STATUS_INPUT,
- 	.read_word_data = pli1209bc_read_word_data,
-+	.write_byte = pli1209bc_write_byte,
- #if IS_ENABLED(CONFIG_SENSORS_PLI1209BC_REGULATOR)
- 	.num_regulators = 1,
- 	.reg_desc = &pli1209bc_reg_desc,
+Changes since v1:
+- tach:
+  - Add the document tach-aspeed-ast2600.rst
+  - Use devm_* api to simplify the error cleanup.
+  - Change hwmon register api to devm_hwmon_device_register_with_info
+
+Billy Tsai (2):
+  dt-bindings: hwmon: Support Aspeed g6 PWM TACH Control
+  hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach
+
+ .../bindings/hwmon/aspeed,g6-pwm-tach.yaml    |  57 ++
+ Documentation/hwmon/aspeed-g6-pwm-tach.rst    |  24 +
+ Documentation/hwmon/index.rst                 |   1 +
+ drivers/hwmon/Kconfig                         |  11 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/aspeed-g6-pwm-tach.c            | 530 ++++++++++++++++++
+ 6 files changed, 624 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed,g6-pwm-tach.yaml
+ create mode 100644 Documentation/hwmon/aspeed-g6-pwm-tach.rst
+ create mode 100644 drivers/hwmon/aspeed-g6-pwm-tach.c
+
 -- 
-2.41.0
+2.25.1
 
