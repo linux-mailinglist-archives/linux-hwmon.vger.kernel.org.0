@@ -2,239 +2,142 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7805378DCF8
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 20:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E503778DCE4
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 20:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243250AbjH3SrR (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Aug 2023 14:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42494 "EHLO
+        id S242560AbjH3SrB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Aug 2023 14:47:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243612AbjH3LPR (ORCPT
+        with ESMTP id S244083AbjH3McM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Aug 2023 07:15:17 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F7FFF
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 04:15:14 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9a58dbd5daeso588815166b.2
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 04:15:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1693394113; x=1693998913; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FxLU3sUT4YHt2ZakuwGrcuhK+/MYBD6jt+HylqfbPq4=;
-        b=a/GvIrv7738zoH5ncPEXeoX5acFOJrKCEapFXS9p49moo2Ub87eJd9bMbHJ4RBSo03
-         K6asXPhaU7uA8J4DKKZrh4VMhBguxGuuuLTpYyaO85RhuyigU9MfKuCNh2IxE0pqWSVt
-         fqhV/w2IkKGknuX3JIaTqZ812qiDuwbxSNQYzPNVmZ2pEc69Q6i7kMi9oBj1xL5E7vKg
-         OipKn+RPlXkXmONxB2NuNBVDTLwyfHVmpBokC/kJAQnepYACUv/I0pbotyWHTPqzX6Kd
-         S6HGKZvL4KIs5eNVSkNfbRU8aSQwtSdD7oKBFw3BOB9WAESG9ZMshKyY12SfQGvoo0T7
-         VZRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693394113; x=1693998913;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FxLU3sUT4YHt2ZakuwGrcuhK+/MYBD6jt+HylqfbPq4=;
-        b=c/2OXIAtmKoJeN3LBS7OkcpI+CRJDa+92BucHDKf7UtnwZIpVCgxp9mJz37HLugesG
-         P+lnNMFwWx3uGVzX5WI38mLbvpHYJZ1pRz87XOhz+BGeZcvmI44JlCPkCkFDaNbzmeYZ
-         u8IPBtC4HGkzBTvWTaY8st0xESZt6DkTLZL2oAu6YfyrBrJWZ5kmWNnSGXwqoJbTx888
-         FDBPpS1QRLXQdS4ZOGpv7nXizlGqPfePjqcZRN2oL/rtVumr+mqMZ+DePrnkOhowtLFD
-         PI+9uoH9yOACodZbgvXHHBZSmoIUhn3NOq3+Jimk94G2rWDgIon5Oz7deTwF2K54rL4Q
-         8RLg==
-X-Gm-Message-State: AOJu0YyVdsprdGosKxGZk2PdyB3kvfbvizM53q+eB92o5x837JMsSFcU
-        pYn8CS07jkqYXpOx/v4FTbkoqQ==
-X-Google-Smtp-Source: AGHT+IEdH71V483HWsP7p1xsd/kL6r428EIDWnjNqqWJwHFwS4W4DpRNpyO/YeSEweuh2kH6hKkIUg==
-X-Received: by 2002:a17:906:8a58:b0:9a2:1d09:4eee with SMTP id gx24-20020a1709068a5800b009a21d094eeemr1427527ejc.49.1693394112905;
-        Wed, 30 Aug 2023 04:15:12 -0700 (PDT)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id e19-20020a1709067e1300b0099cbfee34e3sm7129345ejr.196.2023.08.30.04.15.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 04:15:12 -0700 (PDT)
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     zev@bewilderbeest.net,
-        Naresh Solanki <Naresh.Solanki@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: [PATCH] regulator (max5970): Add hwmon support
-Date:   Wed, 30 Aug 2023 13:13:18 +0200
-Message-ID: <20230830111319.3882281-1-Naresh.Solanki@9elements.com>
-X-Mailer: git-send-email 2.41.0
+        Wed, 30 Aug 2023 08:32:12 -0400
+Received: from TWMBX03.aspeed.com (mail.aspeedtech.com [211.20.114.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57148CCF;
+        Wed, 30 Aug 2023 05:32:07 -0700 (PDT)
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Aug
+ 2023 20:32:06 +0800
+Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 30 Aug 2023 20:32:06 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <joel@jms.id.au>,
+        <andrew@aj.id.au>, <corbet@lwn.net>, <thierry.reding@gmail.com>,
+        <u.kleine-koenig@pengutronix.de>, <p.zabel@pengutronix.de>,
+        <billy_tsai@aspeedtech.com>, <naresh.solanki@9elements.com>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <BMC-SW@aspeedtech.com>, <patrick@stwcx.xyz>
+Subject: [PATCH v8 0/3] Support pwm/tach driver for aspeed ast26xx
+Date:   Wed, 30 Aug 2023 20:31:59 +0800
+Message-ID: <20230830123202.3408318-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_FAIL,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Utilize the integrated 10-bit ADC in Max5970/Max5978 to enable voltage
-and current monitoring. This feature is seamlessly integrated through
-the hwmon subsystem.
+Unlike the old design that the register setting of the TACH should based
+on the configure of the PWM. In ast26xx, the dependency between pwm and
+tach controller is eliminated and becomes a separate hardware block. One
+is used to provide pwm output and another is used to monitor the frequency
+of the input. This driver implements them by exposing two kernel
+subsystems: PWM and HWMON. The PWM subsystem can be utilized alongside
+existing drivers for controlling elements such as fans (pwm-fan.c),
+beepers (pwm-beeper.c) and so on. Through the HWMON subsystem, the driver
+provides sysfs interfaces for fan.
 
-Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
----
- drivers/regulator/max5970-regulator.c | 119 ++++++++++++++++++++++++++
- 1 file changed, 119 insertions(+)
+Changes since v7:
+Cherry-pick the fan-common.yaml and add the following properties:
+- min-rpm
+- div
+- mode
+- tach-ch
+Fix the warning which is reported by the kernel test robot.
 
-diff --git a/drivers/regulator/max5970-regulator.c b/drivers/regulator/max5970-regulator.c
-index b56a174cde3d..3a6f7c293526 100644
---- a/drivers/regulator/max5970-regulator.c
-+++ b/drivers/regulator/max5970-regulator.c
-@@ -10,6 +10,7 @@
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/err.h>
-+#include <linux/hwmon.h>
- #include <linux/module.h>
- #include <linux/io.h>
- #include <linux/of.h>
-@@ -32,6 +33,116 @@ enum max597x_regulator_id {
- 	MAX597X_SW1,
- };
- 
-+static int max5970_read_adc(struct regmap *regmap, int reg, long *val)
-+{
-+	u8 reg_data[2];
-+	int ret;
-+
-+	ret = regmap_bulk_read(regmap, reg, &reg_data[0], 2);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = (reg_data[0] << 2) | (reg_data[1] & 3);
-+
-+	return 0;
-+}
-+
-+static int max5970_read(struct device *dev, enum hwmon_sensor_types type,
-+			u32 attr, int channel, long *val)
-+{
-+	struct max5970_data *ddata = dev_get_drvdata(dev);
-+	struct regmap *regmap = dev_get_regmap(dev->parent, NULL);
-+	int ret;
-+
-+	switch (type) {
-+	case hwmon_curr:
-+		switch (attr) {
-+		case hwmon_curr_input:
-+			ret = max5970_read_adc(regmap, MAX5970_REG_CURRENT_H(channel), val);
-+			/*
-+			 * Calculate current from ADC value, IRNG range & shunt resistor value.
-+			 * ddata->irng holds the voltage corresponding to the maximum value the
-+			 * 10-bit ADC can measure.
-+			 * To obtain the output, multiply the ADC value by the IRNG range (in
-+			 * millivolts) and then divide it by the maximum value of the 10-bit ADC.
-+			 */
-+			*val = (*val * ddata->irng[channel]) >> 10;
-+			/* Convert the voltage meansurement across shunt resistor to current */
-+			*val = (*val * 1000) / ddata->shunt_micro_ohms[channel];
-+			return ret;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+
-+	case hwmon_in:
-+		switch (attr) {
-+		case hwmon_in_input:
-+			ret = max5970_read_adc(regmap, MAX5970_REG_VOLTAGE_H(channel), val);
-+			/*
-+			 * Calculate voltage from ADC value and MON range.
-+			 * ddata->mon_rng holds the voltage corresponding to the maximum value the
-+			 * 10-bit ADC can measure.
-+			 * To obtain the output, multiply the ADC value by the MON range (in
-+			 * microvolts) and then divide it by the maximum value of the 10-bit ADC.
-+			 */
-+			*val = mul_u64_u32_shr(*val, ddata->mon_rng[channel], 10);
-+			/* uV to mV */
-+			*val = *val / 1000;
-+			return ret;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static umode_t max5970_is_visible(const void *data,
-+				  enum hwmon_sensor_types type,
-+				  u32 attr, int channel)
-+{
-+	struct max5970_data *ddata = (struct max5970_data *)data;
-+
-+	if (channel >= ddata->num_switches)
-+		return 0;
-+
-+	switch (type) {
-+	case hwmon_in:
-+		switch (attr) {
-+		case hwmon_in_input:
-+			return 0444;
-+		}
-+		break;
-+	case hwmon_curr:
-+		switch (attr) {
-+		case hwmon_curr_input:
-+			/* Current measurement requires knowledge of the shunt resistor value. */
-+			if (ddata->shunt_micro_ohms[channel])
-+				return 0444;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+	return 0;
-+}
-+
-+static const struct hwmon_ops max5970_hwmon_ops = {
-+	.is_visible = max5970_is_visible,
-+	.read = max5970_read,
-+};
-+
-+static const struct hwmon_channel_info *max5970_info[] = {
-+	HWMON_CHANNEL_INFO(in, HWMON_I_INPUT, HWMON_I_INPUT),
-+	HWMON_CHANNEL_INFO(curr, HWMON_C_INPUT, HWMON_C_INPUT),
-+	NULL
-+};
-+
-+static const struct hwmon_chip_info max5970_chip_info = {
-+	.ops = &max5970_hwmon_ops,
-+	.info = max5970_info,
-+};
-+
- static int max597x_uvp_ovp_check_mode(struct regulator_dev *rdev, int severity)
- {
- 	int ret, reg;
-@@ -432,6 +543,7 @@ static int max597x_regulator_probe(struct platform_device *pdev)
- 	struct regulator_config config = { };
- 	struct regulator_dev *rdev;
- 	struct regulator_dev *rdevs[MAX5970_NUM_SWITCHES];
-+	struct device *hwmon_dev;
- 	int num_switches;
- 	int ret, i;
- 
-@@ -485,6 +597,13 @@ static int max597x_regulator_probe(struct platform_device *pdev)
- 		max597x->shunt_micro_ohms[i] = data->shunt_micro_ohms;
- 	}
- 
-+	hwmon_dev = devm_hwmon_device_register_with_info(&i2c->dev, "max5970_hwmon", max597x,
-+							 &max5970_chip_info, NULL);
-+	if (IS_ERR(hwmon_dev)) {
-+		return dev_err_probe(&i2c->dev, PTR_ERR(hwmon_dev), \
-+				     "Unable to register hwmon device\n");
-+	}
-+
- 	if (i2c->irq) {
- 		ret =
- 		    max597x_setup_irq(&i2c->dev, i2c->irq, rdevs, num_switches,
+Changes since v6:
+Consolidate the PWM and TACH functionalities into a unified driver.
 
-base-commit: 35d0d2350d774fecf596cfb2fb050559fe5e1850
+Changes since v5:
+- pwm/tach:
+  - Remove the utilization of common resources from the parent node.
+  - Change the concept to 16 PWM/TACH controllers, each with one channel,
+  instead of 1 PWM/TACH controller with 16 channels.
+- dt-binding:
+  - Eliminate the usage of simple-mfd.
+
+Changes since v4:
+- pwm:
+  - Fix the return type of get_status function.
+- tach:
+  - read clk source once and re-use it
+  - Remove the constants variables
+  - Allocate tach_channel as array
+  - Use dev->parent
+- dt-binding:
+  - Fix the order of the patches
+  - Add example and description for tach child node
+  - Remove pwm extension property
+
+Changes since v3:
+- pwm:
+  - Remove unnecessary include header
+  - Fix warning Prefer "GPL" over "GPL v2"
+- tach:
+  - Remove the paremeter min_rpm and max_rpm and return the tach value 
+  directly without any polling or delay.
+  - Fix warning Prefer "GPL" over "GPL v2"
+- dt-binding:
+  - Replace underscore in node names with dashes
+  - Split per subsystem
+
+Changes since v2:
+- pwm:
+  - Use devm_* api to simplify the error cleanup
+  - Fix the multi-line alignment problem
+- tach:
+  - Add tach-aspeed-ast2600 to index.rst
+  - Fix the multi-line alignment problem
+  - Remove the tach enable/disable when read the rpm
+  - Fix some coding format issue
+
+Changes since v1:
+- tach:
+  - Add the document tach-aspeed-ast2600.rst
+  - Use devm_* api to simplify the error cleanup.
+  - Change hwmon register api to devm_hwmon_device_register_with_info
+
+Billy Tsai (2):
+  dt-bindings: hwmon: Support Aspeed g6 PWM TACH Control
+  hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach
+
+Naresh Solanki (1):
+  dt-bindings: hwmon: fan: Add fan binding to schema
+
+ .../bindings/hwmon/aspeed,g6-pwm-tach.yaml    |  67 +++
+ .../devicetree/bindings/hwmon/fan-common.yaml |  63 +++
+ Documentation/hwmon/aspeed-g6-pwm-tach.rst    |  26 +
+ Documentation/hwmon/index.rst                 |   1 +
+ drivers/hwmon/Kconfig                         |  11 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/aspeed-g6-pwm-tach.c            | 528 ++++++++++++++++++
+ 7 files changed, 697 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed,g6-pwm-tach.yaml
+ create mode 100644 Documentation/devicetree/bindings/hwmon/fan-common.yaml
+ create mode 100644 Documentation/hwmon/aspeed-g6-pwm-tach.rst
+ create mode 100644 drivers/hwmon/aspeed-g6-pwm-tach.c
+
 -- 
-2.41.0
+2.25.1
 
