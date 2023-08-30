@@ -2,72 +2,66 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80E5E78D1F1
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 04:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD4178DCE5
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 20:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241661AbjH3CIY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 29 Aug 2023 22:08:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
+        id S243183AbjH3SrE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Aug 2023 14:47:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241662AbjH3CIM (ORCPT
+        with ESMTP id S242742AbjH3J3H (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 29 Aug 2023 22:08:12 -0400
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BEC1AD
-        for <linux-hwmon@vger.kernel.org>; Tue, 29 Aug 2023 19:08:09 -0700 (PDT)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-34deab8010dso4740755ab.3
-        for <linux-hwmon@vger.kernel.org>; Tue, 29 Aug 2023 19:08:09 -0700 (PDT)
+        Wed, 30 Aug 2023 05:29:07 -0400
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E73CCB
+        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 02:29:04 -0700 (PDT)
+Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-48d0eb04c8cso1654648e0c.0
+        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 02:29:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693361289; x=1693966089; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=m8q9U0lrJvsfD804B/B6x84iiD69UX7+S8H+PhsFL9M=;
-        b=LELlKS8Lzlhx9qFpMdhgVdwkOqgiu7NgKsKG+omHNaibPLTlcEidwzJdq5ActD91cy
-         KgJDvcQPOP63Hh5eDLmuc1dc7JsVhj7x7gN0mxA2PqDTscpJc8hBCHGU1v3r8Ug/coeX
-         5MjM0syWJcX2OeZcQKBjoFLbE3c5UzfdkYZlyX68ArlIm4UiXZIwvxDZZhLxPP18Qqv0
-         UFAZ+0LIz/SRSvdlvFJvSyXanx1J37GYDr1yMXHwasAMkMlR3bWNG5sq4nvGPpOffjvU
-         oNySRm09mzQvVg2IPiHZEbz2A7h2LSDFvkzcFtUuA8xUMFm/eR8PhYaFVi2POi9oml3x
-         cfBg==
+        d=gmail.com; s=20221208; t=1693387744; x=1693992544; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ua10WRdnN+RWxN4RDGFmwcoDFTemva9EtdTfd5rYkW0=;
+        b=MYXqpdvQ4Yj3Nf/ERhEtaHO6jgkrb6KyjJT6SOER++CXO0yBnMn/DYG00emi0MpMx1
+         PND2pnlfsCC8uYkqoXHVgY0ZfTbQbAABRbUiVHpihvaPJFUeG6jYN07T9MXPfNkvn6e7
+         ImMMxAUD3SvbRELu/96gEkJVDUyJ4MtbDTRKZn2BHD9KDvfKiJXkQiRtYURvahtcwMFT
+         5gTrrrWmkDd7Z6gmxu0o2ZEHNK2THmQRRKNX4lcGAfSSXuwuIDUJSO8g8nZ50cgZi2Za
+         3TDWVPUQNGIFEeIiK7lmZbRb64xfiLB/siMn4pPeRhBpmlF4qcqgW8RTodK5jylkQMAg
+         c2zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693361289; x=1693966089;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m8q9U0lrJvsfD804B/B6x84iiD69UX7+S8H+PhsFL9M=;
-        b=DTpd2hwY+MELZFUnBgza22jgDvpCzOpTZRRT4eag4Uux4mpsHqP3MbqMlF/HtjWUck
-         reiL6hW5Yb/j+xMMvY4GLz9NngX6QBn4M2wIhYsTPonIxopQNwNW+Q64ms5GrRu0l3N0
-         h0g4MqLoxlxWWO2CLhphg8YqNPDTgtp/ZdxeRfd3OXAz4Ix1+Uq00bVq45xG2geEbp2D
-         I77Wkjx5snYsJnIf2ztedXWWCiG/Que9V9nRFBSqFG5/Ba8Yallt2cJ485k8MX1xkcrl
-         o/qj0HGN3B3fcjFxxC6AWClTM1+JW+6Es2jD1NzwnvQJg0yEb9mNgtJn9sYqkfzRVEMw
-         IdnQ==
-X-Gm-Message-State: AOJu0Yw0SxizDZl6CWxzoTyNpf4tmarklIdsmZgZQUsINX7vn80aUSm6
-        eJKH4l2O+MHpZbtEfAoX9rg63FbiBzM=
-X-Google-Smtp-Source: AGHT+IE5NdjuKa/eKC2qsyHE0t29CD2gKhoEQh+B5SuTNrfViZupB/ECFmem5REuuStbHAKAs7euEA==
-X-Received: by 2002:a92:c266:0:b0:34d:f0b4:787a with SMTP id h6-20020a92c266000000b0034df0b4787amr1432812ild.15.1693361288936;
-        Tue, 29 Aug 2023 19:08:08 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g2-20020a02b702000000b004300eca209csm3431740jam.112.2023.08.29.19.08.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 19:08:08 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 29 Aug 2023 19:08:07 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Pankaj Pandey <pankaj.embedded@gmail.com>
-Cc:     linux-hwmon@vger.kernel.org
-Subject: Re: Fwd: Regarding pmbus_core.c
-Message-ID: <d41992ac-9670-44af-963b-d171bfcdd8f9@roeck-us.net>
-References: <CAOdCjQtTzQpsko+vqkF9zW5RPe1520r4B5kFsJzHjSkK+KxvMw@mail.gmail.com>
- <CAOdCjQv-dCsd_EDnmWN786H57=cN2U8GBZLS96gXme6hfYpC4A@mail.gmail.com>
+        d=1e100.net; s=20221208; t=1693387744; x=1693992544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ua10WRdnN+RWxN4RDGFmwcoDFTemva9EtdTfd5rYkW0=;
+        b=g6seXwplAtRXWXlnJZ7jagnyN3AKZYvlwev1abu6PzbqQRlm5DBGOtXB8A8q/LaS1i
+         3bYKVxeJ0kmNelAxwdRVjXZxi/aX4AY9A9ATMcVC68Sl8At6RsUAwZwhYU0+Cq3R8j0G
+         O2aOV9vi8EBpFm5Tpcc8OPaeJJrgD306RfwlJTViZY42S7ORQi0xSi0iHDzaE7Rfcv/3
+         Ad5qtwh63m8y6ApRrMDC+3wpIqq+91xxJdUJGaghhKlrenAxceSuB8lTl5UvAx2dina/
+         tJ2QQgWjBTc4q3Fsia7en2VSDn5i/7e9VghkIuKYz4uYJILUqHMyUQ0/bcl2zXERSGzd
+         nxMw==
+X-Gm-Message-State: AOJu0Ywj9cm2FSdSijgjJhV9AFw8TlEWgE2SKqKiBpFgdoiiRlMB0e/G
+        zYrykihyHhwoNJc7nLW4XIIgROTwcT3vxP8G1g2GzcFLwD0=
+X-Google-Smtp-Source: AGHT+IG32hmtOjb3+AwcXeiJ4ZuT7ja3p3wxWcrVIIwQlHh8gO3kMLvOiM3gXadJKziZhU2+vqs9dKkuFETlWUOzXKk=
+X-Received: by 2002:a1f:4886:0:b0:48d:d3b:7dcc with SMTP id
+ v128-20020a1f4886000000b0048d0d3b7dccmr1094566vka.5.1693387743635; Wed, 30
+ Aug 2023 02:29:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOdCjQv-dCsd_EDnmWN786H57=cN2U8GBZLS96gXme6hfYpC4A@mail.gmail.com>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+References: <CAOdCjQtTzQpsko+vqkF9zW5RPe1520r4B5kFsJzHjSkK+KxvMw@mail.gmail.com>
+ <CAOdCjQv-dCsd_EDnmWN786H57=cN2U8GBZLS96gXme6hfYpC4A@mail.gmail.com> <d41992ac-9670-44af-963b-d171bfcdd8f9@roeck-us.net>
+In-Reply-To: <d41992ac-9670-44af-963b-d171bfcdd8f9@roeck-us.net>
+From:   Pankaj Pandey <pankaj.embedded@gmail.com>
+Date:   Wed, 30 Aug 2023 14:58:52 +0530
+Message-ID: <CAOdCjQvEvqoQQQLUX3tuLzuY0sedi2mGzA=aMJg4UY+uMtcr0g@mail.gmail.com>
+Subject: Re: Fwd: Regarding pmbus_core.c
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,34 +69,60 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Wed, Aug 30, 2023 at 07:16:46AM +0530, Pankaj Pandey wrote:
-> ---------- Forwarded message ---------
-> From: Pankaj Pandey <pankaj.embedded@gmail.com>
-> Date: Wed, Aug 30, 2023 at 4:42 AM
-> Subject: Regarding pmbus_core.c
-> To: <linux@roeck-us.net>
-> 
-> 
-> Hi Guenter Roeck,
-> 
-> I am facing an issue at drivers/hwmon/pmbus/pmbus_core.c of linux-5.10 kernel.
-> I am using the bm454 driver from drivers/hwmon/pmbus/pmbus.c.
-> Observed sometimes my Powepc based target board called for reset from
-> inside int pmbus_write_byte_data(struct i2c_client *client, int page,
-> u8 reg, u8 value)  function.  It is not consistent, sometimes not
+Hi Guenter,
 
-Sorry, I don't understand what you mean with "called for reset from
-inside int pmbus_write_byte_data". Please clarify.
+Thanks for the pointer. Actually during bmr454 probing during kernel boots-=
+up it
+called system reset/crash. For reference please find bmr454 probing log bel=
+ow:
 
-If I recall correctly, bmr454 is very picky when it comes to i2c bus
-speed. If it acts up, you might have some success with picking a different
-bus speed.
+[   14.910630] pmbus 7-0010: bmr454 BMR status word : 0x2
+[   14.922945] pmbus 7-0010: bmr454 BMR status cml : 0x2
 
-Thanks,
-Guenter
+---> Immediately after above bmr454 probing it reset/crash the system
+and jump to u-boot.
 
-> observed any reset and bmr454 initialized fine.  Please suggest any
-> pointers to debug this issue.
-> 
-> Regards,
-> Pankaj Pandey
+Using debug prints I observed system got resettted after reaching to
+_pmbus_write_byte  function. But
+sometimes probing is fine, not observing any system reset/crash.
+
+Regards,
+Pankaj Pandey
+
+
+On Wed, Aug 30, 2023 at 7:38=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+>
+> On Wed, Aug 30, 2023 at 07:16:46AM +0530, Pankaj Pandey wrote:
+> > ---------- Forwarded message ---------
+> > From: Pankaj Pandey <pankaj.embedded@gmail.com>
+> > Date: Wed, Aug 30, 2023 at 4:42=E2=80=AFAM
+> > Subject: Regarding pmbus_core.c
+> > To: <linux@roeck-us.net>
+> >
+> >
+> > Hi Guenter Roeck,
+> >
+> > I am facing an issue at drivers/hwmon/pmbus/pmbus_core.c of linux-5.10 =
+kernel.
+> > I am using the bm454 driver from drivers/hwmon/pmbus/pmbus.c.
+> > Observed sometimes my Powepc based target board called for reset from
+> > inside int pmbus_write_byte_data(struct i2c_client *client, int page,
+> > u8 reg, u8 value)  function.  It is not consistent, sometimes not
+>
+> Sorry, I don't understand what you mean with "called for reset from
+> inside int pmbus_write_byte_data". Please clarify.
+>
+> If I recall correctly, bmr454 is very picky when it comes to i2c bus
+> speed. If it acts up, you might have some success with picking a differen=
+t
+> bus speed.
+>
+> Thanks,
+> Guenter
+>
+> > observed any reset and bmr454 initialized fine.  Please suggest any
+> > pointers to debug this issue.
+> >
+> > Regards,
+> > Pankaj Pandey
