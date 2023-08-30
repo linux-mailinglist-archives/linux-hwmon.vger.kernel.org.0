@@ -2,127 +2,170 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD4178DCE5
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 20:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3B4E78DCFD
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 20:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243183AbjH3SrE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Aug 2023 14:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
+        id S243256AbjH3SrU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Aug 2023 14:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242742AbjH3J3H (ORCPT
+        with ESMTP id S243281AbjH3Kgd (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Aug 2023 05:29:07 -0400
-Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E73CCB
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 02:29:04 -0700 (PDT)
-Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-48d0eb04c8cso1654648e0c.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 02:29:04 -0700 (PDT)
+        Wed, 30 Aug 2023 06:36:33 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195961B7
+        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 03:36:30 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-529fb04a234so7094053a12.3
+        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 03:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693387744; x=1693992544; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ua10WRdnN+RWxN4RDGFmwcoDFTemva9EtdTfd5rYkW0=;
-        b=MYXqpdvQ4Yj3Nf/ERhEtaHO6jgkrb6KyjJT6SOER++CXO0yBnMn/DYG00emi0MpMx1
-         PND2pnlfsCC8uYkqoXHVgY0ZfTbQbAABRbUiVHpihvaPJFUeG6jYN07T9MXPfNkvn6e7
-         ImMMxAUD3SvbRELu/96gEkJVDUyJ4MtbDTRKZn2BHD9KDvfKiJXkQiRtYURvahtcwMFT
-         5gTrrrWmkDd7Z6gmxu0o2ZEHNK2THmQRRKNX4lcGAfSSXuwuIDUJSO8g8nZ50cgZi2Za
-         3TDWVPUQNGIFEeIiK7lmZbRb64xfiLB/siMn4pPeRhBpmlF4qcqgW8RTodK5jylkQMAg
-         c2zQ==
+        d=9elements.com; s=google; t=1693391788; x=1693996588; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HZcO54s6dPOvHTKozhAJ9zybhhO9IlHmOjEttCcJ4Fc=;
+        b=C0prIXeHgKDHDYl3xGT74jVJ+7LpPwuKQ9ApXGCbHlvskrYIbeES4cXYboTamDKCMC
+         bA7mmoX1Kk/fzujWZ5VfqofnorAHCPB7/qciijCBZNFGrynvnbAinPacxkx2c+MUsXYW
+         sV1L0KkqQVRBjvSbnDymg/GHfIDTgp/9G69zhzrR2S0xOIvtu+x41dDbllwytpKJ4Lee
+         7VCplc89rhLJHm2LohAl5Wpc04xGDlLEj57VNmaxInvKaQK7xxUv61LMGyrTODCmXO7C
+         nZhHHSpt10QEoAmMCcFuscT20FcRqjNaurGZsof454w3eSxx5nohOlU2TSv6Qvd41vH4
+         lcTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693387744; x=1693992544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ua10WRdnN+RWxN4RDGFmwcoDFTemva9EtdTfd5rYkW0=;
-        b=g6seXwplAtRXWXlnJZ7jagnyN3AKZYvlwev1abu6PzbqQRlm5DBGOtXB8A8q/LaS1i
-         3bYKVxeJ0kmNelAxwdRVjXZxi/aX4AY9A9ATMcVC68Sl8At6RsUAwZwhYU0+Cq3R8j0G
-         O2aOV9vi8EBpFm5Tpcc8OPaeJJrgD306RfwlJTViZY42S7ORQi0xSi0iHDzaE7Rfcv/3
-         Ad5qtwh63m8y6ApRrMDC+3wpIqq+91xxJdUJGaghhKlrenAxceSuB8lTl5UvAx2dina/
-         tJ2QQgWjBTc4q3Fsia7en2VSDn5i/7e9VghkIuKYz4uYJILUqHMyUQ0/bcl2zXERSGzd
-         nxMw==
-X-Gm-Message-State: AOJu0Ywj9cm2FSdSijgjJhV9AFw8TlEWgE2SKqKiBpFgdoiiRlMB0e/G
-        zYrykihyHhwoNJc7nLW4XIIgROTwcT3vxP8G1g2GzcFLwD0=
-X-Google-Smtp-Source: AGHT+IG32hmtOjb3+AwcXeiJ4ZuT7ja3p3wxWcrVIIwQlHh8gO3kMLvOiM3gXadJKziZhU2+vqs9dKkuFETlWUOzXKk=
-X-Received: by 2002:a1f:4886:0:b0:48d:d3b:7dcc with SMTP id
- v128-20020a1f4886000000b0048d0d3b7dccmr1094566vka.5.1693387743635; Wed, 30
- Aug 2023 02:29:03 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1693391788; x=1693996588;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HZcO54s6dPOvHTKozhAJ9zybhhO9IlHmOjEttCcJ4Fc=;
+        b=T05GOvjPFtWKEEWgWrG2sxaFjszfsJCmYIHjcmaXDA7yT1R+Xl20+jC8LiQVsG9Jko
+         z40ZqdPkGeWT/gbriW+rQzOzI5G4c8z7LXeS3yLERTg29SosbDqvuKKZy8zR4YuT0ges
+         K/WHKG3UV4473j/FDHFVm/dlz7GGB3HtdNp+Weg6LjCb2Dt8Sy8zVhvJekZtGHoixwm1
+         MZva83NbOwPxtO3dYfk3gXOVVgBGwVZmTszzbiCYwTaKk2UHe2QwuoVLQnjmQJI/gNKs
+         E+8IGLzspjTe2dymaQ1Qf14l3OgwDUnSk1bbQbVk54ygfcLmwehL2Jpc3LSBswuj7MM+
+         aGkw==
+X-Gm-Message-State: AOJu0Yxx+0gaUehuWxafS9E1PsSQMXvysZLX/rppgTwRsACH/qIaQfe6
+        XLlFMGcm4YV/4/k9l6y1GRlurA==
+X-Google-Smtp-Source: AGHT+IGiBHH+VCjnIyveBq5dLYGOcHJ2s6Xflu3d/0Pw3YF2Fpdun5D9Au3Dso27zqC14dGTODLPfQ==
+X-Received: by 2002:a17:907:60c7:b0:9a5:8eab:49de with SMTP id hv7-20020a17090760c700b009a58eab49demr1376125ejc.17.1693391788390;
+        Wed, 30 Aug 2023 03:36:28 -0700 (PDT)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id s11-20020a170906354b00b00992bea2e9d2sm7027620eja.62.2023.08.30.03.36.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Aug 2023 03:36:27 -0700 (PDT)
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        krzysztof.kozlowski+dt@linaro.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Naresh Solanki <naresh.solanki@9elements.com>
+Cc:     linux-hwmon@vger.kernel.org,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/3] dt-bindings: hwmon: Add Infineon TDA38640
+Date:   Wed, 30 Aug 2023 12:36:16 +0200
+Message-ID: <20230830103620.3611761-1-Naresh.Solanki@9elements.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <CAOdCjQtTzQpsko+vqkF9zW5RPe1520r4B5kFsJzHjSkK+KxvMw@mail.gmail.com>
- <CAOdCjQv-dCsd_EDnmWN786H57=cN2U8GBZLS96gXme6hfYpC4A@mail.gmail.com> <d41992ac-9670-44af-963b-d171bfcdd8f9@roeck-us.net>
-In-Reply-To: <d41992ac-9670-44af-963b-d171bfcdd8f9@roeck-us.net>
-From:   Pankaj Pandey <pankaj.embedded@gmail.com>
-Date:   Wed, 30 Aug 2023 14:58:52 +0530
-Message-ID: <CAOdCjQvEvqoQQQLUX3tuLzuY0sedi2mGzA=aMJg4UY+uMtcr0g@mail.gmail.com>
-Subject: Re: Fwd: Regarding pmbus_core.c
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     linux-hwmon@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Guenter,
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
 
-Thanks for the pointer. Actually during bmr454 probing during kernel boots-=
-up it
-called system reset/crash. For reference please find bmr454 probing log bel=
-ow:
+Add the DT property 'infineon,en-pin-fixed-level' to
+indicated that the chip ENABLE pin is at fixed level
+or left unconnected(has internal pull-down).
 
-[   14.910630] pmbus 7-0010: bmr454 BMR status word : 0x2
-[   14.922945] pmbus 7-0010: bmr454 BMR status cml : 0x2
+Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+----
+Changes in V4:
+- Update property name & description.
+- Update commit message.
+---
+ .../hwmon/pmbus/infineon,tda38640.yaml        | 50 +++++++++++++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |  2 -
+ 2 files changed, 50 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml
 
----> Immediately after above bmr454 probing it reset/crash the system
-and jump to u-boot.
+diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml
+new file mode 100644
+index 000000000000..1df40ee7454a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++
++$id: http://devicetree.org/schemas/hwmon/pmbus/infineon,tda38640.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Infineon TDA38640 Synchronous Buck Regulator with SVID and I2C
++
++maintainers:
++  - Naresh Solanki <naresh.solanki@9elements.com>
++
++description: |
++  The Infineon TDA38640 is a 40A Single-voltage Synchronous Buck
++  Regulator with SVID and I2C designed for Industrial use.
++
++  Datasheet: https://www.infineon.com/dgdl/Infineon-TDA38640-0000-DataSheet-v02_04-EN.pdf?fileId=8ac78c8c80027ecd018042f2337f00c9
++
++properties:
++  compatible:
++    enum:
++      - infineon,tda38640
++
++  reg:
++    maxItems: 1
++
++  infineon,en-pin-fixed-level:
++    description: |
++      Indicates that the chip ENABLE pin is at fixed level or left
++      unconnected(has internal pull-down).
++    type: boolean
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        tda38640@40 {
++            compatible = "infineon,tda38640";
++            reg = <0x40>;
++        };
++    };
++
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 40bc475ee7e1..86c7d34f63bf 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -151,8 +151,6 @@ properties:
+           - infineon,slb9645tt
+             # Infineon SLB9673 I2C TPM 2.0
+           - infineon,slb9673
+-            # Infineon TDA38640 Voltage Regulator
+-          - infineon,tda38640
+             # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
+           - infineon,tlv493d-a1b6
+             # Infineon Multi-phase Digital VR Controller xdpe11280
 
-Using debug prints I observed system got resettted after reaching to
-_pmbus_write_byte  function. But
-sometimes probing is fine, not observing any system reset/crash.
+base-commit: 919a83d020a8dfa1411c1dc1cff23a833f0f5268
+-- 
+2.41.0
 
-Regards,
-Pankaj Pandey
-
-
-On Wed, Aug 30, 2023 at 7:38=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
-wrote:
->
-> On Wed, Aug 30, 2023 at 07:16:46AM +0530, Pankaj Pandey wrote:
-> > ---------- Forwarded message ---------
-> > From: Pankaj Pandey <pankaj.embedded@gmail.com>
-> > Date: Wed, Aug 30, 2023 at 4:42=E2=80=AFAM
-> > Subject: Regarding pmbus_core.c
-> > To: <linux@roeck-us.net>
-> >
-> >
-> > Hi Guenter Roeck,
-> >
-> > I am facing an issue at drivers/hwmon/pmbus/pmbus_core.c of linux-5.10 =
-kernel.
-> > I am using the bm454 driver from drivers/hwmon/pmbus/pmbus.c.
-> > Observed sometimes my Powepc based target board called for reset from
-> > inside int pmbus_write_byte_data(struct i2c_client *client, int page,
-> > u8 reg, u8 value)  function.  It is not consistent, sometimes not
->
-> Sorry, I don't understand what you mean with "called for reset from
-> inside int pmbus_write_byte_data". Please clarify.
->
-> If I recall correctly, bmr454 is very picky when it comes to i2c bus
-> speed. If it acts up, you might have some success with picking a differen=
-t
-> bus speed.
->
-> Thanks,
-> Guenter
->
-> > observed any reset and bmr454 initialized fine.  Please suggest any
-> > pointers to debug this issue.
-> >
-> > Regards,
-> > Pankaj Pandey
