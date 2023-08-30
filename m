@@ -2,104 +2,165 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C774678E0A6
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 22:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D65378DFB3
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Aug 2023 22:15:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239281AbjH3U3D (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 30 Aug 2023 16:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58294 "EHLO
+        id S240295AbjH3UBM (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 30 Aug 2023 16:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239566AbjH3U2y (ORCPT
+        with ESMTP id S239137AbjH3UAt (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 30 Aug 2023 16:28:54 -0400
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A59873052;
-        Wed, 30 Aug 2023 12:33:07 -0700 (PDT)
-Received: by mail-io1-xd29.google.com with SMTP id ca18e2360f4ac-792623074edso30088739f.1;
-        Wed, 30 Aug 2023 12:33:07 -0700 (PDT)
+        Wed, 30 Aug 2023 16:00:49 -0400
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1C11736
+        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 12:37:01 -0700 (PDT)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7a50bd29064so70722241.3
+        for <linux-hwmon@vger.kernel.org>; Wed, 30 Aug 2023 12:37:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693423937; x=1694028737; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=phKhrjG7sXSAjhn653McWF0Xp9kDLF4E5/rGNJ97Y4k=;
-        b=iaqimD4gB7qmOLd6a3coQzU+ciA8nwIbWgq+ir17l5uJDP2hFTmBHaqHVUuPZHqg3g
-         +kNunaCZrj988vhf+P9ZBR/yoQ+fn09FFzQf/NSbgzKlaBEkrFJ2I2GMR5mIir24M2KX
-         8U/TrSr59Ik6bezjgbY6nMQHaFOsCnTr1FnwxHR+XXVRueObfVxAl7YkqJbBHxZLnGkN
-         IxDohJkUfDlXOdGX3DsTyw4KKvskSbbDxesDRnU5Cikh/KXzp6sU5tvvYSyjByZObhh/
-         sON2tEq2DEwNLxbk1p8EJp9GYI90L+U7nJcF/NWc17fJbeYSEkIpDCABf6M9+JpHIt9e
-         viJA==
+        d=gmail.com; s=20221208; t=1693424095; x=1694028895; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=femUbnNkI0dPgRYRrDdrRsJ5hRpAu998V7jEmuAfMrw=;
+        b=g73fJn6H38Pkm7rwBvv5S8bpgVMcV5I3+RupYUh2+3jknr751Yi+KTl1NqRMr4jnfi
+         RhMw+mytlvk/OpkarvTf2pPgEU35NDUCHkDFmnWIIBYL2xye5OjegfHKPR9Ev9L/kLj1
+         cEMyyymV9gamoHybQ4OWLIeho5NsHBrMjEuSDm80QvJpmZyn9XMKSn/1qanOpLKkyne+
+         EBNkZQEpnVWLS6MJFjGnZVNEGIKLrDX6P71/S1y+i+MfHi8dJLC0kgIKWz2Mqo7kLNVx
+         QeVm8NEsn0OpNpMBgWoaTuEaXcWYF+1voQ/m5U2y9VIAf6krfcRj7IJYB9JmdekMbqgv
+         qZpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693423937; x=1694028737;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=phKhrjG7sXSAjhn653McWF0Xp9kDLF4E5/rGNJ97Y4k=;
-        b=E7HL6iCX29ETcqp/WZWPy3RgVPD/HVboXPApbXqjAjSbHayriblvv82LH1ggVbM//N
-         JP2HKRy2FSTNw3E0qcy5Nlw5CN7vtWPSnlYaxzPPXjm6X8SqcEjBK0Ni89VILxCirIsP
-         hhwE7btA93aY3d91ra+noNH7a53URF+4qb0v7ARI2SE452Oib/us866ockymUtdKCg/i
-         91uD4e8KR2vQeJJyiG7bJnTfEZtXA9+scBPLW3Gp030oFQ/Yk7t73NR8UC211pd/Arkk
-         bA7d7tfXdbFKUHKocQFjElgp+F5iTH87Jh0C44sx20OqUFwZPQ5eR/nKT61FTzRi2Xp8
-         tRIA==
-X-Gm-Message-State: AOJu0YwFV8PAxX4GITjV2MomyeHPWdDCHJw53jUdVUMQPzNseiAqTn7a
-        1+vsd0fAQuwvrOwYDbcaFQx6PpSCNWE=
-X-Google-Smtp-Source: AGHT+IE31EKHM80PdXHF58NCuY7SQ8l1WyQLE2oZUZir0KdXHAlu86zL4NC4+NFUHfHufL2C15OPsA==
-X-Received: by 2002:a05:6e02:184e:b0:34d:ecbb:9cc4 with SMTP id b14-20020a056e02184e00b0034decbb9cc4mr529528ilv.3.1693423936749;
-        Wed, 30 Aug 2023 12:32:16 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id ft19-20020a056638661300b0042b0de0b976sm3900085jab.154.2023.08.30.12.32.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 12:32:16 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1efe9234-a97f-6df2-c47d-e153dc362599@roeck-us.net>
-Date:   Wed, 30 Aug 2023 12:32:14 -0700
+        d=1e100.net; s=20221208; t=1693424095; x=1694028895;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=femUbnNkI0dPgRYRrDdrRsJ5hRpAu998V7jEmuAfMrw=;
+        b=R21aeyMceS8wjFPloybM5VGJRPG4QiRmS7YbtVdfn036yx2iyzTVBmMXrsknS2pT3g
+         moiamTc769ttaZON6QI5shAecbISJDRJ4aZe2l5PpIA5NKHOSbmcMZ9nYUDWbHN3BzNS
+         6A+ucYFz0FkHySaFj6ERZ2lUfAZ92Q0zam5fnont2BCfOT4ueC7MFtG4NAx/XTWhJogQ
+         enW3yZizXPW0gdRelifWsdy7bGSeotgPU1+4+pYyn2N1OfvOGproYrHO8dN5co++8dec
+         /Dj9CrcXydtkut35i43uCsGnnwS8tSIRzZXd+B4kbDMzT/Pa4l9q/jofNuPCqWyLMQjU
+         82Gg==
+X-Gm-Message-State: AOJu0Yy6BAbthIGmj23Dt8GF2/YRnARRvXsdeCDaeBDmsyTdxDYOincW
+        k3m7Xa+0CTyPQ5XcM47LKDlZqyeMgVviKFEErVBk7bb7
+X-Google-Smtp-Source: AGHT+IFia5ollVps8fAWA2izAZcbD2vMJY6o+IbWybBDjiGt+MAhLxVXY1ew+u7HRnri1BYyUPCxLPoVtCLHXmN1flU=
+X-Received: by 2002:a67:f98d:0:b0:44e:8ef9:336d with SMTP id
+ b13-20020a67f98d000000b0044e8ef9336dmr2765521vsq.1.1693424094794; Wed, 30 Aug
+ 2023 12:34:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] regulator (max5970): Add hwmon support
-Content-Language: en-US
-To:     Naresh Solanki <naresh.solanki@9elements.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>, zev@bewilderbeest.net,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-References: <20230830111319.3882281-1-Naresh.Solanki@9elements.com>
- <0bfbbbb3-6144-fc9a-c8ab-423a8865591b@roeck-us.net>
- <CABqG17ig1VRJYqbrOvPKAYS8iUFwY9J3tYcgYGtnnXw+vrnoRA@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <CABqG17ig1VRJYqbrOvPKAYS8iUFwY9J3tYcgYGtnnXw+vrnoRA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CAOdCjQtTzQpsko+vqkF9zW5RPe1520r4B5kFsJzHjSkK+KxvMw@mail.gmail.com>
+ <CAOdCjQv-dCsd_EDnmWN786H57=cN2U8GBZLS96gXme6hfYpC4A@mail.gmail.com>
+ <d41992ac-9670-44af-963b-d171bfcdd8f9@roeck-us.net> <CAOdCjQvEvqoQQQLUX3tuLzuY0sedi2mGzA=aMJg4UY+uMtcr0g@mail.gmail.com>
+ <a148cb9e-e108-5513-39f1-b307d517d8b2@roeck-us.net>
+In-Reply-To: <a148cb9e-e108-5513-39f1-b307d517d8b2@roeck-us.net>
+From:   Pankaj Pandey <pankaj.embedded@gmail.com>
+Date:   Thu, 31 Aug 2023 01:04:43 +0530
+Message-ID: <CAOdCjQuMU9kJq_KhM2Z6pjqSwVVTm_o8C3-GGtvgAQMQzaxpSg@mail.gmail.com>
+Subject: Re: Fwd: Regarding pmbus_core.c
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 8/30/23 12:14, Naresh Solanki wrote:
-> Hi
-> 
-[ ... ]
->>> +                     /*
->>> +                      * Calculate voltage from ADC value and MON range.
->>> +                      * ddata->mon_rng holds the voltage corresponding to the maximum value the
->>> +                      * 10-bit ADC can measure.
->>> +                      * To obtain the output, multiply the ADC value by the MON range (in
->>> +                      * microvolts) and then divide it by the maximum value of the 10-bit ADC.
->>> +                      */
->>> +                     *val = mul_u64_u32_shr(*val, ddata->mon_rng[channel], 10);
->>
->> Why do you use mul_u64_u32_shr() here but a direct shift above ?
-> There is possibility of overflow due to large value of ddata->mon_rng
+Thanks for the suggestion !!
 
-Does the right shift guarantee that the result fits into 32 bit ?
-
-Thanks,
-Guenter
-
+On Wed, Aug 30, 2023 at 8:56=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+>
+> Pankaj,
+>
+> On 8/30/23 02:28, Pankaj Pandey wrote:
+> > Hi Guenter,
+> >
+> > Thanks for the pointer. Actually during bmr454 probing during kernel bo=
+ots-up it
+> > called system reset/crash. For reference please find bmr454 probing log=
+ below:
+> >
+>
+> First of all, please don't top-post.
+>
+> > [   14.910630] pmbus 7-0010: bmr454 BMR status word : 0x2
+> > [   14.922945] pmbus 7-0010: bmr454 BMR status cml : 0x2
+> >
+>
+> Bit 1 of the CML status register suggests that there is a communication
+> problem. Per PMBus standard:
+>
+> Bit 1 - A communication fault other than the ones listed in this table ha=
+s occurred
+>
+> > ---> Immediately after above bmr454 probing it reset/crash the system
+> > and jump to u-boot.
+> >
+>
+> I don't think anything _called_ system reset/crash. There is no code
+> in the driver that would do that.
+>
+> > Using debug prints I observed system got resettted after reaching to
+> > _pmbus_write_byte  function. But
+> > sometimes probing is fine, not observing any system reset/crash.
+> >
+>
+> My best guess is that the i2c communication with the chip is unstable,
+> and that the write causes it to do something that causes the reset.
+> How it would do that - I don't know. Maybe one of the module pins is wire=
+d
+> to the system's reset pin (though I can not imagine why that would be
+> the case), or the miscommunication causes a chip reset. Either case,
+> maybe the problem is in the I2C bus speed. If you can, I would suggest
+> to lower it to 100 KHz to see if that makes a difference.
+>
+> Guenter
+>
+>
+> > Regards,
+> > Pankaj Pandey
+> >
+> >
+> > On Wed, Aug 30, 2023 at 7:38=E2=80=AFAM Guenter Roeck <linux@roeck-us.n=
+et> wrote:
+> >>
+> >> On Wed, Aug 30, 2023 at 07:16:46AM +0530, Pankaj Pandey wrote:
+> >>> ---------- Forwarded message ---------
+> >>> From: Pankaj Pandey <pankaj.embedded@gmail.com>
+> >>> Date: Wed, Aug 30, 2023 at 4:42=E2=80=AFAM
+> >>> Subject: Regarding pmbus_core.c
+> >>> To: <linux@roeck-us.net>
+> >>>
+> >>>
+> >>> Hi Guenter Roeck,
+> >>>
+> >>> I am facing an issue at drivers/hwmon/pmbus/pmbus_core.c of linux-5.1=
+0 kernel.
+> >>> I am using the bm454 driver from drivers/hwmon/pmbus/pmbus.c.
+> >>> Observed sometimes my Powepc based target board called for reset from
+> >>> inside int pmbus_write_byte_data(struct i2c_client *client, int page,
+> >>> u8 reg, u8 value)  function.  It is not consistent, sometimes not
+> >>
+> >> Sorry, I don't understand what you mean with "called for reset from
+> >> inside int pmbus_write_byte_data". Please clarify.
+> >>
+> >> If I recall correctly, bmr454 is very picky when it comes to i2c bus
+> >> speed. If it acts up, you might have some success with picking a diffe=
+rent
+> >> bus speed.
+> >>
+> >> Thanks,
+> >> Guenter
+> >>
+> >>> observed any reset and bmr454 initialized fine.  Please suggest any
+> >>> pointers to debug this issue.
+> >>>
+> >>> Regards,
+> >>> Pankaj Pandey
+>
