@@ -2,304 +2,70 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF28791CAA
-	for <lists+linux-hwmon@lfdr.de>; Mon,  4 Sep 2023 20:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A065879294C
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Sep 2023 18:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236498AbjIDSQb (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 4 Sep 2023 14:16:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57344 "EHLO
+        id S1351562AbjIEQ0G (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 5 Sep 2023 12:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjIDSQa (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Mon, 4 Sep 2023 14:16:30 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43051B7
-        for <linux-hwmon@vger.kernel.org>; Mon,  4 Sep 2023 11:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693851382; x=1725387382;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=c7aOo3pwp2P/s/lYq4e499qLFiG7/hg1DBfvLZ9w6ys=;
-  b=Kdu6S3cZeeUQ8g2ixREDu+IDilZOL2VeAO5NdWwrP2U/npW3F9Y50sTS
-   EJMSQl66PYCGaJ1HI43PlkYSHj1VsJFrauv7OAqxbR5ugbiLqhVdZVbRh
-   /vIAQUiYXt5hrk9FSg36xk+ZTAZfGI/fAmekuQOHLmZ76QS8N179IzNm0
-   kd4V5RQq+IKfLRVfa9tpAHMCUKvn5WMQsolGIgI1F2Olx+zSxwgdlwU8P
-   UN8TOfiPhjiVLctb2eDx4aqyCen1zOhTWEEFjpuQv6vvq/+uyyoT9qil9
-   R6l8RBk1uH05w2rT9qSYD9RKewduq+NKLOo5yNxdBHhEWe73KvQ6yJcIL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="366867404"
-X-IronPort-AV: E=Sophos;i="6.02,227,1688454000"; 
-   d="scan'208";a="366867404"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 11:16:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="1071692771"
-X-IronPort-AV: E=Sophos;i="6.02,227,1688454000"; 
-   d="scan'208";a="1071692771"
-Received: from bnilawar-desk1.iind.intel.com ([10.145.169.158])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 11:16:19 -0700
-From:   Badal Nilawar <badal.nilawar@intel.com>
-To:     intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org
-Cc:     anshuman.gupta@intel.com, ashutosh.dixit@intel.com,
-        linux@roeck-us.net, andi.shyti@linux.intel.com,
-        riana.tauro@intel.com, matthew.brost@intel.com
-Subject: [PATCH v4 6/6] drm/xe/hwmon: Expose power1_max_interval
-Date:   Mon,  4 Sep 2023 23:52:58 +0530
-Message-Id: <20230904182258.2291881-7-badal.nilawar@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230904182258.2291881-1-badal.nilawar@intel.com>
-References: <20230904182258.2291881-1-badal.nilawar@intel.com>
+        with ESMTP id S1354087AbjIEJf1 (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Tue, 5 Sep 2023 05:35:27 -0400
+X-Greylist: delayed 4326 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 02:35:23 PDT
+Received: from mail.equinoxrise.pl (mail.equinoxrise.pl [217.61.112.157])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF211A7
+        for <linux-hwmon@vger.kernel.org>; Tue,  5 Sep 2023 02:35:23 -0700 (PDT)
+Received: by mail.equinoxrise.pl (Postfix, from userid 1002)
+        id A23D183656; Mon,  4 Sep 2023 09:41:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=equinoxrise.pl;
+        s=mail; t=1693813346;
+        bh=v6OgBfK5dN7P5dQ0wCu59rOfZaiqziJeLNblJ8dOcGI=;
+        h=Date:From:To:Subject:From;
+        b=X0cr7H4zP6wmWbeSZLzIe3qNCs6BJIM+/4omJcZBOd+iGGc8k9EgZQ2jwdMC5dXYS
+         TCiWqYuRYRyO9D70opVr9/PvnSFpWvnsnJMSksgLttX2capCIYZ0z8iPo8sWt15nQ4
+         ZQcXcdX74Q1vkSEFJ13bQ1f1v/kTVA2srLPRpCMcBcCC99LYxSrSoaVx2yWkLyAMfB
+         Z0NGdBND4c1XYyc9mUlOrV7mMM2jhVyUHqNo7yjeTaq6MbDbaF3suLQS16/9KG/e1F
+         D7thtJzzTLUh4ThMDzZL+/TVCox3GJMRyABnRDupIHIk4lroNlfrbRRc1Yv0qh+v0v
+         axER2Wgq7cxGQ==
+Received: by mail.equinoxrise.pl for <linux-hwmon@vger.kernel.org>; Mon,  4 Sep 2023 07:40:34 GMT
+Message-ID: <20230904084500-0.1.7.r84.0.li13lyu2qr@equinoxrise.pl>
+Date:   Mon,  4 Sep 2023 07:40:34 GMT
+From:   "Mateusz Talaga" <mateusz.talaga@equinoxrise.pl>
+To:     <linux-hwmon@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.equinoxrise.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Expose power1_max_interval, that is the tau corresponding to PL1, as a
-custom hwmon attribute. Some bit manipulation is needed because of the
-format of PKG_PWR_LIM_1_TIME in
-PACKAGE_RAPL_LIMIT register (1.x * power(2,y))
+Dzie=C5=84 dobry!
 
-v2: Get rpm wake ref while accessing power1_max_interval
-v3: %s/hwmon/xe_hwmon/
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
----
- .../ABI/testing/sysfs-driver-intel-xe-hwmon   |  11 ++
- drivers/gpu/drm/xe/regs/xe_mchbar_regs.h      |   8 +
- drivers/gpu/drm/xe/xe_hwmon.c                 | 138 +++++++++++++++++-
- 3 files changed, 156 insertions(+), 1 deletion(-)
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
-diff --git a/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
-index 1a7a6c23e141..9ceb9c04b52b 100644
---- a/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
-+++ b/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
-@@ -59,3 +59,14 @@ Contact:	intel-xe@lists.freedesktop.org
- Description:	RO. Energy input of device in microjoules.
- 
- 		Only supported for particular Intel xe graphics platforms.
-+
-+What:		/sys/devices/.../hwmon/hwmon<i>/power1_max_interval
-+Date:		September 2023
-+KernelVersion:	6.5
-+Contact:	intel-xe@lists.freedesktop.org
-+Description:	RW. Sustained power limit interval (Tau in PL1/Tau) in
-+		milliseconds over which sustained power is averaged.
-+
-+		Only supported for particular Intel xe graphics platforms.
-+
-+
-diff --git a/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h b/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
-index d9d3115ade37..4a51da6ea1d7 100644
---- a/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
-@@ -22,15 +22,23 @@
- #define   PKG_PKG_TDP				GENMASK_ULL(14, 0)
- #define   PKG_MIN_PWR				GENMASK_ULL(30, 16)
- #define   PKG_MAX_PWR				GENMASK_ULL(46, 32)
-+#define   PKG_MAX_WIN				GENMASK_ULL(54, 48)
-+#define     PKG_MAX_WIN_X			GENMASK_ULL(54, 53)
-+#define     PKG_MAX_WIN_Y			GENMASK_ULL(52, 48)
-+
- 
- #define PCU_CR_PACKAGE_POWER_SKU_UNIT		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x5938)
- #define   PKG_PWR_UNIT				REG_GENMASK(3, 0)
- #define   PKG_ENERGY_UNIT			REG_GENMASK(12, 8)
-+#define   PKG_TIME_UNIT				REG_GENMASK(19, 16)
- 
- #define PCU_CR_PACKAGE_ENERGY_STATUS		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x593c)
- 
- #define PCU_CR_PACKAGE_RAPL_LIMIT		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x59a0)
- #define   PKG_PWR_LIM_1				REG_GENMASK(14, 0)
- #define   PKG_PWR_LIM_1_EN			REG_BIT(15)
-+#define   PKG_PWR_LIM_1_TIME			REG_GENMASK(23, 17)
-+#define   PKG_PWR_LIM_1_TIME_X			REG_GENMASK(23, 22)
-+#define   PKG_PWR_LIM_1_TIME_Y			REG_GENMASK(21, 17)
- 
- #endif /* _XE_MCHBAR_REGS_H_ */
-diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
-index e2677e916824..507aff124e5c 100644
---- a/drivers/gpu/drm/xe/xe_hwmon.c
-+++ b/drivers/gpu/drm/xe/xe_hwmon.c
-@@ -39,6 +39,7 @@ enum xe_hwmon_reg_operation {
- #define SF_CURR		1000		/* milliamperes */
- #define SF_VOLTAGE	1000		/* millivolts */
- #define SF_ENERGY	1000000		/* microjoules */
-+#define SF_TIME		1000		/* milliseconds */
- 
- struct hwmon_energy_info {
- 	u32 reg_val_prev;
-@@ -53,6 +54,7 @@ struct xe_hwmon {
- 	wait_queue_head_t waitq;
- 	int scl_shift_power;
- 	int scl_shift_energy;
-+	int scl_shift_time;
- 	struct hwmon_energy_info ei;	/*  Energy info for energy1_input */
- };
- 
-@@ -262,6 +264,138 @@ xe_hwmon_energy_get(struct xe_hwmon *hwmon, long *energy)
- 	xe_device_mem_access_put(gt_to_xe(hwmon->gt));
- }
- 
-+static ssize_t
-+xe_hwmon_power1_max_interval_show(struct device *dev, struct device_attribute *attr,
-+				  char *buf)
-+{
-+	struct xe_hwmon *hwmon = dev_get_drvdata(dev);
-+	u32 r, x, y, x_w = 2; /* 2 bits */
-+	u64 tau4, out;
-+
-+	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
-+
-+	xe_hwmon_process_reg(hwmon, REG_PKG_RAPL_LIMIT,
-+			     REG_READ, &r, 0, 0);
-+
-+	xe_device_mem_access_put(gt_to_xe(hwmon->gt));
-+
-+	x = REG_FIELD_GET(PKG_PWR_LIM_1_TIME_X, r);
-+	y = REG_FIELD_GET(PKG_PWR_LIM_1_TIME_Y, r);
-+	/*
-+	 * tau = 1.x * power(2,y), x = bits(23:22), y = bits(21:17)
-+	 *     = (4 | x) << (y - 2)
-+	 * where (y - 2) ensures a 1.x fixed point representation of 1.x
-+	 * However because y can be < 2, we compute
-+	 *     tau4 = (4 | x) << y
-+	 * but add 2 when doing the final right shift to account for units
-+	 */
-+	tau4 = ((1 << x_w) | x) << y;
-+	/* val in hwmon interface units (millisec) */
-+	out = mul_u64_u32_shr(tau4, SF_TIME, hwmon->scl_shift_time + x_w);
-+
-+	return sysfs_emit(buf, "%llu\n", out);
-+}
-+
-+static ssize_t
-+xe_hwmon_power1_max_interval_store(struct device *dev, struct device_attribute *attr,
-+				   const char *buf, size_t count)
-+{
-+	struct xe_hwmon *hwmon = dev_get_drvdata(dev);
-+	u32 x, y, rxy, x_w = 2; /* 2 bits */
-+	u64 tau4, r, max_win;
-+	unsigned long val;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 0, &val);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Max HW supported tau in '1.x * power(2,y)' format, x = 0, y = 0x12
-+	 * The hwmon->scl_shift_time default of 0xa results in a max tau of 256 seconds
-+	 */
-+#define PKG_MAX_WIN_DEFAULT 0x12ull
-+
-+	/*
-+	 * val must be < max in hwmon interface units. The steps below are
-+	 * explained in xe_hwmon_power1_max_interval_show()
-+	 */
-+	r = FIELD_PREP(PKG_MAX_WIN, PKG_MAX_WIN_DEFAULT);
-+	x = REG_FIELD_GET(PKG_MAX_WIN_X, r);
-+	y = REG_FIELD_GET(PKG_MAX_WIN_Y, r);
-+	tau4 = ((1 << x_w) | x) << y;
-+	max_win = mul_u64_u32_shr(tau4, SF_TIME, hwmon->scl_shift_time + x_w);
-+
-+	if (val > max_win)
-+		return -EINVAL;
-+
-+	/* val in hw units */
-+	val = DIV_ROUND_CLOSEST_ULL((u64)val << hwmon->scl_shift_time, SF_TIME);
-+	/* Convert to 1.x * power(2,y) */
-+	if (!val) {
-+		/* Avoid ilog2(0) */
-+		y = 0;
-+		x = 0;
-+	} else {
-+		y = ilog2(val);
-+		/* x = (val - (1 << y)) >> (y - 2); */
-+		x = (val - (1ul << y)) << x_w >> y;
-+	}
-+
-+	rxy = REG_FIELD_PREP(PKG_PWR_LIM_1_TIME_X, x) | REG_FIELD_PREP(PKG_PWR_LIM_1_TIME_Y, y);
-+
-+	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
-+
-+	mutex_lock(&hwmon->hwmon_lock);
-+
-+	xe_hwmon_process_reg(hwmon, REG_PKG_RAPL_LIMIT, REG_RMW, (u32 *)&r,
-+			     PKG_PWR_LIM_1_TIME, rxy);
-+
-+	mutex_unlock(&hwmon->hwmon_lock);
-+
-+	xe_device_mem_access_put(gt_to_xe(hwmon->gt));
-+
-+	return count;
-+}
-+
-+static SENSOR_DEVICE_ATTR(power1_max_interval, 0664,
-+			  xe_hwmon_power1_max_interval_show,
-+			  xe_hwmon_power1_max_interval_store, 0);
-+
-+static struct attribute *hwmon_attributes[] = {
-+	&sensor_dev_attr_power1_max_interval.dev_attr.attr,
-+	NULL
-+};
-+
-+static umode_t xe_hwmon_attributes_visible(struct kobject *kobj,
-+					   struct attribute *attr, int index)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct xe_hwmon *hwmon = dev_get_drvdata(dev);
-+	u32 reg_val;
-+	int ret = 0;
-+
-+	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
-+
-+	if (attr == &sensor_dev_attr_power1_max_interval.dev_attr.attr)
-+		ret =  xe_hwmon_process_reg(hwmon, REG_PKG_RAPL_LIMIT,
-+					    REG_READ, &reg_val, 0, 0) ? 0 : attr->mode;
-+
-+	xe_device_mem_access_put(gt_to_xe(hwmon->gt));
-+
-+	return ret;
-+}
-+
-+static const struct attribute_group hwmon_attrgroup = {
-+	.attrs = hwmon_attributes,
-+	.is_visible = xe_hwmon_attributes_visible,
-+};
-+
-+static const struct attribute_group *hwmon_groups[] = {
-+	&hwmon_attrgroup,
-+	NULL
-+};
-+
- static const struct hwmon_channel_info *hwmon_info[] = {
- 	HWMON_CHANNEL_INFO(power, HWMON_P_MAX | HWMON_P_RATED_MAX | HWMON_P_CRIT),
- 	HWMON_CHANNEL_INFO(curr, HWMON_C_CRIT),
-@@ -580,6 +714,7 @@ xe_hwmon_get_preregistration_info(struct xe_device *xe)
- 	if (!ret) {
- 		hwmon->scl_shift_power = REG_FIELD_GET(PKG_PWR_UNIT, val_sku_unit);
- 		hwmon->scl_shift_energy = REG_FIELD_GET(PKG_ENERGY_UNIT, val_sku_unit);
-+		hwmon->scl_shift_time = REG_FIELD_GET(PKG_TIME_UNIT, val_sku_unit);
- 	}
- 
- 	/*
-@@ -621,7 +756,8 @@ void xe_hwmon_register(struct xe_device *xe)
- 								"xe",
- 								hwmon,
- 								&hwmon_chip_info,
--								NULL);
-+								hwmon_groups);
-+
- 	if (IS_ERR(hwmon->hwmon_dev)) {
- 		drm_warn(&xe->drm, "Fail to register xe hwmon (%pe)\n", hwmon->hwmon_dev);
- 		xe->hwmon = NULL;
--- 
-2.25.1
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
 
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Mateusz Talaga
