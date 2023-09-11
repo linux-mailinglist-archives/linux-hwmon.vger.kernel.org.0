@@ -2,73 +2,84 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 965EA79A0E1
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Sep 2023 02:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFE979A1F3
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Sep 2023 05:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229923AbjIKAyi (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 10 Sep 2023 20:54:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49106 "EHLO
+        id S229634AbjIKDnm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 10 Sep 2023 23:43:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbjIKAyh (ORCPT
+        with ESMTP id S229512AbjIKDnl (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 10 Sep 2023 20:54:37 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005F3180;
-        Sun, 10 Sep 2023 17:54:33 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-68fbb10dec7so396745b3a.3;
-        Sun, 10 Sep 2023 17:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694393673; x=1694998473; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gVOqgHK2ezKb67maSfo1jCAtAIQQF0mALfe2uCVklzU=;
-        b=OqxjT0RIJ5qb0m90jKKcDYkzkJITWP9fuNUGyD6QFgpIzoaUIFSHVKZpNUe5d6NFPL
-         RyEy36WXJ6kNS4haS981WMDvN5fiFzOwUstlroiOllr3s6usjzHewmnhjTMAYj7Sgynr
-         0W0gd/ErQLEsceRYqrFCd25cPcDLH6v2K2mPY5/AY3BG0oXdIh3jUNT/nqAgQqEwaXUA
-         BHPuxxkzUzJGDwzKj/ViBJiyDL+C2lHs9f6x/zVDfnGCmI3EsYPwc7EV0IcK3PlIq4wQ
-         gl5+AXQaGoZRy1xL/GBMWe74kvSipPHVhq1F6uHqK46Oy14GDcnqU7bsWPpFbw8BRsLz
-         K1lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694393673; x=1694998473;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gVOqgHK2ezKb67maSfo1jCAtAIQQF0mALfe2uCVklzU=;
-        b=Wg14JrdSNshPeZuA6oKp9v7WcX/2CqacXfz7EcMqi/61D4Bh7S7SV44A5W+N34aEOm
-         b4eEeQyj8lw1vn91g9mlKdpJrwUMxv7Q0U1lNbQuVBTeytGdfgJs+O/tY24qapF4eGtl
-         wi9Lg/j9aC5gvByjj5rL+H3iAwIbUkYBHW7kyJfWsFjiIPNkBWXdddZnynbqBKxaAT8+
-         mnghIxJsiO+aUMrtZJJDCX9twSMEJPyFo9gKmR8dUAp5MUdW2Do2tHya3UTzXEbQYtXz
-         dw23XgO4TuGLXTL3dciCmakoDEIsqECxoPG4oWWBhs1xa1axnZvfYXps1tvxmYxtjN27
-         Ibog==
-X-Gm-Message-State: AOJu0YymzeCVMW2nGGOEj/FZegUzJuiv/8E6r6idVEGeANwezBK7UsRh
-        kQsITJMsOSboIA0XSOg6+EE=
-X-Google-Smtp-Source: AGHT+IFTXOBU6Y2AWmCw/MVK/rcBQVrEGmh8Bj8WjtNrZRW+Jsn+8MtB4eRwyHWVy3R01F/zEf93TA==
-X-Received: by 2002:a05:6a21:778b:b0:14d:7130:ce5f with SMTP id bd11-20020a056a21778b00b0014d7130ce5fmr7720114pzc.32.1694393673414;
-        Sun, 10 Sep 2023 17:54:33 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f12-20020a17090274cc00b001bbb22652a4sm5087476plt.226.2023.09.10.17.54.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Sep 2023 17:54:33 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sun, 10 Sep 2023 17:54:32 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     hdegoede@redhat.com, jdelvare@suse.com,
-        linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] hwmon: (sch5627) Document behaviour of limit
- registers
-Message-ID: <582706d2-c74e-4700-943e-a9ba909e7df1@roeck-us.net>
-References: <20230907052639.16491-1-W_Armin@gmx.de>
- <20230907052639.16491-6-W_Armin@gmx.de>
+        Sun, 10 Sep 2023 23:43:41 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 10 Sep 2023 20:43:37 PDT
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0CF19C
+        for <linux-hwmon@vger.kernel.org>; Sun, 10 Sep 2023 20:43:37 -0700 (PDT)
+Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
+        by cmsmtp with ESMTP
+        id fULSqv1OLEoVsfXoNqVXIf; Mon, 11 Sep 2023 03:42:07 +0000
+Received: from md-in-79.webhostbox.net ([43.225.55.182])
+        by cmsmtp with ESMTPS
+        id fXoKqHdKmiPHUfXoMqKJ9R; Mon, 11 Sep 2023 03:42:06 +0000
+X-Authority-Analysis: v=2.4 cv=JtLiEe0C c=1 sm=1 tr=0 ts=64fe8c8e
+ a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=CKMxHAookNUaJbGn3r6bzg==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=zNV7Rl7Rt7sA:10 a=oz0wMknONp8A:10 a=fXLTLdlhBoXFRLbt6LEA:9
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
+        ; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=GhflVbz5vM28c/oqiKt0CeuCefN5C4x+tqAreTx3lzA=; b=Zb90C2TYcibGpN5sHqp4Pk4/3U
+        25C82bIalgSFKNCSRoNruk5GJHnN7CtfCMPE6u0HnEXsUU7VqZzo8XboaO8ZUtAcmN7JTIXuRj437
+        xb4qc/15Ex2ZhGdUIFdfEG2KsGU2qyy7Z8hqPzVEWFN0+su9+UBqTQecgo3ZSMoVm3GmIjaBsl4AD
+        Q4pKU48BbDlixZOyz8ovZkC3PguoWBqpEzJZsaQlRZ3AAQ/v67z2uneTNrlidUnpVw/0N7/YIYbWz
+        UIo1VGO1HCskvdGa5wpvSyDVIXk6FHzvWXuHRNLpmcWGsVyt5+NQ5BRT2TYEmSyD4FiJL7aqEri7O
+        5fkzgWnQ==;
+Received: from [103.163.95.214] (port=46382 helo=discovery..)
+        by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <saravanan@linumiz.com>)
+        id 1qfXoG-002lKM-08;
+        Mon, 11 Sep 2023 09:12:00 +0530
+From:   Saravanan Sekar <saravanan@linumiz.com>
+To:     sravanhome@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux@roeck-us.net, jdelvare@suse.com
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-hwmon@vger.kernel.org,
+        Saravanan Sekar <saravanan@linumiz.com>
+Subject: [PATCH 0/3] Add support for mpq2286 PMIC IC
+Date:   Mon, 11 Sep 2023 09:11:47 +0530
+Message-Id: <20230911034150.181880-1-saravanan@linumiz.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230907052639.16491-6-W_Armin@gmx.de>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - linumiz.com
+X-BWhitelist: no
+X-Source-IP: 103.163.95.214
+X-Source-L: No
+X-Exim-ID: 1qfXoG-002lKM-08
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (discovery..) [103.163.95.214]:46382
+X-Source-Auth: saravanan@linumiz.com
+X-Email-Count: 1
+X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfG2t3AEQzHEhlSFv4YfOVqw3lH/OIq6RBED6FqGq9c5xZCWTFJX9ESoedpndlhF8PUdsAg2hDMohvi79cllRP2+gzRsQ5/yhFm4sxGz6ocdpd3mXsT8S
+ u1bPOV0VpYWMR/2oN2yUurn+ZvRMwUQTXZPe+i5AsIhjlMQ5O5ijm4WqKkB4hk8pX0fLypxgBlRPP5ZmbqAqg7X3IogENpYPCL8=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,14 +87,20 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 07:26:39AM +0200, Armin Wolf wrote:
-> The values of the limit registers affect the fan speed in a
-> particular way. Document this behaviour so that future users
-> can exploit it if required.
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+The MPQ2286 is a programmable, high frequency synchronous buck regulator with
+integrated internal high side and low side power MOSFET. Application in
+Automotive compenents such as ADAS, Infotainment, SOC System core, DDR memory.
 
-Applied.
+Saravanan Sekar (3):
+  hwmon: (pmbus/mpq7932) Get page count based on chip info
+  dt-bindings: regulator: Add mps,mpq2286 power-management IC
+  hwmon: (pmbus/mpq2286) Add a support for mpq2286 Power Management IC
 
-Thanks,
-Guenter
+ .../bindings/regulator/mps,mpq2286.yaml       | 59 +++++++++++++++++++
+ drivers/hwmon/pmbus/mpq7932.c                 |  9 ++-
+ 2 files changed, 65 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/regulator/mps,mpq2286.yaml
+
+-- 
+2.34.1
+
