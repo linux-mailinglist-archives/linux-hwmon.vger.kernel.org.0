@@ -2,164 +2,135 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E43A79A4AA
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Sep 2023 09:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DDF479B2D5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 12 Sep 2023 01:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229877AbjIKHmB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 11 Sep 2023 03:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43062 "EHLO
+        id S235458AbjIKVRU (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbjIKHmA (ORCPT
+        with ESMTP id S235447AbjIKIjI (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 11 Sep 2023 03:42:00 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A04012C
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 Sep 2023 00:41:54 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2b9338e4695so66977581fa.2
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 Sep 2023 00:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694418112; x=1695022912; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X6Wi2Cl6yqEgEwDpqAn0o8L4gTcv/vavP+EfJY/TstY=;
-        b=cGUVsO53Kd03jleKUWd14r3WkBxLTVzVOO+C7Ojez8JFXojVGjPLNRnU7NG+A8C6NO
-         J679xBFIdEjLs2JR93o23dBY5eWHK4u3ddsR3l9FDIzKzC1a1hBxOxGBRVxGkuab+tsN
-         wOuF9PfHNV+tJY71Fo404+4z2I2JdbxPto3A/q2x15yWmjgN3pxTZaRw0OB5myafEYbp
-         JUT/3Z0Lc2JQw4VuJwrgsqSBwDKHg+F+iGBghanqtxst7gLqinLeFW93+7rhmawdn4Br
-         oFvu6t4sDa2JtXfZurvLPgZThZc4vkII+Bq2LWgwWoxxGEAjA7oT5Kj+Q34QK5Ug6Efa
-         SMAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694418112; x=1695022912;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X6Wi2Cl6yqEgEwDpqAn0o8L4gTcv/vavP+EfJY/TstY=;
-        b=nHrlR0tkrxChhzoXDMpDBbH1WGIoWeVH2eUNI9VNNd29T2jXVWswSIRypp+acJWmQM
-         dioTldbKijVjNGULye0Ow4juofZdLt62xQkSMuJWhsckNkznne4qnUbx8i/wVQ1Xj+F0
-         k2jqBoYAMzWeRZOsqCJy/CwbgTl3KvSLzBwAx1F7afmR4rUsu6fHKXvfNoC57PcKBIgk
-         q2Aw0OzVnNZRgAptZ/KhO6lpaSCLQpSAQvKtSdkUAQDnp1holRfiam9diy3pDMBldVe7
-         4g96144NWJMPllT/BSxnJrZpmyEUd4wd/DmLXX/XEy9RK6wId2bzZ7tI5m0A/WAYX+ml
-         e++A==
-X-Gm-Message-State: AOJu0YxuyplOqHd5DM6uxhGQmCKFFITDROdwUWoZJ54DnSVFxZOa23Zs
-        7mp0JIKNCk7YeYuMSHqr9CEiJQ==
-X-Google-Smtp-Source: AGHT+IF24kz1iYQ9vPXRQ0ngdaYWmIH4ZWnCCdeM2ZQ1388/L6JwGV+ir1r1kuZ0k8URNwxzbj1NoA==
-X-Received: by 2002:a2e:b015:0:b0:2bc:bf29:18d3 with SMTP id y21-20020a2eb015000000b002bcbf2918d3mr6679147ljk.31.1694418112182;
-        Mon, 11 Sep 2023 00:41:52 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.214.188])
-        by smtp.gmail.com with ESMTPSA id l15-20020a1709060e0f00b0099bcd1fa5b0sm4902868eji.192.2023.09.11.00.41.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 00:41:51 -0700 (PDT)
-Message-ID: <500f8285-3939-4cc7-9731-e4127d08451f@linaro.org>
-Date:   Mon, 11 Sep 2023 09:41:49 +0200
+        Mon, 11 Sep 2023 04:39:08 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3651DFB;
+        Mon, 11 Sep 2023 01:39:04 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38B7FBCr006980;
+        Mon, 11 Sep 2023 04:38:47 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3t15jj68g6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 Sep 2023 04:38:47 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 38B8cidI048422
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 11 Sep 2023 04:38:44 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 11 Sep 2023 04:38:43 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 11 Sep 2023 04:38:43 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 11 Sep 2023 04:38:43 -0400
+Received: from daniel-Precision-5530.ad.analog.com ([10.48.65.230])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 38B8cSYw008521;
+        Mon, 11 Sep 2023 04:38:30 -0400
+From:   Daniel Matyas <daniel.matyas@analog.com>
+CC:     Daniel Matyas <daniel.matyas@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: [PATCH 1/2] dt-bindings: hwmon: Describe changes to the device tree
+Date:   Mon, 11 Sep 2023 11:37:34 +0300
+Message-ID: <20230911083735.11795-1-daniel.matyas@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 2/3] dt-bindings: regulator: Add mps,mpq2286
- power-management IC
-To:     Saravanan Sekar <saravanan@linumiz.com>, sravanhome@gmail.com,
-        lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux@roeck-us.net, jdelvare@suse.com
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-hwmon@vger.kernel.org
-References: <20230911034150.181880-1-saravanan@linumiz.com>
- <20230911034150.181880-3-saravanan@linumiz.com>
- <34ede760-d612-4628-17e6-600c133ee878@linaro.org>
- <d7eb272e-8abb-c307-4aa8-b0af3f943453@linumiz.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <d7eb272e-8abb-c307-4aa8-b0af3f943453@linumiz.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: J5E0hy7tSeZTxHBJDOvO0Wb26Vd42iUf
+X-Proofpoint-ORIG-GUID: J5E0hy7tSeZTxHBJDOvO0Wb26Vd42iUf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 mlxlogscore=999
+ suspectscore=0 priorityscore=1501 bulkscore=0 mlxscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2309110078
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 11/09/2023 09:12, Saravanan Sekar wrote:
-> On 11/09/23 11:56, Krzysztof Kozlowski wrote:
->> On 11/09/2023 05:41, Saravanan Sekar wrote:
->>> Document mpq2286 power-management IC
->>>
->>> Signed-off-by: Saravanan Sekar <saravanan@linumiz.com>
->>
->> Please use subject prefixes matching the subsystem. You can get them for
->> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->> your patch is touching. It's: regulator: dt-bindings:
-> 
-> Thanks for your time to review. git log has mix of "regulator: 
-> dt-bindings" and "dt-bindings: regualtor".
+Added new attributes to the device tree:
+	- adi,comp-int
+	- adi,alrm-pol
+	- adi,flt-q
 
-Just take a look how many times each appear... they are just few cases
-of the latter.
+These modify the corresponding bits in the configuration register.
 
+Signed-off-by: Daniel Matyas <daniel.matyas@analog.com>
+---
+ .../bindings/hwmon/adi,max31827.yaml          | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-> I had referred my own 
-> accepted driver regulator/mps,mpq7932.yaml
-> 
->>
->>> ---
->>>   .../bindings/regulator/mps,mpq2286.yaml       | 59 +++++++++++++++++++
->>>   1 file changed, 59 insertions(+)
->>>   create mode 100644 Documentation/devicetree/bindings/regulator/mps,mpq2286.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/regulator/mps,mpq2286.yaml b/Documentation/devicetree/bindings/regulator/mps,mpq2286.yaml
->>> new file mode 100644
->>> index 000000000000..d00d887870a9
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/regulator/mps,mpq2286.yaml
->>> @@ -0,0 +1,59 @@
->>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/regulator/mps,mpq2286.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Monolithic Power System MPQ2286 PMIC
->>> +
->>> +maintainers:
->>> +  - Saravanan Sekar <saravanan@linumiz.com>
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - mps,mpq2286
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  regulators:
->>> +    type: object
->>> +
->>> +    properties:
->>> +      "buck0":
->>
->> You did not test it... Sigh. Anyway, there is no need for entire
->> regulators node for one regulator. Can the device do anything else than
->> being a regulator?
->>
-> 
-> I tested it, but documentation is not updated with test findings (buck0).
-
-I mean, testing bindings. You did not test this patch. Testing this
-patch produces warnings, so this is considered a failed test.
-
-> 
-> Other chipset has multiple regulator so dts has regulators node to keep 
-> the driver common
-> 
-> Primarily device is a regulator with pmbus capability like fault status 
-> (OV,OC, VIN, VOUT, Power good status), temperature status.
-
-OK, then regulators node seems fine. Anyway, drop quotes and test this
-patch (which means: test the bindings).
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml b/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
+index 2dc8b07b4d3b..b10878c4a05d 100644
+--- a/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
++++ b/Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
+@@ -32,10 +32,28 @@ properties:
+       Must have values in the interval (1.6V; 3.6V) in order for the device to
+       function correctly.
+ 
++  adi,comp-int:
++    description:
++      A boolean property. If present interrupt mode is used. If not present
++      comparator mode is used (default).
++
++  adi,alrm-pol:
++    description:
++      A boolean propert. If present, alarm is active on high. If not present,
++      alarm is active on low.
++
++  adi,flt-q:
++    description:
++      Select how many consecutive temperature faults must occur before
++      overtemperature or undertemperature faults are indicated in the
++      corresponding status bits.
++            - can be 1, 2, 4 or 8
++
+ required:
+   - compatible
+   - reg
+   - vref-supply
++  - adi,flt-q
+ 
+ additionalProperties: false
+ 
+@@ -49,6 +67,9 @@ examples:
+             compatible = "adi,max31827";
+             reg = <0x42>;
+             vref-supply = <&reg_vdd>;
++            adi,comp-int;
++            adi,alrm-pol;
++            adi,flt-q = <1>;
+         };
+     };
+ ...
+-- 
+2.34.1
 
