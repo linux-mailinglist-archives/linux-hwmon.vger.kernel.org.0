@@ -2,88 +2,99 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D95A979E58C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 Sep 2023 13:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C810879E979
+	for <lists+linux-hwmon@lfdr.de>; Wed, 13 Sep 2023 15:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239827AbjIMLAI (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 13 Sep 2023 07:00:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32878 "EHLO
+        id S240987AbjIMNh2 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 13 Sep 2023 09:37:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239847AbjIMLAH (ORCPT
+        with ESMTP id S239451AbjIMNh2 (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 13 Sep 2023 07:00:07 -0400
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6978419B0
-        for <linux-hwmon@vger.kernel.org>; Wed, 13 Sep 2023 04:00:03 -0700 (PDT)
-Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-5717f7b932aso4189839eaf.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 13 Sep 2023 04:00:03 -0700 (PDT)
+        Wed, 13 Sep 2023 09:37:28 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C37F19B1;
+        Wed, 13 Sep 2023 06:37:24 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-573921661a6so4056379eaf.1;
+        Wed, 13 Sep 2023 06:37:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694602802; x=1695207602; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TEdx1B3/vE1SABfJd9OtBBbmrxl/YbyAk3pytLbX7k8=;
-        b=rGVuud87tg2jnhRGOom8/7X4vz1qxtIYU/7c/2b5Cgg1e+xWYp3X9lqLKwmkIggtyh
-         ALFu5dTzcRg2Yf1aFngmF2+Y7YZ3flMtnTX/UgULhXj2IsBHCqDPvD5V/frglKDO7tOl
-         WFNInFVEe/n85TyQmCPUaNgDxbi+b31t+Dz4Tf2Sc7E6vNMD2quaV3MljR0oUo9FfG3V
-         EzvBV+hfBns2hZEN5uVBkm9UFjFenNXBHIK+QFceXJCHXiR1ZrG2PrHoqkv+tRQ/qOpN
-         jkm6uzQBZn0PuRP7p5a/ul3jX2NpTfaqbtaunW9Kdd8jPQyKQnUquTmG7o76h+9aoXKd
-         c0xw==
+        d=gmail.com; s=20221208; t=1694612243; x=1695217043; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=mcgD0Ewsr/9q6i+3hzurksNbRO1+jgjaSl9HYyWGZo4=;
+        b=sq1v/bzsGLWkRRucN9AvRSWrGkHXufwQt2+ar+VNlLzlavth5jdHynhsv+IpWKB1dx
+         x4S1xg0ub4G6kaWLYLN/YwL47UXWBlEjfI5Q74f7AnkZ+QhwATETj512IVs7IdiXuAkT
+         Es6O82KIt/6KhIP+643nL4GAixB0w08i8gL10QxDFObogNhN2UIAwXA+ffRZuAlJe6Hs
+         ztAVqcgq6jAVb9gz7aYmhKgVl4qQt0bwSgoosiaZCi7NAfw29BzF7r5mQHPJDyUHa0oM
+         OICm+TKGiRLquW7y+0jfRz52B3jVIs97TGVQre+zNkM3JVVg4ul/bW1nEGR7Ch9uNLa/
+         i9gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694602802; x=1695207602;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1694612243; x=1695217043;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TEdx1B3/vE1SABfJd9OtBBbmrxl/YbyAk3pytLbX7k8=;
-        b=Cx0E93JTDNqKZ3MYxWBFNpowZ66n3ZO16SWCdAkxdS5beTljd5tYZGyJMsoBskWc/2
-         iWzsvjJDD6sG5z+gO3GaCk+OQJYZECtijZjivXwzvrlYbEEwnrwsOLIRaebxGC2hzQyt
-         Vmd9PZaUVL9j5fxx7E4KkPI0RrgOtHTPo6ZaEVOkwkOBzCESUZ5FDCYPV/msKufSfR+e
-         nMHvFVwOsWQkulbwLfTOOIIN9FWaHJZbNvpCd01k25s+H8rWAb4JRJzNgjNoh8gm/3NY
-         PSwS8DSnxJ29PpQV79kmJI2ViOdFWIZOEVwKN05J3SACouUGJ/VtaiW3LZoa8e0XcLMG
-         YvaQ==
-X-Gm-Message-State: AOJu0YymIiSbkCEv182vHyku26cxgTfA+hykY+qj3X1TFZIQZBLLgwKY
-        p3aVvUW0gKXyJvCPuVQAkOJKq0n9+7nr4xsstDs=
-X-Google-Smtp-Source: AGHT+IE3+lIAtOBgptAPQ5c1Z8EG/9Sepxc/Mh8JMVlX+8Z0XZuy0EVqsVgWb1WnEXm3OURfMx724os8MuPp10m+Z8I=
-X-Received: by 2002:a05:6870:7394:b0:1b0:883e:3095 with SMTP id
- z20-20020a056870739400b001b0883e3095mr2206857oam.56.1694602802690; Wed, 13
- Sep 2023 04:00:02 -0700 (PDT)
+        bh=mcgD0Ewsr/9q6i+3hzurksNbRO1+jgjaSl9HYyWGZo4=;
+        b=GJe9F1xzEuC77jhQuCKRRunKSahD0RK6qhtClTIU3FB5+ccJx11HeWwCdOPetURdY1
+         10Zf3TUx/iUJr0aS4Lu9ZKxIDn9sdB2hftS2iM9apnk4U0OYVv93RiMb7eGUyPtHwUIv
+         TvPJ4KCjWzBt2cJAiNKb3sDjlng2A5+E+DufQOxXCUIONhE5+AVwQ2oVkesBe+G52cCs
+         j5aQtPVLLYMctgEhhxaW3fEMVNCNZBDArrFFL74gIh3knogeLAKssqW2qwh/wlGOcAkb
+         OlCHawwfz4D/Y6GPeBB6c4lmWhrTV4cfAhhLB4TlIZr9vn+msemT384jLgRwKvXLRJKm
+         /Z1Q==
+X-Gm-Message-State: AOJu0YwU0TIT7P0zsCfJ/UIGx6E4bLJYooF2rGuMDFqAFsfNlymE/9IO
+        AaIY4iriXyN+UKQgBWYCv7h9xxVPPIQ=
+X-Google-Smtp-Source: AGHT+IFQ3x6iFxJ+MomknNL5UtqI+O6dlEwbOiZeDCE0/go3o7I3KRFg1tVQtPfDbFVV3sme9riTOw==
+X-Received: by 2002:a05:6358:99a1:b0:140:ff29:7057 with SMTP id j33-20020a05635899a100b00140ff297057mr2640539rwb.7.1694612243328;
+        Wed, 13 Sep 2023 06:37:23 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h8-20020a62b408000000b0068a0b5df6b2sm9128737pfn.196.2023.09.13.06.37.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Sep 2023 06:37:22 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <29e27f2a-3347-b6f4-2dd9-4c93afea87b7@roeck-us.net>
+Date:   Wed, 13 Sep 2023 06:37:21 -0700
 MIME-Version: 1.0
-Sender: yvonnebalakiwal1@gmail.com
-Received: by 2002:a05:6838:a613:b0:79a:f668:d6ba with HTTP; Wed, 13 Sep 2023
- 04:00:02 -0700 (PDT)
-From:   Mrs Evelyn Richardson <evelynrichards10@gmail.com>
-Date:   Wed, 13 Sep 2023 04:00:02 -0700
-X-Google-Sender-Auth: _ieN_OEK1AUMgTGD9OfBXpWvlkc
-Message-ID: <CAFT-94dELAPA5xdp-ifCRpg1SiWK=_EBizBQ3uvUKhvv9zEkaA@mail.gmail.com>
-Subject: Dear Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] hwmon: max31790: support to config PWM as TACH
+Content-Language: en-US
+To:     Delphine_CC_Chiu/WYHQ/Wiwynn <Delphine_CC_Chiu@wiwynn.com>,
+        "patrick@stwcx.xyz" <patrick@stwcx.xyz>,
+        Jean Delvare <jdelvare@suse.com>
+Cc:     "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20230906084837.3043030-1-Delphine_CC_Chiu@wiwynn.com>
+ <20230906084837.3043030-3-Delphine_CC_Chiu@wiwynn.com>
+ <8a3b41a2-0ab2-6213-04a1-54ab7263c647@roeck-us.net>
+ <TYZPR04MB58533E15AA65FCDA0F603FA3D6F0A@TYZPR04MB5853.apcprd04.prod.outlook.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <TYZPR04MB58533E15AA65FCDA0F603FA3D6F0A@TYZPR04MB5853.apcprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Dear Beneficiary.
- This is to inform you that the United Nation Organization in
-Con junction with the World Bank has released the 2023 compensation
-Fund which you are one of the lucky 40 winners that the committee has
-Resolved to compensate with the sum of   Twenty Seven Million Five
-Hundred Thousand United State Dollar ($27.500.000.00) after the 2023
-General online compensation raffle draw
-Held last WEEK during the UNCC conference this year with
-The Secretary-General of the United Nations Mr. Ant=C3=B3nio Guterres in
-Geneva Switzerland. This payment program is aimed at charities / fraud
-Victims and their development to help individuals to establish their
-Own private business/companies.
-Your E-mail was randomly selected among others to receive this Fund
-Through our International Micro Soft Network during the compensation
-Ballot survey/draws.
-Therefore, contact Engineer Account Mrs Kristalina Georgieva, he is
-our representative and also United Nation`s Coordinator in United
-State of America that will organize with you in Dispatch or handling
-Your DISCOVER CARD to your Destination. You are to make sure that you
-Received the UN Approved DISCOVER CARD in your names which is in list
-Founds in names of U.N world list to receive this UN Guest Compensation.
-We are at your service.
-Mrs. Evelyn Richardson
-Directorate for International Payments
-United States of America USA
+On 9/13/23 01:51, Delphine_CC_Chiu/WYHQ/Wiwynn wrote:
+
+[ ... ]
+
+>>
+>> This assumes that the channel is configured as pwm.
+>> What if the BIOS / ROMMON configured another channel which you want as
+>> pwm channel as fan input channel ?
+>>
+> This will config the channel as TACH.
+> Could you provide more information about the scenario you mentioned?
+> In our system, there is only BMC that will set the config of fan device.
+
+Please keep in mind that upstream code is not intended to only support
+your specific use case, but the use case of others as well. Your system
+(the one you have today) may only use the chip for fan speed
+measurement. Others may use it use it to control fans, or your hardware
+might tomorrow build another system where the chip us used to control
+the fans as well. Those use cases should be covered by your patch as well.
+
+Guenter
+
