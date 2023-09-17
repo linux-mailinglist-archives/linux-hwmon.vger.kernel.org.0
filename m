@@ -2,84 +2,111 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A5E87A3575
-	for <lists+linux-hwmon@lfdr.de>; Sun, 17 Sep 2023 14:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 652307A3DCD
+	for <lists+linux-hwmon@lfdr.de>; Sun, 17 Sep 2023 23:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232622AbjIQMET (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 17 Sep 2023 08:04:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
+        id S231883AbjIQVSD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 17 Sep 2023 17:18:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229972AbjIQMER (ORCPT
+        with ESMTP id S233072AbjIQVRq (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 17 Sep 2023 08:04:17 -0400
-Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EFA8112B;
-        Sun, 17 Sep 2023 05:04:11 -0700 (PDT)
-Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
-          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38HC40nk026906
-          ; Sun, 17 Sep 2023 14:04:05 +0200 (CEST)
-X-Ids:  168
-Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
-        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id 78A06C062BC0;
-        Sun, 17 Sep 2023 13:58:50 +0200 (CEST)
-Received: from [105.112.96.211] ([105.112.96.211]) by
- webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sun, 17 Sep 2023
- 11:58:50 +0000
-Date:   Sun, 17 Sep 2023 11:58:50 +0000
-Message-ID: <20230917115850.Horde.nDVhVuZCMbI1tdSrz7hexww@webmail.insp.jussieu.fr>
-From:   Victoria Cleland <wajdi.chaabani@insp.upmc.fr>
-Subject: Hallo
-Reply-to: v.cleland10@aol.com
-User-Agent: Horde Application Framework 5
-Organization: Institut des NanoSciences de Paris
-X-InspUpmcSession: CHAABANI
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+        Sun, 17 Sep 2023 17:17:46 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED50612D
+        for <linux-hwmon@vger.kernel.org>; Sun, 17 Sep 2023 14:17:40 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-577fff1cae6so2231604a12.1
+        for <linux-hwmon@vger.kernel.org>; Sun, 17 Sep 2023 14:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=telus.net; s=google; t=1694985460; x=1695590260; darn=vger.kernel.org;
+        h=thread-index:content-language:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8n0+7AQY+a9ER9AXeF1FZFLGIrztWlAu2PTuhQoCBZg=;
+        b=Hr4feSD1plxQM1HAvKZ8GaHhc8dsqUcnEJ09tehcFrIPxjhonb3WxDHgtyQliZy5aZ
+         7LeujjP7pyxjCM984ux7oXA1NdDfak2ENMcImKsrGS12IiuPt6lqkbRmbqOsejUPzlMo
+         71Uog13kf2DfNjRS1lsKZZ6GXuBvSYp83v7FpZ/p3hLusz1j17u8mZj7QSGUUy1mJKjr
+         Spj/H0bfTeccWRvok0bQlDjMuAfwbnJ9ndEe+Mq2LA4L1mIYXL8hJxgGul8fed5PMMPj
+         KQeWk64kyEvgh4hOtQ6/XRWrlCRjBeGTNAx2fsHiCNywmZb+NdeShKzRlg8Npybfj6YT
+         bjBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694985460; x=1695590260;
+        h=thread-index:content-language:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8n0+7AQY+a9ER9AXeF1FZFLGIrztWlAu2PTuhQoCBZg=;
+        b=V2ilvXI6f94j8uLBJG4NicX3ID/A+cZKeQ1R385Jb0N1SY3GijErjjyF7dSXpaKvKC
+         3uHPnYUmz5KMn2Xw1bqgMTZqIk2J/tSrNzR31VuE9V53vkfm9tZVrAy8w0K7EBtdqAbw
+         3qM8e1eCSOocBSDbxJUU9UmIEjJHB9h/4I0/HyAWRjH58X+AkiHPAmD4zUug6UxcGMJq
+         uRQu9NRBsGOYMgBX2BsCockef0qpM1Ti969zv2FZ4jMLMqLZU/pBEFQaGn2+AVp3IkO1
+         VTSX99CITMAX8XaVyg8jVsfuKMnrTt3dsygP5vg8/rxl/vhp8mMvqXOOSANjQBWj48fB
+         4RKA==
+X-Gm-Message-State: AOJu0YxEOfNyuqWTgfDFNlq6+Ua8T5gFPBWegj5s+tHPOSpiaImil4vr
+        hsUVP2JZtg9hHbqnTFJCo7jSaBKqM7bD4nUijGQ=
+X-Google-Smtp-Source: AGHT+IHPrODoskOePG+WWrkoXF8IjKc3IyrVkN/Nbcg7+PzzIVbSAAShVnw+8RuDCj4YZ/p38j2b5Q==
+X-Received: by 2002:a17:90b:1d10:b0:273:83ac:5eb9 with SMTP id on16-20020a17090b1d1000b0027383ac5eb9mr14098550pjb.4.1694985460397;
+        Sun, 17 Sep 2023 14:17:40 -0700 (PDT)
+Received: from DougS18 (s66-183-142-209.bc.hsia.telus.net. [66.183.142.209])
+        by smtp.gmail.com with ESMTPSA id o3-20020a17090a4e8300b002765eee878dsm728702pjh.36.2023.09.17.14.17.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 17 Sep 2023 14:17:39 -0700 (PDT)
+From:   "Doug Smythies" <dsmythies@telus.net>
+To:     "'Ahmad Khalifa'" <ahmad@khalifa.ws>
+Cc:     "'Jean Delvare'" <jdelvare@suse.com>,
+        <linux-hwmon@vger.kernel.org>,
+        "'Guenter Roeck'" <linux@roeck-us.net>,
+        "Doug Smythies" <dsmythies@telus.net>
+References: <002101d9e7e0$f67c4490$e374cdb0$@telus.net> <1b747280-a1cc-d125-a40d-c3bcce39297e@roeck-us.net> <322119da-0de6-ffe4-d2cb-0d7cda1c4a53@khalifa.ws>
+In-Reply-To: <322119da-0de6-ffe4-d2cb-0d7cda1c4a53@khalifa.ws>
+Subject: RE: hwmon: (nct6775) Regression Bisected
+Date:   Sun, 17 Sep 2023 14:17:42 -0700
+Message-ID: <001501d9e9ac$656a1cc0$303e5640$@telus.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 6506EB30.005 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
-X-j-chkmail-Enveloppe: 6506EB30.005 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<wajdi.chaabani@insp.upmc.fr>
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [134.157.0.129 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
-        *      [134.157.0.129 listed in wl.mailspike.net]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [v.cleland10[at]aol.com]
-        *  1.0 MISSING_HEADERS Missing To: header
-        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-ca
+Thread-Index: AQIVV+zLPPY/GAerH63YAbr+MKT6uQG7juHtAZ8RBiqvjdCwcA==
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+Hi Ahmad,
 
-17. September 2023.
+On 2023.09.16 009:43 Ahmad wrote:
 
-Hallo,
+> Thanks for the detailed report, Doug.
+> Would you be able to test out a fix please?
+>
 
-Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
-Details antworten Sie auf Englisch.
+That request was superseded by a subsequent email,
+already replied to.
 
-Grüße
-Frau Victoria Cleland
-_________________________
-Sekretär: Wajdi Chaabani
+> It's a basic guard line as _alarm attributes are assumed to be there 
+> when a sensor exists, but the device doesn't have an alarm for in5 (VIN8
+> on the device)
+>
+> If you could also confirm that your /sys/class/hwmon/hwmon?/in5_alarm
+> file is there and showing 0, that would be great.
+
+But I forgot to reply to that part:
+
+The file is there, and the content is 0.
+
+$ ls -l /sys/class/hwmon/hwmon?/in5_alarm
+-r--r--r-- 1 root root 4096 Sep 17 14:14 /sys/class/hwmon/hwmon3/in5_alarm
+doug@s19:~$ ls -l /sys/devices/platform/eeepc-wmi/hwmon/hwmon4^C
+doug@s19:~$ cat /sys/class/hwmon/hwmon?/in5_alarm
+0
+
+I had to go back to an unpatched kernel 6.6-rc1 for the above.
+With the kernel I compiled yesterday for the test patch, the file was not there.
+
+... Doug
 
