@@ -2,46 +2,46 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7C237A4560
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2AD7A4563
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241020AbjIRJA4 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 18 Sep 2023 05:00:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56892 "EHLO
+        id S241029AbjIRJA6 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Sep 2023 05:00:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240884AbjIRJAP (ORCPT
+        with ESMTP id S240893AbjIRJAQ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 18 Sep 2023 05:00:15 -0400
+        Mon, 18 Sep 2023 05:00:16 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E07E12F
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA70135
         for <linux-hwmon@vger.kernel.org>; Mon, 18 Sep 2023 02:00:03 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6r-0008TU-18; Mon, 18 Sep 2023 11:00:01 +0200
+        id 1qiA6r-0008UI-6u; Mon, 18 Sep 2023 11:00:01 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6q-007B6o-3F; Mon, 18 Sep 2023 11:00:00 +0200
+        id 1qiA6q-007B6s-Bp; Mon, 18 Sep 2023 11:00:00 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6p-002Z9p-QF; Mon, 18 Sep 2023 10:59:59 +0200
+        id 1qiA6q-002Z9t-2k; Mon, 18 Sep 2023 11:00:00 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 18/24] hwmon: (via-cputemp) Convert to platform remove callback returning void
-Date:   Mon, 18 Sep 2023 10:59:45 +0200
-Message-Id: <20230918085951.1234172-19-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 19/24] hwmon: (via686a) Convert to platform remove callback returning void
+Date:   Mon, 18 Sep 2023 10:59:46 +0200
+Message-Id: <20230918085951.1234172-20-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 References: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1850; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=UeAJlM9DxFPVPTGLYJAguFg8qxQfa7bWZe0XLxihHUw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBA+smKiUGTLyJGMWf+g5p9Efx6fJT1/+x4Dt OKZ/nuIvW+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQPgAKCRCPgPtYfRL+ TpHYB/4ueF3eHyI/yy6Xz2OeSXY7PaY6a308blHyEBYgD8Z79VSONx8F55krqo4X4quvv96WVPs z/F5J+mFEFRfUQPxDhCd79C+BE1zMkS6f0Qw9bQQTqPwjQwubVLj6vKvB3HezpC2x4m6Flb8DJt GNnWjZpFFF6b0SqCm6Nk184yv5NwU2EA7SoUVM9VtGNOxUXBfrcJowUmtwEYYf+B5mckcqzYGRB 1dkXfWQfAHSBt9+Jamf3FR04w/qTdoHNNKmB3X5jfVfAujPMLMXVkL8W8XmiFFtS5X05sgHoVAD cMlDMhFaaQubo+sI313GwGpA2pt2gAMaQ8OMvMrcSA6D6zlz
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1728; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=UbYkt5+nCLXQGedS8E+XLGCNJfqo10L1sWvUfNUcjeU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBA/tIBd1TJTYbuSDx2EqVoG9yi6zYtl8M3i+ ITgyIhSaeiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQPwAKCRCPgPtYfRL+ TmnwCACvfeiokLBb1sT5/1Il/OAENpQCsyq1cuR18sj0q923kyJVmlRJXX3jahWAcJrXwoxzs7N 4L3j6pOZgOtU6BUDXkrIap2qWu0KDp5iOmm5KBS6fPBHWM+Gzyd5L/kzYt7IzDx5XNY/jliHifH V6NJCjWF1cnAqohF8RDtp0oyaJET/FEPn7dLfZLLgxxh0dt3DyLnhJDvYt8/6YRFOlz7/qf9par KEOspfy8RqexXT3HA9Kdp4wcE3UkUSxcHpZa9JuEWWD+3hMzzWgHPVufGnE16mV2fIZLQX3fmbV /rmES8BcKhJRNJWVNpubq0BywiVpwNfxQL4Vz/Tsh/imoQzr
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -70,39 +70,38 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/hwmon/via-cputemp.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/hwmon/via686a.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/via-cputemp.c b/drivers/hwmon/via-cputemp.c
-index e5d18dac8ee7..5abe95b683c0 100644
---- a/drivers/hwmon/via-cputemp.c
-+++ b/drivers/hwmon/via-cputemp.c
-@@ -182,7 +182,7 @@ static int via_cputemp_probe(struct platform_device *pdev)
+diff --git a/drivers/hwmon/via686a.c b/drivers/hwmon/via686a.c
+index 407933d6e425..3a002ad3c005 100644
+--- a/drivers/hwmon/via686a.c
++++ b/drivers/hwmon/via686a.c
+@@ -786,14 +786,12 @@ static int via686a_probe(struct platform_device *pdev)
  	return err;
  }
  
--static int via_cputemp_remove(struct platform_device *pdev)
-+static void via_cputemp_remove(struct platform_device *pdev)
+-static int via686a_remove(struct platform_device *pdev)
++static void via686a_remove(struct platform_device *pdev)
  {
- 	struct via_cputemp_data *data = platform_get_drvdata(pdev);
+ 	struct via686a_data *data = platform_get_drvdata(pdev);
  
-@@ -190,7 +190,6 @@ static int via_cputemp_remove(struct platform_device *pdev)
- 	if (data->vrm)
- 		device_remove_file(&pdev->dev, &dev_attr_cpu0_vid);
- 	sysfs_remove_group(&pdev->dev.kobj, &via_cputemp_group);
+ 	hwmon_device_unregister(data->hwmon_dev);
+ 	sysfs_remove_group(&pdev->dev.kobj, &via686a_group);
+-
 -	return 0;
  }
  
- static struct platform_driver via_cputemp_driver = {
-@@ -198,7 +197,7 @@ static struct platform_driver via_cputemp_driver = {
- 		.name = DRVNAME,
+ static struct platform_driver via686a_driver = {
+@@ -801,7 +799,7 @@ static struct platform_driver via686a_driver = {
+ 		.name	= DRIVER_NAME,
  	},
- 	.probe = via_cputemp_probe,
--	.remove = via_cputemp_remove,
-+	.remove_new = via_cputemp_remove,
+ 	.probe		= via686a_probe,
+-	.remove		= via686a_remove,
++	.remove_new	= via686a_remove,
  };
  
- struct pdev_entry {
+ static const struct pci_device_id via686a_pci_ids[] = {
 -- 
 2.40.1
 
