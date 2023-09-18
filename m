@@ -2,46 +2,46 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09DCE7A454C
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6801E7A454A
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240928AbjIRJAq (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 18 Sep 2023 05:00:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
+        id S240895AbjIRJAp (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Sep 2023 05:00:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240930AbjIRJAJ (ORCPT
+        with ESMTP id S240931AbjIRJAJ (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Mon, 18 Sep 2023 05:00:09 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9CEFB
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC3C110A
         for <linux-hwmon@vger.kernel.org>; Mon, 18 Sep 2023 02:00:00 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6o-0008Ir-Cu; Mon, 18 Sep 2023 10:59:58 +0200
+        id 1qiA6o-0008Is-D1; Mon, 18 Sep 2023 10:59:58 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6n-007B61-QU; Mon, 18 Sep 2023 10:59:57 +0200
+        id 1qiA6o-007B64-0Y; Mon, 18 Sep 2023 10:59:58 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6n-002Z96-HC; Mon, 18 Sep 2023 10:59:57 +0200
+        id 1qiA6n-002Z9B-Nd; Mon, 18 Sep 2023 10:59:57 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 07/24] hwmon: (f71882fg) Convert to platform remove callback returning void
-Date:   Mon, 18 Sep 2023 10:59:34 +0200
-Message-Id: <20230918085951.1234172-8-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 08/24] hwmon: (i5k_amb) Convert to platform remove callback returning void
+Date:   Mon, 18 Sep 2023 10:59:35 +0200
+Message-Id: <20230918085951.1234172-9-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 References: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1799; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=50l0hLGmaPxmeEZGz9hTtFDVpGPNc3HHZDLrvu0Nrqk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBAyr8DqJ9SMTeL+cwp9i3yaGDeAMMqxrB/4W FKOt+KkEFCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQMgAKCRCPgPtYfRL+ TujQB/9uXDy8q2Ph1lpEefpNejz/CFy2Ck+OuOZNDtevf7YgbLFehISUR6vionNENgWR1WAhoO/ tB88oIbCos3x7wdh14nUzFPBmX6wQtm0uzOUlgQ4SyskjoZFnd1GSBD77+NKXeunfqN7bf0jYfg +U44Bf9Y6CkCE4fiJn7DeekKqTap4I5EmYVIsBDc4q53pNSDhoq4JwabPzevi2GkWpsV8zmJQdJ 6XwCkC5qC4oHZ6O+hWnAOxZCQGJfuDlIucUMscGjZyW/gRS/HFSNZxqP+t1r0yH6kWGyEEfalwu TQiqptbIvHAnqQ/oR2GIQETx1D/q1iIb2+2jIxRsI51qdGmH
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1778; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=VWlulYbPf5rVhjZ/FS6dh3ZqMiObZmpW+i9lXbXxNzY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBAzg9nONqAZlycztBd3aNaztUl5VazT+fjp4 mvKGDH18CGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQMwAKCRCPgPtYfRL+ TpMlB/0SmI105rutpO8FVoQAM5wVPJlhXcHPwGX4wkTBAXrvzcx0GZjjcm0HFkcu0vV7EtErNKr 0nMP4GrOdfwG3jthrUkYEGaucmP0XYq2tlJWpi8nRtNEcnCGZecGeA4wlDDPOxhknk/hXM/i+iI rV+YfTkSz9sP1CP+CgdJ2sJRx6pfIBaLxh7PP6lDtQRz8GyC7hQv8DPiuSJwtiDqDho1VxF+Ism CWAuTZiXdn5Y971IfEbewD/5ByXtkSjJMyjbXJFjP90U+T2BKBCS9OIszuY4/tTYa4ioa1XjIoG tpSKlZi60cvclqFOqVavilfGbfUdKEfwA+rlr3GIukGvCnYa
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -70,39 +70,39 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/hwmon/f71882fg.c | 5 ++---
+ drivers/hwmon/i5k_amb.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/f71882fg.c b/drivers/hwmon/f71882fg.c
-index 27207ec6f7fe..7c941d320a18 100644
---- a/drivers/hwmon/f71882fg.c
-+++ b/drivers/hwmon/f71882fg.c
-@@ -2223,7 +2223,7 @@ static int f71882fg_create_fan_sysfs_files(
- 	return err;
+diff --git a/drivers/hwmon/i5k_amb.c b/drivers/hwmon/i5k_amb.c
+index 783fa936e4d1..ff48913fe6bf 100644
+--- a/drivers/hwmon/i5k_amb.c
++++ b/drivers/hwmon/i5k_amb.c
+@@ -555,7 +555,7 @@ static int i5k_amb_probe(struct platform_device *pdev)
+ 	return res;
  }
  
--static int f71882fg_remove(struct platform_device *pdev)
-+static void f71882fg_remove(struct platform_device *pdev)
+-static int i5k_amb_remove(struct platform_device *pdev)
++static void i5k_amb_remove(struct platform_device *pdev)
  {
- 	struct f71882fg_data *data = platform_get_drvdata(pdev);
- 	int nr_fans = f71882fg_nr_fans[data->type];
-@@ -2333,7 +2333,6 @@ static int f71882fg_remove(struct platform_device *pdev)
- 				ARRAY_SIZE(fxxxx_auto_pwm_attr[0]) * nr_fans);
- 		}
- 	}
+ 	int i;
+ 	struct i5k_amb_data *data = platform_get_drvdata(pdev);
+@@ -568,7 +568,6 @@ static int i5k_amb_remove(struct platform_device *pdev)
+ 	iounmap(data->amb_mmio);
+ 	release_mem_region(data->amb_base, data->amb_len);
+ 	kfree(data);
 -	return 0;
  }
  
- static int f71882fg_probe(struct platform_device *pdev)
-@@ -2659,7 +2658,7 @@ static struct platform_driver f71882fg_driver = {
- 		.name	= DRVNAME,
+ static struct platform_driver i5k_amb_driver = {
+@@ -576,7 +575,7 @@ static struct platform_driver i5k_amb_driver = {
+ 		.name = DRVNAME,
  	},
- 	.probe		= f71882fg_probe,
--	.remove		= f71882fg_remove,
-+	.remove_new	= f71882fg_remove,
+ 	.probe = i5k_amb_probe,
+-	.remove = i5k_amb_remove,
++	.remove_new = i5k_amb_remove,
  };
  
- static int __init f71882fg_init(void)
+ static int __init i5k_amb_init(void)
 -- 
 2.40.1
 
