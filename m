@@ -2,46 +2,46 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FED7A455E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D13797A455D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237689AbjIRJAz (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 18 Sep 2023 05:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56892 "EHLO
+        id S240994AbjIRJAy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Sep 2023 05:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240881AbjIRJAO (ORCPT
+        with ESMTP id S240877AbjIRJAO (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
         Mon, 18 Sep 2023 05:00:14 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B28CD12A
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2156812C
         for <linux-hwmon@vger.kernel.org>; Mon, 18 Sep 2023 02:00:02 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6q-0008Qx-Il; Mon, 18 Sep 2023 11:00:00 +0200
+        id 1qiA6q-0008Sc-Lv; Mon, 18 Sep 2023 11:00:00 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6p-007B6h-KT; Mon, 18 Sep 2023 10:59:59 +0200
+        id 1qiA6p-007B6l-Sl; Mon, 18 Sep 2023 10:59:59 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6p-002Z9g-BI; Mon, 18 Sep 2023 10:59:59 +0200
+        id 1qiA6p-002Z9l-JW; Mon, 18 Sep 2023 10:59:59 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
 Cc:     linux-hwmon@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 16/24] hwmon: (sis5595) Convert to platform remove callback returning void
-Date:   Mon, 18 Sep 2023 10:59:43 +0200
-Message-Id: <20230918085951.1234172-17-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 17/24] hwmon: (ultra45_env) Convert to platform remove callback returning void
+Date:   Mon, 18 Sep 2023 10:59:44 +0200
+Message-Id: <20230918085951.1234172-18-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 References: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1881; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=S1ts/lyOk18OE3/RHR+4V/NjuO0HJyUoYjNx0bxf1lQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBA8cbOlf3w1lu7ElrBc515qDWh9lWLFlanZj zZEheO3bU2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQPAAKCRCPgPtYfRL+ ToqNCACICBMDN40GXNFQmD6H1/y3t3d0YyJpO2npOX3vFwE0ev08rZZgmu9Bxk7q61zOf/FyX0p 1765xjvuJF+xb/QPfk9jniikr8+jpTP96HF6aFHkPbOvTFfi8hTYlLo6B1RE8Hu/DCYwz+utS73 H1u/X14u3TSoptRNQRqcJsPmKjYzG40uEIAga4rq/qbGptf16r1BXJ3bDieT/s+aMxPJGGuTSi6 8+1aDZAVkq5M21So28ZlNf7fnokuukYk3ngB0yEQI4rYf4tuemTG/4o94pyr3/9nM1Ox+y4bbDa KPxgyxJI8DkUvf+zExoC8MrPKNypIeQrw4D9Z/ksMhhWLYsa
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1755; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=8ed1skhb69iRw8dFQY5YnJaBV1WEBpHoLBwlLo9O9cg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBA9tTWkORb/S8bmo0kuM04iXIlXHkE2laBsa M6j2+F9RlGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQPQAKCRCPgPtYfRL+ TixJB/9FCzvxDxbLs4ryz/Uix1ABQd1dU6Onr4tcRMP3lfMTtC4l4eh1UrWJfNYnKP5avUktacF 56+IPt7nWNPRHmIlOHdnrQ5SentWm4/ZAmMtFp3dWfUQGBAAp9Wz+gANm1SmSAE3BPHFYCJ/O1x 2jnqbxlB8WSoWJvOm2+SvfJh1Afa7JDH7mJ0SnW1YJzzBUsok3vcuELzZ8wE9HRQJB1XaE2cNNq Ky6nwVAzi79LH0Jcg5FGZL2RZxVBpT1MHlZmwoXCFgqYrXynujMMJRCEzIYG5DgCthEUTFMtqtn EX7tYh4kN2Obwi4YYCHmVoHdYi1CvbBGmG3ZGcW+d31eKRbH
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -70,40 +70,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/hwmon/sis5595.c | 6 ++----
+ drivers/hwmon/ultra45_env.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/sis5595.c b/drivers/hwmon/sis5595.c
-index 0a0479501e11..641be1f7f9cd 100644
---- a/drivers/hwmon/sis5595.c
-+++ b/drivers/hwmon/sis5595.c
-@@ -709,7 +709,7 @@ static int sis5595_probe(struct platform_device *pdev)
- 	return err;
+diff --git a/drivers/hwmon/ultra45_env.c b/drivers/hwmon/ultra45_env.c
+index 3b580f229887..9823afb0675a 100644
+--- a/drivers/hwmon/ultra45_env.c
++++ b/drivers/hwmon/ultra45_env.c
+@@ -291,7 +291,7 @@ static int env_probe(struct platform_device *op)
+ 	goto out;
  }
  
--static int sis5595_remove(struct platform_device *pdev)
-+static void sis5595_remove(struct platform_device *pdev)
+-static int env_remove(struct platform_device *op)
++static void env_remove(struct platform_device *op)
  {
- 	struct sis5595_data *data = platform_get_drvdata(pdev);
+ 	struct env *p = platform_get_drvdata(op);
  
-@@ -717,8 +717,6 @@ static int sis5595_remove(struct platform_device *pdev)
- 	sysfs_remove_group(&pdev->dev.kobj, &sis5595_group);
- 	sysfs_remove_group(&pdev->dev.kobj, &sis5595_group_in4);
- 	sysfs_remove_group(&pdev->dev.kobj, &sis5595_group_temp1);
+@@ -300,8 +300,6 @@ static int env_remove(struct platform_device *op)
+ 		hwmon_device_unregister(p->hwmon_dev);
+ 		of_iounmap(&op->resource[0], p->regs, REG_SIZE);
+ 	}
 -
 -	return 0;
  }
  
- static const struct pci_device_id sis5595_pci_ids[] = {
-@@ -790,7 +788,7 @@ static struct platform_driver sis5595_driver = {
- 		.name	= DRIVER_NAME,
+ static const struct of_device_id env_match[] = {
+@@ -319,7 +317,7 @@ static struct platform_driver env_driver = {
+ 		.of_match_table = env_match,
  	},
- 	.probe		= sis5595_probe,
--	.remove		= sis5595_remove,
-+	.remove_new	= sis5595_remove,
+ 	.probe		= env_probe,
+-	.remove		= env_remove,
++	.remove_new	= env_remove,
  };
  
- static int sis5595_pci_probe(struct pci_dev *dev,
+ module_platform_driver(env_driver);
 -- 
 2.40.1
 
