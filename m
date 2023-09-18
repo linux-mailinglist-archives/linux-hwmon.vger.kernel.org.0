@@ -2,111 +2,150 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 652307A3DCD
-	for <lists+linux-hwmon@lfdr.de>; Sun, 17 Sep 2023 23:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CA1A7A4168
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 08:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231883AbjIQVSD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Sun, 17 Sep 2023 17:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
+        id S239854AbjIRGlr (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Sep 2023 02:41:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233072AbjIQVRq (ORCPT
+        with ESMTP id S239851AbjIRGlY (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Sun, 17 Sep 2023 17:17:46 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED50612D
-        for <linux-hwmon@vger.kernel.org>; Sun, 17 Sep 2023 14:17:40 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-577fff1cae6so2231604a12.1
-        for <linux-hwmon@vger.kernel.org>; Sun, 17 Sep 2023 14:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=telus.net; s=google; t=1694985460; x=1695590260; darn=vger.kernel.org;
-        h=thread-index:content-language:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8n0+7AQY+a9ER9AXeF1FZFLGIrztWlAu2PTuhQoCBZg=;
-        b=Hr4feSD1plxQM1HAvKZ8GaHhc8dsqUcnEJ09tehcFrIPxjhonb3WxDHgtyQliZy5aZ
-         7LeujjP7pyxjCM984ux7oXA1NdDfak2ENMcImKsrGS12IiuPt6lqkbRmbqOsejUPzlMo
-         71Uog13kf2DfNjRS1lsKZZ6GXuBvSYp83v7FpZ/p3hLusz1j17u8mZj7QSGUUy1mJKjr
-         Spj/H0bfTeccWRvok0bQlDjMuAfwbnJ9ndEe+Mq2LA4L1mIYXL8hJxgGul8fed5PMMPj
-         KQeWk64kyEvgh4hOtQ6/XRWrlCRjBeGTNAx2fsHiCNywmZb+NdeShKzRlg8Npybfj6YT
-         bjBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694985460; x=1695590260;
-        h=thread-index:content-language:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8n0+7AQY+a9ER9AXeF1FZFLGIrztWlAu2PTuhQoCBZg=;
-        b=V2ilvXI6f94j8uLBJG4NicX3ID/A+cZKeQ1R385Jb0N1SY3GijErjjyF7dSXpaKvKC
-         3uHPnYUmz5KMn2Xw1bqgMTZqIk2J/tSrNzR31VuE9V53vkfm9tZVrAy8w0K7EBtdqAbw
-         3qM8e1eCSOocBSDbxJUU9UmIEjJHB9h/4I0/HyAWRjH58X+AkiHPAmD4zUug6UxcGMJq
-         uRQu9NRBsGOYMgBX2BsCockef0qpM1Ti969zv2FZ4jMLMqLZU/pBEFQaGn2+AVp3IkO1
-         VTSX99CITMAX8XaVyg8jVsfuKMnrTt3dsygP5vg8/rxl/vhp8mMvqXOOSANjQBWj48fB
-         4RKA==
-X-Gm-Message-State: AOJu0YxEOfNyuqWTgfDFNlq6+Ua8T5gFPBWegj5s+tHPOSpiaImil4vr
-        hsUVP2JZtg9hHbqnTFJCo7jSaBKqM7bD4nUijGQ=
-X-Google-Smtp-Source: AGHT+IHPrODoskOePG+WWrkoXF8IjKc3IyrVkN/Nbcg7+PzzIVbSAAShVnw+8RuDCj4YZ/p38j2b5Q==
-X-Received: by 2002:a17:90b:1d10:b0:273:83ac:5eb9 with SMTP id on16-20020a17090b1d1000b0027383ac5eb9mr14098550pjb.4.1694985460397;
-        Sun, 17 Sep 2023 14:17:40 -0700 (PDT)
-Received: from DougS18 (s66-183-142-209.bc.hsia.telus.net. [66.183.142.209])
-        by smtp.gmail.com with ESMTPSA id o3-20020a17090a4e8300b002765eee878dsm728702pjh.36.2023.09.17.14.17.39
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 17 Sep 2023 14:17:39 -0700 (PDT)
-From:   "Doug Smythies" <dsmythies@telus.net>
-To:     "'Ahmad Khalifa'" <ahmad@khalifa.ws>
-Cc:     "'Jean Delvare'" <jdelvare@suse.com>,
-        <linux-hwmon@vger.kernel.org>,
-        "'Guenter Roeck'" <linux@roeck-us.net>,
-        "Doug Smythies" <dsmythies@telus.net>
-References: <002101d9e7e0$f67c4490$e374cdb0$@telus.net> <1b747280-a1cc-d125-a40d-c3bcce39297e@roeck-us.net> <322119da-0de6-ffe4-d2cb-0d7cda1c4a53@khalifa.ws>
-In-Reply-To: <322119da-0de6-ffe4-d2cb-0d7cda1c4a53@khalifa.ws>
-Subject: RE: hwmon: (nct6775) Regression Bisected
-Date:   Sun, 17 Sep 2023 14:17:42 -0700
-Message-ID: <001501d9e9ac$656a1cc0$303e5640$@telus.net>
+        Mon, 18 Sep 2023 02:41:24 -0400
+Received: from TWMBX02.aspeed.com (mail.aspeedtech.com [211.20.114.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C1010E;
+        Sun, 17 Sep 2023 23:41:16 -0700 (PDT)
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 18 Sep
+ 2023 14:41:14 +0800
+Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 18 Sep 2023 14:41:14 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <joel@jms.id.au>,
+        <andrew@aj.id.au>, <corbet@lwn.net>, <thierry.reding@gmail.com>,
+        <u.kleine-koenig@pengutronix.de>, <p.zabel@pengutronix.de>,
+        <billy_tsai@aspeedtech.com>, <naresh.solanki@9elements.com>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <BMC-SW@aspeedtech.com>, <patrick@stwcx.xyz>
+Subject: [PATCH v9 0/3] Support pwm/tach driver for aspeed ast26xx
+Date:   Mon, 18 Sep 2023 14:41:08 +0800
+Message-ID: <20230918064111.2221594-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-ca
-Thread-Index: AQIVV+zLPPY/GAerH63YAbr+MKT6uQG7juHtAZ8RBiqvjdCwcA==
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+Received-SPF: Fail (TWMBX02.aspeed.com: domain of billy_tsai@aspeedtech.com
+ does not designate 192.168.10.10 as permitted sender)
+ receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
+ helo=twmbx02.aspeed.com;
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_FAIL,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Ahmad,
+Unlike the old design that the register setting of the TACH should based
+on the configure of the PWM. In ast26xx, the dependency between pwm and
+tach controller is eliminated and becomes a separate hardware block. One
+is used to provide pwm output and another is used to monitor the frequency
+of the input. This driver implements them by exposing two kernel
+subsystems: PWM and HWMON. The PWM subsystem can be utilized alongside
+existing drivers for controlling elements such as fans (pwm-fan.c),
+beepers (pwm-beeper.c) and so on. Through the HWMON subsystem, the driver
+provides sysfs interfaces for fan.
 
-On 2023.09.16 009:43 Ahmad wrote:
+Changes since v8:
+Fix the fail of fan div register setting. (FIELD_GET -> FIELD_PREP)
+Change the type of tach-ch from uint32_t to uint8-array
+Add additional properties and apply constraints to certain properties.
 
-> Thanks for the detailed report, Doug.
-> Would you be able to test out a fix please?
->
+Changes since v7:
+Cherry-pick the fan-common.yaml and add the following properties:
+- min-rpm
+- div
+- mode
+- tach-ch
+Fix the warning which is reported by the kernel test robot.
 
-That request was superseded by a subsequent email,
-already replied to.
+Changes since v6:
+Consolidate the PWM and TACH functionalities into a unified driver.
 
-> It's a basic guard line as _alarm attributes are assumed to be there 
-> when a sensor exists, but the device doesn't have an alarm for in5 (VIN8
-> on the device)
->
-> If you could also confirm that your /sys/class/hwmon/hwmon?/in5_alarm
-> file is there and showing 0, that would be great.
+Changes since v5:
+- pwm/tach:
+  - Remove the utilization of common resources from the parent node.
+  - Change the concept to 16 PWM/TACH controllers, each with one channel,
+  instead of 1 PWM/TACH controller with 16 channels.
+- dt-binding:
+  - Eliminate the usage of simple-mfd.
 
-But I forgot to reply to that part:
+Changes since v4:
+- pwm:
+  - Fix the return type of get_status function.
+- tach:
+  - read clk source once and re-use it
+  - Remove the constants variables
+  - Allocate tach_channel as array
+  - Use dev->parent
+- dt-binding:
+  - Fix the order of the patches
+  - Add example and description for tach child node
+  - Remove pwm extension property
 
-The file is there, and the content is 0.
+Changes since v3:
+- pwm:
+  - Remove unnecessary include header
+  - Fix warning Prefer "GPL" over "GPL v2"
+- tach:
+  - Remove the paremeter min_rpm and max_rpm and return the tach value 
+  directly without any polling or delay.
+  - Fix warning Prefer "GPL" over "GPL v2"
+- dt-binding:
+  - Replace underscore in node names with dashes
+  - Split per subsystem
 
-$ ls -l /sys/class/hwmon/hwmon?/in5_alarm
--r--r--r-- 1 root root 4096 Sep 17 14:14 /sys/class/hwmon/hwmon3/in5_alarm
-doug@s19:~$ ls -l /sys/devices/platform/eeepc-wmi/hwmon/hwmon4^C
-doug@s19:~$ cat /sys/class/hwmon/hwmon?/in5_alarm
-0
+Changes since v2:
+- pwm:
+  - Use devm_* api to simplify the error cleanup
+  - Fix the multi-line alignment problem
+- tach:
+  - Add tach-aspeed-ast2600 to index.rst
+  - Fix the multi-line alignment problem
+  - Remove the tach enable/disable when read the rpm
+  - Fix some coding format issue
 
-I had to go back to an unpatched kernel 6.6-rc1 for the above.
-With the kernel I compiled yesterday for the test patch, the file was not there.
+Changes since v1:
+- tach:
+  - Add the document tach-aspeed-ast2600.rst
+  - Use devm_* api to simplify the error cleanup.
+  - Change hwmon register api to devm_hwmon_device_register_with_info
 
-... Doug
+Billy Tsai (2):
+  dt-bindings: hwmon: Support Aspeed g6 PWM TACH Control
+  hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach
+
+Naresh Solanki (1):
+  dt-bindings: hwmon: fan: Add fan binding to schema
+
+ .../bindings/hwmon/aspeed,g6-pwm-tach.yaml    |  69 +++
+ .../devicetree/bindings/hwmon/fan-common.yaml |  78 +++
+ Documentation/hwmon/aspeed-g6-pwm-tach.rst    |  26 +
+ Documentation/hwmon/index.rst                 |   1 +
+ drivers/hwmon/Kconfig                         |  11 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/aspeed-g6-pwm-tach.c            | 539 ++++++++++++++++++
+ 7 files changed, 725 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed,g6-pwm-tach.yaml
+ create mode 100644 Documentation/devicetree/bindings/hwmon/fan-common.yaml
+ create mode 100644 Documentation/hwmon/aspeed-g6-pwm-tach.rst
+ create mode 100644 drivers/hwmon/aspeed-g6-pwm-tach.c
+
+-- 
+2.25.1
 
