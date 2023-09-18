@@ -2,47 +2,46 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB5A7A454D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DCF27A4550
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Sep 2023 11:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234572AbjIRJAs (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Mon, 18 Sep 2023 05:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56898 "EHLO
+        id S239127AbjIRJAu (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Mon, 18 Sep 2023 05:00:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240837AbjIRJAL (ORCPT
+        with ESMTP id S240854AbjIRJAM (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Mon, 18 Sep 2023 05:00:11 -0400
+        Mon, 18 Sep 2023 05:00:12 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5DB116
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C22FA11C
         for <linux-hwmon@vger.kernel.org>; Mon, 18 Sep 2023 02:00:01 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6p-0008Kq-6V; Mon, 18 Sep 2023 10:59:59 +0200
+        id 1qiA6p-0008Mo-HM; Mon, 18 Sep 2023 10:59:59 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6o-007B6P-Pf; Mon, 18 Sep 2023 10:59:58 +0200
+        id 1qiA6o-007B6V-W2; Mon, 18 Sep 2023 10:59:59 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qiA6o-002Z9Q-GK; Mon, 18 Sep 2023 10:59:58 +0200
+        id 1qiA6o-002Z9U-Mf; Mon, 18 Sep 2023 10:59:58 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>
-Cc:     Jim Cromie <jim.cromie@gmail.com>, linux-hwmon@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: [PATCH 12/24] hwmon: (pc87360) Convert to platform remove callback returning void
-Date:   Mon, 18 Sep 2023 10:59:39 +0200
-Message-Id: <20230918085951.1234172-13-u.kleine-koenig@pengutronix.de>
+Cc:     linux-hwmon@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH 13/24] hwmon: (pc87427) Convert to platform remove callback returning void
+Date:   Mon, 18 Sep 2023 10:59:40 +0200
+Message-Id: <20230918085951.1234172-14-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 References: <20230918085951.1234172-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1614; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=rLYFljyEvQKJvsuc8knRlHVTk+M9jk+lmoFGTyz1Qcs=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlCBA3hsWDb6t3JHWYxY6QzZTJG67z9NZ5OJQ6M ocofTTGlKeJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQgQNwAKCRCPgPtYfRL+ TnA2B/9iEXXbkksa5gAneOEJJ5niV7lHbQorfxVNFRaX4xYKVfnUgrqiJEUiEoLdwdXKEOorYIA Tb057aiSoOYg0jiRiKY8CV/BKED3in7eMHj4znVKijv7/3jojGoPxcB9+YtRyfC39VCBwHyYqY0 hsy16VPif/iNzkv8ezmJ8q8j4zdqKRTJUVd/nst4BaT7G2bjN6WDjn7MjVBNlO09asebflLyDuc IeLmh2Wd4DUhfp/u145Jd+xFqya7Ug8zQMYr/v1/M5K1kfEGs+KUyLTEa1p94i5kJ7CGcP59Tih XW7Mu7aYStP3982723LrQ7Y9rS3KqUMrWqsxp2ucxXuzA5JB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1683; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=RUT/Pfu/4GocYLB/DQhEVDWcd0hkLupM+oTfz9pjpag=; b=owGbwMvMwMXY3/A7olbonx/jabUkhlQOAQv/3m0OcYcCDU7UBDJ7HNofVee+17D2ctmVW+pRI vEHYnw7GY1ZGBi5GGTFFFnsG9dkWlXJRXau/XcZZhArE8gUBi5OAZjIL0/2f4q3bErZxMUYLSRz zOtunZouzOzsP2nbHu95t/ZNOffL/maW90rtJcxaBjpPAlITL8b/2P3grtxMyRrx2dJ/5DZOsct 6MC+NbW3eLt4FBdk/Vty75qX2SP5Q3T9ny12/s1ZMcshPZJczNzdiulMXsMCvIsuq/HWnh6KmyK LVjy607wqbfH3hvsp/H+Rv/t427f8jIUGuiIhmGbZpmybv4643O3K3uJqDb9HR9o+u1g2FW46ZW 7JUaXHZ7Ki4Z/y9vLlk59lJdzcH7WqL0rLlvuYyTysiZOLcFWaHjDov3tEyNVFm8xRfdN7PTj1R iLfr5qkQESuPUt5vGuy/ElvDWo9/Nlqjm3/vodbdu+b+AA==
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -71,38 +70,38 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/hwmon/pc87360.c | 6 ++----
+ drivers/hwmon/pc87427.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/pc87360.c b/drivers/hwmon/pc87360.c
-index a4adc8bd531f..926ea1fe133c 100644
---- a/drivers/hwmon/pc87360.c
-+++ b/drivers/hwmon/pc87360.c
-@@ -1586,14 +1586,12 @@ static int pc87360_probe(struct platform_device *pdev)
+diff --git a/drivers/hwmon/pc87427.c b/drivers/hwmon/pc87427.c
+index eaab83d879fb..7bca04eb4ee4 100644
+--- a/drivers/hwmon/pc87427.c
++++ b/drivers/hwmon/pc87427.c
+@@ -1115,14 +1115,12 @@ static int pc87427_probe(struct platform_device *pdev)
  	return err;
  }
  
--static int pc87360_remove(struct platform_device *pdev)
-+static void pc87360_remove(struct platform_device *pdev)
+-static int pc87427_remove(struct platform_device *pdev)
++static void pc87427_remove(struct platform_device *pdev)
  {
- 	struct pc87360_data *data = platform_get_drvdata(pdev);
+ 	struct pc87427_data *data = platform_get_drvdata(pdev);
  
  	hwmon_device_unregister(data->hwmon_dev);
- 	pc87360_remove_files(&pdev->dev);
+ 	pc87427_remove_files(&pdev->dev);
 -
 -	return 0;
  }
  
- /*
-@@ -1604,7 +1602,7 @@ static struct platform_driver pc87360_driver = {
- 		.name	= DRIVER_NAME,
+ 
+@@ -1131,7 +1129,7 @@ static struct platform_driver pc87427_driver = {
+ 		.name	= DRVNAME,
  	},
- 	.probe		= pc87360_probe,
--	.remove		= pc87360_remove,
-+	.remove_new	= pc87360_remove,
+ 	.probe		= pc87427_probe,
+-	.remove		= pc87427_remove,
++	.remove_new	= pc87427_remove,
  };
  
- /*
+ static int __init pc87427_device_add(const struct pc87427_sio_data *sio_data)
 -- 
 2.40.1
 
