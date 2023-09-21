@@ -2,41 +2,41 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F62F7A9D02
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 21:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0DE57A990A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 20:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229903AbjIUT1z (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 21 Sep 2023 15:27:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
+        id S230099AbjIUSKo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 21 Sep 2023 14:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbjIUT1b (ORCPT
+        with ESMTP id S229744AbjIUSKk (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 21 Sep 2023 15:27:31 -0400
+        Thu, 21 Sep 2023 14:10:40 -0400
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C313A1505;
-        Thu, 21 Sep 2023 10:57:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43D4897F0;
+        Thu, 21 Sep 2023 10:52:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
         MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=CC2gkTGhITx2Tkn4hzBnyxcQlVD3H0K9p7hCx7iKc0I=; b=RX/Dh/JlHN7+Dr2mKIx1OHw08j
-        abawgMlrvxjDlsbIPFGzplofhq7VcEHhhGFZr5v8TUs2rmkpzNCwTdiU/ex1Izqw2rmGLteOf6T3b
-        rafTyBkIl6Vl7p+9BVOfWbBV6ztXErezBRlJ0k1UNn9OTHkTcAr7tQi0CZZ2getl6yCEM4qAHxcUF
-        0KrBEHNL0Z7sRA9uEwAO55WvgagpdOLapZsmOUsOq3ojQ/D5eDQ9JBA++gwR1mHYPfVN/hpVeI3CF
-        AADotTfqbGiEqrhzLlKFo3aGvIzijqZ5x69wIwORuvfZRHh61rlcTaxBdznV8HpM6ZdVxWJ73Kr2f
-        hqa/s60A==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56250)
+        bh=y80U+ROzdWFAGesuJv0fAWCJugjaoZUvkVKbCL8UtRM=; b=J1yh53DeBNARTsqqU8MHBzo9Oa
+        t0+dRp/RaWdqEqR/zlkiuTCdTMvV7LfZBpgaPOo9mz3Ar25SG5iPMKXPJ1Pakv7POYEio6eyu3imp
+        Jue1paSBhwzjv0GVy6aou42CWQp6vSIlPYV8hlPJ5VHamcRnA8qcdTN4cPrFGpVz1BTCn704A78vE
+        WKxVrydWMewhT15+u9bny+bRHgeZaaqgcYNfslcWse8SCYpLZxpj04q12Qq2mZevEQIJk5Ji3lybk
+        draQ9SuAvOjf/F8wS4j1zOR8oS4A/59eybSt0kjrpVaKBQ211JZ5hMg5lAiocOJweLC8GJ5sJOtgz
+        HfWLrfPQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54404)
         by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.96)
         (envelope-from <linux@armlinux.org.uk>)
-        id 1qjJk4-0004de-0F;
-        Thu, 21 Sep 2023 14:29:16 +0100
+        id 1qjKIb-0004k2-1O;
+        Thu, 21 Sep 2023 15:04:57 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
         (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1qjJjc-0003ZN-MP; Thu, 21 Sep 2023 14:28:48 +0100
-Date:   Thu, 21 Sep 2023 14:28:48 +0100
+        id 1qjKIX-0003an-Lu; Thu, 21 Sep 2023 15:04:53 +0100
+Date:   Thu, 21 Sep 2023 15:04:53 +0100
 From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     Choong Yong Liang <yong.liang.choong@linux.intel.com>
 Cc:     Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
@@ -82,15 +82,15 @@ Cc:     Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
         Tan Tee Min <tee.min.tan@linux.intel.com>,
         Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>,
         Lai Peter Jun Ann <jun.ann.lai@intel.com>
-Subject: Re: [PATCH net-next v3 4/5] net: stmmac: enable Intel mGbE 1G/2.5G
- auto-negotiation support
-Message-ID: <ZQxFEChbKJtsGm2w@shell.armlinux.org.uk>
+Subject: Re: [PATCH net-next v3 3/5] net: phy: update in-band AN mode when
+ changing interface by PHY driver
+Message-ID: <ZQxNhYcusHfrJvxM@shell.armlinux.org.uk>
 References: <20230921121946.3025771-1-yong.liang.choong@linux.intel.com>
- <20230921121946.3025771-5-yong.liang.choong@linux.intel.com>
+ <20230921121946.3025771-4-yong.liang.choong@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230921121946.3025771-5-yong.liang.choong@linux.intel.com>
+In-Reply-To: <20230921121946.3025771-4-yong.liang.choong@linux.intel.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -102,31 +102,70 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 08:19:45PM +0800, Choong Yong Liang wrote:
-> +#if IS_ENABLED(CONFIG_INTEL_PMC_IPC)
+On Thu, Sep 21, 2023 at 08:19:44PM +0800, Choong Yong Liang wrote:
+> As there is a mechanism in PHY drivers to switch the PHY interface
+> between SGMII and 2500BaseX according to link speed. In this case,
+> the in-band AN mode should be switching based on the PHY interface
+> as well, if the PHY interface has been changed/updated by PHY driver.
+> 
+> For e.g., disable in-band AN in 2500BaseX mode, or enable in-band AN
+> back for SGMII mode (10/100/1000Mbps).
+> 
+> Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
 
-There shouldn't be any need to make this conditional.
+This approach is *going* to break existing setups, sorry.
 
-> +static int stmmac_mac_prepare(struct phylink_config *config, unsigned int mode,
-> +			      phy_interface_t interface)
+> +/**
+> + * phylink_interface_change() - update both cfg_link_an_mode and
+> + * cur_link_an_mode when there is a change in the interface.
+> + * @phydev: pointer to &struct phy_device
+> + *
+> + * When the PHY interface switches between SGMII and 2500BaseX in
+> + * accordance with the link speed, the in-band AN mode should also switch
+> + * based on the PHY interface
+> + */
+> +static void phylink_interface_change(struct phy_device *phydev)
 > +{
-> +	struct net_device *ndev = to_net_dev(config->dev);
-> +	struct stmmac_priv *priv = netdev_priv(ndev);
-> +	int ret = 0;
+> +	struct phylink *pl = phydev->phylink;
 > +
-> +	priv->plat->phy_interface = interface;
-> +
-> +	if (priv->plat->config_serdes)
-> +		ret = priv->plat->config_serdes(ndev, priv->plat->bsp_priv);
+> +	if (pl->phy_state.interface != phydev->interface) {
+> +		/* Fallback to the correct AN mode. */
+> +		if (phy_interface_mode_is_8023z(phydev->interface) &&
+> +		    pl->cfg_link_an_mode == MLO_AN_INBAND) {
+> +			pl->cfg_link_an_mode = MLO_AN_PHY;
+> +			pl->cur_link_an_mode = MLO_AN_PHY;
 
-Please call this "phylink_mac_prepare" and pass the parameters that
-phylink passes you to this function, so we don't end up at a later
-date with people needing to extend this function to do other stuff,
-thus repeating mistakes from earlier.
+1. Why are you changing both cfg_link_an_mode (configured link AN mode)
+and cur_link_an_mode (current link AN mode) ?
 
-This is what has led to some very yucky code in all those
-"fix_mac_speed" implementations, with duplicated data in the BSPs
-to get the PHY mode and store it separately, etc.
+The "configured" link AN mode is supposed to be whatever was configured
+at phylink creation time, and it's never supposed to change. The
+"current" link AN mode can change, but changing that must be followed
+by a major reconfiguration to ensure everything is correctly setup.
+That will happen only because the change to the current link AN mode
+can only happen when pl->phy_state.interface has changed, and the
+change of pl->phy_state.interface triggers the reconfiguration.
+
+2. You force this behaviour on everyone, so now everyone with a SFP
+module that operates in 802.3z mode will be switched out of inband mode
+whether they want that or not. This is likely to cause some breakage.
+
+> +		} else if (pl->config->ovr_an_inband) {
+> +			pl->cfg_link_an_mode = MLO_AN_INBAND;
+> +			pl->cur_link_an_mode = MLO_AN_INBAND;
+
+Here you force inband when not 802.3z mode and ovr_an_inband is set.
+There are SFP modules that do *not* support in-band at all, and this
+will break these modules when combined with a driver that sets
+ovr_an_inband. So more breakage.
+
+Please enumerate the PHY interface modes that you are trying to support
+with this patch set, and indicate whether you want in-band for that
+mode or not, and where the restriction for whether in-band can be used
+comes from (PHY, PCS or MAC) so that it's possible to better understand
+what you're trying to achieve.
+
+Thanks.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
