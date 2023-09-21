@@ -2,197 +2,159 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8256F7A98A0
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D64567A97C5
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:27:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbjIURuo (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 21 Sep 2023 13:50:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37988 "EHLO
+        id S230014AbjIUR1o (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 21 Sep 2023 13:27:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230029AbjIURuJ (ORCPT
+        with ESMTP id S230090AbjIUR1J (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 21 Sep 2023 13:50:09 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAAC354925;
-        Thu, 21 Sep 2023 10:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695316633; x=1726852633;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=A586LM0+gOXd/iEXjaMd75qtDywyXfu3CO1tYPaBTEU=;
-  b=EGyrJUi6MWNaAgyLgzFST1Cw8KC9HLwVF/MDSOQ1DwRqEEtMoghOcJx8
-   aBSLporeERcX2a7FzdJNv6i9tkNUQSO0E43uKg3jFHgZyND+5xO86TPOm
-   aT6RPGdn+1zAL5D6cNzUGOM/rlNhomdtuuctBKMMVgqnhjxX3ckrayL5M
-   TBCZXG4XlGkF6RAFmRCrTC+TY1DPJLLikXSztng/pwbV92B+Fhp9YNVCs
-   gPEV7+1j3eckDTE9tEn5brf2J0EEKwUaSP5CTC5NkI85EbtH4Zj5viFZY
-   G2vXiikhUY65LItYksI0n8apto+zFcMOCBFdjegAez7VmEnDwXK9Olkn3
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="444608385"
-X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
-   d="scan'208";a="444608385"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 05:21:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="862442142"
-X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
-   d="scan'208";a="862442142"
-Received: from yongliang-ubuntu20-ilbpg12.png.intel.com ([10.88.229.33])
-  by fmsmga002.fm.intel.com with ESMTP; 21 Sep 2023 05:21:11 -0700
-From:   Choong Yong Liang <yong.liang.choong@linux.intel.com>
-To:     Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
-        David E Box <david.e.box@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
+        Thu, 21 Sep 2023 13:27:09 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20603.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e89::603])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C41119AC;
+        Thu, 21 Sep 2023 10:02:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UtqY1PC8AeKKFOxZ9nQRkHk6R3pCZf1WQAsQaD/3SxsGuKnKQfrZ11FboZkvCjhw0HQWI9xkZhlGnpi3jlXoJiTgGdkli4DMsZq4c+fg0d3psGaS9+v1kqHpgJebNbt8S3kw5jXO+lysBNKMBrop2gV6RwrGmRVFUr6ZViLGVhCMyiVJhUgVf/sjwU0UNm00cW2K1yS/fghTLT0gFqO1Bq9AMjWJumilr16mUlSJIFm6t3NSJrP+jNBAWRpMGK2OpQwLNkISEmVuNjzSvO19FjWqX2Z4LiVeE/gM+nFXX15KECzY7tjGMEsPZkjczuhHsSfmnYFLMMpkE0kloffJgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wc0r/elJ4ch61SNrDZj4Q+lGDrvlTpYAGek6Kp7Mowo=;
+ b=cu5V7I632UY+Pmdg1k8OBMzrXMpI1s75A0FCim6lBuoPE/06mMg/lqbAkZ6vimBOEvwLeOhiYj8ZbRXBeqidJevL44BAoVFxFlepKghtMXejfZGeTxoFpaNcVprUaTaeITjOczKZ/wVJPacJDE5EHHjgZsWlxo//TGZYqDD40JV/Cr/vf7jALSalSzkjh/wOY2CO9ucZsyJPjiwFGdPUSdxbUMQF48TLtOYCZxWwPzvA9sXY4uvfFYmnNxJeLVbezR9GpWPQ4gg+/C4Ls9aM/mZwsmD66Y5jiZGo2Ct1gczYEO3HA0UFpDi3fXez+qU2T5XQGU7cBRaof+H8Qs64Fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=suse.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wc0r/elJ4ch61SNrDZj4Q+lGDrvlTpYAGek6Kp7Mowo=;
+ b=KiW+9CCiov27xOMZomdh/gwJRtFK66nMRD61lzgKyLXFrlFVOVtHfLrjWPkA+aovDqk4m8/w6visxBHxokTusBzmoz8FXzWIKlprDEAAcOOdfj34Nr2aUTeA6gfAX7OcIcb1Fgnw2KH9bvyVLFIV3OH4hoRr9Jqp6WIO4i33H01b+nl3cJhv6dx0mu0dsFR5hdvjrCOkIlahK2VPVAe2CxVd5ssuqbMPlEsvxcRZrQcc0z1ddWgxe271Ev94DeoC4ng+6DQ3AFKhWSSPdS+q8u3fWrvWtgzq8lFysDw4mbTPn7qy0L30PNUBIKjKMKLHSW1dVLrp1DRMO4cZdvY6TQ==
+Received: from PR3P251CA0021.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:b5::20)
+ by CY8PR12MB7415.namprd12.prod.outlook.com (2603:10b6:930:5d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Thu, 21 Sep
+ 2023 13:12:07 +0000
+Received: from SN1PEPF000252A4.namprd05.prod.outlook.com
+ (2603:10a6:102:b5:cafe::c6) by PR3P251CA0021.outlook.office365.com
+ (2603:10a6:102:b5::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.31 via Frontend
+ Transport; Thu, 21 Sep 2023 13:12:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF000252A4.mail.protection.outlook.com (10.167.242.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6792.20 via Frontend Transport; Thu, 21 Sep 2023 13:12:05 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 21 Sep
+ 2023 06:11:33 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 21 Sep
+ 2023 06:11:32 -0700
+Received: from moonraker.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server id 15.2.986.41 via Frontend
+ Transport; Thu, 21 Sep 2023 06:11:31 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Wong Vee Khee <veekhee@apple.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Revanth Kumar Uppala <ruppala@nvidia.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Andrey Konovalov <andrey.konovalov@linaro.org>,
-        Jochen Henneberg <jh@henneberg-systemdesign.com>
-Cc:     David E Box <david.e.box@intel.com>,
-        Andrew Halaney <ahalaney@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        platform-driver-x86@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        bpf@vger.kernel.org, Voon Wei Feng <weifeng.voon@intel.com>,
-        Tan Tee Min <tee.min.tan@linux.intel.com>,
-        Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>,
-        Lai Peter Jun Ann <jun.ann.lai@intel.com>
-Subject: [PATCH net-next v3 5/5] stmmac: intel: Add 1G/2.5G auto-negotiation support for ADL-N
-Date:   Thu, 21 Sep 2023 20:19:46 +0800
-Message-Id: <20230921121946.3025771-6-yong.liang.choong@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230921121946.3025771-1-yong.liang.choong@linux.intel.com>
-References: <20230921121946.3025771-1-yong.liang.choong@linux.intel.com>
+        "Rob Herring" <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>
+CC:     <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH V3 0/4] hwmon: ina3221: Add selective summation support
+Date:   Thu, 21 Sep 2023 14:08:14 +0100
+Message-ID: <20230921130818.21247-1-jonathanh@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A4:EE_|CY8PR12MB7415:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebb4948f-82cf-4b44-39be-08dbbaa45a91
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7iGxtZzsqbBZTO+6Kjf0lKVMSRZ2qQygZk2dYrQBexK7xCHw+x8BU60BTzqh4XvUXiSgMwVD6u5cO2y1yR7n7wLOZhzCfKGjA0KCxnYu0K3BEtqQXVsjRI2Ci6ddZm/PTZoSBbyIDhOIZGgcHdKbzOevAI5Vu8ieqOH1Lz7e+PpMW0dOvuvJWAHOCyLM0rBIzXSsm0wkZUTFSj5trQSRgwqdxFdy72I4vNl1YnEKl4KJFonizfn7BnmToiYdw/gHVw1Fhk6g4TkNmKpzjM+faDIjGug5FyCryXNnxBW6f92RkqY005NB64dISH8Yb0iZatdWNtC2qiQTyP08bXY3iMl+yCo6tkGeCpzTDWLJn5mXRkWLxAxTMCGlQOty8HAuiangSmyLD3RGTb/qiz4q/JCtJQKtqlenlD2o5V4aG1UZ2EGCfVrLYdq3sZm9q8r/xzYzOEHroempi97e3qur9Vz+CxOliVeR0QRKtxl+tpMVhY0aBNXeWVo7wMigQU11OkBFIlyyQhwqSPJhzaTmEBYyn2qmATGCgNU6YNJ+ssnPoSgDAuZBxnjVwT6bbcpxwiJjdmI9V2TkSgki0wK3zhm91M7zhzynKztAI3gFu9KxDi99JdNFxuV+c/VOCSlCZt1afXb6P8h3DH7EuqGhsotZeAB3HJjhzoFoLKHm3dqHOxB8adljBJm9/oPIw4EqG31tz9bwiiD1vjYHMz3Nu6HqpxxHoX1wpabuHX5KGHGLXizYYx8B4tY44LCV1aO6
+X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(346002)(39860400002)(376002)(82310400011)(186009)(451199024)(1800799009)(46966006)(40470700004)(36840700001)(54906003)(316002)(70586007)(86362001)(6666004)(110136005)(7636003)(2906002)(82740400003)(356005)(41300700001)(36756003)(36860700001)(5660300002)(47076005)(478600001)(70206006)(7696005)(40460700003)(4326008)(1076003)(8936002)(8676002)(107886003)(83380400001)(426003)(26005)(2616005)(336012)(40480700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 13:12:05.8520
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebb4948f-82cf-4b44-39be-08dbbaa45a91
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF000252A4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7415
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Add modphy register lane to have 1G/2.5G auto-negotiation support for
-ADL-N.
+The current INA3221 driver always sums the shunt voltage for all enabled
+channels regardless of the shunt-resistor used for each channel. Summing
+the shunt-voltage for channels is only meaningful if the shunt resistor
+is the same for each channel. This series adds device-tree support to
+allow which channels are summed in device-tree.
 
-Signed-off-by: Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>
-Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
----
- .../net/ethernet/stmicro/stmmac/dwmac-intel.c | 49 ++++++++++++++++++-
- .../net/ethernet/stmicro/stmmac/dwmac-intel.h |  2 +
- 2 files changed, 50 insertions(+), 1 deletion(-)
+Changes since V2:
+- Added note to binding-doc to indicate that input channels must be
+  explicitly disabled.
+- Corrected ordering of properties in the binding-doc
+- Updated license for the binding-doc to be dual licensed.
+- Changed newly added property from 'summation-bypass' to
+  summation-disable'.
+- Documented type for the new 'summation-disable' property.
+- Corrected spelling and comments as per the feedback received.
+- Used debugfs instead of sysfs for exposing the 'summation-disable'
+  status for each input channel.
+- Populated missing instances for the ina3221 device for Tegra234
+  boards.
+- Populated ina219 device for the NVIDIA IGX board (not strictly
+  related to this series but related to populating all
+  power-sensors for Tegra234 boards)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-index a211f42914a2..bece46faa710 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-@@ -961,6 +961,53 @@ static int adls_sgmii_phy1_data(struct pci_dev *pdev,
- static struct stmmac_pci_info adls_sgmii1g_phy1_info = {
- 	.setup = adls_sgmii_phy1_data,
- };
-+
-+static int adln_common_data(struct pci_dev *pdev,
-+			    struct plat_stmmacenet_data *plat)
-+{
-+	struct intel_priv_data *intel_priv = plat->bsp_priv;
-+
-+	plat->rx_queues_to_use = 6;
-+	plat->tx_queues_to_use = 4;
-+	plat->clk_ptp_rate = 204800000;
-+
-+	plat->safety_feat_cfg->tsoee = 1;
-+	plat->safety_feat_cfg->mrxpee = 0;
-+	plat->safety_feat_cfg->mestee = 1;
-+	plat->safety_feat_cfg->mrxee = 1;
-+	plat->safety_feat_cfg->mtxee = 1;
-+	plat->safety_feat_cfg->epsi = 0;
-+	plat->safety_feat_cfg->edpp = 0;
-+	plat->safety_feat_cfg->prtyen = 0;
-+	plat->safety_feat_cfg->tmouten = 0;
-+
-+	intel_priv->tsn_lane_registers = adln_tsn_lane_registers;
-+	intel_priv->max_tsn_lane_registers = ARRAY_SIZE(adln_tsn_lane_registers);
-+
-+	return intel_mgbe_common_data(pdev, plat);
-+}
-+
-+static int adln_sgmii_phy0_data(struct pci_dev *pdev,
-+				struct plat_stmmacenet_data *plat)
-+{
-+	struct intel_priv_data *intel_priv = plat->bsp_priv;
-+
-+	plat->bus_id = 1;
-+	plat->phy_interface = PHY_INTERFACE_MODE_SGMII;
-+	plat->max_speed = SPEED_2500;
-+	plat->serdes_powerup = intel_serdes_powerup;
-+	plat->serdes_powerdown = intel_serdes_powerdown;
-+	plat->config_serdes = intel_config_serdes;
-+
-+	intel_priv->pid_modphy = PID_MODPHY1;
-+
-+	return adln_common_data(pdev, plat);
-+}
-+
-+static struct stmmac_pci_info adln_sgmii1g_phy0_info = {
-+	.setup = adln_sgmii_phy0_data,
-+};
-+
- static const struct stmmac_pci_func_data galileo_stmmac_func_data[] = {
- 	{
- 		.func = 6,
-@@ -1343,7 +1390,7 @@ static const struct pci_device_id intel_eth_pci_id_table[] = {
- 	{ PCI_DEVICE_DATA(INTEL, TGLH_SGMII1G_1, &tgl_sgmii1g_phy1_info) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLS_SGMII1G_0, &adls_sgmii1g_phy0_info) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLS_SGMII1G_1, &adls_sgmii1g_phy1_info) },
--	{ PCI_DEVICE_DATA(INTEL, ADLN_SGMII1G, &tgl_sgmii1g_phy0_info) },
-+	{ PCI_DEVICE_DATA(INTEL, ADLN_SGMII1G, &adln_sgmii1g_phy0_info) },
- 	{ PCI_DEVICE_DATA(INTEL, RPLP_SGMII1G, &tgl_sgmii1g_phy0_info) },
- 	{}
- };
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.h b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.h
-index 093eed977ab0..2c6b50958988 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.h
-@@ -124,8 +124,10 @@ static const struct pmc_serdes_regs pid_modphy1_2p5g_regs[] = {
- 	{}
- };
- 
-+static const int adln_tsn_lane_registers[] = {6};
- static const int ehl_tsn_lane_registers[] = {7, 8, 9, 10, 11};
- #else
-+static const int adln_tsn_lane_registers[] = {};
- static const int ehl_tsn_lane_registers[] = {};
- #endif /* CONFIG_INTEL_PMC_IPC */
- 
+Changes since V1:
+- Added yaml conversion patch for binding-doc
+- Added binding-doc documentation patch for new property
+- Added patch to populate ina3221 devices for Tegra234.
+
+Jon Hunter (2):
+  dt-bindings: hwmon: ina3221: Add ti,summation-disable
+  arm64: tegra: Add power-sensors for Tegra234 boards
+
+Ninad Malwade (2):
+  dt-bindings: hwmon: ina3221: Convert to json-schema
+  hwmon: ina3221: Add support for channel summation disable
+
+ .../devicetree/bindings/hwmon/ina3221.txt     |  54 --------
+ .../devicetree/bindings/hwmon/ti,ina3221.yaml | 117 ++++++++++++++++++
+ .../boot/dts/nvidia/tegra234-p3701-0008.dtsi  |  33 +++++
+ .../arm64/boot/dts/nvidia/tegra234-p3701.dtsi |  53 ++++++++
+ .../arm64/boot/dts/nvidia/tegra234-p3767.dtsi |  29 +++++
+ drivers/hwmon/ina3221.c                       |  30 ++++-
+ 6 files changed, 259 insertions(+), 57 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/hwmon/ina3221.txt
+ create mode 100644 Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
+
 -- 
-2.25.1
+2.34.1
 
