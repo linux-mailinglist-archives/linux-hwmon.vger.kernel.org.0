@@ -2,420 +2,184 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0B17A980C
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F42F7A97F1
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjIUR3h (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 21 Sep 2023 13:29:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
+        id S230350AbjIUR24 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 21 Sep 2023 13:28:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbjIUR2z (ORCPT
+        with ESMTP id S229904AbjIUR2R (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 21 Sep 2023 13:28:55 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC89F54907
-        for <linux-hwmon@vger.kernel.org>; Thu, 21 Sep 2023 10:17:08 -0700 (PDT)
+        Thu, 21 Sep 2023 13:28:17 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9F32AC54
+        for <linux-hwmon@vger.kernel.org>; Thu, 21 Sep 2023 10:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695316629; x=1726852629;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=vSuqBx1dLAO4E9D3i0J3xhqpToCEfluHZRnjfQWKV70=;
-  b=mmGk6QAzYti7PMNgjFx/L4FRUxhCgInzG8m1LAIAAdGdVEtnYDw9UV3S
-   KSNHt+H3xW41HkNfS038jrfcN12wiSFrdygSSvdvDleavNZ4K21LsSdmg
-   ZHdypmB2P9NUQTB39MQNGAZ5QdPwBFaN8/W1MZhihOPemjNLcaAvKngtQ
-   CHgiaFSijGy2yIMN9TlGCMTTpFUjZasLtncaq15sXkBJDGN0zBhMKNIIP
-   zLW1ALFhZh+c94SOuXgJ89OD/QuRpR+PJ3hvWt0Z6K3DKHi8dCVzeE+W4
-   AyX+j9XK1/QxvdClFfvjgCM/lDHsZ67FF+GgRyYhS7rO3MGafV2PBoxRR
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="380438472"
+  t=1695316309; x=1726852309;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=QdeNKfl3Sjo39E9AbtcXODM/K8QaKbOsFdP1wLWG55g=;
+  b=aVzhTeCWYJCzHTE2QQ5t1dFPEmlkA2sv+u1D9NZfKKgZZwVg/gOYwHHK
+   TjY9gEJdsedMxSzF/K/OgO+3sS007CKOTvDObQi9rhU9ft6LpuDkJU7wr
+   ksdMOLOXXw6k0DL71iCH9GsbeN6rfoKblL7FIKACA2HtToyZvOoqe6IRn
+   fBZhDKn+it3NvsPIb+UsTADzhu8od9pbhZL2kX/KH7b5cbFuS81NSZFWC
+   jjE3d4dA088pRnjHGs4NfUMlnIroC4n1nM5BhxJlJfVDFW4gCe7iGyuDp
+   zohTuVciWtrRK7ckArYZOSPSZ2SOxMXVBdoNYToAliyqk6QHphVV4PceT
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="370890198"
 X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
-   d="scan'208";a="380438472"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 07:09:39 -0700
+   d="scan'208";a="370890198"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 09:03:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="747126711"
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="696785373"
 X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
-   d="scan'208";a="747126711"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Sep 2023 07:09:38 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+   d="scan'208";a="696785373"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orsmga003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Sep 2023 09:03:34 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 21 Sep 2023 07:09:38 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.1.2507.32; Thu, 21 Sep 2023 09:03:34 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Thu, 21 Sep 2023 07:09:38 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.171)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.32; Thu, 21 Sep 2023 09:03:33 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Thu, 21 Sep 2023 09:03:33 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.43) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Thu, 21 Sep 2023 07:09:38 -0700
+ 15.1.2507.32; Thu, 21 Sep 2023 09:03:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lTIABQ0+tM1eaiDh2XslfSHRJpqqU8MXsOU9ByWGkief2pAVS9BJ6Nwrde72DXf/ZUlTlk4YoYGgP4XMZhrNB8qSDgPu/1DESoyWiVU84sxQFR//TLJ54T5n9sNXxeV4wKZ7CMEH34CAxRc+a+8QSmncHcA8eCAzP5Hs7bDcXGyTWrifnuJrdCLLn8M6eEThhhMY8kZsuF4aq+iIdw9s2rIpJbP2kKYkc+nMLlTLN+LXznVehZzpyxn9+I28+xTM333L+vYm6mlXIMAUVxHJVLcAiGn6N96WxjcdKNnWjzVBfYCnmCIg1HtygWbOdG3DGMAIBDmspRhkuQ+FnqPtFw==
+ b=aySxwXF+qfh2DBZ8ij8BAi232POvQE3nVnzlOuQuElJOQpXsvMVvcNzOHlrD8YaQeMr0jyrHobm3dGkV6MkMfxhb62JVpe0Tc4uFQo4VPgH63gGxshFI4SM24iPtSseHRD0kV+cYOHUi7khebW2xgLLrKPtZg//sMfkmIgGgZjr9u77byDPipG+M6I27k2qSfF0OkTE64LyyP0NqWMX9LGUS7Da4RDVsZ70oKp3FFnYgPQdN0iZW0B/5KpUeRqnVcp6iH9YYLW7mDeD3fk3NXoBkyRZosfwJQREQpWKT+q6gAjjGrqGDaZ7B5TE3hpVyO4rCg3cP4tXIwRa5bhON6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h27fxy5WueY9Ei8oApWzItwHlmCS1slDb/w3OYbtm38=;
- b=FnwKXVj/+0PmLjcXfgmDwKvgswHlQxljvBwdpnlatRuF1x1+nxrDUzj4RMsQ1tV1NmhOH6QlKQZsMejjl12q+v6rpJ03DumPWJapX/Arnq+5FALRICalwAYcxeALfX8iynQ1dOFP49p6Wobs40yDFfcstv/svYBKuNMCkqjzc6i1gS/YQUBqpSva+J/T0cTc+916GbJoA47PtCWFJ91aXOvgPgvniWf7JMv6mivVAK3QDyzSMmA1ddXFZtHZHDmY6BjfkL5L5lHPwYF2qcdBViQDTMmUgSti3MdD94Ygk10trrPDiWRplMxsbEcoAB8p+kpW42adCL2IlmPIpuT8TQ==
+ bh=RMNldUmoSY3QAwUt8UagZUW0iAIBantAGx2IBxPDTao=;
+ b=VIHRouRtwOrwgabLU1S2c+TPFem+4EvoiN+zO8ZzWmZjOIXV3y9JC++lj32AM69XTYUJ0vScyBKlMbBZzl+dEgFJBzjVPQJgZOhuILSnxFwHOcGdonl/sB0KqPoi/V738ij5Pt/JHLmzn7gtkJwtF1hxcPbkohUM5Ux66TySFdJmfvtfQVECGo1+AazC4PS/MW/tR+G0qTUf+VSrE8/uYXHXes1H4gmfkMXZB41+IoEeeACqx1CNOqu1ELSH5TQE3MilNU3GDgBaTxDLKfWAARva8k5M57zVak5rbE0X30keC0FteMpGXdo9X0UV2veqrP8d+V0SBLJ4TUEASTByQw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- DM4PR11MB6143.namprd11.prod.outlook.com (2603:10b6:8:b1::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6792.27; Thu, 21 Sep 2023 14:09:36 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::6b9:384:8202:b294]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::6b9:384:8202:b294%7]) with mapi id 15.20.6792.026; Thu, 21 Sep 2023
- 14:09:35 +0000
-Message-ID: <ae591302-4c1b-227a-5a4e-b8e726144447@intel.com>
-Date:   Thu, 21 Sep 2023 19:39:23 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [PATCH v5 5/6] drm/xe/hwmon: Expose hwmon energy attribute
-To:     Badal Nilawar <badal.nilawar@intel.com>,
-        <intel-xe@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>
-CC:     <anshuman.gupta@intel.com>, <ashutosh.dixit@intel.com>,
+Received: from MN0PR11MB6059.namprd11.prod.outlook.com (2603:10b6:208:377::9)
+ by CYYPR11MB8429.namprd11.prod.outlook.com (2603:10b6:930:c2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.19; Thu, 21 Sep
+ 2023 16:03:31 +0000
+Received: from MN0PR11MB6059.namprd11.prod.outlook.com
+ ([fe80::6d0b:5bc6:8723:593]) by MN0PR11MB6059.namprd11.prod.outlook.com
+ ([fe80::6d0b:5bc6:8723:593%6]) with mapi id 15.20.6792.022; Thu, 21 Sep 2023
+ 16:03:31 +0000
+Date:   Thu, 21 Sep 2023 12:03:26 -0400
+From:   Rodrigo Vivi <rodrigo.vivi@intel.com>
+To:     Badal Nilawar <badal.nilawar@intel.com>
+CC:     <intel-xe@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
+        <anshuman.gupta@intel.com>, <ashutosh.dixit@intel.com>,
         <linux@roeck-us.net>, <andi.shyti@linux.intel.com>,
-        <matthew.brost@intel.com>, <rodrigo.vivi@intel.com>
+        <riana.tauro@intel.com>, <matthew.brost@intel.com>
+Subject: Re: [PATCH v5 1/6] drm/xe: Add XE_MISSING_CASE macro
+Message-ID: <ZQxpTss3+OYdbJks@intel.com>
 References: <20230921102519.3355538-1-badal.nilawar@intel.com>
- <20230921102519.3355538-6-badal.nilawar@intel.com>
-Content-Language: en-US
-From:   Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20230921102519.3355538-6-badal.nilawar@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0089.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:23::34) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+ <20230921102519.3355538-2-badal.nilawar@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230921102519.3355538-2-badal.nilawar@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0335.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::10) To MN0PR11MB6059.namprd11.prod.outlook.com
+ (2603:10b6:208:377::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|DM4PR11MB6143:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5de4779-792e-4631-ee0d-08dbbaac624b
+X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|CYYPR11MB8429:EE_
+X-MS-Office365-Filtering-Correlation-Id: e70ae996-432c-4239-e69b-08dbbabc4d39
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cpVy/7gc7eSCg6YTgrg64qPztUPWiTrtrvQ2bi3d+VEPG0o8GufkXC8wNgsOa03f9xv92Ny7EthMw7EtRvo7enS5MnWqiIfFas1fyCITTuBUN0Yb+NJp/tnVrRY7odSB1CaWlSzGDRTqfTEI+B03q+Ohi/QKacT5VFucjlimusEq4SC9u/Am1iFKDLOvn4vqUbw+H2Zh4T8U3hp1ChZhrjrP3PIy2JXGGyaThZZqmNbmAPzDWYh+LFhknQ3hPusr5RNYE09e+n3bw0/uUNvWrYUpMGGp82pTuWm5CSRujKTV6FelzNxkoLR64xvyDolrXenjRtIbkI3/l4cLtVBhG3jgfwds0HQD1gpdBmjiRlEa3ys1eGLwi2UqgShcu1KMa0Eg+pzYuJ0jh8Fl22ZIP3BI77Hh0zVLaUqmP5WdjQB33sToYlr0dtWU86muJt9C/XEJGYsXrzcunhSVoQ38eXkmD91neQHu/i74zkb9vP4o68WlTeg7cfDAtG7e+W3P/6H+Uo/jQIR2g66WvjZjWKJxops61103fy1w8ZyqChE1Q/GxRh+Y2xv0am30iYrACRKv18IW7xn/rG3IZ8x8XpvND1em32+//dIYKg6awEzJQ83HEK6r4Myl6D+VA23+GI5EHl085xV6o3cwP9rQuA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(376002)(136003)(366004)(396003)(451199024)(186009)(1800799009)(478600001)(6512007)(6486002)(44832011)(5660300002)(6506007)(53546011)(86362001)(66946007)(66476007)(38100700002)(41300700001)(316002)(66556008)(31686004)(6666004)(82960400001)(26005)(8936002)(2616005)(83380400001)(31696002)(36756003)(4326008)(8676002)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: AjlWfcdP6pwmz/XLS7iadhUv2NGBwYYWsH9mmO7G0cAVOZQ4jzyc+j4G7RVLQyQcr0BeUZPP58qmwG9wGurO1kzva4U8+akkscsu7vx6yYgH39O4EDJyqtN+ZJNUHT+HebPjfuupPn2JzWN2DQCuIPpawoS8Z8PqikEjsqZlY6mDPnQ45d+q0hem8ktcQY+1EuTYbMpCzswZmVAhSt/KG37HHC7wLAN0DZ/Hj1qjw1l8IWdfRhmCHS7KAHp/B0wnneEIJNYkZv/XinyFJXnogGAGe8la+4mhaTWZRQWPi9OMcrVS3OcuBIqwTSItc/TQNEHbbE5Lza/mElJ3DNeQ0ptjPL5irFBygqDRx7WwyUff4QVylkPL7P7tPplbBnUy8MuJCbjckfLccyTT4tZFQIIF45T55GJhTAURdnl5W/e0dJdZkiNki2tzS6bIwcBt11/Ov84XBa6alYira8fZfNEKEzumHId0hZvhyMiPuyCoH8k7u2AaHCtB3qQK6CCowERBG9PotOi8hvXJHINv8lkG5HEqLIBVnm9HWfcl9HQDnTWZzVEDBThuBbQjILAvsTziSUzKbkFL6NCoHkRl5ZL5H+ywlEmrU8kd/9JQCPI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6059.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(376002)(346002)(136003)(186009)(451199024)(1800799009)(6666004)(6512007)(6506007)(6486002)(36756003)(86362001)(82960400001)(38100700002)(2906002)(4744005)(44832011)(2616005)(478600001)(8676002)(6862004)(5660300002)(8936002)(37006003)(4326008)(6636002)(66476007)(66946007)(26005)(41300700001)(66556008)(316002)(67856001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZjdVWDdnbkl6VkFrVVYzQzB1SytCbGFIdkI3a0xjM2dQN3lvQ3NZdHlhaExC?=
- =?utf-8?B?Q01HaWNwbzVvemZEV2g1cHBucTU1MFlGcVJEWnA3eFMwVkp1b1FiTFpIRVhn?=
- =?utf-8?B?SkxndFYxbFQrRzltZlhIZ0lrZkQrelAxdkt0RExzRnBOUVhuakJIa2ZxaHIx?=
- =?utf-8?B?RWlib3hNV3V3T1BiazRXelZ1dzRZbnliQzJKcElhWWJXdklDcUNqTHlFSjZR?=
- =?utf-8?B?c2NKWi9oOFhpemROaGttOW04UzEzaE13Vm5XS3pWQlkrb2NIT3hwdEpFRlJC?=
- =?utf-8?B?UE5aMlRGcGErWUlIdXNIT09WT1k1ZzhqU3l6NzB0M3ZPU1QxbnlFRUdUdjZZ?=
- =?utf-8?B?akp0SVVsNzdjMTRFVE8zTXc2b2M3a1hHcHNXdml1R2E2alBlM0o1cjB4VVUy?=
- =?utf-8?B?RCs0akFUR1htM0tJZmxBS0FpZi9tMnhla0xMc1IvdDZKLzZhNGtDY0N1SVhk?=
- =?utf-8?B?THB4bXNIbFgxRllnSzFQR29nWHdiblkwZnpvSjdBYzg3cStCSlI4ZjdnVjlF?=
- =?utf-8?B?TE5CZ1hPdEdEYXZxamk2cm9ORERrbXZNMkNqZjdBdGN1MFQveGRKQnpSdTJk?=
- =?utf-8?B?U0xwZGRpRnQ5d1d2VWpiVUpVYy9rbWV0RmZYelFuYjZRZFBXNUV4cVpwOWFC?=
- =?utf-8?B?TGdGRUlZV0I1N0tPRmVCY21kd2kxL0NHOTVIRHlWM2NLaHIxVkErSlBvZ3dG?=
- =?utf-8?B?TDVDZXFKZi9Ka3hxTVZ4RUc1Mys4MnhDRkh3NVV3OTd6dDVlbjQ2Y2UxZzk2?=
- =?utf-8?B?TE1zTmhwVVI4V1l6REkzTGpTSnlLTFBRSjNQanFxbDNBemU5QjRyL3ZFdnlW?=
- =?utf-8?B?QzdjdDFQQ1llbTRLTkx5SDZRZXZkUHBSTVliamdUZGZEblh6TC83T0pscFFi?=
- =?utf-8?B?alNkanZIZzROV3B6ajMwL213djZHSnRoSzhldDA2UzhITml4eWJWeUJaV0NS?=
- =?utf-8?B?bWcySTcycHpCdHFtWjlmQ09pL05tNEhVT01ENGlCNzg2WFBFaWYyK0l3QnQ1?=
- =?utf-8?B?YWZjSS9DYlhzcUlZK3ZOa08wWmZSSk1sYW9jVXJZT0F1TTRnRTFXaEcvN3Ex?=
- =?utf-8?B?M0t2QkN2L2RVV0ZRTXRLeW5ZYk5ZQ1ptQVluTzJrbllwSUNiUEszUDVqR0x6?=
- =?utf-8?B?UWJ6d3dVZzJoWFhFeVI3TVRoL1FOMml6Qmx3UW9PeG5JYmZ3V05PcXU1anlv?=
- =?utf-8?B?bEcySGVTelpFTllaMFZKcFgvTzlqaW5YUHBEZThkYThTYS9icVlXSXlCcjh4?=
- =?utf-8?B?K2R4eitacXorWGsyaTJaYW9YZFlsSmgzaXJlZlF3a2N6ZTVVNmpBU1ppbjg1?=
- =?utf-8?B?WXZmelIwcDVIS0FRd2l2K2p2RkpUbmxjSGRVTU1TRGdxUkxzMjZkVktjZGg0?=
- =?utf-8?B?ZkRNbVJnUkdvTTNGanBjNVhkMFI4SzRadk5TdGY3MXVZdGFlMHBmbHorODVO?=
- =?utf-8?B?M1lYd05jOGJscDBEOW5KdWpJSlFjM0s3U3J4N1NId1pPN0I2YWVwZkk2TXZm?=
- =?utf-8?B?RlBzbXdkWTl0ZG84ejFmaGNReklKWEQyT1VoTlorOTF3TUlaMG9XY25SK0kx?=
- =?utf-8?B?bUZXeTJHbDB3b01ZZ2tLMlRRbnhOUmlicXI4dHNuWWZNRHdLWk83MnJkZDVK?=
- =?utf-8?B?bk9mVkRyZ0dDaHVpeXcwcmpkbVVBVWRJNmphWDFQSnpZUVhRQkVCK29hb3Ra?=
- =?utf-8?B?bmpNUlVtanNaMDdvWEdNZmZqQ1NGVU14dE5IV0dCaEswSXZvNzJuV0JMa3Vv?=
- =?utf-8?B?SDR2RitVNkE4V0MxbmJkTzhaVzloMkY4R0pka09WOGRjTVc5Q084Y1czOUly?=
- =?utf-8?B?SVRINUlkOXltdFJHVUoyTXpWYjRVZDZ2TXllV3RrTzRySjJRNi8xeDdhVDNQ?=
- =?utf-8?B?a3V5b3J2UU1uVDFTZ1RQSEhkdlJFWDZBZnI0VDFOYUZLVE8zOUQ2cVYxc01L?=
- =?utf-8?B?T2Z6Z1VUWUtObStjTk9tMlRiYmVoeUdCZWZVazQzLzBpQ1AraDZpbjB2SDNq?=
- =?utf-8?B?UW5xM3kzRW1QK09WTnhkc1FpMFF6VzVRU2tNOEg4eEo4bmd2WDBwTDFsWUxR?=
- =?utf-8?B?djg5emNreU5BbzkweVVpN3d6ZDF5cjdIaTM2ZmtuQWJEUHJvRmYrakdqWktI?=
- =?utf-8?Q?lE1p+q0yVnHQAerZZYZpL3jeC?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5de4779-792e-4631-ee0d-08dbbaac624b
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cdzpXwR0LeeoRsKRmUTKflV+lv6CjCpe1Z1jmZyJXq++15R6931kygSIqqiX?=
+ =?us-ascii?Q?zVOn4xTGyOJu3oQqvVNfF7NBYCsHI9cmf+Vo/HGneUaoTEh3PvkJ8yMY+N2z?=
+ =?us-ascii?Q?pasZdWCf/agW9xSz5GINJKVKLgU70UhKVL7x7ZquZOgM1MT1wyx6ub5jYpZF?=
+ =?us-ascii?Q?QJfYx51sYZ6fUSncZp3rdjbFoV6LLDh+2ppMOCcYBFELbRdb5m3B0rWTU98j?=
+ =?us-ascii?Q?jR69vSmrzV94lYZIZULwf2A0UM527+FpF2/6BccSYAsSuDUgS8GIlgzu3c3/?=
+ =?us-ascii?Q?g0w47fFWwUM5CQbfiESJuKPxc19qgltRe3KZvpeV4XkHLms6KDigubQ3UEN1?=
+ =?us-ascii?Q?D0L0HDhD3enpmx/nUD7pSFYPD2Y3ZBhkH19PSYITQh6EQbdKsBp3RQiZLcAh?=
+ =?us-ascii?Q?nynVKJ9v2Rayi5ne04D3NvdtOK9OfNuv/E+fF7sw+I2PX9+UGtSuZ27bOlzU?=
+ =?us-ascii?Q?AohoBYOyb7jyVx1p0Snk6yvHbO76M+MUmnCE03uBS+sosyZWvli0FyNVhlhX?=
+ =?us-ascii?Q?ig9bueQdIWglF5Xvt76YcwDqrpLWs4U8hHWz9jIG72JdXw+NjlB+v8qWNsnx?=
+ =?us-ascii?Q?pqf6mpY2g5N1Hsr/vsxZyCN+hJY5/w4TgeWJE517s0qd/gyii/uD1+Bi423l?=
+ =?us-ascii?Q?N6A2yVMhRfTzC/DxX/BntVjG5PY3c8Fi2aCoHIibnaEiATwUbyjXzI7/Sch8?=
+ =?us-ascii?Q?3XGgnXL/HRT2sBP5vkzWP2b+AXEqLPqagLA1+4ZvS6NqcT6r8XSYOSbBbmnY?=
+ =?us-ascii?Q?VuK0XNn3bLzGjAudKdoCydCoAMIQXyt6dc0hl1F4zFaTkurw+qf+GJHc/BFM?=
+ =?us-ascii?Q?MMNVYZD7f3vezmBCE5Q8LVVuP0Nmh/B5f4h2NPn+3wYHMjaCj3L7gnWXJIu3?=
+ =?us-ascii?Q?FpXRwX9vAnEx204R+6pnqIXrLa8rRjdYTv1yC0+TqkDbA5cgsolTE5mc1fjI?=
+ =?us-ascii?Q?r22m/CBnU3SYQVNw+svSPsIxHHe0A8kqEkTsxaQuMy6sYp6l0+lja7OlOTgh?=
+ =?us-ascii?Q?mxIy/0twl+2C8dIgXQE1lIIdfSLWDRm4XomMBpt/p60houbs2v3nlP6b4BOr?=
+ =?us-ascii?Q?C+WJhk4Vn49ihdrCqY/pW591sqd3hp8NLzIo61ARA4qlbChNAC7/Rnm+KmGL?=
+ =?us-ascii?Q?ei0BW3ub/TvuHI936oacOjKkpezlvVNkcGYzX4to5q5+3W8ttUg992skqQiO?=
+ =?us-ascii?Q?ez8jMfR8HOX/988lHeQQj+mfFmUfdY9+eNAijoruPUJXP8SBKgjdLDY+jWGb?=
+ =?us-ascii?Q?1vgpqEXv9GMuR1+J54nNaAlBYCHzdGO1pKIcs+cVBUtSZWCPQAkER9Oo/ArE?=
+ =?us-ascii?Q?BDLrlm3mQvMffO0st22pbxj48qfjliRiIB3iSqyE0LWT+7D/P/xub/4iwBrt?=
+ =?us-ascii?Q?mevxRcZEIbV2cRTGe7VC3O79t8/IbCGtkchBNUc13b9ZE29EwdtmOFXb0rSF?=
+ =?us-ascii?Q?HqXXs495sWn+rekjJZz4JYEUHSdBla5rkjuoIJZNzAGQ4DOwt9mMQpYgUkS6?=
+ =?us-ascii?Q?CPwEZWlN0B1brTsqVefDwggTTgb9Eb/vgYF3joo/EYyabvpQQ9mvN2skwN+8?=
+ =?us-ascii?Q?5V1Kawmu+1z0FHBQUfT2rIIdtTvVeFsuyRqeGXj/5IsCIK0vIckyKg3s1goP?=
+ =?us-ascii?Q?2Q=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e70ae996-432c-4239-e69b-08dbbabc4d39
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6059.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 14:09:35.3588
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 16:03:31.8067
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gIsfHhEe1W1weHSvt2/bGmyTXnuUR66p+oBgxBBxfU5TWp+uwh3l+qYxxkqgA2fPBVqATQiL/dEfvPtpI82Xfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6143
+X-MS-Exchange-CrossTenant-UserPrincipalName: NKkKILc86q9wo8u1uK/aiob77WHOE6+7uglMQA1CyN04XHm46C/a2wZ0m+h/JhpIgP8X0TIkYEjGN+Z4vaCBRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR11MB8429
 X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Badal
-
-On 9/21/2023 3:55 PM, Badal Nilawar wrote:
-> Expose hwmon energy attribute to show device level energy usage
+On Thu, Sep 21, 2023 at 03:55:14PM +0530, Badal Nilawar wrote:
+> Add XE_MISSING_CASE macro to handle missing switch case
 > 
-> v2:
->    - %s/hwm_/hwmon_/
->    - Convert enums to upper case
-> v3:
->    - %s/hwmon_/xe_hwmon
->    - Remove gt specific hwmon attributes
-> v4:
->   - %s/REG_PKG_ENERGY_STATUS/REG_ENERGY_STATUS_ALL (Riana)
+> v2: Add comment about macro usage (Himal)
 > 
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
 > Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+> Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 > ---
->   .../ABI/testing/sysfs-driver-intel-xe-hwmon   |   7 ++
->   drivers/gpu/drm/xe/regs/xe_gt_regs.h          |   2 +
->   drivers/gpu/drm/xe/regs/xe_mchbar_regs.h      |   3 +
->   drivers/gpu/drm/xe/xe_hwmon.c                 | 105 +++++++++++++++++-
->   4 files changed, 116 insertions(+), 1 deletion(-)
+>  drivers/gpu/drm/xe/xe_macros.h | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
-> index 7f9407c20864..1a7a6c23e141 100644
-> --- a/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
-> +++ b/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
-> @@ -52,3 +52,10 @@ Description:	RO. Current Voltage in millivolt.
->   
->   		Only supported for particular Intel xe graphics platforms.
->   
-> +What:		/sys/devices/.../hwmon/hwmon<i>/energy1_input
-> +Date:		September 2023
-> +KernelVersion:	6.5
-> +Contact:	intel-xe@lists.freedesktop.org
-> +Description:	RO. Energy input of device in microjoules.
+> diff --git a/drivers/gpu/drm/xe/xe_macros.h b/drivers/gpu/drm/xe/xe_macros.h
+> index daf56c846d03..6c74c69920ed 100644
+> --- a/drivers/gpu/drm/xe/xe_macros.h
+> +++ b/drivers/gpu/drm/xe/xe_macros.h
+> @@ -15,4 +15,8 @@
+>  			    "Ioctl argument check failed at %s:%d: %s", \
+>  			    __FILE__, __LINE__, #cond), 1))
+>  
+> +/* Parameter to macro should be a variable name */
+> +#define XE_MISSING_CASE(x) WARN(1, "Missing case (%s == %ld)\n", \
+> +				__stringify(x), (long)(x))
 > +
-> +		Only supported for particular Intel xe graphics platforms.
-> diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-> index 102663cbc320..9e6ce74fdd68 100644
-> --- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-> +++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-> @@ -413,8 +413,10 @@
->   #define XEHPC_BCS5_BCS6_INTR_MASK		XE_REG(0x190118)
->   #define XEHPC_BCS7_BCS8_INTR_MASK		XE_REG(0x19011c)
->   
-> +#define PVC_GT0_PACKAGE_ENERGY_STATUS		XE_REG(0x281004)
-This is not used in the file
->   #define PVC_GT0_PACKAGE_RAPL_LIMIT		XE_REG(0x281008)
->   #define PVC_GT0_PACKAGE_POWER_SKU_UNIT		XE_REG(0x281068)
-> +#define PVC_GT0_PLATFORM_ENERGY_STATUS		XE_REG(0x28106c)
->   #define PVC_GT0_PACKAGE_POWER_SKU		XE_REG(0x281080)
->   
->   #endif
-> diff --git a/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h b/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
-> index 27f1d42baf6d..d8ecbe1858d1 100644
-> --- a/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
-> +++ b/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
-> @@ -25,6 +25,9 @@
->   
->   #define PCU_CR_PACKAGE_POWER_SKU_UNIT		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x5938)
->   #define   PKG_PWR_UNIT				REG_GENMASK(3, 0)
-> +#define   PKG_ENERGY_UNIT			REG_GENMASK(12, 8)
-> +
-> +#define PCU_CR_PACKAGE_ENERGY_STATUS		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x593c)
->   
->   #define PCU_CR_PACKAGE_RAPL_LIMIT		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x59a0)
->   #define   PKG_PWR_LIM_1				REG_GENMASK(14, 0)
-> diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
-> index 431995045faa..cb75b9a386c0 100644
-> --- a/drivers/gpu/drm/xe/xe_hwmon.c
-> +++ b/drivers/gpu/drm/xe/xe_hwmon.c
-> @@ -22,6 +22,7 @@ enum xe_hwmon_reg {
->   	REG_PKG_POWER_SKU,
->   	REG_PKG_POWER_SKU_UNIT,
->   	REG_GT_PERF_STATUS,
-> +	REG_PKG_ENERGY_STATUS,
-PVC register above has it PLATFORM. Is PKG okay incase the other 
-register is added later?
->   };
->   
->   enum xe_hwmon_reg_operation {
-> @@ -36,12 +37,20 @@ enum xe_hwmon_reg_operation {
->   #define SF_POWER	1000000		/* microwatts */
->   #define SF_CURR		1000		/* milliamperes */
->   #define SF_VOLTAGE	1000		/* millivolts */
-> +#define SF_ENERGY	1000000		/* microjoules */
-> +
-> +struct hwmon_energy_info {
-Better to retain xe prefix since all the enums and structs have the 
-prefix across the file
 
-With the above changes
+No, please! Let's not add unnecessary macros.
 
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-
-
-
-> +	u32 reg_val_prev;
-> +	long accum_energy;		/* Accumulated energy for energy1_input */
-> +};
->   
->   struct xe_hwmon {
->   	struct device *hwmon_dev;
->   	struct xe_gt *gt;
->   	struct mutex hwmon_lock; /* rmw operations*/
->   	int scl_shift_power;
-> +	int scl_shift_energy;
-> +	struct hwmon_energy_info ei;	/*  Energy info for energy1_input */
->   };
->   
->   static u32 xe_hwmon_get_reg(struct xe_hwmon *hwmon, enum xe_hwmon_reg hwmon_reg)
-> @@ -72,6 +81,12 @@ static u32 xe_hwmon_get_reg(struct xe_hwmon *hwmon, enum xe_hwmon_reg hwmon_reg)
->   		if (xe->info.platform == XE_DG2)
->   			reg = GT_PERF_STATUS;
->   		break;
-> +	case REG_PKG_ENERGY_STATUS:
-> +		if (xe->info.platform == XE_DG2)
-> +			reg = PCU_CR_PACKAGE_ENERGY_STATUS;
-> +		else if (xe->info.platform == XE_PVC)
-> +			reg = PVC_GT0_PLATFORM_ENERGY_STATUS;
-> +		break;
->   	default:
->   		XE_MISSING_CASE(hwmon_reg);
->   		break;
-> @@ -192,10 +207,59 @@ static int xe_hwmon_power_rated_max_read(struct xe_hwmon *hwmon, long *value)
->   	return 0;
->   }
->   
-> +/*
-> + * xe_hwmon_energy_get - Obtain energy value
-> + *
-> + * The underlying energy hardware register is 32-bits and is subject to
-> + * overflow. How long before overflow? For example, with an example
-> + * scaling bit shift of 14 bits (see register *PACKAGE_POWER_SKU_UNIT) and
-> + * a power draw of 1000 watts, the 32-bit counter will overflow in
-> + * approximately 4.36 minutes.
-> + *
-> + * Examples:
-> + *    1 watt:  (2^32 >> 14) /    1 W / (60 * 60 * 24) secs/day -> 3 days
-> + * 1000 watts: (2^32 >> 14) / 1000 W / 60             secs/min -> 4.36 minutes
-> + *
-> + * The function significantly increases overflow duration (from 4.36
-> + * minutes) by accumulating the energy register into a 'long' as allowed by
-> + * the hwmon API. Using x86_64 128 bit arithmetic (see mul_u64_u32_shr()),
-> + * a 'long' of 63 bits, SF_ENERGY of 1e6 (~20 bits) and
-> + * hwmon->scl_shift_energy of 14 bits we have 57 (63 - 20 + 14) bits before
-> + * energy1_input overflows. This at 1000 W is an overflow duration of 278 years.
-> + */
-> +static void
-> +xe_hwmon_energy_get(struct xe_hwmon *hwmon, long *energy)
-> +{
-> +	struct hwmon_energy_info *ei = &hwmon->ei;
-> +	u32 reg_val;
-> +
-> +	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
-> +
-> +	mutex_lock(&hwmon->hwmon_lock);
-> +
-> +	xe_hwmon_process_reg(hwmon, REG_PKG_ENERGY_STATUS, REG_READ,
-> +			     &reg_val, 0, 0);
-> +
-> +	if (reg_val >= ei->reg_val_prev)
-> +		ei->accum_energy += reg_val - ei->reg_val_prev;
-> +	else
-> +		ei->accum_energy += UINT_MAX - ei->reg_val_prev + reg_val;
-> +
-> +	ei->reg_val_prev = reg_val;
-> +
-> +	*energy = mul_u64_u32_shr(ei->accum_energy, SF_ENERGY,
-> +				  hwmon->scl_shift_energy);
-> +
-> +	mutex_unlock(&hwmon->hwmon_lock);
-> +
-> +	xe_device_mem_access_put(gt_to_xe(hwmon->gt));
-> +}
-> +
->   static const struct hwmon_channel_info *hwmon_info[] = {
->   	HWMON_CHANNEL_INFO(power, HWMON_P_MAX | HWMON_P_RATED_MAX | HWMON_P_CRIT),
->   	HWMON_CHANNEL_INFO(curr, HWMON_C_CRIT),
->   	HWMON_CHANNEL_INFO(in, HWMON_I_INPUT),
-> +	HWMON_CHANNEL_INFO(energy, HWMON_E_INPUT),
->   	NULL
->   };
->   
-> @@ -369,6 +433,29 @@ xe_hwmon_in_read(struct xe_hwmon *hwmon, u32 attr, long *val)
->   	return ret;
->   }
->   
-> +static umode_t
-> +xe_hwmon_energy_is_visible(struct xe_hwmon *hwmon, u32 attr)
-> +{
-> +	switch (attr) {
-> +	case hwmon_energy_input:
-> +		return xe_hwmon_get_reg(hwmon, REG_PKG_ENERGY_STATUS) ? 0444 : 0;
-> +	default:
-> +		return 0;
-> +	}
-> +}
-> +
-> +static int
-> +xe_hwmon_energy_read(struct xe_hwmon *hwmon, u32 attr, long *val)
-> +{
-> +	switch (attr) {
-> +	case hwmon_energy_input:
-> +		xe_hwmon_energy_get(hwmon, val);
-> +		return 0;
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +}
-> +
->   static umode_t
->   xe_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_types type,
->   		    u32 attr, int channel)
-> @@ -388,6 +475,9 @@ xe_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_types type,
->   	case hwmon_in:
->   		ret = xe_hwmon_in_is_visible(hwmon, attr);
->   		break;
-> +	case hwmon_energy:
-> +		ret = xe_hwmon_energy_is_visible(hwmon, attr);
-> +		break;
->   	default:
->   		ret = 0;
->   		break;
-> @@ -417,6 +507,9 @@ xe_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
->   	case hwmon_in:
->   		ret = xe_hwmon_in_read(hwmon, attr, val);
->   		break;
-> +	case hwmon_energy:
-> +		ret = xe_hwmon_energy_read(hwmon, attr, val);
-> +		break;
->   	default:
->   		ret = -EOPNOTSUPP;
->   		break;
-> @@ -468,6 +561,7 @@ static void
->   xe_hwmon_get_preregistration_info(struct xe_device *xe)
->   {
->   	struct xe_hwmon *hwmon = xe->hwmon;
-> +	long energy;
->   	u32 val_sku_unit = 0;
->   	int ret;
->   
-> @@ -476,8 +570,17 @@ xe_hwmon_get_preregistration_info(struct xe_device *xe)
->   	 * The contents of register PKG_POWER_SKU_UNIT do not change,
->   	 * so read it once and store the shift values.
->   	 */
-> -	if (!ret)
-> +	if (!ret) {
->   		hwmon->scl_shift_power = REG_FIELD_GET(PKG_PWR_UNIT, val_sku_unit);
-> +		hwmon->scl_shift_energy = REG_FIELD_GET(PKG_ENERGY_UNIT, val_sku_unit);
-> +	}
-> +
-> +	/*
-> +	 * Initialize 'struct hwmon_energy_info', i.e. set fields to the
-> +	 * first value of the energy register read
-> +	 */
-> +	if (xe_hwmon_is_visible(hwmon, hwmon_energy, hwmon_energy_input, 0))
-> +		xe_hwmon_energy_get(hwmon, &energy);
->   }
->   
->   void xe_hwmon_register(struct xe_device *xe)
+>  #endif
+> -- 
+> 2.25.1
+> 
