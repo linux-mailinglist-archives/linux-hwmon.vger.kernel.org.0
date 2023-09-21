@@ -2,104 +2,100 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 029AB7A962F
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B658B7A97AD
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjIURAJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 21 Sep 2023 13:00:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        id S230101AbjIUR05 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 21 Sep 2023 13:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229655AbjIURAE (ORCPT
+        with ESMTP id S229854AbjIUR0o (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 21 Sep 2023 13:00:04 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C2741FDC;
-        Thu, 21 Sep 2023 09:59:11 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3adf06730c4so767236b6e.1;
-        Thu, 21 Sep 2023 09:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695315547; x=1695920347; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=lHCS21QIk3L+DNjxmnEhYWKsA7WV3a4yGzQ5Vl55Ezw=;
-        b=Pa5tZITZ3CCWadoQadyZD6aL+guhR+0eaWnAlzvHe2HiMRaiuWF7GbSrAi30qOODwt
-         eMWLXKtS87sIXTgfo1pgiJY8LzsHFs+0IbJl+fxB8B7IfP5HAf3mnuSFKU3GkfQmE1mW
-         8JtM9V74Z7iB4TTLRTFExPVjauQoDPNt8nq3ljvioDnrpQvxETXXLiMl79XgDy3OK3ic
-         4L+F5rpNWx25spjLEZ99LtiJPZR0wop1nI+ppm9IVetjomROBJdyvViCBN99SHURJoNL
-         TLqKFI3iAKSsjEYfSn6CLGhtVoApxGx53YyvQrnnJA2Qsf6Z3TtPYuJok6yowRB0fX4D
-         BSBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695315547; x=1695920347;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lHCS21QIk3L+DNjxmnEhYWKsA7WV3a4yGzQ5Vl55Ezw=;
-        b=joAyIfbHVkXDWiid16SR/hpKY+M6sGWbtc7MoCB8ZZqQctwrVG69a2AqD8tJad/JJg
-         XpdUMiodU0v2RfgAV9AP4kP0W+8kqVga9LCO6ebGrGNDDlCJSuYfC9nNkvdA9MAmDL6t
-         Knk1G6ky4YlFbd8nNh25yLd5neaaw5ayQz29B62ODzwgt3087O+XAp5I6p7v6bZrexJh
-         mDrfOXse6+7bYPD3QNJaNn+HlivgwzQONeed7mk9ERddCQ2vsJhZo0Dksf3lPAcDgX3Z
-         fAYoe9wZCneC83rJbACbh7iQZnv62zdFe2XyB0Ilxa9llauoZZZhXTXPiJtUxzGRzhV8
-         Rk0Q==
-X-Gm-Message-State: AOJu0YxA3yO1PxIbXde9RF21OlsvlvcCHUgYEK/0dwxXrypbOqsgrjiE
-        KYUw5QDC/4vT2du+H+l1xf0OXuLtQyI=
-X-Google-Smtp-Source: AGHT+IFg5DznAGOg1mVnHhU90rf67WF//DLZRWMgLq1fwB4Dooh3RaTYeCoe6mlIN5gyG9nAAZFHFw==
-X-Received: by 2002:a5b:7c5:0:b0:d81:5ec1:80d5 with SMTP id t5-20020a5b07c5000000b00d815ec180d5mr4016062ybq.18.1695272810276;
-        Wed, 20 Sep 2023 22:06:50 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id s196-20020a6377cd000000b005789cbd2cacsm347811pgc.20.2023.09.20.22.06.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 22:06:49 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hwmon fixes for v6.6-rc3
-Date:   Wed, 20 Sep 2023 22:06:47 -0700
-Message-Id: <20230921050647.4048805-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.39.2
+        Thu, 21 Sep 2023 13:26:44 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D7626B8
+        for <linux-hwmon@vger.kernel.org>; Thu, 21 Sep 2023 10:01:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695315701; x=1726851701;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YAZeKBHLjed9WszyR6yfhUABYujx6VDl+31sOawmrSM=;
+  b=ihgUijkecf5YOm4gkWJDcw98KcZe2P5tgnPflckiBEx/WRTtKJBrzMDG
+   +7IA32tOsgTAjq0DIa4L3ydDpUKoVwW6L6WFMSvN6dYQWCKXIwCFhW/1J
+   wFyrqClllMWidXDFg3/i6y3Fjmk5BDXXUyT8cMQLTFR3qqCIoHuahPY+i
+   rzXgWzeMAvlTzegUBjkW/+YNBD7RBbMnqI9yZy7jtBAt6PT1ISbYF2LlE
+   Lx4Pdre00s8nbqRhY6L35PVAQ/IHb4dbE5Ihb0+vCTjfBrQg2j6hYN3k5
+   DXyVc39W8tAfVTmlJKJSYdSP/55MN0BNfnnZnaF3UICBM7s2RFj4Z6DD5
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="466788332"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
+   d="scan'208";a="466788332"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 03:18:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="740573603"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
+   d="scan'208";a="740573603"
+Received: from bnilawar-desk1.iind.intel.com ([10.145.169.158])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 03:18:02 -0700
+From:   Badal Nilawar <badal.nilawar@intel.com>
+To:     intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org
+Cc:     anshuman.gupta@intel.com, ashutosh.dixit@intel.com,
+        linux@roeck-us.net, andi.shyti@linux.intel.com,
+        riana.tauro@intel.com, matthew.brost@intel.com,
+        rodrigo.vivi@intel.com
+Subject: [PATCH v5 0/6] Add HWMON support for DGFX
+Date:   Thu, 21 Sep 2023 15:55:13 +0530
+Message-Id: <20230921102519.3355538-1-badal.nilawar@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Linus,
+This series adds the hwmon support on xe driver for 
+DGFX. This is ported from i915 hwmon. 
 
-Please pull hwmon fixes for Linux v6.6-rc3 from signed tag:
+v3: Fix review comments (Matt Brost/Andi) 
 
-    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v6.6-rc3
+v4:
+  - Squashed "Add HWMON infrastructure" patch to "Expose power attributes"
+  - Dropped changes related to disable PL1 to boost firmware loading. 
+    Will handle it saperate patch/series.
+  - Dropped changes related to gt specific energy attributes. 
+    Will handle gt specific energy attributes in saperate patch/series with design
+    change suggested by Guenter
+  - Fix review comments (Andi/Guenter)
 
-Thanks,
-Guenter
-------
+v5: Rebased and clean up
 
-The following changes since commit 0bb80ecc33a8fb5a682236443c1e740d5c917d1d:
+Badal Nilawar (6):
+  drm/xe: Add XE_MISSING_CASE macro
+  drm/xe/hwmon: Expose power attributes
+  drm/xe/hwmon: Expose card reactive critical power
+  drm/xe/hwmon: Expose input voltage attribute
+  drm/xe/hwmon: Expose hwmon energy attribute
+  drm/xe/hwmon: Expose power1_max_interval
 
-  Linux 6.6-rc1 (2023-09-10 16:28:41 -0700)
+ .../ABI/testing/sysfs-driver-intel-xe-hwmon   |  72 ++
+ drivers/gpu/drm/xe/Makefile                   |   3 +
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h          |   9 +
+ drivers/gpu/drm/xe/regs/xe_mchbar_regs.h      |  44 +
+ drivers/gpu/drm/xe/xe_device.c                |   3 +
+ drivers/gpu/drm/xe/xe_device_types.h          |   2 +
+ drivers/gpu/drm/xe/xe_hwmon.c                 | 758 ++++++++++++++++++
+ drivers/gpu/drm/xe/xe_hwmon.h                 |  20 +
+ drivers/gpu/drm/xe/xe_macros.h                |   4 +
+ drivers/gpu/drm/xe/xe_pcode.h                 |   5 +
+ drivers/gpu/drm/xe/xe_pcode_api.h             |   7 +
+ 11 files changed, 927 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
+ create mode 100644 drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
+ create mode 100644 drivers/gpu/drm/xe/xe_hwmon.c
+ create mode 100644 drivers/gpu/drm/xe/xe_hwmon.h
 
-are available in the Git repository at:
+-- 
+2.25.1
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v6.6-rc3
-
-for you to fetch changes up to 2dd1d862817b850787f4755c05d55e5aeb76dd08:
-
-  hwmon: (nct6775) Fix non-existent ALARM warning (2023-09-18 11:52:18 -0700)
-
-----------------------------------------------------------------
-hwmon fix for v6.6-rc3
-
-One patch to drop a non-existent alarm attribute in the nct6775 driver
-
-----------------------------------------------------------------
-Ahmad Khalifa (1):
-      hwmon: (nct6775) Fix non-existent ALARM warning
-
- drivers/hwmon/nct6775-core.c | 4 ++++
- 1 file changed, 4 insertions(+)
