@@ -2,278 +2,420 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF517A9667
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0B17A980C
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 Sep 2023 19:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjIURCQ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Thu, 21 Sep 2023 13:02:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        id S230038AbjIUR3h (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Thu, 21 Sep 2023 13:29:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229801AbjIURCE (ORCPT
+        with ESMTP id S230062AbjIUR2z (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Thu, 21 Sep 2023 13:02:04 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5EED19BE;
-        Thu, 21 Sep 2023 09:59:53 -0700 (PDT)
+        Thu, 21 Sep 2023 13:28:55 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC89F54907
+        for <linux-hwmon@vger.kernel.org>; Thu, 21 Sep 2023 10:17:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695316629; x=1726852629;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=vSuqBx1dLAO4E9D3i0J3xhqpToCEfluHZRnjfQWKV70=;
+  b=mmGk6QAzYti7PMNgjFx/L4FRUxhCgInzG8m1LAIAAdGdVEtnYDw9UV3S
+   KSNHt+H3xW41HkNfS038jrfcN12wiSFrdygSSvdvDleavNZ4K21LsSdmg
+   ZHdypmB2P9NUQTB39MQNGAZ5QdPwBFaN8/W1MZhihOPemjNLcaAvKngtQ
+   CHgiaFSijGy2yIMN9TlGCMTTpFUjZasLtncaq15sXkBJDGN0zBhMKNIIP
+   zLW1ALFhZh+c94SOuXgJ89OD/QuRpR+PJ3hvWt0Z6K3DKHi8dCVzeE+W4
+   AyX+j9XK1/QxvdClFfvjgCM/lDHsZ67FF+GgRyYhS7rO3MGafV2PBoxRR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="380438472"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
+   d="scan'208";a="380438472"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 07:09:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="747126711"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
+   d="scan'208";a="747126711"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Sep 2023 07:09:38 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 21 Sep 2023 07:09:38 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Thu, 21 Sep 2023 07:09:38 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.171)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Thu, 21 Sep 2023 07:09:38 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UZAYgm82ntBfO+UUHZtnsZxysUtEZZmRWjx8Aqx0aZO84j/vNre7luLw/gexksNf4JCBvYMMrryfrIZMTEw1ZoDdZeZvZJZ5xEtkz5thUn3zdF9Ved98EzPptY7e42aCbSXXY6foQwWzBOyv/C/mSHPTGpZFKtyFxyHkN47XlaneopXWgY2KaRHccgrgYhoz6Ec6pltWt5/BeJJ4UbaBdymWfDyoQGjbUI2wtOwr77mZM9rSrQ+FrH9yyZdfpxAyfoN8BSQIZpRF333XEoveq6EWEpj/g3lI8JI6jRIqenZtJm8LiKJhpq3OFepKVBZOm+ahXeo4HSylpAnOqyCsBQ==
+ b=lTIABQ0+tM1eaiDh2XslfSHRJpqqU8MXsOU9ByWGkief2pAVS9BJ6Nwrde72DXf/ZUlTlk4YoYGgP4XMZhrNB8qSDgPu/1DESoyWiVU84sxQFR//TLJ54T5n9sNXxeV4wKZ7CMEH34CAxRc+a+8QSmncHcA8eCAzP5Hs7bDcXGyTWrifnuJrdCLLn8M6eEThhhMY8kZsuF4aq+iIdw9s2rIpJbP2kKYkc+nMLlTLN+LXznVehZzpyxn9+I28+xTM333L+vYm6mlXIMAUVxHJVLcAiGn6N96WxjcdKNnWjzVBfYCnmCIg1HtygWbOdG3DGMAIBDmspRhkuQ+FnqPtFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4UkB9s5xBccRKqPVNLpA4gXzkA9jD0OZbiBOWe052aI=;
- b=CY55o5U9SGiMea63HfADC/V2w1Xc0WiefU+7HSRkOPtoKPr9Kby0x7H2fuWUqYH/Uu/kO5k+im2/VQE6Bmu/peo0wsQhbjl6pn6TeJO9KHHU+UPhb1xAVtN/eyOfneNEZ8X5ASWajep7pRdVjZNiM+7yWnZc5hGeoNSAaw8DBVZVZY9QRxLJTilgAJuu/EsmFLXUoazDzLzJ261EwNibRqpF9sF4sV1qSL1OkAUiz31hVxUHZ8l775mGhB2DVfStxexo8ukJk/EMpr9F8vryo7HFwj+3Duh2oOv5usuP/bVY/aOi8X0duY3UkC5TWG+yoa/nA1WhJ8so4PlVvS1brA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=suse.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4UkB9s5xBccRKqPVNLpA4gXzkA9jD0OZbiBOWe052aI=;
- b=e2vq3VYUhBSmqR8y9WrNnV8Ex0pxVBMWyq2FD5HdW1xDHPAnS70sTkfNT8trkdfHMLQ11EGG599ju1vCkaewl1eoXfPGzy8crkugE5FrW0ujA/8tUY5MsLg4rbA4H84h4hN9wrTSJGjr0zGGJiHYCsYz6KezugvyvGFOK0OsobFyvLwrOXebwj5JX0H8z/jrqGkuI+6WiXWSEO+zcgvs3hacE4tc4lyyPaDj2jdMwSCqwnv3+xVdU9B34v0qhhVPF81In3DFG0uOh3MLiucRxYoC+hgG+pF2GADtxnU00EM4sy0pPGAMTzWPB5NAiI5pKeP/9Vsb5D3i6XpJpdFI+Q==
-Received: from BY5PR04CA0022.namprd04.prod.outlook.com (2603:10b6:a03:1d0::32)
- by IA1PR12MB8538.namprd12.prod.outlook.com (2603:10b6:208:455::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Thu, 21 Sep
- 2023 13:11:56 +0000
-Received: from DS2PEPF0000343E.namprd02.prod.outlook.com
- (2603:10b6:a03:1d0:cafe::86) by BY5PR04CA0022.outlook.office365.com
- (2603:10b6:a03:1d0::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.31 via Frontend
- Transport; Thu, 21 Sep 2023 13:11:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS2PEPF0000343E.mail.protection.outlook.com (10.167.18.41) with Microsoft
+ bh=h27fxy5WueY9Ei8oApWzItwHlmCS1slDb/w3OYbtm38=;
+ b=FnwKXVj/+0PmLjcXfgmDwKvgswHlQxljvBwdpnlatRuF1x1+nxrDUzj4RMsQ1tV1NmhOH6QlKQZsMejjl12q+v6rpJ03DumPWJapX/Arnq+5FALRICalwAYcxeALfX8iynQ1dOFP49p6Wobs40yDFfcstv/svYBKuNMCkqjzc6i1gS/YQUBqpSva+J/T0cTc+916GbJoA47PtCWFJ91aXOvgPgvniWf7JMv6mivVAK3QDyzSMmA1ddXFZtHZHDmY6BjfkL5L5lHPwYF2qcdBViQDTMmUgSti3MdD94Ygk10trrPDiWRplMxsbEcoAB8p+kpW42adCL2IlmPIpuT8TQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ DM4PR11MB6143.namprd11.prod.outlook.com (2603:10b6:8:b1::11) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6792.20 via Frontend Transport; Thu, 21 Sep 2023 13:11:54 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 21 Sep
- 2023 06:11:41 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 21 Sep
- 2023 06:11:40 -0700
-Received: from moonraker.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server id 15.2.986.41 via Frontend
- Transport; Thu, 21 Sep 2023 06:11:38 -0700
-From:   Jon Hunter <jonathanh@nvidia.com>
-To:     Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-CC:     <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>, Ninad Malwade <nmalwade@nvidia.com>,
-        "Rajkumar Kasirajan" <rkasirajan@nvidia.com>,
-        Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH V3 3/4] hwmon: ina3221: Add support for channel summation disable
-Date:   Thu, 21 Sep 2023 14:08:17 +0100
-Message-ID: <20230921130818.21247-4-jonathanh@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230921130818.21247-1-jonathanh@nvidia.com>
-References: <20230921130818.21247-1-jonathanh@nvidia.com>
+ 15.20.6792.27; Thu, 21 Sep 2023 14:09:36 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::6b9:384:8202:b294]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::6b9:384:8202:b294%7]) with mapi id 15.20.6792.026; Thu, 21 Sep 2023
+ 14:09:35 +0000
+Message-ID: <ae591302-4c1b-227a-5a4e-b8e726144447@intel.com>
+Date:   Thu, 21 Sep 2023 19:39:23 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [PATCH v5 5/6] drm/xe/hwmon: Expose hwmon energy attribute
+To:     Badal Nilawar <badal.nilawar@intel.com>,
+        <intel-xe@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>
+CC:     <anshuman.gupta@intel.com>, <ashutosh.dixit@intel.com>,
+        <linux@roeck-us.net>, <andi.shyti@linux.intel.com>,
+        <matthew.brost@intel.com>, <rodrigo.vivi@intel.com>
+References: <20230921102519.3355538-1-badal.nilawar@intel.com>
+ <20230921102519.3355538-6-badal.nilawar@intel.com>
+Content-Language: en-US
+From:   Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20230921102519.3355538-6-badal.nilawar@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0089.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:23::34) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF0000343E:EE_|IA1PR12MB8538:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fb73dff-8491-4347-391c-08dbbaa453fe
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|DM4PR11MB6143:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5de4779-792e-4631-ee0d-08dbbaac624b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JeMoSaBE7k4MnBjgx1X6QmBOihfrvIeEoZvObuOsUyzEk7CMVVAWR0rl0eRCGaSQM85irE9YZP6K9LKSfXRh6U0grlss1x0K4nCiNMj8UUc9GE2yfUmU18rhybVycU8ndCC2nQvmrccArxYNwVoFYIOTWCnyYNBwDjlQ1jzWqVHczHSEl59DXsev9DqJ174v1+z6PuuRzxv3mt73SrM6WslrC8RlnSaPxvbW2MEvvdBPLpAQqiJ08f4EHerTnfbUOTvhcZQRlMSQCrmA9DbZotPrzqz+EixKH4fScggrxGqa/xfs9kwilpn4Hl4Ym1W53Lmyf9UFJs3GNSx7+lFa3mPneQXEIaBWf+OWDNne5Ix9eLohD3Bx9+o7PUBLNDHjCe5xXw2JZn1YbVdp5jperL28viBfdEKHJ9S7xyoitGrcMFo5KPVYfy3/KGXItlsw1Y+DZeTh74PFNpYK5YsbQnamue6PQlVh+mGpkt5ba1xlgd2OYnE32zYU8ppHYlAFzTgKsPTU6URMeD+dhSBn1oKDzCbyb7pmn6box69Y9Q1wg5jYGJ0FOPWkSZNCVmS2zh4N/C/jJaoX+sLdYCh0OVOJeVI83Xwu/bruY+E+XInpD/xWANfZOXw+x3nOtZKFaUfD+icZOQ/mKLa5G7v/U1tlbP984N5BPPhUYGYBuB8ko81DWTv2Dl+KWARef+oDPLUKNreqJfTP4w3+ShYRTAlNW2lNscNZBYC3NOTnm0u4nWZ+4CkuL2reZsrpO/vN
-X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(376002)(39860400002)(136003)(346002)(82310400011)(1800799009)(186009)(451199024)(46966006)(40470700004)(36840700001)(7696005)(478600001)(6666004)(8936002)(8676002)(83380400001)(70206006)(70586007)(54906003)(110136005)(316002)(40460700003)(5660300002)(107886003)(2616005)(36860700001)(36756003)(4326008)(86362001)(82740400003)(40480700001)(26005)(47076005)(336012)(2906002)(426003)(1076003)(41300700001)(356005)(7636003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 13:11:54.8223
+X-Microsoft-Antispam-Message-Info: cpVy/7gc7eSCg6YTgrg64qPztUPWiTrtrvQ2bi3d+VEPG0o8GufkXC8wNgsOa03f9xv92Ny7EthMw7EtRvo7enS5MnWqiIfFas1fyCITTuBUN0Yb+NJp/tnVrRY7odSB1CaWlSzGDRTqfTEI+B03q+Ohi/QKacT5VFucjlimusEq4SC9u/Am1iFKDLOvn4vqUbw+H2Zh4T8U3hp1ChZhrjrP3PIy2JXGGyaThZZqmNbmAPzDWYh+LFhknQ3hPusr5RNYE09e+n3bw0/uUNvWrYUpMGGp82pTuWm5CSRujKTV6FelzNxkoLR64xvyDolrXenjRtIbkI3/l4cLtVBhG3jgfwds0HQD1gpdBmjiRlEa3ys1eGLwi2UqgShcu1KMa0Eg+pzYuJ0jh8Fl22ZIP3BI77Hh0zVLaUqmP5WdjQB33sToYlr0dtWU86muJt9C/XEJGYsXrzcunhSVoQ38eXkmD91neQHu/i74zkb9vP4o68WlTeg7cfDAtG7e+W3P/6H+Uo/jQIR2g66WvjZjWKJxops61103fy1w8ZyqChE1Q/GxRh+Y2xv0am30iYrACRKv18IW7xn/rG3IZ8x8XpvND1em32+//dIYKg6awEzJQ83HEK6r4Myl6D+VA23+GI5EHl085xV6o3cwP9rQuA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(376002)(136003)(366004)(396003)(451199024)(186009)(1800799009)(478600001)(6512007)(6486002)(44832011)(5660300002)(6506007)(53546011)(86362001)(66946007)(66476007)(38100700002)(41300700001)(316002)(66556008)(31686004)(6666004)(82960400001)(26005)(8936002)(2616005)(83380400001)(31696002)(36756003)(4326008)(8676002)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZjdVWDdnbkl6VkFrVVYzQzB1SytCbGFIdkI3a0xjM2dQN3lvQ3NZdHlhaExC?=
+ =?utf-8?B?Q01HaWNwbzVvemZEV2g1cHBucTU1MFlGcVJEWnA3eFMwVkp1b1FiTFpIRVhn?=
+ =?utf-8?B?SkxndFYxbFQrRzltZlhIZ0lrZkQrelAxdkt0RExzRnBOUVhuakJIa2ZxaHIx?=
+ =?utf-8?B?RWlib3hNV3V3T1BiazRXelZ1dzRZbnliQzJKcElhWWJXdklDcUNqTHlFSjZR?=
+ =?utf-8?B?c2NKWi9oOFhpemROaGttOW04UzEzaE13Vm5XS3pWQlkrb2NIT3hwdEpFRlJC?=
+ =?utf-8?B?UE5aMlRGcGErWUlIdXNIT09WT1k1ZzhqU3l6NzB0M3ZPU1QxbnlFRUdUdjZZ?=
+ =?utf-8?B?akp0SVVsNzdjMTRFVE8zTXc2b2M3a1hHcHNXdml1R2E2alBlM0o1cjB4VVUy?=
+ =?utf-8?B?RCs0akFUR1htM0tJZmxBS0FpZi9tMnhla0xMc1IvdDZKLzZhNGtDY0N1SVhk?=
+ =?utf-8?B?THB4bXNIbFgxRllnSzFQR29nWHdiblkwZnpvSjdBYzg3cStCSlI4ZjdnVjlF?=
+ =?utf-8?B?TE5CZ1hPdEdEYXZxamk2cm9ORERrbXZNMkNqZjdBdGN1MFQveGRKQnpSdTJk?=
+ =?utf-8?B?U0xwZGRpRnQ5d1d2VWpiVUpVYy9rbWV0RmZYelFuYjZRZFBXNUV4cVpwOWFC?=
+ =?utf-8?B?TGdGRUlZV0I1N0tPRmVCY21kd2kxL0NHOTVIRHlWM2NLaHIxVkErSlBvZ3dG?=
+ =?utf-8?B?TDVDZXFKZi9Ka3hxTVZ4RUc1Mys4MnhDRkh3NVV3OTd6dDVlbjQ2Y2UxZzk2?=
+ =?utf-8?B?TE1zTmhwVVI4V1l6REkzTGpTSnlLTFBRSjNQanFxbDNBemU5QjRyL3ZFdnlW?=
+ =?utf-8?B?QzdjdDFQQ1llbTRLTkx5SDZRZXZkUHBSTVliamdUZGZEblh6TC83T0pscFFi?=
+ =?utf-8?B?alNkanZIZzROV3B6ajMwL213djZHSnRoSzhldDA2UzhITml4eWJWeUJaV0NS?=
+ =?utf-8?B?bWcySTcycHpCdHFtWjlmQ09pL05tNEhVT01ENGlCNzg2WFBFaWYyK0l3QnQ1?=
+ =?utf-8?B?YWZjSS9DYlhzcUlZK3ZOa08wWmZSSk1sYW9jVXJZT0F1TTRnRTFXaEcvN3Ex?=
+ =?utf-8?B?M0t2QkN2L2RVV0ZRTXRLeW5ZYk5ZQ1ptQVluTzJrbllwSUNiUEszUDVqR0x6?=
+ =?utf-8?B?UWJ6d3dVZzJoWFhFeVI3TVRoL1FOMml6Qmx3UW9PeG5JYmZ3V05PcXU1anlv?=
+ =?utf-8?B?bEcySGVTelpFTllaMFZKcFgvTzlqaW5YUHBEZThkYThTYS9icVlXSXlCcjh4?=
+ =?utf-8?B?K2R4eitacXorWGsyaTJaYW9YZFlsSmgzaXJlZlF3a2N6ZTVVNmpBU1ppbjg1?=
+ =?utf-8?B?WXZmelIwcDVIS0FRd2l2K2p2RkpUbmxjSGRVTU1TRGdxUkxzMjZkVktjZGg0?=
+ =?utf-8?B?ZkRNbVJnUkdvTTNGanBjNVhkMFI4SzRadk5TdGY3MXVZdGFlMHBmbHorODVO?=
+ =?utf-8?B?M1lYd05jOGJscDBEOW5KdWpJSlFjM0s3U3J4N1NId1pPN0I2YWVwZkk2TXZm?=
+ =?utf-8?B?RlBzbXdkWTl0ZG84ejFmaGNReklKWEQyT1VoTlorOTF3TUlaMG9XY25SK0kx?=
+ =?utf-8?B?bUZXeTJHbDB3b01ZZ2tLMlRRbnhOUmlicXI4dHNuWWZNRHdLWk83MnJkZDVK?=
+ =?utf-8?B?bk9mVkRyZ0dDaHVpeXcwcmpkbVVBVWRJNmphWDFQSnpZUVhRQkVCK29hb3Ra?=
+ =?utf-8?B?bmpNUlVtanNaMDdvWEdNZmZqQ1NGVU14dE5IV0dCaEswSXZvNzJuV0JMa3Vv?=
+ =?utf-8?B?SDR2RitVNkE4V0MxbmJkTzhaVzloMkY4R0pka09WOGRjTVc5Q084Y1czOUly?=
+ =?utf-8?B?SVRINUlkOXltdFJHVUoyTXpWYjRVZDZ2TXllV3RrTzRySjJRNi8xeDdhVDNQ?=
+ =?utf-8?B?a3V5b3J2UU1uVDFTZ1RQSEhkdlJFWDZBZnI0VDFOYUZLVE8zOUQ2cVYxc01L?=
+ =?utf-8?B?T2Z6Z1VUWUtObStjTk9tMlRiYmVoeUdCZWZVazQzLzBpQ1AraDZpbjB2SDNq?=
+ =?utf-8?B?UW5xM3kzRW1QK09WTnhkc1FpMFF6VzVRU2tNOEg4eEo4bmd2WDBwTDFsWUxR?=
+ =?utf-8?B?djg5emNreU5BbzkweVVpN3d6ZDF5cjdIaTM2ZmtuQWJEUHJvRmYrakdqWktI?=
+ =?utf-8?Q?lE1p+q0yVnHQAerZZYZpL3jeC?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5de4779-792e-4631-ee0d-08dbbaac624b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 14:09:35.3588
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fb73dff-8491-4347-391c-08dbbaa453fe
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8538
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gIsfHhEe1W1weHSvt2/bGmyTXnuUR66p+oBgxBBxfU5TWp+uwh3l+qYxxkqgA2fPBVqATQiL/dEfvPtpI82Xfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6143
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-From: Ninad Malwade <nmalwade@nvidia.com>
+Hi Badal
 
-The INA3221 allows the Critical alert pin to be controlled by the
-summation control function. This function adds the single
-shunt-voltage conversions for the desired channels in order to compare
-the combined sum to the programmed limit. The Shunt-Voltage Sum Limit
-register contains the programmed value that is compared to the value in
-the Shunt-Voltage Sum register in order to determine if the total summed
-limit is exceeded. If the shunt-voltage sum limit value is exceeded, the
-Critical alert pin pulls low.
+On 9/21/2023 3:55 PM, Badal Nilawar wrote:
+> Expose hwmon energy attribute to show device level energy usage
+> 
+> v2:
+>    - %s/hwm_/hwmon_/
+>    - Convert enums to upper case
+> v3:
+>    - %s/hwmon_/xe_hwmon
+>    - Remove gt specific hwmon attributes
+> v4:
+>   - %s/REG_PKG_ENERGY_STATUS/REG_ENERGY_STATUS_ALL (Riana)
+> 
+> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+> ---
+>   .../ABI/testing/sysfs-driver-intel-xe-hwmon   |   7 ++
+>   drivers/gpu/drm/xe/regs/xe_gt_regs.h          |   2 +
+>   drivers/gpu/drm/xe/regs/xe_mchbar_regs.h      |   3 +
+>   drivers/gpu/drm/xe/xe_hwmon.c                 | 105 +++++++++++++++++-
+>   4 files changed, 116 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon b/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
+> index 7f9407c20864..1a7a6c23e141 100644
+> --- a/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
+> +++ b/Documentation/ABI/testing/sysfs-driver-intel-xe-hwmon
+> @@ -52,3 +52,10 @@ Description:	RO. Current Voltage in millivolt.
+>   
+>   		Only supported for particular Intel xe graphics platforms.
+>   
+> +What:		/sys/devices/.../hwmon/hwmon<i>/energy1_input
+> +Date:		September 2023
+> +KernelVersion:	6.5
+> +Contact:	intel-xe@lists.freedesktop.org
+> +Description:	RO. Energy input of device in microjoules.
+> +
+> +		Only supported for particular Intel xe graphics platforms.
+> diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+> index 102663cbc320..9e6ce74fdd68 100644
+> --- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+> +++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+> @@ -413,8 +413,10 @@
+>   #define XEHPC_BCS5_BCS6_INTR_MASK		XE_REG(0x190118)
+>   #define XEHPC_BCS7_BCS8_INTR_MASK		XE_REG(0x19011c)
+>   
+> +#define PVC_GT0_PACKAGE_ENERGY_STATUS		XE_REG(0x281004)
+This is not used in the file
+>   #define PVC_GT0_PACKAGE_RAPL_LIMIT		XE_REG(0x281008)
+>   #define PVC_GT0_PACKAGE_POWER_SKU_UNIT		XE_REG(0x281068)
+> +#define PVC_GT0_PLATFORM_ENERGY_STATUS		XE_REG(0x28106c)
+>   #define PVC_GT0_PACKAGE_POWER_SKU		XE_REG(0x281080)
+>   
+>   #endif
+> diff --git a/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h b/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
+> index 27f1d42baf6d..d8ecbe1858d1 100644
+> --- a/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
+> +++ b/drivers/gpu/drm/xe/regs/xe_mchbar_regs.h
+> @@ -25,6 +25,9 @@
+>   
+>   #define PCU_CR_PACKAGE_POWER_SKU_UNIT		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x5938)
+>   #define   PKG_PWR_UNIT				REG_GENMASK(3, 0)
+> +#define   PKG_ENERGY_UNIT			REG_GENMASK(12, 8)
+> +
+> +#define PCU_CR_PACKAGE_ENERGY_STATUS		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x593c)
+>   
+>   #define PCU_CR_PACKAGE_RAPL_LIMIT		XE_REG(MCHBAR_MIRROR_BASE_SNB + 0x59a0)
+>   #define   PKG_PWR_LIM_1				REG_GENMASK(14, 0)
+> diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
+> index 431995045faa..cb75b9a386c0 100644
+> --- a/drivers/gpu/drm/xe/xe_hwmon.c
+> +++ b/drivers/gpu/drm/xe/xe_hwmon.c
+> @@ -22,6 +22,7 @@ enum xe_hwmon_reg {
+>   	REG_PKG_POWER_SKU,
+>   	REG_PKG_POWER_SKU_UNIT,
+>   	REG_GT_PERF_STATUS,
+> +	REG_PKG_ENERGY_STATUS,
+PVC register above has it PLATFORM. Is PKG okay incase the other 
+register is added later?
+>   };
+>   
+>   enum xe_hwmon_reg_operation {
+> @@ -36,12 +37,20 @@ enum xe_hwmon_reg_operation {
+>   #define SF_POWER	1000000		/* microwatts */
+>   #define SF_CURR		1000		/* milliamperes */
+>   #define SF_VOLTAGE	1000		/* millivolts */
+> +#define SF_ENERGY	1000000		/* microjoules */
+> +
+> +struct hwmon_energy_info {
+Better to retain xe prefix since all the enums and structs have the 
+prefix across the file
 
-For the summation limit to have a meaningful value, we have to use the
-same shunt-resistor value on all included channels. Unless equal
-shunt-resistor values are used for each channel, the summation control
-function cannot be used and it is not enabled by the driver.
+With the above changes
 
-To address this, add support to disable the summation of specific
-channels via device tree property "ti,summation-disable". The channel
-which has this property would be excluded from the calculation of
-summation control function.
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 
-For example, summation control function calculates Shunt-Voltage Sum as:
 
-- input_shunt_voltage_summation = input_shunt_voltage_channel1
-                                + input_shunt_voltage_channel2
-                                + input_shunt_voltage_channel3
 
-If we want the summation to only use channel1 and channel3, we can add
-'ti,summation-disable' property in device tree node for channel2. Then
-the calculation will skip channel2.
-
-- input_shunt_voltage_summation = input_shunt_voltage_channel1
-                                + input_shunt_voltage_channel3
-
-Note that we only want the channel to be skipped for summation control
-function rather than completely disabled. Therefore, even if we add the
-property 'ti,summation-disable', the channel is still enabled and
-functional.
-
-Finally, create debugfs entries that display if summation is disabled
-for each of the channels.
-
-Signed-off-by: Rajkumar Kasirajan <rkasirajan@nvidia.com>
-Signed-off-by: Ninad Malwade <nmalwade@nvidia.com>
-Co-developed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
----
- drivers/hwmon/ina3221.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
-index 5ab944056ec0..359b758e9f03 100644
---- a/drivers/hwmon/ina3221.c
-+++ b/drivers/hwmon/ina3221.c
-@@ -6,6 +6,7 @@
-  *	Andrew F. Davis <afd@ti.com>
-  */
- 
-+#include <linux/debugfs.h>
- #include <linux/hwmon.h>
- #include <linux/hwmon-sysfs.h>
- #include <linux/i2c.h>
-@@ -104,6 +105,7 @@ struct ina3221_input {
- 	const char *label;
- 	int shunt_resistor;
- 	bool disconnected;
-+	bool summation_disable;
- };
- 
- /**
-@@ -123,8 +125,10 @@ struct ina3221_data {
- 	struct regmap_field *fields[F_MAX_FIELDS];
- 	struct ina3221_input inputs[INA3221_NUM_CHANNELS];
- 	struct mutex lock;
-+	struct dentry *debugfs;
- 	u32 reg_config;
- 	int summation_shunt_resistor;
-+	u32 summation_channel_control;
- 
- 	bool single_shot;
- };
-@@ -154,7 +158,8 @@ static inline int ina3221_summation_shunt_resistor(struct ina3221_data *ina)
- 	int i, shunt_resistor = 0;
- 
- 	for (i = 0; i < INA3221_NUM_CHANNELS; i++) {
--		if (input[i].disconnected || !input[i].shunt_resistor)
-+		if (input[i].disconnected || !input[i].shunt_resistor ||
-+		    input[i].summation_disable)
- 			continue;
- 		if (!shunt_resistor) {
- 			/* Found the reference shunt resistor value */
-@@ -786,6 +791,9 @@ static int ina3221_probe_child_from_dt(struct device *dev,
- 	/* Save the connected input label if available */
- 	of_property_read_string(child, "label", &input->label);
- 
-+	/* summation channel control */
-+	input->summation_disable = of_property_read_bool(child, "ti,summation-disable");
-+
- 	/* Overwrite default shunt resistor value optionally */
- 	if (!of_property_read_u32(child, "shunt-resistor-micro-ohms", &val)) {
- 		if (val < 1 || val > INT_MAX) {
-@@ -827,6 +835,7 @@ static int ina3221_probe(struct i2c_client *client)
- 	struct device *dev = &client->dev;
- 	struct ina3221_data *ina;
- 	struct device *hwmon_dev;
-+	char name[32];
- 	int i, ret;
- 
- 	ina = devm_kzalloc(dev, sizeof(*ina), GFP_KERNEL);
-@@ -873,6 +882,10 @@ static int ina3221_probe(struct i2c_client *client)
- 
- 	/* Initialize summation_shunt_resistor for summation channel control */
- 	ina->summation_shunt_resistor = ina3221_summation_shunt_resistor(ina);
-+	for (i = 0; i < INA3221_NUM_CHANNELS; i++) {
-+		if (!ina->inputs[i].summation_disable)
-+			ina->summation_channel_control |= BIT(14 - i);
-+	}
- 
- 	ina->pm_dev = dev;
- 	mutex_init(&ina->lock);
-@@ -900,6 +913,15 @@ static int ina3221_probe(struct i2c_client *client)
- 		goto fail;
- 	}
- 
-+	scnprintf(name, sizeof(name), "%s-%s", INA3221_DRIVER_NAME, dev_name(dev));
-+	ina->debugfs = debugfs_create_dir(name, NULL);
-+
-+	for (i = 0; i < INA3221_NUM_CHANNELS; i++) {
-+		scnprintf(name, sizeof(name), "in%d_summation_disable", i);
-+		debugfs_create_bool(name, 0400, ina->debugfs,
-+				    &ina->inputs[i].summation_disable);
-+	}
-+
- 	return 0;
- 
- fail:
-@@ -918,6 +940,8 @@ static void ina3221_remove(struct i2c_client *client)
- 	struct ina3221_data *ina = dev_get_drvdata(&client->dev);
- 	int i;
- 
-+	debugfs_remove_recursive(ina->debugfs);
-+
- 	pm_runtime_disable(ina->pm_dev);
- 	pm_runtime_set_suspended(ina->pm_dev);
- 
-@@ -978,13 +1002,13 @@ static int ina3221_resume(struct device *dev)
- 	/* Initialize summation channel control */
- 	if (ina->summation_shunt_resistor) {
- 		/*
--		 * Take all three channels into summation by default
-+		 * Sum only channels that are not disabled for summation.
- 		 * Shunt measurements of disconnected channels should
- 		 * be 0, so it does not matter for summation.
- 		 */
- 		ret = regmap_update_bits(ina->regmap, INA3221_MASK_ENABLE,
- 					 INA3221_MASK_ENABLE_SCC_MASK,
--					 INA3221_MASK_ENABLE_SCC_MASK);
-+					 ina->summation_channel_control);
- 		if (ret) {
- 			dev_err(dev, "Unable to control summation channel\n");
- 			return ret;
--- 
-2.34.1
-
+> +	u32 reg_val_prev;
+> +	long accum_energy;		/* Accumulated energy for energy1_input */
+> +};
+>   
+>   struct xe_hwmon {
+>   	struct device *hwmon_dev;
+>   	struct xe_gt *gt;
+>   	struct mutex hwmon_lock; /* rmw operations*/
+>   	int scl_shift_power;
+> +	int scl_shift_energy;
+> +	struct hwmon_energy_info ei;	/*  Energy info for energy1_input */
+>   };
+>   
+>   static u32 xe_hwmon_get_reg(struct xe_hwmon *hwmon, enum xe_hwmon_reg hwmon_reg)
+> @@ -72,6 +81,12 @@ static u32 xe_hwmon_get_reg(struct xe_hwmon *hwmon, enum xe_hwmon_reg hwmon_reg)
+>   		if (xe->info.platform == XE_DG2)
+>   			reg = GT_PERF_STATUS;
+>   		break;
+> +	case REG_PKG_ENERGY_STATUS:
+> +		if (xe->info.platform == XE_DG2)
+> +			reg = PCU_CR_PACKAGE_ENERGY_STATUS;
+> +		else if (xe->info.platform == XE_PVC)
+> +			reg = PVC_GT0_PLATFORM_ENERGY_STATUS;
+> +		break;
+>   	default:
+>   		XE_MISSING_CASE(hwmon_reg);
+>   		break;
+> @@ -192,10 +207,59 @@ static int xe_hwmon_power_rated_max_read(struct xe_hwmon *hwmon, long *value)
+>   	return 0;
+>   }
+>   
+> +/*
+> + * xe_hwmon_energy_get - Obtain energy value
+> + *
+> + * The underlying energy hardware register is 32-bits and is subject to
+> + * overflow. How long before overflow? For example, with an example
+> + * scaling bit shift of 14 bits (see register *PACKAGE_POWER_SKU_UNIT) and
+> + * a power draw of 1000 watts, the 32-bit counter will overflow in
+> + * approximately 4.36 minutes.
+> + *
+> + * Examples:
+> + *    1 watt:  (2^32 >> 14) /    1 W / (60 * 60 * 24) secs/day -> 3 days
+> + * 1000 watts: (2^32 >> 14) / 1000 W / 60             secs/min -> 4.36 minutes
+> + *
+> + * The function significantly increases overflow duration (from 4.36
+> + * minutes) by accumulating the energy register into a 'long' as allowed by
+> + * the hwmon API. Using x86_64 128 bit arithmetic (see mul_u64_u32_shr()),
+> + * a 'long' of 63 bits, SF_ENERGY of 1e6 (~20 bits) and
+> + * hwmon->scl_shift_energy of 14 bits we have 57 (63 - 20 + 14) bits before
+> + * energy1_input overflows. This at 1000 W is an overflow duration of 278 years.
+> + */
+> +static void
+> +xe_hwmon_energy_get(struct xe_hwmon *hwmon, long *energy)
+> +{
+> +	struct hwmon_energy_info *ei = &hwmon->ei;
+> +	u32 reg_val;
+> +
+> +	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
+> +
+> +	mutex_lock(&hwmon->hwmon_lock);
+> +
+> +	xe_hwmon_process_reg(hwmon, REG_PKG_ENERGY_STATUS, REG_READ,
+> +			     &reg_val, 0, 0);
+> +
+> +	if (reg_val >= ei->reg_val_prev)
+> +		ei->accum_energy += reg_val - ei->reg_val_prev;
+> +	else
+> +		ei->accum_energy += UINT_MAX - ei->reg_val_prev + reg_val;
+> +
+> +	ei->reg_val_prev = reg_val;
+> +
+> +	*energy = mul_u64_u32_shr(ei->accum_energy, SF_ENERGY,
+> +				  hwmon->scl_shift_energy);
+> +
+> +	mutex_unlock(&hwmon->hwmon_lock);
+> +
+> +	xe_device_mem_access_put(gt_to_xe(hwmon->gt));
+> +}
+> +
+>   static const struct hwmon_channel_info *hwmon_info[] = {
+>   	HWMON_CHANNEL_INFO(power, HWMON_P_MAX | HWMON_P_RATED_MAX | HWMON_P_CRIT),
+>   	HWMON_CHANNEL_INFO(curr, HWMON_C_CRIT),
+>   	HWMON_CHANNEL_INFO(in, HWMON_I_INPUT),
+> +	HWMON_CHANNEL_INFO(energy, HWMON_E_INPUT),
+>   	NULL
+>   };
+>   
+> @@ -369,6 +433,29 @@ xe_hwmon_in_read(struct xe_hwmon *hwmon, u32 attr, long *val)
+>   	return ret;
+>   }
+>   
+> +static umode_t
+> +xe_hwmon_energy_is_visible(struct xe_hwmon *hwmon, u32 attr)
+> +{
+> +	switch (attr) {
+> +	case hwmon_energy_input:
+> +		return xe_hwmon_get_reg(hwmon, REG_PKG_ENERGY_STATUS) ? 0444 : 0;
+> +	default:
+> +		return 0;
+> +	}
+> +}
+> +
+> +static int
+> +xe_hwmon_energy_read(struct xe_hwmon *hwmon, u32 attr, long *val)
+> +{
+> +	switch (attr) {
+> +	case hwmon_energy_input:
+> +		xe_hwmon_energy_get(hwmon, val);
+> +		return 0;
+> +	default:
+> +		return -EOPNOTSUPP;
+> +	}
+> +}
+> +
+>   static umode_t
+>   xe_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_types type,
+>   		    u32 attr, int channel)
+> @@ -388,6 +475,9 @@ xe_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_types type,
+>   	case hwmon_in:
+>   		ret = xe_hwmon_in_is_visible(hwmon, attr);
+>   		break;
+> +	case hwmon_energy:
+> +		ret = xe_hwmon_energy_is_visible(hwmon, attr);
+> +		break;
+>   	default:
+>   		ret = 0;
+>   		break;
+> @@ -417,6 +507,9 @@ xe_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32 attr,
+>   	case hwmon_in:
+>   		ret = xe_hwmon_in_read(hwmon, attr, val);
+>   		break;
+> +	case hwmon_energy:
+> +		ret = xe_hwmon_energy_read(hwmon, attr, val);
+> +		break;
+>   	default:
+>   		ret = -EOPNOTSUPP;
+>   		break;
+> @@ -468,6 +561,7 @@ static void
+>   xe_hwmon_get_preregistration_info(struct xe_device *xe)
+>   {
+>   	struct xe_hwmon *hwmon = xe->hwmon;
+> +	long energy;
+>   	u32 val_sku_unit = 0;
+>   	int ret;
+>   
+> @@ -476,8 +570,17 @@ xe_hwmon_get_preregistration_info(struct xe_device *xe)
+>   	 * The contents of register PKG_POWER_SKU_UNIT do not change,
+>   	 * so read it once and store the shift values.
+>   	 */
+> -	if (!ret)
+> +	if (!ret) {
+>   		hwmon->scl_shift_power = REG_FIELD_GET(PKG_PWR_UNIT, val_sku_unit);
+> +		hwmon->scl_shift_energy = REG_FIELD_GET(PKG_ENERGY_UNIT, val_sku_unit);
+> +	}
+> +
+> +	/*
+> +	 * Initialize 'struct hwmon_energy_info', i.e. set fields to the
+> +	 * first value of the energy register read
+> +	 */
+> +	if (xe_hwmon_is_visible(hwmon, hwmon_energy, hwmon_energy_input, 0))
+> +		xe_hwmon_energy_get(hwmon, &energy);
+>   }
+>   
+>   void xe_hwmon_register(struct xe_device *xe)
