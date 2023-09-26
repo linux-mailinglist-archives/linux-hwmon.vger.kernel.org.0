@@ -2,96 +2,189 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7236F7AF44E
-	for <lists+linux-hwmon@lfdr.de>; Tue, 26 Sep 2023 21:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEBDD7AF6BE
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 01:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232101AbjIZToE (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 26 Sep 2023 15:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59644 "EHLO
+        id S231753AbjIZXfy (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 26 Sep 2023 19:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232241AbjIZToD (ORCPT
+        with ESMTP id S232628AbjIZXdx (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 26 Sep 2023 15:44:03 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B3B0121;
-        Tue, 26 Sep 2023 12:43:57 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-3512f905f6cso20474435ab.3;
-        Tue, 26 Sep 2023 12:43:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695757436; x=1696362236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nZysiqfTQ6hkM6jDfZN72nc6S9wN6Tq8p5sHukAaays=;
-        b=bTD/lTusib18TTJMRirapJTG1KrX81Cqunib68bZufBD+oYt3fmw0pxZIUoyBWYNwA
-         F0Sd2J0T53GOrpyG7//JCqPTd9YR2mq9SVNRAUUl7Xwfv4VcwKdO45lmpf1Ya/6s3fOw
-         IuKIxbzKW+Qg9MblAFZLN8tpdcDoNU67nXgPWxg+HOtXc1WzsBo07aNn3ov9mzRNHYdN
-         Bcvl0uO+DwHWUfqE0geykWpuMtVH8Iqtj8+Nt+Nozo64/gPnBxJGVScHl3kxvDvn6Y+W
-         0TrvMwvN+z5MRZ7NQ+MiulPzfj9QSgj1y+ur7u2Aql1QcxeZYK8aXywt8ifL4QY6s7+T
-         xa8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695757436; x=1696362236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nZysiqfTQ6hkM6jDfZN72nc6S9wN6Tq8p5sHukAaays=;
-        b=AnMk5UKZJB9q+KsFcVyXOqcQZ7uXZzBE7tQLvEEmVo/H9n4Rx40ibqP67yJxwXb1Dg
-         c9TAlNgTv8AKaaI+8kxEPvO1Q+NkISHonI4HA6mnMSuRiN7Zob7Iqv6rNLc8DoycKAzS
-         UfkX+wjOmdBkdxJo8iVHZ0o7/3OUs6M1Y59ioUeycsM037+aWwVcd8xGyzffkf+ghnyI
-         3HkuZ+mh0xbO7z6wAVkabKXj+0WmZkDDTPJpMr/1OeuUqFavagDjG2LZUTXYJdGi6lk0
-         JPIeDF98NMrJ0jBSOowM9kHbwcySVaNqizYmdx2XK35AdXqaTwCruu/1mGZQ1ySf9xOT
-         34Kw==
-X-Gm-Message-State: AOJu0YwnPU+NABNhTGvHoW/Ft30iNds60DmgOpGbEradAy4NDwiv0fdm
-        4pHoqsn82mxPFSCExgTY5AEoBrEkB+E=
-X-Google-Smtp-Source: AGHT+IGg7ubIXfGmSu+gIkFUgJFSl1LPYB+T9ILwusYpeGYdP8G6pLMVR3folw0eHLS5iO+Cox0+ug==
-X-Received: by 2002:a05:6e02:1bcb:b0:351:59db:a215 with SMTP id x11-20020a056e021bcb00b0035159dba215mr2132024ilv.18.1695757436524;
-        Tue, 26 Sep 2023 12:43:56 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k1-20020a02c641000000b0042b09036e5fsm3585824jan.175.2023.09.26.12.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 12:43:55 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 26 Sep 2023 12:43:54 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Naresh Solanki <naresh.solanki@9elements.com>,
-        zev@bewilderbeest.net, Liam Girdwood <lgirdwood@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v4] regulator (max5970): Add hwmon support
-Message-ID: <edebb3a6-a116-49dd-9571-3f56a618117f@roeck-us.net>
-References: <20230919054824.3368656-1-naresh.solanki@9elements.com>
- <ZRL4j32syAhYVu0y@finisterre.sirena.org.uk>
+        Tue, 26 Sep 2023 19:33:53 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2114B72A6
+        for <linux-hwmon@vger.kernel.org>; Tue, 26 Sep 2023 15:39:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695767940; x=1727303940;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7qq4ZRv6WnnMAgCSbfzwTJu+7DemR5VZO2titfmffI4=;
+  b=HoprseRHSzRrI2ZWCycUgXZPOGwxYtroGBVbKdgvNIvKqmZHcj9JtmgJ
+   3UTP3S2MxsyfM+Mn67VtTinJeNAXzRlDVS8AfTahuoINxmlbpl8sYkv4L
+   bw7RPzdyIXwsLSSP1MHoA+a7O64/Gvrxa/dV97MwFSgLEjAUzJl82wr3P
+   NTJ8FSWTj1sBtE7hgNUwwgu6ijNbHgMT6K7KLssHCpNcXWSJrjozTvJUI
+   4n1DVzhQwnADKGd+3zmbQAoqWjvmhNfOLDJqfGxSljkym/O42GXy0zmEA
+   UBggOScHjUjRshmR7KW+YRGi+0jG1T3rD+SNsZoI1FDda3Z1L0+rGx7s9
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="378949212"
+X-IronPort-AV: E=Sophos;i="6.03,178,1694761200"; 
+   d="scan'208";a="378949212"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 14:01:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="864537824"
+X-IronPort-AV: E=Sophos;i="6.03,178,1694761200"; 
+   d="scan'208";a="864537824"
+Received: from yeehernc-mobl2.gar.corp.intel.com (HELO intel.com) ([10.214.173.104])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 14:01:13 -0700
+Date:   Tue, 26 Sep 2023 23:01:06 +0200
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc:     Andi Shyti <andi.shyti@linux.intel.com>,
+        intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+        anshuman.gupta@intel.com, ashutosh.dixit@intel.com,
+        linux@roeck-us.net, riana.tauro@intel.com, matthew.brost@intel.com,
+        rodrigo.vivi@intel.com
+Subject: Re: [PATCH v6 5/5] drm/xe/hwmon: Expose power1_max_interval
+Message-ID: <ZRNGkgVqsnJ9Z8O2@ashyti-mobl2.lan>
+References: <20230925081842.3566834-1-badal.nilawar@intel.com>
+ <20230925081842.3566834-6-badal.nilawar@intel.com>
+ <ZRF1f2OsC1pr5hFd@ashyti-mobl2.lan>
+ <e5801f36-2f9a-6d24-7af2-1e7174f2e0b4@intel.com>
+ <ZRKP2UIGUWTXnZN6@ashyti-mobl2.lan>
+ <ec2a4e33-0b34-fb00-5470-f2d39edc6eb1@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZRL4j32syAhYVu0y@finisterre.sirena.org.uk>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ec2a4e33-0b34-fb00-5470-f2d39edc6eb1@intel.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 05:28:15PM +0200, Mark Brown wrote:
-> On Tue, Sep 19, 2023 at 07:48:23AM +0200, Naresh Solanki wrote:
-> > Utilize the integrated 10-bit ADC in Max5970/Max5978 to enable voltage
-> > and current monitoring. This feature is seamlessly integrated through
-> > the hwmon subsystem.
+Hi Badal,
+
+> > > > > +	/* val in hw units */
+> > > > > +	val = DIV_ROUND_CLOSEST_ULL((u64)val << hwmon->scl_shift_time, SF_TIME);
+> > > > > +	/* Convert to 1.x * power(2,y) */
+> > > > > +	if (!val) {
+> > > > > +		/* Avoid ilog2(0) */
+> > > > > +		y = 0;
+> > > > > +		x = 0;
+> > > > > +	} else {
+> > > > > +		y = ilog2(val);
+> > > > > +		/* x = (val - (1 << y)) >> (y - 2); */
+> > > > 
+> > > > this is some spurious development comment, can you please remove
+> > > > it?
+> > > 
+> > > This is kept intentionally to help to understand the calculations.
+> > 
+> > then this is confusing... Can you please expand the concept?
+> > As it is it's not understandable and I would expect someone
+> > sending a patch with title:
+> > 
+> >   [PATCH] drm/xe/hwmon: Remove spurious comment
+> > 
+> > Because it just looks forgotten from previous development.
+> I will add this comment inside the comment at the top of if. So it will look
+> like.
+> /*
+>  * Convert to 1.x * power(2,y)
+>  * y = ilog(val);
+>  * x = (val - (1 << y)) >> (y-2);
+>  */
+
+All right.
+
+> > > > > +		x = (val - (1ul << y)) << x_w >> y;
+> > > > > +	}
+> > > > > +
+> > > > > +	rxy = REG_FIELD_PREP(PKG_PWR_LIM_1_TIME_X, x) | REG_FIELD_PREP(PKG_PWR_LIM_1_TIME_Y, y);
+> > > > > +
+> > > > > +	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
+> > > > > +
+> > > > > +	mutex_lock(&hwmon->hwmon_lock);
+> > > > > +
+> > > > > +	xe_hwmon_process_reg(hwmon, REG_PKG_RAPL_LIMIT, REG_RMW, (u32 *)&r,
+> > > > > +			     PKG_PWR_LIM_1_TIME, rxy);
+> > > > > +
+> > > > > +	mutex_unlock(&hwmon->hwmon_lock);
+> > > > 
+> > > > why are we locking here?
+> > > 
+> > > Since it is rmw operation we are using lock here.
+> > 
+> > OK... so what you are trying to protect here is the
+> > 
+> >    read -> update -> write
+> > 
+> > and it makes sense. The problem is that if this is a generic
+> > rule, which means that everyone who will do a rmw operation has
+> > to take the lock, why not take the lock directly in
+> > xe_hwmon_process_reg()?
+> > 
+> > But also this can be a bit confusing, because a function is
+> > either locked or unlocked and purists might complain.
+> > 
+> > A suggestion would be to do something like:
+> > 
+> >     static int xe_hwmon_process_reg(..., enum xe_hwmon_reg_operation operation)
+> >     {
+> >     	...
+> >     }
+> > 
+> >     static int xe_hwmon_reg_read(...);
+> >     {
+> >     	return xe_hwmon_process_reg(..., REG_READ);
+> >     }
+> > 
+> >     static int xe_hwmon_reg_write(...);
+> >     {
+> >     	return xe_hwmon_process_reg(..., REG_WRITE);
+> >     }
+> > 
+> >     static int xe_hwmon_reg_rmw(...);
+> >     {
+> > 	int ret;
+> >     	
+> > 	/*
+> > 	 * Optional: you can check that the lock is not taken
+> > 	 * to shout loud if potential deadlocks arise.
+> > 	 */
+> > 
+> > 	/*
+> > 	 * We want to protect the register update with the
+> > 	 * lock blah blah blah... explanatory comment.
+> > 	 */
+> > 	mutex_lock(&hwmon->hwmon_lock);
+> > 	ret = xe_hwmon_process_reg(..., REG_RMW);
+> > 	mutex_unlock(&hwmon->hwmon_lock);
+> > 
+> > 	return ret;
+> >     }
+> > 
+> > What do you think? It looks much clearer to me.
 > 
-> Guenter, are you OK with the hwmon side of this?
+> REG_PKG_RAPL_LIMIT register is being written in xe_hwmon_power_max_write
+> also, that's why lock is taken. But some how while cleaning up I forgot to
+> take it in xe_hwmon_power_max_write(), thanks for catching it up. I will
+> update xe_hwmon_power_max_write() and resend series.
 
-Sorry, I lost track. Not really; see my response to the patch.
+yes... OK... then, please add the lock also in the write case.
 
-I think the memory allocation in that driver is a bit too complicated.
-It trades simplicity for minor memory savings, and even those savings
-are questionable. It would have been much easier and simpler to just
-add a two-element regulator_dev array to struct max5970_regulator
-and live with the "lost" memory if only one of them is used. I suspect
-that would have consumed less memory and code overall.
+But still... thinking of hwmon running in more threads don't you
+think we might need a more generic locking? This might mean to
+lock all around xe_hwmon_process_reg()... maybe it's an overkill.
 
-Guenter
+For the time being I'm OK with your current solution.
+
+If you don't like my suggestion above, feel free to ignore it.
+
+Andi
