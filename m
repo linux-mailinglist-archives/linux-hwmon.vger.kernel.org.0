@@ -2,75 +2,68 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15BF67B0612
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 16:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E6F17B0627
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 16:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232066AbjI0OEJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 27 Sep 2023 10:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36216 "EHLO
+        id S232045AbjI0OFY (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 27 Sep 2023 10:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232067AbjI0OEI (ORCPT
+        with ESMTP id S232051AbjI0OFX (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 27 Sep 2023 10:04:08 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFD6121;
-        Wed, 27 Sep 2023 07:04:05 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-79f92726f47so378841639f.3;
-        Wed, 27 Sep 2023 07:04:05 -0700 (PDT)
+        Wed, 27 Sep 2023 10:05:23 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E875FC
+        for <linux-hwmon@vger.kernel.org>; Wed, 27 Sep 2023 07:05:20 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b962c226ceso190158981fa.3
+        for <linux-hwmon@vger.kernel.org>; Wed, 27 Sep 2023 07:05:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695823445; x=1696428245; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gj000gBP9rdmKXA0ELeXucGsmSs875G0oWEFOqxRClI=;
-        b=Wj4W2RzS3zlg2dLgXv2nCaDxAfaTcrOAdNwQanH4ESUwb+J33MV2JlUKdV05O89/dO
-         txwzslOI11wNSVESIszz6oQBoQ/CKip29+4aANzb/SuAkMsqc3fPYUPwyO2jemF6ZRed
-         RjZOaDcBfUR9JPhLWljCsCMaMI9STRxSPF9rycqdLpI/Tv0bqzIoIO7PWO4aez7a9nAc
-         zV5BQKOORv2Pj4KWE+IamERupEzgW+EmFiWdYpCSkqeh+zrl7zN52e9ICaXUBoCD8tAr
-         rTkDcl5yr8RsblM3IDpDvUpytVQauVVAvbJ9Xpzbw0GKb6Poc8MxWQWoNEkmoqMWbQUh
-         UL1g==
+        d=google.com; s=20230601; t=1695823519; x=1696428319; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+hHvUR0n4EwEOMV5of1rEk3gEaF0cxdFPl6HtMVDF9g=;
+        b=rQsXaI80jmvpHELs2QWa9e93J11gYc1okeYxSekqEWMb5T70OzZL8eDWoGXfdObXOO
+         VPtViHGo/dALr5X8eH8XJBRN04UjDdX7Bewfunpk/1Y7z8s5UyhUjv56S7dDz2Tz42r/
+         mtDEDISBVSbA7Zu5yjNalYqYEn5GZpnYMpVat8P1yPUqFWfFmntVifiZw6vSkIKWLRET
+         bGAvNyNaBVkqu+hi3STPSRGd7XLOfjTpQ0LXfHlAzLQaDUzrGW4LH0NurPXZEe5y4hUK
+         Rw4NiPZXO8mQZ01XJEO2BYZgUZNZ+ZDgkgpQQRKVatMMHggEgTbVDoBZ+GBErSYK5PjY
+         lsYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695823445; x=1696428245;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1695823519; x=1696428319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gj000gBP9rdmKXA0ELeXucGsmSs875G0oWEFOqxRClI=;
-        b=us7DvtQvfieLWgs5iUo0+LjVLQfoq3Q2WaJh567dgXH1aG3DBZUlYLLN48lZYsSWyw
-         BfbfZqv7As3MkF9tSwQ0yQIeep44zijKnRFOV0maPONmTOKGV7EW61o8T5LwCD/2mwKT
-         65ynngRxXQ6fu7vFVOFbDOUXOpi3oODfslv0U9nR7lh/BcPX+47gUZo+dk/iAn2B5yhE
-         xVsEvIfOtYZlpHQiZYkM9gqQnt30+BckIGQcDp+j4Bxal5YbtCwmb6wnSJzZU1DmAHgv
-         od+ZuQf6dGMzDioisEB5KeQ1+kfspLQmhrCRD2o6PF+a++rg/k4/a2ZK5bd3Roha4vD1
-         PUzA==
-X-Gm-Message-State: AOJu0YxZxppE6zDlJXi3TQ/dLxcv7P6pCp/J3ezHqSZGmvF7oSjGWfQy
-        /80iiAgzEpNJhYflpL5amK4=
-X-Google-Smtp-Source: AGHT+IEqgRL+rMwMTrlgJEJvY5XieflrlEWZITWcLh/RiAuwAKo6MhInWhVPZ2mV1YvhspFjFrNPIg==
-X-Received: by 2002:a5e:950c:0:b0:794:efb0:83d6 with SMTP id r12-20020a5e950c000000b00794efb083d6mr2148868ioj.12.1695823444749;
-        Wed, 27 Sep 2023 07:04:04 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id m1-20020a6b7f41000000b0079f5265e7b3sm3802025ioq.46.2023.09.27.07.04.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Sep 2023 07:04:04 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 27 Sep 2023 07:04:03 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Michael Chan <michael.chan@broadcom.com>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, gospo@broadcom.com,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/9] bnxt_en: Expose threshold temperatures
- through hwmon
-Message-ID: <5ae37019-55a9-414d-852d-ecdedaab68d9@roeck-us.net>
-References: <20230927035734.42816-1-michael.chan@broadcom.com>
- <20230927035734.42816-6-michael.chan@broadcom.com>
+        bh=+hHvUR0n4EwEOMV5of1rEk3gEaF0cxdFPl6HtMVDF9g=;
+        b=rIdo6/pBgXbQg9xbs6IszSzVpOAR9k3zG2wEzvsvwtjXVhSy1XIirWNW+bwM5vyigJ
+         chAUGkn/UrIgTAtS9G2ChkldO3AL73IDbGJou0a4lbC78wfo4ge1tRYaibMvEHUeYbOB
+         teBEQta6vR8Yn+rRcwcb8tDFjHxdiVacicC4N8gVzP4KL4+WN9WKe1AaxSGzZq3D+nnl
+         mugteigzt3sUbqk8uDZ/2HM+fLVs+xvwCK/3gI5VX3TTGHyEsqlForBYwQ+hmrm58Acn
+         bDcJH+CJjJ55PbDCAThV5QUy/fhZ9M3S3QxdkcVieOsnEcEbfPDmHFkg2Qa4JnTuKcYs
+         vCsQ==
+X-Gm-Message-State: AOJu0YxjzgF3Ufc4WWBA9H3YagxST6fagJX9iC6lAT9rhwR+jqIoszA8
+        mrmzaGjP5JVcZgftMrJVtrHzfc0w5Jp09zwWze+gzgYj39noSJLaxEQ=
+X-Google-Smtp-Source: AGHT+IGyURsd0EeGPjEDXefgtQMh28AzFEh8FtUpw8FRGj6Ug6Jx5dKutZCzHJrNXhhHz7tjAg+oEEVkSLoheF/XMzY=
+X-Received: by 2002:a2e:92d7:0:b0:2bc:c4af:36b7 with SMTP id
+ k23-20020a2e92d7000000b002bcc4af36b7mr2178440ljh.39.1695823518581; Wed, 27
+ Sep 2023 07:05:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230927035734.42816-6-michael.chan@broadcom.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+References: <20230921-strncpy-drivers-hwmon-acpi_power_meter-c-v3-1-307552c6ec3f@google.com>
+ <9837d8dd-d802-4d5d-bca7-6e029658ba76@roeck-us.net>
+In-Reply-To: <9837d8dd-d802-4d5d-bca7-6e029658ba76@roeck-us.net>
+From:   Justin Stitt <justinstitt@google.com>
+Date:   Wed, 27 Sep 2023 23:05:07 +0900
+Message-ID: <CAFhGd8rY5uTh+e0U8jG94dga6Acx5R1G+MKWt=LfD5orNNca+Q@mail.gmail.com>
+Subject: Re: [PATCH v3] hwmon: refactor deprecated strncpy
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,172 +71,45 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 08:57:30PM -0700, Michael Chan wrote:
-> From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-> 
-> HWRM_TEMP_MONITOR_QUERY response now indicates various
-> threshold temperatures. Expose these threshold temperatures
-> through the hwmon sysfs using this mapping:
-> 
-> hwmon_temp_max : bp->warn_thresh_temp
-> hwmon_temp_crit : bp->crit_thresh_temp
-> hwmon_temp_emergency : bp->fatal_thresh_temp
-> 
-> hwmon_temp_max_alarm : temp >= bp->warn_thresh_temp
-> hwmon_temp_crit_alarm : temp >= bp->crit_thresh_temp
-> hwmon_temp_emergency_alarm : temp >= bp->fatal_thresh_temp
-> 
-> Link: https://lore.kernel.org/netdev/20230815045658.80494-12-michael.chan@broadcom.com/
-> Cc: Jean Delvare <jdelvare@suse.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: linux-hwmon@vger.kernel.org
-> Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+On Wed, Sep 27, 2023 at 9:49=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+>
+> On Thu, Sep 21, 2023 at 05:41:46AM +0000, Justin Stitt wrote:
+> > `strncpy` is deprecated for use on NUL-terminated destination strings [=
+1].
+> >
+> > Let's refactor this kcalloc() + strncpy() into a kmemdup_nul() which ha=
+s
+> > more obvious behavior and is less error prone.
+> >
+> > To avoid truncating the last byte supply `...length + 1` to
+> > kmemdup_nul() as `element->string.length` does not account for the
+> > trailing null as made obvious from it's definition (and associated
+> > comment):
+> > |       u32 length;   /* # of bytes in string, excluding trailing null =
+*/
+> >
+> > ... this is precisely what the original kcalloc invocation did as well.
+> >
+> > Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#st=
+rncpy-on-nul-terminated-strings [1]
+> > Link: https://github.com/KSPP/linux/issues/90
+> > Cc: linux-hardening@vger.kernel.org
+> > Signed-off-by: Justin Stitt <justinstitt@google.com>
+>
+> I have multiple patches with the hwmon: prefix but no driver,
+> like this one, suggesting the change is in the hwmon core,
+> when in reality it is in some hwmon driver.
+> I am not going to apply any of those, and I am not even going to
+> look into them.
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+Whoops, I was using some tooling to auto-fetch prefixes and the style
+of "xyz: (stuff in paren)" isn't always caught.
 
-> ---
-> v2:
-> bnxt_hwrm_temp_query() now stores the static threshold values once.
-> Use new hwmon temperature mappings shown above and remove hwmon_temp_lcrit.
-> 
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  7 +++
->  .../net/ethernet/broadcom/bnxt/bnxt_hwmon.c   | 57 ++++++++++++++++---
->  2 files changed, 57 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-> index 84cbcfa61bc1..43a07d84f815 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-> @@ -2013,6 +2013,7 @@ struct bnxt {
->  	#define BNXT_FW_CAP_RING_MONITOR		BIT_ULL(30)
->  	#define BNXT_FW_CAP_DBG_QCAPS			BIT_ULL(31)
->  	#define BNXT_FW_CAP_PTP				BIT_ULL(32)
-> +	#define BNXT_FW_CAP_THRESHOLD_TEMP_SUPPORTED	BIT_ULL(33)
->  
->  	u32			fw_dbg_cap;
->  
-> @@ -2185,7 +2186,13 @@ struct bnxt {
->  	struct bnxt_tc_info	*tc_info;
->  	struct list_head	tc_indr_block_list;
->  	struct dentry		*debugfs_pdev;
-> +#ifdef CONFIG_BNXT_HWMON
->  	struct device		*hwmon_dev;
-> +	u8			warn_thresh_temp;
-> +	u8			crit_thresh_temp;
-> +	u8			fatal_thresh_temp;
-> +	u8			shutdown_thresh_temp;
-> +#endif
->  	enum board_idx		board_idx;
->  };
->  
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwmon.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwmon.c
-> index 05e3d75f3c43..6a2cad5cc159 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwmon.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwmon.c
-> @@ -32,8 +32,16 @@ static int bnxt_hwrm_temp_query(struct bnxt *bp, u8 *temp)
->  	if (rc)
->  		goto drop_req;
->  
-> -	*temp = resp->temp;
-> -
-> +	if (temp) {
-> +		*temp = resp->temp;
-> +	} else if (resp->flags &
-> +		   TEMP_MONITOR_QUERY_RESP_FLAGS_THRESHOLD_VALUES_AVAILABLE) {
-> +		bp->fw_cap |= BNXT_FW_CAP_THRESHOLD_TEMP_SUPPORTED;
-> +		bp->warn_thresh_temp = resp->warn_threshold;
-> +		bp->crit_thresh_temp = resp->critical_threshold;
-> +		bp->fatal_thresh_temp = resp->fatal_threshold;
-> +		bp->shutdown_thresh_temp = resp->shutdown_threshold;
-> +	}
->  drop_req:
->  	hwrm_req_drop(bp, req);
->  	return rc;
-> @@ -42,12 +50,23 @@ static int bnxt_hwrm_temp_query(struct bnxt *bp, u8 *temp)
->  static umode_t bnxt_hwmon_is_visible(const void *_data, enum hwmon_sensor_types type,
->  				     u32 attr, int channel)
->  {
-> +	const struct bnxt *bp = _data;
-> +
->  	if (type != hwmon_temp)
->  		return 0;
->  
->  	switch (attr) {
->  	case hwmon_temp_input:
->  		return 0444;
-> +	case hwmon_temp_max:
-> +	case hwmon_temp_crit:
-> +	case hwmon_temp_emergency:
-> +	case hwmon_temp_max_alarm:
-> +	case hwmon_temp_crit_alarm:
-> +	case hwmon_temp_emergency_alarm:
-> +		if (!(bp->fw_cap & BNXT_FW_CAP_THRESHOLD_TEMP_SUPPORTED))
-> +			return 0;
-> +		return 0444;
->  	default:
->  		return 0;
->  	}
-> @@ -66,13 +85,39 @@ static int bnxt_hwmon_read(struct device *dev, enum hwmon_sensor_types type, u32
->  		if (!rc)
->  			*val = temp * 1000;
->  		return rc;
-> +	case hwmon_temp_max:
-> +		*val = bp->warn_thresh_temp * 1000;
-> +		return 0;
-> +	case hwmon_temp_crit:
-> +		*val = bp->crit_thresh_temp * 1000;
-> +		return 0;
-> +	case hwmon_temp_emergency:
-> +		*val = bp->fatal_thresh_temp * 1000;
-> +		return 0;
-> +	case hwmon_temp_max_alarm:
-> +		rc = bnxt_hwrm_temp_query(bp, &temp);
-> +		if (!rc)
-> +			*val = temp >= bp->warn_thresh_temp;
-> +		return rc;
-> +	case hwmon_temp_crit_alarm:
-> +		rc = bnxt_hwrm_temp_query(bp, &temp);
-> +		if (!rc)
-> +			*val = temp >= bp->crit_thresh_temp;
-> +		return rc;
-> +	case hwmon_temp_emergency_alarm:
-> +		rc = bnxt_hwrm_temp_query(bp, &temp);
-> +		if (!rc)
-> +			*val = temp >= bp->fatal_thresh_temp;
-> +		return rc;
->  	default:
->  		return -EOPNOTSUPP;
->  	}
->  }
->  
->  static const struct hwmon_channel_info *bnxt_hwmon_info[] = {
-> -	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
-> +	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_CRIT |
-> +			   HWMON_T_EMERGENCY | HWMON_T_MAX_ALARM |
-> +			   HWMON_T_CRIT_ALARM | HWMON_T_EMERGENCY_ALARM),
->  	NULL
->  };
->  
-> @@ -96,13 +141,11 @@ void bnxt_hwmon_uninit(struct bnxt *bp)
->  
->  void bnxt_hwmon_init(struct bnxt *bp)
->  {
-> -	struct hwrm_temp_monitor_query_input *req;
->  	struct pci_dev *pdev = bp->pdev;
->  	int rc;
->  
-> -	rc = hwrm_req_init(bp, req, HWRM_TEMP_MONITOR_QUERY);
-> -	if (!rc)
-> -		rc = hwrm_req_send_silent(bp, req);
-> +	/* temp1_xxx is only sensor, ensure not registered if it will fail */
-> +	rc = bnxt_hwrm_temp_query(bp, NULL);
->  	if (rc == -EACCES || rc == -EOPNOTSUPP) {
->  		bnxt_hwmon_uninit(bp);
->  		return;
-> -- 
-> 2.30.1
-> 
+I will resend with a fixed subject line matching the appropriate driver.
 
+>
+> Guenter
 
+Thanks
+Justin
