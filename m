@@ -2,67 +2,213 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F00627AF62F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 00:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A2A7AF8E3
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 05:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbjIZWL7 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 26 Sep 2023 18:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37804 "EHLO
+        id S229660AbjI0D6B (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 26 Sep 2023 23:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236049AbjIZWJ7 (ORCPT
+        with ESMTP id S229663AbjI0D4b (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 26 Sep 2023 18:09:59 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C7923127;
-        Tue, 26 Sep 2023 15:07:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F5FC07618;
-        Tue, 26 Sep 2023 21:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695763840;
-        bh=4GMeUJSKKReF6s3SEqksGnEq5C7PEvuoRGdNtW/1FtQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pUNQ7l0J63nPh9zcScWHpNRd7CxN1iVpP5n3+8OHy+P/13ioWXGZHGSDOWx9TIBEc
-         cUcEy9LpdMXEGN7+cZ4NaIRl4bJQ6Pwxa08G6O9cU/9vkDscjQrXvpHeYaPowK3nMM
-         j5zjUxRYn6Mcf6Fk9+GvczcYC+kX9sLms7sObqU2LUPFAZYnhlPGpJ9O0pw5ZN3BtD
-         YGn+G/01R5WCVJ41DEjiDhrK5O5df2XO+6qbJb8sxqGk9U/3SOan0p3z4/85dKc8HO
-         pGI0ujyB7LKjR412OyN/v8DWyf8nWfpnsxq9ISvFNFi8fzpaENexQN3h7RC5DI6Q0/
-         dko1p/x23ucPA==
-Date:   Tue, 26 Sep 2023 23:30:35 +0200
-From:   Andi Shyti <andi.shyti@kernel.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 2/3] i2c: xgene-slimpro: Migrate to use generic PCC shmem
- related macros
-Message-ID: <20230926213035.5dwlepgocda7xgd2@zenone.zhora.eu>
-References: <20230926-pcc_defines-v1-0-0f925a1658fd@arm.com>
- <20230926-pcc_defines-v1-2-0f925a1658fd@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230926-pcc_defines-v1-2-0f925a1658fd@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tue, 26 Sep 2023 23:56:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0574826B3
+        for <linux-hwmon@vger.kernel.org>; Tue, 26 Sep 2023 20:34:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695785676; x=1727321676;
+  h=date:message-id:from:to:cc:subject:in-reply-to:
+   references:mime-version;
+  bh=gLk6iQqSYK4rI9ty6o9Ng3fdNcs03K0dtZFKMi1myTk=;
+  b=LfAPbyMxfAtnztMHg0FLnl5Xcapkauh/cCyphipq3PjhT+YrWGpDI3r5
+   THiKhkubB3eENrJwyuQdZdEQIwtHaG8Wd+WhwnE5DBU3DL1C/QjXs7/Em
+   N8VCOIFzoi7zFNifwYQ3Cv3fZHdoO1yhAjyKItZuWFblvv+pTnZBPmS3t
+   ah9cgwtk5oECIx1JIiDdjqhmzDgBa/ig1aoQedawVT6R+KhfRqcoNKRIK
+   OhCaVYikvt5khCzSj6br+RsnmQ83bQe/JWkkcoMhp8k1sjXwTNAoOtY7r
+   QjFZ1sVJf9gajxI9XfXqWfcvEjZZ96bzCL+pNZqROX6MRxBgwkcuZ0OMY
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="385577258"
+X-IronPort-AV: E=Sophos;i="6.03,179,1694761200"; 
+   d="scan'208";a="385577258"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 20:34:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="1079969955"
+X-IronPort-AV: E=Sophos;i="6.03,179,1694761200"; 
+   d="scan'208";a="1079969955"
+Received: from adixit-mobl.amr.corp.intel.com (HELO adixit-arch.intel.com) ([10.209.6.221])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 20:34:34 -0700
+Date:   Tue, 26 Sep 2023 20:32:05 -0700
+Message-ID: <878r8s1ebu.wl-ashutosh.dixit@intel.com>
+From:   "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To:     Andi Shyti <andi.shyti@linux.intel.com>,
+        Badal Nilawar <badal.nilawar@intel.com>
+Cc:     <intel-xe@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
+        <anshuman.gupta@intel.com>, <linux@roeck-us.net>,
+        <riana.tauro@intel.com>, <matthew.brost@intel.com>,
+        <rodrigo.vivi@intel.com>
+Subject: Re: [PATCH v6 5/5] drm/xe/hwmon: Expose power1_max_interval
+In-Reply-To: <ZRNGkgVqsnJ9Z8O2@ashyti-mobl2.lan>
+References: <20230925081842.3566834-1-badal.nilawar@intel.com>
+        <20230925081842.3566834-6-badal.nilawar@intel.com>
+        <ZRF1f2OsC1pr5hFd@ashyti-mobl2.lan>
+        <e5801f36-2f9a-6d24-7af2-1e7174f2e0b4@intel.com>
+        <ZRKP2UIGUWTXnZN6@ashyti-mobl2.lan>
+        <ec2a4e33-0b34-fb00-5470-f2d39edc6eb1@intel.com>
+        <ZRNGkgVqsnJ9Z8O2@ashyti-mobl2.lan>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.1 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Sudeep,
+On Tue, 26 Sep 2023 14:01:06 -0700, Andi Shyti wrote:
+>
 
-> Use the newly defined common and generic PCC shared memory region
-> related macros in this driver to replace the locally defined ones.
-> 
-> Cc: Andi Shyti <andi.shyti@kernel.org>
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Hi Badal/Andi,
 
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org> 
+>
+> > > > > > +	/* val in hw units */
+> > > > > > +	val = DIV_ROUND_CLOSEST_ULL((u64)val << hwmon->scl_shift_time, SF_TIME);
+> > > > > > +	/* Convert to 1.x * power(2,y) */
+> > > > > > +	if (!val) {
+> > > > > > +		/* Avoid ilog2(0) */
+> > > > > > +		y = 0;
+> > > > > > +		x = 0;
+> > > > > > +	} else {
+> > > > > > +		y = ilog2(val);
+> > > > > > +		/* x = (val - (1 << y)) >> (y - 2); */
+> > > > >
+> > > > > this is some spurious development comment, can you please remove
+> > > > > it?
+> > > >
+> > > > This is kept intentionally to help to understand the calculations.
+> > >
+> > > then this is confusing... Can you please expand the concept?
+> > > As it is it's not understandable and I would expect someone
+> > > sending a patch with title:
+> > >
+> > >   [PATCH] drm/xe/hwmon: Remove spurious comment
+> > >
+> > > Because it just looks forgotten from previous development.
+> > I will add this comment inside the comment at the top of if. So it will look
+> > like.
+> > /*
+> >  * Convert to 1.x * power(2,y)
+> >  * y = ilog(val);
+> >  * x = (val - (1 << y)) >> (y-2);
+> >  */
+>
+> All right.
 
-Thanks,
-Andi
+That comment is explaining that one line of code. I think we should just
+leave it where it is, it doesn't make sense to move it above the if. How
+else can we write it so that the comment doesn't look like a leftover?
+
+If the code is clear we can remove the comment, but I think the code is
+hard to understand. So try to understand the code and then you will need
+the comment.
+
+>
+> > > > > > +		x = (val - (1ul << y)) << x_w >> y;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	rxy = REG_FIELD_PREP(PKG_PWR_LIM_1_TIME_X, x) | REG_FIELD_PREP(PKG_PWR_LIM_1_TIME_Y, y);
+> > > > > > +
+> > > > > > +	xe_device_mem_access_get(gt_to_xe(hwmon->gt));
+> > > > > > +
+> > > > > > +	mutex_lock(&hwmon->hwmon_lock);
+> > > > > > +
+> > > > > > +	xe_hwmon_process_reg(hwmon, REG_PKG_RAPL_LIMIT, REG_RMW, (u32 *)&r,
+> > > > > > +			     PKG_PWR_LIM_1_TIME, rxy);
+> > > > > > +
+> > > > > > +	mutex_unlock(&hwmon->hwmon_lock);
+> > > > >
+> > > > > why are we locking here?
+> > > >
+> > > > Since it is rmw operation we are using lock here.
+> > >
+> > > OK... so what you are trying to protect here is the
+> > >
+> > >    read -> update -> write
+> > >
+> > > and it makes sense. The problem is that if this is a generic
+> > > rule, which means that everyone who will do a rmw operation has
+> > > to take the lock, why not take the lock directly in
+> > > xe_hwmon_process_reg()?
+> > >
+> > > But also this can be a bit confusing, because a function is
+> > > either locked or unlocked and purists might complain.
+> > >
+> > > A suggestion would be to do something like:
+> > >
+> > >     static int xe_hwmon_process_reg(..., enum xe_hwmon_reg_operation operation)
+> > >     {
+> > >		...
+> > >     }
+> > >
+> > >     static int xe_hwmon_reg_read(...);
+> > >     {
+> > >		return xe_hwmon_process_reg(..., REG_READ);
+> > >     }
+> > >
+> > >     static int xe_hwmon_reg_write(...);
+> > >     {
+> > >		return xe_hwmon_process_reg(..., REG_WRITE);
+> > >     }
+> > >
+> > >     static int xe_hwmon_reg_rmw(...);
+> > >     {
+> > >	int ret;
+> > >
+> > >	/*
+> > >	 * Optional: you can check that the lock is not taken
+> > >	 * to shout loud if potential deadlocks arise.
+> > >	 */
+> > >
+> > >	/*
+> > >	 * We want to protect the register update with the
+> > >	 * lock blah blah blah... explanatory comment.
+> > >	 */
+> > >	mutex_lock(&hwmon->hwmon_lock);
+> > >	ret = xe_hwmon_process_reg(..., REG_RMW);
+> > >	mutex_unlock(&hwmon->hwmon_lock);
+> > >
+> > >	return ret;
+> > >     }
+> > >
+> > > What do you think? It looks much clearer to me.
+> >
+> > REG_PKG_RAPL_LIMIT register is being written in xe_hwmon_power_max_write
+> > also, that's why lock is taken. But some how while cleaning up I forgot to
+> > take it in xe_hwmon_power_max_write(), thanks for catching it up. I will
+> > update xe_hwmon_power_max_write() and resend series.
+>
+> yes... OK... then, please add the lock also in the write case.
+>
+> But still... thinking of hwmon running in more threads don't you
+> think we might need a more generic locking? This might mean to
+> lock all around xe_hwmon_process_reg()... maybe it's an overkill.
+>
+> For the time being I'm OK with your current solution.
+>
+> If you don't like my suggestion above, feel free to ignore it.
+
+Yeah agree, might as well take the lock around the switch statement in
+xe_hwmon_process_reg().
+
+>
+> Andi
+
+Thanks.
+--
+Ashutosh
