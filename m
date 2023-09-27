@@ -2,80 +2,110 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A257AF93A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 06:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E08A27AFA26
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Sep 2023 07:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbjI0EXh (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 27 Sep 2023 00:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
+        id S229867AbjI0Fej (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 27 Sep 2023 01:34:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjI0EWm (ORCPT
+        with ESMTP id S229669AbjI0FeE (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 27 Sep 2023 00:22:42 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9940876B8;
-        Tue, 26 Sep 2023 19:11:24 -0700 (PDT)
-Received: from kwepemm000004.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RwKjx1bScztSyl;
-        Wed, 27 Sep 2023 10:07:01 +0800 (CST)
-Received: from [10.67.121.59] (10.67.121.59) by kwepemm000004.china.huawei.com
- (7.193.23.18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 27 Sep
- 2023 10:11:22 +0800
-Message-ID: <9497cf31-09b9-b083-bbe8-84307178b20a@huawei.com>
-Date:   Wed, 27 Sep 2023 10:11:21 +0800
+        Wed, 27 Sep 2023 01:34:04 -0400
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2EDC72A9
+        for <linux-hwmon@vger.kernel.org>; Tue, 26 Sep 2023 20:40:16 -0700 (PDT)
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+        by cmsmtp with ESMTP
+        id lH8BqYe7xQFHRlLPMqOGme; Wed, 27 Sep 2023 03:40:16 +0000
+Received: from md-in-79.webhostbox.net ([43.225.55.182])
+        by cmsmtp with ESMTPS
+        id lLPKqnO7uPsTZlLPLqRrCA; Wed, 27 Sep 2023 03:40:16 +0000
+X-Authority-Analysis: v=2.4 cv=eaguwpIH c=1 sm=1 tr=0 ts=6513a420
+ a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=CKMxHAookNUaJbGn3r6bzg==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=zNV7Rl7Rt7sA:10 a=oz0wMknONp8A:10 a=LxWt8M_ywhtm8WUVVfYA:9
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
+        ; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=U4js+SM1U11yyB4riZ8YLEuGYKTsQkErTf8a0N1JnLc=; b=MC+WRP1pn4KkCodttFQzJrqd3W
+        FvA0tc+tRbMmV5uB1xCJT6FTCp6pYY8L4fpP0NPXFXz3Fq8xCSMmK06Q92ytYnFbKzl65BOxDMige
+        yeXIwoDUaf+yrJp9dA2Bpk++zBcPpjYPXumU3y5qRUJUWHTIjdBuk85t7zOnBw8JXj7+NGTPmDjYP
+        uz1PPEVZVWDt9vC3tpTORuUtlv5Hlolifr+hM4NuyDGMK6QFYNc7tb+0k7FUmMaJrUvbr0OGg1ZXg
+        sWfi3INxpzyBUltWOjwpXCjKfyN6RA7l87yVOymzy6Bng0yL96eqKomii20rQnY3CJdpFwP5sXjA7
+        DYmvTvHw==;
+Received: from [103.163.95.214] (port=59728 helo=discovery..)
+        by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <saravanan@linumiz.com>)
+        id 1qlLPG-000tFx-26;
+        Wed, 27 Sep 2023 09:10:10 +0530
+From:   Saravanan Sekar <saravanan@linumiz.com>
+To:     sravanhome@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux@roeck-us.net, jdelvare@suse.com
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-hwmon@vger.kernel.org,
+        Saravanan Sekar <saravanan@linumiz.com>
+Subject: [PATCH v2 0/3] Add support for mpq2286 PMIC IC
+Date:   Wed, 27 Sep 2023 09:09:50 +0530
+Message-Id: <20230927033953.1503440-1-saravanan@linumiz.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 0/3] ACPI: PCC: Define and use the common PCC shared
- memory regions related macros
-To:     Sudeep Holla <sudeep.holla@arm.com>, <linux-hwmon@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>
-CC:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, <lihuisong@huawei.com>
-References: <20230926-pcc_defines-v1-0-0f925a1658fd@arm.com>
-From:   "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <20230926-pcc_defines-v1-0-0f925a1658fd@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.121.59]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm000004.china.huawei.com (7.193.23.18)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - linumiz.com
+X-BWhitelist: no
+X-Source-IP: 103.163.95.214
+X-Source-L: No
+X-Exim-ID: 1qlLPG-000tFx-26
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (discovery..) [103.163.95.214]:59728
+X-Source-Auth: saravanan@linumiz.com
+X-Email-Count: 1
+X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfByR8TBObxe/ITPsj3Gn0YjxJR1mCddAySl6lfLSfRlFP0EnYFdPS75XsIwU2m0H4JXOr0Y3rc1j95zjhEYP1OOZs5O6wXpD4DziMYthDIDeJyi+n8yn
+ i5FkCWvT6iJiWjD2flPFe0MTg5No/wjSGJYuSAFxuQts0zRc/OG9N++rQ5d2oTn5b3ByATHxj84d8GSsPKPSCZ4LeNvXGwGERuE=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi Sudeep,
+changes in v2:
+ - fix dt check warnings
+ - fix compiler warning on cast device_get_match_data and lexicological order of compatible
 
-Could you please use these new common macros for kunpeng_hccs?
 
-在 2023/9/26 20:27, Sudeep Holla 写道:
-> This set of 3 small patches intend to consolidate and replace the existing
-> locally defined macros within couple of PCC client drivers when accessing
-> the command and status bitfields.
->
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
-> Sudeep Holla (3):
->        ACPI: PCC: Add PCC shared memory region command and status bitfields
->        i2c: xgene-slimpro: Migrate to use generic PCC shmem related macros
->        hwmon: (xgene) Migrate to use generic PCC shmem related macros
->
->   drivers/hwmon/xgene-hwmon.c            | 16 +++++-----------
->   drivers/i2c/busses/i2c-xgene-slimpro.c | 16 ++++------------
->   include/acpi/pcc.h                     | 11 +++++++++++
->   3 files changed, 20 insertions(+), 23 deletions(-)
-> ---
-> base-commit: 6465e260f48790807eef06b583b38ca9789b6072
-> change-id: 20230926-pcc_defines-24be5e33b6f3
->
-> Best regards,
+
+The MPQ2286 is a programmable, high frequency synchronous buck regulator with
+integrated internal high side and low side power MOSFET. Application in
+Automotive compenents such as ADAS, Infotainment, SOC System core, DDR memory.
+
+Saravanan Sekar (3):
+  hwmon: (pmbus/mpq7932) Get page count based on chip info
+  regulator: dt-bindings: Add mps,mpq2286 power-management IC
+  hwmon: (pmbus/mpq2286) Add a support for mpq2286 Power Management IC
+
+ .../bindings/regulator/mps,mpq2286.yaml       | 59 +++++++++++++++++++
+ drivers/hwmon/pmbus/mpq7932.c                 |  9 ++-
+ 2 files changed, 65 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/regulator/mps,mpq2286.yaml
+
+-- 
+2.34.1
+
