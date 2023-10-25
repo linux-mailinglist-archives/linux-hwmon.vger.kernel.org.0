@@ -2,34 +2,33 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C94827D6EFF
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Oct 2023 16:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E8E77D6F22
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Oct 2023 16:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232800AbjJYOLj (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 25 Oct 2023 10:11:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
+        id S1344622AbjJYOTg (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 25 Oct 2023 10:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233628AbjJYOLi (ORCPT
+        with ESMTP id S1344639AbjJYOTf (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Wed, 25 Oct 2023 10:11:38 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E30138;
-        Wed, 25 Oct 2023 07:11:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1539C433C8;
-        Wed, 25 Oct 2023 14:11:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698243094;
-        bh=/jJzyKjNC6FGKobMSGDhSoV4yztUacHX0xl4BCXTuhY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=laLY4L8NIAoGXTb7rf3Evei0yPk1z48pNiUiMnyS0a8dyWlcodIYDySIU/BAmYbSo
-         QXAhNinHY6I964Auzaxp8wwLdcU8+vpPywMlj9lKYvBbT2LoDQyy/VvrKQ0Kt6+s4f
-         IUzCnfY/mFGM+RkuZZc4perSfcO/IWrC4kpKCzCgHCAlE0JzpXh8ByNOjSwuAv8nus
-         5GTzrWx2LazThMSAREsTdMpeoLdVjWQUXD3uo1MrmsAI5JNfVuiPnfL+DAvQRXzF2w
-         cJp/ogLfQx8QwyGUH3fS6oU0Fur0v73Ym4j9XZuDQreh1vSf+bLT3n6DQskHP2etRU
-         IWIXxBPp7mTFg==
-Date:   Wed, 25 Oct 2023 15:11:27 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Richard Leitner <richard.leitner@linux.dev>
+        Wed, 25 Oct 2023 10:19:35 -0400
+X-Greylist: delayed 347 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 Oct 2023 07:19:33 PDT
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [IPv6:2001:41d0:1004:224b::b7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD7F99
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 Oct 2023 07:19:33 -0700 (PDT)
+Date:   Wed, 25 Oct 2023 16:13:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1698243224;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RuY2yDHrXKAvuateilio+Ihipw+6+Lq+kqIuX9eZkgc=;
+        b=xqXXrruYY3CMsVHk0QotQ+7a99KNMvVrS2E6GyvvHA86+kfOC8D2FFhXQzg8ZnU5gwofKY
+        Wg/wyazmFAnQ7L78sYju1lHjzVVZB+oswcb0jXNAM2xrU1Vi65BpohWpNXxnR/t+4tNjHD
+        EhvN6StwHVGrQkK0AeckCMZ+nZKBmTo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Richard Leitner <richard.leitner@linux.dev>
+To:     Conor Dooley <conor@kernel.org>
 Cc:     Guenter Roeck <linux@roeck-us.net>,
         Jean Delvare <jdelvare@suse.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -37,58 +36,70 @@ Cc:     Guenter Roeck <linux@roeck-us.net>,
         Conor Dooley <conor+dt@kernel.org>,
         linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/4] dt-bindings: hwmon: add ti,ina238
-Message-ID: <20231025-eatery-backup-ad85c043cb01@spud>
+Subject: Re: [PATCH 4/4] dt-bindings: hwmon: ti,ina238: add ti,ina237
+Message-ID: <pwfj54krrau3rihjb73dd4p3yizzjyuv4gwxky776m2goerjw6@6rfxo6kzjhjs>
 References: <20231025-ina237-v1-0-a0196119720c@linux.dev>
- <20231025-ina237-v1-2-a0196119720c@linux.dev>
- <20231025-hut-omnivore-f4b44a7b928d@spud>
- <qoxgyho5twbm4jopfveaf5ee3z4tkyb2z5f2vsyrpglffegmxf@v2z5ckcaa5jc>
+ <20231025-ina237-v1-4-a0196119720c@linux.dev>
+ <20231025-unclip-ion-826a58681a12@spud>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0Nwgnp+2M+wTx7xK"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <qoxgyho5twbm4jopfveaf5ee3z4tkyb2z5f2vsyrpglffegmxf@v2z5ckcaa5jc>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20231025-unclip-ion-826a58681a12@spud>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
+On Wed, Oct 25, 2023 at 02:58:44PM +0100, Conor Dooley wrote:
+> On Wed, Oct 25, 2023 at 10:34:14AM +0000, Richard Leitner wrote:
+> > Add ti,ina237 binding to ti,ina238 as they share the same driver.
+> > 
+> > Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
+> > ---
+> >  Documentation/devicetree/bindings/hwmon/ti,ina238.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina238.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina238.yaml
+> > index aba89e5f34b3..17408076696c 100644
+> > --- a/Documentation/devicetree/bindings/hwmon/ti,ina238.yaml
+> > +++ b/Documentation/devicetree/bindings/hwmon/ti,ina238.yaml
+> > @@ -22,6 +22,7 @@ description: |
+> >  properties:
+> >    compatible:
+> >      enum:
+> > +      - ti,ina237
+> 
+> The driver patch you have done implies no difference between the
+> programming model for both of these devices. It'd seem to make more sense
+> for the ina237 to fall back to the ina238, thereby requiring no change in
+> the driver to support it.
 
---0Nwgnp+2M+wTx7xK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the quick feedback, Conor.
 
-On Wed, Oct 25, 2023 at 04:07:31PM +0200, Richard Leitner wrote:
-> On Wed, Oct 25, 2023 at 03:00:01PM +0100, Conor Dooley wrote:
-> > On Wed, Oct 25, 2023 at 10:34:12AM +0000, Richard Leitner wrote:
-> > > The ina238 driver is available since 2021 but lacks a dt-bindings fil=
-e.
-> > > Therefore add the missing file now.
-> >=20
-> > Seemingly it is documented in Documentation/devicetree/bindings/hwmon/t=
-i,ina2xx.yaml
->=20
-> Thanks for the feedback. True. So is it fine if it's left there or
-> should it be removed from ti,ina2xxx.yml as this is a separate driver
-> with different properties?
+I first thought of just mentioning the ina237 in the documentation as
+"compatible" to the ina238. But IMHO it is better understandable if it's
+listed as compatible.
 
-Merging them would seem like the most straightforward thing to do, no?
+And I would strongly encourage mentioning it somewhere (documentation or
+compatible). So other people using the ina237 are able to find it and
+don't have to compare the datasheets by themselves to find the right
+driver.
 
---0Nwgnp+2M+wTx7xK
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> Cheers,
+> Conor.
+> 
+> >        - ti,ina238
+> >  
+> >    reg:
+> > 
+> > -- 
+> > 2.40.1
+> > 
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTkiDwAKCRB4tDGHoIJi
-0j7pAP9JI52QPfjD7cMmKnb+ff4n5DTJwAlJ7S/Xnms0TgMPUwEAi4ADo2EXKe/M
-uVGDgKqL9K80ZoFMCDsmj5G+wqku+gA=
-=YnZ3
------END PGP SIGNATURE-----
-
---0Nwgnp+2M+wTx7xK--
