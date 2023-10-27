@@ -2,69 +2,82 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB937D9CED
-	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Oct 2023 17:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD9557D9D73
+	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Oct 2023 17:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235125AbjJ0P2k (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 27 Oct 2023 11:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36306 "EHLO
+        id S231920AbjJ0Pvf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 27 Oct 2023 11:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235107AbjJ0P2k (ORCPT
+        with ESMTP id S231953AbjJ0Pve (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 27 Oct 2023 11:28:40 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7461A1
-        for <linux-hwmon@vger.kernel.org>; Fri, 27 Oct 2023 08:28:37 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c50fbc218bso31019651fa.3
-        for <linux-hwmon@vger.kernel.org>; Fri, 27 Oct 2023 08:28:37 -0700 (PDT)
+        Fri, 27 Oct 2023 11:51:34 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6594D42;
+        Fri, 27 Oct 2023 08:51:30 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d9a58aa4983so1640664276.0;
+        Fri, 27 Oct 2023 08:51:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1698420515; x=1699025315; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GXUmekLw1GEFnBbnbx9xiufl4bE1wbCiB6K9UiIw9hY=;
-        b=OlbMcgqbh9KDvhDSF2SUUn2kTEG67Vmq5a9kte9IVj9PFZvfhLeFsKncbF6/+Jjs8U
-         KZFxUf2KE+KJyV16k6HG7JYqY6BgJlcYSfbjhrAwY4vWGcTZdIopmzf2p08Yq2ke2zmZ
-         YUjRq+edna3NcrKZ7yp2gYkzdpGyIpGIw6q9L3YvbiNoUozd8YtgG3tEFbX5PMUnS2sA
-         f5EpFne4UOgdt+qAhLPN6erMHGEqeuqMEwaK2SMXlX1GnromhnmwWQPoVzxaymGJ9vKw
-         LfF1nvp9kwJ8gNN3mFWMobM1lVn/WOCnNZbK28HmfgEAbq1MXxRajQyN6+I4vWjQgpCx
-         s0EA==
+        d=gmail.com; s=20230601; t=1698421890; x=1699026690; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Wzy57PUf9orHh4OjGzjzAp13qnWwnh2HAAT0JBgqrrs=;
+        b=HOL033eEc/DKMO5D+Mc1XNZ7y/TX68zSWpNFoyyd0xmI9v4DpdJYU4jWLF3+qzZdH9
+         nBTyjX314fbnC8naO/UqGwh1iiMyC+RKn8p93TUF2g9HB0Hl2JefGbzXKcbQKLMkXru/
+         MyzS65x6OD5Ft5L4vXHKMIJy/JgKqCM9Plq3yzpcbFOdUEn7s1vs+yHjiI2lVfg6BiAe
+         OEFiti0/zLc3gFkjRK74qD+Upi3IppUYQpxwi2HuDz7n65a1xzS19BC9BdmuxoU15bzl
+         OlFA5PtBWQreywWnGdDrjzb5SdTqx/Izmbjd7GYIWX4na/4VRYCA9NrQWieJvttQYLXJ
+         lvbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698420515; x=1699025315;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GXUmekLw1GEFnBbnbx9xiufl4bE1wbCiB6K9UiIw9hY=;
-        b=Bn2Kh41rp2myLEKbF5eJvvTLGDBiuV+IpWJtdEeA0fZuQybjWkyDp1TqyQESa9w5q2
-         d1yl48zbBaZ+XQkngu7MlGTNST8KkCpt7PdNvGkZ0pb9iwTmXPh69nWaZ2epPbTK0/PH
-         FFn4+C6QWKRPcqgE4ZTZ51Osat03vWBB0o2kJiCZbp+i3XeGg8DcprzdHFIyNvcCWGO0
-         pTQjcMcR8vmXyvrrZQeFm+SUwqXShvWwxnVaFMZuRBVIBXdG708pHFdU5sZ+m3jvupGn
-         2qG5w3yx79yQMZI+Dbz1rbmtCu6rYUy1YKLHE7clEXA2w/0jvZBgzOPUeQlJ93BpXLX0
-         gdBw==
-X-Gm-Message-State: AOJu0Yx4BF9pMmpbFwTff5087Hs2DVjG60TNz4gzNOuyUobIhPV5pc7/
-        NhZ68nFmKTBf7iDlLda6B5Tbu/uXvqD7b/1fTEi9RQ==
-X-Google-Smtp-Source: AGHT+IFPPkTC206+yrjoVKX7YSoR1y3QWKxomFd5kE0Tx1waO2OJORc3Xr55GOT+zRwc9FpDwOYWxw==
-X-Received: by 2002:a05:651c:b9f:b0:2c5:623:aa01 with SMTP id bg31-20020a05651c0b9f00b002c50623aa01mr2018337ljb.49.1698420514939;
-        Fri, 27 Oct 2023 08:28:34 -0700 (PDT)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id q17-20020a05600c46d100b0040836519dd9sm1902688wmo.25.2023.10.27.08.28.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Oct 2023 08:28:34 -0700 (PDT)
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Naresh Solanki <naresh.solanki@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: [PATCH v6 1/2] regulator (max5970): Add hwmon support
-Date:   Fri, 27 Oct 2023 15:28:28 +0000
-Message-ID: <20231027152830.1269895-1-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.41.0
+        d=1e100.net; s=20230601; t=1698421890; x=1699026690;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wzy57PUf9orHh4OjGzjzAp13qnWwnh2HAAT0JBgqrrs=;
+        b=mF/5dpJ6vo0LetZw2Pt7HfFVQLqXUURHrzAZGnqlQWSSD13MAyl0okCzIWW6KhCgn5
+         YPoDtNAzdmSCj4o6yjcziEcERl2IKn85L0ZXbVFRkHNHTKSnrJkb3rQF0BM/LrpXWQI2
+         EgZUjgEj7KsfkMi7PA86PeKal3sXYPgLyU9arbrkCfWQ6tpATbGBW9IeBuLGnoe4GVhE
+         x/bAtEJ5Y2o3pDQI5E9fUPtjxFJVhL+rUGnIWK84i72KQ+9JG7TycYwxOIKoKGiTwKdG
+         3khkAb7qrGqOBDZoOIST3O83ofzTuQQXnS/bsb1AZ768P9XEa6NNIo9KXphHX/ErKdhL
+         P6RA==
+X-Gm-Message-State: AOJu0YwxgN+1CtefLw61UG/skX7uDcTIWxowhEEjB++1DLm2KgJOiNIS
+        6WUxMLUU/qdQEKUqEjCjdQ8=
+X-Google-Smtp-Source: AGHT+IHz6K8imb2cUy5vfXE7RsDkyWqKz9BYYAMj2LUiJAbmdb/AnRNSz7B3Rc1gcFGGTebIcHJEMA==
+X-Received: by 2002:a25:cf02:0:b0:da0:3535:41f4 with SMTP id f2-20020a25cf02000000b00da0353541f4mr3375675ybg.7.1698421889667;
+        Fri, 27 Oct 2023 08:51:29 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p136-20020a25748e000000b00d9cce349877sm751262ybc.16.2023.10.27.08.51.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Oct 2023 08:51:29 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <d67c0bf1-beae-d93f-994c-3a937e2047a0@roeck-us.net>
+Date:   Fri, 27 Oct 2023 08:51:27 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To:     "Matyas, Daniel" <Daniel.Matyas@analog.com>
+Cc:     Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20231026144405.546822-1-daniel.matyas@analog.com>
+ <20231026144405.546822-2-daniel.matyas@analog.com>
+ <fe99431e-3245-484c-bf26-928048500ec6@roeck-us.net>
+ <PH0PR03MB67712B3C063B794442F6D58A89DCA@PH0PR03MB6771.namprd03.prod.outlook.com>
+ <84252c5e-9a39-91bd-b7da-2bdea1b2aff6@roeck-us.net>
+ <PH0PR03MB6771E74E7C5CC2FB1DD0EB1989DCA@PH0PR03MB6771.namprd03.prod.outlook.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v5 2/4] hwmon: max31827: Add support for max31828 and
+ max31829
+In-Reply-To: <PH0PR03MB6771E74E7C5CC2FB1DD0EB1989DCA@PH0PR03MB6771.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,219 +85,61 @@ Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Utilize the integrated 10-bit ADC in Max5970/Max5978 to enable voltage
-and current monitoring. This feature is seamlessly integrated through
-the hwmon subsystem.
+On 10/27/23 08:05, Matyas, Daniel wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Guenter Roeck <groeck7@gmail.com> On Behalf Of Guenter Roeck
+>> Sent: Friday, October 27, 2023 5:52 PM
+>> To: Matyas, Daniel <Daniel.Matyas@analog.com>
+>> Cc: Jean Delvare <jdelvare@suse.com>; Jonathan Corbet
+>> <corbet@lwn.net>; linux-hwmon@vger.kernel.org; linux-
+>> doc@vger.kernel.org; linux-kernel@vger.kernel.org
+>> Subject: Re: [PATCH v5 2/4] hwmon: max31827: Add support for
+>> max31828 and max31829
+>>
+>> [External]
+>>
+>> On 10/27/23 06:00, Matyas, Daniel wrote:
+>> [ ... ]
+>>
+>>>> I also don't understand why that would be chip specific. I don't see
+>>>> anything along that line in the datasheet.
+>>>>
+>>>> Ah, wait ... I guess that is supposed to reflect the chip default.
+>>>> I don't see why the chip default makes a difference - a well defined
+>>>> default must be set either way. Again, there is no guarantee that the
+>>>> chip is in its default state when the driver is loaded.
+>>>
+>>> The well defined default was set in v4, but I deleted it, because the
+>> default value in hex for max31827 and max31828 alarm polarity, and
+>> max31827 fault queue is 0x0. I had 2 #defines for these values, but you
+>> said:
+>>> " Since MAX31827_ALRM_POL_LOW is 0, this code doesn't really do
+>> anything and just pollutes the code."
+>>>
+>>> So, I thought I should remove it altogether, since res is set to 0 in the
+>> beginning and the default value of these chips (i.e. 0) is implicitly set.
+>>>
+>>>>
+>>>> Also, why are the default values added in this patch and not in the
+>>>> previous patch ?
+>>>>
+>>>
+>>> In v4 these default values were set in the previous patch.
+>>>
+>>
+>> I asked you (or meant to ask you) to stop overwriting 0 with 0 in a
+>> variable. I didn't mean to ask you (if I did) to stop writing the default value
+>> into the chip. Sorry if I did; if so, that was a misunderstanding.
+>>
+>> Guenter
+> 
+> Well, writing the default value into res, would just overwrite 0 with 0. Should I still do it?
+> 
 
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
----
-Change in V6:
-- Remove unrelated change
-- Add necessary return value check
-- Remove unneeded NULL check
-Changes in V5:
-- Simplify memory allocation for rdevs
-Changes in V4:
-- Use IS_REACHABLE
-- Use rdevs array for hwmon ops.
-- Remove duplicate i2c_set_clientdata
-Changes in V3:
-- Update signed-off
-- Add break
-- Update hwmon dev register name to max5970
-- Remove changes in Kconfig.
-Changes in V2:
-- default case added for switch statement
-- Add dependency on HWMON
----
- drivers/regulator/max5970-regulator.c | 144 +++++++++++++++++++++++++-
- 1 file changed, 143 insertions(+), 1 deletion(-)
+No, that is not correct. You don't know what is in the chip register.
+It may not be the chip default.
 
-diff --git a/drivers/regulator/max5970-regulator.c b/drivers/regulator/max5970-regulator.c
-index b56a174cde3d..56cc56ae63b7 100644
---- a/drivers/regulator/max5970-regulator.c
-+++ b/drivers/regulator/max5970-regulator.c
-@@ -10,6 +10,7 @@
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/err.h>
-+#include <linux/hwmon.h>
- #include <linux/module.h>
- #include <linux/io.h>
- #include <linux/of.h>
-@@ -32,6 +33,132 @@ enum max597x_regulator_id {
- 	MAX597X_SW1,
- };
- 
-+static int max5970_read_adc(struct regmap *regmap, int reg, long *val)
-+{
-+	u8 reg_data[2];
-+	int ret;
-+
-+	ret = regmap_bulk_read(regmap, reg, &reg_data[0], 2);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = (reg_data[0] << 2) | (reg_data[1] & 3);
-+
-+	return 0;
-+}
-+
-+static int max5970_read(struct device *dev, enum hwmon_sensor_types type,
-+			u32 attr, int channel, long *val)
-+{
-+	struct regulator_dev **rdevs = dev_get_drvdata(dev);
-+	struct max5970_regulator *ddata = rdev_get_drvdata(rdevs[channel]);
-+	struct regmap *regmap = ddata->regmap;
-+	int ret;
-+
-+	switch (type) {
-+	case hwmon_curr:
-+		switch (attr) {
-+		case hwmon_curr_input:
-+			ret = max5970_read_adc(regmap, MAX5970_REG_CURRENT_H(channel), val);
-+			if (ret < 0)
-+				return ret;
-+			/*
-+			 * Calculate current from ADC value, IRNG range & shunt resistor value.
-+			 * ddata->irng holds the voltage corresponding to the maximum value the
-+			 * 10-bit ADC can measure.
-+			 * To obtain the output, multiply the ADC value by the IRNG range (in
-+			 * millivolts) and then divide it by the maximum value of the 10-bit ADC.
-+			 */
-+			*val = (*val * ddata->irng) >> 10;
-+			/* Convert the voltage meansurement across shunt resistor to current */
-+			*val = (*val * 1000) / ddata->shunt_micro_ohms;
-+			return 0;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+
-+	case hwmon_in:
-+		switch (attr) {
-+		case hwmon_in_input:
-+			ret = max5970_read_adc(regmap, MAX5970_REG_VOLTAGE_H(channel), val);
-+			if (ret < 0)
-+				return ret;
-+			/*
-+			 * Calculate voltage from ADC value and MON range.
-+			 * ddata->mon_rng holds the voltage corresponding to the maximum value the
-+			 * 10-bit ADC can measure.
-+			 * To obtain the output, multiply the ADC value by the MON range (in
-+			 * microvolts) and then divide it by the maximum value of the 10-bit ADC.
-+			 */
-+			*val = mul_u64_u32_shr(*val, ddata->mon_rng, 10);
-+			/* uV to mV */
-+			*val = *val / 1000;
-+			return 0;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static umode_t max5970_is_visible(const void *data,
-+				  enum hwmon_sensor_types type,
-+				  u32 attr, int channel)
-+{
-+	struct regulator_dev **rdevs = (struct regulator_dev **)data;
-+	struct max5970_regulator *ddata;
-+
-+	if (channel >= MAX5970_NUM_SWITCHES || !rdevs[channel])
-+		return 0;
-+
-+	ddata = rdev_get_drvdata(rdevs[channel]);
-+
-+	if (channel >= ddata->num_switches)
-+		return 0;
-+
-+	switch (type) {
-+	case hwmon_in:
-+		switch (attr) {
-+		case hwmon_in_input:
-+			return 0444;
-+		default:
-+			break;
-+		}
-+		break;
-+	case hwmon_curr:
-+		switch (attr) {
-+		case hwmon_curr_input:
-+			/* Current measurement requires knowledge of the shunt resistor value. */
-+			if (ddata->shunt_micro_ohms)
-+				return 0444;
-+			break;
-+		default:
-+			break;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+	return 0;
-+}
-+
-+static const struct hwmon_ops max5970_hwmon_ops = {
-+	.is_visible = max5970_is_visible,
-+	.read = max5970_read,
-+};
-+
-+static const struct hwmon_channel_info *max5970_info[] = {
-+	HWMON_CHANNEL_INFO(in, HWMON_I_INPUT, HWMON_I_INPUT),
-+	HWMON_CHANNEL_INFO(curr, HWMON_C_INPUT, HWMON_C_INPUT),
-+	NULL
-+};
-+
-+static const struct hwmon_chip_info max5970_chip_info = {
-+	.ops = &max5970_hwmon_ops,
-+	.info = max5970_info,
-+};
-+
- static int max597x_uvp_ovp_check_mode(struct regulator_dev *rdev, int severity)
- {
- 	int ret, reg;
-@@ -431,7 +558,8 @@ static int max597x_regulator_probe(struct platform_device *pdev)
- 	struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
- 	struct regulator_config config = { };
- 	struct regulator_dev *rdev;
--	struct regulator_dev *rdevs[MAX5970_NUM_SWITCHES];
-+	struct regulator_dev **rdevs = NULL;
-+	struct device *hwmon_dev;
- 	int num_switches;
- 	int ret, i;
- 
-@@ -442,6 +570,11 @@ static int max597x_regulator_probe(struct platform_device *pdev)
- 	if (!max597x)
- 		return -ENOMEM;
- 
-+	rdevs = devm_kcalloc(&i2c->dev, MAX5970_NUM_SWITCHES, sizeof(struct regulator_dev *),
-+			     GFP_KERNEL);
-+	if (!rdevs)
-+		return -ENOMEM;
-+
- 	i2c_set_clientdata(i2c, max597x);
- 
- 	if (of_device_is_compatible(i2c->dev.of_node, "maxim,max5978"))
-@@ -485,6 +618,15 @@ static int max597x_regulator_probe(struct platform_device *pdev)
- 		max597x->shunt_micro_ohms[i] = data->shunt_micro_ohms;
- 	}
- 
-+	if (IS_REACHABLE(CONFIG_HWMON)) {
-+		hwmon_dev = devm_hwmon_device_register_with_info(&i2c->dev, "max5970", rdevs,
-+								 &max5970_chip_info, NULL);
-+		if (IS_ERR(hwmon_dev)) {
-+			return dev_err_probe(&i2c->dev, PTR_ERR(hwmon_dev),
-+					     "Unable to register hwmon device\n");
-+		}
-+	}
-+
- 	if (i2c->irq) {
- 		ret =
- 		    max597x_setup_irq(&i2c->dev, i2c->irq, rdevs, num_switches,
-
-base-commit: e95d9ba0eb4ef2f9f7fa0451c3ad4f77c685538d
--- 
-2.41.0
+Guenter
 
