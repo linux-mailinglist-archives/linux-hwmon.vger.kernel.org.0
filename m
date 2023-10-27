@@ -2,155 +2,289 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 748ED7D9C97
-	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Oct 2023 17:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB937D9CED
+	for <lists+linux-hwmon@lfdr.de>; Fri, 27 Oct 2023 17:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231461AbjJ0PID (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Fri, 27 Oct 2023 11:08:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S235125AbjJ0P2k (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Fri, 27 Oct 2023 11:28:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbjJ0PIB (ORCPT
+        with ESMTP id S235107AbjJ0P2k (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Fri, 27 Oct 2023 11:08:01 -0400
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3171B6
-        for <linux-hwmon@vger.kernel.org>; Fri, 27 Oct 2023 08:07:58 -0700 (PDT)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20231027150756euoutp01ec2bfd05d09592b6f67441398dd89f05~R-1VJO1FD1326113261euoutp01u;
-        Fri, 27 Oct 2023 15:07:56 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20231027150756euoutp01ec2bfd05d09592b6f67441398dd89f05~R-1VJO1FD1326113261euoutp01u
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1698419276;
-        bh=SJ636XENRBVKqcMBGxmurSV7+gQcnrcFhpYD2j7jO0M=;
-        h=From:To:Cc:Subject:Date:References:From;
-        b=pn6wxgfELEewMkOlHEoKeO1b6nbRfz8dlK7gbBIq9P/epQWM7ZgxzGx1Gy2jXvROK
-         Dwksc2rl+W391trcGxgSbEwzYuFggUvd09rO29x5qrkvqumFRXiPnECyVRyMILjfhU
-         9XjocWCZFjXCKYjKm/o8DuYQ66jL62ur/tDX8mIk=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20231027150755eucas1p2c95ba626e303d1731fa7df5f475a361b~R-1UoIcFS2825028250eucas1p2n;
-        Fri, 27 Oct 2023 15:07:55 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 00.D1.42423.B42DB356; Fri, 27
-        Oct 2023 16:07:55 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20231027150755eucas1p205057d22989db5c031ea5db27b8d9836~R-1UJg5ug2825028250eucas1p2m;
-        Fri, 27 Oct 2023 15:07:55 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20231027150755eusmtrp1159ed46c96599aba7c9a56f23f6c200a~R-1UJBziA2565225652eusmtrp1U;
-        Fri, 27 Oct 2023 15:07:55 +0000 (GMT)
-X-AuditID: cbfec7f2-a3bff7000002a5b7-96-653bd24bf119
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 0A.63.10549.A42DB356; Fri, 27
-        Oct 2023 16:07:55 +0100 (BST)
-Received: from localhost (unknown [106.120.51.111]) by eusmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20231027150754eusmtip1bc2eb4854b123185dabd7018994e5455~R-1T6KbUY0985809858eusmtip1R;
-        Fri, 27 Oct 2023 15:07:54 +0000 (GMT)
-From:   Lukasz Stelmach <l.stelmach@samsung.com>
-To:     James Seo <james@equiv.tech>
-Cc:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Subject: [BUG] hp-wmi-sensors: probe of 8F1F6435-9F42-42C8-BADC-0E9424F20C9A
- failed with error -22
-Date:   Fri, 27 Oct 2023 17:07:09 +0200
-Message-ID: <oypijdmsw4f6jm.fsf%l.stelmach@samsung.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Fri, 27 Oct 2023 11:28:40 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7461A1
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Oct 2023 08:28:37 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c50fbc218bso31019651fa.3
+        for <linux-hwmon@vger.kernel.org>; Fri, 27 Oct 2023 08:28:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1698420515; x=1699025315; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GXUmekLw1GEFnBbnbx9xiufl4bE1wbCiB6K9UiIw9hY=;
+        b=OlbMcgqbh9KDvhDSF2SUUn2kTEG67Vmq5a9kte9IVj9PFZvfhLeFsKncbF6/+Jjs8U
+         KZFxUf2KE+KJyV16k6HG7JYqY6BgJlcYSfbjhrAwY4vWGcTZdIopmzf2p08Yq2ke2zmZ
+         YUjRq+edna3NcrKZ7yp2gYkzdpGyIpGIw6q9L3YvbiNoUozd8YtgG3tEFbX5PMUnS2sA
+         f5EpFne4UOgdt+qAhLPN6erMHGEqeuqMEwaK2SMXlX1GnromhnmwWQPoVzxaymGJ9vKw
+         LfF1nvp9kwJ8gNN3mFWMobM1lVn/WOCnNZbK28HmfgEAbq1MXxRajQyN6+I4vWjQgpCx
+         s0EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698420515; x=1699025315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GXUmekLw1GEFnBbnbx9xiufl4bE1wbCiB6K9UiIw9hY=;
+        b=Bn2Kh41rp2myLEKbF5eJvvTLGDBiuV+IpWJtdEeA0fZuQybjWkyDp1TqyQESa9w5q2
+         d1yl48zbBaZ+XQkngu7MlGTNST8KkCpt7PdNvGkZ0pb9iwTmXPh69nWaZ2epPbTK0/PH
+         FFn4+C6QWKRPcqgE4ZTZ51Osat03vWBB0o2kJiCZbp+i3XeGg8DcprzdHFIyNvcCWGO0
+         pTQjcMcR8vmXyvrrZQeFm+SUwqXShvWwxnVaFMZuRBVIBXdG708pHFdU5sZ+m3jvupGn
+         2qG5w3yx79yQMZI+Dbz1rbmtCu6rYUy1YKLHE7clEXA2w/0jvZBgzOPUeQlJ93BpXLX0
+         gdBw==
+X-Gm-Message-State: AOJu0Yx4BF9pMmpbFwTff5087Hs2DVjG60TNz4gzNOuyUobIhPV5pc7/
+        NhZ68nFmKTBf7iDlLda6B5Tbu/uXvqD7b/1fTEi9RQ==
+X-Google-Smtp-Source: AGHT+IFPPkTC206+yrjoVKX7YSoR1y3QWKxomFd5kE0Tx1waO2OJORc3Xr55GOT+zRwc9FpDwOYWxw==
+X-Received: by 2002:a05:651c:b9f:b0:2c5:623:aa01 with SMTP id bg31-20020a05651c0b9f00b002c50623aa01mr2018337ljb.49.1698420514939;
+        Fri, 27 Oct 2023 08:28:34 -0700 (PDT)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id q17-20020a05600c46d100b0040836519dd9sm1902688wmo.25.2023.10.27.08.28.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Oct 2023 08:28:34 -0700 (PDT)
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     Naresh Solanki <naresh.solanki@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: [PATCH v6 1/2] regulator (max5970): Add hwmon support
+Date:   Fri, 27 Oct 2023 15:28:28 +0000
+Message-ID: <20231027152830.1269895-1-naresh.solanki@9elements.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
-        protocol="application/pgp-signature"
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphleLIzCtJLcpLzFFi42LZduznOV3vS9apBjOWqVnMu3aQ2aL99VZG
-        iycLzzA5MHt8777I5LHzewO7x+dNcgHMUVw2Kak5mWWpRfp2CVwZ27v7mAtW8VSsu7ibvYHx
-        EFcXIweHhICJxIVj1l2MXBxCAisYJSbfnMsM4XxhlGi9tZANwvnMKPF67w32LkZOsI7VU+6x
-        QySWM0rcWLUGquUFo8T5eW1MIHPZBPQk1q6NAGkQEVCQaJ2zgRHEZhZwljg77w8ziC0skCIx
-        68kBJhCbRUBV4vm7A2BxXgFzib7+nWC2qIClxPGt7WwQcUGJkzOfsEDMyZWYef4NI8heCYGV
-        HBKv3h5mhLjOReLjvmusELawxKvjW6CulpE4PbmHBaKhnVGi6cpCVghnAqPE544mJogqa4k7
-        536xQdiOEh/PvmKEhBKfxI23ghCb+SQmbZvODBHmlehoE4KoVpFY17+HBcKWkuh9tQLqHg+J
-        E0d2gz0jJBAr0Xqkn2kCo/wsJP/MQvLPLKCpzAKaEut36UOEtSWWLXzNDGHbSqxb955lASPr
-        Kkbx1NLi3PTUYsO81HK94sTc4tK8dL3k/NxNjMBEcvrf8U87GOe++qh3iJGJg/EQowpQ86MN
-        qy8wSrHk5eelKonwRvpYpArxpiRWVqUW5ccXleakFh9ilOZgURLnVU2RTxUSSE8sSc1OTS1I
-        LYLJMnFwSjUw9S3oFl2yM23fN/ntu1qe/tp2Y2vZbasJTh6Kp4I/TLwhbviO7ep/F6mKrSeO
-        P4uSVC5YJ8Su4lw8cY6mdcihy4skYjO/8hz973SEi9t6yt63U4KP1KwTWL+MXe3Iw/zbOZW3
-        NHVU9CVXKi/sd4v0ZD11+9KlsklWP9/syuC32FBSYPgk4OS9Pja1eYnFMZ/ZfogcXduRlP9l
-        7xSz5lWzPhxidL7m8HX3pHS/zSw/Fj1Z514zfYnZV3HG7wZpv75PPbvy6J8o84wbGk1e+2dU
-        3s64dM9z2XZ7qaAlq/ZsceurP3vzd8yToNV78sOW7H73x+mEdcyp6TfM+LI/7frMsJS1K3Si
-        KcOn9H9HhZ9ObnRWYinOSDTUYi4qTgQAuYmB8p8DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOLMWRmVeSWpSXmKPExsVy+t/xu7rel6xTDQ7fY7KYd+0gs0X7662M
-        Fk8WnmFyYPb43n2RyWPn9wZ2j8+b5AKYo/RsivJLS1IVMvKLS2yVog0tjPQMLS30jEws9QyN
-        zWOtjEyV9O1sUlJzMstSi/TtEvQytnf3MRes4qlYd3E3ewPjIa4uRk4OCQETidVT7rF3MXJx
-        CAksZZQ4tfoBSxcjB1BCSmLl3HSIGmGJP9e62CBqnjFKPN11gxmkhk1AT2Lt2giQGhEBBYnW
-        ORsYQWxmAWeJs/P+MIPYwgIpErOeHGACsVkEVCWevzsAFucVMJfo698JZosKWEoc39rOBhEX
-        lDg58wkLxJxsia+rnzNPYOSbhSQ1C0lqFtAVzAKaEut36UOEtSWWLXzNDGHbSqxb955lASPr
-        KkaR1NLi3PTcYkO94sTc4tK8dL3k/NxNjMBQ33bs5+YdjPNefdQ7xMjEwXiIUQWo89GG1RcY
-        pVjy8vNSlUR4I30sUoV4UxIrq1KL8uOLSnNSiw8xmgK9M5FZSjQ5HxiFeSXxhmYGpoYmZpYG
-        ppZmxkrivJ4FHYlCAumJJanZqakFqUUwfUwcnFINTB1zXuYffXPxQuL8i59dWLZWFKd+dF9i
-        6HnC/XFYxPxZR1nPrrwll9DCwfr9MsfhBee3/H55SeXH5qM9zvmXEidX5+9f2WkWdN3CTYJz
-        Slj59eQ80f6VHcEzz8c2rFMv2Z18nn3pjlwzhqW5T/mPTdVvmGyiePT0tYmzT5x67/3rubr8
-        PJ1726Sqj3Skvz/wjK1fTr/M/YGRYC+LRtizDZVd6Td3xrW0LkhvWJeu9iiay1dQ1XXi6bUO
-        HA3+blusL3BcDgsRNktZviOs00mvsI2tbh+n1QubLBmVwh+fpjcscsvVu8Er4LIwYmJL3uN3
-        mxonm31WTVhlcSFp97lffkdkw594dbDud8xprTmwSomlOCPRUIu5qDgRALTxlFUKAwAA
-X-CMS-MailID: 20231027150755eucas1p205057d22989db5c031ea5db27b8d9836
-X-Msg-Generator: CA
-X-RootMTR: 20231027150755eucas1p205057d22989db5c031ea5db27b8d9836
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20231027150755eucas1p205057d22989db5c031ea5db27b8d9836
-References: <CGME20231027150755eucas1p205057d22989db5c031ea5db27b8d9836@eucas1p2.samsung.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Utilize the integrated 10-bit ADC in Max5970/Max5978 to enable voltage
+and current monitoring. This feature is seamlessly integrated through
+the hwmon subsystem.
 
-Hi,
+Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+---
+Change in V6:
+- Remove unrelated change
+- Add necessary return value check
+- Remove unneeded NULL check
+Changes in V5:
+- Simplify memory allocation for rdevs
+Changes in V4:
+- Use IS_REACHABLE
+- Use rdevs array for hwmon ops.
+- Remove duplicate i2c_set_clientdata
+Changes in V3:
+- Update signed-off
+- Add break
+- Update hwmon dev register name to max5970
+- Remove changes in Kconfig.
+Changes in V2:
+- default case added for switch statement
+- Add dependency on HWMON
+---
+ drivers/regulator/max5970-regulator.c | 144 +++++++++++++++++++++++++-
+ 1 file changed, 143 insertions(+), 1 deletion(-)
 
-I've got HP EliteDesk 800 G6 Tower PC running Linux 6.1 from Debian=C2=A012.
-I managed to build the hp-wmi-sensors out of tree. When I loaded it I
-got EINVAL.
+diff --git a/drivers/regulator/max5970-regulator.c b/drivers/regulator/max5970-regulator.c
+index b56a174cde3d..56cc56ae63b7 100644
+--- a/drivers/regulator/max5970-regulator.c
++++ b/drivers/regulator/max5970-regulator.c
+@@ -10,6 +10,7 @@
+ #include <linux/bitops.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
++#include <linux/hwmon.h>
+ #include <linux/module.h>
+ #include <linux/io.h>
+ #include <linux/of.h>
+@@ -32,6 +33,132 @@ enum max597x_regulator_id {
+ 	MAX597X_SW1,
+ };
+ 
++static int max5970_read_adc(struct regmap *regmap, int reg, long *val)
++{
++	u8 reg_data[2];
++	int ret;
++
++	ret = regmap_bulk_read(regmap, reg, &reg_data[0], 2);
++	if (ret < 0)
++		return ret;
++
++	*val = (reg_data[0] << 2) | (reg_data[1] & 3);
++
++	return 0;
++}
++
++static int max5970_read(struct device *dev, enum hwmon_sensor_types type,
++			u32 attr, int channel, long *val)
++{
++	struct regulator_dev **rdevs = dev_get_drvdata(dev);
++	struct max5970_regulator *ddata = rdev_get_drvdata(rdevs[channel]);
++	struct regmap *regmap = ddata->regmap;
++	int ret;
++
++	switch (type) {
++	case hwmon_curr:
++		switch (attr) {
++		case hwmon_curr_input:
++			ret = max5970_read_adc(regmap, MAX5970_REG_CURRENT_H(channel), val);
++			if (ret < 0)
++				return ret;
++			/*
++			 * Calculate current from ADC value, IRNG range & shunt resistor value.
++			 * ddata->irng holds the voltage corresponding to the maximum value the
++			 * 10-bit ADC can measure.
++			 * To obtain the output, multiply the ADC value by the IRNG range (in
++			 * millivolts) and then divide it by the maximum value of the 10-bit ADC.
++			 */
++			*val = (*val * ddata->irng) >> 10;
++			/* Convert the voltage meansurement across shunt resistor to current */
++			*val = (*val * 1000) / ddata->shunt_micro_ohms;
++			return 0;
++		default:
++			return -EOPNOTSUPP;
++		}
++
++	case hwmon_in:
++		switch (attr) {
++		case hwmon_in_input:
++			ret = max5970_read_adc(regmap, MAX5970_REG_VOLTAGE_H(channel), val);
++			if (ret < 0)
++				return ret;
++			/*
++			 * Calculate voltage from ADC value and MON range.
++			 * ddata->mon_rng holds the voltage corresponding to the maximum value the
++			 * 10-bit ADC can measure.
++			 * To obtain the output, multiply the ADC value by the MON range (in
++			 * microvolts) and then divide it by the maximum value of the 10-bit ADC.
++			 */
++			*val = mul_u64_u32_shr(*val, ddata->mon_rng, 10);
++			/* uV to mV */
++			*val = *val / 1000;
++			return 0;
++		default:
++			return -EOPNOTSUPP;
++		}
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static umode_t max5970_is_visible(const void *data,
++				  enum hwmon_sensor_types type,
++				  u32 attr, int channel)
++{
++	struct regulator_dev **rdevs = (struct regulator_dev **)data;
++	struct max5970_regulator *ddata;
++
++	if (channel >= MAX5970_NUM_SWITCHES || !rdevs[channel])
++		return 0;
++
++	ddata = rdev_get_drvdata(rdevs[channel]);
++
++	if (channel >= ddata->num_switches)
++		return 0;
++
++	switch (type) {
++	case hwmon_in:
++		switch (attr) {
++		case hwmon_in_input:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	case hwmon_curr:
++		switch (attr) {
++		case hwmon_curr_input:
++			/* Current measurement requires knowledge of the shunt resistor value. */
++			if (ddata->shunt_micro_ohms)
++				return 0444;
++			break;
++		default:
++			break;
++		}
++		break;
++	default:
++		break;
++	}
++	return 0;
++}
++
++static const struct hwmon_ops max5970_hwmon_ops = {
++	.is_visible = max5970_is_visible,
++	.read = max5970_read,
++};
++
++static const struct hwmon_channel_info *max5970_info[] = {
++	HWMON_CHANNEL_INFO(in, HWMON_I_INPUT, HWMON_I_INPUT),
++	HWMON_CHANNEL_INFO(curr, HWMON_C_INPUT, HWMON_C_INPUT),
++	NULL
++};
++
++static const struct hwmon_chip_info max5970_chip_info = {
++	.ops = &max5970_hwmon_ops,
++	.info = max5970_info,
++};
++
+ static int max597x_uvp_ovp_check_mode(struct regulator_dev *rdev, int severity)
+ {
+ 	int ret, reg;
+@@ -431,7 +558,8 @@ static int max597x_regulator_probe(struct platform_device *pdev)
+ 	struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
+ 	struct regulator_config config = { };
+ 	struct regulator_dev *rdev;
+-	struct regulator_dev *rdevs[MAX5970_NUM_SWITCHES];
++	struct regulator_dev **rdevs = NULL;
++	struct device *hwmon_dev;
+ 	int num_switches;
+ 	int ret, i;
+ 
+@@ -442,6 +570,11 @@ static int max597x_regulator_probe(struct platform_device *pdev)
+ 	if (!max597x)
+ 		return -ENOMEM;
+ 
++	rdevs = devm_kcalloc(&i2c->dev, MAX5970_NUM_SWITCHES, sizeof(struct regulator_dev *),
++			     GFP_KERNEL);
++	if (!rdevs)
++		return -ENOMEM;
++
+ 	i2c_set_clientdata(i2c, max597x);
+ 
+ 	if (of_device_is_compatible(i2c->dev.of_node, "maxim,max5978"))
+@@ -485,6 +618,15 @@ static int max597x_regulator_probe(struct platform_device *pdev)
+ 		max597x->shunt_micro_ohms[i] = data->shunt_micro_ohms;
+ 	}
+ 
++	if (IS_REACHABLE(CONFIG_HWMON)) {
++		hwmon_dev = devm_hwmon_device_register_with_info(&i2c->dev, "max5970", rdevs,
++								 &max5970_chip_info, NULL);
++		if (IS_ERR(hwmon_dev)) {
++			return dev_err_probe(&i2c->dev, PTR_ERR(hwmon_dev),
++					     "Unable to register hwmon device\n");
++		}
++	}
++
+ 	if (i2c->irq) {
+ 		ret =
+ 		    max597x_setup_irq(&i2c->dev, i2c->irq, rdevs, num_switches,
 
-    hp-wmi-sensors: probe of 8F1F6435-9F42-42C8-BADC-0E9424F20C9A failed wi=
-th error -22
+base-commit: e95d9ba0eb4ef2f9f7fa0451c3ad4f77c685538d
+-- 
+2.41.0
 
-I managed to track it down. And it happens in check_wobj() called from
-check_platform_events_wobj() because in the for loop when prop=3D=3D0 the
-type is ACPI_TYPE_BUFFER instead of ACPI_TYPE_STRING. When I bypass this
-particular check like this
-
-    if (prop =3D=3D 0 && type =3D=3D ACPI_TYPE_BUFFER)
-            continue;
-
-everything else works like charm and I can read senosrs via sysfs. I'd
-like to perpare a proper patch, but I've got no idea how to do properly
-work this quirk around. What are your suggestions?
-
-Kind regards,
-=2D-=20
-=C5=81ukasz Stelmach
-Samsung R&D Institute Poland
-Samsung Electronics
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAmU70h0ACgkQsK4enJil
-gBBwiwf/Z0TVt+lKBIw2VMJl4rE0XWBWkusb14T+IAYu/xg+VRUUyGU7QO2CVvPI
-jB9gKFk/zRhyNAK0MwvvyHryEmIKlYcS5OampPxDkqG+GbIgG8zb/SXvIUGxzVBc
-q4/smXacXTa0Cev/UXOh1Y4Q5fYnSw2PMyki91/HR7cFMHZ53sb9RFQGWHhcluwe
-3qdXLQbwY/kkVbNDdr8lfT6d6aZs1es5/vRoEayyDbN68BU/arnJzxN5wyjl8E2m
-ekvT7HvpBulX19feI6NAjIN4+NNhf0fS8UHULdweK5jZrRR/cO6ruiWHXWRK1oBl
-lA995stifCvUsOjTpqd8OJXsoz3hQQ==
-=poOV
------END PGP SIGNATURE-----
---=-=-=--
