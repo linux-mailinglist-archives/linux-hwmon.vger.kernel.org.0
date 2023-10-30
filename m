@@ -1,160 +1,165 @@
-Return-Path: <linux-hwmon+bounces-22-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765E67E9B79
-	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Nov 2023 12:53:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165EE1F20F75
-	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Nov 2023 11:53:40 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615261CFBF;
-	Mon, 13 Nov 2023 11:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ZKUFcwTJ"
-X-Original-To: linux-hwmon@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417E21CF91
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 11:53:33 +0000 (UTC)
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17E6D6C
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 03:53:29 -0800 (PST)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20231113115328euoutp01bdd78606d47ae527e3f1b9fe8d96ec2b~XLJZPMAEs0163201632euoutp01d
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 11:53:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20231113115328euoutp01bdd78606d47ae527e3f1b9fe8d96ec2b~XLJZPMAEs0163201632euoutp01d
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1699876408;
-	bh=SJ636XENRBVKqcMBGxmurSV7+gQcnrcFhpYD2j7jO0M=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=ZKUFcwTJLdxfYiJa/ZxoVpje09AKXYMCUaozsujbpv+MGATm7rbhIMzPwyFK6PTOZ
-	 LCizZy2TrZd5LshepVNPiLa/AmZm6wkYRWeLtynyX+lDShU1t6Wb8JLzgHuXdJ8G07
-	 Wd/2JSfY/bsEjlEgjv+jaV9CTyRqEz/YcCANBlQ8=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20231113115328eucas1p28cb55388eaac77661353605ac7f81743~XLJZH1j2O0481204812eucas1p2_
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 11:53:28 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id D6.80.09552.83E02556; Mon, 13
-	Nov 2023 11:53:28 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20231113115327eucas1p11f84e775ce78deaa01557f3868c2f9dd~XLJY04wla1257812578eucas1p1M
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 11:53:27 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20231113115327eusmtrp13d06f7ace73b91db71cf69d50cc08065~XLJY0dpai1997219972eusmtrp1L
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 11:53:27 +0000 (GMT)
-X-AuditID: cbfec7f5-83dff70000002550-61-65520e38d09a
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id 4A.70.09146.73E02556; Mon, 13
-	Nov 2023 11:53:27 +0000 (GMT)
-Received: from localhost (unknown [106.120.51.111]) by eusmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20231113115327eusmtip166b9efd58ada5cb89c1d680d232cf93f~XLJYqe8pV1137911379eusmtip1X
-	for <linux-hwmon@vger.kernel.org>; Mon, 13 Nov 2023 11:53:27 +0000 (GMT)
-From: Lukasz Stelmach <l.stelmach@samsung.com>
-To: James Seo <james@equiv.tech>
-Cc: Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Subject: [BUG] hp-wmi-sensors: probe of 8F1F6435-9F42-42C8-BADC-0E9424F20C9A
- failed with error -22
-Date: Fri, 27 Oct 2023 17:07:09 +0200
-Message-ID: <oypijdmsw4f6jm.fsf%l.stelmach@samsung.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Precedence: bulk
-X-Mailing-List: linux-hwmon@vger.kernel.org
-List-Id: <linux-hwmon.vger.kernel.org>
-List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id CD83F7DB1F3
+	for <lists+linux-hwmon@lfdr.de>; Mon, 30 Oct 2023 03:07:13 +0100 (CET)
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S229648AbjJ3CHN (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Sun, 29 Oct 2023 22:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229569AbjJ3CHM (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Sun, 29 Oct 2023 22:07:12 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ED7ABE;
+        Sun, 29 Oct 2023 19:07:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698631630; x=1730167630;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dbVY1ThUDo1weBPv8bgLKEZ7vpAIM1jDmAicjkFa74o=;
+  b=OPrrqAennHFuo5x93Lu+aKsATqPdFBiYuqLGwt+aFoBkE2mmx5vEjqzI
+   Av8z0mpF99iiFYBQ1Bt6d5az59MfdyDLDtOTim2ssi+dB55w9g6oMAg3J
+   VogjA6/oDTQ3UDbqPJe+ep+qqKNI/R5MXSkswihdb/M+caQQiPcl2EX0x
+   EfXG7Fi4HvdO8dmHLHOJYNMpGN2U6vPLCeInOKHvWYtO6yFimK7Y0qWLv
+   scwnTavn26y/8KSc1UJrDPl5EhNbFPyMX5yl3bq0uU9wIrrPDdu7n1bmP
+   sraO+35bHURWZkrOxW1zwpuzg3JFzcxLIX+BsWcUego4YgzN0l4+lEz0i
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="387812924"
+X-IronPort-AV: E=Sophos;i="6.03,262,1694761200"; 
+   d="scan'208";a="387812924"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2023 19:07:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="876978077"
+X-IronPort-AV: E=Sophos;i="6.03,262,1694761200"; 
+   d="scan'208";a="876978077"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 29 Oct 2023 19:07:07 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qxHgH-000Cyp-2D;
+        Mon, 30 Oct 2023 02:07:05 +0000
+Date:   Mon, 30 Oct 2023 10:06:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Aleksa Savic <savicaleksa83@gmail.com>, linux-hwmon@vger.kernel.org
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Aleksa Savic <savicaleksa83@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: Add driver for Gigabyte AORUS Waterforce AIO
+ coolers
+Message-ID: <202310300959.8NLKyQDJ-lkp@intel.com>
+References: <20231020130212.8919-1-savicaleksa83@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
-	protocol="application/pgp-signature"
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOIsWRmVeSWpSXmKPExsWy7djP87oWfEGpBu//8lq0v97K6MDo8XmT
-	XABjFJdNSmpOZllqkb5dAlfG9u4+5oJVPBXrLu5mb2A8xNXFyMkhIWAisXXmd5YuRi4OIYEV
-	jBL/pr5gg3CmMUkse7MbypnKJPFm6ixmmJYHj+eygNhCAssZJba8NIYo6mKSODllAVCCg4NN
-	QE9i7doIkBoRAQWJ1jkbGEFsZgFnibPz/oDNERZIkZj15AATiM0ioCrx/N0BsDivgLlEX/9O
-	MFtUwFLi+NZ2Noi4oMTJmU9YIObkSsw8/4YRZK+EwEQOib//V7JCHOcisenhPnYIW1ji1fEt
-	ULaMxOnJPSwQDe2MEk1XFrJCOBMYJT53NDFBVFlL3Dn3iw3kAwkBR4npf9QhTD6JG28FIRbz
-	SUzaNp0ZIswr0dEmBNGoIrGufw8LhC0l0ftqBSOE7SGx889eaFjFSqw7PYl5AqP8LCTvzELy
-	ziygqcwCmhLrd+lDhLUlli18zQxh20qsW/eeZQEj6ypG8dTS4tz01GLjvNRyveLE3OLSvHS9
-	5PzcTYzA9HD63/GvOxhXvPqod4iRiYPxEKMKUPOjDasvMEqx5OXnpSqJ8OZpBqQK8aYkVlal
-	FuXHF5XmpBYfYpTmYFES51VNkU8VEkhPLEnNTk0tSC2CyTJxcEo1MDkxyJ8qTAvRXNqQwLF2
-	06mjrj1PbhgZNs/3rDvm+kw9Xub86XnR3xYu1GIulDI3XVujsMXqffykDB87y8sff/3bK5NX
-	MZvv8Bn1I2t7u9QibFYtU5rx2eFgl1zEBq3dN0sXvp81ed7e/OmJXnN+Tza7EZM2rb8vXG0q
-	U33QAY9Xl5O+Holx9CjlfPii7NA2f+O9DZs09kVW7olST1i6+/l9M77l/vvuluy4XbhExjR5
-	skTj5ILbn+5trn2zdSFL3l4Wju3/feKCJYu0Lm36vO7YxbZE0TBXjT1b5s49uZzLiy2+NYy3
-	NzNrtYcFV8Ps3UuX2JxWTn+1oOjOkavmyxX+mD7wXqNswPrynDXv3AglluKMREMt5qLiRADx
-	rZ2ZigMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrMLMWRmVeSWpSXmKPExsVy+t/xu7rmfEGpBisnWli0v97K6MDo8XmT
-	XABjlJ5NUX5pSapCRn5xia1StKGFkZ6hpYWekYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7G
-	9u4+5oJVPBXrLu5mb2A8xNXFyMkhIWAi8eDxXJYuRi4OIYGljBKXVj5j7GLkAEpISaycmw5R
-	Iyzx51oXG0RNB5PEqVknmUBq2AT0JNaujQCpERFQkGids4ERxGYWcJY4O+8PM4gtLJAiMevJ
-	ASYQm0VAVeL5uwNgcV4Bc4m+/p1gtqiApcTxre1sEHFBiZMzn7BAzMmW+Lr6OfMERr5ZSFKz
-	kKRmAV3BLKApsX6XPkRYW2LZwtfMELatxLp171kWMLKuYhRJLS3OTc8tNtQrTswtLs1L10vO
-	z93ECAzhbcd+bt7BOO/VR71DjEwcjIcYVYA6H21YfYFRiiUvPy9VSYQ3TzMgVYg3JbGyKrUo
-	P76oNCe1+BCjKdA7E5mlRJPzgdGVVxJvaGZgamhiZmlgamlmrCTO61nQkSgkkJ5YkpqdmlqQ
-	WgTTx8TBKdXApLdT8sNUZq9rTXNeHzvhrv9/dvIhxv0/U0/E9cW9Oba3jjvkx7Oq8CVF58NE
-	7yYeOnDn54QXHdwzN2ZOXsU1uf2M/Rppu3Xee/d/O9f45MyGowutXseVmz68dOnNHHXBOXGh
-	8+zzZFeGxz84oqC5eOOBW0bz+WbdDpZw0kyXSm3znZ1UJuUykTFdTlpwvoJ+q87Oh02VQlr8
-	hxrW+1/O2vbIu39lR03BYd0r+h+ulcTaXNO766+2IOGB7M+C9bGcwSxvXzM/+M6h8re3K0kz
-	ev/SKV+v9Z5YsUut+n3pM4NDzVfsqvWn37PZw7RiHuu6J/tDNq67e5sxu3LVrmUhOpe0zwec
-	ns/Ftq3BoCU9eIkSS3FGoqEWc1FxIgDZgYtb9gIAAA==
-X-CMS-MailID: 20231113115327eucas1p11f84e775ce78deaa01557f3868c2f9dd
-X-Msg-Generator: CA
-X-RootMTR: 20231113115327eucas1p11f84e775ce78deaa01557f3868c2f9dd
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20231113115327eucas1p11f84e775ce78deaa01557f3868c2f9dd
-References: <CGME20231113115327eucas1p11f84e775ce78deaa01557f3868c2f9dd@eucas1p1.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231020130212.8919-1-savicaleksa83@gmail.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
+Precedence: bulk
+List-ID: <linux-hwmon.vger.kernel.org>
+X-Mailing-List: linux-hwmon@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Aleksa,
 
-Hi,
+kernel test robot noticed the following build warnings:
 
-I've got HP EliteDesk 800 G6 Tower PC running Linux 6.1 from Debian=C2=A012.
-I managed to build the hp-wmi-sensors out of tree. When I loaded it I
-got EINVAL.
+[auto build test WARNING on groeck-staging/hwmon-next]
+[also build test WARNING on linus/master v6.6-rc7 next-20231027]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-    hp-wmi-sensors: probe of 8F1F6435-9F42-42C8-BADC-0E9424F20C9A failed wi=
-th error -22
+url:    https://github.com/intel-lab-lkp/linux/commits/Aleksa-Savic/hwmon-Add-driver-for-Gigabyte-AORUS-Waterforce-AIO-coolers/20231020-210452
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+patch link:    https://lore.kernel.org/r/20231020130212.8919-1-savicaleksa83%40gmail.com
+patch subject: [PATCH] hwmon: Add driver for Gigabyte AORUS Waterforce AIO coolers
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20231030/202310300959.8NLKyQDJ-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231030/202310300959.8NLKyQDJ-lkp@intel.com/reproduce)
 
-I managed to track it down. And it happens in check_wobj() called from
-check_platform_events_wobj() because in the for loop when prop=3D=3D0 the
-type is ACPI_TYPE_BUFFER instead of ACPI_TYPE_STRING. When I bypass this
-particular check like this
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310300959.8NLKyQDJ-lkp@intel.com/
 
-    if (prop =3D=3D 0 && type =3D=3D ACPI_TYPE_BUFFER)
-            continue;
+All warnings (new ones prefixed by >>):
 
-everything else works like charm and I can read senosrs via sysfs. I'd
-like to perpare a proper patch, but I've got no idea how to do properly
-work this quirk around. What are your suggestions?
+>> drivers/hwmon/gigabyte_waterforce.c:130:7: warning: variable 'ret' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+     130 |                 if (!time_after(jiffies, priv->updated + msecs_to_jiffies(STATUS_VALIDITY))) {
+         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/hwmon/gigabyte_waterforce.c:155:7: note: uninitialized use occurs here
+     155 |                 if (ret < 0)
+         |                     ^~~
+   drivers/hwmon/gigabyte_waterforce.c:130:3: note: remove the 'if' if its condition is always false
+     130 |                 if (!time_after(jiffies, priv->updated + msecs_to_jiffies(STATUS_VALIDITY))) {
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     131 |                         /* Data is up to date */
+         | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     132 |                         goto unlock_and_return;
+         | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     133 |                 }
+         | ~~~~~~~~~~~~~~~~~
+   drivers/hwmon/gigabyte_waterforce.c:127:9: note: initialize the variable 'ret' to silence this warning
+     127 |         int ret;
+         |                ^
+         |                 = 0
+   1 warning generated.
 
-Kind regards,
-=2D-=20
-=C5=81ukasz Stelmach
-Samsung R&D Institute Poland
-Samsung Electronics
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+vim +130 drivers/hwmon/gigabyte_waterforce.c
 
------BEGIN PGP SIGNATURE-----
+   124	
+   125	static int waterforce_get_status(struct waterforce_data *priv)
+   126	{
+   127		int ret;
+   128	
+   129		if (!mutex_lock_interruptible(&priv->status_report_request_mutex)) {
+ > 130			if (!time_after(jiffies, priv->updated + msecs_to_jiffies(STATUS_VALIDITY))) {
+   131				/* Data is up to date */
+   132				goto unlock_and_return;
+   133			}
+   134	
+   135			/*
+   136			 * Disable raw event parsing for a moment to safely reinitialize the
+   137			 * completion. Reinit is done because hidraw could have triggered
+   138			 * the raw event parsing and marked the priv->status_report_received
+   139			 * completion as done.
+   140			 */
+   141			spin_lock_bh(&priv->status_report_request_lock);
+   142			reinit_completion(&priv->status_report_received);
+   143			spin_unlock_bh(&priv->status_report_request_lock);
+   144	
+   145			/* Send command for getting status */
+   146			ret = waterforce_write_expanded(priv, get_status_cmd, GET_STATUS_CMD_LENGTH);
+   147			if (ret < 0)
+   148				return ret;
+   149	
+   150			if (wait_for_completion_interruptible_timeout
+   151			    (&priv->status_report_received, msecs_to_jiffies(STATUS_VALIDITY)) <= 0)
+   152				ret = -ENODATA;
+   153	unlock_and_return:
+   154			mutex_unlock(&priv->status_report_request_mutex);
+   155			if (ret < 0)
+   156				return ret;
+   157		} else {
+   158			return -ENODATA;
+   159		}
+   160	
+   161		return 0;
+   162	}
+   163	
 
-iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAmU70h0ACgkQsK4enJil
-gBBwiwf/Z0TVt+lKBIw2VMJl4rE0XWBWkusb14T+IAYu/xg+VRUUyGU7QO2CVvPI
-jB9gKFk/zRhyNAK0MwvvyHryEmIKlYcS5OampPxDkqG+GbIgG8zb/SXvIUGxzVBc
-q4/smXacXTa0Cev/UXOh1Y4Q5fYnSw2PMyki91/HR7cFMHZ53sb9RFQGWHhcluwe
-3qdXLQbwY/kkVbNDdr8lfT6d6aZs1es5/vRoEayyDbN68BU/arnJzxN5wyjl8E2m
-ekvT7HvpBulX19feI6NAjIN4+NNhf0fS8UHULdweK5jZrRR/cO6ruiWHXWRK1oBl
-lA995stifCvUsOjTpqd8OJXsoz3hQQ==
-=poOV
------END PGP SIGNATURE-----
---=-=-=--
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
