@@ -2,337 +2,265 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3CF77DD886
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Oct 2023 23:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AA77DD690
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Oct 2023 20:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231904AbjJaWlJ (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 31 Oct 2023 18:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
+        id S233401AbjJaTIB (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 31 Oct 2023 15:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344871AbjJaWlH (ORCPT
+        with ESMTP id S233231AbjJaTIB (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 31 Oct 2023 18:41:07 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6329110;
-        Tue, 31 Oct 2023 15:41:02 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39VM9GJP004517;
-        Tue, 31 Oct 2023 18:40:47 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3u38jds73p-934
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 31 Oct 2023 18:40:47 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 39VIMP1L034724
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 31 Oct 2023 14:22:25 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 31 Oct
- 2023 14:22:24 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 31 Oct 2023 14:22:24 -0400
-Received: from daniel-Precision-5530.ad.analog.com ([10.48.65.198])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 39VIM1d6022309;
-        Tue, 31 Oct 2023 14:22:16 -0400
-From:   Daniel Matyas <daniel.matyas@analog.com>
-CC:     Daniel Matyas <daniel.matyas@analog.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>,
-        <linux-hwmon@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 5/5] hwmon: max31827: Add custom attribute for resolution
-Date:   Tue, 31 Oct 2023 20:21:57 +0200
-Message-ID: <20231031182158.124608-5-daniel.matyas@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231031182158.124608-1-daniel.matyas@analog.com>
-References: <20231031182158.124608-1-daniel.matyas@analog.com>
+        Tue, 31 Oct 2023 15:08:01 -0400
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F5E5F3
+        for <linux-hwmon@vger.kernel.org>; Tue, 31 Oct 2023 12:07:58 -0700 (PDT)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20231031190754euoutp01244bde642bee2ac8fc627cf0065611f8~TRr-wfFyb2780727807euoutp01Z;
+        Tue, 31 Oct 2023 19:07:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20231031190754euoutp01244bde642bee2ac8fc627cf0065611f8~TRr-wfFyb2780727807euoutp01Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1698779274;
+        bh=DDfeCQzF6T6XGiaKOHJHBvQObdxj4bCUunftE3PL7Lc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=c2CBkR5d+AXdPkFSEZfBFjVvVzKmjInrUFcYFtqZwNQ/1Tnnzb+1BIOk4WaPDD475
+         QfOrg1e2CKJu699RJ7UH7836BWbpQj9dKxDQPo0XggfRpX2FCxIhdugZbeblLEUf1K
+         Y9MaK/eAp8HxWqL5mLIBoA0Kiy9K+fmL+bfQA/sc=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20231031190754eucas1p2715559240e63b30ad63938da8cc891d4~TRr-NLiwO1660816608eucas1p2Q;
+        Tue, 31 Oct 2023 19:07:54 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 10.4E.11320.98051456; Tue, 31
+        Oct 2023 19:07:53 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20231031190753eucas1p25afeef1c5372a0da4549ebea01ec0ea9~TRr_sLaMy1474414744eucas1p2J;
+        Tue, 31 Oct 2023 19:07:53 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20231031190753eusmtrp28be2e5395e34ac6334c80f7630d57ba5~TRr_rr3GF1307213072eusmtrp2M;
+        Tue, 31 Oct 2023 19:07:53 +0000 (GMT)
+X-AuditID: cbfec7f4-993ff70000022c38-fe-65415089b2f8
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id B0.D5.10549.98051456; Tue, 31
+        Oct 2023 19:07:53 +0000 (GMT)
+Received: from localhost (unknown [106.120.51.111]) by eusmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20231031190753eusmtip18ae007650da089f21af6bce532805eca~TRr_c_aFS0344103441eusmtip1c;
+        Tue, 31 Oct 2023 19:07:53 +0000 (GMT)
+From:   Lukasz Stelmach <l.stelmach@samsung.com>
+To:     James Seo <james@equiv.tech>
+Cc:     Guenter Roeck <linux@roeck-us.net>, Armin Wolf <W_Armin@gmx.de>,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [BUG] hp-wmi-sensors: probe of
+ 8F1F6435-9F42-42C8-BADC-0E9424F20C9A failed with error -22
+Date:   Tue, 31 Oct 2023 20:07:42 +0100
+In-Reply-To: <ZUEIcOBpVzxC/+c1@equiv.tech> (James Seo's message of "Tue, 31
+ Oct 2023 07:00:16 -0700")
+Message-ID: <oypijdsf5qehkx.fsf%l.stelmach@samsung.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 2Jo_6VfOCUs_KY3Pc8O37ztpyfqC4ovE
-X-Proofpoint-ORIG-GUID: 2Jo_6VfOCUs_KY3Pc8O37ztpyfqC4ovE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-31_09,2023-10-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0 spamscore=0
- phishscore=0 malwarescore=0 clxscore=1015 mlxscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2310240000
- definitions=main-2310310186
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
+        protocol="application/pgp-signature"
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrAKsWRmVeSWpSXmKPExsWy7djPc7qdAY6pBo/PmFvMu3aQ2aL99VZG
+        iycLzzBZTHx+gNWBxeN790Umjw8f4zx2fm9g9/i8SS6AJYrLJiU1J7MstUjfLoEr48T3l2wF
+        z3Qrnp+cy9bAeFili5GTQ0LARGJN3yLWLkYuDiGBFYwS99tWMIMkhAS+MEq8O8APkfjMKPH6
+        wVw2mI73jzZCdSxnlLh5fSIjhPOCUeJM72Ogdg4ONgE9ibVrI0AaRAQUJFrnbGAEsZkFkiWW
+        dHYygpQIC2RI3PwNtoxFQFVi7qHdYCWcAukSkxZ2s4LYvALmEv8e7wWLiwpYShzf2s4GEReU
+        ODnzCQvEyFyJmeffgJ0gIXCFQ6Jj2wJmiENdJBadb2OEsIUlXh3fwg5hy0j83zmfCaKhnVGi
+        6cpCVghnAqPE544mJogqa4k7535BvewosWDeYjaQqyUE+CRuvBWE2MwnMWnbdGaIMK9ER5sQ
+        RLWKxLr+PSwQtpRE76sVUDd4SLzfupMJErq1ErPm/2KcwKgwC8k/s5D8MwtoKrOApsT6XfoQ
+        YW2JZQtfM0PYthLr1r1nWcDIuopRPLW0ODc9tdgoL7Vcrzgxt7g0L10vOT93EyMw4Zz+d/zL
+        Dsblrz7qHWJk4mA8xKgC1Pxow+oLjFIsefl5qUoivIdNHVKFeFMSK6tSi/Lji0pzUosPMUpz
+        sCiJ86qmyKcKCaQnlqRmp6YWpBbBZJk4OKUamKZJC5rdPndS7IXZEVHJRxOdFBWfbW2dv2sN
+        n/CjOQcvZq1gm3i6h5nd7Ljspz/G/x9zeGibNl7dGPVJ8su04OfJAp0LXBW2zd1ssz69dpen
+        7pSaA1O2sQVvzrdYPrFJ5vHeBYbqPEYPwnY5KOyt2Tn9f0b+kwi9/rlfF2oYquUHbX138d3b
+        6RLL5tqz7Of5ZbbK++nOa3pM69h3X+fvy59R7WPnasj4JJHJ3dLx896F589n2Pumzn7ziDFJ
+        e/mqF1kHwwrnLNHJ4zsXmni/1WVlrGSD/pP1Ym48K4MzExaz1Lzcfea8n7R7cbZdC1to7oYf
+        cifqr6s51lxlbJMLPeLcWLHwR16+nmTmQ2AiU2Ipzkg01GIuKk4EACEeprCzAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGIsWRmVeSWpSXmKPExsVy+t/xu7qdAY6pBu/OilrMu3aQ2aL99VZG
+        iycLzzBZTHx+gNWBxeN790Umjw8f4zx2fm9g9/i8SS6AJUrPpii/tCRVISO/uMRWKdrQwkjP
+        0NJCz8jEUs/Q2DzWyshUSd/OJiU1J7MstUjfLkEv48T3l2wFz3Qrnp+cy9bAeFili5GTQ0LA
+        ROL9o42sXYxcHEICSxkljv64wNLFyAGUkJJYOTcdokZY4s+1LjYQW0jgGaPE1ElcICVsAnoS
+        a9dGgIRFBBQkWudsYASxmQVSJDZM6GACKREWyJC4+ZsZolNTYurCrWAlLAKqEnMP7QazOQXS
+        Jb592wZWwytgLvHv8V6wuKiApcTxre1sEHFBiZMzn7BAjM+W+Lr6OfMERoFZSFKzkKRmAW1m
+        Blq3fpc+RFhbYtnC18wQtq3EunXvWRYwsq5iFEktLc5Nzy021CtOzC0uzUvXS87P3cQIjJRt
+        x35u3sE479VHvUOMTByMhxhVgDofbVh9gVGKJS8/L1VJhPewqUOqEG9KYmVValF+fFFpTmrx
+        IUZToNcmMkuJJucDYzivJN7QzMDU0MTM0sDU0sxYSZzXs6AjUUggPbEkNTs1tSC1CKaPiYNT
+        qoHJZKd4x3eGso1zbeJTFDmnfa66avlxisZWK2uNVLaamuWXdOaeiPw75eu0HTNvcvU9j7/U
+        0bj43Euu3Rt02x7cXHd8pf3uxfEVXjumzl2efvlqncthS6f9JXLm1z2YF7JonPKxEHlZ2H5K
+        Y2Ld07oPLJNX71Wr3rH9F/fmvgOxK/zjmves5RDb7aZ0+uxSthqWl9IHHbIZuT5dcCjZV9v0
+        513qzZVz9Xc+W3gm6L9SnrPT9K83P6lt/jPjoMYFiyLfArbAQ9kRElJGfnOuPTu4TnrduteZ
+        pctfLuee4MCkJD2pIN1kwzxzg162D/OmPl90ntHDNH8Wa6fi0+z73kyOva9+is68veD1zK0H
+        qgx+zVBiKc5INNRiLipOBAAPFjiCKQMAAA==
+X-CMS-MailID: 20231031190753eucas1p25afeef1c5372a0da4549ebea01ec0ea9
+X-Msg-Generator: CA
+X-RootMTR: 20231031190753eucas1p25afeef1c5372a0da4549ebea01ec0ea9
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20231031190753eucas1p25afeef1c5372a0da4549ebea01ec0ea9
+References: <ZUEIcOBpVzxC/+c1@equiv.tech>
+        <CGME20231031190753eucas1p25afeef1c5372a0da4549ebea01ec0ea9@eucas1p2.samsung.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Added custom channel-specific (temp1) attribute for resolution. The wait
-time for a conversion in one-shot mode (enable = 0) depends on the
-resolution.
+--=-=-=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-When resolution is 12-bit, the conversion time is 140ms, but the minimum
-update_interval is 125ms. Handled this problem by waiting an additional
-15ms (125ms + 15ms = 140ms).
+It was <2023-10-31 wto 07:00>, when James Seo wrote:
+> On Tue, Oct 31, 2023 at 11:20:00AM +0100, Lukasz Stelmach wrote:
+>> I am attaching dsdt.dat. It is the only file that contains the
+>> "HPBIOS_BIOSEvent" string and the above UUID.
+>
+> OK, I think I've figured it out.
+>
+> Earlier, I focused on "probe of 8F1F6435-9F42-42C8-BADC-0E9424F20C9A fail=
+ed"
+> (the GUID of HPBIOS_BIOSNumericSensor), and missed it when you said the f=
+ailure
+> is happening when check_wobj() is called from check_platform_events_wobj(=
+).
+> So the issue is actually with HPBIOS_PlatformEvents.Name, since any insta=
+nces
+> of that WMI object are examined during driver init as well.
+>
+> After using iasl to decompile the DSDT you sent to ACPI Source Language (=
+ASL),
+> everything looks fine with HPBIOS_BIOSNumericSensor. Not that I'm particu=
+larly
+> familiar with ASL, but search for "Name (SEN1, Package (0x06)" and read o=
+n to
+> the "Method (_INI, 0, NotSerialized)" and the "Method (WQAE, 1, Serialize=
+d)"
+> lines below. It certainly looks like that's how the BIOS on that system is
+> generating HPBIOS_PlatformEvents instances at runtime.
+>
+> For HPBIOS_PlatformEvents instances, that BIOS seems to generate them in =
+two
+> places. The driver is interested in those from "Method (WQBC, 1, Serializ=
+ed)",
+> which rely on the section above that beginning at "Name (EVNT, Package (0=
+x0D)".
+> There are also some generated in "Method (WQPE, 1, Serialized)", relying =
+on:
+>
+>         Name (CBWE, Package (0x02)
+>         {
+>             Package (0x05)
+>             {
+>                 Unicode ("4BIOS Configuration Change"), // Oops.
+>                 "BIOS Settings",=20
+>                 0x04,=20
+>                 0x05,=20
+>                 0x02
+>             },=20
+>
+>             Package (0x05)
+>             {
+>                 "BIOS Configuration Security",=20
+>                 "An attempt has been made to Access BIOS features unsucce=
+ssfully",=20
+>                 0x04,=20
+>                 0x0A,=20
+>                 0x06
+>             }
+>         })
+>
+> So yes, Armin was right, UTF-16 is the culprit. And it's only for this one
+> instance of HPBIOS_PlatformEvents on this one system's BIOS.
+>
+> Can you find the wonky object instance in the debugfs interface? I imagine
+> its name shows up as either "4" or an empty string, depending on the UTF-=
+16
+> byte order.
 
-Added 'mask' parameter to the shutdown_write() function. Now it can
-either write or update bits, depending on the value of mask. This is
-needed, because for alarms a write is necessary, but for resolution only
-the resolution bits should be updated.
+Indeed there is one
 
-Signed-off-by: Daniel Matyas <daniel.matyas@analog.com>
----
+=2D-8<---------------cut here---------------start------------->8---
+# grep -r "" /sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/possible_status:2
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/possible_severity:5
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/category:4
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/source_class:HPBIOS_BI=
+OSEvent
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/source_namespace:root\=
+wmi
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/description:BIOS Setti=
+ngs
+/sys/kernel/debug/hp-wmi-sensors-0/platform_events/0/name:4
+=2D-8<---------------cut here---------------end--------------->8---
 
-v5 -> v6: Resolution selects value closest to input value.
+> I'm also curious how it looks in Windows (I used WMI Explorer [1] during
+> development). The WMI namespace should be "\\.\root\HP\InstrumentedBIOS".
 
-v3 -> v5: No change.
+I'll see if I can find such machine with Windows. It may take a few days
+thou.
 
-v2 -> v3: Fixed indentation problems in .rst.
+>> The readings of hp_wmi_sensors-virtual-0 look sensible and they change
+>> reasonably under load.
+>
+> Good. I guess that part working wasn't so surprising after all :)
+>
+> Regarding how we proceed from here, I think the main question is
+> whether a workaround should be limited to only specific machines
+> (maybe detected using DMI data), and if so, to specific WMI object
+> types and instances (cf.  hp_wmi_get_wobj(), though limiting on
+> instance number would be fragile if BIOS updates change instance
+> numbering). Other questions are how thoroughly to validate UTF-16 in a
+> buffer and whether to convert to UTF-8 internally.
+>
+> For what it's worth, I personally don't see much value in doing much
+> more than a machine-limited workaround for now. To me it's clear that
+> this UTF-16 corner case is a BIOS bug and its consequences are minimal
+> once a workaround is in place.
+>
+> Thoughts?
 
-v1 -> v2: Changed subject. Separated patch. Removed timeout sysfs
-attribute and kept only resolution. Added temp1_ prefix to resolution.
-Changed value of resolution from bits to milli-degrees Celsius. Added
-appropriate documentation.
+I am no expert regarding x86 platforms and I don't know how often bugs
+like this happen and if making it more generic makes sens. Maybe.
 
- Documentation/hwmon/max31827.rst |  29 ++++++--
- drivers/hwmon/max31827.c         | 122 ++++++++++++++++++++++++++++---
- 2 files changed, 134 insertions(+), 17 deletions(-)
+My solution would be to add a module option, let's name it `quirks` and
+make it a bit field for future use, that enables the workaound. Plus an
+additional error message when probe fails to suggest user to add the
+option to kernel command line or whatever file that contains module
+options. A nice touch would be to detect if the workaround is still
+required.
 
-diff --git a/Documentation/hwmon/max31827.rst b/Documentation/hwmon/max31827.rst
-index a8bbfb85dd02..44ab9dc064cb 100644
---- a/Documentation/hwmon/max31827.rst
-+++ b/Documentation/hwmon/max31827.rst
-@@ -90,11 +90,28 @@ the data sheet are:
- 
- Enabling the device when it is already enabled has the side effect of setting
- the conversion frequency to 1 conv/s. The conversion time varies depending on
--the resolution. The conversion time doubles with every bit of increased
--resolution. For 10 bit resolution 35ms are needed, while for 12 bit resolution
--(default) 140ms. When chip is in shutdown mode and a read operation is
--requested, one-shot is triggered, the device waits for 140 (conversion time) ms,
--and only after that is the temperature value register read.
-+the resolution.
-+
-+The conversion time doubles with every bit of increased resolution. The
-+available resolutions are:
-+
-+- 8 bit -> 8.75 ms conversion time
-+- 9 bit -> 17.5 ms conversion time
-+- 10 bit -> 35 ms conversion time
-+- 12 bit (default) -> 140 ms conversion time
-+
-+There is a temp1_resolution attribute which indicates the unit change in the
-+input temperature in milli-degrees C.
-+
-+- 1000 mC -> 8 bit
-+- 500 mC -> 9 bit
-+- 250 mC -> 10 bit
-+- 62 mC -> 12 bit (default) - actually this is 62.5, but the fil returns 62
-+
-+When chip is in shutdown mode and a read operation is requested, one-shot is
-+triggered, the device waits for <conversion time> ms, and only after that is
-+the temperature value register read. Note that the conversion times are rounded
-+up to the nearest possible integer.
- 
- The LSB of the temperature values is 0.0625 degrees Celsius, but the values of
- the temperatures are displayed in milli-degrees. This means, that some data is
-@@ -117,4 +134,4 @@ corresponding status bits.
- Notes
- -----
- 
--PEC and resolution are not implemented.
-+PEC is not implemented.
-diff --git a/drivers/hwmon/max31827.c b/drivers/hwmon/max31827.c
-index 13ebe691475a..ea10b4a0fcab 100644
---- a/drivers/hwmon/max31827.c
-+++ b/drivers/hwmon/max31827.c
-@@ -36,6 +36,9 @@
- #define MAX31827_FLT_Q_1	0x0
- #define MAX31827_FLT_Q_4	0x2
- 
-+#define MAX31827_8_BIT_CNV_TIME		9
-+#define MAX31827_9_BIT_CNV_TIME		18
-+#define MAX31827_10_BIT_CNV_TIME	35
- #define MAX31827_12_BIT_CNV_TIME	140
- 
- #define MAX31827_16_BIT_TO_M_DGR(x)	(sign_extend32(x, 15) * 1000 / 16)
-@@ -64,6 +67,27 @@ static const u16 max31827_conversions[] = {
- 	[MAX31827_CNV_8_HZ] = 125,
- };
- 
-+enum max31827_resolution {
-+	MAX31827_RES_8_BIT = 0,
-+	MAX31827_RES_9_BIT,
-+	MAX31827_RES_10_BIT,
-+	MAX31827_RES_12_BIT,
-+};
-+
-+static const u16 max31827_resolutions[] = {
-+	[MAX31827_RES_8_BIT] = 1000,
-+	[MAX31827_RES_9_BIT] = 500,
-+	[MAX31827_RES_10_BIT] = 250,
-+	[MAX31827_RES_12_BIT] = 62,
-+};
-+
-+static const u16 max31827_conv_times[] = {
-+	[MAX31827_RES_8_BIT] = MAX31827_8_BIT_CNV_TIME,
-+	[MAX31827_RES_9_BIT] = MAX31827_9_BIT_CNV_TIME,
-+	[MAX31827_RES_10_BIT] = MAX31827_10_BIT_CNV_TIME,
-+	[MAX31827_RES_12_BIT] = MAX31827_12_BIT_CNV_TIME,
-+};
-+
- struct max31827_state {
- 	/*
- 	 * Prevent simultaneous access to the i2c client.
-@@ -71,6 +95,8 @@ struct max31827_state {
- 	struct mutex lock;
- 	struct regmap *regmap;
- 	bool enable;
-+	unsigned int resolution;
-+	unsigned int update_interval;
- };
- 
- static const struct regmap_config max31827_regmap = {
-@@ -87,9 +113,9 @@ static int shutdown_write(struct max31827_state *st, unsigned int reg,
- 	int ret;
- 
- 	/*
--	 * Before the Temperature Threshold Alarm and Alarm Hysteresis Threshold
--	 * register values are changed over I2C, the part must be in shutdown
--	 * mode.
-+	 * Before the Temperature Threshold Alarm, Alarm Hysteresis Threshold
-+	 * and Resolution bits from Configuration register are changed over I2C,
-+	 * the part must be in shutdown mode.
- 	 *
- 	 * Mutex is used to ensure, that some other process doesn't change the
- 	 * configuration register.
-@@ -207,9 +233,18 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
- 					mutex_unlock(&st->lock);
- 					return ret;
- 				}
--
--				msleep(MAX31827_12_BIT_CNV_TIME);
-+				msleep(max31827_conv_times[st->resolution]);
- 			}
-+
-+			/*
-+			 * For 12-bit resolution the conversion time is 140 ms,
-+			 * thus an additional 15 ms is needed to complete the
-+			 * conversion: 125 ms + 15 ms = 140 ms
-+			 */
-+			if (max31827_resolutions[st->resolution] == 12 &&
-+			    st->update_interval == 125)
-+				usleep_range(15000, 20000);
-+
- 			ret = regmap_read(st->regmap, MAX31827_T_REG, &uval);
- 
- 			mutex_unlock(&st->lock);
-@@ -366,10 +401,14 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
- 			res = FIELD_PREP(MAX31827_CONFIGURATION_CNV_RATE_MASK,
- 					 res);
- 
--			return regmap_update_bits(st->regmap,
--						  MAX31827_CONFIGURATION_REG,
--						  MAX31827_CONFIGURATION_CNV_RATE_MASK,
--						  res);
-+			ret = regmap_update_bits(st->regmap,
-+						 MAX31827_CONFIGURATION_REG,
-+						 MAX31827_CONFIGURATION_CNV_RATE_MASK,
-+						 res);
-+			if (ret)
-+				return ret;
-+
-+			st->update_interval = val;
- 		}
- 		break;
- 
-@@ -377,9 +416,70 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
- 		return -EOPNOTSUPP;
- 	}
- 
--	return -EOPNOTSUPP;
-+	return 0;
-+}
-+
-+static ssize_t temp1_resolution_show(struct device *dev,
-+				     struct device_attribute *devattr,
-+				     char *buf)
-+{
-+	struct max31827_state *st = dev_get_drvdata(dev);
-+	unsigned int val;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, MAX31827_CONFIGURATION_REG, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = FIELD_GET(MAX31827_CONFIGURATION_RESOLUTION_MASK, val);
-+
-+	return scnprintf(buf, PAGE_SIZE, "%u\n", max31827_resolutions[val]);
-+}
-+
-+static ssize_t temp1_resolution_store(struct device *dev,
-+				      struct device_attribute *devattr,
-+				      const char *buf, size_t count)
-+{
-+	struct max31827_state *st = dev_get_drvdata(dev);
-+	unsigned int idx = 0;
-+	unsigned int val;
-+	int ret;
-+
-+	ret = kstrtouint(buf, 10, &val);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Convert the desired resolution into register
-+	 * bits. idx is already initialized with 0.
-+	 *
-+	 * This was inspired by lm73 driver.
-+	 */
-+	while (idx < ARRAY_SIZE(max31827_resolutions) &&
-+	       val < max31827_resolutions[idx])
-+		idx++;
-+
-+	if (idx == ARRAY_SIZE(max31827_resolutions))
-+		idx = ARRAY_SIZE(max31827_resolutions) - 1;
-+
-+	st->resolution = idx;
-+
-+	ret = shutdown_write(st, MAX31827_CONFIGURATION_REG,
-+			     MAX31827_CONFIGURATION_RESOLUTION_MASK,
-+			     FIELD_PREP(MAX31827_CONFIGURATION_RESOLUTION_MASK,
-+					idx));
-+
-+	return ret ? ret : count;
- }
- 
-+static DEVICE_ATTR_RW(temp1_resolution);
-+
-+static struct attribute *max31827_attrs[] = {
-+	&dev_attr_temp1_resolution.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(max31827);
-+
- static const struct i2c_device_id max31827_i2c_ids[] = {
- 	{ "max31827", max31827 },
- 	{ "max31828", max31828 },
-@@ -524,7 +624,7 @@ static int max31827_probe(struct i2c_client *client)
- 
- 	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, st,
- 							 &max31827_chip_info,
--							 NULL);
-+							 max31827_groups);
- 
- 	return PTR_ERR_OR_ZERO(hwmon_dev);
- }
--- 
-2.34.1
+Thouths.
 
+> Also, if you'd prefer to let me handle it, I'd be glad to write a
+> patch myself.
+
+I am fine with that, I know a bit more about device-tree than about ACPI
+(-; and PCs in general. I'll be glad to test the patch thou.
+
+=2D-=20
+=C5=81ukasz Stelmach
+Samsung R&D Institute Poland
+Samsung Electronics
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAmVBUH4ACgkQsK4enJil
+gBApjAgAj3C3yYahkRmckb1BTCz+JFNzskkJBkbUyHOumOvFbm5RUiQhu2wwhQIj
+22UT6ZyKxCKp4lQIN18Os2+/6mHzN0tz2IKhHEFAaqd79LpzC51xhfqTnWVeMEpZ
+H29BLKuXRWiy/AwXrRQ2tyEBtsU1Z3HlSxB5H2y8PCSgfVXY9VwMOPwf9UBaLnPU
+93AEYYhd/kMjvcUthjr9ZAEW2uMzjj9aDQMWs0WcY8PVIi5QdzUx4HSVb8xCudKD
+AWglMMcUrUxCVMBvIbdrjIu9OScNzq3uJulsu5zaa2nQ1RQiZUw6hj3AFr13o9n7
+XLVx4qgvHMqDiPtuaBPUAJLlRBo3NA==
+=s9xF
+-----END PGP SIGNATURE-----
+--=-=-=--
