@@ -2,499 +2,298 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF09E7DD5D1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Oct 2023 19:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D7017DD88B
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Oct 2023 23:41:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376595AbjJaSJm (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Tue, 31 Oct 2023 14:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
+        id S234459AbjJaWlw (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Tue, 31 Oct 2023 18:41:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230455AbjJaSJl (ORCPT
+        with ESMTP id S234390AbjJaWlv (ORCPT
         <rfc822;linux-hwmon@vger.kernel.org>);
-        Tue, 31 Oct 2023 14:09:41 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1926BA2;
-        Tue, 31 Oct 2023 11:09:39 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6be0277c05bso5297509b3a.0;
-        Tue, 31 Oct 2023 11:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698775778; x=1699380578; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=JchhP+mGKXvZIlmqePmuD84psJVG+oz+e68YnJRPIdo=;
-        b=Njht6S7VQD5X25TqY3cXftz+e98xikBN8DB93GXZFChKq70XVD3npFjhvpevLpBt12
-         e72nl5z9HAi9BTCFKZ6HHVsCkx/6/SOkmBeAQQK8kmRWp9TGlnHdAWBM+LTqr3SQlMYH
-         APX6lQ9VHZ639VwIAXOfF8I4eJisCJXZT5dGvWsx87nGbZxQYgbbAP/xlFlnZTFQZ6z1
-         joOeXFKR7xXF8WycbZcttt8H+71qmjplMm7cVWJ6Nm4QY1GcqXkTz3OteBqZLq8AVL08
-         E3CdH8izDGOTlJWEnh049S4uGUvODUT1tX+5eoMiS89bRlhgxCfhZGyjjga9femrAgQN
-         R29A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698775778; x=1699380578;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JchhP+mGKXvZIlmqePmuD84psJVG+oz+e68YnJRPIdo=;
-        b=D5AMRUlVAyD7n9lu8kEStRBfFU8KrwkfZ68lQ8A0ULZsPHL+vBWDmBtd3Z5kVWLOyB
-         wRUFOn1vrA8Sf/+DccUWXeOWfXxS4D/f7RcB7C2yJu890NoEEiJqTmpyv3D0p92gqf4c
-         yiyHATIafc2yy7AfMUqIegOBluYmBhnnY8wKkW5K4yz6KbUY7JAZiH/QFFTCsVYtIQL3
-         r8KAjNCKypFB6EExHEJmtiUG0gEu1iDHyiMrx7zTWX2xrpgrgowslfGYlyigLb0VvkUQ
-         gG4HTo0oA3vc5MklEk8WT5dRSE+haA3jvQpU4jpreHoGVqZRJJq9dO/IfP+0FBEtrHuK
-         LBqQ==
-X-Gm-Message-State: AOJu0YyTaJV0y2J4jefMjlSGAThJC2aj7T5J1rhrAv26i21iDpVuhx9Q
-        8Cnaba8OeggQhfVh5tYsOu8=
-X-Google-Smtp-Source: AGHT+IEhEGhFE8d19oTBS/RMKIKGCO7V9qvGIme49Hz8cY41gVd5uHZmSuhvL5tMNvGgl7GQjX/agw==
-X-Received: by 2002:a05:6a00:2d96:b0:6b2:5b5:4f12 with SMTP id fb22-20020a056a002d9600b006b205b54f12mr12995496pfb.14.1698775778082;
-        Tue, 31 Oct 2023 11:09:38 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g16-20020a056a001a1000b006c0685422e0sm1533514pfv.214.2023.10.31.11.09.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Oct 2023 11:09:37 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <96d7bf00-a5f8-486f-912d-931e918f3fa3@roeck-us.net>
-Date:   Tue, 31 Oct 2023 11:09:35 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] hwmon: pmbus: Add ltc4286 driver
-Content-Language: en-US
-To:     Delphine CC Chiu <Delphine_CC_Chiu@Wiwynn.com>, patrick@stwcx.xyz,
+        Tue, 31 Oct 2023 18:41:51 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC55102;
+        Tue, 31 Oct 2023 15:41:44 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39VM9GK7004517;
+        Tue, 31 Oct 2023 18:41:30 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3u38jds73p-961
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 31 Oct 2023 18:41:29 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 39VIMJst034707
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 31 Oct 2023 14:22:19 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 31 Oct 2023 14:22:18 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 31 Oct 2023 14:22:18 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 31 Oct 2023 14:22:18 -0400
+Received: from daniel-Precision-5530.ad.analog.com ([10.48.65.198])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 39VIM1d2022309;
+        Tue, 31 Oct 2023 14:22:04 -0400
+From:   Daniel Matyas <daniel.matyas@analog.com>
+CC:     Daniel Matyas <daniel.matyas@analog.com>,
+        kernel test robot <lkp@intel.com>,
         Jean Delvare <jdelvare@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20231031072124.201181-1-Delphine_CC_Chiu@Wiwynn.com>
- <20231031072124.201181-3-Delphine_CC_Chiu@Wiwynn.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231031072124.201181-3-Delphine_CC_Chiu@Wiwynn.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        <linux-hwmon@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v6 1/5] hwmon: max31827: Handle new properties from the devicetree
+Date:   Tue, 31 Oct 2023 20:21:53 +0200
+Message-ID: <20231031182158.124608-1-daniel.matyas@analog.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 5tWyA4pnXRo8BOnWgBhteesIA0jJhQGh
+X-Proofpoint-ORIG-GUID: 5tWyA4pnXRo8BOnWgBhteesIA0jJhQGh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-31_09,2023-10-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ phishscore=0 malwarescore=0 clxscore=1015 mlxscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2310240000
+ definitions=main-2310310186
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 10/31/23 00:21, Delphine CC Chiu wrote:
-> Add a driver to support ltc4286 chip
-> 
-> Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@Wiwynn.com>
-> 
-> Changelog:
->    v3 - Use dev_err_probe() instead of dev_err()
->       - The VRANGE_SELECT bit only be written if it actually changed
->       - Avoid the info pointer being overwritten
->       - Check the MBR value range to avoid overflow
->       - Revise ltc4286.rst to corrcet description
->    v2 - Revise Linear Technologies LTC4286 to
->         Analog Devices LTC4286 in Kconfig
->       - Add more description for this driver in Kconfig
->       - Add some comments for MBR setting in ltc4286.c
->       - Add ltc4286.rst
-> ---
->   Documentation/hwmon/ltc4286.rst |  95 +++++++++++++++++
+Used fwnode to retrieve data from the devicetree in the init_client
+function.
 
-Needs to be added to Documentation/hwmon/index.rst
+If the uint32 properties are not present, the default values are used
+for max31827 chip.
 
->   drivers/hwmon/pmbus/Kconfig     |   9 ++
->   drivers/hwmon/pmbus/Makefile    |   1 +
->   drivers/hwmon/pmbus/ltc4286.c   | 178 ++++++++++++++++++++++++++++++++
->   4 files changed, 283 insertions(+)
->   create mode 100644 Documentation/hwmon/ltc4286.rst
->   create mode 100644 drivers/hwmon/pmbus/ltc4286.c
-> 
-> diff --git a/Documentation/hwmon/ltc4286.rst b/Documentation/hwmon/ltc4286.rst
-> new file mode 100644
-> index 000000000000..2cd149676d86
-> --- /dev/null
-> +++ b/Documentation/hwmon/ltc4286.rst
-> @@ -0,0 +1,95 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +Kernel driver ltc4286
-> +=====================
-> +
-> +Supported chips:
-> +
-> +  * Analog Devices LTC4286
-> +
-> +    Prefix: 'ltc4286'
-> +
-> +    Addresses scanned: -
-> +
-> +    Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ltc4286.pdf
-> +
-> +  * Analog Devices LTC4287
-> +
-> +    Prefix: 'ltc4287'
-> +
-> +    Addresses scanned: -
-> +
-> +    Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ltc4287.pdf
-> +
-> +Author: Delphine CC Chiu <Delphine_CC_Chiu@Wiwynn.com>
-> +
-> +
-> +Description
-> +-----------
-> +
-> +This driver supports hardware monitoring for Analog Devices LTC4286
-> +and LTC4287 Hot-Swap Controller and Digital Power Monitors.
-> +
-> +LTC4286 and LTC4287 are hot-swap controllers that allow a circuit board
-> +to be removed from or inserted into a live backplane. They also feature
-> +current and voltage readback via an integrated 12 bit analog-to-digital
-> +converter (ADC), accessed using a PMBus interface.
-> +
-> +The driver is a client driver to the core PMBus driver. Please see
-> +Documentation/hwmon/pmbus.rst for details on PMBus client drivers.
-> +
-> +
-> +Usage Notes
-> +-----------
-> +
-> +This driver does not auto-detect devices. You will have to instantiate the
-> +devices explicitly. Please see Documentation/i2c/instantiating-devices.rst for
-> +details.
-> +
-> +The shunt value in micro-ohms can be set via device tree at compile-time. Please
-> +refer to the Documentation/devicetree/bindings/hwmon/lltc,ltc4286.yaml for bindings
-> +if the device tree is used.
-> +
-> +
-> +Platform data support
-> +---------------------
-> +
-> +The driver supports standard PMBus driver platform data. Please see
-> +Documentation/hwmon/pmbus.rst for details.
-> +
-> +
-> +Sysfs entries
-> +-------------
-> +
-> +The following attributes are supported. Limits are read-write, history reset
-> +attributes are write-only, all other attributes are read-only.
-> +
-> +======================= =======================================================
-> +in1_label		"vin"
-> +in1_input		Measured voltage.
-> +in1_alarm		Input voltage alarm.
-> +in1_min 		Minimum input voltage.
-> +in1_max 		Maximum input voltage.
-> +
-> +in2_label		"vout1"
-> +in2_input		Measured voltage.
-> +in2_alarm		Output voltage alarm.
-> +in2_min 		Minimum output voltage.
-> +in2_max 		Maximum output voltage.
-> +
-> +curr1_label		"iout1"
-> +curr1_input		Measured current.
-> +curr1_alarm		Output current alarm.
-> +curr1_max		Maximum current.
-> +
-> +power1_label		"pin"
-> +power1_input		Input power.
-> +power1_alarm		Input power alarm.
-> +power1_max		Maximum poewr.
-> +
-> +temp1_input		Chip temperature.
-> +temp1_min		Minimum chip temperature.
-> +temp1_max		Maximum chip temperature.
-> +temp1_crit		Critical chip temperature.
-> +temp1_alarm		Chip temperature alarm.
-> +======================= =======================================================
-> diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-> index b4e93bd5835e..f2b53e8abc3c 100644
-> --- a/drivers/hwmon/pmbus/Kconfig
-> +++ b/drivers/hwmon/pmbus/Kconfig
-> @@ -226,6 +226,15 @@ config SENSORS_LTC3815
->   
->   	  This driver can also be built as a module. If so, the module will
->   	  be called ltc3815.
+Signed-off-by: Daniel Matyas <daniel.matyas@analog.com>
+---
 
-Add empty line
+v5 -> v6: Added back default value for adi,fault-q and adi,alarm-pol.
+Converting adi,fault-q from devicetree to register bits is cleaner.
 
-> +config SENSORS_LTC4286
-> +	bool "Analog Devices LTC4286"
-> +	help
-> +	  LTC4286 is an integrated solution for hot swap applications that
-> +	  allows a board to be safely inserted and removed from a live
-> +	  backplane.
-> +	  This chip could be used to monitor voltage, current, ...etc.
-> +	  If you say yes here you get hardware monitoring support for Analog
-> +	  Devices LTC4286.
->   
->   config SENSORS_MAX15301
->   	tristate "Maxim MAX15301"
-> diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-> index 84ee960a6c2d..94e28f6d6a61 100644
-> --- a/drivers/hwmon/pmbus/Makefile
-> +++ b/drivers/hwmon/pmbus/Makefile
-> @@ -24,6 +24,7 @@ obj-$(CONFIG_SENSORS_LM25066)	+= lm25066.o
->   obj-$(CONFIG_SENSORS_LT7182S)	+= lt7182s.o
->   obj-$(CONFIG_SENSORS_LTC2978)	+= ltc2978.o
->   obj-$(CONFIG_SENSORS_LTC3815)	+= ltc3815.o
-> +obj-$(CONFIG_SENSORS_LTC4286)	+= ltc4286.o
->   obj-$(CONFIG_SENSORS_MAX15301)	+= max15301.o
->   obj-$(CONFIG_SENSORS_MAX16064)	+= max16064.o
->   obj-$(CONFIG_SENSORS_MAX16601)	+= max16601.o
-> diff --git a/drivers/hwmon/pmbus/ltc4286.c b/drivers/hwmon/pmbus/ltc4286.c
-> new file mode 100644
-> index 000000000000..042d3af99489
-> --- /dev/null
-> +++ b/drivers/hwmon/pmbus/ltc4286.c
-> @@ -0,0 +1,178 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/pmbus.h>
-> +#include "pmbus.h"
-> +
-> +/* LTC4286 register */
-> +#define LTC4286_MFR_CONFIG1	0xF2
-> +
-> +/* LTC4286 configuration */
-> +#define VRANGE_SELECT_BIT	BIT(1)
-> +
-> +#define LTC4286_MFR_ID_SIZE	3
-> +#define VRANGE_25P6		0
-> +
-> +enum chips { ltc4286, ltc4287 };
+v4 -> v5: Removed comment from __bf_shf() and used ffs() instead of
+ffs64().
+Added tabs where there was a need.
+Removed i2c_client from private structure. In init_client() passed
+device structure, because I only used that.
+Changed error message when the data in adi,fault-q is invalid.
+Fwnode is initialized in init_client().
 
-Not really used anywhere and can be dropped.
+v3 -> v4: Renamed property names to correspond with binding.
 
-> +
-> +/*
-> + * Initialize the MBR as default settings which is referred to LTC4286 datasheet
-> + * (March 22, 2022 version) table 3 page 16
-> + */
-> +static struct pmbus_driver_info ltc4286_info = {
-> +	.pages = 1,
-> +	.format[PSC_VOLTAGE_IN] = direct,
-> +	.format[PSC_VOLTAGE_OUT] = direct,
-> +	.format[PSC_CURRENT_OUT] = direct,
-> +	.format[PSC_POWER] = direct,
-> +	.format[PSC_TEMPERATURE] = direct,
-> +	.m[PSC_VOLTAGE_IN] = 32,
-> +	.b[PSC_VOLTAGE_IN] = 0,
-> +	.R[PSC_VOLTAGE_IN] = 1,
-> +	.m[PSC_VOLTAGE_OUT] = 32,
-> +	.b[PSC_VOLTAGE_OUT] = 0,
-> +	.R[PSC_VOLTAGE_OUT] = 1,
-> +	.m[PSC_CURRENT_OUT] = 1024,
-> +	.b[PSC_CURRENT_OUT] = 0,
-> +	/*
-> +	 * The rsense value used in MBR formula in LTC4286 datasheet should be ohm unit.
-> +	 * However, the rsense value that user input is mirco ohm.
+v2 -> v3: Separated patch into 2. Fixed 'WARNING: Unexpected
+indentation.'
+Reported-by: kernel test robot <lkp@intel.com>
 
-micro
+v2: Added patch.
 
-> +	 * Thus, the MBR setting which involves rsense should be shifted by 6 digits.
-> +	 */
-> +	.R[PSC_CURRENT_OUT] = 3 - 6,
-> +	.m[PSC_POWER] = 1,
-> +	.b[PSC_POWER] = 0,
-> +	/*
-> +	 * The rsense value used in MBR formula in LTC4286 datasheet should be ohm unit.
-> +	 * However, the rsense value that user input is mirco ohm.
+ Documentation/hwmon/max31827.rst | 48 ++++++++++++++++----
+ drivers/hwmon/max31827.c         | 75 +++++++++++++++++++++++++++++---
+ 2 files changed, 108 insertions(+), 15 deletions(-)
 
-micro
-
-> +	 * Thus, the MBR setting which involves rsense should be shifted by 6 digits.
-> +	 */
-> +	.R[PSC_POWER] = 4 - 6,
-> +	.m[PSC_TEMPERATURE] = 1,
-> +	.b[PSC_TEMPERATURE] = 273,
-> +	.R[PSC_TEMPERATURE] = 0,
-> +	.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
-> +		   PMBUS_HAVE_PIN | PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_VOUT |
-> +		   PMBUS_HAVE_STATUS_IOUT | PMBUS_HAVE_STATUS_TEMP,
-> +};
-> +
-> +static const struct i2c_device_id ltc4286_id[] = { { "ltc4286", ltc4286 },
-> +						   { "ltc4287", ltc4287 },
-> +						   {} };
-> +MODULE_DEVICE_TABLE(i2c, ltc4286_id);
-> +
-> +static int ltc4286_probe(struct i2c_client *client)
-> +{
-> +	int ret;
-> +	const struct i2c_device_id *mid;
-> +	u8 block_buffer[I2C_SMBUS_BLOCK_MAX + 1];
-> +	struct pmbus_driver_info *info;
-> +	u32 rsense;
-> +
-> +	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, block_buffer);
-> +	if (ret < 0) {
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "Failed to read manufacturer id\n");
-> +	}
-> +
-> +	/*
-> +	 * Refer to ltc4286 datasheet page 20
-> +	 * the manufacturer id is LTC
-> +	 */
-> +	if (ret != LTC4286_MFR_ID_SIZE ||
-> +	    strncmp(block_buffer, "LTC", LTC4286_MFR_ID_SIZE)) {
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "Manufacturer id mismatch\n");
-> +	}
-> +
-> +	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_MODEL, block_buffer);
-> +	if (ret < 0) {
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "Failed to read manufacturer model\n");
-> +	}
-> +
-> +	for (mid = ltc4286_id; mid->name[0]; mid++) {
-> +		if (!strncasecmp(mid->name, block_buffer, strlen(mid->name)))
-> +			break;
-> +	}
-> +	if (!mid->name[0])
-> +		return dev_err_probe(&client->dev, -ENODEV,
-> +				     "Unsupported device\n");
-> +
-> +	ret = of_property_read_u32(client->dev.of_node,
-> +				   "shunt-resistor-micro-ohms", &rsense);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (rsense == 0)
-> +		return -EINVAL;
-> +
-> +	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
-> +	if (!info)
-> +		return -ENOMEM;
-> +	memcpy(info, &ltc4286_info, sizeof(*info));
-
-devm_kmemdup()
-
-> +
-> +	/* Default of VRANGE_SELECT = 1, 102.4V */
-> +	if (device_property_read_bool(&client->dev, "adi,vrange-low-enable")) {
-> +		/* Setup MFR1 CONFIG register bit 1 VRANGE_SELECT */
-> +		ret = i2c_smbus_read_word_data(client, LTC4286_MFR_CONFIG1);
-> +		if (ret < 0) {
-> +			return dev_err_probe(
-> +				&client->dev, ret,
-> +				"Failed to read manufacturer configuration one\n");
-> +		}
-> +
-> +		if ((ret & VRANGE_SELECT_BIT) != VRANGE_25P6) {
-> +			ret &= ~VRANGE_SELECT_BIT; /* VRANGE_SELECT = 0, 25.6V */
-> +			ret = i2c_smbus_write_word_data(
-> +				client, LTC4286_MFR_CONFIG1, ret);
-> +			if (ret < 0)
-> +				return dev_err_probe(&client->dev, ret,
-> +						     "Failed to set vrange\n");
-> +		}
-> +
-> +		info->m[PSC_VOLTAGE_IN] = 128;
-> +		info->m[PSC_VOLTAGE_OUT] = 128;
-> +		info->m[PSC_POWER] = 4 * rsense;
-> +		if (info->m[PSC_POWER] > INT_MAX)
-
-This is too late. See below.
-
-> +			return dev_err_probe(&client->dev, -ERANGE,
-> +					     "Power coefficient overflow\n");
-> +	} else {
-> +		info->m[PSC_POWER] = rsense;
-> +		if (info->m[PSC_POWER] > INT_MAX)
-> +			return dev_err_probe(&client->dev, -ERANGE,
-> +					     "Power coefficient overflow\n");
-
-This still needs to be written into the chip. There is no guarantee that
-the chip is in its default configuration when the driver is loaded.
-
-> +	}
-> +
-> +	info->m[PSC_CURRENT_OUT] = 1024 * rsense;
-> +	if (info->m[PSC_CURRENT_OUT] > INT_MAX)
-
-This is too late. If rsense == INT_MAX, for example, 1024 * rsense
-will be some negative number.
-
-> +		return dev_err_probe(&client->dev, -ERANGE,
-> +				     "Current coefficient overflow\n");
-> +
-> +	return pmbus_do_probe(client, info);
-> +}
-> +
-> +static const struct of_device_id ltc4286_of_match[] = {
-> +	{ .compatible = "lltc,ltc4286" },
-> +	{ .compatible = "lltc,ltc4287" },
-> +	{}
-> +};
-> +
-> +static struct i2c_driver ltc4286_driver = {
-> +	.driver = {
-> +		.name = "ltc4286",
-> +		.of_match_table = ltc4286_of_match,
-> +	},
-> +	.probe = ltc4286_probe,
-> +	.id_table = ltc4286_id,
-> +};
-> +
-> +module_i2c_driver(ltc4286_driver);
-> +
-> +MODULE_AUTHOR("Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>");
-> +MODULE_DESCRIPTION("PMBUS driver for LTC4286 and compatibles");
-> +MODULE_LICENSE("GPL");
+diff --git a/Documentation/hwmon/max31827.rst b/Documentation/hwmon/max31827.rst
+index 9a1055a007cf..a8bbfb85dd02 100644
+--- a/Documentation/hwmon/max31827.rst
++++ b/Documentation/hwmon/max31827.rst
+@@ -52,13 +52,21 @@ MAX31827 has low and over temperature alarms with an effective value and a
+ hysteresis value: -40 and -30 degrees for under temperature alarm and +100 and
+ +90 degrees for over temperature alarm.
+ 
+-The alarm can be configured in comparator and interrupt mode. Currently only
+-comparator mode is implemented. In Comparator mode, the OT/UT status bits have a
+-value of 1 when the temperature rises above the TH value or falls below TL,
+-which is also subject to the Fault Queue selection. OT status returns to 0 when
+-the temperature drops below the TH_HYST value or when shutdown mode is entered.
+-Similarly, UT status returns to 0 when the temperature rises above TL_HYST value
+-or when shutdown mode is entered.
++The alarm can be configured in comparator and interrupt mode from the
++devicetree. In Comparator mode, the OT/UT status bits have a value of 1 when the
++temperature rises above the TH value or falls below TL, which is also subject to
++the Fault Queue selection. OT status returns to 0 when the temperature drops
++below the TH_HYST value or when shutdown mode is entered. Similarly, UT status
++returns to 0 when the temperature rises above TL_HYST value or when shutdown
++mode is entered.
++
++In interrupt mode exceeding TH also sets OT status to 1, which remains set until
++a read operation is performed on the configuration/status register (max or min
++attribute); at this point, it returns to 0. Once OT status is set to 1 from
++exceeding TH and reset, it is set to 1 again only when the temperature drops
++below TH_HYST. The output remains asserted until it is reset by a read. It is
++set again if the temperature rises above TH, and so on. The same logic applies
++to the operation of the UT status bit.
+ 
+ Putting the MAX31827 into shutdown mode also resets the OT/UT status bits. Note
+ that if the mode is changed while OT/UT status bits are set, an OT/UT status
+@@ -68,6 +76,18 @@ clear the status bits before changing the operating mode.
+ 
+ The conversions can be manual with the one-shot functionality and automatic with
+ a set frequency. When powered on, the chip measures temperatures with 1 conv/s.
++The conversion rate can be modified with update_interval attribute of the chip.
++Conversion/second = 1/update_interval. Thus, the available options according to
++the data sheet are:
++
++- 64000 (ms) = 1 conv/64 sec
++- 32000 (ms) = 1 conv/32 sec
++- 16000 (ms) = 1 conv/16 sec
++- 4000 (ms) = 1 conv/4 sec
++- 1000 (ms) = 1 conv/sec (default)
++- 250 (ms) = 4 conv/sec
++- 125 (ms) = 8 conv/sec
++
+ Enabling the device when it is already enabled has the side effect of setting
+ the conversion frequency to 1 conv/s. The conversion time varies depending on
+ the resolution. The conversion time doubles with every bit of increased
+@@ -83,8 +103,18 @@ in the writing of alarm values too. For positive numbers the user-input value
+ will always be rounded down to the nearest possible value, for negative numbers
+ the user-input will always be rounded up to the nearest possible value.
+ 
++Bus timeout resets the I2C-compatible interface when SCL is low for more than
++30ms (nominal).
++
++Alarm polarity determines if the active state of the alarm is low or high. The
++behavior for both settings is dependent on the Fault Queue setting. The ALARM
++pin is an open-drain output and requires a pullup resistor to operate.
++
++The Fault Queue bits select how many consecutive temperature faults must occur
++before overtemperature or undertemperature faults are indicated in the
++corresponding status bits.
++
+ Notes
+ -----
+ 
+-Currently fault queue, alarm polarity and resolution cannot be modified.
+-PEC is not implemented either.
++PEC and resolution are not implemented.
+diff --git a/drivers/hwmon/max31827.c b/drivers/hwmon/max31827.c
+index 614bbf5d25fa..bc201a8fcd5b 100644
+--- a/drivers/hwmon/max31827.c
++++ b/drivers/hwmon/max31827.c
+@@ -12,6 +12,7 @@
+ #include <linux/i2c.h>
+ #include <linux/mutex.h>
+ #include <linux/regmap.h>
++#include <linux/of_device.h>
+ 
+ #define MAX31827_T_REG			0x0
+ #define MAX31827_CONFIGURATION_REG	0x2
+@@ -22,9 +23,17 @@
+ 
+ #define MAX31827_CONFIGURATION_1SHOT_MASK	BIT(0)
+ #define MAX31827_CONFIGURATION_CNV_RATE_MASK	GENMASK(3, 1)
++#define MAX31827_CONFIGURATION_TIMEOUT_MASK	BIT(5)
++#define MAX31827_CONFIGURATION_RESOLUTION_MASK	GENMASK(7, 6)
++#define MAX31827_CONFIGURATION_ALRM_POL_MASK	BIT(8)
++#define MAX31827_CONFIGURATION_COMP_INT_MASK	BIT(9)
++#define MAX31827_CONFIGURATION_FLT_Q_MASK	GENMASK(11, 10)
+ #define MAX31827_CONFIGURATION_U_TEMP_STAT_MASK	BIT(14)
+ #define MAX31827_CONFIGURATION_O_TEMP_STAT_MASK	BIT(15)
+ 
++#define MAX31827_ALRM_POL_LOW	0x0
++#define MAX31827_FLT_Q_1	0x0
++
+ #define MAX31827_12_BIT_CNV_TIME	140
+ 
+ #define MAX31827_16_BIT_TO_M_DGR(x)	(sign_extend32(x, 15) * 1000 / 16)
+@@ -361,14 +370,68 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static int max31827_init_client(struct max31827_state *st)
++static int max31827_init_client(struct max31827_state *st,
++				struct device *dev)
+ {
++	struct fwnode_handle *fwnode;
++	unsigned int res = 0;
++	u32 data, lsb_idx;
++	bool prop;
++	int ret;
++
++	fwnode = dev_fwnode(dev);
++
+ 	st->enable = true;
++	res |= MAX31827_DEVICE_ENABLE(1);
++
++	res |= MAX31827_CONFIGURATION_RESOLUTION_MASK;
++
++	prop = fwnode_property_read_bool(fwnode, "adi,comp-int");
++	res |= FIELD_PREP(MAX31827_CONFIGURATION_COMP_INT_MASK, prop);
++
++	prop = fwnode_property_read_bool(fwnode, "adi,timeout-enable");
++	res |= FIELD_PREP(MAX31827_CONFIGURATION_TIMEOUT_MASK, !prop);
++
++	if (fwnode_property_present(fwnode, "adi,alarm-pol")) {
++		ret = fwnode_property_read_u32(fwnode, "adi,alarm-pol", &data);
++		if (ret)
++			return ret;
++
++		res |= FIELD_PREP(MAX31827_CONFIGURATION_ALRM_POL_MASK, !!data);
++	} else {
++		/*
++		 * Set default value.
++		 */
++		res |= FIELD_PREP(MAX31827_CONFIGURATION_ALRM_POL_MASK,
++				  MAX31827_ALRM_POL_LOW);
++	}
++
++	if (fwnode_property_present(fwnode, "adi,fault-q")) {
++		ret = fwnode_property_read_u32(fwnode, "adi,fault-q", &data);
++		if (ret)
++			return ret;
++
++		/*
++		 * Convert the desired fault queue into register bits.
++		 */
++		if (data != 0)
++			lsb_idx = __ffs(data);
++
++		if (hweight32(data) != 1 || lsb_idx > 4) {
++			dev_err(dev, "Invalid data in adi,fault-q\n");
++			return -EINVAL;
++		}
++
++		res |= FIELD_PREP(MAX31827_CONFIGURATION_FLT_Q_MASK, lsb_idx);
++	} else {
++		/*
++		 * Set default value.
++		 */
++		res |= FIELD_PREP(MAX31827_CONFIGURATION_FLT_Q_MASK,
++				  MAX31827_FLT_Q_1);
++	}
+ 
+-	return regmap_update_bits(st->regmap, MAX31827_CONFIGURATION_REG,
+-				  MAX31827_CONFIGURATION_1SHOT_MASK |
+-					  MAX31827_CONFIGURATION_CNV_RATE_MASK,
+-				  MAX31827_DEVICE_ENABLE(1));
++	return regmap_write(st->regmap, MAX31827_CONFIGURATION_REG, res);
+ }
+ 
+ static const struct hwmon_channel_info *max31827_info[] = {
+@@ -412,7 +475,7 @@ static int max31827_probe(struct i2c_client *client)
+ 		return dev_err_probe(dev, PTR_ERR(st->regmap),
+ 				     "Failed to allocate regmap.\n");
+ 
+-	err = max31827_init_client(st);
++	err = max31827_init_client(st, dev);
+ 	if (err)
+ 		return err;
+ 
+-- 
+2.34.1
 
