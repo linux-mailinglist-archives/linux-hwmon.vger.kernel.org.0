@@ -2,151 +2,148 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 742F07DDFF6
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Nov 2023 11:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C74B57DE369
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Nov 2023 16:37:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234620AbjKAK45 (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 1 Nov 2023 06:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38040 "EHLO
+        id S231201AbjKAOWD (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 1 Nov 2023 10:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234064AbjKAK4t (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Nov 2023 06:56:49 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA57122;
-        Wed,  1 Nov 2023 03:56:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698836200; x=1730372200;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8XoIBvJBqu2UWQDbjlJ+l/oehOtNlARvyRZhwkORV84=;
-  b=joACo38YsW5rDnNlEJ/Xxzw8zZ4RCx2y3xv8BxVCtX3YPx4W9W1nYcfG
-   xp88PbhiETi1IQesFchd89jVpW6MEtxi0eKJlTF6RED7jYQvgXNeAVfZk
-   1kH0MAqpUePfQu1PUPN43M370FjomDlqFMsQkuhmjQO2BW2yfx8Q6anIG
-   uqjj4khol5TpDT2C+lDDe9zPIHOQyQVUmXpZulQqupMFIxyqc2aBi/0NI
-   R6dUf9d1YvzDIR6HciZZliI9qGt4bza8O8P0s1C7CZP1++I3+P/TPiOwa
-   usJbrb4/Ni4NnOXOkts/Dq3A/jlNIlEa+Z0veAhx29w6vlw8qCFzuFF7Q
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="454948364"
-X-IronPort-AV: E=Sophos;i="6.03,268,1694761200"; 
-   d="scan'208";a="454948364"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 03:56:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,268,1694761200"; 
-   d="scan'208";a="8632388"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 01 Nov 2023 03:56:37 -0700
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qy8tm-0000lM-1L;
-        Wed, 01 Nov 2023 10:56:34 +0000
-Date:   Wed, 1 Nov 2023 18:56:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     David Ober <dober6023@gmail.com>, linux-hwmon@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jdelvare@suse.com,
-        linux@roeck-us.net, corbet@lwn.net, dober@lenovo.com,
-        mpearson-lenovo@squebb.ca, David Ober <dober6023@gmail.com>
-Subject: Re: [PATCH v2] hwmon:Add MEC172x Micro Chip driver for Lenovo
- motherboards
-Message-ID: <202311011858.M1Ui9wp1-lkp@intel.com>
-References: <20231031154930.4908-1-dober6023@gmail.com>
+        with ESMTP id S230464AbjKAOWC (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 1 Nov 2023 10:22:02 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83BCB10F;
+        Wed,  1 Nov 2023 07:21:54 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3b566bc6daaso989109b6e.1;
+        Wed, 01 Nov 2023 07:21:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698848514; x=1699453314; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J/KfXtnlsxkHOWGWL/ahWCJ5PQS2xM9nsLdfpk8B9gE=;
+        b=mXBbJH1CgDEMFCs9LARv1F5dPfx4HzW8jmCcnb8mC2MCwiv6DkyK4gLEMoLAvcl7cq
+         +morSGin12yTEg0iyW3vpC/hgqnXgfXNFTgVHKli/DV978tgoBv1sWDFOi0hOM40V1Qh
+         oP4cvCHD5zX4Xl4P3/v3QX8qeqYwh3Qq8PGtjMhkp8F9SsrbyXwr+2aLf0cJGwTvcWBc
+         qP5igEW8VKBpbrRx+jTOpTyaovTxKojKhwv6BPIyjoV0waI2MKI66nFIUgzKBuNzwwCv
+         WiDcM47k3a/0J0+ib6y0vCYinmylok434BheAcShYOWcDnCvUM0s9Zs+TeD2BIXuhbcq
+         ORZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698848514; x=1699453314;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J/KfXtnlsxkHOWGWL/ahWCJ5PQS2xM9nsLdfpk8B9gE=;
+        b=PxtwHPiP63Ct9wOY8iXATEVxyA637NbFXVEoXU9o1TTLbGAXDyEQ7n6s6zYbHQ/ip6
+         q9PFeXAU2IFb36xVq7Mk4ruiPAe41xiWHQ0i8FVAyzheBVQCeqhh9psp8IqwD/8p/P9R
+         d/OgMn5zJg/hhZebGvLAV4kAZyUOBXumKoyScdxzdYSB7reUDpO/KnGgPAVSwUWgA1GC
+         KVdaKOdwYzGYW+ckYpcpaSJIku8sFtpSOex0ymlgqfeU9MGDPO5A1lcwxQHRlZcne5S8
+         sXYywMzhHiow55OZff0BgP8vuycAwZUz6D37vkcsvfuBsWuLW/Z9/r+hg/fKtHaIlP2B
+         FEEw==
+X-Gm-Message-State: AOJu0YzIY/dxdqb5SjAe4jyTnCdl7dkeLfG5CAi83YrnKN/nS0uGyk41
+        wWPo5PxYgV0runNWK252R0vkSoxS4aA=
+X-Google-Smtp-Source: AGHT+IHaQA8pp7eLV0RYAgQQ1vMA/CktRCYX/iXK/CmcUQOZV7ZXDwJ0UhTA3fe0js7b+okbGPmlow==
+X-Received: by 2002:a05:6808:602:b0:3ae:5c0c:df0f with SMTP id y2-20020a056808060200b003ae5c0cdf0fmr16271349oih.44.1698848513642;
+        Wed, 01 Nov 2023 07:21:53 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id q12-20020a0568080ecc00b003a7a34a4ed8sm229203oiv.33.2023.11.01.07.21.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Nov 2023 07:21:52 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 1 Nov 2023 07:21:51 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>, linux-rtc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] rtc: max31335: add driver support
+Message-ID: <81efcde1-8305-465a-85a2-cfe449e8a8da@roeck-us.net>
+References: <20231101094835.51031-1-antoniu.miclaus@analog.com>
+ <20231101094835.51031-2-antoniu.miclaus@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231031154930.4908-1-dober6023@gmail.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231101094835.51031-2-antoniu.miclaus@analog.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-Hi David,
+On Wed, Nov 01, 2023 at 11:48:14AM +0200, Antoniu Miclaus wrote:
+> RTC driver for MAX31335 ±2ppm Automotive Real-Time Clock with
+> Integrated MEMS Resonator.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v4:
+>  - add Kconfig entry for HWMON dependency.
+>  MAINTAINERS                |   8 +
+>  drivers/rtc/Kconfig        |  20 +
+>  drivers/rtc/Makefile       |   1 +
+>  drivers/rtc/rtc-max31335.c | 765 +++++++++++++++++++++++++++++++++++++
+>  4 files changed, 794 insertions(+)
+>  create mode 100644 drivers/rtc/rtc-max31335.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index dd5de540ec0b..bc484cb997ab 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12823,6 +12823,14 @@ F:	Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
+>  F:	Documentation/hwmon/max31827.rst
+>  F:	drivers/hwmon/max31827.c
+>  
+> +MAX31335 RTC DRIVER
+> +M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +L:	linux-rtc@vger.kernel.org
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/devicetree/bindings/rtc/adi,max31335.yaml
+> +F:	drivers/rtc/rtc-max31335.c
+> +
+>  MAX6650 HARDWARE MONITOR AND FAN CONTROLLER DRIVER
+>  L:	linux-hwmon@vger.kernel.org
+>  S:	Orphan
+> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+> index d7502433c78a..360da13fe61b 100644
+> --- a/drivers/rtc/Kconfig
+> +++ b/drivers/rtc/Kconfig
+> @@ -373,6 +373,26 @@ config RTC_DRV_MAX8997
+>  	  This driver can also be built as a module. If so, the module
+>  	  will be called rtc-max8997.
+>  
+> +config RTC_DRV_MAX31335
+> +	tristate "Analog Devices MAX31335"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	help
+> +	  If you say yes here you get support for the Analog Devices
+> +	  MAX31335.
+> +
+> +	  This driver can also be built as a module. If so, the module
+> +	  will be called rtc-max31335.
+> +
+> +config RTC_DRV_MAX31335_HWMON
+> +	bool "HWMON support for Analog Devices MAX31335"
+> +	depends on RTC_DRV_MAX31335 && HWMON
+> +	depends on !(RTC_DRV_MAX31335=y && HWMON=m)
+> +	default y
+> +	help
+> +	  Say Y here if you want to expose temperature sensor data on
+> +	  rtc-max31335.
+> +
 
-kernel test robot noticed the following build warnings:
+This isn't used in the driver. Did you test with HWMON=n ?
 
-[auto build test WARNING on groeck-staging/hwmon-next]
-[also build test WARNING on linus/master v6.6 next-20231101]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Ober/hwmon-Add-MEC172x-Micro-Chip-driver-for-Lenovo-motherboards/20231031-235345
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-patch link:    https://lore.kernel.org/r/20231031154930.4908-1-dober6023%40gmail.com
-patch subject: [PATCH v2] hwmon:Add MEC172x Micro Chip driver for Lenovo motherboards
-config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20231101/202311011858.M1Ui9wp1-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231101/202311011858.M1Ui9wp1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311011858.M1Ui9wp1-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/hwmon/lenovo-ec-sensors.c: In function 'get_ec_reg':
-   drivers/hwmon/lenovo-ec-sensors.c:36:25: error: implicit declaration of function 'inb_p'; did you mean 'int_pow'? [-Werror=implicit-function-declaration]
-      36 | #define io_read8(a)     inb_p(a)
-         |                         ^~~~~
-   drivers/hwmon/lenovo-ec-sensors.c:45:13: note: in expansion of macro 'io_read8'
-      45 |         if (io_read8(MCHP_EMI0_APPLICATION_ID) != 0) /* EMI access locked */
-         |             ^~~~~~~~
-   drivers/hwmon/lenovo-ec-sensors.c:35:25: error: implicit declaration of function 'outb_p' [-Werror=implicit-function-declaration]
-      35 | #define io_write8(a, b) outb_p(b, a)
-         |                         ^~~~~~
-   drivers/hwmon/lenovo-ec-sensors.c:48:9: note: in expansion of macro 'io_write8'
-      48 |         io_write8(MCHP_EMI0_APPLICATION_ID, 0x01);
-         |         ^~~~~~~~~
-   drivers/hwmon/lenovo-ec-sensors.c: In function 'get_platform':
->> drivers/hwmon/lenovo-ec-sensors.c:274:9: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
-     274 |         for (idx = 0 ; idx < 6 ; idx++)
-         |         ^~~
-   drivers/hwmon/lenovo-ec-sensors.c:276:17: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
-     276 |                 system_type[idx] = get_ec_reg(0xC, (0x10 + idx));
-         |                 ^~~~~~~~~~~
-   In function 'get_platform',
-       inlined from 'lenovo_ec_probe' at drivers/hwmon/lenovo-ec-sensors.c:420:26:
->> drivers/hwmon/lenovo-ec-sensors.c:276:34: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
-     276 |                 system_type[idx] = get_ec_reg(0xC, (0x10 + idx));
-         |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/hwmon/lenovo-ec-sensors.c: In function 'lenovo_ec_probe':
-   drivers/hwmon/lenovo-ec-sensors.c:270:14: note: at offset 6 into destination object 'system_type' of size 6
-     270 |         char system_type[6];
-         |              ^~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/for +274 drivers/hwmon/lenovo-ec-sensors.c
-
-   267	
-   268	static int get_platform(struct ec_sensors_data *data)
-   269	{
-   270		char system_type[6];
-   271		int ret = -1;
-   272		int idx;
-   273	
- > 274		for (idx = 0 ; idx < 6 ; idx++)
-   275			mutex_lock(&data->mec_mutex);
- > 276			system_type[idx] = get_ec_reg(0xC, (0x10 + idx));
-   277			mutex_unlock(&data->mec_mutex);
-   278	
-   279		for (idx = 0 ; idx < 4 ; idx++) {
-   280			if (strcmp(systems[idx], system_type) == 0) {
-   281				ret = idx;
-   282				break;
-   283			}
-   284		}
-   285		return ret;
-   286	}
-   287	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Guenter
