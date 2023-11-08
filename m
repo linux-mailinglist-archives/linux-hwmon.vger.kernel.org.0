@@ -2,145 +2,112 @@ Return-Path: <linux-hwmon-owner@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DAAF7E5035
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Nov 2023 07:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B68677E5B38
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Nov 2023 17:31:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjKHGDf (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
-        Wed, 8 Nov 2023 01:03:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
+        id S229559AbjKHQbP (ORCPT <rfc822;lists+linux-hwmon@lfdr.de>);
+        Wed, 8 Nov 2023 11:31:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjKHGDe (ORCPT
-        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Nov 2023 01:03:34 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95545D41
-        for <linux-hwmon@vger.kernel.org>; Tue,  7 Nov 2023 22:03:32 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-da077db5145so6455291276.0
-        for <linux-hwmon@vger.kernel.org>; Tue, 07 Nov 2023 22:03:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699423412; x=1700028212; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:cc:references
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=EIG5IR4aeSLKZDL/UZXg2XK7G8saSh+KpyA/eSaablg=;
-        b=d6WKhfr/AEbCp+6Ee8HIonkEN9sDwSeF8lW8C9qAyPvk7MeqsGj0hbfk7sn8MUS/18
-         fSaJW6sXO/aO/oUBCIbKZ1ATi5SlMNpI9tazc7BFkb4TIM6yrfnah3zlXDLqB84IKtwV
-         AUj1GGlH+S4lwTszjvAEmwVmiEsYipbXlud97Z9/H+uTKxxTmBRTMf4zKfBcVSPbksIQ
-         wu0dTkWR9ztn5263Vsh3ie2nkBQcHd9KAG1i9V4mwpZwrzwlYuWi5AuZzJJiOTuZv5Yq
-         7LWU1NUfagsh1xzjeL2vy2DlSvdr+dxkq5xl51f+5GerjiZySLi6xdZ6PqclilL2Q4Sg
-         FX/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699423412; x=1700028212;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:cc:references
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EIG5IR4aeSLKZDL/UZXg2XK7G8saSh+KpyA/eSaablg=;
-        b=QQR0AbY9MsQAK6fX35BxvWy0djbK6GLDGVfhc+EpoFMpe22+0ZIq39FJ+jAG8dtimi
-         yeYQ6d0qVDvzQALlJ+FEpdSrdWt/NP5Ee+5v1YDAEw6TCbHp8l1hUYRNxmVvR2x2Vpv/
-         t6yiFllKuiRsf0CazS66hmfTfBKF8XXkNGTMkOcSY8NwocCcdQfHDjTOy1Rml+owNgbt
-         jQL14tD/JzhV/QBXbXn92M8WWNA+K/26tcE/ZtSYLLRwpQuxPjVIgZmVHzVQTSCktyV/
-         8oY3Tdl18G7nDVaxHcflYMFbYqI5WJH+KPkPyuQUvFnG8jxpsbSH/CPxG6WlVWcpA1Yg
-         6XUA==
-X-Gm-Message-State: AOJu0YxDDN42XN+H5hkvxVjEqYYaB59yOqepVDW7EHBAEUCDakEmME/v
-        BgWCGwe+BX4vqCc3oA13VCNQQWOCocI=
-X-Google-Smtp-Source: AGHT+IF9ZQ9pLL0zD7oJvlhdVLMQPtYZSchzfaLXz8GGqOFRWKHRyOrDI1RAYwlmLBUehOpna/BvIw==
-X-Received: by 2002:a25:d105:0:b0:da0:3bfc:b915 with SMTP id i5-20020a25d105000000b00da03bfcb915mr879997ybg.11.1699423411714;
-        Tue, 07 Nov 2023 22:03:31 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l10-20020a056902000a00b00d9a3fe483cfsm5824912ybh.23.2023.11.07.22.03.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 22:03:31 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9259f35c-0d0c-4e02-ad8d-abc856e21ad8@roeck-us.net>
-Date:   Tue, 7 Nov 2023 22:03:29 -0800
+        with ESMTP id S232142AbjKHQbO (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>); Wed, 8 Nov 2023 11:31:14 -0500
+X-Greylist: delayed 31784 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Nov 2023 08:31:07 PST
+Received: from 7.mo583.mail-out.ovh.net (7.mo583.mail-out.ovh.net [178.32.124.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2CA41FEF
+        for <linux-hwmon@vger.kernel.org>; Wed,  8 Nov 2023 08:31:07 -0800 (PST)
+Received: from director8.ghost.mail-out.ovh.net (unknown [10.109.146.131])
+        by mo583.mail-out.ovh.net (Postfix) with ESMTP id 66D0928C3F
+        for <linux-hwmon@vger.kernel.org>; Wed,  8 Nov 2023 07:02:58 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-lkwnp (unknown [10.110.115.9])
+        by director8.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 9A5291FD24;
+        Wed,  8 Nov 2023 07:02:57 +0000 (UTC)
+Received: from RCM-web9.webmail.mail.ovh.net ([151.80.29.21])
+        by ghost-submission-6684bf9d7b-lkwnp with ESMTPSA
+        id nOucGqEyS2V5+woArb8c/A
+        (envelope-from <jose.pekkarinen@foxhound.fi>); Wed, 08 Nov 2023 07:02:57 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v10 0/3] Support pwm/tach driver for aspeed ast26xx
-Content-Language: en-US
-To:     Billy Tsai <billy_tsai@aspeedtech.com>
-References: <20231107105025.1480561-1-billy_tsai@aspeedtech.com>
- <3ea9ef0c-27c0-4304-8bf7-26710224c3b1@roeck-us.net>
- <SG2PR06MB33658A0B3EA8FD0870D8AC388BA8A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-Cc:     "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <SG2PR06MB33658A0B3EA8FD0870D8AC388BA8A@SG2PR06MB3365.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date:   Wed, 08 Nov 2023 09:02:56 +0200
+From:   =?UTF-8?Q?Jos=C3=A9_Pekkarinen?= <jose.pekkarinen@foxhound.fi>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     evan.quan@amd.com, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com,
+        skhan@linuxfoundation.org, airlied@gmail.com, daniel@ffwll.ch,
+        jdelvare@suse.com, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH] drm/amd/pm: clean up redundant comparisons with 0
+In-Reply-To: <f98d840d-f3ff-47e1-b609-2cfe33c65cb5@roeck-us.net>
+References: <20231107082910.92508-1-jose.pekkarinen@foxhound.fi>
+ <98e8490e-6608-47a8-890c-f1fe894dac7f@roeck-us.net>
+ <65d132b0dbef66039fd6938ecbc2bf68@foxhound.fi>
+ <f98d840d-f3ff-47e1-b609-2cfe33c65cb5@roeck-us.net>
+User-Agent: Roundcube Webmail/1.4.15
+Message-ID: <b15e6759f51beed255036b9b3c7c6740@foxhound.fi>
+X-Sender: jose.pekkarinen@foxhound.fi
+Organization: Foxhound Ltd.
+X-Originating-IP: 192.42.116.216
+X-Webmail-UserID: jose.pekkarinen@foxhound.fi
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 3648478649106343617
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedruddukedguddtudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepggffhffvvefujghffgfkgihoihgtgfesthekjhdttderjeenucfhrhhomheplfhoshorucfrvghkkhgrrhhinhgvnhcuoehjohhsvgdrphgvkhhkrghrihhnvghnsehfohighhhouhhnugdrfhhiqeenucggtffrrghtthgvrhhnpeekhfeguddufeegvdelgedtvdffgeehvddtkeevkeejvedvgeeitdefleehtdeitdenucfkphepuddvjedrtddrtddruddpudelvddrgedvrdduudeirddvudeipdduhedurdektddrvdelrddvudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehjohhsvgdrphgvkhhkrghrihhnvghnsehfohighhhouhhnugdrfhhiqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhhfihmohhnsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkeefpdhmohguvgepshhmthhpohhuth
 Precedence: bulk
 List-ID: <linux-hwmon.vger.kernel.org>
 X-Mailing-List: linux-hwmon@vger.kernel.org
 
-On 11/7/23 18:07, Billy Tsai wrote:
-> On 11/7/23 02:50, Billy Tsai wrote:
->>> Unlike the old design that the register setting of the TACH should based
->>> on the configure of the PWM. In ast26xx, the dependency between pwm and
->>> tach controller is eliminated and becomes a separate hardware block. One
->>> is used to provide pwm output and another is used to monitor the frequency
->>> of the input. This driver implements them by exposing two kernel
->>> subsystems: PWM and HWMON. The PWM subsystem can be utilized alongside
->>> existing drivers for controlling elements such as fans (pwm-fan.c),
->>> beepers (pwm-beeper.c) and so on. Through the HWMON subsystem, the driver
->>> provides sysfs interfaces for fan.
->>>
->>> Changes since v9:
->>> Change the type of fan-driving-mode to string
->>> Fix some typos and formatting issues.
->>>
+On 2023-11-07 20:03, Guenter Roeck wrote:
+> On 11/7/23 09:26, José Pekkarinen wrote:
+>> On 2023-11-07 16:08, Guenter Roeck wrote:
+>>> On 11/7/23 00:29, José Pekkarinen wrote:
+>>>> There is a couple of function return checks of functions that return
+>>>> unsigned values, and local variables to hold them are also unsigned, 
+>>>> so
+>>>> checking if they are negative will always return false. This patch 
+>>>> will
+>>>> remove them, as well as the never reached code.
+>>>> 
+>>>> drivers/gpu/drm/amd/pm/amdgpu_pm.c:2801:5-8: WARNING: Unsigned 
+>>>> expression compared with zero: val < 0
+>>>> drivers/gpu/drm/amd/pm/amdgpu_pm.c:2814:5-8: WARNING: Unsigned 
+>>>> expression compared with zero: val < 0
+>>>> 
+>>>> Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+>>>> ---
+>>>>   drivers/gpu/drm/amd/pm/amdgpu_pm.c | 4 ----
+>>>>   1 file changed, 4 deletions(-)
+>>>> 
+>>>> diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c 
+>>>> b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+>>>> index 8bb2da13826f..e7bb1d324084 100644
+>>>> --- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+>>>> +++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+>>>> @@ -2798,8 +2798,6 @@ static ssize_t 
+>>>> amdgpu_hwmon_show_power_avg(struct device *dev,
+>>>>       unsigned int val;
+>>>>         val = amdgpu_hwmon_get_power(dev, 
+>>>> AMDGPU_PP_SENSOR_GPU_AVG_POWER);
+>>>> -    if (val < 0)
+>>>> -        return val;
+>>>> 
+>>> 
+>>> This is reporting errors returned from amdgpu_hwmon_get_power() as
+>>> large integers.
+>> 
+>>      Alright, that case it is a false positive, thanks for the 
+>> comment!
+>> 
 > 
->> What is the resend about ?
 > 
-> Hi Guenter,
-> 
-> The reason for the resend is simply to remove the 'Change-Id' in the commit log, which
-> will get the error for running scripts/checkpatch.pl.
-> 
+> No, it isn't a false positive. The fix is wrong. The variable should be 
+> declared
+> 'int val', not 'unsigned int val'.
 
-You should mention that in the change log, and please _never_ drop
-the mailing list from your replies.
+     Sorry I may have missunderstood your comment, I certainly can do the
+minor fix then.
 
-Thanks,
-Guenter
+     Thanks!
 
+     José.
