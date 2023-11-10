@@ -1,333 +1,396 @@
-Return-Path: <linux-hwmon+bounces-3-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9668F7E7EFD
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Nov 2023 18:49:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAE37E7F2A
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Nov 2023 18:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E234F281AD1
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Nov 2023 17:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB02E1C20F65
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Nov 2023 17:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583533C696;
-	Fri, 10 Nov 2023 17:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S0rLqJei"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8CD3D99F;
+	Fri, 10 Nov 2023 17:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A1F3B7B1
-	for <linux-hwmon@vger.kernel.org>; Fri, 10 Nov 2023 17:46:50 +0000 (UTC)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A8C3AE3B;
-	Fri, 10 Nov 2023 07:34:50 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1cc394f4cdfso17889345ad.0;
-        Fri, 10 Nov 2023 07:34:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699630490; x=1700235290; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=LOTAcu4FmLa0ZO5e/oRiQFa94EdrML0eRYVvFKo0n7w=;
-        b=S0rLqJeiDW64851X+KMapNgz8+jmjd7syBqL09nLK6kcoVqbckk0LJpGprKvEiHBr2
-         INmxIA/Ba4wKsZ07/pJa9SKYIelNXazWGBKjs1truOJoLSs1X20NNwLrIrhg9mn46Mn0
-         cXAddpoGXLEkTjqKBohqbEJAgN0gQOrwPdUz+wmRYAi8ZyAP37QfHpF9dseaenl0Inly
-         AyhCG5nSoc7esWGFp3onB/HIqTcoV3782L3RiQ59VMjswwyQ1okO4HyZhLr8PVuRc6yq
-         FcYbdtg/g1W1fdr+4tqigp7g2x2LHq7q6eZFVCiV+PWmcLBKlm8FZVh8BKbdkCOk3zyM
-         xK+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699630490; x=1700235290;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LOTAcu4FmLa0ZO5e/oRiQFa94EdrML0eRYVvFKo0n7w=;
-        b=Yo46bMHcIqHJrtoEMoeC3YkwnIqLqfsIQYc9aLPHStt66PZAvZIEDk/4tG0RzrSpry
-         1B9MsgjeTO70Hm3Y8Xw6sLnJV9xo2S60O6VrUpJRiMxl6uP/NyeOSUurYURzeZW7hOZ6
-         VqZeFZt70aUqrSsJFbtJz6R/eutSEOxSqvQSWjJnoH+gXrC4M0XFQHFWmMdhQZL7GCih
-         YAS+oopLq5LYGBA+J1WynfWws8S5pQfTDGZUu5ygdDr9T8Qgw9rRM6/LxKkaYOVOKPy1
-         X91TgkcvaGP9eHpUqSJAmv/wKHXs1K0KrzArbXJaiH+m0ZsUq7vDimt663biiRHfpBMR
-         B8KQ==
-X-Gm-Message-State: AOJu0Yxcj3zCzFPvvEsa63T6PJOhZZAbpHPxyf7G7roiAxZefnPIfjUR
-	HdbZelW4Nejq1ckl4Zp0ioQ=
-X-Google-Smtp-Source: AGHT+IHsMQ2Z1fVX2V6vFRC918SDXXUwAN1cGrm2Pu93OANrkqIk6CjfGgySZ4JBSbFcWaUkiVKpaw==
-X-Received: by 2002:a17:902:e84f:b0:1b5:561a:5ca9 with SMTP id t15-20020a170902e84f00b001b5561a5ca9mr9190228plg.50.1699630489743;
-        Fri, 10 Nov 2023 07:34:49 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id l6-20020a170902eb0600b001cc3b988fd6sm5493973plb.265.2023.11.10.07.34.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Nov 2023 07:34:48 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <84782418-958c-4477-a9d1-e1eb2714b225@roeck-us.net>
-Date: Fri, 10 Nov 2023 07:34:46 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9D33C69F
+	for <linux-hwmon@vger.kernel.org>; Fri, 10 Nov 2023 17:47:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C66CC40AEF;
+	Fri, 10 Nov 2023 08:50:48 -0800 (PST)
+X-IronPort-AV: E=McAfee;i="6600,9927,10890"; a="394111592"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
+   d="scan'208";a="394111592"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2023 08:50:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10890"; a="740197164"
+X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
+   d="scan'208";a="740197164"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2023 08:50:45 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
+	(envelope-from <andy@kernel.org>)
+	id 1r1UiQ-0000000Ctty-0Atx;
+	Fri, 10 Nov 2023 18:50:42 +0200
+Date: Fri, 10 Nov 2023 18:50:41 +0200
+From: Andy Shevchenko <andy@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 2/2] hwmon: ltc4282: add support for the LTC4282 chip
+Message-ID: <ZU5fYY81L_qSmQWq@smile.fi.intel.com>
+References: <20231110151905.1659873-1-nuno.sa@analog.com>
+ <20231110151905.1659873-3-nuno.sa@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] hwmon: (pmbus) Add support for MPS Multi-phase
- mp5990
-Content-Language: en-US
-To: Peter Yin <peteryin.openbmc@gmail.com>, patrick@stwcx.xyz,
- Jean Delvare <jdelvare@suse.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20231109044844.614007-1-peteryin.openbmc@gmail.com>
- <20231109044844.614007-3-peteryin.openbmc@gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231109044844.614007-3-peteryin.openbmc@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231110151905.1659873-3-nuno.sa@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 11/8/23 20:48, Peter Yin wrote:
-> Add support for mp5990 device from Monolithic Power Systems, Inc. (MPS)
-> vendor. This is a Hot-Swap Controller.
-> 
-> Signed-off-by: Peter Yin <peteryin.openbmc@gmail.com>
-> ---
->   Documentation/hwmon/index.rst  |  1 +
->   Documentation/hwmon/mp5990.rst | 84 +++++++++++++++++++++++++++++++++
->   drivers/hwmon/pmbus/Kconfig    |  9 ++++
->   drivers/hwmon/pmbus/Makefile   |  1 +
->   drivers/hwmon/pmbus/mp5990.c   | 86 ++++++++++++++++++++++++++++++++++
->   5 files changed, 181 insertions(+)
->   create mode 100644 Documentation/hwmon/mp5990.rst
->   create mode 100644 drivers/hwmon/pmbus/mp5990.c
-> 
-> diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-> index 042e1cf9501b..8c70e10fc795 100644
-> --- a/Documentation/hwmon/index.rst
-> +++ b/Documentation/hwmon/index.rst
-> @@ -157,6 +157,7 @@ Hardware Monitoring Kernel Drivers
->      mp2888
->      mp2975
->      mp5023
-> +   mp5990
->      nct6683
->      nct6775
->      nct7802
-> diff --git a/Documentation/hwmon/mp5990.rst b/Documentation/hwmon/mp5990.rst
-> new file mode 100644
-> index 000000000000..d2da0f767530
-> --- /dev/null
-> +++ b/Documentation/hwmon/mp5990.rst
-> @@ -0,0 +1,84 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +Kernel driver mp5990
-> +====================
-> +
-> +Supported chips:
-> +
-> +  * MPS MP5990
-> +
-> +    Prefix: 'mp5990'
-> +
-> +  * Datasheet
-> +
-> +    Publicly available at the MPS website : https://www.monolithicpower.com/en/mp5990.html
-> +
-> +Author:
-> +
-> +	Peter Yin <peteryin.openbmc@gmail.com>
-> +
-> +Description
-> +-----------
-> +
-> +This driver implements support for Monolithic Power Systems, Inc. (MPS)
-> +MP5990 Hot-Swap Controller.
-> +
-> +Device compliant with:
-> +
-> +- PMBus rev 1.3 interface.
-> +
-> +Device supports direct format for reading input voltage, output voltage,
-> +output current, input power and temperature.
-> +
+On Fri, Nov 10, 2023 at 04:18:46PM +0100, Nuno Sa wrote:
+> The LTC4282 hot swap controller allows a board to be safely inserted and
+> removed from a live backplane. Using one or more external N-channel pass
+> transistors, board supply voltage and inrush current are ramped up at an
+> adjustable rate. An I2C interface and onboard ADC allows for monitoring
+> of board current, voltage, power, energy and fault status.
 
-The device also supports linear mode according to its datasheet.
+There are plenty of ltc42xx in the same folder and a lot of other chips.
+Have you checked that none of the existing driver is not close enough and
+brand new driver is indeed required? If so, add a respective paragraph
+somewhere (cover letter? TBH I haven't read it, it's fine if it's already
+explained there).
 
-> +The driver exports the following attributes via the 'sysfs' files
-> +for input voltage:
-> +
-> +**in1_input**
-> +
-> +**in1_label**
-> +
-> +**in1_max**
-> +
-> +**in1_max_alarm**
-> +
-> +**in1_min**
-> +
-> +**in1_min_alarm**
-> +
-> +The driver provides the following attributes for output voltage:
-> +
-> +**in2_input**
-> +
-> +**in2_label**
-> +
-> +**in2_alarm**
-> +
-> +The driver provides the following attributes for output current:
-> +
-> +**curr1_input**
-> +
-> +**curr1_label**
-> +
-> +**curr1_alarm**
-> +
-> +**curr1_max**
-> +
-> +The driver provides the following attributes for input power:
-> +
-> +**power1_input**
-> +
-> +**power1_label**
-> +
-> +**power1_alarm**
-> +
-> +The driver provides the following attributes for temperature:
-> +
-> +**temp1_input**
-> +
-> +**temp1_max**
-> +
-> +**temp1_max_alarm**
-> +
-> +**temp1_crit**
-> +
-> +**temp1_crit_alarm**
-> diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-> index 270b6336b76d..65a116f7744d 100644
-> --- a/drivers/hwmon/pmbus/Kconfig
-> +++ b/drivers/hwmon/pmbus/Kconfig
-> @@ -326,6 +326,15 @@ config SENSORS_MP5023
->   	  This driver can also be built as a module. If so, the module will
->   	  be called mp5023.
->   
-> +config SENSORS_MP5990
-> +	tristate "MPS MP5990"
-> +	help
-> +	  If you say yes here you get hardware monitoring support for MPS
-> +	  MP5990.
-> +
-> +	  This driver can also be built as a module. If so, the module will
-> +	  be called mp5990.
-> +
->   config SENSORS_MPQ7932_REGULATOR
->   	bool "Regulator support for MPQ7932"
->   	depends on SENSORS_MPQ7932 && REGULATOR
-> diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-> index 84ee960a6c2d..212d9ca0acc9 100644
-> --- a/drivers/hwmon/pmbus/Makefile
-> +++ b/drivers/hwmon/pmbus/Makefile
-> @@ -35,6 +35,7 @@ obj-$(CONFIG_SENSORS_MAX8688)	+= max8688.o
->   obj-$(CONFIG_SENSORS_MP2888)	+= mp2888.o
->   obj-$(CONFIG_SENSORS_MP2975)	+= mp2975.o
->   obj-$(CONFIG_SENSORS_MP5023)	+= mp5023.o
-> +obj-$(CONFIG_SENSORS_MP5990)	+= mp5990.o
->   obj-$(CONFIG_SENSORS_MPQ7932)	+= mpq7932.o
->   obj-$(CONFIG_SENSORS_PLI1209BC)	+= pli1209bc.o
->   obj-$(CONFIG_SENSORS_PM6764TR)	+= pm6764tr.o
-> diff --git a/drivers/hwmon/pmbus/mp5990.c b/drivers/hwmon/pmbus/mp5990.c
-> new file mode 100644
-> index 000000000000..fb3ac9c5d44e
-> --- /dev/null
-> +++ b/drivers/hwmon/pmbus/mp5990.c
-> @@ -0,0 +1,86 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
+...
+
+> +#define LTC4282_STATUS_MSB			0x1F
+
+> +#define LTC4282_VSOURCE				0x3a
+> +#define LTC4282_VSOURCE_LOWEST			0x3c
+> +#define LTC4282_VSOURCE_HIGHEST			0x3e
+
+You have an inconsistency in the capitalization of the hexadecimal values.
+
+...
+
 > +/*
-> + * Driver for MPS MP5990 Hot-Swap Controller
+> + * relaxed version of FIELD_PREP() to be used when mask is not a compile time constant
+> + * u32_encode_bits() can't also be used as the compiler needs to be able to evaluate
+> + * mask at compile time.
 > + */
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/of_device.h>
-> +#include <linux/pmbus.h>
+> +#define LTC4282_FIELD_PREP(m, v)	(((v) << (ffs(m) - 1)) & (m))
 
-Not used in this driver.
+Can we name it accordingly as done in other places, and TBH it's a time to move
+it to the header. (At least I know about two more implementations of this).
 
-> +#include "pmbus.h"
-> +
-> +static int mp5990_read_byte_data(struct i2c_client *client, int page, int reg)
+...
+
+> +struct ltc4282_state {
+> +	struct regmap *map;
+> +	struct device *dev;
+> +	/* Protect against multiple accesses to the device registers */
+> +	struct mutex lock;
+> +	struct gpio_chip gc;
+> +	u64 saved_energy;
+> +	long power_max;
+
+> +	u32 gpio_map[LTC4282_GPIO_NR];
+
+Why is this needed? The valid_mask is not enough?
+
+> +	u32 rsense;
+> +	u32 vin_mode;
+> +	u16 vfs_out;
+> +};
+
+...
+
+> +	/* GPIO_2,3 and the ALERT pin require setting the bit to 1 to pull down the line */
+> +	if (!gpio->active_high)
+
+Hmm... Why do you need a separate flag for this? Shouldn't be described or
+autodetected somehow?
+
+> +		val = !val;
+
+...
+
+> +	*val = DIV_ROUND_CLOSEST_ULL(be16_to_cpu(in) * (u64)fs, U16_MAX);
+
+I'm wondering if you can do some trick to "divide" actually to 2^16 so, it will
+not use division op at all?
+
+...
+
+> +	*val = DIV_ROUND_CLOSEST(in * fs, U8_MAX);
+
+Ditto.
+
+...
+
+> +	/*
+> +	 * Wait for two ADC conversions so we are sure we get one full VDD
+> +	 * measurement.
+> +	 */
+> +	msleep(2 * LTC4282_TCONV_US / MILLI);
+
+fsleep() ?
+
+...
+
+> +static int ltc4282_read_power_word(const struct ltc4282_state *st, u32 reg, long *val)
 > +{
-> +	switch (reg) {
-> +	case PMBUS_VOUT_MODE:
-> +		/* The datasheet does not support the VOUT command,
+> +	u64 temp =  DECA * 40ULL * st->vfs_out * 1 << 16, temp_2;
 
-Standard multi-line comments, please. This is not the networking subsystem.
+Too many spaces.
 
-> +		 * but the device responds with a default value of 0x17.
-> +		 * In the standard, 0x17 represents linear mode. However,
-> +		 * for the MP5990, the VOUT linear mode is linear11, not linear16.
-> +		 * Therefore, we should enforce the VOUT in the direct format.
+"* BIT(16)" / "* BIT_ULL(16)" ?
+
+...
+
+> +		temp = DIV_ROUND_CLOSEST_ULL(power * temp, U16_MAX);
+> +		*val = DIV64_U64_ROUND_CLOSEST(temp * MICRO, U16_MAX * (u64)st->rsense);
+
+> +	*val = DIV64_U64_ROUND_CLOSEST(temp_2, st->rsense * int_pow(U16_MAX, 2));
+
+Same Q about possible optimizations.
+
+...
+
+> +	temp = power * 40 * DECA * st->vfs_out * 256ULL;
+
+BIT_ULL(8) ?
+
+...
+
+> +	*val = DIV64_U64_ROUND_CLOSEST(temp * MICRO, int_pow(U8_MAX, 2) * st->rsense);
+
+Same Q about possible optimizations.
+
+...
+
+> +	if (check_mul_overflow(DECA * st->vfs_out * 40 * 256, energy, &temp)) {
+> +		temp = DIV_ROUND_CLOSEST(DECA * st->vfs_out * 40 * 256, U16_MAX);
+> +		*val = DIV_ROUND_CLOSEST_ULL(temp * energy, st->rsense);
+> +		return ret;
+> +	}
+
+BIT(8) ?
+
+...
+
+> +	*val = DIV64_U64_ROUND_CLOSEST(temp, U16_MAX * (u64)st->rsense);
+
+Same Q about possible optimizations.
+
+...
+
+> +		/*
+> +		 * reset happened... let's read the new energy value that
+
+Reset
+Let's
+
+> +		 * together with the new tick counter should give a sane average
+> +		 * value. Furthermore, we save whatever value we had accumulated
+> +		 * so that the next energy read will have it into account.
 > +		 */
-> +		return PB_VOUT_MODE_DIRECT;
 
-This doesn't take into account that the reporting mode is set in
-EFUSE_CFG bit 9 (RPT_FORMAT). If the chip is configured to report its data
-in linear mode, all readings will be wrong if the exponent is != 0 and
-for negative values.
+...
 
-The driver could enforce direct mode by explicitly configuring EFUSE_CFG,
-but that is not guaranteed to work because the chip could be write
-protected. It would be necessary to disable write protection first,
-making this a bit complicated. Alternatively, the reading of VOUT could
-be adjusted in linear mode to linear16 if the chip is configured to
-report data in linear mode. I would personally prefer this solution.
-Either case, this needs to be handled.
+> +		/* give some time for accumulation... */
+> +		msleep(2 * LTC4282_TCONV_US / MILLI);
 
-Guenter
+fsleep() ?
+
+...
+
+> +	/*
+> +	 * AVG = E / (Tconv * counter)
+> +	 * We get energy in microJoule, hence dividing it by microSeconds gives Watts. Therefore,
+> +	 * multiplying by MICRO gives us microWatts.
+> +	 */
+
+Here you used long lines, somewhere else, much shorter. Please, choose one
+limit and be consistent with it.
+
+...
+
+> +	temp = val * int_pow(U8_MAX, 2) * st->rsense;
+> +	power = DIV64_U64_ROUND_CLOSEST(temp, MICRO * DECA * 256ULL * st->vfs_out * 40);
+
+As per above.
+
+...
+
+> +	if (val >= fs)
+> +		in = U8_MAX;
+> +	else
+> +		in = DIV_ROUND_CLOSEST(val * U8_MAX, fs);
+
+Can clamp() be used here?
+
+...
+
+> +	/*
+> +	 * Make sure vdd is stable. From the datasheet:
+> +	 * The state of the UV and OV comparators is indicated by the STATUS register
+> +	 * bits 0 and 1 and must be stable for at least 50ms to qualify for turn-on.
+> +	 */
+> +	do {
+> +		ret = regmap_read_poll_timeout(st->map, LTC4282_STATUS_LSB, reg,
+> +					       reg & LTC4282_VDD_STATUS_MASK, 10000, 50000);
+> +		if (!ret)
+> +			continue;
+> +		if (ret != -ETIMEDOUT)
+> +			return dev_err_probe(st->dev, ret, "Failed regmap read\n");
+
+I would do it a bit differently.
+
+> +		break;
+
+> +	} while (n_tries--);
+
+	} while (--n_tries); ?
+
+Altogether:
+
+	do {
+		ret = regmap_read_poll_timeout(st->map, LTC4282_STATUS_LSB, reg,
+					       reg & LTC4282_VDD_STATUS_MASK, 10000, 50000);
+		/* Check if we got timeout which means UV and OV are stable for 50ms */
+		if (ret == -ETIMEDOUT)
+			break;
+		if (ret)
+			return dev_err_probe(st->dev, ret, "Failed regmap read\n");
+	} while (--n_tries);
+
+
+...
+
+> +	if (val > LTC4282_CLKOUT_TICK)
+> +		return dev_err_probe(st->dev, -EINVAL,
+> +				     "Invalid val(%u) for adi,clkout-mode\n", val);
+
+ERANGE?
+
+...
+
+> +	if (rate < LTC4282_CLKIN_MIN || rate > LTC4282_CLKIN_MAX)
+
+in_range() ?
+
+> +		return dev_err_probe(st->dev, -EINVAL, "Invalid clkin range(%lu) [%lu %lu]\n",
+> +				     rate, LTC4282_CLKIN_MIN, LTC4282_CLKIN_MAX);
+
+...
+
+> +	for (gpio = 0; gpio <= LTC4282_GPIO_3; gpio++) {
+
+Is 0 also being defined?
+
+> +		ret = device_property_read_u32(dev, ltc4282_gpio_prop[gpio], &func);
+> +		if (ret)
+> +			continue;
+> +		if (func >= ltc4282_gpios[gpio].n_funcs)
+> +			return dev_err_probe(dev, ret, "Invalid func(%u >= %u) for gpio%u\n",
+> +					     func, ltc4282_gpios[gpio].n_funcs, gpio + 1);
+> +		if (func == LTC4282_PIN_GPIO) {
+> +			st->gpio_map[ngpios++] = gpio;
+> +			if (gpio == LTC4282_GPIO_1) {
+> +				/* default to input GPIO */
+> +				ret = regmap_set_bits(st->map, LTC4282_GPIO_CONFIG,
+> +						      LTC4282_GPIO_1_CONFIG_MASK);
+> +				if (ret)
+> +					return ret;
+> +			}
+> +
+> +			continue;
+> +		}
+
+...
+
+> +		switch (val) {
+> +		case 3300000:
+
+Hmm... Do we have MICROVOLTS_IN_VOLTS or so?
+
+> +			st->vin_mode = LTC4282_VIN_3_3V;
+> +			break;
+> +		case 5000000:
+> +			st->vin_mode = LTC4282_VIN_5V;
+> +			break;
+> +		case 12000000:
+> +			st->vin_mode = LTC4282_VIN_12V;
+> +			break;
+> +		case 24000000:
+> +			st->vin_mode = LTC4282_VIN_24V;
+> +			break;
+> +		default:
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "Invalid val(%u) for vin-mode-microvolt\n", val);
+> +		}
+
+...
+
+> +static SENSOR_DEVICE_ATTR(in1_crit_fault_log, 0644, ltc4282_show_fault_log,
+> +			  ltc4282_clear_fault_log, LTC4282_OV_FAULT_MASK);
+> +static SENSOR_DEVICE_ATTR(in1_lcrit_fault_log, 0644, ltc4282_show_fault_log,
+> +			  ltc4282_clear_fault_log, LTC4282_UV_FAULT_MASK);
+> +static SENSOR_DEVICE_ATTR(curr1_crit_fault_log, 0644, ltc4282_show_fault_log,
+> +			  ltc4282_clear_fault_log, LTC4282_OC_FAULT_MASK);
+> +static SENSOR_DEVICE_ATTR(power1_fault_log, 0644, ltc4282_show_fault_log,
+> +			  ltc4282_clear_fault_log, LTC4282_POWER_BAD_FAULT_MASK);
+> +static SENSOR_DEVICE_ATTR(fet_bad_fault_log, 0644, ltc4282_show_fault_log,
+> +			  ltc4282_clear_fault_log, LTC4282_FET_BAD_FAULT_MASK);
+> +static SENSOR_DEVICE_ATTR(fet_short_fault_log, 0644, ltc4282_show_fault_log,
+> +			  ltc4282_clear_fault_log, LTC4282_FET_SHORT_FAULT_MASK);
+
+SENSOR_DEVICE_ATTR_RO() / _RW() ?
+
+...
+
+> +static struct attribute *ltc4282_attrs[] = {
+> +	&sensor_dev_attr_energy1_input.dev_attr.attr,
+> +	&sensor_dev_attr_power1_good.dev_attr.attr,
+> +	&sensor_dev_attr_fet_bad_fault.dev_attr.attr,
+> +	&sensor_dev_attr_fet_short_fault.dev_attr.attr,
+> +	&sensor_dev_attr_in1_crit_fault_log.dev_attr.attr,
+> +	&sensor_dev_attr_in1_lcrit_fault_log.dev_attr.attr,
+> +	&sensor_dev_attr_curr1_crit_fault_log.dev_attr.attr,
+> +	&sensor_dev_attr_power1_fault_log.dev_attr.attr,
+> +	&sensor_dev_attr_fet_bad_fault_log.dev_attr.attr,
+> +	&sensor_dev_attr_fet_short_fault_log.dev_attr.attr,
+> +	NULL,
+
+No comma for the terminator line.
+
+> +};
+
+...
+
+> +	msleep(3200);
+
+Not a single letter to comment such a huge delay :-(
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
