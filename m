@@ -1,873 +1,557 @@
-Return-Path: <linux-hwmon+bounces-20-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-18-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702407E99E7
-	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Nov 2023 11:12:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDFF7E99DD
+	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Nov 2023 11:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C372DB2097E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Nov 2023 10:12:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 154A01F20F07
+	for <lists+linux-hwmon@lfdr.de>; Mon, 13 Nov 2023 10:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41421C690;
-	Mon, 13 Nov 2023 10:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF391C2B8;
+	Mon, 13 Nov 2023 10:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aYyq3i+4"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C2619466;
-	Mon, 13 Nov 2023 10:12:27 +0000 (UTC)
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E208135;
-	Mon, 13 Nov 2023 02:12:25 -0800 (PST)
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3AD7Ovbh019662;
-	Mon, 13 Nov 2023 05:11:56 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3ubfcxrh3d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Nov 2023 05:11:56 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3ADABtug046819
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 13 Nov 2023 05:11:55 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 13 Nov 2023 05:11:54 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 13 Nov 2023 05:11:54 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 13 Nov 2023 05:11:54 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.148])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3ADABThx009585;
-	Mon, 13 Nov 2023 05:11:44 -0500
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Alessandro Zummo
-	<a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, "Jean Delvare" <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, <linux-rtc@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hwmon@vger.kernel.org>
-Subject: [PATCH v8 2/2] rtc: max31335: add driver support
-Date: Mon, 13 Nov 2023 12:11:07 +0200
-Message-ID: <20231113101123.34767-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231113101123.34767-1-antoniu.miclaus@analog.com>
-References: <20231113101123.34767-1-antoniu.miclaus@analog.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396A619465;
+	Mon, 13 Nov 2023 10:10:53 +0000 (UTC)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88174D58;
+	Mon, 13 Nov 2023 02:10:49 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-53e70b0a218so6495285a12.2;
+        Mon, 13 Nov 2023 02:10:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699870248; x=1700475048; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YdxHVwkkDV2Ld9dGiWwyW8pBUgE/swsfDDpYaQzu++E=;
+        b=aYyq3i+4ni9m/Ey4lXLg36Wa0/2QbOjT8FjF/4hFYewQf+nQzwnCCyDWR1t8/VsZei
+         BRqQqcGCkH+Ac5Z5R7kiRK+i28PX3b7XJP+2XVPwwl1z0/R1uS2rn7l+dC0CbhEHX1VA
+         dRfK/gOrU2IqUII1HPcD0OCVc9bStB/FOgLISXsadOuDZmf1Uzg5tBFHMLvgvO58QZQX
+         uoR4thAWxS9vxOS9DfNfxFgRcDaQ3xCc5ZhsiaISr0YhbDTxfwq6tQWsLeITMyu64MhN
+         vkgB7QAYo+TO+4I/PmdHbN/th+LDZxEIM4GSKxSRl/2G62EBNXci18kDVFlSWi+NEtoo
+         g64A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699870248; x=1700475048;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YdxHVwkkDV2Ld9dGiWwyW8pBUgE/swsfDDpYaQzu++E=;
+        b=YUzdqwdV4PW2iHsLjlkoT3Oaq9d+lmay2uR31/S4yBoOXLGmpThhi1AEd5OGXMLwSv
+         yNQSawQ00Hm+zjbNHHX38Rw67JpjlunqYEvRB122ECtmMqjpM26P2phabvwYxf0IiTnX
+         gZ9xldTPIIluFGf2Eg2t6mrq8BY9ZPwtaqQhYq7EkVUgPxtBCll0PT4BegsZMbxO19Bm
+         cte7FM2DsRl0tBVaJOkPtdNSYE2DB33F6yjOyCrRaGyMUmE0lxmaEtV16OlRPOu67lmf
+         Gv+aEs8ty97mOJKv0i5fwORWTbsEvr02l0saH6AFmLWqtjzgNAOf5hey8tj1Mq13VCZM
+         RUfg==
+X-Gm-Message-State: AOJu0YwsunT3pt3RM8nTKGE58Mw2U96eQTWDyOsBCZyvNugTYJWKZcxt
+	z1t9K+w9AZSDEuZMPUeisieaBtKaI6LLzCgYaa4=
+X-Google-Smtp-Source: AGHT+IEKG/SXFWyTlUP/fjoFcfYNCl774t+JwXV0/jFvFi02fCweXz9HMlJrw9O5Pu04XS0VrrgLJA==
+X-Received: by 2002:a05:6402:1016:b0:540:fde:5407 with SMTP id c22-20020a056402101600b005400fde5407mr4057996edu.34.1699870247641;
+        Mon, 13 Nov 2023 02:10:47 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:361b:8f29:1cbf:5e69? (p200300f6ef1b2000361b8f291cbf5e69.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:361b:8f29:1cbf:5e69])
+        by smtp.gmail.com with ESMTPSA id m20-20020a50d7d4000000b00530bc7cf377sm3531074edj.12.2023.11.13.02.10.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Nov 2023 02:10:47 -0800 (PST)
+Message-ID: <581aec9c6313e3885aae8b1e12dfcc9f392716db.camel@gmail.com>
+Subject: Re: [PATCH 2/2] hwmon: ltc4282: add support for the LTC4282 chip
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andy@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org, 
+ devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, Jonathan
+ Corbet <corbet@lwn.net>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>,  Linus Walleij
+ <linus.walleij@linaro.org>, Guenter Roeck <linux@roeck-us.net>, Rob Herring
+ <robh+dt@kernel.org>,  Jean Delvare <jdelvare@suse.com>, Conor Dooley
+ <conor+dt@kernel.org>
+Date: Mon, 13 Nov 2023 11:13:44 +0100
+In-Reply-To: <ZU5fYY81L_qSmQWq@smile.fi.intel.com>
+References: <20231110151905.1659873-1-nuno.sa@analog.com>
+	 <20231110151905.1659873-3-nuno.sa@analog.com>
+	 <ZU5fYY81L_qSmQWq@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.1 
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: BcV0z4IKDYS3jTRX27nYA5sLDfd_SAlj
-X-Proofpoint-GUID: BcV0z4IKDYS3jTRX27nYA5sLDfd_SAlj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-12_24,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
- suspectscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 phishscore=0 mlxscore=0 priorityscore=1501 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311060001
- definitions=main-2311130083
 
-RTC driver for MAX31335 ±2ppm Automotive Real-Time Clock with
-Integrated MEMS Resonator.
+On Fri, 2023-11-10 at 18:50 +0200, Andy Shevchenko wrote:
+> On Fri, Nov 10, 2023 at 04:18:46PM +0100, Nuno Sa wrote:
+> > The LTC4282 hot swap controller allows a board to be safely inserted an=
+d
+> > removed from a live backplane. Using one or more external N-channel pas=
+s
+> > transistors, board supply voltage and inrush current are ramped up at a=
+n
+> > adjustable rate. An I2C interface and onboard ADC allows for monitoring
+> > of board current, voltage, power, energy and fault status.
+>=20
+> There are plenty of ltc42xx in the same folder and a lot of other chips.
+> Have you checked that none of the existing driver is not close enough and
+> brand new driver is indeed required? If so, add a respective paragraph
+> somewhere (cover letter? TBH I haven't read it, it's fine if it's already
+> explained there).
+>=20
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v8:
- - make `nvmem_config` and `clk_init_data` static
- MAINTAINERS                |   8 +
- drivers/rtc/Kconfig        |  13 +
- drivers/rtc/Makefile       |   1 +
- drivers/rtc/rtc-max31335.c | 706 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 728 insertions(+)
- create mode 100644 drivers/rtc/rtc-max31335.c
+I can double check but not the last time I looked into those drivers
+> ...
+>=20
+> > +#define LTC4282_STATUS_MSB			0x1F
+>=20
+> > +#define LTC4282_VSOURCE				0x3a
+> > +#define LTC4282_VSOURCE_LOWEST			0x3c
+> > +#define LTC4282_VSOURCE_HIGHEST			0x3e
+>=20
+> You have an inconsistency in the capitalization of the hexadecimal values=
+.
+>=20
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 97f51d5ec1cf..0b2a6f95bae7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12986,6 +12986,14 @@ F:	Documentation/devicetree/bindings/hwmon/adi,max31827.yaml
- F:	Documentation/hwmon/max31827.rst
- F:	drivers/hwmon/max31827.c
- 
-+MAX31335 RTC DRIVER
-+M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-+L:	linux-rtc@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/rtc/adi,max31335.yaml
-+F:	drivers/rtc/rtc-max31335.c
-+
- MAX6650 HARDWARE MONITOR AND FAN CONTROLLER DRIVER
- L:	linux-hwmon@vger.kernel.org
- S:	Orphan
-diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-index 3814e0845e77..6ed8cb5c3c9a 100644
---- a/drivers/rtc/Kconfig
-+++ b/drivers/rtc/Kconfig
-@@ -373,6 +373,19 @@ config RTC_DRV_MAX8997
- 	  This driver can also be built as a module. If so, the module
- 	  will be called rtc-max8997.
- 
-+config RTC_DRV_MAX31335
-+	tristate "Analog Devices MAX31335"
-+	depends on I2C
-+	depends on COMMON_CLK
-+	depends on HWMON || HWMON=n
-+	select REGMAP_I2C
-+	help
-+	  If you say yes here you get support for the Analog Devices
-+	  MAX31335.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called rtc-max31335.
-+
- config RTC_DRV_MAX77686
- 	tristate "Maxim MAX77686"
- 	depends on MFD_MAX77686 || MFD_MAX77620 || MFD_MAX77714 || COMPILE_TEST
-diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-index 7b03c3abfd78..aa3f3bac8e1c 100644
---- a/drivers/rtc/Makefile
-+++ b/drivers/rtc/Makefile
-@@ -88,6 +88,7 @@ obj-$(CONFIG_RTC_DRV_M41T94)	+= rtc-m41t94.o
- obj-$(CONFIG_RTC_DRV_M48T35)	+= rtc-m48t35.o
- obj-$(CONFIG_RTC_DRV_M48T59)	+= rtc-m48t59.o
- obj-$(CONFIG_RTC_DRV_M48T86)	+= rtc-m48t86.o
-+obj-$(CONFIG_RTC_DRV_MAX31335)	+= rtc-max31335.o
- obj-$(CONFIG_RTC_DRV_MAX6900)	+= rtc-max6900.o
- obj-$(CONFIG_RTC_DRV_MAX6902)	+= rtc-max6902.o
- obj-$(CONFIG_RTC_DRV_MAX6916)	+= rtc-max6916.o
-diff --git a/drivers/rtc/rtc-max31335.c b/drivers/rtc/rtc-max31335.c
-new file mode 100644
-index 000000000000..779f872215a0
---- /dev/null
-+++ b/drivers/rtc/rtc-max31335.c
-@@ -0,0 +1,706 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * RTC driver for the MAX31335
-+ *
-+ * Copyright (C) 2023 Analog Devices
-+ *
-+ * Antoniu Miclaus <antoniu.miclaus@analog.com>
-+ *
-+ */
-+
-+#include <asm-generic/unaligned.h>
-+#include <linux/bcd.h>
-+#include <linux/bitfield.h>
-+#include <linux/bitops.h>
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
-+#include <linux/hwmon.h>
-+#include <linux/i2c.h>
-+#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/regmap.h>
-+#include <linux/rtc.h>
-+#include <linux/util_macros.h>
-+
-+/* MAX31335 Register Map */
-+#define MAX31335_STATUS1			0x00
-+#define MAX31335_INT_EN1			0x01
-+#define MAX31335_STATUS2			0x02
-+#define MAX31335_INT_EN2			0x03
-+#define MAX31335_RTC_RESET			0x04
-+#define MAX31335_RTC_CONFIG			0x05
-+#define MAX31335_RTC_CONFIG2			0x06
-+#define MAX31335_TIMESTAMP_CONFIG		0x07
-+#define MAX31335_TIMER_CONFIG			0x08
-+#define MAX31335_SECONDS_1_128			0x09
-+#define MAX31335_SECONDS			0x0A
-+#define MAX31335_MINUTES			0x0B
-+#define MAX31335_HOURS				0x0C
-+#define MAX31335_DAY				0x0D
-+#define MAX31335_DATE				0x0E
-+#define MAX31335_MONTH				0x0F
-+#define MAX31335_YEAR				0x0F
-+#define MAX31335_ALM1_SEC			0x11
-+#define MAX31335_ALM1_MIN			0x12
-+#define MAX31335_ALM1_HRS			0x13
-+#define MAX31335_ALM1_DAY_DATE			0x14
-+#define MAX31335_ALM1_MON			0x15
-+#define MAX31335_ALM1_YEAR			0x16
-+#define MAX31335_ALM2_MIN			0x17
-+#define MAX31335_ALM2_HRS			0x18
-+#define MAX31335_ALM2_DAY_DATE			0x19
-+#define MAX31335_TIMER_COUNT			0x1A
-+#define MAX31335_TIMER_INIT			0x1B
-+#define MAX31335_PWR_MGMT			0x1C
-+#define MAX31335_TRICKLE_REG			0x1D
-+#define MAX31335_AGING_OFFSET			0x1E
-+#define MAX31335_TS_CONFIG			0x30
-+#define MAX31335_TEMP_ALARM_HIGH_MSB		0x31
-+#define MAX31335_TEMP_ALARM_HIGH_LSB		0x32
-+#define MAX31335_TEMP_ALARM_LOW_MSB		0x33
-+#define MAX31335_TEMP_ALARM_LOW_LSB		0x34
-+#define MAX31335_TEMP_DATA_MSB			0x35
-+#define MAX31335_TEMP_DATA_LSB			0x36
-+#define MAX31335_TS0_SEC_1_128			0x40
-+#define MAX31335_TS0_SEC			0x41
-+#define MAX31335_TS0_MIN			0x42
-+#define MAX31335_TS0_HOUR			0x43
-+#define MAX31335_TS0_DATE			0x44
-+#define MAX31335_TS0_MONTH			0x45
-+#define MAX31335_TS0_YEAR			0x46
-+#define MAX31335_TS0_FLAGS			0x47
-+#define MAX31335_TS1_SEC_1_128			0x48
-+#define MAX31335_TS1_SEC			0x49
-+#define MAX31335_TS1_MIN			0x4A
-+#define MAX31335_TS1_HOUR			0x4B
-+#define MAX31335_TS1_DATE			0x4C
-+#define MAX31335_TS1_MONTH			0x4D
-+#define MAX31335_TS1_YEAR			0x4E
-+#define MAX31335_TS1_FLAGS			0x4F
-+#define MAX31335_TS2_SEC_1_128			0x50
-+#define MAX31335_TS2_SEC			0x51
-+#define MAX31335_TS2_MIN			0x52
-+#define MAX31335_TS2_HOUR			0x53
-+#define MAX31335_TS2_DATE			0x54
-+#define MAX31335_TS2_MONTH			0x55
-+#define MAX31335_TS2_YEAR			0x56
-+#define MAX31335_TS2_FLAGS			0x57
-+#define MAX31335_TS3_SEC_1_128			0x58
-+#define MAX31335_TS3_SEC			0x59
-+#define MAX31335_TS3_MIN			0x5A
-+#define MAX31335_TS3_HOUR			0x5B
-+#define MAX31335_TS3_DATE			0x5C
-+#define MAX31335_TS3_MONTH			0x5D
-+#define MAX31335_TS3_YEAR			0x5E
-+#define MAX31335_TS3_FLAGS			0x5F
-+
-+/* MAX31335_STATUS1 Bit Definitions */
-+#define MAX31335_STATUS1_PSDECT			BIT(7)
-+#define MAX31335_STATUS1_OSF			BIT(6)
-+#define MAX31335_STATUS1_PFAIL			BIT(5)
-+#define MAX31335_STATUS1_VBATLOW		BIT(4)
-+#define MAX31335_STATUS1_DIF			BIT(3)
-+#define MAX31335_STATUS1_TIF			BIT(2)
-+#define MAX31335_STATUS1_A2F			BIT(1)
-+#define MAX31335_STATUS1_A1F			BIT(0)
-+
-+/* MAX31335_INT_EN1 Bit Definitions */
-+#define MAX31335_INT_EN1_DOSF			BIT(6)
-+#define MAX31335_INT_EN1_PFAILE			BIT(5)
-+#define MAX31335_INT_EN1_VBATLOWE		BIT(4)
-+#define MAX31335_INT_EN1_DIE			BIT(3)
-+#define MAX31335_INT_EN1_TIE			BIT(2)
-+#define MAX31335_INT_EN1_A2IE			BIT(1)
-+#define MAX31335_INT_EN1_A1IE			BIT(0)
-+
-+/* MAX31335_STATUS2 Bit Definitions */
-+#define MAX31335_STATUS2_TEMP_RDY		BIT(2)
-+#define MAX31335_STATUS2_OTF			BIT(1)
-+#define MAX31335_STATUS2_UTF			BIT(0)
-+
-+/* MAX31335_INT_EN2 Bit Definitions */
-+#define MAX31335_INT_EN2_TEMP_RDY_EN		BIT(2)
-+#define MAX31335_INT_EN2_OTIE			BIT(1)
-+#define MAX31335_INT_EN2_UTIE			BIT(0)
-+
-+/* MAX31335_RTC_RESET Bit Definitions */
-+#define MAX31335_RTC_RESET_SWRST		BIT(0)
-+
-+/* MAX31335_RTC_CONFIG1 Bit Definitions */
-+#define MAX31335_RTC_CONFIG1_EN_IO		BIT(6)
-+#define MAX31335_RTC_CONFIG1_A1AC		GENMASK(5, 4)
-+#define MAX31335_RTC_CONFIG1_DIP		BIT(3)
-+#define MAX31335_RTC_CONFIG1_I2C_TIMEOUT	BIT(1)
-+#define MAX31335_RTC_CONFIG1_EN_OSC		BIT(0)
-+
-+/* MAX31335_RTC_CONFIG2 Bit Definitions */
-+#define MAX31335_RTC_CONFIG2_ENCLKO		BIT(2)
-+#define MAX31335_RTC_CONFIG2_CLKO_HZ		GENMASK(1, 0)
-+
-+/* MAX31335_TIMESTAMP_CONFIG Bit Definitions */
-+#define MAX31335_TIMESTAMP_CONFIG_TSVLOW	BIT(5)
-+#define MAX31335_TIMESTAMP_CONFIG_TSPWM		BIT(4)
-+#define MAX31335_TIMESTAMP_CONFIG_TSDIN		BIT(3)
-+#define MAX31335_TIMESTAMP_CONFIG_TSOW		BIT(2)
-+#define MAX31335_TIMESTAMP_CONFIG_TSR		BIT(1)
-+#define MAX31335_TIMESTAMP_CONFIG_TSE		BIT(0)
-+
-+/* MAX31335_TIMER_CONFIG Bit Definitions */
-+#define MAX31335_TIMER_CONFIG_TE		BIT(4)
-+#define MAX31335_TIMER_CONFIG_TPAUSE		BIT(3)
-+#define MAX31335_TIMER_CONFIG_TRPT		BIT(2)
-+#define MAX31335_TIMER_CONFIG_TFS		GENMASK(1, 0)
-+
-+/* MAX31335_HOURS Bit Definitions */
-+#define MAX31335_HOURS_F_24_12			BIT(6)
-+#define MAX31335_HOURS_HR_20_AM_PM		BIT(5)
-+
-+/* MAX31335_MONTH Bit Definitions */
-+#define MAX31335_MONTH_CENTURY			BIT(7)
-+
-+/* MAX31335_PWR_MGMT Bit Definitions */
-+#define MAX31335_PWR_MGMT_PFVT			BIT(0)
-+
-+/* MAX31335_TRICKLE_REG Bit Definitions */
-+#define MAX31335_TRICKLE_REG_TRICKLE		GENMASK(3, 1)
-+#define MAX31335_TRICKLE_REG_EN_TRICKLE		BIT(0)
-+
-+/* MAX31335_TS_CONFIG Bit Definitions */
-+#define MAX31335_TS_CONFIG_AUTO			BIT(4)
-+#define MAX31335_TS_CONFIG_CONVERT_T		BIT(3)
-+#define MAX31335_TS_CONFIG_TSINT		GENMASK(2, 0)
-+
-+/* MAX31335_TS_FLAGS Bit Definitions */
-+#define MAX31335_TS_FLAGS_VLOWF			BIT(3)
-+#define MAX31335_TS_FLAGS_VBATF			BIT(2)
-+#define MAX31335_TS_FLAGS_VCCF			BIT(1)
-+#define MAX31335_TS_FLAGS_DINF			BIT(0)
-+
-+/* MAX31335 Miscellaneous Definitions */
-+#define MAX31335_TRICKLE_SCHOTTKY_DIODE		1
-+#define MAX31335_TRICKLE_STANDARD_DIODE		4
-+#define MAX31335_RAM_SIZE			32
-+#define MAX31335_TIME_SIZE			0x07
-+
-+#define clk_hw_to_max31335(_hw) container_of(_hw, struct max31335_data, clkout)
-+
-+struct max31335_data {
-+	struct regmap *regmap;
-+	struct rtc_device *rtc;
-+	struct clk_hw clkout;
-+};
-+
-+static const int max31335_clkout_freq[] = { 1, 64, 1024, 32768 };
-+
-+static const u16 max31335_trickle_resistors[] = {3000, 6000, 11000};
-+
-+static bool max31335_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	/* time keeping registers */
-+	if (reg >= MAX31335_SECONDS &&
-+	    reg < MAX31335_SECONDS + MAX31335_TIME_SIZE)
-+		return true;
-+
-+	/* interrupt status register */
-+	if (reg == MAX31335_INT_EN1_A1IE)
-+		return true;
-+
-+	/* temperature registers */
-+	if (reg == MAX31335_TEMP_DATA_MSB || MAX31335_TEMP_DATA_LSB)
-+		return true;
-+
-+	return false;
-+}
-+
-+static const struct regmap_config regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x5F,
-+	.volatile_reg = max31335_volatile_reg,
-+};
-+
-+static int max31335_read_time(struct device *dev, struct rtc_time *tm)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	u8 date[7];
-+	int ret;
-+
-+	ret = regmap_bulk_read(max31335->regmap, MAX31335_SECONDS, date,
-+			       sizeof(date));
-+	if (ret)
-+		return ret;
-+
-+	tm->tm_sec  = bcd2bin(date[0] & 0x7f);
-+	tm->tm_min  = bcd2bin(date[1] & 0x7f);
-+	tm->tm_hour = bcd2bin(date[2] & 0x3f);
-+	tm->tm_wday = bcd2bin(date[3] & 0x7) - 1;
-+	tm->tm_mday = bcd2bin(date[4] & 0x3f);
-+	tm->tm_mon  = bcd2bin(date[5] & 0x1f) - 1;
-+	tm->tm_year = bcd2bin(date[6]) + 100;
-+
-+	if (FIELD_GET(MAX31335_MONTH_CENTURY, date[5]))
-+		tm->tm_year += 100;
-+
-+	return 0;
-+}
-+
-+static int max31335_set_time(struct device *dev, struct rtc_time *tm)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	u8 date[7];
-+
-+	date[0] = bin2bcd(tm->tm_sec);
-+	date[1] = bin2bcd(tm->tm_min);
-+	date[2] = bin2bcd(tm->tm_hour);
-+	date[3] = bin2bcd(tm->tm_wday + 1);
-+	date[4] = bin2bcd(tm->tm_mday);
-+	date[5] = bin2bcd(tm->tm_mon + 1);
-+	date[6] = bin2bcd(tm->tm_year % 100);
-+
-+	if (tm->tm_year >= 200)
-+		date[5] |= FIELD_PREP(MAX31335_MONTH_CENTURY, 1);
-+
-+	return regmap_bulk_write(max31335->regmap, MAX31335_SECONDS, date,
-+				 sizeof(date));
-+}
-+
-+static int max31335_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	int ret, ctrl, status;
-+	struct rtc_time time;
-+	u8 regs[6];
-+
-+	ret = regmap_bulk_read(max31335->regmap, MAX31335_ALM1_SEC, regs,
-+			       sizeof(regs));
-+	if (ret)
-+		return ret;
-+
-+	alrm->time.tm_sec  = bcd2bin(regs[0] & 0x7f);
-+	alrm->time.tm_min  = bcd2bin(regs[1] & 0x7f);
-+	alrm->time.tm_hour = bcd2bin(regs[2] & 0x3f);
-+	alrm->time.tm_mday = bcd2bin(regs[3] & 0x3f);
-+	alrm->time.tm_mon  = bcd2bin(regs[4] & 0x1f) - 1;
-+	alrm->time.tm_year = bcd2bin(regs[5]) + 100;
-+
-+	ret = max31335_read_time(dev, &time);
-+	if (ret)
-+		return ret;
-+
-+	if (time.tm_year >= 200)
-+		alrm->time.tm_year += 100;
-+
-+	ret = regmap_read(max31335->regmap, MAX31335_INT_EN1, &ctrl);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(max31335->regmap, MAX31335_STATUS1, &status);
-+	if (ret)
-+		return ret;
-+
-+	alrm->enabled = FIELD_GET(MAX31335_INT_EN1_A1IE, ctrl);
-+	alrm->pending = FIELD_GET(MAX31335_STATUS1_A1F, status);
-+
-+	return 0;
-+}
-+
-+static int max31335_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	unsigned int reg;
-+	u8 regs[6];
-+	int ret;
-+
-+	regs[0] = bin2bcd(alrm->time.tm_sec);
-+	regs[1] = bin2bcd(alrm->time.tm_min);
-+	regs[2] = bin2bcd(alrm->time.tm_hour);
-+	regs[3] = bin2bcd(alrm->time.tm_mday);
-+	regs[4] = bin2bcd(alrm->time.tm_mon + 1);
-+	regs[5] = bin2bcd(alrm->time.tm_year % 100);
-+
-+	ret = regmap_bulk_write(max31335->regmap, MAX31335_ALM1_SEC,
-+				regs, sizeof(regs));
-+	if (ret)
-+		return ret;
-+
-+	reg = FIELD_PREP(MAX31335_INT_EN1_A1IE, alrm->enabled);
-+	ret = regmap_update_bits(max31335->regmap, MAX31335_INT_EN1,
-+				 MAX31335_INT_EN1_A1IE, reg);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(max31335->regmap, MAX31335_STATUS1,
-+				 MAX31335_STATUS1_A1F, 0);
-+
-+	return 0;
-+}
-+
-+static int max31335_alarm_irq_enable(struct device *dev, unsigned int enabled)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+
-+	return regmap_update_bits(max31335->regmap, MAX31335_INT_EN1,
-+				  MAX31335_INT_EN1_A1IE, enabled);
-+}
-+
-+static irqreturn_t max31335_handle_irq(int irq, void *dev_id)
-+{
-+	struct max31335_data *max31335 = dev_id;
-+	struct mutex *lock = &max31335->rtc->ops_lock;
-+	int ret, status;
-+
-+	mutex_lock(lock);
-+
-+	ret = regmap_read(max31335->regmap, MAX31335_STATUS1, &status);
-+	if (ret)
-+		goto exit;
-+
-+	if (FIELD_GET(MAX31335_STATUS1_A1F, status)) {
-+		ret = regmap_update_bits(max31335->regmap, MAX31335_STATUS1,
-+					 MAX31335_STATUS1_A1F, 0);
-+		if (ret)
-+			goto exit;
-+
-+		rtc_update_irq(max31335->rtc, 1, RTC_AF | RTC_IRQF);
-+	}
-+
-+exit:
-+	mutex_unlock(lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static const struct rtc_class_ops max31335_rtc_ops = {
-+	.read_time = max31335_read_time,
-+	.set_time = max31335_set_time,
-+	.read_alarm = max31335_read_alarm,
-+	.set_alarm = max31335_set_alarm,
-+	.alarm_irq_enable = max31335_alarm_irq_enable,
-+};
-+
-+static int max31335_trickle_charger_setup(struct device *dev,
-+					  struct max31335_data *max31335)
-+{
-+	u32 ohms, chargeable;
-+	int i, trickle_cfg;
-+	const char *diode;
-+
-+	if (device_property_read_u32(dev, "aux-voltage-chargeable",
-+				     &chargeable))
-+		return 0;
-+
-+	if (device_property_read_u32(dev, "trickle-resistor-ohms", &ohms))
-+		return 0;
-+
-+	if (device_property_read_string(dev, "adi,tc-diode", &diode))
-+		return 0;
-+
-+	if (!strcmp(diode, "schottky"))
-+		trickle_cfg = MAX31335_TRICKLE_SCHOTTKY_DIODE;
-+	else if (!strcmp(diode, "standard+schottky"))
-+		trickle_cfg = MAX31335_TRICKLE_STANDARD_DIODE;
-+	else
-+		dev_err_probe(dev, -EINVAL, "Invalid tc-diode value: %s\n",
-+			      diode);
-+
-+	for (i = 0; i < ARRAY_SIZE(max31335_trickle_resistors); i++)
-+		if (ohms == max31335_trickle_resistors[i])
-+			break;
-+
-+	if (i >= ARRAY_SIZE(max31335_trickle_resistors))
-+		return 0;
-+
-+	i = i + trickle_cfg;
-+
-+	return regmap_write(max31335->regmap, MAX31335_TRICKLE_REG,
-+			    FIELD_PREP(MAX31335_TRICKLE_REG_TRICKLE, i) |
-+			    FIELD_PREP(MAX31335_TRICKLE_REG_EN_TRICKLE,
-+				       chargeable));
-+}
-+
-+static unsigned long max31335_clkout_recalc_rate(struct clk_hw *hw,
-+						 unsigned long parent_rate)
-+{
-+	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
-+	unsigned int freq_mask;
-+	unsigned int reg;
-+	int ret;
-+
-+	ret = regmap_read(max31335->regmap, MAX31335_RTC_CONFIG2, &reg);
-+	if (ret)
-+		return 0;
-+
-+	freq_mask = __roundup_pow_of_two(ARRAY_SIZE(max31335_clkout_freq)) - 1;
-+
-+	return max31335_clkout_freq[reg & freq_mask];
-+}
-+
-+static long max31335_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
-+				       unsigned long *prate)
-+{
-+	int index;
-+
-+	index = find_closest(rate, max31335_clkout_freq,
-+			     ARRAY_SIZE(max31335_clkout_freq));
-+
-+	return max31335_clkout_freq[index];
-+}
-+
-+static int max31335_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
-+				    unsigned long parent_rate)
-+{
-+	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
-+	unsigned int freq_mask;
-+	int index;
-+
-+	index = find_closest(rate, max31335_clkout_freq,
-+			     ARRAY_SIZE(max31335_clkout_freq));
-+	freq_mask = __roundup_pow_of_two(ARRAY_SIZE(max31335_clkout_freq)) - 1;
-+
-+	return regmap_update_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
-+				  freq_mask, index);
-+}
-+
-+static int max31335_clkout_enable(struct clk_hw *hw)
-+{
-+	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
-+
-+	return regmap_set_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
-+			       MAX31335_RTC_CONFIG2_ENCLKO);
-+}
-+
-+static void max31335_clkout_disable(struct clk_hw *hw)
-+{
-+	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
-+
-+	regmap_clear_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
-+			  MAX31335_RTC_CONFIG2_ENCLKO);
-+}
-+
-+static int max31335_clkout_is_enabled(struct clk_hw *hw)
-+{
-+	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
-+	unsigned int reg;
-+	int ret;
-+
-+	ret = regmap_read(max31335->regmap, MAX31335_RTC_CONFIG2, &reg);
-+	if (ret)
-+		return ret;
-+
-+	return !!(reg & MAX31335_RTC_CONFIG2_ENCLKO);
-+}
-+
-+static const struct clk_ops max31335_clkout_ops = {
-+	.recalc_rate = max31335_clkout_recalc_rate,
-+	.round_rate = max31335_clkout_round_rate,
-+	.set_rate = max31335_clkout_set_rate,
-+	.enable = max31335_clkout_enable,
-+	.disable = max31335_clkout_disable,
-+	.is_enabled = max31335_clkout_is_enabled,
-+};
-+
-+static struct clk_init_data max31335_clk_init = {
-+	.name = "max31335-clkout",
-+	.ops = &max31335_clkout_ops,
-+};
-+
-+static int max31335_nvmem_reg_read(void *priv, unsigned int offset,
-+				   void *val, size_t bytes)
-+{
-+	struct max31335_data *max31335 = priv;
-+	unsigned int reg = MAX31335_TS0_SEC_1_128 + offset;
-+
-+	return regmap_bulk_read(max31335->regmap, reg, val, bytes);
-+}
-+
-+static int max31335_nvmem_reg_write(void *priv, unsigned int offset,
-+				    void *val, size_t bytes)
-+{
-+	struct max31335_data *max31335 = priv;
-+	unsigned int reg = MAX31335_TS0_SEC_1_128 + offset;
-+
-+	return regmap_bulk_write(max31335->regmap, reg, val, bytes);
-+}
-+
-+static struct nvmem_config max31335_nvmem_cfg = {
-+	.reg_read = max31335_nvmem_reg_read,
-+	.reg_write = max31335_nvmem_reg_write,
-+	.word_size = 8,
-+	.size = MAX31335_RAM_SIZE,
-+};
-+
-+#if IS_REACHABLE(HWMON)
-+static int max31335_read_temp(struct device *dev, enum hwmon_sensor_types type,
-+			      u32 attr, int channel, long *val)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	u8 reg[2];
-+	s16 temp;
-+	int ret;
-+
-+	if (type != hwmon_temp || attr != hwmon_temp_input)
-+		return -EOPNOTSUPP;
-+
-+	ret = regmap_bulk_read(max31335->regmap, MAX31335_TEMP_DATA_MSB,
-+			       reg, 2);
-+	if (ret)
-+		return ret;
-+
-+	temp = get_unaligned_be16(reg);
-+
-+	*val = (temp / 64) * 250;
-+
-+	return 0;
-+}
-+
-+static umode_t max31335_is_visible(const void *data,
-+				   enum hwmon_sensor_types type,
-+				   u32 attr, int channel)
-+{
-+	if (type == hwmon_temp && attr == hwmon_temp_input)
-+		return 0444;
-+
-+	return 0;
-+}
-+
-+static const struct hwmon_channel_info *max31335_info[] = {
-+	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
-+	NULL
-+};
-+
-+static const struct hwmon_ops max31335_hwmon_ops = {
-+	.is_visible = max31335_is_visible,
-+	.read = max31335_read_temp,
-+};
-+
-+static const struct hwmon_chip_info max31335_chip_info = {
-+	.ops = &max31335_hwmon_ops,
-+	.info = max31335_info,
-+};
-+#endif
-+
-+static int max31335_clkout_register(struct device *dev)
-+{
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	int ret;
-+
-+	if (!device_property_present(dev, "#clock-cells"))
-+		return regmap_clear_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
-+					 MAX31335_RTC_CONFIG2_ENCLKO);
-+
-+	max31335->clkout.init = &max31335_clk_init;
-+
-+	ret = devm_clk_hw_register(dev, &max31335->clkout);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "cannot register clock\n");
-+
-+	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
-+					  &max31335->clkout);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "cannot add hw provider\n");
-+
-+	max31335->clkout.clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(max31335->clkout.clk))
-+		return dev_err_probe(dev, PTR_ERR(max31335->clkout.clk),
-+				     "cannot enable clkout\n");
-+
-+	return 0;
-+}
-+
-+static int max31335_probe(struct i2c_client *client)
-+{
-+	struct max31335_data *max31335;
-+#if IS_REACHABLE(HWMON)
-+	struct device *hwmon;
-+#endif
-+	int ret;
-+
-+	max31335 = devm_kzalloc(&client->dev, sizeof(*max31335), GFP_KERNEL);
-+	if (!max31335)
-+		return -ENOMEM;
-+
-+	max31335->regmap = devm_regmap_init_i2c(client, &regmap_config);
-+	if (IS_ERR(max31335->regmap))
-+		return PTR_ERR(max31335->regmap);
-+
-+	i2c_set_clientdata(client, max31335);
-+
-+	max31335->rtc = devm_rtc_allocate_device(&client->dev);
-+	if (IS_ERR(max31335->rtc))
-+		return PTR_ERR(max31335->rtc);
-+
-+	max31335->rtc->ops = &max31335_rtc_ops;
-+	max31335->rtc->range_min = RTC_TIMESTAMP_BEGIN_2000;
-+	max31335->rtc->range_max = RTC_TIMESTAMP_END_2199;
-+	max31335->rtc->alarm_offset_max = 24 * 60 * 60;
-+
-+	ret = max31335_clkout_register(&client->dev);
-+	if (ret)
-+		return ret;
-+
-+	if (client->irq > 0) {
-+		ret = devm_request_threaded_irq(&client->dev, client->irq,
-+						NULL, max31335_handle_irq,
-+						IRQF_ONESHOT,
-+						"max31335", max31335);
-+		if (ret) {
-+			dev_warn(&client->dev,
-+				 "unable to request IRQ, alarm max31335 disabled\n");
-+			client->irq = 0;
-+		}
-+	}
-+
-+	if (!client->irq)
-+		clear_bit(RTC_FEATURE_ALARM, max31335->rtc->features);
-+
-+	max31335_nvmem_cfg.priv = max31335;
-+	ret = devm_rtc_nvmem_register(max31335->rtc, &max31335_nvmem_cfg);
-+	if (ret)
-+		dev_err_probe(&client->dev, ret, "cannot register rtc nvmem\n");
-+
-+#if IS_REACHABLE(HWMON)
-+	hwmon = devm_hwmon_device_register_with_info(&client->dev, client->name,
-+						     max31335,
-+						     &max31335_chip_info,
-+						     NULL);
-+	if (IS_ERR(hwmon))
-+		dev_err_probe(&client->dev, PTR_ERR(hwmon),
-+			      "cannot register hwmon device\n");
-+#endif
-+
-+	ret = max31335_trickle_charger_setup(&client->dev, max31335);
-+	if (ret)
-+		return ret;
-+
-+	return devm_rtc_register_device(max31335->rtc);
-+}
-+
-+static const struct i2c_device_id max31335_id[] = {
-+	{ "max31335", 0 },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(i2c, max31335_id);
-+
-+static const struct of_device_id max31335_of_match[] = {
-+	{ .compatible = "adi,max31335" },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(of, max31335_of_match);
-+
-+static struct i2c_driver max31335_driver = {
-+	.driver = {
-+		.name = "rtc-max31335",
-+		.of_match_table = max31335_of_match,
-+	},
-+	.probe = max31335_probe,
-+	.id_table = max31335_id,
-+};
-+module_i2c_driver(max31335_driver);
-+
-+MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com>");
-+MODULE_DESCRIPTION("MAX31335 RTC driver");
-+MODULE_LICENSE("GPL");
--- 
-2.42.0
+right...
+
+> ...
+>=20
+> > +/*
+> > + * relaxed version of FIELD_PREP() to be used when mask is not a compi=
+le
+> > time constant
+> > + * u32_encode_bits() can't also be used as the compiler needs to be ab=
+le to
+> > evaluate
+> > + * mask at compile time.
+> > + */
+> > +#define LTC4282_FIELD_PREP(m, v)	(((v) << (ffs(m) - 1)) & (m))
+>=20
+> Can we name it accordingly as done in other places, and TBH it's a time t=
+o
+> move
+> it to the header. (At least I know about two more implementations of this=
+).
+>=20
+
+Not sure what you mean? Is there some other drivers doing it already? I'll,
+anyways, wait on more feedback for the GPIO stuff because we might end up n=
+ot
+needing it...
+
+> ...
+>=20
+> > +struct ltc4282_state {
+> > +	struct regmap *map;
+> > +	struct device *dev;
+> > +	/* Protect against multiple accesses to the device registers */
+> > +	struct mutex lock;
+> > +	struct gpio_chip gc;
+> > +	u64 saved_energy;
+> > +	long power_max;
+>=20
+> > +	u32 gpio_map[LTC4282_GPIO_NR];
+>=20
+> Why is this needed? The valid_mask is not enough?
+>=20
+
+Hmm I just looked at the valid_mask. So, I can definitely make it work with=
+ it.
+The only thing I see is that we might end up wasting memory in case we are =
+not
+using the 4 available pins. Worst case, we allocate 3 'struct gpio_desc' th=
+at
+will never be used but I guess that's not a real issue... So yeah, I'll use=
+ the
+mask stuff.
+
+> > +	u32 rsense;
+> > +	u32 vin_mode;
+> > +	u16 vfs_out;
+> > +};
+>=20
+> ...
+>=20
+> > +	/* GPIO_2,3 and the ALERT pin require setting the bit to 1 to pull
+> > down the line */
+> > +	if (!gpio->active_high)
+>=20
+> Hmm... Why do you need a separate flag for this? Shouldn't be described o=
+r
+> autodetected somehow?
+
+Well, if a consumer as an active high gpio, it expects to call
+gpiod_set_value(..., 1) and the line to assert, right? To have that, we nee=
+d to
+write 0 on the device register for some of the pins.
+
+And the same story is true for active low. gpiod_set_value(..., 0) will hav=
+e the
+gpiolib to automatically invert the value and we get 1 in the callback.
+=20
+>=20
+> > +		val =3D !val;
+>=20
+> ...
+>=20
+> > +	*val =3D DIV_ROUND_CLOSEST_ULL(be16_to_cpu(in) * (u64)fs, U16_MAX);
+>=20
+> I'm wondering if you can do some trick to "divide" actually to 2^16 so, i=
+t
+> will
+> not use division op at all?
+
+Hmm, not sure if it will be obvious but you mean something like:
+
+*val =3D (be16_to_cpu(in) * (u64)fs) >> 16;
+
+Is this what you mean? If so, we`ll loose the "CLOSEST" handling... Not so =
+sure
+if we need to be "that" performant in such a code path. But Guenter can als=
+o
+share his opinion...
+
+>=20
+> ...
+>=20
+> > +	*val =3D DIV_ROUND_CLOSEST(in * fs, U8_MAX);
+>=20
+> Ditto.
+>=20
+> ...
+>=20
+> > +	/*
+> > +	 * Wait for two ADC conversions so we are sure we get one full VDD
+> > +	 * measurement.
+> > +	 */
+> > +	msleep(2 * LTC4282_TCONV_US / MILLI);
+>=20
+> fsleep() ?
+>=20
+
+Could be but this is going away anyways...
+
+> ...
+>=20
+> > +static int ltc4282_read_power_word(const struct ltc4282_state *st, u32=
+ reg,
+> > long *val)
+> > +{
+> > +	u64 temp =3D=C2=A0 DECA * 40ULL * st->vfs_out * 1 << 16, temp_2;
+>=20
+> Too many spaces.
+>=20
+> "* BIT(16)" / "* BIT_ULL(16)" ?
+
+Well, I can just place the number as in the formula. Not too keen on the BI=
+T()
+macros as this is not really a mask.
+>=20
+> ...
+>=20
+> > +		temp =3D DIV_ROUND_CLOSEST_ULL(power * temp, U16_MAX);
+> > +		*val =3D DIV64_U64_ROUND_CLOSEST(temp * MICRO, U16_MAX *
+> > (u64)st->rsense);
+>=20
+> > +	*val =3D DIV64_U64_ROUND_CLOSEST(temp_2, st->rsense *
+> > int_pow(U16_MAX, 2));
+>=20
+> Same Q about possible optimizations.
+>=20
+> ...
+>=20
+> > +	temp =3D power * 40 * DECA * st->vfs_out * 256ULL;
+>=20
+> BIT_ULL(8) ?
+
+Same, not a mask so I would prefer the plain 256. No strong feeling though.=
+..
+
+>=20
+> ...
+>=20
+> > +	*val =3D DIV64_U64_ROUND_CLOSEST(temp * MICRO, int_pow(U8_MAX, 2) *
+> > st->rsense);
+>=20
+> Same Q about possible optimizations.
+>=20
+> ...
+>=20
+> > +	if (check_mul_overflow(DECA * st->vfs_out * 40 * 256, energy,
+> > &temp)) {
+> > +		temp =3D DIV_ROUND_CLOSEST(DECA * st->vfs_out * 40 * 256,
+> > U16_MAX);
+> > +		*val =3D DIV_ROUND_CLOSEST_ULL(temp * energy, st->rsense);
+> > +		return ret;
+> > +	}
+>=20
+> BIT(8) ?
+>=20
+> ...
+>=20
+> > +	*val =3D DIV64_U64_ROUND_CLOSEST(temp, U16_MAX * (u64)st->rsense);
+>=20
+> Same Q about possible optimizations.
+>=20
+> ...
+>=20
+> > +		/*
+> > +		 * reset happened... let's read the new energy value that
+>=20
+> Reset
+> Let's
+>=20
+> > +		 * together with the new tick counter should give a sane
+> > average
+> > +		 * value. Furthermore, we save whatever value we had
+> > accumulated
+> > +		 * so that the next energy read will have it into account.
+> > +		 */
+>=20
+> ...
+>=20
+> > +		/* give some time for accumulation... */
+> > +		msleep(2 * LTC4282_TCONV_US / MILLI);
+>=20
+> fsleep() ?
+>=20
+> ...
+>=20
+> > +	/*
+> > +	 * AVG =3D E / (Tconv * counter)
+> > +	 * We get energy in microJoule, hence dividing it by microSeconds
+> > gives Watts. Therefore,
+> > +	 * multiplying by MICRO gives us microWatts.
+> > +	 */
+>=20
+> Here you used long lines, somewhere else, much shorter. Please, choose on=
+e
+> limit and be consistent with it.
+>=20
+
+Yeah, maybe not too consistent. I'm still not sure what's the convention in
+hwmon (I mention it in the cover).
+
+> ...
+>=20
+> > +	temp =3D val * int_pow(U8_MAX, 2) * st->rsense;
+> > +	power =3D DIV64_U64_ROUND_CLOSEST(temp, MICRO * DECA * 256ULL * st-
+> > >vfs_out * 40);
+>=20
+> As per above.
+>=20
+> ...
+>=20
+> > +	if (val >=3D fs)
+> > +		in =3D U8_MAX;
+> > +	else
+> > +		in =3D DIV_ROUND_CLOSEST(val * U8_MAX, fs);
+>=20
+> Can clamp() be used here?
+>=20
+
+Yes, I guess it can...
+
+> ...
+>=20
+> > +	/*
+> > +	 * Make sure vdd is stable. From the datasheet:
+> > +	 * The state of the UV and OV comparators is indicated by the
+> > STATUS register
+> > +	 * bits 0 and 1 and must be stable for at least 50ms to qualify for
+> > turn-on.
+> > +	 */
+> > +	do {
+> > +		ret =3D regmap_read_poll_timeout(st->map, LTC4282_STATUS_LSB,
+> > reg,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg &
+> > LTC4282_VDD_STATUS_MASK, 10000, 50000);
+> > +		if (!ret)
+> > +			continue;
+> > +		if (ret !=3D -ETIMEDOUT)
+> > +			return dev_err_probe(st->dev, ret, "Failed regmap
+> > read\n");
+>=20
+> I would do it a bit differently.
+>=20
+> > +		break;
+>=20
+> > +	} while (n_tries--);
+>=20
+> 	} while (--n_tries); ?
+>=20
+> Altogether:
+>=20
+> 	do {
+> 		ret =3D regmap_read_poll_timeout(st->map, LTC4282_STATUS_LSB,
+> reg,
+> 					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg & LTC4282_VDD_STATUS_MASK,
+> 10000, 50000);
+> 		/* Check if we got timeout which means UV and OV are stable
+> for 50ms */
+> 		if (ret =3D=3D -ETIMEDOUT)
+> 			break;
+> 		if (ret)
+> 			return dev_err_probe(st->dev, ret, "Failed regmap
+> read\n");
+> 	} while (--n_tries);
+>=20
+>=20
+
+being dropped...
+
+> ...
+>=20
+> > +	if (val > LTC4282_CLKOUT_TICK)
+> > +		return dev_err_probe(st->dev, -EINVAL,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid val(%u) for adi,clkout-
+> > mode\n", val);
+>=20
+> ERANGE?
+
+Yeah, probably more appropriate.
+
+>=20
+> ...
+>=20
+> > +	if (rate < LTC4282_CLKIN_MIN || rate > LTC4282_CLKIN_MAX)
+>=20
+> in_range() ?
+
+sure...
+
+>=20
+> > +		return dev_err_probe(st->dev, -EINVAL, "Invalid clkin
+> > range(%lu) [%lu %lu]\n",
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0 rate, LTC4282_CLKIN_MIN,
+> > LTC4282_CLKIN_MAX);
+>=20
+> ...
+>=20
+> > +	for (gpio =3D 0; gpio <=3D LTC4282_GPIO_3; gpio++) {
+>=20
+> Is 0 also being defined?
+>=20
+
+Hmm, I guess ARRAY_SIZE(ltc4282_gpio_prop) is better. Not sure why I did no=
+t
+used it...
+
+> > +		ret =3D device_property_read_u32(dev,
+> > ltc4282_gpio_prop[gpio], &func);
+> > +		if (ret)
+> > +			continue;
+> > +		if (func >=3D ltc4282_gpios[gpio].n_funcs)
+> > +			return dev_err_probe(dev, ret, "Invalid func(%u >=3D
+> > %u) for gpio%u\n",
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0 func,
+> > ltc4282_gpios[gpio].n_funcs, gpio + 1);
+> > +		if (func =3D=3D LTC4282_PIN_GPIO) {
+> > +			st->gpio_map[ngpios++] =3D gpio;
+> > +			if (gpio =3D=3D LTC4282_GPIO_1) {
+> > +				/* default to input GPIO */
+> > +				ret =3D regmap_set_bits(st->map,
+> > LTC4282_GPIO_CONFIG,
+> > +						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > LTC4282_GPIO_1_CONFIG_MASK);
+> > +				if (ret)
+> > +					return ret;
+> > +			}
+> > +
+> > +			continue;
+> > +		}
+>=20
+> ...
+>=20
+> > +		switch (val) {
+> > +		case 3300000:
+>=20
+> Hmm... Do we have MICROVOLTS_IN_VOLTS or so?
+>=20
+
+Not sure, can look for it...
+
+> > +			st->vin_mode =3D LTC4282_VIN_3_3V;
+> > +			break;
+> > +		case 5000000:
+> > +			st->vin_mode =3D LTC4282_VIN_5V;
+> > +			break;
+> > +		case 12000000:
+> > +			st->vin_mode =3D LTC4282_VIN_12V;
+> > +			break;
+> > +		case 24000000:
+> > +			st->vin_mode =3D LTC4282_VIN_24V;
+> > +			break;
+> > +		default:
+> > +			return dev_err_probe(dev, -EINVAL,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid val(%u) for vin-mode-
+> > microvolt\n", val);
+> > +		}
+>=20
+> ...
+>=20
+> > +static SENSOR_DEVICE_ATTR(in1_crit_fault_log, 0644, ltc4282_show_fault=
+_log,
+> > +			=C2=A0 ltc4282_clear_fault_log, LTC4282_OV_FAULT_MASK);
+> > +static SENSOR_DEVICE_ATTR(in1_lcrit_fault_log, 0644,
+> > ltc4282_show_fault_log,
+> > +			=C2=A0 ltc4282_clear_fault_log, LTC4282_UV_FAULT_MASK);
+> > +static SENSOR_DEVICE_ATTR(curr1_crit_fault_log, 0644,
+> > ltc4282_show_fault_log,
+> > +			=C2=A0 ltc4282_clear_fault_log, LTC4282_OC_FAULT_MASK);
+> > +static SENSOR_DEVICE_ATTR(power1_fault_log, 0644, ltc4282_show_fault_l=
+og,
+> > +			=C2=A0 ltc4282_clear_fault_log,
+> > LTC4282_POWER_BAD_FAULT_MASK);
+> > +static SENSOR_DEVICE_ATTR(fet_bad_fault_log, 0644, ltc4282_show_fault_=
+log,
+> > +			=C2=A0 ltc4282_clear_fault_log,
+> > LTC4282_FET_BAD_FAULT_MASK);
+> > +static SENSOR_DEVICE_ATTR(fet_short_fault_log, 0644,
+> > ltc4282_show_fault_log,
+> > +			=C2=A0 ltc4282_clear_fault_log,
+> > LTC4282_FET_SHORT_FAULT_MASK);
+>=20
+> SENSOR_DEVICE_ATTR_RO() / _RW() ?
+
+will check..
+
+>=20
+> ...
+>=20
+> > +static struct attribute *ltc4282_attrs[] =3D {
+> > +	&sensor_dev_attr_energy1_input.dev_attr.attr,
+> > +	&sensor_dev_attr_power1_good.dev_attr.attr,
+> > +	&sensor_dev_attr_fet_bad_fault.dev_attr.attr,
+> > +	&sensor_dev_attr_fet_short_fault.dev_attr.attr,
+> > +	&sensor_dev_attr_in1_crit_fault_log.dev_attr.attr,
+> > +	&sensor_dev_attr_in1_lcrit_fault_log.dev_attr.attr,
+> > +	&sensor_dev_attr_curr1_crit_fault_log.dev_attr.attr,
+> > +	&sensor_dev_attr_power1_fault_log.dev_attr.attr,
+> > +	&sensor_dev_attr_fet_bad_fault_log.dev_attr.attr,
+> > +	&sensor_dev_attr_fet_short_fault_log.dev_attr.attr,
+> > +	NULL,
+>=20
+> No comma for the terminator line.
+>=20
+
+sure.
+
+> > +};
+>=20
+> ...
+>=20
+> > +	msleep(3200);
+>=20
+> Not a single letter to comment such a huge delay :-(
+>=20
+
+Well, it's after doing a reset so it should be pretty obvious is the number
+given in the DS. But I'll put a comment on it.
+
+- Nuno S=C3=A1
 
 
