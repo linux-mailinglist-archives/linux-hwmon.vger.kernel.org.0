@@ -1,32 +1,32 @@
-Return-Path: <linux-hwmon+bounces-72-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-77-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893E97ED957
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 03:24:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7327ED9A5
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 03:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CDAA280F44
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 02:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E6628100E
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 02:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26ED1384;
-	Thu, 16 Nov 2023 02:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC64A21;
+	Thu, 16 Nov 2023 02:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QgdDwbXn"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kzXMORIJ"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.196])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id DDA841B2;
-	Wed, 15 Nov 2023 18:24:33 -0800 (PST)
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.216])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 02F6C19F;
+	Wed, 15 Nov 2023 18:39:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=hijft
-	SCcjG/9boz0oEYP+nVxe7rLA+Dx/w2RlM3IhcM=; b=QgdDwbXnbs69uyuHTiUNJ
-	9QLs+wt31XmvrnsGpX600Qy2/SACwcUHp3oPVFnAu8ZnVns2jlP/ldoe4VqxnAgt
-	Oo2oW+GOOWmr2GsYzZPUy+jtC0zn0OoVTcqalz/geFI44Uli0IQKu7MBUvBRLely
-	hFfmysW/EC8bqBShNZUv9Q=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cHgkt
+	6wFw4yulka3yAnNtGtv/ycgWvgfCPluWVrqKrA=; b=kzXMORIJgWIWLtVcRBc6+
+	CHeJZmWclLrJHzUWHTD+48VXG07e45AXH1BXU+NO/pGWL7xLsEDaknuskHNX+f/W
+	KOgLW4dXiv7qJfKdb+CRmIIygvCNbOEOhVNFbHJzS9ZrAIwaxMUXUIHczM5GU0Me
+	CJcOEsJLJOxemzngAD7zUc=
 Received: from localhost.localdomain (unknown [39.144.137.125])
-	by zwqz-smtp-mta-g4-4 (Coremail) with SMTP id _____wD3H2U+fVVl5bnXDA--.19779S3;
-	Thu, 16 Nov 2023 10:24:07 +0800 (CST)
+	by zwqz-smtp-mta-g4-4 (Coremail) with SMTP id _____wD3H2U+fVVl5bnXDA--.19779S4;
+	Thu, 16 Nov 2023 10:24:09 +0800 (CST)
 From: Xing Tong Wu <xingtong_wu@163.com>
 To: Guenter Roeck <linux@roeck-us.net>,
 	Jean Delvare <jdelvare@suse.com>,
@@ -35,9 +35,9 @@ To: Guenter Roeck <linux@roeck-us.net>,
 Cc: xingtong.wu@siemens.com,
 	tobias.schaffner@siemens.com,
 	gerd.haeussler.ext@siemens.com
-Subject: [PATCH 1/3] hwmon: (nct6775) Fix incomplete register array
-Date: Thu, 16 Nov 2023 10:23:28 +0800
-Message-Id: <20231116022330.2696-2-xingtong_wu@163.com>
+Subject: [PATCH 2/3] hwmon: (nct6775) Fix logic error for PWM enable
+Date: Thu, 16 Nov 2023 10:23:29 +0800
+Message-Id: <20231116022330.2696-3-xingtong_wu@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231116022330.2696-1-xingtong_wu@163.com>
 References: <20231116022330.2696-1-xingtong_wu@163.com>
@@ -48,47 +48,45 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3H2U+fVVl5bnXDA--.19779S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur1fXr1Dtry8uF1xur4xXrb_yoW8Gr1kpF
-	ykXrWSy3Wrt3WavF43Ga1ru3W3Cwn7ArWIyw1UCw4SkFn5tFyxXF43KFyqywn0yFWfJa42
-	9FykJFWYg3Z8CF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jqxRhUUUUU=
+X-CM-TRANSID:_____wD3H2U+fVVl5bnXDA--.19779S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Wry8Kr4xXw17trWfGF4Uurg_yoWkKFX_Ww
+	4rGrZ7Zw1Y9r13CF4jgF4rtFW2ka1UWr17Jw1xKa98J347AFn5Cr1kXrZxZrnru3yDZF93
+	Xa1DAr4Iy342vjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUeo7K5UUUUU==
 X-Originating-IP: [39.144.137.125]
-X-CM-SenderInfo: p0lqw35rqjs4rx6rljoofrz/1tbiEAsq0F8YMgZlaQAAse
+X-CM-SenderInfo: p0lqw35rqjs4rx6rljoofrz/1tbiTA4q0GI0cSnRZAAAsD
 
 From: Xing Tong Wu <xingtong.wu@siemens.com>
 
-The nct6116 specification actually includes 5 PWMs, but only 3
-PWMs are present in the array. To address this, the missing 2
-PWMs have been added to the array.
+The determination of the "pwm_enable" should be based solely on the mode,
+regardless of the pwm value.
+According to the specification, the default values for pwm and pwm_enable
+are 255 and 0 respectively. However, there is a bug in the code where the
+fan control is actually enabled, but the file "pwm_enable" incorrectly
+displays "off", indicating that fan control is disabled. This contradiction
+needs to be addressed and resolved.
+Solution: Update the logic so that "pwm_enable" is determined by mode + 1,
+remove the "off" value for "pwm_enable" since it is not specified in the
+documentation.
 
 Signed-off-by: Xing Tong Wu <xingtong.wu@siemens.com>
 ---
- drivers/hwmon/nct6775-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/nct6775-core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index d928eb8ae5a3..2111f0cd9787 100644
+index 2111f0cd9787..575db6cb96e9 100644
 --- a/drivers/hwmon/nct6775-core.c
 +++ b/drivers/hwmon/nct6775-core.c
-@@ -769,7 +769,7 @@ static const u16 NCT6106_FAN_PULSE_SHIFT[] = { 0, 2, 4 };
+@@ -900,8 +900,6 @@ static const u16 NCT6116_REG_TSI_TEMP[] = { 0x59, 0x5b };
  
- static const u8 NCT6106_REG_PWM_MODE[] = { 0xf3, 0xf3, 0xf3 };
- static const u8 NCT6106_PWM_MODE_MASK[] = { 0x01, 0x02, 0x04 };
--static const u16 NCT6106_REG_PWM_READ[] = { 0x4a, 0x4b, 0x4c };
-+static const u16 NCT6106_REG_PWM_READ[] = { 0x4a, 0x4b, 0x4c, 0xd8, 0xd9 };
- static const u16 NCT6106_REG_FAN_MODE[] = { 0x113, 0x123, 0x133 };
- static const u16 NCT6106_REG_TEMP_SOURCE[] = {
- 	0xb0, 0xb1, 0xb2, 0xb3, 0xb4, 0xb5 };
-@@ -3595,7 +3595,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		break;
- 	case nct6116:
- 		data->in_num = 9;
--		data->pwm_num = 3;
-+		data->pwm_num = 5;
- 		data->auto_pwm_num = 4;
- 		data->temp_fixed_num = 3;
- 		data->num_temp_alarms = 3;
+ static enum pwm_enable reg_to_pwm_enable(int pwm, int mode)
+ {
+-	if (mode == 0 && pwm == 255)
+-		return off;
+ 	return mode + 1;
+ }
+ 
 -- 
 2.25.1
 
