@@ -1,32 +1,32 @@
-Return-Path: <linux-hwmon+bounces-77-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-73-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7327ED9A5
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 03:39:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDED7ED95A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 03:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E6628100E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 02:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5C61F21BBB
+	for <lists+linux-hwmon@lfdr.de>; Thu, 16 Nov 2023 02:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC64A21;
-	Thu, 16 Nov 2023 02:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B7B4596A;
+	Thu, 16 Nov 2023 02:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kzXMORIJ"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LYczdvfh"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.216])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 02F6C19F;
-	Wed, 15 Nov 2023 18:39:38 -0800 (PST)
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.215])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id EDC391BFC;
+	Wed, 15 Nov 2023 18:24:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cHgkt
-	6wFw4yulka3yAnNtGtv/ycgWvgfCPluWVrqKrA=; b=kzXMORIJgWIWLtVcRBc6+
-	CHeJZmWclLrJHzUWHTD+48VXG07e45AXH1BXU+NO/pGWL7xLsEDaknuskHNX+f/W
-	KOgLW4dXiv7qJfKdb+CRmIIygvCNbOEOhVNFbHJzS9ZrAIwaxMUXUIHczM5GU0Me
-	CJcOEsJLJOxemzngAD7zUc=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=S3N+U
+	nTP8NAOW5Vw5F6SLjig+wZLk03Ej/o8rB18V/A=; b=LYczdvfh/HrdJWsUUPgi/
+	FcdQ/VKr6Vd9UcLGnCFuTmCQfcr9nJV4RHMV7hqaICCvNrrKUBNP8/XvKSLLK1jA
+	5Gy1FDlsgY8IxHVffbhGWMV0ltJJIjNCYPXnKG6VZQ9ND1tzq9kWN5l8pHVzZEvX
+	VF1DoCeQlfXDtMOf/MHC4M=
 Received: from localhost.localdomain (unknown [39.144.137.125])
-	by zwqz-smtp-mta-g4-4 (Coremail) with SMTP id _____wD3H2U+fVVl5bnXDA--.19779S4;
-	Thu, 16 Nov 2023 10:24:09 +0800 (CST)
+	by zwqz-smtp-mta-g4-4 (Coremail) with SMTP id _____wD3H2U+fVVl5bnXDA--.19779S5;
+	Thu, 16 Nov 2023 10:24:13 +0800 (CST)
 From: Xing Tong Wu <xingtong_wu@163.com>
 To: Guenter Roeck <linux@roeck-us.net>,
 	Jean Delvare <jdelvare@suse.com>,
@@ -35,9 +35,9 @@ To: Guenter Roeck <linux@roeck-us.net>,
 Cc: xingtong.wu@siemens.com,
 	tobias.schaffner@siemens.com,
 	gerd.haeussler.ext@siemens.com
-Subject: [PATCH 2/3] hwmon: (nct6775) Fix logic error for PWM enable
-Date: Thu, 16 Nov 2023 10:23:29 +0800
-Message-Id: <20231116022330.2696-3-xingtong_wu@163.com>
+Subject: [PATCH 3/3] hwmon: (nct6775) Fix fan speed set failure in automatic mode
+Date: Thu, 16 Nov 2023 10:23:30 +0800
+Message-Id: <20231116022330.2696-4-xingtong_wu@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231116022330.2696-1-xingtong_wu@163.com>
 References: <20231116022330.2696-1-xingtong_wu@163.com>
@@ -48,45 +48,45 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3H2U+fVVl5bnXDA--.19779S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Wry8Kr4xXw17trWfGF4Uurg_yoWkKFX_Ww
-	4rGrZ7Zw1Y9r13CF4jgF4rtFW2ka1UWr17Jw1xKa98J347AFn5Cr1kXrZxZrnru3yDZF93
-	Xa1DAr4Iy342vjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUeo7K5UUUUU==
+X-CM-TRANSID:_____wD3H2U+fVVl5bnXDA--.19779S5
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtFWDWr4UWryUtFy5Ar4UXFb_yoWDZrb_uw
+	4F939rAwnYqF43Aa4DCFWSqFyUtF48WF48XFn2ga98ta4UZw1DXF1kXryaqw12vrWIvFyD
+	Xw4UWrWI9ry7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUet8nUUUUUU==
 X-Originating-IP: [39.144.137.125]
-X-CM-SenderInfo: p0lqw35rqjs4rx6rljoofrz/1tbiTA4q0GI0cSnRZAAAsD
+X-CM-SenderInfo: p0lqw35rqjs4rx6rljoofrz/xtbBnBMq0FghlXwhQwAAsH
 
 From: Xing Tong Wu <xingtong.wu@siemens.com>
 
-The determination of the "pwm_enable" should be based solely on the mode,
-regardless of the pwm value.
-According to the specification, the default values for pwm and pwm_enable
-are 255 and 0 respectively. However, there is a bug in the code where the
-fan control is actually enabled, but the file "pwm_enable" incorrectly
-displays "off", indicating that fan control is disabled. This contradiction
-needs to be addressed and resolved.
-Solution: Update the logic so that "pwm_enable" is determined by mode + 1,
-remove the "off" value for "pwm_enable" since it is not specified in the
-documentation.
+Setting the fan speed is only valid in manual mode; it is not possible
+to set the fan's speed in automatic mode.
+Return error and show error message when attempting to set the fan
+speed in automatic mode.
 
 Signed-off-by: Xing Tong Wu <xingtong.wu@siemens.com>
 ---
- drivers/hwmon/nct6775-core.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/hwmon/nct6775-core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index 2111f0cd9787..575db6cb96e9 100644
+index 575db6cb96e9..3fb9896c61ce 100644
 --- a/drivers/hwmon/nct6775-core.c
 +++ b/drivers/hwmon/nct6775-core.c
-@@ -900,8 +900,6 @@ static const u16 NCT6116_REG_TSI_TEMP[] = { 0x59, 0x5b };
+@@ -2551,6 +2551,14 @@ store_pwm(struct device *dev, struct device_attribute *attr, const char *buf,
+ 	int err;
+ 	u16 reg;
  
- static enum pwm_enable reg_to_pwm_enable(int pwm, int mode)
- {
--	if (mode == 0 && pwm == 255)
--		return off;
- 	return mode + 1;
- }
- 
++	if (index == 0 && data->pwm_enable[nr] != manual) {
++		dev_err(dev,
++			"The pwm%d doesn't support manual fan speed control in automatic mode.\n",
++			nr + 1);
++		dev_err(dev, "Please set pwm%d_enable to manual mode.\n", nr + 1);
++		return -EOPNOTSUPP;
++	}
++
+ 	err = kstrtoul(buf, 10, &val);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.25.1
 
