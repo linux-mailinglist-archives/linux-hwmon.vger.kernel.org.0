@@ -1,137 +1,190 @@
-Return-Path: <linux-hwmon+bounces-153-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-155-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9657F3C51
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 04:24:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEF37F3E3A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 07:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BDCB218A2
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 03:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928A628159E
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 06:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CF6747E;
-	Wed, 22 Nov 2023 03:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A635946BD;
+	Wed, 22 Nov 2023 06:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wiwynn.com header.i=@wiwynn.com header.b="E2JSAiBl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZgHBQmr"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2059.outbound.protection.outlook.com [40.107.215.59])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E2ED40;
-	Tue, 21 Nov 2023 19:23:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CRQKHRRAvk0wkEpRF/ovFEvYLa11KgznKfQpVwDVHVu3cknrnedu3q7YoLzkNw420WR8HbbqkQWPBI9Sy8YN8aO4s+WDQm+qIHQ8SrNV1imz9e9Y9a8vnJMydE/i9XAcmNkoBT9P2l9+U9JstqnDMfpqn4ggc69T66/nMYMK2IaLjwQq5+9b7Fsuljiei8LtWNSt6Gb0f0x6KQ7N97oigzXdW4Eq9ulO3PIO88WzEbFeYc90QnCdd7EqLiO7LIEPjGqf9NxzojObm9Su+M0j9P41UNtNI0Lp4xkALsOu7FyRQ4O6Aow54dESs+JuHbY3QD6N+vFkxGdEL1+qDY9wcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ne8DHLwPA/jsT43c17x9qaPVf2vrRJXucJfidDLh7SY=;
- b=G9V9RYj9KSgsT7VUC7uMuowpLYgzoOZsFsbuXloYnFRIUbQbRgOFWBbNlbkFRt9t1DL/pkhQNn4gOyI9We2FaCzZPB2bAceQCBJHuzyDhpqnXWyaUiCR/izdlaclYbKJVq4m8/dKjz3dO3+Wxfa3quC16o6eeOf/+tBk33GPrRKg+h/YaFYX3yjrOQOWpvrltWjO1nNvAXTJwUi7opIQDGUB0oQvZS/jjL106XeGxaOOmW3/xXbpu3Qy+VfGATvdvcAWJk2I1EozcPz1dAtXvawsm4YhaVbsdNylxmQZtEhhj/KB2D5k6ToWybLCAN4WIiZoXXYLYu3J/qEYj7kHFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 211.20.1.79) smtp.rcpttodomain=stwcx.xyz smtp.mailfrom=wiwynn.com; dmarc=fail
- (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=wiwynn.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wiwynn.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ne8DHLwPA/jsT43c17x9qaPVf2vrRJXucJfidDLh7SY=;
- b=E2JSAiBlBvFVwy6lixUvmU1Qyqa5oJQJr/F+0XqONUyX13Geb0xq7LD+V1UurcxbhbZaPEQR6hIUwHF8hhiUXwNbM6YBpcwxoUiuXvKvz5TjAXydTSfS8Sx3Sj5RyqIyPAWyluh6G0VPLiZWvPThQ9Fh4CWXTozY30FXdEdb3M97xDSSz3sJWiGDVJncR37RrpiXrUA6kUrgo10sv17O+e2oYifCxDxnjVQ/nSpmVcNTxmxsEPmt7kPnJ5PGG0bZoOoGOiJtdjdO0uMZRqrhBDDV57ORRTM7XpvC+nUc61RaX+EAZdhRd2CqK35r71GIn4NLdJCrxV625juV4Zv1cA==
-Received: from KL1PR02CA0034.apcprd02.prod.outlook.com (2603:1096:820:d::21)
- by KL1PR0401MB4467.apcprd04.prod.outlook.com (2603:1096:820:37::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Wed, 22 Nov
- 2023 03:23:54 +0000
-Received: from HK3PEPF00000220.apcprd03.prod.outlook.com
- (2603:1096:820:d:cafe::2b) by KL1PR02CA0034.outlook.office365.com
- (2603:1096:820:d::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18 via Frontend
- Transport; Wed, 22 Nov 2023 03:23:54 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 211.20.1.79)
- smtp.mailfrom=wiwynn.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=wiwynn.com;
-Received-SPF: Fail (protection.outlook.com: domain of wiwynn.com does not
- designate 211.20.1.79 as permitted sender) receiver=protection.outlook.com;
- client-ip=211.20.1.79; helo=localhost.localdomain;
-Received: from localhost.localdomain (211.20.1.79) by
- HK3PEPF00000220.mail.protection.outlook.com (10.167.8.42) with Microsoft SMTP
- Server id 15.20.7025.12 via Frontend Transport; Wed, 22 Nov 2023 03:23:53
- +0000
-From: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
-To: patrick@stwcx.xyz,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH v1 2/2] dt-bindings: hwmon: pmbus: Add adm1281 support
-Date: Wed, 22 Nov 2023 11:23:42 +0800
-Message-Id: <20231122032343.2794903-3-Delphine_CC_Chiu@wiwynn.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231122032343.2794903-1-Delphine_CC_Chiu@wiwynn.com>
-References: <20231122032343.2794903-1-Delphine_CC_Chiu@wiwynn.com>
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B83B9;
+	Tue, 21 Nov 2023 22:35:23 -0800 (PST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5cca712b715so491847b3.1;
+        Tue, 21 Nov 2023 22:35:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700634923; x=1701239723; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=2hd1Zq/k/Ryf9wFcKS5fdo6xT3mq9vfnmVd+Mv4TFts=;
+        b=NZgHBQmrBzZsEnpgDBh0poPGdJnQddYl7iddEI2YXgJSQFp5qf5kXmOmizc4+Me3HX
+         q/wjzmo2C7tD8BZruKjrAGQ4gIN5TPntq4Yw680KesdQswlK55bQPcRLTExHAbnRPgUr
+         VvNwR03/ipoTgQR3sSpVm7jvD/YvfUma0SeYTBCD756KMCYMqLmxpiGH9Y64KmIDd+ru
+         FiPD8lvldi2rVgq+vp8nsb8foYERarEoU0N+7zEYv3FKP02rNPTgwTyIve0NUeCUnRqr
+         vawE+rbfek8kk6A1O+SK0emlNlZcmXKN2FzSbfakn0VEthB0eyT0hRHwZsH6RtVt70Sb
+         LjYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700634923; x=1701239723;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2hd1Zq/k/Ryf9wFcKS5fdo6xT3mq9vfnmVd+Mv4TFts=;
+        b=F388FcAKEBNCuJ1sxEVFVrDvbZu2s03CqYdf4kLyiHkdkkG4bYTrcWnIxYAQCtDTdJ
+         HACmjj1lCDu2/nt2/91I+sby/F/fZLS62FZEWf13VgVJZf57M86W80Uz8WxO2E94eFPk
+         blh5dVmFkKxDcl/EdHfYRK4FHe+LbA2n/D7We/ZWWbk2wHpt/sN7dG9YPPFgFHDcu2ht
+         3a7+cpCAO5lcwogkNHoidEk1UTbyrWUYtvbjdxMHIOEyvgxVOukDMmGDVcAM38dCX3nX
+         MmGBXRsNikLNb7W7Cyqz1WKpSmUFP4gnvQiJR/bDkMA5TVPten2UWKDyULpnouF7WsnV
+         KXdA==
+X-Gm-Message-State: AOJu0Ywio/BOFEBtrEqky0UT0X7eiX/dv49h65gHYwv5E7Ag/dXYWjtu
+	H/tyigFwIVMi59I9avZdTQI=
+X-Google-Smtp-Source: AGHT+IHkQGhD2tzW6STYSWSP3lfwFAkGHoWOT84cZkqUrHPWgxtYXhS1Xsgol/4iG/PyhIytmp0hMg==
+X-Received: by 2002:a81:a091:0:b0:5c4:61b5:5ac6 with SMTP id x139-20020a81a091000000b005c461b55ac6mr1269540ywg.7.1700634922828;
+        Tue, 21 Nov 2023 22:35:22 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id x19-20020a0dd513000000b0059f4f30a32bsm3507691ywd.24.2023.11.21.22.35.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Nov 2023 22:35:22 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <d3790e91-d7c9-4b8d-9871-1765d693707e@roeck-us.net>
+Date: Tue, 21 Nov 2023 22:35:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HK3PEPF00000220:EE_|KL1PR0401MB4467:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 664ccb20-8220-47b8-7e82-08dbeb0a74a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	lz3y+qGpCgW9Tk7nsH/+6fSF7BmaK3PA4GVPU0xA6MUc2rplL76PmYjQ3WcFe9ue+fGaJl7+N3GKQi1zU39m2OgY5jXRul2VuFywMPB3dCU2Twz9H8Os7g5ALYFlWq26HVamXYEB8OipR6KxwsiQi3lyzBpIkheAyJt26Rr02FZ7fOgNE9F+lcFsy99ApGATp2MeeCBaohElR26pFvNi5Cko9rGvtVYyluV0pUdDnjwthSEcFs71Uh+3ESnW9cp5NkvM4cG71AxignoDjAAUxTvb9OXQqILYmhAJpVQu3GWm/cEvVS1AgYcdu+RoKrDl7oVRg180mhm6kp5zPcEccTnSKWzUeK+NxtAZ7w4v9dbMMhl2OXMC45aH9GZiLmjbYJscBm1Ljqhi4xGvfAOZq7NeKgacs4pX7by2N3aq2i00eyqJtZfOfIF7vwVjXXJOOnPi8Buw5upNzSPWfqngFcrk/8+u8JpzHn24KyrE9Mc8Dq8M5+D7+fCjMYDHYybb2YZk+IYcrcT7VMjl8lT8Z5/lsTWI51ZbtJo5LBmkKD5qCx/ts6levpPpUU46OiIGgdU6y+tc1PQEij8BDookVcuuY21pIugaQ6jE8HRcw+lhSWauEDtqIBTQ7BORBr9stiz1PxbrRgWumwDwkyTeiWnhCjaxAe6CQxdXKoDz2jGu+RRi6G/mV0fWqIQJbyoZGc2tsQkcxxs+W/qI8OUndA==
-X-Forefront-Antispam-Report:
-	CIP:211.20.1.79;CTRY:TW;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:localhost.localdomain;PTR:211-20-1-79.hinet-ip.hinet.net;CAT:NONE;SFS:(13230031)(6069001)(4636009)(346002)(136003)(39860400002)(376002)(396003)(230922051799003)(451199024)(186009)(64100799003)(82310400011)(1800799012)(36840700001)(46966006)(47076005)(7416002)(4744005)(2906002)(36860700001)(5660300002)(9316004)(36756003)(86362001)(41300700001)(356005)(81166007)(82740400003)(70206006)(70586007)(54906003)(316002)(40480700001)(110136005)(36736006)(336012)(1076003)(26005)(6666004)(956004)(2616005)(478600001)(6486002)(6512007)(6506007)(4326008)(8676002)(8936002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: wiwynn.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 03:23:53.8928
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 664ccb20-8220-47b8-7e82-08dbeb0a74a9
-X-MS-Exchange-CrossTenant-Id: da6e0628-fc83-4caf-9dd2-73061cbab167
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=da6e0628-fc83-4caf-9dd2-73061cbab167;Ip=[211.20.1.79];Helo=[localhost.localdomain]
-X-MS-Exchange-CrossTenant-AuthSource:
-	HK3PEPF00000220.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0401MB4467
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] hwmon: pmbus: Add adm1281 support
+Content-Language: en-US
+To: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>, patrick@stwcx.xyz,
+ Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-hwmon@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20231122032343.2794903-1-Delphine_CC_Chiu@wiwynn.com>
+ <20231122032343.2794903-2-Delphine_CC_Chiu@wiwynn.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
+ nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
+ hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
+ c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
+ 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
+ GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
+ sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
+ Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
+ HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
+ BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
+ l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
+ J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
+ cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
+ wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
+ hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
+ nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
+ QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
+ trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
+ WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
+ HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20231122032343.2794903-2-Delphine_CC_Chiu@wiwynn.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add device type support for adm1281
+On 11/21/23 19:23, Delphine CC Chiu wrote:
+> Add device type support for adm1281
+> 
 
-Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
----
- Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+s/device type/chip/
 
-diff --git a/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml b/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
-index ab87f51c5aef..77a358f9104b 100644
---- a/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/adi,adm1275.yaml
-@@ -27,6 +27,7 @@ properties:
-       - adi,adm1275
-       - adi,adm1276
-       - adi,adm1278
-+      - adi,adm1281
-       - adi,adm1293
-       - adi,adm1294
- 
-@@ -94,6 +95,7 @@ allOf:
-           contains:
-             enum:
-               - adi,adm1278
-+              - adi,adm1281
-               - adi,adm1293
-               - adi,adm1294
-     then:
--- 
-2.25.1
+> Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+> ---
+>   Documentation/hwmon/adm1275.rst | 8 ++++++++
+>   drivers/hwmon/pmbus/adm1275.c   | 8 ++++++--
+>   2 files changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/hwmon/adm1275.rst b/Documentation/hwmon/adm1275.rst
+> index 804590eeabdc..47a13b56e086 100644
+> --- a/Documentation/hwmon/adm1275.rst
+> +++ b/Documentation/hwmon/adm1275.rst
+> @@ -43,6 +43,14 @@ Supported chips:
+>   
+>       Datasheet: www.analog.com/static/imported-files/data_sheets/ADM1278.pdf
+>   
+> +  * Analog Devices ADM1281
+> +
+> +    Prefix: 'adm1281'
+> +
+> +    Addresses scanned: -
+> +
+> +    Datasheet:
+> +
+
+Another undocumented / unpublished chip ?
+
+If so, at say something like "Not publicly available".
+
+>     * Analog Devices ADM1293/ADM1294
+>   
+>       Prefix: 'adm1293', 'adm1294'
+> diff --git a/drivers/hwmon/pmbus/adm1275.c b/drivers/hwmon/pmbus/adm1275.c
+> index e2c61d6fa521..979474ba6bd3 100644
+> --- a/drivers/hwmon/pmbus/adm1275.c
+> +++ b/drivers/hwmon/pmbus/adm1275.c
+> @@ -18,7 +18,7 @@
+>   #include <linux/log2.h>
+>   #include "pmbus.h"
+>   
+> -enum chips { adm1075, adm1272, adm1275, adm1276, adm1278, adm1293, adm1294 };
+> +enum chips { adm1075, adm1272, adm1275, adm1276, adm1278, adm1281, adm1293, adm1294 };
+>   
+>   #define ADM1275_MFR_STATUS_IOUT_WARN2	BIT(0)
+>   #define ADM1293_MFR_STATUS_VAUX_UV_WARN	BIT(5)
+> @@ -362,6 +362,7 @@ static int adm1275_read_word_data(struct i2c_client *client, int page,
+>   		ret = -ENODATA;
+>   		break;
+>   	}
+> +
+
+Please refrain from making cosmetic changes like this.
+
+Thanks,
+Guenter
+
+>   	return ret;
+>   }
+>   
 
 
