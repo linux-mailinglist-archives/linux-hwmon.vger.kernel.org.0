@@ -1,98 +1,193 @@
-Return-Path: <linux-hwmon+bounces-159-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-162-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319A77F4DE5
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 18:11:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DE77F51DA
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 21:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5A60B20D89
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 17:11:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04ABC281486
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Nov 2023 20:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCB35787E;
-	Wed, 22 Nov 2023 17:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C352B15AC9;
+	Wed, 22 Nov 2023 20:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.b="EvhYv0D5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTZKN5o8"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from post.baikalelectronics.com (post.baikalelectronics.com [213.79.110.86])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 081211B2;
-	Wed, 22 Nov 2023 09:11:34 -0800 (PST)
-Received: from post.baikalelectronics.com (localhost.localdomain [127.0.0.1])
-	by post.baikalelectronics.com (Proxmox) with ESMTP id 2C979E0EBB;
-	Wed, 22 Nov 2023 20:05:15 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	baikalelectronics.ru; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=post;
-	 bh=DpPTDtezDz6LzG5AwmetxU6wxuU0QGpGPaHxHQ0gF6E=; b=EvhYv0D5GI5a
-	ZTsWPVMAsSZ30a4g1To1xC50KVuGg/id8c0m653KIkp0cm37dHXHEc+w5m6+98yt
-	tKGmA4eiduPRPEnHuUUPFkcHbZkX1BJviz3p6GKBJtv8ayzcMDUdLFQN430lbOBh
-	ZVtyhMLWd93Y1pruwJNM4tJf4bR6RDc=
-Received: from mail.baikal.int (mail.baikal.int [192.168.51.25])
-	by post.baikalelectronics.com (Proxmox) with ESMTP id 07D53E0EB4;
-	Wed, 22 Nov 2023 20:05:15 +0300 (MSK)
-Received: from localhost (10.8.30.118) by mail (192.168.51.25) with Microsoft
- SMTP Server (TLS) id 15.0.1395.4; Wed, 22 Nov 2023 20:05:14 +0300
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Thomas Bogendoerfer
-	<tsbogend@alpha.franken.de>
-CC: Serge Semin <Sergey.Semin@baikalelectronics.ru>, Serge Semin
-	<fancer.lancer@gmail.com>, Alexey Malahov
-	<Alexey.Malahov@baikalelectronics.ru>, Arnd Bergmann <arnd@arndb.de>,
-	<linux-mips@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-hwmon@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH 3/3] MAINTAINERS: Add maintainer for MIPS Baikal-T1 platform code
-Date: Wed, 22 Nov 2023 20:04:52 +0300
-Message-ID: <20231122170506.27267-4-Sergey.Semin@baikalelectronics.ru>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231122170506.27267-1-Sergey.Semin@baikalelectronics.ru>
-References: <20231122170506.27267-1-Sergey.Semin@baikalelectronics.ru>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F231A587;
+	Wed, 22 Nov 2023 20:47:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE42C433C7;
+	Wed, 22 Nov 2023 20:47:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700686039;
+	bh=iOGqsjNrxAouz3AJJHZo7n5yudWeQ8nrq1vq3zxtsBE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JTZKN5o8vBbSuTJ3zDm40Y+bDC/o4pO62dv6Qdw7wjjfuIvXz850E2mN4N0glDyAQ
+	 I24R1FewFREzbe6rsAaoxOszJT3HRAS9FwQcOgcd7p5330hxLb25O+yIbsQjwCTtsn
+	 +UFBAeZhqin2ubNn0OiBQfTXJ3vuEL5ciC2berJUgxbcBx4Aia14ioQrjV7DiaUVSR
+	 st50n8JxEhvGIa27YvK0jqgESrKFfDzRghsbGqbgZ3ITGcJLSxCRtKlTKGWtCMUBqj
+	 XpnKWid20FYJZBoiCILBrxO3xwRpU60BIQ28102Xv1iodp9t4T9w+AQKOUaZTyPQCD
+	 Ac2OW6LMM00DQ==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2c874286f4dso13653841fa.0;
+        Wed, 22 Nov 2023 12:47:19 -0800 (PST)
+X-Gm-Message-State: AOJu0YzNuFrwlviDvPvddGrRdGaDalVIHy/mfWHxVn2LmdnpHuqkbVYK
+	7/OccFJZzvNVT1vxx0DuCC4GpJp5X2i1XwC4KQ==
+X-Google-Smtp-Source: AGHT+IGTjq0mZD9i+eUzTXzP28Wi1Bo+2Bm1FI9n8vEQBS5kPkO5fcu9os4HymBwAvrwCsgVBASyxd59bRZr+JZsdyc=
+X-Received: by 2002:a05:6512:3e20:b0:509:4792:25eb with SMTP id
+ i32-20020a0565123e2000b00509479225ebmr249053lfv.17.1700686037339; Wed, 22 Nov
+ 2023 12:47:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+References: <20231107105025.1480561-1-billy_tsai@aspeedtech.com>
+ <20231107105025.1480561-3-billy_tsai@aspeedtech.com> <20231108182135.GA2698015-robh@kernel.org>
+ <SG2PR06MB33655734700697E8F6FD0D1B8BB2A@SG2PR06MB3365.apcprd06.prod.outlook.com>
+In-Reply-To: <SG2PR06MB33655734700697E8F6FD0D1B8BB2A@SG2PR06MB3365.apcprd06.prod.outlook.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 22 Nov 2023 13:47:04 -0700
+X-Gmail-Original-Message-ID: <CAL_JsqL=2-dD5yFWWDDHu1svcCF-EMZqcYz92Pr7L5ntppNQVA@mail.gmail.com>
+Message-ID: <CAL_JsqL=2-dD5yFWWDDHu1svcCF-EMZqcYz92Pr7L5ntppNQVA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v10 2/3] dt-bindings: hwmon: Support Aspeed g6 PWM
+ TACH Control
+To: Billy Tsai <billy_tsai@aspeedtech.com>
+Cc: "jdelvare@suse.com" <jdelvare@suse.com>, "linux@roeck-us.net" <linux@roeck-us.net>, 
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>, "joel@jms.id.au" <joel@jms.id.au>, 
+	"andrew@aj.id.au" <andrew@aj.id.au>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"thierry.reding@gmail.com" <thierry.reding@gmail.com>, 
+	"u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>, 
+	"p.zabel@pengutronix.de" <p.zabel@pengutronix.de>, 
+	"naresh.solanki@9elements.com" <naresh.solanki@9elements.com>, 
+	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, BMC-SW <BMC-SW@aspeedtech.com>, 
+	"patrick@stwcx.xyz" <patrick@stwcx.xyz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add myself as a maintainer of the MIPS Baikal-T1 platform-specific
-drivers. The arch-code hasn't been submitted yet, but will be soon enough.
-Until then it's better to have the already available drivers marked as
-maintained.
+On Mon, Nov 13, 2023 at 8:11=E2=80=AFPM Billy Tsai <billy_tsai@aspeedtech.c=
+om> wrote:
+>
+> > > Document the compatible for aspeed,ast2600-pwm-tach device, which can
+> > > support up to 16 PWM outputs and 16 fan tach input.
+> > >
+> > > Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+> > > ---
+> > >  .../bindings/hwmon/aspeed,g6-pwm-tach.yaml    | 69 +++++++++++++++++=
+++
+> > >  1 file changed, 69 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/hwmon/aspeed,g6=
+-pwm-tach.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/hwmon/aspeed,g6-pwm-ta=
+ch.yaml b/Documentation/devicetree/bindings/hwmon/aspeed,g6-pwm-tach.yaml
+> > > new file mode 100644
+> > > index 000000000000..c615fb10705c
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/hwmon/aspeed,g6-pwm-tach.yaml
+> > > @@ -0,0 +1,69 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +# Copyright (C) 2023 Aspeed, Inc.
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/hwmon/aspeed,g6-pwm-tach.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: ASPEED G6 PWM and Fan Tach controller
+> > > +
+> > > +maintainers:
+> > > +  - Billy Tsai <billy_tsai@aspeedtech.com>
+> > > +
+> > > +description: |
+> > > +  The ASPEED PWM controller can support up to 16 PWM outputs.
+> > > +  The ASPEED Fan Tacho controller can support up to 16 fan tach inpu=
+t.
+> > > +  They are independent hardware blocks, which are different from the
+> > > +  previous version of the ASPEED chip.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - aspeed,ast2600-pwm-tach
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  clocks:
+> > > +    maxItems: 1
+> > > +
+> > > +  resets:
+> > > +    maxItems: 1
+> > > +
+> > > +  "#pwm-cells":
+> > > +    const: 3
+> > > +
+> > > +patternProperties:
+> > > +  "^fan-[0-9]+$":
+> > > +    $ref: fan-common.yaml#
+> > > +    unevaluatedProperties: false
+> > > +    required:
+> > > +      - tach-ch
+> > > +
+> > > +required:
+> > > +  - reg
+> > > +  - clocks
+> > > +  - resets
+> > > +  - "#pwm-cells"
+> > > +  - compatible
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/clock/aspeed-clock.h>
+> > > +    pwm_tach: pwm-tach-controller@1e610000 {
+> > > +      compatible =3D "aspeed,ast2600-pwm-tach";
+> > > +      reg =3D <0x1e610000 0x100>;
+> > > +      clocks =3D <&syscon ASPEED_CLK_AHB>;
+> > > +      resets =3D <&syscon ASPEED_RESET_PWM>;
+> > > +      #pwm-cells =3D <3>;
+> > > +
+> > > +      fan-0 {
+>
+> > I assume there's a PWM connection here? How do you know which PWM? You
+> > said the tach channel is independent, so it is not that.
+>
+> > It should not be 0 from 'fan-0' because that's just a meaningless index=
+.
+>
+> > You either need 'pwms' here or you can use 'reg' and the reg value is
+> > the PWM channel.
+>
+> Hi Rob, this binding is used to export the PWM provider and the Fan monit=
+or (i.e., Tach).
+> If the user wants to add the PWM connection for the fan, it can be done a=
+s follows:
+>
+> fan0: pwm-fan0 {
+>         compatible =3D "pwm-fan";
+>         pwms =3D <&pwm_tach 0 40000 0>;
+>         cooling-min-state =3D <0>;
+>         cooling-max-state =3D <3>;
+>         #cooling-cells =3D <2>;
+>         cooling-levels =3D <0 15 128 255>;
+> };
+>
+> This will reuse the existing PWM fan driver (e.g., pwm-fan.c).
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+I'm confused now. So what are the child nodes you have? You are
+defining the fan in 2 places? The "pwm-fan" driver supports a tach via
+an interrupt, so how would this work in your case?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 52ee905c50f4..a56e241608ae 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14491,6 +14491,17 @@ F:	arch/mips/
- F:	drivers/platform/mips/
- F:	include/dt-bindings/mips/
- 
-+MIPS BAIKAL-T1 PLATFORM
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-mips@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/bus/baikal,bt1-*.yaml
-+F:	Documentation/devicetree/bindings/clock/baikal,bt1-*.yaml
-+F:	drivers/bus/bt1-*.c
-+F:	drivers/clk/baikal-t1/
-+F:	drivers/memory/bt1-l2-ctl.c
-+F:	drivers/mtd/maps/physmap-bt1-rom.[ch]
-+
- MIPS BOSTON DEVELOPMENT BOARD
- M:	Paul Burton <paulburton@kernel.org>
- L:	linux-mips@vger.kernel.org
--- 
-2.42.1
-
-
+Rob
 
