@@ -1,93 +1,136 @@
-Return-Path: <linux-hwmon+bounces-359-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-361-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8067A8057AF
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Dec 2023 15:45:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C705F805872
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Dec 2023 16:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B5F32825F4
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Dec 2023 14:45:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11FE4281BAA
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Dec 2023 15:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C5E5FEEF;
-	Tue,  5 Dec 2023 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAE568E9E;
+	Tue,  5 Dec 2023 15:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k1gQpW/n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nt37GRXp"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8547FCA;
-	Tue,  5 Dec 2023 06:45:21 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d04c097e34so32497955ad.0;
-        Tue, 05 Dec 2023 06:45:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701787521; x=1702392321; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jL35IHN53r+yIpqXLtr4T8Q6V/zjPn7x24AFOh/NSio=;
-        b=k1gQpW/nHX4iMMsMMKZi8sh9WD9Fv5us17y6GqrTJE7kLaEnGxwS88itX6ETW93oaU
-         aeXW+uU+ZzOYqiwbf51L2mmewTXCiLj8UUpa44qlgZbi5aWcNmbdHVVueS3me4AUHcNR
-         rIkbB3Q2rkXe2kCkUYoaOm/BlW2IZaFn0EXUhMnz9fXF1lwru47/mywQpbj/IAZITXEk
-         LhDY6PwoNedauDgXyft6VW7ngj4JFZA7/mOWQZb3SgBiT8LbKBmWu7L5+eXSWj3Bgn/S
-         Yg/QyXAR0Gz02xaaLJ+SmP7lttWPiPJMiYfXBmNZ56wReIOGbg690uxiZ2AUbyWzEWwV
-         w2mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701787521; x=1702392321;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jL35IHN53r+yIpqXLtr4T8Q6V/zjPn7x24AFOh/NSio=;
-        b=Hh0aeEO04oVFkEGvDtbatcDR63f8wRL2befdgjEh/IJ9t/TpPvDmLxN2NS8rFMQPQZ
-         +gz6K4ikgpzRUBgzkp4eJ3LG64kYIuAhEFrxKgiWQrKrZdZYMlvFPaBQpdlnwMqlRSTg
-         agEkmDAcbZC8gQzQuSLMqJDEGA/AOPsFjSgsvMgr4y6uNGcd2VP2bYo91FyUMuPQj619
-         Hh/ZtyCE7ODrGKQE9JJWpXbtx32TeHQTVzHuK1H6JiP43MoDh75dpOHagAvOtADCwcvz
-         CZstBKZ10dyp9sQco3kqlt9k7TBLlGSXQ3ge7SUAP3ADhtQ9j8yCqurtCTiZhxZs5rRq
-         FOQQ==
-X-Gm-Message-State: AOJu0YyD2w5AUuMao3UuKSlDGhxvwz18pLkishDfK2WItEq778LVGAUD
-	L5tuM9+c2kqkH5BnIzapm8U=
-X-Google-Smtp-Source: AGHT+IHi73NcFPEehZyVYhe4vLmBqNqcGqTBJqX4RGqVyorXx9NoZtlNxFyM6o1tF/FI64lhMduWyg==
-X-Received: by 2002:a17:903:41cf:b0:1cf:59ad:9637 with SMTP id u15-20020a17090341cf00b001cf59ad9637mr2125975ple.22.1701787520951;
-        Tue, 05 Dec 2023 06:45:20 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id jm1-20020a17090304c100b001c5fc11c085sm5797913plb.264.2023.12.05.06.45.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 06:45:20 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 5 Dec 2023 06:45:19 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Cosmo Chou <chou.cosmo@gmail.com>
-Cc: jdelvare@suse.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	corbet@lwn.net, heiko@sntech.de, jernej.skrabec@gmail.com,
-	macromorgan@hotmail.com, linus.walleij@linaro.org,
-	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	cosmo.chou@quantatw.com
-Subject: Re: [PATCH 0/3] hwmon: Add driver for Astera Labs PT516XX retimer
-Message-ID: <2a6beed6-c530-473c-8c4d-c29f7a4f5822@roeck-us.net>
-References: <20231205074723.3546295-1-chou.cosmo@gmail.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1502368E91;
+	Tue,  5 Dec 2023 15:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9DB45C433C8;
+	Tue,  5 Dec 2023 15:22:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701789777;
+	bh=zmMe6JBH09XXMGADR7GVSPNl3I74k767y2uX7Ridnpw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Nt37GRXp8T6Vou5oJUp+AZfyMY/yS99kJTn5PsE/YFgmZNkdb35wrAlyto3w9kTWj
+	 dtADUn6/VKALGf9mQZm8UUhqyfuL+BrMzIXu8Q6RbkxzpGHqoxjT3I//z5HfmkNDOY
+	 mQJUQVH2LZpHcxNvT6NZ6ms2usgtIXVSD9GfmD74ZJ6GptFt7peyhwy4Ix96bXMg0k
+	 16XPH4AQI+JSfJWX3o2KbuvNC8n7TV0V/vcoCyqdL7E+sF9qD7n5PBxo8YcWvkTspJ
+	 lkTQtD65xFJ7TptCrjojUJ+HXqSjfEgAfeFqLHe3Bc09LzIVhYrFmiFM5MN9mFn7Rn
+	 UkI4+dt5Hxp0Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D86DC4167B;
+	Tue,  5 Dec 2023 15:22:57 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v3 0/2] Add support for LTC4282
+Date: Tue, 05 Dec 2023 16:22:54 +0100
+Message-Id: <20231205-ltc4282-support-v3-0-e0877b281bc2@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205074723.3546295-1-chou.cosmo@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAE5Ab2UC/03MQQ6DIBBA0auYWXcMA6LoqvdouiB0VBIFA9o0M
+ d69pKsu3+L/EzInzxmG6oTEb599DAXqVoGbbZgY/asYpJCKSDa47K6RRmI+ti2mHY2jttOsSAs
+ DpdoSj/7zOz6exWOKK+5zYvv3IUGaeqFranVvOoUKwxFine3dBrvEqXZxhev6ArTQuAKfAAAA
+To: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-doc@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1701789775; l=2306;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=zmMe6JBH09XXMGADR7GVSPNl3I74k767y2uX7Ridnpw=;
+ b=y+rnkM3pXhxCNJfuqsOWQ7W778iLQ8AibszEbiqJrlzeuh9DYCA2OvLdY63+O4C1a8SrnRN2o
+ XOUeKCuhWZoDLTqOagsansAxcS3ciSBeCS5V1KB0hwZ2z5kxWM4I0dn
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received:
+ by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: <nuno.sa@analog.com>
 
-On Tue, Dec 05, 2023 at 03:47:20PM +0800, Cosmo Chou wrote:
-> This driver implements support for temperature monitoring of Astera Labs
-> PT5161L series PCIe retimer chips.
-> 
-> Cosmo Chou (3):
->   dt-bindings: vendor-prefixes: add asteralabs
->   dt-bindings: hwmon: pt516xx: add bindings
->   hwmon: Add driver for Astera Labs PT516XX retimer
+v1:
+ * https://lore.kernel.org/linux-hwmon/20231110151905.1659873-1-nuno.sa@analog.com/
 
-Please refrain from using wildcards in file, variable, or
-function names.
+v2:
+ * https://lore.kernel.org/linux-hwmon/20231124-ltc4282-support-v2-0-952bf926f83c@analog.com 
 
-Guenter
+Changes in V3:
+- Bindings:
+   * Remove 'default' from string types;
+   * Update gpios descriptions and removed leftovers from when they were
+     integer types.
+   * Dropped gpio function. With that, adi,gpio3-mode and adi,gpio-alert were
+     dropped.
+- Driver:
+   * Make all clock ops static;
+   * Dropped macro to create debugfs attributes;
+   * Dropped GPIO support;
+   * Removed regulator consumer header (leftover from v1).
+
+There are still some possible interfaces which are dubious from an hwmon
+point view. Namely:
+
+* fet_short_fault
+* fet_bad_fault
+* power1_good
+
+power1_good and fet_short can be "monitored" with gpio1 and 2
+respectively so maybe we could remove the. OTHO, some users might want
+the pins free for GPIO usage. fet_bad_fault is a status bit (we also have it in
+fault_logs) that might be meaningful to monitor (I think).
+
+Also to note, I'm still seeing the following sparse issue:
+
+"CHECK   drivers/hwmon/ltc4282.c
+drivers/hwmon/ltc4282.c:805:34: warning: dubious: x & !y
+drivers/hwmon/ltc4282.c:895:34: warning: dubious: x & !y" 
+
+However, this does not look to be directly related with the driver. It's
+on FIED_PREP() taking values like !val or !!val.
+
+I'm also removing the GPIO maintainers/reviewers from Cc since there's no
+gpiochip support anymore. If not adequate, I'll Cc them again...
+
+---
+Nuno Sa (2):
+      dt-bindings: hwmon: Add LTC4282 bindings
+      hwmon: ltc4282: add support for the LTC4282 chip
+
+ .../devicetree/bindings/hwmon/adi,ltc4282.yaml     |  142 ++
+ Documentation/hwmon/index.rst                      |    1 +
+ Documentation/hwmon/ltc4282.rst                    |  108 ++
+ MAINTAINERS                                        |    8 +
+ drivers/hwmon/Kconfig                              |   11 +
+ drivers/hwmon/Makefile                             |    1 +
+ drivers/hwmon/ltc4282.c                            | 1705 ++++++++++++++++++++
+ 7 files changed, 1976 insertions(+)
+---
+base-commit: 44482310b7f8ac4cd8fa7be4cee8c1b260ea5ee9
+change-id: 20231124-ltc4282-support-8c1675e31508
+--
+
+Thanks!
+- Nuno Sá
+
 
