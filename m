@@ -1,91 +1,58 @@
-Return-Path: <linux-hwmon+bounces-477-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-479-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314748127B2
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Dec 2023 07:06:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D562F81334B
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Dec 2023 15:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93742282448
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Dec 2023 06:06:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A721B21670
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Dec 2023 14:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F25BC8F4;
-	Thu, 14 Dec 2023 06:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SpSonT5T"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B8D5ABA3;
+	Thu, 14 Dec 2023 14:37:34 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80938114;
-	Wed, 13 Dec 2023 22:06:24 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6ce7c1b07e1so6899762b3a.2;
-        Wed, 13 Dec 2023 22:06:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702533984; x=1703138784; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4mpRpMmgTE/RmwDWK+gGBJC1BAioH5XQWw3+MnfpE1E=;
-        b=SpSonT5TkkIp7Wm/rQHTtbWOl5RVP+suqm6dYzURQgDUfWmNHMUmZiuMRwSx0TvWF6
-         Sv4wSt1GVl9zD1G7yBlvI2x1l8f9MJR3XLW+1LoHbAQI1VE6GYc4aZbAL9c7Mepc4446
-         bvgOQ85eT4djcwqTCTN/odhp8AobEEzuJ/BerEAKiC/gzOiMMDMcA1U4e+q7dClz17QB
-         h0DK6thfo/YN0kcPD3DwwapiHG//5zRlAOTUjo2pS+tTg8HIlat7enmN4PurU7wB4PS6
-         SfT29kogtL4AUifp8oHPWW/CpV8lKOHiVsmVTo/+bzd2388Z4MRidF3xCInUPhBwBhxK
-         GLrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702533984; x=1703138784;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4mpRpMmgTE/RmwDWK+gGBJC1BAioH5XQWw3+MnfpE1E=;
-        b=wQMGpXT6JS+SrQHNLFrk5qrbJxgnHUtDStoo9Ybt8yDfbkaYadnyR4Xuj2Imky1T7n
-         82qDlK3rTS/EdEn0tFsFIR2OCcnj8xLfN7ArMwJ4Qs506mGGysT3ClrO4EYjy7EGMZeT
-         cYARhWPPrUTdbCbYXbPRbBDk8x8KJx9+N4pXqbKaC33IS0EGhqnHqsVnp1KTMsPTJZhX
-         Cmd3LgWjIQKK1uEigXZAeIFX9u9LQ37cKG1HwNQ+z1gmnIAGjfU7C54Uz+/io9qkJ+Fq
-         MIYmsgsF1ANemcDNx+egIiecrVpUcXsMDT31W1dBGgKbuvYXJ12s/TGGUqRYyyU0zYDL
-         pYwg==
-X-Gm-Message-State: AOJu0YwJ3/te6DofugItCEi7L9BDk+JTBlo4hOX6FbN4LP3rlT8UiHVb
-	eHMO70wt51EFjN62CTF3XRg=
-X-Google-Smtp-Source: AGHT+IEd2ZquLFnY3B5hnidKeDzr2SWwxzm9rWDpBwj7wWgZ9BDtey68Uh3tXTiqKe2+zUMEwk2FLA==
-X-Received: by 2002:a05:6a20:9389:b0:18b:cc7e:de3 with SMTP id x9-20020a056a20938900b0018bcc7e0de3mr11171129pzh.41.1702533983868;
-        Wed, 13 Dec 2023 22:06:23 -0800 (PST)
-Received: from cosmo-ubuntu-2204.dhcpserver.bu9bmc.local (1-34-21-66.hinet-ip.hinet.net. [1.34.21.66])
-        by smtp.gmail.com with ESMTPSA id p11-20020a17090a2d8b00b0028ae812da81sm2373327pjd.8.2023.12.13.22.06.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 22:06:23 -0800 (PST)
-From: Cosmo Chou <chou.cosmo@gmail.com>
-To: linux@roeck-us.net,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	jdelvare@suse.com,
-	corbet@lwn.net,
-	broonie@kernel.org,
-	naresh.solanki@9elements.com,
-	vincent@vtremblay.dev,
-	patrick.rudolph@9elements.com,
-	luca.ceresoli@bootlin.com,
-	bhelgaas@google.com,
-	festevam@denx.de,
-	alexander.stein@ew.tq-group.com,
-	heiko@sntech.de,
-	jernej.skrabec@gmail.com,
-	macromorgan@hotmail.com,
-	forbidden405@foxmail.com,
-	sre@kernel.org,
-	linus.walleij@linaro.org
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	chou.cosmo@gmail.com,
-	cosmo.chou@quantatw.com
-Subject: [PATCH v2 3/3] hwmon: Add driver for Astera Labs PT5161L retimer
-Date: Thu, 14 Dec 2023 14:05:52 +0800
-Message-Id: <20231214060552.2852761-4-chou.cosmo@gmail.com>
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5850A7;
+	Thu, 14 Dec 2023 06:37:30 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BEBOb7q026794;
+	Thu, 14 Dec 2023 09:37:08 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3uy905p8y6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Dec 2023 09:37:07 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3BEEb6VF003512
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 14 Dec 2023 09:37:06 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 14 Dec
+ 2023 09:37:05 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 14 Dec 2023 09:37:05 -0500
+Received: from daniel-Precision-5530.ad.analog.com ([10.48.65.152])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3BEEaqwd017595;
+	Thu, 14 Dec 2023 09:36:54 -0500
+From: Daniel Matyas <daniel.matyas@analog.com>
+To: 
+CC: Daniel Matyas <daniel.matyas@analog.com>,
+        Jean Delvare
+	<jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring
+	<robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: [PATCH 1/3] hwmon: max31827: Add PEC support
+Date: Thu, 14 Dec 2023 16:36:45 +0200
+Message-ID: <20231214143648.175336-1-daniel.matyas@analog.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231214060552.2852761-1-chou.cosmo@gmail.com>
-References: <20231214060552.2852761-1-chou.cosmo@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -93,701 +60,471 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 8ss27Uad35oU5kGN88cY07AfjKw7MuDo
+X-Proofpoint-ORIG-GUID: 8ss27Uad35oU5kGN88cY07AfjKw7MuDo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-02_01,2023-11-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 clxscore=1011
+ mlxlogscore=999 impostorscore=0 phishscore=0 adultscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312140102
 
-This driver implements support for temperature monitoring of Astera Labs
-PT5161L series PCIe retimer chips.
+Removed regmap and used my functions to read, write and update bits. In
+these functions i2c_smbus_ helper functions are used. These check if
+there were any PEC errors during read. In the write function, if PEC is
+enabled, I check for PEC Error bit, to see if there were any errors.
 
-This driver implementation originates from the CSDK available at
-Link: https://github.com/facebook/openbmc/tree/helium/common/recipes-lib/retimer-v2.14
-The communication protocol utilized is based on the I2C/SMBus standard.
-
-Signed-off-by: Cosmo Chou <chou.cosmo@gmail.com>
+Signed-off-by: Daniel Matyas <daniel.matyas@analog.com>
 ---
- Documentation/hwmon/index.rst   |   1 +
- Documentation/hwmon/pt5161l.rst |  42 +++
- MAINTAINERS                     |   7 +
- drivers/hwmon/Kconfig           |  10 +
- drivers/hwmon/Makefile          |   1 +
- drivers/hwmon/pt5161l.c         | 558 ++++++++++++++++++++++++++++++++
- 6 files changed, 619 insertions(+)
- create mode 100644 Documentation/hwmon/pt5161l.rst
- create mode 100644 drivers/hwmon/pt5161l.c
+ Documentation/hwmon/max31827.rst |  14 +-
+ drivers/hwmon/max31827.c         | 219 +++++++++++++++++++++++--------
+ 2 files changed, 171 insertions(+), 62 deletions(-)
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 72f4e6065bae..f145652098fc 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -181,6 +181,7 @@ Hardware Monitoring Kernel Drivers
-    pmbus
-    powerz
-    powr1220
-+   pt5161l
-    pxe1610
-    pwm-fan
-    q54sj108a2
-diff --git a/Documentation/hwmon/pt5161l.rst b/Documentation/hwmon/pt5161l.rst
-new file mode 100644
-index 000000000000..5f4ce3b2f38d
---- /dev/null
-+++ b/Documentation/hwmon/pt5161l.rst
-@@ -0,0 +1,42 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+Kernel driver pt5161l
-+=====================
-+
-+Supported chips:
-+
-+  * Astera Labs PT5161L
-+
-+    Prefix: 'pt5161l'
-+
-+    Addresses: I2C 0x24
-+
-+    Datasheet: http://www.asteralabs.com/wp-content/uploads/2021/03/Astera_Labs_PT5161L_Product_Brief.pdf
-+
-+Authors: Cosmo Chou <cosmo.chou@quantatw.com>
-+
-+Description
-+-----------
-+
-+This driver implements support for temperature monitoring of Astera Labs
-+PT5161L series PCIe retimer chips.
-+
-+This driver implementation originates from the CSDK available at
-+https://github.com/facebook/openbmc/tree/helium/common/recipes-lib/retimer-v2.14
-+The communication protocol utilized is based on the I2C/SMBus standard.
-+
-+Sysfs entries
-+----------------
-+
-+================ ==============================================
-+temp1_input      Measured temperature (in millidegrees Celsius)
-+================ ==============================================
-+
-+Debugfs entries
-+----------------
-+
-+================ ===============================
-+fw_load_status   Firmware load status
-+fw_ver           Firmware version of the retimer
-+heartbeat_status Heartbeat status
-+================ ===============================
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e2c6187a3ac8..8def71ca2ace 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17421,6 +17421,13 @@ F:	fs/pstore/
- F:	include/linux/pstore*
- K:	\b(pstore|ramoops)
+diff --git a/Documentation/hwmon/max31827.rst b/Documentation/hwmon/max31827.rst
+index 44ab9dc064cb..ecbc1ddba6a7 100644
+--- a/Documentation/hwmon/max31827.rst
++++ b/Documentation/hwmon/max31827.rst
+@@ -131,7 +131,13 @@ The Fault Queue bits select how many consecutive temperature faults must occur
+ before overtemperature or undertemperature faults are indicated in the
+ corresponding status bits.
  
-+PT5161L HARDWARE MONITOR DRIVER
-+M:	Cosmo Chou <cosmo.chou@quantatw.com>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/pt5161l.rst
-+F:	drivers/hwmon/pt5161l.c
+-Notes
+------
+-
+-PEC is not implemented.
++PEC (packet error checking) can be enabled from the "pec" device attribute.
++If PEC is enabled, a PEC byte is appended to the end of each message transfer.
++This is a CRC-8 byte that is calculated on all of the message bytes (including
++the address/read/write byte). The last device to transmit a data byte also
++transmits the PEC byte. The master transmits the PEC byte after a write
++transaction, and the MAX31827 transmits the PEC byte after a read transaction.
 +
- PTP HARDWARE CLOCK SUPPORT
- M:	Richard Cochran <richardcochran@gmail.com>
- L:	netdev@vger.kernel.org
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index cf27523eed5a..ccdbcf12aed3 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -1703,6 +1703,16 @@ source "drivers/hwmon/peci/Kconfig"
++The read PEC error is handled inside the i2c_smbus_read_word_swapped() function.
++To check if the write had any PEC error a read is performed on the configuration
++register, to check the PEC Error bit.
+\ No newline at end of file
+diff --git a/drivers/hwmon/max31827.c b/drivers/hwmon/max31827.c
+index 71ad3934dfb6..db93492193bd 100644
+--- a/drivers/hwmon/max31827.c
++++ b/drivers/hwmon/max31827.c
+@@ -11,8 +11,8 @@
+ #include <linux/hwmon.h>
+ #include <linux/i2c.h>
+ #include <linux/mutex.h>
+-#include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/hwmon-sysfs.h>
+ #include <linux/of_device.h>
  
- source "drivers/hwmon/pmbus/Kconfig"
+ #define MAX31827_T_REG			0x0
+@@ -24,11 +24,13 @@
  
-+config SENSORS_PT5161L
-+	tristate "Astera Labs PT5161L PCIe retimer hardware monitoring"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for temperature monitoring
-+	  on the Astera Labs PT5161L PCIe retimer.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called pt5161l.
-+
- config SENSORS_PWM_FAN
- 	tristate "PWM fan"
- 	depends on (PWM && OF) || COMPILE_TEST
-diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index e84bd9685b5c..4e68b808ddac 100644
---- a/drivers/hwmon/Makefile
-+++ b/drivers/hwmon/Makefile
-@@ -179,6 +179,7 @@ obj-$(CONFIG_SENSORS_PC87427)	+= pc87427.o
- obj-$(CONFIG_SENSORS_PCF8591)	+= pcf8591.o
- obj-$(CONFIG_SENSORS_POWERZ)	+= powerz.o
- obj-$(CONFIG_SENSORS_POWR1220)  += powr1220.o
-+obj-$(CONFIG_SENSORS_PT5161L)	+= pt5161l.o
- obj-$(CONFIG_SENSORS_PWM_FAN)	+= pwm-fan.o
- obj-$(CONFIG_SENSORS_RASPBERRYPI_HWMON)	+= raspberrypi-hwmon.o
- obj-$(CONFIG_SENSORS_SBTSI)	+= sbtsi_temp.o
-diff --git a/drivers/hwmon/pt5161l.c b/drivers/hwmon/pt5161l.c
-new file mode 100644
-index 000000000000..95e7fb07699c
---- /dev/null
-+++ b/drivers/hwmon/pt5161l.c
-@@ -0,0 +1,558 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <linux/debugfs.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/init.h>
-+#include <linux/hwmon.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+
-+/* Temperature measurement constants */
-+// Aries current average temp ADC code CSR
-+#define ARIES_CURRENT_AVG_TEMP_ADC_CSR	0x42c
-+
-+// Main Micro Heartbeat reg
-+#define ARIES_MM_HEARTBEAT_ADDR	0x923
-+
-+/* Main SRAM */
-+// AL Main SRAM DMEM offset (A0)
-+#define AL_MAIN_SRAM_DMEM_OFFSET	(64 * 1024)
-+// SRAM read command
-+#define AL_TG_RD_LOC_IND_SRAM	0x16
-+
-+/* Micros */
-+// Offset for main micro FW info
-+#define ARIES_MAIN_MICRO_FW_INFO	(96 * 1024 - 128)
-+
-+/* Path Micro Members */
-+// FW Info (Major) offset location in struct
-+#define ARIES_MM_FW_VERSION_MAJOR	0
-+// FW Info (Minor) offset location in struct
-+#define ARIES_MM_FW_VERSION_MINOR	1
-+// FW Info (Build no.) offset location in struct
-+#define ARIES_MM_FW_VERSION_BUILD	2
-+
-+/* Offsets for MM assisted accesses */
-+// Legacy Address and Data registers (using wide registers)
-+// Reg offset to specify Address for MM assisted accesses
-+#define ARIES_MM_ASSIST_REG_ADDR_OFFSET	0xd99
-+
-+/* Misc block offsets */
-+// Device Load check register
-+#define ARIES_CODE_LOAD_REG	0x605
-+
-+/* Value indicating FW was loaded properly */
-+#define ARIES_LOAD_CODE	0xe
-+
-+#define ARIES_TEMP_CAL_CODE_DEFAULT	84
-+
-+/* Struct defining FW version loaded on an Aries device */
-+struct pt5161l_fw_ver {
-+	u8 major;
-+	u8 minor;
-+	u16 build;
-+};
-+
-+/* Each client has this additional data */
-+struct pt5161l_data {
+ #define MAX31827_CONFIGURATION_1SHOT_MASK	BIT(0)
+ #define MAX31827_CONFIGURATION_CNV_RATE_MASK	GENMASK(3, 1)
++#define MAX31827_CONFIGURATION_PEC_EN_MASK	BIT(4)
+ #define MAX31827_CONFIGURATION_TIMEOUT_MASK	BIT(5)
+ #define MAX31827_CONFIGURATION_RESOLUTION_MASK	GENMASK(7, 6)
+ #define MAX31827_CONFIGURATION_ALRM_POL_MASK	BIT(8)
+ #define MAX31827_CONFIGURATION_COMP_INT_MASK	BIT(9)
+ #define MAX31827_CONFIGURATION_FLT_Q_MASK	GENMASK(11, 10)
++#define MAX31827_CONFIGURATION_PEC_ERR_MASK	BIT(13)
+ #define MAX31827_CONFIGURATION_U_TEMP_STAT_MASK	BIT(14)
+ #define MAX31827_CONFIGURATION_O_TEMP_STAT_MASK	BIT(15)
+ 
+@@ -94,23 +96,67 @@ struct max31827_state {
+ 	 * Prevent simultaneous access to the i2c client.
+ 	 */
+ 	struct mutex lock;
+-	struct regmap *regmap;
+ 	bool enable;
+ 	unsigned int resolution;
+ 	unsigned int update_interval;
 +	struct i2c_client *client;
-+	struct dentry *debugfs;
-+	struct pt5161l_fw_ver fw_ver;
-+	struct mutex lock;
-+	bool pec_enable;
-+	bool code_load_okay; // indicate if code load reg value is expected
-+	bool mm_heartbeat_okay; // indicate if Main Micro heartbeat is good
-+};
-+
-+static struct dentry *pt5161l_debugfs_dir;
-+
-+/*
-+ * Write multiple data bytes to Aries over I2C
-+ */
-+static int pt5161l_write_block_data(struct pt5161l_data *data, u32 address,
-+				    u8 len, u8 *val)
+ };
+ 
+-static const struct regmap_config max31827_regmap = {
+-	.reg_bits = 8,
+-	.val_bits = 16,
+-	.max_register = 0xA,
+-};
++static int max31827_reg_read(struct i2c_client *client, u8 reg, u16 *val)
 +{
-+	struct i2c_client *client = data->client;
++	u16 tmp = i2c_smbus_read_word_swapped(client, reg);
++
++	if (tmp < 0)
++		return tmp;
++
++	*val = tmp;
++	return 0;
++}
++
++static int max31827_reg_write(struct i2c_client *client, u8 reg, u16 val)
++{
++	u16 cfg;
 +	int ret;
-+	u8 remain_len = len;
-+	u8 xfer_len, curr_len;
-+	u8 buf[16];
-+	u8 cmd = 0x0F; // [7]:pec_en, [6:5]:rsvd, [4:2]:func, [1]:start, [0]:end
-+	u8 config = 0x40; // [6]:cfg_type, [4:1]:burst_len, [0]:bit16 of address
 +
-+	if (data->pec_enable)
-+		cmd |= 0x80;
++	ret = i2c_smbus_write_word_swapped(client, reg, val);
++	if (ret)
++		return ret;
 +
-+	while (remain_len > 0) {
-+		if (remain_len > 4) {
-+			curr_len = 4;
-+			remain_len -= 4;
-+		} else {
-+			curr_len = remain_len;
-+			remain_len = 0;
-+		}
++	// If PEC is not enabled, return with success
++	if (!(client->flags & I2C_CLIENT_PEC))
++		return 0;
 +
-+		buf[0] = config | (curr_len - 1) << 1 | ((address >> 16) & 0x1);
-+		buf[1] = (address >> 8) & 0xff;
-+		buf[2] = address & 0xff;
-+		memcpy(&buf[3], val, curr_len);
++	ret = max31827_reg_read(client, MAX31827_CONFIGURATION_REG, &cfg);
++	if (ret)
++		return ret;
 +
-+		xfer_len = 3 + curr_len;
-+		ret = i2c_smbus_write_block_data(client, cmd, xfer_len, buf);
-+		if (ret)
-+			return ret;
-+
-+		val += curr_len;
-+		address += curr_len;
-+	}
++	if (cfg & MAX31827_CONFIGURATION_PEC_ERR_MASK)
++		return -EBADMSG;
 +
 +	return 0;
 +}
 +
-+/*
-+ * Read multiple data bytes from Aries over I2C
-+ */
-+static int pt5161l_read_block_data(struct pt5161l_data *data, u32 address,
-+				   u8 len, u8 *val)
++static int max31827_update_bits(struct i2c_client *client, u8 reg,
++				u16 mask, u16 val)
 +{
-+	struct i2c_client *client = data->client;
-+	int ret, tries;
-+	u8 remain_len = len;
-+	u8 curr_len;
-+	u8 wbuf[16], rbuf[24];
-+	u8 cmd = 0x08; // [7]:pec_en, [6:5]:rsvd, [4:2]:func, [1]:start, [0]:end
-+	u8 config = 0x00; // [6]:cfg_type, [4:1]:burst_len, [0]:bit16 of address
-+
-+	if (data->pec_enable)
-+		cmd |= 0x80;
-+
-+	while (remain_len > 0) {
-+		if (remain_len > 16) {
-+			curr_len = 16;
-+			remain_len -= 16;
-+		} else {
-+			curr_len = remain_len;
-+			remain_len = 0;
-+		}
-+
-+		wbuf[0] = config | (curr_len - 1) << 1 |
-+			  ((address >> 16) & 0x1);
-+		wbuf[1] = (address >> 8) & 0xff;
-+		wbuf[2] = address & 0xff;
-+
-+		for (tries = 0; tries < 3; tries++) {
-+			ret = i2c_smbus_write_block_data(client, (cmd | 0x2), 3,
-+							 wbuf);
-+			if (ret)
-+				return ret;
-+
-+			ret = i2c_smbus_read_block_data(client, (cmd | 0x1),
-+							rbuf);
-+			if (ret == curr_len)
-+				break;
-+		}
-+		if (tries >= 3)
-+			return -ENODATA;
-+
-+		memcpy(val, rbuf, curr_len);
-+		val += curr_len;
-+		address += curr_len;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Read multiple (up to eight) data bytes from micro SRAM over I2C
-+ */
-+static int
-+pt5161l_read_block_data_main_micro_indirect(struct pt5161l_data *data,
-+					    u32 address, u8 len, u8 *val)
-+{
-+	int ret, tries;
-+	u8 buf[8];
-+	u8 i, status;
-+	u32 uind_offs = ARIES_MM_ASSIST_REG_ADDR_OFFSET;
-+	u32 eeprom_base, eeprom_addr;
-+
-+	// No multi-byte indirect support here. Hence read a byte at a time
-+	eeprom_base = address - AL_MAIN_SRAM_DMEM_OFFSET;
-+	for (i = 0; i < len; i++) {
-+		eeprom_addr = eeprom_base + i;
-+		buf[0] = eeprom_addr & 0xff;
-+		buf[1] = (eeprom_addr >> 8) & 0xff;
-+		buf[2] = (eeprom_addr >> 16) & 0xff;
-+		ret = pt5161l_write_block_data(data, uind_offs, 3, buf);
-+		if (ret)
-+			return ret;
-+
-+		buf[0] = AL_TG_RD_LOC_IND_SRAM;
-+		ret = pt5161l_write_block_data(data, uind_offs + 4, 1, buf);
-+		if (ret)
-+			return ret;
-+
-+		status = 0xff;
-+		for (tries = 0; tries < 255; tries++) {
-+			ret = pt5161l_read_block_data(data, uind_offs + 4, 1,
-+						      &status);
-+			if (ret)
-+				return ret;
-+
-+			if (status == 0)
-+				break;
-+		}
-+		if (status != 0)
-+			return -ETIMEDOUT;
-+
-+		ret = pt5161l_read_block_data(data, uind_offs + 3, 1, buf);
-+		if (ret)
-+			return ret;
-+
-+		val[i] = buf[0];
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Check firmware load status
-+ */
-+static int pt5161l_fw_load_check(struct pt5161l_data *data)
-+{
++	u16 tmp;
 +	int ret;
-+	u8 buf[8];
 +
-+	ret = pt5161l_read_block_data(data, ARIES_CODE_LOAD_REG, 1, buf);
++	ret = max31827_reg_read(client, reg, &tmp);
 +	if (ret)
 +		return ret;
 +
-+	if (buf[0] < ARIES_LOAD_CODE) {
-+		dev_dbg(&data->client->dev,
-+			"Code Load reg unexpected. Not all modules are loaded %x\n",
-+			buf[0]);
-+		data->code_load_okay = false;
-+	} else {
-+		data->code_load_okay = true;
-+	}
++	tmp = (tmp & ~mask) | (val & mask);
++	ret = max31827_reg_write(client, reg, tmp);
 +
-+	return 0;
++	return ret;
++}
+ 
+ static int shutdown_write(struct max31827_state *st, unsigned int reg,
+ 			  unsigned int mask, unsigned int val)
+ {
+-	unsigned int cfg;
+-	unsigned int cnv_rate;
++	u16 cfg;
++	u16 cnv_rate;
+ 	int ret;
+ 
+ 	/*
+@@ -125,34 +171,34 @@ static int shutdown_write(struct max31827_state *st, unsigned int reg,
+ 
+ 	if (!st->enable) {
+ 		if (!mask)
+-			ret = regmap_write(st->regmap, reg, val);
++			ret = max31827_reg_write(st->client, reg, val);
+ 		else
+-			ret = regmap_update_bits(st->regmap, reg, mask, val);
++			ret = max31827_update_bits(st->client, reg, mask, val);
+ 		goto unlock;
+ 	}
+ 
+-	ret = regmap_read(st->regmap, MAX31827_CONFIGURATION_REG, &cfg);
++	ret = max31827_reg_read(st->client, MAX31827_CONFIGURATION_REG, &cfg);
+ 	if (ret)
+ 		goto unlock;
+ 
+ 	cnv_rate = MAX31827_CONFIGURATION_CNV_RATE_MASK & cfg;
+ 	cfg = cfg & ~(MAX31827_CONFIGURATION_1SHOT_MASK |
+ 		      MAX31827_CONFIGURATION_CNV_RATE_MASK);
+-	ret = regmap_write(st->regmap, MAX31827_CONFIGURATION_REG, cfg);
++	ret = max31827_reg_write(st->client, MAX31827_CONFIGURATION_REG, cfg);
+ 	if (ret)
+ 		goto unlock;
+ 
+ 	if (!mask)
+-		ret = regmap_write(st->regmap, reg, val);
++		ret = max31827_reg_write(st->client, reg, val);
+ 	else
+-		ret = regmap_update_bits(st->regmap, reg, mask, val);
++		ret = max31827_update_bits(st->client, reg, mask, val);
+ 
+ 	if (ret)
+ 		goto unlock;
+ 
+-	ret = regmap_update_bits(st->regmap, MAX31827_CONFIGURATION_REG,
+-				 MAX31827_CONFIGURATION_CNV_RATE_MASK,
+-				 cnv_rate);
++	ret = max31827_update_bits(st->client, MAX31827_CONFIGURATION_REG,
++				   MAX31827_CONFIGURATION_CNV_RATE_MASK,
++				   cnv_rate);
+ 
+ unlock:
+ 	mutex_unlock(&st->lock);
+@@ -198,15 +244,16 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
+ 			 u32 attr, int channel, long *val)
+ {
+ 	struct max31827_state *st = dev_get_drvdata(dev);
+-	unsigned int uval;
++	u16 uval;
+ 	int ret = 0;
+ 
+ 	switch (type) {
+ 	case hwmon_temp:
+ 		switch (attr) {
+ 		case hwmon_temp_enable:
+-			ret = regmap_read(st->regmap,
+-					  MAX31827_CONFIGURATION_REG, &uval);
++			ret = max31827_reg_read(st->client,
++						MAX31827_CONFIGURATION_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+@@ -226,10 +273,10 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
+ 				 * be changed during the conversion process.
+ 				 */
+ 
+-				ret = regmap_update_bits(st->regmap,
+-							 MAX31827_CONFIGURATION_REG,
+-							 MAX31827_CONFIGURATION_1SHOT_MASK,
+-							 1);
++				ret = max31827_update_bits(st->client,
++							   MAX31827_CONFIGURATION_REG,
++							   MAX31827_CONFIGURATION_1SHOT_MASK,
++							   1);
+ 				if (ret) {
+ 					mutex_unlock(&st->lock);
+ 					return ret;
+@@ -246,7 +293,8 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
+ 			    st->update_interval == 125)
+ 				usleep_range(15000, 20000);
+ 
+-			ret = regmap_read(st->regmap, MAX31827_T_REG, &uval);
++			ret = max31827_reg_read(st->client, MAX31827_T_REG,
++						&uval);
+ 
+ 			mutex_unlock(&st->lock);
+ 
+@@ -257,23 +305,26 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
+ 
+ 			break;
+ 		case hwmon_temp_max:
+-			ret = regmap_read(st->regmap, MAX31827_TH_REG, &uval);
++			ret = max31827_reg_read(st->client, MAX31827_TH_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+ 			*val = MAX31827_16_BIT_TO_M_DGR(uval);
+ 			break;
+ 		case hwmon_temp_max_hyst:
+-			ret = regmap_read(st->regmap, MAX31827_TH_HYST_REG,
+-					  &uval);
++			ret = max31827_reg_read(st->client,
++						MAX31827_TH_HYST_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+ 			*val = MAX31827_16_BIT_TO_M_DGR(uval);
+ 			break;
+ 		case hwmon_temp_max_alarm:
+-			ret = regmap_read(st->regmap,
+-					  MAX31827_CONFIGURATION_REG, &uval);
++			ret = max31827_reg_read(st->client,
++						MAX31827_CONFIGURATION_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+@@ -281,23 +332,25 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
+ 					 uval);
+ 			break;
+ 		case hwmon_temp_min:
+-			ret = regmap_read(st->regmap, MAX31827_TL_REG, &uval);
++			ret = max31827_reg_read(st->client, MAX31827_TL_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+ 			*val = MAX31827_16_BIT_TO_M_DGR(uval);
+ 			break;
+ 		case hwmon_temp_min_hyst:
+-			ret = regmap_read(st->regmap, MAX31827_TL_HYST_REG,
+-					  &uval);
++			ret = max31827_reg_read(st->client, MAX31827_TL_HYST_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+ 			*val = MAX31827_16_BIT_TO_M_DGR(uval);
+ 			break;
+ 		case hwmon_temp_min_alarm:
+-			ret = regmap_read(st->regmap,
+-					  MAX31827_CONFIGURATION_REG, &uval);
++			ret = max31827_reg_read(st->client,
++						MAX31827_CONFIGURATION_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+@@ -313,8 +366,9 @@ static int max31827_read(struct device *dev, enum hwmon_sensor_types type,
+ 
+ 	case hwmon_chip:
+ 		if (attr == hwmon_chip_update_interval) {
+-			ret = regmap_read(st->regmap,
+-					  MAX31827_CONFIGURATION_REG, &uval);
++			ret = max31827_reg_read(st->client,
++						MAX31827_CONFIGURATION_REG,
++						&uval);
+ 			if (ret)
+ 				break;
+ 
+@@ -355,11 +409,11 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
+ 
+ 			st->enable = val;
+ 
+-			ret = regmap_update_bits(st->regmap,
+-						 MAX31827_CONFIGURATION_REG,
+-						 MAX31827_CONFIGURATION_1SHOT_MASK |
+-						 MAX31827_CONFIGURATION_CNV_RATE_MASK,
+-						 MAX31827_DEVICE_ENABLE(val));
++			ret = max31827_update_bits(st->client,
++						   MAX31827_CONFIGURATION_REG,
++						   MAX31827_CONFIGURATION_1SHOT_MASK |
++						   MAX31827_CONFIGURATION_CNV_RATE_MASK,
++						   MAX31827_DEVICE_ENABLE(val));
+ 
+ 			mutex_unlock(&st->lock);
+ 
+@@ -402,10 +456,10 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
+ 			res = FIELD_PREP(MAX31827_CONFIGURATION_CNV_RATE_MASK,
+ 					 res);
+ 
+-			ret = regmap_update_bits(st->regmap,
+-						 MAX31827_CONFIGURATION_REG,
+-						 MAX31827_CONFIGURATION_CNV_RATE_MASK,
+-						 res);
++			ret = max31827_update_bits(st->client,
++						   MAX31827_CONFIGURATION_REG,
++						   MAX31827_CONFIGURATION_CNV_RATE_MASK,
++						   res);
+ 			if (ret)
+ 				return ret;
+ 
+@@ -425,10 +479,10 @@ static ssize_t temp1_resolution_show(struct device *dev,
+ 				     char *buf)
+ {
+ 	struct max31827_state *st = dev_get_drvdata(dev);
+-	unsigned int val;
++	u16 val;
+ 	int ret;
+ 
+-	ret = regmap_read(st->regmap, MAX31827_CONFIGURATION_REG, &val);
++	ret = max31827_reg_read(st->client, MAX31827_CONFIGURATION_REG, &val);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -473,10 +527,63 @@ static ssize_t temp1_resolution_store(struct device *dev,
+ 	return ret ? ret : count;
+ }
+ 
++static ssize_t pec_show(struct device *dev, struct device_attribute *devattr,
++			char *buf)
++{
++	struct max31827_state *st = dev_get_drvdata(dev);
++	struct i2c_client *client = st->client;
++
++	return scnprintf(buf, PAGE_SIZE, "%d\n", !!(client->flags & I2C_CLIENT_PEC));
 +}
 +
-+/*
-+ * Check main micro heartbeat
-+ */
-+static int pt5161l_heartbeat_check(struct pt5161l_data *data)
++static ssize_t pec_store(struct device *dev, struct device_attribute *devattr,
++			 const char *buf, size_t count)
 +{
-+	int ret, tries;
-+	u8 buf[8];
-+	u8 heartbeat;
-+	bool hb_changed = false;
++	struct max31827_state *st = dev_get_drvdata(dev);
++	struct i2c_client *client = st->client;
++	unsigned int val;
++	u16 val2;
++	int err;
 +
-+	ret = pt5161l_read_block_data(data, ARIES_MM_HEARTBEAT_ADDR, 1, buf);
-+	if (ret)
-+		return ret;
++	err = kstrtouint(buf, 10, &val);
++	if (err < 0)
++		return err;
 +
-+	heartbeat = buf[0];
-+	for (tries = 0; tries < 100; tries++) {
-+		ret = pt5161l_read_block_data(data, ARIES_MM_HEARTBEAT_ADDR, 1,
-+					      buf);
-+		if (ret)
-+			return ret;
++	val2 = FIELD_PREP(MAX31827_CONFIGURATION_PEC_EN_MASK, val);
 +
-+		if (buf[0] != heartbeat) {
-+			hb_changed = true;
-+			break;
-+		}
-+	}
-+	data->mm_heartbeat_okay = hb_changed;
++	if (err)
++		return err;
 +
-+	return 0;
-+}
-+
-+/*
-+ * Check the status of firmware
-+ */
-+static int pt5161l_fwsts_check(struct pt5161l_data *data)
-+{
-+	int ret;
-+	u8 buf[8];
-+	u8 major = 0, minor = 0;
-+	u16 build = 0;
-+
-+	ret = pt5161l_fw_load_check(data);
-+	if (ret)
-+		return ret;
-+
-+	ret = pt5161l_heartbeat_check(data);
-+	if (ret)
-+		return ret;
-+
-+	if (data->code_load_okay && data->mm_heartbeat_okay) {
-+		ret = pt5161l_read_block_data_main_micro_indirect(
-+			data,
-+			ARIES_MAIN_MICRO_FW_INFO + ARIES_MM_FW_VERSION_MAJOR, 1,
-+			&major);
-+		if (ret)
-+			return ret;
-+
-+		ret = pt5161l_read_block_data_main_micro_indirect(
-+			data,
-+			ARIES_MAIN_MICRO_FW_INFO + ARIES_MM_FW_VERSION_MINOR, 1,
-+			&minor);
-+		if (ret)
-+			return ret;
-+
-+		ret = pt5161l_read_block_data_main_micro_indirect(
-+			data,
-+			ARIES_MAIN_MICRO_FW_INFO + ARIES_MM_FW_VERSION_BUILD, 2,
-+			buf);
-+		if (ret)
-+			return ret;
-+		build = buf[1] << 8 | buf[0];
-+	}
-+	data->fw_ver.major = major;
-+	data->fw_ver.minor = minor;
-+	data->fw_ver.build = build;
-+
-+	return 0;
-+}
-+
-+static int pt5161l_read(struct device *dev, enum hwmon_sensor_types type,
-+			u32 attr, int channel, long *val)
-+{
-+	struct pt5161l_data *data = dev_get_drvdata(dev);
-+	int ret = 0;
-+	u8 buf[8];
-+	long adc_code = 0;
-+
-+	switch (attr) {
-+	case hwmon_temp_input:
-+		mutex_lock(&data->lock);
-+		ret = pt5161l_read_block_data(
-+			data, ARIES_CURRENT_AVG_TEMP_ADC_CSR, 4, buf);
-+		mutex_unlock(&data->lock);
-+		adc_code = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
++	switch (val) {
++	case 0:
++		client->flags &= ~I2C_CLIENT_PEC;
++		err = max31827_update_bits(client, MAX31827_CONFIGURATION_REG,
++					   MAX31827_CONFIGURATION_PEC_EN_MASK,
++					   val2);
++		if (err)
++			return err;
++		break;
++	case 1:
++		err = max31827_update_bits(client, MAX31827_CONFIGURATION_REG,
++					   MAX31827_CONFIGURATION_PEC_EN_MASK,
++					   val2);
++		if (err)
++			return err;
++		client->flags |= I2C_CLIENT_PEC;
 +		break;
 +	default:
-+		return -EOPNOTSUPP;
-+	}
-+	if (ret) {
-+		dev_dbg(dev, "Read adc_code failed %d\n", ret);
-+		return ret;
-+	}
-+	if (adc_code == 0 || adc_code >= 0x3ff) {
-+		dev_dbg(dev, "Invalid adc_code %lx\n", adc_code);
-+		return -ENODATA;
++		return -EINVAL;
 +	}
 +
-+	*val = 110000 +
-+	       ((adc_code - (ARIES_TEMP_CAL_CODE_DEFAULT + 250)) * -320);
-+
-+	return 0;
++	return count;
 +}
 +
-+static umode_t pt5161l_is_visible(const void *data,
-+				  enum hwmon_sensor_types type, u32 attr,
-+				  int channel)
-+{
-+	switch (attr) {
-+	case hwmon_temp_input:
-+		return 0444;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct hwmon_channel_info *pt5161l_info[] = {
-+	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
-+	NULL
-+};
-+
-+static const struct hwmon_ops pt5161l_hwmon_ops = {
-+	.is_visible = pt5161l_is_visible,
-+	.read = pt5161l_read,
-+};
-+
-+static const struct hwmon_chip_info pt5161l_chip_info = {
-+	.ops = &pt5161l_hwmon_ops,
-+	.info = pt5161l_info,
-+};
-+
-+static ssize_t pt5161l_debugfs_read_fw_ver(struct file *file, char __user *buf,
-+					   size_t count, loff_t *ppos)
-+{
-+	struct pt5161l_data *data = file->private_data;
-+	int ret;
-+	char ver[32];
-+
-+	mutex_lock(&data->lock);
-+	ret = pt5161l_fwsts_check(data);
-+	mutex_unlock(&data->lock);
-+	if (ret)
-+		return ret;
-+
-+	ret = snprintf(ver, sizeof(ver), "%u.%u.%u\n", data->fw_ver.major,
-+		       data->fw_ver.minor, data->fw_ver.build);
-+	if (ret < 0)
-+		return ret;
-+
-+	return simple_read_from_buffer(buf, count, ppos, ver, ret + 1);
-+}
-+
-+static const struct file_operations pt5161l_debugfs_ops_fw_ver = {
-+	.read = pt5161l_debugfs_read_fw_ver,
-+	.open = simple_open,
-+};
-+
-+static ssize_t pt5161l_debugfs_read_fw_load_sts(struct file *file,
-+						char __user *buf, size_t count,
-+						loff_t *ppos)
-+{
-+	struct pt5161l_data *data = file->private_data;
-+	int ret;
-+	bool status = false;
-+	char health[16];
-+
-+	mutex_lock(&data->lock);
-+	ret = pt5161l_fw_load_check(data);
-+	mutex_unlock(&data->lock);
-+	if (ret == 0)
-+		status = data->code_load_okay;
-+
-+	ret = snprintf(health, sizeof(health), "%s\n",
-+		       status ? "normal" : "abnormal");
-+	if (ret < 0)
-+		return ret;
-+
-+	return simple_read_from_buffer(buf, count, ppos, health, ret + 1);
-+}
-+
-+static const struct file_operations pt5161l_debugfs_ops_fw_load_sts = {
-+	.read = pt5161l_debugfs_read_fw_load_sts,
-+	.open = simple_open,
-+};
-+
-+static ssize_t pt5161l_debugfs_read_hb_sts(struct file *file, char __user *buf,
-+					   size_t count, loff_t *ppos)
-+{
-+	struct pt5161l_data *data = file->private_data;
-+	int ret;
-+	bool status = false;
-+	char health[16];
-+
-+	mutex_lock(&data->lock);
-+	ret = pt5161l_heartbeat_check(data);
-+	mutex_unlock(&data->lock);
-+	if (ret == 0)
-+		status = data->mm_heartbeat_okay;
-+
-+	ret = snprintf(health, sizeof(health), "%s\n",
-+		       status ? "normal" : "abnormal");
-+	if (ret < 0)
-+		return ret;
-+
-+	return simple_read_from_buffer(buf, count, ppos, health, ret + 1);
-+}
-+
-+static const struct file_operations pt5161l_debugfs_ops_hb_sts = {
-+	.read = pt5161l_debugfs_read_hb_sts,
-+	.open = simple_open,
-+};
-+
-+static int pt5161l_init_debugfs(struct pt5161l_data *data)
-+{
-+	data->debugfs = debugfs_create_dir(dev_name(&data->client->dev),
-+					   pt5161l_debugfs_dir);
-+
-+	debugfs_create_file("fw_ver", 0444, data->debugfs, data,
-+			    &pt5161l_debugfs_ops_fw_ver);
-+
-+	debugfs_create_file("fw_load_status", 0444, data->debugfs, data,
-+			    &pt5161l_debugfs_ops_fw_load_sts);
-+
-+	debugfs_create_file("heartbeat_status", 0444, data->debugfs, data,
-+			    &pt5161l_debugfs_ops_hb_sts);
-+
-+	return 0;
-+}
-+
-+static int pt5161l_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct device *hwmon_dev;
-+	struct pt5161l_data *data;
-+
-+	data = devm_kzalloc(dev, sizeof(struct pt5161l_data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	data->client = client;
-+	mutex_init(&data->lock);
-+	dev_set_drvdata(dev, data);
-+
-+	hwmon_dev = devm_hwmon_device_register_with_info(
-+		dev, client->name, data, &pt5161l_chip_info, NULL);
-+
-+	pt5161l_init_debugfs(data);
-+
-+	return PTR_ERR_OR_ZERO(hwmon_dev);
-+}
-+
-+static void pt5161l_remove(struct i2c_client *client)
-+{
-+	struct pt5161l_data *data = i2c_get_clientdata(client);
-+
-+	debugfs_remove_recursive(data->debugfs);
-+}
-+
-+static const struct of_device_id __maybe_unused pt5161l_of_match[] = {
-+	{ .compatible = "asteralabs,pt5161l" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, pt5161l_of_match);
-+
-+static const struct acpi_device_id pt5161l_acpi_match[] = {
-+	{ "PT5161L", 0 },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(acpi, pt5161l_acpi_match);
-+
-+static const struct i2c_device_id pt5161l_id[] = {
-+	{ "pt5161l", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, pt5161l_id);
-+
-+static struct i2c_driver pt5161l_driver = {
-+	.class = I2C_CLASS_HWMON,
-+	.driver = {
-+		.name = "pt5161l",
-+		.of_match_table = of_match_ptr(pt5161l_of_match),
-+		.acpi_match_table = ACPI_PTR(pt5161l_acpi_match),
-+	},
-+	.probe = pt5161l_probe,
-+	.remove = pt5161l_remove,
-+	.id_table = pt5161l_id,
-+};
-+
-+static int __init pt5161l_init(void)
-+{
-+	pt5161l_debugfs_dir = debugfs_create_dir("pt5161l", NULL);
-+	return i2c_add_driver(&pt5161l_driver);
-+}
-+
-+static void __exit pt5161l_exit(void)
-+{
-+	debugfs_remove_recursive(pt5161l_debugfs_dir);
-+	i2c_del_driver(&pt5161l_driver);
-+}
-+
-+module_init(pt5161l_init);
-+module_exit(pt5161l_exit);
-+
-+MODULE_AUTHOR("Cosmo Chou <cosmo.chou@quantatw.com>");
-+MODULE_DESCRIPTION("Hwmon driver for Astera Labs Aries PCIe retimer");
-+MODULE_LICENSE("GPL");
+ static DEVICE_ATTR_RW(temp1_resolution);
++static DEVICE_ATTR_RW(pec);
+ 
+ static struct attribute *max31827_attrs[] = {
+ 	&dev_attr_temp1_resolution.attr,
++	&dev_attr_pec.attr,
+ 	NULL
+ };
+ ATTRIBUTE_GROUPS(max31827);
+@@ -489,9 +596,9 @@ static const struct i2c_device_id max31827_i2c_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, max31827_i2c_ids);
+ 
+-static int max31827_init_client(struct max31827_state *st,
+-				struct device *dev)
++static int max31827_init_client(struct max31827_state *st)
+ {
++	struct device *dev = &st->client->dev;
+ 	struct fwnode_handle *fwnode;
+ 	unsigned int res = 0;
+ 	u32 data, lsb_idx;
+@@ -575,7 +682,7 @@ static int max31827_init_client(struct max31827_state *st,
+ 		}
+ 	}
+ 
+-	return regmap_write(st->regmap, MAX31827_CONFIGURATION_REG, res);
++	return max31827_reg_write(st->client, MAX31827_CONFIGURATION_REG, res);
+ }
+ 
+ static const struct hwmon_channel_info *max31827_info[] = {
+@@ -613,17 +720,13 @@ static int max31827_probe(struct i2c_client *client)
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&st->lock);
+-
+-	st->regmap = devm_regmap_init_i2c(client, &max31827_regmap);
+-	if (IS_ERR(st->regmap))
+-		return dev_err_probe(dev, PTR_ERR(st->regmap),
+-				     "Failed to allocate regmap.\n");
++	st->client = client;
+ 
+ 	err = devm_regulator_get_enable(dev, "vref");
+ 	if (err)
+ 		return dev_err_probe(dev, err, "failed to enable regulator\n");
+ 
+-	err = max31827_init_client(st, dev);
++	err = max31827_init_client(st);
+ 	if (err)
+ 		return err;
+ 
 -- 
 2.34.1
 
