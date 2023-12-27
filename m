@@ -1,126 +1,84 @@
-Return-Path: <linux-hwmon+bounces-611-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-613-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B381F0E8
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Dec 2023 18:29:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D2181F181
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Dec 2023 20:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829B81F22315
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Dec 2023 17:29:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9ED1283C8A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 Dec 2023 19:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F74546459;
-	Wed, 27 Dec 2023 17:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S3YtY6Y9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEEF4655B;
+	Wed, 27 Dec 2023 19:06:11 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mxout017.mail.hostpoint.ch (mxout017.mail.hostpoint.ch [217.26.49.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB246521;
-	Wed, 27 Dec 2023 17:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703698190; x=1735234190;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Aldfr7OGlFepgVjQLG4ahYMsoND2AkgxRVR/eA9MgBw=;
-  b=S3YtY6Y9+wVXd341JyxqEJTB7vYu6C3VWvWJasTU5cpuK9UIgqAEBcRw
-   F3L+wglEfRMaACA1oLCh8hBRUohjq3TI8pziX/It/gCxgzGmQvUWPX9PK
-   v9Qc1hZQ35SYhSZW6qxDEGtAvYXOiXmhxtoOakdGYqbYu8pRn2OyZb0BO
-   hb2b11Ru7MoGxb2pfgR8InLLX5hKHtXbKvqEIrJLkWPKuZlsMMUE3tcXd
-   ZTaWWt7o/yumE0KGSJD/cteOKZLVVMnvbPS/I+aJYhjFAEP3yJP3v1Wfr
-   94PnesReWbRd3MSnClHxIKH0wHRolwlGdl5CNBXn+/v5Notq60M0LEGNH
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="3770555"
-X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
-   d="scan'208";a="3770555"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 09:29:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="1025435720"
-X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
-   d="scan'208";a="1025435720"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 27 Dec 2023 09:29:47 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rIXiz-000Fbl-11;
-	Wed, 27 Dec 2023 17:29:45 +0000
-Date: Thu, 28 Dec 2023 01:28:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>, jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: oe-kbuild-all@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler
- is ready on Dell systems
-Message-ID: <202312280116.QtpZzDTy-lkp@intel.com>
-References: <20231227040401.548977-1-kai.heng.feng@canonical.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0188447A63;
+	Wed, 27 Dec 2023 19:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stefan-gloor.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stefan-gloor.ch
+Received: from [10.0.2.44] (helo=asmtp014.mail.hostpoint.ch)
+	by mxout017.mail.hostpoint.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2 (FreeBSD))
+	(envelope-from <code@stefan-gloor.ch>)
+	id 1rIZBW-000BDR-1t;
+	Wed, 27 Dec 2023 20:03:18 +0100
+Received: from 157.20.79.83.dynamic.wline.res.cust.swisscom.ch ([83.79.20.157] helo=thinkpad.localdomain)
+	by asmtp014.mail.hostpoint.ch with esmtpa (Exim 4.96.2 (FreeBSD))
+	(envelope-from <code@stefan-gloor.ch>)
+	id 1rIZBW-0000IA-1H;
+	Wed, 27 Dec 2023 20:03:18 +0100
+X-Authenticated-Sender-Id: code@stefan-gloor.ch
+From: Stefan Gloor <code@stefan-gloor.ch>
+To: jdelvare@suse.com,
+	linux@roeck-us.net,
+	corbet@lwn.net,
+	linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Stefan Gloor <code@stefan-gloor.ch>
+Subject: [PATCH v3 0/1] hwmon: (sht3x) read out sensor serial number
+Date: Wed, 27 Dec 2023 20:00:35 +0100
+Message-ID: <20231227190036.20725-1-code@stefan-gloor.ch>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231227040401.548977-1-kai.heng.feng@canonical.com>
+Content-Transfer-Encoding: 8bit
+X-Vs-State: 0
 
-Hi Kai-Heng,
+The temperature/humidity sensors of the STS3x/SHT3x family are
+calibrated and factory-programmed with a unique serial number.
+For some sensors, this serial number can be used to obtain a calibration
+certificate via an API provided by the manufacturer (Sensirion).
+Expose the serial number via debugfs.
 
-kernel test robot noticed the following build errors:
+Changelog
+=========
 
-[auto build test ERROR on groeck-staging/hwmon-next]
-[also build test ERROR on rafael-pm/linux-next rafael-pm/acpi-bus linus/master v6.7-rc7 next-20231222]
-[cannot apply to rafael-pm/devprop]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+v2 -> v3:
+	- Remove #ifdef for debugfs
+	- Add debugfs cleanup
+	- Do not expose serial number if read fails
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kai-Heng-Feng/hwmon-acpi_power_meter-Ensure-IPMI-space-handler-is-ready-on-Dell-systems/20231227-120900
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-patch link:    https://lore.kernel.org/r/20231227040401.548977-1-kai.heng.feng%40canonical.com
-patch subject: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler is ready on Dell systems
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20231228/202312280116.QtpZzDTy-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231228/202312280116.QtpZzDTy-lkp@intel.com/reproduce)
+v1 -> v2:
+	- Change from sysfs to debugfs
+	- Add documentation improvements
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312280116.QtpZzDTy-lkp@intel.com/
+Stefan Gloor (1):
+  hwmon: (sht3x) read out sensor serial number
 
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/acpi_ipmi.c:585:6: error: redefinition of 'wait_for_acpi_ipmi'
-     585 | void wait_for_acpi_ipmi(void)
-         |      ^~~~~~~~~~~~~~~~~~
-   In file included from include/linux/acpi.h:35,
-                    from drivers/acpi/acpi_ipmi.c:11:
-   include/acpi/acpi_bus.h:676:20: note: previous definition of 'wait_for_acpi_ipmi' with type 'void(void)'
-     676 | static inline void wait_for_acpi_ipmi(void)
-         |                    ^~~~~~~~~~~~~~~~~~
-
-
-vim +/wait_for_acpi_ipmi +585 drivers/acpi/acpi_ipmi.c
-
-   584	
- > 585	void wait_for_acpi_ipmi(void)
-   586	{
-   587		wait_for_completion_interruptible_timeout(&smi_selected, 2 * HZ);
-   588	}
-   589	EXPORT_SYMBOL_GPL(wait_for_acpi_ipmi);
-   590	
+ Documentation/hwmon/sht3x.rst | 11 +++++++
+ drivers/hwmon/sht3x.c         | 56 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 66 insertions(+), 1 deletion(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
 
