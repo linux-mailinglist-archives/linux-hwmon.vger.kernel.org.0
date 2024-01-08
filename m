@@ -1,698 +1,845 @@
-Return-Path: <linux-hwmon+bounces-651-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-653-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A04C8268C7
-	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Jan 2024 08:44:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB71B826B11
+	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Jan 2024 10:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AC971F21E08
-	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Jan 2024 07:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EE4B1C21F13
+	for <lists+linux-hwmon@lfdr.de>; Mon,  8 Jan 2024 09:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88027BA27;
-	Mon,  8 Jan 2024 07:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7966112B98;
+	Mon,  8 Jan 2024 09:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWUrTHwk"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from TWMBX03.aspeed.com (mail.aspeedtech.com [211.20.114.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F78C09;
-	Mon,  8 Jan 2024 07:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 8 Jan
- 2024 15:43:50 +0800
-Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 8 Jan 2024 15:43:50 +0800
-From: Billy Tsai <billy_tsai@aspeedtech.com>
-To: <jdelvare@suse.com>, <linux@roeck-us.net>, <robh+dt@kernel.org>,
-	<krzysztof.kozlowski+dt@linaro.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
-	<corbet@lwn.net>, <thierry.reding@gmail.com>,
-	<u.kleine-koenig@pengutronix.de>, <p.zabel@pengutronix.de>,
-	<billy_tsai@aspeedtech.com>, <naresh.solanki@9elements.com>,
-	<linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-pwm@vger.kernel.org>, <BMC-SW@aspeedtech.com>, <patrick@stwcx.xyz>
-Subject: [PATCH v12 3/3] hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach
-Date: Mon, 8 Jan 2024 15:43:48 +0800
-Message-ID: <20240108074348.735014-4-billy_tsai@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240108074348.735014-1-billy_tsai@aspeedtech.com>
-References: <20240108074348.735014-1-billy_tsai@aspeedtech.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF2913FF8;
+	Mon,  8 Jan 2024 09:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-33677fb38a3so1836067f8f.0;
+        Mon, 08 Jan 2024 01:46:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704707171; x=1705311971; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KF6Div87I9fs3ZfKa72S07dwa+YnHFiwsS57CtwU0SY=;
+        b=HWUrTHwkGK8KFNdt8SgEOhSQn6eppIDXVUchkhp8fEx9KgOrkzwa+jvxtLXe3kU8pO
+         yt1EjSwUNWAvddD0zZuhtxsQh6CkalScYvDzSyLmF9lRcpLKheAdsPyyhB8pSsAIwdHT
+         /zh6BBUZDmXMuVcAgn+h3K38aDCc6JZAdRAg0jnaVCGLN+ynzbqPPswfcdAH1tvZQYdp
+         C7CiEB9rjfF1mth7+g9ly+C2p+fNxQJj0Jc7/VToce5691ww66zR9vmpd0RyczV7L2C2
+         prdLtoRm/lhMJP+PmjJSAOwq+JAQEi2jPa+qxYiQXo5+Ec0LlwnA5pbdm/SLjIbO+xNN
+         6stQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704707171; x=1705311971;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KF6Div87I9fs3ZfKa72S07dwa+YnHFiwsS57CtwU0SY=;
+        b=H92b51nyFMuRrBvv9I0zL+DPSYLoBNrXD82tpnDlI/nHsSw2AJBwgSb3sF2YV/r2RG
+         CUFl9+J6/ybHd/FoOGVJ3Kc/iTNes+mrOSn5wRKa/+KK2nxaOeCecNFOUYEyf73HMmHK
+         Rz0RPPH5Iuv2aEEIpt0Y40GhfI8sUeGSSK53D8q7FAYEF/JZ+zlsKTWfHy14NC+zkJ9B
+         wyYPmLZy4/6rCL2KkxuXBVcNwOSJfzp+AwWc1Fdd2Fw4/D2u0a7DswFFyC7a8s1Sqj1G
+         F5dJd1+2hvtLsoGUiOkl6sXthj48DlCKp3ZHx8UgxiQSzJdh90e2E1e9jNd/VSf8p9v1
+         +Psg==
+X-Gm-Message-State: AOJu0YwA1ela6Ng4OKkex3LziQn2P/SnMNA/zwpXV3SQ0FbkC/eVrwnL
+	O+oOimQLoT2olw/3OQhglfdkv7q3ZH0eoQ==
+X-Google-Smtp-Source: AGHT+IGEs/ExmtvR1N0PDuA08QLxee34yqdz16abgbN//CaLQcVzS5Ip2ksIThBsQQoJrOgPL1cDiQ==
+X-Received: by 2002:a7b:c057:0:b0:40d:83ba:dd27 with SMTP id u23-20020a7bc057000000b0040d83badd27mr1730292wmc.93.1704707170660;
+        Mon, 08 Jan 2024 01:46:10 -0800 (PST)
+Received: from fedora.. (cable-178-148-234-71.dynamic.sbb.rs. [178.148.234.71])
+        by smtp.gmail.com with ESMTPSA id j8-20020adff548000000b0033642a9a1eesm7323172wrp.21.2024.01.08.01.46.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jan 2024 01:46:10 -0800 (PST)
+From: Aleksa Savic <savicaleksa83@gmail.com>
+To: linux-hwmon@vger.kernel.org
+Cc: Aleksa Savic <savicaleksa83@gmail.com>,
+	Florian Freudiger <florian.freudiger@proton.me>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] hwmon: Add driver for ASUS ROG RYUJIN II 360 AIO cooler
+Date: Mon,  8 Jan 2024 10:44:50 +0100
+Message-ID: <20240108094453.22986-1-savicaleksa83@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-The driver support two functions: PWM and Tachometer. The PWM feature can
-handle up to 16 output ports, while the Tachometer can monitor to up to 16
-input ports as well. This driver implements them by exposing two kernel
-subsystems: PWM and HWMON. The PWM subsystem can be utilized alongside
-existing drivers for controlling elements such as fans (pwm-fan.c),
-beepers (pwm-beeper.c) and so on. Through the HWMON subsystem, the driver
-provides sysfs interfaces for fan.
+This driver exposes hardware sensors of the ASUS ROG RYUJIN II 360
+all-in-one CPU liquid cooler, which communicates through a proprietary
+USB HID protocol. Report offsets were initially discovered in [1] by
+Florian Freudiger.
 
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Available sensors are pump, internal and external
+(controller) fan speed in RPM, their duties in PWM, as well as
+coolant temperature.
+
+Attaching external fans to the controller is optional and allows them
+to be controlled from the device. If not connected, the fan-related
+sensors will report zeroes. The controller is a separate hardware unit
+that comes bundled with the AIO and connects to it to allow fan control.
+
+The addressable LCD screen is not supported in this
+driver and should be controlled through userspace tools.
+
+[1]: https://github.com/liquidctl/liquidctl/pull/653
+
+Tested-by: Florian Freudiger <florian.freudiger@proton.me>
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
 ---
- Documentation/hwmon/aspeed-g6-pwm-tach.rst |  26 +
- Documentation/hwmon/index.rst              |   1 +
- drivers/hwmon/Kconfig                      |  11 +
- drivers/hwmon/Makefile                     |   1 +
- drivers/hwmon/aspeed-g6-pwm-tach.c         | 538 +++++++++++++++++++++
- 5 files changed, 577 insertions(+)
- create mode 100644 Documentation/hwmon/aspeed-g6-pwm-tach.rst
- create mode 100644 drivers/hwmon/aspeed-g6-pwm-tach.c
+ Documentation/hwmon/asus_rog_ryujin.rst |  47 ++
+ Documentation/hwmon/index.rst           |   1 +
+ MAINTAINERS                             |   6 +
+ drivers/hwmon/Kconfig                   |   9 +
+ drivers/hwmon/Makefile                  |   1 +
+ drivers/hwmon/asus_rog_ryujin.c         | 609 ++++++++++++++++++++++++
+ 6 files changed, 673 insertions(+)
+ create mode 100644 Documentation/hwmon/asus_rog_ryujin.rst
+ create mode 100644 drivers/hwmon/asus_rog_ryujin.c
 
-diff --git a/Documentation/hwmon/aspeed-g6-pwm-tach.rst b/Documentation/hwmon/aspeed-g6-pwm-tach.rst
+diff --git a/Documentation/hwmon/asus_rog_ryujin.rst b/Documentation/hwmon/asus_rog_ryujin.rst
 new file mode 100644
-index 000000000000..17398fe397fe
+index 000000000000..9f77da070022
 --- /dev/null
-+++ b/Documentation/hwmon/aspeed-g6-pwm-tach.rst
-@@ -0,0 +1,26 @@
++++ b/Documentation/hwmon/asus_rog_ryujin.rst
+@@ -0,0 +1,47 @@
 +.. SPDX-License-Identifier: GPL-2.0-or-later
 +
-+Kernel driver aspeed-g6-pwm-tach
-+=================================
++Kernel driver asus_rog_ryujin
++=============================
 +
-+Supported chips:
-+	ASPEED AST2600
++Supported devices:
 +
-+Authors:
-+	<billy_tsai@aspeedtech.com>
++* ASUS ROG RYUJIN II 360
 +
-+Description:
-+------------
-+This driver implements support for ASPEED AST2600 Fan Tacho controller.
-+The controller supports up to 16 tachometer inputs.
++Author: Aleksa Savic
 +
-+The driver provides the following sensor accesses in sysfs:
++Description
++-----------
 +
-+=============== ======= ======================================================
-+fanX_input	ro	provide current fan rotation value in RPM as reported
-+			by the fan to the device.
-+fanX_div	rw	Fan divisor: Supported value are power of 4 (1, 4, 16
-+                        64, ... 4194304)
-+                        The larger divisor, the less rpm accuracy and the less
-+                        affected by fan signal glitch.
-+=============== ======= ======================================================
++This driver enables hardware monitoring support for the listed ASUS ROG RYUJIN
++all-in-one CPU liquid coolers. Available sensors are pump, internal and external
++(controller) fan speed in RPM, their duties in PWM, as well as coolant temperature.
++
++Attaching external fans to the controller is optional and allows them to be
++controlled from the device. If not connected, the fan-related sensors will
++report zeroes. The controller is a separate hardware unit that comes bundled
++with the AIO and connects to it to allow fan control.
++
++The addressable LCD screen is not supported in this driver and should
++be controlled through userspace tools.
++
++Usage notes
++-----------
++
++As these are USB HIDs, the driver can be loaded automatically by the kernel and
++supports hot swapping.
++
++Sysfs entries
++-------------
++
++=========== =============================================
++fan1_input  Pump speed (in rpm)
++fan2_input  Internal fan speed (in rpm)
++fan3_input  External (controller) fan 1 speed (in rpm)
++fan4_input  External (controller) fan 2 speed (in rpm)
++fan5_input  External (controller) fan 3 speed (in rpm)
++fan6_input  External (controller) fan 4 speed (in rpm)
++temp1_input Coolant temperature (in millidegrees Celsius)
++pwm1        Pump duty
++pwm2        Internal fan duty
++pwm3        External (controller) fan duty
++=========== =============================================
 diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 72f4e6065bae..f5ff380f7c9d 100644
+index c7ed1f73ac06..e29aa21d759f 100644
 --- a/Documentation/hwmon/index.rst
 +++ b/Documentation/hwmon/index.rst
-@@ -44,6 +44,7 @@ Hardware Monitoring Kernel Drivers
-    aquacomputer_d5next
-    asb100
+@@ -46,6 +46,7 @@ Hardware Monitoring Kernel Drivers
     asc7621
-+   aspeed-g6-pwm-tach
     aspeed-pwm-tacho
     asus_ec_sensors
++   asus_rog_ryujin
     asus_wmi_sensors
+    bcm54140
+    bel-pfe
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a0677e35c9b6..e7d3eb551230 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3161,6 +3161,12 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git
+ F:	drivers/platform/x86/asus-tf103c-dock.c
+ 
++ASUS ROG RYUJIN AIO HARDWARE MONITOR DRIVER
++M:	Aleksa Savic <savicaleksa83@gmail.com>
++L:	linux-hwmon@vger.kernel.org
++S:	Maintained
++F:	drivers/hwmon/asus_rog_ryujin.c
++
+ ASUS WIRELESS RADIO CONTROL DRIVER
+ M:	João Paulo Rechi Vita <jprvita@gmail.com>
+ L:	platform-driver-x86@vger.kernel.org
 diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index cf27523eed5a..546a47a5880b 100644
+index a608264da87d..07932bbff75c 100644
 --- a/drivers/hwmon/Kconfig
 +++ b/drivers/hwmon/Kconfig
-@@ -412,6 +412,17 @@ config SENSORS_ASPEED
+@@ -301,6 +301,15 @@ config SENSORS_ASC7621
  	  This driver can also be built as a module. If so, the module
- 	  will be called aspeed_pwm_tacho.
+ 	  will be called asc7621.
  
-+config SENSORS_ASPEED_G6
-+	tristate "ASPEED g6 PWM and Fan tach driver"
-+	depends on ARCH_ASPEED || COMPILE_TEST
-+	depends on PWM
++config SENSORS_ASUS_ROG_RYUJIN
++	tristate "ASUS ROG RYUJIN II 360 hardware monitoring driver"
 +	help
-+	  This driver provides support for ASPEED G6 PWM and Fan Tach
-+	  controllers.
++	  If you say yes here you get support for the fans and sensors of
++	  the ASUS ROG RYUJIN II 360 AIO CPU liquid cooler.
 +
 +	  This driver can also be built as a module. If so, the module
-+	  will be called aspeed_pwm_tacho.
++	  will be called asus_rog_ryujin.
 +
- config SENSORS_ATXP1
- 	tristate "Attansic ATXP1 VID controller"
- 	depends on I2C
+ config SENSORS_AXI_FAN_CONTROL
+ 	tristate "Analog Devices FAN Control HDL Core driver"
+ 	help
 diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index e84bd9685b5c..92b150682828 100644
+index 47be39af5c03..f9f78e2387fa 100644
 --- a/drivers/hwmon/Makefile
 +++ b/drivers/hwmon/Makefile
 @@ -55,6 +55,7 @@ obj-$(CONFIG_SENSORS_ARM_SCPI)	+= scpi-hwmon.o
  obj-$(CONFIG_SENSORS_AS370)	+= as370-hwmon.o
  obj-$(CONFIG_SENSORS_ASC7621)	+= asc7621.o
  obj-$(CONFIG_SENSORS_ASPEED)	+= aspeed-pwm-tacho.o
-+obj-$(CONFIG_SENSORS_ASPEED_G6) += aspeed-g6-pwm-tach.o
++obj-$(CONFIG_SENSORS_ASUS_ROG_RYUJIN)	+= asus_rog_ryujin.o
  obj-$(CONFIG_SENSORS_ATXP1)	+= atxp1.o
  obj-$(CONFIG_SENSORS_AXI_FAN_CONTROL) += axi-fan-control.o
  obj-$(CONFIG_SENSORS_BT1_PVT)	+= bt1-pvt.o
-diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
+diff --git a/drivers/hwmon/asus_rog_ryujin.c b/drivers/hwmon/asus_rog_ryujin.c
 new file mode 100644
-index 000000000000..996b77489710
+index 000000000000..f8b20346a995
 --- /dev/null
-+++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
-@@ -0,0 +1,538 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/drivers/hwmon/asus_rog_ryujin.c
+@@ -0,0 +1,609 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Copyright (C) 2021 Aspeed Technology Inc.
++ * hwmon driver for Asus ROG Ryujin II 360 AIO cooler.
 + *
-+ * PWM/TACH controller driver for Aspeed ast2600 SoCs.
-+ * This drivers doesn't support earlier version of the IP.
-+ *
-+ * The hardware operates in time quantities of length
-+ * Q := (DIV_L + 1) << DIV_H / input-clk
-+ * The length of a PWM period is (DUTY_CYCLE_PERIOD + 1) * Q.
-+ * The maximal value for DUTY_CYCLE_PERIOD is used here to provide
-+ * a fine grained selection for the duty cycle.
-+ *
-+ * This driver uses DUTY_CYCLE_RISING_POINT = 0, so from the start of a
-+ * period the output is active until DUTY_CYCLE_FALLING_POINT * Q. Note
-+ * that if DUTY_CYCLE_RISING_POINT = DUTY_CYCLE_FALLING_POINT the output is
-+ * always active.
-+ *
-+ * Register usage:
-+ * PIN_ENABLE: When it is unset the pwm controller will emit inactive level to the external.
-+ * Use to determine whether the PWM channel is enabled or disabled
-+ * CLK_ENABLE: When it is unset the pwm controller will assert the duty counter reset and
-+ * emit inactive level to the PIN_ENABLE mux after that the driver can still change the pwm period
-+ * and duty and the value will apply when CLK_ENABLE be set again.
-+ * Use to determine whether duty_cycle bigger than 0.
-+ * PWM_ASPEED_CTRL_INVERSE: When it is toggled the output value will inverse immediately.
-+ * PWM_ASPEED_DUTY_CYCLE_FALLING_POINT/PWM_ASPEED_DUTY_CYCLE_RISING_POINT: When these two
-+ * values are equal it means the duty cycle = 100%.
-+ *
-+ * The glitch may generate at:
-+ * - Enabled changing when the duty_cycle bigger than 0% and less than 100%.
-+ * - Polarity changing when the duty_cycle bigger than 0% and less than 100%.
-+ *
-+ * Limitations:
-+ * - When changing both duty cycle and period, we cannot prevent in
-+ *   software that the output might produce a period with mixed
-+ *   settings.
-+ * - Disabling the PWM doesn't complete the current period.
-+ *
-+ * Improvements:
-+ * - When only changing one of duty cycle or period, our pwm controller will not
-+ *   generate the glitch, the configure will change at next cycle of pwm.
-+ *   This improvement can disable/enable through PWM_ASPEED_CTRL_DUTY_SYNC_DISABLE.
++ * Copyright 2024 Aleksa Savic <savicaleksa83@gmail.com>
 + */
 +
-+#include <linux/bitfield.h>
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
++#include <linux/debugfs.h>
++#include <linux/hid.h>
 +#include <linux/hwmon.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/math64.h>
++#include <linux/jiffies.h>
 +#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/pwm.h>
-+#include <linux/reset.h>
-+#include <linux/sysfs.h>
++#include <linux/spinlock.h>
++#include <asm/unaligned.h>
 +
-+/* The channel number of Aspeed pwm controller */
-+#define PWM_ASPEED_NR_PWMS			16
-+/* PWM Control Register */
-+#define PWM_ASPEED_CTRL(ch)			((ch) * 0x10 + 0x00)
-+#define PWM_ASPEED_CTRL_LOAD_SEL_RISING_AS_WDT	BIT(19)
-+#define PWM_ASPEED_CTRL_DUTY_LOAD_AS_WDT_ENABLE	BIT(18)
-+#define PWM_ASPEED_CTRL_DUTY_SYNC_DISABLE	BIT(17)
-+#define PWM_ASPEED_CTRL_CLK_ENABLE		BIT(16)
-+#define PWM_ASPEED_CTRL_LEVEL_OUTPUT		BIT(15)
-+#define PWM_ASPEED_CTRL_INVERSE			BIT(14)
-+#define PWM_ASPEED_CTRL_OPEN_DRAIN_ENABLE	BIT(13)
-+#define PWM_ASPEED_CTRL_PIN_ENABLE		BIT(12)
-+#define PWM_ASPEED_CTRL_CLK_DIV_H		GENMASK(11, 8)
-+#define PWM_ASPEED_CTRL_CLK_DIV_L		GENMASK(7, 0)
++#define DRIVER_NAME	"asus_rog_ryujin"
 +
-+/* PWM Duty Cycle Register */
-+#define PWM_ASPEED_DUTY_CYCLE(ch)		((ch) * 0x10 + 0x04)
-+#define PWM_ASPEED_DUTY_CYCLE_PERIOD		GENMASK(31, 24)
-+#define PWM_ASPEED_DUTY_CYCLE_POINT_AS_WDT	GENMASK(23, 16)
-+#define PWM_ASPEED_DUTY_CYCLE_FALLING_POINT	GENMASK(15, 8)
-+#define PWM_ASPEED_DUTY_CYCLE_RISING_POINT	GENMASK(7, 0)
++#define USB_VENDOR_ID_ASUS_ROG		0x0b05
++#define USB_PRODUCT_ID_RYUJIN_AIO	0x1988	/* ASUS ROG RYUJIN II 360 */
 +
-+/* PWM fixed value */
-+#define PWM_ASPEED_FIXED_PERIOD			FIELD_MAX(PWM_ASPEED_DUTY_CYCLE_PERIOD)
++#define STATUS_VALIDITY		1500	/* ms */
++#define MAX_REPORT_LENGTH	65
 +
-+/* The channel number of Aspeed tach controller */
-+#define TACH_ASPEED_NR_TACHS		16
-+/* TACH Control Register */
-+#define TACH_ASPEED_CTRL(ch)		(((ch) * 0x10) + 0x08)
-+#define TACH_ASPEED_IER			BIT(31)
-+#define TACH_ASPEED_INVERS_LIMIT	BIT(30)
-+#define TACH_ASPEED_LOOPBACK		BIT(29)
-+#define TACH_ASPEED_ENABLE		BIT(28)
-+#define TACH_ASPEED_DEBOUNCE_MASK	GENMASK(27, 26)
-+#define TACH_ASPEED_DEBOUNCE_BIT	26
-+#define TACH_ASPEED_IO_EDGE_MASK	GENMASK(25, 24)
-+#define TACH_ASPEED_IO_EDGE_BIT		24
-+#define TACH_ASPEED_CLK_DIV_T_MASK	GENMASK(23, 20)
-+#define TACH_ASPEED_CLK_DIV_BIT		20
-+#define TACH_ASPEED_THRESHOLD_MASK	GENMASK(19, 0)
-+/* [27:26] */
-+#define DEBOUNCE_3_CLK			0x00
-+#define DEBOUNCE_2_CLK			0x01
-+#define DEBOUNCE_1_CLK			0x02
-+#define DEBOUNCE_0_CLK			0x03
-+/* [25:24] */
-+#define F2F_EDGES			0x00
-+#define R2R_EDGES			0x01
-+#define BOTH_EDGES			0x02
-+/* [23:20] */
-+/* divisor = 4 to the nth power, n = register value */
-+#define DEFAULT_TACH_DIV		1024
-+#define DIV_TO_REG(divisor)		(ilog2(divisor) >> 1)
++/* Cooler status report offsets */
++#define RYUJIN_TEMP_SENSOR_1		3
++#define RYUJIN_TEMP_SENSOR_2		4
++#define RYUJIN_PUMP_SPEED		5
++#define RYUJIN_INTERNAL_FAN_SPEED	7
 +
-+/* TACH Status Register */
-+#define TACH_ASPEED_STS(ch)		(((ch) * 0x10) + 0x0C)
++/* Cooler duty report offsets */
++#define RYUJIN_PUMP_DUTY		4
++#define RYUJIN_INTERNAL_FAN_DUTY	5
 +
-+/*PWM_TACH_STS */
-+#define TACH_ASPEED_ISR			BIT(31)
-+#define TACH_ASPEED_PWM_OUT		BIT(25)
-+#define TACH_ASPEED_PWM_OEN		BIT(24)
-+#define TACH_ASPEED_DEB_INPUT		BIT(23)
-+#define TACH_ASPEED_RAW_INPUT		BIT(22)
-+#define TACH_ASPEED_VALUE_UPDATE	BIT(21)
-+#define TACH_ASPEED_FULL_MEASUREMENT	BIT(20)
-+#define TACH_ASPEED_VALUE_MASK		GENMASK(19, 0)
-+/**********************************************************
-+ * Software setting
-+ *********************************************************/
-+#define DEFAULT_FAN_PULSE_PR		2
++/* Controller status (speeds) report offsets */
++#define RYUJIN_CONTROLLER_SPEED_1	5
++#define RYUJIN_CONTROLLER_SPEED_2	7
++#define RYUJIN_CONTROLLER_SPEED_3	9
++#define RYUJIN_CONTROLLER_SPEED_4	3
 +
-+struct aspeed_pwm_tach_data {
-+	struct device *dev;
-+	void __iomem *base;
-+	struct clk *clk;
-+	struct reset_control *reset;
-+	unsigned long clk_rate;
-+	struct pwm_chip chip;
-+	bool tach_present[TACH_ASPEED_NR_TACHS];
-+	u32 tach_divisor;
++/* Controller duty report offsets */
++#define RYUJIN_CONTROLLER_DUTY		4
++
++/* Control commands and their inner offsets */
++#define RYUJIN_CMD_PREFIX	0xEC
++
++static const u8 get_cooler_status_cmd[] = { RYUJIN_CMD_PREFIX, 0x99 };
++static const u8 get_cooler_duty_cmd[] = { RYUJIN_CMD_PREFIX, 0x9A };
++static const u8 get_controller_speed_cmd[] = { RYUJIN_CMD_PREFIX, 0xA0 };
++static const u8 get_controller_duty_cmd[] = { RYUJIN_CMD_PREFIX, 0xA1 };
++
++#define RYUJIN_SET_COOLER_PUMP_DUTY_OFFSET	3
++#define RYUJIN_SET_COOLER_FAN_DUTY_OFFSET	4
++static const u8 set_cooler_duty_cmd[] = { RYUJIN_CMD_PREFIX, 0x1A, 0x00, 0x00, 0x00 };
++
++#define RYUJIN_SET_CONTROLLER_FAN_DUTY_OFFSET	4
++static const u8 set_controller_duty_cmd[] = { RYUJIN_CMD_PREFIX, 0x21, 0x00, 0x00, 0x00 };
++
++/* Command lengths */
++#define GET_CMD_LENGTH	2	/* Same length for all get commands */
++#define SET_CMD_LENGTH	5	/* Same length for all set commands */
++
++/* Command response headers */
++#define RYUJIN_GET_COOLER_STATUS_CMD_RESPONSE		0x19
++#define RYUJIN_GET_COOLER_DUTY_CMD_RESPONSE		0x1A
++#define RYUJIN_GET_CONTROLLER_SPEED_CMD_RESPONSE	0x20
++#define RYUJIN_GET_CONTROLLER_DUTY_CMD_RESPONSE		0x21
++
++static const char *const rog_ryujin_temp_label[] = {
++	"Coolant temp"
 +};
 +
-+static inline struct aspeed_pwm_tach_data *
-+aspeed_pwm_chip_to_data(struct pwm_chip *chip)
-+{
-+	return container_of(chip, struct aspeed_pwm_tach_data, chip);
-+}
-+
-+static int aspeed_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
-+				struct pwm_state *state)
-+{
-+	struct aspeed_pwm_tach_data *priv = aspeed_pwm_chip_to_data(chip);
-+	u32 hwpwm = pwm->hwpwm;
-+	bool polarity, pin_en, clk_en;
-+	u32 duty_pt, val;
-+	u64 div_h, div_l, duty_cycle_period, dividend;
-+
-+	val = readl(priv->base + PWM_ASPEED_CTRL(hwpwm));
-+	polarity = FIELD_GET(PWM_ASPEED_CTRL_INVERSE, val);
-+	pin_en = FIELD_GET(PWM_ASPEED_CTRL_PIN_ENABLE, val);
-+	clk_en = FIELD_GET(PWM_ASPEED_CTRL_CLK_ENABLE, val);
-+	div_h = FIELD_GET(PWM_ASPEED_CTRL_CLK_DIV_H, val);
-+	div_l = FIELD_GET(PWM_ASPEED_CTRL_CLK_DIV_L, val);
-+	val = readl(priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+	duty_pt = FIELD_GET(PWM_ASPEED_DUTY_CYCLE_FALLING_POINT, val);
-+	duty_cycle_period = FIELD_GET(PWM_ASPEED_DUTY_CYCLE_PERIOD, val);
-+	/*
-+	 * This multiplication doesn't overflow, the upper bound is
-+	 * 1000000000 * 256 * 256 << 15 = 0x1dcd650000000000
-+	 */
-+	dividend = (u64)NSEC_PER_SEC * (div_l + 1) * (duty_cycle_period + 1)
-+		       << div_h;
-+	state->period = DIV_ROUND_UP_ULL(dividend, priv->clk_rate);
-+
-+	if (clk_en && duty_pt) {
-+		dividend = (u64)NSEC_PER_SEC * (div_l + 1) * duty_pt
-+				 << div_h;
-+		state->duty_cycle = DIV_ROUND_UP_ULL(dividend, priv->clk_rate);
-+	} else {
-+		state->duty_cycle = clk_en ? state->period : 0;
-+	}
-+	state->polarity = polarity ? PWM_POLARITY_INVERSED : PWM_POLARITY_NORMAL;
-+	state->enabled = pin_en;
-+	return 0;
-+}
-+
-+static int aspeed_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
-+			    const struct pwm_state *state)
-+{
-+	struct aspeed_pwm_tach_data *priv = aspeed_pwm_chip_to_data(chip);
-+	u32 hwpwm = pwm->hwpwm, duty_pt, val;
-+	u64 div_h, div_l, divisor, expect_period;
-+	bool clk_en;
-+
-+	expect_period = div64_u64(ULLONG_MAX, (u64)priv->clk_rate);
-+	expect_period = min(expect_period, state->period);
-+	dev_dbg(chip->dev, "expect period: %lldns, duty_cycle: %lldns",
-+		expect_period, state->duty_cycle);
-+	/*
-+	 * Pick the smallest value for div_h so that div_l can be the biggest
-+	 * which results in a finer resolution near the target period value.
-+	 */
-+	divisor = (u64)NSEC_PER_SEC * (PWM_ASPEED_FIXED_PERIOD + 1) *
-+		  (FIELD_MAX(PWM_ASPEED_CTRL_CLK_DIV_L) + 1);
-+	div_h = order_base_2(DIV64_U64_ROUND_UP(priv->clk_rate * expect_period, divisor));
-+	if (div_h > 0xf)
-+		div_h = 0xf;
-+
-+	divisor = ((u64)NSEC_PER_SEC * (PWM_ASPEED_FIXED_PERIOD + 1)) << div_h;
-+	div_l = div64_u64(priv->clk_rate * expect_period, divisor);
-+
-+	if (div_l == 0)
-+		return -ERANGE;
-+
-+	div_l -= 1;
-+
-+	if (div_l > 255)
-+		div_l = 255;
-+
-+	dev_dbg(chip->dev, "clk source: %ld div_h %lld, div_l : %lld\n",
-+		priv->clk_rate, div_h, div_l);
-+	/* duty_pt = duty_cycle * (PERIOD + 1) / period */
-+	duty_pt = div64_u64(state->duty_cycle * priv->clk_rate,
-+			    (u64)NSEC_PER_SEC * (div_l + 1) << div_h);
-+	dev_dbg(chip->dev, "duty_cycle = %lld, duty_pt = %d\n",
-+		state->duty_cycle, duty_pt);
-+
-+	/*
-+	 * Fixed DUTY_CYCLE_PERIOD to its max value to get a
-+	 * fine-grained resolution for duty_cycle at the expense of a
-+	 * coarser period resolution.
-+	 */
-+	val = readl(priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+	val &= ~PWM_ASPEED_DUTY_CYCLE_PERIOD;
-+	val |= FIELD_PREP(PWM_ASPEED_DUTY_CYCLE_PERIOD,
-+			  PWM_ASPEED_FIXED_PERIOD);
-+	writel(val, priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+
-+	if (duty_pt == 0) {
-+		/* emit inactive level and assert the duty counter reset */
-+		clk_en = 0;
-+	} else {
-+		clk_en = 1;
-+		if (duty_pt >= (PWM_ASPEED_FIXED_PERIOD + 1))
-+			duty_pt = 0;
-+		val = readl(priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+		val &= ~(PWM_ASPEED_DUTY_CYCLE_RISING_POINT |
-+			 PWM_ASPEED_DUTY_CYCLE_FALLING_POINT);
-+		val |= FIELD_PREP(PWM_ASPEED_DUTY_CYCLE_FALLING_POINT, duty_pt);
-+		writel(val, priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+	}
-+
-+	val = readl(priv->base + PWM_ASPEED_CTRL(hwpwm));
-+	val &= ~(PWM_ASPEED_CTRL_CLK_DIV_H | PWM_ASPEED_CTRL_CLK_DIV_L |
-+		 PWM_ASPEED_CTRL_PIN_ENABLE | PWM_ASPEED_CTRL_CLK_ENABLE |
-+		 PWM_ASPEED_CTRL_INVERSE);
-+	val |= FIELD_PREP(PWM_ASPEED_CTRL_CLK_DIV_H, div_h) |
-+	       FIELD_PREP(PWM_ASPEED_CTRL_CLK_DIV_L, div_l) |
-+	       FIELD_PREP(PWM_ASPEED_CTRL_PIN_ENABLE, state->enabled) |
-+	       FIELD_PREP(PWM_ASPEED_CTRL_CLK_ENABLE, clk_en) |
-+	       FIELD_PREP(PWM_ASPEED_CTRL_INVERSE, state->polarity);
-+	writel(val, priv->base + PWM_ASPEED_CTRL(hwpwm));
-+
-+	return 0;
-+}
-+
-+static const struct pwm_ops aspeed_pwm_ops = {
-+	.apply = aspeed_pwm_apply,
-+	.get_state = aspeed_pwm_get_state,
++static const char *const rog_ryujin_speed_label[] = {
++	"Pump speed",
++	"Internal fan speed",
++	"Controller fan 1 speed",
++	"Controller fan 2 speed",
++	"Controller fan 3 speed",
++	"Controller fan 4 speed",
 +};
 +
-+static void aspeed_tach_ch_enable(struct aspeed_pwm_tach_data *priv, u8 tach_ch,
-+				  bool enable)
++struct rog_ryujin_data {
++	struct hid_device *hdev;
++	struct device *hwmon_dev;
++	/* For locking access to buffer */
++	struct mutex buffer_lock;
++	/* For queueing multiple readers */
++	struct mutex status_report_request_mutex;
++	/* For reinitializing the completions below */
++	spinlock_t status_report_request_lock;
++	struct completion cooler_status_received;
++	struct completion controller_status_received;
++	struct completion cooler_duty_received;
++	struct completion controller_duty_received;
++	struct completion cooler_duty_set;
++	struct completion controller_duty_set;
++
++	/* Sensor data */
++	s32 temp_input[1];
++	u16 speed_input[6];	/* Pump, internal fan and four controller fan speeds in RPM */
++	u8 duty_input[3];	/* Pump, internal fan and controller fan duty in PWM */
++
++	u8 *buffer;
++	unsigned long updated;	/* jiffies */
++};
++
++static int rog_ryujin_percent_to_pwm(u16 val)
 +{
-+	if (enable)
-+		writel(readl(priv->base + TACH_ASPEED_CTRL(tach_ch)) |
-+			       TACH_ASPEED_ENABLE,
-+		       priv->base + TACH_ASPEED_CTRL(tach_ch));
-+	else
-+		writel(readl(priv->base + TACH_ASPEED_CTRL(tach_ch)) &
-+			       ~TACH_ASPEED_ENABLE,
-+		       priv->base + TACH_ASPEED_CTRL(tach_ch));
++	return DIV_ROUND_CLOSEST(val * 255, 100);
 +}
 +
-+static int aspeed_tach_val_to_rpm(struct aspeed_pwm_tach_data *priv, u32 tach_val)
++static int rog_ryujin_pwm_to_percent(long val)
 +{
-+	u64 rpm;
-+	u32 tach_div;
-+
-+	tach_div = tach_val * priv->tach_divisor * DEFAULT_FAN_PULSE_PR;
-+
-+	dev_dbg(priv->dev, "clk %ld, tach_val %d , tach_div %d\n",
-+		priv->clk_rate, tach_val, tach_div);
-+
-+	rpm = (u64)priv->clk_rate * 60;
-+	do_div(rpm, tach_div);
-+
-+	return (int)rpm;
++	return DIV_ROUND_CLOSEST(val * 100, 255);
 +}
 +
-+static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tach_data *priv,
-+				      u8 fan_tach_ch)
++static umode_t rog_ryujin_is_visible(const void *data,
++				     enum hwmon_sensor_types type, u32 attr, int channel)
 +{
-+	u32 val;
-+
-+	val = readl(priv->base + TACH_ASPEED_STS(fan_tach_ch));
-+
-+	if (!(val & TACH_ASPEED_FULL_MEASUREMENT))
-+		return 0;
-+	val = FIELD_GET(TACH_ASPEED_VALUE_MASK, val);
-+	return aspeed_tach_val_to_rpm(priv, val);
-+}
-+
-+static int aspeed_tach_hwmon_read(struct device *dev,
-+				  enum hwmon_sensor_types type, u32 attr,
-+				  int channel, long *val)
-+{
-+	struct aspeed_pwm_tach_data *priv = dev_get_drvdata(dev);
-+	u32 reg_val;
-+
-+	switch (attr) {
-+	case hwmon_fan_input:
-+		*val = aspeed_get_fan_tach_ch_rpm(priv, channel);
++	switch (type) {
++	case hwmon_temp:
++		switch (attr) {
++		case hwmon_temp_label:
++		case hwmon_temp_input:
++			return 0444;
++		default:
++			break;
++		}
 +		break;
-+	case hwmon_fan_div:
-+		reg_val = readl(priv->base + TACH_ASPEED_CTRL(channel));
-+		reg_val = FIELD_GET(TACH_ASPEED_CLK_DIV_T_MASK, reg_val);
-+		*val = BIT(reg_val << 1);
++	case hwmon_fan:
++		switch (attr) {
++		case hwmon_fan_label:
++		case hwmon_fan_input:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	case hwmon_pwm:
++		switch (attr) {
++		case hwmon_pwm_input:
++			return 0644;
++		default:
++			break;
++		}
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++/* Writes the command to the device with the rest of the report filled with zeroes */
++static int rog_ryujin_write_expanded(struct rog_ryujin_data *priv, const u8 *cmd, int cmd_length)
++{
++	int ret;
++
++	mutex_lock(&priv->buffer_lock);
++
++	memcpy_and_pad(priv->buffer, MAX_REPORT_LENGTH, cmd, cmd_length, 0x00);
++	ret = hid_hw_output_report(priv->hdev, priv->buffer, MAX_REPORT_LENGTH);
++
++	mutex_unlock(&priv->buffer_lock);
++	return ret;
++}
++
++/* Assumes priv->status_report_request_mutex is locked */
++static int rog_ryujin_execute_cmd(struct rog_ryujin_data *priv, const u8 *cmd, int cmd_length,
++				  struct completion *status_completion)
++{
++	int ret;
++
++	/*
++	 * Disable raw event parsing for a moment to safely reinitialize the
++	 * completion. Reinit is done because hidraw could have triggered
++	 * the raw event parsing and marked the passed in completion as done.
++	 */
++	spin_lock_bh(&priv->status_report_request_lock);
++	reinit_completion(status_completion);
++	spin_unlock_bh(&priv->status_report_request_lock);
++
++	/* Send command for getting data */
++	ret = rog_ryujin_write_expanded(priv, cmd, cmd_length);
++	if (ret < 0)
++		return ret;
++
++	ret = wait_for_completion_interruptible_timeout(status_completion,
++							msecs_to_jiffies(STATUS_VALIDITY));
++	if (ret == 0)
++		return -ETIMEDOUT;
++	else if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int rog_ryujin_get_status(struct rog_ryujin_data *priv)
++{
++	int ret = mutex_lock_interruptible(&priv->status_report_request_mutex);
++
++	if (ret < 0)
++		return ret;
++
++	if (!time_after(jiffies, priv->updated + msecs_to_jiffies(STATUS_VALIDITY))) {
++		/* Data is up to date */
++		goto unlock_and_return;
++	}
++
++	/* Retrieve cooler status */
++	ret =
++	    rog_ryujin_execute_cmd(priv, get_cooler_status_cmd, GET_CMD_LENGTH,
++				   &priv->cooler_status_received);
++	if (ret < 0)
++		goto unlock_and_return;
++
++	/* Retrieve controller status (speeds) */
++	ret =
++	    rog_ryujin_execute_cmd(priv, get_controller_speed_cmd, GET_CMD_LENGTH,
++				   &priv->controller_status_received);
++	if (ret < 0)
++		goto unlock_and_return;
++
++	/* Retrieve cooler duty */
++	ret =
++	    rog_ryujin_execute_cmd(priv, get_cooler_duty_cmd, GET_CMD_LENGTH,
++				   &priv->cooler_duty_received);
++	if (ret < 0)
++		goto unlock_and_return;
++
++	/* Retrieve controller duty */
++	ret =
++	    rog_ryujin_execute_cmd(priv, get_controller_duty_cmd, GET_CMD_LENGTH,
++				   &priv->controller_duty_received);
++	if (ret < 0)
++		goto unlock_and_return;
++
++	priv->updated = jiffies;
++
++unlock_and_return:
++	mutex_unlock(&priv->status_report_request_mutex);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int rog_ryujin_read(struct device *dev, enum hwmon_sensor_types type,
++			   u32 attr, int channel, long *val)
++{
++	struct rog_ryujin_data *priv = dev_get_drvdata(dev);
++	int ret = rog_ryujin_get_status(priv);
++
++	if (ret < 0)
++		return ret;
++
++	switch (type) {
++	case hwmon_temp:
++		*val = priv->temp_input[channel];
++		break;
++	case hwmon_fan:
++		*val = priv->speed_input[channel];
++		break;
++	case hwmon_pwm:
++		switch (attr) {
++		case hwmon_pwm_input:
++			*val = priv->duty_input[channel];
++			break;
++		default:
++			return -EOPNOTSUPP;
++		}
++		break;
++	default:
++		return -EOPNOTSUPP;	/* unreachable */
++	}
++
++	return 0;
++}
++
++static int rog_ryujin_read_string(struct device *dev, enum hwmon_sensor_types type,
++				  u32 attr, int channel, const char **str)
++{
++	switch (type) {
++	case hwmon_temp:
++		*str = rog_ryujin_temp_label[channel];
++		break;
++	case hwmon_fan:
++		*str = rog_ryujin_speed_label[channel];
++		break;
++	default:
++		return -EOPNOTSUPP;	/* unreachable */
++	}
++
++	return 0;
++}
++
++static int rog_ryujin_write_fixed_duty(struct rog_ryujin_data *priv, int channel, int val)
++{
++	u8 set_cmd[SET_CMD_LENGTH];
++	int ret;
++
++	if (channel < 2) {
++		/*
++		 * Retrieve cooler duty since both pump and internal fan are set
++		 * together, then write back with one of them modified.
++		 */
++		ret = mutex_lock_interruptible(&priv->status_report_request_mutex);
++		if (ret < 0)
++			return ret;
++		ret =
++		    rog_ryujin_execute_cmd(priv, get_cooler_duty_cmd, GET_CMD_LENGTH,
++					   &priv->cooler_duty_received);
++		if (ret < 0)
++			goto unlock_and_return;
++
++		memcpy(set_cmd, set_cooler_duty_cmd, SET_CMD_LENGTH);
++
++		/* Cooler duties are set as 0-100% */
++		val = rog_ryujin_pwm_to_percent(val);
++
++		if (channel == 0) {
++			/* Cooler pump duty */
++			set_cmd[RYUJIN_SET_COOLER_PUMP_DUTY_OFFSET] = val;
++			set_cmd[RYUJIN_SET_COOLER_FAN_DUTY_OFFSET] =
++			    rog_ryujin_pwm_to_percent(priv->duty_input[1]);
++		} else if (channel == 1) {
++			/* Cooler internal fan duty */
++			set_cmd[RYUJIN_SET_COOLER_PUMP_DUTY_OFFSET] =
++			    rog_ryujin_pwm_to_percent(priv->duty_input[0]);
++			set_cmd[RYUJIN_SET_COOLER_FAN_DUTY_OFFSET] = val;
++		}
++
++		ret = rog_ryujin_execute_cmd(priv, set_cmd, SET_CMD_LENGTH, &priv->cooler_duty_set);
++unlock_and_return:
++		mutex_unlock(&priv->status_report_request_mutex);
++		if (ret < 0)
++			return ret;
++	} else {
++		/*
++		 * Controller fan duty (channel == 2). No need to retrieve current
++		 * duty, so just send the command.
++		 */
++		memcpy(set_cmd, set_controller_duty_cmd, SET_CMD_LENGTH);
++		set_cmd[RYUJIN_SET_CONTROLLER_FAN_DUTY_OFFSET] = val;
++
++		ret =
++		    rog_ryujin_execute_cmd(priv, set_cmd, SET_CMD_LENGTH,
++					   &priv->controller_duty_set);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Lock onto this value until next refresh cycle */
++	priv->duty_input[channel] = val;
++
++	return 0;
++}
++
++static int rog_ryujin_write(struct device *dev, enum hwmon_sensor_types type, u32 attr, int channel,
++			    long val)
++{
++	struct rog_ryujin_data *priv = dev_get_drvdata(dev);
++	int ret;
++
++	switch (type) {
++	case hwmon_pwm:
++		switch (attr) {
++		case hwmon_pwm_input:
++			if (val < 0 || val > 255)
++				return -EINVAL;
++
++			ret = rog_ryujin_write_fixed_duty(priv, channel, val);
++			if (ret < 0)
++				return ret;
++			break;
++		default:
++			return -EOPNOTSUPP;
++		}
 +		break;
 +	default:
 +		return -EOPNOTSUPP;
 +	}
-+	return 0;
-+}
-+
-+static int aspeed_tach_hwmon_write(struct device *dev,
-+				   enum hwmon_sensor_types type, u32 attr,
-+				   int channel, long val)
-+{
-+	struct aspeed_pwm_tach_data *priv = dev_get_drvdata(dev);
-+	u32 reg_val;
-+
-+	switch (attr) {
-+	case hwmon_fan_div:
-+		if (!is_power_of_2(val) || (ilog2(val) % 2) ||
-+		    DIV_TO_REG(val) > 0xb)
-+			return -EINVAL;
-+		priv->tach_divisor = val;
-+		reg_val = readl(priv->base + TACH_ASPEED_CTRL(channel));
-+		reg_val &= ~TACH_ASPEED_CLK_DIV_T_MASK;
-+		reg_val |= FIELD_PREP(TACH_ASPEED_CLK_DIV_T_MASK,
-+				      DIV_TO_REG(priv->tach_divisor));
-+		writel(reg_val, priv->base + TACH_ASPEED_CTRL(channel));
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
 +
 +	return 0;
 +}
 +
-+static umode_t aspeed_tach_dev_is_visible(const void *drvdata,
-+					  enum hwmon_sensor_types type,
-+					  u32 attr, int channel)
-+{
-+	const struct aspeed_pwm_tach_data *priv = drvdata;
-+
-+	if (!priv->tach_present[channel])
-+		return 0;
-+	switch (attr) {
-+	case hwmon_fan_input:
-+		return 0444;
-+	case hwmon_fan_div:
-+		return 0644;
-+	}
-+	return 0;
-+}
-+
-+static const struct hwmon_ops aspeed_tach_ops = {
-+	.is_visible = aspeed_tach_dev_is_visible,
-+	.read = aspeed_tach_hwmon_read,
-+	.write = aspeed_tach_hwmon_write,
++static const struct hwmon_ops rog_ryujin_hwmon_ops = {
++	.is_visible = rog_ryujin_is_visible,
++	.read = rog_ryujin_read,
++	.read_string = rog_ryujin_read_string,
++	.write = rog_ryujin_write
 +};
 +
-+static const struct hwmon_channel_info *aspeed_tach_info[] = {
-+	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV,
-+			   HWMON_F_INPUT | HWMON_F_DIV, HWMON_F_INPUT | HWMON_F_DIV),
++static const struct hwmon_channel_info *rog_ryujin_info[] = {
++	HWMON_CHANNEL_INFO(temp,
++			   HWMON_T_INPUT | HWMON_T_LABEL),
++	HWMON_CHANNEL_INFO(fan,
++			   HWMON_F_INPUT | HWMON_F_LABEL,
++			   HWMON_F_INPUT | HWMON_F_LABEL,
++			   HWMON_F_INPUT | HWMON_F_LABEL,
++			   HWMON_F_INPUT | HWMON_F_LABEL,
++			   HWMON_F_INPUT | HWMON_F_LABEL,
++			   HWMON_F_INPUT | HWMON_F_LABEL),
++	HWMON_CHANNEL_INFO(pwm,
++			   HWMON_PWM_INPUT,
++			   HWMON_PWM_INPUT,
++			   HWMON_PWM_INPUT),
 +	NULL
 +};
 +
-+static const struct hwmon_chip_info aspeed_tach_chip_info = {
-+	.ops = &aspeed_tach_ops,
-+	.info = aspeed_tach_info,
++static const struct hwmon_chip_info rog_ryujin_chip_info = {
++	.ops = &rog_ryujin_hwmon_ops,
++	.info = rog_ryujin_info,
 +};
 +
-+static void aspeed_present_fan_tach(struct aspeed_pwm_tach_data *priv, u8 *tach_ch, int count)
++static int rog_ryujin_raw_event(struct hid_device *hdev, struct hid_report *report, u8 *data,
++				int size)
 +{
-+	u8 ch, index;
-+	u32 val;
++	struct rog_ryujin_data *priv = hid_get_drvdata(hdev);
 +
-+	for (index = 0; index < count; index++) {
-+		ch = tach_ch[index];
-+		priv->tach_present[ch] = true;
-+		priv->tach_divisor = DEFAULT_TACH_DIV;
++	if (data[0] != RYUJIN_CMD_PREFIX)
++		return 0;
 +
-+		val = readl(priv->base + TACH_ASPEED_CTRL(ch));
-+		val &= ~(TACH_ASPEED_INVERS_LIMIT | TACH_ASPEED_DEBOUNCE_MASK |
-+			 TACH_ASPEED_IO_EDGE_MASK | TACH_ASPEED_CLK_DIV_T_MASK |
-+			 TACH_ASPEED_THRESHOLD_MASK);
-+		val |= (DEBOUNCE_3_CLK << TACH_ASPEED_DEBOUNCE_BIT) |
-+		       F2F_EDGES |
-+		       FIELD_PREP(TACH_ASPEED_CLK_DIV_T_MASK,
-+				  DIV_TO_REG(priv->tach_divisor));
-+		writel(val, priv->base + TACH_ASPEED_CTRL(ch));
++	if (data[1] == RYUJIN_GET_COOLER_STATUS_CMD_RESPONSE) {
++		/* Received coolant temp and speeds of pump and internal fan */
++		priv->temp_input[0] =
++		    data[RYUJIN_TEMP_SENSOR_1] * 1000 + data[RYUJIN_TEMP_SENSOR_2] * 100;
++		priv->speed_input[0] = get_unaligned_le16(data + RYUJIN_PUMP_SPEED);
++		priv->speed_input[1] = get_unaligned_le16(data + RYUJIN_INTERNAL_FAN_SPEED);
 +
-+		aspeed_tach_ch_enable(priv, ch, true);
-+	}
-+}
++		if (!completion_done(&priv->cooler_status_received))
++			complete_all(&priv->cooler_status_received);
++	} else if (data[1] == RYUJIN_GET_CONTROLLER_SPEED_CMD_RESPONSE) {
++		/* Received speeds of four fans attached to the controller */
++		priv->speed_input[2] = get_unaligned_le16(data + RYUJIN_CONTROLLER_SPEED_1);
++		priv->speed_input[3] = get_unaligned_le16(data + RYUJIN_CONTROLLER_SPEED_2);
++		priv->speed_input[4] = get_unaligned_le16(data + RYUJIN_CONTROLLER_SPEED_3);
++		priv->speed_input[5] = get_unaligned_le16(data + RYUJIN_CONTROLLER_SPEED_4);
 +
-+static int aspeed_tach_create_fan(struct device *dev, struct device_node *child,
-+				  struct aspeed_pwm_tach_data *priv)
-+{
-+	int ret, count;
-+	u8 *tach_ch;
-+
-+	count = of_property_count_u8_elems(child, "tach-ch");
-+	if (count < 1)
-+		return -EINVAL;
-+	tach_ch = devm_kcalloc(dev, count, sizeof(*tach_ch), GFP_KERNEL);
-+	if (!tach_ch)
-+		return -ENOMEM;
-+	ret = of_property_read_u8_array(child, "tach-ch", tach_ch, count);
-+	if (ret)
-+		return ret;
-+
-+	aspeed_present_fan_tach(priv, tach_ch, count);
-+
-+	return 0;
-+}
-+
-+static int aspeed_pwm_tach_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev, *hwmon;
-+	int ret;
-+	struct device_node *child;
-+	struct aspeed_pwm_tach_data *priv;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	priv->dev = dev;
-+	priv->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
-+
-+	priv->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(priv->clk))
-+		return dev_err_probe(dev, PTR_ERR(priv->clk),
-+				     "Couldn't get clock\n");
-+	priv->clk_rate = clk_get_rate(priv->clk);
-+	priv->reset = devm_reset_control_get_exclusive(dev, NULL);
-+	if (IS_ERR(priv->reset))
-+		return dev_err_probe(dev, PTR_ERR(priv->reset),
-+				     "Couldn't get reset control\n");
-+
-+	ret = reset_control_deassert(priv->reset);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Couldn't deassert reset control\n");
-+
-+	priv->chip.dev = dev;
-+	priv->chip.ops = &aspeed_pwm_ops;
-+	priv->chip.npwm = PWM_ASPEED_NR_PWMS;
-+
-+	ret = devm_pwmchip_add(dev, &priv->chip);
-+	if (ret < 0) {
-+		reset_control_assert(priv->reset);
-+		return dev_err_probe(dev, ret, "Failed to add PWM chip\n");
-+	}
-+
-+	for_each_child_of_node(dev->of_node, child) {
-+		ret = aspeed_tach_create_fan(dev, child, priv);
-+		if (ret < 0) {
-+			of_node_put(child);
-+			dev_warn(dev, "Failed to create fan %d", ret);
++		if (!completion_done(&priv->controller_status_received))
++			complete_all(&priv->controller_status_received);
++	} else if (data[1] == RYUJIN_GET_COOLER_DUTY_CMD_RESPONSE) {
++		/* Received report for pump and internal fan duties (in %) */
++		if (data[RYUJIN_PUMP_DUTY] == 0 && data[RYUJIN_INTERNAL_FAN_DUTY] == 0) {
++			/*
++			 * We received a report with zeroes for duty in both places.
++			 * The device returns this as a confirmation that setting values
++			 * is successful. If we initiated a write, mark it as complete.
++			 */
++			if (!completion_done(&priv->cooler_duty_set))
++				complete_all(&priv->cooler_duty_set);
++			else if (!completion_done(&priv->cooler_duty_received))
++				/*
++				 * We didn't initiate a write, but received both zeroes.
++				 * This means that either both duties are actually zero,
++				 * or that we received a success report caused by userspace.
++				 * We're expecting a report, so parse it.
++				 */
++				goto read_cooler_duty;
 +			return 0;
 +		}
-+	}
++read_cooler_duty:
++		priv->duty_input[0] = rog_ryujin_percent_to_pwm(data[RYUJIN_PUMP_DUTY]);
++		priv->duty_input[1] = rog_ryujin_percent_to_pwm(data[RYUJIN_INTERNAL_FAN_DUTY]);
 +
-+	hwmon = devm_hwmon_device_register_with_info(dev, "aspeed_tach", priv,
-+						     &aspeed_tach_chip_info, NULL);
-+	ret = PTR_ERR_OR_ZERO(hwmon);
-+	if (ret) {
-+		reset_control_assert(priv->reset);
-+		return dev_err_probe(dev, ret,
-+				     "Failed to register hwmon device\n");
++		if (!completion_done(&priv->cooler_duty_received))
++			complete_all(&priv->cooler_duty_received);
++	} else if (data[1] == RYUJIN_GET_CONTROLLER_DUTY_CMD_RESPONSE) {
++		/* Received report for controller duty for fans (in PWM) */
++		if (data[RYUJIN_CONTROLLER_DUTY] == 0) {
++			/*
++			 * We received a report with a zero for duty. The device returns this as
++			 * a confirmation that setting the controller duty value was successful.
++			 * If we initiated a write, mark it as complete.
++			 */
++			if (!completion_done(&priv->controller_duty_set))
++				complete_all(&priv->controller_duty_set);
++			else if (!completion_done(&priv->controller_duty_received))
++				/*
++				 * We didn't initiate a write, but received a zero for duty.
++				 * This means that either the duty is actually zero, or that
++				 * we received a success report caused by userspace.
++				 * We're expecting a report, so parse it.
++				 */
++				goto read_controller_duty;
++			return 0;
++		}
++read_controller_duty:
++		priv->duty_input[2] = data[RYUJIN_CONTROLLER_DUTY];
++
++		if (!completion_done(&priv->controller_duty_received))
++			complete_all(&priv->controller_duty_received);
 +	}
 +
 +	return 0;
 +}
 +
-+static int aspeed_pwm_tach_remove(struct platform_device *pdev)
++static int rog_ryujin_probe(struct hid_device *hdev, const struct hid_device_id *id)
 +{
-+	struct aspeed_pwm_tach_data *priv = platform_get_drvdata(pdev);
++	struct rog_ryujin_data *priv;
++	int ret;
 +
-+	reset_control_assert(priv->reset);
++	priv = devm_kzalloc(&hdev->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->hdev = hdev;
++	hid_set_drvdata(hdev, priv);
++
++	/*
++	 * Initialize priv->updated to STATUS_VALIDITY seconds in the past, making
++	 * the initial empty data invalid for rog_ryujin_read() without the need for
++	 * a special case there.
++	 */
++	priv->updated = jiffies - msecs_to_jiffies(STATUS_VALIDITY);
++
++	ret = hid_parse(hdev);
++	if (ret) {
++		hid_err(hdev, "hid parse failed with %d\n", ret);
++		return ret;
++	}
++
++	/* Enable hidraw so existing user-space tools can continue to work */
++	ret = hid_hw_start(hdev, HID_CONNECT_HIDRAW);
++	if (ret) {
++		hid_err(hdev, "hid hw start failed with %d\n", ret);
++		return ret;
++	}
++
++	ret = hid_hw_open(hdev);
++	if (ret) {
++		hid_err(hdev, "hid hw open failed with %d\n", ret);
++		goto fail_and_stop;
++	}
++
++	priv->buffer = devm_kzalloc(&hdev->dev, MAX_REPORT_LENGTH, GFP_KERNEL);
++	if (!priv->buffer) {
++		ret = -ENOMEM;
++		goto fail_and_close;
++	}
++
++	mutex_init(&priv->status_report_request_mutex);
++	mutex_init(&priv->buffer_lock);
++	spin_lock_init(&priv->status_report_request_lock);
++	init_completion(&priv->cooler_status_received);
++	init_completion(&priv->controller_status_received);
++	init_completion(&priv->cooler_duty_received);
++	init_completion(&priv->controller_duty_received);
++	init_completion(&priv->cooler_duty_set);
++	init_completion(&priv->controller_duty_set);
++
++	priv->hwmon_dev = hwmon_device_register_with_info(&hdev->dev, "rog_ryujin",
++							  priv, &rog_ryujin_chip_info, NULL);
++	if (IS_ERR(priv->hwmon_dev)) {
++		ret = PTR_ERR(priv->hwmon_dev);
++		hid_err(hdev, "hwmon registration failed with %d\n", ret);
++		goto fail_and_close;
++	}
 +
 +	return 0;
++
++fail_and_close:
++	hid_hw_close(hdev);
++fail_and_stop:
++	hid_hw_stop(hdev);
++	return ret;
 +}
 +
-+static const struct of_device_id aspeed_pwm_tach_match[] = {
-+	{
-+		.compatible = "aspeed,ast2600-pwm-tach",
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, aspeed_pwm_tach_match);
++static void rog_ryujin_remove(struct hid_device *hdev)
++{
++	struct rog_ryujin_data *priv = hid_get_drvdata(hdev);
 +
-+static struct platform_driver aspeed_pwm_tach_driver = {
-+	.probe = aspeed_pwm_tach_probe,
-+	.remove = aspeed_pwm_tach_remove,
-+	.driver	= {
-+		.name = "aspeed-g6-pwm-tach",
-+		.of_match_table = aspeed_pwm_tach_match,
-+	},
++	hwmon_device_unregister(priv->hwmon_dev);
++
++	hid_hw_close(hdev);
++	hid_hw_stop(hdev);
++}
++
++static const struct hid_device_id rog_ryujin_table[] = {
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUS_ROG, USB_PRODUCT_ID_RYUJIN_AIO) },
++	{ }
 +};
 +
-+module_platform_driver(aspeed_pwm_tach_driver);
++MODULE_DEVICE_TABLE(hid, rog_ryujin_table);
 +
-+MODULE_AUTHOR("Billy Tsai <billy_tsai@aspeedtech.com>");
-+MODULE_DESCRIPTION("Aspeed ast2600 PWM and Fan Tach device driver");
++static struct hid_driver rog_ryujin_driver = {
++	.name = "rog_ryujin",
++	.id_table = rog_ryujin_table,
++	.probe = rog_ryujin_probe,
++	.remove = rog_ryujin_remove,
++	.raw_event = rog_ryujin_raw_event,
++};
++
++static int __init rog_ryujin_init(void)
++{
++	return hid_register_driver(&rog_ryujin_driver);
++}
++
++static void __exit rog_ryujin_exit(void)
++{
++	hid_unregister_driver(&rog_ryujin_driver);
++}
++
++/* When compiled into the kernel, initialize after the HID bus */
++late_initcall(rog_ryujin_init);
++module_exit(rog_ryujin_exit);
++
 +MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Aleksa Savic <savicaleksa83@gmail.com>");
++MODULE_DESCRIPTION("Hwmon driver for Asus ROG Ryujin II 360 AIO cooler");
 -- 
-2.25.1
+2.43.0
 
 
