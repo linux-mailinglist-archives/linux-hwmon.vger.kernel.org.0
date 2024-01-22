@@ -1,189 +1,164 @@
-Return-Path: <linux-hwmon+bounces-717-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-720-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA12D835C34
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 09:00:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22B4835D43
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 09:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E9B02893C0
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 08:00:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 112471C215A9
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 08:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D94E17C8B;
-	Mon, 22 Jan 2024 08:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1763A1B9;
+	Mon, 22 Jan 2024 08:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Wux7hChM"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PbdD3Z0z"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2040.outbound.protection.outlook.com [40.107.15.40])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F57117C68;
-	Mon, 22 Jan 2024 08:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705910431; cv=fail; b=XscHBRFAcRBpEmCw+4wp7l7Qhe0v70AI9B3TLTEmW1rNa8WAJfyPy+SNQyIilRpA4Upb9gm20Q8d7RO5lTpscGR3EI6/RMr4HjNYq9NS31CoGXKzgAeueaShmjH8bY9BXJ97XZbdimrXfsVbTmd5csNLWRHygou+DLnRTtWe/Ak=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705910431; c=relaxed/simple;
-	bh=26Ah53ogv1RuFrHV72FthULZUHBDgAlP66A+g2KntIg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=CS4PSz9PnZRVAD/v/udm5n+o1UR4sdvcY54mKG/mPumQZ/6867v9/AN4Hco7TLiw3x/BCguaMCvjTEplAQI+AgQ+ogD0eJJ3yhnoaf89Qd3Uv0lhr6M2gD/Zf1mNP8tGTZsN6R3bdKYkuavMYonA7o/IbkRPJWEQqagTOwDiRvs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Wux7hChM; arc=fail smtp.client-ip=40.107.15.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lkXzRXX3QYPoRXg/Bm3D13EIoL1klRN55u177xwAK5OKJTW1iS7bBc5OTBJJ79BVloD2gOvF6LqYXUF4ljZeovFfLydkZCVpl4cQa+ua1TjXE37N5mQZKgQZ9iQKZey9lHdeybfMAWQqk87OaxennJ4uu1UeYQvQxGZ+JELU9KzDz+YSXKbk6BUeynsIU6tYxNRHEOynioqlZyF4bkHjvgLTHnb18RS1s3KplOJFEJ2UQI8+eU8XZyPfqSvcFSgt1a1CqyjnKmQ9Z7zKwY3kVgQncmHxHGLbshPcwofwXkdcU3viMusxlAoI01NW9xEqASIQ8uIS0c6RW4F2OJwNpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y9kmDS80mo593DsrjqavbETC0IgjsyOsNnaCt6c156E=;
- b=fOUH37Xv4TNWH8b21OJNJrnZeEyvfjv36jw9pU3JIXdE0NCSa5RpVtk0AReC413YpLHLX0j5yWWMMRFTfeNuwFVBzyOhHdI0/0SlQOl6MJAPLT6YAC+a6XTPSR3p4Y853LbaugS2mHvQgoUweXxQdqRGtXHwHbAd9F4kUKyAz2GV39SW22W4elAP3PyEt2GyWjMFmfyDPNR5PBZ2c3RFjShkCB7y3ikD23zCpw3LtLXqRT7S8rgTOaovm8iqGQoxNmZcta55vFcOkpiPEV979qYYHOuGsDkyHvam1xg1HGgy4pWeAt79AFh93pThLPjRYOrNpwG78VfqQ+dMVl+Wow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y9kmDS80mo593DsrjqavbETC0IgjsyOsNnaCt6c156E=;
- b=Wux7hChMsVZxEpwjd3UGZqtx5xu+XQBoTbZsWu5UHdQSWO9xl4Ew+48OZ6UQy69FhXQ+Dy3DKnS8TV3GybmwtITM/PCMZVwtP2uupMejB9h7Cnd12T6O+rAvZuiSE7sqUorJKQSt4YF1YppV8aBEAkXMrtyxld2bPezjqo5/30U=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by AM8PR04MB7313.eurprd04.prod.outlook.com (2603:10a6:20b:1c5::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32; Mon, 22 Jan
- 2024 08:00:24 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::c499:8cef:9bb1:ced6]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::c499:8cef:9bb1:ced6%3]) with mapi id 15.20.7202.031; Mon, 22 Jan 2024
- 08:00:24 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: sudeep.holla@arm.com,
-	cristian.marussi@arm.com,
-	jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH] hwmon: scmi-hwmon: implement change_mode
-Date: Mon, 22 Jan 2024 16:04:41 +0800
-Message-Id: <20240122080441.1957022-1-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0015.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::21) To DU0PR04MB9417.eurprd04.prod.outlook.com
- (2603:10a6:10:358::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFEF38F8F;
+	Mon, 22 Jan 2024 08:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705913307; cv=none; b=SaRdFkMcrxF92WaJcrHOmwNEQ7NWeVwPm+iKmRg/xoP8g48VSKNxDfzhI3aH/rByTy2/kBUg/K6T1A3JSFYXtE1YTLy4obdclZs1qBedheqjErJveEdU+VplkpM7bHfEXvq/0/iXEYP1oZg0B6cQIZ3SNStKj+T06EYnWqrAyk8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705913307; c=relaxed/simple;
+	bh=WYvUJM6Lln/O7kMg7YLdb6gXjy+H8J71CclA1VdAyD8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kwVY7stdxYXdssnFfEbU/BrrR6Nq5nHBdKu3Byx0ZKfry1jiB4eTHfMn3mdv8+V5RdlYtFOoI1yZ8SZCS6AA3gduKvO94mCZaOEnXBh669ZT8pc7X1kc5Y/sfpkyOdHkC9DPbjXoPsVLkzJsQNKdoo9Uv62oc+/2+ytCwEbsZW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PbdD3Z0z; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1705913305; x=1737449305;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WYvUJM6Lln/O7kMg7YLdb6gXjy+H8J71CclA1VdAyD8=;
+  b=PbdD3Z0zZyqZPssJ1jRGUp97yERSto0Td81xnc+CujYHf/y/4XdEruqC
+   E3hX38B2sidv5Y/FtUI954CdAZYJpCB/gCvf4/ldtpLUAUrlN1Yhm6JK5
+   rqp8983Hr71VEyKs8jZYygswKr4QyK53An3R6Lf9iu/Es/doHYnEdIfR7
+   BpWOohAmIfHI+IK584kVAOgac6wTMbxxCuNd7m2hVT09+m2QqFDU3GTc6
+   BBFNai0+fAL5tfSybnr2oa+kZxA8YkvzJ7jg7V0l3gNHr6UhL1IuL9ww6
+   2JEXWghXl8Q5bD10BZPUgbZ1UTMLhKsbJ9+erZwJrkEX1ysLr1t06DU/I
+   g==;
+X-CSE-ConnectionGUID: 4ytLpERVSI+Hb+Gl/SsgFQ==
+X-CSE-MsgGUID: Bvw4fyzxTSmyLuJ1xX4WYw==
+X-IronPort-AV: E=Sophos;i="6.05,211,1701154800"; 
+   d="scan'208";a="15087208"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Jan 2024 01:48:24 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 22 Jan 2024 01:47:18 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Mon, 22 Jan 2024 01:47:15 -0700
+From: <marius.cristea@microchip.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>,
+	<jdelvare@suse.com>, <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>
+CC: <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <marius.cristea@microchip.com>
+Subject: [PATCH v4 0/2] adding support for Microchip PAC193X Power Monitor
+Date: Mon, 22 Jan 2024 10:47:10 +0200
+Message-ID: <20240122084712.11507-1-marius.cristea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|AM8PR04MB7313:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d393467-ac53-4c44-faa8-08dc1b202fff
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	7rW6dfvRHvtiQ8r0K0ozpzF5ae+AHNzaCmwy9qEAa6j+qgOyGkiwvqpjYak2PG2YOUp2FlZqGpnFJZTlA1gbBdx3cO0paJamfw58gU6uUcNzZgykVmTI4Qsr1UtrAp5CYaLC5jbVpYQJ07+QFNET6HSzSvaYq0oP66bXrus3pqu/6vZ5A3oTnfdVBv+KkxAGrls/wfLNsTYxl1m3FcutSJzQ49XycyRcQUyB5zhyMCbf5l5KzdeZ1RfQ6TfoFAKe33K8EeZa8hDA/YBiyQC+aC4MDjai0biPBWnPqvUaR5xClU/koyIlflVY5Je0pX1DQJcaMjaDFwiETWy9LKCDLGA1pw7T7msClM5iy15exkFJ2mI88+e5vggsXwJenyeLFroaY2S9uRWbAnrjNj7giEbPEWACh//dgho+0X7Ktng4nzhlfafX0Xy1vC9whLKWaIfH1dl6ty3FmCekrLtzOAaXe6I2iRo8w7dOa34nWBX6Jpu3+832e1wWTVgTeXA3GONx2JNTKUs+JpmDOrPjoCzrAUSzSAmK++wwoMczGMvqSD06usIJyZdkXwTyKVVmlc5qHE2x30o73Nl/g5E7PRYwVmi3pP0RGiDdqbDTiSxNgbgYcg5h4hzKbP0ee7xZ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(366004)(376002)(39860400002)(136003)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(41300700001)(1076003)(26005)(38350700005)(6506007)(478600001)(52116002)(2616005)(6666004)(83380400001)(38100700002)(6512007)(6486002)(66476007)(316002)(66946007)(66556008)(86362001)(5660300002)(8676002)(8936002)(2906002)(4326008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1qrBRvoxnAYlD6pz9ntoy2SvfP7b44IplU+VskmRKUL0ztJxebDLfPrLQc4H?=
- =?us-ascii?Q?w84ej1juNmVlOHVpJN5ANwG8EkDtinbaaCpQJL0BwiHzTs1mBX8kaHrtLVlA?=
- =?us-ascii?Q?hHwpcClACgVWaEnL+3N6pVSyUCqF48B9RhAAw9GH8M8eDJ3gVMPOKTvXXFfz?=
- =?us-ascii?Q?7NDFJCVKoRUeBRnkcT7ma+GJQ2kw1Noc14UuIta+XLAbvlCzGzViW88pwqZ6?=
- =?us-ascii?Q?R7be6xEZPSzSpEkjByf+O8sp1UYVg7DnUWI5xZb+Jv2El8dZWNJSA8RZvI1y?=
- =?us-ascii?Q?jwAsVTQdih0UV/8PEAHoYJKRrdh/3ocyuaRtfsE3RocbZjEFkUpn6RNM8TpL?=
- =?us-ascii?Q?FU7pTTERSLllGfYR5qfLFKTCa8S4YYbMEXnurMMlGfQSNbQkObVQO3pBqQWJ?=
- =?us-ascii?Q?A+ns552Nb1JYZERQGiPhFaROyPquu0nGIXvrUIVW1keyo70lYVgKUlqV8/ES?=
- =?us-ascii?Q?jBxmXd7HdKUn5uGc8JKIbLIDC+w6kjEQ1woh/cCOHXOXeII+Y02WczJPx/WS?=
- =?us-ascii?Q?Y9G4/N7wlQX9+KtgOrZVX1QKPMLVPioxQ2q51zVxqnTk8P//0O+JRX7qMWaN?=
- =?us-ascii?Q?pa1aREcEh8fCfKBrlZwofRfR46VVMzbE2ZpTjSDfL5lfIq7tvIoTWeKtueFl?=
- =?us-ascii?Q?cTqqqqQtEsCBqzToyN8vr1AsHAqE0rVxxuwTmabUdGGFYtld+xldIaJvGmAW?=
- =?us-ascii?Q?PyQpMJEQVTliJVDH/DC5aPDIpp+R3u8enBTlWGX6lqfBhFGZ3CGepTBs2YTM?=
- =?us-ascii?Q?tfYb9AklNKRt8jHPyUtcqMIecgemXVkFcrmkueOt9ixZw8m7bJ2vdc6bixqI?=
- =?us-ascii?Q?MoCqyzLo4O3rSfFAQLjRlEurKSvdLPy+huyePDkCoy8CwX9Tvw/PBEVqUWWS?=
- =?us-ascii?Q?AVFoR49BBzdNg3cOFaQfBwvfmPZRvSmWTBhO0UQqMSYeBgzNqPKyIgiXuP6x?=
- =?us-ascii?Q?2Ig30HrznnLjdDZKhNA+rXJFZwwNNb1PEdD9e7ukHXedEisgBBhabt0Xritq?=
- =?us-ascii?Q?js2vvTWj0WW7/pbjqAPkavUJvITECZG48MEDhVyGZIDH6kx6mGWKe0mCAygt?=
- =?us-ascii?Q?dochnGCh89kQoutzjbkO8Bb/oQZo8r3F1BYkq+y/xW6WJ1Wtuiu/oKmuVARG?=
- =?us-ascii?Q?PxKBd5iAvJm343APPPSCSMsgflsULUBexn7DeCNL7eLIemBRWCYGNSxXEkPo?=
- =?us-ascii?Q?aSUqFL3a9KuIBR/2yXF2B0kDLc0mRNBn81MHksAhE10FaO+fuLCHrMoCpysF?=
- =?us-ascii?Q?gNSBIzrY9xI/9RR0zoxuROL4T2EAx8EdNjKJmg8yWE+UYuYlhhsUYieBF9mB?=
- =?us-ascii?Q?nHsPMyEMym8w2D16nxWsKYWYD99D9iwybmgORzXsgNdsDMnoystJGcvcrlwv?=
- =?us-ascii?Q?Oadiyg/xdgq4G2NjIw9gKmJtCTWJODOieLblr4vjs6kRpOfyzTN4d3c5bYx/?=
- =?us-ascii?Q?3ADhwbRYaZBaneWYR4gA6oXIXy1yniW2TgIY15SbFwiXSBIH7QKL68MKpFm0?=
- =?us-ascii?Q?KvMZDeVJ7Rl9QGMuYgXX0eDNOyO8lp2GFN1HQhzSiiLEejum/DUvUm4gLKZG?=
- =?us-ascii?Q?BlImLYNMUf065ghp304wjjpESdnr6EWxQP/h01za?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d393467-ac53-4c44-faa8-08dc1b202fff
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 08:00:24.2955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MC85hmU5e1YXe+nGSDucCKahsOGauiF7rTwRsu4JXy4SyyK+w+6NXma0CNwgWSGOW3j5EJhN+69WVgn1YGRUEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7313
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Marius Cristea <marius.cristea@microchip.com>
 
-The sensor maybe disabled before kernel boot, so add change_mode
-to support configuring the sensor to enabled state.
+Adding support for Microchip PAC193X series of Power Monitor with
+Accumulator chip family. This driver covers the following part numbers:
+ - PAC1931, PAC1932, PAC1933 and PAC1934
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/hwmon/scmi-hwmon.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+  This device is at the boundary between IIO and HWMON (if you are
+looking just at the "shunt resistors, vsense, power, energy"). The
+device also has ADC internally that can measure voltages (up to 4
+channels) and also currents (up to 4 channels). The current is measured as
+voltage across the shunt_resistor.
 
-diff --git a/drivers/hwmon/scmi-hwmon.c b/drivers/hwmon/scmi-hwmon.c
-index 364199b332c0..f7bd63d52d15 100644
---- a/drivers/hwmon/scmi-hwmon.c
-+++ b/drivers/hwmon/scmi-hwmon.c
-@@ -151,7 +151,36 @@ static int scmi_hwmon_thermal_get_temp(struct thermal_zone_device *tz,
- 	return ret;
- }
- 
-+static int scmi_hwmon_thermal_change_mode(struct thermal_zone_device *tz,
-+					  enum thermal_device_mode new_mode)
-+{
-+	int ret;
-+	u32 config;
-+	enum thermal_device_mode cur_mode = THERMAL_DEVICE_DISABLED;
-+	struct scmi_thermal_sensor *th_sensor = thermal_zone_device_priv(tz);
-+
-+	ret = sensor_ops->config_get(th_sensor->ph, th_sensor->info->id,
-+				     &config);
-+	if (ret)
-+		return ret;
-+
-+	if (config & BIT(0))
-+		cur_mode = THERMAL_DEVICE_ENABLED;
-+
-+	if (cur_mode == new_mode)
-+		return 0;
-+
-+	if (new_mode == THERMAL_DEVICE_ENABLED)
-+		config |= SCMI_SENS_CFG_SENSOR_ENABLED_MASK;
-+	else
-+		config &= ~SCMI_SENS_CFG_SENSOR_ENABLED_MASK;
-+
-+	return sensor_ops->config_set(th_sensor->ph, th_sensor->info->id,
-+				      config);
-+}
-+
- static const struct thermal_zone_device_ops scmi_hwmon_thermal_ops = {
-+	.change_mode = scmi_hwmon_thermal_change_mode,
- 	.get_temp = scmi_hwmon_thermal_get_temp,
- };
- 
+  I have started with a simple driver (this one that is more appropriate to be
+a HWMON) and willing to add more functionality later (like data buffering that
+is quite important for example if someone wants to profile power consumption
+of the processor itself, or a peripheral device, or a battery, this kind of
+functionality was requested by our customers).
+
+
+Differences related to previous patch:
+v4:
+  - remove the "reset_accumulators" proprietary attribute
+  - add enable/disable for energy channels
+  - remove "reset_accumulators" attribute
+  - remove unused/redundant defines
+  - rename variable to be more relevant into a certain context
+  - make "storagebits" naturally aligned power of 2
+  - fix coding style issues
+  - use to_iio_dev_attr to access address field in the IIO_DEVICE_ATTR()
+  - remove unnecesarry "break" from switch case
+  - remove double increment and initialization of a variable
+  - use address as index in IIO_DEVICE_ATTR
+  - properly handle memory allocation failure
+
+v3:
+- this version was sent also to HWMON list
+- fix review comments:
+  - drop redundant description from device tree bindings
+  - reorder "patternProperties:" to follow "properties:" in device tree bindings
+  - update comments to proper describe code
+  - use numbers instead of defines for clarity in some part of the code
+  - use the new "guard(mutex)"
+  - use "clamp()" instead of duplicating code
+  - remove extra layer of checking in some switch cases
+  - use "i2c_get_match_data()"
+  - replace while with for loops for the code to look cleaner
+  - reverse the logic to reduce indent.
+  - add comment related to channels numbering
+  - remove memory duplicate when creating dynamic channels
+  - add "devm_add_action_or_reset" to handle the "cancel_delayed_work_sync"
+  - remove "pac1934_remove()" function
+
+v2:
+- fix review comments:
+  - change the device tree bindings
+  - use label property
+  - fix coding style issues
+  - remove unused headers
+  - use get_unaligned_bexx instead of own functions
+  - change to use a system work queue
+  - use probe_new instead of old probe
+
+v1:
+- first version committed to review
+
+Marius Cristea (2):
+  dt-bindings: iio: adc: adding support for PAC193X
+  iio: adc: adding support for PAC193x
+
+ .../ABI/testing/sysfs-bus-iio-adc-pac1934     |    9 +
+ .../bindings/iio/adc/microchip,pac1934.yaml   |  120 ++
+ MAINTAINERS                                   |    7 +
+ drivers/iio/adc/Kconfig                       |   12 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/pac1934.c                     | 1646 +++++++++++++++++
+ 6 files changed, 1795 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-pac1934
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+ create mode 100644 drivers/iio/adc/pac1934.c
+
+
+base-commit: b1a1eaf6183697b77f7243780a25f35c7c0c8bdf
 -- 
-2.37.1
+2.34.1
 
 
