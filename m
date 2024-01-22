@@ -1,338 +1,157 @@
-Return-Path: <linux-hwmon+bounces-726-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-723-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E724783677E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 16:15:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35A18366FB
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 16:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9641F28829F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 15:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58D291F24316
+	for <lists+linux-hwmon@lfdr.de>; Mon, 22 Jan 2024 15:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D09755C11;
-	Mon, 22 Jan 2024 14:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5143E49A;
+	Mon, 22 Jan 2024 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLl9nRKt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WlN4ARmw"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FC255C0A;
-	Mon, 22 Jan 2024 14:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CBC4CB52;
+	Mon, 22 Jan 2024 14:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705935513; cv=none; b=FnXPbLK9AI+72J3o2WBbBoKEhB/0aLmWxRVRLSZkIBuNFCR5bMZNR8TUbh4ptcF7pjqlz5/GYP5cfU7z2fZGbvivsl1d6A1fkxIroapAij4miBmvi6XsmzLf6631AYPqoaebQFjOyId10WROd8kLe8Nl0zy/Y5c1Rhswu3EYSP4=
+	t=1705935457; cv=none; b=lkHedZo21EuzqWMgu3bhwq4LSry0lIMxB2w0erVmeVjb4LRQ4kobwWPmGxxUsAegzr3npfg1CK2JaeZW6cCMaQ8f1usCU0ZVVh6HYsut78eFULKc+EyxrUuXjNYuZkFgULjIm/0LYLqo/Y5d7JMegrraK/cEBjWzOYnPpnP0PF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705935513; c=relaxed/simple;
-	bh=uSm5WdoNgv9YBFYXySEhiol7ose8rm+x2zRobce0P6s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k/AGjp6rT6G8urSDagoMFxIKs+m+KnRrzBpNDP9Axd5rTCIl+Kc2AGwABqKoJ+lzoI66HYoZbINBfMRn4y3uWiNEf0ud7kzJQ8D+iLl+dwNb+OXN7VCv3EfjJ7LI75d2khxTfrjCuex3wcEr7RQRi9J3cQ3J63Qf0k6JKQhKWEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLl9nRKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0623C43390;
-	Mon, 22 Jan 2024 14:58:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705935513;
-	bh=uSm5WdoNgv9YBFYXySEhiol7ose8rm+x2zRobce0P6s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLl9nRKtGJY9hCaWVSWvyzd8f+/49ueUphiaDmDhoTS0f08fLNf4DBMvcqWIjZHOp
-	 xEFJIZ1vNqLhNGyUaUDQrfMrr4Toccdg5GOrh7cAVeWpXlbW9EW+Q+LHJVrgZBxZGk
-	 O+jeCc6+vBIOnuOgUPEE0WeLyDpEAv58VvajCQsAf1NmTEGi9g5Fd5oVjoy3i7v/51
-	 8ldW/pWzWZH5cTagYDH79qg8L6KbBIi2PZflyxNLmRo2kHi6FJcTwwSkWKQ6OT/ysK
-	 fwzSFCcM6nhwF+Kgb6/FWXNlMjcd5mE1N0ojOVUJmotG/5DJaYOnnYZlbaCrsBGFtB
-	 qTbj/QcI1iskQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: James Seo <james@equiv.tech>,
-	Lukasz Stelmach <l.stelmach@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 42/88] hwmon: (hp-wmi-sensors) Fix failure to load on EliteDesk 800 G6
-Date: Mon, 22 Jan 2024 09:51:15 -0500
-Message-ID: <20240122145608.990137-42-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122145608.990137-1-sashal@kernel.org>
-References: <20240122145608.990137-1-sashal@kernel.org>
+	s=arc-20240116; t=1705935457; c=relaxed/simple;
+	bh=spHEdjlAJz6awq3PIydFaK3ccnZgwJ1aPu6BJP9NIPo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rHNm8nkbs2DpagxbL/jHaPXXhMv31ZE0/X2DjEbHXcDOeeSeyvvug5VD0vTKT4z0F1n+NjllkxzrntCoJEsE+YdnXvNwxR94lzXXvZ6D8SkZZ9nXGiQiGLL8mCPS18Yxsg/m+zf/dgiorG02tlveVrUYZavdm/KP4Dl/C5jSxiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WlN4ARmw; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso2400433a12.3;
+        Mon, 22 Jan 2024 06:57:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705935455; x=1706540255; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=KmZWPYJBSOkWieoqR8/ANidiao8Ik7FDtETaXiuMJHY=;
+        b=WlN4ARmw4x9a0w55nuZU8lcIfSSq+PTxSqvRQOuicO7dCvuiAcwrCiGbHo95zzjYaS
+         VLRUk2n3AFEqQWcKtIysWfux4e+uExEcY2o1keoW9Zlrg+9gSiD9B3UmtJnH4bu8z/pd
+         NnbJncRxqz6nHWw9kCbIS7qwfs5Q0qJK3zK0+YCEgMoOE1V1cto0FA4lbctWXBBx7Z/5
+         +RyivQwckmkHdOcDOazrojxEugUeN+zHfZ6nJtnsfaXApbQGwkkNmk4by7eb9oanQTRL
+         /ldLRUb/vCYYv8OCtyqeBS2h/PGYv7r1KllGc7f/2Hb7N9sIACssTlw6ggCO1WOMFxfF
+         TxUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705935455; x=1706540255;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KmZWPYJBSOkWieoqR8/ANidiao8Ik7FDtETaXiuMJHY=;
+        b=diN/YKcNpQqXlzRikItTjFzAvDo7tIYoHH9PFO8tIWYjwgHIBy87TZNHs4bYTJSqzC
+         +0esL6F+vHt5aGSf6y5f3v+wPVWwCkYarpqhGr4zEQl9nxj0gdrPgeaphfm3E2Vn+zzX
+         4AZLW4sDHZL7EWEqBLP2SBt5E3ipAxLx4lenzn5LiuKZcHaCCgR4ZUVBBGtDPyihebkU
+         8+a/zUYKWXOoQfrc6dNoObfyf9pTlHMeZpmRlrak49KPUY62tgrNJ+LOjtePeLDsAFKN
+         Gqqc7E8uzKGTfvIWjn1rwekX7fx2HqCchrgJ5jsXxWPrILRae38EQJD358tXLMu8p2wd
+         6Iqw==
+X-Gm-Message-State: AOJu0Yw3b78nXf1aORQ30hPpItklRi6NhdsPpV4jpmXwzL3yPBPnmOlL
+	e3S6sG02oNmqfITVNVTCsqepH9V2pkjfIJChvszW/UdZK5s7u+PRVNxoRFbA
+X-Google-Smtp-Source: AGHT+IE4n7mW9RShOa0e76OB/+/OmswiUn3ZFEYmE59BNA3dsPajEXEommWuByO46cxNLBdaDQF8uA==
+X-Received: by 2002:a17:90b:3782:b0:28f:f2b3:67a9 with SMTP id mz2-20020a17090b378200b0028ff2b367a9mr1825694pjb.77.1705935455266;
+        Mon, 22 Jan 2024 06:57:35 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id sn8-20020a17090b2e8800b0028afdb88d08sm9732358pjb.23.2024.01.22.06.57.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Jan 2024 06:57:34 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <b7dbd5fa-b300-4d6d-b3fc-8cb8e90eefa3@roeck-us.net>
+Date: Mon, 22 Jan 2024 06:57:32 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] adding support for Microchip PAC193X Power Monitor
+Content-Language: en-US
+To: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+ robh+dt@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org
+Cc: krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240122084712.11507-1-marius.cristea@microchip.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240122084712.11507-1-marius.cristea@microchip.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: James Seo <james@equiv.tech>
+On 1/22/24 00:47, marius.cristea@microchip.com wrote:
+> From: Marius Cristea <marius.cristea@microchip.com>
+> 
+> Adding support for Microchip PAC193X series of Power Monitor with
+> Accumulator chip family. This driver covers the following part numbers:
+>   - PAC1931, PAC1932, PAC1933 and PAC1934
+> 
+>    This device is at the boundary between IIO and HWMON (if you are
+> looking just at the "shunt resistors, vsense, power, energy"). The
+> device also has ADC internally that can measure voltages (up to 4
+> channels) and also currents (up to 4 channels). The current is measured as
+> voltage across the shunt_resistor.
+> 
+>    I have started with a simple driver (this one that is more appropriate to be
+> a HWMON) and willing to add more functionality later (like data buffering that
 
-[ Upstream commit c9ba592580947b81f33f514320aeef02ddc001fd ]
+Not sure I understand what you are trying to say here. This is obviously an iio
+driver, not a hwmon driver. Any hwmon related concern is irrelevant.
 
-The EliteDesk 800 G6 stores a raw WMI string within the ACPI object in its
-BIOS corresponding to one instance of HPBIOS_PlatformEvents.Name. This is
-evidently a valid way of representing a WMI data item as far as the
-Microsoft ACPI-WMI mapper is concerned, but is preventing the driver from
-loading.
-
-This seems quite rare, but add support for such strings. Treating this as a
-quirk pretty much means adding that support anyway.
-
-Also clean up an oversight in update_numeric_sensor_from_wobj() in which
-the result of hp_wmi_strdup() was being used without error checking.
-
-Reported-by: Lukasz Stelmach <l.stelmach@samsung.com>
-Closes: https://lore.kernel.org/linux-hwmon/7850a0bd-60e7-88f8-1d6c-0bb0e3234fdc@roeck-us.net/
-Tested-by: Lukasz Stelmach <l.stelmach@samsung.com>
-Signed-off-by: James Seo <james@equiv.tech>
-Link: https://lore.kernel.org/r/20231123054918.157098-1-james@equiv.tech
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/hp-wmi-sensors.c | 127 ++++++++++++++++++++++++++++-----
- 1 file changed, 111 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/hwmon/hp-wmi-sensors.c b/drivers/hwmon/hp-wmi-sensors.c
-index 17ae62f88bbf..b5325d0e72b9 100644
---- a/drivers/hwmon/hp-wmi-sensors.c
-+++ b/drivers/hwmon/hp-wmi-sensors.c
-@@ -17,6 +17,8 @@
-  *     Available: https://github.com/linuxhw/ACPI
-  * [4] P. Rohár, "bmfdec - Decompile binary MOF file (BMF) from WMI buffer",
-  *     2017. [Online]. Available: https://github.com/pali/bmfdec
-+ * [5] Microsoft Corporation, "Driver-Defined WMI Data Items", 2017. [Online].
-+ *     Available: https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/driver-defined-wmi-data-items
-  */
- 
- #include <linux/acpi.h>
-@@ -24,6 +26,7 @@
- #include <linux/hwmon.h>
- #include <linux/jiffies.h>
- #include <linux/mutex.h>
-+#include <linux/nls.h>
- #include <linux/units.h>
- #include <linux/wmi.h>
- 
-@@ -395,6 +398,50 @@ struct hp_wmi_sensors {
- 	struct mutex lock;	/* Lock polling WMI and driver state changes. */
- };
- 
-+static bool is_raw_wmi_string(const u8 *pointer, u32 length)
-+{
-+	const u16 *ptr;
-+	u16 len;
-+
-+	/* WMI strings are length-prefixed UTF-16 [5]. */
-+	if (length <= sizeof(*ptr))
-+		return false;
-+
-+	length -= sizeof(*ptr);
-+	ptr = (const u16 *)pointer;
-+	len = *ptr;
-+
-+	return len <= length && !(len & 1);
-+}
-+
-+static char *convert_raw_wmi_string(const u8 *buf)
-+{
-+	const wchar_t *src;
-+	unsigned int cps;
-+	unsigned int len;
-+	char *dst;
-+	int i;
-+
-+	src = (const wchar_t *)buf;
-+
-+	/* Count UTF-16 code points. Exclude trailing null padding. */
-+	cps = *src / sizeof(*src);
-+	while (cps && !src[cps])
-+		cps--;
-+
-+	/* Each code point becomes up to 3 UTF-8 characters. */
-+	len = min(cps * 3, HP_WMI_MAX_STR_SIZE - 1);
-+
-+	dst = kmalloc((len + 1) * sizeof(*dst), GFP_KERNEL);
-+	if (!dst)
-+		return NULL;
-+
-+	i = utf16s_to_utf8s(++src, cps, UTF16_LITTLE_ENDIAN, dst, len);
-+	dst[i] = '\0';
-+
-+	return dst;
-+}
-+
- /* hp_wmi_strdup - devm_kstrdup, but length-limited */
- static char *hp_wmi_strdup(struct device *dev, const char *src)
- {
-@@ -412,6 +459,23 @@ static char *hp_wmi_strdup(struct device *dev, const char *src)
- 	return dst;
- }
- 
-+/* hp_wmi_wstrdup - hp_wmi_strdup, but for a raw WMI string */
-+static char *hp_wmi_wstrdup(struct device *dev, const u8 *buf)
-+{
-+	char *src;
-+	char *dst;
-+
-+	src = convert_raw_wmi_string(buf);
-+	if (!src)
-+		return NULL;
-+
-+	dst = hp_wmi_strdup(dev, strim(src));	/* Note: Copy is trimmed. */
-+
-+	kfree(src);
-+
-+	return dst;
-+}
-+
- /*
-  * hp_wmi_get_wobj - poll WMI for a WMI object instance
-  * @guid: WMI object GUID
-@@ -462,8 +526,14 @@ static int check_wobj(const union acpi_object *wobj,
- 	for (prop = 0; prop <= last_prop; prop++) {
- 		type = elements[prop].type;
- 		valid_type = property_map[prop];
--		if (type != valid_type)
-+		if (type != valid_type) {
-+			if (type == ACPI_TYPE_BUFFER &&
-+			    valid_type == ACPI_TYPE_STRING &&
-+			    is_raw_wmi_string(elements[prop].buffer.pointer,
-+					      elements[prop].buffer.length))
-+				continue;
- 			return -EINVAL;
-+		}
- 	}
- 
- 	return 0;
-@@ -480,7 +550,9 @@ static int extract_acpi_value(struct device *dev,
- 		break;
- 
- 	case ACPI_TYPE_STRING:
--		*out_string = hp_wmi_strdup(dev, strim(element->string.pointer));
-+		*out_string = element->type == ACPI_TYPE_BUFFER ?
-+			hp_wmi_wstrdup(dev, element->buffer.pointer) :
-+			hp_wmi_strdup(dev, strim(element->string.pointer));
- 		if (!*out_string)
- 			return -ENOMEM;
- 		break;
-@@ -861,7 +933,9 @@ update_numeric_sensor_from_wobj(struct device *dev,
- {
- 	const union acpi_object *elements;
- 	const union acpi_object *element;
--	const char *string;
-+	const char *new_string;
-+	char *trimmed;
-+	char *string;
- 	bool is_new;
- 	int offset;
- 	u8 size;
-@@ -885,11 +959,21 @@ update_numeric_sensor_from_wobj(struct device *dev,
- 	offset = is_new ? size - 1 : -2;
- 
- 	element = &elements[HP_WMI_PROPERTY_CURRENT_STATE + offset];
--	string = strim(element->string.pointer);
--
--	if (strcmp(string, nsensor->current_state)) {
--		devm_kfree(dev, nsensor->current_state);
--		nsensor->current_state = hp_wmi_strdup(dev, string);
-+	string = element->type == ACPI_TYPE_BUFFER ?
-+		convert_raw_wmi_string(element->buffer.pointer) :
-+		element->string.pointer;
-+
-+	if (string) {
-+		trimmed = strim(string);
-+		if (strcmp(trimmed, nsensor->current_state)) {
-+			new_string = hp_wmi_strdup(dev, trimmed);
-+			if (new_string) {
-+				devm_kfree(dev, nsensor->current_state);
-+				nsensor->current_state = new_string;
-+			}
-+		}
-+		if (element->type == ACPI_TYPE_BUFFER)
-+			kfree(string);
- 	}
- 
- 	/* Old variant: -2 (not -1) because it lacks the Size property. */
-@@ -996,11 +1080,15 @@ static int check_event_wobj(const union acpi_object *wobj)
- 			  HP_WMI_EVENT_PROPERTY_STATUS);
- }
- 
--static int populate_event_from_wobj(struct hp_wmi_event *event,
-+static int populate_event_from_wobj(struct device *dev,
-+				    struct hp_wmi_event *event,
- 				    union acpi_object *wobj)
- {
- 	int prop = HP_WMI_EVENT_PROPERTY_NAME;
- 	union acpi_object *element;
-+	acpi_object_type type;
-+	char *string;
-+	u32 value;
- 	int err;
- 
- 	err = check_event_wobj(wobj);
-@@ -1009,20 +1097,24 @@ static int populate_event_from_wobj(struct hp_wmi_event *event,
- 
- 	element = wobj->package.elements;
- 
--	/* Extracted strings are NOT device-managed copies. */
--
- 	for (; prop <= HP_WMI_EVENT_PROPERTY_CATEGORY; prop++, element++) {
-+		type = hp_wmi_event_property_map[prop];
-+
-+		err = extract_acpi_value(dev, element, type, &value, &string);
-+		if (err)
-+			return err;
-+
- 		switch (prop) {
- 		case HP_WMI_EVENT_PROPERTY_NAME:
--			event->name = strim(element->string.pointer);
-+			event->name = string;
- 			break;
- 
- 		case HP_WMI_EVENT_PROPERTY_DESCRIPTION:
--			event->description = strim(element->string.pointer);
-+			event->description = string;
- 			break;
- 
- 		case HP_WMI_EVENT_PROPERTY_CATEGORY:
--			event->category = element->integer.value;
-+			event->category = value;
- 			break;
- 
- 		default:
-@@ -1511,8 +1603,8 @@ static void hp_wmi_notify(u32 value, void *context)
- 	struct acpi_buffer out = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct hp_wmi_sensors *state = context;
- 	struct device *dev = &state->wdev->dev;
-+	struct hp_wmi_event event = {};
- 	struct hp_wmi_info *fan_info;
--	struct hp_wmi_event event;
- 	union acpi_object *wobj;
- 	acpi_status err;
- 	int event_type;
-@@ -1546,7 +1638,7 @@ static void hp_wmi_notify(u32 value, void *context)
- 
- 	wobj = out.pointer;
- 
--	err = populate_event_from_wobj(&event, wobj);
-+	err = populate_event_from_wobj(dev, &event, wobj);
- 	if (err) {
- 		dev_warn(dev, "Bad event data (ACPI type %d)\n", wobj->type);
- 		goto out_free_wobj;
-@@ -1577,6 +1669,9 @@ static void hp_wmi_notify(u32 value, void *context)
- out_free_wobj:
- 	kfree(wobj);
- 
-+	devm_kfree(dev, event.name);
-+	devm_kfree(dev, event.description);
-+
- out_unlock:
- 	mutex_unlock(&state->lock);
- }
--- 
-2.43.0
+Guenter
 
 
