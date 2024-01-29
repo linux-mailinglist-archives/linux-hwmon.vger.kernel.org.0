@@ -1,189 +1,185 @@
-Return-Path: <linux-hwmon+bounces-831-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-828-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01F3840AF4
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 17:12:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C7C840AE4
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 17:10:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18DDFB20F04
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 16:12:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C010028C3E3
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 16:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0355155A28;
-	Mon, 29 Jan 2024 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E0F155A22;
+	Mon, 29 Jan 2024 16:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jmZTr9+s"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Bj567jN9"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5C8155316;
-	Mon, 29 Jan 2024 16:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60381552FE;
+	Mon, 29 Jan 2024 16:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706544719; cv=none; b=DSvHah43ICESVSxnnFce5yntactFraCyt4yC/RAXhSFqqTtQ5HYsRQwCW2pONsO3uObZpEiVzCw2Y4dknOIevIEj8PhLBH5Y1DaQ4Y/RU49KQ56EwFOoB+IUqCBfKf2ECCC6liu/q3Ut1R9g06CJYu1plLS72iRdgwLLKYUZpPI=
+	t=1706544651; cv=none; b=RJe7+VgiwXo2sPO2Idrwpdlto413TGxmh+YwQpJruIU7tCpDGjag3egnN638cqaZEQqAH6XiR9d0xnnq+cvSejwaTsZ/AGIJk+nl0NyGRdPtwfdIrlgwtEiXh9ePGFjAaWzlCw/63xnDtWXsfnAWxKZE88yVoAvzNYJutDz9kMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706544719; c=relaxed/simple;
-	bh=EJuKz+rDfnnrgz4jtF7KK8M8+lKo37WzgpZ8fWKe+go=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZB+GO7gWznVf1uLUo7DDZhMlCsWOew2DnJD823kDZZqLuhIsD4Z+e6j9AHZf69vhtpei0uO7giXMeQDt1H8coK1LAQRYajRcA/wcF0e1iVz/mo9APHBx0Bg8oioTzX80JOcYExzB7hD6fAckJi0gxa2p1WDOWJSbp7DcmE6X7Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jmZTr9+s; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706544717; x=1738080717;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EJuKz+rDfnnrgz4jtF7KK8M8+lKo37WzgpZ8fWKe+go=;
-  b=jmZTr9+s0BH0yotyOal0q9jxcJoA62wy25l1FbdVyMSYrG8n8/5I5iXX
-   j6f1Uam6LcnTvGo2QtuQdybq/982+bOjOmiro8aVgfeC/za03w88C5U5F
-   0MGWVmSus8W51EfUIEjZVSDBYPoL8e/2N5o60F5D710ImRdsL38rx5RIQ
-   zqrV4PPN/KiyHIRtvMwhY9U+wL+Ksvj18xrmdcZN/pmKjqluICEowsKVw
-   gjIiuQJbyWMUQsUy0e+m1ye3rkP1aVqCbJwhlC0ZrVeDObPRNslWn3LnY
-   PKaaucS09jcnGyHHffyopgrqE/81eywmV6W0Wm1vy1AUk6AlNf/trU4v0
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="16359739"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="16359739"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 08:02:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="3342415"
-Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 29 Jan 2024 08:02:44 -0800
-Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rUU5q-0004Oq-0h;
-	Mon, 29 Jan 2024 16:02:42 +0000
-Date: Tue, 30 Jan 2024 00:02:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Billy Tsai <billy_tsai@aspeedtech.com>, jdelvare@suse.com,
-	linux@roeck-us.net, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	joel@jms.id.au, andrew@codeconstruct.com.au, corbet@lwn.net,
-	u.kleine-koenig@pengutronix.de, p.zabel@pengutronix.de,
-	naresh.solanki@9elements.com, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org,
-	BMC-SW@aspeedtech.com, patrick@stwcx.xyz
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v13 3/3] hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED
- g6 PWM/Fan tach
-Message-ID: <202401292303.6SVAncvn-lkp@intel.com>
-References: <20240124060705.1342461-4-billy_tsai@aspeedtech.com>
+	s=arc-20240116; t=1706544651; c=relaxed/simple;
+	bh=EbFpr9ZKDmCOAJdluDZ3z64ekFircDWxS2WbS/tts3o=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=O2zV2Lii0FeRi64KlHEHVhCfkmuyL1nCmhsSK9L05cY30vpOvjW1QeaTbcXT6dZtbZ/2d0jk+xlIq8d3Ys9Ldi+hdY4TtpxHnc3N9atYdXmzIfn/C0zrmXTLMPMZy4UHxFFyTyEl2JkJB6LHuUREpY75xcHnhJ9mn53Q26xqRVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Bj567jN9; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40TElDxT021654;
+	Mon, 29 Jan 2024 11:10:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding:to:cc; s=DKIM; bh=oEBDrzAlQ12hosSNut/
+	8e3TfatdsA94M7gemXVu6V9w=; b=Bj567jN9k9oI4sYixtMm7+yGlCVC9aEFl8W
+	QIj23KnWMCClHInSlYxdEYwbbkMx5mMsAkm2cG8JBe0+9vA6JYkNjV868TKkuNfx
+	sYxpmggegwNL9PMM4OOu2SxS97lp64QzQqRsExbxeiTIBT6cRABnUbvdc5V4jBYV
+	58Qkywdp4fHUN3+sNzTQsUo5RmjISlP6vYI7H5m1WXoyXEYFFOY1LtCPma6QVp7t
+	sr1kPEtL25ksswhl4jlbSFQRtdMcILCMIA9E7VAH5jefW3vujDTrJJ6bJxAJL6JH
+	e6eZZJ334TjV+o+RUqRgvQ6xk1J0NXiwg0qrQXUmZsrxQ/NnKPA==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3vxe398af2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 11:10:23 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 40TGAMQg050399
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 29 Jan 2024 11:10:22 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 29 Jan 2024 11:10:21 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 29 Jan 2024 11:10:21 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 29 Jan 2024 11:10:21 -0500
+Received: from [127.0.0.1] ([10.44.3.54])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 40TGA9Cf002356;
+	Mon, 29 Jan 2024 11:10:12 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH RESEND v4 0/3] Add support for LTC4282
+Date: Mon, 29 Jan 2024 17:13:22 +0100
+Message-ID: <20240129-b4-ltc4282-support-v4-0-fe75798164cc@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240124060705.1342461-4-billy_tsai@aspeedtech.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKLOt2UC/32NsQ6CMBRFf4W82WdKfcXGyUFWBx0NQy0tNEFKW
+ mw0hH+34QMcz7255y4QTXAmwqlYIJjkovNjBtoVoHs1dgZdmxk444eSlxKfhMOsiUuO8T1NPsz
+ IFZNKCqqEriAPp2Cs+2zSB9zqe329QJPz3sXZh+/2lWhr/2kTIUOyWpT22DKy7KxGNfhur/0Lm
+ nVdfx4aQie9AAAA
+To: <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>
+CC: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+        "Rob
+ Herring" <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706544807; l=3062;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=EbFpr9ZKDmCOAJdluDZ3z64ekFircDWxS2WbS/tts3o=;
+ b=Y4lnBaCLK6MEVOtqSQ4D9G+NfZPzQnPpEEHjNzhRp6z3H92G1A51y7vJmZPgyNTmKynn0hc7s
+ XZY0lWA7fNxD4NDLrj6/L/cE9e0yom5V7RMBF5CkPd4VnLYdcvoNc00
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: iMDWAOn5PKRn2Tv7QZQ-Iax9gvBJFdOV
+X-Proofpoint-ORIG-GUID: iMDWAOn5PKRn2Tv7QZQ-Iax9gvBJFdOV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-29_10,2024-01-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401290118
 
-Hi Billy,
+v1:
+ * https://lore.kernel.org/linux-hwmon/20231110151905.1659873-1-nuno.sa@analog.com/
 
-kernel test robot noticed the following build errors:
+v2:
+ * https://lore.kernel.org/linux-hwmon/20231124-ltc4282-support-v2-0-952bf926f83c@analog.com
 
-[auto build test ERROR on groeck-staging/hwmon-next]
-[also build test ERROR on linus/master v6.8-rc2 next-20240129]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+v3:
+ * https://lore.kernel.org/r/20231205-ltc4282-support-v3-0-e0877b281bc2@analog.com
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Billy-Tsai/dt-bindings-hwmon-fan-Add-fan-binding-to-schema/20240124-141405
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-patch link:    https://lore.kernel.org/r/20240124060705.1342461-4-billy_tsai%40aspeedtech.com
-patch subject: [PATCH v13 3/3] hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach
-config: riscv-randconfig-r071-20240129 (https://download.01.org/0day-ci/archive/20240129/202401292303.6SVAncvn-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240129/202401292303.6SVAncvn-lkp@intel.com/reproduce)
+Changes in v4:
+- Patch 1:
+ * New patch. Support fault attributes in voltage channels.
+- Patch 2:
+ * Add default values for gpios and divider properties;
+ * Add adi,gpio3-monitor-enable property.
+- Patch 3:
+ - Docs:
+  * Document that fault logs are also cleared when writing in reset_history
+    attributes;
+  * Document debugfs entries;
+  * Add new in0_fault attributes and remove dropped ones.
+ - Driver:
+  * Add hwmon_in_fault attribute to report FET failures in VSOURCE;
+  * Clear fault logs in reset_history;
+  * Constify 'ltc4282_out_rates';
+  * Add missing error check in ltc4282_cache_history();
+  * Removed unused functions;
+  * Renamed clk provider name so it's unique per device;
+  * Support new adi,gpio3-monitor-enable property;
+  * Dropped power1_good, fet_bad_fault, fet_short_fault, fault_logs_reset
+    custom attributes. Note that only power1_good was really dropped.
+    The other ones are supported in standard ABI.
+  * Renamed debugfs directory for ltc4282-hwmonX;
+  * Added in0 prefix to FET fault logs so it's clear they affect VSOURCE;
+  * Fix in_range() condition (false means error);
+  * Fix reset_history attributes. We should not write 0 in the lowest
+    value. Write the theoretical max value in there. For vsource/vdd,
+    also do it during device setup (or we would end up with 0).
+  * Directly store the chip vdd instead of vin_mode in our device
+    structure. Easier to handle reset_history;
+  * Moved the vin_mode enum to reduce it's scope.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401292303.6SVAncvn-lkp@intel.com/
+As mentioned in v3 discussion, clearing the power bad fault log has no
+effect but I'm still doing it for consistency and because we also allow
+to read it in debugfs (so better allow to clear it as well)
 
-All errors (new ones prefixed by >>):
+I've also added Conor's reviewed-by tag while resending.
 
->> drivers/hwmon/aspeed-g6-pwm-tach.c:496:2: error: implicit declaration of function 'of_platform_populate' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-           of_platform_populate(dev->of_node, NULL, NULL, dev);
-           ^
-   1 error generated.
+---
+Nuno Sa (3):
+      dt-bindings: hwmon: Add LTC4282 bindings
+      hwmon: add fault attribute for voltage channels
+      hwmon: ltc4282: add support for the LTC4282 chip
 
+ Documentation/ABI/testing/sysfs-class-hwmon        |    9 +
+ .../devicetree/bindings/hwmon/adi,ltc4282.yaml     |  159 ++
+ Documentation/hwmon/index.rst                      |    1 +
+ Documentation/hwmon/ltc4282.rst                    |  133 ++
+ MAINTAINERS                                        |    8 +
+ drivers/hwmon/Kconfig                              |   11 +
+ drivers/hwmon/Makefile                             |    1 +
+ drivers/hwmon/hwmon.c                              |    1 +
+ drivers/hwmon/ltc4282.c                            | 1784 ++++++++++++++++++++
+ include/linux/hwmon.h                              |    2 +
+ 10 files changed, 2109 insertions(+)
+---
+base-commit: 909d8d33f8b4664c9b6c7fd585114921af77fc2b
+change-id: 20231218-b4-ltc4282-support-2a08a85465c6
+--
 
-vim +/of_platform_populate +496 drivers/hwmon/aspeed-g6-pwm-tach.c
+Thanks!
+- Nuno Sá
 
-   446	
-   447	static int aspeed_pwm_tach_probe(struct platform_device *pdev)
-   448	{
-   449		struct device *dev = &pdev->dev, *hwmon;
-   450		int ret;
-   451		struct device_node *child;
-   452		struct aspeed_pwm_tach_data *priv;
-   453	
-   454		priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-   455		if (!priv)
-   456			return -ENOMEM;
-   457		priv->dev = dev;
-   458		priv->base = devm_platform_ioremap_resource(pdev, 0);
-   459		if (IS_ERR(priv->base))
-   460			return PTR_ERR(priv->base);
-   461	
-   462		priv->clk = devm_clk_get_enabled(dev, NULL);
-   463		if (IS_ERR(priv->clk))
-   464			return dev_err_probe(dev, PTR_ERR(priv->clk),
-   465					     "Couldn't get clock\n");
-   466		priv->clk_rate = clk_get_rate(priv->clk);
-   467		priv->reset = devm_reset_control_get_exclusive(dev, NULL);
-   468		if (IS_ERR(priv->reset))
-   469			return dev_err_probe(dev, PTR_ERR(priv->reset),
-   470					     "Couldn't get reset control\n");
-   471	
-   472		ret = reset_control_deassert(priv->reset);
-   473		if (ret)
-   474			return dev_err_probe(dev, ret,
-   475					     "Couldn't deassert reset control\n");
-   476	
-   477		priv->chip.dev = dev;
-   478		priv->chip.ops = &aspeed_pwm_ops;
-   479		priv->chip.npwm = PWM_ASPEED_NR_PWMS;
-   480	
-   481		ret = devm_pwmchip_add(dev, &priv->chip);
-   482		if (ret < 0) {
-   483			reset_control_assert(priv->reset);
-   484			return dev_err_probe(dev, ret, "Failed to add PWM chip\n");
-   485		}
-   486	
-   487		for_each_child_of_node(dev->of_node, child) {
-   488			ret = aspeed_tach_create_fan(dev, child, priv);
-   489			if (ret < 0) {
-   490				of_node_put(child);
-   491				dev_warn(dev, "Failed to create fan %d", ret);
-   492				return 0;
-   493			}
-   494		}
-   495	
- > 496		of_platform_populate(dev->of_node, NULL, NULL, dev);
-   497	
-   498		hwmon = devm_hwmon_device_register_with_info(dev, "aspeed_tach", priv,
-   499							     &aspeed_tach_chip_info, NULL);
-   500		ret = PTR_ERR_OR_ZERO(hwmon);
-   501		if (ret) {
-   502			reset_control_assert(priv->reset);
-   503			return dev_err_probe(dev, ret,
-   504					     "Failed to register hwmon device\n");
-   505		}
-   506	
-   507		return 0;
-   508	}
-   509	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
