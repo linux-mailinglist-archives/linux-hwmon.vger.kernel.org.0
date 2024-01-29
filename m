@@ -1,168 +1,189 @@
-Return-Path: <linux-hwmon+bounces-826-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-831-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB23840A7D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 16:49:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01F3840AF4
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 17:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA59028CB57
-	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 15:49:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18DDFB20F04
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Jan 2024 16:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C54154C07;
-	Mon, 29 Jan 2024 15:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0355155A28;
+	Mon, 29 Jan 2024 16:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hNv7zTGZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jmZTr9+s"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A12C155303;
-	Mon, 29 Jan 2024 15:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5C8155316;
+	Mon, 29 Jan 2024 16:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706543375; cv=none; b=X61STPVfiHoaxyLnvJTck6RZ0XIScovfJLyl6T6hjh4lvH+sZAIOC3nEuKm9rtMawOnDhOZkJYEZaakmgC5zI9GbWBJnsOBS5iHjNtp82Zo/QFAR2aIfNekjO0ODtW9q232haJvWKHP0oq5mRPhhRnrOcAnbxdu90oKjH9iYiT4=
+	t=1706544719; cv=none; b=DSvHah43ICESVSxnnFce5yntactFraCyt4yC/RAXhSFqqTtQ5HYsRQwCW2pONsO3uObZpEiVzCw2Y4dknOIevIEj8PhLBH5Y1DaQ4Y/RU49KQ56EwFOoB+IUqCBfKf2ECCC6liu/q3Ut1R9g06CJYu1plLS72iRdgwLLKYUZpPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706543375; c=relaxed/simple;
-	bh=Zx20aw8bxqZbzVA6EGvzAj5iiiWHikZt6nCgLe2ot7g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X9OQ5DXNM36aoIoGbl/iXvwFO0ugbK5AOQf8DXe83EgWGxKtvFTVO9Sjj4BFKp1Rpx+YR2VsAEmQ3IBM61hQZOqj0/ksaR3ZQMLfsv1turU1YFag1MdLkpAW6TNWYfJIc8BRz027Asjn8oTj5JsbUkJL2hGrpV/dEuhgYUGTNBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hNv7zTGZ; arc=none smtp.client-ip=209.85.222.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-7d5bbbe57f7so369310241.3;
-        Mon, 29 Jan 2024 07:49:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706543372; x=1707148172; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=dMnJOTdzG7a16ZkGN1wYLd1rwYgOffQVSBuPgavSzTo=;
-        b=hNv7zTGZ0/WmvU8ZfKYpv7eON+jmY5GxHKbT/pHHWtiKv8a4oqdWLBIRajT1io8dSb
-         KyzspREYvcS7sYcgjzwJf1Rwt/rrfm/ZF9FiQ+ePS2g4/50srZ3O1fOJGtoRdj8ny592
-         Zzj51DChL3eckAocF3IF2VP7HlEhfT4L/5v9J3ywjK8Z/51zj0kSEKmNPQu6ID66T1ls
-         J381UojoJ/SVlygEjk5ASt9TrUgZh3xhJO2GAPEKuT+ooTWkY3dg+dPJTzjZ127KWuFp
-         5Ghv7JDPUGMXtR/gZWQmsS2MfJI2BYW1J1EdLJvCH0gia4Jo+CciIUfO37ZKGh1D7hhp
-         pipA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706543372; x=1707148172;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dMnJOTdzG7a16ZkGN1wYLd1rwYgOffQVSBuPgavSzTo=;
-        b=tdETCAQQpNVHx2PRN8+G4QbJnI1I6iIw09mxMo+HhmsNTctKDsuTKR6O0B6qH9DIQU
-         Evb704Amf7hJNGViRNnZkuUc2c8gxb0B81dydbPcYndf8V/cvqJPvh/rycW9WVis2pKg
-         D4U0cjCQb8iQE/rtBWDR2cPBEsazr8VNTdxKy1GwYh5asWj4/HaGzcBOuVodjSIl39RX
-         sqmdXqEA7pEDNg8N9DCqG7PKxxgtNos4NqU+RN9bf0QXQcUw8XAzg2o5PBY2cWIThGDW
-         w3/w4b3JQ28WDq6Yt2gwgTt32dkENWFK2Ox6Ieq5PHxRkSyZ9athPJh83mOea0zSgPbD
-         cIgQ==
-X-Gm-Message-State: AOJu0YyNJkW79OY9n+w3nlxIsXPc43dUfwODQ/3rsUCe3C2mS3mMILrm
-	exOw/l1Oukcdc/WNJgWXINSUjoXS8LlMqLdMw4JEl4FW6Th75suq
-X-Google-Smtp-Source: AGHT+IGhsxjQLqHkE1o7cWurr5eI5xqNVuLZjma4JBD35E+SfC/Kts1hY2CFfTrZ8DIivGO+RTVkdQ==
-X-Received: by 2002:a67:e9d2:0:b0:469:b18f:b86d with SMTP id q18-20020a67e9d2000000b00469b18fb86dmr2166466vso.33.1706543372040;
-        Mon, 29 Jan 2024 07:49:32 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d16-20020ac86690000000b0042a6e6792basm2794881qtp.69.2024.01.29.07.49.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 07:49:31 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <d18763ea-bd8a-40a0-8072-c9a87120c0e1@roeck-us.net>
-Date: Mon, 29 Jan 2024 07:49:28 -0800
+	s=arc-20240116; t=1706544719; c=relaxed/simple;
+	bh=EJuKz+rDfnnrgz4jtF7KK8M8+lKo37WzgpZ8fWKe+go=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZB+GO7gWznVf1uLUo7DDZhMlCsWOew2DnJD823kDZZqLuhIsD4Z+e6j9AHZf69vhtpei0uO7giXMeQDt1H8coK1LAQRYajRcA/wcF0e1iVz/mo9APHBx0Bg8oioTzX80JOcYExzB7hD6fAckJi0gxa2p1WDOWJSbp7DcmE6X7Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jmZTr9+s; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706544717; x=1738080717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EJuKz+rDfnnrgz4jtF7KK8M8+lKo37WzgpZ8fWKe+go=;
+  b=jmZTr9+s0BH0yotyOal0q9jxcJoA62wy25l1FbdVyMSYrG8n8/5I5iXX
+   j6f1Uam6LcnTvGo2QtuQdybq/982+bOjOmiro8aVgfeC/za03w88C5U5F
+   0MGWVmSus8W51EfUIEjZVSDBYPoL8e/2N5o60F5D710ImRdsL38rx5RIQ
+   zqrV4PPN/KiyHIRtvMwhY9U+wL+Ksvj18xrmdcZN/pmKjqluICEowsKVw
+   gjIiuQJbyWMUQsUy0e+m1ye3rkP1aVqCbJwhlC0ZrVeDObPRNslWn3LnY
+   PKaaucS09jcnGyHHffyopgrqE/81eywmV6W0Wm1vy1AUk6AlNf/trU4v0
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="16359739"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="16359739"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 08:02:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="3342415"
+Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 29 Jan 2024 08:02:44 -0800
+Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rUU5q-0004Oq-0h;
+	Mon, 29 Jan 2024 16:02:42 +0000
+Date: Tue, 30 Jan 2024 00:02:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Billy Tsai <billy_tsai@aspeedtech.com>, jdelvare@suse.com,
+	linux@roeck-us.net, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	joel@jms.id.au, andrew@codeconstruct.com.au, corbet@lwn.net,
+	u.kleine-koenig@pengutronix.de, p.zabel@pengutronix.de,
+	naresh.solanki@9elements.com, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org,
+	BMC-SW@aspeedtech.com, patrick@stwcx.xyz
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v13 3/3] hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED
+ g6 PWM/Fan tach
+Message-ID: <202401292303.6SVAncvn-lkp@intel.com>
+References: <20240124060705.1342461-4-billy_tsai@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hwmon: Add driver for MPS MPQ8785 Synchronous
- Step-Down Converter
-Content-Language: en-US
-To: Charles Hsu <ythsu0511@gmail.com>, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, jdelvare@suse.com,
- corbet@lwn.net, Delphine_CC_Chiu@Wiwynn.com, naresh.solanki@9elements.com,
- peteryin.openbmc@gmail.com, patrick.rudolph@9elements.com,
- alexander.stein@ew.tq-group.com, lakshmiy@us.ibm.com, bhelgaas@google.com,
- michal.simek@amd.com, lukas@wunner.de, festevam@denx.de
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-i2c@vger.kernel.org, ytshu0511@gmail.com
-References: <20240129083115.2107466-1-ythsu0511@gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240129083115.2107466-1-ythsu0511@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240124060705.1342461-4-billy_tsai@aspeedtech.com>
 
-On 1/29/24 00:31, Charles Hsu wrote:
-> Add support for mpq8785 device from Monolithic Power Systems, Inc.
-> (MPS) vendor. This is synchronous step-down controller.
-> 
-> Signed-off-by: Charles Hsu <ythsu0511@gmail.com>
+Hi Billy,
 
-I hope you are somehow getting this.
+kernel test robot noticed the following build errors:
 
-I got:
+[auto build test ERROR on groeck-staging/hwmon-next]
+[also build test ERROR on linus/master v6.8-rc2 next-20240129]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Address not found
-Your message wasn't delivered to ytshu0511@gmail.com because the address couldn't be found, or is unable to receive mail.
+url:    https://github.com/intel-lab-lkp/linux/commits/Billy-Tsai/dt-bindings-hwmon-fan-Add-fan-binding-to-schema/20240124-141405
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+patch link:    https://lore.kernel.org/r/20240124060705.1342461-4-billy_tsai%40aspeedtech.com
+patch subject: [PATCH v13 3/3] hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach
+config: riscv-randconfig-r071-20240129 (https://download.01.org/0day-ci/archive/20240129/202401292303.6SVAncvn-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240129/202401292303.6SVAncvn-lkp@intel.com/reproduce)
 
-and:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401292303.6SVAncvn-lkp@intel.com/
 
-550 5.1.1 The email account that you tried to reach does not exist.
-Please try double-checking the recipient's email address for typos or unnecessary spaces.
-For more information, go to https://support.google.com/mail/?p=NoSuchUser eo9-20020a056830720900b006e11433d3c1sor1010792otb.11 - gsmtp
+All errors (new ones prefixed by >>):
 
-Maybe your address got banned from gmail for sending patches to too many
-recipients (that happened to me before, so it would not be surprising).
-Unfortunately, I can only accept patches from valid e-mail addresses,
-so I hope you can get this resolved.
+>> drivers/hwmon/aspeed-g6-pwm-tach.c:496:2: error: implicit declaration of function 'of_platform_populate' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+           of_platform_populate(dev->of_node, NULL, NULL, dev);
+           ^
+   1 error generated.
 
-Thanks,
-Guenter
 
+vim +/of_platform_populate +496 drivers/hwmon/aspeed-g6-pwm-tach.c
+
+   446	
+   447	static int aspeed_pwm_tach_probe(struct platform_device *pdev)
+   448	{
+   449		struct device *dev = &pdev->dev, *hwmon;
+   450		int ret;
+   451		struct device_node *child;
+   452		struct aspeed_pwm_tach_data *priv;
+   453	
+   454		priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+   455		if (!priv)
+   456			return -ENOMEM;
+   457		priv->dev = dev;
+   458		priv->base = devm_platform_ioremap_resource(pdev, 0);
+   459		if (IS_ERR(priv->base))
+   460			return PTR_ERR(priv->base);
+   461	
+   462		priv->clk = devm_clk_get_enabled(dev, NULL);
+   463		if (IS_ERR(priv->clk))
+   464			return dev_err_probe(dev, PTR_ERR(priv->clk),
+   465					     "Couldn't get clock\n");
+   466		priv->clk_rate = clk_get_rate(priv->clk);
+   467		priv->reset = devm_reset_control_get_exclusive(dev, NULL);
+   468		if (IS_ERR(priv->reset))
+   469			return dev_err_probe(dev, PTR_ERR(priv->reset),
+   470					     "Couldn't get reset control\n");
+   471	
+   472		ret = reset_control_deassert(priv->reset);
+   473		if (ret)
+   474			return dev_err_probe(dev, ret,
+   475					     "Couldn't deassert reset control\n");
+   476	
+   477		priv->chip.dev = dev;
+   478		priv->chip.ops = &aspeed_pwm_ops;
+   479		priv->chip.npwm = PWM_ASPEED_NR_PWMS;
+   480	
+   481		ret = devm_pwmchip_add(dev, &priv->chip);
+   482		if (ret < 0) {
+   483			reset_control_assert(priv->reset);
+   484			return dev_err_probe(dev, ret, "Failed to add PWM chip\n");
+   485		}
+   486	
+   487		for_each_child_of_node(dev->of_node, child) {
+   488			ret = aspeed_tach_create_fan(dev, child, priv);
+   489			if (ret < 0) {
+   490				of_node_put(child);
+   491				dev_warn(dev, "Failed to create fan %d", ret);
+   492				return 0;
+   493			}
+   494		}
+   495	
+ > 496		of_platform_populate(dev->of_node, NULL, NULL, dev);
+   497	
+   498		hwmon = devm_hwmon_device_register_with_info(dev, "aspeed_tach", priv,
+   499							     &aspeed_tach_chip_info, NULL);
+   500		ret = PTR_ERR_OR_ZERO(hwmon);
+   501		if (ret) {
+   502			reset_control_assert(priv->reset);
+   503			return dev_err_probe(dev, ret,
+   504					     "Failed to register hwmon device\n");
+   505		}
+   506	
+   507		return 0;
+   508	}
+   509	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
