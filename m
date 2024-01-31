@@ -1,142 +1,102 @@
-Return-Path: <linux-hwmon+bounces-870-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-872-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24863843D86
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 Jan 2024 12:01:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDF0843E24
+	for <lists+linux-hwmon@lfdr.de>; Wed, 31 Jan 2024 12:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD8881F24526
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 Jan 2024 11:01:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719C91C2B3A9
+	for <lists+linux-hwmon@lfdr.de>; Wed, 31 Jan 2024 11:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA947AE47;
-	Wed, 31 Jan 2024 10:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f1YWadyW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC6179DA0;
+	Wed, 31 Jan 2024 11:17:20 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mxout013.mail.hostpoint.ch (mxout013.mail.hostpoint.ch [217.26.49.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022AF7AE43;
-	Wed, 31 Jan 2024 10:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A433A7993A;
+	Wed, 31 Jan 2024 11:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.26.49.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706698730; cv=none; b=gr3W30VnrFUkzJkTJzmKD1k/ytUp6nUWHcEzG3oFb9SSR+M3jYNMPNk56wV12NizThXTkkzw0aBPIR1vQUN683UhfwDyT+auK7D/VnqrO9Wi7W8CQ6IO+yxqg0Z7AB/Qe10aPm9aIYnwM/LFWPA//DvrqGJCPgvbY4Wp55d+irQ=
+	t=1706699840; cv=none; b=Fd+52vC21TG4k+C+zianvOSudU7P96yGfrysFXqD1xxkKHMePWxBjdUulvgbqJ0itWvo/I+OPcxdH0BsSMqagqJzNNDyA8zx6t23URyW/YBV3DuGKA+sIpHR4drFGYdqOCJv+X8VARjOVoHHQ7Te7uqqCVg5arGms6e4PNNFwjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706698730; c=relaxed/simple;
-	bh=miXEls7aCVwLJDABniQxOKAOmoSskv8EQdi+pLuHLaQ=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=QwOWNTDb95YpARaEoxumWZtlXldGKKisUqeHUqJ9kodpaEU6bMNrFR9WYnRbueFgAy/McHkKuftSPlpzDF1/rvj8NbzY1obXxZYYTdsOsxAAT2Le4EColJVFteOMzUpGLH1eJwsInCsctVFD0NgUMohglsi1ASR63eLNVCnyaqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f1YWadyW; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706698729; x=1738234729;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=miXEls7aCVwLJDABniQxOKAOmoSskv8EQdi+pLuHLaQ=;
-  b=f1YWadyW5wLSEx/hBtT+dc0UJcLQKxv1VhNXglxWmTj1Xghm1e3msDFe
-   eCpuNZiYGc1apXqZjzBPzex1dEpFvb/al24zKwwj9H50bEzELgCuTKat2
-   mNkICMHhz8j+jnVxF+0tT6Qc0w/C7NDIOl6uZs8OgqEv3fPk9lxJDvHCL
-   lu7KLTy+pJtrNC+8HC9J/fMpzXH++DHSlcUdiQejmoz6Ixb5JtBX5QJXH
-   Mjmw7APDBNo9xx6LXFWDisiP2B4dQaFEgT7Wc6IkBbzDUlPHeKoun+mRE
-   5ckjWP/xwom/f/CJMJHDk1IRsRdm9jKEWVmO7Jr5V2GbFVX99/Ciauz1V
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3407460"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="3407460"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 02:58:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="1119583211"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="1119583211"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.35.167])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 02:58:37 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 31 Jan 2024 12:58:32 +0200 (EET)
-To: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-cc: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>, 
-    David E Box <david.e.box@linux.intel.com>, 
-    Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, 
-    Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-    Jose Abreu <Jose.Abreu@synopsys.com>, 
-    "David S . Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, 
-    Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-    Richard Cochran <richardcochran@gmail.com>, 
-    Russell King <linux@armlinux.org.uk>, Alexei Starovoitov <ast@kernel.org>, 
-    Daniel Borkmann <daniel@iogearbox.net>, 
-    Jesper Dangaard Brouer <hawk@kernel.org>, 
-    John Fastabend <john.fastabend@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-    Heiner Kallweit <hkallweit1@gmail.com>, 
-    Philipp Zabel <p.zabel@pengutronix.de>, 
-    Andrew Halaney <ahalaney@redhat.com>, 
-    Simon Horman <simon.horman@corigine.com>, 
-    Serge Semin <fancer.lancer@gmail.com>, Netdev <netdev@vger.kernel.org>, 
-    LKML <linux-kernel@vger.kernel.org>, 
-    linux-stm32@st-md-mailman.stormreply.com, 
-    linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
-    linux-hwmon@vger.kernel.org, bpf@vger.kernel.org, 
-    Voon Wei Feng <weifeng.voon@intel.com>, 
-    Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>, 
-    Lai Peter Jun Ann <jun.ann.lai@intel.com>, 
-    Abdul Rahim Faizal <faizal.abdul.rahim@intel.com>
-Subject: Re: [PATCH net-next v4 08/11] stmmac: intel: configure SerDes
- according to the interface mode
-In-Reply-To: <20240129130253.1400707-9-yong.liang.choong@linux.intel.com>
-Message-ID: <99d78f25-dd2a-4a52-4c2a-b0e29505a776@linux.intel.com>
-References: <20240129130253.1400707-1-yong.liang.choong@linux.intel.com> <20240129130253.1400707-9-yong.liang.choong@linux.intel.com>
+	s=arc-20240116; t=1706699840; c=relaxed/simple;
+	bh=pJCY8vlQdovHIAKMl/XorVaaAX4PdAyOBYKtKbP5f0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QcrRfuTbce7MLt21puFZSYSe1FbnAsy8qmUI2DMxBY02ZbsJazrpabmKGPWFaI+9ZMqywyyWzdqfkE1Fy7o+S8JsotSHl2YUzub81tTWy2ftJTFNsmQB6DtkfLZ7U3ZBgwCkHCp1g9mb3L+DlR+/FyQu5OIHIHBnP+rXkRM4uwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stefan-gloor.ch; spf=pass smtp.mailfrom=stefan-gloor.ch; arc=none smtp.client-ip=217.26.49.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stefan-gloor.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stefan-gloor.ch
+Received: from [10.0.2.44] (helo=asmtp014.mail.hostpoint.ch)
+	by mxout013.mail.hostpoint.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.97.1 (FreeBSD))
+	(envelope-from <code@stefan-gloor.ch>)
+	id 1rV8ZB-00000000DVs-0gxz;
+	Wed, 31 Jan 2024 12:15:41 +0100
+Received: from 157.20.79.83.dynamic.wline.res.cust.swisscom.ch ([83.79.20.157] helo=thinkpad.localdomain)
+	by asmtp014.mail.hostpoint.ch with esmtpa (Exim 4.97.1 (FreeBSD))
+	(envelope-from <code@stefan-gloor.ch>)
+	id 1rV8ZA-000000009un-3yfk;
+	Wed, 31 Jan 2024 12:15:41 +0100
+X-Authenticated-Sender-Id: code@stefan-gloor.ch
+From: Stefan Gloor <code@stefan-gloor.ch>
+To: jdelvare@suse.com,
+	linux@roeck-us.net,
+	corbet@lwn.net,
+	linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Stefan Gloor <code@stefan-gloor.ch>
+Subject: [PATCH v4 0/1] hwmon: (sht3x) read out sensor serial number
+Date: Wed, 31 Jan 2024 12:15:11 +0100
+Message-ID: <20240131111512.25321-1-code@stefan-gloor.ch>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Vs-State: 0
 
-On Mon, 29 Jan 2024, Choong Yong Liang wrote:
+The temperature/humidity sensors of the STS3x/SHT3x family are
+calibrated and factory-programmed with a unique serial number.
+For some sensors, this serial number can be used to obtain a calibration
+certificate via an API provided by the manufacturer (Sensirion).
+Expose the serial number via debugfs.
 
-> From: "Tan, Tee Min" <tee.min.tan@linux.intel.com>
-> 
-> Intel platform will configure the SerDes through PMC api based on the
-> provided interface mode.
-> 
-> This patch adds several new functions below:-
-> - intel_tsn_interface_is_available(): This new function reads FIA lane
->   ownership registers and common lane registers through IPC commands
->   to know which lane the mGbE port is assigned to.
-> - intel_config_serdes(): To configure the SerDes based on the assigned
->   lane and latest interface mode, it sends IPC command to the PMC through
->   PMC driver/API. The PMC acts as a proxy for R/W on behalf of the driver.
-> - intel_set_reg_access(): Set the register access to the available TSN
->   interface.
-> 
-> Signed-off-by: Tan, Tee Min <tee.min.tan@linux.intel.com>
-> Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/Kconfig   |   1 +
->  .../net/ethernet/stmicro/stmmac/dwmac-intel.c | 113 +++++++++++++++++-
->  .../net/ethernet/stmicro/stmmac/dwmac-intel.h |  75 ++++++++++++
->  3 files changed, 188 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> index 85dcda51df05..be423fb2b46c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> @@ -273,6 +273,7 @@ config DWMAC_INTEL
->  	default X86
->  	depends on X86 && STMMAC_ETH && PCI
->  	depends on COMMON_CLK
-> +	select INTEL_PMC_IPC
+A "sht3x" debugfs directory is created when loading the driver.
+Within this parent directory, another directory is created for each
+sensor instantiation which contains the serial number.
+The sensor-specific directories are managed by devres, such that
+they are cleaned up upon deinstantation or if hwmon registration fails.
+The top-level directory is removed when the driver is unloaded.
 
-INTEL_PMC_IPC has depends on ACPI but selecting INTEL_PMC_IPC won't 
-enforce it AFAIK.
+Changelog
+=========
+
+v3 -> v4:
+	- Remove debugfs entry with devm_add_action_or_reset()
+
+v2 -> v3:
+	- Remove #ifdef for debugfs
+	- Add debugfs cleanup
+	- Do not expose serial number if read fails
+
+v1 -> v2:
+	- Change from sysfs to debugfs
+	- Add documentation improvements
+
+Stefan Gloor (1):
+  hwmon: (sht3x) read out sensor serial number
+
+ Documentation/hwmon/sht3x.rst | 11 ++++++
+ drivers/hwmon/sht3x.c         | 66 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 76 insertions(+), 1 deletion(-)
 
 -- 
- i.
+2.41.0
 
 
