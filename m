@@ -1,261 +1,127 @@
-Return-Path: <linux-hwmon+bounces-913-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-916-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F15846606
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Feb 2024 03:52:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD592846632
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Feb 2024 04:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5840E1C22200
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Feb 2024 02:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 826E81F249EA
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Feb 2024 03:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A2EBE56;
-	Fri,  2 Feb 2024 02:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7900BA4C;
+	Fri,  2 Feb 2024 03:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="0OAi9XV8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EZZiWmmc"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EB6EAC1
-	for <linux-hwmon@vger.kernel.org>; Fri,  2 Feb 2024 02:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E74C2CD;
+	Fri,  2 Feb 2024 03:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706842373; cv=none; b=MvEUXKVDBcyngfnBRzh+RQOpfvBNitH5Sihp3nrAA4nb4QnU6uT643Yo6jSbiDEbKjoE7uYwy1iG4B4YUm3TbgGvo1bN6cdOo6ymefhU/sCQgedFRsQoa0SqVNuaVhyysZjAILcmakcUlM4iGFm7zTw+ANN7GsU1f/pthH0BVEU=
+	t=1706842875; cv=none; b=FkHQgC7oo5vNWBsqtZf8DhEaUWYRmvNsDwd+07X8JQ18laTDqa9PVSTfi5gRzYc3Y4xY8nTXKpJPliPhMtOekE4BGvBDjKQWu1NJc9RVCegfGI2Bf7JtPHm7k5YkHMlQ327BcrF5pcHA7d9mHHtawnCAoVvvVwcd9fEIAt1sD24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706842373; c=relaxed/simple;
-	bh=QqjuENTdk7eOyEsK4MLG1kNiU0NEVI5RtJWR5DtykL4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3O62rpimURauExv69eXGbpStls7S3nTqBXslsYS7P9oNs6F7SA/s/kECVUJE1J84cLLTXba1TRPhGXK/nLvuJZ/AAqdPvxhFfzOmlb+QTgM1k/GIK70ts5s1XDbeQm1eXDKnp8AW/IALivpg5tyBeWH0JtGPE4N6fySb43//TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=0OAi9XV8; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id AFE1D2C05EE;
-	Fri,  2 Feb 2024 15:52:48 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1706842368;
-	bh=jigWZVExlHT68HTKXoH+elk5GMoflcfVL+zYx+L5+Uc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OAi9XV8WJ8GqQ5q3kPCGC8YNJLnPcCfP1iaa4hrQKoX+8nw4jp+xoO+uLa9vgyef
-	 i7CesjfqWjXcV+RAWkr+dH42M8eQp9H4rZupP+PjRcHEdwqJS97giSo0hcKEzjNrwo
-	 y9CABIoqsBJN60SkcO9taDLIudn3WBRBmnY+tpflp1XvBhBPnSjW5BJ1pgFARj4eG4
-	 MbtSm6Wrl3933mCjpks3KAKGlkgbb+nj+WqOnREgKsir2y2Zk1QW6BRP1m2PJbKbKu
-	 LWO4K4EtWXVMkKtbXFtfks8LyN6tJP6DWZKTfW3Sl4nvSR+cFtYcHOqlz4SrRoXTCz
-	 gVjbAV2OBsRJw==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B65bc59000002>; Fri, 02 Feb 2024 15:52:48 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id 697AB13EDA9;
-	Fri,  2 Feb 2024 15:52:48 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id 5F37A280EB7; Fri,  2 Feb 2024 15:52:48 +1300 (NZDT)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: alexandre.belloni@bootlin.com,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	antoniu.miclaus@analog.com,
-	noname.nuno@gmail.com
-Cc: linux-rtc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v6 2/2] dt-bindings: rtc: add max313xx RTCs
-Date: Fri,  2 Feb 2024 15:52:41 +1300
-Message-ID: <20240202025241.834283-3-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202025241.834283-1-chris.packham@alliedtelesis.co.nz>
-References: <20240202025241.834283-1-chris.packham@alliedtelesis.co.nz>
+	s=arc-20240116; t=1706842875; c=relaxed/simple;
+	bh=QphI2QaFh5i8mpq3LXJuXnOJcGXvW8OtRDIwjhj/MoM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dRpWGmIOoJnRV+FWDdiKkNv3f+pz0YjcKt/xPsLJ9NTXNPN7JFqsvZTSWhSer+tYrdLjGmg/giSxS0HwwIrAGoA+0z8RcyXGwW0iMW20VIQq510Szq7WXcXeHhGChJxNVbq9YEtirXLVshVwLLUvp4mZfUAfim+Gz9DEETdvSgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZZiWmmc; arc=none smtp.client-ip=192.55.52.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706842873; x=1738378873;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QphI2QaFh5i8mpq3LXJuXnOJcGXvW8OtRDIwjhj/MoM=;
+  b=EZZiWmmcBpSq9tmUcL4yWi4pqMcGsklJrCIcNQ4aY5gzu+RaPRHW2sSK
+   lKy8nTR+A/W8oZ3PyYrXetwL6sLD+DbPv5kOOKmMVhtoKcMmyiU8SCubr
+   uTClcNYMFL4AuaDx+Cq6c4/B2zFT/UQavHBmuH2nlfQMlCfsxuFCSRLBF
+   8VojYry5uGu5a8TKckVGZgAiL5blbft9eFG7omIhdLpKja6+fAeJS1ixN
+   swZ6sy+sDiiEZX8aOwLpMO5+RCgqm+vrqJvRJRvJauOmxYDDgpaC3nLA9
+   09gjNHI2h3ggZWH91XZxXGaSUguGATp2ktUuaKzU6lFrpggZzyZvnEcq9
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="401187693"
+X-IronPort-AV: E=Sophos;i="6.05,237,1701158400"; 
+   d="scan'208";a="401187693"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 19:01:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,237,1701158400"; 
+   d="scan'208";a="257260"
+Received: from choongyo-mobl.gar.corp.intel.com (HELO [10.247.22.55]) ([10.247.22.55])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 19:01:00 -0800
+Message-ID: <2ad1f55c-f361-4439-9174-6af1bb429d55@linux.intel.com>
+Date: Fri, 2 Feb 2024 11:00:58 +0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.3 cv=LZFCFQXi c=1 sm=1 tr=0 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=k7vzHIieQBIA:10 a=gAnH3GRIAAAA:8 a=gEfo2CItAAAA:8 a=8-29ehldHqSqZt1QG5QA:9 a=oVHKYsEdi7-vN-J5QA_j:22 a=sptkURWiP4Gy88Gu7hUp:22
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 06/11] net: stmmac: resetup XPCS according to
+ the new interface mode
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+ David E Box <david.e.box@linux.intel.com>,
+ Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Andrew Halaney
+ <ahalaney@redhat.com>, Simon Horman <simon.horman@corigine.com>,
+ Serge Semin <fancer.lancer@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, bpf@vger.kernel.org,
+ Voon Wei Feng <weifeng.voon@intel.com>,
+ Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>,
+ Lai Peter Jun Ann <jun.ann.lai@intel.com>,
+ Abdul Rahim Faizal <faizal.abdul.rahim@intel.com>
+References: <20240129130253.1400707-1-yong.liang.choong@linux.intel.com>
+ <20240129130253.1400707-7-yong.liang.choong@linux.intel.com>
+ <ZbjNn+C/VHegH2t7@shell.armlinux.org.uk>
+ <9e23671e-788c-4191-bdb4-94915ff7da5a@linux.intel.com>
+ <ZbtYaXkNf2ZF1prE@shell.armlinux.org.uk>
+Content-Language: en-US
+From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+In-Reply-To: <ZbtYaXkNf2ZF1prE@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
 
-Devicetree binding documentation for Analog Devices MAX313XX RTCs
 
-Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-Signed-off-by: Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
- .../devicetree/bindings/rtc/adi,max313xx.yaml | 145 ++++++++++++++++++
- 1 file changed, 145 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/rtc/adi,max313xx.ya=
-ml
+On 1/2/2024 4:38 pm, Russell King (Oracle) wrote:
+> Note the "This must not modify any state." statement. By reinitialising
+> the PCS in this method, you are violating that statement.
+> 
+> This requirement is because this method will be called by
+> phylink_validate_mac_and_pcs() at various times, potentially for each
+> and every interface that stmmac supports, which will lead to you
+> reinitialising the PCS, killing the link, each time we ask the MAC for
+> a PCS, whether we are going to make use of it in that mode or not.
+> 
+> You can not do this. Sorry. Hard NAK for this approach.
+> 
+Thank you for taking the time to review, got your concerns, and I'll 
+address the following concerns before submitting a new patch series:
 
-diff --git a/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml b/Do=
-cumentation/devicetree/bindings/rtc/adi,max313xx.yaml
-new file mode 100644
-index 000000000000..ccfb0cbfb045
---- /dev/null
-+++ b/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
-@@ -0,0 +1,145 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2022 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/rtc/adi,max313xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices MAX313XX series I2C RTCs
-+
-+maintainers:
-+  - Chris Packham <chris.packham@alliedtelesis.co.nz>
-+
-+description: Analog Devices MAX313XX series I2C RTCs.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,max31328
-+      - adi,max31329
-+      - adi,max31331
-+      - adi,max31334
-+      - adi,max31341
-+      - adi,max31342
-+      - adi,max31343
-+
-+  reg:
-+    description: I2C address of the RTC
-+    items:
-+      - enum: [0x68, 0x69]
-+
-+  interrupts:
-+    description:
-+      Alarm1 interrupt line of the RTC. Some of the RTCs have two interr=
-upt
-+      lines and alarm1 interrupt muxing depends on the clockin/clockout
-+      configuration.
-+    maxItems: 1
-+
-+  "#clock-cells":
-+    description:
-+      RTC can be used as a clock source through its clock output pin whe=
-n
-+      supplied.
-+    const: 0
-+
-+  clocks:
-+    description:
-+      RTC uses this clock for clock input when supplied. Clock has to pr=
-ovide
-+      one of these four frequencies - 1Hz, 50Hz, 60Hz or 32.768kHz.
-+    maxItems: 1
-+
-+  adi,tc-diode:
-+    description:
-+      Select the diode configuration for the trickle charger.
-+      schottky - Schottky diode in series.
-+      standard+schottky - standard diode + Schottky diode in series.
-+    enum: [schottky, standard+schottky]
-+
-+  trickle-resistor-ohms:
-+    description: Selected resistor for trickle charger.
-+    enum: [3000, 6000, 11000]
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: rtc.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,max31328
-+              - adi,max31342
-+
-+    then:
-+      properties:
-+        aux-voltage-chargeable: false
-+        trickle-resistor-ohms: false
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,max31328
-+              - adi,max31331
-+              - adi,max31334
-+              - adi,max31343
-+
-+    then:
-+      properties:
-+        clocks: false
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,max31341
-+              - adi,max31342
-+
-+    then:
-+      properties:
-+        reg:
-+          items:
-+            - const: 0x69
-+
-+    else:
-+      properties:
-+        reg:
-+          items:
-+            - const: 0x68
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+
-+        rtc@68 {
-+            reg =3D <0x68>;
-+            compatible =3D "adi,max31329";
-+            clocks =3D <&clkin>;
-+            interrupt-parent =3D <&gpio>;
-+            interrupts =3D <26 IRQ_TYPE_EDGE_FALLING>;
-+            aux-voltage-chargeable =3D <1>;
-+            trickle-resistor-ohms =3D <6000>;
-+            adi,tc-diode =3D "schottky";
-+        };
-+    };
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+
-+        rtc@68 {
-+            reg =3D <0x68>;
-+            compatible =3D "adi,max31331";
-+            #clock-cells =3D <0>;
-+        };
-+    };
---=20
-2.43.0
+1. Remove allow_switch_interface and have the PHY driver fill in 
+phydev->possible_interfaces.
+2. Rework on the PCS to have similar implementation with the following 
+patch "net: macb: use .mac_select_pcs() interface" 
+(https://lore.kernel.org/netdev/E1n568J-002SZX-Gr@rmk-PC.armlinux.org.uk/T/).
 
+Kindly let me know if there are any additional concerns or suggestions.
 
