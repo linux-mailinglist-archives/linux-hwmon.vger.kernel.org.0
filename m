@@ -1,74 +1,76 @@
-Return-Path: <linux-hwmon+bounces-995-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-997-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D7F849E0C
-	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Feb 2024 16:26:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1EB849ED3
+	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Feb 2024 16:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888FC288E22
-	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Feb 2024 15:26:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FA361C21C58
+	for <lists+linux-hwmon@lfdr.de>; Mon,  5 Feb 2024 15:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56512D059;
-	Mon,  5 Feb 2024 15:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AD32DF9D;
+	Mon,  5 Feb 2024 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XYWw0o6V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lRnEn8xY"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AEF3FE4C
-	for <linux-hwmon@vger.kernel.org>; Mon,  5 Feb 2024 15:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF7F3F8F9
+	for <linux-hwmon@vger.kernel.org>; Mon,  5 Feb 2024 15:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707146775; cv=none; b=T14k0Y6oMYFKBVX9M3MuYOj3s1DxZ7J134E6L8ZjcmgYk1DRck6C8VDwdvTE1nrUVGZFXD9l1/Yg9yLcfcw5vzHQgnXJWbHnjbSt/fQVius3xObXHsgPReX9KL6ZOiCmKEAW8LLfr9Tzr3hEA7riip2mFQ2T3n8rwC1esoyqbSM=
+	t=1707148441; cv=none; b=sCTpraHr+pxB83LLXMPDWncEa1ep3uFKtML7y98pQo7P3/zJ73A0jNetCjMvz2YIySw2hAy0EsxzT0h3SRShkTBosk/n9+7dPWSPY22Ixh0n3w5NfacKqOt95qMV0hUBX3vQ88Vaj0G4cBe2hFcchV/oQE4Si1/aaoFBp3yJK+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707146775; c=relaxed/simple;
-	bh=Zh7YmdcD/XiEFed/G00TDlfa4Yku1WeI8x2qLeLS7eM=;
+	s=arc-20240116; t=1707148441; c=relaxed/simple;
+	bh=0PzwQ7RIMQPCNKSS7SKKlVchmYYVwiICCMzINycFKRA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QfasRaVNJU2Pob9q0Ek4LP4v1Z3ksCt9xFM6XdT/JmfQh8Crly3NIz08J8IaGsuIYZQtmrYXumIeXYYzgsvl6l/PLGob9b8pyGdWUef1EZ4stAvbRouBZH3Yk3ZAC84u3+Cvv3kwd3Rgl78e/Yl937nEzVFng6giSqvMoj6GGBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XYWw0o6V; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-33b0e5d1e89so3613835f8f.0
-        for <linux-hwmon@vger.kernel.org>; Mon, 05 Feb 2024 07:26:13 -0800 (PST)
+	 In-Reply-To:Content-Type; b=XPleel/cpTzdL4fUwfXjs4S097+1lpCI1hsA5uhQIfILscbQ4ORk2EzqmjuT23miOTkCrhn+0aEZLNhwQuVuSgXmyqZh0ZV0t4eNtx4lahfUogTbhI5b2mPurRBfzFqZKx08w/7ItI6QQnAQgyUGVcbmS4hQb+9ZXevUjy3hsok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lRnEn8xY; arc=none smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-59a1a03d067so1885175eaf.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 05 Feb 2024 07:53:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707146771; x=1707751571; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707148438; x=1707753238; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4XGvwJO/HN7NttDxW0V6QgrgtBtfHzeWu2WrNAsllBg=;
-        b=XYWw0o6Vze3mO+cPqzv5RpwcB/1ngv4TFs5sjYPX2A8tmkj94nvUmtQlks3/a4blu0
-         F9lXrVYQJoeLUMUjiZZQmz6871hUsf9TfPK99H7t4eijUKf1FTDIsrtx7HX1EeZp2hpg
-         Sj7fpG3e6jkTEhJ+FK/DM4qgJxkIC1EZzB4e/QMnsPEOxLMI89lGWB39GyVJZGolpyUM
-         n/7/rd351AXZY8VFv89vTHneLXkMyWhilCUmNG2ytUQ5bxOqIx1SYycmSHRtOjotuOrX
-         e6c/tkm0GW1QlJQ0ugIdcrtsDoUdGskxBVz6u8daZxE2DiUmU3kzmyDfUkq5Tul6H81b
-         F8ug==
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=m/cqcJnpXk97rMJdBIsmS4z7GoxL3OzwnwJcHxbAh8o=;
+        b=lRnEn8xYBwjHSGoy1jmbKishT4ApIFI+yM825POUnnkym3YhODq5FXZ4DnjzOnsniu
+         D/vTZNYdV4E9RoO7RORiVdQ2EGSYTmtOk9u4NUxGQDWqsuRvGpS1ZrjQObBpSG4n41to
+         a9c5LKqALt5D/C2ZxrMFHwtZsgtTNyBTTYOFuff6beijljwTqc7EToPjHWbToRKRI06C
+         UUeA64bwYokiQgE0sxIy/YLU5BGA8VzB6pNYnfEroirYJFfmJ+v/qrMZxXE7l047NRUN
+         SvMfmkKJwsBtQz1+sIVvHKj/LSaqoXCoMcqRyDIS7JCAodJ2j1Z5dPp1CRNxxaRT2Wk4
+         wj/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707146771; x=1707751571;
+        d=1e100.net; s=20230601; t=1707148438; x=1707753238;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4XGvwJO/HN7NttDxW0V6QgrgtBtfHzeWu2WrNAsllBg=;
-        b=K7uyLV3xma1BIBgufEeNSzJiVAiznxv2SL+9+JMoc06h7FsaDjN7AXOYWlWeP3FSa9
-         cfjxe+rt+UyptzC4ec8LrKi+IRtchlRaUzBVW36/ZaSiE4FP0f0W1GWrInAvDXbi+91U
-         oci4oWsOrFLoJ0b+9a95nC0QRWqDrKp+860OKv9FlSOKywvcdROybJXlFuPljEO8IuoF
-         34TB+M+CkErmgacO+OOx6nwoGwXoFCSbzqzXGHu7YlOhFkN1ngZlu2l8yqZ0vzqkvXON
-         ExnBD/k111EXQ8fA9B4hrSlJ7/e32ZgM9rEQNhKL6X9UKlToJYJ9IaDhcFtlSa8fwseW
-         loRA==
-X-Gm-Message-State: AOJu0Yzt9VeSPU9Bg3RkjPV1DR3DNwR1PIxuXx+W731MKDYja28bfN3w
-	/FR6tnMAi/a6s32s8z4My5zrq7iwKD2mnHkUmhJCM97W+nBgHcBcGgWoKz21N7I=
-X-Google-Smtp-Source: AGHT+IHPeOEjW3CWQFxd/XLJq8qJPFkU5qMwUhzNhzxbDfFmPIA6OivpUbhtSkdtppzYywKwTXT7JA==
-X-Received: by 2002:a05:6000:118e:b0:33a:df1f:c18d with SMTP id g14-20020a056000118e00b0033adf1fc18dmr8405851wrx.50.1707146771391;
-        Mon, 05 Feb 2024 07:26:11 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVuLW0bkDzVoKu+Mano7UEgymGlonqruvWcHCUZDODQ7S+Ip/4+cvUXK+dqIRBO3Fn1BWcCzHVlGR7v4OOqhrtul1U/55xIq5Ao+9xd5hhAPlbBtDFpgu67Y4/xBWmEGYzevbsYLMAecjjRnxh3rVq7ovmQ/1m9epKMGO7hEDcLAZuQ6GYve1IvGOc4GSbcx52fSSxyw5UwJ0wjwG1FOGMThBJETBNSayvQKyOPs4yBuT6Beo1ZtGyTU23X/9WAd/wxoQnABG11wc5eK0aw1i1yYA9vwXXSisrxitukJ20MLnSJJKmH2Ys0nokBXnW9sa/v2BKHbfzXHIcVr0+cmTvGH6k/Z2VZq57BUXgaGfYmjxp1FfoXZHcXkZTvm4vJ8rEUA7GU4SVMPLAo3wDu7e58jDkhwrbPhbNJa2GQ7ZI13tfvXiaUSsiU4w6Qx+bi5QO0q5FM0y50C9+/U0A3wKdMzONoRT6LBT+TXlLGfHMrDMpIJidITFxNGY5QJB4fo891IIf8+KcIqISZzDxUX8ornxRDSy/4X/s0gLl9OSODeHFpmRrtFoZIM+zPlA03nWGaZMHLJueSib9IMn1Nj99auORotQpqwhh9ycS3amvTG4vhyP2P4NEmpLhI5PfGtdrYf8lwt9XpXNbxP4pSGt3I3JSGgVcXlCRN9aSVNiEhkddhLCszALYpTOP+X9lVg8HgRQmpxJ9GFSTHGXMxsDf9MBwwKqxi980aemGt7OLtaPViRVII9G4XcwzU1D7ttLRS5N3l/xuqIGYnD0/n9gLR2FUICR09nNoprIDGqRLME29593Vwd7e2Ie9G5d8NXXrZP08=
-Received: from [192.168.1.20] ([178.197.222.62])
-        by smtp.gmail.com with ESMTPSA id q16-20020adfcd90000000b0033afc875fd5sm8194486wrj.49.2024.02.05.07.26.09
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m/cqcJnpXk97rMJdBIsmS4z7GoxL3OzwnwJcHxbAh8o=;
+        b=bXjPLpcWhEjWHQzvccPkx2xg9spzm/TaDy15pGJ5hPmceAAwTOg+N8CbkU6ujsb5PT
+         ElL3CNopQSvaknR1FdCSuQri3RZFCfCMQdCMsdwaMCRMBJ+DQE1n6dUcCcWpruPhWqxn
+         Gqv3acRwE+IuAf4MHV/IbFweQwoLGmR+BCeMay+NJOKGMjdyjOLNr4czp4y45G6linXj
+         qrTlg/HawKa9YOXxfeCSgqQiIB4T4cOrNYBkV7ixhqYr99gRgnWKm4dEm/wyPJxXJkmV
+         XOkgX/tjiTwIAL4q52UIo197sEMhoxJgp2oy9E7d2J6uIPi5CX10I5hahRj7ZCJvyksE
+         xG2A==
+X-Gm-Message-State: AOJu0YwtQNQjUBnUb8MMlE3O7ErVNLbMN4FRHkppKqUHZknXkefTVqVo
+	1pg0S20J0rCMC8etXk9QWiWxYimVAwO+H5H3ez6v5UgHH39lxT87
+X-Google-Smtp-Source: AGHT+IFwyheGvTuG3zH0mbLDJxQlpoqm+eeUrgrKBAAbhgOCwj9XhdyGGVYDvJcBMsq2b0kX4sCzew==
+X-Received: by 2002:a05:6358:33a5:b0:176:bef2:634a with SMTP id i37-20020a05635833a500b00176bef2634amr265142rwd.0.1707148438047;
+        Mon, 05 Feb 2024 07:53:58 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUO6mHMD/B6VMuLnsCHbuyBMv9GZfgB3VXj2Zadgaf2d3HVF6FvBVd+aY1VnAJavMJzvJX8q095IQ9xUjMNg5hkER/hz/cQ5r8SXrN2l/KK6wcRJslEH8QTBcyqbZKOM1B1OCMaeXync/KBbu8eLNxPCZpYhgvoVs7oQ7HgQ22CscZdclX+ICWiNyR9Xg==
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p9-20020a634f49000000b0059b2316be86sm89796pgl.46.2024.02.05.07.53.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Feb 2024 07:26:10 -0800 (PST)
-Message-ID: <99a1a309-41d6-448f-b622-b62dbabb2c52@linaro.org>
-Date: Mon, 5 Feb 2024 16:26:08 +0100
+        Mon, 05 Feb 2024 07:53:57 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <45b98838-ab26-4c0f-a639-7c5f0df4c49d@roeck-us.net>
+Date: Mon, 5 Feb 2024 07:53:55 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -76,167 +78,88 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/1] hwmon: Add driver for Astera Labs PT5161L retimer
+Subject: Re: [groeck-staging:hwmon-next 13/34] drivers/hwmon/surface_fan.c:87:
+ undefined reference to `__ssam_device_driver_register'
 Content-Language: en-US
-To: Cosmo Chou <chou.cosmo@gmail.com>, linux@roeck-us.net,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- jdelvare@suse.com, corbet@lwn.net, broonie@kernel.org,
- naresh.solanki@9elements.com, vincent@vtremblay.dev,
- patrick.rudolph@9elements.com, luca.ceresoli@bootlin.com,
- bhelgaas@google.com, festevam@denx.de, alexander.stein@ew.tq-group.com,
- heiko@sntech.de, jernej.skrabec@gmail.com, macromorgan@hotmail.com,
- forbidden405@foxmail.com, sre@kernel.org, linus.walleij@linaro.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
- cosmo.chou@quantatw.com
-References: <20240205152013.3833940-1-chou.cosmo@gmail.com>
- <20240205152013.3833940-2-chou.cosmo@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240205152013.3833940-2-chou.cosmo@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Maximilian Luz <luzmaximilian@gmail.com>, Ivor Wanders <ivor@iwanders.net>
+Cc: W_Armin@gmx.de, linux-hwmon@vger.kernel.org, lkp@intel.com,
+ oe-kbuild-all@lists.linux.dev
+References: <50af81da-779b-4782-9326-043bc204bfe6@gmail.com>
+ <20240205125249.3740-1-ivor@iwanders.net>
+ <d96ccd50-9354-4c73-9d8d-021e29e5fcfc@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <d96ccd50-9354-4c73-9d8d-021e29e5fcfc@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 05/02/2024 16:20, Cosmo Chou wrote:
-> This driver implements support for temperature monitoring of Astera Labs
-> PT5161L series PCIe retimer chips.
+On 2/5/24 05:03, Maximilian Luz wrote:
+> Am 2/5/2024 um 1:52 PM schrieb Ivor Wanders:
+>>> Missing 'depends on SURFACE_AGGREGATOR' in the Kconfig.
+>>
+>> Unfortunately, `SURFACE_AGGREGATOR` is what was in the Kconfig, it should
+>> have been `SURFACE_AGGREGATOR_BUS` instead, that's where the missing symbol
+>> is defined. I wonder if that split still provides value, but that's
+>> off topic for this thread.
+>>
+>> I see that c3747f28ebcefe34d6ea2e4eb2d3bb6b9d574b5f is no longer in the
+>> branch, but 42c88a7d1474b6f6e53acca3522d179d3c9b1c6f is where this is
+>> already changed over.
+>>
+>> Thanks again Guenter!
+>>
+>> ~Ivor
 > 
-> This driver implementation originates from the CSDK available at
-> Link: https://github.com/facebook/openbmc/tree/helium/common/recipes-lib/retimer-v2.14
-> The communication protocol utilized is based on the I2C/SMBus standard.
+> It should actually depend on both. Since SURFACE_AGGREGATOR_BUS is just
+> a bool, depending on it alone will allow the module to be built in when
+> SURFACE_AGGREGATOR has not been built in. Which I assume is what caused
+> this issue.
 > 
-> Signed-off-by: Cosmo Chou <chou.cosmo@gmail.com>
-> ---
->  Documentation/hwmon/index.rst   |   1 +
->  Documentation/hwmon/pt5161l.rst |  42 ++
->  MAINTAINERS                     |   7 +
->  drivers/hwmon/Kconfig           |  10 +
 
-....
+Weird dependencies. Never mind, I'll add the second one as well.
 
-> +
-> +static int pt5161l_probe(struct i2c_client *client)
-> +{
-> +	struct device *dev = &client->dev;
-> +	struct device *hwmon_dev;
-> +	struct pt5161l_data *data;
-> +
-> +	data = devm_kzalloc(dev, sizeof(struct pt5161l_data), GFP_KERNEL);
-
-sizeof(*)
-
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	data->client = client;
-> +	mutex_init(&data->lock);
-> +	pt5161l_init_dev(data);
-> +	dev_set_drvdata(dev, data);
-> +
-> +	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
-> +							 data,
-> +							 &pt5161l_chip_info,
-> +							 NULL);
-> +
-> +	pt5161l_init_debugfs(data);
-> +
-> +	return PTR_ERR_OR_ZERO(hwmon_dev);
-> +}
-> +
-> +static void pt5161l_remove(struct i2c_client *client)
-> +{
-> +	struct pt5161l_data *data = i2c_get_clientdata(client);
-> +
-> +	debugfs_remove_recursive(data->debugfs);
-> +}
-> +
-> +static const struct of_device_id __maybe_unused pt5161l_of_match[] = {
-> +	{ .compatible = "asteralabs,pt5161l" },
-
-Please run scripts/checkpatch.pl and fix reported warnings. Some
-warnings can be ignored, but the code here looks like it needs a fix.
-Feel free to get in touch if the warning is not clear.
-
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, pt5161l_of_match);
-> +
-> +static const struct acpi_device_id __maybe_unused pt5161l_acpi_match[] = {
-> +	{ "PT5161L", 0 },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(acpi, pt5161l_acpi_match);
-> +
-> +static const struct i2c_device_id pt5161l_id[] = {
-> +	{ "pt5161l", 0 },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(i2c, pt5161l_id);
-> +
-> +static struct i2c_driver pt5161l_driver = {
-> +	.class = I2C_CLASS_HWMON,
-> +	.driver = {
-> +		.name = "pt5161l",
-> +		.of_match_table = of_match_ptr(pt5161l_of_match),
-> +		.acpi_match_table = ACPI_PTR(pt5161l_acpi_match),
-> +	},
-> +	.probe = pt5161l_probe,
-> +	.remove = pt5161l_remove,
-> +	.id_table = pt5161l_id,
-> +};
-> +
-> +static int __init pt5161l_init(void)
-> +{
-> +	pt5161l_debugfs_dir = debugfs_create_dir("pt5161l", NULL);
-
-Drivers don't need initcalls. For sure any debugfs should not be handled
-here but in probe.
-
-
-Best regards,
-Krzysztof
+Guenter
 
 
