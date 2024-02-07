@@ -1,148 +1,101 @@
-Return-Path: <linux-hwmon+bounces-1023-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1025-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75D784C84C
-	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Feb 2024 11:08:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D91684C863
+	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Feb 2024 11:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38082861FE
-	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Feb 2024 10:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9BC11C211B2
+	for <lists+linux-hwmon@lfdr.de>; Wed,  7 Feb 2024 10:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38D924208;
-	Wed,  7 Feb 2024 10:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE0D24208;
+	Wed,  7 Feb 2024 10:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l+G/ttjP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vZGr+HmA"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55A223775
-	for <linux-hwmon@vger.kernel.org>; Wed,  7 Feb 2024 10:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCAF24B41
+	for <linux-hwmon@vger.kernel.org>; Wed,  7 Feb 2024 10:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707300503; cv=none; b=iVX9wSIuItZGSzSt9IZNhVV96nffCrWtl/XHyxlj0AdtGqrhIc9aWNKkuktH2c+YtV+6oGsMU0oCBp78mQJhAUoeLahp/5tvRvVoQzh2C7qquX28qKY34j/yIDMKj9UV+SNhb6rH4Hd3JwCg7Q7VtDWDSGKp6ShlntcIuxQzlk8=
+	t=1707300971; cv=none; b=MeBFTMbIav5hS2lArICB6trn3LmBBwlzrK1nEboD78nwP4o4pAdJwiLyWFnqrTATlJ/uVyrKi4Co+4FCcksMnPMbRLdRpmPbJlTAWxP/xaLzDanR1hohFCNiOCKKturwVBgfb/gyj9AALTCnH2n20b6Oet/3pkEPbFN4yXgOMDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707300503; c=relaxed/simple;
-	bh=4PLbSpB3yxiNu2P2UZfBy4iA7TAt9tV8JeTJ/1KsdPI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iokeOmS8tLq0J7HIxXzamzDdV8ffcFz17dQ7NdGEknZMQCsYQ8sL2FyKccoYbmc/Tk/dfPrqf3zbuKDaHNZMyxodaK09lVOxCXyIRRUVjAeCr27bVatEoxYOHrdI6UEAaBOy9w88ERaq1MeDjapIOYhsfmPNpe/bZ57x7AyQses=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+G/ttjP; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d09faadba5so5119781fa.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 07 Feb 2024 02:08:21 -0800 (PST)
+	s=arc-20240116; t=1707300971; c=relaxed/simple;
+	bh=SX4i4ogiPn2BLCbRXtT9m3wlLpKMh3kIiMF+HbF1pvE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c8xHiBG4XLqo3aYH1JaUwSyFdMv1MwOwRQAJw5oFTc+8wFsn4cJxYT0SVYTGeoRxWYIj8eNoBP+dBlpfzpBGYjl/M7Fy/aw4LeYio8LFe4madTPI6dVHj9G9Gw0p3cHgmJmvMhIIbFSfW8yllbsSWPC7E0EhGQbczScxjomlbyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vZGr+HmA; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-55a8fd60af0so510867a12.1
+        for <linux-hwmon@vger.kernel.org>; Wed, 07 Feb 2024 02:16:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707300500; x=1707905300; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gCi9hlvMXlqJmzofvENRx4oyFwYZqRbXRlJSB5Lv2N4=;
-        b=l+G/ttjPLmL6alwqzQZ4Zl4aN2eYgI0/9mXGVkUNwba/KoQJ+73wTwQYzrZ31VzRFS
-         2toDVpBEHnFUGHuqYRk1RNW4/K96ZU2GqTaqRIH8t5CZ2d4sUDnL7Mj+Ux7FO3z+vfsy
-         nkzlBOqOfte1xeReiiAWUyHKhV2DDN7PGwP3gCGoVAbBmZuhNddpJRgbSK8I0hUpO2BV
-         KBOJxAjyb0VFtiN9A8Pp52jG+rpDlxTg/mGkG9q6qTPXNY0jqQmvOEGOJhRXdq6cbtvB
-         eNrJGCdCETpnEc86KFyu53MsXmlazfGtIKp7Su7elTxfYbPfVENdvByFX4HXUxfLjAJ2
-         XZwg==
+        d=linaro.org; s=google; t=1707300967; x=1707905767; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UN6Itv6PZbeyX5qmqFhw0rKbEBdTeVzfwruk5gmsqHg=;
+        b=vZGr+HmATouj19XTCdGXY75EbARMfyPMg8SOi8W7qSyWxAeQjorahmNJNUrncCCU8k
+         apQYLF0gIq3M2a93YkPeyOABNWA3hK2T7Mi35kfDvNSYWrSKTjC78+HCgjnHDC9MCxKz
+         wcg0VHopkncZoaYiI451ySDEBapdjYfLE865BDf7t3duMBPTWNZzaMPCwY0s+vQLwQaV
+         p1k9x7NznoDwH5gs5b3fdpZfePr4i0DTn2flrrTR0UK0nnFpWjy9U0VgiD+LtexcNs5D
+         AfYsksjhQHF51IKNI+w2wSYpB/2mFBBxaOQjNCuzC+OsGAmsnQS4GAgpAKcpmQ9ZL4H8
+         49yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707300500; x=1707905300;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gCi9hlvMXlqJmzofvENRx4oyFwYZqRbXRlJSB5Lv2N4=;
-        b=M8kKcG5tG6F19nwO2xIs0z2cPkoVjKGlecTRe5smaHSII5NnALHI6olAPFr8A26ZbK
-         iYgMFD1begAX85WGMhJgzKA9aTsxa/8OI883JSGrSXj8S0IUefBExQD9cLPUlmAmJDQL
-         sWW/GAU75RI6G4SWU2pP4D0p/ABOJ5H07rUlvXYzZw+bnnCtF2TY3gCOuKpM3AnJkjtb
-         f4J76OHYccODYWbcXME/KhDxM7qZ6nWhGrOPUl0P9Rz2ZyyBwqahoINt0/48c+PxTUe4
-         TgzX0q9MjmJHExofBfeB1PzYa+ds6G7XoqiZe0faE5Ls/f1B5pcNzmqHdjhYwRDNA+60
-         u2GQ==
-X-Gm-Message-State: AOJu0YyoIPkOFM/azFjvtqWwT9bKjVD3SHGT70cgMUmjW7D40Xh58xIl
-	Ec+LSHwuRbFBjozQKt4ZccxW43jlwktCnjyCkvKpQm6iYRIsDACU
-X-Google-Smtp-Source: AGHT+IH2/UipYP69Axnc10nnri4l+JWruKdW3bofzLNL/ebKw/T4nJTChmxSovSiy/g3jmy/RVECag==
-X-Received: by 2002:a2e:9b14:0:b0:2d0:a4f7:11aa with SMTP id u20-20020a2e9b14000000b002d0a4f711aamr4016246lji.41.1707300499649;
-        Wed, 07 Feb 2024 02:08:19 -0800 (PST)
-Received: from [192.168.100.74] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id gl1-20020a170906e0c100b00a386196f65csm584219ejb.4.2024.02.07.02.08.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Feb 2024 02:08:19 -0800 (PST)
-Message-ID: <ca9be823-8b43-4f51-9bc0-8ee5de7df4a2@gmail.com>
-Date: Wed, 7 Feb 2024 11:08:18 +0100
+        d=1e100.net; s=20230601; t=1707300967; x=1707905767;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UN6Itv6PZbeyX5qmqFhw0rKbEBdTeVzfwruk5gmsqHg=;
+        b=QHLvDbwkRnsw+x7HKKu5v7OO707ucV/GhcRFel51qx5tvWa8qw9IiBJuve4DWfquek
+         eaR88F6SVOxJS8hKaW9zzGQK0ym2vPLXyYJ3RhKlBgU7AtDmALPt6xbvdCF/ZOt8awBL
+         xUULcdksRiYw06dY8y6Y4fSsp8ZXOJUDAsrC7XyepHqpswP6gzxalMj3Cpte3xuGbGlJ
+         wLVa0xXOsi/NHR2ya9laxmnQgEDDsquBspjNRTryXD7Lm1Rja4WPID9Qz/EJvEam4LBH
+         rZ5QS2yelF7sCOPcPjGQmqZxIGQ96W3TarvHEjAUXxZaHBDg2Zk2fdryER151XZnxQLV
+         nKvw==
+X-Gm-Message-State: AOJu0Yxh0M3XT/okejwAYZGxggIED1wpMTi8QS5VDNOBFf2qAVJ75R5F
+	iPtOpZIwTetXCqt4TT6/Mq5ze7bJmiN3IGYGJKKCbesA95IqvPh3X1cy6C5MY1o=
+X-Google-Smtp-Source: AGHT+IFGVryUTKM7cRWgl7evc9UrweEmF0V/JOSdFYgkpvRMWkejSXxCns4FWZnLHV8nUfvSXe3PHA==
+X-Received: by 2002:a17:906:3e0e:b0:a38:6d3:ac54 with SMTP id k14-20020a1709063e0e00b00a3806d3ac54mr3823007eji.23.1707300967178;
+        Wed, 07 Feb 2024 02:16:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXIGHkd2GpbRXPdScQL8ANrrNwnckc5LmG7LP8njvvMldouaMY4DKCtknVI3lY2bICHQVPm421moCwKqGcawd44xuk7Y2+UXY4=
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id qo8-20020a170907874800b00a2b1a20e662sm588060ejc.34.2024.02.07.02.16.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Feb 2024 02:16:06 -0800 (PST)
+Date: Wed, 7 Feb 2024 13:16:03 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: linux-hwmon@vger.kernel.org
+Subject: Re: [bug report] hwmon: Add support for Amphenol ChipCap 2
+Message-ID: <563343c4-8893-44d8-a398-ea36a9cd396a@moroto.mountain>
+References: <c61a90ff-7f63-4181-96fd-ca5a5029386d@moroto.mountain>
+ <ca9be823-8b43-4f51-9bc0-8ee5de7df4a2@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug report] hwmon: Add support for Amphenol ChipCap 2
-Content-Language: en-US
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: linux-hwmon@vger.kernel.org
-References: <c61a90ff-7f63-4181-96fd-ca5a5029386d@moroto.mountain>
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <c61a90ff-7f63-4181-96fd-ca5a5029386d@moroto.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca9be823-8b43-4f51-9bc0-8ee5de7df4a2@gmail.com>
 
-Hello Dan,
-
-On 07.02.24 10:51, Dan Carpenter wrote:
-> Hello Javier Carrasco,
+On Wed, Feb 07, 2024 at 11:08:18AM +0100, Javier Carrasco wrote:
 > 
-> The patch 33c41faa98f3: "hwmon: Add support for Amphenol ChipCap 2"
-> from Jan 30, 2024 (linux-next), leads to the following Smatch static
-> checker warning:
-> 
-> drivers/hwmon/chipcap2.c:327 cc2_get_reg_val() error: uninitialized symbol 'reg_val'.
-> drivers/hwmon/chipcap2.c:695 cc2_request_alarm_irqs() error: uninitialized symbol 'ret'.
-> 
-> drivers/hwmon/chipcap2.c
->     669 static int cc2_request_alarm_irqs(struct cc2_data *data, struct device *dev)
->     670 {
->     671         int ret;
-> 
-> Set this to ret = -ENODEV?
-> 
->     672 
->     673         data->irq_low = fwnode_irq_get_byname(dev_fwnode(dev), "low");
->     674         if (data->irq_low > 0) {
->     675                 ret = devm_request_threaded_irq(dev, data->irq_low, NULL,
->     676                                                 cc2_low_interrupt,
->     677                                                 IRQF_ONESHOT |
->     678                                                 IRQF_TRIGGER_RISING,
->     679                                                 dev_name(dev), data);
->     680                 if (!ret)
->     681                         data->rh_alarm.low_alarm_visible = true;
->     682         }
->     683 
->     684         data->irq_high = fwnode_irq_get_byname(dev_fwnode(dev), "high");
->     685         if (data->irq_high > 0) {
->     686                 ret = devm_request_threaded_irq(dev, data->irq_high, NULL,
->     687                                                 cc2_high_interrupt,
->     688                                                 IRQF_ONESHOT |
->     689                                                 IRQF_TRIGGER_RISING,
->     690                                                 dev_name(dev), data);
->     691                 if (!ret)
->     692                         data->rh_alarm.high_alarm_visible = true;
->     693         }
->     694 
-> --> 695         return ret;
->     696 }
-> 
-> regards,
-> dan carpenter
+> The ret variable should be initialized to 0 because if no irqs are
+> defined, the function should not fail i.e. the driver supports that case.
+> That is probably the reason why I did not notice in my tests.
 
-The ret variable should be initialized to 0 because if no irqs are
-defined, the function should not fail i.e. the driver supports that case.
-That is probably the reason why I did not notice in my tests.
+These days everyone has the GCC extension to automatically zero out
+stack variables so it wouldn't have shown up in testing.  It's still
+technically a bug, but I don't know how many people it would affect in
+real life (probably a small number).
 
-The reg_val symbol might stay unassigned if the function that assigns
-its value fails, and the check of the error return value is missing.
+regards,
+dan carpenter
 
-
-I will fix both issues asap.
-
-Thanks a lot for your feedback and best regards,
-Javier Carrasco
 
