@@ -1,165 +1,119 @@
-Return-Path: <linux-hwmon+bounces-1071-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1074-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB04F85451C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Feb 2024 10:25:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F26F854B77
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Feb 2024 15:33:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D39D1F2C753
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Feb 2024 09:25:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59C96280E70
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Feb 2024 14:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D811112E54;
-	Wed, 14 Feb 2024 09:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8775043157;
+	Wed, 14 Feb 2024 14:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="K9+wPc5O"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="tai9kdKh"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E2412B6F
-	for <linux-hwmon@vger.kernel.org>; Wed, 14 Feb 2024 09:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D4356762
+	for <linux-hwmon@vger.kernel.org>; Wed, 14 Feb 2024 14:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707902717; cv=none; b=pr4XeqiREuukDyuawEKYGbWRujwhb0VNN6cgDK+HrhOF5DlQL+VzG7sSipLtw1V7X9LWh5aHWp9Emsw1cHa6BVb4Uvz/qLj9bxrU1EpHTiHXMHxEZcCXzqwBluous/Kb0JAmQooFO61k3zUUNfkWeXOk5qfJSm6yqTBQ/6SLK6Y=
+	t=1707921233; cv=none; b=DRJ099FMqf1kpWgDdbzVtTTJfLH6WTfwO/zHA2G9q++pizxYh+13Rg3/XkeMuOb7p/iSmI2gjl5kO/udMyZICVi5RU1EL5juyn1WcZqCRkjyowFXlqL59C5no+H8TT3+Nd4XxULqujJ4DLoaj1FrsZx8D32zJhdHVUxnESVkVSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707902717; c=relaxed/simple;
-	bh=TLbgnEAQe8QDK0qYRbwk6kDfqKEpbc9popgQQqa1quc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XDnCk5oge6QL/Tnt/cnq8qGw6OrVdkKpCttu9z/UnD+gePHOu0UBXfWAeDr0Wc6+rpTyqqm2rJdRYPhsrKlYbWCsEDLV9673LzYsoB1wej/ypVvxD3+l+cmElcOmSFNNq7HDU/rZRAwV3qM+nbkJAwX13UQ57oF5aIOgxv4EvDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=K9+wPc5O; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-33b0e5d1e89so3391093f8f.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 14 Feb 2024 01:25:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1707902714; x=1708507514; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y041iHqKwu8te/0ASvv6dCCwr8Scx9NdIC+ftOWbyRk=;
-        b=K9+wPc5OG/5e5hKH+3L+NHXEIysK4FDawD86LzWMeGXdd/hVglUUyQC0qMdAVgeILC
-         jy+iEMKChSBhYGpUUPQ+cXzYCdL7CPLgBepRmpqoNyOu7+aOzfW5c9v/mkH+TMxkOnEK
-         p0Rzxyd2PmiQ7QJlmubY/N4x1uSYp0eHL1LyL51WULHCF8HAq0cos1/9DSAQ2ymdqAXu
-         5UpQDSCVzmFXe6+ty6foSiPN1WyItALurOuzz87QGgEVuN1L1Vq1SUAzN9gvcfmPVG/i
-         7aJnbsVJgFtsF0kX/+VOx25ed/piZJNk4tHl7d11oPeywPLso1fbM2fTlr/XTBMQd9tl
-         zoxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707902714; x=1708507514;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y041iHqKwu8te/0ASvv6dCCwr8Scx9NdIC+ftOWbyRk=;
-        b=AbJtFBiUKlMsQL2rFxZraR/4lNJeJDI1zRfrRYahRALXHOmYCpumXy4pS2sJLN/IF8
-         UEv7zvtFUPJV13dZg9oP+QqbkPlhjXv8xzAS1tgJWutWJCjn/+Uu3PaVHzxeAWLrdLjT
-         dDKAk3t6J3KfVIXjh7ui+Mwx7rAZnrCbUiup0HBZMzzzs+eZYThwS4Psj9VBgrnT2yIu
-         rC7AN81GjI8sWWu7Lb5F9P8lCEqoPujDQNGIAMYHaxHILorS8x3tivNzkz+ucsaetF3m
-         tiL7af8Tg6dJ6dGpdprJ5bCv5eNQi9fDK/yfWYTSp5amo26fDVLrdBLW8HrL/UlHkNbR
-         u0IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPAO7w9cTHSIDHoyEYp5iKdLiWsvUwtHz3YzdHNM2q4WLVOB50TC3swrj3eu6mYPnBgjDK0dDCqNN0bq2JJcPepGdJT5awWNSqXko=
-X-Gm-Message-State: AOJu0Yyp6Zxr2c9F08HLa4XOVWDACWBmUdj2FlY7/TTnsETEIt5l5+ah
-	9JLLnZsfTGkxWgULmzqghTEg4vjIOuaN8Pcu/cOnx6x/eEzHeP+n9t+6GfEN6I+oB8LfWlrKIQo
-	OI/Y=
-X-Google-Smtp-Source: AGHT+IEKJ1XboS81qrP+3LVVvBXCy+KpFsGJPMfWQvy5h2Q3RzLja7VykOaVmkjjZHC9fvSxpbnTGw==
-X-Received: by 2002:a5d:51c7:0:b0:33b:5f40:323 with SMTP id n7-20020a5d51c7000000b0033b5f400323mr1101863wrv.51.1707902714217;
-        Wed, 14 Feb 2024 01:25:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUWFyWps/fHcpSSH0HQANSkGfvWsqyVSJ9Q7MtVLH+UpedJsKJn1mpMI8+0buoRgMBl5hkD/N7xMLb0c4pzRk7lFUl/rCu+SUXWJxAdIFR4qB9CWgrXvs6h/lwzlizPzUoVBX5gnE4er6oaiQnd/LwuJHLoFXY5W2af2mRwsGtMFDYFTxGJwelRur3m8E7ERQwdHPhZgApFJVakP8OpL7dI4wfzzaP5ZJUWOPw3zIG6AMNfNxe7VLTXv/grKY56+KDSxj/SR9tdXT94mmaSm6GB9mKJn/sjzUbPPTkhXpD/xfgrcwvOssDfwzjISs/XlW/d2ZoxofHEzHSRYXXd74BvWzwx
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id en8-20020a056000420800b0033b7d9c14desm9114882wrb.5.2024.02.14.01.25.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 01:25:13 -0800 (PST)
-From: Naresh Solanki <naresh.solanki@9elements.com>
-To: Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Naresh Solanki <naresh.solanki@9elements.com>
-Cc: mazziesaccount@gmail.com,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] dt-bindings: hwmon: tda38640: Add interrupt & regulator properties
-Date: Wed, 14 Feb 2024 14:55:03 +0530
-Message-ID: <20240214092504.1237402-1-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1707921233; c=relaxed/simple;
+	bh=3rXjCGG2OIoNDP5SLrhqd0goTJWS8NK11vHCUp/q7bw=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=l4vKop9d4yQ4hIgmYCbEgH1ywyU3mIN7WPJrPVfngbNG6ySJnCRv9d+mV13MsWu1zZMg9keSl8YcNU/Ks8SbV7zZnc2qOV/gcQwDHS8ge8GVK6JeQZtBQNIubhTaOxKYxjhp0Rj1NgLYf96Of4i7ILaNE9ivNFn7yAwTW7EGx4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=tai9kdKh; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41EEUPSX029702;
+	Wed, 14 Feb 2024 09:33:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding:to:cc; s=DKIM; bh=eKYomhAVajYHLuJ1YU2
+	EAYqV8LT/QBxiZCM+todR4Js=; b=tai9kdKh0ftLniIWBlvqaFj3TCLNOkfiqw9
+	+S5bEF1xoJRKpt0/rthVz/J74PgEgbQzA9TGuR9uWuqV8Y2kAqP3y5GI18ugGEn3
+	vmvGgg8gMOQhpTTkS/2z4QUQblljE3eFgqt1Ceheg4EYZYhydh3PiOHO5BI9KXbj
+	SNgPKAyHTF6+0cdezwLOmK6Z2+dzxFl4OEyq+S2wKSQeMRN9/wNXAYev0Ocaviuu
+	nQz0qZY1SrZ0h2HqIH9x3wvaMw1Hqx23Cl/Mvx+n1MwZSHqSPpDSIimg+2aQgXRY
+	xQXujSKZ05iLolFH8DXYZpC3eW3/YtWmgkWH0WscG61579ZOCzA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3w8ybcg0fv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Feb 2024 09:33:39 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 41EEXcjo018589
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 14 Feb 2024 09:33:38 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 14 Feb
+ 2024 09:33:37 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 14 Feb 2024 09:33:37 -0500
+Received: from [127.0.0.1] ([10.44.3.56])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 41EEXStD008866;
+	Wed, 14 Feb 2024 09:33:30 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH 0/3] hwmon: (axi-fan-control) Small improvements
+Date: Wed, 14 Feb 2024 15:36:42 +0100
+Message-ID: <20240214-axi-fan-control-no-of-v1-0-43ca656fe2e3@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPrPzGUC/x3MQQqEMAxA0atI1hOwtSp4FZlF0UQDkkg7DELx7
+ haXb/F/gUxJKMPUFEj0lyymFe7TwLJH3QhlrQbf+tB6FzBeghwVF9NfsgPV0BhH6gYO/eqIA9T
+ 2TMRyvd/5e98PaiLX2mcAAAA=
+To: <linux-hwmon@vger.kernel.org>
+CC: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1707921408; l=579;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=3rXjCGG2OIoNDP5SLrhqd0goTJWS8NK11vHCUp/q7bw=;
+ b=y6RpXorbzzWs24yvIG6gM93XY0ElAWKvuE823McjlC81zlJQf19WZdaBNrjLBDBzukGc0Gaw+
+ i/jYz8q2D/3DE1Rb+Zy6ftYj3rWaK95/OP+Vbpsf4aOLYqiEwo84Wqr
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: j7Ego1NL1tRxewqT9di3BLePHAB0RNVI
+X-Proofpoint-ORIG-GUID: j7Ego1NL1tRxewqT9di3BLePHAB0RNVI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-14_07,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ clxscore=1015 mlxlogscore=380 bulkscore=0 suspectscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402140111
 
-Add properties for interrupt & regulator.
-Also update example.
-
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+This series is doing some minor improvements in the driver with no
+functional changes intended.
 
 ---
-Changes in v2:
-1. Remove TEST=..
-2. Update regulator subnode property as vout0
-3. Restore commented line in example
-4. blank line after interrupts property in example.
+Nuno Sa (3):
+      hwmon: (axi-fan-control) Use device firmware agnostic API
+      hwmon: (axi-fan-control) Make use of sysfs_emit()
+      hwmon: (axi-fan-control) Make use of dev_err_probe()
+
+ drivers/hwmon/axi-fan-control.c | 75 ++++++++++++++++++++---------------------
+ 1 file changed, 36 insertions(+), 39 deletions(-)
 ---
- .../hwmon/pmbus/infineon,tda38640.yaml        | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+base-commit: 1c365b5017d017260161de296bf0b35fb1f0dbb9
+change-id: 20240214-axi-fan-control-no-of-7e36f45d1ef4
+--
 
-diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml
-index ded1c115764b..a93b3f86ee87 100644
---- a/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,tda38640.yaml
-@@ -30,6 +30,23 @@ properties:
-       unconnected(has internal pull-down).
-     type: boolean
- 
-+  interrupts:
-+    maxItems: 1
-+
-+  regulators:
-+    type: object
-+    description:
-+      list of regulators provided by this controller.
-+
-+    properties:
-+      vout0:
-+        $ref: /schemas/regulator/regulator.yaml#
-+        type: object
-+
-+        unevaluatedProperties: false
-+
-+    additionalProperties: false
-+
- required:
-   - compatible
-   - reg
-@@ -38,6 +55,7 @@ additionalProperties: false
- 
- examples:
-   - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-     i2c {
-         #address-cells = <1>;
-         #size-cells = <0>;
-@@ -45,5 +63,15 @@ examples:
-         tda38640@40 {
-             compatible = "infineon,tda38640";
-             reg = <0x40>;
-+
-+            interrupt-parent = <&smb_pex_cpu0_event>;
-+            interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
-+
-+            regulators {
-+                pvnn_main_cpu0: vout0 {
-+                    regulator-name = "pvnn_main_cpu0";
-+                    regulator-enable-ramp-delay = <200>;
-+                };
-+            };
-         };
-     };
-
-base-commit: 7e90b5c295ec1e47c8ad865429f046970c549a66
--- 
-2.42.0
+Thanks!
+- Nuno Sá
 
 
