@@ -1,101 +1,98 @@
-Return-Path: <linux-hwmon+bounces-1352-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1354-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF40587785B
-	for <lists+linux-hwmon@lfdr.de>; Sun, 10 Mar 2024 20:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F01E28778B4
+	for <lists+linux-hwmon@lfdr.de>; Sun, 10 Mar 2024 23:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFF521C20A14
-	for <lists+linux-hwmon@lfdr.de>; Sun, 10 Mar 2024 19:58:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AF4C1C20E20
+	for <lists+linux-hwmon@lfdr.de>; Sun, 10 Mar 2024 22:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4469739FFF;
-	Sun, 10 Mar 2024 19:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD65B3B2BE;
+	Sun, 10 Mar 2024 22:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GRmS7jca"
+	dkim=pass (2048-bit key) header.d=math.uni-bielefeld.de header.i=@math.uni-bielefeld.de header.b="gVcAZjE5"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp2.math.uni-bielefeld.de (smtp2.math.uni-bielefeld.de [129.70.45.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BE83987D;
-	Sun, 10 Mar 2024 19:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C91C38394;
+	Sun, 10 Mar 2024 22:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.70.45.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710100720; cv=none; b=G1gLftY8HKwRJYGDYpQ8gkfJeCxu45OWYEGl+Ay6w+1QfFB/eFCnQ5SW/Zi5oGhZs2eUjSQiT61LtiidrN/c2pD90Mjc5MLnHf4GRdTHyZu7hv90OZxp1mzc3disIu1Uq3tv5XUsjkIXfZKCDRwjC92+RfLNvg1VpqSD6g+IH1o=
+	t=1710108821; cv=none; b=MgPupHUmzE2jYN2h5I3+72ve1jHD+1+KPDJ4qrv4ZnKOMCk4uPbp2rI6nXZ47GGTyLztlN384iTdAK05T7BMoGG1KzLFPIYfmZZhrfoBi2mGqRPnyCrFIVxowq5UML43Y1bAZM2Alx2L93YLmWxE6TGh+HInA6VTgqNS+FdTH1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710100720; c=relaxed/simple;
-	bh=e/S3QsOZRxk0R1c0mtSGuywQ8blcGGvaddFxTrU5nzQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WkEuog9umVZK/97vNGkYHZeu/rYHTgEwP7DufKyDWAS/F6XYRy/14uuTNkjG4BIksGqUBq5lhAn5xqVwn5bzZLWXCc++Arr4HQWKIOGmbAlA+l0h5SICIULj/7DNk8jhNJVFxblxYRmZAan/WNA6lUOp2A6NDQVXBKnxGORUl/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GRmS7jca; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e4eaa4b394so1597275a34.1;
-        Sun, 10 Mar 2024 12:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710100717; x=1710705517; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gUky88ZAZ+yr9vj7pzsLUkjMCq8JAAHxO4SYtMxX+9w=;
-        b=GRmS7jcaehhOxliCLGxAY9cD8RHwTBUqRdwPx6S5INYcA2MBcwgxFtjHNOOJaDm414
-         PZ1eyQeQbwrvE5Oz3BrITARLiFsx5R5Mq77be7F7unWthr6LkogGw4QG0FJfTQKErxRk
-         Xqdo9ROV02G05Bo8Ddhr+YPzoyJ0Dq+kuT9EJvmqy+kcQpvvapWnweS17b3iKoTehlCK
-         lFrB/lSnzmeLerSw4vRigaK2+Qb1rBjCPfwlsknoXjx0WgjB/US9HKRm0OAuae7gQ4YR
-         T6LZR4BvVZ0F3cEow+UrU4Aox7vq5TnYvtMpsJF/tmxnWYojJH0Mu+VpmLkB5shxVj28
-         4bBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710100717; x=1710705517;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gUky88ZAZ+yr9vj7pzsLUkjMCq8JAAHxO4SYtMxX+9w=;
-        b=WMDE8iGFHAfmx9Gdu2DXgQwnElwQZ3CQeJs+E0rms5KAbxvXQs5t3NNHDpmGv8Yn/y
-         pc0Qmz3dxBCRyoFUikRK31KYQA1dm/VkiMrIOdxK0OvxKDarDqRwoZvLenWGrKRheuWH
-         7YOSIBhSni8EnDhf53KAeNhTO8R0LZjFbkEg/3tmxVsV7OatTaSnuB+elEFmzcH9Q4Xh
-         k94vx97lbwAAdW8hKdoq42CsCwc6QZrzSu00YfM2mSINSh4/RSXe7tEYHcyPPeKJZ2Vq
-         IffXUmDpKiZSZYRFdMUcF2bMK7rZPW13zLgEOOj7nCMY4C+lkuKz+W/pqStLbxqUySUC
-         +hrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXOsSrVJfYWQSV4qFQv6tkDQxo/Hf/zo+14TjD//OY+YeqwWftMiU1ofWotL+yiqR/a6SSiwUJTcscJar0vH1LUD2PuD2GqKr9mBGYr6ROYoWTlFgiJk2ErLqwfcpz/G+6QmCRFg9j/s+U=
-X-Gm-Message-State: AOJu0Yx5mdc6gLzJrcWC4v56XKgVoj8r+8IZzBL1Tn56rpQPpxiCfNFu
-	pBYi+pspKjfOAb+ReigyFMFvr6XajEzozJeQLPQRwPIKZEkTMnlc
-X-Google-Smtp-Source: AGHT+IFFiiCe4Qnwvr/rghFmL47p+EkCKmaCnHCOzJOECf1+sw3dexnPEF1isa5Sc9m2cNdQWggfzQ==
-X-Received: by 2002:a05:6808:f94:b0:3c2:4d6d:22bd with SMTP id o20-20020a0568080f9400b003c24d6d22bdmr314193oiw.10.1710100717553;
-        Sun, 10 Mar 2024 12:58:37 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id b21-20020a170902d31500b001dcc2951c02sm3000939plc.286.2024.03.10.12.58.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Mar 2024 12:58:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 10 Mar 2024 12:58:34 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: pali@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+	s=arc-20240116; t=1710108821; c=relaxed/simple;
+	bh=Xp6HN1t5P9W1dHKGWQfqKqsgWh0lrw2Qc0o8/g7BVbQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OrBniG+us5ppYIVCV//2Vxkw9Vw3ORI0iEFLn/dOtRgBMZEYQn69ybWziHrbfIdclKX/nk6fAhPrfZKIEp3rTU33ZT2wVxaMYWzBsL4JTng1WUp5bcQbparUrwO9VZtZ7WsabU7uUe2Bh66Zx9UybFHUkbTshpizmWi1vhG8shA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=math.uni-bielefeld.de; spf=pass smtp.mailfrom=math.uni-bielefeld.de; dkim=pass (2048-bit key) header.d=math.uni-bielefeld.de header.i=@math.uni-bielefeld.de header.b=gVcAZjE5; arc=none smtp.client-ip=129.70.45.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=math.uni-bielefeld.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=math.uni-bielefeld.de
+Received: from localhost (dslb-094-217-220-071.094.217.pools.vodafone-ip.de [94.217.220.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp2.math.uni-bielefeld.de (Postfix) with ESMTPSA id 6C30A60063;
+	Sun, 10 Mar 2024 23:07:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=math.uni-bielefeld.de; s=default; t=1710108432;
+	bh=Xp6HN1t5P9W1dHKGWQfqKqsgWh0lrw2Qc0o8/g7BVbQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gVcAZjE5IlCILMtST6tKtnw3IhFgUhO1k+6TkOiE8TAnpe4qL1gBMdkO+hJHI+GMc
+	 weGITu4R4JnGLa48XjtGigxd3Ua1WlPo4+CaJQDIsvjvbeFk7o69nHuSI54yK/ss9J
+	 AV4SZM9ruqjYJJiiFFhgjvTpjTcMQ7aO+aA1o4lLPlctCwNJL3txJY8H/VULAiCC5H
+	 6/1zSH7Q0cDXFgwfMTjkNqtwu3kcZQjZdKzbrFgXCcbVsdeEYVZT1t4cBJCelXUeEf
+	 3atijaNzEE0c3YaQoHgQhic5bGGwh3tmf6kxnPiKNfqK3fA6G0lXz7TSdWHSYVtMVV
+	 tjRD2i82DUhng==
+From: tjakobi@math.uni-bielefeld.de
+To: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Cc: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (dell-smm) Add XPS 9315 to fan control whitelist
-Message-ID: <cd8071c1-22c9-4a2f-89d9-6634fb88b842@roeck-us.net>
-References: <20240309212025.13758-1-W_Armin@gmx.de>
+Subject: [PATCH v2] hwmon: (dell-smm) Add Dell G5 5505 to DMI table
+Date: Sun, 10 Mar 2024 23:07:09 +0100
+Message-ID: <20240310220710.896230-1-tjakobi@math.uni-bielefeld.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240309212025.13758-1-W_Armin@gmx.de>
 
-On Sat, Mar 09, 2024 at 10:20:25PM +0100, Armin Wolf wrote:
-> A user reported that on this machine, disabling BIOS fan control
-> is necessary in order to change the fan speed.
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> Acked-by: Pali Rohár <pali@kernel.org>
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 
-Applied.
+Enables reading the speed of the CPU and GPU fan on the G5.
 
-Thanks,
-Guenter
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+---
+ drivers/hwmon/dell-smm-hwmon.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 44aaf9b9191d..02405a1dd0a0 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1096,6 +1096,13 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "G5 5590"),
+ 		},
+ 	},
++	{
++		.ident = "Dell G5 5505",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "G5 5505"),
++		},
++	},
+ 	{
+ 		.ident = "Dell Inspiron",
+ 		.matches = {
+-- 
+2.43.0
+
 
