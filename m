@@ -1,163 +1,162 @@
-Return-Path: <linux-hwmon+bounces-1498-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1501-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C16E886708
-	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Mar 2024 07:46:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D84F88681D
+	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Mar 2024 09:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD49C1C21D5C
-	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Mar 2024 06:46:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C8F71C23CBE
+	for <lists+linux-hwmon@lfdr.de>; Fri, 22 Mar 2024 08:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE1112E73;
-	Fri, 22 Mar 2024 06:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD79171AC;
+	Fri, 22 Mar 2024 08:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kjkHHFTT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gKSSFatA"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C982171C1;
-	Fri, 22 Mar 2024 06:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7861217541;
+	Fri, 22 Mar 2024 08:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711089949; cv=none; b=fFIavbxMEbq1h3TjzjQbAQxgKBDlRmHdZklCoSqkZKGW6Rf5IBXhPYb4EVMnJq3gQMS1TyTqqyPBs6+2/MLk055C4wrAogvnWBfEuPLJ9pvmgtgsif648hYMzOu3wvVQmpfPp2GUshQ1fEtMBbfkBYFrL98UVQSdPhcp5w8YQnE=
+	t=1711095523; cv=none; b=mINajCRa26rv3C2undq0oqLE1NgOpP5iH1IB6sc+1B/57shlw1vhO8oRp/TuYM/lLR99xtbJrflxsO2LocC72b2gnM9b7w0RXjHntbe7S+Td1mWsRvnLabBPaNgUzWpMtDCwsc4HVO2oxMgadsIHfzliDUIiinK/7rYGEC7N2M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711089949; c=relaxed/simple;
-	bh=4rUBSyPV6ao55dHemnHVuLdadgQFFoAi54Gb6HBKVTY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WTsbVJXKar/wHmmopI4cT0G7p2NdHgmatIomEL0WQYSYzulKh5LrnrawtsoFf4g9Nu2Tgv42lrIVLc0KHbowHlFfTeN1QerX+WyHbQv3weoFyHWx6AjAR4uY+wlBzMOKHPcD70UDxkpjKiotx9bQQegYIi7xwjPbTTH6TABJdIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kjkHHFTT; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1711095523; c=relaxed/simple;
+	bh=rd+p0dVu4TA+0VkP+DxfWT2f83gmcmxQREG7HALIvfk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r/Ogsr7bPV3j3YVNvAQlSKddtsv1rWrqUBWMKozbCudKKjLI1rP5YP//wYD2gCJhpc8SrXCebsriGVzVY4sjHdGcj2rZXhqWQu3JpkN4ddILOYvWDlbryg7RqeHXIajpoo+DQ1qWewmxgAd/DPORD76ywpBUFD3iyF4R185hLh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gKSSFatA; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a44ad785a44so209611566b.3;
-        Thu, 21 Mar 2024 23:45:47 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1e00d1e13acso11203805ad.0;
+        Fri, 22 Mar 2024 01:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711089946; x=1711694746; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k0ZX0mSNtR84zaDW6QrVcacYADFhCeQmdayKmvm0d6c=;
-        b=kjkHHFTTdjABgPaMb3QPIMWLfVZGR1031sE8cGw1Nlzk/Ffr/vMEYRb95mq3QPr7+k
-         wbcv6ZxfyLR41mv+hxJ4Jt/xSzB3aQVl6ioa3d0XdIJz53I0m2w+QX1MeRTh/cHfwx8s
-         n7sRlcAyA/9rnjkYXznIwCv/5zhkaq5nPJ07EBcwQP7AjzNG7o4ko4nhvL/BeMBK5xfy
-         iKn40tjWnEeMu7AzXcSGTK0XbrVwf3MkavEUbNs3VtmHYk0rdBxY3mbZxRBjfrZ2AdcZ
-         q9vzJEFVuGE8/ykHKlw3M3eMn4k5wjS+kP7RRC73Xzq/gOK6cCYzZLCnulA5CFBJK/+e
-         QIxg==
+        d=gmail.com; s=20230601; t=1711095522; x=1711700322; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yy+KHNUW+coF6cF93OFhp/xRFqCnGtKs15mHnvutaYM=;
+        b=gKSSFatAf8J+4Ivu4b1PmTKfXGqdp4Q5MYuWiqMWa4X+O8sfAGbaRBEypOYkIOXF2R
+         5vKi0fFCs5Fj794tZD28u/DCIa79JV9X1xzrtvPRUlRM6syZ//pjiVeLBLzK4Slm9vyN
+         3INK0+uYDO+abAXBzRteAadR+1aNe2bMeV7GsRJt/wl1ItlDl/ETAOZ31OXWeElMd2WN
+         wx5KZ44X6jqql9ocCrvha+Tk5S4TuZyLCH8Uc64HzgrgNUavU/c1RYsq7KKQZQjuOsjH
+         6bhwBJSxb1umOI+NGxd2TlUH2VGZ7EliIQZi8uFGk9dkGjK9RxS8SbbGbLMeOFQ2+c3/
+         FdAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711089946; x=1711694746;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k0ZX0mSNtR84zaDW6QrVcacYADFhCeQmdayKmvm0d6c=;
-        b=egI5H9cWcRBjDUiPklxLL8D5hmj4m2hpe3WCeJ+rLINS2qsxmfcVwRn8s41ieDok2r
-         btqEPfyEInmB+8TUzNy0YKet97dvkoSjV40vYeeOLQiPlWWJ1ODFVBBiZq8AcLnQd2K5
-         IhHwUhu3V2aavc4CeKJWvHXXdLef6swoxdIcM7BQeBncLgZtdzOWxFbhHGibZsyiSTk7
-         93WNo7ACr0NRq1CWqn9mDf1QGpoN0rHr8Jewzze+OsjtnYxKDH8c6DWzLFy49C5r6vZO
-         6tnclcrtJjiZpZD4mvvOxWIDJssW98e5zk2LlWPIPWmgmMjC6/lgMYciolJTF4VEDiG/
-         MEnA==
-X-Forwarded-Encrypted: i=1; AJvYcCVd1P7S5u3c42MgtsSdYjyB29UNL9XdD3dgm5tI46DCtP82OSHLAfBEbVFKEvv8GM/BD+MSlgfNC27XRE7UJluB3L66tZny8A4EHF3vUfjfcQ/G5Svb6Dz44zk3R8c6HuPUT6kzQVJHPw==
-X-Gm-Message-State: AOJu0Yw8wfQ0tuCA5sXw0GcatSDCe9DpclbeX5Z8dhf+upUhZGHpWkI7
-	8ZhRVVzpbvGNzHtoqWTIlRRtjwMHfSJjD2ZWt3T1CI1sB6DOWEKx
-X-Google-Smtp-Source: AGHT+IHWTwuW8UIUUoXFTdiYrzTtIrzPGEkZkGQ8lAESE+yEAIlcPzGhuzwEM7g3eVOt5C0rx4FIKQ==
-X-Received: by 2002:a17:906:38d7:b0:a46:1d4b:d81 with SMTP id r23-20020a17090638d700b00a461d4b0d81mr1014632ejd.62.1711089945564;
-        Thu, 21 Mar 2024 23:45:45 -0700 (PDT)
-Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id e19-20020a170906375300b00a46bb8a44cdsm679694ejc.198.2024.03.21.23.45.44
+        d=1e100.net; s=20230601; t=1711095522; x=1711700322;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yy+KHNUW+coF6cF93OFhp/xRFqCnGtKs15mHnvutaYM=;
+        b=gIaVTmNQGgvCLxoFdiZ88gm+eA8hS4CWsBayffVUnUmGlZ7yo8AuoTypLIbKnvCBKW
+         buTK9DzXFuWnDnARgDQc1OOCVrPN66gQKnmxsU7wZdwqRY2C89Hic2B2qHjupAEkfgTC
+         EzbPOkl9t9PzdKc916qZMQFNEqvg0UrJbGmxQcGVUpSzMTc4XNs9mt8bcaGOI8ATXz56
+         mM4v5ipXGa4K6IRZDyOr/yU8/Ixpbcf4jv+PPSAd1aYQzwrBaMUKb8ZwKIoodSOaoiv4
+         HdX7r4qZCWWiwS3XcusaRpsr9l93QYOn2y7IXzje59qxWFYaeYC2Kg65YJuRYlaFX1mk
+         Vasg==
+X-Forwarded-Encrypted: i=1; AJvYcCW71eSkhZIluE6WFIKgsvzKAbwjl9nExvZ4n4oWOQkEejgQOeu/IFphDtTPd+OO7zcNRFm4qS5Io8DH6xU7DiwN3gB+YE1VRJn+W9n0bSdwwbqQh4bGNp1bEo5+0+a5BwoPKTM6XIf0hqVnoxMUSPpITgH4BNIdJ9CTadtkp2Gq/oraUg==
+X-Gm-Message-State: AOJu0YzAgJMT1d2RU3SCeqys9Ax18XVc2lCwdW75MkH6E55NGo/tf9er
+	dXvYNel7K7s1g/PVMfhLIvmA01wKLLCM3CoGkFPC4+DxJJSGv5DGqC3+zVl3OYI=
+X-Google-Smtp-Source: AGHT+IGtZSQd4OGDi6oKa3A/VMJZUn6iI84Lg9soIxe7ueMP2K9ls9aPaWHsCdIhDoSHLxi++tYQ8Q==
+X-Received: by 2002:a05:6a21:3997:b0:1a3:55d2:1489 with SMTP id ad23-20020a056a21399700b001a355d21489mr2312813pzc.7.1711095147442;
+        Fri, 22 Mar 2024 01:12:27 -0700 (PDT)
+Received: from hcdev-d520mt2.. (60-250-192-107.hinet-ip.hinet.net. [60.250.192.107])
+        by smtp.gmail.com with ESMTPSA id s128-20020a625e86000000b006e749161d40sm1132564pfb.113.2024.03.22.01.12.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 23:45:45 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Fri, 22 Mar 2024 07:45:30 +0100
-Subject: [PATCH v2 5/5] dt-bindings: hwmon: ibm,p8-occ-hwmon: move to
- trivial devices
+        Fri, 22 Mar 2024 01:12:26 -0700 (PDT)
+From: baneric926@gmail.com
+X-Google-Original-From: kcfeng0@nuvoton.com
+To: jdelvare@suse.com,
+	linux@roeck-us.net,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	corbet@lwn.net
+Cc: linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	openbmc@lists.ozlabs.org,
+	kwliu@nuvoton.com,
+	kcfeng0@nuvoton.com,
+	DELPHINE_CHIU@wiwynn.com,
+	Bonnie_Lo@wiwynn.com
+Subject: [PATCH v5 0/2] hwmon: Driver for Nuvoton NCT7363Y
+Date: Fri, 22 Mar 2024 16:11:56 +0800
+Message-Id: <20240322081158.4106326-1-kcfeng0@nuvoton.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240322-hwmon_dtschema-v2-5-570bee1acecb@gmail.com>
-References: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
-In-Reply-To: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711089934; l=2051;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=4rUBSyPV6ao55dHemnHVuLdadgQFFoAi54Gb6HBKVTY=;
- b=q70/gdmXCi4RvGIZ+Icn9EMX+Srdt6GnUw1wapHGSfBb5rKgsJsBrfeEQjXEbzRQpC0yBmLNL
- yBJQ7F88FHLBJrbYbGpP85x5g38ot1Fi6LVn2jSQHMJlPTSEvepiCto
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Transfer-Encoding: 8bit
 
-This binding meets the requirements to be converted to dtschema
-via trivial-devices.yaml.
+From: Ban Feng <kcfeng0@nuvoton.com>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- .../devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt | 25 ----------------------
- .../devicetree/bindings/trivial-devices.yaml       |  2 ++
- 2 files changed, 2 insertions(+), 25 deletions(-)
+NCT7363Y is an I2C based hardware monitoring chip from Nuvoton.
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt b/Documentation/devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt
-deleted file mode 100644
-index 5dc5d2e2573d..000000000000
---- a/Documentation/devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt
-+++ /dev/null
-@@ -1,25 +0,0 @@
--Device-tree bindings for I2C-based On-Chip Controller hwmon device
--------------------------------------------------------------------
--
--Required properties:
-- - compatible = "ibm,p8-occ-hwmon";
-- - reg = <I2C address>;			: I2C bus address
--
--Examples:
--
--    i2c-bus@100 {
--        #address-cells = <1>;
--        #size-cells = <0>;
--        clock-frequency = <100000>;
--        < more properties >
--
--        occ-hwmon@1 {
--            compatible = "ibm,p8-occ-hwmon";
--            reg = <0x50>;
--        };
--
--        occ-hwmon@2 {
--            compatible = "ibm,p8-occ-hwmon";
--            reg = <0x51>;
--        };
--    };
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index e07be7bf8395..87b0dd9b0734 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -126,6 +126,8 @@ properties:
-           - ibm,cffps1
-             # IBM Common Form Factor Power Supply Versions 2
-           - ibm,cffps2
-+            # IBM On-Chip Controller hwmon device
-+          - ibm,p8-occ-hwmon
-             # Infineon barometric pressure and temperature sensor
-           - infineon,dps310
-             # Infineon IR36021 digital POL buck controller
+Changes since version 4:
+- add Datasheet information and refine words in yaml and rst files
+- remove fan-common.yaml since it is already in hwmon-next
+- refine the commit messages
+- modify the type of returned value in some functions
+- refine lock/unlock in nct7363_write_pwm and accessing
+  HVAL/LVAL registers
+- refine nct7363_init_chip
+- add range check in nct7363_present_pwm_fanin
+- add i2c_device_id table
+- add nct7362 to of_device_id and i2c_device_id table
+
+Changes since version 3:
+- Cherry-pick the fan-common.yaml in [1]
+- Fix "checkpatch --strict" report
+- Replace BIT_CHECK() with BIT()
+- Fix CamelCase defines or variables
+- Drop enum chips
+- Drop all local caching and just read values through regmap
+- Drop chip auto-detection since it increases boot time
+
+[1]: https://patchwork.kernel.org/project/linux-hwmon/patch/
+     20240221104025.1306227-2-billy_tsai@aspeedtech.com/
+
+Changes since version 2:
+- Cherry-pick the fan-common.yaml in [1]
+- Fix nct736x typo and add unevaluatedProperties
+
+[1]: https://patchwork.kernel.org/project/linux-hwmon/patch/
+     20231107105025.1480561-2-billy_tsai@aspeedtech.com/
+
+Changes since version 1:
+- Modify NCT736X(nct736x) to NCT7363Y(nct7363)
+- Convert to devm_hwmon_device_register_with_info API
+- All ID tables are next to each other and should be consistent
+  between i2c_device_id and of_device_id
+- Ref. fan-common.yaml and modify properties (nuvoton,pwm-mask/
+  nuvoton,fanin-mask) to (pwms/tach-ch)
+- Convert to devm_regmap_init_i2c API
+- Remove unused function (watchdog timer)
+- Fix uninitialized symbol which is reported by kernel test robot
+
+Ban Feng (2):
+  dt-bindings: hwmon: Add NCT7363Y documentation
+  hwmon: Add driver for I2C chip Nuvoton NCT7363Y
+
+ .../bindings/hwmon/nuvoton,nct7363.yaml       |  66 +++
+ Documentation/hwmon/index.rst                 |   1 +
+ Documentation/hwmon/nct7363.rst               |  33 ++
+ MAINTAINERS                                   |   8 +
+ drivers/hwmon/Kconfig                         |  11 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/nct7363.c                       | 396 ++++++++++++++++++
+ 7 files changed, 516 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/nuvoton,nct7363.yaml
+ create mode 100644 Documentation/hwmon/nct7363.rst
+ create mode 100644 drivers/hwmon/nct7363.c
 
 -- 
-2.40.1
+2.34.1
 
 
