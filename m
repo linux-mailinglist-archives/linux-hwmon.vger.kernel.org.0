@@ -1,152 +1,199 @@
-Return-Path: <linux-hwmon+bounces-1597-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1602-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C57893785
-	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 04:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58878893851
+	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 08:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163B228120E
-	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 02:57:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BCD41C20979
+	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 06:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EA464D;
-	Mon,  1 Apr 2024 02:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E67F8F62;
+	Mon,  1 Apr 2024 06:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b="sHyuFZV5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AV5u/VTT"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from bits.crawford.emu.id.au (bits.crawford.emu.id.au [203.132.92.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB4A7F
-	for <linux-hwmon@vger.kernel.org>; Mon,  1 Apr 2024 02:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.132.92.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561038F51;
+	Mon,  1 Apr 2024 06:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711940235; cv=none; b=GDi0MQ0ld5dNIxbgRZE0sSBMGeFjcQes00/uFc7Q8RfgwX1mNJkaZwU1WB1YylPMkGpk3t3XXuXwvhL6mHYNO03oU8R29AwTTR8XI+5M5/7yfpAdQ1Y6W5d3bQHJ+H8T9a9wxYYC6d93K2CmBkJ3QOmNHCWZtKTOTEBbV46fVoM=
+	t=1711952463; cv=none; b=No6DpMZGw0PTg0rQQgPwyL9Ujdtj4az6M7bUlfFiwXjUnfqn59y2YTDfDA8iNSvvXKTS0BUooZh+LeXjuaptpGDXhuNe99kywwvrV46zTdtq6sfcA5PrHZPSWyjxIk5+esvzQp44boweiTc702qzDAM72z0FNdZB+slyfDe2Yn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711940235; c=relaxed/simple;
-	bh=OSSb/O5csrUyqjFr6utKFsOCrRYwe1jZIwjRdt3sWrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yd59PI+Mif1ixLvZVjq0XHsDaZqQmn6oro/L3lLEK0jpaV7BfsVf7B+NRPvAebE7asPLalzDDw7zfFNVHGdTbtznZEFjtqWsN9zLPgeN8HntcPeprcqPl6U1Pc2bMcqY6VXHezUGY3aZ9KZTEkCQNwbWlITPUc9E8TQPYitmp6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au; spf=pass smtp.mailfrom=crawford.emu.id.au; dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b=sHyuFZV5; arc=none smtp.client-ip=203.132.92.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crawford.emu.id.au
-Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
-	(authenticated bits=0)
-	by bits.crawford.emu.id.au (8.17.2/8.17.2) with ESMTPSA id 4312uQwn871729
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 1 Apr 2024 13:56:48 +1100
-Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 4312uQwn871729
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-	s=s1; t=1711940208; bh=tyiK63EQJyv2V2245oIrzzcXln0HwFK88tDu8y2Umoo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHyuFZV5DsQ3FBMNCCz5h2b13sjnARczn579CedVEi5pIEah0F/E9NB8b1ZhQxj6B
-	 WrJ7xXy5Aw9aQCQwrN/dKcveKS0RoHGhSGYJ7WjqcCWyl5gMEt+swsuXCkj5800aK5
-	 t8LL5gnAUsbULZ/UpoJbUzYAMw8LK2ohLSc7xAt6QSceQbCoWkN35IHiSD4P4Hqgw8
-	 vlLPXeKZnu58FWJVmtRK2PEWoESZNkwe7lI+ofQT07APgyxsM2Wz4NTSBkufhU3x/E
-	 Bxd/s+h3RC7qdZgtbpi8MYshMrRbotEzT2OqfkAcXUXLNfSrYuVhjzrUdlagr7pANk
-	 /IgdN83sAMBjQ==
-From: Frank Crawford <frank@crawford.emu.id.au>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org, Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v1 4/4] hwmon (it87): Remove tests no longer required
-Date: Mon,  1 Apr 2024 13:56:06 +1100
-Message-ID: <20240401025620.205068-5-frank@crawford.emu.id.au>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401025620.205068-1-frank@crawford.emu.id.au>
-References: <20240401025620.205068-1-frank@crawford.emu.id.au>
+	s=arc-20240116; t=1711952463; c=relaxed/simple;
+	bh=Lf2dD3nRXEM3QKLcinOUWGrZNiSWMEAx6xFjKwZTZuA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Unz5nQdftBROxN6QED9JnyIp85lCOsC3x2mGAcGHHyaYD3DwqX+5dexMVNEZO/QtLX0r7ScnR5NDH7FeVmHT/gB+WhkhZRM+bYEUb6dGjK1fCO7dKWdRjo+iZ9AvN8vXHGeCyqaKaayMAOp7VnDRzolYSnr/cfK5YP2mWkQ0zQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AV5u/VTT; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7cc77e74b5cso175448239f.2;
+        Sun, 31 Mar 2024 23:21:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711952461; x=1712557261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iMMohnAWMK6m3tG9gNhC20ZEygwyJguxL99B9xnGWG8=;
+        b=AV5u/VTTWJYcGIO3YwSyLj1AmfLeIQHcSePw9JK0F57Eorjp/XW5t9AP30djqEZ+UV
+         AG0sYnkkcD1iLRP/JSgHE2h1cMHWlmYWN1o2Fg4bB2lCBapiZfzz+5Wztmx/l3h7CFcc
+         u2eS6VI+yKDeckF/u1Ekm/u755SlTA7ZYuTuf83qNtKeaDCwEEOUVsxmIH1YI2A1ak5I
+         PEAYxcpq6xBQbAkKyJ2tiRH89ywRwpNEWveZgqxNrqei9QIwjIFK27Nsfmq96zeH3E5P
+         wvewsFOMraFQSWbvlQXj7Gz1mBRyAakknOwvo12cHbUyl0Q0H0QBE7EZcnElKh07oWYP
+         PljA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711952461; x=1712557261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iMMohnAWMK6m3tG9gNhC20ZEygwyJguxL99B9xnGWG8=;
+        b=MTDxLaA2EVZy5e5bcSb+T5UJbR5ei4WaLNWG4DcqW7PmPyY5dwuBB4OS4fiQYhnYNy
+         Qz27vIjvxcz+HRQoQiAJaSPR71Zl99sxPM5c88JDT+MEIKUA1/r1Wf0yTu+b+v+8GicR
+         n4iJgYWidTwWsFHdGPV4WVmU6x4gFFC8GkGjV3wrSLJgN54Fnr+pF5BZhD8CwF0DuKZr
+         WiFcl87AYO8ziu75AsCJ9QAeddzJw50YVARh7Ac/NQEPH0UthmTaNuhIUbC3oFMxhuLJ
+         verNUzTGvnxJ82mYcBGRA49ChG1yc9ux4O0REHlP67k4Ng3rgaoMoHunI5ZdG6Rv4cQb
+         2zxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUny0raQFzsM8ZIcau0rbJ12NOPOlT/DXpnUGh6SEd33FoWbDwxWFad54ANBnocbRokdQu/Q7qZ9lPqxNCywDKf3lWZEklheWUcQDN5M2zE6rBCv+ATtTW+ynf1SnGAhPkFbDzB0N+UUJrJlqSY8BJPaWCLR0LiVN7rrGw/Fa/qevY+qkSwONUYoRONr0/sD51bTWK3gBUDPruedupwxPh1
+X-Gm-Message-State: AOJu0YytMbKv/InyIrF31TqP71yzcGSLXH5Z3LtBonfqyczc0QHdP4pp
+	ZIthghVLvzVdDBZ0qPHjVzjN5ssyvwXvpYy6dMr6SGnzlY1ihzCci1VQwvQasavrcome6ZxVEsj
+	m3ynYfkgBYeTUA36LUdIGDG1WNYc=
+X-Google-Smtp-Source: AGHT+IGqrP3UbKuIe1tD2jwC4HaMuI/kdKXkvDhRJ+AWyQfCT0kCIFRqJPOXLpW67XqZ5jBlSE9DEP3cTjA6OoqADbE=
+X-Received: by 2002:a5d:8986:0:b0:7cf:1c5c:681e with SMTP id
+ m6-20020a5d8986000000b007cf1c5c681emr10205960iol.17.1711952461453; Sun, 31
+ Mar 2024 23:21:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Mon, 01 Apr 2024 13:56:48 +1100 (AEDT)
-X-Virus-Scanned: clamav-milter 1.0.5 at bits.crawford.emu.id.au
-X-Virus-Status: Clean
-X-Spam-Level: *
+References: <20240322081158.4106326-1-kcfeng0@nuvoton.com> <20240322081158.4106326-2-kcfeng0@nuvoton.com>
+ <171109961635.307786.7810067768607811171.robh@kernel.org> <22fcad13-dd9b-4e9a-90aa-d20fb78e6a0d@roeck-us.net>
+ <e1102a00-0c94-4d35-8de2-1173ee417bdc@linaro.org>
+In-Reply-To: <e1102a00-0c94-4d35-8de2-1173ee417bdc@linaro.org>
+From: Ban Feng <baneric926@gmail.com>
+Date: Mon, 1 Apr 2024 14:20:50 +0800
+Message-ID: <CALz278ZdvJhtDhBaKMg_nP+sS0HQVvAjidKAGkeqG8Cu4ftb+Q@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] dt-bindings: hwmon: Add NCT7363Y documentation
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, linux-hwmon@vger.kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org, conor+dt@kernel.org, 
+	corbet@lwn.net, jdelvare@suse.com, kwliu@nuvoton.com, kcfeng0@nuvoton.com, 
+	Paul Menzel <pmenzel@molgen.mpg.de>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Bonnie_Lo@wiwynn.com, linux-doc@vger.kernel.org, 
+	DELPHINE_CHIU@wiwynn.com, openbmc@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Remove DMI tests for boards that are known to have issues with entering
-configuration mode, as now we are testing the chips directly and no
-longer need to rely on matching the board.
+Hi Krzysztof,
 
-Leave the DMI table in place, for the nVIDIA board, and any future
-expansions.
+Thanks for your support.
 
-Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
----
- drivers/hwmon/it87.c | 48 --------------------------------------------
- 1 file changed, 48 deletions(-)
+Best regards,
+Ban
 
-diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index 6a77f2f6e1e1..b850eb3e5907 100644
---- a/drivers/hwmon/it87.c
-+++ b/drivers/hwmon/it87.c
-@@ -3683,27 +3683,6 @@ static int it87_dmi_cb(const struct dmi_system_id *dmi_entry)
- 	return 1;
- }
- 
--/*
-- * On various Gigabyte AM4 boards (AB350, AX370), the second Super-IO chip
-- * (IT8792E) needs to be in configuration mode before accessing the first
-- * due to a bug in IT8792E which otherwise results in LPC bus access errors.
-- * This needs to be done before accessing the first Super-IO chip since
-- * the second chip may have been accessed prior to loading this driver.
-- *
-- * The problem is also reported to affect IT8795E, which is used on X299 boards
-- * and has the same chip ID as IT8792E (0x8733). It also appears to affect
-- * systems with IT8790E, which is used on some Z97X-Gaming boards as well as
-- * Z87X-OC.
-- * DMI entries for those systems will be added as they become available and
-- * as the problem is confirmed to affect those boards.
-- */
--static int it87_sio_force(const struct dmi_system_id *dmi_entry)
--{
--	__superio_enter(REG_4E);
--
--	return it87_dmi_cb(dmi_entry);
--};
--
- /*
-  * On the Shuttle SN68PT, FAN_CTL2 is apparently not
-  * connected to a fan, but to something else. One user
-@@ -3726,34 +3705,7 @@ static struct it87_dmi_data nvidia_fn68pt = {
- 		.driver_data = data, \
- 	}
- 
--#define IT87_DMI_MATCH_GBT(name, cb, data) \
--	IT87_DMI_MATCH_VND("Gigabyte Technology Co., Ltd.", name, cb, data)
--
- static const struct dmi_system_id it87_dmi_table[] __initconst = {
--	IT87_DMI_MATCH_GBT("AB350", it87_sio_force, NULL),
--		/* ? + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("AX370", it87_sio_force, NULL),
--		/* ? + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("Z97X-Gaming G1", it87_sio_force, NULL),
--		/* ? + IT8790E */
--	IT87_DMI_MATCH_GBT("TRX40 AORUS XTREME", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("Z390 AORUS ULTRA-CF", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("B550 AORUS PRO AC", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570 AORUS MASTER", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570 AORUS PRO", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570 AORUS PRO WIFI", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570S AERO G", it87_sio_force, NULL),
--		/* IT8689E + IT87952E */
--	IT87_DMI_MATCH_GBT("Z690 AORUS PRO DDR4", it87_sio_force, NULL),
--		/* IT8689E + IT87952E */
--	IT87_DMI_MATCH_GBT("Z690 AORUS PRO", it87_sio_force, NULL),
--		/* IT8689E + IT87952E */
- 	IT87_DMI_MATCH_VND("nVIDIA", "FN68PT", it87_dmi_cb, &nvidia_fn68pt),
- 	{ }
- 
--- 
-2.44.0
+On Tue, Mar 26, 2024 at 2:29=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 25/03/2024 18:09, Guenter Roeck wrote:
+> > On 3/22/24 02:26, Rob Herring wrote:
+> >>
+> >> On Fri, 22 Mar 2024 16:11:57 +0800, baneric926@gmail.com wrote:
+> >>> From: Ban Feng <kcfeng0@nuvoton.com>
+> >>>
+> >>> Add bindings for the Nuvoton NCT7363Y Fan Controller
+> >>>
+> >>> Reviewed-by: Rob Herring <robh@kernel.org>
+> >>> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> >>> Signed-off-by: Ban Feng <kcfeng0@nuvoton.com>
+> >>> ---
+> >>>   .../bindings/hwmon/nuvoton,nct7363.yaml       | 66 ++++++++++++++++=
++++
+> >>>   MAINTAINERS                                   |  6 ++
+> >>>   2 files changed, 72 insertions(+)
+> >>>   create mode 100644 Documentation/devicetree/bindings/hwmon/nuvoton,=
+nct7363.yaml
+> >>>
+> >>
+> >> My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_che=
+ck'
+> >> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> >>
+> >> yamllint warnings/errors:
+> >>
+> >> dtschema/dtc warnings/errors:
+> >> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/binding=
+s/hwmon/nuvoton,nct7363.yaml:
+> >> Error in referenced schema matching $id: http://devicetree.org/schemas=
+/hwmon/fan-common.yaml
+> >> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/binding=
+s/hwmon/nuvoton,nct7363.example.dtb: hwmon@22: fan-0: False schema does not=
+ allow {'pwms': [[1, 0, 50000]], 'tach-ch': ['']}
+> >>      from schema $id: http://devicetree.org/schemas/hwmon/nuvoton,nct7=
+363.yaml#
+> >> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/binding=
+s/hwmon/nuvoton,nct7363.example.dtb: hwmon@22: fan-0: Unevaluated propertie=
+s are not allowed ('pwms', 'tach-ch' were unexpected)
+> >>      from schema $id: http://devicetree.org/schemas/hwmon/nuvoton,nct7=
+363.yaml#
+> >> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/binding=
+s/hwmon/nuvoton,nct7363.example.dtb: hwmon@22: fan-1: False schema does not=
+ allow {'pwms': [[1, 1, 50000]], 'tach-ch': b'\x01'}
+> >>      from schema $id: http://devicetree.org/schemas/hwmon/nuvoton,nct7=
+363.yaml#
+> >> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/binding=
+s/hwmon/nuvoton,nct7363.example.dtb: hwmon@22: fan-1: Unevaluated propertie=
+s are not allowed ('pwms', 'tach-ch' were unexpected)
+> >>      from schema $id: http://devicetree.org/schemas/hwmon/nuvoton,nct7=
+363.yaml#
+> >> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/binding=
+s/hwmon/nuvoton,nct7363.example.dtb: fan-1: tach-ch: b'\x01' is not of type=
+ 'object', 'array', 'boolean', 'null'
+> >>      from schema $id: http://devicetree.org/schemas/dt-core.yaml#
+> >>
+> >> doc reference errors (make refcheckdocs):
+> >>
+> >> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202=
+40322081158.4106326-2-kcfeng0@nuvoton.com
+> >>
+> >> The base for the series is generally the latest rc1. A different depen=
+dency
+> >> should be noted in *this* patch.
+> >>
+> >> If you already ran 'make dt_binding_check' and didn't see the above
+> >> error(s), then make sure 'yamllint' is installed and dt-schema is up t=
+o
+> >> date:
+> >>
+> >> pip3 install dtschema --upgrade
+> >>
+> >> Please check and re-submit after running the above command yourself. N=
+ote
+> >> that DT_SCHEMA_FILES can be set to your schema file to speed up checki=
+ng
+> >> your schema. However, it must be unset to test all examples with your =
+schema.
+> >>
+> >
+> > I am a bit puzzled by this one. The patch has a Reviewed-by: tag from R=
+ob,
+> > but then Rob's bot complains about errors. hat am I missing ?
+>
+> The warning is a result of missing fan-common.yaml in the tree used as a
+> base.
+>
+> I checked now and I don't see warnings on next or v6.9-rc1, so it is
+> safe for you to apply it.
+>
+> For the record:
+>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>
+> Best regards,
+> Krzysztof
+>
 
