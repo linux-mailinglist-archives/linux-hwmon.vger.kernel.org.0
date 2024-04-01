@@ -1,58 +1,61 @@
-Return-Path: <linux-hwmon+bounces-1598-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1601-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8547989379F
-	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 05:02:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9957F8937A4
+	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 05:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63ED281B63
-	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 03:02:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555AB281B83
+	for <lists+linux-hwmon@lfdr.de>; Mon,  1 Apr 2024 03:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23695256;
-	Mon,  1 Apr 2024 03:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B825CBD;
+	Mon,  1 Apr 2024 03:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b="m3cpJJbI"
+	dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b="nazqFoht"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from bits.crawford.emu.id.au (bits.crawford.emu.id.au [203.132.92.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CCE1C0DF8
-	for <linux-hwmon@vger.kernel.org>; Mon,  1 Apr 2024 03:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E19833F6
+	for <linux-hwmon@vger.kernel.org>; Mon,  1 Apr 2024 03:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.132.92.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711940485; cv=none; b=Kzl6xLUqqr52jYldVXV1E6Yz33Kb9ENqfNPjl4EXOKDpT95TTTVy2oO7s88QlAdDNAXmlfGzNE6ULcTVbcxS5fKrb+h+YM4hMZvnNLrgKTtYkYNnOI0p1plqSB5Kyc2dznqu9MKnecRQjD2PB3vRXyaiA/qkDaN3sUK3x0lMu60=
+	t=1711940495; cv=none; b=BeozOnSd51CQKvuvpjPtGAnjGyCLnbN4T4dWHPXm0VKZmviERPmFmmiXs8nqvOTcH3lb4DsRtOGrO4QkqSwb+DADUvCj+GfQJJ0mdO1yBIHC0RE9PfiksXqZgSg94v2sTpBL5NGWCWfpjyA7a78AiHIh32flsgd1WJPCbB+nKPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711940485; c=relaxed/simple;
-	bh=F4Nltxd64i4uHYYrV8J7hU3zw/Dsx1oJpEvtgfIIKJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NJ9iBbIeP3y/7B9Yc0dzwIqQnK3qoMlgZ6S260wN1qI1GJ1cHXt8/5DJtz7MRM3Ue6prfO7uzw0N/AlcgxhbMX1iyKiQZl7MQz2Hpac93bqLvbZ44GT+plNmvGr8O2l/Ga7QoQlhCyGUBAjMzrMafc1yGfrjEK+rE08Keza37kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au; spf=pass smtp.mailfrom=crawford.emu.id.au; dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b=m3cpJJbI; arc=none smtp.client-ip=203.132.92.223
+	s=arc-20240116; t=1711940495; c=relaxed/simple;
+	bh=x073pIytXcY6puSD7Qj//QsYJ28CrFTDN5jpp5D6vj8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YhHr+/n9MmsIVg/BuArhevp6laIX/zF+HaJNUDS+JUm62F157wMbz0NC356ac2Xm4l4WEs5f3FzYzwxgL8djnA6Lyp4EH3JOw9Kh9ZBSU3K9NMM5dhHS6p4FSvKmhVo/v2GVbaNMyrU5KgCy5YlrxvyYQLOcOzFRwT4oAQAuwbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au; spf=pass smtp.mailfrom=crawford.emu.id.au; dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b=nazqFoht; arc=none smtp.client-ip=203.132.92.223
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crawford.emu.id.au
 Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
 	(authenticated bits=0)
-	by bits.crawford.emu.id.au (8.17.2/8.17.2) with ESMTPSA id 4312uQwj871729
+	by bits.crawford.emu.id.au (8.17.2/8.17.2) with ESMTPSA id 4312uQwk871729
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 1 Apr 2024 13:56:34 +1100
+	Mon, 1 Apr 2024 13:56:38 +1100
 Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 4312uQwj871729
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 4312uQwk871729
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-	s=s1; t=1711940195; bh=6QavR8+N77TdckjkRh57p8WJzWa5e4yYlJTT3cx8wcQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=m3cpJJbI2364CBBL5exgCq1H66yB1JAq2hsclW46RB8zTk8EM73JCXGGYDUwPxp8V
-	 Sgz5EVTK931jSkZMDLrVOP3sdWerIZdZLfDlymy53vrygfZI64FMuT+GG9S+sLgrk8
-	 qcRwVApwxCWgV97uacHN44qKOHB8/kZywcto2wz1pHL3TV8qs6ky2EPS+0ljOfmUyZ
-	 s8kstSBFLQDgPhapWQa/c3iAnR4Q1Is7l0NvlmEl2SntnAAeqNpfRF4YQ18zN1u/Hj
-	 pm5Om1w7Ru6AAFbU3g37jSyOURkuOib7rR7lbbmEOV6KFhPk3UQ+IPcFtUkvHlVO0r
-	 MwfFnrY/HubRw==
+	s=s1; t=1711940198; bh=a0YV52EsZDUdvg1iL/OPQ/7Xu0bpdkRonT2rAvFRLcg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nazqFohtHYDskluY6/00Qc3DizZhA7cPm6ODJ68+8o3V6gPUzP2eKvePvQBLxJpCr
+	 uVmSnlYPGXOc4TvCrY3aYGuoJjr8qDHUUkVOqufDsnjRXKRR7jAG4sUomY24hi5z3p
+	 aXGQYcoA3aZurzzxOY94fPKi2+yUxusZTlIcokAa9CQ8Lzlh7ObEeYcRdB6in1qcKl
+	 utLf5rl4EP8mrrhUxLZXKXpaAPqBnHyr6jh3geHC1ASrUn1PUQw0tj7WsdKQTtlg1z
+	 e034vnUD6pUGFYlACfv7D2HncKbmm/Kt8EMVyIJExX8paQw+psFyQy8bDwbx7Yr5eX
+	 a08mrJnow7HPQ==
 From: Frank Crawford <frank@crawford.emu.id.au>
 To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
 Cc: linux-hwmon@vger.kernel.org, Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v1 0/4] hwmon (it87): Correct handling for configuration mode
-Date: Mon,  1 Apr 2024 13:56:02 +1100
-Message-ID: <20240401025620.205068-1-frank@crawford.emu.id.au>
+Subject: [PATCH v1 1/4] hwmon (it87): Rename NOEXIT to BIOSOPEN as more descriptive of requirement
+Date: Mon,  1 Apr 2024 13:56:03 +1100
+Message-ID: <20240401025620.205068-2-frank@crawford.emu.id.au>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240401025620.205068-1-frank@crawford.emu.id.au>
+References: <20240401025620.205068-1-frank@crawford.emu.id.au>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -60,36 +63,105 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Mon, 01 Apr 2024 13:56:35 +1100 (AEDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Mon, 01 Apr 2024 13:56:38 +1100 (AEDT)
 X-Virus-Scanned: clamav-milter 1.0.5 at bits.crawford.emu.id.au
 X-Virus-Status: Clean
 X-Spam-Level: *
 
-On various Gigabyte boards, incorrectly entering configuration mode
-causes the second Super-IO chip generate LPC buss access errors.
-This was preivously fixed by ensuring that the second chip receives the
-code to enter configuration mode before the first chip.
+Rename previous definitions to match the new information that they are
+preinitialised by the BIOS and should not receive codes to enter or exit
+configuration mode.
 
-On discussion with people who have access to the specification documents
-it was noted that this is wrong, and you should not enter or leave
-configuration mode for the second chip, as it is enable by the BIOS and
-should not be changed.
-
-In particular, this was found to be the case on the Gigabyte X670E Aorus
-Master board, where it was reporting a totally wrong chip ID (0x8883)
-using the previous method.  This was corrected by not entering
-configuration mode, and this has been found to still work with older boards.
-
+Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
 ---
-Frank Crawford (4):
-  Rename NOEXIT to BIOSOPEN as more descriptive of requirement
-  Do not enter configuration mode for some chip types
-  Test for chipset before entering configuration mode
-  Remove tests no longer required
+ drivers/hwmon/it87.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
- drivers/hwmon/it87.c | 127 +++++++++++++++++++++----------------------
- 1 file changed, 61 insertions(+), 66 deletions(-)
-
+diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
+index fbe86cec6055..6eeba3a01e3c 100644
+--- a/drivers/hwmon/it87.c
++++ b/drivers/hwmon/it87.c
+@@ -320,7 +320,7 @@ struct it87_devices {
+  * second SIO address. Never exit configuration mode on these
+  * chips to avoid the problem.
+  */
+-#define FEAT_CONF_NOEXIT	BIT(19)	/* Chip should not exit conf mode */
++#define FEAT_CONF_BIOSOPEN	BIT(19)	/* Chip conf mode enabled by BIOS */
+ #define FEAT_FOUR_FANS		BIT(20)	/* Supports four fans */
+ #define FEAT_FOUR_PWM		BIT(21)	/* Supports four fan controls */
+ #define FEAT_FOUR_TEMP		BIT(22)
+@@ -452,7 +452,7 @@ static const struct it87_devices it87_devices[] = {
+ 		.model = "IT8790E",
+ 		.features = FEAT_NEWER_AUTOPWM | FEAT_12MV_ADC | FEAT_16BIT_FANS
+ 		  | FEAT_TEMP_OFFSET | FEAT_TEMP_PECI | FEAT_IN7_INTERNAL
+-		  | FEAT_PWM_FREQ2 | FEAT_FANCTL_ONOFF | FEAT_CONF_NOEXIT,
++		  | FEAT_PWM_FREQ2 | FEAT_FANCTL_ONOFF | FEAT_CONF_BIOSOPEN,
+ 		.peci_mask = 0x07,
+ 	},
+ 	[it8792] = {
+@@ -461,7 +461,7 @@ static const struct it87_devices it87_devices[] = {
+ 		.features = FEAT_NEWER_AUTOPWM | FEAT_16BIT_FANS
+ 		  | FEAT_TEMP_OFFSET | FEAT_TEMP_OLD_PECI | FEAT_TEMP_PECI
+ 		  | FEAT_10_9MV_ADC | FEAT_IN7_INTERNAL | FEAT_FANCTL_ONOFF
+-		  | FEAT_CONF_NOEXIT,
++		  | FEAT_CONF_BIOSOPEN,
+ 		.peci_mask = 0x07,
+ 		.old_peci_mask = 0x02,	/* Actually reports PCH */
+ 	},
+@@ -507,7 +507,7 @@ static const struct it87_devices it87_devices[] = {
+ 		.features = FEAT_NEWER_AUTOPWM | FEAT_16BIT_FANS
+ 		  | FEAT_TEMP_OFFSET | FEAT_TEMP_OLD_PECI | FEAT_TEMP_PECI
+ 		  | FEAT_10_9MV_ADC | FEAT_IN7_INTERNAL | FEAT_FANCTL_ONOFF
+-		  | FEAT_CONF_NOEXIT,
++		  | FEAT_CONF_BIOSOPEN,
+ 		.peci_mask = 0x07,
+ 		.old_peci_mask = 0x02,	/* Actually reports PCH */
+ 	},
+@@ -544,7 +544,7 @@ static const struct it87_devices it87_devices[] = {
+ #define has_four_temp(data)	((data)->features & FEAT_FOUR_TEMP)
+ #define has_six_temp(data)	((data)->features & FEAT_SIX_TEMP)
+ #define has_vin3_5v(data)	((data)->features & FEAT_VIN3_5V)
+-#define has_conf_noexit(data)	((data)->features & FEAT_CONF_NOEXIT)
++#define has_conf_biosopen(data)	((data)->features & FEAT_CONF_BIOSOPEN)
+ #define has_scaling(data)	((data)->features & (FEAT_12MV_ADC | \
+ 						     FEAT_10_9MV_ADC))
+ #define has_fanctl_onoff(data)	((data)->features & FEAT_FANCTL_ONOFF)
+@@ -748,7 +748,7 @@ static int smbus_disable(struct it87_data *data)
+ 		superio_select(data->sioaddr, PME);
+ 		superio_outb(data->sioaddr, IT87_SPECIAL_CFG_REG,
+ 			     data->ec_special_config & ~data->smbus_bitmap);
+-		superio_exit(data->sioaddr, has_conf_noexit(data));
++		superio_exit(data->sioaddr, has_conf_biosopen(data));
+ 	}
+ 	return 0;
+ }
+@@ -765,7 +765,7 @@ static int smbus_enable(struct it87_data *data)
+ 		superio_select(data->sioaddr, PME);
+ 		superio_outb(data->sioaddr, IT87_SPECIAL_CFG_REG,
+ 			     data->ec_special_config);
+-		superio_exit(data->sioaddr, has_conf_noexit(data));
++		superio_exit(data->sioaddr, has_conf_biosopen(data));
+ 	}
+ 	return 0;
+ }
+@@ -3143,7 +3143,7 @@ static int __init it87_find(int sioaddr, unsigned short *address,
+ 	}
+ 
+ exit:
+-	superio_exit(sioaddr, config ? has_conf_noexit(config) : false);
++	superio_exit(sioaddr, config ? has_conf_biosopen(config) : false);
+ 	return err;
+ }
+ 
+@@ -3540,7 +3540,7 @@ static void it87_resume_sio(struct platform_device *pdev)
+ 			     reg2c);
+ 	}
+ 
+-	superio_exit(data->sioaddr, has_conf_noexit(data));
++	superio_exit(data->sioaddr, has_conf_biosopen(data));
+ }
+ 
+ static int it87_resume(struct device *dev)
 -- 
 2.44.0
 
