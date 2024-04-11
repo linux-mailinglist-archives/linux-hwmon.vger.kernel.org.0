@@ -1,257 +1,145 @@
-Return-Path: <linux-hwmon+bounces-1696-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1698-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B9C8A12AA
-	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Apr 2024 13:12:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB1B8A1454
+	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Apr 2024 14:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454FF1C21E11
-	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Apr 2024 11:12:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8D71F2341A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Apr 2024 12:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C043E147C7C;
-	Thu, 11 Apr 2024 11:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8332314A603;
+	Thu, 11 Apr 2024 12:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ORawTR+n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2V2opAq"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002B6147C69
-	for <linux-hwmon@vger.kernel.org>; Thu, 11 Apr 2024 11:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D043314A61E
+	for <linux-hwmon@vger.kernel.org>; Thu, 11 Apr 2024 12:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712833949; cv=none; b=MAIXuxiF6w1q6VGVxdSM+ZWMnonrEgoqjLjZMTFuB6qMceYV9tyN2Ztty3RjsMe2+BuFBnF64YHydbKcvLhNmxatZlpcPDSo7/qLqwFetjGZK20us/UW6cdbG5PkCiTkYBD0LvvMQqHmNUBqb/+KMtY4re5cGVhoAoN2tWkWMOU=
+	t=1712838048; cv=none; b=tB8C06xfBcDFE3TMDdC11Y+dFJcT1L8QgN0usNEinBOLBDccmxN2A4IFeOPjjnOTGvj5pobUgL8ba/JyHBCjEscPaJFGedz7CDr1guCZMFB85S2JuxwxvthPxfGpNp7LkDaS6jonsDzsEIsH00N2RMfZ7Eqeyc6tC2UXeJoMiP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712833949; c=relaxed/simple;
-	bh=3nehdY3IoisZgfnPOVj2Hf8bER48KMRzaHu+3gnRuUM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Iw1v/J70vt5Unh+LFNMUHtRpDSbE0guYzTGMD95KaJFQljJ9s8fc4c3r/3hlPvVUhmHHzNnGEWuu2hj5FBwwJhrnL1EqYqZW7LiF6pHGV4hyM5AO25uSZLzMSdUT0a3nshpJcn9P/mhAgHM0dEbEilispNIv+yvlzXaCvrS279A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ORawTR+n; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712833947; x=1744369947;
-  h=date:from:to:cc:subject:message-id;
-  bh=3nehdY3IoisZgfnPOVj2Hf8bER48KMRzaHu+3gnRuUM=;
-  b=ORawTR+nYbe45PLtTKJqqkHsBY5QDAOSnorQtCeSSP5J7se2xR1mlK68
-   Zs61TDguHRXjTCIbH3swQiY3gnA5T1QzL2AnJL6lPBMTr6jwEYFPTSxko
-   WDfFqT952QgQMWGs5jCZ5JVUrDB8o5Hmzvs5WoT+3h4jXVfpdMaCUMDOq
-   5oRYkdbJ+ejzo74xZl3DVRGJMAJexTZbq9rsGukopd/nT6DeuO5UOVK4q
-   PjvR8zSy8Ue6E6WEp1/KHJi3Bgigar+RPnLCx3e+tDcJi/eoXnqafQwhy
-   XbdTi5JoMiBI6lbpEjomvfu5wUMzQQrQo48V6jlKUlDxmbz5/bTRJyHzn
-   A==;
-X-CSE-ConnectionGUID: gQAK8S3VQMSbwuzokD/mKw==
-X-CSE-MsgGUID: g/xPyf2KSwS3APyP2cd2oA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8112281"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="8112281"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 04:12:27 -0700
-X-CSE-ConnectionGUID: P7H1/5m8QGm5QYEnJ8I/qA==
-X-CSE-MsgGUID: vN0E47KnSIKz0d11SLvjww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="25346273"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 11 Apr 2024 04:12:25 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rusLu-0008Xe-35;
-	Thu, 11 Apr 2024 11:12:22 +0000
-Date: Thu, 11 Apr 2024 19:11:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- db85dba9fee5fed54e2c37eed465f8fd243a92e8
-Message-ID: <202404111934.SCwm68pL-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1712838048; c=relaxed/simple;
+	bh=eroD4NnMy1CrfzkCMjfZATzGKCba0PyD+soplAE6M2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OD74KhKg4ZnKxLFTkv9fztQEg6BfU+Rvvu2JVQ7DraJLRENyBzMidnu96PnOIybb6jaz6J3cte+Qdpnl3v2SCxlcLBmYAU181xrIHNTRDsMQ1EKAxdz5CLHYwjjHCeuGw4c+Ng18SuBVdGg6C7LNIMIzqGVHOHr61uI8L4ZbB4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2V2opAq; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6ee12766586so78616b3a.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 11 Apr 2024 05:20:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712838046; x=1713442846; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A4v/E1mg/DJDGaK05rrSrzBpolIV7TIOSaF5rtlHY74=;
+        b=C2V2opAq0aHlL1dnqz7lZcbJ6c2T4N+vvidMC+MM1Pb7TNONTVlIja8x92PH9dQ4Y9
+         mgzg9YQxfP3qsg6vvihBcoBsGr6XuI24yWDcPDycOkA/pBuvkE9cUlA2KwCKVPsq6AJT
+         0ipKJUvLNGbogaR+zQmo0Tb43Vq6QB7aMrZIdBSn64fhMHKLZijPC5EXzr5gIhjLh+LS
+         XuLp+fomMPhn1Pb06KihTzZApsq0FgWRkvebSja4wz4Jn8hQlhfnPiU0BDYcpxE7mqw1
+         oUr2FkUoVpAqRQZic9ZhXMIXCNuAJ9vbwtz2jilyWTnHL+h5EZO2/wzDEgrm8kHAtNV+
+         gU4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712838046; x=1713442846;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A4v/E1mg/DJDGaK05rrSrzBpolIV7TIOSaF5rtlHY74=;
+        b=b0aKNtoEWX/fci7W9eZXsSep8HzIlJOb+QiJHhcyk7uUeCsK5xMfpDwsZrZaS6ddS3
+         wZCwxOOT3esJ5zVRGj7uX/K7IGRNAHgjDR+cusjaWryEStUQ6KngRW/3vM7lM33eMaSK
+         Fs3n+1HBewquFinLagnlDpmzZC3D6RVvvK1XXtkirsWyo5WD2Xzgx4mgewu2LDCZwFFb
+         HjCOpFmPPFVos+HBSzWWOjDnElH02ddQPwD5YCogjYgZmiIDz7vKJ407enFlyZXvcGkF
+         nZRoVpEvwE5aXLwDoNc5pCWOkSoCinyVsSE+3QpowmF20tMQFFACjmUdBlmcdlMv6Fjy
+         vDgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDPN3hPzgl6rot8WkMo7znC5GpEH49Wl9GNAQ8BgTN9aIEZt/k1mA/QNL3iilR11VFx3xfzYVzE8tUiVt6px/HNsvkUezPb2Rjou8=
+X-Gm-Message-State: AOJu0YzlMPOK9dGWvh7aghHE3rVCEpjF3PXNr6PXiDO7vtqYmhpjPY6d
+	vRyb1k5HjMBEhQPStY4LFdEXumntVW4c7t46lJTxiDxv+JM/IdcLZL/CQQ==
+X-Google-Smtp-Source: AGHT+IEkvhoJeP49sfgF2lQ+OlAoy+FTX2jgdEdl0IgJC6PdzZRbNFYhynU6+6caAoqka9FWDyW+GA==
+X-Received: by 2002:a05:6a21:32a6:b0:1a3:6f13:b11b with SMTP id yt38-20020a056a2132a600b001a36f13b11bmr3330176pzb.4.1712838046014;
+        Thu, 11 Apr 2024 05:20:46 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id r15-20020aa78b8f000000b006edda81101esm1066858pfd.80.2024.04.11.05.20.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Apr 2024 05:20:45 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 11 Apr 2024 05:20:44 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Frank Crawford <frank@crawford.emu.id.au>
+Cc: Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v1 3/4] hwmon (it87): Test for chipset before entering
+ configuration mode
+Message-ID: <f9963bed-b669-4bdc-897c-3ca04d5162c0@roeck-us.net>
+References: <20240401025620.205068-1-frank@crawford.emu.id.au>
+ <20240401025620.205068-4-frank@crawford.emu.id.au>
+ <0773b784-e552-4b31-b8c7-d68e058a2290@roeck-us.net>
+ <bfe6323c154ae4080a38a85e3601c7fe980dc10b.camel@crawford.emu.id.au>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bfe6323c154ae4080a38a85e3601c7fe980dc10b.camel@crawford.emu.id.au>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: db85dba9fee5fed54e2c37eed465f8fd243a92e8  hwmon: (aspeed-g6-pwm-tach) Convert to platform remove callback returning void
+On Thu, Apr 11, 2024 at 09:08:19PM +1000, Frank Crawford wrote:
+> On Wed, 2024-04-10 at 08:17 -0700, Guenter Roeck wrote:
+> > On Mon, Apr 01, 2024 at 01:56:05PM +1100, Frank Crawford wrote:
+> > > Major part of the change for the new method to avoid chipset
+> > > issues.
+> > > 
+> > > Perform an intial test if the chip ID can be read without entering
+> > > configuration mode, if so, do not enter configuration mode and
+> > > continue
+> > > as is.
+> > > 
+> > > If chip ID cannot be read, enter configuration mode, and continue
+> > > with
+> > > previous code.
+> > > 
+> > > Also update exit code to take account of if we entered
+> > > configuration
+> > > mode or not.
+> > > 
+> > 
+> > You describe the changes, but you don't describe the problem you are
+> > trying to solve. Even if configuration mode was already entered, that
+> > is not a reason to keep it active. We don't _know_ what is going on
+> > outside the driver and can not make assumptions. For changes like
+> > this
+> > you really need to explain the problem you are trying to solve, and
+> > the
+> > reasoning behind the changes. Just assuming that a set of chips would
+> > have its SIO mode enabled by the BIOS is just wrong. We don't know
+> > what if anything the BIOS is doing.
+> 
+> In this regard, it is no different to the current code, which runs SIO
+> mode enable, but does not ever run the SIO mode disable code.
+> 
+> In fact this code is actually safer than the previous code in that it
+> acts similar to the chip not being enabled or disabled, which would
+> happen if no driver existed.
 
-elapsed time: 1163m
+Not really. There is also the watchdog code which will happily disable
+SIO access after it is done, causing subsequent accesses by the hwmon
+driver to fail. The code also assumes that SIO access was not erroneously
+left enabled by some other code which we don't have any control over.
 
-configs tested: 164
-configs skipped: 3
+You assume that the hwmon driver is the only driver accessing the chip.
+That is a wrong assumption. I understand that the underlying problem
+is really that there is no SIO access infrastructure in the kernel.
+In the absence of such an infrastructure we can not make any assumptions
+about SIO access control implemented by other drivers in the kernel,
+and specifically can not assume that SIO access won't be disabled by
+other drivers just because it was enabled when the hwmon driver probe
+function was running.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                         haps_hs_defconfig   gcc  
-arc                   randconfig-001-20240411   gcc  
-arc                   randconfig-002-20240411   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          moxart_defconfig   gcc  
-arm                           omap1_defconfig   gcc  
-arm                   randconfig-001-20240411   gcc  
-arm                   randconfig-002-20240411   gcc  
-arm                   randconfig-004-20240411   gcc  
-arm                       spear13xx_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   clang
-arm64                               defconfig   gcc  
-arm64                 randconfig-002-20240411   gcc  
-arm64                 randconfig-003-20240411   gcc  
-arm64                 randconfig-004-20240411   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240411   gcc  
-csky                  randconfig-002-20240411   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240411   clang
-i386         buildonly-randconfig-002-20240411   clang
-i386         buildonly-randconfig-003-20240411   clang
-i386         buildonly-randconfig-004-20240411   clang
-i386         buildonly-randconfig-005-20240411   clang
-i386         buildonly-randconfig-006-20240411   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240411   gcc  
-i386                  randconfig-002-20240411   gcc  
-i386                  randconfig-003-20240411   clang
-i386                  randconfig-004-20240411   clang
-i386                  randconfig-005-20240411   gcc  
-i386                  randconfig-006-20240411   clang
-i386                  randconfig-011-20240411   clang
-i386                  randconfig-012-20240411   gcc  
-i386                  randconfig-013-20240411   gcc  
-i386                  randconfig-014-20240411   gcc  
-i386                  randconfig-015-20240411   clang
-i386                  randconfig-016-20240411   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240411   gcc  
-loongarch             randconfig-002-20240411   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                            mac_defconfig   gcc  
-m68k                           sun3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                         bigsur_defconfig   gcc  
-mips                      fuloong2e_defconfig   gcc  
-mips                    maltaup_xpa_defconfig   gcc  
-mips                           rs90_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240411   gcc  
-nios2                 randconfig-002-20240411   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                generic-32bit_defconfig   gcc  
-parisc                randconfig-001-20240411   gcc  
-parisc                randconfig-002-20240411   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240411   gcc  
-powerpc               randconfig-003-20240411   gcc  
-powerpc64             randconfig-002-20240411   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-002-20240411   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                ecovec24-romimage_defconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                          polaris_defconfig   gcc  
-sh                    randconfig-001-20240411   gcc  
-sh                    randconfig-002-20240411   gcc  
-sh                           se7206_defconfig   gcc  
-sh                             shx3_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240411   gcc  
-sparc64               randconfig-002-20240411   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240411   gcc  
-um                    randconfig-002-20240411   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-002-20240411   clang
-x86_64       buildonly-randconfig-003-20240411   clang
-x86_64       buildonly-randconfig-005-20240411   clang
-x86_64       buildonly-randconfig-006-20240411   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240411   clang
-x86_64                randconfig-002-20240411   clang
-x86_64                randconfig-004-20240411   clang
-x86_64                randconfig-006-20240411   clang
-x86_64                randconfig-011-20240411   clang
-x86_64                randconfig-013-20240411   clang
-x86_64                randconfig-071-20240411   clang
-x86_64                randconfig-072-20240411   clang
-x86_64                randconfig-073-20240411   clang
-x86_64                randconfig-076-20240411   clang
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                  cadence_csp_defconfig   gcc  
-xtensa                randconfig-001-20240411   gcc  
-xtensa                randconfig-002-20240411   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Guenter
 
