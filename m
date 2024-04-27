@@ -1,152 +1,117 @@
-Return-Path: <linux-hwmon+bounces-1895-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-1900-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06848B4522
-	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Apr 2024 10:34:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9643F8B4573
+	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Apr 2024 11:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503E71F21DF7
-	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Apr 2024 08:34:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5791F21F6B
+	for <lists+linux-hwmon@lfdr.de>; Sat, 27 Apr 2024 09:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB69376EC;
-	Sat, 27 Apr 2024 08:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6838147F63;
+	Sat, 27 Apr 2024 09:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b="AES6Ho74"
+	dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b="UOyZmUHs"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from bits.crawford.emu.id.au (bits.crawford.emu.id.au [116.255.43.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2969A1DA3A
-	for <linux-hwmon@vger.kernel.org>; Sat, 27 Apr 2024 08:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CAA38DD3
+	for <linux-hwmon@vger.kernel.org>; Sat, 27 Apr 2024 09:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.255.43.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714206854; cv=none; b=ZUer1Vyabp6SBes9H0KMNlzGhVwIo61u5R6RUcgSy7mHKQP/O/kmNrv768wEFmmj6935htwyvMWnqm0UVvnGVqChUt/qzB6E9OPc28GvIxP6eEeBKsfml3TRtG1oQbBfS/vpNnnIKFzqPQ4xqMsv4c2kaE4DX2ncISHrhXHh15s=
+	t=1714211958; cv=none; b=oDa8gGgMsWvbH1ltsw21T9aGBTbKc0lG47IvqKsZpktcAAn6Hyq3gRK1SVN+MyN3A7/0PR/4Nt+nKzSMotjV4HpMHY2YPCiuGaoMKgjaa7HN/y35nq5cxXc4P3LSwRi6uzEMAuECYr60qf+zO5ljYmBn1fp5a/DTCkTRHF2+uKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714206854; c=relaxed/simple;
-	bh=OSSb/O5csrUyqjFr6utKFsOCrRYwe1jZIwjRdt3sWrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXbYHGrlTy9PWurtGsmrMZjgsnpWL6V7vT/DbFnzcnWgAlhX3DME5pmqRMwApW/6rRk1BNwcLuO7qnBocxGQaaiaFz7B1H4tWiJEh7/pOBFIlWegcm1ecolnliP2+TeWIswitf3k7+y77cwiz48f9QX9vZOAY+y9fizGON7N9uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au; spf=pass smtp.mailfrom=crawford.emu.id.au; dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b=AES6Ho74; arc=none smtp.client-ip=116.255.43.97
+	s=arc-20240116; t=1714211958; c=relaxed/simple;
+	bh=Eiidt9813FfhVTD6aoE1xn37kiI5VAqvG9mwFFOOD2M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sWInNnUkyv8JOCi2G6AOJyyVzQwf2KgMSeL8XX+EnolUHbnXMYpkOl6p/lWWxGp+gReWAR/H7w/NSJrlF/PuDgigfk6qzk4Awo3jBOmJFc22fwbtKuWyDSh0Q/LLz/C3UIBeF2+AN75zjc2pCV7fCRKXzJLrUP/r2oahYUtirkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au; spf=pass smtp.mailfrom=crawford.emu.id.au; dkim=pass (2048-bit key) header.d=crawford.emu.id.au header.i=@crawford.emu.id.au header.b=UOyZmUHs; arc=none smtp.client-ip=116.255.43.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crawford.emu.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crawford.emu.id.au
 Received: from agc.crawford.emu.id.au (agc.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc07])
 	(authenticated bits=0)
-	by bits.crawford.emu.id.au (8.17.2/8.17.2) with ESMTPSA id 43R8XNSG3013858
+	by bits.crawford.emu.id.au (8.17.2/8.17.2) with ESMTPSA id 43R9wmkO3032938
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Sat, 27 Apr 2024 18:33:47 +1000
+	Sat, 27 Apr 2024 19:58:49 +1000
 Authentication-Results: bits.crawford.emu.id.au; arc=none smtp.remote-ip=fdd2:7aad:d478:1::cb10:cc07
-DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 43R8XNSG3013858
+DKIM-Filter: OpenDKIM Filter v2.11.0 bits.crawford.emu.id.au 43R9wmkO3032938
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crawford.emu.id.au;
-	s=s1; t=1714206827; bh=tyiK63EQJyv2V2245oIrzzcXln0HwFK88tDu8y2Umoo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AES6Ho74zNuCG0OfnGFujaBvJVkexMYnkoOIRFK81hSaQbG5EQuqMBP/aQainRwpp
-	 nJhVQrBxIPZo57A7+kcmqLhd/UHrqDcNF7/4pww0kO+zgApyn5XIDSAce8Motm4cRW
-	 hdUdhALLxd2RvA8H57BksJ4COAxD8TCFF1yy303jB2rDYtY5S0Ae+eRwKDxVxnGTdv
-	 jDqIzjHSooltLrLDs6JRUQ3LWQKWts5iS65zK4KAKqes9ouiHgrjHOBWo6scX3mSiN
-	 VOEd698YxGdmbxoxb/jfXoPty75uuFiVsEEoSG1C7uRejA58bdO1yUYIqM0ezvDyLb
-	 ZeH8zU4DLhIVg==
+	s=s1; t=1714211929; bh=Eiidt9813FfhVTD6aoE1xn37kiI5VAqvG9mwFFOOD2M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=UOyZmUHsSHSigegTbAkyMc43dZ1YObogvkonWroOflu1gbzPk3r9NxGbmI+BY+Sql
+	 WhS6JOy4nBg4hQjccaOM59OAv0JYDZwTdV2Si9r4U7GkVdnV+h+nc4MJmW9M0hBNYu
+	 xh3OlO+MHfWaw1sd4RaGpssNi4fLLesiQe48CZAvtZE8AOfGeG1OHUrJfjWbiCJCrq
+	 Mm3N/H6OMMBama/Xw/LOgcEPdOnhckzPQjEQ7nhhOOiF/kU4bhvKSLLS4qD/tenLLg
+	 kaPtBgjEy2aFE8N3FmrJIK75JdegDhjHsZ9czjLicSpk3uLRutlbccxdy9ij/F9inq
+	 syAoKUDZ3fZgw==
+Message-ID: <67469410c2cccaf993171bbfcae5b7f0de94d674.camel@crawford.emu.id.au>
+Subject: Re: [PATCH v2 0/4] hwmon (it87): Correct handling for configuration
+ mode
 From: Frank Crawford <frank@crawford.emu.id.au>
 To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org, Frank Crawford <frank@crawford.emu.id.au>
-Subject: [PATCH v2 4/4] hwmon (it87): Remove tests nolonger required
-Date: Sat, 27 Apr 2024 18:33:05 +1000
-Message-ID: <20240427083317.2077175-5-frank@crawford.emu.id.au>
-X-Mailer: git-send-email 2.44.0
+Cc: linux-hwmon@vger.kernel.org
+Date: Sat, 27 Apr 2024 19:58:48 +1000
 In-Reply-To: <20240427083317.2077175-1-frank@crawford.emu.id.au>
 References: <20240427083317.2077175-1-frank@crawford.emu.id.au>
+Autocrypt: addr=frank@crawford.emu.id.au; prefer-encrypt=mutual;
+ keydata=mQGiBD+o6joRBADBLtTRHGwkCHLbpC5qU/cJL0mHf8wDGcoiy9jSlPHrlTp8qGyxBOsus917W0fd9tm1RPRdcYffVFRqdduxBwPdpXi7vTWZgNG5CS39IXw6V//oO1hi7swPm3bNjszq3D1TxVpIpK3EuL4oNcgweLJftXuPP30Mi0gbRgMSyn9SOwCgzc/nZ4i9iPEq7Jhyu+MptuFzNqsEAJPZYUk0MDmXrJjzvcydHoOePqxp9VIqxLOf1gqxy8wXg9D9R3oTAXh94ekLkIN+GimKdB0oCZu02PF9wDnJlQqOtk0Fz4hCetwsNNBsFdbSY7gfmIEByqHE4MicQnTl97JOV/4XQgovznJJKv4OiCC6n20aIPFe2OcKHsi4NlxIA/9lKO2a4ge8f6a6sQoHgrjBe0SQJ0RimXqVUKAxac2wKeDe62J8RJhDJ+Ghnm29w5kKb3YHr2muVJEVqHxz3VYqGXG4T+tleG6T8yeic3HbTghC6+o3HYXOJchGfciIw52S08xO0w4eowNznlS5i8td+aroFF7JiomZqnmyD6oqSbQpRnJhbmsgQ3Jhd2ZvcmQgPGZyYW5rQGNyYXdmb3JkLmVtdS5pZC5hdT6IeQQTEQIAOQIXgAIeBxYhBAPV1JdGtb85KnTrWEWq0knseWomBQJigar6BQsJCAcCAyICAQYVCgkICwIEFgIDAQAKCRBFqtJJ7HlqJqFLAJ9OZPRJxlFHCfDJ6iCL8i4IpINeuACgw1znVGjRZpfNx+YRELbLYdLvZKW5AQ0EP6jqPBAEANwthQvVRnrGQBCGCXBFZ6Dum/aQWXzEovvipgLH0MrVNJy3605GJt+aLGjnzPNvhjvCYGmNtdksqPQqsg8VnE/DgvQFJr+OX/q9IWnZhzEaZ4t6Itvqv9DhtVk6tX6XUgxkBVTX0mQOSwFIPRG+XgSve9dv6xgSRTeAjXRxzbrHAAQLBAC0atcs!
+ Itf9FthDk
+	6XJg9ZXtsXDctsVgV1BuSSDP/iynoMozuGpbqMkGXugBGqPmNOMHXw+XALd4yQ2/rPrznK5VFyaCupqzCgWtKfQ1zMczHUb9JvFCweP7I8ZbP2oXCvlHBySzGjVJVCNPxCYLQi0qriLv0aXmWIkHBLCpybDqYhdBBgRAgAdFiEEA9XUl0a1vzkqdOtYRarSSex5aiYFAmKBqYQACgkQRarSSex5aiYz/gCfUNAXafSyBey6z61HSG7l16anYfcAoKsrBxj7bE73wsjzjywqOWkJ9hjJ
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 27 Apr 2024 18:33:47 +1000 (AEST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (bits.crawford.emu.id.au [IPv6:fdd2:7aad:d478:1:0:0:cb10:cc01]); Sat, 27 Apr 2024 19:58:49 +1000 (AEST)
 X-Virus-Scanned: clamav-milter 1.0.5 at bits.crawford.emu.id.au
 X-Virus-Status: Clean
 
-Remove DMI tests for boards that are known to have issues with entering
-configuration mode, as now we are testing the chips directly and no
-longer need to rely on matching the board.
+On Sat, 2024-04-27 at 18:33 +1000, Frank Crawford wrote:
+> On various Gigabyte boards, incorrectly entering configuration mode
+> causes the second Super-IO chip to generate LPC bus access errors.
+> This was preivously fixed by ensuring that the second chip receives
+> the
+> code to enter configuration mode before the first chip.
+>=20
+> On discussion with people who have access to the specification
+> documents
+> it was noted that this is wrong, and you should not enter or leave
+> configuration mode for the second chip, as it is enable during
+> initialisation and should not be changed.
+>=20
+> In particular, this was found to be the case on the Gigabyte X670E
+> Aorus
+> Master board, where it was reporting a totally wrong chip ID (0x8883)
+> using the previous method.=A0 This was corrected by not entering
+> configuration mode, and this has been found to still work with older
+> boards.
+>=20
+> ---
 
-Leave the DMI table in place, for the nVIDIA board, and any future
-expansions.
+Sorry, I forgot to add what the changes are since v1:
 
-Signed-off-by: Frank Crawford <frank@crawford.emu.id.au>
----
- drivers/hwmon/it87.c | 48 --------------------------------------------
- 1 file changed, 48 deletions(-)
+- renamed the feature to FEAT_NOCONF and macro to has_noconf.
+- reworked patch descriptions to be more explicit about the actions and
+remove any reference to the BIOS.
 
-diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index 6a77f2f6e1e1..b850eb3e5907 100644
---- a/drivers/hwmon/it87.c
-+++ b/drivers/hwmon/it87.c
-@@ -3683,27 +3683,6 @@ static int it87_dmi_cb(const struct dmi_system_id *dmi_entry)
- 	return 1;
- }
- 
--/*
-- * On various Gigabyte AM4 boards (AB350, AX370), the second Super-IO chip
-- * (IT8792E) needs to be in configuration mode before accessing the first
-- * due to a bug in IT8792E which otherwise results in LPC bus access errors.
-- * This needs to be done before accessing the first Super-IO chip since
-- * the second chip may have been accessed prior to loading this driver.
-- *
-- * The problem is also reported to affect IT8795E, which is used on X299 boards
-- * and has the same chip ID as IT8792E (0x8733). It also appears to affect
-- * systems with IT8790E, which is used on some Z97X-Gaming boards as well as
-- * Z87X-OC.
-- * DMI entries for those systems will be added as they become available and
-- * as the problem is confirmed to affect those boards.
-- */
--static int it87_sio_force(const struct dmi_system_id *dmi_entry)
--{
--	__superio_enter(REG_4E);
--
--	return it87_dmi_cb(dmi_entry);
--};
--
- /*
-  * On the Shuttle SN68PT, FAN_CTL2 is apparently not
-  * connected to a fan, but to something else. One user
-@@ -3726,34 +3705,7 @@ static struct it87_dmi_data nvidia_fn68pt = {
- 		.driver_data = data, \
- 	}
- 
--#define IT87_DMI_MATCH_GBT(name, cb, data) \
--	IT87_DMI_MATCH_VND("Gigabyte Technology Co., Ltd.", name, cb, data)
--
- static const struct dmi_system_id it87_dmi_table[] __initconst = {
--	IT87_DMI_MATCH_GBT("AB350", it87_sio_force, NULL),
--		/* ? + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("AX370", it87_sio_force, NULL),
--		/* ? + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("Z97X-Gaming G1", it87_sio_force, NULL),
--		/* ? + IT8790E */
--	IT87_DMI_MATCH_GBT("TRX40 AORUS XTREME", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("Z390 AORUS ULTRA-CF", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("B550 AORUS PRO AC", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570 AORUS MASTER", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570 AORUS PRO", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570 AORUS PRO WIFI", it87_sio_force, NULL),
--		/* IT8688E + IT8792E/IT8795E */
--	IT87_DMI_MATCH_GBT("X570S AERO G", it87_sio_force, NULL),
--		/* IT8689E + IT87952E */
--	IT87_DMI_MATCH_GBT("Z690 AORUS PRO DDR4", it87_sio_force, NULL),
--		/* IT8689E + IT87952E */
--	IT87_DMI_MATCH_GBT("Z690 AORUS PRO", it87_sio_force, NULL),
--		/* IT8689E + IT87952E */
- 	IT87_DMI_MATCH_VND("nVIDIA", "FN68PT", it87_dmi_cb, &nvidia_fn68pt),
- 	{ }
- 
--- 
-2.44.0
+There is no code changes of any significance.
 
+> Frank Crawford (4):
+> =A0 Rename FEAT_CONF_NOEXIT to FEAT_NOCONF as more descriptive of
+> requirement
+> =A0 Do not enter configuration mode for some chiptypes
+> =A0 Test for chipset before entering configuration mode
+> =A0 Remove tests nolonger required
+>=20
+> =A0drivers/hwmon/it87.c | 127 +++++++++++++++++++++--------------------
+> --
+> =A01 file changed, 61 insertions(+), 66 deletions(-)
+>=20
 
