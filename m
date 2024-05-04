@@ -1,92 +1,132 @@
-Return-Path: <linux-hwmon+bounces-2037-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2040-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06128BBAAF
-	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 13:25:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF9D8BBB25
+	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 14:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4241F21DFF
-	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 11:25:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A04A71C2114A
+	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 12:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41E0182B9;
-	Sat,  4 May 2024 11:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu1gtAgG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E68208C4;
+	Sat,  4 May 2024 12:18:17 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms-10.1blu.de (ms-10.1blu.de [178.254.4.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE5A12E4A;
-	Sat,  4 May 2024 11:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964B05234;
+	Sat,  4 May 2024 12:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.254.4.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714821917; cv=none; b=d3UEIneovagY0rH7uZ1slvSvtKoiRRdR+uuPvqCtnMc0/JoFkTAs5fOUYpemli7KjLh6XsQJ5qqyqOGGR9IFp/y99lVxdRTYPRY+YsydUnnjz3mvMk8/o6s8gkXm6R1kIQUYLjgCe7qXg97MoNAYIWhPTMONhSqFVh0JxHQmJh4=
+	t=1714825097; cv=none; b=o+9I3LGfflJ5FXbSTK95CPc4x6KmU9lCaLDf6PL++8nEiJZovgMg27zLLZvXqrfHI0bbUsgx4DBXbk8XZD+2CYuvsxTh6iPtrGAf8koDVhsROtNlST9ioo0BQGHviS2uWXhPc/9oRdth83/TLQl+Gr6Eh7fRBHg0i9ve1cCp1Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714821917; c=relaxed/simple;
-	bh=aoXtElC6QjfEFEfzT5AfaOXZlXtAWDSJADrXTUPIhJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iw+p2gYXchSk9PxM3LRIXLjEDaluYG0/MgZXGR39cLALH5fOXpj+WG45yctgD1+IBsFqyy7vk8xjz/asYAFgOGu7fo3d+TKm6sHE47fqDdMu7P9rpNoqtQo64Zsz6w8YNpz25KC0wxMu7ep74wpotNazKcF0uUCj0jBlHt/oHJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu1gtAgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C081C072AA;
-	Sat,  4 May 2024 11:25:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714821917;
-	bh=aoXtElC6QjfEFEfzT5AfaOXZlXtAWDSJADrXTUPIhJ0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Tu1gtAgG9z5Y+yIvIEIVmQ2fgyjD9Tn/RCv0n/DVuQsXojxeIcNqTROwRA0zGng4j
-	 Ya5SpoaGi4SNih9n8Sq3x2yfWbKEhYzBOqQZnSxnGf5l7dtD3PWZLGjvO1Ih20FJQD
-	 TReESyKIdZ7IsVIZsuw+P7sRyIFVtAbV56r6zgRm45YQ57ybcMMkFIXvmtn8AJNS7L
-	 SXuEjrVx4AQy13Z4yg9Rs4OpkuCPiiSzKbCIBkbCtfS15qjAPrPWQ8hxsqGMzicPgt
-	 RLgbpCGMpBjeLONT4v4OjIUqu4JFCpK+1qh829hJZmLNgsXGxStgLOER2GggkuhHv7
-	 8TOSwx7Ys5crA==
-Date: Sat, 4 May 2024 12:25:04 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	s=arc-20240116; t=1714825097; c=relaxed/simple;
+	bh=CsIZ8ETxiJAGv+CnlYM534fFITb1mczKbTdqGZHPBfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nzcqIEHByDVKV7G18LBTpyWBpnxWNQsBUhs6YcTZ1w8NI+p2fA8uAJYsS1qnC6jK7hOMN5Dvx+wHiYpSivMIDjsvnSmEGFD1Wng34RAreTWUQlL7icB+AHoW+J90CLPMwhAt+UlpGgEw7BRrYrazdMzxOYOPi3ZLWRTsPd0GBgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariuszachmann.de; spf=pass smtp.mailfrom=mariuszachmann.de; arc=none smtp.client-ip=178.254.4.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariuszachmann.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mariuszachmann.de
+Received: from [2.211.228.80] (helo=marius.localnet)
+	by ms-10.1blu.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <mail@mariuszachmann.de>)
+	id 1s3EHT-00FLNS-C6;
+	Sat, 04 May 2024 14:14:19 +0200
+From: Marius Zachmann <mail@mariuszachmann.de>
+To: linux-hwmon@vger.kernel.org, Aleksa Savic <savicaleksa83@gmail.com>
+Cc: Jonas Malaco <jonas@protocubo.io>, Aleksa Savic <savicaleksa83@gmail.com>,
  Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jonathan Corbet
- <corbet@lwn.net>, Support Opensource <support.opensource@diasemi.com>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-input@vger.kernel.org
-Subject: Re: [PATCH v2 4/7] iio: addac: ad74115: Use
- devm_regulator_get_enable_read_voltage()
-Message-ID: <20240504122504.0389b872@jic23-huawei>
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-4-b1f11ab766c1@baylibre.com>
-References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
-	<20240429-regulator-get-enable-get-votlage-v2-4-b1f11ab766c1@baylibre.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+ linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH 1/3] hwmon: (corsair-cpro) Use a separate buffer for sending
+ commands
+Date: Sat, 04 May 2024 14:14:18 +0200
+Message-ID: <6041245.lOV4Wx5bFT@marius>
+In-Reply-To: <20240504092504.24158-2-savicaleksa83@gmail.com>
+References:
+ <20240504092504.24158-1-savicaleksa83@gmail.com>
+ <20240504092504.24158-2-savicaleksa83@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-Con-Id: 241080
+X-Con-U: 0-mail
 
-On Mon, 29 Apr 2024 18:40:12 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On 04.05.24 at 11:25:01 MESZ, Aleksa Savic wrote
+> Introduce cmd_buffer, a separate buffer for storing only
+> the command that is sent to the device. Before this separation,
+> the existing buffer was shared for both the command and the
+> report received in ccp_raw_event(), which was copied into it.
+> 
+> However, because of hidraw, the raw event parsing may be triggered
+> in the middle of sending a command, resulting in outputting gibberish
+> to the device. Using a separate buffer resolves this.
+> 
+> Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+> Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+> ---
+>  drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+> index a284a02839fb..8d85f66f8143 100644
+> --- a/drivers/hwmon/corsair-cpro.c
+> +++ b/drivers/hwmon/corsair-cpro.c
+> @@ -79,6 +79,7 @@ struct ccp_device {
+>  	struct device *hwmon_dev;
+>  	struct completion wait_input_report;
+>  	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
+> +	u8 *cmd_buffer;
+>  	u8 *buffer;
+>  	int target[6];
+>  	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+> @@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+>  	unsigned long t;
+>  	int ret;
+>  
+> -	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
+> -	ccp->buffer[0] = command;
+> -	ccp->buffer[1] = byte1;
+> -	ccp->buffer[2] = byte2;
+> -	ccp->buffer[3] = byte3;
+> +	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
+> +	ccp->cmd_buffer[0] = command;
+> +	ccp->cmd_buffer[1] = byte1;
+> +	ccp->cmd_buffer[2] = byte2;
+> +	ccp->cmd_buffer[3] = byte3;
+>  
+>  	reinit_completion(&ccp->wait_input_report);
+>  
+> -	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
+> +	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+>  	if (!ccp)
+>  		return -ENOMEM;
+>  
+> -	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
+> +	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
+> +	if (!ccp->cmd_buffer)
+> +		return -ENOMEM;
+> +
+> +	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
+>  	if (!ccp->buffer)
+>  		return -ENOMEM;
+>  
+> 
 
-> We can reduce boilerplate code by using
-> devm_regulator_get_enable_read_voltage().
-> 
-> To maintain backwards compatibility in the case a DT does not provide
-> an avdd-supply, we fall back to calling devm_regulator_get_enable()
-> so that there is no change in user-facing behavior (e.g. dummy regulator
-> will still be in sysfs).
-> 
-> Also add an informative error message when we failed to get the voltage
-> and knowing the voltage is required while we are touching this.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-A somewhat fiddly case.  I think you've done it the best way possible though.
+Thank you!
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 
