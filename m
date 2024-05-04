@@ -1,151 +1,167 @@
-Return-Path: <linux-hwmon+bounces-2039-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2041-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0558BBB1C
-	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 14:15:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A68C8BBC44
+	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 15:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 560EC282C9C
-	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 12:15:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45001F21AD1
+	for <lists+linux-hwmon@lfdr.de>; Sat,  4 May 2024 13:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD4922EEF;
-	Sat,  4 May 2024 12:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8453219F3;
+	Sat,  4 May 2024 13:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RE4gRyoP"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from ms-10.1blu.de (ms-10.1blu.de [178.254.4.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CCE1097B;
-	Sat,  4 May 2024 12:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.254.4.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259211799B;
+	Sat,  4 May 2024 13:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714824892; cv=none; b=F+3VxLkdLSE0ARYHUIdb/YwVlW7cQxxnqLe6QR6iLhkUG0Rjzt7uhWor+meQ1xSC29lZ3st0p3XUD1hhMO3lqTtfzDlU6Ds/lp9nUikumpWpyztemkXAXSDOxSwAPVRE0jj4yjg+j3HHVEwXsV5kwC1GInwJpeviDXZJTlKdK18=
+	t=1714829876; cv=none; b=bRMLgBXgo2rNclPAlT6yOmo0DUaWfUv1MLTiJ2xiiWAQQEWIgcfvSVYDBlskQyGYYuhYNa4sc+rwENXDJX/KC7XiHuRWiYBqqbuXcmxvBDyVwAZfRf4jL3kNsbAe8SbKngBNgbJqEIZwHq0rDmEk07T9nS9oAbbdKgqH1HgSLCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714824892; c=relaxed/simple;
-	bh=VtBLvm01Gl40CEKVVLkK6MNAUa9Vo5Q0UV0wX8v4hB0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KsTNpjx9Hl2NyLyOhbcvn6Km/m1h1PGeZ7SZVDfmfwNUbiuKq+W9aaVe0IHSd6zKY249IJAGcOvGOTpCmjRuCUfcWRhlBw1RmgjYvAyMuhBs7fa522RiyOCkFgdtDX6YwtUsAUwiIBNoOQlVNVGljZ+lJ79qbpduxeOvtikZ7YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariuszachmann.de; spf=pass smtp.mailfrom=mariuszachmann.de; arc=none smtp.client-ip=178.254.4.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariuszachmann.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mariuszachmann.de
-Received: from [2.211.228.80] (helo=marius.localnet)
-	by ms-10.1blu.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <mail@mariuszachmann.de>)
-	id 1s3EHw-00FLhs-Iv;
-	Sat, 04 May 2024 14:14:48 +0200
-From: Marius Zachmann <mail@mariuszachmann.de>
-To: linux-hwmon@vger.kernel.org, Aleksa Savic <savicaleksa83@gmail.com>
-Cc: Jonas Malaco <jonas@protocubo.io>, Aleksa Savic <savicaleksa83@gmail.com>,
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH 3/3] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a
- spinlock
-Date: Sat, 04 May 2024 14:14:48 +0200
-Message-ID: <2182068.irdbgypaU6@marius>
-In-Reply-To: <20240504092504.24158-4-savicaleksa83@gmail.com>
-References:
- <20240504092504.24158-1-savicaleksa83@gmail.com>
- <20240504092504.24158-4-savicaleksa83@gmail.com>
+	s=arc-20240116; t=1714829876; c=relaxed/simple;
+	bh=+CJXx3koQLYN1B1om5/4IRE7tuuotyHp4wQJJOV4Vyk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jmc+pmDt9wTBjduBAGVI+40te2lMojLzTx1QshrTTU9qLR1fiW5leayQNOCkFVm3V/stHqTBsif/ZztxV4JB5XpOo+feDq5Zc4kTpbiOh6nUp0VPKoyhvGUaeNwzk5l2f1seBo54PenDSivPcKvnurNoc9A56xzXUcFjZPEv+JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RE4gRyoP; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1e3ca546d40so4416355ad.3;
+        Sat, 04 May 2024 06:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714829874; x=1715434674; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4EGKr6FjTAXUcLBcVBwQzJVvnJMccoMO665tE3tYfk=;
+        b=RE4gRyoPM+vc418Qme2SDkwP4l09xPeJ+GkGZSevFmmLRDByhIViApofW7UGvPj8/r
+         3RBxmZreXZNX+eX8oi17QpcDBJGUwXQJhZT0dcKwv7GfZMXrbJU7QCnPwivF6jt9zh+Q
+         7Xwqy6LMB89c4jM60OeouxE+Ej7xHEPUGzfVlpnrf4AM12KZyEH7X3aod1lHq9U/tv4R
+         HwjDNLnI0Ho8jleWFXgYkUHSP0fPP5XVFtfKcEs2/CUaXnb+KDlm76UG6OLzzu4PlJrU
+         zL/RpMhAgnHuW8xnmmcw9OR5pDNS4RFBvJLI+Rol4py0vmo7cfrAu8rfVpEG49kJEapL
+         wYjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714829874; x=1715434674;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q4EGKr6FjTAXUcLBcVBwQzJVvnJMccoMO665tE3tYfk=;
+        b=J0sNX55+ZvYCwGb4i3z8pzh+4bDRWgTQPgxuJPwp0KswbLbmRBVnCwUwLrp6cOO+cF
+         3r0SdxzswrjxRVn4txf3Vcb5t9t7noY1/Q+QC0hgq94tMNJM0f1TvsRjKm3zRq8khAyy
+         v6vU+5MRuRguYnV5cZsXMusl8l/YW/cmOqBY+3QWp8Qm4zZ943dsC7NrPx3Pesq1PUkx
+         N5Q7l3S2u+bAJvq3lIe5VrW/QugMucCb/VSSl8qY+phm7iTM3DzEdNjkGKcNjYpjc55y
+         yQRFTgXoZrCMZsf/Uo15mJVkLjd99CZuT3vayWlMrNAxKwg3nNBKe2SvzAJsCJspylfu
+         rnAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULlN9qMLTtM2xm9gNermFDpLejoHtPoo97GkB66By3NjQ75piX9oH6jxKt8FzPDHuOwRy4Brkk/esv+cpA0woR8D0Gbw7SBrjcPYsSoZk61DyNZhiLetgTXH4m3mWrsm9Rt53AfdIPc/8=
+X-Gm-Message-State: AOJu0Yzftu+rsSwt4KaE8PvWUYxYuQfEfIVAJRylfSgZrzPKyf3nt/d2
+	KQx/7XR7zU/aC5fIvLmG8eofgle01vdppnLzXpcUXoTrsHueBms2
+X-Google-Smtp-Source: AGHT+IFg3r+K7gDnBpuBLEs/oU52paelf/WsWsHygn8lhr7kEz7oFnEyalsYUgRJVYpszLi2o89SpQ==
+X-Received: by 2002:a17:902:f682:b0:1e4:3c7f:c060 with SMTP id l2-20020a170902f68200b001e43c7fc060mr6182311plg.66.1714829874263;
+        Sat, 04 May 2024 06:37:54 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e14-20020a17090301ce00b001ec80dbb8b1sm5009265plh.73.2024.05.04.06.37.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 May 2024 06:37:53 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <e85861b4-b129-48a0-9ce7-fb912d4eda34@roeck-us.net>
+Date: Sat, 4 May 2024 06:37:52 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Con-Id: 241080
-X-Con-U: 0-mail
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] hwmon: (corsair-cpro) Fix issues when hidraw is used
+To: Aleksa Savic <savicaleksa83@gmail.com>, linux-hwmon@vger.kernel.org
+Cc: Jonas Malaco <jonas@protocubo.io>,
+ Marius Zachmann <mail@mariuszachmann.de>, Jean Delvare <jdelvare@suse.com>,
+ linux-kernel@vger.kernel.org
+References: <20240504092504.24158-1-savicaleksa83@gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240504092504.24158-1-savicaleksa83@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 04.05.24 at 11:25:03 MESZ, Aleksa Savic wrote
-> Through hidraw, userspace can cause a status report to be sent
-> from the device. The parsing in ccp_raw_event() may happen in
-> parallel to a send_usb_cmd() call (which resets the completion
-> for tracking the report) if it's running on a different CPU where
-> bottom half interrupts are not disabled.
+On 5/4/24 02:25, Aleksa Savic wrote:
+> This patch series fixes the behavior of the corsair-cpro driver while
+> hidraw is used from userspace.
 > 
-> Add a spinlock around the complete_all() in ccp_raw_event() and
-> reinit_completion() in send_usb_cmd() to prevent race issues.
+> The first patch introduces a separate buffer for sending commands to
+> the device to prevent it from being overwritten thanks to a hidraw
+> userspace call.
 > 
-> Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-> Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-> ---
->  drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
+> The second patch replaces the complete() call in the raw event parsing
+> function with complete_all() to signify that the completion is done
+> until reinit.
 > 
-> diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-> index 6ab4d2478b1f..3e63666a61bd 100644
-> --- a/drivers/hwmon/corsair-cpro.c
-> +++ b/drivers/hwmon/corsair-cpro.c
-> @@ -16,6 +16,7 @@
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/slab.h>
-> +#include <linux/spinlock.h>
->  #include <linux/types.h>
->  
->  #define USB_VENDOR_ID_CORSAIR			0x1b1c
-> @@ -77,6 +78,8 @@
->  struct ccp_device {
->  	struct hid_device *hdev;
->  	struct device *hwmon_dev;
-> +	/* For reinitializing the completion below */
-> +	spinlock_t wait_input_report_lock;
->  	struct completion wait_input_report;
->  	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
->  	u8 *cmd_buffer;
-> @@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
->  	ccp->cmd_buffer[2] = byte2;
->  	ccp->cmd_buffer[3] = byte3;
->  
-> +	/*
-> +	 * Disable raw event parsing for a moment to safely reinitialize the
-> +	 * completion. Reinit is done because hidraw could have triggered
-> +	 * the raw event parsing and marked the ccp->wait_input_report
-> +	 * completion as done.
-> +	 */
-> +	spin_lock_bh(&ccp->wait_input_report_lock);
->  	reinit_completion(&ccp->wait_input_report);
-> +	spin_unlock_bh(&ccp->wait_input_report_lock);
->  
->  	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
->  	if (ret < 0)
-> @@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
->  	struct ccp_device *ccp = hid_get_drvdata(hdev);
->  
->  	/* only copy buffer when requested */
-> -	if (completion_done(&ccp->wait_input_report))
-> -		return 0;
-> -
-> -	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-> -	complete_all(&ccp->wait_input_report);
-> +	spin_lock(&ccp->wait_input_report_lock);
-> +	if (!completion_done(&ccp->wait_input_report)) {
-> +		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-> +		complete_all(&ccp->wait_input_report);
-> +	}
-> +	spin_unlock(&ccp->wait_input_report_lock);
->  
->  	return 0;
->  }
-> @@ -515,7 +527,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
->  
->  	ccp->hdev = hdev;
->  	hid_set_drvdata(hdev, ccp);
-> +
->  	mutex_init(&ccp->mutex);
-> +	spin_lock_init(&ccp->wait_input_report_lock);
->  	init_completion(&ccp->wait_input_report);
->  
->  	hid_device_io_start(hdev);
+> The third patch introduces locking for the ccp->wait_input_report
+> completion as it's touched in functions that could be executing in
+> parallel.
+> 
+> Aleksa Savic (3):
+>    hwmon: (corsair-cpro) Use a separate buffer for sending commands
+>    hwmon: (corsair-cpro) Use complete_all() instead of complete() in
+>      ccp_raw_event()
+>    hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
+> 
+>   drivers/hwmon/corsair-cpro.c | 45 +++++++++++++++++++++++++-----------
+>   1 file changed, 32 insertions(+), 13 deletions(-)
 > 
 
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Series applied.
 
-
-
+Thanks,
+Guenter
 
 
