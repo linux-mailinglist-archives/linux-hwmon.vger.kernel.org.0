@@ -1,174 +1,143 @@
-Return-Path: <linux-hwmon+bounces-2091-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2093-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563868C02C1
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 May 2024 19:14:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584198C03B8
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 May 2024 19:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC4E1F240E4
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 May 2024 17:14:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE611F21818
+	for <lists+linux-hwmon@lfdr.de>; Wed,  8 May 2024 17:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D690312AAC7;
-	Wed,  8 May 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340B412BF3A;
+	Wed,  8 May 2024 17:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="wPoCaEd6"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="EXe2OJUg"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6FC128383
-	for <linux-hwmon@vger.kernel.org>; Wed,  8 May 2024 17:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC3B12C558
+	for <linux-hwmon@vger.kernel.org>; Wed,  8 May 2024 17:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715188455; cv=none; b=J0VWeXT2HWx4Yw0UmiG7wduNt79Pp5aNk91f7dF/uly5GJjReefgQ5LTXjW/oQc8GrzQg0jVf6coq3V7mUXhqaeF7baqPlW+7fXcA7nUcB26CUUanTWM1BiK/ypsciuf77AuWLJ13K/Pa1PIEQHFGTKnGisaULJUR/3QLAOpIvc=
+	t=1715190604; cv=none; b=RSHx7rtn9/k7TAiI32JgyKcx5/urejQNUw6AjNDkyQ8Ptje3NTRwQ6Q5+CjZ8IxMV5TdPQoM1sJ+BDSiCvw2bRWziawz4y0J0rhChDfFqmcGAlGvmj8VNUkRaaycV4BcQJoA0cGSB8/spAR9Yu0XNrxzxjZId2KaYsz08fcbmO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715188455; c=relaxed/simple;
-	bh=wBIe8L/kzS+iFaHUIe5MJ34qQDJlShFdBDx5Aipq6MI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JM4JQTaetRVqR4+njP/6CnKv/LL2VFR3NAnxwkEX+Z6fWg4ujB3hUTNOz9Wh+WZ6bz87aguTlyWWH/DLZb3GwTL/AY8gqZTfzQ32X/RRJxIoYX+MVETp6My9IzKmVnr22zEP8q3LZIH6ncg5hBRvxhJ7i3pr5Bu3YamHPaBeXnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=wPoCaEd6; arc=none smtp.client-ip=202.36.163.20
+	s=arc-20240116; t=1715190604; c=relaxed/simple;
+	bh=V2Q4pwpdjqg9xxAMMtcZVQYSQ96Q+Kp2F4ha6okEb84=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VxcWdhrLgdbdzIGxMFK5qeB7qAywAfRqqdYPf3f3uArBOYOVPh5T99sZAZTmK/XG7HkFsCwyn1GuA8meGOMecWs8TIbO9P3GAr8kU62aWbUlkSl1QNXN+6zEkpkaeToDjJqDzPM6+a83dxnfXkU/OKmqBkr3FssBVJzPVyxDDNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=EXe2OJUg; arc=none smtp.client-ip=202.36.163.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 21CDD2C0240;
-	Thu,  9 May 2024 05:05:48 +1200 (NZST)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id A47EE2C01BD;
+	Thu,  9 May 2024 05:49:49 +1200 (NZST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1715187948;
-	bh=0z3I4FWLpGwn1DF7NS3tZlEXDhBmoqyxj/U0Pm5RNgE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPoCaEd6WxiHVoe20gXL4BVy/S+3W1Dh05IEZh+wZm7X/7GDC4i2Mi9WY7wy3Td/n
-	 +UsMSbt9UgrWoSVl3ou+ySJq37rJ+RkGyD1vUg8SLZN+Hbx0pxfov+VQA0FQxHjIwJ
-	 d2v1MIumAgz1xMuYsEnXb3CQm1meC7VeEsPkT5NXkxomGn389j76P6g3b7AyjHoybf
-	 43aW1ZyKdlrW9pba2BUNwJg+skpCr5K3Qnn4sCBf5A3V34Tv5mifzCIzPobfzptwcl
-	 i6i6N8G770K6RaD2KrrPwEVPavfYgwDJk0zweAU4VkT78xUXhO3NeKTBX2RoFOHBvR
-	 QMgt2FfIb0uMg==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B663bb0eb0002>; Thu, 09 May 2024 05:05:47 +1200
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id CCFD713EE83;
-	Thu,  9 May 2024 05:05:47 +1200 (NZST)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id C9D5C280461; Thu,  9 May 2024 05:05:47 +1200 (NZST)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: jdelvare@suse.com,
-	linux@roeck-us.net,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH 2/2] hwmon: (adt7475) Add support for configuring initial PWM duty cycle
-Date: Thu,  9 May 2024 05:05:43 +1200
-Message-ID: <20240508170544.263059-3-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240508170544.263059-1-chris.packham@alliedtelesis.co.nz>
+	s=mail181024; t=1715190589;
+	bh=V2Q4pwpdjqg9xxAMMtcZVQYSQ96Q+Kp2F4ha6okEb84=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=EXe2OJUgIDR0A/GXHnI7+K/re/H5RaiZg7ypj2E/FEa0S9/Fj7Rbe0oZuKXcvW8w6
+	 JOxGHJP87Bf4XG3FoUFNdIiFH9HpS9YeDqfa7FhXArkmomWy7SOFBkdNAGrt3E6NHe
+	 vY+5eG+4Fjf43jgGWAMDPTiPMMjNE/9JiZhgbgYFa3sYUt/17mDtyINikp+m4Iv+Tz
+	 ltXtYS34HsWH5RKc8ZGZBS32vwEypsZjTePspzZOiRfqbY5IzPVefiZp+o/5117OHK
+	 jLawqAMe22A8lFIkZHDXoMz66zq65eyoWRBsrnTEdNMwgGyCGCTcq4Vf2YDNmZ3TR7
+	 24eCNYlRBnMfQ==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B663bbb3d0001>; Thu, 09 May 2024 05:49:49 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1544.11; Thu, 9 May 2024 05:49:49 +1200
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with Microsoft
+ SMTP Server (TLS) id 15.0.1497.48; Thu, 9 May 2024 05:49:49 +1200
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1544.011; Thu, 9 May 2024 05:49:49 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: "jdelvare@suse.com" <jdelvare@suse.com>, "linux@roeck-us.net"
+	<linux@roeck-us.net>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>
+CC: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] hwmon: (adt7475) Add support for configuring initial
+ PWM duty cycle
+Thread-Topic: [PATCH 2/2] hwmon: (adt7475) Add support for configuring initial
+ PWM duty cycle
+Thread-Index: AQHaoWn5Wh+pud+mHku8vdrDvQZJzLGM1D2A
+Date: Wed, 8 May 2024 17:49:49 +0000
+Message-ID: <7cb45e90-659e-4caa-8e10-be52e1c969c6@alliedtelesis.co.nz>
 References: <20240508170544.263059-1-chris.packham@alliedtelesis.co.nz>
+ <20240508170544.263059-3-chris.packham@alliedtelesis.co.nz>
+In-Reply-To: <20240508170544.263059-3-chris.packham@alliedtelesis.co.nz>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AAC0F0B1DB31164DA0FEF15AFD7CAA09@atlnz.lc>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=MfrPuI/f c=1 sm=1 tr=0 ts=663bb0eb a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=TpHVaj0NuXgA:10 a=62ePmnuN2cZSMFv3--EA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=MfrPuI/f c=1 sm=1 tr=0 ts=663bbb3d a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10 a=IkcTkHD0fZMA:10 a=TpHVaj0NuXgA:10 a=gnXwXUZvAAwXd9gAzRcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
 
-By default the PWM duty cycle in hardware is 100%. On some systems this
-can cause unwanted fan noise. Add the ability to take an initial PWM
-duty cycle and frequency via device properties.
-
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
- drivers/hwmon/adt7475.c | 56 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 4224ffb30483..b0c7c1a95897 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1662,6 +1662,54 @@ static int adt7475_set_pwm_polarity(struct i2c_cli=
-ent *client)
- 	return 0;
- }
-=20
-+static int adt7475_set_pwm_initial_freq(struct i2c_client *client)
-+{
-+	int ret, out, i;
-+	u32 freqs[ADT7475_PWM_COUNT];
-+	int data;
-+
-+	ret =3D device_property_read_u32_array(&client->dev,
-+					     "pwm-initial-frequency", freqs,
-+					     ARRAY_SIZE(freqs));
-+	if (ret)
-+		return ret;
-+
-+	for (i =3D 0; i < ADT7475_PWM_COUNT; i++) {
-+		out =3D find_closest(freqs[i], pwmfreq_table, ARRAY_SIZE(pwmfreq_table=
-));
-+		data =3D adt7475_read(TEMP_TRANGE_REG(i));
-+		if (data < 0)
-+			return data;
-+		data &=3D ~0xf;
-+		data |=3D out;
-+
-+		ret =3D i2c_smbus_write_byte_data(client, TEMP_TRANGE_REG(i), data);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int adt7475_set_pwm_initial_duty(struct i2c_client *client)
-+{
-+	int ret, i;
-+	u32 dutys[ADT7475_PWM_COUNT];
-+
-+	ret =3D device_property_read_u32_array(&client->dev,
-+					     "adi,pwm-initial-duty-cycle", dutys,
-+					     ARRAY_SIZE(dutys));
-+	if (ret)
-+		return ret;
-+
-+	for (i =3D 0; i < ADT7475_PWM_COUNT; i++) {
-+		ret =3D i2c_smbus_write_byte_data(client, PWM_MAX_REG(i), dutys[i] & 0=
-xff);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int adt7475_probe(struct i2c_client *client)
- {
- 	enum chips chip;
-@@ -1778,6 +1826,14 @@ static int adt7475_probe(struct i2c_client *client=
-)
- 	if (ret && ret !=3D -EINVAL)
- 		dev_warn(&client->dev, "Error configuring pwm polarity\n");
-=20
-+	ret =3D adt7475_set_pwm_initial_freq(client);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D adt7475_set_pwm_initial_duty(client);
-+	if (ret)
-+		return ret;
-+
- 	/* Start monitoring */
- 	switch (chip) {
- 	case adt7475:
---=20
-2.43.2
-
+DQpPbiA5LzA1LzI0IDA1OjA1LCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPiBCeSBkZWZhdWx0IHRo
+ZSBQV00gZHV0eSBjeWNsZSBpbiBoYXJkd2FyZSBpcyAxMDAlLiBPbiBzb21lIHN5c3RlbXMgdGhp
+cw0KPiBjYW4gY2F1c2UgdW53YW50ZWQgZmFuIG5vaXNlLiBBZGQgdGhlIGFiaWxpdHkgdG8gdGFr
+ZSBhbiBpbml0aWFsIFBXTQ0KPiBkdXR5IGN5Y2xlIGFuZCBmcmVxdWVuY3kgdmlhIGRldmljZSBw
+cm9wZXJ0aWVzLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBQYWNraGFtIDxjaHJpcy5wYWNr
+aGFtQGFsbGllZHRlbGVzaXMuY28ubno+DQo+IC0tLQ0KPiAgIGRyaXZlcnMvaHdtb24vYWR0NzQ3
+NS5jIHwgNTYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gICAx
+IGZpbGUgY2hhbmdlZCwgNTYgaW5zZXJ0aW9ucygrKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9od21vbi9hZHQ3NDc1LmMgYi9kcml2ZXJzL2h3bW9uL2FkdDc0NzUuYw0KPiBpbmRleCA0MjI0
+ZmZiMzA0ODMuLmIwYzdjMWE5NTg5NyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9od21vbi9hZHQ3
+NDc1LmMNCj4gKysrIGIvZHJpdmVycy9od21vbi9hZHQ3NDc1LmMNCj4gQEAgLTE2NjIsNiArMTY2
+Miw1NCBAQCBzdGF0aWMgaW50IGFkdDc0NzVfc2V0X3B3bV9wb2xhcml0eShzdHJ1Y3QgaTJjX2Ns
+aWVudCAqY2xpZW50KQ0KPiAgIAlyZXR1cm4gMDsNCj4gICB9DQo+ICAgDQo+ICtzdGF0aWMgaW50
+IGFkdDc0NzVfc2V0X3B3bV9pbml0aWFsX2ZyZXEoc3RydWN0IGkyY19jbGllbnQgKmNsaWVudCkN
+Cj4gK3sNCj4gKwlpbnQgcmV0LCBvdXQsIGk7DQo+ICsJdTMyIGZyZXFzW0FEVDc0NzVfUFdNX0NP
+VU5UXTsNCj4gKwlpbnQgZGF0YTsNCj4gKw0KPiArCXJldCA9IGRldmljZV9wcm9wZXJ0eV9yZWFk
+X3UzMl9hcnJheSgmY2xpZW50LT5kZXYsDQo+ICsJCQkJCSAgICAgInB3bS1pbml0aWFsLWZyZXF1
+ZW5jeSIsIGZyZXFzLA0KPiArCQkJCQkgICAgIEFSUkFZX1NJWkUoZnJlcXMpKTsNCj4gKwlpZiAo
+cmV0KQ0KPiArCQlyZXR1cm4gcmV0Ow0KPiArDQo+ICsJZm9yIChpID0gMDsgaSA8IEFEVDc0NzVf
+UFdNX0NPVU5UOyBpKyspIHsNCj4gKwkJb3V0ID0gZmluZF9jbG9zZXN0KGZyZXFzW2ldLCBwd21m
+cmVxX3RhYmxlLCBBUlJBWV9TSVpFKHB3bWZyZXFfdGFibGUpKTsNCj4gKwkJZGF0YSA9IGFkdDc0
+NzVfcmVhZChURU1QX1RSQU5HRV9SRUcoaSkpOw0KPiArCQlpZiAoZGF0YSA8IDApDQo+ICsJCQly
+ZXR1cm4gZGF0YTsNCj4gKwkJZGF0YSAmPSB+MHhmOw0KPiArCQlkYXRhIHw9IG91dDsNCj4gKw0K
+PiArCQlyZXQgPSBpMmNfc21idXNfd3JpdGVfYnl0ZV9kYXRhKGNsaWVudCwgVEVNUF9UUkFOR0Vf
+UkVHKGkpLCBkYXRhKTsNCj4gKwkJaWYgKHJldCkNCj4gKwkJCXJldHVybiByZXQ7DQo+ICsJfQ0K
+PiArDQo+ICsJcmV0dXJuIDA7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyBpbnQgYWR0NzQ3NV9zZXRf
+cHdtX2luaXRpYWxfZHV0eShzdHJ1Y3QgaTJjX2NsaWVudCAqY2xpZW50KQ0KPiArew0KPiArCWlu
+dCByZXQsIGk7DQo+ICsJdTMyIGR1dHlzW0FEVDc0NzVfUFdNX0NPVU5UXTsNCj4gKw0KPiArCXJl
+dCA9IGRldmljZV9wcm9wZXJ0eV9yZWFkX3UzMl9hcnJheSgmY2xpZW50LT5kZXYsDQo+ICsJCQkJ
+CSAgICAgImFkaSxwd20taW5pdGlhbC1kdXR5LWN5Y2xlIiwgZHV0eXMsDQo+ICsJCQkJCSAgICAg
+QVJSQVlfU0laRShkdXR5cykpOw0KPiArCWlmIChyZXQpDQo+ICsJCXJldHVybiByZXQ7DQo+ICsN
+Cj4gKwlmb3IgKGkgPSAwOyBpIDwgQURUNzQ3NV9QV01fQ09VTlQ7IGkrKykgew0KPiArCQlyZXQg
+PSBpMmNfc21idXNfd3JpdGVfYnl0ZV9kYXRhKGNsaWVudCwgUFdNX01BWF9SRUcoaSksIGR1dHlz
+W2ldICYgMHhmZik7DQo+ICsJCWlmIChyZXQpDQo+ICsJCQlyZXR1cm4gcmV0Ow0KPiArCX0NCj4g
+Kw0KPiArCXJldHVybiAwOw0KPiArfQ0KPiArDQo+ICAgc3RhdGljIGludCBhZHQ3NDc1X3Byb2Jl
+KHN0cnVjdCBpMmNfY2xpZW50ICpjbGllbnQpDQo+ICAgew0KPiAgIAllbnVtIGNoaXBzIGNoaXA7
+DQo+IEBAIC0xNzc4LDYgKzE4MjYsMTQgQEAgc3RhdGljIGludCBhZHQ3NDc1X3Byb2JlKHN0cnVj
+dCBpMmNfY2xpZW50ICpjbGllbnQpDQo+ICAgCWlmIChyZXQgJiYgcmV0ICE9IC1FSU5WQUwpDQo+
+ICAgCQlkZXZfd2FybigmY2xpZW50LT5kZXYsICJFcnJvciBjb25maWd1cmluZyBwd20gcG9sYXJp
+dHlcbiIpOw0KPiAgIA0KPiArCXJldCA9IGFkdDc0NzVfc2V0X3B3bV9pbml0aWFsX2ZyZXEoY2xp
+ZW50KTsNCj4gKwlpZiAocmV0KQ0KPiArCQlyZXR1cm4gcmV0Ow0KDQpXaG9vcHMgSSBtZWFudCB0
+byBzZW5kIHRoZSB2ZXJzaW9uIHRoYXQgaGFuZGxlcyAtRUlOVkFMLiB2MiB3aWxsIGhhbmRsZSAN
+CmVycm9ycyB0aGUgc2FtZSB3YXkgYXMgcHdtX3BvbGFyaXR5IGFib3ZlLiBJJ2xsIHdhaXQgZm9y
+IGEgYml0IGJlZm9yZSANCnNlbmRpbmcgdGhhdCBvdXQuDQoNCj4gKw0KPiArCXJldCA9IGFkdDc0
+NzVfc2V0X3B3bV9pbml0aWFsX2R1dHkoY2xpZW50KTsNCj4gKwlpZiAocmV0KQ0KPiArCQlyZXR1
+cm4gcmV0Ow0KPiArDQo+ICAgCS8qIFN0YXJ0IG1vbml0b3JpbmcgKi8NCj4gICAJc3dpdGNoIChj
+aGlwKSB7DQo+ICAgCWNhc2UgYWR0NzQ3NTo=
 
