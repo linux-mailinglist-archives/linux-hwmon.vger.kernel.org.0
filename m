@@ -1,30 +1,30 @@
-Return-Path: <linux-hwmon+bounces-2123-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2122-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5F68C38EA
-	for <lists+linux-hwmon@lfdr.de>; Mon, 13 May 2024 00:03:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3FF8C389F
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 May 2024 23:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9B741F213E9
-	for <lists+linux-hwmon@lfdr.de>; Sun, 12 May 2024 22:03:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 158F7B20CF7
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 May 2024 21:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A665476B;
-	Sun, 12 May 2024 22:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B542A54762;
+	Sun, 12 May 2024 21:40:57 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from ms-10.1blu.de (ms-10.1blu.de [178.254.4.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B33242A8B;
-	Sun, 12 May 2024 22:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78F76FDC;
+	Sun, 12 May 2024 21:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.254.4.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715551406; cv=none; b=mdF6764KT1zUqOfg3rlAIL7SHyTRwfXAvjxzsxNWIOPEceOwEHUpcec+/BN2gGxU166v/wCJNIf2zffUwe4SFthjTUEB1l243uE3PrllK4g9hDCn8F4B5oPYXJa+GkYBV9aVSwM24gQw1T+5zzLO39KUWtwV/MxEcNUSC8+yV+c=
+	t=1715550057; cv=none; b=u4rTD/uHQQWYh3mxwdgL7jBqtocAzhrkul6xhbZNm9LvKsRj+Xn8ZAbXjVgqxSNuAS+8aV2oEkf/4CEAXBdzOUjeSqssbcuNQW8PNLfqFy7nrw6SOpel4LeCnldpewNZYJoxx7BPTNJmh8c4XvMllGI0ao7epW+Pj1BYC9yKIFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715551406; c=relaxed/simple;
-	bh=dux3huahA1liLOpFwdmSO8xRrf6oOdxNpUOjfeKr07w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eSYk2zMOaVGPsN0sOx2wQ6OEYm7pXa9HxGgmetveM+t33Rrxwz0x+LDGwfvt/xV3L4gp8DqG3wIrh5yu1fZM0zR1NSpBK/EACIVqqaj+bxKwla9XaLWMD4N+1xFnh+ts9e1se2aCAj9Bi2T86sz3ZlaCTZXaSTbgDPseq3zfumQ=
+	s=arc-20240116; t=1715550057; c=relaxed/simple;
+	bh=EeARFm8bOP6d++/dKVBQqGylNANAc9Nh3viD5ijSmI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o9IV2cE793R2BOSv4tWeCB4flEf/bjlz/O8WKOTX0UGIP83sKeuvAQl+M5qFZNOTtYx6K12YroV96E9oUM3wLgthaSp63M4i44uH0nBsO+GQ8mg9em6UabXOv1ei1KWdSRAVKw8ILFHNna+K3xSf6dfYP510KQYqA+0cooLvKFw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariuszachmann.de; spf=pass smtp.mailfrom=mariuszachmann.de; arc=none smtp.client-ip=178.254.4.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariuszachmann.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mariuszachmann.de
@@ -32,8 +32,8 @@ Received: from [2.211.228.80] (helo=marius.fritz.box)
 	by ms-10.1blu.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <mail@mariuszachmann.de>)
-	id 1s6Gse-0051Ux-KH;
-	Sun, 12 May 2024 23:37:16 +0200
+	id 1s6Gw4-0053Wk-Pq;
+	Sun, 12 May 2024 23:40:48 +0200
 From: Marius Zachmann <mail@mariuszachmann.de>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: Marius Zachmann <mail@mariuszachmann.de>,
@@ -41,9 +41,9 @@ Cc: Marius Zachmann <mail@mariuszachmann.de>,
 	Jonathan Corbet <corbet@lwn.net>,
 	linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: 
-Date: Sun, 12 May 2024 23:33:20 +0200
-Message-ID: <20240512213320.40944-3-mail@mariuszachmann.de>
+Subject: [PATCH] Add firmware and bootloader information
+Date: Sun, 12 May 2024 23:40:34 +0200
+Message-ID: <20240512214035.43161-1-mail@mariuszachmann.de>
 X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -54,9 +54,6 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Con-Id: 241080
 X-Con-U: 0-mail
-
-Date: Sun, 12 May 2024 23:15:49 +0200
-Subject: [PATCH] Add firmware and bootloader information
 
 This patch adds:
 - Reading the firmware and bootloader version of the device
