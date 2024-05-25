@@ -1,110 +1,198 @@
-Return-Path: <linux-hwmon+bounces-2233-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2236-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845BA8CEF2E
-	for <lists+linux-hwmon@lfdr.de>; Sat, 25 May 2024 15:56:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090D38CEF50
+	for <lists+linux-hwmon@lfdr.de>; Sat, 25 May 2024 16:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A12BFB210C2
-	for <lists+linux-hwmon@lfdr.de>; Sat, 25 May 2024 13:56:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F9071F213D8
+	for <lists+linux-hwmon@lfdr.de>; Sat, 25 May 2024 14:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BD64D9EC;
-	Sat, 25 May 2024 13:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA2D47A57;
+	Sat, 25 May 2024 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="pjCtGx7S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LbziSav6"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1309B652;
-	Sat, 25 May 2024 13:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC833B297;
+	Sat, 25 May 2024 14:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716645363; cv=none; b=b157xNXY8bIW9sQQhUlgVW9w7zzRJmglSOD+JUJRU9t7i6lcVqorUtOND3cpU1lY5p+BXU7QHWMZGFb+sXbYWHP5bkqX0fHSdRhutSIAuyJ65WKoyCNSvyyq7eJNFCZehKDS066+qOsaO3WXKZXuCa4rmwoOC4wouOLSz6khLvk=
+	t=1716647632; cv=none; b=IzVt6Va1igtDPr+vzy5nSKy7sOHtE7fpUnFfh330ckMrgFMXHyHZDReX9Wvzpus60hU/rkAGX6OqOYwPLHQNaSVVOIfxBxH7UwTSBJx1T0o+RoEzx+t7yPUs9XeWuUgwRNgqi7tQpUqqkcnrd+GADWdMiHnlRJC+S1iFyGXAgd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716645363; c=relaxed/simple;
-	bh=EDSZ+t9eeoZ/S27lFFmK0yqgyDG5QixJYOls16lDhyo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=LFiBJ/WY9rxUMxv0hxffeTIN7ALCOcODVGegg0mK4rpVIfYcNDrG+H4i72mm/MKmHnWvPeTlroROyaP9CEs+WxZtq7a5rPXjJ6fMsRTOwHr5bMw5Ir0PMPIQkAmYk5GFvgkjbShkhlIkPANA8vAlOAFAMdzmS6wUF160a9Tah6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pjCtGx7S; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1716645339; x=1717250139; i=markus.elfring@web.de;
-	bh=SBXIH9zX5kPE4nMYQkrY5M0b+lEnjHUeuUIGpZsKoaE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=pjCtGx7SMqtL/2lfO9n3DM6tDF5e8WE3CSciUcLx43VWgvhUWvsmW2jGr6ZQJOi2
-	 f0tlwbgHp5cfb45DfCF9yQf/C2hOhDovSS1x2IINYyuzeuE2MAQqL+2dzY0MiAMEL
-	 vNB47NrU9bRlB7Q+eG7Wo4KMShELi5yInCt5YETmfyb+wF4atFCDMi859hCb7VL8P
-	 g23CbzJCNsmNXj0Bhswxi/W3pAsvLUk/Ar7gC8bAJPueDZovIQQcPaymgNTr7We3B
-	 1xLqpGj0owbCLywkOTHw7OjuL23hxOqTSNtjIqmxPUPsH7Xx1qk0OFvTGnh77sxXF
-	 M9xUKEiDh5Q1uVfxNw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MOm0x-1rsNdt45ct-00XLQj; Sat, 25
- May 2024 15:55:39 +0200
-Message-ID: <8610cb8f-ad3a-421a-8a85-4c498c8fd0bf@web.de>
-Date: Sat, 25 May 2024 15:55:38 +0200
+	s=arc-20240116; t=1716647632; c=relaxed/simple;
+	bh=5n7lkDxcP7/xIQnHH72V11GBJnBkIwLKgCjvbVNGbAU=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ou4emxU0yAC2z0U2xOL/bnopJ2Kzq1K7E6TiGUyEXosTOzZv2S4R4Up+xS8t2yBAmGLVfv8d4twunUPvXmvc5oobSxaCul3aXP1FOXy6Q6kZO2uEFoW/bsm1/jZjPhQWQERtn5zXP+VzT7sPfqJyswkNQeusZYjBEN+ZTkckzLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LbziSav6; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-354be94c874so2992923f8f.3;
+        Sat, 25 May 2024 07:33:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716647629; x=1717252429; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CErVniz+W5wR3XMrkvKFk+LDivHl4mX/Bk33d4Ln3XM=;
+        b=LbziSav6NEzr95dC/Ukztuvu9dholwTFaWpANoDRjj4MiTZ7yrUrBIf8cgsK/3TarO
+         n4A1UxcqrxVMg7nfld6nLX68EOuDdnmGSDgYiGlD7fvJfzkPgSZeF+BWp0ClBTToYvHA
+         /ZWuGot+v30Q5YDZ1gqP45H2Yn2fcwx++dxWOf0dBknnCuZ7tVMUMGhiQewDoB5gXg5S
+         0j+LfyxBmKe/rpC69/SVdCrd8wXquRA/iBE3moDjeLMtVZPgHOZ6X7wI8Ch1Zn1oO9YF
+         yHx4fwo4XXynHRtng3GH8HAGD+rGvcM66sA0hmnrg+KkCELeu97rYZC5rPT+P0VAhinW
+         zgOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716647629; x=1717252429;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CErVniz+W5wR3XMrkvKFk+LDivHl4mX/Bk33d4Ln3XM=;
+        b=CDTqBjm0gWqSHcPnijo8CKhY8bNRPjphkeNOPCxYGnUcFOz1zReyoExHd0do73BBBb
+         uEx3EM3MMLGpkp6YNFxeSI+1cGia+JOEzAEwW+fJGZEFCtcmROaVgP7EmMIsWcSWqoBO
+         ls28O0w/I9d119av+qWpcNMXPN3slsgR+r56Kl1diLFOH/drIeIXuk6HlMbTuXMCWGO1
+         5B6C2Gs2Mmkg7c/IjwgD6kDyM9WOASEL9Aca8MXUrT+EBADRPenQD/lzSs4+O7HEJfoL
+         e9idvfEWU2HA8LJQeaQ6KWenrVtyrCfpms0owbt091nSvRG4ZsBZSemoCPAtaaxpZoDY
+         ZOFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGHeUqdoy6aPCEXvkcm5a/mde0iP63f0kcNjPduesRW9v5KR0x6Qe4fvdtny+hjKhKHOo9VWqBHGZQb/ADSRpDu5+pfXxZy1GWqVTh2AQftaw2zBtSFaKyaEhchqFDTaWA6hkkCmPXwTOWYGSSKxW9qlzv4vKYNtPkgVZ3R40AUP/htzP1
+X-Gm-Message-State: AOJu0Yy0VsdXBrc3UuQEK1t9OoXTkBY9g46akz1rTGxwdKPD7HWcZL4w
+	vExPgZjuJHj6G0XgGlNcQFtt2Agxjhovo+oZaoDBqUf6OVlTUpBo
+X-Google-Smtp-Source: AGHT+IHfpJHAR0xPYbhrdjzlHYOsMFn+Fuu2j5n/W/C7wWfej0FrMq1yPZIpjCe6kSIFT9ivsGgj6Q==
+X-Received: by 2002:adf:e444:0:b0:356:4cfa:b4a2 with SMTP id ffacd0b85a97d-3564cfaebb7mr2911205f8f.3.1716647628458;
+        Sat, 25 May 2024 07:33:48 -0700 (PDT)
+Received: from Ansuel-XPS. (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3557a090185sm4116340f8f.47.2024.05.25.07.33.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 May 2024 07:33:48 -0700 (PDT)
+Message-ID: <6651f6cc.050a0220.6f744.fff3@mx.google.com>
+X-Google-Original-Message-ID: <ZlHBu6Fsy1HU3Igy@Ansuel-XPS.>
+Date: Sat, 25 May 2024 12:47:23 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Jean Delvare <jdelvare@suse.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] hwmon: g672: add support for g761
+References: <20240525102914.22634-1-ansuelsmth@gmail.com>
+ <20240525102914.22634-3-ansuelsmth@gmail.com>
+ <bbcce511-1105-40f7-b6e7-beef07971205@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Yazen Ghannam <yazen.ghannam@amd.com>, linux-edac@vger.kernel.org,
- linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org,
- x86@kernel.org, =?UTF-8?B?R8O8bnRlciBSw7Zjaw==?= <linux@roeck-us.net>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Mario Limonciello <mario.limonciello@amd.com>
-References: <20240523-fix-smn-bad-read-v3-4-aa44c622de39@amd.com>
-Subject: Re: [PATCH v3 4/8] x86/amd_nb: Enhance SMN access error checking
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240523-fix-smn-bad-read-v3-4-aa44c622de39@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:urr3nIG7Roa28FTFjHGAy9EfXto9s16eYPbCl+FfZ32ENTwuq0/
- aoxWA2yLKf5UDJkJ227ckGg1sR+KkM1ZIc9WE//RcMwZLF/HzYzpYhuK76lFi2gqtAS0xV2
- hhX7BGuYUU5CSfq3KcuaXXiqLNDdt4W42UZREwL9u2NdApwOI9y/fyBzBhRSCYpEjNNnlVE
- 4xm/UmBBIbffbvr90FGJQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:fABZ+vIg7vQ=;Zinq8XQxkn2Hj8SfC88xZCe1mFa
- 46f864MhCTkr9wv+qjGhYxW15ggV4/UgmIJho5W5vv5erKQB7qFfDJTZzJDQv/Z8TbnaWWLdl
- Z3B5uOVFClQjWjKOgQRKUs0G5xbCrW8SNK9TkWMBqzE3JN7767oEqwm0QHcOLWmE27QqSXiuw
- ++4eLCxsIzkNbR/eR/JgpDmlttQYcvd/QME8SkkPKFGxNvdXMxzXzBHTffxNFZPaDFHcGchLC
- z9qFxhX8nfab+z23fHn+pB6Y+nSZvFMyv6b5h7DlnjfJzUudhsJ2TfNgafNDOUPWIis6h/wFz
- Gt8cZjgG1gEyWfiZQxLg9trIieSuhqhSKWy1APLr08VBbDGr2YO9xyne+FyL1feJSl1SbAY/n
- b/kdysyGWT5GvKb9Ej9ARhn0yWeR3nwfpjPQdsfIGQUETfZfVzetfhPFNTyEMLcLeKDZvFaFR
- KGUnPLO5AQ7HGctXRAFTGLgq3rGew63NxRcQU8IrE+REK8kfmeY0g0psTQ3Aoj9meXWGdkTDG
- IK/HrpavGRxu+EBPdaFktwD9CnL5ZmhHeOd72Y0JkQrfq4WGJwZ+uMq0lsGgQTyZQW8pFgvod
- pia2wE1W0XUx1gEcUfMN8DVxb0PdM+S2UvRJ56cMe7uDW1SlzOdcXUeaeu+K5x7bz5ZAEl36M
- pjWIMLCRjEahiYEn0MiyBjbGw44EOScHL6bNYHFlvS+A0E9ZkX8j3AkOx1Vl50gIn+HhcrxWc
- 6mTExFoIsfnAoOuzrS9JvNr3dUWy3bOYzRf6iSrK3S3pGrTG16VSVD3FPYyPxET4FEBOMqZxl
- /8KNuFx9wfcCQAXEvjZyloGNh5OoVFMyZ5dOMeLiXqChk=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bbcce511-1105-40f7-b6e7-beef07971205@roeck-us.net>
 
-> Furthermore, require error checking for callers of amd_smn_read() and
-> amd_smn_write(). This is needed because many error conditions cannot
-> be checked by these functions.
+On Sat, May 25, 2024 at 07:29:55AM -0700, Guenter Roeck wrote:
+> On 5/25/24 03:29, Christian Marangi wrote:
+> > Add support for g761 PWM Fan Controller.
+> > 
+> > The g761 is a copy of the g763 with the only difference of supporting
+> > and internal clock. This can be configured with the gmt,internal-clock
+> > property and in such case clock handling is skipped.
+> > 
+> 
+> Do you happen to have a datasheet ? The datasheet is not available from GMT,
+> making it impossible to validate the changes.
+>
 
-Does such information qualify for the tag =E2=80=9CFixes=E2=80=9D?
+No datasheet, online there is only the first page that describe the
+features.
 
+This internal clock feature is the only difference to g763 and is
+present in a downstream driver from a Asus ipq807x router.
 
->                                                 =E2=80=A6 And remove a w=
-arning
-> that will not be trigger in many cases.
+I verified that all the regs match.
 
-                   triggered?
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > ---
+> >   drivers/hwmon/g762.c | 23 ++++++++++++++++++++---
+> >   1 file changed, 20 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/hwmon/g762.c b/drivers/hwmon/g762.c
+> > index af1228708e25..1629a3141c11 100644
+> > --- a/drivers/hwmon/g762.c
+> > +++ b/drivers/hwmon/g762.c
+> > @@ -69,6 +69,7 @@ enum g762_regs {
+> >   #define G762_REG_FAN_CMD1_PWM_POLARITY  0x02 /* PWM polarity */
+> >   #define G762_REG_FAN_CMD1_PULSE_PER_REV 0x01 /* pulse per fan revolution */
+> > +#define G761_REG_FAN_CMD2_FAN_CLOCK     0x20 /* choose internal clock*/
+> >   #define G762_REG_FAN_CMD2_GEAR_MODE_1   0x08 /* fan gear mode */
+> >   #define G762_REG_FAN_CMD2_GEAR_MODE_0   0x04
+> >   #define G762_REG_FAN_CMD2_FAN_STARTV_1  0x02 /* fan startup voltage */
+> > @@ -115,6 +116,7 @@ enum g762_regs {
+> >   struct g762_data {
+> >   	struct i2c_client *client;
+> > +	bool internal_clock;
+> >   	struct clk *clk;
+> >   	/* update mutex */
+> > @@ -566,6 +568,7 @@ static int do_set_fan_startv(struct device *dev, unsigned long val)
+> >   #ifdef CONFIG_OF
+> >   static const struct of_device_id g762_dt_match[] = {
+> > +	{ .compatible = "gmt,g761" },
+> >   	{ .compatible = "gmt,g762" },
+> >   	{ .compatible = "gmt,g763" },
+> >   	{ },
+> > @@ -597,6 +600,16 @@ static int g762_of_clock_enable(struct i2c_client *client)
+> >   	if (!client->dev.of_node)
+> >   		return 0;
+> > +	data = i2c_get_clientdata(client);
+> > +
+> > +	/* Skip CLK detection and handling if we use internal clock */
+> > +	data->internal_clock = of_property_read_bool(client->dev.of_node,
+> > +						     "gmt,internal-clock");
+> > +	if (data->internal_clock) {
+> > +		do_set_clk_freq(&client->dev, 32768); > +		return 0;
+> > +	}:
+> > +
+> >   	clk = of_clk_get(client->dev.of_node, 0);
+> >   	if (IS_ERR(clk)) {
+> >   		dev_err(&client->dev, "failed to get clock\n");
+> > @@ -616,7 +629,6 @@ static int g762_of_clock_enable(struct i2c_client *client)
+> >   		goto clk_unprep;
+> >   	}
+> > -	data = i2c_get_clientdata(client);
+> >   	data->clk = clk;
+> >   	ret = devm_add_action(&client->dev, g762_of_clock_disable, data);
+> > @@ -1029,12 +1041,17 @@ static inline int g762_fan_init(struct device *dev)
+> >   	if (IS_ERR(data))
+> >   		return PTR_ERR(data);
+> > +	if (data->internal_clock)
+> > +		data->fan_cmd2 |= G761_REG_FAN_CMD2_FAN_CLOCK;
+> > +
+> 
+> This and the property must only be accepted for G761.
+>
 
-I suggest to perform this source code cleanup in a separate update step.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.9#n81
+Yes you are right. I limit this only in Documentation but as a failsafe
+I should also verify this here. Will do in V2.
 
-Regards,
-Markus
+> >   	data->fan_cmd1 |= G762_REG_FAN_CMD1_DET_FAN_FAIL;
+> >   	data->fan_cmd1 |= G762_REG_FAN_CMD1_DET_FAN_OOC;
+> >   	data->valid = false;
+> > -	return i2c_smbus_write_byte_data(data->client, G762_REG_FAN_CMD1,
+> > -					 data->fan_cmd1);
+> > +	return (i2c_smbus_write_byte_data(data->client, G762_REG_FAN_CMD1,
+> > +					  data->fan_cmd1) |
+> > +		i2c_smbus_write_byte_data(data->client, G762_REG_FAN_CMD2,
+> > +					  data->fan_cmd2));
+> 
+> This is wrong. It would logically combine error codes, and execute
+> the second write even after the first failed.
+> 
+
+Ok will change the thing. 
+
+> >   }
+> >   static int g762_probe(struct i2c_client *client)
+> 
+
+-- 
+	Ansuel
 
