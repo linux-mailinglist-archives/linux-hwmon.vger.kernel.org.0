@@ -1,224 +1,153 @@
-Return-Path: <linux-hwmon+bounces-2287-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2291-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3130A8D2D24
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 May 2024 08:23:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6F88D2D36
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 May 2024 08:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9111F233E0
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 May 2024 06:23:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7433288FE8
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 May 2024 06:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C6B15EFC9;
-	Wed, 29 May 2024 06:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C83F161320;
+	Wed, 29 May 2024 06:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="nuk5asU3"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="jsBgKBfa"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF8E15CD7D;
-	Wed, 29 May 2024 06:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F8215B99C;
+	Wed, 29 May 2024 06:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716963823; cv=none; b=mEQ5UEw7M+dpyJxOr7skPSJJwVty+DWYSuroMG65tuNXvbLWEySsiPUy8iVudJ46bHF7D5O/+uGQgaXPHPGMcbKTvuZ0gjQJy9HNKIU5BnG7oDCg+h7HpBULqstXU47LEqG3GFSJfgALnEJzASNzdND7iE2ZJ/trxWryRZohcqg=
+	t=1716964045; cv=none; b=cUVX58pDQZL9iF/LA9YjyJG52uCqBSjE+9CDj6ew52D1tWwzFa+nrORtvUYe+rLNYqVUHd6t2thfmA40UJKg8GUyOQ3T4vc12GywE48bhm3sv7allC+/5gvZLsrushaeOaPY743b/ZWXdVsNFCjKUHzOYzbCsYSfUXjzzUDBDXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716963823; c=relaxed/simple;
-	bh=3bracRjbxdYDDKFLpVEB1YVlYghO1YkC0e4RdFgdlgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ourDERhyGKjaOmQB234hXTam290Z+mlBg9F6QNaY4sV18ZBQoca148+5ZlEVa1sQTu3uCF772uQCFCWu029Rl9OEe7pYAJjcLIyH1EnT67EFCpISx+S5CpKu+/E/xa7EQWlhQqdruvo5CgytpaemL6kBdyOTELgX/GgMBSaiqMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=nuk5asU3; arc=none smtp.client-ip=159.69.126.157
+	s=arc-20240116; t=1716964045; c=relaxed/simple;
+	bh=/qkFRUhNoy5tpCX40rtxxef0GjehgEsAFGDIUTr+/OY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DCqFKoF3Yc7IK5UvSyldcCKMrlBQzhztOaH3xzcFTXtSj4ck4hQVh6T4TGhg3hUDdn3gHbolTH/a9zrj9U9lsdBCqGnNH1iKJ2VTlaVH8CjlB8juF+oXbxH4AXA5GRsQykVOivhdtdTmaAUsVFbbH1rKs53tzrZZtKpENM7JEuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=jsBgKBfa; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1716963817;
-	bh=3bracRjbxdYDDKFLpVEB1YVlYghO1YkC0e4RdFgdlgE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nuk5asU3sIeBf0jHEJVz/u9DYiH4FioJxqM5jMXUbR4u7Cbkmtueho+zV7Tn5fiV5
-	 JAMyfFMsrGjYVvKqGsH0yALrQ/tMAEnXEkZSHbfIONhrLE30EFfzKW6h5KUlyttNnX
-	 ukoVxwhaGPQzPnEFY/PnKva4N1UgLVqCQsDOWG+k=
-Date: Wed, 29 May 2024 08:23:36 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Stephen Horvath <s.horvath@outlook.com.au>, 
-	Guenter Roeck <linux@roeck-us.net>
-Cc: Jean Delvare <jdelvare@suse.com>, Benson Leung <bleung@chromium.org>, 
-	Lee Jones <lee@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
-	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	Dustin Howett <dustin@howett.net>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Moritz Fischer <mdf@kernel.org>
-Subject: Re: [PATCH v2 1/2] hwmon: add ChromeOS EC driver
-Message-ID: <22a16af6-93c4-454c-853b-5959a5c018d3@t-8ch.de>
-References: <20240507-cros_ec-hwmon-v2-0-1222c5fca0f7@weissschuh.net>
- <20240507-cros_ec-hwmon-v2-1-1222c5fca0f7@weissschuh.net>
- <SY4P282MB30635BA1D4087113E79921B5C5F52@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
- <9cf224dd-51eb-4608-abcf-06f337d08178@t-8ch.de>
- <SY4P282MB306325BB023A95198F25A21DC5F12@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
- <c9b110eb-ff0e-41f2-9492-8a5d8c3c01d0@roeck-us.net>
- <b8072b36-688f-41b8-8b32-40fc4fa4d148@t-8ch.de>
- <6824f030-92da-4439-af3b-8c2498f4382e@roeck-us.net>
- <SY4P282MB30638301303268093B6D1ABFC5F22@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
+	s=mail; t=1716964039;
+	bh=/qkFRUhNoy5tpCX40rtxxef0GjehgEsAFGDIUTr+/OY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=jsBgKBfaMstqcJW43Mra5SM4GjqbbhgTmnMY4j62NE0AEjOI6mcvb9L/vRYJnHCQx
+	 bCf0lJSWwtdElBqo+E+wjTLIeUrfYRvmDdTjdPRusTofvlj1IDzQylLkqLSpfTHaTA
+	 AEWlKuNm84a2bL41D2GE/vpHTa4pOwqZFf6ojdmo=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH v4 0/3] ChromeOS Embedded controller hwmon driver
+Date: Wed, 29 May 2024 08:27:10 +0200
+Message-Id: <20240529-cros_ec-hwmon-v4-0-5cdf0c5db50a@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <SY4P282MB30638301303268093B6D1ABFC5F22@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
+X-B4-Tracking: v=1; b=H4sIAL7KVmYC/33M0QqCMBTG8VeJXbeYx81JV71HRMzjWdtFGptpI
+ b57Uwgio8v/B99vZJGCp8j2m5EF6n30bZNCbjcMnWkuxH2dmoEAKZQoOIY2ngm5G65tw0EWuay
+ ERltYlj63QNY/Fu94Su187NrwXPg+m9e3pL+kPuOCA0qNCqmkUh0G8jFGdHe3a6hjM9fDXwISk
+ QEAKotGWP2TyD8IWBF5IkhhrUylKpOviWmaXu6Bjt01AQAA
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Benson Leung <bleung@chromium.org>, Lee Jones <lee@kernel.org>, 
+ Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Guenter Roeck <groeck@chromium.org>, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, chrome-platform@lists.linux.dev, 
+ Dustin Howett <dustin@howett.net>, 
+ Mario Limonciello <mario.limonciello@amd.com>, 
+ Moritz Fischer <mdf@kernel.org>, Stephen Horvath <s.horvath@outlook.com.au>, 
+ Rajas Paranjpe <paranjperajas@gmail.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716964039; l=3297;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=/qkFRUhNoy5tpCX40rtxxef0GjehgEsAFGDIUTr+/OY=;
+ b=+xsNB+ZSA9FsJ4I7ELvsAzE01r5HXo9Tnr0AcYS1MJGRFEVEI2dKRHpa7AKDpaKrWBVhVkFCH
+ y7MDOaw8AWGAW76QWToC89mpnm5cvxklEnl94KhEpWwWFQJtBdS7kda
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On 2024-05-29 10:58:23+0000, Stephen Horvath wrote:
-> On 29/5/24 09:29, Guenter Roeck wrote:
-> > On 5/28/24 09:15, Thomas Weißschuh wrote:
-> > > On 2024-05-28 08:50:49+0000, Guenter Roeck wrote:
-> > > > On 5/27/24 17:15, Stephen Horvath wrote:
-> > > > > On 28/5/24 05:24, Thomas Weißschuh wrote:
-> > > > > > On 2024-05-25 09:13:09+0000, Stephen Horvath wrote:
-> > > > > > > Don't forget it can also return `EC_FAN_SPEED_STALLED`.
+Add a hwmon driver that reports fan and temperature readings from the
+ChromeOS Embedded controller.
 
-<snip>
+There was an earlier effort in 2017 to add such a driver [0], but there
+was no followup after v1.
+The new driver is complete reimplementation based on newer APIs and with
+more features (temp sensor names).
 
-> > > > > > 
-> > > > > > Thanks for the hint. I'll need to think about how to
-> > > > > > handle this better.
-> > > > > > 
-> > > > > > > Like Guenter, I also don't like returning `-ENODEV`,
-> > > > > > > but I don't have a
-> > > > > > > problem with checking for `EC_FAN_SPEED_NOT_PRESENT`
-> > > > > > > in case it was removed
-> > > > > > > since init or something.
-> > > > > > 
-> > > > 
-> > > > That won't happen. Chromebooks are not servers, where one might
-> > > > be able to
-> > > > replace a fan tray while the system is running.
-> > > 
-> > > In one of my testruns this actually happened.
-> > > When running on battery, one specific of the CPU sensors sporadically
-> > > returned EC_FAN_SPEED_NOT_PRESENT.
-> > > 
-> > 
-> > What Chromebook was that ? I can't see the code path in the EC source
-> > that would get me there.
-> > 
-> 
-> I believe Thomas and I both have the Framework 13 AMD, the source code is
-> here:
-> https://github.com/FrameworkComputer/EmbeddedController/tree/lotus-zephyr
+It only works on LPC-connected ECs, as only those implement direct
+memory-map access.
+For other busses the data would need to be read with a command.
+Adding some helpers was discussed in the previous patchset [1].
 
-Correct.
+The EC protocols also support reading and writing fan curves but that is
+not implemented.
 
-> The organisation confuses me a little, but Dustin has previous said on the
-> framework forums (https://community.frame.work/t/what-ec-is-used/38574/2):
-> 
-> "This one is based on the Zephyr port of the ChromeOS EC, and tracks
-> mainline more closely. It is in the branch lotus-zephyr.
-> All of the model-specific code lives in zephyr/program/lotus.
-> The 13"-specific code lives in a few subdirectories off the main tree named
-> azalea."
+Tested on a Framework 13 AMD, Firmware 3.05.
 
-The EC code is at [0]:
+[0] https://lore.kernel.org/all/1491602410-31518-1-git-send-email-moritz.fischer@ettus.com/
+[1] https://lore.kernel.org/all/ac61bfca-bfa0-143b-c9ca-365b8026ce8d@roeck-us.net/
 
-$ ectool version
-RO version:    azalea_v3.4.113353-ec:b4c1fb,os
-RW version:    azalea_v3.4.113353-ec:b4c1fb,os
-Firmware copy: RO
-Build info:    azalea_v3.4.113353-ec:b4c1fb,os:7b88e1,cmsis:4aa3ff 2024-03-26 07:10:22 lotus@ip-172-26-3-226
-Tool version:  0.0.1-isolate May  6 2024 none
+---
+Changes in v4:
+- Don't try to support variable-length reading in cros_ec_cmd_readmem()
+  (Tzung-Bi)
+- Stylistic changes (Tzung-Bi)
+- Return -EOPNOTSUPP from read callbacks by default
+- Use nested if-blocks in read callback
+- Only allocate priv data after checking thermal version in memmap
+- Simplify calling protocol of _read() functions
+- Replace cros_ec_hwmon_read_temp_sensor_info() with cros_ec_cmd()
+- Link to v3: https://lore.kernel.org/r/20240527-cros_ec-hwmon-v3-0-e5cd5ab5ba37@weissschuh.net
 
+Changes in v3:
+- Drop Mario's Reviewed-by tag, as the code has changed
+- Introduce cros_ec_cmd_readmem() for non-LPC compatibility
+- Report fault state for fans and temp sensors
+- Avoid adding unnecessary space characters to channel label
+- Drop thermal_version from priv data
+- Read fans during probing only once
+- Don't include linux/kernel.h
+- Move _read_temp_sensor_info to similar functions
+- Insert MFD entry alphabetically
+- Link to v2: https://lore.kernel.org/r/20240507-cros_ec-hwmon-v2-0-1222c5fca0f7@weissschuh.net
 
-From the build info I gather it should be commit b4c1fb, which is the
-current HEAD of the lotus-zephyr branch.
-Lotus is the Framework 16 AMD, which is very similar to Azalea, the
-Framework 13 AMD, which I tested this against.
-Both share the same codebase.
+Changes in v2:
+- drop unnecessary range checks (Guenter)
+- only validate thermal_version during probing
+- reorder some variable declarations
+- validate thermal_version directly in cros_ec_hwmon_probe (Mario)
+- drop return value from probe_temp_sensors as it can't fail anymore
+- fail with -ENODEV if cmd_readmem is missing to avoid spurious warnings
+- Link to v1: https://lore.kernel.org/r/20240507-cros_ec-hwmon-v1-0-2c47c5ce8e85@weissschuh.net
 
-> Also I just unplugged my fan and you are definitely correct, the EC only
-> generates EC_FAN_SPEED_NOT_PRESENT for fans it does not have the capability
-> to support. Even after a reboot it just returns 0 RPM for an unplugged fan.
-> I thought about simulating a stall too, but I was mildly scared I was going
-> to break one of the tiny blades.
+---
+Thomas Weißschuh (3):
+      platform/chrome: cros_ec_proto: Introduce cros_ec_cmd_readmem()
+      hwmon: add ChromeOS EC driver
+      mfd: cros_ec: Register hardware monitoring subdevice
 
-I get the error when unplugging *the charger*.
+ Documentation/hwmon/cros_ec_hwmon.rst       |  26 +++
+ Documentation/hwmon/index.rst               |   1 +
+ MAINTAINERS                                 |   8 +
+ drivers/hwmon/Kconfig                       |  11 ++
+ drivers/hwmon/Makefile                      |   1 +
+ drivers/hwmon/cros_ec_hwmon.c               | 286 ++++++++++++++++++++++++++++
+ drivers/mfd/cros_ec_dev.c                   |   1 +
+ drivers/platform/chrome/cros_ec_proto.c     |  27 +++
+ include/linux/platform_data/cros_ec_proto.h |   2 +
+ 9 files changed, 363 insertions(+)
+---
+base-commit: 2bfcfd584ff5ccc8bb7acde19b42570414bf880b
+change-id: 20240506-cros_ec-hwmon-24634b07cf6f
 
-To be more precise:
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
-It does not happen always.
-It does not happen instantly on unplugging.
-It goes away after a few seconds/minutes.
-During the issue, one specific sensor reads 0xffff.
-
-> > > > > > Ok.
-> > > > > > 
-> > > > > > > My approach was to return the speed as `0`, since
-> > > > > > > the fan probably isn't
-> > > > > > > spinning, but set HWMON_F_FAULT for `EC_FAN_SPEED_NOT_PRESENT` and
-> > > > > > > HWMON_F_ALARM for `EC_FAN_SPEED_STALLED`.
-> > > > > > > No idea if this is correct though.
-> > > > > > 
-> > > > > > I'm not a fan of returning a speed of 0 in case of errors.
-> > > > > > Rather -EIO which can't be mistaken.
-> > > > > > Maybe -EIO for both EC_FAN_SPEED_NOT_PRESENT (which
-> > > > > > should never happen)
-> > > > > > and also for EC_FAN_SPEED_STALLED.
-> > > > > 
-> > > > > Yeah, that's pretty reasonable.
-> > > > > 
-> > > > 
-> > > > -EIO is an i/o error. I have trouble reconciling that with
-> > > > EC_FAN_SPEED_NOT_PRESENT or EC_FAN_SPEED_STALLED.
-> > > > 
-> > > > Looking into the EC source code [1], I see:
-> > > > 
-> > > > EC_FAN_SPEED_NOT_PRESENT means that the fan is not present.
-> > > > That should return -ENODEV in the above code, but only for
-> > > > the purpose of making the attribute invisible.
-> > > > 
-> > > > EC_FAN_SPEED_STALLED means exactly that, i.e., that the fan
-> > > > is present but not turning. The EC code does not expect that
-> > > > to happen and generates a thermal event in case it does.
-> > > > Given that, it does make sense to set the fault flag.
-> > > > The actual fan speed value should then be reported as 0 or
-> > > > possibly -ENODATA. It should _not_ generate any other error
-> > > > because that would trip up the "sensors" command for no
-> > > > good reason.
-> > > 
-> > > Ack.
-> > > 
-> > > Currently I have the following logic (for both fans and temp):
-> > > 
-> > > if NOT_PRESENT during probing:
-> > >    make the attribute invisible.
-> > > 
-> > > if any error during runtime (including NOT_PRESENT):
-> > >    return -ENODATA and a FAULT
-> > > 
-> > > This should also handle the sporadic NOT_PRESENT failures.
-> > > 
-> > > What do you think?
-> > > 
-> > > Is there any other feedback to this revision or should I send the next?
-> > > 
-> > 
-> > No, except I'd really like to know which Chromebook randomly generates
-> > a EC_FAN_SPEED_NOT_PRESENT response because that really looks like a bug.
-> > Also, can you reproduce the problem with the ectool command ?
-
-Yes, the ectool command reports the same issue at the same time.
-
-The fan affected was always the sensor cpu@4c, which is
-compatible = "amd,sb-tsi".
-
-> I have a feeling it was related to the concurrency problems between ACPI and
-> the CrOS code that are being fixed in another patch by Ben Walsh, I was also
-> seeing some weird behaviour sometimes but I *believe* it was fixed by that.
-
-I don't think it's this issue.
-Ben's series at [1], is for MEC ECs which are the older Intel
-Frameworks, not the Framework 13 AMD.
-
-[0] https://github.com/FrameworkComputer/EmbeddedController
-[1] https://lore.kernel.org/lkml/20240515055631.5775-1-ben@jubnut.com/
 
