@@ -1,213 +1,140 @@
-Return-Path: <linux-hwmon+bounces-2377-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2379-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CA28D5D0C
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 10:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2E88D5E4D
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 11:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19716286BEC
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 08:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CEF285E79
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 09:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3896A15572F;
-	Fri, 31 May 2024 08:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BA981ABA;
+	Fri, 31 May 2024 09:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="nAOB4i1u"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="hOWHqTxx"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9F44E1C8;
-	Fri, 31 May 2024 08:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F62768EA
+	for <linux-hwmon@vger.kernel.org>; Fri, 31 May 2024 09:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717145248; cv=none; b=Q9k+3l/fcZZJO/9rFMwqF9HwbTJSmTYMbQOFuvDu+CCCoBoze8JzER4ELngHpLBcbJ2Ol81mVHS3oQ6nrSVJ1q6CAz+j7FgHXFkW05cEelEhFXLCRRl/ipF7Zg34A7R+Z6J4W9ET632ouznfKRrutwTqaplEbIIOZdPlUE9PUoE=
+	t=1717147924; cv=none; b=nntb3lIKU57b9MeVqqv3EIXeReYGo8yIJrJLU6lZGGB5LfQ/BnuznyLup2HSfIG+/+z9WXKatTY0Sf95LFR6j71rL+vJ1DqnJ3TmXuFMNtdiMAPETQ/cSF2mvIwCVHAjTbe2L1kGabUVG/v6QCYNpnDK/GUkARxu3GMCrmOab84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717145248; c=relaxed/simple;
-	bh=puLHBzNZ26APQMzwfYvHHSHrulunZMrMo+MEGm1JwjA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U/eKZujJ7Bh6FUqI2Aew4awBR/fn+zOVj4GxtO/gwnLlHb8uY7wN2eOLhyNrQJUv5i+eMFkzbvCfyEzq9FAX0DEv5I7cvdXEmF3TDQ2vPOGy2WBuhxCmbTC1rtLFA3AdLxOgc7nMB5neU37cNnU0d0Pffchz2DEv7yYAQOAuinQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=nAOB4i1u; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44V80o2s031840;
-	Fri, 31 May 2024 04:47:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=g1kRZ
-	lNIOKNCVjWxqEE5O19ed4HqbyIxzVGl4/CiTpo=; b=nAOB4i1ubAHpVA6q8V6sd
-	DRkhw/9D6VPCBKuZPWbhz0hokUCQA5WVq9+Laf9+bz4e9Jeq2U8cX6B5/tO2yTWA
-	1bvsyXIcnZ9k6z9Xw8kPMWPRn1PgWX9XCCPdz/DeUONHgA3bS17e+MqBSn4E5c3L
-	jCHdQXwpqXCqEEG0/Wsdg7eNw+zMSSFF3RuUe7CQpU7PWA9v5/FrV7W7e6sKBSKW
-	ErLl/KO+tuOwbZ6RB3VjbK1JOylIGWpYiCvJ3p4fOx8YUaPwqThbZjtpQgvnwnq7
-	y9CVXkU1uVvvYrNDj5KtNsEkCVq3TJFJkgk4Kj1WdtK/wJtZuesTgLwalkXRdR0x
-	g==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yeddx6k7j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 04:47:13 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 44V8lB7X044918
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 31 May 2024 04:47:11 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 31 May 2024 04:47:10 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 31 May 2024 04:47:10 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 31 May 2024 04:47:10 -0400
-Received: from radu.ad.analog.com ([10.48.65.189])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 44V8kshe031459;
-	Fri, 31 May 2024 04:47:06 -0400
-From: Radu Sabau <radu.sabau@analog.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-hwmon@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Radu Sabau <radu.sabau@analog.com>
-Subject: [PATCH v6 2/2] drivers: hwmon: max31827: Add PEC support
-Date: Fri, 31 May 2024 11:46:44 +0300
-Message-ID: <20240531084645.12935-2-radu.sabau@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240531084645.12935-1-radu.sabau@analog.com>
-References: <20240531084645.12935-1-radu.sabau@analog.com>
+	s=arc-20240116; t=1717147924; c=relaxed/simple;
+	bh=5U7FyklsEaq5Z77Xh71GF62p+k3mhNStH7+QJ6d8CG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T4gK0uuEJuybxrDWxSZ045rEAu3INc7pZDFpwon1nK6dORTEJRAK7UMXJd88BfZ+my5uK0JkqbbIRqTtD8Uw13fIqZDDhflYbFpWI3CNiCBAMY8t0LkRZq0SPNET2vmkfLPZBl6uRVmSBF+uZI7I64T3r/s8L/oCJBv1c2Ra3TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=hOWHqTxx; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=duxs
+	2uujR9NRLXhAk81tC9D0XnsOzJhWFLu0vA/jvfo=; b=hOWHqTxxNcqGINU4ZS5V
+	8MKGNRQ1ywH86zYBzxlq9zwDNbGRiiSw5RvoUrm48F2QpF0DCXRMrgO1kjOrvHzs
+	4czC037sbomdEVd9YlqOIwXxeyhEw9stc5w2H33Wdz1y61ck7YCnA6DUZG3Nahtb
+	XNQWWa/d8HSv7t8HZv5J9/+MT9/VFmZfwwa48cmWDpIkg7TvIGzISVhjTr1XaOWz
+	27CkblNe7VFsPOMdAPFv1s9oy9EfYIKgHFXApaatbxu3BnLUYeHxS8ruz8//uZMM
+	IFXNJ4LCDGR66sMqy3QBipWsNdt2fB4qCdn/V6OfG2cnFhbkSCA45K4eYexWXN0g
+	6A==
+Received: (qmail 1124244 invoked from network); 31 May 2024 11:31:55 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 31 May 2024 11:31:55 +0200
+X-UD-Smtp-Session: l3s3148p1@C1GEp7wZ4rFehhtB
+Date: Fri, 31 May 2024 11:31:54 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+	linux-hwmon@vger.kernel.org, Hristo Venev <hristo@venev.name>,
+	=?utf-8?B?UmVuw6k=?= Rebe <rene@exactcode.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Radu Sabau <radu.sabau@analog.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Re: [PATCH 2/3] hwmon: Add support for SPD5118 compliant temperature
+ sensors
+Message-ID: <20240531093154.rna2vwbfx7csu2sj@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+	linux-hwmon@vger.kernel.org, Hristo Venev <hristo@venev.name>,
+	=?utf-8?B?UmVuw6k=?= Rebe <rene@exactcode.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Radu Sabau <radu.sabau@analog.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>
+References: <20240529205204.81208-1-linux@roeck-us.net>
+ <20240529205204.81208-3-linux@roeck-us.net>
+ <34a4292e-c4db-4b40-822e-b892e1444045@t-8ch.de>
+ <16e448f1-cfc9-4e88-b3f1-55e1856d1405@roeck-us.net>
+ <0a2ed64d-06d9-45e8-a054-4ded4429f952@t-8ch.de>
+ <ffd72953-ecd2-405a-ad6d-236143b26946@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: ZR_1fOSEMhxZW_gt8hhdnT9LNNr8S_Kz
-X-Proofpoint-ORIG-GUID: ZR_1fOSEMhxZW_gt8hhdnT9LNNr8S_Kz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-31_04,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=999 priorityscore=1501 adultscore=0 bulkscore=0
- phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2405310064
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xeb7swmh4n3lar4t"
+Content-Disposition: inline
+In-Reply-To: <ffd72953-ecd2-405a-ad6d-236143b26946@roeck-us.net>
 
-Add support for PEC by configuring the chip accordingly to the hwmon core PEC
-attribute handling
-Handle hwmon_chip_pec attribute writing in the max31827_write in the
-hwmon_chip type switch case, approaching the same code structure
-as for temp writing.
 
-Signed-off-by: Radu Sabau <radu.sabau@analog.com>
----
-Change log:
-v2:
- *Rebase on top of v6.9
- *Attach pec attribute only to i2c device
- *Fix bug to attach pec attribute to i2c device if the device supports it.
-v3:
- *Use only one variable to write PEC_EN bit in configuration register
- *Use regmap_set_bits to set PEC_EN bit when requested instead of
-  regmap_update_bits.
- *Fix typo in commit message.
-v4:
- *Use regmap_clear_bits to clear PEC_EN bit when requested instead of
-  regmap_update_bits.
-v5:
- *Adapt driver to the new hwmon PEC attribute handling from the hwmon core.
-v6:
- *Apply patch containing hwmon core code and rebase driver PEC patch on top
-  of it.
- *Handle hwmon_chip_pec attribute write in the max31827_write function, the same
-  way temp writes are handled, therefore remove the max31827_chip_write function
- *Fix typos.
----
- Documentation/hwmon/max31827.rst | 13 ++++++++++---
- drivers/hwmon/max31827.c         | 18 ++++++++++++------
- 2 files changed, 22 insertions(+), 9 deletions(-)
+--xeb7swmh4n3lar4t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/hwmon/max31827.rst b/Documentation/hwmon/max31827.rst
-index 44ab9dc064cb..9c11a9518c67 100644
---- a/Documentation/hwmon/max31827.rst
-+++ b/Documentation/hwmon/max31827.rst
-@@ -131,7 +131,14 @@ The Fault Queue bits select how many consecutive temperature faults must occur
- before overtemperature or undertemperature faults are indicated in the
- corresponding status bits.
- 
--Notes
-------
-+PEC Support
-+-----------
-+
-+When reading a register value, the PEC byte is computed and sent by the chip.
-+
-+PEC on word data transaction respresents a signifcant increase in bandwitdh
-+usage (+33% for both write and reads) in normal conditions.
- 
--PEC is not implemented.
-+Since this operation implies there will be an extra delay to each
-+transaction, PEC can be disabled or enabled through sysfs.
-+Just write 1  to the "pec" file for enabling PEC and 0 for disabling it.
-diff --git a/drivers/hwmon/max31827.c b/drivers/hwmon/max31827.c
-index f8a13b30f100..4d89b6a7060b 100644
---- a/drivers/hwmon/max31827.c
-+++ b/drivers/hwmon/max31827.c
-@@ -24,6 +24,7 @@
- 
- #define MAX31827_CONFIGURATION_1SHOT_MASK	BIT(0)
- #define MAX31827_CONFIGURATION_CNV_RATE_MASK	GENMASK(3, 1)
-+#define MAX31827_CONFIGURATION_PEC_EN_MASK	BIT(4)
- #define MAX31827_CONFIGURATION_TIMEOUT_MASK	BIT(5)
- #define MAX31827_CONFIGURATION_RESOLUTION_MASK	GENMASK(7, 6)
- #define MAX31827_CONFIGURATION_ALRM_POL_MASK	BIT(8)
-@@ -382,7 +383,8 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
- 		}
- 
- 	case hwmon_chip:
--		if (attr == hwmon_chip_update_interval) {
-+		switch (attr) {
-+		case hwmon_chip_update_interval:
- 			if (!st->enable)
- 				return -EINVAL;
- 
-@@ -410,14 +412,18 @@ static int max31827_write(struct device *dev, enum hwmon_sensor_types type,
- 				return ret;
- 
- 			st->update_interval = val;
--		}
--		break;
- 
-+			return 0;
-+		case hwmon_chip_pec:
-+			return regmap_update_bits(st->regmap, MAX31827_CONFIGURATION_REG,
-+						  MAX31827_CONFIGURATION_PEC_EN_MASK,
-+						  val ? MAX31827_CONFIGURATION_PEC_EN_MASK : 0);
-+		default:
-+			return -EOPNOTSUPP;
-+		}
- 	default:
- 		return -EOPNOTSUPP;
- 	}
--
--	return 0;
- }
- 
- static ssize_t temp1_resolution_show(struct device *dev,
-@@ -583,7 +589,7 @@ static const struct hwmon_channel_info *max31827_info[] = {
- 					 HWMON_T_MIN_HYST | HWMON_T_MIN_ALARM |
- 					 HWMON_T_MAX | HWMON_T_MAX_HYST |
- 					 HWMON_T_MAX_ALARM),
--	HWMON_CHANNEL_INFO(chip, HWMON_C_UPDATE_INTERVAL),
-+	HWMON_CHANNEL_INFO(chip, HWMON_C_UPDATE_INTERVAL | HWMON_C_PEC),
- 	NULL,
- };
- 
--- 
-2.34.1
+Hi all,
 
+> > Wolfgang seems to think it's important:
+
+Wolfram, please.
+
+> > https://lore.kernel.org/lkml/tdia472d4pow2osabef24y2ujkkquplfajxmmtk5pn=
+xllsdxsz@wxzynz7llasr/
+> >=20
+>=20
+> Ok, but that doesn't explain the reason. Wolfram, Paul, why do you
+> think this is needed ? Note that I am not opposed to adding spd
+> eeprom support, but I'd like to know why I am doing it before
+> I spend time on it.
+
+A working eeprom driver is needed to get 'decode-dimms' from the
+i2c-tools package working. Jean reported that EEPROM access for DDR5 is
+different from DDR4, so it needs a separate driver. And
+i2c_register_spd() then needs to be updated to use the new driver for
+DDR5.
+
+Happy hacking,
+
+   Wolfram
+
+--xeb7swmh4n3lar4t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmZZmQcACgkQFA3kzBSg
+KbYuTg/6A5ij4YXV/CfauyFRASldgEnInfw2WdYkuXzCtfXvsZCRvP15BLSBEH9K
+VKEnsN6sysLVyMnIJnfH8/hQ+6eOniAio8fcPIcxHQyWZOOZeqEa5pOyBuGoXZYS
+/5DTYEjeII6iOILpNCQa2s6gbK3IPZioCheK8WliLIiTYO5vpjg4QVjHO7R6MK6o
+u/Fp8goQNofhZRqijddVMVc1m3r8EAgfU5tb+DLgM3x9WWzl0IFWKAPbtkcyuTPs
+kVwaJj35pWJG6zAQKmu+6213QIlmFVZM8ODPtTvYD1lc9Msrnq366u+SCrWuu5vF
+zxmZkp8+C1uHq/jXroOEQaYZQJ9ncMDtZ/aDhwV7nZz0RfhPTGSq7PdTg/q5S1gW
+bQMt3uGdDaTGD70IAHoXZjKMBO6J2mDAmjvLX89krNCNpj9r3rqekJU8Rr6g7Bji
+XFpPaCvZHEC7QswW07/TIDhCF5dgTaUIQxtQvYcb1ioROTFFenqMk4LNkJ1zLGtb
++lr4D6Fyqv2Is2ZEVSQi9Y6Xh9Q5zS4tYcbhiItsnxjOqGQfQF3aPRvreeauFEyk
+DdGuiSZWrub8Gg2EsOUAgrL6gJ55uu9s14Ke2UsxcS7/GWfDyK/tJACWzpW2Swdc
+8j5H3E1hxJFiXVloKf040i9jT0odS0H2fSXHyaWpjhJTJbc9e28=
+=gjGP
+-----END PGP SIGNATURE-----
+
+--xeb7swmh4n3lar4t--
 
