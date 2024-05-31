@@ -1,107 +1,126 @@
-Return-Path: <linux-hwmon+bounces-2380-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2382-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951268D5EB4
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 11:45:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6938D5FB4
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 12:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48E161F2317F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 09:45:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5760A283C08
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 May 2024 10:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8127868B;
-	Fri, 31 May 2024 09:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B58D155726;
+	Fri, 31 May 2024 10:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iROFP+Am"
+	dkim=pass (1024-bit key) header.d=exactco.de header.i=@exactco.de header.b="sq/68tkN"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.exactcode.de (mx.exactcode.de [144.76.154.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB1924B26;
-	Fri, 31 May 2024 09:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3D9150997;
+	Fri, 31 May 2024 10:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.154.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717148733; cv=none; b=sWDPVEHmaImbdZXfO7wo0G1jyxXxdD4LdURkAt/kUTvJVjl8LxEbyY5w8+4eUvRSQ3GO5hyBaZ82S6HEUW0e0y1hdMTRWUoAtxukejcLPTQQR2OkfHAXXWQR7T0/UthDQkLJdpQ3/az30MG+EyFbWDXYEcmQ3TmQzsgTytMmOb4=
+	t=1717151192; cv=none; b=DMxSE7xVcCGDPoy2nzyMMqJFsrUpclX6U8903OiTegT/qkrAKU+TcFIjYQkr6sysfKSLOeHZmvI+hO8wnYDpXH4VbI9ax8vRnUUdi9WHiUX9nknnh2Qy98IIz0ON21R//b95ZsBa6nqKitgrujGBHHIGxXTrGHCoB+Yg2S+91Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717148733; c=relaxed/simple;
-	bh=lERvVoyJAE/jeXnmH1j9lxgnxLnRxdAv4vYaPklDwFE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pTfUAMxGhIGUXn/RhdzSJ0M0qinT/whz0oAHdZ/RxOmhYITotIOK9g6Z9DJMKA20jQQ3B18nhuLG4Gsxf1KCRlmPC0O4RuS+YaOv+w0Pob9l1ApJbd3T7Gf31bUtYpCD7M0T0CbPYfwe1RuNn2XU8vRvw00mJPEsA3s8JUZy79w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iROFP+Am; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a59a352bbd9so292091366b.1;
-        Fri, 31 May 2024 02:45:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717148730; x=1717753530; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lERvVoyJAE/jeXnmH1j9lxgnxLnRxdAv4vYaPklDwFE=;
-        b=iROFP+AmyemW+k/xYH1mkWxyfFqaSyg/qMbCJQOmEYICIslZLFTXc87RVj9/0MqHdS
-         NLIaynR0Q5Bb50+CZ5wRnc2FroOis5t8LeU+Nf6kbaRXrVcB/lGMGEryUHWPLK8y0oIL
-         zxfbdAWVQogZWfy5YNzBrKN2b2XuCjT5Nx+wud6p2I4IFzFfgj8yz6JGXH0MpXiDwTZi
-         LpPgyLI2l2PRD9QMPzp9vrAV980evHYPLyZBMjxy5KK5X7VIiU+5rNYbbikpz0Xe6rhz
-         p63ckITaJz5VBv4as+K06ooLnCFu/0NW0rNYQ2cr0vc4BfEUNWU+AkeXZUMm8zztRHI6
-         5W+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717148730; x=1717753530;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lERvVoyJAE/jeXnmH1j9lxgnxLnRxdAv4vYaPklDwFE=;
-        b=BIx90/83KNPIkkutabrbUJLIaGPA3Y+Zjfmh4iLhNIsry6s4S4EgNmLApnQoUd/dpq
-         n3Yer/XcqQzNMSH5kAyipI1r3n0DGsRSsgV7wabJyqz4Dgi/UQ2lezb0kmpeg/F6bgkO
-         t2Z/Lj8P0SmoanvrXt03nc6csXZjX9Kb/YXfz4dmT4RD0B2dbqfWb921833lr+fSG167
-         IW7MTyV3WUavF/EkY18QSvlCb+0QBwYubogm31rsfWfP0rUV098/0WvQXrTd8H5pmIfe
-         8V2CbM9ZMyRR/WbueHa7b5glcIwL6ZMOWcd9/HPEJSdxAUeXu95Bk4gC6450U3pRIHKm
-         xegg==
-X-Forwarded-Encrypted: i=1; AJvYcCUY8rSzVMa8xRAqbMBLw2iX8UajxzZLUnVOhruEKVbJmvGenxBV3FACySGItOHGTnRYO5q1ll4fAwIRd7m5hBHRbGluPufzTm7GybZNCBXGuMSlpbDkAF1GmvVeW+zxJhmRaLazyOFpE8zMPL17nXdgH7AwKKEgHBzKa5rQCaMWEMLffO0=
-X-Gm-Message-State: AOJu0Yz/VbNSYszDvs/jyVaoVYrDdpfucQi+/z2MCuT+IvCbmtn74iJT
-	R75uHglyjscu7KqdUqIj/HtHoN3X5VPu9e17KMmaEUEFnaIg8e0KSDB1F0JfR7M=
-X-Google-Smtp-Source: AGHT+IFTFMH2jNPbQ/gcHw6Zpbe+myU3YyJ7m0d+2DIQGeRbcHm78hJ6xn84ifk1xVD6VmkTxOYzkg==
-X-Received: by 2002:a17:906:414d:b0:a59:c807:72d3 with SMTP id a640c23a62f3a-a681933565fmr134693866b.17.1717148729683;
-        Fri, 31 May 2024 02:45:29 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a682ea1e5c4sm50888966b.115.2024.05.31.02.45.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 02:45:29 -0700 (PDT)
-Message-ID: <635356d36f5d402a3a921da12e352a95926ff03d.camel@gmail.com>
-Subject: Re: [PATCH v6 2/2] drivers: hwmon: max31827: Add PEC support
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Radu Sabau <radu.sabau@analog.com>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>,
- linux-hwmon@vger.kernel.org,  linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 31 May 2024 11:45:28 +0200
-In-Reply-To: <20240531084645.12935-2-radu.sabau@analog.com>
-References: <20240531084645.12935-1-radu.sabau@analog.com>
-	 <20240531084645.12935-2-radu.sabau@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+	s=arc-20240116; t=1717151192; c=relaxed/simple;
+	bh=7DUjjMTSikNgt3aT++EcWYY1TqaPsjZb2Iel1P6aPxs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ldEmTpu610kcA/DowtTzFngoXXua2JnUTL330GpuujqmuvxWv+nhpOGouQr4s2RMb3u13Ev8WfW4CAEaZkpYAfrgqtjNShfZKxOx1p8Gt5kciY947EBge3GjlGng6A9wIJFNZcH+4kzYWsgIRd/utkfIHQ0QoPjrtN3HaZOAA9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactcode.de; spf=pass smtp.mailfrom=exactcode.de; dkim=pass (1024-bit key) header.d=exactco.de header.i=@exactco.de header.b=sq/68tkN; arc=none smtp.client-ip=144.76.154.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactcode.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactcode.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de; s=x;
+	h=To:References:Message-Id:Content-Transfer-Encoding:Cc:Date:In-Reply-To:From:Subject:Mime-Version:Content-Type; bh=a8KggmGaKDZZtnscDRz48StTHWGYeHwCoGv1AU1JscY=;
+	b=sq/68tkN8ocozxD3yYsVWsexRuHm/2jGblms4BiyahZ/S0nxSmKCFxSdezsqS/lqTEds7nVGUzepcM8rO5uM3ENsY22b3byBlS2ZTvTrMWs9yM2mH9W7K9m2YafBE+GrrJCPCqvIJtQvqnOunsyxgf+rJYQD6WKGd/sCxtG1urg=;
+Received: from exactco.de ([90.187.5.221])
+	by mx.exactcode.de with esmtp (Exim 4.82)
+	(envelope-from <rene@exactcode.de>)
+	id 1sCz5V-0000Ud-8I; Fri, 31 May 2024 10:02:17 +0000
+Received: from [192.168.2.131] (helo=smtpclient.apple)
+	by exactco.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.86_2)
+	(envelope-from <rene@exactcode.de>)
+	id 1sCz86-0002lf-BT; Fri, 31 May 2024 10:04:58 +0000
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [PATCH 2/3] hwmon: Add support for SPD5118 compliant temperature
+ sensors
+From: =?utf-8?Q?Ren=C3=A9_Rebe?= <rene@exactcode.de>
+In-Reply-To: <20240531093154.rna2vwbfx7csu2sj@ninjato>
+Date: Fri, 31 May 2024 12:01:35 +0200
+Cc: Guenter Roeck <linux@roeck-us.net>,
+ =?utf-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ linux-hwmon@vger.kernel.org,
+ Hristo Venev <hristo@venev.name>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Radu Sabau <radu.sabau@analog.com>,
+ Paul Menzel <pmenzel@molgen.mpg.de>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BA0B79E0-6582-45EA-8EA9-35E278B8CC42@exactcode.de>
+References: <20240529205204.81208-1-linux@roeck-us.net>
+ <20240529205204.81208-3-linux@roeck-us.net>
+ <34a4292e-c4db-4b40-822e-b892e1444045@t-8ch.de>
+ <16e448f1-cfc9-4e88-b3f1-55e1856d1405@roeck-us.net>
+ <0a2ed64d-06d9-45e8-a054-4ded4429f952@t-8ch.de>
+ <ffd72953-ecd2-405a-ad6d-236143b26946@roeck-us.net>
+ <20240531093154.rna2vwbfx7csu2sj@ninjato>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
+X-Spam-Score: -0.5 (/)
 
-On Fri, 2024-05-31 at 11:46 +0300, Radu Sabau wrote:
-> Add support for PEC by configuring the chip accordingly to the hwmon core=
- PEC
-> attribute handling
-> Handle hwmon_chip_pec attribute writing in the max31827_write in the
-> hwmon_chip type switch case, approaching the same code structure
-> as for temp writing.
+Hi,
+
+On May 31, 2024, at 11:31, Wolfram Sang =
+<wsa+renesas@sang-engineering.com> wrote:
 >=20
-> Signed-off-by: Radu Sabau <radu.sabau@analog.com>
-> ---
-
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-
-- Nuno S=C3=A1
+> Hi all,
 >=20
+>>> Wolfgang seems to think it's important:
+>=20
+> Wolfram, please.
+>=20
+>>> =
+https://lore.kernel.org/lkml/tdia472d4pow2osabef24y2ujkkquplfajxmmtk5pnxll=
+sdxsz@wxzynz7llasr/
+>>>=20
+>>=20
+>> Ok, but that doesn't explain the reason. Wolfram, Paul, why do you
+>> think this is needed ? Note that I am not opposed to adding spd
+>> eeprom support, but I'd like to know why I am doing it before
+>> I spend time on it.
+>=20
+> A working eeprom driver is needed to get 'decode-dimms' from the
+> i2c-tools package working. Jean reported that EEPROM access for DDR5 =
+is
+> different from DDR4, so it needs a separate driver. And
+> i2c_register_spd() then needs to be updated to use the new driver for
+> DDR5.
+
+Well my original downstream driver already had eeprom access:
+
+	=
+https://svn.exactcode.de/t2/trunk/package/kernel/linux/spd-5118.patch
+
+Note there are some surrounding -2, and parity patches around this =
+patch.
+
+Thanks,
+	Ren=C3=A9
+
+--
+ExactCODE GmbH, Lietzenburger Str. 42, DE-10789 Berlin
+http://exactcode.com | http://exactscan.com | http://ocrkit.com
 
 
