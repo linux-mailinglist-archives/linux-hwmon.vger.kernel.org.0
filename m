@@ -1,48 +1,48 @@
-Return-Path: <linux-hwmon+bounces-2428-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2427-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B8F8D79CA
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 03:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2668D79C9
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 03:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03814B21261
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 01:30:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62FB0B2117B
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 01:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DDD5244;
-	Mon,  3 Jun 2024 01:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58A41366;
+	Mon,  3 Jun 2024 01:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tEBAfjUt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATad+G0n"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E754C63;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B879A4A08;
 	Mon,  3 Jun 2024 01:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717378230; cv=none; b=RITs+8foHbyRjrNAUT993WAz8yq2N5gv+C9FQPDp9+PutU9sVZZAl9ii4O6QxNRuVppkaR8JsZ6LT8Cx9vBp0FJBU9DARFklVRjGjfWTOtY3pDLaZrTByOnpY9qfY4a2WCv0VctAKlXGH+rTyhR0Vx+y4fFL5eeVVZg4AFKoEvg=
+	t=1717378229; cv=none; b=g12S2U/o4JjDplxEHImjkf8ZQGEXsbXW9Y/nTNrikxBA47Q+Ibqnde5k+5GIVtXhw6ZYrfujoNVL7W6lsnA0Ocr5KdjtgSXDqKj7qGHgPJ46I+nKkeff0FbFz2K/EeO5nenprX7zKqD1wOKWIV0iq7IVzDJhDb7Bf9Twyh6tIpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717378230; c=relaxed/simple;
-	bh=iTVP8HFRpDspCzQtZtfOWLoHx1WUVU/xxp/iKDtWq/c=;
+	s=arc-20240116; t=1717378229; c=relaxed/simple;
+	bh=c/gcQfCpVJnfZDVPUk0eXP87yX0ySWpMX5T4FZ+WwZQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ITfO85vYEmTTzkjFklOxPwLHKfw6TutPsTDQxIf0aC36QQPsOVdX11yZiaVEHpINdCE7Jc8YuW9pkNBdd5AWnhXzvopKysCRe1xGxgUEkfazYk+o4QP0a2K9NEtW5bMeLASV0SZYJEe1RrNvQeyExf53rkGaGjkQD9Ot4Lpxs+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tEBAfjUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9EDCEC2BBFC;
+	 In-Reply-To:To:Cc; b=TzjdxDYbkIrEm3BMVUQ/WEWX5GA2v2HJnrDWZ23HRshXH6PZSdhc5jEUM6vCrnj5pPzpdGpybtrO5xqJl0JsL6xrqOBMEnxb7fnn7PWv9XRIiWoJDLTTlCd/SHfS5GM78StkLnfBt7XomMwSt/lYyM/UkrrWX81SB88u1eu1FE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATad+G0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3526DC4AF0B;
 	Mon,  3 Jun 2024 01:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1717378229;
-	bh=iTVP8HFRpDspCzQtZtfOWLoHx1WUVU/xxp/iKDtWq/c=;
+	bh=c/gcQfCpVJnfZDVPUk0eXP87yX0ySWpMX5T4FZ+WwZQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=tEBAfjUtaZCd7VJLIHmu9knMz8gDVzlWrXUIfF4tmgU6XV7vOuaAPoqVG9WonQVpZ
-	 yE1ytMODwREqiuZYz6SiUKe4GrhtcRXO2MOo4xn8THO17PCWo3/kfs/ygNuPP0OxJx
-	 El9h1dz0rsFvXIXdYI5ftjAtqenktY5h4rsy0D56HA3ZlVQXr2J2ykiruyzoZ5zok2
-	 dYmY1rJWVmYE6FizqcTpyrLwDCxXZ9dFRjEebmPzOzMFKrQLW8V30ZPoyX5AC/zJRk
-	 bBXempPbLSl6SzBPbplwqIi7i8Q7rXtxVVAkGMYE1Dv8r1z5ghPSHi5gHWbJMYUkDp
-	 iHIBoBvtZK3rg==
+	b=ATad+G0nFuK3JK8yMD6dxCR6bNIVI5x7qf+2PTJx1TJtYHJpnsTdYy8ZBo9SuOseE
+	 e3lwxvbrCS+tGOc+AnD0bfkVxqeJnoDfu/+/o3qYpIoOb8P4+wOlsvyMqExIaoQLfq
+	 KtL9MKnNjyByRYICxqw/L2r9Y/lrZwixfgEhkdoilXWJHDBqWvP0MqKhwFjWOECuWc
+	 kFbvAeFcz6VINeOEOOXfChRFzAPXvPmMbr9q0ufsTvUQAu0egsowrQkI/VHaE/uPGu
+	 nU5QCIT2IoyddGxVjZc+/H1N0trMHG5XoLPHikYJl3Z+fI55NA3E8l1nwrWpDZ0Hpl
+	 vj13TC7zqhuAw==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 940AAD6191F;
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 24595D6191F;
 	Mon,  3 Jun 2024 01:30:29 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
@@ -55,7 +55,7 @@ Content-Transfer-Encoding: 8bit
 Subject: Re: [PATCH v4 0/3] ChromeOS Embedded controller hwmon driver
 From: patchwork-bot+chrome-platform@kernel.org
 Message-Id: 
- <171737822960.30104.5438801510343944646.git-patchwork-notify@kernel.org>
+ <171737822914.30104.2468762695672180347.git-patchwork-notify@kernel.org>
 Date: Mon, 03 Jun 2024 01:30:29 +0000
 References: <20240529-cros_ec-hwmon-v4-0-5cdf0c5db50a@weissschuh.net>
 In-Reply-To: <20240529-cros_ec-hwmon-v4-0-5cdf0c5db50a@weissschuh.net>
@@ -69,7 +69,7 @@ Cc: jdelvare@suse.com, linux@roeck-us.net, bleung@chromium.org,
 
 Hello:
 
-This series was applied to chrome-platform/linux.git (for-next)
+This series was applied to chrome-platform/linux.git (for-kernelci)
 by Tzung-Bi Shih <tzungbi@kernel.org>:
 
 On Wed, 29 May 2024 08:27:10 +0200 you wrote:
