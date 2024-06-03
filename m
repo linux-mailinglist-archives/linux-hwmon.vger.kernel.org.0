@@ -1,244 +1,160 @@
-Return-Path: <linux-hwmon+bounces-2435-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2437-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F32C8D8003
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 12:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D57F68D8060
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 12:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01E41B24FCF
-	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 10:31:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29CEDB256E5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  3 Jun 2024 10:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEF882C6B;
-	Mon,  3 Jun 2024 10:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3A384D09;
+	Mon,  3 Jun 2024 10:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="Cr9Nt6Pe"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="UDt72DqO"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01olkn2105.outbound.protection.outlook.com [40.92.52.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888945A4FD
-	for <linux-hwmon@vger.kernel.org>; Mon,  3 Jun 2024 10:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717410688; cv=none; b=AAv0ig5DHf4u9cnUzyHFZsb9x2WA0C/+jVSE6GfslBfFAxj3e7NHGl2ULK3AOeoV9gYm+pb2cOCyfhXgX71I6lirgQz4LCprXQVjhzR+Qa/XTsDieAF3fhHa2L74lPbZr6IDHzo8tUmagp8ipOwL6HUIw8iZOeuWW4buGkJRnUU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717410688; c=relaxed/simple;
-	bh=jschtwg1oUPywVWq3uuJVgwTsrIfn7Hnd/x/JMZnxxw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4urSGhCEn5kDrEBWGc6VfCqpZjR/Rw/oK219CZoZuEz9DRgz/ROjxEel7CzMm+fnhpGAMikYeyzduL351jDQFX1p4bKOGK0EQiwAfbLwW3KOzvifZL//1EFyV6Lqi5nX9rTB+viKrEbiSScrQAKGOuSXaoIxwtiLbnahKX59Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=Cr9Nt6Pe; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42108856c33so24140845e9.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 03 Jun 2024 03:31:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1717410684; x=1718015484; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TdKJy8/Q1hhiwzSia9kCnDlHx7ANWWXeJd2ZmaVjc7Q=;
-        b=Cr9Nt6PeOIvwJN2KYHl/fKdQ/+xisRjr/enl6A71+9yf3192KWs6UpN0AU6QjAxxUv
-         fPYHv+QQjs82TEg3/+ni2PoezXbBdQEGFhgRElNbNyMfYvY1QpfSPw2OnDHpjMuq7oYp
-         27IZovI0Ok2n2ZOzGfHljwmdhjvATjjyLF4g7fWOY/vOvvl7Mp1j+Or5dhmmk+PyvrW8
-         oZsVi2ogDojDBreFstGdfpt6e2UjtGaeLNN/tIBetRAVmgv2z/GEcK3q149pZu8l+bOW
-         61c+OI2JVOiMkpZZ2ko1rCDC0i3Z32K6xZAjQe1Q8YFTIg1NwfyO+ZiW4NQ37l2LDweB
-         AXEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717410684; x=1718015484;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TdKJy8/Q1hhiwzSia9kCnDlHx7ANWWXeJd2ZmaVjc7Q=;
-        b=NomHYJxD4PzeVYCg2nslFgPJVilCmqfXRcKs8hba+Jru9JEdo2lzy5XdfuceZHvuhH
-         ZdM6AMWAvMSAx8yMwi1+j03JDFhlhZ6GOQhRx0rFBEp/Bwq7u82vWpSMPEyZn4KiCuXI
-         /CFw+CIahwG+LgKaMa+XKrENXVqwmFLSPdpOBH4Hi+fLIbPmv4/73mmqMrwwvnBQ1lAk
-         eLIe1sRwxrBNU1ta1u7min+B8uLDtozRM1s8xJAYS/0aR/uYjqkswziCKvydwOMSOLqk
-         IZZ/7+waap6uer0cHlNay1B9BinzuMI03BuEsA0gO7oI6WdrdXOBP5ZnsDLrNKhlg5H1
-         UA5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWJVsQGgozDDUdnwLgpENWhjmiWbMsaSLQBEyf9q/YpxbdEgpFDdMnjN/TE1EIUsLUk/cVcaoUguyFy8NLPq5a490THF59zpcZgu38=
-X-Gm-Message-State: AOJu0YzPkU9YrfCVMr3FqnDuKQlwBis9gdRajG/qc0HVPSAOf2oM2FtY
-	xCrAs2X3nFFb08mScIhbyuz3XETWf+LOPrXoWkT/2LP39tL8byI+5pewCNUwKNA=
-X-Google-Smtp-Source: AGHT+IGj3jtcWp3TZCEN6P22PHIyTYpsnId9SpPI58C6BWA+HuWeruCqNwtCYr7o9BTbk3VSktdaIg==
-X-Received: by 2002:a05:600c:1907:b0:421:20df:c6d7 with SMTP id 5b1f17b1804b1-4212dd3247fmr82903575e9.4.1717410684075;
-        Mon, 03 Jun 2024 03:31:24 -0700 (PDT)
-Received: from stroh80.lab.9e.network (ip-078-094-000-050.um19.pools.vodafone-ip.de. [78.94.0.50])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4213bfce44fsm40051505e9.16.2024.06.03.03.31.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 03:31:23 -0700 (PDT)
-From: Naresh Solanki <naresh.solanki@9elements.com>
-To: Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Cc: Naresh Solanki <naresh.solanki@9elements.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C01684A52;
+	Mon,  3 Jun 2024 10:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.52.105
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717412019; cv=fail; b=YsW7ds5jFytTbKZbPfbOrYV8ULG0YiiISMxOPZVds9KZUxRI/mKU0vDx4Nubt09QMkZxVAM9Pxym1hXoF2YEoC/wr4YNFm7I9sPyuZnkHaxpvA9fe6TZWuUOi+6N5+jnaYb4gJbI+fKEviLhRTU4z7PZ6JGHQUDggdP78O5NO6E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717412019; c=relaxed/simple;
+	bh=gKAQy4eyQToSJVkahniDel+kP5XuF7Cg1aVdVSWs3Dk=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=M87KdKpsbsWktLdJh6hWLocPJ8ct/1NS2CbRWquJY+H3A7gw9ZdC0rTOq3VVJb7Xp0tIH5HaeegFgxqLudFPL1wtm1RAJY7YEjlEP2Q39Gsj2WZ0h5NQOucyCukrsl8yoaUx72m++X67/ug5wC1RYR7BGQ7LfeFTZ8+rzKW3/wk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=UDt72DqO; arc=fail smtp.client-ip=40.92.52.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jb8GBbuZbmwq/4P2Vhrh2I5aWtpkloJK3VOp+MMs97V3QJi8TD9uKQY6dvu10frtbmwIJOwUKPTwxqtB9xk/CkdjTkrjy7Bc6k+wNqTE+M1F7HFR5DZzjZZSaCv2hD1plnn8WTAxapQn4eG+SWpx4eC6Q4BLIj+dHLEWmyJCiWSEELdZxESMLBw47cbsRvi5+YAYtDnvmrCehgU2pbWlMnuCOmziWRpvgWsR1DbYCUvOju5pqCFpg8cSKKbxP7B8t71YlSqLnn5b0ddEkfEjTbSYEWsnaMCYKtLjm9qItRi9nTWqat36vWNROYTmF3i/2KjWzBFNueoC7FoGOeW6Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EJ8Ro3dufx/9Dpeqm4zoVoQIl2AUK+MN/JAXgu9+2iQ=;
+ b=AWe7yjySs0/ecSQfsEwVrH9DUUOb/pYhnGW13c8G0njp8mx8eOYk3sASkS88aoquMMz0Oc1T+QTDgRSkyt65h0GY7eTPTzvoGlTERymuuK8PP+iBvqaKnkpHLUI0uVJFDm34YceGrice7LzObAiI8Ifx6YCXXv+ZDTub+kkuXZIXFrHNJ4C0svxI4YYYAA40IBM9JbzPIWNjUSrl95AxmgiNQ8qP1VU7IarXsjW8qn/EsmNsUJEjnYhYOopoQAE4S2UomCmLMakvkSk7JUhNJSbkyWyPqsjzrWOWL6b/Xx5aJ1KrHrdgkUwnr4dx74c4kDPvN5ULxdt30ARxc1GwGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EJ8Ro3dufx/9Dpeqm4zoVoQIl2AUK+MN/JAXgu9+2iQ=;
+ b=UDt72DqODIGWRfokEQIagep3T0BDoqUVv0dHgzmI3UV8UrjfGWgxjKyr9GYiHpXFPEw24q7khWVDFYCLYWX3RLsItgwWqvdtmK4P21iU8DROj+q2U3NX7nplpxn8GlzZeqz9vAcMYIsLUCCHlCMczea9bra07GDjAwsxT7pgTcpnObPYryNfq22+YhkZyvbohp9BjRWveBv4uloJHMamYRGSa0rZW1h4+rK1NdhnMImW6qBIw9JzOrfwFedTmmgj4qbCfXemsnW8ftu3+a/RDD7UIk4ckSZ6ZUIufUIY69dHCaBv+WlHF36JHBo+VqJbr0qOxjerBZjLa0qW8pLDmA==
+Received: from KL1PR0401MB6491.apcprd04.prod.outlook.com
+ (2603:1096:820:b9::14) by TYSPR04MB7967.apcprd04.prod.outlook.com
+ (2603:1096:405:88::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.25; Mon, 3 Jun
+ 2024 10:53:31 +0000
+Received: from KL1PR0401MB6491.apcprd04.prod.outlook.com
+ ([fe80::d4b1:6b60:841e:2190]) by KL1PR0401MB6491.apcprd04.prod.outlook.com
+ ([fe80::d4b1:6b60:841e:2190%5]) with mapi id 15.20.7611.025; Mon, 3 Jun 2024
+ 10:53:30 +0000
+From: Noah Wang <noahwang.wang@outlook.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	linux@roeck-us.net,
+	conor+dt@kernel.org,
+	jdelvare@suse.com
+Cc: corbet@lwn.net,
+	Delphine_CC_Chiu@Wiwynn.com,
+	peteryin.openbmc@gmail.com,
+	javier.carrasco.cruz@gmail.com,
+	patrick.rudolph@9elements.com,
+	luca.ceresoli@bootlin.com,
+	chou.cosmo@gmail.com,
+	bhelgaas@google.com,
+	lukas@wunner.de,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] hwmon: (max6639) : Add hwmon attributes for fan and pwm
-Date: Mon,  3 Jun 2024 16:01:10 +0530
-Message-ID: <20240603103114.3263060-2-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240603103114.3263060-1-naresh.solanki@9elements.com>
-References: <20240603103114.3263060-1-naresh.solanki@9elements.com>
+	linux-doc@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	Noah Wang <noahwang.wang@outlook.com>
+Subject: [v4,0/2] hwmon: Add support for MPS mp2891 chip
+Date: Mon,  3 Jun 2024 18:53:04 +0800
+Message-ID:
+ <KL1PR0401MB649116238A245597849D9269FAFF2@KL1PR0401MB6491.apcprd04.prod.outlook.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [FL7V6KzVqSvl31S5/eMOd6FvxmabfdnU]
+X-ClientProxiedBy: TYXPR01CA0044.jpnprd01.prod.outlook.com
+ (2603:1096:403:a::14) To KL1PR0401MB6491.apcprd04.prod.outlook.com
+ (2603:1096:820:b9::14)
+X-Microsoft-Original-Message-ID:
+ <20240603105306.180874-1-noahwang.wang@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR0401MB6491:EE_|TYSPR04MB7967:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8bc112f-cde4-4841-4714-08dc83bb672f
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199019|3412199016|440099019|1710799017;
+X-Microsoft-Antispam-Message-Info:
+	aA7uRGlvubx/EqfzQpGABIYiPT2CZIWJdnxkwrtUP46jNgccIFC3HOYxbLAxb3YXHP4BYAZXY3RyGz7IOwlNaLTSfjxFoaI4QQsrAuUUVAJEyybu1bEx3FV4poBsFtO5k/YGR//w9BgPdxBbNZQTQPbBKdKnrNlnizkPULn/4Jn/d6s2H0C1olvxbr0Xm2tcPb7YZ2ZoQVqCQeZY0/3+1yF+ZxmecehV2GI21iY+KI9pLDG7cLtO/EFg83NTitfY3eSZJvptUyGGU6u4gRp39VZVNONvJJ3ifx9gIosBnxwZUVx61zovUeWJNjr9M3XjP4fo3UeD3Qbt/BxiCi0MOWTz96HbiLSX+xAKg9N1wKBM4/l7zrb1SybvtNUNP4fevsWBZyIjhj+G5tkINFciRlFSnCEL4Iaakzq0wxqnUjvh7TcdTY2jE/vOkvjU2j2DjBC8Yevck1WfLzvHpsVltNK90J7ATbJfRiIKKM6CQuqtRiFHcbfnPGjG3nKEwAaZWDHDiX0KR6nTHDVmcQg7NLA5qJFmmEorWPO4PPKJEeCBdaglzxqNJ/aYSWCT+11Y1BM6zhwzxNFIUfd+VrTuayRbYVoo+uSd44xp37seMERiw6xRCwkHJjS92SuYhhjz
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jscMfqrdsJ4UzLB2Yc39b9rojisGNF2TP7HbZ9xd5AReWj/Ongf1BpPm0nMB?=
+ =?us-ascii?Q?hkRY1su/iRFeO+qVJeRfQwhh3TAFTCcPAHcpEe/RSO/TL6OCEgSo6UikDA4m?=
+ =?us-ascii?Q?rSFLPsxYN7MY8khVSymtMFOOOKPbuY0P4aCYwv94aAiFyQUCaCHBXbWsHA7x?=
+ =?us-ascii?Q?2o88EPJDgN7yBpQUdvVv8dKvbAaydNk9+QggwxNbhlBag8F+lsdTNChdEzY8?=
+ =?us-ascii?Q?0M2jUXmYUvPxgOcR0cLlPLGdRpYd06drNCey4HFwaKQkmrE3NbP8hFVeghCp?=
+ =?us-ascii?Q?OQbWgK48epedZPMsjJWt2cYV2p0f0wJLHDvHSjf0Rg2faWAvfw96M9Q6TPwI?=
+ =?us-ascii?Q?+ktWTqT5r+TmE800YpS4YEuSUpB7DJVVFXA/a/x9qIyqNJ1d7WPA2rJeKZg4?=
+ =?us-ascii?Q?CpiuZJEnXG7gsA8Ru0kUPV8SU6eRvkAFLwTTlJ1RNB25cm7jRVho82QCD8pu?=
+ =?us-ascii?Q?7nZJ0bJfPkwTYrgJ5tGDHQwWG59vo3yuloNJhg/iO9VU+v3KKn8b282mclC2?=
+ =?us-ascii?Q?GcIt/sAZw4azPvhMOn30yZeWydqPgro6DecL8tBm53NoofxicYXgCy3oifYz?=
+ =?us-ascii?Q?Ndd/8IUj8/+rKgkSe+1aIAPGNJKdozCd4F5geW6fEhlxNTVn7Nlj9Kkk1ctf?=
+ =?us-ascii?Q?YBLGXV7Rcv3TR2+5F90gMzXtlwJwMpzg9qt+/GwpN+SY2NHNxDVVSyS8UH3u?=
+ =?us-ascii?Q?elg+Jh/LufSr2mr0GP0MvKkEOeWA0Fc/M6vXsbdGPbIrD6baT0uALiR9on9i?=
+ =?us-ascii?Q?mnyvl9JiYEV3bKGlE6Kd9owIMg3Ny9PYItUALz6IbZm9GPdL6/WkYVqBsqDG?=
+ =?us-ascii?Q?pXbPhjqQLY9Zi6hNUxNp0uPs/HGLSHCaz6Rh7KtJuy5wxc2yow4spqSvG2B4?=
+ =?us-ascii?Q?+c22MxE4H1/oCSq/dzunoHKhI/gMSrMyzAZlkmJfDPGb+dAxRz5gGrXG8z3E?=
+ =?us-ascii?Q?dJtJnPIDBqd4/AzCpeGLbQHF8YxHLe5a4fuhWGIqWQdHL0QGssD/Jk3j/NhR?=
+ =?us-ascii?Q?YYvqAL0OxeV+3XfE6e3yVHznDwxeqbtRrgdWMEs58bo/VJYx1OX9aGCCQLly?=
+ =?us-ascii?Q?jqtwuxd6HFMtxuytwQWXJpDN7Rvy+XcXaocYasecCAw8vibjuGQcY4STCebQ?=
+ =?us-ascii?Q?1NdgJF6gBf1hWEM1fsLu6+jKZBKJlm5+TSIqxdWBofQZr8CtFf0t4WhFLMXM?=
+ =?us-ascii?Q?xPi1Z2PesaBfcddje+GTejeDUNBv88vINQ8w+QD3GUMP7MkK6wZiEzqdWcEl?=
+ =?us-ascii?Q?WAbsFRP4NrTwFSu3zaNX?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8bc112f-cde4-4841-4714-08dc83bb672f
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR0401MB6491.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2024 10:53:30.0777
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR04MB7967
 
-Add attribute for fan & pwm i.e.,
-fanY_pulse
-pwmY_freq
+Add mp2891 driver in hwmon and add dt-bindings for it.
 
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
----
- drivers/hwmon/max6639.c | 74 ++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 70 insertions(+), 4 deletions(-)
+Noah Wang (2):
+  dt-bindings: hwmon: Add MPS mp2891
+  hwmon: add MP2891 driver
 
-diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
-index 7fa41442165e..ea412dd44f8b 100644
---- a/drivers/hwmon/max6639.c
-+++ b/drivers/hwmon/max6639.c
-@@ -234,6 +234,9 @@ static int max6639_read_fan(struct device *dev, u32 attr, int channel,
- 			return res;
- 		*fan_val = !!(val & BIT(1 - channel));
- 		return 0;
-+	case hwmon_fan_pulses:
-+		*fan_val = data->ppr[channel];
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -245,6 +248,32 @@ static int max6639_set_ppr(struct max6639_data *data, int channel, u8 ppr)
- 	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), ppr-- << 6);
- }
- 
-+static int max6639_write_fan(struct device *dev, u32 attr, int channel,
-+			     long val)
-+{
-+	struct max6639_data *data = dev_get_drvdata(dev);
-+	int err;
-+
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
-+	switch (attr) {
-+	case hwmon_fan_pulses:
-+		if (val <= 0 || val > 5)
-+			return -EINVAL;
-+
-+		/* Set Fan pulse per revolution */
-+		err = max6639_set_ppr(data, channel, val);
-+		if (err < 0)
-+			return err;
-+
-+		data->ppr[channel] = val;
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static umode_t max6639_fan_is_visible(const void *_data, u32 attr, int channel)
- {
- 	struct max6639_data *data = (struct max6639_data *)_data;
-@@ -268,6 +297,7 @@ static int max6639_read_pwm(struct device *dev, u32 attr, int channel,
- {
- 	struct max6639_data *data = dev_get_drvdata(dev);
- 	unsigned int val, res;
-+	u8 i;
- 
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
-@@ -279,6 +309,21 @@ static int max6639_read_pwm(struct device *dev, u32 attr, int channel,
- 			return res;
- 		*pwm_val = val * 255 / 120;
- 		return 0;
-+	case hwmon_pwm_freq:
-+		res = regmap_read(data->regmap, MAX6639_REG_FAN_CONFIG3(channel), &val);
-+		if (res < 0)
-+			return res;
-+		i = val & MAX6639_FAN_CONFIG3_FREQ_MASK;
-+
-+		res = regmap_read(data->regmap, MAX6639_REG_GCONFIG, &val);
-+		if (res < 0)
-+			return res;
-+
-+		if (val & MAX6639_GCONFIG_PWM_FREQ_HI)
-+			i |= 0x4;
-+		i &= 0x7;
-+		*pwm_val = freq_table[i];
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -289,6 +334,7 @@ static int max6639_write_pwm(struct device *dev, u32 attr, int channel,
- {
- 	struct max6639_data *data = dev_get_drvdata(dev);
- 	int err;
-+	u8 i;
- 
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
-@@ -299,6 +345,23 @@ static int max6639_write_pwm(struct device *dev, u32 attr, int channel,
- 		err = regmap_write(data->regmap, MAX6639_REG_TARGTDUTY(channel),
- 				   val * 120 / 255);
- 		return err;
-+	case hwmon_pwm_freq:
-+		val = clamp_val(val, 0, 25000);
-+
-+		i = find_closest(val, freq_table, ARRAY_SIZE(freq_table));
-+
-+		err = regmap_update_bits(data->regmap, MAX6639_REG_FAN_CONFIG3(channel),
-+					 MAX6639_FAN_CONFIG3_FREQ_MASK, i);
-+		if (err < 0)
-+			return err;
-+
-+		if (i >> 2)
-+			err = regmap_set_bits(data->regmap, MAX6639_REG_GCONFIG,
-+					      MAX6639_GCONFIG_PWM_FREQ_HI);
-+		else
-+			err = regmap_clear_bits(data->regmap, MAX6639_REG_GCONFIG,
-+						MAX6639_GCONFIG_PWM_FREQ_HI);
-+		return err;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -308,6 +371,7 @@ static umode_t max6639_pwm_is_visible(const void *_data, u32 attr, int channel)
- {
- 	switch (attr) {
- 	case hwmon_pwm_input:
-+	case hwmon_pwm_freq:
- 		return 0644;
- 	default:
- 		return 0;
-@@ -413,6 +477,8 @@ static int max6639_write(struct device *dev, enum hwmon_sensor_types type,
- 			 u32 attr, int channel, long val)
- {
- 	switch (type) {
-+	case hwmon_fan:
-+		return max6639_write_fan(dev, attr, channel, val);
- 	case hwmon_pwm:
- 		return max6639_write_pwm(dev, attr, channel, val);
- 	case hwmon_temp:
-@@ -440,11 +506,11 @@ static umode_t max6639_is_visible(const void *data,
- 
- static const struct hwmon_channel_info * const max6639_info[] = {
- 	HWMON_CHANNEL_INFO(fan,
--			   HWMON_F_INPUT | HWMON_F_FAULT,
--			   HWMON_F_INPUT | HWMON_F_FAULT),
-+			   HWMON_F_INPUT | HWMON_F_FAULT | HWMON_F_PULSES,
-+			   HWMON_F_INPUT | HWMON_F_FAULT | HWMON_F_PULSES),
- 	HWMON_CHANNEL_INFO(pwm,
--			   HWMON_PWM_INPUT,
--			   HWMON_PWM_INPUT),
-+			   HWMON_PWM_INPUT | HWMON_PWM_FREQ,
-+			   HWMON_PWM_INPUT | HWMON_PWM_FREQ),
- 	HWMON_CHANNEL_INFO(temp,
- 			   HWMON_T_INPUT | HWMON_T_FAULT | HWMON_T_MAX | HWMON_T_MAX_ALARM |
- 			   HWMON_T_CRIT | HWMON_T_CRIT_ALARM | HWMON_T_EMERGENCY |
+ .../devicetree/bindings/trivial-devices.yaml  |   2 +
+ Documentation/hwmon/index.rst                 |   1 +
+ Documentation/hwmon/mp2891.rst                | 179 ++++++
+ MAINTAINERS                                   |   7 +
+ drivers/hwmon/pmbus/Kconfig                   |   9 +
+ drivers/hwmon/pmbus/Makefile                  |   1 +
+ drivers/hwmon/pmbus/mp2891.c                  | 603 ++++++++++++++++++
+ 7 files changed, 802 insertions(+)
+ create mode 100644 Documentation/hwmon/mp2891.rst
+ create mode 100644 drivers/hwmon/pmbus/mp2891.c
+
 -- 
-2.42.0
+2.25.1
 
 
