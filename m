@@ -1,83 +1,81 @@
-Return-Path: <linux-hwmon+bounces-2676-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-2678-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E9B90836D
-	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jun 2024 07:55:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39937908C40
+	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jun 2024 15:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01824283821
-	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jun 2024 05:55:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E3A8B228B4
+	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Jun 2024 13:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A01B147C82;
-	Fri, 14 Jun 2024 05:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E5D199EB9;
+	Fri, 14 Jun 2024 13:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b="BBu7Aado"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xmr5l/oX"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CAF145B34
-	for <linux-hwmon@vger.kernel.org>; Fri, 14 Jun 2024 05:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927EA26ACA;
+	Fri, 14 Jun 2024 13:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718344545; cv=none; b=cuABqgr2VWIx+Qe9IEet1roHwzYL7OGXSiDuAbiHXL1F4J0VbaDi3vXRzlM0UTrUmoAAFJgAmsPsi+4h4KjjIb8+N8fGFCI7xfovc+dVgwavALsQ1Es5eAWvRHDrpMrlvo13sqYdYm8b171bZz9IP5zL01TYNOcIxHc0Fa9A2RY=
+	t=1718370507; cv=none; b=PAomQ9/Gz5p3qT5caj91gDXCPnmwHKcdZMdE7G+QHZlswZPC06KijMw8lTle8iv7mNC7R0e6SAO9GfaJcJYts/6w9EUa4EFQbltPu7YSUAwvi6o3aU17ZVIBer0AHaA6BCkOOofQcN/EwYnSVb2B8ifAkxhXoDJYVTrnTiu2TUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718344545; c=relaxed/simple;
-	bh=Pa6jI99d+sC+RqKa/RilQaFsQvQoyIuPVKJo4RrDMVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ip7K49/dTCdk79Bkr8KRCaUo7byf/Hl9jSQRJkS58Fo0egZfjJTw0rga8tqDUeFzfRoCFGo2x/+GMyjhdz8TV/HZQ6x+5/+2BkoIRrzPFMSSzHWdjS30To2QR8upaRaGZmp/8EQR+xPZ0btpF0YDuFU/lDgM5lewk3wyH9h51xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com; spf=pass smtp.mailfrom=9elements.com; dkim=pass (2048-bit key) header.d=9elements.com header.i=@9elements.com header.b=BBu7Aado; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=9elements.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=9elements.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42172ed3487so14688125e9.0
-        for <linux-hwmon@vger.kernel.org>; Thu, 13 Jun 2024 22:55:42 -0700 (PDT)
+	s=arc-20240116; t=1718370507; c=relaxed/simple;
+	bh=t3xhUUAwCao5G4aVc1jzhrPvysAENUJFdWQNZrkQEnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bGN7GsHiOcGuJNb8gy3aNcxsB9fEj1yXRLuoq4FFpJEPG2b9iy8Qjk7rhI9DRR0WH24npUmLXIJubnyThM4JNuOR5JGsULfgXLz7onms5ooVoERWz3aQ5I8P2Vn5RwJazex/5BEKdpZSwFHx2s6xlUPkmpc9ZlQuBeIRXQUaquQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xmr5l/oX; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-6bce380eb9bso1288452a12.0;
+        Fri, 14 Jun 2024 06:08:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1718344541; x=1718949341; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=atieE0lcxb/9U93M0barRDrZi7dMCPkgBP2Rd6ay3bE=;
-        b=BBu7AadoYh2kXZHZfnre/B4XRO9Kcg4c3TJQIcSp8JLrw4XKAUyKEpYBi0zQfnDe8R
-         XTWZDKmC/n5xhq7ku63JZv2p1AmylvM8cox+HtgBooVEa9Dgd1vqGACQHjG3hjR2GYtF
-         K8OaV7NV1n3vnFyemP69eg6kfA1OyIcxuBfQveLl+SHduIwBeq4iFslsBD6Ob3E+QM2L
-         vCZOQ7q1Hhpo1QutwUZoPmuGc4iXmM5ci4gPEELSKJ8c0KPuvG0onqbLVasJzyncvTGH
-         bEFyk7+TD6OruIG94lgQDaUk8hojrIIeoN2m8cWd6Ga2nFTgyb4272iR458i4aVKFmF6
-         TOeQ==
+        d=gmail.com; s=20230601; t=1718370505; x=1718975305; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZNM2KHSPHrZv0rqrC428DTKu5CzRUqPsIONnWWtEu/U=;
+        b=Xmr5l/oXr2F2Kvh93o0fmBxWptWeaQqRy/Nz7yPBguoc9EA9mZFSaJfgmi4Ui3blA1
+         QR48ZceRtYOE2pr4Vv1HQNWgTEeIeV+UAjGxiEwDKNA5L6APcSPSK2xQ3KIwpP7vC2Aq
+         /tmHW6QdmSrpicC0zfJN6t3pPvUNTxxXmtiutqa25RF9zYDMTsvCxa5bs3BSbZGUyfm/
+         +T0SwfzmrDgbeadnzEDu2JaqF7Fs3AwbBnPS5rFFwpQRLo1AfQaBxGY73y4zdtiZTtOB
+         C+QyS51N3Q/Ey2dbMEvH/VGIHF0RDa7tlXDIj0lVhK889Bi7BLl0T0sKH2vrZhKWcfu+
+         WDAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718344541; x=1718949341;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1718370505; x=1718975305;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=atieE0lcxb/9U93M0barRDrZi7dMCPkgBP2Rd6ay3bE=;
-        b=fdPTTKYTTPTZeJKEdpzYQE1MqAJxQE6JLaFnaGTS8xDI6MyLB8nwYr74K72fIJQacL
-         hINRCuDOx39szE4utgOEv/e54QIB7OmvkZs8G8CynEmY2AC+Jpmu8N73CmMLDJx/QYZ4
-         1HAYK6KMsiv7NxCQQzarVWi1fOKNq+fdK+8xEgQBFgImzpzQl06Uo480e754cQ/YG666
-         PUpC/tUGxENlKzLau1QA1DTYsqRSREtMNjeWy2VRUJKtSsXDc5Wse6lFjy0R0EJdyffu
-         ehvW1GWBcmpnluJq727ktyMyPMhgMQH0Uaz9UDSV38JKAEwWS1tce0+jpjrInp1pD4JX
-         u4tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+Uxjf3m/isUiuNCYS8V8fr2So6jxTMje6L0QnyQVB3+JMRP7J/tGI2NVx6YlRsJ41/UB8krGGizF7O2iHBMbNPWg2450i4NY2A3I=
-X-Gm-Message-State: AOJu0Yyq6qbnukYDIfrkVzmAOB2l84/CaQzsala8HLjuikC8Cp2lALbi
-	GkpjJdG4Z8VtCFDaWsLrllZm/V4kUstHTidRzVsUWKI68vWW0MGoinAhVmoOjy8=
-X-Google-Smtp-Source: AGHT+IHRj4bq/LBSzth+tkBe/3uo7sudhZhCr/LdWnF6gTghRo1IW7OIjDzA2oKro9sLg4cY2HguzA==
-X-Received: by 2002:a05:600c:3516:b0:421:de31:8b with SMTP id 5b1f17b1804b1-423048440d8mr15042905e9.27.1718344541629;
-        Thu, 13 Jun 2024 22:55:41 -0700 (PDT)
-Received: from stroh80.lab.9e.network (ip-078-094-000-050.um19.pools.vodafone-ip.de. [78.94.0.50])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-423072c21dbsm5190605e9.4.2024.06.13.22.55.40
+        bh=ZNM2KHSPHrZv0rqrC428DTKu5CzRUqPsIONnWWtEu/U=;
+        b=euO/yLI73e4bCH9Za0hurjW6fR74VO/U1UK2jb12skXY/aH7+Trw4r7HY99sh3H9/2
+         i0Qx6kpmKOwHFefBOxqLtBBWDOdm7XW6CJ1bkZOEmV8vM/ZzfZrWxRkontxp9cTdMhkD
+         5JaMBRY8FjkmTFacwDZYyk9Cpx0DuFK7xoRxN1YZR+CDhQJgTuHagqk6RNOpThWhe7+r
+         /OBiKgPv8Uqc06ZBXsQVimXZQQX8o8RxAum95Z8qNcAnKRk3KFDklMVlI030OQES3grv
+         yvo4RdU72fQ1D85LXB5VXtpB0eWYCczT9YDM6vlB5RhSY1W2eDfpmaYrfnNiy2sXLBH4
+         JmnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+B/FUnkF8H8stEp9lwihlMB9Gw84SuxjYbQcIBuXowVpX/dRBMWkQMdD8qb4e3YJjZZPKgxNnnHyQhaFAGgogLj+2/hSogHldt3F6VoAZD7wqcNzL6eGZ0iS8E7knuf7c8DnJnpTGRfk=
+X-Gm-Message-State: AOJu0Yz0Hoqy5hezv+okFvAndGazxmb33ni8R5L5m6888KGlLK3CxFrV
+	UiMH2mHlXMuLDXUYbMz1sFfrLK+rML7cGd0mOvulipbOmgDHR1YB
+X-Google-Smtp-Source: AGHT+IFGG4IyXXqa6zyUtivb6vcFgZtJ/33V4QOuxQ5yb5USvZK7qpPWNOzs6HK8SBxmFYDL7Iwm/Q==
+X-Received: by 2002:a17:90b:705:b0:2bd:d42a:e071 with SMTP id 98e67ed59e1d1-2c4db951d76mr2408414a91.30.1718370504403;
+        Fri, 14 Jun 2024 06:08:24 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c4a76a9a42sm6084845a91.49.2024.06.14.06.08.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 22:55:41 -0700 (PDT)
-From: Naresh Solanki <naresh.solanki@9elements.com>
-To: Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Cc: Naresh Solanki <naresh.solanki@9elements.com>,
-	linux-hwmon@vger.kernel.org,
+        Fri, 14 Jun 2024 06:08:23 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Fri, 14 Jun 2024 06:08:21 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Naresh Solanki <naresh.solanki@9elements.com>
+Cc: Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 2/2] hwmon: (max6639) : Add hwmon attributes for fan and pwm
-Date: Fri, 14 Jun 2024 11:25:31 +0530
-Message-ID: <20240614055533.2735210-2-naresh.solanki@9elements.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240614055533.2735210-1-naresh.solanki@9elements.com>
+Subject: Re: [PATCH v5 1/2] hwmon: (max6639) : Update hwmon init using info
+ structure
+Message-ID: <2b53fe36-ce84-4237-a53d-fae35bcde705@roeck-us.net>
 References: <20240614055533.2735210-1-naresh.solanki@9elements.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -85,195 +83,18 @@ List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240614055533.2735210-1-naresh.solanki@9elements.com>
 
-Add attribute for fan & pwm i.e.,
-fanY_pulse
-pwmY_freq
+On Fri, Jun 14, 2024 at 11:25:30AM +0530, Naresh Solanki wrote:
+> Update hwmon init with info instead of group. The hwmon info structure
+> in more flexible to describe sensor attribute & easy to maintian.
+> 
+> Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
 
-Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+Applied.
 
----
-Changes in V5:
-- Remove unnecessary IS_ERR check.
-- Add mutex
----
- drivers/hwmon/max6639.c | 90 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 86 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
-index 45ed629c6af9..091a4a0abd27 100644
---- a/drivers/hwmon/max6639.c
-+++ b/drivers/hwmon/max6639.c
-@@ -76,6 +76,7 @@ static const unsigned int freq_table[] = { 20, 33, 50, 100, 5000, 8333, 12500,
-  */
- struct max6639_data {
- 	struct regmap *regmap;
-+	struct mutex update_lock;
- 
- 	/* Register values initialized only once */
- 	u8 ppr[MAX6639_NUM_CHANNELS];	/* Pulses per rotation 0..3 for 1..4 ppr */
-@@ -232,6 +233,9 @@ static int max6639_read_fan(struct device *dev, u32 attr, int channel,
- 			return res;
- 		*fan_val = !!(val & BIT(1 - channel));
- 		return 0;
-+	case hwmon_fan_pulses:
-+		*fan_val = data->ppr[channel];
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -243,6 +247,33 @@ static int max6639_set_ppr(struct max6639_data *data, int channel, u8 ppr)
- 	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), ppr-- << 6);
- }
- 
-+static int max6639_write_fan(struct device *dev, u32 attr, int channel,
-+			     long val)
-+{
-+	struct max6639_data *data = dev_get_drvdata(dev);
-+	int err;
-+
-+	switch (attr) {
-+	case hwmon_fan_pulses:
-+		if (val <= 0 || val > 5)
-+			return -EINVAL;
-+
-+		mutex_lock(&data->update_lock);
-+		/* Set Fan pulse per revolution */
-+		err = max6639_set_ppr(data, channel, val);
-+		if (err < 0) {
-+			mutex_unlock(&data->update_lock);
-+			return err;
-+		}
-+		data->ppr[channel] = val;
-+
-+		mutex_unlock(&data->update_lock);
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static umode_t max6639_fan_is_visible(const void *_data, u32 attr, int channel)
- {
- 	switch (attr) {
-@@ -262,6 +293,7 @@ static int max6639_read_pwm(struct device *dev, u32 attr, int channel,
- 	struct max6639_data *data = dev_get_drvdata(dev);
- 	unsigned int val;
- 	int res;
-+	u8 i;
- 
- 	switch (attr) {
- 	case hwmon_pwm_input:
-@@ -270,6 +302,28 @@ static int max6639_read_pwm(struct device *dev, u32 attr, int channel,
- 			return res;
- 		*pwm_val = val * 255 / 120;
- 		return 0;
-+	case hwmon_pwm_freq:
-+		mutex_lock(&data->update_lock);
-+		res = regmap_read(data->regmap, MAX6639_REG_FAN_CONFIG3(channel), &val);
-+		if (res < 0) {
-+			mutex_unlock(&data->update_lock);
-+			return res;
-+		}
-+		i = val & MAX6639_FAN_CONFIG3_FREQ_MASK;
-+
-+		res = regmap_read(data->regmap, MAX6639_REG_GCONFIG, &val);
-+		if (res < 0) {
-+			mutex_unlock(&data->update_lock);
-+			return res;
-+		}
-+
-+		if (val & MAX6639_GCONFIG_PWM_FREQ_HI)
-+			i |= 0x4;
-+		i &= 0x7;
-+		*pwm_val = freq_table[i];
-+
-+		mutex_unlock(&data->update_lock);
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -280,6 +334,7 @@ static int max6639_write_pwm(struct device *dev, u32 attr, int channel,
- {
- 	struct max6639_data *data = dev_get_drvdata(dev);
- 	int err;
-+	u8 i;
- 
- 	switch (attr) {
- 	case hwmon_pwm_input:
-@@ -287,6 +342,28 @@ static int max6639_write_pwm(struct device *dev, u32 attr, int channel,
- 		err = regmap_write(data->regmap, MAX6639_REG_TARGTDUTY(channel),
- 				   val * 120 / 255);
- 		return err;
-+	case hwmon_pwm_freq:
-+		val = clamp_val(val, 0, 25000);
-+
-+		i = find_closest(val, freq_table, ARRAY_SIZE(freq_table));
-+
-+		mutex_lock(&data->update_lock);
-+		err = regmap_update_bits(data->regmap, MAX6639_REG_FAN_CONFIG3(channel),
-+					 MAX6639_FAN_CONFIG3_FREQ_MASK, i);
-+		if (err < 0) {
-+			mutex_unlock(&data->update_lock);
-+			return err;
-+		}
-+
-+		if (i >> 2)
-+			err = regmap_set_bits(data->regmap, MAX6639_REG_GCONFIG,
-+					      MAX6639_GCONFIG_PWM_FREQ_HI);
-+		else
-+			err = regmap_clear_bits(data->regmap, MAX6639_REG_GCONFIG,
-+						MAX6639_GCONFIG_PWM_FREQ_HI);
-+
-+		mutex_unlock(&data->update_lock);
-+		return err;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -296,6 +373,7 @@ static umode_t max6639_pwm_is_visible(const void *_data, u32 attr, int channel)
- {
- 	switch (attr) {
- 	case hwmon_pwm_input:
-+	case hwmon_pwm_freq:
- 		return 0644;
- 	default:
- 		return 0;
-@@ -401,6 +479,8 @@ static int max6639_write(struct device *dev, enum hwmon_sensor_types type,
- 			 u32 attr, int channel, long val)
- {
- 	switch (type) {
-+	case hwmon_fan:
-+		return max6639_write_fan(dev, attr, channel, val);
- 	case hwmon_pwm:
- 		return max6639_write_pwm(dev, attr, channel, val);
- 	case hwmon_temp:
-@@ -428,11 +508,11 @@ static umode_t max6639_is_visible(const void *data,
- 
- static const struct hwmon_channel_info * const max6639_info[] = {
- 	HWMON_CHANNEL_INFO(fan,
--			   HWMON_F_INPUT | HWMON_F_FAULT,
--			   HWMON_F_INPUT | HWMON_F_FAULT),
-+			   HWMON_F_INPUT | HWMON_F_FAULT | HWMON_F_PULSES,
-+			   HWMON_F_INPUT | HWMON_F_FAULT | HWMON_F_PULSES),
- 	HWMON_CHANNEL_INFO(pwm,
--			   HWMON_PWM_INPUT,
--			   HWMON_PWM_INPUT),
-+			   HWMON_PWM_INPUT | HWMON_PWM_FREQ,
-+			   HWMON_PWM_INPUT | HWMON_PWM_FREQ),
- 	HWMON_CHANNEL_INFO(temp,
- 			   HWMON_T_INPUT | HWMON_T_FAULT | HWMON_T_MAX | HWMON_T_MAX_ALARM |
- 			   HWMON_T_CRIT | HWMON_T_CRIT_ALARM | HWMON_T_EMERGENCY |
-@@ -643,6 +723,8 @@ static int max6639_probe(struct i2c_client *client)
- 		}
- 	}
- 
-+	mutex_init(&data->update_lock);
-+
- 	/* Initialize the max6639 chip */
- 	err = max6639_init_client(client, data);
- 	if (err < 0)
--- 
-2.42.0
-
+Thanks,
+Guenter
 
