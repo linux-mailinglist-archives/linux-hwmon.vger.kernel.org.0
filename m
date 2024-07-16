@@ -1,208 +1,124 @@
-Return-Path: <linux-hwmon+bounces-3107-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3109-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2F1932EBB
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 18:57:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AFA932EC5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 18:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D4E81C221DA
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 16:57:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E16B22F0B
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 16:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B2119EEB3;
-	Tue, 16 Jul 2024 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73FE19F48C;
+	Tue, 16 Jul 2024 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dHVbiVdq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxWJirFa"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E161E528
-	for <linux-hwmon@vger.kernel.org>; Tue, 16 Jul 2024 16:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51F417CA0E;
+	Tue, 16 Jul 2024 16:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721149034; cv=none; b=pWCH94ZGINxiQxfQRuGuAPsAiJpWEJWvwHNL0jSUFgY8LWCCiTmtRIpqQ0cP7n0ketG6ET657lvmuO3u5/d0yjYl7cmBkuh5GPTRNUsiNDDrkjHf3qMG7A2/iPgSrhQkl9z9+U8j3t4xstX2myHGctUwpsrARJvvdpGu3t4MDbY=
+	t=1721149103; cv=none; b=EMBC1mZg1S7XMWdx5oq/jNKfDrT6U4inaw/4rG1EU/nd+bGgm3Hy1l9NG5CSlDgubuWTGCA0UNnfIlE8S18qy+MoKYTPXgv4lKme63wZ8TzsecLi+iypjQYwkkG73BccyRRXLdrwJIZIcHXFdTs2RSTkFOtxGrKmW765XW1EGhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721149034; c=relaxed/simple;
-	bh=FTYLozzIDBa35YXReDeWMi9G1WCwjiMTE0Nja9t2vVI=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=PvZVJrEU+DrtBef74gZEg4SRSR1Io26kEwPKJGIXyrqhe/NYyZSfKUJXJ4nuTvkmclSrPcnl6PSDZfpB99FiIqVA18VBUo8su+n1ZaAgAzOQ5uSVaUiayBaFCGYASkMc8G8MYdN0sqnm29ZBT7iDrTOH3aS+BX+fbCl6M49n9Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dHVbiVdq; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721149033; x=1752685033;
-  h=date:from:to:cc:subject:message-id;
-  bh=FTYLozzIDBa35YXReDeWMi9G1WCwjiMTE0Nja9t2vVI=;
-  b=dHVbiVdq5Dh5u1qe/ZV+xmqx8J8j6GtfKy3Yc1zV6GDMQsotX4MmCdVZ
-   gr9mhlGLhtQSzqbDjmaMsrjUOVIGwazUemgCIkv1utIOH21iK9vENJSC5
-   N4ahbza+2e0TeCBvD4836nJXPmrOHUWiV4rzfPeXZgIrnOotoipkFO9Nz
-   t2fM24iWC7BJNlKoJ9CAEBfutqB2F4OlDMdkTQ/6QPWn7O36H7Lu+Owvr
-   T2JrTrNmkvtVf6kLghtS2f0qHpBazbkEAww4EwB+VeXVz8T9KMpm5YeZW
-   CP7Ju2BIyXcxEqWDGUEx5pj1zVwPBReoPFLLpPzVxR21HIxCwTqdtQOnP
-   w==;
-X-CSE-ConnectionGUID: hcISzMmwSLm9u4qGZabllg==
-X-CSE-MsgGUID: V1oCbaLERsCZXWZFPklnag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18451218"
-X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; 
-   d="scan'208";a="18451218"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 09:57:10 -0700
-X-CSE-ConnectionGUID: +ZD5Q0VGThKCF7wtV3PzUQ==
-X-CSE-MsgGUID: V9yIIw9cQmC/xtZq3IGZew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,212,1716274800"; 
-   d="scan'208";a="50004699"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 16 Jul 2024 09:57:08 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sTlUA-000fTG-1C;
-	Tue, 16 Jul 2024 16:57:06 +0000
-Date: Wed, 17 Jul 2024 00:56:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:testing] BUILD SUCCESS
- 5aea0981492ebc4dfb59b4eb7f2c092e2c48cf1b
-Message-ID: <202407170027.yJ0fxQHc-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1721149103; c=relaxed/simple;
+	bh=93hyIkgIDDXYRKPYLb1eE1CU46ivjzLvtL28cInJllk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XiYwevGEGoOh61mp8aEqv4IbagyMngHZ1tiFTGDBGyX8g1brTdM9j//fsMVEDvXPXz+BhGcMSb0NxFGbweUCoCE5rHrtU/U/gPunN8MeTdQNzQH6Z9Wk7fakNiQWLXXT1gKp6C1ofkCF8hQHlVrQyyTTbe9x9ArSvHW2+2/6k8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxWJirFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D34EC116B1;
+	Tue, 16 Jul 2024 16:58:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721149103;
+	bh=93hyIkgIDDXYRKPYLb1eE1CU46ivjzLvtL28cInJllk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=lxWJirFav0Eq40RtsN9hzLBQCZZrIOBKPcVV5Y5uahVnYboZRkkrhUxiaYqtd9XGC
+	 pKGYL6sVzEQ/+Qc2Bx6gbFKSsftSmBiW19wAztQBm4kXJHw0BrIxrxYdY1elhaC5tf
+	 ZfFPYATsKRhziK64l3x7Bup7Se2timhMjcs3u3uD4Rs/T+5HuTRsP5XMYEuhRGsKL1
+	 aUaW27RWN9MOscuo+JjLg7+dYVacMrWrzWl/N7KWF+lZqVEBCr0A6yhoD7S34rGO1e
+	 WWGjZhedcfhG3KzYgfKQ126pf/JI4MyZteznKIhuDRRqhwZRvG4tS4Py6GyAl3tnwn
+	 8oJ+O7O0LVGRg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35587C3DA59;
+	Tue, 16 Jul 2024 16:58:23 +0000 (UTC)
+From: Cryolitia PukNgae via B4 Relay <devnull+Cryolitia.gmail.com@kernel.org>
+Subject: [PATCH v2 0/2] hwmon: add GPD devices sensor driver
+Date: Wed, 17 Jul 2024 00:58:06 +0800
+Message-Id: <20240717-gpd_fan-v2-0-f7b7e6b9f21b@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJ6mlmYC/2XMSwrCMBSF4a2UOzaSV5vqyH1IkZBXL9imJBKUk
+ r0bO3X4Hw7fDtkldBmu3Q7JFcwY1xb81IGZ9RocQdsaOOWSKjaQsNmH1yvplRf0woUZRwntvSX
+ n8X1I96n1jPkV0+eAC/ut/0ZhhBIhac+sVUzT4RYWjc+ziQtMtdYvbXdH2p4AAAA=
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Cryolitia PukNgae <Cryolitia@gmail.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
+ =?utf-8?q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1150;
+ i=Cryolitia@gmail.com; h=from:subject:message-id;
+ bh=93hyIkgIDDXYRKPYLb1eE1CU46ivjzLvtL28cInJllk=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0did012TXdNRm9GeXRlOUtlcjd5N2phY
+ lVraHJScHkxWmZlTU9hdlVoTWc3TjNBZWVudTlON2lrNnFTT3hiClkyWndiaVhqckl6TFAxU2tP
+ aG1OV1JnWU9SaGt4UlJaU2t4ek5VOTlML0FRck9GUWd4bkV5Z1F5aFlHTFV3QW0KY2p1T2c2SHJ
+ wUGdOaTNWclEvelNFdFpaZW5PV3NiREpQZE9zbjZhZVhhSmJFcmNrNC9Udi9SbGErNExVdnJ5Yw
+ prS3NlYzBYK0UvL3JMbmNHeG4rSDh2OTV5THlUbUo3L3JmL0dua0JkUFYrSHF3SVQyeVFDS2lZM
+ nN4cDFmRnZwCjc4cTY0RTdoMzlmclBrKzQ2dEh3MDlOMmM1ZFoyNnhjc3hNYk93MFNxN3ozcHdU
+ dmZGTVpvM3RHU1REMTQrTkgKdFp5aWRzTHErU0tIMmU5SjdWN1Z5QlVhc0c5WDc5dDBxZC9UMjl
+ OQzVTWkdCS3haZGVwWjJWbVJHck5QOWZyNgpsV2V5dXFwMENsMkM5cGZ5emRuOXlQZkZSOE91M3
+ NOMy94OW01ZG44Ym83bjFjUGJOTmZPUzdmOWZZdXpUcGJKCnZjN3BucnpkdnZNNzZ0cDlhNmI4O
+ HVvSnlmajV4dUt5bWh5L2wzcDhVcFk0QUE9PQo9cDZFSAotLS0tLUVORCBQR1AgTUVTU0FHRS0t
+ LS0tCg==
+X-Developer-Key: i=Cryolitia@gmail.com; a=openpgp;
+ fpr=1C3C6547538D7152310C0EEA84DD0C0130A54DF7
+X-Endpoint-Received: by B4 Relay for Cryolitia@gmail.com/default with
+ auth_id=186
+X-Original-From: Cryolitia PukNgae <Cryolitia@gmail.com>
+Reply-To: Cryolitia@gmail.com
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git testing
-branch HEAD: 5aea0981492ebc4dfb59b4eb7f2c092e2c48cf1b  Merge branch 'kunit-improvements' into testing
+Sensors driver for GPD Handhelds that expose fan reading and control via
+hwmon sysfs.
 
-elapsed time: 828m
+Shenzhen GPD Technology Co., Ltd. manufactures a series of handheld
+devices. This driver implements these functions through x86 port-mapped IO.
+I have tested it on my device.
 
-configs tested: 115
-configs skipped: 2
+Tested-by: Marcin Strągowski <marcin@stragowski.com>
+Signed-off-by: Cryolitia PukNgae <Cryolitia@gmail.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+---
+Changes in v2:
+- Improved documentation, thanks to Randy Dunlap!
+- Link to v1: https://lore.kernel.org/r/20240716-gpd_fan-v1-0-34051dd71a06@gmail.com
 
-tested configs:
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                   randconfig-001-20240716   gcc-13.2.0
-arc                   randconfig-002-20240716   gcc-13.2.0
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-19
-arm                              allyesconfig   gcc-14.1.0
-arm                   randconfig-001-20240716   gcc-14.1.0
-arm                   randconfig-002-20240716   clang-19
-arm                   randconfig-003-20240716   gcc-14.1.0
-arm                   randconfig-004-20240716   gcc-14.1.0
-arm64                            allmodconfig   clang-19
-arm64                             allnoconfig   gcc-14.1.0
-arm64                 randconfig-001-20240716   gcc-14.1.0
-arm64                 randconfig-002-20240716   clang-19
-arm64                 randconfig-003-20240716   gcc-14.1.0
-arm64                 randconfig-004-20240716   gcc-14.1.0
-csky                              allnoconfig   gcc-14.1.0
-csky                  randconfig-001-20240716   gcc-14.1.0
-csky                  randconfig-002-20240716   gcc-14.1.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-hexagon               randconfig-001-20240716   clang-19
-hexagon               randconfig-002-20240716   clang-19
-i386                             allmodconfig   gcc-13
-i386                              allnoconfig   gcc-13
-i386                             allyesconfig   gcc-13
-i386         buildonly-randconfig-001-20240716   clang-18
-i386         buildonly-randconfig-002-20240716   clang-18
-i386         buildonly-randconfig-003-20240716   clang-18
-i386         buildonly-randconfig-004-20240716   clang-18
-i386         buildonly-randconfig-005-20240716   clang-18
-i386         buildonly-randconfig-006-20240716   clang-18
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240716   clang-18
-i386                  randconfig-002-20240716   clang-18
-i386                  randconfig-003-20240716   gcc-9
-i386                  randconfig-004-20240716   gcc-7
-i386                  randconfig-005-20240716   clang-18
-i386                  randconfig-006-20240716   gcc-9
-i386                  randconfig-011-20240716   gcc-8
-i386                  randconfig-012-20240716   clang-18
-i386                  randconfig-013-20240716   gcc-8
-i386                  randconfig-014-20240716   clang-18
-i386                  randconfig-015-20240716   clang-18
-i386                  randconfig-016-20240716   gcc-10
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch             randconfig-001-20240716   gcc-14.1.0
-loongarch             randconfig-002-20240716   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                 randconfig-001-20240716   gcc-14.1.0
-nios2                 randconfig-002-20240716   gcc-14.1.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240716   gcc-14.1.0
-parisc                randconfig-002-20240716   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   clang-19
-powerpc               randconfig-001-20240716   clang-19
-powerpc               randconfig-002-20240716   clang-19
-powerpc               randconfig-003-20240716   clang-19
-powerpc64             randconfig-001-20240716   clang-19
-powerpc64             randconfig-002-20240716   clang-19
-powerpc64             randconfig-003-20240716   gcc-14.1.0
-riscv                            allmodconfig   clang-19
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-19
-riscv                               defconfig   clang-19
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-19
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                             i386_defconfig   gcc-13
-um                           x86_64_defconfig   clang-15
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240716   gcc-13
-x86_64       buildonly-randconfig-002-20240716   clang-18
-x86_64       buildonly-randconfig-003-20240716   clang-18
-x86_64       buildonly-randconfig-004-20240716   clang-18
-x86_64       buildonly-randconfig-005-20240716   clang-18
-x86_64       buildonly-randconfig-006-20240716   clang-18
-x86_64                              defconfig   gcc-13
-x86_64                randconfig-001-20240716   gcc-13
-x86_64                randconfig-002-20240716   gcc-8
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
+---
+Cryolitia PukNgae (2):
+      hwmon: add GPD devices sensor driver
+      hwmon: document: add gpd-fan
 
+ Documentation/hwmon/gpd-fan.rst |  69 ++++
+ Documentation/hwmon/index.rst   |   1 +
+ MAINTAINERS                     |   7 +
+ drivers/hwmon/Kconfig           |  10 +
+ drivers/hwmon/Makefile          |   1 +
+ drivers/hwmon/gpd-fan.c         | 759 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 847 insertions(+)
+---
+base-commit: d67978318827d06f1c0fa4c31343a279e9df6fde
+change-id: 20240716-gpd_fan-57f30923c884
+
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cryolitia PukNgae <Cryolitia@gmail.com>
+
+
 
