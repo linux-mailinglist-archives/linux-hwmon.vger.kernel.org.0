@@ -1,202 +1,195 @@
-Return-Path: <linux-hwmon+bounces-3105-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3106-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206B59325E5
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 13:50:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F25932973
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 16:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D2911C20FF7
-	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 11:50:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C0E1283925
+	for <lists+linux-hwmon@lfdr.de>; Tue, 16 Jul 2024 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895D8199EA0;
-	Tue, 16 Jul 2024 11:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5355119DF6D;
+	Tue, 16 Jul 2024 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8JmIpLa"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AGc1LUQv"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBF2199E92;
-	Tue, 16 Jul 2024 11:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6314819DF77;
+	Tue, 16 Jul 2024 14:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721130600; cv=none; b=hkVOQ+IaKuyiR0nFoL9TLwaoIwwM/YqOJy21KpHKQP/kLYc3W2As/YaOiYy81SjujeVuSWlVOiyYVljyCv3nwBQKKXF9CTZXPt+6vxwTxs6yL4+PMM6eJsIX9NeRcaZFnP4+lQa5IOR8XOw2+ukLgfl3Y1nExR08dblzVmKKzMU=
+	t=1721140591; cv=none; b=MfFs+S7t5Nf48KTZvOq45CKWuuOaGuACCgVYwX49H6BzaLIQCCnWQyqP/Xj2LiQGKgMJ7hggBP6MwmPnJbeC35IkOSYPAOnxt99Tlcs8fE8NwEfMArQaSCuqV0YsmzZEvnJppG98Yo4oM7Dgx0W7noJAiIxLnxfpuyvsw4cutXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721130600; c=relaxed/simple;
-	bh=Qp5s5s0qoFrNJjn2rOJBg5QOeCH0WdccBxFNyY6GhaE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SMi2uzGQ+ys0Bp9bu3tGx+oR7q9O2I+KPgsZRXChSHrvGeibwkt3NfypfD0VaIOcot5dtJFC7T3c84nWNj4sl5LRBtMKQ9VdqUq8Nqh2BlRYtLj+2bb1ICn+lhJGR5c1DoB+Plm3gxW25+YqyDSTLiLmJk2LEJOPtZ6yFc35C8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8JmIpLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A4E6C4AF0F;
-	Tue, 16 Jul 2024 11:50:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721130600;
-	bh=Qp5s5s0qoFrNJjn2rOJBg5QOeCH0WdccBxFNyY6GhaE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=B8JmIpLaAZeAbGcmudTjGR5Gybg5aOVhP1oHkxizq2rAjztO7/nwGy0RQ66h/bNkX
-	 PZ46C0L0PtMDJO7CXi22W85q0nlTsZWvQROmW8zfhFYQz47ysKN0UrIynvi7/Ho5W6
-	 pwjKlY1V/ddcoXlopvkjTfGO81STbEFNw0yKlMIAEY51b4kh/JsGXuwDeVRH9rxkut
-	 z5Zs+3opt4JYkZq8wcE47YJrERwj2bagpVaYfaepLfrWVc62qGz4tE0F4WfmJa50Rr
-	 vCa1Vn5zpHtUPBbMlNMg24Vsu9SEuVvv0++3z/Fwrg3UCwpYGyzsR9nzQVFLIUSgxe
-	 r519v4q/YxeRA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A9EDC3DA49;
-	Tue, 16 Jul 2024 11:50:00 +0000 (UTC)
-From: Cryolitia PukNgae via B4 Relay <devnull+Cryolitia.gmail.com@kernel.org>
-Date: Tue, 16 Jul 2024 19:49:54 +0800
-Subject: [PATCH 2/2] hwmon: document: add gpd-fan
+	s=arc-20240116; t=1721140591; c=relaxed/simple;
+	bh=cVBLJYeQ4Y93+llDXaQT2azxM9Oa16LXngchgJI+10Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GcjljV6Rxrm0gRzBccr9f3FH6tWATF/OtLT49F8HFqOEAX5/PdrwUtQ1b2D+Wne4nlbhbi5KxuomZN7mmbjF9K1FarFKn/iHpHgCGdXcoIk+roQ/FLcIq8vVgghndy3gCFgIpFPz4lv/B9AuyHQzXuA5nO+ZYHnO6a7IY9xFTsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=AGc1LUQv; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=5evkk+ddmqxAw9fwrmRt+qolzEFINFzdf+d6kxAKhJc=; b=AGc1LUQvnD4jjIo0vOeYHngP7D
+	9VStVzSu/mte6PmaAZHnlDc+cZi2TDXvm5PuZXWwUrD4uVdx19Dn4WwR3bFj5054vmmq0fXByl8Ah
+	oB8Fbt2goUrgJMJ7/2uV9g9bxEezjAt/W2EcRCtAuggJELX6UoBt9qBXmP2qhel0s2fnUXFkpKUVh
+	ThPFaD/cGO1g/3XtLF3dNWQY6wcTuIalKgs5jRLsyv9UrIoieDOtbt130By61Xmh8Krh0bj7JjFTD
+	7zPNfVDhgz1W0NX/kLiGlKOohl2DSh5MuWLbG6KtFUm04RRToQey44/6oe6VWh9dr2htgCg12Z08c
+	J8+hHoeg==;
+Received: from [50.53.4.147] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sTjI2-0000000Akx4-1OB9;
+	Tue, 16 Jul 2024 14:36:26 +0000
+Message-ID: <c81b25ec-3e6a-4b9b-8e3b-9991f1645d47@infradead.org>
+Date: Tue, 16 Jul 2024 07:36:24 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240716-gpd_fan-v1-2-34051dd71a06@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] hwmon: document: add gpd-fan
+To: Cryolitia@gmail.com, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>,
+ =?UTF-8?Q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>
 References: <20240716-gpd_fan-v1-0-34051dd71a06@gmail.com>
-In-Reply-To: <20240716-gpd_fan-v1-0-34051dd71a06@gmail.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Cryolitia PukNgae <Cryolitia@gmail.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
- =?utf-8?q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3005;
- i=Cryolitia@gmail.com; h=from:subject:message-id;
- bh=rCZFBuF0vMkbp2kqIBIiOPphrC0bJhpWObJgki8Zq9M=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFHUy9wQU5Bd0FJQVQ1ZEYzTDhpb
- zdkQWNzbVlnQm1sbDVsOTlwMDU3YXZQVkZ1bjlkWFNqVG5tbld2CklaZEY1aDJuMmwvY1Jzd1lj
- L0NKQVRNRUFBRUlBQjBXSVFSME5XMHB5dmR3U0JGOENDWStYUmR5L0lxTzNRVUMKWnBaZVpRQUt
- DUkErWFJkeS9JcU8zUm9QQi85b1VDL3ZqOWpxWVFZcnlXLzR0c1VIenV6bkNkSFJkMlRRYXpOZg
- pFYmZoTFhBQ3REN1BrMURVckJYUUNtVHpuK0RrRWpMbk1qd0tyTmEvTHJOT3VBeFNuNHZWNmRhY
- XBvWmpyempiCmxieGJ1QmpBblhQbjVKWnJzOHlWRGNoYlBJM3lkd0w1cEVYaVlQQ0RoSEtxeDRu
- VDVWaWMwSjBrS3JXNlN6MGEKd3hKMUtqN3U1RDE3RFE0bndmUXEwOExub1VtamxML1N3eHZ3Y0l
- ZS0o3ODRUTzZvOTF1QklJL051ZmpDc1BCbgpVRENralJiWS9TY3dXNnJBeGpJclcxTmx4ZWFoSm
- w4TFBrZjFVRjZJcit1MnBia1lyRHp1U0xHd3h2SElJNWpUCklxZllHUE9tVHZ3RlVHNy9LaFV1d
- Gx0eER4SG8yS0xmdlAvK0lnN0oreXFaR0Y4VQo9SEYvYQotLS0tLUVORCBQR1AgTUVTU0FHRS0t
- LS0tCg==
-X-Developer-Key: i=Cryolitia@gmail.com; a=openpgp;
- fpr=1C3C6547538D7152310C0EEA84DD0C0130A54DF7
-X-Endpoint-Received: by B4 Relay for Cryolitia@gmail.com/default with
- auth_id=186
-X-Original-From: Cryolitia PukNgae <Cryolitia@gmail.com>
-Reply-To: Cryolitia@gmail.com
+ <20240716-gpd_fan-v1-2-34051dd71a06@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240716-gpd_fan-v1-2-34051dd71a06@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Cryolitia PukNgae <Cryolitia@gmail.com>
+Hi--
 
-Add GPD fan driver document
+On 7/16/24 4:49 AM, Cryolitia PukNgae via B4 Relay wrote:
+> From: Cryolitia PukNgae <Cryolitia@gmail.com>
+> 
+> Add GPD fan driver document
+> 
+> Signed-off-by: Cryolitia PukNgae <Cryolitia@gmail.com>
+> ---
+>  Documentation/hwmon/gpd-fan.rst | 68 +++++++++++++++++++++++++++++++++++++++++
+>  Documentation/hwmon/index.rst   |  1 +
+>  MAINTAINERS                     |  1 +
+>  3 files changed, 70 insertions(+)
+> 
+> diff --git a/Documentation/hwmon/gpd-fan.rst b/Documentation/hwmon/gpd-fan.rst
+> new file mode 100644
+> index 000000000000..0e5bb8b5feed
+> --- /dev/null
+> +++ b/Documentation/hwmon/gpd-fan.rst
+> @@ -0,0 +1,68 @@
+> +.. SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +Kernel driver gpd-fan
+> +=========================
+> +
+> +Authors:
+> +    - Cryolitia PukNgae <Cryolitia@gmail.com>
+> +
+> +Description:
 
-Signed-off-by: Cryolitia PukNgae <Cryolitia@gmail.com>
----
- Documentation/hwmon/gpd-fan.rst | 68 +++++++++++++++++++++++++++++++++++++++++
- Documentation/hwmon/index.rst   |  1 +
- MAINTAINERS                     |  1 +
- 3 files changed, 70 insertions(+)
+No ending ':' above, please.
 
-diff --git a/Documentation/hwmon/gpd-fan.rst b/Documentation/hwmon/gpd-fan.rst
-new file mode 100644
-index 000000000000..0e5bb8b5feed
---- /dev/null
-+++ b/Documentation/hwmon/gpd-fan.rst
-@@ -0,0 +1,68 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+Kernel driver gpd-fan
-+=========================
-+
-+Authors:
-+    - Cryolitia PukNgae <Cryolitia@gmail.com>
-+
-+Description:
-+------------
-+
-+Handheld devices from GPD provide fan readings and fan control through
-+their embedded controllers.
-+
-+Supported devices
-+-----------------
-+
-+Currently the driver supports the following handhelds:
-+
-+ - GPD Win Mini (7840U)
-+ - GPD Win Mini (8840U)
-+ - GPD Win Max 2
-+ - GPD Win Max 2 2023 (7840U)
-+ - GPD Win Max 2 2024 (8840U)
-+ - GPD Win 4 (6800U)
-+ - GPD Win 4 (7840U)
-+
-+Module parameters
-+-----------------
-+
-+gpd_fan_model
-+  Force specific which module quirk should be use.
-+
-+   - wm2
-+       - GPD Win 4 (7840U)
-+       - GPD Win Max 2 (6800U)
-+       - GPD Win Max 2 2023 (7840U)
-+       - GPD Win Max 2 2024 (8840U)
-+   - win4
-+       - GPD Win 4 (6800U)
-+   - win_mini
-+       - GPD Win Mini (7840U)
-+       - GPD Win Mini (8840U)
-+
-+Sysfs entries
-+-------------
-+
-+The following attributes are supported:
-+
-+fan1_input
-+  Read Only. Reads current fan RMP.
-+
-+pwm1_enable
-+  Read Write. Enable manual fan control. Write "0" to disable control and run
-+  full speed. Write "1" to set to manual, write "2" to let the EC control decide
-+  fan speed. Read this attribute to see current status.
-+
-+pwm1
-+  Read Write. Read this attribute to see current duty cycle in the range [0-255].
-+  When pwm1_enable is set to "1" (manual) write any value in the range [0-255]
-+  to set fan speed.
-+
-+pwm1_mode
-+  Read Only. Should always be "1" by now to indicate the fan being under PWM mode.
-+
-+update_interval
-+  Read Write. Set the interval in milliseconds to update fan speed. The default
-+  and minimum time is 1 second
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 913c11390a45..97add26f53b7 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -80,6 +80,7 @@ Hardware Monitoring Kernel Drivers
-    gigabyte_waterforce
-    gsc-hwmon
-    gl518sm
-+   gpd-fan
-    gxp-fan-ctrl
-    hih6130
-    hp-wmi-sensors
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9ced72cec42b..5079b5bfe4b1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9376,6 +9376,7 @@ GPD FAN DRIVER
- M:	Cryolitia PukNgae <Cryolitia@gmail.com>
- L:	linux-hwmon@vger.kernel.org
- S:	Maintained
-+F:	Documentation/hwmon/gpd-fan.rst
- F:	drivers/hwmon/gpd-fan.c
- 
- GPD POCKET FAN DRIVER
+> +------------
+> +
+> +Handheld devices from GPD provide fan readings and fan control through
+> +their embedded controllers.
+> +
+> +Supported devices
+> +-----------------
+> +
+> +Currently the driver supports the following handhelds:
+> +
+> + - GPD Win Mini (7840U)
+> + - GPD Win Mini (8840U)
+> + - GPD Win Max 2
+> + - GPD Win Max 2 2023 (7840U)
+> + - GPD Win Max 2 2024 (8840U)
+> + - GPD Win 4 (6800U)
+> + - GPD Win 4 (7840U)
+> +
+> +Module parameters
+> +-----------------
+> +
+> +gpd_fan_model
+> +  Force specific which module quirk should be use.
+
+                                                 used.
+
+> +
+> +   - wm2
+> +       - GPD Win 4 (7840U)
+> +       - GPD Win Max 2 (6800U)
+> +       - GPD Win Max 2 2023 (7840U)
+> +       - GPD Win Max 2 2024 (8840U)
+> +   - win4
+> +       - GPD Win 4 (6800U)
+> +   - win_mini
+> +       - GPD Win Mini (7840U)
+> +       - GPD Win Mini (8840U)
+
+so how is the module parameter used? like so?
+
+   gpd_fan_model=wm2
+
+> +
+> +Sysfs entries
+> +-------------
+> +
+> +The following attributes are supported:
+> +
+> +fan1_input
+> +  Read Only. Reads current fan RMP.
+
+Should that be                    RPM
+?
+
+> +
+> +pwm1_enable
+> +  Read Write. Enable manual fan control. Write "0" to disable control and run
+
+     Read/Write
+or
+     Read-Write
+
+> +  full speed. Write "1" to set to manual, write "2" to let the EC control decide
+> +  fan speed. Read this attribute to see current status.
+> +
+> +pwm1
+> +  Read Write. Read this attribute to see current duty cycle in the range [0-255].
+
+     Read-Write
+or
+     Read/Write
+
+> +  When pwm1_enable is set to "1" (manual) write any value in the range [0-255]
+> +  to set fan speed.
+> +
+> +pwm1_mode
+> +  Read Only. Should always be "1" by now to indicate the fan being under PWM mode.
+
+                    Drop             by now
+
+> +
+> +update_interval
+> +  Read Write. Set the interval in milliseconds to update fan speed. The default
+
+     Read-Write
+or
+     Read/Write
+
+> +  and minimum time is 1 second
 
 -- 
-2.45.2
-
-
+~Randy
 
