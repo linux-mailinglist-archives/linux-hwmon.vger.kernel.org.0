@@ -1,55 +1,54 @@
-Return-Path: <linux-hwmon+bounces-3177-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3178-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629669350C4
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 18:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D949350C5
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 18:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6F1C20A28
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 16:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2B041C20CBF
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 16:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7E3144D34;
-	Thu, 18 Jul 2024 16:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4CB144D34;
+	Thu, 18 Jul 2024 16:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdWNHx4i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnYd8yar"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936D07407A
-	for <linux-hwmon@vger.kernel.org>; Thu, 18 Jul 2024 16:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1934F7407A
+	for <linux-hwmon@vger.kernel.org>; Thu, 18 Jul 2024 16:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721320838; cv=none; b=RU1gWK+Y+RUVmfylwA8V9p5IVZHQqmwclZ700Y6KuXhNJoK5rFNGx82RGvEjtYbJVdwV5WB/M0cd+ubL3bIsX91yuUmlxp51rlRCP5w9Rs3L6f9NV81SoBBK7hMXcmzNZdcnbFj1CYczgxo3ZAgVhRrMXhzZ+7if81piUHcH/Rc=
+	t=1721320848; cv=none; b=Ef4uZk/osCc+KGXnt9UcwNW2h7+tQ/VO/DJHVgWfqPKWs8gM7kb8rtJFxK5Nlr7wHVsdjCE7mxcSkm9HKKAZD5+ZFZK8NlLnX6ND3m6mzsvsP22OsRKKXaqezB6mywXy8+Jhf51QJgeich5MXkwP1XGlsgD2GX390FLrnrocVcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721320838; c=relaxed/simple;
-	bh=4Jxbo91j/E55dD00zJfivBDpfwjT8cui2wLmgDZsQTg=;
+	s=arc-20240116; t=1721320848; c=relaxed/simple;
+	bh=HcEmN9tzvkQ/glz+FXDVpny0YAf4jL8ESK8xDNErJpE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JVwMhm1w5Rhur27UwI3euJ/4uTJ0pULtl4FZFTF55s6Z30mjpb/bMen3XUbaYTagntl1W16aH9zNwejH4ur0eX/OBajRtoBVNZcYlghGipg3/exKc3nwXRJ1lBW2pHmGZ2LAQpC9n+8bWnLB7Mhlfqxn0fXj7i28RiCZhsLXuhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdWNHx4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74605C116B1;
-	Thu, 18 Jul 2024 16:40:37 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cLAWR9d80uIJZi64mZFKDj6/VhaTkYNaeVlGIhjI4Ay2eWgPoRoG0yQcG4zFM46E7x06vZALI26QAVWLofPv/2713ND/NJcjCag1/eXxLIu9EHYWrik9ydyEQib1iB5jkFn6E3wpWoRmxgNZrLiFlRHP5Bqp3Qj8ItexeZRt65s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnYd8yar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9B8C116B1;
+	Thu, 18 Jul 2024 16:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721320838;
-	bh=4Jxbo91j/E55dD00zJfivBDpfwjT8cui2wLmgDZsQTg=;
+	s=k20201202; t=1721320847;
+	bh=HcEmN9tzvkQ/glz+FXDVpny0YAf4jL8ESK8xDNErJpE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IdWNHx4ibvTfKNpxwcS3d97DwdGWelvRUoLLqt8aHhQhFSXg3ONeFiNdAlwPDNAii
-	 CNykHc1nXCcCt45K+bNPTRyRvACOMgvLAfCmR0KKL0repHZYzyRrvAcV1+KMtnCTts
-	 +p0dD3HmrA346m+Q+5QjQ1XB30MKzjcuBqYVPTR+NMvjhgRe65WT4frCbOu6abRAiK
-	 RsXKQ1Wg2pBHC2pewNsdSrAf+FrcNhId7crb6Rwvcx5JVChJSQ4I6QZukvHZ5gNCUY
-	 UJX8uBW56B7P8gEpRo7whBTk4fijgeV2FeI6/08sV0ZlN8f1DkqwS2zc16hecMhojy
-	 q3o+QJFpU4RJw==
-Date: Fri, 19 Jul 2024 00:40:34 +0800
+	b=UnYd8yard/ri/UE9rulPIghLb/Hj+67t+nKFSciBJnYsq2koctPrsd51t0Y4esSCl
+	 ojbk08gT9k+vr63Am6h8VECZ1OkPzKPZweI6MH7RCLKnKughOK/SB27bq28MLJxIfL
+	 xCeKGDr3B/yEson5wHqhsDEogeNjj6le+/f3TfNKeVeD3DGmN+AOxnPbVESE0+jJck
+	 Bw6mO8LcxYkC+xdWso8SxLfxKyewdWh+NhxS96ccmL1eG6JIC/oTUqTf8b3spIcIWf
+	 AQI77AInriSs4oUAxdq+Lu4UreTwnWjYwpsszHbukjkeesJ81idITgBxqsYjTqqLMo
+	 U+CeO1AvS5uyg==
+Date: Fri, 19 Jul 2024 00:40:44 +0800
 From: Tzung-Bi Shih <tzungbi@kernel.org>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: Hardware Monitoring <linux-hwmon@vger.kernel.org>
-Subject: Re: [PATCH 5/6] hwmon: (lm95234) Add support for tempX_enable
- attribute
-Message-ID: <ZplFgnjEhNKURkT6@tzungbi-laptop>
+Subject: Re: [PATCH 6/6] hwmon: (lm95234) Use multi-byte regmap operations
+Message-ID: <ZplFjI6xfShXkIYd@tzungbi-laptop>
 References: <20240718033935.205185-1-linux@roeck-us.net>
- <20240718033935.205185-6-linux@roeck-us.net>
+ <20240718033935.205185-7-linux@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -58,12 +57,13 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240718033935.205185-6-linux@roeck-us.net>
+In-Reply-To: <20240718033935.205185-7-linux@roeck-us.net>
 
-On Wed, Jul 17, 2024 at 08:39:34PM -0700, Guenter Roeck wrote:
-> LM95233/LM95234 support enabling temperature channels one by one.
-> Add support for tempX_enable attribute to be able to use that
-> functionality.
+On Wed, Jul 17, 2024 at 08:39:35PM -0700, Guenter Roeck wrote:
+> Use  multi-byte regmap operations to simplify the code
+> and to reduce dependency on locking.
+> 
+> No functional change.
 > 
 > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
