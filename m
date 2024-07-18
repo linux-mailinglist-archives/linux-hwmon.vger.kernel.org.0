@@ -1,198 +1,108 @@
-Return-Path: <linux-hwmon+bounces-3158-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3161-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECB4934643
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 04:22:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC67D934665
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 04:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8D328337C
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 02:22:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 613841F221CD
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Jul 2024 02:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641D118EBF;
-	Thu, 18 Jul 2024 02:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89B118B14;
+	Thu, 18 Jul 2024 02:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0dphP4n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmVk3VPk"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384E71B86E2;
-	Thu, 18 Jul 2024 02:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A7B15C3;
+	Thu, 18 Jul 2024 02:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721269349; cv=none; b=T+iAU72nK5q+5KbD1fnDXEXE1UKKYHH/q0LnM/4nS7w6kIYCTQPZFrwbmTwVzZ43sGRWaXusJ4iUiI3mv5uFYxoDkNo9NhNwOl48tgJKm6PcAUo0xXMTZ0a4ifE6+zEtm69Q3JCK/VsPtQ2D9BNTRmLWgIRtNjqVuI+/RHtasHo=
+	t=1721269660; cv=none; b=Dcvezj6Z4LFhsCILPX0CSfaF1FyHvcoby11yIa1DLPO+wjpK3Ul1QyK8XwRFMSkgcVpDj3Ahv/8Br9WOZdeXBuVH/qc5sILjW53qUK48nKOGIoPetisEha7C5XBSJm0msfuWONtqgUTgqk0te75yBACUWFI4zCe9OyV38RBsg6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721269349; c=relaxed/simple;
-	bh=gDkyXHZ+uvQOh5+CSatxWv2gpcXQE70zzlSXyGIc6hE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U26zKziVCgy4HzQtpIvc2kQMTDBfas6cTDyLOkKB9cKgnPDfUGKSIVihgBg7AwZhTOLczg4GtPYJIyw9L7emWfyg92f42grmjIJuVlIN3Ef7n8Y77f5YyJnZvIhqkjNk+r0gdehutz+G+mPDxrVNVZiOaKcnHAiNN6KFSO0U2GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0dphP4n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DAB64C4AF12;
-	Thu, 18 Jul 2024 02:22:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721269348;
-	bh=gDkyXHZ+uvQOh5+CSatxWv2gpcXQE70zzlSXyGIc6hE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=A0dphP4nJn/3JPeId6DJUHW6gcD8hNLGS8Io2CfK1unCA4jB4kVQXQEwAa1yhnYF1
-	 4Yky0HTOYwCpxVFUYwlheE/VINKh4xg7pSaPwjQetwR68hF7v5E9MZOKnoG2v4TRSY
-	 1SYRdGKoKDcduS3m6AznAA/ocR8mZmuBteYKVf4GxASmX8hxncGm4bOnWh26/x/sJA
-	 HgWbyF/AEL6LAXELJ8T9RXDyb1lNOEYN3NBQ9W+hy0zS4T45wzLMVN0L8H7dcLgOBB
-	 ilKQ4kAOmEcMRpILWMDYhCWE+CN5gvdwZ5rfPsEhcL2o2vVeemPqte4sh7pBEYW33S
-	 Lkx+E8gYeurow==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB888C3DA6A;
-	Thu, 18 Jul 2024 02:22:28 +0000 (UTC)
-From: Cryolitia PukNgae via B4 Relay <devnull+Cryolitia.gmail.com@kernel.org>
-Date: Thu, 18 Jul 2024 10:22:24 +0800
-Subject: [PATCH v4 2/2] hwmon: document: add gpd-fan
+	s=arc-20240116; t=1721269660; c=relaxed/simple;
+	bh=CV7LYfCxINP5w09KGhat3kkBY4Oo+VC8T93Z6UfqSUs=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=hz8EdxeYEyVxRBemXBxAVym10tZilVqlBUZFv8ZucecoObV/paan1adwT5T9hRlVq1WFlte/W4cOXN18uyi56jHpVwnzwOgHfCDtyhbID0LeaLPIe8cFor5EgMTmJ+ExykpNI04L2ucQApT1sxzzweZeacaChpzkOCIzWSxWlSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YmVk3VPk; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c9e37bdd6fso226097a91.3;
+        Wed, 17 Jul 2024 19:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721269659; x=1721874459; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GUAd6g54xeJRdV81nGL0g6LtQDcATLm06ClbA+KAow0=;
+        b=YmVk3VPkhaShHuV6sYN0Wzq6WCzWirBMqsII8PJh6S36bLQjcXXbzRZJvCjEMbfOLU
+         itLI66/eJnIV/oSxh4sIWBhduzBc0sHR3z1aMYAK93ylA2Cgm7UMsMCHLwBI/f75cNnf
+         gyLN5KKHjNmHLKppQ/WqN7PGQOY0BTvgAzN8J7UgU9ViX8evC1Wxh8gP3Ynn+LjSiOk/
+         IgAyMRXk0N7TD6FPwpem/CF33lRC854f7JLRvW7feyBYlV5Y2Ff+v1cOnavkscU3Bpgq
+         GrUrxTUX8tQK0BSdyiJcDjeYeViU5UGX5sX7UxA1hXCDq0a8JZ78gszoViF78jGdB/ij
+         MWQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721269659; x=1721874459;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GUAd6g54xeJRdV81nGL0g6LtQDcATLm06ClbA+KAow0=;
+        b=RZucKeurtWdjULt4i5uWs+Qle/b9bfqapjbpXed2s0pmNZZRjl1m6unKz6STbwFYla
+         B2Cb7H3VjMu3LrfVGlmJfu5kT4BC4hePTGW8Bl0a7NsR0IOqtMXMOtIeNTdNxmPgGKJ6
+         uLFUy0GEaPIMxVfAKt8YmA0pmS2iUD5raEpvW+6JmvwhgmPvyF5TXyWTCo9XjzLJQLk0
+         XWgDbdsNe2R3P1VB26crnYcFsw1Cm5zl8BuVfCsSmxJTBy7+MyQeSZAyNnVSGTqCwasW
+         +w//7awLTsvg2Qkp4XjFcj7eyHio3MsqF+ULwDCmu0zExv0U0V+j21V9h5Znu4tPcTrc
+         gwmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXczA+r9wi3cj1wh/ReKsNWkeDzVzudGrRi7A6DL6vD7O3NzDq2quXtAJpRQsCeCCAMb3pwkcmEmvFBKR6ohWfeNbitpETevGiZGLp8NP6ebt8d+fw1Dubb3aZJ+OzyuqD+BcjZzK4=
+X-Gm-Message-State: AOJu0YwG6LathwkXVrOmc1WxSQ5glJEOiRiS0fCkaKvs/0iaKBANdRRc
+	OslIiJN/KW7q2GTppf11wJuOVCpXhv8lJgC8TuOqFQuQzG5xPTeVtAGZ2BNp
+X-Google-Smtp-Source: AGHT+IE8SvX4CLDwAqE0jj8m+KCvYqhmkfATV+kF3+EHc9JlTZrnccUYA8tLj1CrFijiVCWM2kehCw==
+X-Received: by 2002:a17:90a:fb8f:b0:2c8:1f30:4e04 with SMTP id 98e67ed59e1d1-2cb5293beb9mr3038183a91.36.1721269658624;
+        Wed, 17 Jul 2024 19:27:38 -0700 (PDT)
+Received: from [198.18.0.1] ([2401:d9c0:2902::c2eb])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb601e42easm662877a91.40.2024.07.17.19.27.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jul 2024 19:27:36 -0700 (PDT)
+From: Cryolitia PukNgae <cryolitia@gmail.com>
+X-Google-Original-From: Cryolitia PukNgae <Cryolitia@gmail.com>
+Message-ID: <22807968-922a-460d-9dda-7e8f9b4791ad@gmail.com>
+Date: Thu, 18 Jul 2024 10:27:28 +0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] hwmon: add GPD devices sensor driver
+To: Krzysztof Kozlowski <krzk@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>,
+ Yao Zi <ziyao@disroot.org>, =?UTF-8?Q?Marcin_Str=C4=85gowski?=
+ <marcin@stragowski.com>
+References: <20240717-gpd_fan-v3-0-8d7efb1263b7@gmail.com>
+ <20240717-gpd_fan-v3-1-8d7efb1263b7@gmail.com>
+ <14e3654e-27b1-41f7-a66f-03ec47e95593@kernel.org>
+Content-Language: en-US
+In-Reply-To: <14e3654e-27b1-41f7-a66f-03ec47e95593@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240718-gpd_fan-v4-2-116e5431a9fe@gmail.com>
-References: <20240718-gpd_fan-v4-0-116e5431a9fe@gmail.com>
-In-Reply-To: <20240718-gpd_fan-v4-0-116e5431a9fe@gmail.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Cryolitia PukNgae <Cryolitia@gmail.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
- Yao Zi <ziyao@disroot.org>, 
- =?utf-8?q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2841;
- i=Cryolitia@gmail.com; h=from:subject:message-id;
- bh=w5ysSKMT+Erogd22vy685m5vnNbd3B3fdSDLl++agfw=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFHUy9wQU5Bd0FJQVQ1ZEYzTDhpb
- zdkQWNzbVlnQm1tSHhpRFl0SmswN3RiNXpxc0s4VlIrV3pRdzJqClFKQnFMeHAvMjdnaGd6a2Jl
- ZXlKQVRNRUFBRUlBQjBXSVFSME5XMHB5dmR3U0JGOENDWStYUmR5L0lxTzNRVUMKWnBoOFlnQUt
- DUkErWFJkeS9JcU8zVW45Q0FDVFR6bGRPMzBrVXpobHVLTzBYRnp1Z014Zit6OVlycWVsQllvcg
- pDUDQzZ2hNRTRKRGYvV1lEZ09BTVd1QmlVRHQ3OWJVb1B6NExoWHlTZGZHLzE3ZEg1VXN0L0xHR
- FJDMFJIU2RlCjAvNXQ4Y1dHcUduKzBKQk5VWjBielZNS29TNFhJSXY0U3JkZ08za0U0VU1RYkNQ
- dTYycW16aGxQVVlxZ1dlNlQKdjFpS1BwaXNMS2VqeUlLRE1Vd1l2dGpDdjBDZVBNSzQ4M04xUDl
- nRE5rWS9rOHVEY0d2b0JEdXlnUW9TdmFuZgorR0FmUFhDUExocEFvc29OaGtlUmI2aTVqU1NOMU
- FDNGxZZWdkUFYyYUdJeFZvZ2NxcmJwdHRaMlJOc1Z0VWRyCjIvN3UxZExrbU1vZWw0NDVSSmhPS
- E5rdng5SzgxY3hOMkNTbUFCbGp2aDFucExrdQo9VzdLeAotLS0tLUVORCBQR1AgTUVTU0FHRS0t
- LS0tCg==
-X-Developer-Key: i=Cryolitia@gmail.com; a=openpgp;
- fpr=1C3C6547538D7152310C0EEA84DD0C0130A54DF7
-X-Endpoint-Received: by B4 Relay for Cryolitia@gmail.com/default with
- auth_id=186
-X-Original-From: Cryolitia PukNgae <Cryolitia@gmail.com>
-Reply-To: Cryolitia@gmail.com
 
-From: Cryolitia PukNgae <Cryolitia@gmail.com>
 
-Add GPD fan driver document
+On 2024/7/17 15:11, Krzysztof Kozlowski wrote:
+> This entire driver still does not look like using Linux coding style.
 
-Signed-off-by: Cryolitia PukNgae <Cryolitia@gmail.com>
----
- Documentation/hwmon/gpd-fan.rst | 63 +++++++++++++++++++++++++++++++++++++++++
- Documentation/hwmon/index.rst   |  1 +
- MAINTAINERS                     |  1 +
- 3 files changed, 65 insertions(+)
+I carefully read the code style again and adjusted my code.
 
-diff --git a/Documentation/hwmon/gpd-fan.rst b/Documentation/hwmon/gpd-fan.rst
-new file mode 100644
-index 000000000000..68189cdc5b45
---- /dev/null
-+++ b/Documentation/hwmon/gpd-fan.rst
-@@ -0,0 +1,63 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+Kernel driver gpd-fan
-+=========================
-+
-+Author:
-+    - Cryolitia PukNgae <Cryolitia@gmail.com>
-+
-+Description
-+------------
-+
-+Handheld devices from Shenzhen GPD Technology Co., Ltd. provide fan readings and fan control through
-+their embedded controllers.
-+
-+Supported devices
-+-----------------
-+
-+Currently the driver supports the following handhelds:
-+
-+ - GPD Win Mini (7840U)
-+ - GPD Win Mini (8840U)
-+ - GPD Win Max 2
-+ - GPD Win Max 2 2023 (7840U)
-+ - GPD Win Max 2 2024 (8840U)
-+ - GPD Win 4 (6800U)
-+ - GPD Win 4 (7840U)
-+
-+Module parameters
-+-----------------
-+
-+gpd_fan_model
-+  Force specific which module quirk should be used.
-+  Use it like "gpd_fan_model=wm2".
-+
-+   - wm2
-+       - GPD Win 4 (7840U)
-+       - GPD Win Max 2 (6800U)
-+       - GPD Win Max 2 2023 (7840U)
-+       - GPD Win Max 2 2024 (8840U)
-+   - win4
-+       - GPD Win 4 (6800U)
-+   - win_mini
-+       - GPD Win Mini (7840U)
-+       - GPD Win Mini (8840U)
-+
-+Sysfs entries
-+-------------
-+
-+The following attributes are supported:
-+
-+fan1_input
-+  Read Only. Reads current fan RPM.
-+
-+pwm1_enable
-+  Read/Write. Enable manual fan control. Write "0" to disable control and run at
-+  full speed. Write "1" to set to manual, write "2" to let the EC control decide
-+  fan speed. Read this attribute to see current status.
-+
-+pwm1
-+  Read/Write. Read this attribute to see current duty cycle in the range [0-255].
-+  When pwm1_enable is set to "1" (manual) write any value in the range [0-255]
-+  to set fan speed.
-+
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 913c11390a45..97add26f53b7 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -80,6 +80,7 @@ Hardware Monitoring Kernel Drivers
-    gigabyte_waterforce
-    gsc-hwmon
-    gl518sm
-+   gpd-fan
-    gxp-fan-ctrl
-    hih6130
-    hp-wmi-sensors
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9ced72cec42b..5079b5bfe4b1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9376,6 +9376,7 @@ GPD FAN DRIVER
- M:	Cryolitia PukNgae <Cryolitia@gmail.com>
- L:	linux-hwmon@vger.kernel.org
- S:	Maintained
-+F:	Documentation/hwmon/gpd-fan.rst
- F:	drivers/hwmon/gpd-fan.c
- 
- GPD POCKET FAN DRIVER
+I apologize for my rookie recklessness and sincerely thank you for your 
+patience.
 
--- 
-2.45.2
-
+v4 sent: 
+https://lore.kernel.org/all/20240718-gpd_fan-v4-1-116e5431a9fe@gmail.com/
 
 
