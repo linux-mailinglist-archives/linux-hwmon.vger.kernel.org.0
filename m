@@ -1,117 +1,113 @@
-Return-Path: <linux-hwmon+bounces-3279-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3287-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1F493C8EC
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 21:46:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97ED893CA09
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 23:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC3E2837BA
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 19:46:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92001C21F14
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 21:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940E082D98;
-	Thu, 25 Jul 2024 19:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F78139CFF;
+	Thu, 25 Jul 2024 21:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="LbkS9bQJ"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FDB6F2EA;
-	Thu, 25 Jul 2024 19:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6D66F2EA
+	for <linux-hwmon@vger.kernel.org>; Thu, 25 Jul 2024 21:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721936774; cv=none; b=p+tb7wcCxO2oXnwmuBiSsOyTzLtgbkJSuuOHDSEkyoAqHG8L9Dn4yLwbkFh5s+XUXshkvsO09p6h7b7JES2WsDczmwfog9Lx1Sjd/pyruqfhQDz2Rypi8xOlXjQjBHRVnFo0cBBlZjBKMw49AN6YO1gRMuLnRCVz54UCYH4H2eE=
+	t=1721941359; cv=none; b=NeeAnoESCVBAdWB2Hm+kYatqFeXlbHxOG4mQ1OkmiIN4vwcGfzGbsdGsGvj5xO8hMDdzb/FpzGQhQ+v1PYRFWw9VmTsnQ3oI4RVfeofzhB4muooxO59j/gb8EBQtwNo7Gu/7USGQPeLNXdTc9gHPpabrdem0KO4Q3R8DvvCYOPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721936774; c=relaxed/simple;
-	bh=fkrMzGswzCO7CPU3pzXIY4sgrQ/Z3eYGrtwNukVb2dM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zv3Hnbk37+dENHaiuVSUo7xlnkCe71Jr4VxusRJ1tzS5ysBwO1QGDGUQExlooudQovXK9jZ50X4jVUjKvrc5BCRgwJd1FePXnEBiipxhja0CawQtgqAI4pHlCOemd9JJck4oG7FMUIg3r9mYFYe8g1zVnZJKCKDE3lYkOGb+kb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i5e860cdd.versanet.de ([94.134.12.221] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sX4PS-0001rD-Bx; Thu, 25 Jul 2024 21:45:54 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: lee@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	dmitry.torokhov@gmail.com,
-	pavel@ucw.cz
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	heiko@sntech.de,
-	ukleinek@debian.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-hwmon@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org
-Subject: [PATCH 7/7] arm64: dts: rockchip: set hdd led labels on qnap-ts433
-Date: Thu, 25 Jul 2024 21:45:39 +0200
-Message-Id: <20240725194539.1780790-8-heiko@sntech.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240725194539.1780790-1-heiko@sntech.de>
-References: <20240725194539.1780790-1-heiko@sntech.de>
+	s=arc-20240116; t=1721941359; c=relaxed/simple;
+	bh=itACr6q6euo6bZmjeTw9qs8N0BkFk0gWez2lg4bJR3w=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JYVPu0+7a7372QImN01HoUTkkBJtKTLk5FJXu2CFpT2BCjcPfm1JS9HgV50kbQRFR+ICnmdjxegwVYwevwBqQ6dQ8fuoqYVBDfgZnVHb+osUnbZZhSQxmiq+F8buPJQ59ybKZIto49IuaFxl8G6Mv+hx7l0Aikz2hdeHtPWbMvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=LbkS9bQJ; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id E70DF2C04A9;
+	Fri, 26 Jul 2024 09:02:28 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1721941348;
+	bh=itACr6q6euo6bZmjeTw9qs8N0BkFk0gWez2lg4bJR3w=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=LbkS9bQJw8dedgsSBB3+i4G52hDocXnEd7yrnucY8Hv0FlgwMmk+dygkiE3xLm6zs
+	 Kjvt5cdc9UBQUKVUbOBmILKY0GP8X6TSqWlo3R1Yf3rObJX8mAYWY3cN5uJis06Lby
+	 sdtuQwLlEpol1wzcZfZiYmrlBoayBrI89t4SJl9EBZveUa3KvEk0pu5N2CFQpF9Jnz
+	 FSAX0OTGvnSJDi4zpaUWjuLODaR7d7XsLo50kER7SKQKlhPJlOxoVi8Ldh8KO4y20j
+	 ixC74ukimyJdXq0o6d4OrnzA/jrMPAShMCaVD92u7cpZHsAP8POi5HpTolDyvwIHSL
+	 Gt5d7U7P7I9UQ==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B66a2bd640001>; Fri, 26 Jul 2024 09:02:28 +1200
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 26 Jul 2024 09:02:28 +1200
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1544.011; Fri, 26 Jul 2024 09:02:28 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Guenter Roeck <linux@roeck-us.net>
+CC: "jdelvare@suse.com" <jdelvare@suse.com>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "ukleinek@kernel.org"
+	<ukleinek@kernel.org>, "linux-hwmon@vger.kernel.org"
+	<linux-hwmon@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-pwm@vger.kernel.org"
+	<linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH v7 3/3] hwmon: (adt7475) Add support for configuring
+ initial PWM state
+Thread-Topic: [PATCH v7 3/3] hwmon: (adt7475) Add support for configuring
+ initial PWM state
+Thread-Index: AQHa3IT3Zuzwz3xFwkKaciGnUdU3zLIGtlgAgABzS4A=
+Date: Thu, 25 Jul 2024 21:02:28 +0000
+Message-ID: <ee3b9800-4649-4e8a-af67-80713e76b79d@alliedtelesis.co.nz>
+References: <20240722221737.3407958-1-chris.packham@alliedtelesis.co.nz>
+ <20240722221737.3407958-4-chris.packham@alliedtelesis.co.nz>
+ <aaa8217b-031d-40e7-96a7-b9ed8482748a@roeck-us.net>
+In-Reply-To: <aaa8217b-031d-40e7-96a7-b9ed8482748a@roeck-us.net>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B30A173DDF236640BC96E73D55C672FA@atlnz.lc>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=Gqbh+V1C c=1 sm=1 tr=0 ts=66a2bd64 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10 a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=YMKABRJBKZM-AwbpdXYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-The automatically generated names for the LEDs from color and function
-do not match nicely for the 4 hdds, so set them manually per the label
-property to also match the LEDs generated from the MCU.
-
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
----
- arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-index bff21684a3970..c35c11203e903 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-@@ -50,6 +50,7 @@ led-0 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD5 GPIO_ACTIVE_LOW>;
-+			label = "hdd1:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd1_led_pin>;
-@@ -59,6 +60,7 @@ led-1 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD6 GPIO_ACTIVE_LOW>;
-+			label = "hdd2:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd2_led_pin>;
-@@ -68,6 +70,7 @@ led-2 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD7 GPIO_ACTIVE_LOW>;
-+			label = "hdd3:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd3_led_pin>;
-@@ -77,6 +80,7 @@ led-3 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_LOW>;
-+			label = "hdd4:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd4_led_pin>;
--- 
-2.39.2
-
+DQpPbiAyNi8wNy8yNCAwMjowOSwgR3VlbnRlciBSb2VjayB3cm90ZToNCj4gT24gVHVlLCBKdWwg
+MjMsIDIwMjQgYXQgMTA6MTc6MzdBTSArMTIwMCwgQ2hyaXMgUGFja2hhbSB3cm90ZToNCj4+IEJ5
+IGRlZmF1bHQgdGhlIFBXTSBkdXR5IGN5Y2xlIGluIGhhcmR3YXJlIGlzIDEwMCUuIE9uIHNvbWUg
+c3lzdGVtcyB0aGlzDQo+PiBjYW4gY2F1c2UgdW53YW50ZWQgZmFuIG5vaXNlLiBBZGQgdGhlIGFi
+aWxpdHkgdG8gc3BlY2lmeSB0aGUgZmFuDQo+PiBjb25uZWN0aW9ucyBhbmQgaW5pdGlhbCBzdGF0
+ZSBvZiB0aGUgUFdNcyB2aWEgZGV2aWNlIHByb3BlcnRpZXMuDQo+Pg0KPj4gU2lnbmVkLW9mZi1i
+eTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56Pg0KPiBD
+SEVDSzogQmxhbmsgbGluZXMgYXJlbid0IG5lY2Vzc2FyeSBiZWZvcmUgYSBjbG9zZSBicmFjZSAn
+fScNCj4gIzIwNzogRklMRTogZHJpdmVycy9od21vbi9hZHQ3NDc1LmM6MTczNDoNCj4gKw0KPiAr
+fQ0KPg0KPiBOZXZlciBtaW5kLCBhcHBsaWVkIGFmdGVyIGZpeGluZyB0aGUgYWJvdmUuDQoNCkht
+bSwgb2RkIGNoZWNrcGF0Y2gucGwgZG9lc24ndCBjb21wbGFpbiBmb3IgbWUNCg0KJCAuL3Njcmlw
+dHMvY2hlY2twYXRjaC5wbCANCnBhdGNoZXMvYWR0LWluaXQtZHV0eS92Ny92Ny0wMDAzLWh3bW9u
+LWFkdDc0NzUtQWRkLXN1cHBvcnQtZm9yLWNvbmZpZ3VyaW5nLWluaXRpYWwucGF0Y2ggDQoNCnRv
+dGFsOiAwIGVycm9ycywgMCB3YXJuaW5ncywgMTQ5IGxpbmVzIGNoZWNrZWQNCg0KcGF0Y2hlcy9h
+ZHQtaW5pdC1kdXR5L3Y3L3Y3LTAwMDMtaHdtb24tYWR0NzQ3NS1BZGQtc3VwcG9ydC1mb3ItY29u
+ZmlndXJpbmctaW5pdGlhbC5wYXRjaCANCmhhcyBubyBvYnZpb3VzIHN0eWxlIHByb2JsZW1zIGFu
+ZCBpcyByZWFkeSBmb3Igc3VibWlzc2lvbi4NCg0KPg0KPiBUaGFua3MsDQo+IEd1ZW50ZXI=
 
