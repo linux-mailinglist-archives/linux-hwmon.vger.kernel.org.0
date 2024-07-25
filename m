@@ -1,101 +1,124 @@
-Return-Path: <linux-hwmon+bounces-3278-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3282-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC3393C71B
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 18:28:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DF593C8FB
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 21:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4FE1C20E67
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 16:28:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CEAA28169E
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Jul 2024 19:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9B119DF5F;
-	Thu, 25 Jul 2024 16:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LiyTau5p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A998913E881;
+	Thu, 25 Jul 2024 19:46:16 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EBD19D880;
-	Thu, 25 Jul 2024 16:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3BA768EC;
+	Thu, 25 Jul 2024 19:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721924886; cv=none; b=QU4EffwhtTScWWq7m1Xjx9D9dmst5TgqROllRbMGYQhKPpILFQ//c33VMmO+9OP54GJLYbXUPkn77assfK1t56jvlS9VkxsoGegu80UO9ESy608i4G2W1MWPLgC770udyNR641oSXI6tLogLTsf79cixXvvDzODIQtStVBnMCW4=
+	t=1721936776; cv=none; b=FHYhQ5lUljeiCSt7NuqgmsksJZ2O1zPsve8qAQZ75tffqDR5u/EvGJ0iBpXXwCx0/zwjXndrX2bhiEZ0n0pO0uhzZeRpLs9lpfcqcK2lJIU+s6F4p2ozGY49hx0IPZ5/ir9oYi5n1CYlHlirIzeHsQc6wDwofIXLM9cTVs+PtCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721924886; c=relaxed/simple;
-	bh=L7Fg0m1ebyP2PV/ivJTC9Xfja1OP5JV3H02XKfasc1Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OT38r9u3oLT5a3UzkHVlrwiFmko5Hsp3ATEgZh8cZqwdPP3TdeRZDg9Z6Y/9AG5878dSPdFOXrpHeGCUC/RDrqZrhUtbAmKkgcypMmMPSvUnajjojIkcWlwkFrFf/ByMKMPXVod/hl1SIsIilKnFozhWm4tDN24Y0awjsKigkDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LiyTau5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D6BC116B1;
-	Thu, 25 Jul 2024 16:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721924886;
-	bh=L7Fg0m1ebyP2PV/ivJTC9Xfja1OP5JV3H02XKfasc1Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=LiyTau5pMzmxs6bD/CxOOKH86UKrbpTZF1Nel2qo8HJGlIjkwJvQ04jQU/2tFFc5/
-	 IKTI/sBNYtMfyhkhKfjrElrm+/3UskwyACdIARCu+QdpMy8oCjygLhG+ODfpvxIgAu
-	 jTO1M/YjC5MBLNLoeMt7TOcDL/WThyditsFXNKVInnnogFYqh6AVHqt+2H62h4AjJL
-	 VIR1oU5gfMLcL/Jxqu3jfVtdb+4cccoqgCwrLg65O8ZyVOz2X5fm0WuLzxQjgspCqg
-	 n2HMqS9VX4MoXuShAZlCIFbCCr6elsxEJiHi3IGYOSrLWyzDRlX+8JaxDPceea5P56
-	 /GQO5hzX4G95w==
-From: Lee Jones <lee@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
- Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andreas Kemnade <andreas@kemnade.info>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org, 
- netdev@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240721-device_for_each_child_node-available-v2-0-f33748fd8b2d@gmail.com>
-References: <20240721-device_for_each_child_node-available-v2-0-f33748fd8b2d@gmail.com>
-Subject: Re: (subset) [PATCH v2 0/6] use device_for_each_child_node() to
- access device child nodes
-Message-Id: <172192488125.1053789.17350723750885690064.b4-ty@kernel.org>
-Date: Thu, 25 Jul 2024 17:28:01 +0100
+	s=arc-20240116; t=1721936776; c=relaxed/simple;
+	bh=PwOHSuXwXja0mNgYGH2EcNlFeXFHwyvrdGGEYegbbzU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lU3qUx63vJsYJTElc4Wv7Ufom+Io88U9TOI+FsELafQ0gcEKS84sGS/ZWRfW5N/oTws0mz0PGaVxL2qQaMFz8jVEVoLra2vGhh8Nltnz77VxpOGtYmfKN6j3Ywu3P5d+/RppoxlCASxVO6b3UlSMBPYqbYVopJPLQ7kv/vssm9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i5e860cdd.versanet.de ([94.134.12.221] helo=phil.lan)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sX4PN-0001rD-GO; Thu, 25 Jul 2024 21:45:49 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: lee@kernel.org,
+	jdelvare@suse.com,
+	linux@roeck-us.net,
+	dmitry.torokhov@gmail.com,
+	pavel@ucw.cz
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	heiko@sntech.de,
+	ukleinek@debian.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-hwmon@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-leds@vger.kernel.org
+Subject: [PATCH 0/7] Drivers to support the MCU on QNAP NAS devices
+Date: Thu, 25 Jul 2024 21:45:32 +0200
+Message-Id: <20240725194539.1780790-1-heiko@sntech.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
 
-On Sun, 21 Jul 2024 17:19:00 +0200, Javier Carrasco wrote:
-> This series aims to clarify the use cases of:
-> 
-> - device_for_each_child_node[_scoped]()
-> - fwnode_for_each_available_child_node[_scoped]()
-> 
-> to access firmware nodes.
-> 
-> [...]
+This implements a set of drivers for the MCU used on QNAP NAS devices.
 
-Applied, thanks!
+Of course no documentation for the serial protocol is available, so
+thankfully QNAP has a tool on their rescue-inird to talk to the MCU and
+I found interceptty [0] to listen to what goes over the serial connection.
 
-[3/6] leds: bd2606mvv: fix device child node usage in bd2606mvv_probe()
-      commit: 75d2a77327c4917bb66163eea0374bb749428e9c
-[4/6] leds: is31fl319x: use device_for_each_child_node_scoped() to access child nodes
-      commit: 0f5a3feb60aba5d74f0b655cdff9c35aca03e81b
-[5/6] leds: pca995x: use device_for_each_child_node() to access device child nodes
-      (no commit info)
+In general it looks like there are two different generations in general,
+an "EC" device and now this "MCU" - referenced in the strings of the
+userspace handlers for those devices.
 
---
-Lee Jones [李琼斯]
+For the MCU "SPEC3" and "SPEC4" are listed which is configured in
+the model.conf of the device. When setting the value from SPEC4 to
+SPEC3 on my TS433, the supported commands change, but the command
+interface stays the same and especially the version command is the
+same.
+
+The binding also does not expose any interals of the device that
+might change, so hopefully there shouldn't be big roadblocks to
+support different devices, apart from possibly adapting the commands.
+
+
+[0] https://github.com/geoffmeyers/interceptty
+
+Heiko Stuebner (7):
+  dt-bindings: mfd: add binding for qnap,mcu devices
+  mfd: add base driver for qnap-mcu devices
+  leds: add driver for LEDs from qnap-mcu devices
+  Input: add driver for the input part of qnap-mcu devices
+  hwmon: add driver for the hwmon parts of qnap-mcu devices
+  arm64: dts: rockchip: hook up the MCU on the QNAP TS433
+  arm64: dts: rockchip: set hdd led labels on qnap-ts433
+
+ .../devicetree/bindings/mfd/qnap,mcu.yaml     |  43 +++
+ .../boot/dts/rockchip/rk3568-qnap-ts433.dts   |  58 +++
+ drivers/hwmon/Kconfig                         |  12 +
+ drivers/hwmon/Makefile                        |   1 +
+ drivers/hwmon/qnap-mcu-hwmon.c                | 352 +++++++++++++++++
+ drivers/input/misc/Kconfig                    |  12 +
+ drivers/input/misc/Makefile                   |   1 +
+ drivers/input/misc/qnap-mcu-input.c           | 156 ++++++++
+ drivers/leds/Kconfig                          |  11 +
+ drivers/leds/Makefile                         |   1 +
+ drivers/leds/leds-qnap-mcu.c                  | 247 ++++++++++++
+ drivers/mfd/Kconfig                           |  10 +
+ drivers/mfd/Makefile                          |   2 +
+ drivers/mfd/qnap-mcu.c                        | 356 ++++++++++++++++++
+ include/linux/mfd/qnap-mcu.h                  |  28 ++
+ 15 files changed, 1290 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/qnap,mcu.yaml
+ create mode 100644 drivers/hwmon/qnap-mcu-hwmon.c
+ create mode 100644 drivers/input/misc/qnap-mcu-input.c
+ create mode 100644 drivers/leds/leds-qnap-mcu.c
+ create mode 100644 drivers/mfd/qnap-mcu.c
+ create mode 100644 include/linux/mfd/qnap-mcu.h
+
+-- 
+2.39.2
 
 
