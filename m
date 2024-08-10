@@ -1,63 +1,80 @@
-Return-Path: <linux-hwmon+bounces-3537-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3545-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD03894DE02
-	for <lists+linux-hwmon@lfdr.de>; Sat, 10 Aug 2024 20:48:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D228C94DED7
+	for <lists+linux-hwmon@lfdr.de>; Sat, 10 Aug 2024 23:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 111581C215B2
-	for <lists+linux-hwmon@lfdr.de>; Sat, 10 Aug 2024 18:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 111341C20FC1
+	for <lists+linux-hwmon@lfdr.de>; Sat, 10 Aug 2024 21:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6008512EBD7;
-	Sat, 10 Aug 2024 18:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E72513E3EF;
+	Sat, 10 Aug 2024 21:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QyNgNmY1"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F03482DB;
-	Sat, 10 Aug 2024 18:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9053FBA7;
+	Sat, 10 Aug 2024 21:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723315694; cv=none; b=oY5C9fTBlQptej1PbtECgTX57+Eg4JzCpb7ApYrpmllczoSEzRHTlGkFm8SW9plttQo+MVzSOtRwzirUgw4m0V9QOSAZKm8qt2j7bmbaU8TzUj8uGlRj1SzQE38P/4J+XmwY/MlABrUxR/h7Kwx2gIpvBr9+cEImsYDBwuMFg90=
+	t=1723326449; cv=none; b=a/PKDl59tTbzY5mJmRR9GmLfRS45jaEFtV6TcCygv70FBL6RzLsYCgJrE0gr8fk0slKOB3ZJcsoExdueiLuDc3NCjgOdvajSBPmE7XfePfV6K8KubTcDt+GCuyaWrY4Ha58A1/BOsF9eK6XguAxi59ZMASi0ni+VYyU9dGqKxvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723315694; c=relaxed/simple;
-	bh=3oRagH2yyp/5JVazFAZWcnGYexHP4Uw1cLEt7HEAvTo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=r4EH9RXYL9ngilVMX8jyjl9mC20VZqZ4fVS6ae1WD1D4xhm36m8Bsb/ntxEWEVo9W2jG0uOKTaJRX+lFp12+kQDfVVpWz5uUHfxb0TQWZiLTU3OY0a/VB/8WGvC/jeJLIa/pwPe9Mzw+J6JP1C7ChDesJuwZBumssEycXk/UjdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i53875b02.versanet.de ([83.135.91.2] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1scr84-0006GR-HN; Sat, 10 Aug 2024 20:47:52 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: lee@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	dmitry.torokhov@gmail.com,
-	pavel@ucw.cz
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	heiko@sntech.de,
-	ukleinek@debian.org,
-	devicetree@vger.kernel.org,
+	s=arc-20240116; t=1723326449; c=relaxed/simple;
+	bh=64Kz5nerjw5JoHtlzFnvfP/ze5U+Z0CdoYXAltRn7fQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eJFVaSaEsONn3jYnFC5GFeKz+XxDHiy+OuBdoI1dEZ4NnqI4SQrqISNUsM8MyZzz40ceUnBbgaXx8f1btRKekUs1uFFgd+7QCYvzqmSVUnw6gRWfsY7J1TlcREPUC0Td+D37XCQT9kzikOzKfBKL5BN2Re0eXoeHctuA4A+sJDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QyNgNmY1; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a10835487fso4340745a12.1;
+        Sat, 10 Aug 2024 14:47:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723326446; x=1723931246; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fHsOZ0YN3St7Rru9LJHWEJIKN37bCHz+NEhkc8Z4w7M=;
+        b=QyNgNmY1wJU6N7ykERjVdoXVmUsUAeOJosZhcWi0UTaLa7QHRdoOSKuvttN0tgCaMx
+         GO7CCRpIAROiZR4a4k9DnCxeM/1SYFO1MAg2E85XN0ER2d5nFd6Q7T9plsZLT+hLfyJg
+         aHm5+D07Coqb2XWY+bZ0YZ3UwS1H51HopujlhlGqyy7nXlmCQ1vNtbFSLsyWLmdSfgON
+         QRt4TlYGKwbLUtwgQJZCZxsd5MvZooQ8m5qtgfEx5PUGmHg1fP2utJ8bAb6OJtH/rnwu
+         VF8mGkmy55CHKKvbXDA2Aa7HXkbJJANI/BJWNFPNUSt7ZZGbrWqN0mgTeUkMntxyG70B
+         ijrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723326446; x=1723931246;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fHsOZ0YN3St7Rru9LJHWEJIKN37bCHz+NEhkc8Z4w7M=;
+        b=hhFh5ZVF/YxdGyLKdUiEsq5RGkgVfJoVobHlJHHfFW8uakG5nV275Y1QIRXXP/5oIF
+         YUbPpDiKxIgr9xe1cY7shHt6nboMXS3CRY283lsufY4uWYzuqGAvO7HfQUN6TR9iSPhX
+         cwfW43rZfED0w3XH3sNMn6Qg9qYcQS0+geIKTN7IlswvwEdWT1PEIVePLpQ3tJGDw/U6
+         x7UrfOWPQ90c4Q7xMcLU+teFZmSwLcNeuWpQ268Ut5mH1DxwSDfWuw7ax7SziPhwQdpg
+         chYRXP3VTXjA+V3UhVvews+6FO5Vg0I7DUX65oRPgM176YB2UWLQJiFRx/49KRG8kJWE
+         UUbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUn5NRkxHNAezp/L52NcwKLp65TrPVG+sfLCJu7iXpb+HpOhgKX7J6Vxv1Z08W9WSt1FfNaXuBjCOQOwaS9UK+kkoDA4DViocSiVMzJPCJE9k4nL06BtLlFZKiwsBpMn8okBSHv6jCRm8Q=
+X-Gm-Message-State: AOJu0YwL+PEmouR78T7jBtCvCeRsP3jo1j6YL7zNw/NDdq4UQ2yo4LY4
+	7yrm5uriNpM3j6dcogiFnh3LT1VF01gQEilL6S9YbKxpaVe9oQxM
+X-Google-Smtp-Source: AGHT+IGrebiM4NpumYdQYX/l0XXeKNpt7pDWZHgC1Jo9RUjo38yaPcFe52XAB7vySQVw/mqDNLdwhg==
+X-Received: by 2002:a05:6402:50cd:b0:5a2:fc48:db12 with SMTP id 4fb4d7f45d1cf-5bd0a5767bemr3536948a12.19.1723326445440;
+        Sat, 10 Aug 2024 14:47:25 -0700 (PDT)
+Received: from xws.fritz.box ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd187f33c3sm889156a12.13.2024.08.10.14.47.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Aug 2024 14:47:24 -0700 (PDT)
+From: Maximilian Luz <luzmaximilian@gmail.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Maximilian Luz <luzmaximilian@gmail.com>,
+	Jean Delvare <jdelvare@suse.com>,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-hwmon@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org
-Subject: [PATCH v4 7/7] arm64: dts: rockchip: set hdd led labels on qnap-ts433
-Date: Sat, 10 Aug 2024 20:47:43 +0200
-Message-Id: <20240810184743.277248-8-heiko@sntech.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240810184743.277248-1-heiko@sntech.de>
-References: <20240810184743.277248-1-heiko@sntech.de>
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH] hwmon: (surface_fan) Change dependency on SURFACE_AGGREGATOR_BUS to 'select'
+Date: Sat, 10 Aug 2024 23:47:08 +0200
+Message-ID: <20240810214709.425095-1-luzmaximilian@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -66,52 +83,36 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The automatically generated names for the LEDs from color and function
-do not match nicely for the 4 hdds, so set them manually per the label
-property to also match the LEDs generated from the MCU.
+The SURFACE_AGGREGATOR_BUS option specifies whether SAM bus support is
+build into the SAM controller driver or not. The surface_fan module
+requires this, due to which it has a dependency on the option.
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+However, from an end-user perspective, it makes more sense to
+automatically enable the option when choosing to include the fan driver,
+rather than requiring the user to know that they have to enable bus
+support first before they get shown the option for the fan driver.
+
+Therefore change the 'depends on' to 'select'.
+
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-index 6405ec7d47361..110c323786848 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-@@ -50,6 +50,7 @@ led-0 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD5 GPIO_ACTIVE_LOW>;
-+			label = "hdd1:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd1_led_pin>;
-@@ -59,6 +60,7 @@ led-1 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD6 GPIO_ACTIVE_LOW>;
-+			label = "hdd2:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd2_led_pin>;
-@@ -68,6 +70,7 @@ led-2 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD7 GPIO_ACTIVE_LOW>;
-+			label = "hdd3:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd3_led_pin>;
-@@ -77,6 +80,7 @@ led-3 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_LOW>;
-+			label = "hdd4:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd4_led_pin>;
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index b60fe2e58ad6..e4d9a035a57a 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -2069,7 +2069,7 @@ config SENSORS_SFCTEMP
+ config SENSORS_SURFACE_FAN
+ 	tristate "Surface Fan Driver"
+ 	depends on SURFACE_AGGREGATOR
+-	depends on SURFACE_AGGREGATOR_BUS
++	select SURFACE_AGGREGATOR_BUS
+ 	help
+ 	  Driver that provides monitoring of the fan on Surface Pro devices that
+ 	  have a fan, like the Surface Pro 9.
 -- 
-2.39.2
+2.46.0
 
 
