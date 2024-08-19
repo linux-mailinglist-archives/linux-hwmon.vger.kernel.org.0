@@ -1,131 +1,141 @@
-Return-Path: <linux-hwmon+bounces-3671-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3677-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0E7956D90
-	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Aug 2024 16:40:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A27B956EA2
+	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Aug 2024 17:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A96F283786
-	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Aug 2024 14:40:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30062B20CF4
+	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Aug 2024 15:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7F4175D5D;
-	Mon, 19 Aug 2024 14:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3203AC2B;
+	Mon, 19 Aug 2024 15:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="BoN1ZK5E"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mT1Rsg+D"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1644D171E70;
-	Mon, 19 Aug 2024 14:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC5F347C7;
+	Mon, 19 Aug 2024 15:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724078421; cv=none; b=fhlTwNT5HJNP7R2+G6R0OHR9k7fiWK54vaTnj4zsZhcHAm842Wou7wff7o+y8jL1K7X1dZyhBpR5WeJPsIowUJBzdzgX3QHn8FayiSZKsnCD1hoGXNIPY9xUg2k4tKvr8D/TcZmF52E9NkZx1ohfWED1sP7d0P8/AVL/O1dSL+I=
+	t=1724080959; cv=none; b=sFG7Ew8xnjo9p+ADjU0aovW5yghWGvflhhTw7n09SxaTpqj1sRCMDEtzPnoBCXIRlJHVMpEpPzigZmI6MQukJDkC5F3K2u/+lnIQkGSTB/HRiPDbUp4O7mJyNXUBtIjHZkgbmx1Eud9yTe/y8mejtSpVjSly/h35rdgXNnfwYAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724078421; c=relaxed/simple;
-	bh=equbU9VBMIwdvGkqWk+AjPVcTc+O1BMZPBWXnDB1Dyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcmjDfVHqpaCA35Bg/MNA0g/N1nXwXrzur4RmxqCU6wbCcErfPfxvLzXkSYhFodViaRdsgLAMBchsIb2IrJWZRKAiMRwhKgrjeRw+8B+xQIbKgC+CbnzhEiEvUM0f8owWIuix8epb2ccyFiVrbqFTMU4Hyb7Udd/OcEt9VGTjDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=BoN1ZK5E; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=q1jpFbe8UJlfuFdvluwPG8fKnNdFZmBXVzuyZQAcBU0=; b=BoN1ZK5Edi9AlOHHsw1K/RGBPt
-	zQnEiOOg+wQjd7zLve56+O+FLfv3n7NCkXP3C7P4r3zBLkfiMaOrLqcIZJGSXaL9QINQhSfoRnac8
-	uEbjryqLMmKCDpbH2XSEKBouHnow+ghJF/ph6rUWQ/Nt1bOca21pt3UAYViRyyULydRLkSnAvUnXb
-	QylKTwWz1zgrtlp1rf+Ru5DGYSoJaQQtfWS9xjUlzTxDFbEp6kCsP+sXxcDUhmhiz6hHUmLa8I63a
-	F4iSiPN25iJmdtH6XBKaT38Z6lgfsAXzGnnYl35EzTqgDqv9vDCAxctSdNGsFZwvUMfikYe+cRdeb
-	2Ms5JD9w==;
-Received: from i53875a9f.versanet.de ([83.135.90.159] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sg3YG-00014n-NZ; Mon, 19 Aug 2024 16:40:08 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: lee@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	heiko@sntech.de,
-	dmitry.torokhov@gmail.com,
-	pavel@ucw.cz,
-	ukleinek@debian.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org
-Subject: [PATCH v5 7/7] arm64: dts: rockchip: set hdd led labels on qnap-ts433
-Date: Mon, 19 Aug 2024 16:40:00 +0200
-Message-ID: <20240819144000.411846-8-heiko@sntech.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240819144000.411846-1-heiko@sntech.de>
-References: <20240819144000.411846-1-heiko@sntech.de>
+	s=arc-20240116; t=1724080959; c=relaxed/simple;
+	bh=9JWfjIa1vdn38FsVkvDYMYCfzjwxvlY4s9IpqPG8eFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YjUGT8VYZ2LTi9JyHJtCGPG05IXD7tAkRqwTzdA+59vvPzZ1HBanlXM9dumA8zq0KBOVtLBPG06SV1nqDv4bCmMKGXmcss11AH4zkORSIfuJnVA0Zh9idibN/nZyTS+tMVfVIh00yzZ6DD43y0YGNiQwb4W5x0LDlW99ZDwk7O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mT1Rsg+D; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724080958; x=1755616958;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=9JWfjIa1vdn38FsVkvDYMYCfzjwxvlY4s9IpqPG8eFw=;
+  b=mT1Rsg+D2pL1acEAH6ht/Asb+9tHyPdcpMiKrHNKd1ARNUFt7HVwytuJ
+   Mq51kl4UfiAD//GKh/ah0AiECv3O0pU6n2nRGrV9q4hxe5t/cdibrQwOU
+   CP+2AyqFGVazIIpJzdBIlSmZkCc8txKpWhJn6cIxYdY8suJvPEHiu0eRy
+   kueWrk4JBbI60wmLq90jyRlB3+am5RdEKm92MWFca4lDBmgzIZI+66fGB
+   51ATZRC+JfloXVfX3iDs24x330KWnueQY8dNFXvJtGutRO+H/h6c1mkmF
+   Fz7Ei0YFi1l0OR8QDR71fUC22XcVOJGo2Yu7E80LAzd0g+d1kdjnlDvCT
+   Q==;
+X-CSE-ConnectionGUID: bvBpU9KvQUWfsWSIqkQvXA==
+X-CSE-MsgGUID: k2rNx8dHRDyIApqS9e3+qQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22509903"
+X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; 
+   d="scan'208";a="22509903"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 08:22:37 -0700
+X-CSE-ConnectionGUID: h/Lf2QjnTJWLwtRYtsKpRw==
+X-CSE-MsgGUID: FkCpXxoHSjSKEccMTCJLlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; 
+   d="scan'208";a="60068171"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.73])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 08:22:32 -0700
+Date: Mon, 19 Aug 2024 17:22:29 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com, tursulin@ursulin.net, airlied@gmail.com,
+	daniel@ffwll.ch, linux@roeck-us.net,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	anshuman.gupta@intel.com, riana.tauro@intel.com,
+	ashutosh.dixit@intel.com, karthik.poosa@intel.com,
+	andriy.shevchenko@linux.intel.com
+Subject: Re: [PATCH v4] drm/i915/hwmon: expose fan speed
+Message-ID: <ZsNjNSu5tCsRUxJ9@ashyti-mobl2.lan>
+References: <20240809061525.1368153-1-raag.jadav@intel.com>
+ <23dc7824-50cd-4ba3-be5a-df141e8fe69a@intel.com>
+ <ZrXslA1c-BhO6zYr@ashyti-mobl2.lan>
+ <88320f60-d55b-4aa5-881f-530375659c27@intel.com>
+ <ZsLrJVdBmfZhZaaR@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZsLrJVdBmfZhZaaR@black.fi.intel.com>
 
-The automatically generated names for the LEDs from color and function
-do not match nicely for the 4 hdds, so set them manually per the label
-property to also match the LEDs generated from the MCU.
+Hi Raag,
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
----
- arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+I'm sorry, I missed this mail.
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-index 4bc5f5691d45..7bd32d230ad2 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-@@ -50,6 +50,7 @@ led-0 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD5 GPIO_ACTIVE_LOW>;
-+			label = "hdd1:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd1_led_pin>;
-@@ -59,6 +60,7 @@ led-1 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD6 GPIO_ACTIVE_LOW>;
-+			label = "hdd2:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd2_led_pin>;
-@@ -68,6 +70,7 @@ led-2 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD7 GPIO_ACTIVE_LOW>;
-+			label = "hdd3:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd3_led_pin>;
-@@ -77,6 +80,7 @@ led-3 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_LOW>;
-+			label = "hdd4:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd4_led_pin>;
--- 
-2.43.0
+On Mon, Aug 19, 2024 at 09:50:13AM +0300, Raag Jadav wrote:
+> On Wed, Aug 14, 2024 at 02:07:44PM +0530, Nilawar, Badal wrote:
+> > On 09-08-2024 15:46, Andi Shyti wrote:
+> > > > > +static int
+> > > > > +hwm_fan_read(struct hwm_drvdata *ddat, u32 attr, long *val)
+> > > > > +{
+> > > > > +	struct i915_hwmon *hwmon = ddat->hwmon;
+> > > > > +	struct hwm_fan_info *fi = &ddat->fi;
+> > > > > +	u32 reg_val, pulses, time, time_now;
+> > > > > +	intel_wakeref_t wakeref;
+> > > > > +	long rotations;
+> > > > > +	int ret = 0;
+> > > > > +
+> > > > > +	if (attr != hwmon_fan_input)
+> > > > > +		return -EOPNOTSUPP;
+> > > > Using a switch case in rev3 is more logical here. It will also simplify
+> > > > adding more fan attributes in the future. This is why switch cases are used
+> > > > in other parts of the file.
+> > > 
+> > > it was my suggestion and to be honest I would rather prefer it
+> > > this way. I can understand it if we were expecting more cases in
+> > > the immediate, like it was in your case.
+> > > 
+> > > But I wouldn't have an ugly and unreadable one-case-switch in the
+> > > eventuality that something comes in the future. In that case, we
+> > > can always convert it.
+> > 
+> > My rationale for suggesting a switch case is that in the current alignment
+> > hwm_XX_read() function is designed to handle all possible/supported
+> > attributes of the XX sensor type.
+> > With the proposed change, hwm_fan_read() would only manage the
+> > hwmon_fan_input attribute.
+> > If a single switch case isn’t preferred, I would recommend creating a helper
+> > function dedicated to hwmon_fan_input.
+> > 
+> > hwm_fan_read()
+> > {
+> > 	if (attr == hwmon_fan_input)
+> > 		return helper(); //hwmon_fan_input_read()
 
+I'm not really understanding what is the point of the helper, but
+if it looks cleaner, I have no objection.
+
+Thanks,
+Andi
 
