@@ -1,52 +1,52 @@
-Return-Path: <linux-hwmon+bounces-3710-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3709-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF02895AD67
-	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 08:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC1895AD63
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 08:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2D21F24ECB
-	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 06:22:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B9761F24F71
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 06:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7BD139CF6;
-	Thu, 22 Aug 2024 06:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4491B13A3FD;
+	Thu, 22 Aug 2024 06:22:41 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1B61369B6
-	for <linux-hwmon@vger.kernel.org>; Thu, 22 Aug 2024 06:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C41136E09
+	for <linux-hwmon@vger.kernel.org>; Thu, 22 Aug 2024 06:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724307766; cv=none; b=CW7NKqddpgFq+uWWsNt10ZrM64N98yQ3B+GZ5PekSpN0syLFPe4vrmJ/HUki/heGZ15Bb0Cw9Px+9FLGXSp3w8jJ1FfaGS/VRqZQ2CuTrBhWfLQWK+vEER1kvp6K0z+HGDZcgODMNzpgSLGhRWKQ+IPlNwfauIWSw3Sz8ImOmgE=
+	t=1724307761; cv=none; b=tMkv3atRJUrFHMkIIWxaE/NZSwosrwFR1Ldr4Th9rkG7lzk/LjJAual1yHsd//PNfuURmHlYlgtnvecClAWJwVLUUWzf/8MH0TS9HAKt2zjwZ6eXc9pRSWkXVzN7+lfRRrekOGRVZPobqs+ejcv1v4oy2eylheKNmsuqWFb75e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724307766; c=relaxed/simple;
-	bh=H1H02w5xu9s6cSoOuKyFMGByHhLzPLYGIMauSgcwB/s=;
+	s=arc-20240116; t=1724307761; c=relaxed/simple;
+	bh=zc4krLjzbCKD0JA5aUjz4/uIZlWOB6pYn8GIZYxGK6E=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aUrO/FVHygsN/ybNvj9ZoVQcAE8T3/vkSsvIdAo8PCLF0Bfp7+Q+whhGx+aYrtnsjOd0+95YUPBSdjHcfOcESDW8821/CveQ78FbYmrBnTtuWoyWoXLdpcgtErQn/nk1FzZ04P0gG6K6YTNmBFHVkkHaybb4tRsU+zauW/Zj9Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=A+C2XfLgK7pHic3nfP1584o9oek4jJIpQjM+27+/Ffd5AMxYEYuyaBEDE8MXBnlPVT8MMhRWpF6zPnNiyDw2hVqmAEeplUuXeLezCCp0ix09uabIulZZAAaV4QIhGTGr6KI7VZxI6VUEOGfPjQ7QH/wT+6xDWXKaLpbN0zQnumA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WqCmS6X73z2CnB3;
-	Thu, 22 Aug 2024 14:22:32 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4WqCln3M4Yz13ZvZ;
+	Thu, 22 Aug 2024 14:21:57 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 446C41401F1;
-	Thu, 22 Aug 2024 14:22:36 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7CBC11402CF;
+	Thu, 22 Aug 2024 14:22:37 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 22 Aug
- 2024 14:22:35 +0800
+ 2024 14:22:36 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <jdelvare@suse.com>, <linux@roeck-us.net>, <joel@jms.id.au>,
 	<andrew@codeconstruct.com.au>, <linux-hwmon@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH -next 7/8] hwmon: (tmp421): Simplify with scoped for each OF child loop
-Date: Thu, 22 Aug 2024 14:29:55 +0800
-Message-ID: <20240822062956.3490387-8-ruanjinjie@huawei.com>
+Subject: [PATCH -next 8/8] hwmon: (tmp464): Simplify with scoped for each OF child loop
+Date: Thu, 22 Aug 2024 14:29:56 +0800
+Message-ID: <20240822062956.3490387-9-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240822062956.3490387-1-ruanjinjie@huawei.com>
 References: <20240822062956.3490387-1-ruanjinjie@huawei.com>
@@ -66,16 +66,16 @@ nodes to make code a bit simpler.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- drivers/hwmon/tmp421.c | 7 ++-----
+ drivers/hwmon/tmp464.c | 7 ++-----
  1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/tmp421.c b/drivers/hwmon/tmp421.c
-index 7a6f9532e594..9537727aad9a 100644
---- a/drivers/hwmon/tmp421.c
-+++ b/drivers/hwmon/tmp421.c
-@@ -410,18 +410,15 @@ static int tmp421_probe_from_dt(struct i2c_client *client, struct tmp421_data *d
+diff --git a/drivers/hwmon/tmp464.c b/drivers/hwmon/tmp464.c
+index 0a7c0448835b..0f629c6d7695 100644
+--- a/drivers/hwmon/tmp464.c
++++ b/drivers/hwmon/tmp464.c
+@@ -562,18 +562,15 @@ static int tmp464_probe_child_from_dt(struct device *dev,
+ static int tmp464_probe_from_dt(struct device *dev, struct tmp464_data *data)
  {
- 	struct device *dev = &client->dev;
  	const struct device_node *np = dev->of_node;
 -	struct device_node *child;
  	int err;
@@ -85,7 +85,7 @@ index 7a6f9532e594..9537727aad9a 100644
  		if (strcmp(child->name, "channel"))
  			continue;
  
- 		err = tmp421_probe_child_from_dt(client, child, data);
+ 		err = tmp464_probe_child_from_dt(dev, child, data);
 -		if (err) {
 -			of_node_put(child);
 +		if (err)
