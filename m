@@ -1,52 +1,52 @@
-Return-Path: <linux-hwmon+bounces-3703-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3706-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEB295AD60
-	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 08:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1352195AD61
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 08:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F38C1C22AA5
-	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 06:22:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446AF1C20A41
+	for <lists+linux-hwmon@lfdr.de>; Thu, 22 Aug 2024 06:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1F6139D1A;
-	Thu, 22 Aug 2024 06:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FA0139D09;
+	Thu, 22 Aug 2024 06:22:38 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA21A136643
-	for <linux-hwmon@vger.kernel.org>; Thu, 22 Aug 2024 06:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E77C139D05
+	for <linux-hwmon@vger.kernel.org>; Thu, 22 Aug 2024 06:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724307756; cv=none; b=BjgEZMmdfNyMBYdTzpn/S7czzGeg6h+YwgS/B0UHivksoEdAh7XKOsmo8iuKsSEtRpfeHyZtIqtEtg+OApIq7BVrRnT9ejuj7Tre7NS3AqjtKaUqtvzhN/GhMgW5RAmxrVHrBzMnUAlJ27IR/3wLJs5aLpRc7LBf6DvioUA4CJU=
+	t=1724307758; cv=none; b=gtcOuVz8JYsJZH9JebuLudVsFzcb3kVmPrwd5Cehst7y4NfdfFi04J1Bz+UHhULgb5UARtUkldoDcA2hEWqc2vzWj9iAVhiu8k8ucCDzsIRxfxDrazrQ1FPFnpBl4qPPoMNo6kr55XN0UO6MozS64AByZRLZZrbxGu3EIrnlPo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724307756; c=relaxed/simple;
-	bh=iEENZbCtIGoSS5zb7tD/8mwivYf8UZvRQnGcpB7oN7o=;
+	s=arc-20240116; t=1724307758; c=relaxed/simple;
+	bh=knOvrWTLKjpl/DrSBIpkjIWgtit+HoutsLiwT9GII7w=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DemEI6R59yyCjDNLdfYol3KFPYXbAf4wVtS7XIkuNRTKHbeIjISzxLz/nM7tpx4Upv9tySamE6G6N4SpDgB4mdVEExUAIELE7/64TX1bbgyTuMPmP31ShEOWJeeBktR/RVsAbkjvR+ylBa6b6iKN7A6EF+oVITuYQmRVz3O5yO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+	 MIME-Version:Content-Type; b=n5XjyAm1Qlkbe3MZKEjWcVNUt8A8BT8gTIxykbJXxWCjW0ORRNkxLhmdS19NyzX+AcMBo1x0uPG/ntxNbf9V6CH+O6fLCdFtLGrq5cFRSH6EE05xYb6k3ghUJpAE/T5qVtpn88FGHdQoQBHSdPtzGgxSsLGqLm1bVXhD63+Ibe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4WqClf0QGqz13bv7;
-	Thu, 22 Aug 2024 14:21:50 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4WqChk5fRbz1HGxl;
+	Thu, 22 Aug 2024 14:19:18 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 171EC1800FF;
-	Thu, 22 Aug 2024 14:22:30 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B94171400FD;
+	Thu, 22 Aug 2024 14:22:31 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 22 Aug
- 2024 14:22:29 +0800
+ 2024 14:22:31 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <jdelvare@suse.com>, <linux@roeck-us.net>, <joel@jms.id.au>,
 	<andrew@codeconstruct.com.au>, <linux-hwmon@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH -next 1/8] hwmon: (aspeed-g6-pwm-tacho): Simplify with scoped for each OF child loop
-Date: Thu, 22 Aug 2024 14:29:49 +0800
-Message-ID: <20240822062956.3490387-2-ruanjinjie@huawei.com>
+Subject: [PATCH -next 2/8] hwmon: (aspeed-pwm-tacho): Simplify with scoped for each OF child loop
+Date: Thu, 22 Aug 2024 14:29:50 +0800
+Message-ID: <20240822062956.3490387-3-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240822062956.3490387-1-ruanjinjie@huawei.com>
 References: <20240822062956.3490387-1-ruanjinjie@huawei.com>
@@ -66,33 +66,37 @@ nodes to make code a bit simpler.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- drivers/hwmon/aspeed-g6-pwm-tach.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/hwmon/aspeed-pwm-tacho.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
-index 08a2ded95e45..75eadda738ab 100644
---- a/drivers/hwmon/aspeed-g6-pwm-tach.c
-+++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
-@@ -456,7 +456,6 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
+diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
+index 4acc1858d8ac..aa159bf158a3 100644
+--- a/drivers/hwmon/aspeed-pwm-tacho.c
++++ b/drivers/hwmon/aspeed-pwm-tacho.c
+@@ -907,7 +907,7 @@ static void aspeed_pwm_tacho_remove(void *data)
+ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
  {
- 	struct device *dev = &pdev->dev, *hwmon;
- 	int ret;
--	struct device_node *child;
- 	struct aspeed_pwm_tach_data *priv;
- 	struct pwm_chip *chip;
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *np, *child;
++	struct device_node *np;
+ 	struct aspeed_pwm_tacho_data *priv;
+ 	void __iomem *regs;
+ 	struct device *hwmon;
+@@ -951,12 +951,10 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
  
-@@ -498,10 +497,9 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWM chip\n");
+ 	aspeed_create_type(priv);
  
--	for_each_child_of_node(dev->of_node, child) {
-+	for_each_child_of_node_scoped(dev->of_node, child) {
- 		ret = aspeed_create_fan_monitor(dev, child, priv);
- 		if (ret) {
+-	for_each_child_of_node(np, child) {
++	for_each_child_of_node_scoped(np, child) {
+ 		ret = aspeed_create_fan(dev, child, priv);
+-		if (ret) {
 -			of_node_put(child);
- 			dev_warn(dev, "Failed to create fan %d", ret);
- 			return 0;
- 		}
++		if (ret)
+ 			return ret;
+-		}
+ 	}
+ 
+ 	priv->groups[0] = &pwm_dev_group;
 -- 
 2.34.1
 
