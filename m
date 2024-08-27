@@ -1,43 +1,43 @@
-Return-Path: <linux-hwmon+bounces-3774-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3777-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082A2960E82
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 16:49:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7629611DB
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 17:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1C01C21431
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 14:49:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D34BEB28952
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 15:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FF91C6887;
-	Tue, 27 Aug 2024 14:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB9F1C6F65;
+	Tue, 27 Aug 2024 15:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmOzSZ5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbeWisLO"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339951C57BE;
-	Tue, 27 Aug 2024 14:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06CC1BC073;
+	Tue, 27 Aug 2024 15:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770158; cv=none; b=q3XjK5nXXIln7Rh2p9L0FCnIvZ/F0g/4bF5cBK8YRNztLTzfJob/P5yVmMKjNL70Zvwk+W2GoIP1SP0bxJjT5h9+E5BX4XYXNuQ1h9ekSk9sHJIMNIUxmtXmYxmOj9V3eLSxbeAmUrYVsrWZLlwNn9Zj8tWLzbTFQpwdE+D+RlE=
+	t=1724772237; cv=none; b=S/kmF69tflsKmJG8PoPvamsxGbI0HKMrgX5GdIsKGJV7sZ9MIaCA81ugEx9nfi+e5PXtGSSKpudGStQtKkpUfgygcqn7p5Nq2hMHtpf2u6DN3Y6/JPqWVvPVKeMpguqu438HFM/IEoboaWdKbMmqqbsy407oVcJZG42oh1MgQOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770158; c=relaxed/simple;
-	bh=o/9xEUXYA6GrVwe4ILpaOhsA1lQAMvTGZXVGMqVBQxs=;
+	s=arc-20240116; t=1724772237; c=relaxed/simple;
+	bh=NpIXwWfO3vTOMhKP07i5uJz/kib9KeVx8tKhpwWkkDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wz9I+88Jn6gLwm1x405ixeS/dFyAB5jytRQbOaT8woF8CdKbpbXfKyJ67lvJByJ6SkZgv+V/Xjkdup3z3We5MImzwPkF9UFQ2QEURasV/IEGqA/TTpXwn/bs4E1bOqhUUpvs6cF0dGOxcMBaio6048B4K2OcbKjUwI3vdXvECvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmOzSZ5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79453C4AF13;
-	Tue, 27 Aug 2024 14:49:17 +0000 (UTC)
+	 MIME-Version; b=SwbFSXcPUh03VsXGmpUC3zDrpvcJ/1BD0P+4AxCvdvE//KOsY/q9sGM0hfGCH+ivmijprgP42Yv6iiDtv46MJ4On83MfUjP31ayFdlk+6mOvNw+8/1i+4rAyyNVaQ1cLYiza9i1O/PibDkdCCaU2qdKra8GiL86E7gGX5jfyfAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbeWisLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E074C61062;
+	Tue, 27 Aug 2024 15:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770158;
-	bh=o/9xEUXYA6GrVwe4ILpaOhsA1lQAMvTGZXVGMqVBQxs=;
+	s=korg; t=1724772237;
+	bh=NpIXwWfO3vTOMhKP07i5uJz/kib9KeVx8tKhpwWkkDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmOzSZ5lZStJyC3ib1QS1uEg5oPmJbuCJ76BB41vczSK8FAju2TXkRR71OVcWLS+p
-	 N8E2dPkRBSdEhMskxDlq4nYFaa4kLS7XSSTLuWyu/Bdw794zgmwv2l0znVeJkypEQw
-	 KYBlcblGt5/J+KRXl6/zn0RA1wInyxFkT7VWlG5w=
+	b=VbeWisLO0ZZMTy50gACRdQ3e3E7kVtHV6dKQpKJ/kcz053/FBAhTWq+Vbcjikwi0Z
+	 Gwh4sSrr+1WOdYAdF1ow9okvznMYSXGoNj2HCcOqE1xbR7h5AJIwjkxPd6nt64JLjb
+	 w0WtMDoZQ812ukxA2Smwtpv1EHJucSPOBd5qfc28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kees Cook <keescook@chromium.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/341] hwmon: (pc87360) Bounds check data->innr usage
-Date: Tue, 27 Aug 2024 16:36:15 +0200
-Message-ID: <20240827143848.899532703@linuxfoundation.org>
+Subject: [PATCH 6.1 154/321] hwmon: (pc87360) Bounds check data->innr usage
+Date: Tue, 27 Aug 2024 16:37:42 +0200
+Message-ID: <20240827143844.095930313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
