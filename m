@@ -1,109 +1,102 @@
-Return-Path: <linux-hwmon+bounces-3776-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-3778-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59EE961073
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 17:09:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AD19612D5
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 17:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E2C286B03
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 15:09:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ABD42820CE
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Aug 2024 15:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A3E1C462B;
-	Tue, 27 Aug 2024 15:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650D11BD00D;
+	Tue, 27 Aug 2024 15:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tb2QBC46"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gtr0E6nF"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389B51E520
-	for <linux-hwmon@vger.kernel.org>; Tue, 27 Aug 2024 15:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B105619EEA2
+	for <linux-hwmon@vger.kernel.org>; Tue, 27 Aug 2024 15:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771341; cv=none; b=lhJDW4S2tQjOQi3/kstycjaxTH1aQsDGhUDrguQElha+EdeA6taYjWCFRg+h02TSvNU9CO/6oQ8IQiITB2IVudjCTYVA+bxFQWpzl3rw0KZIzsYtGFSEq0SDJAmvQ35rFMcdNwv4hFOkBxrHk3SMiPY7yUSpaRSxHlpwvaPYwJY=
+	t=1724772902; cv=none; b=AIPOeQe/Myp4aKPY9uSEVPpym0DruHf1OrtcAhEwEVPkA/4ljpzBdFhBk9VqUt75k6+vwvOIM4D6Z0XipNQ7Ngyyu6t2UJgH4Lc+VWuqE03mMjq025dLq1hHSmkiNehjHltRNebPsOerQlTXIlLr9EZjlj3YIrRtUbJA7nHCDW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771341; c=relaxed/simple;
-	bh=l7WxW36O7am6p3vv+/0BRCw81cJKOj86v0+TCt1c754=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HrUTxo4psXFEiXnPYfdJ7G0ooIRqj9lkuA5QjhBGu+TC0NzdJk0Pj7z7VXbp678JD/W81d+2PpbQ+3cUPs6cBXnAaJtzJo4bKzLdgU7FJS/+Odx0/Z4Jm08n9EZl2LHJVxPlQjQU9D03dq8NfUEHe90HyWiltLSNbJPjtql9joI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tb2QBC46; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1724772902; c=relaxed/simple;
+	bh=0SXGR+AQHVV4w16HuMriSd5l0Tl2yQ8NEJMuhu+v13k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fTKvJwi2f96EQtgp+isma4wiqbpX4CtOBaa6pXk5pT+s0exil2vUkzEc/Fg8ctDJkllutSp+zbKkXG4bMUVgamD4otU9YUtEVITAdGp832c4UQeDZoYlQFtioIBU1XR8Otxb5P7l9k2hBcLHsbY/ECT7yPMo6FLidrpURax48mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gtr0E6nF; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-71430e7eaf8so4451128b3a.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 27 Aug 2024 08:08:58 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2021c03c13aso42575845ad.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 27 Aug 2024 08:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724771338; x=1725376138; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3n0Ph4/cZee5xGStGup0GbqMBI9F2UvrvpLrg1CT1eE=;
-        b=Tb2QBC46uCUkMO/r6oXgjGnoY13BOu6wvHlroO1qEk5w8iAqytXNaFdEO7nSCtYO2d
-         O1J6HpflHUuMrmAJWzSMWDEiUq8HjsKH9/IrUhpkDokmbG8TIQsQIJT2+x6X2jYU2f/H
-         X8EHZGkib4SsHr6JqXQMUgLsi0Nvof+6DhyO14KAZ39kZ6gGOjERKWLmcAoXOBUqKy3N
-         aHr805WBPgPvmg7cZvlnaVVTFa4xRiK6ptXoEDid/5+ZJEzDxCm3tsEWTEwhak3BGwPX
-         wCsqgVlDaZHpc0j7hguHaEdUMH5e1B+VlQHo/Jw/yrb50F+DTY1zt520l7/nA4WAwlMF
-         0gPg==
+        d=gmail.com; s=20230601; t=1724772900; x=1725377700; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=pGVjrr5rv0eo3sHHLsXqjVr3Gq7500x0aZF/FYdQeZs=;
+        b=Gtr0E6nF/MZn6+n2P7hog0+UGH80B0YVwhWkRRVm76u/b+aupd2wKkVCrJbRtRYFbV
+         tre3w9EeAOGJB35GgOAE4eFiAbvlRt+yUOtjSuoYEVG3YLHfpx+ybWRkQfl4QHfrBUyo
+         YclFetvRw+5ptppSx9bsp6MrZHs4TVs0WzNIRZ75TlpWUqV6vr/pCq8Ntj+C0GjhFL7L
+         3yufcz7Zer5CZoVX1AQjmLgIRinU5/BrD4ijQZKdbUPqcF8T9G/XQ3sNwfXkUyVVGpOh
+         hTwaoNCJ+4wsC2QguGw5VksxWak9hU+wd8OOc+OKFy4GCy6IPb0vjQdplgUJfH1pyH1G
+         LwSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724771338; x=1725376138;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3n0Ph4/cZee5xGStGup0GbqMBI9F2UvrvpLrg1CT1eE=;
-        b=VqFIUAJoz9pFuJ7HyEsXtO6PZFukPuMbldY70KJuhuNvAAHCKmZtxiVj4vmYQK8K+V
-         ztrm+8mKqnN46UShdo5Bl8Bj9nm4t1SENHSmq4auF2kfKWJQE4BxphlAflWMpdvhY5X2
-         3wneQKcAtIx9ic7Z0J/fz+zSy9imSahFLA3vXnl6VDSUeiVH+zG2R4zYRtyK2OxE7Lom
-         6zC3yoEnBkSO40A339TiKIEDmGmejsy4x8MmvV/G4/I5mZsyR6Nj8OIaD/G4tN/JeLPs
-         XwjJduwKWRUhisKRkf0zs3RRr3C8yGiczbSMeCyZmq3GUwLQbPstXkEcDfaOiNh0ScvU
-         quhw==
-X-Gm-Message-State: AOJu0YzYiu8nzlNyjCeSnwcFhM1VhKIsbZumq7jkqysVXvls6rSBLZi9
-	oZR7fdK+Mot6M2pGrIDM94RAXkXRIKPgJGwuTeKyJEbBI1koaguSyoU7fw==
-X-Google-Smtp-Source: AGHT+IH0IFkRvC4y2nD/QqdJdvNsjDJ5QEzApgy5pZnO6TcskmAmCf/Lnja92KlDzHomaaLyjSKetQ==
-X-Received: by 2002:a05:6a20:4f89:b0:1cc:bb4e:a905 with SMTP id adf61e73a8af0-1ccbb4ea95amr3822894637.1.1724771338243;
-        Tue, 27 Aug 2024 08:08:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724772900; x=1725377700;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pGVjrr5rv0eo3sHHLsXqjVr3Gq7500x0aZF/FYdQeZs=;
+        b=Ad7yHe+CiF9BHcLktttd7jQgdj70jp3uJKq7i31rIU6v3zbJ7TQGjHIzkHMmwMvIAa
+         3mIYj8Z3uingb3YUtXaV+8klGo5zusvQNdG0BzQAcypWz+0vpD2PWojzdPSZJD/mAjrO
+         rdhqSoYa61YCebEPo+y+puTziyFtkXKxaNM3p7bRXkj2hVSnekO4qir9T774MplKMO6k
+         9/wBI8YhIpp6Fdn45lNoU39Zlrr1IOV+YvRNoCo1EbBKHMTcZtmvOjpHYjqJgb4m3yuP
+         J/UI/VRy9DHq27J8106g6mCQ9OAHmGJxmJi8PAjwbBLNiFVBKqGFBDytR/SgSGDzymDn
+         2cew==
+X-Gm-Message-State: AOJu0Yy1MKs8mI4vXDkYbnJtkWxfWGgQlWSJgpOD7PfEBBdMUvsLDFiO
+	1FEOoLO5QzRuIusk/Q5JWMguP23X4rQojT0TMmtjDj9NmdZIUvila6nI/A==
+X-Google-Smtp-Source: AGHT+IGGCk4sgcfx7XnZvtfWwmiiMsuJgdyjKqNQNOJHftsHncFvEgzFJpeZg3uWyQ6q+Nn1ll4VeA==
+X-Received: by 2002:a17:902:d4c1:b0:1fd:96c7:24f5 with SMTP id d9443c01a7336-204ddcaee05mr49539005ad.5.1724772899580;
+        Tue, 27 Aug 2024 08:34:59 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434230d1dsm8681882b3a.37.2024.08.27.08.08.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203859f02e0sm84443425ad.250.2024.08.27.08.34.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 08:08:57 -0700 (PDT)
+        Tue, 27 Aug 2024 08:34:58 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 27 Aug 2024 08:08:56 -0700
 From: Guenter Roeck <linux@roeck-us.net>
-To: mailinglist1@johanneskirchmair.de
-Cc: linux-hwmon@vger.kernel.org, groeck7@gmail.com,
-	johannes.kirchmair@skidata.com
-Subject: Re: [PATCH v3] hwmon: pwmfan: do not force disable pwm controller
-Message-ID: <e6ad0833-9af3-438a-995b-b8c15f49b3e7@roeck-us.net>
-References: <20240827054454.521494-1-mailinglist1@johanneskirchmair.de>
+To: Hardware Monitoring <linux-hwmon@vger.kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 00/11] hwmon: (ina2xx) Cleanup and convert to use with_info API
+Date: Tue, 27 Aug 2024 08:34:44 -0700
+Message-ID: <20240827153455.1344529-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240827054454.521494-1-mailinglist1@johanneskirchmair.de>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 27, 2024 at 07:44:54AM +0200, mailinglist1@johanneskirchmair.de wrote:
-> From: Johannes Kirchmair <johannes.kirchmair@skidata.com>
-> 
-> The pwm1_enable attribute of the pwmfan driver influences the mode of
-> operation, especially in case of a requested pwm1 duty cycle of zero.
-> Especially setting pwm1_enable to two, should keep the pwm controller
-> enabled even if the duty cycle is set to zero [1].
-> 
-> This is not the case at the moment, as the pwm controller is disabled
-> always if pwm1 is set to zero.
-> 
-> This commit tries to fix this behavior.
-> 
-> [1] https://docs.kernel.org/hwmon/pwm-fan.html
-> 
-> Signed-off-by: Johannes Kirchmair <johannes.kirchmair@skidata.com>
+Clean up driver and convert to use with_info API to simplify driver
+maintenance.
 
-Applied.
+----------------------------------------------------------------
+Guenter Roeck (11):
+      hwmon: (ina2xx) Reorder include files to alphabetic order
+      hwmon: (ina2xx) Replace platform data with device properties
+      hwmon: (ina2xx) Use bit operations
+      hwmon: (ina2xx) Mark regmap_config as const
+      hwmon: (ina2xx) Use local regmap pointer if used more than once
+      hwmon: (ina2xx) Re-initialize chip using regmap functions
+      hwmon: (ina2xx) Set alert latch when enabling alerts
+      hwmon: (ina2xx) Fix various overflow issues
+      hwmon: (ina2xx) Consolidate chip initialization code
+      hwmon: (ina2xx) Move ina2xx_get_value()
+      hwmon: (ina2xx) Convert to use with_info hwmon API
 
-Thanks,
-Guenter
+ drivers/hwmon/ina2xx.c | 822 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 453 insertions(+), 369 deletions(-)
 
