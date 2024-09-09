@@ -1,119 +1,134 @@
-Return-Path: <linux-hwmon+bounces-4060-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4062-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5876F970AA0
-	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Sep 2024 01:38:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDC3970AF5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Sep 2024 03:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3BC1F216BB
-	for <lists+linux-hwmon@lfdr.de>; Sun,  8 Sep 2024 23:38:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51CB0B211B7
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Sep 2024 01:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C08015351C;
-	Sun,  8 Sep 2024 23:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLoMjLY7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DF9111AA;
+	Mon,  9 Sep 2024 01:14:26 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF63A1B5;
-	Sun,  8 Sep 2024 23:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B971F9EC;
+	Mon,  9 Sep 2024 01:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725838695; cv=none; b=FgTIGBo3/MqRl64CD9FNtJZ6erZvAWTnqaYtqphGvRy56pvrmn8WxdRkcky/6kj50O/k2a3Npk4WM3W5hSnq8dNhw8oeoRD9DZ7SsHdDjL4bkQzkfvokv2jgGielbKTqkEwmkRJJn0bi+IGTmsq1xZ8IocbwsYnpoVvbR3q3UPA=
+	t=1725844466; cv=none; b=JB7Su1LkgR4VVgIgLAhP9TEvJIzrUsaZSdT3+VXd2lqpuovjLltNFUvyAlR6fLnhXDyupBQ43cOmP56UDw1VaALgLXW5IDMHVnE3fL1tq2I18O64EUI5K2oO5thjwX79jG24wWFDJ0s6dCBrOpvnBGSfNjEjRFH0bqfE9QWY2Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725838695; c=relaxed/simple;
-	bh=FY/BjhsgiyH0daYlzg5bOZKtsRLtohljcQZ3TCBxMaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=If+BFHF/FJHuLrOR3KxD0SJg6Givivsx1fVoVcmoqew6WQGgbYO3VI+wvqXarN6r44dpWq0FBasTtNjkbVrhlh++dvXBPA4ia907Z7QijxixV+a/sVq3m6RTo4rus0agiy+jg3gv/HIbg6+OZpWSo8P9WWHK+iw7gX9bzlFmrXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLoMjLY7; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7cb3db0932cso2924576a12.1;
-        Sun, 08 Sep 2024 16:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725838693; x=1726443493; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n3eHjycKFrqwvUbRNtshDfNjCTOFbe1oyIgmCT0dxeE=;
-        b=XLoMjLY7IsGTqBEEXhfUL5dVtTvxlCu/ZVIJkjpW9PFY+xdx/lvgSGNBua4TwoISr3
-         w941jg9K5vUPQGuJCpAnsWOkZDSex9GbGDCZz3sHW+XWT7P31KUXcOZ5kYyYJAU3lSEQ
-         qXHPN5JpfC6EBx5EP4ydlP/3l52j05TyNxcBn03ZZq/9KQkrBWFNft1szyST1Y+jm9V2
-         JjA8Lf8OuODh8V/liGgLKkGtuuWjrinOJOPSVvyfLennwLZCq+jh/mQl4UuFptWcVc9H
-         zX+XHndwUBjcoHroTRHDp5nmy5uZw1dxk8lKbDyrUIqdGtgc6fffcONMx0gc+bAa/Mao
-         Bp9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725838693; x=1726443493;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n3eHjycKFrqwvUbRNtshDfNjCTOFbe1oyIgmCT0dxeE=;
-        b=sFGW25roKiaBhP+loG+5FgwZObHFzkjDD7GefB3dbaOeAIIDTkAE+FWUJOYhS1S+0W
-         QQboShn9AyTB2gV2kq7Se8pC1vgwyveMiS3VHm/asEo7B+GGjgwHwVvKRe9s50Qu5Nge
-         xz7J5IqLcqPYBhnXc6lyG559w7e7sDwnj644jUT45C6WABBlpGxln8MsrzunC9hGACRH
-         Aqa5tJcOXfEnQQZ2s6owyvt3abl+jrMgcxiCHPLzyYCaQ1Wpbl44snRCHtXvKGL2rD5H
-         VdwW5AhsF2PsuA+od++L3dZmLXmovqU7A1Hsx0uLmN6b6mkGRUHzEzzoOotBAshW/PbX
-         k3ug==
-X-Forwarded-Encrypted: i=1; AJvYcCUgOwDa/NPrpe7I9SvGeSP88EeX0yqK6ut58anKMp2t0h2GfebEjmmaQ97E2PwzYlFyMEVXCEVLAuoSbWJI@vger.kernel.org, AJvYcCV1TEkSuHJdj32DCBLMuDkiIumGWJ71YHRAhrVWfW8TUK6lYBL36Xqd7Ws0ZCMvyEftqeJYYPpt6e8ZcrmURKE=@vger.kernel.org, AJvYcCXnejJITNWE2ujHFsgWoaJubI/mvCM/qwzGtUDuLxYNUY1gcjAFmqedE7sH6huCiJH319wScfUFG+xMi4w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ+RKWYRwoWzzR9tQviieZYUga8KQABdxHJbpu1XrPPn7oKA/I
-	7fSi7blVaT4FH9K5jMcfPjXaEtIvSXzM2tyGsb0KvlBQrVkPvAaA
-X-Google-Smtp-Source: AGHT+IGOmnvuP7qDYxfamyY7dTZnsjSbc3Swnm6V4JGaI+iN0fr4DKRu9NEUxrBwfTThDs1aZuxc/A==
-X-Received: by 2002:a05:6a20:718a:b0:1cf:55e:f893 with SMTP id adf61e73a8af0-1cf2a0e58ecmr5896375637.36.1725838692810;
-        Sun, 08 Sep 2024 16:38:12 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-718e5982ebasm2465733b3a.164.2024.09.08.16.38.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Sep 2024 16:38:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 8 Sep 2024 16:38:10 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Saravanan Sekar <sravanhome@gmail.com>,
-	Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (pmbus/mpq7932) Constify struct regulator_desc
-Message-ID: <f6c39166-19bb-4e63-97ce-abf50c6f915d@roeck-us.net>
-References: <c0585a07547ec58d99a5bff5e02b398114bbe312.1725784343.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1725844466; c=relaxed/simple;
+	bh=6bcvZU1rTtHXISVQ5qkXgIcYAt31PhLF45p5DV9bjI0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NvOHNlgeR3MbQ23ArxEnp9n6tOMu2oHO0eEaGl33+hkYLNAhxqFNmO9DIr3exbHKcwPdKhr9FbzxuO6cX814CS4xw5AMOBTihcdbP80x+9fwZLlQfxs9pQoXQQEq25t7xHz4gVydAiZSCqRCvq0pTXiPr8zjADmb/KZpDacKKCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4X28273BkRzpVCL;
+	Mon,  9 Sep 2024 09:12:15 +0800 (CST)
+Received: from kwepemd500012.china.huawei.com (unknown [7.221.188.25])
+	by mail.maildlp.com (Postfix) with ESMTPS id 13807140360;
+	Mon,  9 Sep 2024 09:14:15 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemd500012.china.huawei.com
+ (7.221.188.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Mon, 9 Sep
+ 2024 09:14:14 +0800
+From: Li Zetao <lizetao1@huawei.com>
+To: <jikos@kernel.org>, <bentiss@kernel.org>, <michael.zaidman@gmail.com>,
+	<gupt21@gmail.com>, <djogorchock@gmail.com>,
+	<roderick.colenbrander@sony.com>, <savicaleksa83@gmail.com>,
+	<me@jackdoan.com>, <jdelvare@suse.com>, <linux@roeck-us.net>,
+	<mail@mariuszachmann.de>, <wilken.gottwalt@posteo.net>, <jonas@protocubo.io>,
+	<mezin.alexander@gmail.com>
+CC: <lizetao1@huawei.com>, <linux-input@vger.kernel.org>,
+	<linux-i2c@vger.kernel.org>, <linux-hwmon@vger.kernel.org>
+Subject: [PATCH -next v2 00/15] HID: convert to devm_hid_hw_start_and_open()
+Date: Mon, 9 Sep 2024 09:22:58 +0800
+Message-ID: <20240909012313.500341-1-lizetao1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c0585a07547ec58d99a5bff5e02b398114bbe312.1725784343.git.christophe.jaillet@wanadoo.fr>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemd500012.china.huawei.com (7.221.188.25)
 
-On Sun, Sep 08, 2024 at 10:32:38AM +0200, Christophe JAILLET wrote:
-> 'struct regulator_desc' is not modified in this driver.
-> 
-> Constifying this structure moves some data to a read-only section, so
-> increase overall security, especially when the structure holds some
-> function pointers.
-> 
-> This also makes mpq7932_regulators_desc consistent with
-> mpq7932_regulators_desc_one which is already a "static const struct
-> regulator_desc".
-> 
-> On a x86_64, with allmodconfig:
-> Before:
-> ======
->    text	   data	    bss	    dec	    hex	filename
->    3516	   2264	      0	   5780	   1694	drivers/hwmon/pmbus/mpq7932.o
-> 
-> After:
-> =====
->    text	   data	    bss	    dec	    hex	filename
->    5396	    384	      0	   5780	   1694	drivers/hwmon/pmbus/mpq7932.o
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+v1 -> v2:
+ 1) drop some risky patches, such as patch 7, which may have race issues
+ 2) Some patches can be further optimized. By replacing
+hwmon_device_register_with_info with devm_hwmon_device_register_with_info,
+the .remove operation can be completely deleted.
+ 3) Adjust some commit information and use "Use" to replace
+"Consider using"
 
-Applied.
+v1:
+https://lore.kernel.org/all/20240904123607.3407364-1-lizetao1@huawei.com/
+
+Hi, all
+
+This patchset is dedicated to using the life cycle approach to manage
+hid resources. By keeping hid resources consistent with the life cycle
+of the device, we ensure that resources are available during the life
+cycle and the hid resources can be released before device release.
+
+Going one step further, since the module does not need to recycle hid
+resources by itself, the goto-release resource release coding can be
+avoided. It also reduces the risk of resources not being released.
 
 Thanks,
-Guenter
+Li Zetao.
+
+Li Zetao (15):
+  HID: core: Use devm_add_action_or_reset helper to manage hid resources
+  HID: cp2112: Use devm_hid_hw_start_and_open in cp2112_probe()
+  HID: ft260: Use devm_hid_hw_start_and_open in ft260_probe()
+  HID: mcp2200: Use devm_hid_hw_start_and_open in mcp2200_probe()
+  HID: mcp2221: Use devm_hid_hw_start_and_open in mcp2221_probe()
+  HID: nintendo: Use devm_hid_hw_start_and_open in nintendo_hid_probe()
+  HID: playstation: Use devm_hid_hw_start_and_open in ps_probe()
+  hwmon: (aquacomputer_d5next) Use devm_hid_hw_start_and_open in
+    aqc_probe()
+  hwmon: Use devm_hid_hw_start_and_open in rog_ryujin_probe()
+  hwmon: (corsair-cpro) Use devm_hid_hw_start_and_open in ccp_probe()
+  hwmon: (corsair-psu) Use devm_hid_hw_start_and_open in
+    corsairpsu_probe()
+  hwmon: (gigabyte_waterforce) Use devm_hid_hw_start_and_open in
+    waterforce_probe()
+  hwmon: (nzxt-kraken2) Use devm_hid_hw_start_and_open in
+    kraken2_probe()
+  hwmon: (nzxt-kraken3) Use devm_hid_hw_start_and_open in
+    kraken3_probe()
+  hwmon: (nzxt-smart2) Use devm_hid_hw_start_and_open in
+    nzxt_smart2_hid_probe()
+
+ drivers/hid/hid-core.c              | 40 ++++++++++++++++++++++++
+ drivers/hid/hid-cp2112.c            | 26 ++--------------
+ drivers/hid/hid-ft260.c             | 32 +++++---------------
+ drivers/hid/hid-mcp2200.c           | 22 ++------------
+ drivers/hid/hid-mcp2221.c           | 26 ++--------------
+ drivers/hid/hid-nintendo.c          | 23 +++-----------
+ drivers/hid/hid-playstation.c       | 27 +++--------------
+ drivers/hwmon/aquacomputer_d5next.c | 39 ++++++------------------
+ drivers/hwmon/asus_rog_ryujin.c     | 47 +++++------------------------
+ drivers/hwmon/corsair-cpro.c        | 24 +++------------
+ drivers/hwmon/corsair-psu.c         | 24 +++------------
+ drivers/hwmon/gigabyte_waterforce.c | 29 +++---------------
+ drivers/hwmon/nzxt-kraken2.c        | 45 +++++----------------------
+ drivers/hwmon/nzxt-kraken3.c        | 34 +++++----------------
+ drivers/hwmon/nzxt-smart2.c         | 38 +++--------------------
+ include/linux/hid.h                 |  2 ++
+ 16 files changed, 114 insertions(+), 364 deletions(-)
+
+-- 
+2.34.1
+
 
