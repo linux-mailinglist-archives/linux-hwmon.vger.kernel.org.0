@@ -1,76 +1,77 @@
-Return-Path: <linux-hwmon+bounces-4222-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4224-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B0797D885
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 18:47:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CF897D88C
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 18:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D842848FB
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 16:47:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A5A21C22444
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D58518132F;
-	Fri, 20 Sep 2024 16:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCC4183CC5;
+	Fri, 20 Sep 2024 16:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uL3z3rkq"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QHV+AA2j"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC0417CA1B
-	for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 16:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A19517E01B
+	for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 16:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726850852; cv=none; b=LYXV9GbGn8qhnJI18LKuCR4FCGFapGJrGxmtJalr77V2nDzVvNbBtuRBNlr3pDh7i3xu31TBE/z5V48Py8xP1+EvJlUPsj51toAUqW3gGSpq0mqzsL79iXqN1rSM6wEZSyBFOhi+dhbEtrnRgtWYEL5socQh7GdEKXSdX9MHbjw=
+	t=1726850854; cv=none; b=u1GfYgFX35PmGJCot9CQXsVkyzVwnG+/7MTaVwbnLRUiw02qHEp9ifg572qbVle3ZI21+3Xgsoz8KzHSPnoJ0wP8bafNjvBwYNWW+lsAcp8qGG64Fa63ixK8CC+C7qGSrbWtYNB4u/+sLY0DGUlaed7fZQoPKygf0i6jZRGsx7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726850852; c=relaxed/simple;
-	bh=3p8epjwY1oVoba554UVp1ZMZNkGwAgCoLLhC2PSJKOM=;
+	s=arc-20240116; t=1726850854; c=relaxed/simple;
+	bh=7Gd97J5FZJ8x51YDJ0TveVRB+r/ZL3dVmW0gShb0mFQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aWup91wKLAf8mQ8a5dAa9+CUD3+zK9lvRwFUFWkPh31/Jz2v471Xqcy+qQXqoNQcb3ylRwfmBtEWkuy5NGSbXGZPBzczwvjy+UiPW9yN9vNR8akI6Vl9ltmDskJAopWlcZpDMge54E2AcKsimFyv2NoR1GhSMF3lRIWWz/Ui1jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uL3z3rkq; arc=none smtp.client-ip=209.85.221.52
+	 In-Reply-To:To:Cc; b=qEMMHeEZzP6Ig2lopQ00lV07qrxNDPTMpd8/j3fgjf+/F2soBs0vR9JJjdaffLacI3mvXH8aNDkMAWwv4aIIsqhYKwJ+Ewy1qzWswbCCTpfsUzBaeWmGhGGXdqRT2xEFYJeSEIzRL6k4dzfq/dnoL2amChPhqZuNIWIQbKjltqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QHV+AA2j; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-374c3400367so1900902f8f.2
-        for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 09:47:30 -0700 (PDT)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-374cacf18b1so1436249f8f.2
+        for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 09:47:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726850849; x=1727455649; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726850850; x=1727455650; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=auS1Nijn3/MM+vVwjmIp4Kgr8RxjQxso8G43GcLWcTA=;
-        b=uL3z3rkqZcPgS5yRPjXj3VG1n5M6ku0OzbGm3pi4wJPQqx8ImhdipFi0KcRVYn3GbJ
-         D/peGKRY+1cEpl+xT0jKDLDFigZEqeEQY7mMHlySv6VgOoShfe/ykrRde/pEa2L+CqSF
-         OvuaaYyUM/AtE18BMvRYPNpcoH+irBRYcV7vqPGR2dhwIkEemMf3Q9FtZoQhIUJ3CLwS
-         mhrHCx3AzMjg/BpdCaCMDHZZgCaU8n6DK2ALH45TpouZS0arZDgOeHEpXK9X0Eba0aNi
-         yJefg594tkCt3CBf2b3wVVgqz1OwWj+AEwReUBiclcMSR2KzyU5a3OHBDrM70qMuIHqq
-         fsyQ==
+        bh=Grd6/QarEoX1VDGP2KnV3P4yoP18b6h6fWLKjReB7pQ=;
+        b=QHV+AA2jqm2Xt3VklSL6soiUStVJlv6sJlzGVldo4Y+B6eEvgAb10Dnf1ux737oNLc
+         +hzTlOEvUwJxIvcoyuiaWk2JqMg6CK6BzFoI57wyngJxnuARrawixzNfzga8dKqXjLH1
+         x58suh/P+IvcEpycKAqxQyZCpofFO3UD4H77k+mPUQWJUbd8EUWByEHWkVWG/RAGuMt9
+         c2Ljvx5lraQbW3OTohLVHroEoXGPSiXVpTw1yWgoyyQdXWW3gZibPhf3xO4deULJpFKf
+         LthzEsy8sWkvJvPxyqe0V3I4jvV/Ct8eTilaP06cxfkGxMB7HhejXKvfmLell7iIEdD3
+         VOkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726850849; x=1727455649;
+        d=1e100.net; s=20230601; t=1726850850; x=1727455650;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=auS1Nijn3/MM+vVwjmIp4Kgr8RxjQxso8G43GcLWcTA=;
-        b=muDOXyx5Zn/Mdl1KiBKBZyKQs5cFh0bDPyYw/pSab32Z7MwGiqCLValc+omDV41s0z
-         S1DN7l11lRSWooCT5TwHdyn9mkjwEL8+jxzYtiieo1Z+iRSuOX2azISMDy7Nerr5tO5Y
-         uArSV3cfy1Xv052AX9InYfI+foytg5llBPLx0yD999QhcnZVmTYBgu41oOcCgwHzyBJk
-         DQeQdCyJlqQuGE/QLFQHPIe7GA2ZFJ5WVcqa5HZbXwyFpfnGYfPWocemEVY42LqwpCkf
-         LYFnuK7HJ2OXQJmv0VNX+inFZMSSz5hZG08FQf6/J2M549hzkXAiYdwdcA7SfGeI16rR
-         J2wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQaU7uAjoRVo1OSeq1t4ut1ejuDNcjO4yMj4Mpq2BW8I8jAebYmwWVU5LLPm7s1GX7pNFpRr0stvqYpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC8tB588JkoYFxxqMx2jvW9c365XThrWWVR8zqdvNdW6UoUJ7w
-	UoOUgAdLtY7xubYBYRpEgbC4Kqno0ZA5oVXrYzJbtOs0WPwQ7Beolt08nc2odzs=
-X-Google-Smtp-Source: AGHT+IHXZIFkEVB0paBQKp6NWhbzwDh87vNSKY+P6NiQas53tTtsyxNthvn6Df+xga4/u+MbyHXoIQ==
-X-Received: by 2002:a5d:4741:0:b0:374:c6b8:50b5 with SMTP id ffacd0b85a97d-37a422783aamr2678511f8f.17.1726850848643;
-        Fri, 20 Sep 2024 09:47:28 -0700 (PDT)
+        bh=Grd6/QarEoX1VDGP2KnV3P4yoP18b6h6fWLKjReB7pQ=;
+        b=ARbA1wNv9kf9zJguh7gigGavS83PD4+RrHyymdCM/a9x25cQkGDGJNI94wDYhbBa/7
+         69B8qDNOEsG63RlLaI58SzSDo37MJcEB2AXSYT9U1xvPVniRVH5rB0ZfKe4gKFsAOya0
+         mpARAS2H3qf+9GwkrLgZRIkcrY51iDwp+lRzCC6HxYo+NF6oEDxoWtq9BYqaRDQ7apdR
+         a1l0WGgKOSDkave+8bAYqqZT7EVnliyTa7kNvk4J0sMFq3ROXAlPeaGZpOPOhRZ7Uv1+
+         1MO+iyEp+gz+iqJIhkBo35PgLX3wnjQW9pCZTSH9RFLJVWxm23qgkEFk4AxUiBAJtn5f
+         QrgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcr+cQwdm1gblKVcSJvtLAAqRKS73evFjV6muQyiOftFvn/MMCcFRN1fVJOF7dFFcCkfoRQSFbTOlVhw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC8KASeIkV6j1YAYzyLa3hwjBR22YWhM8yfa+L1XP8H1PALXS+
+	hKvA7N2MsXTH+pef2x7npAyq17T1+Vq/TSsDZ2mblZ/nMjlVglevPw/15TqY0paeeU5k0sLr3s2
+	p
+X-Google-Smtp-Source: AGHT+IG8T/Uxxp3O3XxMqRJvOjGpV7ESRsDjpxKRPa7+9h85Ch4V4TUG0cezV+sC11zAQjuSit0j4w==
+X-Received: by 2002:a05:6000:186c:b0:368:5bb4:169b with SMTP id ffacd0b85a97d-37a43128c93mr2271652f8f.4.1726850849724;
+        Fri, 20 Sep 2024 09:47:29 -0700 (PDT)
 Received: from toaster.baylibre.com ([2a01:e0a:3c5:5fb1:8e69:83a7:a29a:ba83])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-378e7804476sm18172250f8f.90.2024.09.20.09.47.27
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-378e7804476sm18172250f8f.90.2024.09.20.09.47.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2024 09:47:28 -0700 (PDT)
+        Fri, 20 Sep 2024 09:47:29 -0700 (PDT)
 From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Fri, 20 Sep 2024 18:47:03 +0200
-Subject: [PATCH 2/5] regulator: core: remove machine init callback from
- config
+Date: Fri, 20 Sep 2024 18:47:04 +0200
+Subject: [PATCH 3/5] hwmon: (pmbus/core) allow drivers to override
+ WRITE_PROTECT
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -79,7 +80,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240920-pmbus-wp-v1-2-d679ef31c483@baylibre.com>
+Message-Id: <20240920-pmbus-wp-v1-3-d679ef31c483@baylibre.com>
 References: <20240920-pmbus-wp-v1-0-d679ef31c483@baylibre.com>
 In-Reply-To: <20240920-pmbus-wp-v1-0-d679ef31c483@baylibre.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -88,69 +89,48 @@ To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
  linux-doc@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1661; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=3p8epjwY1oVoba554UVp1ZMZNkGwAgCoLLhC2PSJKOM=;
- b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBm7acZNBtZ0hTqllWyyFMkYkYea+7oUuVASt9st
- N3sfAwEOmyJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCZu2nGQAKCRDm/A8cN/La
- hYf9D/46acuxSjA+sfoQ9+odznEGE2QZudI7LvM+JHSU/uTEuptHRL1hXmdE1Qz6bnv1WEoelb5
- 7oVKFTLwZMGp7We3tD8/wedhHL5r01t52dh2tD642SNH5nXOOZgZbazATUe+vSH4DFV05/aYIhm
- HXcQ0L1e2W3/HmXhWmIkfdbly++V3pNkkSDBjbQdJ+iNN1Dh1yX0p+Qnq/ndZnoSDPauKrJmqkt
- xWpM0uObnaIsR5lEQipTJUJOpkQWwzfufyYHdQb2CBdwvSMNJs4SxjCxcBj/HdtrVw9dFG0BDvz
- oyVwKTMwhKodI638sksCw4ZCUkRkrkmJbnD5I6F0iR5yOn6J8gHoYJX2UZSlUKvAyid6VcqAfU8
- 0yKY5jx2A1On/UvNFFNBw3BAzY5+dmZNO1ud3iiurAnLqETdxsaYG9B4fGm+CHaBE/q+EzY6V8H
- HG3nLSgyEh2FEfIWwqy0av3r34GXSzueXAYt9iI91E5tc23gw+Op5Mo+tXHCoaL/tdJT1NiIDkf
- 90MEHG/fXhcccoStXKKIji+IFMZRxXPBOzhf6+6biaGizZ14hPFUHh7VB9eBJqptmqRzK9fjXlR
- WeK2wU+8Qio/NF2dgy/hx0xQ+5t9aUK2NMMjN2VABPjh0UQkG5ya/eGfbGGpvxVytYKDWschLnc
- dnfdIuMTDuI7igA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1110; i=jbrunet@baylibre.com;
+ h=from:subject:message-id; bh=7Gd97J5FZJ8x51YDJ0TveVRB+r/ZL3dVmW0gShb0mFQ=;
+ b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBm7acaXTvdJKP2FMN9pQ4umDAkwEokdT5Fn2ljm
+ LQ7DUrb6xaJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCZu2nGgAKCRDm/A8cN/La
+ haMxD/9QfNw3IwRMsafMz8ch2EJPLc14eq+igVnicuHhSAD2mgJovVwOh6Gk4aOLqCpyMmEBh64
+ uoCpwQFDtcKN30sKNarIugge8PvQUQDgXrXQs2Do5QaZx4pYRpviK60KyiTY/yWQOd7iUESYGVo
+ xgC3Nl7g+n4PUVlMyjlrrxQTWMky97X2AufoH4/3SdL85E60vOcmbaxb/1CNQnhtTe00Aw8Jxhg
+ PC1X832P8pBeHzg6OfoT8poveY6i+fGd8p1dFCXK1gsfHHjRfOSN/mkI02zYNUZRw4ZnLzO1A6l
+ AOENu885QxuDVFluRzVFdKsJ7Qph/eyvoiwezXrU3DdFc0WU8YEabOap269ObbADlg/lhQX8F7D
+ t9Dgjaj6Ns5tEPaQfXXX8IH/VKy8su5qeYqrU5DGTy6TaFGK3QLCG9u8xZpY1gO1HBPCGjLSGkr
+ o1PnicrBJdEwQ2ricOIiyLPGCS0Gbsppq7Of/MGLvvjBLHHiC5sntuSXsvVkm3G3ZoPAps6FhxH
+ buhBG2LeT248LMNAUh44JMRcCXKJN8NDTfjNoKqLiQacewAlim/nqmj2RbSWx8ZNL2/US9IKCzT
+ uqIsgcDcS5Y1Bzr/8gA9dguykUNuah9qs5PHt3z7l6zhQWZBFVcSr45gOSO25VaZyddRc3JEit+
+ 3cD2ojqjflq/7yw==
 X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
  fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
 
-The machine specific regulator_init() appears to be unused.
-It does not allow a lot of interactiona with the regulator framework,
-since nothing from the framework is passed along (desc, config,
-etc ...)
-
-Machine specific init may also be done with the added init_cb() in
-the regulator description, so remove regulator_init().
+Use _pmbus_read_byte_data() rather than calling smbus directly to check
+the write protection status. This give a chance to device implementing
+write protection differently to report back on the actual write protection
+status.
 
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 ---
- drivers/regulator/core.c          | 7 -------
- include/linux/regulator/machine.h | 3 +--
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/hwmon/pmbus/pmbus_core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 4c90ab5ad876..4666b0e226c2 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5764,13 +5764,6 @@ regulator_register(struct device *dev,
- 		resolved_early = true;
- 	}
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 0ea6fe7eb17c..82522fc9090a 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -2712,9 +2712,7 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 	 * limit registers need to be disabled.
+ 	 */
+ 	if (!(data->flags & PMBUS_NO_WRITE_PROTECT)) {
+-		pmbus_wait(client);
+-		ret = i2c_smbus_read_byte_data(client, PMBUS_WRITE_PROTECT);
+-		pmbus_update_ts(client, false);
++		ret = _pmbus_read_byte_data(client, 0xff, PMBUS_WRITE_PROTECT);
  
--	/* perform any regulator specific init */
--	if (init_data && init_data->regulator_init) {
--		ret = init_data->regulator_init(rdev->reg_data);
--		if (ret < 0)
--			goto wash;
--	}
--
- 	if (config->ena_gpiod) {
- 		ret = regulator_ena_gpio_request(rdev, config);
- 		if (ret != 0) {
-diff --git a/include/linux/regulator/machine.h b/include/linux/regulator/machine.h
-index 0cd76d264727..d0d700ff337a 100644
---- a/include/linux/regulator/machine.h
-+++ b/include/linux/regulator/machine.h
-@@ -285,8 +285,7 @@ struct regulator_init_data {
- 	int num_consumer_supplies;
- 	struct regulator_consumer_supply *consumer_supplies;
- 
--	/* optional regulator machine specific init */
--	int (*regulator_init)(void *driver_data);
-+	/* optional regulator machine specific data */
- 	void *driver_data;	/* core does not touch this */
- };
- 
+ 		if (ret > 0 && (ret & PB_WP_ANY))
+ 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
 
 -- 
 2.45.2
