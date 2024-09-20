@@ -1,76 +1,76 @@
-Return-Path: <linux-hwmon+bounces-4223-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4225-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B5897D88A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 18:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43E097D88E
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 18:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207D51C217AE
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 16:48:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D001F21CDC
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Sep 2024 16:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E327183CBB;
-	Fri, 20 Sep 2024 16:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6B5184534;
+	Fri, 20 Sep 2024 16:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Zz36+hBl"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Am13g7Pp"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4841F17E013
-	for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 16:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772FC18309C
+	for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 16:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726850854; cv=none; b=qZrrOjcs81IQ24X2SF98S5GV8NIfUSYqETFlGQRRuzga4e73+PIBCHxC4ca/JwMzR/MnNK7qJcCSihe6cbKJxh4pUYqdxJDLOUo0ALtoPibZZ84GEYyCObeRD/MKBBVS/PBKfy+wC+HJ8dWOhBIq9d3yqgIL7OKe2q+TutE6c00=
+	t=1726850855; cv=none; b=CBsXVyiVuHLwfRzeQFC3qGIbGKHxWLmZpaN0FQA4Aetm8JPr5b17bfO+EjBdF7ZvPf5YTm6ZlgM0NPqj4H5KQo+Jnptpll1maVyx3MNXvDVk15X3cYU8ayhx6/6TlgYpJiI/3IHV9z9RqrjI/TVx943DOlKOLRaEjWDg8uxGzXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726850854; c=relaxed/simple;
-	bh=zsNq+PDcTEKGZXeuBcmGNoMaVB7tGewK0MhypO0Gu/k=;
+	s=arc-20240116; t=1726850855; c=relaxed/simple;
+	bh=CjFFhc9MMW49VE8u5F61A8xLqeMREhaJD452w7fqvfs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hsHu3FcGmcSRzctHF6/XCteQX5C0MDQ8uaVC6O36dBsWK41HDnO9l4UTNDlMjNelKe+2lSV7Aiw6DqZEClNAWlYlxhhcDszuaOV6AFl3ZH8wjSoAu6CnReTnPzyS41YRI3iXrrlDO8R+FIrbTWf/GE0A+feYn0DewswfkjV2Gtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Zz36+hBl; arc=none smtp.client-ip=209.85.128.44
+	 In-Reply-To:To:Cc; b=QkKrwm3j4vm+n3ciAbijYTVlRNXrp8iq5G0LbXHYVmlCPiZmThX4aez/Pr/Jnr8wO1txCRkd4QKeiS6/LZvpToloh+6nkIDWt7ZMjsvEp8jNpzO8jH12WjefEbDt7VcolrjdnNmf+euKavc+DFROd64wiaNXUdszEzxTOznCnTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Am13g7Pp; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42cb58d810eso20746315e9.0
-        for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 09:47:32 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cbc22e1c4so18188345e9.2
+        for <linux-hwmon@vger.kernel.org>; Fri, 20 Sep 2024 09:47:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726850851; x=1727455651; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726850852; x=1727455652; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xvG11yWq9fBDuA1GWIjJf5XkqaA0AVG/AvWx55StoTg=;
-        b=Zz36+hBl7h3Bt2s1OCAGoOlI+RC6frOWoZzz8RS8+AqZLPa3Qx0R56h66kXUYH2iZ9
-         vIG0p/lvVdAAxooKxZ5HYlU3Ik5a0OPdX8E3e8UG6qOR9cJka4XTDx4r2AnJLrr1dIjv
-         Vd4xMRvVUCAfBFLYqo1x7xnMJnE5bIMJDrNBjvFDTB1jt5pAk27kA1jIC4iu5OFQAimC
-         YZD4X2vq3z6+sCSVmToVgsSocvz1OruqnYebWdbb/UHTzIxVkVDAQHj2eHeH30wShkYY
-         1AOEPydKrcuZjzlpQL1HgYQr/RXlihgfl5nmb7u8TiihV976IQwU+D62DvNFAusA5T5M
-         sXLw==
+        bh=9qllhEfwvR3O4kFWcLK8tY64jimzQys29VMp9CXwNVU=;
+        b=Am13g7Pp4Th2TNYl0OmOU3HxwArqkgR04NFH39lh+mBc4t76MgCfvoXI7UMAaco9Ec
+         ExnvAtOQjmlyYezI4+edKQ5yeCeb4wk8Vq15yjjIOt2WmI0v2x/nRAVcoCgoh8KyUsy0
+         DEOHVeeg42z9FOsdxESzvV2IU6CAyY7MZsdtoEfHMyFt0iltrY0uUxmxPuF18ZKwXHLN
+         OfaBNgcf5LqGs1fpdbIMeGX4kKtMhYITFRMK4lpaxDnUcF2+FNYxaN01OdUvSwjC/KG2
+         vKYlbXM1b3WZJK8ipM6c7seqWy49GoZJ0wDbvnL5QkaPh67b50SzpHdNqBegC5U6N/UY
+         iZRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726850851; x=1727455651;
+        d=1e100.net; s=20230601; t=1726850852; x=1727455652;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xvG11yWq9fBDuA1GWIjJf5XkqaA0AVG/AvWx55StoTg=;
-        b=fp4WlLwt0m3aYPx2ZDhoKbXgwFEV4zhfWIeU/F6kB/uw4lYqZbe+W1ND4Fl/2xGkzV
-         zY0Ii0/2H9qMPl8PqHGX3VWDwYaN8veEFS2N0vkviadYQj6qeFbdVPHnsIWrdNeV9MAy
-         mv7+sHh2TBkgzEikh52aOlKwWOWwAmd9KlFOI3lfK6IddxGzvOmMto3UGWUiiU4cWl+P
-         HgUmZlhmobZGmWIKoaAghDpfmLg77ewoVVo2Aw8aaRLtdwt+Lh5cwAvigXqUaJcG4IOQ
-         M+yzsyrjnL52O1eoJmmU3OxTqBBVoRfPKHqSCXQ4jRA5IyGMaS5M0sbmZMlxaN9mLABA
-         maiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3ueoWP8A+pFCWqDVkivC2hhOzmjP1yomFC4AEmod2iH1Act27Umbwd8cy4yneBQcOLbU3tdr4zONMtQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzgm1nAnOJFjv55q6FseJXZ1svdG5hGMpyrzhlVPV3puAlLbkp5
-	F5cLrryhCEJlYx8YRqzih2jBzzcUukVJIjb6KE6ailkNGgD+cPZ0FHbjzbrfu0U=
-X-Google-Smtp-Source: AGHT+IFNfQPAgXWVZgTbiHDHxfW/w57ppwxvispcmBLKSumCGr63LrH09BizxXHzfnC2wMVwUg8w0Q==
-X-Received: by 2002:a5d:5b84:0:b0:374:b6e4:16a7 with SMTP id ffacd0b85a97d-3799a1d312dmr3849296f8f.8.1726850850718;
-        Fri, 20 Sep 2024 09:47:30 -0700 (PDT)
+        bh=9qllhEfwvR3O4kFWcLK8tY64jimzQys29VMp9CXwNVU=;
+        b=wg6wvgFn6L50Yve6EW9pk+9tafh8ysZKt0NWxxACTcax4IO2u5nOlZj4hL39qTdS5b
+         Oz8ZwIHK6TL/uxALQYwUWnyR25rZTL/KEdKEvZNzRxecP3VcH4rb/91jl10SQxWXSLWu
+         WPEa5I9HwICp+a94TovrwCFjskGUa9+ClpS5leyPmFNCDAWhllTfftMD6TDOML8dGj8i
+         LufSRrzymd40Rm/oVMevE2rQI7GtotXb2TpSMppsEQsm6To3us7hlgmr8wapEKP7J8tI
+         giowBUvRu4v4dYcQZXmjKFhebbsabAZ63rQrLOj64/0fe7zFdImiN3RCAyQdwM0TLMax
+         UDug==
+X-Forwarded-Encrypted: i=1; AJvYcCWtNRTzVoDVraMBYyqZ1y43RzaYiqy0iM4qHBjq/PatcOdQqU17+FrrKgvnOe0HYw/SIgzpicbh6pdgZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCKBTq4A3vlq/DefVZXHYdovGBaqh28R7dbq+VZ9wl2R+VFEEZ
+	gaUPf2g/NLXclUYgSpWA2+AZ0M75qYcMdWrCvyDfNpwbCePo4gIy2/I4IfAXjgQqYEeSVYvX7Kb
+	m
+X-Google-Smtp-Source: AGHT+IEt0mM17T+QkgiiYQ9Xi5bCM7DZKFGhbLt/nTTYRXLtk0K+n3YEG7uPcLIhjOVfXQUGSIfHYw==
+X-Received: by 2002:a05:600c:4f0c:b0:42c:a7cc:cb64 with SMTP id 5b1f17b1804b1-42e7abe4424mr26563375e9.3.1726850851917;
+        Fri, 20 Sep 2024 09:47:31 -0700 (PDT)
 Received: from toaster.baylibre.com ([2a01:e0a:3c5:5fb1:8e69:83a7:a29a:ba83])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-378e7804476sm18172250f8f.90.2024.09.20.09.47.29
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-378e7804476sm18172250f8f.90.2024.09.20.09.47.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2024 09:47:30 -0700 (PDT)
+        Fri, 20 Sep 2024 09:47:31 -0700 (PDT)
 From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Fri, 20 Sep 2024 18:47:05 +0200
-Subject: [PATCH 4/5] hwmon: (pmbus/core) improve handling of write
- protected regulators
+Date: Fri, 20 Sep 2024 18:47:06 +0200
+Subject: [PATCH 5/5] hwmon: (pmbus/core) add wp module param
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240920-pmbus-wp-v1-4-d679ef31c483@baylibre.com>
+Message-Id: <20240920-pmbus-wp-v1-5-d679ef31c483@baylibre.com>
 References: <20240920-pmbus-wp-v1-0-d679ef31c483@baylibre.com>
 In-Reply-To: <20240920-pmbus-wp-v1-0-d679ef31c483@baylibre.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -88,158 +88,153 @@ To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
  linux-doc@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4754; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=zsNq+PDcTEKGZXeuBcmGNoMaVB7tGewK0MhypO0Gu/k=;
- b=owEBbAKT/ZANAwAKAeb8Dxw38tqFAcsmYgBm7acbao3zIvXqaNheqeFc3p0DmPTEMe5MluMfx
- h7HTttOKFWJAjIEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCZu2nGwAKCRDm/A8cN/La
- hRTdD/jpC8QdC54NzWDrfJ2/jk4ANYii+AlBOJ3MNcMKC4CU+IMtZ9ACXEJiesnQK8dTHY/wWrY
- UZMOmA65g7/145Oh7G/pPCYXMZMSWVT888pi+TJybFg1wUp945EzXKiH3leu426uP1ZfQWQz+k7
- SBWOUAHA7ptD8H6qR5v4KxNXT5Z6h8cax7gfkySX/SvQffwk/wRtcKqD6Yc7ruVdifKWcS6PqTV
- TREAWioe298JtdrpeW7IZrYHhhB0qcXe+Js26t9vUE68Ed9UBH1UlwKcxvM9Y/iQ9PZvdAC9Dm9
- 24/zJ/GAR7TvjT5b5NiXH9RBm9XHQtocSttHSP2XBIlAyrfTzS686MMZtv11VokoH4guUooL+5j
- vHDN2or35kkdjDAWFRozRYeQMqvCP0pV6nUzL3tJGsfFBgKbvmS5ucHok2DSt0bCNeQvlZHQ1p9
- oRiWIKFqVqh2qAS9TB4Bhfrx6C1b5FhIBAvmkdzXUhYG2W4o5QQPWNEs+wmPH2z4LHiQlPicTgd
- ptaLiB1o4FjAleovO84Z0xN0JybS0cI44z6B2IrMAvjbLnl6B9wV058NIYj7630C7FdBOC6LL4V
- x+5WB2JCuyTlLyo2XUz5vf7yL2ZP3aigr74nreqTi4CfXEX+B8q76CFqk9sl1zEt5xnlOUah+xl
- j6FNMIUb/UTO/
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4312; i=jbrunet@baylibre.com;
+ h=from:subject:message-id; bh=CjFFhc9MMW49VE8u5F61A8xLqeMREhaJD452w7fqvfs=;
+ b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBm7accgwF3pAoGMadS0uLmPG3TjPnHKaehiS7BO
+ q/wHo52nMaJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCZu2nHAAKCRDm/A8cN/La
+ hTCCD/9bQZablXDI+t6T4xSNVQA9V6jPgrq8Mwr4Qdn3Sb1S6l7rmjLjRCZ+ukYqm8JfNaQjtiU
+ b/z1f1CS+g84eBFCphG1xjCrgNoVAtVToR2fPbE4ugvqFAFeq8VoTKrxh9cbnz7JwrJRtZ16TGM
+ MRPPglExlRbgQcbWfVOMaxa+83bdubMwNqDtWnfmVb+zW57F/iKyAsqka+1PqaZsozpWBvsB7Ak
+ +ePVvPOkkGVT1XtwmeCF4x0vs5PuFIWMZ4ct6Qlca8UVSpLocVwkZ3b1L3cDYjdX3hLMODXsI9+
+ FwcFiNICY75flV9AcriBS3MiPR9vCjWW4vGYIwSAw4/sRfXtwuUWcQyI3rwtKj5uAkp3Oj4DxCR
+ xgwXtj79YOWkfADhVBaB+4i8cLTSIfJlpcYvowhfZKEOUXsuA10cuVr9+ZskgpLVPGDRJd2A2et
+ GOEXHuMdd7xibOoNCypCxEASsGAnz983G0+HkvudeN++D1tv+uyYbxENUa58aXU1cZdMU91gcwO
+ eZvu5FPf/jeZ2B+kRTLwiabTcqhdP0VU+xIPB2jp/QMxcULFZQtW7nsnjHRj+gSBGShnZmvUA0F
+ leJizcwQ/QM9NaCjS8AsaRY74u1TRTTLZd5IrtNIHYGNRuGStjuLIAuOqnmRzftdBi7VKWdonVA
+ INERHNsw978xEAQ==
 X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
  fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
 
-Writing PMBus protected registers does succeed from the smbus perspective,
-even if the write is ignored by the device and a communication fault is
-raised. This fault will silently be caught and cleared by pmbus irq if one
-has been registered.
+Add a module parameter to force the write protection mode of pmbus chips.
 
-This means that the regulator call may return succeed although the
-operation was ignored.
+2 protections modes are provided to start with:
+* 0: Remove the write protection if possible
+* 1: Enable full write protection if possible
 
-With this change, the operation which are not supported will be properly
-flagged as such and the regulator framework won't even try to execute them.
+Of course, if the parameter is not provided, the default write protection
+status of the pmbus chips is left untouched.
 
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 ---
- drivers/hwmon/pmbus/pmbus.h      |  4 ++++
- drivers/hwmon/pmbus/pmbus_core.c | 35 ++++++++++++++++++++++++++++++++++-
- include/linux/pmbus.h            | 14 ++++++++++++++
- 3 files changed, 52 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt |  4 ++
+ drivers/hwmon/pmbus/pmbus_core.c                | 74 ++++++++++++++++++-------
+ 2 files changed, 59 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
-index 5d5dc774187b..76cff65f38d5 100644
---- a/drivers/hwmon/pmbus/pmbus.h
-+++ b/drivers/hwmon/pmbus/pmbus.h
-@@ -481,6 +481,8 @@ struct pmbus_driver_info {
- /* Regulator ops */
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 09126bb8cc9f..e41d13f46140 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4672,6 +4672,10 @@
+ 			Format: { parport<nr> | timid | 0 }
+ 			See also Documentation/admin-guide/parport.rst.
  
- extern const struct regulator_ops pmbus_regulator_ops;
-+int pmbus_regulator_init_cb(struct regulator_dev *rdev,
-+			    struct regulator_config *config);
- 
- /* Macros for filling in array of struct regulator_desc */
- #define PMBUS_REGULATOR_STEP(_name, _id, _voltages, _step, _min_uV)  \
-@@ -495,6 +497,7 @@ extern const struct regulator_ops pmbus_regulator_ops;
- 		.n_voltages = _voltages,			\
- 		.uV_step = _step,				\
- 		.min_uV = _min_uV,				\
-+		.init_cb = pmbus_regulator_init_cb,		\
- 	}
- 
- #define PMBUS_REGULATOR(_name, _id)   PMBUS_REGULATOR_STEP(_name, _id, 0, 0, 0)
-@@ -510,6 +513,7 @@ extern const struct regulator_ops pmbus_regulator_ops;
- 		.n_voltages = _voltages,			\
- 		.uV_step = _step,				\
- 		.min_uV = _min_uV,				\
-+		.init_cb = pmbus_regulator_init_cb,		\
- 	}
- 
- #define PMBUS_REGULATOR_ONE(_name)   PMBUS_REGULATOR_STEP_ONE(_name, 0, 0, 0)
++	pmbus.wp=	[HW] PMBus Chips write protection forced mode
++			Format: { 0 | 1 }
++			See drivers/hwmon/pmbus/pmbus_core.c
++
+ 	pmtmr=		[X86] Manual setup of pmtmr I/O Port.
+ 			Override pmtimer IOPort with a hex value.
+ 			e.g. pmtmr=0x508
 diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index 82522fc9090a..363def768888 100644
+index 363def768888..ca5803bfd24a 100644
 --- a/drivers/hwmon/pmbus/pmbus_core.c
 +++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -2714,8 +2714,21 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
- 	if (!(data->flags & PMBUS_NO_WRITE_PROTECT)) {
- 		ret = _pmbus_read_byte_data(client, 0xff, PMBUS_WRITE_PROTECT);
+@@ -31,6 +31,20 @@
+ #define PMBUS_ATTR_ALLOC_SIZE	32
+ #define PMBUS_NAME_SIZE		24
  
--		if (ret > 0 && (ret & PB_WP_ANY))
-+		switch (ret) {
-+		case PB_WP_ALL:
-+			data->flags |= PMBUS_OP_PROTECTED;
-+			fallthrough;
-+		case PB_WP_OP:
-+			data->flags |= PMBUS_VOUT_PROTECTED;
-+			fallthrough;
-+		case PB_WP_VOUT:
- 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
-+			break;
++/*
++ * PMBus write protect forced mode:
++ * PMBus may come up with a variety of write protection configuration.
++ * 'pmbus_wp' may be used if a particular write protection is necessary.
++ * The ability to actually alter the protection may also depend on the chip
++ * so the actual runtime write protection configuration may differ from
++ * the requested one. pmbus_core currently support the following value:
++ * - 0: write protection removed
++ * - 1: write protection fully enabled, including OPERATION and VOUT_COMMAND
++ *      registers. Chips essentially become read-only with this.
++ */
++static int wp = -1;
++module_param(wp, int, 0444);
 +
-+		default:
-+			/* Ignore manufacturer specific and invalid as well as errors */
-+			break;
-+		}
- 	}
+ struct pmbus_sensor {
+ 	struct pmbus_sensor *next;
+ 	char name[PMBUS_NAME_SIZE];	/* sysfs sensor name */
+@@ -2658,6 +2672,45 @@ static void pmbus_remove_pec(void *dev)
+ 	device_remove_file(dev, &dev_attr_pec);
+ }
+ 
++static void pmbus_init_wp(struct i2c_client *client, struct pmbus_data *data)
++{
++	int ret;
++
++	switch (wp) {
++	case 0:
++		_pmbus_write_byte_data(client, 0xff,
++				       PMBUS_WRITE_PROTECT, 0);
++		break;
++
++	case 1:
++		_pmbus_write_byte_data(client, 0xff,
++				       PMBUS_WRITE_PROTECT, PB_WP_ALL);
++		break;
++
++	default:
++		/* Ignore the other values */
++		break;
++	}
++
++	ret = _pmbus_read_byte_data(client, 0xff, PMBUS_WRITE_PROTECT);
++
++	switch (ret) {
++	case PB_WP_ALL:
++		data->flags |= PMBUS_OP_PROTECTED;
++		fallthrough;
++	case PB_WP_OP:
++		data->flags |= PMBUS_VOUT_PROTECTED;
++		fallthrough;
++	case PB_WP_VOUT:
++		data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
++		break;
++
++	default:
++		/* Ignore manufacturer specific and invalid as well as errors */
++		break;
++	}
++}
++
+ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 			     struct pmbus_driver_info *info)
+ {
+@@ -2711,25 +2764,8 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 	 * faults, and we should not try it. Also, in that case, writes into
+ 	 * limit registers need to be disabled.
+ 	 */
+-	if (!(data->flags & PMBUS_NO_WRITE_PROTECT)) {
+-		ret = _pmbus_read_byte_data(client, 0xff, PMBUS_WRITE_PROTECT);
+-
+-		switch (ret) {
+-		case PB_WP_ALL:
+-			data->flags |= PMBUS_OP_PROTECTED;
+-			fallthrough;
+-		case PB_WP_OP:
+-			data->flags |= PMBUS_VOUT_PROTECTED;
+-			fallthrough;
+-		case PB_WP_VOUT:
+-			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
+-			break;
+-
+-		default:
+-			/* Ignore manufacturer specific and invalid as well as errors */
+-			break;
+-		}
+-	}
++	if (!(data->flags & PMBUS_NO_WRITE_PROTECT))
++		pmbus_init_wp(client, data);
  
  	if (data->info->pages)
-@@ -3172,8 +3185,12 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
- {
- 	struct device *dev = rdev_get_dev(rdev);
- 	struct i2c_client *client = to_i2c_client(dev->parent);
-+	struct pmbus_data *data = i2c_get_clientdata(client);
- 	int val, low, high;
- 
-+	if (data->flags & PMBUS_VOUT_PROTECTED)
-+		return 0;
-+
- 	if (selector >= rdev->desc->n_voltages ||
- 	    selector < rdev->desc->linear_min_sel)
- 		return -EINVAL;
-@@ -3208,6 +3225,22 @@ const struct regulator_ops pmbus_regulator_ops = {
- };
- EXPORT_SYMBOL_NS_GPL(pmbus_regulator_ops, PMBUS);
- 
-+int pmbus_regulator_init_cb(struct regulator_dev *rdev,
-+			    struct regulator_config *config)
-+{
-+	struct pmbus_data *data = config->driver_data;
-+	struct regulation_constraints *constraints = rdev->constraints;
-+
-+	if (data->flags & PMBUS_OP_PROTECTED)
-+		constraints->valid_ops_mask &= ~REGULATOR_CHANGE_STATUS;
-+
-+	if (data->flags & PMBUS_VOUT_PROTECTED)
-+		constraints->valid_ops_mask &= ~REGULATOR_CHANGE_VOLTAGE;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(pmbus_regulator_init_cb, PMBUS);
-+
- static int pmbus_regulator_register(struct pmbus_data *data)
- {
- 	struct device *dev = data->dev;
-diff --git a/include/linux/pmbus.h b/include/linux/pmbus.h
-index fa9f08164c36..884040e1383b 100644
---- a/include/linux/pmbus.h
-+++ b/include/linux/pmbus.h
-@@ -73,6 +73,20 @@
-  */
- #define PMBUS_USE_COEFFICIENTS_CMD		BIT(5)
- 
-+/*
-+ * PMBUS_OP_PROTECTED
-+ * Set if the chip OPERATION command is protected and protection is not
-+ * determined by the standard WRITE_PROTECT command.
-+ */
-+#define PMBUS_OP_PROTECTED			BIT(6)
-+
-+/*
-+ * PMBUS_VOUT_PROTECTED
-+ * Set if the chip VOUT_COMMAND command is protected and protection is not
-+ * determined by the standard WRITE_PROTECT command.
-+ */
-+#define PMBUS_VOUT_PROTECTED			BIT(7)
-+
- struct pmbus_platform_data {
- 	u32 flags;		/* Device specific flags */
- 
+ 		pmbus_clear_faults(client);
 
 -- 
 2.45.2
