@@ -1,98 +1,136 @@
-Return-Path: <linux-hwmon+bounces-4388-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4390-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C4F99B166
-	for <lists+linux-hwmon@lfdr.de>; Sat, 12 Oct 2024 09:07:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A67C99B2D0
+	for <lists+linux-hwmon@lfdr.de>; Sat, 12 Oct 2024 12:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC221C21A3C
-	for <lists+linux-hwmon@lfdr.de>; Sat, 12 Oct 2024 07:07:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4038B21E2B
+	for <lists+linux-hwmon@lfdr.de>; Sat, 12 Oct 2024 10:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5F213B280;
-	Sat, 12 Oct 2024 07:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4413D14EC60;
+	Sat, 12 Oct 2024 10:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FQ/qmjW5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aa0ZmdAV"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA2E10940;
-	Sat, 12 Oct 2024 07:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14754136330;
+	Sat, 12 Oct 2024 10:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728716840; cv=none; b=ctMe8o5xokR5lpPfOQSdE+psKUN6sq8k3hOR/wkg8IkJ3Jcs9bJWVqWa+QnE/GpLnvr+TyPbe49v3jMyg5ZfVIL41Fme8ttHhYVDQrcvL5a2nBXQBWqFtKgQDOTN1fP65piXhhxKJ1wLxW5pvyqUu9ZhBUa/UNvnq1LYfRHXrNI=
+	t=1728727623; cv=none; b=NqaNKZwUiLLbnbJvZ2m2SohNB9wYE7ikCBo0b7IXeficvRAIi3APnAQ3K5BvT9Hho+gv5QXc+Em6FJIsbHGOxdAfkqCwo2lDJSENsIHB80A3oMTN8dgu1EfDUKby7HrIxB+913PJhoJo/gW7ENI6witAm25sMniQDuzb959Ng48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728716840; c=relaxed/simple;
-	bh=qTkGrv0p7+4vinrP3/grAVnhUVtY10seEVTYYhHkma4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Jw/ms3Mx5T+TV9s/EFm72VfUZrTld9BE5lD+qD3kZCVz474DhiY5N2O2RrepvvwZcy92Edwbe7kWTvbI2W9Rx610cpJ64z2jLVZpHqhlA/XY3jGoEdlhr5XdCdinrYfwmo/AkyVCFTYHmarOnh+HC3YcpeLPksThiM8KKUk/Now=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FQ/qmjW5; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=quz+2hMWjcczLuJItS
-	DKvNUVNrU4bXl5LbBt2SkvvLc=; b=FQ/qmjW595pERdGdNqUZx73pAwXZwHuPr8
-	DzchcGeRWQjhguTRc+M7lqYvxiZlnOBthqNGgP2F013qM2ygWuyc9ccRNSJxJ832
-	gExP+oqHnK3zSk22P1cAx9uINjoFj3vcKFOaBBjG0l4VEd05EayWzVBfH1mo9fCe
-	IF2K5O1AE=
-Received: from 100ask.localdomain (unknown [36.18.172.102])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3nwP1HwpnNwWcAg--.5517S3;
-	Sat, 12 Oct 2024 15:06:39 +0800 (CST)
-From: Wenliang <wenliang202407@163.com>
-To: linux@roeck-us.net
-Cc: Wenliang <wenliang202407@163.com>,
-	jdelvare@suse.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH linux dev-6.11 2/2] v3: dt-bindings: modified ina2xx to match SY24655
-Date: Sat, 12 Oct 2024 03:06:27 -0400
-Message-Id: <20241012070627.20788-2-wenliang202407@163.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20241012070627.20788-1-wenliang202407@163.com>
-References: <f7653d58-9cee-4496-91b8-55dda44289bc@roeck-us.net>
- <20241012070627.20788-1-wenliang202407@163.com>
-X-CM-TRANSID:_____wD3nwP1HwpnNwWcAg--.5517S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZFyfGr1fGw4DZw4DJryfCrg_yoWDArcEga
-	yxAw18XFZ8XFyYgF1DA395Jr1ayw4a9r48Aw15JrsYywn3ZrWqga4kJ3sxAr4xWay3uF13
-	uan5GrWvqrsrKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7VUbiL0UUUUUU==
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/1tbiRwt202cKG1NL7QAAsq
+	s=arc-20240116; t=1728727623; c=relaxed/simple;
+	bh=LF6rAw8lZWIdkWpscHtz5ZOfje3+hfNGJ57w0AJ9/to=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hoqDzZx8FzDYP8dkaRa6zXX+5JWdtrb4reGpmMGaAlmhDqVSmFNJOtyWmg/s+10eVX8uiN68VqtMEhWjcGCiZpOlanhMY+/SI1BjztFqXPvyN93pCSv0xZIFEjLShmpJLvN1QF9tJXM7ZCEg5ZRv55iuFui9N5y5m5gnviApEsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aa0ZmdAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3757C4CEC6;
+	Sat, 12 Oct 2024 10:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728727622;
+	bh=LF6rAw8lZWIdkWpscHtz5ZOfje3+hfNGJ57w0AJ9/to=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aa0ZmdAVxo7964t8x487xEPC7dZ0V/+AoIUC8dr48Gn+CvkX4WG16AcrsBsg2aIWK
+	 tlqS6osq105BML8OjLdtPDZIpv2RJch/WDqLlYCnvYt52WXfEJREAq2Y5owL8UCdFF
+	 5knGStzI5uJigrg6tsmefiJ+we18xVLbyxNVjIWZ7qObXZhOY5BdwmrDr6tz6EjREX
+	 aKTW/sZtAAMoI+j6mOImKtIpvVTQdG7DHUUGxg6gnGizy88B7J96si9dR2LLJvMHS+
+	 1EmPhW1TWGBV0fe6d2jjl7ptf3XnH3YISS1BEKb2mEdbN6EKsucFxxTOperoqQzeN4
+	 PS5uAyB5Of9fg==
+Message-ID: <40b01554-44ab-4a67-b9ff-d8b821eb74a8@kernel.org>
+Date: Sat, 12 Oct 2024 12:06:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH linux dev-6.11 2/2] v3: dt-bindings: modified ina2xx to
+ match SY24655
+To: Wenliang <wenliang202407@163.com>, linux@roeck-us.net
+Cc: jdelvare@suse.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-hwmon@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <f7653d58-9cee-4496-91b8-55dda44289bc@roeck-us.net>
+ <20241012070627.20788-1-wenliang202407@163.com>
+ <20241012070627.20788-2-wenliang202407@163.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241012070627.20788-2-wenliang202407@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Modified the binding of ina2xx to make it compatible with SY24655. 
+On 12/10/2024 09:06, Wenliang wrote:
+> Modified the binding of ina2xx to make it compatible with SY24655. 
+> 
 
-Signed-off-by: Wenliang <wenliang202407@163.com>
----
+Your subject is odd. We do not develop v6.11, that's something already
+old. The cc-list suggest you just want it for next release, so rebase on
+mainline or next and avoid any unusual patch prefixes.
 
-SY24655 is a fixed gain power monitor from Silergy, with a power supply
-of 2.7-5.5V and communication mode of IIC capable of detecting bus voltage
-and voltage on shunt resistors. Its first 5 registers are identical to
-ina226, and also have alert and limit functions. So, the sy24655 is
-compatible with the ina2xx devices.
+OTOH, v3 is not part of subject. Use b4 or git format-patch -v3.
 
- Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml | 1 +
- 1 file changed, 1 insertion(+)
+> Signed-off-by: Wenliang <wenliang202407@163.com>
+> ---
+> 
+> SY24655 is a fixed gain power monitor from Silergy, with a power supply
+> of 2.7-5.5V and communication mode of IIC capable of detecting bus voltage
+> and voltage on shunt resistors. Its first 5 registers are identical to
+> ina226, and also have alert and limit functions. So, the sy24655 is
+> compatible with the ina2xx devices.
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-index 6ae961732e6b..05a9cb36cd82 100644
---- a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-@@ -20,6 +20,7 @@ description: |
- properties:
-   compatible:
-     enum:
-+      - silergy,sy24655
-       - ti,ina209
-       - ti,ina219
-       - ti,ina220
--- 
-2.17.1
+This is hardware description, why it is not part of commit message?
+
+
+Best regards,
+Krzysztof
 
 
