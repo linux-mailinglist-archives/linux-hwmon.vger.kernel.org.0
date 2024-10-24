@@ -1,205 +1,420 @@
-Return-Path: <linux-hwmon+bounces-4530-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4532-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DBC9ADD68
-	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Oct 2024 09:16:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581E19ADDBE
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Oct 2024 09:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 614F02831DD
-	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Oct 2024 07:16:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AB21F2266E
+	for <lists+linux-hwmon@lfdr.de>; Thu, 24 Oct 2024 07:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45CF19CD16;
-	Thu, 24 Oct 2024 07:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7430E1AB511;
+	Thu, 24 Oct 2024 07:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NPYBlPus"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA6618BBA0;
-	Thu, 24 Oct 2024 07:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31C61AB52D
+	for <linux-hwmon@vger.kernel.org>; Thu, 24 Oct 2024 07:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729754158; cv=none; b=LViO/2c2GaFteFibhA0mQ0RIU1cX8CfQRGJCw1RX7AeAIHC42XLBdKNXnQHiaaxtHGQnoNHMnmMP4xIs6VaU9IiMI3ol+2DkuCKG19znsUjocJKsxZUcNDSaD51Aon1YWpCKe2R8Yyd4wLCGF36UcRWQQMlMXhrIolMJtolTJ/0=
+	t=1729755183; cv=none; b=dPnUOd9UOdqTZrfty/0KbANlhWFx5pP0I0ihlmxXLz9tDK/ZwTYl4aDjMjH2lpy0G9a0k6uCNHcJABOV+3YYNWAGDOGsJ4DkSuAhXrC4BD3fEnvMowxnvF+tVSTL2V8nfGoEYFtmODjkDR+t3QyxVRchQ20yj6PbjYNWlb9f6Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729754158; c=relaxed/simple;
-	bh=oVST8IcSxvlu1YUMZVdQot5WSVbJEQ1NUm7B7sRhPUw=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gLZe9VeN1eOrh+RzLAbtWHA6u+6xL2uGImly9GVtr39L10iQIqQe9JenA+soMyOmUatIKXGpP5kNaXvSLQFo54osvXMR/zzz14C7NMihDI/b/u1A/lNMDvFsOlqBMdQxaQ7DyhtsnO2H2abxhHpJslIINyyGmH1Gz868PK2fA3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 24 Oct
- 2024 15:15:48 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 24 Oct 2024 15:15:48 +0800
-From: Billy Tsai <billy_tsai@aspeedtech.com>
-To: <jdelvare@suse.com>, <linux@roeck-us.net>, <robh@kernel.org>,
-	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <joel@jms.id.au>,
-	<andrew@codeconstruct.com.au>, <ukleinek@kernel.org>,
-	<billy_tsai@aspeedtech.com>, <linux-hwmon@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pwm@vger.kernel.org>, <BMC-SW@aspeedtech.com>
-Subject: [PATCH v1 2/2] hwmon: (aspeed-g6-pwm-tacho): Support the WDT reload
-Date: Thu, 24 Oct 2024 15:15:48 +0800
-Message-ID: <20241024071548.3370363-3-billy_tsai@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241024071548.3370363-1-billy_tsai@aspeedtech.com>
-References: <20241024071548.3370363-1-billy_tsai@aspeedtech.com>
+	s=arc-20240116; t=1729755183; c=relaxed/simple;
+	bh=xJk9DEO+3X/GcCNVC4idOyP3Q8DzjJsvWHkQBNNuUiI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HxuOcmOd5YgjlUqrDmeqnSj+5/AOjM8ujWrEBHEQ8YN9ZqavnvbGxyHuvhgMTvIE01cHX640mJj1GM40jB75VAhcmNDnCBOfBN2XVs89g0YEomWxadQS8bhRcEFBJNia6RSyf4UimRp4+CTe1YjMspkkGl1uxS3IussR5MxzeBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NPYBlPus; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729755177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6QtnlkYe/1PnWLS5Ii6raZ83O0JHoz7C7QG5MqJpjr0=;
+	b=NPYBlPus2ErWhnfc5pjFKNkzb04Mij/NUKYpingANTTyjfd8F2sZtyToBjKi4+VCoCUcOn
+	D97Ffl5OhPC8DCSLkZvtg42uPcner62C5jIUEhYrpjuRx/63sDT1vj06tGhrt+F1dTpG6p
+	M6+2Ot0UMofKiqq/CVqPK7OgHDS3fGA=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-iWBRQVp1N3elByhZdMeMsg-1; Thu, 24 Oct 2024 03:32:55 -0400
+X-MC-Unique: iWBRQVp1N3elByhZdMeMsg-1
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-6e3529d80e5so11268527b3.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 24 Oct 2024 00:32:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729755175; x=1730359975;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6QtnlkYe/1PnWLS5Ii6raZ83O0JHoz7C7QG5MqJpjr0=;
+        b=ZFLKbgAeuv9JipWPe5IMFeZCkXJSx5+fwTBVoF/40aLtRNbn6MaaOfF9qNVYIZJirR
+         739Nge//iosZskQzQ2/7jbM9aTYIn1+CTe7ESYIQLEcNvxVY5oWxnbSndEWSZySXnEL8
+         YlCrRGQdOGStJEJ9SlfqIG34Zt9tecMal0bXZRDC2At56YT5dSI0QZrwuXm7YAj4zZ6U
+         yz6w129E2bC5OfQvgqngAYN+s9fQ6fjrATPbnbk7swEn4N/Y6Rg5QNQWDewxY9cCmkBT
+         stKjvzsnT6+qL2UWIW2f0CE8wrmRomTA4iQnKPX/xGmEL7AGctPnWoZ+EJFKTAL4ZpGq
+         b1yw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRlK7wtg4mi7ojlFKD2kbw8TExmsSmYnG0Y8JtEzDG6/JYOh6M0EIPZ7XdGxnJTJ+p6VRq+tFdA9IiYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN5mPnH6CqK7zGQVHveQaUJcxyTrJgZhwzB6EnrRMSFg4pabaA
+	YEHM8pzxWWVmkyUCOnwCSEDIZsSVosmAblQrvBRU4aTAvevGVIf15qL617GporOMBb4r71xMaif
+	lUqqwRWkgpcdnf7g3Y0sGGjlJ0+ol4y99toRnbEl4w8C9MLYjxpaEG6NztApu
+X-Received: by 2002:a05:690c:6e03:b0:6db:cf6c:a7c4 with SMTP id 00721157ae682-6e866331c20mr10690507b3.45.1729755174538;
+        Thu, 24 Oct 2024 00:32:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwjzENxysw+j7YRfDKeQxYY43g6inqzMz9Yd8c7a5bPrsRFqYGaOrxa6Un2MKjvPM7S1dLyw==
+X-Received: by 2002:a05:690c:6e03:b0:6db:cf6c:a7c4 with SMTP id 00721157ae682-6e866331c20mr10690047b3.45.1729755174061;
+        Thu, 24 Oct 2024 00:32:54 -0700 (PDT)
+Received: from dhcp-64-16.muc.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce008ac8f1sm47141046d6.26.2024.10.24.00.32.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 00:32:53 -0700 (PDT)
+Message-ID: <7be870fc2b2fa01b89708208c78cc041029252aa.camel@redhat.com>
+Subject: Re: linux: Goodbye from a Linux community volunteer
+From: Philipp Stanner <pstanner@redhat.com>
+To: Serge Semin <fancer.lancer@gmail.com>, Jon Mason <jdmason@kudzu.us>, 
+ Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+ ntb@lists.linux.dev, Andy Shevchenko <andy@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Kory Maincent
+ <kory.maincent@bootlin.com>, Cai Huoqing <cai.huoqing@linux.dev>, 
+ dmaengine@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ linux-spi@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, 
+ linux-ide@vger.kernel.org, Paul Burton <paulburton@kernel.org>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Arnd Bergmann <arnd@arndb.de>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,  linux-mips@vger.kernel.org, Bjorn
+ Helgaas <bhelgaas@google.com>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>, Yoshihiro Shimoda
+ <yoshihiro.shimoda.uh@renesas.com>,  linux-pci@vger.kernel.org, "David S.
+ Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>, Russell King
+ <linux@armlinux.org.uk>, Vladimir Oltean <olteanv@gmail.com>, Keguang Zhang
+ <keguang.zhang@gmail.com>, Yanteng Si <siyanteng@loongson.cn>, 
+ netdev@vger.kernel.org, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
+ linux-hwmon@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
+ linux-edac@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  linux-serial@vger.kernel.org
+Cc: Andrew Halaney <ajhalaney@gmail.com>, Nikita Travkin <nikita@trvn.ru>, 
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Alexander Shiyan
+ <shc_work@mail.ru>, Dmitry Kozlov <xeb@mail.ru>,  Sergey Shtylyov
+ <s.shtylyov@omp.ru>, Evgeniy Dushistov <dushistov@mail.ru>, Geert
+ Uytterhoeven <geert@linux-m68k.org>, Sergio Paracuellos
+ <sergio.paracuellos@gmail.com>,  Nikita Shubin <nikita.shubin@maquefel.me>,
+ linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 24 Oct 2024 09:32:46 +0200
+In-Reply-To: <2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
+References: 
+	<2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-Use the DTS property #pwm-cells to determine if the PWM controller needs
-to enable the WDT reload feature, which changes the duty cycle to a
-preprogrammed value after a WDT/EXTRST#. When #pwm-cells = <4>, the
-feature will be enabled, and the PWM consumer can use the 4th argument to
-set the reload duty cycle [0-255].
+On Thu, 2024-10-24 at 07:27 +0300, Serge Semin wrote:
+> Hello Linux-kernel community,
+>=20
+> I am sure you have already heard the news caused by the recent Greg'
+> commit
+> 6e90b675cf942e ("MAINTAINERS: Remove some entries due to various
+> compliance
+> requirements."). As you may have noticed the change concerned some of
+> the
+> Ru-related developers removal from the list of the official kernel
+> maintainers,
+> including me.
+>=20
+> The community members rightly noted that the _quite_ short commit log
+> contained
+> very vague terms with no explicit change justification. No matter how
+> hard I
+> tried to get more details about the reason, alas the senior
+> maintainer I was
+> discussing the matter with haven't given an explanation to what
+> compliance
+> requirements that was. I won't cite the exact emails text since it
+> was a private
+> messaging, but the key words are "sanctions", "sorry", "nothing I can
+> do", "talk
+> to your (company) lawyer"... I can't say for all the guys affected by
+> the
+> change, but my work for the community has been purely _volunteer_ for
+> more than
+> a year now (and less than half of it had been payable before that).
+> For that
+> reason I have no any (company) lawyer to talk to, and honestly after
+> the way the
+> patch has been merged in I don't really want to now. Silently, behind
+> everyone's
+> back, _bypassing_ the standard patch-review process, with no affected
+> developers/subsystem notified - it's indeed the worse way to do what
+> has been
+> done. No gratitude, no credits to the developers for all these years
+> of the
+> devoted work for the community. No matter the reason of the situation
+> but
+> haven't we deserved more than that? Adding to the GREDITS file at
+> least, no?..
+>=20
+> I can't believe the kernel senior maintainers didn't consider that
+> the patch
+> wouldn't go unnoticed, and the situation might get out of control
+> with
+> unpredictable results for the community, if not straight away then in
+> the middle
+> or long term perspective. I am sure there have been plenty ways to
+> solve the
+> problem less harmfully, but they decided to take the easiest path.
+> Alas what's
+> done is done. A bifurcation point slightly initiated a year ago has
+> just been
+> fully implemented. The reason of the situation is obviously in the
+> political
+> ground which in this case surely shatters a basement the community
+> has been built
+> on in the first place. If so then God knows what might be next (who
+> else might
+> be sanctioned...), but the implemented move clearly sends a bad
+> signal to the
+> Linux community new comers, to the already working volunteers and
+> hobbyists like
+> me.
 
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Change-Id: Ided520f73220581e3b37819a106ec81ebf9bb5a6
----
- drivers/hwmon/aspeed-g6-pwm-tach.c | 49 ++++++++++++++++++++++++++++++
- drivers/pwm/core.c                 |  6 ++--
- include/linux/pwm.h                | 10 ++++++
- 3 files changed, 62 insertions(+), 3 deletions(-)
+I'm also quite shocked and even baffled about how this has been
+handled. This is not how leaders should communicate difficult or big
+decisions. It's the most disappointing event I have witnessed in the
+project.
 
-diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
-index 75eadda738ab..df47f9aa8ee6 100644
---- a/drivers/hwmon/aspeed-g6-pwm-tach.c
-+++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
-@@ -56,6 +56,7 @@
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/pwm.h>
-+#include <dt-bindings/pwm/pwm.h>
- #include <linux/reset.h>
- #include <linux/sysfs.h>
- 
-@@ -452,6 +453,51 @@ static void aspeed_pwm_tach_reset_assert(void *data)
- 	reset_control_assert(rst);
- }
- 
-+static void aspeed_pwm_set_wdt_reload(struct pwm_chip *chip,
-+				      struct pwm_device *pwm,
-+				      u64 reload_duty_cycle)
-+{
-+	struct aspeed_pwm_tach_data *priv = aspeed_pwm_chip_to_data(chip);
-+	u32 hwpwm = pwm->hwpwm, val;
-+
-+	val = readl(priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+	val &= ~PWM_ASPEED_DUTY_CYCLE_POINT_AS_WDT;
-+	val |= FIELD_PREP(PWM_ASPEED_DUTY_CYCLE_POINT_AS_WDT,
-+			  reload_duty_cycle);
-+	writel(val, priv->base + PWM_ASPEED_DUTY_CYCLE(hwpwm));
-+
-+	val = readl(priv->base + PWM_ASPEED_CTRL(hwpwm));
-+	val |= PWM_ASPEED_CTRL_DUTY_LOAD_AS_WDT_ENABLE;
-+	writel(val, priv->base + PWM_ASPEED_CTRL(hwpwm));
-+}
-+
-+static struct pwm_device *
-+aspeed_pwm_xlate(struct pwm_chip *chip, const struct of_phandle_args *args)
-+{
-+	struct pwm_device *pwm;
-+
-+	/* flags in the fourth cell are optional */
-+	if (args->args_count < 3)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (args->args[0] >= chip->npwm)
-+		return ERR_PTR(-EINVAL);
-+
-+	pwm = pwm_request_from_chip(chip, args->args[0], NULL);
-+	if (IS_ERR(pwm))
-+		return pwm;
-+
-+	pwm->args.period = args->args[1];
-+	pwm->args.polarity = PWM_POLARITY_NORMAL;
-+	if (args->args[2] & PWM_POLARITY_INVERTED)
-+		pwm->args.polarity = PWM_POLARITY_INVERSED;
-+
-+	if (args->args_count > 3 && args->args[3] < U8_MAX)
-+		aspeed_pwm_set_wdt_reload(chip, pwm, args->args[3]);
-+
-+	return pwm;
-+}
-+
- static int aspeed_pwm_tach_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev, *hwmon;
-@@ -493,6 +539,9 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
- 	pwmchip_set_drvdata(chip, priv);
- 	chip->ops = &aspeed_pwm_ops;
- 
-+	if (IS_ENABLED(CONFIG_OF))
-+		chip->of_xlate = aspeed_pwm_xlate;
-+
- 	ret = devm_pwmchip_add(dev, chip);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWM chip\n");
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 6e752e148b98..8251f7b361ab 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -422,9 +422,8 @@ static int pwm_device_request(struct pwm_device *pwm, const char *label)
-  * chip. A negative error code is returned if the index is not valid for the
-  * specified PWM chip or if the PWM device cannot be requested.
-  */
--static struct pwm_device *pwm_request_from_chip(struct pwm_chip *chip,
--						unsigned int index,
--						const char *label)
-+struct pwm_device *pwm_request_from_chip(struct pwm_chip *chip,
-+					 unsigned int index, const char *label)
- {
- 	struct pwm_device *pwm;
- 	int err;
-@@ -442,6 +441,7 @@ static struct pwm_device *pwm_request_from_chip(struct pwm_chip *chip,
- 
- 	return pwm;
- }
-+EXPORT_SYMBOL_GPL(pwm_request_from_chip);
- 
- struct pwm_device *
- of_pwm_xlate_with_flags(struct pwm_chip *chip, const struct of_phandle_args *args)
-diff --git a/include/linux/pwm.h b/include/linux/pwm.h
-index 8acd60b53f58..95ae885f65c3 100644
---- a/include/linux/pwm.h
-+++ b/include/linux/pwm.h
-@@ -405,6 +405,8 @@ void pwmchip_remove(struct pwm_chip *chip);
- int __devm_pwmchip_add(struct device *dev, struct pwm_chip *chip, struct module *owner);
- #define devm_pwmchip_add(dev, chip) __devm_pwmchip_add(dev, chip, THIS_MODULE)
- 
-+struct pwm_device *pwm_request_from_chip(struct pwm_chip *chip,
-+					 unsigned int index, const char *label);
- struct pwm_device *of_pwm_xlate_with_flags(struct pwm_chip *chip,
- 		const struct of_phandle_args *args);
- struct pwm_device *of_pwm_single_xlate(struct pwm_chip *chip,
-@@ -504,6 +506,14 @@ static inline void pwm_put(struct pwm_device *pwm)
- 	might_sleep();
- }
- 
-+static inline struct pwm_device *pwm_request_from_chip(struct pwm_chip *chip,
-+						       unsigned int index,
-+						       const char *label)
-+{
-+	might_sleep();
-+	return ERR_PTR(-ENODEV);
-+}
-+
- static inline struct pwm_device *devm_pwm_get(struct device *dev,
- 					      const char *consumer)
- {
--- 
-2.25.1
+There is the form and there is the content =E2=80=93 about the content one
+cannot do much, when the state he or his organization resides in gives
+an order.
+
+But about the form one can indeed do much. No "Thank you!", no "I hope
+we can work together again once the world has become sane(r)"... srsly,
+what the hell.
+
+No idea why they felt the need to do it that way, but it certainly is
+not the open source way, neither is it decent or honorable.
+
+
+That said, thank you for all your work, Serge!
+
+I believe that nothing that has been accomplished with a candid mindset
+and decent intentions is ever done for nothing, although it often pays
+off way differently than expected.
+So I hope this will be the case for you, too.
+
+Take care,
+Philipp
+
+
+>=20
+> Thus even if it was still possible for me to send patches or perform
+> some
+> reviews, after what has been done my motivation to do that as a
+> volunteer has
+> simply vanished. (I might be doing a commercial upstreaming in future
+> though).
+> But before saying goodbye I'd like to express my gratitude to all the
+> community
+> members I have been lucky to work with during all these years.
+> Specifically:
+>=20
+> NTB-folks, Jon, Dave, Allen. NTB was my starting point in the kernel
+> upstream
+> work. Thanks for the initial advices and despite of very-very-very
+> tough reviews
+> with several complete patchset refactorings, I learned a lot back
+> then. That
+> experience helped me afterwards. Thanks a lot for that. BTW since
+> then I've got
+> several thank-you letters for the IDT NTB and IDT EEPROM drivers. If
+> not for you
+> it wouldn't have been possible.
+>=20
+> Andy, it's hard to remember who else would have given me more on my
+> Linux kernel
+> journey as you have. We first met in the I2C subsystem review of my
+> DW I2C
+> driver patches. Afterwards we've got to be frequently meeting here
+> and there -
+> GPIO, SPI, TTY, DMA, NET, etc, clean/fixes/features patch(set)s.
+> Quite heat
+> discussions in your first reviews drove me crazy really. But all the
+> time we
+> managed to come up with some consensus somehow. And you never quit
+> the
+> discussions calmly explaining your point over and over. You never
+> refused to
+> provide more detailed justification to your requests/comments even
+> though you
+> didn't have to. Thanks to that I learned how to be patient to
+> reviewers
+> and reviewees. And of course thank you for the Linux-kernel
+> knowledges and all
+> the tips and tricks you shared.
+>=20
+> * Andy, please note due to the situation I am not going to work on my
+> DW DMAC
+> fixes patchset anymore. So if you ever wish to have DW UART stably
+> working with the
+> DW DMA-engine driver, then feel free to pick the series up:
+> Link:
+> https://lore.kernel.org/dmaengine/20240911184710.4207-1-fancer.lancer@gma=
+il.com/
+>=20
+> Linus (Walleij), after you merged one of my pretty much heavy
+> patchset in you
+> suggested to me to continue the DW APB GPIO driver maintaining. It
+> was a first
+> time I was asked to maintain a not-my driver. Thank you for the
+> trust. I'll
+> never forget that.
+>=20
+> Mark, thank you very much for entrusting the DW APB SSI driver
+> maintenance to
+> me. I've put a lot of efforts into making it more generic and less
+> errors-prune,
+> especially when it comes working under a DMA-engine control or
+> working in the
+> mem-ops mode. I am sure the results have been beneficial to a lot of
+> DW
+> SPI-controller users since then.
+>=20
+> Damien, our first and last meeting was at my generic AHCI-platform
+> and DW AHCI
+> SATA driver patches review. You didn't make it a quick and easy path.
+> But still
+> all the reviews comments were purely on the technical basis, and the
+> patches
+> were eventually merged in. Thank you for your time and experience
+> I've got from
+> the reviews.
+>=20
+> Paul, Thomas, Arnd, Jiaxun, we met several times in the mailing list
+> during my
+> MIPS P5600 patches and just generic MIPS patches review. It was
+> always a
+> pleasure to discuss the matters with such brilliant experts in the
+> field. Alas
+> I've spent too much time working on the patches for another
+> subsystems and
+> failed to submit all the MIPS-related bits. Sorry I didn't keep my
+> promise, but
+> as you can see the circumstances have suddenly drawn its own
+> deadline.
+>=20
+> Bjorn, Mani, we were working quite a lot with you in the framework of
+> the DW
+> PCIe RC drivers. You reviewed my patches. I helped you to review
+> another patches
+> for some time. Despite of some arguing it was always a pleasure to
+> work with
+> you.=C2=A0 Mani, special thanks for the cooperative DW eDMA driver
+> maintenance. I
+> think we were doing a great work together.
+>=20
+> Paolo, Jakub, David, Andrew, Vladimir, Russell. The network subsystem
+> and
+> particularly the STMMAC driver (no doubt the driver sucks) have
+> turned to be a
+> kind of obstacle on which my current Linux-kernel activity has
+> stopped. I really
+> hope that at least in some way my help with the incoming STMMAC and
+> DW XPCS
+> patches reviews lightened up your maintainance duty. I know Russell
+> might
+> disagree, but I honestly think that all our discussions were useful
+> after all,
+> at least for me. I also think we did a great work working together
+> with Russell
+> on the DW GMAC/QoS ETH PCS patches. Hopefully you'll find a time to
+> finish it up
+> after all.=20
+>=20
+> Rob, Krzysztof, from your reviews I've learned a lot about the most
+> hardwary part
+> of the kernel - DT sources and DT-bindings. All your comments have
+> been laconic
+> and straight to the point. That made reviews quick and easy. Thank
+> you very
+> much for that.
+>=20
+> Guenter, special thanks for reviewing and accepting my patches to the
+> hwmon and
+> watchdog subsystems. It was pleasure to be working with you.
+>=20
+> Borislav, we disagreed and argued a lot. So my DW uMCTL2 DDRC EDAC
+> patches even
+> got stuck in limbo for quite a long time. Anyway thank you for the
+> time
+> you spent reviewing my patches and trying to explain your point.
+>=20
+> * Borislav, it looks like I won't be able to work on my Synopsys EDAC
+> patchsets
+> anymore. If you or somebody else could pick them up and finish up the
+> work it
+> would be great (you can find it in the lore archive). The patches
+> convert the
+> mainly Zynq(MP)-specific Synopsys EDAC driver to supporting the
+> generic DW
+> uMCTL2 DDRC. It would be very beneficial for each platform based on
+> that
+> controller.
+>=20
+> Greg, we met several times in the mailing lists. You reviewed my
+> patches sent
+> for the USB and TTY subsystems, and all the time the process was
+> straight,
+> highly professional, and simpler than in the most of my other case.
+> Thank you very much for that.
+>=20
+> Yoshihiro, Keguang, Yanteng, Kory, Cai and everybody I was lucky to
+> meet in the
+> kernel mailing lists, but forgot to mention here. Thank you for the
+> time spent
+> for our cooperative work on making the Linux kernel better. It was a
+> pleasure to
+> meet you here.
+>=20
+> I also wish to say huge thanks to the community members trying to
+> defend the kicked off maintainers and for support you expressed in
+> these days. It means a lot.
+>=20
+> A little bit statics of my kernel-work at the end:
+>=20
+> Signed-off patches:		518
+> Reviewed and Acked patches:	253
+> Tested patches:			80
+>=20
+> You might say not the greatest achievement for seven years comparing
+> to some
+> other developers. Perhaps. But I meant each of these tags, be sure.
+>=20
+> I guess that's it. If you ever need some info or consultation
+> regarding the
+> drivers I used to maintain or the respective hardware or the Synopsys
+> IP-cores
+> (about which I've got quite comprehensive knowledge by this time),
+> feel free to
+> reach me out via this email. I am always willing to help to the
+> community
+> members.
+>=20
+> Hope we'll meet someday in more pleasant circumstances and drink a
+> couple or more beers together. But now it's time to say good bye.
+> Sorry for a long-read text. I wish good luck on your Linux-way.
+>=20
+> Best Regards,
+> -Serge(y)
+>=20
 
 
