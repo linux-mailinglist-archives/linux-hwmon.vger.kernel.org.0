@@ -1,110 +1,155 @@
-Return-Path: <linux-hwmon+bounces-4810-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4813-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E899B6692
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Oct 2024 15:55:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AD79B66EA
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Oct 2024 16:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 477D01C21401
-	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Oct 2024 14:55:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D436282747
+	for <lists+linux-hwmon@lfdr.de>; Wed, 30 Oct 2024 15:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E1A1F427D;
-	Wed, 30 Oct 2024 14:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AB820F5C9;
+	Wed, 30 Oct 2024 15:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y57Bfle1"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=metux@gmx.de header.b="qomTIikI"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F68043173;
-	Wed, 30 Oct 2024 14:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2009F200CA2;
+	Wed, 30 Oct 2024 15:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730300122; cv=none; b=tH0sdud0rcGgR2Q+RqqFKVubPGRHB2vuSBQqTSkQZkoXUeT0oQdrtft1IIO40jDC2S2OKzvXqTOQ1feF838OqmNzvY+pmJiXA8gaufyu5jpxd5Mi5Hc/KwzxxI5aV80fG68H9F26WhtZlVoeWgOx7Avimej4ZZ2ybzfeZ343Rkk=
+	t=1730300611; cv=none; b=fSLnKluJDFy8cQ5uINPhoHsKjosiiOTeF6XdRmLU/BB5HZ7On6Tto8iPB2AXUMJizjICbB/tfMHL/a8XKleFweHtFz4876vlwDvxfH7QLFP6wg1tOvRaQi+WtJwBF3pR6F4d9bRXMcsoAoiv2tdtLxDBBByIiQBGZXf2516TNkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730300122; c=relaxed/simple;
-	bh=+rCWZ55g6lEO9DEzgUrUV6wM9NGbz+RzKyLC4yixhkM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bimpdod32E+tLx9b43/RrKxM0U+AX1KmpisfNZUS9Uxgp+qtA2EkKqJKsSOqoqTiltgRjoRQgEofFx3PZcHVYqgb8WANkDfBnVn91/wEbbV9eOTSet0sg0GBcj+u9QL93lwGAcNTJXyBp9alKmImesEYMN7HZ5gCwqc6lFqALAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y57Bfle1; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6cbf340fccaso8542266d6.1;
-        Wed, 30 Oct 2024 07:55:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730300119; x=1730904919; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S26NapLVOsHBop+Zv7sCn9r3u8VbS5I1a8U6RuCxeHQ=;
-        b=Y57Bfle1oDBFK4NTgNviPxQ1DswEJL/2n8PVW+YnjO01Ti9ogikW+6ed0177Pz0jW5
-         /zz9sl9BQAKTbN0ca/xJN2C25HfnWpYc2IQhWq2GZF8jsnyaUqa5EeCBmdvlIPEglE+s
-         wGBFeyulZhriJf5mBNfcsa11TQoOfCdJcW/rw5EP2A+aUWajfdjZ8cBNWA7NEVnMle1T
-         xigIQ7jyJdJfVzC3PYwrJmuDZ3t9dZhulCnnNt6TtJUcExfZ0/nfNOpNwTBLd4bxzFcD
-         1L+ag+fJ4r8/w/eYKJEdk0GFA1UpSRt3GOeKoaN9HA8U20Ta0fiw4moPKAQ5/WXsoPWl
-         +5YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730300119; x=1730904919;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S26NapLVOsHBop+Zv7sCn9r3u8VbS5I1a8U6RuCxeHQ=;
-        b=WOtXN4KBUz4CSM6hnM8+2Qll5s5QK2/dK2WvuhSizwgS+Xy/vSFJx8Nao+rHX2Y9uD
-         Arbh9JKbAj1GoYkn369ae7jFwofJyj7PrC2Xifb/OZFE+H9t+034G9E1ryBGzgp1UPwe
-         ow6dmk8oUGK8OBNJ9bRElVMMk0LAFYXEGcSLsL4CyZg/Rl+qIs/8Sn78mIwCRW3Plksm
-         OnPHalav3+hVfkF43/2RzZoFmXNQ1gf03gYGOe+/30XzBSUDQ5V7fBA6+Ro1u68C8zdn
-         ph2ww9N/rfVe33Ja7NfdKjjFHe/epk4Dy8oF09U7wj5MAVv7LMXSY84Q5tNTnx7buCXl
-         fApg==
-X-Forwarded-Encrypted: i=1; AJvYcCWq2+NqS99y44j5PI5fqJ9uIjDpzWelUnfB1ZeseKbRIAcvyirkA7/zeyQTQg1U/bkjPxNablZaFdxB6/w=@vger.kernel.org, AJvYcCXD5DLWs2ZS47c4NJ2Kr1eyxb7i0fjRlTewPJdjP49DFjKqsRHs/7ieURqXNpeTdd6Xr3GoIk6lWpE6@vger.kernel.org
-X-Gm-Message-State: AOJu0YypQVW2HJW//adzjyaUdIhB/uEKx6fU3QOdAL7q/j7tBizYOijN
-	yUA57WRRr4P7Ur7J6fnpZidzFj2Fn88EQJnt3p2hPkRs3jr1Y3u+xYmCbU4w70w4Ln9HXODinJs
-	Mu41ttk0DCRyFG8Csganag+HKeSU=
-X-Google-Smtp-Source: AGHT+IGQSEIiHVhnvfX6tnD/WSIxLI4s5a65e/sH1b80CfA4RZVB1nl/zI7uDJ/g6XFe4jN6q6h/OVKOAV93dso9Mfk=
-X-Received: by 2002:a05:6214:b6e:b0:6cb:5ef6:93e9 with SMTP id
- 6a1803df08f44-6d348486daamr44883466d6.9.1730300118909; Wed, 30 Oct 2024
- 07:55:18 -0700 (PDT)
+	s=arc-20240116; t=1730300611; c=relaxed/simple;
+	bh=NAJDFpr9nmdU19C3JKcxMzbLsCujnceVqhZ/RKnEwwg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Af+TFKHbaNb+31NyYomIGXM73EbTT6cTqSu98SsoWPf9nOox0LZkrVYTYwFp+I+wNaLYmJk8frvjgX/RPZmzBKdUFVwnUGYm49zXP0bFaKHdfny3PyILmseqRbzytFLMMDTu/p8ax9QRp+1oc96YfhX0b314DFEoItACsgBOMu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=metux@gmx.de header.b=qomTIikI; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1730300534; x=1730905334; i=metux@gmx.de;
+	bh=NAJDFpr9nmdU19C3JKcxMzbLsCujnceVqhZ/RKnEwwg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
+	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=qomTIikI/OgfmxAbFKh1e8iCRJShu7EnlgU5G434TkB+7QieI60zcRnRQmNHY7mL
+	 26XECiyiNu12zXTWRy2asSgHeF6VwbBHM3aDnQ3uox6d+N5j3vyz2V29nf9ZEHI/7
+	 qUlSXTqxVipxXZ1JSehQTzpHDHQPSPiL/eaweFb8E7BUCEPOvfqCWNoLR7qjkN1j/
+	 p49vWpG4avdBGfWZrfUUn1QQPJYBKupzAA27zZiM0BrIysUJtE3I4oi18t2KU2Jgp
+	 NR5BKuTzLj4AssNq/jcoRi8JEym9/1eHXVRmJDUQ/Hacah+zbe10IoOhncuicwk4Q
+	 B7fK/ijaayh5nLVM0A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.178] ([77.2.112.201]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M5wPh-1tCUne2tcR-003w9y; Wed, 30
+ Oct 2024 16:02:13 +0100
+Message-ID: <0369c687-db33-4665-b3dc-143000ef2e47@gmx.de>
+Date: Wed, 30 Oct 2024 16:02:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241026080535.444903-1-akinobu.mita@gmail.com>
- <20241026080535.444903-2-akinobu.mita@gmail.com> <OSQPR06MB72524578F1E5BA93772A12728B4B2@OSQPR06MB7252.apcprd06.prod.outlook.com>
-In-Reply-To: <OSQPR06MB72524578F1E5BA93772A12728B4B2@OSQPR06MB7252.apcprd06.prod.outlook.com>
-From: Akinobu Mita <akinobu.mita@gmail.com>
-Date: Wed, 30 Oct 2024 23:55:07 +0900
-Message-ID: <CAC5umyjtCaYPjtgDnJ69c87w825MFSHgm92JA1kWORwP4Hdjww@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] hwmon: (pwm-fan) add option to leave fan on shutdown
-To: Billy Tsai <billy_tsai@aspeedtech.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Jean Delvare <jdelvare@suse.com>, 
-	Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: Maintainers now blocked from kernel.org mail access [WAS Re:
+ linux: Goodbye from a Linux community volunteer]
+From: metux <metux@gmx.de>
+To: Hantong Chen <cxwdyx620@gmail.com>, tytso@mit.edu
+Cc: ajhalaney@gmail.com, allenbh@gmail.com, andrew@lunn.ch,
+ andriy.shevchenko@linux.intel.com, andy@kernel.org, arnd@arndb.de,
+ bhelgaas@google.com, bp@alien8.de, broonie@kernel.org,
+ cai.huoqing@linux.dev, dave.jiang@intel.com, davem@davemloft.net,
+ dlemoal@kernel.org, dmaengine@vger.kernel.org, dushistov@mail.ru,
+ fancer.lancer@gmail.com, geert@linux-m68k.org, gregkh@linuxfoundation.org,
+ ink@jurassic.park.msu.ru, james.bottomley@hansenpartnership.com,
+ jdmason@kudzu.us, jiaxun.yang@flygoat.com, keguang.zhang@gmail.com,
+ kory.maincent@bootlin.com, krzk@kernel.org, kuba@kernel.org,
+ linux-edac@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux@armlinux.org.uk, linux@roeck-us.net,
+ manivannan.sadhasivam@linaro.org, netdev@vger.kernel.org,
+ nikita.shubin@maquefel.me, nikita@trvn.ru, ntb@lists.linux.dev,
+ olteanv@gmail.com, pabeni@redhat.com, paulburton@kernel.org,
+ robh@kernel.org, s.shtylyov@omp.ru, sergio.paracuellos@gmail.com,
+ shc_work@mail.ru, siyanteng@loongson.cn, tsbogend@alpha.franken.de,
+ xeb@mail.ru, yoshihiro.shimoda.uh@renesas.com
+References: <20241024173504.GN3204734@mit.edu>
+ <20241024181917.1119-1-cxwdyx620@gmail.com>
+ <e3559794-ab4a-48f2-8c28-52ef46258051@metux.net>
+Content-Language: tl
+In-Reply-To: <e3559794-ab4a-48f2-8c28-52ef46258051@metux.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jSWmplSFQgV90c2A0bkkvj2t8ExnIUMHHQD7NlbYYqtnVH71j/A
+ Pj4uZIi6YPufmEMjudXa4dJHIygmTV1wIFJJkHGM+GIBFRAfnlev+sgkCZr+MF54lQRidxS
+ bkG2HCXJq0essmv69s27h4WdycA0Rnb+4K1fnTHuD/qBR+mEDSBS53MElG91weJLYtaeg5k
+ OTPFgaQ3fak8gIXNj4JDQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:WLKWUYisdM4=;2yNj/laS7SIY5FYvJFi4MhOmvxZ
+ pHFbD0J1kye994bqbqLhdCTnBHW8Ug5JybvfzVUSlvhHAACTecoQE51xKKnV5hpKkUhCo8yLr
+ /EvJ6VglOAgdSAY02WiKyUBPuOArNFiBamR/Fukdo2XJTgsXt550Q9Uu3s0mVOwxlXCMnWMns
+ Fn7g+nMUVDwZg2peIk913PvjXMFh4d9Lkvh3kvC90QEiN4qogLfcOyB8IyykJPV3DQeeXp5hf
+ +MrDjTpn28aqOi4W0rgu+IoyVD3neDdXwidld0Di4C2B0Xjeof79KSNCRhE6HCopzETXFL3/P
+ Eq20+VJdDS4NGHO7dtKR96RqKlqckwmu3AywKAhNuZLL3xf4qG/GG7lFzucn1PmOwB9qzuDQ0
+ T83E1gkoEctHd2TIp9iZslkwtRvZoLEaBVqlMchJ2WhOacIxu0B7j2GBH/lqButUW3kxkamyr
+ QKLpEtwiYtP4mMfbOjHeKNuT587VBOcJ0soGtjcr5abLWdDOKEep1at+A6hNDrbBSP1f6/IBo
+ BK+2+hzwJ3piZW/Yn1eaXBx6/3MBI0Lr+ftdHokUiS61Mp+GLxSd3NlP9E5Ud6tWQlNEOE+TO
+ 3A3+h1iPb9qNj+J4fjqMCG2p0nA6l58zMiSBfI4P0CjndwksOOuTcigJ6T1hzsfD+NMuWWKR6
+ sAOmiaHvt7qnuiw6srIxEdbhvlRklDpq1Rv8Lrce6Ts8Z8qBYDnh7sqT0QOx+5KI9Lsu5iX3q
+ 5le4iVFFC4QhG4eqQ5l+1SnoJ0wgVAVlJ5k6YKhwZo8jzqS56dXAir9zu5tn+DGzJFsWUTgbd
+ rbwM2pncFYXiGznL6foV5OhA==
 
-2024=E5=B9=B410=E6=9C=8829=E6=97=A5(=E7=81=AB) 11:35 Billy Tsai <billy_tsai=
-@aspeedtech.com>:
->
-> > This adds an optional property "retain-state-shutdown" as requested by
-> > Billy Tsai.
->
-> > Billy said:
-> >  "Our platform is BMC that will use a PWM-FAN driver to control the fan
-> >  on the managed host. In our case, we do not want to stop the fan when
-> >  the BMC is reboot, which may cause the temperature of the managed host
-> >  not to be lowered."
->
-> I confirmed that it works properly.
->
-> Reviewed-by: Billy Tsai <billy_tsai@aspeedtech.com>
-> Tested-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Resending with another address, since the other one is
+hard-blocked / censored by kernel.org mail server.
 
-Thank you very much for testing.
-However, I plan to change this option to device attribute
-(/sys/class/hwmon/hwmonX/retain-state-shutdown) instead of the device tree.
+On 30.10.24 15:33, Enrico Weigelt, metux IT consult wrote:
+> On 24.10.24 20:19, Hantong Chen wrote:
+>
+>> What LF and Linus done will inevitably create a climate of fear where
+>> contributors and maintainers from the *Countries of Particular Concern*
+>> feels endangered.
+>
+> And it's getting worse:
+>
+> They're now blocking mail traffic on kernel.org, even from maintainers.
+> (my whole company is hard-marked as "spam"). Anything @kernel.org -
+> lists as well as invidual inboxes.
+>
+> Still in the process of compiling evidence report. Anybody out there
+> who's affected too, let me know - will be added to the report.
+>
+> I wonder when this one will be blocked, too. (I've still got many more
+> left).
+>
+>> This is clearly NOT what contributors truly want. People from around
+>> the world
+>> once firmly believed that Linux was a free and open-source project.
+>> However,
+>> Greg's commit and Linus' response deeply disappoint them.
+>
+> Indeed. The trust that had been bulit up in decades is now finally
+> destroyed - just by a few mails.
+>
+> Linux has been turned into POSS, politware.
+>
+>> Open-source projects might be international, but the people or
+>> organizations
+>> controlling them are not. This is the source of concern and
+>> disappointment.
+>
+> That's why those projects should never depend on just a few individuals
+> or organisations in one specific country.
+>
+>
+>
+> --mtx
+>
 
