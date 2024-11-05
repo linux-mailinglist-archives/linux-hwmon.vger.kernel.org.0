@@ -1,74 +1,75 @@
-Return-Path: <linux-hwmon+bounces-4924-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-4927-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7479BD3DC
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Nov 2024 18:59:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDCA9BD3EA
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Nov 2024 18:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A35D284025
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Nov 2024 17:59:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B31FB2840BE
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Nov 2024 17:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E1D1E765A;
-	Tue,  5 Nov 2024 17:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B261E6DD5;
+	Tue,  5 Nov 2024 17:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="thW1ggpa"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yUhpqV+n"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75591E5728
-	for <linux-hwmon@vger.kernel.org>; Tue,  5 Nov 2024 17:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7261E5731
+	for <linux-hwmon@vger.kernel.org>; Tue,  5 Nov 2024 17:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730829549; cv=none; b=ZZJbaYnXT2DElmUCrtAozyEVOkqGrwTsqmJQpzvLfVWPqsOo/lelJY6Zh7o7+u44c8C6nQ1Vao/eZg0Y7Yd5VYx8PlU+reIWpZSZ4SLAa0IWq1Qr2azrvZio/UT/kPRoskIL81BJLCYiaTB9KqinrEMr8dP7WxIvgEz/Q69NIMQ=
+	t=1730829552; cv=none; b=La6ohj1Tp7bzq9cRQXZVvswN9dlQe342hL9KhgYZp6q3s/5ob1XQ2XenEnJ6Pb3ucjMWdphV3Lx3srstucVAXEmnzuyfRbwfvjJJ8bzMnb4jkVBgeHYM9uOtzaW3qMbBK4GVIJL0cm11AXRpCvsfRFjZpKHyvkd4TxJ+uUSY6h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730829549; c=relaxed/simple;
-	bh=ktW0GKrYRwS/MWSHyPsz9MtYv3cVuAnNYT/fHajylvw=;
+	s=arc-20240116; t=1730829552; c=relaxed/simple;
+	bh=o/S07rQA5LKC++ibvZP8+btEUdTChzX9PQxEcexB2Fc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VcPsUeGT5eKqNq1HFUrX9bYJZFmuMfrV92b76dHdrHMSah3Q7eH5osjWZNYKNj/KL8oUGptDDdazAtfSsyNdAbeju3qujMYo/1gZoIYN5N7gQu1s/SGeB5Y3gJFad+f9UHkNeFXAd0ytlyvijtpBNmkmNhCHzHtvBaLx1jItmr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=thW1ggpa; arc=none smtp.client-ip=209.85.221.48
+	 In-Reply-To:To:Cc; b=sgxy/5K3rjhklvE6MKUYKSWjvggLMbCXmSGgqgRomTodAqmD9IhV5iYAYN0FsZRHBAt4YuPXDAmR/XiOpbiyeMiJ/Ji4eTA4L4pGLjVLQSKIEWEMu2uxCSi+An9jaKlylRevlRD31ZiS4VNcAUOYq4Ac2UecWwQqo26ZzxtGgz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yUhpqV+n; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37d63a79bb6so3836727f8f.0
-        for <linux-hwmon@vger.kernel.org>; Tue, 05 Nov 2024 09:59:07 -0800 (PST)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d49a7207cso3641866f8f.0
+        for <linux-hwmon@vger.kernel.org>; Tue, 05 Nov 2024 09:59:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730829546; x=1731434346; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730829547; x=1731434347; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HQOF7ULLSSCvm8fW5y6GOnkdNjq0wbdWw4lgdHQeMiE=;
-        b=thW1ggpa8q7pBFB4F0WZ8vRgkn4hIc3yNHmUfk6aPYvLzRJ4S+bBko1oc+gn6MQvLm
-         vxkjh6E7s3tnJJ5oknxZPdjBrkCMI12d9eHbuNqQhWmk7qYkyiTrYmI2DgL60eOJ0iyU
-         gfo5mUoNPWf6y5kcOPslOmRP6Ne+xNiybUNjnJH7g+7M7gfMmrxrE1Cg/FHTXcV4oi2x
-         4zGe8/Jd5rfKKjuyhcltwyx3y1YAosDQByH6assb2PxF4QxBNExlrEDzRT44YvX0OpvE
-         fmaWUOY3HCIWGuFkpYAe3crxBfFDJz7EVUVXoo8yxAMERtrdOS0XPiRCZhWAO9m9IZ5k
-         klMw==
+        bh=cYYwPmz/G4AVlx/yjCM3Cevdc1UJIzYaJNcdAVGLoTM=;
+        b=yUhpqV+nXxZaMER0EZpXWOoKN9RIwuImlQxNVU7hw77/BtQ4r8I58ZKfFzCE7ikPKX
+         +EL5rM0/XmPMp2R8aAtmSK6iWN6LsuDnCxsdIOPGc8LkDjwO9H9yqyRa7HmHZPPT/1Gv
+         bmNwiWQ5RlkEhYHYQphKj5cfUAcyB9+3uay2xd7Qr4LZLlTBmI9Bfc7LNF63DGhv3FiY
+         OxiTfealCA7MRAfIdJB0ozCVGLbBZm928ED3hAva94CKciYiyXzJDMUc5s229gNjNhVH
+         IAUXiiw3uviF3Rn9/oBOAHf8Gy3AcdFjpmkYjqVFKkNORgakMlowj7bJmBzgMdeO+cy9
+         fK2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730829546; x=1731434346;
+        d=1e100.net; s=20230601; t=1730829547; x=1731434347;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HQOF7ULLSSCvm8fW5y6GOnkdNjq0wbdWw4lgdHQeMiE=;
-        b=p6BOFf6cxRMCc1R4x3bKTgqeHMSyBJa8pP1IdPslGI9muhFZ0GyrTjl2Nl2F0dZNrC
-         1eChzCUIrcexY2ZQbMrA+K0gDZMLCdjjZJoQPyN5KaCCnZInZYWQLhYQ9iN2MKw8arpv
-         cWmL0FOpoVxlV+jtMf39qqB5rmATWgAqNn2OHVS9biBJYPZ5G3zWQrkhdYFVWSqwpkmD
-         fiCD5o6ykJfNqv3p64l+49NajAlQvjuRsBYuChtL0JEdWNxY2DfI8LYKT6llo87Xx7Su
-         I1K4Q542MDyIwIaK4fxic5S3cEPxUsmDWhUTeCK0sLXj8SVRKwfpNGJCeOLkLNCy9lSL
-         ts2A==
-X-Gm-Message-State: AOJu0YzSAiKWnOP4JUAUuiS416sDRpDELibrB4QTftnDpW3gWPXJIdk4
-	REy4DG3vombrrgs2bm4eHfyjXWGpLmIuvMOmrlk9SGbcUZeJMVYAK5cOxOG+1wE=
-X-Google-Smtp-Source: AGHT+IFiXg+Pk7NwIRN/jmZgmoFna52TL4VngHOo1/Xg+wnm0k2K8RU347YgH7g7hKinh//u0MjnxQ==
-X-Received: by 2002:a05:6000:1842:b0:37c:cd38:c51e with SMTP id ffacd0b85a97d-381be7adf74mr14978203f8f.1.1730829545960;
-        Tue, 05 Nov 2024 09:59:05 -0800 (PST)
+        bh=cYYwPmz/G4AVlx/yjCM3Cevdc1UJIzYaJNcdAVGLoTM=;
+        b=lafPiyk0XvltVPkaVDJZ0v9D75AG6o6ElWNonKTK7YnTN83f8Ns9a7OKyVwrrfEk/g
+         LIUJJEfzuNe66TbFeLigFEQNGje0t4+IHlUsU9BAkDdUPvA0YcAnFEkGDwUGgeHU/alm
+         n9sqfDNHG45GeXisLjY4sbaJTk2v8pk8FRzhCiYkz6AF0QxEoKkwKYCxkrq1NRHvctHH
+         h0/esZLQdtFkgBDnnbk7lXnR0cQMQE0zBT5y3dZhPtffhV793OQD/545oakk5+WhLswH
+         8dsIB+Bp2UCob3yQB4wjZIfP9VRl/rdFSZ8EoH0uXEydrUwUg4jGoNnnRa5oS8W73DgX
+         68TQ==
+X-Gm-Message-State: AOJu0YxHlahWcq0/9HJhhGCGvFBeoqt8FYu5a6w0F2W9wvrovKJmAAqB
+	/zpeMm73nJGf9QlWCG1HYjyKAV4a9TqvFuzNkVvMXhuy5L9yaMEVBLGW7E8RPp8=
+X-Google-Smtp-Source: AGHT+IE25zC4eqQ6X5jlcca9JvDhL9cTo62Y8/Ni22/gumHeYIQDsBdSiTMBQDkr9GZdErmEGlPxEw==
+X-Received: by 2002:a05:6000:188b:b0:37d:4c8f:2e1 with SMTP id ffacd0b85a97d-381c7a4c76amr10961922f8f.22.1730829546869;
+        Tue, 05 Nov 2024 09:59:06 -0800 (PST)
 Received: from toaster.baylibre.com ([2a01:e0a:3c5:5fb1:5b9b:df02:2761:7a57])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-381c113dd7fsm16959481f8f.70.2024.11.05.09.59.05
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-381c113dd7fsm16959481f8f.70.2024.11.05.09.59.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 09:59:05 -0800 (PST)
+        Tue, 05 Nov 2024 09:59:06 -0800 (PST)
 From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Tue, 05 Nov 2024 18:58:38 +0100
-Subject: [PATCH v4 1/7] hwmon: (pmbus) add documentation for existing flags
+Date: Tue, 05 Nov 2024 18:58:39 +0100
+Subject: [PATCH v4 2/7] hwmon: (pmbus/core) allow drivers to override
+ WRITE_PROTECT
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -77,7 +78,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241105-tps25990-v4-1-0e312ac70b62@baylibre.com>
+Message-Id: <20241105-tps25990-v4-2-0e312ac70b62@baylibre.com>
 References: <20241105-tps25990-v4-0-0e312ac70b62@baylibre.com>
 In-Reply-To: <20241105-tps25990-v4-0-0e312ac70b62@baylibre.com>
 To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
@@ -91,63 +92,48 @@ Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-i2c@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1629; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=ktW0GKrYRwS/MWSHyPsz9MtYv3cVuAnNYT/fHajylvw=;
- b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBnKlzhvQPxtedOYvOHyn1+qAaTyZ4JJnw30qwln
- EmtnD0is7CJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCZypc4QAKCRDm/A8cN/La
- hfpJD/0cVfc7WiZKYsK62JOY8LNupfGVTbpzODKb8RJB3dN+fxSu0tW+glVc5ZdarEcN9f0BS49
- U7GG9gt1rMeoFIb0LIF79IJhyqxoMWrI+QLnzv1jdOxBvymUEo0Ws1ZbH5Nx0XwGjL+VWHNdhgp
- /xihJLmUkjlvF0GKw5txxoxIEqS9ZvlISyt765OEHkHo1bsmolevYUxadEeixFRWvPw5/XDTBOq
- f7Hz+B+RmWjySaFqfzcW9/e3vfOBm70VMjGIXvP8narC6s3iLHBFZdCGR0yDTvc2lgJeo7MuvzO
- 8g/N8NRP+ChPbmCQocpJvgi/q36kJCeZFOBEWNzwSPm60KCO/XpAFHNJWTtsYWRgFFgOu0taJ5P
- GgeywGDVnqQH4lO5EEGdEeJ5lC+ch3J4OBRNzks5zkJtIpUsupcrHp1RvYoj3tn/K87AEaEBsTS
- SvXDJOY2NPwVtKrQMHto36BkOI5kRmA1iXTYhl7UtJGy/5DexI10W81OVqp8kcl9uHPiepLpSwD
- 1I5iIP4cYL6G2MQJLXO8XvXxqwQYTsAK6k67F2xtheisQQtQ/rgTXsdFZf2hx437FmM9AE7RXJt
- Xj/7X6AZ8UEfF6CXXKFafLSlGK6blMq6nZT72oubMkEfc/ZkjvmS+gB9X3WrIobuKEtrpjltd0Y
- JVf8QuYTYDWop2g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1166; i=jbrunet@baylibre.com;
+ h=from:subject:message-id; bh=o/S07rQA5LKC++ibvZP8+btEUdTChzX9PQxEcexB2Fc=;
+ b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBnKlziyU5VuYN5u7I6QgqGhZ8ra1bIhVFcODbjP
+ PHsCrqyZn+JAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCZypc4gAKCRDm/A8cN/La
+ hcaED/9tYQFT9ZLIrrU3Lezn+ZTE00hfX46jWTWOz68yb6noBO44loCXAYdt9ZlwhWT9ChCdVoL
+ UcfopD7Ig3TwiRQV0MXXZcDrRav5Hk8vCd/OQbUYh9NOt2CMpIgHSyZnSBJkJNPIkOJ+JsB1iiN
+ /vmJKV21Qery6AgmWIppQUBaMidxhCiZFML+autKjnG5ppY6OuIFjeUcfY23YBjNttDJOK4DH9t
+ 29myh0c7v9WUUYtj2Nv3PlbcjCKz8ik5TLLe2qTFQrtlO4tfzYSXQlhcKNwylZDroKDi24WMClr
+ OQebZlBuQju5+cAkra0xbxGZT7BuBD6QipiaDLkI/pvX8ThccnWhHiAFnwuMYNkWfXIApA+TiJ1
+ r1s4oU2ZPU6w/kF08WbfPcGqz+vpXRjSb8SeDTHWLkzWBUDeNvJRjA4oYMK5zFhj/B5zqTbGeVG
+ gvjqU40HPnbzAXe8DCXqBAnDCX6noi6LInpC/DJfGstpyz+9Rm/Oat/Xwf50GBocAQm2Ow47KVF
+ aF67fDMNmsMoRbOuqrKHUo8JIl0dNnufu3PCVTwCjwh8irunipdkEAYOEtMCUJvF5iqI6apx5Q+
+ khWqE4IoIstnVnJO/24/TRdBtMTf/WMbdG31uc6bMlJEJYp5j0LExPvQLTET8/5MuGh+BAlFlBm
+ zkj/Qt9e33/9VfA==
 X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
  fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
 
-PMBUS_NO_WRITE_PROTECT and PMBUS_USE_COEFFICIENTS_CMD flags have been added
-to pmbus, but the corresponding documentation was not updated.
-
-Update the documentation before adding new flags
+Use _pmbus_read_byte_data() rather than calling smbus directly to check
+the write protection status. This give a chance to device implementing
+write protection differently to report back on the actual write protection
+status.
 
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 ---
- Documentation/hwmon/pmbus-core.rst | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/hwmon/pmbus/pmbus_core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/Documentation/hwmon/pmbus-core.rst b/Documentation/hwmon/pmbus-core.rst
-index 1eaf2b0158376812eaff1786d01b0f330c85eab8..686a00265bf71231c684afad6df41d6266303919 100644
---- a/Documentation/hwmon/pmbus-core.rst
-+++ b/Documentation/hwmon/pmbus-core.rst
-@@ -308,6 +308,10 @@ currently provides a flags field with four bits used::
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index ce7fd4ca9d89b0f0a02e6c99db391a7cfca924a8..085a4dc91d9bad3d2aacdd946b74a094ea9ae458 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -2719,9 +2719,7 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 	 * limit registers need to be disabled.
+ 	 */
+ 	if (!(data->flags & PMBUS_NO_WRITE_PROTECT)) {
+-		pmbus_wait(client);
+-		ret = i2c_smbus_read_byte_data(client, PMBUS_WRITE_PROTECT);
+-		pmbus_update_ts(client, false);
++		ret = _pmbus_read_byte_data(client, 0xff, PMBUS_WRITE_PROTECT);
  
- 	#define PMBUS_READ_STATUS_AFTER_FAILED_CHECK	BIT(3)
- 
-+	#define PMBUS_NO_WRITE_PROTECT			BIT(4)
-+
-+	#define PMBUS_USE_COEFFICIENTS_CMD		BIT(5)
-+
- 	struct pmbus_platform_data {
- 		u32 flags;              /* Device specific flags */
- 
-@@ -358,3 +362,14 @@ This can be done by reading a known register. By setting this flag the
- driver will try to read the STATUS register after each failed
- register check. This read may fail, but it will put the chip into a
- known state.
-+
-+PMBUS_NO_WRITE_PROTECT
-+
-+Some PMBus chips respond with invalid data when reading the WRITE_PROTECT
-+register. For such chips, this flag should be set so that the PMBus core
-+driver doesn't use the WRITE_PROTECT command to determine its behavior.
-+
-+PMBUS_USE_COEFFICIENTS_CMD
-+
-+When this flag is set the PMBus core driver will use the COEFFICIENTS
-+register to initialize the coefficients for the direct mode format.
+ 		if (ret > 0 && (ret & PB_WP_ANY))
+ 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
 
 -- 
 2.45.2
