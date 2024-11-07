@@ -1,170 +1,168 @@
-Return-Path: <linux-hwmon+bounces-5005-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5002-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D109BFC49
-	for <lists+linux-hwmon@lfdr.de>; Thu,  7 Nov 2024 03:06:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00E29BFB40
+	for <lists+linux-hwmon@lfdr.de>; Thu,  7 Nov 2024 02:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B381F23875
-	for <lists+linux-hwmon@lfdr.de>; Thu,  7 Nov 2024 02:06:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D6C1F22AB7
+	for <lists+linux-hwmon@lfdr.de>; Thu,  7 Nov 2024 01:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AFB17BCA;
-	Thu,  7 Nov 2024 02:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618554A33;
+	Thu,  7 Nov 2024 01:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="DZjNLkzj"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="B/x1SXzY"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC5C168BD;
-	Thu,  7 Nov 2024 02:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.139.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892C5C13D;
+	Thu,  7 Nov 2024 01:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730945051; cv=fail; b=MOE0CN9HwJ4nYCmUIi3lCx+WHlZfV8dDn8e4YRpC9jBjieaB/1UFGexSBtHKNR95GlAZUTdgjpIYhvLp2D1sqF4fdSpGpyXNxFcptqSOwjo3LuEdYqq8Z8xzdYgbCYFBQNg7XRzTmgItH3N69RAdHFO4F4YckrJICOaG6NQcbEY=
+	t=1730942249; cv=fail; b=DS/QPQOfaA5bKVcB3ogMWCxQMP75xYG4s6XnSWTfG2yiyjQKxDzEnogSIVptAvwfAAzrc3rp8MqoQobqJIyexamW/PpVLoGZ+4RkKz70wmWaTEbNsFue7NG82SKQaZUpi1Btlu8yP9ljEJ8OW6xq+PIC+BsikHGUY604aSRzHik=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730945051; c=relaxed/simple;
-	bh=UJ2U7ZFboUq5ekNY9OkpN3eyo6BbH4HCEiTolzaMR8s=;
+	s=arc-20240116; t=1730942249; c=relaxed/simple;
+	bh=98wr8gYirA8UBfcnS+9fjXGbYMS0gVK6dNK4C9+1jFc=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=k/Que25NFM0mq2w1svvhnQYDVaVN++4El/vkFJnIIUzMuCFoglhkPrwt3/bY8+0GLgYVpMeGGBql/jYdCdHYW9yj4PnYCTvXNNBNi+f+sQvFfouQjkaexpCPFBuZ+p7myBKD8utlcGuflJX2KDxgX+G3kuESWT8Ahw4bkag3Djk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=DZjNLkzj; arc=fail smtp.client-ip=148.163.139.77
+	 Content-Type:MIME-Version; b=cuLFY7SWtGUAz23lLddcz3ZIy49vSgoNKCr5qts2qGXU/48aPu0eMPbHbfnWMgAQUAE2lHUoNiO8AoevoCcairAWMo4DyB7dnhgPY0iMtDCPEw0ClHslyJUE9fcRrEFC1rscxk39PHj2p5n0cCREzGRFlKGJgWnGGqTLklVMzwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=B/x1SXzY; arc=fail smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6L6hdF023626;
-	Wed, 6 Nov 2024 19:49:29 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6L2VKt000475;
+	Wed, 6 Nov 2024 20:17:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=D99Z/
-	83gMU8sfB9r3iPN0OG6BGLiP87P6hTg31NOCtQ=; b=DZjNLkzjMYxFMQyq9mK7z
-	V4gz7kJV/6LbWsyNssPKfDYhJV2nRVZMbm3fA4YJ2mDcmoi2wc7Lsmo7kXNvyn0B
-	H477ecQo0QmScBjpFpVVrSeDon1+EVpzxTRFV0tKzjZt3geBO06Z/W1Lm7nfDeC4
-	OyIuBBZeDBrt1p0xvTa67mIe+BSzVkMm4k00+XCSrKmvxMvR0jAlv2CK9cqx6dsA
-	5YLvbMqF5YkHhkP92U0VL8FvExt/rDD1wjcZYKo56SEQ+Ff4UgpDfWRT8pIzxy92
-	cZY32JN7kUW22DcAMclFpykHHtzVSBeWqjEyKr3crbQij3SVKGVeKw5Cc4tY0HOG
-	g==
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2044.outbound.protection.outlook.com [104.47.55.44])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 42r0qkchkt-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=r2eHO
+	n7ywqakckanuMnw6PAuUFRtaCOhGv1g2rWHTHo=; b=B/x1SXzYypyqEQ+wjzZr5
+	/YRdAwqkIWqNvlHuW9vz03/z6e+NlwFg6+zhE/Z+Iu9CHqi6dpvIzOyKv8suOHlX
+	OWiJm6kUnxbxhhTeEyuHEyikkUVs4AfwFYje+mH+KdXeJFp15JXs5q/bLKIn7BpS
+	PL8IczCaHDKR8TSQC6NJknzybLfzYMChTnTH3M8hcxZcXav2Uwbj8VXcm9iFRCUt
+	g6TwMvzqhv031yXKo5ob7JwzW5eQDGjDVPzfDQgf6rrD5Fc6DEmX/InSMtmYAo9V
+	kNp1jv6NrUjUGm0/cTsYDxci3Bdzmvgw9GuGdxQydLKVMQwlyFNvJxx3uA5mt2aI
+	A==
+Received: from bl0pr05cu006.outbound.protection.outlook.com (mail-eastusazlp17011001.outbound.protection.outlook.com [40.93.4.1])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 42qf1dhhgs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Nov 2024 19:49:28 -0500 (EST)
+	Wed, 06 Nov 2024 20:17:07 -0500 (EST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LNjmYhj6XzoQNW7b0rDZEdqPq3vxpKBQOVNVU906QtOhpp3ujK1DTT0zpNl6CgTzHNJ6c5XBb605cFOTE5eoy3rMYOR+7wEl7rJJ+2DR28WAmeEJQJukLp6f3ZeJFawMjac+8RXCc9NOxIeeWX+GpfluSbj6Nbo9ev5Rd5DuCXQGlwV30b8HULXrVTuIfXc6R/sD22Q+OmsKY1PMiAOna3pwYvQ0PiMDL2W/YQ1hriV0bbcvd+9ENeIJsBW30Oyw10qQVQy2fsXKod9ME786aIkcNfyZNzh3dJhX4/Tc68C2ICzFQiHFdEUVzkNLEb5LV/MI/UOCc0bvE2CRjTX2WA==
+ b=nwRt17YjepK8N9k6h+q/nusdBIbyk7LVghAmHIK+/iCD1/bWvMI3liVtFoLQ6ZbOkInSEP5xAqr00O1iftDhvIEmnF1V7by2uc+iBeDBgnFDocZ29EfsQ29D28r/AlxoIzq680snmRZ9J59FZyvisIcyNZRzDdyJQxlzdFJ9s3o7DIOk7zk+YqyrIR37MxrfFjhemSe/UD66bsLrroWiaK0+Gu0qvT0P4Cyu8tMJTHHTh0MJj9pwDWLINV4apbpJwSxCVzWnvzjlJGB25SrjBlrNUCH4se3ENPzyjtLW7ivPL3y7Gwn1nRs83rwO0dqsI8eEiFTKDyBSg22nXDahWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D99Z/83gMU8sfB9r3iPN0OG6BGLiP87P6hTg31NOCtQ=;
- b=b6uErnYaDigxaogXAbOblh43Q7vltyOj+TWr/kEvAy1qQEde+dyB+GGOVyEsY344pTahZpE1aWICZFyV9gBY5nWkiR4qtVkY3MfM+ExmTXnmlzopP0eFOnCkH9amf6W+XZZ4yMzydP70aB689/lmE+WWRwKOwGH35cmw0DZUWfKlBgWfRUQgoAgPwRMik/P21O1ghh3WJQEAQVTHem014eVABj1PhIFEfAUJpQ3P6ocbJwge/pkGvgtw/0+iZP38gX3aOVepca9a9KdygAkWuATyOhin9rrYFo/gglqRkGDvOB9p3PBoZcnfJMr46hLNpJOhmTbbS0nQRvIU2w6R6w==
+ bh=r2eHOn7ywqakckanuMnw6PAuUFRtaCOhGv1g2rWHTHo=;
+ b=yBPdpVdICJch/tsq8KfQGMHv0tCbk2B9pgl+GijJqvs4zI4wxM8jrqx4QU+egKdsMtO49+/yfCpyryLy+s2jbE57rYGIvVzr94OR5fFI3fkEYi2sxQaT+WqN50r7TmiIIILby7GkSPaBexCGJNgrHymbzuyWe3yLewMxfTbX/3M8SkqqVkRr5BVafv6VOS/uMqzm45vnLVfUHArQ/TfXzn7tWPAG9qFtYYGwT51SGYXGCbEimhlRPtlHJikESkbxrJY8e2lgsG/+kw/F4ZapgGt0DFr5KWGwWTcY8SM6BBrwOuHI8fxynQOfTIPr7LVxNNDHgdIEQUbgVd1QI27p1Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
  dkim=pass header.d=analog.com; arc=none
 Received: from PH0PR03MB6351.namprd03.prod.outlook.com (2603:10b6:510:ab::18)
- by CO1PR03MB5697.namprd03.prod.outlook.com (2603:10b6:303:94::14) with
+ by MN6PR03MB7575.namprd03.prod.outlook.com (2603:10b6:208:500::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 00:49:25 +0000
+ 2024 01:17:04 +0000
 Received: from PH0PR03MB6351.namprd03.prod.outlook.com
  ([fe80::71f7:8e63:e91:a354]) by PH0PR03MB6351.namprd03.prod.outlook.com
  ([fe80::71f7:8e63:e91:a354%3]) with mapi id 15.20.8114.028; Thu, 7 Nov 2024
- 00:49:25 +0000
+ 01:17:04 +0000
 From: "Torreno, Alexis Czezar" <AlexisCzezar.Torreno@analog.com>
-To: Conor Dooley <conor@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Guenter Roeck
+	<linux@roeck-us.net>
 CC: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
         "Sabau, Radu
  bogdan" <Radu.Sabau@analog.com>,
-        Jean Delvare <jdelvare@suse.com>, Guenter
- Roeck <linux@roeck-us.net>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jonathan
- Corbet <corbet@lwn.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jean Delvare <jdelvare@suse.com>, Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
         =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: RE: [PATCH 1/2] dt-bindings: hwmon: (pmbus/adp1050): Support adp1051
- and adp1055: add bindings.
-Thread-Topic: [PATCH 1/2] dt-bindings: hwmon: (pmbus/adp1050): Support adp1051
- and adp1055: add bindings.
-Thread-Index: AQHbMCrMXCXi5s2C2EqrPjhQ/cnsCLKqZm+AgACTYoA=
-Date: Thu, 7 Nov 2024 00:49:25 +0000
+Subject: RE: [PATCH 2/2] hwmon: (pmbus/adp1050): Support adp1051 and adp1055
+Thread-Topic: [PATCH 2/2] hwmon: (pmbus/adp1050): Support adp1051 and adp1055
+Thread-Index: AQHbMCrJ4Y9sFgRAo02CKADXnFeaqrKqHK0AgABLmQCAAAGcAIAAlSkw
+Date: Thu, 7 Nov 2024 01:17:04 +0000
 Message-ID:
- <PH0PR03MB63512F464B43A8F457EE0B75F15C2@PH0PR03MB6351.namprd03.prod.outlook.com>
+ <PH0PR03MB6351F678D8FDC9C28174E9EBF15C2@PH0PR03MB6351.namprd03.prod.outlook.com>
 References: <20241106090311.17536-1-alexisczezar.torreno@analog.com>
- <20241106090311.17536-2-alexisczezar.torreno@analog.com>
- <20241106-linoleum-kebab-decf14f54f76@spud>
-In-Reply-To: <20241106-linoleum-kebab-decf14f54f76@spud>
+ <20241106090311.17536-3-alexisczezar.torreno@analog.com>
+ <ZytSCD0dViGp-l2b@smile.fi.intel.com>
+ <55825e91-b111-4689-bb3e-ede2c241728d@roeck-us.net>
+ <ZyuSzPXnxRYG4Gk3@smile.fi.intel.com>
+In-Reply-To: <ZyuSzPXnxRYG4Gk3@smile.fi.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR03MB6351:EE_|CO1PR03MB5697:EE_
-x-ms-office365-filtering-correlation-id: bcbcac5b-9627-4270-4b3c-08dcfec60729
+x-ms-traffictypediagnostic: PH0PR03MB6351:EE_|MN6PR03MB7575:EE_
+x-ms-office365-filtering-correlation-id: fb6fa5fb-e757-4ca3-43a0-08dcfec9e3e3
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
 x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?1bCmxyE6E+tSLCJqFLCjZehcjWsQOMuqT0D0PDZ3DLOMwVfeuS400F2K+9?=
- =?iso-8859-1?Q?sbWngNrNzokyfRViWx8hRo1EA0eUzKhHL0I5J/9irqlkUw6JSSGEX5UQ2O?=
- =?iso-8859-1?Q?cyU2AN/yKAuursBaZKP1uVihIcNhK/yY0WutKGsJOGXi8PSLZc57RsI9FR?=
- =?iso-8859-1?Q?MGKQ3mCCaBWXfSfrMBJmDfLY0PYm0TBeTCAHj+XfGMTSWktgwAKMb+Gb1l?=
- =?iso-8859-1?Q?my+DLp7cwUhMBQvS2JmWcOq3iIcNEArJIKwp2Tk+I3CGPgP8Vd/9fg1BPH?=
- =?iso-8859-1?Q?mneZ64tdIjsk0UhGCLbGREYmAO3iDUMAD8oaGGpOUZJksqSW6SRtEaVmUC?=
- =?iso-8859-1?Q?/ve/fE3FU3An2LldDgdYSZtkRrIFB8s5ca2PwcU3zRb87zPED1LFKu+utP?=
- =?iso-8859-1?Q?gN6laYh2B+nUEadpwOHjJus0V0ugZNA8aPqGK+9jvJCwTBT/iGVXnOewki?=
- =?iso-8859-1?Q?yi8UwW0WtyPlBO+oT5eEdhDv2JisJ2qbO2f7O5BANu6dU0WBkxRMaY1203?=
- =?iso-8859-1?Q?cU5/7qSEEHRnoIXYOh2VoV4jFeQ2h8HCAcvrGzhUf5O2svlb0kZFOcq0qb?=
- =?iso-8859-1?Q?mVOwAftoiNUDik56+9rmD5CW3DioQmeqVKDlcb6OMoyzR+18etzwBLyiTa?=
- =?iso-8859-1?Q?zajy3vL7pGAm9hGNcXu9BB0aJd4HCay+RGCwEolkGeIm/xHUz5zLgqz5Rn?=
- =?iso-8859-1?Q?l0l8eZqtsj+yHsFotTSuWxdh12PTO3Qrf2/dwVLrQ8KdN14cEKC/oVh73t?=
- =?iso-8859-1?Q?q/cWsS224IOqddbgAGJ8ukFpDACW5SRa6GllqWawVdIiiM3oga0kuAQRdf?=
- =?iso-8859-1?Q?LLK4yjAOF3unFobUGfhDFrNlpWhSmNbBqYEsBjn6rbHAMpjZSuMJi1q2Uy?=
- =?iso-8859-1?Q?9prqLppZ+YIog5A13/nMA4Lv+QBPvtk6dGZtxJxMvxy4a1Ujw5qK8jBUZ3?=
- =?iso-8859-1?Q?Qx9KEPDXQ98SsnbNXaZSdZZiHv7sEUPI5W2y3svFi7Dw2Y143exh0WBxK6?=
- =?iso-8859-1?Q?K4/Zr63tHL9kdrgeEqng9coej61I0AHt4lbuItulaENwOH72accXpYktYa?=
- =?iso-8859-1?Q?LBPF8CTb4lfEMaSbTtaogXVc8k8WM++NRZgLyFzGS8ZKm354iQxYK9/4ub?=
- =?iso-8859-1?Q?Xn8Ue2uD1X+eHVG9l8nnpRNKPT4ycTVHbu+cTM8X6+y/4jei4SiWsiaBXG?=
- =?iso-8859-1?Q?DkMAur3xkwA3uoWhY/G4DP9I+GaDxUX0ieSaUEvC1F5Bl7t+hefo2g0Q+R?=
- =?iso-8859-1?Q?U3nyOHavyrChWwmWsFk94O4ddXuZlsIdmt9KPOS3bxI+zPlSjfKcCuFVmp?=
- =?iso-8859-1?Q?p0F6D1NCciJ7i5l0Qw4wYnu0KZoGHJUU4nWRG4qJVzll9tjTEf1ZX4c6IY?=
- =?iso-8859-1?Q?vZNe10GcJAE+vOszusRKIKXG7Sx1AELW7IY1Xic4Xl1iU+it+cHpyaFia5?=
- =?iso-8859-1?Q?Scn56EPInylPqUH3?=
+ =?iso-8859-1?Q?5dkoUoKF5mrJjRKC2wIIXk/2qlN14JFg+a9y1yWzWx2mPKMnUOJMLrn7HQ?=
+ =?iso-8859-1?Q?lUdIHep39rAtMn/QOwGVTa6CoVNI89ZbKJUnaUdXadBeZ+8jeafeIvfhs2?=
+ =?iso-8859-1?Q?Avs7hCXgHjAm6vOBt8O1MIDcif2tnYHmL9nd12wknE3NREO1RqTnSUHkAw?=
+ =?iso-8859-1?Q?rebfodjjV48Rh/JXV1yUQpnd/PplZotYBaTS+0SC2i70a8Cb1NaRYuKMo1?=
+ =?iso-8859-1?Q?rFr+FephF66kdb5zDCkDf6KJ096bmmhGDOogYUjwEBTyqRQPKipvQGqFAN?=
+ =?iso-8859-1?Q?nez4Jbx96EVYtMgqTOG8HgApE2eufUrJqMnOQ6vnVw8540TcQ3bddQiMW4?=
+ =?iso-8859-1?Q?nMK6QpoWLnKzINIItHgET4VX+xOSGam127aFDd6p0JRSDIk+n5uEXYZyZo?=
+ =?iso-8859-1?Q?nwPncuXFoQ8h235ZEfrT8A2N5Ltz6lec0SLozqYFL4tlYVck1mh0lSNo8e?=
+ =?iso-8859-1?Q?T5tUoKdwMOgT7RplCJnCVj+Do5efD/4LlHzAAwCMrmFJUfUIaj1QsFhOr7?=
+ =?iso-8859-1?Q?fQGW5cKXXspWdk3g0H0YPt0H+8Oe2w2oXObvIihBiEXhnV0KoaVfAHZN6p?=
+ =?iso-8859-1?Q?fMjDXIXAQku0Z8xgxxl24J0+hVX1Qo+U+XksThSt7fFFD4sS4roMVYQslV?=
+ =?iso-8859-1?Q?+bZ7D0mMoRIgFXEPeFAWfyW4Ic64RBD0IvTCs7tj5u43zowBITry09EXEn?=
+ =?iso-8859-1?Q?UMiZz+axsaF7FuV88G3qIAM+i6SBBms7KhluYVufcaK16mBtPE373hLyxH?=
+ =?iso-8859-1?Q?szzgzk3dtm9FFGXVc3JU6malm2BddshF5U/XXrOAUTwl2kBIuv9KkGXnWa?=
+ =?iso-8859-1?Q?ZoHWqcpm1Ne+3VM6A8eG4Tt30UPGsYlcoNgyOW5RbjFNY1+8gDxUsyJggc?=
+ =?iso-8859-1?Q?M4fM7swxpFSfzQWiWggBxWCfLTfUaXaiuryaxcQorvLNS9DbY/1jZNsGGe?=
+ =?iso-8859-1?Q?fFf7GzuzO0ua9rG54JIihRWrDkx9Fl9owaUpRxJwWh+iT262sVPtRaH0OI?=
+ =?iso-8859-1?Q?++MZdBCwkr62I9lN0gWCtXl9MuEI5TXJQSnSl2RxqxL7/iHEVsdja09nYz?=
+ =?iso-8859-1?Q?C/WRMdP+J8aUvWadiAjbuU738cydIlJIm40YqqSt1Bxoyxdb6W/yNKt7N8?=
+ =?iso-8859-1?Q?L+6k/zAjwacsm/c+ksNgf22EIUeotCefJUQJMz3QuEKpAY4TvMY6PMpjbz?=
+ =?iso-8859-1?Q?M6N9Fawihaq+4bqxAOlARbxMed223BSYsgvCEcAR9+2W/vNTfLzgKE8TgF?=
+ =?iso-8859-1?Q?WXJObyKcitemWPXjiR9Lq0VxpBvoiKt3X2/39BxGXyQdrBJpKXIycF1kPG?=
+ =?iso-8859-1?Q?uoIdBCkHmaF5gZRXwg+GkcA/j3OJYOPpgmtNk3fAo/uYoPnN8nr7dtsMyz?=
+ =?iso-8859-1?Q?98cCk3u7R3UkQpDNfkG0RrnFV8iCHGx827SCQGzCCbef/p2Zh4J5A=3D?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6351.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6351.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?b/qc6QrJG34yIOAKtRr4uhW9FiXzksWbxNIe/k3L7fbWkgc28R7drNfyDT?=
- =?iso-8859-1?Q?5B/t/Be8jr9KCTSX7jlCKZRMyAxjSbjgBo1jByT0yL7QzjM8wEBo38MfpL?=
- =?iso-8859-1?Q?nYAjll8eMYwpOWyzmLruU9Iyk0eJ0FveFzrrOGVftLNM86QFSzhWX8pdJz?=
- =?iso-8859-1?Q?yomQRcp+J8/LJgktUdlwkSVaQINZxG0jZsOadDiPLwlDx77Qdis3oUKYaL?=
- =?iso-8859-1?Q?RxwY3z7Vhhzfb0U8+hDzqSY0D/eML4veq8hC05USy4q5EcM3/ye58rN6xK?=
- =?iso-8859-1?Q?slyr3sGYPAjOM/A15G8cPB6DzsQNq2e+mwyy670Lc/9YIXxJK1A/ojL/bM?=
- =?iso-8859-1?Q?6XiZVajHzX4wYNTfLcyJlUEikfuJ5U9BF2pNqyD5Rhk4IwO71T9Lfc1hnw?=
- =?iso-8859-1?Q?sHuVRYaRYY3YBf2qFGVHCHAuNPK1fDDc67Dua3M1hd2tDa5JGQygW8QKcC?=
- =?iso-8859-1?Q?UsdjWEhINSIUdsmdgL1IueetfYECs9w85dJEwC5AKpiQkyyNj3yhtU/Jr7?=
- =?iso-8859-1?Q?jXhzvd3gMBkjRrXXDMKdCuwBWdShj390kuiiynFI16KlBsL8JAxNSLSsdR?=
- =?iso-8859-1?Q?YdPGEruDR3tNn81gSWtLHMm5gDvt1u3cBYrKbUxU32iu0C+cfnru254SEm?=
- =?iso-8859-1?Q?bpNlHbGcRIi8Xt/wa+Dz50V8eSzv4UUqYU7QHUaBPEyqZWmRf2hT9Etjpd?=
- =?iso-8859-1?Q?+QyrczMo2S1ylK2BEUl1S9h8dZra3kA4ZQv/wBANFgRN1v88o+zfDQEoBt?=
- =?iso-8859-1?Q?hn0jXzW4fe+h5LT3GUAu2iMX2rG1Ii8CKlsiJSVjNX0bdE6BissNFrkiZ0?=
- =?iso-8859-1?Q?Xc6b4K34q3gFcHd2KJiYa8Cmhh+NmzEXuFnw3E9brWS+wxJj0lWg9S6VNY?=
- =?iso-8859-1?Q?rb5ZlX41RpSAcPBAQWy3Pw7Z9/6z6TU3cRw3+sTvXIq7XaJXiPTJYH07pG?=
- =?iso-8859-1?Q?lxzLNRtZK/AWAY3zdXvLLEdtcX09f1SUqeaBOCaO4u1BekpHH36f0Kc9jJ?=
- =?iso-8859-1?Q?0ymLF/7g8B6ZU+hrs4odp67Tt3Wb/p03ameuj1GB/hGJlRa8TVzxhgMi2i?=
- =?iso-8859-1?Q?8A9XQ0JMOnfd6xEJE8T27FC/lAsuhNNRbUNjE4bbrHAL56hfP4hWe8ynCr?=
- =?iso-8859-1?Q?Ek+51H3JqlAW98/yVMw2SQhUNMeS/p/kLSCJE94mo4Rfl5NKu9X5HXwOZs?=
- =?iso-8859-1?Q?/N5W5IQQBtKbbGWOrSgSr0heqoYGiaIGJXgHfOiX/A2/CjiP7IME8AeOpI?=
- =?iso-8859-1?Q?Js/6dE7k4hQ63WYBN2KYKuKFneXvBOLLlQVETi6Ux+jJHbIehRziHuO3iK?=
- =?iso-8859-1?Q?81VlHEnLthlWgwBBMPyAPZzS7wdA46EvgO5Tmydvw4UZ4PEuejOBLzXcN6?=
- =?iso-8859-1?Q?OpJvto7hJiZz4JUl68f3PUDaoZ35uIh/Cxbz9nFpuYhTlRD/5t22SfoBpb?=
- =?iso-8859-1?Q?uZBSuUJzg4oGz9foqWcV21y/2xSJtarwbDO8MSKPlat1sgWuF2td2GCGsf?=
- =?iso-8859-1?Q?r00CQKpgiJ9NgMjjqIKJ/XfkaysiWHHiMLt68sJfaj1cXgaQ2luQBJhIzt?=
- =?iso-8859-1?Q?cCH/7MYnpvrMkBX0HcVjjYnOl9wqXrNwIqn8/Q1IKxqB0yJFV9vhkIuf3X?=
- =?iso-8859-1?Q?NekNZAGDDcGxsWbA8byhJg5+uJ+aEFvFJHWVvWNb32cAQ0euhVCbfA8Q?=
+ =?iso-8859-1?Q?9UdCAfFOxv/E2c/khBZcsn0VJzjnk6A3NChLme5WP3g8pNAPe6FqaCLTVq?=
+ =?iso-8859-1?Q?cqnFz2w7EAl/RJw6Xbt1z5A4ItAlMucYXs0ARDPv66OzTgvmPqo18yS8Mj?=
+ =?iso-8859-1?Q?sKKrDZ8VyvGS+P3qIQ9FAYlJLyTfRqctN1QkimJOsnVbUo6ZUBXrF1TLN6?=
+ =?iso-8859-1?Q?vfzEy+3JFWWTdUFy7QdtFcysADpKu6jBVnBOCIAPhJqppwIj2KqsCNQRc4?=
+ =?iso-8859-1?Q?hVBYA6Sl7fjDbbeq41srOg7IavXooW1YmM8hKGCY7tv0+TADwwcr8HQkid?=
+ =?iso-8859-1?Q?f0ujaaOPnNEo9XyYhHn9KJq5BGbgeKJygzvFtH1JuN3JLB4TIggpS8Yw77?=
+ =?iso-8859-1?Q?6iCNskatIrWh/lfuq0ZV9XZUp5cvbEdi3rsPIfpYDKJOyAxVTMZnncadmI?=
+ =?iso-8859-1?Q?qA8AKyKd6GU03xUhuPvu3bxvczJ+62ku82u12WCSOkUXnl4LNRYlswF3Kv?=
+ =?iso-8859-1?Q?om2R6n29eHHM0xYcvgELwCLnSeudnVy4HeoI1NLmZc9xD2BvQT8uqKulWH?=
+ =?iso-8859-1?Q?xUWav07BNp7eUdAzcraYSPM3QrIC2nKTfMatoZEVBL2ewletH9EMEY4RXZ?=
+ =?iso-8859-1?Q?DcwizuOP8N3WnEP9sRH19UCpZC1laESVJl/Bdfr33nhb1IXZ0NMjuGdEkN?=
+ =?iso-8859-1?Q?LCXAANxgEhwJiOQPHMa+HbXU7J2K8UuYKk9eRX0676vhJHVhesh7nfVk9C?=
+ =?iso-8859-1?Q?pFk7Pz+MmTF8tanSYjydkMI2IcxDt3pdko8fBKDFkyUrHW5GMbWFDtzLFG?=
+ =?iso-8859-1?Q?nIyWop3Y9/I8twGkbqGFVCtQFBce+HnfiyEzabNFm8utY7+v94PO7ReEll?=
+ =?iso-8859-1?Q?Gi3JVAvBVVzhCRqnUxtMR7dnkLCwBKv0ZVv3s4a6UA4p/yZ1gIobOJ4nrM?=
+ =?iso-8859-1?Q?0z6jl8gayWs2IU8txFrEOkqkr7O8HfpaRt1wMUs2hOv3hkdTKR7vNCs1qI?=
+ =?iso-8859-1?Q?XvhM37pHJBp3fZrgBGzFhwPzJPT7xTQAD0mngyhFR3kiuCdg/jZKrUwP3S?=
+ =?iso-8859-1?Q?rLYXjINm2SKWkJDpy1p3TA7xYOVTvOfPoO+NtnLPkZBNdR8W/3Yr1RH/P0?=
+ =?iso-8859-1?Q?2nhz/hm6mT0BgcSMH8jOb4TOvZeVdy5hUzi3xFMXIcnKOq/6087suFZV2V?=
+ =?iso-8859-1?Q?xb/lq8Ugg41SnA06mVbM0jMfh1jNfz3IbNaU7hUYPxWr4JUekcGQO1biw1?=
+ =?iso-8859-1?Q?l2VU2SXZNO14FJ5vKhHcTyh+MIE+GUH6h67klHKWCP7SeSzF3pXs/KhV3v?=
+ =?iso-8859-1?Q?47wjbrf6Ig+qOPFt2AfxuTvSUORQeuY40QeKSVXqvtzJ/SM0F9moy6fpVZ?=
+ =?iso-8859-1?Q?ePHwH0YSXBJmRQP1RTYXj/UHmHCBG420fB66YKyWo35BCOhm4Qzl6yYfR1?=
+ =?iso-8859-1?Q?RgiXCRAPN9bp3V6b9YhAmK3Ffz8KsK2aJ+kjU67G1AiSArAx3kTsErUALa?=
+ =?iso-8859-1?Q?qRWKqyl8xUdCldE74og3cx0zLkq66vkcaNhEaI/mOrWwfQda7LIrHkkIcJ?=
+ =?iso-8859-1?Q?Y3wqoeigL5lvhEs78h2u/Cnkl/lafiQqD2WxZc7wcM6faicw23Fv0Y4fEB?=
+ =?iso-8859-1?Q?832eabUQik6ZauirtJgU4WDnEKqC1KNaH2Ub2wVisN1qY6aHJ9Prv7OJHk?=
+ =?iso-8859-1?Q?Uvz/4bJz3O76SU50NPPRQysPaQ2719nDyqcEIRgFS9vO76CP8kOaimog?=
  =?iso-8859-1?Q?=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -177,107 +175,107 @@ MIME-Version: 1.0
 X-OriginatorOrg: analog.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6351.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcbcac5b-9627-4270-4b3c-08dcfec60729
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2024 00:49:25.6293
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb6fa5fb-e757-4ca3-43a0-08dcfec9e3e3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2024 01:17:04.4838
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1UddIIZT+UyE+BdvRQ8lTYH1P7zVonn2Bs6CnbsVQ67zwABgdhZ/CwO/qrYgdX5xZXU+sPM88MM6uIs+LOLeJklTZVhZFiwXrZT5EUdPYX8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR03MB5697
-X-Proofpoint-ORIG-GUID: l43s60viod2b3UwNuSm-N7Kaqz7TQ4ok
-X-Proofpoint-GUID: l43s60viod2b3UwNuSm-N7Kaqz7TQ4ok
+X-MS-Exchange-CrossTenant-userprincipalname: yiLcsdOgGDEmz9gGxIH2ddnKTN5DJLhjCOQ0jkoz9AGK3om0vcGLGl5Ra4e+9GjSW7F9GI8IBqcVh/DScmliY0/9ZSEuAzNgVtySoS/n0ts=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR03MB7575
+X-Proofpoint-ORIG-GUID: fIhi9xDTqokuOk4zKJibtTpnBdiJ9XJ5
+X-Proofpoint-GUID: fIhi9xDTqokuOk4zKJibtTpnBdiJ9XJ5
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
- phishscore=0 impostorscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411070003
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
+ spamscore=0 suspectscore=0 phishscore=0 clxscore=1015 adultscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411070007
 
 
 > -----Original Message-----
-> From: Conor Dooley <conor@kernel.org>
-> Sent: Wednesday, November 6, 2024 11:49 PM
-> To: Torreno, Alexis Czezar <AlexisCzezar.Torreno@analog.com>
-> Cc: linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Sent: Thursday, November 7, 2024 12:01 AM
+> To: Guenter Roeck <linux@roeck-us.net>
+> Cc: Torreno, Alexis Czezar <AlexisCzezar.Torreno@analog.com>; linux-
+> doc@vger.kernel.org; linux-kernel@vger.kernel.org;
 > devicetree@vger.kernel.org; linux-hwmon@vger.kernel.org; Sabau, Radu
-> bogdan <Radu.Sabau@analog.com>; Jean Delvare <jdelvare@suse.com>;
-> Guenter Roeck <linux@roeck-us.net>; Rob Herring <robh@kernel.org>;
-> Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> <conor+dt@kernel.org>; Jonathan Corbet <corbet@lwn.net>; Andy
-> Shevchenko <andriy.shevchenko@linux.intel.com>; Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de>
-> Subject: Re: [PATCH 1/2] dt-bindings: hwmon: (pmbus/adp1050): Support
-> adp1051 and adp1055: add bindings.
+> bogdan <Radu.Sabau@analog.com>; Jean Delvare <jdelvare@suse.com>; Rob
+> Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Cono=
+r
+> Dooley <conor+dt@kernel.org>; Jonathan Corbet <corbet@lwn.net>; Uwe
+> Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Subject: Re: [PATCH 2/2] hwmon: (pmbus/adp1050): Support adp1051 and
+> adp1055
 >=20
 > [External]
 >=20
-> On Wed, Nov 06, 2024 at 05:03:10PM +0800, Alexis Cezar Torreno wrote:
-> > Add dt-bindings for adp1051 and adp1055 pmbus.
-> > ADP1051: 6 PWM for I/O Voltage, I/O Current, Temperature
-> > ADP1055: 6 PWM for I/O Voltage, I/O Current, Power, Temperature
+> On Wed, Nov 06, 2024 at 07:55:30AM -0800, Guenter Roeck wrote:
+> > On 11/6/24 03:24, Andy Shevchenko wrote:
+> > > On Wed, Nov 06, 2024 at 05:03:11PM +0800, Alexis Cezar Torreno wrote:
+> > > > ADP1051: 6 PWM for I/O Voltage, I/O Current, Temperature
+> > > > ADP1055: 6 PWM for I/O Voltage, I/O Current, Power, Temperature
+> > >
+> > > Missing blank line and perhaps you can add Datasheet: tag(s) for thes=
+e HW?
+> > > (see `git log --no-merges --grep Datasheet:` for the example)
 > >
-> > Signed-off-by: Alexis Cezar Torreno <alexisczezar.torreno@analog.com>
-> > ---
-> >  .../devicetree/bindings/hwmon/pmbus/adi,adp1050.yaml | 12 ++++++++++-
-> -
-> >  1 file changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git
-> a/Documentation/devicetree/bindings/hwmon/pmbus/adi,adp1050.yaml
-> b/Documentation/devicetree/bindings/hwmon/pmbus/adi,adp1050.yaml
-> > index 10c2204bc3df..88aaa29b3bd1 100644
-> > --- a/Documentation/devicetree/bindings/hwmon/pmbus/adi,adp1050.yaml
-> > +++
-> b/Documentation/devicetree/bindings/hwmon/pmbus/adi,adp1050.yaml
-> > @@ -10,16 +10,24 @@ maintainers:
-> >    - Radu Sabau <radu.sabau@analog.com>
-> >
-> >  description: |
-> > -   The ADP1050 is used to monitor system voltages, currents and
-> temperatures.
-> > +   The ADP1050 and similar devices are used to monitor system voltages=
-,
-> > +   currents, power, and temperatures.
-> > +
-> >     Through the PMBus interface, the ADP1050 targets isolated power sup=
-plies
-> >     and has four individual monitors for input/output voltage, input cu=
-rrent
-> >     and temperature.
-> >     Datasheet:
-> >       https://www.analog.com/en/products/adp1050.html
-> > +     https://www.analog.com/en/products/adp1051.html
-> > +     https://www.analog.com/en/products/adp1055.html
-> >
-> >  properties:
-> > +
+> > Is that an official tag ? Frankly, if so, I think it is quite useless
+> > in the patch description because datasheet locations keep changing.
+> > I think it is much better to provide a link in the driver documentation=
+.
 >=20
-> That's an abnormal newline, leave it alone if you respin.
+> I believe it's semi-official, meaning that people use it from time to tim=
+e.
+> I'm fine with the Link in the documentation. Actually with any solution t=
+hat
+> saves the respective link in the kernel source tree (either in form of co=
+mmit
+> message or documentation / comments in the code).
 >=20
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
->=20
-> Cheers,
-> Conor.
 
-Will remove/revert the newline. Thanks!
+Will add the blank line after description.=20
+Am I right to understand that we leave this as is? No need to add driver li=
+nk
+in patch description since it is in driver documentation?
+
+> ...
+>=20
+> > > > +static struct pmbus_driver_info adp1055_info =3D {
+> > > > +	.pages =3D 1,
+> > > > +	.format[PSC_VOLTAGE_IN] =3D linear,
+> > > > +	.format[PSC_VOLTAGE_OUT] =3D linear,
+> > > > +	.format[PSC_CURRENT_IN] =3D linear,
+> > > > +	.format[PSC_TEMPERATURE] =3D linear,
+> > > > +	.func[0] =3D PMBUS_HAVE_VIN | PMBUS_HAVE_IIN |
+> PMBUS_HAVE_VOUT
+> > > > +		   | PMBUS_HAVE_IOUT | PMBUS_HAVE_TEMP2 |
+> PMBUS_HAVE_TEMP3
+> > > > +		   | PMBUS_HAVE_POUT | PMBUS_HAVE_STATUS_VOUT
+> > > > +		   | PMBUS_HAVE_STATUS_IOUT |
+> PMBUS_HAVE_STATUS_INPUT
+> > > > +		   | PMBUS_HAVE_STATUS_TEMP,
+> > >
+> > > Ditto.
+> >
+> > That one slipped through with the original driver submission.
+> > I thought that checkpatch complains about that, but it turns out that
+> > it doesn't. I agree, though, that the usual style should be used.
+>=20
+> Oh, okay, that's up to you then.
+>=20
+> --
+> With Best Regards,
+> Andy Shevchenko
+>=20
+
+I based my code style on the original, but I agree that the usual style
+should be followed. =20
+I will change it to follow the usual style.
+Should I leave the original untouched or should I format it too?
 
 Regards,
 Alexis
-
->=20
-> >    compatible:
-> > -    const: adi,adp1050
-> > +    enum:
-> > +      - adi,adp1050
-> > +      - adi,adp1051
-> > +      - adi,adp1055
-> >
-> >    reg:
-> >      maxItems: 1
-> > --
-> > 2.34.1
-> >
 
