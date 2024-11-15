@@ -1,125 +1,99 @@
-Return-Path: <linux-hwmon+bounces-5147-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5150-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9907C9CF19E
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 Nov 2024 17:37:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D029CF303
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 Nov 2024 18:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B88C1F24502
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 Nov 2024 16:37:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 185D1B46DA0
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 Nov 2024 16:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110331D5172;
-	Fri, 15 Nov 2024 16:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB37F1E0DEC;
+	Fri, 15 Nov 2024 16:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7g+fzjB"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="rk3hDSHL"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5749A1E4A6;
-	Fri, 15 Nov 2024 16:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2AF1D54E1;
+	Fri, 15 Nov 2024 16:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731688600; cv=none; b=X/waVjWm42vj3bhp7i02WA4abx+BOtT8Rzd0ebUDpfSnXvMslqvp2RuewhXMy++56sV0BaxSgFIy0sOM9vfzXlfCv3WgBfSudwVfjsJ/XYvnfIh7+nnKnUCAwOlcIx8RJWvXpgXASm+0c0cU/FPywQXsqIcAQM9rjNQfZQOG31Y=
+	t=1731688839; cv=none; b=d0xFr7X/bQZHuMUTi9Fd/p15PEBi6V3DEQO66moBh45tV/pwDdeZogqsYFC1KOjrrYFsXa+iuFHrW2wtwdWl5TJFUYNMe8DkbRWllQ2mKVgbEbdO/Yn/rNWo4ru3iPuLjbFfXYIzVY8Nfmc3ddf8gjdF8dhKMHpyBme5zlMYt0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731688600; c=relaxed/simple;
-	bh=y+PbtP+vn6mx5pVaEDZFsg7iVYw3KU0kEFAepCEBgf0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BnJaSw4OFQxH3NpKx0r9nL+R2t69LPqAiuN5INFrVI0LED1vMwbx8+44ZBeM+s9cP10OTYuOEnay+jqcHw57HlNbaNmyDAcIJ6eyt8jR/RrY2Y8T+PM4fY4/qKdZal53NEyB2TCNtAT1dz4OQNbxT+NC/0TUVwIa6kYZ6Y9nxcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7g+fzjB; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7247ebab977so550334b3a.3;
-        Fri, 15 Nov 2024 08:36:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731688597; x=1732293397; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WNOdDdSV1Z0oUqfYyXXzrSfaZYOowO1TNJ4A5Rc5Khc=;
-        b=I7g+fzjBYuMbZlT5DxQEGzVjCpOtiJn9tei1LaksVvFco6QgNy/8uBQDc0kIuJ75CI
-         0+DaMD15giW6YUweucRNufL1UPO00t9G1KFD8vZ8BdBtjX++XXkYZ3tXahhLkc6N+Nnf
-         AMyj00QqpRoJA2WMiQ93YHI1k+a3wwMIX4+rFjnhyJVLmBMkHgyQ/RJ8WsF29RWK7Pa0
-         jshf4lcy+f9kTwxPcTfgNG4Z++W1Vtx/Mab0DRwwnIba+cqYutZHZT0lvbZcmmONU6vm
-         CVsKKVeXIJ/QA/TalTMrSyG7rt+geQq0Wx8yRaZHaqN7VIvpLuk1rIu+al2aregw2ZwL
-         KX9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731688597; x=1732293397;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNOdDdSV1Z0oUqfYyXXzrSfaZYOowO1TNJ4A5Rc5Khc=;
-        b=pEirbPrekFDWNrR2f1PySbC/Dp2Ehj11w66egrx783faQjZD6JTimraQp/9LUCHv3A
-         EQZTFL6So3eau9pQ8zVYrA1ieEXUW3kAgGnEgIR/DXQrPZDextdxagv+WwVGHPk+h/rC
-         4e6kmg7+5yCmdKC44FCpp1E5KEvHANG39uCYvKcTa84fh3OY8ZcZ+dj7Vs2L4cu8PGGp
-         OUzBvM0KlTsIVDCcbuBvk3UwiMTWGz306VBcLsCr+EnEhbvvC4x0t0vdbTNozm0a03Wg
-         WQ4iyV6Js3JHconErN8JY0RTguFJfgoxM3B7UgUV6BkRogeamnJTRqDhx4dnojQlk/0g
-         mmpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVEWHJV4UFiC3gwLKuEe8/ujHwb756G/zpAHHiHN+QI+31LtWdIJv0B50wPFp1JKBIpzgMATVbP5a6DTIfm@vger.kernel.org, AJvYcCW+/KmHw2tJ12Mrgqaerm4YE5GGGsWZ8SaOpiSLdHKRU7fkkTdEFqQULzBYXAvrJvV4ti2Xda9QPeyhBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0Da+NL2yNnlDR6G/Q1If7DDO7ns6IVABJnCsZ+MNXHtbTjk96
-	PSfGqKfJiybyxBE/uSw1zu5VmefmvQM7e9qLscnk3nn/8kCNoEJliKwrhQ==
-X-Google-Smtp-Source: AGHT+IHLRXUrvO/FSpUkSwIOqI4NgtwIXaRbEzAWdH0RZpCjHH+b7ipJ0iAec7vzqzNEsn/WAPz0oQ==
-X-Received: by 2002:aa7:88c5:0:b0:71e:5f2c:c019 with SMTP id d2e1a72fcca58-72476b87648mr3428783b3a.9.1731688597530;
-        Fri, 15 Nov 2024 08:36:37 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72477120abfsm1538313b3a.53.2024.11.15.08.36.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 08:36:36 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 15 Nov 2024 08:36:36 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (core) Avoid ifdef in C source file
-Message-ID: <51c9b886-be97-4fe4-bc22-35d1c727b93c@roeck-us.net>
-References: <20241113-hwmon-thermal-v1-1-71270be7f7a2@weissschuh.net>
- <20fde375-a88a-4279-a849-520063217de9@roeck-us.net>
- <3dfa3859-cef0-4311-b0c5-ff1c04284e88@roeck-us.net>
+	s=arc-20240116; t=1731688839; c=relaxed/simple;
+	bh=XJgwbJmJy1dij2tvJOcwOOlxmwxz8tQU72/Pm0EegoA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uvyqeW7vmbfqQ3y5InrKEsZDBmDMKurC/qTwevOqAq0lQAMT1Mhq8Bj8QxdrlMAQ9SvSivy9ZXTqtfZ4CGULohVm/YW7UpCafX2Lx3MmZJLG5PDTmch4oC0KPR32BZCC61PPxbzesII+lPQKxGyLeC66XSUUvAOudz7Q2u25iZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=rk3hDSHL; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1731688833;
+	bh=XJgwbJmJy1dij2tvJOcwOOlxmwxz8tQU72/Pm0EegoA=;
+	h=From:Subject:Date:To:Cc:From;
+	b=rk3hDSHLR+Ep6ydphocv3aeZ30Fd16rSlDBYSX1ELszo2drVLuEYA6OxnqkS20sKs
+	 1z0MJJM0xNQ00cx9ktjL8zwXMis6e/oVbSZW3PwXlQMZYqJxaJs7J7jGFY0C+xxD+4
+	 L47Uz+98nYD27W4PzbDAw3fwz1iiB3xnyyT82kvA=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH v2 0/2] hwmon: (core) Avoid ifdef CONFIG_THERMAL in C
+ source file
+Date: Fri, 15 Nov 2024 17:40:20 +0100
+Message-Id: <20241115-hwmon-thermal-v2-0-c96f0c0984b2@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3dfa3859-cef0-4311-b0c5-ff1c04284e88@roeck-us.net>
+X-B4-Tracking: v=1; b=H4sIAHR5N2cC/3XMyw6CMBCF4Vchs7aGGS81rnwPw6LSwU4ixXSwa
+ AjvbmXv8j/J+WZQTsIK52qGxFlUhliCNhW0wcU7G/GlgWraI+LOhKkfohkDp949DHny7nDCluw
+ RyueZuJP36l2b0kF0HNJn5TP+1n9SRoPGItn6xrazji4Ti6q24RW2kUdolmX5AoHun+ivAAAA
+X-Change-ID: 20241113-hwmon-thermal-2d2da581c276
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731688832; l=849;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=XJgwbJmJy1dij2tvJOcwOOlxmwxz8tQU72/Pm0EegoA=;
+ b=jDhwvYH1RRBZYDcKyKhsKmJMFFTEW6KNBzi9NHeRqwg+sXj7dZEKy1K3u1yqSmbEN5cJOXOLx
+ VPqxI1c6CcMDWFDjeS0B63gxickl07yDfaeXB86iKJIB6HcB0+tWYjI
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Fri, Nov 15, 2024 at 08:34:47AM -0800, Guenter Roeck wrote:
-> On Fri, Nov 15, 2024 at 08:31:29AM -0800, Guenter Roeck wrote:
-> > Hi Thomas,
-> > 
-> > On Wed, Nov 13, 2024 at 05:39:16AM +0100, Thomas Weißschuh wrote:
-> > > Using an #ifdef in a C source files to have different definitions
-> > > of the same symbol makes the code harder to read and understand.
-> > > Furthermore it makes it harder to test compilation of the different
-> > > branches.
-> > > 
-> > > Replace the ifdeffery with IS_ENABLED() which is just a normal
-> > > conditional.
-> > > The resulting binary is still the same as before as the compiler
-> > > optimizes away all the unused code and definitions.
-> > > 
-> > > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> > > ---
-> > 
-> > I decided to apply the patch despite my concerns about the lack
-> > of dummy functions. Let's see if it blows up in our face; if so,
-> > I'll revert it.
-> 
-> Ah, no, that didn't work, because if CONFIG_THERMAL=n there isn't
-> even an external declaration for thermal_zone_device_update().
-> 
+Replace some confusing ifdeffery with IS_ENABLED() conditionals.
+The ifdefs confused me while looking at the implementation of
+HWMON_C_REGISTER_TZ.
 
-allnoconfig+CONFIG_HWMON:
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Changes in v2:
+- Add stub for thermal_zone_device_update()
+- Link to v1: https://lore.kernel.org/r/20241113-hwmon-thermal-v1-1-71270be7f7a2@weissschuh.net
 
-drivers/hwmon//hwmon.c: In function ‘hwmon_thermal_notify’:
-drivers/hwmon//hwmon.c:302:25: error: implicit declaration of function ‘thermal_zone_device_update’; did you mean ‘thermal_zone_device_disable’? [-Werror=implicit-function-declaration]
-  302 |                         thermal_zone_device_update(tzdata->tzd,
+---
+Thomas Weißschuh (2):
+      thermal: core: Add stub for thermal_zone_device_update()
+      hwmon: (core) Avoid ifdef CONFIG_THERMAL in C source file
 
-Guenter
+ drivers/hwmon/hwmon.c   | 21 ++++++---------------
+ include/linux/thermal.h |  4 ++++
+ 2 files changed, 10 insertions(+), 15 deletions(-)
+---
+base-commit: cfaaa7d010d1fc58f9717fcc8591201e741d2d49
+change-id: 20241113-hwmon-thermal-2d2da581c276
+
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
+
 
