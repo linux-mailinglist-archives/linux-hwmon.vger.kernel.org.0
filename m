@@ -1,48 +1,48 @@
-Return-Path: <linux-hwmon+bounces-5166-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5168-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891F99D27E3
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 15:15:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A14A9D2825
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 15:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42EB91F259C9
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 14:15:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5046B281D35
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 14:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75541D07B5;
-	Tue, 19 Nov 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD121CEAAF;
+	Tue, 19 Nov 2024 14:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUjDjvkM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WvK0bjB6"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B5C1D07AA;
-	Tue, 19 Nov 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D01CCB37;
+	Tue, 19 Nov 2024 14:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732025611; cv=none; b=IKKTKVX6yn5M+JX7lmCpbXbTZN+9eIzVkD5cCb0a4Z1UmRELkMBPHPFlfyCADO/wCJcmmWgfAH+cvqsiEztXCUGC9Fri3i3dZXi7i7gqwoWLpK5RRlCHtDH7lQwtULMUBG13RIT3N4SUtVbydOBNbWvyhS54u+3Yz2WsFVo4oss=
+	t=1732026508; cv=none; b=RYmmQzuNU1HoQpmK/s2WKTG6t7a8Gy5wmRBKi3v/S5cFTsNNBKBJfbsFR3OjSmF2qjl4MD3kxB7XYfTQA6m8bKlu6fozPKjTsfhh43DAIJfjp5kgZMdUDW4Hq5VsmeuD7X+5eX3q+fawCA7d+JanM4b2PDHnCdvVZzOqpRP2/LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732025611; c=relaxed/simple;
-	bh=AtZl+/+YOABDoSFUZKaIkFRXJgK0Lll61JEq77vP4QY=;
+	s=arc-20240116; t=1732026508; c=relaxed/simple;
+	bh=EljHuHfepTQAteLPcZoK7BrK4kfGbFZ2F4h2gkEyS7o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qanq/GvT4Ww9Or0qr884NqVFbOI/6ZtncKXtQ8MhQFjk4TYSBF1ECXb67i5uAC7N5xPevqu13Pj/y2Rtfusfh4kmvvx9oflgtKGkR5fGYsFpmnWAItMnJjJcrBlJdAyevoBBctuNLIg34ZqV7ig4ikOdT1juTlXcsIAgUawye1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUjDjvkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368A3C4CED7;
-	Tue, 19 Nov 2024 14:13:28 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=j9QoeduX9FUaN9+T4pkfGXUN+t+ZDbsyx9m4OWG/XewDe7yZ4B7mp9nVcaiBJZeZd2+VVbtEwxuIC1CmERY0qcmgVcXWvDAkqFGZuhIdNVbZa6U9oXZqkW9C6b82bvU0eu8s8pwpCtpo1h6ERTF3p6IpNjrH4Rt5J1qt3+ZAhz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WvK0bjB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDB5C4CED0;
+	Tue, 19 Nov 2024 14:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732025611;
-	bh=AtZl+/+YOABDoSFUZKaIkFRXJgK0Lll61JEq77vP4QY=;
+	s=k20201202; t=1732026507;
+	bh=EljHuHfepTQAteLPcZoK7BrK4kfGbFZ2F4h2gkEyS7o=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=YUjDjvkMuEE77VTkHuBjMxsKwkppVAnlr1wB8/N+px2oa9694xTZVXc8y2cmYNMNh
-	 oYlyPLqVmzJNB2OzMbpAGMuKC0/qE7ZfCpUfX6XXX0Bd+8tJUZmiMyYVSq6ZJyiOoC
-	 EWQGpSkLNrd30fDYJp8FudGP2mAEPGo+x4h67Sc2PIS5s8cRDh8hD9dCJJsHnj7TLo
-	 hvbUhshwxcUD14Is1fXJ5/Mdtv6WzHNIsBLoIlIIYLd2qxSLPgggu0Vs55Wp38nk1F
-	 RnrJ4iNyqaaO8xf1JKaKwF/spRJptIoc32z0S+nLPu4kuih5J8LoBX7RAw9aAZkJIa
-	 SMa6TQJMff7kQ==
-Message-ID: <419a5d2c-7d00-41c7-b787-c824b13dcce3@kernel.org>
-Date: Tue, 19 Nov 2024 15:13:26 +0100
+	b=WvK0bjB6g7uboBcKH/cHQ1VCGWOyzXLQTLcvjc6HrjQaHi6KIX/5geHJs9tp8Zrfq
+	 ymPwUwee5Gm92nbKHsVYTNHA2eNajFYLWGuMDKdaJHV0F0Kkg79Unf0KU4CJdDq2Vh
+	 vxIkSBTkBjurDVGNFbpucfrzfhHnVRD42I7rnq2qs0K4kRLs/8nN49Hi24R9MHPWud
+	 9NC5heIDo+S5Y4XEbxXCpslUyCdy3KZwqTy2Sb4dzMmivebsq3SZwK9JQ/Fn/e/kP2
+	 ULgS2VjxaDYaJqNxee58GpUUepjYcz3ZT19SR6hn2UzEWz5MGRUwSfd4R4pPO7dxW4
+	 V9uamA0Varm/w==
+Message-ID: <25f72478-62c0-47c1-b2c0-3baf8627cc32@kernel.org>
+Date: Tue, 19 Nov 2024 15:28:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -50,13 +50,14 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] hwmon: (sht3x) add devicetree support
+Subject: Re: [PATCH 2/2] dt-bindings: trivial-devices: add sensirion,sht3x
 To: JuenKit Yip <hunterteaegg@126.com>, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
  peteryin.openbmc@gmail.com, noahwang.wang@outlook.com, festevam@gmail.com,
  marex@denx.de, lukas@wunner.de, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
 References: <20241119140725.75297-1-hunterteaegg@126.com>
+ <20241119140725.75297-2-hunterteaegg@126.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,38 +103,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241119140725.75297-1-hunterteaegg@126.com>
+In-Reply-To: <20241119140725.75297-2-hunterteaegg@126.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 19/11/2024 15:07, JuenKit Yip wrote:
-> add "compatible" property for supporting devicetree
+> add sensirion,sht3x as trivial device for devicetree support
 > 
 > Signed-off-by: JuenKit Yip <hunterteaegg@126.com>
 > ---
->  drivers/hwmon/sht3x.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
-> index 650b0bcc2359..2ac1537b3e3e 100644
-> --- a/drivers/hwmon/sht3x.c
-> +++ b/drivers/hwmon/sht3x.c
-> @@ -954,6 +954,19 @@ static int sht3x_probe(struct i2c_client *client)
->  	return PTR_ERR_OR_ZERO(hwmon_dev);
->  }
->  
-> +/* devicetree ID table */
-> +static const struct of_device_id sht3x_of_match[] = {
-> +	{ .compatible = "sensirion,sht30", .data = (void *)sht3x },
-This does not match your binding at all. Also all SHT/STS devices are
-compatible, so express it in the binding with a fallback.
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+I see now you sent the same binding to proper addresses. This is
+therefore a RESEND and please mark it appropriately in the future. git
+format-patch -2 --subject-prefix="PATCH RESEND"
 
-Anyway, you cannot just send half of patch afterwards without resolving
-previous comments. If this is v2, mark it as v2. If this is a resend,
-mark it as RESEND.
-
-See other examples on mailing lists (lore.kernel.org) and read
-submitting patches document.
+or similar command for b4.
 
 Best regards,
 Krzysztof
