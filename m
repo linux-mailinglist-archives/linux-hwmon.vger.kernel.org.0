@@ -1,145 +1,107 @@
-Return-Path: <linux-hwmon+bounces-5158-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5160-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A20D9D0966
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Nov 2024 07:16:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716E19D2378
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 11:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 727E9B2124F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 Nov 2024 06:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7621F21F3D
+	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 10:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5694B14830C;
-	Mon, 18 Nov 2024 06:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92441C3302;
+	Tue, 19 Nov 2024 10:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="gvwt19Ie"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="YWolq7yx"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56E680BFF;
-	Mon, 18 Nov 2024 06:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155C21C32FD
+	for <linux-hwmon@vger.kernel.org>; Tue, 19 Nov 2024 10:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731910568; cv=none; b=S1wpn/ETvpHFQM3J9zhpPGQMi7Z6zt86lJBTVgNSwCIR6ORpSspJ/0DWWDfX5PLsMwkrniZIo0MKCZKl1jBCPARhMNWHMiecKPi71CLxCEswtbtgOd4NMGTLsX749SgQ2AFi85yD79CSFLr3qI9/Kss/9f+3vzg5ky6EFygS7Ko=
+	t=1732011616; cv=none; b=htsRmNRWD3bV4vlttZ90UXqUo4jfEN5Ej6DE/PqPoB9jBNh/6vMvSWwGHl5fx1F31dnV7A6miaw4GZr3F5ThtYAYsB8Dn0q2r3aotLtu9i9CLwaTrPqLFI9Gi5R2E/sru1bijI6OQ//0Jwov/HpVaWdWkOU73Y3pBnHs6Xm7Xeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731910568; c=relaxed/simple;
-	bh=XQgvZFznm/KTm80suFUAjYCJpg8vLqeuB0js8ihQD+w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pyEG12Y2RVEcMOVmQqRNCvhwmFNtf/bBUYszZjZc/kMGQQJmTSrtlSmFyj2m/V0uBBiF13CIScVbmyC6Ais2ICLmBVXS26Y3GJjG3CLJaBKFhlIrg5yMCsTbPwxppI6rkXgVW76q/9uLokyYKhlbDoDWU4EPg4cvqXPDpl3TCO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=gvwt19Ie; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1731910561;
-	bh=XQgvZFznm/KTm80suFUAjYCJpg8vLqeuB0js8ihQD+w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gvwt19Iel5AVInp6oXH5A1Cbzqlqs/6PDKtFpkkHaawZQ76C7Nk+o4TWPz5JQziyf
-	 Rhwm1WDvNdDuCcJKBpowoDZm/apEj6WTenoiUIkU8y6nTqzYOykzZLkP4Rkhg2SCoa
-	 4Ko9Ie+xuSCCrc976ThnU50SfbjIBxEPbI9KbsrU=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 18 Nov 2024 07:15:59 +0100
-Subject: [PATCH v3 2/2] hwmon: (core) Avoid ifdef CONFIG_THERMAL in C
- source file
+	s=arc-20240116; t=1732011616; c=relaxed/simple;
+	bh=VddMon7KGsoAO+8uNG9DoNYGSEVrl+SvzfCAy5RVITw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KbwE2fAOf/ftVXDjD7ZsaTVRR1AN6Hm3VPy68obC2ZxYjWdnAcTQHv0Yuzi6ZAQfu/bSZX2u+r9CrJdUDXeoh2Aefgp4Mef2cnt1UakcDbyzLo6uRQVAvbXu+zMAsMy03neRc5OjaW88mqBl0eU8vy1NP1oWK4MzzEb+8bndZRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=YWolq7yx; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cHi0m
+	zq8NWBijK4Ly2A3LsdTUocLcPH7MQG+4r3jEMc=; b=YWolq7yxnqTIwgPNhIPA3
+	t5fgsU1j28lr9EL93Cw5kOEKpvZk3nhOS5kJTvf1iMNRpquQuUZ3S/BvWWyKoCW4
+	RgPt2TuBd9tXdLIeuPMNbBbD55+WOlWM4J3XHGNaemqAbeUpKN2GvZyzjpw504hl
+	ExYaKFWpHEhjYmObinu3zs=
+Received: from localhost.localdomain (unknown [122.225.16.198])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD334BFZjxnBiVXBQ--.51824S2;
+	Tue, 19 Nov 2024 18:20:01 +0800 (CST)
+From: JuenKit Yip <hunterteaegg@126.com>
+To: linux-hwmon@vger.kernel.org
+Cc: JuenKit Yip <hunterteaegg@126.com>
+Subject: [PATCH 1/2] hwmon: (sht3x) add devicetree support
+Date: Tue, 19 Nov 2024 05:04:43 -0500
+Message-Id: <20241119100443.74393-1-hunterteaegg@126.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241118-hwmon-thermal-v3-2-9c17973e7342@weissschuh.net>
-References: <20241118-hwmon-thermal-v3-0-9c17973e7342@weissschuh.net>
-In-Reply-To: <20241118-hwmon-thermal-v3-0-9c17973e7342@weissschuh.net>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731910561; l=2293;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=XQgvZFznm/KTm80suFUAjYCJpg8vLqeuB0js8ihQD+w=;
- b=WEIs60uRkDtK8HMWMK5J2YA8reycwreYFxJTMjU5qXgPwOujG0KcQfIUaSPKnVj69BdehRPWa
- +e2AJ6tqDpRB4R6XrF9oM92haadQmnuBy957+ActuAPb7GiEM9lJWU4
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-CM-TRANSID:_____wD334BFZjxnBiVXBQ--.51824S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uFy8Xw1rurW5Ar17CF4kWFg_yoW8Gw48p3
+	Wrur9aqF15WF4fX39Iqay09Fy5Cwn3A3yIkr9rGas09FWDJ34jqa1ftFyDA3Z8Zry5Xr12
+	gFykt34fGF48AFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi1xRxUUUUU=
+X-CM-SenderInfo: xkxq3v5uwhtvljj6ij2wof0z/1tbifg2c7Gc8WpmkUAAAsv
 
-Using an #ifdef in a C source files to have different definitions
-of the same symbol makes the code harder to read and understand.
-Furthermore it makes it harder to test compilation of the different
-branches.
+add "compatible" property for supporting devicetree
 
-Replace the ifdeffery with IS_ENABLED() which is just a normal
-conditional.
-The resulting binary is still the same as before as the compiler
-optimizes away all the unused code and definitions.
-
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: JuenKit Yip <hunterteaegg@126.com>
 ---
- drivers/hwmon/hwmon.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/hwmon/sht3x.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-index 9c35c4d0369d7aad7ea61ccd25f4f63fc98b9e02..86fb674c85d3f54d475be014c3fd3dd74c815c57 100644
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -147,11 +147,6 @@ static DEFINE_IDA(hwmon_ida);
- 
- /* Thermal zone handling */
- 
--/*
-- * The complex conditional is necessary to avoid a cyclic dependency
-- * between hwmon and thermal_sys modules.
-- */
--#ifdef CONFIG_THERMAL_OF
- static int hwmon_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
- {
- 	struct hwmon_thermal_data *tdata = thermal_zone_device_priv(tz);
-@@ -257,6 +252,9 @@ static int hwmon_thermal_register_sensors(struct device *dev)
- 	void *drvdata = dev_get_drvdata(dev);
- 	int i;
- 
-+	if (!IS_ENABLED(CONFIG_THERMAL_OF))
-+		return 0;
-+
- 	for (i = 1; info[i]; i++) {
- 		int j;
- 
-@@ -285,6 +283,9 @@ static void hwmon_thermal_notify(struct device *dev, int index)
- 	struct hwmon_device *hwdev = to_hwmon_device(dev);
- 	struct hwmon_thermal_data *tzdata;
- 
-+	if (!IS_ENABLED(CONFIG_THERMAL_OF))
-+		return;
-+
- 	list_for_each_entry(tzdata, &hwdev->tzdata, node) {
- 		if (tzdata->index == index) {
- 			thermal_zone_device_update(tzdata->tzd,
-@@ -293,16 +294,6 @@ static void hwmon_thermal_notify(struct device *dev, int index)
- 	}
+diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
+index 650b0bcc2359..2ac1537b3e3e 100644
+--- a/drivers/hwmon/sht3x.c
++++ b/drivers/hwmon/sht3x.c
+@@ -954,6 +954,19 @@ static int sht3x_probe(struct i2c_client *client)
+ 	return PTR_ERR_OR_ZERO(hwmon_dev);
  }
  
--#else
--static int hwmon_thermal_register_sensors(struct device *dev)
--{
--	return 0;
--}
--
--static void hwmon_thermal_notify(struct device *dev, int index) { }
--
--#endif /* IS_REACHABLE(CONFIG_THERMAL) && ... */
--
- static int hwmon_attr_base(enum hwmon_sensor_types type)
- {
- 	if (type == hwmon_in || type == hwmon_intrusion)
-
++/* devicetree ID table */
++static const struct of_device_id sht3x_of_match[] = {
++	{ .compatible = "sensirion,sht30", .data = (void *)sht3x },
++	{ .compatible = "sensirion,sht31", .data = (void *)sht3x },
++	{ .compatible = "sensirion,sht35", .data = (void *)sht3x },
++	{ .compatible = "sensirion,sts30", .data = (void *)sts3x },
++	{ .compatible = "sensirion,sts31", .data = (void *)sts3x },
++	{ .compatible = "sensirion,sts35", .data = (void *)sts3x },
++	{},
++};
++
++MODULE_DEVICE_TABLE(of, sht3x_of_match);
++
+ /* device ID table */
+ static const struct i2c_device_id sht3x_ids[] = {
+ 	{"sht3x", sht3x},
+@@ -964,7 +977,10 @@ static const struct i2c_device_id sht3x_ids[] = {
+ MODULE_DEVICE_TABLE(i2c, sht3x_ids);
+ 
+ static struct i2c_driver sht3x_i2c_driver = {
+-	.driver.name = "sht3x",
++	.driver = {
++		.name = "sht3x",
++		.of_match_table = sht3x_of_match,
++	},
+ 	.probe       = sht3x_probe,
+ 	.id_table    = sht3x_ids,
+ };
 -- 
-2.47.0
+2.39.5
 
 
