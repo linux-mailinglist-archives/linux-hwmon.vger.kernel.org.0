@@ -1,79 +1,169 @@
-Return-Path: <linux-hwmon+bounces-5170-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5172-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E6E9D2F2D
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 20:53:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B2E9D32CE
+	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Nov 2024 04:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667E32828B1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Nov 2024 19:53:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDEC51F23755
+	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Nov 2024 03:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4091D3562;
-	Tue, 19 Nov 2024 19:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CFA155CA5;
+	Wed, 20 Nov 2024 03:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1su0qEq"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Th7M5qZZ"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD01CF2BD;
-	Tue, 19 Nov 2024 19:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9B942AAB;
+	Wed, 20 Nov 2024 03:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732045966; cv=none; b=Wm+hwmirf5WzS/ajQ8yaLK/+GMblnX0wIQKNCw/rGmiwspvgzJBDbv5GwVjcoGEEtoMt5hWvJAw7owtH3r5M0yNGQtLUg0aRgbd+k7oF5rmdQZIMS9DhbP1iaEV/I3//PA6IfCULOvENyOHpbvBi/afZmzW8iOlNjbTG42KLqHo=
+	t=1732075177; cv=none; b=T6fiyBxwE1gghIGHkfAxVTG7x301+VnSob9917Z0GvSi2as1UkkcBl+rL4duobTpLUsLzg5I6xvio+Cu8OHdHlpmtAa5FsLgsM8CUUdShg4MgvlEeQ4z+vqo2Cr3FuAPhJ+dF41V8W4fbiG9cVYKa3goMPA98Fdhxtr+rgVfbOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732045966; c=relaxed/simple;
-	bh=u/Oc9PfpWDaqe9WRUg0vP6SCrb6k4DOoQXBZDcreQ60=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=DnWF3/GoU7qXKGXYFx35tAjeWO8+D7+qtQZ0XACxwk0tVWge3p0EtHJo6jBg/VP1Avag88yWumsIKI8TUbuyQt3PqMoK7GN3aOE3JosFEgtHYhvg3ojopOmdOVgC2BXcvasa+qgEgnAN0U8FRKHzVQOf6KTrFkMroH6upFpZZWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1su0qEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14A1C4CECF;
-	Tue, 19 Nov 2024 19:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732045965;
-	bh=u/Oc9PfpWDaqe9WRUg0vP6SCrb6k4DOoQXBZDcreQ60=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=P1su0qEqTtC+FkhnAI0scAd6niJNuW44JkGaJ1EGYWHjxrYLD7ov6gOa233VTBaFM
-	 OosRTpcHEHA1q0fkcJkdL5CeMS1bZ3aEIizSOEI/pCbSS1ND/a6pGRtRhVVhxqbn/8
-	 0s3DESvhKaM6H50ORwEoTCJiZBwYw5uFALlbtfu0YQrixz4s291YQYvaPUNbk8AvP4
-	 JRb3fYLmUlGqBH4Pvd8E2kojaCe2PiV3VBV2oQy/PRh1NsdCpIsryBqyMIteoK6wlx
-	 KNnNv9VL4BPErRMhyMl2HFb2oFunighokSpBZ60mn2/GSjqroaVfys6+o12UGdeOfe
-	 KOtPOo2MiREag==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD513809A80;
-	Tue, 19 Nov 2024 19:52:58 +0000 (UTC)
-Subject: Re: [GIT PULL] hwmon updates for v6.13-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20241118033837.3586271-1-linux@roeck-us.net>
-References: <20241118033837.3586271-1-linux@roeck-us.net>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20241118033837.3586271-1-linux@roeck-us.net>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v6.13-rc1
-X-PR-Tracked-Commit-Id: 3996187f80a0e24bff1959609065d49041cf648d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 2b5d5f23d4056543757919bb2db06d0829835f7e
-Message-Id: <173204597717.668199.12429408067726554757.pr-tracker-bot@kernel.org>
-Date: Tue, 19 Nov 2024 19:52:57 +0000
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1732075177; c=relaxed/simple;
+	bh=XLOVrN1qJxo6DUMf7JPO4aITf0YVxst6aLGLLt9UP18=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H+66mQpkPpv1FqKKHvFSd4+MkZggBPRiZbQRGI2nnMuCiYhB/ABjPO7raMBLwbc+WDFCD5xjSrgLY+av3J7ZrXLZJ6aUz06f3pdqYlcwi5UwfTqe3dvIN2eBdAo3bncVEvhbUuLecjvWtiE1a8omcqSMBjxMeht7FUDTW00maBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Th7M5qZZ; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AK2DVM9025391;
+	Tue, 19 Nov 2024 22:59:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=aKJL4nPUC4KZ2rDyGagX9coT2kr
+	zzn7okWAhD9vBxQU=; b=Th7M5qZZLnKjXNThA3WNZAOjoGOYc+bp4nmyOI2AGnU
+	UxD95YfHoKI5UY62Y7A43IX3k+vpe1ADnbCUG/fPuEsyiyIINaJqMC2ebHJeaZFA
+	Ako5auRjXXCo3sNe53FIlUh4JRR6MBiGAwOHg+0dOfSMcVhw6YQfTtO/2YFOJfBG
+	iQ9kFJJLUqErFb1S04zOcuMzMxe6Wxrmvg0jUSpuqhTUr8p3oB8Is9vxF91fkAzR
+	DdvqiQv4UsYOIZc+cN7fukHNyiH+9U/f3x5NTgFBlYDFNZkamOw/p9qZO9bnJ7L0
+	bVyl9GUyyGt9sZeR/ZYWDz1lkfLr5LcKYFUbX3gxeVg==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4316sygcxa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Nov 2024 22:59:02 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4AK3x1IM039301
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 19 Nov 2024 22:59:01 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 19 Nov 2024 22:59:01 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 19 Nov 2024 22:59:01 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 19 Nov 2024 22:59:01 -0500
+Received: from CENCARNA-L02.ad.analog.com (CENCARNA-L02.ad.analog.com [10.116.39.203])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4AK3wWZj027365;
+	Tue, 19 Nov 2024 22:58:35 -0500
+From: Cedric Encarnacion <cedricjustine.encarnacion@analog.com>
+To: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-hwmon@vger.kernel.org>
+CC: Guenter Roeck <linux@roeck-us.net>, Jean Delvare <jdelvare@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Delphine CC Chiu
+	<Delphine_CC_Chiu@Wiwynn.com>,
+        Rob Herring <robh@kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "Radu
+ Sabau" <radu.sabau@analog.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>,
+        Alexis Czezar Torreno
+	<alexisczezar.torreno@analog.com>,
+        Cedric Encarnacion
+	<cedricjustine.encarnacion@analog.com>,
+        Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 0/2] Add support for ADP1051/ADP1055 and LTP8800-1A/-2/-4A
+Date: Wed, 20 Nov 2024 11:58:24 +0800
+Message-ID: <20241120035826.3920-1-cedricjustine.encarnacion@analog.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: E98D-voB-nUU_wcpDuOAu_A8ABZOZr_r
+X-Proofpoint-ORIG-GUID: E98D-voB-nUU_wcpDuOAu_A8ABZOZr_r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 mlxlogscore=910
+ mlxscore=0 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411200028
 
-The pull request you sent on Sun, 17 Nov 2024 19:38:36 -0800:
+The ADP1051, and ADP1055 have 6 PWM for individual monitoring. ADP1051
+can monitor input/output voltages, input/output currents, and temperature.
+ADP1055 is similar and can also monitor power.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v6.13-rc1
+The LTP8800-1A/-2/-4A is a 150A/135A/200A step-down μModule regulator that
+provides microprocessor core voltage from 54V power distribution
+architecture. It features remote configurability and telemetry monitoring
+of power management parameters over PMBus.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/2b5d5f23d4056543757919bb2db06d0829835f7e
+This patch combines existing patch series adding support for adp1051/
+adp1055 and ltp8800-XX. Below are references to the original patch series.
 
-Thank you!
+ADP1051/ADP1055:
+Link: https://lore.kernel.org/20241106090311.17536-1-alexisczezar.torreno@analog.com
+Link: https://lore.kernel.org/20241106090311.17536-2-alexisczezar.torreno@analog.com
+Link: https://lore.kernel.org/20241106090311.17536-3-alexisczezar.torreno@analog.com
 
+LTP8800-1A/-2/-4A:
+Link: https://lore.kernel.org/20241106030918.24849-1-cedricjustine.encarnacion@analog.com
+Link: https://lore.kernel.org/20241106030918.24849-2-cedricjustine.encarnacion@analog.com
+Link: https://lore.kernel.org/20241106030918.24849-3-cedricjustine.encarnacion@analog.com
+
+changes from v1 of original ADP1051/ADP1055 patch series:
+
+adp1050:
+  * Removed stray change in "includes" and stray blank line
+  * The requested datasheet link to be added is in the documentation
+  * Patterned format of pmbus_driver_info of new devices to the existing
+    one
+
+Bindings:
+  * Removed abnormal newline
+
+changes from v2 of original LTP8800 patch series:
+
+adp1050:
+  * Extended adp1050 to support ltp8800-xx devices instead of separate
+    client driver
+  * Used PMBUS_REGULATOR_ONE
+
+Cedric Encarnacion (2):
+  dt-bindings: hwmon: (pmbus/adp1050): Add bindings for adp1051, adp1055
+    and ltp8800
+  hwmon: (pmbus/adp1050): add support for adp1051, adp1055 and ltp8800
+
+ .../bindings/hwmon/pmbus/adi,adp1050.yaml     | 15 +++-
+ Documentation/hwmon/adp1050.rst               | 63 ++++++++++++++--
+ drivers/hwmon/pmbus/Kconfig                   |  9 +++
+ drivers/hwmon/pmbus/adp1050.c                 | 72 ++++++++++++++++++-
+ 4 files changed, 150 insertions(+), 9 deletions(-)
+
+
+base-commit: 3996187f80a0e24bff1959609065d49041cf648d
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.39.5
+
 
