@@ -1,46 +1,46 @@
-Return-Path: <linux-hwmon+bounces-5238-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5239-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876889D6EEC
-	for <lists+linux-hwmon@lfdr.de>; Sun, 24 Nov 2024 13:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5349D6EFD
+	for <lists+linux-hwmon@lfdr.de>; Sun, 24 Nov 2024 13:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CA47281016
-	for <lists+linux-hwmon@lfdr.de>; Sun, 24 Nov 2024 12:56:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D2E281739
+	for <lists+linux-hwmon@lfdr.de>; Sun, 24 Nov 2024 12:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2A91B4F3F;
-	Sun, 24 Nov 2024 12:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44561E0DFA;
+	Sun, 24 Nov 2024 12:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tGu+xZWf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unp2/0P7"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714F51B4F3D;
-	Sun, 24 Nov 2024 12:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E2B1BD4FD;
+	Sun, 24 Nov 2024 12:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452338; cv=none; b=emCHwwUNRSkRFo7vb5Aja83g4QjPrXLJ2qaI5OHymTIiYFm7zAFLa1Uph3uIboy/E1D+tIY8EsBCYWIy1wVxiHN9paw+73zZNVWmyw4ISUTEZM9kaQUhWPQRsLbw5MK64GnC5XaRAXPvd3zE99SUffDE8PDN8B/GzbYgiAzxiw4=
+	t=1732452351; cv=none; b=LRfJwiFo+Puida6qXpdjOdgBcbBjv0DhXx/kMi9BVPDvnk3ph/1EUKgO4ftjBcLzU3aGGk+jttJeQ+lFsRhoSvVaCRIY0HeoHJ5INhF8EoBaoheLWr6YfmZvbkkEHzKBhP/QtY3RKu4sKxfYoD+TzMU2l0YSwVeGk12Zw1e3OMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452338; c=relaxed/simple;
-	bh=U0/U2tEFLD6b79I/LulY4tgji590SiyhcKVcreMzKE4=;
+	s=arc-20240116; t=1732452351; c=relaxed/simple;
+	bh=k7MfGDglnKUYbss0POiLHVKeYeFMjLONHdm4EcpnFEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uydj5xSBO3qQRU9mCMkd/QlYW+A/PfaQCMkcJjb9Aq6GjrQToGV0vNrtTq6U/UYKtOf2ZkysRDIlZXldSrbHwrMkB6zQ0QSvyS2OkhIVL0svtXIozyo61tyiELNCrRey+rzMBp1xwDvtJOxZYYNouOL98NdLAXlad4vGN/etVf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tGu+xZWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEF8C4CED3;
-	Sun, 24 Nov 2024 12:45:36 +0000 (UTC)
+	 MIME-Version; b=b4DKmTCJ7kpEqBEpp24553OA7ehX6RcVJVlyY3MGt91GMVJzD10BX6DltKjzhtjN9hq++JUIvYqFnlpD++xFplA3pBEwKg81lgluYTfzxa1+0ADE4+JcGyE38dWbg1U+IQA50IL3c9Xe11cr28mzu4dT7b04fIjviuZ6hvTIAGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unp2/0P7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24178C4CED6;
+	Sun, 24 Nov 2024 12:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452338;
-	bh=U0/U2tEFLD6b79I/LulY4tgji590SiyhcKVcreMzKE4=;
+	s=k20201202; t=1732452351;
+	bh=k7MfGDglnKUYbss0POiLHVKeYeFMjLONHdm4EcpnFEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGu+xZWfePL27jhoJ2xzMaePucSeM3KWgBxuP7SRnjGGDDsL2wgY1Ca3pDwmrni6A
-	 ZbLItl95v03fTqhRvBhKANM7VIr0txLvmuecZ9EO9H0KdejCUKMq9GDaWzAytg4DZW
-	 NjK4JI9RfUC5AYmJhCnuWstds+Hu6HRasKZRAH0oL+ktxfyxjSHDMiVvNJMyJICmpu
-	 GMZako6jad9bTHyGGsm2yUrIJw8THf+4EfJyLaKpKEzuJqOYOjbyqNM84qEyVlf9qk
-	 xlh07fwfJt5tu0XOMRiAMVqvfmA53lfXrUiW8eRTYIK3MnRzEQnwu9qb1zUrjtRaQN
-	 8o2tcBtF/2AKw==
+	b=unp2/0P7znVK2zGQri42b9z40htLlGYOXwYYxZLuV5r87TjkmepMxyzfDhB3k+NuO
+	 O/25bbtyD3sWwFpoRupV0zgmg88iR1/3HSK7tFqs+YhRMMMLnRr99tG9SemBrlS01h
+	 fQovk2r/Vcg75QKsSPjkQH2Y92fBjSwNYWCK2hUyoYjPkensW0Ij3T+0770CBFWkXe
+	 mcUSaR+NYPzbY99unhy2ZmNEmT9LOSyhasMwIBFeDBRmYOKjy+kdyzsVQAQXJRgx+C
+	 N0LTJ4BE7O0F6InwjOd5xLY30EIo2Rbr/rhqUkyS7l9z4txnTS0c0giSGpwnbxsvfi
+	 WTMTDkoLMiRQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,12 +50,12 @@ Cc: Sarah Maedel <sarah.maedel@hetzner-cloud.de>,
 	Sasha Levin <sashal@kernel.org>,
 	jdelvare@suse.com,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 3/6] hwmon: (nct6775) Add 665-ACE/600M-CL to ASUS WMI monitoring list
-Date: Sun, 24 Nov 2024 07:45:25 -0500
-Message-ID: <20241124124532.3337626-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 2/3] hwmon: (nct6775) Add 665-ACE/600M-CL to ASUS WMI monitoring list
+Date: Sun, 24 Nov 2024 07:45:44 -0500
+Message-ID: <20241124124547.3337766-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124124532.3337626-1-sashal@kernel.org>
-References: <20241124124532.3337626-1-sashal@kernel.org>
+In-Reply-To: <20241124124547.3337766-1-sashal@kernel.org>
+References: <20241124124547.3337766-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
+X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
 From: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
@@ -92,7 +92,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
-index 096f1daa8f2bc..1218a3b449a80 100644
+index 706a662dd077d..7e0ac3fcbc050 100644
 --- a/drivers/hwmon/nct6775-platform.c
 +++ b/drivers/hwmon/nct6775-platform.c
 @@ -1350,6 +1350,8 @@ static const char * const asus_msi_boards[] = {
