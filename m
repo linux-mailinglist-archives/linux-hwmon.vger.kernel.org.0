@@ -1,109 +1,182 @@
-Return-Path: <linux-hwmon+bounces-5328-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5330-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8B59E1342
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 07:11:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825129E1B91
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 13:01:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 366B31669A3
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 12:01:05 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822581E47CE;
+	Tue,  3 Dec 2024 12:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdDeCtLV"
+X-Original-To: linux-hwmon@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EE12B2176B
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 06:11:15 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DB518455B;
-	Tue,  3 Dec 2024 06:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mM+KE4yx"
-X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2D613F43A;
-	Tue,  3 Dec 2024 06:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26B3398B;
+	Tue,  3 Dec 2024 12:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733206270; cv=none; b=mr+RJzlKaS6jntZPNI/V1TUyzj8SMuoMyzTDNBux/DNLZkXz4ChmmlgnU22QAoNf7Nm19J7dzJPD4ptk15wwErJmc4nvEMbjufQkl4XE/rbjnN8m+bLGieQmsSrHI1gHi80Dcb0HC4YSTCZKY/6n/8Wj+NVJf7FVdmne6oya93I=
+	t=1733227262; cv=none; b=FzO7zdcCbOGmFYMs76UesdXZ0Fc7Nl77VPhE/Ky8oPsmxh/+t/NuBngY4P11WQjiQKcoLXZUEeL+oLyj6J/lIYtd2avhg8Q37+X7gzST0DfTkg1ND5XKKKL2m2xNT2XRxgIuOqLRSGQZaCkfxUqnU/RvX7tcXDXl2ecIS5xu6yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733206270; c=relaxed/simple;
-	bh=/FgOw83lPcIOL254tAVHr+zF+3M+oXPUFUmcFh6lqC8=;
+	s=arc-20240116; t=1733227262; c=relaxed/simple;
+	bh=rlz53vWDp5E/pYVOEj1URbYGt1AREB4Xo9ogjRjCu50=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z+/C9xq2tPAURFlSoPoGUQBpOVsSEBTufu/dWAuqWX/YN76FJBAZXJ+Q/eZ9H3WYasMK4DhANSIKaoJ2h/NmsnLQHsxJ+/M1Bpp2mEnEKMhyFelufla+FaihssmckedjWWtJ9sm/+E3Cm+VmQydrU1daeP4AVInvIJ+SD95RaGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mM+KE4yx; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3ea53011deaso2277498b6e.1;
-        Mon, 02 Dec 2024 22:11:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733206268; x=1733811068; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k61ug4XDql2tfyDsvp03UG3wRkg9ZVLO9ZMI6rnSJmo=;
-        b=mM+KE4yxH4rWQ5ByA+iULW/fs8cGHj7ox4T9vmU3016QueayyKRDbCW1OJ6wonCcRk
-         iG70KsJ18m/DcoRr7XBNF6Tr2kEcgl1fsCFdopsyx9gHT8aPKaVFBlBJFXSBsy0SyN+/
-         Tc87Ux4q06spEDAQJkaOQttjhlvKP8+kTqNv6/CNmFobHdoN6I+V5jgLrZdHI9DbcRoe
-         DICQcsFKlWj5CTCSmhRLeE0V8ccZt5MobrFV0Z+n1k67M6k1m1HkOhkp8/WCpcws5j4c
-         Nd2P/FQPs8K3xiAg3D/MJXmncsfqLb+xWDticlEGCtIzfELh6bA7aVXZahglFfETcjI2
-         3Jjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733206268; x=1733811068;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k61ug4XDql2tfyDsvp03UG3wRkg9ZVLO9ZMI6rnSJmo=;
-        b=EVS7frIORkRWi9cNqcydoXEv0An2bpPtSC4Ruw8Hgy7u7/8YW+gCty4ZIn47GlSNYD
-         v/g1p4Fu3Q/+g+5MONATGnZUzpR6FkAZUJ7ymjWIzKNHRIZwtjKUVPswW6c9kzHWeNnP
-         G2bMQWB7aTTPxBtnSmZnIkmA0AfkOqn5QZa2G5OLjg3xCn1CKmeQSySooQf+7veUzemD
-         jGrH5J5OA9Uk97sofvS5xhL+45UqizWg1D91duO3UPG0/12/e8SNaE9QnKsMR6vFqtk0
-         1Iat8XcsLinq+UdkZ7AsUYvjSN0zTixOMRIA5oJfcGcKIZRV+bxpRmORjciX0F7+DU1t
-         ShuA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2F8+3VWit7ORcuRXaAhyORemm9CgTT0eTAsIDj7cCwMpWMTcVxmUfRIEBV8soH4P3mYxitVQMXrnGmxM=@vger.kernel.org, AJvYcCUNMlT99UrvOfoASkZAYWQa37B+g1d8p9nnqvvs56sdxSW9B9RxiifEcYMEkvgvmPVPVFbYYiCK0Dw=@vger.kernel.org, AJvYcCVKou9XR+t+rrxVSA5Zp7XjrcriEB2DcmreNIc8t9APSbOlCYiIsbXcRAUcicsPWolyrR3igxfbYaXHTOYF@vger.kernel.org, AJvYcCWTSwI6hEf1TSQ00LKZBqvpcguM8tzAbLDQ3tpRnFKXyaZFrMcpFh8MnpwgZgBkIsUhORO3ZobhmqjE@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0TqbdAXKGl2/g2M4CqxPd873fDODwFlKh0COTvdYobdpaFiA1
-	JS9Q5KoLUgNtCzp74FewbG6nbGwG1uZOO5i4uLqHuWC6G6titZjO
-X-Gm-Gg: ASbGncswmheMg5R7S5mMOACrrE87WlhyNx9jgF3c9B5YLsk8AIMXep0gyTSdB+al/eE
-	1EqBOhEDllzG9mbRmYAcTBKK72X6YjmSqnvKz62Rh7G1N2Ws3rrWIm66/Qohl638lLszJ7PTY4a
-	MV9XF80eR/vzDk5n54f+Sa+LvWLZW3FJZfZWRhA0KXKl7Zcxe5N7x2NEjpt+JCY9PF3UIxR0qm0
-	486cny0Oqdbxf5cJ+nKm5sw0K+k9p0xznRN4Nrin1mVq0M7ZzhV2QgoUoESbCA=
-X-Google-Smtp-Source: AGHT+IEUrn1dwPR0GaPVIZ4bHYwRzLNtCp7NgFdjawnPiVJawBQg0ZMW53VqbHt2CX2LDYfP068PLQ==
-X-Received: by 2002:a05:6808:1802:b0:3ea:5705:2a2d with SMTP id 5614622812f47-3eae510773bmr972830b6e.41.1733206267864;
-        Mon, 02 Dec 2024 22:11:07 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72541761453sm9579036b3a.37.2024.12.02.22.11.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 22:11:07 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Mon, 2 Dec 2024 22:11:06 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	Vaishnav Achath <vaishnav.a@ti.com>
-Subject: Re: [PATCH v4 3/3] hwmon: (pmbus/tps25990): add initial support
-Message-ID: <7dde579d-a4be-443d-8c02-510fb5556a6f@roeck-us.net>
-References: <20241202-tps25990-v4-0-bb50a99e0a03@baylibre.com>
- <20241202-tps25990-v4-3-bb50a99e0a03@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=rKPWitPTPIjPGJJtxcIdmX9tRnFLzlNuAIpWz2zE5F6v0tYsKpF7koC+Eb9bnpcfT39KKfLnppZUfH1YZHoE/zenBBuGQYVTNY9OhPRt+8L0D+bhGfVOiUWog413yWrdxB93lVnyAt02SIsC/sAreWOlPPF9/n13xvOgo4IWFA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdDeCtLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAF4C4CECF;
+	Tue,  3 Dec 2024 12:01:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733227261;
+	bh=rlz53vWDp5E/pYVOEj1URbYGt1AREB4Xo9ogjRjCu50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fdDeCtLVqECfRfNoqbCzzD0S2R+ze8fu4xgXlPdQFJQ+STayO+czgml6vxR6gAr9u
+	 SfvYrgXRdRmOjMEDiUcIg8Ywi35riI0nUxeZrJIGAla7/uurms7YmN220IRsCbVxR6
+	 0RLGXO472a27O/MHnrmTkWCsCE1MnHGszPPpy+ATOMh/r4ZUNj1XVz+G2aEnELC83Q
+	 5zXc30+JHwj5J8xXpxDpdRcwIa3kank2REKqd9CMrbu3SZA6RQSEQqgx6shuUaL3BU
+	 er9sxGEV01E1uZex0+a/6+JDYf3SqBVZ3ELFg7wS+IFimmHwT30DsHPjPlqmlPz8Tg
+	 GqLyWYoqGameA==
+Date: Tue, 3 Dec 2024 13:00:58 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Jean Delvare <jdelvare@suse.com>, 
+	Guenter Roeck <linux@roeck-us.net>, Martin Tuma <martin.tuma@digiteqautomotive.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Andreas Noever <andreas.noever@gmail.com>, 
+	Michael Jamet <michael.jamet@intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Yehezkel Bernat <YehezkelShB@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>, Jiri Slaby <jirislaby@kernel.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>, 
+	Mike Christie <michael.christie@oracle.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Nilesh Javali <njavali@marvell.com>, 
+	Manish Rangankar <mrangankar@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Alison Schofield <alison.schofield@intel.com>, Andreas Larsson <andreas@gaisler.com>, 
+	Stuart Yoder <stuyoder@gmail.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>, 
+	Jens Axboe <axboe@kernel.dk>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Cristian Marussi <cristian.marussi@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hwmon@vger.kernel.org, linux-media@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, netdev@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	nvdimm@lists.linux.dev, linux1394-devel@lists.sourceforge.net, 
+	linux-serial@vger.kernel.org, linux-sound@vger.kernel.org, open-iscsi@googlegroups.com, 
+	linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-block@vger.kernel.org, arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
+ and adapt for various existing usages
+Message-ID: <g32cigmktmj4egkq2tof27el2yss4liccfxgebkgqvkil32mlb@e3ta4ezv7y4m>
+References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="35h4iyqfzzpzpkno"
 Content-Disposition: inline
-In-Reply-To: <20241202-tps25990-v4-3-bb50a99e0a03@baylibre.com>
+In-Reply-To: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
 
-On Mon, Dec 02, 2024 at 11:28:02AM +0100, Jerome Brunet wrote:
-> Add initial support for the Texas Instruments TPS25990 eFuse.
-> This adds the basic PMBUS telemetry support for the device.
-> 
-> Tested-by: Vaishnav Achath <vaishnav.a@ti.com>
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 
-Applied, after fixing whitespace error (emty line at end
-of driver documentation).
+--35h4iyqfzzpzpkno
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
+ and adapt for various existing usages
+MIME-Version: 1.0
 
-Thanks,
-Guenter
+Hello,
+
+On Tue, Dec 03, 2024 at 08:33:22AM +0800, Zijun Hu wrote:
+> This patch series is to constify the following API:
+> struct device *device_find_child(struct device *dev, void *data,
+> 		int (*match)(struct device *dev, void *data));
+> To :
+> struct device *device_find_child(struct device *dev, const void *data,
+> 				 device_match_t match);
+> typedef int (*device_match_t)(struct device *dev, const void *data);
+
+This series isn't bisectible. With only the first two patches applied I
+hit:
+
+  CC      drivers/pwm/core.o
+drivers/pwm/core.c: In function =E2=80=98pwm_unexport_child=E2=80=99:
+drivers/pwm/core.c:1292:55: error: passing argument 3 of =E2=80=98device_fi=
+nd_child=E2=80=99 from incompatible pointer type [-Wincompatible-pointer-ty=
+pes]
+ 1292 |         pwm_dev =3D device_find_child(pwmchip_dev, pwm, pwm_unexpor=
+t_match);
+      |                                                       ^~~~~~~~~~~~~=
+~~~~~
+      |                                                       |
+      |                                                       int (*)(struc=
+t device *, void *)
+In file included from include/linux/acpi.h:14,
+                 from drivers/pwm/core.c:11:
+include/linux/device.h:1085:49: note: expected =E2=80=98device_match_t=E2=
+=80=99 {aka =E2=80=98int (*)(struct device *, const void *)=E2=80=99} but a=
+rgument is of type =E2=80=98int (*)(struct device *, void *)=E2=80=99
+ 1085 |                                  device_match_t match);
+      |                                  ~~~~~~~~~~~~~~~^~~~~
+drivers/pwm/core.c: In function =E2=80=98pwm_class_get_state=E2=80=99:
+drivers/pwm/core.c:1386:55: error: passing argument 3 of =E2=80=98device_fi=
+nd_child=E2=80=99 from incompatible pointer type [-Wincompatible-pointer-ty=
+pes]
+ 1386 |         pwm_dev =3D device_find_child(pwmchip_dev, pwm, pwm_unexpor=
+t_match);
+      |                                                       ^~~~~~~~~~~~~=
+~~~~~
+      |                                                       |
+      |                                                       int (*)(struc=
+t device *, void *)
+include/linux/device.h:1085:49: note: expected =E2=80=98device_match_t=E2=
+=80=99 {aka =E2=80=98int (*)(struct device *, const void *)=E2=80=99} but a=
+rgument is of type =E2=80=98int (*)(struct device *, void *)=E2=80=99
+ 1085 |                                  device_match_t match);
+      |                                  ~~~~~~~~~~~~~~~^~~~~
+make[5]: *** [scripts/Makefile.build:194: drivers/pwm/core.o] Error 1
+make[4]: *** [scripts/Makefile.build:440: drivers/pwm] Error 2
+make[3]: *** [scripts/Makefile.build:440: drivers] Error 2
+make[2]: *** [Makefile:1989: .] Error 2
+make[1]: *** [Makefile:372: __build_one_by_one] Error 2
+make: *** [Makefile:251: __sub-make] Error 2
+
+Best regards
+Uwe
+
+--35h4iyqfzzpzpkno
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdO8vgACgkQj4D7WH0S
+/k5hrwgAmMfv4tgQM/zHhRunXZer+6rbqIrp5LbiXSYngMgHSWkkF/Aqcp/Uejmb
+FQwdlGB47gyVlHT5SP4HCDeST+PhX0lg3vHxP2lg0HaHp7/vgJRZAI65iOfy7DY7
+xqXQ+U2+YvtY+lwSneGFeXo9VZZtuu/YfpP8Qg6jH8dGaIojaU57rB+uJCpdvZmt
+VJhc51IAA6eHPcPMGf5mvS8/A7M8uPDwyEgWBDP/MRE0z6oKEjVLPWYFzXjUaVnZ
+MMOmGyzIfvhHTMxlkisgCC+PwmjrO2lZFsM1jD6SVNzMp6XeT2jiGa7lbfXaK9Rk
+7TvM1d7dwtqa42JTuIjTWWBR7AfmBA==
+=Sef0
+-----END PGP SIGNATURE-----
+
+--35h4iyqfzzpzpkno--
 
