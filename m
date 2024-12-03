@@ -1,170 +1,153 @@
-Return-Path: <linux-hwmon+bounces-5334-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5329-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124DE9E1CFC
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 14:04:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3537161206
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 13:03:52 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C7E1EF09C;
-	Tue,  3 Dec 2024 13:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Kc4yhuXu"
-X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mr85p00im-ztdg06021801.me.com (mr85p00im-ztdg06021801.me.com [17.58.23.195])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EA79E1D4A
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 14:15:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE11EE009
-	for <linux-hwmon@vger.kernel.org>; Tue,  3 Dec 2024 13:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.195
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2787B2AFD1
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Dec 2024 11:35:05 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF001E3DF7;
+	Tue,  3 Dec 2024 11:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k5sk3Llo"
+X-Original-To: linux-hwmon@vger.kernel.org
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5774A1E3772;
+	Tue,  3 Dec 2024 11:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733231024; cv=none; b=K5F2+XsPvbcOPw+ZuotJc8t+8RK4T1H0SXICFHwSfFS14LE3U8scOg/7ybEqywFoEFM0n/qaMdYW4lO1LDiSB6FC1e9Rb9Wm9osN4rHvtXON3/zAUdlmEEEh3UQztp3pDF/ITJj3w/pj2d4wfFgCAZWwhWAoxnEGYX92OAjtm2U=
+	t=1733225701; cv=none; b=ImFfYWVZaU5FIfCCh9uR2wcr7fRZxXSTXl4FrGj7LS1jN0lYbCVDtWwXf3M1kTLsErwxruCTbgU+jc+l5zmSWLq4l0Ubo3BZFA2Wgbq4x4gf02Fl0b1c0SBlzduPgIeEtUqH9vcvP2Og4dtZpqD/LrIwqVTz8kAwHgoQTT6PUlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733231024; c=relaxed/simple;
-	bh=PMZl124fAJi/9a12repkCEPo/NdFlnbWHM0+eGs6QGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BhU3+2oyBZ9jbiH7DxS4s5utfP/DGBGssciLQm6KyoVYvgdn21rt3kvLkDikGdHUV5Z9GsXTA+gL9rt1cCsjXRWgm+1aVDuhSEUA5bs2391bv4PEuMi/XpUhruvCoTsh2nYx36x+Kla4UUbIqfzaiePU3FMAI3nQYOCNfwfT9+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Kc4yhuXu; arc=none smtp.client-ip=17.58.23.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733231020;
-	bh=QEJ75x+TqYUJVxmVF6uQZZWFOEl0WJRfUhXN2h5KpKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=Kc4yhuXugc/D/qtZZ41v8wAnuwEzwggEWUway63IXkClqixwU1cfn/v3YVm8Qsiaw
-	 28NLlORRwJjFZX7JY4DZlIgrQ1s8zKvPJAQ+RXHBAEkcNRuUPk0OyxBiAs9kB0GBL/
-	 4jgwTolEa8TiqyUyeuv6tr/7DG898UMLRPOw8P2qzUVkHb/i6BK0gmuVjOCVuRaOL4
-	 yVOUtS8ijY+iNGs/3oFthLPmtWg3RPz3zQCNIexvybyNTkT8kJ+0hPmRIWLu7xxlpo
-	 9HqUza+TM66+s3TNEHqlu5QAj7PkxbSr1VPZfaRzmcsea2BKweNx4LzKqRftuLVcUB
-	 Ma8BwRHqOq26Q==
-Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06021801.me.com (Postfix) with ESMTPSA id 67D49442839;
-	Tue,  3 Dec 2024 13:03:18 +0000 (UTC)
-Message-ID: <b9885785-d4d4-4c72-b425-3dc552651d7e@icloud.com>
-Date: Tue, 3 Dec 2024 21:02:59 +0800
+	s=arc-20240116; t=1733225701; c=relaxed/simple;
+	bh=x7dLi7wAGruYlnkWF7Di04Y7mXBk+HfGj4As5QQnFLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q9i7kQK4mn6oQYJt6xuk9jSnUdjs0iXiY0Na8VVeZLU0zoa8YMlao5aelDOBO7jvGl0SzwKPWUMVBqPHgwK68Vpikji8f7FfmiysUUpNwgjBVk4AHB74y8ZOxAeirsqxZ2Rfs95PDzNuxJ0WhMe+Sng7y87yNNls/tKpCQd/C+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k5sk3Llo; arc=none smtp.client-ip=209.85.215.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-7ee11ff7210so3716373a12.1;
+        Tue, 03 Dec 2024 03:35:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733225699; x=1733830499; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gRTMjpBU2FZrkasI1vglpiZRnbuKwshDQaObui5oB2I=;
+        b=k5sk3LloHDV3vj1UHofOkYahkliD3++deodRfyVwVmB+Q/CbK7LTqHAKla4Au5TVFK
+         tEqD/XKO4n8XcBIhv2/2lYVRz48vUQtefHarBfFFTEqrZhrZWqV4qaqtu2jXlp5x9pVo
+         Ta1y/9TXpgxzpStc7A+KkNlR9T6VaBVhZjN6AfnwAm8mzPwYs+CMNc9Ml2Q5sVyl6H3K
+         ZV8r5utp6k4qptG4xbUrDOqyRGt+7Q+z/UaXJmRD4K3AFX8v1LZbYcDm09EmQXHvF+hT
+         wqKft81Z1p9wnTyXXWCpjF7PDRFrnzjiuH7LbY9NxVVUCKiSpM4En6UD2VWT2vni/Q+0
+         cU3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733225699; x=1733830499;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gRTMjpBU2FZrkasI1vglpiZRnbuKwshDQaObui5oB2I=;
+        b=FbypOD4fPkz++xzS3x4L1TLdHAhb0jfdHi48l5S2ep646spUNRRUgNDxkn6jRCpTvI
+         0haWx2EIc6L3ooonSyfqNlv6BmnSWZIDU9LV7BFhknxwniXk6sv7e9CU0E2S35ICz+VB
+         zWVu2rqXjgw945CTzTU1vI9m0N569SN8sYejXSdkDjdXCTyvxnacqBiehWrXONgRP/2S
+         ZO+n5mRO+hKI+Pdu7m3ZQgdYzG4G74re8FYAKQijM1Qh5SwgN/tyxZE/E4AuHE5Ror4O
+         GzR2fcA2kiV3Mh5agDAVIZ8NSFrEmt2Db2NBOTfbwTNvNExvWfHWEbRIHKVovnTBEYpp
+         +QxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWCPif1EO5l82ytIKDPY9IckEBmiV7rLw4Vwg4dQkFp3f2GWee7zdCFn3crTrrjzjQZhUb2Rx4NAQ=@vger.kernel.org, AJvYcCUb6d8Sk57tVgeKJlRqu5axuclYJj9aL4EVPS9oyQ00G85snLVx3iZyUbtD4RXfKjHTUGUyaEtS0o1sbmk=@vger.kernel.org, AJvYcCXqIv7/mJoR5o+PsW6V1tr7j11YClPK9f0t7Zp2CXUwpY/8hqPO7w+pFGGSypwnTCdhwwTVfHgTKlanKgLw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn7o2MjnixtBmjN800H9rV23ARSW5LUTWIMGlZ61m7Jx86Zng0
+	P8ei2zMIjHeeoSqGaTPO5Q+7R94bNElDej8Q9TTIj0SGc7EeMCFcUtsaRxMu
+X-Gm-Gg: ASbGncs4UI2UKLZwNLn/wU1NRb/8G0a6zqOOntQfl+D+oLc4M/kMAUCpdyD0kSO7YTL
+	ImZ5hWn4XapnhFNiWKWsm6YOk6cRXQ1c/zZeqH3zxwtiIPWEsNin+QCtFSr8XLtiNUp0GwZNnRM
+	2ohCqZOQ1LEO+Uy4Q4A+hM9HelNBX3lvgVbVPMlJZ2vd2FylaPBOeY/fjNIJ1xlmw90wuo8tSAa
+	FuB7v3UJ2tW6k230PrXd1MDxcSw
+X-Google-Smtp-Source: AGHT+IEgl7vHhlCDL4Gwe4it1dd5SMY6cGnkCBgQo5plDhb1eivLpmfTOrsdMgmKo3BAvvYzv1rVXQ==
+X-Received: by 2002:a05:6a20:6a1b:b0:1db:f00e:2dfe with SMTP id adf61e73a8af0-1e165412f88mr3221903637.39.1733225699535;
+        Tue, 03 Dec 2024 03:34:59 -0800 (PST)
+Received: from gmail.com ([2a12:f8c1:50:4::4fd])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72541849c28sm10180513b3a.196.2024.12.03.03.34.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 03:34:58 -0800 (PST)
+Date: Tue, 3 Dec 2024 19:34:54 +0800
+From: Li XingYang <yanhuoguifan@gmail.com>
+To: eugene.shalygin@gmail.com
+Cc: jdelvare@suse.com, linux@roeck-us.net, corbet@lwn.net,
+	linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] hwmon: (asus-ec-sensors) add TUF GAMING X670E PLUS
+Message-ID: <Z07s3rKyv32uUGrG@gmail.com>
+References: <20241201034803.584482-1-yanhuoguifan@gmail.com>
+ <20241201034803.584482-3-yanhuoguifan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
- and adapt for various existing usages
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Martin Tuma <martin.tuma@digiteqautomotive.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Andreas Noever <andreas.noever@gmail.com>,
- Michael Jamet <michael.jamet@intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Yehezkel Bernat <YehezkelShB@gmail.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
- Jiri Slaby <jirislaby@kernel.org>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>,
- Mike Christie <michael.christie@oracle.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Nilesh Javali <njavali@marvell.com>,
- Manish Rangankar <mrangankar@marvell.com>,
- GR-QLogic-Storage-Upstream@marvell.com, Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Andreas Larsson <andreas@gaisler.com>, Stuart Yoder <stuyoder@gmail.com>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>, Jens Axboe <axboe@kernel.dk>,
- Sudeep Holla <sudeep.holla@arm.com>,
- Cristian Marussi <cristian.marussi@arm.com>, Ard Biesheuvel
- <ardb@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-gpio@vger.kernel.org, netdev@vger.kernel.org,
- linux-pwm@vger.kernel.org, nvdimm@lists.linux.dev,
- linux1394-devel@lists.sourceforge.net, linux-serial@vger.kernel.org,
- linux-sound@vger.kernel.org, open-iscsi@googlegroups.com,
- linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
- arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
- <g32cigmktmj4egkq2tof27el2yss4liccfxgebkgqvkil32mlb@e3ta4ezv7y4m>
- <9d34bd6f-b120-428a-837b-5a5813e14618@icloud.com>
- <2024120320-manual-jockey-dfd1@gregkh>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <2024120320-manual-jockey-dfd1@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: CNFmwAOF9NCRr2KajfMjTjtFd_qlM54K
-X-Proofpoint-GUID: CNFmwAOF9NCRr2KajfMjTjtFd_qlM54K
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-03_02,2024-12-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- clxscore=1015 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412030113
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241201034803.584482-3-yanhuoguifan@gmail.com>
 
-On 2024/12/3 20:41, Greg Kroah-Hartman wrote:
-> On Tue, Dec 03, 2024 at 08:23:45PM +0800, Zijun Hu wrote:
->> On 2024/12/3 20:00, Uwe Kleine-König wrote:
->>> Hello,
->>>
->>> On Tue, Dec 03, 2024 at 08:33:22AM +0800, Zijun Hu wrote:
->>>> This patch series is to constify the following API:
->>>> struct device *device_find_child(struct device *dev, void *data,
->>>> 		int (*match)(struct device *dev, void *data));
->>>> To :
->>>> struct device *device_find_child(struct device *dev, const void *data,
->>>> 				 device_match_t match);
->>>> typedef int (*device_match_t)(struct device *dev, const void *data);
->>>
->>> This series isn't bisectible. With only the first two patches applied I
->>> hit:
->>
->> yes. such patch series needs to be merge as atomic way.
->>
->> Hi Greg,
->>
->> is it possible to ONLY merge such patch series by atomic way into your
->> driver-core tree?
-> 
-> Nope!
-> 
->> or squash such patch series into a single patch ?
->>
->> various subsystem maintainers may not like squashing way.
-> 
-> Agreed, so look into either doing it in a bisectable way if at all
-> possible.  As I don't see a full series here, I can't suggest how it
-> needs to happen :(
-> 
+On Sun, Dec 01, 2024 at 11:47:45AM +0800, Li XingYang wrote:
 
-let me send you a full series later and discuss how to solve this issue.
+Hi Eugene:
 
-> thanks,
+Could you review the new verson patch in free time?
+
+thanks,
+XingYang
+> add asus-ec-sensors support on the mainboard TUF GAMING X670E PLUS
 > 
-> greg k-h
-
+> Signed-off-by: Li XingYang <yanhuoguifan@gmail.com>
+> ---
+>  Documentation/hwmon/asus_ec_sensors.rst |  1 +
+>  drivers/hwmon/asus-ec-sensors.c         | 11 +++++++++++
+>  2 files changed, 12 insertions(+)
+> 
+> diff --git a/Documentation/hwmon/asus_ec_sensors.rst b/Documentation/hwmon/asus_ec_sensors.rst
+> index ca38922f4ec5..739636cf7994 100644
+> --- a/Documentation/hwmon/asus_ec_sensors.rst
+> +++ b/Documentation/hwmon/asus_ec_sensors.rst
+> @@ -29,6 +29,7 @@ Supported boards:
+>   * ROG STRIX Z690-A GAMING WIFI D4
+>   * ROG ZENITH II EXTREME
+>   * ROG ZENITH II EXTREME ALPHA
+> + * TUF GAMING X670E PLUS
+>  
+>  Authors:
+>      - Eugene Shalygin <eugene.shalygin@gmail.com>
+> diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+> index 381bf117104f..43e54dc513da 100644
+> --- a/drivers/hwmon/asus-ec-sensors.c
+> +++ b/drivers/hwmon/asus-ec-sensors.c
+> @@ -479,6 +479,15 @@ static const struct ec_board_info board_info_zenith_ii_extreme = {
+>  	.family = family_amd_500_series,
+>  };
+>  
+> +static const struct ec_board_info board_info_tuf_gaming_x670e_plus = {
+> +	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
+> +		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
+> +		SENSOR_TEMP_WATER_IN | SENSOR_TEMP_WATER_OUT |
+> +		SENSOR_FAN_CPU_OPT,
+> +	.mutex_path = ACPI_GLOBAL_LOCK_PSEUDO_PATH,
+> +	.family = family_amd_600_series,
+> +};
+> +
+>  #define DMI_EXACT_MATCH_ASUS_BOARD_NAME(name, board_info)                      \
+>  	{                                                                      \
+>  		.matches = {                                                   \
+> @@ -540,6 +549,8 @@ static const struct dmi_system_id dmi_table[] = {
+>  					&board_info_zenith_ii_extreme),
+>  	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG ZENITH II EXTREME ALPHA",
+>  					&board_info_zenith_ii_extreme),
+> +	DMI_EXACT_MATCH_ASUS_BOARD_NAME("TUF GAMING X670E-PLUS",
+> +					&board_info_tuf_gaming_x670e_plus),
+>  	{},
+>  };
+>  
+> -- 
+> 2.47.1
+> 
 
