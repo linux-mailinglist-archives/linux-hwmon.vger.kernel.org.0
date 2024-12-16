@@ -1,69 +1,95 @@
-Return-Path: <linux-hwmon+bounces-5551-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5553-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350C89F37C6
-	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Dec 2024 18:47:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1249F37E8
+	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Dec 2024 18:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2727D1676FB
-	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Dec 2024 17:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26FE4165C21
+	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Dec 2024 17:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC76E206F03;
-	Mon, 16 Dec 2024 17:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77955206F2D;
+	Mon, 16 Dec 2024 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="GfLJ7qTG"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IW2X7Qih"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E0E2063D1;
-	Mon, 16 Dec 2024 17:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFAF206F0A;
+	Mon, 16 Dec 2024 17:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734371207; cv=none; b=TWinzQJ+Q6PQs5EcUbh7dtEuEOv2yxGOun6PuSz8Usj3QutHNF6VOt81QA3gYYQyeQVGjkZPQhLWAZRYG855Olrq7lJhpBNnQlnN028DfeH2WWMLDzACVAnsAh6F83c+YfsZOakpTBhV+5ZD5yqqEu1jhwmcsMugmUNnAn2x4OQ=
+	t=1734371489; cv=none; b=s3XVV8rFapUQ5vV93qM6BKZ0w2sWHGTc0lunZAXWe8WRfk7al/3rbOwJ/K/32dJXC/h8XDprmISxLFNHMEBGq2GPC4xJQGGcOOq7nl8WK0c6ZT8eH57oH5bEvhTGU3fny+e2+AZ3wOqlr0vRPaRLWD/6s3UEAp2fqBjOs8ARjMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734371207; c=relaxed/simple;
-	bh=fY6y0lXzXOqF3TKLW5TwyP1WKuAZswB9Lwop6yYCl4o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ope3rCIvvi0TgKVCbBJdHCjbO17S3cdthXWPaQ2CCfyk3d3fKYVjps63ufqYdOZkcanzwKurGnSokkD00nIHtbC7ePprm0xXcTCpXj1Wh2jH4tgL1Rw22hK+1EdI7RcU9FCUZk76E8vdb4UiFWSzIDg5lWDfD3lpeKySg+NLLG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=GfLJ7qTG; arc=none smtp.client-ip=81.200.124.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
-Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
-	by ksmg02.maxima.ru (Postfix) with ESMTP id CA4A71E000C;
-	Mon, 16 Dec 2024 20:37:19 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru CA4A71E000C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
-	t=1734370639; bh=2NtiqvLaYzpruvxpMSHj0sXsF8gaZ7HqQVWmKbuJ5gI=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=GfLJ7qTGMOUCZmr0eSQcoJn3WLtloUANwvEqZNHZ+C8S0PGLxhk7lI829FydQP7qh
-	 sYeHII+Nlf0HreASjRtwDgukxK5BEfe8It2KW7RWBfRRmYW6R0TtJ5e3mxhskSG8O3
-	 paY2ZFC+jmD877CRiqQKBTGsOxGC6zQXBitKSsMZ0orMRvHnfPwmeeHKdif4/5Z5Bq
-	 AGViGycpsQCqgEWJvJN3W9fS8HWhYMXyqeGfsjy90DA0P5MAxNN9t199UbdfYilTwD
-	 Uy5jNKOzGaJZvHN5Ly3KioD7G8lGWAcN/9QcI310EnBlAak+0ygXQq4LcCMeMyjsLl
-	 5qTfayvS4aYqg==
-Received: from ksmg02.maxima.ru (mail.maxima.ru [81.200.124.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg02.maxima.ru (Postfix) with ESMTPS;
-	Mon, 16 Dec 2024 20:37:19 +0300 (MSK)
-Received: from GS-NOTE-190.mt.ru (10.0.246.113) by mmail-p-exch02.mt.ru
- (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Mon, 16 Dec
- 2024 20:37:16 +0300
-From: Murad Masimov <m.masimov@maxima.ru>
-To: Eric Tremblay <etremblay@distech-controls.com>
-CC: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
-	<linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Murad Masimov <m.masimov@maxima.ru>
-Subject: [PATCH 3/3] hwmon: (tmp513) Fix interpretation of values of Temperature Result and Limit Registers
-Date: Mon, 16 Dec 2024 20:36:48 +0300
-Message-ID: <20241216173648.526-4-m.masimov@maxima.ru>
-X-Mailer: git-send-email 2.46.0.windows.1
-In-Reply-To: <20241216173648.526-1-m.masimov@maxima.ru>
-References: <20241216173648.526-1-m.masimov@maxima.ru>
+	s=arc-20240116; t=1734371489; c=relaxed/simple;
+	bh=aPDJpKppg/TOsKM8+c3Xq9otEds3XPt9t0Tvx8IubsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FUxY+b5jmarA7C4e3hkRK4v4pNmK0c72/h9g+LZA5CIuafcmDJzj0dhGyaEE7v0hQoImIrfQzatdEbrERvrPxYEJZbTQcOLEEf11RoU140/FIYwUb5dDW2LJzb10Ean+n4ybTCrxB16OH1NwqRZNGshnMeU/52bwMtVIO5EvrAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IW2X7Qih; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BGEd0eY011550;
+	Mon, 16 Dec 2024 17:50:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=SoHHWYCgMlJtpvwBGw5VKuQDGx9iSnHvH5n5hxC5d
+	jQ=; b=IW2X7QihwgP5HFI96O1SNX38WIYQAxDJ57UzY1Hn/tXMPj6Iqts8d/k8d
+	XaY+xKOXRRVolo5ey8yncaNr0UnAfQqpjDSGJco/uIXB4bul36PcvX/IJGGQQrW3
+	P4uH2XtcZiA767vcdf0PBSYFWEzuIrgsOXVw4mrB49iqCCAyj7Le9/OEoR/TC/ro
+	KgSQtmbHre2YaU3tkcOt+GzFD4MjSxy9hs2cYKUvXdFNFan2TwAa2FZj9f+zq/VW
+	RBPwQHUCI/TwifklCzpBrjTNVfWACtJjxgx4PMKhUEnLvB1vaj+uNf9PH9ffrLWm
+	xbzKKuNkt6J7bYKMw9M4RKb+JZysQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jcpb3wac-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 17:50:50 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BGHoniD029763;
+	Mon, 16 Dec 2024 17:50:49 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jcpb3wa6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 17:50:49 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BGEf9d1011256;
+	Mon, 16 Dec 2024 17:50:48 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hpjjxtbx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 17:50:48 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BGHolpf13697636
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Dec 2024 17:50:47 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E9A4F58056;
+	Mon, 16 Dec 2024 17:50:46 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D6285803F;
+	Mon, 16 Dec 2024 17:50:46 +0000 (GMT)
+Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 16 Dec 2024 17:50:46 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+        eajames@linux.ibm.com, jdelvare@suse.com, linux@roeck-us.net,
+        corbet@lwn.net, joel@jms.id.au, andrew@codeconstruct.com.au,
+        Delphine_CC_Chiu@Wiwynn.com, broonie@kernel.org,
+        peteryin.openbmc@gmail.com, noahwang.wang@outlook.com,
+        naresh.solanki@9elements.com, lukas@wunner.de, jbrunet@baylibre.com,
+        patrick.rudolph@9elements.com, gregkh@linuxfoundation.org,
+        peterz@infradead.org, pbiel7@gmail.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-i2c@vger.kernel.org
+Cc: Ninad Palsule <ninad@linux.ibm.com>
+Subject: [PATCH v2 0/4] Add support for Intel CRPS PSU
+Date: Mon, 16 Dec 2024 11:50:38 -0600
+Message-ID: <20241216175044.4144442-1-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -71,61 +97,46 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
- (81.200.124.62)
-X-KSMG-Rule-ID: 7
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 189867 [Dec 16 2024]
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 47 0.3.47 57010b355d009055a5b6c34e0385c69b21a4e07f, {rep_avail}, {Tracking_smtp_not_equal_from}, {Tracking_from_domain_doesnt_match_to}, 81.200.124.62:7.1.2;mt-integration.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;ksmg02.maxima.ru:7.1.1;maxima.ru:7.1.1, {Tracking_smtp_domain_mismatch}, {Tracking_smtp_domain_2level_mismatch}, FromAlignment: n, ApMailHostAddress: 81.200.124.62
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/12/16 14:34:00 #26899616
-X-KSMG-AntiVirus-Status: Clean, skipped
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8pTZR6lA8KXlS59d5t7BhAEXPTGEs6Pu
+X-Proofpoint-GUID: CxfNOI2bf93ySdZJnPI3RJJk3E96nwrV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 spamscore=0 mlxscore=0 adultscore=0
+ mlxlogscore=997 suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412160146
 
-The values returned by the driver after processing the contents of the
-Temperature Result and the Temperature Limit Registers do not correspond to the
-TMP512/TMP513 specifications. A raw register value is converted to a signed
-integer value by a sign extension in accordance with the algorithm provided
-in the specification, but due to the off-by-one error in the sign bit index,
-the result is incorrect.
+Hello,
 
-According to the TMP512 and TMP513 datasheets, the Temperature Result (08h to 0Bh)
-and Limit (11h to 14h) Registers are 13-bit two's complement integer values,
-shifted left by 3 bits. The value is scaled by 0.0625 degrees Celsius per bit.
-E.g., if regval = 1 1110 0111 0000 000, the output should be -25 degrees,
-but the driver will return +487 degrees.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Please review the patchset for Intel CRPS185 driver.
+V2:
 ---
- drivers/hwmon/tmp513.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  - Incorporated review comments by Guenter Roeck
+  - Incorporated review comments by Krzysztof Kozlowski
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index dacce7417bfd..be63a049923a 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -234,7 +234,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 	case TMP51X_REMOTE_TEMP_LIMIT_2:
- 	case TMP513_REMOTE_TEMP_LIMIT_3:
- 		// 1lsb = 0.0625 degrees centigrade
--		*val = sign_extend32(regval, 16) >> TMP51X_TEMP_SHIFT;
-+		*val = sign_extend32(regval, 15) >> TMP51X_TEMP_SHIFT;
- 		*val = DIV_ROUND_CLOSEST(*val * 625, 10);
- 		break;
- 	case TMP51X_N_FACTOR_AND_HYST_1:
---
-2.39.2
+Ninad Palsule (4):
+  hwmon: (pmbus/core) Add PMBUS_REVISION in debugfs
+  hwmon: (pmbus/crps) Add Intel CRPS185 power supply
+  dt-bindings: hwmon: intel,crps185: Add to trivial
+  ARM: dts: aspeed: system1: Use crps PSU driver
+
+ .../devicetree/bindings/trivial-devices.yaml  |  2 +
+ Documentation/hwmon/crps.rst                  | 97 +++++++++++++++++++
+ Documentation/hwmon/index.rst                 |  1 +
+ MAINTAINERS                                   |  7 ++
+ .../dts/aspeed/aspeed-bmc-ibm-system1.dts     |  8 +-
+ drivers/hwmon/pmbus/Kconfig                   |  9 ++
+ drivers/hwmon/pmbus/Makefile                  |  1 +
+ drivers/hwmon/pmbus/crps.c                    | 79 +++++++++++++++
+ drivers/hwmon/pmbus/pmbus_core.c              | 13 ++-
+ 9 files changed, 211 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/hwmon/crps.rst
+ create mode 100644 drivers/hwmon/pmbus/crps.c
+
+-- 
+2.43.0
 
 
