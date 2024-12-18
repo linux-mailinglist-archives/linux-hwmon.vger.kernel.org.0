@@ -1,62 +1,60 @@
-Return-Path: <linux-hwmon+bounces-5604-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5606-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31F69F5F75
-	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2024 08:41:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA759F5F78
+	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2024 08:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83C201882025
-	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2024 07:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28BD918820EE
+	for <lists+linux-hwmon@lfdr.de>; Wed, 18 Dec 2024 07:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C6915E5BB;
-	Wed, 18 Dec 2024 07:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C99165EF8;
+	Wed, 18 Dec 2024 07:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="If3LkKEs"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Dya5ZKST"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF540158D96
-	for <linux-hwmon@vger.kernel.org>; Wed, 18 Dec 2024 07:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C85161311
+	for <linux-hwmon@vger.kernel.org>; Wed, 18 Dec 2024 07:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734507710; cv=none; b=WCBKsirn45HOczIHrh3bYnFUskT9nBMaVsM2/e845oaUpRelH+bn5EE+N4LSE0EXzLq5IyhvQb5bbEmQwMhgzmDGp0PCVN6rPrmEzQk+U+EeVx/YqV3zcIW2IVh/I44jqqDxJG4C2DyTCra07CN2lw6cKDLSrwRSjVL/aCXTLMQ=
+	t=1734507712; cv=none; b=pS2MQ4wNJlDkrKsSbTDr/SpZc816FrI0oQ6yuSajRgKIL0ojmDkGzbYKfnXRkwzfIK1lAoEh0GNZa/efbcRAbB/FqbKx1pNpwKp1gfomCkRi6JvyBWYHDpppO9VxCDRA4Ukc1GHuQKwz5HyqDdE6dq2Fjd84SwlTVvW9GDXfBDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734507710; c=relaxed/simple;
-	bh=FrZgWB2yWo4bERxGxTtSd9dtQyUEytmgA/wGVCi5Dqc=;
+	s=arc-20240116; t=1734507712; c=relaxed/simple;
+	bh=1alsSrtg+YFvHJ0ZC2N88facs3PkqkS2LIwNoe1ZRy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDvF4hBH2JGXrPhR6DzkNcCuD13ycWCwzhANlras194Gtow++MzL+kYpaxEV5bH4dDBs94DkxZDmLcMqt9F3XZhmSq0k7MssDKM3vtwBkxLZk172yBrrpylB9rr1zoqbnoEYZrHJQHQcq3zQJGxCL6zGRNmxGG4wzWj/Sy+aaYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=If3LkKEs; arc=none smtp.client-ip=194.117.254.33
+	 MIME-Version; b=axwhhAQVUh/ofcJqCgNaA7i7XLRSPLFdSjyfNejat5gRzxL0vEg6VH3nA3sDOayYY2MTBqyPKtHeKz7TG788/Hsezm1PSiRtWg4WPZwILDf+24tOlGFSATi9Xf+tnYT1B2pVM428hRiiPLd6CMM2gAUwl7FIKx1hyhHayeLDuhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Dya5ZKST; arc=none smtp.client-ip=194.117.254.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=from:to:cc:subject:date:message-id
 	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=a98PHnlZySAGXXFpfVOSs4b90C2ExeIXDfLvrYzmPcM=; b=If3LkK
-	Es7MnoBnAgkVe1qEPfroyWCkdFAjg0GUbL/QdxUyQ2e5TaFhnZQjRm4lxnf7SE2I
-	bozSlwOvcAphsXroxS+CtfwESIJA0zrOJ8Z8ZrCnPqqt+gjsIrvMISZyEZpvF9FO
-	ZFeXnUnTR7cvu0SpvZg2nxMq8XeIUWf8GexrDREOhwb0O8gNpe/aHT2yk+rvIf8j
-	isv+8F0aMdHn6q82hWXsWDBkGZHiCi5y8AT3NPo4MKAqEdDF6Oyvj8MBZa2n8X0W
-	FsV6c1EuZS1SKeiCXB6guvOGz2lA5mCqlJCC9jL0fNc7N5K+DArAFBtt5RNe8aPM
-	3bC89HDKsBLvddLw==
-Received: (qmail 204808 invoked from network); 18 Dec 2024 08:41:46 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Dec 2024 08:41:46 +0100
-X-UD-Smtp-Session: l3s3148p1@aS23i4YpSpwujnsY
+	 s=k1; bh=H99eTZ2U99mbsSI7wrJCDQ+VdYBsbWQkx3mJdR9iXSc=; b=Dya5ZK
+	STUHRs1eAf4BXBBHoJ6TknmP2nJMZNRiYLGoWRE/OEHcpioX/x9TaG0SX4xNkFCa
+	duFSl000Ib46h2A17Zkoedqfx0UD3CZTnCXQ8iVAt0izy+IH066M3I9yrJyYX4/P
+	ctmecOP9XxedOmBbl2gAUNSWsPDNMaJUsg9lyJfTF8woI+CC8ZMDF6eU+Ek6pZwd
+	nl4pBpAMBhQpI5m6kkOkkr6GPPnGfmsHiVPjM+EnjHiSAVXyjuWqb0MP/t+ZKfMY
+	3Wqdo1BkAN3nAfEk3y5NYCOJN/C8Q/YdqrBNwTSapp4qSw6D8BKj8cxySAMUT9q9
+	4TBEnjx3Q+QFFDmQ==
+Received: (qmail 204858 invoked from network); 18 Dec 2024 08:41:48 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Dec 2024 08:41:48 +0100
+X-UD-Smtp-Session: l3s3148p1@bPfJi4YpTJwujnsY
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-renesas-soc@vger.kernel.org
 Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Jean Delvare <jdelvare@suse.com>,
 	Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 1/3] dt-bindings: hwmon: lm75: Add NXP P3T1755
-Date: Wed, 18 Dec 2024 08:41:32 +0100
-Message-ID: <20241218074131.4351-6-wsa+renesas@sang-engineering.com>
+	linux-doc@vger.kernel.org
+Subject: [PATCH v2 2/3] hwmon: (lm75) Add NXP P3T1755 support
+Date: Wed, 18 Dec 2024 08:41:33 +0100
+Message-ID: <20241218074131.4351-7-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241218074131.4351-5-wsa+renesas@sang-engineering.com>
 References: <20241218074131.4351-5-wsa+renesas@sang-engineering.com>
@@ -74,23 +72,82 @@ its default sampling time and SMBusAlert handling.
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
 
-Change since v1: added patch description
+Change since v1: reworded patch description
 
- Documentation/devicetree/bindings/hwmon/lm75.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/hwmon/lm75.rst |  6 ++++--
+ drivers/hwmon/lm75.c         | 13 +++++++++++++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/lm75.yaml b/Documentation/devicetree/bindings/hwmon/lm75.yaml
-index 29bd7460cc26..c38255243f57 100644
---- a/Documentation/devicetree/bindings/hwmon/lm75.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/lm75.yaml
-@@ -28,6 +28,7 @@ properties:
-       - maxim,max31725
-       - maxim,max31726
-       - maxim,mcp980x
-+      - nxp,p3t1755
-       - nxp,pct2075
-       - st,stds75
-       - st,stlm75
+diff --git a/Documentation/hwmon/lm75.rst b/Documentation/hwmon/lm75.rst
+index 6adab608dd05..9877ddbbf7c8 100644
+--- a/Documentation/hwmon/lm75.rst
++++ b/Documentation/hwmon/lm75.rst
+@@ -121,9 +121,9 @@ Supported chips:
+ 
+          https://www.ti.com/product/TMP1075
+ 
+-  * NXP LM75B, PCT2075
++  * NXP LM75B, P3T1755, PCT2075
+ 
+-    Prefix: 'lm75b', 'pct2075'
++    Prefix: 'lm75b', 'p3t1755', 'pct2075'
+ 
+     Addresses scanned: none
+ 
+@@ -131,6 +131,8 @@ Supported chips:
+ 
+ 	       https://www.nxp.com/documents/data_sheet/LM75B.pdf
+ 
++               https://www.nxp.com/docs/en/data-sheet/P3T1755.pdf
++
+                https://www.nxp.com/docs/en/data-sheet/PCT2075.pdf
+ 
+   * AMS OSRAM AS6200
+diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
+index 2c2205aec7d4..a8f95bef68cb 100644
+--- a/drivers/hwmon/lm75.c
++++ b/drivers/hwmon/lm75.c
+@@ -38,6 +38,7 @@ enum lm75_type {		/* keep sorted in alphabetical order */
+ 	max6626,
+ 	max31725,
+ 	mcp980x,
++	p3t1755,
+ 	pct2075,
+ 	stds75,
+ 	stlm75,
+@@ -222,6 +223,13 @@ static const struct lm75_params device_params[] = {
+ 		.default_resolution = 9,
+ 		.default_sample_time = MSEC_PER_SEC / 18,
+ 	},
++	[p3t1755] = {
++		.clr_mask = 1 << 1 | 1 << 7,	/* disable SMBAlert and one-shot */
++		.default_resolution = 12,
++		.default_sample_time = 55,
++		.num_sample_times = 4,
++		.sample_times = (unsigned int []){ 28, 55, 110, 220 },
++	},
+ 	[pct2075] = {
+ 		.default_resolution = 11,
+ 		.default_sample_time = MSEC_PER_SEC / 10,
+@@ -734,6 +742,7 @@ static const struct i2c_device_id lm75_ids[] = {
+ 	{ "max31725", max31725, },
+ 	{ "max31726", max31725, },
+ 	{ "mcp980x", mcp980x, },
++	{ "p3t1755", p3t1755, },
+ 	{ "pct2075", pct2075, },
+ 	{ "stds75", stds75, },
+ 	{ "stlm75", stlm75, },
+@@ -813,6 +822,10 @@ static const struct of_device_id __maybe_unused lm75_of_match[] = {
+ 		.compatible = "maxim,mcp980x",
+ 		.data = (void *)mcp980x
+ 	},
++	{
++		.compatible = "nxp,p3t1755",
++		.data = (void *)p3t1755
++	},
+ 	{
+ 		.compatible = "nxp,pct2075",
+ 		.data = (void *)pct2075
 -- 
 2.45.2
 
