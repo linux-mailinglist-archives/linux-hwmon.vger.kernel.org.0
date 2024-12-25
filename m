@@ -1,95 +1,128 @@
-Return-Path: <linux-hwmon+bounces-5765-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5767-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DCB9FC33E
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Dec 2024 03:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A30059FC467
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Dec 2024 10:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E252B164E85
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Dec 2024 02:03:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DAF1163A93
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Dec 2024 09:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E61F25763;
-	Wed, 25 Dec 2024 02:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E619913FD86;
+	Wed, 25 Dec 2024 09:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="porp2Ffq"
+	dkim=pass (2048-bit key) header.d=inventec.com header.i=@inventec.com header.b="EYkEiWZN"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742FA17591;
-	Wed, 25 Dec 2024 02:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from mail-vs1-f67.google.com (mail-vs1-f67.google.com [209.85.217.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DC0A935
+	for <linux-hwmon@vger.kernel.org>; Wed, 25 Dec 2024 09:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735092231; cv=none; b=EYDrUKqayqcjE3k2kwg553fnFIJRSCUoj7btKuyiUhpBkExZs87PaP6sAGP7wz+yCGSM10Ed0Sd69NCsrd/jJQC+XUtt9f9MpZcBhLDSPjJJq5O0fdN24zGcaHIK0u+bKrQm8R/bFCcRcNougButXm2r2HszHQchw5rPCyoAo/I=
+	t=1735119203; cv=none; b=qKYydinr5C9A8dIk9MtfegROQg/1remeivnY9o2Z0ix8N22fdjIPdwaXozcmMf/u3bmT0gEh+dXLWdZLe6rNgKU7k8C/VBbtVA5NepjyKmj9iCEcrH4uEFrPG9SoxFe+DPbNX2U6LSLfNnKzSxYiuws0WhfAidP/soQdCCr95UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735092231; c=relaxed/simple;
-	bh=TIcNcCJhoTVjPyh/lf6YMX4opzjlAdx8Dq92HYmVlKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ca9TdU3yr5dfg3KhOfa6+Yx1IwnA/hc5yxFcp3t8GQcvTcwd0Kwb9fGWSbC/onCU6HFEFraihC4ygegpYFVesmMpmwDHQyLQKNlIFYJ3AGdKun5l6nfyljqP1ai2s8oqKfdY2TP0pBWdYznuqPp8/6JaZUI7Cg1Iij6zPt9xwFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=porp2Ffq; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=f9oWu
-	9Cat8FuZZ8TF9tEadnv9ykTlIOQfpN2/NTylfs=; b=porp2FfqWdPM2UKoBF2se
-	etPQd29YEY6ou1qL/MY/l3ndGoAW5jHYbQzwUhljkT1vFeqfYjOUsCP57gCRjC+b
-	1eFAjrks7FmTkd3c9wIqdEv7B5JiPZKXTz1X5+MGQJFbPm2VTSOwEETRG+AGXI4L
-	nPMUtqI8AcfyzRmYJsniD8=
-Received: from silergy-System-Product-Name.silergy.inc (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBXVAvbZ2tn9MwIBg--.45990S4;
-	Wed, 25 Dec 2024 10:03:08 +0800 (CST)
-From: Wenliang Yan <wenliang202407@163.com>
-To: linux@roeck-us.net,
-	Jean Delvare <jdelvare@suse.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Wenliang <wenliang202407@163.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] dt-bindings:Add SQ52206 to ina2xx devicetree bindings
-Date: Wed, 25 Dec 2024 10:03:05 +0800
-Message-ID: <20241225020305.440008-1-wenliang202407@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1735119203; c=relaxed/simple;
+	bh=btXwt2CLFrLTUfNrdjIrhzANjrwFpD/aQLQJkchjYGI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=H79rCd1MKFr2zrWpV1gpZc/SPaJoXdWobUPa9IcMmuCVwh4z7t4y6yQehwJJSgtJmdEzoa7cKtDoqJBCOUa7W5ON/vjgaedPR4/NX4aWnT4OMjrQkbPuI9yb8PB4W/a9AHXP+T0fsNrpqhnm21mQY+TobGIhWFgPb1Bt8tq8Fww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inventec.com; spf=pass smtp.mailfrom=inventec.com; dkim=pass (2048-bit key) header.d=inventec.com header.i=@inventec.com header.b=EYkEiWZN; arc=none smtp.client-ip=209.85.217.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inventec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inventec.com
+Received: by mail-vs1-f67.google.com with SMTP id ada2fe7eead31-4afeb79b52fso1487436137.0
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 Dec 2024 01:33:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=inventec.com; s=google; t=1735119199; x=1735723999; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EEBojO0CGxsTABS3Yht5J7ecr+X2bNwjUL7DN3qWefs=;
+        b=EYkEiWZNR/rENqsc0bcm/FOvsXRhmJX4ra/llJvZnNlmSNewpmL/4t1YjJjHS27HRK
+         jdqMzj05gfwoWXAsq5nSIVL+XEDfhyaecSE7dKr5uOMJoT0Z3WEpNlxbyWsP8p4K1Fxj
+         vsQddr/5hsJvxHpCGzPHMHokAEYpRTuy5H9Lo5HzYRzgA4hNEhzryX8P6yrX3GY3n/3B
+         PNtf9wJZySmPWgMQBNzccbtHHb7qqZJAjPPZDDe56qHT4EOZvHQbXT9bX7pJ+qG/gS4n
+         ryNsh8lJzWKSnCCiVouJCzkNQ5Iw/M0SM0JknT18Qfmw3jFtRUxy4NPd1fz2f4Rp9UxM
+         k3gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735119199; x=1735723999;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EEBojO0CGxsTABS3Yht5J7ecr+X2bNwjUL7DN3qWefs=;
+        b=xCDbiPab3c0qLk5wRnJuQ6blhbSi0vZh3QoXWXvN5iQDkdtmt5LVqoO4gtkFiBxvGP
+         Mz50/VrdhcBuZ9pq1tqr+bry1pw7XNFE7o3jphXbSrPWynoNarviiOffm1NTMbP6hpFD
+         C5ZyINPKeJOW5/oWOhsjN1eP0gyhjHiiqCPuqpQTRRF6j8AuC7Rw6xD1l30uMOn+6rFg
+         JO/xJ2mPU2vDblLflHP4hyLmqKTMXl1hfV1OOplfsSdRo+OMGMbuJqWQGXiwuwvzEI9s
+         dZ4uOaEpVhxFKzlZxzCKvr/gseIa9mkn69EV2KrI5V/aTVR2YTLoY7SENBG3Rf8cizit
+         Rjgg==
+X-Gm-Message-State: AOJu0Yxtz/GgrPboXlp5+tdhuhcQNoKnXYwQVV2MhQQS+Orbv9KfI0HU
+	PiwEWlPGkZgDsnM8q3y9qxHUWO0CzX717hvS0qVW2QnGLjrPn+T/DziTcuTGSBBirk3eJtx7SfW
+	UVqks7zx2B6P3/CCg7EEUTl9ukhxxxWF+nsNh6frB29X8l54mjBgwOw==
+X-Gm-Gg: ASbGncsJxok1D4ORnagnpg3BXvx/4j/ZElLGgTpnJRJU1ZrnsGdrqXrV4jNiMegKECI
+	zwmG6hgyr/SLvxESB9T+ntBfjjjCZfZbLETYHawE=
+X-Google-Smtp-Source: AGHT+IGZJsaE+ut6J2xmoQMgOxcD3AAGbu5PXq9eItsNqk7vjs02mHEFYLR6kMjOiizVU1f0n1aWdsZq8ngCYOVD5iA=
+X-Received: by 2002:a05:6102:5689:b0:4b1:1232:def with SMTP id
+ ada2fe7eead31-4b2cc31a411mr16277865137.4.1735119199131; Wed, 25 Dec 2024
+ 01:33:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXVAvbZ2tn9MwIBg--.45990S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZFyUXF13XrWfZFy8ZrWkZwb_yoW3tFgEga
-	1xZr1UZFZ5JFyFgw4DAa97Jr13tw12kF4kCw1jyrs5Aw1DZrZ09a4kJ34DAw1xWFW7uFy5
-	uws5JFWqqrsrKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRROJ5UUUUUU==
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/1tbiNRHA02drYJKFBwAAsL
+From: =?UTF-8?B?Q2hpYW5nQnJpYW4g5rGf5rOz57e7IFRBTw==?= <chiang.brian@inventec.com>
+Date: Wed, 25 Dec 2024 17:33:08 +0800
+Message-ID: <CAJCfHmXcrr_si4HLLCrXskuZ4aYmqAh0SFXNSkeL78d2qX2Qcg@mail.gmail.com>
+Subject: [PATCH v1] hwmon: Add RAA229621 for renesas spec
+To: linux-hwmon@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Wenliang <wenliang202407@163.com>
+From: Brian Chiang<chiang.brian@inventec.com>
 
-Document the compatible string for the Silergy SQ52206, this device
-is a variant of the existing INA2xx devices and has the same device
-tree bindings.
+According to the RAA229621 datasheet, add support for reading.
 
-Signed-off-by: Wenliang <wenliang202407@163.com>
----
- Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml | 1 +
- 1 file changed, 1 insertion(+)
+Signed-off-by: Brian Chiang<chiang.brian@inventec.com>
+--- This modification is added RAA229621 chip to isl68137 list ---
+drivers/hwmon/pmbus/isl68137.c        | 9 +
+1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-index 05a9cb36cd82..f0b7758ab29f 100644
---- a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-@@ -20,6 +20,7 @@ description: |
- properties:
-   compatible:
-     enum:
-+      - silergy,sq52206
-       - silergy,sy24655
-       - ti,ina209
-       - ti,ina219
--- 
-2.43.0
+diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
+index 2af921039309..43e860d95280 100644
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -63,6 +63,7 @@ enum chips {
+        raa228228,
+        raa229001,
+        raa229004,
++       raa229621,
+ };
 
+ enum variants {
+@@ -72,6 +73,7 @@ enum variants {
+        raa_dmpvr2_2rail_nontc,
+        raa_dmpvr2_3rail,
+        raa_dmpvr2_hv,
++       raa_dmpvr2_hvt,
+ };
+
+ struct isl68137_channel {
+@@ -412,6 +414,12 @@ static int isl68137_probe(struct i2c_client *client)
+                info->read_word_data = raa_dmpvr2_read_word_data;
+                info->write_word_data = raa_dmpvr2_write_word_data;
+                break;
++       case raa_dmpvr2_hvt:
++               info->pages = 2;
++               info->func[0] &= ~PMBUS_HAVE_TEMP3;
++               info->func[1] &= ~PMBUS_HAVE_TEMP3;
++               info->read_word_data = raa_dmpvr2_read_word_data;
++               break;
+        default:
+                return -ENODEV;
+        }
+@@ -465,6 +473,7 @@ static const struct i2c_device_id raa_dmpvr_id[] = {
+        {"raa228228", raa_dmpvr2_2rail_nontc},
+        {"raa229001", raa_dmpvr2_2rail},
+        {"raa229004", raa_dmpvr2_2rail},
++       {"raa229621", raa_dmpvr2_hvt},
+        {}
+ };
 
