@@ -1,93 +1,135 @@
-Return-Path: <linux-hwmon+bounces-5773-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5775-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FAA9FC9E9
-	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Dec 2024 10:25:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D289B9FCA86
+	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Dec 2024 12:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F2B9161EDF
-	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Dec 2024 09:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 684B21882F0B
+	for <lists+linux-hwmon@lfdr.de>; Thu, 26 Dec 2024 11:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D3E1CF5C0;
-	Thu, 26 Dec 2024 09:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AE11D461B;
+	Thu, 26 Dec 2024 11:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLluwXju"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="dsYy7Ozz"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA64154BEA;
-	Thu, 26 Dec 2024 09:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CA51B86F6;
+	Thu, 26 Dec 2024 11:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735205151; cv=none; b=dIrdSFxYAYbXiJ9a1Vx0JQVONZmOkw1KsmO+z6dwX5LMlEk4y5u7JS3GoSocthUbwh8uVL8a5viF23SIo+heh6jxEzjP0t+G7ALc5EBTS3ZaYjuFYAN4LDuwm99ZC5aa/sFgEjFWyZgrIBhGXHdSHevcsbXNsxVHFvEn9oxBKhI=
+	t=1735212477; cv=none; b=I6X743VzfhfdyaveYrY9XylADj27N0RrNA+oLKhdvRhreK7ZdbO2biLYaTrunFP9FetWPaZ0usPZHo0XqbnXj7vD9DZfXYkwkUOSdYnKF3GQpMYiQGKnl2dte9YADed2Aq0lxdvRHN2BypvfVcS7s8Efi5KFJXpoCsGluJnc1QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735205151; c=relaxed/simple;
-	bh=Ul6bUTCa3anx9Wsnv9cjUsR1k1LIwb47nD82Zrb+90A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkU/Qon7dux63ki1EEOQAJTX5PgkG7d1MInxJSxfeYA6CwHU3frUDIl0xQgbJzAIoQLBZiP6QtH2IqdQMjzKixgBQDRXY7cXuDIEOy5lQs08x6nuXtDNoqnBhrY2Vpsyeho8lniXzrvJlXjLFs6kqD3Msu4+UtaTnvwMCBp6CP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLluwXju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364A2C4CED1;
-	Thu, 26 Dec 2024 09:25:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735205151;
-	bh=Ul6bUTCa3anx9Wsnv9cjUsR1k1LIwb47nD82Zrb+90A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lLluwXjuwtXtZVjo2UTLBoDjVUHYRXrees11Ics8rqLZHHhN/sssRbt4AwUEws5PA
-	 wl9bl1PBbJdZeRnzY1F5asz8PsC4yYaDFeemoS4FG8UAEj6FezyV6/PLjcwLcOEc5b
-	 a3X/KTR8xQsnNyo4CZo8Cr1qMhDI6EWB6ZddPoqY6fEJSyr8l6n92TELfeK/YQJdOO
-	 NVox0I603bOxzn3N+yu3st/PKq4cIyLCPDofyl5/vIf6cn11jrMZ7E2e0do0vvqkY7
-	 fWREmyJysf1TT+d+op7KWAhv52eszQQNCfMAxObrx4WP3ZD+ooGZ+5CKDLdtx8zq/q
-	 o+Iqo6NE5ePrg==
-Date: Thu, 26 Dec 2024 10:25:44 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] i2c: Add Nuvoton NCT6694 I2C support
-Message-ID: <bjgcaxdlkqiujbyjazjprvoup3r2ctgjr5fcvzyyr46vea5icc@ao5axgffufbw>
-References: <20241210104524.2466586-1-tmyu0@nuvoton.com>
- <20241210104524.2466586-4-tmyu0@nuvoton.com>
- <qe7rucm65tixgnlendfdlr6iemrvs2ecun7odlbl3csofj7qjj@sl6vypb66awz>
- <CAOoeyxX475tHNqoejX=DcY2ow2+rPc=_qXuX0O5AGumLPFoQGA@mail.gmail.com>
+	s=arc-20240116; t=1735212477; c=relaxed/simple;
+	bh=jk0VU4v1klmKX/2HLXtWmTQfpi1u60Ha3PA9FSqrB90=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c7e/yrtwrtDg5Vefxn6zY7EzPtf7b5NB6q56TSV5+ugEyRFTwGUaqbOjtyULwSOnb+wNVeO9hIBLDDeHSUMEhSCD09+pYYvXrm+jcXIF6H1RIh8RZkDE53xKewtvilrbI75UvyiH4sg9tkBEFUY8hdKVopDkarqGep9b3jIWfro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=dsYy7Ozz; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from localhost.localdomain (unknown [IPv6:2a02:2149:8b14:7c00:7f68:a54:8871:387f])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 78D802E005C1;
+	Thu, 26 Dec 2024 13:27:43 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1735212464;
+	bh=9wtaZnw1xMpPN2Hpqu4lXlfFiLOEZHktcrPAz/pEEBA=; h=From:To:Subject;
+	b=dsYy7Ozz/z5AAVyZv52rFxhTszaZRu68azguySetM/6zMjANPm24e6TrKoy+JVfsX
+	 wjKaSOht5eOQ60uYSvzVE1Vm5LFgxmYnHGARVEnSB25gGhPPPuOROP5yg2ToL4JFW3
+	 N+HvOb25Ao9dK4WX1T2Sj9zu6oEVcCL5sJHnvcFc=
+Authentication-Results: linux1587.grserver.gr;
+	spf=pass (sender IP is 2a02:2149:8b14:7c00:7f68:a54:8871:387f) smtp.mailfrom=lkml@antheas.dev smtp.helo=localhost.localdomain
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+From: Antheas Kapenekakis <lkml@antheas.dev>
+To: linux-hwmon@vger.kernel.org
+Cc: linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jean Delvare <jdelvare@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joaquin Ignacio Aramendia <samsagax@gmail.com>,
+	Derek J Clark <derekjohn.clark@gmail.com>,
+	Kevin Greenberg <kdgreenberg234@protonmail.com>,
+	Joshua Tam <csinaction@pm.me>,
+	Parth Menon <parthasarathymenon@gmail.com>,
+	Eileen <eileen@one-netbook.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>
+Subject: [PATCH 00/10] hwmon: (oxpsensors) Add 2024 OneXPlayer line-up,
+ add charge limiting and turbo LED, fix ABI
+Date: Thu, 26 Dec 2024 12:27:30 +0100
+Message-ID: <20241226112740.340804-1-lkml@antheas.dev>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOoeyxX475tHNqoejX=DcY2ow2+rPc=_qXuX0O5AGumLPFoQGA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <173521246418.10748.1646876848026847725@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
-Hi Ming,
+This three part series updates the oxpsensors module to bring it in line
+with its Windows OneXPlayer counterpart. First, it adds support for all
+2024 OneXPlayer handhelds and their special variants.
 
-> > > +static struct platform_driver nct6694_i2c_driver = {
-> > > +     .driver = {
-> > > +             .name   = "nct6694-i2c",
-> > > +     },
-> > > +     .probe          = nct6694_i2c_probe,
-> > > +     .remove         = nct6694_i2c_remove,
-> > > +};
-> > > +
-> > > +module_platform_driver(nct6694_i2c_driver);
-> >
-> > what I meant in v1 is to try using module_auxiliary_driver().
-> > Check, e.g., i2c-ljca.c or i2c-keba.c.
-> 
-> I think the NCT6694  is an MCU-based device, and the current
-> implementation is as an MFD driver. Are you suggesting it should
-> instead be implemented as an auxiliary device driver? If so, would
-> that mean all related drivers need to be revised accordingly?
+Then, it adds the new charge limiting and bypass features that were first
+introduced in the X1 and retrofit to older OneXFly variants and for
+controlling the turbo led found in the X1 models. For Bypass, it adds a new
+bypass variant BypassS0 that is only active while the device is in the S0
+state.
 
-No worries, module_platform_driver() is also fine.
+Finally, it performs a minor refactor by moving around switch statements
+into their own functions, in order to allow for fixing the pwm1_enable ABI
+in the final patch. Currently, pwm1_enable sets the fan to auto with the
+value 0 and allows manual control with the value 1. This patch makes it
+so 0 sets the fan to full speed, 1 sets the fan to manual control, and
+2 sets the fan to auto. This requires both setting enable and the fan
+speed when the enable sysfs is written to as 0, hence the refactor.
 
-Andi
+As this is a breaking ABI change and there is userspace software relying
+on this previous behavior, the last patch also changes the /name of the
+hwmon endpoint to "oxp_ec" from "oxpec" (mirroring WMI module conventions)
+such that userspace software that relied on the previous behavior can be
+retrofit to the new kernel while enabling correct functionality on old
+and new kernels. Failing that, software that is not updated will just
+stop controlling the fans, ensuring no malignant behavior.
+
+As part of this series I also updated my userspace software [1] to work
+with this change and verified it works correctly on both 6.12.6 and when
+using this module on my X1.
+
+To make testing possible this patch series is rebased on top of the tag
+kernel-6.12.6 (hash e4cc9a13) on remote [2]. None of the files changed
+in-between master and this tag, but in case this does not apply clean,
+you can pull that remote or reference [3].
+
+[1] https://github.com/hhd-dev/adjustor/commit/4b02087ae39bef39288f26431af0ec221da089c4
+[2] https://gitlab.com/cki-project/kernel-ark
+[3] https://github.com/hhd-dev/patchwork/tree/upstream/oxpsensors
+
+Antheas Kapenekakis (10):
+  hwmon: (oxp-sensors) Distinguish the X1 variants
+  hwmon: (oxp-sensors) Add all OneXFly variants
+  ABI: testing: sysfs-class-power: add BypassS0 charge_type
+  hwmon: (oxp-sensors) Add charge threshold and bypass to OneXPlayer
+  hwmon: (oxp-sensors) Rename ec group to tt_toggle
+  hwmon: (oxp-sensors) Add turbo led support to X1 devices
+  hwmon: (oxp-sensors) Move pwm_enable read to its own function
+  hwmon: (oxp-sensors) Move pwm value read/write to separate functions
+  hwmon: (oxp-sensors) Move fan speed read to separate function
+  hwmon: (oxp-sensors) Adhere to sysfs-class-hwmon and enable pwm on 2
+
+ Documentation/ABI/testing/sysfs-class-power |   6 +-
+ drivers/hwmon/oxp-sensors.c                 | 647 ++++++++++++++++----
+ 2 files changed, 523 insertions(+), 130 deletions(-)
+
+-- 
+2.47.1
+
 
