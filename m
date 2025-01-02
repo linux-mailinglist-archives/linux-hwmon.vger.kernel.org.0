@@ -1,80 +1,98 @@
-Return-Path: <linux-hwmon+bounces-5832-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5830-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8EE9FFD4C
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Jan 2025 18:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F91B9FFD1D
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Jan 2025 18:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23DA818803D4
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Jan 2025 17:59:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7DDB1883534
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Jan 2025 17:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72757DF51;
-	Thu,  2 Jan 2025 17:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JXLZeQLI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235CE13957E;
+	Thu,  2 Jan 2025 17:50:53 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68938F66
-	for <linux-hwmon@vger.kernel.org>; Thu,  2 Jan 2025 17:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680F44C83;
+	Thu,  2 Jan 2025 17:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735840778; cv=none; b=UdQHgy0mVNJMaFdQSc/Wy/vfXetGllgDmgPfJix2nxUxqJCGCufh84YGb4ACKWfuLiHuLsKpy4tyNy5UvxrqlLRnATyQVffmUrsr/ZnLkNha3s13Wwe2wKAa09vCnPPo+3cgJoY3krf5U2356wXE1l3+b8jaBVxtrgRLkqzckgo=
+	t=1735840253; cv=none; b=eFUj1XuXZG50dIdZGkvig3MZL5jiPu4vMPJzSUKBiLbeVvsLx3XZ6x6LQeZ5Q0nRVrTH/8a5aAUfPWVJnEbru6MsVbuuhRu2Saxo1aHPGcXBNaEs9vy+M6qTPLhQgHSr39ByssG16ePWLx5hAMvqfPSgnnFqRCCs0ACe/j7eOj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735840778; c=relaxed/simple;
-	bh=8adqYawUNYSMGUMPUz08UncqWome1lgrmigUBHmV53w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=QKn7Mq1ScxnlMrOeNW3t5UBr4KefzlRfyujsPMC7TIJ7qaP6Ene8sSlY6gSkjloUdcSL/QQ8KyxzPbSIanSxbUrC99N8z9dmnQTEjg7nqIJrQjaDcl2R25UjN86RyGBGeDLOuG1ijlrg34EEfI1CNYm3Ti8s35wKc/t0qXr5MMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JXLZeQLI; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E66CF10408F95;
-	Thu,  2 Jan 2025 18:59:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1735840773;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ps7JI5EpP897e67kv8Jn2THdW5QI1XZFbF/Z3t3Jxyw=;
-	b=JXLZeQLIC8VAIzlUGKfbAIJjripfHHpexuUW886pf2hRzhYVMk2+QZ70uiL3G2p9KUL/v6
-	YzCTFvlR2fDhA4M3giUVs4SzzOAXhKwcv/XXTXwc8HJy2p4fCPa4+LYFdSfDT6cfIpw9MB
-	GRfHsH/LUL+Xx7ZMqMV007fvue0gkvDzX9dF7kSOv1CEvvxZy7BpHVOfwV+UQW8QClJccU
-	4OHdF+At97JzyC7a7BnkLjQX+YUo/oM1edTPxsdr5nWk9HTJnV7RqxP6D03TlIttC+p0u8
-	qPe9Hwub6a97R/ozRXiMdVhqXoq+JvD04XD/7IzSFOlccS2alMcCSaTLbZWniQ==
-Message-ID: <8f98e89e-47c8-439c-bcfc-eff973901d25@denx.de>
-Date: Thu, 2 Jan 2025 18:46:51 +0100
+	s=arc-20240116; t=1735840253; c=relaxed/simple;
+	bh=P6qhlJbu53rjUmvLe1d+oqaNFvqOypkD/4qBvmwL83w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nUMoyNk2qEAtmi+V5v6Jirs1ue0qnIg9snpQCkyB+z83+xxLDSYkyHQDSOaDzG2/D4IvDvZblLdAzv7zC53G4tGhZT7TQYqNsGr/YZ632UQH4MGEVhu9nEZZSA4ozLTqjljJPkAF1Zsvdt1yKRZY8pxI2vveL372PabTxSBC/9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9FF2D240003;
+	Thu,  2 Jan 2025 17:50:45 +0000 (UTC)
+Received: from peko by dell.be.48ers.dk with local (Exim 4.96)
+	(envelope-from <peko@dell.be.48ers.dk>)
+	id 1tTPLH-003S6F-0t;
+	Thu, 02 Jan 2025 18:50:43 +0100
+From: Peter Korsgaard <peter@korsgaard.com>
+To: Guenter Roeck <linux@roeck-us.net>,
+	devicetree@vger.kernel.org,
+	linux-hwmon@vger.kernel.org
+Cc: Peter Korsgaard <peter@korsgaard.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 1/2] dt-bindings: hwmon: pwm-fan: Document default-pwm property
+Date: Thu,  2 Jan 2025 18:50:40 +0100
+Message-Id: <20250102175041.822977-1-peter@korsgaard.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hwmon: (pwm-fan): Make use of device properties
- everywhere
-To: Peter Korsgaard <peter@korsgaard.com>, Guenter Roeck
- <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <20250102170429.791912-1-peter@korsgaard.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20250102170429.791912-1-peter@korsgaard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: peter@korsgaard.com
 
-On 1/2/25 6:04 PM, Peter Korsgaard wrote:
-> Commit 255ab27a0743 ("hwmon: (pwm-fan) Introduce start from stopped state
-> handling") added two of_property_read_u32() calls after the driver was
-> reworked to use device_property_* in commit dfd977d85b15 ("hwmon: (pwm-fan)
-> Make use of device properties"), so convert those as well.
-> 
-> Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
+The pwm-fan driver uses full PWM (255) duty cycle at startup, which may not
+always be desirable because of noise or power consumption peaks, so add an
+optional "default-pwm" property that can be used to specify a custom default
+PWM duty cycle.
 
-Thanks
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Documentation/devicetree/bindings/hwmon/pwm-fan.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml b/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
+index 8b4ed5ee962f..83b8b0b964ee 100644
+--- a/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
++++ b/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
+@@ -20,6 +20,12 @@ properties:
+     items:
+       maximum: 255
+ 
++  default-pwm:
++    description: Default PWM duty cycle value to use at startup
++    minimum: 0
++    maximum: 255
++    default: 255
++
+   fan-supply:
+     description: Phandle to the regulator that provides power to the fan.
+ 
+@@ -100,6 +106,7 @@ examples:
+     pwm-fan {
+       compatible = "pwm-fan";
+       pwms = <&pwm 0 40000 0>;
++      default-pwm = 75;
+       fan-supply = <&reg_fan>;
+       interrupt-parent = <&gpio5>;
+       interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+-- 
+2.39.5
+
 
