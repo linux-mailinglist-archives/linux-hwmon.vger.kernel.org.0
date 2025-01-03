@@ -1,126 +1,113 @@
-Return-Path: <linux-hwmon+bounces-5837-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5839-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20633A001FE
-	for <lists+linux-hwmon@lfdr.de>; Fri,  3 Jan 2025 01:30:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D672A0049B
+	for <lists+linux-hwmon@lfdr.de>; Fri,  3 Jan 2025 07:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE7791883865
-	for <lists+linux-hwmon@lfdr.de>; Fri,  3 Jan 2025 00:30:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2CE162D4C
+	for <lists+linux-hwmon@lfdr.de>; Fri,  3 Jan 2025 06:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD22C6A3;
-	Fri,  3 Jan 2025 00:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B69A1B85FA;
+	Fri,  3 Jan 2025 06:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="mOkTDaQ/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e19yS4YD"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mr85p00im-ztdg06011101.me.com (mr85p00im-ztdg06011101.me.com [17.58.23.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3C0BA3F
-	for <linux-hwmon@vger.kernel.org>; Fri,  3 Jan 2025 00:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119EC19E999;
+	Fri,  3 Jan 2025 06:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735864200; cv=none; b=Q30y8uzSI0xzGiM01p+njqvEyvtexOTvMfqmxwAsx8PlRKZl312yLXcMO9PkPhjF9a8d6GAyja6VFWXJveISjnHHGhGZoyU1hetTLneO1f1Y5zqRm+RMdWcu6CDwWa+VJ/U6BmeXQ24SsYMSzONYa7QV2mcuiFXLef2A8amv2t8=
+	t=1735887477; cv=none; b=hhFAyqLwORN3siQpCq+7STRuXT7W841oFwVFBq57BG8bPVu+f6toHOdqQxozjRH2aTq13SxVxgDk7Tf/dr0p7e/BYwem/71cchDuTva3ZiFaUmmr46h0UGFSpFqCuY/0RG97haoBaBNQAtU4chBZ0gPxilD16pkedQlxZtLib9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735864200; c=relaxed/simple;
-	bh=9OKtjR1OqVgdyYo7PBAJ2n+E+ZuEA9Qci0SNdsRT6zM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iNBc8NQv9vuAxtT+Z7T7Mnpy7J+6dt2xuKjH3YRY0tAvQhXIXJtKt4AFZDrcYVuFk2SMwn3BuviNQMNi17GD16XaIBf24T+UKGtLy8cmbYHPU8pAWwLquz4JSDzdh/Fiyp31EQI8ZG5ZP4NxPScEJMZEvlCtYyjLg/FahoFhkrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=mOkTDaQ/; arc=none smtp.client-ip=17.58.23.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1735864198;
-	bh=sX00kjdMMkpbEo7t/2MEjZFR57bisypxfIJ+Q9mKzxY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=mOkTDaQ/GuVii6DBvUjnFzJIAdLAeaaL2tmFlRCZ4P+A6TYAVQrRWp9Er4PXba69V
-	 7uSsUCLtOa63r9/3gMumkZmwFIEJtfG9H7DrHOBn8VlVz1XIhdLGUpypXWFkWu6bB8
-	 12Lwz3XHfyn//c8VkfZ/5/nckvSnkCoTO1R/fPwDGARAEbrdQkb/xTRlQjO1qZxC/z
-	 RJBK/KTEi6Bfsh1R4xlfoaQqy05mCIS0oWki+dsxYfz4DoTRws4M1be+zF4Ihp8ZaV
-	 YgKVNniBsmJEp1/jlXOCVacxKat31ZnCxX15TS4W0gpYAvwSUtQIuTLSHGpxBZ/hrZ
-	 LrwcTpexf4FRQ==
-Received: from [192.168.1.25] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06011101.me.com (Postfix) with ESMTPSA id 0B02FDA0388;
-	Fri,  3 Jan 2025 00:29:47 +0000 (UTC)
-Message-ID: <2f8abbad-a70c-4ff0-94c7-8a8a37ad0845@icloud.com>
-Date: Fri, 3 Jan 2025 08:29:43 +0800
+	s=arc-20240116; t=1735887477; c=relaxed/simple;
+	bh=jdxHvjuFL3Z1KgXxrlmqLozw/Gwy+74Oep59dG14Ue4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KtcdaVwqQZF3d1kJznAUpyxJIHmvXayQBwl9S5F+tm2Z40TWm7ZsztLZxYrN0V/HDC95guGhRtS7WqFueRFPpDF6BVhms62aebatSH1FAd0iGjEN5rK9Yg17T4XDE4/RXNev+2yjKjqOhAfpdou1FqLC/O15L8va8w9gGAY0Z0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e19yS4YD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 95956C4CECE;
+	Fri,  3 Jan 2025 06:57:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735887476;
+	bh=jdxHvjuFL3Z1KgXxrlmqLozw/Gwy+74Oep59dG14Ue4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=e19yS4YDS6gBRmgYbUtaLXCyORJnoHcFusLwul/5FX+Z9dEibJFQeZsUSuaiEArSk
+	 0UlG9MizkIVhGma2b0NzW+RzRa1aYeqwnagJeRNLFTep3EJ3ZvPZUcj604VPDQHV0C
+	 hpH6tNrrik0ukugpwSgVhybKX7o6XSR9IDFFf7Ri6fL+HuDsHNHg7S6HEcLB5MrenK
+	 jLlrqMRz3Ftf/R5ZINvUo3M00PP2d7Pu2tUzsBAIeGad7SuoUzKkzCMzFRfkJJCGY9
+	 I1Q45GZnl1uA72L1EJ3i6b1f08/CmnXmC7Jy9yPnTGo5qIU+0M8pzlZiefjWa2C4UV
+	 wKFAsKApCDEkQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8464AE77188;
+	Fri,  3 Jan 2025 06:57:56 +0000 (UTC)
+From: PavithraUdayakumar-adi via B4 Relay <devnull+pavithra.u.analog.com@kernel.org>
+Subject: [PATCH v2 0/2] Add support for MAX31331 RTC
+Date: Fri, 03 Jan 2025 12:34:18 +0530
+Message-Id: <20250103-add_support_max31331_fix-v1-0-8ff3c7a81734@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/11] libnvdimm: Replace namespace_match() with
- device_find_child_by_name()
-To: Fan Ni <nifan.cxl@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-sound@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-block@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux1394-devel@lists.sourceforge.net, arm-scmi@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-gpio@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- linux-hwmon@vger.kernel.org, linux-media@vger.kernel.org,
- linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-serial@vger.kernel.org, netdev@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>,
- Alison Schofield <alison.schofield@intel.com>
-References: <20241211-const_dfc_done-v4-0-583cc60329df@quicinc.com>
- <20241211-const_dfc_done-v4-1-583cc60329df@quicinc.com>
- <Z3bYMiOG0u3Jtv3h@smc-140338-bm01>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <Z3bYMiOG0u3Jtv3h@smc-140338-bm01>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: ybkBbilc0XTCT_YEDgTjyLJ9DRFrwcwH
-X-Proofpoint-ORIG-GUID: ybkBbilc0XTCT_YEDgTjyLJ9DRFrwcwH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-02_03,2025-01-02_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
- mlxlogscore=738 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2501030002
+X-B4-Tracking: v=1; b=H4sIAPKLd2cC/x2MQQrDIBAAvxL2XEFdbCBfKUVW3TZ7SCLaSCDk7
+ 5EeZ2DmhMpFuMI0nFC4SZVt7WAeA8SZ1i8rSZ3Bauu00agoJV/3nLfy8wsdaBCN/8ih+OlCCBR
+ HTAQ9z4W7/q9f0Cy8r+sGrcpK424AAAA=
+X-Change-ID: 20250103-add_support_max31331_fix-e65bbbac73da
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ PavithraUdayakumar-adi <pavithra.u@analog.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1735887863; l=1003;
+ i=pavithra.u@analog.com; s=20241220; h=from:subject:message-id;
+ bh=jdxHvjuFL3Z1KgXxrlmqLozw/Gwy+74Oep59dG14Ue4=;
+ b=DdvvlnW5b4ktUmdeApxFEkJNF+ur0ukx8T6FdeKhDpjDHLllsq6Iuz9xoy0h9V2yCnWikhL8C
+ esbXOIZt0DhAmD9OFbUVesS5b71sDlXl/tK7nCvrCW6e8H7kOcIcogX
+X-Developer-Key: i=pavithra.u@analog.com; a=ed25519;
+ pk=RIhZrdpg71GEnmwm1eNn95TYUMDJOKVsFd37Fv8xf1U=
+X-Endpoint-Received: by B4 Relay for pavithra.u@analog.com/20241220 with
+ auth_id=303
+X-Original-From: PavithraUdayakumar-adi <pavithra.u@analog.com>
+Reply-To: pavithra.u@analog.com
 
-On 2025/1/3 02:17, Fan Ni wrote:
->> -
->>  static bool is_idle(struct device *dev, struct nd_namespace_common *ndns)
->>  {
->>  	struct nd_region *nd_region = to_nd_region(dev->parent);
->> @@ -168,7 +161,7 @@ ssize_t nd_namespace_store(struct device *dev,
->>  		goto out;
->>  	}
->>  
->> -	found = device_find_child(dev->parent, name, namespace_match);
->> +	found = device_find_child_by_name(dev->parent, name);
-> Looks good to me.
-> Just one general question.
-> The function device_find_child checks parent and parent->p, but
-> device_find_child_by_name only checks parent although they share the
-> code except the match function. Why that?
-> 
+This patch series introduces support for the Maxim MAX31331 RTC.
+It includes:
 
-Thank you Fan for code review.
+1. Device Tree bindings documentation for the MAX31331 chip.
+2. The driver implementation for the MAX31331 RTC.
 
-I did not touch device_find_child_by_name() parameter checking at
-that time.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=903c44939abc02e2f3d6f2ad65fa090f7e5df5b6
+Signed-off-by: PavithraUdayakumar-adi <pavithra.u@analog.com>
+---
+Changes in v2:
+- Fix issue with device tree binding in v1
+- Revert a header change in driver code
+- Link to v1: https://lore.kernel.org/all/20241223-max31331-driver-support-v1-0-f9499bd598f5@analog.com
 
-since
-[PATCH v5 05/12] will come finally.
-https://lore.kernel.org/all/20241224-const_dfc_done-v5-5-6623037414d4@quicinc.com/
+---
+PavithraUdayakumar-adi (2):
+      dtbindings:rtc:max31335:Add max31331 support
+      rtc:max31335: Add driver support for max31331
 
+ .../devicetree/bindings/rtc/adi,max31335.yaml      |  32 +++-
+ drivers/rtc/rtc-max31335.c                         | 182 +++++++++++++++------
+ 2 files changed, 157 insertions(+), 57 deletions(-)
+---
+base-commit: fc033cf25e612e840e545f8d5ad2edd6ba613ed5
+change-id: 20250103-add_support_max31331_fix-e65bbbac73da
 
-> Fan
+Best regards,
+-- 
+PavithraUdayakumar-adi <pavithra.u@analog.com>
+
 
 
