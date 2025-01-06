@@ -1,111 +1,124 @@
-Return-Path: <linux-hwmon+bounces-5881-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5883-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7144AA021C1
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jan 2025 10:27:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71021A02217
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jan 2025 10:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52EA5160903
-	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jan 2025 09:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3EFA3A424A
+	for <lists+linux-hwmon@lfdr.de>; Mon,  6 Jan 2025 09:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E80C1D90B3;
-	Mon,  6 Jan 2025 09:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8B71DA31F;
+	Mon,  6 Jan 2025 09:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="TPWk4NfP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KEX/BOsG"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85C81D90B9
-	for <linux-hwmon@vger.kernel.org>; Mon,  6 Jan 2025 09:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A44C1D6193;
+	Mon,  6 Jan 2025 09:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736155658; cv=none; b=gtR5SxbMdO1mMB0j5coBJEEakr2EcUsKAvSGDyXIsa4XHVtg65IvqCs63Evh/WkubrKJ5vneRoPXDlhyjRDBVwif1P/CsKSTQIUOC6bMkCiX1gHSKfLrKEWUw4Fp49Ad/Kvb8cuto0CmvAiPnwoSoHjT4XPo+ec2sSa34Xungwc=
+	t=1736156757; cv=none; b=VQii8JOvSeHREfsI0YnVwzhQMfgX98Muvq0jLa8AeWDOw4v1LgA0exli2iKjkujUawTxlOzjj1qdWhIG6rP/8K331Qj18TdaH59yyou4x3xAg/e8gUk6uJW/1/8kN1xHV7MTOFz1fYN6RUzojBbBPXNbBLhe6DR56KpP+8aSzEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736155658; c=relaxed/simple;
-	bh=m4dZUh60u/mP9K/YIW4a9JOlkH+HgpGeePQd9+q1fYE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QK9pPsNepvC7dhHNmljc/BjzLR0xsGDPMeOSo5IksJJfRZ8AQCkj+nX2H22K+0/dePADuOrJ3Me6ypTrOj5XNzjYMbvH37dnsTEoCJ5ZUns72MfVj4jztU47Wl+ygKz+tRFMD/wIxanF9XOQWhi1MOQYqCX4SDPoy8PbR0RBgc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=TPWk4NfP; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=3esdoiFUb3AEevKBNMcpAJ6KfgvtuQ7LV32gNwqiGFg=; b=TPWk4N
-	fPZcFA8m1Gjf3bWSln46VsZOp5vMeZKXNGqo+2aLWg5gfieLCa+BfBNX3ty3Ls7N
-	E7GWKLWrww3BOUql2/X00NYG6maKN6aHoPkf64myWHYMdRgJBU1oFw1vJYxRdram
-	XhLhz/Sx+LYpnzkxaySdxU6Fpn298bvr6wwxz0WIzu1EE84CpVdLjiS29QeRHxHg
-	iugPAFkwqrAPQb5uIxAGNQJqoeDbPR+LxlNcD8VMOi8elZJ+VWtR0pYftGhS9PdK
-	UQzmQ2hvi8ZH7RAGv61mzSOTG/Gs0VE/rbXkmQi89evDat94dqkWVdpmlmh1dRki
-	a+M0i0qKYqzqgi+w==
-Received: (qmail 1727852 invoked from network); 6 Jan 2025 10:27:27 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 6 Jan 2025 10:27:27 +0100
-X-UD-Smtp-Session: l3s3148p1@/zGjPAYr4JsgAwDPXw20AOMQ2KO98fSH
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-i3c@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH v3 2/5] hwmon: (spd5118) Use generic parity calculation
-Date: Mon,  6 Jan 2025 10:27:20 +0100
-Message-ID: <20250106092725.22869-3-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250106092725.22869-1-wsa+renesas@sang-engineering.com>
-References: <20250106092725.22869-1-wsa+renesas@sang-engineering.com>
+	s=arc-20240116; t=1736156757; c=relaxed/simple;
+	bh=ZQU+ovsD55f64DF1zOadfrUNcIGee3cjAidEI96IOp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YKCZlsOTl0fiLjZqec7mOSOtGbPf2GOeI+qWVlIDVOIBncapbaRg9igak192T/amNGYauk1n91d9FsOo2fHOxGc5mLAo01KGhiz7i4Y0+czbS8jHss28ly/dujeW+IgryAy2xT+8gbXavJucGOuVGqtAhC9t2GkCTYVGihPmWgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KEX/BOsG; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736156754; x=1767692754;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZQU+ovsD55f64DF1zOadfrUNcIGee3cjAidEI96IOp0=;
+  b=KEX/BOsGgVg0iKJ5HPqVq15YJDhWRAJnsa0c9U4vMs+ZGtxws/aO1qrp
+   H1XzXNNZzisG7gqKdyNS16Bkg4i4UUxQUBZJlv3DSGENtssKqW/MHpcfD
+   +FYOZmdKpjYVQx61tKatWUT/iKLE25QEaQAGrgKjxaXdjo8rL6+XGRcLL
+   YOC0CoEJVEZwpdAZEb+rJYsuyf3xur+ZsMsKNujdUj3aFqNFeh+zdFqSW
+   JKCmdp2KL7O3johaPpOwlESYuuX0YIHSqRD36af/xOfCKYYQNUYC0cRrL
+   DAD+OGG/WizlmRetq6h3qmazyOuUbFspkR4PN+6JdrwqcV33SffSFspJ2
+   g==;
+X-CSE-ConnectionGUID: v/dKm1aTSxGpWbSd11yLag==
+X-CSE-MsgGUID: sAvJkz/uTim49mCuL3qcQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11306"; a="35537144"
+X-IronPort-AV: E=Sophos;i="6.12,292,1728975600"; 
+   d="scan'208";a="35537144"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2025 01:45:53 -0800
+X-CSE-ConnectionGUID: 0fzl6LKNQaOw5xaSmu4jfA==
+X-CSE-MsgGUID: eEhcNsKlTfudbQR8gqUD3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,292,1728975600"; 
+   d="scan'208";a="102292716"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 06 Jan 2025 01:45:50 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tUjgB-000CT1-2H;
+	Mon, 06 Jan 2025 09:45:47 +0000
+Date: Mon, 6 Jan 2025 17:45:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Leo Yang <leo.yang.sy0@gmail.com>, jdelvare@suse.com,
+	linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Leo-Yang@quantatw.com, corbet@lwn.net,
+	Delphine_CC_Chiu@wiwynn.com, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] hwmon: Add driver for TI INA233 Current and Power
+ Monitor
+Message-ID: <202501061734.nPNdRKqO-lkp@intel.com>
+References: <20250106071337.3017926-3-Leo-Yang@quantatw.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250106071337.3017926-3-Leo-Yang@quantatw.com>
 
-Make use of the new generic helper for calculating the parity.
+Hi Leo,
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
----
- drivers/hwmon/spd5118.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/hwmon/spd5118.c b/drivers/hwmon/spd5118.c
-index 6cee48a3e5c3..358152868d96 100644
---- a/drivers/hwmon/spd5118.c
-+++ b/drivers/hwmon/spd5118.c
-@@ -291,12 +291,6 @@ static umode_t spd5118_is_visible(const void *_data, enum hwmon_sensor_types typ
- 	}
- }
- 
--static inline bool spd5118_parity8(u8 w)
--{
--	w ^= w >> 4;
--	return (0x6996 >> (w & 0xf)) & 1;
--}
--
- /*
-  * Bank and vendor id are 8-bit fields with seven data bits and odd parity.
-  * Vendor IDs 0 and 0x7f are invalid.
-@@ -304,7 +298,7 @@ static inline bool spd5118_parity8(u8 w)
-  */
- static bool spd5118_vendor_valid(u8 bank, u8 id)
- {
--	if (!spd5118_parity8(bank) || !spd5118_parity8(id))
-+	if (parity8(bank) == 0 || parity8(id) == 0)
- 		return false;
- 
- 	id &= 0x7f;
+[auto build test WARNING on groeck-staging/hwmon-next]
+[also build test WARNING on linus/master v6.13-rc6 next-20241220]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Leo-Yang/dt-bindings-Add-INA233-device/20250106-151934
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+patch link:    https://lore.kernel.org/r/20250106071337.3017926-3-Leo-Yang%40quantatw.com
+patch subject: [PATCH 2/2] hwmon: Add driver for TI INA233 Current and Power Monitor
+reproduce: (https://download.01.org/0day-ci/archive/20250106/202501061734.nPNdRKqO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501061734.nPNdRKqO-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
+   Warning: Documentation/translations/ja_JP/SubmittingPatches references a file that doesn't exist: linux-2.6.12-vanilla/Documentation/dontdiff
+   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
+   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
+>> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/ina233.txt
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+   Warning: lib/Kconfig.debug references a file that doesn't exist: Documentation/dev-tools/fault-injection/fault-injection.rst
+   Using alabaster theme
+
 -- 
-2.45.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
