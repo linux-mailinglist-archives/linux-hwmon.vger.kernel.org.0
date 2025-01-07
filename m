@@ -1,93 +1,94 @@
-Return-Path: <linux-hwmon+bounces-5935-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5937-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE048A047A1
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 18:08:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1845A047F7
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 18:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE4F87A183F
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 17:08:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8843218890C0
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB171F427D;
-	Tue,  7 Jan 2025 17:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C48C1F5429;
+	Tue,  7 Jan 2025 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nhH616F0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCNDUV0/"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8D719D8A0;
-	Tue,  7 Jan 2025 17:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8D18A943;
+	Tue,  7 Jan 2025 17:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736269708; cv=none; b=F2oaNp4Ex+QRI0mD5xlfH5SgTcOjynxl735yriIU2YUG0k3lvc21SXRuQwvoXnClJaWOaeKoXKSfqpy50bf0fAKVaKcgc3tgwq9iNZGdxDFA/4vkkgq7aZ/R+TPU3aDkXBFP60eG6zSSqzQanbXLYrRUWKrEgwQWCOKv7UeDO9E=
+	t=1736270138; cv=none; b=tJqSVA3u2x+/iQ4bO0y+eYzp5Ex3W50pSVpC52SAh0c3Ju94LP8BHxB2kbZPLFjj7SAH5EcFIL1Jd0ABEgM+r+bKr0/DD4SZoJFEjVn5TSBEfCU618D4BeNn3cCLKiW3qVv/5kqOata8OIv1d2KONJuc4nu1+oK1UJw7oWk/tfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736269708; c=relaxed/simple;
-	bh=5BiLod8fo2Z+1bMUdZCcPAot9zWqVgRsSfhLhhBb7RA=;
+	s=arc-20240116; t=1736270138; c=relaxed/simple;
+	bh=OCp8XIW/iVjuSQMKDQ5D20QcSAdjhaqSja4L/tXSGXw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WF65CRuu2CgZLnem2TN1KxzUeGxgCXMo9SVz5LiUuU2/NDYe6PJQK+9ncMwfBxeaKBveLuvhU4bywGi2KTrvo8SPCSy624CSq9z8BrI9pOUeF21jd3TlINGrXOHH8mMKz0vCbFTIsfsL9u2T5OL+pRHZzwPMuZYka9oxD1ShzUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nhH616F0; arc=none smtp.client-ip=209.85.214.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=T6xiWtmEImR5GNS5sK4H7mKeGvk5wotD+vk7GR40IYsoAdJf08W6nCi1V9jNflmk2ObJ4snsN8mHz1mTStdxEDn+LoTXRCAihTiOaIrfALAQdXo5rQVDyI+D4dI6Gx94dCuK3qNkLQ6SrYUMY9qGRjLWGugAaH7w7u6aUf33DWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCNDUV0/; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-216634dd574so153953785ad.2;
-        Tue, 07 Jan 2025 09:08:25 -0800 (PST)
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so23150773a91.1;
+        Tue, 07 Jan 2025 09:15:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736269705; x=1736874505; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736270134; x=1736874934; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UXZU79WIoGNt7SyXKwZ7mdaE/L/ztf4wKB+Jbm762BE=;
-        b=nhH616F0fC8n8CjBekPtlUizd41F37S2EhZuuVVrYzhyY4Ra7Lg2me2b/OVzDN0/B4
-         xraqAAJtyq8Ja5drDCXAkdwNG8d7VfLYvga2GvV7kh+Mr7T4B3fjaXelMpQdHmapIkxB
-         xPl1GO83gB9CVCVJmP7QPdgZFQSdx/G9wOmafEAHZ3bT2wDfHy1/aO49NVJ3QGdBQ8ey
-         5nEpV5Bfkr63WUWgTRmevqKJsxMtYxYkaWDmtdlUrtPMoIkf0xqKyJNocoOUlb9CMzP6
-         PgA+DOKTH0vxCFQMARmd4ReT9u6SRpoXnBlnrsz3LH8DLMiVw5ncDc55N2SoHcLLawTr
-         PMcg==
+        bh=Phi0BJwRoCy7LtgG3cuCqi/oioxuOIHuUrBFKsoyUEk=;
+        b=NCNDUV0/F8BZbiyau5GlrqWfdd4LCqjuIjL/TdkhMw0vwjvUiN3PuBL+IH9NvHU310
+         XXO9ay3xoY9vBO7ptu6emU2yH+Mt7s4w5fn/GZ3VQcJ313L8qgf6tSU95BSoQgwYL/0W
+         PbaBLpgZvrEmR8WYx5vsVYFqzs8VUzcWAE2qoSz6g+80gma4WAMhCLlAeK4BDfTMJMGP
+         kCuePKpv3ANp+t8x0WkEkbS+wv4evHk56spBYvQn3bLRmpM+HUch6S1UngbAAdC7u204
+         C31+Il+j1HyrXpreqv/W/FTC0fawqYWtpvaPd+5MsYmniwtFqhyCaiLMzGIG2CX3ytOj
+         3fcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736269705; x=1736874505;
+        d=1e100.net; s=20230601; t=1736270134; x=1736874934;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UXZU79WIoGNt7SyXKwZ7mdaE/L/ztf4wKB+Jbm762BE=;
-        b=pEo2bH+Iq0VDDkc4cIKeKGlcy13w+1zLs5vOKm0T+iqZsC1tGdYbP9+V7slrh5f4q2
-         yTav6NQVW1napdNdNFLXnPQQjOhSNUqmHaupNi7UoNG5/fe39RZ+Bd4caABvSoAmM8FA
-         Ta5WaVgyP3QBkE2JPjl+EbzM08djU17YaNrlRsWBev1KgZ92j6qwitbD72wcAxi4JV7K
-         210ghk07/tKeSkNGZ1VHES/kWVELE3RhGluWGiofJEmbYQdHZpaoCNpsqotipNxSjB3D
-         tKGJ1N/KGZGzpatbiPUT6VDxn0c6NEwCjGvhfos3S9i2wR2dhNpFZyKLkz3LNzKPIyYq
-         m1Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCVx5DDWbKyF324MqHS4WCBj6o01TIAYP2whAvwx4uq0Biw+9HerJveNPVhVwEdFYREubwFrgRhpJyIt@vger.kernel.org, AJvYcCX/HxglRB0iC0KNSrrUzjuqEN5mgIaRxLhUejCMbKoXkLljPtb3gVSVBwTWYaA62ww+xtoLBu/8NFoGWKJQ@vger.kernel.org, AJvYcCXDQsHbItL6D4Cumua5QYzNvn0E3+7UDSQg9XGdHHjxg/EX9Rgl/JO7IjSFZSueSG3j9Y9AMu8qhWfP@vger.kernel.org, AJvYcCXXBJA/75ngMKUdZNjny1vrwuOAuZHQ2yt9yjnzwGafy9K5SiSnL8C35MTPX7QfBGZMUARBv+6B7ZmZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpD2fgmHY/PWzjhnPDXK5qbgSdP8ouQGj8ttru30C7y6PqIhlj
-	LADpnm5YlGL1phic4k0Sa7j7Dk5D4mVCjahf81zcwJJ8G1Sd3CCTwH6r+w==
-X-Gm-Gg: ASbGncs+rZfhClwSfjSI55U4TVfBSMXX0HFM6mNF0Xzuc8XRldeM0WKthzcJJuhUtuT
-	zqciP0Q0vLqNC4CwoABMzqAIcG/8GotrRk0rpzremNnhDjguJfcYR4C3YUOSugpRzwOqaueZ8ME
-	QpYRl/bOVCtaOrdpXjLXPwiRImZBqTxCha6/das9YrbvpN999DLOkYz1rihE0fVWvEj/MKhHdj6
-	0qVX6PCRWLruUcPX8mqq7oMm4+ijLlYwU7mGxQsQZbPgnYVzjPU2GmJWf58K9gLadfXTg==
-X-Google-Smtp-Source: AGHT+IGpCS/mMfKd032Vs6k7Vroab/6z+GlJ/DB28xQzalUJFVsBhrLFETrXiZENSifN2zZyJM+E3g==
-X-Received: by 2002:a05:6a20:7fa7:b0:1dc:c19c:b7b0 with SMTP id adf61e73a8af0-1e5e080042cmr89903889637.33.1736269703291;
-        Tue, 07 Jan 2025 09:08:23 -0800 (PST)
+        bh=Phi0BJwRoCy7LtgG3cuCqi/oioxuOIHuUrBFKsoyUEk=;
+        b=jMTkW6ktb16zsC1aVdoDy4QyCUYPEy0Mv+Tw0bNP2sVqzUQkwJr9tm3/AEGZAno5Uh
+         d9KsyQ4AiCKiH+WpMS0c1gSEvm9zEf2hfcpqOgXfGp9i44qwW+KKTYXDPi4yQkKFWEzk
+         W/tZj6Lho0xbVNR7R8TGvwBvfeK0/qUAvKBy5TRaPPOPH2PIfCBllaNiZPb4Nlh8cTQG
+         b9X0wlpqj0D5Gy3RJMjx9cByiJMPxO+UU+FhwuL5dj598oBOVQRnf0tGjJURtJvsWSfw
+         KHrMrWXp8ucRNy5f9sgk3PE9qrVHi76BBftAdvbVeZKis0N6CyaGPyhgbqz+5j4pqndt
+         ictA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHitVDWre3lSdDibstrKd0vh8I2MNgwj6rg46GLdHQkzNJO7bFZf1uQtHj5BQqUsefpu/SClP79nw=@vger.kernel.org, AJvYcCXBY0rpe/OSDdTvTeMHN86z+5IF6WTBb5GEN7NROgIWXZM1o5YcmWWjx2fl+ppIamjz/JmABf7XmjY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0bbelpZIFn0BYWBIJTXnAmFcSh/DAqXTfG9dx4I5z/h5FOwTk
+	63GZaMUQsKlxSE2VfttAvNF1d3lhP1Vg1b/SxEKendd8FOILY2O2
+X-Gm-Gg: ASbGncv5Kmoid8sdfu2hG1yuGVyWhvjiR7E6FXZbSVti7J3qs3JpGemkdnYVkbPaYVw
+	XHpWcFQzM42UoOzdlJzD0PpM9TrLGD4/jvfGJHss9H1QclpI7kKQPJNXJlPAaYAcLnhGTFiWVW1
+	CsMQdDk7gh9LKLXPri39Se6d6L6O5iFufhe9cB9CikDMRHtWGHNIFjaylqOTcYjcNgWVVZ1udMP
+	B9g0Eo6jV8ZMEHc1DUOjLfQuk87+XJjiVLUzYYW2xxz7ytMKWtT7/fj9oYa3v9euVBhEg==
+X-Google-Smtp-Source: AGHT+IGS616iV8NftkSPimSe8ktMqorvBTl59Pfg2mAk7R+x0AIYQFBDb10AsddUnTX/OIlUEAZjrg==
+X-Received: by 2002:a17:90b:2f0e:b0:2f4:4003:f3d4 with SMTP id 98e67ed59e1d1-2f452ee5e54mr96683153a91.30.1736270133950;
+        Tue, 07 Jan 2025 09:15:33 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8faf93sm33558318b3a.153.2025.01.07.09.08.22
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f454f58087sm37899197a91.11.2025.01.07.09.15.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 09:08:22 -0800 (PST)
+        Tue, 07 Jan 2025 09:15:33 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 7 Jan 2025 09:08:21 -0800
+Date: Tue, 7 Jan 2025 09:15:32 -0800
 From: Guenter Roeck <linux@roeck-us.net>
-To: John Erasmus Mari Geronimo <johnerasmusmari.geronimo@analog.com>
-Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-i2c@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
 	Jonathan Corbet <corbet@lwn.net>,
-	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH 2/2] hwmon: (pmbus/adm1275) add adm1273 support
-Message-ID: <1527b5cf-5d23-45de-9340-d1af4c5c18e1@roeck-us.net>
-References: <20250106131740.305988-1-johnerasmusmari.geronimo@analog.com>
- <20250106131740.305988-3-johnerasmusmari.geronimo@analog.com>
+	Joaquin Ignacio Aramendia <samsagax@gmail.com>,
+	Derek J Clark <derekjohn.clark@gmail.com>,
+	Kevin Greenberg <kdgreenberg234@protonmail.com>,
+	Joshua Tam <csinaction@pm.me>,
+	Parth Menon <parthasarathymenon@gmail.com>,
+	Eileen <eileen@one-netbook.com>
+Subject: Re: [PATCH 04/10] hwmon: (oxp-sensors) Add charge threshold and
+ bypass to OneXPlayer
+Message-ID: <05cdd309-ec15-4236-ad4a-0a821a8eed76@roeck-us.net>
+References: <20241226112740.340804-1-lkml@antheas.dev>
+ <20241226112740.340804-5-lkml@antheas.dev>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -96,15 +97,28 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250106131740.305988-3-johnerasmusmari.geronimo@analog.com>
+In-Reply-To: <20241226112740.340804-5-lkml@antheas.dev>
 
-On Mon, Jan 06, 2025 at 09:17:40PM +0800, John Erasmus Mari Geronimo wrote:
-> Add support for adm1273 which is similar to adm1275 and other chips
-> of the series.
+On Thu, Dec 26, 2024 at 12:27:34PM +0100, Antheas Kapenekakis wrote:
+> With the X1 (AMD), OneXPlayer added a charge limit and charge bypass to
+> their devices. Charge limit allows for choosing an arbitrary battery
+> charge setpoint in percentages. Charge bypass allows to instruct the
+> device to stop charging either when its on or always.
 > 
-> Signed-off-by: John Erasmus Mari Geronimo <johnerasmusmari.geronimo@analog.com>
+> This feature was then extended for the F1Pro as well. OneXPlayer also
+> released BIOS updates for the X1 Mini, X1 (Intel), and F1 devices that
+> add support for this feature. Therefore, enable it for all F1 and
+> X1 devices.
+> 
+> Add both of these under the standard sysfs battery endpoints for them,
+> by looking for the battery. OneXPlayer devices have a single battery.
+> 
 
-Applied.
+This exceeds the scope of a hardware monitoring device, and even more so
+with the subsequent addition of LED support.
+
+I would suggest to move the code to drivers/platform/x86/, where
+multi-function drivers in a single file are permitted.
 
 Thanks,
 Guenter
