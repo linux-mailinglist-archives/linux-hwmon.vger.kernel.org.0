@@ -1,93 +1,80 @@
-Return-Path: <linux-hwmon+bounces-5934-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5936-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1673A04799
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 18:08:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B22AA047A8
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 18:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3D91888E64
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 17:08:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45B41881AEA
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 17:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7751A1F4289;
-	Tue,  7 Jan 2025 17:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA11A1F3D35;
+	Tue,  7 Jan 2025 17:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EhoGviDg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XHSQq9NE"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2541F3D31;
-	Tue,  7 Jan 2025 17:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEEC1F2C41;
+	Tue,  7 Jan 2025 17:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736269672; cv=none; b=TBzi1mcPw5ySzc6tBxiwniPTAxsJ0uh62mNWX9wSX+3A3gV8YBDBnF4189rQu4Wiju1JsQEzg4C4ftAIJT7g8SeLMsGkNs0AUKv9/xj84FSu0s/mzQxZnb1mK/eKz9jobzNbVYFAoMI6+D0DNNYzfBJ+9WpKqvN/eCRnZzRZYl0=
+	t=1736269726; cv=none; b=XzyPr2n9LxtJ/tLqs7A55XUoHOSIVa/VbSwzQa4Tknt4UqK5tuOyZQRQT6fO/XkhkuDyuNllnCFVFErW4ug+SxCOHKAdeTyiljGjZ/qK/2YaPTItHNRFGbjughxhyn9RmpbpyRI/hNm3NScer8RyJ6zWCDoA38Z/RH3eWh1oa1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736269672; c=relaxed/simple;
-	bh=T+Y6iXcDaYH60kkFdgVpQ9Rg8qHxxndfEOWGZzPei5Y=;
+	s=arc-20240116; t=1736269726; c=relaxed/simple;
+	bh=2N37pvqY9JtK82ffSrxBCtwOdMjgx5xq3c2IXnVUeUo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A2M6GTFdsQRdjyCyhdZ2Xw99YrjbuMsJ0wlTOksB+ICrn+lW3AuMhCtQAHaPIlus9BAx45pKyE0a+BI/L40yZYEnCspiXj+on/7TGWLpSuniURWvGvnNgCTlU+hgMDJReT8stKuKwNgEPPJCL3UNuBwEuoe77WX7naN0UTAUB0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EhoGviDg; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21661be2c2dso212776085ad.1;
-        Tue, 07 Jan 2025 09:07:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736269668; x=1736874468; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a1/XIgmNs19O7VrEuKC/8XgGH8MKVIeqR8vGTjVDJ5U=;
-        b=EhoGviDgwS54NXNwUdUg4qvz34m+S+kJmXA/p4wfQalgVEZSMVumMrE1byukZrvdFW
-         4KqGKAEEn45SFqLKDFtYTCd4b/Nlo2xSsKXBcUW2UZuPA2y+k2A6X2UuR53bxPYk2kxi
-         psJtApPP+j9iKrAwHSIOcRUgsdiw6cU5xc8HyVVYrMj8RIccmF2fpxHnx2C5tT0CKBlI
-         xTWMCVs6+ACh/kTjMXWgWb9JuRrajk7YLCAjuu0acVIeF4mh1m6c5+UQ4ueIbrbrvU+4
-         yoHVIERHqsdargcy7J4HF8asl3D47uP3UbuuC1sBnJxdf6KL1gl2Rdw1HW5aZwIv7iug
-         jp4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736269668; x=1736874468;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a1/XIgmNs19O7VrEuKC/8XgGH8MKVIeqR8vGTjVDJ5U=;
-        b=kpYxL8Ox31lzt2NskNvclZ2Rvc2HYJ2cyqBeNH7ZFWhwIYuOugDmyyNWNhKMYtSGps
-         8u8309AwjN+aPpfCCVCuUIQJQ1NOUPrbaW1Ja53/18XgV0RiizJSmt8dGfEKQCM9BUoL
-         jKhZy+iVOMZKs9VFJ+zeeSgukwTdIq7mG0YIJV3kVKGm6mrcnDlva3HQrD3Fk/jXNZ8K
-         lsDMl6j8hMuM/10sygjcWoTuT2BsM+BG5JfQ1Y/wAOjw6MDLhLvYfUtbBPG20WxtLLwS
-         4GL86j8zGRSMpHSg+I3psLMo0bBlDrlTNp8p1tUJZZcs2OtTrlr+vz09eiGxa21wm0yV
-         rpuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUb7Uy+IsK9I1j4vLRaDjkvHHY9GNK/AjilPv/Pt7wl31CODJ0SM6Ketncw3BrXMOFZCpgoo1JLT0pn@vger.kernel.org, AJvYcCVuM4joyQY4flAPtclwtCR6Mt5bblAD+1Kp8qHy4Q/GeTxj3oWEDiVdkp0ncjba3bD8FKjrQDYkXRtf@vger.kernel.org, AJvYcCXBhglVqMZisktjIicOJMnVtQ96dWzre8WPW1qU8XW810SH0tS3cdNxRn221JqlHAw1YvNODsoxvvKL@vger.kernel.org, AJvYcCXQt8xLhpXoilHvG0xERkyasbfNok/tR/N+7ibD4kAeQpbJQkerj5H3LVWXxwfCl4MSxOUKTDd+teISUn3d@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGM40uB2lgXqo/Ho9gqxv5gQlB6XCZevKUiWdg5Al7a5u1YC4F
-	sjG6e5tvZTB7bXZqlKfMslUcqd7JXycwVo/uh7gvu/Dppb3vcwLA
-X-Gm-Gg: ASbGnct+oAYpff6iE5C7AWVPuNbnmcHeyr6fMIO0+UsGgM/jM8QSGM6vM4Yt2/o81fK
-	s2ofx40Ay21rdl48KM8w3cgne7kSqereGoTXrXiP1CAQeCqkqtQrHRbuSP544yJI1S05tT8vw+S
-	hY/yZi+W/Z8bgvP0lVC8ASIemn9UQCLarPqlWugZl48oM/7XDgI41nXlnuo2ySI1RUWhgPop7K4
-	OIeUjo5zEfV9xR6EYgSewe/RurbTWG7n08Vw8SRi7IkCgYM3GHK5fnqQAs3/apldQdZFA==
-X-Google-Smtp-Source: AGHT+IHzwOlVl1byvEUZVmul1KsE4nwD0E5VfC2yC9z8ApO7up1Jg3nNX6r4UlAb63h3YDRNpTqJ5w==
-X-Received: by 2002:a17:902:c40e:b0:216:2dc5:233c with SMTP id d9443c01a7336-219e6f0e6e2mr881813935ad.41.1736269668450;
-        Tue, 07 Jan 2025 09:07:48 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca04f46sm313137695ad.263.2025.01.07.09.07.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 09:07:47 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 7 Jan 2025 09:07:46 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: John Erasmus Mari Geronimo <johnerasmusmari.geronimo@analog.com>
-Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-i2c@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH 1/2] dt-bindings: hwmon: adm1275: add adm1273
-Message-ID: <ce9786ed-191b-455a-be8f-7963f5c99ded@roeck-us.net>
-References: <20250106131740.305988-1-johnerasmusmari.geronimo@analog.com>
- <20250106131740.305988-2-johnerasmusmari.geronimo@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fqpma0ycGnDP0375aguH7Qx1WCwqAtdlPJea8b74WI9zkfinm+YoW+K5esdue1vpKSQjHInjYK2Klitge3YR5R2F24ZfkKeOKJNCNZoUWc8I9RJxoAE6qtXaxk4J/tX8f/6ihEfdmzyIg310Q7awFF+lISBDr5uv+m1DV6jWkHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XHSQq9NE; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736269724; x=1767805724;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2N37pvqY9JtK82ffSrxBCtwOdMjgx5xq3c2IXnVUeUo=;
+  b=XHSQq9NEHM9lp+c6G9axfftfgRZI9ymdAgJynd/6F+KRj7tdDFGQZtxT
+   /uHEpHkchq+3dFIJFLjI7NlhmL5gHTCpzVkSPBlBZ3GgDT6XEO1Z8RKuR
+   CV6RGPI2d4N2pHpvWJY+RQDrGyKGPccQ/c5yx5CRSBIhjA46cvCiLWtfk
+   9SXXpz/EFzbDe0E+DMDJxTHNZOv7sKoqJdSOkuYkFZHxkaGMKok0dUegC
+   8WujHnXkfpMqWBGAgNRIHh4Zmhz/RcE7baEOh/UQeXuDiTWTR+jwHNIZZ
+   0NasKZjkTHVtfiWOedx8Xm0QQ9hd9jcyfqZE435oDv1y4YzZZe0MMfnaE
+   Q==;
+X-CSE-ConnectionGUID: rNUDsYuSTJOAjVha5lHWKA==
+X-CSE-MsgGUID: esxULo9HQEitRYPxJRIWpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11308"; a="36357616"
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; 
+   d="scan'208";a="36357616"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2025 09:08:43 -0800
+X-CSE-ConnectionGUID: htf44ynhTIS0GikYRtGobg==
+X-CSE-MsgGUID: YXpfGKs7RKC5x79pnAkopA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,296,1728975600"; 
+   d="scan'208";a="103025289"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 07 Jan 2025 09:08:40 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tVD4H-000F1b-2x;
+	Tue, 07 Jan 2025 17:08:37 +0000
+Date: Wed, 8 Jan 2025 01:08:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Leo Yang <leo.yang.sy0@gmail.com>, jdelvare@suse.com,
+	linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Leo-Yang@quantatw.com, corbet@lwn.net,
+	Delphine_CC_Chiu@wiwynn.com, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] hwmon: Add driver for TI INA233 Current and Power
+ Monitor
+Message-ID: <202501080011.H8YAGThn-lkp@intel.com>
+References: <20250106071337.3017926-3-Leo-Yang@quantatw.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -96,17 +83,56 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250106131740.305988-2-johnerasmusmari.geronimo@analog.com>
+In-Reply-To: <20250106071337.3017926-3-Leo-Yang@quantatw.com>
 
-On Mon, Jan 06, 2025 at 09:17:39PM +0800, John Erasmus Mari Geronimo wrote:
-> Add support for the adm1273 Hot-Swap Controller and Digital Power
-> and Energy Monitor
-> 
-> Signed-off-by: John Erasmus Mari Geronimo <johnerasmusmari.geronimo@analog.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Hi Leo,
 
-Applied.
+kernel test robot noticed the following build warnings:
 
-Thanks,
-Guenter
+[auto build test WARNING on groeck-staging/hwmon-next]
+[also build test WARNING on linus/master v6.13-rc6 next-20250107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Leo-Yang/dt-bindings-Add-INA233-device/20250106-151934
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+patch link:    https://lore.kernel.org/r/20250106071337.3017926-3-Leo-Yang%40quantatw.com
+patch subject: [PATCH 2/2] hwmon: Add driver for TI INA233 Current and Power Monitor
+config: csky-randconfig-r131-20250107 (https://download.01.org/0day-ci/archive/20250108/202501080011.H8YAGThn-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 14.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20250108/202501080011.H8YAGThn-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501080011.H8YAGThn-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/hwmon/pmbus/ina233.c:93:26: sparse: sparse: symbol 'ina233_info' was not declared. Should it be static?
+
+vim +/ina233_info +93 drivers/hwmon/pmbus/ina233.c
+
+    92	
+  > 93	struct pmbus_driver_info ina233_info = {
+    94		.pages = 1,
+    95		.format[PSC_VOLTAGE_IN] = direct,
+    96		.format[PSC_VOLTAGE_OUT] = direct,
+    97		.format[PSC_CURRENT_OUT] = direct,
+    98		.format[PSC_POWER] = direct,
+    99		.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_INPUT
+   100			| PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT
+   101			| PMBUS_HAVE_POUT
+   102			| PMBUS_HAVE_VMON | PMBUS_HAVE_STATUS_VMON,
+   103		.m[PSC_VOLTAGE_IN] = 8,
+   104		.R[PSC_VOLTAGE_IN] = 2,
+   105		.m[PSC_VOLTAGE_OUT] = 8,
+   106		.R[PSC_VOLTAGE_OUT] = 2,
+   107		.read_word_data = ina233_read_word_data,
+   108	};
+   109	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
