@@ -1,65 +1,56 @@
-Return-Path: <linux-hwmon+bounces-5920-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5924-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC92A03A79
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 10:02:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C0EA03E1F
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 12:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED7D3A1628
-	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 09:02:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1863165F02
+	for <lists+linux-hwmon@lfdr.de>; Tue,  7 Jan 2025 11:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2A1E32CA;
-	Tue,  7 Jan 2025 09:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Jl4M7yTT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5B61EE00C;
+	Tue,  7 Jan 2025 11:45:33 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172DB1E2858
-	for <linux-hwmon@vger.kernel.org>; Tue,  7 Jan 2025 09:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB421EB9EB;
+	Tue,  7 Jan 2025 11:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736240534; cv=none; b=eIRwiQIKppkMRgYVkaFMG2pxRW1HCYvIrvW34VSiybpab/do712RvBxZjSW4j4WYWUs8EqdMyrSMHP9pp+CiR36AhvTrplPKrFmWNJfODTUCIL6Wtn9DQ/KtbeIwxoCwbmmsSrdM0EX2IgtnUYa8RSxYACsNL4wHLR5m1bywlYo=
+	t=1736250332; cv=none; b=S+TRkOCAz+CYl3XCKCbSK7sgTlbmwQJdCGYadQkFuyibONnijS51XR5nZL0PlzDN3VbJ73m+9eS1IProQoM7E7rXv4f0pi6EZhvZZ1Yx03OQWBjiwy+zYBkC5fGuOTOWxXyMr1g0ORL+KsftOlsecfkVm/csYXxKYI5PrCv9Owc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736240534; c=relaxed/simple;
-	bh=m4dZUh60u/mP9K/YIW4a9JOlkH+HgpGeePQd9+q1fYE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h01Cqh1kZbgccXCdk1DzBGocDy+dUjy+LvoXBIv7BW37NpFcNBsIIA90qZjayRQ1zKhazkp8OxJNTDkoQSP+4PMRlRWlYWCcljyCTxVm3EyfGKftbLxB3xpxbDkuqnKhEFcOe2DwMZ9bR6wXRVf61XF6hryhsHQqY0QkqvX0yME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Jl4M7yTT; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=3esdoiFUb3AEevKBNMcpAJ6KfgvtuQ7LV32gNwqiGFg=; b=Jl4M7y
-	TTjNgAoBMM0fzgwlpdNwhWedqnlibkxCCVlKu0nJEY5R3AD80JO7w5+dUI115wKT
-	+OtzoIHK7KtHltOseIEQUj1URJweRklK+880BEyl5Jw2R2wzxL52SH4Un1+I+FIi
-	uKNung5c4LxuzIfRV9YeO+IqFxq04DFCnBkUB8jnHK31+WWg8QGZXMzIuLNYz+hZ
-	aVNaYZwqwI9QNXnesom7OQUZ08anvBX7ccToarXwhUvIClpPG1X0dsnRxsh/dOs1
-	pNVOHuDV/RRFP6oZ+6+jCK9I0W4ozZzZCvX+bkvDurNKZssqCwDQoofoa1XOMaze
-	2TQFceHsD+BR5QqQ==
-Received: (qmail 2125271 invoked from network); 7 Jan 2025 10:02:08 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 7 Jan 2025 10:02:08 +0100
-X-UD-Smtp-Session: l3s3148p1@qa3t/xkrXJMgAwDPXw20AOMQ2KO98fSH
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-i3c@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH v4 2/5] hwmon: (spd5118) Use generic parity calculation
-Date: Tue,  7 Jan 2025 10:02:00 +0100
-Message-ID: <20250107090204.6593-3-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250107090204.6593-1-wsa+renesas@sang-engineering.com>
-References: <20250107090204.6593-1-wsa+renesas@sang-engineering.com>
+	s=arc-20240116; t=1736250332; c=relaxed/simple;
+	bh=cdt27/DlHh8xaL901PmHQZFJmnT3eMuL4WJyTSc/Gug=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I2Cvkuoi+dnh5LS2kNv3YojRAS7Tcxmwex8u8JSsugeOzfyIwrrRT2ipJ8PG/zpxNEIQt4ul7MjVUlqFwpjhA772TZY4pqFS4H24tF4F9+zhxPK4a/uk7SIcmmNuLf/C06R/qFgA6b5iu0NzjR6/HiBedXe7D9xVhAwvoQ4S7Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YS8Lf0dDyz22kfS;
+	Tue,  7 Jan 2025 19:43:06 +0800 (CST)
+Received: from dggemv711-chm.china.huawei.com (unknown [10.1.198.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id 227961A0188;
+	Tue,  7 Jan 2025 19:45:20 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 7 Jan 2025 19:45:19 +0800
+Received: from localhost.localdomain (10.28.79.22) by
+ kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 7 Jan 2025 19:45:19 +0800
+From: Huisong Li <lihuisong@huawei.com>
+To: <linux-hwmon@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux@roeck-us.net>, <jdelvare@suse.com>,
+	<liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>,
+	<zhenglifeng1@huawei.com>, <lihuisong@huawei.com>
+Subject: [PATCH v2 0/3] some bugfix for acpi power meter
+Date: Tue, 7 Jan 2025 19:33:27 +0800
+Message-ID: <20250107113330.7970-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.22.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -67,45 +58,22 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-Make use of the new generic helper for calculating the parity.
+I found some bugfix when I use this driver. And remove a redundant variable
+by the way. 
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
----
- drivers/hwmon/spd5118.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Huisong Li (3):
+  hwmon: (acpi_power_meter) Fix uninitialized variables
+  hwmon: (acpi_power_meter) Fix update the power trip points on failure
+  hwmon: (acpi_power_meter) Remove redundant 'sensors_valid' variable
 
-diff --git a/drivers/hwmon/spd5118.c b/drivers/hwmon/spd5118.c
-index 6cee48a3e5c3..358152868d96 100644
---- a/drivers/hwmon/spd5118.c
-+++ b/drivers/hwmon/spd5118.c
-@@ -291,12 +291,6 @@ static umode_t spd5118_is_visible(const void *_data, enum hwmon_sensor_types typ
- 	}
- }
- 
--static inline bool spd5118_parity8(u8 w)
--{
--	w ^= w >> 4;
--	return (0x6996 >> (w & 0xf)) & 1;
--}
--
- /*
-  * Bank and vendor id are 8-bit fields with seven data bits and odd parity.
-  * Vendor IDs 0 and 0x7f are invalid.
-@@ -304,7 +298,7 @@ static inline bool spd5118_parity8(u8 w)
-  */
- static bool spd5118_vendor_valid(u8 bank, u8 id)
- {
--	if (!spd5118_parity8(bank) || !spd5118_parity8(id))
-+	if (parity8(bank) == 0 || parity8(id) == 0)
- 		return false;
- 
- 	id &= 0x7f;
+ drivers/hwmon/acpi_power_meter.c | 55 ++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 17 deletions(-)
+
 -- 
-2.45.2
+2.22.0
 
 
