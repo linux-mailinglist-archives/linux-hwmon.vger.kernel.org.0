@@ -1,150 +1,178 @@
-Return-Path: <linux-hwmon+bounces-5990-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5992-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6DCA0759A
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 13:21:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BBBA078A2
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 15:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE948164745
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 12:21:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B321D166EB5
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 14:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7140C21771C;
-	Thu,  9 Jan 2025 12:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DD121A44B;
+	Thu,  9 Jan 2025 14:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="fQJ+UXAk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XN0k4pS/"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF3D217713
-	for <linux-hwmon@vger.kernel.org>; Thu,  9 Jan 2025 12:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58176219A93;
+	Thu,  9 Jan 2025 14:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736425285; cv=none; b=HxgtXvuk6RDZ0N/bUt9H0QquCbjBzTcy9k9SnA0izm/WfZLrtwwpCioHyPxHT1m9VvKX+RXEttAINCf34fSR8oEJfwix0TtCgrGI90DgpnAj8FsXDSjdKh2y3VvpoSzgGGOfi4whkwkn1AYXaDis74QN9RG5RrePsE0gY1nLI3E=
+	t=1736431714; cv=none; b=p1OZblqToBgeye4cKAs1Js92egWf2fveBl5cYwnD58TwOb6D8Fu+QvAwU6cOR7mvPOS4K6NhlER1868GQtYti0ZeWgHZI1KcAIoMb0+JGPjgZOQeGeiVtneroaM19mkQ85Atzd499IWEp2bbzXtAZT2b6G3dq0sOlqaUrDIilGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736425285; c=relaxed/simple;
-	bh=s6iLSMvwvB1hhEvSbVmgChnOY8FBYiVDdEUfiaRKLus=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZBdPP+Ye2oOEApxMJy7HUOFCmWzu09Im/tWfCvUCyyxLs3xiLazLy3TJqNWEuPq2t0s8fPuw7PGVs4z4YyZGftYoadaX7EO2Y7lLfXtmY/bqcZ4C4KTFJLkArAkj/vMSYIEXHiQbFuVUsjs54x6rScwdEOQhQ3l09IZniATqET4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=fQJ+UXAk; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-type
-	:content-transfer-encoding; s=k1; bh=Wvj0OmgUBbiythAxDaHZcyRy7Ax
-	S3rfnwX3CjJNEV/c=; b=fQJ+UXAkul0JhNsbZfeiSYTu2E3mPjb4X8LGkNLfC53
-	QImYkAZoHXjeL4dYRg1TpMEYhS+rHnd4bBFqBhfImp/H2HvJsm1KB8FZYbmqiE/c
-	p36oK62jv9nBnYarowVnITjPkFi+3tJXmV9I3yrKAOZQTaX2ubOl6Ar4rLVVQ2OA
-	nNuprrEZ/VSDyUvqAURfI9ITD21uiw4xu0reMeQjZZjArbhcU4jKXWS8jN6LDvIt
-	3HkH0ZykU6KSFBhAGmkIZl4HxTeCC1NDpHzvmKVHBd4E3w5RYBcfCytGmWrDe7lG
-	D8KY8wXTDzEpo2wGYxtbkzZebi6/1W5PTy1Ln5LgTwA==
-Received: (qmail 2902280 invoked from network); 9 Jan 2025 13:21:18 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Jan 2025 13:21:18 +0100
-X-UD-Smtp-Session: l3s3148p1@ePvpA0UraL0gAwDPXw20AOMQ2KO98fSH
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-renesas-soc@vger.kernel.org
-Cc: Guenter Roeck <linux@roeck-us.net>,
-	linux-kernel@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	=?UTF-8?q?Carsten=20Spie=C3=9F?= <mail@carsten-spiess.de>,
-	Jean Delvare <jdelvare@suse.com>,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH 2/2] hwmon: (isl28022) Use per-client debugfs entry
-Date: Thu,  9 Jan 2025 13:21:11 +0100
-Message-ID: <20250109122112.45810-3-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250109122112.45810-1-wsa+renesas@sang-engineering.com>
-References: <20250109122112.45810-1-wsa+renesas@sang-engineering.com>
+	s=arc-20240116; t=1736431714; c=relaxed/simple;
+	bh=npe+/FHP0F+2rX6XbsOumEF4Ihr7wMvChx1co/E64YQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eJoWLuPvG3n8biNG1wnO0EazafZYOGFOo57PHxbNXDhhhSEc8yuPK7HZD0qo5iIF12gVzC9/PqbF6cWlu/4N4Xz9MbmBn3UnFcUBsirQ9Fp8Q5VuyxOnTHgSwbVUmuyJH0m9SeBsOsFpwNinjd/SM8jMMnpSJ6hN9J/y75OL8bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XN0k4pS/; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2156e078563so13543935ad.2;
+        Thu, 09 Jan 2025 06:08:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736431713; x=1737036513; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=fa+0MfrjdKY5FvOChqcYyOo88eA2m6FeMZQVXasM0zs=;
+        b=XN0k4pS/u3xF9RnB1xn1pFLl2m3FSRpz6nZoEjoAwWNt04bjL1/gIaSfixqXdA4qpC
+         KfMgRK6Pi+NBqR6v1pYhfwzus5Gs/oA51HAdIB0tsTmSEIN0H60WqLmYQDnJIO0m9XjC
+         ee+qqPZj7TBHEHG3Bh4+P1IF0c9hoLXaZsYI++GAGMdzp+iBizq5uTCLNXG+xFRf0Qpg
+         UsOPghdYbwebnJpF7LUoYGXizLpmbhjtY3GtBpOOD82PkzuHNShTxAUtIpuiBy0ysYKm
+         ieeGrCVmrHMAJinLv+eti6TimFoosFidoxPtFZtQjyuETLUGN2kVYglx1ra4rV2e2kxr
+         LQLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736431713; x=1737036513;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fa+0MfrjdKY5FvOChqcYyOo88eA2m6FeMZQVXasM0zs=;
+        b=etcXdLLpG/OVxlL+TyLDckMxxUg/wMewp7LbPY93h2RUzubiA9e5FU/YIdx7ZDMkzy
+         dGt7nQQPv1ZXLYpn90ZlR6O53fphaVm0k5C+cTHLICDPBmsjGSM1vxKAtEj4evWtS1PT
+         OSZS99zmxUDyYIzC83y0T74Z5QbjIPrA0vfqJwO1xw9eXS4VEcH3J7D66BOzq+mIlqah
+         nVadEYPKekvsZ6CVN1pMDT8hLaMUfgGsanTpq7Vl6OY+QKkErFvVawO3FZ93vUTkEhX3
+         AEUMyS0+7998bnUQtPgO7/dn7yDfi/rP3YcL00QLJaGgBO++hOKC/Py3OkO5QDZ5KtbS
+         MWpA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+Sq9ugNsTdBEW/N3H0VfAqwXDlqxrWzHqsIRxs78eThRPQcr8HeD9WaUvP0OpmCJbwTsiRZsZGchbLHc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJzGr9lw9TIIG9M+tbk/2bgZ5FbKf+EhGmRSIk67ESxiFdzpEn
+	aRxpqZgDwVZFgrwjT+RSYdhCPVaUFifSp6t316qPGE4IFnJYgihX
+X-Gm-Gg: ASbGncuzjeCYXoZGtxfRzRIdHEFRSvfoxDV35wF8yEhOV/Ns/DIZHgh9rP2wbQHcd3w
+	5ffdoFoFsUTlfkCsgjnGPMMW/e80BczBl3z3QeeC5uzAim4Ldi1Pow2Lmfm+gK+UJSWrC8sMOV6
+	qkI2PRkNnImN2I7l/GdolhMEYzscwDknkavlmOCi5981Cs9HMX9ntlfUZdjF2Xy7151DEmjM83X
+	UC2ZoTDC9RNlwy7FpiAqkugwAUa2gHIKi7HJ2ZSfivDThJkozGSfS2zmIVqoLxjzR6VNzgfsRgw
+	l9nh5trx1v5IAdxWH4GoJJtZYtvDyw==
+X-Google-Smtp-Source: AGHT+IHjwp5c6AzdGlXUXXHGKucDdSRLGtnjJA8ySFBHD/fykNIE4McGQT3aRhUphzMTKyT0TRbdWg==
+X-Received: by 2002:a05:6a20:1582:b0:1e1:b19a:fb58 with SMTP id adf61e73a8af0-1e88d0edb48mr11316446637.13.1736431712605;
+        Thu, 09 Jan 2025 06:08:32 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8fb9a8sm37370874b3a.157.2025.01.09.06.08.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jan 2025 06:08:31 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <4a62570b-00bd-4740-a416-1f13da3469ce@roeck-us.net>
+Date: Thu, 9 Jan 2025 06:08:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] hwmon: pmbus: dps920ab: Add ability to instantiate
+ through i2c
+To: Denis Kirjanov <kirjanov@gmail.com>, robert.marko@sartura.hr,
+ jdelvare@suse.com
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250109100912.10054-1-kirjanov@gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250109100912.10054-1-kirjanov@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The I2C core now offers a debugfs-directory per client. Use it and
-remove the custom handling.
+On 1/9/25 02:09, Denis Kirjanov wrote:
+> Add support for instantiating the Delta DPS920AB PSU
+> through I2C on systems without devicetree support.
+> 
+> Signed-off-by: Denis Kirjanov <kirjanov@gmail.com>
+> ---
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/hwmon/isl28022.c | 44 ++--------------------------------------
- 1 file changed, 2 insertions(+), 42 deletions(-)
+Change log goes here.
 
-diff --git a/drivers/hwmon/isl28022.c b/drivers/hwmon/isl28022.c
-index 3f9b4520b53e..1fb9864635db 100644
---- a/drivers/hwmon/isl28022.c
-+++ b/drivers/hwmon/isl28022.c
-@@ -324,26 +324,6 @@ static int shunt_voltage_show(struct seq_file *seqf, void *unused)
- }
- DEFINE_SHOW_ATTRIBUTE(shunt_voltage);
- 
--static struct dentry *isl28022_debugfs_root;
--
--static void isl28022_debugfs_remove(void *res)
--{
--	debugfs_remove_recursive(res);
--}
--
--static void isl28022_debugfs_init(struct i2c_client *client, struct isl28022_data *data)
--{
--	char name[16];
--	struct dentry *debugfs;
--
--	scnprintf(name, sizeof(name), "%d-%04hx", client->adapter->nr, client->addr);
--
--	debugfs = debugfs_create_dir(name, isl28022_debugfs_root);
--	debugfs_create_file("shunt_voltage", 0444, debugfs, data, &shunt_voltage_fops);
--
--	devm_add_action_or_reset(&client->dev, isl28022_debugfs_remove, debugfs);
--}
--
- /*
-  * read property values and make consistency checks.
-  *
-@@ -475,7 +455,7 @@ static int isl28022_probe(struct i2c_client *client)
- 	if (err)
- 		return err;
- 
--	isl28022_debugfs_init(client, data);
-+	debugfs_create_file("shunt_voltage", 0444, client->debugfs, data, &shunt_voltage_fops);
- 
- 	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
- 							 data, &isl28022_chip_info, NULL);
-@@ -505,27 +485,7 @@ static struct i2c_driver isl28022_driver = {
- 	.probe	= isl28022_probe,
- 	.id_table	= isl28022_ids,
- };
--
--static int __init isl28022_init(void)
--{
--	int err;
--
--	isl28022_debugfs_root = debugfs_create_dir("isl28022", NULL);
--	err = i2c_add_driver(&isl28022_driver);
--	if (!err)
--		return 0;
--
--	debugfs_remove_recursive(isl28022_debugfs_root);
--	return err;
--}
--module_init(isl28022_init);
--
--static void __exit isl28022_exit(void)
--{
--	i2c_del_driver(&isl28022_driver);
--	debugfs_remove_recursive(isl28022_debugfs_root);
--}
--module_exit(isl28022_exit);
-+module_i2c_driver(isl28022_driver);
- 
- MODULE_AUTHOR("Carsten Spieß <mail@carsten-spiess.de>");
- MODULE_DESCRIPTION("ISL28022 driver");
--- 
-2.45.2
+>   drivers/hwmon/pmbus/dps920ab.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/hwmon/pmbus/dps920ab.c b/drivers/hwmon/pmbus/dps920ab.c
+> index cc5aac9dfdb3..c002ed41f517 100644
+> --- a/drivers/hwmon/pmbus/dps920ab.c
+> +++ b/drivers/hwmon/pmbus/dps920ab.c
+> @@ -190,12 +190,19 @@ static const struct of_device_id __maybe_unused dps920ab_of_match[] = {
+>   
+>   MODULE_DEVICE_TABLE(of, dps920ab_of_match);
+>   
+> +static struct i2c_device_id dps920ab_i2c_match[] = {
+> +	{ "dps920ab" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, dps920ab_i2c_match);
+> +
+>   static struct i2c_driver dps920ab_driver = {
+>   	.driver = {
+>   		   .name = "dps920ab",
+>   		   .of_match_table = of_match_ptr(dps920ab_of_match),
+>   	},
+>   	.probe = dps920ab_probe,
+> +	.id_table = dps920ab_device_id,
+>   };
+>   
+>   module_i2c_driver(dps920ab_driver);
 
 
