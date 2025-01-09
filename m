@@ -1,118 +1,114 @@
-Return-Path: <linux-hwmon+bounces-5986-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-5987-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC3DA072A0
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 11:17:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D50A072FF
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 11:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B469C1888CCD
-	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 10:17:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC445188AFF9
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Jan 2025 10:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A4A215F4C;
-	Thu,  9 Jan 2025 10:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DE62163AD;
+	Thu,  9 Jan 2025 10:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mv6bo9gr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pPj2xIX6"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A74521578B;
-	Thu,  9 Jan 2025 10:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62933215F77;
+	Thu,  9 Jan 2025 10:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736417818; cv=none; b=NHvz9pHy4qo3I2Mmja0ED5v9svcCxn6egNEHSl9WZ784aqeYudM360IItP3CZ7yDc/RDBezrb2hOFYCPhqTJ4UXIAgBvAcGerobmnTHCDXxqnxm1IuII7pfOgqKsNDW3tAuRAdTj5qJasEuww2yREU78tgCd0vkYJvr4+CLG524=
+	t=1736418229; cv=none; b=pt9mM7wNJOmhL2pmLZDzGypzS0bU6uGYOiS5hyggsWz1DLiwexv5msnVQKCR2GZzgbkPEYJww0kWeXd/9JNxLhxuMtOfXLaJ1s9OlMtiuJ+i8vVKifV2YRPzo4AgMxfgQCoNpNdx7dsfe2t3P754berL4gE2kGL+X9T46SJZg5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736417818; c=relaxed/simple;
-	bh=o2gV8+qd+OstVBKFXAlKb6b8WAzoR3uhP+40NL99g4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fJq7xjFzM1rPePuX+Y8K6uUYcOnF9lLGrIQ+sV1utp9ZA2BZ0Gdy7YI0KVC6VGR9MUaFayPo4yejpkmfQPKmlOxdajSNhMXG2zE5O9gsLYU0fwDirG3+jerW4UhzPq9ONteBtXpo055ZknaAQKaEIL/zrefxXCOYz34ejY9cMEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mv6bo9gr; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736417817; x=1767953817;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=o2gV8+qd+OstVBKFXAlKb6b8WAzoR3uhP+40NL99g4c=;
-  b=Mv6bo9grXkpaJ6XkqcOrEk7xmpyD/Y39hUejyI73LHGjUUyxWWVPiRB3
-   gN0i/H8/Sz04rW8MA5Jew7zZPRs5LJdHtfmD4oHzLm8VgOhfhrrZeboa3
-   /08mVDFCz3IHDeKim8azrQiZWSI5omDbbGObVz/7GRFdFjSaZjJX4aqJ1
-   Uc5WlF2+5X48T2W3TnuthmcWbLptXigWSoP9pc2NXvpSg4K0CoSDl+dy8
-   zO35nir2zV/8XafyxgZKytKAvDZPY7phbXctRM+PUfuBcO4SCXFOgZqDP
-   8NGYXL9lZ6jzlOiYwRTaGK2lVgtggh85D837gJBs3SjhYAMxhKciajA4A
-   Q==;
-X-CSE-ConnectionGUID: O/DLvZC6Q5CSOnWRFSpXqg==
-X-CSE-MsgGUID: E4YutE46RmKB5UVfbg1X6Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36830884"
-X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; 
-   d="scan'208";a="36830884"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 02:16:56 -0800
-X-CSE-ConnectionGUID: 6hdmEu8SSXO2+Mp4RQEcaQ==
-X-CSE-MsgGUID: T0zJ1WQTRYmQeydN1S1tag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; 
-   d="scan'208";a="103329234"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 09 Jan 2025 02:16:52 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tVpas-000HMR-1U;
-	Thu, 09 Jan 2025 10:16:50 +0000
-Date: Thu, 9 Jan 2025 18:15:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Leo Yang <leo.yang.sy0@gmail.com>, jdelvare@suse.com,
-	linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Leo-Yang@quantatw.com, corbet@lwn.net,
-	Delphine_CC_Chiu@wiwynn.com, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] hwmon: Add driver for TI INA233 Current and Power
- Monitor
-Message-ID: <202501091702.8ZdJcvFC-lkp@intel.com>
-References: <20250106071337.3017926-3-Leo-Yang@quantatw.com>
+	s=arc-20240116; t=1736418229; c=relaxed/simple;
+	bh=xRRlLnDdNPgPN0sW40gnB6StZmB2oxUH4YZ4q2xE94g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=h9A/drTG1tJaGTWnRURL6bbyxRxzKOBAV7GaZNYW0S9Lse7kq8i6gENnj9kiizA5H8Mq9JUUJYGUG/o/WTfly8b6jCgjGZHX8ogA7o96KGQzT81tVmAUpndgrB+XZIIu/RTxNISUIRCC+5v+LYuF5TNShld7X9CLo51PQAxfgSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pPj2xIX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 054C2C4CEDF;
+	Thu,  9 Jan 2025 10:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736418229;
+	bh=xRRlLnDdNPgPN0sW40gnB6StZmB2oxUH4YZ4q2xE94g=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=pPj2xIX6r+UbHzT6NqaVtiRrFfHwo67TNoNUMn6fY20eI0xr5+Ij1Q52uewY8kuF1
+	 xlQrFgqWTT9gDYyaX7yTzmDRtnTKEv3hUtSImrTT/PA+BtFej5rPk7tkhXNG7hIioQ
+	 7lPgz7wmXdK/3C86Y4W7ccTAUJ6x9zg/9GfKZw528Iu0X7FQrQEc25BeAgG8Uim1Do
+	 794+6O1jihuCCfnsc5mlhALO9b47+sd5P8PbNVpxtMdjiisgXKlcnEL2uSCkbWS+6b
+	 bKAttBt21OhtGpk32f4cKQnocDGiRTRPHMAyFjLzQDEMjQsrzW3CPX/B0QjDyfV7D/
+	 zsEOTh5VzHswg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED606E77199;
+	Thu,  9 Jan 2025 10:23:48 +0000 (UTC)
+From: PavithraUdayakumar-adi via B4 Relay <devnull+pavithra.u.analog.com@kernel.org>
+Subject: [PATCH v3 0/2] Add support for MAX31331 RTC
+Date: Thu, 09 Jan 2025 15:59:56 +0530
+Message-Id: <20250109-add_support_max31331_fix_3-v1-0-a74fac29bf49@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250106071337.3017926-3-Leo-Yang@quantatw.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACSlf2cC/x3M0QqEIBBA0V+ReV7BcSqwX1kWEZ1qHirR3Qiif
+ 1/p8XDhXlC5CFcY1QWFD6mybw34UhCXsM2sJTWDNbY3aJwOKfn6y3kvX7+Gk5AI/SSnJx2Hzg4
+ uWIdsoA1y4Rae+RsOgs99/wHD5wokcAAAAA==
+X-Change-ID: 20250109-add_support_max31331_fix_3-c64269a291e0
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ PavithraUdayakumar-adi <pavithra.u@analog.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736418610; l=972;
+ i=pavithra.u@analog.com; s=20241220; h=from:subject:message-id;
+ bh=xRRlLnDdNPgPN0sW40gnB6StZmB2oxUH4YZ4q2xE94g=;
+ b=4GCBlT93CXnIsbRyC0BuHL+gbpS66b3TFeG9oR8Fm+DX2rrDJtXvI0Kqi/m7pw1VFUU/VR+mp
+ cC8CaW+9uSvCUdiXv4wsIL0egnWIWg28MgxEjuQHzPPqUmZLzLSG4I3
+X-Developer-Key: i=pavithra.u@analog.com; a=ed25519;
+ pk=RIhZrdpg71GEnmwm1eNn95TYUMDJOKVsFd37Fv8xf1U=
+X-Endpoint-Received: by B4 Relay for pavithra.u@analog.com/20241220 with
+ auth_id=303
+X-Original-From: PavithraUdayakumar-adi <pavithra.u@analog.com>
+Reply-To: pavithra.u@analog.com
 
-Hi Leo,
+This patch series introduces support for the Maxim MAX31331 RTC.
+It includes:
 
-kernel test robot noticed the following build errors:
+1. Device Tree bindings documentation for the MAX31331 chip.
+2. The driver implementation for the MAX31331 RTC
 
-[auto build test ERROR on groeck-staging/hwmon-next]
-[also build test ERROR on linus/master v6.13-rc6 next-20250108]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: PavithraUdayakumar-adi <pavithra.u@analog.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Leo-Yang/dt-bindings-Add-INA233-device/20250106-151934
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-patch link:    https://lore.kernel.org/r/20250106071337.3017926-3-Leo-Yang%40quantatw.com
-patch subject: [PATCH 2/2] hwmon: Add driver for TI INA233 Current and Power Monitor
-config: i386-randconfig-001-20250108 (https://download.01.org/0day-ci/archive/20250109/202501091702.8ZdJcvFC-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250109/202501091702.8ZdJcvFC-lkp@intel.com/reproduce)
+Changes in v3:
+- Address review comments
+- Rebase on v6.13-rc6
+- Link to v2: https://lore.kernel.org/all/20250103-add_support_max31331_fix-v1-0-8ff3c7a81734@analog.com/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501091702.8ZdJcvFC-lkp@intel.com/
+---
+PavithraUdayakumar-adi (2):
+      dt-bindings: rtc: max31335: Add max31331 support
+      rtc: max31335: Add driver support for max31331
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+ .../devicetree/bindings/rtc/adi,max31335.yaml      |  22 ++-
+ drivers/rtc/rtc-max31335.c                         | 163 +++++++++++++++------
+ 2 files changed, 138 insertions(+), 47 deletions(-)
+---
+base-commit: eea6e4b4dfb8859446177c32961c96726d0117be
+change-id: 20250109-add_support_max31331_fix_3-c64269a291e0
 
->> ERROR: modpost: "__divdi3" [drivers/hwmon/pmbus/ina233.ko] undefined!
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+PavithraUdayakumar-adi <pavithra.u@analog.com>
+
+
 
