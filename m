@@ -1,130 +1,151 @@
-Return-Path: <linux-hwmon+bounces-6203-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6205-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5592CA17616
-	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jan 2025 04:02:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39512A177A1
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jan 2025 07:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86F5D1681F6
-	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jan 2025 03:02:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E94188B4A0
+	for <lists+linux-hwmon@lfdr.de>; Tue, 21 Jan 2025 06:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7019F1531F9;
-	Tue, 21 Jan 2025 03:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X3+VLWdA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3AA1B3950;
+	Tue, 21 Jan 2025 06:57:31 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90508831;
-	Tue, 21 Jan 2025 03:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A341B21A8;
+	Tue, 21 Jan 2025 06:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737428527; cv=none; b=tqORf6f0ipYheA4KoXwdbwkjm2nuAS8G1lzsqFoY9V0g+K7H9EshohtJxQLAwOrUvr9Mb9Q5nKzyeMFXEEqReFr7xlQzTBXh1KpCHWYHRzDJ1J6oMo2ORYPoj0LL6IJp3J+0rxco+LM0tu6h5/glyrzPvYrDgMdLcK06jwwqu+Y=
+	t=1737442651; cv=none; b=lQOgf7Q54d3hsXwoUwjeAB8Ol3+kiPJCuOgPk9sybrGe1hs5xnAX3GQQdfja09lt5c+kUV8FL18ONGtnhiWjosr24QHdFKfLcqxJGvdKqyAREUP6nvjUHsK+HG2yZJw/bp4fKVG5HOIb9VY4LOvsOMJo+EmOYWO6r/9UiGWUly0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737428527; c=relaxed/simple;
-	bh=VngkI13m0a6394z7V6bn+vTOXKQRZK2y/gQ+ebv30+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DttEU5ntLQfYyaEUrYJuMIZBzjgqDhi6c6inHY8pDmQZGBqxM3PfoQt1SvAZWyxFeF0D+Izl7loIisjOZ827/xVih1wiuM3twuzIpL9VmQWZ00bNb6GXpe/SAfQE7qzJPr4WRnlfs0QP0pdDDnE47nIjSBBWONjrbVcGJAkU+hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X3+VLWdA; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737428526; x=1768964526;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VngkI13m0a6394z7V6bn+vTOXKQRZK2y/gQ+ebv30+A=;
-  b=X3+VLWdA69NzM8DPT3IORP0st+8bW/wxqOBiq46bcV5XgHnnWrQe4Sfs
-   LC236aiyuWeVefIigXE62OKiqfmtImd5Jsh143APG2MLQxiKIS0REoK7R
-   LWma4Dc9v0rB3QouwD0j445bHh0wQCT1krDv2HYQYrxsCMDjf2uWHpD/h
-   3rVaWcgcLtG3h3EMRF0hx+6d8IZg/s1T/37Sc9t/XhiLG51MOx25InPJZ
-   Y9QNN1qhWbp+FnI4rqLrnivBxG1G5NPmGk8u7j8ielC1NiAaxyjDfDHTL
-   n8okDWJrH2TZiHnsGx071hUVDcVCvKi5UwoBBcSEYViOxlVh6xDtJgR97
-   g==;
-X-CSE-ConnectionGUID: Yk6qJdC0Rqa1nMwnKyatsw==
-X-CSE-MsgGUID: tx/B0guQThSASaUY3ZPZXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37712693"
-X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; 
-   d="scan'208";a="37712693"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 19:02:05 -0800
-X-CSE-ConnectionGUID: 3V1WsWUHQzOgyn0Q857QFg==
-X-CSE-MsgGUID: BSmIHu4KSnu+cjc77rvf6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; 
-   d="scan'208";a="106483671"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 20 Jan 2025 19:02:02 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ta4Wd-000XWp-3B;
-	Tue, 21 Jan 2025 03:01:59 +0000
-Date: Tue, 21 Jan 2025 11:01:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Potin Lai <potin.lai.pt@gmail.com>, Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Patrick Williams <patrick@stwcx.xyz>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Cosmo Chou <cosmo.chou@quantatw.com>,
-	Potin Lai <potin.lai@quantatw.com>
-Subject: Re: [PATCH] hwmon: ina238: Add support for shunt voltage scaling
-Message-ID: <202501211015.8Szwv3Cd-lkp@intel.com>
-References: <20250121-potin-ina238-shunt-voltage-scaling-v1-1-36d5dfe027f5@gmail.com>
+	s=arc-20240116; t=1737442651; c=relaxed/simple;
+	bh=pLDYZI2ORguKTw/14TF5fTg2eqigu3oKV9kYu2UT8Ik=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=chKx4ZjRBbnLV9oBkfY0xu0arBX9k/7NQS/J057H0L3xz4WnfuEFCDuwRcuFo6jFE2Gk+RKjc5kSW5ySG/NHbzq4zrzKDliQ0EwYHpMlEfYl9Lf6h9StL1BlkWORJN6yxEFRGmrT+YqMwApZzg08c1MMwNzEojFiWSflz7LbjzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4YcdGq1MdBzbp8C;
+	Tue, 21 Jan 2025 14:54:11 +0800 (CST)
+Received: from dggemv703-chm.china.huawei.com (unknown [10.3.19.46])
+	by mail.maildlp.com (Postfix) with ESMTPS id D21421800D1;
+	Tue, 21 Jan 2025 14:57:19 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 21 Jan 2025 14:57:19 +0800
+Received: from localhost.localdomain (10.28.79.22) by
+ kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 21 Jan 2025 14:57:17 +0800
+From: Huisong Li <lihuisong@huawei.com>
+To: <linux-hwmon@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <arm-scmi@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-rtc@vger.kernel.org>,
+	<oss-drivers@corigine.com>, <linux-rdma@vger.kernel.org>,
+	<platform-driver-x86@vger.kernel.org>, <linuxarm@huawei.com>,
+	<linux@roeck-us.net>, <jdelvare@suse.com>, <kernel@maidavale.org>,
+	<pauk.denis@gmail.com>, <james@equiv.tech>, <sudeep.holla@arm.com>,
+	<cristian.marussi@arm.com>, <matt@ranostay.sg>, <mchehab@kernel.org>,
+	<irusskikh@marvell.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<saeedm@nvidia.com>, <leon@kernel.org>, <tariqt@nvidia.com>,
+	<louis.peens@corigine.com>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<kabel@kernel.org>, <W_Armin@gmx.de>, <hdegoede@redhat.com>,
+	<ilpo.jarvinen@linux.intel.com>, <alexandre.belloni@bootlin.com>,
+	<krzk@kernel.org>, <jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
+	<zhenglifeng1@huawei.com>, <liuyonglong@huawei.com>, <lihuisong@huawei.com>
+Subject: [PATCH v1 00/21] hwmon: Fix the type of 'config' in struct hwmon_channel_info to u64
+Date: Tue, 21 Jan 2025 14:44:58 +0800
+Message-ID: <20250121064519.18974-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.22.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250121-potin-ina238-shunt-voltage-scaling-v1-1-36d5dfe027f5@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-Hi Potin,
+The hwmon_device_register() is deprecated. When I try to repace it with
+hwmon_device_register_with_info() for acpi_power_meter driver, I found that
+the power channel attribute in linux/hwmon.h have to extend and is more
+than 32 after this replacement.
 
-kernel test robot noticed the following build warnings:
+However, the maximum number of hwmon channel attributes is 32 which is
+limited by current hwmon codes. This is not good to add new channel
+attribute for some hwmon sensor type and support more channel attribute.
 
-[auto build test WARNING on fc033cf25e612e840e545f8d5ad2edd6ba613ed5]
+This series are aimed to do this. And also make sure that acpi_power_meter
+driver can successfully replace the deprecated hwmon_device_register()
+later.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Potin-Lai/hwmon-ina238-Add-support-for-shunt-voltage-scaling/20250121-002826
-base:   fc033cf25e612e840e545f8d5ad2edd6ba613ed5
-patch link:    https://lore.kernel.org/r/20250121-potin-ina238-shunt-voltage-scaling-v1-1-36d5dfe027f5%40gmail.com
-patch subject: [PATCH] hwmon: ina238: Add support for shunt voltage scaling
-config: x86_64-buildonly-randconfig-004-20250121 (https://download.01.org/0day-ci/archive/20250121/202501211015.8Szwv3Cd-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250121/202501211015.8Szwv3Cd-lkp@intel.com/reproduce)
+Huisong Li (21):
+  hwmon: Fix the type of 'config' in struct hwmon_channel_info to u64
+  media: video-i2c: Use HWMON_CHANNEL_INFO macro to simplify code
+  net: aquantia: Use HWMON_CHANNEL_INFO macro to simplify code
+  net: nfp: Use HWMON_CHANNEL_INFO macro to simplify code
+  net: phy: marvell: Use HWMON_CHANNEL_INFO macro to simplify code
+  net: phy: marvell10g: Use HWMON_CHANNEL_INFO macro to simplify code
+  rtc: ab-eoz9: Use HWMON_CHANNEL_INFO macro to simplify code
+  rtc: ds3232: Use HWMON_CHANNEL_INFO macro to simplify code
+  w1: w1_therm: w1: Use HWMON_CHANNEL_INFO macro to simplify code
+  net: phy: aquantia: Use HWMON_CHANNEL_INFO macro to simplify code
+  hwmon: (asus_wmi_sensors) Fix type of 'config' in struct
+    hwmon_channel_info to u64
+  hwmon: (hp-wmi-sensors) Fix type of 'config' in struct
+    hwmon_channel_info to u64
+  hwmon: (mr75203) Fix the type of 'config' in struct hwmon_channel_info
+    to u64
+  hwmon: (pwm-fan) Fix the type of 'config' in struct hwmon_channel_info
+    to u64
+  hwmon: (scmi-hwmon) Fix the type of 'config' in struct
+    hwmon_channel_info to u64
+  hwmon: (tmp401) Fix the type of 'config' in struct hwmon_channel_info
+    to u64
+  hwmon: (tmp421) Fix the type of 'config' in struct hwmon_channel_info
+    to u64
+  net/mlx5: Fix the type of 'config' in struct hwmon_channel_info to u64
+  platform/x86: dell-ddv: Fix the type of 'config' in struct
+    hwmon_channel_info to u64
+  hwmon: (asus-ec-sensors) Fix the type of 'config' in struct
+    hwmon_channel_info to u64
+  hwmon: (lm90) Fix the type of 'config' in struct hwmon_channel_info to
+    u64
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501211015.8Szwv3Cd-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/hwmon/ina238.c:120:30: warning: format specifies type 'int' but the argument has type 'long' [-Wformat]
-     120 |         return sprintf(buf, "%d\n", data->shunt_volt_scale);
-         |                              ~~     ^~~~~~~~~~~~~~~~~~~~~~
-         |                              %ld
-   1 warning generated.
-
-
-vim +120 drivers/hwmon/ina238.c
-
-   114	
-   115	static ssize_t shunt_volt_scale_show(struct device *dev,
-   116					     struct device_attribute *attr, char *buf)
-   117	{
-   118		struct ina238_data *data = dev_get_drvdata(dev);
-   119	
- > 120		return sprintf(buf, "%d\n", data->shunt_volt_scale);
-   121	}
-   122	
+ drivers/hwmon/asus-ec-sensors.c               |   6 +-
+ drivers/hwmon/asus_wmi_sensors.c              |   8 +-
+ drivers/hwmon/hp-wmi-sensors.c                |   6 +-
+ drivers/hwmon/hwmon.c                         |   4 +-
+ drivers/hwmon/lm90.c                          |   4 +-
+ drivers/hwmon/mr75203.c                       |   6 +-
+ drivers/hwmon/pwm-fan.c                       |   4 +-
+ drivers/hwmon/scmi-hwmon.c                    |   6 +-
+ drivers/hwmon/tmp401.c                        |   4 +-
+ drivers/hwmon/tmp421.c                        |   2 +-
+ drivers/media/i2c/video-i2c.c                 |  12 +-
+ .../ethernet/aquantia/atlantic/aq_drvinfo.c   |  14 +-
+ .../net/ethernet/mellanox/mlx5/core/hwmon.c   |   8 +-
+ .../net/ethernet/netronome/nfp/nfp_hwmon.c    |  40 +--
+ drivers/net/phy/aquantia/aquantia_hwmon.c     |  32 +-
+ drivers/net/phy/marvell.c                     |  24 +-
+ drivers/net/phy/marvell10g.c                  |  24 +-
+ drivers/platform/x86/dell/dell-wmi-ddv.c      |   6 +-
+ drivers/rtc/rtc-ab-eoz9.c                     |  24 +-
+ drivers/rtc/rtc-ds3232.c                      |  24 +-
+ drivers/w1/slaves/w1_therm.c                  |  12 +-
+ include/linux/hwmon.h                         | 300 +++++++++---------
+ 22 files changed, 205 insertions(+), 365 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.22.0
+
 
