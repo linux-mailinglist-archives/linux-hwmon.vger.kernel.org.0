@@ -1,60 +1,61 @@
-Return-Path: <linux-hwmon+bounces-6319-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6323-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1449A1C1BF
-	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Jan 2025 07:49:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B225EA1C340
+	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Jan 2025 13:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68E7F3A96D1
-	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Jan 2025 06:48:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E34D167F61
+	for <lists+linux-hwmon@lfdr.de>; Sat, 25 Jan 2025 12:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12BB20A5D8;
-	Sat, 25 Jan 2025 06:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCDF207E18;
+	Sat, 25 Jan 2025 12:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bU+mSz77"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="XdW9QhGP"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8DF209696;
-	Sat, 25 Jan 2025 06:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38F1207E07
+	for <linux-hwmon@vger.kernel.org>; Sat, 25 Jan 2025 12:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737787613; cv=none; b=nemBMwHMSw9uUfi20GMcR+iPsP6nxVV0TGc7hiJ+e0vBBTpvDsyMarHrwKHLVbMATaOJFKX2ltjJ0Y8i+W9gWT8DV7q2br/1wsedlVVsZ9nUAM21Xm2h7yI3/AfnSkLsgzLBnM7aXvJIG2JD85Pac4CSjni0RN6QhcVvZavCAVc=
+	t=1737808820; cv=none; b=gtwF0Qy+JxCUTGzxFA2OKFAJEpHKMftya7mikH5/QONaG3Sx401xJ7QsS/4uGvyg359ll7mWPXy/WKiCr+89X+TLFlZ6XHfWOB+jKEQ5+O3E3Lth14hpQkZfY77QMQ/ReHrwhJ7vuI2Qpdz7ZAn954YBAey/2va1SoQyML4VuJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737787613; c=relaxed/simple;
-	bh=TlYBvxSEmeZxxXLvq/FH5xBfExh/1Il55iDpuFK0taA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhXW3MGm0fTpdxrhPyVwQeUNNSGXBJOy8AanXCBLbIiHeQOyp6TGZ0g0OJ6gKWQKGVRs8UcSGJY2MuaZPYp/zaG+v1HOOObmebxCmf2cyuVhonc7xQGoHBkNq7rHDQUh2xISV3lWeBIoX7RYQ9yFrSkGdjY9QewlZc8m4+wPb98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bU+mSz77; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=2+Gez
-	wAuC0TIWv5b3TpjjkNBdQsYgqc/av58BWSgrT4=; b=bU+mSz77V28YRj5zHUJ8H
-	yu5NwBQIuGLnd8KfYU4T1otuAyIFCAReeGs6yvjzYOSKshTav7kWPcXiPJR7f+nE
-	+o2zJr+cR/Qh8cqzhfF0ymW8R/gMzahDwobQ2pc8Ra6BYrKtw8Jfa3Yj4RowVx68
-	WaYFxVoXOweOG3RgFH8kGA=
-Received: from silergy-System-Product-Name.silergy.inc (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBHtPqxiJRnLj1HIA--.30509S4;
-	Sat, 25 Jan 2025 14:46:10 +0800 (CST)
-From: Wenliang Yan <wenliang202407@163.com>
-To: linux@roeck-us.net
-Cc: christophe.jaillet@wanadoo.fr,
-	conor+dt@kernel.org,
-	corbet@lwn.net,
-	jdelvare@suse.com,
-	krzk+dt@kernel.org,
+	s=arc-20240116; t=1737808820; c=relaxed/simple;
+	bh=+tSpK9Ew8Zy/NfgVcc421SUrbcGyGk1bLqBeUafffk8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NmL6gSjmVabwJAGq+zVeERM1xLgNWuX2DYqwSRLxhVwWNWVQfV9E9Fbu7hwckyEF9vb13wLyDBOCksdkTk2vdkmlIn1fH36kpTfabY8B26I77duCQ6hWsHKN9H3+TJI/ED+nlseNwszSf4BZnwOSlU710soVSP6eTMkLBy5JeWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=XdW9QhGP; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=BUiDItMTatdmhY
+	M0QAH0NcfmW2Yq+hNBMKGBB2C2ejk=; b=XdW9QhGPTWAZo743KEYVW71RWFLPBR
+	umfEF3pkuJNLYi0BF4DgCc8gSemkd8My38pmhQ8LpUDd3iV4OU1gEQJRcEYqWkDk
+	qeQtg24H0SuL4g1eW4rZjN3YJjuy1wsKphXbKreJ0QpbnoEvTbZs+DOpAQcqxp4K
+	Kw9QTvXTz7g/25G4JVCtNPaEp6HxydaJ98VFAPTigVugW0TVywfizn6qOCjw0QqA
+	CIALxwz7k5vKhvqUfVH0LFMrBrKJAnik0rP1ghAfa4ddSgaMynAzdoG+fCCqucEi
+	WOi4aZotR5fbuka9PTi6rSOkuHdBL0O/bW76HLQHUmBDdckTgMmTZ5cw==
+Received: (qmail 3871085 invoked from network); 25 Jan 2025 13:40:07 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 25 Jan 2025 13:40:07 +0100
+X-UD-Smtp-Session: l3s3148p1@EyZjJIcsTOEujnvm
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-renesas-soc@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Cosmo Chou <cosmo.chou@quantatw.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jean Delvare <jdelvare@suse.com>,
 	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	wenliang202407@163.com
-Subject: Re: [PATCH v4 0/2] hwmon:(ina238)Add support for SQ52206
-Date: Sat, 25 Jan 2025 14:44:32 +0800
-Message-ID: <20250125064432.1242713-1-wenliang202407@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <c7c3d35a-e8a5-40ee-9b47-c22d87fa7f71@roeck-us.net>
-References: <c7c3d35a-e8a5-40ee-9b47-c22d87fa7f71@roeck-us.net>
+	Luka Perkov <luka.perkov@sartura.hr>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Robert Marko <robert.marko@sartura.hr>
+Subject: [PATCH RFT 0/6] hwmon: Use per-client debugfs entry
+Date: Sat, 25 Jan 2025 13:39:40 +0100
+Message-ID: <20250125123941.36729-8-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -62,68 +63,28 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHtPqxiJRnLj1HIA--.30509S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur1UXw1fZw18urWUuF47CFg_yoW8uF4rpr
-	Z3GF4FkFyUGr17XrZa9a1avryjkan5JF1xWFn8Jw1ruF1Uu3WIq3y2kw1Y9F4DXr93uFZY
-	vF1IqFn3GF4rArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUAxhdUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/1tbioxbf02eUTE5pQQAEsk
 
-At 2025-01-25 13:01:36, "Guenter Roeck" <linux@roeck-us.net> wrote:
->On 1/24/25 19:02, Wenliang Yan wrote:
->> Add support for Silergy i2c power monitor SQ52206 to the ina238
->> driver as those two are similar.
->> 
->> Signed-off-by: Wenliang Yan <wenliang202407@163.com>
->> ---
->> 
->> Add new chip SQ52206, the datasheet depends on
->> https://us1.silergy.com/cloud/index/uniqid/676b659b4a503
->> The password is fx6NEe.
->> 
->> Changes in v4:
->> - addressed various review comments.
->> - Link to v3: https://lore.kernel.org/linux-hwmon/20250117082017.688212-1-wenliang202407@163.com/
->> 
->
->Your "change logs" are equivalent to "made changes" and completely pointless.
->As consequence, I'll only handle your patches if and when I have nothing else
->to review since I'll have to figure out myself what you changed and if you
->implemented the feedback. I don't really hve time for that, so please do not
->expect that I'll apply this series anytime soon.
->
->Guenter
+The I2C core now offers a debugfs-directory per client. Use it and
+remove the custom handling in hwmon drivers. I don't have the hardware,
+so I hope I can find people willing to test here. Build bots are happy.
 
-Thank you for your reply.
+Wolfram Sang (6):
+  hwmon: (ina3221) Use per-client debugfs entry
+  hwmon: (ltc4282) Use per-client debugfs entry
+  hwmon: (pt5161l) Use per-client debugfs entry
+  hwmon: (sg2042) Use per-client debugfs entry
+  hwmon: (sht3x) Use per-client debugfs entry
+  hwmon: (tps23861) Use per-client debugfs entry
 
-Okay, I understand. I will pay attention to adding detailed modifications for
-your review in the future. There are two main changes in the V4 version:
+ drivers/hwmon/ina3221.c    |  9 +-----
+ drivers/hwmon/ltc4282.c    | 44 ++++++----------------------
+ drivers/hwmon/pt5161l.c    | 59 ++++++++------------------------------
+ drivers/hwmon/sg2042-mcu.c | 44 +++++-----------------------
+ drivers/hwmon/sht3x.c      | 57 ++++++------------------------------
+ drivers/hwmon/tps23861.c   | 31 ++------------------
+ 6 files changed, 38 insertions(+), 206 deletions(-)
 
-1) add 'Acked-by: Krzysztof Kozlowski' information to PATCH 1.
-
-2) formatting adjustments have been made to ina2xx.c in PATCH2 with
-Christophe JAILLET's comments.
-
->> Changes in v3:
->> - addressed various review comments.
->> - Link to v2: https://lore.kernel.org/linux-hwmon/20250113035023.365697-1-wenliang202407@163.com/
->> 
->> Changes in v2:
->> - Explain why sq52206 compatibility has been added to ina2xx.yaml.
->> - addressed various review comments
->> - Link to v1: https://lore.kernel.org/linux-hwmon/20241224063559.391061-1-wenliang202407@163.com/
->> 
->> Wenliang Yan (2):
->>    dt-bindings:Add SQ52206 to ina2xx devicetree bindings
->>    hwmon:(ina238)Add support for SQ52206
->> 
->>   .../devicetree/bindings/hwmon/ti,ina2xx.yaml  |   4 +
->>   Documentation/hwmon/ina238.rst                |  15 ++
->>   drivers/hwmon/ina238.c                        | 209 +++++++++++++++---
->>   3 files changed, 195 insertions(+), 33 deletions(-)
->> 
-
-Thanks,
-Wenliang Yan
+-- 
+2.45.2
 
 
