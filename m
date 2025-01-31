@@ -1,292 +1,129 @@
-Return-Path: <linux-hwmon+bounces-6404-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6406-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A6AA23C4F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 Jan 2025 11:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA35A23D46
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 Jan 2025 12:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D3C166353
-	for <lists+linux-hwmon@lfdr.de>; Fri, 31 Jan 2025 10:36:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B094164CE1
+	for <lists+linux-hwmon@lfdr.de>; Fri, 31 Jan 2025 11:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B691953BB;
-	Fri, 31 Jan 2025 10:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845621C243D;
+	Fri, 31 Jan 2025 11:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NUu25pcD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0p9i2Qs"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2932169397
-	for <linux-hwmon@vger.kernel.org>; Fri, 31 Jan 2025 10:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5332A14A099;
+	Fri, 31 Jan 2025 11:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738319815; cv=none; b=gZZu2SwkxJiqX9zpSy8aTVcCt/jx2rBPuL+grb6sYWv+L7mJlkYb2SWYT0bPPJzNz2pWOYSpBE+ee5bkhtlF9Yjm6kt0NVukmaDrCvULgs5jB/APvpvBucUcD87tw0v3bESp4gKe10OyMMRega7e947RyV3Hfru7kd2xEvm9SVg=
+	t=1738323979; cv=none; b=YIGi5jXEQyR2jUJsZujd4F1WsgwRGgZ6zysSvjqaU1wXKl5CEQjFMSNxLfK/76Q8+M6LzSSWC6qmhJObBp5kmGJwZ19sS5aw2XpuyGKtm78RGoBpVYvi+pX+k+EUg1QKgw5k5EVpCRtL2xNsHVfzsXcRh+A/FwARP+RVti7rlZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738319815; c=relaxed/simple;
-	bh=thV84Efb19HxPOzrJmPMQTbU95z3kl5+ypofIzGI9jw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=PjA8wLfDaji3aZl0cVbADhu6+RnfBfJtxz4G1+kVFV4Wme2OjKuEYXWbAgWGGQiJGHnuNw9svu3VIPnn+i71Px/oAVLY+e4FsaH1RDFSLGj4MwtAAf+f+EM8NN8no/BTV6IppQ+kV2ySP+WP/Qa6tWqGqqNyKgJ8SSfUI/1nlFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NUu25pcD; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738319812; x=1769855812;
-  h=date:from:to:cc:subject:message-id;
-  bh=thV84Efb19HxPOzrJmPMQTbU95z3kl5+ypofIzGI9jw=;
-  b=NUu25pcD4KH/x1v9dYwS3PCd67lg4ennjYo+NVSqbQGV7c1FAq2hsMIV
-   YHdNQUNHq9GlXiwhBXeSrOAM5LMMiCZpqK7yRxVSRXjT8Psu/Csrcu1sz
-   fLPXEHm6EgQA0Rl3WbzA9o9ioByaX9BSsgr3JLlczQc8LORIgOTA8oUUk
-   7iK0aMybqbsEtZ7lbKtRvB5c3kz2FNKARmqdXBNlC26djhxa/5vZXsMJN
-   En7dtfqjpqBzP30zzVLkll2qR4i1nYPYaBPIBa9sw9wheeodmtI2+4no6
-   SwVGd8XH6LtOhNwOnOS+Hcd/POzVCF5RObKmuuzgxxdIU7Ix3MTaWkjJx
-   g==;
-X-CSE-ConnectionGUID: RjOn5ZnGRgOD0sAQJ88mrg==
-X-CSE-MsgGUID: ZFMvyTO4R6Cgz3XCt3Vurg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="41719915"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
-   d="scan'208";a="41719915"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 02:36:52 -0800
-X-CSE-ConnectionGUID: quPcL1fPQVuIueRoYqm/DQ==
-X-CSE-MsgGUID: H1V8CCNuQqSHokRzPr/Cag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
-   d="scan'208";a="109432716"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 31 Jan 2025 02:36:51 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tdoOG-000mGl-31;
-	Fri, 31 Jan 2025 10:36:48 +0000
-Date: Fri, 31 Jan 2025 18:36:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:testing] BUILD SUCCESS
- 223ef3538c79fd692a3b0204d5f00f09c8865462
-Message-ID: <202501311856.BfCgESG6-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1738323979; c=relaxed/simple;
+	bh=qpv5Qe5UupEfbrdlYqJJRSVBIxpIAPSkVz947qQECY0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ufaFwPaA21VJBkRmBrb0QCaPqxeQ//pUX/oWVAXehFqZsxLsiQA5dMFB1o6P6HA7pWqhZLnPQqCfLXJpD7u9frFvJc5T6mcF0rg+Fhd2/R2IUPHRVrBLoGvO9WTgKfdDeB/vjuJS2ebjpSBt+MkbPfXlp7SaMUKBUE8WmO5cxwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0p9i2Qs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ABCD6C4CED1;
+	Fri, 31 Jan 2025 11:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738323978;
+	bh=qpv5Qe5UupEfbrdlYqJJRSVBIxpIAPSkVz947qQECY0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=I0p9i2QsF+vu122iLNpgNAuy/HuJceDbdRueQO9zaBi+/FssgubSJitWyRrQtvAgu
+	 xePYBug3lCB5wiqNv2FzpNm4foyNn+ZZWYujXMcOp7S8olI2jnMZpxtGrUPhAo/jda
+	 Op3W5Zi266DZN6gVtgSL8nJFiMdIQGEFpyV1LVxMWcdbjgvVfpMyOt6b/AAhSWDYoX
+	 DJV6dzG31CmKyun80qeRL+1JOLY3YXgp3mCRAid3y93rqJJHMRnAJq5+/gHQPrklB3
+	 ygrSi1v++GTMD752YIi4g6KrGbE/HyK2sB8fOAYNcwF48thKoFEPeVYhne4qde3J07
+	 Om64vSG1uqbkw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D404C02193;
+	Fri, 31 Jan 2025 11:46:18 +0000 (UTC)
+From: PavithraUdayakumar-adi via B4 Relay <devnull+pavithra.u.analog.com@kernel.org>
+Subject: [PATCH v5 0/2] Add support for MAX31331 RTC
+Date: Fri, 31 Jan 2025 17:22:13 +0530
+Message-Id: <20250131-add_support_max31331_fix_7-v1-0-d29d5de3d562@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG25nGcC/x3M0QpAMBSA4VfRubZyNkNeRVpjB+cCa0NK3t1y+
+ fXX/0CkwBShzR4IdHHkfUvAPINxsdtMgl0yyELqAhUK65yJp/d7OMxqb4VKoZn4NrVobDnoWo5
+ V2QyQBj5QCv+8g0tD/74fJd9dv3AAAAA=
+X-Change-ID: 20250131-add_support_max31331_fix_7-8a4b572c648b
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ PavithraUdayakumar-adi <pavithra.u@analog.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738324342; l=1589;
+ i=pavithra.u@analog.com; s=20241220; h=from:subject:message-id;
+ bh=qpv5Qe5UupEfbrdlYqJJRSVBIxpIAPSkVz947qQECY0=;
+ b=nnlwZTb3xL5G3PEcUYBFYnaFSrqJv+ju4ecJafx1/BJ6gjvZKwnfMTQJR0uHsRqHLKAHY4v+w
+ xq3AgtxJi/BCpIZCCqI9worHBVTai8cM/winyyMn8nXrDJhkfmabdgK
+X-Developer-Key: i=pavithra.u@analog.com; a=ed25519;
+ pk=RIhZrdpg71GEnmwm1eNn95TYUMDJOKVsFd37Fv8xf1U=
+X-Endpoint-Received: by B4 Relay for pavithra.u@analog.com/20241220 with
+ auth_id=303
+X-Original-From: PavithraUdayakumar-adi <pavithra.u@analog.com>
+Reply-To: pavithra.u@analog.com
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git testing
-branch HEAD: 223ef3538c79fd692a3b0204d5f00f09c8865462  Merge branch 'fixes-v6.14' into testing
+This patch series introduces support for the Maxim MAX31331 RTC.
+It includes:
 
-elapsed time: 882m
+1. Device Tree bindings documentation for MAX31331.
+2. The driver implementation for the MAX31331 RTC.
 
-configs tested: 199
-configs skipped: 5
+---
+Changes in v5:
+- Removed the commit description stating max31331 and max31335 are compatible. 
+- Rebase v6.13
+- Link to v4: https://lore.kernel.org/all/20250119-add_support_max31331_fix_5-v1-0-73f7be59f022@analog.com/
+---
+Changes in v4:
+- Reverted the I2C address change for MAX31335 RTC (0x69) and removed it from the property register;
+  will include it in a separate fix.
+- Added id as a member of struct chip_desc
+- Rebase on v6.13-rc7
+- Link to v3: https://lore.kernel.org/all/20250109-add_support_max31331_fix_3-v1-0-a74fac29bf49@analog.com/
+---
+Changes in v3:
+- Added missing spaces in driver code
+- Removed binding for checking address
+- Rebase on v6.13-rc6
+- Link to v2: https://lore.kernel.org/all/20250103-add_support_max31331_fix-v1-0-8ff3c7a81734@analog.com/
+---
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: PavithraUdayakumar-adi <pavithra.u@analog.com>
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    clang-18
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-14.2.0
-arc                              allyesconfig    clang-18
-arc                              allyesconfig    gcc-13.2.0
-arc                                 defconfig    gcc-14.2.0
-arc                   randconfig-001-20250131    gcc-13.2.0
-arc                   randconfig-002-20250131    gcc-13.2.0
-arm                              allmodconfig    clang-18
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    gcc-14.2.0
-arm                              allyesconfig    clang-18
-arm                              allyesconfig    gcc-14.2.0
-arm                                 defconfig    gcc-14.2.0
-arm                          gemini_defconfig    gcc-14.2.0
-arm                          ixp4xx_defconfig    gcc-14.2.0
-arm                   randconfig-001-20250131    clang-17
-arm                   randconfig-002-20250131    clang-15
-arm                   randconfig-003-20250131    gcc-14.2.0
-arm                   randconfig-004-20250131    gcc-14.2.0
-arm                           tegra_defconfig    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                               defconfig    gcc-14.2.0
-arm64                 randconfig-001-20250131    clang-15
-arm64                 randconfig-002-20250131    gcc-14.2.0
-arm64                 randconfig-003-20250131    clang-21
-arm64                 randconfig-004-20250131    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                                defconfig    gcc-14.2.0
-csky                  randconfig-001-20250131    clang-21
-csky                  randconfig-001-20250131    gcc-14.2.0
-csky                  randconfig-002-20250131    clang-21
-csky                  randconfig-002-20250131    gcc-14.2.0
-hexagon                           allnoconfig    gcc-14.2.0
-hexagon                          allyesconfig    clang-18
-hexagon                             defconfig    gcc-14.2.0
-hexagon               randconfig-001-20250131    clang-21
-hexagon               randconfig-002-20250131    clang-21
-i386                             allmodconfig    clang-19
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    clang-19
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    clang-19
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250131    clang-19
-i386        buildonly-randconfig-002-20250131    clang-19
-i386        buildonly-randconfig-003-20250131    gcc-12
-i386        buildonly-randconfig-004-20250131    gcc-12
-i386        buildonly-randconfig-005-20250131    clang-19
-i386        buildonly-randconfig-006-20250131    gcc-12
-i386                                defconfig    clang-19
-i386                  randconfig-001-20250131    clang-19
-i386                  randconfig-002-20250131    clang-19
-i386                  randconfig-003-20250131    clang-19
-i386                  randconfig-004-20250131    clang-19
-i386                  randconfig-005-20250131    clang-19
-i386                  randconfig-006-20250131    clang-19
-i386                  randconfig-007-20250131    clang-19
-i386                  randconfig-011-20250131    gcc-12
-i386                  randconfig-012-20250131    gcc-12
-i386                  randconfig-013-20250131    gcc-12
-i386                  randconfig-014-20250131    gcc-12
-i386                  randconfig-015-20250131    gcc-12
-i386                  randconfig-016-20250131    gcc-12
-i386                  randconfig-017-20250131    gcc-12
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch                           defconfig    gcc-14.2.0
-loongarch             randconfig-001-20250131    clang-21
-loongarch             randconfig-001-20250131    gcc-14.2.0
-loongarch             randconfig-002-20250131    clang-21
-loongarch             randconfig-002-20250131    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                         amcore_defconfig    gcc-14.2.0
-m68k                                defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-microblaze                          defconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                        bcm63xx_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250131    clang-21
-nios2                 randconfig-001-20250131    gcc-14.2.0
-nios2                 randconfig-002-20250131    clang-21
-nios2                 randconfig-002-20250131    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-12
-parisc                randconfig-001-20250131    clang-21
-parisc                randconfig-001-20250131    gcc-14.2.0
-parisc                randconfig-002-20250131    clang-21
-parisc                randconfig-002-20250131    gcc-14.2.0
-parisc64                            defconfig    gcc-14.2.0
-powerpc                    adder875_defconfig    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                          allyesconfig    gcc-14.2.0
-powerpc                        icon_defconfig    gcc-14.2.0
-powerpc                      mgcoge_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20250131    clang-21
-powerpc               randconfig-001-20250131    gcc-14.2.0
-powerpc               randconfig-002-20250131    clang-15
-powerpc               randconfig-002-20250131    clang-21
-powerpc               randconfig-003-20250131    clang-21
-powerpc                    socrates_defconfig    gcc-14.2.0
-powerpc                        warp_defconfig    gcc-14.2.0
-powerpc                 xes_mpc85xx_defconfig    gcc-14.2.0
-powerpc64             randconfig-001-20250131    clang-15
-powerpc64             randconfig-001-20250131    clang-21
-powerpc64             randconfig-002-20250131    clang-17
-powerpc64             randconfig-002-20250131    clang-21
-powerpc64             randconfig-003-20250131    clang-15
-powerpc64             randconfig-003-20250131    clang-21
-riscv                            alldefconfig    gcc-14.2.0
-riscv                            allmodconfig    clang-21
-riscv                            allmodconfig    gcc-14.2.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-21
-riscv                            allyesconfig    gcc-14.2.0
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20250131    gcc-14.2.0
-riscv                 randconfig-002-20250131    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250131    gcc-14.2.0
-s390                  randconfig-002-20250131    gcc-14.2.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-12
-sh                    randconfig-001-20250131    gcc-14.2.0
-sh                    randconfig-002-20250131    gcc-14.2.0
-sh                           se7619_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250131    gcc-14.2.0
-sparc                 randconfig-002-20250131    gcc-14.2.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20250131    gcc-14.2.0
-sparc64               randconfig-002-20250131    gcc-14.2.0
-um                               allmodconfig    clang-21
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250131    gcc-14.2.0
-um                    randconfig-002-20250131    gcc-14.2.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250131    gcc-11
-x86_64      buildonly-randconfig-002-20250131    clang-19
-x86_64      buildonly-randconfig-003-20250131    gcc-12
-x86_64      buildonly-randconfig-004-20250131    gcc-12
-x86_64      buildonly-randconfig-005-20250131    clang-19
-x86_64      buildonly-randconfig-006-20250131    clang-19
-x86_64                              defconfig    clang-19
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-19
-x86_64                randconfig-001-20250131    clang-19
-x86_64                randconfig-002-20250131    clang-19
-x86_64                randconfig-003-20250131    clang-19
-x86_64                randconfig-004-20250131    clang-19
-x86_64                randconfig-005-20250131    clang-19
-x86_64                randconfig-006-20250131    clang-19
-x86_64                randconfig-007-20250131    clang-19
-x86_64                randconfig-008-20250131    clang-19
-x86_64                randconfig-071-20250131    clang-19
-x86_64                randconfig-072-20250131    clang-19
-x86_64                randconfig-073-20250131    clang-19
-x86_64                randconfig-074-20250131    clang-19
-x86_64                randconfig-075-20250131    clang-19
-x86_64                randconfig-076-20250131    clang-19
-x86_64                randconfig-077-20250131    clang-19
-x86_64                randconfig-078-20250131    clang-19
-x86_64                               rhel-9.4    clang-19
-x86_64                           rhel-9.4-bpf    clang-19
-x86_64                         rhel-9.4-kunit    clang-19
-x86_64                           rhel-9.4-ltp    clang-19
-x86_64                          rhel-9.4-rust    clang-19
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250131    gcc-14.2.0
-xtensa                randconfig-002-20250131    gcc-14.2.0
-xtensa                         virt_defconfig    gcc-14.2.0
+---
+PavithraUdayakumar-adi (2):
+      dt-bindings: rtc: max31335: Add max31331 support
+      rtc: max31335: Add driver support for max31331
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+ .../devicetree/bindings/rtc/adi,max31335.yaml      |   4 +-
+ drivers/rtc/rtc-max31335.c                         | 165 +++++++++++++++------
+ 2 files changed, 125 insertions(+), 44 deletions(-)
+---
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+change-id: 20250131-add_support_max31331_fix_7-8a4b572c648b
+
+Best regards,
+-- 
+PavithraUdayakumar-adi <pavithra.u@analog.com>
+
+
 
