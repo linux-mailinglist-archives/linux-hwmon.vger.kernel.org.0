@@ -1,235 +1,112 @@
-Return-Path: <linux-hwmon+bounces-6453-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6455-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C114FA27B12
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Feb 2025 20:22:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD189A27CC1
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Feb 2025 21:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33B623A11EA
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Feb 2025 19:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE34F1886A68
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Feb 2025 20:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BBB218AC3;
-	Tue,  4 Feb 2025 19:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BEC219A75;
+	Tue,  4 Feb 2025 20:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiTKmsma"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jMZ6zrXp"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BBD204F85;
-	Tue,  4 Feb 2025 19:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4530F219A6B
+	for <linux-hwmon@vger.kernel.org>; Tue,  4 Feb 2025 20:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738696964; cv=none; b=DUDgupFrBdiBf5nI6QyjhEDcZq7CZxAgS7MMv0KBB8zVP8xxsgwOu/5+3EbhNa7KVG0gJefbYRYCUFtXcx0fe8U9F7HeX8cvJgyYXrw0tuEedPDB4XN7gKWnLc2AvBJAP2g/sLiZL/Ba+uM9+6GP7Dk3kOlk/mOfwbBCtIFuASM=
+	t=1738700695; cv=none; b=oeEwT5rEz0GqvrEsJAaTYQsg2upPSg5jYQ7M4fNq49Ah/WTHdaqGQN4x/GEjK2/Nc+kXSl9fR3NOJlUA5+61EZHFHLpR2Skn//xlc5E4OMX8eH1IDiWfvUsjvKgBE9XvDoqzYfY5ZQFdvGQrmdcUPK5gjh2EOuiUJsC4SdcnzHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738696964; c=relaxed/simple;
-	bh=JIIYJevLdmFj/UppSjoqdwt4o9oRsJRr08DNrl9bKjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eSvBSgkQHmz9Syl9ORhlz+2nmHIayt5s6JNaxOQHzeYJTXm1rlQwkMKxBLz7upkyNzLjdHNmPxhwAveRtNyPYaFsmgs2Pr4gcbfYRnGQDuB2nc/RKTq/bnU4/MvqOQQiYf2eP4uIJsn8Hv+CX4s6X4upuzPyWIaHgTwLFt+z624=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiTKmsma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32D1C4CEDF;
-	Tue,  4 Feb 2025 19:22:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738696964;
-	bh=JIIYJevLdmFj/UppSjoqdwt4o9oRsJRr08DNrl9bKjM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oiTKmsmaawtyzK3gFz6SoL3CCBbX2odSetSm8/RtFli99hdpbpEMGz5b45YIz2Lg+
-	 3Y79cu+JjhlDD+sXz341Q6Lhk7gp/U2662fsol5SY/SexMRIK1S3JaEc4tMOWgkJqu
-	 85SkbHnqeZ/jHVL3UtoHdl14znHvI9LacUUVRRXHzPsajkngZ+8TiFgsnYkDwzcz28
-	 gbqZFk3x2CzQE/e5/23LZDZwUPEyu09jG4qDAic5Bq9cg8RRO1oiTMvqt2PW91NgA+
-	 BWfs4iLOJQPUHOgTFbtrwsZRUsje5DMFW/84+OI4Ab3yhhMaTjBRq85LF1j7cAnRbZ
-	 mqHsCzf2E7c0Q==
-Date: Tue, 4 Feb 2025 19:22:39 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Naresh Solanki <naresh.solanki@9elements.com>
-Cc: Guenter Roeck <linux@roeck-us.net>, broonie@kernel.org,
-	Jean Delvare <jdelvare@suse.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: hwmon: ir38060: Move & update dt binding
-Message-ID: <20250204-mulled-evaluate-8a690cdfbd4d@spud>
-References: <20250204180306.2755444-1-naresh.solanki@9elements.com>
+	s=arc-20240116; t=1738700695; c=relaxed/simple;
+	bh=+tDw1rM8R6L8IupSD+W6AbNnxB6dJEzU9dSZ87LXzRY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=IBXsZHHfI9/Y6YZPrUPuxjOb3coNHV2a3XczzuCf5k231W1WMiG/CfZszxitabEcA+hIRu91xJJPJR+g7Su3nN3BHIBzXXrOCsqHW/rA4OWGYBlSa/0hAFnVLR8NsajEep8o6qxHvj1Nps1MnBzDgLV3Truksh7kGtvHE0fU1kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jMZ6zrXp; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738700694; x=1770236694;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=+tDw1rM8R6L8IupSD+W6AbNnxB6dJEzU9dSZ87LXzRY=;
+  b=jMZ6zrXpBt2Ae6+p0rAXQqSaFCxjXMjNrp2O4jVi87uTo2sMx/LuiMXL
+   wC/n2QTUl8Ub3IW0G6XXtzTxY/y3hf7PElAR97nsxH+qynukrYmNeEU0o
+   R8Ph5jUcpYUWjqQUDWu7eb2joUmDShB3z7AaDCFIYYKekXhA+yhux8dha
+   rBpc327Mcs1v4aNpgnjgpEYoDknK+C1uyaGEIzhJL1oXeraDAtujsFZ2n
+   ai37daz8uN3z2fWPDTHBcDz0v66gGc1+4wCVDL9kYOtoRfr8WyBBmnuY1
+   NiMfEi7mE3HKDgBl+Tl5aYQmncjC2da6hp4+PGyeliPcMZRttWgFQikn0
+   w==;
+X-CSE-ConnectionGUID: 8l+4FElDTumaYiFs8oUz4A==
+X-CSE-MsgGUID: Hw/MvwNaRgCXa9l96IrtMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="26845868"
+X-IronPort-AV: E=Sophos;i="6.13,259,1732608000"; 
+   d="scan'208";a="26845868"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 12:24:53 -0800
+X-CSE-ConnectionGUID: Z8vRZy6PT3Ci8+Nuslvifg==
+X-CSE-MsgGUID: 3IqtRhj5S/KQkjq1kNci7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="133948005"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 04 Feb 2025 12:24:51 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tfPTV-000syL-12;
+	Tue, 04 Feb 2025 20:24:49 +0000
+Date: Wed, 5 Feb 2025 04:24:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: oe-kbuild-all@lists.linux.dev, linux-hwmon@vger.kernel.org
+Subject: drivers/hwmon/pmbus/pmbus_core.c:3507:33: sparse: sparse: symbol
+ 'pmbus_debugfs_block_data' was not declared. Should it be static?
+Message-ID: <202502050447.CA5dAMMU-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="HYb3Nichi2MrG9QF"
-Content-Disposition: inline
-In-Reply-To: <20250204180306.2755444-1-naresh.solanki@9elements.com>
-
-
---HYb3Nichi2MrG9QF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 04, 2025 at 11:33:03PM +0530, Naresh Solanki wrote:
-> Move dt binding under hwmon/pmbus & align accordingly.
->=20
-> Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
-> ---
->  .../hwmon/pmbus/infineon,ir38060.yaml         | 61 +++++++++++++++++++
->  .../bindings/regulator/infineon,ir38060.yaml  | 45 --------------
->  2 files changed, 61 insertions(+), 45 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/infineo=
-n,ir38060.yaml
->  delete mode 100644 Documentation/devicetree/bindings/regulator/infineon,=
-ir38060.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/infineon,ir380=
-60.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,ir38060.ya=
-ml
-> new file mode 100644
-> index 000000000000..e1f683846a54
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,ir38060.yaml
-> @@ -0,0 +1,61 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/hwmon/pmbus/infineon,ir38060.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Infineon Buck Regulators with PMBUS interfaces
-> +
-> +maintainers:
-> +  - Not Me.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git testing
+head:   67b0f0fb646de244e59420a373c93a9deb2c60b5
+commit: 9fac9564cf8a1da1d26a555355cb92b517444b1e hwmon: (pmbus/core) Optimize debugfs block data attribute initialization
+date:   25 hours ago
+config: csky-randconfig-r132-20250205 (https://download.01.org/0day-ci/archive/20250205/202502050447.CA5dAMMU-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 14.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20250205/202502050447.CA5dAMMU-lkp@intel.com/reproduce)
 
-How the hell did this get merged!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502050447.CA5dAMMU-lkp@intel.com/
 
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - infineon,ir38060
-> +      - infineon,ir38064
-> +      - infineon,ir38164
-> +      - infineon,ir38263
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  regulators:
-> +    type: object
-> +    description:
-> +      list of regulators provided by this controller.
+sparse warnings: (new ones prefixed by >>)
+>> drivers/hwmon/pmbus/pmbus_core.c:3507:33: sparse: sparse: symbol 'pmbus_debugfs_block_data' was not declared. Should it be static?
 
-Can you explain why this change is justified? Your commit message is
-explaining what you're doing but not why it's okay to do.
+vim +/pmbus_debugfs_block_data +3507 drivers/hwmon/pmbus/pmbus_core.c
 
-Cheers,
-Conor.
+  3506	
+> 3507	const struct pmbus_debugfs_data pmbus_debugfs_block_data[] = {
+  3508		{ .reg = PMBUS_MFR_ID, .name = "mfr_id" },
+  3509		{ .reg = PMBUS_MFR_MODEL, .name = "mfr_model" },
+  3510		{ .reg = PMBUS_MFR_REVISION, .name = "mfr_revision" },
+  3511		{ .reg = PMBUS_MFR_LOCATION, .name = "mfr_location" },
+  3512		{ .reg = PMBUS_MFR_DATE, .name = "mfr_date" },
+  3513		{ .reg = PMBUS_MFR_SERIAL, .name = "mfr_serial" },
+  3514	};
+  3515	
 
-> +
-> +    properties:
-> +      vout:
-> +        $ref: /schemas/regulator/regulator.yaml#
-> +        type: object
-> +
-> +        unevaluatedProperties: false
-> +
-> +    additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        regulator@34 {
-> +            compatible =3D "infineon,ir38060";
-> +            reg =3D <0x34>;
-> +
-> +            regulators {
-> +                vout {
-> +                    regulator-name =3D "p5v_aux";
-> +                    regulator-min-microvolt =3D <437500>;
-> +                    regulator-max-microvolt =3D <1387500>;
-> +                };
-> +            };
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/regulator/infineon,ir38060=
-=2Eyaml b/Documentation/devicetree/bindings/regulator/infineon,ir38060.yaml
-> deleted file mode 100644
-> index e6ffbc2a2298..000000000000
-> --- a/Documentation/devicetree/bindings/regulator/infineon,ir38060.yaml
-> +++ /dev/null
-> @@ -1,45 +0,0 @@
-> -# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> -%YAML 1.2
-> ----
-> -$id: http://devicetree.org/schemas/regulator/infineon,ir38060.yaml#
-> -$schema: http://devicetree.org/meta-schemas/core.yaml#
-> -
-> -title: Infineon Buck Regulators with PMBUS interfaces
-> -
-> -maintainers:
-> -  - Not Me.
-> -
-> -allOf:
-> -  - $ref: regulator.yaml#
-> -
-> -properties:
-> -  compatible:
-> -    enum:
-> -      - infineon,ir38060
-> -      - infineon,ir38064
-> -      - infineon,ir38164
-> -      - infineon,ir38263
-> -
-> -  reg:
-> -    maxItems: 1
-> -
-> -required:
-> -  - compatible
-> -  - reg
-> -
-> -unevaluatedProperties: false
-> -
-> -examples:
-> -  - |
-> -    i2c {
-> -      #address-cells =3D <1>;
-> -      #size-cells =3D <0>;
-> -
-> -      regulator@34 {
-> -        compatible =3D "infineon,ir38060";
-> -        reg =3D <0x34>;
-> -
-> -        regulator-min-microvolt =3D <437500>;
-> -        regulator-max-microvolt =3D <1387500>;
-> -      };
-> -    };
->=20
-> base-commit: bfbb730c4255e1965d202f48e7aa71baa9a7c65b
-> --=20
-> 2.42.0
->=20
-
---HYb3Nichi2MrG9QF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ6Jo/wAKCRB4tDGHoIJi
-0n1LAQCvwcmBoxgsSDIQxYp6veyw89f+ngZJgwza+NLCdV/5GAEAqLOh4I/JlmHW
-myWJFQTOAi+LyrfwSTy4LXwa7z9UVQk=
-=+Bh3
------END PGP SIGNATURE-----
-
---HYb3Nichi2MrG9QF--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
