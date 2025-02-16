@@ -1,179 +1,143 @@
-Return-Path: <linux-hwmon+bounces-6654-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6658-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB2BA36B96
-	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Feb 2025 04:14:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF83A37730
+	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Feb 2025 20:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8B43B04EE
-	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Feb 2025 03:13:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F5E73AFFB5
+	for <lists+linux-hwmon@lfdr.de>; Sun, 16 Feb 2025 19:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDDD15B10D;
-	Sat, 15 Feb 2025 03:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC431A4F2D;
+	Sun, 16 Feb 2025 19:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ns1KFfMN"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="rAdIPGvM"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB3A1426C
-	for <linux-hwmon@vger.kernel.org>; Sat, 15 Feb 2025 03:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E637F1A2860;
+	Sun, 16 Feb 2025 19:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739589246; cv=none; b=UdlTUYtWSXqFSAyUz1wbxoVnQn42cz7m49Sf7MCnVZE45EB4EKP3F1p+6sL48+Q8ktO4e753aOugtr5kKp68Qkq6btj/I6GrdIoX7cXlrN9S1+mMgLbpSmkCpKkmn0vagRElJyd5TTi6bUPncJrCEW1WrA65cSsKR6wIQeYjjmA=
+	t=1739734403; cv=none; b=czsB/F+U6oPrRoWskZf1D505ptcBI5EAgGqww12fhnKZ+kl0n5SfaDeDgvPAhyQDNTyUaBqKwo6ziTgg9Bm2kcqVzzuV1XHk/72fE8PeVf3qNJGZNPMjI/mzEW8CQ1U05jp4svGm+XQ+6jKuGk7JGXFuZwJfjoh7gfVUzV48Osw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739589246; c=relaxed/simple;
-	bh=XbtIgK4btgu4hpVTE1orOsAv4oWywTOG76u4zgWCn9I=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=aSQorqeL0RPYGxywyPcHHfe5Z9AVjGAl3gqIJsjkr0YH8RYwjxrzXRUYu1RcarEIryLztDi4NEX+gZ+btlDB3f1rJI1YnXt4BVSstyvpSO+z3qkWeNr053UFJXG+Qv4rh7IA0SoYuCGQ2AGWGBrNRipP+K5l7WXf6jwQ2xC0X4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ns1KFfMN; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739589244; x=1771125244;
-  h=date:from:to:cc:subject:message-id;
-  bh=XbtIgK4btgu4hpVTE1orOsAv4oWywTOG76u4zgWCn9I=;
-  b=ns1KFfMNvwR7EIWjreWRV665OTJTJe3+Fsfh0b74yF91Y9OE3kYoZBHf
-   W+raoRw0vcriUF7cFI1Tuk3uCE8uGnGV1rfMQDTUPzNSTz0U0z7nHTLd5
-   bC23jXz14a80HG4m0YDP2FpWVGDs0hJH25/LzSgH8nWJOrMkfuJ0Ldp/J
-   lu8wB4feCVkBYX4XVzr9xgB5eZ1Ab2xOPQondcXpzzvlKV9AhXFFZO00S
-   Vb3sMSoPLOtuiz+OmRvrnVT/XdH+7tkgKEouJ+PQ5ViHrZE/rHjuqAAT9
-   svyy3y//Q3npdY8KdPLHqt4hfRHt/qRc0vPpwPC/n5FHYfli4kqk7fLDE
-   w==;
-X-CSE-ConnectionGUID: CrR0KmHbSEGISaTeSXh8sQ==
-X-CSE-MsgGUID: E1W5bLifQYqjhdPXio7CZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="43996030"
-X-IronPort-AV: E=Sophos;i="6.13,287,1732608000"; 
-   d="scan'208";a="43996030"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 19:14:03 -0800
-X-CSE-ConnectionGUID: hx/1V0XwSv60p0vgBJR88g==
-X-CSE-MsgGUID: Y7jjB4sGQEWzEy67ymYo2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="136844346"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 14 Feb 2025 19:13:49 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tj8cl-001ASR-1K;
-	Sat, 15 Feb 2025 03:13:47 +0000
-Date: Sat, 15 Feb 2025 11:12:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:testing] BUILD SUCCESS
- 52885bdadeade448dc8bdd2017f88a71b8d4fc97
-Message-ID: <202502151141.952q2aeC-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1739734403; c=relaxed/simple;
+	bh=WJV/XDNncV3HMhaU1OkQyuWjHFhef1ztCgpi83LVLx0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WnEMGFZNypGgLfLM8mKcFEbulz2Z6QFQYp4zuy/UPMzHnV1HgSUOl1iK14cWFmjpDa14MSZWbfVMU0u96zMkQa7QbcqQsItYDEW+8ap2GOSPvkff3GH8k/i/gvKdJyCfMDQRVTU55Txf8qOjeF4YOGCxPMGu6WkYB9wA4iZFOSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=rAdIPGvM; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1739734377; x=1740339177; i=w_armin@gmx.de;
+	bh=5SxkcnujTlMkxclqqkcog9uUjawTQI9K/xGxAcUUiqY=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=rAdIPGvMneGt5JWjYN867QM9Q0DF5zLKHhpoBmrQYkv7zqzUDRASrOQ7hO2oQEg4
+	 oOvX9/8JUG7i+pmQ0nWuZ5YD5l+uwYsOvzXnZXKmSRws7FY6bWzlUpo3Pckem0ifI
+	 R04QA5W9Hq70SijenQVarViXB2Dy266/NBPdrnaOJoxNEv6h5ao4aYSZcXH8Asrrm
+	 yvuzu8rLcK44BHi3p0OCkJbEX5DzwP41NetdhYbBeBAAJE2gp/Im9DnaS+gKWe+SA
+	 sqNYTnWykbIRP7nipOMLIdFKNMlMFDEcMrR6f+Y5c4oZNv/VWcxnCVaCQGW60suf1
+	 wuslnRNgaTBolsOhMA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.fritz.box ([87.177.78.219]) by mail.gmx.net
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1M59C2-1tkqJY3cIe-004mIN; Sun, 16 Feb 2025 20:32:57 +0100
+From: Armin Wolf <W_Armin@gmx.de>
+To: james@equiv.tech,
+	markpearson@lenovo.com,
+	jorge.lopez2@hp.com
+Cc: jdelvare@suse.com,
+	linux@roeck-us.net,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org,
+	corbet@lwn.net,
+	linux-doc@vger.kernel.org
+Subject: [PATCH v2 0/8] platform/x86: wmi: Rework WMI device enabling
+Date: Sun, 16 Feb 2025 20:32:43 +0100
+Message-Id: <20250216193251.866125-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:E9HBntScjkVmVXA/RGU9WXs5GzImI8Q5X8772CBP2g8NU7m/q5o
+ gD23GUCkgFW/DXUEj5q1iZmJ5FAAooM8lpLPX8BA6EkLJygVlRSXaqEjNnJXGNBWBJDLJFj
+ 8ennt/4GXSDzNz0l74igPpfxYKGsVTw1ljyefKGPV00UjN5YAHMxyPMO955cmmG1eP5xCij
+ aIVtIJdF9rk1dx77tCPEA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:wKyUm7eqFOA=;oV8SorG/pKw1gx7VoIRfah3gMob
+ 55qNoJ9jz/wxCTxZQc35Orx0cT7WgdSgZV96PovOQhy2vYrEF3zdEHE+opdmehVM/eVNOKQhp
+ 9/o/9lHgJ29cCkRtAjcg7MgkvzqE2SFr30OkZIQ7jhlNJrWUyXEXABy4AsRDUAxeQn64c2byI
+ uROM1ENssbACUGleJ5QgBljiwv03lUBYBvjrwquOX9AeXLWlXAXnTJSoUnsxqDnCiprZ+lY2e
+ ZY3WVp2OKiX497vNmpH6xnTngg+b6clJUcjaaFQKvVp3YpiqyvLUfqs7G8rytkayHpZLcFsxZ
+ RrtJzhKSHfsXN2M0EotP+CpPwtuiUdqXXklXwYUjLPWCQ358Y0DAYT1x0/DoQhk8BQ2VXlTYA
+ Kfo/kYK6Cd7IuT6/BCGoB3WjzRKJR/rnaxeKVNwJJ0wbnAj/p92bRnxai26ayyA1LH7e8yOFP
+ 9wUo5dGpfEC2A5Yerw3M15QIbHWEJ4MhevvOeUD6gvLmnLR8gK369W4c+ABC9uwx9Yxt9NgHA
+ 9pxqnRQI+WScmkWIaEEOcVBZrqas8OM+4m4JXim/NrND42n/9QZTovkFYeNL8uYFXhvayCGa6
+ ZzmIcg6U5ddCFVICpANRnIuB4zn5M62W05Dq63qlBhPBSXunaP8Mhdnp7I15sc26bk1xpbPx1
+ X3xN4X0crc5ZIBG6zF2yCprNBQHJvEjVz8OcLfud16HO3YsqvHs1PtVAFlB0eP9Nlbvaj6eMr
+ Jr3rkM6YQdBOLOG2TxdYP6TPQwkmEKxbb2B7Lj8OsIzknDh8Q/6FptUphDxYuZjdlr9jUzC/p
+ 6+7AN1wdQXwcTdHkoRLYOqolOB0QX+2U9aHKyMpPnP2ifcTKSxY6qqVmJ2On5DA5skE5YLM9b
+ NmOBype6LsRJ9xW56xNO2KFfPfi/xw9dAC9OJL+sDJat6t+qQ79jd1FJ9wHNYsOmYVLd+jWE3
+ y219ZOl9kM0rFP0dVQehqT61ZkoW+GpQbxS5PREImBqDXZGcDPkuLBMDAj7y0ZMFUHmcfS2+P
+ 7TJt7kqvduS4xy3wdLkVSp7kfejBbnIt6djOVDjRBwaitjn4ZWqFsSCw54q1SdkBRhxNBxRxT
+ pXSg5lafIPkKzWrCCl7f9WhMun4g3oj7iZCzsAHlgw2uxWJBQiymSmxowbvOaJP8bMid07lJN
+ /5/RdzreZOZwb0NB2ceQXnns5gj6FyavPKRA4TyA551b6+W/6lx5vVsxnHcUjVDCZm062HZVf
+ U1oIJfPW08fmieyqPcVz3woOdW8eWZD2c3DDOBnyNZTfcj2WB+RO6chO3OdF29+WfQRhqCKJI
+ 7kbuc2HGA3+Kbp/6Y7KJRBx+8MLQM8q1ju5ZWHMv1WJR8/1beR8HTWjDhQo0DpxhZlVK/PwJi
+ s1o9sAMQ2R5qn6zpNy6LXlRh1/qxf6x8NgB4WpTdaNxvAiVliO/95rXBPorWZuAXsspewN0ku
+ /YZ7Hfg==
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git testing
-branch HEAD: 52885bdadeade448dc8bdd2017f88a71b8d4fc97  Merge branch 'fixes-v6.14' into testing
+This patch series reworks how WMI devices are enabled and disabled
+to improve the compatibility with various firmware implementations.
 
-elapsed time: 1446m
+The first three patches make sure that no WMI driver using the WMI bus
+infrastructure is using the deprecated GUID-based API to access the
+underlying WMI device.
 
-configs tested: 86
-configs skipped: 2
+The fourth patch is a unrelated cleanup patch.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The last four patches finally rework the WMI device enabling inside
+the WMI core and update the documentation.
 
-tested configs:
-alpha                           allyesconfig    gcc-14.2.0
-arc                             allmodconfig    gcc-13.2.0
-arc                             allyesconfig    gcc-13.2.0
-arc                  randconfig-001-20250214    gcc-13.2.0
-arc                  randconfig-002-20250214    gcc-13.2.0
-arm                             allmodconfig    gcc-14.2.0
-arm                             allyesconfig    gcc-14.2.0
-arm                  randconfig-001-20250214    clang-16
-arm                  randconfig-002-20250214    gcc-14.2.0
-arm                  randconfig-003-20250214    clang-21
-arm                  randconfig-004-20250214    gcc-14.2.0
-arm64                           allmodconfig    clang-18
-arm64                randconfig-001-20250214    gcc-14.2.0
-arm64                randconfig-002-20250214    gcc-14.2.0
-arm64                randconfig-003-20250214    gcc-14.2.0
-arm64                randconfig-004-20250214    gcc-14.2.0
-csky                 randconfig-001-20250214    gcc-14.2.0
-csky                 randconfig-002-20250214    gcc-14.2.0
-hexagon                         allmodconfig    clang-21
-hexagon                         allyesconfig    clang-18
-hexagon              randconfig-001-20250214    clang-21
-hexagon              randconfig-002-20250214    clang-15
-i386                            allmodconfig    gcc-12
-i386                             allnoconfig    gcc-12
-i386                            allyesconfig    gcc-12
-i386       buildonly-randconfig-001-20250214    gcc-12
-i386       buildonly-randconfig-002-20250214    gcc-12
-i386       buildonly-randconfig-003-20250214    clang-19
-i386       buildonly-randconfig-004-20250214    gcc-12
-i386       buildonly-randconfig-005-20250214    gcc-12
-i386       buildonly-randconfig-006-20250214    gcc-12
-i386                               defconfig    clang-19
-loongarch                       allmodconfig    gcc-14.2.0
-loongarch            randconfig-001-20250214    gcc-14.2.0
-loongarch            randconfig-002-20250214    gcc-14.2.0
-m68k                            allmodconfig    gcc-14.2.0
-m68k                            allyesconfig    gcc-14.2.0
-nios2                randconfig-001-20250214    gcc-14.2.0
-nios2                randconfig-002-20250214    gcc-14.2.0
-openrisc                         allnoconfig    gcc-14.2.0
-openrisc                        allyesconfig    gcc-14.2.0
-parisc                          allmodconfig    gcc-14.2.0
-parisc                           allnoconfig    gcc-14.2.0
-parisc                          allyesconfig    gcc-14.2.0
-parisc               randconfig-001-20250214    gcc-14.2.0
-parisc               randconfig-002-20250214    gcc-14.2.0
-powerpc                         allmodconfig    gcc-14.2.0
-powerpc                          allnoconfig    gcc-14.2.0
-powerpc              randconfig-001-20250214    gcc-14.2.0
-powerpc              randconfig-002-20250214    clang-18
-powerpc              randconfig-003-20250214    clang-21
-powerpc64            randconfig-001-20250214    clang-18
-powerpc64            randconfig-002-20250214    gcc-14.2.0
-powerpc64            randconfig-003-20250214    gcc-14.2.0
-riscv                            allnoconfig    gcc-14.2.0
-riscv                randconfig-001-20250214    clang-18
-riscv                randconfig-002-20250214    gcc-14.2.0
-s390                            allmodconfig    clang-19
-s390                             allnoconfig    clang-21
-s390                            allyesconfig    gcc-14.2.0
-s390                 randconfig-001-20250214    gcc-14.2.0
-s390                 randconfig-002-20250214    clang-19
-sh                              allmodconfig    gcc-14.2.0
-sh                              allyesconfig    gcc-14.2.0
-sh                   randconfig-001-20250214    gcc-14.2.0
-sh                   randconfig-002-20250214    gcc-14.2.0
-sparc                randconfig-001-20250214    gcc-14.2.0
-sparc                randconfig-002-20250214    gcc-14.2.0
-sparc64              randconfig-001-20250214    gcc-14.2.0
-sparc64              randconfig-002-20250214    gcc-14.2.0
-um                              allmodconfig    clang-21
-um                               allnoconfig    clang-18
-um                              allyesconfig    gcc-12
-um                   randconfig-001-20250214    gcc-12
-um                   randconfig-002-20250214    clang-16
-x86_64                           allnoconfig    clang-19
-x86_64                          allyesconfig    clang-19
-x86_64     buildonly-randconfig-001-20250214    clang-19
-x86_64     buildonly-randconfig-002-20250214    clang-19
-x86_64     buildonly-randconfig-003-20250214    gcc-12
-x86_64     buildonly-randconfig-004-20250214    clang-19
-x86_64     buildonly-randconfig-005-20250214    gcc-12
-x86_64     buildonly-randconfig-006-20250214    gcc-12
-x86_64                             defconfig    gcc-11
-xtensa               randconfig-001-20250214    gcc-14.2.0
-xtensa               randconfig-002-20250214    gcc-14.2.0
+The WMI core patches have been tested on a Dell Inspiron 3505, but
+the remaining patches are mostly compile-tested only.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Changes since v2:
+- add Reviewed-by, Acked-by and Tested-by tags
+- use devres to disable the WMI device
+
+Armin Wolf (8):
+  hwmon: (hp-wmi-sensors) Use the WMI bus API when accessing sensors
+  platform/x86: think-lmi: Use ACPI object when extracting strings
+  platform/x86: think-lmi: Use WMI bus API when accessing BIOS settings
+  platform/x86: hp-bioscfg: Use wmi_instance_count()
+  platform/x86: wmi: Use devres to disable the WMI device
+  platform/x86: wmi: Rework WCxx/WExx ACPI method handling
+  platform/x86: wmi: Call WCxx methods when setting data blocks
+  platform/x86: wmi: Update documentation regarding the GUID-based API
+
+ Documentation/wmi/acpi-interface.rst          |   3 +
+ .../wmi/driver-development-guide.rst          |   4 +
+ drivers/hwmon/hp-wmi-sensors.c                |   4 +-
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c  |  13 +-
+ drivers/platform/x86/think-lmi.c              |  51 +++----
+ drivers/platform/x86/think-lmi.h              |   2 +
+ drivers/platform/x86/wmi.c                    | 141 ++++++++++--------
+ 7 files changed, 116 insertions(+), 102 deletions(-)
+
+=2D-
+2.39.5
+
 
