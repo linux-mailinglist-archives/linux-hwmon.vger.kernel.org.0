@@ -1,148 +1,136 @@
-Return-Path: <linux-hwmon+bounces-6669-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6672-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84779A380BE
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Feb 2025 11:52:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C043A38330
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Feb 2025 13:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41A9C188C835
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Feb 2025 10:52:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FFA41696F1
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Feb 2025 12:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBA72165F9;
-	Mon, 17 Feb 2025 10:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084E521B183;
+	Mon, 17 Feb 2025 12:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwUfvwnC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sh6F76jQ"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35DC1DE3B6;
-	Mon, 17 Feb 2025 10:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C06218842;
+	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739789537; cv=none; b=W7d42srA2rr6PKRewJdNkvNe4OFVFRnVh9oMFae2TLGntGXlqcSygi0o3l2PMr1ZlzMPFoiBI7Pv8LgC5Zy06v7PboekS3vPqFWgKvXi9Di4gQDTeJzr4gLhf5idccbP9NMQQQXXI/ANlscPpVSGAuO44RvXuSxXfLwQAGx2mcY=
+	t=1739796104; cv=none; b=MdtWt8lVSrLbmMm5LZK4rRPimUAk4BaI5sVPn1NCTOs+NQZmziYIr31C3D/FZb9Z9/aG71fMYyJroHgNCTE+vXno6zX5D9k6qxF+xf/49yy6wM0uRRaoWzo12w9PIVVry0NHUeor48DfX1gXrbVkWe8LMDatchnzbnz1acRU+aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739789537; c=relaxed/simple;
-	bh=ECFQiigJkucz+54P1vwO33omMVv3zqagABDHOg3hkYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mxV3wwKM5sn1H9XiXxFki6bRSg8c56KLqSaoSXvZxk1EcCd+/L268Spz1i8noOrtucYRIyGqM6IFKBlCT57BXoA0yldlpmoMLDa7DbjvROrb+Z64Xg3zUi5Rs4SLQur50g6hmahtxW79ZFdl91RP/2Fi7LaBFFkbrb69pfI89Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwUfvwnC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC596C4CED1;
-	Mon, 17 Feb 2025 10:52:12 +0000 (UTC)
+	s=arc-20240116; t=1739796104; c=relaxed/simple;
+	bh=PTSy1ip0l95HNNQQE+rcttEDB0KFrDuEV+630qcL2IM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HllivKs3RILMTCPI7X5Yusz0cgoahYHBVjsN2KaOlMOgbeBGA06TboQbel35i22A4Q1PGeSO5Z+kquyW/bwvC9QgYmEligKxYK4Ge+IwL0hwfVmtsUq8ifbK3d6BBi24ymWqpT7n9lKbCjmAHtieENHODidw3F2YFpc5GyfWM3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sh6F76jQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 339C3C4CED1;
+	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739789536;
-	bh=ECFQiigJkucz+54P1vwO33omMVv3zqagABDHOg3hkYA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GwUfvwnCZ+788bztR9frQqcjXFuVjAY9NK9RMmQu5y8GLRfFROqW30YiGXXNFI1DB
-	 iQxlNO4AVoe4sNj6JL3YoD2YzEj3YHV0BOm6hWOsNb0QgpSURlDHPaxMBoFpsMbjpi
-	 DubuGS55oUBE+Uv6wjihrWJXWVwdeNcbau2n0P8OStIj9kMI/nofrWCc5wAYpDiwTo
-	 zJLxInywER9Zyoh2zpNWA8GYUnwT8paCBOfOP2PzswETiq8uGXulrMsM3y/q1ojKd8
-	 csmd8UKp1o9Fh+8OG0GliEE9C6yPUrBhSpOqdKI7QsmE08O7yb7J6EH+lKroNzikD4
-	 RbPEv1GrdSaLw==
-Message-ID: <bcadb20f-4867-4b77-ac53-f855b14cd746@kernel.org>
-Date: Mon, 17 Feb 2025 11:52:09 +0100
+	s=k20201202; t=1739796104;
+	bh=PTSy1ip0l95HNNQQE+rcttEDB0KFrDuEV+630qcL2IM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Sh6F76jQz7E1gO+yNlIQ6DDxuf9whY05qkY8fjCPWO99FgrecMh6KarVSka6B12wH
+	 +GwAWRa5NycHMmHv6b5spvRBGtT8lZKi9udOaoIfOyUDILIjAx4DaOdVWGtAYpGK8R
+	 BUOZmT2Ho0P3cvvTS3gYuS016ENmSmYg4cGDS9gwrK7XcryJGRTZFSYbd9c161BTS8
+	 h2ZUkAIkjIR9E7tjMGL5lOhqDkgELJ9zu5w5ry8VqsZ6CCHVPJ0KEs+uIvPsH8I6Nt
+	 DY6uxXbE3cUgn9QGv0J88tzpti6r/z7KH+LRgRNt1m2yA56kI+qCuN72bdFDcAlCK0
+	 PinA5vLFGvihQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26E95C021A9;
+	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
+From: PavithraUdayakumar-adi via B4 Relay <devnull+pavithra.u.analog.com@kernel.org>
+Subject: [PATCH RESEND v5 0/2] Add support for MAX31331 RTC
+Date: Mon, 17 Feb 2025 18:17:15 +0530
+Message-Id: <20250217-add_support_max31331_fix_8-v1-0-16ebcfc02336@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: trivial-devices: add lt3074
-To: "Encarnacion, Cedric justine" <Cedricjustine.Encarnacion@analog.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>,
- Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>,
- Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-References: <20250124-upstream-lt3074-v1-0-7603f346433e@analog.com>
- <20250124-upstream-lt3074-v1-1-7603f346433e@analog.com>
- <20250127-outgoing-ibis-of-respect-028c50@krzk-bin>
- <PH0PR03MB6938B71327DAADC17492A5538EF62@PH0PR03MB6938.namprd03.prod.outlook.com>
- <5d2b71a9-a62b-418c-91ae-fa2a195aa27c@kernel.org>
- <PH0PR03MB693845F71D14B21D447D701A8EFB2@PH0PR03MB6938.namprd03.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <PH0PR03MB693845F71D14B21D447D701A8EFB2@PH0PR03MB6938.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANMvs2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDI0Nz3cSUlPji0oKC/KKS+NzECmNDY2PD+LTMingL3UTLxDQTc4MU0+R
+ EYyWgAQVFqUAJsOHRSkGuwa5+LgplpkqxtbUAZvihj3cAAAA=
+X-Change-ID: 20250217-add_support_max31331_fix_8-a9af470d5ca3
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ PavithraUdayakumar-adi <pavithra.u@analog.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739796453; l=1888;
+ i=pavithra.u@analog.com; s=20241220; h=from:subject:message-id;
+ bh=PTSy1ip0l95HNNQQE+rcttEDB0KFrDuEV+630qcL2IM=;
+ b=GEPLWHzuMBYTO6EresIlfpo7HAopxkDf6L5smseqo1eSfTDrJKoO9S/ltULxyNfxkr6IJzyks
+ x2FXYLOP0zYDemNc9ckp+qoqoj65TD4aTngiFvOU/ZoI1tVIusTxSaY
+X-Developer-Key: i=pavithra.u@analog.com; a=ed25519;
+ pk=RIhZrdpg71GEnmwm1eNn95TYUMDJOKVsFd37Fv8xf1U=
+X-Endpoint-Received: by B4 Relay for pavithra.u@analog.com/20241220 with
+ auth_id=303
+X-Original-From: PavithraUdayakumar-adi <pavithra.u@analog.com>
+Reply-To: pavithra.u@analog.com
 
-On 17/02/2025 10:30, Encarnacion, Cedric justine wrote:
->>
->>> LT7182S. Like other PMBus drivers, its GPIOs are not exposed.
->>>
->>> Here are other PMBus regulators/power modules found in trivial-devices
->>> I also used as reference:
->>>
->>> - infineon,irps5401
->>> - delta,q54sj108a2
->>
->>
->> I don't know these devices so still no clue. Please rather explain in
->> the terms of the hardware, e.g. what this device has or has not. See
->> also regulator bindings.
-> 
-> The device has enable-gpio and status-gpio. It also has registers of
-> similar functionality which the core driver accesses instead for
-> toggling enable and monitoring status of the device.
-> 
-> Upon checking regulator bindings and other related bindings for
-> PMBus devices with regulator support, this indeed should be a
-> separate binding outside of trivial devices. Please let me know
-> what do you suggest.
+This patch series introduces support for the Maxim MAX31331 RTC.
+It includes:
 
-Even the GPIOs are outside of trivial devices, so for that sole reason
-this should not be here but in its own binding.
+1. Device Tree bindings documentation for MAX31331.
+2. The driver implementation for the MAX31331 RTC.
+
+---
+Resend v5:
+- [PATCH RESEND v5 2/2]: Added id as a member of struct chip_desc in v4 [Nuno Sa], the patch requires a review. 
+- Rebase v6.14-rc3                                    
+- Link to v5: https://lore.kernel.org/r/20250131-add_support_max31331_fix_7-v1-0-d29d5de3d562@analog.com
+
+Changes in v5:
+- Removed the commit description stating max31331 and max31335 are compatible.
+- Rebase v6.13
+- Link to v4: https://lore.kernel.org/all/20250119-add_support_max31331_fix_5-v1-0-73f7be59f022@analog.com/
+---
+Changes in v4:
+- Reverted the I2C address change for MAX31335 RTC (0x69) and removed it from the property register;
+  will include it in a separate fix.
+- Added id as a member of struct chip_desc [Nuno Sa]
+- Rebase on v6.13-rc7
+- Link to v3: https://lore.kernel.org/all/20250109-add_support_max31331_fix_3-v1-0-a74fac29bf49@analog.com/
+---
+Changes in v3:
+- Added missing spaces in driver code
+- Removed binding for checking address
+- Rebase on v6.13-rc6
+- Link to v2: https://lore.kernel.org/all/20250103-add_support_max31331_fix-v1-0-8ff3c7a81734@analog.com/
+---
+
+Signed-off-by: PavithraUdayakumar-adi <pavithra.u@analog.com>
+
+---
+PavithraUdayakumar-adi (2):
+      dt-bindings: rtc: max31335: Add max31331 support
+      rtc: max31335: Add driver support for max31331
+
+ .../devicetree/bindings/rtc/adi,max31335.yaml      |   4 +-
+ drivers/rtc/rtc-max31335.c                         | 165 +++++++++++++++------
+ 2 files changed, 125 insertions(+), 44 deletions(-)
+---
+base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
+change-id: 20250217-add_support_max31331_fix_8-a9af470d5ca3
 
 Best regards,
-Krzysztof
+-- 
+PavithraUdayakumar-adi <pavithra.u@analog.com>
+
+
 
