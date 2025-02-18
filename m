@@ -1,53 +1,81 @@
-Return-Path: <linux-hwmon+bounces-6670-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6673-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A335A3832D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Feb 2025 13:41:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65925A39587
+	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Feb 2025 09:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE6A01884B73
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Feb 2025 12:41:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96CDB16DDF9
+	for <lists+linux-hwmon@lfdr.de>; Tue, 18 Feb 2025 08:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F332E21ADC9;
-	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA6622B8C1;
+	Tue, 18 Feb 2025 08:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFRtTRxt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBI0lgny"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B9F13AA5D;
-	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEE222B5B5;
+	Tue, 18 Feb 2025 08:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739796104; cv=none; b=lOsG7IU+LKQg7PHKTtnNuqfYDO5rObJfqfyHWXT+PYPKFdqtQ+RXuhzkeOU28jKwqnnj4Jk2T2GJugSFWTEmRAFtoC6bW4RZ7QXmzeWezhZ9h8001P0d4+xZE3DFUOu7h9udT5W4HQ8uaK2+0oxIRo5Uqhi2ibSXl6Q6ac8QXYI=
+	t=1739867759; cv=none; b=B7RPv+5TschB4Y/cudasCGvkZu+IqpBMOqNEIZ7qsc4dVODif7Tt1FWwwb3TtX4S6Q8LXijlQOKNnuK3McPQjidT/9XKWo/ysdpPrrc1qNb0tc5BCeHNg01aXftjGnhWa48fnktZZvfMYH41MsdJqwvfg47IuRuUqNV8p05QuD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739796104; c=relaxed/simple;
-	bh=HKotTF9Hfu06Aq3zzigEqgO5A23ICuHhxxdELQosKn4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b1F9bV0cEI8/LZtfulPFxZIhgGRcDR9QBOw7JCbIf2blfaGhOuCNA0NxDQqoSfYMQU4eOsYDW+8SCpoiutkWKX52DjqcBZvAs8UfcnvT110qx7tGmjLsfLhGAD8PXFJo9h2H/G8eLxDjjYlAUt8xTDg1gVTRaxlmDhoY9+iBB3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFRtTRxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 51D72C4CEE2;
-	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739796104;
-	bh=HKotTF9Hfu06Aq3zzigEqgO5A23ICuHhxxdELQosKn4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=TFRtTRxt2osCT+4usW0PZ8lcj8sbjUEFd8mrj93EBhNe/Lc8lNc6APW9gc2a/wwa6
-	 Csgfus/EKK2z7WH0X/DqcPOcTGoUaNwFAgDM5OU0hY1TjthzyNKB0FBH8pW0+Vncs7
-	 ta1+d20T0BUQ5sza7c03I8w96K8lktlSLo/uydrhjqvK0reCFYh467wMI9eIhObYnT
-	 NQjIypiuviCba58EhpX/2pJDI9d4W7NTj2B3Ed8hqGrKdSsktts50SkJ5FJkW2r1+b
-	 lkpCEouKcQwDo3BZrSnMUfBZkoFuAiwUzYZuzHV6FDx+uBcfHMYU3sUeMbQ0+fFybr
-	 tvhIgZ5sTfkGQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47E17C021AD;
-	Mon, 17 Feb 2025 12:41:44 +0000 (UTC)
-From: PavithraUdayakumar-adi via B4 Relay <devnull+pavithra.u.analog.com@kernel.org>
-Date: Mon, 17 Feb 2025 18:17:17 +0530
-Subject: [PATCH RESEND v5 2/2] rtc: max31335: Add driver support for
- max31331
+	s=arc-20240116; t=1739867759; c=relaxed/simple;
+	bh=sFfR4eIGWeqHKx7p9Z7iGt8U9lbfIZhokJqUsiq2T+U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=c4wZpni1u+DnBF+2h8omPUsiiWcPSeC4Ow9U/D2cyUww+G1tiFSXp/JfsgfBfbBlrxk3WmsgN6hI4SHGmvNOfXp9MUHrafS7O0o+IlIruMQYyCeH5I7Ds1d4E63Q9zT//0sNV+HZb11ZxmDPkEPur0XIjBmYeIpX7k3gM18zZtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RBI0lgny; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-220d601886fso67179155ad.1;
+        Tue, 18 Feb 2025 00:35:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739867755; x=1740472555; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UasE+6v+LUcf32VIrcU6EoAVg1auG4g+9EdoM3brOBo=;
+        b=RBI0lgny2etZKy14RL4P4jbdcgoq9dJr6uzCT2VVAVhUDWxS1RI6Dp7oKaQxF4B0Mn
+         O/MjK1UXmNPPtMSyjkdmDCopD7o/ir5VyJcXv6mRTv12C7F7mVHFVEshYkWKiEWrVucD
+         zwHBeZ298EpUYpA92tuzJy8g+fIbYAwDARX+eKJ/FIwt4SXqazP0Rf7rf4xKMTssKYbs
+         s7yqph6AHHnzdmGwFwPlmHu8ndgSTzvILIMrnHtQ/WfqKatE+dJdaUmDXQpiU716cPqr
+         HCOd34D43MoR+2MmdIDzy5qslBswxOD+3LX4IOCqCXAawW5YO6IOFdzy2tkiWFZNG0YX
+         osQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739867755; x=1740472555;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UasE+6v+LUcf32VIrcU6EoAVg1auG4g+9EdoM3brOBo=;
+        b=nN154iNHcjCfizDnHYxjP7r3PEREfOQnFiS5d5uYgnL4byP4uGoEfWuzmhcqfuCtwE
+         xC263KQajc14w7JkZX8ht+PPsZBPdRSm4SNBUUijRYK2N9b4d5eXAG/ryEZXh9lB7gAk
+         LgJ5WynnZyWnQ8wSVqDLJUjART80mkcSw/oEB/9w7epSpQIItWrviL8f0FgaicXoscq2
+         lHf36vFrT4pdmoC0WRtLDAGd/R+4LZi7L9EXs1+iS1fhjIGbcXnta/Ba/WUvp9n9B5MP
+         PeEi3ObuYfJqgIzjBAIaQE5h9VUCwFEoZPuTlCGNfQjZqfFCMpq6t02F/3qmfFdTAdeZ
+         FeGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUq59epElPHa1auVY/8eZUvkVrzCaHwlR9sZDQVj87x20DyfHBLQ8LURczC2GugShGU/2jufIG7cy9D2Bc=@vger.kernel.org, AJvYcCVPDa9kA8CrWuh3PDg6fpCXUoDGVcO9yqzgdi0slySKSB9S6IMhVe+jRivnO6fYbFKNAeH2F/924i8SKiuO@vger.kernel.org, AJvYcCWyXDcX05MS3oD9McMvZ35jVCJHdUjyGeWZxuipAcoSeYDKBrnvCsPHdqyiK8P72UJiVFvDlR2Rxuqe@vger.kernel.org, AJvYcCXGvkpG3Qm7RwFXmqy8Cl5/T+0yD41hZ4r0wu5R5KZgzjF1MIhzCaLte/s3TcvvO95rNFzOr7D2i89EToc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIUfkzKohPVe4DvUQxQJJxpYBHaKjBZhIZ/ykaj2IVTpDsBSEb
+	SaptPmzHuXT8/SFbqyFtZWB3hZFprbpS/j+Tlo0HvanOMyvY4QA+EgTtvoIc
+X-Gm-Gg: ASbGncvU14apvlqwDD8AuoWw9RuQGvE1/1Yao3gIWa1NTxJp5VlBpFH6UOyVw8CO8Z+
+	x0AB0tIfWL/PhpaySFGufw+v2A/Wn1P97Ut3n3jrF0iT1nC3PNsOyK4fZ66WAuPA4NlJALNp6AB
+	OleCWY+EgtgditLahGyGM3prpz2zcB07ffTBsP347v2sD/LzUsfPbLoJut5tsMZFjAxIIl/Q/30
+	QaDncjhFxsq/zRW69vP1uxX8FTj3Qk60iMGT4lN5ON0HOlbVHsTc1wUBXBxXMouWdEw0cmZeDe8
+	lOErEOdnCAOz7Mnl3pjISckTwL992FBNHbis2QvOg4V6IR5ziI7LBGPf2Kgj4AB6opzDM6QG5AR
+	TcroYqUpu4A==
+X-Google-Smtp-Source: AGHT+IFTu0Jt5oOB7cldX3rIsFRKzoyx1f3pziHi+TW8B5xeOECKaq3mlWTAmJ4KLKYw1e8wd/mIAA==
+X-Received: by 2002:a62:b403:0:b0:732:6221:edea with SMTP id d2e1a72fcca58-7326221ee7dmr17780715b3a.3.1739867755169;
+        Tue, 18 Feb 2025 00:35:55 -0800 (PST)
+Received: from [192.168.2.3] (2403-580a-80ed-0-4835-5a07-49e7-f115.ip6.aussiebb.net. [2403:580a:80ed:0:4835:5a07:49e7:f115])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ae1ee4febb2sm787325a12.51.2025.02.18.00.35.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 00:35:54 -0800 (PST)
+From: James Calligeros <jcalligeros99@gmail.com>
+Subject: [PATCH v2 00/29] ASoC: tas27{64,70}: improve support for Apple
+ codec variants
+Date: Tue, 18 Feb 2025 18:35:34 +1000
+Message-Id: <20250218-apple-codec-changes-v2-0-932760fd7e07@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -55,420 +83,121 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250217-add_support_max31331_fix_8-v1-2-16ebcfc02336@analog.com>
-References: <20250217-add_support_max31331_fix_8-v1-0-16ebcfc02336@analog.com>
-In-Reply-To: <20250217-add_support_max31331_fix_8-v1-0-16ebcfc02336@analog.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFZGtGcC/22NwQ6CMBBEf4Xs2TV0pTV48j8MB2hX2ARo0xqiI
+ fy7FePN45vMvFkhcRROcClWiLxIEj9noEMBdmjnnlFcZqCSdEmqwjaEkdF6xxa/jYSGjTbOKqb
+ KQV6GyHd57tZbk3mQ9PDxtZ8s6pP+fPqvb1FY4plO2tQdqU7V135qZTxaP0GzbdsbcCaiMrYAA
+ AA=
+X-Change-ID: 20250214-apple-codec-changes-6e656dc1e24d
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
+ Baojun Xu <baojun.xu@ti.com>, Dan Murphy <dmurphy@ti.com>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>, 
- =?utf-8?q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- PavithraUdayakumar-adi <pavithra.u@analog.com>
+ Conor Dooley <conor+dt@kernel.org>, Shi Fu <shifu0704@thundersoft.com>, 
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
+Cc: Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+ =?utf-8?q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>, 
+ Hector Martin <marcan@marcan.st>, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ asahi@lists.linux.dev, linux-hwmon@vger.kernel.org, 
+ Neal Gompa <neal@gompa.dev>, James Calligeros <jcalligeros99@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739796453; l=12419;
- i=pavithra.u@analog.com; s=20241220; h=from:subject:message-id;
- bh=1stnG/N6HE8QaQ6joNd5xgD+z3/Jmq/go1M+BD9Kck8=;
- b=u3odZIorXh0l1SccQrXJDQPBr4ymnlz6Urc82IqL1FdL7QwBYP0YtoYvJ35x6OV2EE0ocxEto
- NnEz9NMEQGXBV/Szn6eTlhjHryS8ZNsBgA80oR8cKnUX0ffBdeyGwfl
-X-Developer-Key: i=pavithra.u@analog.com; a=ed25519;
- pk=RIhZrdpg71GEnmwm1eNn95TYUMDJOKVsFd37Fv8xf1U=
-X-Endpoint-Received: by B4 Relay for pavithra.u@analog.com/20241220 with
- auth_id=303
-X-Original-From: PavithraUdayakumar-adi <pavithra.u@analog.com>
-Reply-To: pavithra.u@analog.com
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3697;
+ i=jcalligeros99@gmail.com; h=from:subject:message-id;
+ bh=sFfR4eIGWeqHKx7p9Z7iGt8U9lbfIZhokJqUsiq2T+U=;
+ b=owGbwMvMwCV2xczoYuD3ygTG02pJDOlb3OJnzm4P15/epLjK71BgXt5frehfYvNXmwapilpNS
+ Tiw7fyGjlIWBjEuBlkxRZYNTUIes43YbvaLVO6FmcPKBDKEgYtTACay4jkjw53uyNUXn0iEmcfq
+ 8YhF9yi8MQ+XPiPnrd9ycd6aF0yu6owMM9dVnehcscPowLvZ38qUylk3fQniTZZIfXB/sceZ9Cv
+ nmQA=
+X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
+ fpr=B08212489B3206D98F1479BDD43632D151F77960
 
-From: PavithraUdayakumar-adi <pavithra.u@analog.com>
+Hi all,
 
-MAX31331 is an ultra-low-power, I2C Real-Time Clock RTC.
+This series introduces a number of changes to the drivers for
+the Texas Instruments TAS2764 and TAS2770 amplifiers in order to
+introduce (and improve in the case of TAS2770) support for the
+variants of these amps found in Apple Silicon Macs.
 
-Signed-off-by: PavithraUdayakumar-adi <pavithra.u@analog.com>
+Apple's variant of TAS2764 is known as SN012776, and as always with
+Apple is a subtly incompatible variant with a number of quirks. It
+is not publicly available. The TAS2770 variant is known as TAS5770L,
+and does not require incompatible handling.
+
+Much as with the Cirrus codec patches, I do not
+expect that we will get any official acknowledgement that these parts
+exist from TI, however I would be delighted to be proven wrong.
+
+This series has been living in the downstream Asahi kernel tree[1]
+for over two years, and has been tested by many thousands of users
+by this point[2].
+
+[1] https://github.com/AsahiLinux/linux/tree/asahi-wip
+[2] https://stats.asahilinux.org/
+
 ---
- drivers/rtc/rtc-max31335.c | 165 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 122 insertions(+), 43 deletions(-)
+Changes in v2:
+- Changed author field of patch to match Martin's Signed-off-by
+- Added Neal's Reviewed-by to reviewed patches
+- Moved fixes to existing code to the top of the series
+- Removed tas2764's explicit dependency on OF
+- Removed complicated single-use tas2764 quirks macro and replaced with
+  if block
+- Added hwmon interface for codec die temp
+- Fixed a malformed commit message
+- Link to v1: https://lore.kernel.org/r/20250215-apple-codec-changes-v1-0-723569b21b19@gmail.com
 
-diff --git a/drivers/rtc/rtc-max31335.c b/drivers/rtc/rtc-max31335.c
-index 3fbcf5f6b92ffd4581e9c4dbc87ec848867522dc..a7bb37aaab9e6e315db70bc6bc0dbaa553fdecfa 100644
---- a/drivers/rtc/rtc-max31335.c
-+++ b/drivers/rtc/rtc-max31335.c
-@@ -184,31 +184,91 @@
- #define MAX31335_RAM_SIZE			32
- #define MAX31335_TIME_SIZE			0x07
- 
-+/* MAX31331 Register Map */
-+#define MAX31331_RTC_CONFIG2			0x04
-+
- #define clk_hw_to_max31335(_hw) container_of(_hw, struct max31335_data, clkout)
- 
-+/* Supported Maxim RTC */
-+enum max_rtc_ids {
-+	ID_MAX31331,
-+	ID_MAX31335,
-+	MAX_RTC_ID_NR
-+};
-+
-+struct chip_desc {
-+	u8 sec_reg;
-+	u8 alarm1_sec_reg;
-+
-+	u8 int_en_reg;
-+	u8 int_status_reg;
-+
-+	u8 ram_reg;
-+	u8 ram_size;
-+
-+	u8 temp_reg;
-+
-+	u8 trickle_reg;
-+
-+	u8 clkout_reg;
-+
-+	enum max_rtc_ids id;
-+};
-+
- struct max31335_data {
- 	struct regmap *regmap;
- 	struct rtc_device *rtc;
- 	struct clk_hw clkout;
-+	struct clk *clkin;
-+	const struct chip_desc *chip;
-+	int irq;
- };
- 
- static const int max31335_clkout_freq[] = { 1, 64, 1024, 32768 };
- 
-+static const struct chip_desc chip[MAX_RTC_ID_NR] = {
-+	[ID_MAX31331] = {
-+		.id = ID_MAX31331,
-+		.int_en_reg = 0x01,
-+		.int_status_reg = 0x00,
-+		.sec_reg = 0x08,
-+		.alarm1_sec_reg = 0x0F,
-+		.ram_reg = 0x20,
-+		.ram_size = 32,
-+		.trickle_reg = 0x1B,
-+		.clkout_reg = 0x04,
-+	},
-+	[ID_MAX31335] = {
-+		.id = ID_MAX31335,
-+		.int_en_reg = 0x01,
-+		.int_status_reg = 0x00,
-+		.sec_reg = 0x0A,
-+		.alarm1_sec_reg = 0x11,
-+		.ram_reg = 0x40,
-+		.ram_size = 32,
-+		.temp_reg = 0x35,
-+		.trickle_reg = 0x1D,
-+		.clkout_reg = 0x06,
-+	},
-+};
-+
- static const u16 max31335_trickle_resistors[] = {3000, 6000, 11000};
- 
- static bool max31335_volatile_reg(struct device *dev, unsigned int reg)
- {
-+	struct max31335_data *max31335 = dev_get_drvdata(dev);
-+	const struct chip_desc *chip = max31335->chip;
-+
- 	/* time keeping registers */
--	if (reg >= MAX31335_SECONDS &&
--	    reg < MAX31335_SECONDS + MAX31335_TIME_SIZE)
-+	if (reg >= chip->sec_reg && reg < chip->sec_reg + MAX31335_TIME_SIZE)
- 		return true;
- 
- 	/* interrupt status register */
--	if (reg == MAX31335_STATUS1)
-+	if (reg == chip->int_status_reg)
- 		return true;
- 
--	/* temperature registers */
--	if (reg == MAX31335_TEMP_DATA_MSB || reg == MAX31335_TEMP_DATA_LSB)
-+	/* temperature registers if valid */
-+	if (chip->temp_reg && (reg == chip->temp_reg || reg == chip->temp_reg + 1))
- 		return true;
- 
- 	return false;
-@@ -227,7 +287,7 @@ static int max31335_read_time(struct device *dev, struct rtc_time *tm)
- 	u8 date[7];
- 	int ret;
- 
--	ret = regmap_bulk_read(max31335->regmap, MAX31335_SECONDS, date,
-+	ret = regmap_bulk_read(max31335->regmap, max31335->chip->sec_reg, date,
- 			       sizeof(date));
- 	if (ret)
- 		return ret;
-@@ -262,7 +322,7 @@ static int max31335_set_time(struct device *dev, struct rtc_time *tm)
- 	if (tm->tm_year >= 200)
- 		date[5] |= FIELD_PREP(MAX31335_MONTH_CENTURY, 1);
- 
--	return regmap_bulk_write(max31335->regmap, MAX31335_SECONDS, date,
-+	return regmap_bulk_write(max31335->regmap, max31335->chip->sec_reg, date,
- 				 sizeof(date));
- }
- 
-@@ -273,7 +333,7 @@ static int max31335_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
- 	struct rtc_time time;
- 	u8 regs[6];
- 
--	ret = regmap_bulk_read(max31335->regmap, MAX31335_ALM1_SEC, regs,
-+	ret = regmap_bulk_read(max31335->regmap, max31335->chip->alarm1_sec_reg, regs,
- 			       sizeof(regs));
- 	if (ret)
- 		return ret;
-@@ -292,11 +352,11 @@ static int max31335_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
- 	if (time.tm_year >= 200)
- 		alrm->time.tm_year += 100;
- 
--	ret = regmap_read(max31335->regmap, MAX31335_INT_EN1, &ctrl);
-+	ret = regmap_read(max31335->regmap, max31335->chip->int_en_reg, &ctrl);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_read(max31335->regmap, MAX31335_STATUS1, &status);
-+	ret = regmap_read(max31335->regmap, max31335->chip->int_status_reg, &status);
- 	if (ret)
- 		return ret;
- 
-@@ -320,18 +380,18 @@ static int max31335_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
- 	regs[4] = bin2bcd(alrm->time.tm_mon + 1);
- 	regs[5] = bin2bcd(alrm->time.tm_year % 100);
- 
--	ret = regmap_bulk_write(max31335->regmap, MAX31335_ALM1_SEC,
-+	ret = regmap_bulk_write(max31335->regmap, max31335->chip->alarm1_sec_reg,
- 				regs, sizeof(regs));
- 	if (ret)
- 		return ret;
- 
- 	reg = FIELD_PREP(MAX31335_INT_EN1_A1IE, alrm->enabled);
--	ret = regmap_update_bits(max31335->regmap, MAX31335_INT_EN1,
-+	ret = regmap_update_bits(max31335->regmap, max31335->chip->int_en_reg,
- 				 MAX31335_INT_EN1_A1IE, reg);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_update_bits(max31335->regmap, MAX31335_STATUS1,
-+	ret = regmap_update_bits(max31335->regmap, max31335->chip->int_status_reg,
- 				 MAX31335_STATUS1_A1F, 0);
- 
- 	return 0;
-@@ -341,23 +401,33 @@ static int max31335_alarm_irq_enable(struct device *dev, unsigned int enabled)
- {
- 	struct max31335_data *max31335 = dev_get_drvdata(dev);
- 
--	return regmap_update_bits(max31335->regmap, MAX31335_INT_EN1,
-+	return regmap_update_bits(max31335->regmap, max31335->chip->int_en_reg,
- 				  MAX31335_INT_EN1_A1IE, enabled);
- }
- 
- static irqreturn_t max31335_handle_irq(int irq, void *dev_id)
- {
- 	struct max31335_data *max31335 = dev_id;
--	bool status;
--	int ret;
-+	struct mutex *lock = &max31335->rtc->ops_lock;
-+	int ret, status;
- 
--	ret = regmap_update_bits_check(max31335->regmap, MAX31335_STATUS1,
--				       MAX31335_STATUS1_A1F, 0, &status);
-+	mutex_lock(lock);
-+
-+	ret = regmap_read(max31335->regmap, max31335->chip->int_status_reg, &status);
- 	if (ret)
--		return IRQ_HANDLED;
-+		goto exit;
-+
-+	if (FIELD_GET(MAX31335_STATUS1_A1F, status)) {
-+		ret = regmap_update_bits(max31335->regmap, max31335->chip->int_status_reg,
-+					 MAX31335_STATUS1_A1F, 0);
-+		if (ret)
-+			goto exit;
- 
--	if (status)
- 		rtc_update_irq(max31335->rtc, 1, RTC_AF | RTC_IRQF);
-+	}
-+
-+exit:
-+	mutex_unlock(lock);
- 
- 	return IRQ_HANDLED;
- }
-@@ -404,7 +474,7 @@ static int max31335_trickle_charger_setup(struct device *dev,
- 
- 	i = i + trickle_cfg;
- 
--	return regmap_write(max31335->regmap, MAX31335_TRICKLE_REG,
-+	return regmap_write(max31335->regmap, max31335->chip->trickle_reg,
- 			    FIELD_PREP(MAX31335_TRICKLE_REG_TRICKLE, i) |
- 			    FIELD_PREP(MAX31335_TRICKLE_REG_EN_TRICKLE,
- 				       chargeable));
-@@ -418,7 +488,7 @@ static unsigned long max31335_clkout_recalc_rate(struct clk_hw *hw,
- 	unsigned int reg;
- 	int ret;
- 
--	ret = regmap_read(max31335->regmap, MAX31335_RTC_CONFIG2, &reg);
-+	ret = regmap_read(max31335->regmap, max31335->chip->clkout_reg, &reg);
- 	if (ret)
- 		return 0;
- 
-@@ -449,23 +519,23 @@ static int max31335_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
- 			     ARRAY_SIZE(max31335_clkout_freq));
- 	freq_mask = __roundup_pow_of_two(ARRAY_SIZE(max31335_clkout_freq)) - 1;
- 
--	return regmap_update_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
--				  freq_mask, index);
-+	return regmap_update_bits(max31335->regmap, max31335->chip->clkout_reg,
-+				 freq_mask, index);
- }
- 
- static int max31335_clkout_enable(struct clk_hw *hw)
- {
- 	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
- 
--	return regmap_set_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
--			       MAX31335_RTC_CONFIG2_ENCLKO);
-+	return regmap_set_bits(max31335->regmap, max31335->chip->clkout_reg,
-+			      MAX31335_RTC_CONFIG2_ENCLKO);
- }
- 
- static void max31335_clkout_disable(struct clk_hw *hw)
- {
- 	struct max31335_data *max31335 = clk_hw_to_max31335(hw);
- 
--	regmap_clear_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
-+	regmap_clear_bits(max31335->regmap, max31335->chip->clkout_reg,
- 			  MAX31335_RTC_CONFIG2_ENCLKO);
- }
- 
-@@ -475,7 +545,7 @@ static int max31335_clkout_is_enabled(struct clk_hw *hw)
- 	unsigned int reg;
- 	int ret;
- 
--	ret = regmap_read(max31335->regmap, MAX31335_RTC_CONFIG2, &reg);
-+	ret = regmap_read(max31335->regmap, max31335->chip->clkout_reg, &reg);
- 	if (ret)
- 		return ret;
- 
-@@ -500,7 +570,7 @@ static int max31335_nvmem_reg_read(void *priv, unsigned int offset,
- 				   void *val, size_t bytes)
- {
- 	struct max31335_data *max31335 = priv;
--	unsigned int reg = MAX31335_TS0_SEC_1_128 + offset;
-+	unsigned int reg = max31335->chip->ram_reg + offset;
- 
- 	return regmap_bulk_read(max31335->regmap, reg, val, bytes);
- }
-@@ -509,7 +579,7 @@ static int max31335_nvmem_reg_write(void *priv, unsigned int offset,
- 				    void *val, size_t bytes)
- {
- 	struct max31335_data *max31335 = priv;
--	unsigned int reg = MAX31335_TS0_SEC_1_128 + offset;
-+	unsigned int reg = max31335->chip->ram_reg + offset;
- 
- 	return regmap_bulk_write(max31335->regmap, reg, val, bytes);
- }
-@@ -533,7 +603,7 @@ static int max31335_read_temp(struct device *dev, enum hwmon_sensor_types type,
- 	if (type != hwmon_temp || attr != hwmon_temp_input)
- 		return -EOPNOTSUPP;
- 
--	ret = regmap_bulk_read(max31335->regmap, MAX31335_TEMP_DATA_MSB,
-+	ret = regmap_bulk_read(max31335->regmap, max31335->chip->temp_reg,
- 			       reg, 2);
- 	if (ret)
- 		return ret;
-@@ -577,8 +647,8 @@ static int max31335_clkout_register(struct device *dev)
- 	int ret;
- 
- 	if (!device_property_present(dev, "#clock-cells"))
--		return regmap_clear_bits(max31335->regmap, MAX31335_RTC_CONFIG2,
--					 MAX31335_RTC_CONFIG2_ENCLKO);
-+		return regmap_clear_bits(max31335->regmap, max31335->chip->clkout_reg,
-+				  MAX31335_RTC_CONFIG2_ENCLKO);
- 
- 	max31335->clkout.init = &max31335_clk_init;
- 
-@@ -605,6 +675,7 @@ static int max31335_probe(struct i2c_client *client)
- #if IS_REACHABLE(HWMON)
- 	struct device *hwmon;
- #endif
-+	const struct chip_desc *match;
- 	int ret;
- 
- 	max31335 = devm_kzalloc(&client->dev, sizeof(*max31335), GFP_KERNEL);
-@@ -616,7 +687,10 @@ static int max31335_probe(struct i2c_client *client)
- 		return PTR_ERR(max31335->regmap);
- 
- 	i2c_set_clientdata(client, max31335);
--
-+	match = i2c_get_match_data(client);
-+	if (!match)
-+		return -ENODEV;
-+	max31335->chip = match;
- 	max31335->rtc = devm_rtc_allocate_device(&client->dev);
- 	if (IS_ERR(max31335->rtc))
- 		return PTR_ERR(max31335->rtc);
-@@ -639,6 +713,8 @@ static int max31335_probe(struct i2c_client *client)
- 			dev_warn(&client->dev,
- 				 "unable to request IRQ, alarm max31335 disabled\n");
- 			client->irq = 0;
-+		} else {
-+			max31335->irq = client->irq;
- 		}
- 	}
- 
-@@ -652,13 +728,13 @@ static int max31335_probe(struct i2c_client *client)
- 				     "cannot register rtc nvmem\n");
- 
- #if IS_REACHABLE(HWMON)
--	hwmon = devm_hwmon_device_register_with_info(&client->dev, client->name,
--						     max31335,
--						     &max31335_chip_info,
--						     NULL);
--	if (IS_ERR(hwmon))
--		return dev_err_probe(&client->dev, PTR_ERR(hwmon),
--				     "cannot register hwmon device\n");
-+	if (max31335->chip->temp_reg) {
-+		hwmon = devm_hwmon_device_register_with_info(&client->dev, client->name, max31335,
-+							     &max31335_chip_info, NULL);
-+		if (IS_ERR(hwmon))
-+			return dev_err_probe(&client->dev, PTR_ERR(hwmon),
-+					     "cannot register hwmon device\n");
-+	}
- #endif
- 
- 	ret = max31335_trickle_charger_setup(&client->dev, max31335);
-@@ -669,14 +745,16 @@ static int max31335_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id max31335_id[] = {
--	{ "max31335" },
-+	{ "max31331", (kernel_ulong_t)&chip[ID_MAX31331] },
-+	{ "max31335", (kernel_ulong_t)&chip[ID_MAX31335] },
- 	{ }
- };
- 
- MODULE_DEVICE_TABLE(i2c, max31335_id);
- 
- static const struct of_device_id max31335_of_match[] = {
--	{ .compatible = "adi,max31335" },
-+	{ .compatible = "adi,max31331", .data = &chip[ID_MAX31331] },
-+	{ .compatible = "adi,max31335", .data = &chip[ID_MAX31335] },
- 	{ }
- };
- 
-@@ -693,5 +771,6 @@ static struct i2c_driver max31335_driver = {
- module_i2c_driver(max31335_driver);
- 
- MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com>");
-+MODULE_AUTHOR("Saket Kumar Purwar <Saket.Kumarpurwar@analog.com>");
- MODULE_DESCRIPTION("MAX31335 RTC driver");
- MODULE_LICENSE("GPL");
+---
+Hector Martin (14):
+      ASoC: tas2764: Fix power control mask
+      ASoC: tas2770: Fix volume scale
+      ASoC: tas2764: Enable main IRQs
+      ASoC: tas2764: Power up/down amp on mute ops
+      ASoC: tas2764: Add SDZ regulator
+      ASoC: tas2764: Add reg defaults for TAS2764_INT_CLK_CFG
+      ASoC: tas2764: Mark SW_RESET as volatile
+      ASoC: tas2764: Wait for ramp-down after shutdown
+      ASoC: tas2770: Add SDZ regulator
+      ASoC: tas2770: Power cycle amp on ISENSE/VSENSE change
+      ASoC: tas2770: Add zero-fill and pull-down controls
+      ASoC: tas2770: Support setting the PDM TX slot
+      ASoC: tas2764: Set the SDOUT polarity correctly
+      ASoC: tas2770: Set the SDOUT polarity correctly
 
+James Calligeros (4):
+      ASoC: dt-bindings: tas27xx: add compatible for SN012776
+      ASoC: dt-bindings: tas2770: add compatible for TAS5770L
+      ASoC: tas2770: expose die temp to hwmon
+      ASoC: tas2764: expose die temp to hwmon
+
+Martin Povišer (11):
+      ASoC: tas2764: Extend driver to SN012776
+      ASoC: tas2764: Add control concerning overcurrent events
+      ASoC: tas2770: Factor out set_ivsense_slots
+      ASoC: tas2770: Fix and redo I/V sense TDM slot setting logic
+      ASoC: tas2764: Reinit cache on part reset
+      ASoC: tas2764: Configure zeroing of SDOUT slots
+      ASoC: tas2764: Apply Apple quirks
+      ASoC: tas2764: Raise regmap range maximum
+      ASoC: tas2770: Export 'die_temp' to sysfs
+      ASoC: tas2764: Export 'die_temp' to sysfs
+      ASoC: tas2764: Crop SDOUT zero-out mask based on BCLK ratio
+
+ .../bindings/sound/ti,tas2770.yaml       |   1 +
+ .../bindings/sound/ti,tas27xx.yaml       |   1 +
+ sound/soc/codecs/tas2764-quirks.h        | 180 ++++++++++++
+ sound/soc/codecs/tas2764.c               | 368 ++++++++++++++++++++++---
+ sound/soc/codecs/tas2764.h               |  29 +-
+ sound/soc/codecs/tas2770.c               | 333 ++++++++++++++++++----
+ sound/soc/codecs/tas2770.h               |  20 ++
+ 7 files changed, 839 insertions(+), 93 deletions(-)
+---
+base-commit: cc7708ae5e2aab296203fcec774695fc9d995f48
+change-id: 20250214-apple-codec-changes-6e656dc1e24d
+
+Best regards,
 -- 
-2.25.1
-
+James Calligeros <jcalligeros99@gmail.com>
 
 
