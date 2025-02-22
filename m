@@ -1,170 +1,152 @@
-Return-Path: <linux-hwmon+bounces-6762-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6775-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE39A403F8
-	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Feb 2025 01:17:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC56FA40A10
+	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Feb 2025 17:30:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FE2819C1E95
-	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Feb 2025 00:17:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F37219C08F5
+	for <lists+linux-hwmon@lfdr.de>; Sat, 22 Feb 2025 16:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B54282ED;
-	Sat, 22 Feb 2025 00:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8651207A2B;
+	Sat, 22 Feb 2025 16:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d2WgT39T"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="E8wyQwe/"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5353FFD;
-	Sat, 22 Feb 2025 00:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE47019E975;
+	Sat, 22 Feb 2025 16:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740183429; cv=none; b=llDfyo53jS9+2zGHaV6dvcoNaQfLEkmEOai2HaxBxbHgBZovSKjQhBg7lD0HvfsoggNxKSjCrvgSDeGvf0qK2AiJZvZkFzrXJedgxf683P68htXv/v+C5j1ZSYKW5fBOLC8TSVUY9XUZ+dAYUUpDmLXz/wwPMCbIt//F3VBp54w=
+	t=1740241812; cv=none; b=ACqF0vF6mEY0Vfwvv9rsbA4DVaOFRGpNXWvvq8T8K0o0V+FF0l7dTlnRlWkMgd5883L2XaWDZkUMurAlFT2sQmSm8CZoHpauQk1x7WGsImY2exXvETLWxkEt4CEAbKLAXkJW+1Dxh7h0kuqj0j257ueuNogL1TQ/vdi691W1hx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740183429; c=relaxed/simple;
-	bh=qr85W/PiRzoYKCP0ImmABGA3K9TQe+z/nrWXd81Rydg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g5Nvi0rEjRZXjtl0/qXV1snjlwNg5EkLakxzBIk9AQQdTGdhr2qd1Qjq6X06BXwQvid/XXRyv166s4geVHMoXa2oa6cEqdtqZwGpexOz/LpTi/hbOhSa+tFbiGL/7bYoApDN+jJZR5sgOkek2Q85PDH/OglVmV6+L/hdeVtiBWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d2WgT39T; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2212a930001so75607955ad.0;
-        Fri, 21 Feb 2025 16:17:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740183427; x=1740788227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V8r7+y5SJBip6iQOe2wHWa44kb87aSgNqK+A4dnbHC4=;
-        b=d2WgT39T6I4e5RgcOwEizuTAGXFO8DW5IzwotRaWkYjtNKwWPKao5jOdxuxItZoDNp
-         320SGklTL6YkJNrZcgAPSa0xAsLZ1I5UMAlTT1IKDNLKVFnSYPZd8nBHGlqbx8UVIGcf
-         vSJonXsQX+LohIlv97rJCOHmpaadH31+162HuAFoC5Oihz6PQEI0uVZ9pnyvd7D0OGOR
-         Q9itpnv4Z6/fxkxI5ZRl73AWM+ASflIemAkN99nfolVcbvMcTi3rpvWvLMK2H16mCMo2
-         /DW4pWIJWI4qCy7SUKh7QM7hBHX33fQP1tZvK9a8i5IHNR7OCwhC7iAl58jg6ZOFMfez
-         5TOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740183427; x=1740788227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V8r7+y5SJBip6iQOe2wHWa44kb87aSgNqK+A4dnbHC4=;
-        b=sqzlo3HLI3cKu/fsjHKvQxCch1j/YpUKI3823nWnb8cjOCAj4CD4Onc78foDTkL44A
-         Qbs1zlAyKFU28SVau5wug/02x9zt7qvyMrTOIkdy7NjZoqvG51Wda6b86QCQLURcNgYb
-         A0gtnNu32OU9Opy+dzNwYzzxLJ2nZX/6yg3IdI9nuncBGCA5+hDaKIkKtX2+Shp6TJMJ
-         m4kF3Exi0eZpXMtbvJFRLYLhyUdKY/QKf0GpVYjcu5HsLfym10XTNknp7ZJPDOesR1bl
-         Cc8OzIJiC8Ut/TUj6fnQ0knVaa17pL+zMZj6YmbO0QRZ8BInpFDWENG06Zh7YQdUTJCX
-         ke3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVDmTEuAD0NU7xtUaOk4jhN0zgmIbI8RfvVxfKbezRIBIU06jYUvm5Div4/VKvqklx8JApMk5e5rkCf@vger.kernel.org, AJvYcCVSXCNWE8XPCrTXVsSs/XEzXmhgeNmyXTwRPfAv9ifEmK7O9BWW4BiNTaxWzsJrnYKZyUVdAkNNPsLGewNu@vger.kernel.org, AJvYcCWrAqZnUdsaT420lxVanRVipAZzcN6lfOLlNg3bXBgled1d6uEODSgLVpavxryzW3RmxkYLAvW3xzctSfg=@vger.kernel.org, AJvYcCXB2SKFmbGEf+ed9fyAnos9rCVymD9OGXM3LJUgC7u6o8bytS1/JL4OsCREXWNJv2LPqXN36hItZRE38bQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS0DkKmoutaHdt/aGewPBupmLGJOR/iilQWMEMpGUSj1ObrNse
-	bG906lS0+XYTHG3wpgAW50Gdr8gQD3E2G+3ssBxdCmmAO27nKBrv
-X-Gm-Gg: ASbGncunVEyolgM8eV8vFYWSKZmMjGNtCGiXyt5WApYApDBGrFyDSt8cANKDVJDXS0y
-	mJLSd4kfzPgwj4lQZclp0SFOASRhJT5Abbxnkh6gUVTlxruznkx10m2tKjQOEqRad21e+teXKUa
-	ppvovq/AZw3xPD4HKb1s59Tyn5h2JEtbN4uCQUwJz+Sh2wuEVzGfo1qmREmlxuOdU9LHRDrB/xx
-	DibKtgPmK7hJPL6vTKeteec5TmNfQm3DqC0yROxp67h0gzgTJWlstQzZKywLRQZX6DnerZT69DW
-	npA9v6vCKgkLEHyZGN87wN5t4piPA2RzCLk4U4CZ72TFxB9ZAlqYtqaTWjRSurcXmQitz0D3cLN
-	1ayAuDgf8EdKdyG/C+VQ3YTlA
-X-Google-Smtp-Source: AGHT+IE1KT+jsLeYcAoG6RbWaNlaDRP+N3w0uHd3VKbF9XIGUtNL+tdpdnurdl0Wr+EIr+ZaQK09lQ==
-X-Received: by 2002:a17:903:1cc:b0:220:e336:94e with SMTP id d9443c01a7336-221a0ed738emr72468355ad.15.1740183427150;
-        Fri, 21 Feb 2025 16:17:07 -0800 (PST)
-Received: from setsuna.localnet (2403-580a-80ed-0-4835-5a07-49e7-f115.ip6.aussiebb.net. [2403:580a:80ed:0:4835:5a07:49e7:f115])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d545d039sm141779875ad.133.2025.02.21.16.17.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 16:17:06 -0800 (PST)
-From: James Calligeros <jcalligeros99@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
- Baojun Xu <baojun.xu@ti.com>, Dan Murphy <dmurphy@ti.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shi Fu <shifu0704@thundersoft.com>,
- Jean Delvare <jdelvare@suse.com>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Martin =?UTF-8?B?UG92acWhZXI=?= <povik+lin@cutebit.org>,
- Hector Martin <marcan@marcan.st>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- asahi@lists.linux.dev, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v2 14/29] ASoC: tas2770: expose die temp to hwmon
-Date: Sat, 22 Feb 2025 10:16:57 +1000
-Message-ID: <4993899.31r3eYUQgx@setsuna>
-In-Reply-To: <409e8873-5ebd-41af-8162-30668271be6a@roeck-us.net>
-References:
- <20250218-apple-codec-changes-v2-0-932760fd7e07@gmail.com>
- <CAHgNfTzfK4HnYs+LDH7kcR+pZqSxT9YBZYQ=c+Mcpva4Vx=D_w@mail.gmail.com>
- <409e8873-5ebd-41af-8162-30668271be6a@roeck-us.net>
+	s=arc-20240116; t=1740241812; c=relaxed/simple;
+	bh=jyqvHSFqOFsY1PXsSSN904r8wYVR6DvtzhnRyZ+hGf8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fM5kGUrxkLjmAH0PuhYjR1asoxYXnjzTghqqs/vi6NkHQ9HswwJWpb+0L6Yc9xBbqXeTxnlWEPBq2UgEIZewh5af6ISH7Gmjxt2GJ5lIwYC8qDQ49eTPWn8NHzBJZnTeJMcLOxKoFcxn4GNyR4mxU9jMEKbZqRpUHMaThbNRoyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=E8wyQwe/; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from localhost.localdomain (unknown [IPv6:2a05:f6c2:511b:0:cbc0:999f:73ad:33bd])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 4FC342E08C2F;
+	Sat, 22 Feb 2025 18:20:22 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1740241223;
+	bh=6qQL+zKQxfhiEopyGjxPkJmskcBXM7Vdkt09g7USSlE=; h=From:To:Subject;
+	b=E8wyQwe/oB/HRGLEyE5ri2VrVxtXndjLoKtw6BfBeyPYethHCnhqruMNwXTVynaWr
+	 WAeLSx9Aa9je7B1/nop/2M+KF4RpLnIJmwBDtGDvoHb3W9u4Q+WmfKz7XfMeNANJRq
+	 wGAuKXWe8vI0jdNJTALfrPAkxClfYGlhulvI/3co=
+Authentication-Results: linux1587.grserver.gr;
+	spf=pass (sender IP is 2a05:f6c2:511b:0:cbc0:999f:73ad:33bd) smtp.mailfrom=lkml@antheas.dev smtp.helo=localhost.localdomain
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+From: Antheas Kapenekakis <lkml@antheas.dev>
+To: linux-hwmon@vger.kernel.org
+Cc: linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jean Delvare <jdelvare@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joaquin Ignacio Aramendia <samsagax@gmail.com>,
+	Derek J Clark <derekjohn.clark@gmail.com>,
+	Kevin Greenberg <kdgreenberg234@protonmail.com>,
+	Joshua Tam <csinaction@pm.me>,
+	Parth Menon <parthasarathymenon@gmail.com>,
+	Eileen <eileen@one-netbook.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>
+Subject: [PATCH v2 00/12] hwmon: (oxpsensors) Add devices, features,
+ fix ABI and move to platform/x86
+Date: Sat, 22 Feb 2025 17:18:11 +0100
+Message-ID: <20250222161824.172511-1-lkml@antheas.dev>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <174024122356.13470.8646678086481011352@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
-On Saturday, 22 February 2025 1:03:38=E2=80=AFam Australian Eastern Standar=
-d Time=20
-Guenter Roeck wrote:
-> On 2/21/25 03:31, James Calligeros wrote:
-> > On Wed, Feb 19, 2025 at 1:20=E2=80=AFAM Guenter Roeck <linux@roeck-us.n=
-et> wrote:
-> >> On 2/18/25 00:35, James Calligeros wrote:
-> >>> +static int tas2770_hwmon_read(struct device *dev,
-> >>> +                           enum hwmon_sensor_types type,
-> >>> +                           u32 attr, int channel, long *val)
-> >>> +{
-> >>> +     struct tas2770_priv *tas2770 =3D
-> >>> i2c_get_clientdata(to_i2c_client(dev)); +     int ret;
-> >>> +
-> >>> +     switch (attr) {
-> >>> +     case hwmon_temp_input:
-> >>> +             ret =3D tas2770_read_die_temp(tas2770, (int *)val);
-> >>=20
-> >> Type casting a pointer like this is never a good idea. This only works
-> >> if sizeof(int) =3D=3D sizeof(long).
-> >=20
-> > I will rework this when dropping the die temp sysfs interface. This
-> > was mostly so that
-> > I didn't have to change any of the code there, but since we're going
-> > to drop that
-> > anyway it's redundant.
-> >=20
-> >>> +             if (!ret)
-> >>> +                     *val *=3D 1000;
-> >>=20
-> >> The calculations in the previous patch suggest that this is wrong.
-> >>=20
-> >> Either case, this is redundant. The temperature is already displayed
-> >> as device specific sysfs attribute. Displaying it twice does not make
-> >> sense. I would suggest to either drop the sysfs attribute in the
-> >> previous patch or to drop this patch.
-> >=20
-> > The calculation in the datasheet yields the temperature in degrees
-> > Celsius.
-> > hwmon consumers expect temperatures in "millidegrees" Celsius as per the
-> > sysfs interface documentation[1]. Regardless, as above I will likely
-> > rework this
-> Yes, I am well aware of that.
->=20
-> > when dropping the die temp sysfs interface so that things are a little
-> > more logical.
->=20
-> Unless I really misread the code, tas2770_read_die_temp() doesn't return
-> the temperature in degrees C.
->=20
-> Guenter
+This four part series updates the oxpsensors module to bring it in line
+with its Windows OneXPlayer counterpart. First, it adds support for all
+2024, 2025 OneXPlayer handhelds and their special variants.
 
-My mistake. We return an intermediate value that is then manipulated in
-die_temp_show() to yield degrees. I will clean this up for the next submiss=
-ion
-since we will no longer require the sysfs interface at all. Apologies for t=
-he
-confusion.
+Then, it adds the new charge limiting and bypass features that were first
+introduced in the X1 and retrofit to older OneXFly variants and for
+controlling the turbo led found in the X1 models. For Bypass, it adds a new
+bypass variant BypassS0 that is only active while the device is in the S0
+state.
 
-Regards,
-James
+Then, it performs a minor refactor by moving around switch statements
+into their own functions, in order to allow for fixing the pwm1_enable ABI
+in the final patch. Currently, pwm1_enable sets the fan to auto with the
+value 0 and allows manual control with the value 1. This patch makes it
+so 0 sets the fan to full speed, 1 sets the fan to manual control, and
+2 sets the fan to auto. This requires both setting enable and the fan
+speed when the enable sysfs is written to as 0, hence the refactor.
 
+As this is a breaking ABI change and there is userspace software relying
+on this previous behavior, the last patch also changes the /name of the
+hwmon endpoint to "oxp_ec" from "oxpec" (mirroring WMI module conventions)
+such that userspace software that relied on the previous behavior can be
+retrofit to the new kernel while enabling correct functionality on old
+and new kernels. Failing that, software that is not updated will just
+stop controlling the fans, ensuring no malignant behavior.
 
+Finally, the oxp-sensors module is converted into the oxpec platform driver
+in order for it to stay as a single unit. Then, the appropriate
+documentation for it is added.
+
+Changes since V1:
+    - Add X1 Pro, F1 Pro variants
+    - Fix minor typo in initial patches
+    - Convert oxp-sensors into a platform driver, as it is no longer
+      considered a hwmon driver.
+    - Add sysfs documentation and myself to the MAINTAINERS file
+    - Update documentation to state that this is the OneXPlayer/AOKZOE
+      platform driver, and that support for Ayaneo/OPI is provided until
+      they gain their own platform driver.
+
+Antheas Kapenekakis (12):
+  hwmon: (oxp-sensors) Distinguish the X1 variants
+  hwmon: (oxp-sensors) Add all OneXFly variants
+  ABI: testing: sysfs-class-power: add BypassS0 charge_type
+  hwmon: (oxp-sensors) Add charge threshold and bypass to OneXPlayer
+  hwmon: (oxp-sensors) Rename ec group to tt_toggle
+  hwmon: (oxp-sensors) Add turbo led support to X1 devices
+  hwmon: (oxp-sensors) Move pwm_enable read to its own function
+  hwmon: (oxp-sensors) Move pwm value read/write to separate functions
+  hwmon: (oxp-sensors) Move fan speed read to separate function
+  hwmon: (oxp-sensors) Adhere to sysfs-class-hwmon and enable pwm on 2
+  platform/x86: oxpec: Move hwmon/oxp-sensors to platform/x86
+  ABI: testing: add tt_toggle and tt_led entries
+
+ Documentation/ABI/testing/sysfs-class-power   |   6 +-
+ Documentation/ABI/testing/sysfs-platform-oxp  |  29 +
+ Documentation/hwmon/index.rst                 |   2 +-
+ Documentation/hwmon/oxp-sensors.rst           |  89 ---
+ Documentation/hwmon/oxpec.rst                 |  67 ++
+ MAINTAINERS                                   |   7 +-
+ drivers/hwmon/Kconfig                         |  11 -
+ drivers/hwmon/Makefile                        |   1 -
+ drivers/platform/x86/Kconfig                  |  11 +
+ drivers/platform/x86/Makefile                 |   3 +
+ .../oxp-sensors.c => platform/x86/oxpec.c}    | 664 ++++++++++++++----
+ 11 files changed, 649 insertions(+), 241 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-platform-oxp
+ delete mode 100644 Documentation/hwmon/oxp-sensors.rst
+ create mode 100644 Documentation/hwmon/oxpec.rst
+ rename drivers/{hwmon/oxp-sensors.c => platform/x86/oxpec.c} (52%)
+
+-- 
+2.48.1
 
 
