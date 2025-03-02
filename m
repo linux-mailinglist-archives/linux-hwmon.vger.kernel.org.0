@@ -1,115 +1,103 @@
-Return-Path: <linux-hwmon+bounces-6876-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6878-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FDFA4B2BB
-	for <lists+linux-hwmon@lfdr.de>; Sun,  2 Mar 2025 16:51:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A20A4B304
+	for <lists+linux-hwmon@lfdr.de>; Sun,  2 Mar 2025 17:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01145188DDAC
-	for <lists+linux-hwmon@lfdr.de>; Sun,  2 Mar 2025 15:51:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 616113AEC52
+	for <lists+linux-hwmon@lfdr.de>; Sun,  2 Mar 2025 16:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814241E7C25;
-	Sun,  2 Mar 2025 15:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C40D1E98FF;
+	Sun,  2 Mar 2025 16:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mixaill.net header.i=@mixaill.net header.b="HW2kZ4M6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jRn4Ue8q"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.mixaill.net (mail.mixaill.net [144.76.234.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327D4258A
-	for <linux-hwmon@vger.kernel.org>; Sun,  2 Mar 2025 15:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.234.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1571E9B0A
+	for <linux-hwmon@vger.kernel.org>; Sun,  2 Mar 2025 16:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740930666; cv=none; b=dwlcotbwmViga/8zEF0OTAXDojkgOJ1fiw6B7gggBKkl1aVSW02XOBx6aq7nfVwRRtyOBkEIP9hbL29EbBLJE08BDBd6gFXj6vG2G2CFXUKim/k6Y90ELFgjDO1LKT5WHLeq4Ei8LoTHCeb6/l6ijxeNbbTvz/FCm0RBf0kc62I=
+	t=1740932100; cv=none; b=iPJ1TZXXBXvYgOmO+q1AjSNDl6nus4ceQGyM80iVS7B19d/t/rEjt5o7YLoIZUMZtg5vM58QifJBU9S4gVAXoSu+mOTcQA+8admiST9SLgZ5EswfRIVJ2UQO9smmnhVKQpnu+OKTfnvv5eVLfX9v8UgZKAJ7iU04TA3myWWgDsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740930666; c=relaxed/simple;
-	bh=Ir8ZI4R2IM4pyCCWWX2IRNe6GehZJvXY6fdXKVLdkQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EEyHpHsez9bbGCEKcP1F7rLHUjsbxIoMnJ4Iv4lIyerhc0dQVF5OXPSqQnYuidzDu9mRBmjeXen3u4l1Sb2o69wWTtf6a17sNp8pkg6k7TytNENOFY15+Di9da6Ch7xBC+lYSn73Sb5xxdHikhygIEDgYMijsIbiO8P12++VzCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mixaill.net; spf=pass smtp.mailfrom=mixaill.net; dkim=pass (2048-bit key) header.d=mixaill.net header.i=@mixaill.net header.b=HW2kZ4M6; arc=none smtp.client-ip=144.76.234.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mixaill.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mixaill.net
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D9A696E6F4;
-	Sun,  2 Mar 2025 15:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mixaill.net; s=dkim;
-	t=1740930662; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=YG9lBUpLJfhhzYEZH6l6Enzmsv4WhFsOvD/G0fAlccE=;
-	b=HW2kZ4M6L0bB/JAQ+PEtD28rOXMM3P/sukE8/mbc3QG6kpCFbGrllHuh5NDMZivojqoAmq
-	sQn/QapIdCkpNlBOdyXCHkdmeOwaaXNBXPXry3hqU9JIFrEq9o3wlJIr0hoAaShil1vyOH
-	aVXzCgTOrwuB5cNT+b/sROX+prngkpY5c5/THgPlYwMw1faLPLwrepl8jXOwrh7E3AEZXK
-	iyV4GFmRSVOVKobcVzavqh4xkFSnjMBi2Q5pIzYuuxjhErtJNYNjs3PMPZNHHSkrQFv9UO
-	enbOratNZF2yvKbxT11W1EBJ+PyNBKL8ZKhAjwqONr1iKG6utHD+F80YF+izyg==
-From: Mikhail Paulyshka <me@mixaill.net>
-To: Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-hwmon@vger.kernel.org
-Cc: Mikhail Paulyshka <me@mixaill.net>
-Subject: [PATCH] hwmon: (nct6683) Add customer ID for AMD BC-250
-Date: Sun,  2 Mar 2025 18:50:53 +0300
-Message-ID: <20250302155053.50096-1-me@mixaill.net>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1740932100; c=relaxed/simple;
+	bh=bVRzqdX10lv6/py/0AUd+d9jP2RIns/AxgJ42fxFPOA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bGh9Drm4XgYxvNPNmL8sdAaF0xJQhrmqWh2J9+CHasMJCUVRuWqbIRVbwv1md27D2VHpqG9S4eYMCiex4dB0S8Eun0aqLZ9PfVvmAVZStCX0ZE5M610iybNfZEiLCvvadxfnbXiN2H6fbpBt7PfCvzzQOBPZsVdx1RdKzX6V5f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jRn4Ue8q; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-223378e2b0dso51624245ad.0
+        for <linux-hwmon@vger.kernel.org>; Sun, 02 Mar 2025 08:14:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740932098; x=1741536898; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZJb55axwrdQd2n7JHZOC7qiwCga0+NFRK4WdT3RyIM4=;
+        b=jRn4Ue8qDQmaSgFKtFsegu2mKYgTM4oM+QAIeLW7Fzmdj14dFyCz56lOZBnNYh5JDL
+         x6G75pxVZxQbU4+f7fSD4Pkn2XSWa0UQViqEMfEFYg6sGlxNz3ydHNcgtUvEkQA+CeTP
+         d5mPi5cWmVvnDpa+ftuBV9i5UJoL8kbiynwhIe6BJMn4GnyQbmJl91zR7phO0cBxu4Ig
+         hUUuAwFpeiU0BFY1PaUqR2gLoQ0DEOJ9pn4FraYuLwNLvPkMRQD0d3i8qheNncmbAixY
+         7qVftpGif4a3IIo9AjAgCYyzjs2sie6X1V6AtMxiJYcLCegk0b9myJ13q31WdlwSBM91
+         8lTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740932098; x=1741536898;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZJb55axwrdQd2n7JHZOC7qiwCga0+NFRK4WdT3RyIM4=;
+        b=XbT2Yjma7cmHI+517bEpZbQ6nxTJembQwTBQrfSLkfUEzNvkAkIt7rAo2734yXTN4I
+         fMyerzsO04YMJDTZYN9TnG1rDcFwHzNhYEu9kYJQGjITJrejUgzVliIbPkRXbvyClGRa
+         7ZecW4c6kTaGWjXY1a8AybpCNvcBFtclZMlqY138D4Qa/gTjVIxl32fxHl2TkS5Twrvm
+         v7asC5Q5983ArT1r9jOgmzDGKcvhWr9O6N7ZDnDVIkdaOYMyby1sCBGhhKfR9WbXP6TC
+         eu7teXZ7HMXlJnB/RalTbews4e4eOHs98Locdn+648l8HZxZVnn6CsWQfgfmREF7mdQf
+         dw9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVycHVuxRtSs9yj/JeLP27nXf9JZM0ycQ8BTfnqSup7xF7feUOMF/DB7IMtKujbWCK2Qv+8Ca7obmTIYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHIX+W9OgnGSH4hETsmSX738vbUmd8vR+upsIosRzWRGUIYiVx
+	btBnpQ1NRMDd1OZCp8mvwef9zdmrO8hQwoCIBxFtg5L7lY/KtSA5
+X-Gm-Gg: ASbGncso+uc+2T5u685ZZzrB5FXx14b5eZfObBZoSvAqqnBO1vA9/bzpospitcFoFL2
+	ovymf/KRaPmLAstec452N8BBDyHkfJGUEteMkYT5rlFLPIOJzzSUGvsC+XOdzsuISZsRuLNkQXh
+	2cg9Ja9Ed6ho1zOqc7CQAiiYlZattY7pNoH0Hvzwmjlsd+HZd3iBSh0MWTHkLK4geRz9gCYz0wv
+	WNRsWh1B1Y1dVu0exTWL9Fb4jM3c9s0mAY8WF28pkjXr8RfaikWScU56tVuRnAOugbFH/40xtdo
+	SVXQekw/vn4EEHBfo4irZ3ka/y31FoPoRI4mtZE6z2pJmbbM5DjfX7uuCA==
+X-Google-Smtp-Source: AGHT+IEfZ3zSqLZkN8LXqCRhOFpuWWLDsxn5Gqnxj8m//12JSn/bUJi3OvVoYFMfAAVMTo6vdBDMCg==
+X-Received: by 2002:a05:6a21:10e:b0:1ee:c8e7:203a with SMTP id adf61e73a8af0-1f2f4e8fb25mr21621619637.40.1740932097981;
+        Sun, 02 Mar 2025 08:14:57 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a00400a0sm7333768b3a.140.2025.03.02.08.14.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Mar 2025 08:14:57 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sun, 2 Mar 2025 08:14:56 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Mikhail Paulyshka <me@mixaill.net>
+Cc: Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (nct6683) Add customer ID for AMD BC-250
+Message-ID: <610dd1b9-c8f1-4ded-a1bb-108121b566d3@roeck-us.net>
+References: <20250302155053.50096-1-me@mixaill.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250302155053.50096-1-me@mixaill.net>
 
-This value was found on an AMD BC-250 board with an
-NCT6686D chip.
+On Sun, Mar 02, 2025 at 06:50:53PM +0300, Mikhail Paulyshka wrote:
+> This value was found on an AMD BC-250 board with an
+> NCT6686D chip.
+> 
+> Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
 
-Signed-off-by: Mikhail Paulyshka <me@mixaill.net>
----
- Documentation/hwmon/nct6683.rst | 3 ++-
- drivers/hwmon/nct6683.c         | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Applied.
 
-diff --git a/Documentation/hwmon/nct6683.rst b/Documentation/hwmon/nct6683.rst
-index 8d4a20d99e59..3e549ba95a15 100644
---- a/Documentation/hwmon/nct6683.rst
-+++ b/Documentation/hwmon/nct6683.rst
-@@ -3,7 +3,7 @@ Kernel driver nct6683
- 
- Supported chips:
- 
--  * Nuvoton NCT6683D/NCT6687D
-+  * Nuvoton NCT6683D/NCT6686D/NCT6687D
- 
-     Prefix: 'nct6683'
- 
-@@ -61,6 +61,7 @@ Board				Firmware version
- Intel DH87RL			NCT6683D EC firmware version 1.0 build 04/03/13
- Intel DH87MC			NCT6683D EC firmware version 1.0 build 04/03/13
- Intel DB85FL			NCT6683D EC firmware version 1.0 build 04/03/13
-+AMD BC-250			NCT6686D EC firmware version 1.0 build 07/28/21
- ASRock X570			NCT6683D EC firmware version 1.0 build 06/28/19
- ASRock X670E			NCT6686D EC firmware version 1.0 build 05/19/22
- ASRock B650 Steel Legend WiFi	NCT6686D EC firmware version 1.0 build 11/09/23
-diff --git a/drivers/hwmon/nct6683.c b/drivers/hwmon/nct6683.c
-index 416ac02e9f74..6cda35388b24 100644
---- a/drivers/hwmon/nct6683.c
-+++ b/drivers/hwmon/nct6683.c
-@@ -176,6 +176,7 @@ superio_exit(int ioreg)
- #define NCT6683_CUSTOMER_ID_MSI2	0x200
- #define NCT6683_CUSTOMER_ID_MSI3	0x207
- #define NCT6683_CUSTOMER_ID_MSI4	0x20d
-+#define NCT6683_CUSTOMER_ID_AMD		0x162b
- #define NCT6683_CUSTOMER_ID_ASROCK		0xe2c
- #define NCT6683_CUSTOMER_ID_ASROCK2	0xe1b
- #define NCT6683_CUSTOMER_ID_ASROCK3	0x1631
-@@ -1231,6 +1232,8 @@ static int nct6683_probe(struct platform_device *pdev)
- 		break;
- 	case NCT6683_CUSTOMER_ID_MSI4:
- 		break;
-+	case NCT6683_CUSTOMER_ID_AMD:
-+		break;
- 	case NCT6683_CUSTOMER_ID_ASROCK:
- 		break;
- 	case NCT6683_CUSTOMER_ID_ASROCK2:
--- 
-2.48.1
-
+Thanks,
+Guenter
 
