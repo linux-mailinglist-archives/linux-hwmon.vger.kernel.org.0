@@ -1,52 +1,86 @@
-Return-Path: <linux-hwmon+bounces-6942-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6948-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC12A4E059
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 15:12:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1717A4E45B
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 16:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C362718886AF
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 14:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41A6819C1220
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 15:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB2F20469B;
-	Tue,  4 Mar 2025 14:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nr64fsRu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35402780F0;
+	Tue,  4 Mar 2025 15:31:08 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7577D1FC7C9;
-	Tue,  4 Mar 2025 14:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A162780EB
+	for <linux-hwmon@vger.kernel.org>; Tue,  4 Mar 2025 15:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.116
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741102268; cv=pass; b=Ez/59p4qXE0+vHFeaK9XUWzqNgHnFzGc5lNes6u9qlaaVIggaGWIvFMTrBqH2FZImCCtPvSNWNCEtlO9vxLxbg/JE687He3ADemYt8SZqhp+MDWqqSpaqhRUmtG+y5kucQBMgfX7v0UDO05iG0wYwYdSbW24ZFIUxFeqZ4GJoQo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741102268; c=relaxed/simple;
+	bh=qKYQ/RpHnPPi0xz+U1dihMeF/+HcwhhzvfPtYWgkvCg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HFDbjSeslwhOzCmHUoJnlsMNp7t+C8nEysCdowehzktPtt/1LTnLzPJiD/kGzUyVJpUcbec0bgEdYz4NifUPimtBWTTYwlLiGE4AaBLcgilcXqabr1fDaYSmfBsIoaJkHmKp9uR1SgOdTYocaKa2gFbNKL+nWx0oIUyjv26Tm2I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=217.140.110.172; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=pass smtp.client-ip=160.75.25.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
+Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 501BF408B648
+	for <linux-hwmon@vger.kernel.org>; Tue,  4 Mar 2025 18:31:05 +0300 (+03)
+X-Envelope-From: <root@cc.itu.edu.tr>
+Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6fj61VryzG0Sy
+	for <linux-hwmon@vger.kernel.org>; Tue,  4 Mar 2025 18:28:42 +0300 (+03)
+Received: by le1 (Postfix, from userid 0)
+	id E9A054272E; Tue,  4 Mar 2025 18:28:31 +0300 (+03)
+X-Envelope-From: <linux-kernel+bounces-541454-bozkiru=itu.edu.tr@vger.kernel.org>
+Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
+	by le2 (Postfix) with ESMTP id 7526B41F10
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:57:45 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 26FA4305F789
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:57:45 +0300 (+03)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C676172641
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:57:11 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9371F9F64;
+	Mon,  3 Mar 2025 10:53:45 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80FC1F8AE2;
+	Mon,  3 Mar 2025 10:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741097434; cv=none; b=FKqQrnt0nyXW1SDpWBm+mxEv+N81GKm1LBFwdRPzYQoxWUDAD1Fntqwt7brWbRd9WC8+/99+jJhizzFCEGrwTA9sqr5nUhwsPl9IM+atl2bh0F7PicIo886j3Q8lWduPoK7wXApb9ZwnaxIB+/gGWDTkJkRiVMeAUG4YRNnwJ74=
+	t=1740999223; cv=none; b=AChXIWWbSGvoKjtkDj36sZe1V6IVHEXjDCU06bRvarqzxI7jMptQvjk6RkpOUPX/PUIJLp/XVYqU+vDQf2mWm/Fg5OTo5YPYzbxTURBlVDZUSJzSQ+17sIRE93zfRAQvIHf659gbBk9P6cWftLdGlvtBcV6gilgJql8bh7BCoF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741097434; c=relaxed/simple;
-	bh=rizGSgK5xHo58KsRXuy97biYsv6kMmnPbMmM4wJ9HCE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aUVpbHIZQ0jUbUnsKhItEX2x/nNE/eibnR18UGKlA8KA2To3ejDzo9qS/VnZx2yY2aStVQYHsJVpsAKC4kZp/2qWBnowxLVDU/PSwfAfnQr1IvQ2u+e3uzt2k6YEgRI1/p+8oJf7zTfdLchfXReSOjhYBZbpJZqNpy69bK4ShPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nr64fsRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EA6C7C4CEE5;
-	Tue,  4 Mar 2025 14:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741097434;
-	bh=rizGSgK5xHo58KsRXuy97biYsv6kMmnPbMmM4wJ9HCE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nr64fsRuGgnVEGx5/zGpV14nu1iJkDxt8MLykV0n8qW+WlaHdY0fpBCABovY28ZPn
-	 zoSLExMOjWpcNOB3dCkpZP3dkwm5xDnxNKaHpL1Zp+FKd/LlShzeHBA/Ze2xFev3XA
-	 vf2W1+SVUEWXHY6CDxK+qagFg3sH/pr7uYuk42kz0q/yK9BnQd13C9W6hkFlGRZRyy
-	 KMWuRKNTa21IkpwDDdwiZ/fCSQoDxXqnbPD+NMgVk/Ow95PtRdQWyciuH4nmhpEdrk
-	 I0+7sa2J5llPdlhI/xEgCNNrNQQBdCVhPX3Ye71vhTkbiuIwnowEUkmDvpG3wzhc5G
-	 DzL7uv6zpvceg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D56CEC021B8;
-	Tue,  4 Mar 2025 14:10:33 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Tue, 04 Mar 2025 15:10:31 +0100
-Subject: [PATCH] hwmon: (ntc_thermistor) return error instead of clipping
- on OOB
+	s=arc-20240116; t=1740999223; c=relaxed/simple;
+	bh=qKYQ/RpHnPPi0xz+U1dihMeF/+HcwhhzvfPtYWgkvCg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=H+ivxV4DBbdDdINjB7PqEYgBjbfdqKGRJdq6+Ok/g2ok+c28Sv+aNk6wy2/ZOtFwIuHj0YaCjZKOa9VeT7Nmj7VGFtGEZ5ZxIIa82LHMTm+gdEChnYAu5ObPCYDM1aO+O95wtT1vO1W+qqA2LwIJHYz7HqeIRYNI9bO+EPzaqcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6B6C113E;
+	Mon,  3 Mar 2025 02:53:55 -0800 (PST)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2FC6A3F673;
+	Mon,  3 Mar 2025 02:53:40 -0800 (PST)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Date: Mon, 03 Mar 2025 10:51:47 +0000
+Subject: [PATCH 12/14] hwmon: (xgene-hwmon) Simplify PCC shared memory
+ region handling
+Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -55,133 +89,148 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250304-ntc_oob-v1-1-600d8992478d@gocontroll.com>
-X-B4-Tracking: v=1; b=H4sIANYJx2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDYwMT3byS5Pj8/CRdCyMjkyTTJCNTc4s0JaDqgqLUtMwKsEnRsbW1ADs
- ERUxZAAAA
-X-Change-ID: 20250304-ntc_oob-8224b5b2578f
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Maud Spierings <maudspierings@gocontroll.com>
+Message-Id: <20250303-pcc_fixes_updates-v1-12-3b44f3d134b1@arm.com>
+References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+In-Reply-To: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>, 
+ Adam Young <admiyo@os.amperecomputing.com>, 
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ linux-hwmon@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741097433; l=4222;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=RmytwYHysabk9h8JtKUKdTZTREYQi1OmvlBNEp98ZGQ=;
- b=My3ewUjA2boel3PNERKlLCk4c31l8WSk+MPw21rkUcGwvZ9oUwYzyyK0E5/OGB2Exd+t6SDGx
- jhTsGLnVMTYCZlWm8iFjPL6YiqqEGxmKSL0BgcOCogm4/g7UHjz0Yzj
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3678; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=qKYQ/RpHnPPi0xz+U1dihMeF/+HcwhhzvfPtYWgkvCg=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBnxYoiJfyJ15B7dZMCKbfDh7KWMxlk1zX1nXbFZ
+ DSDENvulASJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ8WKIgAKCRAAQbq8MX7i
+ mOOJEACk8HwhoV/kf4yQTtXA0+Bt6TAgAQcmvhIbnJbmQo6uNeuyvNtO6AJ4hp2bBhQshaQw/O5
+ EJ/zNcpbsEojllwwlLTXEySe3nChK24CyD5Hz/DbGKOrZNTE6ZPI2nN7d7ids2MfY3gnpJRe+EY
+ JSuME2353lxcPdMkxQD0SU5auKiZJzQJXZNsmwCII+ibzjmokrbjDIdDnmi5gG9SZ/3Z3MYOAb+
+ UjqklBafICGSMLwE+zmaIYwtt1v0RZ7swQHGkNMHAc/Q6HyQCR9tM8DMeGq9ezKkV7S7cU3eApR
+ bVJmjqNa7Tz2U9z59MMvtfCS5uYcSY5hNk5s0asxqgQA/sW32EdUvI1AUj9jo6jEzjqBYzSLTm7
+ UbnG/UCJYSDSZqThECQuw3zhvwCdiSwC4593JGU4SIDWuZ3KxGAybmi2T4YsBgKg7FoI5YuDs7F
+ 0x5PH5nD26+wtjhRIfYcvHDjZzFQJrUFcee3epOIiPYflGlKgS6Gdx8ymxUhcfIc+LXV0e0fjrv
+ iFrgf7J3PAs2slBNxdLJ+VCtUxx6s147rt9O1XarZ4TDmRDTh751OhsGFsqJeF5cEK6H3Yqs7br
+ PrEnT+KfL563qBk10DtcNPuQ9fTiK9gLXm1SrbF6MDC9ZdpbqwFGVtUVNzlPm0iYt1S4wgdnR0j
+ Wb96Xqm4w4wZD3g==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
+X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
+X-ITU-Libra-ESVA-ID: 4Z6fj61VryzG0Sy
+X-ITU-Libra-ESVA: No virus found
+X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
+X-ITU-Libra-ESVA-Watermark: 1741706965.83513@f/1tXoR1A/x/O5OHyTZESA
+X-ITU-MailScanner-SpamCheck: not spam
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+The PCC driver now handles mapping and unmapping of shared memory
+areas as part of pcc_mbox_{request,free}_channel(). Without these before,
+this xgene hwmon driver did handling of those mappings like several
+other PCC mailbox client drivers.
 
-When the ntc is reading Out Of Bounds instead of clipping to the nearest
-limit (min/max) return -ENODATA. This prevents malfunctioning sensors
-from sending a device into a shutdown loop due to a critical trip.
+There were redundant operations, leading to unnecessary code. Maintaining
+the consistency across these driver was harder due to scattered handling
+of shmem.
 
-This implementation will only work for ntc type thermistors if a ptc
-type is to be implemented the min/max ohm calculation must be adjusted
-to take that into account.
+Just use the mapped shmem and remove all redundant operations from this
+driver.
 
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
-This patch is a continuation of another discussion [1]. I felt like it
-should be a new patch, not a v2 as this is a very different change.
+ drivers/hwmon/xgene-hwmon.c | 40 ++++------------------------------------
+ 1 file changed, 4 insertions(+), 36 deletions(-)
 
-I have left the clamping of n to INT_MAX in the code with a comment, but
-it may be possible to find a better solution to it. One I thought of is
-to make the ohm field of the ntc_compensation struct a signed int as
-well. It would get rid of this weird edge case, but it doesn't make
-sense to allow for negative resistances to be entered into the sensor
-table.
-
-Currently the only feedback this provides to the user is when they
-manually try to read the temperature and it returns the error. I have
-added a simple printk to these error points to see how spammy it gets
-and this is the result:
-
-dmesg | grep hwmon
-[    4.982682] hwmon: sensor out of bounds
-[    5.249758] hwmon: sensor out of bounds
-[    5.633729] hwmon: sensor out of bounds
-[    6.215285] hwmon: sensor out of bounds
-[    7.073882] hwmon: sensor out of bounds
-[    7.486620] hwmon: sensor out of bounds
-[    8.833765] hwmon: sensor out of bounds
-[   10.785969] hwmon: sensor out of bounds
-[   13.793722] hwmon: sensor out of bounds
-[   16.761124] hwmon: sensor out of bounds
-[   17.889706] hwmon: sensor out of bounds
-[   25.057715] hwmon: sensor out of bounds
-[   35.041725] hwmon: sensor out of bounds
-[   50.110346] hwmon: sensor out of bounds
-[   72.945283] hwmon: sensor out of bounds
-[  105.712619] hwmon: sensor out of bounds
-[  154.863976] hwmon: sensor out of bounds
-[  164.937104] hwmon: sensor out of bounds
-[  228.590909] hwmon: sensor out of bounds
-[  315.365777] hwmon: sensor out of bounds
-[  464.718403] hwmon: sensor out of bounds
-[  615.079123] hwmon: sensor out of bounds
-[  764.496780] hwmon: sensor out of bounds
-
-This is with polling-delay set to 1000, it seems to rate-limit itself?
-But I feel there should be a better way to communicate the potential
-sensor failure to the user, but I can't think of anything.
-
-[1]: https://lore.kernel.org/all/20250304-ntc_min_max-v1-1-b08e70e56459@gocontroll.com/
----
- drivers/hwmon/ntc_thermistor.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
-index 0d29c8f97ba7c2f264588b6309b91ca494012ad6..311a60498d409ea068a18590415b2d5b43e73eb1 100644
---- a/drivers/hwmon/ntc_thermistor.c
-+++ b/drivers/hwmon/ntc_thermistor.c
-@@ -387,12 +387,9 @@ static int get_ohm_of_thermistor(struct ntc_data *data, unsigned int uv)
- 	puo = data->pullup_ohm;
- 	pdo = data->pulldown_ohm;
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index 1e3bd129a922d25ff25142d864503377773304a8..ea350d4de902c4e6fc4de1cd54a8b75edfad1119 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -102,9 +102,6 @@ struct xgene_hwmon_dev {
  
--	if (uv == 0)
--		return (data->connect == NTC_CONNECTED_POSITIVE) ?
--			INT_MAX : 0;
--	if (uv >= puv)
--		return (data->connect == NTC_CONNECTED_POSITIVE) ?
--			0 : INT_MAX;
-+	/* faulty adc value */
-+	if (uv == 0 || uv >= puv)
-+		return -ENODATA;
+ 	struct device		*hwmon_dev;
+ 	bool			temp_critical_alarm;
+-
+-	phys_addr_t		comm_base_addr;
+-	void			*pcc_comm_addr;
+ 	u64			usecs_lat;
+ };
  
- 	if (data->connect == NTC_CONNECTED_POSITIVE && puo == 0)
- 		n = div_u64(pdo * (puv - uv), uv);
-@@ -404,6 +401,16 @@ static int get_ohm_of_thermistor(struct ntc_data *data, unsigned int uv)
- 	else
- 		n = div64_u64_safe(pdo * puo * uv, pdo * (puv - uv) - puo * uv);
+@@ -125,7 +122,8 @@ static u16 xgene_word_tst_and_clr(u16 *addr, u16 mask)
  
-+	/* sensor out of bounds */
-+	if (n > data->comp[0].ohm || n < data->comp[data->n_comp-1].ohm)
-+		return -ENODATA;
-+
-+	/*
-+	 * theoretically data->comp[0].ohm can be greater than INT_MAX as it is an
-+	 * unsigned integer, but it doesn't make any sense for it to be so as the
-+	 * maximum return value of this function is INT_MAX, so it will never be
-+	 * able to properly calculate that temperature.
-+	 */
- 	if (n > INT_MAX)
- 		n = INT_MAX;
- 	return n;
+ static int xgene_hwmon_pcc_rd(struct xgene_hwmon_dev *ctx, u32 *msg)
+ {
+-	struct acpi_pcct_shared_memory *generic_comm_base = ctx->pcc_comm_addr;
++	struct acpi_pcct_shared_memory __iomem *generic_comm_base =
++							ctx->pcc_chan->shmem;
+ 	u32 *ptr = (void *)(generic_comm_base + 1);
+ 	int rc, i;
+ 	u16 val;
+@@ -523,7 +521,8 @@ static void xgene_hwmon_rx_cb(struct mbox_client *cl, void *msg)
+ static void xgene_hwmon_pcc_rx_cb(struct mbox_client *cl, void *msg)
+ {
+ 	struct xgene_hwmon_dev *ctx = to_xgene_hwmon_dev(cl);
+-	struct acpi_pcct_shared_memory *generic_comm_base = ctx->pcc_comm_addr;
++	struct acpi_pcct_shared_memory __iomem *generic_comm_base =
++							ctx->pcc_chan->shmem;
+ 	struct slimpro_resp_msg amsg;
+ 
+ 	/*
+@@ -649,7 +648,6 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+ 	} else {
+ 		struct pcc_mbox_chan *pcc_chan;
+ 		const struct acpi_device_id *acpi_id;
+-		int version;
+ 
+ 		acpi_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
+ 					    &pdev->dev);
+@@ -658,8 +656,6 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+ 			goto out_mbox_free;
+ 		}
+ 
+-		version = (int)acpi_id->driver_data;
+-
+ 		if (device_property_read_u32(&pdev->dev, "pcc-channel",
+ 					     &ctx->mbox_idx)) {
+ 			dev_err(&pdev->dev, "no pcc-channel property\n");
+@@ -685,34 +681,6 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+ 			goto out;
+ 		}
+ 
+-		/*
+-		 * This is the shared communication region
+-		 * for the OS and Platform to communicate over.
+-		 */
+-		ctx->comm_base_addr = pcc_chan->shmem_base_addr;
+-		if (ctx->comm_base_addr) {
+-			if (version == XGENE_HWMON_V2)
+-				ctx->pcc_comm_addr = (void __force *)devm_ioremap(&pdev->dev,
+-								  ctx->comm_base_addr,
+-								  pcc_chan->shmem_size);
+-			else
+-				ctx->pcc_comm_addr = devm_memremap(&pdev->dev,
+-								   ctx->comm_base_addr,
+-								   pcc_chan->shmem_size,
+-								   MEMREMAP_WB);
+-		} else {
+-			dev_err(&pdev->dev, "Failed to get PCC comm region\n");
+-			rc = -ENODEV;
+-			goto out;
+-		}
+-
+-		if (!ctx->pcc_comm_addr) {
+-			dev_err(&pdev->dev,
+-				"Failed to ioremap PCC comm region\n");
+-			rc = -ENOMEM;
+-			goto out;
+-		}
+-
+ 		/*
+ 		 * pcc_chan->latency is just a Nominal value. In reality
+ 		 * the remote processor could be much slower to reply.
 
----
-base-commit: 20d5c66e1810e6e8805ec0d01373afb2dba9f51a
-change-id: 20250304-ntc_oob-8224b5b2578f
-
-Best regards,
 -- 
-Maud Spierings <maudspierings@gocontroll.com>
+2.34.1
 
 
 
