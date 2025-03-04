@@ -1,132 +1,82 @@
-Return-Path: <linux-hwmon+bounces-6947-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6944-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFCFA4E442
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 16:51:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67EBA4E2A4
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 16:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2714217C823
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 15:42:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53D1E19C2F08
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 15:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FF52620E8;
-	Tue,  4 Mar 2025 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B3127F4F9;
+	Tue,  4 Mar 2025 15:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l+uBhUrR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BoSkIJf9"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56D0292F93
-	for <linux-hwmon@vger.kernel.org>; Tue,  4 Mar 2025 15:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741102090; cv=pass; b=jSjylZLB3kVHjTMQ+ZTDL7fFHnn/KFyVDB7UzYOJajg65Bt5Ea/OohgCE/9RWWBcL5EH7yBrPyeK6/55zR4XROIVAMU5lMEZ9TUxMktiDRAU4IRmoO5yuiyP9PWRXHjMWPmX5z6rBoU7jgbxTbb51kvkLMXIq0BbuFTUgAnrFls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741102090; c=relaxed/simple;
-	bh=MCTeDFzPFsuhhTnj3i86r61OhjjPyU6f8ybt9FJfxJ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=esAnUrzAtI6N8/FsDy2vTe4KwjtqGjYnjIfcJOCkFWZ0nmAsX6Q9mfz6jzpqIvSyoMvf8kLMhiwCZS1XnXkm31KuZ5eEjslxCGp4a0EP6iFQDyidghBi//5MtMauXwZMCNX/Zw8Akow1Byi3t/X4Bhz8fJ7+d+nc7JtxQec+b68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR; arc=none smtp.client-ip=209.85.216.53; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; arc=pass smtp.client-ip=160.75.25.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
-Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id D6ECB40D5713
-	for <linux-hwmon@vger.kernel.org>; Tue,  4 Mar 2025 18:28:05 +0300 (+03)
-X-Envelope-From: <root@cc.itu.edu.tr>
-Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l+uBhUrR
-Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6dz24rG1zFy0X
-	for <linux-hwmon@vger.kernel.org>; Tue,  4 Mar 2025 17:55:42 +0300 (+03)
-Received: by le1 (Postfix, from userid 0)
-	id 2913D42727; Tue,  4 Mar 2025 17:55:28 +0300 (+03)
-Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR
-X-Envelope-From: <linux-kernel+bounces-541859-bozkiru=itu.edu.tr@vger.kernel.org>
-Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR
-Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id 3FF8741D24
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:56:23 +0300 (+03)
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id 84B4B305F789
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:56:22 +0300 (+03)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A34D7A91AB
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:55:21 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2340213244;
-	Mon,  3 Mar 2025 13:56:06 +0000 (UTC)
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31457211A28;
-	Mon,  3 Mar 2025 13:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB37F27F4EE;
+	Tue,  4 Mar 2025 15:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741010163; cv=none; b=q8WJXbhQIBrpsiUyCt0STiCL5Q+uB/WWC3WVlVqgWkCqpv/OTI4FdiQyFRAFSktoNkzbinD4TK+8aJ8FVa28hmTgushOtdQ9UK7uTtREkAq5n38He/HzJkSQnedeErp9gn/whD3RTzyLC8JmxnIWuQ2puUbnw3UmVlV29Y/80Zc=
+	t=1741100649; cv=none; b=rh3mJ4XpozVxDJQWa1jl7D2k0IyTU43qUYyznXAdL7nE8BAb98GMJaUV+sdDz9TdOK+IdPZgBPdaD39XOFdHFlfe41H8UpTj37Dv3UjMm2BGBZABX1T/S1qcrDJdtiD3WOj1PpqE8/fOqjtVE0tDtGeu0lTW/fqZOrfGqwrK0lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741010163; c=relaxed/simple;
-	bh=MCTeDFzPFsuhhTnj3i86r61OhjjPyU6f8ybt9FJfxJ8=;
+	s=arc-20240116; t=1741100649; c=relaxed/simple;
+	bh=smWbqg8U2xiB2fxpwWIjWqn8gf/WlfjfAXbWI6g3TUg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HiTFCxPDLRQzf3QpDtGI3v/d7MS0P3MXaFSEg5wTz4CotGSd9DR15+I9YO9yx1W0Z+MNVbHJxKv1RVG8Ow82h00Tpyr72G0vvJKtkVusd9xpz1mU3UWdZELlZVUPeieLgYHY1Tl7+OXx0CAkXOpjI0vN7JaSh1QFfxT2yYrRhO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l+uBhUrR; arc=none smtp.client-ip=209.85.216.53
+	 In-Reply-To:Content-Type; b=hx7ESQp/2o7OFh4a7skD2sGmB8RAg/Pb/2fJa1ZoK+MyFvm8fK8EKH96VmPZMkXFu9edXdpo/JroC1yNIo3ecpXu8i/yZPiGYqZh5wq15q9JunQJVmvEo6nAuNVforknUX18RvGcmq6YRJaT7H6SoRXi48nS91XWod+CjVngY9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BoSkIJf9; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2feb91a25bdso5424496a91.1;
-        Mon, 03 Mar 2025 05:56:00 -0800 (PST)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ff187f027fso3500665a91.1;
+        Tue, 04 Mar 2025 07:04:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741010160; x=1741614960; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741100647; x=1741705447; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=tBTP2SsN8b8d1tj08ma/P1grGEnHl37Fv9ksqNgBmtw=;
-        b=l+uBhUrRIt2vae8rNSALiaqNZPNbVIzSp/nkZCM2yqW0+eMAnY4qh8PSJBPlXDE0au
-         a4lvHLkLukKeC75wIbJY/6HbDSvFtfsqgu4/Pdch6CG66njFzHXuL07gw/PSBXy3AFWb
-         A7jqVE5dAMzcMI+6T4M65MPZF40mYTz2IvC9HSj3y0Q9KdNX7QSZQw85RTf9XNYi2HnG
-         tj4vNORgYmiV+8oLmcboNsaRUeqHAyEtf6wlRx7zyauoesvGImeyv1a35gCBUU5T2hAP
-         GV574/kaRk0gv09s/hps+Ta12AMb2RJ5o4DgS10z981rC+5uTq34A1zIg1HZU9oskiE8
-         gJjA==
+        bh=RGSgPOjUdjWVUkak51gMxwQnYY3XKB5C5+M6wHBRJPU=;
+        b=BoSkIJf9U4k3Do4jWrsF/vC2J/wmyxkxPw6V4HJnhdjThdXhX5/uEmaFbvIPGLHRlV
+         W+W+9auwOSB4Ettuxlf5V9gWTSjZD+qEKjjBrsDU3At0VVFg5xb3kIX8HafiYNGw0317
+         xALIMSOv/ESfcsUuPGLsp7CkNyOJGcQA4ZiSVbHok5TyhQ2psZE54TiCggaMo4zZ5QMV
+         fl6o3d6DDH8VEevzVG95tqTGbmCsONM11hgD+321S11HEs6loFST8CgMZc6jPqS+YhL0
+         G0E5CxQbUrsiaQF1Py5uMmegkEvgEWEj1nyLlVIteHQDiyvnxZM4kRRXYzJPJ4lbUPWY
+         AsWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741010160; x=1741614960;
+        d=1e100.net; s=20230601; t=1741100647; x=1741705447;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tBTP2SsN8b8d1tj08ma/P1grGEnHl37Fv9ksqNgBmtw=;
-        b=K16xm9EOevXY29t71la8+2kU1Cp0ysFdBH+JaYYDgvMeUYnLbTF3iqvbV5OGjVKerM
-         pQL5ictwJYhXiWZTnKFj+Znv64IKmM1lg9uDe+9Ove9Vmyjkwi+WDAw3Civc//Bi123Y
-         6+EQbYeDHLI4pQGJBwYoBxL+zeyJGN4O/Q1jkAzOa269mLILMWUqYTx0T/J5MPvrY2xu
-         AvARCd+gPc7U+OV0YIjfk7j7/xxcvBx51F6Bt7T5d+QdonGXRCk+iIXNhoAOVsbgAyzl
-         FI/G1SEOvvTfJespqG8LeQlMUvKAWfYxXFoF7bZwsquDn4xDynUOjFH1N8Q16Qmf/uk/
-         v8UA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwakdTganp/P5UWBLWIKpw68yESsQdXbZleuoEEEcMuN0Uvdp7sRIAcdh/6eCR3GTskkdRvVR9Ny1C@vger.kernel.org, AJvYcCW2Dcor1FeZw/siSHfXJqp9FiBiEKtpiI3pkIvLfIK7BxPY7Djn8hOHB/HGHikDXr4TT2EIB9HkbPcY86JI@vger.kernel.org, AJvYcCXayjDoJcpZqoL1DbSOWishoeg3ku45PAOMfKBOBo05DjmutNtzL+rE6Qghz3IlPhjxL6Y0Po6ruFVxdi8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyyjyQb2uZCXwPmKt3ETjgswWCr8cBnrV4t6JG2S48hxu4FEVx
-	EnXHlUzpuAVyWc7O73GVeSITcR7qs4k01DUlcSn9FxE783GfXsp4
-X-Gm-Gg: ASbGncsvGa1PxmEuKBnTi2GMJXG1qYPih1vHWdUKn39btsUUj+1dixGwkTkwFFzW9JD
-	P/eN+b8nxegXZhEsIx3z+xFK69EFDrDgH2fb6sJI1e1fp6ywd+lXKRqZeY2AtowJif0SvsLmhnU
-	gnQ7j+i+Iw2ha7EgWd/q1BF5Ip39jncbsek/gNas+0x3umjr1Io7XBzZ0DHsrvXyUwl/7N0CvG8
-	KKOkb4PGgZhJkdZ+rz0po5fDbw5q9WjuisPhGfQR36L4nrO3Pgq2xWzt+bjFmrpxSv5ohz6UPSw
-	+HSiFOsmAE7+vJ8bdJAGNIGaGtYR0yCbwi5AIVUpXGxQ9noX/8b1G0BCjotmxBFXAV7iBzavXQt
-	0yQlfOayYlmsBT2H/aA==
-X-Google-Smtp-Source: AGHT+IGTn6ar+i21IthOT0JS9e6dJdyXIRsagA4YhnhB00hq/ZrlppOYJSELP4R84rv2YxZxVFKujQ==
-X-Received: by 2002:a17:90b:4b41:b0:2fe:8217:2da6 with SMTP id 98e67ed59e1d1-2febabc804cmr16947066a91.22.1741010160288;
-        Mon, 03 Mar 2025 05:56:00 -0800 (PST)
+        bh=RGSgPOjUdjWVUkak51gMxwQnYY3XKB5C5+M6wHBRJPU=;
+        b=q2DASSc3uFf7jAFqP4pnAy0FMNwJoLc6hPAttYqp51BuJwqwZT488ugw9lkkCQM0LT
+         4QHC9rsHz1V18JCmCb3DWMEn57p/BSpaJdd/8Pe1DrDIW9hDd120Fze3WnwU6fouY8Vo
+         D16s1BZPfPfTJgBGLIDlewVHZTMxC8xfh+zy5WykkPVfQb34KS9CoKHdtmEq5QJScl3A
+         r7Y4PjZvB3k0ZcG2E8gGTEa6bwost+rgjiCIX9F5dDHD6+x8bV/jfFzuslA2aXuVCeRQ
+         Z+32EPGVUHtlQMp7A9ZxPzEjWeZVopYKJKXk2/NoD8iCi0rXObubDKC5/aXRr5uf/wM6
+         nALQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwOAIIXuNN+5QcW6xPW3shAhqsomsO8PvhOtkGjp1XUqCC5dcdyTwqnmkLdthdIpTVMdxArXQDE9mKHpk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3+QUeWZvgH5PCMrG3rDB2b+s2Fo7O/QhNQShzoO5yTlo3pxSj
+	58p55fXRa9J7Wm3D+eAfaph85Xss0dhgtJCfFD6rI0j0Tj+eRZmr
+X-Gm-Gg: ASbGncv+sa3/aH9SEI+LTRjMpnxjlEBI0u2EeJDhorK1JScSijVue3uMXch/jSrdxGS
+	s1to+QzJ3y6mPKiRhASwNoCEfJ9Y4Vo5XC6SqNyM+k8XQvgYktKJ0Q3Ykp7uh/qcHuznJcZza+O
+	hdoaRePZTwTPM3AYVzHWfawRAgLze/BeGpkSXlil3d5VVbaYfmMegN66IwNkFzNkQ6YgMB1leZZ
+	tjdoZlSs3kD2fNFFbnL3yP7FYmYje2N1vDiCt2TVm5LZYJ2uhwmVOFKQ9nOYXGzN4IYkqtNSFBI
+	8Y4Su2QBb/RXNFRW3r8J5qp2NB8MyizWc8rzNK+hAh6xP+t7RY2i2C4y4sWSB9Y8dyipQ1aPbPn
+	vYIkJuOCEbIAgvVwrHg==
+X-Google-Smtp-Source: AGHT+IG4rIwcHAcKZzAUK5cNqSizVekBWhDBKwebpTqf6cSVHgCb+yGGn88fNTd45L3fL5f9M2gg0w==
+X-Received: by 2002:a17:90b:4c51:b0:2ee:c30f:33c9 with SMTP id 98e67ed59e1d1-2ff33bd5cc8mr5840171a91.14.1741100646828;
+        Tue, 04 Mar 2025 07:04:06 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fea696e3f0sm8957394a91.37.2025.03.03.05.55.58
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff35966689sm963341a91.0.2025.03.04.07.04.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 05:55:59 -0800 (PST)
+        Tue, 04 Mar 2025 07:04:06 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <afb9a22f-7d21-42a2-a8dc-87537caad027@roeck-us.net>
-Date: Mon, 3 Mar 2025 05:55:57 -0800
-Precedence: bulk
+Message-ID: <184d5217-149f-4f6a-b4a6-f897a8391873@roeck-us.net>
+Date: Tue, 4 Mar 2025 07:04:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -134,15 +84,11 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/14] hwmon: (xgene-hwmon) Simplify PCC shared memory
- region handling
-To: Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Jassi Brar <jassisinghbrar@gmail.com>, Huisong Li <lihuisong@huawei.com>,
- Adam Young <admiyo@os.amperecomputing.com>, Jean Delvare
- <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
-References: <20250303-pcc_fixes_updates-v1-0-3b44f3d134b1@arm.com>
- <20250303-pcc_fixes_updates-v1-12-3b44f3d134b1@arm.com>
+Subject: Re: [PATCH] hwmon: (ntc_thermistor) return error instead of clipping
+ on OOB
+To: maudspierings@gocontroll.com, Jean Delvare <jdelvare@suse.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250304-ntc_oob-v1-1-600d8992478d@gocontroll.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -188,73 +134,123 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20250303-pcc_fixes_updates-v1-12-3b44f3d134b1@arm.com>
+In-Reply-To: <20250304-ntc_oob-v1-1-600d8992478d@gocontroll.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6dz24rG1zFy0X
-X-ITU-Libra-ESVA: No virus found
-X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741706757.95141@CVJXFAbnS7XVqiVw41faVw
-X-ITU-MailScanner-SpamCheck: not spam
 
-On 3/3/25 02:51, Sudeep Holla wrote:
-> The PCC driver now handles mapping and unmapping of shared memory
-> areas as part of pcc_mbox_{request,free}_channel(). Without these before,
-> this xgene hwmon driver did handling of those mappings like several
-> other PCC mailbox client drivers.
+On 3/4/25 06:10, Maud Spierings via B4 Relay wrote:
+> From: Maud Spierings <maudspierings@gocontroll.com>
 > 
-> There were redundant operations, leading to unnecessary code. Maintaining
-> the consistency across these driver was harder due to scattered handling
-> of shmem.
+> When the ntc is reading Out Of Bounds instead of clipping to the nearest
+> limit (min/max) return -ENODATA. This prevents malfunctioning sensors
+> from sending a device into a shutdown loop due to a critical trip.
 > 
-> Just use the mapped shmem and remove all redundant operations from this
-> driver.
+> This implementation will only work for ntc type thermistors if a ptc
+> type is to be implemented the min/max ohm calculation must be adjusted
+> to take that into account.
 > 
-> Cc: Jean Delvare <jdelvare@suse.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: linux-hwmon@vger.kernel.org
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> ---
+> This patch is a continuation of another discussion [1]. I felt like it
+> should be a new patch, not a v2 as this is a very different change.
+> 
+> I have left the clamping of n to INT_MAX in the code with a comment, but
+> it may be possible to find a better solution to it. One I thought of is
+> to make the ohm field of the ntc_compensation struct a signed int as
+> well. It would get rid of this weird edge case, but it doesn't make
+> sense to allow for negative resistances to be entered into the sensor
+> table.
+> 
+> Currently the only feedback this provides to the user is when they
+> manually try to read the temperature and it returns the error. I have
+> added a simple printk to these error points to see how spammy it gets
+> and this is the result:
+> 
+> dmesg | grep hwmon
+> [    4.982682] hwmon: sensor out of bounds
+> [    5.249758] hwmon: sensor out of bounds
+> [    5.633729] hwmon: sensor out of bounds
+> [    6.215285] hwmon: sensor out of bounds
+> [    7.073882] hwmon: sensor out of bounds
+> [    7.486620] hwmon: sensor out of bounds
+> [    8.833765] hwmon: sensor out of bounds
+> [   10.785969] hwmon: sensor out of bounds
+> [   13.793722] hwmon: sensor out of bounds
+> [   16.761124] hwmon: sensor out of bounds
+> [   17.889706] hwmon: sensor out of bounds
+> [   25.057715] hwmon: sensor out of bounds
+> [   35.041725] hwmon: sensor out of bounds
+> [   50.110346] hwmon: sensor out of bounds
+> [   72.945283] hwmon: sensor out of bounds
+> [  105.712619] hwmon: sensor out of bounds
+> [  154.863976] hwmon: sensor out of bounds
+> [  164.937104] hwmon: sensor out of bounds
+> [  228.590909] hwmon: sensor out of bounds
+> [  315.365777] hwmon: sensor out of bounds
+> [  464.718403] hwmon: sensor out of bounds
+> [  615.079123] hwmon: sensor out of bounds
+> [  764.496780] hwmon: sensor out of bounds
+> 
+> This is with polling-delay set to 1000, it seems to rate-limit itself?
+> But I feel there should be a better way to communicate the potential
+> sensor failure to the user, but I can't think of anything.
+> 
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+Hmm ... we could add "fault" attributes and report a sensor fault
+if uv == 0 or uv >= puv, together with the -ENODATA temperature reading.
+That could distinguish the fault from the "resistor value out of range" case.
 
-Note that I'll apply a fix this week which will cause a context conflict.
-See below.
+> [1]: https://lore.kernel.org/all/20250304-ntc_min_max-v1-1-b08e70e56459@gocontroll.com/
+
+Most of the above should be after "---" since it is irrelevant for the commit log.
 
 > ---
->   drivers/hwmon/xgene-hwmon.c | 40 ++++------------------------------------
-...
-> @@ -685,34 +681,6 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
->   			goto out;
->   		}
+>   drivers/hwmon/ntc_thermistor.c | 19 +++++++++++++------
+>   1 file changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+> index 0d29c8f97ba7c2f264588b6309b91ca494012ad6..311a60498d409ea068a18590415b2d5b43e73eb1 100644
+> --- a/drivers/hwmon/ntc_thermistor.c
+> +++ b/drivers/hwmon/ntc_thermistor.c
+> @@ -387,12 +387,9 @@ static int get_ohm_of_thermistor(struct ntc_data *data, unsigned int uv)
+>   	puo = data->pullup_ohm;
+>   	pdo = data->pulldown_ohm;
 >   
-> -		/*
-> -		 * This is the shared communication region
-> -		 * for the OS and Platform to communicate over.
-> -		 */
-> -		ctx->comm_base_addr = pcc_chan->shmem_base_addr;
-> -		if (ctx->comm_base_addr) {
-> -			if (version == XGENE_HWMON_V2)
-> -				ctx->pcc_comm_addr = (void __force *)devm_ioremap(&pdev->dev,
-> -								  ctx->comm_base_addr,
-> -								  pcc_chan->shmem_size);
-> -			else
-> -				ctx->pcc_comm_addr = devm_memremap(&pdev->dev,
-> -								   ctx->comm_base_addr,
-> -								   pcc_chan->shmem_size,
-> -								   MEMREMAP_WB);
-> -		} else {
-> -			dev_err(&pdev->dev, "Failed to get PCC comm region\n");
-> -			rc = -ENODEV;
-> -			goto out;
-> -		}
-> -
-> -		if (!ctx->pcc_comm_addr) {
+> -	if (uv == 0)
+> -		return (data->connect == NTC_CONNECTED_POSITIVE) ?
+> -			INT_MAX : 0;
+> -	if (uv >= puv)
+> -		return (data->connect == NTC_CONNECTED_POSITIVE) ?
+> -			0 : INT_MAX;
+> +	/* faulty adc value */
+> +	if (uv == 0 || uv >= puv)
+> +		return -ENODATA;
+>   
+>   	if (data->connect == NTC_CONNECTED_POSITIVE && puo == 0)
+>   		n = div_u64(pdo * (puv - uv), uv);
+> @@ -404,6 +401,16 @@ static int get_ohm_of_thermistor(struct ntc_data *data, unsigned int uv)
+>   	else
+>   		n = div64_u64_safe(pdo * puo * uv, pdo * (puv - uv) - puo * uv);
+>   
+> +	/* sensor out of bounds */
+> +	if (n > data->comp[0].ohm || n < data->comp[data->n_comp-1].ohm)
+> +		return -ENODATA;
+> +
+> +	/*
+> +	 * theoretically data->comp[0].ohm can be greater than INT_MAX as it is an
+> +	 * unsigned integer, but it doesn't make any sense for it to be so as the
+> +	 * maximum return value of this function is INT_MAX, so it will never be
+> +	 * able to properly calculate that temperature.
+> +	 */
+>   	if (n > INT_MAX)
+>   		n = INT_MAX;
 
-This needed to be IS_ERR_OR_NULL() since devm_memremap() returns an ERR_PTR.
+I am not a friend of theoretic code or comments like this. Please drop.
+The original code was intended to catch out-of-bounds values which would
+otherwise have been reported as error, not to catch unrealistic resistor
+values in the compensation tables.
 
 Thanks,
 Guenter
-
 
 
