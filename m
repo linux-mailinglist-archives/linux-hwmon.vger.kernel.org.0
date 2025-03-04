@@ -1,48 +1,48 @@
-Return-Path: <linux-hwmon+bounces-6956-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6960-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B99CA4E712
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 17:56:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE9AA4E76F
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 18:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B11F7AB042
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 16:52:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75E4A17A967
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 16:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33079260378;
-	Tue,  4 Mar 2025 16:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C619929DB9B;
+	Tue,  4 Mar 2025 16:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojTooJ3e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WLzqKgeb"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026F425FA28;
-	Tue,  4 Mar 2025 16:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F5129DB8C;
+	Tue,  4 Mar 2025 16:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741105916; cv=none; b=RH+qtGHQrhjv8v8jeTgQfz9r3Ebak0cPN/t6At1Ss3+p5mx512SkbQYIWkFhtrpsZbsTmG5I9e64i9+B3KP2TVDrdGIsIgMgWqDkaHSUofHoIitdJ1WeVK2+2n3sk9muNFrxZCXqrlz6LHX3FktemendbcGjDJyw1U8Tci4eu7s=
+	t=1741106005; cv=none; b=d7KmdiMjvpstRYNP782oTJfnuD+lzCmpY76xrQe5JFYy1UYjVpfKs1FL7yLOoAPNdcQltMzp0J9sGd1GTLUpAAOpnNMu0n/vL+L4gv/fxERVpIFDwbcH/nJwZpADGE7swnjumKgGzo7nODwLuRx8Tx1ft/N7MmKqLxIEuHYPX8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741105916; c=relaxed/simple;
-	bh=1b7ToBllyPpn0zk+DtE2pK66E04RdkGhHH2S/sCQtoI=;
+	s=arc-20240116; t=1741106005; c=relaxed/simple;
+	bh=sVMNAHKUeuRT95+im4P0/jKAS/GgcfOXmRXfFHueNYU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DxOTSTBkcT+qmKHO+Ieysdjghjw96HgOvANF6EoI6G/XzsODUF/hx8Epopz2tiCdcVV1aJ+tm9yt0X7DbrrIYF0t4Z0UZkmzoxsmFXVcuh4deDPfzVK5uiSwOFt+DI3utD81hUObwbxhZgkbvpkaCXZz/efmyo1CPGkWQ+cHLTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojTooJ3e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6DEC4CEE5;
-	Tue,  4 Mar 2025 16:31:49 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Zkd+/HYZ9kKIKL+Uo6gpwDbV+xY+f46ekM+H4qwPIOusQoJ/7NOBqOS8y2sn9igtGCPIEa6NZpA/xQF3NI3Nje5oaMyosbngSZdPmrQwtT1cPkCJLYE1nFbjtmcO9PI+phXZvKRQbylq16ZPSjYrHyHD493Mix/0CxZvTjnX9Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WLzqKgeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B13C4CEE7;
+	Tue,  4 Mar 2025 16:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741105915;
-	bh=1b7ToBllyPpn0zk+DtE2pK66E04RdkGhHH2S/sCQtoI=;
+	s=k20201202; t=1741106005;
+	bh=sVMNAHKUeuRT95+im4P0/jKAS/GgcfOXmRXfFHueNYU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ojTooJ3elCLNG/aGdXcD7y+0S07fyNBZVVTXHKZiwN+h40LFTXwngX5eFCGc+xOMd
-	 Eh4dCwm0JFnhykfrmMbB7eB2fkYbrFByCulpXD+Ji/tTTxlevzV3/MRihZMTw1KYOi
-	 w1tu1/RqoDtHK823LgSU3PJqbH5bFeOYUq5Ha/yhD5vTXFZuUgFNMZLdWuJXM2et8+
-	 ARVKXGj6EVzau5WJuC/iqHc+geNzG3lTI7q1yfr9nDQSCFdy0o+cs62G7u0u98wXWu
-	 N1/NFMkPHjzUwobZpYZVpvUfMb7IpQIeF+g2OWID2M4rpPuDzTgNgvM/OHq3rbYHtS
-	 gOI/8uHbnHv9Q==
-Message-ID: <880bac84-c593-44fa-a9dc-63462e1cee9d@kernel.org>
-Date: Tue, 4 Mar 2025 17:31:47 +0100
+	b=WLzqKgebR3Z1yyQWkkvDsRbvkJ0DR4h7CdicTt6kETDN7WiFUR0IZ2mFnvwFYvFki
+	 3wCFKEtwexcxSaTSYV+/A9/5S25Wmd8e+5Z0qvOxeEyEF0dLONG1ufDrRds6m3KOzq
+	 MILYp6ND7vin9qEwgEM59ydkSOG/ZQU9orONU8ZUKlBuaz9FTqA7yac7Tpk8HRnhFD
+	 SOXp+lSElrlCio1jTn0KAdE4h5BUjqhePtvHk8n2fqhaFlHC4PshfrhZDXEfP7pUsK
+	 zC1MzrJtoD5eiGlIEfLDwOVDZ0DJ1ZL3egfIZ+69FoITW0TvIoKaQ7pUcMaKOHWMLQ
+	 naBBllK6LaF6Q==
+Message-ID: <d4282923-63e4-4f14-b5ee-5e8bf1973893@kernel.org>
+Date: Tue, 4 Mar 2025 17:33:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -52,17 +52,17 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/3] dt-bindings: hwmon: Add Microchip emc2305 yaml
  schema
-To: Conor Dooley <conor@kernel.org>, florin.leotescu@oss.nxp.com
-Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+To: florin.leotescu@oss.nxp.com, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
  linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, viorel.suman@nxp.com, carlos.song@nxp.com,
+ linux-kernel@vger.kernel.org
+Cc: viorel.suman@nxp.com, carlos.song@nxp.com,
  linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
  festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
 References: <20250304162136.1963384-1-florin.leotescu@oss.nxp.com>
  <20250304162136.1963384-2-florin.leotescu@oss.nxp.com>
- <20250304-serving-stem-e059361db2b8@spud>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,34 +108,41 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250304-serving-stem-e059361db2b8@spud>
+In-Reply-To: <20250304162136.1963384-2-florin.leotescu@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/03/2025 17:29, Conor Dooley wrote:
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - microchip,emc2301
->> +      - microchip,emc2302
->> +      - microchip,emc2303
->> +      - microchip,emc2305
+On 04/03/2025 17:21, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
 > 
-> Driver has no match data etc, suggesting all of these are compatible.
-> Please pick one as a fallback compatible.
+> Introduce yaml schema for Microchip emc2305 pwm fan controller.
 > 
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
-> 
-> Missing descriptions of the fans, no?
-> See max6639 for an example.
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> ---
+>  .../bindings/hwmon/microchip,emc2305.yaml     | 43 +++++++++++++++++++
 
-Yes and missing $ref to fan-controller schema.
+I do not see improvements in the subject nor in missing $ref to common
+schema for fans.
+
+<form letter>
+This is a friendly reminder during the review process.
+
+It looks like you received a tag and forgot to add it.
+
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here. However, there's no need to repost
+patches *only* to add the tags. The upstream maintainer will do that for
+tags received on the version they apply.
+
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
 
 Best regards,
 Krzysztof
