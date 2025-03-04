@@ -1,511 +1,211 @@
-Return-Path: <linux-hwmon+bounces-6931-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-6933-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5A7A4DBDC
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 12:08:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C465DA4DC2E
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 12:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA07188DCB1
-	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 11:09:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96666173284
+	for <lists+linux-hwmon@lfdr.de>; Tue,  4 Mar 2025 11:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A2D1FECAC;
-	Tue,  4 Mar 2025 11:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BA71FF1AB;
+	Tue,  4 Mar 2025 11:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bde/3n0y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kpgfxWG4"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31751FECDB;
-	Tue,  4 Mar 2025 11:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D983E1FF1A6;
+	Tue,  4 Mar 2025 11:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741086528; cv=none; b=P12cDmLFgiHv+jfiUCkiJt1+KRFzvCvhMDp0MP7R5pcRVti4wq9z6fRAwqw+KYhUZpVHgCV5ukfkTkYEKUpDY6Eube82dVtJA1+qTciCATfXjD7WuH4tSX7AF3DFb9lwdTd/fKfEkvNVmEadB26NPrscY17/QPMPXc/pasR897s=
+	t=1741086742; cv=none; b=Q859Xvp/dtVLDES1NAiLEaY9fpB1j+B8UkuwXRzEtwGyXDuTfrE8OFhgvugI211egipINwTISBhl/mAe73LWvSteyhPkqWyjrmQleJ8CXYmIz15dNwyAS9UlBoUaoj0NJ351nZ4AJftoNmu96F3QkKqK7ArHGR1/lZHYiHC0tY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741086528; c=relaxed/simple;
-	bh=4xkw0yYacB0/6Q5LwI8fkd9jTNv0eZdwxdKwCFqlyEc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PbTQ0ydw5M9bYKO/qpljP7lpnu1UIO0hAMiRfpO3XpNUtznVGJZQQvfCgAfFj3th0NM5isttUNKW4LVKNCrFjQernNZryGSMhU/cFAnBWfineQXSlv8FKpfpm7pWWRCop5yzC1Cm5qEuSygADbvdAggVBygQkyIS35kdidx26QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bde/3n0y; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1741086742; c=relaxed/simple;
+	bh=Wn35wzbe+Q8L/bYrvTjn8zseKL0WI1HoDtVSnphOdbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yw7M79Yw6PxCHnbHHjhIAbVIMOWnSeC2grIMJ4tnTRFpUufJHZ3UORlZDKqkcn+MiANBZbYWIT3b1m1j4fXw93bFeUh4vrXdjUVJSNYG49xedt1N5TnvrVHv3NWx8JktGOzuuF3R/Yz3n5KDzglXYF6/bVNw+mdE3MiIdROHVA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kpgfxWG4; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e4ebc78da5so7867731a12.2;
-        Tue, 04 Mar 2025 03:08:46 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2235908a30aso88087765ad.3;
+        Tue, 04 Mar 2025 03:12:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741086525; x=1741691325; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MRjbS74Nsh8/qZkVcV7Vot+3slTDRd+TY3FbkFl3aNo=;
-        b=Bde/3n0y9icKKRCtSLbOwqCszWjgEbxHM+whyGY2P/AGQ3DvQw1b3PXjBNZyUIVjhd
-         UKIsSk4SKd9/jSdCVhS0odliX2AtUrWy/LVpb4+n1HG72X3jJN9wppXTp2N2W18n+f39
-         6mtKO+G+ekxc/8T9+pwli6jdkAMFa30KNm/zqX+2ffa8yUtkPN6bJiNz5dOEeLIes+a5
-         1y4ALq0fflvUJ4QLH5l8kqZQo36A2gebloa658ah//PhCT70gumjdYtwotIQUW/DOiuY
-         2zInwphDr3IVfIa2wBsJNPLoYHgsyBvV3EcKhlUl7j3A9P8wE/xb/P3y+EP2MFrdG8WY
-         uvGg==
+        d=gmail.com; s=20230601; t=1741086740; x=1741691540; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=EhErTMLxBPvnHRj81OpDYTVq6CDG6bl2cvW4ml+lGiA=;
+        b=kpgfxWG4tn71XeCz0cr7CH4wg5ZIRrmGo2spBJkpnF2ah31FucSMQgXpN1mQdDMCPo
+         AY65WCss8CVjdSKTrYdfYoDS3iYKL0CQGqKoAcSZmY8YF/h/eebgkPJksV3uWFqqiIgg
+         Og8H/mGleIIB8IJuXXG8mNtQ6q91NgYHK6dA17e0hNJUi5SQcmcZ7ozI4yI+wbwCHk5x
+         ETJc5N4CJXzFkk68vTfk/1mB44LilZtq1XIjEwulJZycS8gJns6IZuea2ouQNPYSz8RJ
+         Je7vfNO9xTLnA/L28RiF//duELEC5iLSzHhwsWRUlZVCrOlglx1D+GOvNZpBR0qx2XDQ
+         Mh3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741086525; x=1741691325;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MRjbS74Nsh8/qZkVcV7Vot+3slTDRd+TY3FbkFl3aNo=;
-        b=BpeW6QvQSk8Yv2L4bK90tQXNrNj3LvuB9gZ0aR6n2iD1sW7nJfT7za7xYGmDetas3i
-         ZWWN6MIcGiXNrHAAOmWfVFZJ83P+mieil2d796sKQfAP/nfO4P8gI0p9GvHyW4sln/QM
-         Xppn2HQR0nlhFefYSgpM3YwZQvZVYaYhCmEYTCxNwkt6BnJXf36mxUpRn+DOvGMkHIKm
-         0/g+ZCo7roe841noF/b+NFsJX5Eu+dW3V6t4ynh6CwoZK2YP53dA4TYtI/XmDhZ2Vptw
-         L2i2+q4T4w7B3XuHfnw+VHZBaJ3qR+L0NUcpHq6IcJYyw5Qqf5YTkeK4MP7IpL/g2TYJ
-         c5Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5iROHbzIUENCz3FrHNstyrxwHLqRamNEQOaGs360YQOtISfdhXsQxXF+qE1CUCr2M7RvFNZTi4JM=@vger.kernel.org, AJvYcCW8oFhICIkDwG6mPNqJ+X7CJwuZ3TzARSLDjg5XAtBTflzWhaVNRmMiGSEFs1NDEzqrgYDLljyBZElp6FHf@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY0hrQT+SkpdsSgnnOC3G53oJWFLmZKNslKa0W0pDHwxv24V5B
-	75QF7cn1Ln/0dSdo1Z7nxESptr4W0XrQwt2DMAbvnJ9dh/TX9y2L
-X-Gm-Gg: ASbGnct5xIJfWD18SvC6sjG4D7WwRUh0FIZN6xcDVp4SFCwcarM0iAU0PhUTCfNqB2E
-	xNTi1KxbrOcZMgcn/VG2iTWfOAkGvLsiq4BqlsYUsaRdhdFCXr1tLpC9+7ppk68mqe33WMXJ0/P
-	RNFcm+JmuGMMWK80q/0HC1TmD8ShnqD5rfVTm5ugu16ct3UgBN5xi4HatvC4PlaCHobqsTyc8Kk
-	gccDhZRXI0ppkS1tJKUSl/wX9j/zMMzPNONicrw05JRbxw2RFAVX53tl5iLmm5wPw4iy3L2Xx3U
-	B6W8JxOitSo1rzbMiZ4fZErqKE5+tQuQutNDkjRX9Gc=
-X-Google-Smtp-Source: AGHT+IE1Np6k0sfwEuo8edx8oMlGkUOpQl3WFhV3iKjRQEVe2y/wzupGuFLz92VZSFKAR8kjCHXWLQ==
-X-Received: by 2002:a05:6402:1d4a:b0:5e4:be64:b562 with SMTP id 4fb4d7f45d1cf-5e4d6adb99fmr14634828a12.1.1741086524560;
-        Tue, 04 Mar 2025 03:08:44 -0800 (PST)
-Received: from [127.0.1.1] ([46.53.242.22])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3fb51e1sm8262041a12.61.2025.03.04.03.08.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 03:08:43 -0800 (PST)
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Tue, 04 Mar 2025 14:08:40 +0300
-Subject: [PATCH v2] hwmon: (max77705) add initial support
+        d=1e100.net; s=20230601; t=1741086740; x=1741691540;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EhErTMLxBPvnHRj81OpDYTVq6CDG6bl2cvW4ml+lGiA=;
+        b=gNaU/BRJc8hx7z/3VFfn3MzxC4CzTQZxWl5glI1WCRa1EGlMdwD9vFU8LTBtA3CCOB
+         WEqmNHhwOyyXYZqHDScEhLT1m0tBHtDdUVgUGRjq6gWctgNEJhvXhpPoAYa19g7AP/fO
+         tM/677GJBYtFyyNsNnH0aM2Hw+0b8WJDi/CDQQ/nbzn9U5t1Ncn1A+Xyt0WFMh+kEIX3
+         PnID1GTxAGet2+BO91WpCMkxBGFLf+EH7g/CFm5CGovfqAiT4Le+zGxTLFzXfy4oJH3z
+         ToOvEUyF0KNA5n0WPXA++c1wyVui7QTJM1Et411P6Q2ziDD4ClcemyRQUtJciVjWyedk
+         zTow==
+X-Forwarded-Encrypted: i=1; AJvYcCV7FBCVLpQ7uev4bZhwz9en/FjW8QuCv06CrM97p3FQa/9XR7yutmceMRYE/4nYiWJ4D0Ozek0HIkAKshw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+UGDmr5bGvZW3H5uFKaN384KfU7b5f1AHzgMzzJ3oc8mlKnV2
+	gk762vRXQfgcnNFnXZrDYg50cewIwCdS5OMu4Z0VMFhh9qpsXbIb2kzpIw==
+X-Gm-Gg: ASbGnctgRDSDRM71zQYUg5e0gEnjyCLxmQEQfUjooak6yvGt45MaBn+TQmjp9bI0doJ
+	nXQEcmQFO30cRmeHnnFYBLR4ObO5W3sGuvwCjSstVt76ZqmoCu/5Uuj1ASTPav67ogfoRPzkm1r
+	s6DvQ9R9R4H2qoabEz1G0XaYjBWEmfcktP/FBp9JAPdUJttEd5H/znMBMz6nU8qLbJGk/eH7Eq4
+	+Qg2XLJmnjzIsGIZQl9lC/buZ0/J8Q6NO/C9fhH9scC7T/LkTywo+Bg16bVlPn9XzNUfvXbMbbY
+	6RsOPuAa2hY7gYaOIZ+xjGCLID/nMgw7BYdtPjX3OPZP9akCzyvF2d1ZnraJwhX9YeJwdeNScWt
+	uzwMYjACRfXc7KVuXKg==
+X-Google-Smtp-Source: AGHT+IE/WXC+DbgbFY+ZnCk3Y1Hqqhj9R3wVELVwS5SWO6zNnX+O3KWSMeXmQUNuvgVqs+bx0IymSA==
+X-Received: by 2002:a05:6a00:4f8d:b0:736:3d6c:aa64 with SMTP id d2e1a72fcca58-7363d6caab1mr14990357b3a.21.1741086739979;
+        Tue, 04 Mar 2025 03:12:19 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73655ce7b15sm3654876b3a.163.2025.03.04.03.12.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 03:12:19 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <f2b58aab-6664-4968-86d9-1e761a41b065@roeck-us.net>
+Date: Tue, 4 Mar 2025 03:12:18 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hwmon: (ntc_thermistor) Add min and max temperature
+ attributes
+To: maudspierings@gocontroll.com, Jean Delvare <jdelvare@suse.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250304-ntc_min_max-v1-1-b08e70e56459@gocontroll.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250304-ntc_min_max-v1-1-b08e70e56459@gocontroll.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250304-initial-support-for-max77705-sensors-v2-1-58d2207c732b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADffxmcC/42OsQ6CMBRFf4V09pm2Wmqc/A/DUMoDXgIttoVgC
- P8uwuDqeM5wz11YxEAY2T1bWMCJInm3gTxlzLbGNQhUbcwkl4oLeQFylMh0EMdh8CFB7QP0ZtZ
- acwURXfQhgqm40NxYgVaxbWoIWNO8Z57FwQFf41ZLP9lSTD689yuT+NqjKqX6rzoJECBLzK+5z
- uWt5I+mN9Sdre9Zsa7rBx9gDRDtAAAA
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Dzmitry Sankouski <dsankouski@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741086522; l=11567;
- i=dsankouski@gmail.com; s=20240619; h=from:subject:message-id;
- bh=4xkw0yYacB0/6Q5LwI8fkd9jTNv0eZdwxdKwCFqlyEc=;
- b=8IF6/x0sJWHtuL5LtWUNiphXXL3SiISj+3oqxNmfvm5zmngkg9prKJfjO3lxnVNOWb3y14jHV
- hqVRyO5AWuTC5m0ts/ev3/2GUJYowpiowP7WA+pGwhShCjsuEHpgUqC
-X-Developer-Key: i=dsankouski@gmail.com; a=ed25519;
- pk=YJcXFcN1EWrzBYuiE2yi5Mn6WLn6L1H71J+f7X8fMag=
 
-Add support for max77705 hwmon. Includes charger input, system bus, and
-vbyp measurements.
+On 3/4/25 00:24, Maud Spierings via B4 Relay wrote:
+> From: Maud Spierings <maudspierings@gocontroll.com>
+> 
+> Add the min and max temperature attributes as it is trivial for this
+> driver.
+> 
+> This can help with detecting implausible readings and indicates to users
+> which range they can actually measure, so they will not set a trip point
+> at a temperature higher than max or lower than min.
+> 
+Unless I misunderstand the driver code, readings outside the table values
+are never reported. Also, min/max are supposed to be alarm temperatures.
+The reported values for min/max would be between -55 and +155 degrees C,
+which does not make sense and has zero value for trip point usage.
 
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
----
-Maxim MAX77705 is a Companion Power Management and Type-C interface IC.
-It includes charger and fuel gauge blocks, and is capable of measuring
-charger input current, system bus volatage and current, and bypass
-voltage.
+NACK.
 
-Add support for mentioned measurements.
----
-Changes in v2:
-- EDITME: describe what is new in this series revision.
-- EDITME: use bulletpoints and terse descriptions.
-- Link to v1: https://lore.kernel.org/r/20250225-initial-support-for-max77705-sensors-v1-1-2be6467628b0@gmail.com
----
-Changes in v2:
-- sort headers alphabetically
-- swap curr channel info, to align indeces with channel_desc struct
-- reword coverletter
-- fix checkpatch --strict warnings
-- remove struct max77705_hwmon, use regmap directly
-- move register validation logic to is_visible function
-- move common register reading and converting logic to separate function
-- remove unnessesary {} in if statement
-- s/i2c->dev/pdev->dev in dev_err_probe
----
- Documentation/hwmon/index.rst    |   1 +
- Documentation/hwmon/max77705.rst |  39 +++++++++++++++++++++++++++++++++++++++
- MAINTAINERS                      |   7 +++++++
- drivers/hwmon/Kconfig            |  10 ++++++++++
- drivers/hwmon/Makefile           |   1 +
- drivers/hwmon/max77705-hwmon.c   | 250 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 308 insertions(+)
+Guenter
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 874f8fd26325..444c7865f74f 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -158,6 +158,7 @@ Hardware Monitoring Kernel Drivers
-    max6639
-    max6650
-    max6697
-+   max77705
-    max8688
-    mc13783-adc
-    mc34vr500
-diff --git a/Documentation/hwmon/max77705.rst b/Documentation/hwmon/max77705.rst
-new file mode 100644
-index 000000000000..9037226c50b9
---- /dev/null
-+++ b/Documentation/hwmon/max77705.rst
-@@ -0,0 +1,39 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver max77705
-+====================
-+
-+Supported chips:
-+
-+  * Maxim Integrated MAX77705
-+
-+    Prefix: 'max77705'
-+
-+    Addresses scanned: none
-+
-+    Datasheet: Not available
-+
-+Authors:
-+      - Dzmitry Sankouski <dsankouski@gmail.com>
-+
-+Description
-+-----------
-+
-+The MAX77705 PMIC provides current and voltage measurements besides fuelgauge:
-+- chip input current
-+- system bus current and voltage
-+- VBYP voltage
-+
-+Sysfs Attributes
-+----------------
-+
-+================= ========================================
-+in1_label         "vbyp"
-+in1_input         Measured chip vbyp voltage
-+in2_label         "vsys"
-+in2_input         Measured chip system bus voltage
-+curr1_label       "iin"
-+curr1_input       Measured chip input current.
-+curr2_label       "isys"
-+curr2_input       Measured chip system bus current.
-+================= ========================================
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 29e1a423eee5..0175f9f89325 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18110,6 +18110,13 @@ S:	Maintained
- F:	Documentation/hwmon/pc87427.rst
- F:	drivers/hwmon/pc87427.c
- 
-+MAX77705 HARDWARE MONITORING DRIVER
-+M:	Dzmitry Sankouski <dsankouski@gmail.com>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/max77705.rst
-+F:	drivers/hwmon/max77705-hwmon.c
-+
- PCA9532 LED DRIVER
- M:	Riku Voipio <riku.voipio@iki.fi>
- S:	Maintained
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 56494ab85b83..c86fe094a978 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -1287,6 +1287,16 @@ config SENSORS_MAX31790
- 	  This driver can also be built as a module. If so, the module
- 	  will be called max31790.
- 
-+config SENSORS_MAX77705
-+	tristate "MAX77705 current and voltage sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  If you say yes here you get support for MAX77705 sensors connected with I2C.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called max77705-hwmon.
-+
- config SENSORS_MC34VR500
- 	tristate "NXP MC34VR500 hardware monitoring driver"
- 	depends on I2C
-diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index b7ef0f0562d3..ff69f45eca50 100644
---- a/drivers/hwmon/Makefile
-+++ b/drivers/hwmon/Makefile
-@@ -159,6 +159,7 @@ obj-$(CONFIG_SENSORS_MAX6650)	+= max6650.o
- obj-$(CONFIG_SENSORS_MAX6697)	+= max6697.o
- obj-$(CONFIG_SENSORS_MAX31790)	+= max31790.o
- obj-$(CONFIG_MAX31827) += max31827.o
-+obj-$(CONFIG_SENSORS_MAX77705) += max77705-hwmon.o
- obj-$(CONFIG_SENSORS_MC13783_ADC)+= mc13783-adc.o
- obj-$(CONFIG_SENSORS_MC34VR500)	+= mc34vr500.o
- obj-$(CONFIG_SENSORS_MCP3021)	+= mcp3021.o
-diff --git a/drivers/hwmon/max77705-hwmon.c b/drivers/hwmon/max77705-hwmon.c
-new file mode 100644
-index 000000000000..6d2161421ac7
---- /dev/null
-+++ b/drivers/hwmon/max77705-hwmon.c
-@@ -0,0 +1,250 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ *  MAX77705 voltage and current hwmon driver.
-+ *
-+ *  Copyright (C) 2025 Dzmitry Sankouski <dsankouski@gmail.com>
-+ */
-+
-+#include <linux/err.h>
-+#include <linux/hwmon-sysfs.h>
-+#include <linux/hwmon.h>
-+#include <linux/i2c.h>
-+#include <linux/jiffies.h>
-+#include <linux/kernel.h>
-+#include <linux/mfd/max77705-private.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/slab.h>
-+
-+struct channel_desc {
-+	u8 reg;
-+	u8 avg_reg;
-+	const char *const label;
-+	// register resolution. nano Volts for voltage, nano Amperes for current
-+	u64 resolution;
-+};
-+
-+static const struct channel_desc current_channel_desc[] = {
-+	{
-+		.reg = IIN_REG,
-+		.label = "IIN_REG",
-+		.resolution = 125000
-+	},
-+	{
-+		.reg = ISYS_REG,
-+		.avg_reg = AVGISYS_REG,
-+		.label = "ISYS_REG",
-+		.resolution = 312500
-+	}
-+};
-+
-+static const struct channel_desc voltage_channel_desc[] = {
-+	{
-+		.reg = VBYP_REG,
-+		.label = "VBYP_REG",
-+		.resolution = 427246
-+	},
-+	{
-+		.reg = VSYS_REG,
-+		.label = "VSYS_REG",
-+		.resolution = 156250
-+	}
-+};
-+
-+static const struct regmap_range max77705_hwmon_readable_ranges[] = {
-+	regmap_reg_range(AVGISYS_REG,	AVGISYS_REG + 1),
-+	regmap_reg_range(IIN_REG,	IIN_REG + 1),
-+	regmap_reg_range(ISYS_REG,	ISYS_REG + 1),
-+	regmap_reg_range(VBYP_REG,	VBYP_REG + 1),
-+	regmap_reg_range(VSYS_REG,	VSYS_REG + 1),
-+};
-+
-+static const struct regmap_access_table max77705_hwmon_readable_table = {
-+	.yes_ranges = max77705_hwmon_readable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(max77705_hwmon_readable_ranges),
-+};
-+
-+static const struct regmap_config max77705_hwmon_regmap_config = {
-+	.name = "max77705_hwmon",
-+	.reg_bits = 8,
-+	.val_bits = 16,
-+	.rd_table = &max77705_hwmon_readable_table,
-+	.max_register = MAX77705_FG_END,
-+	.val_format_endian = REGMAP_ENDIAN_LITTLE
-+};
-+
-+static int max77705_read_and_convert(struct regmap *regmap, u8 reg, u64 res, long *val)
-+{
-+	int ret;
-+	u32 regval;
-+
-+	ret = regmap_read(regmap, reg, &regval);
-+	if (ret < 0)
-+		return ret;
-+	*val = mult_frac((long)regval, res, 1000000);
-+
-+	return 0;
-+}
-+
-+static umode_t max77705_is_visible(const void *data,
-+				   enum hwmon_sensor_types type,
-+				   u32 attr, int channel)
-+{
-+	switch (type) {
-+	case hwmon_in:
-+		if (channel >= ARRAY_SIZE(voltage_channel_desc))
-+			return 0;
-+
-+		switch (attr) {
-+		case hwmon_in_input:
-+		case hwmon_in_label:
-+			return 0444;
-+		default:
-+			break;
-+		}
-+		break;
-+	case hwmon_curr:
-+		if (channel >= ARRAY_SIZE(current_channel_desc))
-+			return 0;
-+
-+		switch (attr) {
-+		case hwmon_curr_input:
-+		case hwmon_in_label:
-+			return 0444;
-+		case hwmon_curr_average:
-+			if (current_channel_desc[channel].avg_reg)
-+				return 0444;
-+		default:
-+			break;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+	return 0;
-+}
-+
-+static int max77705_read_string(struct device *dev, enum hwmon_sensor_types type, u32 attr,
-+				int channel, const char **buf)
-+{
-+	switch (type) {
-+	case hwmon_curr:
-+		switch (attr) {
-+		case hwmon_in_label:
-+			*buf = current_channel_desc[channel].label;
-+			return 0;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+
-+	case hwmon_in:
-+		switch (attr) {
-+		case hwmon_in_label:
-+			*buf = voltage_channel_desc[channel].label;
-+			return 0;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int max77705_read(struct device *dev, enum hwmon_sensor_types type,
-+			 u32 attr, int channel, long *val)
-+{
-+	struct regmap *regmap = dev_get_drvdata(dev);
-+	u8 reg;
-+	u64 res;
-+
-+	switch (type) {
-+	case hwmon_curr:
-+		switch (attr) {
-+		case hwmon_curr_input:
-+			reg = current_channel_desc[channel].reg;
-+			res = current_channel_desc[channel].resolution;
-+
-+			return max77705_read_and_convert(regmap, reg, res, val);
-+		case hwmon_curr_average:
-+			reg = current_channel_desc[channel].avg_reg;
-+			res = current_channel_desc[channel].resolution;
-+
-+			return max77705_read_and_convert(regmap, reg, res, val);
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+
-+	case hwmon_in:
-+		switch (attr) {
-+		case hwmon_in_input:
-+			reg = voltage_channel_desc[channel].reg;
-+			res = voltage_channel_desc[channel].resolution;
-+
-+			return max77705_read_and_convert(regmap, reg, res, val);
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct hwmon_ops max77705_hwmon_ops = {
-+	.is_visible = max77705_is_visible,
-+	.read = max77705_read,
-+	.read_string = max77705_read_string,
-+};
-+
-+static const struct hwmon_channel_info *max77705_info[] = {
-+	HWMON_CHANNEL_INFO(in,
-+			   HWMON_I_INPUT | HWMON_I_LABEL,
-+			   HWMON_I_INPUT | HWMON_I_LABEL
-+			),
-+	HWMON_CHANNEL_INFO(curr,
-+			   HWMON_C_INPUT | HWMON_C_LABEL,
-+			   HWMON_C_INPUT | HWMON_C_AVERAGE | HWMON_C_LABEL
-+			),
-+	NULL
-+};
-+
-+static const struct hwmon_chip_info max77705_chip_info = {
-+	.ops = &max77705_hwmon_ops,
-+	.info = max77705_info,
-+};
-+
-+static int max77705_hwmon_probe(struct platform_device *pdev)
-+{
-+	struct i2c_client *i2c;
-+	struct device *hwmon_dev;
-+	struct regmap *regmap;
-+
-+	i2c = to_i2c_client(pdev->dev.parent);
-+	regmap = devm_regmap_init_i2c(i2c, &max77705_hwmon_regmap_config);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(regmap),
-+				"Failed to register max77705 hwmon regmap\n");
-+
-+	hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev, "max77705", regmap,
-+							 &max77705_chip_info, NULL);
-+	if (IS_ERR(hwmon_dev))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(hwmon_dev),
-+				"Unable to register hwmon device\n");
-+
-+	return 0;
-+};
-+
-+static struct platform_driver max77705_hwmon_driver = {
-+	.driver = {
-+		.name = "max77705-hwmon",
-+	},
-+	.probe = max77705_hwmon_probe,
-+};
-+
-+module_platform_driver(max77705_hwmon_driver);
-+
-+MODULE_AUTHOR("Dzmitry Sankouski <dsankouski@gmail.com>");
-+MODULE_DESCRIPTION("MAX77705 monitor driver");
-+MODULE_LICENSE("GPL");
-+
-
----
-base-commit: 20d5c66e1810e6e8805ec0d01373afb2dba9f51a
-change-id: 20250123-initial-support-for-max77705-sensors-ad0170ac1ec5
-
-Best regards,
--- 
-Dzmitry Sankouski <dsankouski@gmail.com>
+> This implementation only works for ntcs, if a ptc gets added this will
+> have to be changed, but I'm not sure if that is ever the intention.
+> 
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> ---
+>   drivers/hwmon/ntc_thermistor.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+> index 0d29c8f97ba7c2f264588b6309b91ca494012ad6..fecee177be5daf304c0521a74f2733f6e42567e0 100644
+> --- a/drivers/hwmon/ntc_thermistor.c
+> +++ b/drivers/hwmon/ntc_thermistor.c
+> @@ -522,6 +522,12 @@ static int ntc_read(struct device *dev, enum hwmon_sensor_types type,
+>   		case hwmon_temp_type:
+>   			*val = 4;
+>   			return 0;
+> +		case hwmon_temp_min:
+> +			*val = data->comp[0].temp_c*1000;
+> +			return 0;
+> +		case hwmon_temp_max:
+> +			*val = data->comp[data->n_comp-1].temp_c*1000;
+> +			return 0;
+>   		default:
+>   			break;
+>   		}
+> @@ -539,6 +545,8 @@ static umode_t ntc_is_visible(const void *data, enum hwmon_sensor_types type,
+>   		switch (attr) {
+>   		case hwmon_temp_input:
+>   		case hwmon_temp_type:
+> +		case hwmon_temp_min:
+> +		case hwmon_temp_max:
+>   			return 0444;
+>   		default:
+>   			break;
+> @@ -549,7 +557,8 @@ static umode_t ntc_is_visible(const void *data, enum hwmon_sensor_types type,
+>   
+>   static const struct hwmon_channel_info * const ntc_info[] = {
+>   	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
+> -	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_TYPE),
+> +	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_TYPE | HWMON_T_MIN |
+> +					 HWMON_T_MAX),
+>   	NULL
+>   };
+>   
+> 
+> ---
+> base-commit: cd3215bbcb9d4321def93fea6cfad4d5b42b9d1d
+> change-id: 20250304-ntc_min_max-a925e87d0da7
+> 
+> Best regards,
 
 
