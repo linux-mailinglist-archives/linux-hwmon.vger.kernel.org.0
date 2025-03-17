@@ -1,113 +1,141 @@
-Return-Path: <linux-hwmon+bounces-7180-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7182-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C381A641E8
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 07:41:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38153A64710
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 10:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D9F33A870F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 06:40:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274AB1893651
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 09:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FC021A426;
-	Mon, 17 Mar 2025 06:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="JUhC/VS/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97780221540;
+	Mon, 17 Mar 2025 09:22:16 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A17219E8F;
-	Mon, 17 Mar 2025 06:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554E321D3DF
+	for <linux-hwmon@vger.kernel.org>; Mon, 17 Mar 2025 09:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742193659; cv=none; b=X7n/E4IimcJ/qaiD6nJE9JhbkQOyB7XFunlkXNFQLWy8eJ82x3UjQuqYYGF4AHi0JML06z2XQ1BsWX2ChR9mqqQirTKv7kgUlxXICzETQaxoFSns9qmZOjbjjcfQOdd6F+nqIlRNRSTyk5jqnjdLNf4XfFafP9NH9jdsYq4Vt80=
+	t=1742203336; cv=none; b=u47xZ11trV23s/wjUwEsw1mSLJ0F2d0po75RY5T5obCX7iBpiS59gzIIzEKJLfRXHYYXFXlAdurwgcihyxE+xIVSh55wkICJh/BQVNLks2SNLbHYHg6wncjG7vbtSe0VRRwYAarqIE22w2VsN8k3lB4A/tSlH/1oGvFsDPqSfQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742193659; c=relaxed/simple;
-	bh=ueTDnhNiGkK2trcg7SlaETXX/t3eit7F2ZXxKu4qBeY=;
+	s=arc-20240116; t=1742203336; c=relaxed/simple;
+	bh=RCXMiTQVBNYBPJfpmsdm6M3UyDf5ie66TGTqQRiknF8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BiPW3wsJ02DQcOVJpDFuhVEMXG3QkBiNBsgpkuDnIzqtn3sl2VEQZ/tuxVaoRdCjZUc+oNNlkjhQwNcDu4QIaNXYODtuuIYcciB3HjqM3V57gQkXIwaZuCWxJz2L4DC9k8q0QLoHXvzZW1qq3MhPLlE789Q9qqOh7+JHp/ZHGR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=JUhC/VS/; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1742193652;
-	bh=ueTDnhNiGkK2trcg7SlaETXX/t3eit7F2ZXxKu4qBeY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JUhC/VS/2iR6e0Ge8EuxwPO8sNgvrpJWuqLplCWY8qYpZ6U+SVBpRzfIfq554rzrW
-	 A2v/ONO39sMbG8pvWOADVeiwh2xBcqFaQSLgZI8HA6jdq1di4101Ys/JMpwqsIS6Ob
-	 ERK+FZreU2n7p0+zG4BQ3o52xyLWX9se0wES8bLs=
-Date: Mon, 17 Mar 2025 07:40:51 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@weissschuh.net>
-To: "Sung-Chi, Li" <lschyi@chromium.org>
-Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
-	chrome-platform@lists.linux.dev, linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] hwmon: (cros_ec) Add reading target fan RPM function
-Message-ID: <f6b09d06-6fc5-4032-a960-856e8cbd1574@t-8ch.de>
-References: <20250313-extend_ec_hwmon_fan-v1-0-5c566776f2c4@chromium.org>
- <20250313-extend_ec_hwmon_fan-v1-2-5c566776f2c4@chromium.org>
- <782e6319-2082-4f05-9987-fa68439701ef@t-8ch.de>
- <Z9ecN4ZWx1P5csrK@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NFq4YDVOEyfe2V9q+vkSD8Hrx+CG4kJUljcbFMXq1U9Wma9SstpUR5SCi0bZ5PESx+x06ScvInVerbSqGCYsPD6J3dkIWBpfBXFXqpPHvJV00ImCjLb8S7r462JSz9egq9ZDF4u5DpXe7pGmXcJJ+pyKxEaCOVVSJD/pYP7kVdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tu6fD-0006qI-Un; Mon, 17 Mar 2025 10:21:39 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tu6f8-000Dix-1r;
+	Mon, 17 Mar 2025 10:21:35 +0100
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1974B3DD0DA;
+	Mon, 17 Mar 2025 09:13:43 +0000 (UTC)
+Date: Mon, 17 Mar 2025 10:13:42 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
+	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
+Message-ID: <20250317-cuttlefish-of-simple-champagne-ee666c-mkl@pengutronix.de>
+References: <20250225081644.3524915-1-a0282524688@gmail.com>
+ <20250225081644.3524915-5-a0282524688@gmail.com>
+ <20250227-spicy-grebe-of-dignity-68c847-mkl@pengutronix.de>
+ <CAOoeyxWSsy0Q0Y7iJE8-DZM5Yvcdto8mncFkM8X4BvVMEgfUiQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="23gmkzuie32cja6b"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z9ecN4ZWx1P5csrK@google.com>
+In-Reply-To: <CAOoeyxWSsy0Q0Y7iJE8-DZM5Yvcdto8mncFkM8X4BvVMEgfUiQ@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 
-On 2025-03-17 11:51:19+0800, Sung-Chi, Li wrote:
-> On Thu, Mar 13, 2025 at 05:24:28PM +0100, Thomas Weißschuh wrote:
-> > On 2025-03-13 12:47:43+0800, Sung-Chi Li wrote:
-> > > Implement the functionality of reading the target fan RPM setting from
-> > > ChromeOS embedded controller under framework.
-> > > 
-> > > Signed-off-by: Sung-Chi Li <lschyi@chromium.org>
-> > > ---
-> > >  drivers/hwmon/cros_ec_hwmon.c | 18 ++++++++++++++++++
-> > >  1 file changed, 18 insertions(+)
-> > > 
-> > > diff --git a/drivers/hwmon/cros_ec_hwmon.c b/drivers/hwmon/cros_ec_hwmon.c
-> > > index b2fec0768301f116f49c57b8dbfb042b98a573e1..73bfcbbaf9531be6b753cfef8045fd5dab5b2ab3 100644
-> > > --- a/drivers/hwmon/cros_ec_hwmon.c
-> > > +++ b/drivers/hwmon/cros_ec_hwmon.c
-> > > @@ -36,6 +36,19 @@ static int cros_ec_hwmon_read_fan_speed(struct cros_ec_device *cros_ec, u8 index
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +static int cros_ec_hwmon_read_fan_target(struct cros_ec_device *cros_ec, u8 index, int32_t *speed)
-> > 
-> > int32_t is a userspace type. In the kernel use i32, or even better u32.
-> > 
-> Sorry for missing this important detail, I will not use userspace type
-> for following changes.
 
-No need to be sorry.
+--23gmkzuie32cja6b
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v8 4/7] can: Add Nuvoton NCT6694 CANFD support
+MIME-Version: 1.0
 
-<snip>
+On 17.03.2025 10:24:11, Ming Yu wrote:
+[...]
+> > > +     priv->can.clock.freq =3D can_clk;
+> > > +     priv->can.bittiming_const =3D &nct6694_can_bittiming_nominal_co=
+nst;
+> > > +     priv->can.data_bittiming_const =3D &nct6694_can_bittiming_data_=
+const;
+> > > +     priv->can.do_set_mode =3D nct6694_can_set_mode;
+> > > +     priv->can.do_get_berr_counter =3D nct6694_can_get_berr_counter;
+> > > +     priv->can.ctrlmode_supported =3D CAN_CTRLMODE_LOOPBACK |
+> > > +             CAN_CTRLMODE_LISTENONLY | CAN_CTRLMODE_BERR_REPORTING |
+> > > +             CAN_CTRLMODE_FD | CAN_CTRLMODE_FD_NON_ISO;
+> >
+> > Does your device run in CAN-FD mode all the time? If so, please use
+> > can_set_static_ctrlmode() to set it after priv->can.ctrlmode_supported
+> > and remove CAN_CTRLMODE_FD from ctrlmode_supported.
+> >
+>=20
+> Our device is designed to allow users to dynamically switch between
+> Classical CAN and CAN-FD mode via ip link set ... fd on/off.
+> Therefore, CAN_CTRLMODE_FD needs to remain in ctrlmode_supported, and
+> can_set_static_ctrlmode() is not suitable in this case.
+> Please let me know if you have any concerns about this approach.
 
-> > > +
-> > > +	ret = cros_ec_cmd(cros_ec, 0, EC_CMD_PWM_GET_FAN_TARGET_RPM, NULL, 0, &r, sizeof(r));
-> > > +	if (ret < 0)
-> > > +		return ret;
-> > > +
-> > > +	*speed = le32_to_cpu(r.rpm);
-> > 
-> > r.rpm is not marked as __le32, I'm not sure if sparse will complain
-> > about the usage of le32_to_cpu().
-> > 
-> It did. Currently, all devices are running little endians on both AP and EC, so
-> I think it is ok not to explicitly call the le32_to_cpu?
+Where do you evaluate if the user has configured CAN_CTRLMODE_FD or not?
 
-I think on big endian none of the CrOS EC code in Linux would work.
-But as the driver currently already uses leXX_to_cpu() it would be nice
-to keep using it consistently.
-The nicest solution would be to change the definition of
-struct ec_response_pwm_get_fan_rpm to use __le32.
-Or add a cast: le32_to_cpu((__force __le32)r.rpm);
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--23gmkzuie32cja6b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfX58MACgkQDHRl3/mQ
+kZwFAQf9GoWsVJLES07w392fRsnC/rJTEBHJ+gWGk0Zaqdl7cUlNxdf7ITy2fLQT
+jVyEF5A8MMT/txn8IyEHDiz1XQ5ptSoQZCQZzZSCAyTF/t4c5MFH9QyKlhvzocSY
+xEg4egeM/22pi+2Y+H7Ft6ueQ2gJUgtMnTVpEefren3c+dgDVAOu9gfJGh2XikpF
+Iq6S4h/5UXf60oM/NNhtp/ApUqbcAzfVll1i2C6RhEDVM1jw6CF8qZ5lRMUCAGO5
+ZGcps/NHX9dD4Z9bz5EKQ0vp04JBZC5mxEegZN72Mlj4NAPBYklROlG4qPBc6Qvn
+ly1l8zW07HNRO/FpuxTOgjisVpV65A==
+=jXP5
+-----END PGP SIGNATURE-----
+
+--23gmkzuie32cja6b--
 
