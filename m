@@ -1,79 +1,79 @@
-Return-Path: <linux-hwmon+bounces-7195-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7197-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BA7A654F7
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 16:05:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB05AA654FA
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 16:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4EB9165C56
-	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 15:03:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1EDB3ACD01
+	for <lists+linux-hwmon@lfdr.de>; Mon, 17 Mar 2025 15:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC7A2441AF;
-	Mon, 17 Mar 2025 15:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B18E24503B;
+	Mon, 17 Mar 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWclU53B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2G8y7K2"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B1C214A9C;
-	Mon, 17 Mar 2025 15:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2642123FC7A;
+	Mon, 17 Mar 2025 15:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742223833; cv=none; b=gvtmlGeFS/SDLp4kkXn/PiXFLw7awG3vFEeg+/7d5aMnTscYgUiY4+vE4lSulGGSVV5nISfGvvjAeNb0n8WQVkVPkWgfSpChY5Bs1H5R5sQPjVT+nuJ1DOoR4+D0yk5OOSfs6fvqybfAKbGxJIY0+hcRCBndZGyTw2+WRT52vVY=
+	t=1742223930; cv=none; b=I8nH69zP9f2rq2qMhT4b2karANO1GSQMpasbD1ye9+bUqjj/Gpe7841ON1iO2WLuvYA/hZ0t9rBf/d11Nk/pHUhfXAA+k/6A9Q2IVcMYqIJy809Eci0N0ilqoCBISiGH8/ILeB80usFaJiR2hrGQBQ++MrEIM7WcDnYltDPMu+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742223833; c=relaxed/simple;
-	bh=iLaRuezQt/T6WdqKcjHtAOTkdWPLu5drQDYl8LyIh4Q=;
+	s=arc-20240116; t=1742223930; c=relaxed/simple;
+	bh=Yb2rEiiLCMrp1AvW+QcvmBctaAMK/aZmU/So0WMJY9s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t31ZYmyFiYuAzYZSiDHx8UM6naCoo8IW0KOqWaTAo0dSA5111GdUBiQLgGdmQUSfpjGpDs4+nAkMlg9QKD5kQM3ZgPKctsFLqqzId5BnVYUqxeZ27df1i/KdlLwuo4+/Wvoou1Vki62kB4JR9cvLSnPFJpaLgOLNnzeHe8sR5FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWclU53B; arc=none smtp.client-ip=209.85.216.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=mbWNA5JKzO9Vio03QN8bC7OzVGqXRdUEf3+uU2ETGVjRkmHElTStlc8nfxacuiUqmS1zRBPk3dxbBWyJrosxebP7YDWR5gwZhHx4Z0QAPm0u33DIsUuZNUNTL9+vS4SrC7gMEwVm76dMmdhDA+9mSgeZJs2vvLcsFHXrTPwI7Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2G8y7K2; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff65d88103so3747286a91.2;
-        Mon, 17 Mar 2025 08:03:51 -0700 (PDT)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2239c066347so91932995ad.2;
+        Mon, 17 Mar 2025 08:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742223831; x=1742828631; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742223928; x=1742828728; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=o7zFlRnzaKGS1ESWbJzZJmSvwNNhlBm1rOh71RWWkM8=;
-        b=MWclU53BXM0dUuwYlgWaaqLDmWEknFgARzAceys/56fStvR+rlHWH1kx2ie01Zt3hZ
-         SmRsR6TnIuL31bx996gc2Se/hEZ8wtdWzvHh3FQZfoQ5PY94M+jKFaBlEf3xlcNcPXfm
-         ykmLVtgasoCyJT/TIWIlXlKlqeKtbTNhw1JKrSloFjWShwqG3frUK6HckesJBgkDJjVi
-         Au1Btx0dGODP6kY+tWuLjD141ksDKnZuak7IRjdQWWQX63JF+Yo22wYRVrathIViBr3K
-         XGdo8QStvsPI90c/wHoscUn1hpACQVM5C7Gk7AVowr6dBcV1whSgNbqBZxCbhsU5/GsK
-         DM0g==
+        bh=bkIrTL7TVQbHt2INgK5+tPrCVj4mZD+1zxl667P8yZ8=;
+        b=A2G8y7K2xfKyqu4K2CMSVNW0Y497Db0cqIzwqTBPq5u0BzjIEuatpILgPF8dF2n6xA
+         +VX8TZwr79G18N5RsBbp47mTtVheNZ8JfajvwKkn4Wf8BpQwPaOtVbi+NuOUxcrxMoki
+         CF0I5JNiI2dmjln4sS28i3bCXf087H7t0OwP5PECwks9b7KtCvfB4SETaHvchJdysNsO
+         kpdxIcCZiiSx3DZ6ztrlvT/iVQoOD4CUfOzeHd5BVGZc+jOrNAerOSwkfc651xJ1zzHn
+         waK+nyo67S7y2dR/bw36LTg6bOz5baIoBjqEBvwaRGQqTZ8hmh5ZsMGMWEvHKBYo8omY
+         X9fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742223831; x=1742828631;
+        d=1e100.net; s=20230601; t=1742223928; x=1742828728;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o7zFlRnzaKGS1ESWbJzZJmSvwNNhlBm1rOh71RWWkM8=;
-        b=dxC6qTKr0DL9kj54iv/xFmhy5mVCMk7DNWeru2mopNkQ0/09ypBqbVGjOLaJg/XgLp
-         wHe/Yzk0TRlTwKYG0Bxa9PL80d3blsPkMNF0S+WftN9xBmMz1u5aBdcMoCcG8D8EM9wa
-         NwJ3tXtVfp/DU319OSP7bmD8kZvmz06JMcfEvCo3ngnTU34+xUDyDvjpXndNbEWexwt1
-         tJ4ACAqqibzaDvh7+/O5sM5SFQBm6snE+b6YAr6dAbNtDYWE2EHCPHDTZuFq3eY4nyNM
-         yblAKuw52qFS6Ww/yXe6Np2yKuhyDTgmFet3AM8foNrnLvUxoQdT6SqHnDTQanAzDooz
-         gyOw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0ui0Uspm1QbizUT0006XmmZUdTDOxVz690DoFk1Uh/NfDzquUZjlaZcfWERvv+uGYjqI39+BqmEHgKQc=@vger.kernel.org, AJvYcCW4eTYYUe25vlaFWS4ck1nhIdIxg2IjErCtiX4k0MO4oC5nHv4Wms5pudTZ+jxgWLbEs3uL5lnFlvNs@vger.kernel.org, AJvYcCWUMz0etO75QFInCLeiXZWVpr2LC0bjD9atg6V0UqxV3G0UUUcCCw6IJgvhV3l3Pz0wEqTE8QfeQZhQ@vger.kernel.org, AJvYcCXH2xdtQhP46ORtaxidEev3b0CbmC1U4zrTjVuZF08wcquutapcaxvvJmLcHBSAZf92PoIL5Qcs0PZE@vger.kernel.org, AJvYcCXQqHMMssrLp9SkeaM3+U6LHGCiv1awbNYAaZ9DUiIRUkAapdBLyRlFWpOIJjM0OCCCz437nlIgTYoCNkBh@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrS3l+xVZQHhY+pqbimOPNcfBw1vQLx5Mgn22Im1EQTB5tdtaT
-	4AppIlzZbZ4OVDyhr9p3TL4gniNI4Cc7Jii9CJgHarXosMnxtPpD
-X-Gm-Gg: ASbGncukrS2DcTHHyeIhjc9Qo0iZT5HZs9SrB2r32N/icIu2DNqKWUeLZn5e8zx/ue0
-	UudpFid2WfKIa4Fjx7zguiCmPBXqdD2AUkbt5zdZi3CqfEFEyNfuOcIcgWWXwe8Obg4koln1CaQ
-	C1xq1y07P9mL9WbnB423Zbf+oiqq0d2KUi4YnR+Lu7vDc8CrVjjYeSWIv+c4DsaTShw1aQ5n5wS
-	ZLktrGq9Rx+iSrcu80Un2ne1Wr95QfqCPO/dKsjL/LseqaALiwrVlIKG36yHobVK+Q/kt3AFWkj
-	3ilGlXcu27U+fHBfiI7aGDfcJtuTK4Mra7iu7uFjbEIPvsIcy7wGpDcRpbt1SwB04oXR
-X-Google-Smtp-Source: AGHT+IEMJCyihgu3hzsFLndhdamegaKRSNOI/PrpAIwIeAiZP72lHKTsSrfRsiClc1hAcuTcucAYKQ==
-X-Received: by 2002:a17:90b:544e:b0:2ff:62b7:dcc0 with SMTP id 98e67ed59e1d1-30151cbb8cfmr17316504a91.15.1742223830879;
-        Mon, 17 Mar 2025 08:03:50 -0700 (PDT)
+        bh=bkIrTL7TVQbHt2INgK5+tPrCVj4mZD+1zxl667P8yZ8=;
+        b=QTBbPeLbrqopoes+vrVo2ZHNjLTeRCyzEX+91P5PCDI409d7XlcsTA/JpNiEhE7tmk
+         9hA7J/Dh3kRgHI50P4IANpBmti+avvgBpvT4oRWBg2DKWz4mKG07Swbb+8BVFxLaX046
+         VwCqC+7j2dJsx+Gn3CqgC+34voZQsSJ3ptPKI9k3+NrSvVmUEzzlNgygjccPHDUVrFC+
+         pA3DtQPhG4vaHh1h9fWvkKXSs5dOhnOOB0YlNvY5GkaPO7t8IBW52ES+Nn4slUy9ujur
+         X0UYNp+V/NlZ53FpxorBPvvYZQ4qZiYa9zTLV6ORHOtaMe5INmNcpcaS82St/IJFhXOi
+         HyLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUEe8IaVOkY3+iM1uzzZKcfIyyXKjI33an5ZxBVOnACb3Xpk855sIERV3mvHfz/Fl8FmqNE8kO1UBNS@vger.kernel.org, AJvYcCVcSqskk3DPm4Ut/SNrWJIU9bEgxwGjcoO258Ob5qerzR/dZinVo0oEv0bGAXqgpz3ch7l2ME/6qfoWxutd@vger.kernel.org, AJvYcCVfoSJpq1QxADc/J4b8WjG9zf95+RiEk7+YQrOrfzA7oag5Vh8WTZNlPNnz0CsnnhrV8F5fkDgRKXCZ@vger.kernel.org, AJvYcCXMaYy1yIcSvNMt/TdCa2PFNVROY2LiNAmXLMDct+OLWrTg6FT1NbIznkj7kWZixijUVlFVGZ58XbeqE6o=@vger.kernel.org, AJvYcCXyRFMkOqK7qg0+NR6At2KLlCDQKx5ZHkcRP/epiJZtQJ+SaRpGnOglKcak7QeJ+AWDYGEOGzmdWTcz@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLEZonI71z8THAoHqsQ1WooxD3pO5275YImqBIMTmMR/e1QCJf
+	WbTTe39lr35w5Nx9H/rqOyd8f2jWKIoU3wqHDrbtbmiruP+Xevho
+X-Gm-Gg: ASbGncs3vwG9w8eJHpzIGEssVMmuEdxvwJKhCGtWtju3JA0u49yrqSWStE1vZqEkqIt
+	FsoTfwo+T2OpLen7u86Mx21G7xNoXtjKuz/xsFk+UWTjH3p9LK8ddKMOtIO7bwNZEKE9LgGY668
+	/Hsb9qzt3SWEjNjARm4eZ0H0fhyGYKYs0uST37xiqnfkbuB/lJawa0F7x2XPvNvYjE7VX5054r0
+	V1tC0H0FiGQ1kRrDpoZoBBLmmB1iwaNygm7JWzqAuPLZetBCzwuY6k/o7fVpHuzy8TRQrKbgqvM
+	jT1U5IFK1KuJp/79efiOWbupYhBxDq62P65nZfGvj7XaglWBtrDCWMkbEA==
+X-Google-Smtp-Source: AGHT+IGyxNKKtFE4O+xxB83SVTRJD3lGny3wW+HlvIlr6xI+6KGUddtnLki5b6MFt2u4apwGnKOT6g==
+X-Received: by 2002:a17:903:283:b0:224:584:6eef with SMTP id d9443c01a7336-225e0af9d34mr175921725ad.41.1742223928358;
+        Mon, 17 Mar 2025 08:05:28 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301539ed074sm6141166a91.15.2025.03.17.08.03.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6888486sm75800075ad.11.2025.03.17.08.05.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 08:03:50 -0700 (PDT)
+        Mon, 17 Mar 2025 08:05:27 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Mon, 17 Mar 2025 08:03:48 -0700
+Date: Mon, 17 Mar 2025 08:05:26 -0700
 From: Guenter Roeck <linux@roeck-us.net>
 To: Kim Seer Paller <kimseer.paller@analog.com>
 Cc: Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
@@ -85,10 +85,10 @@ Cc: Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
 	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-i2c@vger.kernel.org,
 	Cherrence Sarip <cherrence.sarip@analog.com>
-Subject: Re: [PATCH 1/3] hwmon: (pmbus/ltc7841) add support for LT717x - docs
-Message-ID: <6cd68f79-41e2-4400-84ca-d07d178acc9f@roeck-us.net>
+Subject: Re: [PATCH 3/3] hwmon: (pmbus/ltc2978) add support for lt717x
+Message-ID: <fceea72e-2b11-4a84-82c3-4c1caa5f981b@roeck-us.net>
 References: <20250317-hwmon-next-v1-0-da0218c38197@analog.com>
- <20250317-hwmon-next-v1-1-da0218c38197@analog.com>
+ <20250317-hwmon-next-v1-3-da0218c38197@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -97,16 +97,26 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250317-hwmon-next-v1-1-da0218c38197@analog.com>
+In-Reply-To: <20250317-hwmon-next-v1-3-da0218c38197@analog.com>
 
-On Mon, Mar 17, 2025 at 01:02:25PM +0800, Kim Seer Paller wrote:
-> Add LT7170 and LT7171 to compatible devices of LTC2978.
+On Mon, Mar 17, 2025 at 01:02:27PM +0800, Kim Seer Paller wrote:
+> Add support for LT7170 and LT7171. The LT7170 and LT7171 are 20 A, 16 V,
+> Single- or Dual-Phase, Silent Switcher Step-Down Regulators with Digital
+> Power System Management.
+> 
+> The relevant registers in the LT7170 and LT7171 are similar to those in
+> the LTC3887, but with fewer channels. This adds the chip ID and
+> identification of ASCII to differentiate between the LT7170 and LT7171.
+> These devices support polling for status updates and clearing peak
+> values. The data format for voltage, current, and temperature is set to
+> IEEE754 for precision and compatibility.
 > 
 > Co-developed-by: Cherrence Sarip <cherrence.sarip@analog.com>
 > Signed-off-by: Cherrence Sarip <cherrence.sarip@analog.com>
 > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 
-Applied, though I changed the subject from "ltc7841" to "ltc2978".
+Applied.
 
+Thanks,
 Guenter
 
