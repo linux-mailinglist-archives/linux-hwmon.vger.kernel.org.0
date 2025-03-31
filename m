@@ -1,212 +1,121 @@
-Return-Path: <linux-hwmon+bounces-7455-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7459-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA29A76B89
-	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Mar 2025 18:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E6EA76CBC
+	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Mar 2025 20:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090621659F2
-	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Mar 2025 16:01:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F197616B080
+	for <lists+linux-hwmon@lfdr.de>; Mon, 31 Mar 2025 18:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D078213E83;
-	Mon, 31 Mar 2025 16:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE87139D1B;
+	Mon, 31 Mar 2025 18:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dr5+q1OB"
+	dkim=pass (2048-bit key) header.d=3mdeb.com header.i=@3mdeb.com header.b="k8oBLQFz"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 2.mo575.mail-out.ovh.net (2.mo575.mail-out.ovh.net [46.105.52.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A0840BF5;
-	Mon, 31 Mar 2025 16:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DAC14D428
+	for <linux-hwmon@vger.kernel.org>; Mon, 31 Mar 2025 18:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.52.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743436873; cv=none; b=L7VLgRRg/J/KM3RoSDPoEalGNKX6wUroIni5y/cD6bHZqd5WoNICEJ9YPNFSf/UzSEJFPO6SahTWs21IDShvbqK7FzdwIfRswscU/C2UxoEKteZAFYYO1HSXjHG1ltL3UJmMUTKjNB6Fk1hA9xm4kBl//NhTe3j8YOD4HiSlblw=
+	t=1743444241; cv=none; b=pa2NNzOlATNq1cyS5f8tIDo5VeKNVuUZOBa58DW3IzksqbbK+oJMefxO8OxrAfcsVSjscqlfW4yLcAp6wCybM49X7VoQx0kmNz6v4yQ6OiDpT7HucDwNQHW2UPYvDSL2XZoKe7YNoga3+Sxnq6abmmkbg6cwLNtHB5SQexPBNvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743436873; c=relaxed/simple;
-	bh=uVjb0RyJm1L/PaivBHBBBL7QBJ2FyjZoMPhE51nwvnA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i3cvb6ZL9K2bP49fVglW996PQ8a/4/Tk733PipR47ROBqRTF1bM8QJbeQc4wIE+suRMiRexquJoOEYJB20rE02w6yLLvobwCHmf3JVbmlG0CgScTmq9ywkj+VEPwY7GpQrrRqkxICuap3QZQStQfIGIvcjfYuLJyv3wZVXxz8AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dr5+q1OB; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-224100e9a5cso84332845ad.2;
-        Mon, 31 Mar 2025 09:01:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743436871; x=1744041671; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=XzCJyG6oQ+0B3aFeUDBm9UYjT0tfcf104yg1JE/+lVI=;
-        b=dr5+q1OBbAiOelA81MFEeLHOn9URyeY8ER4RoBz6prah2gfxlUxPAUBEcb2e3/smtn
-         V/guUkfSqqK7kD3d09NUIlq9W1IDcrQevzy99SX5cwAyPwitmXEoNLjsBWj1XXYyxfsB
-         Y6czszDUSFv5iZBD+MlJKsAYArdsF+C7ZtgjkBnvYepqXkUNr2QP/Ffdw9Datt2smjel
-         fetfiO26VixSlwvw8AODxpx+Ji8xY2xMe6j4+33TtxOobGSMkqFVzr/7Zr2U5fUDyeeH
-         2yJc+POPwYfw6eunSmd62GxOau3JPTQvLapIEGZLqP5CO52HlqX1rCQkSuB6RFFYnDak
-         1+rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743436871; x=1744041671;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XzCJyG6oQ+0B3aFeUDBm9UYjT0tfcf104yg1JE/+lVI=;
-        b=lFruvly2P7GKS1Cbwohl4wb2vsWR8ei9Qtqb93RZhXDdZApQWlbLNxmIPYImTfKt6U
-         oEVg/CquDHCzLD+DKFRTksNhmUKJUwAd5gGeuxCsrzu/FV6WMQWrC8GXL7u1xVl9J5T9
-         Q1C7qEIznEYSlcGQ2gKkSS1le3bpQ1D0reVdHeeWL5yxAawu6bHzTFEbLdyBmWFUgCMx
-         1M6TNFFSI801SDlME+JcheqaDr1oEaeamjtuQzGUOQS7y+9ebsBFZg0ZBoZ0JxUh0ups
-         6dUNOLjETF/hQZR4+TufG+kr4G/w/Bkw5p8Z5vEwKX2N+KEev02PNV1Lzdtft3U3DlJZ
-         tUhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8hf2rxqQgPlRWbKXWj6FJAQTqj+vntb05gQWdgStX2Ua9+scRg/53xJ6ksXN8e9vWlPVVQFPVcru2uKDv@vger.kernel.org, AJvYcCUPqSUNVq7IaIM1lvafDi8VUtTNLd2qy1C/gfnqvypw2mmE5hQOgdDJGqpbqjp1hkXQ65thWuCwrd/eGM4=@vger.kernel.org, AJvYcCWLMzQo7Hk3+KaGRQ1DQOd+mo26Xc2vMyvWVAnLjwRfY7RcucZiiM+N+uCv90uc4mmONYb46FYki4PG@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0fiM3WLxex0a8swSmTgsVGXK1SXAxXVyTc3sYzXADVmBL9/2a
-	jWfXxU8CkDdLEvw33IZfBvXwrglYO1f95REQVHg0/gS+Qf7a5fHB
-X-Gm-Gg: ASbGncsDG4d2lX32PJ9gr7yaaHEsu3Xv3rNoUhCo0GRVNwUubYqNEAW6+6EeF+TuEkB
-	rlgyqBW+x+xl2JxQqWt6Apzfk7qE3XguANujnrst4mCR6JKyWcO1KlRNFgOyhwRwwO83ZNAEXrI
-	NhH3/uaAQ/2MFR52JIDqqqrUWh7qhxnIf2dsqkwVsCjpODPf/WKU3EyPSDMoEOTXbTqgFotMk5+
-	j2V37SbYT3mHN6a1mwDUu7EG0kDo+kGYRIU/gyMcljLJeCDMlue6MYCk6ImKaqyEsO1l5mJ9E8E
-	pil+EMhubb0YDD2H9cJGJS1swykiMYfC7A3pbtuANbcsDuQutTmw5x1iW2rBuh376737Ecpej1B
-	0cH50MJbNSMN1b+/oQw==
-X-Google-Smtp-Source: AGHT+IFAFkzTCBhjjbFbdUKV9Pbr+1K4JWfSCgpFEEtvHRH6BSIbnWoo3dOs/0Kbgui/FAWBv8Zx9g==
-X-Received: by 2002:a17:903:903:b0:223:5c33:56a2 with SMTP id d9443c01a7336-2292f97a2aemr160002045ad.28.1743436870676;
-        Mon, 31 Mar 2025 09:01:10 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eec53easm70800385ad.24.2025.03.31.09.01.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Mar 2025 09:01:10 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <8064282a-17aa-4b97-b5d9-1b4a8b0dc40b@roeck-us.net>
-Date: Mon, 31 Mar 2025 09:01:08 -0700
+	s=arc-20240116; t=1743444241; c=relaxed/simple;
+	bh=TjPFzSUnPbPRgTscjsJmd0n4OCJ9hkWeITeAT4SIS3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZNXmBjM7hHs9FqDtCPdIEsrl0XwO0ofhdud2Cm78OyRLfenmwFBRhFibSMZw6mRntKpFBs17UYTwsyqMyzgPOLEi+BK9rGMQbhRoBKyPNmDdpDeTWv3udPdgUCL6g0A8qBtXxDgPn4h0zPi0+ddCCvdH7ZoGRtK3g1nkKpjBm5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=3mdeb.com; spf=pass smtp.mailfrom=3mdeb.com; dkim=pass (2048-bit key) header.d=3mdeb.com header.i=@3mdeb.com header.b=k8oBLQFz; arc=none smtp.client-ip=46.105.52.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=3mdeb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3mdeb.com
+Received: from director1.ghost.mail-out.ovh.net (unknown [10.108.17.203])
+	by mo575.mail-out.ovh.net (Postfix) with ESMTP id 4ZRDtM3KF1z1Vrl
+	for <linux-hwmon@vger.kernel.org>; Mon, 31 Mar 2025 15:04:11 +0000 (UTC)
+Received: from ghost-submission-5b5ff79f4f-z77lt (unknown [10.108.42.32])
+	by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 31FF41FEB0;
+	Mon, 31 Mar 2025 15:04:10 +0000 (UTC)
+Received: from 3mdeb.com ([37.59.142.112])
+	by ghost-submission-5b5ff79f4f-z77lt with ESMTPSA
+	id LsokNOmu6mczfAAAaRWDkw
+	(envelope-from <michal.kopec@3mdeb.com>); Mon, 31 Mar 2025 15:04:10 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-112S0065bc1be9b-8226-4a4d-9b31-578571ccbd9a,
+                    022D63F0A2E1D1A994006CE925429A65688265DF) smtp.auth=michal.kopec@3mdeb.com
+X-OVh-ClientIp:213.192.77.249
+From: =?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal.kopec@3mdeb.com>
+To: hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	tomasz.pakula.oficjalny@gmail.com,
+	jdelvare@suse.com,
+	linux@roeck-us.net
+Cc: platform-driver-x86@vger.kernel.org,
+	piotr.krol@3mdeb.com,
+	maciej.pijanowski@3mdeb.com,
+	michal.kopec@3mdeb.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH v4 0/1] platform/x86: Introduce dasharo-acpi platform driver
+Date: Mon, 31 Mar 2025 17:03:52 +0200
+Message-ID: <20250331150353.127067-1-michal.kopec@3mdeb.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: hwmon: amc6821: add fan and PWM
- output
-To: Francesco Dolcini <francesco@dolcini.it>, Jean Delvare
- <jdelvare@suse.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Farouk Bouabid <farouk.bouabid@cherry.de>,
- Quentin Schulz <quentin.schulz@cherry.de>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250331155229.147879-1-francesco@dolcini.it>
- <20250331155229.147879-2-francesco@dolcini.it>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20250331155229.147879-2-francesco@dolcini.it>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 12604167982617857433
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedtvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhepofhitghhrghlucfmohhpvggtuceomhhitghhrghlrdhkohhpvggtseefmhguvggsrdgtohhmqeenucggtffrrghtthgvrhhnpeduledtfffgueeugfffieeivdfhfeeutdfhffeigedttdefheektedvgefgueeugfenucfkphepuddvjedrtddrtddruddpvddufedrudelvddrjeejrddvgeelpdefjedrheelrddugedvrdduuddvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehmihgthhgrlhdrkhhophgvtgesfehmuggvsgdrtghomhdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhhfihmohhnsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehjeehmgdpmhhouggvpehsmhhtphhouhht
+DKIM-Signature: a=rsa-sha256; bh=1nyfr4gmsPdJ+V2tJgtrLfho+pZBvZ3IvyLJvPNq434=;
+ c=relaxed/relaxed; d=3mdeb.com; h=From; s=ovhmo3617313-selector1;
+ t=1743433451; v=1;
+ b=k8oBLQFzmnz4gY+9EVqsh3cqYqwcqiYNvQyXQkafoLDE1I8yFR1M4BRxHpk9uLISu64tts/E
+ zn5k2odk8xRPOsFbJkz1vVCy22abxjbsP9/Z+eSqyt7gR2rku8ohKUcEfvi3GQArKsnDJjtE36u
+ GDK4TZm/kCCagRZbclAubOGtUGamMUdS5pvPWDivWvJTg9//vDqz8mYz8epNBfINRRzcJSfZRou
+ IrXvIW13FSz2GYq7AusesEm6iXWGs4WN8l8rypBtYxYg4UJ/PRcwDzIhgVtn9lWKa5gO5RjssdH
+ DzTIEsI7IWHqIDhQ1BgJT7m0dRR8V9+x8E7sRbF2ZFxPA==
 
-On 3/31/25 08:52, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Add properties to describe the fan and the PWM controller output.
-> 
-> Link: https://www.ti.com/lit/gpn/amc6821
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
-> v3:
->   - explicitly describe the fan, use standard PWM and FAN bindings
->   - pwm.yaml cannot be referenced, because of the $nodename pattern that is
->     enforced there
-> v2: https://lore.kernel.org/all/20250224180801.128685-2-francesco@dolcini.it/
->   - no changes
-> v1: https://lore.kernel.org/all/20250218165633.106867-2-francesco@dolcini.it/
-> ---
->   .../devicetree/bindings/hwmon/ti,amc6821.yaml      | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/hwmon/ti,amc6821.yaml b/Documentation/devicetree/bindings/hwmon/ti,amc6821.yaml
-> index 5d33f1a23d03..94aca9c378e6 100644
-> --- a/Documentation/devicetree/bindings/hwmon/ti,amc6821.yaml
-> +++ b/Documentation/devicetree/bindings/hwmon/ti,amc6821.yaml
-> @@ -28,6 +28,13 @@ properties:
->     i2c-mux:
->       type: object
->   
-> +  fan:
-> +    $ref: fan-common.yaml#
-> +    unevaluatedProperties: false
-> +
-> +  "#pwm-cells":
-> +    const: 3
-> +
->   required:
->     - compatible
->     - reg
-> @@ -50,9 +57,14 @@ examples:
->           #address-cells = <1>;
->           #size-cells = <0>;
->   
-> -        fan@18 {
-> +        fan_controller: fan@18 {
->               compatible = "ti,amc6821";
->               reg = <0x18>;
-> +            #pwm-cells = <3>;
-> +
-> +            fan {
-> +                pwms = <&fan_controller 0 40000 0>;
+Changes in v2:
+- Remove redundant copyright information
+- Turn dasharo_fill_* functions into single dasharo_fill_feature_caps
+  function
+- Code style fixes
+- Turn large if / else blocks into switch / case
+- Fix possible positive return values in hwmon read handler
+- Change while loops to for loops
+- Add local variable for data->sensors[data->sensors_count] in
+  dasharo_fill_feature_caps
+- Replace snprintf with scnprintf per Ilpo's review
+- Keep the "ok" path silent
 
-There is no explanation for the parameters. I guess that the first is the index and the
-second is the frequency. The index is not used and can be dropped (there is just a single
-channel), and the frequency only makes sense if it can actually be configured.
+Changes in V3:
+- Simplify dasharo_read_value_by_cap_idx arguments and rename to
+  dasharo_read_channel
 
-Either case, the fields need to be documented.
+Changes in V4:
+- Remove unnecessary linebreaks
+- Simplify naming of variables
+- Constify zone lookup table
+- Remove unneeded includes
+- Switch to platform_device API
+- Remove unneeded driver remove handler
+- Add myself to MAINTAINERS
 
-Thanks,
-Guenter
+Michał Kopeć (1):
+  platform/x86: Introduce dasharo-acpi platform driver
 
-> +            };
->           };
->       };
->   
+ MAINTAINERS                         |   7 +
+ drivers/platform/x86/Kconfig        |  10 +
+ drivers/platform/x86/Makefile       |   3 +
+ drivers/platform/x86/dasharo-acpi.c | 357 ++++++++++++++++++++++++++++
+ 4 files changed, 377 insertions(+)
+ create mode 100644 drivers/platform/x86/dasharo-acpi.c
+
+-- 
+2.49.0
 
 
