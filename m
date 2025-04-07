@@ -1,147 +1,98 @@
-Return-Path: <linux-hwmon+bounces-7588-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7582-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE33A7E437
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Apr 2025 17:26:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA80EA7E05A
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Apr 2025 16:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C6C8189FB75
-	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Apr 2025 15:19:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F03E91707F9
+	for <lists+linux-hwmon@lfdr.de>; Mon,  7 Apr 2025 13:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDF21FBCA1;
-	Mon,  7 Apr 2025 15:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFE71ADFFB;
+	Mon,  7 Apr 2025 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=3mdeb.com header.i=@3mdeb.com header.b="f9U1/uqC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXG8+zHj"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from 7.mo582.mail-out.ovh.net (7.mo582.mail-out.ovh.net [46.105.59.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A419E140E3C
-	for <linux-hwmon@vger.kernel.org>; Mon,  7 Apr 2025 15:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.59.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275C7846D;
+	Mon,  7 Apr 2025 13:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744039131; cv=none; b=fAmS6A8jJ+1TGVUY2CeB3V3l3jhpHZN8kQqZga4aWKmADgMaovM/bpgMBt3A0Bu08OAVYr8p19phkdjZwTgqcyRSEnZkQ3d0CvRtsAu/7eXvj8bfPJaToCmGPxS17AJD1Md2ekk0zb58ovPSjOjZiBaKTAji9Q0kkpmD+gCeNds=
+	t=1744034366; cv=none; b=AD7+6xIM+Vlz+C6ur7MAbqUXYOvLPxoaGaOeX4x9PjwkRrVGCKhpiWT7rl6pWP3wHLCtg1ekF5mVr5YXpZxoX3l35MQot7uVEfWMwY87r8y32w9hkpjgJJfcWiZ29coV+J5K2LLNl9yBYjpvuMTb5FzSwt7gMwYQERC4UZJ41yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744039131; c=relaxed/simple;
-	bh=ri/Q71c6p0NfoGvBcO9l27Ztt6As2I80kAoK2yHHV3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jxXWOC2GfGvqisn++QEJhxtv3eHxKsybA6kfZe3pp913b+JLFgEK0SyDaLEoa0yG/CBWsndI8CUesx707J3NzlKWXrAckSO9zs7aDNqJuTcD9San/p4FZ7ZkWzRumMPeSc2RoK7jrNnN1KRpH2FUJ/yADrKC1LE2tZrPfA90TkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=3mdeb.com; spf=pass smtp.mailfrom=3mdeb.com; dkim=pass (2048-bit key) header.d=3mdeb.com header.i=@3mdeb.com header.b=f9U1/uqC; arc=none smtp.client-ip=46.105.59.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=3mdeb.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3mdeb.com
-Received: from director9.ghost.mail-out.ovh.net (unknown [10.108.17.160])
-	by mo582.mail-out.ovh.net (Postfix) with ESMTP id 4ZWTdC3gnkz1Vq6
-	for <linux-hwmon@vger.kernel.org>; Mon,  7 Apr 2025 12:52:31 +0000 (UTC)
-Received: from ghost-submission-5b5ff79f4f-kfbdm (unknown [10.108.42.198])
-	by director9.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 090071FEC8;
-	Mon,  7 Apr 2025 12:52:29 +0000 (UTC)
-Received: from 3mdeb.com ([37.59.142.99])
-	by ghost-submission-5b5ff79f4f-kfbdm with ESMTPSA
-	id v4jKLY3K82fdGgAAEArC2g
-	(envelope-from <michal.kopec@3mdeb.com>); Mon, 07 Apr 2025 12:52:29 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-99G00366dd81de-80f8-4d6f-ba43-ad97daa944b4,
-                    49FEA267915985A1F78C17A329F0406DF60E39EF) smtp.auth=michal.kopec@3mdeb.com
-X-OVh-ClientIp:213.192.77.249
-From: =?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal.kopec@3mdeb.com>
-To: hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	tomasz.pakula.oficjalny@gmail.com,
-	jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: platform-driver-x86@vger.kernel.org,
-	piotr.krol@3mdeb.com,
-	maciej.pijanowski@3mdeb.com,
-	michal.kopec@3mdeb.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH v7 0/1] platform/x86: Introduce dasharo-acpi platform driver
-Date: Mon,  7 Apr 2025 14:52:09 +0200
-Message-ID: <20250407125210.215794-1-michal.kopec@3mdeb.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1744034366; c=relaxed/simple;
+	bh=8s2WBNabZQFxBl7Vpsud+lJ/8w8F8nDe+peMa/6CfYw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tYzJXc+tTJiyN9YYSV/sUkLVC5EEFTqeGC00XtkizI/w8DNjJg/i19ETMtk8aYR4s9s2nOsSmlzCMH7ArsTqBDPhYHH0wfkHh/5tYM5KQ6tRVbe2SyT0U07cbMQwYs12cx6jCykp/O8Ld+MK+swnrR0jyzcYuHcKFKG8MjZGhRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXG8+zHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55286C4CEDD;
+	Mon,  7 Apr 2025 13:59:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744034365;
+	bh=8s2WBNabZQFxBl7Vpsud+lJ/8w8F8nDe+peMa/6CfYw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HXG8+zHjOCj+V48R59reR4E1O9Q2qp21nTZlonWp9Xyp0ycMi0V/9lST8jdTr0JrB
+	 dwa44fh0Om/zzKA0zGhuyNwgJ0BTsdSwrk6QZp8p3UGwoHZA0O0dLZiodAr4W829ZG
+	 TUxObNX6z/efLUgEv34gVPOMdySNc0fUQDCPZe7b4T3sGHYDcLThD8icihBOG8/kN+
+	 uTKEbi0PwlM+9+WH5COIS7hYG+6oEuN2nvg/YVU5dAjKKt/kHkgWwePWd4N/KkT1kq
+	 zDWY70pHKi3qVH9AjH7qXgKhX0cG6jwP/4slFVjbxAE6EyzKWkS5OHwpfyF+1fNF7s
+	 t2QGiCC2GYohQ==
+Date: Mon, 7 Apr 2025 08:59:24 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>, linux-riscv@lists.infradead.org,
+	linux-hwmon@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, linux-kernel@vger.kernel.org,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Yixun Lan <dlan@gentoo.org>, sophgo@lists.linux.dev,
+	Chao Wei <chao.wei@sophgo.com>, Longbin Li <looong.bin@gmail.com>,
+	linux-i2c@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	ghost <2990955050@qq.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-mmc@vger.kernel.org, Jisheng Zhang <jszhang@kernel.org>,
+	Jean Delvare <jdelvare@suse.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>
+Subject: Re: [PATCH 5/9] dt-bindings: hwmon: Add Sophgo SG2044 external
+ hardware monitor support
+Message-ID: <174403436377.2164588.13246068752333809704.robh@kernel.org>
+References: <20250407010616.749833-1-inochiama@gmail.com>
+ <20250407010616.749833-6-inochiama@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 14595884920276716953
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddtvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhepofhitghhrghlucfmohhpvggtuceomhhitghhrghlrdhkohhpvggtseefmhguvggsrdgtohhmqeenucggtffrrghtthgvrhhnpeduledtfffgueeugfffieeivdfhfeeutdfhffeigedttdefheektedvgefgueeugfenucfkphepuddvjedrtddrtddruddpvddufedrudelvddrjeejrddvgeelpdefjedrheelrddugedvrdelleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepmhhitghhrghlrdhkohhpvggtseefmhguvggsrdgtohhmpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqhhifmhhonhesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheekvdgmpdhmohguvgepshhmthhpohhuth
-DKIM-Signature: a=rsa-sha256; bh=aA5fdCb3DjkZEhHkgEsxx15UGiq5j/wbfgoVeM7TrIM=;
- c=relaxed/relaxed; d=3mdeb.com; h=From; s=ovhmo3617313-selector1;
- t=1744030351; v=1;
- b=f9U1/uqC/Np8G3fAEdN6Rd/1cVl2u7OeIUbklA+aw41bx2AWY5FSTSw0L9fa7yZFy9S8OUpm
- eWxevyP8hGoZezhRHeOPtObXl7/b4G2DN5BAI3x7nyeRmdCVXsB0jlfieLp2oHF02Kb2WaDBdhs
- qJF/TTEFdWNbel/xk4GAuPPM1VQtd0cOI0fIh7feW0SXXStkyY0B1Hq9fqd18kJW4Gfo6sCZ0Jy
- 26AvhjOkmnolxX3HslVcDREnGXcPtn9wagXNCh7Ac5ONDf3F5Z/h4NWhAZVqpu3PuZaaUTKPK+n
- cJvNnHdgRzKZtKBRk1uAlkwrebYEouHYy1x1CIhQyqTIg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407010616.749833-6-inochiama@gmail.com>
 
-Introduce a driver for devices running Dasharo firmware. The driver
-supports thermal monitoring using a new ACPI interface in Dasharo. The
-initial version supports monitoring fan speeds, fan PWM duty cycles and
-system temperatures as well as determining which specific interfaces are
-implemented by firmware.
 
-It has been tested on a NovaCustom laptop running pre-release Dasharo
-firmware, which implements fan and thermal monitoring for the CPU and
-the discrete GPU, if present.
+On Mon, 07 Apr 2025 09:06:10 +0800, Inochi Amaoto wrote:
+> The MCU device on SG2044 exposes the same interface as SG2042, which is
+> already supported by the kernel.
+> 
+> Add compatible string for monitor device of SG2044.
+> 
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> ---
+>  .../devicetree/bindings/hwmon/sophgo,sg2042-hwmon-mcu.yaml  | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
 
-Changes in v2:
-- Remove redundant copyright information
-- Turn dasharo_fill_* functions into single dasharo_fill_feature_caps
-  function
-- Code style fixes
-- Turn large if / else blocks into switch / case
-- Fix possible positive return values in hwmon read handler
-- Change while loops to for loops
-- Add local variable for data->sensors[data->sensors_count] in
-  dasharo_fill_feature_caps
-- Replace snprintf with scnprintf per Ilpo's review
-- Keep the "ok" path silent
-
-Changes in V3:
-- Simplify dasharo_read_value_by_cap_idx arguments and rename to
-  dasharo_read_channel
-
-Changes in V4:
-- Remove unnecessary linebreaks
-- Simplify naming of variables
-- Constify zone lookup table
-- Remove unneeded includes
-- Switch to platform_device API
-- Remove unneeded driver remove handler
-- Add myself to MAINTAINERS
-
-Changes in V5:
-- Fix up the MAINTAINERS entry
-- Use PTR_ERR_OR_ZERO for the hwmon pointer in the register func
-- Simplify if blocks in dasharo_hwmon_read
-- Use ACPI_FAILURE instead of !ACPI_SUCCESS
-
-Changes in V6:
-- Validate input parameters in dasharo_read_channel
-- Add default return code in dasharo_hwmon_read
-- Return error if invalid channel is requested in hwmon_read_string
-- Add missing include for ARRAY_SIZE
-- Align line continuations in dasharo_probe
-
-Changes in V7:
-- Use cap count for bound checking in dasharo_read_channel
-
-Michał Kopeć (1):
-  platform/x86: Introduce dasharo-acpi platform driver
-
- MAINTAINERS                         |   6 +
- drivers/platform/x86/Kconfig        |  10 +
- drivers/platform/x86/Makefile       |   3 +
- drivers/platform/x86/dasharo-acpi.c | 357 ++++++++++++++++++++++++++++
- 4 files changed, 376 insertions(+)
- create mode 100644 drivers/platform/x86/dasharo-acpi.c
-
--- 
-2.49.0
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
 
