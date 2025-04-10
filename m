@@ -1,152 +1,133 @@
-Return-Path: <linux-hwmon+bounces-7692-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7694-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1108CA84DA4
-	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Apr 2025 22:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A29A84E49
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Apr 2025 22:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5839A0CB6
-	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Apr 2025 20:01:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247709A5B47
+	for <lists+linux-hwmon@lfdr.de>; Thu, 10 Apr 2025 20:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40C3204844;
-	Thu, 10 Apr 2025 20:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124DE14D29B;
+	Thu, 10 Apr 2025 20:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQdDmaiE"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="Bpeth0k8"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx02lb.world4you.com (mx02lb.world4you.com [81.19.149.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFE519DF99;
-	Thu, 10 Apr 2025 20:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E509259C
+	for <linux-hwmon@vger.kernel.org>; Thu, 10 Apr 2025 20:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744315272; cv=none; b=kGRz9AGcbYwsol9AuQgfWNA9BPVWVMMyk/vBFDYAe8poElyAyu03g0tgRe8FAUTBx9XKbutkp9+5agSqvegOrsZRAk2qnv4JOH1BudWU/j8I9G8Potxl4UfqSmVn03ZSfC17wqEgxb2VMQekkD4Y5MuwsjbxbjjeSfylpjFncKw=
+	t=1744317543; cv=none; b=uEIAdfH9xrt39PVrzvSNR3G8f+RJ1WwWKrHfFAhG/cvhxfFC3AdSJXeFPvM8TNarirN+X2mHB/0KVhfYnfpCiaYr4Cai/8GHwFSOjAIlAShvibi3X3lxTeDHd4ifMyADi7SMd7ffUiuvTR/3Pk4+7MdzLInSGdjB/+LrFi1Ccp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744315272; c=relaxed/simple;
-	bh=EqMPlsiz6ELDNfT2CaECmHob3xlyd+QRtzPxAhzTX7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M7xWOI3oCM5VUhXl+UVnmrUGBtlP0eu9LaQYt0mVkZTR++KTb+gJI0EGINztZKrrsodmAYusVqCaWk5Uv9bNW71+NDfwnjNJN08H6qImqHqAA6jIFWF1spq7irQ3w6YpIIXNTEVkzfWcyo3pswrA061L5b5fY9h+EJI5a1wiyy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQdDmaiE; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-739b3fe7ce8so1216803b3a.0;
-        Thu, 10 Apr 2025 13:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744315270; x=1744920070; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zYvHi6bKQVzjYUMCVSzuCNYURE2WOZKhLEo4wbN8zNA=;
-        b=IQdDmaiE5wMzMfXiN/lAsjph3uTXEXnOPc+OI3E1rw+oX2xdVCEryt/I3oO6rc2C3b
-         9dj8HtYcWvIa18TdsQa/FNZx1j/KWQIoDdChDBfPq3Um/huItpuCtDZA5fL/VKB61NcG
-         Rap5SEuZKg2/8UBxMI96skKatOXGRB9wa4FJ2WAGouAAZ+N0421D3w6R5bodgHpih5oy
-         YZYj6WASkurHUrop+IURuz7ikQI2F/VXtJ5Tt5A2PPVUBc4E6iTamqMvYdDWnGfdO8U6
-         ddZc/QobIWsKiUQWTWlJPwut1RxZPwnU957Jzbhl14bs5CIZ7VsPQQy3Pa6L2e9JrYkx
-         Rd9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744315270; x=1744920070;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zYvHi6bKQVzjYUMCVSzuCNYURE2WOZKhLEo4wbN8zNA=;
-        b=cDHQnmR55IK64N/GJbqBENBA24KAxvl/Cy/AtUMCj3FdE6wX48XNMgC6LqTXfe0bW1
-         XP0qfhR97ZkN/UBcimK5uHPLgVRREAGJAcKaCQRabPB7nN1bqFGxDol3s6y3d2QRerbJ
-         FxqkYS+4G7oqaJN8nHvxK53HVM6v/fpDtlcHww+3wfVDhMIrYGzWmTPYsC2rFmq2nt3k
-         JalCJViNIMArTVxZGRE+yyVN3NGWJy+6fpU/gLD5DCT+YM2Q+S+fU17mNRuPhGarYhJm
-         zVWn3t9B3+YRu6zGgZ2WYhloTzGY2NtDt0Oo3T4XS/nES/sSFK33jxINzRgbQAxfPZos
-         l4CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVqFrB5NsG0ISmpO6ShM4E3SvRZxDlEBIG9sOr8otS+365qwqFsZirPNgZnR40qoDi6PwbchEi1LEFE6Q==@vger.kernel.org, AJvYcCXsqgv/K1MuoMH8xmdIIIh6rc/FEpTlEkPM2yNV0aXghw4/cssetqH8tVHNtKovZH/I1TF3xmTGkra5WgrQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyiHr9WNkp1pjEXTtDpmwAOPf77QxpHAv/ILlRTRkgKK7B0Dj9
-	XbMPhe3UmrzafsOQ+LL/6as7dyNT5v9YxeRkuu3sVOoRf0ftnnys
-X-Gm-Gg: ASbGncudRuXQYO5heOhg2JCvv7tSYyU66iGeD/R+Qyvee8Lo7NfXNmBXnFwT9+Gyxv6
-	XDXGd3xxTgRHdEa2kq+h39Cxu5qqeKTxwnZ1MV8xuia2JV7ZTgVqEVAzi6T/fXkG6e7wN7tK2iq
-	NaNuzcVOhJESUVc+cku/2DpQBaKpE2YKLJXiBjyfz/8gKZDnfW/8zGyw4ttZSrBcJ6w8ccA6IcN
-	f4MyOXvWA2E77qTae7K1Pye/8rjTwNsqVDpM1bqsR+P4efKVj/nEMOfzzPx7bM/wN0q4kykZXjW
-	YA2GgpEMY79YiSsC/lu7DO+8CiKsWQStxm6hP3JF9bo9vAHACtT9ow==
-X-Google-Smtp-Source: AGHT+IEaUiK0yxhoAmXkw6Go5RaDXLwBAhdiQ2rXCg+r12sLcvUlESwj+HbZqwlKAjWSDAdquLV2xQ==
-X-Received: by 2002:a05:6a00:2188:b0:736:5dae:6b0d with SMTP id d2e1a72fcca58-73bd11e60d1mr204932b3a.10.1744315269940;
-        Thu, 10 Apr 2025 13:01:09 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1d6ae67sm3709461b3a.84.2025.04.10.13.01.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 13:01:09 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 10 Apr 2025 13:01:08 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Purva Yeshi <purvayeshi550@gmail.com>
-Cc: Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: max31827: Fix uninitialized variable lsb_idx in
- max31827_init_client
-Message-ID: <f0ad5113-eab9-4e71-8363-1b7a005189c4@roeck-us.net>
-References: <20250410194833.21366-1-purvayeshi550@gmail.com>
+	s=arc-20240116; t=1744317543; c=relaxed/simple;
+	bh=jBRjGc74xhIs3DXLdbRzyqsZxs/AFxY78DrDKskAMxY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UvfAGrFiitBDyIF6rQvPhKhmps9TTcMdMuCitNSK+7p26JK1N/xhJgB3RaBtnprx9qElOZOxcAPxCuDQl0zplp/2VX2Ag9HMP/xbRHB+HhSaMKb93D9yxg4n2snfTfEyWpan9ZNjqg+cNwUacswNKgLvBH7rMSp7QJXWwBn0sUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=Bpeth0k8; arc=none smtp.client-ip=81.19.149.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=wqwJq1Zyc4EGRc9zZYSMWTqBd76XI1sIXUidnNXjtXc=; b=Bpeth0k8fv5jfUTLDEDbIkTIGB
+	B2/lLAGXze2sziPvPJ5mT5AYrg62BAmVSArlWQA2BmNmwus+H3D/n3UrEVYrlhpU6Qq5+9rTiXK5l
+	f/2AY5bzSSLNeG4R2R6jff3/K6gvu3GH6e9F5qLnJH2YY5IvBGWsWFKQSZWrY+lR7/Uc=;
+Received: from [188.22.33.74] (helo=[10.0.0.160])
+	by mx02lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1u2xWF-000000000TO-0DoN;
+	Thu, 10 Apr 2025 21:25:01 +0200
+Message-ID: <c1a67d09-a23a-4ba8-bf8b-19f3f6d2eb34@engleder-embedded.com>
+Date: Thu, 10 Apr 2025 21:24:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250410194833.21366-1-purvayeshi550@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hwmon: Add KEBA battery monitoring controller support
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org, jdelvare@suse.com, linux@weissschuh.net,
+ Gerhard Engleder <eg@keba.com>
+References: <20250409190830.60489-1-gerhard@engleder-embedded.com>
+ <651ce8b5-4257-4d38-aa18-285698ab7856@roeck-us.net>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <651ce8b5-4257-4d38-aa18-285698ab7856@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-On Fri, Apr 11, 2025 at 01:18:33AM +0530, Purva Yeshi wrote:
-> Fix Smatch-detected issue:
-> drivers/hwmon/max31827.c:564 max31827_init_client() error:
-> uninitialized symbol 'lsb_idx'.
+On 09.04.25 22:11, Guenter Roeck wrote:
+> On Wed, Apr 09, 2025 at 09:08:30PM +0200, Gerhard Engleder wrote:
+>> From: Gerhard Engleder <eg@keba.com>
+>>
+>> The KEBA battery monitoring controller is found in the system FPGA of
+>> KEBA PLC devices. It puts a load on the coin cell battery to check the
+>> state of the battery. If the coin cell battery is nearly empty, then
+>> the user space is signaled with a hwmon alarm.
+>>
+>> The auxiliary device for this driver is instantiated by the cp500 misc
+>> driver.
+>>
+>> Signed-off-by: Gerhard Engleder <eg@keba.com>
+>> ---
+> ...
+>> diff --git a/drivers/hwmon/kbatt.c b/drivers/hwmon/kbatt.c
+>> new file mode 100644
+>> index 000000000000..501b8f4ded33
+>> --- /dev/null
+>> +++ b/drivers/hwmon/kbatt.c
+>> +
+>> +		/* check battery state */
+>> +		if (ioread8(kbatt->base + KBATT_STATUS_REG) &
+>> +		    KBATT_STATUS_BAT_OK)
+>> +			kbatt->alarm = false;
+>> +		else
+>> +			kbatt->alarm = true;
+>> +
 > 
-> ​In the max31827_init_client() function, the variable lsb_idx is assigned
-> a value only when data has exactly one bit set (hweight32(data) == 1).
-> If this condition isn't met, lsb_idx remains uninitialized, leading to
-> undefined behavior when it's subsequently used.
-
-That is not correct.
-
+> 		kbatt->alarm = !(ioread8(kbatt->base + KBATT_STATUS_REG) & KBATT_STATUS_BAT_OK);
 > 
-> Ensure that data is non-zero and has exactly one bit set before
-> calling __ffs(data) to determine lsb_idx. Additionally, verify that
-> lsb_idx does not exceed 4. This approach prevents the use of an
-> uninitialized lsb_idx and resolves the Smatch warning.
+>> +		/* switch load off */
+>> +		iowrite8(0, kbatt->base + KBATT_CONTROL_REG);
+>> +
+>> +		kbatt->next_update = jiffies + KBATT_MAX_UPD_INTERVAL;
+>> +	}
+>> +
+>> +	mutex_unlock(&kbatt->lock);
+>> +
+>> +	return kbatt->alarm;
+>> +}
+>> +
+>> +static int kbatt_read(struct device *dev, enum hwmon_sensor_types type,
+>> +		      u32 attr, int channel, long *val)
+>> +{
+>> +	struct kbatt *kbatt = dev_get_drvdata(dev);
+>> +
+>> +	*val = kbatt_alarm(kbatt) ? 1 : 0;
 > 
-> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-> ---
->  drivers/hwmon/max31827.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+> and
 > 
-> diff --git a/drivers/hwmon/max31827.c b/drivers/hwmon/max31827.c
-> index 48e8f8ba4d05..c62eaf186d9d 100644
-> --- a/drivers/hwmon/max31827.c
-> +++ b/drivers/hwmon/max31827.c
-> @@ -558,10 +558,13 @@ static int max31827_init_client(struct max31827_state *st,
->  		/*
->  		 * Convert the desired fault queue into register bits.
->  		 */
-> -		if (data != 0)
-> -			lsb_idx = __ffs(data);
-
-lsb_idx is assigned if data != 0, not if hweight32(data) == 1 ...
-
-> +		if (data == 0 || hweight32(data) != 1) {
-> +			dev_err(dev, "Invalid data in adi,fault-q\n");
-> +			return -EINVAL;
-> +		}
->  
-> -		if (hweight32(data) != 1 || lsb_idx > 4) {
-
-... and if hweight32(data) != 1, it bails out here before using lsb_idx.
-The problem you describe does not exist.
-
-Guenter
-
-> +		lsb_idx = __ffs(data);
-> +		if (lsb_idx > 4) {
->  			dev_err(dev, "Invalid data in adi,fault-q\n");
->  			return -EINVAL;
->  		}
-> -- 
-> 2.34.1
+> 	*val = kbatt_alarm(kbatt);
 > 
+> would have been equivalent and a bit simpler. Also, kbatt_is_visible()
+> could have just returned 0444 without any checks since there is only one
+> attribute and it is always present. However, I am tired of arguing today,
+> so applied.
+
+Thanks for applying! I will try to make you less tired next time.
+
+Gerhard
+
 
