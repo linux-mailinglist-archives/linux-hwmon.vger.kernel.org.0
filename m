@@ -1,198 +1,207 @@
-Return-Path: <linux-hwmon+bounces-7772-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7774-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119A8A8B14F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Apr 2025 08:57:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C27EA8B747
+	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Apr 2025 13:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B1A5A1B0E
-	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Apr 2025 06:57:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68CB71893D86
+	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Apr 2025 11:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8629E233702;
-	Wed, 16 Apr 2025 06:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D3423642E;
+	Wed, 16 Apr 2025 11:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="GOGescOE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L2i214uM"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA542231A51;
-	Wed, 16 Apr 2025 06:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D21E1EF380
+	for <linux-hwmon@vger.kernel.org>; Wed, 16 Apr 2025 11:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744786506; cv=none; b=duJJ8JmwLMj8SKLE2DZsebxV7ku26bh3/1Zo4oNox+ivUKAnVBMiJOZo80Shj6zcHl20crZJWao9bapwp2vdhgEK/jVypelI6a93qCZMxds1kFv4tnvyEmUwcLt2bg/lOArPVsmBDr1ulIw4QHW71mbeKU/jVjWo2MIWTS54/Zw=
+	t=1744801546; cv=none; b=A+VTxkVUyn1WP+SXwFew3Dz3DcCCbXc9U+6Ow6HF8fK3K9+whh0X+77SbvvL3d03yojidY7LhMEXUpvJ9S+DX5BfjsQITPN0tTCEzvSOyqa7/yW248McSkoIHD+PjRD027nZ2FhI0DMTXwpIIJcPQ8sQu5n6fUQz20RxCy6D4v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744786506; c=relaxed/simple;
-	bh=f5MvPPgZzNQoUwNLf8pjd+gK69ncgfdoDGlBlbgMevI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fRR8gmk8+OnLpo9gahlplL1mHH8hC7LhA5PeHIxa6kyseGUrDSbt8uTPFZMHMBGmbRndr3gufouanYyr8dsmVkYGc+BIe7837N++WSXzJUvymrfxL6KoIJio6Z6ga/n0ouf0JtQW6X30/birxX7NW5iCFrSI0pKvFl5ptvp43uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=GOGescOE; arc=none smtp.client-ip=185.125.188.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from 2001-b400-e2a9-54f6-6e67-7778-9cb9-7043.emome-ip6.hinet.net (unknown [10.101.200.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id DE35B42465;
-	Wed, 16 Apr 2025 06:46:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1744786020;
-	bh=HXmdxN4qv8qUN/AmjmYz54sxkDkoxDt0ewKZemJZ36g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc;
-	b=GOGescOEvY87ayDp1JcSqQxuzXw3u5PtCzkLHHTkFdWM6cO37CvYDOP95Qm+d9eU7
-	 kXX5YDzJFmc0L6TqoZ6UiUqPNpfddpoIswqixBH3VXB4F8V/KL379/lyigAWSayO/2
-	 cbfpt7cedrTDkZl/DTpGAGnsE32GUUUd5DTYfywCzLcHE+z3Wl5vMfUuGbmY82nKca
-	 4dFvqkhMQz5/zJ1VpPqOuZ6YMlHB2f8nkTVDFrl1MQQPjKIBDzCJME+yPqTlMm/mg7
-	 7V/9Z8M8tARrO+Tdbn2uSmAQyA2hEFu0O8P1Fo+0dSA64VSxbe0Obrx66TGNr4Pzys
-	 fbiAgaiDTpJrQ==
-From: "Yo-Jung (Leo) Lin" <leo.lin@canonical.com>
-Date: Wed, 16 Apr 2025 14:46:27 +0800
-Subject: [PATCH 2/2] hwmon: (spd5118) restrict writes under SPD write
- protection
+	s=arc-20240116; t=1744801546; c=relaxed/simple;
+	bh=Sn1gl8Z3DQwVEKnzgi9ovJRTRasFdJIx/atxlsowIDM=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=NoaWpTVuihyiiH17rhtj3gQVyAZhmU/s02olDsH0d+gBK65T9e1jL3SH8yxATebbOcTPMTaneE41YNi8qkCcRj7LWkLkR3sDgGVV0Z8XF7/jwdJ46RD3mHRohiNNBLQSuAKcwmN3Eqmfiw3Svjj6Zy4REYOqmNWK/7iIaVEfHF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L2i214uM; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744801544; x=1776337544;
+  h=date:from:to:cc:subject:message-id;
+  bh=Sn1gl8Z3DQwVEKnzgi9ovJRTRasFdJIx/atxlsowIDM=;
+  b=L2i214uM6Ljx++xno9WF9qIFCNgQvdZ+Yt3vbO9My+heRXPL5tJ4baXX
+   HC4AMCK0hryQxTMN0fDmqS4Yl2lzjAKhNbLABgnnJqHr0+Vt3U2VHEQ1g
+   ck1uuYcXbOBkyKPtzewAkFyHIbUBkP+RBnkqMFi+l9Nc9OkI313eFfYeb
+   jRPkNwPeLq+MpynpYYHDeXLbs51r2wQ6PErXkRKOLfxplmOP4hg0lrGQC
+   OWxCbzIXp0iIQP+7dsqWJliOlXwnIbY0bEOP2+qjEolqS/Oo/Ri+vybRe
+   cEYWGWuk190hA83nKZ0nrBQNWqep80vUzHLxQOmJLfSM1Vs7ZLfU6F83X
+   w==;
+X-CSE-ConnectionGUID: 2xSAmlb2QH24TidzP+A99A==
+X-CSE-MsgGUID: iKW4D8wkQMW+l+PdP6uWWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="33958996"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="33958996"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 04:05:44 -0700
+X-CSE-ConnectionGUID: qEKTqq17TLGS+4aAUU9oow==
+X-CSE-MsgGUID: wajZgIxhQ32y4OzrhOev2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="131405575"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 16 Apr 2025 04:05:43 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u50aJ-000JZx-35;
+	Wed, 16 Apr 2025 11:05:39 +0000
+Date: Wed, 16 Apr 2025 19:04:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
+ 8f47f2d1355a3846d0ac2b1e05b3bb8aaf3a6c2f
+Message-ID: <202504161934.R6A632F5-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250416-for-upstream-spd5118-spd-write-prot-detect-v1-2-8b3bcafe9dad@canonical.com>
-References: <20250416-for-upstream-spd5118-spd-write-prot-detect-v1-0-8b3bcafe9dad@canonical.com>
-In-Reply-To: <20250416-for-upstream-spd5118-spd-write-prot-detect-v1-0-8b3bcafe9dad@canonical.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Yo-Jung Lin (Leo)" <leo.lin@canonical.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3515; i=leo.lin@canonical.com;
- h=from:subject:message-id; bh=f5MvPPgZzNQoUwNLf8pjd+gK69ncgfdoDGlBlbgMevI=;
- b=owEBbQKS/ZANAwAKAV8XsZZKKe6GAcsmYgBn/1JbViDIxPHR4QLCCYOn0QykrbyNLeW87IG9j
- l/cbSDmN0SJAjMEAAEKAB0WIQQzqV4kW+yguuqHrw5fF7GWSinuhgUCZ/9SWwAKCRBfF7GWSinu
- hjA/D/wMjsVRiYEMRj7NWnhGDeQLuKLfS8Jh3+ARwbt90Wq6TlBLb9py/krsK8AX0jIUHnNf+VB
- yRZVa5s6tMV+IFG5kbt0yh0iDJX8Tz1OD0c7Ls1kMm2gLBpME1STkapX+Je9EFxuGMt7YVNhPoQ
- 4NnylGcFhKprDKsADoioY/D+eDHAWJYM0YqgBV5Ith8cyVw/i/iX7BTw5fgSUldYd/yuO/GNW95
- zbzqAGnp5+i0xqR8bFX/FYwM5StNOPlxSRF8TskkWryy14hyHQiZCyp93leId5RjDdqzlTBGydn
- xqqjfzUPsM9AFf9XJpVJ+QWBOeALOdcd1FPmoNHGbIujUuEQQNNPIYXWipkmqgbN4D8aVY5bwlj
- MbU2gJwZXQqy3Xguxhn/YMt6lL1MB3P5HugyuFKfkNJ9u6SQlfpIpkuXn3mA76RHvYCFNBa05TQ
- /Ul7Pakos16+FhWBmQjkW8NyZ6KxO/oRcgYjSpsH+qI+HnDBH34xYHcMEIgLY3Y21s/p8BuEBG1
- r8cneXRds8J3zoJ3c2w6JvwUkUNTumHOmRLtQmGVW9Dno7J2RWyQsOyqOlzlDPtGmt6xNp2rhzO
- eutzYzYv4/xSI1aJJK1WQxgmoAcM66nuLXSj2rMaFYU50VeCHT9rQDHymmvXw3kVJRcEQYEE5m2
- OD3IgtBv1OAbgag==
-X-Developer-Key: i=leo.lin@canonical.com; a=openpgp;
- fpr=33A95E245BECA0BAEA87AF0E5F17B1964A29EE86
 
-On some platforms, SPD Write Protection for the SMBus controller may be
-enabled. For the i801 family, this will forbid writing data to devices
-residing on addresses from 0x50 to 0x57. This may lead to the following
-issues:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+branch HEAD: 8f47f2d1355a3846d0ac2b1e05b3bb8aaf3a6c2f  hwmon: (lm90) Use to_delayed_work()
 
-  1) Writes to the sensor hwmon sysfs attributes will always result in
-     ENXIO.
+elapsed time: 1448m
 
-  2) System-wide resume will encounter errors during regcache sync back,
-     resulting in the following messages during resume:
+configs tested: 114
+configs skipped: 1
 
-     kernel: spd5118 1-0050: Failed to write b = 0: -6
-     kernel: spd5118 1-0050: PM: dpm_run_callback(): spd5118_resume [spd5118] returns -6
-     kernel: spd5118 1-0050: PM: failed to resume async: error -6
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-To address this, check if the sensor can be written to at probe, and bypass
-write-related functions if writing to the sensor is not possible.
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-14.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    gcc-14.2.0
+arc                   randconfig-001-20250415    gcc-14.2.0
+arc                   randconfig-002-20250415    gcc-14.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-14.2.0
+arm                          gemini_defconfig    clang-20
+arm                   randconfig-001-20250415    clang-21
+arm                   randconfig-002-20250415    clang-21
+arm                   randconfig-003-20250415    gcc-10.5.0
+arm                   randconfig-004-20250415    gcc-6.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250415    clang-16
+arm64                 randconfig-002-20250415    gcc-7.5.0
+arm64                 randconfig-003-20250415    gcc-9.5.0
+arm64                 randconfig-004-20250415    gcc-9.5.0
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250415    gcc-13.3.0
+csky                  randconfig-002-20250415    gcc-14.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250415    clang-20
+hexagon               randconfig-002-20250415    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250415    clang-20
+i386        buildonly-randconfig-002-20250415    clang-20
+i386        buildonly-randconfig-003-20250415    clang-20
+i386        buildonly-randconfig-004-20250415    clang-20
+i386        buildonly-randconfig-005-20250415    gcc-12
+i386        buildonly-randconfig-006-20250415    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250415    gcc-14.2.0
+loongarch             randconfig-002-20250415    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                          rb532_defconfig    clang-18
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250415    gcc-13.3.0
+nios2                 randconfig-002-20250415    gcc-7.5.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                generic-64bit_defconfig    gcc-14.2.0
+parisc                randconfig-001-20250415    gcc-12.4.0
+parisc                randconfig-002-20250415    gcc-10.5.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-21
+powerpc                       eiger_defconfig    clang-21
+powerpc                          g5_defconfig    gcc-14.2.0
+powerpc               randconfig-001-20250415    gcc-5.5.0
+powerpc               randconfig-002-20250415    clang-17
+powerpc               randconfig-003-20250415    gcc-7.5.0
+powerpc64             randconfig-001-20250415    gcc-7.5.0
+powerpc64             randconfig-002-20250415    clang-17
+powerpc64             randconfig-003-20250415    gcc-10.5.0
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20250415    gcc-14.2.0
+riscv                 randconfig-002-20250415    gcc-9.3.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-21
+s390                  randconfig-001-20250415    clang-21
+s390                  randconfig-002-20250415    gcc-7.5.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20250415    gcc-11.5.0
+sh                    randconfig-002-20250415    gcc-9.3.0
+sh                   secureedge5410_defconfig    gcc-14.2.0
+sh                             sh03_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250415    gcc-6.5.0
+sparc                 randconfig-002-20250415    gcc-12.4.0
+sparc64               randconfig-001-20250415    gcc-14.2.0
+sparc64               randconfig-002-20250415    gcc-12.4.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250415    clang-21
+um                    randconfig-002-20250415    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250415    clang-20
+x86_64      buildonly-randconfig-002-20250415    gcc-11
+x86_64      buildonly-randconfig-003-20250415    gcc-12
+x86_64      buildonly-randconfig-004-20250415    clang-20
+x86_64      buildonly-randconfig-005-20250415    clang-20
+x86_64      buildonly-randconfig-006-20250415    gcc-12
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250415    gcc-6.5.0
+xtensa                randconfig-002-20250415    gcc-10.5.0
 
-Signed-off-by: Yo-Jung (Leo) Lin <leo.lin@canonical.com>
----
- drivers/hwmon/spd5118.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hwmon/spd5118.c b/drivers/hwmon/spd5118.c
-index 3cb2eb2e0227..9dd5342c31dd 100644
---- a/drivers/hwmon/spd5118.c
-+++ b/drivers/hwmon/spd5118.c
-@@ -75,6 +75,7 @@ static const unsigned short normal_i2c[] = {
- struct spd5118_data {
- 	struct regmap *regmap;
- 	struct mutex nvmem_lock;
-+	bool write_protected;
- };
- 
- /* hwmon */
-@@ -284,7 +285,7 @@ static umode_t spd5118_is_visible(const void *_data, enum hwmon_sensor_types typ
- 	case hwmon_temp_lcrit:
- 	case hwmon_temp_crit:
- 	case hwmon_temp_enable:
--		return 0644;
-+		return data->write_protected ? 0444 : 0644;
- 	case hwmon_temp_min_alarm:
- 	case hwmon_temp_max_alarm:
- 	case hwmon_temp_crit_alarm:
-@@ -499,7 +500,7 @@ static const struct regmap_range_cfg spd5118_regmap_range_cfg[] = {
- 	},
- };
- 
--static const struct regmap_config spd5118_regmap_config = {
-+static struct regmap_config spd5118_regmap_config = {
- 	.reg_bits = 8,
- 	.val_bits = 8,
- 	.max_register = 0x7ff,
-@@ -563,6 +564,21 @@ static int spd5118_init(struct i2c_client *client)
- 	return 0;
- }
- 
-+static bool spd5118_write_protected(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	int mode = 0;
-+	int err = 0;
-+
-+	mode = i2c_smbus_read_byte_data(client, SPD5118_REG_I2C_LEGACY_MODE);
-+	if (mode < 0)
-+		dev_warn(dev, "Failed to read MR11: %d", mode);
-+
-+	err = i2c_smbus_write_byte_data(client, SPD5118_REG_I2C_LEGACY_MODE, mode);
-+
-+	return (err < 0);
-+}
-+
- static int spd5118_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-@@ -580,6 +596,11 @@ static int spd5118_probe(struct i2c_client *client)
- 	if (!data)
- 		return -ENOMEM;
- 
-+	if (spd5118_write_protected(client)) {
-+		data->write_protected = true;
-+		spd5118_regmap_config.cache_type = REGCACHE_NONE;
-+	}
-+
- 	regmap = devm_regmap_init_i2c(client, &spd5118_regmap_config);
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(dev, PTR_ERR(regmap), "regmap init failed\n");
-@@ -638,6 +659,9 @@ static int spd5118_suspend(struct device *dev)
- 	u32 regval;
- 	int err;
- 
-+	if (data->write_protected)
-+		return 0;
-+
- 	/*
- 	 * Make sure the configuration register in the regmap cache is current
- 	 * before bypassing it.
-@@ -662,6 +686,9 @@ static int spd5118_resume(struct device *dev)
- 	struct spd5118_data *data = dev_get_drvdata(dev);
- 	struct regmap *regmap = data->regmap;
- 
-+	if (data->write_protected)
-+		return 0;
-+
- 	regcache_cache_only(regmap, false);
- 	return regcache_sync(regmap);
- }
-
--- 
-2.43.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
