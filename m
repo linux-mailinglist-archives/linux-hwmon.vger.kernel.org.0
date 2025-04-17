@@ -1,225 +1,218 @@
-Return-Path: <linux-hwmon+bounces-7777-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7780-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E960A9223D
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Apr 2025 18:08:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB948A9246A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Apr 2025 19:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8951896CC1
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Apr 2025 16:08:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506521B60811
+	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Apr 2025 17:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8E9253F37;
-	Thu, 17 Apr 2025 16:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647F7256C77;
+	Thu, 17 Apr 2025 17:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mattcorallo.com header.i=@mattcorallo.com header.b="FtGPHr+x";
-	dkim=pass (2048-bit key) header.d=clients.mail.as397444.net header.i=@clients.mail.as397444.net header.b="BjtBcSPu"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="varjrbVA"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.as397444.net (mail.as397444.net [69.59.18.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D2D347B4
-	for <linux-hwmon@vger.kernel.org>; Thu, 17 Apr 2025 16:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.59.18.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383342561B3;
+	Thu, 17 Apr 2025 17:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744906087; cv=none; b=MMIIMmraSk/ZlLyacw97u90mumjb5dFt0kt6GgIRnN1rE4QUVuHuHhCOn/Zf+x7u8KjyYbU3W+l18bErJxPZQt2XpQKMcX8V4cWaqBPjhu1qWbZbS9i1H3CZOiw9Ffgc4XR912eeDQqCxd2dAO5ScPBaWU76BGLjzYvqzGELnEk=
+	t=1744912411; cv=none; b=EDwyPFPFlv8JbiIAXeioNSJomVBJW4mg7Bd4vOrqZvGxWBxx3fWIW+L1p42xVxQX6ZhF2ft50y8Qyyypwwyzmr7oafIWJCgcnxHLJsyD62Kz0hFH5uUhhRnI/uClJvGWnX0q8bQWi/WyNOXoaCdk12uzSKLVmAwbuAurFtQgNkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744906087; c=relaxed/simple;
-	bh=igBp5/yWJwdMAngHPFz552QBEPTUOiIRz5mJ3Q8RbZQ=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=bIlytcgzv8a0lbz0EBwV7R8zo9tULKnS1a8UefHDK61rRHbHRF7ohlTplyHs/R4yWZBuWIGFuYdNSBFW5mkLKjDNN0Tp3MlBh1W2EWI7IzU3rZ5mOYE1xEPYu/8PPZWRFcmhA6o9MiPkyZA+149hYcjS9caPLoiWNgw8QF5omEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mattcorallo.com; spf=pass smtp.mailfrom=mattcorallo.com; dkim=pass (2048-bit key) header.d=mattcorallo.com header.i=@mattcorallo.com header.b=FtGPHr+x; dkim=pass (2048-bit key) header.d=clients.mail.as397444.net header.i=@clients.mail.as397444.net header.b=BjtBcSPu; arc=none smtp.client-ip=69.59.18.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mattcorallo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mattcorallo.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=mattcorallo.com; s=1744904462; h=Subject:From:To:From:Subject:To:Cc:Cc:
-	Reply-To:In-Reply-To:References;
-	bh=hfk7qVQrs5+0gtfIJBulsYL5ggYTJQy11droRlyS2Ig=; b=FtGPHr+xT2PwSk7l1AVXn3rhrx
-	LV5Gw8S5Uy1BfQXN9M1OaKkQ9kZnfLXEvfDIk+GLosPWUh3BvxucdINg9Ifkx4vYmuKFH4Ow3GNSa
-	xtcGgdd+220KwUe0ArKRyvp+dQ9pBmr8s/VtWaSn09C70BkXheflXUkij9/CqkMrRkxf4ixeJ2K24
-	yovoX8YNm/v3IhaxYILs6js2asOmeB3j8j3St0m8rnQSaqDq25lYFe1Rk5zr4v0b9fXVqGfp2IIts
-	BsvF18LHjIgsjLSLqsP43iTc+h5cCDVvR5io5BMRAM1/K+Z3gvPYs+nUx+929VDwZQmHh6DxSA42v
-	KoNjhlDA==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=clients.mail.as397444.net; s=1744904464; h=Subject:From:To:From:Subject:To:
-	Cc:Cc:Reply-To:In-Reply-To:References;
-	bh=hfk7qVQrs5+0gtfIJBulsYL5ggYTJQy11droRlyS2Ig=; b=BjtBcSPufrzJyoyYcfr5gyyF52
-	E9/9GW6XdU/3T3NTIAVtxIBLE3TANrrdBYn466uW89dPIKclYkGeNzbepODZbWHkU69bDoDYPHNGl
-	6lAIhsChNTKX7vDiMSmXm1egwUA5h8GkEKRcstr5zqSWN7aQ86dXe7KQASIC7YCSGscNIcfwyfnOf
-	Qn0pX8P60O2xokeDi/K0D2QurpxRIOiAchuK1ati0Ug7+uUqATYtOAmchbCtaJJV83le5RI3lPIgj
-	U97+TbkFg8Jpy11Qn4OxYCaoMCmhRQYWG7klrf/p2e+/y6iqulhPg3BywqsjY1XgrXjRJrd0jruV/
-	hYHGhEXQ==;
-X-DKIM-Note: Keys used to sign are likely public at
-X-DKIM-Note: https://as397444.net/dkim/mattcorallo.com and
-X-DKIM-Note: https://as397444.net/dkim/clients.mail.as397444.net
-X-DKIM-Note: For more info, see https://as397444.net/dkim/
-Received: by mail.as397444.net with esmtpsa (TLS1.3) (Exim)
-	(envelope-from <yalbrymrb@mattcorallo.com>)
-	id 1u5RKe-009KSR-0b for linux-hwmon@vger.kernel.org;
-	Thu, 17 Apr 2025 15:39:16 +0000
-Message-ID: <985cd95f-155b-4b8a-9fe7-59938d0c2b8f@mattcorallo.com>
-Date: Thu, 17 Apr 2025 11:39:14 -0400
+	s=arc-20240116; t=1744912411; c=relaxed/simple;
+	bh=pCVqQAYpCVhJ9wCywF07NW7d/d4nUha3lxeyYF/oaJU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JvW2md9ajrh3foHcJigBB0Xe8uKnZY9Qll5zt9sG+88q/oKJ9FBNlIbNtg0MynAThMYAwmeYbcsOdKz1+4sHwk+SmlzZ1Vz+wv3I6/8KADX0c7fZy+9kFxRz757K9ZkS8403gnqCLTKxstsoGB9AW3Ph7Yvikef9AEKlNrp/T0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=varjrbVA; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from localhost.localdomain (unknown [IPv6:2a05:f6c2:511b:0:cbc0:999f:73ad:33bd])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 2767D2E081B2;
+	Thu, 17 Apr 2025 20:53:16 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1744912398;
+	bh=ou5+D4xBER3uZ7V2MSrInn3i2yL3RLmePJoaKMwXTN4=; h=From:To:Subject;
+	b=varjrbVAnnB0SNmVqGevnTzm845+fmYf68Q8KafLS2QZTYTeA/vvmVvwihLLgtsTP
+	 3RndL1yNtxK0vXWJ1XWzQrnny+K3MhO3QurAzj94g3oGyUhF/a/hsmS6KELSkAEAwE
+	 CGuqrQMbWyj2t+qV/NzfFPEPOwLPG4op/7Xo+RBY=
+Authentication-Results: linux1587.grserver.gr;
+	spf=pass (sender IP is 2a05:f6c2:511b:0:cbc0:999f:73ad:33bd) smtp.mailfrom=lkml@antheas.dev smtp.helo=localhost.localdomain
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+From: Antheas Kapenekakis <lkml@antheas.dev>
+To: platform-driver-x86@vger.kernel.org
+Cc: linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jean Delvare <jdelvare@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joaquin Ignacio Aramendia <samsagax@gmail.com>,
+	Derek J Clark <derekjohn.clark@gmail.com>,
+	Kevin Greenberg <kdgreenberg234@protonmail.com>,
+	Joshua Tam <csinaction@pm.me>,
+	Parth Menon <parthasarathymenon@gmail.com>,
+	Eileen <eileen@one-netbook.com>,
+	linux-kernel@vger.kernel.org,
+	sre@kernel.org,
+	linux@weissschuh.net,
+	ilpo.jarvinen@linux.intel.com,
+	hdegoede@redhat.com,
+	mario.limonciello@amd.com,
+	Antheas Kapenekakis <lkml@antheas.dev>
+Subject: [PATCH v9 00/15] hwmon: (oxpsensors) Add devices, features,
+ fix ABI and move to platform/x86
+Date: Thu, 17 Apr 2025 19:52:55 +0200
+Message-ID: <20250417175310.3552671-1-lkml@antheas.dev>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: linux-hwmon@vger.kernel.org
-From: Matt Corallo <yalbrymrb@mattcorallo.com>
-Subject: PMBus memory overflow
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <174491239800.24547.816808875078412525@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
-When adding the PMBus entry for a FSP520-20RAB (actually FSP Twins Pro but it appears to be 
-identical hardware with a provided SMBus -> USB adapter and it self-reports as an FSP520-20RAB when 
-queried over PMBus using the old pmbus_peek.c script) with `echo pmbus 0x59 > 
-/sys/bus/i2c/devices/i2c-3/new_device` I got the following BUG_ON (on Proxmox's 6.8.12-8-pve 
-kernel). Its redundant and reports back fine on 0x60 and 0x59 for both of its modules (using 
-pmbus_peek.c) and I'd already added 0x60 and it BUG'd adding the second module at 0x59.
+This four part series updates the oxpsensors module to bring it in line
+with its Windows OneXPlayer counterpart. First, it adds support for all
+2024, 2025 OneXPlayer handhelds and their special variants. Then, it moves
+the module to platform/x86 to allow for including more EC features.
 
-Apr 17 15:31:19 rackchill-refresh kernel: detected buffer overflow in memcpy
-Apr 17 15:31:19 rackchill-refresh kernel: ------------[ cut here ]------------
-Apr 17 15:31:19 rackchill-refresh kernel: kernel BUG at lib/string_helpers.c:1048!
-Apr 17 15:31:19 rackchill-refresh kernel: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-Apr 17 15:31:19 rackchill-refresh kernel: CPU: 18 PID: 387839 Comm: bash Tainted: P           O 
-  6.8.12-8-pve #1
-Apr 17 15:31:19 rackchill-refresh kernel: Hardware name: Supermicro Super Server/X13SAE-F, BIOS 4.1 
-10/01/2024
-Apr 17 15:31:19 rackchill-refresh kernel: RIP: 0010:fortify_panic+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel: Code: cc 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 
-90 90 90 90 90 90 55 48 89 fe 48 c7 c7 b0 4e bf 90 48 89 e5 e8 4d f6 9a ff <0f> 0b 66 66 2e 0f 1f 84 
-00 00 00 00 00 90 90 90 90 90 90 90 90 90
-Apr 17 15:31:19 rackchill-refresh kernel: RSP: 0018:ffffab56ae19f708 EFLAGS: 00010246
-Apr 17 15:31:19 rackchill-refresh kernel: RAX: 0000000000000022 RBX: ffffab56ae19f766 RCX: 
-0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: RDX: 0000000000000000 RSI: 0000000000000000 RDI: 
-0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: RBP: ffffab56ae19f708 R08: 0000000000000000 R09: 
-0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: R10: 0000000000000000 R11: 0000000000000000 R12: 
-ffff8a76f8c98428
-Apr 17 15:31:19 rackchill-refresh kernel: R13: ffff8a7481989400 R14: 000000000000009b R15: 
-ffff8a8f6fe1a428
-Apr 17 15:31:19 rackchill-refresh kernel: FS:  00007f3e871a1740(0000) GS:ffff8a937fd00000(0000) 
-knlGS:0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-Apr 17 15:31:19 rackchill-refresh kernel: CR2: 00007ff6328e0000 CR3: 00000011f6ba0002 CR4: 
-0000000000f72ef0
-Apr 17 15:31:19 rackchill-refresh kernel: PKRU: 55555554
-Apr 17 15:31:19 rackchill-refresh kernel: Call Trace:
-Apr 17 15:31:19 rackchill-refresh kernel:  <TASK>
-Apr 17 15:31:19 rackchill-refresh kernel:  ? show_regs+0x6d/0x80
-Apr 17 15:31:19 rackchill-refresh kernel:  ? die+0x37/0xa0
-Apr 17 15:31:19 rackchill-refresh kernel:  ? do_trap+0xd4/0xf0
-Apr 17 15:31:19 rackchill-refresh kernel:  ? do_error_trap+0x71/0xb0
-Apr 17 15:31:19 rackchill-refresh kernel:  ? fortify_panic+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel:  ? exc_invalid_op+0x52/0x80
-Apr 17 15:31:19 rackchill-refresh kernel:  ? fortify_panic+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel:  ? asm_exc_invalid_op+0x1b/0x20
-Apr 17 15:31:19 rackchill-refresh kernel:  ? fortify_panic+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel:  ? fortify_panic+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel:  i2c_smbus_read_block_data+0x116/0x120
-Apr 17 15:31:19 rackchill-refresh kernel:  pmbus_check_block_register.constprop.0+0x77/0x100 
-[pmbus_core]
-Apr 17 15:31:19 rackchill-refresh kernel:  pmbus_do_probe+0x11a5/0x1e00 [pmbus_core]
-Apr 17 15:31:19 rackchill-refresh kernel:  ? __kmalloc_node_track_caller+0x1c9/0x430
-Apr 17 15:31:19 rackchill-refresh kernel:  ? devres_add+0x6f/0xf0
-Apr 17 15:31:19 rackchill-refresh kernel:  pmbus_probe+0x74/0xb0 [pmbus]
-Apr 17 15:31:19 rackchill-refresh kernel:  i2c_device_probe+0x13b/0x300
-Apr 17 15:31:19 rackchill-refresh kernel:  really_probe+0x1c9/0x430
-Apr 17 15:31:19 rackchill-refresh kernel:  __driver_probe_device+0x8c/0x190
-Apr 17 15:31:19 rackchill-refresh kernel:  driver_probe_device+0x24/0xd0
-Apr 17 15:31:19 rackchill-refresh kernel:  __device_attach_driver+0xcd/0x170
-Apr 17 15:31:19 rackchill-refresh kernel:  ? __pfx___device_attach_driver+0x10/0x10
-Apr 17 15:31:19 rackchill-refresh kernel:  bus_for_each_drv+0x94/0xf0
-Apr 17 15:31:19 rackchill-refresh kernel:  __device_attach+0xb6/0x1d0
-Apr 17 15:31:19 rackchill-refresh kernel:  device_initial_probe+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel:  bus_probe_device+0x9f/0xb0
-Apr 17 15:31:19 rackchill-refresh kernel:  device_add+0x6d7/0x8f0
-Apr 17 15:31:19 rackchill-refresh kernel:  ? hrtimer_init+0x27/0x90
-Apr 17 15:31:19 rackchill-refresh kernel:  device_register+0x1a/0x30
-Apr 17 15:31:19 rackchill-refresh kernel:  i2c_new_client_device+0x1fb/0x3f0
-Apr 17 15:31:19 rackchill-refresh kernel:  new_device_store+0x113/0x290
-Apr 17 15:31:19 rackchill-refresh kernel:  dev_attr_store+0x14/0x40
-Apr 17 15:31:19 rackchill-refresh kernel:  sysfs_kf_write+0x3b/0x60
-Apr 17 15:31:19 rackchill-refresh kernel:  kernfs_fop_write_iter+0x130/0x210
-Apr 17 15:31:19 rackchill-refresh kernel:  vfs_write+0x2a5/0x480
-Apr 17 15:31:19 rackchill-refresh kernel:  ksys_write+0x73/0x100
-Apr 17 15:31:19 rackchill-refresh kernel:  __x64_sys_write+0x19/0x30
-Apr 17 15:31:19 rackchill-refresh kernel:  x64_sys_call+0x200f/0x2480
-Apr 17 15:31:19 rackchill-refresh kernel:  do_syscall_64+0x81/0x170
-Apr 17 15:31:19 rackchill-refresh kernel:  ? __handle_mm_fault+0xba9/0xf70
-Apr 17 15:31:19 rackchill-refresh kernel:  ? __count_memcg_events+0x6f/0xe0
-Apr 17 15:31:19 rackchill-refresh kernel:  ? count_memcg_events.constprop.0+0x2a/0x50
-Apr 17 15:31:19 rackchill-refresh kernel:  ? handle_mm_fault+0xad/0x380
-Apr 17 15:31:19 rackchill-refresh kernel:  ? do_user_addr_fault+0x33e/0x660
-Apr 17 15:31:19 rackchill-refresh kernel:  ? irqentry_exit_to_user_mode+0x7b/0x260
-Apr 17 15:31:19 rackchill-refresh kernel:  ? irqentry_exit+0x43/0x50
-Apr 17 15:31:19 rackchill-refresh kernel:  ? exc_page_fault+0x94/0x1b0
-Apr 17 15:31:19 rackchill-refresh kernel:  entry_SYSCALL_64_after_hwframe+0x78/0x80
-Apr 17 15:31:19 rackchill-refresh kernel: RIP: 0033:0x7f3e8729c300
-Apr 17 15:31:19 rackchill-refresh kernel: Code: 40 00 48 8b 15 01 9b 0d 00 f7 d8 64 89 02 48 c7 c0 
-ff ff ff ff eb b7 0f 1f 00 80 3d e1 22 0e 00 00 74 17 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 
-c3 0f 1f 80 00 00 00 00 48 83 ec 28 48 89
-Apr 17 15:31:19 rackchill-refresh kernel: RSP: 002b:00007ffcd6171828 EFLAGS: 00000202 ORIG_RAX: 
-0000000000000001
-Apr 17 15:31:19 rackchill-refresh kernel: RAX: ffffffffffffffda RBX: 000000000000000b RCX: 
-00007f3e8729c300
-Apr 17 15:31:19 rackchill-refresh kernel: RDX: 000000000000000b RSI: 00005a5e6f9bb6f0 RDI: 
-0000000000000001
-Apr 17 15:31:19 rackchill-refresh kernel: RBP: 00005a5e6f9bb6f0 R08: 0000000000000007 R09: 
-0000000000000073
-Apr 17 15:31:19 rackchill-refresh kernel: R10: 0000000000000000 R11: 0000000000000202 R12: 
-000000000000000b
-Apr 17 15:31:19 rackchill-refresh kernel: R13: 00007f3e87377760 R14: 000000000000000b R15: 
-00007f3e873729e0
-Apr 17 15:31:19 rackchill-refresh kernel:  </TASK>
-Apr 17 15:31:19 rackchill-refresh kernel: Modules linked in: pmbus pmbus_core tcp_diag inet_diag 
-ebt_arp xt_mac veth rbd ceph libceph cmac nls_utf8 cifs cifs_arc4 nls_ucs2_utils rdma_cm iw_cm ib_cm 
-cifs_md4 netfs ebtable_filter ebtables ip6table_raw ip6t_REJECT nf_reject_ipv6 ip6table_filter 
-ip6_tables iptable_raw ipt_REJECT nf_reject_ipv4 xt_mark xt_set xt_physdev xt_addrtype xt_comment 
-xt_multiport xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_tcpudp iptable_filter 
-ip_set_hash_net ip_set sctp ip6_udp_tunnel udp_tunnel nf_tables nvme_fabrics nvme_keyring bonding 
-sunrpc softdog nfnetlink_log binfmt_misc nfnetlink intel_rapl_msr intel_rapl_common 
-intel_uncore_frequency intel_uncore_frequency_common snd_sof_pci_intel_tgl snd_sof_intel_hda_common 
-soundwire_intel snd_sof_intel_hda_mlink soundwire_cadence snd_sof_intel_hda x86_pkg_temp_thermal 
-snd_sof_pci intel_powerclamp snd_sof_xtensa_dsp snd_sof snd_sof_utils snd_soc_hdac_hda coretemp 
-snd_hda_ext_core snd_soc_acpi_intel_match snd_soc_acpi soundwire_generic_allocation soundwire_bus
-Apr 17 15:31:19 rackchill-refresh kernel:  kvm_intel snd_soc_core snd_hda_codec_realtek snd_compress 
-ac97_bus snd_hda_codec_generic snd_pcm_dmaengine snd_hda_intel kvm snd_intel_dspcfg 
-snd_intel_sdw_acpi snd_hda_codec snd_hda_core ipmi_ssif irqbypass snd_hwdep mei_hdcp mei_pxp 
-cmdlinepart snd_pcm spi_nor snd_timer rapl ast snd acpi_ipmi intel_cstate ucsi_acpi mtd wmi_bmof 
-i2c_algo_bit soundcore mei_me pcspkr intel_pmc_core typec_ucsi ipmi_si mei ipmi_devintf intel_vsec 
-typec pmt_telemetry ipmi_msghandler pmt_class acpi_pad acpi_tad joydev input_leds mac_hid zfs(PO) 
-spl(O) vhost_net vhost vhost_iotlb tap nct6775 nct6775_core hwmon_vid efi_pstore dmi_sysfs ip_tables 
-x_tables autofs4 btrfs blake2b_generic xor raid6_pq libcrc32c dm_crypt mlx5_ib ib_uverbs macsec 
-ib_core rndis_host cdc_ether usbnet mii usbmouse hid_cp2112 hid_generic usbhid hid crct10dif_pclmul 
-mlx5_core crc32_pclmul polyval_clmulni nvme xhci_pci polyval_generic ghash_clmulni_intel 
-xhci_pci_renesas sha256_ssse3 sha1_ssse3 e1000e intel_lpss_pci mlxfw nvme_core i2c_i801 ahci igc psample
-Apr 17 15:31:19 rackchill-refresh kernel:  intel_lpss spi_intel_pci xhci_hcd spi_intel i2c_smbus tls 
-idma64 nvme_auth libahci pci_hyperv_intf video pinctrl_alderlake wmi aesni_intel crypto_simd cryptd
-Apr 17 15:31:19 rackchill-refresh kernel: ---[ end trace 0000000000000000 ]---
-Apr 17 15:31:19 rackchill-refresh kernel: RIP: 0010:fortify_panic+0x13/0x20
-Apr 17 15:31:19 rackchill-refresh kernel: Code: cc 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 
-90 90 90 90 90 90 55 48 89 fe 48 c7 c7 b0 4e bf 90 48 89 e5 e8 4d f6 9a ff <0f> 0b 66 66 2e 0f 1f 84 
-00 00 00 00 00 90 90 90 90 90 90 90 90 90
-Apr 17 15:31:19 rackchill-refresh kernel: RSP: 0018:ffffab56ae19f708 EFLAGS: 00010246
-Apr 17 15:31:19 rackchill-refresh kernel: RAX: 0000000000000022 RBX: ffffab56ae19f766 RCX: 
-0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: RDX: 0000000000000000 RSI: 0000000000000000 RDI: 
-0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: RBP: ffffab56ae19f708 R08: 0000000000000000 R09: 
-0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: R10: 0000000000000000 R11: 0000000000000000 R12: 
-ffff8a76f8c98428
-Apr 17 15:31:19 rackchill-refresh kernel: R13: ffff8a7481989400 R14: 000000000000009b R15: 
-ffff8a8f6fe1a428
-Apr 17 15:31:19 rackchill-refresh kernel: FS:  00007f3e871a1740(0000) GS:ffff8a937fd00000(0000) 
-knlGS:0000000000000000
-Apr 17 15:31:19 rackchill-refresh kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-Apr 17 15:31:19 rackchill-refresh kernel: CR2: 00007ff6328e0000 CR3: 00000011f6ba0002 CR4: 
-0000000000f72ef0
-Apr 17 15:31:19 rackchill-refresh kernel: PKRU: 55555554
+Then, it adds the new charge limiting and bypass features that were first
+introduced in the X1 and retrofit to older OneXFly variants and for
+controlling the turbo led found in the X1 models. For Bypass, it adds a new
+charge_behaviour variant called inhibit-charge-s0.
+
+Finally, it performs a minor refactor by moving around switch statements
+into their own functions, in order to allow for fixing the pwm1_enable ABI
+in the final patch. Currently, pwm1_enable sets the fan to auto with the
+value 0 and allows manual control with the value 1. This patch makes it
+so 0 sets the fan to full speed, 1 sets the fan to manual control, and
+2 sets the fan to auto. This requires both setting enable and the fan
+speed when the enable sysfs is written to as 0, hence the refactor.
+
+As this is a minor ABI break and there is userspace software relying
+on this previous behavior, the last patch also changes the /name of the
+hwmon endpoint to "oxp_ec" from "oxpec" (mirroring WMI module conventions)
+such that userspace software that relied on the previous behavior can be
+retrofit to the new kernel while enabling correct functionality on old
+and new kernels. Failing that, software that is not updated will just
+stop controlling the fans, ensuring no malignant behavior.
+
+---
+V8: https://lore.kernel.org/all/20250322103606.680401-1-lkml@antheas.dev/
+V7: https://lore.kernel.org/all/20250319181044.392235-1-lkml@antheas.dev/
+V6: NA
+V5: https://lore.kernel.org/all/20250317155349.1236188-1-lkml@antheas.dev/
+V4: https://lore.kernel.org/all/20250311165406.331046-1-lkml@antheas.dev/
+V3: https://lore.kernel.org/all/20250309112114.1177361-1-lkml@antheas.dev/
+
+Changes since V8:
+    - Fix nits by Ilpo
+    - No functionality changes (battery check was a NOOP)
+
+Changes since V7:
+    - Add rename to ABI switch patch, for rebase friendliness (this is
+      moreso for my sanity as I will be the one rebasing)
+    - Fix 2 other nits by Thomas
+
+Changes since V6:
+    - Fix compile error due to extra const. My bad on that one, did a
+      double check on a device too.
+
+Changes since V5:
+    - Separate doc entries with Fixes as by Mario
+    - Add sysfs file name to subject as per Thomas
+    - Make tt_led and tt_turbo const as per Thomas
+    - Align a couple of structs as per Thomas
+    - Remove excess battery check as per Thomas
+    - For Thomas: devices without a BIOS update battery control is a NOOP
+      OXP is a boutique manufacturer for now, so gathering information
+      about old devices to add BIOS checks is not practical unfortunately
+
+Changes since V4:
+    - Fix nits by Hans
+    - change inhibit-charge-s0 to inhibit-charge-awake
+    - use devm_battery_hook_register and power_supply_unregister_extension
+      (based on cros driver)
+    - move charge behavior patches to the end to make the rest of the series
+      easier to merge
+    - CC platform-x86 and power maintainers
+
+Changes since V3:
+    - Fix nits by Derek
+    - Remove the hwmon documentation as it is not required for platform
+      drivers (suggested by Guenter)
+    - Add ACPI_BATTERY and HWMON depends to Kconfig
+      (reported by kernel robot)
+    - Homogenize driver into following reverse xmas convention
+
+Changes since V2:
+    - Add ack by Guenter, move platform move patch to be third (not first
+      to allow for device support backport to lts kernels)
+    - Rework patch text, especially in the refactor patches as per Derek
+    - Change bypass to use charge_behaviour instead of charge_type, as that
+      ABI supports capability detection and is more appropriate
+    - Move battery attach to probe instead of init
+    - Fix bug where reading tt_led would instead use the turbo register
+
+Changes since V1:
+    - Add X1 Pro, F1 Pro variants
+    - Fix minor typo in initial patches
+    - Convert oxp-sensors into a platform driver, as it is no longer
+      considered a hwmon driver.
+    - Add sysfs documentation and myself to the MAINTAINERS file
+    - Update documentation to state that this is the OneXPlayer/AOKZOE
+      platform driver, and that support for Ayaneo/OPI is provided until
+      they gain their own platform driver.
+
+Antheas Kapenekakis (15):
+  hwmon: (oxp-sensors) Distinguish the X1 variants
+  hwmon: (oxp-sensors) Add all OneXFly variants
+  platform/x86: oxpec: Move hwmon/oxp-sensors to platform/x86
+  ABI: testing: sysfs-class-oxp: add missing documentation
+  ABI: testing: sysfs-class-oxp: add tt_led attribute documentation
+  platform/x86: oxpec: Rename ec group to tt_toggle
+  platform/x86: oxpec: Add turbo led support to X1 devices
+  platform/x86: oxpec: Move pwm_enable read to its own function
+  platform/x86: oxpec: Move pwm value read/write to separate functions
+  platform/x86: oxpec: Move fan speed read to separate function
+  platform/x86: oxpec: Adhere to sysfs-class-hwmon and enable pwm on 2
+  platform/x86: oxpec: Follow reverse xmas convention for tt_toggle
+  power: supply: add inhibit-charge-awake to charge_behaviour
+  platform/x86: oxpec: Add charge threshold and behaviour to OneXPlayer
+  platform/x86: oxpec: Rename rval to ret in tt_toggle
+
+ Documentation/ABI/testing/sysfs-class-power   |  11 +-
+ Documentation/ABI/testing/sysfs-platform-oxp  |  25 +
+ Documentation/hwmon/index.rst                 |   2 +-
+ Documentation/hwmon/oxp-sensors.rst           |  89 ---
+ MAINTAINERS                                   |   7 +-
+ drivers/hwmon/Kconfig                         |  11 -
+ drivers/hwmon/Makefile                        |   1 -
+ drivers/platform/x86/Kconfig                  |  13 +
+ drivers/platform/x86/Makefile                 |   3 +
+ .../oxp-sensors.c => platform/x86/oxpec.c}    | 636 ++++++++++++++----
+ drivers/power/supply/power_supply_sysfs.c     |   7 +-
+ drivers/power/supply/test_power.c             |   1 +
+ include/linux/power_supply.h                  |   1 +
+ 13 files changed, 547 insertions(+), 260 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-platform-oxp
+ delete mode 100644 Documentation/hwmon/oxp-sensors.rst
+ rename drivers/{hwmon/oxp-sensors.c => platform/x86/oxpec.c} (52%)
+
+
+base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
+-- 
+2.49.0
+
 
