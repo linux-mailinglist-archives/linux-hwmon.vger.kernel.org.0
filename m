@@ -1,108 +1,227 @@
-Return-Path: <linux-hwmon+bounces-7826-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7841-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF3FA955D9
-	for <lists+linux-hwmon@lfdr.de>; Mon, 21 Apr 2025 20:25:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8670DA96155
+	for <lists+linux-hwmon@lfdr.de>; Tue, 22 Apr 2025 10:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E3A16F2A7
-	for <lists+linux-hwmon@lfdr.de>; Mon, 21 Apr 2025 18:25:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6CD23BBF8A
+	for <lists+linux-hwmon@lfdr.de>; Tue, 22 Apr 2025 08:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CB61E5729;
-	Mon, 21 Apr 2025 18:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DE925E44E;
+	Tue, 22 Apr 2025 08:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePpSrZlo"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="coQSwlhZ"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119191E1041;
-	Mon, 21 Apr 2025 18:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4AD259C82;
+	Tue, 22 Apr 2025 08:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745259920; cv=none; b=g5Wmqgxea7n5vB1A1Hq5MMgK8J6zK8x8bQwzQOK272/0CP+HlCGr2vh7joiGTKhxu+IgHKHZY9Xo2c16VgFP1TYQhSwbiiEeaRnNda9Heh5SObGTvGC/m1n8qJPQIp035TSX+I+YP4wJIvjzYEKV6wxCZDsfO2Z9QtG+WhoqUYA=
+	t=1745310234; cv=none; b=T5afs59J7o9FiZoBQ39f2m6DuEdt7TR0oQ8jKsBU9Ta1gzNdOjQxPKxGVJGQxrQ7Qi4OBOfDiCPIR6jYyfr2Ub16axgA+WMrWI44Rhnvrg4aXrisBAb/Z+Z0rmDAePlK9wrmZHVpraDeEjFAsE7cBzMz522lZexiKZiJ06MbReY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745259920; c=relaxed/simple;
-	bh=twNH0S4pyQylEiqFPX1s507CySCI37q2nkD137RMcic=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mflGgdmyvqJVavFhQwh3I9rpermlHW6TdpHMO1wCRVqd5DGxOyOWm5F9UfYs21GsvoVwFWgi+fgHI6GnqM03w2ptKZpR6BHgp7E8xVHFGtJxDsfp/5EiEO6iA7TNLcUCQwhyrzMKt5FqYD5i3BfeOf/IVw/dGrsscgcG9S7JE3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ePpSrZlo; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2255003f4c6so47913435ad.0;
-        Mon, 21 Apr 2025 11:25:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745259918; x=1745864718; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kZ7lhE0zceQBiDbb/+v2JkUT6Jl1uZ4guW4PrMbfZ9Q=;
-        b=ePpSrZloEQAHYu75wJpbjTY9ArrC3Ch4gNk09kntusYiNdYue/SseP4zwCSYmqBVVj
-         BD37DsiiaG15b4fYnBFIw3erWy6Wj95AM67YBEBCYmFkvL7l0r8chmun4fIvdf45nF8/
-         iD0lWiHqEMSgWhvJvGkHFctSklrbYxI6Trj489qwPyxb259kK9p6WSL1l4y3hx6nNI5V
-         pa4ZAMHlSBv1WoQBw2Gfy4TBXWE/LdG5ZM6ceh4AlIz5xbDOpYIDaIPztBfpkuVRHDJQ
-         b2CtxeFZRP78jtOfFsTMCZmZlSYDK7x2xNM5TRb9rLgKiHdbz+HdGre0uKXFhAX1xoqq
-         G//A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745259918; x=1745864718;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kZ7lhE0zceQBiDbb/+v2JkUT6Jl1uZ4guW4PrMbfZ9Q=;
-        b=HO9c7CLmBz0HIIrSK3lss3hvA2Du8TNs5OElnySb5unIyc6Gy63k8oFHOn5rR2axR3
-         Ufjc1zj+vUJ6aQPfehoN7xk581OfE0sjdWbkdqiGzF/CguWDLK0livKJjUJJEc95tcjf
-         ipEtvaoUYDdVBbKN44BK1LuglcHQ4v/6CcPPBdoHn6xluwnUsl3JoP0QyjwDMxKdmqAi
-         DV+Fzf/wpFdWEd+kpVW1KZjnk+18yrnZIthCOWyuk/M9tLAjC5scqd2Gvh08fxu1erBy
-         iTcGrBscEtLAqcwi00d6hy6hzbofQtraId523H8NrsueTdVQ4wZ2P3c/Dc6BRmyAlswF
-         BzHA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3mWPBcyJA5b7f8fXmIaxqud9rGibj1BYxi+YSnWpQlMmdAOBiJp6nWEbjoyVGBracMbozHvsdozACs5o6@vger.kernel.org, AJvYcCUAp67ZIZRRRtp3HaqUM/+R85FTY3sMDlnNWXd6NpJy+mXincJS2zXkrmhoyP1OaQ+VZ0o7ltQzp8REyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMYkK3ulVGkCQTD86oR3PfY4HkZITGd9dHtxPD43YnTjV8CZqX
-	10X9bhV6taDmdRcUlBrFmQsRrx/sbTo0nqfcPT1+91esRmWcY1ie
-X-Gm-Gg: ASbGncvoWvQRCSekFr7c+0mvGTfAR6/rQfBn9rowps9kKa8ssBS3mHJXwrcq9YXxKuG
-	vGrJxLZLuL6z3H1czyJFkspHWYgugG8MVD/XNV1dACa8s/WCA2OyDUUhaxOKctuIdFHbE64vGjL
-	3YaHx/lp0PvjCS5fAKsfgE+8f2oZLdfNNk+v/TOzvE7XRKr4twB27Di6I+NlXNKmAQ4yK5X7uTr
-	OOmEvd8FRyMHavuJrR7MBq4/buR/1k2umz19/kkWZ+6Ohd+3kl1MdB1ZmeFBiK/9N+ZagW9raVc
-	YfkE9DMRb94++y7qrqIo/e9ZhvJ1yWExNosW0WVdbwYMmm6nrZDT6w==
-X-Google-Smtp-Source: AGHT+IE99OTnC4BIIEAJtKyh6nGdbIRkB2pMTx7d+sQADO9twzgO0gDZ1AcUaQ2/0ukYHywL0m1DUw==
-X-Received: by 2002:a17:902:d491:b0:221:78a1:27fb with SMTP id d9443c01a7336-22c5356dc2fmr171408555ad.11.1745259918289;
-        Mon, 21 Apr 2025 11:25:18 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50fe20b0sm68859305ad.243.2025.04.21.11.25.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Apr 2025 11:25:17 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Mon, 21 Apr 2025 11:25:16 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: pali@kernel.org, jdelvare@suse.com, linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (dell-smm) Add the Dell OptiPlex 7050 to the DMI
- whitelist
-Message-ID: <e7ea6f37-37fe-403a-8abf-23e40fa24689@roeck-us.net>
-References: <20250420223334.12920-1-W_Armin@gmx.de>
+	s=arc-20240116; t=1745310234; c=relaxed/simple;
+	bh=biMi9f3PXjemBC7ffAX7zKHa41SsFQV4v7nPJOjJMZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jsKATJkmLypSCHJCWlYf8S/6agodmVLZX7KsNru2Ui08utlF+1cL5g5uy2f+295RQegkOkWxgbIisLQU9KPOJ98p/N2UtDrzj2TCEvcuIwb81mDpFikgrW3IdUJmGugot1ac5GHk6JbvIKFXBbAJ/yQmy61Ca7e3/Gb/+LX2J3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=coQSwlhZ; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M8MG9E1954391
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Tue, 22 Apr 2025 01:22:20 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M8MG9E1954391
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1745310142;
+	bh=mYcTzU0oObhvxWiZx+iiw1dueV7yQ96m6ct2fgUgxlA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=coQSwlhZKMasXch4vb9MccuN5lPE6K+czznn/cj5lrt8w3zCTLqPI3EvxgT/JXgLR
+	 JyjiL4Jdfd1e6yDi2uLRF74KLb5HbAUDLx0QLG/V9QoskVA0B1JdssAt+3pkfAUH4L
+	 HDOXgxSKh2KwOCizLlzk8+EehNeWtMVP7zozfQ2aTEAvuLwOKDLIJKJmFyE6XndVkg
+	 iA+/X2cnKdqtk4yn7E856l7cmqtDR8XRCST0c8ZnAr47yysDHIB/AA6NA04jrNwZAr
+	 EBPETFtsShEkDGlZrttN07OBL96YEQmtzFzBPc9HAWOPDwlfAZyYRr7G/9WrED437W
+	 CowiWvGjoZBkA==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
+        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
+        wei.liu@kernel.org, ajay.kaher@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
+        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
+        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
+        haiyangz@microsoft.com, decui@microsoft.com
+Subject: [RFC PATCH v2 00/34] MSR refactor with new MSR instructions support
+Date: Tue, 22 Apr 2025 01:21:41 -0700
+Message-ID: <20250422082216.1954310-1-xin@zytor.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250420223334.12920-1-W_Armin@gmx.de>
 
-On Mon, Apr 21, 2025 at 12:33:34AM +0200, Armin Wolf wrote:
-> A user reported that the driver works on the OptiPlex 7050. Add this
-> machine to the DMI whitelist.
-> 
-> Closes: https://github.com/Wer-Wolf/i8kutils/issues/12
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> Acked-by: Pali Rohár <pali@kernel.org>
+Obviously the existing MSR code and the pv_ops MSR access APIs need some
+love: https://lore.kernel.org/lkml/87y1h81ht4.ffs@tglx/
 
-Applied.
+hpa has started a discussion about how to refactor it last October:
+https://lore.kernel.org/lkml/7a4de623-ecda-4369-a7ae-0c43ef328177@zytor.com/
 
-Thanks,
-Guenter
+The consensus so far is to utilize the alternatives mechanism to eliminate
+the Xen MSR access overhead on native systems and enable new MSR instructions
+based on their availability.
+
+To achieve this, a code refactor is required:
+
+Patch 1 relocates rdtsc{,_ordered}() from <asm/msr.h> to <asm/tsc.h> and
+removes the inclusion of <asm/msr.h> in <asm/tsc.h>.  As a result,
+<asm/msr.h> must now be explicitly included in several source files where
+it was previously included implicitly through <asm/tsc.h>.
+
+Patches 2 ~ 6 refactor the code to use the alternatives mechanism to read
+PMC.
+
+Patches 7 ~ 16 unify and simplify the MSR API definitions and usages.
+
+Patches 17 ~ 19 add basic support for immediate form MSR instructions,
+e.g., its CPU feature bit and opcode.
+
+Patch 20 adds a new exception type to allow a function call inside an
+alternative for instruction emulation to "kick back" the exception into
+the alternatives pattern, possibly invoking a different exception handling
+pattern there, or at least indicating the "real" location of the fault.
+
+patches 21 and 22 refactor the code to use the alternatives mechanism to
+read and write MSR.
+
+Patches 23 ~ 34 are afterwards cleanups.
+
+
+H. Peter Anvin (Intel) (1):
+  x86/extable: Implement EX_TYPE_FUNC_REWIND
+
+Xin Li (Intel) (33):
+  x86/msr: Move rdtsc{,_ordered}() to <asm/tsc.h>
+  x86/msr: Remove rdpmc()
+  x86/msr: Rename rdpmcl() to rdpmcq()
+  x86/msr: Convert rdpmcq() into a function
+  x86/msr: Return u64 consistently in Xen PMC read functions
+  x86/msr: Use the alternatives mechanism to read PMC
+  x86/msr: Convert __wrmsr() uses to native_wrmsr{,q}() uses
+  x86/msr: Convert a native_wrmsr() use to native_wrmsrq()
+  x86/msr: Add the native_rdmsrq() helper
+  x86/msr: Convert __rdmsr() uses to native_rdmsrq() uses
+  x86/msr: Remove calling native_{read,write}_msr{,_safe}() in
+    pmu_msr_{read,write}()
+  x86/msr: Remove pmu_msr_{read,write}()
+  x86/xen/msr: Remove the error pointer argument from set_reg()
+  x86/msr: refactor pv_cpu_ops.write_msr{_safe}()
+  x86/msr: Replace wrmsr(msr, low, 0) with wrmsrq(msr, low)
+  x86/msr: Change function type of native_read_msr_safe()
+  x86/cpufeatures: Add a CPU feature bit for MSR immediate form
+    instructions
+  x86/opcode: Add immediate form MSR instructions
+  x86/extable: Add support for immediate form MSR instructions
+  x86/msr: Utilize the alternatives mechanism to write MSR
+  x86/msr: Utilize the alternatives mechanism to read MSR
+  x86/extable: Remove new dead code in ex_handler_msr()
+  x86/mce: Use native MSR API __native_{wr,rd}msrq()
+  x86/msr: Rename native_wrmsrq() to native_wrmsrq_no_trace()
+  x86/msr: Rename native_wrmsr() to native_wrmsr_no_trace()
+  x86/msr: Rename native_write_msr() to native_wrmsrq()
+  x86/msr: Rename native_write_msr_safe() to native_wrmsrq_safe()
+  x86/msr: Rename native_rdmsrq() to native_rdmsrq_no_trace()
+  x86/msr: Rename native_rdmsr() to native_rdmsr_no_trace()
+  x86/msr: Rename native_read_msr() to native_rdmsrq()
+  x86/msr: Rename native_read_msr_safe() to native_rdmsrq_safe()
+  x86/msr: Move the ARGS macros after the MSR read/write APIs
+  x86/msr: Convert native_rdmsr_no_trace() uses to
+    native_rdmsrq_no_trace() uses
+
+ arch/x86/boot/startup/sme.c                   |   5 +-
+ arch/x86/events/amd/brs.c                     |   4 +-
+ arch/x86/events/amd/uncore.c                  |   2 +-
+ arch/x86/events/core.c                        |   2 +-
+ arch/x86/events/intel/core.c                  |   4 +-
+ arch/x86/events/intel/ds.c                    |   2 +-
+ arch/x86/events/msr.c                         |   3 +
+ arch/x86/events/perf_event.h                  |   1 +
+ arch/x86/events/probe.c                       |   2 +
+ arch/x86/hyperv/hv_apic.c                     |   6 +-
+ arch/x86/hyperv/hv_vtl.c                      |   4 +-
+ arch/x86/hyperv/ivm.c                         |   7 +-
+ arch/x86/include/asm/apic.h                   |   4 +-
+ arch/x86/include/asm/asm.h                    |   6 +
+ arch/x86/include/asm/cpufeatures.h            |   1 +
+ arch/x86/include/asm/extable_fixup_types.h    |   1 +
+ arch/x86/include/asm/fred.h                   |   3 +-
+ arch/x86/include/asm/microcode.h              |  10 +-
+ arch/x86/include/asm/mshyperv.h               |   3 +-
+ arch/x86/include/asm/msr.h                    | 637 ++++++++++++------
+ arch/x86/include/asm/paravirt.h               |  78 ---
+ arch/x86/include/asm/paravirt_types.h         |  13 -
+ arch/x86/include/asm/sev-internal.h           |   9 +-
+ arch/x86/include/asm/spec-ctrl.h              |   2 +-
+ arch/x86/include/asm/suspend_32.h             |   1 +
+ arch/x86/include/asm/suspend_64.h             |   1 +
+ arch/x86/include/asm/switch_to.h              |   4 +-
+ arch/x86/include/asm/tsc.h                    |  76 ++-
+ arch/x86/kernel/cpu/amd.c                     |   2 +-
+ arch/x86/kernel/cpu/common.c                  |  10 +-
+ arch/x86/kernel/cpu/mce/core.c                |  61 +-
+ arch/x86/kernel/cpu/microcode/amd.c           |  10 +-
+ arch/x86/kernel/cpu/microcode/core.c          |   4 +-
+ arch/x86/kernel/cpu/microcode/intel.c         |   8 +-
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c     |  25 +-
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c        |   2 +-
+ arch/x86/kernel/cpu/scattered.c               |   1 +
+ arch/x86/kernel/cpu/umwait.c                  |   4 +-
+ arch/x86/kernel/fpu/xstate.h                  |   1 +
+ arch/x86/kernel/hpet.c                        |   1 +
+ arch/x86/kernel/kvm.c                         |   2 +-
+ arch/x86/kernel/kvmclock.c                    |   2 +-
+ arch/x86/kernel/paravirt.c                    |   5 -
+ arch/x86/kernel/process_64.c                  |   1 +
+ arch/x86/kernel/trace_clock.c                 |   2 +-
+ arch/x86/kernel/tsc_sync.c                    |   1 +
+ arch/x86/kvm/svm/svm.c                        |  34 +-
+ arch/x86/kvm/vmx/vmx.c                        |  12 +-
+ arch/x86/lib/kaslr.c                          |   2 +-
+ arch/x86/lib/x86-opcode-map.txt               |   5 +-
+ arch/x86/mm/extable.c                         | 181 +++--
+ arch/x86/realmode/init.c                      |   1 +
+ arch/x86/xen/enlighten_pv.c                   | 112 ++-
+ arch/x86/xen/pmu.c                            |  63 +-
+ arch/x86/xen/xen-asm.S                        | 113 ++++
+ arch/x86/xen/xen-ops.h                        |  14 +-
+ drivers/acpi/processor_perflib.c              |   1 +
+ drivers/acpi/processor_throttling.c           |   3 +-
+ drivers/cpufreq/amd-pstate-ut.c               |   2 +
+ drivers/hwmon/hwmon-vid.c                     |   4 +
+ drivers/net/vmxnet3/vmxnet3_drv.c             |   6 +-
+ .../intel/speed_select_if/isst_if_common.c    |   1 +
+ drivers/platform/x86/intel/turbo_max_3.c      |   1 +
+ tools/arch/x86/lib/x86-opcode-map.txt         |   5 +-
+ 64 files changed, 988 insertions(+), 605 deletions(-)
+
+
+base-commit: f30a0c0d2b08b355c01392538de8fc872387cb2b
+-- 
+2.49.0
+
 
