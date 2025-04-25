@@ -1,86 +1,227 @@
-Return-Path: <linux-hwmon+bounces-7978-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-7980-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B0DA9C6DE
-	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 13:15:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B47A9C70A
+	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 13:18:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE18B9C2794
-	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 11:14:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 168BF1BC3CF2
+	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 11:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985CE242914;
-	Fri, 25 Apr 2025 11:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B122245021;
+	Fri, 25 Apr 2025 11:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzfPp44h"
+	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="tmZsm/DW"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E21183CC3;
-	Fri, 25 Apr 2025 11:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D7623C39A;
+	Fri, 25 Apr 2025 11:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745579634; cv=none; b=P/xzN8flQ+1xwYUZxOvHfnRzrQyJKWMdpWo7ALqvWoDeL+XnJExRC9Q2vgxTW/kIoz0Dth3srfQMCgcAb346ocYBVYAaZH6K/AmW67lDPrq64AKGuZiRfVpzkPxOpifDtuHYnxcLkcxq2WvcQe8ZxzWYtQ7Z9qlh4+dos7ViqyU=
+	t=1745579913; cv=none; b=W7+qedhzjfjMrTa2L16VcQB2oVXyEZs/TWHC9rD/jdEOD44hUXPWa0+CN8pg7GWhnyzeHOyuOYCvrlc0Jr1q2NYRObjy9SljbihOkl/1ZXy0PFx2kYWkIW45WYPDAf06jQFU/M4UNgsElaeF+nD2nNUOirnedCF6UMqoKcJvWmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745579634; c=relaxed/simple;
-	bh=Ezqd4VS2tdUP8uwDrS78FIFfjyaT1c46Eo4Ie3SLLAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jmXDvssfrCBJ67GUorV7XR5WaVsWEz7S/TH462lxmwgR9OaRPfiU6QhnHBfCUuMw133nsiof9McIggVcw7tp5i2rgA5YKPQwWLCr/t8l4+jrLFjf7DSs5z6ihONZlxaGD1SUrupdsZQlMtoD5JqdjuIjWISq+PIbrEaDO5TB3Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzfPp44h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF51C4CEE4;
-	Fri, 25 Apr 2025 11:13:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745579634;
-	bh=Ezqd4VS2tdUP8uwDrS78FIFfjyaT1c46Eo4Ie3SLLAw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nzfPp44hY80vim38LVUi0AJaVzHubxBfSYQh9zqjDYTgTQ+pEa7LzF82G6mkiZ0Wk
-	 gHP6U4AFnQML6cW+mEhJ5YqqMn0Ql+q158Onv6pmYnXPJyufAHAnCMj+AQ4Iz7ZihQ
-	 7HJSN9CKwHety5cLGSX4G5gxDwFP4BKNoBjPziAJDnUS4gstYvpoNjsXt+duZYlSnD
-	 QUWk2MAcn5wdWKjkbA4o+a7mkCSAcc+ZokZs6XaWQmth9mMMSKmeD6CysTl2obgbEN
-	 hSVcFqsPomfniiuL5nctH2FuCDX/zr7L7rxp8I9zhrcWMRkt9EvCnCb2uiI5oeUeS9
-	 0jkh3Aoavf8Yw==
-Date: Fri, 25 Apr 2025 13:13:49 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: a0282524688@gmail.com
-Cc: lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
-	mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-usb@vger.kernel.org, Ming Yu <tmyu0@nuvoton.com>
-Subject: Re: [PATCH v10 3/7] i2c: Add Nuvoton NCT6694 I2C support
-Message-ID: <qalofwnbulbpzl7542l7756radnx5ks7pt6wsbsblyqayxcycl@rl4ety27l27t>
-References: <20250423094058.1656204-1-tmyu0@nuvoton.com>
- <20250423094058.1656204-4-tmyu0@nuvoton.com>
+	s=arc-20240116; t=1745579913; c=relaxed/simple;
+	bh=woMhmSbd2RGStLtARhpFlSXw0HogGCcgxqjp/f0CaNs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mP+uNW4j3jqEb7MAZiIc/u3odBcS7TIAJMQNx/FpNy4VJwEFDxBIrgLP3AoFe3vzyWbE0ZG9wy56XN0Sbg6AN8VSM4Gi8/+isAo9uFSMD0zap3vJot3s/XWQwfJ2Yty3c2UrGsHfwicCihckb8MTrseOF5Ay+wDp4dWk26ALwsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=tmZsm/DW; arc=none smtp.client-ip=185.138.42.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
+Received: from localhost.localdomain (unknown [IPv6:2a02:2149:8a3b:5a00:3490:6581:3910:8337])
+	by linux1587.grserver.gr (Postfix) with ESMTPSA id 56EAB2E028F6;
+	Fri, 25 Apr 2025 14:18:24 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
+	s=default; t=1745579905;
+	bh=xkqb9DdTPLOsKuZ2Ytpn497eBzpN7zXb863QHCFPmrw=; h=From:To:Subject;
+	b=tmZsm/DWRr3VhbEE1SJlbEbDdBrZXBaiV7NoU+5g6D1rqkwPdFC6rcS0s8MV8wXob
+	 jSzP1G2QyaAjMnOupyYdu8EdDXQREJr5id4oEGpB7lcZYwEfE5YOU8/8gOrCBN9G9z
+	 L3kUJDU02k9hAqDrVfUq40KBwbrqzY0upIssrh90=
+Authentication-Results: linux1587.grserver.gr;
+	spf=pass (sender IP is 2a02:2149:8a3b:5a00:3490:6581:3910:8337) smtp.mailfrom=lkml@antheas.dev smtp.helo=localhost.localdomain
+Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
+From: Antheas Kapenekakis <lkml@antheas.dev>
+To: platform-driver-x86@vger.kernel.org
+Cc: linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jean Delvare <jdelvare@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joaquin Ignacio Aramendia <samsagax@gmail.com>,
+	Derek J Clark <derekjohn.clark@gmail.com>,
+	Kevin Greenberg <kdgreenberg234@protonmail.com>,
+	Joshua Tam <csinaction@pm.me>,
+	Parth Menon <parthasarathymenon@gmail.com>,
+	Eileen <eileen@one-netbook.com>,
+	linux-kernel@vger.kernel.org,
+	sre@kernel.org,
+	linux@weissschuh.net,
+	ilpo.jarvinen@linux.intel.com,
+	hdegoede@redhat.com,
+	mario.limonciello@amd.com,
+	Antheas Kapenekakis <lkml@antheas.dev>
+Subject: [PATCH v10 00/16] hwmon: (oxpsensors) Add devices, features,
+ fix ABI and move to platform/x86
+Date: Fri, 25 Apr 2025 13:18:05 +0200
+Message-ID: <20250425111821.88746-1-lkml@antheas.dev>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423094058.1656204-4-tmyu0@nuvoton.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <174557990523.22129.15756631395239033959@linux1587.grserver.gr>
+X-PPP-Vhost: antheas.dev
+X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
+X-Virus-Status: Clean
 
-Hi,
+This four part series updates the oxpsensors module to bring it in line
+with its Windows OneXPlayer counterpart. First, it adds support for all
+2024, 2025 OneXPlayer handhelds and their special variants. Then, it moves
+the module to platform/x86 to allow for including more EC features.
 
-On Wed, Apr 23, 2025 at 05:40:54PM +0800, a0282524688@gmail.com wrote:
-> From: Ming Yu <tmyu0@nuvoton.com>
-> 
-> This driver supports I2C adapter functionality for NCT6694 MFD
-> device based on USB interface.
-> 
-> Each I2C controller uses the default baudrate of 100kHz, which
-> can be overridden via module parameters.
-> 
-> Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
+Then, it adds the new charge limiting and bypass features that were first
+introduced in the X1 and retrofit to older OneXFly variants and for
+controlling the turbo led found in the X1 models. For Bypass, it adds a new
+charge_behaviour variant called inhibit-charge-s0.
 
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Finally, it performs a minor refactor by moving around switch statements
+into their own functions, in order to allow for fixing the pwm1_enable ABI
+in the final patch. Currently, pwm1_enable sets the fan to auto with the
+value 0 and allows manual control with the value 1. This patch makes it
+so 0 sets the fan to full speed, 1 sets the fan to manual control, and
+2 sets the fan to auto. This requires both setting enable and the fan
+speed when the enable sysfs is written to as 0, hence the refactor.
 
-Thanks,
-Andi
+As this is a minor ABI break and there is userspace software relying
+on this previous behavior, the last patch also changes the /name of the
+hwmon endpoint to "oxp_ec" from "oxpec" (mirroring WMI module conventions)
+such that userspace software that relied on the previous behavior can be
+retrofit to the new kernel while enabling correct functionality on old
+and new kernels. Failing that, software that is not updated will just
+stop controlling the fans, ensuring no malignant behavior.
+
+---
+V9: https://lore.kernel.org/all/20250417175310.3552671-1-lkml@antheas.dev/
+V8: https://lore.kernel.org/all/20250322103606.680401-1-lkml@antheas.dev/
+V7: https://lore.kernel.org/all/20250319181044.392235-1-lkml@antheas.dev/
+V6: NA
+V5: https://lore.kernel.org/all/20250317155349.1236188-1-lkml@antheas.dev/
+V4: https://lore.kernel.org/all/20250311165406.331046-1-lkml@antheas.dev/
+V3: https://lore.kernel.org/all/20250309112114.1177361-1-lkml@antheas.dev/
+
+Changes since V9:
+    - Reflow commit texts
+    - Use tabs for all defines (with extra patch)
+    - Reflow some function headers
+
+Changes since V8:
+    - Fix nits by Ilpo
+    - No functionality changes (battery check was a NOOP)
+
+Changes since V7:
+    - Add rename to ABI switch patch, for rebase friendliness (this is
+      moreso for my sanity as I will be the one rebasing)
+    - Fix 2 other nits by Thomas
+
+Changes since V6:
+    - Fix compile error due to extra const. My bad on that one, did a
+      double check on a device too.
+
+Changes since V5:
+    - Separate doc entries with Fixes as by Mario
+    - Add sysfs file name to subject as per Thomas
+    - Make tt_led and tt_turbo const as per Thomas
+    - Align a couple of structs as per Thomas
+    - Remove excess battery check as per Thomas
+    - For Thomas: devices without a BIOS update battery control is a NOOP
+      OXP is a boutique manufacturer for now, so gathering information
+      about old devices to add BIOS checks is not practical unfortunately
+
+Changes since V4:
+    - Fix nits by Hans
+    - change inhibit-charge-s0 to inhibit-charge-awake
+    - use devm_battery_hook_register and power_supply_unregister_extension
+      (based on cros driver)
+    - move charge behavior patches to the end to make the rest of the series
+      easier to merge
+    - CC platform-x86 and power maintainers
+
+Changes since V3:
+    - Fix nits by Derek
+    - Remove the hwmon documentation as it is not required for platform
+      drivers (suggested by Guenter)
+    - Add ACPI_BATTERY and HWMON depends to Kconfig
+      (reported by kernel robot)
+    - Homogenize driver into following reverse xmas convention
+
+Changes since V2:
+    - Add ack by Guenter, move platform move patch to be third (not first
+      to allow for device support backport to lts kernels)
+    - Rework patch text, especially in the refactor patches as per Derek
+    - Change bypass to use charge_behaviour instead of charge_type, as that
+      ABI supports capability detection and is more appropriate
+    - Move battery attach to probe instead of init
+    - Fix bug where reading tt_led would instead use the turbo register
+
+Changes since V1:
+    - Add X1 Pro, F1 Pro variants
+    - Fix minor typo in initial patches
+    - Convert oxp-sensors into a platform driver, as it is no longer
+      considered a hwmon driver.
+    - Add sysfs documentation and myself to the MAINTAINERS file
+    - Update documentation to state that this is the OneXPlayer/AOKZOE
+      platform driver, and that support for Ayaneo/OPI is provided until
+      they gain their own platform driver.
+
+Antheas Kapenekakis (16):
+  hwmon: (oxp-sensors) Distinguish the X1 variants
+  hwmon: (oxp-sensors) Add all OneXFly variants
+  platform/x86: oxpec: Move hwmon/oxp-sensors to platform/x86
+  ABI: testing: sysfs-class-oxp: add missing documentation
+  ABI: testing: sysfs-class-oxp: add tt_led attribute documentation
+  platform/x86: oxpec: Rename ec group to tt_toggle
+  platform/x86: oxpec: Add turbo led support to X1 devices
+  platform/x86: oxpec: Move pwm_enable read to its own function
+  platform/x86: oxpec: Move pwm value read/write to separate functions
+  platform/x86: oxpec: Move fan speed read to separate function
+  platform/x86: oxpec: Adhere to sysfs-class-hwmon and enable pwm on 2
+  platform/x86: oxpec: Follow reverse xmas convention for tt_toggle
+  power: supply: add inhibit-charge-awake to charge_behaviour
+  platform/x86: oxpec: Add charge threshold and behaviour to OneXPlayer
+  platform/x86: oxpec: Rename rval to ret in tt_toggle
+  platform/x86: oxpec: Convert defines to using tabs
+
+ Documentation/ABI/testing/sysfs-class-power  |   11 +-
+ Documentation/ABI/testing/sysfs-platform-oxp |   25 +
+ Documentation/hwmon/index.rst                |    2 +-
+ Documentation/hwmon/oxp-sensors.rst          |   89 --
+ MAINTAINERS                                  |    7 +-
+ drivers/hwmon/Kconfig                        |   11 -
+ drivers/hwmon/Makefile                       |    1 -
+ drivers/hwmon/oxp-sensors.c                  |  716 ------------
+ drivers/platform/x86/Kconfig                 |   13 +
+ drivers/platform/x86/Makefile                |    3 +
+ drivers/platform/x86/oxpec.c                 | 1055 ++++++++++++++++++
+ drivers/power/supply/power_supply_sysfs.c    |    7 +-
+ drivers/power/supply/test_power.c            |    1 +
+ include/linux/power_supply.h                 |    1 +
+ 14 files changed, 1113 insertions(+), 829 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-platform-oxp
+ delete mode 100644 Documentation/hwmon/oxp-sensors.rst
+ delete mode 100644 drivers/hwmon/oxp-sensors.c
+ create mode 100644 drivers/platform/x86/oxpec.c
+
+
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+-- 
+2.49.0
+
 
