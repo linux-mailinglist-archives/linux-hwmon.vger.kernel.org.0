@@ -1,130 +1,431 @@
-Return-Path: <linux-hwmon+bounces-8008-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8011-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6111A9D1F7
-	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 21:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8FFA9D306
+	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 22:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9042E1B83147
-	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 19:41:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB351B62163
+	for <lists+linux-hwmon@lfdr.de>; Fri, 25 Apr 2025 20:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD5222258B;
-	Fri, 25 Apr 2025 19:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC9121B1AB;
+	Fri, 25 Apr 2025 20:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="C+Rdr/oo"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="QiXAb7Q/"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx08lb.world4you.com (mx08lb.world4you.com [81.19.149.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878D1219313;
-	Fri, 25 Apr 2025 19:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F31186E20
+	for <linux-hwmon@vger.kernel.org>; Fri, 25 Apr 2025 20:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745609905; cv=none; b=RJkCCWtQbTHW5iG8Nht5ylDWcurQ3rtGeCF+deZTfjAwgGZEcGXOFYbsuCoKtiSShRINF33YKQM/PdhxEQMnwWj1gT0VAwHS9bAl5E+BCS8PoMtWSX2WVf90RjJwaOcSwSv6NeN8vbU/DAH51qsGOd8OJF0dwguotg5hP7hz0TQ=
+	t=1745613215; cv=none; b=crLIAgOX0THr5EGfl/Nwq2qyWya+vjNnOePKE+3Ql+XNOh5wA9Pyr17Q670WNJjm2R/8yPzFAmx8s4H2zs7XMYUbP5NoU7TfDBeUK0TuAmhNFsAQVYAZ+hx23NnxOXeh0Zqbz04VyrgDZOMaZ/KtsEsCn9iR4x/9hd2xHXIYJsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745609905; c=relaxed/simple;
-	bh=wjYY8hD1aR6U/hYht1xTDSyyUul+5U2cO03JezuRPjo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vEWmgvDpDPkBUf8jmpy/uw0O1MD+IPBri652szM5dLGoa947zRNV08gL4TvyxdoLCasdoLDJX98a/YVQwz2U9uL574fzbVPlcULr3DAI19rFAKhpm1YYwCsYTQevUWC4EUlq/Ux0yDjVNV9LkF7ZJnIGnN4Rg2fA6nx4UUxwur4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=C+Rdr/oo; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [IPV6:2601:646:8081:1f93:3f9b:137e:d2cb:73f7] ([IPv6:2601:646:8081:1f93:3f9b:137e:d2cb:73f7])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53PJXQqR3199422
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 25 Apr 2025 12:33:27 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53PJXQqR3199422
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745609615;
-	bh=OLByDl2k8QS7+vMeXGAQllfp+4VYlTCCje7Ox6Pfa4g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=C+Rdr/oohHcjiYl3k1s0a/jc7dixN5R0Mv5Px2j8kDdwJbPFLv4mJw8by+4Oto+F1
-	 tveW9WpgN8ttlpQLpdXcxTyaag9b/7TVjdH+TFVTrbHGQKwFJgak240662L863NwH8
-	 vgd5rhQsraf4buOHAZcbX5elWx80ZG9egeLnGj+ScCeWi6QGr1XXyAHAVnHwSmGqjn
-	 GkUO/NnNKAj8Q2mW/Ez/Vn8NVAPQB+fwhPjMvNjg1RQgr6hZA7HmxZl5MiRxUlxIY9
-	 uDj0XpVrhXq3zSB+OYJgYqNwOTX2giqyzWvO0pM/qCL4rFHYBzL4YJWj3wXsa2EaH3
-	 7hq16GNhLhdyg==
-Message-ID: <8571fd6f-4e71-4a6d-b2e8-16d9d72fa56e@zytor.com>
-Date: Fri, 25 Apr 2025 12:33:21 -0700
+	s=arc-20240116; t=1745613215; c=relaxed/simple;
+	bh=rIp3+BIaCgtzU9fsanaifjcpjmA/jkrtSJbUIy0/RQg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WFykLunGsqAz+abg9quYkKHgdv2bzr0uvHWczoq9mZFBh7qxsPGv4Qbd2o72u9Ofy7LPxc6j7V7GIliMEaoeyTNGG9D3K3QSU8AjTjTjoCLGfIv2VPi7omMcZfgjZh/rY6kY5v6d1nCEBq5dZnQYl+OlN9pFeNzZnN2DyuTeSbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=QiXAb7Q/; arc=none smtp.client-ip=81.19.149.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bj7Gy+1wol1f1ETiP/VC44jfg+MKsngoN2yVwO0cdxM=; b=QiXAb7Q/Ut3A9pzj80+RVf8Y+E
+	mptZ0GMKu1dR5fkxDTWdNvRRweFgOV0FJ65n+9065uN+GUCWFHEYccRt35mlbI23nhz075C0Q3mu4
+	JTczMV5kZoRBNKfi15hGXxSdoxcP6/7ZjdKG8V3iZqW95pnn2Jf6L1vF2MDHvgHz5bzY=;
+Received: from [188.22.4.210] (helo=hornet.engleder.at)
+	by mx08lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1u8P2D-0000000085N-2Tpm;
+	Fri, 25 Apr 2025 21:48:30 +0200
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: linux-hwmon@vger.kernel.org
+Cc: jdelvare@suse.com,
+	linux@roeck-us.net,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Gerhard Engleder <eg@keba.com>
+Subject: [PATCH] hwmon: Add KEBA fan controller support
+Date: Fri, 25 Apr 2025 21:48:23 +0200
+Message-Id: <20250425194823.54664-1-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/13] Introduce parity_odd() and refactor redundant
- parity code
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Yury Norov <yury.norov@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        jk@ozlabs.org, joel@jms.id.au, eajames@linux.ibm.com,
-        andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-        dmitry.torokhov@gmail.com, mchehab@kernel.org, awalls@md.metrocast.net,
-        hverkuil@xs4all.nl, miquel.raynal@bootlin.com, richard@nod.at,
-        vigneshr@ti.com, louis.peens@corigine.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        parthiban.veerasooran@microchip.com, arend.vanspriel@broadcom.com,
-        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, akpm@linux-foundation.org, jdelvare@suse.com,
-        linux@roeck-us.net, alexandre.belloni@bootlin.com, pgaj@cadence.com,
-        alistair@popple.id.au, linux@rasmusvillemoes.dk,
-        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-        jernej.skrabec@gmail.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsi@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-        oss-drivers@corigine.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-        brcm80211-dev-list.pdl@broadcom.com, linux-serial@vger.kernel.org,
-        bpf@vger.kernel.org, jserv@ccns.ncku.edu.tw, Frank.Li@nxp.com,
-        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
-        david.laight.linux@gmail.com, andrew.cooper3@citrix.com,
-        Yu-Chun Lin <eleanor15x@gmail.com>
-References: <20250409154356.423512-1-visitorckw@gmail.com>
- <Z_amQp3gK5Dm8Qz3@yury> <Z/a5Qh/OeLT8JBS4@visitorckw-System-Product-Name>
- <Z_a9YpE46Xf8581l@yury> <e97a83a2-dabd-4dc3-b69a-840ca17d70b5@zytor.com>
- <Z/lEkDwefWvw4ZA3@visitorckw-System-Product-Name>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <Z/lEkDwefWvw4ZA3@visitorckw-System-Product-Name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
-On 4/11/25 09:34, Kuan-Wei Chiu wrote:
->>
->> In either case, instead of packing the cascade into one function, make good
->> use of it.
->>
->> In the latter case, __builtin_constant_p() isn't necessary as it puts the
->> onus on the architecture to separate out const and non-const cases, if it
->> matters -- which it doesn't if the architecture simply wants to use
->> __builtin_parity:
->>
->> #define parity8(x)  ((bool) __builtin_parity((u8)(x)))
->> #define parity16(x) ((bool) __builtin_parity((u16)(x)))
->> #define parity32(x) ((bool) __builtin_parity((u32)(x)))
->> #define parity64(x) ((bool) __builtin_parityll((u64)(x)))
->>
->> As stated before, I don't really see that the parity function itself would
->> be very suitable for a generic helper, but if it were to, then using the
->> "standard" macro construct for it would seem to be the better option.
->>
->> (And I would be very much in favor of not open-coding the helper everywhere
->> but to macroize it; effectively creating a C++ template equivalent. It is
->> out of scope for this project, though.)
->>
-> IIUC, you prefer using the parity8/16/32/64() interface with
-> __builtin_parity(), regardless of whether there are users on the hot
-> path?
+From: Gerhard Engleder <eg@keba.com>
 
-As a per-architecture opt-in, yes.
+The KEBA fan controller is found in the system FPGA of KEBA PLC devices.
+It detects if the fan is removed or blocked. For fans with tacho signal
+the monitoring of the speed of the fan is supported. It also supports to
+regulate the speed of fans with PWM input.
 
-	-hpa
+The auxiliary device for this driver is instantiated by the cp500 misc
+driver.
+
+Signed-off-by: Gerhard Engleder <eg@keba.com>
+---
+ Documentation/hwmon/index.rst |   1 +
+ Documentation/hwmon/kfan.rst  |  39 ++++++
+ drivers/hwmon/Kconfig         |  10 ++
+ drivers/hwmon/Makefile        |   1 +
+ drivers/hwmon/kfan.c          | 243 ++++++++++++++++++++++++++++++++++
+ 5 files changed, 294 insertions(+)
+ create mode 100644 Documentation/hwmon/kfan.rst
+ create mode 100644 drivers/hwmon/kfan.c
+
+diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
+index 946b8a266d89..983aa0233e4a 100644
+--- a/Documentation/hwmon/index.rst
++++ b/Documentation/hwmon/index.rst
+@@ -107,6 +107,7 @@ Hardware Monitoring Kernel Drivers
+    k10temp
+    k8temp
+    kbatt
++   kfan
+    lan966x
+    lineage-pem
+    lm25066
+diff --git a/Documentation/hwmon/kfan.rst b/Documentation/hwmon/kfan.rst
+new file mode 100644
+index 000000000000..ce02dddfb4b8
+--- /dev/null
++++ b/Documentation/hwmon/kfan.rst
+@@ -0,0 +1,39 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Kernel driver kfan
++==================
++
++Supported chips:
++
++  * KEBA fan controller (IP core in FPGA)
++
++    Prefix: 'kfan'
++
++Authors:
++
++	Gerhard Engleder <eg@keba.com>
++	Petar Bojanic <boja@keba.com>
++
++Description
++-----------
++
++The KEBA fan controller is an IP core for FPGAs, which monitors the health
++and controls the speed of a fan. The fan is typically used to cool the CPU
++and the whole device. E.g., the CP500 FPGA includes this IP core to monitor
++and control the fan of PLCs and the corresponding cp500 driver creates an
++auxiliary device for the kfan driver.
++
++This driver provides information about the fan health to user space.
++The user space shall be informed if the fan is removed or blocked.
++Additionally, the speed in RPM is reported for fans with tacho signal.
++
++For fan control PWM is supported. For PWM 255 equals 100%. None-regulable
++fans can be turned on with PWM 255 and turned off with PWM 0.
++
++====================== ==== ===================================================
++Attribute              R/W  Contents
++====================== ==== ===================================================
++fan1_fault             R    Fan fault
++fan1_input             R    Fan tachometer input (in RPM)
++pwm1                   RW   Fan target duty cycle (0..255)
++====================== ==== ===================================================
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 80e277448c71..01b21fe55ccd 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -345,6 +345,16 @@ config SENSORS_KBATT
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called kbatt.
+ 
++config SENSORS_KFAN
++	tristate "KEBA fan controller support"
++	depends on KEBA_CP500
++	help
++	  This driver supports the fan controller found in KEBA system
++	  FPGA devices.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called kfan.
++
+ config SENSORS_FAM15H_POWER
+ 	tristate "AMD Family 15h processor power"
+ 	depends on X86 && PCI && CPU_SUP_AMD
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index 50df221f67c2..c34a0ae658e0 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -111,6 +111,7 @@ obj-$(CONFIG_SENSORS_JC42)	+= jc42.o
+ obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
+ obj-$(CONFIG_SENSORS_K10TEMP)	+= k10temp.o
+ obj-$(CONFIG_SENSORS_KBATT)	+= kbatt.o
++obj-$(CONFIG_SENSORS_KFAN)	+= kfan.o
+ obj-$(CONFIG_SENSORS_LAN966X)	+= lan966x-hwmon.o
+ obj-$(CONFIG_SENSORS_LENOVO_EC)	+= lenovo-ec-sensors.o
+ obj-$(CONFIG_SENSORS_LINEAGE)	+= lineage-pem.o
+diff --git a/drivers/hwmon/kfan.c b/drivers/hwmon/kfan.c
+new file mode 100644
+index 000000000000..c4f799b79e4d
+--- /dev/null
++++ b/drivers/hwmon/kfan.c
+@@ -0,0 +1,243 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2025 KEBA Industrial Automation GmbH
++ *
++ * Driver for KEBA fan controller FPGA IP core
++ *
++ */
++
++#include <linux/hwmon.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/auxiliary_bus.h>
++#include <linux/misc/keba.h>
++
++#define KFAN "kfan"
++
++#define KFAN_CONTROL_REG	0x04
++
++#define KFAN_STATUS_REG		0x08
++#define   KFAN_STATUS_PRESENT	0x01
++#define   KFAN_STATUS_REGULABLE	0x02
++#define   KFAN_STATUS_TACHO	0x04
++#define   KFAN_STATUS_BLOCKED	0x08
++
++#define KFAN_TACHO_REG		0x0c
++
++#define KFAN_DEFAULT_DIV	2
++
++struct kfan {
++	void __iomem *base;
++	bool tacho;
++	bool regulable;
++
++	/* hwmon API configuration */
++	u32 fan_channel_config[2];
++	struct hwmon_channel_info fan_info;
++	u32 pwm_channel_config[2];
++	struct hwmon_channel_info pwm_info;
++	const struct hwmon_channel_info *info[3];
++	struct hwmon_chip_info chip;
++};
++
++static bool kfan_get_fault(struct kfan *kfan)
++{
++	u8 status = ioread8(kfan->base + KFAN_STATUS_REG);
++
++	if (!(status & KFAN_STATUS_PRESENT))
++		return true;
++
++	if (!kfan->tacho && (status & KFAN_STATUS_BLOCKED))
++		return true;
++
++	return false;
++}
++
++static unsigned int kfan_count_to_rpm(u16 count)
++{
++	if (count == 0 || count == 0xffff)
++		return 0;
++
++	return 5000000UL / (KFAN_DEFAULT_DIV * count);
++}
++
++static unsigned int kfan_get_rpm(struct kfan *kfan)
++{
++	unsigned int rpm;
++	u16 count;
++
++	count = ioread16(kfan->base + KFAN_TACHO_REG);
++	rpm = kfan_count_to_rpm(count);
++
++	return rpm;
++}
++
++static unsigned int kfan_get_pwm(struct kfan *kfan)
++{
++	return ioread8(kfan->base + KFAN_CONTROL_REG);
++}
++
++static int kfan_set_pwm(struct kfan *kfan, long val)
++{
++	if (val < 0 || val > 0xff)
++		return -EINVAL;
++
++	/* if none-regulable, then only 0 or 0xff can be written */
++	if (!kfan->regulable && val > 0)
++		val = 0xff;
++
++	iowrite8(val, kfan->base + KFAN_CONTROL_REG);
++
++	return 0;
++}
++
++static int kfan_write(struct device *dev, enum hwmon_sensor_types type,
++		      u32 attr, int channel, long val)
++{
++	struct kfan *kfan = dev_get_drvdata(dev);
++
++	switch (type) {
++	case hwmon_pwm:
++		switch (attr) {
++		case hwmon_pwm_input:
++			return kfan_set_pwm(kfan, val);
++		default:
++			break;
++		}
++	default:
++		break;
++	}
++
++	return -EOPNOTSUPP;
++}
++
++static int kfan_read(struct device *dev, enum hwmon_sensor_types type,
++		     u32 attr, int channel, long *val)
++{
++	struct kfan *kfan = dev_get_drvdata(dev);
++
++	switch (type) {
++	case hwmon_fan:
++		switch (attr) {
++		case hwmon_fan_fault:
++			*val = kfan_get_fault(kfan);
++			return 0;
++		case hwmon_fan_input:
++			*val = kfan_get_rpm(kfan);
++			return 0;
++		default:
++			break;
++		}
++		break;
++	case hwmon_pwm:
++		switch (attr) {
++		case hwmon_pwm_input:
++			*val = kfan_get_pwm(kfan);
++			return 0;
++		default:
++			break;
++		}
++	default:
++		break;
++	}
++
++	return -EOPNOTSUPP;
++}
++
++static umode_t kfan_is_visible(const void *data, enum hwmon_sensor_types type,
++			       u32 attr, int channel)
++{
++	switch (type) {
++	case hwmon_fan:
++		switch (attr) {
++		case hwmon_fan_input:
++			return 0444;
++		case hwmon_fan_fault:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	case hwmon_pwm:
++		switch (attr) {
++		case hwmon_pwm_input:
++			return 0644;
++		default:
++			break;
++		}
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++static const struct hwmon_ops kfan_hwmon_ops = {
++	.is_visible = kfan_is_visible,
++	.read = kfan_read,
++	.write = kfan_write,
++};
++
++static int kfan_probe(struct auxiliary_device *auxdev,
++		      const struct auxiliary_device_id *id)
++{
++	struct keba_fan_auxdev *kfan_auxdev =
++		container_of(auxdev, struct keba_fan_auxdev, auxdev);
++	struct device *dev = &auxdev->dev;
++	struct device *hwmon_dev;
++	struct kfan *kfan;
++	u8 status;
++
++	kfan = devm_kzalloc(dev, sizeof(*kfan), GFP_KERNEL);
++	if (!kfan)
++		return -ENOMEM;
++
++	kfan->base = devm_ioremap_resource(dev, &kfan_auxdev->io);
++	if (IS_ERR(kfan->base))
++		return PTR_ERR(kfan->base);
++
++	status = ioread8(kfan->base + KFAN_STATUS_REG);
++	if (status & KFAN_STATUS_REGULABLE)
++		kfan->regulable = true;
++	if (status & KFAN_STATUS_TACHO)
++		kfan->tacho = true;
++
++	/* fan */
++	kfan->fan_channel_config[0] = HWMON_F_FAULT;
++	if (kfan->tacho)
++		kfan->fan_channel_config[0] |= HWMON_F_INPUT;
++	kfan->fan_info.type = hwmon_fan;
++	kfan->fan_info.config = kfan->fan_channel_config;
++	kfan->info[0] = &kfan->fan_info;
++
++	/* PWM */
++	kfan->pwm_channel_config[0] = HWMON_PWM_INPUT;
++	kfan->pwm_info.type = hwmon_pwm;
++	kfan->pwm_info.config = kfan->pwm_channel_config;
++	kfan->info[1] = &kfan->pwm_info;
++
++	kfan->chip.ops = &kfan_hwmon_ops;
++	kfan->chip.info = kfan->info;
++	hwmon_dev = devm_hwmon_device_register_with_info(dev, KFAN, kfan,
++							 &kfan->chip, NULL);
++	return PTR_ERR_OR_ZERO(hwmon_dev);
++}
++
++static const struct auxiliary_device_id kfan_devtype_aux[] = {
++	{ .name = "keba.fan" },
++	{}
++};
++MODULE_DEVICE_TABLE(auxiliary, kfan_devtype_aux);
++
++static struct auxiliary_driver kfan_driver_aux = {
++	.name = KFAN,
++	.id_table = kfan_devtype_aux,
++	.probe = kfan_probe,
++};
++module_auxiliary_driver(kfan_driver_aux);
++
++MODULE_AUTHOR("Petar Bojanic <boja@keba.com>");
++MODULE_AUTHOR("Gerhard Engleder <eg@keba.com>");
++MODULE_DESCRIPTION("KEBA fan controller driver");
++MODULE_LICENSE("GPL");
+-- 
+2.39.5
 
 
