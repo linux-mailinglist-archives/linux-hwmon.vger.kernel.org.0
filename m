@@ -1,196 +1,212 @@
-Return-Path: <linux-hwmon+bounces-8018-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8022-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA694A9DFE7
-	for <lists+linux-hwmon@lfdr.de>; Sun, 27 Apr 2025 08:35:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E3CA9E18A
+	for <lists+linux-hwmon@lfdr.de>; Sun, 27 Apr 2025 11:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7C211A83C4B
-	for <lists+linux-hwmon@lfdr.de>; Sun, 27 Apr 2025 06:34:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5645017F626
+	for <lists+linux-hwmon@lfdr.de>; Sun, 27 Apr 2025 09:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B1D1A3145;
-	Sun, 27 Apr 2025 06:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AE92528F1;
+	Sun, 27 Apr 2025 09:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="KGPKbjRG"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6A91F8AC0
-	for <linux-hwmon@vger.kernel.org>; Sun, 27 Apr 2025 06:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E4122D4FF;
+	Sun, 27 Apr 2025 09:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745735588; cv=none; b=Obrpfz+1cZxhj50ykQe7o17pW8nMz1HrLO+VUjRPjttZxCuJBqoW0mYk6L5TuIyImoNt6Q/KBqUdTFDzV6x+PrAlpFZIvj3iKBVHIjA5rF5hEgvJ1rDHBipTupGq939gWbgAWoxssXHuuhuJZxjl2B2rRt3eaBP6HDBymnMCPZU=
+	t=1745745694; cv=none; b=JPkmomVfWl2skuId5/fVAMz8jDYE9Pmjx0h1kOJACpReBvWRGAINW0//gUHxwofon/8oVGYGx5BpHx8l9tYB3WqRb10b9Ktm5KsU4iJlyZZzLvak5DG8TVh90l7M0AbrCx0JuixbZKQhgpLd6IXN3OK6kdDsx3IoypM3gcEYvYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745735588; c=relaxed/simple;
-	bh=0NQJG3HJwKrg1IoMqJrBmx7B2B1iRkoqGTatcIR9y8c=;
-	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=qTDTz6bDJP1+fwd7PwbhForCXalqdjFwpjBCedh5IjykIoL/3kabbavI1VFilo0rE5IgcebbNwlOGjqjQN+yA78mbeod1IaRFMgKVhn3oA50vfdVmweb8Mw44e6PEpOj4jhFBL15hpT6E902oaaRtrW+nWu/YuMXVzde6R0L1YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZlcGp5R4Yz27gHJ;
-	Sun, 27 Apr 2025 14:33:38 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id C5E661A016C;
-	Sun, 27 Apr 2025 14:32:54 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sun, 27 Apr 2025 14:32:54 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sun, 27 Apr
- 2025 14:32:54 +0800
-Message-ID: <1f8f24e8-0ca2-4fb0-bb69-21965e1c70c2@huawei.com>
-Date: Sun, 27 Apr 2025 14:32:53 +0800
+	s=arc-20240116; t=1745745694; c=relaxed/simple;
+	bh=sAwmHzM5BuZaF2+SHHsnyyh62JrNU6fREWCA/ZhKmV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lTHC9iF/c7HURUkq2JmhYs2wkxV2XC9iYFJRULkVi/FkhQXbQo5cffa/C8h+bdbC9/HkBwsysYlWm764XapjbeKeGp6Po7o+57VxXWStqhpXOxoKnCgt0cj3EfVOd9lPsnJhADr3XmXY3BML4+LflMHlUUWcTqz9iba0sOm8dBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=KGPKbjRG; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53R9KRRv1598826
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Sun, 27 Apr 2025 02:20:31 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53R9KRRv1598826
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1745745633;
+	bh=qSfXCrg4qMgrCCN/nBzwbznIDzcGPiftIKltZswFgIE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KGPKbjRGgpHgFU0cY/ACUzxlHFjWDOeiPp9By/ChtzbJZIweuQ+iTo89wAU0iNihQ
+	 SKEyvJHImJNQXBkUZWIdvyDCu6QoEPA8rITFD0DzOFnJQDU+Kzfi3F/wVVPJtaasOz
+	 tp9WXAiFowdLbVcAn52sxpFAE0019Qh9Ohma3zzykO4s2ncruEhapesrBun7C7nbu/
+	 4XCH6DGZYk0OeujJJD/cl152iPZUttGL/t3z+ARRTRK4pCAey7AUYR4wEKwxvjBg97
+	 nHT/eL7JBioWUo9OkjJnkhRi5NlEgkrstADaj6ZDGDUs2C9E+9FUj4IM8BNmXhLIe2
+	 IL5Z9UXy1PO/Q==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
+        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
+        wei.liu@kernel.org, ajay.kaher@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
+        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
+        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
+        haiyangz@microsoft.com, decui@microsoft.com,
+        dapeng1.mi@linux.intel.com, ilpo.jarvinen@linux.intel.com
+Subject: [PATCH v4 00/15] MSR code cleanup part one
+Date: Sun, 27 Apr 2025 02:20:12 -0700
+Message-ID: <20250427092027.1598740-1-xin@zytor.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Guenter Roeck <linux@roeck-us.net>
-CC: <linux-hwmon@vger.kernel.org>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-Subject: Consultation on extending hwmon channel attributes number to 64
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemn100009.china.huawei.com (7.202.194.112)
 
-Hi Guenter,
+This patch set is the first part of the patch set:
 
-Currently, the implementation of hwmon core limits the maximum number of 
-hwmon channel attributes is 32.
-The maximum number of used attributes in hwmon.h is 31(namely, 
-hwmon_power_attributes) .
-Actually, we can extend this upper limit to 64 without any impact on 
-driver. And the main modification is as follows.
-It's also mentioned in series[1].
-I want to know what do you think about this? I will drop this thing If 
-it's not necessary to you.
+  MSR refactor with new MSR instructions support
 
-/Huisong
+@ https://lore.kernel.org/lkml/20250422082216.1954310-1-xin@zytor.com/T/#m5a34be7d4ed55f0baca965cb65452a08e9ad7c8a
 
 
-[1]https://patchwork.kernel.org/project/linux-arm-kernel/cover/20250121064519.18974-1-lihuisong@huawei.com/
+It's getting *WAY* too big, and whether to zap the pv_ops MSR APIs is
+still under argument.  Dave Hansen suggested to focus on rename stuff
+first, most of which he acked.
 
--->
+Jürgen Groß also gave his RBs to the Xen MSR cleanup patches.
 
-diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-index 1688c210888a..6f3e92b67e74 100644
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -785,19 +785,21 @@ int hwmon_notify_event(struct device *dev, enum 
-hwmon_sensor_types type,
-  }
-  EXPORT_SYMBOL_GPL(hwmon_notify_event);
+So here comes the first MSR cleanup patch set with version 4.
 
--static int hwmon_num_channel_attrs(const struct hwmon_channel_info *info)
-+static int hwmon_num_channel_attrs(const struct hwmon_chip_info *chip,
-+                                  const struct hwmon_channel_info *info)
-  {
-         int i, n;
 
-         for (i = n = 0; info->config[i]; i++)
--               n += hweight32(info->config[i]);
-+               n += chip->attribute_bit64 ? hweight64(info->config64[i]) :
-+                               hweight32(info->config[i]);
+Changes in v4:
+1) Add missing includes in a different patch (Ilpo Järvinen).
+2) Add all necessary direct inclusions for msr.h (Ilpo Järvinen).
+3) Remove two "else" that no longer make sense (Juergen Gross).
+4) Collect RBs from Jürgen Groß and ABs from Peter Zijlstra.
 
-         return n;
-  }
 
-  static int hwmon_genattrs(const void *drvdata,
-                           struct attribute **attrs,
--                         const struct hwmon_ops *ops,
-+                         const struct hwmon_chip_info *chip,
-                           const struct hwmon_channel_info *info)
-  {
-         const char * const *templates;
-@@ -811,7 +813,8 @@ static int hwmon_genattrs(const void *drvdata,
-         template_size = __templates_size[info->type];
+Link to the previous v3 patch set:
+https://lore.kernel.org/lkml/20250425083442.2390017-1-xin@zytor.com/
 
-         for (i = 0; info->config[i]; i++) {
--               u32 attr_mask = info->config[i];
-+               u64 attr_mask = chip->attribute_bit64 ?
-+                                info->config64[i] : info->config[i];
-                 u32 attr;
 
-                 while (attr_mask) {
-@@ -822,7 +825,7 @@ static int hwmon_genattrs(const void *drvdata,
-                         if (attr >= template_size || !templates[attr])
-                                 continue;       /* attribute is 
-invisible */
-                         a = hwmon_genattr(drvdata, info->type, attr, i,
--                                         templates[attr], ops);
-+                                         templates[attr], chip->ops);
-                         if (IS_ERR(a)) {
-                                 if (PTR_ERR(a) != -ENOENT)
-                                         return PTR_ERR(a);
-@@ -841,7 +844,7 @@ __hwmon_create_attrs(const void *drvdata, const 
-struct hwmon_chip_info *chip)
-         struct attribute **attrs;
+This patch series is based on:
 
-         for (i = 0; chip->info[i]; i++)
--               nattrs += hwmon_num_channel_attrs(chip->info[i]);
-+               nattrs += hwmon_num_channel_attrs(chip, chip->info[i]);
+  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/msr
 
-         if (nattrs == 0)
-                 return ERR_PTR(-EINVAL);
-@@ -851,7 +854,7 @@ __hwmon_create_attrs(const void *drvdata, const 
-struct hwmon_chip_info *chip)
-                 return ERR_PTR(-ENOMEM);
 
-         for (i = 0; chip->info[i]; i++) {
--               ret = hwmon_genattrs(drvdata, &attrs[aindex], chip->ops,
-+               ret = hwmon_genattrs(drvdata, &attrs[aindex], chip,
-                                      chip->info[i]);
-                 if (ret < 0) {
-                         hwmon_free_attrs(attrs);
+Xin Li (Intel) (15):
+  x86/msr: Add missing includes of <asm/msr.h>
+  x86/msr: Move rdtsc{,_ordered}() to <asm/tsc.h>
+  x86/msr: Remove rdpmc()
+  x86/msr: Rename rdpmcl() to rdpmc()
+  x86/msr: Convert the rdpmc() macro into an always inline function
+  x86/xen/msr: Return u64 consistently in Xen PMC read functions
+  x86/msr: Convert __wrmsr() uses to native_wrmsr{,q}() uses
+  x86/msr: Add the native_rdmsrq() helper
+  x86/msr: Convert __rdmsr() uses to native_rdmsrq() uses
+  x86/xen/msr: Remove calling native_{read,write}_msr{,_safe}() in
+    pmu_msr_{read,write}()
+  x86/xen/msr: Remove pmu_msr_{read,write}()
+  x86/xen/msr: Remove the error pointer argument from set_seg()
+  x86/pvops/msr: refactor pv_cpu_ops.write_msr{,_safe}()
+  x86/msr: Replace wrmsr(msr, low, 0) with wrmsrq(msr, low)
+  x86/msr: Change the function type of native_read_msr_safe()
 
-diff --git a/include/linux/hwmon.h b/include/linux/hwmon.h
-index 3a63dff62d03..8634bc4bdd1c 100644
---- a/include/linux/hwmon.h
-+++ b/include/linux/hwmon.h
+ arch/x86/coco/sev/core.c                      |   2 +-
+ arch/x86/events/amd/brs.c                     |   4 +-
+ arch/x86/events/amd/uncore.c                  |   2 +-
+ arch/x86/events/core.c                        |   2 +-
+ arch/x86/events/intel/core.c                  |   4 +-
+ arch/x86/events/intel/ds.c                    |   2 +-
+ arch/x86/events/msr.c                         |   3 +
+ arch/x86/events/perf_event.h                  |   1 +
+ arch/x86/events/probe.c                       |   2 +
+ arch/x86/hyperv/hv_apic.c                     |   6 +-
+ arch/x86/hyperv/hv_vtl.c                      |   4 +-
+ arch/x86/hyperv/ivm.c                         |   3 +-
+ arch/x86/include/asm/apic.h                   |   4 +-
+ arch/x86/include/asm/fred.h                   |   1 +
+ arch/x86/include/asm/microcode.h              |   2 +
+ arch/x86/include/asm/mshyperv.h               |   3 +-
+ arch/x86/include/asm/msr.h                    | 130 +++++-------------
+ arch/x86/include/asm/paravirt.h               |  57 ++++----
+ arch/x86/include/asm/paravirt_types.h         |  10 +-
+ arch/x86/include/asm/suspend_32.h             |   1 +
+ arch/x86/include/asm/suspend_64.h             |   1 +
+ arch/x86/include/asm/switch_to.h              |   4 +-
+ arch/x86/include/asm/tsc.h                    |  76 +++++++++-
+ arch/x86/kernel/cpu/amd.c                     |   2 +-
+ arch/x86/kernel/cpu/common.c                  |  10 +-
+ arch/x86/kernel/cpu/mce/core.c                |   6 +-
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c     |  25 ++--
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c        |   2 +-
+ arch/x86/kernel/cpu/umwait.c                  |   4 +-
+ arch/x86/kernel/fpu/xstate.h                  |   1 +
+ arch/x86/kernel/hpet.c                        |   1 +
+ arch/x86/kernel/kvm.c                         |   2 +-
+ arch/x86/kernel/kvmclock.c                    |   2 +-
+ arch/x86/kernel/process_64.c                  |   1 +
+ arch/x86/kernel/trace_clock.c                 |   2 +-
+ arch/x86/kernel/tsc_sync.c                    |   1 +
+ arch/x86/kvm/svm/svm.c                        |  34 ++---
+ arch/x86/kvm/vmx/vmx.c                        |   4 +-
+ arch/x86/lib/kaslr.c                          |   2 +-
+ arch/x86/mm/mem_encrypt_identity.c            |   5 +-
+ arch/x86/realmode/init.c                      |   1 +
+ arch/x86/xen/enlighten_pv.c                   |  58 ++++----
+ arch/x86/xen/pmu.c                            |  72 +++-------
+ arch/x86/xen/xen-ops.h                        |   5 +-
+ drivers/acpi/acpi_extlog.c                    |   1 +
+ drivers/acpi/processor_perflib.c              |   1 +
+ drivers/acpi/processor_throttling.c           |   3 +-
+ drivers/char/agp/nvidia-agp.c                 |   1 +
+ drivers/cpufreq/amd-pstate-ut.c               |   2 +
+ drivers/crypto/ccp/sev-dev.c                  |   1 +
+ drivers/edac/amd64_edac.c                     |   1 +
+ drivers/edac/ie31200_edac.c                   |   1 +
+ drivers/edac/mce_amd.c                        |   1 +
+ drivers/hwmon/hwmon-vid.c                     |   4 +
+ drivers/idle/intel_idle.c                     |   1 +
+ drivers/misc/cs5535-mfgpt.c                   |   1 +
+ drivers/net/vmxnet3/vmxnet3_drv.c             |   4 +
+ drivers/platform/x86/intel/ifs/core.c         |   1 +
+ drivers/platform/x86/intel/ifs/load.c         |   1 +
+ drivers/platform/x86/intel/ifs/runtest.c      |   1 +
+ drivers/platform/x86/intel/pmc/cnp.c          |   1 +
+ .../intel/speed_select_if/isst_if_common.c    |   1 +
+ .../intel/speed_select_if/isst_if_mbox_msr.c  |   1 +
+ .../intel/speed_select_if/isst_tpmi_core.c    |   1 +
+ drivers/platform/x86/intel/turbo_max_3.c      |   1 +
+ .../intel/uncore-frequency/uncore-frequency.c |   1 +
+ drivers/powercap/intel_rapl_common.c          |   1 +
+ drivers/powercap/intel_rapl_msr.c             |   1 +
+ .../processor_thermal_device.c                |   1 +
+ drivers/thermal/intel/intel_tcc_cooling.c     |   1 +
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |   1 +
+ drivers/video/fbdev/geode/display_gx.c        |   1 +
+ drivers/video/fbdev/geode/gxfb_core.c         |   1 +
+ drivers/video/fbdev/geode/lxfb_ops.c          |   1 +
+ 74 files changed, 308 insertions(+), 295 deletions(-)
 
-  /**
-   * struct hwmon_ops - hwmon device operations
-@@ -433,7 +433,10 @@ struct hwmon_ops {
-   */
-  struct hwmon_channel_info {
-         enum hwmon_sensor_types type;
--       const u32 *config;
-+       union {
-+               const u32 *config;
-+               const u64 *config64;
-+       }
-  };
 
-  #define HWMON_CHANNEL_INFO(stype, ...)         \
-@@ -444,12 +447,21 @@ struct hwmon_channel_info {
-                 }                               \
-         })
-
-+#define HWMON_CHANNEL_INFO64(stype, ...)               \
-+       (&(const struct hwmon_channel_info) {   \
-+               .type = hwmon_##stype,          \
-+               .config64 = (const u64 []) {    \
-+                       __VA_ARGS__, 0          \
-+               }                               \
-+       })
-+
-  /**
-   * struct hwmon_chip_info - Chip configuration
-   * @ops:       Pointer to hwmon operations.
-   * @info:      Null-terminated list of channel information.
-   */
-  struct hwmon_chip_info {
-+       bool attribute_bit64; // use config64 pointer if it is true.
-         const struct hwmon_ops *ops;
-         const struct hwmon_channel_info * const *info;
-  };
--->
+base-commit: a5447e92e169dafaf02fd653500105c7186d7128
+-- 
+2.49.0
 
 
