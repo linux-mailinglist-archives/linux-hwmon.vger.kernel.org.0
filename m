@@ -1,60 +1,60 @@
-Return-Path: <linux-hwmon+bounces-8162-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8164-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D9BAAB07D
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 05:39:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE785AAB629
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 07:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEDA21BA540F
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 03:39:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C57F64C217F
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 05:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9096330FD00;
-	Mon,  5 May 2025 23:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9FA3247A2;
+	Tue,  6 May 2025 00:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFkutQau"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BK6GzS4g"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B903C01D9;
-	Mon,  5 May 2025 23:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B294035C90E;
+	Mon,  5 May 2025 22:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487431; cv=none; b=ONTKw99nqzVqSWDhnllJ7gNWa0NCGQ6UvBy1CXTl65bKdscKnT05ZTkDnljE2+eBbxDViWns7JwBF5RaLU5lVbEQjPhdNWIF+AJO6fR9hgaNW6zNLRG4jVxA2HGCugdBJq6RNrWH8mkhlK1n4NCgRqfcR/CEj78a+FPLEJ95VC8=
+	t=1746485232; cv=none; b=nGSJJyj+ssoU6o4+daVR0wvfvwkTe9HpQR0kix+cUlYa+YHqve70L+34zFgVWh46oGJBrq+tL5PIU1T8MEp5xRinjq9X6C9MbNGv+vYMpMcn2OTIhP6YXcYsRZh4L2AgMeAmYr3Yb82bfsRvNz6vceyyUhAXUWA3cf3TCIHQJvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487431; c=relaxed/simple;
-	bh=/5BcaKk29skcl6C0x/EXuNzv3BY6vyonckuttvX+NdA=;
+	s=arc-20240116; t=1746485232; c=relaxed/simple;
+	bh=QB5BDmNQRFBOKORRB1IUyzjlT4+1l2j7PdDoCOiaFtk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m8oorU2Zj9JO71UqpEiexKw72xG03eG7zJwDhW9BR6LN8duuQLQ2HuAZ0NKaH8nCfL/r91KJFeG0CD5iqoLTSwnfgDI8psrcjbIy8u6y7ZoVPOEBR7Tw8QsAtGfOc6HOw8EzZ0mjfR7Tei9jXLQ2ohGhjAvc8DCRnimRX/OIHfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFkutQau; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D7AC4CEE4;
-	Mon,  5 May 2025 23:23:49 +0000 (UTC)
+	 MIME-Version; b=cBaICYQIuylnJleL2Il2jn6FWlXq/s+ee52bWhH2++VcpaV60myYJ7OufRToccQCYhatYoq4O250boNhDkUgWvFdo2jAvhRWrNk1wrKwexTeSAxwdQi89oVoA+GVP9oBMoflxD2/TC5yxCekobhc2Ma5S8wmercmi57LSoBE1yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BK6GzS4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629C4C4CEED;
+	Mon,  5 May 2025 22:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487430;
-	bh=/5BcaKk29skcl6C0x/EXuNzv3BY6vyonckuttvX+NdA=;
+	s=k20201202; t=1746485232;
+	bh=QB5BDmNQRFBOKORRB1IUyzjlT4+1l2j7PdDoCOiaFtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HFkutQauMAcbZIBmcPBNZRs05NpUYU8zTQ8S8zkzdhhN4sT8Q2vNb0Ar9ErUX9i9F
-	 +oM1CvFPCS8lzQscfws2l+MwRm0OQiUtsr6tan8f/KZ0O+cx+8m4kXzjqZPWE3WfyR
-	 FNG/0PQbIbbzjcV0BPCcRWSaT6NVc38AZRgOjtiyVdGGWl21RG0nRpAI4WQacImUv8
-	 a1gMW4WYGjDPjg21FKy5nmKXcKymhnaqDLrdNt8xyf7GW8DjtOXLy4bD3gPbWT7jER
-	 qZ7L7EMl5epUQp3xxH57fAGLn4/YYlH/I/xPnP4BEHDi84DgmgjJe+aJtK1ydfrVgN
-	 zlIiVQSkvHWBQ==
+	b=BK6GzS4gn3Eu4I4+aHTkNgZ4LWb/UcD9cV3M4acIGkSfr6do5KyTVEapYsrVDz30q
+	 0YjGtF8goeglcEwN60YIuARP8GJimsvlUP/JJhk2MU2YRLpEX9msXoIZzefekw3Q0A
+	 MbUNv6HcRxXMHjlX0/o6ITSnsGsm5Z7wm8xN83ePUEOy8DyMqucMNv5tvmejUg41St
+	 gKUPMMV+1s7TZa2326fxiHcKQe95FfuAfXPAU4JdwMi12rqJZnNH9zW4ARzpfVd20h
+	 QjtSyp8MImeZvBUJ2KR+HJHdNW/VtalP7MRQk/w4MJMsSry+WCsAdMMLFnnOnaWVPa
+	 E/lQNH3pzEFeA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrey Vatoropin <a.vatoropin@crpt.ru>,
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
 	jdelvare@suse.com,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 67/79] hwmon: (xgene-hwmon) use appropriate type for the latency value
-Date: Mon,  5 May 2025 19:21:39 -0400
-Message-Id: <20250505232151.2698893-67-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 224/486] hwmon: (gpio-fan) Add missing mutex locks
+Date: Mon,  5 May 2025 18:35:00 -0400
+Message-Id: <20250505223922.2682012-224-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
-References: <20250505232151.2698893-1-sashal@kernel.org>
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -63,46 +63,76 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
+X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
+[ Upstream commit 9fee7d19bab635f89223cc40dfd2c8797fdc4988 ]
 
-The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
-evaluated using 32-bit arithmetic.
+set_fan_speed() is expected to be called with fan_data->lock being locked.
+Add locking for proper synchronization.
 
-Since a value of type 'u64' is used to store the eventual result,
-and this result is later sent to the function usecs_to_jiffies with
-input parameter unsigned int, the current data type is too wide to
-store the value of ctx->usecs_lat.
-
-Change the data type of "usecs_lat" to a more suitable (narrower) type.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250210145934.761280-3-alexander.stein@ew.tq-group.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/gpio-fan.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 559a73bab51e8..15889bcc85875 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -110,7 +110,7 @@ struct xgene_hwmon_dev {
+diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
+index d92c536be9af7..b779240328d59 100644
+--- a/drivers/hwmon/gpio-fan.c
++++ b/drivers/hwmon/gpio-fan.c
+@@ -393,7 +393,12 @@ static int gpio_fan_set_cur_state(struct thermal_cooling_device *cdev,
+ 	if (state >= fan_data->num_speed)
+ 		return -EINVAL;
  
- 	phys_addr_t		comm_base_addr;
- 	void			*pcc_comm_addr;
--	u64			usecs_lat;
-+	unsigned int		usecs_lat;
- };
++	mutex_lock(&fan_data->lock);
++
+ 	set_fan_speed(fan_data, state);
++
++	mutex_unlock(&fan_data->lock);
++
+ 	return 0;
+ }
  
- /*
+@@ -489,7 +494,11 @@ MODULE_DEVICE_TABLE(of, of_gpio_fan_match);
+ 
+ static void gpio_fan_stop(void *data)
+ {
++	struct gpio_fan_data *fan_data = data;
++
++	mutex_lock(&fan_data->lock);
+ 	set_fan_speed(data, 0);
++	mutex_unlock(&fan_data->lock);
+ }
+ 
+ static int gpio_fan_probe(struct platform_device *pdev)
+@@ -562,7 +571,9 @@ static int gpio_fan_suspend(struct device *dev)
+ 
+ 	if (fan_data->gpios) {
+ 		fan_data->resume_speed = fan_data->speed_index;
++		mutex_lock(&fan_data->lock);
+ 		set_fan_speed(fan_data, 0);
++		mutex_unlock(&fan_data->lock);
+ 	}
+ 
+ 	return 0;
+@@ -572,8 +583,11 @@ static int gpio_fan_resume(struct device *dev)
+ {
+ 	struct gpio_fan_data *fan_data = dev_get_drvdata(dev);
+ 
+-	if (fan_data->gpios)
++	if (fan_data->gpios) {
++		mutex_lock(&fan_data->lock);
+ 		set_fan_speed(fan_data, fan_data->resume_speed);
++		mutex_unlock(&fan_data->lock);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
