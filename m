@@ -1,122 +1,97 @@
-Return-Path: <linux-hwmon+bounces-8174-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8178-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4130AABB23
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 09:35:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E49FBAACA92
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 18:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82B293BF875
-	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 07:26:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EB85506275
+	for <lists+linux-hwmon@lfdr.de>; Tue,  6 May 2025 16:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532E128FAAB;
-	Tue,  6 May 2025 05:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AED28466B;
+	Tue,  6 May 2025 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fIRgVAd3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ksqh5E+v"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661CE27BF9A;
-	Tue,  6 May 2025 05:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF46280008;
+	Tue,  6 May 2025 16:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746509948; cv=none; b=IajYhBsBAYeFRXRvam01W4eVPjy5ev2de9fVNSsEHuFQm0ShERMC767PNdcnZ3sXFIXIX2lBTQQyjqN5eEJtf10AeFAIJREoZDkz/EU3eqC765t/pwJrGaiGk+K2iNnhWMMwagwfnNNPvlk+v+hjepnFAlCoZpI7kvMlnEKSdbU=
+	t=1746547866; cv=none; b=dbMC1L0a/YVtay0ME9sxo24/iGUBr4Sw9LWOOlIIhvekhFiDE4Ov3Q4FbCe+QNU3hGN6rfUpRJtls5nAG71GJT9jYu1cahm5lgerJYV+nji06WCV6FqN4XHJa+Jacyk6kAHB1qrSA7q3Ol/9u7QMXOcwTy1WyRyoTYy3L8Gq+JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746509948; c=relaxed/simple;
-	bh=jS6WcRUZ5LMlqt/v3lxpcWGgtkNFOwJfvXYwfqfFbi4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=abdFgEBTpdt6u9n9fNkiUWgrCkEX0RF/ZazA7fCtLHpNmgRyxRYeiTDKPVJC2MO6oundOMxFJZP6vol4NRJvp+EeUAR0tDTx7xo/Yh4JyAu7gPT/kLG1ZO/YIO6GTUx0TjTgj7/4vcP06t+g5IHRNtJX0nzmGRHoZSNfSFWr5Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fIRgVAd3; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=SEKm99PurVmtrNTupP
-	5Lg3cHjShnygrGqkE6bVv/E7I=; b=fIRgVAd3fMVfzNtZrUHMKm4X5GSFt8lgWi
-	9njtbfBxHMQhvRTM4ntJlB65BvfuWlTqWy8Ys+YmtCU90kEmfBKhadOclNKvdA8a
-	fQGUsQvJVLZCBWOVCnU2xkf61BfP7bcQdkIpdaBhmJb0GfKbfztdrjwQtoXTCEyU
-	WkyuG1TeM=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBHxSpEoBloZ2M1Ew--.50689S6;
-	Tue, 06 May 2025 13:38:28 +0800 (CST)
-From: Wenliang Yan <wenliang202407@163.com>
-To: linux@roeck-us.net,
-	Jean Delvare <jdelvare@suse.com>,
+	s=arc-20240116; t=1746547866; c=relaxed/simple;
+	bh=N9LxGo67U8S/ha5ag2nBlir7WXYDRaO7ZbHT7Qw/tk0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZZXQGwZpRygUycEVF1b3qan9fxImG+LV4h4yQfFDmdWMqqTV27gNb8Q9W8OnZjqauzkfDf/x4tjuLKQlaHx+ttIEZGVC/1uJMJeAUR483+RUILXQoAH78fwAayPjSyXIMYNeDU5QLvEC640ZSq6xlA4qEg1v53JumP3m50sff1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ksqh5E+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0E1C4CEE4;
+	Tue,  6 May 2025 16:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746547865;
+	bh=N9LxGo67U8S/ha5ag2nBlir7WXYDRaO7ZbHT7Qw/tk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ksqh5E+vlPYV4Iefz4/uKLdivGgzx6ExSKwh4KnzUhd2QpmWPL1xMAN9BU+CznI/1
+	 ENQt+MbYua1NEXpqSk5g9sgPL8YubC20vFiBf/m3wda6lqyMiLwN+KidRsxAbDhjcf
+	 HJRxG52QzQHz44SKKcPfCVXwqT765sGfzYNF75swt1hk77bezqR54D1GXooVjzd6db
+	 r12sqN2hbJFI+k7Srale50su+oHbXDDjiuPqYHCvFdiC7+SRYDNiinxqO/XjMVvhal
+	 J56g/g2QGmMlK+7vkyyY7jGxTkrZuMxUHNlNXG7jc1UJ+PEAk5WJcuzIfvu0GOnU3X
+	 bWm9/5hiBrVNA==
+Date: Tue, 6 May 2025 17:11:00 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Wenliang Yan <wenliang202407@163.com>
+Cc: linux@roeck-us.net, Jean Delvare <jdelvare@suse.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Wenliang Yan <wenliang202407@163.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	christophe.jaillet@wanadoo.fr,
-	derek.lin@silergycorp.com,
-	miguel.lee@silergycorp.com,
-	chris.ho@silergycorp.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	christophe.jaillet@wanadoo.fr, derek.lin@silergycorp.com,
+	miguel.lee@silergycorp.com, chris.ho@silergycorp.com,
 	eason.liao@silergycorp.com
-Subject: [PATCH v7 4/4] dt-bindings:Add SQ52206 to ina2xx devicetree bindings
-Date: Tue,  6 May 2025 01:37:41 -0400
-Message-Id: <20250506053741.4837-5-wenliang202407@163.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250506053741.4837-1-wenliang202407@163.com>
+Subject: Re: [PATCH v7 4/4] dt-bindings:Add SQ52206 to ina2xx devicetree
+ bindings
+Message-ID: <20250506-reload-thimble-a0d7b6fd9696@spud>
 References: <20250506053741.4837-1-wenliang202407@163.com>
-X-CM-TRANSID:_____wBHxSpEoBloZ2M1Ew--.50689S6
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF18Kr4fWF45uF4UWF43Awb_yoW8XF17p3
-	9xCF1jqryFqF13u3y7t3Z5G34Uu3Wv9F48KF1DJr1a93WkZa4Fq39xKr18Kr17Cr1fZFWf
-	uFn2grW8X340yaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRVnmiUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/1tbiMAZF02gZnOxMHwAAsy
+ <20250506053741.4837-5-wenliang202407@163.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="1HZzb8hbYXZ4WHE/"
+Content-Disposition: inline
+In-Reply-To: <20250506053741.4837-5-wenliang202407@163.com>
 
-Add the sq52206 compatible to the ina2xx.yaml
 
-Signed-off-by: Wenliang Yan <wenliang202407@163.com>
----
+--1HZzb8hbYXZ4WHE/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add the meaning of 'shunt-gain' in SQ52206.
+On Tue, May 06, 2025 at 01:37:41AM -0400, Wenliang Yan wrote:
+> Add the sq52206 compatible to the ina2xx.yaml
+>=20
+> Signed-off-by: Wenliang Yan <wenliang202407@163.com>
 
-v6->v7: Change 'silergy,sy24655' to 'silergy,sq52206' so that
-the make dt_binding_check' command can be successfully passed
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-v5->v6:add content to meet the update requirements of the ina2xx.yaml
+--1HZzb8hbYXZ4WHE/
+Content-Type: application/pgp-signature; name="signature.asc"
 
- Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-index bc03781342c0..d1fb7b9abda0 100644
---- a/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ti,ina2xx.yaml
-@@ -19,6 +19,7 @@ description: |
- properties:
-   compatible:
-     enum:
-+      - silergy,sq52206
-       - silergy,sy24655
-       - ti,ina209
-       - ti,ina219
-@@ -58,6 +59,9 @@ properties:
-       shunt voltage, and a value of 4 maps to ADCRANGE=0 such that a wider
-       voltage range is used.
- 
-+      For SQ52206,the shunt-gain value 1 mapps to ADCRANGE=10/11, the value 2
-+      mapps to ADCRANGE=01, and the value 4 mapps to ADCRANGE=00.
-+
-       The default value is device dependent, and is defined by the reset value
-       of PGA/ADCRANGE in the respective configuration registers.
-     $ref: /schemas/types.yaml#/definitions/uint32
-@@ -97,6 +101,7 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - silergy,sq52206
-               - silergy,sy24655
-               - ti,ina209
-               - ti,ina219
--- 
-2.17.1
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaBo0lAAKCRB4tDGHoIJi
+0jefAP4kFMBOHhuT97nr68L74nAxW8w17ny8cyn2d3cflFXrhQEAy96BlvBN0x82
+B4p9e1Uvv+pMf9hV8vf8iR4HcRYZ2gw=
+=WI4v
+-----END PGP SIGNATURE-----
 
+--1HZzb8hbYXZ4WHE/--
 
