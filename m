@@ -1,281 +1,192 @@
-Return-Path: <linux-hwmon+bounces-8229-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8234-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432E4AB2B24
-	for <lists+linux-hwmon@lfdr.de>; Sun, 11 May 2025 22:46:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5C0AB2C4E
+	for <lists+linux-hwmon@lfdr.de>; Mon, 12 May 2025 01:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE891898692
-	for <lists+linux-hwmon@lfdr.de>; Sun, 11 May 2025 20:46:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D233B4E2A
+	for <lists+linux-hwmon@lfdr.de>; Sun, 11 May 2025 23:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DE826563F;
-	Sun, 11 May 2025 20:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34001DACB1;
+	Sun, 11 May 2025 23:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="tmQC8lgf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D5xFv9CW"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2958264FBB;
-	Sun, 11 May 2025 20:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4F31E485;
+	Sun, 11 May 2025 23:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746996305; cv=none; b=pd9Welb5iZdp0wPbJdI4zRxUK7zo4/g8mJo3tIBGZdKOhFNAS2l1KmYCF/revfkdUWrofTTT+xgk2T/e4T1I63tY0eNZLwKFmJw6lW3BgnndauqtffauXO7v43UxH2Vg8xPi95UYriYZ4BGeexzqbPte5oc7doj/MIG48o90tkA=
+	t=1747006226; cv=none; b=fXfD6o7yovYxdJGjC0D0MVxxzwy1zjJMG3YR3xotD4Qk287Tg9yufKeij0NDXdANpdOYaIqhutsFFjy1PdblTTYVdSx46NO063aFei4cpbJguVZsVWGi+8MhVvjdBroFG+OKKZeJ7xDoY+9VL6Cv3Qa+Q2xnMYf9m+Ls+zMLMtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746996305; c=relaxed/simple;
-	bh=orJ8j/3ajnfYd3uDV2+SFkRISKEac5ehE16CTuEw1eI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NORRHoczhuuyPRQCGxtdScdlq+LBb+D22sCrrbay+t84k/fuCRMwlhjbnyemGsHu61zWVAnYWnk++704pNsvDRdJyozXZlMTFdaLxpRLwFACR7fKBe1r5dzBokdDuYihUNHaImvP3meBQyP37xERy03bDVJE19L/ek1SYEaZLnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=tmQC8lgf; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from localhost.localdomain (x5996a826.customers.hiper-net.dk [89.150.168.38])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id AB49A2E0A4EA;
-	Sun, 11 May 2025 23:44:59 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1746996301;
-	bh=Enb2hpri1htzmtmoOfLTI9UZyxly8NwM8OPV3n/jH3Q=; h=From:To:Subject;
-	b=tmQC8lgfWNLsbtuszcxNtW+/jFiB/zKXw4HpKzaKbSQR3duV1mNKmN/0b0OEIELtI
-	 pv4vKxaN77nnP2QKM+Pf2gj54uJWnzof2S97WqDB5NjeqGF5LeGluSWgF2SFqJh+1z
-	 JencDpHdmlq+O/oEvKLwxX4ZJW6Tw27noCTT9tIo=
-Authentication-Results: linux1587.grserver.gr;
-	spf=pass (sender IP is 89.150.168.38) smtp.mailfrom=lkml@antheas.dev smtp.helo=localhost.localdomain
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-From: Antheas Kapenekakis <lkml@antheas.dev>
-To: platform-driver-x86@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Kurt Borja <kuurtb@gmail.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	Antheas Kapenekakis <lkml@antheas.dev>
-Subject: [PATCH v1 10/10] platform/x86: msi-wmi-platform: Restore fan curves
- on PWM disable and unload
-Date: Sun, 11 May 2025 22:44:27 +0200
-Message-ID: <20250511204427.327558-11-lkml@antheas.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250511204427.327558-1-lkml@antheas.dev>
-References: <20250511204427.327558-1-lkml@antheas.dev>
+	s=arc-20240116; t=1747006226; c=relaxed/simple;
+	bh=kxS9RGUJfGYHYRC6/YRlAu+5nrctscMWll9hzu5mfPw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=o3xxsatoNQ9KvBOfTqBBmvLAhHHTg3OVAxgH5Dp5U8dLSqEwomCizXuEYiUdj9ac4q0oaUuCJpYvqPjZOSG5qH8j3kJi7qTPnuE0NnwYYk9Dt3Z5Uu7V8/yuSj4W5Iyk2sgLOMRpHPoHkyTc9a8lt8oiCZmYBnB/552T5mGHfuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D5xFv9CW; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-879e8e2237dso2136150241.0;
+        Sun, 11 May 2025 16:30:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747006224; x=1747611024; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FuAxY1FnwLvvV5y/w1jLzmRCbR2PH85UKoUxJqV9epg=;
+        b=D5xFv9CWjEpo+EMQJNA0Ze7UV14onpW7Kfi8RnAz6rDAT3pxVF9Xnoxyj+Dg9PVtGl
+         i8sPbPuK/FO0yxlsvDWraf++x9W2nkZTtW9vrXKxRbnYH+aJdazveMraC3Wz3cItZC9X
+         i75/PSR8Ypuik7x0MYdMSCJ82oTo5veeXLAph7jgrxocIfSsr1itZtV22elkfbMX6H3j
+         cqtr/shdPpRHQcaZ9mvtJ2A6x7Zn7NMNuFuw+yPs3yHiwhXGu6LRi2TBCqV/GakD2bEx
+         4ATWkAIMjW6B/IzNNuCvpb1n19zBSe9/HVk2Hdr9WshEOqrR3mUMYu2DUU1K9/anwfC2
+         r8rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747006224; x=1747611024;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FuAxY1FnwLvvV5y/w1jLzmRCbR2PH85UKoUxJqV9epg=;
+        b=OLr26QSHb+7HOf4lrggFGFPGF8OFUBqXhG30foWNcDKmbxoO3crtT6OzbsEH57BGzM
+         uvufmu2EbJ2ZgTCIDTth4UvTn0XrXfZijhBdPfAV9JyrofU07bPKUO4ziYAVPQrWSZqr
+         b6Vp0fXPi0aWcTn4ahfaKKzfO4otwXS6Yrv8zcDaDcLWk2nG7JcD7ZTp4STDC7KUASyk
+         A9bBY4F57kbI3koocO1CGuSaPKk5brWgQnhTcAWijI7fseYhay8493LyRJHcE/MFImsq
+         geOzFawzkFVOGXcxtNqTpSrlfJp8kT4sck4Rk++aoYZ5LlrnymGOTu//53SBPTaTixh2
+         kD+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUmneW2mS1FliW/wxMsGiJhs6Du9y4c6nZm5PsaFZfL0mLsEmXdGsKTnX7E+FTCRVGtNy60blEaYEE6XCSh@vger.kernel.org, AJvYcCVPrij1VLlw1vWV+gkHg+ULU+EXPoU/s+5w2R25Kam1yP/bv427lxS0E8K5UyjBZSz5G6Kw1qfKGTaYPonGoRbny7tlvQ==@vger.kernel.org, AJvYcCW9usKEUqbCMKsb5nzYMm30FQRT0aRJfL1QguqW++MnIIFtiMdYTR1VhwKVy0MR8rAbBElOfTAAEqQ=@vger.kernel.org, AJvYcCWKudGQlBCOYC3Na2DC4aYhPxgcdUeAhvJ0EYo386EOYQYi5hVoz8VwMclbM+1MKNXM5Q7YRImjVOFB0z8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmuQuhW0NY559Iv+RGvOFGCxUUyoXirafYJzuXImwXiUiWi02b
+	v0IKlAA3VmG4lRkVNAopSTgPDs37UnLIrIE89JGQWTSjo7zyz9u9
+X-Gm-Gg: ASbGncvL1ogPhRU/Y0VeENRbDDn3mJ2wCxHZw6GzOEQ20R66/E/c+RlrjtKUDcBwGIG
+	8Kzvxj+Dy3bCNbcfvKljZU+gpgfWV777PuNsKCRkYQsLaxjxiJbhRcNtfgBtgg87OwKv2XpySfF
+	HsLxcIn9hq/hGvsG3FlSZ4On/hY6h6P4cw30KqwwLcsr223BSVoBj+UtNnjtiOJHDrgAjtRi8Y1
+	2a7ssxd86AqLPWA4NQLwImGwfx89K4TAuA4X8gDcBmUWnfNS2XcRAen+Taka5cmuADk/uz2fnc8
+	OZ4fnJyetyDPgEoeM/zKdF2s3wWSmqZg2S8uzAbZJnG+8cZz5dZsb/c=
+X-Google-Smtp-Source: AGHT+IGLAPxCLFkep0vlw76XA5pXelgzr8XBayNAzLNhNympu2KSsPefmv4d83vBHWQJt8DoWywtcA==
+X-Received: by 2002:a05:6102:2c02:b0:4c1:9288:906c with SMTP id ada2fe7eead31-4deed33c572mr10054589137.9.1747006223621;
+        Sun, 11 May 2025 16:30:23 -0700 (PDT)
+Received: from localhost ([181.91.133.137])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4deb2018611sm4186579137.20.2025.05.11.16.30.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 May 2025 16:30:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <174699630136.28218.12400765318638031012@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=1917ec96a486740fa601ecfd0c45a92a45394f0234bd152b47b6d3031405;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Sun, 11 May 2025 20:30:11 -0300
+Message-Id: <D9TQ0LYKISGB.3QAOHFXVL9PEO@gmail.com>
+Cc: "Armin Wolf" <W_Armin@gmx.de>, "Jonathan Corbet" <corbet@lwn.net>, "Hans
+ de Goede" <hdegoede@redhat.com>, =?utf-8?q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>, "Jean Delvare" <jdelvare@suse.com>,
+ "Guenter Roeck" <linux@roeck-us.net>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-hwmon@vger.kernel.org>
+Subject: Re: [PATCH v1 00/10] platform/x86: msi-wmi-platform: Add fan
+ curves/platform profile/tdp/battery limiting
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Antheas Kapenekakis" <lkml@antheas.dev>,
+ <platform-driver-x86@vger.kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250511204427.327558-1-lkml@antheas.dev>
+In-Reply-To: <20250511204427.327558-1-lkml@antheas.dev>
 
-MSI software is a bit weird in that even when the manual fan curve is
-disabled, the fan speed is still somewhat affected by the curve. So
-we have to restore the fan curves on unload and PWM disable, as it
-is done in Windows.
+--1917ec96a486740fa601ecfd0c45a92a45394f0234bd152b47b6d3031405
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Suggested-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
----
- drivers/platform/x86/msi-wmi-platform.c | 123 +++++++++++++++++++++++-
- 1 file changed, 122 insertions(+), 1 deletion(-)
+Hi Antheas,
 
-diff --git a/drivers/platform/x86/msi-wmi-platform.c b/drivers/platform/x86/msi-wmi-platform.c
-index 7dafe17d4d6be..a917db0300c06 100644
---- a/drivers/platform/x86/msi-wmi-platform.c
-+++ b/drivers/platform/x86/msi-wmi-platform.c
-@@ -123,16 +123,25 @@ struct msi_wmi_platform_quirk {
- 	bool shift_mode;	/* Shift mode is supported */
- 	bool charge_threshold;	/* Charge threshold is supported */
- 	bool dual_fans;		/* For devices with two hwmon fans */
-+	bool restore_curves;	/* Restore factory curves on unload */
- 	int pl_min;		/* Minimum PLx value */
- 	int pl1_max;		/* Maximum PL1 value */
- 	int pl2_max;		/* Maximum PL2 value */
- };
- 
-+struct msi_wmi_platform_factory_curves {
-+	u8 cpu_fan_table[32];
-+	u8 gpu_fan_table[32];
-+	u8 cpu_temp_table[32];
-+	u8 gpu_temp_table[32];
-+};
-+
- struct msi_wmi_platform_data {
- 	struct wmi_device *wdev;
- 	struct msi_wmi_platform_quirk *quirks;
- 	struct mutex wmi_lock;	/* Necessary when calling WMI methods */
- 	struct device *ppdev;
-+	struct msi_wmi_platform_factory_curves factory_curves;
- 	struct acpi_battery_hook battery_hook;
- 	struct device *fw_attrs_dev;
- 	struct kset *fw_attrs_kset;
-@@ -219,6 +228,7 @@ static struct msi_wmi_platform_quirk quirk_gen1 = {
- 	.shift_mode = true,
- 	.charge_threshold = true,
- 	.dual_fans = true,
-+	.restore_curves = true,
- 	.pl_min = 8,
- 	.pl1_max = 43,
- 	.pl2_max = 45
-@@ -227,6 +237,7 @@ static struct msi_wmi_platform_quirk quirk_gen2 = {
- 	.shift_mode = true,
- 	.charge_threshold = true,
- 	.dual_fans = true,
-+	.restore_curves = true,
- 	.pl_min = 8,
- 	.pl1_max = 30,
- 	.pl2_max = 37
-@@ -507,6 +518,94 @@ static struct attribute *msi_wmi_platform_hwmon_attrs[] = {
- };
- ATTRIBUTE_GROUPS(msi_wmi_platform_hwmon);
- 
-+static int msi_wmi_platform_curves_save(struct msi_wmi_platform_data *data)
-+{
-+	int ret;
-+
-+	data->factory_curves.cpu_fan_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_CPU_FAN_TABLE;
-+	ret = msi_wmi_platform_query_unlocked(
-+		data, MSI_PLATFORM_GET_FAN,
-+		data->factory_curves.cpu_fan_table,
-+		sizeof(data->factory_curves.cpu_fan_table));
-+	if (ret < 0)
-+		return ret;
-+	data->factory_curves.cpu_fan_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_CPU_FAN_TABLE;
-+
-+	data->factory_curves.gpu_fan_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_GPU_FAN_TABLE;
-+	ret = msi_wmi_platform_query_unlocked(
-+		data, MSI_PLATFORM_GET_FAN,
-+		data->factory_curves.gpu_fan_table,
-+		sizeof(data->factory_curves.gpu_fan_table));
-+	if (ret < 0)
-+		return ret;
-+	data->factory_curves.gpu_fan_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_GPU_FAN_TABLE;
-+
-+	data->factory_curves.cpu_temp_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_CPU_TEMP_TABLE;
-+	ret = msi_wmi_platform_query_unlocked(
-+		data, MSI_PLATFORM_GET_TEMPERATURE,
-+		data->factory_curves.cpu_temp_table,
-+		sizeof(data->factory_curves.cpu_temp_table));
-+	if (ret < 0)
-+		return ret;
-+	data->factory_curves.cpu_temp_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_CPU_TEMP_TABLE;
-+
-+	data->factory_curves.gpu_temp_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_GPU_TEMP_TABLE;
-+	ret = msi_wmi_platform_query_unlocked(
-+		data, MSI_PLATFORM_GET_TEMPERATURE,
-+		data->factory_curves.gpu_temp_table,
-+		sizeof(data->factory_curves.gpu_temp_table));
-+	if (ret < 0)
-+		return ret;
-+	data->factory_curves.gpu_temp_table[0] =
-+		MSI_PLATFORM_FAN_SUBFEATURE_GPU_TEMP_TABLE;
-+
-+	return 0;
-+}
-+
-+static int msi_wmi_platform_curves_load(struct msi_wmi_platform_data *data)
-+{
-+	u8 buffer[32] = { };
-+	int ret;
-+
-+	memcpy(buffer, data->factory_curves.cpu_fan_table,
-+	       sizeof(data->factory_curves.cpu_fan_table));
-+	ret = msi_wmi_platform_query_unlocked(data, MSI_PLATFORM_SET_FAN,
-+					      buffer, sizeof(buffer));
-+	if (ret < 0)
-+		return ret;
-+
-+	memcpy(buffer, data->factory_curves.gpu_fan_table,
-+	       sizeof(data->factory_curves.gpu_fan_table));
-+	ret = msi_wmi_platform_query_unlocked(data, MSI_PLATFORM_SET_FAN,
-+					      buffer, sizeof(buffer));
-+	if (ret < 0)
-+		return ret;
-+
-+	memcpy(buffer, data->factory_curves.cpu_temp_table,
-+	       sizeof(data->factory_curves.cpu_temp_table));
-+	ret = msi_wmi_platform_query_unlocked(
-+		data, MSI_PLATFORM_SET_TEMPERATURE, buffer, sizeof(buffer));
-+	if (ret < 0)
-+		return ret;
-+
-+	memcpy(buffer, data->factory_curves.gpu_temp_table,
-+	       sizeof(data->factory_curves.gpu_temp_table));
-+	ret = msi_wmi_platform_query_unlocked(
-+		data, MSI_PLATFORM_SET_TEMPERATURE, buffer, sizeof(buffer));
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+
- static umode_t msi_wmi_platform_is_visible(const void *drvdata, enum hwmon_sensor_types type,
- 					   u32 attr, int channel)
- {
-@@ -603,9 +702,19 @@ static int msi_wmi_platform_write(struct device *dev, enum hwmon_sensor_types ty
- 				return -EINVAL;
- 			}
- 
--			return msi_wmi_platform_query_unlocked(
-+			ret = msi_wmi_platform_query_unlocked(
- 				data, MSI_PLATFORM_SET_AP, buffer,
- 				sizeof(buffer));
-+			if (ret < 0)
-+				return ret;
-+
-+			if (val == 2 && data->quirks->restore_curves) {
-+				ret = msi_wmi_platform_curves_load(data);
-+				if (ret < 0)
-+					return ret;
-+			}
-+
-+			return 0;
- 		default:
- 			return -EOPNOTSUPP;
- 		}
-@@ -1373,6 +1482,13 @@ static int msi_wmi_platform_probe(struct wmi_device *wdev, const void *context)
- 
- 	msi_wmi_platform_profile_setup(data);
- 
-+	if (data->quirks->restore_curves) {
-+		guard(mutex)(&data->wmi_lock);
-+		ret = msi_wmi_platform_curves_save(data);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	return msi_wmi_platform_hwmon_init(data);
- }
- 
-@@ -1382,6 +1498,11 @@ static void msi_wmi_platform_remove(struct wmi_device *wdev)
- 
- 	if (data->quirks->charge_threshold)
- 		battery_hook_unregister(&data->battery_hook);
-+
-+	if (data->quirks->restore_curves) {
-+		guard(mutex)(&data->wmi_lock);
-+		msi_wmi_platform_curves_load(data);
-+	}
- }
- 
- static const struct wmi_device_id msi_wmi_platform_id_table[] = {
--- 
-2.49.0
+On Sun May 11, 2025 at 5:44 PM -03, Antheas Kapenekakis wrote:
+> This draft patch series brings into parity the msi-wmi-platform driver wi=
+th
+> the MSI Center M Windows application for the MSI Claw (all models).
+> Unfortunately, MSI Center M and this interface do not have a discovery AP=
+I,
+> necessitating the introduction of a quirk system.
+>
+> While this patch series is fully functional and tested, there are still
+> some issues that need to be addressed:
+>   - Armin notes we need to disable fan curve support by default and quirk
+>     it as well, as it is not supported on all models. However, the way
+>     PWM enable ops work, this makes it a bit difficult, so I would like
+>     some suggestions on how to rework this.
 
+If I understood the question correctly, then you should control the
+visibility of all "curve" related attributes with the quirk.
+
+The custom hwmon attribute_group has an is_visible callback, and so do
+the hwmon_ops.
+
+>   - It turns out that to fully disable the fan curve, we have to restore
+>     the default fan values. This is also what is done on the OEM software=
+.
+>     For this, the last patch in the series is used, which is a bit dirty.
+
+I have a couple questions about this.
+
+* What are the default fan curves? Can these be statically defined?
+* Are user-defined fan curves persistent between reboots?
+
+I have some doubts about the approach you took on the last patch, but I
+want to understand how the platform works first.
+
+>
+> Sleep was tested with all values being preserved during S0iX (platform
+> profile, fan curve, PL1/PL2), so we do not need suspend/resume hooks, at
+> least for the Claw devices.
+>
+> For PL1/PL2, we use firmware-attributes. So for that I +cc Kurt since if
+> his new high level interface is merged beforehand, we can use that instea=
+d.
+
+Hopefully!
+
+--=20
+ ~ Kurt
+
+>
+> Antheas Kapenekakis (8):
+>   platform/x86: msi-wmi-platform: Add unlocked msi_wmi_platform_query
+>   platform/x86: msi-wmi-platform: Add quirk system
+>   platform/x86: msi-wmi-platform: Add platform profile through shift
+>     mode
+>   platform/x86: msi-wmi-platform: Add PL1/PL2 support via firmware
+>     attributes
+>   platform/x86: msi-wmi-platform: Add charge_threshold support
+>   platform/x86: msi-wmi-platform: Drop excess fans in dual fan devices
+>   platform/x86: msi-wmi-platform: Update header text
+>   platform/x86: msi-wmi-platform: Restore fan curves on PWM disable and
+>     unload
+>
+> Armin Wolf (2):
+>   platform/x86: msi-wmi-platform: Use input buffer for returning result
+>   platform/x86: msi-wmi-platform: Add support for fan control
+>
+>  .../wmi/devices/msi-wmi-platform.rst          |   26 +
+>  drivers/platform/x86/Kconfig                  |    3 +
+>  drivers/platform/x86/msi-wmi-platform.c       | 1181 ++++++++++++++++-
+>  3 files changed, 1156 insertions(+), 54 deletions(-)
+>
+>
+> base-commit: 62b1dcf2e7af3dc2879d1a39bf6823c99486a8c2
+
+
+--1917ec96a486740fa601ecfd0c45a92a45394f0234bd152b47b6d3031405
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSHYKL24lpu7U7AVd8WYEM49J/UZgUCaCEzCAAKCRAWYEM49J/U
+ZvMVAP90EoPkVW7VqHuwNlfls7tgNzziX1CAK5Eu6S5HKDVw+QD/VFui/pt6/cZX
+xPsGAD7Fgq9WqgM4WaErpofj5IHf2gw=
+=ZTi6
+-----END PGP SIGNATURE-----
+
+--1917ec96a486740fa601ecfd0c45a92a45394f0234bd152b47b6d3031405--
 
