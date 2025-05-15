@@ -1,136 +1,154 @@
-Return-Path: <linux-hwmon+bounces-8318-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8322-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D92AB8193
-	for <lists+linux-hwmon@lfdr.de>; Thu, 15 May 2025 10:55:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 668B2AB8229
+	for <lists+linux-hwmon@lfdr.de>; Thu, 15 May 2025 11:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12FC71BC27CE
-	for <lists+linux-hwmon@lfdr.de>; Thu, 15 May 2025 08:53:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BEF87A9C00
+	for <lists+linux-hwmon@lfdr.de>; Thu, 15 May 2025 09:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5074028CF6B;
-	Thu, 15 May 2025 08:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBEA296D2C;
+	Thu, 15 May 2025 09:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=inventec.com header.i=@inventec.com header.b="JIbYk9p2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jJv3vwR0"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B89128AB0C
-	for <linux-hwmon@vger.kernel.org>; Thu, 15 May 2025 08:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B682D28D830
+	for <linux-hwmon@vger.kernel.org>; Thu, 15 May 2025 09:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747299205; cv=none; b=Dx7E5qn+pJR/UX63B9QW2X4IhazpgZZ0DqQTq8R3WBZwbc7/CRR8IqUmR5C3LxxEXFnZGekGnbkcKWJG+wlhcTQDQHvKgIwcOQvF7Btb9BbahU9VZb8iUAf6dsE0g0ffPS4GgmEk/UngZQjeePs9k03fCPuiiyS22N6ixvO/aY0=
+	t=1747300327; cv=none; b=cR13MNkivwbAsuC3rcakjbbEEVfyGE8E+6EfKd1x7h9pWpfkApiEabByWmmXxATV5M9E1haWt+sZLVZ0h7psDG+dijz0NsznAIXrPJf8VhDhoNtHLqsAoSAUOL3qW7vs+k80jFDeu8+cBydGgHZxYrAbXhcRVQAsrPCcimhL1WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747299205; c=relaxed/simple;
-	bh=lIfNCPP66O5sWacTogM/feH6CoiW9xHNdDEGcTAOa1g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gm73ZkisVKY5pZUt52JzD/TEiG6rHmW/Ny9xBex1/IXg2H2i7HguLhvSO/lMaUy5F6SC9JyDjq5a/I8smX7Cl2dYNLBhE+zKICil7Id5yH/mP55Xkyf57Q3gh/Gh9FDXddAv7HgTHpxk6vtej3ewedk2Vd3zzqccs31/Gdke4ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inventec.com; spf=pass smtp.mailfrom=inventec.com; dkim=pass (2048-bit key) header.d=inventec.com header.i=@inventec.com header.b=JIbYk9p2; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inventec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inventec.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-22e16234307so7393755ad.0
-        for <linux-hwmon@vger.kernel.org>; Thu, 15 May 2025 01:53:21 -0700 (PDT)
+	s=arc-20240116; t=1747300327; c=relaxed/simple;
+	bh=Y8fh0ydbwDFuT4JP0Uktyo5VIuBqssqojenovaU59/E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ryuLYOj3RtpZ8P3f3WDNvrvaCbA7GamT25kg64XeT8LpsWtop24gxtF5pWbKdUnAW3xUeaXidIgCxC2npNEoaEmnyBdg4lUL/6/EErJkFWtiSYAjfHRZJutE4BC9la4/VpGICAPeOSxVwCwkInJMfjhvlmRmooUII2/oy3EU0n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jJv3vwR0; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ce71582e9so5315975e9.1
+        for <linux-hwmon@vger.kernel.org>; Thu, 15 May 2025 02:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=inventec.com; s=google; t=1747299201; x=1747904001; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nOVoQnwWT25lQttWoZH7JoBjuOJGRtQg1frpngi8VzY=;
-        b=JIbYk9p23k25N0ts46ZfByaxfR0wUe8eftbnQ8WcAraUkc5xwLHLFqGjjEukAywz6N
-         xSR1QlxoxfR27yuHr2SMsufGmo4iLnqENPkJKf0yWc6eUI7Ip51A+C8pXOwOTTsMWTcA
-         2m21uEEzRYwdxC0NsLOM2H6iSYtdMdDzNxlQI2FLcuBTS9IyA/b2O+4ZzbywUS0ZM+Go
-         M1ln70M26ZUX26+5VM+EUUV4+kf13mIc9ImYLFzoIxZSZuYL8fXnC0Fnomg92SCdwsy3
-         wIfQATH+vKhLNKmwIZ4b5TPob6Rp6xCh/kSfn2VeVPMTyC70Eyl7YnXo+D0KjFRIaBor
-         /I0w==
+        d=linaro.org; s=google; t=1747300322; x=1747905122; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CAE9bz2isgxzUGbrKGqqEdeq1PEN+8OwnZGGftLgteU=;
+        b=jJv3vwR0aSTmk0oZeJL61m/SKSS731rgOU+85WuPrAwyCrQspNh4lPIk3tIJKmWaYD
+         u3zp9d2VeDqo/yRrfPqotiW+R5Jzvu+J386ew48fRkQOEiFKEXrwP05CHUgDflCFgS1S
+         bAlh2Cvx1MXcvEE1v4ENNQGy0adlfxzQDXMJ4Ucug9W3v1FXX3STo9cpedj1XwgUII/f
+         B4yO/3D0sP4PVAiDBL0iNqWf2eVVGdkauG/LMQkow1Ny/vU6jysg7uK17qJ+6ZyngIIo
+         n59n+6/2j13DMfRym3MC6S/QwAmi+XuJb+TKLAxSZ8URqSJvFgdE7WTH4YGU9Z/VqDmz
+         RO7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747299201; x=1747904001;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nOVoQnwWT25lQttWoZH7JoBjuOJGRtQg1frpngi8VzY=;
-        b=pPsKVxxMtAgmOffNoIGTNgXOXsVpHxN2nTGjD+3b7lUvTVlhPBC3PuNJowEcGq2dld
-         fApA0tzwZam11/owAZW4qGrQLmdzTRcZdgqQblKKasMBjDQWMWoDNLONTvZwzgi6MzxR
-         0qveN6i0Uf9pz+SEKlVrxQYcalhOMwBT/cBK4aBY+510nRT/8gxkvOGrKNFJCEAra7Og
-         rNVKRpbN2s0/mYgT5It7uRGZVQSZQJgwpM8fYD61mif9x0HFwm8xq13UYqBKbUwHCOxx
-         M/k860KfrXJt79FdSRXyVcttI+Px3KnfWw4Qz7B4gwha/7KADtcKtEVuPhOCynmo29yR
-         G14Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVdrDbtcFbDrC2T4P91aUHchWTBedgS5VwqXG1J55P55dbvjV0mUpU4XoIuB/T6dlMYnMRYT5nMQuC5ug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLbZvsghEWJ+paEBii9/4ISwyemMV1FEV2m38uD0pb5Gn5Q0c4
-	N8Rxz9nggeXkARr+lxp6uGnzXsW0AEVKhteLyf4y/zwOo4YsNaeoFtjYX+kR9Zw=
-X-Gm-Gg: ASbGnctkPhStGZtwKk7rUtyQu1ePA3t2gkCFBzlBodE4sJKhHnDKBrfL/a91FMTmkyk
-	Pdok+G3naUP6sRh7Yy0eWW5z/67Gs2vwS1VUBMR01QKrTTowL54McpbbFY6JE4JGRlYOTA8zlvU
-	cq7O37v7R2lpAdK9SY/k7lQL15tnm8Etpv7H6OrrJSckSMEsHCFTKQP3LrtlxryNkzWyQ8ecaH7
-	yR8LiXRjzlOkweuWsStJF0kqMh9+hDBY+pNuwQ1HSU2o+3GNhMT9mUdCxKD3hoYbheJWwbtgGuP
-	IhZVPN/Cpc1BJ786l9U3ZGN/dtoDYIzMY6gErVMCbjSMUHgZa7HefZBd43Zb5Vajioj8HqFCV96
-	u5X8KwilIpxgedYonkxUALhv8ZK4J+YYD
-X-Google-Smtp-Source: AGHT+IENsPZ/AMQVPFzwdzV24c1hYE73gMI1F84hexuGBFYoNLNqWR0VXSlco8GETzsjYyrN3LMd4Q==
-X-Received: by 2002:a17:903:1252:b0:21f:2e:4e4e with SMTP id d9443c01a7336-231b3970b19mr36155395ad.5.1747299200653;
-        Thu, 15 May 2025 01:53:20 -0700 (PDT)
-Received: from localhost.localdomain (60-250-242-163.hinet-ip.hinet.net. [60.250.242.163])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc7742f3csm111237665ad.99.2025.05.15.01.53.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 May 2025 01:53:20 -0700 (PDT)
-From: Chiang Brian <chiang.brian@inventec.com>
-To: chiang.brian@inventec.com
-Cc: alex@ghiti.fr,
-	aou@eecs.berkeley.edu,
-	corbet@lwn.net,
-	jdelvare@suse.com,
-	linux-doc@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux@roeck-us.net,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com
-Subject: Re: [PATCH v7 2/2] hwmon: (pmbus/tps53679) Add support for TPS53685
-Date: Thu, 15 May 2025 16:45:40 +0800
-Message-Id: <20250515084540.1558914-1-chiang.brian@inventec.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250515083706.1554823-1-chiang.brian@inventec.com>
-References: <20250515083706.1554823-1-chiang.brian@inventec.com>
+        d=1e100.net; s=20230601; t=1747300322; x=1747905122;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CAE9bz2isgxzUGbrKGqqEdeq1PEN+8OwnZGGftLgteU=;
+        b=vHB7pVyR4MZPCVC6bpKqFhBOng+x1bociOmVLfRff9RkZF5H77OzDLQ1i4HZNM3+XN
+         cXHiHqOZ1ki4dIV/J8nrvdNbF53YDqsYPPzHuMDtKZzAMNdnIZv9UraFe4fGrt0Pc0+p
+         WoChqmn6tHq9WUXn1mozKWt90HDnXBUYmeZGqwB6SLW1Qe3EWYa1gbRAtrG6T5NVzzRv
+         T+phgQdh2kQG5IYlkTQieIXHi86OaNpj3VBzYTz0AXfbQLuYjbFuXothhjjhl9L3YFkG
+         a9R7OkRZpC59icsV7A6mo8AAHzDyNckWr7UqcFOSk73ClvxMU4e/0aH3wcBAuBx+D8SN
+         dsnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUctrdH+xRFXzZhcFtYxHaeDfXMWCjnBmIOIkXMmYtXHSCYcXcp/gnxkUYNtDHQPxaNgRnsqmesbQ9Xg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5EXD0jjVSZ4B6XkHftyaMpe3g4+ydj9osYknasMe9OzKEmndZ
+	THZKI07ibinvylhkZj9Z5PEaSd34bRFLxUBrSzWhCAg4qUgHu5SjXRHWSYBM8gU=
+X-Gm-Gg: ASbGncsE9EeSo19v/qDtwPprUIHf+40keuE6PKEcWaHLm2jq8/tY7D57vi7W/so7HWi
+	Ym1wpMVc8n3pUkZRuKDdA/XiCESzY5+HS2SjVQlryGTTH8cUZrneOhcmMvtygnObQgbfxFH7fJr
+	BKWerL4YJ4g320GGiBoLrFf8sOfM7fJRzcBDNC+B04ILvHsOkUWXOUt4EWMfLaLj+DRAyrpjBV9
+	czwGRDH90u/tTEsHHVY0nkGxxO8UYIqmb5S64Zqy3jXWX8ElBfk6oKRcTZ9S0gc1LyIhqN8ZYmg
+	Dlm1hwIp+yFMxhMYV4p4Y6TE39cp5kBHYpLZ8JF61H3puz+FyaAbmJ3hQIb7J8u/d9uAZMwOcSm
+	dmSxDMUgPwkU5
+X-Google-Smtp-Source: AGHT+IEiWqZK+wIF0dIQPPNEPiVIMFChIw3pA6T9sTYgeSc0xYst5cv/piO7TsYycRsa/pH81nx0gg==
+X-Received: by 2002:a05:600c:b91:b0:43c:f597:d589 with SMTP id 5b1f17b1804b1-442f2177567mr56412345e9.27.1747300321871;
+        Thu, 15 May 2025 02:12:01 -0700 (PDT)
+Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a1f57de100sm21837759f8f.2.2025.05.15.02.11.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 May 2025 02:12:01 -0700 (PDT)
+Message-ID: <726e96bd-d4c9-450b-9161-241f05d3d82f@linaro.org>
+Date: Thu, 15 May 2025 11:11:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] dt-bindings: timer: Add Sophgo SG2044 ACLINT timer
+To: Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
+ <inochiama@gmail.com>, Andi Shyti <andi.shyti@kernel.org>
+Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Thomas Bonnefille <thomas.bonnefille@bootlin.com>, ghost
+ <2990955050@qq.com>, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ Jisheng Zhang <jszhang@kernel.org>, Chao Wei <chao.wei@sophgo.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ sophgo@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-mmc@vger.kernel.org, Yixun Lan <dlan@gentoo.org>,
+ Longbin Li <looong.bin@gmail.com>
+References: <20250407010616.749833-1-inochiama@gmail.com>
+ <20250407010616.749833-2-inochiama@gmail.com>
+ <aCSmNRTVXQ51xj0m@mai.linaro.org>
+ <MA0P287MB2262A447A98778BF4BC3DB2BFE90A@MA0P287MB2262.INDP287.PROD.OUTLOOK.COM>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <MA0P287MB2262A447A98778BF4BC3DB2BFE90A@MA0P287MB2262.INDP287.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15/05/2025 08:37 GMT, Chiang Brian wrote:
+On 5/15/25 02:03, Chen Wang wrote:
+> Hi, Daniel,
 > 
-> On 14/03/2025 07:11, Chiang Brian wrote:
-> > 
-> > On 14/03/2025 04:28, Chiang Brian wrote:
-> > > Add undocumented tps53685 into compatible in dt-bindings
-> > > 
-> > > Signed-off-by: Chiang Brian <chiang.brian@inventec.com>
-> > >  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> > > index fadbd3c041c8..c98d69facb48 100644
-> > > --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> > > +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> > > @@ -380,6 +380,8 @@ properties:
-> > >            - ti,tps53676
-> > >              # TI Dual channel DCAP+ multiphase controller TPS53679
-> > >            - ti,tps53679
-> > > +            # TI Dual channel DCAP+ multiphase controller TPS53685 with AMD-SVI3
-> > > +          - ti,tps53685
-> >
-> > There is no user of such compatible, so how can it be undocumented?
+> Just a kindly reminder. There is a v2 of this patcheset [1], and I see 
+> [1/9] of v2 has been picked by Andi [2].
 > 
-> The following link is the patch which I would like to add support tps53685,
-> and I think it is the user of the compatible:
-> https://lore.kernel.org/lkml/20250314033040.3190642-1-chiang.brian@inventec.com/
+> Please double check if anything wrong or conflicted.
 
-Sorry for the wrong post, and please ignore it.
-Thank you.
+Thanks for the heads up
 
-Best Regards,
-Brian Chiang
+I think it is ok, I have the right version in my tree.
+
+If you want to double check, it is here:
+
+https://git.linaro.org/plugins/gitiles/people/daniel.lezcano/linux/+/refs/heads/timers/drivers/next
+
+
+> Link: https://lore.kernel.org/linux-riscv/20250413223507.46480-1- 
+> inochiama@gmail.com/ [1]
+> 
+> Link: https://lore.kernel.org/linux-riscv/ 
+> egkwz23tyr3psl3eaqhzdhmvxlufem5vqdlwvl4y6henyeazuz@ch3oflv4ekw7/ [2]
+> 
+> 
+> On 2025/5/14 22:18, Daniel Lezcano wrote:
+>> On Mon, Apr 07, 2025 at 09:06:06AM +0800, Inochi Amaoto wrote:
+>>> Like SG2042, SG2044 implements an enhanced ACLINT, so add necessary
+>>> compatible string for SG2044 SoC.
+>>>
+>>> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+>>> ---
+>> Applied, thanks
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
