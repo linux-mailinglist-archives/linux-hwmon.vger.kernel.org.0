@@ -1,53 +1,54 @@
-Return-Path: <linux-hwmon+bounces-8656-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8658-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DBDAEF7DA
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 14:09:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E56AAEFE0F
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 17:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095E2188D842
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 12:07:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A5024A32CF
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 15:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749E52737E5;
-	Tue,  1 Jul 2025 12:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461D627934E;
+	Tue,  1 Jul 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYJdMCC9"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="e0VpmjOK"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.pv.icloud.com (p-west1-cluster1-host8-snip4-3.eps.apple.com [57.103.64.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3921626A09F;
-	Tue,  1 Jul 2025 12:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49FF279DD8
+	for <linux-hwmon@vger.kernel.org>; Tue,  1 Jul 2025 15:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.64.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751371632; cv=none; b=HVqjaj4iFNCi+mVJ2+HtO5trgyfhYWXe95mUSB8XL8LNBrmo91vU8NrvBlLzmmLyHUhba8G9JNVQTvirbf3awyrc4BJIrfJVB52Nf4yEjZaSLNcP/qKlxa1GFnQt3/j6OJKUwuh6liABLGc2Wlr+YEOPH/cj/wVshMUMSz5ZqKE=
+	t=1751383539; cv=none; b=HX/WfnmgLwAt0RZzXKrU0ZQM5SnRn0leNPrdxp+toKHlKVwp0jRkaPt0JlKTioWoGgpBpyVSjUN05RFfbqmI1/CKK1QYzI6BYldeWDzXzCAW1RtyEuXRWuXc9MkK2cLHJRsYFIGe5UcCd0jTvDOpcWNH2A39ptjSRMMW8VZlOGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751371632; c=relaxed/simple;
-	bh=7wkwOin07890ZbxLrRieTI3uNp6G9UwDzxti8zfSBxE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NbepEddAxXspYcfR2yynb/3JaeYh7zAIPAvnDsNJMGGtxjL8Od4l4UYKpZA6yQayr9dulX4EX6ozqQhzGsZ3TFZQCzSXcSFPd+PDPYPUqFvODzFkLvBtNuyr5eSdvHfYNHB0xRKO61kxY4ykEjYLiCaGi3fxdIKhAHe359x5vaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYJdMCC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C9EF9C4CEEB;
-	Tue,  1 Jul 2025 12:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751371631;
-	bh=7wkwOin07890ZbxLrRieTI3uNp6G9UwDzxti8zfSBxE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PYJdMCC9vxJDqqQdJbV/ma3ZMnUcfi1nEgmOaSke0FddQNvQSXrrzA6VAhyeZY9Bj
-	 nXp6zRC+aI10ZUrYE7iAUJ63lGz2hP2P/oYsrjzc7o1EzgJHGofamCpEIzvA5QtvFe
-	 7tA+jBphFtRzkuKYOfu05jd6f1Y2EVDkUlUxnMBXnXY0Sn2sZhn+BlyifPy1XxDNSO
-	 GKJTeU5v6EcRveIUnY2Qoi4rQXDZwgf2W0ji+hcjIVQiUP8tTXOejuxWVMSENsNYJb
-	 GMBFxBzxNKdBVeV6fc4fiU5e+dtcI7Fc7UmS9+BOo0YraTXY3mA/Ls0vT6grFCJcKc
-	 2UQuWcIVNRIOw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8705C7EE30;
-	Tue,  1 Jul 2025 12:07:11 +0000 (UTC)
-From: Jack Cheng via B4 Relay <devnull+Cheng.JackHY.inventec.com@kernel.org>
-Date: Tue, 01 Jul 2025 12:03:45 +0000
-Subject: [PATCH 1/2] dt-bindings: trivial: Add q50sn12072 and q54sj108a1
- support
+	s=arc-20240116; t=1751383539; c=relaxed/simple;
+	bh=/xiHoEfuz6/cTN5j+brnwCFPrNkucrnRkZA7gLvrw18=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K+gaOkTpfoz+aqLBD6zB+leQ7sOQyUOfYIRyS7t/YZHSoZMqXxJSNzQyxoTn1E+truKm+7fvqn/cUKqMDd11k4g1U6MEC7Yudpdl7EujFyD5QUi2wpZoK1Zpmrm6n9GUD0y4szhhO/5jhjQggODIxl+KX/TvKevcJi9zS7DzMgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=e0VpmjOK; arc=none smtp.client-ip=57.103.64.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=3+n81dwkBafL//lMPlx4ETy4nA09EkZFH9IrMca4OF8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme;
+	b=e0VpmjOKWR/TtEwXMHglg+hPYtMAtkte96QbOmQI7JhVo0wEHenyk1SpZjEg5Vvs0
+	 VVdyrjCvjvLFDHaQdsHdUrsDYJEBH/Yp8uFUVK/fhZL0z8srsTnfkbXpReP3EsPDK+
+	 WQKSAdntCSlUBP90IUPpJi4NMEf5A8h17DiVmj4t3NnEzBwogHAH8J2itNh5y8EzTY
+	 9GLQYJJpgchEVmliGVkbA9SMaJgBbVOB9tBpvaJLGfydhe63kPXAbCQzISWDi2pA1k
+	 T2q8w/jM0SQVsx0gOVvW0ZijwSOdd6eXUb0SYxQMc5q5UPjmvO7/K7QSm5NIwd9mue
+	 wYiW1zGjIuCJg==
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by outbound.pv.icloud.com (Postfix) with ESMTPS id B4A001800310;
+	Tue,  1 Jul 2025 15:25:32 +0000 (UTC)
+Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+	by outbound.pv.icloud.com (Postfix) with ESMTPSA id E3D9D180017B;
+	Tue,  1 Jul 2025 15:25:17 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH v2 0/9] char: misc: Various cleanup for miscdevice
+Date: Tue, 01 Jul 2025 23:24:38 +0800
+Message-Id: <20250701-rfc_miscdev-v2-0-3eb22bf533be@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -56,57 +57,79 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250701-add-support-for-q50sn12072-and-q54sn120a1-v1-1-c387baf928cb@inventec.com>
-References: <20250701-add-support-for-q50sn12072-and-q54sn120a1-v1-0-c387baf928cb@inventec.com>
-In-Reply-To: <20250701-add-support-for-q50sn12072-and-q54sn120a1-v1-0-c387baf928cb@inventec.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, Jack Cheng <Cheng.JackHY@inventec.com>, 
- Jack Cheng <cheng.jackhy@inventec.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751371491; l=1103;
- i=Cheng.JackHY@inventec.com; s=20250701; h=from:subject:message-id;
- bh=iMAIxaFU1vJJldUQGTtol5eSWpPkR5/YqPptwSKn8kY=;
- b=+nLfOUtuC/vAC7V1DydaU6IRZa01xhp3nYid+nup9vz3j5XIxoeil/eamWmynC+WKvwxfX4g/
- 3hTCxrTpXX4B7/LhG3NlV/7uDxCjM7MMXn26cUhKGhf/+/E9n6yMtlL
-X-Developer-Key: i=Cheng.JackHY@inventec.com; a=ed25519;
- pk=L+GNI15NJXj7JAu9YqFXp9hL3rwZWbBbjlEeDjPvm68=
-X-Endpoint-Received: by B4 Relay for Cheng.JackHY@inventec.com/20250701
- with auth_id=449
-X-Original-From: Jack Cheng <Cheng.JackHY@inventec.com>
-Reply-To: Cheng.JackHY@inventec.com
+X-B4-Tracking: v=1; b=H4sIALf9Y2gC/1XMQQrCMBCF4auUWZsySYgFV95DRMLMxAZMo4kGo
+ fTuBjfi5sG3eP8KVUqUCodhhSIt1piXDrMbgGa/XEVF7gaDxuGEWpVAlxQrsTRlHbO1GmkihP6
+ 4Fwnx/a2dzt2h5KSecxH/a+wN/jWaVloF9saxQ+PtdMy1jo+Xv1FOaewD2/YBPLFDtacAAAA=
+X-Change-ID: 20250701-rfc_miscdev-35dd3310c7c0
+To: Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Rudolf Marek <r.marek@assembler.cz>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+ Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+ linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org, 
+ Zijun Hu <zijun.hu@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDEwMyBTYWx0ZWRfXw3vmlR/rz6EC
+ J7f+eSwcTCRJ3b44G6xnwHtcacUqVQgzWrLye/CE8vICli6tMq7httcE9yAVb2kmevlk56H2WOu
+ p3MrzrhJFQmQSSgBqutCO+8DMSPF9+WpWOP4FJgbtJwuDAzxcVKiiAibP5GUOF+B0L0fm2kJzlr
+ mnLOX1p1hPNYIIXUpiv1PbdH9p/KC+YROHpwiEhR5aIP3YcExOV9y54etMetqguF7DaYGGxsbcp
+ Ii3eIEuONZX+NaOIvaLood8HIbPUH8dEhlTL3ScS4XPhd3PIE3keDc+NjpmjgMY6Z9Q0QHLxI=
+X-Proofpoint-GUID: TAZS-eDz8OnWu2xISqFutSn1uKq1H9Li
+X-Proofpoint-ORIG-GUID: TAZS-eDz8OnWu2xISqFutSn1uKq1H9Li
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ phishscore=0 clxscore=1011 mlxlogscore=973 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2506060001 definitions=main-2507010103
 
-From: Jack Cheng <cheng.jackhy@inventec.com>
+This patch series is to do cleanup for:
 
-Add support for the Delta Electronics q50sn12072 and q54sj108a1
-1/4 Brick DC/DC Regulated Power Modules.
+- Miscdevice APIs
+- Miscdevice kunit test cases
+- Drivers which use miscdevice APIs
 
-Signed-off-by: Jack Cheng <cheng.jackhy@inventec.com>
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
 ---
- Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+Previous discussion link:
+https://lore.kernel.org/all/20250620-rfc_miscdev-v1-1-fda25d502a37@oss.qualcomm.com
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 27930708ccd5..dfcdf0c4aca3 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -78,7 +78,11 @@ properties:
-             # Delta Electronics DPS920AB 920W 54V Power Supply
-           - delta,dps920ab
-             # 1/4 Brick DC/DC Regulated Power Module
-+          - delta,q50sn12072
-+            # 1/4 Brick DC/DC Regulated Power Module
-           - delta,q54sj108a2
-+            # 1/4 Brick DC/DC Regulated Power Module
-+          - delta,q54sn120a1
-             # Devantech SRF02 ultrasonic ranger in I2C mode
-           - devantech,srf02
-             # Devantech SRF08 ultrasonic ranger
+---
+Zijun Hu (9):
+      char: misc: Move drivers/misc/misc_minor_kunit.c to drivers/char/
+      char: misc: Adapt and add test cases for simple minor space division
+      char: misc: Disallow registering miscdevice whose minor > MISC_DYNAMIC_MINOR
+      char: misc: Add a reentry test case for dynamic minor request
+      char: misc: Make registering dynamic device reentry
+      char: misc: Does not request module for miscdevice with dynamic minor
+      char: misc: Allocate 4 more fixed minors for watchdog
+      char: misc: Define fixed minor EISA_EEPROM_MINOR in linux/miscdevice.h
+      sparc: kernel: apc: Remove macro APC_MINOR defination
 
+ arch/sparc/kernel/apc.c                   |  3 +-
+ drivers/char/Makefile                     |  1 +
+ drivers/char/misc.c                       | 16 +++++-
+ drivers/{misc => char}/misc_minor_kunit.c | 95 +++++++++++++++++++++----------
+ drivers/hwmon/fschmd.c                    |  3 +-
+ drivers/hwmon/w83793.c                    |  3 +-
+ drivers/misc/Makefile                     |  1 -
+ drivers/parisc/eisa_eeprom.c              |  2 -
+ drivers/watchdog/cpwd.c                   |  6 +-
+ include/linux/miscdevice.h                | 13 +++++
+ 10 files changed, 100 insertions(+), 43 deletions(-)
+---
+base-commit: 626e89412dfb88766d90d842af4d9ec432d8526f
+change-id: 20250701-rfc_miscdev-35dd3310c7c0
+
+Best regards,
 -- 
-2.43.0
-
+Zijun Hu <zijun.hu@oss.qualcomm.com>
 
 
