@@ -1,44 +1,45 @@
-Return-Path: <linux-hwmon+bounces-8650-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8654-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CA6AEF403
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 11:58:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09278AEF456
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 12:04:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 967383A7147
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 09:58:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BFC87AD700
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 10:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C22626E6E4;
-	Tue,  1 Jul 2025 09:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DAD273D68;
+	Tue,  1 Jul 2025 10:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="E2Cdfc0f"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="cdyhgIpp"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from proxy41135.mail.163.com (proxy25215.mail.163.com [103.129.252.15])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B157C70810;
-	Tue,  1 Jul 2025 09:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.129.252.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B786273812;
+	Tue,  1 Jul 2025 10:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751363915; cv=none; b=S/2lRR0fNTRWYsYaI/ltGHvOByQk2q0Vu1VwPSGAn62clWUeFf+MKupLP+bfo6mQHL28RAnGFqWCZ7ORLPAHVIg8JirVFpK0pMwh2ESqi5KOvk9wSHPWZ413y6cSB1GlQwUzxjJUW3JWlFD/K9TwFMq7z5vsrkG4zsZa+KjgBGA=
+	t=1751364096; cv=none; b=J1NpxzDuA4+4f0DsbgfpyiPsZvqETZYgqDplmSHdolrADUqrByQzt88hVWK5UZWNLffUNB5yW6o5Yey0jj/P+v4gZnUSNeVWVj1pGOgirQbQXG+F75P5n9i1M87l1y9MTZIj8Mk4eXR0WZyEyLrzNWoSXAzOfDr6vZNiH6JFbjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751363915; c=relaxed/simple;
-	bh=qGNAjoFJG8zm3JGUUR99OuCL/pJOrN39l9GlE/Xcr7o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LxVFoxjZdwD8kku5wPLuEhNN3vp7fgMA/vX9wXQqItTOfihAetmNVn/aVPx0t53jB2HlVCSagFLmCzL9jSktw2Cy1ZmkcFuhAM4Uw7yYG441GlRFpF0wBCLtFbjg0zw6e7psNPQufvpY2niGMDAML3m6fFd/Oh3H3c2r3yveAFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=E2Cdfc0f; arc=none smtp.client-ip=103.129.252.15
+	s=arc-20240116; t=1751364096; c=relaxed/simple;
+	bh=TMAXeG9Ax4zwoWvP0WGuB15LrX5qREtY31rJ/K8imd8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qVW06mizVulqSN9GSr9JKT4DbTuIW//LVTSbPU6CQ2JksbT5JfBs/qosEvZjz9+LWkvtLuCs9OTjUUYPn/0nZCyZri7ZEeiXQm5gDom0NfLXOVPRzNoVviwUGCcHNMwhIeXSY4hTZgFdcIGmgD+THa3aCcGGczK5AqmuyL43mUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=cdyhgIpp; arc=none smtp.client-ip=220.197.32.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/G
-	ELPfBEq4QsfPpyB+JepuYTT1ZyBNGagqKrHAXkd5s=; b=E2Cdfc0f2mZEMJ07sx
-	Vy1LUqp7nLt3WWNI+Hh4ncWxZ9SbBmCY+NCCeNEFkwnJw1Q1N9jI6dyA8+Ic5pWW
-	qHtor/3yLoE/SEvVweOqq23A7ih+Sw0oolGK9KffsN+p8a4FGIUjGG0fy3QbWACY
-	0pQBSVjIoEaVQRBJ/gTRPs4Iw=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=rQ
+	DgbozZs0wCnVTQUwk8rjb8iJ2wpvBzg/YdEDreAPA=; b=cdyhgIppjytp2U79bK
+	btCeDDPRrMkkM61+7IuJSFAYN8TL9rmTbA/EdeIiUtiQCu91rqs6atcSGmGJS2gM
+	jz7vGkp+iuzWHCNJN8Iu2tLqfb/91QIUQR/4GEfPCAJA06f94KNpmRAeInVMzEuT
+	VcRuczSVfyNH229Tl3mGFwxhM=
 Received: from mps-HP-EliteBook-840-G3.monolithicpower.com (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgC3Ohr5sGNotxc9AA--.1916S2;
-	Tue, 01 Jul 2025 17:57:15 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id M88vCgDX_zqLsWNoZKLkAQ--.58034S2;
+	Tue, 01 Jul 2025 17:59:40 +0800 (CST)
 From: wenswang@yeah.net
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -51,10 +52,12 @@ Cc: devicetree@vger.kernel.org,
 	linux-hwmon@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Wensheng Wang <wenswang@yeah.net>
-Subject: [PATCH v2 0/4] hwmon: Add support for MPS mp2869,mp29502 chip
-Date: Tue,  1 Jul 2025 17:56:25 +0800
-Message-Id: <20250701095625.1049917-1-wenswang@yeah.net>
+Subject: [PATCH v2 1/4] dt-bindings: hwmon: Add MPS mp2869 series
+Date: Tue,  1 Jul 2025 17:59:27 +0800
+Message-Id: <20250701095930.1050234-1-wenswang@yeah.net>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250701095625.1049917-1-wenswang@yeah.net>
+References: <20250701095625.1049917-1-wenswang@yeah.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -62,41 +65,49 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Mc8vCgC3Ohr5sGNotxc9AA--.1916S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jry7CF1DGF4ruw4DuFyrCrg_yoWDJrcEkw
-	sFgFZrAr1UJFs5WFZrCrn5urWUtr4FgFyxJ3ZIy398AFW3Z3ZxWFykZ3sFya47ArWUuF13
-	ZaykC395AF17KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU87l1PUUUUU==
-X-CM-SenderInfo: 5zhq24xdqjq5hhdkh0dhw/1tbiNBtdAmhjsPscgAAA3s
+X-CM-TRANSID:M88vCgDX_zqLsWNoZKLkAQ--.58034S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uF4kXry7GrW5Kr4kCr1Utrb_yoW8Gw4fpF
+	WkCF4IyF4FgF17Ca12gF1kGF45WrWDAw4kJayqyrnrKr1a9rZ7Ww4a9wn5Xan8Crs3JF4U
+	JrnFy34F9Fyjv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j8jjkUUUUU=
+X-CM-SenderInfo: 5zhq24xdqjq5hhdkh0dhw/1tbiIQyCJ2hjsYwevAAA3c
 
 From: Wensheng Wang <wenswang@yeah.net>
 
-Add mp2869,mp29502 driver in hwmon and add dt-bindings for them.
+Add support for MPS mp2869 series controller
 
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Wensheng Wang <wenswang@yeah.net>
+---
 V1 -> V2:
     add Rob's Acked-by
 
-Wensheng Wang (4):
-  dt-bindings: hwmon: Add MPS mp2869 series
-  hwmon: add MP2869 series driver
-  dt-bindings: hwmon: Add MPS mp29502
-  hwmon: add MP29502 driver
+ Documentation/devicetree/bindings/trivial-devices.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- .../devicetree/bindings/trivial-devices.yaml  |  10 +
- Documentation/hwmon/index.rst                 |   2 +
- Documentation/hwmon/mp2869.rst                | 175 +++++
- Documentation/hwmon/mp29502.rst               | 101 +++
- MAINTAINERS                                   |  14 +
- drivers/hwmon/pmbus/Kconfig                   |  18 +
- drivers/hwmon/pmbus/Makefile                  |   2 +
- drivers/hwmon/pmbus/mp2869.c                  | 711 ++++++++++++++++++
- drivers/hwmon/pmbus/mp29502.c                 | 691 +++++++++++++++++
- 9 files changed, 1724 insertions(+)
- create mode 100644 Documentation/hwmon/mp2869.rst
- create mode 100644 Documentation/hwmon/mp29502.rst
- create mode 100644 drivers/hwmon/pmbus/mp2869.c
- create mode 100644 drivers/hwmon/pmbus/mp29502.c
-
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 27930708ccd5..493e7232f09f 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -285,10 +285,18 @@ properties:
+           - mps,mp2856
+             # Monolithic Power Systems Inc. multi-phase controller mp2857
+           - mps,mp2857
++            # Monolithic Power Systems Inc. multi-phase controller mp2869
++          - mps,mp2869
+             # Monolithic Power Systems Inc. multi-phase controller mp2888
+           - mps,mp2888
+             # Monolithic Power Systems Inc. multi-phase controller mp2891
+           - mps,mp2891
++            # Monolithic Power Systems Inc. multi-phase controller mp29608
++          - mps,mp29608
++            # Monolithic Power Systems Inc. multi-phase controller mp29612
++          - mps,mp29612
++            # Monolithic Power Systems Inc. multi-phase controller mp29816
++          - mps,mp29816
+             # Monolithic Power Systems Inc. multi-phase controller mp2993
+           - mps,mp2993
+             # Monolithic Power Systems Inc. multi-phase hot-swap controller mp5920
 -- 
 2.25.1
 
