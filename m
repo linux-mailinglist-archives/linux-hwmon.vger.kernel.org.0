@@ -1,963 +1,215 @@
-Return-Path: <linux-hwmon+bounces-8653-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8657-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B90AEF459
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 12:05:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB40AEF7CD
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 14:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC1F188863B
-	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 10:04:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3A5E169131
+	for <lists+linux-hwmon@lfdr.de>; Tue,  1 Jul 2025 12:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F062737E8;
-	Tue,  1 Jul 2025 10:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BA12737EA;
+	Tue,  1 Jul 2025 12:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="G2GG9I3q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ju65JOmy"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A0E272E47;
-	Tue,  1 Jul 2025 10:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3928626B97F;
+	Tue,  1 Jul 2025 12:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751364063; cv=none; b=ASrlwJilVE4aq9Ytv+B8nx2EfOUIpBihO7WtC/XzaM9ZlgivWe5TELxRH9OiTzoDL4EfZfGsoXxicQowR43hcB+xtrkIIi4qytYeo4vWwAurXLQNu8YewRa38+cakFElvhyzV0CkeO964dm9H5bkCIH2mgOuOMFC4vDIYhByMPg=
+	t=1751371632; cv=none; b=MwsqFLrkUyaO8b+4fMLB9nddGPvWaeBNPrl6OwhFdDy+XN+7DPSH4wfQ6iAgsozDeGGw8+JhJm6ud2iRC+AU06hmtCnJ3P7k0XSnLGt7oZM2UGstU852K2YLOLbHr0PlJzKGIXqanxCvTkdAyz2xqyb6z0QEj1ZOrwhjBe/qrIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751364063; c=relaxed/simple;
-	bh=7FCqB4FrvxsXOcKve/E+N/W9127G5ZDeIGDdzNnFfQQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVZfXdRPWQoqPT89izSNKIlYrUuYi2CmXl/QRCHePPGrOGhDLHJhmueDkxftZ1CXMIWAspFcPlHWS50JLZs8GXSOO1a64snhOyEouFnQr8lnHB3LfqKad+IvQVuW6ZOHgPB6RTU4XgJ9+ouY4Sq+umxci3QlaJwvrYM9yBQAVEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=G2GG9I3q; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=t+3zuwH/eq1s1reHvpjvbn9paGqILyAoiAoDX0MFzL4=;
-	b=G2GG9I3qpbywCn2zChHdj86JpwzcgVrGf6rrI75BosqMBCxrbGJ2NHq047uA/k
-	hHU+LWO4gic6s4khxHlqBjH63195eVs5Fz2u5h0VvHyTps+DcPgVBxRV3y5z62JX
-	EywEb/ekt7iZ7saqoxLyL6c1a2K/BJtXwKvB2BVOKUzvQ=
-Received: from mps-HP-EliteBook-840-G3.monolithicpower.com (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDX_zqLsWNoZKLkAQ--.58034S5;
-	Tue, 01 Jul 2025 17:59:58 +0800 (CST)
-From: wenswang@yeah.net
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	corbet@lwn.net
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Wensheng Wang <wenswang@yeah.net>
-Subject: [PATCH v2 4/4] hwmon: add MP29502 driver
-Date: Tue,  1 Jul 2025 17:59:30 +0800
-Message-Id: <20250701095930.1050234-4-wenswang@yeah.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250701095930.1050234-1-wenswang@yeah.net>
-References: <20250701095625.1049917-1-wenswang@yeah.net>
- <20250701095930.1050234-1-wenswang@yeah.net>
+	s=arc-20240116; t=1751371632; c=relaxed/simple;
+	bh=zdQNmqbysWdxXUYiaVVlHOhxVRge3N7XydcHJPPQNu4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fHQei9E10MGGUeC5Z8ZVVu5eQlL6aTJcbYJQk7xsUDIKy9s2GJaXlraiOx3IdF1yj2NQdOZwiQ7AecjV35yqWRvqFPkQgT5rzIMitUXigz+DPa4j6RvskvbITA5+FCh+45BTl5CXxO0+3x/UvXVCJ0G4fccPz48/5WLziBIxtZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ju65JOmy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D5222C4CEF1;
+	Tue,  1 Jul 2025 12:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751371631;
+	bh=zdQNmqbysWdxXUYiaVVlHOhxVRge3N7XydcHJPPQNu4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ju65JOmy9oCkN1QPH9pvJ14VODmGp+h0gKYTzdrsBHKcubtbU31s5XzcCI3PzmK5X
+	 bpaOMU79xBKlPk/Pk4dpKRpCuxXeareE3r5eYdZ7RCO0YAYkGGy61w6idIkvyraqsp
+	 KSPq4p5MNK82yDe6An4BioRZLi0GNJYmNVyWEvnnvEARIcOTW1pdZHGpAyMoIINarF
+	 dAHhsFu/Av+c7PmCC/iy4YXPtvOcrsnCillv1kdNA4JN9t6AU7CSkr4LsMLRaX5vo+
+	 cN1zXFhwOYqflprfph5qltj6dKqpiK/cskN0XWvHtjmC1yARDCaq2NPv8YdQuaMlDn
+	 R0QmpamrS9OUw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7917C8303A;
+	Tue,  1 Jul 2025 12:07:11 +0000 (UTC)
+From: Jack Cheng via B4 Relay <devnull+Cheng.JackHY.inventec.com@kernel.org>
+Date: Tue, 01 Jul 2025 12:03:46 +0000
+Subject: [PATCH 2/2] hwmon: (pmbus/q54sj108a2) Add support for q50sn12072
+ and q54sn120a1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:M88vCgDX_zqLsWNoZKLkAQ--.58034S5
-X-Coremail-Antispam: 1Uf129KBjvAXoWfZFWkArW7ZrWrJr43CF4DJwb_yoW8tr4fCo
-	Z3WFWruw1UJr1UuFWkKF4IqF17Xr1UAr9Yy3WYyanrWa47Ar4Fva93Cw4aqa4aya1rXan5
-	ua4vk34fta17AF17n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU2UUUUUUUU
-X-CM-SenderInfo: 5zhq24xdqjq5hhdkh0dhw/1tbiAQl9pGhjrVcM0wAAs-
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250701-add-support-for-q50sn12072-and-q54sn120a1-v1-2-c387baf928cb@inventec.com>
+References: <20250701-add-support-for-q50sn12072-and-q54sn120a1-v1-0-c387baf928cb@inventec.com>
+In-Reply-To: <20250701-add-support-for-q50sn12072-and-q54sn120a1-v1-0-c387baf928cb@inventec.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, Jack Cheng <Cheng.JackHY@inventec.com>, 
+ Jack Cheng <cheng.jackhy@inventec.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751371491; l=4040;
+ i=Cheng.JackHY@inventec.com; s=20250701; h=from:subject:message-id;
+ bh=zA/Fyy6uru6kWhlC/CVZ1MMPpQZdr70m76wF9y8wM0E=;
+ b=QlcIod5aR81TXWHqlkwVyvOkCRY/AtaejFlk3i22kPJkuiboUBmK/08hqeqhxGwLTA0PRDLNe
+ 5p8ab4oEfHcDWbfGUziBEVK5/oK3VtBAkhHAxKR7QkHymIkHyaKILOT
+X-Developer-Key: i=Cheng.JackHY@inventec.com; a=ed25519;
+ pk=L+GNI15NJXj7JAu9YqFXp9hL3rwZWbBbjlEeDjPvm68=
+X-Endpoint-Received: by B4 Relay for Cheng.JackHY@inventec.com/20250701
+ with auth_id=449
+X-Original-From: Jack Cheng <Cheng.JackHY@inventec.com>
+Reply-To: Cheng.JackHY@inventec.com
 
-From: Wensheng Wang <wenswang@yeah.net>
+From: Jack Cheng <cheng.jackhy@inventec.com>
 
-Add support for MPS VR controller mp29502. This driver exposes
-telemetry and limits value readings and writtings.
+The Q54SN12072 and Q54SN120A1 are high-efficiency, high-density DC-DC power
+module from Delta Power Modules.
 
-Signed-off-by: Wensheng Wang <wenswang@yeah.net>
+The Q54SN12072, quarter brick, single output 12V. This product provides up
+to 1200 watts of output power at 38~60V. The Q54SN12072 offers peak
+efficiency up to 98.3%@54Vin.
+
+The Q54SN120A1, quarter brick, single output 12V. This product provides up
+to 1300 watts of output power at 40~60V. The Q54SN120A1 offers peak
+efficiency up to 98.1%@54Vin.
+
+Add support for them to q54sj108a2 driver.
+
+Signed-off-by: Jack Cheng <cheng.jackhy@inventec.com>
 ---
- Documentation/hwmon/index.rst   |   1 +
- Documentation/hwmon/mp29502.rst | 101 +++++
- MAINTAINERS                     |   7 +
- drivers/hwmon/pmbus/Kconfig     |   9 +
- drivers/hwmon/pmbus/Makefile    |   1 +
- drivers/hwmon/pmbus/mp29502.c   | 691 ++++++++++++++++++++++++++++++++
- 6 files changed, 810 insertions(+)
- create mode 100644 Documentation/hwmon/mp29502.rst
- create mode 100644 drivers/hwmon/pmbus/mp29502.c
+ drivers/hwmon/pmbus/q54sj108a2.c | 51 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 7e278aa0aac3..ebc5c92e50b0 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -175,6 +175,7 @@ Hardware Monitoring Kernel Drivers
-    mp2869
-    mp2888
-    mp2891
-+   mp29502
-    mp2975
-    mp2993
-    mp5023
-diff --git a/Documentation/hwmon/mp29502.rst b/Documentation/hwmon/mp29502.rst
-new file mode 100644
-index 000000000000..308bbff65915
---- /dev/null
-+++ b/Documentation/hwmon/mp29502.rst
-@@ -0,0 +1,101 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver mp29502
-+====================
-+
-+Supported chips:
-+
-+  * MPS mp29502
-+
-+    Prefix: 'mp29502'
-+
-+Author:
-+
-+	Wensheng Wang <wenswang@yeah.net>
-+
-+Description
-+-----------
-+
-+This driver implements support for Monolithic Power Systems, Inc. (MPS)
-+MP29502 Digital Multi-phase Controller.
-+
-+Device compliant with:
-+
-+- PMBus rev 1.3 interface.
-+
-+The driver exports the following attributes via the 'sysfs' files
-+for input voltage:
-+
-+**in1_input**
-+
-+**in1_label**
-+
-+**in1_crit**
-+
-+**in1_crit_alarm**
-+
-+The driver provides the following attributes for output voltage:
-+
-+**in2_input**
-+
-+**in2_label**
-+
-+**in2_crit**
-+
-+**in2_crit_alarm**
-+
-+**in2_lcrit**
-+
-+**in2_lcrit_alarm**
-+
-+The driver provides the following attributes for input current:
-+
-+**curr1_input**
-+
-+**curr1_label**
-+
-+The driver provides the following attributes for output current:
-+
-+**curr2_input**
-+
-+**curr2_label**
-+
-+**curr2_crit**
-+
-+**curr2_crit_alarm**
-+
-+**curr2_max**
-+
-+**curr2_max_alarm**
-+
-+The driver provides the following attributes for input power:
-+
-+**power1_input**
-+
-+**power1_label**
-+
-+**power1_max**
-+
-+**power1_alarm**
-+
-+The driver provides the following attributes for output power:
-+
-+**power2_input**
-+
-+**power2_label**
-+
-+**power2_max**
-+
-+**power2_max_alarm**
-+
-+The driver provides the following attributes for temperature:
-+
-+**temp1_input**
-+
-+**temp1_crit**
-+
-+**temp1_crit_alarm**
-+
-+**temp1_max**
-+
-+**temp1_max_alarm**
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6436a4737e2e..6737a748dc47 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16893,6 +16893,13 @@ S:	Maintained
- F:	Documentation/hwmon/mp2891.rst
- F:	drivers/hwmon/pmbus/mp2891.c
+diff --git a/drivers/hwmon/pmbus/q54sj108a2.c b/drivers/hwmon/pmbus/q54sj108a2.c
+index 4d7086d83aa3..34233d955c48 100644
+--- a/drivers/hwmon/pmbus/q54sj108a2.c
++++ b/drivers/hwmon/pmbus/q54sj108a2.c
+@@ -21,11 +21,14 @@
+ #define PMBUS_FLASH_KEY_WRITE		0xEC
  
-+MPS MP29502 DRIVER
-+M:	Wensheng Wang <wenswang@yeah.net>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/mp29502.rst
-+F:	drivers/hwmon/pmbus/mp29502.c
-+
- MPS MP2993 DRIVER
- M:	Noah Wang <noahwang.wang@outlook.com>
- L:	linux-hwmon@vger.kernel.org
-diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index f3bf7b7fb76d..d0bdd1b5feb6 100644
---- a/drivers/hwmon/pmbus/Kconfig
-+++ b/drivers/hwmon/pmbus/Kconfig
-@@ -391,6 +391,15 @@ config SENSORS_MP2891
-       This driver can also be built as a module. If so, the module will
-       be called mp2891.
+ enum chips {
+-	q54sj108a2
++	q50sn12072,
++	q54sj108a2,
++	q54sn120a1
+ };
  
-+config SENSORS_MP29502
-+	tristate "MPS MP29502"
-+	help
-+	  If you say yes here you get hardware monitoring support for MPS
-+	  MP29502 Dual Loop Digital Multi-Phase Controller.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called mp29502.
-+
- config SENSORS_MP2975
- 	tristate "MPS MP2975"
- 	help
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index 6177047414ee..4c5ff3f32c5e 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -40,6 +40,7 @@ obj-$(CONFIG_SENSORS_MP2856)	+= mp2856.o
- obj-$(CONFIG_SENSORS_MP2869)	+= mp2869.o
- obj-$(CONFIG_SENSORS_MP2888)	+= mp2888.o
- obj-$(CONFIG_SENSORS_MP2891)	+= mp2891.o
-+obj-$(CONFIG_SENSORS_MP29502)	+= mp29502.o
- obj-$(CONFIG_SENSORS_MP2975)	+= mp2975.o
- obj-$(CONFIG_SENSORS_MP2993)	+= mp2993.o
- obj-$(CONFIG_SENSORS_MP5023)	+= mp5023.o
-diff --git a/drivers/hwmon/pmbus/mp29502.c b/drivers/hwmon/pmbus/mp29502.c
-new file mode 100644
-index 000000000000..004ee71def05
---- /dev/null
-+++ b/drivers/hwmon/pmbus/mp29502.c
-@@ -0,0 +1,691 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Hardware monitoring driver for MPS Multi-phase Digital VR Controllers(MP29502)
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include "pmbus.h"
-+
-+#define MFR_VOUT_SCALE_LOOP	0x29
-+#define MFR_SVI3_IOUT_PRT	0x67
-+#define MFR_READ_PIN_EST	0x94
-+#define MFR_READ_IIN_EST	0x95
-+#define MFR_VOUT_PROT1	0x3D
-+#define MFR_VOUT_PROT2	0x51
-+#define MFR_SLOPE_CNT_SET	0xA8
-+#define MFR_TSNS_FLT_SET	0xBB
-+
-+#define MP29502_VIN_OV_GAIN	4
-+#define MP29502_TEMP_LIMIT_OFFSET	40
-+#define MP29502_READ_VOUT_DIV	1024
-+#define MP29502_READ_IOUT_DIV	32
-+#define MP29502_IOUT_LIMIT_UINT	8
-+#define MP29502_OVUV_LIMIT_SCALE	10
-+#define MP29502_OVUV_DELTA_SCALE	50
-+#define MP29502_POUT_OP_GAIN	2
-+#define MP28502_VOUT_OV_GAIN	512
-+#define MP28502_VOUT_OV_SCALE	40
-+#define MP29502_VOUT_UV_OFFSET	36
-+
-+#define MP29502_PAGE_NUM	1
-+
-+#define MP29502_RAIL_FUNC	(PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | \
-+							PMBUS_HAVE_IOUT | PMBUS_HAVE_POUT | \
-+							PMBUS_HAVE_TEMP | PMBUS_HAVE_PIN | \
-+							PMBUS_HAVE_IIN | \
-+							PMBUS_HAVE_STATUS_VOUT | \
-+							PMBUS_HAVE_STATUS_IOUT | \
-+							PMBUS_HAVE_STATUS_TEMP | \
-+							PMBUS_HAVE_STATUS_INPUT)
-+
-+struct mp29502_data {
-+	struct pmbus_driver_info info;
-+	int vout_scale;
-+	int vout_bottom_div;
-+	int vout_top_div;
-+	int ovp_div;
-+	int iout_scale;
-+};
-+
-+#define to_mp29502_data(x)	container_of(x, struct mp29502_data, info)
-+
-+static u16 mp29502_reg2data_linear11(u16 word)
-+{
-+	s16 exponent;
-+	s32 mantissa;
-+	s64 val;
-+
-+	exponent = ((s16)word) >> 11;
-+	mantissa = ((s16)((word & 0x7ff) << 5)) >> 5;
-+	val = mantissa;
-+
-+	if (exponent >= 0)
-+		val <<= exponent;
-+	else
-+		val >>= -exponent;
-+
-+	return val;
-+}
-+
-+static int
-+mp29502_identify_vout_scale(struct i2c_client *client, struct pmbus_driver_info *info,
-+			    int page)
-+{
-+	struct mp29502_data *data = to_mp29502_data(info);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_VOUT_SCALE_LOOP);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (FIELD_GET(GENMASK(12, 10), ret)) {
-+	case 0:
-+		data->vout_scale = 6400;
-+		break;
-+	case 1:
-+		data->vout_scale = 5120;
-+		break;
-+	case 2:
-+		data->vout_scale = 2560;
-+		break;
-+	case 3:
-+		data->vout_scale = 2048;
-+		break;
-+	case 4:
-+		data->vout_scale = 1024;
-+		break;
-+	case 5:
-+		data->vout_scale = 4;
-+		break;
-+	case 6:
-+		data->vout_scale = 2;
-+		break;
-+	case 7:
-+		data->vout_scale = 1;
-+		break;
-+	default:
-+		data->vout_scale = 1;
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+mp29502_identify_vout_divider(struct i2c_client *client, struct pmbus_driver_info *info,
-+			      int page)
-+{
-+	struct mp29502_data *data = to_mp29502_data(info);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_VOUT_PROT1);
-+	if (ret < 0)
-+		return ret;
-+
-+	data->vout_bottom_div = FIELD_GET(GENMASK(11, 0), ret);
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_VOUT_PROT2);
-+	if (ret < 0)
-+		return ret;
-+
-+	data->vout_top_div = FIELD_GET(GENMASK(14, 0), ret);
-+
-+	return 0;
-+}
-+
-+static int
-+mp29502_identify_ovp_divider(struct i2c_client *client, struct pmbus_driver_info *info,
-+			     int page)
-+{
-+	struct mp29502_data *data = to_mp29502_data(info);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_SLOPE_CNT_SET);
-+	if (ret < 0)
-+		return ret;
-+
-+	data->ovp_div = FIELD_GET(GENMASK(9, 0), ret);
-+
-+	return 0;
-+}
-+
-+static int
-+mp29502_identify_iout_scale(struct i2c_client *client, struct pmbus_driver_info *info,
-+			    int page)
-+{
-+	struct mp29502_data *data = to_mp29502_data(info);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_SVI3_IOUT_PRT);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (ret & GENMASK(2, 0)) {
-+	case 0:
-+	case 6:
-+		data->iout_scale = 32;
-+		break;
-+	case 1:
-+		data->iout_scale = 1;
-+		break;
-+	case 2:
-+		data->iout_scale = 2;
-+		break;
-+	case 3:
-+		data->iout_scale = 4;
-+		break;
-+	case 4:
-+		data->iout_scale = 8;
-+		break;
-+	case 5:
-+		data->iout_scale = 16;
-+		break;
-+	default:
-+		data->iout_scale = 64;
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mp29502_read_vout_ov_limit(struct i2c_client *client, struct mp29502_data *data)
-+{
-+	int ret;
-+	int ov_value;
-+
-+	/*
-+	 * This is because the vout ov fault limit value comes from
-+	 * page1 MFR_TSNS_FLT_SET reg, and other telemetry and limit
-+	 * value comes from page0 reg. So the page should be set to
-+	 * 0 after the reading of vout ov limit.
-+	 */
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_TSNS_FLT_SET);
-+	if (ret < 0)
-+		return ret;
-+
-+	ov_value = DIV_ROUND_CLOSEST(FIELD_GET(GENMASK(12, 7), ret) *
-+						   MP28502_VOUT_OV_GAIN * MP28502_VOUT_OV_SCALE,
-+						   data->ovp_div);
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return ov_value;
-+}
-+
-+static int mp29502_write_vout_ov_limit(struct i2c_client *client, u16 word,
-+				       struct mp29502_data *data)
-+{
-+	int ret;
-+
-+	/*
-+	 * This is because the vout ov fault limit value comes from
-+	 * page1 MFR_TSNS_FLT_SET reg, and other telemetry and limit
-+	 * value comes from page0 reg. So the page should be set to
-+	 * 0 after the writing of vout ov limit.
-+	 */
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_word_data(client, MFR_TSNS_FLT_SET);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_write_word_data(client, MFR_TSNS_FLT_SET,
-+					(ret & ~GENMASK(12, 7)) |
-+		FIELD_PREP(GENMASK(12, 7),
-+			   DIV_ROUND_CLOSEST(word * data->ovp_div,
-+					     MP28502_VOUT_OV_GAIN * MP28502_VOUT_OV_SCALE)));
-+
-+	return i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+}
-+
-+static int mp29502_read_byte_data(struct i2c_client *client, int page, int reg)
-+{
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (reg) {
-+	case PMBUS_VOUT_MODE:
-+		ret = PB_VOUT_MODE_DIRECT;
-+		break;
-+	default:
-+		ret = -ENODATA;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int mp29502_read_word_data(struct i2c_client *client, int page,
-+				  int phase, int reg)
-+{
-+	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-+	struct mp29502_data *data = to_mp29502_data(info);
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_STATUS_WORD:
-+		ret = -ENODATA;
-+		break;
-+	case PMBUS_READ_VIN:
-+		/*
-+		 * The MP29502 PMBUS_READ_VIN[10:0] is the vin value, the vin scale is
-+		 * 125mV/LSB. And the vin scale is set to 125mV/Lsb(using r/m/b scale)
-+		 * in MP29502 pmbus_driver_info struct, so the word data bit0-bit10 can
-+		 * be returned to pmbus core directly.
-+		 */
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = FIELD_GET(GENMASK(10, 0), ret);
-+		break;
-+	case PMBUS_READ_VOUT:
-+		/*
-+		 * The MP29502 PMBUS_READ_VOUT[11:0] is the vout value, and vout
-+		 * value is calculated based on vout scale and vout divider.
-+		 */
-+
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = DIV_ROUND_CLOSEST((ret &  GENMASK(11, 0)) *
-+								data->vout_scale *
-+								(data->vout_bottom_div +
-+								4 * data->vout_top_div),
-+								MP29502_READ_VOUT_DIV *
-+								data->vout_bottom_div);
-+		break;
-+	case PMBUS_READ_IIN:
-+		ret = pmbus_read_word_data(client, page, phase, MFR_READ_IIN_EST);
-+		if (ret < 0)
-+			return ret;
-+
-+		break;
-+	case PMBUS_READ_PIN:
-+		/*
-+		 * The MP29502 MFR_READ_PIN_EST register is linear11 format, and the
-+		 * exponent is not a constant value. But the pin scale is set to
-+		 * 1W/Lsb(using r/m/b scale). As a result, the pout read from MP29502
-+		 * should be calculated to W, then return the result to pmbus core.
-+		 */
-+
-+		ret = pmbus_read_word_data(client, page, phase, MFR_READ_PIN_EST);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = mp29502_reg2data_linear11(ret);
-+		break;
-+	case PMBUS_READ_POUT:
-+		/*
-+		 * The MP29502 PMBUS_READ_POUT register is linear11 format, and the
-+		 * exponent is not a constant value. But the pout scale is set to
-+		 * 1W/Lsb(using r/m/b scale). As a result, the pout read from MP29502
-+		 * should be calculated to W, then return the result to pmbus core.
-+		 */
-+
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = mp29502_reg2data_linear11(ret);
-+		break;
-+	case PMBUS_READ_IOUT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = DIV_ROUND_CLOSEST((ret & GENMASK(10, 0)) * data->iout_scale,
-+					MP29502_READ_IOUT_DIV);
-+		break;
-+	case PMBUS_READ_TEMPERATURE_1:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = FIELD_GET(GENMASK(10, 0), ret);
-+		break;
-+	case PMBUS_VIN_OV_FAULT_LIMIT:
-+		/*
-+		 * The MP29502 PMBUS_VIN_OV_FAULT_LIMIT is 500mV/Lsb, but
-+		 * the vin  scale is set to 125mV/Lsb(using r/m/b scale),
-+		 * so the word data should multiply by 4.
-+		 */
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = FIELD_GET(GENMASK(7, 0), ret) * MP29502_VIN_OV_GAIN;
-+		break;
-+	case PMBUS_VIN_UV_WARN_LIMIT:
-+	case PMBUS_VIN_UV_FAULT_LIMIT:
-+		/*
-+		 * The MP29502 PMBUS_VIN_UV_WARN_LIMIT and PMBUS_VIN_UV_FAULT_LIMIT
-+		 * scale is 125mV/Lsb, but the vin scale is set to 125mV/Lsb(using
-+		 * r/m/b scale), so the word data bit0-bit9 can be returned to pmbus
-+		 * core directly.
-+		 */
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = FIELD_GET(GENMASK(9, 0), ret);
-+		break;
-+	case PMBUS_VOUT_OV_FAULT_LIMIT:
-+		/*
-+		 * The MP29502 vout ov fault limit value comes from
-+		 * page1 MFR_TSNS_FLT_SET[12:7].
-+		 */
-+		ret = mp29502_read_vout_ov_limit(client, data);
-+		if (ret < 0)
-+			return ret;
-+
-+		break;
-+	case PMBUS_VOUT_UV_FAULT_LIMIT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = DIV_ROUND_CLOSEST((FIELD_GET(GENMASK(8, 0), ret) *
-+								MP29502_OVUV_LIMIT_SCALE -
-+								MP29502_VOUT_UV_OFFSET) *
-+								(data->vout_bottom_div +
-+								4 * data->vout_top_div),
-+								data->vout_bottom_div);
-+		break;
-+	case PMBUS_IOUT_OC_FAULT_LIMIT:
-+	case PMBUS_IOUT_OC_WARN_LIMIT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = DIV_ROUND_CLOSEST((ret & GENMASK(7, 0)) *
-+								data->iout_scale *
-+								MP29502_IOUT_LIMIT_UINT,
-+								MP29502_READ_IOUT_DIV);
-+		break;
-+	case PMBUS_OT_FAULT_LIMIT:
-+	case PMBUS_OT_WARN_LIMIT:
-+		/*
-+		 * The scale of MP29502 PMBUS_OT_FAULT_LIMIT and PMBUS_OT_WARN_LIMIT
-+		 * is 1°C/LSB and they have 40°C offset.
-+		 */
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = (ret & GENMASK(7, 0)) - MP29502_TEMP_LIMIT_OFFSET;
-+		break;
-+	case PMBUS_POUT_OP_WARN_LIMIT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = (ret & GENMASK(11, 0)) * MP29502_POUT_OP_GAIN;
-+		break;
-+	case PMBUS_PIN_OP_WARN_LIMIT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = (ret & GENMASK(11, 0)) * MP29502_POUT_OP_GAIN;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int mp29502_write_word_data(struct i2c_client *client, int page, int reg,
-+				   u16 word)
-+{
-+	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-+	struct mp29502_data *data = to_mp29502_data(info);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (reg) {
-+	case PMBUS_VIN_OV_FAULT_LIMIT:
-+		/*
-+		 * The PMBUS_VIN_OV_FAULT_LIMIT[7:0] is the limit value,
-+		 * and bit8-bit15 should not be changed. The scale of
-+		 * PMBUS_VIN_OV_FAULT_LIMIT is 500mV/Lsb, but the vin
-+		 * scale is set to 125mV/Lsb(using r/m/b scale), so
-+		 * the word data should divide by 4.
-+		 */
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    (ret & ~GENMASK(7, 0)) |
-+				FIELD_PREP(GENMASK(7, 0),
-+					   DIV_ROUND_CLOSEST(word,
-+							     MP29502_VIN_OV_GAIN)));
-+		break;
-+	case PMBUS_VIN_UV_WARN_LIMIT:
-+	case PMBUS_VIN_UV_FAULT_LIMIT:
-+		/*
-+		 * The PMBUS_VIN_UV_WARN_LIMIT[9:0] and PMBUS_VIN_UV_FAULT_LIMIT[9:0]
-+		 * are the limit value, and bit10-bit15 should not be changed.
-+		 */
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    (ret & ~GENMASK(9, 0)) |
-+							FIELD_PREP(GENMASK(9, 0),
-+								   word));
-+		break;
-+	case PMBUS_VOUT_OV_FAULT_LIMIT:
-+		ret = mp29502_write_vout_ov_limit(client, word, data);
-+		if (ret < 0)
-+			return ret;
-+
-+		break;
-+	case PMBUS_VOUT_UV_FAULT_LIMIT:
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    (ret & ~GENMASK(8, 0)) |
-+						FIELD_PREP(GENMASK(8, 0),
-+							   DIV_ROUND_CLOSEST(word *
-+									data->vout_bottom_div +
-+									MP29502_VOUT_UV_OFFSET *
-+									(data->vout_bottom_div +
-+									4 * data->vout_top_div),
-+									MP29502_OVUV_LIMIT_SCALE *
-+									(data->vout_bottom_div +
-+									4 * data->vout_top_div))));
-+		break;
-+	case PMBUS_IOUT_OC_FAULT_LIMIT:
-+	case PMBUS_IOUT_OC_WARN_LIMIT:
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    DIV_ROUND_CLOSEST(word *
-+							MP29502_READ_IOUT_DIV,
-+							MP29502_IOUT_LIMIT_UINT *
-+							data->iout_scale));
-+		break;
-+	case PMBUS_OT_FAULT_LIMIT:
-+	case PMBUS_OT_WARN_LIMIT:
-+		/*
-+		 * The PMBUS_OT_FAULT_LIMIT[7:0] and PMBUS_OT_WARN_LIMIT[7:0]
-+		 * are the limit value, and bit8-bit15 should not be changed.
-+		 */
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    (ret & ~GENMASK(7, 0)) |
-+					FIELD_PREP(GENMASK(7, 0),
-+						   word + MP29502_TEMP_LIMIT_OFFSET));
-+		break;
-+	case PMBUS_POUT_OP_WARN_LIMIT:
-+		/*
-+		 * The PMBUS_POUT_OP_WARN_LIMIT[11:0] and bit12-bit15 should not be
-+		 * changed.
-+		 */
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    (ret & ~GENMASK(11, 0)) |
-+				FIELD_PREP(GENMASK(11, 0),
-+					   DIV_ROUND_CLOSEST(word,
-+							     MP29502_POUT_OP_GAIN)));
-+		break;
-+	case PMBUS_PIN_OP_WARN_LIMIT:
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    DIV_ROUND_CLOSEST(word,
-+							      MP29502_POUT_OP_GAIN));
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int mp29502_identify(struct i2c_client *client, struct pmbus_driver_info *info)
-+{
-+	int ret;
-+
-+	/* Identify vout scale */
-+	ret = mp29502_identify_vout_scale(client, info, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Identify vout divider. */
-+	ret = mp29502_identify_vout_divider(client, info, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Identify ovp divider. */
-+	ret = mp29502_identify_ovp_divider(client, info, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Identify iout scale */
-+	return mp29502_identify_iout_scale(client, info, 0);
-+}
-+
-+static const struct pmbus_driver_info mp29502_info = {
-+	.pages = MP29502_PAGE_NUM,
-+	.format[PSC_VOLTAGE_IN] = direct,
-+	.format[PSC_TEMPERATURE] = direct,
-+	.format[PSC_CURRENT_OUT] = direct,
-+	.format[PSC_VOLTAGE_OUT] = direct,
-+	.format[PSC_POWER] = direct,
-+	.format[PSC_CURRENT_IN] = linear,
-+
-+	.m[PSC_VOLTAGE_IN] = 8,
-+	.R[PSC_VOLTAGE_IN] = 0,
-+	.b[PSC_VOLTAGE_IN] = 0,
-+
-+	.m[PSC_VOLTAGE_OUT] = 1,
-+	.R[PSC_VOLTAGE_OUT] = 3,
-+	.b[PSC_VOLTAGE_OUT] = 0,
-+
-+	.m[PSC_TEMPERATURE] = 1,
-+	.R[PSC_TEMPERATURE] = 0,
-+	.b[PSC_TEMPERATURE] = 0,
-+
-+	.m[PSC_CURRENT_OUT] = 1,
-+	.R[PSC_CURRENT_OUT] = 0,
-+	.b[PSC_CURRENT_OUT] = 0,
-+
-+	.m[PSC_POWER] = 1,
-+	.R[PSC_POWER] = 0,
-+	.b[PSC_POWER] = 0,
-+
-+	.func[0] = MP29502_RAIL_FUNC,
-+	.read_word_data = mp29502_read_word_data,
-+	.read_byte_data = mp29502_read_byte_data,
-+	.write_word_data = mp29502_write_word_data,
-+	.identify = mp29502_identify,
-+};
-+
-+static int mp29502_probe(struct i2c_client *client)
-+{
-+	struct pmbus_driver_info *info;
-+	struct mp29502_data *data;
-+
-+	data = devm_kzalloc(&client->dev, sizeof(struct mp29502_data),
-+			    GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	memcpy(&data->info, &mp29502_info, sizeof(*info));
-+	info = &data->info;
-+
-+	return pmbus_do_probe(client, info);
-+}
-+
-+static const struct i2c_device_id mp29502_id[] = {
-+	{"mp29502", 0},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, mp29502_id);
-+
-+static const struct of_device_id __maybe_unused mp29502_of_match[] = {
-+	{.compatible = "mps,mp29502"},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, mp29502_of_match);
-+
-+static struct i2c_driver mp29502_driver = {
-+	.driver = {
-+		.name = "mp29502",
-+		.of_match_table = mp29502_of_match,
+ enum {
+-	Q54SJ108A2_DEBUGFS_OPERATION = 0,
++	Q50SN12072_DEBUGFS_VOUT_COMMAND = 0,
++	Q54SJ108A2_DEBUGFS_OPERATION,
+ 	Q54SJ108A2_DEBUGFS_CLEARFAULT,
+ 	Q54SJ108A2_DEBUGFS_WRITEPROTECT,
+ 	Q54SJ108A2_DEBUGFS_STOREDEFAULT,
+@@ -54,6 +57,20 @@ struct q54sj108a2_data {
+ #define to_psu(x, y) container_of((x), struct q54sj108a2_data, debugfs_entries[(y)])
+ 
+ static struct pmbus_driver_info q54sj108a2_info[] = {
++	[q50sn12072] = {
++		.pages = 1,
++
++		/* Source : Delta Q50SN12072 */
++		.format[PSC_TEMPERATURE] = linear,
++		.format[PSC_VOLTAGE_IN] = linear,
++		.format[PSC_CURRENT_OUT] = linear,
++
++		.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_IIN | PMBUS_HAVE_PIN |
++		PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
++		PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT |
++		PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP |
++		PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_POUT,
 +	},
-+	.probe = mp29502_probe,
-+	.id_table = mp29502_id,
-+};
+ 	[q54sj108a2] = {
+ 		.pages = 1,
+ 
+@@ -68,6 +85,20 @@ static struct pmbus_driver_info q54sj108a2_info[] = {
+ 		PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP |
+ 		PMBUS_HAVE_STATUS_INPUT,
+ 	},
++	[q54sn120a1] = {
++		.pages = 1,
 +
-+module_i2c_driver(mp29502_driver);
++		/* Source : Delta Q54SN120A1 */
++		.format[PSC_TEMPERATURE] = linear,
++		.format[PSC_VOLTAGE_IN] = linear,
++		.format[PSC_CURRENT_OUT] = linear,
 +
-+MODULE_AUTHOR("Wensheng Wang <wenswang@yeah.net");
-+MODULE_DESCRIPTION("PMBus driver for MPS MP29502");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("PMBUS");
++		.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_IIN | PMBUS_HAVE_PIN |
++		PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
++		PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT |
++		PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP |
++		PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_POUT,
++	},
+ };
+ 
+ static ssize_t q54sj108a2_debugfs_read(struct file *file, char __user *buf,
+@@ -177,6 +208,7 @@ static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *bu
+ {
+ 	u8 flash_key[4];
+ 	u8 dst_data;
++	u16 val;
+ 	ssize_t rc;
+ 	int *idxp = file->private_data;
+ 	int idx = *idxp;
+@@ -187,6 +219,17 @@ static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *bu
+ 		return rc;
+ 
+ 	switch (idx) {
++	case Q50SN12072_DEBUGFS_VOUT_COMMAND:
++		rc = kstrtou16_from_user(buf, count, 0, &val);
++		if (rc < 0)
++			return rc;
++
++		rc = pmbus_write_word_data(psu->client, 0x00,
++					   PMBUS_VOUT_COMMAND, (const u16)val);
++		if (rc < 0)
++			return rc;
++
++		break;
+ 	case Q54SJ108A2_DEBUGFS_OPERATION:
+ 		rc = kstrtou8_from_user(buf, count, 0, &dst_data);
+ 		if (rc < 0)
+@@ -268,7 +311,9 @@ static const struct file_operations q54sj108a2_fops = {
+ };
+ 
+ static const struct i2c_device_id q54sj108a2_id[] = {
++	{ "q50sn12072", q50sn12072 },
+ 	{ "q54sj108a2", q54sj108a2 },
++	{ "q54sn120a1", q54sn120a1 },
+ 	{ },
+ };
+ 
+@@ -401,7 +446,9 @@ static int q54sj108a2_probe(struct i2c_client *client)
+ }
+ 
+ static const struct of_device_id q54sj108a2_of_match[] = {
++	{ .compatible = "delta,q50sn12072", .data = (void *)q50sn12072 },
+ 	{ .compatible = "delta,q54sj108a2", .data = (void *)q54sj108a2 },
++	{ .compatible = "delta,q54sn120a1", .data = (void *)q54sn120a1 },
+ 	{ },
+ };
+ 
+
 -- 
-2.25.1
+2.43.0
+
 
 
