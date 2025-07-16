@@ -1,286 +1,452 @@
-Return-Path: <linux-hwmon+bounces-8776-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8780-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42BCB0680E
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Jul 2025 22:50:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E434DB06EE0
+	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Jul 2025 09:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E379C5664F9
-	for <lists+linux-hwmon@lfdr.de>; Tue, 15 Jul 2025 20:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5E61A65DF5
+	for <lists+linux-hwmon@lfdr.de>; Wed, 16 Jul 2025 07:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5A1274656;
-	Tue, 15 Jul 2025 20:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88BB289E36;
+	Wed, 16 Jul 2025 07:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NUXJsXGi"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8CF1DF269
-	for <linux-hwmon@vger.kernel.org>; Tue, 15 Jul 2025 20:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6936218858;
+	Wed, 16 Jul 2025 07:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752612555; cv=none; b=qdOqaVapsdEOtwwp4qgSwgErej7wPr31j8htNfeRg4RORGvTGoirX2VV1c2MnQnCsB62+ZsvuIIbGQXgfk2UXy9hiNJNGMzNBNjy3+LdCQbkIDpgNgiB4C9o33RRwVxam9wchkIVCPXNLb/AZnuWfEa6y7tut6YOINe9YLdo5Os=
+	t=1752650551; cv=none; b=tSYFB/trpH1ian6j147MwS6JRNJrWZiMTglxI4Z6C5wmN4qrhQMX4CwftvSD+6Oqq/lX4l+ucaRV0AJHIB2ZfTttK6EqjLkXLeensg7qJKUI3ZxLu0+v7kwG0DCSdWAr5HTDnWISeILFwd2tKIdmvxKJHYbwZzGYqOp2fNYaMNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752612555; c=relaxed/simple;
-	bh=qeSiSEChF8vkI7U3jprp57CemwGFZH0pwj0CrxbU60w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lAHzJTW9d1A7SPXt+Oyte/23L0ucljkxFJVvORuPFvNF9bEqmYtQfmnEbwVu/5GsRDtCoKFsDcCeep9JxyuX1Gu0h0YX0SJXz4noZRVxOsVdz3m54tSVmBwntrprlJ9yUhJlU25ZKUFYuVhR/EbfU/a6XxrHJEurJzIDjkA0kFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1ubmaI-0008KV-KY; Tue, 15 Jul 2025 22:49:06 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 15 Jul 2025 22:49:03 +0200
-Subject: [PATCH 4/4] hwmon: ina238: Add support for INA228
+	s=arc-20240116; t=1752650551; c=relaxed/simple;
+	bh=IcBeacOtmCHFWAN7Z+3nTRHhmgap1sVpheslGNe4rrU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=g6KbxZh1Ri3ytWUpFutn8uUqH5MuPSCbMiacu9VdPkfSWwIi9TaTKVnPqjKpcAQu5pIHOe6GNL3REya9Z1zVXaHlFvMWxwFAYsCAJKzUfne2XWEjWqc3ZWkuvjGlKZP2DKBG5mqpUvDN5fzy3xKOgxSapyx+v9ggSDPkQpIP4QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NUXJsXGi; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-451d54214adso41823445e9.3;
+        Wed, 16 Jul 2025 00:22:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752650548; x=1753255348; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rQ0igjN6f0ZgtsRyAdgNl4YH74awlMukDlXQcIRUqOc=;
+        b=NUXJsXGiE3EEZjhpHs8yW3qQf3tN7p7280D6lnZ+QWaGwrOzUbkVpEzXBoKDRQYytc
+         /tMT3G5F0UcjFv0esPhwdOW2k0yZoGvODFtAblIVkeZBmtzrNt8Buly+IVkIzXvMCUTo
+         iMnXC2KoR25UD8CKiZI2cxorUcq44wfq75UuladsUIJFGjFeqpREMkwqFB7m7Vr27rD0
+         Hqr8WUrcTD1kbxzByjI96jDpNoG6sV4rSSUs/ae/Oiw/B9LZnORqqNsjFBZlpqaEt/WH
+         sE7ESJQJDd8KeC8wkbsK8+f+p+hxCAbqtRD7a1FbkhhF/gg6Bjl/33q1e52SgEQj3+lC
+         ER8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752650548; x=1753255348;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rQ0igjN6f0ZgtsRyAdgNl4YH74awlMukDlXQcIRUqOc=;
+        b=ZpQqt4IYHPjKvghJwdmVE8W+0CDb5XR0anHupwTm4Os3ud6907mS+fZweaR66zIhKD
+         3FSPiHTKn/3iF3SPvz0xhJ4oN0eUcs8kAUsSksSNR1OpWERmWm6PJvgkOJOkxVrHvlDa
+         BpmHWOF6nY1D3UdZQtaYlZohvlOI4Kky5J6I2OLdhbxYWwRhx0vBf81tZJvOknFNwbsa
+         7Gcxrn9EAEee7GiMqcBcxz0BJ9PDC3/FAFgG5C6udDdU8b0YIGAMutZkl6BkOkClHtNN
+         +W3XS1XHEyB5z+c9jMeWNigbYDwXvIV3zuaTBu/JqhhRzGwoopAIdvJy0+HHm3LXEuSb
+         P/Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCVanOkynHA0vthSxfWqKsL92qOqfIDHuNrlLqxzRQx45EK8gachESSUeUtE900W9CSHQSNcH2S4XVPp5TN6@vger.kernel.org, AJvYcCXBjFbahiUpZS2DP59hjXycZhWGjbwmhtmW4ZgAWglOlGzdFbiKQcUgwnJ9PjPtKnXrbhmdJZ9v4Sb3PA==@vger.kernel.org, AJvYcCXJ2lEU3RUCSl2hnE6I7vvgj1+GqxBl6+K6hJAa7veS5CbTYfOwo5b92OgzNuY0q9bOP8Hx5w1JKHZ8@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8pacFsDh4CqSIKtoZZQvN95t/brvRYIrGPT9T1XkCMbBzp0kd
+	g8nXG9795paJaFutbAudVAGqtmw9fDUbHwFfxgSLIG8bGqyymMxKkKt7
+X-Gm-Gg: ASbGnctKaxHQxZv7Ru3jrgghzoRhvTeFnBn2Ao5ZFzriu2mDUGJucJjqoBN5L1ZgFoO
+	348/+LTQ+2nCHSx17UJkRN/sKlwlbIe+uDAEb71LL+h1iXDmwjmVIJ1M02ZhBNDXWTh5awh0zPN
+	6k4okAEyNJ/4cm8VHPMldXrBto8JMYskfskfYeIFXDztBv3YkwmFhe1C8Cj7NoRmqwlotLKw2yi
+	PYx09hUZsz4SHAhX80eFODeSgkWEQSekGYb8qXIFj9rb3UF+6mRVBF4QPI4tGcNKunrOEfudhMZ
+	1UmRfbh9RhiRj/tped7sBCIAnrTDubFTyC57hppdxNBlSisahE5kdPc6D2vsxcbIH2kpRIez9fY
+	T86hQjfY5PjDVM1SqQ9+oYHBXzswj8uIurSiI4ocJFLtqUVNFZ7e6T/gOK6KiQdb1hyou96gEdR
+	9E0o6ChBA=
+X-Google-Smtp-Source: AGHT+IGtnpoxojmjcjwSAcTEuWBa5CvFqrND65xJLBjBnXwZl3JwqZZdhCQ8WuGYFXhqtKfrpF6Dsg==
+X-Received: by 2002:a05:600c:1c81:b0:456:161c:3d6f with SMTP id 5b1f17b1804b1-4562dfe78dfmr16440825e9.11.1752650547459;
+        Wed, 16 Jul 2025 00:22:27 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4562e82ec6esm12091705e9.28.2025.07.16.00.22.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 00:22:27 -0700 (PDT)
+Message-ID: <bc45e2de04d6decfcbfa60502e75e8b7bef1450e.camel@gmail.com>
+Subject: Re: [PATCH 2/7] iio: inkern: Add API for reading/writing events
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Sean Anderson <sean.anderson@linux.dev>, Jonathan Cameron
+ <jic23@kernel.org>,  Jean Delvare <jdelvare@suse.com>, Guenter Roeck
+ <linux@roeck-us.net>, linux-iio@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org
+Cc: Andy Shevchenko <andy@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, linux-kernel@vger.kernel.org, David Lechner
+	 <dlechner@baylibre.com>
+Date: Wed, 16 Jul 2025 07:23:05 +0100
+In-Reply-To: <8e598681-f0a2-4ced-8f68-17384ef95de4@linux.dev>
+References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+	 <20250715012023.2050178-3-sean.anderson@linux.dev>
+	 <0fad26b4384e4163f4807f6b779361099f505a86.camel@gmail.com>
+	 <8e598681-f0a2-4ced-8f68-17384ef95de4@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250715-ina228-v1-4-3302fae4434b@pengutronix.de>
-References: <20250715-ina228-v1-0-3302fae4434b@pengutronix.de>
-In-Reply-To: <20250715-ina228-v1-0-3302fae4434b@pengutronix.de>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
- kernel@pengutronix.de, Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7020; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=qeSiSEChF8vkI7U3jprp57CemwGFZH0pwj0CrxbU60w=;
- b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYsgo23fwhFXjrqaVHNlptausf8kwHyy9VKmbk3o007v30
- uyV32vXd5SyMIhxMMiKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACaibszIMMnsXqbGzBjvhEvH
- J+/ImFIerSCWelzKs7/WrGXTFBfxfkaGK+k64j8MNs0UWXmyP0X1bnb82dOu7n0/t+y+9qir+xg
- TEwA=
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 
-Add support for the Texas Instruments INA228 Ultra-Precise
-Power/Energy/Charge Monitor.
+On Tue, 2025-07-15 at 11:43 -0400, Sean Anderson wrote:
+> On 7/15/25 06:35, Nuno S=C3=A1 wrote:
+> > On Mon, 2025-07-14 at 21:20 -0400, Sean Anderson wrote:
+> > > Add an in-kernel API for reading/writing event properties. Like the
+> > > raw-to-processed conversion, with processed-to-raw we only convert th=
+e
+> > > integer part, introducing some round-off error.
+> > >=20
+> > > A common case is for other drivers to re-expose IIO events as sysfs
+> > > properties with a different API. To help out with this, iio_event_mod=
+e
+> > > returns the appropriate mode. It can also be used to test for existen=
+ce
+> > > if the consumer doesn't care about read/write capability.
+> > >=20
+> > > Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+> > > ---
+> >=20
+> > Just one comment on top of Andy's review
+> >=20
+> > >=20
+> > > =C2=A0drivers/iio/inkern.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 198 +++++++++++++++++++++++++++++++++++
+> > > =C2=A0include/linux/iio/consumer.h |=C2=A0 56 ++++++++++
+> > > =C2=A02 files changed, 254 insertions(+)
+> > >=20
+> > > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> > > index c174ebb7d5e6..d3bbd2444fb5 100644
+> > > --- a/drivers/iio/inkern.c
+> > > +++ b/drivers/iio/inkern.c
+> > > @@ -1028,3 +1028,201 @@ ssize_t iio_read_channel_label(struct iio_cha=
+nnel
+> > > *chan, char *buf)
+> > > =C2=A0	return do_iio_read_channel_label(chan->indio_dev, chan->channe=
+l,
+> > > buf);
+> > > =C2=A0}
+> > > =C2=A0EXPORT_SYMBOL_GPL(iio_read_channel_label);
+> > > +
+> > > +static bool iio_event_exists(struct iio_channel *channel,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_type type,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_info info)
+> > > +{
+> > > +	struct iio_chan_spec const *chan =3D channel->channel;
+> > > +	int i;
+> > > +
+> >=20
+> > Can we iio_event_exists() -> iio_event_exists_locked()? Or likely the b=
+est way
+>=20
+> wouldn't _unlocked be the convention for this file?
 
-The INA228 is very similar to the INA238 but offers four bits of extra
-precision in the temperature, voltage and current measurement fields.
-It also supports energy and charge monitoring, the latter of which is
-not supported through this patch.
+Oh, indeed!
 
-While it seems in the datasheet that some constants such as LSB values
-differ between the 228 and the 238, they differ only for those registers
-where four bits of precision have been added and they differ by a factor
-of 16 (VBUS, VSHUNT, DIETEMP, CURRENT).
-
-Therefore, the INA238 constants are still applicable with regard
-to the bit of the same significance.
-
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
- drivers/hwmon/ina238.c | 98 +++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 93 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/hwmon/ina238.c b/drivers/hwmon/ina238.c
-index 44f7ce3c1d7b5a91f67d12c1d29e1e560024a04c..f8c74317344a5bbdf933a32b8c7e5aba13beda30 100644
---- a/drivers/hwmon/ina238.c
-+++ b/drivers/hwmon/ina238.c
-@@ -107,6 +107,7 @@
- #define INA238_DIE_TEMP_LSB		1250000 /* 125.0000 mC/lsb */
- #define SQ52206_BUS_VOLTAGE_LSB		3750 /* 3.75 mV/lsb */
- #define SQ52206_DIE_TEMP_LSB		78125 /* 7.8125 mC/lsb */
-+#define INA228_DIE_TEMP_LSB		78125 /* 7.8125 mC/lsb */
- 
- static const struct regmap_config ina238_regmap_config = {
- 	.max_register = INA238_REGISTERS,
-@@ -114,9 +115,10 @@ static const struct regmap_config ina238_regmap_config = {
- 	.val_bits = 16,
- };
- 
--enum ina238_ids { ina238, ina237, sq52206 };
-+enum ina238_ids { ina238, ina237, sq52206, ina228 };
- 
- struct ina238_config {
-+	bool has_20bit_voltage_current; /* vshunt, vbus and current are 20-bit fields */
- 	bool has_power_highest;		/* chip detection power peak */
- 	bool has_energy;		/* chip detection energy */
- 	u8 temp_shift;			/* fixed parameters for temp calculate */
-@@ -137,6 +139,7 @@ struct ina238_data {
- 
- static const struct ina238_config ina238_config[] = {
- 	[ina238] = {
-+		.has_20bit_voltage_current = false,
- 		.has_energy = false,
- 		.has_power_highest = false,
- 		.temp_shift = 4,
-@@ -146,6 +149,7 @@ static const struct ina238_config ina238_config[] = {
- 		.temp_lsb = INA238_DIE_TEMP_LSB,
- 	},
- 	[ina237] = {
-+		.has_20bit_voltage_current = false,
- 		.has_energy = false,
- 		.has_power_highest = false,
- 		.temp_shift = 4,
-@@ -155,6 +159,7 @@ static const struct ina238_config ina238_config[] = {
- 		.temp_lsb = INA238_DIE_TEMP_LSB,
- 	},
- 	[sq52206] = {
-+		.has_20bit_voltage_current = false,
- 		.has_energy = true,
- 		.has_power_highest = true,
- 		.temp_shift = 0,
-@@ -163,6 +168,16 @@ static const struct ina238_config ina238_config[] = {
- 		.bus_voltage_lsb = SQ52206_BUS_VOLTAGE_LSB,
- 		.temp_lsb = SQ52206_DIE_TEMP_LSB,
- 	},
-+	[ina228] = {
-+		.has_20bit_voltage_current = true,
-+		.has_energy = true,
-+		.has_power_highest = false,
-+		.temp_shift = 0,
-+		.power_calculate_factor = 20,
-+		.config_default = INA238_CONFIG_DEFAULT,
-+		.bus_voltage_lsb = INA238_BUS_VOLTAGE_LSB,
-+		.temp_lsb = INA228_DIE_TEMP_LSB,
-+	},
- };
- 
- static int ina238_read_reg24(const struct i2c_client *client, u8 reg, u32 *val)
-@@ -199,6 +214,56 @@ static int ina238_read_reg40(const struct i2c_client *client, u8 reg, u64 *val)
- 	return 0;
- }
- 
-+static int ina228_read_shunt_voltage(struct device *dev, u32 attr, int channel,
-+				     long *val)
-+{
-+	struct ina238_data *data = dev_get_drvdata(dev);
-+	int regval;
-+	int field;
-+	int err;
-+
-+	err = ina238_read_reg24(data->client, INA238_SHUNT_VOLTAGE, &regval);
-+	if (err)
-+		return err;
-+
-+	/* bits 3-0 Reserved, always zero */
-+	field = regval >> 4;
-+
-+	/*
-+	 * gain of 1 -> LSB / 4
-+	 * This field has 16 bit on ina238. ina228 adds another 4 bits of
-+	 * precision. ina238 conversion factors can still be applied when
-+	 * dividing by 16.
-+	 */
-+	*val = (field * INA238_SHUNT_VOLTAGE_LSB) * data->gain / (1000 * 4) / 16;
-+	return 0;
-+}
-+
-+static int ina228_read_bus_voltage(struct device *dev, u32 attr, int channel,
-+				   long *val)
-+{
-+	struct ina238_data *data = dev_get_drvdata(dev);
-+	int regval;
-+	int field;
-+	int err;
-+
-+	err = ina238_read_reg24(data->client, INA238_BUS_VOLTAGE, &regval);
-+	if (err)
-+		return err;
-+
-+	/* bits 3-0 Reserved, always zero */
-+	field = regval >> 4;
-+
-+	/*
-+	 * gain of 1 -> LSB / 4
-+	 * This field has 16 bit on ina238. ina228 adds another 4 bits of
-+	 * precision. ina238 conversion factors can still be applied when
-+	 * dividing by 16.
-+	 */
-+	*val = (field * data->config->bus_voltage_lsb) / 1000 / 16;
-+	return 0;
-+}
-+
- static int ina238_read_in(struct device *dev, u32 attr, int channel,
- 			  long *val)
- {
-@@ -211,6 +276,8 @@ static int ina238_read_in(struct device *dev, u32 attr, int channel,
- 	case 0:
- 		switch (attr) {
- 		case hwmon_in_input:
-+			if (data->config->has_20bit_voltage_current)
-+				return ina228_read_shunt_voltage(dev, attr, channel, val);
- 			reg = INA238_SHUNT_VOLTAGE;
- 			break;
- 		case hwmon_in_max:
-@@ -234,6 +301,8 @@ static int ina238_read_in(struct device *dev, u32 attr, int channel,
- 	case 1:
- 		switch (attr) {
- 		case hwmon_in_input:
-+			if (data->config->has_20bit_voltage_current)
-+				return ina228_read_bus_voltage(dev, attr, channel, val);
- 			reg = INA238_BUS_VOLTAGE;
- 			break;
- 		case hwmon_in_max:
-@@ -341,13 +410,27 @@ static int ina238_read_current(struct device *dev, u32 attr, long *val)
- 
- 	switch (attr) {
- 	case hwmon_curr_input:
--		err = regmap_read(data->regmap, INA238_CURRENT, &regval);
--		if (err < 0)
--			return err;
-+		if (data->config->has_20bit_voltage_current) {
-+			err = ina238_read_reg24(data->client, INA238_CURRENT, &regval);
-+			if (err)
-+				return err;
-+			/* 4 Lowest 4 bits reserved zero */
-+			regval >>= 4;
-+		} else {
-+			err = regmap_read(data->regmap, INA238_CURRENT, &regval);
-+			if (err < 0)
-+				return err;
-+			/* sign-extend */
-+			regval = (s16)regval;
-+		}
- 
- 		/* Signed register, fixed 1mA current lsb. result in mA */
--		*val = div_s64((s16)regval * INA238_FIXED_SHUNT * data->gain,
-+		*val = div_s64(regval * INA238_FIXED_SHUNT * data->gain,
- 			       data->rshunt * 4);
-+
-+		/* Account for 4 bit offset */
-+		if (data->config->has_20bit_voltage_current)
-+			*val /= 16;
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -773,6 +856,7 @@ static int ina238_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id ina238_id[] = {
-+	{ "ina228", ina228 },
- 	{ "ina237", ina237 },
- 	{ "ina238", ina238 },
- 	{ "sq52206", sq52206 },
-@@ -781,6 +865,10 @@ static const struct i2c_device_id ina238_id[] = {
- MODULE_DEVICE_TABLE(i2c, ina238_id);
- 
- static const struct of_device_id __maybe_unused ina238_of_match[] = {
-+	{
-+		.compatible = "ti,ina228",
-+		.data = (void *)ina228
-+	},
- 	{
- 		.compatible = "ti,ina237",
- 		.data = (void *)ina237
-
--- 
-2.39.5
+>=20
+> > would be to annotate it with lockdep (though that would mean some dance=
+ to get
+> > the opaque object.
+>=20
+> I will add a lockdep annotation.
+>=20
+> --Sean
+>=20
+> > Anyways, bottom line is it should clear that iio_event_exists() is to b=
+e called
+> > with the lock held.
+> >=20
+> > - Nuno S=C3=A1
+> >=20
+> > > +	if (!channel->indio_dev->info)
+> > > +		return false;
+> > > +
+> > > +	for (i =3D 0; i < chan->num_event_specs; i++) {
+> > > +		if (chan->event_spec[i].type !=3D type)
+> > > +			continue;
+> > > +		if (chan->event_spec[i].dir !=3D dir)
+> > > +			continue;
+> > > +		if (chan->event_spec[i].mask_separate & BIT(info))
+> > > +			return true;
+> > > +	}
+> > > +
+> > > +	return false;
+> > > +}
+> > > +
+> > > +umode_t iio_event_mode(struct iio_channel *chan, enum iio_event_type=
+ type,
+> > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,=
+ enum iio_event_info
+> > > info)
+> > > +{
+> > > +	struct iio_dev *indio_dev =3D chan->indio_dev;
+> > > +	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_d=
+ev);
+> > > +	umode_t mode =3D 0;
+> > > +
+> > > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> > > +	if (!iio_event_exists(chan, type, dir, info))
+> > > +		return 0;
+> > > +
+> > > +	if (info =3D=3D IIO_EV_INFO_ENABLE) {
+> > > +		if (indio_dev->info->read_event_config)
+> > > +			mode |=3D 0444;
+> > > +
+> > > +		if (indio_dev->info->write_event_config)
+> > > +			mode |=3D 0200;
+> > > +	} else {
+> > > +		if (indio_dev->info->read_event_value)
+> > > +			mode |=3D 0444;
+> > > +
+> > > +		if (indio_dev->info->write_event_value)
+> > > +			mode |=3D 0200;
+> > > +	}
+> > > +
+> > > +	return mode;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(iio_event_mode);
+> > > +
+> > > +int iio_read_event_processed_scale(struct iio_channel *chan,
+> > > +				=C2=A0=C2=A0 enum iio_event_type type,
+> > > +				=C2=A0=C2=A0 enum iio_event_direction dir,
+> > > +				=C2=A0=C2=A0 enum iio_event_info info, int *val,
+> > > +				=C2=A0=C2=A0 unsigned int scale)
+> > > +{
+> > > +	struct iio_dev *indio_dev =3D chan->indio_dev;
+> > > +	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_d=
+ev);
+> > > +	int ret, raw;
+> > > +
+> > > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> > > +	if (!iio_event_exists(chan, type, dir, info))
+> > > +		return -ENODEV;
+> > > +
+> > > +	if (info =3D=3D IIO_EV_INFO_ENABLE) {
+> > > +		if (!indio_dev->info->read_event_config)
+> > > +			return -EINVAL;
+> > > +
+> > > +		raw =3D indio_dev->info->read_event_config(indio_dev,
+> > > +							 chan->channel, type,
+> > > +							 dir);
+> > > +		if (raw < 0)
+> > > +			return raw;
+> > > +
+> > > +		*val =3D raw;
+> > > +		return 0;
+> > > +	}
+> > > +
+> > > +	if (!indio_dev->info->read_event_value)
+> > > +		return -EINVAL;
+> > > +
+> > > +	ret =3D indio_dev->info->read_event_value(indio_dev, chan->channel,
+> > > type,
+> > > +						dir, info, &raw, NULL);
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	return iio_convert_raw_to_processed_unlocked(chan, raw, val, scale)=
+;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(iio_read_event_processed_scale);
+> > > +
+> > > +static int iio_convert_processed_to_raw_unlocked(struct iio_channel =
+*chan,
+> > > +						 int processed, int *raw,
+> > > +						 unsigned int scale)
+> > > +{
+> > > +	int scale_type, scale_val, scale_val2;
+> > > +	int offset_type, offset_val, offset_val2;
+> > > +	s64 r, scale64, raw64;
+> > > +
+> > > +	scale_type =3D iio_channel_read(chan, &scale_val, &scale_val2,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO_CHAN_INFO_SCALE);
+> > > +	if (scale_type < 0) {
+> > > +		raw64 =3D processed / scale;
+> > > +	} else {
+> > > +		switch (scale_type) {
+> > > +		case IIO_VAL_INT:
+> > > +			scale64 =3D (s64)scale_val * scale;
+> > > +			if (scale64 <=3D INT_MAX && scale64 >=3D INT_MIN)
+> > > +				raw64 =3D processed / (int)scale64;
+> > > +			else
+> > > +				raw64 =3D 0;
+> > > +			break;
+> > > +		case IIO_VAL_INT_PLUS_MICRO:
+> > > +			scale64 =3D scale_val * scale * 1000000LL + scale_val2;
+> > > +			raw64 =3D div64_s64_rem(processed, scale64, &r);
+> > > +			raw64 =3D raw64 * 1000000 +
+> > > +				div64_s64(r * 1000000, scale64);
+> > > +			break;
+> > > +		case IIO_VAL_INT_PLUS_NANO:
+> > > +			scale64 =3D scale_val * scale * 1000000000LL +
+> > > scale_val2;
+> > > +			raw64 =3D div64_s64_rem(processed, scale64, &r);
+> > > +			raw64 =3D raw64 * 1000000000 +
+> > > +				div64_s64(r * 1000000000, scale64);
+> > > +			break;
+> > > +		case IIO_VAL_FRACTIONAL:
+> > > +			raw64 =3D div64_s64((s64)processed * scale_val2,
+> > > +					=C2=A0 (s64)scale_val * scale);
+> > > +			break;
+> > > +		case IIO_VAL_FRACTIONAL_LOG2:
+> > > +			raw64 =3D div64_s64((s64)processed << scale_val2,
+> > > +					=C2=A0 (s64)scale_val * scale);
+> > > +			break;
+> > > +		default:
+> > > +			return -EINVAL;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	offset_type =3D iio_channel_read(chan, &offset_val, &offset_val2,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO_CHAN_INFO_OFFSET);
+> > > +	if (offset_type >=3D 0) {
+> > > +		switch (offset_type) {
+> > > +		case IIO_VAL_INT:
+> > > +		case IIO_VAL_INT_PLUS_MICRO:
+> > > +		case IIO_VAL_INT_PLUS_NANO:
+> > > +			raw64 -=3D offset_val;
+> > > +			break;
+> > > +		case IIO_VAL_FRACTIONAL:
+> > > +			raw64 -=3D offset_val / offset_val2;
+> > > +			break;
+> > > +		case IIO_VAL_FRACTIONAL_LOG2:
+> > > +			raw64 -=3D offset_val >> offset_val2;
+> > > +			break;
+> > > +		default:
+> > > +			return -EINVAL;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	*raw =3D clamp(raw64, (s64)INT_MIN, (s64)INT_MAX);
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +int iio_write_event_processed_scale(struct iio_channel *chan,
+> > > +				=C2=A0=C2=A0=C2=A0 enum iio_event_type type,
+> > > +				=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,
+> > > +				=C2=A0=C2=A0=C2=A0 enum iio_event_info info, int processed,
+> > > +				=C2=A0=C2=A0=C2=A0 unsigned int scale)
+> > > +{
+> > > +	struct iio_dev *indio_dev =3D chan->indio_dev;
+> > > +	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(chan-
+> > > > indio_dev);
+> > > +	int ret, raw;
+> > > +
+> > > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> > > +	if (!iio_event_exists(chan, type, dir, info))
+> > > +		return -ENODEV;
+> > > +
+> > > +	if (info =3D=3D IIO_EV_INFO_ENABLE) {
+> > > +		if (!indio_dev->info->write_event_config)
+> > > +			return -EINVAL;
+> > > +
+> > > +		return indio_dev->info->write_event_config(indio_dev,
+> > > +							=C2=A0=C2=A0 chan->channel,
+> > > type,
+> > > +							=C2=A0=C2=A0 dir, processed);
+> > > +	}
+> > > +
+> > > +	if (!indio_dev->info->write_event_value)
+> > > +		return -EINVAL;
+> > > +
+> > > +	ret =3D iio_convert_processed_to_raw_unlocked(chan, processed, &raw=
+,
+> > > +						=C2=A0=C2=A0=C2=A0 scale);
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	return indio_dev->info->write_event_value(indio_dev, chan->channel,
+> > > +						=C2=A0 type, dir, info, raw, 0);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(iio_write_event_processed_scale);
+> > > diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consume=
+r.h
+> > > index 6a4479616479..16e7682474f3 100644
+> > > --- a/include/linux/iio/consumer.h
+> > > +++ b/include/linux/iio/consumer.h
+> > > @@ -451,4 +451,60 @@ ssize_t iio_write_channel_ext_info(struct iio_ch=
+annel
+> > > *chan, const char *attr,
+> > > =C2=A0 */
+> > > =C2=A0ssize_t iio_read_channel_label(struct iio_channel *chan, char *=
+buf);
+> > > =C2=A0
+> > > +/**
+> > > + * iio_event_mode() - get file mode for an event property
+> > > + * @chan: Channel being queried
+> > > + * @type: Event type (theshold, rate-of-change, etc.)
+> > > + * @dir: Event direction (rising, falling, etc.)
+> > > + * @info: Event property (enable, value, etc.)
+> > > + *
+> > > + * Determine an appropriate mode for sysfs files derived from this e=
+vent.
+> > > + *
+> > > + * Return:
+> > > + *=C2=A0=C2=A0 - `0000` if the event is unsupported or otherwise una=
+vailable
+> > > + *=C2=A0=C2=A0 - `0444` if the event is read-only
+> > > + *=C2=A0=C2=A0 - `0200` if the event is write-only
+> > > + *=C2=A0=C2=A0 - `0644` if the event is read-write
+> > > + */
+> > > +umode_t iio_event_mode(struct iio_channel *chan, enum iio_event_type=
+ type,
+> > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,=
+ enum iio_event_info
+> > > info);
+> > > +
+> > > +/**
+> > > + * iio_read_event_processed_scale() - Read an event property
+> > > + * @chan: Channel being queried
+> > > + * @type: Event type (theshold, rate-of-change, etc.)
+> > > + * @dir: Event direction (rising, falling, etc.)
+> > > + * @info: Event property (enable, value, etc.)
+> > > + * @val: Processed property value
+> > > + * @scale: Factor to scale @val by
+> > > + *
+> > > + * Read a processed (scaled and offset) event property of a given ch=
+annel.
+> > > + *
+> > > + * Return: 0 on success, or negative error on failure
+> > > + */
+> > > +int iio_read_event_processed_scale(struct iio_channel *chan,
+> > > +				=C2=A0=C2=A0 enum iio_event_type type,
+> > > +				=C2=A0=C2=A0 enum iio_event_direction dir,
+> > > +				=C2=A0=C2=A0 enum iio_event_info info, int *val,
+> > > +				=C2=A0=C2=A0 unsigned int scale);
+> > > +
+> > > +/**
+> > > + * iio_write_event_processed_scale() - Read an event property
+> > > + * @chan: Channel being queried
+> > > + * @type: Event type (theshold, rate-of-change, etc.)
+> > > + * @dir: Event direction (rising, falling, etc.)
+> > > + * @info: Event property (enable, value, etc.)
+> > > + * @processed: Processed property value
+> > > + * @scale: Factor to scale @processed by
+> > > + *
+> > > + * Write a processed (scaled and offset) event property of a given c=
+hannel.
+> > > + *
+> > > + * Return: 0 on success, or negative error on failure
+> > > + */
+> > > +int iio_write_event_processed_scale(struct iio_channel *chan,
+> > > +				=C2=A0=C2=A0=C2=A0 enum iio_event_type type,
+> > > +				=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,
+> > > +				=C2=A0=C2=A0=C2=A0 enum iio_event_info info, int processed,
+> > > +				=C2=A0=C2=A0=C2=A0 unsigned int scale);
+> > > +
+> > > =C2=A0#endif
+>=20
 
 
