@@ -1,117 +1,187 @@
-Return-Path: <linux-hwmon+bounces-8827-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8830-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E33B0921D
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Jul 2025 18:43:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D91EB09BFA
+	for <lists+linux-hwmon@lfdr.de>; Fri, 18 Jul 2025 09:08:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D58E74A6B19
-	for <lists+linux-hwmon@lfdr.de>; Thu, 17 Jul 2025 16:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D93881C2749F
+	for <lists+linux-hwmon@lfdr.de>; Fri, 18 Jul 2025 07:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D265C2FC3DC;
-	Thu, 17 Jul 2025 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34965217719;
+	Fri, 18 Jul 2025 07:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m8fg2IKA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lsB5/D3m"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A7D2FCE07
-	for <linux-hwmon@vger.kernel.org>; Thu, 17 Jul 2025 16:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE311624E9;
+	Fri, 18 Jul 2025 07:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752770556; cv=none; b=KuJFGjkx46dwVG4KfDgU3I//SGoj441OTGUhqqslrEIJdDOd6wMbNZS40witUoFccczUlFBO1KVkJ9iwHt/dvWp/2aGjg6PxAZkN/IJK0hQZk2aON2Fkd5NyswILMZGz0TT410kofsTfQZ47qI2QnLlgIEv6FjG9tqbNXQ6Tc3U=
+	t=1752822522; cv=none; b=eYxJvnW5XWfLy0dxse87fRa10oRFC0///A8oxp4IQAGaJVZ+0h8mzgpp2HfMkCF3SBorZ6JPFGabz3tXinvUp8ktHR0PyL9tVTJsyI83U6Vn6lZ7n4VEUcQD3NOMCjhauCUMEgl1XW66nXX77sOtKADoSr30LW6MPYA++pmKs9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752770556; c=relaxed/simple;
-	bh=pwzmXDwJ4zUMLHJozgllRu/mzzAcAPdj9GK36HNatug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UQPJItkGu2Tugv8/I5LznLawEwCcpy2RGiIS8XHHr/7fey1pgANpyjGfczykao4m+bt6V25isAXCmEmJW/Zx6ag5RItXJqbhRzrVG0yfch5RB6Ha6V4cZ7TvrhiYc3FyCCx+ojFLM64Li+f02h/vRzU38MAjBN/3jrVyXv14OB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m8fg2IKA; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <f180b5ac-131f-474a-be5e-70787972a772@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752770541;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I57bGWW9HkB2BD1T3Qt5kgqxhjLDrfo2Pvi/xORSNyE=;
-	b=m8fg2IKADa4qU9gIaAHsRTO2qJ11Wiblg7fZdxmnZZ4N9E9weBx+d5aaL/MFgkSieN0onb
-	yceX37QtsrrwWTo4DeQQ97vjAE35CGMvLn16a+4kdvA4SmG7GHO/jiR72M+xcEGi/Aees7
-	qyybYucPF9Oo9NtlJ47+98oKRR3xKGs=
-Date: Thu, 17 Jul 2025 12:42:13 -0400
+	s=arc-20240116; t=1752822522; c=relaxed/simple;
+	bh=fUvHQZqTl24PCF89+WJfWZK205oQzlOcq+fyKB4X7l4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DTr86fQ07pGSIFQjTaPRWvE4/pf3G8XJP5VSQpALKNJVSTGYFbSuT7ErbjTmNIG15iBmEEWyuhmyxOAXtYBHK+YCwf7Qe8Hf6YONIrrpv94xkxWgmmJBN/1IvSSvDyGcaTVgHTtUtQzKrdu+POee6oPfQACYSbJ/FQfG/XKGWl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lsB5/D3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 80092C4CEF0;
+	Fri, 18 Jul 2025 07:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752822521;
+	bh=fUvHQZqTl24PCF89+WJfWZK205oQzlOcq+fyKB4X7l4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=lsB5/D3m3BzQw6WHzO27RsejVZVIi3iQxUpiqbJ/LvsHBF+sxgaDtsj3uLxGVRM/M
+	 iFOM+TEHz11w234jT9gSpnECfv5e0kTxyjTbcpeY4V04NltXSoNbz/MqBk3MzpxlUh
+	 cNs0IF5UiFozLpTXmCjLOmht5A94JFGWZULTH8MA249ga0jgIGojd4rOn3er5I3thM
+	 6yRQIlHyAMgA88F/BqzBPfed5I3bSIymObDIS47UP2sok0ANhbFqgoDoahnRrtFkaK
+	 pA+qGXDr5JSmAHugqWF+F6awmdOvPL528voZIJoA/smoxpfzDM6SzrC9GFuL6Is19Z
+	 IXw9+hPBh6O8A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F10CC83F34;
+	Fri, 18 Jul 2025 07:08:41 +0000 (UTC)
+From: Sung-Chi Li via B4 Relay <devnull+lschyi.chromium.org@kernel.org>
+Subject: [PATCH v6 0/2] Export fan control and register fans as cooling
+ devices
+Date: Fri, 18 Jul 2025 15:08:28 +0800
+Message-Id: <20250718-cros_ec_fan-v6-0-8df018396b56@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/7] iio: inkern: Add API for reading/writing events
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
- Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
- linux-hwmon@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
- David Lechner <dlechner@baylibre.com>
-References: <20250715012023.2050178-1-sean.anderson@linux.dev>
- <20250715012023.2050178-3-sean.anderson@linux.dev>
- <aHYOuzdQ_jSKA898@smile.fi.intel.com>
- <8bb7d291-f94a-4e96-b3ec-93fbe06c8407@linux.dev>
- <aHdwzFk-688ASRx2@smile.fi.intel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aHdwzFk-688ASRx2@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-B4-Tracking: v=1; b=H4sIAOzyeWgC/23OTW7DIBCG4atErEPF8OOYrHKPqooGGGIWMRG0V
+ qvIdy/OJonl5Yf0vMOdVSqJKjvu7qzQlGrKYxvdfsf8gOOFeAptMymkEVpa7kuuZ/LniCMPqFy
+ n0VsPgjVxKxTT76P2+dX2kOp3Ln+P+ATL63ZnAi449sGSougc4MkPJV/Tz/UjlwtbUpN8ciPkO
+ 5eN62D6vqVRQNzg6oXDiqvluo3SSWOi8GGD6yfvYPV53bhHAKN7T1rbDW5euBTv3DRu7MESAjq
+ nYMXnef4HfgesnaUBAAA=
+X-Change-ID: 20250429-cros_ec_fan-da3b64ac9c10
+To: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Sung-Chi Li <lschyi@google.com>, Sung-Chi Li <lschyi@chromium.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752822520; l=4414;
+ i=lschyi@chromium.org; s=20250429; h=from:subject:message-id;
+ bh=fUvHQZqTl24PCF89+WJfWZK205oQzlOcq+fyKB4X7l4=;
+ b=ja3jexFOHyCaNVploN4rGApv+Exlr5UOcylDy5nMbClEN871PDR1+ygfdIO/AoQ0s2vtkk5+d
+ gY6mUlGbMQRCzjQnbXS5RVRJkB2Xvi07/5ZxeMxnVHV7IdUGQu5JCyr
+X-Developer-Key: i=lschyi@chromium.org; a=ed25519;
+ pk=9gCZPRJmYyHDt6VN9FV2UreFcUr73JFrwYvmsltW9Y8=
+X-Endpoint-Received: by B4 Relay for lschyi@chromium.org/20250429 with
+ auth_id=392
+X-Original-From: Sung-Chi Li <lschyi@chromium.org>
+Reply-To: lschyi@chromium.org
 
-On 7/16/25 05:28, Andy Shevchenko wrote:
-> On Tue, Jul 15, 2025 at 11:42:05AM -0400, Sean Anderson wrote:
->> On 7/15/25 04:18, Andy Shevchenko wrote:
->> > On Mon, Jul 14, 2025 at 09:20:18PM -0400, Sean Anderson wrote:
-> 
-> ...
-> 
->> >> +EXPORT_SYMBOL_GPL(iio_event_mode);
->> > 
->> > Can we move this to namespace? Otherwise it will be never ending story...
->> > Ditto for other new APIs.
->> 
->> Never ending story of what?
-> 
-> Of converting IIO core to use exported namespaces.
+This is a continuation of the previous series "Export the target RPM fan
+control by ChromeOS EC under hwmon"
+(https://lore.kernel.org/lkml/20250313-extend_ec_hwmon_fan-v1-0-5c566776f2c4@chromium.org/T/#t).
+There is a change from controlling the target fan RPM value to control
+the PWM value.
 
-What's the purpose?
+We anticipate to involve fans connected to EC as thermal cooling
+devices, so we can utilize the thermal framework to have further thermal
+control strategies.
 
->> >> +			if (scale64 <= INT_MAX && scale64 >= INT_MIN)
->> >> +				raw64 = processed / (int)scale64;
->> > 
->> > Do you need the casting? (I mean if the compiler is dumb enough to not see this)
->> 
->> AIUI 64-bit division is not available on 32-bit platforms. The cast
->> ensures we get 32-bit division.
-> 
-> I put specifically a remark in the parentheses. So, the Q is if the compiler
-> doesn't recognize that. Can you confirm that 32-bit compilation without cast
-> is broken?
+This series updates the required EC controls definitions, implements the
+mechanism for controlling fan PWM values, and registers these fans under
+thermal framework as cooling devices.
 
-inkern.c:(.text.iio_write_event_processed_scale+0x14c): undefined reference to `__aeabi_ldivmod'
+Adapting comments from the previous series, the driver probes the host
+command capability at beginning to see whether a fan is controllable:
+  - if command `EC_CMD_PWM_GET_FAN_DUTY` is supported (v0, this is a
+    new command).
+  - if command `EC_CMD_THERMAL_AUTO_FAN_CTRL` v2 is supported.
+  - if command `EC_CMD_PWM_SET_FAN_DUTY` v1 is supported.
 
->> >> +	*raw = clamp(raw64, (s64)INT_MIN, (s64)INT_MAX);
->> > 
->> > You already have similar approach here...
->> 
->> Well, I can spell it 0x7fffffffLL if you'd like...
-> 
-> Nope, I like to have named constants instead of magics, but actually are those
-> castings needed for the clamp()?
+This combination is selected as this is the minimum requirement for a
+fan to be fully controllable under hwmon framework.
 
-Apparently not. The checks in __clamp_once are only for matching signedness. And
-the ints are promoted to s64s when the comparison is made.
+The driver supports changing the fan control mode, and allows to change
+the fan PWM value only if the fan is in manual control mode. The power
+management hook is implemented as well for keeping the fan control
+settings, as EC will automatically restore the control method to auto
+when device is suspended.
 
---Sean
+Change-Id: I4e2fdc8c4bc50778c0d04cfbefeaab7088d3181e
+Signed-off-by: Sung-Chi Li <lschyi@google.com>
+---
+Changes in v6:
+- Fix lines over 100 characters.
+- Remove unnecessary out of memory message.
+- Link to v5: https://lore.kernel.org/r/20250620-cros_ec_fan-v5-0-5979ea1abb31@chromium.org
+
+Changes in v5:
+- Fix line breaks.
+- Directly return 0 when there is no error (rather than return ret
+  variable).
+- Rename CROS to CrOS.
+- Preserve Acked-by and Reviewed-by tags.
+- Link to v4: https://lore.kernel.org/r/20250619-cros_ec_fan-v4-0-ca11548ce449@chromium.org
+
+Changes in v4:
+- Treat fan control is supported without `CONFIG_PM` is enabled.
+- Change logic of registering cooling devices for fan from abandom
+  immediately to log warning logs, then continue with the next fan.
+- Fix error checking logic to use IS_ERR for
+  devm_thermal_of_cooling_device_register.
+- Revise variable declaration ordering with reverse christmas tree.
+- Rename member variable `manual_fan_pwm_values` to `manual_fan_pwm`.
+- Use %pe for printing error pointers, and add newline for logs.
+- Revise comments in suspend and resume hook.
+- Link to v3: https://lore.kernel.org/r/20250512-cros_ec_fan-v3-0-a9f2b255f0cd@chromium.org
+
+Changes in v3:
+- Make required EC command versions macros.
+- Add `CONFIG_THERMAL` guarding for registering as thermal fan cooling
+  devices.
+- Add error handling during registering thermal cooling devices, and
+  immediately abort the registration if any error occurred to align with
+  the thermal sensor registration in hwmon core.
+- Add error handling for EC fan communication during suspend and resume.
+- Add `CONFIG_PM` guarding for checking whether the EC supports a
+  complete fan control in hwmon driver.
+- Sort variables order in declaration.
+- Separate declaration and logic to different sections.
+- Move `cros_ec_thermal_cooling_ops` next right after the operation
+  functions declaration.
+- Improve describing the resume behavior in documentation.
+
+Changes in v2:
+- Change column from 80 to 100 and fix styles.
+- Directly store driver data into platform dev with
+  platform_set_drvdata.
+- Unify the PWM unit (from 0 ~ 255) between hwmon and thermal cooling
+  devices.
+- Only fetch the fan control mode and PWM value when suspending rather
+  than caching values when writing. The suspend hook is thus added.
+- Link to v1: https://lore.kernel.org/r/20250429-cros_ec_fan-v1-0-a8d9e3efbb1a@chromium.org
+
+---
+Sung-Chi Li (2):
+      hwmon: (cros_ec) add PWM control over fans
+      hwmon: (cros_ec) register fans into thermal framework cooling devices
+
+ Documentation/hwmon/cros_ec_hwmon.rst |   7 +-
+ drivers/hwmon/cros_ec_hwmon.c         | 313 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 319 insertions(+), 1 deletion(-)
+---
+base-commit: 024e09e444bd2b06aee9d1f3fe7b313c7a2df1bb
+change-id: 20250429-cros_ec_fan-da3b64ac9c10
+
+Best regards,
+-- 
+Sung-Chi Li <lschyi@chromium.org>
+
+
 
