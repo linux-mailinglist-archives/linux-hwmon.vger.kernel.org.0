@@ -1,192 +1,157 @@
-Return-Path: <linux-hwmon+bounces-8989-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-8991-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BB3B17A49
-	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Aug 2025 01:51:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC93B17DE8
+	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Aug 2025 09:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2996D1C22EBD
-	for <lists+linux-hwmon@lfdr.de>; Thu, 31 Jul 2025 23:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847DFA818AA
+	for <lists+linux-hwmon@lfdr.de>; Fri,  1 Aug 2025 07:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A9F28A1F3;
-	Thu, 31 Jul 2025 23:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43402214A79;
+	Fri,  1 Aug 2025 07:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYxyy8Ak"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYL0cPZq"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E9E289E38;
-	Thu, 31 Jul 2025 23:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1943720B1F4;
+	Fri,  1 Aug 2025 07:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754005856; cv=none; b=rMjcqq+UGnermBWGRzvTbCo3lZGJn80yCjQH54KIy0x+SKAxbZJ0brJ/G9b0atlJJBNWFoixz120tTao8KB9JaoqY6JA5m6AiFOvBJbgE3UkeEI87G7lb8Qk/qqDm+5IqZ9zXvdbK70chLE5tNL+Z9ZY8CjC8BvA8dlYxTDp5Ek=
+	t=1754035169; cv=none; b=coUSgUmzDczvCVBy98qynZW6DAK7vdif1MSJfbxTdVQZ5Kv+JOfSMSMXsP9CGH7KK5/TkSfNVa3dGwZsEX7ErVBLZ42tVm+3Wll42lcxVex/ANWRSghKIGL8WWggpxbEH9KxG2s1bcIYOMQWAuGZuZcbPvt46rNSRPL5ZwN0F1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754005856; c=relaxed/simple;
-	bh=n+xgTXiwxj/r0YnLofwy5BYwuD6vgPqqtA81raYpl+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KkARgTKqAXfpkgp8/WNbBEOmQaZFoocBmmq9UpUPuKiP2X8qc3CS2hoCJsRsuQVHyskeJEUKKJaf+Njt/cel86JtDmWeA0mKxSnTx9smhlCBn56r5pMlYqIuurfhBkTr9hcWHYSN0z3/lP1bhlXcWrgzRyPvxR3ydyTKhkjQtWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RYxyy8Ak; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b3be5c0eb99so910896a12.1;
-        Thu, 31 Jul 2025 16:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754005853; x=1754610653; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kCCXuKCh3v8xE5+dUZx33Pv4uJhuT1czbkXgRduKzU0=;
-        b=RYxyy8AkspXmNrFewyICv4sxko9CQRswG/F6C6iYivHZZDAzKvbxTduGOQnsiYKUDG
-         mkWop2skIsgVFTsdp44POGpa4XycTycgGvY7RUlUda3fo6EsxQOUN2t492PQJieFn7oz
-         oEZsAYCHzZj/kL+trynJbIC/AdYvVpyRnsy8wS+8r4lsZl/QmtvExGtf4fsZX8Wrvdje
-         3U3yxqNCrAz7X0kLvtOdU8k68xE7K4s7EKnPVbnDpoT6gf9YtILzOiOF6VQPFystOTqO
-         tUahxRS8P7U2grNbnUOsAI119ALWHry8bT2OPBx0LHLDi0pl4GSv/3L371PyWcqddaRE
-         UdzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754005853; x=1754610653;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kCCXuKCh3v8xE5+dUZx33Pv4uJhuT1czbkXgRduKzU0=;
-        b=QXiValSzS7PqU8Hw7haWqewtk2WkjGu7A6FmaFfwtd5yHyjt0TqzK4o9tKKKmG0uyO
-         LYXW5sjbsqozK2UgQF0sOhZU2jFJp51xm7Q0BWaqxPPEZ+62Pw3qACtQS2IwbfWPS1c4
-         rGIjIOttKu4B5ONDfP2boS0kDroRMAgLjW+cNcTuKUQw58sA/gipOj4MA2X6fk/wG8XA
-         Ztm4Nr48tIpFH2skHgTGRzrMzXPfPuHlcbZDKHHa8zwHsLxGW4vpYG27q+puwmBp7L9o
-         VfK14DvquihbqMsimRs1+fpGJvaK/gApYO+UkeuXiiCp1pbDPUqAGRGkiupoWYPBNWc8
-         yCRw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/yhrr2ZGOFTCkJybCSHUXwmo0l+im4iQayMfw8ccyHdaTMYGYncw/mAlJAE3VJq9G2vnGwlQTPrg2@vger.kernel.org, AJvYcCVK9sfOOMHg+BaGIeo7jNgtS1aEs95am1rphjSRPfBM0iJY9FCsRJryuMnPbqsEODTou6qE/mL/U3sk72g=@vger.kernel.org, AJvYcCWPV6AP3+fVlsBr+J7TmKeWQ53/e9Ub9minPwSuM/r7JUvIoqCCw3bGJmFl0dEKNlIkVQM+EXGhODY6@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN9mHwRwXRppLkWck+x9ZywjsGapa1DqU/1kmuzexB2weeL1a1
-	xYzZpFQgV5nVt/Dbzt8RW8/Itx57Gz1mnjWyOuU3i9FkXti17JRVC2uR
-X-Gm-Gg: ASbGncuMaXy43XiTNyeCBHMs5PR2JcNCUiteYw6jLYNDarWpxGAObihdKbVaffgfMgI
-	HRAlxcd4cDSPT/HHyO3dRwn4ZeXsHIZdUGwT3XxBaFXyrjdyGR6vOyUTURhQo67Ycb3JjqOfC+Y
-	ez2F+gUwTGN7pVPxeRSHKc1/hSPMngkEpELC6rLDezXBGnWDLKR96d7fYP/8NmEa5T4KK81aYaN
-	T4hYo/aqtvkFPSyh2aq7jpr8Ml+NWMu/bgwa4o5GWpnCHEhHR0JmjlRoQ6/v1IZcrHn2x+QMU8w
-	WA7us80gePyYq+0GN1nCtuQ7H/naXzwGFurwRN0FfxkpYefMeTIYa3QXDf5MU/KLEWVOSxkwgCw
-	w38SWNIdQ637ETKACvPG/bvJ1Ert5Ry8c2BQ=
-X-Google-Smtp-Source: AGHT+IHZP5vpLYjoG2db9CKFqk59UicpNqI84lwWQUFNl7O/CXSKg8clVq+Ai1asQhK5rgcd0aNObQ==
-X-Received: by 2002:a17:90b:57e6:b0:313:d346:f347 with SMTP id 98e67ed59e1d1-31f5de58642mr12343818a91.35.1754005853333;
-        Thu, 31 Jul 2025 16:50:53 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63f0bb79sm5700324a91.31.2025.07.31.16.50.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 16:50:52 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 31 Jul 2025 16:50:52 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Lakshay Piplani <lakshay.piplani@nxp.com>
-Cc: linux-kernel@vger.kernel.org, jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org, corbet@lwn.net,
-	linux-doc@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	vikash.bansal@nxp.com, priyanka.jain@nxp.com,
-	shashank.rebbapragada@nxp.com
-Subject: Re: [PATCH v2 2/2] hwmon: (lm75) Add NXP P3T1750 support
-Message-ID: <e038b18c-4a14-4caa-9922-23ec5ea55f1b@roeck-us.net>
-References: <20250728041913.3754236-1-lakshay.piplani@nxp.com>
- <20250728041913.3754236-2-lakshay.piplani@nxp.com>
+	s=arc-20240116; t=1754035169; c=relaxed/simple;
+	bh=UPN2BtjFTPrNsAhc0hr0QepQVBNilRoSpsPBwysfjg8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q8qZG9otXr9aWVgbSKUyP7styh0VW/k4xP6AYdncOmX9ExeLPqq+1Rxa7QHoPVeKcHjxZa6PeJdymWcHo7MWAUkCF1bJr7LCYsTGqarpPv1ihSzveeYSbGY7z1wNQdzB8vOud2I6mKTWxQ+Qm3wyzE/9W4cRpeIOYO7FoCepIF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYL0cPZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A42D1C4CEE7;
+	Fri,  1 Aug 2025 07:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754035168;
+	bh=UPN2BtjFTPrNsAhc0hr0QepQVBNilRoSpsPBwysfjg8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=VYL0cPZqCxuK8i+Vi6dqDSoGzXWJwNUNA7/bJFqMDpIDrdme3/NvLvVOTNtoldaI+
+	 vUawJRPXfdsQzLus63GRHc2m2RCTD1DBAvpgVZzu8/B7KHj64fbjyfABhznJwBUNN9
+	 22QHEHaJGqcIGIvWih72WzwnXx3VTPVauXIDh9mW2p5Ym/0WSLPBDtIxcpig0aOlT6
+	 NZi/4CHoOzGA+L5ylr4WW/hOBiCNWNzIhH0GoPEQ4bR2mSSnjYQVsuHQrkgMboEsdM
+	 37qLTauHaklM5d+V1O4QTmYOZ5MEu7FcaMnB6D+PYJwkre/0WuvzTL1yNAvDqDxFMz
+	 7ILsRJ+AcgfIA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94C42C87FCA;
+	Fri,  1 Aug 2025 07:59:28 +0000 (UTC)
+From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
+Subject: [PATCH v7 0/2] hwmon: add GPD devices sensor driver
+Date: Fri, 01 Aug 2025 15:59:19 +0800
+Message-Id: <20250801-gpd_fan-v7-0-548b9d8f57d7@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250728041913.3754236-2-lakshay.piplani@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANdzjGgC/3XMXUvDMBTG8a8ycquVnJO3VhCmFSbovYjISJeki
+ 9qXtdJujn53s4KsVLx8Duf3P5LWNt625HpxJI3tfOurMgx1uSCbrS5zG3kTNkGKnCqQUV6btdN
+ lJJRjNEG2iWNOwnfdWOf3Y+n1Leytb7+q5jCGOzhd/zY6iGjEOBVgjAJN5TIvtP+82lQFOTU6n
+ Dp1dhicU5myMkscQjZ37B/HgouNsi4DlCxTc8enLj47HhyAtIIz0Imzcyd+naAIcHYiOEljx1E
+ IRy3MnRxdervqq+9+BaztX97TO7l+LnAba0zNw14XF3i4yaHgWB/Kj8fdztw/5cuxM6kNw/ADo
+ T3ErcwBAAA=
+X-Change-ID: 20240716-gpd_fan-57f30923c884
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Cryolitia PukNgae <cryolitia@uniontech.com>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
+ Yao Zi <ziyao@disroot.org>, Derek John Clark <derekjohn.clark@gmail.com>, 
+ WangYuli <wangyuli@uniontech.com>, Jun Zhan <zhanjun@uniontech.com>, 
+ =?utf-8?q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>, 
+ someone5678 <someone5678.dev@gmail.com>, 
+ Justin Weiss <justin@justinweiss.com>, 
+ Antheas Kapenekakis <lkml@antheas.dev>, command_block <mtf@ik.me>, 
+ derjohn <himself@derjohn.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754035167; l=2352;
+ i=cryolitia@uniontech.com; s=20250730; h=from:subject:message-id;
+ bh=UPN2BtjFTPrNsAhc0hr0QepQVBNilRoSpsPBwysfjg8=;
+ b=qZVC7oDXZenuFnLpeXV1GazobxhLyCgLraqXeNVH2Nr4/qDCoLgdqZeWZ/7hhaHqbOt6vMfjv
+ u+VYXmiykzADL53DcBAK/nuEsgS39SyUqnLJDxTv6bLfrvriOe/NrZD
+X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
+ pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
+X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20250730 with
+ auth_id=474
+X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+Reply-To: cryolitia@uniontech.com
 
-On Mon, Jul 28, 2025 at 09:49:13AM +0530, Lakshay Piplani wrote:
-> Add support for lm75 compatible NXP P3T1750
-> temperature sensor.
-> 
-> Signed-off-by: Lakshay Piplani <lakshay.piplani@nxp.com>
-> ---
-> Changes in v2:
-> - None. Patch unchanged.
+Sensors driver for GPD Handhelds that expose fan reading and control via
+hwmon sysfs.
 
-Alphabetic order applies here too.
+Shenzhen GPD Technology Co., Ltd. manufactures a series of handheld
+devices. This driver implements these functions through x86 port-mapped IO.
 
-Never mind, I fixed that up.
+Tested-by: Marcin Strągowski <marcin@stragowski.com>
+Tested-by: someone5678 <someone5678.dev@gmail.com>
+Tested-by: Justin Weiss <justin@justinweiss.com>
+Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
+Tested-by: command_block <mtf@ik.me>
+Tested-by: derjohn <himself@derjohn.de>
 
-Applied.
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-Guenter
+---
+Changes in v7:
+- Add support for GPD Duo
+- Change email from cryolitia@gmail.com to cryolitia@uniontech.com
+- Link to v6: https://lore.kernel.org/r/CAGwozwG13swYjCB6_Wm2h8a2CdHxam+2y=g1m42pynkKqqdDLg@mail.gmail.com
 
-> 
->  Documentation/hwmon/lm75.rst |  6 ++++--
->  drivers/hwmon/lm75.c         | 13 +++++++++++++
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/hwmon/lm75.rst b/Documentation/hwmon/lm75.rst
-> index c6a54bbca3c5..84e690824fee 100644
-> --- a/Documentation/hwmon/lm75.rst
-> +++ b/Documentation/hwmon/lm75.rst
-> @@ -121,9 +121,9 @@ Supported chips:
->  
->           https://www.ti.com/product/TMP1075
->  
-> -  * NXP LM75B, P3T1755, PCT2075
-> +  * NXP LM75B, P3T1755, PCT2075, 'P3T1750'
->  
-> -    Prefix: 'lm75b', 'p3t1755', 'pct2075'
-> +    Prefix: 'lm75b', 'p3t1755', 'pct2075', 'p3t1750'
->  
->      Addresses scanned: none
->  
-> @@ -135,6 +135,8 @@ Supported chips:
->  
->                 https://www.nxp.com/docs/en/data-sheet/PCT2075.pdf
->  
-> +               https://www.nxp.com/docs/en/data-sheet/P3T1750DP.pdf
-> +
->    * AMS OSRAM AS6200
->  
->      Prefix: 'as6200'
-> diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-> index 9b4875e2fd8d..979057f02748 100644
-> --- a/drivers/hwmon/lm75.c
-> +++ b/drivers/hwmon/lm75.c
-> @@ -40,6 +40,7 @@ enum lm75_type {		/* keep sorted in alphabetical order */
->  	max31725,
->  	mcp980x,
->  	p3t1755,
-> +	p3t1750,
->  	pct2075,
->  	stds75,
->  	stlm75,
-> @@ -229,6 +230,13 @@ static const struct lm75_params device_params[] = {
->  		.num_sample_times = 4,
->  		.sample_times = (unsigned int []){ 28, 55, 110, 220 },
->  	},
-> +	[p3t1750] = {
-> +		.clr_mask = 1 << 1 | 1 << 7,	/* disable SMBAlert and one-shot */
-> +		.default_resolution = 12,
-> +		.default_sample_time = 55,
-> +		.num_sample_times = 4,
-> +		.sample_times = (unsigned int []){ 28, 55, 110, 220 },
-> +	},
->  	[pct2075] = {
->  		.default_resolution = 11,
->  		.default_sample_time = MSEC_PER_SEC / 10,
-> @@ -806,6 +814,7 @@ static const struct i2c_device_id lm75_i2c_ids[] = {
->  	{ "max31726", max31725, },
->  	{ "mcp980x", mcp980x, },
->  	{ "p3t1755", p3t1755, },
-> +	{ "p3t1750", p3t1750, },
->  	{ "pct2075", pct2075, },
->  	{ "stds75", stds75, },
->  	{ "stlm75", stlm75, },
-> @@ -920,6 +929,10 @@ static const struct of_device_id __maybe_unused lm75_of_match[] = {
->  		.compatible = "nxp,p3t1755",
->  		.data = (void *)p3t1755
->  	},
-> +	{
-> +		.compatible = "nxp,p3t1750",
-> +		.data = (void *)p3t1750
-> +	},
->  	{
->  		.compatible = "nxp,pct2075",
->  		.data = (void *)pct2075
+Changes in v6:
+- fix: nullptr and label followed by a declaration
+- cleanup: clean up code and rename some function
+- format code
+- dmi: add 2025 new GPD devices
+- Link to v5: https://lore.kernel.org/r/20250211-gpd_fan-v5-0-608f4255f0e1@gmail.com
+
+Changes in v5:
+- Rebase on kernel 6.13
+- Remove all value-cache related code
+- Clean up code
+- Link to v4: https://lore.kernel.org/r/20240718-gpd_fan-v4-0-116e5431a9fe@gmail.com
+
+Changes in v4:
+- Apply suggest by Krzysztof Kozlowski, thanks!
+- Link to v3: https://lore.kernel.org/r/20240717-gpd_fan-v3-0-8d7efb1263b7@gmail.com
+
+Changes in v3:
+- Re-arrange code, thanks to Krzysztof Kozlowski, Guenter Roeck, Yao Zi!
+- Link to v2: https://lore.kernel.org/r/20240717-gpd_fan-v2-0-f7b7e6b9f21b@gmail.com
+
+Changes in v2:
+- Improved documentation, thanks to Randy Dunlap!
+- Link to v1: https://lore.kernel.org/r/20240716-gpd_fan-v1-0-34051dd71a06@gmail.com
+
+---
+Cryolitia PukNgae (2):
+      hwmon: add GPD devices sensor driver
+      hwmon: document: add gpd-fan
+
+ Documentation/hwmon/gpd-fan.rst |  71 ++++
+ Documentation/hwmon/index.rst   |   1 +
+ MAINTAINERS                     |   7 +
+ drivers/hwmon/Kconfig           |  10 +
+ drivers/hwmon/Makefile          |   1 +
+ drivers/hwmon/gpd-fan.c         | 753 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 843 insertions(+)
+---
+base-commit: 0db240bc077fd16cc16bcecfd7f4645bc474aa7e
+change-id: 20240716-gpd_fan-57f30923c884
+
+Best regards,
+-- 
+Cryolitia PukNgae <cryolitia@uniontech.com>
+
+
 
