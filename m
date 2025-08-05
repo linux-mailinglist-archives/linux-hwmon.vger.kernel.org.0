@@ -1,82 +1,83 @@
-Return-Path: <linux-hwmon+bounces-9019-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9021-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3663CB1B439
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Aug 2025 15:11:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA9EB1B49B
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Aug 2025 15:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF07E7B0AF4
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Aug 2025 13:09:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5C3E182FA2
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 Aug 2025 13:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45972274668;
-	Tue,  5 Aug 2025 13:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E732737FA;
+	Tue,  5 Aug 2025 13:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAa7QN4x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lNs5N9o5"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5BF2749D5;
-	Tue,  5 Aug 2025 13:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDA62737F8;
+	Tue,  5 Aug 2025 13:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754399413; cv=none; b=nsngcSjPQTd0DqYE4wUhAoHJ7WApR511L3HDekWR0LKB/W59B2z6yp1XOgWAla/e4QsqjF40JV/RbXnGObA3eLinCyTSOK4UeYeOJ2q5QyQIEam7cYvK+rByrosGX1JVX65NiYawGdW3RZufG9C7H7wqLA5zRtqnxiwYD2QniJE=
+	t=1754399600; cv=none; b=NDX1pm/O2pZIIrnGwd9iIts7KmT4YN1TX3KA4D/2C3p/8bTbjX7QOyoSkrhfff5+yMsvNDtTE1L78eQ5+UQPSXepqMFRYm50ebFxfLaIwm0gIkUykMugYSsG0HmgC5KmehCLwHMDrGjIo0McDnt45EV0Zk8Efbe6rJD7rLRRhCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754399413; c=relaxed/simple;
-	bh=C1sGPmucJ6JCMs4CoRhIxF97FkfQUOs2Jk2OtQjPTl0=;
+	s=arc-20240116; t=1754399600; c=relaxed/simple;
+	bh=VifM+ab/hBa3nt+oOPkFxJiS8el4ucprFd694IPaVlk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=smMlSePSJHaKKCQ+zX1mS6n6B6Tu4Li60KiXgTE41A3Zu+gUBdiOOmSX0mBxz5Y+8E0Z+9cFS5C17IVmOqn2sGWHlBlMxxVxNyPkA6R/zGzPB1nWi/XI2rfHgrUsR7Pz1jZcz+anDhM2czyieray/6V90tLjajMrw5Qgl3YIIvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAa7QN4x; arc=none smtp.client-ip=209.85.214.179
+	 In-Reply-To:Content-Type; b=J8DYCtNHQ2X5pu/xeedVguR/7O2POhBEPg1sguB5kRwT9/nuOf2siwfxsRsRnRnj2h/TGKe5+S1IKtiizwdQRQeIS24o+naCViPEAj2dQW896lAZiqcuJJpoI1tlt0Mfmfg8DO0GLq3TIZ8hhGmHvM4e17XhS5QLaKCE52wILNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lNs5N9o5; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2405c0c431cso56706815ad.1;
-        Tue, 05 Aug 2025 06:10:10 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7426c44e014so4976573b3a.3;
+        Tue, 05 Aug 2025 06:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754399410; x=1755004210; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754399598; x=1755004398; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Df0Tn7UBjE6/kXxfrPbcGsY9nGyoaEzNiY19+deWC+k=;
-        b=AAa7QN4xwoWUs7pQ03zIo1T62vfGGk1jBYY4PSwCSgzUNJLM0PXI6ir25/0iMse1e6
-         nPvfpU0YYgo6bES3oaDpxvKxrMpv82zVAebzEB9aqKmnywGdD0NeKfTt91amVqJgEO5k
-         /1gLjzZOeyxitKOCu1oYLH+OZvyi3z5O5sLOjNx4Lbt6dstWoHGLC4zmM+GUoPWvezQK
-         7rOyS+28MNSJJdvL4bkvCqnt7wDCIpqxW4UdojEkvfEruKTvv6frpa4ir1mIpo3B0n4j
-         DuLV4hae67zk1uWzBeyhTijFDXrYBIeDQ9kJJAn+mTCkZFe0pmMLov6gBspb1zIPIbjf
-         TUKw==
+        bh=gV1AuynyFCHeghTZWDCMvw8UAR68QjHUdkCbqwe4POA=;
+        b=lNs5N9o5RweJ6+k/uccelwyoDgCdJAa0l+/Wi+bCHcgCQ4Pt+2NquRdvhxTMH+lKJo
+         ZW5DXiOUn4rUuJUAlej2oWe2d+mjeIEf3zaKt9ry58R/vXXCoAx37BPVbOs0GeZDm1mS
+         QUdN/ZDxYheZH87/2Autx8/j2ni7ZhMp8Akja8xXjPvJeIjWRbvniJh1qiXYqkwbFr73
+         5YmlOHkeMYB1NlzJvJwPXs7Xur3QXAALFg0PdpYqLN2QCsmCyxqeJY4RM94egM2ab65G
+         cPFL4M7x4SvuOavAqmhJXN4Dl4i49XOojO4vbOtmhBsX7Mp+Cf9CWcP29S5dzEI2KlGf
+         seJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754399410; x=1755004210;
+        d=1e100.net; s=20230601; t=1754399598; x=1755004398;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Df0Tn7UBjE6/kXxfrPbcGsY9nGyoaEzNiY19+deWC+k=;
-        b=mlIavspKWUpTYWmAgShDY62dyMTo4vlaFOT3W8y0gFmQw3tl1YchoGIz0XBYYzZalB
-         8EhdY8yjO9A8CxCUW/IodSIcisETDBfhM5aH2dS2DHaKrtRTEsiEQZ58FtpzzNUKKmln
-         d2jHiBQQ+dd8bL9ksC3t9aiY8gkuolxPBuB61a2YcalzEUz49VWWjrtSsqkp/QdPx5M2
-         HwQbdXQTmOm9VH4gF7VbQqCiDWwonToVhs/wQOZ434uPl7kHw8VvibueAiBDZLtWySCQ
-         +H7D+se+l2pesXRRQLJV6JbSryqNbcYGD4XuAvbPBwEIzvgG6h1R6/BXDK7+5VtrKFq7
-         ryAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWYSSatAiVcs1WRAJN3oixohsC9ihMzNVMAuIZs286njNv4ENqegODAhTJC0+kIuvnkV/OKyxRmv3ml2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YysF2EKGpT8wwnZYFYco7KNji51SORmg/sGwjjrxC8DcKnnT6Su
-	pzrU4jYjMU7BOtDYTSAy5vZ/ASyUkY8UM3zKTyepodOrRG+lKwui4Si2
-X-Gm-Gg: ASbGnct4qxIaRb2TRv929ONXy3TSocVWsavh/G6LYi2B6Znk23kDAYqkxTpndi0R6cY
-	8vBQypnMmEVw82I7oTE7Gfu90QFl+Uj0GtUla0y0bF5zibEe3CP+OANY4R6Qu55L/Vtb4clvgGF
-	6RQO5N++WTzr/hQkhNLBrr/2yeluUyrVFex9JwvMwwT8WajXU5xa6fiw4fQSWaCzRKoqFjjyW4Q
-	t0DpqLAXUCljwyu2JJFy74/qcbPc6p0yl3nmnsm7IfImrdPcfmv0RNrFLi0ILLDufn+lmFqu66R
-	Wb53zFSwjV1nuMfrowOqFhod8idAtpi/VaEhasJl81pQS/gwvNrZ502PmcW82WAFY2pPN+13Olb
-	QAcUl8NWSCv5nyvKeTUTciTjQsYtYt8QEyQfrqIV/o9I0RkTTGRikTpFqjz6zb84cCGuY1Xo=
-X-Google-Smtp-Source: AGHT+IGDs2cjWA1Z11CbkO1c6XQDe6pA8d0mJl1d10ySLxBxsb+cZTCHN2Iuq4eC5XyyJ/ifW48VXw==
-X-Received: by 2002:a17:902:e751:b0:240:6fd0:25b7 with SMTP id d9443c01a7336-24246ff846amr208366595ad.38.1754399408771;
-        Tue, 05 Aug 2025 06:10:08 -0700 (PDT)
+        bh=gV1AuynyFCHeghTZWDCMvw8UAR68QjHUdkCbqwe4POA=;
+        b=iyCkSespn4WgcdAf5EkFx4cDm/CMF5IaZXzIofBbeKb/FHn8FovbBoEdri0UJHIxS8
+         m9H7808RY3/qp/UjAFJuPSjBbm8OagK7ma4mVFmllFdNCMB2xlz6R3tz9I2BjO/zMZnX
+         3SGTr50SqvYMfEES5kVgVYqFNhmJ/QRkR3suhr0OhAqc/0uJsR6leOPIrknBqilPFoYh
+         uRHlG4aDRA0pOxN2KTqx8dVXr/uFjwBiaGcA3iQ+gJ4Cukxtv6lPQ2QzxsHCxLo4iPTF
+         J09b9ZsCF9ISt/ZdPVrzErOkCQF3eVI9qLLYaFDCi9Uqd3v4KwRpreeMS+dD/R2PVgAM
+         U53g==
+X-Forwarded-Encrypted: i=1; AJvYcCW1AXhz9fml36mX3eGOSdi7K3ZgHRI9EAYHtbuxIoJyWG8Owyhv1DL+o+v3YcBq5nbmBxwDVcNR9XNoSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt1LrzCCBSwhFN++/sLusy+Os3h/VsfFFqlBjzr3G9AiIZDwL1
+	bfOgcPnch2q71o5TzIOcF4LurB+OLb03ofT/E+cxuktpceX5foL/nI/mCs3H0g==
+X-Gm-Gg: ASbGnctl5WmRwfZNSNg+WJ6J3Y+DZH9goXJAZXp4ZrCKfWaDdduUVhp1VmavnL7RsU0
+	RU7Q+HLkij42a3RxNDgogQWUGPxhGrHdnX85njOh5ZNdMoB0k9+Tv1zNj2YvDK0IqM7dYTUNmDy
+	DBkarfJkfQeTXKSflANFLs254CSG9uyy/EsBd2afNqjglM6zdGENuzebA7Jx97Bii+Dp9MOTftD
+	p/ltoXoKOpKNYsJuS0VEYzWWXKnpSjLUcy/v0HfBnvQp9Xm9Gj3Su4iG4fcW/PfnGrkHWsGo/5U
+	eVaLzoDCUQrMJIe6co1Pzlv1XplXtzmTPrvW7+i9IZ/JHrkfgG8w/0HFvcwDm6oIf9cinSLRKhd
+	MnR4pU70dziVxkrLVHZ/mfJiDUVXdWGOUt1MffH8yZChw3T/URvbx+m1xL9yawx0h9WqdM8afsQ
+	OLsy6Efw==
+X-Google-Smtp-Source: AGHT+IGHl2aSTawmjvSDGrfYh/fGkq10xNrV0wlEWWLRoQOJ6GT7lJaaIhruCOhiTCO/UG/v49Kapw==
+X-Received: by 2002:a05:6a00:198d:b0:76b:dd2e:5b89 with SMTP id d2e1a72fcca58-76bec33dffemr17125421b3a.6.1754399597659;
+        Tue, 05 Aug 2025 06:13:17 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899a48esm134536415ad.114.2025.08.05.06.10.07
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce8b5basm12864426b3a.41.2025.08.05.06.13.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 06:10:08 -0700 (PDT)
+        Tue, 05 Aug 2025 06:13:17 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <e5d568fe-5aa2-4233-aff7-6d4b105e9ab9@roeck-us.net>
-Date: Tue, 5 Aug 2025 06:10:06 -0700
+Message-ID: <af4f80c4-3d31-4e03-8996-2caf2f311b7a@roeck-us.net>
+Date: Tue, 5 Aug 2025 06:13:15 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -84,12 +85,12 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] hwmon: scmi: Add default case with debug output
+Subject: Re: [PATCH 2/3] hwmon: scmi: Remove redundant devm_kfree call
 To: "a.shimko" <artyom.shimko@gmail.com>, linux-hwmon@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, sudeep.holla@arm.com,
  cristian.marussi@arm.com, jdelvare@suse.com, guenter.roeck@linux.com
 References: <20250805125003.12573-1-artyom.shimko@gmail.com>
- <20250805125003.12573-2-artyom.shimko@gmail.com>
+ <20250805125003.12573-3-artyom.shimko@gmail.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -135,64 +136,49 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
  FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
  np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250805125003.12573-2-artyom.shimko@gmail.com>
+In-Reply-To: <20250805125003.12573-3-artyom.shimko@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 8/5/25 05:43, a.shimko wrote:
 > From: Artem Shimko <artyom.shimko@gmail.com>
 > 
-> Improve handling of unsupported sensor types:
-> - Add default case in sensor type switch statement
-> - Log skipped sensors with debug information including:
->    * Sensor ID
->    * Sensor type
->    * Sensor name (if available)
-> - Use rate-limited dev_dbg for safety
+> Fix potential resource management issue by:
+> - Removing unnecessary devm_kfree() call in error path
+> - Relying on devres automatic cleanup
+> - Preserving all error handling logic
 > 
+> Rationale:
+> - Memory was allocated with devm_kzalloc()
+> - devm_ thermal registration manages its own resources
+> - Double-free could occur during probe failure
 
-The code doesn't actually do that, and it would be pointless
-and make the message useless.
+The reason for calling devm_kfree() is to avoid holding the memory
+unnecessarily until the driver deregisters. There is no double free since
+the code calls devm_kfree(), not kfree().
 
-> Debug output format:
-> "Skipping unsupported sensor ID:%d Type:%d (%s)"
+The reasoning is wrong, and the patch does not add value.
+
+Guenter
+
 > 
 > Signed-off-by: Artem Shimko <artyom.shimko@gmail.com>
 > ---
->   drivers/hwmon/scmi-hwmon.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
+>   drivers/hwmon/scmi-hwmon.c | 2 --
+>   1 file changed, 2 deletions(-)
 > 
 > diff --git a/drivers/hwmon/scmi-hwmon.c b/drivers/hwmon/scmi-hwmon.c
-> index 364199b332c0..a3b5b5c0ec25 100644
+> index a3b5b5c0ec25..d03174922e65 100644
 > --- a/drivers/hwmon/scmi-hwmon.c
 > +++ b/drivers/hwmon/scmi-hwmon.c
-> @@ -275,6 +275,10 @@ static int scmi_hwmon_probe(struct scmi_device *sdev)
->   			nr_count[type]++;
->   			break;
->   		}
-> +		default:
-> +			dev_dbg(dev, "Skipping unsupported sensor ID:%d Type:%d (%s)\n",
-> +				i, sensor->type, sensor->name ? sensor->name : "unnamed");
-> +			continue;
-
-			break;
-
->   	}
->   
->   	if (nr_count[hwmon_temp])
-> @@ -323,6 +327,10 @@ static int scmi_hwmon_probe(struct scmi_device *sdev)
->   			idx = --nr_count[type];
->   			*(scmi_sensors->info[type] + idx) = sensor;
->   			break;
-> +		default:
-> +			dev_dbg(dev, "Skipping unsupported sensor ID:%d Type:%d (%s)\n",
-> +				i, sensor->type, sensor->name ? sensor->name : "unnamed");
-> +			continue;
-
-			break;
-
->   		}
->   	}
+> @@ -211,8 +211,6 @@ static int scmi_thermal_sensor_register(struct device *dev,
+>   	tzd = devm_thermal_of_zone_register(dev, th_sensor->info->id, th_sensor,
+>   					    &scmi_hwmon_thermal_ops);
+>   	if (IS_ERR(tzd)) {
+> -		devm_kfree(dev, th_sensor);
+> -
+>   		if (PTR_ERR(tzd) != -ENODEV)
+>   			return PTR_ERR(tzd);
 >   
 
 
