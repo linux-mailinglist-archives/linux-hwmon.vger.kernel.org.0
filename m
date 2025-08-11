@@ -1,160 +1,124 @@
-Return-Path: <linux-hwmon+bounces-9073-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9075-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB1EB20B2E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Aug 2025 16:06:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F07B2116B
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Aug 2025 18:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70BC517C860
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Aug 2025 14:06:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 573747A96BA
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 Aug 2025 16:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C418223704;
-	Mon, 11 Aug 2025 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F2B2E2F0C;
+	Mon, 11 Aug 2025 16:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P+fsxgiW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioJ2Tcv8"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA50C1F91F6;
-	Mon, 11 Aug 2025 14:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5522E2EE8;
+	Mon, 11 Aug 2025 16:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754921075; cv=none; b=J9I1AJi7Ti+7wIHg2Ka2xJVAO1tbO7yn9eMJg4e1zdHncIlyp8ITYKErSPK5RCOfdtXsq/wgMGXHNnRAcyHyH/Xzjd/VjnDwGPH6zDhwe2U7ds8os1lv97lDCUyDyfUi7GbYyAKgWw3I5uxLTRc9dgslMFuIxe0nJM0FwdQR/vc=
+	t=1754928796; cv=none; b=iphJ88kc4hxCDm4zHdW4UeFVwfFbgRIcvbXfmhe4UpjOK3ctTyiGReTQdbnb+P59eaCf2kC1bStopfT4kiL5lU99uXgI/c4SCfj2BkwvLl797yMX1N3mBsxpwKnlIiR3B2X6mIdXgSRJTq6bAwSd6icIOh7uo+n11nCGswAEcjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754921075; c=relaxed/simple;
-	bh=RmgTHIaDhOguz+w7nmvLbH/WpMkuuGx2b8fcu3B0jaQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u0SkYf3ASZycbiapy+TgKkRKITz7Ys8FYCKwrlwzXJY/eTI7sGzuKy89/uT24C6o348gLoyibbgXOS+hRWroevFakRshDJaSyAiRF7IquNno6rM/3znVHitjX/4Xes5WokERsMgK5ul/TwnKFiSL2TJHiaseADTKs2s61JXRSd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P+fsxgiW; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24041a39005so27711155ad.2;
-        Mon, 11 Aug 2025 07:04:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754921073; x=1755525873; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=YUTK53YIspNHhHoCh8vVSDbdxt8XCkmaBRBU4QetOB4=;
-        b=P+fsxgiWWykuFCzbpVTDsn9RyCGrBCIbJqpLhPCeR1pnqRyvRqLbgw4wgiO7qbqfw8
-         kEIHJN87ebhY4HyzXIxju4BS4pci5Q2jr+LZN2OBlt63jSl4815RkOTms/Lh4OuLdjc6
-         kVJBO6rJk/B5UNo4ItHvXpneGLkPpu9L3y6zGIxnrFONCe/JRAaAkNUF9es3clCPoVVe
-         TPeepVzXzbn06krpjNpuyfrEt5+cLxR8hU1lf6a2/gp10wQepjhblLPiSWu3Miow9vvj
-         yyJkOKe75IKcCUNGcj4mBveycmTAbLHh+8HRhqL1EA3vLIr3nn3V2awboy/5CpkwDitr
-         3EWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754921073; x=1755525873;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YUTK53YIspNHhHoCh8vVSDbdxt8XCkmaBRBU4QetOB4=;
-        b=CrfneS7pZL7boFqxgjXgFYWYAiqjt2QwWKvtJ4oqeVrKm17WEtcbezmQZBt2K/ORtK
-         VqgdisLf6oYvoOIf/zh21QpsR4Zw4HRU57SF4MJpbSec4qX2ppOHtuyEXKo6G02JTD5L
-         k3XepELQA2vu3SW13q/P/uXeVxdhy++7uqz0q6lzdZSne9I0GhHFezwAjXFi7L5CBPef
-         tI+6qczODEAQT0OFN+y65CKaD2qWdpAoID51Fby5c5G5RJYDpWfe7cVXOT7ddTrD2ys6
-         VTlIzYQtGUS94H1hR0TKxIvf62VkL4rVAI6CstEwaQ0RTWNnvoV/p3RwJwjyOKlU6r/V
-         sa4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXIazbYs+KMFo3B1dbFAJfZi8VT0AW45E2TGOwLu6XaYtwjDYbzwMKf4eTNBq86AfF3pBx4Ui68+237gW0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1galOiuhg9p0vy0cDiD6LwFOhoAaLa5OYz3g0PKNAm/4dE8J3
-	gYAAYPu7WOhWE7oFJmCB0nSRAlbrII7eZAxAWBi8L9imAg5u+mSWygX3
-X-Gm-Gg: ASbGncuZH3qC5uHM2pPOOn/R1NJOkpd/3dnwIlIPBTl2SvAeRFze+ePsw3MswFD46xx
-	HUDYPuINS0lNdb+xxfxsxxYxmf9mrRC1xR24sY77+hoAAfExy7pi1Kt95aNrRyfGA4wPSzao5Tn
-	p01NM3g8EVWuB9f6mNzmvXwim4U9b0zlVyreSNsdlpsw7oTQ8yrstSCfFFSo9g6jNk5ykCdrBrI
-	d5dp6WwKorl+LvBffjzjEwmD/03A0BFR13PZLmpieDxKVD22UHCtEnb0cifbZ8uJ9AQ58dCCfzS
-	3tb+jkLQPL5vxuqIACzW8YaRMMPlcHOd6JZngEzAd3njVXEk+Tncw+Npzs6bIOylEJDOHXqbz1E
-	9BIUPNgJvhkXJpiIHsZ1FJDywVB/3ofNLa1UF6LkigFjkK2qDLCmPCZJ1KdqeoNoT2OrPI4w=
-X-Google-Smtp-Source: AGHT+IHbkYXNAxPAuxg++nImkbnZkg3L+q8zj6FyMyfLfo1rJY0xudYw/DYfXMbWZB2Ek4/URlIJdw==
-X-Received: by 2002:a17:903:3b8c:b0:242:460f:e4a2 with SMTP id d9443c01a7336-242c2004168mr157897575ad.23.1754921072812;
-        Mon, 11 Aug 2025 07:04:32 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899b6casm272694975ad.127.2025.08.11.07.04.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 07:04:32 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <112dba6a-dc3a-4b6c-b558-e1cc87636dea@roeck-us.net>
-Date: Mon, 11 Aug 2025 07:04:30 -0700
+	s=arc-20240116; t=1754928796; c=relaxed/simple;
+	bh=BngNvQtxxPHzANuXTDA6edjPk7rZAtFM5WdYLG3It70=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dBTzoY5EVN9FrWnC+9waNPzpCP/x1+L/H7/DcopsyIho8YEU8iQH+iE6qpHLtJ97g3VF3TLeJkwVy8bk1v8Xp/2fk460eMdpWcWjVCXehZrPKTdZACwZ14vIHob5XuO9BGsb2UTgR+zTaGVCXwa6ozawESyE85lJJw7/iHSl4jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioJ2Tcv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2204DC4CEF4;
+	Mon, 11 Aug 2025 16:13:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754928796;
+	bh=BngNvQtxxPHzANuXTDA6edjPk7rZAtFM5WdYLG3It70=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ioJ2Tcv8wWPTyFSIevlLFL6UcLgrJOsPkqcx90GEbJjcylOHEcTIqgWkXP/wHNuPx
+	 ZDSKYKOUwqpc2rBFQclBqU36v1jyXMfc6o+98W+PnyZt1XusW3qIpn5KnbaSYOgwRC
+	 mLwLbhbHeAxm5XUDR91v+6cNgHHigGE6T0pMXQD7IoCua0iTq7LFPy6fpA8Ipt3BkC
+	 TtIv6k7iSG7X7l4tmmp1awhaScM09CaW63XAy0Yu1zdyLJjX9QyOyQXOaB658w/Tgb
+	 JU7IqM3rl7vONjcQCPKwS+OH1ryswxNc/H5QBk53iy66xpsEAegJdrf0C4TcP/ANIZ
+	 6/CYGVvI5UFBg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 199D8CA0ED1;
+	Mon, 11 Aug 2025 16:13:16 +0000 (UTC)
+From: Gregory Fuchedgi via B4 Relay <devnull+gfuchedgi.gmail.com@kernel.org>
+Subject: [PATCH v2 0/2] hwmon: (tps23861) add class restrictions and
+ semi-auto mode support
+Date: Mon, 11 Aug 2025 09:13:14 -0700
+Message-Id: <20250811-hwmon-tps23861-add-class-restrictions-v2-0-ebd122ec5e3b@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/1] hwmon: sbtsi_temp: AMD CPU extended temperature
- range support
-To: Chuande Chen <chenchuande@gmail.com>, jdelvare@suse.com
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- chuachen@cisco.com, groeck7@gmail.com
-References: <20250810084307.41243-1-chenchuande@gmail.com>
- <20250811050752.76030-1-chenchuande@gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250811050752.76030-1-chenchuande@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJoWmmgC/03NywrDIBBA0V8JrjvBBzG2q/5H6UJ0okKMxbEPC
+ Pn3Sldd3s25OyOsCYldhp1VfCVKZeshTwNz0W4BIfneTHI5ccMNxHcuG7QHSWW0AOs9uNUSQUV
+ qNbnWAQKjHCrHpTdmYt16VFzS5/e53XsvtWRosaL912cpJq7mUZiz0FqDgLA8XUQf0jVkm9bRl
+ cyO4wt5ZQr0tgAAAA==
+X-Change-ID: 20250808-hwmon-tps23861-add-class-restrictions-83ce3c02d885
+To: Robert Marko <robert.marko@sartura.hr>, 
+ Luka Perkov <luka.perkov@sartura.hr>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Gregory Fuchedgi <gfuchedgi@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754928795; l=1529;
+ i=gfuchedgi@gmail.com; s=20250811; h=from:subject:message-id;
+ bh=BngNvQtxxPHzANuXTDA6edjPk7rZAtFM5WdYLG3It70=;
+ b=A72Hmv6jDYqCbccWDuiRCxTupDmvpCXwUE2eoETQvNLrJQNL5w6+BIGbMk+WNvBkYuVhDX720
+ cNF2R9o2EbaD5qiS0viNzdjDD0LmUssBk2/F8wmBY4GRJ1ATYsevy8X
+X-Developer-Key: i=gfuchedgi@gmail.com; a=ed25519;
+ pk=J3o48+1a2mUIebH8K4S3SPuR5bmamUvjlsf8onoIccA=
+X-Endpoint-Received: by B4 Relay for gfuchedgi@gmail.com/20250811 with
+ auth_id=484
+X-Original-From: Gregory Fuchedgi <gfuchedgi@gmail.com>
+Reply-To: gfuchedgi@gmail.com
 
-On 8/10/25 22:07, Chuande Chen wrote:
-> From: Chuande Chen <chuachen@cisco.com>
-> 
-> V1 -> V2: addressed review comments, also save READ_ORDER bit into sbtsi_data
-> 
-> Chuande Chen (1):
->    hwmon: sbtsi_temp: AMD CPU extended temperature range support
-> 
->   drivers/hwmon/sbtsi_temp.c | 46 +++++++++++++++++++++++++++-----------
->   1 file changed, 33 insertions(+), 13 deletions(-)
-> 
+This patch series introduces per-port device tree configuration with poe class
+restrictions. Also adds optional reset/shutdown gpios.
 
-Introductory patches are not needed for individual patches and only add noise.
-Please just send the patch with change log after "---".
+Tested with hw poe tester:
+ - Auto mode tested with no per-port DT settings as well as explicit port DT
+   class=4. Tested that no IRQ is required in this case.
+ - Semi-Auto mode with class restricted to 0, 1, 2 or 3. IRQ required.
+ - Tested current cut-offs in Semi-Auto mode.
+ - On/off by default setting tested for both Auto and Semi-Auto modes.
+ - Tested fully disabling the ports in DT.
+ - Tested with both reset and shutdown gpios defined, as well as with reset
+   only, as well as with neither reset nor shutdown.
 
-Guenter
+V1->V2:
+ - code cleanup
+ - split bindings into separate patch
+ - use patternProperties
+ - use labels instead of DT node names
+ - add few comments for clarity
+
+Signed-off-by: Gregory Fuchedgi <gfuchedgi@gmail.com>
+---
+Gregory Fuchedgi (2):
+      hwmon: (tps23861) add class restrictions and semi-auto mode support
+      dt-bindings: hwmon: update TI TPS23861 bindings with per-port schema
+
+ .../devicetree/bindings/hwmon/ti,tps23861.yaml     |  86 +++++++
+ Documentation/hwmon/tps23861.rst                   |   6 +-
+ drivers/hwmon/tps23861.c                           | 249 ++++++++++++++++++++-
+ 3 files changed, 335 insertions(+), 6 deletions(-)
+---
+base-commit: b1549501188cc9eba732c25b033df7a53ccc341f
+change-id: 20250808-hwmon-tps23861-add-class-restrictions-83ce3c02d885
+
+Best regards,
+-- 
+Gregory Fuchedgi <gfuchedgi@gmail.com>
+
 
 
