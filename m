@@ -1,142 +1,140 @@
-Return-Path: <linux-hwmon+bounces-9088-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9090-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398E3B25E62
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Aug 2025 10:08:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B184B2638E
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Aug 2025 12:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A0A2189AE6B
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Aug 2025 08:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EAF9A2243C
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 Aug 2025 10:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2EC2E62BB;
-	Thu, 14 Aug 2025 08:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CE52FDC22;
+	Thu, 14 Aug 2025 10:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="0i/93Bll"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJ1g/ViX"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23662E2DD4
-	for <linux-hwmon@vger.kernel.org>; Thu, 14 Aug 2025 08:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082A42FC89B;
+	Thu, 14 Aug 2025 10:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755158841; cv=none; b=ixC4T/tw2XOliJHqtp/UZSM8WKaILwCBPzNq+NV76LXfhn62VSf8sNJn6MYoM1QbZ5OGjD85D7/lH+0BzKDVF9X3I8m/9mJpr4g8yPexnjIxFDxVlIkDh+Uc0RFiPeqtFdkaxXddTCk+NM9gWXq3hvKM07fMVUkefsX5tgmXfTc=
+	t=1755168734; cv=none; b=jFiFkz6N1y0MWX+m+GZf1Kp7Mg7JgWMP7MCDpBVhih1ZwS1RhrYDuwkfmtk2dIQKs1XsfeS9qATtAnO6wG3SWT57MRGsI333mzlRATIIfIyOkBOjcwAtAW8JOcWG6mOSKVAcxoYu5Ln7vEnZYHWB0CZNhAtbZs5ZODd3AfcwGaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755158841; c=relaxed/simple;
-	bh=lMpxQL3vxiHjhSQ6qRV95klnp1jlsr1g47iiI4+lswU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lxbqMLR+15WQWxt1gSkXuOoIF7oV6RgrBDaMs5OKRSKsIGhCbtgd8Vhy5dqFWWF0zIJkLWnRdcfacyN9qhm4y39ow0zfW5flpkZtQ+J+FA6UPwxyC78ACNYQtn9FWRh/vKEWEp+ELkJHnjK4W13ju7ablEstJKRc3DkQzLse3xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=0i/93Bll; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 2740 invoked from network); 14 Aug 2025 10:07:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1755158832; bh=xDw4DWxZS/qq7zJvdZ1W4x8BSzX0OHBxZaPftTdF3V8=;
-          h=From:To:Cc:Subject;
-          b=0i/93Bllel6CaR24SeXMSfhI7vsF37jckxENf3TF1po9XifsrvU8tANdRx4YsXmD9
-           cmIbivbL3lGCqGfK6lXPirXKcXTx2RJa/aoE0IlW8kZ5lyiG6y1taL5DBayKfmbcmD
-           i2Bnrwlp8/T6SUUs1crZFSmKSL6rFkmQaHGNS69iSSqIp79urBkbvAEeZsKMDD8AkF
-           c6Syg3LUuhwrseWYCTtMkOAcE4K2bCjqIi4hM4Tz6KdZnrh4O7X60oV/JlGbH+KJvn
-           5LgKGheSf9fI5Cf2kj4yN+Qmz8MqkaVwmDZU7lCKmDJByIjGY3cgQp7x5FsLQX8zoQ
-           lzbShrv7Ue8aw==
-Received: from 83.24.134.210.ipv4.supernova.orange.pl (HELO laptop-olek.lan) (olek2@wp.pl@[83.24.134.210])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <jdelvare@suse.com>; 14 Aug 2025 10:07:12 +0200
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-To: jdelvare@suse.com,
-	linux@roeck-us.net,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	fe@dev.tdt.de,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Aleksander Jan Bajkowski <olek2@wp.pl>
-Subject: [PATCH v2] dt-bindings: hwmon: convert lantiq-cputemp to yaml
-Date: Thu, 14 Aug 2025 10:04:41 +0200
-Message-ID: <20250814080708.3054732-1-olek2@wp.pl>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1755168734; c=relaxed/simple;
+	bh=LS7UVXZq5BcWKHTjEz4xF0C5gnYu/PomYCrf0wF8d4E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HHQxU+p2QlZgcqCe9fgqIL86Siww5dqVk+4FiEwdaXbJN8PYRLnUSeUb9cdK1TtGKw15Bp1DaLL7Gxpv8fO13r6Yvf4WvSOv1rJx0DpAvkyr1NuS6+P+MFnASwFJs/rDhUd+B/8jyFj8OHDC+0bthzGlYqp2Gc3ykgZinNrMZC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJ1g/ViX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9614AC4CEED;
+	Thu, 14 Aug 2025 10:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755168733;
+	bh=LS7UVXZq5BcWKHTjEz4xF0C5gnYu/PomYCrf0wF8d4E=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=aJ1g/ViXBXs2iruF7oQkCtU1HxWGhnC09lXi6kvjc8adbYelCRMgpNgXZkAG9tu9B
+	 Vg7oVvPl23Bog5EbB+q2Xtslou7c6shQ5gMp5jxpRQYWYrRF8IAnWLhVJKz+gLL11B
+	 jqI0eRLIaF/gWgLPoHmMV46tSvE2HYHJ7v0MSb48VcgppRV6HVDabGWy+5kYi9XlZ4
+	 88oGmOSH1iCeLP0yEtvaNpvRRSJbKN1xkPytNZMLeEAXnm2S1R/HzcbZvEozuQcmG9
+	 pFe/uQMc9HQmsfikV//L7AZ9+5pPuSc/0N7i7+NZPn7IvBcUlBQ6zSHGsYmY/NHltb
+	 koVaLhMkaRcCA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85884CA0EE4;
+	Thu, 14 Aug 2025 10:52:13 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH 0/6] mfd: Add support for the LTC4283 Hot Swap Controller
+Date: Thu, 14 Aug 2025 11:52:22 +0100
+Message-Id: <20250814-ltc4283-support-v1-0-88b2cef773f2@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-WP-DKIM-Status: good (id: wp.pl)                                                      
-X-WP-MailID: 02e1e0d59fb63bd60bbca17161f711ee
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [4QPE]                               
+X-B4-Tracking: v=1; b=H4sIAOe/nWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC0Mj3ZySZBMjC2Pd4tKCgvyiEl0j82SLZJNUM8tksyQloK6CotS0zAq
+ widGxtbUAb10EdGEAAAA=
+X-Change-ID: 20250812-ltc4283-support-27c8c4e69c6b
+To: linux-hwmon@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755168752; l=2545;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=LS7UVXZq5BcWKHTjEz4xF0C5gnYu/PomYCrf0wF8d4E=;
+ b=MYo3wIvH+i4xncYor+OvLaAiEb1eJDXKd170JjyFYsTrHb/1XGEBmjy7wA+RsfpOVF9yBBaDf
+ xLciOBqry6+CDhImzd4dU9U25eN8kmw/N78xJAXiS+eJWxTHiAId65b
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-Convert the Lantiq cpu temperature sensor bindings to yaml format.
+The LTC4283 device features programmable current limit with foldback and
+independently adjustable inrush current to optimize the MOSFET safe
+operating area (SOA). The SOA timer limits MOSFET temperature rise for
+reliable protection against overstresses.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+An I2C interface and onboard ADC allow monitoring of board current, voltage,
+power, energy, and fault status.
+
+It also features 8 pins that can be configured as GPIO devices. But since
+the main usage for this device is monitoring, the GPIO part is optional
+while the HWMON is being made as required.
+
+Also to note that the device has some similarities with the already
+supported ltc4282 hwmon driver but it is different enough to be in it's own
+driver (apart from being added as MFD). The register map is also fairly
+different.
+
+Last time (for the ltc4282) I tried to add the gpio bits directly in the
+hwmon driver but Guenter did not really liked it and so this time I'm doing
+it as MFD.
+ 
+
 ---
-v2:
-- added reg property 
----
- .../bindings/hwmon/lantiq,cputemp.yaml        | 30 +++++++++++++++++++
- .../devicetree/bindings/hwmon/ltq-cputemp.txt | 10 -------
- 2 files changed, 30 insertions(+), 10 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/hwmon/lantiq,cputemp.yaml
- delete mode 100644 Documentation/devicetree/bindings/hwmon/ltq-cputemp.txt
+Nuno Sá (6):
+      dt-binbings: mfd: Add bindings for the LTC4283 Swap Controller
+      mfd: ltc4283: Add support for the LTC4283 Swap Controller
+      dt-binbings: hwmon: Add bindings for the LTC4283 Swap Controller
+      hwmon: ltc4283-hwmon: Add support for the LTC4283 Swap Controller
+      dt-binbings: gpio: Add bindings for the LTC4283 Swap Controller
+      gpio: gpio-ltc4283: Add support for the LTC4283 Swap Controller
 
-diff --git a/Documentation/devicetree/bindings/hwmon/lantiq,cputemp.yaml b/Documentation/devicetree/bindings/hwmon/lantiq,cputemp.yaml
-new file mode 100644
-index 000000000000..9419b481ff35
---- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/lantiq,cputemp.yaml
-@@ -0,0 +1,30 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/hwmon/lantiq,cputemp.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Lantiq cpu temperature sensor
-+
-+maintainers:
-+  - Florian Eckert <fe@dev.tdt.de>
-+
-+properties:
-+  compatible:
-+    const: lantiq,cputemp
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    cputemp@103040 {
-+        compatible = "lantiq,cputemp";
-+        reg = <0x103040 0x4>;
-+    };
-diff --git a/Documentation/devicetree/bindings/hwmon/ltq-cputemp.txt b/Documentation/devicetree/bindings/hwmon/ltq-cputemp.txt
-deleted file mode 100644
-index 473b34c876dd..000000000000
---- a/Documentation/devicetree/bindings/hwmon/ltq-cputemp.txt
-+++ /dev/null
-@@ -1,10 +0,0 @@
--Lantiq cpu temperature sensor
--
--Requires node properties:
--- compatible value :
--	"lantiq,cputemp"
--
--Example:
--	cputemp@0 {
--		compatible = "lantiq,cputemp";
--	};
--- 
-2.47.2
+ .../devicetree/bindings/gpio/adi,ltc4283.yaml      |   33 +
+ .../devicetree/bindings/hwmon/adi,ltc4283.yaml     |  159 ++
+ .../devicetree/bindings/mfd/adi,ltc4283.yaml       |   85 +
+ Documentation/hwmon/ltc4283.rst                    |  266 ++++
+ MAINTAINERS                                        |   13 +
+ drivers/gpio/Kconfig                               |   10 +
+ drivers/gpio/Makefile                              |    1 +
+ drivers/gpio/gpio-ltc4283.c                        |  233 +++
+ drivers/hwmon/Kconfig                              |   10 +
+ drivers/hwmon/Makefile                             |    1 +
+ drivers/hwmon/ltc4283-hwmon.c                      | 1658 ++++++++++++++++++++
+ drivers/mfd/Kconfig                                |   11 +
+ drivers/mfd/Makefile                               |    1 +
+ drivers/mfd/ltc4283.c                              |  140 ++
+ include/linux/mfd/ltc4283.h                        |   33 +
+ 15 files changed, 2654 insertions(+)
+---
+base-commit: 9703c672af8dd3573c76ce509dfff26bf6c4768d
+change-id: 20250812-ltc4283-support-27c8c4e69c6b
+--
+
+Thanks!
+- Nuno Sá
+
 
 
