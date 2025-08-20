@@ -1,217 +1,168 @@
-Return-Path: <linux-hwmon+bounces-9131-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9132-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F9DB2CFDF
-	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Aug 2025 01:25:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322C5B2D93D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Aug 2025 11:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754483A1694
-	for <lists+linux-hwmon@lfdr.de>; Tue, 19 Aug 2025 23:22:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5719D7B1080
+	for <lists+linux-hwmon@lfdr.de>; Wed, 20 Aug 2025 09:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165392550CD;
-	Tue, 19 Aug 2025 23:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EE7281369;
+	Wed, 20 Aug 2025 09:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K6jwqxZr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwGMkAP3"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A7721ADDB;
-	Tue, 19 Aug 2025 23:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC1E1B4233;
+	Wed, 20 Aug 2025 09:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755645767; cv=none; b=fD+oGFPGVy1noHcdfUHzi57IeYro4kOHrk20svFeHYT1DkH0WtevHZYkQTv+34/PbPZOrzTTZKXIISfr922r6L/uLl/W0PScVHDq9+Ag+K6wmMsKAwLQWgmxM1JdL474zeHE9x301aH/igQqbXrqWJcKOoZcTbcyHCH2DOtdZkY=
+	t=1755683449; cv=none; b=ppI303p7QJ02vn9nANkx3Jj0pWoiXwnhswBDtXsyT4npntt9fL+owyme1mdjJRP5COzHguvVgX0hESZ56SrndDvXMHmugFM7Pn+Qz0numn/i+aQ40FS6JB2w/bMy/yKyQDGFoVdokvaef4JZsmp6hVy5kC9NAYyLwZSPKBFE+dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755645767; c=relaxed/simple;
-	bh=9jkN28NHaaCVj6JDzv6Hw14M+7ThWCQNtbL0G3psptQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GqZGdCbOGG58l7fwDFyN9kw7u8h77UVeRo00KQw9lIm8Q20NQYYNc2TwX1X4sVjJjP1ihEygXxLFncj87mg4alYUVCXzEFkdgtYTC9L1DMh46XpzSkJsBpNZ0BRQSDzszvOa5WIpKybFy7ZDyMqinrzbTSfusATYv59N7rmkdlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K6jwqxZr; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b113500aebso41323261cf.0;
-        Tue, 19 Aug 2025 16:22:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755645765; x=1756250565; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K422/Y/9yj8ALHij9Y1sYg9rSj8Y/+PMz3oGCIVOfdw=;
-        b=K6jwqxZrjaNrV+uHBKktGJCBlWeVDkE9vuEcr4AwUleV0IRC06Ddr6HogdqXnfv4Jq
-         ecxHsT0aiNhXzZVTREofbQUOJIo8L36pejQ6DKDMTapvc8zCqxZ+zIa0ZfsUYwoGTT0E
-         RJVv9aomnQXn69zBeTpKwpHKKtk8jyEfthY9OMuyeSZMGA5y/BYOMwG1v4ma0UIjRIi2
-         vvUW0pPxrLH+7itfGNyQzH43DWmzzwvsd85+nSf1g/Y8Uqa2SJzw4F/o9eGoJ8g/+ZjN
-         1vuMDcr34y5RwRDNmoObPZI1UpVsZ4i6UoY3Ffqbgo35+QNNsFzrl4lzcq1YA1QH0/Ax
-         58lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755645765; x=1756250565;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K422/Y/9yj8ALHij9Y1sYg9rSj8Y/+PMz3oGCIVOfdw=;
-        b=aNVp09vXH3PcIUpVBbKtRJydXpJFjHng/ZUJJ74Ag/kkpEeUjkL/VIald4lze+NGrY
-         fbn8Qv8t1Y91TejNJQriKfSSdA0H1+PhjmKVWihjnSlrYS4mRjQ0b9aKNksLqKr7yYLB
-         twTxmZSP8PAN78MJ/1niMwszmXjMd0jyuTrW4jE0f79ByPzqOI7fHUb3OZjr5ZH5KQFl
-         jzctl027YeDX1e3FHYzHC6sjweXOxGBw3sY4HJ3KTRn2yYEXBE016uSlfxl05mYfxcW6
-         NfVzJl39wrFzJngenrlYu+28szTmbFiJSZ3ijgcUkaxyl0/Drp2eIey3Ve0g/Iq4JiiZ
-         w6Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwcVvb2kU3H+RdRGbdGqeyzo8MZauNKpvOBxpjgKvROj507u5I6jmcmq/nkYUEUc+o+f3U/73KGawqfe0=@vger.kernel.org, AJvYcCWHhhxSDr8DEVTUxMoPILoL0J6c6OmhBRFm3z+8RGnQ0cMQf0lHg66H14ZwVshm7bRiEwvnXeSbZ+PMGjY=@vger.kernel.org, AJvYcCWi6Q92YMPLLKIQ3FIk+DXCwmaXWfbFDjJ/gjbqDYAzoJyqEOQQdKZFpR7fux2BuBf+azaih7HwM2p6e7eT@vger.kernel.org, AJvYcCXEogQ0mNVzVVUEm6QMhnRYVA9WwrZobbYHgLGA7kfaoMO4Fq0Ax0T1qPEB4S/qzOqcjwpPrP/mDt7l@vger.kernel.org, AJvYcCXirtnkJ0ImEVcv2YIKUgRRU+5ETRQm9l68d577PWDE0x+9xoxwvajhIQgdnXTin0TLNZ7fUgAKlf+x@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+8sDQ/Ba2YfemplplzHQfXCqfRtBdTqf+4KKynjMwnOMOnsIv
-	z0h9ENDGB8b3DmG9g0PXwqhtmSyCxgXo+hPrVcu+qyYrr3jPF/zdhllAkWUSv0foOxsyPFqoLyk
-	WHjedqm4W9B/i5VSF6ypwHPrcKwzc2Lc=
-X-Gm-Gg: ASbGncty9S4gXksULV1q2YjFUfAu7LcPwuGtlM7JCiph/l6eAzkqWd/ts7Sg2tll3/Y
-	C9rN05BbWplDcsQ75A4QOg+nmTZV3DQ0p5/w4dUUTJSr5Gwx8g1XpcnEQgR2yamSDm5vQMetVmy
-	j9nr6kfTT0TJLXqDNwMefDX41vQLQuCSjdeun8qD7ukOB5XNcCki4kWVN0d1N8aoeZggqMTYg2q
-	2zaw03MxNcP4WC5
-X-Google-Smtp-Source: AGHT+IHJre8AvfYFwM+tKjlP1D/tcobYVeLPY4jalmq308RktLJB1oePkAuJ7BQTBO7wQ2idbBiWEq+aIlj4VxZBRRo=
-X-Received: by 2002:a05:622a:304:b0:4b2:8ac4:ef61 with SMTP id
- d75a77b69052e-4b291c0a095mr9690251cf.68.1755645765106; Tue, 19 Aug 2025
- 16:22:45 -0700 (PDT)
+	s=arc-20240116; t=1755683449; c=relaxed/simple;
+	bh=TXa6SwADZW2EnuROnuMdq8thNh5pAy9oJvtuOdFbs9k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=e3Zs8Cf0TmXXgCpPUGXmstHbQxfYd0KowTBJZJNua1FaYnigHbd3Mbo3kNfdtiF6XXUR1D+Eb/hpb2cfZ/AfvbToz0JrwsNyaqLsbk/Rjx21Z6Y3YZWpeBk+PvgXgLSIxYWd561aLMRzONRksTebzuYoC7Gap3pVOihQlzqL40w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwGMkAP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 03363C4CEEB;
+	Wed, 20 Aug 2025 09:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755683449;
+	bh=TXa6SwADZW2EnuROnuMdq8thNh5pAy9oJvtuOdFbs9k=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=pwGMkAP3fShXsgmIxrDNbGfSts1T4hTBVJm2cid/yzLOfjeP1FCMK+ej0o+F8IyTy
+	 c3QUhXDiY94NGRtIvDB/IGVAc2eUr6dmqnx0MiD5TXvk6EnAu+WPwSY64BBmAYWExa
+	 fI8CdiVpigXQQ2F/MKXO+PKLZ8YhCR7wMOlWUZPJfTA/Hj1f1ExhvnNIBbsBgO1OL+
+	 JETPlI9OzjTVHNJTHw7rgxCdfuaqSnhZ0byZ1uTrdJcX/Hl8B8WkiXUDB6mfa4LWPy
+	 ahglHaosGsDKQNmJ898OYCSQChX1zsQFE6Q30LDjdYjDeiaklhVl1FWn3crB7m1DqM
+	 XMqvbDjpv2Pvg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBCD0CA0EDC;
+	Wed, 20 Aug 2025 09:50:48 +0000 (UTC)
+From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
+Subject: [PATCH RESEND v7 0/2] hwmon: add GPD devices sensor driver
+Date: Wed, 20 Aug 2025 17:50:37 +0800
+Message-Id: <20250820-gpd_fan-v7-0-10c8058f4dba@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250819-macsmc-subdevs-v1-0-57df6c3e5f19@gmail.com>
- <20250819-macsmc-subdevs-v1-2-57df6c3e5f19@gmail.com> <20250819201537.GA1223169-robh@kernel.org>
-In-Reply-To: <20250819201537.GA1223169-robh@kernel.org>
-From: James Calligeros <jcalligeros99@gmail.com>
-Date: Wed, 20 Aug 2025 09:22:26 +1000
-X-Gm-Features: Ac12FXy5USWNvk81C09AV_y_m0PHlKCGlBXsRbqwyr8NREPpK7i0eE4MCUv2BBE
-Message-ID: <CAHgNfTw+wetmZzvPgkANpmSD4b6k0785QZLpBVD9FMqNDnq2EQ@mail.gmail.com>
-Subject: Re: [PATCH 2/8] dt-bindings: hwmon: add Apple System Management
- Controller hwmon schema
-To: Rob Herring <robh@kernel.org>
-Cc: Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>, Lee Jones <lee@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Jean Delvare <jdelvare@suse.com>, 
-	Guenter Roeck <linux@roeck-us.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAG2apWgC/3XRXUvDMBQG4L8ycquVnHxXEKbbmKB4oRdDREbaJ
+ G3Utls7u82x/26oSEfFy5Oc580LOaDG1t426HJ0QLVtfeOrMgzyfITSXJeZjbwJMyKYMCxBRNn
+ KLJ0uIy4dxTGhqVIMhe1VbZ3fdUkv6HH2NHuYotdwnvtmU9X77oEWuts/WS1EOKIMczBGgsZin
+ BXaf1ykVdFltOTUyd6R4JxMpBVJ7AgkQ0f/cTQ4ZaR1CRBBEzl07NSp3rHgAITljIKOnR06/us
+ 4JgC948EJrBwjnDtsYehE5ybX8231tZ0DbbbPb5MbsVwUJFeaTMztThdnZH+VQcHIal++363XZ
+ nqfjbucQZrsWyh80kKGFpypJDbKcWnk+LMMv72xaf5jj8fjN1HgY1gQAgAA
+X-Change-ID: 20240716-gpd_fan-57f30923c884
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Cryolitia PukNgae <cryolitia@uniontech.com>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
+ Yao Zi <ziyao@disroot.org>, Derek John Clark <derekjohn.clark@gmail.com>, 
+ WangYuli <wangyuli@uniontech.com>, Jun Zhan <zhanjun@uniontech.com>, 
+ niecheng1@uniontech.com, guanwentao@uniontech.com, 
+ =?utf-8?q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>, 
+ someone5678 <someone5678.dev@gmail.com>, 
+ Justin Weiss <justin@justinweiss.com>, 
+ Antheas Kapenekakis <lkml@antheas.dev>, command_block <mtf@ik.me>, 
+ derjohn <himself@derjohn.de>, Crashdummyy <crashdummy1337@proton.me>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755683447; l=2789;
+ i=cryolitia@uniontech.com; s=20250730; h=from:subject:message-id;
+ bh=TXa6SwADZW2EnuROnuMdq8thNh5pAy9oJvtuOdFbs9k=;
+ b=77K97mhcCeUPSUzAKn5zfKgB4jRcNrtMlxnyg46exXHlHVP43IF2mkcf81i56tXInbmviizaw
+ tec0+mxfAtmAG6uf3276jfrqISM5ICFxxTRG6QF/ZR2jdRfGpGC6RLt
+X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
+ pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
+X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20250730 with
+ auth_id=474
+X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+Reply-To: cryolitia@uniontech.com
 
-Hi Rob,
+Sensors driver for GPD Handhelds that expose fan reading and control
+via hwmon sysfs.
 
-On Wed, Aug 20, 2025 at 6:15=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Tue, Aug 19, 2025 at 09:47:54PM +1000, James Calligeros wrote:
-> > Apple Silicon devices integrate a vast array of sensors, monitoring
-> > current, power, temperature, and voltage across almost every part of
-> > the system. The sensors themselves are all connected to the System
-> > Management Controller (SMC). The SMC firmware exposes the data
-> > reported by these sensors via its standard FourCC-based key-value
-> > API. The SMC is also responsible for monitoring and controlling any
-> > fans connected to the system, exposing them in the same way.
-> >
-> > For reasons known only to Apple, each device exposes its sensors with
-> > an almost totally unique set of keys. This is true even for devices
-> > which share an SoC. An M1 Mac mini, for example, will report its core
-> > temperatures on different keys to an M1 MacBook Pro. Worse still, the
-> > SMC does not provide a way to enumerate the available keys at runtime,
-> > nor do the keys follow any sort of reasonable or consistent naming
-> > rules that could be used to deduce their purpose. We must therefore
-> > know which keys are present on any given device, and which function
-> > they serve, ahead of time.
->
-> I'm confused because you say this, but then the .dtsi files are common.
+Shenzhen GPD Technology Co., Ltd. manufactures a series of handheld
+devices. This driver implements these functions through x86 port-mapped
+IO.
 
-The SMC exposes dozens of sensors, and figuring out which one is which
-when all we have to go by are cryptic FourCCs is proving very time consumin=
-g.
-This is made worse by the fact that even sensors which you'd think should
-be consistent across devices with a given SoC are often not. For example,
-the M1 Mac mini exposes the application core temperature sensors on differe=
-nt
-keys to the M1 MacBook Pro. We have only included the minimal subset of
-sensors/fans that we know are common to most devices to validate our approa=
-ch
-with and make the driver itself useful.
+Tested-by: Marcin Strągowski <marcin@stragowski.com>
+Tested-by: someone5678 <someone5678.dev@gmail.com>
+Tested-by: Justin Weiss <justin@justinweiss.com>
+Tested-by: Antheas Kapenekakis <lkml@antheas.dev>
+Tested-by: command_block <mtf@ik.me>
+Tested-by: derjohn <himself@derjohn.de>
+Tested-by: Crashdummyy <crashdummy1337@proton.me>
 
-> > +    patternProperties:
-> > +      "^fan-[A-Za-z0-9]{4}":
-> > +        type: object
-> > +        additionalProperties: false
-> > +        required:
-> > +          - apple,key-id
-> > +        properties:
-> > +          apple,key-id:
-> > +            $ref: /schemas/types.yaml#/definitions/string
-> > +            pattern: "^[A-Za-z0-9]{4}"
-> > +            description: The SMC FourCC key of the desired fan. This i=
-s the
-> > +              main key, which reports the fan's current speed. Sould m=
-atch
->
-> typo
->
-> > +              the node's suffix, but doesn't have to.
->
-> Why can't we require that they match? (Other than we can't express that
-> in schema?)
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-I made this optional mostly because these subnode names are inconsequential=
-.
-It's the apple,key-id property that matters. If it makes more sense
-to say that the node name and property 'must' match instead of 'should' the=
-n
-there's no reason we can't do that. Another option is to just have a
-numbered sequence, e.g. fan-01, temperature-01, etc.
+---
+Additional explanation: Based on the concerns in the previous version
+of the discussion about placing the driver in the x86 subsystem or the
+hwmon subsystem, I currently do not see any intention from GPD to
+integrate battery management into EC, and would prefer to keep the
+driver in the hwmon subsystem until the hardware manufacturers actually
+make something practical.
 
-> > +          apple,fan-minimum:
-> > +            $ref: /schemas/types.yaml#/definitions/string
-> > +            pattern: "^[A-Za-z0-9]{4}"
-> > +            description: The minimum speed the current fan can run at
->
-> This is not the speed, but the identifier key to retrieve the min speed,
-> right? That's not clear. It's a bit odd that everything is a key id, but
-> one property has that in the name and the others don't. I don't have any
-> better suggestion though...
+---
+Changes in v7:
+- Add support for GPD Duo
+- Change email from cryolitia@gmail.com to cryolitia@uniontech.com
+- Link to v6: https://lore.kernel.org/r/CAGwozwG13swYjCB6_Wm2h8a2CdHxam+2y=g1m42pynkKqqdDLg@mail.gmail.com
 
-Would it make sense to append '-key' to all of the optional fan properties
-to make this clearer?
+Changes in v6:
+- fix: nullptr and label followed by a declaration
+- cleanup: clean up code and rename some function
+- format code
+- dmi: add 2025 new GPD devices
+- Link to v5: https://lore.kernel.org/r/20250211-gpd_fan-v5-0-608f4255f0e1@gmail.com
 
-> > +          apple,fan-maximum:
-> > +            $ref: /schemas/types.yaml#/definitions/string
-> > +            pattern: "^[A-Za-z0-9]{4}"
-> > +            description: The maximum speed the current fan can run at
-> > +          apple,fan-target:
-> > +            $ref: /schemas/types.yaml#/definitions/string
-> > +            pattern: "^[A-Za-z0-9]{4}"
-> > +            description: Writeable endpoint for setting desired fan sp=
-eed
-> > +          apple,fan-mode:
-> > +            $ref: /schemas/types.yaml#/definitions/string
-> > +            pattern: "^[A-Za-z0-9]{4}"
-> > +            description: Writeable endpoint to enable/disable manual f=
-an
-> > +              control
-> > +          label:
-> > +            $ref: /schemas/types.yaml#/definitions/string
-> > +            description: Human-readable name for the sensor
->
-> Surely more than apple,key-id is required? How would it be useful with
-> only that? You can know how many fans you have, but have no info or
-> control over them?
+Changes in v5:
+- Rebase on kernel 6.13
+- Remove all value-cache related code
+- Clean up code
+- Link to v4: https://lore.kernel.org/r/20240718-gpd_fan-v4-0-116e5431a9fe@gmail.com
 
-The key specified in apple,key-id is the fan's current speed, which is the
-only key strictly required to enumerate the presence of a fan in the system=
-.
-All of the other keys are optional information that are only really useful
-when implementing manual fan control, which is itself optional as the platf=
-orm
-really expects the SMC firmware to have control over fan speeds at all time=
-s.
+Changes in v4:
+- Apply suggest by Krzysztof Kozlowski, thanks!
+- Link to v3: https://lore.kernel.org/r/20240717-gpd_fan-v3-0-8d7efb1263b7@gmail.com
 
-> Rob
+Changes in v3:
+- Re-arrange code, thanks to Krzysztof Kozlowski, Guenter Roeck, Yao Zi!
+- Link to v2: https://lore.kernel.org/r/20240717-gpd_fan-v2-0-f7b7e6b9f21b@gmail.com
 
-Regards,
+Changes in v2:
+- Improved documentation, thanks to Randy Dunlap!
+- Link to v1: https://lore.kernel.org/r/20240716-gpd_fan-v1-0-34051dd71a06@gmail.com
 
-James
+---
+Cryolitia PukNgae (2):
+      hwmon: add GPD devices sensor driver
+      hwmon: document: add gpd-fan
+
+ Documentation/hwmon/gpd-fan.rst |  71 ++++
+ Documentation/hwmon/index.rst   |   1 +
+ MAINTAINERS                     |   7 +
+ drivers/hwmon/Kconfig           |  10 +
+ drivers/hwmon/Makefile          |   1 +
+ drivers/hwmon/gpd-fan.c         | 753 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 843 insertions(+)
+---
+base-commit: b19a97d57c15643494ac8bfaaa35e3ee472d41da
+change-id: 20240716-gpd_fan-57f30923c884
+
+Best regards,
+-- 
+Cryolitia PukNgae <cryolitia@uniontech.com>
+
+
 
