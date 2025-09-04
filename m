@@ -1,225 +1,166 @@
-Return-Path: <linux-hwmon+bounces-9331-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9334-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D81B4318A
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 07:22:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8B4B435D2
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 10:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31EE617089B
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 05:22:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25E4958652E
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 08:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0423814D;
-	Thu,  4 Sep 2025 05:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90762C1593;
+	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j2ECcCAt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZR6cj6Pf"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657322C355
-	for <linux-hwmon@vger.kernel.org>; Thu,  4 Sep 2025 05:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99118286D7B;
+	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756963358; cv=none; b=IHHLZueOPfChiAwosboBXJVnI8t0I9Ylhborg2I0aRviPsx1oLYrkxYUcgO9lznfvK+VM6W3RGr6xE2SUZV3Uh5ftZUVh6ZiOGJ0mFyRjFDAP8oPSpw3oH0TWmIhSpoRSv7fFs68mburemvuvAIhqO6bQIhm/RVQaC0a8vLFFP0=
+	t=1756974822; cv=none; b=ftQqrr1Yu80fRfKCRcvv2xxVJVPZ52ZVCDgMX0e0kPuKietQ8ZVS7pNMgx24f/uWS5EiwzthlVM3SLrUJsKpVk00ADB2bNw2kDFZwmuuvZS7NU0slJartd2gdEzdrRMCp5qIhHNxkq/Ub9cH3pGi5NmhQIOQHzoBqi7pYusNJpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756963358; c=relaxed/simple;
-	bh=RUbOeHUKx8qtv71JIRH8wWvRXV7sAEdKRcW7lnjCbzU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=tGcI0o1t3bcZF4Wph4O1M4HClu9lCN8djckhRiKCdwcioXCaAtnlTIkZObP1pK3aLjvbpZ/QnDw3v/Cpz7GHSLdHX0ZNLZdkeTvW0BFDPulEFfizP1NYA5Fhk+0ci8fB0Iiru4M3R1LczYLpJFn5sKC6NEcWEUrEclxGcdxs2Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j2ECcCAt; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756963356; x=1788499356;
-  h=date:from:to:cc:subject:message-id;
-  bh=RUbOeHUKx8qtv71JIRH8wWvRXV7sAEdKRcW7lnjCbzU=;
-  b=j2ECcCAty9FoofNoa4eGXTZRag/oULnm4zn2Ci7tuRu64S/r8NgIJFRr
-   l3QKtZ5QUjWcyoi8VMVPU01jYt7vP1BAcUFPPgsvFNDmGb6h61zcb+MnA
-   CzJfWOAiWukSb9xkiz62IuS9evN9h6x7V8LZiDF5vZ/929kHRMWtU8k4T
-   0eA5pI29QrRpDhHjHKeWCi+W5z+fw9Ml02XFsJWS30TxkDUEF5x6jTK+/
-   fPXWiDzIy/w1nr9e+4fRMeNt1KA/ipDcMydyILPWDiHNjacX5RrBjAbro
-   /G/7tAW7m8o8DE4ugINZft8Qb0xRKa5/Se5gWWo6koO27SBqxn3otXRlY
-   Q==;
-X-CSE-ConnectionGUID: fb3CCXTHTWOqsIv737vqAg==
-X-CSE-MsgGUID: VszmSVsVQL2L5tYiizDsRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="70664439"
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="70664439"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 22:22:35 -0700
-X-CSE-ConnectionGUID: sXG3m6pjRMCFcA5Av1QlRw==
-X-CSE-MsgGUID: nR3jqci5R7yVnjs64piWBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="171080784"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 03 Sep 2025 22:22:34 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uu2QZ-0004nT-2l;
-	Thu, 04 Sep 2025 05:22:31 +0000
-Date: Thu, 04 Sep 2025 13:22:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Subject: [groeck-staging:hwmon-next] BUILD SUCCESS
- 44df80829d531fc890c71b2c03384d98e485e0ae
-Message-ID: <202509041301.zc741zv6-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1756974822; c=relaxed/simple;
+	bh=GNtVXyetoXXsPzwMZdtfYe4Fsl9TGhpYaapAdK05kzk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZwJ54QXEZ+rg97zCEefSRc4p2Misb9/vqNx8yq3aUsTMszWFBvp57UkZ2h3YAv6WOv4nOMQaHwLwJYnYKaI/yqbag+1udDxRCCFrI3OHfp66f17SYVRSQgIL0Bt2gI3nvD+YZ+o1Po6dt/LjWDhe7gk/44UU4TqaYBv97PfrOPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZR6cj6Pf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 40280C4CEF0;
+	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756974822;
+	bh=GNtVXyetoXXsPzwMZdtfYe4Fsl9TGhpYaapAdK05kzk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ZR6cj6PfUrvyLOHdfK5JKCjGtSwok34/OGrJyhChwawPRE/JMbsXzJP95zfx1BKEl
+	 bdzOxiiEanUrNANePZnseQ8EiC6xa97dpSHnd2qQbxwkUoGymx01blmD6Y0LeIuvDY
+	 dnPGIh5ftNNFR4tKCTUmRW4WYrIhm+7ektmCeVUQ9TcmDqqamnr4ig89Nd+U4OML9N
+	 or2VNhH2gA9vsUv7FHKIkrzbstVs5nvorjU1QQmUOmbCCZyRI8XMA+8s3SaD3Cp3hr
+	 46TRAo4pek3bOeTVUb3PNvVCwVRfIMS0HQAijlfyIKDHaf23WLdKd6y9my80QrWjFN
+	 /9KhlW+ml5QqQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24D52CA1002;
+	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
+From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
+Subject: [PATCH v8 0/2] hwmon: add GPD devices sensor driver
+Date: Thu, 04 Sep 2025 16:33:40 +0800
+Message-Id: <20250904-gpd_fan-v8-0-0752584f16da@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOROuWgC/3XRXUvDMBgF4L9SeusqefNdQZhOmKD3IjJG0iRt1
+ LZbO7vNsf9uVpTOipfnJc/hQA5xaxtv2/gqOsSN7Xzr6yoEOYnirFBVbhNvQo4xwhQJ4Em+Mku
+ nqoQJR1CKSSYljcPrVWOd3/VNL4uQC99u6mbfF3dwuv7t6CBBCaGIgTECFOLTvFT+/TKry/jU0
+ eFzJwaHg3NCC8t16jDosSP/OBKcNMI6DZgTLcaOnjs5OBocALeMElCps2PHfhxDGGBwLDiOpKO
+ YMYcsjB3v3exmvq0/t3Mg7fb5dXbLl08lLqTCM3O/U+UF3l/nUFK82ldvD+u1uXvMp33PqE0MK
+ yQ6WyHCCkalTo10TBgx/ajCL29sVvR2En0bjH4bQJlELKw3Wo3M4ng8fgFUBzk1PAIAAA==
+X-Change-ID: 20240716-gpd_fan-57f30923c884
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Cryolitia PukNgae <cryolitia@uniontech.com>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
+ Yao Zi <ziyao@disroot.org>, Derek John Clark <derekjohn.clark@gmail.com>, 
+ Jun Zhan <zhanjun@uniontech.com>, Cheng Nie <niecheng1@uniontech.com>, 
+ =?utf-8?q?Marcin_Str=C4=85gowski?= <marcin@stragowski.com>, 
+ someone5678 <someone5678.dev@gmail.com>, 
+ Justin Weiss <justin@justinweiss.com>, 
+ Antheas Kapenekakis <lkml@antheas.dev>, command_block <mtf@ik.me>, 
+ derjohn <himself@derjohn.de>, Crashdummyy <crashdummy1337@proton.me>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756974821; l=2686;
+ i=cryolitia@uniontech.com; s=20250730; h=from:subject:message-id;
+ bh=GNtVXyetoXXsPzwMZdtfYe4Fsl9TGhpYaapAdK05kzk=;
+ b=hQp6X46rBJBkxwsH5tVqIvmPgwgbdYjBLI5lafg/qh8job3V4zVJs+gkDeyQ/KS4m7NPM4dXd
+ kcpZsuRdjMZA5hIparanpxZALt7sCRJEt12p/enejCFuJrUBEnzUncR
+X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
+ pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
+X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20250730 with
+ auth_id=474
+X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+Reply-To: cryolitia@uniontech.com
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-branch HEAD: 44df80829d531fc890c71b2c03384d98e485e0ae  hwmon: (asus-ec-sensors) add ROG STRIX Z690-E GAMING WIFI
+Sensors driver for GPD Handhelds that expose fan reading and control
+via hwmon sysfs.
 
-elapsed time: 1386m
+Shenzhen GPD Technology Co., Ltd. manufactures a series of handheld
+devices. This driver implements these functions through x86 port-mapped
+IO.
 
-configs tested: 132
-configs skipped: 3
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+---
+Additional explanation: Based on the concerns in the previous version
+of the discussion about placing the driver in the x86 subsystem or the
+hwmon subsystem, I currently do not see any intention from GPD to
+integrate battery management into EC, and would prefer to keep the
+driver in the hwmon subsystem until the hardware manufacturers actually
+make something practical.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                          axs103_defconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250903    gcc-15.1.0
-arc                   randconfig-002-20250903    gcc-8.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                      integrator_defconfig    clang-22
-arm                   randconfig-001-20250903    clang-22
-arm                   randconfig-002-20250903    clang-16
-arm                   randconfig-003-20250903    clang-22
-arm                   randconfig-004-20250903    clang-22
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250903    gcc-8.5.0
-arm64                 randconfig-002-20250903    gcc-11.5.0
-arm64                 randconfig-003-20250903    clang-22
-arm64                 randconfig-004-20250903    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250903    gcc-9.5.0
-csky                  randconfig-002-20250903    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20250903    clang-22
-hexagon               randconfig-002-20250903    clang-18
-i386                             allmodconfig    gcc-13
-i386                              allnoconfig    gcc-13
-i386                             allyesconfig    gcc-13
-i386        buildonly-randconfig-001-20250903    gcc-13
-i386        buildonly-randconfig-002-20250903    gcc-13
-i386        buildonly-randconfig-003-20250903    clang-20
-i386        buildonly-randconfig-004-20250903    clang-20
-i386        buildonly-randconfig-005-20250903    clang-20
-i386        buildonly-randconfig-006-20250903    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch             randconfig-001-20250903    gcc-15.1.0
-loongarch             randconfig-002-20250903    clang-22
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20250903    gcc-10.5.0
-nios2                 randconfig-002-20250903    gcc-10.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250903    gcc-13.4.0
-parisc                randconfig-002-20250903    gcc-15.1.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                     akebono_defconfig    clang-22
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                     ep8248e_defconfig    gcc-15.1.0
-powerpc                      ep88xc_defconfig    gcc-15.1.0
-powerpc                      mgcoge_defconfig    clang-22
-powerpc                    mvme5100_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250903    gcc-8.5.0
-powerpc               randconfig-002-20250903    gcc-8.5.0
-powerpc               randconfig-003-20250903    gcc-14.3.0
-powerpc64             randconfig-001-20250903    clang-22
-powerpc64             randconfig-002-20250903    clang-22
-powerpc64             randconfig-003-20250903    clang-22
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20250903    gcc-8.5.0
-riscv                 randconfig-002-20250903    gcc-9.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20250903    gcc-8.5.0
-s390                  randconfig-002-20250903    clang-22
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20250903    gcc-12.5.0
-sh                    randconfig-002-20250903    gcc-10.5.0
-sh                   secureedge5410_defconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250903    gcc-11.5.0
-sparc                 randconfig-002-20250903    gcc-15.1.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20250903    gcc-8.5.0
-sparc64               randconfig-002-20250903    gcc-11.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-13
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-13
-um                    randconfig-001-20250903    gcc-13
-um                    randconfig-002-20250903    clang-18
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250903    clang-20
-x86_64      buildonly-randconfig-002-20250903    clang-20
-x86_64      buildonly-randconfig-003-20250903    clang-20
-x86_64      buildonly-randconfig-004-20250903    gcc-13
-x86_64      buildonly-randconfig-005-20250903    clang-20
-x86_64      buildonly-randconfig-006-20250903    gcc-13
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250903    gcc-11.5.0
-xtensa                randconfig-002-20250903    gcc-14.3.0
+---
+Changes in v8:
+- add mutex lock to protect an entire hwmon operation sequence
+- clear manual model action
+- improve error check
+- style fix
+- Link to v7: https://lore.kernel.org/r/20250820-gpd_fan-v7-0-10c8058f4dba@uniontech.com
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Changes in v7:
+- Add support for GPD Duo
+- Change email from cryolitia@gmail.com to cryolitia@uniontech.com
+- Link to v6: https://lore.kernel.org/r/CAGwozwG13swYjCB6_Wm2h8a2CdHxam+2y=g1m42pynkKqqdDLg@mail.gmail.com
+
+Changes in v6:
+- fix: nullptr and label followed by a declaration
+- cleanup: clean up code and rename some function
+- format code
+- dmi: add 2025 new GPD devices
+- Link to v5: https://lore.kernel.org/r/20250211-gpd_fan-v5-0-608f4255f0e1@gmail.com
+
+Changes in v5:
+- Rebase on kernel 6.13
+- Remove all value-cache related code
+- Clean up code
+- Link to v4: https://lore.kernel.org/r/20240718-gpd_fan-v4-0-116e5431a9fe@gmail.com
+
+Changes in v4:
+- Apply suggest by Krzysztof Kozlowski, thanks!
+- Link to v3: https://lore.kernel.org/r/20240717-gpd_fan-v3-0-8d7efb1263b7@gmail.com
+
+Changes in v3:
+- Re-arrange code, thanks to Krzysztof Kozlowski, Guenter Roeck, Yao Zi!
+- Link to v2: https://lore.kernel.org/r/20240717-gpd_fan-v2-0-f7b7e6b9f21b@gmail.com
+
+Changes in v2:
+- Improved documentation, thanks to Randy Dunlap!
+- Link to v1: https://lore.kernel.org/r/20240716-gpd_fan-v1-0-34051dd71a06@gmail.com
+
+---
+Cryolitia PukNgae (2):
+      hwmon: add GPD devices sensor driver
+      hwmon: document: add gpd-fan
+
+ Documentation/hwmon/gpd-fan.rst |  79 ++++
+ Documentation/hwmon/index.rst   |   1 +
+ MAINTAINERS                     |   7 +
+ drivers/hwmon/Kconfig           |  10 +
+ drivers/hwmon/Makefile          |   1 +
+ drivers/hwmon/gpd-fan.c         | 786 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 884 insertions(+)
+---
+base-commit: e6b9dce0aeeb91dfc0974ab87f02454e24566182
+change-id: 20240716-gpd_fan-57f30923c884
+
+Best regards,
+-- 
+Cryolitia PukNgae <cryolitia@uniontech.com>
+
+
 
