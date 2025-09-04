@@ -1,206 +1,359 @@
-Return-Path: <linux-hwmon+bounces-9332-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9335-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E237B435CD
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 10:33:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408C3B4371C
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 11:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352A358654C
-	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 08:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35481C2835B
+	for <lists+linux-hwmon@lfdr.de>; Thu,  4 Sep 2025 09:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C472C11D9;
-	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2362F657A;
+	Thu,  4 Sep 2025 09:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KvcJpCfa"
+	dkim=pass (2048-bit key) header.d=fetCA905017.onmicrosoft.com header.i=@fetCA905017.onmicrosoft.com header.b="MuRyPSuD"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023095.outbound.protection.outlook.com [52.101.127.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990B3258EED;
-	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756974822; cv=none; b=WW/WBFBWW1GKSdPyZ8Y2OckFwEG0EHvzXBp4uWFFPfCCkg7gnbN9U31kORdw7IAzVMX2SXKBx34edXzoFpHc1a3AIDdnSexZwqe0aB08BMIVF17O05fHMSrJuWm/TY6SkDPmEkz+bwz+D7KfM4iE1kkcLATpP5nDotZOhQd3JYI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756974822; c=relaxed/simple;
-	bh=xa1DNZh9ZS1PCU6W7gGSjK02tfE2cD6nLJfB1gnM5PI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=F//xhcGbRSygO1r5b5P+r7go5eVmPgtJEHTyny4vSz8XmCU8/GbEbysQNWtfXfycEPzOaEKwA047TOtDaGcyE0EeDIjAX/Jogsz6gyXSG7B6KYqkG/62L5iA2qfiQugeBcaSdiZtgr4fWK2woDQYxQuPFmstkGLNjxs4Z+wB0yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KvcJpCfa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A241C4CEF1;
-	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756974822;
-	bh=xa1DNZh9ZS1PCU6W7gGSjK02tfE2cD6nLJfB1gnM5PI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=KvcJpCfaYNNRQilKjRoW3jmSHmV1Hdzliu1dOsOKNFM/kLnu50KyyaeainO4Y30YA
-	 vF36WCYkLTQ28JFaYmdlz/RLZaUGjnlLvXSWskHpIH2Iq58rUxec4DvSulajP1m8ab
-	 DVH/tu5wdQKxfFO4wV/jbTHWXdakAyMa9LrGbRdFhQ5KISjF5wi2lfkvYtgMCTYPXv
-	 /LE/tnBbIXV/ehjdYe1e+OBXbOCqmAUlNFwgirX4xpdRAjTiu7O/sAjJZ2Emb4n1a6
-	 y6D/To8UOpafcZlNRfFe6RPIVsbobMO71liDE2FvZ5FGhUBaZINZa+HhWysnCP97dp
-	 rZLAR/dg8q3+Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E072CA1013;
-	Thu,  4 Sep 2025 08:33:42 +0000 (UTC)
-From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
-Date: Thu, 04 Sep 2025 16:33:42 +0800
-Subject: [PATCH v8 2/2] hwmon: document: add gpd-fan
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE952F6198;
+	Thu,  4 Sep 2025 09:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756978173; cv=fail; b=opS1nzXy/OiDKgbeXK1gH2kBYoApF+UDIamOhrI8Ay9/f/bNKguz9/EagpbXDF64RJ0TJtP2MAeZTezi2j4K49vSd7gi3xksL02mT9ar/Mk51KeVskjIcOEP9Wl58ZrX3yHDgjNByhe4RkVgQtCW7AWcXvKSrjJI3LXFfwVgNig=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756978173; c=relaxed/simple;
+	bh=ee6YUNatPBWLjxrY31TfiBlQaH9XIqRh5qMbBlMggDE=;
+	h=Message-ID:Date:From:Subject:To:Cc:Content-Type:MIME-Version; b=a3Xo6+DN1Ul/owPutPPDpXNdXNIpC95+6f2wNvj85XlSnc4ve/jl5WiLQ8+xo5qoHz2gljHRN/GpWTB7nQWfrSaooc90sX1H+pJDrDTkg8b9SJmkFjHo2CjDaQmepJPoiMtCG+XUOGVsMMjJMKvwvgSEOF77BfbEcy58h+2pa1s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=portwell.com.tw; spf=pass smtp.mailfrom=portwell.com.tw; dkim=pass (2048-bit key) header.d=fetCA905017.onmicrosoft.com header.i=@fetCA905017.onmicrosoft.com header.b=MuRyPSuD; arc=fail smtp.client-ip=52.101.127.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=portwell.com.tw
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=portwell.com.tw
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=URLHDnUHxaT7/JCVHp3w46SJp7gq5MUbnvYcTCx3+Pq40QWqnQPuwz13rXf7Li2ZTyXKELZJbk6VH3MfRrbLBWktJITOl6xVqSv5KsoVran/B360+6KTURV4OnJvl71RHhrhsUCrumhyMhiXofaYfgPmhPqY+LjBfJxUmVzfwG7ssEei5UyPTZMSOLRVzPR9JOH9TQi3GXjXeiTM6080Wzbz7bPhsXYMmo0PUXSbrvhN3P6XZrb7KySg+8GuKKxjdWrO4tZzBKtwjQtKaN4N1PipwNRSN2ZbM1B0rGej/0r9QPfi+59VrD1tnN3x5gxqbDwSFW1Xf4BqN4xkBSpGVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FQLBXr5ap3DoNysqg+xt5mGarqFQIraLpvkkzwowFpo=;
+ b=rlA1jUEKjja4v26R7NwDUJKuB79+2BTYTnzXcxSjsV18p3vSHyUtrW/mqsKwQLImMLzAUrwR3mesySzhbHiKbhWRdOl86idzRfGkY725TbTvzaBAeUHoDdPPCQpBaJa6CJIgDJsfoOMRyiKD4AGFHVwEl3RE6Yd1QIEQCtSZ0kR/uLtpcoLnCoN55jZLPTfGPx5V/uehCwvCED3dG6TOHQ9CxJdiJv4+BnznOxs/YBzUbzVo6C0RLYbYckN4CCXSycO2UgCjm4quaBagULhpjGy3DWd1qEtPC6rkiSoXBJk0DIy0P97A1gLnU8ObJV5XnNxLahVTFG4Q8HG5EOpbVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=portwell.com.tw; dmarc=pass action=none
+ header.from=portwell.com.tw; dkim=pass header.d=portwell.com.tw; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fetCA905017.onmicrosoft.com; s=selector1-fetCA905017-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FQLBXr5ap3DoNysqg+xt5mGarqFQIraLpvkkzwowFpo=;
+ b=MuRyPSuD9KJXXrYrGZt2GnAUDBct5mswiAOImkfmRia/fWEYsxbXWkfws8EH0XFrgBTUZYMTwQrD24HjqoX5gpG0Ix2eaw861rk23pQeD75fxWKbA4gGRnMco3Xn1cl5vvO9FQNDd+NTmgXEsh65zjy4O5SFxU4se5RpDQxiUkNQ1X8rKNxzNzTfDtlpPvnZIsq1QTUy40CCd4Wo9zMRJwNVk3rKwlwc+qxPTkyTjITKaDFkvLd36e/iUQr8bM7v8ZijI5DmyfWufd6aZzFTnKskfchxIFXhxRt3zPJrsYQywJ+gFYZlfrL3svEVFlSrWrpGlYaSk0arSM8X3HVURA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=portwell.com.tw;
+Received: from KL1PR06MB6395.apcprd06.prod.outlook.com (2603:1096:820:e7::10)
+ by SI6PR06MB7103.apcprd06.prod.outlook.com (2603:1096:4:24e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 09:29:27 +0000
+Received: from KL1PR06MB6395.apcprd06.prod.outlook.com
+ ([fe80::8aad:9193:92da:7ec3]) by KL1PR06MB6395.apcprd06.prod.outlook.com
+ ([fe80::8aad:9193:92da:7ec3%3]) with mapi id 15.20.9073.026; Thu, 4 Sep 2025
+ 09:29:27 +0000
+Message-ID: <a5edf505-9b77-461e-ae8d-510e6ed3f950@portwell.com.tw>
+Date: Thu, 4 Sep 2025 17:29:23 +0800
+User-Agent: Mozilla Thunderbird
+From: Yen-Chi Huang <jesse.huang@portwell.com.tw>
+Subject: [PATCH v4] platform/x86: portwell-ec: Add hwmon support for voltage
+ and temperature
+To: hansg@kernel.org, ilpo.jarvinen@linux.intel.com, jdelvare@suse.com,
+ linux@roeck-us.net
+Cc: platform-driver-x86@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jay.chen@canonical.com,
+ jesse.huang@portwell.com.tw
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TP0P295CA0056.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:3::7)
+ To KL1PR06MB6395.apcprd06.prod.outlook.com (2603:1096:820:e7::10)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250904-gpd_fan-v8-2-0752584f16da@uniontech.com>
-References: <20250904-gpd_fan-v8-0-0752584f16da@uniontech.com>
-In-Reply-To: <20250904-gpd_fan-v8-0-0752584f16da@uniontech.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Cryolitia PukNgae <cryolitia@uniontech.com>
-Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-doc@vger.kernel.org, Celeste Liu <CoelacanthusHex@gmail.com>, 
- Yao Zi <ziyao@disroot.org>, Derek John Clark <derekjohn.clark@gmail.com>, 
- Jun Zhan <zhanjun@uniontech.com>, Cheng Nie <niecheng1@uniontech.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756974821; l=3706;
- i=cryolitia@uniontech.com; s=20250730; h=from:subject:message-id;
- bh=LpIT/dc1H9CoyCcFgvvZK2Mbndl3sEjj5NTpoDZaSng=;
- b=TpLbyysrkvlDAZXFVN6a6xnwrd6Zu4nmp7QsMEFNb5HGs1gGOag1kgmrf3SPXcFnEawtpaNMO
- cQK2ULzM/6GCL1cNYWBcBk+JPbNglTf1Um3479E+i6sDvBYzWxX+TnX
-X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
- pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
-X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20250730 with
- auth_id=474
-X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
-Reply-To: cryolitia@uniontech.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR06MB6395:EE_|SI6PR06MB7103:EE_
+X-MS-Office365-Filtering-Correlation-Id: 225c3ce3-15f3-496b-473e-08ddeb958adb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MStWTjh2Wlg1a3NEOGk1OUxuV3k5aXhJczdrZTN0Nm4yajVWNzZJSnJ5VUkx?=
+ =?utf-8?B?Vy9NcDZBalJQSVhrT3VDUXk5OUFFV2wyNnVEdzFXbzRQczJpVGt0ZkRoVmdj?=
+ =?utf-8?B?UThQM0NnWlA4ek1XbjJEVU5pbjViRnFqS0xnWmk1elJTSzJFU21nc2padXZK?=
+ =?utf-8?B?Yi9mS2JXb0dpQ3ZKTlYrc2FVNWlTUTRZNUdHcVJnTFpxYVV4ZzEvOWN1NXR6?=
+ =?utf-8?B?R1dNbGloWHhKWlIwcFphdXR1RVZkT29DOFZzVHhYc2loZy9wNEhYSzRxb1Bx?=
+ =?utf-8?B?R3p2WWM2WDBqeVZEQjF2VURSMTM3SEdCNEc4ejduRlN4M0NXak1MOWtzcWV4?=
+ =?utf-8?B?MDY4THkrRER0YlUwSXFFM3VtcHhORTArZmlSWC9tdEd5VnYwSXBUZXg4TDdI?=
+ =?utf-8?B?dURCdXRERjJFSWpmU0I0WTUxZ3Y5c0lYb25DclFpazNYcDc2NGMrbllIMGJQ?=
+ =?utf-8?B?MEhNTytPOWxtTGo1Sm9KVjQxTER2N2kxMnU4UXVBbEg4UExyT3dkcm9GcGlI?=
+ =?utf-8?B?VGpZcGZjY1FsNEY3Y2QxejdpbHNTN3hMN0Y0bFlEL3duZG1QN2V6aGozSHor?=
+ =?utf-8?B?VXNDS0VYOWFWU2xCZDBzUTFrNk9VcFkxL0FGL1dNSlZrL1NIaytVYjZrZWxp?=
+ =?utf-8?B?YUpWazJDVFpsYTcyWlVOVENVeGF4d3h2SmpQZUowTFBLcGRwODd0dHpNSnRQ?=
+ =?utf-8?B?R3V0aXozbzZNeWI4R0YzdWU1SzNTOGorNzdBVEFMQzg5REhlcWNxeVJFWXRE?=
+ =?utf-8?B?akxqWmxMWU5tWUpKYnpzbGROMmlHbk1raUpMS1h4WldDdThBWXdpU0l0UFY3?=
+ =?utf-8?B?NGREZlNtMTd6bzhCWUNHL0VNeVhVT1R4Z1g5eW9oeUdsbXRGQTgvR3N5SUxt?=
+ =?utf-8?B?RXUvUjIwUG5Tc2RHQ0xvZThoVnJuaFEwa3hKZkQvb0NlQTdqUVhWeXNXTjFi?=
+ =?utf-8?B?b21ISFRQb3hneDNhbWxla2J2ZXQwN3RnRWtKdVJrdFFzQmpzOXNDaUc4c2p4?=
+ =?utf-8?B?YWF6TG1zdk9DZ0xlUlFFS0VVVTQ1U3pwaEg5QVJpRm9xamxLUFVCUm4zaklI?=
+ =?utf-8?B?UTJHUHA5L3FURGZaanhmUjVoaVVJalBneVpEbThzUHFtUGhOa3lHdTg1aW1a?=
+ =?utf-8?B?YkRrN3pDVm1BcG9BWVhFRituaE5oeDJ3RTJpeEF3ejBFL1ByUFFjd210VTlE?=
+ =?utf-8?B?Tmd4Z0hGWjZUVGJKQmNnaSs2TC9iWm1TMmN5d04zOXpSZTFhcERjYnBQbXpI?=
+ =?utf-8?B?M2lGNkQwMGx6SU9jSzN5cWZtb0RmbkM1dENSVldYTktIZFJ0aHF3dVNhd3Fp?=
+ =?utf-8?B?cHNKWk1xclZYS3MvWmFLclBkakVYNUdUeThDVTI1Ylp3VmdqN2t6bEoyazBU?=
+ =?utf-8?B?a3EreEdWRUVPVWFhV2JrMCtuaFdWNmJQU0xlUVBBRVg1UG8zbVdncUZpeTlE?=
+ =?utf-8?B?VE9QSVdoeE1nTUJLSTJvU054b3pYa3RHdG0vd2E5MGVkeEJDOVdmU0tSdkpP?=
+ =?utf-8?B?WklLK0d6WjBqZjJqa3BPdk5Hc0VBRUFtUDJMQnlJL3RsUUl3UElSaDl2OXlv?=
+ =?utf-8?B?dG9aejJseHNRbXhlWFB4b01GM0dzQ3YzcnV5bjhjQXFLZVlzT091QzZOVXg3?=
+ =?utf-8?B?VXVTd0RLNi82RndQUlpQMW13TW5aUDVla1pWVnJZMGdyaE5oSUZ3K2JVcVVS?=
+ =?utf-8?B?OGMwNHN1dVBYaE1sSEtzc2pSTCtjVHBGMFFteS95MXN0ekpLa2tNYnRXcFBU?=
+ =?utf-8?B?Zlo3V1FjK09oSTQxcFJDWTlNTW85RTJ6RTdwbWVBaWw1ZFhObTdxaEMyN3VT?=
+ =?utf-8?Q?30AsLmElloa/n8yhJpVckozckH2Kc1SJ3IAz0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR06MB6395.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MVNqLzRNclNRVXd1L042aTROcHVQYmRQT3hyQ0pEZ1hDTFc2d0xpWWtlTXFy?=
+ =?utf-8?B?OHlkQ21jQU1RUXZVZjc4endLU1M0dVF1UkN4SVJHRVIvMkVnUW9Ka2dheWZ2?=
+ =?utf-8?B?QkV2ckRET2NzQndGUEJscnJjQ3ZVN09OMExHZksxbThqbkVvQklrV3g2dGNU?=
+ =?utf-8?B?dG92RnlrbkhHM09ock9GS2tWbjlZS1Q5V3hSOVhpUitXWFNSUGxUZWJwMmdE?=
+ =?utf-8?B?a1VZSXBwd1NIejNpa2xJemJHWnZsNUczSUQxMlRqUi9iVEtnZTM0eU5YUHlK?=
+ =?utf-8?B?ejIvSHR1RFh0V2t2ekt6RmF2blRITENnSWNKY0FnNW1oSTJ0R2I5b3VmYTFP?=
+ =?utf-8?B?dHJCalptYkY4MnJWZklCKzdGNVo1OGhLL1gyU05uQkhtQ2RTbDJkWHByWmpa?=
+ =?utf-8?B?U3dxamxpcU91MmphNU01QWFDLzlQbFZlUFlmSWlBb3ZVZkd1dlZXMEMwNlVC?=
+ =?utf-8?B?ZlZhS1hLRytRTHV0Z0JWaGcxRjVGOGFTTUJGOGdOWXFPK1ZVaUo5RkVhZmpN?=
+ =?utf-8?B?U3hVc1BIZXJma1E3Vy83cUlmVU5oUDRWOUZDTW5JS09FTWdNeC9pU01uMGo4?=
+ =?utf-8?B?NXVMOE13WVIxTHZwMlFsNyt6RzB5RmJONDVhR2Q5UE95cDZSTWtLRDlyRVdF?=
+ =?utf-8?B?Wkk1VjBiQ2JjeFNsaWY5SVV6Qyt2TGw3K25SSk9MRHprZjhpUUlZaXg4V29J?=
+ =?utf-8?B?cmdHeUxEM1lDcWhVN0VEZ3lic2dZVGo2K0pwc3NnQ2QyeElDTXZRck9GdzJ5?=
+ =?utf-8?B?ZEZsMjdpN2FTTG1YekdQSFl3UXZETVNDSXRpM29SZURrVFhHbVViVUdxMlFO?=
+ =?utf-8?B?SWdFTDQxcG5halBnb0NKVHM4dm5qTFlGN09iOG5lMUx2UDRlYUpFVzJGbkEv?=
+ =?utf-8?B?Z2xRNlR4eVdYanM3M1lvVTBPcDZ2MDBMWWpXV3lUZWpHblJ6RE94aWorMm12?=
+ =?utf-8?B?VDNqb25vVStEeURpMFFQOGgyY0xvQ3pmb0s4bHpTVGdIUC9aNEtLMTEzZW52?=
+ =?utf-8?B?aUVYdmhJdUVvSUFDYzdYQ0VnNkhmcit1T2tuZ0hPQm04QldYM29BemluYWM2?=
+ =?utf-8?B?RlVXWVpETnRKOFZXRVM4dFpGTUZobVFEUHYwY0xkT2hRUUtkM3psaDNRVXp6?=
+ =?utf-8?B?UkJ1c2tPcmNhMi84RDQxZ29DaGtGcmkrRC9KWS8vUEVOZUtpZHlHdzkxOXBh?=
+ =?utf-8?B?Q0FEQUh0VlY0ZGM1NjVJNzRQR1dVV0hpNGpKdkdFVm9OeDN0Q2RKNWFESE1i?=
+ =?utf-8?B?L2FJUWhEaCtxOEdKbkx4eDNKbTJZeXgrZHcwejN1L1N5SnFEMG9QOFlGcUtB?=
+ =?utf-8?B?V3hyOFRRU29zeDVOb3pEclhrM25mZUUxUVB3NmZ5SW13bHc2Z251V3RwR2JJ?=
+ =?utf-8?B?Yys2QzN2ZFpaM1RrWHkrblNRZUcyNExHTXpsWVVtVnlKSkhSblZQN3NiRlhi?=
+ =?utf-8?B?VVl4bDdhenlVMjlpbWVQRUZoYTloSEFBZStlWVZHNXUza2lxb25WQkt0OHdm?=
+ =?utf-8?B?Ym04dXl5U3FUempiTDZ6QXMyL0xReUlDOHNoL0FSWDQxQU9xSTI5NjN1ZlJp?=
+ =?utf-8?B?c1h0b1U0MDlKeEE0d3AwMzhjeStqdWEvWnZHTjFmaE1GcnNvbzNvOUN5K1VX?=
+ =?utf-8?B?Lzlkbm4xcnpWWnU0YzV6SDY4NEQ2dWVIWkZ4QnlzZzI4bmhwSEw2Z1R2Wi9n?=
+ =?utf-8?B?cjhTU21aTy9VV2xZa0RTclpHV2Y4enVFY215NmdYbGViU1Q1TjMydUUwYmtz?=
+ =?utf-8?B?NlIvVGJmcStrQThFd016TlZMcjgrU3JNOUs5YjJocytKbUpGbWRtclE1VXpN?=
+ =?utf-8?B?ZUhEaElpbVgwdXdrVEVhSXY5emhnVzd1Q09uVkhxMk5pTXNFQm9NN1N2bGJO?=
+ =?utf-8?B?cU0rVVYzdnYwejl5SThhWldaOW91dGpwVmZpSjhDSFkxbE1GUHM0SXlWbkNV?=
+ =?utf-8?B?TERhalNCcml2VjJ4bmZ2dm9tM2hDYVVhdUJGWFJiMTRWaXJiOWdJZmtGL0x1?=
+ =?utf-8?B?MFl0WlRqMHYreGJZZ05jZDhWdUwyQzkvOXFuNVdBdWE4NXlFeVR5aHhNRG5H?=
+ =?utf-8?B?OWsweEJLN3U0U0FUc0N2YlEvUEp5YTBHbzVUMXQrUWthdXRKL2dpdHY2T25U?=
+ =?utf-8?B?Njc4ZUZmaWZyOTNZYllZVTJOMEhJS2dhWCtGYS8vRW1MaFNkTXpqeVhXMWFN?=
+ =?utf-8?B?Wnc9PQ==?=
+X-OriginatorOrg: portwell.com.tw
+X-MS-Exchange-CrossTenant-Network-Message-Id: 225c3ce3-15f3-496b-473e-08ddeb958adb
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR06MB6395.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 09:29:27.1729
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e309f7e-c3ee-443b-8668-97701d998b2c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eG5Sp75RDKHeYupK3Tnx4ilwL4CmgyNt2ARrtn0TPRfLXpUDfzAnyUFIJnU3k4IUyeGKY2/EeTme2iK6peGZuasTXtrNalN4ESlj+yLAFtQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI6PR06MB7103
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+Integrates voltage and temperature monitoring into the driver via the hwmon
+subsystem, enabling standardized reporting via tools like lm-sensors.
 
-Add GPD fan driver document
-
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Signed-off-by: Yen-Chi Huang <jesse.huang@portwell.com.tw>
 ---
- Documentation/hwmon/gpd-fan.rst | 79 +++++++++++++++++++++++++++++++++++++++++
- Documentation/hwmon/index.rst   |  1 +
- MAINTAINERS                     |  1 +
- 3 files changed, 81 insertions(+)
 
-diff --git a/Documentation/hwmon/gpd-fan.rst b/Documentation/hwmon/gpd-fan.rst
-new file mode 100644
-index 0000000000000000000000000000000000000000..a8541049d680beef93c5f7623de77e759242ffac
---- /dev/null
-+++ b/Documentation/hwmon/gpd-fan.rst
-@@ -0,0 +1,79 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+Kernel driver gpd-fan
-+=========================
-+
-+Author:
-+    - Cryolitia PukNgae <cryolitia@uniontech.com>
-+
-+Description
-+------------
-+
-+Handheld devices from Shenzhen GPD Technology Co., Ltd. provide fan readings
-+and fan control through their embedded controllers.
-+
-+Supported devices
-+-----------------
-+
-+Currently the driver supports the following handhelds:
-+
-+ - GPD Win Mini (7840U)
-+ - GPD Win Mini (8840U)
-+ - GPD Win Mini (HX370)
-+ - GPD Pocket 4
-+ - GPD Duo
-+ - GPD Win Max 2 (6800U)
-+ - GPD Win Max 2 2023 (7840U)
-+ - GPD Win Max 2 2024 (8840U)
-+ - GPD Win Max 2 2025 (HX370)
-+ - GPD Win 4 (6800U)
-+ - GPD Win 4 (7840U)
-+
-+Module parameters
-+-----------------
-+
-+gpd_fan_board
-+  Force specific which module quirk should be used.
-+  Use it like "gpd_fan_board=wm2".
-+
-+   - wm2
-+       - GPD Win 4 (7840U)
-+       - GPD Win Max 2 (6800U)
-+       - GPD Win Max 2 2023 (7840U)
-+       - GPD Win Max 2 2024 (8840U)
-+       - GPD Win Max 2 2025 (HX370)
-+   - win4
-+       - GPD Win 4 (6800U)
-+   - win_mini
-+       - GPD Win Mini (7840U)
-+       - GPD Win Mini (8840U)
-+       - GPD Win Mini (HX370)
-+       - GPD Pocket 4
-+       - GPD Duo
-+
-+Sysfs entries
-+-------------
-+
-+The following attributes are supported:
-+
-+fan1_input
-+  Read Only. Reads current fan RPM.
-+
-+pwm1_enable
-+  Read/Write. Enable manual fan control. Write "0" to disable control and run
-+  at full speed. Write "1" to set to manual, write "2" to let the EC control
-+  decide fan speed. Read this attribute to see current status.
-+
-+  NB：In consideration of the safety of the device, when setting to manual mode,
-+  the pwm speed will be set to the maximum value (255) by default. You can set
-+  a different value by writing pwm1 later.
-+
-+pwm1
-+  Read/Write. Read this attribute to see current duty cycle in the range
-+  [0-255]. When pwm1_enable is set to "1" (manual) write any value in the
-+  range [0-255] to set fan speed.
-+
-+  NB: Many boards (except listed under wm2 above) don't support reading the
-+  current pwm value in auto mode. That will just return 255 as default on
-+  those boards, or a previously written value. In manual mode it will always
-+  return the real value.
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index d292a86ac5da902cad02c1965c90f5de530489df..ce4419f064e1368740387af70af38a85cadd952d 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -82,6 +82,7 @@ Hardware Monitoring Kernel Drivers
-    gigabyte_waterforce
-    gsc-hwmon
-    gl518sm
-+   gpd-fan
-    gxp-fan-ctrl
-    hih6130
-    hp-wmi-sensors
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 14a616be5ff08aaeee52436dff54a86c4a81e5fb..0b6ae95c2007f0737bc4a4e1f2bac52f71628f78 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10425,6 +10425,7 @@ GPD FAN DRIVER
- M:	Cryolitia PukNgae <cryolitia@uniontech.com>
- L:	linux-hwmon@vger.kernel.org
- S:	Maintained
-+F:	Documentation/hwmon/gpd-fan.rst
- F:	drivers/hwmon/gpd-fan.c
+This version removes board-specific details such as labels and voltage
+scaling factors. The driver now follows a generic approach, delegating
+customization to userspace (e.g. via sensors.conf in lm-sensors), which
+is the standard and more flexible practice.
+
+v3->v4:
+  - Remove .driver_data and related per-board hwmon data structures.
+  - Remove unused pwec_hwmon_is_visible() and pwec_hwmon_init().
+  - Clarify driver header comments.
+
+V2->V3:
+  - Replace hardcoded `1000` with `MILLIDEGREE_PER_DEGREE` and double check
+  - Fix comma placement and spacing coding style issues
+  - Simplify pwec_hwmon_is_visible() with ternary operator
+
+V1->V2:
+  - Removed `msb_reg` from `struct pwec_hwmon_data`
+  - Updated `pwec_read16_stable()` to assume MSB follows LSB
+  - Moved `hwmon_channel_info` to per-board data and assigned it to `.info` at runtime
+  - Replaced the `pwec_board_data[]` array with a standalone struct
+  - Replaced literal `1000` with `MILLIDEGREE_PER_DEGREE`
+  - Removed unused include and sorted header includes
+
+Previous versions (for reference):
+  v3 patch: https://lore.kernel.org/platform-driver-x86/d6429164-46dc-4c0d-8d6f-4650e0b92f22@portwell.com.tw/
+
+---
+ drivers/platform/x86/portwell-ec.c | 84 ++++++++++++++++++++++++++++--
+ 1 file changed, 79 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/platform/x86/portwell-ec.c b/drivers/platform/x86/portwell-ec.c
+index 322f296e9315..0e748bfe4a23 100644
+--- a/drivers/platform/x86/portwell-ec.c
++++ b/drivers/platform/x86/portwell-ec.c
+@@ -5,15 +5,13 @@
+  * Tested on:
+  *  - Portwell NANO-6064
+  *
+- * This driver provides support for GPIO and Watchdog Timer
+- * functionalities of the Portwell boards with ITE embedded controller (EC).
++ * This driver supports Portwell boards with an ITE embedded controller (EC).
+  * The EC is accessed through I/O ports and provides:
++ *  - Temperature and voltage readings (hwmon)
+  *  - 8 GPIO pins for control and monitoring
+  *  - Hardware watchdog with 1-15300 second timeout range
+  *
+- * It integrates with the Linux GPIO and Watchdog subsystems, allowing
+- * userspace interaction with EC GPIO pins and watchdog control,
+- * ensuring system stability and configurability.
++ * It integrates with the Linux hwmon, GPIO and Watchdog subsystems.
+  *
+  * (C) Copyright 2025 Portwell, Inc.
+  * Author: Yen-Chi Huang (jesse.huang@portwell.com.tw)
+@@ -25,6 +23,7 @@
+ #include <linux/bitfield.h>
+ #include <linux/dmi.h>
+ #include <linux/gpio/driver.h>
++#include <linux/hwmon.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/ioport.h>
+@@ -32,6 +31,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/sizes.h>
+ #include <linux/string.h>
++#include <linux/units.h>
+ #include <linux/watchdog.h>
  
- GPD POCKET FAN DRIVER
-
+ #define PORTWELL_EC_IOSPACE              0xe300
+@@ -52,6 +52,9 @@
+ #define PORTWELL_EC_FW_VENDOR_LENGTH     3
+ #define PORTWELL_EC_FW_VENDOR_NAME       "PWG"
+ 
++#define PORTWELL_EC_ADC_VREF             3000
++#define PORTWELL_EC_ADC_MAX              1023
++
+ static bool force;
+ module_param(force, bool, 0444);
+ MODULE_PARM_DESC(force, "Force loading EC driver without checking DMI boardname");
+@@ -79,6 +82,20 @@ static u8 pwec_read(u8 address)
+ 	return inb(PORTWELL_EC_IOSPACE + address);
+ }
+ 
++/* Ensure consistent 16-bit read across potential MSB rollover. */
++static u16 pwec_read16_stable(u8 lsb_reg)
++{
++	u8 lsb, msb, old_msb;
++
++	do {
++		old_msb = pwec_read(lsb_reg + 1);
++		lsb = pwec_read(lsb_reg);
++		msb = pwec_read(lsb_reg + 1);
++	} while (msb != old_msb);
++
++	return (msb << 8) | lsb;
++}
++
+ /* GPIO functions */
+ 
+ static int pwec_gpio_get(struct gpio_chip *chip, unsigned int offset)
+@@ -204,6 +221,54 @@ static struct watchdog_device ec_wdt_dev = {
+ 	.max_timeout = PORTWELL_WDT_EC_MAX_COUNT_SECOND,
+ };
+ 
++/* HWMON functions */
++
++static const u8 pwec_hwmon_temp_regs[] = { 0x0, 0x2, 0x4 };
++static const u8 pwec_hwmon_in_regs[] = { 0x20, 0x22, 0x24, 0x30, 0x32 };
++
++static int pwec_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
++			   u32 attr, int channel, long *val)
++{
++	u8 tmp8;
++	u16 tmp16;
++
++	switch (type) {
++	case hwmon_temp:
++		tmp8 = pwec_read(pwec_hwmon_temp_regs[channel]);
++		*val = tmp8 * MILLIDEGREE_PER_DEGREE;
++		return 0;
++	case hwmon_in:
++		tmp16 = pwec_read16_stable(pwec_hwmon_in_regs[channel]);
++		*val = (tmp16 * PORTWELL_EC_ADC_VREF) / PORTWELL_EC_ADC_MAX;
++		return 0;
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static const struct hwmon_channel_info *pwec_hwmon_info[] = {
++	HWMON_CHANNEL_INFO(temp,
++		HWMON_T_INPUT,
++		HWMON_T_INPUT,
++		HWMON_T_INPUT),
++	HWMON_CHANNEL_INFO(in,
++		HWMON_I_INPUT,
++		HWMON_I_INPUT,
++		HWMON_I_INPUT,
++		HWMON_I_INPUT,
++		HWMON_I_INPUT),
++	NULL
++};
++
++static const struct hwmon_ops pwec_hwmon_ops = {
++	.read = pwec_hwmon_read,
++};
++
++static struct hwmon_chip_info pwec_hwmon_chip_info = {
++	.ops = &pwec_hwmon_ops,
++	.info = pwec_hwmon_info,
++};
++
+ static int pwec_firmware_vendor_check(void)
+ {
+ 	u8 buf[PORTWELL_EC_FW_VENDOR_LENGTH + 1];
+@@ -218,6 +283,7 @@ static int pwec_firmware_vendor_check(void)
+ 
+ static int pwec_probe(struct platform_device *pdev)
+ {
++	struct device *hwmon_dev;
+ 	int ret;
+ 
+ 	if (!devm_request_region(&pdev->dev, PORTWELL_EC_IOSPACE,
+@@ -236,6 +302,14 @@ static int pwec_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	if (IS_REACHABLE(CONFIG_HWMON)) {
++		hwmon_dev = devm_hwmon_device_register_with_info(&pdev->dev,
++				"portwell-ec", NULL, &pwec_hwmon_chip_info, NULL);
++		ret = PTR_ERR_OR_ZERO(hwmon_dev);
++		if (ret)
++			return ret;
++	}
++
+ 	ec_wdt_dev.parent = &pdev->dev;
+ 	ret = devm_watchdog_register_device(&pdev->dev, &ec_wdt_dev);
+ 	if (ret < 0) {
 -- 
-2.51.0
-
+2.34.1
 
 
