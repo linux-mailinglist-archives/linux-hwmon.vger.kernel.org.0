@@ -1,84 +1,52 @@
-Return-Path: <linux-hwmon+bounces-9687-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9689-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60EFB9CCD6
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Sep 2025 02:05:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C11FB9CCE8
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Sep 2025 02:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE8CF3B1C97
-	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Sep 2025 00:05:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FCA538111A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 25 Sep 2025 00:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F106747F;
-	Thu, 25 Sep 2025 00:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wtFEaTBO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MSzhA+pQ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wtFEaTBO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MSzhA+pQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576CA7E0E4;
+	Thu, 25 Sep 2025 00:05:28 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D99E645
-	for <linux-hwmon@vger.kernel.org>; Thu, 25 Sep 2025 00:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B753C35966
+	for <linux-hwmon@vger.kernel.org>; Thu, 25 Sep 2025 00:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758758722; cv=none; b=UCTtQHA5XTBJtAU4H3cEvK4XrA1mIipDEw4R5TnLowJE4fD5RfUQfQFhpiJkq4CebbZxOq06jaGIDZaJ05BET+/K9Kt5TfJloiepcVYJXcXM3aFfi1/RaUS2ePQ9A0VRuOSK9QkQ5nvhlOM9Rf7lNttdulVGgYZQ/wpoa35iFB0=
+	t=1758758728; cv=none; b=G5nj+9rY9ZwlCUItCnBEJszM5iHY7kEwZYgMRvDj+u4U/lyu9jPHipza7wjxr28CxrR+IKuXEqGg+2TIe4wuxkfDC92KAtCclrZNh0v1MfbGhG6kTb9CYJuy5Q2WLd8Ilq1VBiuQ1D2otSujhD/gBglcpzrpCDrEAHHJ+pTdRg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758758722; c=relaxed/simple;
-	bh=hcyZjaQkIyzACf+jXrMXY8I4re3IS/UHj+lJ3IGqgXU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WeeDhFjWCuMyuUCcE/8//uy76JT1Pv/1syMpAXj17yTHfSPaRUrkfhvzDO+izXxg80VE4E3DoeWb4O2OeSbPEwBg4LcokzrqvnVgpE3FY2WPuGm0eHw71DZVKpfL5QFyUchRIX33Y0Fb0bZrBMJMPMfnC8pOC5FggvBqhZR7x2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wtFEaTBO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MSzhA+pQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wtFEaTBO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MSzhA+pQ; arc=none smtp.client-ip=195.135.223.130
+	s=arc-20240116; t=1758758728; c=relaxed/simple;
+	bh=Yjeo/kxzLvJO2MQlk4TZVIyVLUXf4NIEiJXkBmyt40M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D6eRJo6sPnKHuF5U1LNBd6NHwCuUraEXuXQx6OKMTOLi9756hadmTUmpbsqUfv8m4G34FqbN5iVU5Ahs7LnFqFMMm3vFcZezvHHaWBXTcm3fYn5ucwRHFrImIzTL3+Df7xPNEfArif988QEGlPBTOwK+cGy5t5vGwN9qgllY+zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AEAE63EEF9;
-	Thu, 25 Sep 2025 00:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758758717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PxXXH7kpELvfYY5/wXkAikODv5sI+30bpti3onSO2Ug=;
-	b=wtFEaTBOpvWYZy4Uj8iIlwMrWupwmE6VZ4Hk8+c7n2CAlPOA+xPrE3B3eNtII45tbgA7F4
-	8hfIHUZmuW1tuX/T4a7Nlw7Aezz3MzWKHQES+2e8l12VILurYdNBsR/yRYtXiOH6p5dXm8
-	vacXTmbcJvXEZQY1uiswPDJqhuIFsZ8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758758717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PxXXH7kpELvfYY5/wXkAikODv5sI+30bpti3onSO2Ug=;
-	b=MSzhA+pQDu7DzMYmVCTVhdZXPGnzQSBRXCuPhYcmZ8CVYEdwBK0zJrsGGv168J461D462G
-	CCWL2TTI9tGNgECw==
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C24DD3F532;
+	Thu, 25 Sep 2025 00:05:18 +0000 (UTC)
 Authentication-Results: smtp-out1.suse.de;
 	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758758717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PxXXH7kpELvfYY5/wXkAikODv5sI+30bpti3onSO2Ug=;
-	b=wtFEaTBOpvWYZy4Uj8iIlwMrWupwmE6VZ4Hk8+c7n2CAlPOA+xPrE3B3eNtII45tbgA7F4
-	8hfIHUZmuW1tuX/T4a7Nlw7Aezz3MzWKHQES+2e8l12VILurYdNBsR/yRYtXiOH6p5dXm8
-	vacXTmbcJvXEZQY1uiswPDJqhuIFsZ8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758758717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PxXXH7kpELvfYY5/wXkAikODv5sI+30bpti3onSO2Ug=;
-	b=MSzhA+pQDu7DzMYmVCTVhdZXPGnzQSBRXCuPhYcmZ8CVYEdwBK0zJrsGGv168J461D462G
-	CCWL2TTI9tGNgECw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC9D61386E;
-	Thu, 25 Sep 2025 00:05:16 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B8F7613A6B;
+	Thu, 25 Sep 2025 00:05:17 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wls7LzyH1GgdNQAAD6G6ig
-	(envelope-from <svarbanov@suse.de>); Thu, 25 Sep 2025 00:05:16 +0000
+	id ACrxKj2H1GgdNQAAD6G6ig
+	(envelope-from <svarbanov@suse.de>); Thu, 25 Sep 2025 00:05:17 +0000
 From: Stanimir Varbanov <svarbanov@suse.de>
 To: linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org,
@@ -100,10 +68,12 @@ Cc: Jean Delvare <jdelvare@suse.com>,
 	Jonathan Bell <jonathan@raspberrypi.com>,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Stanimir Varbanov <svarbanov@suse.de>
-Subject: [PATCH 0/4] Add Raspberry Pi's RP1 ADC
-Date: Thu, 25 Sep 2025 03:04:12 +0300
-Message-ID: <20250925000416.2408457-1-svarbanov@suse.de>
+Subject: [PATCH 1/4] dt-bindings: Add Raspberry Pi's RP1 ADC
+Date: Thu, 25 Sep 2025 03:04:13 +0300
+Message-ID: <20250925000416.2408457-2-svarbanov@suse.de>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250925000416.2408457-1-svarbanov@suse.de>
+References: <20250925000416.2408457-1-svarbanov@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -111,61 +81,82 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[dt];
-	FREEMAIL_CC(0.00)[suse.com,roeck-us.net,kernel.org,broadcom.com,lunn.ch,gmx.net,raspberrypi.com,suse.de];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmx.net]
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-Spam-Flag: NO
-X-Spam-Score: -1.30
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	TAGGED_RCPT(0.00)[dt]
+X-Rspamd-Queue-Id: C24DD3F532
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
 
-Hello,
+Document dt-bindings for Raspberry Pi's RP1 ADC.
 
-The following patch-set is adding support for RP1 ADC driver,
-and enable it for RPi5.
-
-Comments are welcome!
-
-regards,
-~Stan
-
-Stanimir Varbanov (4):
-  dt-bindings: Add Raspberry Pi's RP1 ADC
-  hwmon: adc: rp1: Add Raspberry Pi's RP1 ADC driver
-  arm64: dts: rp1: Add Raspberry Pi's RP1 ADC DT node
-  arm64: dts: broadcom: Enable RP1 ADC for RPi5
-
- .../bindings/hwmon/raspberrypi,rp1-adc.yaml   |  46 +++
- .../dts/broadcom/bcm2712-rpi-5-b-ovl-rp1.dts  |   8 +
- .../boot/dts/broadcom/bcm2712-rpi-5-b.dts     |   5 +
- arch/arm64/boot/dts/broadcom/rp1-common.dtsi  |   7 +
- drivers/hwmon/Kconfig                         |  10 +
- drivers/hwmon/Makefile                        |   1 +
- drivers/hwmon/rp1-adc.c                       | 301 ++++++++++++++++++
- 7 files changed, 378 insertions(+)
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+---
+ .../bindings/hwmon/raspberrypi,rp1-adc.yaml   | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/hwmon/raspberrypi,rp1-adc.yaml
- create mode 100644 drivers/hwmon/rp1-adc.c
 
+diff --git a/Documentation/devicetree/bindings/hwmon/raspberrypi,rp1-adc.yaml b/Documentation/devicetree/bindings/hwmon/raspberrypi,rp1-adc.yaml
+new file mode 100644
+index 000000000000..5266b253fd2b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/raspberrypi,rp1-adc.yaml
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/hwmon/raspberrypi,rp1-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Rasberry Pi RP1 ADC device
++
++maintainers:
++  - Stanimir Varbanov <svarbanov@suse.de>
++
++description: |
++  The RP1 ADC is a five input successive-approximation ADC with 12-bit
++  resolution (ENOB 9.5-bit) at 500kSPS. It has four external inputs
++  and one internal temperature sensor.
++
++properties:
++  compatible:
++    const: raspberrypi,rp1-adc
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  vref-supply:
++    description:
++      Reference voltage regulator 3.3V.
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - vref-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    adc@400c8000 {
++      compatible = "raspberrypi,rp1-adc";
++      reg = <0x400c8000 0x4000>;
++      clocks = <&rp1_clocks 30>;
++      vref-supply = <&rp1_vdd_3v3>;
++    };
 -- 
 2.47.0
 
