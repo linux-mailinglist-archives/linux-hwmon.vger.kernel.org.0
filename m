@@ -1,64 +1,84 @@
-Return-Path: <linux-hwmon+bounces-9738-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9740-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F04BA6D72
-	for <lists+linux-hwmon@lfdr.de>; Sun, 28 Sep 2025 11:29:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4657DBA7A5D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Sep 2025 03:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1696176D6A
-	for <lists+linux-hwmon@lfdr.de>; Sun, 28 Sep 2025 09:29:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA5857AA83D
+	for <lists+linux-hwmon@lfdr.de>; Mon, 29 Sep 2025 00:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDD32D7DEC;
-	Sun, 28 Sep 2025 09:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2E11ADC97;
+	Mon, 29 Sep 2025 00:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="SQTtule2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jTWPZmWj"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EF32D8375;
-	Sun, 28 Sep 2025 09:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605711A9FBF
+	for <linux-hwmon@vger.kernel.org>; Mon, 29 Sep 2025 00:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759051787; cv=none; b=JS8EzaGbcF9pOpAMMIQozrJGWrTCElNeNqGVT/hAJVnahl6iZNsKAYs6qkDZwaV4XDBujGrBFzcEgvAgx25lI/QACk1vJgaLaaFN3/EFmObgf5LhQlOo+YXrYmP8BKMNX4OWt+1AsckYZy+URKcI+QHdUdUZRZ/aX7Ko0WxxN1g=
+	t=1759107594; cv=none; b=A97EyiBi3cfLqIOfIquoQSwm73N2OXKKheaC2BzYzs2yICjFQleglEp24oRmHvPFhab5GORf/EBoTf3yNoR9Xa6o8fECZvEdSFt8jqcg4F6r0pXw2Mdjtm+aAhnk3EZLHtkE8E48bRXZp9/01DnBScZ9PGyQebrhwr89+caM4fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759051787; c=relaxed/simple;
-	bh=OznBzjQjcSgXPvDVnbFVJJBVSxspxhrLW3kKRpCe8dI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f4b+b2qx8wBlEMipWilGwqwOrmknwi5drsC0SgJ6QWm79Yv18lAsCysNLQvMVBtFX/UC2d+RSfcyTbXBJQN/zptCcCTvl9cw5ec3WrxdKybQIxceP/aoaUIno/Zt7vv2Xk55Bk/0iFCd9Lougx79AtrgSfIB5zWsImzrTby40W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=SQTtule2; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=CrSbXUJZtjpQ7DMiDYvo+MQXFgpQW42bD9GpvO+4YdA=;
-	b=SQTtule2WjhKUqpb2cdqYIlGE/CAnRQ3jrR9g5c4bdWfc5fBR05V6TtdCJvo5g
-	YlBthx2iu2azTv5P57IVw9LRSZ5WBxAJsd1g+mK9pqYgwxXSKM2VpyO+ZymTR47u
-	uoF74HyeG+8e/tFqnNzqiEeXeuATlYoV2dMX8xz15g71A=
-Received: from mps-HP-EliteBook-840-G3.monolithicpower.com (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgA3ZdnP_9hobNCIBQ--.38595S3;
-	Sun, 28 Sep 2025 17:28:53 +0800 (CST)
-From: wenswang@yeah.net
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	corbet@lwn.net
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Wensheng Wang <wenswang@yeah.net>
-Subject: [PATCH v3 2/2] hwmon: add MP2925 and MP2929 driver
-Date: Sun, 28 Sep 2025 17:28:45 +0800
-Message-Id: <20250928092845.1394718-2-wenswang@yeah.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250928092845.1394718-1-wenswang@yeah.net>
-References: <20250928092655.1394429-1-wenswang@yeah.net>
- <20250928092845.1394718-1-wenswang@yeah.net>
+	s=arc-20240116; t=1759107594; c=relaxed/simple;
+	bh=gBBQ/FCQj390FZz+2h9zwy1WIjS9ON/zwiBIOzvBBdQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cUkPFphPfI75ppi+XnnDtpRTy3PVuF7cbzp8ww5j9BrJQcaR2TMf9B01wUIENs0j2GUMOcAWjhNMzsmg6j3GhrwzH1cIhdfl/T3O1YqJbZ/I+CeeoYsoYcAWpLfeLcoJxVGh32SzvcMIMSlzrRX06QnwZpGgj7OV+w1MG8Tpmrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jTWPZmWj; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-77f1f29a551so5335459b3a.3
+        for <linux-hwmon@vger.kernel.org>; Sun, 28 Sep 2025 17:59:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759107592; x=1759712392; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=rK71e9yE0uMuy6Lb+j9wM6nJ42CkKhWhn/KScX86lGs=;
+        b=jTWPZmWjf2RJXbSZT9r9Apk0Dbi9WzMORc2w3g/B25znzv5vO/eVPVd6oQDbtMwJGn
+         5a7bPpx52jwNUDNsEvcbHTOep74Z/khkgokp4MceVKvoqw3aYV5Jc8Kz5b9Moq0f9W4l
+         721LM2XlD78SmElIBY1p/gYPSZ9elwrurUny/VJSe/t/sfXPysnqVjjriP0uJgj7qi8l
+         TVrPDHjdmCHVNsFKHMttBIP1prNk9Mtk4JstlRsPc9Cka9rccbpWImCWyuCBs7cuOOTn
+         ZErCDVs6CxuEBualkbLKMM2SLETyOHxxlL1P6DDGJi3riVcvFLpe6XaUtQSouXET9X6J
+         ThrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759107592; x=1759712392;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rK71e9yE0uMuy6Lb+j9wM6nJ42CkKhWhn/KScX86lGs=;
+        b=ZZ97kKs+x1Hnu/HtezwefHEEvPbNprLzjL/ToE0W1mTdRzDFqYMdAJEbJD0QdegVsp
+         aZ9D+/h/BmsS2yoptl+4y4tux94T8kwzrtx7KyQ84OvDKL6LB4xH0AsOBG4pJGdt8/DC
+         f7evoavbj7EDZ0jyCyBXnWJIOQsddfq+f3XhBeZyMDJrx9MFmuI0t1j3+95/bLrmqubH
+         8VyJq/t4sJX7Kz4rLXffVUbOrLbja+X8H0O8VtHGib+mwjpXTWg5K6d83BaaZZX5jPoM
+         LmKVQNvoYBQCJ4bUMgDqhu45Xj8p43iQMNMyDW/nIqg/vTSlvT8Fh/ig8vHqC2BSzGKl
+         W6Yg==
+X-Gm-Message-State: AOJu0Yxr2YXbhL1GaNcfZ5isIY+I8Am5IuRXvaApTiAV1PTuOWQBif4h
+	H0QRRw9MyzCX4c/khFf9c3ty3QvH3Jd8f5PEZNoDK5g6N8Vs/LAIHQLm
+X-Gm-Gg: ASbGnctZX7xDkqXoj3XAKjpTBsz5iuffeVTXco2iCLCz8RZvV9jm2qjMn6ZuUxYKVFG
+	ejp6BVDbxgo9HlorPLl1DrRsvAQIPWbgFfX9O412ZbRnSt7bAObezt05Vm0uzaA5DOiJZIwOVe7
+	8C1Fo9d6h6AbNAi5DK9W6GRWDDPlElzo45CwlwL+1EzANUBdtXBq1O5G49ShGyI017PWW5rcVod
+	yyfqDMvAFJfkDq6aCweyKTUx0H6DBem4C5nLrcGG+P0Eo5UunRciE8/DcYPcD0IbnR/6gTaS5vO
+	PpLsichY+5MDjcFMpzTPUbvBKzYjV3RYF8Z8sVJ+Y0ohPhRoBYrBxgQU6MpTkGT75tDgAMIQ+08
+	QaTqT6CxCcW06ins2i9siMu3huGXdLEWwmys=
+X-Google-Smtp-Source: AGHT+IFBVmLlcBVkx/7jPdaoFqf007AXUTxuB0ELq5UCTFvEYDObliOZx01ZvrgUckXAA5DTT2+kvw==
+X-Received: by 2002:a05:6a20:2d1f:b0:308:60dc:921b with SMTP id adf61e73a8af0-30860dc9429mr4030097637.40.1759107591495;
+        Sun, 28 Sep 2025 17:59:51 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-781023c1867sm9703152b3a.35.2025.09.28.17.59.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Sep 2025 17:59:51 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hwmon updates for v6.18-rc1
+Date: Sun, 28 Sep 2025 17:59:49 -0700
+Message-ID: <20250929005950.447268-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -67,579 +87,339 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Ms8vCgA3ZdnP_9hobNCIBQ--.38595S3
-X-Coremail-Antispam: 1Uf129KBjvAXoW3tw1DCFWkJr1rCrWkXFW8Zwb_yoW8GF1ruo
-	Z3uFWrZw1DJr18urZYkF4IgF97Xa48CrWFy3W2yFs8WFy3trn5ta47Zw4ag3W7tr4rXw48
-	u3y8A3s3tFW7Zr97n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUODGOUUUUU
-X-CM-SenderInfo: 5zhq24xdqjq5hhdkh0dhw/1tbiIBWFKmjY-9ULhAAA3P
 
-From: Wensheng Wang <wenswang@yeah.net>
+Hi Linus,
 
-Add support for MPS VR mp2925 and mp2929 controller. This driver exposes
-telemetry and limit value readings and writtings.
+Please pull hwmon updates for Linux v6.18-rc1 from signed tag:
 
-Signed-off-by: Wensheng Wang <wenswang@yeah.net>
----
-V2 -> V3:
-    fix garbage value issue when writing vout ov/uv fault
-    limit value in mp2925_write_word_data() function
+    git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v6.18-rc1
 
-V1 -> V2:
-    pass 0 for i2c_device_id and of_device_id struct
+Thanks,
+Guenter
+------
 
- Documentation/hwmon/index.rst  |   1 +
- Documentation/hwmon/mp2925.rst | 151 ++++++++++++++++
- MAINTAINERS                    |   7 +
- drivers/hwmon/pmbus/Kconfig    |   9 +
- drivers/hwmon/pmbus/Makefile   |   1 +
- drivers/hwmon/pmbus/mp2925.c   | 316 +++++++++++++++++++++++++++++++++
- 6 files changed, 485 insertions(+)
- create mode 100644 Documentation/hwmon/mp2925.rst
- create mode 100644 drivers/hwmon/pmbus/mp2925.c
+The following changes since commit 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c:
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index d292a86ac5da..95bcf71ff6d9 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -175,6 +175,7 @@ Hardware Monitoring Kernel Drivers
-    mp2856
-    mp2888
-    mp2891
-+   mp2925
-    mp2975
-    mp2993
-    mp5023
-diff --git a/Documentation/hwmon/mp2925.rst b/Documentation/hwmon/mp2925.rst
-new file mode 100644
-index 000000000000..63eda215b6cb
---- /dev/null
-+++ b/Documentation/hwmon/mp2925.rst
-@@ -0,0 +1,151 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver mp2925
-+====================
-+
-+Supported chips:
-+
-+  * MPS mp2925
-+
-+    Prefix: 'mp2925'
-+
-+  * MPS mp2929
-+
-+    Prefix: 'mp2929'
-+
-+Author:
-+
-+	Wensheng Wang <wenswang@yeah.net>
-+
-+Description
-+-----------
-+
-+This driver implements support for Monolithic Power Systems, Inc. (MPS)
-+MP2925 Dual Loop Digital Multi-phase Controller.
-+
-+Device compliant with:
-+
-+- PMBus rev 1.3 interface.
-+
-+The driver exports the following attributes via the 'sysfs' files
-+for input voltage:
-+
-+**in1_input**
-+
-+**in1_label**
-+
-+**in1_crit**
-+
-+**in1_crit_alarm**
-+
-+**in1_lcrit**
-+
-+**in1_lcrit_alarm**
-+
-+**in1_max**
-+
-+**in1_max_alarm**
-+
-+**in1_min**
-+
-+**in1_min_alarm**
-+
-+The driver provides the following attributes for output voltage:
-+
-+**in2_input**
-+
-+**in2_label**
-+
-+**in2_crit**
-+
-+**in2_crit_alarm**
-+
-+**in2_lcrit**
-+
-+**in2_lcrit_alarm**
-+
-+**in3_input**
-+
-+**in3_label**
-+
-+**in3_crit**
-+
-+**in3_crit_alarm**
-+
-+**in3_lcrit**
-+
-+**in3_lcrit_alarm**
-+
-+The driver provides the following attributes for input current:
-+
-+**curr1_input**
-+
-+**curr1_label**
-+
-+The driver provides the following attributes for output current:
-+
-+**curr2_input**
-+
-+**curr2_label**
-+
-+**curr2_crit**
-+
-+**curr2_crit_alarm**
-+
-+**curr2_max**
-+
-+**curr2_max_alarm**
-+
-+**curr3_input**
-+
-+**curr3_label**
-+
-+**curr3_crit**
-+
-+**curr3_crit_alarm**
-+
-+**curr3_max**
-+
-+**curr3_max_alarm**
-+
-+The driver provides the following attributes for input power:
-+
-+**power1_input**
-+
-+**power1_label**
-+
-+**power2_input**
-+
-+**power2_label**
-+
-+The driver provides the following attributes for output power:
-+
-+**power3_input**
-+
-+**power3_label**
-+
-+**power4_input**
-+
-+**power4_label**
-+
-+The driver provides the following attributes for temperature:
-+
-+**temp1_input**
-+
-+**temp1_crit**
-+
-+**temp1_crit_alarm**
-+
-+**temp1_max**
-+
-+**temp1_max_alarm**
-+
-+**temp2_input**
-+
-+**temp2_crit**
-+
-+**temp2_crit_alarm**
-+
-+**temp2_max**
-+
-+**temp2_max_alarm**
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 35dac69ec0d5..c606ae7be70c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17185,6 +17185,13 @@ S:	Maintained
- F:	Documentation/hwmon/mp2891.rst
- F:	drivers/hwmon/pmbus/mp2891.c
- 
-+MPS MP2925 DRIVER
-+M:	Noah Wang <wenswang@yeah.net>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/mp2925.rst
-+F:	drivers/hwmon/pmbus/mp2925.c
-+
- MPS MP2993 DRIVER
- M:	Noah Wang <noahwang.wang@outlook.com>
- L:	linux-hwmon@vger.kernel.org
-diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index 55e492452ce8..d0e1eb500215 100644
---- a/drivers/hwmon/pmbus/Kconfig
-+++ b/drivers/hwmon/pmbus/Kconfig
-@@ -391,6 +391,15 @@ config SENSORS_MP2891
-       This driver can also be built as a module. If so, the module will
-       be called mp2891.
- 
-+config SENSORS_MP2925
-+    tristate "MPS MP2925"
-+    help
-+      If you say yes here you get hardware monitoring support for MPS
-+      MP2925 Dual Loop Digital Multi-Phase Controller.
-+
-+      This driver can also be built as a module. If so, the module will
-+      be called mp2925.
-+
- config SENSORS_MP2975
- 	tristate "MPS MP2975"
- 	help
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index 29cd8a3317d2..64c1b03bf47b 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -39,6 +39,7 @@ obj-$(CONFIG_SENSORS_MAX8688)	+= max8688.o
- obj-$(CONFIG_SENSORS_MP2856)	+= mp2856.o
- obj-$(CONFIG_SENSORS_MP2888)	+= mp2888.o
- obj-$(CONFIG_SENSORS_MP2891)	+= mp2891.o
-+obj-$(CONFIG_SENSORS_MP2925)	+= mp2925.o
- obj-$(CONFIG_SENSORS_MP2975)	+= mp2975.o
- obj-$(CONFIG_SENSORS_MP2993)	+= mp2993.o
- obj-$(CONFIG_SENSORS_MP5023)	+= mp5023.o
-diff --git a/drivers/hwmon/pmbus/mp2925.c b/drivers/hwmon/pmbus/mp2925.c
-new file mode 100644
-index 000000000000..6bebd6023021
---- /dev/null
-+++ b/drivers/hwmon/pmbus/mp2925.c
-@@ -0,0 +1,316 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Hardware monitoring driver for MPS Multi-phase Digital VR Controllers(MP2925)
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include "pmbus.h"
-+
-+/*
-+ * Vender specific register MFR_VR_MULTI_CONFIG(0x08).
-+ * This register is used to obtain vid scale.
-+ */
-+#define MFR_VR_MULTI_CONFIG	0x08
-+
-+#define MP2925_VOUT_DIV	512
-+#define MP2925_VOUT_OVUV_UINT	195
-+#define MP2925_VOUT_OVUV_DIV	100
-+
-+#define MP2925_PAGE_NUM	2
-+
-+#define MP2925_RAIL1_FUNC	(PMBUS_HAVE_VIN | PMBUS_HAVE_PIN | \
-+							 PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT | \
-+							 PMBUS_HAVE_POUT | PMBUS_HAVE_TEMP | \
-+							 PMBUS_HAVE_STATUS_VOUT | \
-+							 PMBUS_HAVE_STATUS_IOUT | \
-+							 PMBUS_HAVE_STATUS_TEMP | \
-+							 PMBUS_HAVE_STATUS_INPUT)
-+
-+#define MP2925_RAIL2_FUNC	(PMBUS_HAVE_PIN | PMBUS_HAVE_VOUT | \
-+							 PMBUS_HAVE_IOUT | PMBUS_HAVE_POUT | \
-+							 PMBUS_HAVE_TEMP | PMBUS_HAVE_IIN | \
-+							 PMBUS_HAVE_STATUS_VOUT | \
-+							 PMBUS_HAVE_STATUS_IOUT | \
-+							 PMBUS_HAVE_STATUS_TEMP | \
-+							 PMBUS_HAVE_STATUS_INPUT)
-+
-+struct mp2925_data {
-+	struct pmbus_driver_info info;
-+	int vout_scale[MP2925_PAGE_NUM];
-+};
-+
-+#define to_mp2925_data(x) container_of(x, struct mp2925_data, info)
-+
-+static u16 mp2925_linear_exp_transfer(u16 word, u16 expect_exponent)
-+{
-+	s16 exponent, mantissa, target_exponent;
-+
-+	exponent = ((s16)word) >> 11;
-+	mantissa = ((s16)((word & 0x7ff) << 5)) >> 5;
-+	target_exponent = (s16)((expect_exponent & 0x1f) << 11) >> 11;
-+
-+	if (exponent > target_exponent)
-+		mantissa = mantissa << (exponent - target_exponent);
-+	else
-+		mantissa = mantissa >> (target_exponent - exponent);
-+
-+	return (mantissa & 0x7ff) | ((expect_exponent << 11) & 0xf800);
-+}
-+
-+static int mp2925_read_byte_data(struct i2c_client *client, int page, int reg)
-+{
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_VOUT_MODE:
-+		/*
-+		 * The MP2925 does not follow standard PMBus protocol completely,
-+		 * and the calculation of vout in this driver is based on direct
-+		 * format. As a result, the format of vout is enforced to direct.
-+		 */
-+		ret = PB_VOUT_MODE_DIRECT;
-+		break;
-+	default:
-+		ret = -ENODATA;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int mp2925_read_word_data(struct i2c_client *client, int page, int phase,
-+				 int reg)
-+{
-+	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-+	struct mp2925_data *data = to_mp2925_data(info);
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_READ_VOUT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = DIV_ROUND_CLOSEST((ret & GENMASK(11, 0)) * data->vout_scale[page],
-+					MP2925_VOUT_DIV);
-+		break;
-+	case PMBUS_VOUT_OV_FAULT_LIMIT:
-+	case PMBUS_VOUT_UV_FAULT_LIMIT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = DIV_ROUND_CLOSEST((ret & GENMASK(11, 0)) * MP2925_VOUT_OVUV_UINT,
-+					MP2925_VOUT_OVUV_DIV);
-+		break;
-+	case PMBUS_STATUS_WORD:
-+	case PMBUS_READ_VIN:
-+	case PMBUS_READ_IOUT:
-+	case PMBUS_READ_POUT:
-+	case PMBUS_READ_PIN:
-+	case PMBUS_READ_IIN:
-+	case PMBUS_READ_TEMPERATURE_1:
-+	case PMBUS_VIN_OV_FAULT_LIMIT:
-+	case PMBUS_VIN_OV_WARN_LIMIT:
-+	case PMBUS_VIN_UV_WARN_LIMIT:
-+	case PMBUS_VIN_UV_FAULT_LIMIT:
-+	case PMBUS_IOUT_OC_FAULT_LIMIT:
-+	case PMBUS_IOUT_OC_WARN_LIMIT:
-+	case PMBUS_OT_FAULT_LIMIT:
-+	case PMBUS_OT_WARN_LIMIT:
-+		ret = -ENODATA;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int mp2925_write_word_data(struct i2c_client *client, int page, int reg,
-+				  u16 word)
-+{
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_VIN_OV_FAULT_LIMIT:
-+	case PMBUS_VIN_OV_WARN_LIMIT:
-+	case PMBUS_VIN_UV_WARN_LIMIT:
-+	case PMBUS_VIN_UV_FAULT_LIMIT:
-+		/*
-+		 * The PMBUS_VIN_OV_FAULT_LIMIT, PMBUS_VIN_OV_WARN_LIMIT,
-+		 * PMBUS_VIN_UV_WARN_LIMIT and PMBUS_VIN_UV_FAULT_LIMIT
-+		 * of MP2925 is linear11 format, and the exponent is a
-+		 * constant value(5'b11100)， so the exponent of word
-+		 * parameter should be converted to 5'b11100(0x1C).
-+		 */
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    mp2925_linear_exp_transfer(word, 0x1C));
-+		break;
-+	case PMBUS_VOUT_OV_FAULT_LIMIT:
-+	case PMBUS_VOUT_UV_FAULT_LIMIT:
-+		/*
-+		 * The bit0-bit11 is the limit value, and bit12-bit15
-+		 * should not be changed.
-+		 */
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    (ret & ~GENMASK(11, 0)) |
-+				FIELD_PREP(GENMASK(11, 0),
-+					   DIV_ROUND_CLOSEST(word * MP2925_VOUT_OVUV_DIV,
-+							     MP2925_VOUT_OVUV_UINT)));
-+		break;
-+	case PMBUS_OT_FAULT_LIMIT:
-+	case PMBUS_OT_WARN_LIMIT:
-+		/*
-+		 * The PMBUS_OT_FAULT_LIMIT and PMBUS_OT_WARN_LIMIT of
-+		 * MP2925 is linear11 format, and the exponent is a
-+		 * constant value(5'b00000), so the exponent of word
-+		 * parameter should be converted to 5'b00000.
-+		 */
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    mp2925_linear_exp_transfer(word, 0x00));
-+		break;
-+	case PMBUS_IOUT_OC_FAULT_LIMIT:
-+	case PMBUS_IOUT_OC_WARN_LIMIT:
-+		/*
-+		 * The PMBUS_IOUT_OC_FAULT_LIMIT and PMBUS_IOUT_OC_WARN_LIMIT
-+		 * of MP2925 is linear11 format, and the exponent can not be
-+		 * changed.
-+		 */
-+		ret = pmbus_read_word_data(client, page, 0xff, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = pmbus_write_word_data(client, page, reg,
-+					    mp2925_linear_exp_transfer(word,
-+								       FIELD_GET(GENMASK(15, 11),
-+										 ret)));
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int
-+mp2925_identify_vout_scale(struct i2c_client *client, struct pmbus_driver_info *info,
-+			   int page)
-+{
-+	struct mp2925_data *data = to_mp2925_data(info);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, page);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_smbus_read_byte_data(client, PMBUS_VOUT_MODE);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (FIELD_GET(GENMASK(5, 5), ret)) {
-+		ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE,
-+						page == 0 ? 3 : 4);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = i2c_smbus_read_word_data(client, MFR_VR_MULTI_CONFIG);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (FIELD_GET(GENMASK(5, 5), ret))
-+			data->vout_scale[page] = 2560;
-+		else
-+			data->vout_scale[page] = 5120;
-+	} else if (FIELD_GET(GENMASK(4, 4), ret)) {
-+		data->vout_scale[page] = 1;
-+	} else {
-+		data->vout_scale[page] = 512;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mp2925_identify(struct i2c_client *client, struct pmbus_driver_info *info)
-+{
-+	int ret;
-+
-+	ret = mp2925_identify_vout_scale(client, info, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return mp2925_identify_vout_scale(client, info, 1);
-+}
-+
-+static const struct pmbus_driver_info mp2925_info = {
-+	.pages = MP2925_PAGE_NUM,
-+	.format[PSC_VOLTAGE_IN] = linear,
-+	.format[PSC_CURRENT_IN] = linear,
-+	.format[PSC_CURRENT_OUT] = linear,
-+	.format[PSC_POWER] = linear,
-+	.format[PSC_TEMPERATURE] = linear,
-+	.format[PSC_VOLTAGE_OUT] = direct,
-+
-+	.m[PSC_VOLTAGE_OUT] = 1,
-+	.R[PSC_VOLTAGE_OUT] = 3,
-+	.b[PSC_VOLTAGE_OUT] = 0,
-+
-+	.func[0] = MP2925_RAIL1_FUNC,
-+	.func[1] = MP2925_RAIL2_FUNC,
-+	.read_word_data = mp2925_read_word_data,
-+	.read_byte_data = mp2925_read_byte_data,
-+	.write_word_data = mp2925_write_word_data,
-+	.identify = mp2925_identify,
-+};
-+
-+static int mp2925_probe(struct i2c_client *client)
-+{
-+	struct mp2925_data *data;
-+
-+	data = devm_kzalloc(&client->dev, sizeof(struct mp2925_data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	memcpy(&data->info, &mp2925_info, sizeof(mp2925_info));
-+
-+	return pmbus_do_probe(client, &data->info);
-+}
-+
-+static const struct i2c_device_id mp2925_id[] = {
-+	{"mp2925"},
-+	{"mp2929"},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, mp2925_id);
-+
-+static const struct of_device_id __maybe_unused mp2925_of_match[] = {
-+	{.compatible = "mps,mp2925"},
-+	{.compatible = "mps,mp2929"},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, mp2925_of_match);
-+
-+static struct i2c_driver mp2925_driver = {
-+	.driver = {
-+		.name = "mp2925",
-+		.of_match_table = mp2925_of_match,
-+	},
-+	.probe = mp2925_probe,
-+	.id_table = mp2925_id,
-+};
-+
-+module_i2c_driver(mp2925_driver);
-+
-+MODULE_AUTHOR("Wensheng Wang <wenswang@yeah.net>");
-+MODULE_DESCRIPTION("PMBus driver for MPS MP2925");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("PMBUS");
--- 
-2.25.1
+  Linux 6.17-rc5 (2025-09-07 14:22:57 -0700)
 
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git tags/hwmon-for-v6.18-rc1
+
+for you to fetch changes up to 76bb6969a8cfc5e00ca142fdad86ffd0a6ed9ecd:
+
+  dt-bindings: hwmon: (lm75) allow interrupt for ti,tmp75 (2025-09-25 18:21:31 -0700)
+
+----------------------------------------------------------------
+hwmon updates for v6.18-rc1
+
+* New drivers
+
+  - Driver for Kontron SMARC-sAM67
+
+  - Driver for GPD device sensors
+
+  - Driver for MP29502
+
+  - Driver for MP2869, MP29608, MP29612 and MP29816 series
+
+* Added chip support to existing drivers
+
+  - asus-ec-sensors:
+	Add B650E-I
+	Add PRIME Z270-A
+	Add Pro WS WRX90E-SAGE SE
+	Add ROG STRIX X670E-E GAMING WIFI
+	Add ROG STRIX X870-I GAMING WIFI
+	Add ROG STRIX X870E-E GAMING WIFI
+	Add ROG STRIX Z690-E GAMING WIFI
+	Add ROG STRIX Z790E GAMING WIFI II
+	Add STRIX B850-I GAMING WIFI
+	Add TUF GAMING X670E PLUS WIFI
+	Add X670E-I GAMING WIFI
+	Add Z790-I GAMING WIFI
+
+  - dell-smm: Add support for Dell OptiPlex 7040
+
+  - ina238: Major cleanup, and
+  	Add support for INA700
+	Add support for INA780
+
+  - k10temp:
+  	Add device ID for Strix Halo
+	Add support for AMD Family 1Ah-based models
+
+  - lenovo-ec-sensors: Update P8 supprt
+
+  - lm75: Add NXP P3T1750 support
+
+  - pmbus/adm1275: Add sq24905c support
+
+  - pmbus/isl68137: Add support for Renesas RAA228244 and RAA228246
+
+  - pmbus/mp5990: Add support for MP5998
+
+  - sht21: Add support for SHT20, SHT25
+
+  - sl28cpld: Add sa67mcu compatible
+
+* Other notable changes
+
+  - core:
+	Handle locking internally
+	Introduce 64-bit energy attribute support
+
+  - cros_ec: Register into thermal framework, improve PWM control
+
+  - lm75: allow interrupt for ti,tmp75
+
+  - mlxreg-fan: Add support for new flavour of capability register
+
+  - sbtsi_temp: AMD CPU extended temperature range support
+
+  - sht21: Add devicetree support
+
+* Various other minor improvements and fixes
+
+----------------------------------------------------------------
+Aleksander Jan Bajkowski (1):
+      dt-bindings: hwmon: convert lantiq-cputemp to yaml
+
+Andreas Kemnade (1):
+      hwmon: sy7636a: add alias
+
+Armin Wolf (4):
+      hwmon: (dell-smm) Remove Dell Precision 490 custom config data
+      hwmon: (dell-smm) Move clamping of fan speed out of i8k_set_fan()
+      hwmon: (dell-smm) Add support for automatic fan mode
+      hwmon: (dell-smm) Add support for Dell OptiPlex 7040
+
+Avadhut Naik (1):
+      hwmon: (k10temp) Add thermal support for AMD Family 1Ah-based models
+
+Ben Copeland (2):
+      hwmon: (asus-ec-sensors) add ROG STRIX X870E-E GAMING WIFI
+      hwmon: (asus-ec-sensors) increase timeout for locking ACPI mutex
+
+ChiShih Tsai (2):
+      dt-bindings: hwmon: adm1275: add sq24905c support
+      hwmon: (pmbus/adm1275) add sq24905c support
+
+Chris Packham (1):
+      dt-bindings: hwmon: ti,ina2xx: Add INA780 device
+
+Christophe JAILLET (1):
+      hwmon: (nzxt-smart2) Use devm_mutex_init()
+
+Chuande Chen (1):
+      hwmon: (sbtsi_temp) AMD CPU extended temperature range support
+
+Cosmo Chou (2):
+      dt-bindings: trivial-devices: add mps,mp5998
+      hwmon: (pmbus/mp5990) add support for MP5998
+
+Cryolitia PukNgae (4):
+      hwmon: add GPD devices sensor driver
+      hwmon: document: add gpd-fan
+      hwmon: (gpd-fan) Fix range check for pwm input
+      hwmon: (gpd-fan) complete Kconfig dependencies
+
+Dave Hansen (2):
+      MAINTAINERS: Mark coretemp driver as orphaned
+      hwmon: (coretemp) Replace x86_model checks with VFM ones
+
+David Ober (1):
+      hwmon: (lenovo-ec-sensors) Update P8 supprt
+
+Debanil Chowdhury (1):
+      hwmon: crps: Fix typos in crps.rst documentation
+
+Dylan Tackoor (1):
+      hwmon: (asus-ec-sensors) Add B650E-I
+
+Eugene Shalygin (3):
+      hwmon: (asus-ec-sensors) Narrow lock for X870E-CREATOR WIFI
+      hwmon: (asus-ec-sensors) refine config description
+      hwmon: (asus-ec-sensors) add PRIME Z270-A
+
+Flaviu Nistor (2):
+      dt-bindings: hwmon: tmp102: Add label property
+      hwmon: tmp102: Add support for label
+
+Frank Li (1):
+      dt-bindings: hwmon: (lm75) allow interrupt for ti,tmp75
+
+Grant Peltier (3):
+      dt-bindings: hwmon: (pmbus/isl68137) add RAA228244 and RAA228246 support
+      hwmon: (pmbus/isl68137) add support for Renesas RAA228244 and RAA228246
+      docs: hwmon: add RAA228244 and RAA228246 info to isl68137 documentation
+
+Guenter Roeck (19):
+      dt-bindings: hwmon: ti,ina2xx: Update details for various chips
+      hwmon: Introduce 64-bit energy attribute support
+      hwmon: (ina238) Drop platform data support
+      hwmon: (ina238) Update documentation and Kconfig entry
+      hwmon: (ina238) Drop pointless power attribute check on attribute writes
+      hwmon: (ina238) Rework and simplify temperature calculations
+      hwmon: (ina238) Pre-calculate current, power, and energy LSB
+      hwmon: (ina238) Simplify voltage register accesses
+      hwmon: (ina238) Improve current dynamic range
+      hwmon: (ina238) Stop using the shunt voltage register
+      hwmon: (ina238) Add support for current limits
+      hwmon: (ina238) Order chip information alphabetically
+      hwmon: (ina238) Use the energy64 attribute type to report the energy
+      hwmon: (ina238) Support active-high alert polarity
+      hwmon: (ina238) Only configure calibration and shunt registers if needed
+      hwmon: (ina238) Add support for INA780
+      dt-bindings: hwmon: ti,ina2xx: Add INA700
+      hwmon: (ina238) Add support for INA700
+      hwmon: Serialize accesses in hwmon core
+
+Jamie Vickery (1):
+      hwmon: (asus-ec-sensors) Add Z790-I GAMING WIFI
+
+Jean Delvare (1):
+      hwmon: Remove Jean Delvare from maintainers
+
+Kurt Borja (4):
+      hwmon: (sht21) Documentation cleanup
+      hwmon: (sht21) Add support for SHT20, SHT25 chips
+      dt-bindings: trivial-devices: Add sht2x sensors
+      hwmon: (sht21) Add devicetree support
+
+Lakshay Piplani (2):
+      dt-bindings: hwmon: (lm75) Add binding for NXP P3T1750
+      hwmon: (lm75) Add NXP P3T1750 support
+
+Liao Yuanhong (1):
+      hwmon: (ltc4282) remove the use of dev_err_probe()
+
+Lucas Yunkyu Lee (1):
+      hwmon: (asus-ec-sensors) Add STRIX B850-I GAMING WIFI
+
+Maciej Zonski (1):
+      hwmon: (asus-ec-sensors) add ROG STRIX X870-I GAMING WIFI
+
+Marek Vasut (2):
+      dt-bindings: hwmon: pwm-fan: Document after shutdown fan settings
+      hwmon: (pwm-fan) Implement after shutdown fan settings
+
+Michael Tandy (2):
+      (asus-ec-sensors) add Pro WS WRX90E-SAGE SE
+      hwmon: (asus-ec-sensors) sort declarations
+
+Michael Walle (2):
+      dt-bindings: hwmon: sl28cpld: add sa67mcu compatible
+      hwmon: add SMARC-sAM67 support
+
+Mohamad Kamal (1):
+      hwmon: (asus-ec-sensors) add TUF GAMING X670E PLUS WIFI
+
+Nicholas Flintham (1):
+      hwmon: (asus-ec-sensors) Add ROG STRIX Z790E GAMING WIFI II
+
+Qianfeng Rong (1):
+      hwmon: (nct6775) Use int type to store negative error codes
+
+Rong Zhang (1):
+      hwmon: (k10temp) Add device ID for Strix Halo
+
+Runar Grønås (1):
+      hwmon: (asus-ec-sensors) Add X670E-I GAMING WIFI
+
+Shane Fagan (1):
+      hwmon: (asus-ec-sensors) add ROG STRIX X670E-E GAMING WIFI
+
+Sung-Chi Li (3):
+      platform/chrome: update pwm fan control host commands
+      hwmon: (cros_ec) add PWM control over fans
+      hwmon: (cros_ec) register fans into thermal framework cooling devices
+
+Tom Ingleby (1):
+      hwmon: (asus-ec-sensors) add ROG STRIX Z690-E GAMING WIFI
+
+Vadim Pasternak (2):
+      hwmon: (mlxreg-fan) Separate methods of fan setting coming from different subsystems
+      hwmon: (mlxreg-fan) Add support for new flavour of capability register
+
+Wensheng Wang (3):
+      dt-bindings: hwmon: Add MPS mp2869,mp29608,mp29612,mp29816 and mp29502
+      hwmon: add MP2869,MP29608,MP29612 and MP29816 series driver
+      hwmon: add MP29502 driver
+
+Wolfram Sang (1):
+      hwmon: (sch56xx-common) don't print superfluous errors
+
+ .../devicetree/bindings/hwmon/adi,adm1275.yaml     |   9 +
+ .../bindings/hwmon/kontron,sl28cpld-hwmon.yaml     |   1 +
+ .../devicetree/bindings/hwmon/lantiq,cputemp.yaml  |  30 +
+ Documentation/devicetree/bindings/hwmon/lm75.yaml  |   2 +
+ .../devicetree/bindings/hwmon/ltq-cputemp.txt      |  10 -
+ .../bindings/hwmon/pmbus/isil,isl68137.yaml        |   2 +
+ .../devicetree/bindings/hwmon/pwm-fan.yaml         |   9 +
+ .../devicetree/bindings/hwmon/ti,ina2xx.yaml       |  34 +
+ .../devicetree/bindings/hwmon/ti,tmp102.yaml       |   5 +
+ .../devicetree/bindings/trivial-devices.yaml       |  15 +
+ Documentation/hwmon/adm1275.rst                    |  24 +-
+ Documentation/hwmon/asus_ec_sensors.rst            |  12 +
+ Documentation/hwmon/cros_ec_hwmon.rst              |   7 +-
+ Documentation/hwmon/crps.rst                       |   4 +-
+ Documentation/hwmon/dell-smm-hwmon.rst             |  50 +-
+ Documentation/hwmon/gpd-fan.rst                    |  78 +++
+ Documentation/hwmon/hwmon-kernel-api.rst           |  13 +
+ Documentation/hwmon/ina238.rst                     |  64 +-
+ Documentation/hwmon/index.rst                      |   4 +
+ Documentation/hwmon/isl68137.rst                   |  20 +
+ Documentation/hwmon/lm75.rst                       |   6 +-
+ Documentation/hwmon/mp2869.rst                     | 175 +++++
+ Documentation/hwmon/mp29502.rst                    |  93 +++
+ Documentation/hwmon/mp5990.rst                     |  30 +-
+ Documentation/hwmon/sa67.rst                       |  41 ++
+ Documentation/hwmon/sht21.rst                      |  26 +-
+ MAINTAINERS                                        |  26 +-
+ drivers/hwmon/Kconfig                              |  40 +-
+ drivers/hwmon/Makefile                             |   2 +
+ drivers/hwmon/asus-ec-sensors.c                    | 340 +++++++---
+ drivers/hwmon/coretemp.c                           |  76 ++-
+ drivers/hwmon/cros_ec_hwmon.c                      | 313 +++++++++
+ drivers/hwmon/dell-smm-hwmon.c                     |  99 ++-
+ drivers/hwmon/gpd-fan.c                            | 715 +++++++++++++++++++++
+ drivers/hwmon/hwmon.c                              |  58 +-
+ drivers/hwmon/ina238.c                             | 583 +++++++++--------
+ drivers/hwmon/k10temp.c                            |  10 +
+ drivers/hwmon/lenovo-ec-sensors.c                  |  34 +-
+ drivers/hwmon/lm75.c                               |  13 +
+ drivers/hwmon/ltc4282.c                            |   3 +-
+ drivers/hwmon/mlxreg-fan.c                         |  42 +-
+ drivers/hwmon/nct6775-platform.c                   |   3 +-
+ drivers/hwmon/nzxt-smart2.c                        |   8 +-
+ drivers/hwmon/pmbus/Kconfig                        |  21 +-
+ drivers/hwmon/pmbus/Makefile                       |   2 +
+ drivers/hwmon/pmbus/adm1275.c                      |  11 +-
+ drivers/hwmon/pmbus/isl68137.c                     |   6 +
+ drivers/hwmon/pmbus/mp2869.c                       | 659 +++++++++++++++++++
+ drivers/hwmon/pmbus/mp29502.c                      | 670 +++++++++++++++++++
+ drivers/hwmon/pmbus/mp5990.c                       |  67 +-
+ drivers/hwmon/pwm-fan.c                            |  18 +-
+ drivers/hwmon/sa67mcu-hwmon.c                      | 161 +++++
+ drivers/hwmon/sbtsi_temp.c                         |  46 +-
+ drivers/hwmon/sch56xx-common.c                     |   4 +-
+ drivers/hwmon/sht21.c                              |  15 +-
+ drivers/hwmon/sy7636a-hwmon.c                      |   1 +
+ drivers/hwmon/tmp102.c                             |  22 +-
+ include/linux/hwmon.h                              |   4 +
+ include/linux/platform_data/cros_ec_commands.h     |  29 +-
+ include/trace/events/hwmon.h                       |  10 +-
+ include/uapi/linux/i8k.h                           |   2 +
+ 61 files changed, 4283 insertions(+), 594 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/lantiq,cputemp.yaml
+ delete mode 100644 Documentation/devicetree/bindings/hwmon/ltq-cputemp.txt
+ create mode 100644 Documentation/hwmon/gpd-fan.rst
+ create mode 100644 Documentation/hwmon/mp2869.rst
+ create mode 100644 Documentation/hwmon/mp29502.rst
+ create mode 100644 Documentation/hwmon/sa67.rst
+ create mode 100644 drivers/hwmon/gpd-fan.c
+ create mode 100644 drivers/hwmon/pmbus/mp2869.c
+ create mode 100644 drivers/hwmon/pmbus/mp29502.c
+ create mode 100644 drivers/hwmon/sa67mcu-hwmon.c
 
