@@ -1,101 +1,104 @@
-Return-Path: <linux-hwmon+bounces-9761-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9763-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE638BAFFC5
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Oct 2025 12:21:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23814BB03AE
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Oct 2025 13:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75F7A3B9EB8
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Oct 2025 10:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B0F1C5024
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Oct 2025 11:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B17F299A81;
-	Wed,  1 Oct 2025 10:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE09C2E1C6B;
+	Wed,  1 Oct 2025 11:45:51 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C93A1B0420;
-	Wed,  1 Oct 2025 10:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FB42E06E6
+	for <linux-hwmon@vger.kernel.org>; Wed,  1 Oct 2025 11:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759314091; cv=none; b=UsJ45I2B3amXcqjyBI1BY8HkG0OHVfGOE8mRbA43mPoLjJHB8td0ZLzb9WJ6WlGWwvAkQkUiU4GZVoSaAxBzF9kKJfNGuIQ3b102s/JKHzp75Y1QFktdM30CMbcRXx5cRWpvsxuzcypLxih3wcPblRnUiYz83cekU8ye1OCr2wo=
+	t=1759319151; cv=none; b=Lt/KfBkjq2+xl6oA0bDZ4DQmRFkKwyEMfDYM1kaNwf4aFZC8VtMtQNYwn4p5AHI24t922cO2cbOfKrHmGLvaY3O3V04gbHpDCp3dOajlsrUbi8f4N+AZR0XWQRoYz93MwXlTBxaSb0BUEA4KZ/SvIuJFH3vsjx5qrTM+eR8aZzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759314091; c=relaxed/simple;
-	bh=ODeNv/xSjUtbdZAeBsFlGuryHUWRemRcqjm8xDajy7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dylHR7wnLcAZvpRQmsJqAtq9FGcz21KK6pkgDWwZDUw5QODIkDNR7tFKFEJIMMF6RTGLJryCqTRCU4Gw9yPf6Dd178KA6K+u21oBRXNpqZ1rAiaoQTvOqZbL4ZKrTsPxE8ZoCJCQdcXAM9Yq4j+OU9YG5w5DKcreL9sCMCXnRoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 7418972C8CC;
-	Wed,  1 Oct 2025 13:11:48 +0300 (MSK)
-Received: by imap.altlinux.org (Postfix, from userid 705)
-	id 6C02E36D070F; Wed,  1 Oct 2025 13:11:48 +0300 (MSK)
-Date: Wed, 1 Oct 2025 13:11:48 +0300
-From: Michael Shigorin <mike@altlinux.org>
-To: Michael Shigorin <mike@altlinux.ru>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Tor Vic <torvic9@mailbox.org>, Kexy Biscuit <kexybiscuit@aosc.io>,
-	jeffbai@aosc.io, gregkh@linuxfoundation.org, wangyuli@uniontech.com,
-	aospan@netup.ru, conor.dooley@microchip.com,
-	ddrokosov@sberdevices.ru, dmaengine@vger.kernel.org,
-	dushistov@mail.ru, fancer.lancer@gmail.com, geert@linux-m68k.org,
-	hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru,
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
-	ntb@lists.linux.dev, patches@lists.linux.dev,
-	richard.henderson@linaro.org, s.shtylyov@omp.ru, serjk@netup.ru,
-	shc_work@mail.ru, tsbogend@alpha.franken.de, v.georgiev@metrotek.ru,
-	wsa+renesas@sang-engineering.com, xeb@mail.ru
-Subject: Re: what about CoC? (was: [PATCH] Revert "MAINTAINERS: Remove some
- entries due to various compliance requirements.")
-Message-ID: <20251001101148.GA30625@imap.altlinux.org>
-References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
- <20241023080935.2945-2-kexybiscuit@aosc.io>
- <124c1b03-24c9-4f19-99a9-6eb2241406c2@mailbox.org>
- <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
- <20241024095339.GA32487@imap.altlinux.org>
+	s=arc-20240116; t=1759319151; c=relaxed/simple;
+	bh=jbUAjE1/2bcKDmn0WNXhi+HKRDCywjmnQnhBDLi737c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cNmFf/cUWF/LSsj4PgttXEeXZ579JwAa6WzvYpWaDlDqXLrrAH98434CtR3Z0ljbL92vv0Pei2F1BY+wwMjM4NbbnWTkxnMVJ1yuf3NY8/dacSbn/pzwmyRsJ0U2EBAkMIEjx56pL0COiy+4uwXyIRMhNnG1WGw/InStQ2DKTKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3vGz-0007sj-F2; Wed, 01 Oct 2025 13:45:29 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3vGy-001PC8-2V;
+	Wed, 01 Oct 2025 13:45:28 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1v3vGy-000000081Ta-2uJs;
+	Wed, 01 Oct 2025 13:45:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 0/2] drivers: hwmon: ntc-thermistor: add Murata ncp18wm474
+Date: Wed, 01 Oct 2025 13:45:26 +0200
+Message-Id: <20251001-ntc-thermistor-ncp18wm474-v1-0-2c64b9b509ff@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024095339.GA32487@imap.altlinux.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFYU3WgC/x3MTQqEMAxA4atI1gYaqfhzFXExrVGzsEpadKB49
+ ymz/BbvZYiswhHGKoPyLVHOUEB1BX7/hI1RlmJoTNOSMYQheUw76yExnYrBX9Q/h+0sOhqIrDO
+ uHVYo/aW8yvf/nub3/QEE3t2IawAAAA==
+X-Change-ID: 20251001-ntc-thermistor-ncp18wm474-b19114b0b59f
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Emil Dahl Juhl <juhl.emildahl@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759319128; l=650;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=jbUAjE1/2bcKDmn0WNXhi+HKRDCywjmnQnhBDLi737c=;
+ b=sAL3QQeRhIYR7OdZu385y+ymYh+90D9WOAFz8lkhOu725yIbm4ccWKnRZ86C5x0fv2RM9PyQB
+ NE/wISfcG+lD2gOnj0EgS9hZfyabjpf6ACgETbarXTrXSxehVkGjDLm
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
 
-On Thu, Oct 24, 2024 at 12:53:39PM +0300, I wrote
-> It's not about the patch but rather about the attitude;
-> Documentation/process/code-of-conduct-interpretation.rst:
-> 
-> "regardless of ... ethnicity, ... nationality, ... race"
-> "Focusing on what is best for the community"
-> 
-> "Examples of unacceptable behavior ... insulting/derogatory
-> comments ... Public or private harassment"
-> 
-> Get back to single-standard integrity for yor own's sake.
+This series adds support for the Murata ncp18wm474 NTC.
 
-Glad to hear that ESR thinks -- and speaks! -- in a similar vein.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Emil Dahl Juhl (1):
+      drivers: hwmon: ntc-thermistor: add Murata ncp18wm474
 
-I believe that Linus -- whose daughter has been basically
-kidnapped mentally[1][2] by the same hypicrites who speak "love"
-but groom real hate -- has his own merits to rise against those.
+Sascha Hauer (1):
+      dt-bindings: hwmon: ntc-thermistor: Add Murata ncp18wm474 NTC
 
-But it does take leadership and guts in a "modern" world.
+ .../devicetree/bindings/hwmon/ntc-thermistor.yaml  |  1 +
+ drivers/hwmon/ntc_thermistor.c                     | 43 ++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
+---
+base-commit: 50c19e20ed2ef359cf155a39c8462b0a6351b9fa
+change-id: 20251001-ntc-thermistor-ncp18wm474-b19114b0b59f
 
-[1] http://reddit.com/r/linux/comments/9go8cp/linus_torvalds_daughter_has_signed_the/ [del, heh]
-[2] http://unz.com/isteve/and-they-came-for-somebody-who-actually-gets-things-done-linus-torvalds/
-
+Best regards,
 -- 
-Michael Shigorin
-http://t.me/anna_news
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
