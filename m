@@ -1,91 +1,93 @@
-Return-Path: <linux-hwmon+bounces-9796-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9801-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5F1BB56EA
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Oct 2025 23:06:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99666BB57AE
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Oct 2025 23:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E50D19263A1
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Oct 2025 21:07:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76ACF4E7523
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Oct 2025 21:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814042E4258;
-	Thu,  2 Oct 2025 20:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8A1278E67;
+	Thu,  2 Oct 2025 21:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6RroNDL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lfcQQzeR"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16DC2D3EF1
-	for <linux-hwmon@vger.kernel.org>; Thu,  2 Oct 2025 20:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3BC1A9FB5
+	for <linux-hwmon@vger.kernel.org>; Thu,  2 Oct 2025 21:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759438545; cv=none; b=a1OZT82uWlUHXRozf5nziyfjIWE8O+ce+kiasfCzMTwBeozUIbFVFOq0CkILfJIRhmCmwpIs36bYvxXAMcQeCUFw2cD+xOshAp8T0rZ5tFq7ecnwOjnocW6ssXL3mSLjKGKRDedYnwJwHLB3Cqm8hzu4eBnt5httJIfSwSOU/DA=
+	t=1759440859; cv=none; b=YQaEEYTQRMlXvssOQyo25avtcb1l6K73dVjkWIPMDI0v65C7d1ImypoILOocKmy8oeut39PuPPgdvyfj1LW/wl+eF4VvBuJFKFhJcqk6H8Gsgjbca3NarFMyvZ7whQbQn7XMIjbWbyVnLKlPDcylyuMHEXkyiqEO3qPgzgJPQcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759438545; c=relaxed/simple;
-	bh=Z9iSGZ+S2wi6F1tMIvySWX/506OKQt3iTsYD6qsKENo=;
+	s=arc-20240116; t=1759440859; c=relaxed/simple;
+	bh=7iSxhUwFdayMNkBWqhX/46UeqkWg3MxAUcCsOEZ/TwI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RB8bS0qkgldDztaE4GGgDLn0tttb9eDUbX3BYuEaNBFX7OGu0wbj0tqsaZ2/N1+6t+ZgNZLi+ODBD2OUvf26DTxs5GyzBpwHLfGNFDqFzRk5xUWFXTcw7VBRTtd5xOQxa8hRrUt8RPGSEKYAfsxBvi2jr12k0vhy6PRwqHJW0gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6RroNDL; arc=none smtp.client-ip=209.85.214.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=UXCX4VMUeddUMTW+OlqWkjTHVrvb2ckP8lw8MRl5npsDXSe7eTVBlPwhhnYmeT5U92BUQ2J2hvjjmCMGeL8+mhKK3ziPQZT5MOE4WHPAzGMkMXd3/mK/IJKNveAdAcMqP9KyFZLcTcDKLteKyLkpfm8vQtrjfInqYEuvj7yhUmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lfcQQzeR; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-28e7cd34047so14287125ad.2
-        for <linux-hwmon@vger.kernel.org>; Thu, 02 Oct 2025 13:55:43 -0700 (PDT)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so1298522b3a.1
+        for <linux-hwmon@vger.kernel.org>; Thu, 02 Oct 2025 14:34:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759438543; x=1760043343; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1759440855; x=1760045655; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6nWNzw5rFvgp5+4E98Z8mggAdalCFOI1DScecBvxjnM=;
-        b=b6RroNDLzLznnFNiaz7yXatY0jWMrfUxE6G4oZj97RRKJt3nNA/Uoej1GAKCEFdsvs
-         gPcCTpedk+89YT2NI9m+xCepcN9tAzhroUcSOmxnS/KYxwlL1qAppLHLc3Awl7PJlAQu
-         WrfubdDKUiNWZWFialB+7jVYioWbMsIH4+hTkvpsdd7M4DRGGe7+bprZkU02ksfZfKFe
-         c4zir1AZZzZNGVPAGWfsEr63n8vf1L5A1J1UDHfRVhfNi7toMcZcDsExxz49GLDIZwwo
-         uL28sDEuqh+cmU9Xc+9S8ImueUOnzcUscuO/5SG4CtoUKLxojCfbRoXseMj/T/DnTf6K
-         E/EA==
+        bh=Z1PrJRpi1vH5GxKwZlWbhM3YXHmClyIGjsFkroyXTL4=;
+        b=lfcQQzeRu9CjFTaBbxpvB2eeRykW50cBni0HeRqgq+J8HSKgDX03wzcv4IsarnycsE
+         whmNkCvsEVA317ilzRdgwvOXrq0YhLzxV0joclNiQY707arzlnA11ilIJZKt9/4p3v/K
+         VrHLWT26LpVTKC9j132SSYYacvpQqNN7Cukx7M3dG/LchHdcEJo/OtZneRbQJPDBS3E1
+         2KCOJnU3Jg1HkwpWb835Ort4Qx9v/jFSmMwylEBEeIW9TnX7Yb4Kz7PY6pLGho6mnP1m
+         YXdisIX7KARxsVHSUnSSLRlfvOCqGRgPK2VKJOS0cIyMOUVPEtzA1NrDJVSgT7DJYWTL
+         OHDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759438543; x=1760043343;
+        d=1e100.net; s=20230601; t=1759440855; x=1760045655;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6nWNzw5rFvgp5+4E98Z8mggAdalCFOI1DScecBvxjnM=;
-        b=EkTwfg5bnEjHZcKDJqpKLYmNCICR1GyB7g1AqSnTOPMms5J9w4I4Iy6GD4VY+aHCXr
-         +UN+oDOhMrUE4y9TArROv6BlUKass1HPf8SczomLtqOfPkTjpV5VdxB93bi/KxpUY9+j
-         HR/CwZR5EhfsI8Nn/W44JV77fwo2mzonq4vJhHTxFYf5NHG1TUK3BDBVjPzvI8STR9OD
-         Blz+YQn5OU8kfi+KsaIwHb9l3xHqO8ufNdDVVWjmnpySBnmwD3CEwe4w28VTX8q8dIAb
-         +p93WKGaxGLW47Y0ZKUMQM/aaabufV2mfFJviXJebdkjR/9R3KjnmeNpmmtrtVwR1uoK
-         okGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoYoXdnipgpykVBwvIjeek/6Fjz2CmIn3mmgoae2asimyj44DqvQOxOjZWaVG+7sZW4oakgyrF/wFgKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdPMgrkGaepMLOcJBf+xBsaHA1uAXXkpMgDFCwtOwdMdRNVJMU
-	03aIJgGLjjsfmUlLfzpcyEmBZHiCl8fMqTLnQ69tfEY9p5SWrIKxHs5Y
-X-Gm-Gg: ASbGncthuRCbt2Tj0yO8SIxMjfBA3m7RmjAM8zDym92Wj8lROUkgnmDXcxfQDueh0oU
-	8Ky9Isis2rGxzB7bGefelZRwPdCjF1lsfBDQX67n3tw07gDRCdk2r6asGFKR1NYVgxZsF56+wni
-	P8zE33FMWGC4HelsQGe843VBp3fioqYzh6u+Rg1QdGj/al+t/qwOuQbjP12Z9A0LF+zuoG3frfF
-	XK4RNpTaN1wETdJVKQaXUcGJehUp7BJel6yjMXJdtJ8WLdjtXCxnO0j3XiYbwnucCok9zVI7V3L
-	cFnJKxI4Cz6sTQsBqZ7gTmr3+nrDerLxPRKQSQuzQf4f4ZJizWcLrZuPEGdnta2ruN8LpqAYaEF
-	nTPDK4qsQKiNHc1rbwr2OJQOFHlPSEysiinCyctrbZsL4HMLZUYPrSiWA2sY=
-X-Google-Smtp-Source: AGHT+IGYss5qk3VXhh2R+ZWPGB8ZQYoyyFAiwZWm24n7JZhmlZdFeuaqBerfiJZ6THmQhp0n8lu8ag==
-X-Received: by 2002:a17:902:c405:b0:24c:a9c6:d193 with SMTP id d9443c01a7336-28e9a54661cmr8418405ad.18.1759438543174;
-        Thu, 02 Oct 2025 13:55:43 -0700 (PDT)
+        bh=Z1PrJRpi1vH5GxKwZlWbhM3YXHmClyIGjsFkroyXTL4=;
+        b=HeiEm+pW3rHWV5NIrMXGsPC+de65HfnvPIi6puIuwVwSceOsuNJWIOaZ4RBUKDQXYV
+         17RYejTK1LMOb2HUo8yLfh9T7GMMBmvJwr3nIvUw3tXHlrFjmwPT4DZvswoe5K/GcZH2
+         xL6raIHUpz85nfgie9M8r1qdVDCDYaxHwIYSSQbm8tUYagd7w/Olw9xZy2jVGvgDyOly
+         n4SmZG6mEuohuhRdHRx6Fw27rIUIFcmnZL9miL0cgrFQiHCWo9mnmNCJ0xcQLYW7umU6
+         hRmaDuKk1KsAAsHcnHVu4Un3NhM9bkCRe+Uz7sVPH8WSSKgqv7R+qcXm5kU93PNLhFe9
+         T+0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVaxzY73KgYz4xok2nD4tX9h+J00fkJuKxFYLH5yVOvAM2HHpa99UZaz8P7ncsdo6TjaKsbGZHElbmPzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmxGx4qe58skNzm5T2iM/pGNGfxeFDu8ju065dW6ojwzuDo27d
+	Cu+aAS8plsDlVNIMYXvP8N0uxXaXIChAFQcd2OmXafzrConu4GTHB/Hv
+X-Gm-Gg: ASbGncvT+RT9psGxEMUysbFiHLu+2geBCOdVevrk8AljXaMLxyt2IsAxXawexTRZKaO
+	Qg0fUpzncacV/2V0MOTi7I36Y2dOLF299VEAnYABvwf88tfu3LIZBcodELB6VzfCFQMmIDauHMN
+	l6UZTjXo6M/adCWS6pYiJ/QIAJCddLwdrkJqtVlwpEcrPNidCm8LBQpOiNDPUWVGhMLcRdEnyMv
+	sS3eqXH8LGPk9nTTamyCmEFPmKO1EeNQXsvJ1oTsO7PA0vs8/q5/oWrUXyhWS9ycKLrhQ2pz8Rf
+	hjaW/hhWx2pXzsPdcYyfumwS+KsNB2TJjovrRDC1yED0E0tA3PvxU8LkfdhwpcH3fsowEUTKiYn
+	/rI2unSnc/uSg129P1SNYqhgxW8dTt9JfI2B6dbgRDfTyRTq9MetqJHbYx1U=
+X-Google-Smtp-Source: AGHT+IEeOUf9stYiH4A1VxaI8NkZFOnx8BChpkifOeNgOd1G+kYcSz65i3l+MHbiV/bwjRo4Ir5TvA==
+X-Received: by 2002:a05:6a20:72a6:b0:327:957:f915 with SMTP id adf61e73a8af0-32b61d9daa6mr932098637.24.1759440854923;
+        Thu, 02 Oct 2025 14:34:14 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1d622dsm29757765ad.110.2025.10.02.13.55.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b01f9daffsm2947915b3a.17.2025.10.02.14.34.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 13:55:42 -0700 (PDT)
+        Thu, 02 Oct 2025 14:34:14 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 2 Oct 2025 13:55:41 -0700
+Date: Thu, 2 Oct 2025 14:34:08 -0700
 From: Guenter Roeck <linux@roeck-us.net>
-To: Kim Seer Paller <kimseer.paller@analog.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Jean Delvare <jdelvare@suse.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH 2/2] hwmon: (pmbus/max17616): add driver for max17616
-Message-ID: <2731236d-e3a3-4fba-9938-ca6b10f975d5@roeck-us.net>
-References: <20250930-upstream-max17616-v1-0-1525a85f126c@analog.com>
- <20250930-upstream-max17616-v1-2-1525a85f126c@analog.com>
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings: hwmon: ntc-thermistor: Add Murata
+ ncp18wm474 NTC
+Message-ID: <f33219df-2b2c-4edb-bcb6-bad189c25348@roeck-us.net>
+References: <20251001-ntc-thermistor-ncp18wm474-v1-0-2c64b9b509ff@pengutronix.de>
+ <20251001-ntc-thermistor-ncp18wm474-v1-2-2c64b9b509ff@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -94,15 +96,15 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250930-upstream-max17616-v1-2-1525a85f126c@analog.com>
+In-Reply-To: <20251001-ntc-thermistor-ncp18wm474-v1-2-2c64b9b509ff@pengutronix.de>
 
-On Tue, Sep 30, 2025 at 01:02:21PM +0800, Kim Seer Paller wrote:
-> Add support for MAX17616/MAX17616A current-limiter with
-> overvoltage/surge, undervoltage, reverse polarity, loss of ground
-> protection with PMBus interface. The PMBus interface allows monitoring
-> of input/output voltages, output current and temperature.
+On Wed, Oct 01, 2025 at 01:45:28PM +0200, Sascha Hauer wrote:
+> Add Murata ncp18wm474 [1] NTC to the ntc-thermistor binding.
 > 
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> [1] https://www.murata.com/en-eu/api/pdfdownloadapi?cate=&partno=NCP18WM474E03RB
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
 Applied to hwmon-next.
 
