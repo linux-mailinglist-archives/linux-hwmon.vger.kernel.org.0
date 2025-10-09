@@ -1,222 +1,111 @@
-Return-Path: <linux-hwmon+bounces-9888-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9890-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDEBBC5EFE
-	for <lists+linux-hwmon@lfdr.de>; Wed, 08 Oct 2025 18:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3E4BC704F
+	for <lists+linux-hwmon@lfdr.de>; Thu, 09 Oct 2025 02:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80FF8420DB0
-	for <lists+linux-hwmon@lfdr.de>; Wed,  8 Oct 2025 15:43:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BBDD3AE78B
+	for <lists+linux-hwmon@lfdr.de>; Thu,  9 Oct 2025 00:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83A42FD1D5;
-	Wed,  8 Oct 2025 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1219198A2F;
+	Thu,  9 Oct 2025 00:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="n+ufUI8F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d/miDTD6"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448962FD1B1
-	for <linux-hwmon@vger.kernel.org>; Wed,  8 Oct 2025 15:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E41DF6C;
+	Thu,  9 Oct 2025 00:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759937733; cv=none; b=Tx3ztrgCcv1lXVxr0JnNpCRdutFdlUMHUBCCjJ0FtcDg2wtmvp8qMk5SnR1DEnPWb7xpbi1kvzLwtDKxZ6n4FkVyJ/jrvN3bzuax/4Ou+Zc2XcGESt16fbwj8j0vNoWPpSDXRHe0CyubZnXF9fn2uZh/O9bTU2u/NoQzz3i+qxU=
+	t=1759970623; cv=none; b=Yp8Sgv334qMGZwUjckOq94MWeSAzBeRaW6OJkiguvAU5mxW6ZBgBvKp4pYLTQCyn99boRfOyq0s/EvTN44fSQt0H2+Fz4nlJMZPjdSwMubQejaPrgsC/9uB3w1uUMA+TzBkcku93bPoSzNF5tY+tBhds6kMo+vmDqmVIHOnDrxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759937733; c=relaxed/simple;
-	bh=M+DzBGorF0x2HwKxbRALu5Mz4okNvOwcKTlN8glrxuQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=po4rERTrb1uyxqGd5y2eBO2SToSe8tezXwLRfJyMxEYwYyIFW0Ty2uMacj1pCwpQ1iKrghDNJzalRK8Ia9j1Lbofn0BmJQECluJQR6E+P2qQC6x28DPDG0G85OvJYF+xn6EKpIGE0FbHKBZ6Bi02o169q6swAZzbLZbvAakJfrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=n+ufUI8F; arc=none smtp.client-ip=44.246.1.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759937728; x=1791473728;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8djAgabF22BDsxfYcNFa72Q6mXnC3doUyHk+thXHzBc=;
-  b=n+ufUI8FsepknLVJtJq3TPwNwTnNsnEgFFeB4CJ2KtiwMIQA/IVq6y+9
-   jSxquIgaRcHMv6ESIjXavFRXofOorGEls8RqNHanTQLKK63WH7YaJnwn/
-   g2gZvmsvBslt+QX4ehW6ChsyvkyBOUVoyZkx+xOGk/jI+6Osba+vP4yQp
-   3iRNakUNLkBXoh/Q9/EqDuaE/jLB1gJFVXtTraj0dsqtfRh93ct32qkqv
-   EQOP1Qd1LC7TUR3rNu/7KGK04FSHNA2M8rHddRD4DqlUj0d6JiQ4Ly4zk
-   DRQklFg113tIA1gShSvwVCGhm5AqTcJXPTEp2oexdbcVL2e/4ntedzO62
-   w==;
-X-CSE-ConnectionGUID: +iGvFKCjQ5GMPoaNWnuRAA==
-X-CSE-MsgGUID: MckSIzI/SvOrbMuTb6pJhQ==
-X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
-   d="scan'208";a="4530183"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:35:25 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:17923]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.2.125:2525] with esmtp (Farcaster)
- id 3aef3909-3656-4ca0-aac0-3eb9eafc1cca; Wed, 8 Oct 2025 15:35:25 +0000 (UTC)
-X-Farcaster-Flow-ID: 3aef3909-3656-4ca0-aac0-3eb9eafc1cca
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 8 Oct 2025 15:35:20 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 8 Oct 2025
- 15:35:07 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
-	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
-	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
-	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>,
-	<rric@kernel.org>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
-	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
-	<jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>,
-	<dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>,
-	<jernej.skrabec@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
-	<dm-devel@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@canonical.com>,
-	<malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>,
-	<jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
-	<sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>,
-	<dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>,
-	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
-	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
-	<senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>,
-	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
-	<akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>,
-	<pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>,
-	<jmaloy@redhat.com>, <ying.xue@windriver.com>, <shuah@kernel.org>,
-	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
-	<quic_akhilpo@quicinc.com>, <ruanjinjie@huawei.com>,
-	<David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>,
-	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
-	<linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>,
-	<linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
-	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
-	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
-	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
-CC: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>, "Jason A. Donenfeld"
-	<Jason@zx2c4.com>, Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, "Pedro
- Falcato" <pedro.falcato@gmail.com>
-Subject: [PATCH v3 18/19 5.15.y] minmax.h: simplify the variants of clamp()
-Date: Wed, 8 Oct 2025 15:29:43 +0000
-Message-ID: <20251008152946.29285-19-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251008152946.29285-1-farbere@amazon.com>
-References: <20251008152946.29285-1-farbere@amazon.com>
+	s=arc-20240116; t=1759970623; c=relaxed/simple;
+	bh=dX0f9NNc3ev8nYEkPBXLQP7xHQwnM4V0kjsg1TcaF4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UPAC3Bc1srG70TvsS9mzw4+gqAWcWdyA3jCE3CSWg7Y7ZnnLuH6dyJarcaV4WaIoLRagpoedODmyiCuKGkt4G/ZxlzTbWoJx3STqubzn6qX3ZOc+xMIcj4UqkMznNRf6MFoXQrk9uOHdGOnbMCgiZp5Aaq7vhs2XQDxSPm4f0jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d/miDTD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE24C4CEE7;
+	Thu,  9 Oct 2025 00:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759970623;
+	bh=dX0f9NNc3ev8nYEkPBXLQP7xHQwnM4V0kjsg1TcaF4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d/miDTD6rOtxCuQvVhd0sT74JQnWl8xOws2qjCrK8PTGimCO/Cih2WPRfelX3vUrC
+	 dFpxSVeBkaCVvgpZUq4wW3XUNYyXwet85zHxnSqCrshdZa5/j+uLXmn1wIYQzOTXWt
+	 Sj6X8HpuLR91VXM7yzkuSrAW/xLiet20fPM2ncUH7EEZC1pwhNc/KXWgX8ta0rg5En
+	 Yt7VBXXwwivQ3Y/p+vHtjPtQAKinE4o7qERQVfdgxCShMcUfCoeEgAZie90AK5YOIM
+	 ycMOijxSoKMVwCNqp0jxYvtFOyodh2z1foXA/7GDpwPskLtQ1uoA4vHjIUQW/7Q+OE
+	 VUrpGpn+Hhreg==
+Date: Wed, 8 Oct 2025 19:43:41 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: James Calligeros <jcalligeros99@gmail.com>
+Cc: linux-input@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-rtc@vger.kernel.org, asahi@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Janne Grunau <j@jannau.net>, Lee Jones <lee@kernel.org>,
+	Jean Delvare <jdelvare@suse.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>, Neal Gompa <neal@gompa.dev>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Sven Peter <sven@kernel.org>
+Subject: Re: [PATCH v3 02/13] dt-bindings: hwmon: Add Apple System Management
+ Controller hwmon schema
+Message-ID: <175997061547.377977.15400204653916198003.robh@kernel.org>
+References: <20251007-macsmc-subdevs-v3-0-d7d3bfd7ae02@gmail.com>
+ <20251007-macsmc-subdevs-v3-2-d7d3bfd7ae02@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWC004.ant.amazon.com (10.13.139.205) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251007-macsmc-subdevs-v3-2-d7d3bfd7ae02@gmail.com>
 
-From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 495bba17cdf95e9703af1b8ef773c55ef0dfe703 ]
+On Tue, 07 Oct 2025 21:16:43 +1000, James Calligeros wrote:
+> Apple Silicon devices integrate a vast array of sensors, monitoring
+> current, power, temperature, and voltage across almost every part of
+> the system. The sensors themselves are all connected to the System
+> Management Controller (SMC). The SMC firmware exposes the data
+> reported by these sensors via its standard FourCC-based key-value
+> API. The SMC is also responsible for monitoring and controlling any
+> fans connected to the system, exposing them in the same way.
+> 
+> For reasons known only to Apple, each device exposes its sensors with
+> an almost totally unique set of keys. This is true even for devices
+> which share an SoC. An M1 Mac mini, for example, will report its core
+> temperatures on different keys to an M1 MacBook Pro. Worse still, the
+> SMC does not provide a way to enumerate the available keys at runtime,
+> nor do the keys follow any sort of reasonable or consistent naming
+> rules that could be used to deduce their purpose. We must therefore
+> know which keys are present on any given device, and which function
+> they serve, ahead of time.
+> 
+> Add a schema so that we can describe the available sensors for a given
+> Apple Silicon device in the Devicetree.
+> 
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+> ---
+>  .../bindings/hwmon/apple,smc-hwmon.yaml  | 86 +++++++++++++++++++++++++
+>  .../bindings/mfd/apple,smc.yaml          | 36 +++++++++++
+>  MAINTAINERS                              |  1 +
+>  3 files changed, 123 insertions(+)
+> 
 
-Always pass a 'type' through to __clamp_once(), pass '__auto_type' from
-clamp() itself.
-
-The expansion of __types_ok3() is reasonable so it isn't worth the added
-complexity of avoiding it when a fixed type is used for all three values.
-
-Link: https://lkml.kernel.org/r/8f69f4deac014f558bab186444bac2e8@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
- include/linux/minmax.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 75fb7a6ad4c6..2bbdd5b5e07e 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -183,29 +183,29 @@
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
- 
--#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
--	__auto_type uval = (val);						\
--	__auto_type ulo = (lo);							\
--	__auto_type uhi = (hi);							\
-+#define __clamp_once(type, val, lo, hi, uval, ulo, uhi) ({			\
-+	type uval = (val);							\
-+	type ulo = (lo);							\
-+	type uhi = (hi);							\
- 	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
- 	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
--#define __careful_clamp(val, lo, hi) \
--	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-+#define __careful_clamp(type, val, lo, hi) \
-+	__clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
- 
- /**
-- * clamp - return a value clamped to a given range with strict typechecking
-+ * clamp - return a value clamped to a given range with typechecking
-  * @val: current value
-  * @lo: lowest allowable value
-  * @hi: highest allowable value
-  *
-- * This macro does strict typechecking of @lo/@hi to make sure they are of the
-- * same type as @val.  See the unnecessary pointer comparisons.
-+ * This macro checks @val/@lo/@hi to make sure they have compatible
-+ * signedness.
-  */
--#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
-+#define clamp(val, lo, hi) __careful_clamp(__auto_type, val, lo, hi)
- 
- /**
-  * clamp_t - return a value clamped to a given range using a given type
-@@ -217,7 +217,7 @@
-  * This macro does no typechecking and uses temporary variables of type
-  * @type to make all the comparisons.
-  */
--#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
-+#define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
- 
- /**
-  * clamp_val - return a value clamped to a given range using val's type
-@@ -230,7 +230,7 @@
-  * type and @lo and @hi are literals that will otherwise be assigned a signed
-  * integer type.
-  */
--#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
-+#define clamp_val(val, lo, hi) __careful_clamp(typeof(val), val, lo, hi)
- 
- /*
-  * Do not check the array parameter using __must_be_array().
--- 
-2.47.3
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 
