@@ -1,115 +1,125 @@
-Return-Path: <linux-hwmon+bounces-9919-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-9921-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5DABD0999
-	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Oct 2025 20:12:46 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2873CBD09AE
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Oct 2025 20:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20DC13AF365
-	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Oct 2025 18:12:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C62CB347C54
+	for <lists+linux-hwmon@lfdr.de>; Sun, 12 Oct 2025 18:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80ECB2F0C71;
-	Sun, 12 Oct 2025 18:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202492F1FD3;
+	Sun, 12 Oct 2025 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MpkcvHz/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mmx6s7LS"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB892F0C58
-	for <linux-hwmon@vger.kernel.org>; Sun, 12 Oct 2025 18:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F602F068A
+	for <linux-hwmon@vger.kernel.org>; Sun, 12 Oct 2025 18:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760292755; cv=none; b=F0Dz+wir64Ilg5slRjYuvnsHog6iWf7YwDRqjIyPZFzOhrfiriyiO9bln+6OwdeiIjLt7S4OZUoWK062tNK1+/nipzaAHT0bQMYpatf/YU1qnVShEwkTkCn3JE0GX4bc6Jp9zKg4X3Lwg4evLBszxtbxUFn4xGSR03X1UDyVBic=
+	t=1760292793; cv=none; b=jvGm0or9Imyk6yqRA0EsxYkncwXh52355kz/2moy7epiN6bcweS9ioCuYMYcvHfoGlAwHrsijrWKb8FakZlu3eDEq8ln3hCBe97qn/ylDM0HPz2nJk3v2+Lou7f53hQx4J6Nk4tr0xEPt/TFQ0TexojR3dhpeNSAA/ZRkOZbRIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760292755; c=relaxed/simple;
-	bh=wktS8hk5SdONpr7hDtnum8JkZBzGQGtSnk+ZlarPI74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oZpTyxc17dt65URFiUVwj8x0XCWIA4DIObq6vDpKQDOTdvbv3Cf3VTNINC25yyu3x3MbJdX/ThwySLPl8BfL2FbYykrRJZACtPXoXlK0PHskahzDZ34cj/yCFBU1uiXyt4mJr/S2kjCyvvOW4wdwzegobzP4cu0tAtBYHGoVV3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MpkcvHz/; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1760292793; c=relaxed/simple;
+	bh=qmgeVD2VVl4QslPbtYsfzqW9k+kHx43RIn2OTo4Jl5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ExKDWOxBVviyC2wVf2G5BwqWweTMTlosf5TbNoxmdrRVhNj5/POkQBopNeIzAgRa3Kf8yZFBihg2TITJor5l0AQOv91dIUCMyKG2FkP/c3fR7GApAuRBVxQ88wi5WGvEJo57NZ9rnKyreSZGex5U3w6hM9ne34qo5ihamhW7CUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mmx6s7LS; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b57bf560703so2266614a12.2
-        for <linux-hwmon@vger.kernel.org>; Sun, 12 Oct 2025 11:12:33 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4256866958bso1896610f8f.1
+        for <linux-hwmon@vger.kernel.org>; Sun, 12 Oct 2025 11:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760292753; x=1760897553; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VC8GXXSQpIv/LKtCgeHxQw5d2s/g3mf02Ku+jqIhxz8=;
-        b=MpkcvHz/IelBtULM9/eV1l5nDHrJVxbX0fLvplEH/dYq+k3UKStAxCsl5b7HevAzPJ
-         mqK9qEijclCHchOkQ6BZEZWyM8pYaLWoHSQSBBEdg+27TlFY0+P28ifi1Zt9wK5TWS7Q
-         8fPmft4rT8OmMPaG/2iRVEUGreTlJGPpWb2lpB7BTogFO8wzoi5kjJmx3Y3od7zPaYdA
-         Lnr54u9aVj6hJ9qSNOmh1P6tIxCT9PMASerrHjYocdqk4364qLBn14SghrlblT65hIEO
-         Iessb4Wj7kD7q/SlLiXDtkMpa7hkGKIOMxDlEvQqMUXOEeJs85FhhbB0pyRYcPXbWLr4
-         xTgQ==
+        d=gmail.com; s=20230601; t=1760292786; x=1760897586; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qm49PMkGSlJZFDb/IimhHX7d0uXnXKa4R969SumUkuw=;
+        b=mmx6s7LS19jylkIS6hn4qX2FfTZxuC4BW9foq6od94b6sWATQ/1g5W1Qnv0QKwc2dH
+         TiQ70eh1Zqcj4S792FFiBtu7yKx1MuBgNTiZpq2HlBQMrZN8kwE5z+7RK8ks5Q2TF5D/
+         910vVParU+ptPUSqcORmpXi861sDfaNgnkP+zVkxRl7IC3fEx5ZhXEUwS79hW5L2gpzO
+         1kDX9ZaWJ3zKaBdyWWhfM3oOWedR/W9i88O12+53hNzyjSa2+HW8jVNzA2gyB4dSesfG
+         hJQJD4GOHZbGjbtUawomfyaH9rRwHLRRQ2o6HgGvPjMqSM68SDTw6HcR8IsjrhJtGybq
+         D1RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760292753; x=1760897553;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VC8GXXSQpIv/LKtCgeHxQw5d2s/g3mf02Ku+jqIhxz8=;
-        b=iFJ0PCO74D1yWYOAsacbL5egAQX79zu+YbFw1ZKZyCQC+V+HHqrdEBrYMwEEKbqzsc
-         8Z/mk8KBuvCrmundAmBCqfUAwGRmglq8YJdHYSh/QhEUs/sUQeHDb3jvSSXQuNEwn0Aq
-         zmkbJvO4CHE4x8pMoNmV6pMDDwNJqdS0YbOdJJ7rCsCcfackYT/Uejn5O+if8nTPURRk
-         UZzS+6k8FeybXqNcKjUbip4493E3RcHgub04nMpGg0HLHtQ0nIFzQgmoNVYQJ0KY+hD8
-         Ojy2qfFlWKkf6urIHoaASAndepa68ChQRNMyNoeX7Q3OUqM6mLlfA9C+HMu81TgnocJG
-         yAOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMp/jjv1Rx0kv9o6uJQA+rT2bpNtNsToZiVHtTTYqYtKulrfwTd2yUHrypxcqs2WH0+dMdSgLcNBI4Gg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa71SrMdM3V/YfZ0/DOsR4tMIQYzUF0N9XdUmA5OpeyoXHeZ7w
-	gKyX6e6iUl4k/CDRMvH/JHIY4kY9R50LIlCw76vl3GC7Hj3CQwg/620x
-X-Gm-Gg: ASbGncuy/5NHMfAtrd7RmNlNtIkdlChMI753KTqN/oGcVDTAJfhTCkTJyDg18bBw3Vv
-	AIwwhFva9VZGUiH4vS1RCh4rTGXj1WKZjUbDY00cSWy9e1wgEXq+xy0NaumZj/r0YRw8CQz1IBo
-	wi32d9v222mFUIkNiUWSrdEe+AypsvpHSxN2FHVlhgCaujSZi4fje9eVDN/kZvkEy92N1C7h7js
-	NXxt8l4Px6Mbl+P/cyhk5OCMlSeCcw5spd6upQCxDBRBc79lRnnuhkQvOVTnX4vs9SCGhKEMUJe
-	94H6AZxJE0evOQuxCYd4nbVYHs2Pp63yWc1NSoxF/UPYvBmCnsUSBYiVYkQkasxyragXK2PsjPr
-	PlNNUFOnH83xE23emdPi2yFNzS8f/l3HOHmwPpAQDa/DGWLe5O5h4kqAw0flsro6j
-X-Google-Smtp-Source: AGHT+IEGCa6rp5AY25/sXZIN5SM/UqExUQocFllSvQfqN7W2GP0rr3zSmTZkdcqeZqOv2pX50YTOYw==
-X-Received: by 2002:a17:903:2d1:b0:24c:965a:f97e with SMTP id d9443c01a7336-29027356aa7mr255105745ad.2.1760292753291;
-        Sun, 12 Oct 2025 11:12:33 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de9febsm112201485ad.7.2025.10.12.11.12.32
+        d=1e100.net; s=20230601; t=1760292786; x=1760897586;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qm49PMkGSlJZFDb/IimhHX7d0uXnXKa4R969SumUkuw=;
+        b=FWPgu1S1vCXRr9Y20SEPxkR55LjT7INIPiriSn628i5fKoQCdtp5ka2uVuSK4jFNVE
+         RORCoyqzDlI0WW0BtETkaal1n/OBZNUjs0ezfo7F9VbIZmod39If/cOJbvPwoi0mA8kP
+         XKH32jrzyporeoBM6ty21EUaXCUClVao3oQG3KqHsVufKIuxS7o9eRkztz0coLwcdB2t
+         1pkEgoojcY+MFyNjfZvWkcbyfPK7abiNFpWzJZTZ+ps7xD/eimd4KnAdO0L10bkzw5TD
+         KlRTNFs7CtvP1mHa/G+NFU8E3P/tt2Y+AqpHX+JfZMTbrXGA+66xvch+/PVXZ7BN9B5R
+         lI+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXd0Hj6jGtjx4Ekq8JvPY33jccoYkeVJlRy5IP0r+uYtf3UwaNDCb42FVhDNH9pIAMLkGc3YzoBTrAyrg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwesFOm/Lgu/lxcG9le4BEGTf/PsE9ranWlQew1PDtppdLbnXJH
+	bKCgroZ+t+j/C0DvgPKbRsoODXM1jH+g8RyIm03pzL3Qe3KQ8/foalC9
+X-Gm-Gg: ASbGnctijNH392Ua/ykuzxVZcRSuYsQ9AkbtrCClV4rc8AT0WybuajqBq+AIuxe2V1J
+	cLxI31Sq7kdXizhaXNya2YBBhcGHZJYd9QSaRqDLppaNY9rKeSjXwL9V4M1PTqsk74jaTLZpVO6
+	ksMk88STlfvLt6zsLUpqJ90xyzjNqXIGtXLFAFTBSj6y7QH5AM4C6jRZS1n7oEV150I1/ZqoHhq
+	uVdVhxSdNtNPYIHFeZeWbGZ89l4FcbLDbejDplIQjVO2QaZunTYPklWWC73fpEY2xT8N6vXOpDO
+	rWuGgJFZ3a+JNeaZ+EQaSVrwUiY4PuLgsAFOLVOWZM6314ruookyeXbCjivI+1Dv60gYqcoLc6c
+	AVhYlDM9HvnagvlodwxfA00iaTR/V8ipklQ==
+X-Google-Smtp-Source: AGHT+IE1sITyqeK252spybpiCvyKv3IBHpRkeCYLSxM0igwtTT/L5xFKNU+rdVGC1vsPFlR1JqbCHg==
+X-Received: by 2002:a05:6000:25fc:b0:426:d301:a501 with SMTP id ffacd0b85a97d-426d301a83bmr5173581f8f.62.1760292786392;
+        Sun, 12 Oct 2025 11:13:06 -0700 (PDT)
+Received: from pc.. ([105.163.1.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e0efasm14478684f8f.41.2025.10.12.11.13.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Oct 2025 11:12:32 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 12 Oct 2025 11:12:32 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Ivan Mikhaylov <fr0st61te@gmail.com>
-Cc: Iwona Winiarska <iwona.winiarska@intel.com>,
-	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org
-Subject: Re: [PATCH 2/3] hwmon: (peci/dimmtemp) add Intel Emerald Rapids
- platform support
-Message-ID: <da2e5d5e-4bd7-46a8-a664-2f5e0d69b28d@roeck-us.net>
-References: <20251006215321.5036-1-fr0st61te@gmail.com>
- <20251006215321.5036-3-fr0st61te@gmail.com>
+        Sun, 12 Oct 2025 11:13:04 -0700 (PDT)
+From: Erick Karanja <karanja99erick@gmail.com>
+To: linux@roeck-us.net
+Cc: grantpeltier93@gmail.com,
+	chiang.brian@inventec.com,
+	gregkh@linuxfoundation.org,
+	peterz@infradead.org,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Erick Karanja <karanja99erick@gmail.com>
+Subject: [PATCH] hwmon: (pmbus) Fix child node reference leak on early return
+Date: Sun, 12 Oct 2025 21:12:49 +0300
+Message-ID: <20251012181249.359401-1-karanja99erick@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251006215321.5036-3-fr0st61te@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 07, 2025 at 12:53:20AM +0300, Ivan Mikhaylov wrote:
-> Extend the functionality of hwmon (peci/dimmtemp) for Emerald Rapids
-> platform.
-> 
-> The patch has been tested on a 5S system with 16 DIMMs installed.
-> Verified read of DIMM temperature thresholds & temperature.
-> 
-> Using Sapphire's callbacks about getting thresholds because it's same
-> platform/socket.
-> 
-> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
-> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+In the case of an  early return, the reference to the
+child node needs to be release.
 
-Applied to hwmon-next.
+Use for_each_child_of_node_scoped to fix the issue.
 
-Thanks,
-Guenter
+Fixes: 3996187f80a0e ("hwmon: (pmbus/isl68137) add support for voltage divider on Vout")
+Signed-off-by: Erick Karanja <karanja99erick@gmail.com>
+---
+ drivers/hwmon/pmbus/isl68137.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
+index 52cf62e45a86..6bba9b50c51b 100644
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -336,10 +336,9 @@ static int isl68137_probe_from_dt(struct device *dev,
+ 				  struct isl68137_data *data)
+ {
+ 	const struct device_node *np = dev->of_node;
+-	struct device_node *child;
+ 	int err;
+ 
+-	for_each_child_of_node(np, child) {
++	for_each_child_of_node_scoped(np, child) {
+ 		if (strcmp(child->name, "channel"))
+ 			continue;
+ 
+-- 
+2.43.0
+
 
