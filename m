@@ -1,78 +1,78 @@
-Return-Path: <linux-hwmon+bounces-10104-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10106-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D7ABF9FA6
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 06:47:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB43FBF9FAF
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 06:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CEB194F6D89
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 04:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B502B19C826D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 04:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F212D7DE8;
-	Wed, 22 Oct 2025 04:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBADB2D8DB7;
+	Wed, 22 Oct 2025 04:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b="bn1PcFsr"
+	dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b="rF7nshgX"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4B32110E
-	for <linux-hwmon@vger.kernel.org>; Wed, 22 Oct 2025 04:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4C62D7813
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Oct 2025 04:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761108434; cv=none; b=Sv12Cik3KEnSNpRNYPCaaT0hA2/efuzh1WM60HTP3749YZHUOAAlvLDvsRf33HTIt3JM6OrNZebhzPwqGPYzM0xUraVvrMQcww47URdumjwQPPt9jlqj23BIPgUbqfQ9JwNwAK9f9Uuj2cfsBJOpDj6zOsl1xi26LLyiE6VThd0=
+	t=1761108435; cv=none; b=q18xFX/EysHEfWa/3yf4YN0gHyIPpBHBNeK2u7zQchWTNFlvs/BlBZ9lWndrzXGHYvpbxNt9DKZCjilgZsNq0fcV/6uhY5xtlI64RSmBSyxluE8Cxupaxfvl6xOlcILGN/ZiKtLRpkP9YdU3KtMuedo5e5kFVUKiSRnwQdCLunk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761108434; c=relaxed/simple;
-	bh=emjKQWb3F6rOxwSUr/RzSm5M0/FFlkCkJAaJf7c48pA=;
+	s=arc-20240116; t=1761108435; c=relaxed/simple;
+	bh=CHAFGElaJJM6vqsKWvce129HGl6ku8z5jgSnDpe1PuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYcTMalvpOwYvDs8yJTCVTnHAvpwLbRPl1yPrlWYX7WPM9sT8fYoOSnDuZVFkEQlHehR1lX2s5iWmsc1Ccrer4U6FqT9jZTxLga/07HR4+b3MurF7FSZlyNXIOwoASZLis05HBIwgEO7iuWSU8GRDNwCNaqz84kCKiRWQCBbuek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=reznichenko.net; spf=none smtp.mailfrom=dpplabs.com; dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b=bn1PcFsr; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=PYM6usrnuDWDo48O7nFx54h5w2M7o3TMP82xUzoFGghj3dz9zJdmf3JWBydcqDy2fpXRqraP+FUpNqgejBjLnOVdlpoQT04Be81rY1dptxwFrjbQMRSldKgPhHVEsrjV0ywU2dVYYwsUifOB+b/oyGR/ZXtSmvbjhm4L3X3LoPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=reznichenko.net; spf=none smtp.mailfrom=dpplabs.com; dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b=rF7nshgX; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=reznichenko.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dpplabs.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-33d28dbced5so5468843a91.2
-        for <linux-hwmon@vger.kernel.org>; Tue, 21 Oct 2025 21:47:12 -0700 (PDT)
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-782e93932ffso5565401b3a.3
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Oct 2025 21:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=reznichenko.net; s=google; t=1761108432; x=1761713232; darn=vger.kernel.org;
+        d=reznichenko.net; s=google; t=1761108433; x=1761713233; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f8FKJOKMqwXHhFrO9BQqSZunbt6V18YJAj8RFJDvZcc=;
-        b=bn1PcFsriSRAVEoic025yNndQX3cGFAf0excqQh8HyfOYn4v7NZ1x7jj5emW4veEux
-         ep9bnAKsw+XbLQM7k9FOfd075zTVeFHMrsAiQLghn+Z1Oqi3magIjU0BMWKOk/X1PER3
-         fDspvi/4CPzrd1TWRbS1cYOvAh/tfZaQZBaealRDoyN+ZsWy9Y4uAQXk+/pQksxGo7vi
-         wzmDL5mIhLXesySPjKbV7Sr0SB/Vz8bHWra0hc3TPUSGmKpuYxzc5hYuKHToC5bwj5Yc
-         TLT6DqiClLEQ/lccuMow7tfXIYhKC+FZ9MxwBnq2bhpWkz9T5SkUePjytfrJXxzjVCjN
-         bzZw==
+        bh=ARDIlFsexdBsHJ/mYs4iJ+oZYHRCoUuyGXAqhk97moc=;
+        b=rF7nshgXo7uLWccNn8t3L3wsY52chgNtUSL9hqUWGGTd6XqbOaUCAewttCL4ri3VwA
+         UGaATqZsZ9wBBpWsmMWU1vuFkndFhXHucZk43f2GrDRRnwhG1uCuE3FA4Qp+DXPx3LgR
+         vjyyP79ojAdFZnC7nCNZuu2y69ee9g/uu2sn5lLZvVaEB77Ljs/4drlkfE/xQJf/pQC5
+         BrOJsKUykA2ZWgigl3C6zfYfqX0eCS/X8UoBahklqNQryMA7OvOlJguwieo6vdQTByHm
+         mXsqd90SKiS2xGb1ihNWdOm8MphCX8DbYNFVzib6Ftl04OZKs74YCdvSZnZ2nwq9VNgD
+         PnMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761108432; x=1761713232;
+        d=1e100.net; s=20230601; t=1761108433; x=1761713233;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f8FKJOKMqwXHhFrO9BQqSZunbt6V18YJAj8RFJDvZcc=;
-        b=AjE1rxNybSlsjHD0Emns/2Esz+Pi+DCSvu9s1iUDTT8hmRoftSFXvENVxFHQZTL3ey
-         vmTVsQZgveT7ZOWVVUXWD7hHWzfGxDvug6/acGqs4JHl2OEmGFWRlAIJHCztTZVAB7wG
-         cR9VeOYcEWF1acijDZWKq7B2dbIqSGIDPh4pzoX9+SoDlHqD5YF1zxThCC7yqwKNWOeE
-         4aHBe2u3xkZdnNOqK7p9FPAd+GVDoKQCEbuHx5+q6b/1Cuu1782VVxF1MmZwBLIshhfm
-         Jhz2MvwFPHu0GiOYA3eW/8mvq+HCLEwF5uzHC0HR2SA+jh/8MCn8QoJdZxo1WzjmbUVR
-         Gyow==
-X-Gm-Message-State: AOJu0YxWVmUXIrp/03PO0x+XT+FobKPZmvOT0I7rynvyb+DzADvuNqwJ
-	Ui8psitS0Hiku9W7n2PWHUQCDqbolCcVX3EdRg00x7urMiNB4XczyDuTmbaBrHwWg8Q=
-X-Gm-Gg: ASbGnctjD7FhzDoQo66MjFPLZPc6YMQ1R9407FKDgjt/92M/fxVzYLMoP2/gi/+MSwz
-	OXh/m+iB6YonDM3HYRg0UEw3VNU3miVYsDhUUpBgRQ01XIQRDoD/rmiHt9U1I4ejj0ESBZO3E0R
-	5cr44FGn4n0/ptCdsiqJT9nNV0G7o+pHoon9rkUi0RYiyf5HE+nRa/O/DcYoudDq4ihRLlwMcij
-	cl2IZd5QNxMWbnIs7d/2Zv0gU+NMd96X+dvkYgNmA2H9ewSoSAsX/zc/UBek3wwZkvfoif/YYSm
-	DrVHM/DhQ50dCsGrevP1vZPSW9EP22iFDWi0f5kI4+kXhnfrEuNTKRjE+u8nDmTX1DqGPWRzmKs
-	2HMyaHrbYMdy2nzhsiR9Wq7R4qxrHWzMoe6mmBGk6l41qBIHuuDvXkVndLunYym560mwsiH7Fuq
-	mNt7cv
-X-Google-Smtp-Source: AGHT+IElLTdPaMtun1OrDiKuY5Pc6xIJ3dRoMTudaPZDceWpXZomujWtY5sZOb/M5md8LuBAZMbgNQ==
-X-Received: by 2002:a17:90b:270a:b0:33b:ae47:fe72 with SMTP id 98e67ed59e1d1-33bceb1cf3cmr24397298a91.0.1761108431821;
-        Tue, 21 Oct 2025 21:47:11 -0700 (PDT)
+        bh=ARDIlFsexdBsHJ/mYs4iJ+oZYHRCoUuyGXAqhk97moc=;
+        b=Cl8s0Od8vrpwIfNNbRnOLoWKmO8Mg2miCdSFjpSJN59n21p7BNt48KSw2kpzIWZNxP
+         9fXvIY63IReOut09F6o+uhR0nHGv54uRZkyFx2sTRUL5O1w7Im0mUrvNOa8ER43xmfvP
+         h/D+YvS6nQG14Dzv2EVYbW0cMsnYJhEEG4emtGbacAMaIhLbmw/J6ldMXbdgaDX/pE2t
+         pjLRVVTQO8Q8M2VTR+ZyK7y5bjotJdziWlJNn7HYKv9Fe8RhOekfVge8s1DZcsmD7Lmd
+         nDcsd16lMGiakm/4wHO6/SuW7H2AfDVGsFynhAP3xFOEWD59KAv5+5dBtGDeSIkXIfeO
+         6HbA==
+X-Gm-Message-State: AOJu0YxBinsAWuoS4fXxxU0Qa7OPGRXEDhb0jOov8oGJkLneJ5Nu2GDP
+	5OnHvYq3Y8ZP19FHoXxok1bRdPLx/hId+zUleAc1I0xR/KuYgZfccE9CrW9OvGKsVnQ=
+X-Gm-Gg: ASbGncssGt7/Cf61P3RdoQYU0FP015hr+8KGunRYxi5IOtmeH+lIuChB+vRnQdlF8cj
+	dZs4TwEn1s1WmxA19FeGB5PpYcAjNQ9ZqhujqzIb+H93GjZYycqQf7v40w5PxTYj8SPjgic0drb
+	d8ul7hT//tKKgF9kElVGu0T5CtZGshNz4kDssXn6+GjRF3JRlY69qoBPbf4Svvxi3m7F/K9xqnU
+	lXd2v/gArXK6pA+UXbfom75YAJrWuIf8Wy6YwuiMoJIqNEybRWhz43/oOatepssl24R2IwH9UDS
+	u56rmIE3hSOxxPeDflAMZtgWJ9q1LIlOzCEU9QiCoV/pv7c061RhZZA+M/NfwD0/VTSIhyo91bw
+	tv880kkr1Ij9gXbQG6liugBVhz0U8wCJiEPsVLM4LL2ZSsjWURgX7aF5YEsX2rTiFth0Dhf21tj
+	M9I5wHWz6x2aPh3D0TZo4h0RjyKA==
+X-Google-Smtp-Source: AGHT+IG7v2tgI6or6tIkrpsvq7pRrpwD1oTrsV+QwYIgQi2vxNVriCFRUTuiKuUNQqyqsYpRcg54FA==
+X-Received: by 2002:a05:6a21:998f:b0:2c1:17d4:4139 with SMTP id adf61e73a8af0-334a86108e5mr23495747637.29.1761108432842;
+        Tue, 21 Oct 2025 21:47:12 -0700 (PDT)
 Received: from z440.. ([2601:1c0:4502:2d00:8004:e310:f3d:dd0])
         by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223dd9d6sm1257413a91.7.2025.10.21.21.47.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 21:47:11 -0700 (PDT)
+        Tue, 21 Oct 2025 21:47:12 -0700 (PDT)
 From: Igor Reznichenko <igor@reznichenko.net>
 To: linux@roeck-us.net,
 	robh@kernel.org,
@@ -85,9 +85,9 @@ Cc: linux-hwmon@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org
-Subject: [PATCH 2/5] drivers/hwmon: Add Kconfig entry for TSC1641
-Date: Tue, 21 Oct 2025 21:47:05 -0700
-Message-ID: <20251022044708.314287-3-igor@reznichenko.net>
+Subject: [PATCH 3/5] drivers/hwmon: Add TSC1641 module to Makefile
+Date: Tue, 21 Oct 2025 21:47:06 -0700
+Message-ID: <20251022044708.314287-4-igor@reznichenko.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251022044708.314287-1-igor@reznichenko.net>
 References: <20251022044708.314287-1-igor@reznichenko.net>
@@ -99,37 +99,26 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a Kconfig entry for the TSC1641 driver under the HWMON_I2C menu.
-The driver can be built as a module or built-in. Default is module.
+Add the TSC1641 driver to drivers/hwmon/Makefile so it can be
+built as a module.
 
 Signed-off-by: Igor Reznichenko <igor@reznichenko.net>
 ---
- drivers/hwmon/Kconfig | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/hwmon/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 2760feb9f83b..b9d7b02932a6 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -2434,6 +2434,18 @@ config SENSORS_TMP513
- 	  This driver can also be built as a module. If so, the module
- 	  will be called tmp513.
- 
-+config SENSORS_TSC1641
-+	tristate "ST Microelectronics TSC1641 Power Monitor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  If you say yes here you get support for TSC1641 power  monitor chip.
-+	  The TSC1641 driver is configured for the default configuration of
-+	  the part except temperature is enabled by default.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called tsc1641.
-+
- config SENSORS_VEXPRESS
- 	tristate "Versatile Express"
- 	depends on VEXPRESS_CONFIG
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index 73b2abdcc6dd..a8de5bc69f2a 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -233,6 +233,7 @@ obj-$(CONFIG_SENSORS_TMP401)	+= tmp401.o
+ obj-$(CONFIG_SENSORS_TMP421)	+= tmp421.o
+ obj-$(CONFIG_SENSORS_TMP464)	+= tmp464.o
+ obj-$(CONFIG_SENSORS_TMP513)	+= tmp513.o
++obj-$(CONFIG_SENSORS_TSC1641)	+= tsc1641.o
+ obj-$(CONFIG_SENSORS_VEXPRESS)	+= vexpress-hwmon.o
+ obj-$(CONFIG_SENSORS_VIA_CPUTEMP)+= via-cputemp.o
+ obj-$(CONFIG_SENSORS_VIA686A)	+= via686a.o
 -- 
 2.43.0
 
