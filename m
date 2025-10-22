@@ -1,76 +1,78 @@
-Return-Path: <linux-hwmon+bounces-10103-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10105-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1DDBF9F97
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 06:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0241ABF9FA3
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 06:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 688C319C820C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 04:47:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7F319C826F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Oct 2025 04:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46107DA66;
-	Wed, 22 Oct 2025 04:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953D82D7DF6;
+	Wed, 22 Oct 2025 04:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b="G7JBiS9L"
+	dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b="R9YarRAT"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F4F2D739C
-	for <linux-hwmon@vger.kernel.org>; Wed, 22 Oct 2025 04:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B253827815E
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Oct 2025 04:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761108432; cv=none; b=QIYxajipyXoNsdcw3Qv5fZMeM31WgktWP3vMwZaZ/1zwEnP19jfMIN7/Gq2FSYqzIvjcWpncwiMfLERZQCTuPCKhwXrJ083eORoQH55ShSV4X2pfkfQXQ1iAKUMZcCp1QkeufeRQtsUG2y0nsXYKYpIWr9VdlMfF9tLEu2R/lF4=
+	t=1761108434; cv=none; b=Q5+kSeRRdS5T3Jfke5hqFu9L/Ph4wB/FxoyW/7S0zCfSzLKYGPe3zvxNlJ5jgTbMP6Gyoyi9Eg4nPZPFBdvu1zilkp51TkIB+ZtKDGxYNwBf30cijp1Ev7dOHDfg3CbsjrI1PjrwP1qYSsX5HB68Y2TwWr1Woz7QCimY3/87KUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761108432; c=relaxed/simple;
-	bh=DWS7b0OXi35GUhqaHArR2mIysKoute9ykjs7q/LnTyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUqjJW1J18K1mJTDFCoaVNR0eHXyAE/17FWCKAAiUqa33TdKIk2agObvLhFZEmjyIbyFhVpc6sTIW1LlhaiYWF3FJSU03kr0Ao5OXqPciEH4wN3nGVxl0UC1rz8i+TNvQtIn5EOQuZJwfG/m6pOVWQXsfaCmeNbT7R9lSoKy8xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=reznichenko.net; spf=none smtp.mailfrom=dpplabs.com; dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b=G7JBiS9L; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1761108434; c=relaxed/simple;
+	bh=yaCly3CMjBMtRAdh+49SwgtUK8peefycmYSQ6GSuYbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ix3S/W0NW7ftwH7gsrHEELuZIsjXgv+LTI/o2yahP8YyD39TtKvN/dba9FGNdHJA2VIJpoGPq6jdtIj6FKD1I3lkX0S1mcvwDHDMVTepPSgfIK7i0oLtMPzfhEpFdLhfeIBZ/nTHX8YJNIKP/lGvmVeXHaSEbn21KcWhpaqbaIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=reznichenko.net; spf=none smtp.mailfrom=dpplabs.com; dkim=pass (2048-bit key) header.d=reznichenko.net header.i=@reznichenko.net header.b=R9YarRAT; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=reznichenko.net
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dpplabs.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b55517e74e3so6520731a12.2
-        for <linux-hwmon@vger.kernel.org>; Tue, 21 Oct 2025 21:47:10 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-782a77b5ec7so5927544b3a.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 21 Oct 2025 21:47:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=reznichenko.net; s=google; t=1761108430; x=1761713230; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBuTemYA/SGUaF+DBF41ycHM+zeDM425yx/z5PlZWVc=;
-        b=G7JBiS9L+3GrHf4wseXIOFIEvK+EEblLVdX4IdLaVMl0KvPb+gWbsg5C2sdCX9cS4J
-         MUOlVR8FexBqW2BMo8wMzqCSP/4GKhYw9ryofYizqLgk8oeJGKBTSDLNtJgSkYl9dmEv
-         GZQZzmhp3v/AzLb+g8Vt/CdQBxf8mt4zgqByQNOLsIi3C9WOrL5Ig2MKrPGmeZ5xiYhk
-         6z2IDXfqpBcxAQqCtUKpCVFMjehAfpMJhqzpTLr+J2oxyl+GlDsbHEhLQfwoV79mVJQd
-         tG239J3aCJOCs6sYiNfDFINEEMsYQcLJ0ZkDKyTYm4T8wMHdZiyGWQzmW6aV04+OiU9C
-         JHtw==
+        d=reznichenko.net; s=google; t=1761108431; x=1761713231; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pNJchlzQ08KXzi693iiT+LF5MQjDTWP/auMCv7QeW18=;
+        b=R9YarRATZZDslefDXAemSIbonitD3cjs93MpYLi8ogDBOUcP9UUHUkJDgpIeEHvO26
+         IiywkbVr5n84WDH/9toMBNWfdpObUwi2+WpsXooRADaOQZRJ4Wygtl2KN2yLE39URMHC
+         fg5l7BaVLIQK+wBYR/5CEXKvvZXi676fNYLLukC/tpya9PQ51bLHQpB+wDDlhiHUY+pK
+         mt/QD2m2H76pOGDdzxfEJqHXOkfdq7NGNDTKxIcXFFwAGwjVvK/yN+r8QGFrQC5GF3w1
+         AEZ6xQ5ZBUOR+xDLTVq0o05vgEyord/LxdmSRqdII2UQ4emQ95X30ETkMIrlzjb0TH4p
+         9OIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761108430; x=1761713230;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OBuTemYA/SGUaF+DBF41ycHM+zeDM425yx/z5PlZWVc=;
-        b=mOB8jQcHjn1fL8xpQfy2uEcGR1qYroEq7dkDRbIYmUwUdY6qTefkeqv9Pu/cv1hsC6
-         FO/Kg1alEiZO4GWUV721/lbKNrNxARmTXLCjq/TbtYuax2CkO9gKXZ4ZgsHI/v6gArPT
-         7Y3dKTGoY73j4OqMWWynuCwaXW2Buq700QxrbVUGU96cgnc+z2/39TAXmO3MSG2lk8aT
-         ICy0YYDoRgr4Ck4cx9rWRaI3qw6Y/dDnwwadypl/9MJ1taZFVEewCLii7OQj+hKEjZkJ
-         BEqRSWAMjVeiJjSbwfJF1itimIZWGw+p04gcYL0pyzd59GsHDORGYq1QLqgiUcb7HjUj
-         dtuQ==
-X-Gm-Message-State: AOJu0Yy913mb8ok58XbYlGPSLY3hyRvp993WAYUzGHt0F/RHP4APq3vz
-	ITVVlaCJgKND6UzOTxFmx9dA4KSIJK1plVT3MbEx+pEhoNGjyJbM+TmybYVmiS6GCOc=
-X-Gm-Gg: ASbGncu0LLRUqbgD7xbUeCrbOEIXJzEeqNbVDvx1J/4PNOU8c7qgwKa2oM5WVXwwFQG
-	eWA93eiYhapVSIj5VgKluV6AIf3pcO1rJkxszOeU9cth0IXkHsRvJBVQwdpUgA51xIRSxRDPe72
-	NpjiqWU3bH204esg0S+PKSUjp7XkZ0BghWCWXOz3LtiurxsPi0Gj6yct1v/3CTJGpeQtD1ujNSG
-	KJyA6HuL+AnZvSADnBYvnpfLxJE2uyqtZ4RAOpPLNwCSNoNpYXBH7xlES4xyHRxJJKqKAJfB+aV
-	2oYAfdNxLd5V4OQytwzXmUEmlH10ad89PF8L1hk6x38wuMSlsSkVLBt6vtbawDY9ePS+bAH2orl
-	GqXde49H6KKDKT+Dfr5l2FWdF+5ymIGIFQtXGwyVhSdICCtOiebqwIPeBfDuIqC0zwnRsz+gc0+
-	+0UcTZElgMyYO1QEo=
-X-Google-Smtp-Source: AGHT+IHMzyYghXKArrXF4a3abFsvEWo0yK9xR3k3Ts3BFNdVJw1LghdAf673yg3EmO+eQ2pXjMB9AQ==
-X-Received: by 2002:a17:902:ce8d:b0:272:a900:c42e with SMTP id d9443c01a7336-290caf850b1mr243342655ad.35.1761108429966;
-        Tue, 21 Oct 2025 21:47:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761108431; x=1761713231;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pNJchlzQ08KXzi693iiT+LF5MQjDTWP/auMCv7QeW18=;
+        b=NfOJoV79mePBOJ9xBPWPqiF/BXz+WauEli8q7oL1J4Hg+wyPcZqOu04ZnRWwop9Fv8
+         rLyHD90eoqd6gdVz8SDnAh/fw7LDPK2BanFi0BvKlKKPW5iCyVpF4fHum1CfP18p9HgW
+         L5lIbp2/2xWvs2AqwfILudxSdo09vg6gbEE5huKx90epZRnSrrt49gksC/rqqxiNZ7vM
+         sx2d96MHqppOqtx+DN2pYywU61b3yJy9Mr8l/UiefDC7MgkWSOkDP2D1B6dnh3fq8vMp
+         GBkMUOyRBzpkTpsZqKRbI6vi1eYBmaKokQlDGYLlKCsroip0R/tn0wXkvdFYTuDpbYxr
+         zZqQ==
+X-Gm-Message-State: AOJu0Yy97skmn7taX8+JcYJTHN/4auZxi+hjMDtTF+c9vSMvexYTEIvA
+	UyN/jE2tcLYYLTelH7Ls0fBGg9ntdImVu2hWjCJQDvp6ZpP20uysiNKzLvwFam7GQfo=
+X-Gm-Gg: ASbGncvOYsRHFnq/7ZvaY++UEzZuSZoq0rnoEIwi/mmIQe9TknKz0LKyEyngbSJ6Q/B
+	woxxOdLVl9pEUMQaRVtC/DQYCxzEUpDD5sS/DWZoURJgMjBlnBx7r1k5ZPxtvKMr4vRmUXUeEcg
+	N2hMke+aZeYCXi1oBlV/Ty4xh7UtkaC3WcRs7oKA9vHPTskWZkBvNXhE9kr+a3LIQeA5yQIa1m7
+	5tY1kDKxWRP2N0cl3rzAjBf7nJgnkmYuB7/1P+s9Tf+U8zFzbnVXmD5uGP7WGLXlhpLwe/Dfwau
+	Peoor22qFVRA5v+DOeKqTTUZrnh8By/doYE/Ui1uaB2Juo5t9NaoktVJOrFJq6clEysAqORdrD1
+	nYm7/XSFIwxPKStBk0FO14vJ9JQ8OpXMlM7Jk4nKFLrZh38FYGsQFgz4eYixHl4H+YpqoLtD9lL
+	fTJm6SPTH5WZYlCy2CCAvQI1zS9Q==
+X-Google-Smtp-Source: AGHT+IHew15Sp+Fu5zeu/8c4V23WqpmNJ0P8qYG2bNjS3g8AEomTe6/P1R1yKk/8jRN7ebVkmd8Rcg==
+X-Received: by 2002:a05:6a20:e212:b0:334:871e:897 with SMTP id adf61e73a8af0-334a85260acmr26784926637.24.1761108430909;
+        Tue, 21 Oct 2025 21:47:10 -0700 (PDT)
 Received: from z440.. ([2601:1c0:4502:2d00:8004:e310:f3d:dd0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223dd9d6sm1257413a91.7.2025.10.21.21.47.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e223dd9d6sm1257413a91.7.2025.10.21.21.47.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 21:47:09 -0700 (PDT)
+        Tue, 21 Oct 2025 21:47:10 -0700 (PDT)
 From: Igor Reznichenko <igor@reznichenko.net>
 To: linux@roeck-us.net,
 	robh@kernel.org,
@@ -83,10 +85,12 @@ Cc: linux-hwmon@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org
-Subject: [PATCH 0/5] hwmon: Add TSC1641 I2C power monitor driver
-Date: Tue, 21 Oct 2025 21:47:03 -0700
-Message-ID: <20251022044708.314287-1-igor@reznichenko.net>
+Subject: [PATCH 1/5] drivers/hwmon: Add TSC1641 I2C power monitor driver
+Date: Tue, 21 Oct 2025 21:47:04 -0700
+Message-ID: <20251022044708.314287-2-igor@reznichenko.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251022044708.314287-1-igor@reznichenko.net>
+References: <20251022044708.314287-1-igor@reznichenko.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -95,32 +99,826 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds support for the ST Microelectronics TSC1641
-I2C power monitor. The TSC1641 provides bus voltage, current, power, 
-and temperature measurements via the hwmon subsystem. The driver 
-supports optional ALERT pin polarity configuration and exposes the
-shunt resistor value and raw shunt voltage via sysfs.
+Add a new I2C hwmon driver for the ST Microelectronics TSC1641 16-bit
+high-precision power monitor. The driver supports reading bus voltage,
+current, power, and temperature. Sysfs attributes are exposed for
+shunt resistor value, raw shunt voltage and update interval.
+The driver integrates with the hwmon subsystem and supports optional
+ALERT pin polarity configuration.
 
-Tested on Raspberry Pi 3B+ with a TSC1641 evaluation board.
-
-Igor Reznichenko (5):
-  drivers/hwmon: Add TSC1641 I2C power monitor driver
-  drivers/hwmon: Add Kconfig entry for TSC1641
-  drivers/hwmon: Add TSC1641 module to Makefile
-  Documentation/hwmon: Add TSC1641 driver documentation
-  Documentation/devicetree/bindings/hwmon: Add TSC1641 binding
-
- .../devicetree/bindings/hwmon/st,tsc1641.yaml |  54 ++
- Documentation/hwmon/index.rst                 |   1 +
- Documentation/hwmon/tsc1641.rst               |  73 ++
- drivers/hwmon/Kconfig                         |  12 +
- drivers/hwmon/Makefile                        |   1 +
- drivers/hwmon/tsc1641.c                       | 801 ++++++++++++++++++
- 6 files changed, 942 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/hwmon/st,tsc1641.yaml
- create mode 100644 Documentation/hwmon/tsc1641.rst
+Signed-off-by: Igor Reznichenko <igor@reznichenko.net>
+---
+ drivers/hwmon/tsc1641.c | 801 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 801 insertions(+)
  create mode 100644 drivers/hwmon/tsc1641.c
 
+diff --git a/drivers/hwmon/tsc1641.c b/drivers/hwmon/tsc1641.c
+new file mode 100644
+index 000000000000..22b49a7918cf
+--- /dev/null
++++ b/drivers/hwmon/tsc1641.c
+@@ -0,0 +1,801 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Driver for ST Microelectronics TSC1641 I2C power monitor
++ *
++ * 60 V, 16-bit high-precision power monitor with I2C and MIPI I3C interface
++ * Datasheet: https://www.st.com/resource/en/datasheet/tsc1641.pdf
++ *
++ * Copyright (C) 2025 Igor Reznichenko <igor@reznichenko.net>
++ */
++
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/hwmon.h>
++#include <linux/i2c.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/regmap.h>
++#include <linux/sysfs.h>
++
++/* I2C registers */
++#define TSC1641_CONFIG		0x00
++#define TSC1641_SHUNT_VOLTAGE	0x01
++#define TSC1641_LOAD_VOLTAGE	0x02
++#define TSC1641_POWER		0x03
++#define TSC1641_CURRENT		0x04
++#define TSC1641_TEMP		0x05
++#define TSC1641_MASK		0x06
++#define TSC1641_FLAG		0x07
++#define TSC1641_RSHUNT		0x08 /* Shunt resistance */
++#define TSC1641_SOL		0x09
++#define TSC1641_SUL		0x0A
++#define TSC1641_LOL		0x0B
++#define TSC1641_LUL		0x0C
++#define TSC1641_POL		0x0D
++#define TSC1641_TOL		0x0E
++#define TSC1641_MANUF_ID	0xFE /* 0x0006 */
++#define TSC1641_DIE_ID		0xFF /* 0x1000 */
++#define TSC1641_MAX_REG		0xFF
++
++#define TSC1641_RSHUNT_DEFAULT	0x0000
++#define TSC1641_CONFIG_DEFAULT	0x003F /* Enable temperature sensor */
++
++/* Bit mask for conversion time in the configuration register */
++#define TSC1641_CONV_TIME_MASK	GENMASK(7, 4)
++
++#define TSC1641_CONV_TIME_DEFAULT	1024
++#define TSC1641_MIN_UPDATE_INTERVAL	1024
++
++/* LSB value of different registers */
++#define TSC1641_VLOAD_LSB_MILLIVOLT	2
++#define TSC1641_POWER_LSB_MICROWATT	25000
++#define TSC1641_VSHUNT_LSB_NANOVOLT	2500	/* Use nanovolts to make it integer */
++#define TSC1641_RSHUNT_LSB_UOHM		10
++#define TSC1641_TEMP_LSB_MILLIDEGC	500
++
++/* Bit masks for enabling limit alerts in TSC1641_MASK*/
++#define TSC1641_SHUNT_OV_MASK		BIT(15)
++#define TSC1641_SHUNT_UV_MASK		BIT(14)
++#define TSC1641_LOAD_OV_MASK		BIT(13)
++#define TSC1641_LOAD_UV_MASK		BIT(12)
++#define TSC1641_POWER_OVER_MASK		BIT(11)
++#define TSC1641_TEMP_OVER_MASK		BIT(10)
++#define TSC1641_ALERT_POL_MASK		BIT(1)
++#define TSC1641_ALERT_LATCH_EN_MASK	BIT(0)
++
++/* Flags indicating alerts in TSC1641_FLAG register*/
++#define TSC1641_SHUNT_OV_FLAG		BIT(6)
++#define TSC1641_SHUNT_UV_FLAG		BIT(5)
++#define TSC1641_LOAD_OV_FLAG		BIT(4)
++#define TSC1641_LOAD_UV_FLAG		BIT(3)
++#define TSC1641_POWER_OVER_FLAG		BIT(2)
++#define TSC1641_TEMP_OVER_FLAG		BIT(1)
++
++static bool tsc1641_writeable_reg(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case TSC1641_CONFIG:
++	case TSC1641_MASK:
++	case TSC1641_RSHUNT:
++	case TSC1641_SOL:
++	case TSC1641_SUL:
++	case TSC1641_LOL:
++	case TSC1641_LUL:
++	case TSC1641_POL:
++	case TSC1641_TOL:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static bool tsc1641_volatile_reg(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case TSC1641_SHUNT_VOLTAGE:
++	case TSC1641_LOAD_VOLTAGE:
++	case TSC1641_POWER:
++	case TSC1641_CURRENT:
++	case TSC1641_TEMP:
++	case TSC1641_FLAG:
++	case TSC1641_MANUF_ID:
++	case TSC1641_DIE_ID:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static const struct regmap_config tsc1641_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 16,
++	.use_single_write = true,
++	.use_single_read = true,
++	.max_register = TSC1641_MAX_REG,
++	.cache_type = REGCACHE_MAPLE,
++	.volatile_reg = tsc1641_volatile_reg,
++	.writeable_reg = tsc1641_writeable_reg,
++};
++
++struct tsc1641_data {
++	long rshunt_uohm;
++	long current_lsb_uA;
++	/* protects register data during updates */
++	struct mutex update_lock;
++	struct regmap *regmap;
++	struct i2c_client *client;
++};
++
++static int tsc1641_set_shunt(struct tsc1641_data *data, u32 val)
++{
++	struct regmap *regmap = data->regmap;
++
++	if (!val)
++		return 0;
++
++	data->rshunt_uohm = val;
++	long mohm = DIV_ROUND_CLOSEST(data->rshunt_uohm, 1000);
++
++	data->current_lsb_uA = DIV_ROUND_CLOSEST(TSC1641_VSHUNT_LSB_NANOVOLT, mohm);
++	/* RSHUNT register LSB is 10uOhm so need to divide further*/
++	long rshunt_reg = DIV_ROUND_CLOSEST(data->rshunt_uohm, TSC1641_RSHUNT_LSB_UOHM);
++	int ret = regmap_write(regmap, TSC1641_RSHUNT, rshunt_reg);
++
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++/*
++ * Conversion times in uS, value in CONFIG[CT3:CT0] corresponds to index in this array
++ * See "Table 14. CT3 to CT0: conversion time" in:
++ * https://www.st.com/resource/en/datasheet/tsc1641.pdf
++ */
++static const int tsc1641_conv_times[] = { 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768 };
++
++static int tsc1641_reg_to_upd_interval(u16 config)
++{
++	int idx = FIELD_GET(TSC1641_CONV_TIME_MASK, config);
++
++	idx = clamp_val(idx, 0, ARRAY_SIZE(tsc1641_conv_times) - 1);
++	int conv_time = tsc1641_conv_times[idx];
++
++	/* Don't support sub-millisecond update interval as it's not supported in hwmon */
++	conv_time = max(conv_time, TSC1641_MIN_UPDATE_INTERVAL);
++	/* Return nearest value in milliseconds */
++	return DIV_ROUND_CLOSEST(conv_time, 1000);
++}
++
++static u16 tsc1641_upd_interval_to_reg(long interval)
++{
++	/* Supported interval is 1ms - 33ms */
++	interval = clamp_val(interval, 1, 33);
++
++	int conv = interval * 1000;
++	int conv_bits = find_closest(conv, tsc1641_conv_times,
++				 ARRAY_SIZE(tsc1641_conv_times));
++
++	return FIELD_PREP(TSC1641_CONV_TIME_MASK, conv_bits);
++}
++
++static int tsc1641_chip_write(struct device *dev, u32 attr, long val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++
++	switch (attr) {
++	case hwmon_chip_update_interval:
++		return regmap_update_bits(data->regmap, TSC1641_CONFIG,
++					  TSC1641_CONV_TIME_MASK,
++					  tsc1641_upd_interval_to_reg(val));
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int tsc1641_chip_read(struct device *dev, u32 attr, long *val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	u32 regval;
++	int ret;
++
++	switch (attr) {
++	case hwmon_chip_update_interval:
++		ret = regmap_read(data->regmap, TSC1641_CONFIG, &regval);
++		if (ret)
++			return ret;
++
++		*val = tsc1641_reg_to_upd_interval(regval);
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_reg_to_value(struct tsc1641_data *data, u8 reg, unsigned int regval)
++{
++	int val;
++
++	switch (reg) {
++	case TSC1641_SHUNT_VOLTAGE:
++		val = (s16)regval * TSC1641_VSHUNT_LSB_NANOVOLT;
++		/* Return microvolts */
++		return DIV_ROUND_CLOSEST(val, 1000);
++	case TSC1641_SOL:
++		fallthrough;
++	case TSC1641_SUL:
++		/* Used for current limits only, so return current in mA */
++		val = (s16)regval * data->current_lsb_uA;
++		return DIV_ROUND_CLOSEST(val, 1000);
++	case TSC1641_LOL:
++		fallthrough;
++	case TSC1641_LUL:
++		fallthrough;
++	case TSC1641_LOAD_VOLTAGE:
++		return (regval * TSC1641_VLOAD_LSB_MILLIVOLT);
++	case TSC1641_POWER:
++		fallthrough;
++	case TSC1641_POL:
++		return (regval * TSC1641_POWER_LSB_MICROWATT);
++	case TSC1641_CURRENT:
++		val = regval * data->current_lsb_uA;
++		/* Current in milliamps */
++		return DIV_ROUND_CLOSEST(val, 1000);
++	case TSC1641_TEMP:
++		fallthrough;
++	case TSC1641_TOL:
++		return (regval * TSC1641_TEMP_LSB_MILLIDEGC);
++	default:
++		WARN_ON_ONCE(1);
++		return 0;
++	}
++}
++
++static int tsc1641_value_to_reg(struct tsc1641_data *data, u8 reg, unsigned int val)
++{
++	int regval;
++
++	switch (reg) {
++	case TSC1641_SOL:
++		fallthrough;
++	case TSC1641_SUL:
++		/* value is in milliamps, so convert to voltage first */
++		regval = (s16)val * data->rshunt_uohm;
++		regval = DIV_ROUND_CLOSEST(regval, TSC1641_VSHUNT_LSB_NANOVOLT);
++		return clamp_val(regval, SHRT_MIN, SHRT_MAX);
++	case TSC1641_LOL:
++		fallthrough;
++	case TSC1641_LUL:
++		regval = DIV_ROUND_CLOSEST(val, TSC1641_VLOAD_LSB_MILLIVOLT);
++		return clamp_val(regval, 0, USHRT_MAX);
++	case TSC1641_POL:
++		regval = DIV_ROUND_CLOSEST(val, TSC1641_POWER_LSB_MICROWATT);
++		return clamp_val(regval, 0, USHRT_MAX);
++	case TSC1641_TOL:
++		regval = DIV_ROUND_CLOSEST(val, TSC1641_TEMP_LSB_MILLIDEGC);
++		return clamp_val(regval, 0, USHRT_MAX);
++	default:
++		/* shouldn't be here */
++		WARN_ON_ONCE(1);
++		return 0;
++	}
++}
++
++static int tsc1641_alert_limit_read(struct tsc1641_data *data, u32 mask, int reg, long *val)
++{
++	struct regmap *regmap = data->regmap;
++	int regval;
++	int ret;
++
++	mutex_lock(&data->update_lock);
++	ret = regmap_read(regmap, TSC1641_MASK, &regval);
++	if (ret)
++		goto abort;
++
++	if (regval & mask) {
++		ret = regmap_read(regmap, reg, &regval);
++		if (ret)
++			goto abort;
++		*val = tsc1641_reg_to_value(data, reg, regval);
++	} else {
++		*val = 0;
++	}
++abort:
++	mutex_unlock(&data->update_lock);
++	return ret;
++}
++
++static int tsc1641_alert_limit_write(struct tsc1641_data *data, u32 mask, int limit_reg,
++				     long val)
++{
++	struct regmap *regmap = data->regmap;
++	int ret;
++
++	if (val < 0)
++		return -EINVAL;
++
++	/*
++	 * Disable alert mask first, then write the value and enable alert mask
++	 */
++	mutex_lock(&data->update_lock);
++	ret = regmap_update_bits(regmap, TSC1641_MASK, mask, 0);
++	if (ret < 0)
++		goto abort;
++	ret = regmap_write(regmap, limit_reg, tsc1641_value_to_reg(data, limit_reg, val));
++	if (ret < 0)
++		goto abort;
++
++	if (val)
++		ret = regmap_update_bits(regmap, TSC1641_MASK, mask, mask);
++abort:
++	mutex_unlock(&data->update_lock);
++	return ret;
++}
++
++static int tsc1641_alert_read(struct regmap *regmap, u32 flag, long *val)
++{
++	unsigned int regval;
++	int ret;
++
++	ret = regmap_read_bypassed(regmap, TSC1641_FLAG, &regval);
++	if (ret)
++		return ret;
++
++	*val = !!(regval & flag);
++	return 0;
++}
++
++static int tsc1641_in_read(struct device *dev, u32 attr, long *val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	struct regmap *regmap = data->regmap;
++	unsigned int regval;
++	int ret;
++
++	switch (attr) {
++	case hwmon_in_input:
++		ret = regmap_read(regmap, TSC1641_LOAD_VOLTAGE, &regval);
++		if (ret)
++			return ret;
++		*val = tsc1641_reg_to_value(data, TSC1641_LOAD_VOLTAGE, regval);
++		break;
++	case hwmon_in_lcrit:
++		return tsc1641_alert_limit_read(data, TSC1641_LOAD_UV_MASK, TSC1641_LUL, val);
++	case hwmon_in_crit:
++		return tsc1641_alert_limit_read(data, TSC1641_LOAD_OV_MASK, TSC1641_LOL, val);
++	case hwmon_in_lcrit_alarm:
++		return tsc1641_alert_read(regmap, TSC1641_LOAD_UV_FLAG, val);
++	case hwmon_in_crit_alarm:
++		return tsc1641_alert_read(regmap, TSC1641_LOAD_OV_FLAG, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_curr_read(struct device *dev, u32 attr, long *val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	struct regmap *regmap = data->regmap;
++	unsigned int regval;
++	int ret;
++
++	/* Current limits are the shunt under/over voltage limits */
++	switch (attr) {
++	case hwmon_curr_input:
++		ret = regmap_read(regmap, TSC1641_CURRENT, &regval);
++		if (ret)
++			return ret;
++		*val = tsc1641_reg_to_value(data, TSC1641_CURRENT, regval);
++		break;
++	case hwmon_curr_lcrit:
++		return tsc1641_alert_limit_read(data, TSC1641_SHUNT_UV_MASK,
++						TSC1641_SUL, val);
++	case hwmon_curr_crit:
++		return tsc1641_alert_limit_read(data, TSC1641_SHUNT_OV_MASK,
++						TSC1641_SOL, val);
++	case hwmon_curr_lcrit_alarm:
++		return tsc1641_alert_read(regmap, TSC1641_SHUNT_UV_FLAG, val);
++	case hwmon_curr_crit_alarm:
++		return tsc1641_alert_read(regmap, TSC1641_SHUNT_OV_FLAG, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_power_read(struct device *dev, u32 attr, long *val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	struct regmap *regmap = data->regmap;
++	unsigned int regval;
++	int ret;
++
++	switch (attr) {
++	case hwmon_power_input:
++		ret = regmap_read(regmap, TSC1641_POWER, &regval);
++		if (ret)
++			return ret;
++		*val = tsc1641_reg_to_value(data, TSC1641_POWER, regval);
++		break;
++	case hwmon_power_crit:
++		return tsc1641_alert_limit_read(data, TSC1641_POWER_OVER_MASK,
++						TSC1641_POL, val);
++	case hwmon_power_crit_alarm:
++		return tsc1641_alert_read(regmap, TSC1641_POWER_OVER_FLAG, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_temp_read(struct device *dev, u32 attr, long *val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	struct regmap *regmap = data->regmap;
++	unsigned int regval;
++	int ret;
++
++	switch (attr) {
++	case hwmon_temp_input:
++		ret = regmap_read(regmap, TSC1641_TEMP, &regval);
++		if (ret)
++			return ret;
++		*val = tsc1641_reg_to_value(data, TSC1641_TEMP, regval);
++		break;
++	case hwmon_temp_crit:
++		return tsc1641_alert_limit_read(data, TSC1641_TEMP_OVER_MASK,
++						TSC1641_TOL, val);
++	case hwmon_temp_crit_alarm:
++		return tsc1641_alert_read(regmap, TSC1641_TEMP_OVER_FLAG, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_in_write(struct device *dev, u32 attr, long val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++
++	switch (attr) {
++	case hwmon_in_lcrit:
++		return tsc1641_alert_limit_write(data, TSC1641_LOAD_UV_MASK, TSC1641_LUL, val);
++	case hwmon_in_crit:
++		return tsc1641_alert_limit_write(data, TSC1641_LOAD_OV_MASK, TSC1641_LOL, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_curr_write(struct device *dev, u32 attr, long val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++
++	switch (attr) {
++	case hwmon_curr_lcrit:
++		return tsc1641_alert_limit_write(data, TSC1641_SHUNT_UV_MASK,
++						TSC1641_SUL, val);
++	case hwmon_curr_crit:
++		return tsc1641_alert_limit_write(data, TSC1641_SHUNT_OV_MASK,
++						TSC1641_SOL, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_power_write(struct device *dev, u32 attr, long val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++
++	switch (attr) {
++	case hwmon_power_crit:
++		return tsc1641_alert_limit_write(data, TSC1641_POWER_OVER_MASK,
++						 TSC1641_POL, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int tsc1641_temp_write(struct device *dev, u32 attr, long val)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++
++	switch (attr) {
++	case hwmon_temp_crit:
++		return tsc1641_alert_limit_write(data, TSC1641_TEMP_OVER_MASK,
++						 TSC1641_TOL, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static umode_t tsc1641_is_visible(const void *data, enum hwmon_sensor_types type,
++				  u32 attr, int channel)
++{
++	switch (type) {
++	case hwmon_chip:
++		switch (attr) {
++		case hwmon_chip_update_interval:
++			return 0644;
++		default:
++			break;
++		}
++		break;
++	case hwmon_in:
++		switch (attr) {
++		case hwmon_in_input:
++			return 0444;
++		case hwmon_in_lcrit:
++		case hwmon_in_crit:
++			return 0644;
++		case hwmon_in_lcrit_alarm:
++		case hwmon_in_crit_alarm:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	case hwmon_curr:
++		switch (attr) {
++		case hwmon_curr_input:
++			return 0444;
++		case hwmon_curr_lcrit:
++		case hwmon_curr_crit:
++			return 0644;
++		case hwmon_curr_lcrit_alarm:
++		case hwmon_curr_crit_alarm:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	case hwmon_power:
++		switch (attr) {
++		case hwmon_power_input:
++			return 0444;
++		case hwmon_power_crit:
++			return 0644;
++		case hwmon_power_crit_alarm:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	case hwmon_temp:
++		switch (attr) {
++		case hwmon_temp_input:
++			return 0444;
++		case hwmon_temp_crit:
++			return 0644;
++		case hwmon_temp_crit_alarm:
++			return 0444;
++		default:
++			break;
++		}
++		break;
++	default:
++		break;
++	}
++	return 0;
++}
++
++static int tsc1641_read(struct device *dev, enum hwmon_sensor_types type,
++			u32 attr, int channel, long *val)
++{
++	switch (type) {
++	case hwmon_chip:
++		return tsc1641_chip_read(dev, attr, val);
++	case hwmon_in:
++		return tsc1641_in_read(dev, attr, val);
++	case hwmon_curr:
++		return tsc1641_curr_read(dev, attr, val);
++	case hwmon_power:
++		return tsc1641_power_read(dev, attr, val);
++	case hwmon_temp:
++		return tsc1641_temp_read(dev, attr, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int tsc1641_write(struct device *dev, enum hwmon_sensor_types type,
++			 u32 attr, int channel, long val)
++{
++	switch (type) {
++	case hwmon_chip:
++		return tsc1641_chip_write(dev, attr, val);
++	case hwmon_in:
++		return tsc1641_in_write(dev, attr, val);
++	case hwmon_curr:
++		return tsc1641_curr_write(dev, attr, val);
++	case hwmon_power:
++		return tsc1641_power_write(dev, attr, val);
++	case hwmon_temp:
++		return tsc1641_temp_write(dev, attr, val);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static const struct hwmon_channel_info * const tsc1641_info[] = {
++	HWMON_CHANNEL_INFO(chip,
++			   HWMON_C_UPDATE_INTERVAL),
++	HWMON_CHANNEL_INFO(in,
++			   HWMON_I_INPUT | HWMON_I_CRIT | HWMON_I_CRIT_ALARM |
++			   HWMON_I_LCRIT | HWMON_I_LCRIT_ALARM),
++	HWMON_CHANNEL_INFO(curr,
++			   HWMON_C_INPUT | HWMON_C_CRIT | HWMON_C_CRIT_ALARM |
++			   HWMON_C_LCRIT | HWMON_C_LCRIT_ALARM),
++	HWMON_CHANNEL_INFO(power,
++			   HWMON_P_INPUT | HWMON_P_CRIT | HWMON_P_CRIT_ALARM),
++	HWMON_CHANNEL_INFO(temp,
++			   HWMON_T_INPUT | HWMON_T_CRIT | HWMON_T_CRIT_ALARM),
++	NULL
++};
++
++static ssize_t shunt_resistor_show(struct device *dev,
++				   struct device_attribute *da, char *buf)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++
++	return sysfs_emit(buf, "%li\n", data->rshunt_uohm);
++}
++
++static ssize_t shunt_voltage_uvolts_show(struct device *dev,
++					 struct device_attribute *da, char *buf)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	struct regmap *regmap = data->regmap;
++	unsigned int regval;
++	int ret;
++
++	ret = regmap_read(regmap, TSC1641_SHUNT_VOLTAGE, &regval);
++	if (ret)
++		return ret;
++	int val = tsc1641_reg_to_value(data, TSC1641_SHUNT_VOLTAGE, regval);
++
++	return sysfs_emit(buf, "%d\n", val);
++}
++
++static ssize_t shunt_resistor_store(struct device *dev,
++				    struct device_attribute *da,
++				    const char *buf, size_t count)
++{
++	struct tsc1641_data *data = dev_get_drvdata(dev);
++	unsigned long val;
++	int ret;
++
++	ret = kstrtoul(buf, 10, &val);
++	if (ret < 0)
++		return ret;
++
++	mutex_lock(&data->update_lock);
++	ret = tsc1641_set_shunt(data, val);
++	mutex_unlock(&data->update_lock);
++	if (ret < 0)
++		return ret;
++	return count;
++}
++
++static const struct hwmon_ops tsc1641_hwmon_ops = {
++	.is_visible = tsc1641_is_visible,
++	.read = tsc1641_read,
++	.write = tsc1641_write,
++};
++
++static const struct hwmon_chip_info tsc1641_chip_info = {
++	.ops = &tsc1641_hwmon_ops,
++	.info = tsc1641_info,
++};
++
++static DEVICE_ATTR_RW(shunt_resistor);
++static DEVICE_ATTR_RO(shunt_voltage_uvolts);
++
++/* Rshunt and shunt voltage value is exposed via sysfs attributes */
++static struct attribute *tsc1641_attrs[] = {
++	&dev_attr_shunt_resistor.attr,
++	&dev_attr_shunt_voltage_uvolts.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(tsc1641);
++
++static int tsc1641_init(struct device *dev, struct tsc1641_data *data)
++{
++	struct regmap *regmap = data->regmap;
++	u32 shunt;
++	int ret;
++
++	if (device_property_read_u32(dev, "shunt-resistor", &shunt) < 0) {
++		shunt = TSC1641_RSHUNT_DEFAULT;
++		dev_info(dev, "using default shunt-resistor value =%u uOhm\n",
++			 shunt);
++	}
++
++	ret = tsc1641_set_shunt(data, shunt);
++	if (ret < 0)
++		return ret;
++
++	ret = regmap_write(regmap, TSC1641_CONFIG, TSC1641_CONFIG_DEFAULT);
++	if (ret < 0)
++		return ret;
++
++	bool active_high = device_property_read_bool(dev, "st,alert-polarity-active-high");
++
++	regmap_update_bits(regmap, TSC1641_MASK, TSC1641_ALERT_POL_MASK,
++			   FIELD_PREP(TSC1641_ALERT_POL_MASK, active_high));
++
++	return 0;
++}
++
++static int tsc1641_probe(struct i2c_client *client)
++{
++	struct device *dev = &client->dev;
++	struct tsc1641_data *data;
++	struct device *hwmon_dev;
++	int ret;
++
++	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->client = client;
++	mutex_init(&data->update_lock);
++
++	data->regmap = devm_regmap_init_i2c(client, &tsc1641_regmap_config);
++	if (IS_ERR(data->regmap)) {
++		dev_err(dev, "failed to allocate register map\n");
++		return PTR_ERR(data->regmap);
++	}
++
++	ret = tsc1641_init(dev, data);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to configure device\n");
++
++	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
++							 data, &tsc1641_chip_info, tsc1641_groups);
++	if (IS_ERR(hwmon_dev))
++		return PTR_ERR(hwmon_dev);
++
++	dev_info(dev, "power monitor %s (Rshunt = %li uOhm)\n",
++		 client->name, data->rshunt_uohm);
++
++	return 0;
++}
++
++static const struct i2c_device_id tsc1641_id[] = {
++	{ "tsc1641", 0 },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, tsc1641_id);
++
++static const struct of_device_id __maybe_unused tsc1641_of_match[] = {
++	{ .compatible = "st,tsc1641" },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, tsc1641_of_match);
++
++static struct i2c_driver tsc1641_driver = {
++	.driver = {
++		.name = "tsc1641",
++		.of_match_table = of_match_ptr(tsc1641_of_match),
++	},
++	.probe = tsc1641_probe,
++	.id_table = tsc1641_id,
++};
++
++module_i2c_driver(tsc1641_driver);
++
++MODULE_AUTHOR("Igor Reznichenko <igor@reznichenko.net>");
++MODULE_DESCRIPTION("tsc1641 driver");
++MODULE_LICENSE("GPL");
++
 -- 
 2.43.0
 
