@@ -1,240 +1,118 @@
-Return-Path: <linux-hwmon+bounces-10383-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10388-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30879C487A4
-	for <lists+linux-hwmon@lfdr.de>; Mon, 10 Nov 2025 19:09:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF62C4C3EC
+	for <lists+linux-hwmon@lfdr.de>; Tue, 11 Nov 2025 09:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0B5188DB98
-	for <lists+linux-hwmon@lfdr.de>; Mon, 10 Nov 2025 18:09:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DAB0034F699
+	for <lists+linux-hwmon@lfdr.de>; Tue, 11 Nov 2025 08:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D329313546;
-	Mon, 10 Nov 2025 18:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD06D2BE051;
+	Tue, 11 Nov 2025 08:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="Jn/T6OQK"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UdZNw8Dn"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from relay13.grserver.gr (relay13.grserver.gr [178.156.171.147])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549B52E92BA;
-	Mon, 10 Nov 2025 18:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.156.171.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1375B20297E;
+	Tue, 11 Nov 2025 08:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762798139; cv=none; b=tZ9qWKTV/9Lj3RT+UtUhAIn2RIKU6WJiCgDXlGampgDZZrqVaOUD05oTeGYaPhyOAwJtXKtTmuh6d9ZdluI4TbQwlQxGkqMzTWiUOg2IPXQViTyeKt3BDGhSYpWM600uT9RlmWjw46/sbKCsYGLSNR7Vfk93Ncd4i6XMH9RlrWo=
+	t=1762848411; cv=none; b=QsZuimPDBUqIhHfpgRhLTXieTz8NZMPR2iV2NY1y1Fjp+tOsCZkzcXIjw/PYTnEdypxZPbeVkHwdR+zJ9fOcIHZAUTgLrEpgIt85nrGlBpLoMQwOKEO/WWac2e2LKXsBdLgYX/UVJslozj46hU34Jele9gBGg3kcDTuQsQl2SX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762798139; c=relaxed/simple;
-	bh=ZQuJNwIZQjYCB2Ur2PhZH1//YriBqukPRRd0WBh99gc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZ49HVcB2vgib7WD0AfxsZkXu6lMQLd6N2P6E+H1UQvlOnRfOXbrXQ5BVVhO83E5Q/dDnatc4rsaZAe0M//u2xNXw5wKDHUgAI5nUGIIQq/Tyji2GgJvydI6usDhvEgZuuJYir1xLjbxDgXA02NdNe65pQgN6p5Jc/KNj//fzG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=Jn/T6OQK; arc=none smtp.client-ip=178.156.171.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay13 (localhost [127.0.0.1])
-	by relay13.grserver.gr (Proxmox) with ESMTP id 99E385E620;
-	Mon, 10 Nov 2025 20:08:56 +0200 (EET)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay13.grserver.gr (Proxmox) with ESMTPS id E2B5D5E612;
-	Mon, 10 Nov 2025 20:08:55 +0200 (EET)
-Received: from antheas-z13 (unknown [IPv6:2a05:f6c2:511b:0:8d8a:5967:d692:ea4e])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id 932D61FE461;
-	Mon, 10 Nov 2025 20:08:54 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1762798135;
-	bh=r5vFPIuIqw2Ozjx2rDjoRsAOF4F3nnf121dTH3jiqOk=; h=From:To:Subject;
-	b=Jn/T6OQKO86JxAmfufGVkQpEnV6fWJxiVtniEn8FhDAAx4GPsMumFhzSHSkSFFgLy
-	 7rYLc/6tm56cUywBA2lFX969u3EPhSWq95UzXDY9TaGm16bCiae4P76tnSkfDsPV3+
-	 5Z6ZSqCEaQLJZ22nRo69F160c4+L+b4j5WE20YZi2efONj0QgJx0n1MEoy7DJXMPLh
-	 ri8+WEASGT5MzQDiyC37b4fiuXW9u0S4yF5YY07kR1VhXLWk+boDoK1SKMWyTE3g4Y
-	 AUEPNUGvK8irmF8gy17IWw7yRCNj3Bpa5TA1+Qtwp8g8BUTp1aTKOdsKwLCAL+pNML
-	 fsjXuTNiDnCrA==
-Authentication-Results: linux3247.grserver.gr;
-	spf=pass (sender IP is 2a05:f6c2:511b:0:8d8a:5967:d692:ea4e) smtp.mailfrom=lkml@antheas.dev smtp.helo=antheas-z13
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-From: Antheas Kapenekakis <lkml@antheas.dev>
-To: platform-driver-x86@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Derek John Clark <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	s=arc-20240116; t=1762848411; c=relaxed/simple;
+	bh=ERDWDlrCR1OFZ3SFli4MLVKe8rnfVOHEyUysk2j8pFQ=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=KuIK/Ynv8Oj73WPkFL1sM8yU9MOJptsZlgZefDJu9PjtB9zMqbPyh2QDT/I16eOoD/+0mqxHzFlZMaEeVw7xGUxEQpVOctJRaJGSprn7l04cgLZX51mV0aWkqpx/S0cnoAJEnKpZ8ocGL3CS/a9Lww0EwF76r5myxQd2MdtwdKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UdZNw8Dn; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=x5D65oP2rnABI4e
+	/qjWVaN+fcPwB+ZS72UKyNTmB/gU=; b=UdZNw8DnZqLL3Xxgy4CL8PDmEEbGzif
+	z6Bnk04rHTe1RDJVyPZ27PSpbuGBrVyNE4NxiHpvbCTmRFoRjvyxJxkgTAZrFtwU
+	QAHtAqjPav0w5MBvA2TyrPPa1L383MvEI7YqF5wsNGnA4NjXwhzDp6FcyEWk3pjl
+	eSfbLtV734MI=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCnq6ln7hJpK0KCDA--.117S2;
+	Tue, 11 Nov 2025 16:06:01 +0800 (CST)
+From: Wenliang Yan <wenliang202407@163.com>
+To: linux@roeck-us.net,
 	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Antheas Kapenekakis <lkml@antheas.dev>
-Subject: [PATCH v4 6/6] platform/x86: ayaneo-ec: Add suspend hook
-Date: Mon, 10 Nov 2025 19:08:46 +0100
-Message-ID: <20251110180846.1490726-7-lkml@antheas.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251110180846.1490726-1-lkml@antheas.dev>
-References: <20251110180846.1490726-1-lkml@antheas.dev>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: christophe.jaillet@wanadoo.fr,
+	corbet@lwn.net,
+	devicetree@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wenliang202407@163.com
+Subject: [PATCH 0/8] (hwmon):(ina3221) Various improvement and add support for SQ52210
+Date: Tue, 11 Nov 2025 03:05:38 -0500
+Message-Id: <20251111080546.32421-1-wenliang202407@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:_____wCnq6ln7hJpK0KCDA--.117S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ur1rJrWkJr45Gr4UuFW8Xrb_yoW8Cw4Dpa
+	9ak3s0gw1vqF1xZayakFs7Wry5KFWfZrW2kryUG3yIvr45Gas2gw48Ka4Ut34UAr1xtryD
+	Zay2ywn8uan7CFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JU-VyxUUUUU=
+X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbCvwq0iGkS7mpXaAAA3J
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <176279813508.3664791.15761385760381332320@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
 
-The Ayaneo EC resets after hibernation, losing the charge control state.
-Add a small PM hook to restore this state on hibernation resume.
+Add support for SQ52210 to the ina3221 driver. The datasheet depends on 
+https://us1.silergy.com/cloud/index/uniqid/6912826d13b9c.html or
+https://www.silergy.com/cloud/index/uniqid/6912826d13b9c.html
+The password is 7IUCLe.
 
-The fan speed is also lost during hibernation, but since hibernation
-failures are common with this class of devices, setting a low fan speed
-when the userspace program controlling the fan will potentially not
-take over could cause the device to overheat, so it is not restored.
+- SQ52210 is forward compatible with INA3221 and add alert register to
+  implement four additional alert function.
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
----
- drivers/platform/x86/ayaneo-ec.c | 84 +++++++++++++++++++++++++++++++-
- 1 file changed, 83 insertions(+), 1 deletion(-)
+- Add support for SQ52210, add current registers, power registers, and
+  registers related to alerts.
 
-diff --git a/drivers/platform/x86/ayaneo-ec.c b/drivers/platform/x86/ayaneo-ec.c
-index 9548e3d22093..ee97c326c429 100644
---- a/drivers/platform/x86/ayaneo-ec.c
-+++ b/drivers/platform/x86/ayaneo-ec.c
-@@ -51,6 +51,11 @@ struct ayaneo_ec_platform_data {
- 	struct platform_device *pdev;
- 	struct ayaneo_ec_quirk *quirks;
- 	struct acpi_battery_hook battery_hook;
-+
-+	// Protects access to restore_pwm
-+	struct mutex hwmon_lock;
-+	bool restore_charge_limit;
-+	bool restore_pwm;
- };
- 
- static const struct ayaneo_ec_quirk quirk_fan = {
-@@ -207,10 +212,16 @@ static int ayaneo_ec_read(struct device *dev, enum hwmon_sensor_types type,
- static int ayaneo_ec_write(struct device *dev, enum hwmon_sensor_types type,
- 			   u32 attr, int channel, long val)
- {
-+	struct ayaneo_ec_platform_data *data = dev_get_drvdata(dev);
-+	int ret;
-+
-+	guard(mutex)(&data->hwmon_lock);
-+
- 	switch (type) {
- 	case hwmon_pwm:
- 		switch (attr) {
- 		case hwmon_pwm_enable:
-+			data->restore_pwm = false;
- 			switch (val) {
- 			case 1:
- 				return ec_write(AYANEO_PWM_ENABLE_REG,
-@@ -224,6 +235,17 @@ static int ayaneo_ec_write(struct device *dev, enum hwmon_sensor_types type,
- 		case hwmon_pwm_input:
- 			if (val < 0 || val > 255)
- 				return -EINVAL;
-+			if (data->restore_pwm) {
-+				/*
-+				 * Defer restoring PWM control to after
-+				 * userspace resumes successfully
-+				 */
-+				ret = ec_write(AYANEO_PWM_ENABLE_REG,
-+					       AYANEO_PWM_MODE_MANUAL);
-+				if (ret)
-+					return ret;
-+				data->restore_pwm = false;
-+			}
- 			return ec_write(AYANEO_PWM_REG, (val * 100) / 255);
- 		default:
- 			break;
-@@ -453,11 +475,14 @@ static int ayaneo_ec_probe(struct platform_device *pdev)
- 
- 	data->pdev = pdev;
- 	data->quirks = dmi_entry->driver_data;
-+	ret = devm_mutex_init(&pdev->dev, &data->hwmon_lock);
-+	if (ret)
-+		return ret;
- 	platform_set_drvdata(pdev, data);
- 
- 	if (data->quirks->has_fan_control) {
- 		hwdev = devm_hwmon_device_register_with_info(&pdev->dev,
--			"ayaneo_ec", NULL, &ayaneo_ec_chip_info, NULL);
-+			"ayaneo_ec", data, &ayaneo_ec_chip_info, NULL);
- 		if (IS_ERR(hwdev))
- 			return PTR_ERR(hwdev);
- 	}
-@@ -474,10 +499,67 @@ static int ayaneo_ec_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static int ayaneo_freeze(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct ayaneo_ec_platform_data *data = platform_get_drvdata(pdev);
-+	int ret;
-+	u8 tmp;
-+
-+	if (data->quirks->has_charge_control) {
-+		ret = ec_read(AYANEO_CHARGE_REG, &tmp);
-+		if (ret)
-+			return ret;
-+
-+		data->restore_charge_limit = tmp == AYANEO_CHARGE_VAL_INHIBIT;
-+	}
-+
-+	if (data->quirks->has_fan_control) {
-+		ret = ec_read(AYANEO_PWM_ENABLE_REG, &tmp);
-+		if (ret)
-+			return ret;
-+
-+		data->restore_pwm = tmp == AYANEO_PWM_MODE_MANUAL;
-+
-+		/*
-+		 * Release the fan when entering hibernation to avoid
-+		 * overheating if hibernation fails and hangs.
-+		 */
-+		if (data->restore_pwm) {
-+			ret = ec_write(AYANEO_PWM_ENABLE_REG, AYANEO_PWM_MODE_AUTO);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int ayaneo_restore(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct ayaneo_ec_platform_data *data = platform_get_drvdata(pdev);
-+	int ret;
-+
-+	if (data->quirks->has_charge_control && data->restore_charge_limit) {
-+		ret = ec_write(AYANEO_CHARGE_REG, AYANEO_CHARGE_VAL_INHIBIT);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops ayaneo_pm_ops = {
-+	.freeze = ayaneo_freeze,
-+	.restore = ayaneo_restore,
-+};
-+
- static struct platform_driver ayaneo_platform_driver = {
- 	.driver = {
- 		.name = "ayaneo-ec",
- 		.dev_groups = ayaneo_ec_groups,
-+		.pm = &ayaneo_pm_ops,
- 	},
- 	.probe = ayaneo_ec_probe,
- };
+- Add support for alert-type.
+
+- The LSB for current and power can be pre-calculated for data read/write
+  operations. The current LSB is determined by the calibration value and
+  shunt resistor value, with the calibration value fixed within the driver.
+  The power LSB can be derived from the current LSB.
+
+- SQ52210 adds current, power, and alert-limit sensors, with read/write
+  functions modified to accommodate these new changes.
+
+- SQ52210 adds power attribute to report power data, and implements
+  read/write functions for this purpose.
+
+- Modify the read/write functions for current attributes.
+  SQ52210 can directly use its internal current registers to compare
+  with alert values for implementing curr_lcrit functionality.
+
+Wenliang Yan (8):
+  dt-binding:ti,ina3221:Add SQ52210
+  hwmon:(ina3221)Add support for SQ52210
+  hwmon:(ina3221)Support alert-type
+  hwmon:(ina3221)Pre-calculate current and power LSB
+  hwmon:(ina3221)Introduce power attribute and other characteristics of
+    other attribute
+  hwmon:(ina3221)Modify read/write functions for 'in' attribute
+  hwmon:(ina3221)Support read/write functions for 'power' attribute
+  hwmon:(ina3221)Support read/write functions for current_lcrict
+    attribute
+
+ .../devicetree/bindings/hwmon/ti,ina3221.yaml |  16 +-
+ Documentation/hwmon/ina3221.rst               |  24 +
+ drivers/hwmon/ina3221.c                       | 516 +++++++++++++++++-
+ 3 files changed, 541 insertions(+), 15 deletions(-)
+
 -- 
-2.51.2
-
+2.17.1
 
 
