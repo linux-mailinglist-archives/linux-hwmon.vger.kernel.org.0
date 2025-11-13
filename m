@@ -1,240 +1,122 @@
-Return-Path: <linux-hwmon+bounces-10453-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10457-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAE5C5A179
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Nov 2025 22:25:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7ADEC5A7BB
+	for <lists+linux-hwmon@lfdr.de>; Fri, 14 Nov 2025 00:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CBE3B6C65
-	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Nov 2025 21:22:45 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 741A6353DE1
+	for <lists+linux-hwmon@lfdr.de>; Thu, 13 Nov 2025 23:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E97324709;
-	Thu, 13 Nov 2025 21:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524072E1726;
+	Thu, 13 Nov 2025 23:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="JBBqA4o9"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="aTq5ZOug"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from relay13.grserver.gr (relay13.grserver.gr [178.156.171.147])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA273322DC1;
-	Thu, 13 Nov 2025 21:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.156.171.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589A821D3E8;
+	Thu, 13 Nov 2025 23:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763068953; cv=none; b=H6Fobk+aeUohEKGDNxFmUSBGONov10Figv7loi+LB54JZ+1rzP6P5vwnKYxT6a7iraOrbppUdBIZ3D4tXLKe2dheYQ33nxccc8T4rLqQcHXw3TLgzsWWhC9PdGQGsiisNIFEZXpLFDyOtOYQ/+XgOsK3BVVYGXwrwXA4Ql8fox0=
+	t=1763075473; cv=none; b=owRvX1Q+haJwg/Lz/QQ1UfVTf03N20g+NoTPtUoFim1cKmvRBPVj4Wr4a5wBl5U1NrBGqtKEfSoFES9x7hqEPxnRX7sUt9HCk67F6tvrRlJX/BIfG7JV+HlcUjzemFo4w5fhcaf6TbQvuSUFZ6Hdb1T6DciwpAoPGGMNcwGi8gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763068953; c=relaxed/simple;
-	bh=6fFBry94oQXErOxFwWDaDtT4UtLSMxV13yHR4z70Q7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3n6o/Ju5ZE2I9sfzv0L2xaTUUhU6HnoiDRFWgjJBOSU1mwRIh+x+6ZuAuyIM5EQ9djBzxdTk+jZVI/wajtdydPn8hZU95V4jmGUFVLGykQJ6DrSwO2RxxKJuVVInwniOGwUZ1Gdbom+8PitfhxuXq8xM/MRZq512AAVwUUK7cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (2048-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=JBBqA4o9; arc=none smtp.client-ip=178.156.171.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay13 (localhost [127.0.0.1])
-	by relay13.grserver.gr (Proxmox) with ESMTP id E15BD5E4B1;
-	Thu, 13 Nov 2025 23:22:30 +0200 (EET)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay13.grserver.gr (Proxmox) with ESMTPS id 35C9A5E5FD;
-	Thu, 13 Nov 2025 23:22:30 +0200 (EET)
-Received: from antheas-z13 (unknown [IPv6:2a05:f6c2:511b:0:cbc0:999f:73ad:33bd])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id CA05C20077F;
-	Thu, 13 Nov 2025 23:22:28 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1763068949;
-	bh=+PJEPnC+iIPT826+0B43nFX9FMXwk9R00zUcTbG4sI8=; h=From:To:Subject;
-	b=JBBqA4o9Z67zWw8cPxtA30+pok0gDq0B47HoVOq9hz3HvFQl0ABtBG1/4e17HxcoC
-	 EpRhMY9aaNAyVMpyjmI0YoxdyR/P7ONP0sAh3IrcHnljtredfYXqbint9GUjj6liTs
-	 y3auSnRXIy5zeldfiNooZaUhhjMgxYUy46BGdbtmUUArD+QiplIi9I/4G7QnAmSl3p
-	 +7mgy04xA8DdP5ilSR3BMFg2pzDV7wozeo0np5PAAHNbCcsTIrgxqI5pTkCQfpLhJl
-	 x9S+RQmfvp2iX76tahkzgqZAv50Syw+SroSGdV5H4/4e/zXUPOtqmmWZ7wnFLs/+TD
-	 qKo1wU3H2cYAQ==
-Authentication-Results: linux3247.grserver.gr;
-	spf=pass (sender IP is 2a05:f6c2:511b:0:cbc0:999f:73ad:33bd) smtp.mailfrom=lkml@antheas.dev smtp.helo=antheas-z13
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-From: Antheas Kapenekakis <lkml@antheas.dev>
-To: platform-driver-x86@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Derek John Clark <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Antheas Kapenekakis <lkml@antheas.dev>
-Subject: [PATCH v5 6/6] platform/x86: ayaneo-ec: Add suspend hook
-Date: Thu, 13 Nov 2025 22:22:21 +0100
-Message-ID: <20251113212221.456875-7-lkml@antheas.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251113212221.456875-1-lkml@antheas.dev>
-References: <20251113212221.456875-1-lkml@antheas.dev>
+	s=arc-20240116; t=1763075473; c=relaxed/simple;
+	bh=frxn0IvtIXiU4Ye6BwNmJWBCWzKVKKR8zicTclVfg8M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qDGyamCGI1fm9V321oI9teTemJ7AjHvICyazafcCl07BqGiScXK7hnunOxZzjyCZrtmRHQDtPfIh2onUHrVAHrcczuXTidbWMR2SQNoN8Uj2YGZgXZApQNLtO68iY3T4waG7/ZhH7z7Y3Zu8/bGcUoydltiL6vBZAYtqRbOF38E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=aTq5ZOug; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=Y8HrovWKvX8y7aX2LjmCc1TForPMWvEd0h0ldABH8kE=; b=aTq5ZOugdqXehvFWdT2qzAJeS0
+	u7943KvWT3ZOM0mtIJFBq0FmAAXUFe6JrgSxeb3xwhHHWo+vUE+Dz3G5VALHCTnppO7C6MOuqLQNu
+	kos5O5NLA22UDBDNIINnQwvncbydSuqQBnA/9wb2ui3nskCOP9qlhWuUE9x0O2s0YeQOqZj3jNy4y
+	ZcKL48dFtkwTD978qzuDQT4csxae1328e7sZbsXk/373mRPUKS2gtmA2pI7fjIGBFtLRe/a8UlXty
+	PQXhb4kxvBVAGLjXj9gWygyQ+elpyIgHCMGge/Hc1ELl8seosdUeUVKxe+8QRV79u6rlt3cbqgp/Z
+	lflkQ36g==;
+From: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH v2 0/3] regulator: Add FP9931/JD9930
+Date: Fri, 14 Nov 2025 00:06:40 +0100
+Message-Id: <20251114-fp9931-submit-v2-0-cd6998932c4c@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <176306894933.663294.16500678596266657250@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIBkFmkC/3XMQQ7CIBCF4as0sxYDaEtw1XuYLqAMdmJKG6hE0
+ 3B3sXuX/0vet0PCSJjg1uwQMVOiJdSQpwbGyYQHMnK1QXLZCsEV86vWF8HSy860MW5GedW2dZ3
+ lUD9rRE/vw7sPtSdK2xI/B5/Fb/0nZcE4M0ZZpZ021nb9E+dgHJ4p+AWGUsoX/D3/960AAAA=
+X-Change-ID: 20251107-fp9931-submit-0ac249b5d6b0
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Guenter Roeck <linux@roeck-us.net>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>
+X-Mailer: b4 0.15-dev-a6db3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1806; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=frxn0IvtIXiU4Ye6BwNmJWBCWzKVKKR8zicTclVfg8M=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJliKceEXh/s3cp10tEmsYPFuLzVf3ON6YtF8Qnr/4X8m
+ vjm96HDHaUsDGJcDLJiiiy/rBXcPqk8yw2eGmEPM4eVCWQIAxenAExE5RHD/5yOyZujyy61LTp5
+ 0CXrpJZYqZHf1vmxImdLcpm3BiXVezP8FSg48PaszALJOfNvfrjMEZtu177QIlnUS63fYtuOks4
+ H/AA=
+X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
+ fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-The Ayaneo EC resets after hibernation, losing the charge control state.
-Add a small PM hook to restore this state on hibernation resume.
+Add a driver for the FP9931/JD9930 regulator which provides the
+comparatively high voltages needed for electronic paper displays.
 
-The fan speed is also lost during hibernation, but since hibernation
-failures are common with this class of devices, setting a low fan speed
-when the userspace program controlling the fan will potentially not
-take over could cause the device to overheat, so it is not restored.
+Datasheet for the FP9931 is at
+https://www.fitipower.com/dl/file/flXa6hIchVeu0W3K
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Although it is in English, it seems to be only downloadable
+from the Chinese part of that website. 
+For the JD9930 there can be a datasheet found at
+https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/JD9930_2D00_0.7_2D00_JUN_2D00_2019.pdf
+
+To simplify things, include the hwmon part directly which is only
+one register read and there are not other functions besides
+regulators in this chip.
+
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
- drivers/platform/x86/ayaneo-ec.c | 84 +++++++++++++++++++++++++++++++-
- 1 file changed, 83 insertions(+), 1 deletion(-)
+Changes in v2:
+- vendor prefix fiti->fitipower
+- tdly in ms with enum
+- no #thermal-sensor-cells
+- regulator node names lowercase and under regulators subnode
+- s/ts-en/en-ts/
+- remove duplicate v3p3 of_match
+- remove ancient driver.owner assignmed
+- some style cleanup
+- Link to v1: https://patch.msgid.link/20251107-fp9931-submit-v1-0-aa7b79d9abb6@kemnade.info
 
-diff --git a/drivers/platform/x86/ayaneo-ec.c b/drivers/platform/x86/ayaneo-ec.c
-index 814f7f028710..3f40429acbd4 100644
---- a/drivers/platform/x86/ayaneo-ec.c
-+++ b/drivers/platform/x86/ayaneo-ec.c
-@@ -52,6 +52,11 @@ struct ayaneo_ec_platform_data {
- 	struct platform_device *pdev;
- 	struct ayaneo_ec_quirk *quirks;
- 	struct acpi_battery_hook battery_hook;
-+
-+	// Protects access to restore_pwm
-+	struct mutex hwmon_lock;
-+	bool restore_charge_limit;
-+	bool restore_pwm;
- };
- 
- static const struct ayaneo_ec_quirk quirk_fan = {
-@@ -208,10 +213,16 @@ static int ayaneo_ec_read(struct device *dev, enum hwmon_sensor_types type,
- static int ayaneo_ec_write(struct device *dev, enum hwmon_sensor_types type,
- 			   u32 attr, int channel, long val)
- {
-+	struct ayaneo_ec_platform_data *data = dev_get_drvdata(dev);
-+	int ret;
-+
-+	guard(mutex)(&data->hwmon_lock);
-+
- 	switch (type) {
- 	case hwmon_pwm:
- 		switch (attr) {
- 		case hwmon_pwm_enable:
-+			data->restore_pwm = false;
- 			switch (val) {
- 			case 1:
- 				return ec_write(AYANEO_PWM_ENABLE_REG,
-@@ -225,6 +236,17 @@ static int ayaneo_ec_write(struct device *dev, enum hwmon_sensor_types type,
- 		case hwmon_pwm_input:
- 			if (val < 0 || val > 255)
- 				return -EINVAL;
-+			if (data->restore_pwm) {
-+				/*
-+				 * Defer restoring PWM control to after
-+				 * userspace resumes successfully
-+				 */
-+				ret = ec_write(AYANEO_PWM_ENABLE_REG,
-+					       AYANEO_PWM_MODE_MANUAL);
-+				if (ret)
-+					return ret;
-+				data->restore_pwm = false;
-+			}
- 			return ec_write(AYANEO_PWM_REG, (val * 100) / 255);
- 		default:
- 			break;
-@@ -454,11 +476,14 @@ static int ayaneo_ec_probe(struct platform_device *pdev)
- 
- 	data->pdev = pdev;
- 	data->quirks = dmi_entry->driver_data;
-+	ret = devm_mutex_init(&pdev->dev, &data->hwmon_lock);
-+	if (ret)
-+		return ret;
- 	platform_set_drvdata(pdev, data);
- 
- 	if (data->quirks->has_fan_control) {
- 		hwdev = devm_hwmon_device_register_with_info(&pdev->dev,
--			"ayaneo_ec", NULL, &ayaneo_ec_chip_info, NULL);
-+			"ayaneo_ec", data, &ayaneo_ec_chip_info, NULL);
- 		if (IS_ERR(hwdev))
- 			return PTR_ERR(hwdev);
- 	}
-@@ -475,10 +500,67 @@ static int ayaneo_ec_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static int ayaneo_freeze(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct ayaneo_ec_platform_data *data = platform_get_drvdata(pdev);
-+	int ret;
-+	u8 tmp;
-+
-+	if (data->quirks->has_charge_control) {
-+		ret = ec_read(AYANEO_CHARGE_REG, &tmp);
-+		if (ret)
-+			return ret;
-+
-+		data->restore_charge_limit = tmp == AYANEO_CHARGE_VAL_INHIBIT;
-+	}
-+
-+	if (data->quirks->has_fan_control) {
-+		ret = ec_read(AYANEO_PWM_ENABLE_REG, &tmp);
-+		if (ret)
-+			return ret;
-+
-+		data->restore_pwm = tmp == AYANEO_PWM_MODE_MANUAL;
-+
-+		/*
-+		 * Release the fan when entering hibernation to avoid
-+		 * overheating if hibernation fails and hangs.
-+		 */
-+		if (data->restore_pwm) {
-+			ret = ec_write(AYANEO_PWM_ENABLE_REG, AYANEO_PWM_MODE_AUTO);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int ayaneo_restore(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct ayaneo_ec_platform_data *data = platform_get_drvdata(pdev);
-+	int ret;
-+
-+	if (data->quirks->has_charge_control && data->restore_charge_limit) {
-+		ret = ec_write(AYANEO_CHARGE_REG, AYANEO_CHARGE_VAL_INHIBIT);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops ayaneo_pm_ops = {
-+	.freeze = ayaneo_freeze,
-+	.restore = ayaneo_restore,
-+};
-+
- static struct platform_driver ayaneo_platform_driver = {
- 	.driver = {
- 		.name = "ayaneo-ec",
- 		.dev_groups = ayaneo_ec_groups,
-+		.pm = &ayaneo_pm_ops,
- 	},
- 	.probe = ayaneo_ec_probe,
- };
--- 
-2.51.2
+---
+Andreas Kemnade (3):
+      dt-bindings: vendor-prefixes: Add Fitipower
+      dt-bindings: regulator: Add Fitipower FP9931/JD9930
+      regulator: Add FP9931/JD9930 driver
 
+ .../bindings/regulator/fitipower,fp9931.yaml       | 110 ++++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ drivers/regulator/Kconfig                          |  10 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/fp9931.c                         | 564 +++++++++++++++++++++
+ 5 files changed, 687 insertions(+)
+---
+base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
+change-id: 20251107-fp9931-submit-0ac249b5d6b0
+
+Best regards,
+--  
+Andreas Kemnade <andreas@kemnade.info>
 
 
