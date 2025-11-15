@@ -1,49 +1,49 @@
-Return-Path: <linux-hwmon+bounces-10481-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10484-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF456C600AF
-	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Nov 2025 07:51:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F421C600CA
+	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Nov 2025 07:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D1ECE4E1D6A
-	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Nov 2025 06:51:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4B011342FAC
+	for <lists+linux-hwmon@lfdr.de>; Sat, 15 Nov 2025 06:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920481C84BD;
-	Sat, 15 Nov 2025 06:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2D522173F;
+	Sat, 15 Nov 2025 06:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="S7Bsd1Wp"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="Yv7Tadu4"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6F47B3E1;
-	Sat, 15 Nov 2025 06:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CAE212564;
+	Sat, 15 Nov 2025 06:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763189492; cv=none; b=dAGTTP2iR47iYbn++ATy7epNkvzm6OBoIPCKH7V09reUGnORlXXFY8rqUH8dL4zyE0dW9C/MlTD0lpUwouyQZBSUtlywXtVY6mL+8POL7Acyf5d7hg5iDRGUOlWwRii8AIhu7B/0oTQerVTexk6KSlJPWZnKEMCajGfqodLjtEw=
+	t=1763189503; cv=none; b=L9hodomCTB4IyTwBfyMHVyK8kTERIS/qH2M1nHXcAnEb6H/AnWKYeykza6CFPPW1V9fFheZESH45uKqISc2tc1uWzX2KsMx2OX6S73b+QULTgI8pIBDGJ/DZQTS7Hp9UFRZEY0u2GHfPV4P8hDfzZ2NE1lyTBUhQsCnWEuryx00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763189492; c=relaxed/simple;
-	bh=jYbQ7o0KxICJbcxjzxdMBcwRk7D4INZnd7TgdDh9Z5I=;
+	s=arc-20240116; t=1763189503; c=relaxed/simple;
+	bh=Q7JNebQ4U/2zuHXE40sWwu7o80kowIfwZICYwwVMlas=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M2GQPcm2VrgBqJ/aTIIPlmpily32JlKJTaILZ9MusvbBqLpehqEKUBrN93byyGJd5XbiScs4DVgQDCqpQLLMKDnimGYKV8HeBuSvcAxZcJMXqZzuMzjMuGfDbX1PMGSHzlftdMEyff4amwMIFoonYqfXSxIEcrymhm9mfgUcPww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=S7Bsd1Wp; arc=none smtp.client-ip=178.238.236.174
+	 In-Reply-To:To:Cc; b=Wjot92vwk+OrjlKBjXR1Q7ikgsV28mJjkbeTsMBU8uWu+BwVNH6nWDKNbIARKwtVyIgTJMFBqVg8Vkfx1aEOpB+3txeM8Gyvx4kAkg51k3C4UfIqK8c5y/mfBpfqwcpPmguAWjuhx1aiTve7cd/p/ZnH5Gx6FHush+Sod949E0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=Yv7Tadu4; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=Cc:In-Reply-To:References:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=n/jAlABld68ENZLcMexUg87ks9Doqw4zXG+gu9ErXMA=; b=S7Bsd1WpoMJcCrjaPKl/eInG9A
-	cLokeY3Tz/Flc+PECf12Ni68b3qv0M+lXvyAIWXOW0DYrf8InnDp/sWeMfhVsuN9Bf4zWWUPz5gf5
-	1X9i4n0xmVqNrT0AwswPs8GcY3WJ5Uty80ovp7YbTQ7F+QtX6mcVXjPQxXsKJkFJjjTvxm+QIFBt5
-	x3bMawn7ql5rFyxRdqVF/hWuMIjel7gOWdETBkxJw+vsVzFdv8YkmAASH3Wz2dKDK82O6c7CgPd+F
-	YC6ZgHs/21fXM5vUfrbmPjk/44wH9wGAfzDyChPpU5i4McOHDpMx9MN/JdtQ/TBP8P/1j0BcA+mMC
-	XlR9Irqg==;
+	bh=lEtM6gPQ+ek7FwxvRJrZY/vlEduvTnNP2Ergo2QpDSU=; b=Yv7Tadu4KG43HrczqwZvxckvdZ
+	tzDzLNDXcnvZfGJG+KTnEC1f2k12kcCS2ZhFsTV40gBN7+05vvR22pQ6Z8Ueh0NIAN1QPAq/mV/pY
+	hO+auksMaDMGCccvrl5uJp5meoCN0cMOJlfsMDgaN03gTGJBINBf9+lC23BVoXjNmdx+YVISULCV+
+	DkRdMhuaXVsPC9Zn2vrNMwmG3d7JVYs0SNqoNXA2ApbzFkkLnWHfV4kiayRuI4vqMNHkdjD6Ot9+l
+	nCE6cXZHB4U9ifpX4xEXcPor3xmg68nDAXzXnsUYalLONPhPbA2fXxi7U4kEQuXC2worEZp+xmo4+
+	e47XlWag==;
 From: Andreas Kemnade <andreas@kemnade.info>
-Date: Sat, 15 Nov 2025 07:50:49 +0100
-Subject: [PATCH v3 1/3] dt-bindings: vendor-prefixes: Add Fitipower
+Date: Sat, 15 Nov 2025 07:50:50 +0100
+Subject: [PATCH v3 2/3] dt-bindings: regulator: Add Fitipower FP9931/JD9930
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251115-fp9931-submit-v3-1-92f5d0772b68@kemnade.info>
+Message-Id: <20251115-fp9931-submit-v3-2-92f5d0772b68@kemnade.info>
 References: <20251115-fp9931-submit-v3-0-92f5d0772b68@kemnade.info>
 In-Reply-To: <20251115-fp9931-submit-v3-0-92f5d0772b68@kemnade.info>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -62,36 +62,141 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-hwmon@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=882; i=andreas@kemnade.info;
- h=from:subject:message-id; bh=jYbQ7o0KxICJbcxjzxdMBcwRk7D4INZnd7TgdDh9Z5I=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJkSSo+DBCaFnu1lNVxSumx/Rt3UmpaOGg43a1V5ve9W6
- +cvOf25o5SFQYyLQVZMkeWXtYLbJ5VnucFTI+xh5rAygQxh4OIUgInI7mJk+DpN7R+H8K6WKRv2
- +d2sNnzZFLfL49+qv2vusnIEPq2WEWJk2HZeQVc2euKXsNSFP3a/Y+X597/v1e3oMv6CGUrXp78
- IYgAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3716; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=Q7JNebQ4U/2zuHXE40sWwu7o80kowIfwZICYwwVMlas=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJkSSo9t1PgzxXdHa3/0ehujwXDqiPekncq1m5qjDB8p/
+ pL4FqfQUcrCIMbFICumyPLLWsHtk8qz3OCpEfYwc1iZQIYwcHEKwERYahgZ9vA2aGUsfppd/qju
+ omXhatuJUQGTH+7fUZHzo9nBgkfqKcNvljU1m5q235Kr/Gi04NDbo8wvlWNq167aFfaFbbJEZ08
+ EHwA=
 X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
  fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-Add Fitipower Integrated Technology Inc. to the vendor prefixes.
+Document the FP9931/JD9930. As the FP9931 is a clear subset of the JD9930,
+define it as a fallback compatible. GPIO names are same as in the datasheet
+except for the EN pad which is described as "enable".
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ .../bindings/regulator/fitipower,fp9931.yaml       | 110 +++++++++++++++++++++
+ 1 file changed, 110 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index f1d1882009ba..80fbde5ac48f 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -570,6 +570,8 @@ patternProperties:
-     description: Foxconn Industrial Internet
-   "^firefly,.*":
-     description: Firefly
-+  "^fitipower,.*":
-+    description: Fitipower Integrated Technology Inc.
-   "^flipkart,.*":
-     description: Flipkart Inc.
-   "^focaltech,.*":
+diff --git a/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml b/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml
+new file mode 100644
+index 000000000000..c6585e3bacbe
+--- /dev/null
++++ b/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml
+@@ -0,0 +1,110 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/regulator/fitipower,fp9931.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: FitiPower FP9931/JD9930 Power Management Integrated Circuit
++
++maintainers:
++  - Andreas Kemnade <andreas@kemnade.info>
++
++description:
++  FP9931 is a Power Management IC to provide Power for EPDs with one 3.3V
++  switch, 2 symmetric LDOs behind 2 DC/DC converters, and one unsymmetric
++  regulator for a compensation voltage.
++  JD9930 has in addition some kind of night mode.
++
++properties:
++  compatible:
++    oneOf:
++      - const: fitipower,fp9931
++
++      - items:
++          - const: fitipower,jd9930
++          - const: fitipower,fp9931
++
++  reg:
++    maxItems: 1
++
++  enable-gpios:
++    maxItems: 1
++
++  pg-gpios:
++    maxItems: 1
++
++  en-ts-gpios:
++    maxItems: 1
++
++  xon-gpios:
++    maxItems: 1
++
++  vin-supply:
++    description:
++      Supply for the whole chip. Some vendor kernels and devicetrees
++      declare this as a non-existing GPIO named "pwrall".
++
++  fitipower,tdly-ms:
++    description:
++      Power up soft start delay settings tDLY1-4 bitfields in the
++      POWERON_DELAY register
++    items:
++      - enum: [0, 1, 2, 4]
++      - enum: [0, 1, 2, 4]
++      - enum: [0, 1, 2, 4]
++      - enum: [0, 1, 2, 4]
++
++  regulators:
++    type: object
++    additionalProperties: false
++    patternProperties:
++      "^(vcom|vposneg|v3p3)$":
++        unevaluatedProperties: false
++        type: object
++        $ref: /schemas/regulator/regulator.yaml
++
++required:
++  - compatible
++  - reg
++  - pg-gpios
++  - enable-gpios
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pmic@18 {
++            compatible = "fitipower,fp9931";
++            reg = <0x18>;
++            pinctrl-names = "default";
++            pinctrl-0 = <&pinctrl_fp9931_gpio>;
++            vin-supply = <&epd_pmic_supply>;
++            pg-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
++            en-ts-gpios = <&gpio2 9 GPIO_ACTIVE_HIGH>;
++            enable-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
++            fitipower,tdly-ms = <2 2 4 4>;
++
++            regulators {
++                vcom {
++                    regulator-name = "vcom";
++                    regulator-min-microvolt = <2352840>;
++                    regulator-max-microvolt = <2352840>;
++                };
++
++                vposneg {
++                    regulator-name = "vposneg";
++                    regulator-min-microvolt = <15060000>;
++                    regulator-max-microvolt = <15060000>;
++                };
++
++                v3p3 {
++                    regulator-name = "v3p3";
++                };
++            };
++        };
++    };
 
 -- 
 2.47.3
