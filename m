@@ -1,111 +1,174 @@
-Return-Path: <linux-hwmon+bounces-10584-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10580-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1000C72CD8
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 09:24:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEDFC72C8A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 09:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E9F8235A5E0
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 08:22:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C51204E68A4
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 08:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2570D311C14;
-	Thu, 20 Nov 2025 08:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D292E30B512;
+	Thu, 20 Nov 2025 08:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IzTO/17H"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="L+v8P35Z"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8E53101B6;
-	Thu, 20 Nov 2025 08:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4585630AD04;
+	Thu, 20 Nov 2025 08:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763626852; cv=none; b=JUVfgUFxvwa0ft7R4VCxRCBFgN2ZEmOgY4RZV/9gBlG9JxtrtoA3+9RMGoyePlbYp4UPx49Zt8N4PlGiP7paGdbDwox4f5Jzc41wph7i1vkJ30Joc41c8pPRhC60/6xOptFCoePmAMFOrlDfWH1LsM/bXQUvDrwbhNLn8cWdVwk=
+	t=1763626846; cv=none; b=RfikyHL4U1LW4/5MkeR5hYj2mK6WOhTJgxEAtHEyGYURI0LEPOT028XDD1xCYhbdGBsbUzjPOMnMI+3LyZVT1EXr7fnVc6Ny5qh3SzvEUJM6+FAeY+YNquwffaFqqHFJYRpIAvbgNxVbtnHnEWbyi2yI86f7+hb/KyjukFAfkoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763626852; c=relaxed/simple;
-	bh=veV9uBc/4+2aXJkyUrwX782yhnEiSwH07lp6tyy/BGE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Evm8MtNfHHYuJLKYCnVVgOJsguRuY7GR1kXJJJfPKQQFzjRqPJ0HdFtO8AAh7/Sqo6FPVPjlDo8O2dymtKD0CuZLtnX2FGlEsb5/mGH8MaSZZerD4lhvquBkdAspogoXRii1NWVcR79n21j6I3IVwJQAYzvQPFWlmPHdzSo2o7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IzTO/17H; arc=none smtp.client-ip=220.197.31.4
+	s=arc-20240116; t=1763626846; c=relaxed/simple;
+	bh=yyRpSRt2XpliHBt1AW/V4VfYQBqCxqaKqY7JEeIWjjs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=dyOzQBcr2j8vCYZVWMMnEtnIC7LLfHapagVmsOnto1nqmb/qK7WjBsUqUzzBuBc6s3+hO1hsRvFXJaGxGMfX5vMAnl+EB/Ou7mRDTQqHePKS4PBy/Rl0WzIpvLOLIS79SlYa5w8zVpij+jvysknpqluQYh7rajE9QUoXjvAC4Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=L+v8P35Z; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=f8CQJTckkb9TGfo
-	mcbXlA1LWAw7cih0RzjzYbL9VEVM=; b=IzTO/17HtNaBDqKlH0ejU6Me1+07Fww
-	vcJe1G2ZTuyPs/qCD7aBMIGPeCgiQI2z2JpHfGxSWTNlxGu3VEM3jtfchc1E3pgI
-	V23KPCDmspqBCMYcItHoG4eP8NLBsSrjY+bNuxTJIJeZhb9b0JCSGo1FyIo2LJFE
-	VAtXuJVqvkpY=
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=IFaa8TjMQuUxKfS
+	ecCtgY0np35W5UehqzhG+E4SNZcU=; b=L+v8P35ZQdGdHHp/zGYZjQ8dJ5ZhYC3
+	SbHhVt0qUaQJts//FVshivW1TZ7ivLcfK/mmX36/LsTXzTgg4gCWPbX9oDbmKk7h
+	edgFpUxsyITc/VwkgEKFM//L7GC0M7zptdEzSL7Wmf3gcEGhMUivu3lDinF+nDki
+	uZggRG33aqjg=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3BPAwzx5p45f2BA--.17S3;
-	Thu, 20 Nov 2025 16:20:05 +0800 (CST)
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3BPAwzx5p45f2BA--.17S4;
+	Thu, 20 Nov 2025 16:20:06 +0800 (CST)
 From: Wenliang Yan <wenliang202407@163.com>
 To: linux@roeck-us.net,
-	Jean Delvare <jdelvare@suse.com>,
+	Jean Delvare <jdelvare@suse.com>
+Cc: Wenliang Yan <wenliang202407@163.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Wenliang Yan <wenliang202407@163.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/8] dt-bindings: hwmon: ti,ina3221: Add SQ52210
-Date: Thu, 20 Nov 2025 03:19:14 -0500
-Message-Id: <20251120081921.39412-2-wenliang202407@163.com>
+Subject: [PATCH v3 2/8] hwmon: (ina3221) Add support for SQ52210
+Date: Thu, 20 Nov 2025 03:19:15 -0500
+Message-Id: <20251120081921.39412-3-wenliang202407@163.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251120081921.39412-1-wenliang202407@163.com>
 References: <20251120081921.39412-1-wenliang202407@163.com>
-X-CM-TRANSID:_____wA3BPAwzx5p45f2BA--.17S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4UGFWfuw17KFW8uF45KFg_yoW8GFykpF
-	s3CFyUGr1Sqr1fZ39rKFsY9F15Jrn7ua12kFnrJw4SqF4DG34Fq393Kw1qyFn8ArWfXFWU
-	WFyI9r4Fg3s7Ar7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUgNVkUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/1tbibhEM02kezo8TfQAAs4
+X-CM-TRANSID:_____wA3BPAwzx5p45f2BA--.17S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFW8Xr1UJFWDXrW3AF1kXwb_yoW5Zw4rpa
+	n5Aa4rtr45Xr4Ig3yfKFs5tF15tr4xG3yIvrnrK3yIva1DAry0gF1rKw4qyF98ZFyfZF47
+	X34Iy3y8uwnrJr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRbzV8UUUUU=
+X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbCvxbitmkezzbYVAAA3-
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 
-Add a compatible string for SQ52210, provide brief descriptions for
-both INA3221 and SQ52210, and define the compatibility relationship
-between SQ52210 and INA3221.
-SQ52210 is backward compatible with INA3221.
+SQ52210 is compatible with INA3221, but also includes current registers,
+power registers, and registers related to alerts.
 
 Signed-off-by: Wenliang Yan <wenliang202407@163.com>
 ---
- .../devicetree/bindings/hwmon/ti,ina3221.yaml     | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/hwmon/ina3221.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
-index 5f10f1207d69..2dd2fd148792 100644
---- a/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
-@@ -10,9 +10,22 @@ maintainers:
-   - Jean Delvare <jdelvare@suse.com>
-   - Guenter Roeck <linux@roeck-us.net>
+diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
+index 5ecc68dcf169..47ef4fe694ea 100644
+--- a/drivers/hwmon/ina3221.c
++++ b/drivers/hwmon/ina3221.c
+@@ -34,6 +34,17 @@
+ #define INA3221_SHUNT_SUM		0x0d
+ #define INA3221_CRIT_SUM		0x0e
+ #define INA3221_MASK_ENABLE		0x0f
++#define SQ52210_ALERT_CONFIG	0x12
++#define SQ52210_CALIBRATION		0x14
++#define SQ52210_CURRENT1		0x15
++#define SQ52210_CURRENT2		0x16
++#define SQ52210_CURRENT3		0x17
++#define SQ52210_POWER1			0x18
++#define SQ52210_POWER2			0x19
++#define SQ52210_POWER3			0x1A
++#define SQ52210_ALERT_LIMIT1	0x1B
++#define SQ52210_ALERT_LIMIT2	0x1C
++#define SQ52210_ALERT_LIMIT3	0x1D
  
-+description: |
-+  The INA3221 is a three-channel, high-side current and bus voltage monitor.
-+
-+  The Silergy SQ52210 is a power monitor that extends the functionality of
-+  the INA3221 by adding additional current registers, power registers, and
-+  alert registers. These features are configured internally by the driver
-+  and require no board-level device tree configuration.
-+
- properties:
-   compatible:
--    const: ti,ina3221
-+    oneOf:
-+      - items:
-+          - const: silergy,sq52210
-+          - const: ti,ina3221
-+      - items:
-+          - const: ti,ina3221
+ #define INA3221_CONFIG_MODE_MASK	GENMASK(2, 0)
+ #define INA3221_CONFIG_MODE_POWERDOWN	0
+@@ -108,8 +119,11 @@ struct ina3221_input {
+ 	bool summation_disable;
+ };
  
-   reg:
-     maxItems: 1
++enum ina3221_ids { ina3221, sq52210 };
++
+ /**
+  * struct ina3221_data - device specific information
++ * @chip: Chip type identifier
+  * @pm_dev: Device pointer for pm runtime
+  * @regmap: Register map of the device
+  * @fields: Register fields of the device
+@@ -120,6 +134,8 @@ struct ina3221_input {
+  * @single_shot: running in single-shot operating mode
+  */
+ struct ina3221_data {
++	enum ina3221_ids chip;
++
+ 	struct device *pm_dev;
+ 	struct regmap *regmap;
+ 	struct regmap_field *fields[F_MAX_FIELDS];
+@@ -734,6 +750,7 @@ static const struct regmap_range ina3221_yes_ranges[] = {
+ 	regmap_reg_range(INA3221_CONFIG, INA3221_BUS3),
+ 	regmap_reg_range(INA3221_SHUNT_SUM, INA3221_SHUNT_SUM),
+ 	regmap_reg_range(INA3221_MASK_ENABLE, INA3221_MASK_ENABLE),
++	regmap_reg_range(SQ52210_ALERT_CONFIG, SQ52210_POWER3),
+ };
+ 
+ static const struct regmap_access_table ina3221_volatile_table = {
+@@ -818,13 +835,18 @@ static int ina3221_probe(struct i2c_client *client)
+ 	struct device *dev = &client->dev;
+ 	struct ina3221_data *ina;
+ 	struct device *hwmon_dev;
++	enum ina3221_ids chip;
+ 	char name[32];
+ 	int i, ret;
+ 
++	chip = (uintptr_t)i2c_get_match_data(client);
++
+ 	ina = devm_kzalloc(dev, sizeof(*ina), GFP_KERNEL);
+ 	if (!ina)
+ 		return -ENOMEM;
+ 
++	ina->chip = chip;
++
+ 	ina->regmap = devm_regmap_init_i2c(client, &ina3221_regmap_config);
+ 	if (IS_ERR(ina->regmap)) {
+ 		dev_err(dev, "Unable to allocate register map\n");
+@@ -996,13 +1018,21 @@ static DEFINE_RUNTIME_DEV_PM_OPS(ina3221_pm, ina3221_suspend, ina3221_resume,
+ 				 NULL);
+ 
+ static const struct of_device_id ina3221_of_match_table[] = {
+-	{ .compatible = "ti,ina3221", },
++	{
++		.compatible = "silergy,sq52210",
++		.data = (void *)sq52210
++	},
++	{
++		.compatible = "ti,ina3221",
++		.data = (void *)ina3221
++	},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, ina3221_of_match_table);
+ 
+ static const struct i2c_device_id ina3221_ids[] = {
+-	{ "ina3221" },
++	{ "ina3221", ina3221 },
++	{ "sq52210", sq52210 },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(i2c, ina3221_ids);
 -- 
 2.17.1
 
