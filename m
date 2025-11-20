@@ -1,108 +1,102 @@
-Return-Path: <linux-hwmon+bounces-10579-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10582-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1C2C72B2D
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 09:02:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD6C72C99
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 09:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A2352352B2F
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 08:02:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7C054E6CF3
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 08:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272BC288C0E;
-	Thu, 20 Nov 2025 08:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BC730C361;
+	Thu, 20 Nov 2025 08:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s9tcBmKw"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XgSq4ELR"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA339221271;
-	Thu, 20 Nov 2025 08:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A59030BF60;
+	Thu, 20 Nov 2025 08:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763625728; cv=none; b=f6Hmntb/Uq2j5SF/C2r9mfm7N50BdMZzi8wN6u1fbhG8rEFemBwp5zgHK/jJU95XUnzBdfoQHJvXvFUIR0nyGYHCPqQOnLEx231mJ6rzlMy0dL4+jX7KK9PqgnzsZXdOj9PSThlsCTJGsj9uKz/pg3DhLZDRsvteediDUnhqym0=
+	t=1763626849; cv=none; b=pRqqkJbxUTLe6F2EAGLfUm/gdf0uv69fO1qBIvk9BHzXnAJqdaCy7vAR8HHpd4klzVwBqL0zCpylTSvggR8If8aCaFPBBQJOJSV3AWiIr43Cmf3IENN2ysmamBL5SVBpbm+xr7yZ0oHc8kCRzvNUhdmsyGMJlt0uPS45R03dXBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763625728; c=relaxed/simple;
-	bh=mmzn6UC+XT6yk7vSSz8rO7MiIRbmBMxComsmjWtmqgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b5vdcoKH1kZNPMK7MOjJXQ3jjdg3xU6ET7ZuC7rlsKzXi6WZOZLUsUmOkdG8Kb5wfEQ/uokcIFcaDKU/vtdNa+DwEk2tTuq3UiqAsMZBjZjUgtnyYY6d7r3u3+VfLHSlJ2YkLt8BaQ7bSA8WCzbE7g2Sq3F20BifCkpU2WL1Hmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s9tcBmKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13C5C4CEF1;
-	Thu, 20 Nov 2025 08:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763625724;
-	bh=mmzn6UC+XT6yk7vSSz8rO7MiIRbmBMxComsmjWtmqgk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s9tcBmKw0xtxde1vbfu3KXoQuJJ3WllVlxNvksp/DTOano8dJrxkPVs6Kh2TnOwy9
-	 qBPFGbKin+c4hnQBC8+z7gQ2nD57Rp0ze9ZRiHiGYc4I1qSFG4PDYEJ8xjiEMpMq1b
-	 pes05/5SRpfgJ0VXRNxc01vkxR8ohZ9ITvOrbnm08nEPHYofAM7ebTXecT0c3nf5T5
-	 SEVKYOAL61kEi/t/x/1aoNhUVKTHh76wsBwRAKj5GxDYMeYJRDmJRHPpoZz/MHzEKB
-	 6TDS9wKD3hT/yaACF8w5zUdK3TEzwNGyIWjlv98htce4cZKT3XQ2RGGJ+F1X06H5zH
-	 aFEbcKYk9AmAQ==
-Date: Thu, 20 Nov 2025 09:02:02 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Thomas Marangoni <Thomas.Marangoni@becom-group.com>
-Cc: linux-hwmon@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, linux@roeck-us.net, corbet@lwn.net, Jonathan.Cameron@huawei.com, 
-	michal.simek@amd.com, nuno.sa@analog.com, Frank.Li@nxp.com, wenswang@yeah.net, 
-	apokusinski01@gmail.com, dixitparmar19@gmail.com, vassilisamir@gmail.com, 
-	paweldembicki@gmail.com, heiko@sntech.de, neil.armstrong@linaro.org, 
-	kever.yang@rock-chips.com, prabhakar.mahadev-lad.rj@bp.renesas.com, mani@kernel.org, 
-	dev@kael-k.io, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: Add trivial-devices for WSEN-tids
- temperature sensor and wsen as vendor-prefix
-Message-ID: <20251120-towering-clam-of-memory-d96a6e@kuoka>
-References: <20251119125145.2402620-1-Thomas.Marangoni@becom-group.com>
- <20251119125145.2402620-2-Thomas.Marangoni@becom-group.com>
+	s=arc-20240116; t=1763626849; c=relaxed/simple;
+	bh=ZW042sC9gIPOFnqhoxec9Hoqgz2PilHlyVzmoeoFWJs=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=cS3eJUjS6Ea48AZpPDxvRcyMYO3ScSUPZktOL2gN5p1lza9hngNfi9QyFX2C4WUdTCuz7WOe78ZQXGJ+6k+PIDaN5SmrfauvBDjex9T5BNhpS0Qhdk60e847eRB3mJpAJN3QbGg3NRZnIuMuH3+TtN44jo6vubD0I62yAD7nq6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XgSq4ELR; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=GXrAeDrMarYstBo
+	zZxJzPxQ6+Dj9RlIaBV2Ivegt5Nk=; b=XgSq4ELR6fkQfqTvwrNO5xj1RN3EgkF
+	buANkSpeZYQANP7SJ+WQQtAts9CKVawGIMD6OH9otPz9zn68LtwVB9fSOnFXw1TY
+	Fr4YQ5VFoED44iE4bY5JbYjBqSZXnUv+PW37jyFbETQjR4nomsFOtOzJZkvWImIr
+	7m1TNzx/gTCU=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3BPAwzx5p45f2BA--.17S2;
+	Thu, 20 Nov 2025 16:20:03 +0800 (CST)
+From: Wenliang Yan <wenliang202407@163.com>
+To: linux@roeck-us.net,
+	Jean Delvare <jdelvare@suse.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Wenliang Yan <wenliang202407@163.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/8] hwmon: (ina3221) Various improvement and add support for SQ52210
+Date: Thu, 20 Nov 2025 03:19:13 -0500
+Message-Id: <20251120081921.39412-1-wenliang202407@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:_____wA3BPAwzx5p45f2BA--.17S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WFyrAF15ur1fuFyktFW3Awb_yoW8Jw45pa
+	97C345Grn8Xr1xXanIkw48C34YqF4xJF1ayr9rJ3y0qF4UA3WSvr48K3Z8t3srtryxtry8
+	ua4xursxKasrCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUf73kUUUUU=
+X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbCwBTitmkezzR2mQAA3j
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20251119125145.2402620-2-Thomas.Marangoni@becom-group.com>
 
-On Wed, Nov 19, 2025 at 01:51:38PM +0100, Thomas Marangoni wrote:
-> WSEN-tids only has an i2c interface and an optional interrupt. This
-> should qualify the sensor as trivial device.
->=20
-> WSEN is a subcompany of W=C3=BCrth Electronics specialized on IC sensors.
->=20
-> Signed-off-by: Thomas Marangoni <Thomas.Marangoni@becom-group.com>
-> ---
->  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  2 files changed, 4 insertions(+)
+Revised based on feedback from the previous version:
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+1.Adjusted the description in dt-bindings: add description for sq52210,
+express sq52210 in the bindings as compatible devices.
 
-<form letter>
-This is an automated instruction, just in case, because many review
-tags are being ignored. If you know the process, just skip it entirely
-(please do not feel offended by me posting it here - no bad intentions
-intended, no patronizing, I just want to avoid wasted efforts). If you
-do not know the process, here is a short explanation:
+2.Modified the register read/write value conversion function, refined the
+calculation logic for each register, and reduced unnecessary function
+calls.
 
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here ('b4 trailers -u ...').
-However, there's no need to repost patches *only* to add the tags. The
-upstream maintainer will do that for tags received on the version they
-apply.
+---
+v2: https://lore.kernel.org/linux-hwmon/20251118125148.95603-1-wenliang202407@163.com/
+v1: https://lore.kernel.org/linux-hwmon/20251111080546.32421-1-wenliang202407@163.com/
 
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitt=
-ing-patches.rst#L591
-</form letter>
+Wenliang Yan (8):
+  dt-bindings: hwmon: ti,ina3221: Add SQ52210
+  hwmon: (ina3221) Add support for SQ52210
+  hwmon: (ina3221) Pre-calculate current and power LSB
+  hwmon: (ina3221) Support alert configuration
+  hwmon: (ina3221) Introduce power attribute and alert characteristics
+  hwmon: (ina3221) Support for writing alert limit values and modify the
+    'ina3221_read_value' function
+  hwmon: (ina3221) Support write/read functions for 'power' attribute
+  hwmon: (ina3221) Modify write/read functions for 'in' and 'curr'
+    attribute
 
-Best regards,
-Krzysztof
+ .../devicetree/bindings/hwmon/ti,ina3221.yaml |  15 +-
+ Documentation/hwmon/ina3221.rst               |  24 +
+ drivers/hwmon/ina3221.c                       | 527 +++++++++++++++++-
+ 3 files changed, 552 insertions(+), 14 deletions(-)
+
+-- 
+2.17.1
 
 
