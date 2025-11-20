@@ -1,44 +1,44 @@
-Return-Path: <linux-hwmon+bounces-10582-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10584-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD6C72C99
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 09:22:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1000C72CD8
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 09:24:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D7C054E6CF3
-	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 08:22:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E9F8235A5E0
+	for <lists+linux-hwmon@lfdr.de>; Thu, 20 Nov 2025 08:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BC730C361;
-	Thu, 20 Nov 2025 08:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2570D311C14;
+	Thu, 20 Nov 2025 08:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XgSq4ELR"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IzTO/17H"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A59030BF60;
-	Thu, 20 Nov 2025 08:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8E53101B6;
+	Thu, 20 Nov 2025 08:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763626849; cv=none; b=pRqqkJbxUTLe6F2EAGLfUm/gdf0uv69fO1qBIvk9BHzXnAJqdaCy7vAR8HHpd4klzVwBqL0zCpylTSvggR8If8aCaFPBBQJOJSV3AWiIr43Cmf3IENN2ysmamBL5SVBpbm+xr7yZ0oHc8kCRzvNUhdmsyGMJlt0uPS45R03dXBY=
+	t=1763626852; cv=none; b=JUVfgUFxvwa0ft7R4VCxRCBFgN2ZEmOgY4RZV/9gBlG9JxtrtoA3+9RMGoyePlbYp4UPx49Zt8N4PlGiP7paGdbDwox4f5Jzc41wph7i1vkJ30Joc41c8pPRhC60/6xOptFCoePmAMFOrlDfWH1LsM/bXQUvDrwbhNLn8cWdVwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763626849; c=relaxed/simple;
-	bh=ZW042sC9gIPOFnqhoxec9Hoqgz2PilHlyVzmoeoFWJs=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=cS3eJUjS6Ea48AZpPDxvRcyMYO3ScSUPZktOL2gN5p1lza9hngNfi9QyFX2C4WUdTCuz7WOe78ZQXGJ+6k+PIDaN5SmrfauvBDjex9T5BNhpS0Qhdk60e847eRB3mJpAJN3QbGg3NRZnIuMuH3+TtN44jo6vubD0I62yAD7nq6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XgSq4ELR; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1763626852; c=relaxed/simple;
+	bh=veV9uBc/4+2aXJkyUrwX782yhnEiSwH07lp6tyy/BGE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Evm8MtNfHHYuJLKYCnVVgOJsguRuY7GR1kXJJJfPKQQFzjRqPJ0HdFtO8AAh7/Sqo6FPVPjlDo8O2dymtKD0CuZLtnX2FGlEsb5/mGH8MaSZZerD4lhvquBkdAspogoXRii1NWVcR79n21j6I3IVwJQAYzvQPFWlmPHdzSo2o7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IzTO/17H; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=GXrAeDrMarYstBo
-	zZxJzPxQ6+Dj9RlIaBV2Ivegt5Nk=; b=XgSq4ELR6fkQfqTvwrNO5xj1RN3EgkF
-	buANkSpeZYQANP7SJ+WQQtAts9CKVawGIMD6OH9otPz9zn68LtwVB9fSOnFXw1TY
-	Fr4YQ5VFoED44iE4bY5JbYjBqSZXnUv+PW37jyFbETQjR4nomsFOtOzJZkvWImIr
-	7m1TNzx/gTCU=
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=f8CQJTckkb9TGfo
+	mcbXlA1LWAw7cih0RzjzYbL9VEVM=; b=IzTO/17HtNaBDqKlH0ejU6Me1+07Fww
+	vcJe1G2ZTuyPs/qCD7aBMIGPeCgiQI2z2JpHfGxSWTNlxGu3VEM3jtfchc1E3pgI
+	V23KPCDmspqBCMYcItHoG4eP8NLBsSrjY+bNuxTJIJeZhb9b0JCSGo1FyIo2LJFE
+	VAtXuJVqvkpY=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3BPAwzx5p45f2BA--.17S2;
-	Thu, 20 Nov 2025 16:20:03 +0800 (CST)
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3BPAwzx5p45f2BA--.17S3;
+	Thu, 20 Nov 2025 16:20:05 +0800 (CST)
 From: Wenliang Yan <wenliang202407@163.com>
 To: linux@roeck-us.net,
 	Jean Delvare <jdelvare@suse.com>,
@@ -50,52 +50,62 @@ Cc: Wenliang Yan <wenliang202407@163.com>,
 	linux-hwmon@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/8] hwmon: (ina3221) Various improvement and add support for SQ52210
-Date: Thu, 20 Nov 2025 03:19:13 -0500
-Message-Id: <20251120081921.39412-1-wenliang202407@163.com>
+Subject: [PATCH v3 1/8] dt-bindings: hwmon: ti,ina3221: Add SQ52210
+Date: Thu, 20 Nov 2025 03:19:14 -0500
+Message-Id: <20251120081921.39412-2-wenliang202407@163.com>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:_____wA3BPAwzx5p45f2BA--.17S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WFyrAF15ur1fuFyktFW3Awb_yoW8Jw45pa
-	97C345Grn8Xr1xXanIkw48C34YqF4xJF1ayr9rJ3y0qF4UA3WSvr48K3Z8t3srtryxtry8
-	ua4xursxKasrCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUf73kUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbCwBTitmkezzR2mQAA3j
+In-Reply-To: <20251120081921.39412-1-wenliang202407@163.com>
+References: <20251120081921.39412-1-wenliang202407@163.com>
+X-CM-TRANSID:_____wA3BPAwzx5p45f2BA--.17S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4UGFWfuw17KFW8uF45KFg_yoW8GFykpF
+	s3CFyUGr1Sqr1fZ39rKFsY9F15Jrn7ua12kFnrJw4SqF4DG34Fq393Kw1qyFn8ArWfXFWU
+	WFyI9r4Fg3s7Ar7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUgNVkUUUUU=
+X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/1tbibhEM02kezo8TfQAAs4
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 
-Revised based on feedback from the previous version:
+Add a compatible string for SQ52210, provide brief descriptions for
+both INA3221 and SQ52210, and define the compatibility relationship
+between SQ52210 and INA3221.
+SQ52210 is backward compatible with INA3221.
 
-1.Adjusted the description in dt-bindings: add description for sq52210,
-express sq52210 in the bindings as compatible devices.
-
-2.Modified the register read/write value conversion function, refined the
-calculation logic for each register, and reduced unnecessary function
-calls.
-
+Signed-off-by: Wenliang Yan <wenliang202407@163.com>
 ---
-v2: https://lore.kernel.org/linux-hwmon/20251118125148.95603-1-wenliang202407@163.com/
-v1: https://lore.kernel.org/linux-hwmon/20251111080546.32421-1-wenliang202407@163.com/
+ .../devicetree/bindings/hwmon/ti,ina3221.yaml     | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Wenliang Yan (8):
-  dt-bindings: hwmon: ti,ina3221: Add SQ52210
-  hwmon: (ina3221) Add support for SQ52210
-  hwmon: (ina3221) Pre-calculate current and power LSB
-  hwmon: (ina3221) Support alert configuration
-  hwmon: (ina3221) Introduce power attribute and alert characteristics
-  hwmon: (ina3221) Support for writing alert limit values and modify the
-    'ina3221_read_value' function
-  hwmon: (ina3221) Support write/read functions for 'power' attribute
-  hwmon: (ina3221) Modify write/read functions for 'in' and 'curr'
-    attribute
-
- .../devicetree/bindings/hwmon/ti,ina3221.yaml |  15 +-
- Documentation/hwmon/ina3221.rst               |  24 +
- drivers/hwmon/ina3221.c                       | 527 +++++++++++++++++-
- 3 files changed, 552 insertions(+), 14 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml b/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
+index 5f10f1207d69..2dd2fd148792 100644
+--- a/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
++++ b/Documentation/devicetree/bindings/hwmon/ti,ina3221.yaml
+@@ -10,9 +10,22 @@ maintainers:
+   - Jean Delvare <jdelvare@suse.com>
+   - Guenter Roeck <linux@roeck-us.net>
+ 
++description: |
++  The INA3221 is a three-channel, high-side current and bus voltage monitor.
++
++  The Silergy SQ52210 is a power monitor that extends the functionality of
++  the INA3221 by adding additional current registers, power registers, and
++  alert registers. These features are configured internally by the driver
++  and require no board-level device tree configuration.
++
+ properties:
+   compatible:
+-    const: ti,ina3221
++    oneOf:
++      - items:
++          - const: silergy,sq52210
++          - const: ti,ina3221
++      - items:
++          - const: ti,ina3221
+ 
+   reg:
+     maxItems: 1
 -- 
 2.17.1
 
