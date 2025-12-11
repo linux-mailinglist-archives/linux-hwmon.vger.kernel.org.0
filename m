@@ -1,113 +1,130 @@
-Return-Path: <linux-hwmon+bounces-10792-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10795-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FBBCB53D5
-	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Dec 2025 09:56:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B95CB5A36
+	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Dec 2025 12:32:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07515300D302
-	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Dec 2025 08:56:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 835853002174
+	for <lists+linux-hwmon@lfdr.de>; Thu, 11 Dec 2025 11:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E9A2FD69B;
-	Thu, 11 Dec 2025 08:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2715E2DAFB5;
+	Thu, 11 Dec 2025 11:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="DtLZgl/p"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QQX57O8O"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06D82FBE10;
-	Thu, 11 Dec 2025 08:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A111E5B71
+	for <linux-hwmon@vger.kernel.org>; Thu, 11 Dec 2025 11:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765442877; cv=none; b=t12FktvSTTrqwflOAH54l3VZFAr19cIehb/7Ojoc0M9qmGAoQ2QTcrTMgP4sdyNkyEvVFtXGLTdvzzQp1ZvmonMrgPmZP46v1oLa5+JxanT5VFXviYUtiw8sbhNavagxtigN9CdUidIwHmKd1Zd7aCPCi6DmMv3GqjsCrCqbK2E=
+	t=1765452739; cv=none; b=PoncZ3fQILMzSOAonflAWKhUeyBaCJfw86dxnKH9EE3HlbnA5syA6/8TTUyxg4YvNhMoVimgOuamRFqOI5/KlqNFcL9CNd5siAN0/nFj/wzXhzqGYXoC+SntOmm/fRy7IVZuHvr2GkMg+ChJA+bXseJByYEsrYr3REbeBjHJRJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765442877; c=relaxed/simple;
-	bh=3uzMfys7REjFcw5rJ8WnoE2DXjU5x0qD9qatsnWhg6s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H/tdSHZBMq71rgkt3kpnlgINCTSqDgLRZAqeKXvLDr/ClryiF4vL9jLPPCrAPFe13JOhsoWqBHzXBPrSifnm001X3KCMI6Qs6QC2uJjhU40b9xnd/RHYa9dY89D+frcc6U1UlTI5K1OuRQkev7aokmNRjD45Dddb2YKJW16yPgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=DtLZgl/p; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1765452739; c=relaxed/simple;
+	bh=NchHZPDCVbR2zKgQZ6II0ne2TAbumnNcDZoeVADXcKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N2tyfq7SgBvNaJwHo8DDoGQkYPMKxOLT/sTgVNmcLL2ZWx2fd8HjVwR5ma/KVPO83IbC7w81wxW6ZSLqg8gJPwzJIKF8fwh8W9lyUqanDkfMawx8EJhq0S4vm1fNRNBeyExagmR1gzF5WwNeDWRBI+6z/sNo84ltS8uxRs2ZBBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QQX57O8O; arc=none smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-640e065991dso749923d50.3
+        for <linux-hwmon@vger.kernel.org>; Thu, 11 Dec 2025 03:32:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1765442873;
-	bh=4YuQt/ViTsd3OTZlMf2fjHbcSpDjnD7vrDHlgaLMC7Q=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DtLZgl/pzLlAKfeYBIFJAGq+mv8J6I5TrFfyrELEqhyHJG09MbGTKdzaI0m92ywHx
-	 2MQRN0ioXDZBYRrhbN/rfR6CIR+I47pP4z+Lkvli+gD3eYeV3xdvkokIhn6fZCYShX
-	 /L6U0sF/Ht/XcG4wFFgWZVLd3Bzsuwt9SqbdM5VV1leb0cZVX+WWNd/GNHx6Y5hhTu
-	 Rjp2LmxLo83y96h8HPz6nVv2bNjBzSpIZgYi48iW0I7y/eETOqkoWOBQOj2Gd2WE4j
-	 11CxHJJ9ct6uQO1CIWocS6QRvCseG26HsU4KGYFGemSoCE3BLGBJpCYPr00sOiwKyy
-	 R6QQN/Jr1usPA==
-Received: from [127.0.1.1] (fs98a57d9c.tkyc007.ap.nuro.jp [152.165.125.156])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 05A557D6BB;
-	Thu, 11 Dec 2025 16:47:48 +0800 (AWST)
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-Date: Thu, 11 Dec 2025 17:45:58 +0900
-Subject: [PATCH RFC 16/16] dt-bindings: mfd: Document smp-memram node for
- AST2600 SCU
+        d=linaro.org; s=google; t=1765452735; x=1766057535; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vAvAduq0/fXRtJhO0coRhdPgTbJSI1bNLnmdQnPpfuY=;
+        b=QQX57O8OsKuVkASZOy3qxp6if78bDgDbkjwSeD7uaKrKurvNp1ku/3MDnCE9Bf6Mym
+         C+NxsqKpUWN8GaO+RapzoLI/tFEh9UW9QqyYNX0PmN9kAFmFVCqFATZR4TX2+JART4Ij
+         Ww1J4foYdr6vNtt8a7tOuoiWCzh7oZhR6S70cb/Kv0KsQTQyCYa60HSECZoFp77O9N8H
+         VRb0rfvZ7BoxG92nyYSOGgqg5xoWMAP23FDSPo9rP75amoW8qhfaCLkVnVG8eHhNcGb9
+         vncS2Ps5PoPRn4RlbNAcuewgWJFWm6evYv1K+ckfssLI9BeMqOCvPe8FxXjDgx8FcCr/
+         O/3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765452735; x=1766057535;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vAvAduq0/fXRtJhO0coRhdPgTbJSI1bNLnmdQnPpfuY=;
+        b=HB0RxVSjrHEFw/R7Zk/SvqEQVr+AKEnniBkwYTc0iUkRJd2q3yHmc6ZLTAQ5seZeqb
+         KLOBmiK6trzF0jLadVBUSyAdqfRfhpjefb51iE/VSv2k0cWamRlNKOc3C/9KuFFbppcx
+         90+jtvbWh/X7EPp5aSUgDGe45TlaCCKONpYsMk41N4jfU7PPsjvoBJ70xlst000qfWEI
+         vHu3YQwy8qLg+Oyew2qd/froT6/6JV140YW0qmzqPGxXsX6O8NPZeD44iSGBhem0SBwm
+         0Hp319KZRtTPgKa4zmDM47Aq8FNNgjJlDVJe3Nx+ZOzb1kUPEoFf1hdhOXYWaa7KTv3D
+         sLOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZCvGZfZEaA0mQvgEHoXHF7rTp4b9OUM8pCh+5CigyJu7ltAznn+zkiixlq0cNgduFv7f8BR55moe5/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWDf+AVogN8fBk2QxrXXSwDjZIxSIeo5IUES1hR2KntSOpNI+D
+	sstOceNZEMsJubTGaWyANt1thMYF+8TPb7HNnMWJw+PYrh7fqSsUdASuK4pkmiTWicW8OcKSQd3
+	VUiJwTcS3nXCqHu9NHQyqk7haPpihKzqRzoqnAKXaKQ==
+X-Gm-Gg: AY/fxX7n4q5lcK5tfAZ5FIdPaPrw5VG5Cih/WVPfHpcNFMJNMbg0kdiodEj+L//ylKu
+	FA3VGMZjqnuRTHAC+7q5t2wINsSqGF/USkTKY5UjCUbHDR5AwpRGi2Lwxx1CWMrhj8At+8XCgpS
+	rhBR2UUO2kncdDvIjUDEKDAgLnwbkbunAqHZ0JG/Ri9uktdnRvJiX/cPUuNrnwYywx2Xc+xiIUy
+	UsGiz5uT0KbZfHp4+EQzsSbrAvwCVek3v+ZU+aYREFtdXyzK07vfpwKV8THGTA0UrM4YwUn/Tew
+	vNXplJM=
+X-Google-Smtp-Source: AGHT+IG8bNJ7GVmxCtKmkFoNf2sieoYkv2mgOPVq2xJndKf37hgXCewb4eZsd1D0ffqnRQUAE3M4kyCHgtlEMcMmN4I=
+X-Received: by 2002:a05:690e:191b:b0:640:db57:8d95 with SMTP id
+ 956f58d0204a3-6446eb3aa4emr5006636d50.63.1765452735377; Thu, 11 Dec 2025
+ 03:32:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251211-dev-dt-warnings-all-v1-16-21b18b9ada77@codeconstruct.com.au>
 References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
-In-Reply-To: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>
-Cc: Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
- linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
- linux-iio@vger.kernel.org, Andrew Jeffery <andrew@codeconstruct.com.au>
-X-Mailer: b4 0.14.3
+ <20251211-dev-dt-warnings-all-v1-6-21b18b9ada77@codeconstruct.com.au>
+In-Reply-To: <20251211-dev-dt-warnings-all-v1-6-21b18b9ada77@codeconstruct.com.au>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 11 Dec 2025 12:31:38 +0100
+X-Gm-Features: AQt7F2pSIRmWc3gz3aUnvZCl6QhFMFW_pPE_bkwFhLy-FhbClf3aqE2_J1pJY4M
+Message-ID: <CAPDyKFrbS_3XRTSuexFxTpP1ydgvfFvXNv_tninnTqum7+92ZA@mail.gmail.com>
+Subject: Re: [PATCH RFC 06/16] dt-bindings: mmc: Switch ref to sdhci-common.yaml
+To: Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, Joel Stanley <joel@jms.id.au>, 
+	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, 
+	linux-gpio@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The platform initialisation code for the AST2600 implements the custom
-SMP bringup protocol, and searches for the relevant compatible. As a
-consequence, define the requisite node and the compatible string, which
-in-turn tidies up the dtb check results.
+On Thu, 11 Dec 2025 at 09:47, Andrew Jeffery
+<andrew@codeconstruct.com.au> wrote:
+>
+> Enable use of common SDHCI-related properties such as sdhci-caps-mask as
+> found in the AST2600 EVB DTS.
+>
+> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
----
- .../devicetree/bindings/mfd/aspeed,ast2x00-scu.yaml    | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Applied for fixes and by adding a stable-tag, thanks!
 
-diff --git a/Documentation/devicetree/bindings/mfd/aspeed,ast2x00-scu.yaml b/Documentation/devicetree/bindings/mfd/aspeed,ast2x00-scu.yaml
-index da1887d7a8fe..3406b98c4d0b 100644
---- a/Documentation/devicetree/bindings/mfd/aspeed,ast2x00-scu.yaml
-+++ b/Documentation/devicetree/bindings/mfd/aspeed,ast2x00-scu.yaml
-@@ -130,6 +130,24 @@ patternProperties:
-           - description: silicon id information registers
-           - description: unique chip id registers
- 
-+  '^smp-memram@[0-9a-f]+$':
-+    description: Memory region used for the AST2600's custom SMP bringup protocol
-+    type: object
-+    additionalProperties: false
-+
-+    properties:
-+      compatible:
-+        const: "aspeed,ast2600-smpmem"
-+
-+      reg:
-+        description:
-+          The SMP memory region
-+        maxItems: 1
-+
-+    required:
-+      - compatible
-+      - reg
-+
- required:
-   - compatible
-   - reg
+Kind regards
+Uffe
 
--- 
-2.47.3
 
+> ---
+>  Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> index 9fce8cd7b0b6..d24950ccea95 100644
+> --- a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
+> @@ -41,7 +41,7 @@ properties:
+>  patternProperties:
+>    "^sdhci@[0-9a-f]+$":
+>      type: object
+> -    $ref: mmc-controller.yaml
+> +    $ref: sdhci-common.yaml
+>      unevaluatedProperties: false
+>
+>      properties:
+>
+> --
+> 2.47.3
+>
+>
 
