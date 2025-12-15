@@ -1,434 +1,304 @@
-Return-Path: <linux-hwmon+bounces-10856-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10858-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D64CBC3FA
-	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 03:26:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A703CBCA8B
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 07:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41F753010E17
-	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 02:26:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DBC93014AED
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 06:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3232E543B;
-	Mon, 15 Dec 2025 02:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559AA30C361;
+	Mon, 15 Dec 2025 06:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XqQHKfAL"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail.monolithicpower.com (unknown [12.33.0.20])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB89288522;
-	Mon, 15 Dec 2025 02:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.33.0.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D0E2E5B3D
+	for <linux-hwmon@vger.kernel.org>; Mon, 15 Dec 2025 06:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765765615; cv=none; b=XVZotFFbGGrogekvaMSNXKWeaEd5Ndmt6MXhMCDuSpQZoGern4KNNWZxNbRhT7ABQZlMswwxWObiXk5Yp8BdGZgYPUBnLpDZ6mYvBvL8cfx/1Ci1BgjoXGmJntrFIqGHsrPKxty9tr4dqP/zIL5uJy1H70z6GmFvoeixx9cXSwQ=
+	t=1765780624; cv=none; b=tsA3yhKOyZypSMzB9qyOWfV9i1oSFj8ynAwsrpUAND9/VagcP25H+z01YIyTfxWcOO1Eju46aJbzxJ0CVlkbmqi9VTXMx+S7wj3+LSmXamUor5wsO0t79ev+z0pGyW/C+zGuB2SvSCqyDjtI3Y9pl7aqGoalmmBJF5NLZrrKaWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765765615; c=relaxed/simple;
-	bh=sNFvxUCFzUXLt7rzYsZUhxnmYe93UZVuqdCJlsyljzE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E8iGHOjFeXWb1HdN4cinzfw5z2A5A3vOH0Ew56QAnT6pLDK1TW3vN8y08hZ3ZiHRla3uCNrgudmXYKSAtazOLiRGz1phEo34k6aNzVHIoaMiTVqccIbrQzeDkNlFB/EHvNfTXd+06hXTmHMGIV+c36Acu2UnIPLvx9lfwf5x4BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monolithicpower.com; spf=pass smtp.mailfrom=monolithicpower.com; arc=none smtp.client-ip=12.33.0.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monolithicpower.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monolithicpower.com
-Received: from CD-MSH04.monolithicpower.com (10.10.70.213) by
- mps-mslbn03.monolithicpower.com (10.10.10.245) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.6; Sun, 14 Dec 2025 18:26:52 -0800
-Received: from HZ-200D-C0727.monolithicpower.com (10.53.66.137) by
- CD-MSH04.monolithicpower.com (10.10.70.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.57; Mon, 15 Dec 2025 10:26:50 +0800
-From: Yuxi Wang <Yuxi.Wang@monolithicpower.com>
-To: <Yuxi.Wang@monolithicpower.com>, <linux@roeck-us.net>, <corbet@lwn.net>,
-	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
-CC: <wyx137120466@gmail.com>, <linux-hwmon@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Subject: [PATCH v2 RESEND 2/2] hwmon: add mp5926 driver
-Date: Mon, 15 Dec 2025 10:25:05 +0800
-Message-ID: <20251215022505.1602-3-Yuxi.Wang@monolithicpower.com>
-X-Mailer: git-send-email 2.51.0.windows.1
-In-Reply-To: <20251215022505.1602-1-Yuxi.Wang@monolithicpower.com>
-References: <20251215022505.1602-1-Yuxi.Wang@monolithicpower.com>
+	s=arc-20240116; t=1765780624; c=relaxed/simple;
+	bh=Flsp6Ih3FlMEVzRadHwRQZrT6qbOt0qkn7I0oYf7Qcc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U4n/Ml/JD4636pqvG80gah7asbJD91Wo5qefl4lUR7KmW87s9YZVARUsfidDWqjwHXPDaUQAh6frhFML/Pjyo/ovI89I/nVJxi6Uo1cKU3bq/0qnVJnpOQVMFvlUxEUdcpAMOr6bYzC7yEjk8y51RUu3MhKHs1+e8JGmlUOjkn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XqQHKfAL; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6495c4577adso4411846a12.3
+        for <linux-hwmon@vger.kernel.org>; Sun, 14 Dec 2025 22:37:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1765780619; x=1766385419; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Flsp6Ih3FlMEVzRadHwRQZrT6qbOt0qkn7I0oYf7Qcc=;
+        b=XqQHKfAL6c7x/ie+AeiZgcxzfsa3JFTgErvVKvTufKa8Cm+Z4EZdK/CsAPV9anbIeR
+         rql37bUIx2KkISbYXA9AS8pd3acn7PGrBv9wUseOVsmrIpq7IU+DtnprmcQ5ipopg0R6
+         dBWjf3b3Ml5R8WVfTMwAcNaxSZlJsx2qMxWFX3rJovwi+9pG5K+oruUlLh1hKNefT5+A
+         Tey20XZHHtgS5MeYwsNvYBlYxkcsZc4DbOi4UKVcXQ6WlNteTiLCp+/6Sx4c8k/55vWt
+         QXtZ3NGpD+CFzZpZmsP8HXra+PzvxCOrRQ5Ee1JxKjSno7YrRZ2PVQKUSpoSB3e7FriO
+         SfVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765780619; x=1766385419;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Flsp6Ih3FlMEVzRadHwRQZrT6qbOt0qkn7I0oYf7Qcc=;
+        b=WPKFjxaytmwtuemy0cT6HeUskoz3HrRdiXBUm0NCwPYuK5ncR+gFuIFwcHPmSMuovO
+         q7p2pjm1n/h2d7sR8HOlQRajGtA6/imyh/7cq0mVoBDIJIOxbmypQ/f7zRRJKdNEgfbG
+         JzUThMgYWKBR9kV3NT8Rq2z+6LYb6hGF5XnliMdM80/+LBaQqecKAsnw+Ip0Rh42VboY
+         IC7SFUaYsM4kdpT5WqgoZXs+d1DlYaQ97Vt0UxXv+TlxfimWIrPqwo1Dqo6+ZDGTvs3d
+         u/XMOH6BHiM1JDwwdmzY7694gmrgHjhwTr+lrKRPuZ8sff7moJ24FDOyvTtfb8v7fDs6
+         PbLw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9EA28OLXNrjZu3zjS6kZrs1gkAYGBiWHswDh/YuiNGyR6I5HkrQaaQklZ39yVVmuDnL74NyKjVX42uQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxpj7BX4mjOxcrQqhJd2gJ/T5GPBE3lfgYh/OodiQF1o++M1MsV
+	WQ1uc/DB4E7a0nsTymT4BD0QfFGZ2Cp1ba/rM0H4pPK8GTbp+AS907atqGs8o223txU=
+X-Gm-Gg: AY/fxX67h+FFUhNbkPuK5bl51/ePPc32QxbPI/OZlSYzO8MRW+ITGKCAnq8+KQmp/f0
+	RHcwIFJtC7zO7Oi1iizWMC/bAbTxd2MiDTiYPY/D1ktYNcD67rvuTdBAyTWmjMYh69dEIqCMtHX
+	+32Pz5PdlZSyzibHF+H6Gk+a5L1jEjRN/RZHP1PlgwtS79LL0hwQ3E/aCmYCDWXl4kkj+x6xWdf
+	jGVl4uIGiE8YYHCHif50wpVL4X4vEUPaIXtHIF6WfSDIe6lHR4dgLtSewH5j+OSQVQtASVlD9pZ
+	7sDtCpmvseWgTjKvGXBTwwH3A0sbwQC5tCCL6UZDnnLjYFYEEDA5/sJwNzaFFjmnYgp3ivaQjCt
+	EJrpbB5x8syNr5LTt2ZFcZ1B1g7yhENjGqxzHXi88FLsDX+Bx75/7yGUi+F16s4FkABoR9I2Gm+
+	j7YEU0uXZ5KbLlKaRAbXl3AT4CC4+ArJ6qck7zBR06UCA6+4RIDZuVTze9/5I/4qX6+lh5MLJL6
+	AAvb0F1zfCI08569Nc93xZYRZlDmMmaZDQSQUM=
+X-Google-Smtp-Source: AGHT+IGo/GqgVXtCzeCvo1UWjbyI/0K/pid4ihpAfElEjp1P5X9LqCIs4JAGA1cU0Oaa8OlI6Xu5Vg==
+X-Received: by 2002:a17:907:9617:b0:b73:8f33:eed3 with SMTP id a640c23a62f3a-b7d23a9c866mr953872766b.26.1765780619499;
+        Sun, 14 Dec 2025 22:36:59 -0800 (PST)
+Received: from ?IPV6:2003:e5:8704:4800:66fd:131f:60bd:bc29? (p200300e58704480066fd131f60bdbc29.dip0.t-ipconnect.de. [2003:e5:8704:4800:66fd:131f:60bd:bc29])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7cfa29beabsm1330300666b.4.2025.12.14.22.36.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 Dec 2025 22:36:59 -0800 (PST)
+Message-ID: <bff8626d-161e-4470-9cbd-7bbda6852ec3@suse.com>
+Date: Mon, 15 Dec 2025 07:36:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CD-MSLBN02.monolithicpower.com (192.168.86.32) To
- CD-MSH04.monolithicpower.com (10.10.70.213)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] x86: Cleanups around slow_down_io()
+To: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-block@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ xen-devel@lists.xenproject.org, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Denis Efremov <efremov@linux.com>,
+ Jens Axboe <axboe@kernel.dk>
+References: <20251126162018.5676-1-jgross@suse.com>
+ <aT5vtaefuHwLVsqy@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <aT5vtaefuHwLVsqy@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------3mgjNgxNLw3aXEpCS8syparo"
 
-Add support for mps mp5926.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------3mgjNgxNLw3aXEpCS8syparo
+Content-Type: multipart/mixed; boundary="------------uocwPUAwg06DHItKBfr8MkI0";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-block@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ xen-devel@lists.xenproject.org, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Denis Efremov <efremov@linux.com>,
+ Jens Axboe <axboe@kernel.dk>
+Message-ID: <bff8626d-161e-4470-9cbd-7bbda6852ec3@suse.com>
+Subject: Re: [PATCH 0/5] x86: Cleanups around slow_down_io()
+References: <20251126162018.5676-1-jgross@suse.com>
+ <aT5vtaefuHwLVsqy@gmail.com>
+In-Reply-To: <aT5vtaefuHwLVsqy@gmail.com>
 
-Signed-off-by: Yuxi Wang <Yuxi.Wang@monolithicpower.com>
----
- Documentation/hwmon/index.rst  |   1 +
- Documentation/hwmon/mp5926.rst |  92 ++++++++++++++++
- MAINTAINERS                    |   7 ++
- drivers/hwmon/pmbus/Kconfig    |   9 ++
- drivers/hwmon/pmbus/Makefile   |   1 +
- drivers/hwmon/pmbus/mp5926.c   | 190 +++++++++++++++++++++++++++++++++
- 6 files changed, 300 insertions(+)
- create mode 100644 Documentation/hwmon/mp5926.rst
- create mode 100644 drivers/hwmon/pmbus/mp5926.c
+--------------uocwPUAwg06DHItKBfr8MkI0
+Content-Type: multipart/mixed; boundary="------------0K40Sw4HjMWfuWdkxRcyXR0R"
 
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
-index 85d7a686883e..6181c3f62177 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -185,6 +185,7 @@ Hardware Monitoring Kernel Drivers
-    mp2993
-    mp5023
-    mp5920
-+   mp5926
-    mp5990
-    mp9941
-    mp9945
-diff --git a/Documentation/hwmon/mp5926.rst b/Documentation/hwmon/mp5926.rst
-new file mode 100644
-index 000000000000..4b64a7e24ae6
---- /dev/null
-+++ b/Documentation/hwmon/mp5926.rst
-@@ -0,0 +1,92 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Kernel driver mp5926
-+====================
-+
-+Supported chips:
-+
-+  * MPS mp5926
-+
-+    Prefix: 'mp5926'
-+
-+  * Datasheet
-+    https://www.monolithicpower.com/en/
-+
-+Author:
-+
-+	Yuxi Wang <Yuxi.Wang@monolithicpower.com>
-+
-+Description
-+-----------
-+
-+This driver implements support for Monolithic Power Systems, Inc. (MPS)
-+MP5926 Hot-Swap Controller.
-+
-+Device compliant with:
-+
-+- PMBus rev 1.3 interface.
-+
-+The driver exports the following attributes via the 'sysfs' files
-+for input voltage:
-+
-+**in1_input**
-+
-+**in1_label**
-+
-+**in1_crit**
-+
-+**in1_crit_alarm**
-+
-+The driver provides the following attributes for output voltage:
-+
-+**in2_input**
-+
-+**in2_label**
-+
-+**in2_lcrit**
-+
-+**in2_lcrit_alarm**
-+
-+**in2_rated_max**
-+
-+**in2_rated_min**
-+
-+The driver provides the following attributes for input current:
-+
-+**curr1_input**
-+
-+**curr1_label**
-+
-+**curr1_max**
-+
-+**curr1_max_alarm**
-+
-+The driver provides the following attributes for output current:
-+
-+**curr2_input**
-+
-+**curr2_label**
-+
-+The driver provides the following attributes for input power:
-+
-+**power1_input**
-+
-+**power1_label**
-+
-+The driver provides the following attributes for output power:
-+
-+**power2_input**
-+
-+**power2_label**
-+
-+The driver provides the following attributes for temperature:
-+
-+**temp1_input**
-+
-+**temp1_crit**
-+
-+**temp1_crit_alarm**
-+
-+**temp1_max**
-+
-+**temp1_max_alarm**
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d701a4d5b00e..fea710aab535 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17708,6 +17708,13 @@ S:	Maintained
- F:	Documentation/hwmon/mp2993.rst
- F:	drivers/hwmon/pmbus/mp2993.c
- 
-+MPS MP5926 DRIVER
-+M:	Yuxi Wang <Yuxi.Wang@monolithicpower.com>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/hwmon/mp5926.rst
-+F:	drivers/hwmon/pmbus/mp5926.c
-+
- MPS MP9941 DRIVER
- M:	Noah Wang <noahwang.wang@outlook.com>
- L:	linux-hwmon@vger.kernel.org
-diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index f3fb94cebf1a..d0aa460abdc9 100644
---- a/drivers/hwmon/pmbus/Kconfig
-+++ b/drivers/hwmon/pmbus/Kconfig
-@@ -472,6 +472,15 @@ config SENSORS_MP5920
- 	  This driver can also be built as a module. If so, the module will
- 	  be called mp5920.
- 
-+config SENSORS_MP5926
-+	tristate "MPS MP5926"
-+	help
-+	  If you say yes here you get hardware monitoring support for Monolithic
-+	  MP5926.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called mp5926.
-+
- config SENSORS_MP5990
- 	tristate "MPS MP5990"
- 	help
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index 349a89b6d92e..75ec4956ca8d 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -47,6 +47,7 @@ obj-$(CONFIG_SENSORS_MP2975)	+= mp2975.o
- obj-$(CONFIG_SENSORS_MP2993)	+= mp2993.o
- obj-$(CONFIG_SENSORS_MP5023)	+= mp5023.o
- obj-$(CONFIG_SENSORS_MP5920)	+= mp5920.o
-+obj-$(CONFIG_SENSORS_MP5926)	+= mp5926.o
- obj-$(CONFIG_SENSORS_MP5990)	+= mp5990.o
- obj-$(CONFIG_SENSORS_MP9941)	+= mp9941.o
- obj-$(CONFIG_SENSORS_MP9945)	+= mp9945.o
-diff --git a/drivers/hwmon/pmbus/mp5926.c b/drivers/hwmon/pmbus/mp5926.c
-new file mode 100644
-index 000000000000..3122854b07f8
---- /dev/null
-+++ b/drivers/hwmon/pmbus/mp5926.c
-@@ -0,0 +1,190 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+//
-+// mp5926.c  - pmbus driver for mps mp5926
-+//
-+// Copyright 2025 Monolithic Power Systems, Inc
-+//
-+// Author: Yuxi Wang <Yuxi.Wang@monolithicpower.com>
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/pmbus.h>
-+#include "pmbus.h"
-+
-+#define PAGE	0x01
-+#define EFUSE_CFG	0xCF
-+#define I_SCALE_SEL	0xC6
-+#define MP5926_FUNC	(PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | \
-+			PMBUS_HAVE_IIN | PMBUS_HAVE_PIN | \
-+			PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_INPUT | \
-+			PMBUS_HAVE_STATUS_TEMP | PMBUS_HAVE_STATUS_VOUT)
-+
-+struct mp5926_data {
-+	struct pmbus_driver_info info;
-+	u8 vout_mode;
-+	u8 vout_linear_exponent;
-+};
-+
-+#define to_mp5926_data(x)  container_of(x, struct mp5926_data, info)
-+
-+static int mp5926_read_byte_data(struct i2c_client *client, int page,
-+				 int reg)
-+{
-+	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-+	struct mp5926_data *data = to_mp5926_data(info);
-+	int ret;
-+
-+	switch (reg) {
-+	case PMBUS_VOUT_MODE:
-+		if (data->vout_mode == linear) {
-+			/*
-+			 * The VOUT format used by the chip is linear11,
-+			 * not linear16. Report that VOUT is in linear mode
-+			 * and return exponent value extracted while probing
-+			 * the chip.
-+			 */
-+			return data->vout_linear_exponent;
-+		} else {
-+			return PB_VOUT_MODE_DIRECT;
-+		}
-+		break;
-+	default:
-+		ret = -ENODATA;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static int mp5926_read_word_data(struct i2c_client *client, int page, int phase,
-+				 int reg)
-+{
-+	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-+	struct mp5926_data *data = to_mp5926_data(info);
-+	int ret;
-+	s32 mantissa;
-+
-+	switch (reg) {
-+	case PMBUS_READ_VOUT:
-+		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
-+		/*
-+		 * Because the VOUT format used by the chip is linear11 and not
-+		 * linear16, we disregard bits[15:11]. The exponent is reported
-+		 * as part of the VOUT_MODE command.
-+		 */
-+		if (data->vout_mode == linear) {
-+			mantissa = ((s16)((ret & 0x7ff) << 5)) >> 5;
-+			ret = mantissa;
-+		}
-+		break;
-+	default:
-+		ret = -ENODATA;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static struct pmbus_driver_info mp5926_info = {
-+	.pages = PAGE,
-+	.format[PSC_VOLTAGE_IN] = direct,
-+	.format[PSC_CURRENT_IN] = direct,
-+	.format[PSC_VOLTAGE_OUT] = direct,
-+	.format[PSC_TEMPERATURE] = direct,
-+	.format[PSC_POWER] = direct,
-+
-+	.m[PSC_VOLTAGE_IN] = 16,
-+	.b[PSC_VOLTAGE_IN] = 0,
-+	.R[PSC_VOLTAGE_IN] = 0,
-+
-+	.m[PSC_CURRENT_IN] = 16,
-+	.b[PSC_CURRENT_IN] = 0,
-+	.R[PSC_CURRENT_IN] = 0,
-+
-+	.m[PSC_VOLTAGE_OUT] = 16,
-+	.b[PSC_VOLTAGE_OUT] = 0,
-+	.R[PSC_VOLTAGE_OUT] = 0,
-+
-+	.m[PSC_TEMPERATURE] = 4,
-+	.b[PSC_TEMPERATURE] = 0,
-+	.R[PSC_TEMPERATURE] = 0,
-+
-+	.m[PSC_POWER] = 25,
-+	.b[PSC_POWER] = 0,
-+	.R[PSC_POWER] = -2,
-+
-+	.read_word_data = mp5926_read_word_data,
-+	.read_byte_data = mp5926_read_byte_data,
-+	.func[0] = MP5926_FUNC,
-+};
-+
-+static int mp5926_probe(struct i2c_client *client)
-+{
-+	struct mp5926_data *data;
-+	struct pmbus_driver_info *info;
-+	int ret;
-+
-+	data = devm_kzalloc(&client->dev, sizeof(struct mp5926_data),
-+			    GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	memcpy(&data->info, &mp5926_info, sizeof(*info));
-+	info = &data->info;
-+	ret = i2c_smbus_read_word_data(client, EFUSE_CFG);
-+	if (ret < 0)
-+		return ret;
-+	if (ret & BIT(12)) {
-+		data->vout_mode = linear;
-+		data->info.format[PSC_VOLTAGE_IN] = linear;
-+		data->info.format[PSC_CURRENT_IN] = linear;
-+		data->info.format[PSC_VOLTAGE_OUT] = linear;
-+		data->info.format[PSC_TEMPERATURE] = linear;
-+		data->info.format[PSC_POWER] = linear;
-+		ret = i2c_smbus_read_word_data(client, PMBUS_READ_VOUT);
-+		if (ret < 0) {
-+			dev_err(&client->dev, "Can't get vout exponent.");
-+			return ret;
-+		}
-+		data->vout_linear_exponent = (u8)((ret >> 11) & 0x1f);
-+	} else {
-+		data->vout_mode = direct;
-+		ret = i2c_smbus_read_word_data(client, I_SCALE_SEL);
-+		if (ret < 0)
-+			return ret;
-+		if (ret & BIT(6))
-+			data->info.m[PSC_CURRENT_IN] = 4;
-+	}
-+
-+	return pmbus_do_probe(client, info);
-+}
-+
-+static const struct i2c_device_id mp5926_id[] = {
-+	{ "mp5926", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, mp5926_id);
-+
-+static const struct of_device_id mp5926_of_match[] = {
-+	{ .compatible = "mps,mp5926" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, mp5926_of_match);
-+
-+static struct i2c_driver mp5926_driver = {
-+	.probe = mp5926_probe,
-+	.driver = {
-+			.name = "mp5926",
-+			.of_match_table = mp5926_of_match,
-+		   },
-+	.id_table = mp5926_id,
-+};
-+
-+module_i2c_driver(mp5926_driver);
-+MODULE_AUTHOR("Yuxi Wang <Yuxi.Wang@monolithicpower.com>");
-+MODULE_DESCRIPTION("MPS MP5926 pmbus driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("PMBUS");
--- 
-2.39.2
+--------------0K40Sw4HjMWfuWdkxRcyXR0R
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+T24gMTQuMTIuMjUgMDk6MDUsIEluZ28gTW9sbmFyIHdyb3RlOg0KPiANCj4gKiBKdWVyZ2Vu
+IEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+IHdyb3RlOg0KPiANCj4+IFdoaWxlIGxvb2tpbmcg
+YXQgcGFyYXZpcnQgY2xlYW51cHMgSSBzdHVtYmxlZCBvdmVyIHNsb3dfZG93bl9pbygpIGFu
+ZA0KPj4gdGhlIHJlbGF0ZWQgUkVBTExZX1NMT1dfSU8gZGVmaW5lLg0KPj4NCj4+IEVzcGVj
+aWFsbHkgUkVBTExZX1NMT1dfSU8gaXMgYSBtZXNzLCB3aGljaCBpcyBwcm92ZW4gYnkgMiBj
+b21wbGV0ZWx5DQo+PiB3cm9uZyB1c2UgY2FzZXMuDQo+Pg0KPj4gRG8gc2V2ZXJhbCBjbGVh
+bnVwcywgcmVzdWx0aW5nIGluIGEgZGVsZXRpb24gb2YgUkVBTExZX1NMT1dfSU8gYW5kIHRo
+ZQ0KPj4gaW9fZGVsYXkoKSBwYXJhdmlydCBmdW5jdGlvbiBob29rLg0KPj4NCj4+IFBhdGNo
+ZXMgMiBhbmQgMyBhcmUgbm90IGNoYW5naW5nIGFueSBmdW5jdGlvbmFsaXR5LCBidXQgbWF5
+YmUgdGhleQ0KPj4gc2hvdWxkPyBBcyB0aGUgcG90ZW50aWFsIGJ1ZyBoYXMgYmVlbiBwcmVz
+ZW50IGZvciBtb3JlIHRoYW4gYSBkZWNhZGUNCj4+IG5vdywgSSB3ZW50IHdpdGgganVzdCBk
+ZWxldGluZyB0aGUgdXNlbGVzcyAiI2RlZmluZSBSRUFMTFlfU0xPV19JTyIuDQo+PiBUaGUg
+YWx0ZXJuYXRpdmUgd291bGQgYmUgdG8gZG8gc29tZXRoaW5nIHNpbWlsYXIgYXMgaW4gcGF0
+Y2ggNS4NCj4+DQo+PiBKdWVyZ2VuIEdyb3NzICg1KToNCj4+ICAgIHg4Ni9wYXJhdmlydDog
+UmVwbGFjZSBpb19kZWxheSgpIGhvb2sgd2l0aCBhIGJvb2wNCj4+ICAgIGh3bW9uL2xtNzg6
+IERyb3AgUkVBTExZX1NMT1dfSU8gc2V0dGluZw0KPj4gICAgaHdtb24vdzgzNzgxZDogRHJv
+cCBSRUFMTFlfU0xPV19JTyBzZXR0aW5nDQo+PiAgICBibG9jay9mbG9wcHk6IERvbid0IHVz
+ZSBSRUFMTFlfU0xPV19JTyBmb3IgZGVsYXlzDQo+PiAgICB4ODYvaW86IFJlbW92ZSBSRUFM
+TFlfU0xPV19JTyBoYW5kbGluZw0KPj4NCj4+ICAgYXJjaC94ODYvaW5jbHVkZS9hc20vZmxv
+cHB5LmggICAgICAgICB8IDI3ICsrKysrKysrKysrKysrKysrKysrKystLS0tLQ0KPj4gICBh
+cmNoL3g4Ni9pbmNsdWRlL2FzbS9pby5oICAgICAgICAgICAgIHwgMTIgKysrKystLS0tLS0t
+DQo+PiAgIGFyY2gveDg2L2luY2x1ZGUvYXNtL3BhcmF2aXJ0LmggICAgICAgfCAxMSArLS0t
+LS0tLS0tLQ0KPj4gICBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9wYXJhdmlydF90eXBlcy5oIHwg
+IDMgKy0tDQo+PiAgIGFyY2gveDg2L2tlcm5lbC9jcHUvdm13YXJlLmMgICAgICAgICAgfCAg
+MiArLQ0KPj4gICBhcmNoL3g4Ni9rZXJuZWwva3ZtLmMgICAgICAgICAgICAgICAgIHwgIDgg
+Ky0tLS0tLS0NCj4+ICAgYXJjaC94ODYva2VybmVsL3BhcmF2aXJ0LmMgICAgICAgICAgICB8
+ICAzICstLQ0KPj4gICBhcmNoL3g4Ni94ZW4vZW5saWdodGVuX3B2LmMgICAgICAgICAgIHwg
+IDYgKy0tLS0tDQo+PiAgIGRyaXZlcnMvYmxvY2svZmxvcHB5LmMgICAgICAgICAgICAgICAg
+fCAgMiAtLQ0KPj4gICBkcml2ZXJzL2h3bW9uL2xtNzguYyAgICAgICAgICAgICAgICAgIHwg
+IDUgKysrLS0NCj4+ICAgZHJpdmVycy9od21vbi93ODM3ODFkLmMgICAgICAgICAgICAgICB8
+ICA1ICsrKy0tDQo+PiAgIDExIGZpbGVzIGNoYW5nZWQsIDM5IGluc2VydGlvbnMoKyksIDQ1
+IGRlbGV0aW9ucygtKQ0KPiANCj4gSSB0aGluayB3ZSBzaG91bGQgZ2V0IHJpZCBvZiAqYWxs
+KiBpb19kZWxheSBoYWNrcywgdGhleSBtaWdodCBoYXZlIGJlZW4NCj4gcmVsZXZhbnQgaW4g
+dGhlIGRheXMgb2YgaTM4NiBzeXN0ZW1zLCBidXQgd2UgZG9uJ3QgZXZlbiBzdXBwb3J0IGkz
+ODYNCj4gQ1BVcyBhbnltb3JlLiBTaG91bGQgaXQgY2F1c2UgYW55IHJlZ3Jlc3Npb25zLCBp
+dCdzIGVhc3kgdG8gYmlzZWN0IHRvLg0KPiBUaGVyZSdzIGJlZW4gZW5vdWdoIGNoYW5nZXMg
+YXJvdW5kIGFsbCB0aGVzZSBmYWNpbGl0aWVzIHRoYXQgdGhlDQo+IG9yaWdpbmFsIHRpbWlu
+Z3MgYXJlIHByb2JhYmx5IHdheSBvZmYgYWxyZWFkeSwgc28gd2UndmUganVzdCBiZWVuDQo+
+IGNhcmdvLWN1bHQgcG9ydGluZyB0aGVzZSB0byBuZXdlciBrZXJuZWxzIGVzc2VudGlhbGx5
+Lg0KDQpGaW5lIHdpdGggbWUuDQoNCldoaWNoIHBhdGggdG8gcmVtb3ZhbCBvZiBpb19kZWxh
+eSB3b3VsZCB5b3UgKGFuZCBvdGhlcnMpIHByZWZlcj8NCg0KMS4gUmlwcGluZyBpdCBvdXQg
+aW1tZWRpYXRlbHkuDQoNCjIuIEhpZGluZyBpdCBiZWhpbmQgYSBkZWZhdWx0LW9mZiBjb25m
+aWcgb3B0aW9uIGZvciBhIGZldyBrZXJuZWwgdmVyc2lvbnMNCiAgICBiZWZvcmUgcmVtb3Zp
+bmcgaXQuDQoNCjMuIFVzaW5nIENPTkZJR19JT19ERUxBWV9OT05FIGFzIHRoZSBkZWZhdWx0
+IGlvX2RlbGF5X3R5cGUgYmVmb3JlIHJpcHBpbmcgaXQNCiAgICBvdXQuDQoNCjQuIFVzaW5n
+IENPTkZJR19JT19ERUxBWV9OT05FIGFzIHRoZSBkZWZhdWx0IGlvX2RlbGF5X3R5cGUgYmVm
+b3JlIGhpZGluZyBpdA0KICAgIGJlaGluZCBhIGRlZmF1bHQtb2ZmIGNvbmZpZyBvcHRpb24s
+IHRoZW4gcmlwIGl0IG91dCBsYXRlci4NCg0KSW4gY2FzZXMgMi00IEknZCBzdGlsbCBsaWtl
+IHRvIGhhdmUgcGF0Y2ggMSBvZiBteSBzZXJpZXMgYXBwbGllZCwgYXMgaXQgd2lsbA0KbWFr
+ZSBwYXJhdmlydCByZXdvcmsgZWFzaWVyLg0KDQoNCkp1ZXJnZW4NCg==
+--------------0K40Sw4HjMWfuWdkxRcyXR0R
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------0K40Sw4HjMWfuWdkxRcyXR0R--
+
+--------------uocwPUAwg06DHItKBfr8MkI0--
+
+--------------3mgjNgxNLw3aXEpCS8syparo
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmk/rIkFAwAAAAAACgkQsN6d1ii/Ey+O
+KAf/RhuC6z7N89eI1LFebQgpxz6ipUoaEJLE3iPD9BIa8MC4hAK9upc0Be1ulp8clrSuz3rdpIw7
+3FUaPR9cZlvGMCV4Z+IHHjhwmCaWOcpppBqiVsNGhvT47rDwA2VkaikY3Ehl9quAQpn1CC1hhkJ1
+01WuZBXoh2YzULEZSQtLiB/SNUhY/giSrXVDYqFcRdmTVicw/Obw/Xlvx6pXR3h7j5JxemXi9/Fj
+iKUX4frjdzsmdQotNBCZcdFf37mdeUIi3KWRenk5jma77pmhc8v1kpf/IJcf8U5SvVaz2LnLN+pw
+GgFVUcHrV+iMB8ern+6AKait3RZBMNm2dCjJdLk6bg==
+=WEIE
+-----END PGP SIGNATURE-----
+
+--------------3mgjNgxNLw3aXEpCS8syparo--
 
