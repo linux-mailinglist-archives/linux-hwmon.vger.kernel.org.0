@@ -1,49 +1,52 @@
-Return-Path: <linux-hwmon+bounces-10857-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10855-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4D7CBC415
-	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 03:28:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC87CBC3F4
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 03:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A5623008885
-	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 02:27:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FF93300956A
+	for <lists+linux-hwmon@lfdr.de>; Mon, 15 Dec 2025 02:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440482BD5BB;
-	Mon, 15 Dec 2025 02:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C29288522;
+	Mon, 15 Dec 2025 02:26:41 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mail.monolithicpower.com (unknown [12.33.0.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E1C2E0400;
-	Mon, 15 Dec 2025 02:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADB48834;
+	Mon, 15 Dec 2025 02:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.33.0.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765765673; cv=none; b=l8AkXFpj00m68dyJByQtM1Y5jBItMkngA4s2AG4Sjj2ThW4Qzl6Fh9MwMxk8ivHy5EwG6/JyEbvu0klQvlm/uA7eBAoPZ7SjdT9Fy5a8aigmxuAeRCfcIZwXk6EXtSiQu+Bf4EoyiAeC5j0iZm190Vdmme7cJJwEw2HnYs8FBDs=
+	t=1765765601; cv=none; b=mmkOcs6OVQxg3/l1ltNXEnk+aiJ6V8d1NTgcs649MD8Fn1oFsSJGh+mhSSRRyFscdptjgauVeIpYfy6Gh6Ia7JTRkctEYAjpmOwLLPgNWJdWAeqxU3/WFFxPD5/DnvQT7UfBfkbgUTGAboTeJOesLMVHqaRKNaOzCasrRaNTvyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765765673; c=relaxed/simple;
-	bh=OYv/2cm8ZjgmBv1Y9zYXeD8VsLZKK9EOOc+vTiAK510=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dfs6r8uRf1TKklGF6B0+0baopZGhxICH8RGmIxMDpEMJQyvbG6gTHhA9hKEEA6hRxqeBKV/sU1S8Sb0VXuFhCpWZOj1eigs/LPrCCkrEzZ+5DiBc3WaUoOem0tobLRjZO2bt45z4k3FPz2RCAjx/rwmvGFdZ0Rsj5THRAsUA5Fw=
+	s=arc-20240116; t=1765765601; c=relaxed/simple;
+	bh=bL4J/1MC0f6IgvRrU3E11SbBwtlUY01btldktjXiVtg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F9dLv6hhkCO2Xlzzga+fhU5KKgnK5U2INsuwfjQVr7dwBexWL1nXzZ/cMzghLhqA+vzdLxWOBZHmn71HDDJrSC1phaqXCLkNKM0gLmJ/PzOhL7EJS96WeuN7QxqYqgpx2+VGtzscPmjW+BUtbQUDU0PCela53CQo9cLpvR8fdqo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monolithicpower.com; spf=pass smtp.mailfrom=monolithicpower.com; arc=none smtp.client-ip=12.33.0.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monolithicpower.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monolithicpower.com
 Received: from CD-MSH04.monolithicpower.com (10.10.70.213) by
- mps-mslbn01.monolithicpower.com (10.10.10.199) with Microsoft SMTP Server
+ mps-mslbn03.monolithicpower.com (10.10.10.245) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Sun, 14 Dec 2025 18:25:59 -0800
+ 15.1.2507.6; Sun, 14 Dec 2025 18:26:32 -0800
 Received: from HZ-200D-C0727.monolithicpower.com (10.53.66.137) by
  CD-MSH04.monolithicpower.com (10.10.70.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.57; Mon, 15 Dec 2025 10:25:54 +0800
+ 15.1.2507.57; Mon, 15 Dec 2025 10:26:30 +0800
 From: Yuxi Wang <Yuxi.Wang@monolithicpower.com>
 To: <Yuxi.Wang@monolithicpower.com>, <linux@roeck-us.net>, <corbet@lwn.net>,
 	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
 CC: <wyx137120466@gmail.com>, <linux-hwmon@vger.kernel.org>,
 	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<devicetree@vger.kernel.org>
-Subject: [PATCH v2 RESEND 0/2] hwmon: Add support for MPS mp5926 chip
-Date: Mon, 15 Dec 2025 10:25:03 +0800
-Message-ID: <20251215022505.1602-1-Yuxi.Wang@monolithicpower.com>
+Subject: [PATCH v2 RESEND 1/2] dt-bindings: hwmon: Add mps mp5926 driver bindings
+Date: Mon, 15 Dec 2025 10:25:04 +0800
+Message-ID: <20251215022505.1602-2-Yuxi.Wang@monolithicpower.com>
 X-Mailer: git-send-email 2.51.0.windows.1
+In-Reply-To: <20251215022505.1602-1-Yuxi.Wang@monolithicpower.com>
+References: <20251215022505.1602-1-Yuxi.Wang@monolithicpower.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -55,34 +58,26 @@ Content-Type: text/plain
 X-ClientProxiedBy: CD-MSLBN02.monolithicpower.com (192.168.86.32) To
  CD-MSH04.monolithicpower.com (10.10.70.213)
 
-Add mp5926 driver in hwmon and add dt-binding for it.
+Add a device tree bindings for mp5926 device.
 
-Change log:
-
-v1 -> v2:
-  - Corrected dt-bindings description.
-  - Corrected Kconfig description.
-  - Removed useless comment and code.
-  - Corrected the alignment.
-v1:
-  - Add mp5926 driver in hwmon and add dt-binding for it.
-
+Signed-off-by: Yuxi Wang <Yuxi.Wang@monolithicpower.com>
 ---
-Yuxi Wang (2):
-  dt-bindings: hwmon: Add mps mp5926 driver bindings
-  hwmon: add mp5926 driver
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../devicetree/bindings/trivial-devices.yaml  |   2 +
- Documentation/hwmon/index.rst                 |   1 +
- Documentation/hwmon/mp5926.rst                |  92 +++++++++
- MAINTAINERS                                   |   7 +
- drivers/hwmon/pmbus/Kconfig                   |   9 +
- drivers/hwmon/pmbus/Makefile                  |   1 +
- drivers/hwmon/pmbus/mp5926.c                  | 190 ++++++++++++++++++
- 7 files changed, 302 insertions(+)
- create mode 100644 Documentation/hwmon/mp5926.rst
- create mode 100644 drivers/hwmon/pmbus/mp5926.c
-
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index d0f7dbf15d6f..df3f74b9dd28 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -319,6 +319,8 @@ properties:
+           - mps,mp5023
+             # Monolithic Power Systems Inc. multi-phase hot-swap controller mp5920
+           - mps,mp5920
++            # Monolithic Power Systems Inc. multi-phase hot-swap controller mp5926
++          - mps,mp5926
+             # Monolithic Power Systems Inc. multi-phase hot-swap controller mp5990
+           - mps,mp5990
+             # Monolithic Power Systems Inc. multi-phase hot-swap controller mp5998
 -- 
 2.39.2
 
