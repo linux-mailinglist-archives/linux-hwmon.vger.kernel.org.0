@@ -1,64 +1,65 @@
-Return-Path: <linux-hwmon+bounces-10973-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-10975-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209B2CCC245
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Dec 2025 14:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D18BCCC24B
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Dec 2025 14:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 348FD302E59D
-	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Dec 2025 13:57:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FB66305DED2
+	for <lists+linux-hwmon@lfdr.de>; Thu, 18 Dec 2025 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2F333F380;
-	Thu, 18 Dec 2025 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4130340DAB;
+	Thu, 18 Dec 2025 13:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="r04HQ0Jm"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="mFGxQa35"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15852E62B5;
-	Thu, 18 Dec 2025 13:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AC033FE2F;
+	Thu, 18 Dec 2025 13:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766065778; cv=none; b=UZQiHeSzwXPAldBfqPwAhkUbTJLLKVxq6n2yIDXQZRGAGjujtz7gvghG8TG+iG//1dG91KDAQB+lu0P43z0riPs3VJ/NVyZoq3Klsh5qRVXq2uQLS755ilTOQ2U1Kq2FQoHlqWEQtlOrmWrO2LMaodSQlUM2GEorvb6qSl3ECFY=
+	t=1766065794; cv=none; b=b5c11ZBu5dPLa+GLyG2PTWV6LprUAbKCWO4KrEDypxK+dD97m/NX7HW1VbruRTsC5aaRt52eKpW5kjlfrb/S856o4MBBVEF5RQYGC68mXLohNvSeUvWDfRGZk2aQ9g8/FuZj8iU2cvm2gXLVyoF2ZnScJPVTTQU4PZkBUb0RJAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766065778; c=relaxed/simple;
-	bh=ZUlPv0gRf5wEWdZ/1bKPPdZCXjBwOJRFepMCOSGG1aI=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=pffcuw4tCrN6GDRM6IEDNuZAZYXPWrjEGOPmRdmDjLbiUWLEBtWNZhGVIef+3+YwtfGPYEpXitPYh12H7ltZxQ3YhCHjMXIGjbxOkBx+KkH4yJfee1FgMux8oBkzeObi6yD3ZuxrM7wk5pv/aTGZ6kk27uCh4nKZvRaOMiLU80w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=r04HQ0Jm; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1766065794; c=relaxed/simple;
+	bh=OrchZcNzVkiRDk/IccOTw5EqSHvJfTxEqYaQxnqjGaw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=tqC5F+Dbe0Qn1rs/rDhr5ViCe4sXW19iePpkQh5czAr3Nwl5no9BptUBlGsNLUMq1gjEXZFkqUCDDs5nEBoUiSJotQh6f4Q8FbXtHaJ1o8MS4XGbWRRA6OI4J6Tqq30DHp+3CHGm1c8J0PAfiSE5vbGS+97vKrqpq+R4MTaiWP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=mFGxQa35; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1766065777; x=1797601777;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=ZUlPv0gRf5wEWdZ/1bKPPdZCXjBwOJRFepMCOSGG1aI=;
-  b=r04HQ0JmsVNx/KcSwbiL12yxD7yQaNMAGPf2SBLWICI7h4K5SxjkCgge
-   1V47sqEzKE7AYDtB1wzZliOEhJO4PXR8dlorA7J5dv7TDks1zzrpzkKRQ
-   OwCyUKqyPKho3SYvzbwBrh6EPAdJ7EGwZacLGLwlEn3GIJUUDU1/oY10z
-   2aacc/beGRbPcmXTWVfg7ukP+eL+d3eo7mOFo/nxWr7oT79MaXrVW7mWu
-   yieO19VlWGjPjkyCNK8ZlU3uUSZR5xYdwgFKGXc4VYO7VAELuBCI6RZ7B
-   W3wySPs0qZ1TE+5RRccp6Ab+KBSRbijy7DIW86wYYpFRiL5utQgUJ9qUa
-   A==;
-X-CSE-ConnectionGUID: uStnpH7tSuOu/D8Br4ZMQw==
-X-CSE-MsgGUID: hmoE4KUpRJmE127I28b9hA==
+  t=1766065791; x=1797601791;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=OrchZcNzVkiRDk/IccOTw5EqSHvJfTxEqYaQxnqjGaw=;
+  b=mFGxQa35P80UK0zSDB+ItnoIeIjBqIjvFBAqTnAR9NZ9wjCSD/QwPKAb
+   9Nf3l4BcGvtz6t6HveVp5khmuQt4xh/NuJGkcsq57S/DbJmQXvn0nJRjC
+   ADyec9QnQuLPA51CP0xE0/jf5MODPM2sxwcFRdvGZcBe2xu9+5qumZ+fA
+   tpi4O0MYC6Bpx1R6KdEio9VQqT95eDyvH8ys7tfaiGohtFwWocoztH62C
+   z2QlXh+Bit/hn9I71xk6ADc6w0MMHDr5kv23U89gn+L5BMx59sDQwIV2H
+   AIG+2rBAwFZErGSzLVsntmCQ8k2RPBHPngaNUQUSy7nu9R2cw+4PFIWs1
+   Q==;
+X-CSE-ConnectionGUID: OPa4VeZnRsOT0259GpNwAw==
+X-CSE-MsgGUID: vVXsID5YTZKma0wTGfElnA==
 X-IronPort-AV: E=Sophos;i="6.21,158,1763449200"; 
-   d="scan'208";a="57520190"
+   d="scan'208";a="218051740"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 06:49:36 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Dec 2025 06:49:49 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Thu, 18 Dec 2025 06:49:05 -0700
+ 15.1.2507.58; Thu, 18 Dec 2025 06:49:08 -0700
 Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex01.mchp-main.com
  (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Thu, 18 Dec 2025 06:49:03 -0700
+ Transport; Thu, 18 Dec 2025 06:49:06 -0700
 From: Marius Cristea <marius.cristea@microchip.com>
-Subject: [PATCH v3 0/2] Add support for Microchip EMC1812
-Date: Thu, 18 Dec 2025 15:48:56 +0200
-Message-ID: <20251218-hw_mon-emc1812-v3-0-a123ada7b859@microchip.com>
+Date: Thu, 18 Dec 2025 15:48:57 +0200
+Subject: [PATCH v3 1/2] dt-bindings: hwmon: temperature: add support for
+ EMC1812
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -67,11 +68,9 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEgGRGkC/2XM0QqCMBTG8VeRXbc456RuddV7RISbW9vFnMywQ
- nz3pgSBXf4/+H4TG0zyZmCnYmLJjH7wsctx2BVMu6a7G+7b3IyAKgQg7p63EDtugkaJxC0qCXU
- pRYvA8qlPxvrXCl6uuZ0fHjG9V3/EZf1SdNxSI3LgypS2lY0FrJtz8DpF7Xy/1zGwhRvpRyDhH
- 0GZqBSBACuVEHJLzPP8Ac+jDbjzAAAA
-X-Change-ID: 20251002-hw_mon-emc1812-f1b806487d10
+Message-ID: <20251218-hw_mon-emc1812-v3-1-a123ada7b859@microchip.com>
+References: <20251218-hw_mon-emc1812-v3-0-a123ada7b859@microchip.com>
+In-Reply-To: <20251218-hw_mon-emc1812-v3-0-a123ada7b859@microchip.com>
 To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>
@@ -79,65 +78,242 @@ CC: <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Marius Cristea
 	<marius.cristea@microchip.com>, Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1987;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6877;
  i=marius.cristea@microchip.com; h=from:subject:message-id;
- bh=ZUlPv0gRf5wEWdZ/1bKPPdZCXjBwOJRFepMCOSGG1aI=;
- b=owGbwMvMwCW2tbSTZa7u0x2Mp9WSGDJd2PwKex5xG9w1un1TdJ7tnN8Xrj6ImDBDoHBn1+cZl
- XUzbtQ2dZSyMIhxMciKKbKseOunVrX2w2UlsUwdmDmsTCBDGLg4BWAiv80Z/kqHPjTf/u6scPGm
- dtO1M7qmHOnYV7tbwfNNn5vp3Nfz0mUZGQ4u0zx29r7Ny4WfMovzPbz4dfveXUy/x1pXup9Z9JQ
- 6GycA
+ bh=OrchZcNzVkiRDk/IccOTw5EqSHvJfTxEqYaQxnqjGaw=;
+ b=owGbwMvMwCW2tbSTZa7u0x2Mp9WSGDJd2PyMXQ/8eHKrzL6kR904hv3EWis5q4z160tDP/qum
+ KtcnKPSUcrCIMbFICumyLLirZ9a1doPl5XEMnVg5rAygQxh4OIUgInc5mdkODtjxj1f9w3TQxc2
+ epnuS5v4tG7uhJBjVqJSF2fz55TsTmP4p5Wz/z7HXKHdCbKvXRi9al49KbatF1wvnJu8vCY09r4
+ fMwA=
 X-Developer-Key: i=marius.cristea@microchip.com; a=openpgp;
  fpr=E32F8D4396E72E463E8CCD91446DE0ABD9140C3E
 
-This is the hwmon driver for EMC1812/13/14/15/33 multichannel Low-Voltage
-Remote Diode Sensor Family. The chips in the family have one internal
-and different numbers of external channels, ranging from 1 (EMC1812) to
-4 channels (EMC1815).
-Reading diodes in anti-parallel connection is supported by EMC1814, EMC1815
-and EMC1833.
+This is the devicetree schema for Microchip EMC1812/13/14/15/33
+Multichannel Low-Voltage Remote Diode Sensor Family.
+
+EMC1812 has one external remote temperature monitoring channel.
+EMC1813 has two external remote temperature monitoring channels.
+EMC1814 has three external remote temperature monitoring channels and
+channels 2 and 3 supports anti parallel diode.
+EMC1815 has four external remote temperature monitoring channels and
+channels 1/2  and 3/4 supports anti parallel diode.
+EMC1833 has two external remote temperature monitoring channels and
+channels 1 and 2 supports anti parallel diode.
 
 Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 ---
-Changes in v3:
-- remove mesages that are not helpfull
-- fix an issue related to NULL labels
-- fix sign/unsign calculation
-- replace E2BIG with EINVAL
-- use BIT() to create mask
-- Link to v2: https://lore.kernel.org/r/20251121-hw_mon-emc1812-v2-0-5b2070f8b778@microchip.com
+ .../bindings/hwmon/microchip,emc1812.yaml          | 182 +++++++++++++++++++++
+ MAINTAINERS                                        |   6 +
+ 2 files changed, 188 insertions(+)
 
-Changes in v2:
-- update the interrupt section from yaml file
-- update index.rst
-- remove fault condition from internal sensor
-- remove unused members from structures
-- update the driver to work on systems without device tree or
-  firmware nodes
-- add missing include files
-- make NULL labels to be not visible
-- corect sign/unsign calculations
-- corect possible underflow for limits
-- Link to v1: https://lore.kernel.org/r/20251029-hw_mon-emc1812-v1-0-be4fd8af016a@microchip.com
+diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..759e004eafdfc0772e110fe484767eb66a623294
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml
+@@ -0,0 +1,182 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/hwmon/microchip,emc1812.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Microchip EMC1812/13/14/15/33 multichannel temperature sensor
++
++maintainers:
++  - Marius Cristea <marius.cristea@microchip.com>
++
++description: |
++  The Microchip EMC1812/13/14/15/33 is a high-accuracy 2-wire multichannel
++  low-voltage remote diode temperature monitor.
++
++  The datasheet can be found here:
++    https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/EMC1812-3-4-5-33-Data-Sheet-DS20005751.pdf
++
++  EMC1812 has one external remote temperature monitoring channel
++  EMC1813 has two external remote temperature monitoring channels
++  EMC1814 has three external remote temperature monitoring channels and
++    channels 2 and 3 supports anti parallel diode
++  EMC1815 has four external remote temperature monitoring channels and
++    channels 1/2  and 3/4 supports anti parallel diode
++  EMC1833 has two external remote temperature monitoring channels and
++    channels 1 and 2 supports anti parallel diode
++
++properties:
++  compatible:
++    enum:
++      - microchip,emc1812
++      - microchip,emc1813
++      - microchip,emc1814
++      - microchip,emc1815
++      - microchip,emc1833
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    items:
++      - description: alert-therm2 asserts when the ALERT limit is exceeded.
++      - description: therm-addr asserts when the THERM limit is exceeded.
++    minItems: 1
++
++  interrupt-names:
++    items:
++      - enum: [alert-therm2, therm-addr]
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 0
++
++  microchip,parasitic-res-on-channel1-2:
++    description:
++      Indicates that the chip and the diodes/transistors are sufficiently
++      far apart that a parasitic resistance is added to the wires, which can
++      affect the measurements. Due to the anti-parallel diode connections,
++      channels 1 and 2 are affected together.
++    type: boolean
++
++  microchip,parasitic-res-on-channel3-4:
++    description:
++      Indicates that the chip and the diodes/transistors are sufficiently far
++      apart that a parasitic resistance is added to the wires, which can affect
++      the measurements. Due to the anti-parallel diode connections, channels
++      3 and 4 are affected together.
++    type: boolean
++
++  vdd-supply: true
++
++patternProperties:
++  "^channel@[1-4]$":
++    description:
++      Represents the external temperature channels to which
++      a remote diode is connected.
++    type: object
++
++    properties:
++      reg:
++        items:
++          minimum: 1
++          maximum: 4
++
++      label:
++        description: Unique name to identify which channel this is.
++
++    required:
++      - reg
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - microchip,emc1812
++              - microchip,emc1813
++              - microchip,emc1833
++    then:
++      properties:
++        microchip,parasitic-res-on-channel3-4: false
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - microchip,emc1812
++    then:
++      properties:
++        channel@1:
++          properties:
++            reg:
++              items:
++                const: 1
++      patternProperties:
++        "^channel@[2-4]$": false
++  - if:
++      properties:
++        compatible:
++          pattern: "^microchip,emc18[13]3"
++    then:
++      patternProperties:
++        "^channel@[12]$":
++          properties:
++            reg:
++              items:
++                maximum: 2
++        "^channel@[34]$": false
++  - if:
++      properties:
++        compatible:
++          pattern: "^microchip,emc1814"
++    then:
++      patternProperties:
++        "^channel@[1-3]$":
++          properties:
++            reg:
++              items:
++                maximum: 3
++      properties:
++        channel@4: false
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        temperature-sensor@4c {
++            compatible = "microchip,emc1813";
++            reg = <0x4c>;
++
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            microchip,parasitic-res-on-channel1-2;
++
++            vdd-supply = <&vdd>;
++
++            channel@1 {
++                reg = <1>;
++                label = "External CH1 Temperature";
++            };
++
++            channel@2 {
++                reg = <2>;
++                label = "External CH2 Temperature";
++            };
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6d7b697bfdba16e4f0ee5f4f0195b9d7da06dae5..85c236df781e47c78deeb7ef4d80bc94bba604c4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16646,6 +16646,12 @@ S:	Supported
+ F:	Documentation/devicetree/bindings/interrupt-controller/microchip,sama7g5-eic.yaml
+ F:	drivers/irqchip/irq-mchp-eic.c
+ 
++MICROCHIP EMC1812 DRIVER
++M:	Marius Cristea <marius.cristea@microchip.com>
++L:	linux-hwmon@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml
++
+ MICROCHIP I2C DRIVER
+ M:	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+ L:	linux-i2c@vger.kernel.org
 
----
-Marius Cristea (2):
-      dt-bindings: hwmon: temperature: add support for EMC1812
-      hwmon: temperature: add support for EMC1812
-
- .../bindings/hwmon/microchip,emc1812.yaml          | 182 ++++
- Documentation/hwmon/emc1812.rst                    |  68 ++
- Documentation/hwmon/index.rst                      |   1 +
- MAINTAINERS                                        |   8 +
- drivers/hwmon/Kconfig                              |  11 +
- drivers/hwmon/Makefile                             |   1 +
- drivers/hwmon/emc1812.c                            | 966 +++++++++++++++++++++
- 7 files changed, 1237 insertions(+)
----
-base-commit: d2b2fea3503e5e12b2e28784152937e48bcca6ff
-change-id: 20251002-hw_mon-emc1812-f1b806487d10
-
-Best regards,
 -- 
-Marius Cristea <marius.cristea@microchip.com>
+2.51.0
 
 
