@@ -1,47 +1,47 @@
-Return-Path: <linux-hwmon+bounces-11081-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11079-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DDDCEE256
-	for <lists+linux-hwmon@lfdr.de>; Fri, 02 Jan 2026 11:16:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D93CEE243
+	for <lists+linux-hwmon@lfdr.de>; Fri, 02 Jan 2026 11:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0E7A301670D
-	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Jan 2026 10:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6E9F3008E90
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Jan 2026 10:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320422D97B5;
-	Fri,  2 Jan 2026 10:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC9E2C21D0;
+	Fri,  2 Jan 2026 10:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="9pHrkj3x"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="67CcigvT"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828612D94A7;
-	Fri,  2 Jan 2026 10:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE1F149C6F;
+	Fri,  2 Jan 2026 10:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767348975; cv=none; b=Z16uHNInmMaug6IzF6EpO3iQ1qBTsupq/CNatgi+j6wDKtU2vuSNCBnFR6/LCujRxzk5uFb1QwTk6PClysCIrbKSmii09izt9AK+Tkt2Fkd8TLZRyJZYCYWBANVbKFZ6bK62kQEgN30RzV1ejkRTKjtR/kabi+RXN5H+YZGpE4g=
+	t=1767348972; cv=none; b=WvvCL9vRNe6cIYTHWA1asVU2NJV6650a/wdTgy6Iu5EuASYUJRUAUQQaoqcAUn4/LJipQA2G5szwxSclj//mq/ClT+v4sLbv8SXjksjOoPnptcuiJb/HnefS5K3sK5r9H4639ZJ8MjKIor8R4jHNDXdBMWki4xxhDXCEJAodHZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767348975; c=relaxed/simple;
-	bh=Q62La6tMG8NLXgwOLg+zY424ADxKVzFDoaNWZx8Y4nE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jpfOrEHXqrHIM/jgYTt5I57mQe6qRO7F8efMVjVA9UaleUauniiYQmjtSYOvb6JhH2e+tKhmYdZFkumktF7ULS0JIjrQiDQs2MmZsH5S09y4H35ZfwSmPvPlSl7iNx+IzlJEm88rmAW+R5by15mgLWnjp+HncKhfTwUbJVYdROg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=9pHrkj3x; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1767348972; c=relaxed/simple;
+	bh=LVcGh/6SNJstE5IufFNTQ//Nfrp5aD/qOQSUQBUrNuU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dozr7cSv5gnqD6CuXDTlyvgzH5viiaT/78yaqWvYvGcUSRbLVp/5/WZDaavz81wa0ZMfNtOAQxe33fVT6XtwwXMUF6ZnWyPaLfxKc5XkG38/ut6dsXkFjYMOW+hRG9ksT3p7g0jxRN22jkvA+gzGGC+/+ikNv+cGHC/Q8GhcbbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=67CcigvT; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=gFdX2U1Y4+TZXY+xuTQsbX1tSz9wsuRRTDUZpilP4J8=; b=9pHrkj3xk+SqBNRIUMxv3eaW6w
-	gn6kaAVYs3tB2ZxtnOXcVEUlJ0pD23caNPDkE77DFLjWWKMKcbNfx3pWyll7sRCPCaJKgyRfAAMyY
-	4XcmrRsO+7slu2iIMi15O8r3e7dL5jvVPEFFuVhtWOiAFufIv/+EXW9eaD2PRLenB8raXpTZD8tER
-	pAxbAgI1b+ihLJbXwNmnrJNvJDIZbwQuAzuMGoeUb5jQXWO91qd6CVemI4zusOt4y5rt9TuT2DSGt
-	5EY9E0Iolaf/9lgMgfGpV7r2CYqXjEToqAl7XQ56Ua/2jg28fEUJYT6loIAjKm0VZH1MsSUophUko
-	Gc+vSO4w==;
+	d=kemnade.info; s=20220719; h=Cc:In-Reply-To:References:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=noCo3TWyz/2Co4e4aZ+iblmN+RDw5lq2fxKmTHRklOU=; b=67CcigvTDoMIzH59A+zoOOrvUu
+	ifUOctskrnNbsBjOVK0BP4CH88DbmaDLwhtDkQL6BXiYvWes0Kh4ne05822o8aenYghmLRPnFo15t
+	QQXHZcUCsoJCriwCpU783SZ0j1TUld6AyKwYTaAZ28xnseFRt2L16PhBBDz8c7S3sfWis4y41e1Vv
+	APRtD1QCSpYnXhLTD6WdOSLyuecRDCUVawXIKiZt+ssG6+JpyZQEo+r1SSBnqQI88DEdcrD89ldI6
+	mudPefVXLEuNfuFNEL5XbyDItzC/6DVBz1/fA5oEFGAvxE/AG7YY9uB58W9CZCpPYHVjgFgBLes8F
+	uGw6m/Yg==;
 From: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v3 0/2] regulator: Add TPS65185
-Date: Fri, 02 Jan 2026 11:13:55 +0100
-Message-Id: <20260102-tps65185-submit-v3-0-23bda35772f2@kemnade.info>
+Date: Fri, 02 Jan 2026 11:13:56 +0100
+Subject: [PATCH v3 1/2] regulator: dt-bindings: Document TI TPS65185
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -50,68 +50,140 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGOaV2kC/3XNwQ6CMAyA4VchOzuzdQymJ9/DeADWSWMcZMNFQ
- 3h3Byej8fg37deZRQyEkR2LmQVMFGnwOdSuYF3f+CtysrkZCNASAPg0xkpLo3l8tHeaONTQdbW
- uUDSW5asxoKPnJp4vuXuK0xBe24Mk1+l/K0kuuCoPpmq1KK12pxvefWNxT94NbOUSfBL1LwGZk
- MbkhbI1TqkvYlmWN/R1OUL0AAAA
-X-Change-ID: 20251222-tps65185-submit-272cc756e0ad
+Message-Id: <20260102-tps65185-submit-v3-1-23bda35772f2@kemnade.info>
+References: <20260102-tps65185-submit-v3-0-23bda35772f2@kemnade.info>
+In-Reply-To: <20260102-tps65185-submit-v3-0-23bda35772f2@kemnade.info>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Guenter Roeck <linux@roeck-us.net>
 Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-hwmon@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Josua Mayer <josua.mayer@jm0.eu>
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1501; i=andreas@kemnade.info;
- h=from:subject:message-id; bh=Q62La6tMG8NLXgwOLg+zY424ADxKVzFDoaNWZx8Y4nE=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnhs27INwTpWiTfOPo/Li5F1en1E5eJd7cEM1w55nE7v
- WbCNrnHHaUsDGJcDLJiiiy/rBXcPqk8yw2eGmEPM4eVCWQIAxenAEykqo6RYVL5OxeTA/G8XdeS
- PvQd1I78871AQOKri/gmodn95TM+2jIyfD5QXdnxQHpt9jvWlc/rt74u3Ks/6+b2Wb/S1iWUT4k
- VZgMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3262; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=LVcGh/6SNJstE5IufFNTQ//Nfrp5aD/qOQSUQBUrNuU=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnhs+7YnW1VV38/O9mlaBbzrMLAUJ/cv8bfWad93fSD6
+ U3LO37BjlIWBjEuBlkxRZZf1gpun1Se5QZPjbCHmcPKBDKEgYtTACYSepfhn9GNo84b6/9yBb3V
+ FVH+9GPT+2aNxKfTfrAe2Xd/RZqECjPDH86afyfZ4gtP6SoFKn/R/qRcFXnR4dFJWbWDz5enCSu
+ pMgEA
 X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
  fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-Add a driver for the TPS65185 regulator which provides the
-comparatively high voltages needed for electronic paper displays.
+Document the TPS65185. GPIO names are same as in the datasheet except for
+the PWRUP pad which is described as "enable". That pin is optional because
+the rising edge corresponds to setting one register bit and falling edge
+to another register bit.
 
-Datasheet for the TPS65185 is at https://www.ti.com/lit/gpn/tps65185
-
-To simplify things, include the hwmon part directly which is only
-one temperature sensor and there are no other functions besides regulators
-in this chip.
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
-Changes in v3:
-- fix subject prefix for binding
-- remove description for vin-supply
-- Link to v2: https://patch.msgid.link/20251227-tps65185-submit-v2-0-1882024b8f33@kemnade.info
+ .../devicetree/bindings/regulator/ti,tps65185.yaml | 96 ++++++++++++++++++++++
+ 1 file changed, 96 insertions(+)
 
-Changes in v2:
-- try to find a more common subject line for bindings patch
-- align pwr-good name to pin name
-- remove runtime pm
-- make vin supply non-optional
-- use more standard regulator ops
-- Link to v1: https://patch.msgid.link/20251222-tps65185-submit-v1-0-34986b504d5f@kemnade.info
+diff --git a/Documentation/devicetree/bindings/regulator/ti,tps65185.yaml b/Documentation/devicetree/bindings/regulator/ti,tps65185.yaml
+new file mode 100644
+index 000000000000..af0f638b80bc
+--- /dev/null
++++ b/Documentation/devicetree/bindings/regulator/ti,tps65185.yaml
+@@ -0,0 +1,96 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/regulator/ti,tps65185.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI TPS65185 Power Management Integrated Circuit
++
++maintainers:
++  - Andreas Kemnade <andreas@kemnade.info>
++
++description:
++  TPS65185 is a Power Management IC to provide Power for EPDs with one 3.3V
++  switch, 2 symmetric LDOs behind 2 DC/DC converters, and one unsymmetric
++  regulator for a compensation voltage.
++
++properties:
++  compatible:
++    const: ti,tps65185
++
++  reg:
++    maxItems: 1
++
++  enable-gpios:
++    description:
++      PWRUP pin
++    maxItems: 1
++
++  pwr-good-gpios:
++    maxItems: 1
++
++  vcom-ctrl-gpios:
++    maxItems: 1
++
++  wakeup-gpios:
++    maxItems: 1
++
++  vin-supply: true
++
++  interrupts:
++    maxItems: 1
++
++  regulators:
++    type: object
++    additionalProperties: false
++    patternProperties:
++      "^(vcom|vposneg|v3p3)$":
++        unevaluatedProperties: false
++        type: object
++        $ref: /schemas/regulator/regulator.yaml
++
++required:
++  - compatible
++  - reg
++  - pwr-good-gpios
++  - vin-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pmic@18 {
++            compatible = "ti,tps65185";
++            reg = <0x18>;
++            pinctrl-names = "default";
++            pinctrl-0 = <&pinctrl_tps65185_gpio>;
++            pwr-good-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
++            vcom-ctrl-gpios = <&gpio2 9 GPIO_ACTIVE_HIGH>;
++            enable-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
++            wakeup-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
++            vin-supply = <&epdc_pmic_supply>;
++            interrupts-extended = <&gpio2 0 IRQ_TYPE_LEVEL_LOW>;
++
++            regulators {
++                vcom {
++                    regulator-name = "vcom";
++                };
++
++                vposneg {
++                    regulator-name = "vposneg";
++                    regulator-min-microvolt = <15000000>;
++                    regulator-max-microvolt = <15000000>;
++                };
++
++                v3p3 {
++                    regulator-name = "v3p3";
++                };
++            };
++        };
++    };
 
----
-Andreas Kemnade (2):
-      regulator: dt-bindings: Document TI TPS65185
-      regulator: Add TPS65185 driver
-
- .../devicetree/bindings/regulator/ti,tps65185.yaml |  96 +++++
- drivers/regulator/Kconfig                          |  11 +
- drivers/regulator/Makefile                         |   1 +
- drivers/regulator/tps65185.c                       | 454 +++++++++++++++++++++
- 4 files changed, 562 insertions(+)
----
-base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
-change-id: 20251222-tps65185-submit-272cc756e0ad
-
-Best regards,
---  
-Andreas Kemnade <andreas@kemnade.info>
+-- 
+2.47.3
 
 
