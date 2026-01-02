@@ -1,98 +1,117 @@
-Return-Path: <linux-hwmon+bounces-11078-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11081-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C8BCEC987
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 Dec 2025 22:38:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DDDCEE256
+	for <lists+linux-hwmon@lfdr.de>; Fri, 02 Jan 2026 11:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EF8230109AC
-	for <lists+linux-hwmon@lfdr.de>; Wed, 31 Dec 2025 21:38:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0E7A301670D
+	for <lists+linux-hwmon@lfdr.de>; Fri,  2 Jan 2026 10:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E06230C611;
-	Wed, 31 Dec 2025 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320422D97B5;
+	Fri,  2 Jan 2026 10:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ud1JCDQ6"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="9pHrkj3x"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1EF29D269
-	for <linux-hwmon@vger.kernel.org>; Wed, 31 Dec 2025 21:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828612D94A7;
+	Fri,  2 Jan 2026 10:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767217104; cv=none; b=BN+wf6QP7ixYruA5SIS5MjKhjXQESLDe1rnfkK2Hd35Q5MoOaSmrFZcaEEybLVDRwT3IgyAOY2R3SfLycInqGYMgm+C8ixud4m64IdT35ZXQSXwEUp6AWlw7IhUPfHYkAE6DJ5K9aAsXOuzlqxbiTYvGpmV9BYaLYwV2AFSVhGg=
+	t=1767348975; cv=none; b=Z16uHNInmMaug6IzF6EpO3iQ1qBTsupq/CNatgi+j6wDKtU2vuSNCBnFR6/LCujRxzk5uFb1QwTk6PClysCIrbKSmii09izt9AK+Tkt2Fkd8TLZRyJZYCYWBANVbKFZ6bK62kQEgN30RzV1ejkRTKjtR/kabi+RXN5H+YZGpE4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767217104; c=relaxed/simple;
-	bh=bNI4moxHzlL6mKNWIZsVYWKbjwRce0cuGLHEF0rQIaQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hKSK9R3p4iovxrasra8xVM45fRknDTybaSkhbAbbQ8TWNKXXtpoK7eDSY5bQMCowy+1L9rSTEIsgtARUIJjtzqzLCHVd/5d5GgrgVW5JGVmqf1AdRicJJRTRLlqqtd64TDfstX2ewcw4Mjff113mCCBrFrbjIDOfXqvRh3+9LDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ud1JCDQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339D9C19421
-	for <linux-hwmon@vger.kernel.org>; Wed, 31 Dec 2025 21:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767217104;
-	bh=bNI4moxHzlL6mKNWIZsVYWKbjwRce0cuGLHEF0rQIaQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ud1JCDQ6O191m3kYD44vkt1ShFs9vgo4JobjnhWd+evWDfkmkNYuJI5wcSNL4tWrL
-	 0Z7WpJ+bn7kwco/mfx1YQUb+Cf2JEoE/aLmZRvF04wFMC+yaiiiu1Wrne8U3CLXW7m
-	 rlf4vA2wklUadaJzq65C3YgpX5x29MdV+ltwo/Vd2zN8HofhUcqV8WbtJ0uksC688J
-	 ++6tS4KWFBNxOPHIOXyel+T5t0WvUdmHTbHNbqpkG920NCyjtE7n4FDHgl2Y4TBj64
-	 W6M7ykqRfovFexXy0AhEWH8mXR/2CkOb0cvGL234hY0g3gpG0VTXQnHhEZE4eY7Nqc
-	 84vzL6TQKrNEA==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-78fd0cd23faso78818857b3.2
-        for <linux-hwmon@vger.kernel.org>; Wed, 31 Dec 2025 13:38:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUYlIbORaboxwz6SnsRrjUXk6DZg7nFdEylzvVozOeGcFBU+kNW2TsTCNwl+IlGoUQrT9Ontn7WA3PaLA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbHU925P72z2rnoA7K5/e93MMPGotoFM6S+LoiYyefnITrZRGe
-	kYQabRJXXg8VvWC6Tqfff3IaLw9FOXmy5eUzDsscvNBepPvUqDRcR39seyUGCmCH5R680XALWFi
-	s7VxC4GCix+p6nkqVzVFXicftmvkacNU=
-X-Google-Smtp-Source: AGHT+IHGZ+h0d0MHZDCxvMCHygNM5e2LD8BSbr6KIbsOXsE3Z3p+Mpa0Okg+bD8neauLjOFoWJ8WBhGUbfiIcHde2OA=
-X-Received: by 2002:a05:690c:90:b0:78f:a9e9:f784 with SMTP id
- 00721157ae682-78fb3f5d4f4mr320728627b3.31.1767217103495; Wed, 31 Dec 2025
- 13:38:23 -0800 (PST)
+	s=arc-20240116; t=1767348975; c=relaxed/simple;
+	bh=Q62La6tMG8NLXgwOLg+zY424ADxKVzFDoaNWZx8Y4nE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jpfOrEHXqrHIM/jgYTt5I57mQe6qRO7F8efMVjVA9UaleUauniiYQmjtSYOvb6JhH2e+tKhmYdZFkumktF7ULS0JIjrQiDQs2MmZsH5S09y4H35ZfwSmPvPlSl7iNx+IzlJEm88rmAW+R5by15mgLWnjp+HncKhfTwUbJVYdROg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=9pHrkj3x; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=gFdX2U1Y4+TZXY+xuTQsbX1tSz9wsuRRTDUZpilP4J8=; b=9pHrkj3xk+SqBNRIUMxv3eaW6w
+	gn6kaAVYs3tB2ZxtnOXcVEUlJ0pD23caNPDkE77DFLjWWKMKcbNfx3pWyll7sRCPCaJKgyRfAAMyY
+	4XcmrRsO+7slu2iIMi15O8r3e7dL5jvVPEFFuVhtWOiAFufIv/+EXW9eaD2PRLenB8raXpTZD8tER
+	pAxbAgI1b+ihLJbXwNmnrJNvJDIZbwQuAzuMGoeUb5jQXWO91qd6CVemI4zusOt4y5rt9TuT2DSGt
+	5EY9E0Iolaf/9lgMgfGpV7r2CYqXjEToqAl7XQ56Ua/2jg28fEUJYT6loIAjKm0VZH1MsSUophUko
+	Gc+vSO4w==;
+From: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH v3 0/2] regulator: Add TPS65185
+Date: Fri, 02 Jan 2026 11:13:55 +0100
+Message-Id: <20260102-tps65185-submit-v3-0-23bda35772f2@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
- <20251211-dev-dt-warnings-all-v1-3-21b18b9ada77@codeconstruct.com.au>
-In-Reply-To: <20251211-dev-dt-warnings-all-v1-3-21b18b9ada77@codeconstruct.com.au>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 31 Dec 2025 22:38:12 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=TXQyGD5nSdg37KK=OrUJDwi=2pXQciLr+udC9hjCVkw@mail.gmail.com>
-X-Gm-Features: AQt7F2oBzR1qfgGQMAe5k9Xw2nDJvErMxOKzOVsHNn8uiB-Wg9Ho6D3OL063WYs
-Message-ID: <CAD++jL=TXQyGD5nSdg37KK=OrUJDwi=2pXQciLr+udC9hjCVkw@mail.gmail.com>
-Subject: Re: [PATCH RFC 03/16] pinctrl: aspeed: g5: Allow use of LPC node
- instead of LPC host controller
-To: Andrew Jeffery <andrew@codeconstruct.com.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGOaV2kC/3XNwQ6CMAyA4VchOzuzdQymJ9/DeADWSWMcZMNFQ
+ 3h3Byej8fg37deZRQyEkR2LmQVMFGnwOdSuYF3f+CtysrkZCNASAPg0xkpLo3l8tHeaONTQdbW
+ uUDSW5asxoKPnJp4vuXuK0xBe24Mk1+l/K0kuuCoPpmq1KK12pxvefWNxT94NbOUSfBL1LwGZk
+ MbkhbI1TqkvYlmWN/R1OUL0AAAA
+X-Change-ID: 20251222-tps65185-submit-272cc756e0ad
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Guenter Roeck <linux@roeck-us.net>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Josua Mayer <josua.mayer@jm0.eu>
+X-Mailer: b4 0.15-dev-a6db3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1501; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=Q62La6tMG8NLXgwOLg+zY424ADxKVzFDoaNWZx8Y4nE=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnhs27INwTpWiTfOPo/Li5F1en1E5eJd7cEM1w55nE7v
+ WbCNrnHHaUsDGJcDLJiiiy/rBXcPqk8yw2eGmEPM4eVCWQIAxenAEykqo6RYVL5OxeTA/G8XdeS
+ PvQd1I78871AQOKri/gmodn95TM+2jIyfD5QXdnxQHpt9jvWlc/rt74u3Ks/6+b2Wb/S1iWUT4k
+ VZgMA
+X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
+ fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-On Thu, Dec 11, 2025 at 9:46=E2=80=AFAM Andrew Jeffery
-<andrew@codeconstruct.com.au> wrote:
+Add a driver for the TPS65185 regulator which provides the
+comparatively high voltages needed for electronic paper displays.
 
-> There's currently a wart where the Aspeed LPC host controller has no
-> binding specified, but the pinctrl binding depends on referencing its
-> node.
->
-> Allow specification of a phandle to the parent LPC controller instead.
-> Fall back to testing for a compatible parent node if the provided
-> phandle doesn't directly resolve to the LPC controller node.
->
-> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Datasheet for the TPS65185 is at https://www.ti.com/lit/gpn/tps65185
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+To simplify things, include the hwmon part directly which is only
+one temperature sensor and there are no other functions besides regulators
+in this chip.
 
-I guess when this is non-RFC I will just apply these two patches.
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+Changes in v3:
+- fix subject prefix for binding
+- remove description for vin-supply
+- Link to v2: https://patch.msgid.link/20251227-tps65185-submit-v2-0-1882024b8f33@kemnade.info
 
-Yours,
-Linus Walleij
+Changes in v2:
+- try to find a more common subject line for bindings patch
+- align pwr-good name to pin name
+- remove runtime pm
+- make vin supply non-optional
+- use more standard regulator ops
+- Link to v1: https://patch.msgid.link/20251222-tps65185-submit-v1-0-34986b504d5f@kemnade.info
+
+---
+Andreas Kemnade (2):
+      regulator: dt-bindings: Document TI TPS65185
+      regulator: Add TPS65185 driver
+
+ .../devicetree/bindings/regulator/ti,tps65185.yaml |  96 +++++
+ drivers/regulator/Kconfig                          |  11 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/tps65185.c                       | 454 +++++++++++++++++++++
+ 4 files changed, 562 insertions(+)
+---
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+change-id: 20251222-tps65185-submit-272cc756e0ad
+
+Best regards,
+--  
+Andreas Kemnade <andreas@kemnade.info>
+
 
