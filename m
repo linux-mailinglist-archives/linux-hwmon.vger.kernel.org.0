@@ -1,81 +1,81 @@
-Return-Path: <linux-hwmon+bounces-11201-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11199-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9957FD1A0FE
-	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Jan 2026 17:01:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122B2D19B98
+	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Jan 2026 16:07:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 529B6302B76A
-	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Jan 2026 16:01:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE9AF30477FD
+	for <lists+linux-hwmon@lfdr.de>; Tue, 13 Jan 2026 15:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD892280335;
-	Tue, 13 Jan 2026 16:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4902DA75A;
+	Tue, 13 Jan 2026 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cl4MHvn7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RH5Crice"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1D62459FD
-	for <linux-hwmon@vger.kernel.org>; Tue, 13 Jan 2026 16:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358BA2D97AB
+	for <linux-hwmon@vger.kernel.org>; Tue, 13 Jan 2026 15:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768320105; cv=none; b=PLzTi4aHb7s9g3qlfcsF5+FCRF2/Kr7L2ojrNTXF5SymP9VGAyBl5Wn0oviRsGMGwWtejMeJAbwKuKax86wEe/I9QcU0+pBWQZZmrisLPY9DaYmDopLES+yK7Gh0x+mQMgv46zqZTOREwBMfBQo3X0tuh7YeVNO6ilZ1AeG0fHo=
+	t=1768316781; cv=none; b=ssW2Ne0Mk8j2ssgCf6C6C5XtEQDbdB6Qlr7H+Zju4lZUTS2PtnkbRqurnsRtZWHNXg73+GxUrnysVNCNPn4JfdeaIZXqvk7YU5pxErDN47VwsL6K3h4+iIb44WvZPAM/8ZaSPcCUMnej7EquJFlYNCU6IogIMPa47qYuJhknC/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768320105; c=relaxed/simple;
-	bh=iqLbJUskSKL4N9IDtD++X0NNSt+LYTZ6yAIiJzJtIKE=;
+	s=arc-20240116; t=1768316781; c=relaxed/simple;
+	bh=ix2vEkDxkx/qX95hGyUcQ/EDh6tqbhd+51wFSLA0+Ro=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FMOLIKeL/+V8lXaSZkbz3iIJRV/rj4W+77F6wZXA4m8DI+qwAOIzSp64n/XTGHtOHvKcyQDaT3U5qaWR/p5188cRXKeix+JawlVc5+5abcokrNUcOr0z+kfGTIpiDcLI2XvwvSZr3nXjk9/qMoWdLff9nhKbIZdAh1fLCva71q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cl4MHvn7; arc=none smtp.client-ip=209.85.215.195
+	 In-Reply-To:Content-Type; b=Acy/JU9DZTd6Yuc8Wif1GWh++0sZVNoqcf3yp+RDu6mTUvzcbNovoyNstyZREr+ZAYZji5OEt05U3zWreQ6HsitWOvpBi0YtMCkAHbaGfN53E6fMGtLrpJ4celFlA+qSK7J5ZdPk19GP1pfdaNLTqtpFeITY0yXa5THo48HF4E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RH5Crice; arc=none smtp.client-ip=74.125.82.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-c1e4a9033abso3999644a12.3
-        for <linux-hwmon@vger.kernel.org>; Tue, 13 Jan 2026 08:01:44 -0800 (PST)
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-11f3a10dcbbso6957864c88.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 13 Jan 2026 07:06:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768320104; x=1768924904; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768316777; x=1768921577; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=bLrLTIifRNqu5HnU5w9pTdgCpPu1ucQ1Ea9E1Sqzz/M=;
-        b=cl4MHvn7qqEqezFQRM2jm7ini5XEwwyswnJoNUC4JavJBefCZvlZNUd1J2INF5NztE
-         iU3Dg2G9hp90eWxoDo1SyUlsanrdeehM4LXel9mjceFBlvb0uQmVb7PCLpuzDEP6dqgB
-         hNV2e/wZNg/36Pxxs79KSxodXON3CkKQoXF/mrYfzRwP0rHWfbB/TioCygv2H4KkO30O
-         vLdQj2XMlefNfxxxse0sdYl5HLDiGkuSn2PTGU/E37jmSEV+enmpbXSrViJSmdDYHear
-         z/v8nEhYB8BiR5DiWJBExghezlrCtIRB/vy/pOg1bYxjQvaqY18wTn9UXD+LO2z89IJK
-         t3YQ==
+        bh=ufhPzoOtPDqdj3uM9a6Vgcwlr1IUsrf3mDuYDzQ15Kk=;
+        b=RH5Crice1SZMIIOfGNzD2B2lyWfRGv0T2g1rOWJLuoRosUKVw8EqrzLhxOxS5LLKTe
+         FkW20IXT7rGmrg/hv1zkTwoCQ4j7V6ubNKg3+7afjFb2O1KcrG3eQiJwb/BgkIRjJOdY
+         dK8O5hz/6AiWaKSMIcwYDNXs5QQlO25hLBlcsmIzlE5W804iDo6G8EWSKyZz3jQMtRFj
+         QwT19ifH1wjH11OAr1+rWDmZ8+A7RWkPTWnv1vlL+tJDrfKRA1dmJ0B32T3VR+mN6bAU
+         zzB+/meZS94htQZMn0b1Xj2MuSUg0vzFq46eHijTuV4hLrgkm6RB0nf/JIJFoTRF97CO
+         udug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768320104; x=1768924904;
+        d=1e100.net; s=20230601; t=1768316777; x=1768921577;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bLrLTIifRNqu5HnU5w9pTdgCpPu1ucQ1Ea9E1Sqzz/M=;
-        b=G1Qiy6WDYpHOOg7hHPctXoCo30GVRxYr1JJdD2WHrqNjM626DO5UZWy9y5EkazUyhV
-         eHhlDahWLFLfdJ8QiYA5+NW1G20zJUqu+PYmeGscVxniL0g8h06bQ7rXzo5sx4ctX9vt
-         f/YAyL/n8pVmEvzPN34sn5w62CZ5u3fTzqpxdHIrSl1b9UTIsnB7I8FZutNtFtFMnoAo
-         fNpu/2OCOR2y7O8r+qUjM5KOhD+NWxE4Cx5W065q37fNgSUmb5IiTBfuNrNhptiOpPkN
-         5CP0jqyrPHE2CNnexQfLAlyHa7kINYOAWFhlr0PwXqJ+RrcCtP0/GlQijuSt4UOQwl+3
-         oPbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpeCvG/O/NVZg0H4JIvwBO/eVWiPbCMNyebhvKy0fsH4dHmHdTALetZhKr+61JgcmoUyu7Q/s+FdYlWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzujwICA1UubrAA623yyguerXD+gMRdDQ2IEk9lIOyRiy+ZbJn4
-	QBKjil5JbstFlwfk0zOxe9CCDNlEb7M8FdChl4KSk7YhJ8b2NHToUL3H3vQjZo6Q
-X-Gm-Gg: AY/fxX7AgsVBCdQHdjeQsDoCuhbWx5y1YkTUnIG0CusCBzcK8NvMtGIdYDYqXrz5tMy
-	uoF1tjeuI7fP7MzSfuHOjnsv8OJa7VW4NteOHirq5QejHTdc1sLtTaQ/5qYYHKK0/QQ8Cy2YRr3
-	9U9tGYyXy4slYxiVFDeWrfZ63R5vVnXf/RDw1FGiz6K2Rb0mYeYfN02sLPyXZCnpWC9p9L6wsRE
-	TsITrlummW/G1Po2BXM0KVa+stgv8zmp09g+IrGtw7vAVVCjGoaChDw7FaRwYrntsiRsh9J9PCN
-	LIXnP8M3jsiMYfqAyfhpDx36TkIWZt3jIniGD4viuQmrIrUFc//FM9LJGI1Xo58fBUqAPnUo/l8
-	H1nv1JvHejew2pZR26nO3hbqwUXaXx/ge/h+fD4aw8ylh+aXWRlLxA7DaUGgkfzhEPPWAzmup7A
-	Nb8dmjwJSlScMpKG0J9QNB+Ew86ANmHGFmOE3yFimU5edIgQQeu3NEWZlXXDxe
-X-Google-Smtp-Source: AGHT+IHKSKZQgADOl4Pfjd3+mTQKk94xUzc05noeHLNnu6YOzYzqI6HhXwvi4DcrMT5Jb//EbsxJjA==
-X-Received: by 2002:a05:7301:1124:b0:2ae:5dc2:3b08 with SMTP id 5a478bee46e88-2b17d208e7fmr20636867eec.18.1768315941203;
-        Tue, 13 Jan 2026 06:52:21 -0800 (PST)
+        bh=ufhPzoOtPDqdj3uM9a6Vgcwlr1IUsrf3mDuYDzQ15Kk=;
+        b=HTyR+7XxNY5/l2akyNRznZ0XdW41unN+IIkD3yyMqRpnSiVH7XUHlamMvhL3IinHsG
+         VfNCIUQZgNmA81mO+AKeY7Qlq/ap9o04bFRNDHLWZUSiASBmhk3CnbIYQsNVvg66au5p
+         msH3sP4f8ZUuRuWSPfgK8lLPnXG7RssXncwhzQySyUmACga/S2ODb3kkHd/fjcZvbmOk
+         lCZwXgjVy9uk2wSX8BVtjcCbS6yUKT270UzlT1BUQWZuLYhIkWWNZnD/0JudviPFYE3q
+         J2gPtZZDaV9SjAO/SzFxCIIRytapnSm2gdwHNxVbHhIoc1OqQAEOgLA+3nu9eWW40bmA
+         vtNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXciSvsbn7C+EFcO9+NzJvWTaHCStahz+aZIoCbMwLJhZN4oaITVRcAVx0i0k7p0lZSk2ifbHxencjmFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn8qXnbDhv+qdgQneVHtbqDOZRXwkU1sGgJSGwMJE7OMgUhasa
+	mlBrWbOAj3XRlwxe7eXoTuO/Zw5Updd+D9DcdOIPVEcGTPkaW252wvZc
+X-Gm-Gg: AY/fxX655w2fBmkTcEZQ09qqlfizfMYt0+vBlY7cbLEW9WLLZp10JFMQIx6vEYEbBw0
+	Opy2l97XAgwhVZwt9rtx9sO2TjJsmP+HnNIHdjDdPjX3GNHWyKxwcze5wUb+/RugEIOPgYoGSyL
+	TIBC6t1Q7tivT7qVvlnSjbCMQa4Wf/DCnCkHcEvvbCCZum3enzOPmgIXu1dbmFMiG184udeqcXI
+	2TLrBP7dw7MCuDwgG1Xz5KCNtisv0DnonGz8k7xtYV5nL7OnGqBM126pgaQRhS/WLAlp3hMoQHk
+	ecbT9YkvZMZcz37oeAjD7pyv3B1ZutZKhep+T0iwpISxi4Dvk90h/BlRRHU/UiM4hY6o86OvUXo
+	luVBrJ4H2lAwbGQwFCaz5wApgFrt9Tfef3ey0DLOxu8jbwnedsVOq0gnksnvtfLYIkf/KojLgX/
+	/ngiEMuX1jw2kDg7WRc7ax2W9ZM8KVRYzVZaxPM+2Yrzcnm4lteq5sBrwE8kf4pkIa41x/NMk=
+X-Google-Smtp-Source: AGHT+IF7WOOz0yQrTGuA2ALq/uQDzLgxDrQjELDB7LIj01YWLMg0N+tr7XNBcTzfkwV+Rkk4zLqBBA==
+X-Received: by 2002:a05:7022:150a:b0:123:2cb4:7346 with SMTP id a92af1059eb24-1232cb47496mr3454339c88.33.1768316776892;
+        Tue, 13 Jan 2026 07:06:16 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b175bee31dsm15888653eec.32.2026.01.13.06.52.19
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f243421esm27894312c88.2.2026.01.13.07.06.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 06:52:20 -0800 (PST)
+        Tue, 13 Jan 2026 07:06:16 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <e7b367a2-bcb7-4ac9-83ee-ef55d4c2e303@roeck-us.net>
-Date: Tue, 13 Jan 2026 06:52:18 -0800
+Message-ID: <c4f9e253-ae23-4ba2-b70c-1dd3c37dde0a@roeck-us.net>
+Date: Tue, 13 Jan 2026 07:06:14 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -83,13 +83,11 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Documentation: hwmon: coretemp: Fix malformed RST
- table
-To: Laveesh Bansal <laveeshb@laveeshbansal.com>, linux-hwmon@vger.kernel.org,
- linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, rdunlap@infradead.org, sfr@canb.auug.org.au,
- linux-kernel@vger.kernel.org, linux-next@vger.kernel.org
-References: <20260113075322.978737-1-laveeshb@laveeshbansal.com>
+Subject: Re: [PATCH 1/3] hwmon: (tmp108) Add support for P3T1035 and P3T2030
+To: Mayank Mahajan <mayankmahajan.x@nxp.com>, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: priyanka.jain@nxp.com, vikash.bansal@nxp.com
+References: <20260113085207.1608-1-mayankmahajan.x@nxp.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -135,57 +133,39 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
  FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
  np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260113075322.978737-1-laveeshb@laveeshbansal.com>
+In-Reply-To: <20260113085207.1608-1-mayankmahajan.x@nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 1/12/26 23:53, Laveesh Bansal wrote:
-> Shorten the Celeron/Pentium processor entries in the TjMax table to fit
-> within the 47-character column width, fixing the RST table parsing error.
+On 1/13/26 00:52, Mayank Mahajan wrote:
+> Add support for the P3T1035 & P3T2030 temperature sensor. While mostly
+> compatible with the TMP108, P3T1035 uses an 8-bit configuration register
+> instead of the 16-bit layout used by TMP108. Updated driver to handle
+> this difference during configuration read/write.
 > 
-> The following entries exceeded the column width:
->    - "Celeron/Pentium Processors (Goldmont/Apollo Lake)" (49 chars)
->    - "Celeron/Pentium Processors (Goldmont Plus/Gemini Lake)" (54 chars)
->    - "Celeron/Pentium Processors (Tremont/Jasper Lake)" (48 chars)
-> 
-> Drop "Processors" from these entries as this preserves all searchable
-> technical keywords (Celeron, Pentium, Goldmont, Gemini Lake, etc.) while
-> "Processors" is implied by the chip names and adds no search value.
-> 
-> Fixes: 099cc1051df7 ("Documentation: hwmon: coretemp: Update supported CPUs and TjMax values")
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/linux-next/20260113155444.57c7775b@canb.auug.org.au/
-> Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
-> ---
-> v2:
->    - Shorten text instead of widening columns (widening would require
->      adjusting 101 data rows to realign TjMax values)
-> 
-> Tested with:
->    - python3 -m docutils Documentation/hwmon/coretemp.rst /dev/null
->    - make htmldocs
-> 
-> Open to alternative approaches if anyone has a better solution.
-> ---
->   Documentation/hwmon/coretemp.rst | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/hwmon/coretemp.rst b/Documentation/hwmon/coretemp.rst
-> index 3afb179e0ced..3ba44b57d028 100644
-> --- a/Documentation/hwmon/coretemp.rst
-> +++ b/Documentation/hwmon/coretemp.rst
-> @@ -120,12 +120,12 @@ Process		Processor					TjMax(C)
->   		x5-E3940/E3930					105
->   		x7-E3950					105
->   
-> -14nm		Celeron/Pentium Processors (Goldmont/Apollo Lake)
-> +14nm		Celeron/Pentium (Goldmont/Apollo Lake)
 
-I updated the patch to split the affected lines.
+This is way too complex. Use a single regmap configuration, implement the chip
+accesses in the driver, and map the 8-bit configuration register to a 16 bit
+value in the access functions. See the lm75 driver for an example; it does
+exactly the same.
 
-		Celeron/Pentium Processors
-		(Goldmont/Apollo Lake)
+The remaining differences are
 
+- Conversion rate. Use tables, like the lm75 driver.
+
+- The new chips don't support hysteresis. Handle in is_visible function;
+   that is what it is for.
+
+- Configuration
+   - Alert polarity. Not supported by the driver, so don't care.
+   - Configuration bit 2 (LC = Latch Control vs. TM = Thermostat Mode).
+     The functionality is the same (if set, alerts remain active until
+     a register is read) and should be set.
+   - Hysteresis. The value doesn't really matter for the P3T1035 since
+     it is in the upper byte of the configuration register which will be
+     ignored by the chip when written through the regmap access function.
+
+Thanks,
 Guenter
 
 
