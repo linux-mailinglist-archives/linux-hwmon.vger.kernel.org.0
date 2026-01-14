@@ -1,234 +1,114 @@
-Return-Path: <linux-hwmon+bounces-11224-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11233-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C087D1D0F2
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 09:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC416D1D46D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 09:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC0AD3059A5E
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 08:18:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F35230731E3
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 08:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7F337E2E3;
-	Wed, 14 Jan 2026 08:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8E43803C4;
+	Wed, 14 Jan 2026 08:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ODSNlQmI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UMd6V+mR"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB32E37C11E;
-	Wed, 14 Jan 2026 08:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF2637FF47;
+	Wed, 14 Jan 2026 08:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768378722; cv=none; b=fOIWS+yWv1cxGkNbZIkrycHVOubexZDtGjOQY5ZjGMIylxLS46aYvVljgjjzBCEMd5CqD3+Cc+mhthyOQo94k1lmfQ8Gj9CvwMPsWQfj0wTnhdItNeDeeBBPH9hrBEnf4kPI/iI1kfYBSJLe2V2UaR0G3ecJJYRKtcLVjXEQNJY=
+	t=1768380705; cv=none; b=I7Hmu8yKkxoXSi8kRk2l6MdIHaf5b5ij9HNBbI8V1/GYaojQIbuiQxbJLo7ncI8upnlW4aACZmyR2Wm+OKKcdqyvRgUL++1f07JMPLi8WbljKRDcK1n1p8X9xGu5/XpE9WseTbf7i76/lOxE1fb9xddj75Z2gy62+hKXVnn0oUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768378722; c=relaxed/simple;
-	bh=tKkHj585uRbwOBJnr4w4WFhS6cK3mEZfhTBJS3Gkwj0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=S7F6caxgAXcgu0NDzLNAjxjuQyFtEjZxEI4gJZAONfc/PnP2OGdJrDpmKVos6INmVc0RjVS3f686ygourbkEDOiflxNH1An/UdFK/f5ePswO7HtnVTOOJAG1tdkB+g9DmSc8TSwVplE8YxnPEtYKl1jZVYWs/dZWnGUjGxTPVZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ODSNlQmI; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=UEnLV/mo+rvCzPn
-	hi5Ysb5BkCmL3hyM1+qpTjHLGeh0=; b=ODSNlQmIBj0P78zyQoTy/fHZ9GjluPm
-	o/idz0ECKQvqzmt3t33WbkYRtL4XjiWDF6odo6p5kl0pwCDKuZ1sN2MYHsThb9l/
-	FAVXNwoNtHB8QtbX6kvjitfVCJEvhx42mrdp5vsRN5JUGnyJk/ZfP6hlMLco0IWm
-	OixGCt5awyvw=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wB3LaYsUWdpIIuhFg--.292S10;
-	Wed, 14 Jan 2026 16:18:00 +0800 (CST)
-From: Wenliang Yan <wenliang202407@163.com>
-To: linux@roeck-us.net,
-	Jean Delvare <jdelvare@suse.com>
-Cc: Wenliang Yan <wenliang202407@163.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 RESEND 8/8] hwmon: (ina3221) Modify write/read functions for 'in' and 'curr' attribute
-Date: Wed, 14 Jan 2026 03:17:41 -0500
-Message-Id: <20260114081741.111340-9-wenliang202407@163.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260114081741.111340-1-wenliang202407@163.com>
-References: <20260114081741.111340-1-wenliang202407@163.com>
-X-CM-TRANSID:_____wB3LaYsUWdpIIuhFg--.292S10
-X-Coremail-Antispam: 1Uf129KBjvJXoWxurW5uFy5GFW7urWDGF4DJwb_yoW7Jr1Dp3
-	yUGFWrtrWjq3WSgrs2kF4DWrn8tr4xW3y2yr9rK3sYva1UAryqkFyrG3Wq9345GryfWF4x
-	JayxtFWUua1Dtr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUXeOdUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbC5xiWamlnUTjPlQAA3+
+	s=arc-20240116; t=1768380705; c=relaxed/simple;
+	bh=MiqYC275tot1mJjDwI+973ULDxCYSEGTOa4QrdA/6PE=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=qs9UCFoifbXRw2IMnZNHS7iuAUkYbNw1cJhm8YxyzSIjNe6jCi6/PqEZpHAko6rN6cZ+ObutwP3vStWfH2h1Wg6ViP6qCJifU7hdEwwIbVU5mU9q9BhJN1dJ0foT9RreBxHT44Ss2SDA81bPIMznqoqy49ScRI3ow1qABeEEW6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UMd6V+mR; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768380703; x=1799916703;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=MiqYC275tot1mJjDwI+973ULDxCYSEGTOa4QrdA/6PE=;
+  b=UMd6V+mRVwSBkJ9SJtMOl2h6kH+IQjzoC4fiveYyTFSVtWACG4n7PplN
+   rGlspW7cP9kavPMamOvM4cZCfHzcB9mcQiZjmKZ2Il9ltntIVKIzRSuUd
+   e5ggckSk/fn2B6CsVjN35H+FmN/rKZDoc0pvGoqXJwmCsNk8d7baxYrCd
+   QoiUM91ozeqpkvj+JX7IW1YRGY1RGxDuDwMl2sArVJ/OyJlkMlXDKD5tZ
+   Wnryivl5PGku2YoeF5kvEXlx7PzShIInnriL0rsWwY4KWsKmqiBQWoPv6
+   1g96COnPgWnTKZDn9iTSzT9YVwHiN23gBBV2C6EDMIG2ROn+NRyCspnEf
+   Q==;
+X-CSE-ConnectionGUID: La5O6z7ZSACFI/8NDdS7iA==
+X-CSE-MsgGUID: rl0bi5xiTsuDBTKl5QD8TA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="95150934"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="95150934"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:51:41 -0800
+X-CSE-ConnectionGUID: KVGGSkB3T/miD90YUnm7ug==
+X-CSE-MsgGUID: fAOryuHjQP6n1QXzQlFpTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="209466097"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.107])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:51:37 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 14 Jan 2026 10:51:34 +0200 (EET)
+To: kernel test robot <lkp@intel.com>
+cc: Rong Zhang <i@rong.moe>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+    "Derek J. Clark" <derekjohn.clark@gmail.com>, Armin Wolf <W_Armin@gmx.de>, 
+    Hans de Goede <hansg@kernel.org>, oe-kbuild-all@lists.linux.dev, 
+    Guenter Roeck <linux@roeck-us.net>, platform-driver-x86@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v8 3/7] platform/x86: lenovo-wmi-{capdata,other}: Support
+ multiple Capability Data
+In-Reply-To: <202601140833.WJ1oZKuV-lkp@intel.com>
+Message-ID: <55186ed3-bf74-6c34-1350-51046306083a@linux.intel.com>
+References: <20260113172817.393856-4-i@rong.moe> <202601140833.WJ1oZKuV-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 
-Modified the relevant read/write functions for 'in' and 'curr' attributes,
-adding support for crit, lcrit, crit_alarm, and lcrit_alarm features.
+On Wed, 14 Jan 2026, kernel test robot wrote:
 
-Signed-off-by: Wenliang Yan <wenliang202407@163.com>
----
- drivers/hwmon/ina3221.c | 101 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 97 insertions(+), 4 deletions(-)
+> Hi Rong,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on b71e635feefc852405b14620a7fc58c4c80c0f73]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Rong-Zhang/platform-x86-lenovo-wmi-helpers-Convert-returned-buffer-into-u32/20260114-013537
+> base:   b71e635feefc852405b14620a7fc58c4c80c0f73
+> patch link:    https://lore.kernel.org/r/20260113172817.393856-4-i%40rong.moe
+> patch subject: [PATCH v8 3/7] platform/x86: lenovo-wmi-{capdata,other}: Support multiple Capability Data
+> config: x86_64-buildonly-randconfig-002-20260114 (https://download.01.org/0day-ci/archive/20260114/202601140833.WJ1oZKuV-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140833.WJ1oZKuV-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601140833.WJ1oZKuV-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> Warning: drivers/platform/x86/lenovo/wmi-capdata.c:168 function parameter '_cdxx' not described in 'DEF_LWMI_CDXX_GET_DATA'
+> >> Warning: drivers/platform/x86/lenovo/wmi-capdata.c:168 function parameter '_cd_type' not described in 'DEF_LWMI_CDXX_GET_DATA'
+> >> Warning: drivers/platform/x86/lenovo/wmi-capdata.c:168 function parameter '_output_t' not described in 'DEF_LWMI_CDXX_GET_DATA'
+> >> Warning: drivers/platform/x86/lenovo/wmi-capdata.c:168 expecting prototype for _get_data(). Prototype was for DEF_LWMI_CDXX_GET_DATA() instead
 
-diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
-index a1ac998378fb..9494518bf0b5 100644
---- a/drivers/hwmon/ina3221.c
-+++ b/drivers/hwmon/ina3221.c
-@@ -380,6 +380,12 @@ static const u8 ina3221_in_reg[] = {
- 	INA3221_SHUNT_SUM,
- };
- 
-+static const u8 alert_flag[] = {
-+	F_AFF1,
-+	F_AFF2,
-+	F_AFF3,
-+};
-+
- static int ina3221_read_chip(struct device *dev, u32 attr, long *val)
- {
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
-@@ -442,6 +448,40 @@ static int ina3221_read_in(struct device *dev, u32 attr, int channel, long *val)
- 	case hwmon_in_enable:
- 		*val = ina3221_is_enabled(ina, channel);
- 		return 0;
-+	case hwmon_in_crit:
-+	case hwmon_in_lcrit:
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+		if (!ina3221_is_enabled(ina, channel))
-+			return -ENODATA;
-+
-+		reg = limit_regs[channel];
-+		ret = ina3221_read_value(ina, reg, &regval);
-+		if (ret)
-+			return ret;
-+		/*
-+		 * Scale of bus voltage (mV): LSB is 8mV
-+		 */
-+		*val = regval * 8;
-+		return 0;
-+	case hwmon_in_crit_alarm:
-+	case hwmon_in_lcrit_alarm:
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+		/* No actual register read if channel is disabled */
-+		if (!ina3221_is_enabled(ina, channel)) {
-+			/* Return 0 for alert flags */
-+			*val = 0;
-+			return 0;
-+		}
-+
-+		reg = alert_flag[channel];
-+		ret = regmap_field_read(ina->fields[reg], &regval);
-+		if (ret)
-+			return ret;
-+		*val = regval;
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -501,6 +541,28 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 		/* Return current in mA */
- 		*val = DIV_ROUND_CLOSEST(voltage_nv, resistance_uo);
- 		return 0;
-+	case hwmon_curr_lcrit:
-+		if (!resistance_uo)
-+			return -ENODATA;
-+
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+		reg = limit_regs[channel];
-+		ret = ina3221_read_value(ina, reg, &regval);
-+		if (ret)
-+			return ret;
-+
-+		/* Return current in mA */
-+		*val = DIV_ROUND_CLOSEST(regval * ina->current_lsb_uA, 1000);
-+		return 0;
-+	case hwmon_curr_lcrit_alarm:
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+		reg = alert_flag[channel];
-+
-+		fallthrough;
- 	case hwmon_curr_crit_alarm:
- 	case hwmon_curr_max_alarm:
- 		/* No actual register read if channel is disabled */
-@@ -698,10 +760,9 @@ static int ina3221_write_chip(struct device *dev, u32 attr, long val)
- 	}
- }
- 
--static int ina3221_write_curr(struct device *dev, u32 attr,
--			      int channel, long val)
-+static int ina3221_write_curr_shunt(struct ina3221_data *ina, u32 attr,
-+				int channel, long val)
- {
--	struct ina3221_data *ina = dev_get_drvdata(dev);
- 	struct ina3221_input *input = ina->inputs;
- 	u8 reg = ina3221_curr_reg[attr][channel];
- 	int resistance_uo, current_ma, voltage_uv;
-@@ -744,6 +805,22 @@ static int ina3221_write_curr(struct device *dev, u32 attr,
- 	return regmap_write(ina->regmap, reg, regval);
- }
- 
-+static int ina3221_write_curr(struct device *dev, u32 attr,
-+			      int channel, long val)
-+{
-+	struct ina3221_data *ina = dev_get_drvdata(dev);
-+
-+	switch (attr) {
-+	case hwmon_curr_crit:
-+	case hwmon_curr_max:
-+		return ina3221_write_curr_shunt(ina, attr, channel, val);
-+	case hwmon_curr_lcrit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_SUL, channel, val);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int ina3221_write_enable(struct device *dev, int channel, bool enable)
- {
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
-@@ -792,6 +869,22 @@ static int ina3221_write_enable(struct device *dev, int channel, bool enable)
- 	return ret;
- }
- 
-+static int ina3221_write_in(struct device *dev, u32 attr, int channel, long val)
-+{
-+	struct ina3221_data *ina = dev_get_drvdata(dev);
-+
-+	switch (attr) {
-+	case hwmon_in_lcrit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BUL, channel, val);
-+	case hwmon_in_crit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BOL, channel, val);
-+	case hwmon_in_enable:
-+		return ina3221_write_enable(dev, channel, val);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int ina3221_write_power(struct device *dev, u32 attr, int channel, long val)
- {
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
-@@ -841,7 +934,7 @@ static int ina3221_write(struct device *dev, enum hwmon_sensor_types type,
- 		break;
- 	case hwmon_in:
- 		/* 0-align channel ID */
--		ret = ina3221_write_enable(dev, channel - 1, val);
-+		ret = ina3221_write_in(dev, attr, channel - 1, val);
- 		break;
- 	case hwmon_curr:
- 		ret = ina3221_write_curr(dev, attr, channel, val);
+These are quite annoying. Could you make it non-kerneldoc by removing the 
+second * from /**, so it won't trigger these warnings?
+
 -- 
-2.17.1
+ i.
 
 
