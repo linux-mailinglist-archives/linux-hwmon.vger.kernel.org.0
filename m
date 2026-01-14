@@ -1,193 +1,123 @@
-Return-Path: <linux-hwmon+bounces-11244-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11246-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F55ED1F664
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 15:23:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A13D2181A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 23:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 915EA3024112
-	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 14:23:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 629C6301E680
+	for <lists+linux-hwmon@lfdr.de>; Wed, 14 Jan 2026 22:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232E72DAFB0;
-	Wed, 14 Jan 2026 14:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E646D3B531A;
+	Wed, 14 Jan 2026 22:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GoVaa0M/"
+	dkim=pass (2048-bit key) header.d=perenite-com.20230601.gappssmtp.com header.i=@perenite-com.20230601.gappssmtp.com header.b="Z/jOFnMN"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91A01B425C
-	for <linux-hwmon@vger.kernel.org>; Wed, 14 Jan 2026 14:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6363AEF40
+	for <linux-hwmon@vger.kernel.org>; Wed, 14 Jan 2026 22:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768400632; cv=none; b=rTE/LWZqi6urE1UZ5tu/UpP9dB1LmLl+tgUSWYXhlOfMIS5L06b5TrcAUq3wAPY3fyW2Orh/hLD5UAxgWbR3JxJmeM53bXcen3PQhQKfjOJuFEeqt9mnxuOGPXRqISrMcYmuvOml1P4hwpy/eDvy0AqxEKbA9eaQBdu1GF0x2mQ=
+	t=1768428749; cv=none; b=glBqqxIob4WB6Iglx7eM1kjorrVqUZvd/8oCGYMa2X7H/CV7nWdynpgqT6kbHbKK0Kw1VA0eITRTcj59+YmHmaWPh0dTsezxw2FSjE6WxmP/cnGmkvHfrJrJwNd1/kSQdxiKDkGcDOo5pOzw4ruOBt5Id4/Jw1pyrMtuKqSbsAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768400632; c=relaxed/simple;
-	bh=4yI3qv1paP3863JGJN8EaT90z7WyLn3BHwc7lsAkj0g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=rVqKXGaSHt/jwoqMQ0B3BXufwTVmFcL8fe8zmzG8t0K4DdmeWQERWwKIfkZzmXV82H8PY40EZZz5QGEd43I3G8PU/1FXEjadD5sPRsIRRmBDlLC2r7Dwa2+D3vxoxf+P9d/O8Vg78FCqD8iVJ1qWD6JwugbHEjgGhCZnWCuzIz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GoVaa0M/; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1233c155a42so122821c88.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 14 Jan 2026 06:23:50 -0800 (PST)
+	s=arc-20240116; t=1768428749; c=relaxed/simple;
+	bh=B+EeUoOuPx9EoN07TmxXUxT66Ycgj/cFpUNYnSjF3Zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jtoZtUq4DZmg70R/5qOeJwBR4mRlvRBsg9Lwjq5y3GBNWsV2Zf9o/R2U36mrhM5Arhxg7yS+vas6tdE5gg8CQw5YFqG41gzbU7NT+LmoJUfUnfDUeTCIi+XpwkEzvM01mYfD2ZcWr/Geo3f7+juXXrQregZb/vzZIsYU7T/W2ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=perenite.com; spf=pass smtp.mailfrom=perenite.com; dkim=pass (2048-bit key) header.d=perenite-com.20230601.gappssmtp.com header.i=@perenite-com.20230601.gappssmtp.com header.b=Z/jOFnMN; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=perenite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perenite.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47f3b7ef761so1689545e9.0
+        for <linux-hwmon@vger.kernel.org>; Wed, 14 Jan 2026 14:12:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768400630; x=1769005430; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:cc
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=VCTd1UeGbd16C0dw6Flw043UIl8ToTlwb18MsiPCF94=;
-        b=GoVaa0M/ob5LP92LuigTci4rwd8AEn98ed69KJrtijjTKwZOQSNe6VaPoot8EdoJnO
-         YAeeZCBABERSbrdLMCijuAqwLjBiF5xugIA5guZmDDaahAK6o29OlQBvAScp8e8jZ16p
-         NhETAtoS6w1A5u4rclIFGka/r+6IKiSBx9Pocd1XFQqClKUnd+oS25VflweOtoHQNFZ5
-         3nfJZOkO2is6fb3N64ZtRXYxHtJaOMJQDF7MjYFv7f9qnJiC8QuVNJ8j57WSYkxvy5Ry
-         pj40t0Mwm7Etoij6Ic/g46PzTXzelhXBlU0UfzFDQ4lPx52tXuZra6ISlqkzHiE34sX+
-         Ftqg==
+        d=perenite-com.20230601.gappssmtp.com; s=20230601; t=1768428733; x=1769033533; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6PBd6GwtcCIgrv3iBWDU0XhqJMJ/1w2COK3jyTWsvxc=;
+        b=Z/jOFnMNEHCiPcZG5QV5Nz7+eGx6A9psDeE1N8wC7TswFWPHDAIaTFahZWvoO0Nesh
+         V/E7iHesVVxH9gwXuyKItbphlNayU2HNIo/cCxj5Hn1wKl3sFryUIzNTfOcC2S+VB1Z5
+         KDHOvZ2ONJxPEn0yA1hdF3cwvYqUWCuaqDGPaI3yOPWkdbTKf+ox2ADxxMMgV59KZAXg
+         HYOz68xLnrGespjVH8aDJmxEXPFeflS8GjNjRB2DyP+vAo9goeWPyrx49a8WNWfRbPOh
+         mu99TkooV8vwYbDMgdXstqAdZvLM8u58cSDHqV2eB6OvwTFk+1XHBISa0moMBixkJudg
+         eSlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768400630; x=1769005430;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:cc
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VCTd1UeGbd16C0dw6Flw043UIl8ToTlwb18MsiPCF94=;
-        b=JzgrasMXl20pXlBIS0jBPobnrmBAhluoffQsUWa//lcLoV1xM3KpSkP21EQclis3eu
-         3KuJsUTVS2q9Dux1gubWjUq8QwmskicfWcFpQH34IxgxIASN0fmZyANdwNeJLMtyS9V0
-         bQWoVaATOkWcnhIkCtZRnYa7Klo/dOUkbNN9LLYr+4X77Sk0TrHw6rCc9nFrLCD4KyAo
-         wJlrrO6xXu4oZiV73GJCxqKVbi4QfrMpr5tJRfONxty6vHJ/fnctEEs9w86B7EHjKpII
-         zCJsyJsCgYtZEsEdYpNLsGeL6Y88An6+TmfhidPdLt60OOqXDV2zz/jnYAkEQ9dsBXT6
-         V8Rg==
-X-Gm-Message-State: AOJu0YxKOplRc/juMzGAXih20zq+EuSEk0d1Fb/D4jKBt17qSdJGZc7l
-	SaOaMzaHtmttizOG4wI/mQBmZTqQWqwUi2qt+e7B2m7+fCY30hEnB8tlIx9V5g==
-X-Gm-Gg: AY/fxX6T343w//eiLw5SCyTg0iGJo3Me+sklmMBI84F30AAQvOI4wA5B+e06kGICDEp
-	VfHM+YNEmt34UftzTfpkb5qFjG6U2RtEIdmaAEA30TIXdpTNcOfz/aFCtWx1J9n5qyoRfhTeSFn
-	bdcedwDj540qg+Yu4cQxwkVo3HWzJV0iS3rY0iHakr89E0+nA8jEPjfGV8ruFM/ahgvlRVAQpS2
-	fdV7X2aj0UXSPR4NWPKSlmst4+VTCK4SqD73Fu/BAveRinH4ZKnWEXChdM83QWaxxmKAHRVnDw/
-	IXJR67NXq+tJEWG++1dSdxT98tv7WUv/RBN/T5EJCLZw677Yj0z7GOPfocXE9TcoHkF80HrXOyH
-	3y04ZrOEitXWnWhRsFgsZMGDSyEgt0SW83CDx6zJomt4dhhv63cn1IiPMHj3nX8kUni9ezaCTpW
-	JFjtJ1uSRNCewK3DGfeCTI7LOEayQfbbW/bArx6RxKI1adEsW0LoIq+J1nMIf5
-X-Received: by 2002:a05:693c:374a:b0:2ac:2dfd:9ff with SMTP id 5a478bee46e88-2b48731ffeemr3380034eec.41.1768400629498;
-        Wed, 14 Jan 2026 06:23:49 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b480dea94fsm1886468eec.24.2026.01.14.06.23.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jan 2026 06:23:48 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <e994308a-389a-4d67-9ec9-39a5f0d3f4b6@roeck-us.net>
-Date: Wed, 14 Jan 2026 06:23:47 -0800
+        d=1e100.net; s=20230601; t=1768428733; x=1769033533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6PBd6GwtcCIgrv3iBWDU0XhqJMJ/1w2COK3jyTWsvxc=;
+        b=nDQEBaBYz6NVxZp78ioYbxvLa/HvS6hFI7YHdGXxs8sXiBnYEYrKf+cpq8TKoGaJeE
+         j/FYK8jx4NOW7kzwh3VUw2h6RRIa8kzX51ofOr7eOwa0TCu9r4gWKg4mC5S2bIiW2G2X
+         i0JcKaj7Srjh6qIW1swIRfjlfgd1FUBgPaVAxMdnoRbt3JghVUdoKvfb2Nt8YWOGEwSq
+         l+NNixndr+lPNVkue0NLwnpXDiYVV6CLRsQIqZDp/AsCUgslmjCRsvIwCXkpXhT8Jjwk
+         n4HKnCJRbvQziKBHTJMHjdLnYjr2gDRib9BFOmECalfw+X7XRj1MakOikqAdRHKz8I6C
+         wy0w==
+X-Gm-Message-State: AOJu0Yz6k4pd+LCEiPPxE9MXF/gqwEVAKUSy/yjGf2nMiI6pZIRxmolG
+	Y1AZjww+BoO0TKqG6h6ytkdCv5qKX7idiOK0zyiTqTeJCLI6Klgq4oBKmT1N6CpqRiWNQR/hKpJ
+	pNs0=
+X-Gm-Gg: AY/fxX5QOYpBEHi/m+FWycMVSfRbzIE2jUKWzI1zQHo9MahiIUUuKXtd+iUFBIfTcL+
+	aMBcn1Y/HTqoEBhNcKlsaZmmSpXbgLVyHOSwkdP27gKitiTx+xzOmKwr2oO49A13s1zu0JcNs6v
+	wkTz7KHVW3/dyqJRzRDUwXxVFibj/yr95u4mr7a7QPHwHbnmfjPcNZ+vO7zT47ltW9g/X+vUfN8
+	XqATlIM5NHEjk49K0oD5QE1PJxn4sFx/YmB0bIcWspcOoxk896y0o6C0ZRjppEObAQlDyTqOfGs
+	t8ym7T2lI1bkjvYYC1Ohcf0pGmUq/HfqRMOaeMWJUqG6f5Qk1LgkBl1gNLK+nJDXHHO0QNHTJCk
+	r7wvhZOU2rDKXTmrVxCtz19fZs/GRil3+swQZY9v/iEaxNzOqy2z5w161z4hMWNuPkHRjV11flR
+	uji2EHFZ7qG/di6nL29TCaCjA3g/QQwOmMT5YCIzC/zYYLW5PSWvoNXtkiYetOw/8hZMStj3K6U
+	F0bnmREM8f+ZXNX0A==
+X-Received: by 2002:a05:600c:45c8:b0:477:9a28:b0a4 with SMTP id 5b1f17b1804b1-47ee3071491mr51525475e9.0.1768428733153;
+        Wed, 14 Jan 2026 14:12:13 -0800 (PST)
+Received: from localhost.localdomain (217-128-226-200.ftth.fr.orangecustomers.net. [217.128.226.200])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f941a670dsm3098195e9.5.2026.01.14.14.12.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 14 Jan 2026 14:12:12 -0800 (PST)
+From: "benoit.masson" <yahoo@perenite.com>
+To: Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	"benoit.masson" <yahoo@perenite.com>
+Subject: [PATCH v4 0/5] hwmon: it87: add IT8613E support
+Date: Wed, 14 Jan 2026 23:12:05 +0100
+Message-ID: <20260114221210.98071-1-yahoo@perenite.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] hwmon: spd5118: Do not fail resume on temporary I2C
- errors
-To: TINSAE TADESSE <tinsaetadesse2015@gmail.com>
-References: <20260110172003.13969-1-tinsaetadesse2015@gmail.com>
- <c36306c5-2426-4a9c-9abd-9f3cdab17ed5@roeck-us.net>
- <CAJ12PfNkde6__QQXMiyBbEoHMbY3efmtsqgbyiKBtBmyfpX5Jw@mail.gmail.com>
- <2740c3ab-7cb0-4931-81a2-30b85e8615f9@roeck-us.net>
- <CAJ12PfP+Dbxd5fFAx-zAaJQ0B53Z1nXAiPbkmivk6smKajf1=Q@mail.gmail.com>
-Content-Language: en-US
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- linux-kernel@vger.kernel.org
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <CAJ12PfP+Dbxd5fFAx-zAaJQ0B53Z1nXAiPbkmivk6smKajf1=Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/14/26 05:07, TINSAE TADESSE wrote:
-...
->>> Hi Guenter,
->>>
->>> I tested changing the i801 SMBus controller to use
->>> SET_LATE_SYSTEM_SLEEP_PM_OPS() instead of
->>> DEFINE_SIMPLE_DEV_PM_OPS() as a diagnostic experiment. With this
->>> change, spd5118 resume failures (-ENXIO)
->>> still persist, suggesting PM ordering alone is insufficient and other
->>> firmware interactions are involved.
->>
->> How about the problem in the suspend function ? Is that also still seen ?
->>
->> Also, the subject talks about -EIO. Is that still seen ?
->>
->> Either case, can you enable debug logs for the i801 driver ?
->> It should generate log entries when it reports errors.
->>
->> Thanks,
->> Guenter
->>
-> 
-> Hi Guenter,
-> 
-> Thank you for the questions. To clarify:
-> 
-Please do not drop mailing lists from replies.
+This series ports IT8613E support from the out-of-tree it87 fork into
+upstream in small steps. It first adds per-chip resource metadata and
+new PWM temp map handling, then expands temp limits/offsets, adds
+IT8613E detection, and finally the IT8613E configuration.
 
-> 1) I have not observed any failures in the suspend path. The suspend
-> callback completes successfully, and
-> I have not seen I2C errors or warnings during suspend at any point.
+Tested on: IT8613E, MEDION B660H7-M20 BIOS motherboard.
 
-Sorry, I seem to be missing something.
+Builds: each patch builds cleanly with W=1
+(the only checkpatch warnings are the kept symbolic perms
+S_IRUGO | S_IWUSR / S_IRUGO).
 
-In that case, what is the point of patch 3/3 of your series which
-removes hardware accesses from the suspend function ?
+Changes in v4:
+- Drop FEAT_TEMP_OFFSET and has_temp_offset(); rely on num_temp_offset.
+- Initialize num_temp_limit/offset/map for all chips, no runtime defaults.
+- Use per-chip reg_pwm pointer instead of type checks; fixes compile error.
+- Keep IT8613E feature set aligned with the above (no FEAT_TEMP_OFFSET).
 
-> 2) I have also not observed -EIO in my testing. The error consistently
-> reported on resume and subsequent hwmon access is -ENXIO.
-> Earlier references to -EIO were based on assumptions rather than
-> observed logs, and I should have been clearer about that.
-> 
+benoit.masson (5):
+  hwmon: it87: describe per-chip temperature resources
+  hwmon: it87: prepare for extended PWM temp maps
+  hwmon: it87: expose additional temperature limits
+  hwmon: it87: add IT8613E identification
+  hwmon: it87: add IT8613E configuration
 
-Thanks for the clarification.
+ Documentation/hwmon/it87.rst |   8 +
+ drivers/hwmon/it87.c         | 447 ++++++++++++++++++++++++++++-------
+ 2 files changed, 376 insertions(+), 79 deletions(-)
 
-Guenter
-
-> I am enabling debug logging for the i801 driver to collect more
-> concrete evidence of controller state during resume.
-
+-- 
+2.50.1 (Apple Git-155)
 
