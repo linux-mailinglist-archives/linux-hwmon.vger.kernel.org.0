@@ -1,131 +1,136 @@
-Return-Path: <linux-hwmon+bounces-11292-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11294-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A311D328BA
-	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Jan 2026 15:24:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A970FD32CA2
+	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Jan 2026 15:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3B2A301FA5D
-	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Jan 2026 14:24:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C49030E5694
+	for <lists+linux-hwmon@lfdr.de>; Fri, 16 Jan 2026 14:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C23335541;
-	Fri, 16 Jan 2026 14:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76393933EE;
+	Fri, 16 Jan 2026 14:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpGPc+NC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ma2qg64p"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3ED128B40E
-	for <linux-hwmon@vger.kernel.org>; Fri, 16 Jan 2026 14:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF0E2D77FF;
+	Fri, 16 Jan 2026 14:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768573441; cv=none; b=Lmr+1pDYyBef/+JvbEEk+UiRIU+PSItfCptJSWCzhk9JDHZnDaPqm/FKH5zqRFPXnlQSG/XeERmistAChS0fdFj5pkrs3eDvPiZ3AClV04JnQinYhwtp/M+h0g9TgGm+u4cSyau/LjOzaJ1CmLQpNYhXw8sGoEpQ7ywaf2JmqFU=
+	t=1768574291; cv=none; b=S2uip4rzEBU+cERo10zVg5AanMqHj/ybDPwHG2tuGtPG+gvofOA9y1z168ogx+2arDLPxdibZKspFyauLq/O7MIJcGMzwoLepFc4s7d8i5hS0RFR3sDHSHp3QNh1qDBHn2/Yzqkrr2NiuQUlkwh74y5ptr3fQ8cTiRlruDeaa9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768573441; c=relaxed/simple;
-	bh=AJ5ilNTXCmFbN1sZhiRyoXMZdR4/AegoKc+oZ70VIQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eJTqQZOLhtUIKciJSx/zLGizddUOOQK43DfFRT36xFBkjs/THcSLM/kDzkMdEVVordjkcxBrUkLnE/nsR5KsdxJZ5YX+2tM5vo2OldETCm/PWQOxN8oD6fuliVvNoNFlE0MffzH7csYyGj0xKlrlYG/Fn56Q6+fgOWAiKA/A3/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpGPc+NC; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-81ecbdfdcebso1254225b3a.1
-        for <linux-hwmon@vger.kernel.org>; Fri, 16 Jan 2026 06:24:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768573440; x=1769178240; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HPArp3drtMpT9gYIdrY05DfxOakcVV49Lx9C4/UTM/k=;
-        b=fpGPc+NCCcfBJMAJ+5hSdA8ocPZ+qAuhrZDGxa+3cUri3CHvs5bvNPAa0uT8O5LIoM
-         nDj9NXmdaTeEs1YoC+Zr6IftsQR79MGmKFasP832ltVuFi/qnjzqqOcJZYKIvoUJSsCP
-         u4PeX/dX1hqjHwZJYX3umzHJ2Dm7DHMIM/ztM53DlywqQYblZrdndr/zVVxXQ8GQvpdf
-         GK26WoJQGPBHMkRSkoNtKHbdKfLPF49tdf/vf1KMi4PpfS3dSPP1brRSltylhXysxawb
-         L9vSz44CcQ1gcWN9mSg5thv+5f+NpuvHdIbChcrlYP2UXjgsA2bUrMncrYMeOq6/Aasd
-         N+SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768573440; x=1769178240;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HPArp3drtMpT9gYIdrY05DfxOakcVV49Lx9C4/UTM/k=;
-        b=BpvvA4WdsLdoTVy428RbSjpZfTBXjXofi38uwj2oJK6dLdMXMxRdM7qkf1joGRDPf9
-         9Ju5a6b6TQklmrMSCUl4m84II31aRO7aetUBd0NiRrAOBM8+2RhiVA53mWEQc5uSlsWV
-         kpdxUMD2y5/LWz0LFhqAAviZOMlcolO7muJJeU+TpyHdxo3qmsyhqtEetwwh7YKTV9tn
-         zsnoT8ajB3rx60RNo5Z7miPJlvtfguEcPPvQWJAh20cdpNNZAzVe0sbYYmUb1f3aEvZy
-         xWhw2qE0OS0LaHFvr5ApOrLDKEj5ex8WzTOut4M/O42AC+IyDulHv57xm9AqZ5i6niPu
-         82ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRNeONKqWbmGhWypX3ps1ZcalxCOyy7gfPCoirjIov2ADSgl8HIlp3mcDNQLlx3HLUjxatgvZkPK3Fwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIUDj86cca0bwnRh+lRaWILzHoGnDom6jfIXK9yuDtwbAsmMm5
-	fZ8kd9XPAV+9ikprjWw4gm7Rq1bdwjHHGkV0xdA27/4UM/sDnBKYEqqV
-X-Gm-Gg: AY/fxX7GFTOaP2dpHgemt63waKXbyEi+UG18Z0XD6UGmQrtx77OwBTf8a9ulgK3oRRc
-	JHohktdueTt0W4fB98PbYraeZsdMIrb2lQe8WTmTO6ANY8eQJazBqF2WyZNe/5X/W8rcW54DRfQ
-	DvXj0pJ3LGwgqOfy8OmGaeD4MC2/4NLfUFzk2hV93qRuqF0LR4rNvtg7X5YM/Y+vm2o+exsw7PB
-	Z24ksgGkIjHM2DBQwHWq/CIK0C8KUYa9YZsv+8dWyyxAlwczvC1l1wqgcJhDw5RKdf6Dp06oh3J
-	0zQBC879JSFmyRcTsNZyHFVfcEuUkIrHtSvGQAJHd178KSAAo6sTBbtpBaNrRLcUrCakR1GrfXL
-	kU/iBZuiJCFVBOY+wZm6PcxIDelDP3VXYuQMbvg4rwvfslvOwx7sOXPX56PXq+JJnFEKO4eRh69
-	PvjMKGzTxRT4kChKTBev0=
-X-Received: by 2002:a05:6a20:2203:b0:366:14b0:4b09 with SMTP id adf61e73a8af0-38e00d7bd9dmr3180311637.69.1768573440025;
-        Fri, 16 Jan 2026 06:24:00 -0800 (PST)
-Received: from archlinux ([2405:201:1b:225c:eb9d:1fc0:f95c:bd90])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf32d68asm2228914a12.18.2026.01.16.06.23.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 06:23:59 -0800 (PST)
-Date: Fri, 16 Jan 2026 19:53:53 +0530
-From: Krishna Chomal <krishna.chomal108@gmail.com>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, hansg@kernel.org, linux@roeck-us.net
-Subject: Re: [PATCH v3 0/3] platform/x86: hp-wmi: Add manual fan support for
- Victus S laptops
-Message-ID: <aWpJcv5MOlxjb7A2@archlinux>
-References: <20251230145053.516196-1-krishna.chomal108@gmail.com>
- <20260113123738.222244-1-krishna.chomal108@gmail.com>
- <176848473669.15451.499475802697727364.b4-ty@linux.intel.com>
+	s=arc-20240116; t=1768574291; c=relaxed/simple;
+	bh=eaubboqRrOt4wiQ7dNDQSYRVvwj9pKBmaAE6JATQbdk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g/eOqscKvYYcQ3ci7WEfTUBnV3L9Qz4YrKXd+I76LE8mWXyzDj6CS7r9uAlH0DWUELDmQc5gnjUfQImaxeLLZGYx6t6GX4wjzXVIXXSs9MDFD7VOzc3sABnWVwGXZeRd6339GagQJ09HX8QngAwsJkXiJBeQcsZu6n4Q2kU7svY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ma2qg64p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4556C2BC86;
+	Fri, 16 Jan 2026 14:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768574291;
+	bh=eaubboqRrOt4wiQ7dNDQSYRVvwj9pKBmaAE6JATQbdk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ma2qg64p6yDllE44OJeg4SCt/XSz6wXdMSMlrSzaO8jMCXTC9586fMY4TJBgdUWxl
+	 mpVEwof9SEu4wCoHJ/63T7L4nQBjBLcOkgaak85Ugo7GJXmNMcL721atKtcD10KbAG
+	 eKdYZ5OVb4DM0X9nxEiTGnX3qC15zey48uyl8Prrzz/HZkB+i35OqDhFnTdE1ZbBNO
+	 adp6FyCsxX+zWUQ2/1jyEFS5qGshwUBeZDi2mrXXJOSr40s5xNKfovUjWG3j7VEpKI
+	 O08daJoJX+pPAlcCNBlijE+D2giRpArnGZZ0iCQXkVO5QN5Dz9s9oiPRq8bMKCgA3D
+	 Y5oVREMKyo5xA==
+Message-ID: <0e4c18b6-134e-4c66-ad19-1704fd51c92a@kernel.org>
+Date: Fri, 16 Jan 2026 15:38:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <176848473669.15451.499475802697727364.b4-ty@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] dt-bindings: hwmon: ti,tmp108: Add P3T1035,P3T2030
+To: Mayank Mahajan <mayankmahajan.x@nxp.com>, linux@roeck-us.net,
+ corbet@lwn.net, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: priyanka.jain@nxp.com, vikash.bansal@nxp.com
+References: <20260116113554.986-1-mayankmahajan.x@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260116113554.986-1-mayankmahajan.x@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 15, 2026 at 03:45:36PM +0200, Ilpo Järvinen wrote:
->On Tue, 13 Jan 2026 18:07:35 +0530, Krishna Chomal wrote:
->
->> This series adds support for manual fan speed control and PWM reporting
->> for HP Victus S-style laptops.
->>
->> The first patch is a trivial fix for ordering the include headers.
->>
->> The second patch refactors the hwmon implementation to use a per-device
->> private context for state tracking. It implements RPM-to-PWM conversion
->> using linear interpolation based on the laptop's internal fan tables
->> retrieved via WMI. It also introduces PWM_MODE_MANUAL, allowing users
->> to set specific fan speeds.
->>
->> [...]
->
->
->Thank you for your contribution, it has been applied to my local
->review-ilpo-next branch. Note it will show up in the public
->platform-drivers-x86/review-ilpo-next branch only once I've pushed my
->local branch there, which might take a while.
->
->The list of commits applied:
->[1/3] platform/x86: hp-wmi: order include headers
->      commit: 60f2d5d0f04365c41ad4f9eddf48c80dcd0b01c9
->[2/3] platform/x86: hp-wmi: add manual fan control for Victus S models
->      commit: 46be1453e6e61884b4840a768d1e8ffaf01a4c1c
->[3/3] platform/x86: hp-wmi: implement fan keep-alive
->      commit: c203c59fb5de1b1b8947d61176e868da1130cbeb
->
->--
-> i.
->
+On 16/01/2026 12:35, Mayank Mahajan wrote:
+> Document the NXP P3T1035 and P3T2030 compatibles in TMP108.
+> 
+> Signed-off-by: Mayank Mahajan <mayankmahajan.x@nxp.com>
 
-Thank you
+Read carefully replies you receive.
+
+<form letter>
+This is a friendly reminder during the review process.
+
+It looks like you received a tag and forgot to add it.
+
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here. However, there's no need to repost
+patches *only* to add the tags. The upstream maintainer will do that for
+tags received on the version they apply.
+
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
+
+Best regards,
+Krzysztof
 
