@@ -1,45 +1,45 @@
-Return-Path: <linux-hwmon+bounces-11322-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11321-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D117D39395
-	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 10:46:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA039D39393
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 10:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28C63300F730
-	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 09:46:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8F67300E83D
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 09:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A832D6E4B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00702D3A69;
 	Sun, 18 Jan 2026 09:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="JsIn2dj1"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="gq8xQ0v6"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7127C2627F9;
-	Sun, 18 Jan 2026 09:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128D51940A1;
+	Sun, 18 Jan 2026 09:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768729566; cv=none; b=Y0sRz2hEKWAKAFGJ20AC3x0OxzCQfeO1/Wbi8T303tS8dYwuJKVvGhTAYYqC0+xlt1tJQnHIHsOe3UPI0wdwUL7MAcmTawidMzpTOBi1SJqj02AEY895SaG//JoUvoHoJBBrawuim2FFHl5aR2nfvHoA6SKrcUMXp0OXbzSeEpA=
+	t=1768729566; cv=none; b=JTcj5i4wts010YBt/R/yfeT2ez3Bu5FESs1r3mh2FY9dpKmqpTNeGa04gsdWfwJdlrITrWSvv1SwP/o1sehEVeifooRUsw8w8wRg89FRLIxpQCuddxUrBdGVpsU+bz/Ik7uzhXB5YN+a6LpbIkgQYzGp9ZmPRUAM4YBsrC8C0+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768729566; c=relaxed/simple;
-	bh=j9teSg/CW499Ay/SXpjrSx3XeprimzCE6iPiqSHY5uw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VTgLaAvNaMT5IdYi8rKlq0AfCEOn7g2yEkC1Z54TRRj3NUlUgb8F0nw4IXCfFOeNx8RbqdXb0pixo3WacUVh43FYmwbMT9ylUy2EneDu7RV3EFHIg2cuzSoMZkNu+aTFvFFwyxpEnZePU38nW9TXqrygYpVER9N4i1OOw0fjJtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=JsIn2dj1; arc=none smtp.client-ip=159.69.126.157
+	bh=pVOwRSURauI8OX8J7+67T93iT1O49GeqBfIL66ymK0Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=q5veUsYYH+F286TjoMILCjg6s09gmOosYJbNWVCtz3nhypNVKbgwc8wLreyqaCKIFBW+NmhK1ojrl8998DlBtSxDf6DORoMnD9SP+VWx8LdBvuFoDASw0qjxyUwdYN/PLhs1sd8hi5N0s9WTUE+NtOBN9q1ZJk6411zRbZ03Thw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=gq8xQ0v6; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1768729562;
-	bh=j9teSg/CW499Ay/SXpjrSx3XeprimzCE6iPiqSHY5uw=;
-	h=From:Subject:Date:To:Cc:From;
-	b=JsIn2dj1eVs7wxwkmFSDAdFDG2owyfVUyuYmFdwSqTkIi3IUsK+uCGYif7LONKkSS
-	 oeXEVgi+r/eVDTBBluCGh/gYkqAMiR0NAXqvX+NJmGDfA3Ztub1dEshnXxXNpc0kgc
-	 auvO/2w1bdrOJag02TtaWtZZ2TdbshI7GA7AmSSM=
+	bh=pVOwRSURauI8OX8J7+67T93iT1O49GeqBfIL66ymK0Q=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=gq8xQ0v6YGzTM81xP0eeW4mJhiogmJwxObr1DYymjzZqMDPaRGUPvGXTWBSz3r/ZE
+	 YHexCuGr5CHCpcII8xjdrBwiqm32fJrs7bMTPopSf6icim5Brkx8fWxwH2BhxhoxYs
+	 TcOqIUvnOshaFuRQnyhI7LDVgoy2ZhiIQGRjVQ9o=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH v2 0/4] hwmon: (cros_ec) Fan target and temperature
- thresholds
-Date: Sun, 18 Jan 2026 10:45:54 +0100
-Message-Id: <20260118-cros_ec-hwmon-pwm-v2-0-77eb1709b031@weissschuh.net>
+Date: Sun, 18 Jan 2026 10:45:55 +0100
+Subject: [PATCH v2 1/4] hwmon: (cros_ec) Split up supported features in the
+ documentation
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -48,11 +48,9 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQ6CMBBEf4Xs2ZpSlYgn/8MQA9vF7oGWdJFqC
- P9uxau3eZPMmwWEIpPApVgg0szCwWcwuwLQtf5Bim1mMNoc9cnUCmOQO6FyaQhejWlQ2iJWpe7
- aHCDvxkg9vzbnrcnsWKYQ39vFXH7bn63S5z+2uVRaWVPbHk3Vd3i4JmIRQfd0e08TNOu6fgCGn
- XLBtwAAAA==
-X-Change-ID: 20240529-cros_ec-hwmon-pwm-0dcc610ba0dc
+Message-Id: <20260118-cros_ec-hwmon-pwm-v2-1-77eb1709b031@weissschuh.net>
+References: <20260118-cros_ec-hwmon-pwm-v2-0-77eb1709b031@weissschuh.net>
+In-Reply-To: <20260118-cros_ec-hwmon-pwm-v2-0-77eb1709b031@weissschuh.net>
 To: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
  Guenter Roeck <groeck@chromium.org>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
@@ -65,47 +63,56 @@ Cc: Dustin Howett <dustin@howett.net>,
  Sung-Chi Li <lschyi@chromium.org>, linux-doc@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768729562; l=1238;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768729562; l=1702;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=j9teSg/CW499Ay/SXpjrSx3XeprimzCE6iPiqSHY5uw=;
- b=2c7QAb4fz3t66wC76dHGvWktEERqTCgx83zFd9mc3kCI7c0jVp7l4cB7YTyAtI5JRvgmXcIHc
- PaycsLbme2uCk+agQ/SldM/p/3TkRASVt6xWCAQs2P3HWaGv+LdEMRu
+ bh=pVOwRSURauI8OX8J7+67T93iT1O49GeqBfIL66ymK0Q=;
+ b=iXV13yPc7icclGm3211Ub44YYUGW4GfYiY9PuNnDgZHyzYSeJ/Lm/eBFv3hOKFvsnpS35tuBa
+ 6VSj/e9GGtgB1UJLBlg+ZqHjXVv1qhwPhTbiPGeL2S3FDSNkehUBAYK
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Add read-only support to cros_ec_hwmon for
-* fan target speed for fan 1
-* fan temperature thresholds  for all temp sensors
-
-This series is meant to be merged through the hwmon tree.
-
-Tested on a Framework 13 AMD.
+The wall of text of supported features is hard to read and messy to
+extend. Split it into a definition list with an explanations for each
+supported feature.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
-Changes in v2:
-- Rebase onto hwmon-next
-- Drop already applied cros_ec_cmd_versions().
-- Drop PWM control patch as it is already implemented.
-- Drop write-access to temperature thresholds.
-- Link to v1: https://lore.kernel.org/r/20240608-cros_ec-hwmon-pwm-v1-0-d29dfc26fbc3@weissschuh.net
+ Documentation/hwmon/cros_ec_hwmon.rst | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
----
-Thomas Weißschuh (4):
-      hwmon: (cros_ec) Split up supported features in the documentation
-      hwmon: (cros_ec) Add support for fan target speed
-      hwmon: (cros_ec) Move temperature channel params to a macro
-      hwmon: (cros_ec) Add support for temperature thresholds
+diff --git a/Documentation/hwmon/cros_ec_hwmon.rst b/Documentation/hwmon/cros_ec_hwmon.rst
+index 6db812708325..b7dc88d22fda 100644
+--- a/Documentation/hwmon/cros_ec_hwmon.rst
++++ b/Documentation/hwmon/cros_ec_hwmon.rst
+@@ -23,9 +23,20 @@ ChromeOS embedded controller used in Chromebooks and other devices.
+ 
+ The channel labels exposed via hwmon are retrieved from the EC itself.
+ 
+-Fan and temperature readings are supported. PWM fan control is also supported if
+-the EC also supports setting fan PWM values and fan mode. Note that EC will
+-switch fan control mode back to auto when suspended. This driver will restore
+-the fan state to what they were before suspended when resumed.
+-If a fan is controllable, this driver will register that fan as a cooling device
+-in the thermal framework as well.
++Supported features
++------------------
++
++Fan readings
++    Always supported.
++
++Temperature readings
++    Always supported.
++
++PWM fan control
++    If the EC also supports setting fan PWM values and fan mode.
++
++    Note that EC will switch fan control mode back to auto when suspended.
++    This driver will restore the fan state to what they were before suspended when resumed.
++
++    If a fan is controllable, this driver will register that fan as a cooling device
++    in the thermal framework as well.
 
- Documentation/hwmon/cros_ec_hwmon.rst |  29 ++++++--
- drivers/hwmon/cros_ec_hwmon.c         | 133 +++++++++++++++++++++++++++-------
- 2 files changed, 129 insertions(+), 33 deletions(-)
----
-base-commit: cd9625d235b6e42b0430f828f1d2a0b688923872
-change-id: 20240529-cros_ec-hwmon-pwm-0dcc610ba0dc
-
-Best regards,
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
+2.52.0
 
 
