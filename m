@@ -1,234 +1,263 @@
-Return-Path: <linux-hwmon+bounces-11323-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11326-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A945D3939A
-	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 10:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4129BD393DF
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 11:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3A4E2300EA1C
-	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 09:46:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5688D300F19C
+	for <lists+linux-hwmon@lfdr.de>; Sun, 18 Jan 2026 10:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6892E2D8DC4;
-	Sun, 18 Jan 2026 09:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27ABD2DCF46;
+	Sun, 18 Jan 2026 10:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="PcCaoNV5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWXzVz4w"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D027FB2E;
-	Sun, 18 Jan 2026 09:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4B42DB792
+	for <linux-hwmon@vger.kernel.org>; Sun, 18 Jan 2026 10:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768729567; cv=none; b=ioP9TMb4FLnSGAd6VGPTglVNceyxa7k6+Votn0pLkhM1ZLlhJ2+2iy/T2+ThHO5a/075hzE7ivty3K4ktpUwjBqcPr/B0ytQTbMSOYpJbpfiWioI+jk6R2Q6Lj2O1Fq+ocDw9TgMJCc9zTl2VGbvBQ9B4rGiUiSn1IyjSpK8xi4=
+	t=1768731103; cv=none; b=LZAMan0fFN7arC6NtbrDEbJdsCEjNgTCzoFStMl6r69VrrkELj/eTTK965OFP3SuUQP8m9rpZcCoGkPYEVx4S/de1dp8HKfrl9WkXCt2l6x3444/XfSO88hJD3bH34OPgxwjiHxZCGkhK2jDK4HjU9hxh1/35iWVpE6M9XfVJwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768729567; c=relaxed/simple;
-	bh=17m7WiAjoAcgsV/06CC0RNSL0rVjD9jIOzoXf9IKjbo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VHc4Db/nyLjFRNlKMnqt5ZdH7O5T79RU4UKji7Z7ESd0XBWodq8z2F8csRUqcw8Cfa5Kw85OkHpq3aCwPplw7zfMiu2/xwlh8nWfA/twvP1Cjryy/AamyVx1Q0rBzgxK6SqS+ijnHC0rFMGHpV3MDUbU7evDLWrtauN+mnNFFfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=PcCaoNV5; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1768729562;
-	bh=17m7WiAjoAcgsV/06CC0RNSL0rVjD9jIOzoXf9IKjbo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PcCaoNV5WXDDSRmXfpuN7UtyNNCRuw4WGXNEE3WzjxML2XgvPDi0mr7lBTiW/MuCg
-	 lH3Tk1lsNAhpqqArSFmyGTL+72Xl26FzsTjPPEY4RM10XHkf3jXwE8Uox9HrE0Fx08
-	 Uz2ZLW5O9UOhtXS7iZ0dyzgnSS8ZT7AZacCqNpgo=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 18 Jan 2026 10:45:58 +0100
-Subject: [PATCH v2 4/4] hwmon: (cros_ec) Add support for temperature
- thresholds
+	s=arc-20240116; t=1768731103; c=relaxed/simple;
+	bh=LvWRP8Kvnm4HcYbXM1gISUJO/wKhYPV7aq8AvbjshSY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=R2t6nfW04DJV2pLC5a5tbXKTZPp7kkHfP6KweT8MKE8TLbKGwWFW7LIHbnVqAvPpN+mEiwCYiteqfxdDQv+VavnoxMj5WD8Rlog+va5z1U0uOq9uTb79WEPV2v0+imXz5uJlmejexz9ayo48FwgQAOotgYuwM+2cgRHdbx5XqJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nWXzVz4w; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47f3b7ef761so17632105e9.0
+        for <linux-hwmon@vger.kernel.org>; Sun, 18 Jan 2026 02:11:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768731100; x=1769335900; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LvWRP8Kvnm4HcYbXM1gISUJO/wKhYPV7aq8AvbjshSY=;
+        b=nWXzVz4w//cEpWYq8CWQj/iOOl8JdJfsdlWtmAlJ/4ZppLoCwFVfDaUWBbo33kvVlc
+         8DawAMgM9oqQ7mrZl7+7SqY+6mnd0gxfyV4pb7FNFv7yLreBWRAi+Ta4d1+L60iRvEQN
+         pF75Ft478NOJnCnxa+60DT4NZuGgiSIkYWpyjFBfRpHqRr/sbPCa1fhE9QcMufXo9Bhp
+         w1WiSmucMUGR9AZCYB8a3da/73IcgKiE02u3bC0mUuqYqFLtS0IMLL7ThVQibJcPgAmf
+         WMztp1S4n8mRj0D6O7h59Je3KEiigsCiL2kBaOeOzLDQSpyTqi+Prk8wxP27V5Dqb8er
+         Lp0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768731100; x=1769335900;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LvWRP8Kvnm4HcYbXM1gISUJO/wKhYPV7aq8AvbjshSY=;
+        b=oMFeDHf+/DvbLsT8KA0MOI6BcPUQHVOgEEhYqu9uIbrAkHPujGMVWgrYzCEJUcVP7V
+         QVXNOTYEZyxHwBxAKIxjYBM3ZLRSNyhITTkVFu998U89LrEgcjoHOyvXIgLOl5Q+Wj0Q
+         yrOvu7DbIWVMnWpso6s3q7Z7oeABqFPmOZDKvaL9NXFYBZo0tAotEGs18Tz/EPG4ySvi
+         gMFWYu/VzaCOKXOZ8BkHKnLfmlvg81RmJgwHSk1sEw59+xlXoMinhVUSSp6Ynr7Hwdf9
+         x2lI5tMpUqbc2vXbPKbghBhOxw5Zj1kTPvfkUXmHE36w0s5BQUTMa7VU/jSEXOXHVgL+
+         CKbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmt0610bvY3I+8T9EDDlbmiSZvQweg89MndhqwAFCiWeafe48Rg+vQO++qsZSqIEJwWKFTRPZzwQx3gg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuOtRG+87eLmqhl2qLhogqBDyHh7KgGe447zDIuJp9VIEB1+fX
+	+H1HgQmT4yso6TQnYIJGbftqQNbIyzfLSIatZesxyJp8tKuzY4iYMlSN
+X-Gm-Gg: AY/fxX4z4w7muXai1+1p02+jZaMrksycYD14rBDbvEYySiDHJwmVWiO3D3rSvosw+C/
+	coy3742iqn5fInpuMvbkvMc72leYjJZ3BbgGARx/50mkg20/gPpIC/XdhDHEnNuYyikS8l8mW/l
+	DB9e+2DOVVObYFevhWQzXuOjnwO1RYF/aiPh0dA+GX1f/i5ggYHHKE9NdZ8pgvsAAEAWoYowAoM
+	x+XQjRoDc/0szYghg1jA1ICi7wottyhTpGhA0CFnD9XdEFqwZH6vlYGwFg0NhvlcUns1DTrrzWh
+	UY8n4YnP2+riLVk5IaW265Iq5A0/RXBUwwnzokFCEsc5y81hiGaQtDYV+bHlJbB3rlH/+M5tBMc
+	kJDdMCRwE1mBzS2r+0YyMjFkttXXKfN1y/mQlDxjjMVn2P4lgVVq7Z/G5xJw3MF9a6L4yFQEetF
+	N8bTWiS9a4Ds2J0OXYWKBUqZcBdqdoPOgvOlicYKJ9C3/81RHnIh/V7QtONwr8artb7nr8hA==
+X-Received: by 2002:a05:600c:5487:b0:46f:d682:3c3d with SMTP id 5b1f17b1804b1-4801e30d482mr95822395e9.13.1768731099475;
+        Sun, 18 Jan 2026 02:11:39 -0800 (PST)
+Received: from ?IPv6:2001:818:ea56:d000:94c4:fb0e:28f:2a8d? ([2001:818:ea56:d000:94c4:fb0e:28f:2a8d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356992681esm16102416f8f.11.2026.01.18.02.11.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 02:11:39 -0800 (PST)
+Message-ID: <91c052abe2f88be12ef9f557120d540373471d67.camel@gmail.com>
+Subject: Re: [PATCH v5 0/3] hwmon: Add support for the LTC4283 Hot Swap
+ Controller
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Guenter Roeck <linux@roeck-us.net>, nuno.sa@analog.com, 
+	linux-hwmon@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Jean Delvare <jdelvare@suse.com>, Jonathan Corbet
+ <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>,  Bartosz
+ Golaszewski	 <brgl@bgdev.pl>, "Rob Herring (Arm)" <robh@kernel.org>, Linus
+ Walleij	 <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
+Date: Sun, 18 Jan 2026 10:12:43 +0000
+In-Reply-To: <0ae2d448-06e3-41f6-89aa-8aa3f939d64f@roeck-us.net>
+References: <20251223-ltc4283-support-v5-0-1152bff59a61@analog.com>
+	 <0ae2d448-06e3-41f6-89aa-8aa3f939d64f@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260118-cros_ec-hwmon-pwm-v2-4-77eb1709b031@weissschuh.net>
-References: <20260118-cros_ec-hwmon-pwm-v2-0-77eb1709b031@weissschuh.net>
-In-Reply-To: <20260118-cros_ec-hwmon-pwm-v2-0-77eb1709b031@weissschuh.net>
-To: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
- Guenter Roeck <groeck@chromium.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: Dustin Howett <dustin@howett.net>, 
- Mario Limonciello <mario.limonciello@amd.com>, 
- Stephen Horvath <s.horvath@outlook.com.au>, chrome-platform@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- Sung-Chi Li <lschyi@chromium.org>, linux-doc@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768729562; l=5600;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=17m7WiAjoAcgsV/06CC0RNSL0rVjD9jIOzoXf9IKjbo=;
- b=zBRy7NE9VMB8EKU3/N3JzuVLL564HLfNJyUWHHCwWn3wA3RBPhFGOwn2Y5vP/YdPHNWZWShTS
- 2F0dSAagaIqCbeXkmG0bxMpI6XQr9BzOLb675wq86F1FJsCxRhjK81V
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Implement reading temperature thresholds through
-EC_CMD_THERMAL_GET_THRESHOLD/EC_CMD_THERMAL_SET_THRESHOLD.
+On Sat, 2026-01-17 at 16:27 -0800, Guenter Roeck wrote:
+> Hi Nuno,
+>=20
+> On 12/23/25 04:21, Nuno S=C3=A1 via B4 Relay wrote:
+> > This is v3 for the LTC4283 how swap controller. Main change is that I'm
+> > now using the auxiliary bus for adding the GPIO device (done depending
+> > on FW properties).
+> >=20
+> > Similar to the LTC4282 device, we're clearing some fault logs in the
+> > reset_history attributes.
+> >=20
+> > Guenter, in [1] you can find some replies for some questions you had in
+> > v2 that likely you don't remember anymore. Regarding the regmap story I
+> > ended up adding a secong regmap for the 16 bit wide registers which
+> > seems like a clean solution (if I'm not missing nothing).
+> >=20
+>=20
+> Sorry for the long delay.
+>=20
+> Actually I prefer the solution used in the lm75 driver: Map all registers
+> to 16-bit registers using a regmap bus. Would that be possible ?
 
-Thresholds are mapped as follows between the EC and hwmon:
+I do like the current approach as we get the proper i2c functionality check=
+s from
+regmap and it actually maps the device register layout. But no strong feeli=
+ng so
+obvioulsy I'll try the lm75 way. However looking at code, something come to=
+ mind.
+Won't the below break on big endian machines (assuming big endian device)?
 
-hwmon_temp_max       - EC_TEMP_THRESH_WARN
-hwmon_temp_crit      - EC_TEMP_THRESH_HIGH
-hwmon_temp_emergency - EC_TEMP_THRESH_HALT
+https://elixir.bootlin.com/linux/v6.19-rc4/source/drivers/hwmon/lm75.c#L594
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Sunday morning for me so I might be missing something :). FWIW, if I'=E1=B8=
+=BF right about
+the above, then regmap i2c has the same issue (tough the issue seems to be =
+on the i2c
+API - at first glance).
 
----
-The following checkpatch.pl complaint is a false positive:
+Will also look at the below feedback.
 
-  WARNING: else is not generally useful after a break or return
-  #75: FILE: drivers/hwmon/cros_ec_hwmon.c:170:
-  +		return EC_TEMP_THRESH_HALT;
-  +	else
----
- Documentation/hwmon/cros_ec_hwmon.rst |  3 ++
- drivers/hwmon/cros_ec_hwmon.c         | 60 +++++++++++++++++++++++++++++++++--
- 2 files changed, 60 insertions(+), 3 deletions(-)
+Thanks!
+- Nuno S=C3=A1
 
-diff --git a/Documentation/hwmon/cros_ec_hwmon.rst b/Documentation/hwmon/cros_ec_hwmon.rst
-index ebc8da48fa8a..9ccab721e7c2 100644
---- a/Documentation/hwmon/cros_ec_hwmon.rst
-+++ b/Documentation/hwmon/cros_ec_hwmon.rst
-@@ -35,6 +35,9 @@ Fan target speed
- Temperature readings
-     Always supported.
- 
-+Temperature thresholds
-+    If supported by the EC.
+>=20
+> Other than that, I ran the series through an AI review. This is what it t=
+old me:
+>=20
+> =C2=A0=C2=A0 Identified Violations and Observations:
+>=20
+> =C2=A0=C2=A0=C2=A0 * Alphabetical Order of Includes: In drivers/hwmon/ltc=
+4283.c, the include files
+> are not strictly in alphabetical order.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * #include <linux/hwmon.h> is =
+listed before #include <linux/hwmon-sysfs.h>.
+>=20
+> -> Actually, linux/hwmon-sysfs.h> does not have to be included in the fir=
+st place.
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * According to strict ASCII so=
+rting (e.g., LC_ALL=3DC sort), hwmon-sysfs.h
+> should come first because the hyphen - (ASCII 45) precedes the dot . (ASC=
+II 46).
+> =C2=A0=C2=A0=C2=A0 * Documentation Discrepancy: The file Documentation/hw=
+mon/ltc4283.rst includes
+> a section for "Addresses scanned" listing I2C addresses 0x10-0x17 and 0x2=
+0-0x2E.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Inaccuracy: The driver does =
+not implement a .detect function, meaning no
+> I2C address scanning is actually performed.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Guideline Violation: The sub=
+mitting-patches.rst guideline states that
+> only specific I2C addresses (0x18-0x1f, 0x28-0x2f, etc.) shall be probed.=
+ The
+> addresses listed in the documentation (specifically 0x10-0x17) are outsid=
+e of this
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 approved range. Wh=
+ile the driver doesn't probe, the documentation
+> misleadingly suggests it does so on non-approved addresses.
+>=20
+> -> Please fix.
+>=20
+> Thanks,
+> Guenter
+>=20
+> > [1]:
+> > https://lore.kernel.org/linux-hwmon/0765a0b89779331c62a3f136ef030f7f2f4=
+0ea47.camel@gmail.com/
+> > [2]:
+> > https://lore.kernel.org/linux-iio/cover.1761588465.git.geert+renesas@gl=
+ider.be/
+> >=20
+> > ---
+> > Changes in v5:
+> > - Patch 2:
+> > =C2=A0=C2=A0 * Added a secong regmap for the 16bit wide registers;
+> > =C2=A0=C2=A0 * Add default value for rsense so that we can probe withou=
+t FW
+> > =C2=A0=C2=A0=C2=A0=C2=A0 properties;
+> > =C2=A0=C2=A0 * Make sure to give the right file permissions to the rese=
+t_history
+> > =C2=A0=C2=A0=C2=A0=C2=A0 attrs.
+> > - Patch 3:
+> > =C2=A0=C2=A0 * Make sure to get the right regmap (given that the device=
+ now has 2);
+> > =C2=A0=C2=A0 * Add error handling for getting the regmap.
+> > - Link to v4:
+> > https://lore.kernel.org/r/20251204-ltc4283-support-v4-0-db0197fd7984@an=
+alog.com
+> >=20
+> > ---
+> > Nuno S=C3=A1 (3):
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dt-bindings: hwmon: Document the L=
+TC4283 Swap Controller
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hwmon: ltc4283: Add support for th=
+e LTC4283 Swap Controller
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio: gpio-ltc4283: Add support fo=
+r the LTC4283 Swap Controller
+> >=20
+> > =C2=A0 .../devicetree/bindings/hwmon/adi,ltc4283.yaml=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 272 +++
+> > =C2=A0 Documentation/hwmon/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
+> > =C2=A0 Documentation/hwmon/ltc4283.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 266 +++
+> > =C2=A0 MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 9 +
+> > =C2=A0 drivers/gpio/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 15 +
+> > =C2=A0 drivers/gpio/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=
+=A0 1 +
+> > =C2=A0 drivers/gpio/gpio-ltc4283.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 218 +++
+> > =C2=A0 drivers/hwmon/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 12 =
 +
- PWM fan control
-     If the EC also supports setting fan PWM values and fan mode.
- 
-diff --git a/drivers/hwmon/cros_ec_hwmon.c b/drivers/hwmon/cros_ec_hwmon.c
-index f5be293fdaa6..5b998cd5e506 100644
---- a/drivers/hwmon/cros_ec_hwmon.c
-+++ b/drivers/hwmon/cros_ec_hwmon.c
-@@ -28,6 +28,7 @@ struct cros_ec_hwmon_priv {
- 	const char *temp_sensor_names[EC_TEMP_SENSOR_ENTRIES + EC_TEMP_SENSOR_B_ENTRIES];
- 	u8 usable_fans;
- 	bool fan_control_supported;
-+	bool temp_threshold_supported;
- 	u8 manual_fans; /* bits to indicate whether the fan is set to manual */
- 	u8 manual_fan_pwm[EC_FAN_SPEED_ENTRIES];
- };
-@@ -116,6 +117,23 @@ static int cros_ec_hwmon_read_temp(struct cros_ec_device *cros_ec, u8 index, u8
- 	return 0;
- }
- 
-+static int cros_ec_hwmon_read_temp_threshold(struct cros_ec_device *cros_ec, u8 index,
-+					     enum ec_temp_thresholds threshold, u32 *temp)
-+{
-+	struct ec_params_thermal_get_threshold_v1 req = {};
-+	struct ec_thermal_config resp;
-+	int ret;
+> > =C2=A0 drivers/hwmon/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
+> > =C2=A0 drivers/hwmon/ltc4283.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1766 +++++++++++++++++++=
 +
-+	req.sensor_num = index;
-+	ret = cros_ec_cmd(cros_ec, 1, EC_CMD_THERMAL_GET_THRESHOLD,
-+			  &req, sizeof(req), &resp, sizeof(resp));
-+	if (ret < 0)
-+		return ret;
-+
-+	*temp = resp.temp_host[threshold];
-+	return 0;
-+}
-+
- static bool cros_ec_hwmon_is_error_fan(u16 speed)
- {
- 	return speed == EC_FAN_SPEED_NOT_PRESENT || speed == EC_FAN_SPEED_STALLED;
-@@ -134,12 +152,32 @@ static long cros_ec_hwmon_temp_to_millicelsius(u8 temp)
- 	return kelvin_to_millicelsius((((long)temp) + EC_TEMP_SENSOR_OFFSET));
- }
- 
-+static bool cros_ec_hwmon_attr_is_temp_threshold(u32 attr)
-+{
-+	return attr == hwmon_temp_max ||
-+	       attr == hwmon_temp_crit ||
-+	       attr == hwmon_temp_emergency;
-+}
-+
-+static enum ec_temp_thresholds cros_ec_hwmon_attr_to_thres(u32 attr)
-+{
-+	if (attr == hwmon_temp_max)
-+		return EC_TEMP_THRESH_WARN;
-+	else if (attr == hwmon_temp_crit)
-+		return EC_TEMP_THRESH_HIGH;
-+	else if (attr == hwmon_temp_emergency)
-+		return EC_TEMP_THRESH_HALT;
-+	else
-+		unreachable();
-+}
-+
- static int cros_ec_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
- 			      u32 attr, int channel, long *val)
- {
- 	struct cros_ec_hwmon_priv *priv = dev_get_drvdata(dev);
- 	int ret = -EOPNOTSUPP;
- 	u8 control_method;
-+	u32 threshold;
- 	u8 pwm_value;
- 	u16 speed;
- 	u8 temp;
-@@ -187,6 +225,13 @@ static int cros_ec_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
- 			ret = cros_ec_hwmon_read_temp(priv->cros_ec, channel, &temp);
- 			if (ret == 0)
- 				*val = cros_ec_hwmon_is_error_temp(temp);
-+
-+		} else if (cros_ec_hwmon_attr_is_temp_threshold(attr)) {
-+			ret = cros_ec_hwmon_read_temp_threshold(priv->cros_ec, channel,
-+								cros_ec_hwmon_attr_to_thres(attr),
-+								&threshold);
-+			if (ret == 0)
-+				*val = kelvin_to_millicelsius(threshold);
- 		}
- 	}
- 
-@@ -291,8 +336,14 @@ static umode_t cros_ec_hwmon_is_visible(const void *data, enum hwmon_sensor_type
- 		if (priv->fan_control_supported && priv->usable_fans & BIT(channel))
- 			return 0644;
- 	} else if (type == hwmon_temp) {
--		if (priv->temp_sensor_names[channel])
--			return 0444;
-+		if (priv->temp_sensor_names[channel]) {
-+			if (cros_ec_hwmon_attr_is_temp_threshold(attr)) {
-+				if (priv->temp_threshold_supported)
-+					return 0444;
-+			} else {
-+				return 0444;
-+			}
-+		}
- 	}
- 
- 	return 0;
-@@ -310,7 +361,8 @@ static const struct hwmon_channel_info * const cros_ec_hwmon_info[] = {
- 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
- 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
- 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE),
--#define CROS_EC_HWMON_TEMP_PARAMS (HWMON_T_INPUT | HWMON_T_FAULT | HWMON_T_LABEL)
-+#define CROS_EC_HWMON_TEMP_PARAMS (HWMON_T_INPUT | HWMON_T_FAULT | HWMON_T_LABEL | \
-+				   HWMON_T_MAX | HWMON_T_CRIT | HWMON_T_EMERGENCY)
- 	HWMON_CHANNEL_INFO(temp,
- 			   CROS_EC_HWMON_TEMP_PARAMS,
- 			   CROS_EC_HWMON_TEMP_PARAMS,
-@@ -520,6 +572,8 @@ static int cros_ec_hwmon_probe(struct platform_device *pdev)
- 	cros_ec_hwmon_probe_temp_sensors(dev, priv, thermal_version);
- 	cros_ec_hwmon_probe_fans(priv);
- 	priv->fan_control_supported = cros_ec_hwmon_probe_fan_control_supported(priv->cros_ec);
-+	priv->temp_threshold_supported = is_cros_ec_cmd_available(priv->cros_ec,
-+								  EC_CMD_THERMAL_GET_THRESHOLD, 1);
- 	cros_ec_hwmon_register_fan_cooling_devices(dev, priv);
- 
- 	hwmon_dev = devm_hwmon_device_register_with_info(dev, "cros_ec", priv,
-
--- 
-2.52.0
-
+> > =C2=A0 10 files changed, 2561 insertions(+)
+> > ---
+> > base-commit: bc04acf4aeca588496124a6cf54bfce3db327039
+> > change-id: 20250812-ltc4283-support-27c8c4e69c6b
+> > --
+> >=20
+> > Thanks!
+> > - Nuno S=C3=A1
+> >=20
+> >=20
+> >=20
 
