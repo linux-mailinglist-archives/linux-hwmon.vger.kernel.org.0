@@ -1,42 +1,42 @@
-Return-Path: <linux-hwmon+bounces-11341-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11339-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-hwmon@lfdr.de
 Delivered-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18BFD3A88D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Jan 2026 13:21:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C706D3A84E
+	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Jan 2026 13:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BD8C303A192
-	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Jan 2026 12:16:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 766A33009246
+	for <lists+linux-hwmon@lfdr.de>; Mon, 19 Jan 2026 12:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D29532571B;
-	Mon, 19 Jan 2026 12:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2401E32548D;
+	Mon, 19 Jan 2026 12:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MYpyAgjN"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QXkCPIQe"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA092512E6;
-	Mon, 19 Jan 2026 12:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFBA2475D0;
+	Mon, 19 Jan 2026 12:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768824967; cv=none; b=Mlg+gmKDrd3MKJNTmiZDc6BrjzWX8b56U6krAve5WyFPtsDaJub6g8K/RZLG9gu3oV9mVhwjaaw+Dv1Nxh62j+ueX0dYb63R4CHa2hM7ZEOv+sEgEeWCZS7UC5ipADxb3hmtRSO68g3CypqaZlMASP3Hq+/uKSkOrj10HY4upkw=
+	t=1768824966; cv=none; b=mn07ivJsSBVzyE3X503Isg80ZdW7bM1gWYMwP4TaudfBvAwvdgZWwZbR2ZXd4JrULG9uili7Vg+jTTACYxcaSeXGxul1o+K2YMNuCmd4omOwhOxG8lDCjnsKtlHhVo+9qqG4FDBWEBtxbE1D1H3q685gdrr/4vQQghMHeLnU+3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768824967; c=relaxed/simple;
-	bh=YuPVP77vtjEHj/gJO8wjd20Ss1fiQheCeVUVT27Cn8I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=rxZu9UlJstmB46EkQC9Ou7jrSZknKmqh/Xp3w1BRglY/tIcJxNir0BaaifyZmz+/dXbjnvmn8BkSkbhMlBC5yVB7DefObJ2v6TBIlN6Sr9NIVjR5bWVuxq/VE0EoDXuoP+1p9QS/UjC/i3TAs28JYesYNPreQ8cx8QnzVlOZ3YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MYpyAgjN; arc=none smtp.client-ip=220.197.31.3
+	s=arc-20240116; t=1768824966; c=relaxed/simple;
+	bh=pNYNSUyL1HOsyww96CqaGvEFrfFH4JWObFMRkUCSyMs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Xk8N43L6xj86EDdL6sLNIKFkI4gxOdJz7ixas8+IQn7AiNmqMoWlTrQi7txbHg7TquSmfevLSQUCOerkkGKXIFqxWEZnEX4JFihw3l/vL0lCFn5s+Go+A/MKXEd9YC5HbEIu6MEZWYWjZYSdtenQ/aQyUKEwj6rrNvpqNPQaxd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QXkCPIQe; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=aR3HDueLetwRpZs
-	tt8M58tW2Jb/r6AWYTK+piBCx8cU=; b=MYpyAgjNU32TQTi415VXNbMsqNhsto6
-	8hr3Bvv2FweH4wuhbTHA2Ao++ku97i1YJYT63v8XnBhup/tVa8qmNe5UE+8HKPFv
-	ika2bKbuo9m0gX66U824jBhfaUR95wMN1rVI1g42mOe4tq+bT0bh17cZGnemKtLI
-	l50eMskYrUAY=
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=ekmcjPYBNBB/V0T
+	JtT1FuIoSPurJCu2djLYW10Uw6WM=; b=QXkCPIQexK6eljSJwHQCQZ1C6SHx3Eb
+	5KqhRAD9cSK73iNGREmtNL2UE/xEhhWIs+B+aggzthl+Z5qoytxrN0QeXrZ42jkK
+	kLAkn8ZR4sQ/0VwYt/HyK98n5GxyDDU3mgHq9s9uTHmbu5bXWxe0pUP+/On0XBLs
+	ehg4AZfii9vk=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wBHtZdDIG5pljmWGw--.3726S9;
-	Mon, 19 Jan 2026 20:15:13 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wBHtZdDIG5pljmWGw--.3726S10;
+	Mon, 19 Jan 2026 20:15:14 +0800 (CST)
 From: Wenliang Yan <wenliang202407@163.com>
 To: linux@roeck-us.net,
 	Jean Delvare <jdelvare@suse.com>
@@ -47,100 +47,74 @@ Cc: Wenliang Yan <wenliang202407@163.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 7/8] hwmon: (ina3221) Support write/read functions for 'power' attribute
-Date: Mon, 19 Jan 2026 07:14:45 -0500
-Message-Id: <20260119121446.17469-8-wenliang202407@163.com>
+Subject: [PATCH v5 8/8] hwmon: (ina3221) Modify write/read functions for 'in' and 'curr' attribute
+Date: Mon, 19 Jan 2026 07:14:46 -0500
+Message-Id: <20260119121446.17469-9-wenliang202407@163.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260119121446.17469-1-wenliang202407@163.com>
 References: <20260119121446.17469-1-wenliang202407@163.com>
-X-CM-TRANSID:_____wBHtZdDIG5pljmWGw--.3726S9
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXFy3tr48Ar1rGrWUuFWxJFb_yoWrWFykp3
-	yjkFWrtw4Ut3WfuwsakFs8Gw1Yqr4xX3y2yr9Fk3savF4UZr909ryrt3Wvy34UCry3XF47
-	tayxAryru3ZrKrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:_____wBHtZdDIG5pljmWGw--.3726S10
+X-Coremail-Antispam: 1Uf129KBjvJXoWxurW5uFy5GFW7Ar15ZF4fXwb_yoW7Gryrp3
+	yUGFWrtrWjq3WSgrs2kF4DWr15tr4xW3y2yr9rK3sYva1UAryqkFyrG3Wq93y5Gr93WF4x
+	JayxtFW8ua1qqr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUXeOdUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbCwBES5WluIFGt-wAA3C
+X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbCvxIS5WluIFJMKwAA3I
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 
-SQ52210 adds power attributes to report power data and implements
-corresponding read/write functions for this purpose. This includes
-reading power values, reading alert thresholds, reading alert
-trigger status, and writing alert thresholds.
+Modified the relevant read/write functions for 'in' and 'curr' attributes,
+adding support for crit, lcrit, crit_alarm, and lcrit_alarm features.
 
 Signed-off-by: Wenliang Yan <wenliang202407@163.com>
 ---
- drivers/hwmon/ina3221.c | 79 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ drivers/hwmon/ina3221.c | 105 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 101 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
-index cb292fee564b..2338b3288950 100644
+index 2338b3288950..fdcd92082c02 100644
 --- a/drivers/hwmon/ina3221.c
 +++ b/drivers/hwmon/ina3221.c
-@@ -92,6 +92,9 @@ enum ina3221_fields {
- 	/* Alert Flags: SF is the summation-alert flag */
- 	F_SF, F_CF3, F_CF2, F_CF1,
- 
-+	/* Alert Flags: AFF is the alert function flag */
-+	F_AFF3, F_AFF2, F_AFF1,
-+
- 	/* sentinel */
- 	F_MAX_FIELDS
- };
-@@ -107,6 +110,10 @@ static const struct reg_field ina3221_reg_fields[] = {
- 	[F_CF3] = REG_FIELD(INA3221_MASK_ENABLE, 7, 7),
- 	[F_CF2] = REG_FIELD(INA3221_MASK_ENABLE, 8, 8),
- 	[F_CF1] = REG_FIELD(INA3221_MASK_ENABLE, 9, 9),
-+
-+	[F_AFF3] = REG_FIELD(SQ52210_ALERT_CONFIG, 1, 1),
-+	[F_AFF2] = REG_FIELD(SQ52210_ALERT_CONFIG, 2, 2),
-+	[F_AFF1] = REG_FIELD(SQ52210_ALERT_CONFIG, 3, 3),
+@@ -380,6 +380,12 @@ static const u8 ina3221_in_reg[] = {
+ 	INA3221_SHUNT_SUM,
  };
  
- enum ina3221_channels {
-@@ -512,6 +519,60 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 	}
- }
- 
-+static const u8 ina3221_power_reg[][INA3221_NUM_CHANNELS] = {
-+	[hwmon_power_input] = { SQ52210_POWER1, SQ52210_POWER2, SQ52210_POWER3 },
-+	[hwmon_power_crit] = { SQ52210_ALERT_LIMIT1, SQ52210_ALERT_LIMIT2,
-+						SQ52210_ALERT_LIMIT3 },
-+	[hwmon_power_crit_alarm] = { F_AFF1, F_AFF2, F_AFF3 },
++static const u8 alert_flag[] = {
++	F_AFF1,
++	F_AFF2,
++	F_AFF3,
 +};
 +
-+static int ina3221_read_power(struct device *dev, u32 attr, int channel, long *val)
-+{
-+	struct ina3221_data *ina = dev_get_drvdata(dev);
-+	u8 reg = ina3221_power_reg[attr][channel];
-+	int regval, ret;
+ static int ina3221_read_chip(struct device *dev, u32 attr, long *val)
+ {
+ 	struct ina3221_data *ina = dev_get_drvdata(dev);
+@@ -442,6 +448,40 @@ static int ina3221_read_in(struct device *dev, u32 attr, int channel, long *val)
+ 	case hwmon_in_enable:
+ 		*val = ina3221_is_enabled(ina, channel);
+ 		return 0;
++	case hwmon_in_crit:
++	case hwmon_in_lcrit:
++		if (channel >= INA3221_NUM_CHANNELS)
++			return -EOPNOTSUPP;
 +
-+	switch (attr) {
-+	case hwmon_power_input:
 +		if (!ina3221_is_enabled(ina, channel))
 +			return -ENODATA;
 +
-+		/* Write CONFIG register to trigger a single-shot measurement */
-+		if (ina->single_shot) {
-+			regmap_write(ina->regmap, INA3221_CONFIG,
-+				     ina->reg_config);
-+
-+			ret = ina3221_wait_for_data(ina);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		fallthrough;
-+	case hwmon_power_crit:
++		reg = limit_regs[channel];
 +		ret = ina3221_read_value(ina, reg, &regval);
 +		if (ret)
 +			return ret;
-+		/* Return power in mW */
-+		*val = DIV_U64_ROUND_CLOSEST((u64)regval * (u64)ina->power_lsb_uW, 1000);
++		/*
++		 * Scale of bus voltage (mV): LSB is 8mV
++		 */
++		*val = regval * 8;
 +		return 0;
-+	case hwmon_power_crit_alarm:
++	case hwmon_in_crit_alarm:
++	case hwmon_in_lcrit_alarm:
++		if (channel >= INA3221_NUM_CHANNELS)
++			return -EOPNOTSUPP;
 +		/* No actual register read if channel is disabled */
 +		if (!ina3221_is_enabled(ina, channel)) {
 +			/* Return 0 for alert flags */
@@ -148,58 +122,116 @@ index cb292fee564b..2338b3288950 100644
 +			return 0;
 +		}
 +
++		reg = alert_flag[channel];
 +		ret = regmap_field_read(ina->fields[reg], &regval);
 +		if (ret)
 +			return ret;
 +		*val = regval;
 +		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -501,6 +541,28 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
+ 		/* Return current in mA */
+ 		*val = DIV_ROUND_CLOSEST(voltage_nv, resistance_uo);
+ 		return 0;
++	case hwmon_curr_lcrit:
++		if (!resistance_uo)
++			return -ENODATA;
 +
- static int sq52210_alert_limit_write(struct ina3221_data *ina,
- 			enum sq52210_alert_types type, int channel, long val)
- {
-@@ -736,6 +797,18 @@ static int ina3221_write_enable(struct device *dev, int channel, bool enable)
- 	return ret;
++		if (channel >= INA3221_NUM_CHANNELS)
++			return -EOPNOTSUPP;
++
++		reg = limit_regs[channel];
++		ret = ina3221_read_value(ina, reg, &regval);
++		if (ret)
++			return ret;
++
++		/* Return current in mA */
++		*val = DIV_S64_ROUND_CLOSEST((s64)regval * (s64)ina->current_lsb_uA, 1000);
++		return 0;
++	case hwmon_curr_lcrit_alarm:
++		if (channel >= INA3221_NUM_CHANNELS)
++			return -EOPNOTSUPP;
++
++		reg = alert_flag[channel];
++
++		fallthrough;
+ 	case hwmon_curr_crit_alarm:
+ 	case hwmon_curr_max_alarm:
+ 		/* No actual register read if channel is disabled */
+@@ -703,10 +765,9 @@ static int ina3221_write_chip(struct device *dev, u32 attr, long val)
+ 	}
  }
  
-+static int ina3221_write_power(struct device *dev, u32 attr, int channel, long val)
+-static int ina3221_write_curr(struct device *dev, u32 attr,
+-			      int channel, long val)
++static int ina3221_write_curr_shunt(struct ina3221_data *ina, u32 attr,
++				int channel, long val)
+ {
+-	struct ina3221_data *ina = dev_get_drvdata(dev);
+ 	struct ina3221_input *input = ina->inputs;
+ 	u8 reg = ina3221_curr_reg[attr][channel];
+ 	int resistance_uo, current_ma, voltage_uv;
+@@ -749,6 +810,22 @@ static int ina3221_write_curr(struct device *dev, u32 attr,
+ 	return regmap_write(ina->regmap, reg, regval);
+ }
+ 
++static int ina3221_write_curr(struct device *dev, u32 attr,
++			      int channel, long val)
 +{
 +	struct ina3221_data *ina = dev_get_drvdata(dev);
 +
 +	switch (attr) {
-+	case hwmon_power_crit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_POL, channel, val);
++	case hwmon_curr_crit:
++	case hwmon_curr_max:
++		return ina3221_write_curr_shunt(ina, attr, channel, val);
++	case hwmon_curr_lcrit:
++		return sq52210_alert_limit_write(ina, SQ52210_ALERT_SUL, channel, val);
 +	default:
 +		return 0;
 +	}
 +}
 +
- static int ina3221_read(struct device *dev, enum hwmon_sensor_types type,
- 			u32 attr, int channel, long *val)
+ static int ina3221_write_enable(struct device *dev, int channel, bool enable)
  {
-@@ -752,6 +825,9 @@ static int ina3221_read(struct device *dev, enum hwmon_sensor_types type,
- 	case hwmon_curr:
- 		ret = ina3221_read_curr(dev, attr, channel, val);
+ 	struct ina3221_data *ina = dev_get_drvdata(dev);
+@@ -797,6 +874,26 @@ static int ina3221_write_enable(struct device *dev, int channel, bool enable)
+ 	return ret;
+ }
+ 
++static int ina3221_write_in(struct device *dev, u32 attr, int channel, long val)
++{
++	struct ina3221_data *ina = dev_get_drvdata(dev);
++
++	if (attr == hwmon_in_lcrit || attr == hwmon_in_crit)
++		if (channel >= INA3221_NUM_CHANNELS)
++			return -EOPNOTSUPP;
++
++	switch (attr) {
++	case hwmon_in_lcrit:
++		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BUL, channel, val);
++	case hwmon_in_crit:
++		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BOL, channel, val);
++	case hwmon_in_enable:
++		return ina3221_write_enable(dev, channel, val);
++	default:
++		return 0;
++	}
++}
++
+ static int ina3221_write_power(struct device *dev, u32 attr, int channel, long val)
+ {
+ 	struct ina3221_data *ina = dev_get_drvdata(dev);
+@@ -846,7 +943,7 @@ static int ina3221_write(struct device *dev, enum hwmon_sensor_types type,
  		break;
-+	case hwmon_power:
-+		ret = ina3221_read_power(dev, attr, channel, val);
-+		break;
- 	default:
- 		ret = -EOPNOTSUPP;
+ 	case hwmon_in:
+ 		/* 0-align channel ID */
+-		ret = ina3221_write_enable(dev, channel - 1, val);
++		ret = ina3221_write_in(dev, attr, channel - 1, val);
  		break;
-@@ -775,6 +851,9 @@ static int ina3221_write(struct device *dev, enum hwmon_sensor_types type,
  	case hwmon_curr:
  		ret = ina3221_write_curr(dev, attr, channel, val);
- 		break;
-+	case hwmon_power:
-+		ret = ina3221_write_power(dev, attr, channel, val);
-+		break;
- 	default:
- 		ret = -EOPNOTSUPP;
- 		break;
 -- 
 2.17.1
 
