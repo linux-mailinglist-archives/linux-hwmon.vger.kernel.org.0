@@ -1,61 +1,61 @@
-Return-Path: <linux-hwmon+bounces-11351-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11354-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H6pLqHfb2n8RwAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11351-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jan 2026 21:03:45 +0100
+	id UPXqJCXrb2m+UQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11354-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jan 2026 21:52:53 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315414AF84
-	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jan 2026 21:03:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B2D4BC76
+	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jan 2026 21:52:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 736E4A424CE
-	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jan 2026 18:24:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B808766E65C
+	for <lists+linux-hwmon@lfdr.de>; Tue, 20 Jan 2026 18:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB6F42B757;
-	Tue, 20 Jan 2026 18:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FCD46AED2;
+	Tue, 20 Jan 2026 18:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rong.moe header.i=i@rong.moe header.b="lQD+WX8u"
+	dkim=pass (1024-bit key) header.d=rong.moe header.i=i@rong.moe header.b="TApPpk50"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482623A89A8;
-	Tue, 20 Jan 2026 18:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68D2453487;
+	Tue, 20 Jan 2026 18:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768933298; cv=pass; b=S5BZadonrzdkk2xe+LGVvH6elGiPedy0NKR93XttuqdRTnOVkZPc1UANxFH+pA5g1OK2WAaAGVAtVZWV+tMBtZhqtdZ7vQDS53YyvP832WXIyNzYTdjcQEf4usMQCnlKXMtbBaqesYdws+zdaNeFqrUUbVNvxnO1UkjlZYhoxyc=
+	t=1768933303; cv=pass; b=Ej+SmsFQXPbi6Ppw1+NQLfqSzBS06fnH1TY9BoxHNMlx/Csm1Qh3GpxB3NuVFXm/l/t1RI7EjflU3ncQXo2X4lB8iTEKFngeQiPlXFQx1PvgcYMSdYY3L3REzmspThk3jPxxN0+6I2l4R71BQyCih1yiA5L7kYzwOr5cbaQ0klU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768933298; c=relaxed/simple;
-	bh=bJxx+BBuu5wOpM8I7XOoLpP/fg4e7MsHw458WiZKB8U=;
+	s=arc-20240116; t=1768933303; c=relaxed/simple;
+	bh=vb/PAZwFsX3xyFezdGp7THKHJQfKCJybcpyI3ZMBV2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YE2sPFhtN+AXC1G3QJp2CN53sDAcCXCDiA96iAvAE6EQx0/SvDC6sryrNDkvKiOHQio0IAaZRjyrOIzdYzZWX0d0KzyzJsSI4440c4ZLQNfBnES3XXQPW+n5eFQVEUi60SHAdugNSdkM57ALayGIi3tVNMPkXqojxIOjBPHHXJY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (1024-bit key) header.d=rong.moe header.i=i@rong.moe header.b=lQD+WX8u; arc=pass smtp.client-ip=136.143.188.15
+	 MIME-Version:Content-Type; b=a3kFRWmL1wWY2c26hO+5rsV6WVUrGEZvi30FsgPbfYOdJoRLzm2fer2XNTK5f5WLoC2QbLJauHgoKVhS5sNjOkEp5M508Oop0wNmM2s+sPFrAS6sNQnFQEOK6V4Rm6xcjN8U5qHIGbm6zkG8gKGU3Z8+p14Fs89HLYwNpN6cW1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (1024-bit key) header.d=rong.moe header.i=i@rong.moe header.b=TApPpk50; arc=pass smtp.client-ip=136.143.188.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
-ARC-Seal: i=1; a=rsa-sha256; t=1768933274; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1768933280; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=nd+nxB2DQIEq74vI0hu2cD91wtSTmlu6Fc965g9QDTntrhRF2jIRiYD2DUQLYCT5aYN1hi91+tpX5p4DCyNhq2JdEpzH5ewMEkcgP30i+LjZ8OcU4a2D0jRyR7HXDHDqPk+MnB4w9/7CH4tfz0MtRi3ZET0iCUktxPp3bZOwIgA=
+	b=JwlKwhGb2e6INAOAdpr1XgryVBrw6uYBr2emp+7ZjnProqvGMJ5yaHo1L18Stohp+zya2vI60Jmq6qoH53h6TLcbln2FhOeDKESeAxmSb80jWY9+0P476EGbzuqLFL5Rbz6dYppyfn+Pio0C8Dbx+8bYfKcJPtreV1BRBfP83Og=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768933274; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ONW/Kjo4Iy8zIk9zApmrQ4M3TAi6EzH5b9Jv+iGr0Ys=; 
-	b=d6JXMX3eeUzOWvv2DcM/l09yn0WwYaQRIJ0JWr7TkR7GpKmznzjeWpNfJ+z/77FONcc2seW4VqVCUf3HAzOTY4xFC6fSDqWPYtlQ8COq7uwsiLMTeF2C2/VUBDt5p77MXyuxlcLQDASXyHegqiNnQKRbBdk8rRtyvFtqW5UtqqM=
+	t=1768933280; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lGbFyfs9ZJ1W6OL71nNJ4YT728sBEOvEoYbcT1xkAYY=; 
+	b=BN9l5D43HqTQZWzlc+ltnlnv7YLXJIfQYRQaHwNyOmnUgJPCHk/Wo7FE0ZYg/jrzSTIvolnRicT/MBR+XkjIVMcmtaRaWOIYItFDPJuaoW5ThTYt+J6TvNv0mClf0YC6xLuT9/w4tBYPLkrjKGd5Hleyvir/vQ8k74+Uk3eSwTg=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=rong.moe;
 	spf=pass  smtp.mailfrom=i@rong.moe;
 	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768933274;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768933280;
 	s=zmail; d=rong.moe; i=i@rong.moe;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=ONW/Kjo4Iy8zIk9zApmrQ4M3TAi6EzH5b9Jv+iGr0Ys=;
-	b=lQD+WX8udZm0hskZrY0kitHVANNQ4UiJEquR3TwtOrKDELwc9DkI82ZjGzMpQaPV
-	HzOF8BIyYQ6ALAeOinjVHqdX+sPlKjx57BDkOi8KZ62hxS2vBJDwr2sdS+qLYFZ3P5v
-	69XFT9orVMLnjmsR69n/5Z0NwiR0h1iyoUT8ZFwI=
-Received: by mx.zohomail.com with SMTPS id 176893327357812.052566890538174;
-	Tue, 20 Jan 2026 10:21:13 -0800 (PST)
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=lGbFyfs9ZJ1W6OL71nNJ4YT728sBEOvEoYbcT1xkAYY=;
+	b=TApPpk50HOEBGOAxnaeX6ZRDAdw1C5CFlOwNj05aCYfkNcwFoczBHetOioMHXpsT
+	q7FA+hSVaByF3wfB55r1SgvuDXl0sKIRPEXl3xKHv7LtFyssUICfuQgdhmRLHPR3tY1
+	sbh5Uh331djXRm9jN+rpCjKS1F/+Gu4Sxl4nvhuo=
+Received: by mx.zohomail.com with SMTPS id 1768933279444908.1647303426317;
+	Tue, 20 Jan 2026 10:21:19 -0800 (PST)
 From: Rong Zhang <i@rong.moe>
 To: Mark Pearson <mpearson-lenovo@squebb.ca>,
 	"Derek J. Clark" <derekjohn.clark@gmail.com>,
@@ -68,9 +68,9 @@ Cc: Rong Zhang <i@rong.moe>,
 	platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-hwmon@vger.kernel.org
-Subject: [PATCH v11 1/7] platform/x86: lenovo-wmi-helpers: Convert returned buffer into u32
-Date: Wed, 21 Jan 2026 02:20:02 +0800
-Message-ID: <20260120182104.163424-2-i@rong.moe>
+Subject: [PATCH v11 3/7] platform/x86: lenovo-wmi-{capdata,other}: Support multiple Capability Data
+Date: Wed, 21 Jan 2026 02:20:04 +0800
+Message-ID: <20260120182104.163424-4-i@rong.moe>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260120182104.163424-1-i@rong.moe>
 References: <20260120182104.163424-1-i@rong.moe>
@@ -80,110 +80,563 @@ List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[rong.moe:s=zmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[rong.moe,roeck-us.net,gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11354-lists,linux-hwmon=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-11351-lists,linux-hwmon=lfdr.de];
 	FREEMAIL_TO(0.00)[squebb.ca,gmail.com,gmx.de,kernel.org,linux.intel.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[rong.moe,roeck-us.net,gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[rong.moe:+];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[i@rong.moe,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[rong.moe,none];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[linux-hwmon];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,rong.moe:dkim,rong.moe:mid,gmx.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 315414AF84
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,rong.moe:dkim,rong.moe:mid,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,kernel-doc.py:url]
+X-Rspamd-Queue-Id: 02B2D4BC76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The Windows WMI-ACPI driver converts all ACPI objects into a common
-buffer format, so returning a buffer with four bytes will look like an
-integer for WMI consumers under Windows.
+The current implementation are heavily bound to capdata01. Rewrite it so
+that it is suitable to utilize other Capability Data as well.
 
-Therefore, some devices may simply implement the corresponding ACPI
-methods to always return a buffer. While lwmi_dev_evaluate_int() expects
-an integer (u32), convert returned >=4B buffer into u32 to support these
-devices.
+No functional change intended.
 
-Suggested-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/f1787927-b655-4321-b9d9-bc12353c72db@gmx.de/
 Signed-off-by: Rong Zhang <i@rong.moe>
 Reviewed-by: Derek J. Clark <derekjohn.clark@gmail.com>
 Tested-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
 ---
+Changes in v11:
+- Adopt a unified name (lenovo_wmi_capdata) for kmod, Kconfig, export
+  namespace and driver (thanks Ilpo Järvinen)
+
+Changes in v9:
+- Make kernel-doc.py happy (thanks Ilpo Järvinen, kernel test robot)
+
 Changes in v7:
-- Fix mistakenly inverted boundary check
+- Fix missing #include (thanks Ilpo Järvinen)
+- Fix formatting issues (ditto)
+- dev_dbg() instead of dev_info() on probe success (ditto)
+
+Changes in v6:
+- Fix the error path of lwmi_cd_match_add_all()
+  - IS_ERR(matchptr) => IS_ERR(*matchptr)
+
+Changes in v5:
+- Do not cast pointer to non-pointer or vice versa (thanks kernel test
+  robot)
 
 Changes in v4:
-- Accept oversized buffer (thanks Armin Wolf)
-- Use get_unaligned_le32() (ditto)
+- Get rid of wmi_has_guid() (thanks Armin Wolf)
+  - More changes in [PATCH v4 6/7]
+- Prepare for [PATCH v4 6/7]
+  - Move lwmi_cd_match*() forward
+  - Use switch-case in lwmi_cd_remove()
 
 Changes in v2:
-- New patch (thanks Armin Wolf)
+- Fix function parameter 'type' not described in 'lwmi_cd_match' (thanks
+  kernel test bot)
 ---
- drivers/platform/x86/lenovo/wmi-helpers.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/platform/x86/lenovo/wmi-capdata.c | 233 +++++++++++++++++-----
+ drivers/platform/x86/lenovo/wmi-capdata.h |   7 +-
+ drivers/platform/x86/lenovo/wmi-other.c   |  16 +-
+ 3 files changed, 196 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/platform/x86/lenovo/wmi-helpers.c b/drivers/platform/x86/lenovo/wmi-helpers.c
-index f6fef6296251e..7379defac5002 100644
---- a/drivers/platform/x86/lenovo/wmi-helpers.c
-+++ b/drivers/platform/x86/lenovo/wmi-helpers.c
-@@ -21,6 +21,7 @@
- #include <linux/errno.h>
+diff --git a/drivers/platform/x86/lenovo/wmi-capdata.c b/drivers/platform/x86/lenovo/wmi-capdata.c
+index ba843b6604b06..93ecb49c4c73a 100644
+--- a/drivers/platform/x86/lenovo/wmi-capdata.c
++++ b/drivers/platform/x86/lenovo/wmi-capdata.c
+@@ -12,13 +12,21 @@
+  *
+  * Copyright (C) 2025 Derek J. Clark <derekjohn.clark@gmail.com>
+  *   - Initial implementation (formerly named lenovo-wmi-capdata01)
++ *
++ * Copyright (C) 2025 Rong Zhang <i@rong.moe>
++ *   - Unified implementation
+  */
+ 
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
+ #include <linux/acpi.h>
++#include <linux/bug.h>
+ #include <linux/cleanup.h>
+ #include <linux/component.h>
+ #include <linux/container_of.h>
+ #include <linux/device.h>
++#include <linux/dev_printk.h>
++#include <linux/err.h>
  #include <linux/export.h>
+ #include <linux/gfp_types.h>
  #include <linux/module.h>
-+#include <linux/unaligned.h>
+@@ -26,6 +34,7 @@
+ #include <linux/mutex_types.h>
+ #include <linux/notifier.h>
+ #include <linux/overflow.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
  #include <linux/wmi.h>
  
- #include "wmi-helpers.h"
-@@ -59,10 +60,24 @@ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
- 		if (!ret_obj)
- 			return -ENODATA;
+@@ -36,6 +45,23 @@
+ #define ACPI_AC_CLASS "ac_adapter"
+ #define ACPI_AC_NOTIFY_STATUS 0x80
  
--		if (ret_obj->type != ACPI_TYPE_INTEGER)
--			return -ENXIO;
-+		switch (ret_obj->type) {
-+		/*
-+		 * The ACPI method may simply return a buffer when a u32
-+		 * is expected. This is valid on Windows as its WMI-ACPI
-+		 * driver converts everything to a common buffer.
-+		 */
-+		case ACPI_TYPE_BUFFER:
-+			if (ret_obj->buffer.length < sizeof(u32))
-+				return -ENXIO;
++enum lwmi_cd_type {
++	LENOVO_CAPABILITY_DATA_01,
++};
++
++#define LWMI_CD_TABLE_ITEM(_type)		\
++	[_type] = {				\
++		.name = #_type,			\
++		.type = _type,			\
++	}
++
++static const struct lwmi_cd_info {
++	const char *name;
++	enum lwmi_cd_type type;
++} lwmi_cd_table[] = {
++	LWMI_CD_TABLE_ITEM(LENOVO_CAPABILITY_DATA_01),
++};
++
+ struct lwmi_cd_priv {
+ 	struct notifier_block acpi_nb; /* ACPI events */
+ 	struct wmi_device *wdev;
+@@ -44,15 +70,63 @@ struct lwmi_cd_priv {
  
--		*retval = (u32)ret_obj->integer.value;
-+			*retval = get_unaligned_le32(ret_obj->buffer.pointer);
-+			return 0;
-+		case ACPI_TYPE_INTEGER:
-+			*retval = (u32)ret_obj->integer.value;
-+			return 0;
-+		default:
-+			return -ENXIO;
-+		}
+ struct cd_list {
+ 	struct mutex list_mutex; /* list R/W mutex */
++	enum lwmi_cd_type type;
+ 	u8 count;
+-	struct capdata01 data[];
++
++	union {
++		DECLARE_FLEX_ARRAY(struct capdata01, cd01);
++	};
+ };
+ 
++static struct wmi_driver lwmi_cd_driver;
++
++/**
++ * lwmi_cd_match() - Match rule for the master driver.
++ * @dev: Pointer to the capability data parent device.
++ * @type: Pointer to capability data type (enum lwmi_cd_type *) to match.
++ *
++ * Return: int.
++ */
++static int lwmi_cd_match(struct device *dev, void *type)
++{
++	struct lwmi_cd_priv *priv;
++
++	if (dev->driver != &lwmi_cd_driver.driver)
++		return false;
++
++	priv = dev_get_drvdata(dev);
++	return priv->list->type == *(enum lwmi_cd_type *)type;
++}
++
++/**
++ * lwmi_cd_match_add_all() - Add all match rule for the master driver.
++ * @master: Pointer to the master device.
++ * @matchptr: Pointer to the returned component_match pointer.
++ *
++ * Adds all component matches to the list stored in @matchptr for the @master
++ * device. @matchptr must be initialized to NULL.
++ */
++void lwmi_cd_match_add_all(struct device *master, struct component_match **matchptr)
++{
++	int i;
++
++	if (WARN_ON(*matchptr))
++		return;
++
++	for (i = 0; i < ARRAY_SIZE(lwmi_cd_table); i++) {
++		component_match_add(master, matchptr, lwmi_cd_match,
++				    (void *)&lwmi_cd_table[i].type);
++		if (IS_ERR(*matchptr))
++			return;
++	}
++}
++EXPORT_SYMBOL_NS_GPL(lwmi_cd_match_add_all, "LENOVO_WMI_CAPDATA");
++
+ /**
+  * lwmi_cd_component_bind() - Bind component to master device.
+  * @cd_dev: Pointer to the lenovo-wmi-capdata driver parent device.
+  * @om_dev: Pointer to the lenovo-wmi-other driver parent device.
+- * @data: cd_list object pointer used to return the capability data.
++ * @data: lwmi_cd_binder object pointer used to return the capability data.
+  *
+  * On lenovo-wmi-other's master bind, provide a pointer to the local capdata
+  * list. This is used to call lwmi_cd*_get_data to look up attribute data
+@@ -64,9 +138,15 @@ static int lwmi_cd_component_bind(struct device *cd_dev,
+ 				  struct device *om_dev, void *data)
+ {
+ 	struct lwmi_cd_priv *priv = dev_get_drvdata(cd_dev);
+-	struct cd_list **cd_list = data;
++	struct lwmi_cd_binder *binder = data;
+ 
+-	*cd_list = priv->list;
++	switch (priv->list->type) {
++	case LENOVO_CAPABILITY_DATA_01:
++		binder->cd01_list = priv->list;
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+@@ -75,31 +155,36 @@ static const struct component_ops lwmi_cd_component_ops = {
+ 	.bind = lwmi_cd_component_bind,
+ };
+ 
+-/**
+- * lwmi_cd01_get_data - Get the data of the specified attribute
++/*
++ * lwmi_cd*_get_data - Get the data of the specified attribute
+  * @list: The lenovo-wmi-capdata pointer to its cd_list struct.
+  * @attribute_id: The capdata attribute ID to be found.
+- * @output: Pointer to a capdata01 struct to return the data.
++ * @output: Pointer to a capdata* struct to return the data.
+  *
+- * Retrieves the capability data 01 struct pointer for the given
+- * attribute for its specified thermal mode.
++ * Retrieves the capability data struct pointer for the given
++ * attribute.
+  *
+  * Return: 0 on success, or -EINVAL.
+  */
+-int lwmi_cd01_get_data(struct cd_list *list, u32 attribute_id, struct capdata01 *output)
+-{
+-	u8 idx;
+-
+-	guard(mutex)(&list->list_mutex);
+-	for (idx = 0; idx < list->count; idx++) {
+-		if (list->data[idx].id != attribute_id)
+-			continue;
+-		memcpy(output, &list->data[idx], sizeof(list->data[idx]));
+-		return 0;
++#define DEF_LWMI_CDXX_GET_DATA(_cdxx, _cd_type, _output_t)					\
++	int lwmi_##_cdxx##_get_data(struct cd_list *list, u32 attribute_id, _output_t *output)	\
++	{											\
++		u8 idx;										\
++												\
++		if (WARN_ON(list->type != _cd_type))						\
++			return -EINVAL;								\
++												\
++		guard(mutex)(&list->list_mutex);						\
++		for (idx = 0; idx < list->count; idx++) {					\
++			if (list->_cdxx[idx].id != attribute_id)				\
++				continue;							\
++			memcpy(output, &list->_cdxx[idx], sizeof(list->_cdxx[idx]));		\
++			return 0;								\
++		}										\
++		return -EINVAL;									\
+ 	}
+ 
+-	return -EINVAL;
+-}
++DEF_LWMI_CDXX_GET_DATA(cd01, LENOVO_CAPABILITY_DATA_01, struct capdata01);
+ EXPORT_SYMBOL_NS_GPL(lwmi_cd01_get_data, "LENOVO_WMI_CAPDATA");
+ 
+ /**
+@@ -112,10 +197,21 @@ EXPORT_SYMBOL_NS_GPL(lwmi_cd01_get_data, "LENOVO_WMI_CAPDATA");
+  */
+ static int lwmi_cd_cache(struct lwmi_cd_priv *priv)
+ {
++	size_t size;
+ 	int idx;
++	void *p;
++
++	switch (priv->list->type) {
++	case LENOVO_CAPABILITY_DATA_01:
++		p = &priv->list->cd01[0];
++		size = sizeof(priv->list->cd01[0]);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	guard(mutex)(&priv->list->list_mutex);
+-	for (idx = 0; idx < priv->list->count; idx++) {
++	for (idx = 0; idx < priv->list->count; idx++, p += size) {
+ 		union acpi_object *ret_obj __free(kfree) = NULL;
+ 
+ 		ret_obj = wmidev_block_query(priv->wdev, idx);
+@@ -123,11 +219,10 @@ static int lwmi_cd_cache(struct lwmi_cd_priv *priv)
+ 			return -ENODEV;
+ 
+ 		if (ret_obj->type != ACPI_TYPE_BUFFER ||
+-		    ret_obj->buffer.length < sizeof(priv->list->data[idx]))
++		    ret_obj->buffer.length < size)
+ 			continue;
+ 
+-		memcpy(&priv->list->data[idx], ret_obj->buffer.pointer,
+-		       ret_obj->buffer.length);
++		memcpy(p, ret_obj->buffer.pointer, size);
  	}
  
  	return 0;
+@@ -136,20 +231,28 @@ static int lwmi_cd_cache(struct lwmi_cd_priv *priv)
+ /**
+  * lwmi_cd_alloc() - Allocate a cd_list struct in drvdata
+  * @priv: lenovo-wmi-capdata driver data.
++ * @type: The type of capability data.
+  *
+  * Allocate a cd_list struct large enough to contain data from all WMI data
+  * blocks provided by the interface.
+  *
+  * Return: 0 on success, or an error.
+  */
+-static int lwmi_cd_alloc(struct lwmi_cd_priv *priv)
++static int lwmi_cd_alloc(struct lwmi_cd_priv *priv, enum lwmi_cd_type type)
+ {
+ 	struct cd_list *list;
+ 	size_t list_size;
+ 	int count, ret;
+ 
+ 	count = wmidev_instance_count(priv->wdev);
+-	list_size = struct_size(list, data, count);
++
++	switch (type) {
++	case LENOVO_CAPABILITY_DATA_01:
++		list_size = struct_size(list, cd01, count);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	list = devm_kzalloc(&priv->wdev->dev, list_size, GFP_KERNEL);
+ 	if (!list)
+@@ -159,6 +262,7 @@ static int lwmi_cd_alloc(struct lwmi_cd_priv *priv)
+ 	if (ret)
+ 		return ret;
+ 
++	list->type = type;
+ 	list->count = count;
+ 	priv->list = list;
+ 
+@@ -168,6 +272,7 @@ static int lwmi_cd_alloc(struct lwmi_cd_priv *priv)
+ /**
+  * lwmi_cd_setup() - Cache all WMI data block information
+  * @priv: lenovo-wmi-capdata driver data.
++ * @type: The type of capability data.
+  *
+  * Allocate a cd_list struct large enough to contain data from all WMI data
+  * blocks provided by the interface. Then loop through each data block and
+@@ -175,11 +280,11 @@ static int lwmi_cd_alloc(struct lwmi_cd_priv *priv)
+  *
+  * Return: 0 on success, or an error code.
+  */
+-static int lwmi_cd_setup(struct lwmi_cd_priv *priv)
++static int lwmi_cd_setup(struct lwmi_cd_priv *priv, enum lwmi_cd_type type)
+ {
+ 	int ret;
+ 
+-	ret = lwmi_cd_alloc(priv);
++	ret = lwmi_cd_alloc(priv, type);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -235,9 +340,13 @@ static void lwmi_cd01_unregister(void *data)
+ 
+ static int lwmi_cd_probe(struct wmi_device *wdev, const void *context)
+ {
++	const struct lwmi_cd_info *info = context;
+ 	struct lwmi_cd_priv *priv;
+ 	int ret;
+ 
++	if (!info)
++		return -EINVAL;
++
+ 	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+@@ -245,30 +354,58 @@ static int lwmi_cd_probe(struct wmi_device *wdev, const void *context)
+ 	priv->wdev = wdev;
+ 	dev_set_drvdata(&wdev->dev, priv);
+ 
+-	ret = lwmi_cd_setup(priv);
++	ret = lwmi_cd_setup(priv, info->type);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+-	priv->acpi_nb.notifier_call = lwmi_cd01_notifier_call;
++	switch (info->type) {
++	case LENOVO_CAPABILITY_DATA_01:
++		priv->acpi_nb.notifier_call = lwmi_cd01_notifier_call;
+ 
+-	ret = register_acpi_notifier(&priv->acpi_nb);
+-	if (ret)
+-		return ret;
++		ret = register_acpi_notifier(&priv->acpi_nb);
++		if (ret)
++			goto out;
+ 
+-	ret = devm_add_action_or_reset(&wdev->dev, lwmi_cd01_unregister, &priv->acpi_nb);
+-	if (ret)
+-		return ret;
++		ret = devm_add_action_or_reset(&wdev->dev, lwmi_cd01_unregister,
++					       &priv->acpi_nb);
++		if (ret)
++			goto out;
+ 
+-	return component_add(&wdev->dev, &lwmi_cd_component_ops);
++		ret = component_add(&wdev->dev, &lwmi_cd_component_ops);
++		goto out;
++	default:
++		return -EINVAL;
++	}
++out:
++	if (ret) {
++		dev_err(&wdev->dev, "failed to register %s: %d\n",
++			info->name, ret);
++	} else {
++		dev_dbg(&wdev->dev, "registered %s with %u items\n",
++			info->name, priv->list->count);
++	}
++	return ret;
+ }
+ 
+ static void lwmi_cd_remove(struct wmi_device *wdev)
+ {
+-	component_del(&wdev->dev, &lwmi_cd_component_ops);
++	struct lwmi_cd_priv *priv = dev_get_drvdata(&wdev->dev);
++
++	switch (priv->list->type) {
++	case LENOVO_CAPABILITY_DATA_01:
++		component_del(&wdev->dev, &lwmi_cd_component_ops);
++		break;
++	default:
++		WARN_ON(1);
++	}
+ }
+ 
++#define LWMI_CD_WDEV_ID(_type)				\
++	.guid_string = _type##_GUID,			\
++	.context = &lwmi_cd_table[_type],
++
+ static const struct wmi_device_id lwmi_cd_id_table[] = {
+-	{ LENOVO_CAPABILITY_DATA_01_GUID, NULL },
++	{ LWMI_CD_WDEV_ID(LENOVO_CAPABILITY_DATA_01) },
+ 	{}
+ };
+ 
+@@ -283,22 +420,10 @@ static struct wmi_driver lwmi_cd_driver = {
+ 	.no_singleton = true,
+ };
+ 
+-/**
+- * lwmi_cd01_match() - Match rule for the master driver.
+- * @dev: Pointer to the capability data 01 parent device.
+- * @data: Unused void pointer for passing match criteria.
+- *
+- * Return: int.
+- */
+-int lwmi_cd01_match(struct device *dev, void *data)
+-{
+-	return dev->driver == &lwmi_cd_driver.driver;
+-}
+-EXPORT_SYMBOL_NS_GPL(lwmi_cd01_match, "LENOVO_WMI_CAPDATA");
+-
+ module_wmi_driver(lwmi_cd_driver);
+ 
+ MODULE_DEVICE_TABLE(wmi, lwmi_cd_id_table);
+ MODULE_AUTHOR("Derek J. Clark <derekjohn.clark@gmail.com>");
++MODULE_AUTHOR("Rong Zhang <i@rong.moe>");
+ MODULE_DESCRIPTION("Lenovo Capability Data WMI Driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/platform/x86/lenovo/wmi-capdata.h b/drivers/platform/x86/lenovo/wmi-capdata.h
+index 2a4746e38ad43..d326f9d2d1659 100644
+--- a/drivers/platform/x86/lenovo/wmi-capdata.h
++++ b/drivers/platform/x86/lenovo/wmi-capdata.h
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/types.h>
+ 
++struct component_match;
+ struct device;
+ struct cd_list;
+ 
+@@ -19,7 +20,11 @@ struct capdata01 {
+ 	u32 max_value;
+ };
+ 
++struct lwmi_cd_binder {
++	struct cd_list *cd01_list;
++};
++
++void lwmi_cd_match_add_all(struct device *master, struct component_match **matchptr);
+ int lwmi_cd01_get_data(struct cd_list *list, u32 attribute_id, struct capdata01 *output);
+-int lwmi_cd01_match(struct device *dev, void *data);
+ 
+ #endif /* !_LENOVO_WMI_CAPDATA_H_ */
+diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/platform/x86/lenovo/wmi-other.c
+index ef34ea742d1ac..73191dedc029f 100644
+--- a/drivers/platform/x86/lenovo/wmi-other.c
++++ b/drivers/platform/x86/lenovo/wmi-other.c
+@@ -579,14 +579,14 @@ static void lwmi_om_fw_attr_remove(struct lwmi_om_priv *priv)
+ static int lwmi_om_master_bind(struct device *dev)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(dev);
+-	struct cd_list *tmp_list;
++	struct lwmi_cd_binder binder = {};
+ 	int ret;
+ 
+-	ret = component_bind_all(dev, &tmp_list);
++	ret = component_bind_all(dev, &binder);
+ 	if (ret)
+ 		return ret;
+ 
+-	priv->cd01_list = tmp_list;
++	priv->cd01_list = binder.cd01_list;
+ 	if (!priv->cd01_list)
+ 		return -ENODEV;
+ 
+@@ -623,10 +623,13 @@ static int lwmi_other_probe(struct wmi_device *wdev, const void *context)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	/* Sentinel for on-demand ida_free(). */
++	priv->ida_id = -EIDRM;
++
+ 	priv->wdev = wdev;
+ 	dev_set_drvdata(&wdev->dev, priv);
+ 
+-	component_match_add(&wdev->dev, &master_match, lwmi_cd01_match, NULL);
++	lwmi_cd_match_add_all(&wdev->dev, &master_match);
+ 	if (IS_ERR(master_match))
+ 		return PTR_ERR(master_match);
+ 
+@@ -639,7 +642,10 @@ static void lwmi_other_remove(struct wmi_device *wdev)
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(&wdev->dev);
+ 
+ 	component_master_del(&wdev->dev, &lwmi_om_master_ops);
+-	ida_free(&lwmi_om_ida, priv->ida_id);
++
++	/* No IDA to free if the driver is never bound to its components. */
++	if (priv->ida_id >= 0)
++		ida_free(&lwmi_om_ida, priv->ida_id);
+ }
+ 
+ static const struct wmi_device_id lwmi_other_id_table[] = {
 -- 
 2.51.0
 
