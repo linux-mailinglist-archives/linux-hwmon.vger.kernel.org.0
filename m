@@ -1,163 +1,192 @@
-Return-Path: <linux-hwmon+bounces-11426-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11431-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDcAMovaeGnHtgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11426-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 16:32:27 +0100
+	id CNXNMczkeGlftwEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11431-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 17:16:12 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FDA96C55
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 16:32:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E9497935
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 17:16:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49D16303EB98
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 15:19:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40F7F300DA76
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 16:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2F035A93E;
-	Tue, 27 Jan 2026 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A9035EDBE;
+	Tue, 27 Jan 2026 16:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UpuPk5bm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TyhKpQ58"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F752DB785
-	for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 15:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBB9355049
+	for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 16:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769527155; cv=none; b=obGGQzAPun98RioIN2EugreQEHyMDd4Yrh9OsfSjlPIlfdxu6Rda17uy5zZtv8YGwePDOS3khxGvwXJdnUwulpY13Z8DYx9p12F7E4fzA0GVzewSbNtLv63+8VfGNYOM56Leo4E9NUcu5XofixP7oe5IjA8Lnu06wi22sbq1Umg=
+	t=1769530429; cv=none; b=cZDS4dk1Aa3xONt2yk/0yVjMIiEbTEA/DnAksJJ/QgELP+jS0wWFjiavj/VGAR/wyBySaEj5Zicn4umHIuwuOqU1utlzleM+3QCaLPr4WDHjh9ZFff8CNiwEUcMCQKkIKdSlai4ZhVpQ/E0w5CrnSzKcQBJE5cfnrtynOM9uEvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769527155; c=relaxed/simple;
-	bh=sqRtYnS4EMx1wud8eWzUNmsiL0QjlWJurfA7CBk479E=;
+	s=arc-20240116; t=1769530429; c=relaxed/simple;
+	bh=y8v5V+tYIM6n3wnDXvrdbFANd4Jq/4/oDnIJmLqx420=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ApVTYZ7E9wX2DdpWVY8IimrgByJMAve3FE9vmFNFnwJ/WNxhKiSUDYoHVyw+7jhI2LPS32oKhTlXgg/sBGpQcTb6dm2i8eiCWp1SKEVTs7kWDize5EZgGnlNeCk+AEkvX1nhFo0a4OutEwW0DZj7/jBDpKMezncxIcY6hGLYgSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UpuPk5bm; arc=none smtp.client-ip=74.125.82.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+QtL2W9EK3E/5sIbhoEE2A/7f5g27Sz8ITDlRPxiV7Zsw5bfPvVWqn7CDY1LEaZrteM961dkeSv81pXAsDPHx3LupH3+GT23DJmW+if/qqLhOYV1BnEUAOKVL71jP7XXqxrJJ9GbxVLdPB9lxCKNoiBz7bl9VM5VrOfBj/w6aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TyhKpQ58; arc=none smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1249acd6ad2so1373712c88.0
-        for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 07:19:13 -0800 (PST)
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b73112ab62so4922294eec.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 08:13:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769527153; x=1770131953; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lo2+pTnr8aPKBBLG3pwCmtVAgLkRnA2s+o7HL4Gsrrg=;
-        b=UpuPk5bmFtgcj0KTCj0P03FzBgBYahm+XT5wUdS4Fu+JiMvLESM8Yj/sOjPeJXQDyV
-         oRFxfDiNmNOBMoq+CH+ON8XrpeSrK+4Kz6q3C9gRB8xovCrZ8MxqgGxb8YyrZA36OS32
-         UnXNaK8nKVS1lrvs5Rgf/fU+mhE9OBLZ18Vses/GaLtzZ7hqs4idgU6Oqn1oTn2Ww5rz
-         KnGmkylxF55hnE+WPBM99k+BzX26CnRH6Uls0VlETsmuQCXvoxvXP6/A7kTcsi2+QwLC
-         uaVBKPz6YxZj1vbZU3T/iaVUzs6cACQAGlXcTRSgo1KDLjR8sAteMFB8+ZC5XeCi/avW
-         hXDQ==
+        d=gmail.com; s=20230601; t=1769530427; x=1770135227; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=foZbL69h+8hDXLGAkMe9gWFOExWjvLu/2tjx7FoVudk=;
+        b=TyhKpQ58YZbSQd6ipu7/XJocYKNnSrfQ2NZuLhjl+c2hSyz0P4bwmZrSe/Sqb3C997
+         a7VXSgtg2PAElc3/HDMBDe+uPU5VTh8F1v1RxLLTZk672ya9beXO7PBkpJwMKBJjBjhX
+         QwGoTftN9Miko+F4JSEYBNH3poDJCZAQZHQmlFNaySMgf85IZCZO0Tnf4HqJg30sST2x
+         wS2rzvP92zW2ZEgDAxY87w4fMuX2nVhW+o7WvW3t635tXvKgUZZ2MIjWjnplPUQBRXwK
+         vfJusUTnowKnuSMI6XYWTphyhQw69xKQqSzMpc02QxVyZJaw6CTHNA3v/G8eamm/zpG1
+         FN/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769527153; x=1770131953;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lo2+pTnr8aPKBBLG3pwCmtVAgLkRnA2s+o7HL4Gsrrg=;
-        b=I+zZBFUX/jSjlJQfcHgPQMWKwqLzEp9rZXUXCrsVx1XYnKubMVTsc0JByANHHz0K0K
-         gUI4I54uUEJaAd9SeUx8t04uaAx8pl9ORZ0QKpdEmaleZMLxDRZKgVMSJrM9r0yTdfYS
-         lEIIvz43rCu2IYoy5QQSASp9yN16tlL8aw4FETJKCfS7FDfYsEYU9MJe3rX5xpPLCujj
-         CXsZT4d+Nvak1aWL55NiuoG225pTpb/Ied242AF0z+e8HdbQRkK74/OEQLf5faG+uBCB
-         0wGkBYsAnm7olmlVGOuGmSojZ3/t1DCCEiZwKDoy+au+yS2OdHRd7ESvSDNo3GjQgMJB
-         B1NA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjsPK8mdA3JS3aY6DgjMMEbgGh0Mlf4Y4pexqknS1orb7H4JueUe6dS0qFftj+pzAKIywNB2Udux5Myg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnWFej7Omo519MPUTiuuatorK6eUZSawhgbS1EthFNZxKn5KjH
-	tfjcfxOlWxMyr82FpXfqv64Bgr3CxLiM/i2plwBkifmSCYofjf7E/oQu
-X-Gm-Gg: AZuq6aJOhBOSwAV2tPmg/6qIZ9j7iIhF18gEOz0eBpHfgQWRIS07F4IbIJFppcg+bmB
-	bvjKCzd0i9qBPqT+BGONdipziPds9Nfo6O7/jXRwEylQ49v/V5+3Z67VN9tvjBTjhu3PIWpYjpv
-	Xp+Xy8EDHUHkL+kHvUa92x1chvJSeY8J1XKg1R4WBuQXDgm1ah8Z3OpzzLzFOF9r+7qT8Xrf6Vl
-	VPENYzGG9A7hflW7hfgcnAUhnfZ7R+295AgI/MzDfOr0i7OoRaIYfvZVuyW1hubkEfrW13sIldL
-	PYzIs49zgm4B8raG5ker/2fz0yiCVfwYdqi0EpzwGeDcnXIwVR8BiY4GBP5us9VIkB3QYUUZWO4
-	EpyieuWprYMoDeyj/RDylx30UjSsHPA3ZR05Q0nU5DVhNa5ma6Bo7VF2Srmkbi5iu9JY78JdrMh
-	+Mzu2IKEORQ5xMjCLzlx1PxRfP
-X-Received: by 2002:a05:7301:1f01:b0:2b0:5b6b:6529 with SMTP id 5a478bee46e88-2b78da68e7cmr1147445eec.39.1769527152906;
-        Tue, 27 Jan 2026 07:19:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769530427; x=1770135227;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=foZbL69h+8hDXLGAkMe9gWFOExWjvLu/2tjx7FoVudk=;
+        b=Y7zT9ZnCS+2RTRx1fftmKnG0zQj2wjZ4GzrShEH1iAVMA7lrwnHCbC0OesraU+Gnqy
+         YRW7MMoWdf58UvPafrIygUK/L5u2vomcXeooW+p+iQEFDfN28Bu1ME+slx0WbEe9k4fN
+         J+oVdbRYPstKibZ2o0WVjKKs92nadPsrv1wswA3alebYMv5SXUVVQRvcFbqzW2tPKqHz
+         Ak7rl75tvOxYDejA4CH7ZcBpla1vGZOMIC7gSgLrzqpheU8gNGc6Aez6wusbaXu9yvUK
+         o506+cJXkB0D0a+5SqS39b9Z6ctf+bonYEJ3ovMxjrACHGC0uNDRi5YHyOfZOg13OJHj
+         vBZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXaqkmMeu2CVYAgO/+QMW+EsG9zLkbqHH1nMkCJ3nfSVZgwXP9nAXgOzzpAyCD9lRlNVzLqCXjCzlJkZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6c0w+Yq6rjDtwIrKYbvN3Nr8SEOownjA0iaSEnL/Jpdwy1Wr6
+	JGuQ0W4AUkaxE5Ui2C9sBsrQSdduNjArj8AIJJsEmLDzW329C3SJScHL
+X-Gm-Gg: AZuq6aJ3AhSOJ6Cl5v2kHuyQIm6zUUbjgYzqd+ROIUvGfhaUcB35NkiYEveBuMo/2si
+	CjfwNMv7Qx6IdGeUSaWP2VC9KQC8BnmUw/+dY99ulu/3lVc/cpiB1XkpztEUL4eCGMViZFp0GLP
+	qFtGusIJaJSNLzTzd8/x7p0Z6opAC64maGeOM3wlBfEF/5E/zyZ1eCMj1b92URDDz6jNrBlh5Fm
+	SFyM5aWng6m+S5fXHUOUb1gVbeWtcG3SYR8tJ9aVXF6Wb9mJtaHamB7Dd3Gd84JZ8AZFpzY+Epm
+	ErCD/YjIMr+js3TsA5D0GpkDyo2aTB5J63Zow/pBlNT9hVhlwV3dxH6WmxVo/VNA8Xdu5eQ9uU4
+	z5ga2KYvGdshUonCUJ4H9NrOd7Scm2ycW2RjkTNUsVSSunjDxDIN7WwOHk/7W4CIWBCyC7H7gtg
+	ovgIIpSwaS56ZHsdiJwbfq2tIa
+X-Received: by 2002:a05:693c:3017:b0:2b7:1d38:3596 with SMTP id 5a478bee46e88-2b78d8cc6e9mr1589269eec.4.1769530427130;
+        Tue, 27 Jan 2026 08:13:47 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73aa03fd0sm17872331eec.23.2026.01.27.07.19.12
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73a9e1b39sm17459343eec.21.2026.01.27.08.13.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 07:19:12 -0800 (PST)
+        Tue, 27 Jan 2026 08:13:46 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 27 Jan 2026 07:19:11 -0800
+Date: Tue, 27 Jan 2026 08:13:44 -0800
 From: Guenter Roeck <linux@roeck-us.net>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
-	Vasileios Amoiridis <vasileios.amoiridis@cern.ch>
-Subject: Re: [PATCH v2 2/2] hwmon: Add support for HiTRON HAC300S PSU
-Message-ID: <19d5da08-5605-414a-a1f3-2849b9bff19b@roeck-us.net>
-References: <20260119190806.35276-1-vassilisamir@gmail.com>
- <20260119190806.35276-3-vassilisamir@gmail.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	Igor Raits <igor@gooddata.com>,
+	Daniel Secik <daniel.secik@gooddata.com>,
+	Zdenek Pesek <zdenek.pesek@gooddata.com>,
+	Jiri Jurica <jiri.jurica@gooddata.com>
+Subject: Re: acpi_power_meter: power*_average sysfs read hangs, mutex
+ deadlock in hwmon_attr_show since v6.18.y
+Message-ID: <69665f53-a3ef-4129-afd5-5f7622f70e6b@roeck-us.net>
+References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
+ <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
+ <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net>
+ <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
+ <483f36e1-4ddc-4c22-aaba-c78156ebc0e2@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260119190806.35276-3-vassilisamir@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <483f36e1-4ddc-4c22-aaba-c78156ebc0e2@huawei.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-11426-lists,linux-hwmon=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-11431-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cern.ch:email,roeck-us.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 49FDA96C55
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:mid,roeck-us.net:email]
+X-Rspamd-Queue-Id: 59E9497935
 X-Rspamd-Action: no action
 
-On Mon, Jan 19, 2026 at 08:08:06PM +0100, Vasileios Amoiridis wrote:
-> From: Vasileios Amoiridis <vasileios.amoiridis@cern.ch>
+On Fri, Jan 23, 2026 at 10:53:02AM +0800, lihuisong (C) wrote:
 > 
-> Add Support for HiTRON HAC300S PSU. This is a AC/DC hot-swappable
-> CompactPCI Serial Dual output active current sharing switching power
-> supply with a 312W rating.
-> 
-> Signed-off-by: Vasileios Amoiridis <vasileios.amoiridis@cern.ch>
+> On 1/23/2026 4:42 AM, Rafael J. Wysocki wrote:
+> > On Thu, Jan 22, 2026 at 8:51 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > On 1/22/26 10:55, Rafael J. Wysocki wrote:
+> > > > On Thu, Jan 22, 2026 at 7:21 PM Jaroslav Pulchart
+> > > > <jaroslav.pulchart@gooddata.com> wrote:
+> > > > > Hello,
+> > > > > 
+> > > > > after upgrading from kernel 6.17.y to 6.18.y we started to observe a regression
+> > > > > in the ACPI power meter hwmon interface. Reading power*_average sysfs
+> > > > > attributes blocks indefinitely and causes tasks to enter uninterruptible
+> > > > > sleep (D state).
+> > > > The most recent change in the acpi_power_meter driver was made in
+> > > > 6.15, so this is not a regression in that driver.
+> > > > 
+> > > > Also, nothing suspicious is done in power1_average_min_show() and
+> > > > power1_average_min_store() AFAICS.
+> > > > 
+> > > I suspect a circular locking problem between the hwmon lock and the
+> > > resource lock. Unfortunately I don't immediately see it.
+> > > 
+> > > Would it be possible to test this with a kernel which has lock debugging
+> > > enabled ? I'd test it myself but I don't have a system available
+> > > that supports the acpi power meter.
+> > One problem I found in acpi_power_meter through code inspection is
+> > calling hwmon_device_unregister() under resource->lock in
+> > acpi_power_meter_notify(), which may be responsible for the observed
+> > symptoms, but then I'm not sure why it started to be visible after
+> > 6.18.
+> The hwmon_attr_show first hold hwdev->lock and then hold resource->lock in
+> acpi_power_meter driver.
+> Although driver call hwmon_device_unregister under resource->lock in
+> acpi_power_meter_notify(),
+> hwmon_device_unregister does't hold hwdev->lock.
+> So this may not be the root cause of this problem.
 
-checkpatch --strict returns various whitespace errors. Please run that
-command in the future.
+It might be if userspace has one or more open attribute file(s). That might
+be the case since other code in the driver calls sysfs_notify(), suggesting
+that files are expected to remain open. Of course, that would mean that
+userspace is all messed up because having an open file descriptor on a
+since unregistered hwmon device doesn't really help much - worse, if a read
+is executed after unregistering the hwmon driver, using a _different_
+instance of the hwmon lock but the same resource lock would really mess
+things up.
 
-Also,
+We'd need some active debugging to figure out if that is the problem.
+Either case, re-registering the hwmon driver from acpi_power_meter_notify()
+is conceptually wrong, so I am a bit surprised that this ever worked in the
+first place.
 
-> +static int hac300s_read_byte_data(struct i2c_client *client, int page, int reg)
-> +{
-> +	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-> +	struct hac300s_data *data = to_hac300s_data(info);
-> +
-> +	if (reg == PMBUS_VOUT_MODE)
-> +		return data->exponent;
-> +
-> +	return pmbus_read_byte_data(client, page, reg);
-
-This should return -ENODATA.
-
-No need to resend; I fixed it all up and applied the patch.
-
-Thanks,
 Guenter
 
