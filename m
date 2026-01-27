@@ -1,158 +1,186 @@
-Return-Path: <linux-hwmon+bounces-11416-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11418-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDRCIS0GeGmUnQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11416-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 01:26:21 +0100
+	id 4NGIC8NCeGl/pAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11418-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 05:44:51 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EB68E79F
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 01:26:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6198FE24
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 05:44:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58DFE3025F55
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 00:26:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D51F9301AA7B
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 04:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A91F1C5D44;
-	Tue, 27 Jan 2026 00:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8162DAFBD;
+	Tue, 27 Jan 2026 04:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIqHhdig"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WF5Kbspl"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032631A9F93
-	for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 00:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246071F2B8D;
+	Tue, 27 Jan 2026 04:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769473577; cv=none; b=tlzbP6YDf8Z5YQXFlrUfnJcZJI1HlDUZkzrrUO8mkM0pEB8+s6L/EjkbUChgq+NghEMCILdn95SU5KdPsuAY0FFrs+hYa6QOicFbSncroMqgU4gIJerAm8MfoFcSrGouHSqvVwOCubliq4ASvEeTaiq27Ws4+X+PDZrEQuxnSv4=
+	t=1769489084; cv=none; b=F6kZcoJCDnkt72FS+5svpbdLMSCCTLswYO2bF5ALbut6UkYBl7c8JIZutHKVse6e4Rxh6JBZk0FI+geD7bgu39lkr9/FUxFresD2DwblTL0GhdHMbV6JBbMlSdwU63g8X587n17Jhb5MNkFfh0RvtcdgKBRQZ3a2hPUX3ujFdcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769473577; c=relaxed/simple;
-	bh=fdMi7TfKrS7Cmghmf01IPyUxkj4PPBLbj9OGu4MkLsI=;
+	s=arc-20240116; t=1769489084; c=relaxed/simple;
+	bh=N4/dTgsSkKgyPM4oXZP0ylgXW3yR83HN4AMrwnF75aw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=covMs+rUYXfMBBiON0lAf9LOArFPfjIDXdfInxUkxf1gSAtaY5wE2VxPWTplCeoPkVg90Bsp+4+GiIEQaA8Q7C8FD6KJHVhZEoB5j+NQ+IDuSLKhSjZI0+G7oj/scPXpmbWjhLDV/vv9PzWjy7weLLjD1pEWw3gyHctmqoq9i7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YIqHhdig; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a2ea96930cso31403785ad.2
-        for <linux-hwmon@vger.kernel.org>; Mon, 26 Jan 2026 16:26:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769473575; x=1770078375; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nIkKftRmvZrX00LdvEp/NTz/bb5lQOW0F+qle7ug6ME=;
-        b=YIqHhdigWE8cWe6sSX80RmaGFN1rQtmj42JJcKxPkwXhPnCekI+ar6uxMkJrv9nrAc
-         jN+4ydxalKY8WzGouVl3dZicEQRqBgwFdutGPfi8mqxpHFaYndKSreA4lBO9+0si02ig
-         mILkf5GFjHUIWsVXFar/H/cawPry0gQUot1thh0qb7ddBVxNYDcTAwg77cfv/DE4ja6H
-         NnGmZ98m/rKRnmSI2aX5aP3Goq3m/wDj7SsvElB5u21dge/T1EiFU+95NTkVYFlEd2uh
-         +cQ5z+YXSiFHxpViztrYuxyLxITkpYsIXP8xui+RhMI4uB7vQDY8M3w93ghRuSPRuQgV
-         B7OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769473575; x=1770078375;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nIkKftRmvZrX00LdvEp/NTz/bb5lQOW0F+qle7ug6ME=;
-        b=DzEeTrbOdpfEJvrb2NloKydra3kYVEPTrPX6DjTtu1uXff3SkcrQVw/Dtm6n9HIPgV
-         R/AlYasljKrQpwCvUnVnvyaCRFnHg5f/5g1UfyI3wo1mRydbBGW5IsQGl5nTX1qAYCA9
-         shs/m+0KenOQL+VOwwEG1Jd+8G0dPuago1gjbWCnZllPtBVHMlsB/1YabijbEa65ExST
-         8UC0PDOKCKgbPYoCMsxP1GS+wA8DVLL132Z5URmpfRyk0/J/6YeSk089h6hIopFNTFii
-         uXt+10AOR/X1QAfVGZwQiK4ALKJ+RSM7hf3MInkmXouiUODPleq66gJxrvNjqWJhIOAW
-         nBzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuQ2mMajj144GMfnODWSE1MarbiXUWUipRbWvAFb1DfOv3j1+scd73d0L92jBi0w2ACmWzu/ZcPTvphg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN7hwNU2RLsHIlhwgJiTy6xix098rXiy5sNnd2aA+BhqowW3fZ
-	Atnw8YeaNeSSoXBFsC/5dx+vzSNtc7F3c9or/kGM5luyg2KhQ3tA55LQ
-X-Gm-Gg: AZuq6aLOLPxpTxexP9MFNoHCc6XQh3FimJ+5bX4yojvTDqK3YZMzr5tSL0/9IKmsHG8
-	htXspwUKdUp4NpbnjrnG0BWEj9//0Q7SuXLuMNyZrWXA+jrEV9nnfewUpZSP2hoaqs6VU7LrX50
-	jg72mTRkeuIZSj/SRs8ZejcBzluLiuOqpJo/dELGRe+EKgqj1dao+WglOF3khybXJP8d/ddzEsa
-	1H3vNqWvb3ryKzjpLGS6WbIsaRYb0r27VLKlFlyt0MERTEP2NB0u9/3aHG5hfqqRYdwY7nJSPNw
-	jL20MS1b1P9sPictkw1/IddbG+9Sjj8u1kFIdI9EOePAMEI62HMouhsYOFkwrXubxon2q5AUrOE
-	qRMjFty91crz/Z3RAOB/D0t4J0YU36kqQETB5MqtuGCXFcFcWyTeSuXQGV+pO5ulLzZXD+/dOKj
-	rNg0NlRGWhd7dnZdy+1/9u3FA6
-X-Received: by 2002:a17:903:178b:b0:2a0:d629:903c with SMTP id d9443c01a7336-2a8452f0c02mr62071425ad.30.1769473575154;
-        Mon, 26 Jan 2026 16:26:15 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802f98583sm99346985ad.54.2026.01.26.16.26.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 16:26:13 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Mon, 26 Jan 2026 16:26:12 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@weissschuh.net>,
-	Jean Delvare <jdelvare@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Dustin Howett <dustin@howett.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Stephen Horvath <s.horvath@outlook.com.au>,
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, Sung-Chi Li <lschyi@chromium.org>,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] hwmon: (cros_ec) Add support for temperature
- thresholds
-Message-ID: <0eae08ff-22ba-4c85-a2da-4cde7b50e156@roeck-us.net>
-References: <20260118-cros_ec-hwmon-pwm-v2-0-77eb1709b031@weissschuh.net>
- <20260118-cros_ec-hwmon-pwm-v2-4-77eb1709b031@weissschuh.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CbZ5EVseRActX1YCtzwsBEVAFpDuxvQsZYMz1F3BdI1J5Jdbba8O8njQi+kYVluZKq6csyqogbzQi5+tMq6GH88l3W+ueRRVo092B41NfHlu7vUMDYoI1rVFIo1D1e1vVcvGcgjW8i3j2dZfKBcHEuuk+eFuC4f/0SEr3KQ1aEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WF5Kbspl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF17FC116C6;
+	Tue, 27 Jan 2026 04:44:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769489083;
+	bh=N4/dTgsSkKgyPM4oXZP0ylgXW3yR83HN4AMrwnF75aw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WF5KbspleVHuga8JwYh3EeefwmK+a6HDYpdOtJsIEhYhKi7SjlC1BWgGttTO8iTES
+	 pnKiYzRN97JT9hPs+Xudm2RzaPx98OGJgd+B3CBaqga4r97b7UtC15r35QPKKKbGic
+	 g02pRSd4SNV7lnfw0eCqPWJw6Ah31X1pRK9m2IP1udWZfsqBjAeOeTtyE+qzVFfxk2
+	 6ACAOnIzIBkZ1r8gU/Fx2cWitvXT0Fr1JhoPMmBvXFRBnky5QC6k1Z0MSkoaI88pA1
+	 xd/3vU1teyEqQuJhZpxRloBEM7oHKMRQHGs7yXbdPxjH1TaTVN+qPqm1+G1+MYw7bc
+	 HP4pwwMayARyw==
+Date: Tue, 27 Jan 2026 10:14:25 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>, 
+	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Christopher Ruehl <chris.ruehl@gtsys.com.hk>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, Vincent Huang <vincent.huang@tw.synaptics.com>, 
+	Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
+	Frank Li <Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Fix emails with spaces or missing brackets
+Message-ID: <2pmaiz2yvgtmfjg6wtduoksjr34znalkvapr3dn3v6fqlxcdde@xkmnuvww7v37>
+References: <20260126164724.2832009-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260118-cros_ec-hwmon-pwm-v2-4-77eb1709b031@weissschuh.net>
+In-Reply-To: <20260126164724.2832009-1-robh@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[chromium.org,kernel.org,weissschuh.net,suse.com,lwn.net,howett.net,amd.com,outlook.com.au,lists.linux.dev,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-11416-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-11418-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[28];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[roeck-us.net,kernel.org,gmail.com,samsung.com,mobiveil.co.in,nxp.com,google.com,gtsys.com.hk,zx2c4.com,ew.tq-group.com,tw.synaptics.com,vger.kernel.org,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,weissschuh.net:email,roeck-us.net:mid]
-X-Rspamd-Queue-Id: 02EB68E79F
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CA6198FE24
 X-Rspamd-Action: no action
 
-On Sun, Jan 18, 2026 at 10:45:58AM +0100, Thomas Wei�schuh wrote:
-> Implement reading temperature thresholds through
-> EC_CMD_THERMAL_GET_THRESHOLD/EC_CMD_THERMAL_SET_THRESHOLD.
+On Mon, Jan 26, 2026 at 10:47:22AM -0600, Rob Herring (Arm) wrote:
+> Fix email addresses with spaces or missing brackets. A pending
+> dtschema meta-schema change will check for these.
 > 
-> Thresholds are mapped as follows between the EC and hwmon:
-> 
-> hwmon_temp_max       - EC_TEMP_THRESH_WARN
-> hwmon_temp_crit      - EC_TEMP_THRESH_HIGH
-> hwmon_temp_emergency - EC_TEMP_THRESH_HALT
-> 
-> Signed-off-by: Thomas Wei�schuh <linux@weissschuh.net>
-> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml    | 2 +-
+>  Documentation/devicetree/bindings/input/syna,rmi4.yaml          | 2 +-
+>  .../devicetree/bindings/media/samsung,exynos5250-gsc.yaml       | 2 +-
+>  Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml     | 2 +-
 
-Applied.
+For PCI controllers,
 
-Thanks,
-Guenter
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+
+- Mani
+
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml b/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
+> index 3d14d5fc96c5..7b38f2182ffa 100644
+> --- a/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/sensirion,shtc1.yaml
+> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: Sensirion SHTC1 Humidity and Temperature Sensor IC
+>  
+>  maintainers:
+> -  - Christopher Ruehl chris.ruehl@gtsys.com.hk
+> +  - Christopher Ruehl <chris.ruehl@gtsys.com.hk>
+>  
+>  description: |
+>    The SHTC1, SHTW1 and SHTC3 are digital humidity and temperature sensors
+> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+> index f369385ffaf0..8685ef4481f4 100644
+> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+> @@ -8,7 +8,7 @@ title: Synaptics RMI4 compliant devices
+>  
+>  maintainers:
+>    - Jason A. Donenfeld <Jason@zx2c4.com>
+> -  - Matthias Schiffer <matthias.schiffer@ew.tq-group.com
+> +  - Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+>    - Vincent Huang <vincent.huang@tw.synaptics.com>
+>  
+>  description: |
+> diff --git a/Documentation/devicetree/bindings/media/samsung,exynos5250-gsc.yaml b/Documentation/devicetree/bindings/media/samsung,exynos5250-gsc.yaml
+> index 878397830a4d..9196cf5dac0f 100644
+> --- a/Documentation/devicetree/bindings/media/samsung,exynos5250-gsc.yaml
+> +++ b/Documentation/devicetree/bindings/media/samsung,exynos5250-gsc.yaml
+> @@ -9,7 +9,7 @@ title: Samsung Exynos SoC G-Scaler
+>  maintainers:
+>    - Inki Dae <inki.dae@samsung.com>
+>    - Krzysztof Kozlowski <krzk@kernel.org>
+> -  - Seung-Woo Kim <sw0312.kim@samsung.com
+> +  - Seung-Woo Kim <sw0312.kim@samsung.com>
+>  
+>  description:
+>    G-Scaler is used for scaling and color space conversion on Samsung Exynos
+> diff --git a/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
+> index d286b77921e0..8f5d33050348 100644
+> --- a/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
+> +++ b/Documentation/devicetree/bindings/pci/mbvl,gpex40-pcie.yaml
+> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: Mobiveil AXI PCIe Host Bridge
+>  
+>  maintainers:
+> -  - Frank Li <Frank Li@nxp.com>
+> +  - Frank Li <Frank.Li@nxp.com>
+>  
+>  description:
+>    Mobiveil's GPEX 4.0 is a PCIe Gen4 host bridge IP. This configurable IP
+> -- 
+> 2.51.0
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
