@@ -1,122 +1,112 @@
-Return-Path: <linux-hwmon+bounces-11431-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11436-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNXNMczkeGlftwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11431-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 17:16:12 +0100
+	id gFpIDxgMeWnyugEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11436-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 20:03:52 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E9497935
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 17:16:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0515799900
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 20:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40F7F300DA76
-	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 16:13:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A4A0300B9E6
+	for <lists+linux-hwmon@lfdr.de>; Tue, 27 Jan 2026 18:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A9035EDBE;
-	Tue, 27 Jan 2026 16:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071BB32A3C9;
+	Tue, 27 Jan 2026 18:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TyhKpQ58"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hvfrEpUB"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBB9355049
-	for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 16:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834D61D9A54
+	for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 18:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769530429; cv=none; b=cZDS4dk1Aa3xONt2yk/0yVjMIiEbTEA/DnAksJJ/QgELP+jS0wWFjiavj/VGAR/wyBySaEj5Zicn4umHIuwuOqU1utlzleM+3QCaLPr4WDHjh9ZFff8CNiwEUcMCQKkIKdSlai4ZhVpQ/E0w5CrnSzKcQBJE5cfnrtynOM9uEvI=
+	t=1769540392; cv=none; b=akCfBWdFVZFQq90p5QIQTNOOtbDfvDuQccqlT1ZSWOjL9abINn5A8HjOYrr6ULgAj5GrOKQHOTuJgjVLyjNWYvoMA0H2VbOKRECE3cZ6dJTt1PNw4VjBAejC/jpqaPjrODScGokrPgaUuisvPFlKox1xJ1cecuuZW1uVljCUBKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769530429; c=relaxed/simple;
-	bh=y8v5V+tYIM6n3wnDXvrdbFANd4Jq/4/oDnIJmLqx420=;
+	s=arc-20240116; t=1769540392; c=relaxed/simple;
+	bh=XwkACK+iKw7oI/5o/Gv8sfELgLAgj1JR8qRdX4LMvYE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G+QtL2W9EK3E/5sIbhoEE2A/7f5g27Sz8ITDlRPxiV7Zsw5bfPvVWqn7CDY1LEaZrteM961dkeSv81pXAsDPHx3LupH3+GT23DJmW+if/qqLhOYV1BnEUAOKVL71jP7XXqxrJJ9GbxVLdPB9lxCKNoiBz7bl9VM5VrOfBj/w6aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TyhKpQ58; arc=none smtp.client-ip=74.125.82.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=oEtd/E52qMg1ND7MCuV3VZTni+wK/2bBqe6o2OtMknAbO32PG56o9O2Y01VjSfO45umnb1qXW5eC+aQNePqV9j5MhS7k+xQCdliIxdmdkP2z8v06GL3zYSoEF6dBZ+lGZkmK8HaXz5VJHL3xSpudP2VJxNio+9q+q1Xo+G2/eTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hvfrEpUB; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b73112ab62so4922294eec.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 08:13:48 -0800 (PST)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d18cf89e72so118780a34.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 27 Jan 2026 10:59:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769530427; x=1770135227; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=foZbL69h+8hDXLGAkMe9gWFOExWjvLu/2tjx7FoVudk=;
-        b=TyhKpQ58YZbSQd6ipu7/XJocYKNnSrfQ2NZuLhjl+c2hSyz0P4bwmZrSe/Sqb3C997
-         a7VXSgtg2PAElc3/HDMBDe+uPU5VTh8F1v1RxLLTZk672ya9beXO7PBkpJwMKBJjBjhX
-         QwGoTftN9Miko+F4JSEYBNH3poDJCZAQZHQmlFNaySMgf85IZCZO0Tnf4HqJg30sST2x
-         wS2rzvP92zW2ZEgDAxY87w4fMuX2nVhW+o7WvW3t635tXvKgUZZ2MIjWjnplPUQBRXwK
-         vfJusUTnowKnuSMI6XYWTphyhQw69xKQqSzMpc02QxVyZJaw6CTHNA3v/G8eamm/zpG1
-         FN/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769530427; x=1770135227;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1769540390; x=1770145190; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=foZbL69h+8hDXLGAkMe9gWFOExWjvLu/2tjx7FoVudk=;
-        b=Y7zT9ZnCS+2RTRx1fftmKnG0zQj2wjZ4GzrShEH1iAVMA7lrwnHCbC0OesraU+Gnqy
-         YRW7MMoWdf58UvPafrIygUK/L5u2vomcXeooW+p+iQEFDfN28Bu1ME+slx0WbEe9k4fN
-         J+oVdbRYPstKibZ2o0WVjKKs92nadPsrv1wswA3alebYMv5SXUVVQRvcFbqzW2tPKqHz
-         Ak7rl75tvOxYDejA4CH7ZcBpla1vGZOMIC7gSgLrzqpheU8gNGc6Aez6wusbaXu9yvUK
-         o506+cJXkB0D0a+5SqS39b9Z6ctf+bonYEJ3ovMxjrACHGC0uNDRi5YHyOfZOg13OJHj
-         vBZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaqkmMeu2CVYAgO/+QMW+EsG9zLkbqHH1nMkCJ3nfSVZgwXP9nAXgOzzpAyCD9lRlNVzLqCXjCzlJkZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6c0w+Yq6rjDtwIrKYbvN3Nr8SEOownjA0iaSEnL/Jpdwy1Wr6
-	JGuQ0W4AUkaxE5Ui2C9sBsrQSdduNjArj8AIJJsEmLDzW329C3SJScHL
-X-Gm-Gg: AZuq6aJ3AhSOJ6Cl5v2kHuyQIm6zUUbjgYzqd+ROIUvGfhaUcB35NkiYEveBuMo/2si
-	CjfwNMv7Qx6IdGeUSaWP2VC9KQC8BnmUw/+dY99ulu/3lVc/cpiB1XkpztEUL4eCGMViZFp0GLP
-	qFtGusIJaJSNLzTzd8/x7p0Z6opAC64maGeOM3wlBfEF/5E/zyZ1eCMj1b92URDDz6jNrBlh5Fm
-	SFyM5aWng6m+S5fXHUOUb1gVbeWtcG3SYR8tJ9aVXF6Wb9mJtaHamB7Dd3Gd84JZ8AZFpzY+Epm
-	ErCD/YjIMr+js3TsA5D0GpkDyo2aTB5J63Zow/pBlNT9hVhlwV3dxH6WmxVo/VNA8Xdu5eQ9uU4
-	z5ga2KYvGdshUonCUJ4H9NrOd7Scm2ycW2RjkTNUsVSSunjDxDIN7WwOHk/7W4CIWBCyC7H7gtg
-	ovgIIpSwaS56ZHsdiJwbfq2tIa
-X-Received: by 2002:a05:693c:3017:b0:2b7:1d38:3596 with SMTP id 5a478bee46e88-2b78d8cc6e9mr1589269eec.4.1769530427130;
-        Tue, 27 Jan 2026 08:13:47 -0800 (PST)
+        bh=3ZfqLGIvRpFE/gnKzE3sUmBILX80gzyy9OqTW4jmzZU=;
+        b=hvfrEpUBMVVYnLjafDsvVE/rrw9l03PAK0UDpmdDToTXA5yYqZ5K3AIRCEtv+kphgq
+         sMl26hwjGrpiY6+loLpHBB9Ai3NaszSyOsI9xUN4P0yBOi1lRD2ivsoWdhqD0xLoJrNX
+         WGYl5zvlDDXKYxm4zGWiEGTu7KwQa7D6W2oNn2vSqiELtDuapxolK3E2csaW9Fg/og+r
+         blCBW4VHNbdDuoasT5vHbmX1nP17m/kuDJH/E3uFkix1qQSZx8B+VN2AUJdcJu+QsuTu
+         /JYka8VzARbdQSP4PLX84YpMYsGBeTr4wKKhuhzTEO0JeJeOL04cMiGJLCyqWdTpaKHu
+         Pf7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769540390; x=1770145190;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3ZfqLGIvRpFE/gnKzE3sUmBILX80gzyy9OqTW4jmzZU=;
+        b=p1X6DmqW0CoRQZyARfFRhQFtAxW2eenGOvWr6u9rwaImq00h71U8jL5JxvdeuAQ0X5
+         ucdLHLGNPfjH+1zSV1ZPqf0ORwEMMdMXJt5GkF1/CMGqEYx0yzjWBQ+eeqh09g/tqW/v
+         IKqdRyoVVW9kK5vlJEbyb9PgbL0Zg92Ft/3NKwLVD8iti3IRL2g8WpAEkoOjQQ8Dp7Ho
+         dwV74UA8c6b07rLVAScEKIy1qDwRSX0yNtUq+sqnr/+y+VF8R2q0M/e7k3oeJznvgGn/
+         +A9TBxcNfp0GoGfevL2cAihFECnJzd9VWUyhM7qJ1ZMxyMLyTPTMBmHOJMRwrbK2EuMH
+         kl4g==
+X-Gm-Message-State: AOJu0YwOBLXrnTuERdzYhV62Fv7uC4PxFXdRc4HWIOpqEoi/GRDTGeCk
+	Prdd5RcA6pExw62iNp9kb2MsfqO1jYkbSR+sXMBl3uSv1ICRBx3JRoYRNwaIZWy0
+X-Gm-Gg: AZuq6aKmjSnIhsN4cOa5YriTo2lR0LExMkxzRPx4EDJiJNK/zXcR+EBQbqNNRfx2TTS
+	p0sWau5UL70tLOLyKiYKt/3+hj1uhwZE/neGLz9wqEoNvD7zJt3u4dSSOlBJJ38ulvRAc9kJJN6
+	N2ddV+bIqrQLVRbmqXRnD3Uus0tBEovQibQs3xPVzHmpmZkRvylE+66YSPNvOEiLRKtLVwRc1Oc
+	na7N07pxG6YYJRZ3xnCHUfTkd8MH7bPKZFhUyIOZmTLCz82v12eoJ69SNB3aPIEhEO7hkhK/zsz
+	urZkezOw+J7fwSdBgWlOuHjRRD8hp27Jju3pYeZH+EKsEq98XnSFDBUuwkCLHQAemWpahTfAdUT
+	llsx1fXXeGoInyUTtImgnIN3qNPlFePbf8/BHzT8+eYoatfozBPK8md8ohZ7SPtsYUTRPdP9nZp
+	44DZNu81BVziYLx/b+rh7ppeFb
+X-Received: by 2002:a05:7300:2382:b0:2b0:4f34:eed6 with SMTP id 5a478bee46e88-2b78d9d75acmr1505750eec.26.1769533958980;
+        Tue, 27 Jan 2026 09:12:38 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73a9e1b39sm17459343eec.21.2026.01.27.08.13.45
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b79c3aa364sm33692eec.11.2026.01.27.09.12.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 08:13:46 -0800 (PST)
+        Tue, 27 Jan 2026 09:12:38 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 27 Jan 2026 08:13:44 -0800
+Date: Tue, 27 Jan 2026 09:12:37 -0800
 From: Guenter Roeck <linux@roeck-us.net>
-To: "lihuisong (C)" <lihuisong@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	Igor Raits <igor@gooddata.com>,
-	Daniel Secik <daniel.secik@gooddata.com>,
-	Zdenek Pesek <zdenek.pesek@gooddata.com>,
-	Jiri Jurica <jiri.jurica@gooddata.com>
-Subject: Re: acpi_power_meter: power*_average sysfs read hangs, mutex
- deadlock in hwmon_attr_show since v6.18.y
-Message-ID: <69665f53-a3ef-4129-afd5-5f7622f70e6b@roeck-us.net>
-References: <CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com>
- <CAJZ5v0jSbGtRYkjqeuYaT3LXbeZ-xk_Gc0dbCpTZPc6nBD8eCQ@mail.gmail.com>
- <e03c8b69-e667-45b8-b82c-2cd4f1c96bdf@roeck-us.net>
- <CAJZ5v0hvKzKTWA8jFYVDHttd+hDv1juu87vgyhf2udOGbqrQdg@mail.gmail.com>
- <483f36e1-4ddc-4c22-aaba-c78156ebc0e2@huawei.com>
+To: Almog Ben Shaul <almogbs@amazon.com>
+Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	itamark@amazon.com, talel@amazon.com, farbere@amazon.com,
+	ayalstei@amazon.com, dwmw@amazon.com
+Subject: Re: [PATCH 1/2] dt-bindings: trivial-devices: Add jedec,pmic50x0
+Message-ID: <13b492a0-db2e-4e44-b145-cf99f1975fd8@roeck-us.net>
+References: <20260121151947.37719-1-almogbs@amazon.com>
+ <20260121151947.37719-2-almogbs@amazon.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <483f36e1-4ddc-4c22-aaba-c78156ebc0e2@huawei.com>
+In-Reply-To: <20260121151947.37719-2-almogbs@amazon.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-11431-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-11436-lists,linux-hwmon=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[roeck-us.net];
 	RCVD_TLS_LAST(0.00)[];
@@ -128,65 +118,42 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:mid,roeck-us.net:email]
-X-Rspamd-Queue-Id: 59E9497935
+	DBL_BLOCKED_OPENRESOLVER(0.00)[jedec.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:mid]
+X-Rspamd-Queue-Id: 0515799900
 X-Rspamd-Action: no action
 
-On Fri, Jan 23, 2026 at 10:53:02AM +0800, lihuisong (C) wrote:
+On Wed, Jan 21, 2026 at 03:19:46PM +0000, Almog Ben Shaul wrote:
+> Add devicetree binding for JEDEC PMIC50x0 compliant I2C DDR5 PMICs.
+> https://www.jedec.org/standards-documents/docs/jesd301-1a03
 > 
-> On 1/23/2026 4:42 AM, Rafael J. Wysocki wrote:
-> > On Thu, Jan 22, 2026 at 8:51 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > On 1/22/26 10:55, Rafael J. Wysocki wrote:
-> > > > On Thu, Jan 22, 2026 at 7:21 PM Jaroslav Pulchart
-> > > > <jaroslav.pulchart@gooddata.com> wrote:
-> > > > > Hello,
-> > > > > 
-> > > > > after upgrading from kernel 6.17.y to 6.18.y we started to observe a regression
-> > > > > in the ACPI power meter hwmon interface. Reading power*_average sysfs
-> > > > > attributes blocks indefinitely and causes tasks to enter uninterruptible
-> > > > > sleep (D state).
-> > > > The most recent change in the acpi_power_meter driver was made in
-> > > > 6.15, so this is not a regression in that driver.
-> > > > 
-> > > > Also, nothing suspicious is done in power1_average_min_show() and
-> > > > power1_average_min_store() AFAICS.
-> > > > 
-> > > I suspect a circular locking problem between the hwmon lock and the
-> > > resource lock. Unfortunately I don't immediately see it.
-> > > 
-> > > Would it be possible to test this with a kernel which has lock debugging
-> > > enabled ? I'd test it myself but I don't have a system available
-> > > that supports the acpi power meter.
-> > One problem I found in acpi_power_meter through code inspection is
-> > calling hwmon_device_unregister() under resource->lock in
-> > acpi_power_meter_notify(), which may be responsible for the observed
-> > symptoms, but then I'm not sure why it started to be visible after
-> > 6.18.
-> The hwmon_attr_show first hold hwdev->lock and then hold resource->lock in
-> acpi_power_meter driver.
-> Although driver call hwmon_device_unregister under resource->lock in
-> acpi_power_meter_notify(),
-> hwmon_device_unregister does't hold hwdev->lock.
-> So this may not be the root cause of this problem.
+> Signed-off-by: Almog Ben Shaul <almogbs@amazon.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index d0f7dbf15d6f..fb16bd91c76c 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -171,6 +171,8 @@ properties:
+>            - isil,isl76682
+>              # JEDEC JESD300 (SPD5118) Hub and Serial Presence Detect
+>            - jedec,spd5118
+> +            # JEDEC PMIC50X0 DDR5 Power Management ICs
+> +          - jedec,pmic50x0
 
-It might be if userspace has one or more open attribute file(s). That might
-be the case since other code in the driver calls sysfs_notify(), suggesting
-that files are expected to remain open. Of course, that would mean that
-userspace is all messed up because having an open file descriptor on a
-since unregistered hwmon device doesn't really help much - worse, if a read
-is executed after unregistering the hwmon driver, using a _different_
-instance of the hwmon lock but the same resource lock would really mess
-things up.
-
-We'd need some active debugging to figure out if that is the problem.
-Either case, re-registering the hwmon driver from acpi_power_meter_notify()
-is conceptually wrong, so I am a bit surprised that this ever worked in the
-first place.
+This should probably refer to the standard (JEDEC JESD301). Also, I am not
+sure if pmic50x0 is appropriate, since the standard refers to pmic5000 and
+pmic5010, but does not cover pmic50[2-9]0.
 
 Guenter
+
+>              # Linear Technology LTC2488
+>            - lineartechnology,ltc2488
+>              # 5 Bit Programmable, Pulse-Width Modulator
 
