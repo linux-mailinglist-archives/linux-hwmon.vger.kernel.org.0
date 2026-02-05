@@ -1,56 +1,55 @@
-Return-Path: <linux-hwmon+bounces-11578-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11579-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC67DZtqhGl12wMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11578-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 11:02:03 +0100
+	id yDoUNJpqhGl12wMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11579-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 11:02:02 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3F5F1225
+	by mail.lfdr.de (Postfix) with ESMTPS id 8350AF121E
 	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 11:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5BA2A300DD79
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28A94300DA6D
 	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 10:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE933A4F2C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDFA3A1D1D;
 	Thu,  5 Feb 2026 10:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffpYEEa3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bU3AtEK+"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2D13644D2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1BC31A565;
 	Thu,  5 Feb 2026 10:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770285702; cv=none; b=BKKb4/9NbIMIXZ5OyQ8ZR11X4gJyPxRUyqzBBk9uAbUkfpWXCqPi64MdbNhFflYsKjKu/y6EQ+2yIey/9oO3x4K4VFNfSytHvSrz9gCcd3k8a5YqcfaMqc6sUFJ+499hUHpd/FCihEw1BSIiZv7U/yj9ok2xE/dbjzK/rZd+zf8=
+	t=1770285702; cv=none; b=iFBQiBxvagOfxwzwGbhURE5Q4LKyPbp+KLaPB+SDrAnM7SUllHDDp+soTud9whrVp4+N4+/vQlJ4ExWriQ9M5Nlcqws2Y/Z5sQORNMs0QHtgqKe25Gwk09S9jppef+LhozLpFJSlC6IMJvCslGE4/9aYFo3H7kE0C/sA8T2Xj7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770285702; c=relaxed/simple;
-	bh=devR7VJmr/xn8ktgzpu6/1ed8rMHKTcaVA5kSFwJ7Jk=;
+	bh=G57zK63vvGtgsDfzaPgCE/xYaH1Z2/holtmBYCABzvM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Fi3WdS5Ckbo9g6bav6eANNO1PiYVOphcEnEjuz7IPWCV1zdfeohAkbdarVZujtD5DDdYTJ/EZcL+Hh1l8ZYOrmZ7W04IG+NMYD7scpIR0Qvp88HGqMfodXwyBYYXVdw0Np1A2jr1biLuV1rdnuw+Q/VYDjHjWXdxOAftYmRPsZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffpYEEa3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AB626C19423;
+	 In-Reply-To:To:Cc; b=CmiITNZ0v22cUpQxQnwSlxPcFmjvNPFODpvbtZIQoOqidqqiflBE5Y6RPs/fVugS52kQdFNFgNgWUYgTqS6C5AAvC3+XKgtWR6UfNmd8CkZECBLmPfYFM0dowULEKA5BUDGzCvg7n+n2Va709wB5MJ1M0YRp+A/4saagwyDB4Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bU3AtEK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BF4F0C19425;
 	Thu,  5 Feb 2026 10:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770285701;
-	bh=devR7VJmr/xn8ktgzpu6/1ed8rMHKTcaVA5kSFwJ7Jk=;
+	bh=G57zK63vvGtgsDfzaPgCE/xYaH1Z2/holtmBYCABzvM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ffpYEEa3r2u8D8tBKxCo/Tv4wF2Di/1EhYPTBO5FwUNHZN5pf+q5xFUp5PNoenwQ6
-	 k7UshnU02nbyTFdTRw3LkDlhHERxcf81I21zQ/PCn76rzMCwwBqdmWR5rPaneQJEKZ
-	 3ymTnfO7OghaNIbcdgU2Ui3bJUjLYpXORaW0JS4BYF0CBg6O/gD8eD4Nvqfb83gn6S
-	 d+kkDjWu9rh9EVJ7292uk0Jssl0kXcwLZXJJmZ7AQ9Jpdh78rOBf5XlnR2fMGlsB7E
-	 RQWi+JY38ABXAg0a8cz/cf7Y0IVEq9DsZiC/AMgOOQu/79A5CQ+ZwRsBpyFA7HZmEv
-	 fKcAZwdOxJLeQ==
+	b=bU3AtEK+CGn+Ir4NdI6BiIzU3K/pMnWlKtghZEM3yScgQyqBinmqc3jx9HWeIYl2F
+	 JpRH3crrs9z/NXSX7c9JU6S3D0+e/ntLyOh4YvKlbAlUWWLh6+17tuXTOn4o/LQZ47
+	 JUDnQNH6a047X/DrKI9JM9qLR/DK7PkHAtP5FtUHwIiDDq0i4hdEhq0yTuXvsEgYeo
+	 +TglLqxkY3Y5iTt4oC3kH+pBblHF6OoFl8QNOwmrMfx2AjrDNke7LWMXLncfr0EiR8
+	 3A45PZw+Wu2yAowc263DwLGpHCrYfZb3ZN44RCHws5+M9u+J4AsGAmvlp4VPiZ0Y6K
+	 LHtA+iGYu9Q2g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99485EC1E8F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1C4CEC1E91;
 	Thu,  5 Feb 2026 10:01:41 +0000 (UTC)
 From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
-Date: Thu, 05 Feb 2026 18:01:37 +0800
-Subject: [PATCH v2 1/3] dt-bindings: hwmon: pmbus: mpq8785: add MPQ8786
- support
+Date: Thu, 05 Feb 2026 18:01:38 +0800
+Subject: [PATCH v2 2/3] hwmon: pmbus: mpq8785: add support for MPQ8786
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -59,7 +58,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260205-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v2-1-3744cd9b2850@amd.com>
+Message-Id: <20260205-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v2-2-3744cd9b2850@amd.com>
 References: <20260205-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v2-0-3744cd9b2850@amd.com>
 In-Reply-To: <20260205-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v2-0-3744cd9b2850@amd.com>
 To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
@@ -69,11 +68,11 @@ Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, carl.lee@amd.com, peter.shen@amd.com, 
  colin.huang2@amd.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770285700; l=966;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770285700; l=2876;
  i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
- bh=4VP7aSutSEVwewHFNXv1YMwo/Z3h/7GGV0DuOQPQ1hM=;
- b=4jLL+R19hP5vpToXhZfcy/anjN+etq253OapCqYxfFxIg0yFgaN2yMvQAHo8pIGdG+N8k2G9/
- VWaukCD/QVTBm3hbpYicZPWu/IWKXSHi2dAlk7hTqT3ZRTsGTRcuLXo
+ bh=RJRo1UlIAD5Na+x5KlUjzgyX3K81PgptdiZZtQGDLQg=;
+ b=Moi4leam1a/lz1BX25DF2RYSxY3ZhMmuotWye7pZWpalDxga6mMrmJEVZ1CwbhoaThEZ6V9ve
+ VC7TINzKVbOCYYsObg46wq9Dys29d88t4e0AS7ohgsu9sNM+2piUWYa
 X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
  pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
 X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
@@ -90,7 +89,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-11578-lists,linux-hwmon=lfdr.de,carl.lee.amd.com];
+	TAGGED_FROM(0.00)[bounces-11579-lists,linux-hwmon=lfdr.de,carl.lee.amd.com];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[roeck-us.net,kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -109,42 +108,90 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	HAS_REPLYTO(0.00)[carl.lee@amd.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:replyto,amd.com:email,amd.com:mid]
-X-Rspamd-Queue-Id: EB3F5F1225
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:replyto,amd.com:email,amd.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8350AF121E
 X-Rspamd-Action: no action
 
 From: Carl Lee <carl.lee@amd.com>
 
-Add device type support for MPQ8786
+Add support for the Monolithic Power Systems MPQ8786 digital voltage
+regulator.
 
 Signed-off-by: Carl Lee <carl.lee@amd.com>
 ---
- Documentation/devicetree/bindings/hwmon/pmbus/mps,mpq8785.yaml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/hwmon/mpq8785.rst | 7 +++++++
+ drivers/hwmon/pmbus/mpq8785.c   | 6 +++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/mps,mpq8785.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/mps,mpq8785.yaml
-index 90970a0433e9..aec7397a29f9 100644
---- a/Documentation/devicetree/bindings/hwmon/pmbus/mps,mpq8785.yaml
-+++ b/Documentation/devicetree/bindings/hwmon/pmbus/mps,mpq8785.yaml
-@@ -19,6 +19,7 @@ properties:
-       - mps,mpm3695-25
-       - mps,mpm82504
-       - mps,mpq8785
-+      - mps,mpq8786
+diff --git a/Documentation/hwmon/mpq8785.rst b/Documentation/hwmon/mpq8785.rst
+index 198d5dfd7c30..39306033990f 100644
+--- a/Documentation/hwmon/mpq8785.rst
++++ b/Documentation/hwmon/mpq8785.rst
+@@ -8,6 +8,7 @@ Supported chips:
+   * MPS MPM3695 family
+   * MPS MPM82504
+   * MPS MPQ8785
++  * MPS MPQ8786
  
-   reg:
-     maxItems: 1
-@@ -52,7 +53,9 @@ allOf:
-   - if:
-       properties:
-         compatible:
--          const: mps,mpq8785
-+          enum:
-+            - mps,mpq8785
-+            - mps,mpq8786
-     then:
-       properties:
-         mps,vout-fb-divider-ratio-permille:
+     Prefix: 'mpq8785'
+ 
+@@ -38,6 +39,12 @@ buck converter. The MPQ8785 offers a very compact solution that achieves up to
+ wide input supply range. The MPQ8785 operates at high efficiency over a wide
+ output current load range.
+ 
++The MPQ8786 is a fully integrated, PMBus-compatible, high-frequency, synchronous
++buck converter. The device shares the same PMBus interface and register behavior
++as the MPQ8785, but provides a lower output current capability of up to 25A per
++phase. It offers excellent load and line regulation over a wide input supply
++range and operates at high efficiency over a wide output current load range.
++
+ The PMBus interface provides converter configurations and key parameters
+ monitoring.
+ 
+diff --git a/drivers/hwmon/pmbus/mpq8785.c b/drivers/hwmon/pmbus/mpq8785.c
+index 1f56aaf4dde8..f35534836cb8 100644
+--- a/drivers/hwmon/pmbus/mpq8785.c
++++ b/drivers/hwmon/pmbus/mpq8785.c
+@@ -12,13 +12,14 @@
+ 
+ #define MPM82504_READ_TEMPERATURE_1_SIGN_POS	9
+ 
+-enum chips { mpm3695, mpm3695_25, mpm82504, mpq8785 };
++enum chips { mpm3695, mpm3695_25, mpm82504, mpq8785, mpq8786 };
+ 
+ static u16 voltage_scale_loop_max_val[] = {
+ 	[mpm3695] = GENMASK(9, 0),
+ 	[mpm3695_25] = GENMASK(11, 0),
+ 	[mpm82504] = GENMASK(9, 0),
+ 	[mpq8785] = GENMASK(10, 0),
++	[mpq8786] = GENMASK(10, 0),
+ };
+ 
+ static int mpq8785_identify(struct i2c_client *client,
+@@ -87,6 +88,7 @@ static const struct i2c_device_id mpq8785_id[] = {
+ 	{ "mpm3695-25", mpm3695_25 },
+ 	{ "mpm82504", mpm82504 },
+ 	{ "mpq8785", mpq8785 },
++	{ "mpq8786", mpq8786 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(i2c, mpq8785_id);
+@@ -96,6 +98,7 @@ static const struct of_device_id __maybe_unused mpq8785_of_match[] = {
+ 	{ .compatible = "mps,mpm3695-25", .data = (void *)mpm3695_25 },
+ 	{ .compatible = "mps,mpm82504", .data = (void *)mpm82504 },
+ 	{ .compatible = "mps,mpq8785", .data = (void *)mpq8785 },
++	{ .compatible = "mps,mpq8786", .data = (void *)mpq8786 },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, mpq8785_of_match);
+@@ -128,6 +131,7 @@ static int mpq8785_probe(struct i2c_client *client)
+ 		info->read_word_data = mpm82504_read_word_data;
+ 		break;
+ 	case mpq8785:
++	case mpq8786:
+ 		info->identify = mpq8785_identify;
+ 		break;
+ 	default:
 
 -- 
 2.34.1
