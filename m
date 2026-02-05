@@ -1,227 +1,321 @@
-Return-Path: <linux-hwmon+bounces-11602-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11609-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMEYEX75hGkL7QMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11602-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 21:11:42 +0100
+	id yKpVLewbhWkO8gMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11609-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 23:38:36 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF245F70C8
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 21:11:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 359D9F8272
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 23:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85DF3301CFFF
-	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 20:11:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6DC1D30041FC
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 22:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E088032ABFF;
-	Thu,  5 Feb 2026 20:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746A132BF23;
+	Thu,  5 Feb 2026 22:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CRW4MRm5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lp2TKJAz"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82852D3A86;
-	Thu,  5 Feb 2026 20:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D96226AF4
+	for <linux-hwmon@vger.kernel.org>; Thu,  5 Feb 2026 22:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770322297; cv=none; b=fNsWrvOK3f3PEDr7ZtQBmCWkKUQ14as+qA/0YfH2RJ/zEInx8K/zKdWmq2qvuEj5AZNITggnCdsZdgdYZQbcWtDB2u2Ke7qPF7ec93akZ06g/XP5n8LsVrS57Sw5zpXM6Y2qavdjM2Amx8P8/4nt2Xwd1g0l7zG4Rf/Pt7gxnmc=
+	t=1770331113; cv=none; b=t4sPCfVMFJuM1D7T+x4pKKkBN8ZlbzA0HkIXxssZR08ugV24hWg+x1nTr0/0HqAPvRZGh1p/rcth1zydw37WRD73zjQ8MDAfkPe4+MacGVEIpfPi+Ya6JZLD7hGKw/JRvFMIPr/xnCNW/sgAFtesAC+rtKdBO60HphskWVGA64c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770322297; c=relaxed/simple;
-	bh=gekqAShyRuvBQ70OScUhtcb+pcqa6F/iTOcndq1RCqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SWuImza0aiIbBAHwtRWz4dyPeRUGOQg048Y4HOSZLH8KuA9XdvBmRvIoJVSNBFQbfbAZ1CQrAU4iSZJiwIIq0X76Jki4bTMJtjlYH8eGdVxLlHX+sC/n8QJVwO2T3SJOdJ2A0rFMiWqGkgeRocRP02YZLyzp3X30L3BqQGhNHWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CRW4MRm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A064C4CEF7;
-	Thu,  5 Feb 2026 20:11:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770322297;
-	bh=gekqAShyRuvBQ70OScUhtcb+pcqa6F/iTOcndq1RCqQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CRW4MRm5nF4wuvXyDII9FT73yPbbSWMIWjih9eQdHpW6nKwwDUpOCDJfl8ko6MAzJ
-	 IFYZWFoATiMpJ3pdXXCyPTaP1qCKUUOfWbFGRC5pBN+LCge6jreE48SZWpv/aXTjuz
-	 N+KsNgutufpAE8FB6duSHJ1/+bEHexidn90Imgksg8hv6uNrGi06hvjD6ZcG8kOg/V
-	 zjbO1NGwGWAIvLFB2d0a8nWzMuF2aYBUaJ9jBEE+5WgVVQYrfNgI0KmGmblD85bNcx
-	 6dn7xPV31jBPBt4h1MRhZn1UAdWHYtB3amJ5LzzgSH6EALgGIN+rNTBOLJoKSOBj5g
-	 lfvv//diTw/Kg==
-Date: Thu, 5 Feb 2026 20:11:26 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Arnd Bergmann <arnd@kernel.org>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Jonathan
- Cameron <jonathan.cameron@huawei.com>, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-i3c@lists.infradead.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH] [v3, apply after -rc1] i3c: simplify combined i3c/i2c
- dependencies
-Message-ID: <20260205201126.66995e9e@jic23-huawei>
-In-Reply-To: <b2fdaf5f-62b3-4695-aa89-b674aabefffb@roeck-us.net>
-References: <20260204164216.544409-1-arnd@kernel.org>
-	<b2fdaf5f-62b3-4695-aa89-b674aabefffb@roeck-us.net>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1770331113; c=relaxed/simple;
+	bh=Juj1bsdRU0I+IrAom3HInXgDgXdJO/+1D0a5t61HPPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tYpqB5rbu6o0inxOZIOrsSDJJ7kAgoA55jBOfdA3j0JquTqHJiMK4ovaHWqUgNKBDA8Y/csagDzS7OiA4750PscSEL0RjNzV7eI2PZEFpQgEzFzou8d/hYR1PH+usCMmHhkTIeSAJlPrt5G49V8kWVa2JMoCy/DpWfgXuOptk10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lp2TKJAz; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-894770e34afso20832216d6.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 05 Feb 2026 14:38:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770331112; x=1770935912; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RSUkyn5i2wEO3zAje7Mo7JuGzOwqmCv+J4WE0D+9tcU=;
+        b=Lp2TKJAz3R5XgcGVBC57NCCCZaVu6h4WP4Ir5TbTZxP0ZanG5B65IG1idUFl8FZiRI
+         Cn5aFAK2qt8Q52MFtGqr5rPvJQEY/jsH8OYIYZ5QDWZOAYi4NfhH1PK8l2/bzBVLJ/ol
+         RDK9Ld3jM1Mt76rOgEn9C3WeEIA8ag7kbS0q82itt2GXneI5EqXzJBTYqyMRzKoNzgvo
+         ywbji8fzh/T8PGN9wIz0iawogRX5AlFzrvlKNF9wxSBkoL7mCPK+7n37Rkm5mI0cYRdD
+         zMNxYnoFlA680oTuE+XZQZW6760puCFs+QEd+ljeVxLn79SdPKfRuabj75fAwjH2SwTX
+         p+qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770331112; x=1770935912;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RSUkyn5i2wEO3zAje7Mo7JuGzOwqmCv+J4WE0D+9tcU=;
+        b=aHZeonw8iysfyb/KEMrS1EQ88aBwlW5Ovx4sPtB67Y2ddb2TYYp+LsxscPN65tyvoZ
+         TeVxlvtxGjUsF/MpU+JCGyEYCiYqGrJE3wfklMkYv6oOXCtMWxm+zoNLfTOV2tLFvbAf
+         2KTNqQUakzTNQg8diCkFB2qORVabflNWdwVmbA1zIktaH3QHGIk1Hk1EeNsX5R6Ap1BO
+         bLTcG+diP/2xiUIC09sd1ljvvohFiJXGkwGptTAM05ZlyR/sXBcZC1YJqbK3cfh5HyR+
+         VnbCGzgRj0DygqHyGue/hOttkstmdO+PXJhYUALRaIQtH4+4OUH0OaVwJ+Vs+1W01fKg
+         J8Og==
+X-Forwarded-Encrypted: i=1; AJvYcCVS/kdVM+Shdhkq+hCSJnHHr6JXy//eFk6lSnnc8YxzUH1T7/AxBHkXV8XItn5/93iz0G4V78weflWWXw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyW2IewKvCQ8iKlCpm+lzDBrqW7Yrvc7t/10D7hEvdJUC/PJcOe
+	YRi8M4d3T3dNnJbQaRTHeODvQfXIXe5qVEqhnrF/4S76zlbKduG53/Qv+sxW3v2f
+X-Gm-Gg: AZuq6aLyYo84/FADTtsGf4uAJv4CFFez9LhqoDtidK8JNFwrbUmrDeL5GsAcsoOCOo3
+	l9Bk47l09wVaV+HuxE5RowCOvmpc7PRRWg2eG2s862CRqTNqc3HwBX9RRqwNaBJhd3OZA+/JCMG
+	5pr5e4heW4rp6mPrrlrFnEfX9RfPyllmJgEdGj6Gm+pxdHmOY9n+BAwmuKykMCNS4+T642BG4JU
+	wpoEblF+4C4Yxxr0/vi8Z3+VL+3c1jWyau+PKbLHewtRV+qmshcG0nnOcTSWMedbJeK8prNUH+c
+	zH4qsZXs75SDCi9xDV6eR88U/FogoSHoXirmH3RhmxMd9pirzeyNr+oEj8S+A1aFAQyTc8Bk0X0
+	W/Q2BYUNhMEYn7D0G/9pqdfLqBjFWjOtsXnvdTfZ4pExQnBKx3xaceTJlHwOd1qnnHXqmZ3jBVJ
+	DGE47t6yWhn6rWuWwgC0WnDg5u
+X-Received: by 2002:a05:7022:b9b:b0:11b:9386:8271 with SMTP id a92af1059eb24-1270407446dmr233143c88.46.1770325047565;
+        Thu, 05 Feb 2026 12:57:27 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1270414f28bsm360512c88.0.2026.02.05.12.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 12:57:26 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 5 Feb 2026 12:57:25 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Igor Raits <igor@gooddata.com>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	Daniel Secik <daniel.secik@gooddata.com>,
+	Zdenek Pesek <zdenek.pesek@gooddata.com>,
+	Jiri Jurica <jiri.jurica@gooddata.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Corey Minyard <corey@minyard.net>
+Subject: Re: [BISECTED - impi related]: acpi_power_meter: power*_average
+ sysfs read hangs, mutex deadlock in hwmon_attr_show since v6.18.y
+Message-ID: <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net>
+References: <CAK8fFZ43wrQ8A_bO_g+rKN9O31sxULtqA0hUieZSzEH5KqeW1Q@mail.gmail.com>
+ <CAJZ5v0hEu_io2BAzp9weUDHwHngorjZ37GRUK=ngSXNjtp38qw@mail.gmail.com>
+ <CAK8fFZ65Vro5nQqJq_cvsY93hgDbfTdibWnNr5b0Bixzc-ESfg@mail.gmail.com>
+ <CAK8fFZ6Vi4xayvdKh-_eLi-nDNMLuEoMsvwEnb33QqnwS7o4BA@mail.gmail.com>
+ <1c8f748a-5c5d-4234-ae86-7bb12045a373@roeck-us.net>
+ <CA+9S74i+BC3=E0opOPMff0cuC1OPYSecii0C8fVZ+NM7bptNcQ@mail.gmail.com>
+ <fee01c19-2711-487e-91e9-d57f9be04b98@roeck-us.net>
+ <CA+9S74jR9jRRE-DNMxNg=6Uv2uDAUar2n-RkVDJqzkDfNu3eog@mail.gmail.com>
+ <39100538-a1f3-48dc-82d6-5e3314a43b4d@roeck-us.net>
+ <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-11602-lists,linux-hwmon=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,linux-hwmon@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-11609-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:email]
-X-Rspamd-Queue-Id: AF245F70C8
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:mid,roeck-us.net:email]
+X-Rspamd-Queue-Id: 359D9F8272
 X-Rspamd-Action: no action
 
-On Wed, 4 Feb 2026 10:15:56 -0800
-Guenter Roeck <linux@roeck-us.net> wrote:
-
-> On 2/4/26 08:41, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> > 
-> > All combined i2c/i3c drivers appear to suffer from the same link
-> > time problem when CONFIG_I3C is set to 'm':
-> > 
-> > arm-linux-gnueabi-ld: drivers/iio/magnetometer/mmc5633.o: in function `mmc5633_i3c_driver_init':
-> > mmc5633.c:(.init.text+0x30): undefined reference to `i3c_driver_register_with_owner'
-> > 
-> > This was previously fixed every time by marking individual
-> > drivers as 'depends on I2C; depends on I3C || !I3C', but this gets
-> > tedious and is somewhat confusing.
-> > 
-> > Add a Kconfig symbol 'I3C_OR_I2C' to help replace those dependencies,
-> > and use this in all the existing drivers that had already fixed it
-> > as well as the new mmc5633 driver.
-> > 
-> > Fixes: 6e5f6bf2e3f0 ("iio: magnetometer: Add mmc5633 sensor")
-
-I think can drop the Fixes tag now given there is a fix in between for
-the original issue.
-
-> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>  
+On Thu, Feb 05, 2026 at 08:04:12PM +0100, Rafael J. Wysocki wrote:
+> Cc: Corey
 > 
-> For hwmon:
+> On Thu, Feb 5, 2026 at 6:51 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrote:
+> > > On Wed, Feb 4, 2026 at 11:49 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > >
+> > > > On 2/4/26 11:54, Igor Raits wrote:
+> > > > > I have written a patch with the help of AI and it fixes the problem. Attached.
+> > > > >
+> > > >
+> > > > "No MIME, no links, no compression, no attachments.  Just plain text"
+> > >
+> > > Sorry for that, I had assumed that attaching the file would make it in-line.
+> > >
+> > > > ... which means I can not provide inline feedback, which is the whole
+> > > > point of the above.
+> > > >
+> > > > Your patch crosses subsystems, so it will need to be split in two
+> > > > (assuming the ACPI side is even needed). Also, references to iDRAC
+> > > > in common code seem inappropriate.
+> > >
+> > > Yes, this I believe was the essential part (it was the last piece in
+> > > my testing which fixed the hanging):
+> > >
+> >
+> > Then I'll need to ask differently: What happens if you drop the IPMI code,
+> > and just keep the wait_for_completion -> wait_for_completion_timeout
+> > change ? Would that be sufficient to solve the problem ?
 > 
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-
-For IIO
-Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-Thanks!
-
-Jonathan
-
+> I'd rather say "Would that be sufficient to make the symptoms go
+> away?" as it most likely papers over the real problem.
 > 
-> > ---
-> > v2: restore accidentally deleted lines
-> > v3: rebase on top of Jonathan's IIO patch in linux-next
-> > ---
-> >   drivers/hwmon/Kconfig            |  6 ++----
-> >   drivers/i3c/Kconfig              | 12 ++++++++++++
-> >   drivers/iio/magnetometer/Kconfig |  3 +--
-> >   drivers/misc/amd-sbi/Kconfig     |  3 +--
-> >   4 files changed, 16 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> > index 41c381764c2b..ecfba861f66d 100644
-> > --- a/drivers/hwmon/Kconfig
-> > +++ b/drivers/hwmon/Kconfig
-> > @@ -1493,8 +1493,7 @@ config SENSORS_LM73
-> >   
-> >   config SENSORS_LM75
-> >   	tristate "National Semiconductor LM75 and compatibles"
-> > -	depends on I2C
-> > -	depends on I3C || !I3C
-> > +	depends on I3C_OR_I2C
-> >   	select REGMAP_I2C
-> >   	select REGMAP_I3C if I3C
-> >   	help
-> > @@ -2392,8 +2391,7 @@ config SENSORS_TMP103
-> >   
-> >   config SENSORS_TMP108
-> >   	tristate "Texas Instruments TMP108"
-> > -	depends on I2C
-> > -	depends on I3C || !I3C
-> > +	depends on I3C_OR_I2C
-> >   	select REGMAP_I2C
-> >   	select REGMAP_I3C if I3C
-> >   	help
-> > diff --git a/drivers/i3c/Kconfig b/drivers/i3c/Kconfig
-> > index 30a441506f61..626c54b386d5 100644
-> > --- a/drivers/i3c/Kconfig
-> > +++ b/drivers/i3c/Kconfig
-> > @@ -22,3 +22,15 @@ menuconfig I3C
-> >   if I3C
-> >   source "drivers/i3c/master/Kconfig"
-> >   endif # I3C
-> > +
-> > +config I3C_OR_I2C
-> > +	tristate
-> > +	default m if I3C=m
-> > +	default I2C
-> > +	help
-> > +	  Device drivers using module_i3c_i2c_driver() can use either
-> > +	  i2c or i3c hosts, but cannot be built-in for the kernel when
-> > +	  CONFIG_I3C=m.
-> > +
-> > +	  Add 'depends on I2C_OR_I3C' in Kconfig for those drivers to
-> > +	  get the correct dependencies.
-> > diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
-> > index 9345fb6d5317..fb313e591e85 100644
-> > --- a/drivers/iio/magnetometer/Kconfig
-> > +++ b/drivers/iio/magnetometer/Kconfig
-> > @@ -143,8 +143,7 @@ config MMC5633
-> >   	tristate "MEMSIC MMC5633 3-axis magnetic sensor"
-> >   	select REGMAP_I2C
-> >   	select REGMAP_I3C if I3C
-> > -	depends on I2C
-> > -	depends on I3C || !I3C
-> > +	depends on I3C_OR_I2C
-> >   	help
-> >   	  Say yes here to build support for the MEMSIC MMC5633 3-axis
-> >   	  magnetic sensor.
-> > diff --git a/drivers/misc/amd-sbi/Kconfig b/drivers/misc/amd-sbi/Kconfig
-> > index be022c71a90c..30e7fad7356c 100644
-> > --- a/drivers/misc/amd-sbi/Kconfig
-> > +++ b/drivers/misc/amd-sbi/Kconfig
-> > @@ -1,10 +1,9 @@
-> >   # SPDX-License-Identifier: GPL-2.0-only
-> >   config AMD_SBRMI_I2C
-> >   	tristate "AMD side band RMI support"
-> > -	depends on I2C
-> > +	depends on I3C_OR_I2C
-> >   	depends on ARM || ARM64 || COMPILE_TEST
-> >   	select REGMAP_I2C
-> > -	depends on I3C || !I3C
-> >   	select REGMAP_I3C if I3C
-> >   	help
-> >   	  Side band RMI over I2C/I3C support for AMD out of band management.  
+
+Good point. Worse, it may result in UAF or memory leaks.
+
+> > Either case, the need for this change suggests that the ipmi change
+> > may not be complete, since it should send a completion with an error.
 > 
+> I think that reverting commit bc3a9d217755 ("ipmi:si: Gracefully
+> handle if the BMC is non-functional") should also be considered as a
+> possible way forward because it clearly did not improve things as
+> expected, at least in this particular case.
 > 
+
+I tend to agree. I ran a number of AI code reviews over the patch, and
+each time it finds new (and different) problems. The fact that the acpi
+patch is still needed even after applying the ipmi changes suggests that
+something is still missing in the ipmi code.
+
+> It evidently did something that confuses things quite a bit.  Either
+> it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIED, or it is
+> the "hosed" state and refusing to accept messages.
+> 
+
+More than that. My latest AI results are below, just for reference
+(using Gemini 3 with Chris Mason's debug prompts). The prompt I used
+for this run is:
+
+"
+The top commit in the linux/ directory results in hung tasks if the BMC
+stops responding. Using @review-prompts/kernel/debugging.md analyze the
+patch, identify the reason for the hung task problem, suggest and implement
+a fix. Note that there may be more than one problem in the patch, so analyze
+the complete patch and do not stop after fiding the first regression.
+"
+
+I think that catches most of the problem, but not all of it.
+
+Guenter
+
+---
+
+Summary of crash or warning:
+Hung task detected in ipmi_si driver when BMC becomes non-functional.
+Processes waiting for IPMI responses (e.g. ipmitool, monitoring agents) enter D state and never recover.
+
+Kernel version if available:
+Top of tree (commit bc3a9d217755f65c137f145600f23bf1d6c31ea9)
+
+Machine type if available:
+Generic Server with BMC
+
+Cleaned up copy of oops or stack trace:
+[  120.123456] INFO: task ipmitool:1234 blocked for more than 120 seconds.
+[  120.123457]       Not tainted 6.14.0-rc1 #1
+[  120.123458] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  120.123459] task:ipmitool        state:D stack:    0 pid: 1234 ppid:  100 flags:0x00000000
+[  120.123460] Call Trace:
+[  120.123461]  <TASK>
+[  120.123462]  __schedule+0x123/0x456
+[  120.123463]  schedule+0x45/0x78
+[  120.123464]  schedule_timeout+0x9a/0xbc
+[  120.123465]  wait_for_completion+0xde/0xf0
+[  120.123466]  ipmi_request_settime+0x123/0x145
+[  120.123467]  ...
+[  120.123468]  </TASK>
+
+Any other kernel messages you found relevant:
+N/A
+
+Explanation of the problem:
+1. Hung Task:
+The patch "ipmi:si: Gracefully handle if the BMC is non-functional" introduces a new state `SI_HOSED` to handle BMC failures. When the driver detects that the BMC is not responding, it transitions to `SI_HOSED` and fails the currently processing message (`curr_msg`). However, if a new message is queued via `sender()` (populating `waiting_msg`) during a recovery probe (state `SI_GETTING_FLAGS`), and that probe subsequently fails, the state machine transitions back to `SI_HOSED`. In this transition, the driver checks and fails `curr_msg`, but it neglects to check or fail `waiting_msg`. As a result, the `waiting_msg` remains in the queue indefinitely, causing the waiting process to hang.
+
+2. Excessive Polling (Timer Overwrite):
+In `smi_timeout()`, the timer is unconditionally reset to a short timeout (e.g., 10ms) at the end of the function, unless the state machine is IDLE. When the state machine returns `SI_SM_HOSED`, `smi_event_handler()` correctly sets the timer to a long backoff (1 second). However, `smi_timeout()` subsequently overwrites this with the short timeout. This causes the driver to poll the hosed BMC every 10ms instead of backing off for 1 second, resulting in unnecessary CPU overhead.
+
+Functions, snippets and call traces of code related to the problem:
+
+drivers/char/ipmi/ipmi_si_intf.c: smi_event_handler()
+
+	} else if (si_sm_result == SI_SM_HOSED) {
+		/* ... */
+		smi_info->si_state = SI_HOSED;
+		if (smi_info->curr_msg != NULL) {
+			return_hosed_msg(smi_info, IPMI_BUS_ERR);
+		}
+		/* BUG 1: waiting_msg is NOT checked here! */
+
+		smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED); /* Sets 1s timeout */
+		goto out;
+	}
+
+drivers/char/ipmi/ipmi_si_intf.c: smi_timeout()
+
+	smi_result = smi_event_handler(smi_info, time_diff);
+	/* ... */
+	if (smi_result != SI_SM_IDLE)
+		smi_mod_timer(smi_info, timeout); /* BUG 2: Overwrites 1s timeout with ~10ms */
+
+List of potential commits related to the problem:
+bc3a9d217755f65c137f145600f23bf1d6c31ea9 ipmi:si: Gracefully handle if the BMC is non-functional
+
+Suggested fix:
+1. When entering `SI_HOSED` state in `smi_event_handler`, check for and fail any pending `waiting_msg` in addition to `curr_msg`.
+2. In `smi_timeout`, do not reset the timer if the state is `SI_HOSED`, preserving the backoff timeout set by `smi_event_handler`.
+
+---
+Suggested diffs from that run:
+
+diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
+index 1c65275906b4..023b0e819f91 100644
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -810,6 +810,11 @@ static enum si_sm_result smi_event_handler(struct smi_info *smi_info,
+ 			 */
+ 			return_hosed_msg(smi_info, IPMI_BUS_ERR);
+ 		}
++		if (smi_info->waiting_msg != NULL) {
++			smi_info->curr_msg = smi_info->waiting_msg;
++			smi_info->waiting_msg = NULL;
++			return_hosed_msg(smi_info, IPMI_BUS_ERR);
++		}
+ 		smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
+ 		goto out;
+ 	}
+@@ -1130,10 +1135,12 @@ static void smi_timeout(struct timer_list *t)
+ 		timeout = jiffies + SI_TIMEOUT_JIFFIES;
+ 	}
+ 
+-	if (smi_result != SI_SM_IDLE)
+-		smi_mod_timer(smi_info, timeout);
+-	else
++	if (smi_result != SI_SM_IDLE) {
++		if (smi_info->si_state != SI_HOSED)
++			smi_mod_timer(smi_info, timeout);
++	} else {
+ 		smi_info->timer_running = false;
++	}
+ 	spin_unlock_irqrestore(&(smi_info->si_lock), flags);
+ }
+ 
 
 
