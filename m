@@ -1,200 +1,195 @@
-Return-Path: <linux-hwmon+bounces-11571-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11573-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PV6NkUrhGla0QMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11571-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 06:31:49 +0100
+	id +FwIIFJChGmd2AMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11573-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 08:10:10 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F5DEEBC9
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 06:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03A7EF4E9
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 08:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80EAE3012EA0
-	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 05:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06CB53015474
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 07:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABE931C576;
-	Thu,  5 Feb 2026 05:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E69F35B642;
+	Thu,  5 Feb 2026 07:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCqoCx1P"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="X7TSMYs/"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D8330DD00
-	for <linux-hwmon@vger.kernel.org>; Thu,  5 Feb 2026 05:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF98F35B63B;
+	Thu,  5 Feb 2026 07:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770269433; cv=none; b=B7y71khPSWbJ4Kx19/HqP7vH1F2WN5w6lO5hqHR9ciUwI+QdOU4JzBb80R/my5htZ7Y+k6kdTrCawCUfNEGhmp8mJdrQ6HZ4ffmYw3m+Aoi47uhXCUkanKsXReUnBaPThTgnR0XYPXvZTqvADDD0D5MBMowjGYuhXbC7sY/qKes=
+	t=1770275394; cv=none; b=oIic+4Ti5D9eTpic7alSk7G+EMEoSAFfYchLPvej4FOmI+Uih+2dxdhc/s+FrFjo2bAHbI1AshTR1YqTlb+RtWD+Z2TC+2qsjLFAS1Sz+J6S2NG/xaMcIKuEX7lPer0/e4DODo/wIPHvaKbLmK8UeSpsgWAubD/h0D9CAnlAMXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770269433; c=relaxed/simple;
-	bh=4EaoPSeJZ7PkjcSfAJKvXYNbcn+qSK9lMNkJQT680dI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n82WDNJfCv42eMT65pVe2201k/DrU7wuoJMD8I6Vjg4dNJsD40DVW7ZzMnge/O3Xo5NPuWGYtNgGnh24oIh0tChdk0GOx9xptvc8HQmdOHkp94JSaLkyroNyEGmvo3NUvvevwB9mBlZPnBaKtW5eRFYNozSmR3PBLQEV0MxOwVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCqoCx1P; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c6788f3db37so149315a12.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 04 Feb 2026 21:30:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770269433; x=1770874233; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=iCHA0pyhYtn7RkNtoCLDE38YqGNfLX3z4U6eqqpc/Lw=;
-        b=CCqoCx1PWYY4Fm1De2VFf7jOpp+4oqbVgE/KjpjlYZZejghB8GQPwTXUMOD64tDmhk
-         iw7KBcIZBnt0n/wrKDAYOHs/C9RjL+J3VHszT0+bBMTOk0T1+J9hzPGVI5ja8rGBl/T0
-         rW1tQMgeQQfJBEfLKrCKtiBBtSjCws6RNNXKQSp9w3h3d4HVPsLKp8uC1dxHuiP13T65
-         +qIq82+8FyLBCsv71cTgloL1CbzJ3xD47nG7vM00fFyF/6/aHL0PqzYfAvFG9ug0Jumk
-         Tpfh8E1+jJs3eeEkCOWZqQYsHXogc6kfmXQhh5JStt1fPeg7lS8OtKkC3fbtefAGlxaG
-         8W5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770269433; x=1770874233;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iCHA0pyhYtn7RkNtoCLDE38YqGNfLX3z4U6eqqpc/Lw=;
-        b=obQ6vj2avYX9t6SnDsZ9zI6XJMZOm0cKIJQtv6Y+T3JRILgrwbUg7LWhk4fTXH+BOe
-         9b67x5XQ0eWeyUFENabBOK/wpBcstXF5DLUolD7kaXPB/dGj+xejw5odVfSzw2wnTEhj
-         Lih6dwbHCpF/RYo/3VDXXXtzGbRfrtdW1wvermLS0HIHdEp9ncfu4pauXLYcGfGR3SE0
-         A/oH/8J83py3yxg1MojuJ/OntBUG1OMOPiXWUNwTbDDYk1fyf8K/ODkeMACnDejlWvy9
-         bax4CXPuiP94JpuBgDTf2cs3CPShNiI1wJY3Ak0p1T8V5pHvwcvV+0NsbHGCq26tGikn
-         oxtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEqr9n3rU2xxHEz7gaekoKwY8RAqTe9UZ99JNy6sUD4ttrHsMRvExWKyjV3fRn52jSW1RfZpO/+HaRow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxvBglcVfNjPfv7c79MfnkgfdsWgFxfQ8vzBluyYeEReZdhScy
-	Vh5w4cWFjcCjwYtlS3RajkEAYgSzApM0mnJwdAfs4x/uDoNv8Ia2wT+F
-X-Gm-Gg: AZuq6aI/uG7RCKY7ScBZMiMHhBd7O1ZegctlENy5re6O+PosmWy67I+06yTuKEsyf74
-	mfGcTYchQ6Apu6eDL4XKRZmIut98Z54hrNNz3e7rEmLQ9Eqo+EzH0sfOT9M3q+cBBBPzGZG1jJo
-	kXF2AL9O7k2S/J+6kqGLcB7HwLmRyaFr5qj/8fzHT+GRJlDWpxomrooXZCoBTHOgD6WNphwyko8
-	/JD13KVa2lBm8r3eUsDQxZWvfuieGegUxEyrcFJxYTQauA53UeFGkw134nY1asPDhtq1Q4CcNyO
-	uj6Si2bvYTraJ/f4wdNoz4T9MoMUlvqR/Cr4BPrRg0cmVMRP8g1I0Pv3DUiUGYLCqBBlZ5yWKo8
-	2e9OvkHGRH+c83fbnyPNqqu4ctAJKFMf4irzrMShkzO7w8hvfksvcrvDQPx6q6OUOLlfdPw/LOH
-	ZhwBx51ot5gHkeDpQZXHFmJH3zxWyRv5zxUoO7X1gTfr8cXPAZYsbvRp9Kv6YT
-X-Received: by 2002:a17:90b:3910:b0:343:edb0:1012 with SMTP id 98e67ed59e1d1-354871ab52dmr4376106a91.21.1770269432656;
-        Wed, 04 Feb 2026 21:30:32 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3549c09adf4sm1072941a91.3.2026.02.04.21.30.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Feb 2026 21:30:32 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <29f37729-b38a-4c38-a74b-011b2766587a@roeck-us.net>
-Date: Wed, 4 Feb 2026 21:30:30 -0800
+	s=arc-20240116; t=1770275394; c=relaxed/simple;
+	bh=PHl0pdws+AFijhkZGaul3d6HAUBMSEar3LO1wTBxAjk=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=BTDK9zx/BN5oAgg4uFMT7nB79XyJg1nAtL911lGdYWhNQYZX5Ge3KK2QjBH7CNx75OrgevF35pHaYu2xM+4TPLI/tSEqM1gXMy0ts3eJmKY3L4UL78VmUJw3iF1SO3VY+v21fhyACT+ptzA+F0NW7Ldgl3UREZjGAHpVOjl9Mjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=X7TSMYs/; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1770275394; x=1801811394;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=PHl0pdws+AFijhkZGaul3d6HAUBMSEar3LO1wTBxAjk=;
+  b=X7TSMYs/+NBfyAJfKGsY+38S74I5IIM+aHrtqRngu+FTXKlrlZ7sKPAg
+   dllKbIWekLW4i4sLqU7DFzvP7lVg0vdZVYU3IIj7JCVOqv9QFkX61YCVE
+   bzgnGnq+sPvihKAPFmIcax+PibAYTFomhTcr65UAbfL4H9NLagFqv8gfD
+   +F6X7asDFqwL0zVPwEraIPJR8hDCNhakzSFdKrGc6rzEBVAbdsfwrxQRp
+   dmKnoSAyp/+UNpGmSY6qwvVyV/4yHErr61wdip9W+W9W02G9uyo4XwaUD
+   M33kIIPpw5/1Je7bJIIgbGbw8DNYlHjgQ9YL5zMAcuLa7Ema0cZTaeBOo
+   Q==;
+X-CSE-ConnectionGUID: z58WiLDAQlOlatl5K73KFQ==
+X-CSE-MsgGUID: 9XL/ltLGQlmo2IlelJSwEw==
+X-IronPort-AV: E=Sophos;i="6.21,274,1763449200"; 
+   d="scan'208";a="284342757"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Feb 2026 00:09:47 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Thu, 5 Feb 2026 00:09:08 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Thu, 5 Feb 2026 00:09:04 -0700
+From: Marius Cristea <marius.cristea@microchip.com>
+Subject: [PATCH v5 0/2] Add support for Microchip EMC1812
+Date: Thu, 5 Feb 2026 09:09:02 +0200
+Message-ID: <20260205-hw_mon-emc1812-v5-0-232835aefe8f@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: hwmon: pmbus: mpq8785: add MPQ8786 support
-To: "Lee, Carl" <Carl.Lee@amd.com>, Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Charles Hsu <ythsu0511@gmail.com>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Shen, Peter" <Peter.Shen@amd.com>, "Huang, Colin" <Colin.Huang2@amd.com>
-References: <20260203-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v1-1-67b041e2f762@amd.com>
- <20260204-sanction-lunacy-903e96c447e4@spud>
- <ec538467-9068-4ad5-b788-e60f593253be@roeck-us.net>
- <IA1PR12MB759127AAA1EEF4DC6C1904018399A@IA1PR12MB7591.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <IA1PR12MB759127AAA1EEF4DC6C1904018399A@IA1PR12MB7591.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA5ChGkC/23My2rDMBCF4VcJWldlZqzLJKu+RyhFkqVaC1tBL
+ k5L8LtXCS2BOMv/wPkuYo41x1kcdhdR45LnXKYW+mUnwuCmzyhz31oQkEYAksP5YyyTjGNARpI
+ JPYNRbHsE0U6nGlP+voHH99ZDnr9K/bn5C17XP4r2j9SCEqSPKvXsEqBxb2MOtYQhn15DGcWVW
+ +hOIOGGoEZoT2AhsbeWnxHdnSDkDdE1wiF1rnfWs94/I9Q/YQDJbgjVCOOT6YzXipV9JNZ1/QV
+ pAJezeQEAAA==
+X-Change-ID: 20251002-hw_mon-emc1812-f1b806487d10
+To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+CC: <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Marius Cristea
+	<marius.cristea@microchip.com>, Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2769;
+ i=marius.cristea@microchip.com; h=from:subject:message-id;
+ bh=PHl0pdws+AFijhkZGaul3d6HAUBMSEar3LO1wTBxAjk=;
+ b=owGbwMvMwCW2tbSTZa7u0x2Mp9WSGDJbnARkWaRvJbBzFi0R+7wv5ty7wry4fTIiBtur/Kc+L
+ 3riPn1mRykLgxgXg6yYIsuKt35qVWs/XFYSy9SBmcPKBDKEgYtTACYSO5uRYW+oa2aR5k5z0V3T
+ D+xfb5owM752x6RFU72EAlex53xz/czI8G+H3wWGZ/9cAiVyV7w7cevJe4+blrpPp0uz7sm10Fl
+ owgMA
+X-Developer-Key: i=marius.cristea@microchip.com; a=openpgp;
+ fpr=E32F8D4396E72E463E8CCD91446DE0ABD9140C3E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,amd.com];
-	TAGGED_FROM(0.00)[bounces-11571-lists,linux-hwmon=lfdr.de];
-	DMARC_NA(0.00)[roeck-us.net];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[microchip.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11573-lists,linux-hwmon=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[marius.cristea@microchip.com,linux-hwmon@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 87F5DEEBC9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,microchip.com:email,microchip.com:dkim,microchip.com:mid]
+X-Rspamd-Queue-Id: E03A7EF4E9
 X-Rspamd-Action: no action
 
-On 2/4/26 19:32, Lee, Carl wrote:
-> [AMD Proprietary]
-> 
-> sorry for the confusion.
-> 
-> I didn't realize before that driver patches should be sent as part of the same series,
-> while DT binding updates should be submitted later.
+This is the hwmon driver for EMC1812/13/14/15/33 multichannel Low-Voltage
+Remote Diode Sensor Family. The chips in the family have one internal
+and different numbers of external channels, ranging from 1 (EMC1812) to
+4 channels (EMC1815).
+Reading diodes in anti-parallel connection is supported by EMC1814, EMC1815
+and EMC1833.
 
-Patches should be sent as series, with the devicetree patch as _first_ patch
-of the series (_not_ later).
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+---
+Changes in v5:
+- fix calculation in emc1812_get_limit_temp 
+- use i2c_get_match_data cover the case when the driver is instantiated
+  via I2C ID table.
+- replace dev_info with dev_warn
+- remove some unnecessary truncation on 8 bits
+- remove clamping when reading the temerature with hyst
+- not change the conversion rate at probe time
+- use a generic define to remove duplicate channel_info entries
+- Link to v4: https://lore.kernel.org/r/20260127-hw_mon-emc1812-v4-0-6bf636b54847@microchip.com
 
-Guenter
+Changes in v4:
+- fix file permissions for read only properties
+- fix calculation when the limits are written
+- remove the temp_min_hyst because the part doesn't support it
+- Link to v3: https://lore.kernel.org/r/20251218-hw_mon-emc1812-v3-0-a123ada7b859@microchip.com
 
-> The corresponding driver patch is available here:
-> https://lore.kernel.org/all/20260203-hwmon-pmbus-mpq8785-add-support-for-mpq8786-v1-1-9ff8c7c50242@amd.com/
-> 
-> Please let me know if you would prefer this to be resent properly as a series.
+Changes in v3:
+- remove mesages that are not helpfull
+- fix an issue related to NULL labels
+- fix sign/unsign calculation
+- replace E2BIG with EINVAL
+- use BIT() to create mask
+- Link to v2: https://lore.kernel.org/r/20251121-hw_mon-emc1812-v2-0-5b2070f8b778@microchip.com
+
+Changes in v2:
+- update the interrupt section from yaml file
+- update index.rst
+- remove fault condition from internal sensor
+- remove unused members from structures
+- update the driver to work on systems without device tree or
+  firmware nodes
+- add missing include files
+- make NULL labels to be not visible
+- corect sign/unsign calculations
+- corect possible underflow for limits
+- Link to v1: https://lore.kernel.org/r/20251029-hw_mon-emc1812-v1-0-be4fd8af016a@microchip.com
+
+---
+Marius Cristea (2):
+      dt-bindings: hwmon: temperature: add support for EMC1812
+      hwmon: temperature: add support for EMC1812
+
+ .../bindings/hwmon/microchip,emc1812.yaml          | 182 ++++
+ Documentation/hwmon/emc1812.rst                    |  68 ++
+ Documentation/hwmon/index.rst                      |   1 +
+ MAINTAINERS                                        |   8 +
+ drivers/hwmon/Kconfig                              |  11 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/emc1812.c                            | 945 +++++++++++++++++++++
+ 7 files changed, 1216 insertions(+)
+---
+base-commit: d2b2fea3503e5e12b2e28784152937e48bcca6ff
+change-id: 20251002-hw_mon-emc1812-f1b806487d10
+
+Best regards,
+-- 
+Marius Cristea <marius.cristea@microchip.com>
 
 
