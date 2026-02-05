@@ -1,239 +1,403 @@
-Return-Path: <linux-hwmon+bounces-11600-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11603-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uP14CL3phGkj6gMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11600-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 20:04:29 +0100
+	id UDZJF2oFhWlW7gMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11603-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 22:02:34 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADA8F6AF1
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 20:04:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B091CF7649
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Feb 2026 22:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 345AA3004D1E
-	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 19:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5174F3014976
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Feb 2026 21:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906A130DEBD;
-	Thu,  5 Feb 2026 19:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59E232C95F;
+	Thu,  5 Feb 2026 21:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Temv7ei6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bd/oMC4+"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D38630DD2A
-	for <linux-hwmon@vger.kernel.org>; Thu,  5 Feb 2026 19:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B41B328B55
+	for <linux-hwmon@vger.kernel.org>; Thu,  5 Feb 2026 21:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770318265; cv=none; b=e2hstwGfQbZh0XjnqCMMESZogFbljrF5Z0g8VPTPP5WQfCFmsKNyBtS0KXrfq1O4wESF9NC63REAd7AHfI5lz2nmhrEPVezBtV7G1Ve//MKT22mmnV7Rh4Gn2HeUzsw5v33wa9wn6c/Tx7IPUsgpSMG4INniqU0NUb/1Jcrjzsg=
+	t=1770325350; cv=none; b=hwWjfWBL/W7u4MxUS4r/1XuW0rM/UoHOMhR7iiDM/V/R5rJoYaT3E08HVARimg8hiVM1oXK6LB89lENS5OtwVskFtJf5MdygK53gT1klG5POlXQPOOljNNAbPbEtDsoFzCryoZDspf4hqom2gSmO6lYvbKzx4lVdGSzNhEjPv0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770318265; c=relaxed/simple;
-	bh=LaOyk51dqguMNCfrnB1hkzbCh43v+3hDyynKy9Ya4VM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m30xIfS+aO4nthZD8Ow37I+9ff+CM4vtmPx9oVp85i/xhrVKZXBV/+IaiBnXxfyg6yL4mL6xT9ql9eXOoMvcbHU9DDA/TB1GSAujg32Hy6kndRGcxhLAXELZ+HTQ1uPhyw5khq1STD7Xr03dH2nWAchDXCzN5gIhAsQjhjJV7r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Temv7ei6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D88EC2BC87
-	for <linux-hwmon@vger.kernel.org>; Thu,  5 Feb 2026 19:04:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770318265;
-	bh=LaOyk51dqguMNCfrnB1hkzbCh43v+3hDyynKy9Ya4VM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Temv7ei6+cJf3v5Zh3c9K6XmUrOeZupiLSX4jTp5hdj+369h5ros/lWB3OJEJ6C9B
-	 Fz/61mLucZWq02l1sxnGa6QGlPv/YwZzcF/Bbspg+FT0cGMcoRdlGCA2M2cQofrpQE
-	 6fJjbZvdwpAECmY/Bzw9tkofmdIlkbr6r/mrXT92/w4AeJ6Tt3Gtx/FQlKR0QPNQ+S
-	 E4TJ9pZt9s/vfVS5Jucnuz48Dy9eSTh3i/wVmDHGsZxYqfiJjJWyPF481IFIjCnlRf
-	 AJDMOcFq9BOse4fzW4ReGQKylvj6CNryIHQaJY0vAJNb0JsPK3cJ3c9/BkSSsKxoMX
-	 MV6XPeozYtiSA==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7cfd6f321b5so821408a34.2
-        for <linux-hwmon@vger.kernel.org>; Thu, 05 Feb 2026 11:04:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVHCFvKDybwPDyiKcSb9MfVUw1X36qf0oySvSzZA/dSd4EpBXDTIiGiBgo1jYIQacf1dJQA5m4CsViMSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUs7t1+yG2H2qkJB8f5/YLfaBHnVs369J5U23+2f+GdcBwjYmr
-	/CLRczjIUTtTG5f4vyEgBFQcvI4/o3Uan4PU+cd6+HUk+13jNt0QHm3OkDdxYVxJGXu7FRT6Qxv
-	47YhPN85VUKNqQwckt7ttG/DKAWNKf7Y=
-X-Received: by 2002:a05:6830:8387:b0:7cf:d0b4:bab7 with SMTP id
- 46e09a7af769-7d448ae4280mr4996735a34.34.1770318264040; Thu, 05 Feb 2026
- 11:04:24 -0800 (PST)
+	s=arc-20240116; t=1770325350; c=relaxed/simple;
+	bh=eXwQ9SgcUhDKN59vyhZtqEkgpqtPjys6BZik72szYvI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CmrW+W9rLKm0fy6K7bzTciHOzh9KR97iVOEy3KgpqKQsC0rqIWNY/DjbiqQ58/kWmXK5LouxMJ3Z1bQSyTsagZxEwdFXmenKbN9dz0DfIdg2RbKtGze8n6fUffejENLfnr9kGNbppmOYOCihgLU0sYRtX0Yh2HvlUE8mVgcnScA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bd/oMC4+; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8c713a6a6f8so168999985a.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 05 Feb 2026 13:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770325349; x=1770930149; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iiWXSjYD8iWQZkhbOZvxGQgWjvd+mTWIbvYj/f3atxo=;
+        b=Bd/oMC4+tkqiqqEPZIRRIF9BVeDqsd7yWCncnEO3rxNSaq8z5CAjiIDn2xtH0iweq1
+         //igQjkI285rqCPEsLdTzLmdliF9OKpg5MwUwG6GEmwajse93N6/8jTBWwwYxyZmdjZ8
+         GMO6DkDg/ODlpsQgwcuDxCpLgpDn+SbpH/nEOO/YKa8ryojJ3n0o64v6HRqHK54ilqVz
+         3tuuiwNoc0+ZH5lUaHqRQUVWstCdLiE+wMewsM/YRqbIPwdZgm60LybSjuMyZrEYBbj7
+         0Gtfk7v6K9xxGK1LHuRcU6c4yQo7E7gWipx4KAExyNHgRL+HXG2u0TcaMXEotWVwyWA8
+         tr/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770325349; x=1770930149;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iiWXSjYD8iWQZkhbOZvxGQgWjvd+mTWIbvYj/f3atxo=;
+        b=d/F94E93s1oWSJGnVepDQRYjOWOSiBDqTp5h7aSMP0kvUd6gbmE0CBV45pZt4l9+ti
+         mwnM7HiuxhJ0HrbFuOUfDwU7DqPnShLb5o5N8wzyrKJPqCIsL++XCXxB/TYRv9iiMZW2
+         hTZGI/N5Gxm7uf9kHSiSpuV50zz7K6pFmW3UBX7Tkwr68o9oypP20QYl5w9mm+uv3rte
+         rhnqLL5oxl6AMFS2wm680TAqNch9cwqkEJdDW8zCXh7mhZMFHOXUGvqUAYykw00GHwij
+         /oG4e9ID1B2REXinH50J+cc60sRrwkHs0cITPNFdcDN8yl0xp5A+Ja/yo8H6f8+/2Z1P
+         cI5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUEyC1FNqXgo0VFJj2AIKKtJnC0j6BV39Hs6MFRalmYFg2FG3E7P61CSnlqE4Bi4rlY8PWd54U04/rKpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHXM5ElcLhrveLay5NExP3MXL5qOzSGQg9ipdsS0neQId/quBx
+	x2jwyoS5vpWsHO9KA5wv1kXUf58a0oApcwJTx3eLi6vVugTnlb8rjJA/T6uPBRjW
+X-Gm-Gg: AZuq6aJdR6gxffNXW49WLoM6mDUvXknPK6dJhqFZ93vfcoNYw9IRHMIKojTmZUJSrzC
+	KiwWLjsLm2uF+6LWg5HZC7uHHnc4eAJckdvQhxQipGwvfOSSwPU6e+6ViNruLQ0r20ovJWd5aif
+	OTBhHyY0Nlb/ud4OW5tgRxyruJzRhx52fBGAW6M+PVWUCQ9teKPmVU2NDyMWBGA0SOm6xdSGDqb
+	LqS8bYEWn9iD3UI92XLyrFpOCPNFExdjNAgxHj3fAk4msjJKt2r3FpBYhXvc4Pv91m+Wl4QCg7A
+	5rHG+T0OKpPQ+zhZZmXpbboXaK7FQ/aBMI0A1crsd9GpX8HF7MNtedGY3502pfiPPxW9wxbl8nX
+	nD0poM5ixCCeLDAy+iqOheU+E/0+AZkGPFcnOT4vTZ0hVrerzMgnsds5IZeflVWkV9mBEB3b/w6
+	+g7YlH8aWQC2JFsImAmddwunIt
+X-Received: by 2002:a05:693c:3111:b0:2b7:a6fa:3f87 with SMTP id 5a478bee46e88-2b855d341cfmr131450eec.19.1770319108298;
+        Thu, 05 Feb 2026 11:18:28 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855c88cb4sm165396eec.30.2026.02.05.11.18.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 11:18:27 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 5 Feb 2026 11:18:25 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Marius Cristea <marius.cristea@microchip.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v5 1/2] dt-bindings: hwmon: temperature: add support for
+ EMC1812
+Message-ID: <a83b48a4-76ba-48df-9aba-adb018949914@roeck-us.net>
+References: <20260205-hw_mon-emc1812-v5-0-232835aefe8f@microchip.com>
+ <20260205-hw_mon-emc1812-v5-1-232835aefe8f@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK8fFZ401-nez_CgDTTnQiPT=oBRRJuYooXyEKFuCdHpGCPXtA@mail.gmail.com>
- <27d60756-d33e-4926-9a02-f52505339de6@roeck-us.net> <CAK8fFZ43wrQ8A_bO_g+rKN9O31sxULtqA0hUieZSzEH5KqeW1Q@mail.gmail.com>
- <CAJZ5v0hEu_io2BAzp9weUDHwHngorjZ37GRUK=ngSXNjtp38qw@mail.gmail.com>
- <CAK8fFZ65Vro5nQqJq_cvsY93hgDbfTdibWnNr5b0Bixzc-ESfg@mail.gmail.com>
- <CAK8fFZ6Vi4xayvdKh-_eLi-nDNMLuEoMsvwEnb33QqnwS7o4BA@mail.gmail.com>
- <1c8f748a-5c5d-4234-ae86-7bb12045a373@roeck-us.net> <CA+9S74i+BC3=E0opOPMff0cuC1OPYSecii0C8fVZ+NM7bptNcQ@mail.gmail.com>
- <fee01c19-2711-487e-91e9-d57f9be04b98@roeck-us.net> <CA+9S74jR9jRRE-DNMxNg=6Uv2uDAUar2n-RkVDJqzkDfNu3eog@mail.gmail.com>
- <39100538-a1f3-48dc-82d6-5e3314a43b4d@roeck-us.net>
-In-Reply-To: <39100538-a1f3-48dc-82d6-5e3314a43b4d@roeck-us.net>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 5 Feb 2026 20:04:12 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
-X-Gm-Features: AZwV_QhRXq92W5JvpZ-AenUF3DeliUWsbAESXBgZtRSuXVXgahwTkFB58KDrqhQ
-Message-ID: <CAJZ5v0jo4CV__AoUfqxuhVgkw6hA=hM_fBU+W=pTzqDLmNmytw@mail.gmail.com>
-Subject: Re: [BISECTED]: acpi_power_meter: power*_average sysfs read hangs,
- mutex deadlock in hwmon_attr_show since v6.18.y
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Igor Raits <igor@gooddata.com>, Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>, 
-	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	Daniel Secik <daniel.secik@gooddata.com>, Zdenek Pesek <zdenek.pesek@gooddata.com>, 
-	Jiri Jurica <jiri.jurica@gooddata.com>, Huisong Li <lihuisong@huawei.com>, 
-	Corey Minyard <corey@minyard.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260205-hw_mon-emc1812-v5-1-232835aefe8f@microchip.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-11600-lists,linux-hwmon=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11603-lists,linux-hwmon=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[0.0.0.4:email,0.0.0.2:email];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,minyard.net:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: CADA8F6AF1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,microchip.com:url,microchip.com:email,0.0.0.1:email,devicetree.org:url,4c:email]
+X-Rspamd-Queue-Id: B091CF7649
 X-Rspamd-Action: no action
 
-Cc: Corey
+On Thu, Feb 05, 2026 at 09:09:03AM +0200, Marius Cristea wrote:
+> This is the devicetree schema for Microchip EMC1812/13/14/15/33
+> Multichannel Low-Voltage Remote Diode Sensor Family.
+> 
+> EMC1812 has one external remote temperature monitoring channel.
+> EMC1813 has two external remote temperature monitoring channels.
+> EMC1814 has three external remote temperature monitoring channels and
+> channels 2 and 3 supports anti parallel diode.
+> EMC1815 has four external remote temperature monitoring channels and
+> channels 1/2  and 3/4 supports anti parallel diode.
+> EMC1833 has two external remote temperature monitoring channels and
+> channels 1 and 2 supports anti parallel diode.
+> 
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+>  .../bindings/hwmon/microchip,emc1812.yaml          | 182 +++++++++++++++++++++
+>  MAINTAINERS                                        |   6 +
+>  2 files changed, 188 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..759e004eafdfc0772e110fe484767eb66a623294
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml
+> @@ -0,0 +1,182 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/hwmon/microchip,emc1812.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip EMC1812/13/14/15/33 multichannel temperature sensor
+> +
+> +maintainers:
+> +  - Marius Cristea <marius.cristea@microchip.com>
+> +
+> +description: |
+> +  The Microchip EMC1812/13/14/15/33 is a high-accuracy 2-wire multichannel
+> +  low-voltage remote diode temperature monitor.
+> +
+> +  The datasheet can be found here:
+> +    https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/EMC1812-3-4-5-33-Data-Sheet-DS20005751.pdf
+> +
+> +  EMC1812 has one external remote temperature monitoring channel
+> +  EMC1813 has two external remote temperature monitoring channels
+> +  EMC1814 has three external remote temperature monitoring channels and
+> +    channels 2 and 3 supports anti parallel diode
+> +  EMC1815 has four external remote temperature monitoring channels and
+> +    channels 1/2  and 3/4 supports anti parallel diode
+> +  EMC1833 has two external remote temperature monitoring channels and
+> +    channels 1 and 2 supports anti parallel diode
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,emc1812
+> +      - microchip,emc1813
+> +      - microchip,emc1814
+> +      - microchip,emc1815
+> +      - microchip,emc1833
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    items:
+> +      - description: alert-therm2 asserts when the ALERT limit is exceeded.
+> +      - description: therm-addr asserts when the THERM limit is exceeded.
+> +    minItems: 1
+> +
+> +  interrupt-names:
+> +    items:
+> +      - enum: [alert-therm2, therm-addr]
 
-On Thu, Feb 5, 2026 at 6:51=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> w=
-rote:
->
-> On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrote:
-> > On Wed, Feb 4, 2026 at 11:49=E2=80=AFPM Guenter Roeck <linux@roeck-us.n=
-et> wrote:
-> > >
-> > > On 2/4/26 11:54, Igor Raits wrote:
-> > > > I have written a patch with the help of AI and it fixes the problem=
-. Attached.
-> > > >
-> > >
-> > > "No MIME, no links, no compression, no attachments.  Just plain text"
-> >
-> > Sorry for that, I had assumed that attaching the file would make it in-=
-line.
-> >
-> > > ... which means I can not provide inline feedback, which is the whole
-> > > point of the above.
-> > >
-> > > Your patch crosses subsystems, so it will need to be split in two
-> > > (assuming the ACPI side is even needed). Also, references to iDRAC
-> > > in common code seem inappropriate.
-> >
-> > Yes, this I believe was the essential part (it was the last piece in
-> > my testing which fixed the hanging):
-> >
->
-> Then I'll need to ask differently: What happens if you drop the IPMI code=
-,
-> and just keep the wait_for_completion -> wait_for_completion_timeout
-> change ? Would that be sufficient to solve the problem ?
+AI feedback:
 
-I'd rather say "Would that be sufficient to make the symptoms go
-away?" as it most likely papers over the real problem.
+If interrupt names are being used to identify the interrupts, should
+the interrupts property be less restrictive?
 
-> Either case, the need for this change suggests that the ipmi change
-> may not be complete, since it should send a completion with an error.
+Currently, the items list in interrupts enforces a strict order:
+the first interrupt must match the first description (alert-therm2),
+and the second must match the second description (therm-addr).
 
-I think that reverting commit bc3a9d217755 ("ipmi:si: Gracefully
-handle if the BMC is non-functional") should also be considered as a
-possible way forward because it clearly did not improve things as
-expected, at least in this particular case.
+However, the interrupt-names definition for the first item allows it
+to be "therm-addr".
 
-It evidently did something that confuses things quite a bit.  Either
-it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIED, or it is
-the "hosed" state and refusing to accept messages.
+If the intention is to support providing only the second interrupt (therm-addr)
+as the first item in the list, then the interrupts property definition
+prevents that by enforcing the first item to be alert-therm2.
 
-> > diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
-> > index 5fba4dab5d08..ab1f4b27741d 100644
-> > --- a/drivers/acpi/acpi_ipmi.c
-> > +++ b/drivers/acpi/acpi_ipmi.c
-> > @@ -572,7 +572,18 @@ acpi_ipmi_space_handler(u32 function,
-> > acpi_physical_address address,
-> >                 status =3D AE_ERROR;
-> >                 goto out_msg;
-> >         }
-> > -       wait_for_completion(&tx_msg->tx_complete);
-> > +
-> > +       /*
-> > +        * Use a timeout to avoid blocking forever if the BMC is slow
-> > +        * or non-responsive (e.g., during iDRAC reset). The timeout
-> > +        * should be longer than IPMI_TIMEOUT to allow for retries.
-> > +        */
-> > +       if (!wait_for_completion_timeout(&tx_msg->tx_complete,
-> > +                                        msecs_to_jiffies(IPMI_TIMEOUT =
-* 3))) {
-> > +               dev_warn_once(ipmi_device->dev,
-> > +                             "ACPI IPMI request timed out\n");
-> > +               tx_msg->msg_done =3D ACPI_IPMI_TIMEOUT;
-> > +       }
-> >
-> >         acpi_format_ipmi_response(tx_msg, value);
-> >         status =3D AE_OK;
-> >
-> > > Thanks,
-> > > Guenter
-> > >
-> > > > I don't know how correct it is, but it works :)
-> > > >
-> > > > On Wed, Feb 4, 2026 at 2:01=E2=80=AFAM Guenter Roeck <linux@roeck-u=
-s.net> wrote:
-> > > >>
-> > > >> On 2/3/26 15:21, Jaroslav Pulchart wrote:
-> > > >>
-> > > >>> ...
-> > > >>> $ git bisect bad
-> > > >>> bc3a9d217755f65c137f145600f23bf1d6c31ea9 is the first bad commit
-> > > >>> commit bc3a9d217755f65c137f145600f23bf1d6c31ea9 (HEAD)
-> > > >>> Author: Corey Minyard <corey@minyard.net>
-> > > >>> Date:   Wed Aug 20 14:56:50 2025 -0500
-> > > >>>
-> > > >>>       ipmi:si: Gracefully handle if the BMC is non-functional
-> > > >>>
-> > > >>>       If the BMC is not functional, the driver goes into an error=
- state and
-> > > >>>       starts a 1 second timer.  When the timer times out, it will=
- attempt a
-> > > >>>       simple message.  If the BMC interacts correctly, the driver=
- will start
-> > > >>>       accepting messages again.  If not, it remains in error stat=
-e.
-> > > >>>
-> > > >>>       If the driver goes into error state, all messages current a=
-nd pending
-> > > >>>       will return with an error.
-> > > >>>
-> > > >>>       This should more gracefully handle when the BMC becomes non=
--operational,
-> > > >>>       as opposed to trying each messages individually and failing=
- them.
-> > > >>>
-> > > >>>       Signed-off-by: Corey Minyard <corey@minyard.net>
-> > > >>>
-> > > >>>    drivers/char/ipmi/ipmi_si_intf.c | 29 +++++++++++++++++++++++-=
------
-> > > >>>    1 file changed, 23 insertions(+), 6 deletions(-)
-> > > >>
-> > > >> Now that is interesting. Does reverting that patch on top of 6.18.=
-8
-> > > >> (or any other 6.18 release) solve the problem ?
+2nd feedback:
+
+The interrupts property description lists two possible interrupts ("alert-therm2"
+and "therm-addr"), but this definition restricts interrupt-names to a single
+item.
+
+Should this be updated to allow providing names for both interrupts if the
+device is configured with both?
+
+[ I don't know how this is supposed to work, so the feedback needs to be taken
+  with two grains of salt. ]
+
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  microchip,parasitic-res-on-channel1-2:
+> +    description:
+> +      Indicates that the chip and the diodes/transistors are sufficiently
+> +      far apart that a parasitic resistance is added to the wires, which can
+> +      affect the measurements. Due to the anti-parallel diode connections,
+> +      channels 1 and 2 are affected together.
+> +    type: boolean
+> +
+> +  microchip,parasitic-res-on-channel3-4:
+> +    description:
+> +      Indicates that the chip and the diodes/transistors are sufficiently far
+> +      apart that a parasitic resistance is added to the wires, which can affect
+> +      the measurements. Due to the anti-parallel diode connections, channels
+> +      3 and 4 are affected together.
+> +    type: boolean
+> +
+> +  vdd-supply: true
+> +
+> +patternProperties:
+> +  "^channel@[1-4]$":
+> +    description:
+> +      Represents the external temperature channels to which
+> +      a remote diode is connected.
+> +    type: object
+> +
+> +    properties:
+> +      reg:
+> +        items:
+> +          minimum: 1
+> +          maximum: 4
+
+I (or, rather, AI review) asked this before:
+
+Does this reg property need maxItems: 1?
+
+Without it, the schema might allow reg properties with multiple items,
+provided the first item is within the minimum/maximum range.
+
+[ Presumably the _values_ should be 1..4, not the number of items ]
+
+> +
+> +      label:
+> +        description: Unique name to identify which channel this is.
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - microchip,emc1812
+> +              - microchip,emc1813
+> +              - microchip,emc1833
+> +    then:
+> +      properties:
+> +        microchip,parasitic-res-on-channel3-4: false
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - microchip,emc1812
+> +    then:
+> +      properties:
+> +        channel@1:
+> +          properties:
+> +            reg:
+> +              items:
+> +                const: 1
+> +      patternProperties:
+> +        "^channel@[2-4]$": false
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          pattern: "^microchip,emc18[13]3"
+> +    then:
+> +      patternProperties:
+> +        "^channel@[12]$":
+> +          properties:
+> +            reg:
+> +              items:
+> +                maximum: 2
+> +        "^channel@[34]$": false
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          pattern: "^microchip,emc1814"
+> +    then:
+> +      patternProperties:
+> +        "^channel@[1-3]$":
+> +          properties:
+> +            reg:
+> +              items:
+> +                maximum: 3
+> +      properties:
+> +        channel@4: false
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        temperature-sensor@4c {
+> +            compatible = "microchip,emc1813";
+> +            reg = <0x4c>;
+> +
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            microchip,parasitic-res-on-channel1-2;
+> +
+> +            vdd-supply = <&vdd>;
+> +
+> +            channel@1 {
+> +                reg = <1>;
+> +                label = "External CH1 Temperature";
+> +            };
+> +
+> +            channel@2 {
+> +                reg = <2>;
+> +                label = "External CH2 Temperature";
+> +            };
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6d7b697bfdba16e4f0ee5f4f0195b9d7da06dae5..85c236df781e47c78deeb7ef4d80bc94bba604c4 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16646,6 +16646,12 @@ S:	Supported
+>  F:	Documentation/devicetree/bindings/interrupt-controller/microchip,sama7g5-eic.yaml
+>  F:	drivers/irqchip/irq-mchp-eic.c
+>  
+> +MICROCHIP EMC1812 DRIVER
+> +M:	Marius Cristea <marius.cristea@microchip.com>
+> +L:	linux-hwmon@vger.kernel.org
+> +S:	Supported
+> +F:	Documentation/devicetree/bindings/hwmon/microchip,emc1812.yaml
+> +
+>  MICROCHIP I2C DRIVER
+>  M:	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+>  L:	linux-i2c@vger.kernel.org
+> 
+> -- 
+> 2.51.0
+> 
 
