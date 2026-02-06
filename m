@@ -1,45 +1,45 @@
-Return-Path: <linux-hwmon+bounces-11614-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11615-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHY3HRmEhWmqCwQAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11614-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Feb 2026 07:03:05 +0100
+	id CCVtOE+NhWmrDQQAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11615-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Feb 2026 07:42:23 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE781FA888
-	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Feb 2026 07:03:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6796AFAB7C
+	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Feb 2026 07:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4DE2302BA26
-	for <lists+linux-hwmon@lfdr.de>; Fri,  6 Feb 2026 06:03:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF7F03004902
+	for <lists+linux-hwmon@lfdr.de>; Fri,  6 Feb 2026 06:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190B22EC090;
-	Fri,  6 Feb 2026 06:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0B130CDBD;
+	Fri,  6 Feb 2026 06:42:21 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from carl-amd.amd.com (unknown [218.32.81.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFE32D837C;
-	Fri,  6 Feb 2026 06:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165F41D6AA;
+	Fri,  6 Feb 2026 06:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.32.81.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770357783; cv=none; b=M0g+EoEfmCWnvWh8Au8/B4cOYpgPpHVwoCincmXI81ApKyOPbvuoj/kOWYbL47JHcDs1yXLID/P5jGUGQ2xRgLJoJULZo6dp2SDkccw10w4ibmvo4ejkvwO8xqitZyzobNfDZaYXxh+8OsTf8P3Rzv1rcqELrdtXve7xWuHjZew=
+	t=1770360141; cv=none; b=WXAu3taog7jh48nGgUyKVUPKTJWqnuAi924HKqqijeqAO8PHqAFqZotcuT60mHWbYXVkJl3HAg2cDx/AFI+lTpFMyrXsCoGNBctgtB6sHS9NrZLPzlrUcHGm1KEZO0SePlT5BkYgxpTaXNc93piwfY6XzqehP5SE1d1qQDzxw6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770357783; c=relaxed/simple;
-	bh=5ni1MN+rQF2mPjhb+eQuAuhxFYWrWeUb+IOk8x1yHR8=;
+	s=arc-20240116; t=1770360141; c=relaxed/simple;
+	bh=WxU43T15Ay7FVgSmMVyl4sbcVpIPJA6jURP2oOfkTXs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i2Ti2b9pLBBtqyjzjP1TiPvEMJdNGscRSMEv1NjSzFnOeOq9gdBwUlSIvxNP2k9n30bitrJfE/nYg2ajuNSue/dORnYcAah7ltTvv7dR46KwSnkeG9VpzGeVrRhNHqHAJVt/4he6M8qqZ6lHPL59KSk4Cd5tdhJptVHdfWbiXqs=
+	 Content-Type:Content-Disposition:In-Reply-To; b=ssEOwjbtcbg9MRsxWURKEVnY08TYp4hEdV6S0eXDZ2YwwSOk+EngpqldChRlzhLmVULwrH4/g7FYv4gh7eAqBo6Ax0rjpSOPSCrgK1apAbWxhEu+IHiwqLN/XgL0xJAcs/j1y24mMstZKT9+9I8JZquAOrqH0hlNFZvDwEWRrS8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; arc=none smtp.client-ip=218.32.81.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Received: from carl-amd.amd.com (localhost [127.0.0.1])
-	by carl-amd.amd.com (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id 6165sKnR1007604;
-	Fri, 6 Feb 2026 13:54:20 +0800
+	by carl-amd.amd.com (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id 6166fs1e1008273;
+	Fri, 6 Feb 2026 14:41:54 +0800
 Received: (from carl@localhost)
-	by carl-amd.amd.com (8.15.2/8.15.2/Submit) id 6165sIx21007603;
-	Fri, 6 Feb 2026 13:54:18 +0800
+	by carl-amd.amd.com (8.15.2/8.15.2/Submit) id 6166fsxI1008272;
+	Fri, 6 Feb 2026 14:41:54 +0800
 X-Authentication-Warning: carl-amd.amd.com: carl set sender to carl.lee@amd.com using -f
-Date: Fri, 6 Feb 2026 13:54:18 +0800
+Date: Fri, 6 Feb 2026 14:41:53 +0800
 From: Carl Lee <carl.lee@amd.com>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -48,7 +48,7 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
         linux-kernel@vger.kernel.org, peter.shen@amd.com, colin.huang2@amd.com
 Subject: Re: [PATCH v2 1/3] dt-bindings: hwmon: pmbus: mpq8785: add MPQ8786
  support
-Message-ID: <aYWAvWwjEXA1e/ny@carl-amd>
+Message-ID: <aYWNMdfFpW2A0SGy@carl-amd>
 References: <20260205-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v2-0-3744cd9b2850@amd.com>
  <20260205-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v2-1-3744cd9b2850@amd.com>
  <20260205-cordial-warping-pronghorn-aeebe7@quoll>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [2.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,amd.com];
-	TAGGED_FROM(0.00)[bounces-11614-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-11615-lists,linux-hwmon=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -84,14 +84,14 @@ X-Spamd-Result: default: False [2.04 / 15.00];
 	HAS_XAW(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[carl.lee@amd.com,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.971];
+	NEURAL_HAM(-0.00)[-0.975];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EE781FA888
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6796AFAB7C
 X-Rspamd-Action: no action
 
 On Thu, Feb 05, 2026 at 08:17:07AM -0800, Guenter Roeck wrote:
@@ -125,5 +125,6 @@ On Thu, Feb 05, 2026 at 08:17:07AM -0800, Guenter Roeck wrote:
 > Guenter
 
 Agreed. There is no chip-specific difference in the driver code to justify
-separate MPQ8786 support. Therefore, we rely on MPQ8785 support.
+separate MPQ8786 support. 
+Therefore, Therefore, I will use MPQ8785 for support.
 
