@@ -1,82 +1,82 @@
-Return-Path: <linux-hwmon+bounces-11693-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11694-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDYDHsDejWnE8AAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11693-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 15:08:00 +0100
+	id uAEZClDqjWnG8gAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11694-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 15:57:20 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2172512E214
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 15:08:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C9412EACA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 15:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C2633063D5F
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 14:03:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ECE183007896
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 14:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E02352F9B;
-	Thu, 12 Feb 2026 14:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFEB35CB70;
+	Thu, 12 Feb 2026 14:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HIbQ4AtR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aUZXC1nz"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D51A2C234A;
-	Thu, 12 Feb 2026 14:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DEC824BD;
+	Thu, 12 Feb 2026 14:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770905017; cv=none; b=W5D8nM4cl9udt/WwSBQZc1xClATZuy3ny+Z4m5E35re+hCNh7aU2kA1djrbxrJqANA2dvG/ZKB6VlHip+475m8tJ5Yxh5a+OJCiVtYn5KWIhESazYgXWKindnE6D9AFhvB69/kGovMPAIxFm9ghUGeh4IVsbb4HhDpiJj0V1BgA=
+	t=1770908139; cv=none; b=qhsVH/CdAzhraebKHzPo3+eX+U/o1MZS8JvZLEHLdyDf57XjDfJT6vBIXZgvGjTWZdfriSybXeVhIo/93s8jZz0Hw9Z7s5OfvjSJCW7U5CxatHXazkpPgGrB+DGwuHaU5Ap5R2LWPnF8CGNJasieMkiqHxIT0cpSfuB8tc26BLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770905017; c=relaxed/simple;
-	bh=EyQunCWi4Z1DGhSr1/8zGP7hAM9s1Yj4u4pyQcPZisY=;
+	s=arc-20240116; t=1770908139; c=relaxed/simple;
+	bh=4+EeQgLatoi/k2Vy6EeWadd2Qq9OeWiKpyeHSroI1u4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hzmLkyEI7WAkGZABzb39aOAVHkHFD92asZvxo4gHFy2UwPLD4Z8ltADvcWB80waIf73bUzGpDmbMhTi7W1JDcC28CnLMl743AA3OcdYQUyr/3xqTF+AijmOXBB7Q9El4HIM5qZqcnWsoUmuFBMDobYfCyLGNgDoD/gLodozeSbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HIbQ4AtR; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=Su7PiNnL3RweOk3b0EG/3U3gPfesEXA6MYh8E+Y9PewsL18F2YqeyUpiO3lBpPTwtJzgkCf20WiC2be0u+YcDQAha1+apPzqj+PrUwtFJKdicusmqXIu7/nR9J8lJk6LzwOVQWJ7OO8yQm82STmRMBmlhsNeGFq1SSZ5G6/ILYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aUZXC1nz; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770905016; x=1802441016;
+  t=1770908137; x=1802444137;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=EyQunCWi4Z1DGhSr1/8zGP7hAM9s1Yj4u4pyQcPZisY=;
-  b=HIbQ4AtRUazPzYsqClhfkLVAmx8EVct7RfdCdSbkFOjbFgAjuBsErXkn
-   oCsGdh43kHYGNwWAMqD4Hi4ix1yQ5JgqRre09iY6eyK4e/SYNiSdYHQNs
-   rlhv6ANt2uTPTlDjbFJ67WdwdDA1OZUl2RQXBBTjO5MhHw+DtRHLQ20jO
-   inUW39mlEcGy0TQriSRZDNZqYI1BklKMbKTpUR1cvBJahJVVKybCHSOxa
-   CECCg/97mBffOLqAIpJccTtLkhZ3j4YnrQqrzfqg3Ys3AhskMqVuQU30J
-   c54b3hrvN4AkGUAh8nvWqZ+K0X+XNTK8Bg9Zvme70j/CKZwpOXZoSO1Ek
-   g==;
-X-CSE-ConnectionGUID: jhujUUZsS4eErCSq89rb+Q==
-X-CSE-MsgGUID: y8KGPU/xRgmHZeEkLCT09A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="71976922"
+  bh=4+EeQgLatoi/k2Vy6EeWadd2Qq9OeWiKpyeHSroI1u4=;
+  b=aUZXC1nzCyXbodYBDjFcV9doX5AknEeJfxE54ZeLX/WS9WolE5QHVdpz
+   aOJb1tF+8POTuFGYvmBzkN3wFqnOfkA6IHVbPgVujoCco7JQEj/bIS+ph
+   eAyDW4gH3mgKQBGcyw3tPfCWd3xmzyMmSHTYUq6OFoIZUvxkI+joETEKN
+   fOkrX2UXahg72m+LTgib00AZ2qgM4o+LG4OEl4T89hyH4ZItkjHgf2RS7
+   zHbOgzSocvKRk+D85XqlD5STf3+gNxejkJXzckjR3L+wPd2vXudfGNeeU
+   I2yrlqliktJ4v60KHJs8RCynVYZIHHBmpMNGHqES7wyMovw2CyxwxH14I
+   w==;
+X-CSE-ConnectionGUID: L65qf0jJRU6DgWoLQUepgA==
+X-CSE-MsgGUID: zKg4/UtRT/2Pqj9bmF2Xzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="71281768"
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="71976922"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:03:35 -0800
-X-CSE-ConnectionGUID: b9UPKEm5RXKY0a9hXxjt7A==
-X-CSE-MsgGUID: sIgKH/6ER8+H6qHzV4ooXA==
+   d="scan'208";a="71281768"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:55:36 -0800
+X-CSE-ConnectionGUID: 9HgJGD9ORZCobKnmbXsd1A==
+X-CSE-MsgGUID: frgiFmuUQIeSuqf2hYebJw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="211861087"
+   d="scan'208";a="216826311"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 12 Feb 2026 06:03:32 -0800
+  by fmviesa004.fm.intel.com with ESMTP; 12 Feb 2026 06:55:33 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vqXI1-00000000rDE-3YFM;
-	Thu, 12 Feb 2026 14:03:29 +0000
-Date: Thu, 12 Feb 2026 22:03:15 +0800
+	id 1vqY6N-00000000rFA-29A7;
+	Thu, 12 Feb 2026 14:55:31 +0000
+Date: Thu, 12 Feb 2026 22:55:29 +0800
 From: kernel test robot <lkp@intel.com>
 To: Stoyan Bogdanov <sbogdanov@baylibre.com>, jbrunet@baylibre.com,
 	linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Stoyan Bogdanov <sbogdanov@baylibre.com>
 Subject: Re: [PATCH v1 1/3] hwmon: (pmbus/tps25990): Rework TPS25990 non
  standatd direct conversion
-Message-ID: <202602122114.dKAeIkiK-lkp@intel.com>
+Message-ID: <202602122220.QLj7Hqb7-lkp@intel.com>
 References: <20260212084502.1795-2-sbogdanov@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -93,28 +93,27 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-11693-lists,linux-hwmon=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11694-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,intel.com:mid,intel.com:dkim,intel.com:email,01.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2172512E214
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 90C9412EACA
 X-Rspamd-Action: no action
 
 Hi Stoyan,
@@ -131,26 +130,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Stoyan-Bogdanov/hwmon-pmb
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
 patch link:    https://lore.kernel.org/r/20260212084502.1795-2-sbogdanov%40baylibre.com
 patch subject: [PATCH v1 1/3] hwmon: (pmbus/tps25990): Rework TPS25990 non standatd direct conversion
-config: parisc-randconfig-002-20260212 (https://download.01.org/0day-ci/archive/20260212/202602122114.dKAeIkiK-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260212/202602122114.dKAeIkiK-lkp@intel.com/reproduce)
+config: powerpc64-randconfig-001-20260212 (https://download.01.org/0day-ci/archive/20260212/202602122220.QLj7Hqb7-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260212/202602122220.QLj7Hqb7-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602122114.dKAeIkiK-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602122220.QLj7Hqb7-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   drivers/hwmon/pmbus/tps25990.c: In function 'tps25990_probe':
->> drivers/hwmon/pmbus/tps25990.c:463:11: error: 'ENOTSUP' undeclared (first use in this function); did you mean 'ENOTSUPP'?
-      return -ENOTSUP;
-              ^~~~~~~
-              ENOTSUPP
-   drivers/hwmon/pmbus/tps25990.c:463:11: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/hwmon/pmbus/tps25990.c:463:11: error: use of undeclared identifier 'ENOTSUP'
+     463 |                 return -ENOTSUP;
+         |                         ^~~~~~~
+   1 error generated.
 
 
-vim +463 drivers/hwmon/pmbus/tps25990.c
+vim +/ENOTSUP +463 drivers/hwmon/pmbus/tps25990.c
 
    447	
    448	static int tps25990_probe(struct i2c_client *client)
