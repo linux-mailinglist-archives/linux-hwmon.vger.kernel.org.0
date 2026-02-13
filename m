@@ -1,368 +1,162 @@
-Return-Path: <linux-hwmon+bounces-11702-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11704-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGiQHOlOjmljBgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11702-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 23:06:33 +0100
+	id sNiXDC9tjmnuCAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11704-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 01:15:43 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FFE131749
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 23:06:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78AE131F78
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 01:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 803B9305C49A
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Feb 2026 22:06:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B2B5305EE9B
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 00:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F1D35DD17;
-	Thu, 12 Feb 2026 22:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962D217DFE7;
+	Fri, 13 Feb 2026 00:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="b0N7+eXP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ByKOXRJY"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF64299950
-	for <linux-hwmon@vger.kernel.org>; Thu, 12 Feb 2026 22:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697453BBF0
+	for <linux-hwmon@vger.kernel.org>; Fri, 13 Feb 2026 00:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770933983; cv=none; b=OBeN9ethJ/ywUucnNQkrFd14fKSQFZHcGsFtYewt1T6Y5nU1ulO6Fb4L4BeV/7OaLWjdWqckV4nDqA2qGSEk7aIZpGYo09DadwAs2eVHu0sW913sTkvxupeP8//TLCgq5FkzeBYJty/pDE7hqjmg2BJ4BjbYVtrvd6IwMwPxIdU=
+	t=1770941721; cv=none; b=ks73xGMot1ImCLShSTjZit7hNEK6CUwIKB0i434LkoDtvido64LsnRBKf8zn130FwZoMVTT96vH9w8/EHfV1N88gwu8ERS5kHZpYs7/RUiaVJTILwEYqkzZfDzwczyBhiSzHM/U5Q129XB0ifGvLJBocLIOrGk2ZcAa45WTZx6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770933983; c=relaxed/simple;
-	bh=FA9Sa4ZScDMsKUsdS5zZWNPvFD772JVJVeWxvkxf5L8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qQgpn1OPxVRMUt36RqiFTwRUwFEmJSNjwBYd7jP64hP3F0O/N6A+ERnRdpVDSEW2zLJIwH2RUC/LODMcF0YI6k3sLb5N8Hfmet4QXFinExgcz281Fq4tsTMGaQpvnZJTDvBwaO8FKBzyP6RfgzDwXm8yUT8kQEQ2vcILWbj1aug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=b0N7+eXP; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d18f80b5c2so244163a34.3
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 Feb 2026 14:06:21 -0800 (PST)
+	s=arc-20240116; t=1770941721; c=relaxed/simple;
+	bh=/59rGIqsmF4WshNdFxUG9ogPXvNXVfB7MoZDczfEldg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JmO6TjHXxAK7UmusAMxa58mWS9JfR3Vtyk5q9lg0H4MhVDVw+CG40sNmePRiR19b/lmqOyxAqmseqQ9P41NYmGddjOR+m8+JshMd17P7fEvatlMj/k3UD4HHfrLApLdyW87CsGHOC/I9wSTnvbIh2MNGd5Oezi9Meo138L6ws28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ByKOXRJY; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4836e3288cdso2209745e9.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 12 Feb 2026 16:15:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1770933980; x=1771538780; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VMZsU008s1b0NUMycPyjWaPsbDd+SQs/nQ6naksV2T0=;
-        b=b0N7+eXPxbbc6CMCgSFoNtXgxvjQsTPAGyCJVp+KcYR6Jr/GabuWhn3PoYTCa9qJJ2
-         kMQ2cWwdbWhOkl0qI2YAOcLT/EOY3f8A6dv3hfCMki34MEKTMC/dEDpM1GZkXWw/Magn
-         i6HAdXsqWaR50lVtsDtZGaE52MkR/T2f/3KOGKEgVLgJrOOtOHgZy1AeLrBXN2g83Hgt
-         L23rDHHcEUAd/TxtZDuGXitE1/fiLAwYz+PYTh6oLCgFJHzxHqxzO8H0N2NDh23aPq0r
-         JEmWc2sJQX7xnm8Q+J3kYmuCaQu5TrgXaYz8E3Kt3f4V5FqibLUQB+TNFuBFr8I4xVsZ
-         ZFag==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770941717; x=1771546517; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iBcBAJOpsKdY0lf+0KvuBm9F2SiCUmZwqgnRHrAG5Ag=;
+        b=ByKOXRJYP0hFvfdXG9g4Zx5PGYv2chrA8Pg1XuyECYpmbH40mRCt4Mw4NAT+EoIvrL
+         TskvzXYDrLoIp3VdbP8/43hS8LHO7v3mglyEZgZGek1dSbgUNcF67Sw1p0qeMoE4o0G9
+         tEgGCv8Dc7Q/6ZsVnOfnNsWXN8iq90u5MGkdzJeD/mltMgbJD44r9YL31yFlQ44/Vgi8
+         fMaK53Hk8+yXagWXhET3YxWtntTzdVhLhi1YeYiO0P+I+YE3F0MGtKa0C5IyK+bYzgy5
+         fnHov9qptwZ8BMvUCHA95HUxBfLhBsn+36k9aT2IH6eZvqdquQb3RyOYzi1vIt20wOWZ
+         2KKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770933980; x=1771538780;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VMZsU008s1b0NUMycPyjWaPsbDd+SQs/nQ6naksV2T0=;
-        b=IVwdktXRRLUCkYV0oPNZTmgWluSevvO8p87GWisOk4S5l/HGUgZji0u3oy6Wn+DlqF
-         f7PqOhHiYs89UqEYigm9+/T5DJ80NnLCFIkniZYZw23zyOaODj2DeLtTX500h6lUbTd9
-         1LhZfIDjYEQpXGzQfMkyrn+xwV0qZerBiLmP41gGqdGINXlyFANoLq60NSZNz9d67AgS
-         HnHxtKM9RriSyn4uAA07tEdj0QCn1vFGVd4WIuGlncD7yxBOSdZeVOl1WTG15N/Os/U2
-         Hztd0UUu0cAgUkTZInVMycPqK4mxbx55kASkBlWC/keLgqTom5rXesEBdHjBqoiGDa3n
-         bvCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGfgTdreu27X9wjJc4ot9YGjUOG2mrGVHySFFZNar7cWV8cg4bOUxfr42fFrdGSrUbmoggew2+z0vKFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+8DtFNo7yJTK/2git2wa7bMiCAtEOraUjK5CnHhy9EV4EtBWN
-	zKGFnu/gBUMgX+oY/NkzmEg75+OFsyuxT3ibs9CHMsPSoYBlj96suP8hrBcmNWeRtmM=
-X-Gm-Gg: AZuq6aIgUnyrX+tTCy022jMxwful9IF6djOpJ8eYSGYMirgxcXsnAGkBh4f/Lo3roys
-	MbbUFG0FYFQclnuyB6TL1P8xeaxblkcaN+dwZITrVII7cxn58+f0n6kQRBJPa/mOMOcEaDt/+99
-	mNr/RcssApUqr73FfH30a77JpgurpvbBFGGa0HKogc9UT4MExRbeSoEt+8+vgyxca1+dP+Ew3Eu
-	nyy4DWawj4CNhRzLpl+QsMkFhdVrDEAGpNgdciLur874rtAzZrWsirkwc0kzvGfOQF/loAoak/G
-	FaHE/vMOlIVGKMyFeHIiGNVvieinrKgMajIYb0FgyCvZ7vjuJdj0Us086AZRHof5ffKfFfdUDDZ
-	FxzQOS9LRplyOhvDJok1hIpid4OUfJZNal+T3BEx42J+NodQRy16U+ot4nm7ir2M8lmK4ojgm7g
-	uuebnq50+231FKyWzmfJm01+NGDUm+vilJchbxzD0CXuDpsT7UkBjwqPjbSv189Xbot0eY4TsC2
-	7d1ur7EHKBUWsU=
-X-Received: by 2002:a05:6830:7313:b0:7c7:4f2:e15d with SMTP id 46e09a7af769-7d4c3028d5bmr316756a34.16.1770933980193;
-        Thu, 12 Feb 2026 14:06:20 -0800 (PST)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:a3ab:7352:1dc1:6b46])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4a76df04dsm4998416a34.15.2026.02.12.14.06.19
+        d=1e100.net; s=20230601; t=1770941717; x=1771546517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iBcBAJOpsKdY0lf+0KvuBm9F2SiCUmZwqgnRHrAG5Ag=;
+        b=gEGu6aRZKjEVsPy8WLLUJraBMg5OY+OLVuf+5JIt1WQTa7jCeuAmhuRgdsN6uaLaSg
+         3PdlBJlF+LnnvtgVIfdvs3maWx5yc10TvOwP9JzcvoE0c0XgNDlpcmfQHFxmOTRTRZi3
+         8yHxtHFWT97Fk1i5oYuzmcRi3N5oFOQj04AukXCQR79Z/NgNiRO3BcqUcLzFnPOlGpc/
+         p8MKpmwftRw8eFClEai1nWTchF9VEtTfETXgfff5IWUYTTWw45m5EcqL2vxcjCgBOpob
+         76/aqtr/kS6h3xiDyxzLDgrY54tt1XTgA/+qXG231+x0iCz+Gp41r1e2ge64xOHAXrZ2
+         jvHg==
+X-Gm-Message-State: AOJu0YzAGZT1nL6sN7nZxvbyYbPyzFknticew47tC/N06qhM1G++PGEq
+	sYwC5eWU1aN96o9drgRqOFqsqOqUL0NII0c2lZaSMCLOpk7iPI0JDiM7nM5kCB56Rds=
+X-Gm-Gg: AZuq6aJ7EyjeXELnDl9g77q5So6iQfGWMYLoI0hwB8fsgR6Rn558b1tBcMDaBap0u45
+	Yshw7hiBee81Qe8xqU1xPLrxic+zZeWLTq0VILl+ZJWh2o0gMgTZA4ia8LQ8M343tFsLo3CToRJ
+	t0nz2IRUCenZci0F5ImnKJ2obk+OeA10q7ILvvhdSf88iOiNP039SH19RU9ytDQM7NJ7hcuG6hi
+	xcQwyh0AIX+ycGZISVr+FbhhkAR54NwIGYN99C8KHX3dU8h9GHybETMl0Gr9WqdAitu3ybBVWHc
+	f20fyb4Ju0hkLljfqjMvELJP31rgpQraPCIreht7pSnCzkxktKqv9hv/317x2zBd6cI9f6ySflq
+	5g2qVljoM5yjjP3sPl3PIh66YmDsYQMgFzieV83v41DlKYs3BSenhKbX6WYDFYhXZnnXvJDtTIv
+	LcX+QELWyIhzkq0PcpT4jPPZrCguYolq7L7LEoAdslRI5hecOTVXdCXXIzjOeOMc3+1Rh8DNBIT
+	QZ4QnoAsw==
+X-Received: by 2002:a7b:ce14:0:b0:477:991c:a17c with SMTP id 5b1f17b1804b1-48372f1dd02mr872455e9.6.1770941716393;
+        Thu, 12 Feb 2026 16:15:16 -0800 (PST)
+Received: from silence.. ([46.10.240.40])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4835d99497asm234440945e9.6.2026.02.12.16.15.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 14:06:19 -0800 (PST)
-Date: Thu, 12 Feb 2026 16:06:15 -0600
-From: Corey Minyard <corey@minyard.net>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	Guenter Roeck <linux@roeck-us.net>, Igor Raits <igor@gooddata.com>,
-	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	Daniel Secik <daniel.secik@gooddata.com>,
-	Zdenek Pesek <zdenek.pesek@gooddata.com>,
-	Jiri Jurica <jiri.jurica@gooddata.com>,
-	Huisong Li <lihuisong@huawei.com>
-Subject: Re: [BISECTED - impi related]: acpi_power_meter: power*_average
- sysfs read hangs, mutex deadlock in hwmon_attr_show since v6.18.y
-Message-ID: <aY5O1z6SbrGSDaDs@mail.minyard.net>
-Reply-To: corey@minyard.net
-References: <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net>
- <CAJZ5v0i_BmeGROzQFpUCyF5MkA7sFkP3y8jjqH0mD2r2Wqj_xA@mail.gmail.com>
- <aYYPnATz1JakV3m7@mail.minyard.net>
- <CAJZ5v0h1irjy_ovyQw9ObGOTAUWajT_BK6u=rWQqR9awQBrY3A@mail.gmail.com>
- <CAK8fFZ4Ut6K-QGpy769_1N1K-GKpReo2wQgA=uXyXdGZ+QgGxA@mail.gmail.com>
- <CAJZ5v0hCEECyuAJZ4GAn=DeJR-UgtUXOMYYN9JQgEyghVnCYsw@mail.gmail.com>
- <aY4EUQcGbmT3Rexz@mail.minyard.net>
- <CAJZ5v0ip-Ke9p-2Qd9EQpp-J4Te53S4WsrJDeJPi_5o+U2_wNA@mail.gmail.com>
- <aY4dT-Mj5ZJIavdP@mail.minyard.net>
- <CAJZ5v0iS939x7VMQoNgks=Edichx2C+Qq8_kfiLpLh0ov=gwpw@mail.gmail.com>
+        Thu, 12 Feb 2026 16:15:15 -0800 (PST)
+From: Stoyan Bogdanov <sbogdanov@baylibre.com>
+To: jbrunet@baylibre.com,
+	linux@roeck-us.net,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org
+Cc: linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stoyan Bogdanov <sbogdanov@baylibre.com>
+Subject: [PATCH v2 0/3] Add TI TPS1689 pmbus eFuse
+Date: Fri, 13 Feb 2026 02:14:05 +0200
+Message-Id: <20260213001408.2454567-1-sbogdanov@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iS939x7VMQoNgks=Edichx2C+Qq8_kfiLpLh0ov=gwpw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[baylibre-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-11704-lists,linux-hwmon=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-11702-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[baylibre.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[corey@minyard.net];
-	RCVD_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sbogdanov@baylibre.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[baylibre-com.20230601.gappssmtp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,minyard.net:replyto,minyard.net:dkim,minyard.net:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: C2FFE131749
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,baylibre-com.20230601.gappssmtp.com:dkim,baylibre.com:mid]
+X-Rspamd-Queue-Id: A78AE131F78
 X-Rspamd-Action: no action
 
-On Thu, Feb 12, 2026 at 10:33:15PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Feb 12, 2026 at 7:35???PM Corey Minyard <corey@minyard.net> wrote:
-> >
-> > On Thu, Feb 12, 2026 at 06:22:08PM +0100, Rafael J. Wysocki wrote:
-> > > On Thu, Feb 12, 2026 at 5:48???PM Corey Minyard <corey@minyard.net> wrote:
-> > > >
-> > > > On Thu, Feb 12, 2026 at 01:27:41PM +0100, Rafael J. Wysocki wrote:
-> > > > > On Thu, Feb 12, 2026 at 10:11???AM Jaroslav Pulchart
-> > > > > <jaroslav.pulchart@gooddata.com> wrote:
-> > > > > >
-> > > > > > >
-> > > > > > > On Fri, Feb 6, 2026 at 4:58???PM Corey Minyard <corey@minyard.net> wrote:
-> > > > > > > >
-> > > > > > > > On Fri, Feb 06, 2026 at 01:08:56PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > On Thu, Feb 5, 2026 at 11:34???PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Thu, Feb 05, 2026 at 08:04:12PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > > Cc: Corey
-> > > > > > > > > > >
-> > > > > > > > > > > On Thu, Feb 5, 2026 at 6:51???PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrote:
-> > > > > > > > > > > > > On Wed, Feb 4, 2026 at 11:49???PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > On 2/4/26 11:54, Igor Raits wrote:
-> > > > > > > > > > > > > > > I have written a patch with the help of AI and it fixes the problem. Attached.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > "No MIME, no links, no compression, no attachments.  Just plain text"
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Sorry for that, I had assumed that attaching the file would make it in-line.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > > ... which means I can not provide inline feedback, which is the whole
-> > > > > > > > > > > > > > point of the above.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Your patch crosses subsystems, so it will need to be split in two
-> > > > > > > > > > > > > > (assuming the ACPI side is even needed). Also, references to iDRAC
-> > > > > > > > > > > > > > in common code seem inappropriate.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Yes, this I believe was the essential part (it was the last piece in
-> > > > > > > > > > > > > my testing which fixed the hanging):
-> > > > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > > > Then I'll need to ask differently: What happens if you drop the IPMI code,
-> > > > > > > > > > > > and just keep the wait_for_completion -> wait_for_completion_timeout
-> > > > > > > > > > > > change ? Would that be sufficient to solve the problem ?
-> > > > > > > > > > >
-> > > > > > > > > > > I'd rather say "Would that be sufficient to make the symptoms go
-> > > > > > > > > > > away?" as it most likely papers over the real problem.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > Good point. Worse, it may result in UAF or memory leaks.
-> > > > > > > > > >
-> > > > > > > > > > > > Either case, the need for this change suggests that the ipmi change
-> > > > > > > > > > > > may not be complete, since it should send a completion with an error.
-> > > > > > > > > > >
-> > > > > > > > > > > I think that reverting commit bc3a9d217755 ("ipmi:si: Gracefully
-> > > > > > > > > > > handle if the BMC is non-functional") should also be considered as a
-> > > > > > > > > > > possible way forward because it clearly did not improve things as
-> > > > > > > > > > > expected, at least in this particular case.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > I tend to agree. I ran a number of AI code reviews over the patch, and
-> > > > > > > > > > each time it finds new (and different) problems. The fact that the acpi
-> > > > > > > > > > patch is still needed even after applying the ipmi changes suggests that
-> > > > > > > > > > something is still missing in the ipmi code.
-> > > > > > > > > >
-> > > > > > > > > > > It evidently did something that confuses things quite a bit.  Either
-> > > > > > > > > > > it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIED, or it is
-> > > > > > > > > > > the "hosed" state and refusing to accept messages.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > More than that. My latest AI results are below, just for reference
-> > > > > > > > > > (using Gemini 3 with Chris Mason's debug prompts). The prompt I used
-> > > > > > > > > > for this run is:
-> > > > > > > > >
-> > > > > > > > > Well, I guess it's time to send a revert patch then.
-> > > > > > > >
-> > > > > > > > Thanks for the CC.
-> > > > > > > >
-> > > > > > > > Let's fix it right in the IPMI driver.
-> > > > > > > >
-> > > > > > > > >
-> > > > > > > > > > "
-> > > > > > > > > > The top commit in the linux/ directory results in hung tasks if the BMC
-> > > > > > > > > > stops responding. Using @review-prompts/kernel/debugging.md analyze the
-> > > > > > > > > > patch, identify the reason for the hung task problem, suggest and implement
-> > > > > > > > > > a fix. Note that there may be more than one problem in the patch, so analyze
-> > > > > > > > > > the complete patch and do not stop after fiding the first regression.
-> > > > > > > > > > "
-> > > > > > > > > >
-> > > > > > > > > > I think that catches most of the problem, but not all of it.
-> > > > > > > > > >
-> > > > > > > > > > Guenter
-> > > > > > > > > >
-> > > > > > > > > > ---
-> > > > > > > > > >
-> > > > > > > > > > Summary of crash or warning:
-> > > > > > > > > > Hung task detected in ipmi_si driver when BMC becomes non-functional.
-> > > > > > > > > > Processes waiting for IPMI responses (e.g. ipmitool, monitoring agents) enter D state and never recover.
-> > > > > > > > > >
-> > > > > > > > > > Kernel version if available:
-> > > > > > > > > > Top of tree (commit bc3a9d217755f65c137f145600f23bf1d6c31ea9)
-> > > > > > > > > >
-> > > > > > > > > > Machine type if available:
-> > > > > > > > > > Generic Server with BMC
-> > > > > > > > > >
-> > > > > > > > > > Cleaned up copy of oops or stack trace:
-> > > > > > > > > > [  120.123456] INFO: task ipmitool:1234 blocked for more than 120 seconds.
-> > > > > > > > > > [  120.123457]       Not tainted 6.14.0-rc1 #1
-> > > > > > > > > > [  120.123458] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> > > > > > > > > > [  120.123459] task:ipmitool        state:D stack:    0 pid: 1234 ppid:  100 flags:0x00000000
-> > > > > > > > > > [  120.123460] Call Trace:
-> > > > > > > > > > [  120.123461]  <TASK>
-> > > > > > > > > > [  120.123462]  __schedule+0x123/0x456
-> > > > > > > > > > [  120.123463]  schedule+0x45/0x78
-> > > > > > > > > > [  120.123464]  schedule_timeout+0x9a/0xbc
-> > > > > > > > > > [  120.123465]  wait_for_completion+0xde/0xf0
-> > > > > > > > > > [  120.123466]  ipmi_request_settime+0x123/0x145
-> > > > > > > > > > [  120.123467]  ...
-> > > > > > > > > > [  120.123468]  </TASK>
-> > > > > > > > > >
-> > > > > > > > > > Any other kernel messages you found relevant:
-> > > > > > > > > > N/A
-> > > > > > > > > >
-> > > > > > > > > > Explanation of the problem:
-> > > > > > > > > > 1. Hung Task:
-> > > > > > > > > > The patch "ipmi:si: Gracefully handle if the BMC is non-functional" introduces a new state `SI_HOSED` to handle BMC failures. When the driver detects that the BMC is not responding, it transitions to `SI_HOSED` and fails the currently processing message (`curr_msg`). However, if a new message is queued via `sender()` (populating `waiting_msg`) during a recovery probe (state `SI_GETTING_FLAGS`), and that probe subsequently fails, the state machine transitions back to `SI_HOSED`. In this transition, the driver checks and fails `curr_msg`, but it neglects to check or fail `waiting_msg`. As a result, the `waiting_msg` remains in the queue indefinitely, causing the waiting process to hang.
-> > > > > > > > >
-> > > > > > > > > That's quite convincing and it would explain the observed symptoms.
-> > > > > > > >
-> > > > > > > > Yes, and it's a fairly easy fix, I think.  The waiting message just
-> > > > > > > > needs to be returned in that case.  The following patch should do it:
-> > > > > > >
-> > > > > > > Jaroslav, it would be good to test the patch below on top of 6.19.  I
-> > > > > > > can put it on a test git branch if need be, so please let me know.
-> > > > > > >
-> > > > > > > > diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > > > > index 5459ffdde8dc..ff159b1162b9 100644
-> > > > > > > > --- a/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > > > > +++ b/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > > > > @@ -809,6 +809,12 @@ static enum si_sm_result smi_event_handler(struct smi_info *smi_info,
-> > > > > > > >                          */
-> > > > > > > >                         return_hosed_msg(smi_info, IPMI_BUS_ERR);
-> > > > > > > >                 }
-> > > > > > > > +               if (smi_info->waiting_msg != NULL) {
-> > > > > > > > +                       /* Also handle if there was a message waiting. */
-> > > > > > > > +                       smi_info->curr_msg = smi_info->waiting_msg;
-> > > > > > > > +                       smi_info->waiting_msg = NULL;
-> > > > > > > > +                       return_hosed_msg(smi_info, IPMI_BUS_ERR);
-> > > > > > > > +               }
-> > > > > > > >                 smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
-> > > > > > > >                 goto out;
-> > > > > > > >         }
-> > > > > >
-> > > > > > I apply ^ patch to both 6.18.10 and 6.19 and reproduced the issue on
-> > > > > > both, so it does not fix the problem.
-> > > > >
-> > > > > Thanks!
-> > > > >
-> > > > > With all due respect to everyone involved (including the AI), this
-> > > > > means that we are not anywhere close to fixing the problem and it
-> > > > > would be a shame to ship 7.0 with it.
-> > > > >
-> > > > > I'm sending a revert patch shortly.
-> > > >
-> > > > Unfortunately, that patch fixed an issue others were having.
-> > >
-> > > Granted, it broke something else, so it needs to be fixed or reverted.
-> >
-> > Yes, certainly.
-> >
-> > >
-> > > Maybe there is a way to address the original problem fixed by it differently?
-> >
-> > I'm not sure.  This is not the first attempt...
-> 
-> I see.
-> 
-> > >
-> > > Do you have any pointers to any problem reports regarding that one?
-> >
-> > The original problem came as a patch set:
-> >
-> > https://lore.kernel.org/lkml/20221007092617.87597-1-zhangyuchen.lcr@bytedance.com/
-> >
-> > That had a lockup problem, and it had some other issues.  So I reworked
-> > the code to the current form.
-> 
-> OK, thanks!
-> 
-> > I'm working on qemu now.  This needs to be added as part of the test suite, anyway.
-> 
-> There is something in the current code that seems to be problematic.
-> 
-> When acpi_ipmi_space_handler() runs, it calls ipmi_request_settime()
-> to queue up a message.  AFAICS, if all goes well, this ends up calling
-> smi_send() via i_ipmi_request().
-> 
-> If intf->curr_msg is NULL, the new message will not be added to a list
-> in there, but intf->curr_msg will be set to point to it instead and
-> handlers->sender() will be called on it.  But handlers->sender points
-> to sender() defined in ipmi_si_intf.c which returns IPMI_BUS_ERR
-> without doing anything if smi_info->si_state == SI_HOSED and its
-> return value is ignored.
-> 
-> The message is only pointed to by intf->curr_msg at that point and
-> AFAICS it will never get actually processed because intf->curr_msg is
-> never really dereferenced (it is only compared with other pointers and
-> checked against NULL if I'm not mistaken).
-> 
-> It looks like smi_send() needs to check the handlers->sender() return
-> value and maybe return it to the caller so i_ipmi_request() can return
-> an error if it fails.
+Rework TPS25990 eFuse pmbus driver to provide more unified way for
+non standard direct conversions.Remove existing defines for TPS25990
+conversions and replace them with enum listing all supported parameters
+and structure using m, b, R. Add functions to covert raw to real value
+and real value back to raw. Add data structure to hold pmbus_driver_info
+and local_direct_values for direct conversion.
 
-Yes, I think you might be right.  I've just gotten qemu to a point where
-I can test this.
+Add support TPS1689 support to TPS25990 driver, since both
+chips are sharing a lot of similar internal functions with exception of
+work range like Voltage and Current.
 
-Until that code was added handlers->sender() never returned an error.
-Hopefully I can figure this out soon.
+Change log 1v -> v2:
+- Fix error detected from kernel test bot
+- Add Acked-by to dt-bindings commit
+- Drop "support" from dt-bindings commit subject
 
--corey
+Stoyan Bogdanov (3):
+  hwmon: (pmbus/tps25990): Rework TPS25990 non standatd direct
+    conversion
+  dt-bindings: hwmon: pmbus/tps1689: Add TPS1689
+  hwmon: (pmbus/tps1689): Add TPS1689 support
+
+ .../bindings/hwmon/pmbus/ti,tps25990.yaml     |   4 +-
+ Documentation/hwmon/tps25990.rst              |  15 +-
+ drivers/hwmon/pmbus/tps25990.c                | 185 +++++++++++++++---
+ 3 files changed, 171 insertions(+), 33 deletions(-)
+
+-- 
+2.34.1
+
 
