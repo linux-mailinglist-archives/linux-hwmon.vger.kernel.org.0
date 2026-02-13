@@ -1,106 +1,83 @@
-Return-Path: <linux-hwmon+bounces-11711-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11716-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DEFOujKjmm/EwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11711-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 07:55:36 +0100
+	id +BPRBInqjmnsFwEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11716-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 10:10:33 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4D3133502
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 07:55:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6DE134506
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 10:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 017AA305263F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 06:55:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 80A883030EC1
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Feb 2026 09:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74149272801;
-	Fri, 13 Feb 2026 06:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA8834B410;
+	Fri, 13 Feb 2026 09:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="UCA+qTFV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TXfuSbD1"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FE626F2A1
-	for <linux-hwmon@vger.kernel.org>; Fri, 13 Feb 2026 06:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAB6330B27;
+	Fri, 13 Feb 2026 09:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770965734; cv=none; b=U5YHPFHOjKeG8e0nbrGmCAExIeExRtVbF9S3fq+U9uiQapv/3sKqRI6zDhFBXugtC2NU0r0Nllruz6k2nSETaylIkLfNCWxGcPwSmx2ftyYNvUdbKIittTC1lfACHaPATTghYfJeZemo2QBSHDsIPxSd1T/gmIs9SU/Y9KcLqS4=
+	t=1770973827; cv=none; b=jTbcdGuoWNUIyxlKNeRu4jEGGU7guR5uRez39OkUgaM0vA5Z9X564wIPxFB7Jwd06cCjf+0EyhJJiH/ll4Xfhb7NeH6ohUSMu9KJAm8c/14SZCwNieUsGon2J9hP9F1iDe12ry/gabOiJwJrSCAhM3ni/T9ihmO5XP++4mbYZTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770965734; c=relaxed/simple;
-	bh=3f9GZhs53JjFf7w/T46dEHUkViopYFQYeFiwEdCKr0w=;
+	s=arc-20240116; t=1770973827; c=relaxed/simple;
+	bh=WLpab8z9L1FvsgPhhCAmW2PjbccD56OWmkO0q/7nCGI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dd+B270l1yW8x4QV1ikwL77M1cPztAQYqzUhsJUKU5NAY7RRsndckOOkI4g/pjBkUoRtF5UCEe7B4VaBVaVvhArYmnxXXRtfAUwz4LzBMHjbxm6QU0ZZMdvL1u6YSuStKz8D6ZyQ2m8BhfXEnK5176+aJ13VTMWCIo3gj2rNKqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=UCA+qTFV; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-46394090d2fso197202b6e.3
-        for <linux-hwmon@vger.kernel.org>; Thu, 12 Feb 2026 22:55:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1770965731; x=1771570531; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n4e7jAbKNE4bD+vS1RSy4Qf8lUvN6hPjXtNCjaFIu1w=;
-        b=UCA+qTFVBydZgkYJgznMmD1i7xYiaxuqGrR7dIZFt/yvsl4dp3xh7DGO3HSQbiRNIQ
-         V65lLe8M63SplU8I0fJoYQ8Ihctffs5OJi9ujtWPe+BcWAhrDffCmpv00tUgDZTs8iN+
-         8d5U1nfg940gfv0tTYJJ+RMszQVDW5dXdpZ0BwJ+3VF/mZfI3WrXesGzXjvsQfLjaVVe
-         rYPhWewlJLiszp9EyvY/nD4eH5zOsvCyM1esq69rLN8Ik2Hy2zyX7nIjvQajD5BIx6IW
-         GkCjtCfKAjPLkHKm2KEtzCe92bDOhKBiHVA7D9l5i19tCvQLyp5dbHKlSOdARtD7GYTW
-         7zvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770965731; x=1771570531;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=n4e7jAbKNE4bD+vS1RSy4Qf8lUvN6hPjXtNCjaFIu1w=;
-        b=bwrI9i3slaFJnbcKWXQR1BQ2Je7MLh8yozs3ST9qoXtYI8cBHPIsb7x0/2PQn3sE9G
-         iTkID2PH2ZHE8Sdjzns4dK9Y3fC6afEd3DSfm+76O+v+rqpHP/gEyZK/kTbP3vF5JdCn
-         u/lh56es5WhugsXtPeGhq05ngUyjFB53MSSZrnmrnfX+Ux90fx7QmeYu/hvecuyzdQhd
-         +MH/LNwHt0odrSAXFy+aTTQmTynaiUybJ23sdeKQJisKKRMNZzTQc7AAbeR9vjpecCRr
-         jrPhm3YGkUIlQgSTCxlrAcA34mUb0ROwxxFWMXJZMLNZeI5Vt8uCNfkXLSxLh67dgFTV
-         Mmgw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5YQgi1C+p4ZBWCdel7kK5eCLa2Kw7PkvPeZqWFjLhEPVWNutYZi4OAlFjg7zJWU+EC1L836U2dY8dvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxxu9Q7qqTpbBS/MUkx5JxojLQ/BV31WWa4SIBh8UrYD1M2SFHe
-	a2bcXRfg51uFnl24OjEDlWRXSH5UBBxd32xgTu+mNwC72kHZkxEU9ZwjZ81SHCk6cus=
-X-Gm-Gg: AZuq6aKo0v8RL+H1G3Dkqhx/0s8O9A4vXbla8jr2hnOR2sIFdAfmIAUTd6oQjjhuDpo
-	nheMz2a6G6LOktlzeRH5IUYncVQ9a6k5hV5EJ43E++C4q09J+czI3J1eL5FmO1nreKTKM2G2H7e
-	gnF9rkodB867sEYBCrIBEELSxAliOmTc3CXC83EFln8UE7IYUPYMPkCFVFgUi5UcMNphaVNgktt
-	drbhEhdjHIGk7e47dvjy4xsS/Jsl4zD7jMxcsMUU317EJDgaZwP0GRHE0bVSR5hRd6jRU7xzmvs
-	XuVZC8hMWF/ZTZ5U1yPkG5hwCkQzcOFWI7zetcuGfOrs5mASf1TbNaSjkiBrj5u5O26zHo/sR5X
-	PombGkL66eby/eckT+gy6jnyTeKFNpoDxr872d/e1UjUU8AOT38CS405eqf8xtxaCLx7rilMoJG
-	Qe0SGKylscGlE6ISISEyvlSVMWco20xccdmvownr3JX8ME/my88521oUr5ymJuxF4Rf1NdjKNLo
-	u1uh/MhQehQ5yA=
-X-Received: by 2002:a05:6808:ecb:b0:45e:dbc8:7b18 with SMTP id 5614622812f47-4639ef073b7mr528976b6e.13.1770965731453;
-        Thu, 12 Feb 2026 22:55:31 -0800 (PST)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:a3ab:7352:1dc1:6b46])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4a754b162sm5404924a34.12.2026.02.12.22.55.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 22:55:29 -0800 (PST)
-Date: Fri, 13 Feb 2026 00:55:25 -0600
-From: Corey Minyard <corey@minyard.net>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	Guenter Roeck <linux@roeck-us.net>, Igor Raits <igor@gooddata.com>,
-	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	Daniel Secik <daniel.secik@gooddata.com>,
-	Zdenek Pesek <zdenek.pesek@gooddata.com>,
-	Jiri Jurica <jiri.jurica@gooddata.com>,
-	Huisong Li <lihuisong@huawei.com>
-Subject: Re: [BISECTED - impi related]: acpi_power_meter: power*_average
- sysfs read hangs, mutex deadlock in hwmon_attr_show since v6.18.y
-Message-ID: <aY7K3cHE3dgnEC4L@mail.minyard.net>
-Reply-To: corey@minyard.net
-References: <1642aec8-e8c1-4ad4-a5b7-556feeedfd93@roeck-us.net>
- <CAJZ5v0i_BmeGROzQFpUCyF5MkA7sFkP3y8jjqH0mD2r2Wqj_xA@mail.gmail.com>
- <aYYPnATz1JakV3m7@mail.minyard.net>
- <CAJZ5v0h1irjy_ovyQw9ObGOTAUWajT_BK6u=rWQqR9awQBrY3A@mail.gmail.com>
- <CAK8fFZ4Ut6K-QGpy769_1N1K-GKpReo2wQgA=uXyXdGZ+QgGxA@mail.gmail.com>
- <CAJZ5v0hCEECyuAJZ4GAn=DeJR-UgtUXOMYYN9JQgEyghVnCYsw@mail.gmail.com>
- <aY4EUQcGbmT3Rexz@mail.minyard.net>
- <CAJZ5v0ip-Ke9p-2Qd9EQpp-J4Te53S4WsrJDeJPi_5o+U2_wNA@mail.gmail.com>
- <aY4dT-Mj5ZJIavdP@mail.minyard.net>
- <CAJZ5v0iS939x7VMQoNgks=Edichx2C+Qq8_kfiLpLh0ov=gwpw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fnoDnGWCLfIvQNySD0N6FVDaBYySFYFo9MbvKXU1xo2I5uY1CxZzVUEInHjybm6GXOlam2LOM/y1m7A91nlKOi6u01PW4wZfdwyFSuge3nnPtbCnVIc5dpT/cBmhrMIABfO+lEjqT5KRMRj47g06xQ4rDW2rn5Qo3O7K8SnfihM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TXfuSbD1; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770973826; x=1802509826;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WLpab8z9L1FvsgPhhCAmW2PjbccD56OWmkO0q/7nCGI=;
+  b=TXfuSbD1QLR+hpgbHX/VaXA/BZ59T9MGAorGpnPUCF9OVh5dJKfvfF60
+   PxZAzg74gUw+xXpCcNQ+x4WgflAQnaZImJLGH5+Tc7jtMR2DdSknkNkma
+   907bIZwHKOsTNrG1Fyp3LRJQ72rvzDb3PqNSfa/jOV6bTmNfcjATTH+kd
+   MS+rcZHSrvXWGmussGayHSmjSTl9TYhFZQHhwNqqGRPOTVx08jRUuGSs/
+   GyNGaLtuImgObdQhfyxbEPy69po0Xf0Q66+ZywxOlfwj4hVbxgW+YegZ1
+   k++uTIEifFFKy/JMBqXX+gLMn3NUDOgeN85oBBgn9ochKFbE3RaRWps5N
+   A==;
+X-CSE-ConnectionGUID: 0NgGteq2QDuZ4gagFfWtOw==
+X-CSE-MsgGUID: hxFOHue0Rs22QL4TgjIC1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="97614663"
+X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
+   d="scan'208";a="97614663"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2026 01:10:26 -0800
+X-CSE-ConnectionGUID: O0rARFFOQ0CiE6O9xfc6iQ==
+X-CSE-MsgGUID: K4gaZ9zgQ/WYA+DpW14OMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
+   d="scan'208";a="212117102"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 13 Feb 2026 01:10:23 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vqpBs-00000000vFs-1rlU;
+	Fri, 13 Feb 2026 09:10:20 +0000
+Date: Fri, 13 Feb 2026 17:10:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Stoyan Bogdanov <sbogdanov@baylibre.com>, jbrunet@baylibre.com,
+	linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stoyan Bogdanov <sbogdanov@baylibre.com>
+Subject: Re: [PATCH v2 1/3] hwmon: (pmbus/tps25990): Rework TPS25990 non
+ standatd direct conversion
+Message-ID: <202602131712.Lruy3UMc-lkp@intel.com>
+References: <20260213001408.2454567-2-sbogdanov@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -109,265 +86,89 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iS939x7VMQoNgks=Edichx2C+Qq8_kfiLpLh0ov=gwpw@mail.gmail.com>
+In-Reply-To: <20260213001408.2454567-2-sbogdanov@baylibre.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11716-lists,linux-hwmon=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-11711-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[corey@minyard.net];
-	RCVD_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,mail.minyard.net:mid,gooddata.com:email]
-X-Rspamd-Queue-Id: 4B4D3133502
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,01.org:url]
+X-Rspamd-Queue-Id: 7F6DE134506
 X-Rspamd-Action: no action
 
-On Thu, Feb 12, 2026 at 10:33:15PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Feb 12, 2026 at 7:35???PM Corey Minyard <corey@minyard.net> wrote:
-> >
-> > On Thu, Feb 12, 2026 at 06:22:08PM +0100, Rafael J. Wysocki wrote:
-> > > On Thu, Feb 12, 2026 at 5:48???PM Corey Minyard <corey@minyard.net> wrote:
-> > > >
-> > > > On Thu, Feb 12, 2026 at 01:27:41PM +0100, Rafael J. Wysocki wrote:
-> > > > > On Thu, Feb 12, 2026 at 10:11???AM Jaroslav Pulchart
-> > > > > <jaroslav.pulchart@gooddata.com> wrote:
-> > > > > >
-> > > > > > >
-> > > > > > > On Fri, Feb 6, 2026 at 4:58???PM Corey Minyard <corey@minyard.net> wrote:
-> > > > > > > >
-> > > > > > > > On Fri, Feb 06, 2026 at 01:08:56PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > On Thu, Feb 5, 2026 at 11:34???PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Thu, Feb 05, 2026 at 08:04:12PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > > Cc: Corey
-> > > > > > > > > > >
-> > > > > > > > > > > On Thu, Feb 5, 2026 at 6:51???PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > On Thu, Feb 05, 2026 at 08:25:57AM +0100, Igor Raits wrote:
-> > > > > > > > > > > > > On Wed, Feb 4, 2026 at 11:49???PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > On 2/4/26 11:54, Igor Raits wrote:
-> > > > > > > > > > > > > > > I have written a patch with the help of AI and it fixes the problem. Attached.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > "No MIME, no links, no compression, no attachments.  Just plain text"
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Sorry for that, I had assumed that attaching the file would make it in-line.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > > ... which means I can not provide inline feedback, which is the whole
-> > > > > > > > > > > > > > point of the above.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Your patch crosses subsystems, so it will need to be split in two
-> > > > > > > > > > > > > > (assuming the ACPI side is even needed). Also, references to iDRAC
-> > > > > > > > > > > > > > in common code seem inappropriate.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Yes, this I believe was the essential part (it was the last piece in
-> > > > > > > > > > > > > my testing which fixed the hanging):
-> > > > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > > > Then I'll need to ask differently: What happens if you drop the IPMI code,
-> > > > > > > > > > > > and just keep the wait_for_completion -> wait_for_completion_timeout
-> > > > > > > > > > > > change ? Would that be sufficient to solve the problem ?
-> > > > > > > > > > >
-> > > > > > > > > > > I'd rather say "Would that be sufficient to make the symptoms go
-> > > > > > > > > > > away?" as it most likely papers over the real problem.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > Good point. Worse, it may result in UAF or memory leaks.
-> > > > > > > > > >
-> > > > > > > > > > > > Either case, the need for this change suggests that the ipmi change
-> > > > > > > > > > > > may not be complete, since it should send a completion with an error.
-> > > > > > > > > > >
-> > > > > > > > > > > I think that reverting commit bc3a9d217755 ("ipmi:si: Gracefully
-> > > > > > > > > > > handle if the BMC is non-functional") should also be considered as a
-> > > > > > > > > > > possible way forward because it clearly did not improve things as
-> > > > > > > > > > > expected, at least in this particular case.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > I tend to agree. I ran a number of AI code reviews over the patch, and
-> > > > > > > > > > each time it finds new (and different) problems. The fact that the acpi
-> > > > > > > > > > patch is still needed even after applying the ipmi changes suggests that
-> > > > > > > > > > something is still missing in the ipmi code.
-> > > > > > > > > >
-> > > > > > > > > > > It evidently did something that confuses things quite a bit.  Either
-> > > > > > > > > > > it is returning IPMI_BUS_ERR instead of IPMI_ERR_UNSPECIFIED, or it is
-> > > > > > > > > > > the "hosed" state and refusing to accept messages.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > More than that. My latest AI results are below, just for reference
-> > > > > > > > > > (using Gemini 3 with Chris Mason's debug prompts). The prompt I used
-> > > > > > > > > > for this run is:
-> > > > > > > > >
-> > > > > > > > > Well, I guess it's time to send a revert patch then.
-> > > > > > > >
-> > > > > > > > Thanks for the CC.
-> > > > > > > >
-> > > > > > > > Let's fix it right in the IPMI driver.
-> > > > > > > >
-> > > > > > > > >
-> > > > > > > > > > "
-> > > > > > > > > > The top commit in the linux/ directory results in hung tasks if the BMC
-> > > > > > > > > > stops responding. Using @review-prompts/kernel/debugging.md analyze the
-> > > > > > > > > > patch, identify the reason for the hung task problem, suggest and implement
-> > > > > > > > > > a fix. Note that there may be more than one problem in the patch, so analyze
-> > > > > > > > > > the complete patch and do not stop after fiding the first regression.
-> > > > > > > > > > "
-> > > > > > > > > >
-> > > > > > > > > > I think that catches most of the problem, but not all of it.
-> > > > > > > > > >
-> > > > > > > > > > Guenter
-> > > > > > > > > >
-> > > > > > > > > > ---
-> > > > > > > > > >
-> > > > > > > > > > Summary of crash or warning:
-> > > > > > > > > > Hung task detected in ipmi_si driver when BMC becomes non-functional.
-> > > > > > > > > > Processes waiting for IPMI responses (e.g. ipmitool, monitoring agents) enter D state and never recover.
-> > > > > > > > > >
-> > > > > > > > > > Kernel version if available:
-> > > > > > > > > > Top of tree (commit bc3a9d217755f65c137f145600f23bf1d6c31ea9)
-> > > > > > > > > >
-> > > > > > > > > > Machine type if available:
-> > > > > > > > > > Generic Server with BMC
-> > > > > > > > > >
-> > > > > > > > > > Cleaned up copy of oops or stack trace:
-> > > > > > > > > > [  120.123456] INFO: task ipmitool:1234 blocked for more than 120 seconds.
-> > > > > > > > > > [  120.123457]       Not tainted 6.14.0-rc1 #1
-> > > > > > > > > > [  120.123458] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> > > > > > > > > > [  120.123459] task:ipmitool        state:D stack:    0 pid: 1234 ppid:  100 flags:0x00000000
-> > > > > > > > > > [  120.123460] Call Trace:
-> > > > > > > > > > [  120.123461]  <TASK>
-> > > > > > > > > > [  120.123462]  __schedule+0x123/0x456
-> > > > > > > > > > [  120.123463]  schedule+0x45/0x78
-> > > > > > > > > > [  120.123464]  schedule_timeout+0x9a/0xbc
-> > > > > > > > > > [  120.123465]  wait_for_completion+0xde/0xf0
-> > > > > > > > > > [  120.123466]  ipmi_request_settime+0x123/0x145
-> > > > > > > > > > [  120.123467]  ...
-> > > > > > > > > > [  120.123468]  </TASK>
-> > > > > > > > > >
-> > > > > > > > > > Any other kernel messages you found relevant:
-> > > > > > > > > > N/A
-> > > > > > > > > >
-> > > > > > > > > > Explanation of the problem:
-> > > > > > > > > > 1. Hung Task:
-> > > > > > > > > > The patch "ipmi:si: Gracefully handle if the BMC is non-functional" introduces a new state `SI_HOSED` to handle BMC failures. When the driver detects that the BMC is not responding, it transitions to `SI_HOSED` and fails the currently processing message (`curr_msg`). However, if a new message is queued via `sender()` (populating `waiting_msg`) during a recovery probe (state `SI_GETTING_FLAGS`), and that probe subsequently fails, the state machine transitions back to `SI_HOSED`. In this transition, the driver checks and fails `curr_msg`, but it neglects to check or fail `waiting_msg`. As a result, the `waiting_msg` remains in the queue indefinitely, causing the waiting process to hang.
-> > > > > > > > >
-> > > > > > > > > That's quite convincing and it would explain the observed symptoms.
-> > > > > > > >
-> > > > > > > > Yes, and it's a fairly easy fix, I think.  The waiting message just
-> > > > > > > > needs to be returned in that case.  The following patch should do it:
-> > > > > > >
-> > > > > > > Jaroslav, it would be good to test the patch below on top of 6.19.  I
-> > > > > > > can put it on a test git branch if need be, so please let me know.
-> > > > > > >
-> > > > > > > > diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > > > > index 5459ffdde8dc..ff159b1162b9 100644
-> > > > > > > > --- a/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > > > > +++ b/drivers/char/ipmi/ipmi_si_intf.c
-> > > > > > > > @@ -809,6 +809,12 @@ static enum si_sm_result smi_event_handler(struct smi_info *smi_info,
-> > > > > > > >                          */
-> > > > > > > >                         return_hosed_msg(smi_info, IPMI_BUS_ERR);
-> > > > > > > >                 }
-> > > > > > > > +               if (smi_info->waiting_msg != NULL) {
-> > > > > > > > +                       /* Also handle if there was a message waiting. */
-> > > > > > > > +                       smi_info->curr_msg = smi_info->waiting_msg;
-> > > > > > > > +                       smi_info->waiting_msg = NULL;
-> > > > > > > > +                       return_hosed_msg(smi_info, IPMI_BUS_ERR);
-> > > > > > > > +               }
-> > > > > > > >                 smi_mod_timer(smi_info, jiffies + SI_TIMEOUT_HOSED);
-> > > > > > > >                 goto out;
-> > > > > > > >         }
-> > > > > >
-> > > > > > I apply ^ patch to both 6.18.10 and 6.19 and reproduced the issue on
-> > > > > > both, so it does not fix the problem.
-> > > > >
-> > > > > Thanks!
-> > > > >
-> > > > > With all due respect to everyone involved (including the AI), this
-> > > > > means that we are not anywhere close to fixing the problem and it
-> > > > > would be a shame to ship 7.0 with it.
-> > > > >
-> > > > > I'm sending a revert patch shortly.
-> > > >
-> > > > Unfortunately, that patch fixed an issue others were having.
-> > >
-> > > Granted, it broke something else, so it needs to be fixed or reverted.
-> >
-> > Yes, certainly.
-> >
-> > >
-> > > Maybe there is a way to address the original problem fixed by it differently?
-> >
-> > I'm not sure.  This is not the first attempt...
-> 
-> I see.
-> 
-> > >
-> > > Do you have any pointers to any problem reports regarding that one?
-> >
-> > The original problem came as a patch set:
-> >
-> > https://lore.kernel.org/lkml/20221007092617.87597-1-zhangyuchen.lcr@bytedance.com/
-> >
-> > That had a lockup problem, and it had some other issues.  So I reworked
-> > the code to the current form.
-> 
-> OK, thanks!
-> 
-> > I'm working on qemu now.  This needs to be added as part of the test suite, anyway.
-> 
-> There is something in the current code that seems to be problematic.
-> 
-> When acpi_ipmi_space_handler() runs, it calls ipmi_request_settime()
-> to queue up a message.  AFAICS, if all goes well, this ends up calling
-> smi_send() via i_ipmi_request().
-> 
-> If intf->curr_msg is NULL, the new message will not be added to a list
-> in there, but intf->curr_msg will be set to point to it instead and
-> handlers->sender() will be called on it.  But handlers->sender points
-> to sender() defined in ipmi_si_intf.c which returns IPMI_BUS_ERR
-> without doing anything if smi_info->si_state == SI_HOSED and its
-> return value is ignored.
-> 
-> The message is only pointed to by intf->curr_msg at that point and
-> AFAICS it will never get actually processed because intf->curr_msg is
-> never really dereferenced (it is only compared with other pointers and
-> checked against NULL if I'm not mistaken).
-> 
-> It looks like smi_send() needs to check the handlers->sender() return
-> value and maybe return it to the caller so i_ipmi_request() can return
-> an error if it fails.
+Hi Stoyan,
 
-This was indeed an issue, and had to be handled correctly in a lot of
-places.  And there were other issues.  I tested a lot of different
-scenarios.
+kernel test robot noticed the following build errors:
 
-Patches are currently in my next tree
-https://github.com/cminyard/linux-ipmi.git for-next
-and I'll send emails with them, too.
+[auto build test ERROR on groeck-staging/hwmon-next]
+[also build test ERROR on linus/master v6.19 next-20260212]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I was able to reproduce the issue with qemu.  Assuming this works, next
-step is to automate the tests.
+url:    https://github.com/intel-lab-lkp/linux/commits/Stoyan-Bogdanov/hwmon-pmbus-tps25990-Rework-TPS25990-non-standatd-direct-conversion/20260213-081713
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
+patch link:    https://lore.kernel.org/r/20260213001408.2454567-2-sbogdanov%40baylibre.com
+patch subject: [PATCH v2 1/3] hwmon: (pmbus/tps25990): Rework TPS25990 non standatd direct conversion
+config: i386-randconfig-011-20260213 (https://download.01.org/0day-ci/archive/20260213/202602131712.Lruy3UMc-lkp@intel.com/config)
+compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260213/202602131712.Lruy3UMc-lkp@intel.com/reproduce)
 
--corey
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602131712.Lruy3UMc-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   ld: drivers/hwmon/pmbus/tps25990.o: in function `tps25990_value_to_raw':
+>> drivers/hwmon/pmbus/tps25990.c:86:(.text+0x1e3): undefined reference to `__udivdi3'
+   ld: drivers/hwmon/pmbus/tps25990.o: in function `tps25990_raw_to_value':
+   drivers/hwmon/pmbus/tps25990.c:68:(.text+0x4d8): undefined reference to `__udivdi3'
+
+
+vim +86 drivers/hwmon/pmbus/tps25990.c
+
+    74	
+    75	static unsigned int tps25990_value_to_raw(struct i2c_client *client, int param, int val)
+    76	{
+    77		struct tps25990_data *data = (struct tps25990_data *)of_device_get_match_data(&client->dev);
+    78		struct local_direct_value *info_local = data->info_local;
+    79	
+    80		/* Formula : Y = ( m * X + b) * 10^R */
+    81		val = (long)val * info_local->m[param] + info_local->b[param];
+    82	
+    83		if (info_local->R[param] >= 0)
+    84			val *= int_pow(10, info_local->R[param]);
+    85		else
+  > 86			val = DIV_ROUND_CLOSEST(val, int_pow(10, -info_local->R[param]));
+    87	
+    88		return val;
+    89	}
+    90	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
