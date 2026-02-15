@@ -1,63 +1,91 @@
-Return-Path: <linux-hwmon+bounces-11738-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11740-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 5WGoL2obkWndfAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11738-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Feb 2026 02:03:38 +0100
+	id MI6eIMXjkWmongEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11740-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Feb 2026 16:18:29 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2437613DD84
-	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Feb 2026 02:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2358C13F035
+	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Feb 2026 16:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4826301547E
-	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Feb 2026 01:03:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D04330180B5
+	for <lists+linux-hwmon@lfdr.de>; Sun, 15 Feb 2026 15:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4A418C2C;
-	Sun, 15 Feb 2026 01:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C732C032C;
+	Sun, 15 Feb 2026 15:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ElJmaown"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RytmHYpY"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C0617D2;
-	Sun, 15 Feb 2026 01:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCB3145A05
+	for <linux-hwmon@vger.kernel.org>; Sun, 15 Feb 2026 15:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771117414; cv=none; b=PH56YWY35QezsJN1+txKluAZAnVPTkIUfCHUduX9LRLPZdxW1BPAfklePbjnMFR6mrcu03olw+vf7ERXxNUZXD7/leaBFUIZEfZl/PCkrB2ulR4sWOE1FhCKsfc0NCwiyNPLmJKccM4y2ebdkYCO9KgzzX2mnrnu206a0/F47zs=
+	t=1771168684; cv=none; b=bZrJj8cH/XlLXcje9EL0A2omIfHO1eshX4xmU/MIs9Pgra26GTWxcRqN+46QczUws9g7o4XxpVpA3OFjqDVicatYNEhwLczP7F3roN0z7PcY55GUzvJVOGZ1QAu/4eQYjufkqw5m4FYdxp0inY43w6B5n9oXG0MmxqoTEd81QcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771117414; c=relaxed/simple;
-	bh=8TivcMWQmfsHiCVj2A/l4s6f90uWWyhRjy6jlPWIInQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eS98D1mv6sRn/Vbeb0+qoQHVauyPWHJY4dEAxYrBUY0Z85DRUaqcztZ5qNc7hAZAQwlfQUt9kr0x3OwlMLksSzftrtir2Kvo+BvvjznTcrficv4YeVW0yJ8WviwfTQroE5WrmPnZDghRNIwgy9zryDXXfHwXk5Ej8DM3KJSRxQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ElJmaown; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=lpgVmH6waGTwe1fTdaD02I3zX7MSJiXZIdVR5azzhN0=; b=ElJmaownwCJSB9safd4a0Iev5W
-	QBim9uPsKeZhb99KJkg/TjYm1KTL+M2IecaBoCbrX9pkQq0G7RItvCasohGIPpMzuNql8Y1KFXpi0
-	ZYhChh6h7P8itFBLncu5pXzMpfpGRtP/JN5hFb2pZJbxgn2a11pMJ31pMS+RVbXAhBhCpbtbRJtrQ
-	XFuIi7GEvNU8RDByV16JGqLfcezaM2R76QwxL60F7rqpaCYN6QgJ/xX1VUd6zHJW0F7q9gx93JsLm
-	42y/wgFD+zS4dIV13O7UVXT6EPtpc9gVga+jZ+CeRkLr8biwfRGRGzBAGPmeoRAtt7cvl7uqinlhf
-	PrVnb+/A==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vrQXo-000000054KH-2CFe;
-	Sun, 15 Feb 2026 01:03:28 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-doc@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
+	s=arc-20240116; t=1771168684; c=relaxed/simple;
+	bh=ZE5wO03ByAP6iG7XU89PRA8P8X3DWw2l1wy8NJLHmwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qOH2HyiACaZJH3jSCYZSrv2vpcsbRi+2sbEoU/ww0baatTg6Nns26cIP0lzAGyg9uMBV3y72TqrIfWkPMA+KnqPizSYHximOB4DNouXRayebAeq/BvkDvuNQPL+rgMGAiL0BXcqQ0Ii7/jPHZnK1zHUDrIS0tR5auvWy7p7jceM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RytmHYpY; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-482f454be5bso41314735e9.0
+        for <linux-hwmon@vger.kernel.org>; Sun, 15 Feb 2026 07:18:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771168680; x=1771773480; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wLLlHCS4a38rbIEKVaC1wzdp96LtY8Dp8FKU6XhKumE=;
+        b=RytmHYpY8zrb71cT/Rih4ewKpTyqSpIR8eXehd3/sSfLRU1CMDg0pefibTltFbmUFt
+         BpqU7gm66D0DQJwZjSXzlB/N8Xg9IWdjGDAKC+EznYhTdx78RxlfL3+FYWZgsZfM7kdx
+         8xHvhnYuSB+z0tLQZNw0W2jsGHepnzPr3hFJ7h55GSnigvlKCz3DLLE9Nh5J0QbnaSwd
+         Q7r2EPABCLnCLi6nsfztYfAVrzKXOlOtIBKl/7VpzeSjvSPW4Tje+bnr+vKCw2df/cnm
+         IbADcoHTBUnq2O1BtQyziQh2HSLu5Xjz3rnifHBYkZ9oZKWdKkUEFR45b2qHhGBsWEnn
+         rwZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771168680; x=1771773480;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wLLlHCS4a38rbIEKVaC1wzdp96LtY8Dp8FKU6XhKumE=;
+        b=b1CU/916RbOKDszA8tYu2uWMypRref5KmXuoLJ3oq83Ifyx93Rpt4opKh3auLd5Utc
+         iK2HFJP9b5zi8FzWqyoQURaEXjx3ZezkWxL/fZhccp2oOjX/Hs6kLwUU+t1mGxpOXBg5
+         eGoFU8JgagO1woZZK6BBpr6I//lcLz8083aZJWkgO6Z0kb53Oceq+k/gix4je74l/O74
+         CUC3N3foX/krhvqOrDf6DFYoGMC87UW/9IWQH+2e3DJUYujb1SrAQwDPCphjiJdJqQz5
+         Co9oGxp5P+gii2+CXetM2FAz37z5Fx6HzcnuRw9MpdC802295j4AXiXghfXd+n48qGWk
+         V0aA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBksWbJmelGz5HVtWjwE2kg2FRcrq07FQazL1eqxRJ38lE+twFM26MIdbLkqdFfHEUCwHTXU+5SuJFHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1p48jxsgjKieBNF/2hK9ExCdt92XPNzqDPjrd/2WgMvKLVUGY
+	IsCfYR6zxgsow0EnO7FbSusg4dBKUlyCe3mRB/so9J7HAUvKwWJ1pvby
+X-Gm-Gg: AZuq6aICRFbhtXhqrAJ9jgm9bbq9L4ZgEv8hIJ19up5WZSAaq+vQK1QVOnjGNuHxDny
+	WhFOeL77J0i+fAwjAAnS+YXiMOJpd2uoMxc1ohv+7M6fz+Hn2Q2MWXr0cOCGZdI5iAiZh7Z+glN
+	jTHCJCPCpYOH0AtMogqmwGbYgDbGjUfB7I7Taglf3SgQ+iE//GAi+044RIxhGr4SPvAkNt2LBKl
+	QFUzDOkc8HOz8XsRCn4cLn0ZmiaRLk3KF2vnPkSgeWz70GqNAX4rV0GMSnH/+OiVhIcJ7f/Y6RY
+	JWbmJkXLdNwAiLnH6bc5ZYnWrwsHsa7wG6nSkbaSw3gvk2cHF9iJEXCOmUcinYtERKOzhXpLeEn
+	IQz3v9U9WvmeyqRJ7mmFREyD96aANQJtLJn+gsr3zidwyfAmbSKLds3Vrx86NGqQdabd++8urnn
+	xnTjJl/OwT6u8NYap/cf59wzCG9EPQ4CUEobbIvpbAnw==
+X-Received: by 2002:a05:600c:8183:b0:479:1348:c63e with SMTP id 5b1f17b1804b1-48378d9ccc7mr97627215e9.9.1771168679774;
+        Sun, 15 Feb 2026 07:17:59 -0800 (PST)
+Received: from puma.museclub.art ([2a00:6020:b326:d300:d19:a765:d8d7:bedc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a29c13sm63668925e9.16.2026.02.15.07.17.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Feb 2026 07:17:59 -0800 (PST)
+From: Eugene Shalygin <eugene.shalygin@gmail.com>
+To: eugene.shalygin@gmail.com
+Cc: Varasina Farmadani <sina@sinanonym.my.id>,
 	Guenter Roeck <linux@roeck-us.net>,
-	linux-hwmon@vger.kernel.org,
-	Kalhan Trisal <kalhan.trisal@intel.com>,
 	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH] hwmon: (emc1403) correct a malformed email address
-Date: Sat, 14 Feb 2026 17:03:27 -0800
-Message-ID: <20260215010327.1687304-1-rdunlap@infradead.org>
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] hwmon: (asus-ec-sensors) add ROG STRIX X470-F GAMING
+Date: Sun, 15 Feb 2026 16:16:16 +0100
+Message-ID: <20260215151743.20138-1-eugene.shalygin@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -67,59 +95,89 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-11740-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-11738-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rdunlap@infradead.org,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[eugeneshalygin@gmail.com,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:url,linuxfoundation.org:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2437613DD84
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2358C13F035
 X-Rspamd-Action: no action
 
-Add a closing '>' to Kalhan's emaill address.
+From: Varasina Farmadani <sina@sinanonym.my.id>
 
-line 60:  Kalhan Trisal <kalhan.trisal@intel.com
+Add support for ROG STRIX X470-F GAMING
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Varasina Farmadani <sina@sinanonym.my.id>
+Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
 ---
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Cc: Kalhan Trisal <kalhan.trisal@intel.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
+ Documentation/hwmon/asus_ec_sensors.rst |  1 +
+ drivers/hwmon/asus-ec-sensors.c         | 10 ++++++++++
+ 2 files changed, 11 insertions(+)
 
- Documentation/hwmon/emc1403.rst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/Documentation/hwmon/asus_ec_sensors.rst b/Documentation/hwmon/asus_ec_sensors.rst
+index 8a080a786abd..84b92093771e 100644
+--- a/Documentation/hwmon/asus_ec_sensors.rst
++++ b/Documentation/hwmon/asus_ec_sensors.rst
+@@ -33,6 +33,7 @@ Supported boards:
+  * ROG STRIX B550-I GAMING
+  * ROG STRIX B650E-I GAMING WIFI
+  * ROG STRIX B850-I GAMING WIFI
++ * ROG STRIX X470-F GAMING
+  * ROG STRIX X470-I GAMING
+  * ROG STRIX X570-E GAMING
+  * ROG STRIX X570-E GAMING WIFI II
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index d4af5fdd28b1..cd706a602dc9 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -630,6 +630,14 @@ static const struct ec_board_info board_info_strix_b850_i_gaming_wifi = {
+ 	.family = family_amd_800_series,
+ };
+ 
++static const struct ec_board_info board_info_strix_x470_f_gaming = {
++	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
++		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT |
++		SENSOR_CURR_CPU | SENSOR_IN_CPU_CORE,
++	.mutex_path = ASUS_HW_ACCESS_MUTEX_ASMX,
++	.family = family_amd_400_series,
++};
++
+ static const struct ec_board_info board_info_strix_x470_i_gaming = {
+ 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
+ 		SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_VRM |
+@@ -851,6 +859,8 @@ static const struct dmi_system_id dmi_table[] = {
+ 					&board_info_strix_b650e_i_gaming),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX B850-I GAMING WIFI",
+ 					&board_info_strix_b850_i_gaming_wifi),
++	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX X470-F GAMING",
++					&board_info_strix_x470_f_gaming),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX X470-I GAMING",
+ 					&board_info_strix_x470_i_gaming),
+ 	DMI_EXACT_MATCH_ASUS_BOARD_NAME("ROG STRIX X570-E GAMING",
+-- 
+2.53.0
 
---- linux-next-20260213.orig/Documentation/hwmon/emc1403.rst
-+++ linux-next-20260213/Documentation/hwmon/emc1403.rst
-@@ -57,7 +57,7 @@ Supported chips:
- 	- https://ww1.microchip.com/downloads/en/DeviceDoc/EMC1438%20DS%20Rev.%201.0%20(04-29-10).pdf
- 
- Author:
--    Kalhan Trisal <kalhan.trisal@intel.com
-+    Kalhan Trisal <kalhan.trisal@intel.com>
- 
- 
- Description
 
