@@ -1,177 +1,208 @@
-Return-Path: <linux-hwmon+bounces-11825-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11826-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iA5nKmPAmWlDWgMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11825-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Feb 2026 15:25:39 +0100
+	id CLrmOJLCmWlhWgMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11826-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Feb 2026 15:34:58 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C705F16D04B
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Feb 2026 15:25:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB88D16D09E
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Feb 2026 15:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90C31300E164
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Feb 2026 14:25:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E91483002F68
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Feb 2026 14:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D15C1E0B9C;
-	Sat, 21 Feb 2026 14:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA53F1F1313;
+	Sat, 21 Feb 2026 14:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Cc7wubvG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TXwF0A3f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLdL/XwK"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C51156F20;
-	Sat, 21 Feb 2026 14:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DDF1DF965;
+	Sat, 21 Feb 2026 14:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771683935; cv=none; b=dVWawapUHDWFb0vV+S6gdePCjo2nykBh5ez8KbRWVKqectEcMkgL4Ig/nOhq8YOQWxAhrDddvoHSKasHhwfWz10HJ5DE5OCft/mtRtQ52jK8W+4BphyWyBEOzvoSp9Ljxm3YJ8aB9Wcvbhtke9P9xLq+GsdDMVdzwzDKqOrlZ+w=
+	t=1771684490; cv=none; b=m4A5n1pwUyWVZ7sqxjF1nGOIeLOyygOYYSdWRjXAla4u9fRjydS4EmXK0m47ZsZAiJVZSkkh0n1+LR3aNUoSfCsrB5mN0iSl0w8olgrGD4pIiBy71NhQBjVokqpxmp65LS5zxCexRGSOfq1bEohqic2SSPHE2Yt6+AoQQ2huK50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771683935; c=relaxed/simple;
-	bh=otMyq/aQ3qug49eFV1PgpQjmdBBXQNS8WTZj5UYz3/8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gxw7wZCVPrccLD9S5fR1BPnMmXq18YEaq99IpAK8oZmss0l25wfUMiL/Kt3fK5PsdyzWA5uOH3cPVc5ojT5XiItQqPeMjEzhgBcdCLO1xrOK8gXEAjpvIKyP4loNHEWGOhH/gDpWnjfFmlxCCVjSDOTbosbmqJCjyuxMJDr6hBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Cc7wubvG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TXwF0A3f; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8D9B114000AF;
-	Sat, 21 Feb 2026 09:25:32 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Sat, 21 Feb 2026 09:25:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1771683932;
-	 x=1771770332; bh=GFuuMBED/UJaIkcfl/purSOfaX3aDg7So0nftdQcupg=; b=
-	Cc7wubvGSlVCzIGR4PFcGRLjg2jbz0QNqUNGQCkKC8WxAK3FH0mRmvgWizTkEAdz
-	Zp6wvxCnfFVGHnTpEpm1YwNt3polZYWMky4g8jMaCmXTkOPslCwxY33A17nCzrb2
-	16zyofTpKb2jbJx2Bi5Ir65B9LDPzHM7+uX8xDvBoUWayfZDrJIpd6eFsiuDDxua
-	zHosKu9mHbtuxGBmdZPXhIX+PsbnZGZjMyx1rNgfrRykNBz4nLAw+kjmQa326Sar
-	5rE9HzpwU2G28EADonHnlqQl38wYau3P4atRGoddTTiH3HavaHmwOHy7I7A3Wf+f
-	+JYCmCzl4pJSvOBYmpojsA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771683932; x=
-	1771770332; bh=GFuuMBED/UJaIkcfl/purSOfaX3aDg7So0nftdQcupg=; b=T
-	XwF0A3fSWkILfVh8WoG70+zGpGTm0kSKrMh2KOla/rb07ZRFLoK335pvqL9d/IPY
-	9YHh8visIVsQHr6y4IXVgduOyyMONeYNKQ+sZrcyscNGN9McMmUIEXZQO//uFMGw
-	DoZRvfO+kLkNpbig+KElLU6+ZtvmUsfvOeCxbeY+HbPq5vO9MNUcIWv07NPuXoEH
-	yP/HRJyKeHcaU4fKvWDjAsiszodjbfZEF7SBCGQuZgXKZ9uL89Z/JjzDyz8Bcdy7
-	v3hdabEqMTXPCIY1yfWQhcTDfquZtotTKpb52FLnnx1/932brIzdrUx6dlyqJRy4
-	9edPA1/uUxFf77ZzB8yow==
-X-ME-Sender: <xms:W8CZadez4PC9mSPnfZ98qm2--th0e6uljFFDjREMi_IddhZFrvgVfg>
-    <xme:W8CZaWCQAol7kIkiPydT4f5zeW5UNZ6uMSyAfXF8fPoJlbAyqanYBPDkJYGMZJiBC
-    aFhxU9FDSJ-wFJDZN8l4KwRhheLqwM5YbDfPaVrGSkQLpCPilWlqfY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeduiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoh
-    epohhlthgvrghnvhesghhmrghilhdrtghomhdprhgtphhtthhopegvughumhgriigvthes
-    ghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgif
-    sehluhhnnhdrtghhpdhrtghpthhtohepuggrnhhivghlsehmrghkrhhothhophhirgdroh
-    hrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
-    lhhinhhugiesrhhovggtkhdquhhsrdhnvght
-X-ME-Proxy: <xmx:W8CZadY3GJ5GAkuESU9NxIfDG1aHqfh_p8GICEugtLki4_ZA_sBN8w>
-    <xmx:W8CZaayILHKj1rV30vE-eddt6J3Zda1tJh1-I6n--JO-UAf969JIpQ>
-    <xmx:W8CZacPaQEM5dmvyfubcJR9p7LITw2oNxou2nbHBjnsMF2ltfKYNPQ>
-    <xmx:W8CZaZf2WRLHfOamQj3U73JbfhpYx5XCo0lpmMC4A20b1OTs_WhBIw>
-    <xmx:XMCZaQ38u20kVn5RQMlbt38Cmi5PDgI-fmGfNd5oTIXo90RYtTydTrx3>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DA248700065; Sat, 21 Feb 2026 09:25:31 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1771684490; c=relaxed/simple;
+	bh=uiDkhV+WXlAlUF36ubrbVviYzpQ6flkteO6k9beBBi4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tLP1Vp/yMlck1/ubErvHrWFPnOP9YLz+WcnUK+rLFew/jtCvPKT9ST23ztVh5/A27fIrAab8s11OOA5a4zNTNzqK40G2YbpH0iTOWRbVP2koXHzkr0kEiGysmu67dgokPNpgZERv359n34vEGdzBTiAsn+97IWQD5zvMZrc7vuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLdL/XwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2F0C4CEF7;
+	Sat, 21 Feb 2026 14:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771684490;
+	bh=uiDkhV+WXlAlUF36ubrbVviYzpQ6flkteO6k9beBBi4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aLdL/XwK+yzpwIas66DU8JuurPGJOSOLidFB7MJfSE7yO9QJCg8YQo5GU6aIT/a6u
+	 7KvXxVwFVJghF7mcdKprGF3eDOPjNJQlNXA1Dym+qRq8LRA2qtOJMet8oTzj8L2n5o
+	 Xa0nezmC1e1jvrLbpMnvj+5At8bw5m/kr6wk8lQZFepjq+kwTY0Oo/30N5GFkfhGf8
+	 68AXmdYJVMQGFKnXZT8SCK1lc2aOG/LDnBxlc+nd3uXx4qjmj0ujX4Ofh80MzgK7uF
+	 krvrHI1SsmJppfYuZ4vKHWrLWx8z/wHMmrdNR5eC83zDRDEKCM+ZWnveuuUp/SxgJm
+	 CRg0TfWolebhw==
+Message-ID: <4a84d57c-ede6-4038-9883-42aeafce2687@kernel.org>
+Date: Sat, 21 Feb 2026 15:34:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ABuPgj6G8jlB
-Date: Sat, 21 Feb 2026 15:24:44 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Guenter Roeck" <linux@roeck-us.net>,
- "Daniel Golle" <daniel@makrotopia.org>
-Cc: "Arnd Bergmann" <arnd@kernel.org>, "Andrew Lunn" <andrew@lunn.ch>,
- "Vladimir Oltean" <olteanv@gmail.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, Netdev <netdev@vger.kernel.org>,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Message-Id: <3deb6138-e331-4e35-bc56-653a0a741a46@app.fastmail.com>
-In-Reply-To: <9d7aee5a-ac46-47d9-ac26-0f3a63b6a8ab@roeck-us.net>
-References: <20260216105522.2382373-1-arnd@kernel.org>
- <aZMKXavVQPelSXcG@makrotopia.org>
- <306e79fb-f3ee-434e-a90e-547e97d2a5aa@roeck-us.net>
- <c881a13a-0687-4e4d-b70b-900f91acd212@app.fastmail.com>
- <70a195ab-3b61-47fb-a361-17b53cf7bdda@roeck-us.net>
- <aZNEKS-fefEgqhTs@makrotopia.org>
- <316a6ee6-9e5e-4518-8dc4-2f39805934a9@app.fastmail.com>
- <9d7aee5a-ac46-47d9-ac26-0f3a63b6a8ab@roeck-us.net>
-Subject: Re: [PATCH] net: dsa: MxL862xx: don't force-enable MAXLINEAR_GPHY
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 1/2] dt-bindings: hwmon: add support for MCP998X
+To: Victor.Duicu@microchip.com
+Cc: corbet@lwn.net, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, linux-kernel@vger.kernel.org,
+ krzk+dt@kernel.org, linux-doc@vger.kernel.org, conor+dt@kernel.org,
+ Marius.Cristea@microchip.com
+References: <20260217-add-mcp9982-hwmon-v10-0-5e0aaae6f289@microchip.com>
+ <20260217-add-mcp9982-hwmon-v10-1-5e0aaae6f289@microchip.com>
+ <20260217-sincere-spotted-lionfish-d7abca@quoll>
+ <9a39d9f1d97eea245dd194a2db481297b92c6fbf.camel@microchip.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <9a39d9f1d97eea245dd194a2db481297b92c6fbf.camel@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm3,messagingengine.com:s=fm3];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-11825-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,redhat.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-11826-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C705F16D04B
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EB88D16D09E
 X-Rspamd-Action: no action
 
-On Sat, Feb 21, 2026, at 02:25, Guenter Roeck wrote:
-> On 2/16/26 08:27, Arnd Bergmann wrote:
->> On Mon, Feb 16, 2026, at 17:22, Daniel Golle wrote:
->>> On Mon, Feb 16, 2026 at 08:20:41AM -0800, Guenter Roeck wrote:
->> 
->> What I meant above is that I had considered and rejected the extra
->> dependencies in the ethernet driver. I don't think there is a good
->> way to add inline helpers. Technically, one could use IS_REACHABLE()
->> here, to stub out the functions when the caller is built-in, but
->> I find that even worse because it replaces a trivial build-time
->> failure with very subtle runtime bug.
->> 
->
-> Lots of kernel APIs have dummy implementations. hwmon isn't really that
-> different to those. Also, arguably, that would not be a subtle runtime
-> bug but a feature.
+On 20/02/2026 15:58, Victor.Duicu@microchip.com wrote:
+> Hi Krzysztof,
+> 
+>>
+>>
+>> ...
+>>
+>>
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - microchip,mcp9933
+>>> +      - microchip,mcp9933d
+>>> +      - microchip,mcp9982
+>>> +      - microchip,mcp9982d
+>>> +      - microchip,mcp9983
+>>> +      - microchip,mcp9983d
+>>> +      - microchip,mcp9984
+>>> +      - microchip,mcp9984d
+>>> +      - microchip,mcp9985
+>>> +      - microchip,mcp9985d
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  interrupts:
+>>
+>> Your interrupt-names say 1 item is correct, so these are de-synced.
+>> They
+>> should be always constrained the same way.
+>>
+> 
+> We want to allow the user to use none, one or both interrupts.
 
-I would argue that all of them are wrong. I currently count 33 uses
-of IS_REACHABLE() in header files, which is not a lot, but I would
-prefer replacing these with proper Kconfig dependencies than to
-add more for cases we already handle correctly.
+Who is the "user" here? IOW, can the *hardware* work correctly without
+the interrupt line connected anywhere?
 
-     Arnd
+> It was my mistake to set maxItems instead of minItems to interrupts.
+> Do you find the following approach agreeable?
+> 
+>   interrupts:
+>     minItems: 1
+
+missing maxItems
+
+> 
+>   interrupt-names:
+>     minItems: 1
+>     items:
+>       - enum: [alert-therm, therm-addr, sys-shtdwn]
+>       - enum: [therm-addr, sys-shtdwn]
+
+If any combination is allowed, then it is correct code.
+
+> 
+> ...
+> 
+> Thank you for your reply,
+> Victor
+
+
+Best regards,
+Krzysztof
 
