@@ -1,314 +1,178 @@
-Return-Path: <linux-hwmon+bounces-11892-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11897-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIYzBnW7nmnwWwQAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11892-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Feb 2026 10:05:57 +0100
+	id GN4ZOzrDnmkuXQQAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11897-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Feb 2026 10:39:06 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D041949DB
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Feb 2026 10:05:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EE519524C
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Feb 2026 10:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4BA99303ADB4
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Feb 2026 09:04:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5104A30967DF
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Feb 2026 09:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12543644A2;
-	Wed, 25 Feb 2026 09:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2053638E11E;
+	Wed, 25 Feb 2026 09:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RuXe0sxu"
+	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="f9oUVzbc"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0F83624C8;
-	Wed, 25 Feb 2026 09:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD9672627
+	for <linux-hwmon@vger.kernel.org>; Wed, 25 Feb 2026 09:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010265; cv=none; b=Q4VxQouKyYKNWf7qfiX5jT1pRQZVRj4SQbSG8BV9Nxl9fw6JOLGr6OR5x40ZJeFKsLwqrZF7MO1xSsCmOkG/xs4UFOOnLTLZsK+usU5Y1E00WdY4HdNnoaoqCtKZUVssQih+/bEtS9mvMl36drWchsRSxuLVGZx+dzLWvpN0qD0=
+	t=1772011767; cv=none; b=XuYbY1IZa6zhN4nw8a0LzlDNdZ3JIeB1ufV+MJBnJxFTRaWsQnoklarw2sKZ4W4JcL7bvS0391YU9BxdTqib8VEA8jEMen7ajQ26ErGQm66evNR7oR74KkC91B2prXcIkObimqdbpKFYnsIa6NAZsuv/srxWMneMFTVdpXdkNsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010265; c=relaxed/simple;
-	bh=Gt75cHT6L5cWi+x7dEuEj42L4ZWqSz69H0wXJAxT940=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=d9QhlF5m++cDlDttbtGCdQu2dQld6MTVZiJfANejV8bic8FRtVyPk0FXuDcqTDOmBirs8brDk8R+yFvAWem+Y3v4EJIDcgq9sHqRs9MGhVBcWcLMau71qvLiB2BTuSv3enxjJxbIQdHhMxKJZMO85E1+CHEYJjP6S9cRLx6mw1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RuXe0sxu; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=Ifg6aglyA5pgVBE
-	3C7J7/qZP05v0Bp5pksaS0RkFfIk=; b=RuXe0sxud9mWaLcAg5gx9TyIpDMN6Vm
-	nzgixAGNCVkNsBcd8AtCV9/klzvf57ctJGM49TKI0aRaV6LsLXktFfUvu5d2+RLy
-	MSE7a1dcPGMoA8/spfiy/90FUWP0MhMCKx/tT3jc6zu3oTg8nf3WYaxEVz9kkq9G
-	aTSgewqhdu6Q=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3N4nlup5pilgzMg--.30498S10;
-	Wed, 25 Feb 2026 17:03:45 +0800 (CST)
-From: Wenliang Yan <wenliang202407@163.com>
-To: linux@roeck-us.net,
-	Jean Delvare <jdelvare@suse.com>
-Cc: Wenliang Yan <wenliang202407@163.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 8/8] hwmon: (ina3221) Modify write/read functions for 'in' and 'curr' attribute
-Date: Wed, 25 Feb 2026 04:03:24 -0500
-Message-Id: <20260225090324.112145-9-wenliang202407@163.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260225090324.112145-1-wenliang202407@163.com>
-References: <20260225090324.112145-1-wenliang202407@163.com>
-X-CM-TRANSID:_____wD3N4nlup5pilgzMg--.30498S10
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Gr4UWFW7tryxXr4ruFWxWFg_yoWxWw1fp3
-	y5CFWrtrWjq3WSgrWIkFs8WFn8trWxW3y2yryDK39YvF4UAr909F95G3Wq9a45Cr93XF4x
-	J3y7trWUua1DtFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUXeOdUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbC5xLswGmeuvIyLgAA36
+	s=arc-20240116; t=1772011767; c=relaxed/simple;
+	bh=zR3niyRBpiKpurs1dczTgt7o9pgCj8N5Cp38Sp6DFbg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M8OVyGvDD9mUKzX5VqTArb4U82QBhzcJ3270jqVY8JiBpAW62gBGJnEaIgNcFfsygpslX/EJH3/pILHmIRWlMaXuoSxiRi284cdGwcmxeouNmbbWnN1Ez6xH18uzHInhKAWNSw3hcVTeHOfiNX6L3QmMkQZhJX5py089Pd7E3/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=f9oUVzbc; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flipper.net
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-436234ef0f0so4378103f8f.1
+        for <linux-hwmon@vger.kernel.org>; Wed, 25 Feb 2026 01:29:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flipper.net; s=google; t=1772011764; x=1772616564; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=33V8jmhyWf3FJayStb/RFEHOZof6HOLk7BpuerYJxU4=;
+        b=f9oUVzbcNUaCCUp8szbi//rmmmtY3Awf0hbhSRkl7dXeOmzmgo7mUVVX0TB/zCOfZX
+         2iiu95OzZSO/S8c7oFaYH6yyjZxfkImc2QKNq2ykOuoUw5mLGOM5N4RnXKCk2Ic3Aytu
+         1cry6AlfWhtpxVk0ZwekJw736+LFvMXVMWiPcKiwUK0h8VxGrCyxPSUgcTHN7FhlaEo6
+         OtPqf9TnIS4+f3cH4JFJMCwCfQwZecuB842drm1OShhl+VqPQauZIzbpVYfmQCPi2eY+
+         AzwB3sAxVJdFLxWbYOUC8BWLfh3MHCgdeLKwPmYmKuXKHT8/bcKTAELovhzafXe7G8Jc
+         +Bag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772011764; x=1772616564;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=33V8jmhyWf3FJayStb/RFEHOZof6HOLk7BpuerYJxU4=;
+        b=Y6K2AT4I9CiLG1dypGANAxxw7pQnfWZAmHko2X3Zesm9UHqQ6ZcyVdCCR2fVGbPUzL
+         xT6eE2ihOvyjdPrrvMiEyUVufcXbGzQ25LOukgdlCDOat9LB7gnxHgKhfjKcWNdMLONb
+         mb+krKCb4R4mLvYQggVHChPLqLypyQw/rDTmy8gEHm+H2y5f0c+WgUX4H7fJgauxI/Eo
+         uNeKuc6mhWB+IVzTTqgRrH3z5IPFAmIFUASlUQT2iontQkfp1Y2yfsGKJxJ7HTzGiNVN
+         PxAwAvRsxWudyDAuqzbooAZ6yxKrVn+Fu41+GPLzZ/7nAP1IVl3a/n6QbDI63LKMfrXy
+         Vzkg==
+X-Gm-Message-State: AOJu0YwCnDkdXwvBEyo9MstJvGyfQ5bGdvAoXe1hj0NL1y/74s42mD3F
+	63hz2wKXm713Ap5eHN0nvs3fv0guFCvtE1iyXjskmZcFaY1JfOvpd/zFdKJ563XmDaA=
+X-Gm-Gg: ATEYQzx6LNQFmI1ECaDC4doI68c9goE7utByEZoaEh5D6/LywHyDcOFUjdI/tWCQP9Q
+	5jXKMdP10arzWVg+PpD8dmqJYy+PvHN/Sqy5pyUS9YfbchWOgWMyLBy4Y+zL+ky7cdPouB/zGtU
+	ofguh91AKj+kvtKK6LVTQ5JIMunik1F1sbIhSCYrdST/X2K5t3122Y5fctW7NNG1SbbyWSSG3f9
+	5SUmgmPqIVzD94uWeDcG9HmDjOqQuJDptYb8s2vQiMBv0I8B+t6uw1YwcV8UeytdfpE9wj/V6DC
+	XzT2UzA/Nzb8LLxZVMLNsR1ngB/UQgPwMT0sQalq74h2gL7wdVUxMkZwnaUMNWrPTLNd7O4Q7Xc
+	rvYPTf4SyTDSXWOnXgM5nGKgnwkI6Rlqz9mMqWqmu8PyyYwzftUwJOeXvEd71RIgR55Ye0oug8X
+	wlGNlQaW9YcX8NrqaJA09cB+1TTx4N7Ca5qN7poyZGSC/CpJPYuZqfxNm9Rf65vWf6Cj1OpCIYM
+	d8=
+X-Received: by 2002:a05:6000:615:b0:432:84f9:8bf9 with SMTP id ffacd0b85a97d-4396f194d4emr26153557f8f.57.1772011763625;
+        Wed, 25 Feb 2026 01:29:23 -0800 (PST)
+Received: from alchark-surface.localdomain (bba-94-59-44-101.alshamil.net.ae. [94.59.44.101])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d54c5csm33027463f8f.38.2026.02.25.01.29.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 01:29:23 -0800 (PST)
+From: Alexey Charkov <alchark@flipper.net>
+Subject: [PATCH 0/2] Add support for Texas Instruments INA4230 power
+ monitor
+Date: Wed, 25 Feb 2026 13:29:10 +0400
+Message-Id: <20260225-ina4230-v1-0-92b1de981d46@flipper.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAObAnmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDI0NL3cy8RBMjYwNdc5NEAyMTA0tDU+MUJaDqgqLUtMwKsEnRsbW1AEG
+ LzxJZAAAA
+X-Change-ID: 20260219-ina4230-74a02409153d
+To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexey Charkov <alchark@flipper.net>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1800; i=alchark@flipper.net;
+ h=from:subject:message-id; bh=zR3niyRBpiKpurs1dczTgt7o9pgCj8N5Cp38Sp6DFbg=;
+ b=owGbwMvMwCW2adGNfoHIK0sZT6slMWTOO/Dlm4joA6XOiBMCgUaqj17He0rYbMpK+fjv/uf4P
+ IsJ/VvXdUxkYRDjYrAUU2SZ+22J7VQjvlm7PDy+wsxhZQIZIi3SwAAELAx8uYl5pUY6Rnqm2oZ6
+ hoY6xjpGDFycAjDVf8UZGea9qJj75Hojo9LpPdOXJxxdfU3J9etbK4nrHyzaPHo2dpsz/K/o3Pb
+ P84o215PHEtV749pXnEqxMlrGrSy71fSqyIpDAQwA
+X-Developer-Key: i=alchark@flipper.net; a=openpgp;
+ fpr=9DF6A43D95320E9ABA4848F5B2A2D88F1059D4A5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[flipper.net,quarantine];
+	R_DKIM_ALLOW(-0.20)[flipper.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[163.com,kernel.org,lwn.net,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-11892-lists,linux-hwmon=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wenliang202407@163.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[flipper.net:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11897-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alchark@flipper.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 75D041949DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,flipper.net:mid,flipper.net:dkim,flipper.net:email]
+X-Rspamd-Queue-Id: 69EE519524C
 X-Rspamd-Action: no action
 
-Modified the relevant read/write functions for 'in' and 'curr' attributes,
-adding support for crit, lcrit, crit_alarm, and lcrit_alarm features.
+TI INA4230 is a 4-channel power monitor with I2C interface, similar in
+operation to INA3221 (3-channel) and INA219 (single-channel) but with
+a different register layout, different alerting mechanism and slightly
+different support for directly reading calculated current/power/energy
+values (pre-multiplied by the device itself and needing only to be scaled
+by the driver depending on its selected LSB unit values).
 
-Signed-off-by: Wenliang Yan <wenliang202407@163.com>
+In this initial implementation, the driver supports reading voltage,
+current, power and energy values, but does not yet support alerts, which
+can be added separately if needed. Also the overflows during hardware
+calculations are not yet handled, nor is the support for the device's
+internal 32-bit energy counter reset.
+
+An example device tree using this binding and driver is available at [1]
+(not currently upstreamed, as the device in question is in engineering
+phase and not yet publicly available)
+
+[1] https://github.com/flipperdevices/flipper-linux-kernel/blob/flipper-devel/arch/arm64/boot/dts/rockchip/rk3576-flipper-one-rev-f0b0c1.dts
+
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
 ---
- drivers/hwmon/ina3221.c | 109 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 102 insertions(+), 7 deletions(-)
+Alexey Charkov (2):
+      dt-bindings: hwmon: Add DT schema for TI INA4230
+      hwmon: Add support for TI INA4230 power monitor
 
-diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
-index f32f0f18e9b8..bb01a698ebe6 100644
---- a/drivers/hwmon/ina3221.c
-+++ b/drivers/hwmon/ina3221.c
-@@ -142,6 +142,12 @@ static const u8 limit_regs[] = {
- 	SQ52210_ALERT_LIMIT3,
- };
- 
-+static const u8 alert_flag[] = {
-+	F_AFF1,
-+	F_AFF2,
-+	F_AFF3,
-+};
-+
- /**
-  * struct ina3221_input - channel input source specific information
-  * @label: label of channel input source
-@@ -446,6 +452,42 @@ static int ina3221_read_in(struct device *dev, u32 attr, int channel, long *val)
- 	case hwmon_in_enable:
- 		*val = ina3221_is_enabled(ina, channel);
- 		return 0;
-+	case hwmon_in_crit:
-+	case hwmon_in_lcrit:
-+		/* Only for Bus Voltage */
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+		if (!ina3221_is_enabled(ina, channel))
-+			return -ENODATA;
-+
-+		reg = limit_regs[channel];
-+		ret = ina3221_read_value(ina, reg, &regval);
-+		if (ret)
-+			return ret;
-+		/*
-+		 * Scale of bus voltage (mV): LSB is 8mV
-+		 */
-+		*val = regval * 8;
-+		return 0;
-+	case hwmon_in_crit_alarm:
-+	case hwmon_in_lcrit_alarm:
-+		/* Only for Bus Voltage */
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+		/* No actual register read if channel is disabled */
-+		if (!ina3221_is_enabled(ina, channel)) {
-+			/* Return 0 for alert flags */
-+			*val = 0;
-+			return 0;
-+		}
-+
-+		reg = alert_flag[channel];
-+		ret = regmap_field_read(ina->fields[reg], &regval);
-+		if (ret)
-+			return ret;
-+		*val = regval;
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -457,8 +499,16 @@ static const u8 ina3221_curr_reg[][INA3221_NUM_CHANNELS + 1] = {
- 	[hwmon_curr_max] = { INA3221_WARN1, INA3221_WARN2, INA3221_WARN3, 0 },
- 	[hwmon_curr_crit] = { INA3221_CRIT1, INA3221_CRIT2,
- 			      INA3221_CRIT3, INA3221_CRIT_SUM },
-+	[hwmon_curr_lcrit] = { SQ52210_ALERT_LIMIT1, SQ52210_ALERT_LIMIT2,
-+			      SQ52210_ALERT_LIMIT3, 0 },
- 	[hwmon_curr_max_alarm] = { F_WF1, F_WF2, F_WF3, 0 },
- 	[hwmon_curr_crit_alarm] = { F_CF1, F_CF2, F_CF3, F_SF },
-+	[hwmon_curr_lcrit_alarm] = { F_AFF1, F_AFF2, F_AFF3, 0 },
-+};
-+static const u8 sq52210_curr_reg[INA3221_NUM_CHANNELS] = {
-+	SQ52210_CURRENT1,
-+	SQ52210_CURRENT2,
-+	SQ52210_CURRENT3
- };
- 
- static int ina3221_read_curr(struct device *dev, u32 attr,
-@@ -467,6 +517,7 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
- 	struct ina3221_input *input = ina->inputs;
- 	u8 reg = ina3221_curr_reg[attr][channel];
-+	bool has_current_reg = ina->config->has_current_reg;
- 	int resistance_uo, voltage_nv;
- 	int regval, ret;
- 
-@@ -489,10 +540,20 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 			if (ret)
- 				return ret;
- 		}
-+		if (has_current_reg == true) {
-+			reg = sq52210_curr_reg[channel];
-+			ret = ina3221_read_value(ina, reg, &regval);
-+			if (ret)
-+				return ret;
-+			/* Return current in mA */
-+			*val = DIV_U64_ROUND_CLOSEST((u64)regval * (u64)ina->current_lsb_uA, 1000);
-+			return 0;
-+		}
- 
- 		fallthrough;
- 	case hwmon_curr_crit:
- 	case hwmon_curr_max:
-+	case hwmon_curr_lcrit:
- 		if (!resistance_uo)
- 			return -ENODATA;
- 
-@@ -507,6 +568,7 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 		return 0;
- 	case hwmon_curr_crit_alarm:
- 	case hwmon_curr_max_alarm:
-+	case hwmon_curr_lcrit_alarm:
- 		/* No actual register read if channel is disabled */
- 		if (!ina3221_is_enabled(ina, channel)) {
- 			/* Return 0 for alert flags */
-@@ -617,7 +679,9 @@ static int sq52210_alert_limit_write(struct ina3221_data *ina,
- 		 * For SUL configuration, directly convert it to current
- 		 * settings implemented in the ina3221_write_curr function.
- 		 */
--		return -EOPNOTSUPP;
-+		alert_mask = BIT(15 - channel);
-+		regval = val;
-+		break;
- 	case SQ52210_ALERT_BOL:
- 		/* BOL: Bus Over Limit - BIT(12), BIT(11), BIT(10) */
- 		alert_mask = BIT(12 - item);
-@@ -711,12 +775,18 @@ static int ina3221_write_curr(struct device *dev, u32 attr,
- 	struct ina3221_input *input = ina->inputs;
- 	u8 reg = ina3221_curr_reg[attr][channel];
- 	int resistance_uo, current_ma, voltage_uv;
--	int regval;
-+	int regval, ret;
- 
--	if (channel > INA3221_CHANNEL3)
--		resistance_uo = ina->summation_shunt_resistor;
--	else
-+	if (attr == hwmon_curr_lcrit) {
-+		if (channel > INA3221_CHANNEL3)
-+			return -EOPNOTSUPP;
- 		resistance_uo = input[channel].shunt_resistor;
-+	} else {
-+		if (channel > INA3221_CHANNEL3)
-+			resistance_uo = ina->summation_shunt_resistor;
-+		else
-+			resistance_uo = input[channel].shunt_resistor;
-+	}
- 
- 	if (!resistance_uo)
- 		return -EOPNOTSUPP;
-@@ -747,7 +817,12 @@ static int ina3221_write_curr(struct device *dev, u32 attr,
- 	else
- 		regval = DIV_ROUND_CLOSEST(voltage_uv, 5) & 0xfff8;
- 
--	return regmap_write(ina->regmap, reg, regval);
-+	if (attr == hwmon_curr_lcrit)
-+		ret = sq52210_alert_limit_write(ina, SQ52210_ALERT_SUL, channel, regval);
-+	else
-+		ret = regmap_write(ina->regmap, reg, regval);
-+
-+	return ret;
- }
- 
- static int ina3221_write_enable(struct device *dev, int channel, bool enable)
-@@ -798,6 +873,26 @@ static int ina3221_write_enable(struct device *dev, int channel, bool enable)
- 	return ret;
- }
- 
-+static int ina3221_write_in(struct device *dev, u32 attr, int channel, long val)
-+{
-+	struct ina3221_data *ina = dev_get_drvdata(dev);
-+
-+	if (attr == hwmon_in_lcrit || attr == hwmon_in_crit)
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+	switch (attr) {
-+	case hwmon_in_lcrit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BUL, channel, val);
-+	case hwmon_in_crit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BOL, channel, val);
-+	case hwmon_in_enable:
-+		return ina3221_write_enable(dev, channel, val);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int ina3221_write_power(struct device *dev, u32 attr, int channel, long val)
- {
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
-@@ -847,7 +942,7 @@ static int ina3221_write(struct device *dev, enum hwmon_sensor_types type,
- 		break;
- 	case hwmon_in:
- 		/* 0-align channel ID */
--		ret = ina3221_write_enable(dev, channel - 1, val);
-+		ret = ina3221_write_in(dev, attr, channel - 1, val);
- 		break;
- 	case hwmon_curr:
- 		ret = ina3221_write_curr(dev, attr, channel, val);
+ .../devicetree/bindings/hwmon/ti,ina4230.yaml      | 128 +++
+ MAINTAINERS                                        |   6 +
+ drivers/hwmon/Kconfig                              |  11 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/ina4230.c                            | 997 +++++++++++++++++++++
+ 5 files changed, 1143 insertions(+)
+---
+base-commit: 3ef088b0c5772a6f75634e54aa34f5fc0a2c041c
+change-id: 20260219-ina4230-74a02409153d
+
+Best regards,
 -- 
-2.17.1
+Alexey Charkov <alchark@flipper.net>
 
 
