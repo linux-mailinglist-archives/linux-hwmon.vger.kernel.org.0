@@ -1,57 +1,57 @@
-Return-Path: <linux-hwmon+bounces-11953-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11954-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KORHFfSdo2k3IQUAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11953-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sun, 01 Mar 2026 03:01:24 +0100
+	id 0LmDATSko2mRIwUAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11954-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sun, 01 Mar 2026 03:28:04 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCBB71CCA07
-	for <lists+linux-hwmon@lfdr.de>; Sun, 01 Mar 2026 03:01:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638461CD923
+	for <lists+linux-hwmon@lfdr.de>; Sun, 01 Mar 2026 03:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03E1130A4CFB
-	for <lists+linux-hwmon@lfdr.de>; Sun,  1 Mar 2026 01:55:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 881183560F3A
+	for <lists+linux-hwmon@lfdr.de>; Sun,  1 Mar 2026 02:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A577830BB9D;
-	Sun,  1 Mar 2026 01:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3403093DD;
+	Sun,  1 Mar 2026 02:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4MQ7EKn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6dH7sCv"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823151DF271;
-	Sun,  1 Mar 2026 01:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A46C2F5328;
+	Sun,  1 Mar 2026 02:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330054; cv=none; b=qzXB/Ak6f9/tcKhz5o/H7rhw1U6YGYmwOeWIIjk15L4RZGUgQINxJvpFxkLKfkGOp72KIRDF3FwxVXWpxBJLYol8gTB6FswI/X96TWVN9zO7fnyPWKAiomPl8uQJoJEyql/rbDNcZYRXigSEG6uAP2TqIaE7iUWH//ZBes7UPKM=
+	t=1772330634; cv=none; b=XpZCS40A64/HHM6CZ4wUpcSJ1bHBrEna61zwvdyYTQuZQBChi2HPIob0azHj03yfM5yDF3vgsGKYgXWWOsgWqVRNpxW3HB1KtNNt0p4gGKPTwtI663Mkk5rBieJ8qMvjw3WUuOxUkikjJNg3k8f4M6ePsy6TzDzoJJ28KEdY9wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330054; c=relaxed/simple;
-	bh=iObxE+O0WGH08E9ThUVOzRAODclGMmtshIzKWWb3qh4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RwN8Kr1EAVA7byKCROJ4LiQmz/L6prgq195aZlPPvVMNbNxAw71OjLy77TDG1Lz3xOT9r8mL+AC8sjx1FeKplL+ynyTuNwwXNCI0LaJQzYi+qbAP4j9SmCWqi+pIb4QCG/dOofk8gl6723rAmBkpN7tKbNHYCZXqiaIEIYw8jzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4MQ7EKn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB63FC2BC86;
-	Sun,  1 Mar 2026 01:54:13 +0000 (UTC)
+	s=arc-20240116; t=1772330634; c=relaxed/simple;
+	bh=rRPcM1BAQQNH5zz5exxMjHwjJeWElTjlzdv8SnstOC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OgjUdeO58xQzlcurOsOj/CzyP/gOL4JgIQgh4IG3FxLUYDBbiCxZ6LosK6vqIS2gsNcXBYMg6C980KNWSiJjqc6LeODSBkfycffGmzhzO+85VdDJ9UPQFckkPwR/O+W4t0pnyDQ+TYbtx2aKUyKoHda0De6uM09NVnfPbq5xSYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6dH7sCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1980C19421;
+	Sun,  1 Mar 2026 02:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330054;
-	bh=iObxE+O0WGH08E9ThUVOzRAODclGMmtshIzKWWb3qh4=;
+	s=k20201202; t=1772330634;
+	bh=rRPcM1BAQQNH5zz5exxMjHwjJeWElTjlzdv8SnstOC8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=W4MQ7EKnRWj/bPWgvui6HR91qBg08Rqi2bYZMLahc5ihS+StyYCNZIz1ajVVNTOrp
-	 gv2H7E2dyATL3N+gnxdpBgwI9Gv/CRFRKgPLTKVwX8oVk0y9JBYW6VzUZYGDLRndv0
-	 9jNFOCEt/glCB496dXaQltufe7+FppgRMkgf32TnNT8DsBS4Povpe0Lb5HtDvg3DlQ
-	 L+3qWxrWstNWyG0gwXGMOGl/VwJvZPixRJ0k2k3PF3/E5hyZkC7H45ZYC5IXG/whdy
-	 5B0cobVhJUevklb7vkwmb3v4rhEzB9y72u067OLvVdcge2hxJ35pZ8h7N1feiGwDVy
-	 tx4pJVBMObQUQ==
+	b=R6dH7sCv/12xjSPaPe2Dx/uuGd/W9P6e1sRMBbB8WwtmK8xb3u4xD4BuBYWKQIDVb
+	 Xqz8kp8voM66StYCkCuoM7fAhwkMEdmjCvz6C7Zm2eWknTwD2SFDQBjUCz9QZkg48U
+	 hJZiBCTzuRWKWDHHUhDwb+b1mDT9KsMxWUD8gwsFtjkIFP5ewhF8t1rcRu4N3s6Hfz
+	 n9dquwk1rEVTdwJSMPjiDJ0MyKg27lSXhZ4PD3v9WBWGkMMRM4NcnzqEKeOyw9IXXw
+	 bIRryCj/02lX3eb3vQbp1g+WfdMbU2nhV4BxTpCKadFuLpsce6Y2o6eRc5Eajj++4y
+	 dfJBh9MgLaMIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	hanguidong02@gmail.com
 Cc: Ben Hutchings <ben@decadent.org.uk>,
 	Guenter Roeck <linux@roeck-us.net>,
 	linux-hwmon@vger.kernel.org
-Subject: FAILED: Patch "hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:54:12 -0500
-Message-ID: <20260301015412.1721158-1-sashal@kernel.org>
+Subject: FAILED: Patch "hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race" failed to apply to 5.10-stable tree
+Date: Sat, 28 Feb 2026 21:03:52 -0500
+Message-ID: <20260301020352.1732034-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -66,35 +66,34 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-11953-lists,linux-hwmon=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-11954-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,decadent.org.uk:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: CCBB71CCA07
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 638461CD923
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
