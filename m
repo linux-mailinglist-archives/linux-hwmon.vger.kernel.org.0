@@ -1,91 +1,94 @@
-Return-Path: <linux-hwmon+bounces-11965-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-11966-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJ/DDFDRpGnJsQUAu9opvQ
-	(envelope-from <linux-hwmon+bounces-11965-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 02 Mar 2026 00:52:48 +0100
+	id EC+AIpzRpGnJsQUAu9opvQ
+	(envelope-from <linux-hwmon+bounces-11966-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 02 Mar 2026 00:54:04 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED331D1F9F
-	for <lists+linux-hwmon@lfdr.de>; Mon, 02 Mar 2026 00:52:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1631F1D1FB9
+	for <lists+linux-hwmon@lfdr.de>; Mon, 02 Mar 2026 00:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F6FE30107CB
-	for <lists+linux-hwmon@lfdr.de>; Sun,  1 Mar 2026 23:52:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81AA63010163
+	for <lists+linux-hwmon@lfdr.de>; Sun,  1 Mar 2026 23:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DB02D781B;
-	Sun,  1 Mar 2026 23:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A300B2F2607;
+	Sun,  1 Mar 2026 23:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G34/d7FP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ESVA69Dx"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ED51F4C8E
-	for <linux-hwmon@vger.kernel.org>; Sun,  1 Mar 2026 23:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C04E2C11FE
+	for <linux-hwmon@vger.kernel.org>; Sun,  1 Mar 2026 23:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772409165; cv=none; b=Ce0ZTfo1YeUliX4LRLzZmhjJjdf96eyleag7dUBGph06/7erXO5olDMLl5xhjJID3e0Osg6jXZu7AEIRfUpYA+x0IwpC47o7pfYZIdcZ2XQzVt2EwWvH1aRJORDPp/+AJLKRokcjy9eiHHq1WtlinEZMtrdoUTA/n2R4SCqdYsM=
+	t=1772409241; cv=none; b=X2ngNF3EHTBoSlR+rYO3gQy6hvR+Uc7WTlQCtkVuHf0Q2d23Pai2ksROqhhz1lwKp2Jav2Tpc0gZcwrJmYaNCWP26+vAmJLgzdoeff6MtzFHOLSb3TKsuQRSnMs0Lgz8Qw2ULXSglYEdvcNuLf2EFHSbkwfAxzB2iM7pDYyB408=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772409165; c=relaxed/simple;
-	bh=EiOaD919/Ki9hwuytZuFNkKMYcH2NPBKSuybFjO5HE0=;
+	s=arc-20240116; t=1772409241; c=relaxed/simple;
+	bh=a2iFebN5L7jFdqFDZSM7KmflT7Sl3ML/3xj2QmAgu+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3AEvDVoouoluXh6FTINeiW7YCwRfPRYDaoj3zYRvj9aJ2jIZyXZIAxSVhqS5/Hh2kYVuqCSO+bMInXRK34RsChrmlkqot6J/PB2RBW2LIWPAX/pPZXFShLeLiS5VbKHJvNEFwL5gjE7XbL+klsF2SP/Vxguuc0+5g8e8EiAjFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G34/d7FP; arc=none smtp.client-ip=74.125.82.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZzB+zBuXUOdeOIERUkHpGBtwJvpKiuvG4hQxYMUL0mJFuE9uK+OHd1adOvXKFCUoTdAkmasODzgCGeWTOyAwYtpDxq0nJE0y3LnehuK1HTOVTAEIw/uN1Hy4W9nTSDYL26f8wYbV/mF6MjQSSULBwNQ7mAI7afShqdQtAuoi7XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ESVA69Dx; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2bdc47747e2so2865826eec.0
-        for <linux-hwmon@vger.kernel.org>; Sun, 01 Mar 2026 15:52:44 -0800 (PST)
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso3625657eec.1
+        for <linux-hwmon@vger.kernel.org>; Sun, 01 Mar 2026 15:54:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772409163; x=1773013963; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772409240; x=1773014040; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=guE+l9uR0OWbERsCagbK6n6r7rQeTJbRR5tO4b3XCrI=;
-        b=G34/d7FPD03RuYlzbQdzrChaMLwlkeRJMFNbY1gSF4mKgZIk/OsYsXVWRsJeoIDzBD
-         cAdyXkml789aOIzPYieYEXgGfEBqgiy2Vux066gF6BUQVD4ELmUV0/4JsUmdUQSmPhd1
-         3BS4SBxkQ8afIEsr84yuk+4uZWMsoENszku5KAIXONDsbfG4OGBVI5pB0J0YB92S5P0o
-         yjLj0pHV/p9XnzA4A0s+OCLlhl+PYgrhMDmev8AJ7YJ9WV2T/+NApskQQBp/ST42N0Q3
-         T0Pfy+PZAUKDW4qetWa9z2lvIKGFAOP5FmsU3A+3uFD4KIRcB7CmT8lKYpCzhdKbleam
-         ZVXQ==
+        bh=JEWH317fbKM8FxNjJAXj9I7cNExo+KpXcRObD8UxbDQ=;
+        b=ESVA69DxKtrburl66QmLaNqE4RwH8HU9kRyukHiFokjTfR0Eir3MCP6lF7Nj7GMxsb
+         Ws7QmSNlLwIrMcMEgBd5sS5q6Ng8nXID7Jtmaf19NewQ0ELEUwahbfQd1k2Mn2NuQlDU
+         mdPdoZjtHK5TDAzRmKYjYHGb7NhtUhpuBUmKJWBMtLm4EV/s9Y/mY8zGUKox/2gtAEQT
+         WFi9JO+MVmex8jIBe+A44/8ptGF+pIz4+EQBKfKqd91H8hjZS90Z5Wf8gHnwJnTo1y83
+         S6CLmTPNUJjYjNfxa3KzVgVEffmvARKUPHjlyQr4VQF3xdz0HA1crZ0mkmWotWiI8QDv
+         xQCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772409163; x=1773013963;
+        d=1e100.net; s=20230601; t=1772409240; x=1773014040;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=guE+l9uR0OWbERsCagbK6n6r7rQeTJbRR5tO4b3XCrI=;
-        b=DJwX6T5OV9NaC7OWtQyDt0WDio1kKhJQElt6CJKZTD8gDRxQAauZnMVVdNF/U5sFdk
-         37V6ooUgPrPcey2ddWmGkSrrvdfEW1h3JWn16ZTFrH/Jva10weDt5Wt5Ppc7gfW5R+DI
-         y5ZrCvnolK4Q+Rmwt9cT0nsuvwNLSa3ai/igeQwP7LxkTqgDAkBVSOrYkIGMzCY7MRlu
-         TngZurqHlQvpgDeVGX5WWOuSw6i5aFuEippxpthkDlADTrgZrvwdNariw+7s6zdnI0Iv
-         9U39d9V2Nu223k1qAjwVhnEAKjbL1MMjfS1hOI+4sCzuHU+VoV585DGvTgLIUpi8C6+h
-         rK8Q==
-X-Gm-Message-State: AOJu0YwMIDYKOTEee3AW1C/+0PxdY9UDx4+S6EIa8CAc/Bgg6clfgIne
-	NZJTLRg86tc1pWl5mPTWqwZ9Pjt7ilmqv63L+mEZzmxMZRkmKFqy3zfV
-X-Gm-Gg: ATEYQzyBe4gfVeIwSl8p+vQh2ZGBW1ChBPM6IDclWXdEbRb4h7hCgJIgdlXTgnMbPrq
-	AO6iaCWxI0hk7da2XFKKxyTBqR5SfO8kpRmIdKjhlvGgxlzdyuWBHZXfzX0EBy8bX0Vl890FLZj
-	/ncxo72LNehvHc3AjcSpcGt1AYa5yrFXjEMNiTA3MPbj8iUK03m+bmOW1y22bozR1E2+LtWPKke
-	7I/oO0s4yWfhkXMYZS5MQXQWHTclhyEwBqpXrLi81hN4EoXaR42e6J7EWJRjxFqUtskOfCF5mBU
-	vQzWKXsNDQ9oP1H0PZRQoMiZ6KWUIaxvRtUXO4zdZEJDPqI3mtLwXaDABM2l0a9dJGZEEDb/UfP
-	IFQf2lcmmcayU9VKxwnDgQauiQLpTGuXS/9Vgjxj5okVXSLNmPkFN/WuACsHyP8PeWHm0ygrJ/A
-	uS4hUBxd05pbg+PGSDbSDU615Fo2HcHiBz2O2C
-X-Received: by 2002:a05:7300:d4ce:b0:2ba:7863:f0a8 with SMTP id 5a478bee46e88-2bde1e8434emr4036316eec.36.1772409163423;
-        Sun, 01 Mar 2026 15:52:43 -0800 (PST)
+        bh=JEWH317fbKM8FxNjJAXj9I7cNExo+KpXcRObD8UxbDQ=;
+        b=VQquvgGb5kMf987KPO52tLGp/67QVtrkY7vjwTfDit+vvx8DeBOlpivJs3yHZvPV/U
+         xWoXbFZK+QL6onGkl6F5vHOUCUXTEDx6GmArWWevPEauaryrneA6Jfi9WxvdgoP0CQBY
+         ZVj23hLY8UN9sNvGX3xGAulk1AKdGOwsM8zYjAy97B+yUChgtpSv4xGXeYHhf5ncLJGM
+         2qy7Ka4uByDTQaj0ezC/IL81w1zqqwIpXA053mmv5f5aeCNvhDi36IMiL1VPkPOXEOlL
+         3tFFByX1T9YMrXI1DGKpln1RVlMSWt45xBtxSbbW/QPjAriKOMVBUx65t/QD3Ro4n/6Z
+         vmEw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4e11L2/FuZ+xws6RScjHDqWfd8fHfyik0yfiu6ZbqtgYqNykvkZFK3BM1CRUT51G+LW43qGOx+SFjhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjBHF9W96bUGTPj7eCxbwsEr++kGzZn3D/RE9Opld21KXTc/02
+	/Df/oPGxYso2OTBi730ANB92usaMAqay+EpiEKkM9iySIeBki8FefuqY
+X-Gm-Gg: ATEYQzzW6wiySnjvKsMvk/a5lBTmXbAt87wnLMXLtuFak1VOHVY+4CQGHEFVbyYGMyr
+	vWK+FSu4Yoi66iKgJUvApRMBFwTnjglwPg+o8hFA4kw7uso3QSGahxqtFnuc+PEg+huna2A6mkg
+	R7o7ElKSPRtxL5ad6zgcnJbHfx+l2AeGKpeBeLwYopd67GwWExHwZXdnbCLfOOtXgzonPzeBC7j
+	yO7gSFCPHDEYVKCQ2jr+ucCVshzhDLx05Dznko7bKUTWVotxYUT7KDJI7m9kEsNEiojB7GN22i+
+	fl+oAW4FRJ16sF2lK6+XN+jOfSaUR8BYR83GFOAKfVjx/aXoarIuSzrMWsRW1AhuS+wYCrPG7zP
+	eQpz2ts+3EtW2wA9K6gdWQ5Y4g4CILkZ2QFSt5pohOhL7k52AlBc/W456BUk++i5U8AKOrBvSA2
+	Pp14RJz8OzD5Aba37UM8nzwzbYE1F4+e8Hn4aG
+X-Received: by 2002:a05:7301:678a:b0:2be:ca4:e10b with SMTP id 5a478bee46e88-2be0ca4f0d7mr701712eec.35.1772409239681;
+        Sun, 01 Mar 2026 15:53:59 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be09bc9ec4sm2421751eec.24.2026.03.01.15.52.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdd1f49d96sm8755978eec.27.2026.03.01.15.53.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2026 15:52:42 -0800 (PST)
+        Sun, 01 Mar 2026 15:53:59 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 1 Mar 2026 15:52:42 -0800
+Date: Sun, 1 Mar 2026 15:53:58 -0800
 From: Guenter Roeck <linux@roeck-us.net>
-To: Flaviu Nistor <flaviu.nistor@gmail.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v2] hwmon: tmp102: Add support for TMP110 and TMP113
- devices
-Message-ID: <04c0e2ca-6af0-4e25-a2e5-815be9926bc5@roeck-us.net>
-References: <20260225095132.29954-1-flaviu.nistor@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] hwmon: (acpi_power_meter) Drop redundant checks
+ from three functions
+Message-ID: <cc3d0465-d035-49c0-ac0e-f344e68f77d3@roeck-us.net>
+References: <5974797.DvuYhMxLoT@rafael.j.wysocki>
+ <5085645.31r3eYUQgx@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -94,45 +97,65 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260225095132.29954-1-flaviu.nistor@gmail.com>
+In-Reply-To: <5085645.31r3eYUQgx@rafael.j.wysocki>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-11965-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-11966-lists,linux-hwmon=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	DMARC_NA(0.00)[roeck-us.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9ED331D1F9F
+X-Rspamd-Queue-Id: 1631F1D1FB9
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 11:51:32AM +0200, Flaviu Nistor wrote:
-> TMP110 and TMP113 temperature sensors are software compatible
-> with TMP102 sensor but have different accuracy (maximum error).
+On Sun, Mar 01, 2026 at 02:17:19PM +0100, Rafael J. Wysocki wrote:
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 > 
-> Signed-off-by: Flaviu Nistor <flaviu.nistor@gmail.com>
+> Since acpi_power_meter_notify() and acpi_power_meter_remove() are
+> .notify() and .remove() callback functions of an ACPI driver,
+> respectively, the first argument of the former and the only argument
+> of the latter cannot be NULL.  Likewise, the acpi_power_meter_resume()
+> argument cannot be NULL because it is a system resume callback
+> function.
+> 
+> Moreover, since all of these functions can only run after
+> acpi_power_meter_add() has returned 0, the driver_data field in the
+> struct acpi_device object used by them cannot be NULL either.
+> 
+> Accordingly, drop the redundant "device" checks against NULL from
+> acpi_power_meter_notify() and acpi_power_meter_remove(), drop the
+> redundant "dev" check against NULL from acpi_power_meter_resume(),
+> and drop the redundant acpi_driver_data() checks against NULL from
+> all of these functions.
+> 
+> Additionally, combine the initialization of the "resource" local
+> variable in acpi_power_meter_notify() and acpi_power_meter_remove()
+> with its declaration.
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
 Applied.
 
