@@ -1,89 +1,90 @@
-Return-Path: <linux-hwmon+bounces-12058-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12059-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHu1AmMVp2ncdQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12058-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 18:07:47 +0100
+	id EGlCCH4Vp2ncdQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12059-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 18:08:14 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6361F4680
-	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 18:07:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7C91F468E
+	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 18:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5ACB63024159
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Mar 2026 17:03:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DAD6303CE09
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Mar 2026 17:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FA84EA394;
-	Tue,  3 Mar 2026 17:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CBC3C3C05;
+	Tue,  3 Mar 2026 17:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7qy6f71"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1F0+J19"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BE53C3C05
-	for <linux-hwmon@vger.kernel.org>; Tue,  3 Mar 2026 17:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FFF4EA394
+	for <linux-hwmon@vger.kernel.org>; Tue,  3 Mar 2026 17:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772557396; cv=none; b=nqyLD7ogXKU2vfJqOzof9jFMpw9JGXNElYOaOpW5AfJEdGJwfCvd+yAEGuIEknDf+zdT7ELGf/i1eNNj46dDQJ1X32QccRO8Q21BYJ34TO6iUfzkUOugIcTuG+QkVrjJcD4BIwo0lH/qvTWScnhzJ8ZLPes1z9B4Rz7Wzy+s4BQ=
+	t=1772557429; cv=none; b=jSGQJEbD+oJd7JTK3G8oH0mLsxw6pd/kIBmmZvLsFT0k/YfBoxZ/TmzuF49l8sIE5T5fNoO9KHJT7RioGV2OKQ0tRESGxvkJS5eZCHoIAl4lvnYpsAEIH12DcSvSh3ytQCgHTu+gX0q6pHjSOTbKa3gKDaA42F/eQ1uGkvC+rlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772557396; c=relaxed/simple;
-	bh=c7aLvDSU+raKnP5v/QpAuebhnXlsccPbqB8amLtAhOs=;
+	s=arc-20240116; t=1772557429; c=relaxed/simple;
+	bh=SGGOf7kmYffkURw4Nk1MNpgFPMhYM8fpczwvkyA65D0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O9fI/MbNJsm0eeFni2WUcduGlv/kDoIsdUcSyDWr5qQMdiKqnXcLiY2jJ0uhH7x87dhMWLRytHXncGUt05knTg438nNvT4Dz0F4lEUBawLOzV0kJSLCRLOxmEUuetUOC7tTOFSg1vmwLhnI5OPizezAgq8pzCYQ0nrUGO1ZQRTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7qy6f71; arc=none smtp.client-ip=209.85.214.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZV9j3lXJt2cdn4uOtPGJkJF8u6GAjy5wLK4ErWXbsEWHBKSspGj59+GnjE8cMbT5FoPzbWYGAVOKSF0xg0eY0S2HhgNwAbtn/3bksUyuiLf74ka5q0LjvR2OvYG8AC97NDIacrlREd4KuiYVn+qGbq+EzSorcaUkov6cervCMb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1F0+J19; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2adbfab4501so26796935ad.2
-        for <linux-hwmon@vger.kernel.org>; Tue, 03 Mar 2026 09:03:15 -0800 (PST)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c6e1e748dc1so1970353a12.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 03 Mar 2026 09:03:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772557395; x=1773162195; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772557428; x=1773162228; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Eh5hnbYyCw4n6Sax5xc1Wesgy7fTwBbegBAK9uTylYc=;
-        b=A7qy6f71uqUEu4mxOGFo8/AofHQDNnWAdiXwlhpy9otpF/FyhZTMPViattehCYUl3Q
-         5C19iRCD5fHk6PUrEZDFF6lZw63g8bY/F2UzNiQ0d1b3+8lmsBBBUHKTVrPgdJnaBIDg
-         FV3DRDW860NlE0gLk8iCVOTZ0DgJrBp4zhLsnhdlV8BGCLyb8vppDSpbGjhhR9Ei+LsE
-         Ad/HvsrdK6R6LztR85GGzmqsE2X7ScFaVvB5FfeOKzglbMt08ntA7CCub04I89H7W77C
-         8cf7O5I+SvprEb2u+fvYX0Cy48kIBWilwQP4xZIgqyZ7YinlTBpyDw3bzdQ2+2otdDah
-         KNPA==
+        bh=hW4QwqICcYKc2N+wxqS6AgsukbRG0bFVETsdqcER9XE=;
+        b=G1F0+J19sN+gc9JlXVwou9QfX8HtvcjTndaWvTrfJT0B5p7tjFGLqrB++p9MqW+o7R
+         KxDfzBGlFixajmlUV7KAtXvCoZNlq+a9gO6tM7KwBYrBYVmnLP7uA57gnN2lbd0O7uzt
+         P81LtO7AgLpWaxAcuV5jwAvi88nTxCbQo4RQvEa/tuDD20cVyRd9X+9KOYcK8iaLt7J+
+         azLa/EVFfRQecDIGSjfVT1bS9nDri7sSUIvNhZM5eVxCXjz9xjHeoS80m3+1sfrbiMkI
+         4yb1tRAUUGLGwsbN+o0kqRjbnhBsHyxA940uUDGl0tXNLJ4cfu545FnIlecV55hvwgxb
+         5bDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772557395; x=1773162195;
+        d=1e100.net; s=20230601; t=1772557428; x=1773162228;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Eh5hnbYyCw4n6Sax5xc1Wesgy7fTwBbegBAK9uTylYc=;
-        b=HuuvUmqKU+3/HuBiiP9DojhxaZBfHKI33tOpHfJiyWi+KO+rw69W+AM5ab5Ptn6byA
-         8GbgUxDUjiKTRQ5MVnrLKqynxfAdKq7hcRNoLBlwO7u47YYj7nZiIB7TVjHUQXJDWDXS
-         /eGIZ1q06TvDnxRYKftBYQ0B2U5vuLjMt52VTKYebTdpjF7TtIH3pwsQGRDQa4d4dbQw
-         6IOwhYPyD0sF4ps+2TbbFEwOGH9n7k0jXAclPKcLm2JbOpu/2AdJ5PWpveN+VzXCHfe4
-         SAyHlei9+q8GXFk4/fR4o8pSursofMocAq2C0+HBSyPyuisr6jcKlso51Sb+3RnASFyk
-         IaJA==
-X-Gm-Message-State: AOJu0YzQ5OCyJK8C6qnhxznwhEHl+w8sl0Bc0P9LGy0bbB/FiFlyfkBO
-	1fNFBS6VUNtpXzfhFb9buhsOBnZ1X0gcYF087fUixjzDagmU+afRjLl2
-X-Gm-Gg: ATEYQzzNccjJoq04JzH5LtL0vPqg3FeXmp3Z3ZW2FvtlP2y3ClXa0ZUyCum427ZR+sp
-	/soQCGbpqz13pkn3TKVz3cM01WsMjUfo/7+WRH7RMfla43vfxHDuN4+6jxdRXDHUSISEBopSWjk
-	OwP2eJznNeQam6GmyUI+gNyQQNCBlBu/hK8KUkaUQh2XeEC/fw4tdjE7tD+vVy6Fo71hazZS4Gb
-	0ayOJ1QtBnUHeUUdydiQY5sWQSLCjE5OiKHPkQo43zGrnqjTh4mZPDmOrwIYr5KFsIdNfLOfUJZ
-	ING3bbp7+SAUEilI18r0QtWprHIwK9kS9WI3D4/I9u1YPaDlWjqeMVjfHB+k6Mg0RZJD2Qd/yRY
-	SoWiT1VqxHIQa1a7djrgbXB8ee7GrgKhJfuJWraSN05Ac7BAAQRkAnpcpB6iGU+DXDdxw8ocUf/
-	pu/JoV1WTU+wpbiC80FdKQd1Lthr5jCRfDUKr7
-X-Received: by 2002:a17:902:d54f:b0:2ae:5d94:28e8 with SMTP id d9443c01a7336-2ae5d9471d6mr41577495ad.56.1772557394122;
-        Tue, 03 Mar 2026 09:03:14 -0800 (PST)
+        bh=hW4QwqICcYKc2N+wxqS6AgsukbRG0bFVETsdqcER9XE=;
+        b=O7qk1ugWqh9yb/Nps+S06vsv0U0psC/XFrjaO2iHk1hxTNRNW4WJW+j8N7Y2EoC5GO
+         4FolX+vi4asQ7xANXzrl/okzTABySQ6WsH1jQyk+vLL++5ywmzLgLF7JR/RmCSrSYyok
+         N54i0a5cLmwB/kVH5M1JlDwAvMcf0IIXXGwnvIQvYImpK53UkQb4KLPws2noVG/fZZrL
+         sA8JhhoGBV25ZjKqkUi6I+rUww4oA+fiYtAHUbdFGvUliaauVAwjtSmlUQiLAwpLalTC
+         U94SeTqL9LGym2XBVKd082145xFF0Jq+1+EfV+bfvSUIaOpYge+pk6k132XUaeeij+Pl
+         PzdQ==
+X-Gm-Message-State: AOJu0YxBBKO1h/ZUZyh3LVMcw5A9n492JeThQEVR/yKBdFOQvfrr3dzw
+	nDA9VSCE4h+435qaelMTMRz+j9uPZ+6eVrGZIB/ZvHG/9wamtHcyNs/276w0Szwi
+X-Gm-Gg: ATEYQzz9Gs2YO2FHQw+VIlNzJrTUbvLL77FrnHLnw5tJZU7347HiLNk+vVZM82VvKqK
+	3GhTxQuF/BsZ0aajqhyF4mFZdGUjfk4XnU6Pf9QzhHqZuBQT1saYwEPulzhdZb0xTf5pQvJ/bgA
+	vEFB1ZTp3EKc+1/QJPS8ZHLxmNxwRuYDKwPa6RcCBogXsektFeZxj2gFi3jXeNb6Czs6XRpcCqO
+	BEKDsmeqpYqi/QsFEzjPaK4lnGvIbjdPou1tx/MhAMxaQ8Ls12GHXusQJ6bQJqvVMDo8PHmT2fn
+	gqDTShB02Mnq5heLs2o1eIjLvttyZlWHGmwBb5KxCHyjBriZsUaP2zhZ1XtjQp0/3abm1W3FbjX
+	eOywGDyKrEvDMDV546PG/OX/Wh3m6rsyVtrO1FZbzBMoxo6sZdEK5x5EnrWXVMOFtpo4ERoacI8
+	swESkn6HXyYhHZ5r8qbcxOJSiUE+ewrdhnWzNW
+X-Received: by 2002:a17:90b:2691:b0:359:84a3:1942 with SMTP id 98e67ed59e1d1-3599cecc8bamr2618927a91.13.1772557427652;
+        Tue, 03 Mar 2026 09:03:47 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae4b9ac021sm74436055ad.86.2026.03.03.09.03.13
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c8cb9e3sm1848130a91.3.2026.03.03.09.03.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 09:03:13 -0800 (PST)
+        Tue, 03 Mar 2026 09:03:46 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 3 Mar 2026 09:03:12 -0800
+Date: Tue, 3 Mar 2026 09:03:46 -0800
 From: Guenter Roeck <linux@roeck-us.net>
 To: Amay Agarwal <tt@turingtested.xyz>
 Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] hwmon: (tc74) Replace sprintf() with sysfs_emit()
-Message-ID: <181ed7bd-b4cb-4daf-abcc-fb37a8466507@roeck-us.net>
+Subject: Re: [PATCH v2 2/5] hwmon: (max31722) Replace sprintf() with
+ sysfs_emit()
+Message-ID: <8c214234-0f9d-41c2-b359-294c8a6df7cf@roeck-us.net>
 References: <20260303152456.35763-1-tt@turingtested.xyz>
- <20260303152456.35763-2-tt@turingtested.xyz>
+ <20260303152456.35763-3-tt@turingtested.xyz>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -92,12 +93,12 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303152456.35763-2-tt@turingtested.xyz>
-X-Rspamd-Queue-Id: 5D6361F4680
+In-Reply-To: <20260303152456.35763-3-tt@turingtested.xyz>
+X-Rspamd-Queue-Id: 9F7C91F468E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -108,7 +109,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12058-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12059-lists,linux-hwmon=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[3];
 	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -116,21 +117,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,turingtested.xyz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,roeck-us.net:mid,turingtested.xyz:email]
 X-Rspamd-Action: no action
 
-On Tue, Mar 03, 2026 at 08:54:52PM +0530, Amay Agarwal wrote:
+On Tue, Mar 03, 2026 at 08:54:53PM +0530, Amay Agarwal wrote:
 > Replace sprintf() with sysfs_emit() when writing to sysfs buffers.
 > 
-> sysfs_emit() performs proper bounds checking and is the preferred helper
-> for sysfs output.
+> sysfs_emit() performs proper bounds checking and is the preferred
+> helper for sysfs output.
 > 
-> No functional change intended
+> No functional change intended.
 > 
 > Signed-off-by: Amay Agarwal <tt@turingtested.xyz>
 
