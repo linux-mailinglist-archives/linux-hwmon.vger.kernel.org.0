@@ -1,249 +1,180 @@
-Return-Path: <linux-hwmon+bounces-12023-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12026-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM4pKzzBpmlDTQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12023-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 12:08:44 +0100
+	id KLf4GFPSpmnHWgAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12026-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 13:21:39 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496161ED6A5
-	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 12:08:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88AD1EF4E0
+	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 13:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 21723307AA28
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Mar 2026 11:07:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6AF4304A593
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Mar 2026 11:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C910A3F0744;
-	Tue,  3 Mar 2026 11:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0843382CB;
+	Tue,  3 Mar 2026 11:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oEhgG5UY"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589E63EB7F0
-	for <linux-hwmon@vger.kernel.org>; Tue,  3 Mar 2026 11:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDA032E73E
+	for <linux-hwmon@vger.kernel.org>; Tue,  3 Mar 2026 11:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772536030; cv=none; b=nn3KqO7NF3VzvRHw8KNBYZQChw7psOJuYSzlLVZeF/5WmYx+GzUWMGg0avza/68a0j9idWBIpXAeMjdNPyFhFVkBjs8ooPM23MKhUPFJWTgfylRweLmXaZlieIVgGKRSUwcmIsSEDUwn++q5ZwHWkwhUUbl3VAU7ulv1w/TTwJ8=
+	t=1772538489; cv=none; b=aALM96a5xJACozH/+ACayAlk3Hdf81tiXf9nVgsIDSfIcbIJwvvuUNk8ADZX9c9cM5/ltS3ZFvzARNygGmtRq9KfBOg3oVt1/siJnlsECKUsS78DnyDZ6G/Zrxdbr+Bz3N52+ykjQR89p8rll5jg8T2rM5HNrUC6Un/PrW4GC8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772536030; c=relaxed/simple;
-	bh=h+Ntf4Qn+ws+BBHFWTbwrdLTyKq1zQ+xLkOsuqxk9m4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gIwVKGe1mkp3Nl9zMFuncBWEwqErwjfQGu16q5nBojtG/ybuvi3RmvFSH9iloQCSjk+JzKd+/sIhOiAbMRvDQ/p/fSlQz+TzHdFGnNstDKQ4AjItxZyo5ww9loV3mYhk3TwdfnFkHzn7w6sew213LTiu4ezMOn7FwM86yxt/tK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1vxNak-0002HT-KG; Tue, 03 Mar 2026 12:07:06 +0100
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 03 Mar 2026 12:07:02 +0100
-Subject: [PATCH 2/2] hwmon: (ina2xx) Shift INA234 shunt and current
- registers
+	s=arc-20240116; t=1772538489; c=relaxed/simple;
+	bh=EVmZY7JHKD0bO5OwtkcnvtiZd2A0o/JTQR24pgMujw0=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=A8VB0WiLHuO+pj6CEaeqzLWnuhFXEagi00gDd5P9c7jJXd+gdvpr98o1fcZ2Iodz9TYxt8rDKGkJf1zSc6nX7e8PNTYOgzq/MoJqqfHTsiEIHq4APZz9yO6Zr9VG6586Av2/x8j2AklSKHdGQifBV7AmJ27kgiYTKpBNoGsoU+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oEhgG5UY; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772538488; x=1804074488;
+  h=date:from:to:cc:subject:message-id;
+  bh=EVmZY7JHKD0bO5OwtkcnvtiZd2A0o/JTQR24pgMujw0=;
+  b=oEhgG5UYE+oprBl8+GGRXxHD2aEWkS7pNd3knBrOchWyC3/7DlV/IcAb
+   Da/jxhDwRMpXwnBPm9B+bs4gU2OxJr0ar9sB7EOXzqWXoU4g6i41F4c98
+   Nj8Ur8/njK6JuB7A1GPOI7jsol28OGpxuYj0u4OsbOfY1pBWPDcGvBUQO
+   UMv0daPTwmJBYXWkFvX+5QDuUjQzP/pBHb8v6PQ0LLTwpb9/MYTO3KJUG
+   CeDA49ogz8w8XbOVNxxz0RC6jjGWdBqLFK9U92rQakBwNyndynTHo6Hed
+   Wvrh87LlPGCy5xgtVjYR8GWVe7NAez7kXvszYD0Zl/a45nuyE8OkYCqPB
+   w==;
+X-CSE-ConnectionGUID: cboYtSG5QIuzaiNTgUNHeQ==
+X-CSE-MsgGUID: f157psn1TXu1s6EKjmdblA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73766094"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
+   d="scan'208";a="73766094"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 03:48:08 -0800
+X-CSE-ConnectionGUID: ZSfKS1ZATA2H1EWaN6fiTw==
+X-CSE-MsgGUID: +j0LOvl1R5OgCkRAYY65pA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
+   d="scan'208";a="215498325"
+Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 03 Mar 2026 03:48:07 -0800
+Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vxOEO-000000002AD-1mhJ;
+	Tue, 03 Mar 2026 11:48:04 +0000
+Date: Tue, 03 Mar 2026 19:48:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org
+Subject: [groeck-staging:hwmon] BUILD SUCCESS
+ e176ad7b57a1a15ece213251b7f3103bd929e26c
+Message-ID: <202603031953.KzwoLW5I-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260303-ina234-shift-v1-2-318c33ac4480@pengutronix.de>
-References: <20260303-ina234-shift-v1-0-318c33ac4480@pengutronix.de>
-In-Reply-To: <20260303-ina234-shift-v1-0-318c33ac4480@pengutronix.de>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5137; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=h+Ntf4Qn+ws+BBHFWTbwrdLTyKq1zQ+xLkOsuqxk9m4=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshcduCmjNai2LCnSw6nbF7n5eO/Xk313vzzl+8rqmU9e
- nHtQ2t2WkcpC4MYF4OsmCJLrJqcgpCx/3WzSrtYmDmsTCBDGLg4BWAir04x/OE8VmdX4mm5MeHC
- NoEnwbnlosdul23qW7JvU+6TB1v9GGwYGX7uS954q1gqkV2tx+GS9e53S8sYzmnu44tay6nmdCR
- pET8A
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Rspamd-Queue-Id: 496161ED6A5
+X-Rspamd-Queue-Id: B88AD1EF4E0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pengutronix.de:mid,pengutronix.de:email];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	NEURAL_HAM(-0.00)[-0.886];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	R_DKIM_NA(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jre@pengutronix.de,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12026-lists,linux-hwmon=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12023-lists,linux-hwmon=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4]
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:mid]
 X-Rspamd-Action: no action
 
-The INA219 has the lowest three bits of the bus voltage register
-zero-reserved, the bus_voltage_shift ina2xx_config field was introduced
-to accommodate for that.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon
+branch HEAD: e176ad7b57a1a15ece213251b7f3103bd929e26c  dt-bindings: hwmon: sl28cpld: Drop sa67mcu compatible
 
-The INA234 has four bits of the bus voltage, of the shunt voltage, and
-of the current registers zero-reserved but the latter two were
-implemented by choosing a 16x higher shunt_div instead of a separate
-field specifying a bit shift.
+elapsed time: 1220m
 
-This is possible because shunt voltage and current are divided by
-shunt_div, hence a 16x higher shunt_div results in a 16x smaller LSB for
-both the shunt voltage and the current register, perfectly accounting
-for the missing bit shift.
+configs tested: 55
+configs skipped: 0
 
-For consistency and correctness, account for the reserved bits via
-shunt_voltage_shift and current_shift configuration fields as already
-done for voltage registers and use the conversion constants given in the
-INA234 datasheet.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
- drivers/hwmon/ina2xx.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+tested configs:
+alpha         allnoconfig    gcc-15.2.0
+alpha        allyesconfig    gcc-15.2.0
+arc          allmodconfig    gcc-15.2.0
+arc           allnoconfig    gcc-15.2.0
+arc          allyesconfig    gcc-15.2.0
+arm           allnoconfig    clang-23
+arm          allyesconfig    gcc-15.2.0
+arm64        allmodconfig    clang-19
+arm64         allnoconfig    gcc-15.2.0
+csky         allmodconfig    gcc-15.2.0
+csky          allnoconfig    gcc-15.2.0
+hexagon      allmodconfig    clang-17
+hexagon       allnoconfig    clang-23
+i386         allmodconfig    gcc-14
+i386          allnoconfig    gcc-14
+i386         allyesconfig    gcc-14
+loongarch    allmodconfig    clang-19
+loongarch     allnoconfig    clang-23
+m68k         allmodconfig    gcc-15.2.0
+m68k          allnoconfig    gcc-15.2.0
+m68k         allyesconfig    gcc-15.2.0
+microblaze    allnoconfig    gcc-15.2.0
+microblaze   allyesconfig    gcc-15.2.0
+mips         allmodconfig    gcc-15.2.0
+mips          allnoconfig    gcc-15.2.0
+mips         allyesconfig    gcc-15.2.0
+nios2        allmodconfig    gcc-11.5.0
+nios2         allnoconfig    gcc-11.5.0
+openrisc     allmodconfig    gcc-15.2.0
+openrisc      allnoconfig    gcc-15.2.0
+parisc       allmodconfig    gcc-15.2.0
+parisc        allnoconfig    gcc-15.2.0
+parisc       allyesconfig    gcc-15.2.0
+powerpc      allmodconfig    gcc-15.2.0
+powerpc       allnoconfig    gcc-15.2.0
+riscv        allmodconfig    clang-23
+riscv         allnoconfig    gcc-15.2.0
+riscv        allyesconfig    clang-16
+s390         allmodconfig    clang-18
+s390          allnoconfig    clang-23
+s390         allyesconfig    gcc-15.2.0
+sh           allmodconfig    gcc-15.2.0
+sh            allnoconfig    gcc-15.2.0
+sh           allyesconfig    gcc-15.2.0
+sparc         allnoconfig    gcc-15.2.0
+sparc64      allmodconfig    clang-23
+um           allmodconfig    clang-19
+um            allnoconfig    clang-23
+um           allyesconfig    gcc-14
+x86_64       allmodconfig    clang-20
+x86_64        allnoconfig    clang-20
+x86_64       allyesconfig    clang-20
+x86_64      rhel-9.4-rust    clang-20
+xtensa        allnoconfig    gcc-15.2.0
+xtensa       allyesconfig    gcc-15.2.0
 
-diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
-index 6a2cebbb9f15..613ffb622b7c 100644
---- a/drivers/hwmon/ina2xx.c
-+++ b/drivers/hwmon/ina2xx.c
-@@ -135,9 +135,11 @@ struct ina2xx_config {
- 	bool has_update_interval;
- 	int calibration_value;
- 	int shunt_div;
-+	int shunt_voltage_shift;
- 	int bus_voltage_shift;
- 	int bus_voltage_lsb;	/* uV */
- 	int power_lsb_factor;
-+	int current_shift;
- };
- 
- struct ina2xx_data {
-@@ -156,59 +158,69 @@ static const struct ina2xx_config ina2xx_config[] = {
- 		.config_default = INA219_CONFIG_DEFAULT,
- 		.calibration_value = 4096,
- 		.shunt_div = 100,
-+		.shunt_voltage_shift = 0,
- 		.bus_voltage_shift = 3,
- 		.bus_voltage_lsb = 4000,
- 		.power_lsb_factor = 20,
- 		.has_alerts = false,
- 		.has_ishunt = false,
- 		.has_power_average = false,
-+		.current_shift = 0,
- 		.has_update_interval = false,
- 	},
- 	[ina226] = {
- 		.config_default = INA226_CONFIG_DEFAULT,
- 		.calibration_value = 2048,
- 		.shunt_div = 400,
-+		.shunt_voltage_shift = 0,
- 		.bus_voltage_shift = 0,
- 		.bus_voltage_lsb = 1250,
- 		.power_lsb_factor = 25,
- 		.has_alerts = true,
- 		.has_ishunt = false,
- 		.has_power_average = false,
-+		.current_shift = 0,
- 		.has_update_interval = true,
- 	},
- 	[ina234] = {
- 		.config_default = INA226_CONFIG_DEFAULT,
- 		.calibration_value = 2048,
--		.shunt_div = 400, /* 2.5 µV/LSB raw ADC reading from INA2XX_SHUNT_VOLTAGE */
-+		.shunt_div = 25, /* 2.5 µV/LSB raw ADC reading from INA2XX_SHUNT_VOLTAGE */
-+		.shunt_voltage_shift = 4,
- 		.bus_voltage_shift = 4,
- 		.bus_voltage_lsb = 25600,
- 		.power_lsb_factor = 32,
- 		.has_alerts = true,
- 		.has_ishunt = false,
- 		.has_power_average = false,
-+		.current_shift = 4,
- 		.has_update_interval = true,
- 	},
- 	[ina260] = {
- 		.config_default = INA260_CONFIG_DEFAULT,
- 		.shunt_div = 400,
-+		.shunt_voltage_shift = 0,
- 		.bus_voltage_shift = 0,
- 		.bus_voltage_lsb = 1250,
- 		.power_lsb_factor = 8,
- 		.has_alerts = true,
- 		.has_ishunt = true,
- 		.has_power_average = false,
-+		.current_shift = 0,
- 		.has_update_interval = true,
- 	},
- 	[sy24655] = {
- 		.config_default = SY24655_CONFIG_DEFAULT,
- 		.calibration_value = 4096,
- 		.shunt_div = 400,
-+		.shunt_voltage_shift = 0,
- 		.bus_voltage_shift = 0,
- 		.bus_voltage_lsb = 1250,
- 		.power_lsb_factor = 25,
- 		.has_alerts = true,
- 		.has_ishunt = false,
- 		.has_power_average = true,
-+		.current_shift = 0,
- 		.has_update_interval = false,
- 	},
- };
-@@ -262,7 +274,8 @@ static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
- 	switch (reg) {
- 	case INA2XX_SHUNT_VOLTAGE:
- 		/* signed register */
--		val = DIV_ROUND_CLOSEST((s16)regval, data->config->shunt_div);
-+		val = (s16)regval >> data->config->shunt_voltage_shift;
-+		val = DIV_ROUND_CLOSEST(val, data->config->shunt_div);
- 		break;
- 	case INA2XX_BUS_VOLTAGE:
- 		val = (regval >> data->config->bus_voltage_shift) *
-@@ -274,7 +287,8 @@ static int ina2xx_get_value(struct ina2xx_data *data, u8 reg,
- 		break;
- 	case INA2XX_CURRENT:
- 		/* signed register, result in mA */
--		val = (s16)regval * data->current_lsb_uA;
-+		val = ((s16)regval >> data->config->current_shift) *
-+		  data->current_lsb_uA;
- 		val = DIV_ROUND_CLOSEST(val, 1000);
- 		break;
- 	case INA2XX_CALIBRATION:
-@@ -368,6 +382,7 @@ static u16 ina226_alert_to_reg(struct ina2xx_data *data, int reg, long val)
- 	case INA2XX_SHUNT_VOLTAGE:
- 		val = clamp_val(val, 0, SHRT_MAX * data->config->shunt_div);
- 		val *= data->config->shunt_div;
-+		val <<= data->config->shunt_voltage_shift;
- 		return clamp_val(val, 0, SHRT_MAX);
- 	case INA2XX_BUS_VOLTAGE:
- 		val = clamp_val(val, 0, 200000);
-@@ -382,6 +397,7 @@ static u16 ina226_alert_to_reg(struct ina2xx_data *data, int reg, long val)
- 		val = clamp_val(val, INT_MIN / 1000, INT_MAX / 1000);
- 		/* signed register, result in mA */
- 		val = DIV_ROUND_CLOSEST(val * 1000, data->current_lsb_uA);
-+		val <<= data->config->current_shift;
- 		return clamp_val(val, SHRT_MIN, SHRT_MAX);
- 	default:
- 		/* programmer goofed */
-
--- 
-2.51.2.535.g419c72cb8a
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
