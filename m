@@ -1,213 +1,169 @@
-Return-Path: <linux-hwmon+bounces-12051-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12053-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHFtIxYTp2mfdQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12051-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 17:57:58 +0100
+	id qPNdJJMTp2mfdQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12053-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 18:00:03 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090871F4367
-	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 17:57:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E63E1F441D
+	for <lists+linux-hwmon@lfdr.de>; Tue, 03 Mar 2026 18:00:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8350030053BB
-	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Mar 2026 16:57:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E3893010B5D
+	for <lists+linux-hwmon@lfdr.de>; Tue,  3 Mar 2026 17:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC4C3C2766;
-	Tue,  3 Mar 2026 16:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04821492514;
+	Tue,  3 Mar 2026 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HvwwAKDA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+AXG+AO"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8985E3947B2
-	for <linux-hwmon@vger.kernel.org>; Tue,  3 Mar 2026 16:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08463C6A52;
+	Tue,  3 Mar 2026 16:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772557071; cv=none; b=u28BGJBPJfyx3dhTVnjqsV486YDL0z7VFFcbwzKp+ENDREv6OdRQ7123w2mzf15eaoMYUQp5+ou0ClZY9u/EM/4jYfaK/osF1L/DsIsBm6pbWznrdHYzwTqi9UfkYtf220bonV8a1u5m0sv2bOk9UdZQKXylqTkyuMfe66R5h0k=
+	t=1772557197; cv=none; b=WREkjqqcbXB7liWlX2FCZYWamhz7Yk2n3LPGPH8F0gD2Lxc1yx2kfBMJJKjWD7PgRuvYdrEFq8UDVTswCgDlf1A2CpiAM86d2qjpv38f+IigIUqnH1i0ryzmWM4qNJmCBv6sv7mDoeodyBmNAJd3aHN2gxtbnaa9inopbuHfK6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772557071; c=relaxed/simple;
-	bh=3/GzSmoRFQsgGZDBWOEZf5WA45dc4iHal7c2SQqyU/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dhaj0d20F4Xy+bXbphrj0WhgdKGhOP8dJR6SRf99RS7YB9lR9envDLvubEArkoZRzA3byoaeXkEnkDOp3/Vi1wkltiSatVoIKRENLUOAMrGyJRfa2ZmkEWl0ciZNpWXAaY/ADmF0x+RO6wc6EIHvms5CkMYHy5VUQxL3/S7dieE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HvwwAKDA; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a9296b3926so43749355ad.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 03 Mar 2026 08:57:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772557070; x=1773161870; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=DV/HSQAamVa6HSuuaGYt1Sx9aCryyCjzy9hIsHP5+oE=;
-        b=HvwwAKDARrPFqD3SS5xzq/r5mXo7NoKE7T6BD9dD8EDEFQAuJqiXbPvOGTZ7zuexG+
-         p4++vojTrsNVrp7npf+SU6Nw78R1rhpXT8fcWBzC+YBecRbmnYKdZXDoE12WbFRid0zG
-         eoeRH77r9zOan6tV+X89Ph36kU6ygpjYsrWzcc1zfYScYeiAnDtXXMGoHrh9+03Twx/k
-         nKTXQQYYfBdhyQgvm5xhqY/1Vq+jz1jHoqNOkXXD/udJGDS4sxQ2keR2sNcF07T+ogoa
-         YkzxBu72PM8Eyjh6GQnOjQQtRaHDztyY5J2WrUXUEXm+3CAPvv0Tuz3Wvcx/T5USEVAu
-         6aQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772557070; x=1773161870;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DV/HSQAamVa6HSuuaGYt1Sx9aCryyCjzy9hIsHP5+oE=;
-        b=Jp3EyVOp7n2/UvAdW2KYEis4rgcXhySyVeoy7HZtKC+kctCQl8iwuLmiky67GSUwS5
-         xczrNosph9d6D54cxNWtbFEfTP+zLzqToaHnGAo9zn11DqyOnUYwVO6VS7+eMkjB3sji
-         UOvb8idEvvMc5dR2i2Ujuz26dHSaaoaDoEB2Rq8430moT+y9tPVPR1TMo0wi9+nGoUV3
-         pK90o2cn/8OHbZmeNdBGwlwEHzdu58Iy8qKwCS+meUA32/ESVIOqbOuFjAKo9QAuuDQw
-         DtmBuG96HD+C8ibivqWUmxL5pxWOQXR8Pz7QBd3zLZlQPJ1L5tYmpspasntaevMK6pbG
-         ZPFA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXUzTPe8NRAPnw+Wp18UxbJQdqYrZGuslfAaiLz3OQCWcFKzO5r1GAKL7Hv2972MmNLYtT8owxPM/LcQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh0tJSG0XU/nwxlbUVSq5LzWOt6EvM+qkeMi6exI76pjp2nN2e
-	fteCHOjbNl/P+EEAVfT9DROlIaHl2Qrp57P729BpET/Tz6pxAHewCA5C
-X-Gm-Gg: ATEYQzyKzCQsCjwHtEyIVEdzA40eW0hcaqm47srNIOEzTofde30Vw5lXX7myTUXNUBn
-	ozGwsXqd7lc1JEKdKNoFV+/KwILPucWs6eLIli+3TUv1GX/FwvWa2RERdqEWSlwwVEqM+v1j19Y
-	8F1RvSzMY36Sble7crtSPTG8Bd08CMMtj9bFIar37hM8OkdOr1D1cyx8vm/eLVoNzrF1jaTA6Y5
-	PCMqpIfORObL3ZFSPtk1qIBiY+MdfajimBYfSV2gkrDuOaBt7IU5VBNlTFjY9YA3vA4CUy9RS89
-	ncoNQMgm+vC93LKsd58tYPwvmAoJv6JSOxf09KUbJV44DqL5zpRSZJK5HZH/imSgYbB7It2hglG
-	h9m+EYRT9S3JEL4A5bY1Bb1cZ4kdE6a3a/xkdx7A/7FCJ/8tdIobfLe1KWhTE+1LoTZO2ewwHu0
-	ljT7ICBPK/UmUv7ID3Znz+amN+4NwnjlvnT6D4ei01EyrWjZTasEarXvZ2Ak6A7djUOAKJSi6+9
-	XfYH3+M+XU=
-X-Received: by 2002:a17:903:2f89:b0:2ae:6317:56e3 with SMTP id d9443c01a7336-2ae63175cb8mr20707785ad.28.1772557069742;
-        Tue, 03 Mar 2026 08:57:49 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae4802645bsm83989515ad.12.2026.03.03.08.57.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Mar 2026 08:57:49 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <4a7ac923-0f1a-431f-a029-8843a8eddca3@roeck-us.net>
-Date: Tue, 3 Mar 2026 08:57:47 -0800
+	s=arc-20240116; t=1772557197; c=relaxed/simple;
+	bh=mgwUhCncYhDl61XAwXlMI23b+H6nVEk5nE7YqMPl7/4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WrqbgfwgT/8GMCFyjVw3pvPi+BM37bAFYC7fmW1p85dXUCrZdl50iz46EN2Uin5K6W+PpvDpMmyETr/NXlCL3XEiDZR4bNlWZ27McodJmCD+7uv4CeehoBgM9itjdZIE+sCseuNPheslhzj0QAlkHGoxrp5IEZiWITvgVdNDfCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+AXG+AO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A434C116C6;
+	Tue,  3 Mar 2026 16:59:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772557197;
+	bh=mgwUhCncYhDl61XAwXlMI23b+H6nVEk5nE7YqMPl7/4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=L+AXG+AOypu1+2+mVs1pOvJWkKKAlYjCNLOWqw0VNC51YgJnnOQIY3aO5/toAKmFa
+	 ii/nt5Bp67wYf0V4UXKrRRWF+DUtoMNkJ2ATZxjVn7R2IAkCK07dbui+Yl5ZhDX6RP
+	 D5w7hZZsiiuomAW64PgC91lhe+2iJUz9oqYFFjbOIyTII7fWQ8rmgY+Z6ivQMK7Mcu
+	 J6HkqO14hb3K7mIYOoJHfJjuWhTJa0+9YlcIBsa0dT0cGy7ZmPioqZbpnfG0t5hn6Z
+	 YNXS/yzCN2eFaM28+7ZDjY2T9vopEiIBxiXKTo6MlfySoGCBzsfTgUtoh5ETIcuMyl
+	 s06DeI4og5NGw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B6A4EDA697;
+	Tue,  3 Mar 2026 16:59:57 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v6 0/3] hwmon: Add support for the LTC4283 Hot Swap
+ Controller
+Date: Tue, 03 Mar 2026 17:00:39 +0000
+Message-Id: <20260303-ltc4283-support-v6-0-efe11502fad2@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] hwmon: axi-fan: don't use driver_override as IRQ
- name
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, hanguidong02@gmail.com,
- ysato@users.sourceforge.jp, dalias@libc.org, glaubitz@physik.fu-berlin.de,
- abelvesa@kernel.org, srini@kernel.org, s.nawrocki@samsung.com,
- nuno.sa@analog.com, driver-core@lists.linux.dev,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-hwmon@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-sh@vger.kernel.org,
- Guenter Roeck <groeck7@gmail.com>
-References: <20260303115720.48783-1-dakr@kernel.org>
- <20260303115720.48783-4-dakr@kernel.org>
- <b46c5757-b67d-4949-b8d8-54b799464b5d@roeck-us.net>
- <DGTACERFTTCV.29XON9ZLYAEQL@kernel.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <DGTACERFTTCV.29XON9ZLYAEQL@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 090871F4367
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBNEzaSrRAuxqQbCZKwIwrsnL
+ d/i/xcyMmGGoXmB8aZMR6ywbQNh83FFQXM1KKms1FKL/QxGOS3yldLBp5BWL73zIXTeQK0S40L
+ PfxynUj660kVMYQAAAA==
+X-Change-ID: 20260303-ltc4283-support-063f78acc5a4
+To: linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772557240; l=1962;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=mgwUhCncYhDl61XAwXlMI23b+H6nVEk5nE7YqMPl7/4=;
+ b=5QEy1itU4Qq/SbblS24Kt7rPX/4f94eo9Z8Iwj5JbfsH6EGvRk7Shvd0OCxCOFe/D3IM3xtXg
+ jyAOnii5XYlD114Ja5BrgGvlFYESNG2je0ZO2v0RyNDX/Qu+WS3rWbG
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
+X-Rspamd-Queue-Id: 6E63E1F441D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12051-lists,linux-hwmon=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,gmail.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de,samsung.com,analog.com,lists.linux.dev,vger.kernel.org];
-	DMARC_NA(0.00)[roeck-us.net];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12053-lists,linux-hwmon=lfdr.de,nuno.sa.analog.com];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[nuno.sa@analog.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:mid,roeck-us.net:email,analog.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,analog.com:replyto,analog.com:mid]
 X-Rspamd-Action: no action
 
-On 3/3/26 08:25, Danilo Krummrich wrote:
-> On Tue Mar 3, 2026 at 5:23 PM CET, Guenter Roeck wrote:
->> On Tue, Mar 03, 2026 at 12:53:20PM +0100, Danilo Krummrich wrote:
->>> Do not use driver_override as IRQ name, as it is not guaranteed to point
->>> to a valid string; use NULL instead (which makes the devm IRQ helpers
->>> use dev_name()).
->>>
->>> Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
->>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->>> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
->>
->> Applied.
-> 
-> I need this patch in the driver-core tree, otherwise I can't land patch 4 of
-> this series [1]. :(
-> 
-> Any chance you can drop it from your tree?
-> 
-> [1] https://lore.kernel.org/driver-core/20260303115720.48783-5-dakr@kernel.org/
-> 
+This is v6 for the LTC4283 how swap controller. Main change is that I'm
+now using the auxiliary bus for adding the GPIO device (done depending
+on FW properties).
 
-Sure, I'll drop it. Please add
+Similar to the LTC4282 device, we're clearing some fault logs in the
+reset_history attributes.
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+---
+Changes in v6:
+- Patch 2:
+  * Rework regmap to use single regmap with custom regmap_bus
+    (lm75-style);
+  * Add explicit i2c func checks;
+  * Make sure page support is enabled for energy reads;
+  * Fix MODULE_DESCRIPTION: "How Swap" -> "Hot Swap";
+  * Remove #include <linux/hwmon-sysfs.h> (unused);
+  * Fix commit message: "How Swap Controller" -> "Hot Swap Controller";
+  * Fix "Addresses scanned" section in docs (no .detect() supported).
 
-Thanks,
-Guenter
+- Patch 3:
+  * Fix typo: LTC42823_ADIO_CONFIG -> LTC4283_ADIO_CONFIG.
+ 
+- Link to v5: https://lore.kernel.org/linux-hwmon/20251223-ltc4283-support-v5-0-1152bff59a61@analog.com/
+
+---
+
+---
+Nuno Sá (3):
+      dt-bindings: hwmon: Document the LTC4283 Swap Controller
+      hwmon: ltc4283: Add support for the LTC4283 Swap Controller
+      gpio: gpio-ltc4283: Add support for the LTC4283 Swap Controller
+
+ .../devicetree/bindings/hwmon/adi,ltc4283.yaml     |  272 +++
+ Documentation/hwmon/index.rst                      |    1 +
+ Documentation/hwmon/ltc4283.rst                    |  265 +++
+ MAINTAINERS                                        |    9 +
+ drivers/gpio/Kconfig                               |   15 +
+ drivers/gpio/Makefile                              |    1 +
+ drivers/gpio/gpio-ltc4283.c                        |  218 +++
+ drivers/hwmon/Kconfig                              |   12 +
+ drivers/hwmon/Makefile                             |    1 +
+ drivers/hwmon/ltc4283.c                            | 1780 ++++++++++++++++++++
+ 10 files changed, 2574 insertions(+)
+---
+base-commit: 78558965440b27814592ec82d8f3668395953b1b
+change-id: 20260303-ltc4283-support-063f78acc5a4
+--
+
+Thanks!
+- Nuno Sá
+
 
 
