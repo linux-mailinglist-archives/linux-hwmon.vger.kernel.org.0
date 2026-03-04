@@ -1,55 +1,59 @@
-Return-Path: <linux-hwmon+bounces-12119-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12123-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKCZKdSuqGmfwQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12119-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 23:14:44 +0100
+	id gN4rJdWuqGmfwQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12123-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 23:14:45 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117402085ED
-	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 23:14:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 530582085FB
+	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 23:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED05E3015855
-	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Mar 2026 22:14:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D3D8301A2BC
+	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Mar 2026 22:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3BE384232;
-	Wed,  4 Mar 2026 22:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24564383C9D;
+	Wed,  4 Mar 2026 22:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b="hJuK7B8g"
+	dkim=pass (2048-bit key) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b="aRy9lSfY"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED993542E1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEAE372EC3
 	for <linux-hwmon@vger.kernel.org>; Wed,  4 Mar 2026 22:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.64.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772662481; cv=none; b=RGPw2Kp4/KnobXXSRMHIeiRue3Ar4hg+S1pd1wqoF3Ur5v10CN+VDiMUigAOVGndpJW02yHJ29cj32kG04iZ5Rkut2R4V6O5DZ8wwL7hyObjvYhSZYlseyJ9Ay6cvCU6PfozDHd3nMMdZsSMrwFeOLCB+cNRQqMIofro8C9ZjVM=
+	t=1772662483; cv=none; b=IwdpGMjqqGOw7wxplnZAraujneyyRzunmCf97Knzq9QigDWfqAhvSmptn60c9MYOkyPg7GQyhhAkcmrWbxM+/dnTLYXHmNVDIB+IBVuMx5G7CWYsdwGWtwHhJA6LsL/O+DjTxz5YSOYjyptFlWo2euLSk+/iSliUNNptQlFVLfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772662481; c=relaxed/simple;
-	bh=p/FZGYSgjd8d3iCw9nzYGrrNbHJNHtjAgJz5eeYkzZE=;
-	h=Date:Message-ID:Subject:MIME-Version:Content-Type:From:To:Cc; b=PQI+6C9qPf1D2MRGn4O4gZxvPYVgeuN6qZgrbygFMXNiAjgSBb/laRp/sxPxZ8e5uOaWqUgJa2sVltoYnehmowJnJ7zVa5Wq5xJIOwajxGyrLhIHRoi2Bs1BGUhCT0I1CBlMWLt6k8xE4Gayhph1ilmw0vqJeuTC13mVxkSYEbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rere.qmqm.pl; spf=pass smtp.mailfrom=rere.qmqm.pl; dkim=pass (2048-bit key) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b=hJuK7B8g; arc=none smtp.client-ip=91.227.64.183
+	s=arc-20240116; t=1772662483; c=relaxed/simple;
+	bh=KaVX0a3ec1E1mPOuLzeGqpSngNTVij0Jo0HkcK08M+w=;
+	h=Date:Message-ID:In-Reply-To:References:Subject:MIME-Version:
+	 Content-Type:From:To:Cc; b=BL71GdwpwAGdkxPaUZsN0r3AX0lUoA9RoZtG/nSvZZYILHzJkB8F8atUw/CvW+Cun5zm7mLD1klImvQzdwrIrxqszJb+3Tz5g/7DRCTxD8AbBN0a1FALJdri3IqfDGP37PbcJJpg9x2rJMcvhzyh2GNGYDiAeJYnI/4F/nP/tc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rere.qmqm.pl; spf=pass smtp.mailfrom=rere.qmqm.pl; dkim=pass (2048-bit key) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b=aRy9lSfY; arc=none smtp.client-ip=91.227.64.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rere.qmqm.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rere.qmqm.pl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-	t=1772661924; bh=p/FZGYSgjd8d3iCw9nzYGrrNbHJNHtjAgJz5eeYkzZE=;
-	h=Date:Subject:From:To:Cc:From;
-	b=hJuK7B8gNCezM/woaiuiCMWo2YlroM9K1oadsZ0wDo0tFrNRACZ8meJIEoDgYapGV
-	 GGW4pFp/R2PL46P8tOF/RCUq+N7RSSUWHtAx5+pioBCycVB6WIUI8ZOuWshGBYdUZL
-	 Xnr7DvkwVroKaNn5G/1iEoh9QD+IVz6jE7Ge4qKvVY1soklUhTjUcWJiwo+4+VqYy2
-	 uy38DPUTolNkfd/JbT1n9lUtfco7bJeZ+YfowXEBn98KtMsWqlUa8c80KX2EyAaTdh
-	 RjV7r510f8VF8ucHWF4kfAGSfaiZn806AT8n1WqC5EbpOc54gyRaX5x0b7t/QAZdS/
-	 AAKugcRitf76w==
+	t=1772661924; bh=KaVX0a3ec1E1mPOuLzeGqpSngNTVij0Jo0HkcK08M+w=;
+	h=Date:In-Reply-To:References:Subject:From:To:Cc:From;
+	b=aRy9lSfYFe2aBJLhf1RJx4Dw7Gl5RGyX/YQQV0psACtKdZJnAgih9syJOyXQaxyCB
+	 8DlQToqpBI5EKo9JW94YoFdSkQlCbU6UocrQZalqcdgjosK42G7cQU610XFmNFEjX3
+	 5cyRUnhdZq0WS/fnbzVHscSYwgcVyYunFtfk1IVA/trWqSWszBmm8vvu6AYKOH6Q6D
+	 1B92Q28VuAbQwU7R4LoJF87M1DfAmbLl3rmZqvwsVCPpGl/Rchz5TtVIH3T/NvfjJ4
+	 SLM6lDsOMstOyJEJlluLnrNe41f4WyevTMCLlN+05swJ2b5kR1QE63+5vd1K9X/hT2
+	 /9qKWjM+Mt41A==
 Received: from remote.user (localhost [127.0.0.1])
-	by rere.qmqm.pl (Postfix) with UTF8SMTPSA id 4fR6DN1pgLzbg;
+	by rere.qmqm.pl (Postfix) with UTF8SMTPSA id 4fR6DN5vSkzc1;
 	Wed, 04 Mar 2026 23:05:24 +0100 (CET)
 X-Virus-Status: Clean
 X-Virus-Scanned: clamav-milter 1.4.3 at mail
-Date: Wed, 04 Mar 2026 23:05:23 +0100
-Message-ID: <c7a3a0b6c1658a8ce4cc5962de18c5b2cdbcdb8f.1772661800.git.mirq-linux@rere.qmqm.pl>
-Subject: [PATCH 1/5] hwmon: gigabyte_waterforce: Add PID for 2nd gen coolers.
+Date: Wed, 04 Mar 2026 23:05:24 +0100
+Message-ID: <9fb8ec21293205786e5a732f1ef0f3646227d1d0.1772661800.git.mirq-linux@rere.qmqm.pl>
+In-Reply-To: <c7a3a0b6c1658a8ce4cc5962de18c5b2cdbcdb8f.1772661800.git.mirq-linux@rere.qmqm.pl>
+References: <c7a3a0b6c1658a8ce4cc5962de18c5b2cdbcdb8f.1772661800.git.mirq-linux@rere.qmqm.pl>
+Subject: [PATCH 2/5] hwmon: gigabyte_waterforce: fix PWM duty cycle
+ calculation
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -62,21 +66,21 @@ From:	=?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
 To:	Aleksa Savic <savicaleksa83@gmail.com>
 Cc:	Guenter Roeck <linux@roeck-us.net>,
 	linux-hwmon@vger.kernel.org
-X-Rspamd-Queue-Id: 117402085ED
+X-Rspamd-Queue-Id: 530582085FB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.45 / 15.00];
+X-Spamd-Result: default: False [-0.39 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.71)[subject];
+	R_MIXED_CHARSET(0.77)[subject];
 	DMARC_POLICY_ALLOW(-0.50)[rere.qmqm.pl,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[rere.qmqm.pl:s=1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12119-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12123-lists,linux-hwmon=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
@@ -87,44 +91,36 @@ X-Spamd-Result: default: False [-0.45 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[mirq-linux@rere.qmqm.pl,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[rere.qmqm.pl:+];
-	NEURAL_HAM(-0.00)[-0.988];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.983];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,rere.qmqm.pl:dkim,rere.qmqm.pl:mid]
 X-Rspamd-Action: no action
 
+HW reports duty as 0-255 and sysfs expects the same. There is no need
+for scaling - remove it to avoid > bogus 100% duty cycle reports.
+
+This fixes `sensors` output for PWMs on my board with Waterforce II.
+
 Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 ---
- drivers/hwmon/gigabyte_waterforce.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/hwmon/gigabyte_waterforce.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/hwmon/gigabyte_waterforce.c b/drivers/hwmon/gigabyte_waterforce.c
-index 27487e215bdd..ecefac756a19 100644
+index ecefac756a19..06eae143bc4e 100644
 --- a/drivers/hwmon/gigabyte_waterforce.c
 +++ b/drivers/hwmon/gigabyte_waterforce.c
-@@ -16,7 +16,6 @@
- #define DRIVER_NAME	"gigabyte_waterforce"
- 
- #define USB_VENDOR_ID_GIGABYTE		0x1044
--#define USB_PRODUCT_ID_WATERFORCE	0x7a4d	/* Gigabyte AORUS WATERFORCE X240, X280 and X360 */
- 
- #define STATUS_VALIDITY		(2 * 1000)	/* ms */
- #define MAX_REPORT_LENGTH	6144
-@@ -397,8 +396,11 @@ static void waterforce_remove(struct hid_device *hdev)
- }
- 
- static const struct hid_device_id waterforce_table[] = {
--	{ HID_USB_DEVICE(USB_VENDOR_ID_GIGABYTE, USB_PRODUCT_ID_WATERFORCE) },
--	{ }
-+	/* AORUS WATERFORCE X240, X280 and X360 */
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_GIGABYTE, 0x7a4d) },
-+	/* AORUS WATERFORCE II X240, X280 and X360 */
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_GIGABYTE, 0x7a5e) },
-+	/* sentinel */ {}
- };
- 
- MODULE_DEVICE_TABLE(hid, waterforce_table);
+@@ -179,7 +179,7 @@ static int waterforce_read(struct device *dev, enum hwmon_sensor_types type,
+ 	case hwmon_pwm:
+ 		switch (attr) {
+ 		case hwmon_pwm_input:
+-			*val = DIV_ROUND_CLOSEST(priv->duty_input[channel] * 255, 100);
++			*val = priv->duty_input[channel];
+ 			break;
+ 		default:
+ 			return -EOPNOTSUPP;
 -- 
 2.47.3
 
