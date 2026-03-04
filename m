@@ -1,215 +1,267 @@
-Return-Path: <linux-hwmon+bounces-12078-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12079-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMFONn3ap2kRkQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12078-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 08:08:45 +0100
+	id Dl+sEzrop2m4lgAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12079-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 09:07:22 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D831FB615
-	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 08:08:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD481FC2E2
+	for <lists+linux-hwmon@lfdr.de>; Wed, 04 Mar 2026 09:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 00A85300C54F
-	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Mar 2026 07:08:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCF75300072E
+	for <lists+linux-hwmon@lfdr.de>; Wed,  4 Mar 2026 07:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50DE361DA7;
-	Wed,  4 Mar 2026 07:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3E73845D3;
+	Wed,  4 Mar 2026 07:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1tyj4T8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4yUDowT"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8B9309DB5
-	for <linux-hwmon@vger.kernel.org>; Wed,  4 Mar 2026 07:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF1F351C36;
+	Wed,  4 Mar 2026 07:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608120; cv=none; b=olgRvG/86ebBAjl3P5Wl3YPnWu8EEP2Wn3ItjgBZmnr7cWyfuiKF7C2ns9IEGw1CVgWRm31RXqxh0ojQ8qwX+kNiDWF4ooyrgVbWetHVm5D3V7ZMosz7OLBvIFgKtDV9K2YTswzIEl7wdRzvPAfW8lEyWNi8ju/gx+0lbGES3f0=
+	t=1772611185; cv=none; b=KMZ4NkwCBECeZkPKzqjm7YW3aomCYy1up9GlGE30mfZMeq+M6bzoof8ewHVQPsbLKvtQ0beeJGkb4Zj4oZ0xRkcG218w2opP5mMm+p7h0oSwRq2yeWvj05yJq21MVEJMHDl7WgaZINVo/ggKHTi3tTAsPy39RBLgXOvYa3LtmWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608120; c=relaxed/simple;
-	bh=2D7OmnZNznfr12HRuVWR6Mw7dZPUCmEaw/CtC/IUQUI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a6eFVu38uj8ofhWBHK056P969VKrFuQU6tr/Y/VcoiRmm8oQIsN4u+H0LKJBo5eE6E6wY27i+4gznR2O1WdfAiNvkrfnMKHo9nL0w176rcrsZXz+E58cAFAKyOONLn0rbFq0J7S0/83FxVkhdQE33h7IdpMRLPKL6JB5q0FJPVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1tyj4T8; arc=none smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2bded9bf7a7so4764266eec.1
-        for <linux-hwmon@vger.kernel.org>; Tue, 03 Mar 2026 23:08:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772608119; x=1773212919; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s8nGnzPrNPl6mGWCEnP6l5wCtiMPY7eXNdUImo32HCY=;
-        b=T1tyj4T8hQn2u90OpmQNEH/2pW5Qvgqzu1vIOrB0hNqT5B7No/M19Ma+oL8YaIaFf/
-         23OWDOg+zfu8GOXnoK3V9tFX/wRhy6GYCOQbBykdjgi3mbjxMm/yHzYe08x4Fh7I+hLT
-         wl3x+rrffbBOch7rMFE/ZXW9mMMVrcCI7OJu7yeqCtBksmA8++EKVIBQr3hujZoJnttV
-         1Bb1ViodrdPobZmM0c1tFT9cJjOOHvj+WcqW9Yu8ZigztqOMXTJsflQYQ+h8G68tshjX
-         a8HDoIanw/Kwuct06EPRdwkBcoDyVYPSrwpt7GTnXZ0BP2ghQUrrPSJmdB7ZLhLDvVCY
-         rfNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772608119; x=1773212919;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=s8nGnzPrNPl6mGWCEnP6l5wCtiMPY7eXNdUImo32HCY=;
-        b=VboVo+HU0np+mrNjigUt9vcMRCD60TiVoooirKh9J/IisTzhMkXQxFy/pwmlYhRj8a
-         lZMUc650w9jNNG7QUisVSPP0VlnlMdsiJwzUPsAM7yWCepRmDpQVKooWqNsp0IDdgDzQ
-         XItQM9DURvnM+sAykQy9mI5LGQr8UmJ4pKZj5oSyYvKSs4fh8gYxP3JTYcCxSzGGi04J
-         jT0Y4GslMbfTk6tuSHU6cODVU9oIJRneG1pxSsjrl/W/EPC09FWasjtMGNhfOu+Cq9Bx
-         0DgIZ+5vVKiMMDWbfYsOrmjrsNAL2IYdDwjiKywahYDejHDVz3M/GFLSXeLSSQ9h1wHp
-         Fw4g==
-X-Gm-Message-State: AOJu0YwmR7ApHj6sj0nECz0UemQZp72MesrCTAC5tHPNvEpPfEUiGgaP
-	srZc15zpdW2TuZDQMp12tpWIwKg+5LKqsrJPONx9zcST/C9lQ/3rjtBYOKY0Ow==
-X-Gm-Gg: ATEYQzyI3Ug5HXHQOf/odipzA3XUOB/NOqxg5Joo/ZrSrmoAAbTBwL63Wn9fz/Yqr81
-	VtUbUSrVaw7T4xNyYNRr+05stNJ30HcyleXadz0hOEzvcWpy/XZ0vlQGYkQuxm+ZeUNypzaIM/p
-	2nZoiFwlSBtCCCs0M92aYnCkJFxxIamFU/v8weVRJbzdCK/V23xoa16FECzgShQc/+tbTyLXzrk
-	VHec6kBmmglNhrk8glFxS6T3FPAfSbdIo+fuxZR/AKo3KLoLjsJjI9Sejh1kSmW/DhyPxbWnmfq
-	HU4cfSeEBMnwxKiNRHjFOcWGzi646A0nxh6L+m6oLNvZ+IPD7EYfFmgKBjt7NcPG+/OebGMR9T0
-	vDQQJw9vlxrT3JIRspCTBi2n3NpC1AUE7TQpBGlNmoi49p1t3zX5PXbajteytl0Oj6l5ItALwy5
-	lWJ1pr/PT+kfniXbMzTJ5JXB9RveUeSDQjo11//e0Mt2FgQgBKGgbEq2WWarfYEDqbT7MpFFoR8
-	54DEoLD9Nw=
-X-Received: by 2002:a05:7301:2f88:b0:2be:778:49aa with SMTP id 5a478bee46e88-2be3108f8d4mr323361eec.27.1772608118477;
-        Tue, 03 Mar 2026 23:08:38 -0800 (PST)
-Received: from localhost.localdomain (c-67-164-93-214.hsd1.ca.comcast.net. [67.164.93.214])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be2f5f1f4dsm831673eec.25.2026.03.03.23.08.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 23:08:37 -0800 (PST)
-From: Sanman Pradhan <sanman.p211993@gmail.com>
-X-Google-Original-From: Sanman Pradhan <psanman@juniper.net>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	andriy.shevchenko@intel.com,
-	Sanman Pradhan <psanman@juniper.net>
-Subject: [PATCH v2] hwmon: (pmbus/q54sj108a2) fix stack overflow in debugfs read
-Date: Tue,  3 Mar 2026 23:06:08 -0800
-Message-Id: <20260304070607.1942-1-psanman@juniper.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <SA1PR05MB8708FB8CDA1A57DE77D158A7BA7CA@SA1PR05MB8708.namprd05.prod.outlook.com>
-References: <SA1PR05MB8708FB8CDA1A57DE77D158A7BA7CA@SA1PR05MB8708.namprd05.prod.outlook.com>
+	s=arc-20240116; t=1772611185; c=relaxed/simple;
+	bh=sXxkucJhzBsmj5GZg9EW7DJVOjewv5IYmNMzVOziemc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PgGpM7hknL3B5kdkPVW6auCKFbz/PmvqMJYhZ0DTSBMizpvi/W/WVRSXXplYPvn1rJJVn2J/blRib7HobTSbBF+1vXo9nWMB8jnMd8FeN5Bl5Yx76s+hmKUBnc6EbNBaW2z0030BB3dUXLiG5urLrnwsD3AIgneAo8Xz/XFgdjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4yUDowT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB29C19423;
+	Wed,  4 Mar 2026 07:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772611184;
+	bh=sXxkucJhzBsmj5GZg9EW7DJVOjewv5IYmNMzVOziemc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d4yUDowTfd81DMsLBlK7uOaNQ/FX4mVq4+VgNrW6lsw6rIGhdbBtLFDQjKgsd1/CH
+	 RAxA5TLuckHQfZRRloIRa18GYP5ABSlsTAuEg83xVSXhg25q5SdwxQ9gz6qjhhPoWl
+	 ChBYXUOIQVAvWv3iXJGEz8nAHWxtHcqFZvdLPq4bn0NltuOiyCFqSeSLFaMJ7fbDFj
+	 +1qWiOV2khaZ7G7OdXTSQ/URcTVypWiadGa3T1x3QS+QugDpJzyqp8N+EkdjhkIP+E
+	 hSaRKRaIapgoP/O5g9rRJ0/uDGpazocLUzarpj/7Rr0g9ki7uPDTKFjlxT4nWPMGp5
+	 jrCmOMFOfR1kA==
+Date: Wed, 4 Mar 2026 08:59:42 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>, kernel@pengutronix.de, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, David Jander <david@protonic.nl>
+Subject: Re: [PATCH v2 1/6] dt-bindings: mfd: add NXP MC33978/MC34978 MSDI
+Message-ID: <20260304-bald-flashy-cuckoo-00a3e6@quoll>
+References: <20260303133947.1123575-1-o.rempel@pengutronix.de>
+ <20260303133947.1123575-2-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E5D831FB615
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260303133947.1123575-2-o.rempel@pengutronix.de>
+X-Rspamd-Queue-Id: 9CD481FC2E2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12079-lists,linux-hwmon=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12078-lists,linux-hwmon=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sanmanp211993@gmail.com,linux-hwmon@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,devicetree.org:url,pengutronix.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,protonic.nl:email]
 X-Rspamd-Action: no action
 
-The q54sj108a2_debugfs_read function suffers from a stack buffer overflow
-due to incorrect arguments passed to bin2hex(). The function currently
-passes 'data' as the destination and 'data_char' as the source.
+On Tue, Mar 03, 2026 at 02:39:41PM +0100, Oleksij Rempel wrote:
+> +  '#mux-control-cells':
+> +    const: 0
+> +    description:
+> +      Present if the device AMUX selector is used as a mux provider.
+> +      Consumers (e.g. io-channel-mux) must provide settle-time-us for the
+> +      external ADC sampling path.
+> +
+> +  vddq-supply:
+> +    description: Digital supply voltage
+> +
+> +  vbatp-supply:
+> +    description: Battery/power supply
+> +
+> +patternProperties:
+> +  "^pinctrl(@.*)?":
 
-Because bin2hex() converts each input byte into two hex characters, a
-32-byte block read results in 64 bytes of output. Since 'data' is only
-34 bytes (I2C_SMBUS_BLOCK_MAX + 2), this writes 30 bytes past the end
-of the buffer onto the stack.
+Drop @ part. Your binding does not allow addressing anyway.
 
-Additionally, the arguments were swapped: it was reading from the
-zero-initialized 'data_char' and writing to 'data', resulting in
-all-zero output regardless of the actual I2C read.
+> +    type: object
+> +    $ref: /schemas/pinctrl/nxp,mc33978-pinctrl.yaml#
+> +    description:
+> +      Pinctrl and GPIO controller child node for the 22 switch inputs.
+> +
+> +required:
+> +  - compatible
+> +  - interrupt-controller
+> +  - '#interrupt-cells'
+> +  - interrupts
+> +  - reg
 
-Fix this by:
-1. Expanding 'data_char' to 66 bytes to safely hold the hex output.
-2. Correcting the bin2hex() argument order and using the actual read count.
-3. Using a pointer to select the correct output buffer for the final
-   simple_read_from_buffer call.
+Odd order. Keep the same as in the list of properties.
 
-Fixes: d014538aa385 ("hwmon: (pmbus) Driver for Delta power supplies Q54SJ108A2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
----
+> +  - vbatp-supply
+> +  - vddq-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        msdi: gpio@0 {
+> +            compatible = "nxp,mc33978";
+> +            reg = <0>;
+> +            spi-max-frequency = <4000000>;
+> +
+> +            interrupt-parent = <&gpiog>;
+> +            interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
+> +            interrupt-controller;
+> +            #interrupt-cells = <2>;
+> +
+> +            vddq-supply = <&reg_3v3>;
+> +            vbatp-supply = <&reg_12v>;
+> +
+> +            #mux-control-cells = <0>;
+> +
+> +            pinctrl {
+> +                compatible = "nxp,mc33978-pinctrl";
+> +                gpio-controller;
+> +                #gpio-cells = <2>;
+> +            };
+> +
 
-v2:
-- Fixed email formatting/line-wrapping issues
+Stray blank line
 
----
- drivers/hwmon/pmbus/q54sj108a2.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,mc33978-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,mc33978-pinctrl.yaml
+> new file mode 100644
+> index 000000000000..f8257d55d466
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,mc33978-pinctrl.yaml
+> @@ -0,0 +1,82 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/pinctrl/nxp,mc33978-pinctrl.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP MC33978/MC34978 Pinctrl/GPIO Driver
+> +
+> +maintainers:
+> +  - David Jander <david@protonic.nl>
+> +  - Oleksij Rempel <o.rempel@pengutronix.de>
+> +
+> +description: |
+> +  Pin control and GPIO driver for the MC33978/MC34978 MSDI device.
+> +
+> +  Pin numbering:
+> +  - Pins 0-13: SG0-SG13 (Switch-to-Ground inputs). These pins monitor
+> +    contacts closed to ground and typically require GPIO_ACTIVE_LOW
+> +    flags when used as digital inputs.
+> +  - Pins 14-21: SP0-SP7 (Programmable inputs). These can be configured
+> +    as SG (Switch-to-Ground) or SB (Switch-to-Battery) inputs. SB
+> +    inputs monitor contacts closed to the battery voltage and typically
+> +    require GPIO_ACTIVE_HIGH flags when used as digital inputs.
+> +
+> +  Output Emulation:
+> +  The hardware lacks standard push-pull output drivers. Outputs are emulated
+> +  by toggling the programmable wetting current sources (acting as pull-ups or
+> +  pull-downs) and the hardware tri-state registers. Because of this physical
+> +  constraint:
+> +  - Consumers using pins as outputs MUST flag them with GPIO_OPEN_DRAIN or
+> +    GPIO_OPEN_SOURCE in the device tree.
+> +  - Push-pull configurations are physically unsupported.
+> +  - The active polarity depends entirely on the external circuit (e.g., how an
+> +    LED is wired) and must be flagged accordingly by the consumer.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,mc33978-pinctrl
+> +      - nxp,mc34978-pinctrl
+> +
+> +  gpio-controller: true
+> +
+> +  '#gpio-cells':
+> +    const: 2
+> +
+> +  ngpios:
+> +    const: 22
+> +
+> +patternProperties:
+> +  "^.*-grp$":
+> +    type: object
+> +    $ref: pincfg-node.yaml#
+> +    additionalProperties: false
+> +    description:
+> +      Pin configuration subnodes.
+> +    properties:
+> +      pins: true
+> +      bias-pull-up: true
+> +      bias-pull-down: true
+> +      bias-high-impedance: true
+> +
+> +required:
+> +  - compatible
+> +  - gpio-controller
+> +  - '#gpio-cells'
+> +
+> +unevaluatedProperties: false
 
-diff --git a/drivers/hwmon/pmbus/q54sj108a2.c b/drivers/hwmon/pmbus/q54sj108a2.c
-index fc030ca34480..d5d60a9af8c5 100644
---- a/drivers/hwmon/pmbus/q54sj108a2.c
-+++ b/drivers/hwmon/pmbus/q54sj108a2.c
-@@ -79,7 +79,8 @@ static ssize_t q54sj108a2_debugfs_read(struct file *file, char __user *buf,
- 	int idx = *idxp;
- 	struct q54sj108a2_data *psu = to_psu(idxp, idx);
- 	char data[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
--	char data_char[I2C_SMBUS_BLOCK_MAX + 2] = { 0 };
-+	char data_char[I2C_SMBUS_BLOCK_MAX * 2 + 2] = { 0 };
-+	char *out = data;
- 	char *res;
- 
- 	switch (idx) {
-@@ -150,27 +151,27 @@ static ssize_t q54sj108a2_debugfs_read(struct file *file, char __user *buf,
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 32);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	case Q54SJ108A2_DEBUGFS_FLASH_KEY:
- 		rc = i2c_smbus_read_block_data(psu->client, PMBUS_FLASH_KEY_WRITE, data);
- 		if (rc < 0)
- 			return rc;
- 
--		res = bin2hex(data, data_char, 4);
--		rc = res - data;
--
-+		res = bin2hex(data_char, data, rc);
-+		rc = res - data_char;
-+		out = data_char;
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
--	data[rc] = '\n';
-+	out[rc] = '\n';
- 	rc += 2;
- 
--	return simple_read_from_buffer(buf, count, ppos, data, rc);
-+	return simple_read_from_buffer(buf, count, ppos, out, rc);
- }
- 
- static ssize_t q54sj108a2_debugfs_write(struct file *file, const char __user *buf,
--- 
-2.34.1
+additionalProperties instead
 
+> +
+> +examples:
+> +  - |
+> +    pinctrl {
+> +        compatible = "nxp,mc33978-pinctrl";
+> +        gpio-controller;
+> +        #gpio-cells = <2>;
+> +        ngpios = <22>;
+> +
+> +        door-grp {
+> +            pins = "sg0";
+> +            bias-high-impedance;
+> +        };
+> +    };
+> -- 
+> 2.47.3
+> 
 
