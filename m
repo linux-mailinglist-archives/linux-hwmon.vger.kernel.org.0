@@ -1,202 +1,159 @@
-Return-Path: <linux-hwmon+bounces-12153-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12162-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENCHCx7gqWmaGwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12153-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Mar 2026 20:57:18 +0100
+	id wBivBBb3qWk/IwEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12162-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Mar 2026 22:35:18 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BD4217D98
-	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Mar 2026 20:57:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7087121887A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 05 Mar 2026 22:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 67BBF301F696
-	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Mar 2026 19:57:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAFB9304CCFD
+	for <lists+linux-hwmon@lfdr.de>; Thu,  5 Mar 2026 21:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9A53EBF14;
-	Thu,  5 Mar 2026 19:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F44235DA70;
+	Thu,  5 Mar 2026 21:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="kQC4aw+C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxSGlYft"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azhn15012028.outbound.protection.outlook.com [52.102.149.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51CF3EB7F6;
-	Thu,  5 Mar 2026 19:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.149.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772740614; cv=fail; b=oGrxl4eR51/UWqPdZSAdlz43Kt96izVmUxZsF05gQouQ0lI8ei9I7GTelpYZ1UFqiTj3GtY/edKRGl+OLta4EsPMmrF530BraPP9lpuFRdrpSazgE95TtEnPXmnMklT9PLn4IJhiYBA/eGpz/WkDeqxSaVR2esmT5tUt3w9MQ3c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772740614; c=relaxed/simple;
-	bh=nQ8HT1FmX85D5PAFwIx51WZBZw2BMlqiznnUVpp5HJ0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CIFQbPgZCRulOa6ZZuWaZPGo92CeXmWJTkNG9eBS4KYHS3sy8Ydb7GB8xAYauwletrc3v8JwoZlQKlysDBwDkf5E2U7Et9IrQIh0C6mlocYeNpqtzFHfxifIbblhGKsP0sgNGXNYQeM76i8zu648KkG9oObur20ROmt+/vnx/3E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=kQC4aw+C; arc=fail smtp.client-ip=52.102.149.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T8AklTdMg1liGW7mIqsTZbUaiPfDfNJ2RjmxGS9ShLs2e8w+/LBSG/qW4wmgldTjmWJCeTfPi+3w8r2Syp5kPCov9PMtGy4cIOtBpR5GId7DGWKELUeVAJTIs5vWsf7pyr/CysQXxmsVLTUOW8TE+YhLLPL70PKjriwveBf4FieJKmyL7rDNms1ixCw5jTF1pW6WtpN8sQgdiPcFBNvMzHb1T0bwRm0N1qq8IGW6O3ck6bm5kqVEELskroureNlBNvADewnTAdEovdMP5dyVqcx2GhsxmzYgfwXNlObmYKJv2ESizCo7Xr2zXYks/qoyStdgGYEtcqF1ztOS6nw6uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HvaY/IurmObiSRHxEXGts+BpBNUPBS2qToFF7rGP778=;
- b=Q307OIEk8UL94TC85zNxx7WF1HSJe6nquzmMOoxb9OaTyJUlxtMQAxsDfsDXDHPxbeNjGYfSdo8egSDP7GJydd324p+LvC4dWHzLC6sDwDxzSJDEMobf2XOQEnKuUmkuebcS/86wuYBEJ9pvVGs+JUY1KPrynekl3Et43I7fvTpuLxMf4L05FwSO2eSUCKobdHV47B+bmeGp17bxHvQsDME1J48zhJfsbefPQ4lzorLKySWBwfWSo+DJ7bCHWainqKl0seFIFiR/NQqZLmiUTMrFcqD4vKI00eE2kJ9lbltsv2ew6eNQGdInn7LTBeHcNz5vYbJZutfpBlY9/JfkrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HvaY/IurmObiSRHxEXGts+BpBNUPBS2qToFF7rGP778=;
- b=kQC4aw+CcZEu2B1xqUa3rNiEqfu6UQm/Ib0CpvEh5TQ9R8Sk7KeRwu6DWNFpm3lf07KSCqg4cCuJTxyxMwqBVCoknivqIRSAW6rkxGM9iKICenMEfyeLXlBqSbN2voJfqiFHDE0LmKJGJX/TVuHl3S0tg36Zq1rhazi5b/9129c=
-Received: from SA1P222CA0027.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:22c::11)
- by SA1PR10MB7737.namprd10.prod.outlook.com (2603:10b6:806:3a7::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
- 2026 19:56:50 +0000
-Received: from SA2PEPF00001507.namprd04.prod.outlook.com
- (2603:10b6:806:22c:cafe::21) by SA1P222CA0027.outlook.office365.com
- (2603:10b6:806:22c::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.23 via Frontend Transport; Thu,
- 5 Mar 2026 19:56:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
-Received: from lewvzet200.ext.ti.com (198.47.23.194) by
- SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Thu, 5 Mar 2026 19:56:50 +0000
-Received: from DLEE210.ent.ti.com (157.170.170.112) by lewvzet200.ext.ti.com
- (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Mar
- 2026 13:56:49 -0600
-Received: from DLEE205.ent.ti.com (157.170.170.85) by DLEE210.ent.ti.com
- (157.170.170.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Mar
- 2026 13:56:49 -0600
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE205.ent.ti.com
- (157.170.170.85) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 5 Mar 2026 13:56:49 -0600
-Received: from lelvem-mr06.itg.ti.com ([10.249.42.149])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 625Juigr2456638;
-	Thu, 5 Mar 2026 13:56:48 -0600
-From: Andrew Davis <afd@ti.com>
-To: Guenter Roeck <linux@roeck-us.net>, Chiang Brian
-	<chiang.brian@inventec.com>, Erick Karanja <karanja99erick@gmail.com>, "Grant
- Peltier" <grantpeltier93@gmail.com>, Jeff Lin <jefflin994697@gmail.com>,
-	Cherrence Sarip <cherrence.sarip@analog.com>, Kim Seer Paller
-	<kimseer.paller@analog.com>, Alexis Czezar Torreno
-	<alexisczezar.torreno@analog.com>
-CC: <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Andrew
- Davis" <afd@ti.com>
-Subject: [PATCH 11/11] hwmon: (pmbus/max16601) Remove use of i2c_match_id()
-Date: Thu, 5 Mar 2026 13:56:42 -0600
-Message-ID: <20260305195642.830695-12-afd@ti.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260305195642.830695-1-afd@ti.com>
-References: <20260305195642.830695-1-afd@ti.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8663354AE2
+	for <linux-hwmon@vger.kernel.org>; Thu,  5 Mar 2026 21:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772746492; cv=none; b=oK6/X6ajjP4w/nkzaLjJ0zgf3cxcdY2kHKexbthOWC9yHqzzGyHk22aFHpv3VLeCr3ArV9BZVECV9NtIyogMIyBkldidw96petTCgDa5rFT/sCR5Tytmc5Q67XFo77M9+Ne1tR4HO2sSZwH+s4J8kES3/THKMp1Qv8VZm33bTsw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772746492; c=relaxed/simple;
+	bh=we1ZBBjFteLr9bgO+Lax1g9QldZe0sSWMHfxffSETjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQG6rZXnUauJbfKuQr/BeTFzhlhRTgQCO1xsLnLTaWzLM/OLDLJfZqVJrRWMKsDipF6mQPJ3xpioxZuoSNEXhWMKOrabNO5V+2SPjqU/IHt7iMnnw62nNyIsAa9SeuUxZmA1wNh2NcCMgKGWMIFCixoEEEPzhEIgPVUJXOk6URc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxSGlYft; arc=none smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2bdd40d3c61so7112505eec.1
+        for <linux-hwmon@vger.kernel.org>; Thu, 05 Mar 2026 13:34:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772746490; x=1773351290; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pSsd5bKDZzrvqGFN4Dck6xWTQJmjnOdB6I5ka+LcKGg=;
+        b=cxSGlYft7I/188dEaMTyNCN8PLTGBbzKhiscWi73TYDM/EBkSou3MVFDdKK9UU+DhO
+         r06GeTAY9Q0T+OIUFCRE4895HK1M+o3idyHLm2SdROks3UvwshYwZ8xRYZKCneyFKnWi
+         eOl3weCOwi9PjEOG/66Y2MeVQk/JCLkgynm8WJkkaLet46EUp/e/2PY/fGzzKUv0itAU
+         qTP5wzLc82v12tQke6TBTdjGCG49MdmmfZinUOEw0Fg2S+Y685S6RkBagUA11vdmKe1k
+         QsixhuITw1iTHsdkW+AWsEsXxu8ZWwxkDfOgHA2lozPvKvzGRZ7xVmjBqIk1pkfRh9dl
+         hSGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772746490; x=1773351290;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pSsd5bKDZzrvqGFN4Dck6xWTQJmjnOdB6I5ka+LcKGg=;
+        b=Z7o21VJJnNLGOSY/ne1OXiNHNr41Awcy0hK81s8ECfD1hnK1qIKGEDbqv1dDTogtZ2
+         yWltbrXHlsalM/Wr7RVmwfq3SaAs0+j34rqSBXssVcssMVEBwz1jFJF6dUAsVeLVBpOi
+         6mugVrU65NpLI/jm5w8XfmP4r7HbDhvb/vNy/yHAKe8WxsTdmjDhgSGO+kagVvgqMfTI
+         URDVjPbzRNqHr4VOMv57tsg8tGPuOFLFd9TLUFpRxod13HH26pZEpaFKk5y8iUwpJoIc
+         lUG3mfIiaEyLdBTbulrrP3FnupfAhGV1EuwN0YoIEldPjVkSBfIwja4c8c62Ih32u332
+         ltpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQyoP1+FgPAlf+9TachoiMJ7WyvfaJmcMJMkvuLJxXdUl2aa8TAXlQZDquE1zeCfRFB85eBMzxsGfQ+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhPn9ps2tQudQ4LoVvH8FPp+WjYdRYWFzlWblNvKKUfNH4QL3U
+	EUbnZIa/ZvGcnf2YFzoaSLI0cw+pw2XEoTOyR1xO9RgsNVVwc+y13qCX
+X-Gm-Gg: ATEYQzwxq+xHRNqpfKYm8oCB0EwhX4zAj2FClAcbVC2dWCJRTomBtl2DqHLOWrt82Xj
+	pJexV7J3Vtyrq1XhUicWhRfouXXdsF1B7GGSc7TQs5wzCmYdmhc9KqY/hMW00+cFpmBRYOrDfJc
+	c3cbKQnUYVyuKCAXpKjw320XLvin05kxYRrxuU4/Y/zj+kGZKxP0CrRPCpwZ+x1QQc2jcviAV+Z
+	KXwqTJE/Sf1OD2OXd6tMkxKkT+CL6vdIrh1ewWMTTavIg/ShfWb/R2k8ZSAXBru2FLQcn79h1Am
+	/9z0U/UEBg2MPJkhp0+kVmbIK8Vt504p4aG+jAzgP6r4k4ykgG+tLAUC4LP6TRad8P98U1nFaBo
+	jrxwYxmZCzCVetInrkoknk3wT3492eqWkfamwJte1v1zPrnkTr/laeqVrT60l+/kEYkQzXap4S6
+	vWzyAvyx1xnN/V3cc4xC98WzmchHyUSk2zRWid
+X-Received: by 2002:a05:7300:148a:b0:2ba:75f5:72a2 with SMTP id 5a478bee46e88-2be30fcf975mr3249419eec.2.1772746489738;
+        Thu, 05 Mar 2026 13:34:49 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdfba0df2fsm14573249eec.7.2026.03.05.13.34.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 13:34:49 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 5 Mar 2026 13:34:48 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rahul Tanwar <rtanwar@maxlinear.com>,
+	linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Icenowy Zheng <uwu@icenowy.me>
+Subject: Re: [PATCH v2 1/2] dt-bindings: hwmon: moortec,mr75203: adapt
+ multipleOf for T-Head TH1520
+Message-ID: <de1e20d8-2d0c-4eec-978f-2293c1ebac8e@roeck-us.net>
+References: <20260305144044.44208-1-zhengxingda@iscas.ac.cn>
+ <20260305144044.44208-2-zhengxingda@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|SA1PR10MB7737:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3328083c-2951-4ad2-1e74-08de7af1576c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|34020700016|36860700016|7416014|12100799066;
-X-Microsoft-Antispam-Message-Info:
-	FiZQOh5dOoq/oGp6bRrPjyPqPalCq5M/P/COkErgjUlqQhdWpiN9TWDFoXULT3Y9EX9AQc+EUfMkAiq/su/gF/N1b+RXFl6mA2L8+blrr9mQjmIy5mBg1FFFdf0eeFIrTPbYWEeUj+/V9XyZYEurbGi0Ez4HxdJhrKPeGZdBDJLM4Flw9AtrQdT5Iq44H0mZIDLdLqJgz2fIkUPo2Jh1kU6qXD/JW9aGMl4jqIIMhw/jV7UOHwEhvQUp3YQeKYBYsxA62Vvdb0oxcHfydwLLPAiswgWBN2jx/vkHaRWxD9vZTehNyJNhB1+Rfy6XjFm1416uFkn0jkEXA8nXrmxR8L+jmGlUdM8kTvSbEc/5ZOq6a2KixhQZdTd24LnfcwrYKPZ/vr+sFKU28stcPB8wY+PQz5vm619yCYr6M+guGRGNj+kT6T/l2OX/Cg58lbUPJxWQLz96SnJt9FtAduBRpAo5zmyemLNqBlfS717SHapnnZyxaKflSMR3gjL1xqYKfiHV0Nmo9FJmk3egKOh71Cideh60enwI20/WV3QCQLVzprwVhWghGXy1HEAeV6LRO6PUeS29jUTAWSrRgcTKeS8riVP386thDgRwTy17t777zYMjOCwZI0dbX7Eq3656E3vrSjTyBhPJ8iVghdud3vAZwfS9lWr8Lhn2JxSsORv4PnXhdcWniarSpXz3uVO+snf+Y+B9yhlKxKobomyAXcqOFTv/aVj6UbMitPqRa8KvhAJkIT7Z9HdMOUlSNHjKV/6ptr0MaP2JXLBkmbP1BQ==
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(34020700016)(36860700016)(7416014)(12100799066);DIR:OUT;SFP:1501;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	+VB3CgAfOdRg3+hqQue3zqh4OcdLeTeOBeB7lOHwZR8e8agtFFNVoEbIQfFBjUBYom6n1PD7DLRq0MUknZFl4MHQn/9oJ2407h54WcdB5Lxm7GNA22LOwRt7MgFaSVtJ7WrlLMvKm1Pgf8Ndp+pTFQOQgvM88nHZ9GcqVoO1UOCYuKn0Y10yn9otS/6WLucijaImjAIyd8PokmWUMVPeQ50UpujfCnyZlUiVA6+QbVbasuTaDxyEK8O+SBt2Ftqtopzg37CkJXXPgYlXm0yRQ/2ErmbrM9+FjzxQliI0KL2n2S6hVx4r+bHqdL2Ujgf4FEwS7w9vi0WPzem937M0ZWmOItBOJTqg9k1gyDn3XqgFpBsj6VGCfx/XlAUioT/vSDgV/UxJUHQgUvlGpM/ijQ5tX1vPkjMf7OqqzJ34JLvnPm64uXFBPZyW3rxY/sBP
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 19:56:50.4947
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3328083c-2951-4ad2-1e74-08de7af1576c
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001507.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB7737
-X-Rspamd-Queue-Id: 13BD4217D98
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305144044.44208-2-zhengxingda@iscas.ac.cn>
+X-Rspamd-Queue-Id: 7087121887A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-12153-lists,linux-hwmon=lfdr.de];
-	FREEMAIL_TO(0.00)[roeck-us.net,inventec.com,gmail.com,analog.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[afd@ti.com,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ti.com:+];
+	TAGGED_FROM(0.00)[bounces-12162-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-The function i2c_match_id() is used to fetch the matching ID from
-the i2c_device_id table. This is often used to then retrieve the
-matching driver_data. This can be done in one step with the helper
-i2c_get_match_data().
+On Thu, Mar 05, 2026 at 10:40:43PM +0800, Icenowy Zheng wrote:
+> The G and J coefficients provided by T-Head TH1520 manual (which calls
+> them A and C coefficients and calls H coefficient in the binding as B)
+> has the 1/100 degree Celsius bit (the values are 42.74 and -0.16
+> correspondingly), however the binding currently only allows cofficients
+> as precise as 100 milli-Celsius (1/10 degree Celsius).
+> 
+> Change the multipleOf value of these two cofficients to 10 (in the unit
+> of milli-Celsius) to satisfy the need of TH1520.
+> 
+AI feedback:
 
-This helper has a couple other benefits:
- * It doesn't need the i2c_device_id passed in so we do not need
-   to have that forward declared, allowing us to remove those or
-   move the i2c_device_id table down to its more natural spot
-   with the other module info.
- * It also checks for device match data, which allows for OF and
-   ACPI based probing. That means we do not have to manually check
-   those first and can remove those checks.
+This isn't a bug, but there are a few typos in the commit message:
+- "cofficients" should be "coefficients"
+- "correspondingly" should be "respectively"
+- "has" should be "have" (referring to "The G and J coefficients")
+Additionally, "has the 1/100 degree Celsius bit" is slightly confusing and
+might be clearer as "have 1/100 degree Celsius precision".
 
-Signed-off-by: Andrew Davis <afd@ti.com>
----
- drivers/hwmon/pmbus/max16601.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please fix.
 
-diff --git a/drivers/hwmon/pmbus/max16601.c b/drivers/hwmon/pmbus/max16601.c
-index d696e506aafba..36dc13424d929 100644
---- a/drivers/hwmon/pmbus/max16601.c
-+++ b/drivers/hwmon/pmbus/max16601.c
-@@ -318,7 +318,7 @@ static int max16601_probe(struct i2c_client *client)
- 	if (chip_id < 0)
- 		return chip_id;
- 
--	id = i2c_match_id(max16601_id, client);
-+	id = i2c_client_get_device_id(client);
- 	if (chip_id != id->driver_data)
- 		dev_warn(&client->dev,
- 			 "Device mismatch: Configured %s (%d), detected %d\n",
--- 
-2.39.2
-
+Thanks,
+Guenter
 
