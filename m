@@ -1,227 +1,216 @@
-Return-Path: <linux-hwmon+bounces-12174-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12176-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNu5A9XUqmmqXgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12174-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 14:21:25 +0100
+	id GBvCBUTxqmncYwEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12176-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 16:22:44 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF372217FE
-	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 14:21:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185AC223B02
+	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 16:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D8D530CEC11
-	for <lists+linux-hwmon@lfdr.de>; Fri,  6 Mar 2026 13:20:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 315FD3015BB3
+	for <lists+linux-hwmon@lfdr.de>; Fri,  6 Mar 2026 15:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F52396B6D;
-	Fri,  6 Mar 2026 13:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AC636A02C;
+	Fri,  6 Mar 2026 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="to8tsIPj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OPhU2z8J"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013002.outbound.protection.outlook.com [52.101.83.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4D839657F;
-	Fri,  6 Mar 2026 13:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772803250; cv=fail; b=r8HLrKoTla7U2EmZKtbbKsdO65lB4aQ64lqyh+UmEs3o27PJCeQS9hyBn4TDX24i4D2v7Rj+w5mQRUMBA/qeDfObOeDyzhlFPAdnHEYs57BZWT92CyZ60vdg1N65bum+5o4p7X6hmM2VzxstayZvJP8k3NYtYubVTvYOXnd3WpY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772803250; c=relaxed/simple;
-	bh=xuTWu6Ny9c2HGKy+yJcYky8tBw5CpA63ek/5duCcmd4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pHBEgZfXbqbudzKPycUgxjI5T82hYJg5WfYfYipQRG4Sly58C7T5st1n+9iX0ATwwnv/EWuLqgiU8/KPThtYFtbOvAoZwNT7aa8xDnXe8XrEeaGkdw4QQIXBKwz1DqDQHOhdKgH13vOV0jhj33mrTfXNW25CXp2ftS7RzuNuxwk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=to8tsIPj; arc=fail smtp.client-ip=52.101.83.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sYxy1PR2TZ9xVoMuEYMhPU5Lu2tnROQTtrDb3nT5qqUP/vm9S0uHiyhTgNC3t/Vsdxhv2ELYHEU2pNR0siwJhRGIYQvz/qBnQJRc+i/tAnjx+ke+YiFxTVPzWDpk/1t0DcEtFNAfo/6gWOn5w1dkQyD7FA7pw3VomvBlg/0Xqdw1TqEExfebewc960Lqoi7auXW7Ge2lY8l6dWt/6ypFHa9S8JeHUFIn65wHlPYSxK0aa/+aFxbXBwErjg7zvsn3CPpTBoyrLaqW5Yzbfl3KJ0dKACE9AJaE+ES8XypDbA8UsPr77pHSsrAHFCiCHTfBV1kJQtX6GcnTSZR+WNM5Tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2dU6uAttqGbwle1Rl1xEwz9fCjbNK22DordyQHM3n5U=;
- b=U379763l42n1NvfUlcyvFkIx9x4dj7fEgtfr/V8ho6/ry42wzJkyWYYEMwGVh3mIBUVOZzJCWPYQE/wdzcsKUz1SnKTxVsb5ybA4x3Kb9Yotn/D1SgfUEUicMf6Ub7jW4h7T6nB4VLrf/QpnYWWjFfJyrBWaZVCNshGxZxgz+3RqlAoouezl/GtgRUukqmL41xnFbRoKacmYj8txQX70zZkdLZU6GLRpDrstd9gYntzy1CwnSgLOewQUkpL14oZCi6cRhgxdjyQUmQ0NyoCFwBynKT4jKBgc40rBa1qTmywjaDw3VvkC5NF6DEuEa3vIx5KxnPrCb4B/2W/2UGPaCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2dU6uAttqGbwle1Rl1xEwz9fCjbNK22DordyQHM3n5U=;
- b=to8tsIPjpCHHyEJmRj68T2tFC++7gzMcpSRkzk/FUj2qMjn8wsYrKi+Sf4Wh5YkiuO/RCTs0cPSTWagEAsqXiuA8IbB3bUS0aKfryWML8FNWj5MfaX5tU6fYwv7pWnlcJY9vQulcxNdBLG7la+mwoHK45UVyt5CXVEgX6y1ow7eRzDUsJbBFcQc8goBC+O0FhYhPVA6QclcMIyk2YYBtIVoRXHzhdL6lJo1Pxah3PdrWAWxQxUx0Dprq1lvu7cdS+q8TU4r0MbeVLxjtFTqiGT3x5t2j8ZK5mPYcjhZNUoXBFd/Ew2BzFf+LhEnU5sbcM4OtGy+OikywZ6H9ROImgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
- by VE1PR04MB7422.eurprd04.prod.outlook.com (2603:10a6:800:1af::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Fri, 6 Mar
- 2026 13:20:43 +0000
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a%6]) with mapi id 15.20.9678.017; Fri, 6 Mar 2026
- 13:20:43 +0000
-From: florin.leotescu@oss.nxp.com
-To: Guenter Roeck <linux@roeck-us.net>,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: daniel.baluta@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	festevam@gmail.com,
-	Florin Leotescu <florin.leotescu@nxp.com>
-Subject: [RFC PATCH 1/1] hwmon: emc2305: Set max PWM state during shutdown
-Date: Fri,  6 Mar 2026 15:34:39 +0200
-Message-Id: <20260306133439.564033-2-florin.leotescu@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260306133439.564033-1-florin.leotescu@oss.nxp.com>
-References: <20260306133439.564033-1-florin.leotescu@oss.nxp.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P192CA0039.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:658::20) To DU7PR04MB11163.eurprd04.prod.outlook.com
- (2603:10a6:10:5b3::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8443836A039
+	for <linux-hwmon@vger.kernel.org>; Fri,  6 Mar 2026 15:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772810558; cv=none; b=dbg/osicuxLtBGwMMKAb4x0TABd6BPpE6rxb9okoLl6LiZAPb9sR/4pQ3kHt0EdIIcCh51t4xa5pd80KQzJfe7yf8EGJ/zQE454lrGgvthArtnR2XlInSrUTm8R+nVfpgz+O6hRCfzny1tN8L40D0i1X3mdbuPSz7R6Fa2D0gQg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772810558; c=relaxed/simple;
+	bh=0xv0Q/rdY5Bj7nFpgeAx4X3SMt4Ttz/cplFAjBGlyFU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GqfpEryE+07a+yjq+HQKjGtcykfqcekA0Ch9BzP+3UgR4/35B706LUd3ciKKsxCAXQt0BykVTjwWHqKJm/mrScFg71nFNE9ViFHqOKeGL3Ck113KOKRK09eZ/45suQcPtspKZxgI4wg1ZwKLOapXzI8Apx2uWFz52HRDdnsAgro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OPhU2z8J; arc=none smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-124a635476fso11066994c88.0
+        for <linux-hwmon@vger.kernel.org>; Fri, 06 Mar 2026 07:22:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772810551; x=1773415351; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z6XDLuG2g5D0dtVulOb92ZhTkqEZkXM/BQ7MGxoQVFU=;
+        b=OPhU2z8JTK37XDBt/RlqzKWB+4/xTZ4v3JWT9PVIKbspQRykLo5p9NRcox6Z3CLGMu
+         WUxBY1BCFkKKW0/IXZpuWd3m8F9twCGcUyHurZNjOXN81vy5//j33iOOBvN1SU3i0+go
+         I8c5WaYhSLUQXNsWNDus6cvy6YD2kVihUadnxWeYT2iBQxJLrTZjZKsPcoz7WzC/bTrA
+         MYApsEJ+G+9U/kMS8i/al2/Kh5p9ju8voByQ56CgxW8qgHv811CQKw/7dks/dLLObvZe
+         p4kxCn1qoou6ufRvdXG7yn5R3XcHd4yzJ6q79s2XO6xIcM3x/LyXl/buB2zBXT53ltQq
+         SsIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772810551; x=1773415351;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z6XDLuG2g5D0dtVulOb92ZhTkqEZkXM/BQ7MGxoQVFU=;
+        b=FZtpS0gV27oj9TBnpH1q6bxU7N8JWo64QzIF4BaiA/XwHw/DYbryOGCbhH7EeHO1qJ
+         mgJKs2lDWSLuiPBnoP1f2S4MfAreUHRCjXyrBl4z4qHGkF/rxMWN29XpB0SExhXm2i7C
+         2Nofp2g7V4ZT1uTJOPPoIVWrSMCQhpO4CDKVGfwX2OxtBgrQUVc2ItLJs5mBpIyDyJeX
+         wmS82YgiDmdPlp736XDQQlQYX9sZstCXUomFMBSWW5CtSgmI/JriYE7G3y11isECuIGh
+         hbBzMrOEs9+CqGtjEqu9WMpetKMrSr0v2Mjojw9iBo9HaX3t1ftQawi+Ud4d1act8XVP
+         SNCA==
+X-Gm-Message-State: AOJu0Ywwmv1+H9d5EQl3SmrhKEsaekR0JxHlvCOQLarWdBoZH4T8vpTn
+	eQ4eQS6dSfnpow5ZE2aYxmen7zP8FB40H7rXbpIazdPBiDRwIuCJsk9L
+X-Gm-Gg: ATEYQzx6hTNrc0HRlPp3UdaBPYEKrKccUyRUgaDTg9HoyaoCsvJOe7ZkLC2D+5V5TXJ
+	eisWOz1GgoP8dkjwGXFWZFf9VIJoQEn8fRvWhIAa6gecLTSnWE9kIZIN4INVRLoL7BU7LszKjsz
+	/JGCZ/vaw0YVHn6b5vfmdmGgMxpGZNtU9Z4HywtrCn9GvYW7bOw8lNYi/cLOhpTPlqqiqVKFwqt
+	fk56Z8ofd64NQqYCfZ4hUOW/dZT5svdNbnWnTA2hFGjmmcY/Jof9DSTJM/Mpbl02K0G7dHijU2Q
+	Vua0pFHWZE/5eDsuw3hWBfVXZ270jNdj3CtX/cN7Tea1SzxlTFJ63/wT2bCoBuFayhr/mHk8WQb
+	tKjzOjymZA/Uf2O9i9m95p2Wefi9LDfDVfqbt/9aUOm3nOodfjc6P7mOOBfZhoppJ8xf+SHgvZt
+	phFlaRY8WjfZodKECLXboWRnWh7af66ekhmmilZfqQDnWuP++OJhZzQ7KQk5zhN6RuSzgyb93m
+X-Received: by 2002:a05:7022:e28:b0:11b:9d52:9102 with SMTP id a92af1059eb24-128c2d9b28cmr1184560c88.6.1772810551074;
+        Fri, 06 Mar 2026 07:22:31 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128c3f5a102sm1441985c88.13.2026.03.06.07.22.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Mar 2026 07:22:30 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <b4629b96-2e5b-45b7-a72c-dc090a5c15b4@roeck-us.net>
+Date: Fri, 6 Mar 2026 07:22:28 -0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|VE1PR04MB7422:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9118bf1-c142-47bd-8a33-08de7b832b34
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|19092799006;
-X-Microsoft-Antispam-Message-Info:
-	7qtmiQgXUREvrqEA8pkPuHEWolA5HksWOUlYMXtGYC97gIt8Mu3hp1zoNVY58bhS4id/rXgYTeYQclvpQUkRvvGTUVlYLGsEsWHGkmRS/q86uUSzWEXE6vEGjG/ploriNSK/c76vwG8aAOrCztRDpPVDfPxwMZAxRcoRKPHjwLyerC03zbuT2qEfDQWPRz87f8CCY1AimEW6JdEJq5sSkvKqtFAYw/kFfHeaU8RiOTpylXTin+4f6KUwIh8wDe95TORVjlGKyHSFZ1C79LyriDSjYK+uRtlndw9O47QCyOtlNuPfk+Ot7ljKIv94J4g8LfzCCMS/Flzh72a2umVFgQvJl75ZisaYeWiQYhuj9GCNFrBkcW+KqKgy6HtzV8kVQ7s2W44D0j3QWfqg2upVKH2lIdb1lBUwJtaddnxp7qcqRt8IXNIDfO1nDi2VLhAD6uJNcmAHmg2Yd29EMYsEYcdfz9va/WyVKjstk99eYSSk7Tr1n5QLyrwJwmORlQeL7ONympNw5Xoe5mBD90TAIXaVRZx83ExLsWmT2XPNZJklOljCp33uvA9EXBUr2uNFwntr6gVKuK+YUFvNu4GL97GhAnBvrdWLHTIwuwIkmcfdc/WmwB1cbRAKoZmLeZixlkH9h+EQLyStQSrMkKIP8CQEDoGSldoLXLnySzddYFHwa5rrL6sd7JDucJEpJ2l7MmHcOcs8VtnqoJSOZBFaN2NPW9CbeDI3q3AG7ZFY5J4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(19092799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?62ztQXnqAL1yM2NjAjNff8DalXbO8RzIKdoW8rRAFzcPshGkM8oRW7DbNZ?=
- =?iso-8859-1?Q?cUIYMABvIqvp4B14ckh7WdkRuqNA5UFmfGsTZeWqJw+Dc4qyaXLEl+NakP?=
- =?iso-8859-1?Q?PbIRvEE1N9QpQlrsEarOMyHzsM1XM5pK+5MP5xVobG9K0sl/diiE1iI79s?=
- =?iso-8859-1?Q?mE4BpiflvsBE1R586VZ65YeBp55wcYSKV8+opiiJnxWYUO5+Byzw9fh2/c?=
- =?iso-8859-1?Q?kqG/1iSZ2JWhv8hcbN5oXPKE0n/3OA8fuXT8SlsNf2IneDbOovaor8RP/1?=
- =?iso-8859-1?Q?ecSOAqywGjgTbAmNTXS4L9NMnvEoHLX9EypMJgk10ejQBlsWOwCHtJ/UdP?=
- =?iso-8859-1?Q?auMiVC7ODZ4XtM6iPUL+LhQxeh1Es1KjIt6oIpZsdWOpB6/uYq+EJZ3ND+?=
- =?iso-8859-1?Q?pBIDsbk6dUenjxEAPPDlk1kKCcw+oIWCnJLPRuVMM+qPUqVrl3eVhxzR+u?=
- =?iso-8859-1?Q?5tDnEUQVCj4sf7mEMo5b80aqSELN2MLeG9JAjJx44DTU0z/UpTdMLXl5DP?=
- =?iso-8859-1?Q?wu12xUwXd3F+qqe0UEypicNb55T5+5MTpDD2Vl/XuF/Hr5Zwl5S5kl8CKW?=
- =?iso-8859-1?Q?0RieNnMfoiQ24v+LWK4cgjltwxRpkchTV9FUVod2HqjmtsLgcL+rDiTBJD?=
- =?iso-8859-1?Q?w4AcT/RlMmbQyYj0o7EGkKVzkE/PfODPFnhGQb8/KYYyg4rHsz6hnaUYHE?=
- =?iso-8859-1?Q?4u7gRR+mHQOd7MZqFtb/NMNuXt/0z3iWnMr3dqwGxCduyJN2wKx8t33Juc?=
- =?iso-8859-1?Q?PjjzpGWRsi90x6x9N2FVIddj9ZSk/1fW8QZmoMc+mZVmEBuf9FNSCnPYJg?=
- =?iso-8859-1?Q?NibDiXbkk9ZdWIp9WFL7zFxI46zo6oQ98tjBsTasa5XROD4a6AgJVxjwV0?=
- =?iso-8859-1?Q?Gx+0iBFTUh4cfsrpnRCxicGMQMC9BYu4zbzp+9BQKeqGL6YBTop81Jwwp5?=
- =?iso-8859-1?Q?cCftfC3yYUBxau3rtT5EJvz1TgyqPpgB4asRmt2yDZk264WiQUkAGFgW6P?=
- =?iso-8859-1?Q?k/PNHWCXmLlqGVOrUEoy1ek7fl3kLSGWDqvoFlmqyzF5DKDSa5AYg91PbU?=
- =?iso-8859-1?Q?l/iKZGnzL80rMWFUAjJ80e3ZALpKitEinlMrQxO+Xr0ZJ5dsrMR8aORnL0?=
- =?iso-8859-1?Q?IxXQbSAMdEQ7Mar8SX33BgpD0y6NuJzaxqDMOrDRAqLu0G7HLKbIcXZpXJ?=
- =?iso-8859-1?Q?D0eTQ2ENFMbCCjotoXsVrXhmMolg80vG8PG5oJai6HtfDwcZtmbXZhFGbL?=
- =?iso-8859-1?Q?gv/RdT77m+yAv6hpTW11VHe8/38VBE/8D1bGvUlW9+RZl4qfIo7YXbyk5O?=
- =?iso-8859-1?Q?2gf3Z3prCOUlfVoatRHMxpwcPeK8IsOhtrbl8CD+HqYpQurD7qJumS5c48?=
- =?iso-8859-1?Q?DjL/9PzzFa7VGEMAjebPtUUmlo8yDGlBuJTXOlr/EbxiEaKLadxkURZvax?=
- =?iso-8859-1?Q?cC1od7b+fiMvbql/VSYGdFZ0yljaQ0l1fXrqJMIj45N4Hc/emm7tHnViV2?=
- =?iso-8859-1?Q?5C+BjC4pEkM5OhyOwastFD5X3/oWhlJc8LdRwd1Ez1WkwsmHBnQ8RQJFOU?=
- =?iso-8859-1?Q?bKFjSdSznt39RxM9sdE4iU4ijIcgrisIUxCloQQfnfrWYrPRC/olEBuHOS?=
- =?iso-8859-1?Q?pYiUHJ/KqMrkp0/F6EDfKnR6why1LzgTugopvtxV/u8IQ6X5OzD9bZNJCb?=
- =?iso-8859-1?Q?el++/WyW/c823nJBneTXQialp4bj/NZGXnWsfgaVOZFJE3XeTRfCjRij6p?=
- =?iso-8859-1?Q?MZJXmjWShypWX2EfBouKpiLgCkU14IC2kcdTDl7WHpZfVKOTpXJhLGpd6W?=
- =?iso-8859-1?Q?fZlXk13Zyg=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9118bf1-c142-47bd-8a33-08de7b832b34
-X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 13:20:43.0573
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /DggNiKb22OwY79GmeHH//gQ2n+PgaliIav0cARMB2LQh/nthT0QdwfhG7U2Bx+e16GyBoiA3lQ8n0yvpa3iIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7422
-X-Rspamd-Queue-Id: 5EF372217FE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hwmon: (aspeed-g6-pwm-tach): fix driver data handling in
+ probe/remove
+To: Billy Tsai <billy_tsai@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20260306-pwm_fixes-v1-1-e8ede6fbaf47@aspeedtech.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260306-pwm_fixes-v1-1-e8ede6fbaf47@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 185AC223B02
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.44 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[nxp.com,lists.infradead.org,lists.linux.dev,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-12174-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florin.leotescu@oss.nxp.com,linux-hwmon@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-12176-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[NXP1.onmicrosoft.com:dkim,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.nxp.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.939];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Florin Leotescu <florin.leotescu@nxp.com>
+On 3/5/26 22:44, Billy Tsai wrote:
+> Ensure proper association of driver data by setting and retrieving
+> the platform device's driver data during probe and remove.
+> 
+> Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
+> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+> ---
+>   drivers/hwmon/aspeed-g6-pwm-tach.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
+> index 44e1ecba205d..0c03d272279a 100644
+> --- a/drivers/hwmon/aspeed-g6-pwm-tach.c
+> +++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
+> @@ -490,6 +490,7 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
+>   	if (IS_ERR(chip))
+>   		return PTR_ERR(chip);
+>   
+> +	platform_set_drvdata(pdev, chip);
+>   	pwmchip_set_drvdata(chip, priv);
+>   	chip->ops = &aspeed_pwm_ops;
+>   
+> @@ -519,7 +520,8 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
+>   
+>   static void aspeed_pwm_tach_remove(struct platform_device *pdev)
+>   {
+> -	struct aspeed_pwm_tach_data *priv = platform_get_drvdata(pdev);
+> +	struct pwm_chip *chip = platform_get_drvdata(pdev);
+> +	struct aspeed_pwm_tach_data *priv = aspeed_pwm_chip_to_data(chip);
+>   
+>   	reset_control_assert(priv->reset);
+>   }
+> 
 
-Some platforms rely on Linux to leave the EMC2305 fan controller in a
-safe fan state before the system restart handoff.
+The probe function registers aspeed_pwm_tach_reset_assert() with
+devm_add_action_or_reset(). Why is the remove function needed in
+the first place ? It seems redundant to me, and even buggy since
+it asserts reset before its users (pwm and hwmon) are disabled/removed.
 
-If a soft reboot is initiated, the controller may retain the last PWM
-duty cycle written by the kernel until another software stage
-reconfigures it. On systems where no later stage immediately takes over
-fan control, this may leave the fans running below a desired fail-safe
-level.
-
-Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
----
- drivers/hwmon/emc2305.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index 64b213e1451e..d631d972c40e 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -714,6 +714,20 @@ static int emc2305_probe(struct i2c_client *client)
- 	return 0;
- }
- 
-+static void emc2305_shutdown(struct i2c_client *client)
-+{
-+	int i;
-+	int ret;
-+	struct emc2305_data *data = i2c_get_clientdata(client);
-+
-+	for (i = 0; i < data->pwm_num; i++) {
-+		ret = i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i), EMC2305_FAN_MAX);
-+		if (ret < 0)
-+			dev_warn(&client->dev,
-+				 "Failed to set max PWM on for ch %d during shudown", i);
-+	}
-+}
-+
- static const struct of_device_id of_emc2305_match_table[] = {
- 	{ .compatible = "microchip,emc2305", },
- 	{},
-@@ -726,6 +740,7 @@ static struct i2c_driver emc2305_driver = {
- 		.of_match_table = of_emc2305_match_table,
- 	},
- 	.probe = emc2305_probe,
-+	.shutdown = emc2305_shutdown,
- 	.id_table = emc2305_ids,
- };
- 
--- 
-2.34.1
+Thanks,
+Guenter
 
 
