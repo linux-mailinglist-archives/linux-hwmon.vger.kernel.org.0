@@ -1,249 +1,209 @@
-Return-Path: <linux-hwmon+bounces-12186-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12192-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNJvKEwNq2k/ZgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12186-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 18:22:20 +0100
+	id KMXFLqgNq2nmZgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12192-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 18:23:52 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66ECD225F2C
-	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 18:22:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C672226001
+	for <lists+linux-hwmon@lfdr.de>; Fri, 06 Mar 2026 18:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 776F2303F1C0
-	for <lists+linux-hwmon@lfdr.de>; Fri,  6 Mar 2026 17:15:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D3E730DB74E
+	for <lists+linux-hwmon@lfdr.de>; Fri,  6 Mar 2026 17:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFCC421A16;
-	Fri,  6 Mar 2026 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257FE301016;
+	Fri,  6 Mar 2026 17:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="h4tuWnPM"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Ry5NAJt1"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazhn15011022.outbound.protection.outlook.com [52.102.140.22])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazhn15011022.outbound.protection.outlook.com [52.102.137.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C6441B374;
-	Fri,  6 Mar 2026 17:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.140.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37631D5CFE;
+	Fri,  6 Mar 2026 17:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.137.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772817174; cv=fail; b=VhU9Xq8kgra4eG3iZFJ3Rlq9+nIAC2g2nLNVHJd9AoSH4xpBhZOHDsE1Yx8iulVZ9TWRWUGCR/Mn4F+f2MHzckuCtaE0Ag8YY4XrwsEsFSkvDmsJShLBsAF9LODawpcK6s4rfUVP0CRK0hG094z7312AcxaaxN5IeWHOXTzSJdU=
+	t=1772817452; cv=fail; b=KcPfQy+Pb88ZU9s5caRXdcyplDp2qCHEyVQtxKdZ9hJYHNvNR9IxgRgysLOy4AGHRtyaRYs0WJIFc3nguVx2kgnSmKIHx3cktBroYmk5+PL73vt66xIV1ZnyPPCO+9GBGEwa0syoVyf5M1XNsY0Yqn7klkUNwvxELVdAI7vIVik=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772817174; c=relaxed/simple;
-	bh=ZlcExRyl/OMp09+i2mAQ/J9Bi7y93f5J/E4DGUqBF7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=tHS//EVqe0IqfGuiD/ruuTOJvSF9UmlkIjr8x2kAJ2Npacb5N/PBXerUeTXSdZi4bnixIxRfR+zuADqSm8EJoIYk0edsEGz/W3RLtTHduCt8DtxwiBcLNxmyhuqmb7KgKsNpo/9dPMDRXM9nby+QIo25d9ab+i6+dBCP+PefIfQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=h4tuWnPM; arc=fail smtp.client-ip=52.102.140.22
+	s=arc-20240116; t=1772817452; c=relaxed/simple;
+	bh=OMi2LQurEvX4VvSm3uHRiiCJoK2I0q2VapMEkNJhxi8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i9pMEug8sf6tq8TQprpdgaxSN6mRgNTNbhRJTOLaw78neeb//mihTcKPObSHN5kvi/mpQ/KE71FKRHmQxGLhz82eNUF56LA1Djhmz8Q/PiA2Lq19KaL9M24+wTYLLo3S82NeJtIaENWN8j3+Uauc2tbU+UoDRWPhCE424rqSnqg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Ry5NAJt1; arc=fail smtp.client-ip=52.102.137.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=muTeIiRaHL3wh20Py66pJ5hJeeBywjCorZd3L7r6Jm/VnfKidyGQEzMQUzD6umFIuK2TwNxjn9B5feeD+FkJavgUwl0ORnj1jSpVuE7bCq7U9/ZpzTiRdtk2Uvk1tr+u1f6dX6yy8nlZRFbc7qLwVx34OtHUs2BJJnWavSCliw49aZE9M/f/4Jb5CemN9oSMI7RSmbci5MZyfMdIKx8vobrQAkL5GBCLGj5BYy5iKKsuQK7KzcHW1IRMvR+Rf0PmLKq9ZHw0Mq3Ynxiu5c9lzRpJ7UNCIbdXG8jIM54m8uBmOwZVHSEC+x8vjPzo91f5GkV5DAITOq2lyQdMK+Y4xg==
+ b=X7yO8txNGMexXk+Z6hMxK/hSLGaOLhP38LOONkc3dbiV78OyGA+PRfQVBK6jqctP/uqPIhRC+huGj6gctevmi+LZX9f7pFWbHr6s1w0oPe9SsoKHrCm8OydXMIpsrq5HqBbSwDtKEpN0NuVwRBYMozN72EZPSWcMtD3iFkL9SumYx8NniZgnzDz2Cb0ZcIA7cwJmddO9pXj9mKg8KyXwR6Ua/6nJkM/j9c9JwEhtJoqn13Bz/ymm5VghWgjNvJ/pgB9+/ok42nhMgiyr89PvTix5Wg6lLsFU4r7eV6VTciRmV7/G8Z+0ZEaMig9mqlhRnWC+ACynC52ZWuA39SPPbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SPxAx4VuGL3YW5rN7rj8LQXbTk+4F+eNC5UWZSiqmF4=;
- b=ClQ/k4u3LabcsxMz7rtOpgpYi8WUZVu94tP+TCAa6MOeYubEd5bKLt0LlJV/cOyHdlhGhfaannYUCJ/8poPRztifEmcs4jogjxmWh6+TpjDMvM5O1EHn4LwbVit5orNmdDy20/voUJzbN50gZkzytYlMbzOOgv40Muu9ot3SPGJBdKanOkNuwYk8hQ50uo8OvERYfVrsv7Mx+XzXIw6lGip0K9NQRrelpBIuR1foUr0axO1TFxtWvLZJNK+h0CEBYuVuVDbtfVrvMY5t14rU3j+DCFz4liyzXUs2ABcZZtjFjhHbZZcXxRjCHtyDKmnmFez2Bm3Ag9NjBqT1s1BHEQ==
+ bh=Z0VAscbggFXaerrVZXvTaUjo7Tv0uCL8ICZd1ZnItbY=;
+ b=mJm4kG1vLXBp1GR9MXhVtqqFsh8vjXW5FVasPhF9DBFis1MjcGdC1ujlf0igGDr2+v2nHJYSXfDlOrG6oHf6m1EvjF+Vy5Dl7uKVPh+IuS1rYWzcNKTxOJvB8v5t4jZNLB16fSp5oz2jgvBBm+5WL2AMoDDDoOgEM8oJ/G77q4t4On5DuS23PBZIKOJoNtdMHOQtvQgCk9xQ4vEtFphDVEc7CQuNxT9Hb/hWLn0HGbWyK3DWp26J8ig+V2AFCT5RRyzyDABnwlgPzvHfNRZhJu6RIvprZeD35zEBeEnnOWIAiNaTOnlb0InB/NlKuZNGTjVqG5r6LKa2+kqh8wqjhg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SPxAx4VuGL3YW5rN7rj8LQXbTk+4F+eNC5UWZSiqmF4=;
- b=h4tuWnPMIG4fkdBN0SYRfq3QujBRDbDwAXosX+3GP2Oe6A4feQoER/97SZGog1pqyRgBVJTsglgAeVoEbU+WnQ3dTt/Gc2lVBJmdrPMGOCREOwWxiBKzUKx4/n4xkf301v0U3bTP8/OlN2gY2gngYDBYEajm59AiU4KX9TfTGXA=
-Received: from CY5PR03CA0017.namprd03.prod.outlook.com (2603:10b6:930:8::41)
- by LVUPR10MB997811.namprd10.prod.outlook.com (2603:10b6:408:39e::9) with
+ bh=Z0VAscbggFXaerrVZXvTaUjo7Tv0uCL8ICZd1ZnItbY=;
+ b=Ry5NAJt1QoK6zQa+Ip9AKNBbbhZmGnu8e59GPvrli3IeaJH5B4y7doQD3V0b1BRI3m5SQSFx/ScRIrm7lzh4S2e7DUr9CkliEkk+uwBu36fICPavUPNdt42m+5PuhMIBipTN6qHbnEosKQeBFbFV0R/Q9lQfORJ+AwqPoo8pjIE=
+Received: from SJ0PR03CA0274.namprd03.prod.outlook.com (2603:10b6:a03:39e::9)
+ by BN0PR10MB5032.namprd10.prod.outlook.com (2603:10b6:408:122::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.19; Fri, 6 Mar
- 2026 17:12:50 +0000
-Received: from CY4PEPF0000E9D1.namprd03.prod.outlook.com
- (2603:10b6:930:8:cafe::90) by CY5PR03CA0017.outlook.office365.com
- (2603:10b6:930:8::41) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.22 via Frontend Transport; Fri,
- 6 Mar 2026 17:12:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Fri, 6 Mar
+ 2026 17:17:28 +0000
+Received: from MW1PEPF0001615F.namprd21.prod.outlook.com
+ (2603:10b6:a03:39e:cafe::61) by SJ0PR03CA0274.outlook.office365.com
+ (2603:10b6:a03:39e::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.23 via Frontend Transport; Fri,
+ 6 Mar 2026 17:17:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- CY4PEPF0000E9D1.mail.protection.outlook.com (10.167.241.136) with Microsoft
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ MW1PEPF0001615F.mail.protection.outlook.com (10.167.249.90) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Fri, 6 Mar 2026 17:12:50 +0000
-Received: from DLEE200.ent.ti.com (157.170.170.75) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9700.0 via Frontend Transport; Fri, 6 Mar 2026 17:17:27 +0000
+Received: from DFLE210.ent.ti.com (10.64.6.68) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Mar
- 2026 11:12:49 -0600
-Received: from DLEE212.ent.ti.com (157.170.170.114) by DLEE200.ent.ti.com
- (157.170.170.75) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 11:16:55 -0600
+Received: from DFLE205.ent.ti.com (10.64.6.63) by DFLE210.ent.ti.com
+ (10.64.6.68) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Mar
- 2026 11:12:49 -0600
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE212.ent.ti.com
- (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 11:16:54 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE205.ent.ti.com
+ (10.64.6.63) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Fri, 6 Mar 2026 11:12:49 -0600
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 626HCmqN485755;
-	Fri, 6 Mar 2026 11:12:49 -0600
-Message-ID: <7cd5b9c2-0880-4776-960e-b4923f7759dd@ti.com>
-Date: Fri, 6 Mar 2026 11:12:48 -0600
+ Transport; Fri, 6 Mar 2026 11:16:54 -0600
+Received: from fllvem-mr08.itg.ti.com ([10.249.42.149])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 626HGs3d491523;
+	Fri, 6 Mar 2026 11:16:54 -0600
+From: Andrew Davis <afd@ti.com>
+To: Guenter Roeck <linux@roeck-us.net>, Chiang Brian
+	<chiang.brian@inventec.com>, Erick Karanja <karanja99erick@gmail.com>, "Grant
+ Peltier" <grantpeltier93@gmail.com>, Jeff Lin <jefflin994697@gmail.com>,
+	Cherrence Sarip <cherrence.sarip@analog.com>, Kim Seer Paller
+	<kimseer.paller@analog.com>, Alexis Czezar Torreno
+	<alexisczezar.torreno@analog.com>
+CC: <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Andrew
+ Davis" <afd@ti.com>
+Subject: [PATCH v2 00/11] Remove use of i2c_match_id in PMBUS
+Date: Fri, 6 Mar 2026 11:16:41 -0600
+Message-ID: <20260306171652.951274-1-afd@ti.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] hwmon: (pmbus/ibm-cffps) Remove use of
- i2c_match_id()
-To: Guenter Roeck <linux@roeck-us.net>
-CC: Chiang Brian <chiang.brian@inventec.com>, Erick Karanja
-	<karanja99erick@gmail.com>, Grant Peltier <grantpeltier93@gmail.com>, "Jeff
- Lin" <jefflin994697@gmail.com>, Cherrence Sarip <cherrence.sarip@analog.com>,
-	Kim Seer Paller <kimseer.paller@analog.com>, Alexis Czezar Torreno
-	<alexisczezar.torreno@analog.com>, <linux-hwmon@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260305195642.830695-1-afd@ti.com>
- <20260305195642.830695-3-afd@ti.com>
- <4dc0c4b5-12b4-4fdd-b247-13d8c88c8c20@roeck-us.net>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <4dc0c4b5-12b4-4fdd-b247-13d8c88c8c20@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D1:EE_|LVUPR10MB997811:EE_
-X-MS-Office365-Filtering-Correlation-Id: affcff33-ba7b-4233-fa59-08de7ba3987b
+X-MS-TrafficTypeDiagnostic: MW1PEPF0001615F:EE_|BN0PR10MB5032:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96aa5883-2632-46b3-d368-08de7ba43dc6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|34020700016|36860700016|7416014|376014|1800799024|12100799066;
+	BCL:0;ARA:13230040|1800799024|34020700016|82310400026|7416014|376014|36860700016|12100799066;
 X-Microsoft-Antispam-Message-Info:
-	BChNGn8l/eSTSS8d5g/Y3pSofZlc9w80ac0NJs/QnK03X/nDbYMt+PfQ5Mv50g0dXWIP20WoFbzKaZJ69h+Ty3EpGuXS+wy4oPE1ZNoWXkQNsf8EykT/h1ns4Ez7voV3dgwR6Wet4A3Yyd1tab6vS4bIRltaRPh66Gvq4o10hNVKWa3uZLDFXLo/9patL16w4c0bdiflD8Cvn1cxKtjARGCqe8sBe5mwini+ieV0MKfWD/pXczqAulEq8JJwXTd/iPMxzzEJ6+Mut5u5s46FYoUfnXjacsSaD9YCRjT2wSjGPReXXexEZnm8gCjihPYU5GkBhVoBOyG2ynvuqeFmja6heONVCubMzN6JhHBidT1ql1dbxNwoXCdfzRMJeQbNc6VwlHaN99QHzOe80IOKXa+wV8mBjh5su3m6R/0LfTE4DWXgcUSslRcowG8bxW530v33hiaaQXIVT4BDxR/YGBk9UrUjq9MVD/s9qs+XOiRu/sPVlRGORoNXphnyKLYeXCeEqWzU++tzWX3uSvmGqXxWtI1hL0zz26EVHdx5YFbbp0nR5zZEA+R2Q2+zDa7TPrr0icZBwt3j8fJMybkZT2RXkcyThAiId0YU31jjErKOKXTuqUzz3A+uKKFJ1q0AhifEeCvlfc3nuarSRvKPz04Upnf1Am9VfR2ta5oNkDrAiKW30metIIw2GlUaJoCoF5MVt0utHOAlSiub8PAI9BGCJU4HYE+XD53nv8V6kSy/IuKUfIaKmdl3cBFgZI5Nsakec49jzrdx+bav8HIphg==
+	1wQSVBvEysqnEDZgpvt0F8lOsY0UG1Os1386+uWudWdTQ96rxGJ0veDFj+veLGCAFWSa2hOKp7CkyVyPJgQ2j/ec1S5btkq18MrDXnyGX9Qu5JzJopvVQN49+tbRq+/39vsd3atrQgUY6RDiYy7q3HChhXgYzxyP7VEUlhha3RCTsp2uR75YAk4STqM1E18587rwFUkfbCGmHwdp0o3uWzakYysgAzr1JXQs1AxRqJ2J0Da8xXmiCGNZwPFSquZSY4V/4yhV6QkSelqddEMaJL5CIJ1oXddaGzswVzKuLISD2rlQvoadi6U5l5NA5tFl3/lWLB4cPYz9yM2GPih6KrxXMw7MY7Z46ilAiIaeBfsauDP7W2FH0zhXccTRNAVjMg+A2jKVnGKJ7hmGNNvVRUtOOXXm1SmAZ52TfjpDriCDNcR8yiIRPPbVq/6UpxjL7o6oB8KY/bC0uIqsA1/9Esc2pva1o2AxPqBwacmdPCOywO1fq/fsKOjmYurD6MvrMreXXfvTLhpB7I0YgQXzplY9bxtoc64MvfJ4S9RFqTNxXMmcJPkhnGgCaFy7r6R64vo6hfH1kX1CncifJaHWYsgOjG3TVCpKH26s9hOBmlzXNn9Ev7pC2NNAYvZbhrfZ1kFlBqmU8jI5tpGmFIte7w0oDTL90NEApv4djzHbVybuFs4sLn9V3ZgLEinplEl6p5R1zIXQqteOcH3bQARjAN+HTtOSWywdiqvXLbrhY/rGBE913BvoB51pFr/b6SeGMtkAkUBpE2IqclBh/7U71Q==
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(34020700016)(36860700016)(7416014)(376014)(1800799024)(12100799066);DIR:OUT;SFP:1501;
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(1800799024)(34020700016)(82310400026)(7416014)(376014)(36860700016)(12100799066);DIR:OUT;SFP:1501;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	u0kDtSr8lCJLr/SvtAJEFlmwFtfx9slS6ict4U5fSQhvuCEyVcFRtUCDky+lIFHVS9NNOgW3CT5wXW/CvskQvWsSsLov1b7bWEoZRtF11/shBDSVAitASzi47OwVn82Ov/jDSVH47Ub+NqZwTREBBSQlq3dD0ALBVctf88gEPAMH0Uj5m8eVdffxqYleRtP2FVfrO0rztCNHm6JxvGG2/3l/pi4S+I9yWVuTWm3HFH4oPUvINzXVgTY1iWAYQVIUz6ZFCFO6W0zNM7GhdpX/TX3YADMpc5yG4gwFsMBk+Zqxe4SrtzV31E9J8Pj/jSYKGIJ8wQa+2jRLKJOfQRwklT3LOhF301ppafKxiNdmCF952Jrr5YNhw6+Z8p9Qe1aeI6ONO1vygveebWzTHzlxO1jZl12ruWBBI4TpqhmMwgIocyFV70y1CvbNCGnxaLov
+	PTKGH25aWxdXLD1Jt7V1kIhGuzhLC3fdAHZgNKLVar0PkRmgy/tE1K+qGxRM/kBqVV1pn+zhgbeaJeEe/5HFdMidpMUdC5zExdR2x7jMOSLHKrHs++50gigbKTZE9O5OWJZAH5DdzpPEQk7Nwk46+ChI0Q+I/oVWTTP3j/nhuaKkgwaFn4IvNaqiYJSba2JZUH7DH+otsvnKG0c/gTmMaCQ9MRRBVACKQ1174cGqN0/BFcdi5rIela0f2QjZusUTa390XHsChGDPMGekHN8XL9jMeqIWbznXjo4uLKRPSuw3ENaXvGYkE9CVgKl0xOk9RZ0ZvXbOQOmSTPao+sua+JXePdI9cYJhmW6XyD99dtiGYPxdyUiwhwVu1O5eDm8jrW9QQ6268NKfsmyL1uKQt05vV3aS2aVmqV6A1I/OgjY8SuHwqN5iKmBBqIcSKooN
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 17:12:50.0486
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 17:17:27.3122
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: affcff33-ba7b-4233-fa59-08de7ba3987b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96aa5883-2632-46b3-d368-08de7ba43dc6
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D1.namprd03.prod.outlook.com
+	MW1PEPF0001615F.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR10MB997811
-X-Rspamd-Queue-Id: 66ECD225F2C
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5032
+X-Rspamd-Queue-Id: 5C672226001
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[inventec.com,gmail.com,analog.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-12186-lists,linux-hwmon=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12192-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_TO(0.00)[roeck-us.net,inventec.com,gmail.com,analog.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ti.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[afd@ti.com,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ti.com:+];
+	NEURAL_HAM(-0.00)[-0.990];
 	TAGGED_RCPT(0.00)[linux-hwmon];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-On 3/6/26 10:19 AM, Guenter Roeck wrote:
-> On Thu, Mar 05, 2026 at 01:56:33PM -0600, Andrew Davis wrote:
->> The function i2c_match_id() is used to fetch the matching ID from
->> the i2c_device_id table. This is often used to then retrieve the
->> matching driver_data. This can be done in one step with the helper
->> i2c_get_match_data().
->>
->> This helper has a couple other benefits:
->>   * It doesn't need the i2c_device_id passed in so we do not need
->>     to have that forward declared, allowing us to remove those or
->>     move the i2c_device_id table down to its more natural spot
->>     with the other module info.
->>   * It also checks for device match data, which allows for OF and
->>     ACPI based probing. That means we do not have to manually check
->>     those first and can remove those checks.
->>
->> Signed-off-by: Andrew Davis <afd@ti.com>
->> ---
->>   drivers/hwmon/pmbus/ibm-cffps.c | 12 +-----------
->>   1 file changed, 1 insertion(+), 11 deletions(-)
->>
->> diff --git a/drivers/hwmon/pmbus/ibm-cffps.c b/drivers/hwmon/pmbus/ibm-cffps.c
->> index d05ef7a968a96..884b17de3b623 100644
->> --- a/drivers/hwmon/pmbus/ibm-cffps.c
->> +++ b/drivers/hwmon/pmbus/ibm-cffps.c
->> @@ -482,19 +482,9 @@ MODULE_DEVICE_TABLE(i2c, ibm_cffps_id);
->>   static int ibm_cffps_probe(struct i2c_client *client)
->>   {
->>   	int i, rc;
->> -	enum versions vs = cffps_unknown;
->> +	enum versions vs = (uintptr_t)i2c_get_match_data(client);
-> 
-> AI feedback:
-> 
->    Does this inadvertently change the fallback behavior for unmatched devices?
-> 
->    In the old code, `vs` was initialized to `cffps_unknown` (which is 2). If a
->    device was instantiated manually via sysfs without a matching I2C name, both
->    `md` and `id` would be NULL, and `vs` remained `cffps_unknown`. This
->    correctly triggered the dynamic version detection logic using
->    `CFFPS_CCIN_CMD`.
-> 
->    With the new code, if `i2c_get_match_data()` doesn't find a match, it returns
->    `NULL`. Since `NULL` casts to `0` (`cffps1`), the driver will now default to
->    `cffps1` and skip the dynamic version detection entirely.
-> 
->    Additionally, because `cffps1` is `0`, `i2c_get_match_data()` cannot distinguish
->    between an explicit `cffps1` match (where `.data` is `0`) and no match at
->    all, since both result in returning `NULL`.
-> 
->    To safely support fallback, `cffps1` could be assigned a non-zero value in
->    `enum versions` (e.g., `enum versions { cffps1 = 1, ... }`).
-> 
+Hello all,
 
-This does seem valid. I will make `cffps_unknown` the 0th enum so existing
-behavior is preserved.
+Much like we already have done for HWMON top level drivers,
+we are removing the i2c_match_id() function from all hwmon/pmbus/
+drivers now. Using i2c_get_match_data() can simplify code and has
+some other benefits described in the patches.
 
+I don't have most of this hardware, so testing is very welcome :)
+
+Thanks,
 Andrew
 
-> Guenter
-> 
->>   	struct dentry *debugfs;
->>   	struct ibm_cffps *psu;
->> -	const void *md = of_device_get_match_data(&client->dev);
->> -	const struct i2c_device_id *id;
->> -
->> -	if (md) {
->> -		vs = (uintptr_t)md;
->> -	} else {
->> -		id = i2c_match_id(ibm_cffps_id, client);
->> -		if (id)
->> -			vs = (enum versions)id->driver_data;
->> -	}
->>   
->>   	if (vs == cffps_unknown) {
->>   		u16 ccin_revision = 0;
->> -- 
->> 2.39.2
->>
+Changes for v2:
+ - Moved enum value [2/11] to prevent 0 from matching valid device
+ - Trimmed all commit messages to only patch relevant info
+
+Andrew Davis (11):
+  hwmon: (pmbus/bel-pfe) Remove use of i2c_match_id()
+  hwmon: (pmbus/ibm-cffps) Remove use of i2c_match_id()
+  hwmon: (pmbus/isl68137) Remove use of i2c_match_id()
+  hwmon: (pmbus/max20730) Remove use of i2c_match_id()
+  hwmon: (pmbus/max34440) Remove use of i2c_match_id()
+  hwmon: (pmbus) Remove use of i2c_match_id()
+  hwmon: (pmbus/q54sj108a2) Remove use of i2c_match_id()
+  hwmon: (pmbus/tps53679) Remove use of i2c_match_id()
+  hwmon: (pmbus/fsp-3y) Remove use of i2c_match_id()
+  hwmon: (pmbus/ltc2978) Remove use of i2c_match_id()
+  hwmon: (pmbus/max16601) Remove use of i2c_match_id()
+
+ drivers/hwmon/pmbus/bel-pfe.c    |  5 +----
+ drivers/hwmon/pmbus/fsp-3y.c     | 13 ++++++-------
+ drivers/hwmon/pmbus/ibm-cffps.c  | 16 +++-------------
+ drivers/hwmon/pmbus/isl68137.c   |  4 +---
+ drivers/hwmon/pmbus/ltc2978.c    |  2 +-
+ drivers/hwmon/pmbus/max16601.c   |  2 +-
+ drivers/hwmon/pmbus/max20730.c   |  5 +----
+ drivers/hwmon/pmbus/max34440.c   |  4 +---
+ drivers/hwmon/pmbus/pmbus.c      |  4 +---
+ drivers/hwmon/pmbus/q54sj108a2.c |  5 +----
+ drivers/hwmon/pmbus/tps53679.c   |  5 +----
+ 11 files changed, 18 insertions(+), 47 deletions(-)
+
+-- 
+2.39.2
 
 
