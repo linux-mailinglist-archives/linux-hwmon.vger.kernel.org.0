@@ -1,270 +1,205 @@
-Return-Path: <linux-hwmon+bounces-12223-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12225-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJXuGELCrGkduAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12223-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sun, 08 Mar 2026 01:26:42 +0100
+	id h4E/CBHOrGnaugEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12225-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sun, 08 Mar 2026 02:17:05 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B35522E177
-	for <lists+linux-hwmon@lfdr.de>; Sun, 08 Mar 2026 01:26:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFD722E335
+	for <lists+linux-hwmon@lfdr.de>; Sun, 08 Mar 2026 02:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9AE1F3018742
-	for <lists+linux-hwmon@lfdr.de>; Sun,  8 Mar 2026 00:26:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EA5730107F3
+	for <lists+linux-hwmon@lfdr.de>; Sun,  8 Mar 2026 01:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63873221264;
-	Sun,  8 Mar 2026 00:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC91E19F121;
+	Sun,  8 Mar 2026 01:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="cAwRT35C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPM6GHnW"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9414B213254;
-	Sun,  8 Mar 2026 00:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E30918859B
+	for <linux-hwmon@vger.kernel.org>; Sun,  8 Mar 2026 01:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772929561; cv=none; b=ue5WV26eRKxWX4dy/CZ3fsJ/OHwNsJ1UR2a1cWNDBIoTxhL6i+p5cQVkttoj/llXh0UGwDtKCzEIyUnL5qc6ZqrEKadJ7e0261tHql8kl8t8V+TFo6Z0/IbFSBn9jdWnol++XHCTUp/KqqnG0F4wGjHU3JBUDBxHPxTfNOZmI8U=
+	t=1772932621; cv=none; b=gZA8SBv5RRdR1/tyJuxHSyQIfFWTeYxc1YXU6DvT10PRRX830mevyDLErP2UdlpAyF1qTc8hldZMoLBm13OP7xh3KknJcupinrh+wJxnbgkUSQk3MibDfeifIGiefo204Vmu+XkhYYDz7FStXd+KM9lRvbGZV+qNhZtekolJ7gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772929561; c=relaxed/simple;
-	bh=EIEAIMAWlivOEsKWrFH805avfGEQHpaDoGyT6YNUhJI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nGjQkIFehr/wKr+4eSBVeP+rg1EzbdzYrGrNit7g5j/Tib408LQtvVclkHSTDeUR17gtnJ6tR9hd9vuAai5VXGTkLduxLy/NCuJ7ctmdSosfFLcF7YjVB12njnjXGqX+JURvcnIXG9dFT1DSdIcY8Jf/Hw/hc7a2dzLP2AeZQoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=cAwRT35C; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1772929538; x=1773534338; i=w_armin@gmx.de;
-	bh=6sk9cZuhnKYi0MkbTnCeftlMbOwsXCX+l4ak3dLD9wk=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=cAwRT35Cc51FdJskIUrHccTMSxC5FQPgZD8VHB5YXqNSLuWJcjzmyYJUzdmR2hSr
-	 QJpTRXwEgDjHe3TTac3b/QB1iqta0H7CnWti3crpK09+ZSQG7U0oc4MsCUtk6GIxJ
-	 ZwERA4+UVZhe5uFJUa5hJ9hMTeuKdqdw92crg580cG6Aa7zhR0VDlR730QUDeXZku
-	 APe50R/rai8LJtgziqBdkVy9UWnDJBePiDfQGaiA5fAVCNCSaLopAHu30a2XRfyRJ
-	 r2SpH91rqaJQju2xiBW9de6a4ka3H4wX12QhxSQH/GLp/66PN06psbJhpDGnSDweO
-	 LdJi9o6CX5I9hmX7ZA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAwbp-1voLnP1gEb-0082Nx; Sun, 08
- Mar 2026 01:25:38 +0100
-From: Armin Wolf <W_Armin@gmx.de>
-To: Dell.Client.Kernel@dell.com,
-	pali@kernel.org,
-	mjg59@srcf.ucam.org
-Cc: hansg@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH 9/9] modpost: Handle malformed WMI GUID strings
-Date: Sun,  8 Mar 2026 01:25:22 +0100
-Message-Id: <20260308002522.4185-10-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260308002522.4185-1-W_Armin@gmx.de>
-References: <20260308002522.4185-1-W_Armin@gmx.de>
+	s=arc-20240116; t=1772932621; c=relaxed/simple;
+	bh=NHE2vfa0V52HcbnnaIxMpnbUSCvsF4+qrFyniGcVe8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JIvt99CAf22fB50uRr0ve6CZOybOq79IHccjkJTK+KPVeV+wJeK9GZlPfY7K+rk9hABpKomIT8Eq48MFmbP33TyyXyXh886egS5YdlDoXAtRwMQvKLqAgAHmO4hQsGuZ1IjmLj3f7rWG2uMvm+kPQ+oPecx8Iamn37j6xzLBX/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPM6GHnW; arc=none smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-128b9b7e3edso1086381c88.0
+        for <linux-hwmon@vger.kernel.org>; Sat, 07 Mar 2026 17:17:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772932619; x=1773537419; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u/m38TOPeTSpZBeCFcCDG+z70XXvWtRR7+uRRNfUauk=;
+        b=PPM6GHnWyHq+1F/MowSqNd4D7RLVH52EgMScIwzRdsy1HPr6lT1EfT2sQxl0rkhGB4
+         g2BaB05OV9jgsc8iBIIZ7/q2TpoKw9/2D4M2biqwO0KzhtcBvpovh1POyxNCmOjZbv+R
+         dTAAHv4KVAjXlM/q2AP85g3d4Y3WqHheMCBLR/GQPoKISMvtL8HUnPkx0WT+PJ5pBZzK
+         DJsigUBo6ngrd8XN3XRF8DJ8d8DkwPKl/Xyvn2bOMUrZXSg1OffRFZlVObClT5CHpM0j
+         JteXPmJb3Csk3Ii/aNLcg3eoDwhSI72pyKQbUiGtXZzP9hYg24oC6E/DZkSML+fK2r4x
+         Eoog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772932619; x=1773537419;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=u/m38TOPeTSpZBeCFcCDG+z70XXvWtRR7+uRRNfUauk=;
+        b=ooZieHtpnm3U5mN+Kr5/wvV7S01gKdJq/qfQV6HSfFtqTqmVhfMivi2Rg6MzFcW8bf
+         zl6E6HzcYCbjiyAYZSgD3hmgQXn68E37ndNjmDo3hweY21kr8Bz2ekys4eanTlg1160l
+         I1rltL4knaBmceHG9eFlaGrYYNALChQ2eU6TOa/TkaaOD4qzDCNU5ISoo+MHdRU4jEy+
+         oBbmbMg1+fPj0/fC0HhOwNpac87LSB5RylpmyxqI/alzAPVs1F4OEQ8Mb82cdTu3P+1A
+         8xnfSYCbB38n+6LxL91gDYRaLPbxWDTJQLtgxOmk2SLTVSRX+q3Dmh9ZFvGNFaQv9iWZ
+         ZBrg==
+X-Gm-Message-State: AOJu0Yzr9u0LeNwkW38dYXtgZZGXGFnuf7HWLLBECyDCzkX5ddrP2kFk
+	2rnctvRsvWrCqbeYxvpjk4OGijT+k/5Xz4jlftiafUDztK6rLgnHxb+3
+X-Gm-Gg: ATEYQzx/nVBVa7rd15mz2lIi3jVwQgNSdfYdqNJge3KKoJdjOypYWpxllnDjRyAZZlM
+	xQXd/ho5uAETFICjuz78bbVj7XETqOosNRo/+HNS+J7NMZ3qGsaF2lq0IOwbUtDfqZr18OqSXoH
+	WVOpPO2hl1TlTuyxARQdqmXx7GMiGdjBm3ICeERWOdK4fjXoLwGlSvlG640Vhs3DR7HU2AUK8ZS
+	OEeYp5flW6OWAsQYWtmd3QQ868Xsxcfg4Y713egA7+W6wkczc4T+t5cKGlL2CjRp66ZLhIYKTVg
+	UPru7LrkyD+UW4Ucjfq0vLE7ZS0lCbMl4si/RsxXv0I8HZCwgCEfpZOrj3oBrH+XK/iQ76534DQ
+	jtxl0eXUsFV3nuhyk3rNLN8cuSpY10guDQ3IJtX0wcRNjnJgort8opQCPgzrEWz9Dd32/luovny
+	/wN69jmSXNVyLWfFOpCgAFY8XaeTVKs/+L/9Gos/b/lnfM+A8=
+X-Received: by 2002:a05:693c:805c:b0:2be:64d7:8c6a with SMTP id 5a478bee46e88-2be64d794d7mr212153eec.38.1772932619412;
+        Sat, 07 Mar 2026 17:16:59 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f98365fsm4203272eec.30.2026.03.07.17.16.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Mar 2026 17:16:58 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sat, 7 Mar 2026 17:16:56 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Sanman Pradhan <sanman.p211993@gmail.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sanman Pradhan <psanman@juniper.net>
+Subject: Re: [PATCH 2/2] hwmon: (pmbus/max31785) use access_delay for
+ PMBus-mediated accesses
+Message-ID: <f0744e0e-d376-492c-b750-53235dafe45b@roeck-us.net>
+References: <20260307224517.38316-1-sanman.p211993@gmail.com>
+ <20260307224517.38316-3-sanman.p211993@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bzeM10vpnhivd1En9jaZx/dwVVTpiFCmB+zHKb2lyR+Mm3zHBOz
- o8Fn5Oe5kj8Pl1ibexxIDR0wSlg5LklT9t/6sEvp/9yzgHycXbMpe8kPNZ++r/GJ/C57tAr
- kqqiDpsKtivg1woTxpoW8LaU2jRFYvR0AGVHbMflXsh3/A4d30L1LeoSH7Im01Xe3kjqFrI
- cSND2o+oGMMyfolHBFj0A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/Ddaqji19XM=;CZsNUzHItbEqYiKFlBZluYU/hmy
- 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
- K6cKB3f2DyTWMJ0YEJxHVIh4HmeCC
-X-Rspamd-Queue-Id: 0B35522E177
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260307224517.38316-3-sanman.p211993@gmail.com>
+X-Rspamd-Queue-Id: 3DFD722E335
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12223-lists,linux-hwmon=lfdr.de];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[W_Armin@gmx.de,linux-hwmon@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12225-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.953];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.946];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	FREEMAIL_FROM(0.00)[gmx.de];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:email,gmx.de:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid]
 X-Rspamd-Action: no action
 
-Some WMI GUIDs found inside binary MOF files contain both
-uppercase and lowercase characters. Blindly copying such
-GUIDs will prevent the associated WMI driver from loading
-automatically because the WMI GUID found inside WMI device ids
-always contains uppercase characters.
+On Sat, Mar 07, 2026 at 02:45:20PM -0800, Sanman Pradhan wrote:
+> From: Sanman Pradhan <psanman@juniper.net>
+> 
+> The MAX31785 fan controller occasionally NACKs master transactions if
+> accesses are too tightly spaced. To avoid this, the driver currently
+> enforces a 250us inter-access delay with a private timestamp and wrapper
+> functions around both raw SMBus accesses and PMBus helper paths.
+> 
+> Use pmbus_driver_info.access_delay for normal PMBus-mediated accesses
+> instead, and remove the driver-local PMBus read/write wrappers.
+> 
+> Keep local delay handling for raw SMBus accesses used before
+> pmbus_do_probe(). Also add explicit delays around the raw i2c_transfer()
+> long-read path, since it bypasses PMBus core timing and still needs to
+> be spaced from surrounding transactions.
+> 
+> Update max31785_read_byte_data() so PMBUS_FAN_CONFIG_12 accesses are
+> only remapped for virtual pages, allowing physical-page accesses to fall
+> back to the PMBus core. With that change, use pmbus_update_fan() for fan
+> configuration updates.
+> 
+> Also use the delayed raw read helper for MFR_REVISION during probe, drop
+> the unused to_max31785_data() macro, and rename the local variable
+> "virtual" to "vpage".
+> 
+> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+> ---
+>  drivers/hwmon/pmbus/max31785.c | 186 +++++++++++----------------------
+>  1 file changed, 59 insertions(+), 127 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/max31785.c b/drivers/hwmon/pmbus/max31785.c
+> index 50073fe0c5e8..e9c3c36c8663 100644
+> --- a/drivers/hwmon/pmbus/max31785.c
+> +++ b/drivers/hwmon/pmbus/max31785.c
+...
+> @@ -178,9 +129,22 @@ static int max31785_read_long_data(struct i2c_client *client, int page,
+>  	if (rc < 0)
+>  		return rc;
+>  
+> +	/*
+> +	 * The following raw i2c_transfer() bypasses PMBus core access timing.
+> +	 * Add an explicit delay before the transfer so it is properly spaced
+> +	 * from the preceding PMBus transaction.
+> +	 */
+> +	usleep_range(MAX31785_WAIT_DELAY_US, MAX31785_WAIT_DELAY_US + 50);
+> +
+>  	rc = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
+>  	if (rc < 0)
+>  		return rc;
+> +	/*
+> +	 * The preceding raw i2c_transfer() bypasses PMBus core access timing.
+> +	 * Add an explicit delay after the transfer so the next PMBus access
+> +	 * preserves the required inter-transaction spacing.
+> +	 */
+> +	usleep_range(MAX31785_WAIT_DELAY_US, MAX31785_WAIT_DELAY_US + 50);
 
-Avoid this issue by always converting WMI GUID strings to
-uppercase. Also verify that the WMI GUID string actually looks
-like a valid GUID.
+AI feedback:
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- .../wmi/driver-development-guide.rst          |  2 +-
- scripts/mod/file2alias.c                      | 28 ++++++++++++++++++-
- 2 files changed, 28 insertions(+), 2 deletions(-)
+  If `i2c_transfer()` fails, the function returns early without executing the
+  trailing `usleep_range()`. Since this raw transfer bypasses the PMBus core
+  timing management (`pmbus_update_ts()`), the PMBus core is unaware of the
+  exact time this I2C transfer occurred.
+  By returning early on error, the required 250us inter-transaction delay is
+  skipped. The next PMBus transaction issued by the core might be executed
+  immediately, potentially leading to a cascade of communication failures.
+  Would it be better to move the trailing `usleep_range()` before the error
+  check so it executes unconditionally?
 
-diff --git a/Documentation/wmi/driver-development-guide.rst b/Documentatio=
-n/wmi/driver-development-guide.rst
-index fbc2d9b12fe9..74bb156ad9cc 100644
-=2D-- a/Documentation/wmi/driver-development-guide.rst
-+++ b/Documentation/wmi/driver-development-guide.rst
-@@ -54,7 +54,7 @@ to matching WMI devices using a struct wmi_device_id tab=
-le:
- ::
-=20
-   static const struct wmi_device_id foo_id_table[] =3D {
--         /* Only use uppercase letters! */
-+         /* Using only uppercase letters is recommended */
-          { "936DA01F-9ABD-4D9D-80C7-02AF85C822A8", NULL },
-          { }
-   };
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 4e99393a35f1..20e542a888c4 100644
-=2D-- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1253,6 +1253,8 @@ static void do_tee_entry(struct module *mod, void *s=
-ymval)
- static void do_wmi_entry(struct module *mod, void *symval)
- {
- 	DEF_FIELD_ADDR(symval, wmi_device_id, guid_string);
-+	char result[sizeof(*guid_string)];
-+	int i;
-=20
- 	if (strlen(*guid_string) !=3D UUID_STRING_LEN) {
- 		warn("Invalid WMI device id 'wmi:%s' in '%s'\n",
-@@ -1260,7 +1262,31 @@ static void do_wmi_entry(struct module *mod, void *=
-symval)
- 		return;
- 	}
-=20
--	module_alias_printf(mod, false, WMI_MODULE_PREFIX "%s", *guid_string);
-+	for (i =3D 0; i < UUID_STRING_LEN; i++) {
-+		char value =3D (*guid_string)[i];
-+		bool valid =3D false;
-+
-+		if (i =3D=3D 8 || i =3D=3D 13 || i =3D=3D 18 || i =3D=3D 23) {
-+			if (value =3D=3D '-')
-+				valid =3D true;
-+		} else {
-+			if (isxdigit(value))
-+				valid =3D true;
-+		}
-+
-+		if (!valid) {
-+			warn("Invalid character %c inside WMI GUID string '%s' in '%s'\n",
-+			     value, *guid_string, mod->name);
-+			return;
-+		}
-+
-+		/* Some GUIDs from BMOF definitions contain lowercase characters */
-+		result[i] =3D toupper(value);
-+	}
-+
-+	result[i] =3D '\0';
-+
-+	module_alias_printf(mod, false, WMI_MODULE_PREFIX "%s", result);
- }
-=20
- /* Looks like: mhi:S */
-=2D-=20
-2.39.5
+Seems to me it has a point.
 
+Also, would it make sense to export and use pmbus_wait() and pmbus_update_ts()
+instead ?
+
+Thanks,
+Guenter
 
