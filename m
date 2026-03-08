@@ -1,513 +1,228 @@
-Return-Path: <linux-hwmon+bounces-12214-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12221-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOAmNMyqrGldsgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12214-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 07 Mar 2026 23:46:36 +0100
+	id OAGjFDPCrGkduAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12221-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sun, 08 Mar 2026 01:26:27 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2213822DE00
-	for <lists+linux-hwmon@lfdr.de>; Sat, 07 Mar 2026 23:46:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BF522E166
+	for <lists+linux-hwmon@lfdr.de>; Sun, 08 Mar 2026 01:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40A14301AAA3
-	for <lists+linux-hwmon@lfdr.de>; Sat,  7 Mar 2026 22:46:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBD7B301549F
+	for <lists+linux-hwmon@lfdr.de>; Sun,  8 Mar 2026 00:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B18C1DED42;
-	Sat,  7 Mar 2026 22:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BE4215F42;
+	Sun,  8 Mar 2026 00:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMNT5WtF"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="nmYvQDhp"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE12877CB
-	for <linux-hwmon@vger.kernel.org>; Sat,  7 Mar 2026 22:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253AE1DF73A;
+	Sun,  8 Mar 2026 00:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772923571; cv=none; b=B0EcviewrKRZwjh3SLfC1uvoXg0GXwyyPCbG+e9xZqQL3KlsQGVsXqR+ehSoz3AVMPrP2ct5QP0Ps6Olpz7yYOTN1MOuUzTeM71Vi18kxXA8U6knBbsRopTjoW+6vQVXNZbCpPXOLq0a6hAOmBJYUBcVT20/S/NssZ/5nIRBFLM=
+	t=1772929555; cv=none; b=QbxcvskCSGcAQ4rqfMVOcWOYZyzybqd3CayPI5LbqIFkCj8qAQyv0m1EbsM6i4EsbViKAvxgqpuJYjiW208fe45bfcTLNAXi5a8VBvAjQLm0FCHZvRRi1UW7KdHyTuIfX5f1fOEp/vW8Y7ori8dCghc1afh7zbMHnp9fjBJLb5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772923571; c=relaxed/simple;
-	bh=oAOlPws8EP8PUhAHfq9ajzPvFqDm8bjO312/SkoWd1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VUjOBB3YYpZS92W/KqPfgjnQUDzFKt1tzpCR9KUzKL9ENZRvY12P7SFtx9Q5q1DdRguPFiN2y1p5UlYp7D2/nHtXow7p+h2ML5MHrb7HvxVgHyYyHOOcvwL/27x1vO9sZVR+7hUv14D32hs5Rqhwqss1ao59rNt7FjRyEcKuk0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IMNT5WtF; arc=none smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2be06c02f66so3153050eec.1
-        for <linux-hwmon@vger.kernel.org>; Sat, 07 Mar 2026 14:46:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772923568; x=1773528368; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t3pZ4NzWiqslROXZ3lXgUVAHQhP2+7utDLaCs4aywEA=;
-        b=IMNT5WtFrVIO6npwL83041rR0kZn3mJngbWnBoy+dN8/3qLZFExG1+5vVNKyKqpv2T
-         6eQxT2LpkcbBPbhOMc/65rNg4AxijUk6caTEnR9aKBCmwieVZP3vIU1QaPWZxjS+Ba/d
-         hg37JqnTO41uvfrsoaD/zX2/gYeLyk2U+uSi9LfCYGXzDils38T4l5uYSS3Es9YtXUA2
-         iyYiN51TF+WdTY34eWrmnfOhdgKFhc1rDxzc8STQqNzuogJ6daBtH654dUCi7/AEE8Ar
-         xBz9h72fqoitjXzzT2o1NOrWthn8XS+FIEjXLq+Oako+I2q5MO4DSm8OV79eoyFYtG+O
-         7tWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772923568; x=1773528368;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t3pZ4NzWiqslROXZ3lXgUVAHQhP2+7utDLaCs4aywEA=;
-        b=ut1JEV0eZMn0CrQ9w0VYZsukQMORMuG4Kq+Tk/FB/+8xza5k2i5zbodLUWW4iVDyuE
-         mq8N+8HnIpKfhYFQabRF/ZV4n4cQKB5SdLdX02022n0Sjp9dc3+0NVm8pIeAX4kJODKG
-         joxpn6Mr/Xh3thCRNZqjHmUBC3nsrjWh/b3qF/xMWmngzVhD7VhjbBfu9Isdonh5o3St
-         sw9ptCZOG9w1QhgRCSKPZ7tu4MoTOIxdkSCi26GyLm6KGkbVt0mgN6/ASVsRzCC8cHcj
-         pFu3iNFMlVjYFOfZjDTpQIC7iSNGar+Mu2/rEbqLNrMP5JrYLTLvNu/NBu4qnGGTRYGs
-         KqLw==
-X-Gm-Message-State: AOJu0Yw4PxjFdjsSDyEqmQuQT0zmaHjbBmH7/IPJMlR5/Yn643LhDqhR
-	53BxOln4GO7Rz1rNDzjTaJIpNdEM055S6htbbEl2IHlsvfTdKwBoWjHW
-X-Gm-Gg: ATEYQzxnDkdmsNExRhRcQ/ZkV2IHEOnb5Hvd7TXn0vHqbHLl7zMDql6OxQ6BYOO4PRN
-	TwJFIOOemduuWY+eXF+Hcqsm4m8yc3sSQ9A+/YuBnjmFA44WPHgSokqqTTjD/E94zuZH8zCNOUE
-	s0pAzBimvlRdCmkJg1F56q3T+pOutn/+S4gt1TJfHr+p2BJS9e7GWTYJf5CElOsHenk76rrT6eG
-	+exBli6W/jipg/NYKIVPTEUWa8YsV1KlPXjTImvHI0W4vUhAJ65Au/Q2A89+24AoaWdXti6e8fq
-	ZODBKQjy1zliPw/ugXFCe+U/rucnQw4/uqzg1IuqiiXwy2lywbs6JggAueh+L/Z3QejHvP5z1Xd
-	mbnvmL48YKKC90zEvtl3E6qoifs1YeaWKgi9DAAloF/tIkCElV0vDSflKt7CL61J/M1hcKAyZEL
-	jz+UTk83T83Ye3H8IroN6EWQaM7IhEg+VreMHB//jHVjS9GXRjSGf55bruhEl1JadARKOB59Cy3
-	8SiT4NsZRNaUq0IWg==
-X-Received: by 2002:a05:693c:3104:b0:2b8:26b8:3444 with SMTP id 5a478bee46e88-2be4e065b0fmr2783091eec.19.1772923568412;
-        Sat, 07 Mar 2026 14:46:08 -0800 (PST)
-Received: from localhost.localdomain (c-67-164-93-214.hsd1.ca.comcast.net. [67.164.93.214])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f96aec4sm4857344eec.25.2026.03.07.14.46.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 14:46:07 -0800 (PST)
-From: Sanman Pradhan <sanman.p211993@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org,
+	s=arc-20240116; t=1772929555; c=relaxed/simple;
+	bh=4bzICzmZOo+7SwqDhYlO/23u786m4otIgCUo7y/qF3c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cGR2EbO/L/ECu8QWTvNu+I/17PaiBizZI6qIuEcsU8IZhSdOi8RXsr17vNrgoJWpl3vgHLGNF6ZylaL8ZppBo/qK1dwDjPbeDn7Eg1TYouF1moRc7cES9PKE9KL4YuwLtSNa9eYad/J91Mf3trjMUok5HOha+wqn5tJDcP+Z9Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=nmYvQDhp; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1772929528; x=1773534328; i=w_armin@gmx.de;
+	bh=bzjB2sztaBNOWUBbO/XWnKyy2KCALsGBP093MtXNjro=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=nmYvQDhpXByej2EkCUVr34+n4/LsAhOC9wOku3hxfzwgRYg3jL954uBD5DfI1sGW
+	 gVgyF3R02WdBqFrPMcbU6QKc/nSYBW6Fyi7NfTnUA9TK45L11OffIRNe8s2p8JOtG
+	 jddSn+k98WklDYICRahlE/KJdadMpY9WP5uWPHEMDviGNFS0IEIQJ+0gnBkXdEXHC
+	 x0dELQBAeKNbmHpQ3uYE4fpyeL78f/CShehx+5pOCkLI9yPM1b7n/VlX+feGttSAn
+	 AWjD3hPYQqyXK+W1RGk6JxxVqBjeJfCmcr73w9SfHaS6a5mCeGda87lSMLY3YzPc5
+	 3rYwBC9V+vypq+ExEw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7R1J-1vZraX28C5-00tWhB; Sun, 08
+ Mar 2026 01:25:28 +0100
+From: Armin Wolf <W_Armin@gmx.de>
+To: Dell.Client.Kernel@dell.com,
+	pali@kernel.org,
+	mjg59@srcf.ucam.org
+Cc: hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Sanman Pradhan <psanman@juniper.net>
-Subject: [PATCH 2/2] hwmon: (pmbus/max31785) use access_delay for PMBus-mediated accesses
-Date: Sat,  7 Mar 2026 14:45:20 -0800
-Message-Id: <20260307224517.38316-3-sanman.p211993@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260307224517.38316-1-sanman.p211993@gmail.com>
-References: <20260307224517.38316-1-sanman.p211993@gmail.com>
+	linux@roeck-us.net,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH 0/9] Convert most Dell WMI drivers to use the new buffer-based API
+Date: Sun,  8 Mar 2026 01:25:13 +0100
+Message-Id: <20260308002522.4185-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2213822DE00
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sxmtJfK0/SeN8ltILdeJ34HYwr7NeVnvU1mRZeqqiqXtmMNxpc7
+ nSmza5/VRR9kGn3BSYKisQ0TC5GSnNSO7+5N4mhufysXhuLAYVzWN0dePtUEX4fLuQA8vOv
+ OxqtpxKDgoxx8f/C9afdRjTpSAz8I6ZxuE7v0TwADvt4K/uSvxllKWK0ltwM+zvpxJui34O
+ IJ5B+Bxg0A0IACLueFZHw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:eHV347mL1HI=;XJZu0LciPBtdVYCmUcL8rwcMPZr
+ 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
+ bBhECbFi18udnUk5PLuwjgkHK5Faf
+X-Rspamd-Queue-Id: E1BF522E166
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12214-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12221-lists,linux-hwmon=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[W_Armin@gmx.de,linux-hwmon@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[sanmanp211993@gmail.com,linux-hwmon@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.968];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_THREE(0.00)[4];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.956];
+	DKIM_TRACE(0.00)[gmx.de:+];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,juniper.net:email]
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-From: Sanman Pradhan <psanman@juniper.net>
+The new buffer-based WMI API improves the compatibility between
+different ACPI firmware implementations by performing marshalling/
+unmarshalling of WMI buffers like the original Windows driver.
 
-The MAX31785 fan controller occasionally NACKs master transactions if
-accesses are too tightly spaced. To avoid this, the driver currently
-enforces a 250us inter-access delay with a private timestamp and wrapper
-functions around both raw SMBus accesses and PMBus helper paths.
+Convert most Dell WMI drivers to use this new API. This also
+removes all ACPI-related code from most drivers because the
+new buffer-based WMI API uses abstract WMI buffer objects instead
+of ACPI objects.
 
-Use pmbus_driver_info.access_delay for normal PMBus-mediated accesses
-instead, and remove the driver-local PMBus read/write wrappers.
+All drivers have been tested on a Dell Inspiron 3505 and appear
+to work normally.
 
-Keep local delay handling for raw SMBus accesses used before
-pmbus_do_probe(). Also add explicit delays around the raw i2c_transfer()
-long-read path, since it bypasses PMBus core timing and still needs to
-be spaced from surrounding transactions.
+The last three patches contain some misc. cleanups for the WMI
+driver core itself. The most important change is a fix for modprobe
+to verify any WMI GUID strings from WMI drivers and convert them
+to uppercase if necessary. This should fix autoloading for WMI
+drivers that use WMI GUID strings with lowercase letters.
 
-Update max31785_read_byte_data() so PMBUS_FAN_CONFIG_12 accesses are
-only remapped for virtual pages, allowing physical-page accesses to fall
-back to the PMBus core. With that change, use pmbus_update_fan() for fan
-configuration updates.
+Armin Wolf (9):
+  platform/x86: dell-descriptor: Use new buffer-based WMI API
+  platform/x86: dell-privacy: Use new buffer-based WMI API
+  platform/x86: dell-smbios-wmi: Use new buffer-based WMI API
+  platform/x86: dell-wmi-base: Use new buffer-based WMI API
+  platform/x86: dell-ddv: Use new buffer-based WMI API
+  hwmon: (dell-smm) Use new buffer-based WMI API
+  platform/wmi: Make wmi_bus_class const
+  platform/wmi: Make sysfs attributes const
+  modpost: Handle malformed WMI GUID strings
 
-Also use the delayed raw read helper for MFR_REVISION during probe, drop
-the unused to_max31785_data() macro, and rename the local variable
-"virtual" to "vpage".
+ .../wmi/driver-development-guide.rst          |   2 +-
+ drivers/hwmon/dell-smm-hwmon.c                |  47 ++---
+ drivers/platform/wmi/core.c                   |  34 +--
+ drivers/platform/x86/dell/dell-smbios-wmi.c   |  46 +++--
+ drivers/platform/x86/dell/dell-wmi-base.c     |  68 +++---
+ drivers/platform/x86/dell/dell-wmi-ddv.c      | 194 ++++++++++--------
+ .../platform/x86/dell/dell-wmi-descriptor.c   |  96 ++++-----
+ drivers/platform/x86/dell/dell-wmi-privacy.c  |  78 ++++---
+ scripts/mod/file2alias.c                      |  28 ++-
+ 9 files changed, 317 insertions(+), 276 deletions(-)
 
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
----
- drivers/hwmon/pmbus/max31785.c | 186 +++++++++++----------------------
- 1 file changed, 59 insertions(+), 127 deletions(-)
-
-diff --git a/drivers/hwmon/pmbus/max31785.c b/drivers/hwmon/pmbus/max31785.c
-index 50073fe0c5e8..e9c3c36c8663 100644
---- a/drivers/hwmon/pmbus/max31785.c
-+++ b/drivers/hwmon/pmbus/max31785.c
-@@ -31,7 +31,6 @@ struct max31785_data {
- 	struct pmbus_driver_info info;
- };
- 
--#define to_max31785_data(x)  container_of(x, struct max31785_data, info)
- 
- /*
-  * MAX31785 Driver Workaround
-@@ -40,9 +39,8 @@ struct max31785_data {
-  * These issues are not indicated by the device itself, except for occasional
-  * NACK responses during master transactions. No error bits are set in STATUS_BYTE.
-  *
-- * To address this, we introduce a delay of 250us between consecutive accesses
-- * to the fan controller. This delay helps mitigate communication problems by
-- * allowing sufficient time between accesses.
-+ * Keep minimal local delay handling for raw pre-probe SMBus accesses.
-+ * Normal PMBus-mediated accesses use pmbus_driver_info.access_delay instead.
-  */
- static inline void max31785_wait(const struct max31785_data *data)
- {
-@@ -54,89 +52,42 @@ static inline void max31785_wait(const struct max31785_data *data)
- }
- 
- static int max31785_i2c_write_byte_data(struct i2c_client *client,
--					struct max31785_data *driver_data,
--					int command, u8 data)
-+					struct max31785_data *data,
-+					int command, u8 value)
- {
- 	int rc;
- 
--	max31785_wait(driver_data);
--	rc = i2c_smbus_write_byte_data(client, command, data);
--	driver_data->access = ktime_get();
-+	max31785_wait(data);
-+	rc = i2c_smbus_write_byte_data(client, command, value);
-+	data->access = ktime_get();
- 	return rc;
- }
- 
- static int max31785_i2c_read_word_data(struct i2c_client *client,
--				       struct max31785_data *driver_data,
-+				       struct max31785_data *data,
- 				       int command)
- {
- 	int rc;
- 
--	max31785_wait(driver_data);
-+	max31785_wait(data);
- 	rc = i2c_smbus_read_word_data(client, command);
--	driver_data->access = ktime_get();
--	return rc;
--}
--
--static int _max31785_read_byte_data(struct i2c_client *client,
--				    struct max31785_data *driver_data,
--				    int page, int command)
--{
--	int rc;
--
--	max31785_wait(driver_data);
--	rc = pmbus_read_byte_data(client, page, command);
--	driver_data->access = ktime_get();
--	return rc;
--}
--
--static int _max31785_write_byte_data(struct i2c_client *client,
--				     struct max31785_data *driver_data,
--				     int page, int command, u16 data)
--{
--	int rc;
--
--	max31785_wait(driver_data);
--	rc = pmbus_write_byte_data(client, page, command, data);
--	driver_data->access = ktime_get();
--	return rc;
--}
--
--static int _max31785_read_word_data(struct i2c_client *client,
--				    struct max31785_data *driver_data,
--				    int page, int phase, int command)
--{
--	int rc;
--
--	max31785_wait(driver_data);
--	rc = pmbus_read_word_data(client, page, phase, command);
--	driver_data->access = ktime_get();
--	return rc;
--}
--
--static int _max31785_write_word_data(struct i2c_client *client,
--				     struct max31785_data *driver_data,
--				     int page, int command, u16 data)
--{
--	int rc;
--
--	max31785_wait(driver_data);
--	rc = pmbus_write_word_data(client, page, command, data);
--	driver_data->access = ktime_get();
-+	data->access = ktime_get();
- 	return rc;
- }
- 
- static int max31785_read_byte_data(struct i2c_client *client, int page, int reg)
- {
--	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
--	struct max31785_data *driver_data = to_max31785_data(info);
- 
- 	switch (reg) {
- 	case PMBUS_VOUT_MODE:
- 		return -ENOTSUPP;
- 	case PMBUS_FAN_CONFIG_12:
--		return _max31785_read_byte_data(client, driver_data,
--						page - MAX31785_NR_PAGES,
--						reg);
-+		if (page < MAX31785_NR_PAGES)
-+			return -ENODATA;
-+
-+		return pmbus_read_byte_data(client,
-+					    page - MAX31785_NR_PAGES,
-+					    reg);
- 	}
- 
- 	return -ENODATA;
-@@ -178,9 +129,22 @@ static int max31785_read_long_data(struct i2c_client *client, int page,
- 	if (rc < 0)
- 		return rc;
- 
-+	/*
-+	 * The following raw i2c_transfer() bypasses PMBus core access timing.
-+	 * Add an explicit delay before the transfer so it is properly spaced
-+	 * from the preceding PMBus transaction.
-+	 */
-+	usleep_range(MAX31785_WAIT_DELAY_US, MAX31785_WAIT_DELAY_US + 50);
-+
- 	rc = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
- 	if (rc < 0)
- 		return rc;
-+	/*
-+	 * The preceding raw i2c_transfer() bypasses PMBus core access timing.
-+	 * Add an explicit delay after the transfer so the next PMBus access
-+	 * preserves the required inter-transaction spacing.
-+	 */
-+	usleep_range(MAX31785_WAIT_DELAY_US, MAX31785_WAIT_DELAY_US + 50);
- 
- 	*data = (rspbuf[0] << (0 * 8)) | (rspbuf[1] << (1 * 8)) |
- 		(rspbuf[2] << (2 * 8)) | (rspbuf[3] << (3 * 8));
-@@ -203,19 +167,18 @@ static int max31785_get_pwm(struct i2c_client *client, int page)
- 	return rv;
- }
- 
--static int max31785_get_pwm_mode(struct i2c_client *client,
--				 struct max31785_data *driver_data, int page)
-+static int max31785_get_pwm_mode(struct i2c_client *client, int page)
- {
- 	int config;
- 	int command;
- 
--	config = _max31785_read_byte_data(client, driver_data, page,
--					  PMBUS_FAN_CONFIG_12);
-+	config = pmbus_read_byte_data(client, page,
-+				      PMBUS_FAN_CONFIG_12);
- 	if (config < 0)
- 		return config;
- 
--	command = _max31785_read_word_data(client, driver_data, page, 0xff,
--					   PMBUS_FAN_COMMAND_1);
-+	command = pmbus_read_word_data(client, page, 0xff,
-+				       PMBUS_FAN_COMMAND_1);
- 	if (command < 0)
- 		return command;
- 
-@@ -233,8 +196,6 @@ static int max31785_get_pwm_mode(struct i2c_client *client,
- static int max31785_read_word_data(struct i2c_client *client, int page,
- 				   int phase, int reg)
- {
--	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
--	struct max31785_data *driver_data = to_max31785_data(info);
- 	u32 val;
- 	int rv;
- 
-@@ -263,7 +224,7 @@ static int max31785_read_word_data(struct i2c_client *client, int page,
- 		rv = max31785_get_pwm(client, page);
- 		break;
- 	case PMBUS_VIRT_PWM_ENABLE_1:
--		rv = max31785_get_pwm_mode(client, driver_data, page);
-+		rv = max31785_get_pwm_mode(client, page);
- 		break;
- 	default:
- 		rv = -ENODATA;
-@@ -294,35 +255,7 @@ static inline u32 max31785_scale_pwm(u32 sensor_val)
- 	return (sensor_val * 100) / 255;
- }
- 
--static int max31785_update_fan(struct i2c_client *client,
--			       struct max31785_data *driver_data, int page,
--			       u8 config, u8 mask, u16 command)
--{
--	int from, rv;
--	u8 to;
--
--	from = _max31785_read_byte_data(client, driver_data, page,
--					PMBUS_FAN_CONFIG_12);
--	if (from < 0)
--		return from;
--
--	to = (from & ~mask) | (config & mask);
--
--	if (to != from) {
--		rv = _max31785_write_byte_data(client, driver_data, page,
--					       PMBUS_FAN_CONFIG_12, to);
--		if (rv < 0)
--			return rv;
--	}
--
--	rv = _max31785_write_word_data(client, driver_data, page,
--				       PMBUS_FAN_COMMAND_1, command);
--
--	return rv;
--}
--
--static int max31785_pwm_enable(struct i2c_client *client,
--			       struct max31785_data *driver_data, int page,
-+static int max31785_pwm_enable(struct i2c_client *client, int page,
- 			       u16 word)
- {
- 	int config = 0;
-@@ -351,23 +284,21 @@ static int max31785_pwm_enable(struct i2c_client *client,
- 		return -EINVAL;
- 	}
- 
--	return max31785_update_fan(client, driver_data, page, config,
-+	return pmbus_update_fan(client, page, 0, config,
- 				   PB_FAN_1_RPM, rate);
- }
- 
- static int max31785_write_word_data(struct i2c_client *client, int page,
- 				    int reg, u16 word)
- {
--	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
--	struct max31785_data *driver_data = to_max31785_data(info);
- 
- 	switch (reg) {
- 	case PMBUS_VIRT_PWM_1:
--		return max31785_update_fan(client, driver_data, page, 0,
--					   PB_FAN_1_RPM,
--					   max31785_scale_pwm(word));
-+		return pmbus_update_fan(client, page, 0, 0,
-+					PB_FAN_1_RPM,
-+					max31785_scale_pwm(word));
- 	case PMBUS_VIRT_PWM_ENABLE_1:
--		return max31785_pwm_enable(client, driver_data, page, word);
-+		return max31785_pwm_enable(client, page, word);
- 	default:
- 		break;
- 	}
-@@ -391,6 +322,7 @@ static const struct pmbus_driver_info max31785_info = {
- 	.read_byte_data = max31785_read_byte_data,
- 	.read_word_data = max31785_read_word_data,
- 	.write_byte = max31785_write_byte,
-+	.access_delay = MAX31785_WAIT_DELAY_US,
- 
- 	/* RPM */
- 	.format[PSC_FAN] = direct,
-@@ -438,29 +370,29 @@ static const struct pmbus_driver_info max31785_info = {
- };
- 
- static int max31785_configure_dual_tach(struct i2c_client *client,
--					struct pmbus_driver_info *info)
-+					struct max31785_data *data)
- {
-+	struct pmbus_driver_info *info = &data->info;
- 	int ret;
- 	int i;
--	struct max31785_data *driver_data = to_max31785_data(info);
- 
- 	for (i = 0; i < MAX31785_NR_FAN_PAGES; i++) {
--		ret = max31785_i2c_write_byte_data(client, driver_data,
-+		ret = max31785_i2c_write_byte_data(client, data,
- 						   PMBUS_PAGE, i);
- 		if (ret < 0)
- 			return ret;
- 
--		ret = max31785_i2c_read_word_data(client, driver_data,
-+		ret = max31785_i2c_read_word_data(client, data,
- 						  MFR_FAN_CONFIG);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (ret & MFR_FAN_CONFIG_DUAL_TACH) {
--			int virtual = MAX31785_NR_PAGES + i;
-+			int vpage = MAX31785_NR_PAGES + i;
- 
--			info->pages = virtual + 1;
--			info->func[virtual] |= PMBUS_HAVE_FAN12;
--			info->func[virtual] |= PMBUS_PAGE_VIRTUAL;
-+			info->pages = vpage + 1;
-+			info->func[vpage] |= PMBUS_HAVE_FAN12;
-+			info->func[vpage] |= PMBUS_PAGE_VIRTUAL;
- 		}
- 	}
- 
-@@ -471,7 +403,7 @@ static int max31785_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
- 	struct pmbus_driver_info *info;
--	struct max31785_data *driver_data;
-+	struct max31785_data *data;
- 	bool dual_tach = false;
- 	int ret;
- 
-@@ -480,20 +412,20 @@ static int max31785_probe(struct i2c_client *client)
- 				     I2C_FUNC_SMBUS_WORD_DATA))
- 		return -ENODEV;
- 
--	driver_data = devm_kzalloc(dev, sizeof(struct max31785_data), GFP_KERNEL);
--	if (!driver_data)
-+	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
- 		return -ENOMEM;
- 
--	info = &driver_data->info;
--	driver_data->access = ktime_get();
-+	data->access = ktime_get();
-+	info = &data->info;
- 	*info = max31785_info;
- 
--	ret = max31785_i2c_write_byte_data(client, driver_data,
--					   PMBUS_PAGE, 255);
-+	ret = max31785_i2c_write_byte_data(client, data,
-+					   PMBUS_PAGE, 0xff);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = i2c_smbus_read_word_data(client, MFR_REVISION);
-+	ret = max31785_i2c_read_word_data(client, data, MFR_REVISION);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -509,7 +441,7 @@ static int max31785_probe(struct i2c_client *client)
- 	}
- 
- 	if (dual_tach) {
--		ret = max31785_configure_dual_tach(client, info);
-+		ret = max31785_configure_dual_tach(client, data);
- 		if (ret < 0)
- 			return ret;
- 	}
--- 
-2.34.1
+=2D-=20
+2.39.5
 
 
