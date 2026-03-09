@@ -1,62 +1,62 @@
-Return-Path: <linux-hwmon+bounces-12278-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12279-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEKwDFtHr2m9TQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12278-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 23:19:07 +0100
+	id D21WJzNKr2l9TgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12279-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 23:31:15 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8837242208
-	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 23:19:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADDD2423BF
+	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 23:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29341301E5ED
-	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Mar 2026 22:19:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D38E30745EF
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Mar 2026 22:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AC738E5C6;
-	Mon,  9 Mar 2026 22:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0E3274B3B;
+	Mon,  9 Mar 2026 22:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thehoffs.at header.i=@thehoffs.at header.b="mZMg9QOq"
+	dkim=pass (2048-bit key) header.d=thehoffs.at header.i=@thehoffs.at header.b="TU9wqays"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7BC344056
-	for <linux-hwmon@vger.kernel.org>; Mon,  9 Mar 2026 22:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7128F256C84
+	for <linux-hwmon@vger.kernel.org>; Mon,  9 Mar 2026 22:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773094744; cv=none; b=tZggT9J38ouQsaO4bZP5/2oFEK54jnBAqH4CwX3QgDfoQI8BODYSmukte4qiTuVMInldWbl25fVEqFKreXfHvoK12M7y6nJ9tX2cygK77JsFM0AoDVnCMu7z+wkX5YrWGaUaBl4kJ+s4tdIRqEsu/oLWM6c0CPdQ+M0QqCUzjVw=
+	t=1773095472; cv=none; b=AmjMbxJfYAC5CWYlatNZBqnxAqnREe+Xm+jFZ5UVjut5GwfT4FPQTsjkpBtCPtAMdfu//bld3AD1eAGlPRXRIZZIuigNnfcJhlwoZ+bL//gGzvztpowmNqnP1CfxVrYyC9Dm5X1CACrz+NBpXTSkDbAAXOyVt19gvf1G6+LTbHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773094744; c=relaxed/simple;
+	s=arc-20240116; t=1773095472; c=relaxed/simple;
 	bh=hks4Il8pPCtNoIsrJKFQAI0wrnEmxkg91YtSsyPXs7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OFB60VHvRAd2Mf4VUXk7DBRDKD0v+8WY+LPUym0NXFaEQf4XnTzbJ6EZdLLMCkLIrMggrPX+uuX2ZrRLACYRMNWGZd3ynuiiVAjlB9L5kFDoSmi3TaCAWhnJHi9lCMCo5MGngkyuXVOy95dV8mkfqnehLeu8++gorYfJ5TEH3zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thehoffs.at; spf=pass smtp.mailfrom=thehoffs.at; dkim=pass (2048-bit key) header.d=thehoffs.at header.i=@thehoffs.at header.b=mZMg9QOq; arc=none smtp.client-ip=80.241.56.152
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SN2qz69EvZhIawc0NJaPi/4s6pUMTw6+nLsveq1PpCo9C2tACvqeO3zyTj1JrYsSJEAd6kEejvOyBeCyBNnD2sRgJ43tpqzdACZsQksWEYouNGU6Tgk/t8k9NG7c1Qm0/8jfvNN96VGsd0xrhRGj/WEiyV+GXZ00EJR0l6PXKq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thehoffs.at; spf=pass smtp.mailfrom=thehoffs.at; dkim=pass (2048-bit key) header.d=thehoffs.at header.i=@thehoffs.at header.b=TU9wqays; arc=none smtp.client-ip=80.241.56.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thehoffs.at
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thehoffs.at
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fVBHb47S2z9v9n;
-	Mon,  9 Mar 2026 23:18:51 +0100 (CET)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fVBYm2Jt6z9smr;
+	Mon,  9 Mar 2026 23:31:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thehoffs.at; s=MBO0001;
-	t=1773094731;
+	t=1773095468;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
 	bh=w2fDL4wXJ+jUboUW3U0aizbxj/HDcNybU521xcjQLe8=;
-	b=mZMg9QOqzDV7smbI2gCprCjEwlQGGXM2NTf/QQtfeEAzzseH0+F+sbF9YBvL+ItnWKU5OG
-	25bha/j7FFJAT0sxUvmaHIvvvk39N+2TgtBkvgbze/LplaVCDUwkR1iJMZT/K/a2ivZMTt
-	RM/Ll+xheKf6yYdV4JJ/uhFb/WhiddzTnYn3Z2aODE9DsiUfv8jrpsYjKkoF9r60dpRZUC
-	6mMJO+I10eOdKhZISzUuXobFUylMiqnFtRnq7c1z3s9r1wXjqJEnvd4PaslvviNwqFqdhg
-	+3dFXnp3gXL1m+p8HL4mGs9o+e2AnoPQk2pOniB1UfOSW5/ihBd0DUo2HCNYCw==
+	b=TU9wqayscBbpt+7gIRi84CKRK5TcVM4dPTAX+XE/nkXQJEi4JoYtdQB4wj0htUv/+Yq0yz
+	f50tPSAIFOh4wKgZvSKWSE2h/UazRmxRk9+oYF6iWJIpXcfqwwAI3YGGOMpxtDo/uEPfpR
+	FuL08vI9PN+16xa7QydtGo+HrelrAdN53alZVp1WLa6m/q+zJlsmuPcYUvUZkxBa/AidJc
+	KGH3i3WjzphGHO4lxaVV6tAKIQWW2E9fngPUHGnLxtZrtWWrW69QM6J9tIBruBPZm+7wkk
+	5vFND2C6Bn8gE5dYq9lugfUA4sdPIcHCJ8kXd5A8AKxzCmcmlM54Xj4XeGcxrQ==
 From: Markus Hoffmann <markus@thehoffs.at>
 To: linux-hwmon@vger.kernel.org
 Cc: linux@roeck-us.net,
 	Markus Hoffmann <markus@thehoffs.at>
 Subject: [PATCH] hwmon: (it87) Add support for IT8689E
-Date: Mon,  9 Mar 2026 22:16:03 +0000
-Message-ID: <20260309221602.167882-2-markus@thehoffs.at>
+Date: Mon,  9 Mar 2026 22:31:03 +0000
+Message-ID: <20260309223103.175443-1-markus@thehoffs.at>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -64,19 +64,19 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B8837242208
+X-Rspamd-Queue-Id: EADDD2423BF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[thehoffs.at:s=MBO0001];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12278-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12279-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	DMARC_NA(0.00)[thehoffs.at];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,10 +89,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[thehoffs.at:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,thehoffs.at:dkim,thehoffs.at:email,thehoffs.at:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[thehoffs.at:dkim,thehoffs.at:email,thehoffs.at:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 Add support for the ITE IT8689E Super I/O chip. The IT8689E supports
