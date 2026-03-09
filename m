@@ -1,300 +1,357 @@
-Return-Path: <linux-hwmon+bounces-12263-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12271-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCylOATQrmnEIwIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12263-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 14:49:56 +0100
+	id EPBAD0HtrmkWKQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12271-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 16:54:41 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C556D23A027
-	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 14:49:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49A623C2D4
+	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 16:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35655301DD6B
-	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Mar 2026 13:49:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 653363078F81
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Mar 2026 15:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048FB3CE4A0;
-	Mon,  9 Mar 2026 13:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7773D9056;
+	Mon,  9 Mar 2026 15:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QCtAWiKz"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011043.outbound.protection.outlook.com [52.101.57.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CF43BED05
-	for <linux-hwmon@vger.kernel.org>; Mon,  9 Mar 2026 13:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773064184; cv=none; b=JGLaMk+N86yJYzDnasnlZkc4Df6lmTNXAIkhHO1u0Y7iSgay1r1+10LjWPALOeBl9kYhzYWY4hQrQOxObWZ+v4oB4YfffrkLGmjdrslOqeXMNFyEMJ5JGC/O35REd5ZMmqeo9nhTyNv/idntloWS/X6RVRmQjGcI5ejJMcPyjbI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773064184; c=relaxed/simple;
-	bh=voQ3PVHZ91k2HF9py972+zOQaT9+cswu5qeP2vJdCHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhxOYH3A/gogpD1EuzcY3zQh6E7FWumU/69/czhVISy49O0LYQXCHE/4K2GuHmZgDYM5gpS0MN+TiRAvmEo8G8yk2Umht7esGmM95yJ/MlcLlBZoMxNoyyUDVpDPTLo9XaJjq34pAwAyOU4Ei+TpfqVjpbyubQZ7oGKVU49b1ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vzaz5-0006fl-Ed; Mon, 09 Mar 2026 14:49:23 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vzaz2-004XYo-2B;
-	Mon, 09 Mar 2026 14:49:22 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vzaz3-0000000834g-3lw8;
-	Mon, 09 Mar 2026 14:49:21 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Peter Rosin <peda@axentia.se>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	David Jander <david@protonic.nl>
-Subject: [PATCH v3 7/7] mux: add NXP MC33978/MC34978 AMUX driver
-Date: Mon,  9 Mar 2026 14:49:18 +0100
-Message-ID: <20260309134920.1918294-8-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260309134920.1918294-1-o.rempel@pengutronix.de>
-References: <20260309134920.1918294-1-o.rempel@pengutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADC53D9045;
+	Mon,  9 Mar 2026 15:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773070888; cv=fail; b=NhL0bIbuSPBRk0vnGsgCRkFKnVyWZr8Ecdll+OxihZcZ7MlhA+8jmNQ/TuqzjMuS4ozGezCj78lxe5IBXxY2lm/vy6WiIvObpYbvrF8u9ik8RBYLJCtqf7uHY5zOo9RFGwLWyVceC8SBrHFMhH29nUF/KY7IaXAW/zbbBdLDwtM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773070888; c=relaxed/simple;
+	bh=na5MVNFfiNciV9r3sJJdgC80pfXAoV328RsuhJ1fpBs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=p8ysTwPQO5y6Qpikd5gHZkuxisgOB6UAXXT1TgN/kwF3iLahAdfjzMjQw2FJP8AcmK7BaNa9jUE7IcXv+8Dxcjgv0a+PvyY+XG+votDXjoUXIIS+kvPAr4oaG/1KQcdX4Z4knOwPgrLu1D0NDCybBh4otSvySeUWUOHrfkc4muc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QCtAWiKz; arc=fail smtp.client-ip=52.101.57.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gAv7MedS8k86ZkkFREf7aeneoI2Ys+Zj6tRSaxn6nCoLgZGVBZ8NOUlHhl5DqEcAxyHAlGnSvPyrqAqhN3Nq8OKi3irnuBqza9rI87gGZ/DJAo/7iCfCh4LZVqdkjwvihhCHl4wy8scnCjKmskntYRMmpY+wt5Kw9XIHJ52CZxwKI9WErqEgPQsxN8XH68caWhpo7sUjDKcnos/yoKfixm36c7Px3UXORA/V+0hR7QdLdDERbs+E+x59W4ph5DB6+IshJnENnSlSrCfMqLSbBgyHap/m0Pv3av8estBLCvUJnI4+HZDL9T+IaJ3E2qBgJejzDnjZ+x+RP/M7SkHzbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cv34+U3uIcVEA9ZGaRk2DvvyrXI88OYfo+2KzJpnaNs=;
+ b=pHO8wpCNrLGWbdZZmTnq4yqaSGpjvqEn/ElqxVvkKAkotuXw9/dO2hl0zH0GEMH3kASfTpgN38t39AzudSaPeQmZJjzoteJTzbc0nLQvm5EXr8vLyzn4H5BSXi440nyu7DyiMwmPcE8krgKI4tGKoBZtHZlykxrJlWzVS+x3Oz8mQX62M1KnIXV2nNnFuOPgEO5RIICucMkE9uRQSfrzInmfayOYDmbP82ueC/t5xKhIEh7KCkXl3abd1ccrEeygiGf9tdGOdIUVL9y6NBBdbTFaJTksnKsxQooAgchl0Vm+maN2Ok3L6WPtDmiuI2lzDAEPq8LEc3U6UYFhHA8DjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cv34+U3uIcVEA9ZGaRk2DvvyrXI88OYfo+2KzJpnaNs=;
+ b=QCtAWiKzLc2USXUxHvx2ZC52xss8rKoERWg452k8P2+Gb+YluSE0c0W17QOBmDHCc19VcbR5YbSpLTAAp1jqSSDvCnhlV/jeUA7eHB49qpDXyz8/S62A0yK9NIj/i/a7ZISlPTn3Av6TAct5JNsIcxltXr5iG+/7FeQq8bwNQ+M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA0PR12MB4557.namprd12.prod.outlook.com (2603:10b6:806:9d::10)
+ by SA3PR12MB7973.namprd12.prod.outlook.com (2603:10b6:806:305::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
+ 2026 15:41:23 +0000
+Received: from SA0PR12MB4557.namprd12.prod.outlook.com
+ ([fe80::885a:79b3:8288:287]) by SA0PR12MB4557.namprd12.prod.outlook.com
+ ([fe80::885a:79b3:8288:287%5]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
+ 15:41:23 +0000
+Message-ID: <39bdcdf7-a771-4f1b-a3a0-0ecde272d914@amd.com>
+Date: Mon, 9 Mar 2026 10:41:20 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] platform/x86: dell-descriptor: Use new buffer-based
+ WMI API
+To: Armin Wolf <W_Armin@gmx.de>, Dell.Client.Kernel@dell.com,
+ pali@kernel.org, mjg59@srcf.ucam.org
+Cc: hansg@kernel.org, ilpo.jarvinen@linux.intel.com,
+ platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux@roeck-us.net, linux-hwmon@vger.kernel.org
+References: <20260308002522.4185-1-W_Armin@gmx.de>
+ <20260308002522.4185-2-W_Armin@gmx.de>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20260308002522.4185-2-W_Armin@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR13CA0060.namprd13.prod.outlook.com
+ (2603:10b6:610:b2::35) To SA0PR12MB4557.namprd12.prod.outlook.com
+ (2603:10b6:806:9d::10)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Rspamd-Queue-Id: C556D23A027
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4557:EE_|SA3PR12MB7973:EE_
+X-MS-Office365-Filtering-Correlation-Id: a516af3d-b561-4f0e-607c-08de7df25151
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	38YCcDxIzPoq5N+UDzEzT0Z9ZqW5zoHUpc0vna+1EUpUlhyGwOp5bilnVobJN9wpfPOTn9HTbamtn82cmTRWzIekmpT6zzGb2SLpKya7z395b1npD4jNXj7FwpbDdJXy/HCPwctnK7UlC9RpvDQHig7rNEcLLKZNkqA+sqdIh3vJdLO8RpOXaCQSMQGVrqiirmHl8hthFR8BvCM+mCEvrBlNRgT2i5gLnmwWwqTWLTVNYwfOltnwzP6NeVm3mMPcfP906jSQQDXWsHBlEE5Dp4VKIp4rqVfw88a557Est7lTN3YJSkSnVtI4p/wlx2lwtqT9MmT4pMl73h+B+527EoDcMM0iVsboaHan2G+wGXFoqwLTT1mBSO2J28328SwmBjyf1BqPGhs+tZYBaNqzql9NOWjZ7md4+ILq8xXNPFkPkaF0GazS2nsOi/qRQU+3xicU3rF5r+lv7SNjZ5dW7AglN5YwcnPEzrDj+8bt6jlQM6mFOFW77koOzcJv9zwwko1g2Eu/73O+YNv6FdAeXnWaz9Zhd2MEYPAgHMiwJPuwAvTH+IBqMgKa1gKhflXOfmIjSM6QoWnhJoZtovGswpRpqmrtpkycBCf2YYux0FOFMwOEOpFzGPASV18AHl2PbjqyxpIVvA1BpkZzLco42y1RZQLKcPLbcpHtYsV2+AKx9SEHQHGRSUgwjYoE8GXxMTc7QXGWuTfAY9h3AfmTIjNIqLmo9KnIpyG6N+VRz18=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4557.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NEV1MElpbUpPa29RcnVpaGZIY1Vxa3R3V0FFUlh3NU5IRUhzMXArZlZBTWlK?=
+ =?utf-8?B?dTJ0ZE1HOTZCb21GQU1GcHJpZWw2UXlmRzBQd0FtSFhQNkM5UUk0QTZ6MG05?=
+ =?utf-8?B?RW0ySWhnWGVGckQ1OUtXNHhuaEtmN2dCSWFHKzVNQ0ZMemZTbXBmQzRraFk5?=
+ =?utf-8?B?OFFQQVRzOXhpNVVFVmVqeC9CR3NoL3h2OVBFclNlWG5PcjROSy96cVBsNVA3?=
+ =?utf-8?B?bnJQQzJSWjVLSi8zVDFlak5aMVVuUjYwN0xaSy8zaGFpRUxzemxlU0FvdjBD?=
+ =?utf-8?B?TWpiTlZEdC9nRGVBb3NBUTdSbE1HcHhVdVN4Nm4wSWd3bjhsT25LWGZoU0Q0?=
+ =?utf-8?B?VE9xbjV3dHBEREV0Yi80dnd1cFNKd2NKWkUyVjBYWUNkaHhjQjhlQUVDSEs0?=
+ =?utf-8?B?RGhtQ2Rnc1lMUHNNck91a1VqeUtoRGNaODhrczIwbHpQTEZIVTBHSnNPelB0?=
+ =?utf-8?B?bkF0QkRFOVQ4OHVHQVczU0I0cnRkRVhEbWdIVlhoeUl3K0hqQ3VlcVJsa0Yv?=
+ =?utf-8?B?TGFmV3dMVElia3NxaW44Yy9sSGFZenBYNi9FZlgxbHdqN0ZGb0RKdXhMOVZx?=
+ =?utf-8?B?TjF2ZG5ybjFIODFsdHdKVDRtTFM4UHZ3WnRnVWRnMHVHNXMvSFRkTGtHcHhT?=
+ =?utf-8?B?Uy9HUzlOVnZ5bkpOOVcvUEViY0U1KzJ5TDRoNU5yYmVZYUZwYzMvU3NkYXJL?=
+ =?utf-8?B?U2p4bFc3RnA1MFkxMWVaaExHUmNheEg5NzdVRW5nNDE2WlhHbEdncENTWU9s?=
+ =?utf-8?B?T2pvcUh2bTk3TVg0TWlRbHNBcW9BbU9PMEVXajBkdmhYTEIxM08vTXdlVnZs?=
+ =?utf-8?B?bFlBUy81Mng3cVZETUhOaHZNUkRyVm9uK3FhcFBIdG1TS3lxengrU3RUZVFH?=
+ =?utf-8?B?RS9RVWRxd01mbmI1SldDYkJUTGFLaTczTlN6djlpYmxLd29YOHlnOGlQQkxG?=
+ =?utf-8?B?dEpNMi96OXI3cC9OdHJJYmRPQUp4MjZ5MWlFajRHZmd3MmdUMHlKVXpGT0pm?=
+ =?utf-8?B?Zmcvb0ZrbWhoVmdjcWZFb0FmYWtJRFNkQTF3eXZoTVdDaXVSOERGTFZrUzVw?=
+ =?utf-8?B?R0hTM0VQUndlL0pVa01YejNvbUlyWmZvaVdJdUJ6U0ZxenBSZTFKU2swSHNp?=
+ =?utf-8?B?RmYzbkZyQTRuWDJuWXJFWTgzcXJCdlhVUmd2MWc4SkJPLzNvbmdPVEpUR29J?=
+ =?utf-8?B?R3BjNm12N2RpRnZnRSt4cm1zMldQbmNOMk9VMEJyL3ZZcitLUG50QnkzZTdq?=
+ =?utf-8?B?Q0Y4Rzc5YzZjN3hWSWtCTEVvbXIzYm51VGVwdUlkaE1GeElLVzNUY0NzeUJM?=
+ =?utf-8?B?SEFSMDBVeFhTaHNPdHBpd2VQTGVzVENMNnlsdDJ1RlVFeWlMcmR4UC9TQWFl?=
+ =?utf-8?B?czFoTlRRUUFzQ1VyTUtkNWZRTWR2ZjJCcnRIQ0YrVFFiRHRkTDRnK20vSGJF?=
+ =?utf-8?B?Zm5qWnFrQWNkc09rNDJ3RzVpVlE0c21iZXVVWVhBZ00wOERNZ1R6UkFSRXhP?=
+ =?utf-8?B?QVIxQjZWQndsdHdhL1B2NWdXN0FVUVJObm5sZVEvK2h5R1l5K0FtM3IxM2lz?=
+ =?utf-8?B?ZllkWWFWYmJoc0NhRkowMEtFTFNqY2lmZkZQWkpRUVRkd2lBaThlQ0tNSnB4?=
+ =?utf-8?B?Y0dwREpYVTJjQVd0UU5qV01NVlhRZWhTelMrNWJsUndYcHRlbnE0dHVaK1NQ?=
+ =?utf-8?B?TmxIeDZ1cEZjdUlmNEE3djJDbnc0WTJXTFlyMUppSTlrZVNKM0JQeUgwSTA2?=
+ =?utf-8?B?a2JPVERNeVpmNmZDVllZQnlnOVl0UWRoaUg5aSt1a2JGUjVmZjF0eFE2T3J6?=
+ =?utf-8?B?WEgrMXRUMXVORkpoWnBZbWZUK1ZZYWlqOWRuTUNvVGxMaHdOOWpJK0pUS2hU?=
+ =?utf-8?B?ZUpNR1VtUnNaUmJ6U0ZCZVlTQlA3Mm43UW9tM05NaVcyR2pEU1ZYL3pWSWZU?=
+ =?utf-8?B?Vm8wS0J3eWhiU2kxbVpzSysrbllxaWV6aGVNMU13d01sb093L3R0NzdJbGdW?=
+ =?utf-8?B?bU5mWE8wb0NsUnlGMlpOQnA0M2JnZm5lcHpvSFZJSjhDZmlDcVRLMGVnaElU?=
+ =?utf-8?B?ZnlGcmZsdGpnSHd1cXA0cXNVZlUxRExXRTl0RUw0aFEzNm05cURQWVUvQXJO?=
+ =?utf-8?B?Ym02THQvV3M1a1lPaHJHOFZEcDhEK1V6MXBIK3QxbTd3UERYY1o0TWRBOEtB?=
+ =?utf-8?B?dG43dU9hZFJQSHpTZWpmREh4Wis2QTBZbmZaUWV1UDNrK1g2bjhVdytSNnlR?=
+ =?utf-8?B?d2JkcG1tWTZGNjEwcXNzVTBRb3RrR28zem5CSFVsK3B2ZU5nY1E1ZFZEVmtQ?=
+ =?utf-8?B?elNrNGx3QmZWZGdDVCswanJEbkZkUk13MEJod3crQ3hTZ0xZMnFzQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a516af3d-b561-4f0e-607c-08de7df25151
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4557.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 15:41:23.4283
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uEbxN8QZz5PRF1R859+l21pCEs4PgQu+h79xSaZhBj8XwiZCCutO/tJ6Cw3TdC5sjadbBc7kYvJktsEKbon3Pw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7973
+X-Rspamd-Queue-Id: A49A623C2D4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-12271-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-12263-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.615];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,dell.com,kernel.org,srcf.ucam.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[amd.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,pengutronix.de:mid,pengutronix.de:email]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mario.limonciello@amd.com,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.959];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gmx.de:email,amd.com:dkim,amd.com:mid,buffer.data:url]
 X-Rspamd-Action: no action
 
-Add a mux-control driver for the 24-to-1 analog multiplexer (AMUX)
-embedded in the NXP MC33978/MC34978 Multiple Switch Detection
-Interface (MSDI) devices.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v3:
-- no changes
-changes v2:
-- Add missing <linux/err.h> include.
-- Add platform_device_id table
----
- drivers/mux/Kconfig       |  14 +++++
- drivers/mux/Makefile      |   2 +
- drivers/mux/mc33978-mux.c | 119 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 135 insertions(+)
- create mode 100644 drivers/mux/mc33978-mux.c
 
-diff --git a/drivers/mux/Kconfig b/drivers/mux/Kconfig
-index c68132e38138..7532da7e087e 100644
---- a/drivers/mux/Kconfig
-+++ b/drivers/mux/Kconfig
-@@ -45,6 +45,20 @@ config MUX_GPIO
- 	  To compile the driver as a module, choose M here: the module will
- 	  be called mux-gpio.
- 
-+config MUX_MC33978
-+	tristate "NXP MC33978/MC34978 Analog Multiplexer"
-+	depends on MFD_MC33978
-+	help
-+	  MC33978/MC34978 24-to-1 analog multiplexer (AMUX) driver.
-+
-+	  This driver provides mux-control for the analog multiplexer,
-+	  which can route switch voltages, temperature, and battery voltage
-+	  to an external ADC. Typically used with IIO ADC drivers to measure
-+	  analog values from the 22 switch inputs plus temperature and VBATP.
-+
-+	  To compile the driver as a module, choose M here: the module will
-+	  be called mc33978-mux.
-+
- config MUX_MMIO
- 	tristate "MMIO/Regmap register bitfield-controlled Multiplexer"
- 	depends on OF
-diff --git a/drivers/mux/Makefile b/drivers/mux/Makefile
-index 6e9fa47daf56..339c44b4d4f4 100644
---- a/drivers/mux/Makefile
-+++ b/drivers/mux/Makefile
-@@ -7,10 +7,12 @@ mux-core-objs			:= core.o
- mux-adg792a-objs		:= adg792a.o
- mux-adgs1408-objs		:= adgs1408.o
- mux-gpio-objs			:= gpio.o
-+mux-mc33978-objs		:= mc33978-mux.o
- mux-mmio-objs			:= mmio.o
- 
- obj-$(CONFIG_MULTIPLEXER)	+= mux-core.o
- obj-$(CONFIG_MUX_ADG792A)	+= mux-adg792a.o
- obj-$(CONFIG_MUX_ADGS1408)	+= mux-adgs1408.o
- obj-$(CONFIG_MUX_GPIO)		+= mux-gpio.o
-+obj-$(CONFIG_MUX_MC33978)	+= mux-mc33978.o
- obj-$(CONFIG_MUX_MMIO)		+= mux-mmio.o
-diff --git a/drivers/mux/mc33978-mux.c b/drivers/mux/mc33978-mux.c
-new file mode 100644
-index 000000000000..de79073e15aa
---- /dev/null
-+++ b/drivers/mux/mc33978-mux.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (c) 2026 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-+/*
-+ * MC33978/MC34978 Analog Multiplexer (AMUX) Driver
-+ *
-+ * This driver provides mux-control for the 24-to-1 analog multiplexer.
-+ * The AMUX routes one of the following signals to the external AMUX pin:
-+ * - Channels 0-13: SG0-SG13 switch voltages
-+ * - Channels 14-21: SP0-SP7 switch voltages
-+ * - Channel 22: Internal temperature diode
-+ * - Channel 23: Battery voltage (VBATP)
-+ *
-+ * Consumer drivers (typically IIO ADC drivers) use the mux-control
-+ * subsystem to select which signal to measure.
-+ *
-+ * Architecture:
-+ * The MC33978 does not have an internal ADC. Instead, it routes analog
-+ * signals to an external AMUX pin that must be connected to an external
-+ * ADC (such as the SoC's internal ADC). The IIO subsystem is responsible
-+ * for coordinating the mux selection and ADC sampling.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mux/driver.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/mfd/mc33978.h>
-+
-+/* AMUX_CTRL register field definitions */
-+#define MC33978_AMUX_CTRL_MASK	GENMASK(5, 0)	/* 6-bit channel select */
-+
-+struct mc33978_mux_priv {
-+	struct device *dev;
-+	struct regmap *map;
-+};
-+
-+static int mc33978_mux_set(struct mux_control *mux, int state)
-+{
-+	struct mc33978_mux_priv *priv = mux_chip_priv(mux->chip);
-+	int ret;
-+
-+	if (state < 0 || state >= MC33978_NUM_AMUX_CH)
-+		return -EINVAL;
-+
-+	ret = regmap_update_bits(priv->map, MC33978_REG_AMUX_CTRL,
-+				 MC33978_AMUX_CTRL_MASK, state);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to set AMUX channel %d: %d\n",
-+			state, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct mux_control_ops mc33978_mux_ops = {
-+	.set = mc33978_mux_set,
-+};
-+
-+static int mc33978_mux_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct mc33978_mux_priv *priv;
-+	struct mux_chip *mux_chip;
-+	struct mux_control *mux;
-+	int ret;
-+
-+	mux_chip = devm_mux_chip_alloc(dev, 1, sizeof(*priv));
-+	if (IS_ERR(mux_chip))
-+		return dev_err_probe(dev, PTR_ERR(mux_chip), "Failed to allocate mux chip\n");
-+
-+	/* Borrow the parent's DT node so consumers can find this mux chip */
-+	device_set_node(&mux_chip->dev, dev_fwnode(dev->parent));
-+
-+	priv = mux_chip_priv(mux_chip);
-+	priv->dev = dev;
-+
-+	priv->map = dev_get_regmap(dev->parent, NULL);
-+	if (!priv->map)
-+		return dev_err_probe(dev, -ENODEV, "Failed to get parent regmap\n");
-+
-+	mux_chip->ops = &mc33978_mux_ops;
-+
-+	mux = &mux_chip->mux[0];
-+	mux->states = MC33978_NUM_AMUX_CH;
-+
-+	ret = devm_mux_chip_register(dev, mux_chip);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to register mux chip\n");
-+
-+	platform_set_drvdata(pdev, mux_chip);
-+
-+	return 0;
-+}
-+
-+static const struct platform_device_id mc33978_mux_id[] = {
-+	{ "mc33978-mux", },
-+	{ "mc34978-mux", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, mc33978_mux_id);
-+
-+static struct platform_driver mc33978_mux_driver = {
-+	.driver = {
-+		.name = "mc33978-mux",
-+	},
-+	.probe = mc33978_mux_probe,
-+	.id_table = mc33978_mux_id,
-+};
-+module_platform_driver(mc33978_mux_driver);
-+
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("NXP MC33978/MC34978 Analog Multiplexer Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.47.3
+On 3/7/2026 6:25 PM, Armin Wolf wrote:
+> Use the new buffer-based WMI API to also support ACPI firmware
+> implementations that do not use ACPI buffers for the descriptor.
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>   .../platform/x86/dell/dell-wmi-descriptor.c   | 96 ++++++++++---------
+>   1 file changed, 49 insertions(+), 47 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/dell/dell-wmi-descriptor.c b/drivers/platform/x86/dell/dell-wmi-descriptor.c
+> index c2a180202719..621502368895 100644
+> --- a/drivers/platform/x86/dell/dell-wmi-descriptor.c
+> +++ b/drivers/platform/x86/dell/dell-wmi-descriptor.c
+> @@ -7,7 +7,7 @@
+>   
+>   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>   
+> -#include <linux/acpi.h>
+> +#include <linux/compiler_attributes.h>
+>   #include <linux/list.h>
+>   #include <linux/module.h>
+>   #include <linux/wmi.h>
+> @@ -15,6 +15,24 @@
+>   
+>   #define DELL_WMI_DESCRIPTOR_GUID "8D9DDCBC-A997-11DA-B012-B622A1EF5492"
+>   
+> +/*
+> + * Descriptor buffer is 128 byte long and contains:
+> + *
+> + *       Name             Offset  Length  Value
+> + * Vendor Signature          0       4    "DELL"
+> + * Object Signature          4       4    " WMI"
+> + * WMI Interface Version     8       4    <version>
+> + * WMI buffer length        12       4    <length>
+> + * WMI hotfix number        16       4    <hotfix>
+> + */
+> +struct descriptor {
+> +	__le32 vendor_signature;
+> +	__le32 object_signature;
+> +	__le32 interface_version;
+> +	__le32 buffer_length;
+> +	__le32 hotfix_number;
+> +} __packed;
+> +
+>   struct descriptor_priv {
+>   	struct list_head list;
+>   	u32 interface_version;
+> @@ -88,76 +106,60 @@ bool dell_wmi_get_hotfix(u32 *hotfix)
+>   }
+>   EXPORT_SYMBOL_GPL(dell_wmi_get_hotfix);
+>   
+> -/*
+> - * Descriptor buffer is 128 byte long and contains:
+> - *
+> - *       Name             Offset  Length  Value
+> - * Vendor Signature          0       4    "DELL"
+> - * Object Signature          4       4    " WMI"
+> - * WMI Interface Version     8       4    <version>
+> - * WMI buffer length        12       4    <length>
+> - * WMI hotfix number        16       4    <hotfix>
+> - */
+> -static int dell_wmi_descriptor_probe(struct wmi_device *wdev,
+> -				     const void *context)
+> +static int dell_wmi_descriptor_probe(struct wmi_device *wdev, const void *context)
+>   {
+> -	union acpi_object *obj = NULL;
+>   	struct descriptor_priv *priv;
+> -	u32 *buffer;
+> +	struct wmi_buffer buffer;
+> +	struct descriptor *desc;
+>   	int ret;
+>   
+> -	obj = wmidev_block_query(wdev, 0);
+> -	if (!obj) {
+> -		dev_err(&wdev->dev, "failed to read Dell WMI descriptor\n");
+> -		ret = -EIO;
+> -		goto out;
+> -	}
+> +	ret = wmidev_query_block(wdev, 0, &buffer);
+> +	if (ret < 0)
+> +		return ret;
+>   
+> -	if (obj->type != ACPI_TYPE_BUFFER) {
+> -		dev_err(&wdev->dev, "Dell descriptor has wrong type\n");
+> +	if (buffer.length < sizeof(*desc)) {
+> +		dev_err(&wdev->dev,
+> +			"Dell descriptor buffer contains not enough data (%zu)\n",
+> +			buffer.length);
+>   		ret = -EINVAL;
+>   		descriptor_valid = ret;
+>   		goto out;
+>   	}
+>   
+> -	/* Although it's not technically a failure, this would lead to
+> -	 * unexpected behavior
+> -	 */
+> -	if (obj->buffer.length != 128) {
+> -		dev_err(&wdev->dev,
+> -			"Dell descriptor buffer has unexpected length (%d)\n",
+> -			obj->buffer.length);
+> -		ret = -EINVAL;
+> +	desc = buffer.data;
+> +
+> +	/* "DELL" */
+> +	if (le32_to_cpu(desc->vendor_signature) != 0x4C4C4544) {
+
+Do you think you could come up with a helper for matching an expected 
+"string" like this?  I /suspect/ it's going to be a common pattern that 
+vendors use and it will increase code readability going forward if a 
+helper is possible.  I see it at least twice in this patch alone.
+
+Something like this prototype:
+
+bool wmi_valid_signature(u32 field, const char* expected_str);
+
+
+> +		dev_err(&wdev->dev, "Dell descriptor buffer has invalid vendor signature (%u)\n",
+> +			le32_to_cpu(desc->vendor_signature));
+> +		ret = -ENOMSG;
+>   		descriptor_valid = ret;
+>   		goto out;
+>   	}
+>   
+> -	buffer = (u32 *)obj->buffer.pointer;
+> -
+> -	if (strncmp(obj->string.pointer, "DELL WMI", 8) != 0) {
+> -		dev_err(&wdev->dev, "Dell descriptor buffer has invalid signature (%8ph)\n",
+> -			buffer);
+> -		ret = -EINVAL;
+> +	/* " WMI" */
+> +	if (le32_to_cpu(desc->object_signature) != 0x494D5720) {
+> +		dev_err(&wdev->dev, "Dell descriptor buffer has invalid object signature (%u)\n",
+> +			le32_to_cpu(desc->object_signature));
+> +		ret = -ENOMSG;
+>   		descriptor_valid = ret;
+>   		goto out;
+>   	}
+>   	descriptor_valid = 0;
+>   
+> -	if (buffer[2] != 0 && buffer[2] != 1)
+> -		dev_warn(&wdev->dev, "Dell descriptor buffer has unknown version (%lu)\n",
+> -			(unsigned long) buffer[2]);
+> -
+> -	priv = devm_kzalloc(&wdev->dev, sizeof(struct descriptor_priv),
+> -	GFP_KERNEL);
+> +	if (le32_to_cpu(desc->interface_version) > 2)
+> +		dev_warn(&wdev->dev, "Dell descriptor buffer has unknown version (%u)\n",
+> +			 le32_to_cpu(desc->interface_version));
+>   
+> +	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
+>   	if (!priv) {
+>   		ret = -ENOMEM;
+>   		goto out;
+>   	}
+>   
+> -	priv->interface_version = buffer[2];
+> -	priv->size = buffer[3];
+> -	priv->hotfix = buffer[4];
+> +	priv->interface_version = le32_to_cpu(desc->interface_version);
+> +	priv->size = le32_to_cpu(desc->buffer_length);
+> +	priv->hotfix = le32_to_cpu(desc->hotfix_number);
+>   	ret = 0;
+>   	dev_set_drvdata(&wdev->dev, priv);
+>   	mutex_lock(&list_mutex);
+> @@ -170,7 +172,7 @@ static int dell_wmi_descriptor_probe(struct wmi_device *wdev,
+>   		(unsigned long) priv->hotfix);
+>   
+>   out:
+> -	kfree(obj);
+> +	kfree(buffer.data);
+>   	return ret;
+>   }
+>   
 
 
