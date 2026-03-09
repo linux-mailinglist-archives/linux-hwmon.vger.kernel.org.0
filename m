@@ -1,47 +1,48 @@
-Return-Path: <linux-hwmon+bounces-12259-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12260-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKdWL9SMrmnlFwIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12259-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 10:03:16 +0100
+	id aJFDBC6NrmnlFwIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12260-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 10:04:46 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24EA235D28
-	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 10:03:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE4C235DB2
+	for <lists+linux-hwmon@lfdr.de>; Mon, 09 Mar 2026 10:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 21DB930131C3
-	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Mar 2026 09:02:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D37C302EAB5
+	for <lists+linux-hwmon@lfdr.de>; Mon,  9 Mar 2026 09:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA14C37417E;
-	Mon,  9 Mar 2026 09:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D966376BF2;
+	Mon,  9 Mar 2026 09:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OICbRMpf"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HmnYyAhf"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C02374190;
-	Mon,  9 Mar 2026 09:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC72E13AD26;
+	Mon,  9 Mar 2026 09:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773046936; cv=none; b=AhaoQA4PMD57GCMYC9/1uuaMWO8SyKf9hjSsmzypRKgvJd0MwI83bh999bYW/Yc2hBXo0ro/vIco0TFcns6F29oObhbROXCDu5tLo3gX7OBn+LY2H1QSXRkfhiuJ5lAYEbjtvsbdp/+0wDqK67nEkP5dSRgspV6UWPLHL19hMlY=
+	t=1773046989; cv=none; b=KZswmpYFlNmuoeXvU087020tZq9I7OTbgWbzfZwkVNDkxPCbrrg9g5cZLjpG+sftOiywiepKUZfAJYPZDYqJUK7E60Cmeb2N+mIJ9SRF+2rIp3kMufQEEQcLmfZGPi4yo/4RFICmX0CDOc6MwlST1+akpHlBVEvIpyFrMcVFybs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773046936; c=relaxed/simple;
-	bh=GCDqrPRCXFTdWh35bAM+17bmnu6IgDRQEohAFFbNoZY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lFUgRRwhxK1vBRmDaFljNNisNLayPgMj8nYZ1mBcBgYqjlp4pbRnk6YyJIyrmicLYgfB55LgZS2K4avKEd03AxbD8Wbr2mbgIMoO2khsPH1C/MscQzPpjDY9p+Xt4wkGy2Sc/P8z1USC7bzV1BNQ4s+Jqd3ayp9esdwoLBQfetw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OICbRMpf; arc=none smtp.client-ip=1.95.21.17
+	s=arc-20240116; t=1773046989; c=relaxed/simple;
+	bh=9c00j73zKk6jHD/M67G4Xp9ItnJTUP4x5RhnzVGtPkQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=BNi2Pm0v9e7LZIQ831n71oPehQMRUeWfjz7UynfG09kFLYYzaZmnbKbyOrFijXihLodLR4y3wpt63JqpTqxMgxCjuKsZMgHZccVvA3F6H+nIl61ct7WsPbTRL1iSjI5Zk1yLdAsGJs/zP3h/MHXBMnVPVp29W7IkGsiLWmDmfhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HmnYyAhf; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=zq
-	+BzsYb2auBqEfNT1YlsOSoWEADxJSRa92NA2Iakvc=; b=OICbRMpfU1IArSTbvF
-	N9G9dvS8jYuT8Ox448U17SzhY9QON/dmZst0AwPXrnL1qtrejw0FYScVIr6wwk5H
-	wU6rTROsSwiNLVSHehBKkK8cgZWNwYjyhYAfwcghm+6yQBWjI4hZKH49Wgp9M+or
-	cVKKLljdSQvZCI94ru6dC0r0E=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Wl
+	cu9Y4AVM/AEdaiKXC0S2Xj02cI1TN0ia5YYYG0aB0=; b=HmnYyAhfN/4zJCSArV
+	FsnZQfdZ6iNllBAviPljswGk6tv1Vv6aKES5brGWGd/c2Rb/2gQXD+Zw4qpxLI2E
+	9gI2+1VaEjhL90huy90X/v8jpl/UBTYeCWAAD1/ebpawrmRAUqNTRr+riwCLv18Q
+	6BTYFdcXjJmZFvWUoDPsqI3Ww=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with UTF8SMTPA id Ms8vCgD3f_VIjK5pwRNoAg--.8168S2;
-	Mon, 09 Mar 2026 17:00:57 +0800 (CST)
+	by gzsmtp2 (Coremail) with UTF8SMTPA id Ms8vCgDHb9eajK5pzBdoAg--.49039S2;
+	Mon, 09 Mar 2026 17:02:19 +0800 (CST)
 From: wenswang@yeah.net
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -54,10 +55,12 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	Wensheng Wang <wenswang@yeah.net>
-Subject: [PATCH 0/2] hwmon: Add support for MPS mp2985
-Date: Mon,  9 Mar 2026 17:00:41 +0800
-Message-Id: <20260309090041.452957-1-wenswang@yeah.net>
+Subject: [PATCH 1/2] dt-bindings: hwmon: Add MPS mp2985
+Date: Mon,  9 Mar 2026 17:02:14 +0800
+Message-Id: <20260309090215.453396-1-wenswang@yeah.net>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260309090041.452957-1-wenswang@yeah.net>
+References: <20260309090041.452957-1-wenswang@yeah.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -65,13 +68,13 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Ms8vCgD3f_VIjK5pwRNoAg--.8168S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrJr15tr18Cw45Kw45ZFyxZrb_yoWxXrgEkw
-	47Was2vr1UJF4fWFWDCr1fXryUtFWrWF97X3WrtrZ8Zry3XwnIgrykXwnrJ3W7GFW7uFn8
-	ZrWkJ395AF17KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRKNVy3UUUUU==
-X-CM-SenderInfo: 5zhq24xdqjq5hhdkh0dhw/1tbiOAk732mujEmLHwAA3D
-X-Rspamd-Queue-Id: C24EA235D28
+X-CM-TRANSID:Ms8vCgDHb9eajK5pzBdoAg--.49039S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JryrXrWkGryUWFWfWFy7Awb_yoWfuFc_uw
+	4xZ3WDCrWkJF1xKanYyr48Gr15Ww17Kr4UCw18tF1kXr9agay5GF9aq34avryxGay7ur15
+	urn2qrZ3XrnxWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRKCzutUUUUU==
+X-CM-SenderInfo: 5zhq24xdqjq5hhdkh0dhw/1tbiNxtP82mujJvKyQAA3D
+X-Rspamd-Queue-Id: 9AE4C235DB2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -80,49 +83,52 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[yeah.net,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[yeah.net:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,yeah.net];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-12259-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12260-lists,linux-hwmon=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[yeah.net];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.994];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[wenswang@yeah.net,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[yeah.net:+];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yeah.net:dkim,yeah.net:email,yeah.net:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yeah.net:dkim,yeah.net:email,yeah.net:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 From: Wensheng Wang <wenswang@yeah.net>
 
-Add mp2985 driver in hwmon and add dt-bindings for it.
+Add support for MPS mp2985 controller.
 
-Wensheng Wang (2):
-  dt-bindings: hwmon: Add MPS mp2985
-  hwmon: add MP2985 driver
+Signed-off-by: Wensheng Wang <wenswang@yeah.net>
+---
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../devicetree/bindings/trivial-devices.yaml  |   2 +
- Documentation/hwmon/index.rst                 |   1 +
- Documentation/hwmon/mp2985.rst                | 151 ++++++++
- MAINTAINERS                                   |   7 +
- drivers/hwmon/pmbus/Kconfig                   |   9 +
- drivers/hwmon/pmbus/Makefile                  |   1 +
- drivers/hwmon/pmbus/mp2985.c                  | 355 ++++++++++++++++++
- 7 files changed, 526 insertions(+)
- create mode 100644 Documentation/hwmon/mp2985.rst
- create mode 100644 drivers/hwmon/pmbus/mp2985.c
-
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index a482aeadcd44..d61482269352 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -325,6 +325,8 @@ properties:
+           - mps,mp29612
+             # Monolithic Power Systems Inc. multi-phase controller mp29816
+           - mps,mp29816
++            # Monolithic Power Systems Inc. multi-phase controller mp2985
++          - mps,mp2985
+             # Monolithic Power Systems Inc. multi-phase controller mp2993
+           - mps,mp2993
+             # Monolithic Power Systems Inc. hot-swap protection device
 -- 
 2.25.1
 
