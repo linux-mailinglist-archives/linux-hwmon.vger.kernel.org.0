@@ -1,151 +1,119 @@
-Return-Path: <linux-hwmon+bounces-12317-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12316-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G69K8Mgs2mpSQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12317-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 21:23:31 +0100
+	id yEhDEPEes2l/SQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12316-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 21:15:45 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4996B278EF5
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 21:23:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D806E278AA0
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 21:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B03A4301983D
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 20:23:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7AB033027356
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 20:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A7236DA15;
-	Thu, 12 Mar 2026 20:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6310B27281D;
+	Thu, 12 Mar 2026 20:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR+91jY8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkjDkjoo"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F6935A3BA;
-	Thu, 12 Mar 2026 20:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAF0145FE0;
+	Thu, 12 Mar 2026 20:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773347009; cv=none; b=adkPY/3K/oZ9e5++d2be0HIOsCKn9w5VQMXHc4xv5AD6ei0wwLjeW7ZGDR3iF4ric70GiDlwR2yd1rZPBA+m/SsUAm/cFOTpltEX1UEZuEITMJl3zZh/Jcukf+lhQ5jRnE7YykdiQaj74oaU2rwhunNLFjs7zwUf5eDZ0ytlXEQ=
+	t=1773346539; cv=none; b=YL/l7/SpRgSv4y7R7hQYf+TKR5RYiGjNXDRbByPTMoBSzobNgCwHZaM+Ksel0lvSi3Xdx0qU3VrXHe/4EdZWdx87heDq9QaCaC2DdnY2ijsCkhrhdVm9Ek2QJSLjfk+mKFVXHhfZHeScQkEy8HxA77iUlsOEQ3X6HG2ObeLhDEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773347009; c=relaxed/simple;
-	bh=KxvCbh3vQELoXYX+7Rtp2HIpSF648bGSG8CSSmsJJxk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apNHk/xmHOiVRCLRE9z2IEdHu/T7oiQlGVVjmEUHIAepqOEOSUrfGLKo4Z6Kin2mZuJ5LggZnwGFKMIn0HwbV2asbpTTwYivP9WmA0uHr7khgNsvjFAIEypkCGibAx47XV1LsJcVKCbgLB11ZCY4E+od3YdV1I+5RTB0H6hbWpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR+91jY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E6BC4CEF7;
-	Thu, 12 Mar 2026 20:23:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773347009;
-	bh=KxvCbh3vQELoXYX+7Rtp2HIpSF648bGSG8CSSmsJJxk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zR+91jY86atLhReQHKeeIVwq0n6hBQTWXyKhnPA86CXbH2S6GTm/qrYcCUHIrC6cH
-	 VlG115m4XvCazz7SO4/Bnx61ySH2AzsRNa68/HcDL/9O9xdrOuHN4yPN9e62OV/9yh
-	 lfW39X0MuH/b4Naj0tqqsmiCKrGL3OGCI33xgphc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Frank Crawford <frank@crawford.emu.id.au>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jean Delvare <jdelvare@suse.com>,
-	linux-hwmon@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/265] hwmon: (it87) Check the it87_lock() return value
-Date: Thu, 12 Mar 2026 21:09:26 +0100
-Message-ID: <20260312201024.772363750@linuxfoundation.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
-References: <20260312201018.128816016@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1773346539; c=relaxed/simple;
+	bh=HrOFyT1mkelJqN8jGvgQvPsCgvOzSZJphOurWCaFA2o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=vEVei2s0Id46mpEhYuoS4gIyF+m/VWu07Oj24r1+miVuLRjj7lD1rc6qN7TmSphx66d0ay4SSuA+/m944eU7oEJHIhRuP5b1JnjLerKGVWFWclON3RQpwwCaSUe3y953rkLH6ksTFw+ghCi3eGyBT323tbVlUuIopveFBf4vq5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkjDkjoo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AAAC19425;
+	Thu, 12 Mar 2026 20:15:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773346538;
+	bh=HrOFyT1mkelJqN8jGvgQvPsCgvOzSZJphOurWCaFA2o=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=IkjDkjooZTZgrCrA+Rda8txmysbqsyTTsb22w0OBa6A4vLjJGA1eGLV+5TuznbMzl
+	 gv9LET4Xnz71scBmubiUF/NtK68fae706v+4vHRWHTnMHqhu6va/0PyrfakKphirB1
+	 dgvf/ZN+9t+D7/mTRUgJVlxTAcMB2B/tzoa0Y1+IdmId2ylYs2p1/TGwA8XZ+msYMs
+	 lpp06P/OEbe8n/Kr1KiMFxG3/Eu7cLlIIL+GoM8u2A15PXJsCJRdDD6uurY2RUWAqy
+	 OoLRdJPZC+o7846fqXlmR0LxAr0/GV5xditIuaAWYwkRakrk+mnL0+xzCCbbDiIhXr
+	 7vZYz66R8vozQ==
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Mar 2026 21:15:33 +0100
+Message-Id: <DH12VR46PG5L.HJHWKJL8TXBO@kernel.org>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <hanguidong02@gmail.com>, <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+ <glaubitz@physik.fu-berlin.de>, <abelvesa@kernel.org>, <srini@kernel.org>,
+ <s.nawrocki@samsung.com>, <nuno.sa@analog.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 4/4] driver core: platform: use generic
+ driver_override infrastructure
+Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-hwmon@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+ <linux-sh@vger.kernel.org>
+References: <20260303115720.48783-1-dakr@kernel.org>
+ <20260303115720.48783-5-dakr@kernel.org>
+ <DGUUVEFWIFCF.RX8CSJ96ZHMC@kernel.org>
+In-Reply-To: <DGUUVEFWIFCF.RX8CSJ96ZHMC@kernel.org>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-12316-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12317-lists,linux-hwmon=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,gmail.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de,samsung.com,analog.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,linux-hwmon@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4996B278EF5
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D806E278AA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+On Thu Mar 5, 2026 at 1:42 PM CET, Danilo Krummrich wrote:
+> On Tue Mar 3, 2026 at 12:53 PM CET, Danilo Krummrich wrote:
+>>  arch/sh/drivers/platform_early.c |  6 ++++--
+>>  drivers/clk/imx/clk-scu.c        |  3 +--
+>>  drivers/slimbus/qcom-ngd-ctrl.c  |  6 ++----
+>>  sound/soc/samsung/i2s.c          |  6 +++---
+>
+> Some ACKs would be appreciated. :)
 
-------------------
+Looking forward to pick this up soon, please let me know if there are any
+concerns.
 
-From: Bart Van Assche <bvanassche@acm.org>
-
-[ Upstream commit 07ed4f05bbfd2bc014974dcc4297fd3aa1cb88c0 ]
-
-Return early in it87_resume() if it87_lock() fails instead of ignoring the
-return value of that function. This patch suppresses a Clang thread-safety
-warning.
-
-Cc: Frank Crawford <frank@crawford.emu.id.au>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: linux-hwmon@vger.kernel.org
-Fixes: 376e1a937b30 ("hwmon: (it87) Add calls to smbus_enable/smbus_disable as required")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20260223220102.2158611-15-bart.vanassche@linux.dev
-[groeck: Declare 'ret' at the beginning of it87_resume()]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwmon/it87.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
-index e233aafa8856c..5cfb98a0512f0 100644
---- a/drivers/hwmon/it87.c
-+++ b/drivers/hwmon/it87.c
-@@ -3590,10 +3590,13 @@ static int it87_resume(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct it87_data *data = dev_get_drvdata(dev);
-+	int err;
- 
- 	it87_resume_sio(pdev);
- 
--	it87_lock(data);
-+	err = it87_lock(data);
-+	if (err)
-+		return err;
- 
- 	it87_check_pwm(dev);
- 	it87_check_limit_regs(data);
--- 
-2.51.0
-
-
-
+Thanks,
+Danilo
 
