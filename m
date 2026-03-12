@@ -1,181 +1,151 @@
-Return-Path: <linux-hwmon+bounces-12315-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12317-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHaSFRf6smmLRAAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12315-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 18:38:31 +0100
+	id +G69K8Mgs2mpSQAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12317-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 21:23:31 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51784276A32
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 18:38:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4996B278EF5
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 21:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92C423030DFF
-	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 17:38:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B03A4301983D
+	for <lists+linux-hwmon@lfdr.de>; Thu, 12 Mar 2026 20:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C51C3FE64A;
-	Thu, 12 Mar 2026 17:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A7236DA15;
+	Thu, 12 Mar 2026 20:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ff4qP7P0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR+91jY8"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE803FE646;
-	Thu, 12 Mar 2026 17:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F6935A3BA;
+	Thu, 12 Mar 2026 20:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773337076; cv=none; b=r4E+YYct6ET42FBe7YwBs8iZxsxL9HZOoTic86qXiEnA/WoIkFQ/fjuNJ6tIZZEf4QN6NpKTWSWqtXgbZYdAKB96WMnfggW9Sgh0k5o6ubhSkeY8Fyl4Q4QooQXFOFThzklPfeoymTpB50PU46Wcik5tp5ntjigs10EP0HM07Kk=
+	t=1773347009; cv=none; b=adkPY/3K/oZ9e5++d2be0HIOsCKn9w5VQMXHc4xv5AD6ei0wwLjeW7ZGDR3iF4ric70GiDlwR2yd1rZPBA+m/SsUAm/cFOTpltEX1UEZuEITMJl3zZh/Jcukf+lhQ5jRnE7YykdiQaj74oaU2rwhunNLFjs7zwUf5eDZ0ytlXEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773337076; c=relaxed/simple;
-	bh=aFQX/mwVXIQpPQX7qxE0nuMOaK4qcK/SeR4LGJuFsa8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LbNXwss0sM1Pm7epOEarWnYCaAYCAQV9tnH/PInodP/Oaq/xVfO2hoji/3+7V9wmX7Etbyli0USO+wy3kcNsV1V87eJrvzVsX8zsaxUo2pDEBgVYjTIEeJWFqRGxC9unkPqXYG3gvLviFUUmpDkn4+WFxQY0DRQLOFW22L+nT/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ff4qP7P0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1704C4CEF7;
-	Thu, 12 Mar 2026 17:37:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773337076;
-	bh=aFQX/mwVXIQpPQX7qxE0nuMOaK4qcK/SeR4LGJuFsa8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ff4qP7P0InVUnBUhM3Vtq96wZ0ILUUgkGrxZYHaddnDcFs6PP+8gyhTAdIIQHPk2Y
-	 bOfSGdMdcc2cBbuQ1gxKzvzr5buWAShjm7rNFD+OvKTMrfvtiTh58eoQjFMc6UksGQ
-	 6zzbiroo7h6rEQLex6MVQrAvRvw10XGGSbYCdRFNCe5ixJdrzrfagC7rKEuIvs9Umd
-	 g/k72i7MWJ+/ClO8ORAOF7wiAw9nYo+oC9RiMeYljmAL/vq+NvPZzSSyBDxHdAFgKE
-	 l31FhuKTIMQ1Yw6UGKNFZfHhTNYdEkMlfRmpiagxyWcWqUt28APqTDRU5v/lENzIFo
-	 se6GtOW65l5aQ==
-Date: Thu, 12 Mar 2026 17:37:51 +0000
-From: Conor Dooley <conor@kernel.org>
-To: florin.leotescu@oss.nxp.com
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daniel.baluta@nxp.com, viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-Subject: Re: [RFC PATCH v2 1/2] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-Message-ID: <20260312-triage-shallot-1b3d9f07d250@spud>
-References: <20260312122248.1281572-1-florin.leotescu@oss.nxp.com>
- <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
+	s=arc-20240116; t=1773347009; c=relaxed/simple;
+	bh=KxvCbh3vQELoXYX+7Rtp2HIpSF648bGSG8CSSmsJJxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=apNHk/xmHOiVRCLRE9z2IEdHu/T7oiQlGVVjmEUHIAepqOEOSUrfGLKo4Z6Kin2mZuJ5LggZnwGFKMIn0HwbV2asbpTTwYivP9WmA0uHr7khgNsvjFAIEypkCGibAx47XV1LsJcVKCbgLB11ZCY4E+od3YdV1I+5RTB0H6hbWpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR+91jY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E6BC4CEF7;
+	Thu, 12 Mar 2026 20:23:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773347009;
+	bh=KxvCbh3vQELoXYX+7Rtp2HIpSF648bGSG8CSSmsJJxk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=zR+91jY86atLhReQHKeeIVwq0n6hBQTWXyKhnPA86CXbH2S6GTm/qrYcCUHIrC6cH
+	 VlG115m4XvCazz7SO4/Bnx61ySH2AzsRNa68/HcDL/9O9xdrOuHN4yPN9e62OV/9yh
+	 lfW39X0MuH/b4Naj0tqqsmiCKrGL3OGCI33xgphc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Frank Crawford <frank@crawford.emu.id.au>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jean Delvare <jdelvare@suse.com>,
+	linux-hwmon@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 179/265] hwmon: (it87) Check the it87_lock() return value
+Date: Thu, 12 Mar 2026 21:09:26 +0100
+Message-ID: <20260312201024.772363750@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260312201018.128816016@linuxfoundation.org>
+References: <20260312201018.128816016@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oDbvumbCQdRDhubR"
-Content-Disposition: inline
-In-Reply-To: <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	TAGGED_FROM(0.00)[bounces-12315-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[roeck-us.net,kernel.org,nvidia.com,vger.kernel.org,nxp.com,lists.infradead.org,lists.linux.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-12317-lists,linux-hwmon=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 51784276A32
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4996B278EF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
---oDbvumbCQdRDhubR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------------------
 
-On Thu, Mar 12, 2026 at 02:22:47PM +0200, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
->=20
-> The EMC2305 fan controller supports multiple independent PWM fan
-> outputs. Some systems require fans to enter a defined safe state
-> during system shutdown or reboot handoff, until firmware or the next
-> boot stage reconfigures the controller.
->=20
-> Add an optional "fan-shutdown-percent" property to fan child nodes
-> allowing the shutdown fan speed to be configured per fan output.
->=20
-> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-> ---
->  .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.ya=
-ml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> index d3f06ebc19fa..7bcadfab9fc4 100644
-> --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> @@ -54,6 +54,12 @@ patternProperties:
->            The fan number used to determine the associated PWM channel.
->          maxItems: 1
-> =20
-> +      fan-shutdown-percent:
-> +        description:
-> +          Fan RPM in percent set during shutdown.
+From: Bart Van Assche <bvanassche@acm.org>
 
-This sounds like something generic, that other devices might need and
-should be in fan-common.yaml?
+[ Upstream commit 07ed4f05bbfd2bc014974dcc4297fd3aa1cb88c0 ]
 
-> +        minimum: 0
-> +        maximum: 100
-> +
->      required:
->        - reg
-> =20
-> @@ -80,12 +86,14 @@ examples:
->              fan@0 {
->                  reg =3D <0x0>;
->                  pwms =3D <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
-> +                fan-shutdown-percent =3D <100>;
->                  #cooling-cells =3D <2>;
->              };
-> =20
->              fan@1 {
->                  reg =3D <0x1>;
->                  pwms =3D <&fan_controller 26000 0 1>;
-> +                fan-shutdown-percent =3D <50>;
->                  #cooling-cells =3D <2>;
->              };
-> =20
-> --=20
-> 2.34.1
->=20
+Return early in it87_resume() if it87_lock() fails instead of ignoring the
+return value of that function. This patch suppresses a Clang thread-safety
+warning.
 
---oDbvumbCQdRDhubR
-Content-Type: application/pgp-signature; name="signature.asc"
+Cc: Frank Crawford <frank@crawford.emu.id.au>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: linux-hwmon@vger.kernel.org
+Fixes: 376e1a937b30 ("hwmon: (it87) Add calls to smbus_enable/smbus_disable as required")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20260223220102.2158611-15-bart.vanassche@linux.dev
+[groeck: Declare 'ret' at the beginning of it87_resume()]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/it87.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/hwmon/it87.c b/drivers/hwmon/it87.c
+index e233aafa8856c..5cfb98a0512f0 100644
+--- a/drivers/hwmon/it87.c
++++ b/drivers/hwmon/it87.c
+@@ -3590,10 +3590,13 @@ static int it87_resume(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct it87_data *data = dev_get_drvdata(dev);
++	int err;
+ 
+ 	it87_resume_sio(pdev);
+ 
+-	it87_lock(data);
++	err = it87_lock(data);
++	if (err)
++		return err;
+ 
+ 	it87_check_pwm(dev);
+ 	it87_check_limit_regs(data);
+-- 
+2.51.0
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabL57wAKCRB4tDGHoIJi
-0noHAP9z/fCiq8hV4ZCCK6xJrtd6hvHbeRv80Hgr1bMapjuwoAD/QTtp9v/Ab3J9
-3q1keEgHBJviuIq0kTxW0wHKYbkL+g0=
-=Y6RW
------END PGP SIGNATURE-----
 
---oDbvumbCQdRDhubR--
+
 
