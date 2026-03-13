@@ -1,245 +1,273 @@
-Return-Path: <linux-hwmon+bounces-12335-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12337-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Ad+EPpDtGk4kAAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12335-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 18:06:02 +0100
+	id aKdvA09HtGk4kAAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12337-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 18:20:15 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC900287CDB
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 18:06:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790E5288023
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 18:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E609310639F
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 16:59:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 953C130048C7
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 17:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C773CC9EF;
-	Fri, 13 Mar 2026 16:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965BE3CA4A9;
+	Fri, 13 Mar 2026 17:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Nqy1qcKA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rIjWhwC3"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013048.outbound.protection.outlook.com [40.107.162.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAF13CAE8D;
-	Fri, 13 Mar 2026 16:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773421124; cv=fail; b=S4yajviEz+pzpOhrck9ebbqyVh8XbFmdajnV+LscKP5NxsJuamoID7ZZ/o/fS27NzlQ9LbatxE8h6jgLUaAMhpPEfOaOS3CibaGbHzWwmWPuzYEbAZRmie4vI6tAwXR8qKBU4n548VuSWPgoxxD2nsHz+QVApWJaZaHjs17c8wg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773421124; c=relaxed/simple;
-	bh=oXX3Rol6lsaoDb2asClpdVXuKJf3chUVszIsFfFcdbs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=utSm9zyd3jceIm+MkpSzeqIeR6ozVDNSS4BnA4+Kuy2VQfN3JWnfaBa8UiovEH9iw2Z1ePrCaeu1aE/w0m1UoUFyuOhQUytxqu4X2DOGSxDW/Rr191Dy13B2VPu7/deTvIi6kuo4Sb4XgyXHH3eeqhiPJ9PjKVe5V1DXVGsvxbE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Nqy1qcKA; arc=fail smtp.client-ip=40.107.162.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=elOujBJtEleTJFfDWsQtGWiwXkmuGavuDa81yl/47PSzXo7AyrC/L5VxjfBO1hRNnfOYToLvJ6hTi5m/uw9d8p8/PGub0jeQYeOfcODmH2+QwfqR3JCShQ0e5olCpJVwV59I0M2QMhdGxyM95pVaheV2o1p70e5XFzFNASlojuj6x9+QM6o7cxTDs6PzzipqNQ/psByD4lPAWm28PtWn6mjx5F2nxNev/srywYfm7BRmL0Fkrbla+LLqBE8su7LYn52NXYNNEhGPDrIoXkKXT2lGCtOyfT4paRdhArFqSHDbuVWPMWLvvdkZyCRgNDv/bGVBT54L93fHucoKBeY7yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DQuU6FlFdBBlOUdgBP0iK/pkfsCErqdikP44QAvSWEQ=;
- b=Sx9/LmtxJ95bBLOAWK7xJwN/5t3X/wI5FoycxpvJb8BNIc0zGdpgHePShbC3ETkWI7pEZCefOG4Mo8NKagSeigXopEbN5OC/CflOXY/wVoCX7k2L/qNVIrfb8fhpUh1gDadFUY7jTRwe1tP+V0Tat5chQglp79g/f+/ChEaCk3ApzbEtBabhWm3ElDvnf53/zt3Hiu8qqsAauMbLQOJ6sjKBHm9rgjhB1aj1IqeMrSwOHAOfyWp5/LPLQDWbhYCDMU3qoOy/cRyGEPx4/B1H6EGHuWhkKjZQ3iyUIixvWkXH4OdD4s58lfWxKewfjeSwJianTQidPgVzj9S4ND/CQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DQuU6FlFdBBlOUdgBP0iK/pkfsCErqdikP44QAvSWEQ=;
- b=Nqy1qcKAu37OdSIKKhC4dN3wMBeADatrgYln9lO5p7zbMXUY9qQHvzJ0wMR1O/EAtZ1KTuUQ73lBet08NV8AcpjumU83tQRqS+SzGqHpfnByJ0jUPfi4ZXRolJKO5Z8jgeu5pRahO4VcZjfD7yCFn07fBJXSlxbW3qsB0dPbO9OUq735whJ7JsD8mtwNq7ZPZI0vfOCts13+AKydIBSg+cjXsKu3kGeEP0352uRSaXOhbb9rW9B4fDpg3ODbCcJGCtaH+sR4FPYleNcYgy3chaRw1dClpmalldGDMSB/UoJkoNaMk5/Q/udiMtJl7UpG6JjKODksHenMIcPT2JS+Aw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
- by PA4PR04MB7584.eurprd04.prod.outlook.com (2603:10a6:102:ed::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Fri, 13 Mar
- 2026 16:58:29 +0000
-Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
- ([fe80::93f5:4ff3:2f4c:183a%6]) with mapi id 15.20.9700.010; Fri, 13 Mar 2026
- 16:58:28 +0000
-Date: Fri, 13 Mar 2026 19:14:33 +0200
-From: Florin Leotescu <florin.leotescu@oss.nxp.com>
-To: Conor Dooley <conor@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B7035F188;
+	Fri, 13 Mar 2026 17:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773422196; cv=none; b=fu5VroIl1WO1kVhJ3mxkZB0Ch0EU4PcYm3Lsb+66M89b6REKIwjfkb051MxxSpuWNtr8XHIWfd6k8t0X76GBEWgPuOme9uizt1/tIoUiMyr/m9DRSMpe4I/mglOcQ9eO4QhaQH4oVATFjQuFJJH+t80Hi8TsDHUblfboHyrTegY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773422196; c=relaxed/simple;
+	bh=p+BRIsxATMuX2kLWrXUvKdnbah3+9qBGFp11c/r816I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b+8cEdmynl2bySZRg/BxZ3hqzx3NB/1u61U5+l8AYZOXBLeezqqnIbno+LrZ00d/Y/WN5l/d8nkbatHKHiknC+Z7LBOCvR1V6ck9yHOcVSM4BkwQa6wyhOmyJpNeJICixlMbGjmTiEfwU3REYL04Or2DovkmsDboKfMTi/jegRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rIjWhwC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E23DC19421;
+	Fri, 13 Mar 2026 17:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773422196;
+	bh=p+BRIsxATMuX2kLWrXUvKdnbah3+9qBGFp11c/r816I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rIjWhwC3+DEHc0GYh1XpDO1fC8gDEZRqDEzZ5r4HWlfdoKUzwugwpUoKOj4SVmr8N
+	 yQtvHDRMUP9zPsf+t1ZqvaxT+XBrUTYz0eBqinvMcWFRnSZu5eoSH92kw+xaPswtJa
+	 zVxZfzPv0KRn9AI0oIPUdMsVeXI+bJW3ntwyD96SRUTTCVjM2JO4bn0Ak2h8TKRcyI
+	 U5fls478otNQOWHVLExVHms+0F5CzZi7UDb7kgHbAxt28A1Z875Wz01qZMTFUf2rWy
+	 iafUV050/edLonDb/ItmcwMZzVVqzqHY+VMGcoXt1vY2N2/eUlepf775not3CxASmt
+	 flHXasRWrFK7A==
+Date: Fri, 13 Mar 2026 17:16:31 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daniel.baluta@nxp.com, viorel.suman@nxp.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
-Subject: Re: [RFC PATCH v2 1/2] dt-bindings: hwmon: emc2305: Add
- fan-shutdown-percent property
-Message-ID: <abRF+TPKuXFDJc55@ro-kernel-workstation>
-References: <20260312122248.1281572-1-florin.leotescu@oss.nxp.com>
- <20260312122248.1281572-2-florin.leotescu@oss.nxp.com>
- <20260312-triage-shallot-1b3d9f07d250@spud>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312-triage-shallot-1b3d9f07d250@spud>
-X-ClientProxiedBy: FR2P281CA0048.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::19) To DU7PR04MB11163.eurprd04.prod.outlook.com
- (2603:10a6:10:5b3::14)
+	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+	Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	linux-gpio@vger.kernel.org, David Jander <david@protonic.nl>
+Subject: Re: [PATCH v4 1/6] dt-bindings: pinctrl: add NXP MC33978/MC34978 MSDI
+Message-ID: <20260313-shortwave-baguette-5914f1af60f8@spud>
+References: <20260313140218.1213393-1-o.rempel@pengutronix.de>
+ <20260313140218.1213393-2-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|PA4PR04MB7584:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8cb421e-c284-4033-c502-08de8121bfa6
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|19092799006|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	EFLgMCAFgK514/1GHjXUmAcC5JnYz3CtAJ/HdMalOPANNLXsJM3JmKWv87JV/Ckop2tpZDP0PNdz2cIAnc5Eiag0KBFBD8LcjYRT5xrAwiX6gHvED/hj1CWio8xwLxo0nygynrXNryjYDItaKL0n5Hr5E1hdUP+YM8rKn8rAKNPOwIuJrHKFEszI7AM5SBi/Wet9dbb6d9gazi1uiIaJ/eJ1dxY+XDpVrRn6MXI+ghmTNZKbG/tVebTjG3TQLeaUGdgLXMzgOqzq9npcgcRlTArQ+QukcIDs6JFb3RkwxA3RKY00/Zgs61Ix2FNMllvzMLgzjZz64IsFMz8VEFdxtXAiolFNuu5FFPX/0NmzpiW0KjIKKBnyU81SN18mLMfmpm3VeShcCD+uR/lKv3GGjONckYNwVpHI89S0xCUL/LYAXjWsOgI9qdq1xyBgZQHY4jq6Qf41AsM1ksnJOxfhFDyahQduqBJm4Mzkhm26EwmCBJJb9BUzUgdN48gFntU4lQWjRFKOkVahGxBBKbmtNWDplwbDfqtoJc5AX3aFD+J2zYCBIt0cfjr5RXFkkG8kztJIBqxIx2K7xjVzrDcDHdfeBkwlNDRRycUwqIBTQonDQ0klI/j2JPYNdNZ/cPFz8xz5yuyFh9luHT4yX0DQSGM4+XqZDqLhmUC6qL5h66VHoseQJ3njt52BsjldlUPjbInbrm/PxxlChvh6ycA45cVnPNX6G4dXsRKQyyVDxjE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(19092799006)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Gpc152Vfszb5uUlr61Aw0hMKLN57+WNFUFmolafZwqzWMFq5PC4OyonAS1aj?=
- =?us-ascii?Q?6uhv5wO078DyNOYBwajQGcsjTa4tJoZ4L23IuizlpwAbnOJW1OVpSivAJVZv?=
- =?us-ascii?Q?gsOSDQ1D5WTK7lY7SyvNz/2p9qFJbOMhmsp28t32IGs/kXbZ8Cthko1lXLil?=
- =?us-ascii?Q?FfPHuXMk6NuDvIZhUZvqq0p3VJnbo9ERxXOBk/oZJUagQMxq6p46ke5FS4WK?=
- =?us-ascii?Q?ofmlpeKwSuAJPCV7yR/w1PW5a8aW0hVKSdqprdR57GA/g3dEs+QgEJFcTepz?=
- =?us-ascii?Q?EKOjEAoBp0V30TmIi3aJtQwLSLCJaKox/pS7JdQEjSb3xmFzlp0dhGJF5rof?=
- =?us-ascii?Q?Lhz1hs9riZ6UMMsjqbK7ZKktJ5HXUaBegEc39xp4SJdcrg91XMXEmdzlwGgR?=
- =?us-ascii?Q?8xHHoMH/+CBk5FRnaNwaPVmAkRWpKzVEsMLSEUdTYfYH+rcmy8K4m/hmONB4?=
- =?us-ascii?Q?+4DqkzZ7p3YfPC1VLRLIBOo1HWEajJwMcc91cp8D8sokVZHX11iJZLf2YByq?=
- =?us-ascii?Q?zVnI6ea2om/UCSt0AfQ1PzHQHSQa8haIhBTf58fL3USKt0gbwtZXNgk4EFMp?=
- =?us-ascii?Q?j1VpFdOj38+f87RgUcNN+ffcWITbces9aXwYs3byKXd0Pal/AmwTDZhW8Ype?=
- =?us-ascii?Q?E8cflknrPIhW246ThSU2xjLPB9RAKz+J8IBAHeQVZMlOvQmECGwsyjqy0JV6?=
- =?us-ascii?Q?nD3jtiI+B9aXHBSjnaCHTvqg8l8XMv7M7d4D0Rl9AGXuPZS1aC9cek0doQRt?=
- =?us-ascii?Q?pjUQl/23l9hc78LksxBSg34WurpwxjUY7j0TR7OwnE+rnZAoQOWfcyLRjEpG?=
- =?us-ascii?Q?ixcf9hBC0g5XHdfi+KIEmvzPiM9MHqBEiIalw2lzNetjbo0cxHqbUx7kGv1q?=
- =?us-ascii?Q?XIFIvOgRD+i+fSrtHf82uDnXV9HRyAUo3dxuCN2h0jZK36C4UjJ7gCDXpW5A?=
- =?us-ascii?Q?x28Ccg8LxD0x40jt4IvzBdWOTSp6q9T6+k8o9O36rjgQTsO+lJDtK6d03muq?=
- =?us-ascii?Q?FpRSQIBYQ6b4PeaOLJQqp6RnzIm3bnKkjnzrGm2LOzuw0zx5bHMzRw2mS2A1?=
- =?us-ascii?Q?zLVfMSm/+dumgM7vwtsGKMkjGvhK1e4MQTxQjWcwtQtwaIpvLUqfIK5+L5wm?=
- =?us-ascii?Q?sQMIaNRs5UIWrMGEn8gTpZA0wEowYtv/2/wq53hr4vV86GEwrtFkldga9wTu?=
- =?us-ascii?Q?UHugCbC4oJGwimvMsh10wKiT/lD9g0rhLv57kcd0JXFVyORDNfjvG8JfkPav?=
- =?us-ascii?Q?GgRgeYcmBP9Cs6EE27b1bNaBBEqBN4YLr432XOTnK48KsdKD5/i0fERZ9l0X?=
- =?us-ascii?Q?ouihuIWtixNa4iTv4FUtjLtd0Vz3QOxIAiIFTKUuUjajZOe2iwmYXSkD45wL?=
- =?us-ascii?Q?RwEGZcfHMSz/C0Th2zXpci2/3LhnaK989HCK9OCf13A1s5PVdJJw4nvqzTqC?=
- =?us-ascii?Q?6gTDjqBX9iwd81ylx3p8BUTj2q50CWsk/4SyJt4gmOD8kEVW/qFH24F7tyxz?=
- =?us-ascii?Q?R7E0gGuSdKYuFCZNX4a1hPOYXn+/wJ0ePvjnQDpn8IeX4A28rxTacM2nhI/J?=
- =?us-ascii?Q?C+4mZfUPsFGAe7hXKmwH7vyqpBcME6r4LCub6BBwlpn94UOn/MnEaEx4tP6u?=
- =?us-ascii?Q?DYoG7F7uyolMwWMLdg6n77v4rO7aqWLcdz5sBdcMjfpCdWN4iDwUoSbIZ7qc?=
- =?us-ascii?Q?koBzatEzW1jga3CzETD3dQZV9JYUD25fs6MRWBNIu5So8HdQ++FFHoKYkeor?=
- =?us-ascii?Q?lkGMrnymHQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8cb421e-c284-4033-c502-08de8121bfa6
-X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2026 16:58:28.4265
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KSn0Uj2kUOx6OKsEnlmvIPEi4TYr6WlyuMps64PRIOl13OUPVePonNG+5yW9JtlWuTeGY8XMspQvs1BdA+eI/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7584
-X-Spamd-Result: default: False [2.44 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mpVRK4fNYQy4w4wP"
+Content-Disposition: inline
+In-Reply-To: <20260313140218.1213393-2-o.rempel@pengutronix.de>
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12335-lists,linux-hwmon=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-12337-lists,linux-hwmon=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florin.leotescu@oss.nxp.com,linux-hwmon@vger.kernel.org];
-	FREEMAIL_CC(0.00)[roeck-us.net,kernel.org,nvidia.com,vger.kernel.org,nxp.com,lists.infradead.org,lists.linux.dev,gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.1:email,0.0.0.0:email,nxp.com:email,NXP1.onmicrosoft.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AC900287CDB
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,devicetree.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,protonic.nl:email]
+X-Rspamd-Queue-Id: 790E5288023
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 12, 2026 at 05:37:51PM +0000, Conor Dooley wrote:
-> On Thu, Mar 12, 2026 at 02:22:47PM +0200, florin.leotescu@oss.nxp.com wrote:
-> > From: Florin Leotescu <florin.leotescu@nxp.com>
-> > 
-> > The EMC2305 fan controller supports multiple independent PWM fan
-> > outputs. Some systems require fans to enter a defined safe state
-> > during system shutdown or reboot handoff, until firmware or the next
-> > boot stage reconfigures the controller.
-> > 
-> > Add an optional "fan-shutdown-percent" property to fan child nodes
-> > allowing the shutdown fan speed to be configured per fan output.
-> > 
-> > Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-> > ---
-> >  .../devicetree/bindings/hwmon/microchip,emc2305.yaml      | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > index d3f06ebc19fa..7bcadfab9fc4 100644
-> > --- a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > @@ -54,6 +54,12 @@ patternProperties:
-> >            The fan number used to determine the associated PWM channel.
-> >          maxItems: 1
-> >  
-> > +      fan-shutdown-percent:
-> > +        description:
-> > +          Fan RPM in percent set during shutdown.
-> 
-> This sounds like something generic, that other devices might need and
-> should be in fan-common.yaml?
->
-Thanks for the feedback.
 
-The property name was reused from pwm-fan.yaml where it already exists
-with the same meaning. I kept it local to minimize the scope of the change.
+--mpVRK4fNYQy4w4wP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-However, if you prefer it to be modelled as a common property, I can adjust it in the next revision.
+On Fri, Mar 13, 2026 at 03:02:12PM +0100, Oleksij Rempel wrote:
+> Add device tree binding documentation for the NXP MC33978 and MC34978
+> Multiple Switch Detection Interface (MSDI) devices.
+>=20
+> These ICs monitor up to 22 mechanical switch contacts in automotive and
+> industrial environments. They provide configurable wetting currents to
+> break through contact oxidation and feature extensive hardware
+> protection against thermal overload and voltage transients (load
+> dumps/brown-outs).
+>=20
+> The device interfaces via SPI. While it provides multiple functions, its
+> primary hardware purpose is pin/switch control. To accurately represent
+> the hardware as a single physical integrated circuit without unnecessary
+> DT overhead, all functions are flattened into a single pinctrl node:
+> - pinctrl: Exposing the 22 switch inputs (SG/SP pins) as a GPIO controller
+>   and managing their pin configurations.
+> - hwmon: Exposing critical hardware faults (OT, OV, UV) and static
+>   voltage/temperature thresholds.
+> - mux: Controlling the 24-to-1 analog multiplexer to route pin voltages,
+>   internal temperature, or battery voltage to an external SoC ADC.
+>=20
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-> > +        minimum: 0
-> > +        maximum: 100
-> > +
-> >      required:
-> >        - reg
-> >  
-> > @@ -80,12 +86,14 @@ examples:
-> >              fan@0 {
-> >                  reg = <0x0>;
-> >                  pwms = <&fan_controller 26000 PWM_POLARITY_INVERTED 1>;
-> > +                fan-shutdown-percent = <100>;
-> >                  #cooling-cells = <2>;
-> >              };
-> >  
-> >              fan@1 {
-> >                  reg = <0x1>;
-> >                  pwms = <&fan_controller 26000 0 1>;
-> > +                fan-shutdown-percent = <50>;
-> >                  #cooling-cells = <2>;
-> >              };
-> >  
-> > -- 
-> > 2.34.1
-> > 
+>>  .../bindings/pinctrl/nxp,mc33978.yaml         | 148 ++++++++++++++++++
+>  1 file changed, 148 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,mc33978=
+=2Eyaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,mc33978.yaml b=
+/Documentation/devicetree/bindings/pinctrl/nxp,mc33978.yaml
+> new file mode 100644
+> index 000000000000..58a641a7c615
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,mc33978.yaml
+> @@ -0,0 +1,148 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/pinctrl/nxp,mc33978.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP MC33978/MC34978 Multiple Switch Detection Interface
+> +
+> +maintainers:
+> +  - David Jander <david@protonic.nl>
+> +  - Oleksij Rempel <o.rempel@pengutronix.de>
+> +
+> +description: |
+> +  The MC33978 and MC34978 are Multiple Switch Detection Interface (MSDI)
+> +  devices with 22 switch inputs, integrated fault detection, and analog
+> +  multiplexer (AMUX) for voltage/temperature monitoring.
+> +
+> +  Pin numbering:
+> +  - Pins 0-13: SG0-SG13 (Switch-to-Ground inputs). These pins monitor
+> +    contacts closed to ground and typically require GPIO_ACTIVE_LOW
+> +    flags when used as digital inputs.
+> +  - Pins 14-21: SP0-SP7 (Programmable inputs). These can be configured
+> +    as SG (Switch-to-Ground) or SB (Switch-to-Battery) inputs. SB
+> +    inputs monitor contacts closed to the battery voltage and typically
+> +    require GPIO_ACTIVE_HIGH flags when used as digital inputs.
+> +
+> +  Output Emulation:
+> +  The hardware lacks standard push-pull output drivers. Outputs are emul=
+ated
+> +  by toggling the programmable wetting current sources (acting as pull-u=
+ps
+> +  or pull-downs) and the hardware tri-state registers. Because of this
+> +  physical constraint:
+> +  - Consumers using pins as outputs MUST flag them with GPIO_OPEN_DRAIN =
+or
+> +    GPIO_OPEN_SOURCE in the device tree.
+> +  - Push-pull configurations are physically unsupported.
+> +  - The active polarity depends entirely on the external circuit (e.g., =
+how
+> +    an LED is wired) and must be flagged accordingly by the consumer.
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,mc33978
+> +      - nxp,mc34978
+
+What's different about these that a fallback is not suitable?
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description: SPI chip select number
+> +
+> +  spi-max-frequency:
+> +    maximum: 8000000
+> +    description: Maximum SPI clock frequency (up to 8 MHz)
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description:
+> +      INT_B pin interrupt. Active-low, indicates pin state changes or
+> +      fault conditions.
+> +
+> +  interrupt-controller: true
+> +
+> +  '#interrupt-cells':
+> +    const: 2
+> +    description:
+> +      First cell is the IRQ number (0-21 for pins, 22 for faults).
+> +      Second cell is the trigger type (IRQ_TYPE_* from interrupt-control=
+ler.h).
+> +
+> +  '#mux-control-cells':
+> +    const: 0
+> +    description:
+> +      Present if the device AMUX selector is used as a mux provider.
+> +      Consumers (e.g. io-channel-mux) must provide settle-time-us for the
+> +      external ADC sampling path.
+> +
+> +  vddq-supply:
+> +    description: Digital supply voltage
+> +
+> +  vbatp-supply:
+> +    description: Battery/power supply
+> +
+> +  gpio-controller: true
+> +
+> +  '#gpio-cells':
+> +    const: 2
+> +
+> +  ngpios:
+> +    const: 22
+> +
+> +patternProperties:
+> +  '^.*-grp$':
+> +    type: object
+> +    $ref: /schemas/pinctrl/pincfg-node.yaml#
+> +    additionalProperties: false
+> +    description: Pin configuration subnodes.
+> +    properties:
+> +      pins: true
+
+This seems overly permissive, think it should only allow the couple of
+options that your hardware has. Probably just make it an enum? Shouldn't
+have to check the driver to know what the acceptable pin names are.
+
+Cheers,
+Conor.
+
+pw-bot: changes-requested
 
 
+--mpVRK4fNYQy4w4wP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabRGbgAKCRB4tDGHoIJi
+0p75AP0aFQoEjAP1KDnrdD6k7X9NOCRjCBHILhewmZ+uzJxrmwEAs0iC4M9HTbRO
+fY99FIdhCjrgRoYu29pTjAV7fVlmcAM=
+=Mj7z
+-----END PGP SIGNATURE-----
+
+--mpVRK4fNYQy4w4wP--
 
