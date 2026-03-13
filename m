@@ -1,302 +1,208 @@
-Return-Path: <linux-hwmon+bounces-12326-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12333-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLVKBIAZtGlLhQAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12326-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 15:04:48 +0100
+	id aGTyMcYgtGknhwAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12333-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 15:35:50 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DBD284793
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 15:04:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A6128515F
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 15:35:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D0BE323B659
-	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 14:02:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B0AE2300908E
+	for <lists+linux-hwmon@lfdr.de>; Fri, 13 Mar 2026 14:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061A83254B0;
-	Fri, 13 Mar 2026 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1014E3A5450;
+	Fri, 13 Mar 2026 14:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcMIPOlx"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678192DF134
-	for <linux-hwmon@vger.kernel.org>; Fri, 13 Mar 2026 14:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09ED392802
+	for <linux-hwmon@vger.kernel.org>; Fri, 13 Mar 2026 14:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773410559; cv=none; b=nqI2OPNG7dP/qhWVqlUrKP9NS3WOCOHYyQ3r7jNqnH5g4fAKT6fhWAFxmLNleHKaUTQkf6t0NFstAPggtNBcRQTWHbDf0wa3cFJBfEi17P2RO6ncF4CW9RYSLMWyuN0H+dXVYPKicPaNc8i47NCEkZj5i3pzgtJeszlGnL2D138=
+	t=1773412549; cv=none; b=a1cCcV2TiZevusZwsWolx/vzXyEdJI6F4nRftETexYQNjV5+wFPF8flfDq/v69fDVVfUBds0wjYqe8EgqnlUrwsUlV5jT1dusP8ypjm3xGGTTp7XcXr5A0GQRNQK7qokfbcASNmB5YSz8gzsQ2iB5csbYzi1GAgz1CrAUT9hGwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773410559; c=relaxed/simple;
-	bh=CeS4wdaaiNaQWZjEUnnXF4AIgR9+Dlca/S49VoNDuZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSmgD7VpjjP65mxEUo2ae22bypZdeEfpd6nNyR5pOfOvX3e4LE91cDjLgSmUma4PAyIXeqSfcK5wvetH6bPlKOWPNCe+0s0JxM6EpiKV29Ck+pw23wZm2S2f0/viK2v6GaYjAF3fMa+7gPgzJXAZsgqezFIZI2HJJoPgL57xUs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w135r-0007Jq-Ah; Fri, 13 Mar 2026 15:02:23 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w135r-0005cw-04;
-	Fri, 13 Mar 2026 15:02:23 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w135q-000000055i6-3xJd;
-	Fri, 13 Mar 2026 15:02:22 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Peter Rosin <peda@axentia.se>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	David Jander <david@protonic.nl>
-Subject: [PATCH v4 6/6] mux: add NXP MC33978/MC34978 AMUX driver
-Date: Fri, 13 Mar 2026 15:02:17 +0100
-Message-ID: <20260313140218.1213393-7-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260313140218.1213393-1-o.rempel@pengutronix.de>
-References: <20260313140218.1213393-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1773412549; c=relaxed/simple;
+	bh=O2J/uQoWGCK3ip4Lixu2BMrCjPLqW3Zx94+ZkIjekMk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MIHau2W9ukcgrLboreQ6sePrEo66FpR9aNI+cA8mdAjcTXW0rRCAFkqDWjREfZa74FkyU9YwqLCjaAr48JOHMMTv/23BIe73hXuIJtRanL2NOXwcnVZ7OMlsjXNrPxLZUBvfzrqmqoEcF9tOU6iCYESTseR0QeeA1PSp6s9kM8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcMIPOlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9935FC2BCB8
+	for <linux-hwmon@vger.kernel.org>; Fri, 13 Mar 2026 14:35:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773412548;
+	bh=O2J/uQoWGCK3ip4Lixu2BMrCjPLqW3Zx94+ZkIjekMk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gcMIPOlxmx5TVIcEUhr6VVb9Uz71nC3VqZgdy4jrRyflWw0PHwhFdbHt69io4eLPL
+	 kqgjYYLinmnFU9Zkj4vMqRemxBXI+pGGhnOPfC/b0Z7AToeNI0Jx/YiphMjgG2ia9p
+	 QK33RhmQj6gUVT1ZorRrXGxsUakkR4bTFowBDBKBXXrmfMnAevq0SY9SXty2++on9N
+	 GE3w5G8llVJVkUQWsGKA/U9KFjc0OTRXZaYyUFtJL5jmWm3jfnTXjHRxJ93kzhFOAP
+	 rSd2gLetvBhF1wfvlLjDlVW96PvWGkdzZ44+2dcGfyMHeENNsf1qDh4wdnsBT9RvcH
+	 izggXM9PJzKqw==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38a67221fe8so19462331fa.3
+        for <linux-hwmon@vger.kernel.org>; Fri, 13 Mar 2026 07:35:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU3XxuxahidsgpTrSo3i0mOutIJ/kckKZ4fOtafDNn3dELpNDV3rUru0pxKtBwTs5fEJaAVG/N0x2Oq+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzittkdnhVDGymX2UTN9pRdtHOQWObfpWRiptBAu9ZKst9go7pG
+	npQo4w6ndxxYaZinarbB6yQsbNUVtqmtfFaioUBslBVeWQlLy4aoSc3EI5tsNPxMEziTy3q0Gst
+	bDKeH/izIJ7P89PvNjUVANK+YZCXM9Rtm5GK4FieURw==
+X-Received: by 2002:a2e:bc05:0:b0:37b:a30e:fe1e with SMTP id
+ 38308e7fff4ca-38a896b63edmr11623971fa.18.1773412546966; Fri, 13 Mar 2026
+ 07:35:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spamd-Result: default: False [1.54 / 15.00];
+References: <20260309134920.1918294-1-o.rempel@pengutronix.de>
+ <20260309134920.1918294-5-o.rempel@pengutronix.de> <abPqGvy5FqJ0a0ug@tom-desktop>
+ <abQMQAbbvV60bV2j@pengutronix.de> <7b1e12b2-f55d-4e70-9cb7-ecfa9d82ebdf@bp.renesas.com>
+In-Reply-To: <7b1e12b2-f55d-4e70-9cb7-ecfa9d82ebdf@bp.renesas.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Fri, 13 Mar 2026 15:35:34 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Mc4x0SOfoxB9Fv4VUmNjJLjdBnMSmFG=Y1JvLih6cODww@mail.gmail.com>
+X-Gm-Features: AaiRm51exk9bRfCOxBgMLnbyRkpHTWu9jExfiPkKZkcq3MNpB6_WKeGjZSAnPjg
+Message-ID: <CAMRc=Mc4x0SOfoxB9Fv4VUmNjJLjdBnMSmFG=Y1JvLih6cODww@mail.gmail.com>
+Subject: Re: [PATCH v3 4/7] gpio: gpiolib: fix allocation order in
+ hierarchical IRQ domains
+To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Guenter Roeck <linux@roeck-us.net>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Lee Jones <lee@kernel.org>, Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>, 
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, David Jander <david@protonic.nl>, biju.das.jz@bp.renesas.com, 
+	tomm.merciai@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-12326-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-12333-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_CC(0.00)[pengutronix.de,roeck-us.net,kernel.org,axentia.se,vger.kernel.org,protonic.nl,bp.renesas.com,gmail.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid]
-X-Rspamd-Queue-Id: 68DBD284793
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,renesas.com:email,3d:email]
+X-Rspamd-Queue-Id: 50A6128515F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a mux-control driver for the 24-to-1 analog multiplexer (AMUX)
-embedded in the NXP MC33978/MC34978 Multiple Switch Detection
-Interface (MSDI) devices.
+On Fri, Mar 13, 2026 at 3:05=E2=80=AFPM Tommaso Merciai
+<tommaso.merciai.xr@bp.renesas.com> wrote:
+>
+> Hi Oleksij,
+>
+> On 3/13/26 14:08, Oleksij Rempel wrote:
+> > Hi Tommaso,
+> >
+> > On Fri, Mar 13, 2026 at 11:42:34AM +0100, Tommaso Merciai wrote:
+> >> Hi Oleksij,
+> >> Thanks for your patch.
+> >>
+> >> I'm working on DSI support for RZ/G3E
+> >>
+> >> from this morning rebasing on top of next-20260312 I'm seeing
+> >> the following:
+> >> I found out the the issue is related to the interrupt of the adv7535
+> >> bridge:
+> >>
+> >>          adv7535: hdmi1@3d {
+> >>                  compatible =3D "adi,adv7535";
+> >>                  ...
+> >>                  ...
+> >>                  interrupts-extended =3D <&pinctrl RZG3E_GPIO(L, 4) IR=
+Q_TYPE_EDGE_FALLING>;
+> >>
+> >> RZ/G3E is using:
+> >>   - drivers/pinctrl/renesas/pinctrl-rzg2l.c
+> >>
+> >> Reverting this patch fix the issue.
+> >> (git revert a23463beb3d5)
+> >
+> > Thank you for the feedback! If I understand the problem correctly, the
+> > adv7535 is asserting its IRQ line early during probe, which creates an
+> > irq storm due to a missing handler.
+> >
+> > My patch moved irq_domain_set_info() after the parent allocation. When
+> > the parent allocates the IRQ, the pending hardware interrupt fires
+> > immediately. Because the child descriptor isn't fully configured yet, i=
+t
+> > routes to handle_bad_irq. This fails to acknowledge the hardware
+> > interrupt, locking up the CPU and causing the RCU stall.
+> >
+> > I hope splitting the irq_domain_set_info() should fix the regression.
+> > Can you please test if this change resolve the RCU stalls on your setup=
+:
+>
+> Thanks for sharing.
+>
+> >
+> > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> > index 13dd97344b26..376daeddbbbb 100644
+> > --- a/drivers/gpio/gpiolib.c
+> > +++ b/drivers/gpio/gpiolib.c
+> > @@ -1628,6 +1628,9 @@ static int gpiochip_hierarchy_irq_domain_alloc(st=
+ruct irq_domain *d,
+> >       }
+> >       gpiochip_dbg(gc, "found parent hwirq %u\n", parent_hwirq);
+> >
+> > +     irq_set_handler(irq, girq->handler);
+> > +     irq_set_handler_data(irq, gc);
+> > +
+> >       /* This parent only handles asserted level IRQs */
+> >       ret =3D girq->populate_parent_alloc_arg(gc, &gpio_parent_fwspec,
+> >                                             parent_hwirq, parent_type);
+> > @@ -1655,13 +1658,7 @@ static int gpiochip_hierarchy_irq_domain_alloc(s=
+truct irq_domain *d,
+> >        * We set handle_bad_irq because the .set_type() should
+> >        * always be invoked and set the right type of handler.
+> >        */
+> > -     irq_domain_set_info(d,
+> > -                         irq,
+> > -                         hwirq,
+> > -                         gc->irq.chip,
+> > -                         gc,
+> > -                         girq->handler,
+> > -                         NULL, NULL);
+> > +     irq_domain_set_hwirq_and_chip(d, irq, hwirq, gc->irq.chip, gc);
+> >       irq_set_probe(irq);
+> >
+> >       return 0;
+>
+> Tested on RZ/G3E + adv7535.
+>
+> With this fix all is working fine on my side.
+> I'm not more seeing the seeing the RCU stall.
+>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v4:
-- no changes
-changes v3:
-- no changes
-changes v2:
-- Add missing <linux/err.h> include.
-- Add platform_device_id table
----
- drivers/mux/Kconfig       |  14 +++++
- drivers/mux/Makefile      |   2 +
- drivers/mux/mc33978-mux.c | 119 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 135 insertions(+)
- create mode 100644 drivers/mux/mc33978-mux.c
+Ah, I sent this patch upstream for v7.0. I will tell Linus to not pull
+it. How do we want to handle it then? Should this patch go together
+with the rest of the series?
 
-diff --git a/drivers/mux/Kconfig b/drivers/mux/Kconfig
-index c68132e38138..7532da7e087e 100644
---- a/drivers/mux/Kconfig
-+++ b/drivers/mux/Kconfig
-@@ -45,6 +45,20 @@ config MUX_GPIO
- 	  To compile the driver as a module, choose M here: the module will
- 	  be called mux-gpio.
- 
-+config MUX_MC33978
-+	tristate "NXP MC33978/MC34978 Analog Multiplexer"
-+	depends on MFD_MC33978
-+	help
-+	  MC33978/MC34978 24-to-1 analog multiplexer (AMUX) driver.
-+
-+	  This driver provides mux-control for the analog multiplexer,
-+	  which can route switch voltages, temperature, and battery voltage
-+	  to an external ADC. Typically used with IIO ADC drivers to measure
-+	  analog values from the 22 switch inputs plus temperature and VBATP.
-+
-+	  To compile the driver as a module, choose M here: the module will
-+	  be called mc33978-mux.
-+
- config MUX_MMIO
- 	tristate "MMIO/Regmap register bitfield-controlled Multiplexer"
- 	depends on OF
-diff --git a/drivers/mux/Makefile b/drivers/mux/Makefile
-index 6e9fa47daf56..339c44b4d4f4 100644
---- a/drivers/mux/Makefile
-+++ b/drivers/mux/Makefile
-@@ -7,10 +7,12 @@ mux-core-objs			:= core.o
- mux-adg792a-objs		:= adg792a.o
- mux-adgs1408-objs		:= adgs1408.o
- mux-gpio-objs			:= gpio.o
-+mux-mc33978-objs		:= mc33978-mux.o
- mux-mmio-objs			:= mmio.o
- 
- obj-$(CONFIG_MULTIPLEXER)	+= mux-core.o
- obj-$(CONFIG_MUX_ADG792A)	+= mux-adg792a.o
- obj-$(CONFIG_MUX_ADGS1408)	+= mux-adgs1408.o
- obj-$(CONFIG_MUX_GPIO)		+= mux-gpio.o
-+obj-$(CONFIG_MUX_MC33978)	+= mux-mc33978.o
- obj-$(CONFIG_MUX_MMIO)		+= mux-mmio.o
-diff --git a/drivers/mux/mc33978-mux.c b/drivers/mux/mc33978-mux.c
-new file mode 100644
-index 000000000000..de79073e15aa
---- /dev/null
-+++ b/drivers/mux/mc33978-mux.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (c) 2026 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-+/*
-+ * MC33978/MC34978 Analog Multiplexer (AMUX) Driver
-+ *
-+ * This driver provides mux-control for the 24-to-1 analog multiplexer.
-+ * The AMUX routes one of the following signals to the external AMUX pin:
-+ * - Channels 0-13: SG0-SG13 switch voltages
-+ * - Channels 14-21: SP0-SP7 switch voltages
-+ * - Channel 22: Internal temperature diode
-+ * - Channel 23: Battery voltage (VBATP)
-+ *
-+ * Consumer drivers (typically IIO ADC drivers) use the mux-control
-+ * subsystem to select which signal to measure.
-+ *
-+ * Architecture:
-+ * The MC33978 does not have an internal ADC. Instead, it routes analog
-+ * signals to an external AMUX pin that must be connected to an external
-+ * ADC (such as the SoC's internal ADC). The IIO subsystem is responsible
-+ * for coordinating the mux selection and ADC sampling.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mux/driver.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/mfd/mc33978.h>
-+
-+/* AMUX_CTRL register field definitions */
-+#define MC33978_AMUX_CTRL_MASK	GENMASK(5, 0)	/* 6-bit channel select */
-+
-+struct mc33978_mux_priv {
-+	struct device *dev;
-+	struct regmap *map;
-+};
-+
-+static int mc33978_mux_set(struct mux_control *mux, int state)
-+{
-+	struct mc33978_mux_priv *priv = mux_chip_priv(mux->chip);
-+	int ret;
-+
-+	if (state < 0 || state >= MC33978_NUM_AMUX_CH)
-+		return -EINVAL;
-+
-+	ret = regmap_update_bits(priv->map, MC33978_REG_AMUX_CTRL,
-+				 MC33978_AMUX_CTRL_MASK, state);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to set AMUX channel %d: %d\n",
-+			state, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct mux_control_ops mc33978_mux_ops = {
-+	.set = mc33978_mux_set,
-+};
-+
-+static int mc33978_mux_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct mc33978_mux_priv *priv;
-+	struct mux_chip *mux_chip;
-+	struct mux_control *mux;
-+	int ret;
-+
-+	mux_chip = devm_mux_chip_alloc(dev, 1, sizeof(*priv));
-+	if (IS_ERR(mux_chip))
-+		return dev_err_probe(dev, PTR_ERR(mux_chip), "Failed to allocate mux chip\n");
-+
-+	/* Borrow the parent's DT node so consumers can find this mux chip */
-+	device_set_node(&mux_chip->dev, dev_fwnode(dev->parent));
-+
-+	priv = mux_chip_priv(mux_chip);
-+	priv->dev = dev;
-+
-+	priv->map = dev_get_regmap(dev->parent, NULL);
-+	if (!priv->map)
-+		return dev_err_probe(dev, -ENODEV, "Failed to get parent regmap\n");
-+
-+	mux_chip->ops = &mc33978_mux_ops;
-+
-+	mux = &mux_chip->mux[0];
-+	mux->states = MC33978_NUM_AMUX_CH;
-+
-+	ret = devm_mux_chip_register(dev, mux_chip);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to register mux chip\n");
-+
-+	platform_set_drvdata(pdev, mux_chip);
-+
-+	return 0;
-+}
-+
-+static const struct platform_device_id mc33978_mux_id[] = {
-+	{ "mc33978-mux", },
-+	{ "mc34978-mux", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, mc33978_mux_id);
-+
-+static struct platform_driver mc33978_mux_driver = {
-+	.driver = {
-+		.name = "mc33978-mux",
-+	},
-+	.probe = mc33978_mux_probe,
-+	.id_table = mc33978_mux_id,
-+};
-+module_platform_driver(mc33978_mux_driver);
-+
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("NXP MC33978/MC34978 Analog Multiplexer Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.47.3
-
+Bartosz
 
