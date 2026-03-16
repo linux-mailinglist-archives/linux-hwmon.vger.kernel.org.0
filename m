@@ -1,304 +1,245 @@
-Return-Path: <linux-hwmon+bounces-12383-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12389-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCULB50OuGkWYQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12383-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Mar 2026 15:07:25 +0100
+	id 6KdIJyoRuGmIYgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12389-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Mar 2026 15:18:18 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA56329B056
-	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Mar 2026 15:07:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F2929B2FB
+	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Mar 2026 15:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A000B3037274
-	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Mar 2026 14:06:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C20313016B0E
+	for <lists+linux-hwmon@lfdr.de>; Mon, 16 Mar 2026 14:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD5439E6C9;
-	Mon, 16 Mar 2026 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3C539B95B;
+	Mon, 16 Mar 2026 14:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q85g/Kf3"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7E339B976
-	for <linux-hwmon@vger.kernel.org>; Mon, 16 Mar 2026 14:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B990D394498
+	for <linux-hwmon@vger.kernel.org>; Mon, 16 Mar 2026 14:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773669939; cv=none; b=MG9gyQFN9iac2dYfMUDic3Hp80Gi+12aDEWjnksp8hRWdXaozly60jf4nPFwpazJi/1QYw4zgtWjZeso4E4ROsYL3H4E7ESVZzUPRBERifr233aASuyiWW9JijrENsKdd+SBlwYnnF9LVSo34s42uAD1dTX27gR8MXCCxNdUq0Y=
+	t=1773670304; cv=none; b=ACV+vPy5cEOemw2zz8b+a7qHOf6MZYkpWwtzbBZffEJsAQ5yIZT5tJj03xjAprdsdPnN76txR9TVVgkvny84XUulnruXskaIIjO480ApWn4uRLP4PME0jRFugg1/Gqy60gcpuGsFqRW2+HfujpZ2fT61OakZSArWK0dIczUr8Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773669939; c=relaxed/simple;
-	bh=TM520VvlUA/lHaPTFrQ9GcDMMHr/XT3SJTEQdh3jFJk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAX5l+00RKH3Miv7EWdIEQZUso2actQIeWg6wj4uYbwwlmLO2jlq3Ym106RSpDfxel/1EUIW1ph6e3p+bYB5YN4wIbHuJ/B3CKC+d+RExMkH8IgQFvaO5qmMYyB1zrlyr52HxP0QDtQBna10IhXMLJbbzq8LyY4badzZIY/geKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w28ZI-0002G9-E9; Mon, 16 Mar 2026 15:05:16 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w28ZH-000a8U-31;
-	Mon, 16 Mar 2026 15:05:15 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w28ZH-00000005txU-3NiG;
-	Mon, 16 Mar 2026 15:05:15 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Peter Rosin <peda@axentia.se>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	David Jander <david@protonic.nl>
-Subject: [PATCH v5 7/7] mux: add NXP MC33978/MC34978 AMUX driver
-Date: Mon, 16 Mar 2026 15:05:12 +0100
-Message-ID: <20260316140514.1406588-8-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260316140514.1406588-1-o.rempel@pengutronix.de>
-References: <20260316140514.1406588-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1773670304; c=relaxed/simple;
+	bh=htLGnvtizetVXxTUy6snLHUbevhddIJzI+a5EvNU898=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F8nDpJquCgdyIdAAdx5YRO4o4Px0ZP7attN/aUkqTFNyakN8XPueaB3ys1La0yED5Jtd3Ri0hEZoCn3plsEWOJu3CQoJuRAWsfFyn8/5QNRCak+0ojHZrMg5QlIoKwUyKlJfpcW4X+jiCFRqJKorXkZlPeGLGCTQR9JBoC1lhRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q85g/Kf3; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-128e4d0cc48so5109451c88.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 16 Mar 2026 07:11:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773670302; x=1774275102; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=qTyet+vUs4i5zO6iAQ/90TtCdIDVFVxtPrkgLSGy3qg=;
+        b=Q85g/Kf3o26F6A7qpv1xZ/e0ql/2889cl/oeTt4uOlNJJDM+HWUzsir+Ve5j3IfPGx
+         M2oRPiEDCN/6Br87YxdOAP/wCVdgGf6z9v99D0oud0o/GaHtR/+FSNABauV7MAzxysz1
+         T+PlsRifIkr8ElCvdQiDJiUIOuBnG8DhPsEZFs9YDzssXcY7DXgFG6G9ubthX+/VwtGd
+         W4Ql0SGcOBneDmnq1r2yRCLrcleSCx9zV5BW8Bl3J31Sth8Jm3t5L4O7CCWpWz1cWAnJ
+         ggYP2FyWhNjhRjXPgvoBYuSiTmhI9uuVb2JGgCYPb67mf+xwVrYd/oAcfDKKtKIEpnkS
+         Co6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773670302; x=1774275102;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qTyet+vUs4i5zO6iAQ/90TtCdIDVFVxtPrkgLSGy3qg=;
+        b=K9OjQZctUkxXAQMHSnpcb5Mqk4FPXcM86e4OxkyK0ngx8yl3KdhQZB50ar9Owh/HGF
+         C7p8alOZJXX3saB7ZJXNGotCn2tqR9Hc4iDTN6gEOVeEpaKLBEkvWHDNHb0IzQScNzrg
+         vJl9823IC9oxbsa1738hCa9KO5fJFgVC+tVJkmw9SO8wGSk8/nbn7QB5sF+xezdrQSy/
+         DBJUVXOVvOHlySVRg16GS5iSZ1DLBjigwJGidJo6tnKNTfXZf/kjrMVpv7O/YBBhPfrs
+         fDCJVOxDEjvcmhed2mQAV59183/qWdbb9wdOOwIDGOxsE/4ae0Dygbe7oTST1AwCVFRq
+         b9XA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjp2f9ltlZJGw8PZWHsRAEIy+BhflEnMoi8k36pbnXvZOOhOGalMW0yvjJuzse1NrFL63AY9/sa+y0Xw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrUkjXi6rkYiol2WhQlECqsXt7xk1TNN3KcYIoU/24toF69r2A
+	/cPuqBeul3TtLu6YuYcB+Ni3iZmWTAYUnyBqKIkxXqHTWVef0sPiM2d3
+X-Gm-Gg: ATEYQzzuY6aP74RGKPAXWTIJFhOcNxj6BgAsekKxWPonsRY8aXQA2zkt/iBV1W61mtp
+	6/XxbJE1nPqbBGcKoGJYOxraucSbsRpp7Y+n3gB6i6WRxDLtt6Y3SeVkxHcfSPYHeF30XXHaWUE
+	HP63M9OgjzDcr0QOx8TofP5mJ0Nki0KW+CiTjxZ2CBobaoVV9vIUPaXvDHO1CPeLh+FpvevFibM
+	GiJ+MVpzzHlxPT2hB7NI2P//6prJFZFmp2d8GREsOiiI9NHWsjShY8lQPCQ2B3El5WK9cUTUdsC
+	pzUhOw1d8McuuxxIXrOVp4Vqf8Wa8vujkU2SEvr8ccWHP42dBQjgR5dOVBw/14NdG7oBeeNX1v+
+	vqtmLqluS5VdFDURxX9E0eeN/+Q3SNimnWHSsfQWHy/6reTYP+3VxxscZuW/xLzHKSCNt7HJy+0
+	n6O+fnzs8S1aCtT0YWI/SuownFFOU2TzC88BYCT2HQmniYOkoxXqbQDqBprfiQ/jqiF+lggWFz
+X-Received: by 2002:a05:7022:b9c:b0:128:cc63:82f0 with SMTP id a92af1059eb24-128f3e2aa9emr5757183c88.25.1773670301528;
+        Mon, 16 Mar 2026 07:11:41 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128f6283845sm12630518c88.2.2026.03.16.07.11.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Mar 2026 07:11:40 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <0f88a17c-7c21-4ae5-b418-dfb4b4ac5d6a@roeck-us.net>
+Date: Mon, 16 Mar 2026 07:11:37 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spamd-Result: default: False [1.54 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] dt-bindings: hwmon: moortec,mr75203: adapt
+ multipleOf for T-Head TH1520
+To: Conor Dooley <conor@kernel.org>, Drew Fustini <fustini@kernel.org>
+Cc: Icenowy Zheng <zhengxingda@iscas.ac.cn>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
+ <wefu@redhat.com>, Rahul Tanwar <rtanwar@maxlinear.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Icenowy Zheng <uwu@icenowy.me>, Han Gao <rabenda.cn@gmail.com>
+References: <20260309162457.4128205-1-zhengxingda@iscas.ac.cn>
+ <20260309162457.4128205-2-zhengxingda@iscas.ac.cn> <abWTO7QBFIcjxKn6@x1>
+ <20260315-cogwheel-dislodge-a3efe31728d1@spud>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260315-cogwheel-dislodge-a3efe31728d1@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-12383-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.946];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-12389-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[iscas.ac.cn,kernel.org,redhat.com,maxlinear.com,vger.kernel.org,lists.infradead.org,icenowy.me,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid]
-X-Rspamd-Queue-Id: BA56329B056
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 98F2929B2FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a mux-control driver for the 24-to-1 analog multiplexer (AMUX)
-embedded in the NXP MC33978/MC34978 Multiple Switch Detection
-Interface (MSDI) devices.
+On 3/15/26 05:12, Conor Dooley wrote:
+> On Sat, Mar 14, 2026 at 09:56:27AM -0700, Drew Fustini wrote:
+>> On Tue, Mar 10, 2026 at 12:24:56AM +0800, Icenowy Zheng wrote:
+>>> The G and J coefficients provided by T-Head TH1520 manual (which calls
+>>> them A and C coefficients and calls H coefficient in the binding as B)
+>>> have 1/100 degree Celsius precision (the values are 42.74 and -0.16
+>>> respectively), however the binding currently only allows coefficients as
+>>> precise as 100 milli-Celsius (1/10 degree Celsius).
+>>>
+>>> Change the multipleOf value of these two coefficients to 10 (in the unit
+>>> of milli-Celsius) to satisfy the need of TH1520.
+>>>
+>>> Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+>>> Reviewed-by: Drew Fustini <fustini@kernel.org>
+>>> ---
+>>> Changes in v3:
+>>> - Added Drew's R-b.
+>>> - Fixed some typos in the commit message and slightly reworded the
+>>>    precision sentence.
+>>>
+>>>   Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml | 4 ++--
+>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml b/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml
+>>> index 56db2292f062d..7d57c2934a8a1 100644
+>>> --- a/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml
+>>> +++ b/Documentation/devicetree/bindings/hwmon/moortec,mr75203.yaml
+>>> @@ -105,7 +105,7 @@ properties:
+>>>         G coefficient for temperature equation.
+>>>         Default for series 5 = 60000
+>>>         Default for series 6 = 57400
+>>> -    multipleOf: 100
+>>> +    multipleOf: 10
+>>>       minimum: 1000
+>>>       $ref: /schemas/types.yaml#/definitions/uint32
+>>>   
+>>> @@ -131,7 +131,7 @@ properties:
+>>>         J coefficient for temperature equation.
+>>>         Default for series 5 = -100
+>>>         Default for series 6 = 0
+>>> -    multipleOf: 100
+>>> +    multipleOf: 10
+>>>       maximum: 0
+>>>       $ref: /schemas/types.yaml#/definitions/int32
+>>>   
+>>> -- 
+>>> 2.52.0
+>>>
+>>
+>> I have applied this to thead-dt-for-next.
+> 
+> That's odd, why is a hwmon binding in your branch?
+> 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/fustini/linux.git/commit/?h=thead-dt-for-next&id=eb4fd43ff6793681f0a0a8e8ac861142caba2b19
+> 
+> I don't see an ack on it from the relevant maintainer either?
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v5:
-- no changes
-changes v4:
-- no changes
-changes v3:
-- no changes
-changes v2:
-- Add missing <linux/err.h> include.
-- Add platform_device_id table
----
- drivers/mux/Kconfig       |  14 +++++
- drivers/mux/Makefile      |   2 +
- drivers/mux/mc33978-mux.c | 119 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 135 insertions(+)
- create mode 100644 drivers/mux/mc33978-mux.c
+I don't get it either. Normally I am the one to apply hwmon bindings
+through the hwmon branch.
 
-diff --git a/drivers/mux/Kconfig b/drivers/mux/Kconfig
-index c68132e38138..7532da7e087e 100644
---- a/drivers/mux/Kconfig
-+++ b/drivers/mux/Kconfig
-@@ -45,6 +45,20 @@ config MUX_GPIO
- 	  To compile the driver as a module, choose M here: the module will
- 	  be called mux-gpio.
- 
-+config MUX_MC33978
-+	tristate "NXP MC33978/MC34978 Analog Multiplexer"
-+	depends on MFD_MC33978
-+	help
-+	  MC33978/MC34978 24-to-1 analog multiplexer (AMUX) driver.
-+
-+	  This driver provides mux-control for the analog multiplexer,
-+	  which can route switch voltages, temperature, and battery voltage
-+	  to an external ADC. Typically used with IIO ADC drivers to measure
-+	  analog values from the 22 switch inputs plus temperature and VBATP.
-+
-+	  To compile the driver as a module, choose M here: the module will
-+	  be called mc33978-mux.
-+
- config MUX_MMIO
- 	tristate "MMIO/Regmap register bitfield-controlled Multiplexer"
- 	depends on OF
-diff --git a/drivers/mux/Makefile b/drivers/mux/Makefile
-index 6e9fa47daf56..339c44b4d4f4 100644
---- a/drivers/mux/Makefile
-+++ b/drivers/mux/Makefile
-@@ -7,10 +7,12 @@ mux-core-objs			:= core.o
- mux-adg792a-objs		:= adg792a.o
- mux-adgs1408-objs		:= adgs1408.o
- mux-gpio-objs			:= gpio.o
-+mux-mc33978-objs		:= mc33978-mux.o
- mux-mmio-objs			:= mmio.o
- 
- obj-$(CONFIG_MULTIPLEXER)	+= mux-core.o
- obj-$(CONFIG_MUX_ADG792A)	+= mux-adg792a.o
- obj-$(CONFIG_MUX_ADGS1408)	+= mux-adgs1408.o
- obj-$(CONFIG_MUX_GPIO)		+= mux-gpio.o
-+obj-$(CONFIG_MUX_MC33978)	+= mux-mc33978.o
- obj-$(CONFIG_MUX_MMIO)		+= mux-mmio.o
-diff --git a/drivers/mux/mc33978-mux.c b/drivers/mux/mc33978-mux.c
-new file mode 100644
-index 000000000000..de79073e15aa
---- /dev/null
-+++ b/drivers/mux/mc33978-mux.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (c) 2026 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-+/*
-+ * MC33978/MC34978 Analog Multiplexer (AMUX) Driver
-+ *
-+ * This driver provides mux-control for the 24-to-1 analog multiplexer.
-+ * The AMUX routes one of the following signals to the external AMUX pin:
-+ * - Channels 0-13: SG0-SG13 switch voltages
-+ * - Channels 14-21: SP0-SP7 switch voltages
-+ * - Channel 22: Internal temperature diode
-+ * - Channel 23: Battery voltage (VBATP)
-+ *
-+ * Consumer drivers (typically IIO ADC drivers) use the mux-control
-+ * subsystem to select which signal to measure.
-+ *
-+ * Architecture:
-+ * The MC33978 does not have an internal ADC. Instead, it routes analog
-+ * signals to an external AMUX pin that must be connected to an external
-+ * ADC (such as the SoC's internal ADC). The IIO subsystem is responsible
-+ * for coordinating the mux selection and ADC sampling.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mux/driver.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/mfd/mc33978.h>
-+
-+/* AMUX_CTRL register field definitions */
-+#define MC33978_AMUX_CTRL_MASK	GENMASK(5, 0)	/* 6-bit channel select */
-+
-+struct mc33978_mux_priv {
-+	struct device *dev;
-+	struct regmap *map;
-+};
-+
-+static int mc33978_mux_set(struct mux_control *mux, int state)
-+{
-+	struct mc33978_mux_priv *priv = mux_chip_priv(mux->chip);
-+	int ret;
-+
-+	if (state < 0 || state >= MC33978_NUM_AMUX_CH)
-+		return -EINVAL;
-+
-+	ret = regmap_update_bits(priv->map, MC33978_REG_AMUX_CTRL,
-+				 MC33978_AMUX_CTRL_MASK, state);
-+	if (ret) {
-+		dev_err(priv->dev, "Failed to set AMUX channel %d: %d\n",
-+			state, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct mux_control_ops mc33978_mux_ops = {
-+	.set = mc33978_mux_set,
-+};
-+
-+static int mc33978_mux_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct mc33978_mux_priv *priv;
-+	struct mux_chip *mux_chip;
-+	struct mux_control *mux;
-+	int ret;
-+
-+	mux_chip = devm_mux_chip_alloc(dev, 1, sizeof(*priv));
-+	if (IS_ERR(mux_chip))
-+		return dev_err_probe(dev, PTR_ERR(mux_chip), "Failed to allocate mux chip\n");
-+
-+	/* Borrow the parent's DT node so consumers can find this mux chip */
-+	device_set_node(&mux_chip->dev, dev_fwnode(dev->parent));
-+
-+	priv = mux_chip_priv(mux_chip);
-+	priv->dev = dev;
-+
-+	priv->map = dev_get_regmap(dev->parent, NULL);
-+	if (!priv->map)
-+		return dev_err_probe(dev, -ENODEV, "Failed to get parent regmap\n");
-+
-+	mux_chip->ops = &mc33978_mux_ops;
-+
-+	mux = &mux_chip->mux[0];
-+	mux->states = MC33978_NUM_AMUX_CH;
-+
-+	ret = devm_mux_chip_register(dev, mux_chip);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to register mux chip\n");
-+
-+	platform_set_drvdata(pdev, mux_chip);
-+
-+	return 0;
-+}
-+
-+static const struct platform_device_id mc33978_mux_id[] = {
-+	{ "mc33978-mux", },
-+	{ "mc34978-mux", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, mc33978_mux_id);
-+
-+static struct platform_driver mc33978_mux_driver = {
-+	.driver = {
-+		.name = "mc33978-mux",
-+	},
-+	.probe = mc33978_mux_probe,
-+	.id_table = mc33978_mux_id,
-+};
-+module_platform_driver(mc33978_mux_driver);
-+
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("NXP MC33978/MC34978 Analog Multiplexer Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.47.3
+Guenter
 
 
