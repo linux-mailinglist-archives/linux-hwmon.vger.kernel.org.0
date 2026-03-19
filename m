@@ -1,51 +1,51 @@
-Return-Path: <linux-hwmon+bounces-12535-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12536-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKEzOfcwvGnxuQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12535-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 18:23:03 +0100
+	id mBE/COIxvGnxuQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12536-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 18:26:58 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98B42CFE04
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 18:23:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DA02CFF72
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 18:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E97F9301BED3
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 17:14:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 426A53077960
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 17:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55E03E958B;
-	Thu, 19 Mar 2026 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B005F38AC67;
+	Thu, 19 Mar 2026 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MB+s890L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJFbASpx"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9944F3E9F80;
-	Thu, 19 Mar 2026 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F183469E0;
+	Thu, 19 Mar 2026 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773940488; cv=none; b=GIEdcrgOvphPEDZWS/xUx72PPbmU2nB4jz6H3QYzhas3m2obKeLdAkwQYC7EO/8dAF8zhEVtsZCaVPgsr1Rf+BQGbu/8IVyzt0sQbTVgL+Vo1wGGWptPUs8fw+0wN7XXppyLlhmcOt2fuQ2QWmeeUSafjIShGcAeW29Nu9GpQd8=
+	t=1773940521; cv=none; b=OK3Xiw0CGt4e0kdg2B5N6WQpMZ2YQt9kfiLlNdbuQ18DCfDkfo7WiL2M0Pazqh1ifcngQ4Xpnf+25fSnI61/KAnBSJeYFew8RszA12OaksRSGEF8tR6QceAsQp4myqZBIX2xt0VRlWGFxwFGKMJNMmfD6y7xVvK8DYi5q196bNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773940488; c=relaxed/simple;
-	bh=n4GjjoPb3ph6TdK09rRdkzcw8wuRkRmPhqitOkkqNLg=;
+	s=arc-20240116; t=1773940521; c=relaxed/simple;
+	bh=uKygPlvSKYPHJXuYh9Pp9MitMHciwR5qiLRKQjQSO/A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QhhIuqOoF7RvDjG5IHTXsEtZcTk+HlA6L0d+3UNQ0hxPxAvg1IB1/2HfGslCKcfjARza9TsNDSyJbhbektfUovL7CVFMfvc8KhfxXoT9CRWvwrItJsV2PbJqWbEAzuOW82Jo6yhzzjPSrvS9IPS0BBP12XEGKOlE+R+oBAMl3Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MB+s890L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1E8C19424;
-	Thu, 19 Mar 2026 17:14:42 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=sCdIxYJEOovk7rvh/nJokb2aufgg0dwl/ecxBpqHPcMfszpWJv9ENZHkL27VPiJuTlNVCsZytwFQfOWFKaLA27krnK5dI493wflXB8qQNYZaE+NYUl1woUjBc2mvygoKoiC52tI9jeNbK+aUH0BpGEeeM7GE5ghJm1JO1krIqz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJFbASpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745F5C19424;
+	Thu, 19 Mar 2026 17:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773940488;
-	bh=n4GjjoPb3ph6TdK09rRdkzcw8wuRkRmPhqitOkkqNLg=;
+	s=k20201202; t=1773940521;
+	bh=uKygPlvSKYPHJXuYh9Pp9MitMHciwR5qiLRKQjQSO/A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MB+s890L+t3IUYhTYQF+y+D+Z45wflxq954axlDMGUeWZtdTS+X288PVxpRoSckpq
-	 HTjYpfwSw9BtBvdEBGAbGbvFSlmBRV8Kv8LsTqJPetR8bdNfuBZlhKfUpRLdGzYxtZ
-	 QGF73T6uP6XYuzY7jideVqw/N3QSdsGZEaZ3UKVus9M68Pz1fLt8zRUPKAasY5SImN
-	 COl0k9xltraiw8PiQkDduL5/CxMBl6WwCnqTYr7zl7NaQLi6FnVld2Mz5KM5/Hnqxb
-	 hnjpDCC4Ew9nzR/4gHiaZuc8aTwZn99MbGScrxJqqrJky0fdCh5/SQ+3NeQil8VfqZ
-	 cVruSEozn5WXQ==
-Message-ID: <d36ef5bc-8f9d-48db-a868-f3683fce0d7b@kernel.org>
-Date: Thu, 19 Mar 2026 18:14:41 +0100
+	b=EJFbASpxyCOnhL5NB7UhGtGiSobz+L3lUODxULsJmL+NN1ae4vs3+x4/DzUyiMyPo
+	 BW++zhloffWCHd9AJ/ZcwESZZB/F2LLeU5Yud190AmenxeI1OgABnWUuw1sPVSxrat
+	 6dZX1klKc7vkxR6gdhm+nM7GceSgDmWSb/qwl9J7rVAQ+Kd4d9J/eCXwihARO94fRK
+	 7VMU3DN1jnqWRbYOB+70cCmPNa27NBXbXb7i3q8hZVJkmQiTzxcw1cL7bB6+HXDr9X
+	 e9vHnuYziAs6ICI10o3Hv3+DAnkTjaHjXzm4XtQiL+vXXMr5UzIw23FdWF/PkdRLlD
+	 Tm9IqiGljQH1Q==
+Message-ID: <67165a1f-9fa3-4853-b530-b1f9d6e4c2cf@kernel.org>
+Date: Thu, 19 Mar 2026 18:15:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -53,21 +53,19 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] dt-bindings: i3c: Add mipi-i3c-static-method to
- support SETAASA
+Subject: Re: [PATCH 12/12] arm64: defconfig: Enable I3C and SPD5118 hwmon
 To: Akhil R <akhilrajeev@nvidia.com>
 Cc: Frank.Li@nxp.com, acpica-devel@lists.linux.dev,
- alexandre.belloni@bootlin.com, conor+dt@kernel.org, conor@kernel.org,
+ alexandre.belloni@bootlin.com, conor+dt@kernel.org,
  devicetree@vger.kernel.org, ebiggers@kernel.org, fredrik.markstrom@est.tech,
  jonathanh@nvidia.com, krzk+dt@kernel.org, lenb@kernel.org,
  linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
  linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-tegra@vger.kernel.org, linux@roeck-us.net, miquel.raynal@bootlin.com,
  p.zabel@pengutronix.de, rafael@kernel.org, robert.moore@intel.com,
- robh@kernel.org, smangipudi@nvidia.com, thierry.reding@kernel.org,
- andriy.shevchenko@linux.intel.com
-References: <20260319-spiritual-defiant-galago-9bed7e@quoll>
- <20260319170129.13441-1-akhilrajeev@nvidia.com>
+ robh@kernel.org, smangipudi@nvidia.com, thierry.reding@kernel.org
+References: <20260319-nano-manatee-of-vastness-fbafa1@quoll>
+ <20260319170929.14543-1-akhilrajeev@nvidia.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -113,7 +111,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260319170129.13441-1-akhilrajeev@nvidia.com>
+In-Reply-To: <20260319170929.14543-1-akhilrajeev@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -121,20 +119,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12535-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12536-lists,linux-hwmon=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[26];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
@@ -142,27 +140,24 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A98B42CFE04
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 23DA02CFF72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 19/03/2026 18:01, Akhil R wrote:
+On 19/03/2026 18:09, Akhil R wrote:
+> On Thu, 19 Mar 2026 10:40:34 +0100, Krzysztof Kozlowski wrote:
+>> On Wed, Mar 18, 2026 at 10:57:25PM +0530, Akhil R wrote:
+>>> Add I3C subsystem support, DesignWare I3C master controller, and
+>>> SPD5118 hwmon sensor as modules to the defconfig.
 >>
->>> more than one method. It also cannot represent the vendor extensions (Bit 2)
->>> cleanly. Would this be better if we use macros instead of raw numbers?
->>
->> Hoes does setting bit 2 differ from a string "vendor"?
+>> Why? If there is no user of that, why would we want it? Your commit msg
+>> should explain that.
 > 
-> Okay, a string array would handle those cases.
-> 
-> I am concerned if this can be a string array for the ACPI because the MIPI
-> specification defines the property differently. Would it be fine to deviate
-> from that specification in the ACPI? Or do you suggest to keep it as bitmap
-> for the ACPI and use strings in DT?
+> Ack. This is for Tegra410 which has a DesignWare I3C host controller.
+> I will add this in the commit message.
 
-We are not defining here a property for the ACPI. I don't suggest
-anything for ACPI.
+Board or products. Not SoCs.
 
 Best regards,
 Krzysztof
