@@ -1,205 +1,268 @@
-Return-Path: <linux-hwmon+bounces-12553-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12555-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JneDMZZvGlxxQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12553-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 21:17:10 +0100
+	id mH9PJSiMvGlv0QIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12555-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 00:52:08 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1952D1FD5
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 21:17:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6F62D447A
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 00:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36F423009392
-	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 20:17:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF7C930DA2C0
+	for <lists+linux-hwmon@lfdr.de>; Thu, 19 Mar 2026 23:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA1434EF0C;
-	Thu, 19 Mar 2026 20:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2727371884;
+	Thu, 19 Mar 2026 23:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSOKbBpu"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="l7SIvS0u"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186914207A;
-	Thu, 19 Mar 2026 20:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773951425; cv=none; b=pSWlFttm0ZTOS1lN9EsTkuLCIGgIJUZCnWl9jE6mSx7vU8Nv2hZXHfJ0txaPGvJ3IW6rv4jI5pkaajPUcrld4pk8TIysUNHrLsn1VZpJ1tPSeQzY5lQWUIi/niZzkpNer74HjOzonShRT2Jvvv9mKjyq82FobGDTZMvdAuiFjqA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773951425; c=relaxed/simple;
-	bh=UEKFw10HNYR+CnbFlqaDj3B2T2m8yoDnNnkH8LFTx0Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U8H33E/aNVvB5hMifa0oW4WVEZM9UlHXLls/WmMqKtHaaB7N9R2mOd0zifhtrGdJDJclrgjcZ1aFeE2g79JhMX6O1aCzlGlOL481waSu805dtuUCMmSjid7+rxPKuu5XFt57nTwMukbYVm/oHFHR9ywrluvI3wSwqqwzfiZpDGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSOKbBpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B7DC19424;
-	Thu, 19 Mar 2026 20:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773951424;
-	bh=UEKFw10HNYR+CnbFlqaDj3B2T2m8yoDnNnkH8LFTx0Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dSOKbBpuzRnDA4S9IKhvA8Q1W5c2OkwMGqIMtm9gYPdmfuhF/Fg/3xsVad8bCZte8
-	 Hh6LzTl6E7wONqN5GXqFgMsla21IaiKV0nb2HEKrYa/vIDgBqPjzz728zwPuEKARGL
-	 EWOcJ/m7KZrwji81VdXkNue3+9CwAkC7GAWhpFm5NhGiYiStii3IWANzgZmx+QG53L
-	 Cr9DJLC3tFjSTYi7qz5vFOATtJEQRN2VZYbTC7+VX8x6xQDP4F2yjdgSCpsmqdWNdd
-	 /fy3SOMMH5l7ldiWESE9P7Cbcm6iGq/tZRMhsEQjQjKn02sIR4JyFwOzKxO0VywKy1
-	 4RcRgK2hniXdg==
-Message-ID: <082fc1db-c4b6-405f-b85e-81b9afcbd8cf@kernel.org>
-Date: Thu, 19 Mar 2026 21:17:01 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B52F37B3F5;
+	Thu, 19 Mar 2026 23:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.143.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773964312; cv=fail; b=UTCJUyP2+adaHe/Si8K6XGPpqEw1DKIqQFlZIY8mglCuFlLWsQsksnIKiY8ApBaRraKPp4xu/1bfrYa2Sd4kpTxjswkji0CT3SeZ9OZg8I3+khhUtIpO0LKy8rNpVN2Wx07yV2ky4VMq0f7NW4SqbxaJ305Bvy0cW2s3WA6W67w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773964312; c=relaxed/simple;
+	bh=VXbZ02RZHqFJe//CiDytPHEG2/eyfAUSsSY/DppODUc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DZaI9XSz1cwYcLCYns2NiKkm7aJ5mPkmA+TzPcpsRZfeAKJtiB56y/ZcfevHExtBDwlITImN9CFcKDSx2155c1HDgq0DfmaJO7IX68z5kejR9abbc6zbxeKpJN21i3F4/D6PJ8dNNMA3rVYRrIAxm4jVAi+i+aWmZTd//N+Rt0Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=l7SIvS0u; arc=fail smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JKECoG859886;
+	Thu, 19 Mar 2026 23:51:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps0720; bh=ehQ6NFHBHsClPnBhHJzqwJoE
+	/7ihI6OKrTB9Us9x0IE=; b=l7SIvS0uTTIjl9gHunhgg03BzaUU/pMuNYiKPq8E
+	jwR/JrhWrCPGttLLqjsRg8EO5oGJs8kUegt9rItMHfvedOjGYv7ucFt00P43SZrK
+	ArHdDmAyCBfR5nCSZQz2jA+nx8Sv2tQZDo8DfIEpwj9y/NhG9fQ5sXfQVdlk746w
+	0zGTp+JgbVN6AysIVlvbzHXPDY03FH+u2IxocJCK/MCH85y6FGr7DuNPKhR1DeD7
+	S3hQZ1vc5gfn3gmUYSohqQetEhdnbV//DTC5SPL8sd7mDvwUIm8EKqkMSaBNxr+P
+	WyMAw5fw2ojOnhGcZnp9oL/dOActRyIYi8pOxF8xIjvIaw==
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4d0jgfpagn-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 23:51:36 +0000 (GMT)
+Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 6010480163B;
+	Thu, 19 Mar 2026 23:51:35 +0000 (UTC)
+Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 19 Mar 2026 11:50:33 -1200
+Received: from p1wg14919.americas.hpqcorp.net (16.230.19.122) by
+ p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 19 Mar 2026 11:50:33 -1200
+Received: from CO1PR07CU001.outbound.protection.outlook.com (192.58.206.38) by
+ edge.it.hpe.com (16.230.19.122) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 19 Mar
+ 2026 11:50:33 -1200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gNE4N1uhDqPh+yySxsJtIPmxuMHIp3pjenQsxyqiYtkSTQol++f9kbXXcGm3sL3tRJMDq2IyIc6bVWyQF3r/+UTVtsYkgtb5xZ/Ar4fPt35UZvzROfUTLj22E+0rbdrlPTViys32LkXinJUGEmZ7UIHsMlQXBELcC6xICbRAZgqCdoP1lzhCOySe0lHTcybaTBDIIsfDU+3vJKUybSScKvAcZ43T6/ACRTe8MeEfUYsarXouLtLHOTjfNdnQfHPDO/+ZzXEfwp0LqJTpoY6bz+abfv86LE7mcVihUs8gnBnrkZdGfAT/ocsMfW77UPcUt24i8KA1uGffeIWZjweNvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ehQ6NFHBHsClPnBhHJzqwJoE/7ihI6OKrTB9Us9x0IE=;
+ b=KRozLT1rTRgNzxPN9Acyh9+A2Bvc4jPy0jdzwkOJnKJxNOXr4dnchSUCeXsAMmuToN/BbDnL2i7QEnegINgB0F7jHedEYbVxv0IG7EdgD5woiL209YLuwdPgj6FmwqPTdX3UNHHs/d4PRTHFDjBkidAI/uTMS/drXgQLCkDGmJx2QPYlIwsiI3HOJ1OFaxIdzHZ3dRWDRTWK7wtoux2gOeaPqsHjB8/LB9hNyIo6BtJNKZWFNRskGEqCnXyPvGZJUH3mJorBf8WYJfL70O6b76SeV/J3lL6JDE1di2Coc3de4USHfynLxoRlc3uSwRbPuAOaXVgCRTqt+kFrjO23Vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:610:1cc::7)
+ by LV3PR84MB3459.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:408:21c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.27; Thu, 19 Mar
+ 2026 23:50:28 +0000
+Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::2c54:3534:122f:e74f]) by CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::2c54:3534:122f:e74f%4]) with mapi id 15.20.9723.019; Thu, 19 Mar 2026
+ 23:50:27 +0000
+From: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
+To: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
+CC: "linux@roeck-us.net" <linux@roeck-us.net>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        Sanman Pradhan <psanman@juniper.net>
+Subject: [PATCH v4 0/3] hwmon: (pmbus/max31785) refactor inter-access delay
+ handling
+Thread-Topic: [PATCH v4 0/3] hwmon: (pmbus/max31785) refactor inter-access
+ delay handling
+Thread-Index: AQHct/sp9RLaqxQbTUy81xxuayRg1g==
+Date: Thu, 19 Mar 2026 23:50:27 +0000
+Message-ID: <20260319234945.151487-1-sanman.pradhan@hpe.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR84MB3523:EE_|LV3PR84MB3459:EE_
+x-ms-office365-filtering-correlation-id: 8be96f93-c972-42ef-1a44-08de86124c1a
+x-ld-processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|56012099003|38070700021;
+x-microsoft-antispam-message-info: f+PaG2Fg7Jmc4cW0TMe2t4mHn7Np6XqU+zB9nxVfPNgEHQrPd32NiggERb9wvrHmaLaE9KOi5OG84HA2ZjCJMkED00ICZPDEClWFRGaL777LQv2+d3Fu7N50S5FwUKlL6vp2cEXiLL2rvIuu21SI39emhmDYHTAvWJMVo4eRxT7j40fGp9cqzwHe6zCstUgcE95NFaDQhdUJj57lzwNwtMubk0ruzqXRdzTdZuNk3P89lnsmYUw33TjTpxXdbioe9C2JRheIHf/bpJ4LNx/ChapmTvpHKltG94wKUEoR51Xzeug2+fKAMHUO4pSB2NkuJCTsl28ZgEpQj1iRkf8QpisnSgPxYEyH6PWsPV8hQaJI/mrjxEEyknwY82nOScYXKmQzpcI8LeOjdMzk/3Z+4UvNheXDijhBa/JigM74Efw7ke0jWCAnZsmsLt54gSXULNaced+vQ1ZEIgLLy/GBtGWPG4B7+qg7l8zPj9GhEdMmX/HKGnxePDjcj7hHjKgrRavCcCNIdB+goy2IAJQONxYFfzj4ZDIcvM15xXliNHslqeSXgtVo9OW91qgbe2Pz2pEDnct+mc9SMP9RMbtDIli9S1HBZ9yVX+PBCuXtBblO1HEnl1jlHJvAAw+U6MuSPY9Gg35/4G4Iexqv5T6OxdCA/48aPCyOJnUz8gkCbCBwtFYn73SCld89PUUjnzNWLJodgf4LgMalHe1dYC0T49qWiKh+DMczwDML88dg7aJ6sukubqRgDMS1l2PwpHiVk9Wxy2PGmIqqSWF4EiPtpZhYL4oC60RKykTVplKobWg=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(56012099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fPTOcw6CbKUhFxTiSUc0e3CcWWkxWOuTNCElcRNKGsxatYsN99tUhHs6ei?=
+ =?iso-8859-1?Q?yUpnIvknp6z6bQLNZlsjbUAm6SFKy/LPCwdX+7WC/ACAqovjyk67oSdmKC?=
+ =?iso-8859-1?Q?UdoLiJ31NV2YEJyXgKg847FZ/OgFcS1A55jY2m0PGVKGhdr4PM5Yu2HT3x?=
+ =?iso-8859-1?Q?v9HzM5lV3W8Ska9Ut7zK4csRy4f4dDJvDHk+IYLF+SjTg7hWV0yOPZRQQt?=
+ =?iso-8859-1?Q?5LiAhzrQzH1QA6yO3B6DWuiRzUeU8to2217vrA0X8hhn1L5docdJR+PbFx?=
+ =?iso-8859-1?Q?gRR08VoS7P+ZE2c7xtv/PxKgtnuqkZj5YBbWOS2ykwYjC8CNFgUmW0b2jd?=
+ =?iso-8859-1?Q?aN6kI7Rh7PsNP7AY6Veg4tdixI1Si+l69EBlM9dEr0Sv9AJdr6wgKbTn2a?=
+ =?iso-8859-1?Q?lVU9nR1r0259WTwVSEuJ47Df63DXmUYXtL6eU4Pq1e09jmbw989t0I8xyK?=
+ =?iso-8859-1?Q?7JvySiypRgsUlaR2P/g39/GYRiWjqOWTgVNmr9ib3sS3f7EcHm543kBtp+?=
+ =?iso-8859-1?Q?DSPFZjGLbpA53r478xOX4Zhl/sPkEPDFDPh1sYyc4ZF8YNeH+/r7B4Fzsk?=
+ =?iso-8859-1?Q?J0qZdFC79+tFemvUq57GZCta3KMY9qKmb0u26EordmgesDe2r8pFuVlHCF?=
+ =?iso-8859-1?Q?A95YIfDxLrOqA/QNME1rN9N+PhKXD/wlVO94eH78Qlujq6dqJ2fldzQ9wF?=
+ =?iso-8859-1?Q?aowVzOr3w5rUIV8FaQ9yvS4TS9rH7CDU/y8K5E2uS4HQx639Xscz03N83P?=
+ =?iso-8859-1?Q?EW892hglspqqO3jr5UqaVJKu6YL1s/yINgIXWzhBR8CMhQATE3sbX6T/nF?=
+ =?iso-8859-1?Q?ef/vxKwSTdAruaoolwPeUP639R5JtAJXv7m/8N4mM+fjNsLZuvnENUEbg1?=
+ =?iso-8859-1?Q?3MEqzw7OJIOyeCKYTdE6RhyLRk3GgqPfcYsCwPnl2PbdtBI9b3266PXOst?=
+ =?iso-8859-1?Q?eNvV/f0Oy8gP5qP9h7fKu9Kh8Sfv/XWS9lA1/v6Y9TxemrsQaiqJmpBglA?=
+ =?iso-8859-1?Q?eCUf8zn16IEUhRQdtl3zzKcQGYp4Pcy14vXIabEWk2LPOmMY7skI8FVC2b?=
+ =?iso-8859-1?Q?3PVL5NIorFkIFrB/q7eJ0Mn06sPUa8SOUQNRUL9RLABd25FCkCUA2KsCrB?=
+ =?iso-8859-1?Q?OfPuGcnShEmPrr9p2lxIv1FXppmvBuVoxpW9fLnrZXfRbYln1uFdMe80Yu?=
+ =?iso-8859-1?Q?5tRjvEAwvZjfQdLlfSxlA3Od+aAAhLocG9mkpuxZJUiWh0tThHliYwU4k5?=
+ =?iso-8859-1?Q?GhmplxWRCyxR2LlmVNsv4GDwPwsHWnTWRrPqeH9JqYnz9vgfowH2zeM+OL?=
+ =?iso-8859-1?Q?l/GYN9xXbE4gJH6VQ2LJIC7f2uko7vBbgwbSVialIeE2IJ/g8OKuKD2FJu?=
+ =?iso-8859-1?Q?eWuiedhWKUlH3hhVDg8GqfJPDYYThkY9TRcGHE3pQjBSyrt3jeLmGHEfXJ?=
+ =?iso-8859-1?Q?Rl0nAK7iEeTXSeJjVYs5vhH0tu0fcMPMXlVtHsY1se6gWnmWnYaBT0pk7q?=
+ =?iso-8859-1?Q?Fp4h1JoObLCdSEWdCcTpSTmCRVvxvMOHtp6ivyx0Xlkog7KaIZV7rhOquU?=
+ =?iso-8859-1?Q?0nqfA1qvm74FuIhgd/mMPsJJBGAvVYGZc9h0h7t5bDcTwCOGMVbFjvuw/d?=
+ =?iso-8859-1?Q?91vrTb5HoyWhlfLqC6zU0ubZQ8GEqBeN0IxYHC4ipDffuAouh2OwyoF3xI?=
+ =?iso-8859-1?Q?MtHWwhVpdWzFNevAmqIFusHKMTa44kqrvc5+AwicN5wAf5XzPLxrc69Nro?=
+ =?iso-8859-1?Q?wbXqQSTPlWAeg3n+ieRBi3ySRhqoS1EighBAmbSmVm8/IQYTukv0tD5Juw?=
+ =?iso-8859-1?Q?A3WUnWb3+A=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] hwmon: (sht3x) Add support for GXCAS GXHT30
-To: Zaixiang Xu <zaixiang.xu.dev@gmail.com>, linux@roeck-us.net
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <1773919186-17515-1-git-send-email-zaixiang.xu.dev@gmail.com>
- <1773919186-17515-4-git-send-email-zaixiang.xu.dev@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <1773919186-17515-4-git-send-email-zaixiang.xu.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Exchange-RoutingPolicyChecked: vEmxQxXua30fXBFYrx+avFg05dG3J4DRY2hnlTFMuYTYoq7tAjlod+LFbd83IPTV0jvClhLKv4Q5XZTfNd9gm788TAtFecKs7juTDIsnjBeud8XAZMBs6W4rhvm/xz8ggpQquc8Ejpo3oGk3EqKYDatwdUk33MVjs1NSUPU+jmfbmkTau/SLY1PY5DUTs+m20tHyrPTYJ/H0AS104n/2CrDVaYADYyeV/cK57PmYUtYyuhal21Cjep1pg8R8KLTVO7WQ90kU6bvRzjxJtsV9RF6ObTyyygc/HVJhkBarJUjsZLJLSF5ZeT9eDByQJ7NorlJ5UVjHHmuG92dxazbgRQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8be96f93-c972-42ef-1a44-08de86124c1a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2026 23:50:27.7066
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JUYs1gZr+8y9YVxN41Wjg5YOuMYUL8sYKhJ6vfWLAzkd/FvjSjsUdli/OY6YGIygSDmOIz7gY59cabHs1+m4BA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR84MB3459
+X-OriginatorOrg: hpe.com
+X-Proofpoint-GUID: 17WO0SNfEi045Mb7vlWAfk02ZYbkGa7e
+X-Proofpoint-ORIG-GUID: 17WO0SNfEi045Mb7vlWAfk02ZYbkGa7e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDE5MiBTYWx0ZWRfXyQh/rc6ZJ0uY
+ OhxFWFK0xRI5VgozNeF0ukrSEG9kxKRMyxVsIQVgCQl/Bz4RafadCg5G8Ful//3LQ1OYyQCeUcG
+ QYdGxGlKmFTF6Nqq1Wh6ZmZF9/dg8ke82GpDwTDzH+6Bp3LafyvJZppOVcVpSeld/ZSh/tsgCAk
+ hRPyGTQonrwlkXlCGOgqkzVSrzb80j8dfBN04rdKuEu/elDj+XCPSqGJhHBgPiTHC0vhQaQOWdH
+ 8KGzrIK89JSM6CVBA/vi6UO9d7/ftOblsrBadQ5y2vfaKIE8RZt5o/T+0BuHYlvvd6xhBPnzaiV
+ /vKkO3zkUez/mxpWSnj9VewrPvCkp8yGZwKRxU/qZRZNkH2QHZ9rHu6LFxnATC+pH0AzBouA+6L
+ 0OaQsnIfipZrpRy6CBeTj6j/wBnfTJizk8B8QKVJFmV5soZMkKECW7HLZjlTrvKNMTDP/E8efCk
+ m5GRIWxblt9NRfG7FXw==
+X-Authority-Analysis: v=2.4 cv=e4ULiKp/ c=1 sm=1 tr=0 ts=69bc8c08 cx=c_pps
+ a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=Yq5XynenixoA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=NCWKwCw8Xy9Og0ibBRsL:22
+ a=OUXY8nFuAAAA:8 a=_Gc5KHBavwxTq9zUEiQA:9 a=wPNLvfGTeEIA:10
+ a=cAcMbU7R10T-QSRYIcO_:22
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_04,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603190192
+X-Spamd-Result: default: False [0.84 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[hpe.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[hpe.com:s=pps0720];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-12553-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,roeck-us.net];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12555-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,juniper.net:email,hpe.com:dkim,hpe.com:mid];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,sensirion.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3B1952D1FD5
+	FROM_NEQ_ENVFROM(0.00)[sanman.pradhan@hpe.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[hpe.com:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 1A6F62D447A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 19/03/2026 12:19, Zaixiang Xu wrote:
-> Add support for GXCAS GXHT30 sensor to the sht3x driver. The GXHT30 is software compatible with the Sensirion SHT3x series.
-
-Please wrap commit message according to Linux coding style / submission
-process (neither too early nor over the limit):
-https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
-
-> 
-> Signed-off-by: Zaixiang Xu <zaixiang.xu.dev@gmail.com>
-> ---
->  drivers/hwmon/sht3x.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
-> index 08306ccb6d0b..4e2e5671610a 100644
-> --- a/drivers/hwmon/sht3x.c
-> +++ b/drivers/hwmon/sht3x.c
-> @@ -934,13 +934,26 @@ static const struct i2c_device_id sht3x_ids[] = {
->  	{"sht3x", sht3x},
->  	{"sts3x", sts3x},
->  	{"sht85", sht3x},
-> +	{"gxht30", sht3x},
->  	{}
->  };
->  
->  MODULE_DEVICE_TABLE(i2c, sht3x_ids);
->  
-> +static const struct of_device_id sht3x_of_match[] = {
-> +	{ .compatible = "sensirion,sht3x" },
-> +	{ .compatible = "sensirion,sts3x" },
-> +	{ .compatible = "sensirion,sht85" },
-> +	{ .compatible = "gxcas,gxht30" },
-
-If this does not go to trivial devices, then they all look compatible so
-this should be expressed with fallback.
-
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, sht3x_of_match);
-> +
->  static struct i2c_driver sht3x_i2c_driver = {
-> -	.driver.name = "sht3x",
-> +	.driver = {
-> +		.name = "sht3x",
-> +		.of_match_table = sht3x_of_match,
-> +	},
->  	.probe       = sht3x_probe,
->  	.id_table    = sht3x_ids,
->  };
-> @@ -948,5 +961,6 @@ module_i2c_driver(sht3x_i2c_driver);
->  
->  MODULE_AUTHOR("David Frey <david.frey@sensirion.com>");
->  MODULE_AUTHOR("Pascal Sachs <pascal.sachs@sensirion.com>");
-> +MODULE_AUTHOR("Your Name <zaixiang.xu.dev@gmail.com>");
-
-Your or my name?
-
->  MODULE_DESCRIPTION("Sensirion SHT3x humidity and temperature sensor driver");
->  MODULE_LICENSE("GPL");
-
-
-Best regards,
-Krzysztof
+From: Sanman Pradhan <psanman@juniper.net>=0A=
+=0A=
+This v4 series addresses the review feedback regarding 32-bit atomicity=0A=
+of the inter-access delay timestamp and resolves the email address mismatch=
+=0A=
+identified in the v3 submission.=0A=
+=0A=
+To prevent torn reads/writes of the 64-bit next_access_backoff timestamp=0A=
+on 32-bit architectures, this series now includes a prerequisite patch=0A=
+adding a spinlock in struct pmbus_data to protect accesses to that field.=
+=0A=
+=0A=
+Changes in v4:=0A=
+- Introduced a new patch (1/3) to protect 64-bit next_access_backoff=0A=
+  accesses with a spinlock, avoiding torn reads/writes on 32-bit =0A=
+  systems.=0A=
+- Updated the export patch (2/3) so pmbus_wait() and pmbus_update_ts()=0A=
+  use that protection when accessing next_access_backoff.=0A=
+- Standardized all commits and signatures on psanman@juniper.net to =0A=
+  resolve the From/SOB mismatch.=0A=
+=0A=
+Changes in v3:=0A=
+- Dropped the u16 -> u8 wrapper type fix (already applied upstream).=0A=
+- Fixed a comment style nit in max31785_read_long_data().=0A=
+- Added an explicit max31785_wait() before pmbus_do_probe() to ensure=0A=
+  proper timing spacing during the handover to the PMBus core.=0A=
+=0A=
+Changes in v2:=0A=
+- Export pmbus_wait() and pmbus_update_ts() from the core.=0A=
+- Use core timing helpers in max31785 to replace local usleep_range() =0A=
+  boilerplate and private timing state.=0A=
+=0A=
+Sanman Pradhan (3):=0A=
+  hwmon: (pmbus) add spinlock to protect 64-bit timestamp=0A=
+  hwmon: (pmbus) export pmbus_wait and pmbus_update_ts=0A=
+  hwmon: (pmbus/max31785) use access_delay for PMBus-mediated accesses=0A=
+=0A=
+ drivers/hwmon/pmbus/max31785.c   | 191 ++++++++++---------------------=0A=
+ drivers/hwmon/pmbus/pmbus.h      |   9 ++=0A=
+ drivers/hwmon/pmbus/pmbus_core.c |  29 +++--=0A=
+ 3 files changed, 87 insertions(+), 142 deletions(-)=0A=
+=0A=
+-- =0A=
+2.34.1=
 
