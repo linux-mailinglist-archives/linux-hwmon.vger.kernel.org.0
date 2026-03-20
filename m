@@ -1,278 +1,216 @@
-Return-Path: <linux-hwmon+bounces-12578-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12575-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8L5IOqdmvWlF9gIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12578-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 16:24:23 +0100
+	id cEfUBYBlvWlF9gIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12575-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 16:19:28 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7B52DC9F5
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 16:24:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8127D2DC847
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 16:19:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 31070302D70D
-	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 15:22:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA677300A38D
+	for <lists+linux-hwmon@lfdr.de>; Fri, 20 Mar 2026 15:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A62F3C7E1C;
-	Fri, 20 Mar 2026 15:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3872A37A4B7;
+	Fri, 20 Mar 2026 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="etb/22JS"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="iRE8nAfO"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013068.outbound.protection.outlook.com [40.107.162.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA73C7E03
-	for <linux-hwmon@vger.kernel.org>; Fri, 20 Mar 2026 15:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774020142; cv=none; b=Ww2UtV5qQSsUvwXkMw6uECU3exlMVjUvLpDBs7zwB57isElfQXjb699anKrw/2WMP6iVFKetpengdcgAyqPSNhEzl1Xye3AoP+QCMlHBUb0wMJGVdB3nto/rs9Hl/VEliMY88Ff00BXJazj66pXcgc4pzOU8T5FTc1307y4ORwM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774020142; c=relaxed/simple;
-	bh=UgR6Ndg9uIN+GlcSMo5nrbnxzdPyRtxdyxaRymn3PjU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sw/Xu/t01PMheoDDS4eZwMqUqOSXJNDdNozb5wR8+UmoOu4/5hzzhdP/DajE27+E6E9KSfuZHYu8e7aCvScoKLbyru1xJfMVY6ROoYhn4lTV5aWZem6A5vxrCENBdwYIWN0Sd+fkElQUrYgZULn+572VuVlRAb0MHUyIHRvhXHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=etb/22JS; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-128e4d0cc48so810897c88.1
-        for <linux-hwmon@vger.kernel.org>; Fri, 20 Mar 2026 08:22:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774020140; x=1774624940; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=wLivAihLgNnoUtQTgzoVTgm03POcgTePUmAJyh0fy7M=;
-        b=etb/22JSbN7fvE0ycHXItKMqS+dhcRAYlzUA12l+sUaRynrkmLiqlrxOuARf8LP1IG
-         xQK2Y7vYLXOie0loa6jTRlLiAwESQpNv4iv+/lJNoiWmtJkZS5//Rq/aIN4xoQ9g78wJ
-         4LeNsFLMFX5eoaaUxWXFx0bxyjlscdAeKKF10GutRwGpXpNmicIZRe/z8nvKjJ9Y7IF/
-         WZX1jM6sfUoJlZCgyKbqvt24/E4JeBf90cpEHiOtyVI3C1XHkZFAvTcaNPcLm6fx/Xto
-         mjpNKNtXZX6lk0uenkalRzsKvhvTF7ODaD8GU35CppRI6hNgSL1LNGrwH4aYttvQb5KT
-         kSyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774020140; x=1774624940;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wLivAihLgNnoUtQTgzoVTgm03POcgTePUmAJyh0fy7M=;
-        b=nkoZtuzaOxWTsXSUWBJXRxmoZwMLcTLZ3fP4oMeZQ+gMFIwkVTKZ1OSqHNtqgCghHu
-         A++/z4Ohe2huurEg+oVLSWbr4H1j0TPfWxUamE+oQFPB2ekv99yRkEMnuxWGnESbqaOi
-         SS2XrthePXFtdJfRjpcTBhQRn71VyTE87ZHWfQ7scykjiosvlsuOs0jazcmiU6RZEg3Q
-         xA7nbhaeS+V1MoQ2EnTbTeFQAtuZjzaUmdt0+Rfuxhq5/IcdYPqKnx7qko1hvxsVJkek
-         8tAbMx5vpTsw3hbENtpNZfOSgq6p+62JgMB/N8Z5Wn2QAwRSfr2qiHoE5kt8mbG6pDKc
-         MbVg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7N5MA9bmhjz9WROoc5TpWgHdyYQxq0pBX9JEYEFM/ipO4oAJoRTxwdMS2z7VLPg4mrXsBKCqZZlIucw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLAkx1pUnDjw9fzMg3vsIK17Rh/uuPNcAWpzErMJJXi4gi8Gp9
-	BZqsrLeS9q8Qf17JMkwrzpBZ8a9BvuxUCMdfHz8yGRJRPpi8D5h+bgna
-X-Gm-Gg: ATEYQzwBZ1r4ZUXPGrZ/YZcllE71VPbB1AdXPWpRy/p1ilZ4dJteykfiK4sLdnsjP88
-	i/wlax7kpTzpk+CRyo08QjZ7I+rX6sgAzncAkucfpIX2Q7qlxqyzIRVZJQmJl1a9GHqJaAKCfpe
-	vGpWxVkAK3aHZq2BcXElZCvJZNMBx4UVMQOO6NNR+Zok5g9Mvd8N2UE1+YPY7NbzzyA5t34T0yu
-	bfM1LXVPSxoT4/c2TVhU86x+jecYDOjsNkqHnyRKtqqNtyrUy/3pJNr/jdZPWAAZLSDbj6Ei/0B
-	j1gFbOWpRJE5uCbBr22Defma+GMrMNIlZLiETnDuWaiAJR/LJknaExOsaW9ad8G7JVyhx6BsJE6
-	HawhdslyigSxLrwmK4w0KiUt3i/i/j/ltTRiW8Oypiq04go/p0itMR8Kk9FP+9kRGsJdhIkwIMn
-	ekmifHICDHoypa/74gv0WCNfnmm4Bmq4sRSY0qOxFAXlB0apkYC5QY9U0TR+vqrtW6XoSYYtN9
-X-Received: by 2002:a05:693c:300b:b0:2be:1f56:ed21 with SMTP id 5a478bee46e88-2c109563b70mr1476492eec.7.1774020140180;
-        Fri, 20 Mar 2026 08:22:20 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10aefd778sm4707452eec.0.2026.03.20.08.22.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 08:22:19 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <a922cf55-ebe7-4256-b3bb-cc732e45e1ff@roeck-us.net>
-Date: Fri, 20 Mar 2026 08:22:17 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7393285060;
+	Fri, 20 Mar 2026 15:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774019670; cv=fail; b=BpVQoOqzF+qKVfqFbROy7JtDE5YVKznCZawPvVXiqzHAJwc+Y1z8QNdGmGO3vo0kzR0AS9Vc5pkjFcyuP1CZzq6Hy3nbucvsaJwtIh1e0hYq7IHaVkoCXlM4xEOV9Gk+5lNeOgc2TYD1Sr9rhc8b6FLmt34zrxrrxE5pliM3pUQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774019670; c=relaxed/simple;
+	bh=cPn3mWiTAOaylaFMi49UndmugS381oGxKP9OzNNpMLw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rgxb+7gI5eXrwHL3emeEZ0XcqBDaYbsEoOmCXr9R4VHKMXjd3VuJiz5wEeKFptgQ1r/obQXbnuDkJWEmwCMhD9gUnhmPwrDE7NDzj+QRjklEBHTpvR0ovSVgcJMVolhUCqnL2mUz8j9lJ3YZu47Iq6cHNuV8O9lqKRExT2albhM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=iRE8nAfO; arc=fail smtp.client-ip=40.107.162.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w5xvcK8EYmRUJCXHwYRqKu6oQDIGQSH6VQQ0OKg33Me+Ksy5DAww3sRcZjQijOr3NUOLZN4tq+H/I36RxvTXn4YYraHbIFLcUcczyAXnUP4AcB5zchsODWS/+k+CCH2u8Cnme3tuFr7OqNa0ooprSABBfr5hlc/e3p935u/vw+HcSBAfxFgigOqbmFHBq/u4bpl53IPqASWAOAUkdau50oEwcSWU900taloUXQNbzVm+GufnqvgbYLvhHUrUfyrvdJecuLNtGEoQs0O2gWYsAhOCIRjoq6fFIjNkwkaS7Q3cjRsPoeEwgVDhmv1cdfi0T2n6ZKK82aJDYLSMECdNiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cllGIOLczCOQ9rNUzM20y9HnRtTuNo8JOVU9ZRZRTqc=;
+ b=DiZJwzxV6EB0s0OZEcsnnRkLASNJq6DIWAsSzBX8oxbiw78svVu8B6YWY346O0+08uSjKlQR1EE+p9jjq9cGynsYpvy9kQ47LqbYJrdQqrvyLUdw5ybgX6febT1I9tqCYYKBjUIdRkie3vkN9onDswDQpxLGv4NiDlLgTZvCPkHz5HKaRqzobPSV0MMYQMYzlDbzmA4cj28Vjde2Ls2wbuviaMoRVtZAfnY95ltjapv+xExjvbs4FGLrWZt6w95xWrfP4+hFgdvbvM/ze4nxiooQlrrOqnY0gz3H/97kvgHf8i3bP1Nt/PfAzZndI3RDD8fQJ6hK6QKK60qngHx8Ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cllGIOLczCOQ9rNUzM20y9HnRtTuNo8JOVU9ZRZRTqc=;
+ b=iRE8nAfOOsQ0wvHVLBPovNDZR2zE53jDsSMCCNToGzEkwXSbETy2X+87Y5JA7L7mV4tfSOZ6T5lB7nVH7HO8PsNEddDydNl4mDDgAvdLAsJgr8u46FRptnUIJrv35oXEvXVo5gcW/FpRa+Gq3fE2exodCgYfMDHQOAWn8ZpEk4aTBHFXGakCuSOTgBYH2Bd/we87UK29XDKSz5f7AB8bAHyoXzOjwkOxibvQ6tkb95CvycO/zya578G/74KvN8I50z3PwyiJvXjwcgzxVpiWosHgvAQHV5g6APCFO2OTWhiCJ0waOKXQTs7YnNtEFeyJuyzDS2ZgfNnajWIX7Snthg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
+ by GV1PR04MB10630.eurprd04.prod.outlook.com (2603:10a6:150:212::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.23; Fri, 20 Mar
+ 2026 15:14:14 +0000
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::93f5:4ff3:2f4c:183a%6]) with mapi id 15.20.9723.022; Fri, 20 Mar 2026
+ 15:14:13 +0000
+From: florin.leotescu@oss.nxp.com
+To: Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com,
+	viorel.suman@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	festevam@gmail.com,
+	Florin Leotescu <florin.leotescu@nxp.com>
+Subject: [PATCH v4 0/2] hwmon: emc2305: Support configurable fan PWM at shutdown
+Date: Fri, 20 Mar 2026 17:29:57 +0200
+Message-Id: <20260320152959.1575978-1-florin.leotescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR2P281CA0032.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:14::19) To DU7PR04MB11163.eurprd04.prod.outlook.com
+ (2603:10a6:10:5b3::14)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] hwmon: Add Qualcomm PMIC BCL hardware monitor driver
-To: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
- Manaf Meethalavalappu Pallikunhi <manaf.pallikunhi@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, amit.kucheria@oss.qualcomm.com,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>, linux-hwmon@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260206-qcom-bcl-hwmon-v1-0-7b426f0b77a1@oss.qualcomm.com>
- <20260206-qcom-bcl-hwmon-v1-2-7b426f0b77a1@oss.qualcomm.com>
- <ab1fSWx7pqlSANph@mai.linaro.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <ab1fSWx7pqlSANph@mai.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|GV1PR04MB10630:EE_
+X-MS-Office365-Filtering-Correlation-Id: e68077bf-5057-4355-9343-08de869357ea
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	kFz+VbiYzVyH9EHpWhkBpEdFfoSX/xgeBQhaBYstNjuQoLiutfBjFnp55PIpCekFAN0+Q1V1MHhz6JTmgN0COBknH8+xFH776AAQR+aP/elof68iTvhdptq47kTyjkdtkLfZN5j/7yzkW5c4HeJ//FH634W5TyktykuBDnPckhZdFExrUpkhnisY0FU/Gy0p8Fg+eLDp5cw2CGl4GOzZ0ZtJlJpQg7H0GMN5iA4ZY2IhKPRsLy25MDf1RjUdonqID0uhmG4M0EbzB4+VbGpX6dwcekK695YLfEX0x89+6azUj/osISH0IFByqlfcPVnGm5GqK/RB+eQykyey5CF1/1/dbeNVM8g7tJuz2MoAkAo05tAl3M3RR8OqDXvZLzx5vor0yrK4i0HFskNJgOJ9ds5I2TDJpYj6qMHyeb9x8inRVBXrxh0deVsOEhwX9/xEet7lL5iFsvVW3C34EnBZ2GJ+yI8rYo/J7ig51GHtMfFN1V1HYCp2yz5WNVM+hKBtJM6fJHp9HedoXs9t3mK0SdZaj3YO0uOASdWyzxhiiICaMdkW8yXpiIWAk+URDlKF/2CanPao8tnMKnu241KkMktGDVXLPxaYpXVEOc7QVg2mZK3nIM/TCdd5eY+Ec4RDXK4+M+dYSgKw1JxHjbJ6Liw/mINoMLII/Eif8WGoEwa9t+MkzK826MBd/m4PUDipxswnT+TEAnVffViBma1aUX6MNHgE2x6rJ7lfaInEFd4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?RDiawvOQYzSKoy0qIDhIQNBrW8ITR1ZIM696zQHCtGLmP9GNiGzUrte7ID?=
+ =?iso-8859-1?Q?UYdXolmOkQ4reDfH2jxuGdjF+59phIaDINl2u7uf+FEOPQeUCQFdpntW5h?=
+ =?iso-8859-1?Q?Q8/ADGU3AdZuazVne2Jm55F+RRiqeGIigKEzd70TzS5P9CifNC81CWkVlo?=
+ =?iso-8859-1?Q?PJ2JWFBcrV5efImnTAW04pZhAWmCkwp0v6AbThAB+z2cJmqMYMFc5si2Uv?=
+ =?iso-8859-1?Q?Q786siQQTkrsSdmdpKqg50Y6Pc5TqhLl+EAH4hElYShAalbRj+YixfDyDX?=
+ =?iso-8859-1?Q?FuqAiw8izJqGhm3AqADFBnN3IKuEMxFQCxAZ6i/YalTzd6764MqyXhk/Gq?=
+ =?iso-8859-1?Q?DbJgr+KuCQh7iUruD3H/vZYO0Y/x8i19U92C2m7u0FYzpE0qn4ifzBgnvF?=
+ =?iso-8859-1?Q?JgC2pjkk7JKD7iPUHA84fciyMCAlk5lNe/wZXhDojpiV++a4Xs7T9vQyC4?=
+ =?iso-8859-1?Q?uofyQu/T67di65gvz616ozxLWViI1jkIredlzY0OQESIUR3BSHPQ34RUuG?=
+ =?iso-8859-1?Q?pUftQSHXU82iy02BXChOvHI0qai2N/CCGtGMLvYsNjkco4OftEc5WZ4wv6?=
+ =?iso-8859-1?Q?XY7CXYSm0oUAQoG6NsQHXyeuCy5dBThmtVIlffwrvaJFUZFbuU36nMJyrP?=
+ =?iso-8859-1?Q?f6GZvey1CXx5M1rtp136LUoSHWTSKeZfnthw85PCRbctT+MkseA6uWQPhP?=
+ =?iso-8859-1?Q?wPAbnIbooFHAO+QH9aACZpKgeHWWStDaR80LMfXSPdySZftBlzCsRHCu8h?=
+ =?iso-8859-1?Q?WbQJIHpc+4UV7qvoGOPVrAk8BtRkuwho0eBRygXxrKnVb0xk8dIdCQPpXH?=
+ =?iso-8859-1?Q?VWv/iTaCl/GBixte9x4IDoFXA7bktGekJeJoeMIClvY88sjSZG7v3JHxgv?=
+ =?iso-8859-1?Q?Z36600Oi5mAvFwB4NyVUEpxrzLkWRGeMKsOQnX9MkfmRPHwni63giqaULP?=
+ =?iso-8859-1?Q?ZV1xXPVK97Hj5Kq6GLzwo8aCu9E3TeN9OoLupTR0iLyO3s3TY/eNZ/J0Iv?=
+ =?iso-8859-1?Q?5Eldgkx/wQUNae3LP1PaqNKq+yT2EloawRZrqO4oxEKGv4j/5DHieEeXim?=
+ =?iso-8859-1?Q?ZzrkoazcUQ2qT7fwGSa7tOkItdO6hRcJ2OxuUop5zPITNbGSlcRjGDqqVu?=
+ =?iso-8859-1?Q?xea0hY8mfwUE9R6hYSEDGlVa0zEwG9NmR5foJT9+ZHMiluGv6kf49mfQkG?=
+ =?iso-8859-1?Q?+XfB4lIlHrr9zlzW+2RLb4iGnRTvP/fuRdknah9exs4TsUE6FkV2KJnn01?=
+ =?iso-8859-1?Q?erS5fUlFJv4FoPhbmP8bUl2AOkaC9EpcgeKG0PYMkdj+uqNTLRqaGUE4ps?=
+ =?iso-8859-1?Q?3jjpZmBj/BuKv99IdVm1hyKK4zLlXxx7nVV5ChI/CnLlvGbRHmNA7NL080?=
+ =?iso-8859-1?Q?iTT3TaJBJdfc7/pL40bgUpxpR8MGdAav3zMGBBeP8R7yhzH0Q1IGkGJdDb?=
+ =?iso-8859-1?Q?LibGEaPglTXUcM6oHAJUJhCADWRIvq+K/mCRKvErdVBrwiTrRiqHgWIRyA?=
+ =?iso-8859-1?Q?TlRrULWHfOyoX9zJ39IntvYaVcNVWnLb+HbSgnJHLmKE9dYgy7IhSVugTY?=
+ =?iso-8859-1?Q?t5X6TyZbXpGzzeNPDAdm30VtL2oyF4s5Ie4JUXEmlugtDvVctdAulArEvN?=
+ =?iso-8859-1?Q?mDNlflEiFVOz26zdpdHG2nAKT/TW+vNw7b5V+fD/jpEmSXDWN3EiBVRQZJ?=
+ =?iso-8859-1?Q?CuLW/lVFieeT1EuNYgq30jQVCCgXiBuA51FpB1cXsoIuNK5dyOHUjX1L8D?=
+ =?iso-8859-1?Q?bygO046T9EbBKs9Mjp82Q9ard4AF7pWyFVDPAaR6MBHkAn/Gvmdi7VbujW?=
+ =?iso-8859-1?Q?AGtV9HEElQ=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e68077bf-5057-4355-9343-08de869357ea
+X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 15:14:13.0424
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jjVI0oWuW1sBbHUMEF0otCawz8b/0DojGN0ghxM1rla31MRoR/V2maY9nK9bBxP+f6OBIMmKQswfsmv0aBeiww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10630
+X-Spamd-Result: default: False [2.94 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-12578-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12575-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[roeck-us.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[florin.leotescu@oss.nxp.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.989];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_CC(0.00)[nxp.com,lists.infradead.org,lists.linux.dev,gmail.com];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8C7B52DC9F5
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,NXP1.onmicrosoft.com:dkim,nxp.com:email,oss.nxp.com:mid]
+X-Rspamd-Queue-Id: 8127D2DC847
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/20/26 07:52, Daniel Lezcano wrote:
-> Hi Manaf,
-> 
-> On Fri, Feb 06, 2026 at 02:44:06AM +0530, Manaf Meethalavalappu Pallikunhi wrote:
->> Add support for Qualcomm PMIC Battery Current Limiting (BCL) hardware
->> monitor driver. The BCL peripheral is present in Qualcomm PMICs and
->> provides real-time monitoring and protection against battery
->> overcurrent and under voltage conditions.
->>
->> The driver monitors:
->> - Battery voltage with configurable low voltage thresholds
->> - Battery current with configurable high current thresholds
->> - Two limit alarm interrupts (max/min, critical)
-> 
-> Can you describe the behavior of the alarm ?
-> 
-> I assume the alarm is raised when a threshold is crossed from normal
-> to anormal condition leading to a hwmon event.
-> 
->   * Does the BCL trigger an interrupt when going back to the normal condition ?
-> 
->   * When is the alarm flag reset ?
-> 
->   * Can we have a flood of events if the current / voltage is wavering
->     around the thresholds ?
-> 
-> Overall, the driver is too big, so hard to review. It is better to
-> provide a simplified version with one version supported.
-> 
->> The driver integrates with the Linux hwmon subsystem and provides
->> standard hwmon attributes for monitoring battery conditions.
->>
->> Signed-off-by: Manaf Meethalavalappu Pallikunhi <manaf.pallikunhi@oss.qualcomm.com>
->> ---
->>   MAINTAINERS                    |   9 +
->>   drivers/hwmon/Kconfig          |   9 +
->>   drivers/hwmon/Makefile         |   1 +
->>   drivers/hwmon/qcom-bcl-hwmon.c | 982 +++++++++++++++++++++++++++++++++++++++++
->>   drivers/hwmon/qcom-bcl-hwmon.h | 311 +++++++++++++
->>   5 files changed, 1312 insertions(+)
-> 
-> [ ... ]
-> 
->> diff --git a/drivers/hwmon/qcom-bcl-hwmon.c b/drivers/hwmon/qcom-bcl-hwmon.c
->> new file mode 100644
->> index 000000000000..a7e3b865de5c
->> --- /dev/null
->> +++ b/drivers/hwmon/qcom-bcl-hwmon.c
->> @@ -0,0 +1,982 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Qualcomm pmic BCL hardware driver for battery overcurrent and
->> + * battery or system under voltage monitor
->> + *
->> + * Copyright (c) 2026, Qualcomm Innovation Center, Inc. All rights reserved.
->> + */
-> 
-> Old copyright format
-> 
->> +#include <linux/devm-helpers.h>
->> +#include <linux/err.h>
->> +#include <linux/hwmon.h>
->> +#include <linux/interrupt.h>
->> +#include <linux/kernel.h>
->> +#include <linux/module.h>
->> +#include <linux/mod_devicetable.h>
->> +#include <linux/mutex.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/property.h>
->> +#include <linux/regmap.h>
->> +#include <linux/workqueue.h>
->> +
->> +#include "qcom-bcl-hwmon.h"
->> +
->> +ADD_BCL_HWMON_ALARM_MAPS(in, min, lcrit);
->> +ADD_BCL_HWMON_ALARM_MAPS(curr, max, crit);
->> +
->> +/* Interrupt names for each alarm level */
->> +static const char * const bcl_int_names[ALARM_MAX] = {
->> +	[LVL0] = "bcl-max-min",
->> +	[LVL1] = "bcl-critical",
->> +};
-> 
-> IIUC there are three levels of alarms but the hwmon only has max/min
-> and critical. Would it make sense to do adaptative min / max ? So when
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-hwmon has lcrit, min, max, and crit alarms for all sensor types, plus
-an additional _cap_alarm for power attributes and _emergency_alarm
-for temperature attributes. There is also a generic _alarm attribute
-for each sensor, which is supposed to be used if the specific alarm
-type is not known.
+This series adds support for configuring the fan PWM duty cycle applied
+during system shutdown for the EMC2305 fan controller.
 
-What exactly are the three levels of alarms ?
+Some platforms require fans to transition to a predefined safe state
+during shutdown or reboot handoff until firmware or the next boot stage
+reconfigures the controller.
 
-Thanks,
-Guenter
+The new optional Device Tree property "fan-shutdown-percent" allows the
+shutdown PWM duty cycle to be configured per fan output.
+
+Changes in v4:
+- Initialize pwm_shudown array to EMC2305_PWM_SHUTDOWN_UNSET in probe,
+  to avoid treating unconfigured channels as valid and written 0
+  during shutdown
+Changes in v3:
+- Rebased on current upstream
+- Dropped already upstreamed of_node_put(child) fix
+Changes in v2:
+- Address feedback from Guenter Roeck
+- Make shutdown behavior configurable via Device Tree
+- Add optional fan-shutdown-percent property
+- Apply shutdown PWM only for channels defining the property
+
+Florin Leotescu (2):
+  dt-bindings: hwmon: emc2305: Add fan-shutdown-percent property
+  hwmon: emc2305: Support configurable fan PWM at shutdown
+
+ .../bindings/hwmon/microchip,emc2305.yaml     |  8 +++++
+ drivers/hwmon/emc2305.c                       | 35 +++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+
+-- 
+2.34.1
 
 
