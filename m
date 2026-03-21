@@ -1,78 +1,80 @@
-Return-Path: <linux-hwmon+bounces-12613-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12615-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFlqAXDfvml3ggMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12613-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Mar 2026 19:12:00 +0100
+	id 4OThDaDfvml3ggMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12615-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Mar 2026 19:12:48 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AA02E6B23
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Mar 2026 19:11:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 919DA2E6B40
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Mar 2026 19:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C1A4530060A4
-	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Mar 2026 18:11:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B1D8300FC65
+	for <lists+linux-hwmon@lfdr.de>; Sat, 21 Mar 2026 18:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEA22FFDF8;
-	Sat, 21 Mar 2026 18:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF2233FE10;
+	Sat, 21 Mar 2026 18:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="iQCHxKhT"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="n8wMF5lX"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBE32D8391;
-	Sat, 21 Mar 2026 18:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A4C311C32;
+	Sat, 21 Mar 2026 18:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.147.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774116714; cv=fail; b=WVvEtGflvu8c3hIebRJdKnh+ABdEaBnkGFEnEZ3QUS/VDh2k2xRZBAq31l4BDrx/9aJkNWi5kLGVEGUrA8mk/kA+Nh5F/iFqoGW9Bp7jfJ5vOb739HvNenW/AIa8O1Oa/Rq6IHYv0iuLi55VO16mDMz8445/u25zPAmk4gi+ZN8=
+	t=1774116747; cv=fail; b=W9uK1sEguFd4k/IVj2LVSunYCwg+pGAlogllT1cs5PacdgiR8JTH/QbsMdrwyKeo73/D24coGaYLJ69HcAW+1kMqY0/K6SYIpD3KwCHXJ0AkZFG04Usc5bStbdgr9vmvgak5yjKDoyl9CKZpKMBwZ8eYmCuWF1QHer0WeEj3I40=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774116714; c=relaxed/simple;
-	bh=KGb0Mk8WFA4ObR5WVvvbHjyxA6v1e0j3VIqo84lX+rY=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kUYkS40bfv4Eozyb/+CeTnvxmn67ecHmMMs3gLELR0W6TOGVmiVyY06GN+XuBVeiF8MhYZ4OPLibWNVHZOeXfSbkbI3aKdQqbfVapwCtwvB3od7pDTGi5YSEBxfkRyaTDcl460qsbUDuGoUj/G/YbghosuIy2w5nDO0Z9t1+0qM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=iQCHxKhT; arc=fail smtp.client-ip=148.163.147.86
+	s=arc-20240116; t=1774116747; c=relaxed/simple;
+	bh=OzrFza8H53p4n7wvPetIbf27NoWxYlHjs8eRTWWwzJ4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UE9swoY5bGBTAS//MRJv+Uw6CL0ZdXsT3YIyL1OcfQQVjJ3qW9kcRkZF4Qa8bWccKgeXEvxEWfmwU9EFz9XY3elgiHhUg44+2N+y4MgmAeAokFHpqS1p+x0KL8wuLOVqOevUmMMCj3/GPDBAyaGO6bzCKwfXcYK4Du5X1+wdMd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=n8wMF5lX; arc=fail smtp.client-ip=148.163.147.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62LF2WBJ900671;
-	Sat, 21 Mar 2026 18:11:37 GMT
+Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62LF4GHZ982849;
+	Sat, 21 Mar 2026 18:12:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps0720; bh=WbBEp2ym0Nr0J7UAj6YNIBO8
-	xlsr/FunABxbI0r/fXE=; b=iQCHxKhTbVduJFPnt1MWWY91At4hX6vtcjbG16SO
-	+zQrkCLyWLgLlh4VGKW3LTk4xOym5uLGMGCAnt40LPg5PKz6+oEDmRyv+jWupiOr
-	BIQMUpca5HAkTuRP6WkFbWQUkHFMVwfkYB9EM8Mxnwsch1zW0wO/iitX2US3lyZe
-	n9jnXguNdsgTXAqec/4ZGl3tTXhi8A0A8KFUvgQX7cGf9nTta2rUTIJGn+tp/qkS
-	YrRk+d9G1gaXcxLNQFGHTT0aiMYcR3lzvaXkJvCXRMe+rOoBxqBsOMzlHRQtB/AO
-	jXMyLrzEcAbT07yR9sQXTDbGIcDWmJr9DvM2BY8Sx4tO+g==
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4d1kqsd3m5-1
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=W4
+	B659lFA9BERi7CDAd3/FQC4uLfHi0CLKHZ/V9vVUg=; b=n8wMF5lXpKTG3HUI94
+	y3fztb5oFsNfZKVVCDfnLT8XQUajY1ox+06LOLdBBojrpz/yGr5TCTxkRtIJ5Tjq
+	pZDZ5z+Ch52zcSh3CM5tXcp4IL3fPjWvlVqKk3dUMahG8Wu9aOOhOmXh09vNqak9
+	RjNVDNxkmglrMiNKKxJ3uZEqwRcIgzboumdMIrdB9NSZ42xhoiqAir/rG6+TJKJk
+	w1iVy1hHbAKCs7UwfYiBYlfVJnOVQM9GPIyVI/R8eIyDZ6TMCT/DINU8nS+EQBFU
+	OP655ydrOvGs53gbrJDDD1b3kBzjL2n0LOZ1T3gEQjI2zJExEqgzI0m5mbUjc7jw
+	8sVQ==
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4d1v0nhkp3-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 21 Mar 2026 18:11:37 +0000 (GMT)
-Received: from p1wg14926.americas.hpqcorp.net (unknown [10.119.18.115])
+	Sat, 21 Mar 2026 18:12:12 +0000 (GMT)
+Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id C37A2338;
-	Sat, 21 Mar 2026 18:11:36 +0000 (UTC)
-Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id BAC38D273;
+	Sat, 21 Mar 2026 18:12:01 +0000 (UTC)
+Received: from p1wg14924.americas.hpqcorp.net (10.119.18.113) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sat, 21 Mar 2026 06:11:16 -1200
-Received: from p1wg14919.americas.hpqcorp.net (16.230.19.122) by
- p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
+ 15.2.2562.17; Sat, 21 Mar 2026 06:11:49 -1200
+Received: from p1wg14920.americas.hpqcorp.net (16.230.19.123) by
+ p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Sat, 21 Mar 2026 06:11:16 -1200
-Received: from DM2PR0701CU001.outbound.protection.outlook.com (192.58.206.35)
- by edge.it.hpe.com (16.230.19.122) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Sat, 21 Mar 2026 06:11:49 -1200
+Received: from DM2PR0701CU001.outbound.protection.outlook.com (192.58.206.38)
+ by edge.it.hpe.com (16.230.19.123) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sat, 21 Mar 2026 06:11:16 -1200
+ 15.2.2562.17; Sat, 21 Mar 2026 06:11:33 -1200
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f5Y07QzFUC4knIOHPDBYohgQxAOemspQ28kLNsGrttcnWzfBtrwD+Q4rZh+2PDXfUUscG38DkeUlH59FxkX24W/qQqnZyn/zPbR6vedrFQE9n7r4F7BZ7Rvk/Vf+SCsgNCPk3I3M/TA1KFmt2x1o6dEs+LLzj8BvcGdiYGTeAW4BemPCpQf2hyxbpiQcaFCwma5TnwTGlECMgfoy8ZqOeOPdKPMOrMiQAKfL2BoUwi2jvTan/EPDe3++FM/6bWWg1aWVPxJRbXJdJAQF8quiNo2EKFivXgoBa14m/zcBLccTsQTjZIXL9zvQ5TqOOYoTlI0rzm6B4pMHz8pADZRAVg==
+ b=mS9akum4fRGFJD4zxRquLzqhJsnBgQKoBY+I+RHBCKnZoWNorRap1022cJ+Z7MksANQ6MFBxuhh4xqrU2ohbNyjMhIK4MRjSHOPjHkJz8irfaKq8ybQmbKrI3baux93eCrtfc9bOsknnXqLmZp3sHfTuhKG5KAs5Vn+BphUk33qdwLAHUSqMjc2JJmzReNjGAawvDEKWCcGyZ6DogW1GvSUpGwQmJGVVX1F0f9TCT9SdPzBWrugLGxU61dIMug3Hgzpf6Eykl13Z8EfPcy3A+70KINhoaZ6oqUgNHK6WnYwMuOIjzMhGuBU2botwFiO+5rCmV1WGYf8Ojb73sVdOqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WbBEp2ym0Nr0J7UAj6YNIBO8xlsr/FunABxbI0r/fXE=;
- b=cUQrVcAaOYQSIUAzDxDhc+HkANU5zbFifAPKfL4bWRdOZWsJ3NPHV6emAMj33il+i2tgeIA61pB0qb03oC8GPduMF7M9ia6plbOtgtnxm4zKTb1aNJvXwkcRFILbRs+l/BwWhwISDiERr8/LGJ4bFi+c7QZOp4do7O5jM6nac6ogC1r4IaWqVEK1VPjeZhSMmEDJnGQAScfAHdOrkUVxRY6zUg+KhpybDf2GVx0xihQ4LU9rknemOZF8TI+Od1DEK33qdF0Vvhx7hCkqS9UnhfkSGIcu7s54C2b1EcAIoEeo3aHOC0tTU0PDji38D0yUwrRn6jSSySVeK8VYgJv7DA==
+ bh=W4B659lFA9BERi7CDAd3/FQC4uLfHi0CLKHZ/V9vVUg=;
+ b=Ytz0xIgArB5wttt3JOFUDdLDgKU81kngsUzXGMFKCOiPwEPk9eLHJHwMHQOaKIh5v9v+LAx1fD6Hfqk5mxR6G5FQ3tWk9EkiflFeVfCqCquRH5POwjMF/1QbrzOfQ9GtKcRI889K3/DQO1EdVAk1YQKTQxDZ26nY1smrKZbseOlYDkxPn9GsZtZGgosUdrdDAqkFa/MR52E6WQPN40c/U4ZlK3tuQeRk2xQEy7xfuyT45+BCzef4nFYXnmH0wM3FtrLBV1TivnzcE4gFJ3CmesM0Nc+Fg0qgvSglAVauwnnp/POfEf6pHBpHQoLW+UOes7Y/xCypgioLGfXhCJpiCQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
@@ -80,69 +82,69 @@ Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:610:1cc::7)
  by SN7PR84MB3208.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:806:268::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Sat, 21 Mar
- 2026 18:11:13 +0000
+ 2026 18:11:31 +0000
 Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::2c54:3534:122f:e74f]) by CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::2c54:3534:122f:e74f%4]) with mapi id 15.20.9723.022; Sat, 21 Mar 2026
- 18:11:13 +0000
+ 18:11:31 +0000
 From: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
 To: Guenter Roeck <linux@roeck-us.net>
 CC: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Sanman Pradhan
 	<psanman@juniper.net>
-Subject: [PATCH v6 0/3] hwmon: (pmbus/max31785) refactor inter-access delay
- handling
-Thread-Topic: [PATCH v6 0/3] hwmon: (pmbus/max31785) refactor inter-access
- delay handling
-Thread-Index: AQHcuV4aXm0An3ZH1Uqw4BdCPeaaNg==
-Date: Sat, 21 Mar 2026 18:11:13 +0000
-Message-ID: <20260321181052.27129-1-sanman.pradhan@hpe.com>
+Subject: [PATCH v6 1/3] hwmon: (pmbus) export pmbus_wait and pmbus_update_ts
+Thread-Topic: [PATCH v6 1/3] hwmon: (pmbus) export pmbus_wait and
+ pmbus_update_ts
+Thread-Index: AQHcuV4kyicNodFaPEeTJJD+DGScEg==
+Date: Sat, 21 Mar 2026 18:11:30 +0000
+Message-ID: <20260321181052.27129-2-sanman.pradhan@hpe.com>
+References: <20260321181052.27129-1-sanman.pradhan@hpe.com>
+In-Reply-To: <20260321181052.27129-1-sanman.pradhan@hpe.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: CH3PR84MB3523:EE_|SN7PR84MB3208:EE_
-x-ms-office365-filtering-correlation-id: f38edb62-8f28-4162-89c4-08de87753d01
+x-ms-office365-filtering-correlation-id: 4215a633-63d8-4455-ceb2-08de8775474e
 x-ld-processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|18002099003|38070700021;
-x-microsoft-antispam-message-info: 0fKTgCw6iAsgLByiSrcRjkqWCHpOVbF1Zgi+1K7CIeZtlBiebN5v80GrBot3Vn2hwdccofOFOIFhSYgpSRkXEqNNZBlU70phX2vOvf/IGi980yQnQw0g+ECqOaNTwsMpUGNDXaedUwVOilgXwPUpIDXKl5ld4kMuG+yBdLZ0//2POvz1niYBpdvhF5OArcEr/C74S89cccrg93oa6y7zFJ0vzLQPkp+xLGs4+XUTC6rpjL7Fbulrv2XW1GsKltVmSiewxLps1zZ7W8KUq1mP43uzAhSDN0a50GeuP2d+qDF98KmC9HepiQAc4axJcJBq18ggGjUE5Pn1DXuK6E5jPU74ZbrvY0wRk63eqyC7t64cPLpGJbLqCzUs6fUrdehKQ925i7/2EQosN1RHZfW7PvNb11W5ukc/GSXgRJLXVt9X05jTQX1WnGK4Uhw4kXe2LFoycosKbMF9sSxD4LJl5EkJHG7eOZ2vRn6q+JR+zn3s2jhyD7L2bYJp0A+P6O0wUFqJA2tqBjFz8vE23VtX/71B2yMZJxLTDzgj1m4mPrk1iLTJ6W1l+U06wj7CBsI2J/21izJ3pRng64EXqe5BkxzG2+v25CD75tslOumkQilaAKotWCFOO8OvFgyuw8O5V8UK3n//oBaESRVswtgxTJa/XAXFtiOv3OVJWdLwdgFSOv8LErmZ8lN/LC2XQr16zjzcp+uHhaNBqqDbHcg+IjXFHAuOdJbQ1bU6pnJs9V3klmN/XAQGl8xc5SXjSOC1WU9nwsSbI7UQkTGV7Bv7KJkl07cOJTlNBG8UBzbPDFo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info: XC14lYzoyGztfmcKVmlaMgUhU8Np1E7B0DM1hVfHpr4vHs+xeT3cnszAVxKiwS6JFNnxe6Giy2MUZfEpqeo5YpYqvRr+2xEnMYnXN8EDsrp1GtqmNphKNdedIAdL4+wJvJ50nVxnJ3TJOGT0KB0S4RTXUODnizRVcy9bAwNkJQ6VBcKDkIPN0I6nNCA5YWESDjd/blf5p7UsJ4UTLty5yAff3PzqwVghh2zP676Va3yJ+WQcnKei15y+/VabCwAX97B1ehU25Sk5EOKbN2hHaWkm4U68T3ymaIvQqQntBLUF2UFr3AAlXwBxG8N7p6BrIUGFwvstadFy30ITbs4ErFz4zL8DZi4VSN7HAB41Zzf6mL0V42J0AAv41ETireXIoVsAOGTatXL7VbOOrTd69K5DCEEVrjxpWBeMFgdunn4XHZzZ/0Hg4XacQ340plImtm+W/Y/IGwjyqaUg5XUbvPO6X648JJzfNEGRk0zas7csfFT6VCqwmK4TbylEE6qVjOVVKlKqyIj6TtXEyjN1wgWi1oKx4HZA2/bRxwkC9bpDMSv+XItuUhIkSnoD7YwAUqD2tvDGzeQ8J0lT3rX2Lb9ZDZQUhvcFUTi5pkufxdFwvp3AG/i8M6cmmPW2VtakOwd3oe2Syw6BQii3gb4Fep8R+mX3wQvN+rZca0PXUsbAsQQCi1uR6MXTUMUOG0wN+ZfbGg615NJ2kRFsbNIKdMeke10a+IEFTqMM+pSmtUZSEIWk9WJ1LFQub4Fi//yvvz7Qm6Zo6HUS99+9eYRs6uF0zgXjvp62c3Nk7sNMFPc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?yvo3zG2XNMUctb1DA05Nz51l5AEV+RWRCxoJhBZTY5f0mtIL1hawY4g2TO?=
- =?iso-8859-1?Q?NAeIdvH/cAJdnmL3zFdW9Blkn0FuLJPwmz3Fh6EELPcpR9FmSeeXpuAi9k?=
- =?iso-8859-1?Q?sAF5mZoCmunZFFO0yYCy+q3S8PfhygoSQv+nxZqgL5ZfSxbh+zJBI9v0tC?=
- =?iso-8859-1?Q?e3bvKZlFXAqRUu5JsYGEJgW4XvR22hDK1tT3SB/vSI6QdPAOWbdHtNHJeA?=
- =?iso-8859-1?Q?TVNOAm04UJf3pdij/IDjWIl3QNVHEB3mRVjhUedXvZAAEV5+zlnO3b+nec?=
- =?iso-8859-1?Q?pn12uGa9Dd6flqPt+M2qIz9vxgJWDRTg9wYTqUq8JWfLB6y9KC6Y64QJ3U?=
- =?iso-8859-1?Q?rrtuK2R+icZEQxOBUuSVWrsgvzGcMMwXJUpPKNcIuCiN7cSpH7VtUVymjW?=
- =?iso-8859-1?Q?WsiDIPQmbsfxduiqcBwF2jXQS7TsJxffj63xvxb/HIMmH8L+6wLgv4Nvqv?=
- =?iso-8859-1?Q?fnmb8B7rzl8dfEZ/oEfOXRYYiMSSQzfY5ks1ADtgzhocw7MU5hrFGGQj1V?=
- =?iso-8859-1?Q?DfkSI4WRYytiq07WTAt0MZX1ap86k3fpZ9SGwRDUtmOgGy9GwAQSDeCNxL?=
- =?iso-8859-1?Q?VO2u6Dj/zbnMuA1p0HL5bQutrZWU4NkeeFily1Hrs8AHsdd5bi9fbrNavT?=
- =?iso-8859-1?Q?kg5Uo2CbHFLC9QJfgmmCLYeibZ8QI4QOyX9TGWLSo6mURHu2cji6bgCGlP?=
- =?iso-8859-1?Q?wZ9swGN3mjcuBxMn2zVbDc/28keZ5IMSBn4plXLWDVJ6saIRgcNKPdU+t6?=
- =?iso-8859-1?Q?OG+ZUUZYZ3Sgz9Q+hkfSEntc34lyEiw+GdrK/i/O3VOjFJXv9zNGl2bBSC?=
- =?iso-8859-1?Q?ehymPejZ2ryJ5Xb7CB/Tccj+H4QWvtvqDiZw1gAK6Mlw0AmUL4Tv7ZJ9I9?=
- =?iso-8859-1?Q?XS7iA1c0xSOauhQvtSJFUUzxzHcVSqBuwVbpBl0fDu3EDNfxPZsGTzM9Yv?=
- =?iso-8859-1?Q?b7RTTgRGVDmyxBTDfavX6b2yWZ1O4uo8sqeLhXP2YmkkFOHAuZ4FNnyTwS?=
- =?iso-8859-1?Q?E3UdPk5cZ9H3FkB5SZnavIjqCT+LUNP/RMI5Nh9qAuwDozKWgvVZSJeqBV?=
- =?iso-8859-1?Q?wpm/cPgyDVVZEl3OeET1cnHfhhIBRjQwBnrw4FE2q1NYXhPUh8iPnX6kKH?=
- =?iso-8859-1?Q?z4Dte1zWK2ffSaGHe2aZiXvQJtYJZdZkxLaZ9I9zGgMdgFcEZwMEtz5Uvz?=
- =?iso-8859-1?Q?u3ZUuN0ODwBH/dq8bXjtaOVHpEqVvwIjuQXaXXuFkAoA0gUH8jUzpt9T3d?=
- =?iso-8859-1?Q?R+0UPwRbPGa5jvE09P0btlkhwW7iEQ55epwaM+VS24BylvJuZJSEZu+dTa?=
- =?iso-8859-1?Q?txSAxNZTmKhXBhXHpepzKbjSPJFGyWeZtKNSsa0+0/B8PNGL+ButgsRUpY?=
- =?iso-8859-1?Q?OpSseGuYSixwUpEPM2C7ObjK/CqUp03OmYiqTWc8JTnllIAb/hgYyzUpXJ?=
- =?iso-8859-1?Q?gSAdyotUziqsIgPZT+OStYc2QBQF0TxdPLteGb/7PK2bsPlDDqHn7vSRJi?=
- =?iso-8859-1?Q?N7nYCQGvD27LgrqIXSIOwgOgMOUx6TUC+G2jDQpytKOs5G5H/vupdBLBev?=
- =?iso-8859-1?Q?J7LBrbeHIz5rd92ztwgsMAcAtezx8tuTlvCZAQrYD4tQZMqXPUHCUaN8Dr?=
- =?iso-8859-1?Q?XU5LGR5ZJabFumGwHZ+nDGi2BsBg5fHFMsZjXlQcYfzi0J+IfPvcOo3YyS?=
- =?iso-8859-1?Q?F0oxEVdFbuFXZ9n41s9qAD7ZkLAj4X6Z7Gz6dquJ0wkf4CazR3MZkh+sJT?=
- =?iso-8859-1?Q?/pToY84/Ruyd7WOw2e6n/ax17sZWRDz/OK8/QLUW41SQiuzMlcW1jCmx3O?=
- =?iso-8859-1?Q?i3VZ2d4GCA=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?vRSzsexkjNHoHLi+qv7l21NsddkmfzTQELLmhU87XhmiUFV4SAEM9FoDS7?=
+ =?iso-8859-1?Q?04sqzHNmsM+GOpRAl7a7EVoWqyTSQLqd7suVIKJK4/r6hqeNoZdXcp7xfQ?=
+ =?iso-8859-1?Q?EbBnqBHxAzAqc8DhtGnOEWtqVAZ8VM0TLpyxEO8Y/P17K0Qu2JtinXfyGL?=
+ =?iso-8859-1?Q?03B6QoIcUM7XfhwKGL5hZMbftruWXg8yZefpisX593Qa7Ov9UqMdVzuTrj?=
+ =?iso-8859-1?Q?F0Gx9vgYBrRnv47QD4mqqWp4YKN4Ns188LoqjbIYIiBUfcEITkeY5XSKRG?=
+ =?iso-8859-1?Q?STCrwXTuOU8rFDLBfz7aoPL1vvrQSPkjo2XWIxj603xbd/fzYmlYVWMNhC?=
+ =?iso-8859-1?Q?a1JXGlqCKk12dCxeK0ToS0GNEGeVTu7S7tH2kfmU85SeKpGIdDhAJM8Zvn?=
+ =?iso-8859-1?Q?buhJtZye5YMbAasGmxUIOYjBwfBUK8q1tNgUS28mUSe2D55rSNYmKNoB52?=
+ =?iso-8859-1?Q?vOA8Qo/uWtWmJnkpNP7I7K2HXjZry59hhvcd7ZthCBlnjh7S5IyOSOUz2U?=
+ =?iso-8859-1?Q?rlgHEoRPrCk1Qoh/jEkV5jE9EZCLZ3aGdMIGBSx/ncqLloonjuhzuAzSsK?=
+ =?iso-8859-1?Q?/IdRBlivslVhpm0rfbV2ZUOr+nRSmo93M6+kTc7kNpxVGopT8DLQ5/xRM6?=
+ =?iso-8859-1?Q?W3ZmhNfYsWIQgJ0+jKljiwhi0t1meiyB2KTgi7FP8Jiw06P08EuqGUQgr7?=
+ =?iso-8859-1?Q?GXPkWFL3j0IgEI3F5Fa62lfAmYtGYbgen65aiw/3TgyF8HFqfw95nT3+Kq?=
+ =?iso-8859-1?Q?PCl+5BPcK7soIFMOCExp7UY0T16bYHjLBewThAJyEPWGb9I9g0a+ufg3/+?=
+ =?iso-8859-1?Q?VhD3FIDuf6KwmaF3CXFKdj2psnpZo/GJ+7COwt/F8l5iM5R+9PhxDfT/Wo?=
+ =?iso-8859-1?Q?0kV+gaKHWO8BaMntpzSRWtIwXzOvA0oa+Ty2ouHW5mWMxqRKVEZAr4vpmF?=
+ =?iso-8859-1?Q?lMMje4WHxBU5EGlrOSLD74qVhCpHE2108Z6ofSURw7SeqQqFNQN4/ejfmu?=
+ =?iso-8859-1?Q?XZM0CGfpSW94+YVG8OVEtzl26xJIPvp8klQySgf/IJW8c5orQCnFCTJBbQ?=
+ =?iso-8859-1?Q?1xyVJExRtUOmcQkRIMCAVNBt8+27BwcWsGxmfTT2Ke8kn/8qrHm3RQaAdA?=
+ =?iso-8859-1?Q?Qz5WGp9VjCsovmM2i4uM6vC5N6+UkSK6ZTL3ymPpRR3aMG4Zaj7GDG0xCN?=
+ =?iso-8859-1?Q?gvK2BuRa0/+uBik2lj4BAoWBPHJdeqUYoht/pLW2YduBGm1DY8gxgW/L55?=
+ =?iso-8859-1?Q?Cqn1FEPUBTjSG3MEZGeiT/TH50dtsaj0Q0w7ye10Nb9sW6OVk/F/CXvHbf?=
+ =?iso-8859-1?Q?E2jEySVUseOkbCeXQeJZExmAeYosQXC4/5luKOEEX7pS6vLJ8IDMX3i8et?=
+ =?iso-8859-1?Q?B2Y6J8RC5o8EHYYL/I5+F5kp8z/Hh6d+aUt3yRE/Crl5fZTw5e2Aen7aLV?=
+ =?iso-8859-1?Q?vHbBtTolEdAwGMp02CA5wJ9U/4VpxQ8k9mSMCfEO5Q9ldGj9KyPePsfcTq?=
+ =?iso-8859-1?Q?uJoej7MJJ93s6Z/PEUxk7COqMuiL/OqQ1tuZdnxWA0wM9FtDsR3OJfu6hQ?=
+ =?iso-8859-1?Q?R5GuYintKe95riD+1qxmxA3z4fQpzs5ccen/iTLeqvVPLvb2US49Oqz5qj?=
+ =?iso-8859-1?Q?5qx2snfyM6g7ygMoUkXs0kSeF7DgoWEX3ub9fft/YIXfGAzbTvAwpKjyfr?=
+ =?iso-8859-1?Q?UjDFbtj6wtNIHA9N249Uz3A1n98Cu16Uv9Qc95zkgYqmnibYwiX+T19K4h?=
+ =?iso-8859-1?Q?pMkadvaX+sYj++w0ZDnyLrhTDkc7orx/tZdfMedOF44nzX?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -151,60 +153,60 @@ List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: f5G7UuTsS4Is4OBA9LzRCD8oCv3yvGI4+ehyPlLVfZxsUk/qRfMkcAEEy5ZMsjT/SSbxG5/YBWPJ57erqzECV7zBl2BgTgU0c0/G7JtixI3HUM/CWyoXYh0NDxicn7cYXV+z8OZJ7nhfmD2qeNCLKbBAmJzsDA+z7Fx1unDM+XD8iHsnDwSOJBYLmaP6GTRin4koclQXqCqh0eZl0xdTzF/oBi/IeFL8XTSHiXfYWrioMesX1GnO11i74v9EnWKB3D7bf2wGt2pn2uJeS3j3+sefhJBlpWYUNI5W9ZRC/2sYF9lhvF+9Lq2K/QosLH71AbWGRuLa5/Jt9EqqbmI5bQ==
+X-Exchange-RoutingPolicyChecked: MWuJEPKu3USsaLUnv0EeLbdEM07Yeg6Ahacj18En8mclHAebSWabCFTkX4kamsa0OSp+ZZ650xrPb5wKxHlP/bWuvCO0ZxDkeumTD+eKaOrvSJ0ba3cwjU4f6ZCXniyenEGttmzwUdTcby4PjK2YpIHpB17YvEg9t32mIQ2Qt4vOsvrtNTsYYzw9Ybnizy8KGulzec50he7HdYVAv8YY92M/T6NORcEgPsvLkiM3NAPW9FieloZExmQEwOlJ6Jkx+nhTqC3piu5GuyieXQ8frhV/65ejpT4UJbdf2gBzzlALQth/WF0Ng9jGDDrI+oMvz3s7bUa1iQbaG1Qecb22pQ==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f38edb62-8f28-4162-89c4-08de87753d01
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2026 18:11:13.7138
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4215a633-63d8-4455-ceb2-08de8775474e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2026 18:11:30.9875
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 04iwu0ev5SRUGIeB76s7AOloSPKg/YjPyqLB1tNTLv/FFvCp8N6Am4+dLkamGVGIMpc4A3VlIzbWiC4vxqHzig==
+X-MS-Exchange-CrossTenant-userprincipalname: eJSo13TFvkjvO3JQNcVvANpcoqyL3EhKuhUSCtCdv90JJr4SOsjD8cJAXSmhLsqkeME5huCd1X/TeQclpzIU9A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR84MB3208
 X-OriginatorOrg: hpe.com
-X-Proofpoint-GUID: bDLto3LbNwLa4edOnnuajr_2hdG1X-7_
-X-Authority-Analysis: v=2.4 cv=W+I1lBWk c=1 sm=1 tr=0 ts=69bedf59 cx=c_pps
- a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+X-Proofpoint-GUID: wcpiBOdTv-C1g47fVD289_4LTXtAbb-s
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIxMDE1MyBTYWx0ZWRfX155CBT1xMhpG
+ mgMYWwaIVsai91uG9XPyl0iMMGn41fW3GL3vce3pJ96e5pi7XEUTGW5yUr9o03utpCWcheQ42VK
+ rFhIO0+OytEZd62DYWK84PpEYHOX0vN5e4iSMNEqnw0rRu9HnttUqpCOWJ6XHschf6lpYqT8XC/
+ W2X9/I3hNLOpQYHFeRE12uiIOBa0FPjipBfMQjF1PSXN8PnADcrUhEzKIUKi0jcrAPc/KGfaNpS
+ sDRpoUnYTA9zw5d8fYxvUuBNZLb7mUgvLfEeh33OJwEVTIwk4YSI/NIrYYj4yaxO2wcH5ale8Ng
+ PkNX2e/OxZF6rLFpBlFcfUOvuQ5ZCSzQfcULevduRoekOiPo1mHTys7wA6hfdyfuBdfwSJ13GRn
+ 1V6t8HvYbsbJH4SbwyebZ9csPX0ejjKWQ8k+vBwf+SMxyrW+mpdAoDtK2w+SR9ZOBqu2beHvIqt
+ NbOwJEuzuLRR/8HdTrw==
+X-Proofpoint-ORIG-GUID: wcpiBOdTv-C1g47fVD289_4LTXtAbb-s
+X-Authority-Analysis: v=2.4 cv=Sej6t/Ru c=1 sm=1 tr=0 ts=69bedf7c cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=Yq5XynenixoA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=_ZmgHqWwjZUDpi_pur5s:22
- a=OUXY8nFuAAAA:8 a=gqhRMPgVA9zmgczqig4A:9 a=wPNLvfGTeEIA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=6_mrDcixewTG61oOsKN3:22
+ a=OUXY8nFuAAAA:8 a=nH3FplcY2SvcWnwWU-MA:9 a=wPNLvfGTeEIA:10
  a=cAcMbU7R10T-QSRYIcO_:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIxMDE1MyBTYWx0ZWRfX9B3SLimJvZul
- psO3KAqEV0j6tYo5UP0zj8/UEbobWHg7SPU0siuTLuiK3rEL71MZx2QTwVefjb0+2VBu4LVBm4N
- 9c8LIPhLKeRvljWGVTG5GwaqOnnLj83B7pfSiGDNsRpwS9pDmOF0WWWuwmSvMVu0E3LRB4b9z6Z
- yDpqLIk/Y+oFAIOiobqAs84r7Eq89pRp848PmeuS0i0PPtdZcIdvguiLeYGRANCoK272GB7Fl79
- j0t1sJR1rsZ9pvYHG0kN6y1TdYP3tPnAAp94c/76bsxAcbK12NqQOj5GPzkKCBcnKPkZroiIpWF
- htqDIeTBTzudaeVvSdSaof1ssOMW4wim7LJJapXbqqMF1tHz8/khMAhV266YGy2G37oCDa8A20V
- zG9dbLkL9MxN8PeRWlVhIaJnEXCLmmXWwhVUa5/auX2GUFyrPrVt2Ex0LLDnkxm15OuraGtw6S3
- ysbplhYdBh1WAAK6vFw==
-X-Proofpoint-ORIG-GUID: bDLto3LbNwLa4edOnnuajr_2hdG1X-7_
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-21_06,2026-03-20_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 phishscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603210153
 X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[hpe.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[hpe.com:s=pps0720];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12613-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-12615-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,juniper.net:email,hpe.com:dkim,hpe.com:mid];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hpe.com:dkim,hpe.com:mid];
 	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -212,75 +214,126 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[hpe.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: E9AA02E6B23
+X-Rspamd-Queue-Id: 919DA2E6B40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Sanman Pradhan <psanman@juniper.net>=0A=
 =0A=
-This series refactors the MAX31785 fan controller driver to use the=0A=
-PMBus core access_delay mechanism instead of driver-local timing=0A=
-wrappers, and fixes a pre-existing bug in the raw I2C long-read path.=0A=
+Export pmbus_wait() and pmbus_update_ts() so that PMBus device=0A=
+drivers which perform raw I2C transfers outside the core helpers=0A=
+can keep the PMBus core delay bookkeeping in sync.=0A=
 =0A=
-Patch 1 exports pmbus_wait() and pmbus_update_ts() so PMBus device=0A=
-drivers performing raw I2C transfers outside the core helpers can keep=0A=
-the PMBus delay bookkeeping in sync. PMBUS_OP_WRITE and=0A=
-PMBUS_OP_PAGE_CHANGE are moved to pmbus.h for use by device drivers.=0A=
+Move PMBUS_OP_WRITE and PMBUS_OP_PAGE_CHANGE from pmbus_core.c to=0A=
+pmbus.h so device drivers can pass the correct operation type flags=0A=
+to pmbus_update_ts().=0A=
 =0A=
-Patch 2 refactors the max31785 fan controller driver to use the PMBus=0A=
-core access_delay mechanism instead of driver-local PMBus timing=0A=
-wrappers. The raw i2c_transfer() in max31785_read_long_data() is=0A=
-bracketed with pmbus_wait() and pmbus_update_ts() so the PMBus core=0A=
-timing state remains consistent.=0A=
+This is needed by the max31785 driver, which performs raw=0A=
+i2c_transfer() calls for its 4-byte extended fan speed reads that=0A=
+cannot use the standard PMBus word read path.=0A=
 =0A=
-Patch 3 fixes a pre-existing bug in max31785_read_long_data() where=0A=
-partial i2c_transfer() completion was treated as success. If only the=0A=
-write message completes, the read buffer is left uninitialized and may=0A=
-be interpreted as valid data.=0A=
-=0A=
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>=0A=
+---=0A=
 v6:=0A=
-- Dropped the regulator mutex_lock patch (was v5 1/4) due to a=0A=
-  deadlock through the regulator notifier callback path. The remaining=0A=
-  three patches are otherwise unchanged from v5.=0A=
+- No changes to this patch in this version.=0A=
 =0A=
 v5:=0A=
-- Dropped the spinlock patch entirely.=0A=
-- Added a new patch to serialize the missing regulator voltage paths=0A=
-  with update_lock (dropped again in v6).=0A=
-- Updated the export patch to remove the spinlock-based timestamp=0A=
-  handling.=0A=
-- Kept the max31785 access_delay refactor unchanged from v4.=0A=
-- Added a new patch to treat partial i2c_transfer() completion in=0A=
-  max31785_read_long_data() as an error.=0A=
+- Removed spinlock usage; pmbus_wait() and pmbus_update_ts() now rely=0A=
+  solely on update_lock serialization.=0A=
 =0A=
 v4:=0A=
-- Introduced a spinlock to protect 64-bit next_access_backoff accesses=0A=
-  on 32-bit architectures (dropped in v5).=0A=
-- Standardized all commits and signatures on psanman@juniper.net.=0A=
+- No changes to logic; standardized on the Juniper email address to=0A=
+  resolve the From/SOB mismatch.=0A=
 =0A=
 v3:=0A=
-- Dropped the u16 -> u8 wrapper type fix (already applied upstream).=0A=
-- Fixed a comment style nit in max31785_read_long_data().=0A=
+- No changes to this patch in this version.=0A=
 =0A=
 v2:=0A=
-- Export pmbus_wait() and pmbus_update_ts() from the core.=0A=
-- Use core timing helpers in max31785 to replace local boilerplate.=0A=
+- New patch in the series.=0A=
+- Export pmbus_wait() and pmbus_update_ts() to the PMBUS namespace.=0A=
+- Relocate PMBUS_OP_* bitmasks to the subsystem header.=0A=
+---=0A=
+ drivers/hwmon/pmbus/pmbus.h      | 6 ++++++=0A=
+ drivers/hwmon/pmbus/pmbus_core.c | 9 +++++----=0A=
+ 2 files changed, 11 insertions(+), 4 deletions(-)=0A=
 =0A=
-Sanman Pradhan (3):=0A=
-  hwmon: (pmbus) export pmbus_wait and pmbus_update_ts=0A=
-  hwmon: (pmbus/max31785) use access_delay for PMBus-mediated accesses=0A=
-  hwmon: (pmbus/max31785) check for partial i2c_transfer in=0A=
-    read_long_data=0A=
+diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h=0A=
+index 3ddcb742d289e..deb556971a726 100644=0A=
+--- a/drivers/hwmon/pmbus/pmbus.h=0A=
++++ b/drivers/hwmon/pmbus/pmbus.h=0A=
+@@ -424,6 +424,10 @@ enum vrm_version { vr11 =3D 0, vr12, vr13, imvp9, amd6=
+25mv, nvidia195mv };=0A=
+ #define PMBUS_REV_12 0x22	/* PMBus revision 1.2 */=0A=
+ #define PMBUS_REV_13 0x33	/* PMBus revision 1.3 */=0A=
+ =0A=
++/* Operation type flags for pmbus_update_ts */=0A=
++#define PMBUS_OP_WRITE		BIT(0)=0A=
++#define PMBUS_OP_PAGE_CHANGE	BIT(1)=0A=
++=0A=
+ struct pmbus_driver_info {=0A=
+ 	int pages;		/* Total number of pages */=0A=
+ 	u8 phases[PMBUS_PAGES];	/* Number of phases per page */=0A=
+@@ -541,6 +545,8 @@ int pmbus_regulator_init_cb(struct regulator_dev *rdev,=
 =0A=
- drivers/hwmon/pmbus/max31785.c   | 197 ++++++++++---------------------=0A=
- drivers/hwmon/pmbus/pmbus.h      |   6 +=0A=
- drivers/hwmon/pmbus/pmbus_core.c |   9 +-=0A=
- 3 files changed, 74 insertions(+), 138 deletions(-)=0A=
+ =0A=
+ void pmbus_clear_cache(struct i2c_client *client);=0A=
+ void pmbus_set_update(struct i2c_client *client, u8 reg, bool update);=0A=
++void pmbus_wait(struct i2c_client *client);=0A=
++void pmbus_update_ts(struct i2c_client *client, int op);=0A=
+ int pmbus_set_page(struct i2c_client *client, int page, int phase);=0A=
+ int pmbus_read_word_data(struct i2c_client *client, int page, int phase,=
 =0A=
+ 			 u8 reg);=0A=
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_c=
+ore.c=0A=
+index 4d7634ee61484..ada962d9d2762 100644=0A=
+--- a/drivers/hwmon/pmbus/pmbus_core.c=0A=
++++ b/drivers/hwmon/pmbus/pmbus_core.c=0A=
+@@ -36,8 +36,7 @@=0A=
+  * The type of operation used for picking the delay between=0A=
+  * successive pmbus operations.=0A=
+  */=0A=
+-#define PMBUS_OP_WRITE		BIT(0)=0A=
+-#define PMBUS_OP_PAGE_CHANGE	BIT(1)=0A=
++/* PMBUS_OP_WRITE and PMBUS_OP_PAGE_CHANGE are defined in pmbus.h */=0A=
+ =0A=
+ static int wp =3D -1;=0A=
+ module_param(wp, int, 0444);=0A=
+@@ -173,7 +172,7 @@ void pmbus_set_update(struct i2c_client *client, u8 reg=
+, bool update)=0A=
+ EXPORT_SYMBOL_NS_GPL(pmbus_set_update, "PMBUS");=0A=
+ =0A=
+ /* Some chips need a delay between accesses. */=0A=
+-static void pmbus_wait(struct i2c_client *client)=0A=
++void pmbus_wait(struct i2c_client *client)=0A=
+ {=0A=
+ 	struct pmbus_data *data =3D i2c_get_clientdata(client);=0A=
+ 	s64 delay =3D ktime_us_delta(data->next_access_backoff, ktime_get());=0A=
+@@ -181,9 +180,10 @@ static void pmbus_wait(struct i2c_client *client)=0A=
+ 	if (delay > 0)=0A=
+ 		fsleep(delay);=0A=
+ }=0A=
++EXPORT_SYMBOL_NS_GPL(pmbus_wait, "PMBUS");=0A=
+ =0A=
+ /* Sets the last operation timestamp for pmbus_wait */=0A=
+-static void pmbus_update_ts(struct i2c_client *client, int op)=0A=
++void pmbus_update_ts(struct i2c_client *client, int op)=0A=
+ {=0A=
+ 	struct pmbus_data *data =3D i2c_get_clientdata(client);=0A=
+ 	const struct pmbus_driver_info *info =3D data->info;=0A=
+@@ -197,6 +197,7 @@ static void pmbus_update_ts(struct i2c_client *client, =
+int op)=0A=
+ 	if (delay > 0)=0A=
+ 		data->next_access_backoff =3D ktime_add_us(ktime_get(), delay);=0A=
+ }=0A=
++EXPORT_SYMBOL_NS_GPL(pmbus_update_ts, "PMBUS");=0A=
+ =0A=
+ int pmbus_set_page(struct i2c_client *client, int page, int phase)=0A=
+ {=0A=
 -- =0A=
 2.34.1=0A=
 =0A=
