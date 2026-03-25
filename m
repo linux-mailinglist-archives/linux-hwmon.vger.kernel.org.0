@@ -1,187 +1,220 @@
-Return-Path: <linux-hwmon+bounces-12771-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12767-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EB5oI28OxGk+vgQAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12771-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 17:33:51 +0100
+	id aPOSApYExGnOvQQAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12767-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 16:51:50 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDF2329156
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 17:33:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9782F32872D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 16:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F7A831EE11B
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 16:04:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE4AE3020A59
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 15:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DC33E9295;
-	Wed, 25 Mar 2026 16:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C683E4C8B;
+	Wed, 25 Mar 2026 15:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P50ywjpS"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="QHlsqxc8"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013062.outbound.protection.outlook.com [52.101.83.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683A429DB6C
-	for <linux-hwmon@vger.kernel.org>; Wed, 25 Mar 2026 16:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774454668; cv=none; b=ZYHXH0wYLzpoSTa5mmPDMlLVtzvOk1NTu6iQxbPuHtPRaRbdaZKy/ZmMWusoxUMDBWPDjJTy40cBJ8eR20PxhJ2IP5+meJua0vcBvkoM66T0NU2EBlHTRGJkHLhYcQJeWLwN3JUDwc29C7wNKRPsYY5VA4rir0REU/f/QKMKtGY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774454668; c=relaxed/simple;
-	bh=It2AI6F3YafYz9dpGZrSpJ6G8TBbDP8wXG7gFIH9xd4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jodombtY6rAYd8Jtlsmv03wwOo1J59u+bLlA1PVW8B4FKO9tsOYBLE1c+GQmygz275rwRme5SfYUdFRCh7Ms0+oO5pr5OLZBuiQjPnxCkuPSI6JezqJrzbGhx1+sMof8MWBnCNt4grYtiFyZKXdU9bRjjKPBLueH62d7p6okcYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P50ywjpS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774454666;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hitlAwvXRhuCJkHzSod0gxliy1aWU9t/lo673gtXWhk=;
-	b=P50ywjpScDJeE4SFwJubjxf/lGpTLhDUijPrLz5FSvlQkjcyncSvFKiKvQjjc32x316lJR
-	/gT2GE4Xpj5FUGfY0lr5nWmdDHOvhZ2gWSkub/73zp169G3m9Fp0RM2gmC2BEfPDL3uYhh
-	qxO1vJZVnx/MGlwfnqQKRv7/X4hZFvo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-oDyfpEOxONGv4oKfYgyt2Q-1; Wed,
- 25 Mar 2026 12:04:24 -0400
-X-MC-Unique: oDyfpEOxONGv4oKfYgyt2Q-1
-X-Mimecast-MFC-AGG-ID: oDyfpEOxONGv4oKfYgyt2Q_1774454663
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 26C4718002CF;
-	Wed, 25 Mar 2026 16:04:22 +0000 (UTC)
-Received: from [10.44.32.254] (unknown [10.44.32.254])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21E7B300019F;
-	Wed, 25 Mar 2026 16:04:17 +0000 (UTC)
-Message-ID: <66f8ab00-4058-489e-8a95-e6f8990f4732@redhat.com>
-Date: Wed, 25 Mar 2026 17:04:16 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B083DFC84;
+	Wed, 25 Mar 2026 15:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774453753; cv=fail; b=bNWk+BhHLy1WwlsPhn+gxLLetowvsOdYImoUnTSalRtwN3NgajtSJrGOyDIkouPzVFop9/bsZjTHmpRfYxdxU67onpIJe/4SJUZoQfuGG8y4Jn/cFqOse5ilZJUrdmIodQe9cAy3p83hJYIS8rJeRu8dIAVKeBUdO9zR/oz7+I8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774453753; c=relaxed/simple;
+	bh=YhIJmB14yMkiTYCUGtyXzfqU+jIAAA3HvaZs+udyWFw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rv7FY9sLB11LpTriKYVukEkP7BFXABDVXNsvNqshyKZDqtZ52Q/d1kEAdxxQvEx75nH24cOvCwNUm+PbotRaRMMrxgYPsGGvGG6HKTh4+5HqSnODncRE32NJs7nEstw90sqWtfYB2sYB84oACedbPxu8PrArA4m8am45cVlQl5s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=QHlsqxc8; arc=fail smtp.client-ip=52.101.83.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VhAAfqH9EIqO/EuhqB6jtydXb4oHZuxALW9irvl6WB3pxXv/bTw8dddCkD17pKeL7Akt5jzuGX8YNMLo1I8n9hloqPlSobppHA0mVt3anSde8xFE+R0KFM2AADBzzh3oFTQ/Rlb0SCuPPwphlVhPsItaV0T47nmfje2fl3ZgUK3TRRdPiX3m8kQpsWIUp5vqtqUls4JsPa6IlRsrsuO1mJdHIlKj1j/Pj8CN8/fA0pJBlAfKOxSlhL/q2F9N3hoWhB8Lv6IxpmQqEeKxXzPtwvwov15pFvp1rIM4o2ocxK2Lb3AtsI9KkMITJOLAKIPQi1V3Awn1zF4ZCk3K0kWX0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aYdUOXdqZ9dU0xIZEGtxYqtqBVZlHMpk0VZL/d/aG6M=;
+ b=x+T6/JrM/P1GcTmv0DU3iBDcilaeJTy9M8uupv2UbVzb1JZ+P1b3Z1iv6oVqp0359mSV0XjHk7MjYG1mKd9NAO8qg09QMxgNZZo9Choijaucsh+8XKmGZj1iaXkI0w6llE3H/JVq5k83lnsKe0RF2dZ1S2eiuO/+cBvEWS+01kbDRwd6AD32omHNpLoHFGkvjknivDkFJaCojovwmt1tv7C3IDx2KN7qNQ9cnsSMeRHO7vzeAbvSRnvQwFB41oEHLoDuEpAafbYQk7E5J3moSmCjiF4cRCBAh75p2glqqQqOhOAnalMmVcpnHEXDtpOO/kr77hEHmAjDA+2YLOxcBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aYdUOXdqZ9dU0xIZEGtxYqtqBVZlHMpk0VZL/d/aG6M=;
+ b=QHlsqxc8WWJv2S4bSrw3CzMlX2/dwS+qlJ7hkUmm9ZKN3oMDGFkKuB3aKLFT4xpEhgK3MgGzxzWRH5Uh3Kgzxib86XFLtwhRTcYIR6JnOsa39L0P0vwiWi3eGClhyI1atV3pk1HnZLLp2loYd29AZC8Tka6/evVLKFrY3XBi2c487+bBpAgzc6LT9b5fODtN3ivRcY4HxHyBVmUY9kp1b36kTEy6INT06ef2eh1VEcKZ0ZfmBgFdAVNKtAPEP+3DwACg7MTzY3CANUYR0AloLuW20BMsMEdPdBDbPocGfo8rVEm34VNC1sJOcg3QAxy6Wjoo2ZP/kUugHSMfjjOQpQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
+ by DBBPR04MB7690.eurprd04.prod.outlook.com (2603:10a6:10:200::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 15:49:08 +0000
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::93f5:4ff3:2f4c:183a]) by DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::93f5:4ff3:2f4c:183a%6]) with mapi id 15.20.9723.030; Wed, 25 Mar 2026
+ 15:49:08 +0000
+From: florin.leotescu@oss.nxp.com
+To: Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: daniel.baluta@nxp.com,
+	viorel.suman@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	festevam@gmail.com,
+	Florin Leotescu <florin.leotescu@nxp.com>
+Subject: [PATCH v5 0/2] hwmon: emc2305: Support configurable fan PWM at shutdown
+Date: Wed, 25 Mar 2026 18:04:42 +0200
+Message-Id: <20260325160444.1736866-1-florin.leotescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P191CA0007.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d5::7) To DU7PR04MB11163.eurprd04.prod.outlook.com
+ (2603:10a6:10:5b3::14)
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] dpll: zl3073x: add hwmon support for input
- reference frequencies
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- Michal Schmidt <mschmidt@redhat.com>, Petr Oros <poros@redhat.com>,
- Simon Horman <horms@kernel.org>, Guenter Roeck <linux@roeck-us.net>
-References: <20260320105915.149068-1-ivecera@redhat.com>
- <20260320105915.149068-4-ivecera@redhat.com>
- <964752ec-8e6d-444a-aad0-80da3acb2dab@roeck-us.net>
- <7dbb5130-72cf-49d2-bfac-3439deb1b2e3@redhat.com>
- <20260323154825.1a2320c4@kernel.org>
- <50a1671c-9901-426a-97ed-bf36400fe9a7@roeck-us.net>
- <6f1e98b3-4b86-4b7f-8c91-d8d5721aeb25@redhat.com>
- <8486ce6e-ad2a-493d-b734-b40e8db9213e@redhat.com>
- <20260324143654.4dcec5a0@kernel.org>
- <9f169bf2-1d1f-4f7f-9f9f-0b90d06673e0@redhat.com>
- <2ea6547d-aa47-4333-b569-3a10a8fa9988@linux.dev>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <2ea6547d-aa47-4333-b569-3a10a8fa9988@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|DBBPR04MB7690:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1b54128-c4a7-4173-1b05-08de8a860cde
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|19092799006|1800799024|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	iOI15vqXFzVvpI4iQYQhOHBsnVihmYYNG0/kSg635G9tiK5QLlSyYfxkrBn0haPhFIC1ZTsnSyBIIdSnSzEsfdLEho6d/3LI0sTUC2Feli/szHBBYhp2RUJzLPNIMFG+cz2I3EdwqMi4YiUDyjPnYzMFPjQTPJvAXqSb4QgHjHZ0FiSuRnczXlA8rbhw8bD+oSd7zjFpvHhZtZbhRSZro3OdbEzlIW8xXHAmVrhReFGHJ85r4fZtc1EBp4FdN3g0BQWBOl2WMzSQSe5bybe5I83erv3li0NToIlZRvz8PkO+masEOB6S3Z350c8QXq1/yD12adibjDtrc/aNITwjE71Hqyw0ZFG7o31O4LhLDbZZPd7nb0uGFtDM9bEoorIZbriAoq7ZaMX2s979zaJ9oDWLIjoBfO7bOgV34F2y8RmSJ/mhKaJB/mEb4xTR06R0YLTPrUSbkqvDsRiriF4AZuQNtD4MDnE0tovVc3cviEwY2vPdhBHhYLDWNzAIgsetQngoOqOqZSZoVhYM/9fMzqQmfxNYNd9GUIHqt1ZzGxgVuDKhH7X7ngGZtc8DdW6d2SoeibL3xtw1PmhJ1dnRLT5FD+Za7/rabNOViG40te1IZI3Vuis16cr8hxAK2l23Sj1JDD3aiUhNBNr8cItM8ydpfwspX4PknuGv12VXa+dy1P5CxsHB2gBGohi1h/8/IbO3ORxnWkxapA6YRdsG8ElAjE6tlapqJxTtsWGai/c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(19092799006)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?YYcNW2ZddIwAyLVtwRpV7jwavuPlTZv+9VADpbGGBOiva+nfj1V5+17m9A?=
+ =?iso-8859-1?Q?6DC9jkzOjz9OILWg0LI9LhbKmKugV4de/U23YdFQ26MK/qfIK7EgBNjNvC?=
+ =?iso-8859-1?Q?7ST+0wbDKpXDIJut0HHMQlxudiGeBbHtZk+ey67+LZIrXnDglBcp6zFlj6?=
+ =?iso-8859-1?Q?gaPLFgQynlrIxSb0imaxkgGFdsIBNeNE+fPAjC3D2igvQe5a/0+SVUkQ4H?=
+ =?iso-8859-1?Q?U2w98Fm5ZyDwB+SGG/uMNjBynq4z0NY9pz0l9EYexIda3ovndJRUNW+l4U?=
+ =?iso-8859-1?Q?YWTrfuma/uhFUnrlQiKp+F82eUkYOr1H6hd9C9YwEuPNkQAiJNj1PP3BvT?=
+ =?iso-8859-1?Q?ro9OEYuB/Ai1vP7pFlvppFFrkW6wbziDCs5lipPWtF1/2ts6jq9LH95DHk?=
+ =?iso-8859-1?Q?vfG8wO0POgWYrbl9qCVkfuOgypxQ25qGKF/T0OM7vkPF4GloLgXXJfQVwI?=
+ =?iso-8859-1?Q?4L1oVVO1kYrIVeFZhrhCLe/yEwgXMrc8HHgLjG2oznxamKguYPkE1jbVvi?=
+ =?iso-8859-1?Q?FFROVWctEZaHZ4pl2BABSkdlKfimdUioiz/ZM4XPNa4qdx02DlyhJDjLMH?=
+ =?iso-8859-1?Q?RWWAYeJ41oZS37E0Qt4qTgLvfafNIHuHFPdghyq+bPftp8pZZw8b7DXoId?=
+ =?iso-8859-1?Q?Bf87CntbfmR6y/CCrWhex0eFXmea1uh50osk2Qx5irpod/38eF0Yjar03M?=
+ =?iso-8859-1?Q?927Tmcd55fY+awWZ8kkiWi/Qz6X3R6T2vPIcPg5H6JfRNGLzAxP93v6quz?=
+ =?iso-8859-1?Q?y1RV8dl/GCPDCIc4GAcjrQbKsWQDkHWiDW0Ohz1EzBAI9YYaTqkgBZqULh?=
+ =?iso-8859-1?Q?NECwxm2iNGHAFwoyqyIPkSZ7a6kZD6zRb9/tUykQEDlw6SJcBlueFwWb2A?=
+ =?iso-8859-1?Q?Sz/ilMRnFtWCFUPSprYqLaNQ+T05nVaGOvBrJ+/j32gbJY5xK/T3Bj/CGg?=
+ =?iso-8859-1?Q?vHc4q0WD6lcLeQPxPdJegIEeybtHV68ykp1utMKx8fqRJ3n25plchDLjzO?=
+ =?iso-8859-1?Q?Q+t0EA7b9fDcOTcSWouWMdqf3oieLk5wbAjRPWIcb+XxSR626Dui/vf0xY?=
+ =?iso-8859-1?Q?m4KtR0FVpg02i0n/WA4xsJxU6IhuHOJ8XZ8kOqQh72gaLk5nNb73LeBAmT?=
+ =?iso-8859-1?Q?QIgD3TQraVXHh8zxbuhOwtFm8PyCbQMRW8hoigQ1XZ/s2yokJjQMyCRuNl?=
+ =?iso-8859-1?Q?gd+mrJ9yDbupM1rABjPbdclWJO36bK2I9r1NHVRGyHTL5adhMwcQqzRd0C?=
+ =?iso-8859-1?Q?hCVCrQK/FpaNH8qgCQ1BH97pLp/NQU5VYkB12+j4068hdiE6v+qSU1dAEr?=
+ =?iso-8859-1?Q?NHLoZx5a6eLSos/NjJnDACM8lqYvdNxObG/Z+aFpbv48RBWS4281vhwv/8?=
+ =?iso-8859-1?Q?SlXXwZSpiP8xilQlyzI1yM1c9/Df+Ns797j+Sxf7x47lyVkXfMOV7HhSbg?=
+ =?iso-8859-1?Q?5E0WeR87X50FVw2cxl4DBbsJAjJWBGY/klToPJVSq0zz7Y8BuMrA7SXOwD?=
+ =?iso-8859-1?Q?ha4WxLnXFXoAwElY85UzbDitmsBbPl+WvMN1UuqH5JdtIL+AzJK+6VVH2c?=
+ =?iso-8859-1?Q?5HgpQASM4NOI857b5LpIiPK/USNTHTAzUTfUl2scVgnEt2TYM35lpd6m00?=
+ =?iso-8859-1?Q?gBlnrGiGCnKqnN2c1ktKwN/dXW3tMwW61d7PTrKH3BoOxobk/foD1BwuJo?=
+ =?iso-8859-1?Q?PYhC7PkI6WpOEyYFhDg4vcFr2WZ4VHb8gMTRqJS9FLojckEVRjroIzY4qX?=
+ =?iso-8859-1?Q?c6iLOlxrMQ+nwfSJz/KuXg+XNV1JJNXXVaFJgVO3UjEyToaSBzJ5jBQ45J?=
+ =?iso-8859-1?Q?3BCQZ+/dww=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1b54128-c4a7-4173-1b05-08de8a860cde
+X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 15:49:08.3220
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HJLE9lffT7wgLGRiI8avy0HilekhkZ/ykjTVUopE7BROcoHXZSpbmakjqNVAcTvQLARonLxZRDwc036LFdls5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7690
+X-Spamd-Result: default: False [2.94 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-12771-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-12767-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[florin.leotescu@oss.nxp.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ivecera@redhat.com,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4EDF2329156
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[nxp.com,lists.infradead.org,lists.linux.dev,gmail.com];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.nxp.com:mid]
+X-Rspamd-Queue-Id: 9782F32872D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
+This series adds support for configuring the fan PWM duty cycle applied
+during system shutdown for the EMC2305 fan controller.
 
-On 3/25/26 4:56 PM, Vadim Fedorenko wrote:
-> On 25/03/2026 11:19, Ivan Vecera wrote:
->>
->>
->> On 3/24/26 10:36 PM, Jakub Kicinski wrote:
->>> On Tue, 24 Mar 2026 13:59:19 +0100 Ivan Vecera wrote:
->>>>>> In the hardware monitoring world one would have min/max attributes 
->>>>>> and
->>>>>> one or more alarm attributes. I never heard about the idea of 
->>>>>> reporting
->>>>>> deviations, and for typical hardware monitoring attributes it does 
->>>>>> not
->>>>>> really make sense. What would be a "deviation" of a temperature/
->>>>>> voltage/current/power/humidity sensor ? Such attributes typically 
->>>>>> have
->>>>>> an operational range, and they are allowed and even expected to
->>>>>> fluctuate within that range.
->>>>>
->>>>> Ivan, my take on all the above is that using the HWmon interface 
->>>>> here is
->>>>> stretching it too much. I think it would be better to move debugfs
->>>>> and/or netlink events.
->>>>
->>>> I'd rather avoid debugfs... My proposal is to expose absolute measured
->>>> frequency attribute of dpll-pin and follow phase-offset-monitor
->>>> functionality:
->>>>
->>>> So:
->>>> * add real-frequency attribute to dpll pin
->>>> * add real-frequency-monitor attribute dpll device
->>>> * user will be able to enable/disable monitoring by enabling/disabling
->>>>     real-frequency-monitor feature (similarly to phase-offset-monitor)
->>>>
->>>> Thoughts?
->>>
->>> I don't have a strong opinion. IDK where to draw the line between DPLL
->>> and "random functionality some devices may have". We have 3 DPLL
->>> maintainers, let's see what their majority opinion is..
->>
->> I think that line has already been crossed by temperature reporting,
->> which has been there since the beginning. Actual frequency measurement
->> is, in my opinion, much closer to the DPLL world than temperature 
->> reporting. :-)
-> 
-> Frequency measurements are DPLL-world properties indeed. Temperature
-> reporting was added as it has some influence on the stability of DPLL 
-> devices as well as on any oscillators.
-> 
->> Anyway, I have the relevant patch-set already prepared, so I can submit
->> it if you want to see it.
-> Feel free to submit, I'll be happy to review it.
-> 
-Thanks, will do..
+Some platforms require fans to transition to a predefined safe state
+during shutdown or reboot handoff until firmware or the next boot stage
+reconfigures the controller.
 
-Ivan
+The new optional Device Tree property "fan-shutdown-percent" allows the
+shutdown PWM duty cycle to be configured per fan output.
+
+Changes in v5:
+- Add fan channel index bound check after reg property read 
+  to prevent out-of-bounds access.
+- Refine fan-shutdown-percent description.
+Changes in v4:
+- Initialize pwm_shudown array to EMC2305_PWM_SHUTDOWN_UNSET in probe,
+  to avoid treating unconfigured channels as valid and written 0
+  during shutdown
+Changes in v3:
+- Rebased on current upstream
+- Dropped already upstreamed of_node_put(child) fix
+Changes in v2:
+- Address feedback from Guenter Roeck
+- Make shutdown behavior configurable via Device Tree
+- Add optional fan-shutdown-percent property
+- Apply shutdown PWM only for channels defining the property
+
+Florin Leotescu (2):
+  dt-bindings: hwmon: emc2305: Add fan-shutdown-percent property
+  hwmon: emc2305: Support configurable fan PWM at shutdown
+
+ .../bindings/hwmon/microchip,emc2305.yaml     |  8 ++++
+ drivers/hwmon/emc2305.c                       | 41 +++++++++++++++++++
+ 2 files changed, 49 insertions(+)
+
+-- 
+2.34.1
 
 
