@@ -1,64 +1,59 @@
-Return-Path: <linux-hwmon+bounces-12735-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12736-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEkOH3Ccw2myrwQAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12735-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 09:27:28 +0100
+	id wOxaLzahw2kbsQQAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12736-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 09:47:50 +0100
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F22321668
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 09:27:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41B732195F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 09:47:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 10F0230074CD
-	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 08:24:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 490193042BF4
+	for <lists+linux-hwmon@lfdr.de>; Wed, 25 Mar 2026 08:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9973537F1;
-	Wed, 25 Mar 2026 08:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D187F347FD7;
+	Wed, 25 Mar 2026 08:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="syG3GYCG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOMiIoxA"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F626159E;
-	Wed, 25 Mar 2026 08:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8C9347BD9;
+	Wed, 25 Mar 2026 08:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774427053; cv=none; b=pvqk52eD04bXM3nhvm7V0cgKz0pMdz7oZ8IycPdpdpGs5c6/t7Tc/AZ8NyTkNzs+liaJBih5wZsJN5SehK4Cfzh6ONyHNCxWy+pe2X8D2HspFVX0NuJjK8Zzzv1NrN3IQ+JTz8e9pBeTLngMBphvenWBVqvifq2pqNyvGWatkb0=
+	t=1774428316; cv=none; b=UfSCc7vIlIkMy60UFOG6ilXwtWXldefl8XkEXiVqYfvdOlqVvf2He6OZM1C4zqOCrkvlu6FoYVOYmADsebFkANukNrp/TOrLZhNipmrQ8veBIQESrYeoD+SjZtCrPF3LQhYlM/PO1gCgJTA/GB4NUfvi8HztKCGKwvk0rXT2sF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774427053; c=relaxed/simple;
-	bh=k5PHQe3iVJCGlsRJbm6qyUMIgyWVPZaZc+XjwC2x4pY=;
+	s=arc-20240116; t=1774428316; c=relaxed/simple;
+	bh=RaxfN/o8jLEUzXDbWswxoJsPvsxzdUtRAYEbKG1akDs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HKbZS46i72fFx3NsIi2d4RLc2+Wg3Uz14Wsp4XBzoVXCDDkyTEijqGselUlyUO/qmJLNKm/soP+Uvb/9pdtaROX1/2YGpF7iugKKrNCLsIbjL2ZqkB3UnBPAOF53uhxfggzA0Ogk2UdGT0rRWKUJVdDaJuDoLjpCnZw9BeKjMns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=syG3GYCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F43C4CEF7;
-	Wed, 25 Mar 2026 08:24:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=D3N27mC1qwV0eA0iDwUl8LP8P7RmEZvlOfxui7Iyux6THjdeZwPiT3QkVv0NKgnSBi9o5nktlWgebQNvuK/MeDqACgM2Qz4wPikvxLGZbFDoFtyRtTcSiki14TR0T3n2sn7RcgOIbMocjylMuaaXByqdtc74Ye6RrGbHzLnJL48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOMiIoxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03F8C4CEF7;
+	Wed, 25 Mar 2026 08:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774427052;
-	bh=k5PHQe3iVJCGlsRJbm6qyUMIgyWVPZaZc+XjwC2x4pY=;
+	s=k20201202; t=1774428316;
+	bh=RaxfN/o8jLEUzXDbWswxoJsPvsxzdUtRAYEbKG1akDs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=syG3GYCGUrAo6xDxvXSh3i3GQltOpzzWe/0ZVL8WwF8kzDWOWEK0GqQOU73IXgcKD
-	 HSRhpjEGvKGrtCk9+ipuM+9fcReH48CiGqJ8FryxjPtAw3v5EiTmuw20qdIDGf6G17
-	 7DZcim8TEAsq0ZRnv0yAQHYlEpgICuhXFCqtz85xRu422M+CMG0M4jOwiG6/p+hRTy
-	 64guK7ZRaSKRkkXWdVW9y0w8uYy8NdOZ/3SeVmBei6a9Z3L4+XVZIvWGuYoitTgpSF
-	 Jfn1FbZkmQCpD81OU8jZXl+0PQIMGSvbiJLQj1Thu8vl/FFe3Der8bJliLWHZwQuHy
-	 RvBGiqrtCjeRw==
-Date: Wed, 25 Mar 2026 09:24:10 +0100
+	b=kOMiIoxAdEp4GiakbpZiotB6tttGuzKnmpwV5f122bWFZT4n+YXYNbueEGFar8GEo
+	 26HrmBtMrCCtzs3kpSbPXpmd3hzPCbO/wWEod7/BHSoOQh91sfbirmA+VLh4jwTUZM
+	 li6gHqcocH98Jzu29B8ThzMW4+4+a43wv/oPhPbPM1170d+cTQBXVwvpaskvo3OQlC
+	 XW1Uiz/eSitKTJK5AAVjWOfT9KDJAIA+8l3zk7Wf9ugeufBHzECBDCoXonteEJbvDI
+	 InfGswTfcfp4iKXq2sFnpOEPR84I0/06Xr7IM7RiGDR7JKaFTSehIHlHFrjoxIxB1L
+	 cAjw90taooKxw==
+Date: Wed, 25 Mar 2026 09:45:13 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dawei Liu <dawei.liu.jy@renesas.com>
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Grant Peltier <grant.peltier.jg@renesas.com>, Linda Xin <linda.xin.jg@renesas.com>, 
-	Tabrez Ahmed <tabreztalks@gmail.com>, linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: hwmon: isl68137: Add compatible
- strings for RAA228942 and RAA228943
-Message-ID: <20260325-intelligent-auk-of-tempering-64cad0@quoll>
-References: <20260325041728.68-1-dawei.liu.jy@renesas.com>
- <20260325041728.68-2-dawei.liu.jy@renesas.com>
+To: Zaixiang Xu <zaixiang.xu.dev@gmail.com>
+Cc: linux@roeck-us.net, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dt-bindings: hwmon: Add Sensirion SHT30 series
+Message-ID: <20260325-true-glistening-mole-a49303@quoll>
+References: <1774354869-119736-1-git-send-email-zaixiang.xu.dev@gmail.com>
+ <1774354869-119736-3-git-send-email-zaixiang.xu.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -67,66 +62,89 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260325041728.68-2-dawei.liu.jy@renesas.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <1774354869-119736-3-git-send-email-zaixiang.xu.dev@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-12735-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12736-lists,linux-hwmon=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[roeck-us.net,kernel.org,lwn.net,linuxfoundation.org,glider.be,gmail.com,renesas.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt,renesas];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email,0.0.0.60:email]
-X-Rspamd-Queue-Id: B1F22321668
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D41B732195F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 25, 2026 at 12:17:27PM +0800, Dawei Liu wrote:
-> +      - items:
-> +          - enum:
-> +              - renesas,raa228942
-> +              - renesas,raa228943
-> +          - const: renesas,raa228244
->  
->    reg:
->      maxItems: 1
-> @@ -149,3 +156,13 @@ examples:
->          };
->        };
->      };
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
+On Tue, Mar 24, 2026 at 08:21:07PM +0800, Zaixiang Xu wrote:
+> Add YAML devicetree binding schema for Sensirion SHT30 series and
+> GXCAS GXHT30 sensors. Wildcards are replaced with specific model
+> names as per maintainer feedback.
+
+Which wildcards? I do not see your patch replacing any wildcards. Your
+patch only adds new code, so what "are replaced" means?
+
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/r/202603212044.BRPaiz86-lkp@intel.com/
+
+What kernel test robot exactly report? That SHT30 is missing?
+
+> Signed-off-by: Zaixiang Xu <zaixiang.xu.dev@gmail.com>
+> ---
+>  .../bindings/hwmon/sensirion,sht30.yaml       | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/sensirion,sht30.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/sensirion,sht30.yaml b/Documentation/devicetree/bindings/hwmon/sensirion,sht30.yaml
+> new file mode 100644
+> index 000000000000..1b5ce822b37b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/sensirion,sht30.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/hwmon/sensirion,sht30.yaml#
+> +$schema: http://devicetree.org/meta-schema.yaml#
 > +
-> +      regulator@60 {
-> +        compatible = "renesas,raa228942", "renesas,raa228244";
+> +title: Sensirion SHT30 Humidity and Temperature Sensor
+> +
+> +maintainers:
+> +  - Zaixiang Xu <zaixiang.xu.dev@gmail.com>
+> +
+> +description: |
 
-No need for new example - does not differ from the rest.
+No improvements. More comments were also ignored.
 
-With example dropped:
+<form letter>
+This is a friendly reminder during the review process.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+It seems my or other reviewer's previous comments were not fully
+addressed. Maybe the feedback got lost between the quotes, maybe you
+just forgot to apply it. Please go back to the previous discussion and
+either implement all requested changes or keep discussing them.
+
+Thank you.
+</form letter>
 
 Best regards,
 Krzysztof
