@@ -1,187 +1,131 @@
-Return-Path: <linux-hwmon+bounces-12968-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12971-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK6hL89DzGm+RgYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12968-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 23:59:43 +0200
+	id mAvTLupWzGkfSgYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12971-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Apr 2026 01:21:14 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4185E37243A
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 23:59:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E68372ADB
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Apr 2026 01:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D79D9305C3FB
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 21:54:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EEA6305E32A
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 23:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479293DC4A3;
-	Tue, 31 Mar 2026 21:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAB046AF01;
+	Tue, 31 Mar 2026 23:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fatooh.org header.i=@fatooh.org header.b="o+8kh86I"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="Cgk2vEmD"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from juniper.fatooh.org (juniper.fatooh.org [173.255.221.30])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A452D3EC1
-	for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 21:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.255.221.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD8B4657D6
+	for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 23:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774994059; cv=none; b=RNvdQiq6jJSQ6J56nQ8UlKshcLkr1WYBLvGaHG2VcBwHceZtXnAWhjN/PhAd0yDUBKIFdwz4t+QP0/6IfmHM62G+gtO+knaOlngTB3bsv0Pjs64WFH4TvhcU+8W7wWeR3BqI1qMReMfPCah+vdPgvrOsKK4R3iW65ShCXjGL7jk=
+	t=1774999171; cv=none; b=gsBGft/9PRmIbeNWgsAKFbB7fXmM0ciFNebRZSTiwznqDdPg0ZKbG1Z3BSm5H1mKFMtzVZCAzwDYdZikcV4IzOLXcR9kA6HIjWuB1zICaihD2Y8PoqY+whDuQ45hX1iJkY5pvjkuwRWQcUkrOYNNsD0bz9XshaDLUKzupXj8+js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774994059; c=relaxed/simple;
-	bh=yZxtZWBqdfenSFda9Pc97ZeUxFX3TNjjuLPulpbG7Eo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TxbYRsD9Wh8eibJt8M04h1x47XpMVRdKvwLCRNp1yJ/hWZpF8OzyhHymhVbVe5l0Ytk4xV7MwjN98UJt3pWj0PITfrFHJA2ZVDYc+yN1BDgC1rPnRLWn1mFDA/6jqllfJtWZQnrHzTS9Ysn/U31z4vcZas72KjIpwz9a3Cb3N/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fatooh.org; spf=pass smtp.mailfrom=fatooh.org; dkim=pass (1024-bit key) header.d=fatooh.org header.i=@fatooh.org header.b=o+8kh86I; arc=none smtp.client-ip=173.255.221.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fatooh.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fatooh.org
-Received: from juniper.fatooh.org (juniper.fatooh.org [127.0.0.1])
+	s=arc-20240116; t=1774999171; c=relaxed/simple;
+	bh=5jK8GcVu1vSZwUFJ8czxSX0PHhJofNRdkC6TilUwZdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Btx7MMvNQ5bSzPFhkiDQ6106WBDZ12rtO8rDM2ZBW7pQsmNdAfrGahhpLyN34TF+GYXTAcDZfLsqhg+A0k2C1pg/trk96LgnRXqjPGBKtF4kPwbpdcL+cUkjpAfztscABdrZe554h6F8JL5EdeXFw8Vogg/1/9Z5cxpxvWTeqek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=Cgk2vEmD; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by juniper.fatooh.org (Postfix) with ESMTPS id 67FEE401F4;
-	Tue, 31 Mar 2026 14:54:16 -0700 (PDT)
-Received: from juniper.fatooh.org (juniper.fatooh.org [127.0.0.1])
-	by juniper.fatooh.org (Postfix) with ESMTP id 2DF9140261;
-	Tue, 31 Mar 2026 14:54:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=simple; d=fatooh.org; h=from:to
-	:subject:date:message-id:mime-version:content-type
-	:content-transfer-encoding; s=dkim; bh=QXTsAQIfet5GSU6XSgQEulbUP
-	DE=; b=o+8kh86IdzWYz49/f2BHW6uU4NBkNVjQMt+AM2mK0ggrMMaYHjTH0hhOA
-	xs7+OcOILG2kuu4q5GPUE9hfZuQshYZxmnTl6ljAsEwFZZBPX9vpnUfh6J02bRXH
-	bUUo477x5HwS93AgkTUDnd+patK3lQQzGTdpvPJH/WzBLXxoXU=
-DomainKey-Signature: a=rsa-sha1; c=simple; d=fatooh.org; h=from:to
-	:subject:date:message-id:mime-version:content-type
-	:content-transfer-encoding; q=dns; s=dkim; b=NQGqpaxWTQTllSe7a7i
-	C8mJae8tfTgxNiOAxujCmxkgqoYuLaXkCqK747lZQlFmA1QpTxXS2tamJpr+qq5O
-	NakZIXKkxg1zRcP7LdDjAgSnkdM6nDaMdGv1v4OT37wO1j31NOJmWp4IZ4wvhsqm
-	TGt2wXxArwL4p64ALFrVmEW4=
-Received: from bugfood.local (unknown [104.184.153.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by juniper.fatooh.org (Postfix) with ESMTPSA id E3258401F4;
-	Tue, 31 Mar 2026 14:54:15 -0700 (PDT)
-Received: by bugfood.local (Postfix, from userid 1000)
-	id E8CC7C1EF214; Tue, 31 Mar 2026 14:54:14 -0700 (PDT)
-From: Corey Hickey <bugfood-ml@fatooh.org>
-To: Corey Hickey <bugfood-ml@fatooh.org>,
-	Eugene Shalygin <eugene.shalygin@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH v4] hwmon: (asus-ec-sensors) fix T_Sensor for PRIME X670E-PRO WIFI
-Date: Tue, 31 Mar 2026 14:49:06 -0700
-Message-ID: <20260331215414.368785-1-bugfood-ml@fatooh.org>
-X-Mailer: git-send-email 2.51.0
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id DB9912C046F;
+	Wed,  1 Apr 2026 12:19:25 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1774999165;
+	bh=oIhU8F0u3bMco9H5yKNEmxDtoEsOH18S7pDwsiTk314=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Cgk2vEmDGKOezVrNaHJoF+4N4T01gcHsHoWJT2GpluLy+YjqM2rD4Hx+MTxVI5cON
+	 9CWuHOOkJ3oZj+QvyneWYM6rzD7oYqdBEbQLfkJOHAHcy7NETgr+dFdxFhDc8TUDy8
+	 UCkPbAOIkGqVnjj7eLxFkkQRwBjPfpUTCufWOXY3Ww3HDD+kOaBUvvUyPpFghiLgS3
+	 8Ntfihm/RMAg37msTZE2YuIIkthyAgHDRbgwIIQDW5mPyGp9/sSyV2583gimAe5aZK
+	 S1AByYdtno0Wr1WLCqRGxqJUHEHIKO0yiEJbFx/MfNcc5k+TyvsiepFyYs6Skm0l/n
+	 DscoKUR87p0yg==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B69cc567d0000>; Wed, 01 Apr 2026 12:19:25 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.12])
+	by pat.atlnz.lc (Postfix) with ESMTP id 88F8913EE44;
+	Wed,  1 Apr 2026 12:19:25 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+	id 81AEA2807C8; Wed,  1 Apr 2026 12:19:25 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux@roeck-us.net
+Cc: devicetree@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 0/2] hwmon: pmbus: Sony APS-379
+Date: Wed,  1 Apr 2026 12:19:11 +1300
+Message-ID: <20260331231916.94662-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=EcprQ+mC c=1 sm=1 tr=0 ts=69cc567d a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=A5OVakUREuEA:10 a=RPtVrnf-bw8RX5avTx0A:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[fatooh.org:s=dkim];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[alliedtelesis.co.nz,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[alliedtelesis.co.nz:s=mail181024];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-12968-lists,linux-hwmon=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[tor.lore.kernel.org:server fail,fatooh.org:server fail];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[fatooh.org,gmail.com,roeck-us.net,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[fatooh.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,fatooh.org:dkim,fatooh.org:email,fatooh.org:mid];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bugfood-ml@fatooh.org,linux-hwmon@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[chris.packham@alliedtelesis.co.nz,linux-hwmon@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[fatooh.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12971-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[alliedtelesis.co.nz:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alliedtelesis.co.nz:dkim,alliedtelesis.co.nz:mid];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 4185E37243A
+X-Rspamd-Queue-Id: E9E68372ADB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Corey Hickey <bugfood-c@fatooh.org>
+This series add support for the PMBus hwmon on the Sony
+APS-379 power supply module. There's some deviations from
+the PMBus specification that need to be dealt with.
 
-On the Asus PRIME X670E-PRO WIFI, the driver reports a constant value of
-zero for T_Sensor. On this board, the register for T_Sensor is at a
-diferent address, as found by experimentation and confirmed by
-comparison to an independent temperature reading.
+Chris Packham (2):
+  dt-bindings: trivial-devices: Add sony,aps-379
+  hwmon: pmbus: Add support for Sony APS-379
 
-* sensor disconnected: -62.0°C
-* ambient temperature: +22.0°C
-* held between fingers: +30.0°C
+ .../devicetree/bindings/trivial-devices.yaml  |   2 +
+ drivers/hwmon/pmbus/Kconfig                   |   6 +
+ drivers/hwmon/pmbus/Makefile                  |   1 +
+ drivers/hwmon/pmbus/aps-379.c                 | 196 ++++++++++++++++++
+ 4 files changed, 205 insertions(+)
+ create mode 100644 drivers/hwmon/pmbus/aps-379.c
 
-Introduce SENSOR_TEMP_T_SENSOR_ALT1 to support the PRIME X670E-PRO WIFI
-without causing a regression for other 600-series boards
-
-Fixes: f7ac3020036b ("hwmon: (asus-ec-sensors) add ROG Crosshair X670E Gene.")
-Signed-off-by: Corey Hickey <bugfood-c@fatooh.org>
----
-v2:
-* Fixed comment format.
-
-v3:
-* Removed comment about T_Sensor address varying.
-* Removed incorrect reference to thermocouple in commit message.
-
-v4:
-* Made commit message much more concise.
-
- drivers/hwmon/asus-ec-sensors.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index 86f444498650..adedaf0db10e 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -111,6 +111,8 @@ enum ec_sensors {
- 	ec_sensor_temp_mb,
- 	/* "T_Sensor" temperature sensor reading [℃] */
- 	ec_sensor_temp_t_sensor,
-+	/* like ec_sensor_temp_t_sensor, but at an alternate address [℃] */
-+	ec_sensor_temp_t_sensor_alt1,
- 	/* VRM temperature [℃] */
- 	ec_sensor_temp_vrm,
- 	/* VRM east (right) temperature [℃] */
-@@ -160,6 +162,7 @@ enum ec_sensors {
- #define SENSOR_TEMP_CPU_PACKAGE BIT(ec_sensor_temp_cpu_package)
- #define SENSOR_TEMP_MB BIT(ec_sensor_temp_mb)
- #define SENSOR_TEMP_T_SENSOR BIT(ec_sensor_temp_t_sensor)
-+#define SENSOR_TEMP_T_SENSOR_ALT1 BIT(ec_sensor_temp_t_sensor_alt1)
- #define SENSOR_TEMP_VRM BIT(ec_sensor_temp_vrm)
- #define SENSOR_TEMP_VRME BIT(ec_sensor_temp_vrme)
- #define SENSOR_TEMP_VRMW BIT(ec_sensor_temp_vrmw)
-@@ -279,6 +282,8 @@ static const struct ec_sensor_info sensors_family_amd_600[] = {
- 		EC_SENSOR("VRM", hwmon_temp, 1, 0x00, 0x33),
- 	[ec_sensor_temp_t_sensor] =
- 		EC_SENSOR("T_Sensor", hwmon_temp, 1, 0x00, 0x36),
-+	[ec_sensor_temp_t_sensor_alt1] =
-+		EC_SENSOR("T_Sensor", hwmon_temp, 1, 0x00, 0x37),
- 	[ec_sensor_fan_cpu_opt] =
- 		EC_SENSOR("CPU_Opt", hwmon_fan, 2, 0x00, 0xb0),
- 	[ec_sensor_temp_water_in] =
-@@ -519,7 +524,7 @@ static const struct ec_board_info board_info_prime_x570_pro = {
- static const struct ec_board_info board_info_prime_x670e_pro_wifi = {
- 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
- 		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
--		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT,
-+		SENSOR_TEMP_T_SENSOR_ALT1 | SENSOR_FAN_CPU_OPT,
- 	.mutex_path = ACPI_GLOBAL_LOCK_PSEUDO_PATH,
- 	.family = family_amd_600_series,
- };
--- 
-2.51.0
+--=20
+2.53.0
 
 
