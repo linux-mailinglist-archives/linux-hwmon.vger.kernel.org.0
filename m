@@ -1,221 +1,169 @@
-Return-Path: <linux-hwmon+bounces-12948-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12950-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNjMGGj9y2nqNAYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12948-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 18:59:20 +0200
+	id CKiWMTkEzGljNQYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12950-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 19:28:25 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F048136D990
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 18:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2F436EC59
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 19:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDA673103629
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 16:46:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C40F3145D7B
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 17:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E33413258;
-	Tue, 31 Mar 2026 16:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="HAN7d5g5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5122136308A;
+	Tue, 31 Mar 2026 17:16:35 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270AB3EF0A2
-	for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774975597; cv=pass; b=AxD57N9ObToWwA3NnGpe2XXXIqf8jkUioeOeYJiNE7ctMqbfjd25ao+1NdmccjjoJZiC0pXQGDkbYqLW/1z6qS+4Gpg852fOpfaxItWXgB343MgF4lyPJqvXWSafgXFx2LBvp9ckXMKxw4JYw4MQnt6AtmKtCIGEeo8++NlmGCs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774975597; c=relaxed/simple;
-	bh=HzYbfwAcPnd0HwHQXnUiS/moFgAvTCCmXeteH0hKD9Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aoFdDTeAAf4kqlQkv18cG8bDJzIP3m5u31/MWzn+16fi4FubO1K6S/3cwc5OL4Q9ysV9DQRve7/k4FEubeHfqOsv8mWgS65L0BzMluFbZWgEvwJ2gF6OaP6O69dFWRDRDCmhj503Kogz3lRPJENLWZAs2VUBKT+JW6W9A8uxq6o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=HAN7d5g5; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flipper.net
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66c05fb27e4so3403030a12.2
-        for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 09:46:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774975594; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZFg+vXrwfIVOl3U7Zyh01K4Z3WWlJIhLNSaV/X4JpBGL5YCu1W9lNcfXr/tOOiqgX/
-         gcwSSm50iI2pVDdeHcV08fLJTuEE0v0qBrKOLFxDiZfoNHC3gEJXuG+ui1YeRz+I+6I2
-         Lt5BGnmE4bxs1StzrafzXNq5C9fc84uW4BYWNCv1wnlIqvkLLixQHSQgtmli8eBdUg6t
-         W3R36u0TN3GyTZ3NNYI+O4U/7dUlcCRbAz/MT8GbgbvnyMIKgR9mqV4MAh5xpDD0z4/L
-         4gTAs6ppUvVpQm/zuci/C7IvRNeTXxWamuayv+E4x/54kL+yk43jG7QlF/q9dKO+sucn
-         2ckA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GouBERXJUhyxyJHAw9h3FhUT0Po7LZnvJzNFya+cCZs=;
-        fh=4B5tKh3wiDdiwzSXTdVJ1BlzECSAOIUbqptnYI7m+MY=;
-        b=D/oPCqt2h29p3MKex7d8dN6xJ52nhGOh8+zVb054zbDxXRXgoOvW76DorHJvLmlnzI
-         Ev8nrXKdYL4gjFPWnSSlLBiJJf/5u2eIsGmkdOdXjylpxQHk6eycCwOrz2EOV9oM63mo
-         3cUgtC2DEiPvRdsuvDK6gexq1hslxxx2YTXjOUhpCeQfnBCUHeJeiIvWAeLmivw3HPs3
-         xntuZDmcYVkIiO+bEQAke+lcY1a+268S+SHtTVCXU3yWpDvqs4pI9B9jg8nr7lNfv0Me
-         njz/Ly6M+qdkKPZH/fX8unk5Vp7fsG52Aq+CsMnLfL3zKlvYfxMLyi+PLY5/EhNnsuGt
-         fXYQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flipper.net; s=google; t=1774975594; x=1775580394; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GouBERXJUhyxyJHAw9h3FhUT0Po7LZnvJzNFya+cCZs=;
-        b=HAN7d5g536a8S0VxiVaSJhnocvOWPgJz4QXT9mKjHfILmlk0n1JmX7+w9uliqNKJfJ
-         drSa2dlqAOE7nhnd/oiGwyYXKSaLsqAR+pvGSCFQwscDx7xc3ij3ggoFPhkJS1I2duSm
-         ky/IErQoVqvLO0xh0H72gaQOqNIDq0lOWvSCOKxA940Lk1aLvxvAhZgKTYFjrSnw0n4S
-         6al4rGxNQnI54F5DbzRRinWotP27yclMVMw0FyuO9FaAtoCRgFcmRYGWzEbl51QyDLUl
-         bBswKqQIpvJIVKyFQJhj6fgl2h5zr6vQ5yJUfczOk20k9wRZ2rAqTpQoQWt1RS+bjMSS
-         kg8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774975594; x=1775580394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GouBERXJUhyxyJHAw9h3FhUT0Po7LZnvJzNFya+cCZs=;
-        b=FIjdsFW9TL3Zke0+ecuVHkoK/EKz0WW891zMg/y886eDB5dKENOpcGCp6HWLlwBNFR
-         2xV9C9v/V/rehMDXJX8G3vVhBwulNdhH5NvAJaY+vwNlX/a8ZB8HgcXsLiFhYATOOy7n
-         9+i84BOW/4cjjdfY6lGmxxHH0wGTIo6xrkD+Ms7RHt1arjz6VB1NNAmu527M7jLxcaKG
-         i+QUS2s0GwZzze0CIpHQLQO3HIi9RkwOP6v6eUhUSRjRIcFMbgj9arQbADtsMke2hsqe
-         EPMeYrMzdicyqslL65FDW7GR3qRfjM/4av/Yw45qmDtoKvbkebfxv3I2qFjEdjG15YyJ
-         19Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCWowCJ3bU99IppQCQIJJIpNMvZ9x0QFK3AJgSORgE4+ztQD22pNE2HAUJMAbTVmw+Qh+qYCWegUlb8RLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRaAAg+PPn9L9xehZnNU6kC6VWsDS9/TgUrnCjpWoAckoTCyo3
-	PumGVn4rQQUauuoKzpY2M2x+VCZKVs50JdlbKPMPFnNrxP28BV+Jocu0pl0riXJKPT/JnMsDWbi
-	GHLV8RcdKtJ6NtquAq3W28hsffT1pUsCx4EbrmF4MSw==
-X-Gm-Gg: ATEYQzzW+r/btK2HQTNlMf/zI0QThmx53WjSF739Ir4I7dxuFLkMW7nWkVnFOxW24PS
-	c9KgKN+T/uqSBAlqUZnUeXC8b7wWabHzWjCeiV/y33LUhVshz9Y108j+HHjZ8ujDWv6w5dTJ4KF
-	3v7YLcCwJmr1vVl18gk00fPmt/taXLW3Nvm15QKqHXOcx3pn7keogvKUQVhjcmTHswdoCuaBwHZ
-	xT7wUrLrYIVPVfoNS1WiW4HekZtoqFewurnzU37rc/rNQIxiFg5lnOMzRXBE976jebTm3yBF9s2
-	O3opjDY=
-X-Received: by 2002:a17:907:d854:b0:b9c:8da:15ab with SMTP id
- a640c23a62f3a-b9c13cb9918mr23266166b.44.1774975594310; Tue, 31 Mar 2026
- 09:46:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB257345CA5
+	for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 17:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774977395; cv=none; b=G45OeNyW9xHFaiSNFPCVBbA0SCVnd7RBQjSTRMHi2vtlNISUUIUuZbTdfA9bnv94Fgo0WGFbVu20HyseFS/9lnaI0e94WyxTri853ulgcf8tx9/hlQA17a9DuiaBA/pGMFi1ZAlo3wUYvwlJDxNFIbYdTqXkvhKZrTAn/JZUqCg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774977395; c=relaxed/simple;
+	bh=/FApVCbWSJjFc8cchawFzyW3rnZ8V8rm4wL+YrFTc7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aH5Ygzjy5zkIXbonMPFIdSJgL9TH8CJXa18q1Kuv6brCaOuduUiXcNBkktCd2zZwyq98hW+n6DxFu5YHN7nfj15Tj9/RwhpMs8CZQxR3kr/9pOaQep+gGXPnkFwPsIpQMqLnY6HTRrcNNf8csJdPLsp4voPaEJ48Xfg5y9HGKfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1w7chK-0004mE-Dv; Tue, 31 Mar 2026 19:16:14 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1w7chJ-0034jL-1Y;
+	Tue, 31 Mar 2026 19:16:13 +0200
+Received: from ore by dude04 with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1w7chJ-00000000QYb-1cvX;
+	Tue, 31 Mar 2026 19:16:13 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Peter Rosin <peda@axentia.se>,
+	Linus Walleij <linusw@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	David Jander <david@protonic.nl>
+Subject: [PATCH v9 0/6] mfd: Add support for NXP MC33978/MC34978 MSDI
+Date: Tue, 31 Mar 2026 19:16:06 +0200
+Message-ID: <20260331171612.102018-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330-ina4230-v5-0-eeb322d95b3a@flipper.net>
- <67a5d1c1-a9c5-47fb-a0ec-5b69a991b01e@roeck-us.net> <20260331155246.GA1299761-robh@kernel.org>
- <20872ef8-f68c-4916-a05f-404fd49fff00@roeck-us.net>
-In-Reply-To: <20872ef8-f68c-4916-a05f-404fd49fff00@roeck-us.net>
-From: Alexey Charkov <alchark@flipper.net>
-Date: Tue, 31 Mar 2026 20:46:23 +0400
-X-Gm-Features: AQROBzBF6QMV9ZUgiTg9Y6ZYRCRlZXMOMlDxfEHthEBqJ9A_mQSIAoXoi4cvHQo
-Message-ID: <CAKTNdwGcXcE25QiBTrZO6akMad+Lny5iPvAAAmUt6x2Hyzu5wg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] Add support for Texas Instruments INA4230 power monitor
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-hwmon@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
+X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[flipper.net,quarantine];
-	R_DKIM_ALLOW(-0.20)[flipper.net:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-12948-lists,linux-hwmon=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-12950-lists,linux-hwmon=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[flipper.net:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alchark@flipper.net,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.983];
+	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,flipper.net:dkim,flipper.net:email]
-X-Rspamd-Queue-Id: F048136D990
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7D2F436EC59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 31, 2026 at 8:10=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
->
-> On 3/31/26 08:52, Rob Herring wrote:
-> > On Mon, Mar 30, 2026 at 09:07:32AM -0700, Guenter Roeck wrote:
-> >> On 3/30/26 08:14, Alexey Charkov wrote:
-> >>> TI INA4230 is a 4-channel power monitor with I2C interface, similar i=
-n
-> >>> operation to INA3221 (3-channel) and INA219 (single-channel) but with
-> >>> a different register layout, different alerting mechanism and slightl=
-y
-> >>> different support for directly reading calculated current/power/energ=
-y
-> >>> values (pre-multiplied by the device itself and needing only to be sc=
-aled
-> >>> by the driver depending on its selected LSB unit values).
-> >>>
-> >>> In this initial implementation, the driver supports reading voltage,
-> >>> current, power and energy values, but does not yet support alerts, wh=
-ich
-> >>> can be added separately if needed. Also the overflows during hardware
-> >>> calculations are not yet handled, nor is the support for the device's
-> >>> internal 32-bit energy counter reset.
-> >>>
-> >>> An example device tree using this binding and driver is available at =
-[1]
-> >>> (not currently upstreamed, as the device in question is in engineerin=
-g
-> >>> phase and not yet publicly available)
-> >>>
-> >>> [1] https://github.com/flipperdevices/flipper-linux-kernel/blob/flipp=
-er-devel/arch/arm64/boot/dts/rockchip/rk3576-flipper-one-rev-f0b0c1.dts
-> >>>
-> >>> Signed-off-by: Alexey Charkov <alchark@flipper.net>
-> >>> ---
-> >>> Changes in v5:
-> >>> - Reworded per-channel subnodes description in the binding for clarit=
-y (Sashiko)
-> >>> - NB: Sashiko's suggestion to allow interrupts in the binding sounds =
-premature,
-> >>>     as the alerts mechanism is not implemented yet and there are no k=
-nown users
-> >>>     to test it. If anyone has hardware with the alert pins wired to a=
-n interrupt
-> >>>     line - please shout and we can test/extend it together
-> >>
-> >> The bindings are supposed to be complete, even if not implemented, so =
-I am not sure
-> >> if the DT maintainers will agree here. We'll see.
-> >
-> > Given ti,alert-polarity-active-high is added seems like the interrupt
-> > should be too. And the interrupt can specify the polarity, so is that
-> > property really needed? There's alway the possibility that you have som=
-e
-> > inverter on the board too and the interrupt polarity is not enough, but
-> > solve that problem when it actually exists.
-> >
->
-> The alert pin can be attached to a board interrupt, or (more likely) it c=
-an
-> be attached to the I2C controller's alert pin. In the latter case there i=
-s
-> no interrupt property.
+changes v7:
+- drop gpiolib irq fix and make pinctrl more robust against NULL point
+  dereference.
 
-Alright, I will add the interrupt property and keep the dedicated flag
-for alert polarity.
+This series adds support for the NXP MC33978/MC34978 Multiple Switch Detection
+Interface (MSDI) via the MFD framework.
 
-Following the logic of binding completeness, should I add a flag for
-the single-shot mode too, even though I dropped that functionality
-from the driver in one of the prior iterations?
+Architecture overview:
+* mfd: Core driver handling 2-frame pipelined SPI, regulator sequencing, and
+  linear irq_domain. Harvests status bits from SPI MISO MSB.
+* pinctrl: Exposes 22 physical switch inputs as standard GPIOs. Proxies IRQs to
+  the MFD domain.
+* hwmon: Exposes thermal limits, VBATP/VDDQ voltage boundaries, and dynamic
+  fault alarms.
+* mux: Controls the 24-to-1 AMUX routing analog signals (switch voltages,
+  temperature, VBATP) to an external ADC.
 
-Thanks a lot,
-Alexey
+Initial pinctrl implementation by David Jander, reworked into this MFD
+architecture.
+
+Best regards,
+Oleksij
+
+David Jander (1):
+  pinctrl: add NXP MC33978/MC34978 pinctrl driver
+
+Oleksij Rempel (5):
+  dt-bindings: pinctrl: add NXP MC33978/MC34978 MSDI
+  mfd: add NXP MC33978/MC34978 core driver
+  pinctrl: core: Make pin group callbacks optional for pin-only drivers
+  hwmon: add NXP MC33978/MC34978 driver
+  mux: add NXP MC33978/MC34978 AMUX driver
+
+ .../bindings/pinctrl/nxp,mc33978.yaml         |  158 +++
+ drivers/hwmon/Kconfig                         |   10 +
+ drivers/hwmon/Makefile                        |    1 +
+ drivers/hwmon/mc33978-hwmon.c                 |  548 +++++++++
+ drivers/mfd/Kconfig                           |   15 +
+ drivers/mfd/Makefile                          |    2 +
+ drivers/mfd/mc33978.c                         | 1061 +++++++++++++++++
+ drivers/mux/Kconfig                           |   14 +
+ drivers/mux/Makefile                          |    2 +
+ drivers/mux/mc33978-mux.c                     |  141 +++
+ drivers/pinctrl/Kconfig                       |   16 +
+ drivers/pinctrl/Makefile                      |    1 +
+ drivers/pinctrl/core.c                        |   41 +-
+ drivers/pinctrl/pinconf.c                     |    9 +-
+ drivers/pinctrl/pinctrl-mc33978.c             |  865 ++++++++++++++
+ include/linux/mfd/mc33978.h                   |   92 ++
+ 16 files changed, 2969 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,mc33978.yaml
+ create mode 100644 drivers/hwmon/mc33978-hwmon.c
+ create mode 100644 drivers/mfd/mc33978.c
+ create mode 100644 drivers/mux/mc33978-mux.c
+ create mode 100644 drivers/pinctrl/pinctrl-mc33978.c
+ create mode 100644 include/linux/mfd/mc33978.h
+
+--
+2.47.3
+
 
