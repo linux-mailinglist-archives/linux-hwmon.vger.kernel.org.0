@@ -1,344 +1,208 @@
-Return-Path: <linux-hwmon+bounces-12952-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-12956-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IJ0FAIEzGljNQYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12952-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 19:27:30 +0200
+	id OJ2VEigLzGnGNgYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-12956-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 19:58:00 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D5A36EBD1
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 19:27:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2BD36F8AE
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 19:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A3153149543
-	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 17:17:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5B833058155
+	for <lists+linux-hwmon@lfdr.de>; Tue, 31 Mar 2026 17:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF53D3644CA;
-	Tue, 31 Mar 2026 17:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4292D44A724;
+	Tue, 31 Mar 2026 17:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=fatooh.org header.i=@fatooh.org header.b="c9sijxHk"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from juniper.fatooh.org (juniper.fatooh.org [173.255.221.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2223624CE
-	for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 17:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D1644A701
+	for <linux-hwmon@vger.kernel.org>; Tue, 31 Mar 2026 17:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.255.221.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774977396; cv=none; b=H9l0PkKsEvQne/PPK5VYub/72wXzZtdm/uMQMqDdp/tL6lEE4hUn4x+OGY7DzBTN/WhRqHAqjMXcdb9X3UNVYLRdJ9yw6dVzn1kILCv0+U9WBcVeBAQ5gHDXhCFDofQ3fIUPoTiUndzsxi6HJfKnNqVn1S81tLYcTrWKgVMMX5Y=
+	t=1774979570; cv=none; b=tRVxOHJZkaJ2TpN4Z2c5GdyDsaJGPxNUCy5FCgqAQBTyZKZmVcDyXqFH4QrI7VWK1ixVU4S2br3aYeVWBJqXVehvFVmOUPfyik9OQwT9L7y6ezJH8B9PO134QMAQt7GDCP38bIWAG6vZHPPfVe9lfhCuCmq/ZxWdGLIIRzdGDTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774977396; c=relaxed/simple;
-	bh=MCdTgQfl7kwvoBzn7pm2tVyEmi9iWvnnHsyOkpzCEqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbhDQ/fh/J8sh+wxZ3CA5UAXmtbJahNKzLvuOnKdyB7dKBJqU10pGbJig+n++Tlort4dmMUCP6CaO5VbUacHvewfaZDN3RPbdsoThE1zJa9T0HrP107Bo1xoZNEIFOlgm45+ph1jTLQAS/F05G1+ZV/lOZphyUvFQbBl/C11oPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w7chK-0004mR-Dv; Tue, 31 Mar 2026 19:16:14 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w7chJ-0034jW-28;
-	Tue, 31 Mar 2026 19:16:13 +0200
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w7chJ-00000000QZa-2KOR;
-	Tue, 31 Mar 2026 19:16:13 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Peter Rosin <peda@axentia.se>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	David Jander <david@protonic.nl>
-Subject: [PATCH v9 6/6] mux: add NXP MC33978/MC34978 AMUX driver
-Date: Tue, 31 Mar 2026 19:16:12 +0200
-Message-ID: <20260331171612.102018-7-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331171612.102018-1-o.rempel@pengutronix.de>
-References: <20260331171612.102018-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1774979570; c=relaxed/simple;
+	bh=EcYazq15axbc2NoLkWhVP5cZpF3cv/DerMsc18nYOC4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NIceC66DxCrWbZ9PWKoagWFLKys3QV0TE/040bxm62I2jXSsMfCXykHsOSf8PuKXhss+RNE7cbfe1CA+jjgiJgvjb/NrZ4aX553rqUM8rS4NZ0XgwEaIq8jB6TjInsEL7dnqytiPtUdDVS6J4vzcQISIajXyYbqED34K1FlKm2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fatooh.org; spf=pass smtp.mailfrom=fatooh.org; dkim=pass (1024-bit key) header.d=fatooh.org header.i=@fatooh.org header.b=c9sijxHk; arc=none smtp.client-ip=173.255.221.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fatooh.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fatooh.org
+Received: from juniper.fatooh.org (juniper.fatooh.org [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by juniper.fatooh.org (Postfix) with ESMTPS id C0798401F4;
+	Tue, 31 Mar 2026 10:52:45 -0700 (PDT)
+Received: from juniper.fatooh.org (juniper.fatooh.org [127.0.0.1])
+	by juniper.fatooh.org (Postfix) with ESMTP id A52BA40261;
+	Tue, 31 Mar 2026 10:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=simple; d=fatooh.org; h=from:to
+	:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=dkim; bh=NZqSl7B3lkFjKkBimCRYiBoMB
+	ME=; b=c9sijxHkc/fTuVoxKHKxjFpfDYcOvgy5xjhpXOzr8oLHo6kEgxAr39uKZ
+	uEN1re/8MIfcMub9jqt9+DDFVaWL2Af3Y+hkIBsx4utNBgxGmhodJks0kLTsPHS6
+	1209X5xbmMVRKG7OtrfaXmd4se6hI8a2gtPhhbYU4eTBQbOQc0=
+DomainKey-Signature: a=rsa-sha1; c=simple; d=fatooh.org; h=from:to
+	:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; q=dns; s=dkim; b=Oe3SrHn5gkVzZ96vbZ5
+	WouHtb7ClAeL9qSOW2F1s71odxosQp9kC93qhcvx5w3P8zn7cs/QJtvZHZBnBdFM
+	10/AYb5ucSCC4M6gxSa45nnmvfrXhGcKmmiLS7Lrmw/5V4jzPmyo4Z8OSeSyZZtG
+	rxYE1NJVLhR6hLmpL+GaZvWM=
+Received: from bugfood.local (unknown [104.184.153.121])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by juniper.fatooh.org (Postfix) with ESMTPSA id 907E9401F4;
+	Tue, 31 Mar 2026 10:52:45 -0700 (PDT)
+Received: by bugfood.local (Postfix, from userid 1000)
+	id 0C15BC1EF20F; Tue, 31 Mar 2026 10:52:45 -0700 (PDT)
+From: Corey Hickey <bugfood-ml@fatooh.org>
+To: Corey Hickey <bugfood-ml@fatooh.org>,
+	Eugene Shalygin <eugene.shalygin@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH v3] hwmon: (asus-ec-sensors) fix T_Sensor for PRIME X670E-PRO WIFI
+Date: Tue, 31 Mar 2026 10:52:08 -0700
+Message-ID: <20260331175245.354188-1-bugfood-ml@fatooh.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spamd-Result: default: False [1.54 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[fatooh.org:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-12952-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-12956-lists,linux-hwmon=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.981];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DMARC_NA(0.00)[fatooh.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[fatooh.org,gmail.com,roeck-us.net,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,asus.com:url];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D9D5A36EBD1
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bugfood-ml@fatooh.org,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[fatooh.org:+];
+	NEURAL_HAM(-0.00)[-0.971];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 2F2BD36F8AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a mux-control driver for the 24-to-1 analog multiplexer (AMUX)
-embedded in the NXP MC33978/MC34978 Multiple Switch Detection
-Interface (MSDI) devices.
+From: Corey Hickey <bugfood-c@fatooh.org>
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v9:
-- rename mc33978-mux to mux-mc33978 in the Kconfig help
-- fail if fwnode is NULL
-changes v8:
-- no chnages
-changes v7:
-- Simplify the return path and local variable assignment in
-  mc33978_mux_set().
-- Change idle_state to a signed integer to properly handle negative MUX
-  subsystem constants.
-- Default to MUX_IDLE_AS_IS when the "idle-state" device tree property
-  is missing.
-- Explicitly reject MUX_IDLE_DISCONNECT since the hardware does not
-  support disconnecting the multiplexer.
-changes v6:
-- parse optional idle-state property
-- validate idle-state against available AMUX channels
-- lower-case probe error messages
-changes v5:
-- no changes
-changes v4:
-- no changes
-changes v3:
-- no changes
-changes v2:
-- Add missing <linux/err.h> include.
-- Add platform_device_id table
----
- drivers/mux/Kconfig       |  14 ++++
- drivers/mux/Makefile      |   2 +
- drivers/mux/mc33978-mux.c | 141 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 157 insertions(+)
- create mode 100644 drivers/mux/mc33978-mux.c
+I have attached a temperature sensor (10k thermistor) to my motherboard,
+and the temperature monitoring in the BIOS reports a value for the
+sensor, but the Linux driver reports a constant zero value.
 
-diff --git a/drivers/mux/Kconfig b/drivers/mux/Kconfig
-index c68132e38138..ffe92a714096 100644
---- a/drivers/mux/Kconfig
-+++ b/drivers/mux/Kconfig
-@@ -45,6 +45,20 @@ config MUX_GPIO
- 	  To compile the driver as a module, choose M here: the module will
- 	  be called mux-gpio.
- 
-+config MUX_MC33978
-+	tristate "NXP MC33978/MC34978 Analog Multiplexer"
-+	depends on MFD_MC33978
-+	help
-+	  MC33978/MC34978 24-to-1 analog multiplexer (AMUX) driver.
-+
-+	  This driver provides mux-control for the analog multiplexer,
-+	  which can route switch voltages, temperature, and battery voltage
-+	  to an external ADC. Typically used with IIO ADC drivers to measure
-+	  analog values from the 22 switch inputs plus temperature and VBATP.
-+
-+	  To compile the driver as a module, choose M here: the module will
-+	  be called mux-mc33978.
-+
- config MUX_MMIO
- 	tristate "MMIO/Regmap register bitfield-controlled Multiplexer"
- 	depends on OF
-diff --git a/drivers/mux/Makefile b/drivers/mux/Makefile
-index 6e9fa47daf56..339c44b4d4f4 100644
---- a/drivers/mux/Makefile
-+++ b/drivers/mux/Makefile
-@@ -7,10 +7,12 @@ mux-core-objs			:= core.o
- mux-adg792a-objs		:= adg792a.o
- mux-adgs1408-objs		:= adgs1408.o
- mux-gpio-objs			:= gpio.o
-+mux-mc33978-objs		:= mc33978-mux.o
- mux-mmio-objs			:= mmio.o
- 
- obj-$(CONFIG_MULTIPLEXER)	+= mux-core.o
- obj-$(CONFIG_MUX_ADG792A)	+= mux-adg792a.o
- obj-$(CONFIG_MUX_ADGS1408)	+= mux-adgs1408.o
- obj-$(CONFIG_MUX_GPIO)		+= mux-gpio.o
-+obj-$(CONFIG_MUX_MC33978)	+= mux-mc33978.o
- obj-$(CONFIG_MUX_MMIO)		+= mux-mmio.o
-diff --git a/drivers/mux/mc33978-mux.c b/drivers/mux/mc33978-mux.c
-new file mode 100644
-index 000000000000..b44c862f0dbe
---- /dev/null
-+++ b/drivers/mux/mc33978-mux.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (c) 2026 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-+/*
-+ * MC33978/MC34978 Analog Multiplexer (AMUX) Driver
-+ *
-+ * This driver provides mux-control for the 24-to-1 analog multiplexer.
-+ * The AMUX routes one of the following signals to the external AMUX pin:
-+ * - Channels 0-13: SG0-SG13 switch voltages
-+ * - Channels 14-21: SP0-SP7 switch voltages
-+ * - Channel 22: Internal temperature diode
-+ * - Channel 23: Battery voltage (VBATP)
-+ *
-+ * Consumer drivers (typically IIO ADC drivers) use the mux-control
-+ * subsystem to select which signal to measure.
-+ *
-+ * Architecture:
-+ * The MC33978 does not have an internal ADC. Instead, it routes analog
-+ * signals to an external AMUX pin that must be connected to an external
-+ * ADC (such as the SoC's internal ADC). The IIO subsystem is responsible
-+ * for coordinating the mux selection and ADC sampling.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mux/driver.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include <linux/mfd/mc33978.h>
-+
-+/* AMUX_CTRL register field definitions */
-+#define MC33978_AMUX_CTRL_MASK	GENMASK(5, 0)	/* 6-bit channel select */
-+
-+struct mc33978_mux_priv {
-+	struct device *dev;
-+	struct regmap *map;
-+};
-+
-+static int mc33978_mux_set(struct mux_control *mux, int state)
-+{
-+	struct mux_chip *mux_chip = mux->chip;
-+	struct mc33978_mux_priv *priv = mux_chip_priv(mux_chip);
-+	int ret;
-+
-+	if (state < 0 || state >= MC33978_NUM_AMUX_CH)
-+		return -EINVAL;
-+
-+	ret = regmap_update_bits(priv->map, MC33978_REG_AMUX_CTRL,
-+				 MC33978_AMUX_CTRL_MASK, state);
-+	if (ret)
-+		dev_err(priv->dev, "failed to set AMUX channel %d: %d\n",
-+			state, ret);
-+
-+	return ret;
-+}
-+
-+static const struct mux_control_ops mc33978_mux_ops = {
-+	.set = mc33978_mux_set,
-+};
-+
-+static int mc33978_mux_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct mc33978_mux_priv *priv;
-+	struct fwnode_handle *fwnode;
-+	struct mux_chip *mux_chip;
-+	struct mux_control *mux;
-+	s32 idle_state;
-+	int ret;
-+
-+	mux_chip = devm_mux_chip_alloc(dev, 1, sizeof(*priv));
-+	if (IS_ERR(mux_chip))
-+		return dev_err_probe(dev, PTR_ERR(mux_chip), "failed to allocate mux chip\n");
-+
-+	fwnode = dev_fwnode(dev->parent);
-+	if (!fwnode)
-+		return dev_err_probe(dev, -ENODEV, "missing parent firmware node\n");
-+
-+	/* Borrow the parent's firmware node so consumers can find this mux chip */
-+	device_set_node(&mux_chip->dev, fwnode);
-+
-+	priv = mux_chip_priv(mux_chip);
-+	priv->dev = dev;
-+
-+	priv->map = dev_get_regmap(dev->parent, NULL);
-+	if (!priv->map)
-+		return dev_err_probe(dev, -ENODEV, "failed to get parent regmap\n");
-+
-+	mux_chip->ops = &mc33978_mux_ops;
-+
-+	mux = &mux_chip->mux[0];
-+	mux->states = MC33978_NUM_AMUX_CH;
-+
-+	ret = device_property_read_u32(&mux_chip->dev, "idle-state",
-+				       (u32 *)&idle_state);
-+	if (ret < 0 && ret != -EINVAL) {
-+		return dev_err_probe(dev, ret, "failed to parse idle-state\n");
-+	} else if (ret == -EINVAL) {
-+		mux->idle_state = MUX_IDLE_AS_IS;
-+	} else {
-+		if (idle_state == MUX_IDLE_DISCONNECT)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "idle-disconnect not supported by hardware\n");
-+		if (idle_state != MUX_IDLE_AS_IS &&
-+		    (idle_state < 0 || idle_state >= MC33978_NUM_AMUX_CH))
-+			return dev_err_probe(dev, -EINVAL, "invalid idle-state %d\n",
-+					     idle_state);
-+		mux->idle_state = idle_state;
-+	}
-+
-+	ret = devm_mux_chip_register(dev, mux_chip);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to register mux chip\n");
-+
-+	platform_set_drvdata(pdev, mux_chip);
-+
-+	return 0;
-+}
-+
-+static const struct platform_device_id mc33978_mux_id[] = {
-+	{ "mc33978-mux", },
-+	{ "mc34978-mux", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, mc33978_mux_id);
-+
-+static struct platform_driver mc33978_mux_driver = {
-+	.driver = {
-+		.name = "mc33978-mux",
-+	},
-+	.probe = mc33978_mux_probe,
-+	.id_table = mc33978_mux_id,
-+};
-+module_platform_driver(mc33978_mux_driver);
-+
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("NXP MC33978/MC34978 Analog Multiplexer Driver");
-+MODULE_LICENSE("GPL");
+    $ sensors asusec-isa-000a | grep T_Sensor
+    T_Sensor:      +0.0°C
+
+By experimentation, I have found that the address in the driver is off
+by one. Some basic checks seem to confirm correct sensor operation at
+address 0x37:
+* sensor disconnected: -62.0°C
+* sensor plugged in, ambient temperature: +22.0°C
+* sensor plugged in, held between my fingers: +30.0°C
+The latter two values match those measured independently via my DMM's
+temperature probe (with a precision of 1°C).
+
+The existing address was added in commit f7ac3020036b ("hwmon:
+(asus-ec-sensors) add ROG Crosshair X670E Gene."). The commit message
+specifically mentions T_Sensor validation; assuming that commit was
+indeed correct, then 600-series motherboards are inconsistent in what
+address they use.
+
+To fix the "PRIME X670E-PRO WIFI" (0x37) without breaking the "ROG
+Crosshair X670E Gene" (0x36), define an alternate T_SENSOR. The "PRIME
+X670E-PRO WIFI" only has one T_SENSOR documented, so replace the
+original T_SENSOR in the driver rather than specifying an additional
+one.
+* If there are any other boards using 0x37, those can be changed to use
+  SENSOR_TEMP_T_SENSOR_ALT1 instead.
+* If there are any other boards using an entirely different address, an
+  additional alternate T_SENSOR can be defined without altering the
+  naming scheme.
+
+For reference, the sensor used is "XSPC Wire Sensor 10k", purchased from
+Amazon.
+
+Link: https://www.amazon.com/dp/B0CR8Q24TK
+Link: https://rog.asus.com/motherboards/rog-crosshair/rog-crosshair-x670e-hero-model/helpdesk_manual/
+Signed-off-by: Corey Hickey <bugfood-c@fatooh.org>
+---
+v2:
+* Fixed comment format.
+
+v3:
+* Removed comment about T_Sensor address varying.
+* Removed incorrect reference to thermocouple in commit message.
+
+ drivers/hwmon/asus-ec-sensors.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index 86f444498650..adedaf0db10e 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -111,6 +111,8 @@ enum ec_sensors {
+ 	ec_sensor_temp_mb,
+ 	/* "T_Sensor" temperature sensor reading [℃] */
+ 	ec_sensor_temp_t_sensor,
++	/* like ec_sensor_temp_t_sensor, but at an alternate address [℃] */
++	ec_sensor_temp_t_sensor_alt1,
+ 	/* VRM temperature [℃] */
+ 	ec_sensor_temp_vrm,
+ 	/* VRM east (right) temperature [℃] */
+@@ -160,6 +162,7 @@ enum ec_sensors {
+ #define SENSOR_TEMP_CPU_PACKAGE BIT(ec_sensor_temp_cpu_package)
+ #define SENSOR_TEMP_MB BIT(ec_sensor_temp_mb)
+ #define SENSOR_TEMP_T_SENSOR BIT(ec_sensor_temp_t_sensor)
++#define SENSOR_TEMP_T_SENSOR_ALT1 BIT(ec_sensor_temp_t_sensor_alt1)
+ #define SENSOR_TEMP_VRM BIT(ec_sensor_temp_vrm)
+ #define SENSOR_TEMP_VRME BIT(ec_sensor_temp_vrme)
+ #define SENSOR_TEMP_VRMW BIT(ec_sensor_temp_vrmw)
+@@ -279,6 +282,8 @@ static const struct ec_sensor_info sensors_family_amd_600[] = {
+ 		EC_SENSOR("VRM", hwmon_temp, 1, 0x00, 0x33),
+ 	[ec_sensor_temp_t_sensor] =
+ 		EC_SENSOR("T_Sensor", hwmon_temp, 1, 0x00, 0x36),
++	[ec_sensor_temp_t_sensor_alt1] =
++		EC_SENSOR("T_Sensor", hwmon_temp, 1, 0x00, 0x37),
+ 	[ec_sensor_fan_cpu_opt] =
+ 		EC_SENSOR("CPU_Opt", hwmon_fan, 2, 0x00, 0xb0),
+ 	[ec_sensor_temp_water_in] =
+@@ -519,7 +524,7 @@ static const struct ec_board_info board_info_prime_x570_pro = {
+ static const struct ec_board_info board_info_prime_x670e_pro_wifi = {
+ 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
+ 		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
+-		SENSOR_TEMP_T_SENSOR | SENSOR_FAN_CPU_OPT,
++		SENSOR_TEMP_T_SENSOR_ALT1 | SENSOR_FAN_CPU_OPT,
+ 	.mutex_path = ACPI_GLOBAL_LOCK_PSEUDO_PATH,
+ 	.family = family_amd_600_series,
+ };
 -- 
-2.47.3
+2.51.0
 
 
