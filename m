@@ -1,73 +1,91 @@
-Return-Path: <linux-hwmon+bounces-12998-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13003-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJGPOONNzWl6bgYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-12998-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Apr 2026 18:54:59 +0200
+	id 6E1oOeVRzWnWbwYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13003-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Apr 2026 19:12:05 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D9C37E3D4
-	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Apr 2026 18:54:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F12437E73F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 01 Apr 2026 19:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C05A30CB8C3
-	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Apr 2026 16:26:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D4A8B3063190
+	for <lists+linux-hwmon@lfdr.de>; Wed,  1 Apr 2026 16:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CB547A0DD;
-	Wed,  1 Apr 2026 16:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0258477988;
+	Wed,  1 Apr 2026 16:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sbaaQtcu"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F6F3E0C4A
-	for <linux-hwmon@vger.kernel.org>; Wed,  1 Apr 2026 16:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4505F477E4A
+	for <linux-hwmon@vger.kernel.org>; Wed,  1 Apr 2026 16:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775060750; cv=none; b=Pn+oGyDpGt8fQHh2fvYaaSK6ctFoi3KQM8m5Rp0dDhbXy4fB4VFOdb5gLALVVQnN9PJpBcZnMv6AMxy4hdCdm7j+VFoVeDP95yB+qKOaXWumjWTY8Cj8TVb2eKPLAw3YM1y2unfUCBsV0gf+eAoRzeuJ2gNFprxZBBSlFi1w22U=
+	t=1775062032; cv=none; b=soiFYyBbIeooRZyNQbzHHB7uWCNRyND+/qIt6ebk8J295kNxpEhTH7feMPn2GLBc90xzvefIpCENSyeTVdTbNDSWDFRltx5xN1GDnHsJyjBiF16ZVjrE/nyLZjf8oGc6j7N1Z7k8ll+3uwzXzpXucVEdR6TuYchqVYVvN+AIBuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775060750; c=relaxed/simple;
-	bh=WfLdliuubO9b+njcPRfmEVQokukn5/xZH8QylNlNLFU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlnUAJgVMbmxNt8Bs4qSLxfemRoN/UOH/4/FqeD7jwnUF+J2uUI7iMkEnaOFmVGHwP7ytZ65zoRTr6lYL+hFKiRzRrI3U0439lVr+fjmBM6qGNjHJWQCl68nX7qVDWORfSRQ14BAHI/gpBCyoMR5laW1tUHm+fiJeeoDsYRSUG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w7yNV-00088k-RK; Wed, 01 Apr 2026 18:25:13 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w7yNV-003EjM-15;
-	Wed, 01 Apr 2026 18:25:13 +0200
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w7yNV-000000079rb-11QM;
-	Wed, 01 Apr 2026 18:25:13 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+	s=arc-20240116; t=1775062032; c=relaxed/simple;
+	bh=DNiXUH9w7fQ/OhWEKswln0zNwKNXeuNVpsV/JW5zeDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ugoHb31lO8Z3cSXZgAQBIj/dE8RChK0Zbink5OeQF6WHvftVbcOHeTZaEagVsjRw16V0ukZP2CiaxDX64heyoKbz/yw7wKOz5pMyobJjKfFIZYqo+DSqcnOHxO+dRnCP1t+4U3Kb3SW9UJj6+JMyT453GfPGE4IfzYJ7vsDSk0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sbaaQtcu; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-486b96760easo78811515e9.2
+        for <linux-hwmon@vger.kernel.org>; Wed, 01 Apr 2026 09:47:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775062027; x=1775666827; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=77KRbufOZu2J+UY4V60ZX6P4QYigJ3YcJOsAEWEo15s=;
+        b=sbaaQtcumZ63u3UhWOZzT6ryJXJJOGBa15f8MntbSHp6jwOjG1CGDiRkX+Mn89JT9h
+         yO5Y+pES8T/frVGfC4XXmZT9mYqARtsCRLEvZkOtwUg67plTPQCmoN0gOSKDJUqsm6EF
+         xdJyPg7K4jrAOVTL7QUwCRS8dmzVhG6/US0T3fVtf1PcOlPAQZm/t5WsEGTj+UFsPCeY
+         FjKfFCbPfcZdWS/Ql3tuLrm1ovwbqIAizit7cpyGSaT8Je3iEd9ofoZTrpqPQka3yhcm
+         pqdGGiz0C1y1aijJIoymdSmgIVZF9QreSC5pxQXxEKrk5hIIuLstlgYKLLCNO/EDAFQb
+         U/eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775062027; x=1775666827;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=77KRbufOZu2J+UY4V60ZX6P4QYigJ3YcJOsAEWEo15s=;
+        b=mzQ8NHbdoF1uCgZgxHUkKDYueFb45Gj86wAoyoS37D2jVdJvstF6XSiWUWu3xo3LLa
+         92/gU/25xet4Y7CyKMuiqGqiUwpfdPUrAkCyqrOfgcfVTfKqCf9NcteXQPdDUVwzXgUv
+         B/QDRvgd6gXjEotPkus7l0U02g/z7Lv8u9CDQwdGRSgJqTcibXjkxlXXn3ynzj2vsPlj
+         nMgxZ5J3wxMZDVzIUeXrBa8HwR0cp5lxc+KR+CHlGHcJWSa4buQqJp6ilX4vcC5D1LwI
+         rZzULBq1iuQ5PvagR8o0VMiFBtJKNg7kxcq89Va04gV7UHSiQjPXWUEuTWqkavNdTsl6
+         18Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCX/eBYCV/Kq8Vf1axLsWzbVRVzaa9av7A/IquHwABDVRuDvcamSu0PGelqinzqBagIB8KRXVOQOW0YaCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUoyDBXXOGjDuL9x9G3VgGJTwG4QxyIngxWnva7hUcqxqBzkrW
+	xxx54JWaxvMmRffrjfy+T6yKrISorm0jSFkmvf98wZwLluwXQ6BRVCBiAUOlcVTx
+X-Gm-Gg: ATEYQzxm5aEhgWgbvBKVCIShIf4m7jYFoQW0P6H88TnnO1apFp8OTB+zZtDkgsOYaUp
+	cr0GbzPcGsx5b8hzxJ9twOkxdsPFz3bpCko2lSWIr3pjRqzlPSxa7i60L0+Bsc25eih5ZgPtOmg
+	XjA8vdFMye39n0a6R+S9UDLXU+EYFDp/JM9afnYFmkDmhRYCwIkVzX0NdCZjwgaueiF1txBRcGr
+	QCB+0sSSjG1Tq2xwNGXMDwUYVxYUE2zk8/707sBGlkIIDKpFcj0+8eECjsq42+cPjTRuDMMUron
+	wExtt8s2WfigST19mbpPk1rKi6eR0nwv51hVG1fhMbozA9rTDj01+g3wECtyWhPxzih90zM4x5C
+	bSg9CzgTbssFKPd+n3NAJKUtwrI/oKuPGuoAhRHLRvemBiATfduc2z9Fo510yVpr7isxh/W82ss
+	LYrbuhFW7X26faKItR7y3lexanjSbhFPyE6CZGSNOJYI/AyJt1x0yNFEz7o7TjEWndgN3nCH9d3
+	Q==
+X-Received: by 2002:a05:600c:1d0f:b0:485:30f7:6e88 with SMTP id 5b1f17b1804b1-488835a59a3mr72119215e9.31.1775062026674;
+        Wed, 01 Apr 2026 09:47:06 -0700 (PDT)
+Received: from flaviu-Aspire-E5-572G.. ([93.122.249.8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e735532sm160281005e9.0.2026.04.01.09.47.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 09:47:06 -0700 (PDT)
+From: Flaviu Nistor <flaviu.nistor@gmail.com>
 To: Guenter Roeck <linux@roeck-us.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Peter Rosin <peda@axentia.se>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Flaviu Nistor <flaviu.nistor@gmail.com>,
 	linux-hwmon@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	David Jander <david@protonic.nl>
-Subject: [PATCH v10 6/6] mux: add NXP MC33978/MC34978 AMUX driver
-Date: Wed,  1 Apr 2026 18:25:10 +0200
-Message-ID: <20260401162510.1706073-7-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260401162510.1706073-1-o.rempel@pengutronix.de>
-References: <20260401162510.1706073-1-o.rempel@pengutronix.de>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] hwmon: (tmp102) add support for update interval
+Date: Wed,  1 Apr 2026 19:47:01 +0300
+Message-ID: <20260401164701.18456-1-flaviu.nistor@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -75,271 +93,291 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
-X-Spamd-Result: default: False [1.54 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-12998-lists,linux-hwmon=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.981];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 44D9C37E3D4
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13003-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[flaviunistor@gmail.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sashiko.dev:url]
+X-Rspamd-Queue-Id: 1F12437E73F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a mux-control driver for the 24-to-1 analog multiplexer (AMUX)
-embedded in the NXP MC33978/MC34978 Multiple Switch Detection
-Interface (MSDI) devices.
+Since the sensor supports different sampling intervals via
+bits CR0 and CR1 from the CONFIG register, add support in
+order for the conversion rate to be changed from user space.
+Default is 4 conv/sec.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Flaviu Nistor <flaviu.nistor@gmail.com>
 ---
-changes v10:
-- no chnages
-changes v9:
-- rename mc33978-mux to mux-mc33978 in the Kconfig help
-- fail if fwnode is NULL
-changes v8:
-- no chnages
-changes v7:
-- Simplify the return path and local variable assignment in
-  mc33978_mux_set().
-- Change idle_state to a signed integer to properly handle negative MUX
-  subsystem constants.
-- Default to MUX_IDLE_AS_IS when the "idle-state" device tree property
-  is missing.
-- Explicitly reject MUX_IDLE_DISCONNECT since the hardware does not
-  support disconnecting the multiplexer.
-changes v6:
-- parse optional idle-state property
-- validate idle-state against available AMUX channels
-- lower-case probe error messages
-changes v5:
-- no changes
-changes v4:
-- no changes
-changes v3:
-- no changes
-changes v2:
-- Add missing <linux/err.h> include.
-- Add platform_device_id table
----
- drivers/mux/Kconfig       |  14 ++++
- drivers/mux/Makefile      |   2 +
- drivers/mux/mc33978-mux.c | 141 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 157 insertions(+)
- create mode 100644 drivers/mux/mc33978-mux.c
+Changes in v2:
+- Implement all changes suggested inline by Guenter Roeck.
+- Fixed identified issues from link provided by Guenter Roeck:
+https://sashiko.dev/#/patchset/20260331175418.16145-1-flaviu.nistor%40gmail.com	
+- Link to v1: https://lore.kernel.org/all/20260331175418.16145-1-flaviu.nistor@gmail.com/
 
-diff --git a/drivers/mux/Kconfig b/drivers/mux/Kconfig
-index c68132e38138..ffe92a714096 100644
---- a/drivers/mux/Kconfig
-+++ b/drivers/mux/Kconfig
-@@ -45,6 +45,20 @@ config MUX_GPIO
- 	  To compile the driver as a module, choose M here: the module will
- 	  be called mux-gpio.
+ Documentation/hwmon/tmp102.rst |  19 ++++-
+ drivers/hwmon/tmp102.c         | 137 ++++++++++++++++++++++++++-------
+ 2 files changed, 125 insertions(+), 31 deletions(-)
+
+diff --git a/Documentation/hwmon/tmp102.rst b/Documentation/hwmon/tmp102.rst
+index 3c2cb5bab1e9..425a09a3c9b3 100644
+--- a/Documentation/hwmon/tmp102.rst
++++ b/Documentation/hwmon/tmp102.rst
+@@ -41,12 +41,25 @@ degree from -40 to +125 C. Resolution of the sensor is 0.0625 degree.  The
+ operating temperature has a minimum of -55 C and a maximum of +150 C.
  
-+config MUX_MC33978
-+	tristate "NXP MC33978/MC34978 Analog Multiplexer"
-+	depends on MFD_MC33978
-+	help
-+	  MC33978/MC34978 24-to-1 analog multiplexer (AMUX) driver.
-+
-+	  This driver provides mux-control for the analog multiplexer,
-+	  which can route switch voltages, temperature, and battery voltage
-+	  to an external ADC. Typically used with IIO ADC drivers to measure
-+	  analog values from the 22 switch inputs plus temperature and VBATP.
-+
-+	  To compile the driver as a module, choose M here: the module will
-+	  be called mux-mc33978.
-+
- config MUX_MMIO
- 	tristate "MMIO/Regmap register bitfield-controlled Multiplexer"
- 	depends on OF
-diff --git a/drivers/mux/Makefile b/drivers/mux/Makefile
-index 6e9fa47daf56..339c44b4d4f4 100644
---- a/drivers/mux/Makefile
-+++ b/drivers/mux/Makefile
-@@ -7,10 +7,12 @@ mux-core-objs			:= core.o
- mux-adg792a-objs		:= adg792a.o
- mux-adgs1408-objs		:= adgs1408.o
- mux-gpio-objs			:= gpio.o
-+mux-mc33978-objs		:= mc33978-mux.o
- mux-mmio-objs			:= mmio.o
+ The TMP102 has a programmable update rate that can select between 8, 4, 1, and
+-0.5 Hz. (Currently the driver only supports the default of 4 Hz).
++0.25 Hz.
  
- obj-$(CONFIG_MULTIPLEXER)	+= mux-core.o
- obj-$(CONFIG_MUX_ADG792A)	+= mux-adg792a.o
- obj-$(CONFIG_MUX_ADGS1408)	+= mux-adgs1408.o
- obj-$(CONFIG_MUX_GPIO)		+= mux-gpio.o
-+obj-$(CONFIG_MUX_MC33978)	+= mux-mc33978.o
- obj-$(CONFIG_MUX_MMIO)		+= mux-mmio.o
-diff --git a/drivers/mux/mc33978-mux.c b/drivers/mux/mc33978-mux.c
-new file mode 100644
-index 000000000000..b44c862f0dbe
---- /dev/null
-+++ b/drivers/mux/mc33978-mux.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (c) 2026 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
-+/*
-+ * MC33978/MC34978 Analog Multiplexer (AMUX) Driver
-+ *
-+ * This driver provides mux-control for the 24-to-1 analog multiplexer.
-+ * The AMUX routes one of the following signals to the external AMUX pin:
-+ * - Channels 0-13: SG0-SG13 switch voltages
-+ * - Channels 14-21: SP0-SP7 switch voltages
-+ * - Channel 22: Internal temperature diode
-+ * - Channel 23: Battery voltage (VBATP)
-+ *
-+ * Consumer drivers (typically IIO ADC drivers) use the mux-control
-+ * subsystem to select which signal to measure.
-+ *
-+ * Architecture:
-+ * The MC33978 does not have an internal ADC. Instead, it routes analog
-+ * signals to an external AMUX pin that must be connected to an external
-+ * ADC (such as the SoC's internal ADC). The IIO subsystem is responsible
-+ * for coordinating the mux selection and ADC sampling.
-+ */
+ The TMP110 and TMP113 are software compatible with TMP102, but have different
+ accuracy (maximum error) specifications. The TMP110 has an accuracy (maximum error)
+ of 1.0 degree, TMP113 has an accuracy (maximum error) of 0.3 degree, while TMP102
+ has an accuracy (maximum error) of 2.0 degree.
+ 
+-The driver provides the common sysfs-interface for temperatures (see
+-Documentation/hwmon/sysfs-interface.rst under Temperatures).
++sysfs-Interface
++---------------
 +
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mux/driver.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
++The following list includes the sysfs attributes that the driver provides, their
++permissions and a short description:
 +
-+#include <linux/mfd/mc33978.h>
++=============================== ======= ===========================================
++Name                            Perm    Description
++=============================== ======= ===========================================
++temp1_input:                    RO      Temperature input
++temp1_label:                    RO      Descriptive name for the sensor
++temp1_max:                      RW      Maximum temperature
++temp1_max_hyst:                 RW      Maximum hysteresis temperature
++update_interval                 RW      Update conversions interval in milliseconds
++=============================== ======= ===========================================
+diff --git a/drivers/hwmon/tmp102.c b/drivers/hwmon/tmp102.c
+index 5b10c395a84d..7d3ef64bd28c 100644
+--- a/drivers/hwmon/tmp102.c
++++ b/drivers/hwmon/tmp102.c
+@@ -50,11 +50,16 @@
+ 
+ #define CONVERSION_TIME_MS		35	/* in milli-seconds */
+ 
++#define NUM_SAMPLE_TIMES 4
++#define DEFAULT_SAMPLE_TIME_MS 250
++const unsigned int *sample_times = (const unsigned int []){ 125, 250, 1000, 4000 };
 +
-+/* AMUX_CTRL register field definitions */
-+#define MC33978_AMUX_CTRL_MASK	GENMASK(5, 0)	/* 6-bit channel select */
-+
-+struct mc33978_mux_priv {
-+	struct device *dev;
-+	struct regmap *map;
-+};
-+
-+static int mc33978_mux_set(struct mux_control *mux, int state)
+ struct tmp102 {
+ 	const char *label;
+ 	struct regmap *regmap;
+ 	u16 config_orig;
+ 	unsigned long ready_time;
++	u16 sample_time;
+ };
+ 
+ /* convert left adjusted 13-bit TMP102 register value to milliCelsius */
+@@ -79,8 +84,20 @@ static int tmp102_read_string(struct device *dev, enum hwmon_sensor_types type,
+ 	return 0;
+ }
+ 
+-static int tmp102_read(struct device *dev, enum hwmon_sensor_types type,
+-		       u32 attr, int channel, long *temp)
++static int tmp102_read_chip(struct device *dev, u32 attr, long *val)
 +{
-+	struct mux_chip *mux_chip = mux->chip;
-+	struct mc33978_mux_priv *priv = mux_chip_priv(mux_chip);
-+	int ret;
++	struct tmp102 *tmp102 = dev_get_drvdata(dev);
 +
-+	if (state < 0 || state >= MC33978_NUM_AMUX_CH)
-+		return -EINVAL;
-+
-+	ret = regmap_update_bits(priv->map, MC33978_REG_AMUX_CTRL,
-+				 MC33978_AMUX_CTRL_MASK, state);
-+	if (ret)
-+		dev_err(priv->dev, "failed to set AMUX channel %d: %d\n",
-+			state, ret);
-+
-+	return ret;
++	switch (attr) {
++	case hwmon_chip_update_interval:
++		*val = tmp102->sample_time;
++		return 0;
++	default:
++		return -EOPNOTSUPP;
++	}
 +}
 +
-+static const struct mux_control_ops mc33978_mux_ops = {
-+	.set = mc33978_mux_set,
-+};
++static int tmp102_read_temp(struct device *dev, u32 attr, long *val)
+ {
+ 	struct tmp102 *tmp102 = dev_get_drvdata(dev);
+ 	unsigned int regval;
+@@ -108,30 +125,80 @@ static int tmp102_read(struct device *dev, enum hwmon_sensor_types type,
+ 	err = regmap_read(tmp102->regmap, reg, &regval);
+ 	if (err < 0)
+ 		return err;
+-	*temp = tmp102_reg_to_mC(regval);
 +
-+static int mc33978_mux_probe(struct platform_device *pdev)
++	*val = tmp102_reg_to_mC(regval);
+ 
+ 	return 0;
+ }
+ 
+-static int tmp102_write(struct device *dev, enum hwmon_sensor_types type,
+-			u32 attr, int channel, long temp)
++static int tmp102_read(struct device *dev, enum hwmon_sensor_types type,
++		       u32 attr, int channel, long *val)
 +{
-+	struct device *dev = &pdev->dev;
-+	struct mc33978_mux_priv *priv;
-+	struct fwnode_handle *fwnode;
-+	struct mux_chip *mux_chip;
-+	struct mux_control *mux;
-+	s32 idle_state;
-+	int ret;
-+
-+	mux_chip = devm_mux_chip_alloc(dev, 1, sizeof(*priv));
-+	if (IS_ERR(mux_chip))
-+		return dev_err_probe(dev, PTR_ERR(mux_chip), "failed to allocate mux chip\n");
-+
-+	fwnode = dev_fwnode(dev->parent);
-+	if (!fwnode)
-+		return dev_err_probe(dev, -ENODEV, "missing parent firmware node\n");
-+
-+	/* Borrow the parent's firmware node so consumers can find this mux chip */
-+	device_set_node(&mux_chip->dev, fwnode);
-+
-+	priv = mux_chip_priv(mux_chip);
-+	priv->dev = dev;
-+
-+	priv->map = dev_get_regmap(dev->parent, NULL);
-+	if (!priv->map)
-+		return dev_err_probe(dev, -ENODEV, "failed to get parent regmap\n");
-+
-+	mux_chip->ops = &mc33978_mux_ops;
-+
-+	mux = &mux_chip->mux[0];
-+	mux->states = MC33978_NUM_AMUX_CH;
-+
-+	ret = device_property_read_u32(&mux_chip->dev, "idle-state",
-+				       (u32 *)&idle_state);
-+	if (ret < 0 && ret != -EINVAL) {
-+		return dev_err_probe(dev, ret, "failed to parse idle-state\n");
-+	} else if (ret == -EINVAL) {
-+		mux->idle_state = MUX_IDLE_AS_IS;
-+	} else {
-+		if (idle_state == MUX_IDLE_DISCONNECT)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "idle-disconnect not supported by hardware\n");
-+		if (idle_state != MUX_IDLE_AS_IS &&
-+		    (idle_state < 0 || idle_state >= MC33978_NUM_AMUX_CH))
-+			return dev_err_probe(dev, -EINVAL, "invalid idle-state %d\n",
-+					     idle_state);
-+		mux->idle_state = idle_state;
++	switch (type) {
++	case hwmon_chip:
++		return tmp102_read_chip(dev, attr, val);
++	case hwmon_temp:
++		return tmp102_read_temp(dev, attr, val);
++	default:
++		return -EOPNOTSUPP;
 +	}
++}
 +
-+	ret = devm_mux_chip_register(dev, mux_chip);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to register mux chip\n");
++static int tmp102_update_interval(struct device *dev, long val)
+ {
+ 	struct tmp102 *tmp102 = dev_get_drvdata(dev);
+-	int reg;
++	u8 index;
++	s32 err;
 +
-+	platform_set_drvdata(pdev, mux_chip);
++	index = find_closest(val, sample_times, NUM_SAMPLE_TIMES);
++
++	err = regmap_update_bits(tmp102->regmap, TMP102_CONF_REG,
++				 0xc000, (3 - index) << 14);
++	if (err < 0)
++		return err;
++	tmp102->sample_time = sample_times[index];
 +
 +	return 0;
 +}
+ 
++static int tmp102_write_chip(struct device *dev, u32 attr, long val)
++{
+ 	switch (attr) {
+-	case hwmon_temp_max_hyst:
+-		reg = TMP102_TLOW_REG;
+-		break;
+-	case hwmon_temp_max:
+-		reg = TMP102_THIGH_REG;
+-		break;
++	case hwmon_chip_update_interval:
++		return tmp102_update_interval(dev, val);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
++	return 0;
++}
 +
-+static const struct platform_device_id mc33978_mux_id[] = {
-+	{ "mc33978-mux", },
-+	{ "mc34978-mux", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, mc33978_mux_id);
++static int tmp102_write(struct device *dev, enum hwmon_sensor_types type,
++			u32 attr, int channel, long val)
++{
++	struct tmp102 *tmp102 = dev_get_drvdata(dev);
++	int reg;
 +
-+static struct platform_driver mc33978_mux_driver = {
-+	.driver = {
-+		.name = "mc33978-mux",
-+	},
-+	.probe = mc33978_mux_probe,
-+	.id_table = mc33978_mux_id,
-+};
-+module_platform_driver(mc33978_mux_driver);
++	switch (type) {
++	case hwmon_chip:
++		return tmp102_write_chip(dev, attr, val);
++	case hwmon_temp:
++		switch (attr) {
++		case hwmon_temp_max_hyst:
++			reg = TMP102_TLOW_REG;
++			break;
++		case hwmon_temp_max:
++			reg = TMP102_THIGH_REG;
++			break;
++		default:
++			return -EOPNOTSUPP;
++		}
+ 
+-	temp = clamp_val(temp, -256000, 255000);
+-	return regmap_write(tmp102->regmap, reg, tmp102_mC_to_reg(temp));
++		val = clamp_val(val, -256000, 255000);
++		return regmap_write(tmp102->regmap, reg, tmp102_mC_to_reg(val));
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
+ }
+ 
+ static umode_t tmp102_is_visible(const void *data, enum hwmon_sensor_types type,
+@@ -139,27 +206,39 @@ static umode_t tmp102_is_visible(const void *data, enum hwmon_sensor_types type,
+ {
+ 	const struct tmp102 *tmp102 = data;
+ 
+-	if (type != hwmon_temp)
+-		return 0;
+-
+-	switch (attr) {
+-	case hwmon_temp_input:
+-		return 0444;
+-	case hwmon_temp_label:
+-		if (tmp102->label)
++	switch (type) {
++	case hwmon_chip:
++		switch (attr) {
++		case hwmon_chip_update_interval:
++			return 0644;
++		default:
++			break;
++		}
++		break;
++	case hwmon_temp:
++		switch (attr) {
++		case hwmon_temp_input:
+ 			return 0444;
+-		return 0;
+-	case hwmon_temp_max_hyst:
+-	case hwmon_temp_max:
+-		return 0644;
++		case hwmon_temp_label:
++			if (tmp102->label)
++				return 0444;
++			return 0;
++		case hwmon_temp_max_hyst:
++		case hwmon_temp_max:
++			return 0644;
++		default:
++			break;
++		}
++		break;
+ 	default:
+-		return 0;
++		break;
+ 	}
++	return 0;
+ }
+ 
+ static const struct hwmon_channel_info * const tmp102_info[] = {
+ 	HWMON_CHANNEL_INFO(chip,
+-			   HWMON_C_REGISTER_TZ),
++			   HWMON_C_REGISTER_TZ | HWMON_C_UPDATE_INTERVAL),
+ 	HWMON_CHANNEL_INFO(temp,
+ 			   HWMON_T_INPUT | HWMON_T_LABEL | HWMON_T_MAX | HWMON_T_MAX_HYST),
+ 	NULL
+@@ -237,6 +316,8 @@ static int tmp102_probe(struct i2c_client *client)
+ 	if (IS_ERR(tmp102->regmap))
+ 		return PTR_ERR(tmp102->regmap);
+ 
++	tmp102->sample_time = DEFAULT_SAMPLE_TIME_MS;
 +
-+MODULE_AUTHOR("Oleksij Rempel <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("NXP MC33978/MC34978 Analog Multiplexer Driver");
-+MODULE_LICENSE("GPL");
+ 	err = regmap_read(tmp102->regmap, TMP102_CONF_REG, &regval);
+ 	if (err < 0) {
+ 		dev_err(dev, "error reading config register\n");
 -- 
-2.47.3
+2.34.1
 
 
