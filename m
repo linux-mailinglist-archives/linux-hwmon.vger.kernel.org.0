@@ -1,314 +1,208 @@
-Return-Path: <linux-hwmon+bounces-13026-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13033-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHHeJQcnzmnIlQYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13026-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 10:21:27 +0200
+	id oPZ2Gr9HzmkbmgYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13033-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 12:41:03 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597E8385EAD
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 10:21:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B62387CEA
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 12:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 246EC3167413
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Apr 2026 08:15:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58BCD300EAB9
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Apr 2026 10:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E232D3B6344;
-	Thu,  2 Apr 2026 08:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CABE3DF019;
+	Thu,  2 Apr 2026 10:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BC7zz0KN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ht2E7sZF"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50DE3612F0;
-	Thu,  2 Apr 2026 08:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB8035E95A
+	for <linux-hwmon@vger.kernel.org>; Thu,  2 Apr 2026 10:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775117692; cv=none; b=MlvrcJJfVASI7DAEZ3rgHYd9NKnyivyhPm4Gh4jz/JZvN7lUVXzZ69C41Ve8ru7Cxlnjh6ydBlqUGENdILQsp0HkYfS0+vby47IJuUbRUPIuozUKboY8TDEyGFDaP6uhdUdo5uCg2iLEuHP0roRf9tgwgbqN+weyVo2QQNa9PVs=
+	t=1775126308; cv=none; b=Tv/GfVgqmIalId8WpkTptxrqHFMBSMSc3SEBtPVpjQDU6oG3LP5V7Kj57fdG2kCVCzfslNXIjWiJRFJE3wpFmKFUH4kARqrSHOLqD1tOQEoKiao2wqEqK2Viq5op+L6w16GEBOS2xoVHxDCzst2riByy0K8rsdwjWxcA+IizILY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775117692; c=relaxed/simple;
-	bh=2/1IqI0q4fTjZ9UA7RUZLwwfeD75hWqSzKmKTu22cY8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=R9hKuNjenT43xOqTs5i4Q60hOUzSEpBMMD/KCG48iUBl7EsfIqG4Q9vmJXhrJ1dtw9QCMebxTxVCetqzXzn6jFGgpJVwvR5LJAltdfUEgnvVko2oB1Y2jlNGwYEtz/sCyDHimx3/lZ8jC/i2S+JtyWI4W1nxp7SuS2LLeuqjklY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BC7zz0KN; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=20jA2dSc8ur6vcG
-	hh+aP9ExfPksyTfk62oubNqCj24E=; b=BC7zz0KNqEFGcoNvtQBwOpj5T85xYSj
-	8ldwxkKRxi+rcBEpEGZ6V/C8HD3oizLCYBjPtJWCQ3r1RCESikEMqmzKyvOFPLxw
-	NmGCFdhVGFcpeWUEkqhOQEOO1o2s9YKOEwbLGittKFtS0ZY/bho3gIZiR7aE3Wo9
-	1vBqILoE4z6o=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgCX5UBEJc5pC9uuUw--.170S10;
-	Thu, 02 Apr 2026 16:14:12 +0800 (CST)
-From: Wenliang Yan <wenliang202407@163.com>
-To: linux@roeck-us.net,
-	Jean Delvare <jdelvare@suse.com>
-Cc: Wenliang Yan <wenliang202407@163.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 8/8] hwmon: (ina3221) Modify write/read functions for 'in' and 'curr' attribute
-Date: Thu,  2 Apr 2026 04:13:50 -0400
-Message-Id: <20260402081350.65559-9-wenliang202407@163.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260402081350.65559-1-wenliang202407@163.com>
-References: <20260402081350.65559-1-wenliang202407@163.com>
-X-CM-TRANSID:QCgvCgCX5UBEJc5pC9uuUw--.170S10
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Gr4UWFW7tryxXr4ruFWxWFg_yoWxWw18p3
-	y5CFWrtrWjq3WSgrWIkFs8WFn8trWxW3y2yryDK39YvF4UAr909FyrG3Wq9a45Cr93XF4x
-	J3y7trWUua1DtFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUWCJkUUUUU=
-X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbC6BRsQGnOJVSv9gAA3f
+	s=arc-20240116; t=1775126308; c=relaxed/simple;
+	bh=AVKjDab6bK6ZsKM8zazG+7m2550/Pk15eEN9/XSkp8c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FTW/xh502/ZwJBgLoaYrSsAwOcp0zJkGHUKtwNPTVLhjkknis4VE/4uNj+Jgluzz/5+om8MZntF1S42zQnhXiFLjvDpWIlq2uFp5kjiSkpZPsCt4O16uEssbh9eOloz/91MCRT0/yBgKct+jOqI8RLzgwfvz4HW0zZn5w5XBR+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ht2E7sZF; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2c7e5f38b37so1047019eec.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 02 Apr 2026 03:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775126303; x=1775731103; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=QqamXqtOxzBeur4HdUAmKeC/dpeaPCUYwmBwWWj8JfE=;
+        b=Ht2E7sZFt+97q3Ct3fmkbCQXDpYqsACsotIZFfTwXQC9GSahXW8HlcldOYr6ULlWuM
+         A/SvSZSkjXraL26R0NFfK6nuwmhG2Sipt7ewUonV+CsdL4k87nFHfWWK+TYXYqtdunv+
+         xp16AwZP+ci331cnYP5Q1IvSJTxbl7/BH76oIZGMQ8/dde+qSlG5CPhlNoJVQwIEjTQS
+         mtY24VhjT8CS9bA5756NGzTihwJCUJvnlyXqRfwwecQW2CjDZrbSqT2kFzsMRu4JZBD0
+         +C83qprdSPjqMk0N3/5kB9xxQqJA1ZSZhrqka7huJyRr30dOlPiWmyiKl5/MhUXrzBQV
+         7b1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775126303; x=1775731103;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QqamXqtOxzBeur4HdUAmKeC/dpeaPCUYwmBwWWj8JfE=;
+        b=G/L6gTZRIPdwkeDppwCZPx6RgDvmZ2RjN25pzDhi9kTVZVL1ysIZUZHniMEEwTJbQU
+         7zqOX0FJlG/UniiItvlgnQohNF3zeHnBpHt/w1H96vrg/AkJaQOIp7JxmVi1MbKp6FfD
+         yXvZaM7vJv9GplzH/N3Q7BD07z1TAVf0h6sMPnunhYudY7gY1pNXulfBJ2cc/phsRLZ4
+         /T27wsJJWV9N0CoP8X0AD6QfX22VZUjNkegnXbdaj61VaCg99j9DbgV6+XsQzdb435di
+         IuvKUVWv+g+3zd29hPH3pycPYRBsBQSR/FMrcEo/Cuknk2MxRUGcUuixqV7ZF5pt6LeE
+         mklQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNYGmXRgZclXawa1/WBJm5kzKh7oTSKCUeUIT93b/nOMPRrIkMK43qlWewGIDmc29UzwGhjVTXNbAkfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9L2CQGf1RIT66Lc1dcRwfJDRfSnZ/7af88YXZJFG6vOWTQyYR
+	e7ZT+Iw77pLqE2kfs8zECYNr09AxSjQqmW1kgnerPSqVAxQfMBAK0Kwv
+X-Gm-Gg: ATEYQzzHO855zaOI16O/eCSQZQdN1wQoC2diFuabVYqecty6kq3FJ9rSyEDucnALKv4
+	D5+B2dluHixsrjwSYG1P6jLLWa1IeLnc+Ev7FwH6/M8pvHyJFuciJIcaK1g8hJFuEnasyTubRUU
+	25zj7vvifN39ViKN/vNmKcZv3l/DNcrg57o/QzQCOkTwrjl7L9kjYyVgcEKbBsp79J8fBydCmp8
+	PGuBR0XayzJon/zfCSQyNiFj6CpUDNtdSvk0cldwkG0RVzY95JYpe4iSd3yMpw5gKPHwr5cVfBI
+	OMweNJb7aQ0n1IPMSMg+Vw+GKCAUB9yuRCPLMzsCYVxrpLkTDNZ4Gres9nmGFsA4PELpOIHbGUg
+	04wNeoiaz7XWXRDkp9NEbJDKjCD5XU8eHD8q/7vC5dG401reY1EFRsaoly2XIeFPYAsCplP+n5V
+	+CDoXuB3/OcY3BC9tuxunmjHNC/Iz+aHGIaPpPp8gL19SOBs1oJsY64BWtxNM11EIedaUfwOEs
+X-Received: by 2002:a05:7300:a90c:b0:2c1:27c:7598 with SMTP id 5a478bee46e88-2c9330aff2emr3510807eec.30.1775126303009;
+        Thu, 02 Apr 2026 03:38:23 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7ce0075fsm2245141eec.24.2026.04.02.03.38.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Apr 2026 03:38:22 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <cce0e8c4-8df3-408c-b3ac-6ede3c4b2cf0@roeck-us.net>
+Date: Thu, 2 Apr 2026 03:38:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] hwmon: pmbus: Sony APS-379
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260402024101.4136697-1-chris.packham@alliedtelesis.co.nz>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260402024101.4136697-1-chris.packham@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[163.com,kernel.org,lwn.net,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-13026-lists,linux-hwmon=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-13033-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wenliang202407@163.com,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 597E8385EAD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:mid]
+X-Rspamd-Queue-Id: B3B62387CEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Modified the relevant read/write functions for 'in' and 'curr' attributes,
-adding support for crit, lcrit, crit_alarm, and lcrit_alarm features.
+On 4/1/26 19:40, Chris Packham wrote:
+> This series add support for the PMBus hwmon on the Sony
+> APS-379 power supply module. There's some deviations from
+> the PMBus specification that need to be dealt with.
+> 
+> Chris Packham (2):
+>    dt-bindings: trivial-devices: Add sony,aps-379
+>    hwmon: pmbus: Add support for Sony APS-379
+> 
+>   .../devicetree/bindings/trivial-devices.yaml  |   2 +
+>   Documentation/hwmon/aps-379.rst               |  58 ++++++
+>   Documentation/hwmon/index.rst                 |   1 +
+>   drivers/hwmon/pmbus/Kconfig                   |   6 +
+>   drivers/hwmon/pmbus/Makefile                  |   1 +
+>   drivers/hwmon/pmbus/aps-379.c                 | 178 ++++++++++++++++++
+>   6 files changed, 246 insertions(+)
+>   create mode 100644 Documentation/hwmon/aps-379.rst
+>   create mode 100644 drivers/hwmon/pmbus/aps-379.c
+> 
 
-Signed-off-by: Wenliang Yan <wenliang202407@163.com>
----
- drivers/hwmon/ina3221.c | 109 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 102 insertions(+), 7 deletions(-)
+Sashiko still doesn't like it.
 
-diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
-index 361d1be979e1..355a32702f33 100644
---- a/drivers/hwmon/ina3221.c
-+++ b/drivers/hwmon/ina3221.c
-@@ -142,6 +142,12 @@ static const u8 limit_regs[] = {
- 	SQ52210_ALERT_LIMIT3,
- };
- 
-+static const u8 alert_flag[] = {
-+	F_AFF1,
-+	F_AFF2,
-+	F_AFF3,
-+};
-+
- /**
-  * struct ina3221_input - channel input source specific information
-  * @label: label of channel input source
-@@ -446,6 +452,42 @@ static int ina3221_read_in(struct device *dev, u32 attr, int channel, long *val)
- 	case hwmon_in_enable:
- 		*val = ina3221_is_enabled(ina, channel);
- 		return 0;
-+	case hwmon_in_crit:
-+	case hwmon_in_lcrit:
-+		/* Only for Bus Voltage */
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+		if (!ina3221_is_enabled(ina, channel))
-+			return -ENODATA;
-+
-+		reg = limit_regs[channel];
-+		ret = ina3221_read_value(ina, reg, &regval);
-+		if (ret)
-+			return ret;
-+		/*
-+		 * Scale of bus voltage (mV): LSB is 8mV
-+		 */
-+		*val = regval * 8;
-+		return 0;
-+	case hwmon_in_crit_alarm:
-+	case hwmon_in_lcrit_alarm:
-+		/* Only for Bus Voltage */
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+		/* No actual register read if channel is disabled */
-+		if (!ina3221_is_enabled(ina, channel)) {
-+			/* Return 0 for alert flags */
-+			*val = 0;
-+			return 0;
-+		}
-+
-+		reg = alert_flag[channel];
-+		ret = regmap_field_read(ina->fields[reg], &regval);
-+		if (ret)
-+			return ret;
-+		*val = regval;
-+		return 0;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -457,8 +499,16 @@ static const u8 ina3221_curr_reg[][INA3221_NUM_CHANNELS + 1] = {
- 	[hwmon_curr_max] = { INA3221_WARN1, INA3221_WARN2, INA3221_WARN3, 0 },
- 	[hwmon_curr_crit] = { INA3221_CRIT1, INA3221_CRIT2,
- 			      INA3221_CRIT3, INA3221_CRIT_SUM },
-+	[hwmon_curr_lcrit] = { SQ52210_ALERT_LIMIT1, SQ52210_ALERT_LIMIT2,
-+			      SQ52210_ALERT_LIMIT3, 0 },
- 	[hwmon_curr_max_alarm] = { F_WF1, F_WF2, F_WF3, 0 },
- 	[hwmon_curr_crit_alarm] = { F_CF1, F_CF2, F_CF3, F_SF },
-+	[hwmon_curr_lcrit_alarm] = { F_AFF1, F_AFF2, F_AFF3, 0 },
-+};
-+static const u8 sq52210_curr_reg[INA3221_NUM_CHANNELS] = {
-+	SQ52210_CURRENT1,
-+	SQ52210_CURRENT2,
-+	SQ52210_CURRENT3
- };
- 
- static int ina3221_read_curr(struct device *dev, u32 attr,
-@@ -467,6 +517,7 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
- 	struct ina3221_input *input = ina->inputs;
- 	u8 reg = ina3221_curr_reg[attr][channel];
-+	bool has_current_reg = ina->config->has_current_reg;
- 	int resistance_uo, voltage_nv;
- 	int regval, ret;
- 
-@@ -489,10 +540,20 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 			if (ret)
- 				return ret;
- 		}
-+		if (has_current_reg) {
-+			reg = sq52210_curr_reg[channel];
-+			ret = ina3221_read_value(ina, reg, &regval);
-+			if (ret)
-+				return ret;
-+			/* Return current in mA */
-+			*val = DIV_U64_ROUND_CLOSEST((u64)regval * (u64)ina->current_lsb_uA, 1000);
-+			return 0;
-+		}
- 
- 		fallthrough;
- 	case hwmon_curr_crit:
- 	case hwmon_curr_max:
-+	case hwmon_curr_lcrit:
- 		if (!resistance_uo)
- 			return -ENODATA;
- 
-@@ -507,6 +568,7 @@ static int ina3221_read_curr(struct device *dev, u32 attr,
- 		return 0;
- 	case hwmon_curr_crit_alarm:
- 	case hwmon_curr_max_alarm:
-+	case hwmon_curr_lcrit_alarm:
- 		/* No actual register read if channel is disabled */
- 		if (!ina3221_is_enabled(ina, channel)) {
- 			/* Return 0 for alert flags */
-@@ -617,7 +679,9 @@ static int sq52210_alert_limit_write(struct ina3221_data *ina,
- 		 * For SUL configuration, directly convert it to current
- 		 * settings implemented in the ina3221_write_curr function.
- 		 */
--		return -EOPNOTSUPP;
-+		alert_mask = BIT(15 - channel);
-+		regval = val;
-+		break;
- 	case SQ52210_ALERT_BOL:
- 		/* BOL: Bus Over Limit - BIT(12), BIT(11), BIT(10) */
- 		alert_mask = BIT(12 - item);
-@@ -711,12 +775,18 @@ static int ina3221_write_curr(struct device *dev, u32 attr,
- 	struct ina3221_input *input = ina->inputs;
- 	u8 reg = ina3221_curr_reg[attr][channel];
- 	int resistance_uo, current_ma, voltage_uv;
--	int regval;
-+	int regval, ret;
- 
--	if (channel > INA3221_CHANNEL3)
--		resistance_uo = ina->summation_shunt_resistor;
--	else
-+	if (attr == hwmon_curr_lcrit) {
-+		if (channel > INA3221_CHANNEL3)
-+			return -EOPNOTSUPP;
- 		resistance_uo = input[channel].shunt_resistor;
-+	} else {
-+		if (channel > INA3221_CHANNEL3)
-+			resistance_uo = ina->summation_shunt_resistor;
-+		else
-+			resistance_uo = input[channel].shunt_resistor;
-+	}
- 
- 	if (!resistance_uo)
- 		return -EOPNOTSUPP;
-@@ -747,7 +817,12 @@ static int ina3221_write_curr(struct device *dev, u32 attr,
- 	else
- 		regval = DIV_ROUND_CLOSEST(voltage_uv, 5) & 0xfff8;
- 
--	return regmap_write(ina->regmap, reg, regval);
-+	if (attr == hwmon_curr_lcrit)
-+		ret = sq52210_alert_limit_write(ina, SQ52210_ALERT_SUL, channel, regval);
-+	else
-+		ret = regmap_write(ina->regmap, reg, regval);
-+
-+	return ret;
- }
- 
- static int ina3221_write_enable(struct device *dev, int channel, bool enable)
-@@ -798,6 +873,26 @@ static int ina3221_write_enable(struct device *dev, int channel, bool enable)
- 	return ret;
- }
- 
-+static int ina3221_write_in(struct device *dev, u32 attr, int channel, long val)
-+{
-+	struct ina3221_data *ina = dev_get_drvdata(dev);
-+
-+	if (attr == hwmon_in_lcrit || attr == hwmon_in_crit)
-+		if (channel >= INA3221_NUM_CHANNELS)
-+			return -EOPNOTSUPP;
-+
-+	switch (attr) {
-+	case hwmon_in_lcrit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BUL, channel, val);
-+	case hwmon_in_crit:
-+		return sq52210_alert_limit_write(ina, SQ52210_ALERT_BOL, channel, val);
-+	case hwmon_in_enable:
-+		return ina3221_write_enable(dev, channel, val);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int ina3221_write_power(struct device *dev, u32 attr, int channel, long val)
- {
- 	struct ina3221_data *ina = dev_get_drvdata(dev);
-@@ -847,7 +942,7 @@ static int ina3221_write(struct device *dev, enum hwmon_sensor_types type,
- 		break;
- 	case hwmon_in:
- 		/* 0-align channel ID */
--		ret = ina3221_write_enable(dev, channel - 1, val);
-+		ret = ina3221_write_in(dev, attr, channel - 1, val);
- 		break;
- 	case hwmon_curr:
- 		ret = ina3221_write_curr(dev, attr, channel, val);
--- 
-2.17.1
+https://sashiko.dev/#/patchset/20260402024101.4136697-1-chris.packham%40alliedtelesis.co.nz
+
+- Yes, "extracted while probing" is no longer accurate.
+   Maybe add a comment explaining that the exponent is constant.
+   Maybe even use a define ? That would make struct aps_379_data
+   unnecessary.
+
+- Rejecting virtual registers: Why indeed ? Is there a reason ?
+
+Thanks,
+Guenter
 
 
