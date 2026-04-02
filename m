@@ -1,456 +1,175 @@
-Return-Path: <linux-hwmon+bounces-13018-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13020-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENDsD3PXzWn1iAYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13018-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 04:41:55 +0200
+	id UMS/MNH7zWlYkAYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13020-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 07:17:05 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D372D382C87
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 04:41:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B909383E82
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 07:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86CE5304519A
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Apr 2026 02:41:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A86363087D73
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Apr 2026 05:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F4F342CA7;
-	Thu,  2 Apr 2026 02:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0359C36F429;
+	Thu,  2 Apr 2026 05:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="PrGd5B/5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aexidzYF"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09073126D6
-	for <linux-hwmon@vger.kernel.org>; Thu,  2 Apr 2026 02:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFA636CE02
+	for <linux-hwmon@vger.kernel.org>; Thu,  2 Apr 2026 05:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775097672; cv=none; b=T8JukfSsl4pcgUpKkZcWsC1fpukt98G5ecaW0GoKAi09VMM71pqIW0vsCyMrekrQTZ3z0K4edSJiipMyRvWcVxPZw/TD2u/9pcErIZvhPY38/goWWWsY4TXsrDu0ak8yN+ezuWIzBWHkGRpH60pXpPW4z8ox1wuRvhPKSXAkhDc=
+	t=1775106935; cv=none; b=HV6ri9n4zIdLSv1WK87757He/+IWrSdMKmlpa0DFIJYSo3kzRS3qJmL6TDi1HXXJzILV35/NCW1fYyFpZOsLrWwjangv9cq6zY2ShsymVaY6N1xSuB5j/Zx7DzryGrD9PbqaH8byAXO2Ybx7hIDAJZ0vIvdIkKyG3I/PcvdD5BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775097672; c=relaxed/simple;
-	bh=Txt+WdQS9R7oGpuL602PCmRt6KMClDiQ6MEy8cOPOMA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=scApeYS40h2pt0iXsAIPErbgKufWtAQnEBQ1vT90GpaiZpkDWW4kCLxMqRO9fS6NlfkuykBe7AeBio/6tSMPAAUbhNIER/Qo4hUEFmrbyyEzlNm11Lv0nm/+orynTH2ljY04xhOLnfrvuVbL0WK4t5KkN6zFUYn+mPddi0hCoI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=PrGd5B/5; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id C62142C04CF;
-	Thu,  2 Apr 2026 15:41:07 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1775097667;
-	bh=P+CQWOb8xR3uTpnzNfYZrJ8fKIU22HcjGh/ILLR16ZU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrGd5B/5PbXLo2JW6JfhEHPh9KnFSXRoojaGyR0F9TwMn/nqkBJspi6VaBy/kLvVL
-	 X9QcgXbk7/euC8cR3e3LUUN+DuKxMZoYFMBfoG04NER/hid+Zct2ColSrklRuVRYY5
-	 4mvRnGyLxjkl6lxAn9HZb6VxqHb+eAE+UaVhP6YgZJcuvlAGPPEkaj+CYGRAsvJEmG
-	 wOQAhtnuZb7RU9zerVNbxF/sQKBlHyGeFgFj2gMCVbTBZgu80/pNr7NH/U/7BYx4ki
-	 i+pFspNba+q3tanSwyH925Lo5f/9CxT/FIKudY88uKu6y9LMCq111aR6pjzRpXunlg
-	 wGPf81pQpv1NA==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B69cdd7430002>; Thu, 02 Apr 2026 15:41:07 +1300
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.12])
-	by pat.atlnz.lc (Postfix) with ESMTP id 8261113EE7A;
-	Thu,  2 Apr 2026 15:41:07 +1300 (NZDT)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id 7B993280A7B; Thu,  2 Apr 2026 15:41:07 +1300 (NZDT)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux@roeck-us.net
-Cc: devicetree@vger.kernel.org,
+	s=arc-20240116; t=1775106935; c=relaxed/simple;
+	bh=HVoeiC7t5M0u01gC8ZWrF1ZSdndrYAnSTfQH8ssTUVw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BDukQXCyq0Pb3lJ9cFCmtfrpY5pM15J5L1gCG/5EeIo9fd6mNn0DHRgicA0fL0rAzLXFMU1lUkPbWRQRez4sV9m88SBFKMSEyidEpI5xqd1taMtkOb/Bwfg9wA4CjtOLvVFViU9SnAoyW9qdGMbMPuTMACGQ6039EB95TdDBkyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aexidzYF; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35da2d35eccso263047a91.0
+        for <linux-hwmon@vger.kernel.org>; Wed, 01 Apr 2026 22:15:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775106934; x=1775711734; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9VRhm1iFIbmMSuYjrKLq45KZf5lir66/ZO2vyNWUJDo=;
+        b=aexidzYFvmt3YUxjauyrhjoe8SwDNNMksF916eZytT+OIQSDwv+fk8dut+4JpZJdf1
+         FJ6tzmwntIrY5zt/ua4BlUIpJ2yr7BUK5vLmntaa6lM17aaSw1N65UnXEtmU4wQDChPa
+         Hrp6o2VIXdXnE9X1zAmRB587COYxbWO3Rc6t3wbJcw9ZFYbhRbcLlz/1gfvPVHNJ9jLv
+         jM2tr/bO/UPDAKTx81hkgJrfHdJlbUuBPh0WyDRibWzEJ7MRFDe4JIYLR0neXEaPYw7E
+         VeLIu8Zo/y8OYP0GsN3gtGe2cj7cRi2CVT2rxGPmtrh0yvE2JDztD7sOsKR2AuvM/yjq
+         ENRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775106934; x=1775711734;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9VRhm1iFIbmMSuYjrKLq45KZf5lir66/ZO2vyNWUJDo=;
+        b=oadP2gGuEgRxH7h2OTFkWKrQKi6lnsiASa+YHZKjhfVR0X8L0gR6imFA1BseF/2lG1
+         VxmQ6H+XDBms2EN5Pu2q7JMRLa8o1tSzyKddCcqZmYO0ozOyGA285hjRLyDxhxjv7kuT
+         MsutM9GTJSjarln7+LIZaSgwGPdiB+dB2ZnkAxhyI4sgiaTHL9hbsImv46zlxOLmB7Ty
+         qtj8UwKcj2+VCz84sHDgoyfRyrD3csz+zterDBRLgwWzWEZaBsbPdKse3l7oXTRPUBrX
+         ahTexF5HmuwVKdsX3dz/9sTbPo4qQOCEUzksmMmyaEcYuTAPax0HGAQDRgOXwiEKt+7U
+         wVFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfLk1+LE+wVhkY/3YlI0b0soUH9pHVYxRq7+A3ssLdVsY6TNJp8pQ2qQAoFDGTrm/4FTgcB/gMu/ZWeQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMVKqTVOVBYzhxqWiaQ0fbNxroEkiZ4Nb7wD8TqYZY7hfEU6G+
+	8gwGS5GF1d96twhksBdd8Sh6EIVwbodnkeuAH94FiERfDlp/xCM5hoVR
+X-Gm-Gg: AeBDieu7bkiTdKNt5V3GnXRv55DGjhcf79krPmA3lx7h8OsklP6DT+1pYnAN7R3WiIg
+	iUInBPzBNfW8E42WhirZgvi1L4NxHQwV1+0/bcWUUdm5xfTr+Pgs9OGJplBCD+LUjcArhLdtYAM
+	KaqQRLfeIQDQQ1yiB359htHtY+JZ0dzT+Ph3EoS9lTJu+PNXKEMDfLhrkPh6wT8gU5g582EHjWf
+	NPkoyou1pJmPnneQSuxPZ2/g4tRApj+TjuJaJMNdCvNxqCS1utNINE4St6zkCYW9Mh+T1Fb7CRt
+	k/mDWDxkYC9rosjDBx2mlXqokEllC5FcMWctgWkneV4Lwn33kt6B3lOblxfBLSPreKK1pW9bcQT
+	UaD9vAhzdSfw5oHaIR8cUxdk/9zdMjzgbCJehOr/0g0RKLypg3CaD8khqDyl0Xop7hrwE3i+Bdk
+	yv84h2WyZ/LBQa7+yZXtX9+s+pnOKCHRnngLLsBBHlRPsOayaYXz36NYliEGY476e2Fg==
+X-Received: by 2002:a17:90a:c110:b0:35b:9c97:3d18 with SMTP id 98e67ed59e1d1-35dc6eae327mr5651672a91.12.1775106933827;
+        Wed, 01 Apr 2026 22:15:33 -0700 (PDT)
+Received: from hcdev-d520mt2.. (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbe93661fsm6902107a91.11.2026.04.01.22.15.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 22:15:33 -0700 (PDT)
+From: a0282524688@gmail.com
+To: tmyu0@nuvoton.com,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	linux@roeck-us.net,
+	andi.shyti@kernel.org,
+	lee@kernel.org,
+	mkl@pengutronix.de,
+	mailhol@kernel.org,
+	alexandre.belloni@bootlin.com,
+	wim@linux-watchdog.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-watchdog@vger.kernel.org,
 	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v4 2/2] hwmon: pmbus: Add support for Sony APS-379
-Date: Thu,  2 Apr 2026 15:41:00 +1300
-Message-ID: <20260402024101.4136697-3-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402024101.4136697-1-chris.packham@alliedtelesis.co.nz>
-References: <20260402024101.4136697-1-chris.packham@alliedtelesis.co.nz>
+	linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Ming Yu <a0282524688@gmail.com>
+Subject: [PATCH v1 0/2] mfd: nct6694: Refactor transport layer and add HIF (eSPI) support
+Date: Thu,  2 Apr 2026 13:14:40 +0800
+Message-Id: <20260402051442.1426672-1-a0282524688@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=EcprQ+mC c=1 sm=1 tr=0 ts=69cdd743 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=e6eYRz_1WUNsZJDutzsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
-X-Spamd-Result: default: False [0.34 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alliedtelesis.co.nz,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[alliedtelesis.co.nz:s=mail181024];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alliedtelesis.co.nz:dkim,alliedtelesis.co.nz:email,alliedtelesis.co.nz:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13018-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-13020-lists,linux-hwmon=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[alliedtelesis.co.nz:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chris.packham@alliedtelesis.co.nz,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[a0282524688@gmail.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D372D382C87
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7B909383E82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add pmbus support for Sony APS-379 power supplies. There are a few PMBUS
-commands that return data that is undocumented/invalid so these need to
-be rejected with -ENXIO. The READ_VOUT command returns data in linear11
-format instead of linear16 so we need to workaround this.
+From: Ming Yu <a0282524688@gmail.com>
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
+The Nuvoton NCT6694 is a peripheral expander that provides GPIO, I2C,
+CAN-FD, Watchdog, HWMON, PWM, and RTC sub-devices. Currently, the
+driver only supports USB as the host transport interface.
 
-Notes:
-    Changes in v4:
-    - Deal with signed linear11 reading for READ_VOUT
-    - Ignore non-standard IOUT_OC_FAULT_LIMIT
-    - Add more unsupported commands (iout and temp limits)
-    - Use fixed value for VOUT_MODE
-    Changes in v3:
-    - Add missing MODULE_DEVICE_TABLE(i2c, ...) and move aps_379_id to ju=
-st
-      above the probe.
-    - Remove unnecessary sign_extend32
-    - Zero initialise array on stack
-    Changes in v2:
-    - Simplify code per recommendations from Guenter
-    - Add driver documentation
+This series refactors the NCT6694 MFD core to support multiple transport
+backends and adds a new Host Interface (HIF) transport driver that
+communicates over eSPI using Super-I/O shared memory.
 
- Documentation/hwmon/aps-379.rst |  58 +++++++++++
- Documentation/hwmon/index.rst   |   1 +
- drivers/hwmon/pmbus/Kconfig     |   6 ++
- drivers/hwmon/pmbus/Makefile    |   1 +
- drivers/hwmon/pmbus/aps-379.c   | 178 ++++++++++++++++++++++++++++++++
- 5 files changed, 244 insertions(+)
- create mode 100644 Documentation/hwmon/aps-379.rst
- create mode 100644 drivers/hwmon/pmbus/aps-379.c
+Ming Yu (2):
+  mfd: nct6694: Switch to devm_mfd_add_devices() and drop IDA
+  mfd: Add Host Interface (HIF) support for Nuvoton NCT6694
 
-diff --git a/Documentation/hwmon/aps-379.rst b/Documentation/hwmon/aps-37=
-9.rst
-new file mode 100644
-index 000000000000..468ec5a98fd6
---- /dev/null
-+++ b/Documentation/hwmon/aps-379.rst
-@@ -0,0 +1,58 @@
-+Kernel driver aps-379
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+Supported chips:
-+
-+  * Sony APS-379
-+
-+    Prefix: 'aps-379'
-+
-+    Addresses scanned: -
-+
-+ Authors:
-+        - Chris Packham
-+
-+Description
-+-----------
-+
-+This driver implements support for the PMBus monitor on the Sony APS-379
-+modular power supply. The APS-379 deviates from the PMBus standard for t=
-he
-+READ_VOUT command by using the linear11 format instead of linear16.
-+
-+The known supported PMBus commands are:
-+
-+=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=
- =3D=3D=3D=3D=3D
-+Cmd Function                      Protocol  Scaling Bytes
-+=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=
- =3D=3D=3D=3D=3D
-+01  On / Off Command (OPERATION)  Byte R/W  --      1
-+10  WRITE_PROTECT                 Byte R/W  --      1
-+3B  FAN_COMMAND_1                 Word R/W  --      2
-+46  Current Limit (in percent)    Word R/W  2^0     2
-+47  Current Limit Fault Response  Byte R/W  --      1
-+79  Alarm Data Bits (STATUS_WORD) Word Rd   --      2
-+8B  Output Voltage (READ_VOUT)    Word Rd   2^-4    2
-+8C  Output Current (READ_IOUT)    Word Rd   2^-2    2
-+8D  Power Supply Ambient Temp     Word Rd   2^0     2
-+90  READ_FAN_SPEED_1              Word Rd   2^6     2
-+91  READ_FAN_SPEED_2              Word Rd   2^6     2
-+96  Output Wattage (READ_POUT)    Word Rd   2^1     2
-+97  Input Wattage (READ_PIN)      Word Rd   2^1     2
-+9A  Unit Model Number (MFR_MODEL) Block R/W --      10
-+9B  Unit Revision Number          Block R/W --      10
-+9E  Unit Serial Number            Block R/W --      8
-+99  Unit Manufacturer ID (MFR_ID) Block R/W --      8
-+D0  Unit Run Time Information     Block Rd  --      4
-+D5  Firmware Version              Rd cust   --      8
-+B0  User Data 1 (USER_DATA_00)    Block R/W --      4
-+B1  User Data 2 (USER_DATA_01)    Block R/W --      4
-+B2  User Data 3 (USER_DATA_02)    Block R/W --      4
-+B3  User Data 4 (USER_DATA_03)    Block R/W --      4
-+B4  User Data 5 (USER_DATA_04)    Block R/W --      4
-+B5  User Data 6 (USER_DATA_05)    Block R/W --      4
-+B6  User Data 7 (USER_DATA_06)    Block R/W --      4
-+B7  User Data 8 (USER_DATA_07)    Block R/W --      4
-+F0  Calibration command           Byte R/W  --      1
-+F1  Calibration data              Word Wr   2^9     2
-+F2  Unlock Calibration            Byte Wr   --      1
-+=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=
- =3D=3D=3D=3D=3D
-+
-diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rs=
-t
-index b2ca8513cfcd..2bc8d88b5724 100644
---- a/Documentation/hwmon/index.rst
-+++ b/Documentation/hwmon/index.rst
-@@ -41,6 +41,7 @@ Hardware Monitoring Kernel Drivers
-    adt7475
-    aht10
-    amc6821
-+   aps-379
-    aquacomputer_d5next
-    asb100
-    asc7621
-diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index fc1273abe357..29076921e330 100644
---- a/drivers/hwmon/pmbus/Kconfig
-+++ b/drivers/hwmon/pmbus/Kconfig
-@@ -77,6 +77,12 @@ config SENSORS_ADP1050_REGULATOR
- 	  =C2=B5Module regulators that can provide microprocessor power from 54=
-V
- 	  power distribution architecture.
-=20
-+config SENSORS_APS_379
-+	tristate "Sony APS-379 Power Supplies"
-+	help
-+	  If you say yes here you get hardware monitoring support for Sony
-+	  APS-379 Power Supplies.
-+
- config SENSORS_BEL_PFE
- 	tristate "Bel PFE Compatible Power Supplies"
- 	help
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index d6c86924f887..94f36c7069ec 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -9,6 +9,7 @@ obj-$(CONFIG_SENSORS_ACBEL_FSG032) +=3D acbel-fsg032.o
- obj-$(CONFIG_SENSORS_ADM1266)	+=3D adm1266.o
- obj-$(CONFIG_SENSORS_ADM1275)	+=3D adm1275.o
- obj-$(CONFIG_SENSORS_ADP1050)	+=3D adp1050.o
-+obj-$(CONFIG_SENSORS_APS_379)	+=3D aps-379.o
- obj-$(CONFIG_SENSORS_BEL_PFE)	+=3D bel-pfe.o
- obj-$(CONFIG_SENSORS_BPA_RS600)	+=3D bpa-rs600.o
- obj-$(CONFIG_SENSORS_DELTA_AHE50DC_FAN) +=3D delta-ahe50dc-fan.o
-diff --git a/drivers/hwmon/pmbus/aps-379.c b/drivers/hwmon/pmbus/aps-379.=
-c
-new file mode 100644
-index 000000000000..631ba238ba49
---- /dev/null
-+++ b/drivers/hwmon/pmbus/aps-379.c
-@@ -0,0 +1,178 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Hardware monitoring driver for Sony APS-379 Power Supplies
-+ *
-+ * Copyright 2026 Allied Telesis Labs
-+ */
-+
-+#include <linux/i2c.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/pmbus.h>
-+#include "pmbus.h"
-+
-+struct aps_379_data {
-+	struct pmbus_driver_info info;
-+	u8 vout_linear_exponent;
-+};
-+
-+#define to_aps_379_data(x) container_of(x, struct aps_379_data, info)
-+
-+static int aps_379_read_byte_data(struct i2c_client *client, int page, i=
-nt reg)
-+{
-+	const struct pmbus_driver_info *info =3D pmbus_get_driver_info(client);
-+	struct aps_379_data *data =3D to_aps_379_data(info);
-+
-+	switch (reg) {
-+	case PMBUS_VOUT_MODE:
-+		/*
-+		 * The VOUT format used by the chip is linear11,
-+		 * not linear16. Report that VOUT is in linear mode
-+		 * and return exponent value extracted while probing
-+		 * the chip.
-+		 */
-+		return data->vout_linear_exponent;
-+	default:
-+		return -ENODATA;
-+	}
-+}
-+
-+/*
-+ * The APS-379 uses linear11 format instead of linear16. We've reported =
-the exponent
-+ * via the PMBUS_VOUT_MODE so we just return the mantissa here.
-+ */
-+static int aps_379_read_vout(struct i2c_client *client)
-+{
-+	int ret;
-+
-+	ret =3D pmbus_read_word_data(client, 0, 0xff, PMBUS_READ_VOUT);
-+	if (ret < 0)
-+		return ret;
-+
-+	return clamp_val(sign_extend32(ret & 0x7ff, 10), 0, 0x3ff);
-+}
-+
-+static int aps_379_read_word_data(struct i2c_client *client, int page, i=
-nt phase, int reg)
-+{
-+	switch (reg) {
-+	case PMBUS_VOUT_UV_WARN_LIMIT:
-+	case PMBUS_VOUT_OV_WARN_LIMIT:
-+	case PMBUS_VOUT_UV_FAULT_LIMIT:
-+	case PMBUS_VOUT_OV_FAULT_LIMIT:
-+	case PMBUS_IOUT_OC_WARN_LIMIT:
-+	case PMBUS_IOUT_UC_FAULT_LIMIT:
-+	case PMBUS_UT_WARN_LIMIT:
-+	case PMBUS_UT_FAULT_LIMIT:
-+	case PMBUS_OT_WARN_LIMIT:
-+	case PMBUS_OT_FAULT_LIMIT:
-+	case PMBUS_PIN_OP_WARN_LIMIT:
-+	case PMBUS_POUT_OP_WARN_LIMIT:
-+	case PMBUS_MFR_IIN_MAX:
-+	case PMBUS_MFR_PIN_MAX:
-+	case PMBUS_MFR_VOUT_MIN:
-+	case PMBUS_MFR_VOUT_MAX:
-+	case PMBUS_MFR_IOUT_MAX:
-+	case PMBUS_MFR_POUT_MAX:
-+	case PMBUS_MFR_MAX_TEMP_1:
-+		/* These commands return data but it is invalid/un-documented */
-+		return -ENXIO;
-+	case PMBUS_IOUT_OC_FAULT_LIMIT:
-+		/*
-+		 * The standard requires this to be a value in Amps but it's
-+		 * actually a percentage of the rated output (123A for
-+		 * 110-240Vac, 110A for 90-100Vac) which we don't know. Ignore
-+		 * it rather than guessing.
-+		 */
-+		return -ENXIO;
-+	case PMBUS_READ_VOUT:
-+		return aps_379_read_vout(client);
-+	default:
-+		if (reg >=3D PMBUS_VIRT_BASE)
-+			return -ENXIO;
-+		else
-+			return -ENODATA;
-+	}
-+}
-+
-+static struct pmbus_driver_info aps_379_info =3D {
-+	.pages =3D 1,
-+	.format[PSC_VOLTAGE_OUT] =3D linear,
-+	.format[PSC_CURRENT_OUT] =3D linear,
-+	.format[PSC_POWER] =3D linear,
-+	.format[PSC_TEMPERATURE] =3D linear,
-+	.format[PSC_FAN] =3D linear,
-+	.func[0] =3D PMBUS_HAVE_VOUT |
-+		PMBUS_HAVE_IOUT |
-+		PMBUS_HAVE_PIN | PMBUS_HAVE_POUT |
-+		PMBUS_HAVE_TEMP |
-+		PMBUS_HAVE_FAN12,
-+	.read_byte_data =3D aps_379_read_byte_data,
-+	.read_word_data =3D aps_379_read_word_data,
-+};
-+
-+static const struct i2c_device_id aps_379_id[] =3D {
-+	{ "aps-379", 0 },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(i2c, aps_379_id);
-+
-+static int aps_379_probe(struct i2c_client *client)
-+{
-+	struct device *dev =3D &client->dev;
-+	struct pmbus_driver_info *info;
-+	struct aps_379_data *data;
-+	u8 buf[I2C_SMBUS_BLOCK_MAX + 1] =3D { 0 };
-+	int ret;
-+
-+	data =3D devm_kzalloc(&client->dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	memcpy(&data->info, &aps_379_info, sizeof(*info));
-+	info =3D &data->info;
-+
-+	if (!i2c_check_functionality(client->adapter,
-+				     I2C_FUNC_SMBUS_READ_BYTE_DATA
-+				     | I2C_FUNC_SMBUS_READ_WORD_DATA
-+				     | I2C_FUNC_SMBUS_READ_BLOCK_DATA))
-+		return -ENODEV;
-+
-+	ret =3D i2c_smbus_read_block_data(client, PMBUS_MFR_MODEL, buf);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to read Manufacturer Model\n");
-+		return ret;
-+	}
-+
-+	if (strncasecmp(buf, aps_379_id[0].name, strlen(aps_379_id[0].name)) !=3D=
- 0) {
-+		buf[ret] =3D '\0';
-+		dev_err(dev, "Unsupported Manufacturer Model '%s'\n", buf);
-+		return -ENODEV;
-+	}
-+
-+	data->vout_linear_exponent =3D (u8)(-4 & 0x1f);
-+
-+	return pmbus_do_probe(client, info);
-+}
-+
-+static const struct of_device_id __maybe_unused aps_379_of_match[] =3D {
-+	{ .compatible =3D "sony,aps-379" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, aps_379_of_match);
-+
-+static struct i2c_driver aps_379_driver =3D {
-+	.driver =3D {
-+		.name =3D "aps-379",
-+		.of_match_table =3D of_match_ptr(aps_379_of_match),
-+	},
-+	.probe =3D aps_379_probe,
-+	.id_table =3D aps_379_id,
-+};
-+
-+module_i2c_driver(aps_379_driver);
-+
-+MODULE_AUTHOR("Chris Packham");
-+MODULE_DESCRIPTION("PMBus driver for Sony APS-379");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("PMBUS");
---=20
-2.53.0
+ MAINTAINERS                         |   1 +
+ drivers/gpio/gpio-nct6694.c         |  26 +-
+ drivers/hwmon/nct6694-hwmon.c       |  21 -
+ drivers/i2c/busses/i2c-nct6694.c    |  26 +-
+ drivers/mfd/Kconfig                 |  47 +-
+ drivers/mfd/Makefile                |   3 +-
+ drivers/mfd/nct6694-hif.c           | 649 ++++++++++++++++++++++++++++
+ drivers/mfd/nct6694.c               | 180 ++++----
+ drivers/net/can/usb/nct6694_canfd.c |  18 +-
+ drivers/rtc/rtc-nct6694.c           |   7 -
+ drivers/watchdog/nct6694_wdt.c      |  27 +-
+ include/linux/mfd/nct6694.h         |  57 ++-
+ 12 files changed, 829 insertions(+), 233 deletions(-)
+ create mode 100644 drivers/mfd/nct6694-hif.c
+
+-- 
+2.34.1
 
 
