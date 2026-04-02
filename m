@@ -1,177 +1,139 @@
-Return-Path: <linux-hwmon+bounces-13023-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13027-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFnHMEghzmnElAYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13023-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 09:56:56 +0200
+	id JaHvGKEmzmnIlQYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13027-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 10:19:45 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9FC385817
-	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 09:56:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E83385D0F
+	for <lists+linux-hwmon@lfdr.de>; Thu, 02 Apr 2026 10:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00A37312B1F7
-	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Apr 2026 07:45:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 701C430B5DAD
+	for <lists+linux-hwmon@lfdr.de>; Thu,  2 Apr 2026 08:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FA137AA9E;
-	Thu,  2 Apr 2026 07:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DAB3B9D9E;
+	Thu,  2 Apr 2026 08:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QwTlG0I2"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LN6a4tPy"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAD9325726;
-	Thu,  2 Apr 2026 07:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D5E3B2FD9;
+	Thu,  2 Apr 2026 08:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775115848; cv=none; b=WXpfc6U4UUEYWg5n5icjGYN/sGyyB0AaR22k5qcuIsR1ZdsTyA9OX8ikKBOtD3bXt2dnOBF4bUhM9HRx/1GJidOrn7Lu5hg0K9ArV83m5XvWohA1/polLM4LtLgLdfyedUSGm01Qy+2Nq3UIPa1O7oZzy6f7cMpM97B5BQhYd4g=
+	t=1775117694; cv=none; b=mqfPyOi6vGu/hxOtFYzHf6xeXbvRvz/JSvl0QUjVeoScaZqGeoYbxG0KP7GcqP6h2ZYqxIzjw/CGMyq8VOjE5z50aEc6pc3PmaccBy1UBBqu8LRf9KGdGmsfQ5rA9l7bvMvi1dl2DZiDPaMA9JbULB3rtWm5Hc2qZTCAhZlX8OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775115848; c=relaxed/simple;
-	bh=EoUiNgH3RLhJk/rzvHG3W111ug5RQnGLRQHQODHAo28=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KfWqJ/S6EMe5KOiq/ui+c5DqqEx2rpGThrXAYjSToxhlrT5GZuwrHeJ/fUzvRSRLZm30W04yt3IcgW1MhFYPoFrbq++0/1C2XK2YsqyeXbFMkjxRFzJWa/kMgY+GBF3FVdESc1bZZO8BZ1WF4uRzkyCyx4tJ/z36c+T14nGOA2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QwTlG0I2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E907C19423;
-	Thu,  2 Apr 2026 07:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775115847;
-	bh=EoUiNgH3RLhJk/rzvHG3W111ug5RQnGLRQHQODHAo28=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QwTlG0I2ppucR9kfKgc3p8Lzm05Seghu7vyIGxDP3oRRFvrUVgPHYupUibjTAd5X4
-	 IRUi58wVClEe3V61qSxFhyXbA2Gpzn5UPMbYjDBsmyzf4AU7pF5S5nH6uXAYI0VX0l
-	 +pCfVtg/ZRnPWw17owaDUkQQUKxrG67APDnZYECLeoDr96gTWyUEmsGi5udNGoWoAI
-	 wyTzjVZgQjP7BgTn+l3bmQQSdTFMCdw7Uu53LQ3zz9HA2hffd9HLbyWC37Aeh5hxkB
-	 ntBkBu7nmQTkh2/iV6jVl0eceEmgMsZq5bwDiRe6Oj3KDHh1Dz8R1DlIw3Nt98wyKH
-	 zYZwRegHHV5ng==
-Date: Thu, 2 Apr 2026 09:44:05 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: ASHISH YADAV <ashishyadav78@gmail.com>
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-hwmon@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ashish Yadav <ashish.yadav@infineon.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: hwmon/pmbus: Add Infineon XDP720
-Message-ID: <20260402-enlightened-analytic-leopard-ddc512@quoll>
-References: <20260401104550.115715-1-Ashish.Yadav@infineon.com>
- <20260401104550.115715-2-Ashish.Yadav@infineon.com>
+	s=arc-20240116; t=1775117694; c=relaxed/simple;
+	bh=nMY6C9pMt7VeS4KgMH5mOiPqRP+qUHKboMu77924Xeo=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=UXqcWfoO4eCp4bO0XihKSMoGw+4gKL2nLsgNPZDe3YGvpKtTWWHjRjQDrybuiCjxOgR5X7svvb9GXXHs1abqRZ0deoy8UAmHoFNpSDa5aMatmjT5IBY5k2fs8Q99XzrbVFG+TjbBRCej3CR8TT47Q3skutI6IlpHP05MLgjrP/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LN6a4tPy; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=sjepgizR3xZzZsc
+	pwm+JF7uT0zoTKekz9Z6EodbvlT0=; b=LN6a4tPymskhc1EAuIGAOyuewxot/Ia
+	qpFywgtc3KCRDyTmFcouCSIBBvRxX7LFMNkStUYPcdO1DKLCxnh7fXA1hTYcOV4V
+	mzLvBQGQVM3KnzI4OJLwXA1nexWGvZUnwRpQOVzH+Hv+hPFzjjHrNAAg9s5c+TlS
+	HUVzXS0ORU0w=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCX5UBEJc5pC9uuUw--.170S2;
+	Thu, 02 Apr 2026 16:14:00 +0800 (CST)
+From: Wenliang Yan <wenliang202407@163.com>
+To: linux@roeck-us.net,
+	Jean Delvare <jdelvare@suse.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Wenliang Yan <wenliang202407@163.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/8] hwmon: (ina3221) Various improvement and add support for SQ52210
+Date: Thu,  2 Apr 2026 04:13:42 -0400
+Message-Id: <20260402081350.65559-1-wenliang202407@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:QCgvCgCX5UBEJc5pC9uuUw--.170S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF43AF4kWr1ftrW5JFW7XFb_yoW8Xw4xpa
+	yIkw45Wry3Xr1xXa9Ikw47Cryjq3y3JF129r97J3y0vF4Yv3W7ZrZ2gws0yw1DKr9rKFy8
+	XayxWFnxKasrArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUfrc-UUUUU=
+X-CM-SenderInfo: xzhqzxhdqjjiisuqlqqrwthudrp/xtbC6AhpPWnOJUiupgAA32
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260401104550.115715-2-Ashish.Yadav@infineon.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13023-lists,linux-hwmon=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,infineon.com:email,infineon.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1D9FC385817
+	FREEMAIL_CC(0.00)[163.com,lwn.net,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-13027-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wenliang202407@163.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 00E83385D0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 01, 2026 at 04:15:49PM +0530, ASHISH YADAV wrote:
-> From: Ashish Yadav <ashish.yadav@infineon.com>
-> 
-> Add documentation for the device tree binding of the XDP720 eFuse.
-> 
-> Signed-off-by: Ashish Yadav <ashish.yadav@infineon.com>
-> ---
-> This patch introduces a YAML schema describing the required and optional
-> properties for the XDP720 eFuse device node. It includes details on the
-> compatible string, register mapping, and rimon-micro-ohms(RIMON).
-> 
-> The RIMON resistance is installed between the Imon pin and the ground
-> reference.
+Changes in v7:
+- Fixed unnecessary semicolon in ina3221_read_value()
+  (reported by kernel test robot)
 
-Why are you adding second commit msg? Hardware description goes to
-commit msg. Redundant parts go to /dev/null.
+I will address any additional feedback in the next version.
+Thank you for your time
 
+---
+v6: https://lore.kernel.org/linux-hwmon/20260225090324.112145-1-wenliang202407@163.com/
+v5: https://lore.kernel.org/linux-hwmon/20260119121446.17469-1-wenliang202407@163.com/
+v4: https://lore.kernel.org/linux-hwmon/20260114081741.111340-1-wenliang202407@163.com/
+v3: https://lore.kernel.org/linux-hwmon/20251120081921.39412-1-wenliang202407@163.com/
+v2: https://lore.kernel.org/linux-hwmon/20251118125148.95603-1-wenliang202407@163.com/
+v1: https://lore.kernel.org/linux-hwmon/20251111080546.32421-1-wenliang202407@163.com/
 
-> ---
->  .../bindings/hwmon/pmbus/infineon,xdp720.yaml | 51 +++++++++++++++++++
->  1 file changed, 51 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/hwmon/pmbus/infineon,xdp720.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/infineon,xdp720.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,xdp720.yaml
-> new file mode 100644
-> index 000000000000..bbde8ff92ae9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/hwmon/pmbus/infineon,xdp720.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +
-> +$id: http://devicetree.org/schemas/hwmon/pmbus/infineon,xdp720.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Infineon XDP720 Digital eFuse Controller
-> +
-> +maintainers:
-> +  - Ashish Yadav <ashish.yadav@infineon.com>
-> +
-> +description: |
-> +  The XDP720 is an eFuse with integrated current sensor and digital
-> +  controller. It provides accurate system telemetry (V, I, P, T) and
-> +  reports analog current at the IMON pin for post-processing.
-> +
-> +  Datasheet:
-> +     https://www.infineon.com/assets/row/public/documents/24/49/infineon-xdp720-001-datasheet-en.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - infineon,xdp720
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  infineon,rimon-micro-ohms:
-> +    description: |
+Wenliang Yan (8):
+  dt-bindings: hwmon: ti,ina3221: Add SQ52210
+  hwmon: (ina3221) Add support for SQ52210
+  hwmon: (ina3221) Pre-calculate current and power LSB
+  hwmon: (ina3221) Support alert configuration
+  hwmon: (ina3221) Introduce power attribute and alert characteristics
+  hwmon: (ina3221) Modify the 'ina3221_read_value' function
+  hwmon: (ina3221) Support alert_limit_write function and write/read
+    functions for 'power' attribute
+  hwmon: (ina3221) Modify write/read functions for 'in' and 'curr'
+    attribute
 
-Do not need '|' unless you need to preserve formatting.
+ .../devicetree/bindings/hwmon/ti,ina3221.yaml |  15 +-
+ Documentation/hwmon/ina3221.rst               |  24 +
+ drivers/hwmon/ina3221.c                       | 548 +++++++++++++++++-
+ 3 files changed, 571 insertions(+), 16 deletions(-)
 
-> +      The value of the RIMON resistor, in micro ohms, required to enable
-> +      the system overcurrent protection.
-> +
-
-Missing supply
-
-> +required:
-> +  - compatible
-> +  - reg
-
-Here as well, most likely.
-
-Best regards,
-Krzysztof
+-- 
+2.17.1
 
 
