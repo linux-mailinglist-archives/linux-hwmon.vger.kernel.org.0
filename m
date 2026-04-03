@@ -1,164 +1,234 @@
-Return-Path: <linux-hwmon+bounces-13063-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13066-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMMQOdSTz2nmxQYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13063-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 03 Apr 2026 12:17:56 +0200
+	id sE6mNwe2z2l1zgYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13066-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 03 Apr 2026 14:43:51 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152D5393359
-	for <lists+linux-hwmon@lfdr.de>; Fri, 03 Apr 2026 12:17:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E5E3942A7
+	for <lists+linux-hwmon@lfdr.de>; Fri, 03 Apr 2026 14:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 023FC302E86A
-	for <lists+linux-hwmon@lfdr.de>; Fri,  3 Apr 2026 10:15:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D1D6D3057582
+	for <lists+linux-hwmon@lfdr.de>; Fri,  3 Apr 2026 12:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BA139098D;
-	Fri,  3 Apr 2026 10:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3CC39936D;
+	Fri,  3 Apr 2026 12:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qYcoeav5"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Ww0emgJ5"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDF338D006
-	for <linux-hwmon@vger.kernel.org>; Fri,  3 Apr 2026 10:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D476389114;
+	Fri,  3 Apr 2026 12:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775211330; cv=none; b=chWOnpbi5wLx9cIwJtUk9L18QvkRYR0AaD2CyqYNZxj4sLWDXvgMwwX3bUs0R7kEf3Pyhfr+dbxwPTiF1MatGYo4DLyttKc6qqYdmbioouJ6EreeeQnvGOPiOhN0JJ5+33oKMkTRXg/PV3NElUFICda77v9P4OnZYrJiouV/aOc=
+	t=1775220012; cv=none; b=T0osp5QqnlzptU6ZBcDim0ov4RNAbKqZJpnzT2fOsDRiSnDnpBnaTEqntLdziXA7FutHDbfSa+zY8VtVQTtEixhT/BB2hnTsdRo/CKIXGFMLS6nkbvVU/4L6KuW97kVe86c9jQFZRLW2A+Ia215Uey6PWhh5k1VXh6XxoTCFqpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775211330; c=relaxed/simple;
-	bh=7i8J/fbN7z0SDl2RldQ6zv/iIja95/EoYFcW92yxPco=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=tlVfLqgXcxBR9ipMjfRv94aHre/98LJthPlGmyPQ/uEei7ywVZX8tRU3UcfbhherC+MyIBfRl7iu1L5r2cY3qaf+zVYZRp4WxCkTvt7hxeMF3j6pnQNFSaM6/vhgkth4mfRBaFsOqpk0uhvv8luCtPD1pYuYezNjOQBbKDnXffg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qYcoeav5; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2aae146b604so10523525ad.3
-        for <linux-hwmon@vger.kernel.org>; Fri, 03 Apr 2026 03:15:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775211326; x=1775816126; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tordCEdMdCISPKuHP1P7HVkOG9Rk7horQHJTiIOMN44=;
-        b=qYcoeav5Jgh6JG5CnQJLkcmYqjsY1PlCjfw8J+573oX6CfJph3zwhG055pv1/LhJD1
-         AacYzkviEHxOrrrc7wh5uT+3ASADEXLGI0bq2p+1DaNh+LeiqTLaJ99TOa/jFaGdl7Vk
-         w/zOgwi+PY/q+PTlZ2XxoV5iucti2ZGw2mczJDM5K7vlySDcRtE+a4q/DRcS9BGPTVxr
-         p4XA3ix0b3MbctswZ2ewAmFFyug7bnVz/LhmT9ZZXw/MvSnbZXvJqwmG6fdr8M0tB0Ma
-         H7ElKbClPSC8uUo7q6gFjNaTJDBJTcVCZMknN+bQAfoXhmuusJnRgCo5bQerzK0SllSm
-         sVsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775211326; x=1775816126;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tordCEdMdCISPKuHP1P7HVkOG9Rk7horQHJTiIOMN44=;
-        b=TW+10LJ+TWtNdzptENquaY9BCSI5c+l+zga8ocwQiREReMUjl/WjYINX1S8mTky0Yt
-         5C1uh+aAx/rspRBQA4Ct5WGtP8qfpTFc/+jJnsBnRRdXzrmJ/G/mGqBGHuceGpNrQJBs
-         byw9bdSPP7TT+TbFED717an/1Cgx43H7cbkKzavZHwzJxL7DnDqCssTxCBKQSTWWNiYe
-         mi4ds0fzrMtnyOycJSBnHdjv3UCA5ypfSNZjP9vW7qxgIn1DFOOPIg6TDTv7OV7zC3t5
-         LP6eenXab4Sw4kKtmRrWdjvS1ubmU3fFP+7Ar4/5eJJo5Kb7T/yNenBVJwYnqAaSZejr
-         VE+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVKg3c196H3G0/kyrv+k3IoRo0zXcaYSTvYCnxTgA/Uvu/tzqS4c3vb44QUg9Z4s/jENPJq2yVtw+E2Rg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJb6OBhcxbB7rCwO1XTE2Zp1Ng1XMhiXFp8sRoE3MqCLq3qnQe
-	kbnyvH6unxtpvljxQGh2OZjFcWOUOKg5O9NuT3cHQrhwVT3L/cm0e8HD
-X-Gm-Gg: AeBDietOEb+kd9QCbPCvL/nfHwB9gEFHqYxW75N0qk0+61qFS5MCX6jcE9cBNO0aG2H
-	b/4PV5gJQfu7JPUhtUN+GD27PjMZolNi+7+J66vLSqdSso7oQSZt0iG1ag8HueDLPGt2RX/8JKr
-	6VzoVcv8Ii7KwmYNpJxr39QCZ183v9BjT2MrwxgDGucQhiv+e07V3s/7XxBgrva7wiPLkHp8XDS
-	PcTImcc701GU58fEP+XQr4vXTB9DE8aTGccvscbBBAGXuAgku/j7n7nN9UUBdQEe9+brlECrWrb
-	B5q5cgtZIUmfo6uYTbHslsLjS4plVWJK59z5TExIvssid9WG1+6dzBsUs+r/rvobbp2fTbsW3nt
-	ofApTET0j2sWTf5xaaSD29yaFfQ93PoXBMkvelxKGnO9nSqOpv+0Fd5X9Aq6LMlqFSpOikKJw0i
-	Rf9yd6CA1Ho1pwYabBhx3TtksgQimoVYFRJN5JTMeS8Q0ItXcjxVKxFHVdFJqTDBo=
-X-Received: by 2002:a17:903:388e:b0:2b2:6df1:1112 with SMTP id d9443c01a7336-2b281969a70mr25700175ad.40.1775211326126;
-        Fri, 03 Apr 2026 03:15:26 -0700 (PDT)
-Received: from ubuntu.localdomain ([27.217.83.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2747341a8sm54383675ad.3.2026.04.03.03.15.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 03 Apr 2026 03:15:25 -0700 (PDT)
-From: Zaixiang Xu <zaixiang.xu.dev@gmail.com>
-To: linux@roeck-us.net
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zaixiang.xu.dev@gmail.com
-Subject: [PATCH v5 3/3] hwmon: (sht3x) Add support for GXCAS GXHT30 sensor
-Date: Fri,  3 Apr 2026 18:14:56 +0800
-Message-Id: <1775211296-63722-4-git-send-email-zaixiang.xu.dev@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1775211296-63722-1-git-send-email-zaixiang.xu.dev@gmail.com>
-References: <1775211296-63722-1-git-send-email-zaixiang.xu.dev@gmail.com>
+	s=arc-20240116; t=1775220012; c=relaxed/simple;
+	bh=PnRnd7lQtN3WxG2Z0pPYrXqxZbFA1u+MSlM8AIZnedU=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=u3+CwCOmosACcLo2ptBGAWulD+/Jw83v/z0JiPJfYOT/6/6F9N158WXUm5yaHyjWpc2iV9/8ZIb2DB+0Bza5VjmZiXbLP8iCbISmNxcVgkQawkg9ezplc5OJrNEaT8YnA8RFsPotRWYhBLEddS/gWzGmxJ+cWQ+fb/tbIuPs2dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Ww0emgJ5; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1775220010; x=1806756010;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=PnRnd7lQtN3WxG2Z0pPYrXqxZbFA1u+MSlM8AIZnedU=;
+  b=Ww0emgJ5QmVuaqcMlQ2RPwWqHV6+bZdvF0L0PAyQJcY/4mIEHeWlEH6A
+   d8CZhRpTFq3wx+t65k0XokojH+2wp9HgePlGZdkPEliDKQTmWtua4ZZlJ
+   QIylmhVnnjPCsKz1uuTMgzdnxSt15H8hf0zs8R5PA44uem5qIzj0eZIdw
+   d92+GXFgG44x959+iGP92oOLSoCksFsZwEPvgXYm3jt5iJPhtNfoz99Yu
+   T+ERY82J6IIw+vGo96fAy5LCR/ah6qyUdMdpY1oDVhqVxBTKGktQysvRY
+   fRv+T5mD06113FEaiiv7qwqTHA6HxlSlEmarH5e++BVSl15q1ihCSQ8vQ
+   g==;
+X-CSE-ConnectionGUID: CBerw6eeRJyL4pEnwf9CKw==
+X-CSE-MsgGUID: nDCPFf43T2WVOnvKPdKAhA==
+X-IronPort-AV: E=Sophos;i="6.23,157,1770620400"; 
+   d="scan'208";a="54879033"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 05:40:09 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Fri, 3 Apr 2026 05:39:49 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 3 Apr 2026 05:39:46 -0700
+From: Marius Cristea <marius.cristea@microchip.com>
+Subject: [PATCH v9 0/2] Add support for Microchip EMC1812
+Date: Fri, 3 Apr 2026 15:39:36 +0300
+Message-ID: <20260403-hw_mon-emc1812-v9-0-1a798f31cf2e@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAi1z2kC/23RTU7DQAwF4KtUsybI9vw5XXEPhFAm8ZBZpKkSF
+ EBV786kAqXqZPks+Vu8d1GzTElmdTxc1CRLmtN4yqF+Oqi2b04fUqUuZ0VAFgGo6r/eh/FUydA
+ iI1URA4Mz7DsElZ/Ok8T0fQNf33Lu0/w5Tj83f8H1+kdR/UgtWEEVxMSOmwjompchtdPY9un83
+ I6DWrmFNgIJC4IyYQOBh8jBe94j9EYQckHoTDRIuukaH9jWe4T5Jxwg+YIwmXAhOu2CNWz8HmE
+ 3gsAWhM0EaWJtG4nCcY9wdwQWyywuE6K91EFzx/VuF/6OIF0Qfq0ThZx30QjBHsEboREKgtdRW
+ 7TWkxfo6JG4Xq+/JIjxnoUCAAA=
+X-Change-ID: 20251002-hw_mon-emc1812-f1b806487d10
+To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+CC: <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Marius Cristea
+	<marius.cristea@microchip.com>, Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4456;
+ i=marius.cristea@microchip.com; h=from:subject:message-id;
+ bh=PnRnd7lQtN3WxG2Z0pPYrXqxZbFA1u+MSlM8AIZnedU=;
+ b=owGbwMvMwCW2tbSTZa7u0x2Mp9WSGDLPbxUQ5GnjMYqcmOeyJ7mn6l0TS36NzZovswUDVqruf
+ vpmwm+2jlIWBjEuBlkxRZYVb/3UqtZ+uKwklqkDM4eVCWQIAxenAEykWImR4Y2n/lOtmhmL7ty/
+ wynFOTs9PPtMR54vE0fOKU6HtULpqgz/7Dg9p/21Njlklz0hoeZDys0Ilw0xMpGH3nBHsWmfdL/
+ OBAA=
+X-Developer-Key: i=marius.cristea@microchip.com; a=openpgp;
+ fpr=E32F8D4396E72E463E8CCD91446DE0ABD9140C3E
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[zaixiangxudev@gmail.com,linux-hwmon@vger.kernel.org];
-	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13063-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[microchip.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13066-lists,linux-hwmon=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marius.cristea@microchip.com,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sensirion.com:email]
-X-Rspamd-Queue-Id: 152D5393359
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,microchip.com:dkim,microchip.com:email,microchip.com:mid]
+X-Rspamd-Queue-Id: C9E5E3942A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The GXCAS GXHT30 is a humidity and temperature sensor that is software
-compatible with the Sensirion SHT3x series.
+This is the hwmon driver for EMC1812/13/14/15/33 multichannel Low-Voltage
+Remote Diode Sensor Family. The chips in the family have one internal
+and different numbers of external channels, ranging from 1 (EMC1812) to
+4 channels (EMC1815).
+Reading diodes in anti-parallel connection is supported by EMC1814, EMC1815
+and EMC1833.
 
-Add the "gxht30" chip name to the i2c_device_id table to allow I2C core
-matching. For Device Tree instantiation, this driver relies on the I2C
-core fallback matching or DT compatible fallbacks (e.g., matching
-"gxcas,gxht30" with "sensirion,sht30").
-
-Signed-off-by: Zaixiang Xu <zaixiang.xu.dev@gmail.com>
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 ---
- drivers/hwmon/sht3x.c | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v9:
+- improve the wording in the Documentation/hwmon/emc1812.rst file
+- add const to variables in the driver
+- initialize the EXT2_BETA_CONFIG only for the pats that support it
+- update the writeble regmap table to exclude read-only registers
+- Link to v8: https://lore.kernel.org/r/20260310-hw_mon-emc1812-v8-0-bc155727e0d2@microchip.com
 
-diff --git a/drivers/hwmon/sht3x.c b/drivers/hwmon/sht3x.c
-index 08306ccb6d0b..abcc7b4abe5a 100644
---- a/drivers/hwmon/sht3x.c
-+++ b/drivers/hwmon/sht3x.c
-@@ -934,6 +934,7 @@ static const struct i2c_device_id sht3x_ids[] = {
- 	{"sht3x", sht3x},
- 	{"sts3x", sts3x},
- 	{"sht85", sht3x},
-+	{"gxht30", sht3x},
- 	{}
- };
- 
-@@ -948,5 +949,6 @@ module_i2c_driver(sht3x_i2c_driver);
- 
- MODULE_AUTHOR("David Frey <david.frey@sensirion.com>");
- MODULE_AUTHOR("Pascal Sachs <pascal.sachs@sensirion.com>");
-+MODULE_AUTHOR("Zaixiang Xu <zaixiang.xu.dev@gmail.com>");
- MODULE_DESCRIPTION("Sensirion SHT3x humidity and temperature sensor driver");
- MODULE_LICENSE("GPL");
+Changes in v8:
+- remove "address scan" from emc1812.rst documentation
+- change the second dimension of emc1812_limit_regs_low[][] to 2
+- clamp input value before doing math on it to avoid overflow
+- use rounding instead of truncation for 8 bits limit registers
+- fix misleading comment when HW ID is not recognized
+- Link to v7: https://lore.kernel.org/r/20260223-hw_mon-emc1812-v7-0-51e2676f4e20@microchip.com
+
+Changes in v7:
+- driver
+  - fix an overflow emc1812_set_hyst
+  - remove unused parameter in emc1812_set_temp
+- devicetree binding:
+  - remove unneeded restrictions not to bloating the binding
+- Link to v6: https://lore.kernel.org/r/20260212-hw_mon-emc1812-v6-0-e37e9b38d898@microchip.com
+
+Changes in v6:
+- driver
+  - fix an overflow when writing more then 191875 to limits stored on 8
+    bits register
+  - remove "i2c_set_clientdata" from probe
+  - fix discrepancy where writing 16ms and reading it back returns 15ms
+    at update interval
+  - skip setting the ideality factor for channels that are not available
+    on the device
+- devicetree binding:
+  - change the way interrupts are described/used
+  - add "microchip,enable-anti-parallel"
+  - rewrite "allOf" section to be more clear
+- Link to v5: https://lore.kernel.org/r/20260205-hw_mon-emc1812-v5-0-232835aefe8f@microchip.com
+
+Changes in v5:
+- fix calculation in emc1812_get_limit_temp 
+- use i2c_get_match_data cover the case when the driver is instantiated
+  via I2C ID table.
+- replace dev_info with dev_warn
+- remove some unnecessary truncation on 8 bits
+- remove clamping when reading the temerature with hyst
+- not change the conversion rate at probe time
+- use a generic define to remove duplicate channel_info entries
+- Link to v4: https://lore.kernel.org/r/20260127-hw_mon-emc1812-v4-0-6bf636b54847@microchip.com
+
+Changes in v4:
+- fix file permissions for read only properties
+- fix calculation when the limits are written
+- remove the temp_min_hyst because the part doesn't support it
+- Link to v3: https://lore.kernel.org/r/20251218-hw_mon-emc1812-v3-0-a123ada7b859@microchip.com
+
+Changes in v3:
+- remove mesages that are not helpfull
+- fix an issue related to NULL labels
+- fix sign/unsign calculation
+- replace E2BIG with EINVAL
+- use BIT() to create mask
+- Link to v2: https://lore.kernel.org/r/20251121-hw_mon-emc1812-v2-0-5b2070f8b778@microchip.com
+
+Changes in v2:
+- update the interrupt section from yaml file
+- update index.rst
+- remove fault condition from internal sensor
+- remove unused members from structures
+- update the driver to work on systems without device tree or
+  firmware nodes
+- add missing include files
+- make NULL labels to be not visible
+- corect sign/unsign calculations
+- corect possible underflow for limits
+- Link to v1: https://lore.kernel.org/r/20251029-hw_mon-emc1812-v1-0-be4fd8af016a@microchip.com
+
+---
+Marius Cristea (2):
+      dt-bindings: hwmon: temperature: add support for EMC1812
+      hwmon: temperature: add support for EMC1812
+
+ .../bindings/hwmon/microchip,emc1812.yaml          | 184 ++++
+ Documentation/hwmon/emc1812.rst                    |  67 ++
+ Documentation/hwmon/index.rst                      |   1 +
+ MAINTAINERS                                        |   8 +
+ drivers/hwmon/Kconfig                              |  11 +
+ drivers/hwmon/Makefile                             |   1 +
+ drivers/hwmon/emc1812.c                            | 965 +++++++++++++++++++++
+ 7 files changed, 1237 insertions(+)
+---
+base-commit: d2b2fea3503e5e12b2e28784152937e48bcca6ff
+change-id: 20251002-hw_mon-emc1812-f1b806487d10
+
+Best regards,
 -- 
-2.34.1
+Marius Cristea <marius.cristea@microchip.com>
 
 
