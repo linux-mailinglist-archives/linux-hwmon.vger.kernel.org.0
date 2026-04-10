@@ -1,54 +1,92 @@
-Return-Path: <linux-hwmon+bounces-13220-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13221-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHUcMzsQ2Wl+lggAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13220-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Apr 2026 16:59:07 +0200
+	id 4McYFyEa2WnfmAgAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13221-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Apr 2026 17:41:21 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA413D8DDC
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Apr 2026 16:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C953D9856
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Apr 2026 17:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 013113038AC3
-	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Apr 2026 14:53:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89EFE311A023
+	for <lists+linux-hwmon@lfdr.de>; Fri, 10 Apr 2026 15:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35ECA3D7D7B;
-	Fri, 10 Apr 2026 14:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D435E3DFC8C;
+	Fri, 10 Apr 2026 15:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="KbfhcOrE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p6ackZ95"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE6D3D5668;
-	Fri, 10 Apr 2026 14:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953383DF007
+	for <linux-hwmon@vger.kernel.org>; Fri, 10 Apr 2026 15:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775832838; cv=none; b=ZKpIxiUf0ObuSe381dP/9FGU9PwQCe8nUcJfzJAJxaabrKYNrlqGJccye5aSn6SuoR/Lw6LhOKfYijz18biRfCP+NRR1zbWMQgMfWL5lwXFwg+g/rLlitN8G/kM/SQ7dbCsRjc3OlflsYKNH51SNqAoLZ0SeB2L4w3JxtFs7asg=
+	t=1775834617; cv=none; b=AepP+VHYQ4Hyj0LKUw0ImHd7SMhRQciHFux0zll33hFfjqHBTlysUqdkAvPmz+BQDcJNrCMQtPS1y3w3jpv8eLENlKvhX8cw/3OJUtnc8dEC2jVL8V31TbfMJ3ZgipDG9RvTBaG7ObPZoC4TnM2Y935Aeb10X6SFrvO4dWzdHmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775832838; c=relaxed/simple;
-	bh=DhI/OkHJmAlFb2E8T2Sq0d7zABUR4+AKc9tF8OFgYK4=;
+	s=arc-20240116; t=1775834617; c=relaxed/simple;
+	bh=qtiqpEGKt0oMmugrrXhPa7BnqHCckBI4a0HGqw26zI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBOn/R0hpSry1aj7AY86QxiUQsDZAlZDzHLydAmtgNXBskemx6cYaa8XmNU0z0m5/dV0llQvB1t9qk6gywYgOJinDYMTf6fKjl+6ZYzC+5M93T4VJTeIkBFiWmFo6jOvt4kZTcBbqx1YVa5u5lKvYPQyxIdkKD6So2kPbtL/GvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=KbfhcOrE; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1775832834;
-	bh=DhI/OkHJmAlFb2E8T2Sq0d7zABUR4+AKc9tF8OFgYK4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KbfhcOrEyZC+4N5OabPlo8c12l6UPUC3lwjChfQmLc1nd3gLGLNhBoqT6BIPwiF6l
-	 0H3++Z+vXyQ5EgOnbhow/FkWcB1Gmiai5Ag5I2NxJB6WmUkvggTQnwGFZT0WKjrhc+
-	 QBAHkRg+uHvJaEcIWtU2tHuB93BWwEKSi/Of/5aI=
-Date: Fri, 10 Apr 2026 16:53:54 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Aureo Serrano de Souza <aureo.serrano@arctic.de>
-Cc: linux-hwmon@vger.kernel.org, linux@roeck-us.net, corbet@lwn.net, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6] hwmon: add driver for ARCTIC Fan Controller
-Message-ID: <23c6211d-cdc7-4e26-bc7a-a0563c846a24@t-8ch.de>
-References: <20260401153949.77488-1-aureo.serrano@arctic.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MlK9eCXwo5+dfdUXjQLpbBV69JJ+43TfUAHLvDJNvCxRnuZ6alhPEjA1RjRj5Bk9Z9bj7sS2DsDAu8PpUTYIVT0Hdn6KhJ/qMBFCugafLlh/E3wzTvpqbyq8LTKLzafLoOA7HRV2L78pdRqN53DvNGhQCWWJx5DXcQpmob9hOCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p6ackZ95; arc=none smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12c1fcce8f8so1244521c88.1
+        for <linux-hwmon@vger.kernel.org>; Fri, 10 Apr 2026 08:23:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775834616; x=1776439416; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sAA6Qc2NYu8ctUp5Cpi98XZrHzLCmkZgBpA9eSHPmR8=;
+        b=p6ackZ95DtVzlHMVlywT6GxZWtRDp3eCkcDtM1xHCYkIV4sA0o/c/3nP8VVIuuJXpm
+         HkKDAl+TOT+tTI3977BmVQS5ogstT5KYAhGEPpDOWcmFrVZlOog6QwEPo8p7IsHavk+v
+         O30k69vuTRi3TxR80WG2zwJivHLH8gKuh4AzOeS+7lruVlXmKxXlpKk7D2qEOqVsl4PY
+         U045LntjD0gXw7l06xicGBVybxsp2rk8k1lpn8AxhEr14qQBGpMO9E8hOYUuGNymNXpw
+         5J225UcrEF9vKQKZtFm5nfglfPuBy/n8G4NC3pNUSv35BbyE9k/vkD0SOAp6zxTnlEIo
+         H3aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775834616; x=1776439416;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sAA6Qc2NYu8ctUp5Cpi98XZrHzLCmkZgBpA9eSHPmR8=;
+        b=jWMHJwqQFuIu61n/Fvb7ZDKy+vlQopJv5jNl6E63AOjaEFau5jFeWiKYdRR1IXTCjh
+         ip2ffNWYfeWkOYU+SRnu2b7GFQcOSqMHMsO4QKg8S+xhYPifVsHET+xCBXzQAL2v+0FT
+         XT60EWJjP2EJ1xU07GS8A3rS9JFmxFJDGtOSomujG5kizTcyjCVZcwZM2smHmS4592ED
+         wJ/EmaIJ6TcDNre6d7mMjc19x0db3qMutp4Oq3eNyRcITeRDPpN5RbkNnoR9bkj2hded
+         YHKhUs0PpDbe9S7o6886k6i9Gjix9IzkA+HyiWOQ8zvE0KGRBLxiob7Q1yDghp695EMZ
+         F9Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqF0yMehY9IPDPPqxNdTKw7YdEzIgRf2hKt6S7YJVxEbUObm5kFptbSu5MctPWbfLEM5ezGYHG/rktkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8BMT6dBrwIMDyjCuKKsHg17vAnxBrXsxr1XPPKmHbzzBYjjWB
+	bF3wEkDcVuoMNc/7uwH9HZSHLW67J5XqLc9xw5tNGXYS/X7TwrMSxnHb
+X-Gm-Gg: AeBDieu/dXGIbYF7ELZu7HQWpiEuDTnJZZNfr9M5ydVGCBp99zmYqYy/cmZdCvwYxFP
+	SqthJjc6WLOlUlivySL/xJNELJr0rkpZfKUVT8t0ZElKkptBh8eqA33UqFfa1sV6Kttz5kaqTER
+	jiWve+YOKPrRiFKWlahxL4iAZS9UG51KmSISNfsEDyG9y7tsgu0W7fjTSJ27mYj5CpeNldAwaRN
+	NjHhJwxmIefrB2+yPQzFpxXck0Jc+3AWDmTRQfyk/G3lUI4/Nc1nvvQqzSBhmIBNe3y6PxQrs+6
+	4YhKII2xtkaOVBVoTiO3sRbLnM3pWCzgZIepuhacqNWyksmhIXYyQdwCj37iPL+Krbsqe3ASR9Y
+	hgHsHgKpteq7RukSGSNjVY6Ys1UqnMVF2CK1GvrKkkIxGYtyXveN/4D4QYW0zhliTL88KjlCp2/
+	RmGJDCYN4zhhOqnl1ysNJa17RJ990W9v+klaQV
+X-Received: by 2002:a05:7301:1f10:b0:2c5:a6ce:e534 with SMTP id 5a478bee46e88-2d587b840fbmr2399500eec.8.1775834615650;
+        Fri, 10 Apr 2026 08:23:35 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d562eb05fcsm4701544eec.28.2026.04.10.08.23.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 08:23:35 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Fri, 10 Apr 2026 08:23:34 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/2] dt-bindings: trivial-devices: Add sony,aps-379
+Message-ID: <17343af6-0607-4ccd-94db-98c2285b9101@roeck-us.net>
+References: <20260410012414.2818829-1-chris.packham@alliedtelesis.co.nz>
+ <20260410012414.2818829-2-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -57,68 +95,47 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260401153949.77488-1-aureo.serrano@arctic.de>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <20260410012414.2818829-2-chris.packham@alliedtelesis.co.nz>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[weissschuh.net,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[weissschuh.net:s=mail];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13220-lists,linux-hwmon=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-13221-lists,linux-hwmon=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[weissschuh.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@weissschuh.net,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,weissschuh.net:dkim,t-8ch.de:mid]
-X-Rspamd-Queue-Id: 2CA413D8DDC
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 94C953D9856
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Aureo,
+On Fri, Apr 10, 2026 at 01:24:11PM +1200, Chris Packham wrote:
+> Add the compatible string for the sony,aps-379. This is a simple PMBus
+> (I2C) device that requires no additional attributes.
+> 
+> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-On 2026-04-01 23:39:47+0800, Aureo Serrano de Souza wrote:
-(...)
+Applied.
 
-> +struct arctic_fan_data {
-> +	struct hid_device *hdev;
-> +	struct device *hwmon_dev;	/* stored for explicit unregister in remove() */
-> +	spinlock_t in_report_lock;	/* protects fan_rpm, ack_status, write_pending, pwm_duty */
-> +	struct completion in_report_received; /* ACK (ID 0x02) received in raw_event */
-> +	int ack_status;			/* 0 = OK, negative errno on device error */
-> +	bool write_pending;		/* true while an OUT report ACK is in flight */
-> +	u32 fan_rpm[ARCTIC_NUM_FANS];
-> +	u8 pwm_duty[ARCTIC_NUM_FANS];	/* 0-255 matching sysfs range; converted to 0-100 on send */
-> +	/*
-> +	 * OUT report buffer. Cache-line aligned so it occupies its own cache
-> +	 * line, preventing DMA cache-coherency issues with adjacent fields
-> +	 * (fan_rpm[], pwm_duty[]) on non-coherent architectures.
-> +	 * Embedded in the devm_kzalloc'd struct so it is heap-allocated and
-> +	 * passes usb_hcd_map_urb_for_dma(). Serialized by the hwmon core.
-> +	 */
-> +	u8 buf[ARCTIC_REPORT_LEN] ____cacheline_aligned;
-
-I recently discovered __dma_from_device_group_begin() / _end().
-These look like the correct solution to use here. It would also make
-parts of the comment unnecessary, as the macro already expresses this
-semantic.
-
-> +};
-
-(...)
-
-
-Thomas
+Thanks,
+Guenter
 
