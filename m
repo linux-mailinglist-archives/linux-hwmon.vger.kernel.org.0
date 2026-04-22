@@ -1,61 +1,61 @@
-Return-Path: <linux-hwmon+bounces-13437-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13438-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIFMNBk96GlaHgIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13437-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:33 +0200
+	id yHkgER896GlaHgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13438-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:39 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740D6441BF1
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB8D441C02
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFD22301CF98
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 03:09:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0FAF301F19A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 03:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15F839A055;
-	Wed, 22 Apr 2026 03:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603873A16BD;
+	Wed, 22 Apr 2026 03:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joHKHdX3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsCORiB7"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E7A3921E7
-	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 03:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6476339DBCF
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 03:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776827347; cv=none; b=hjzBaqlYe/27agxLqsjm6e13/5RrP2r2I447IUz8z0jyumj32lIjgqRXqSutqD8jy42aDyHb464loxhRihY6aemeHZC21vIB7+2hm98m7+4NBgty4n9d6tcf5laS5xv1T5mYmrbgjr5lsZoXtyoxlrhURT7662xnmEt7jw4Jfyk=
+	t=1776827348; cv=none; b=nQKdTlp/ekhevOlH3ZQ4koJwfQAbTBiC0YT8KjHYAk0jOOmI6rFtURg8OLK5gh8fHg+l3OYv3p5EojRjDEU/1faFtgvaayBhKKx3vGKMWy7rCmAIawlvLsncoNFfv6wGSLIxMKu2ZvwWAcoB4kZeGYid5c63kM4uiCU/oLplW/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776827347; c=relaxed/simple;
-	bh=Cp8VPi6KxLq6/5Ps/ZmQE0Xu8w1wm8R+g7UfjRCpQPU=;
+	s=arc-20240116; t=1776827348; c=relaxed/simple;
+	bh=u3q5jOESPUFXy78Ez3DYVknyqjW/GmfksrNbr2qYR1c=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uoI0ipVgE5SjqH46Cu2TvY8qRtDtfFuakACaEn/liTI6cuGbKS6bl8CGErHMSKHaljyVKQ/ffYqis2fgq8YmkjGsR6H8GvGg8/EbKp5UZvOey+3vAj/agqeIJylXKTH6KXn7FRnMfL6AGGW8fub300WkFcbY93LO/oZa2KpJT+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joHKHdX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471D2C2BCB0;
-	Wed, 22 Apr 2026 03:09:07 +0000 (UTC)
+	 Message-Id; b=rq/HM5i+CcUKgmSHzVlBfrJqNHUm7Q6AeTU45hM1OdRnhf8tnuA9SpEAWMPSh5K9gdLYne5X8q2TF+FmVnWb7ywVCaiR8PzcLmLYEgFoRH0iW4zG3SzVY0aYQIgN/SvjGNhWfVERjpIjXe/Oj3B40mo6KxQnUhgUnUXmBZQW4+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsCORiB7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D055C2BCB0;
+	Wed, 22 Apr 2026 03:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776827347;
-	bh=Cp8VPi6KxLq6/5Ps/ZmQE0Xu8w1wm8R+g7UfjRCpQPU=;
+	s=k20201202; t=1776827348;
+	bh=u3q5jOESPUFXy78Ez3DYVknyqjW/GmfksrNbr2qYR1c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=joHKHdX34G0oHfhyGG5zC1DnFb39+SQFUm850ZBuQpjTs/aYnAyRx70t7mqCSyp+W
-	 j70ArMZMlcIWT7KSeBnNz43E4sDBPJ9ZDy72PnBZDRGwZzoYtknbrFdpSqUFu1z27Q
-	 zJmMZTtn0V+L/vrWC3iqyQRgrC2v9MHLnCXTkJlipEoE/7dpZIB7rWo/COvUoumwgo
-	 JyUy4P3doOVoN8bW3SSL1h7bYtn1BUJKqDtRlvE+3Kh/9zslon5ViLH6NRYlDz2fW1
-	 jX4flAeBm0s7+Sg2mR1983Cy0Kxf6Kjdjce/ZMGw6DhEExKyGBrKGGhSxzxjSWVWiZ
-	 w/rgVeocciM1Q==
+	b=qsCORiB7NndXeA7dZXPrQE1N10y/7yD7ELz7oWHanOM9ecY/DNTf+rxm9BV311VsL
+	 XaHWfYrpG+RsZW+t7baMuHhpzDXfX9jJxA7ixFXXHGQ9YtgXVw6exNBtM5QhzMSlU8
+	 ZIWTeG2oMSRgLxC7XcwZ/pfnA4rR3dcux2fUZ6Nwyyco3+pkMpRx/1bzOri3ho+2Yl
+	 AX2RqiskBCmm358zTh8Yl3Lk6jrvFPKd0wpu//5pk38p2bs+QgVpu28VNJgInuvdiG
+	 YiDW/XTnxzeDh6++Phf64y3NdycEy/ZtogoznRB3zmDwg3l1fVFLbggDkv4WOt8C9u
+	 sOxWXxRft2E2w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 21/23] cgroup/cpuset: Limit the side effect of using CPU
- hotplug on isolated partition
+Subject: Re: [PATCH 22/23] cgroup/cpuset: Prevent offline_disabled CPUs from
+ being used in isolated partition
 Reply-To: sashiko@lists.linux.dev
 To: "Waiman Long" <longman@redhat.com>
-Cc: linux-hwmon@vger.kernel.org, mkoutny@suse.com, hannes@cmpxchg.org, tj@kernel.org
-In-Reply-To: <20260421030351.281436-22-longman@redhat.com>
-References: <20260421030351.281436-22-longman@redhat.com>
+Cc: hannes@cmpxchg.org, mkoutny@suse.com, linux-hwmon@vger.kernel.org, tj@kernel.org
+In-Reply-To: <20260421030351.281436-23-longman@redhat.com>
+References: <20260421030351.281436-23-longman@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Apr 2026 03:09:06 +0000
-Message-Id: <20260422030907.471D2C2BCB0@smtp.kernel.org>
+Date: Wed, 22 Apr 2026 03:09:07 +0000
+Message-Id: <20260422030908.0D055C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -65,14 +65,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13437-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13438-lists,linux-hwmon=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -87,125 +87,119 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev]
-X-Rspamd-Queue-Id: 740D6441BF1
+X-Rspamd-Queue-Id: AEB8D441C02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Sashiko AI review found 3 potential issue(s):
-- [High] The fallback CPU mask is overwritten and ignored in `cpuset_update=
-_tasks_cpumask`, causing task migration to fail silently.
-- [High] The `cpuhp_offline_cb_mode` hack bypasses partition invalidation g=
-lobally, but its fallback logic only protects `PRS_ISOLATED`, breaking stan=
-dard `PRS_ROOT` partitions.
-- [High] Unsynchronized access to the global `cpuhp_offline_cb_mode` flag c=
-reates a data race and TOCTOU vulnerability in partition validation.
+- [High] Unconditional NULL pointer dereference causes boot-time kernel pan=
+ic on architectures with late CPU registration or systems with non-present =
+possible CPUs.
+- [Medium] Caching the `offline_disabled` state at early boot misses dynami=
+c runtime updates, allowing illegal CPUs to enter isolated partitions.
+- [Low] Buffer truncation for the isolated partition error message when mul=
+tiple CPUs have `offline_disabled` set.
 --
 
-commit 273c35c4b20a0b62c4d54c5410e48d5450b71df4
+commit b13420f1f2cd136dd5780ea125eec8631214ef49
 Author: Waiman Long <longman@redhat.com>
 
-cgroup/cpuset: Limit the side effect of using CPU hotplug on isolated parti=
-tion
+cgroup/cpuset: Prevent offline_disabled CPUs from being used in isolated pa=
+rtition
 
-CPU hotplug is used to facilitate the modification of the
-HK_TYPE_KERNEL_NOISE and HK_TYPE_MANAGED_IRQ cpumasks. However, tearing
-down and bringing up CPUs can impact the cpuset partition states
-as well. This patch attempts to work around partition invalidation by
-pretending partitions are empty during cpuhp_offline_cb_mode, and
-temporarily mapping tasks in isolated partitions to their parent's
-effective CPUs.
+This commit introduces a check to prevent CPUs with the offline_disabled
+flag set from being added to isolated cpuset partitions. It initializes
+a cpumask during late boot to track these CPUs and checks against it
+when partition states are updated.
 
 > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> index a927b9cd4f718..5f6b4e67748f2 100644
+> index 5f6b4e67748f2..f3af8ef6c64ee 100644
 > --- a/kernel/cgroup/cpuset.c
 > +++ b/kernel/cgroup/cpuset.c
-> @@ -434,6 +434,13 @@ static inline bool partition_is_populated(struct cpu=
-set *cs,
->  	struct cpuset *cp;
->  	struct cgroup_subsys_state *pos_css;
-> =20
-> +	/*
-> +	 * Hack: In cpuhp_offline_cb_mode, pretend all partitions are empty
-> +	 * to prevent unnecessary partition invalidation.
-> +	 */
-> +	if (cpuhp_offline_cb_mode)
-> +		return false;
-> +
-
-Is it safe to read cpuhp_offline_cb_mode here without synchronization?
-
-The hotplug thread sets this flag while holding lock_device_hotplug(). A
-concurrent userspace write to cpuset.cpus.partition triggers
-validate_partition(), which holds cpuset_mutex and cpus_read_lock(), but not
-lock_device_hotplug().
-
-Could validate_partition() read cpuhp_offline_cb_mode as true before the
-hotplug thread acquires cpus_write_lock(), causing the safety checks to
-falsely conclude the partition is empty and bypassing cgroup validation?
 
 [ ... ]
 
-> @@ -3881,6 +3888,17 @@ hotplug_update_tasks(struct cpuset *cs,
->  	cs->effective_mems =3D *new_mems;
->  	spin_unlock_irq(&callback_lock);
+> @@ -164,6 +167,12 @@ static cpumask_var_t	isolated_mirq_cpus;	/* T */
+>  static bool		boot_nohz_le_domain __ro_after_init;
+>  static bool		boot_mirq_le_domain __ro_after_init;
 > =20
-> +	/*
-> +	 * When cpuhp_offline_cb_mode is active, valid isolated partition
-> +	 * with tasks may have no online CPUs available for a short while.
-> +	 * In that case, we fall back to parent's effective CPUs temporarily
-> +	 * which will be reset back to their rightful value once the affected
-> +	 * CPUs are online again.
-> +	 */
-> +	if (cpuhp_offline_cb_mode && cpumask_empty(new_cpus) &&
-> +	   (cs->partition_root_state =3D=3D PRS_ISOLATED))
-> +		cpumask_copy(new_cpus, parent_cs(cs)->effective_cpus);
+> +/*
+> + * Cpumask of CPUs with offline_disabled set
+> + * The cpumask is effectively __ro_after_init.
+> + */
+> +static cpumask_var_t	offline_disabled_cpus;
+
+Is it safe to assume this mask is effectively ro_after_init? On some
+architectures like ARM64, the offline_disabled state can be set dynamically
+at runtime, such as when an asymmetric 32-bit EL0 CPU is brought online.
+Does caching this state at boot miss these dynamic updates, potentially
+allowing dynamically restricted CPUs to enter isolated partitions later on?
+
+[ ... ]
+
+> @@ -4188,6 +4240,39 @@ void __init cpuset_init_smp(void)
+>  	BUG_ON(!cpuset_migrate_mm_wq);
+>  }
+> =20
+> +/**
+> + * cpuset_init_late - initialize the list of CPUs with offline_disabled =
+set
+> + *
+> + * Description: Initialize a cpumask with CPUs that have the offline_dis=
+abled
+> + *		bit set. It is done in a separate initcall as cpuset_init_smp()
+> + *		is called before driver_init() where the CPU devices will be
+> + *		set up.
+> + */
+> +static int __init cpuset_init_late(void)
+> +{
+> +	int cpu;
 > +
+> +	if (!tick_nohz_full_enabled())
+> +		return 0;
+> +	/*
+> +	 * Iterate all the possible CPUs to see which one has offline disabled.
+> +	 */
+> +	for_each_possible_cpu(cpu) {
+> +		if (get_cpu_device(cpu)->offline_disabled)
 
-By bypassing partition_is_populated() globally during cpuhp_offline_cb_mode,
-all partitions skip normal invalidation. However, this fallback logic stric=
-tly
-checks for PRS_ISOLATED.
+Can get_cpu_device() return NULL here? Because this is a pure_initcall,
+it runs before topology_init() on architectures like PowerPC, MIPS, and
+SPARC, meaning the CPU devices might not be registered yet.=20
 
-If a standard PRS_ROOT partition loses its last online CPU, it gets bypassed
-for invalidation but receives no fallback mask. Won't this leave the PRS_RO=
-OT
-partition with a completely empty effective_cpus mask, breaking its isolati=
-on
-and causing subsequent cgroup_attach() operations to fail with -ENOSPC?
+Furthermore, on systems with physical CPU hotplug where possible_cpus excee=
+ds
+present_cpus, the non-present possible CPUs might also return NULL. Could
+this lead to a NULL pointer dereference during early boot?
 
->  	if (cpus_updated)
->  		cpuset_update_tasks_cpumask(cs, new_cpus);
+> +			__cpumask_set_cpu(cpu, offline_disabled_cpus);
+> +	}
+> +	if (!cpumask_empty(offline_disabled_cpus)) {
+> +		char buf[128];
+> +
+> +		snprintf(buf, sizeof(buf),
+> +			 "CPU %*pbl with offline disabled not allowed in isolated partition",
+> +			 cpumask_pr_args(offline_disabled_cpus));
 
-Does the temporary fallback mask actually get applied to the tasks?
+This isn't a bug, but could the 128-byte buffer silently truncate if there
+are multiple non-contiguous offline-disabled CPUs? The static text takes up
+59 bytes, leaving 68 bytes for the cpumask string. If the formatted string =
+is
+longer, the resulting error message surfaced to userspace via perr_strings
+might be incomplete.
 
-Earlier in hotplug_update_tasks(), cs->effective_cpus is overwritten with t=
-he
-empty incoming new_cpus mask. Then, inside cpuset_update_tasks_cpumask(),
-new_cpus is overwritten again by intersecting it with cs->effective_cpus:
-
-kernel/cgroup/cpuset.c:cpuset_update_tasks_cpumask() {
-    ...
-		} else {
-			cpumask_and(new_cpus, possible_mask, cs->effective_cpus);
-		}
-		set_cpus_allowed_ptr(task, new_cpus);
-    ...
-}
-
-Since cs->effective_cpus is already empty, the resulting new_cpus mask pass=
-ed
-to set_cpus_allowed_ptr() will also be empty. Doesn't set_cpus_allowed_ptr()
-fail with -EINVAL when given an empty mask, leaving the task's affinity
-unchanged and forcing the scheduler to migrate the tasks to arbitrary fallb=
-ack
-CPUs system-wide?
+> +		perr_strings[PERR_OL_DISABLED] =3D kstrdup(buf, GFP_KERNEL);
+> +	}
+> +	return 0;
+> +}
+> +pure_initcall(cpuset_init_late);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260421030351.2814=
-36-1-longman@redhat.com?part=3D21
+36-1-longman@redhat.com?part=3D22
 
