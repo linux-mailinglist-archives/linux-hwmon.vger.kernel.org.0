@@ -1,61 +1,60 @@
-Return-Path: <linux-hwmon+bounces-13474-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13475-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIXJONI/6WmEWQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13474-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 23:38:26 +0200
+	id Noe4AoRC6WmSWwIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13475-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 23:49:56 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C4244AFF6
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 23:38:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5177D44B213
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 23:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 50D25307ABE7
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 21:38:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD106302BBB5
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 21:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A5337A481;
-	Wed, 22 Apr 2026 21:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8873A1680;
+	Wed, 22 Apr 2026 21:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/Bs9YiZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJgGw5Mf"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BE1378D71
-	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 21:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0CD2D8DDF
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 21:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776893903; cv=none; b=hGamOiINVARGT+2EcwstsJ0MHz24Iv5YDU3ElUnt2KsEG4iC7QESSEfHklGOo73Mwu2Wh5A5bRwDuQ8+/zaBp+b1kKEeZD08RHsv22y3q4G/D2+KJJEjst+5qWwfuSovZvH3Yo0RHLm+b/XMjmV/wTz0OSaU7PG+K0C2hAkkWLk=
+	t=1776894592; cv=none; b=peIuAzXhdID3MAgaGN4Kj2avM1VD0vCbcg/HDjsjjio35MSTxj4jgu28qfmi0GRJHg0ifWZlpV4akyAotDpeMGxZJ8GGBv/8PuqPJEsq1i4wu7ySOdWTqGfPUbcb7iqjX43Zyxq7njZOThBTyde07EYSLzplmCTQYIY9aAQsSsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776893903; c=relaxed/simple;
-	bh=PIMIpVvVlAuyWm10NzB91Nr65egCIsiyN5AZF4b7uhY=;
+	s=arc-20240116; t=1776894592; c=relaxed/simple;
+	bh=m2heAE7Kzlc5BnBry5vsKjZ4ZvaPz5SGFCoKLzCQwH4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=r1fbk35Q4UZNg9d+0+JvR7yfL8aIPMdFYGOPMsJOItKpv4pkP65ISR1ONGu2Pg0gj6x+LsY02/Qlgj2CEjyLiYqlDjHUo0uS+7qesJsRYWI9ClRiAFGpyITX/X9xvLTuAjpT/SFUU8wTtBtHd+grxRp7qEshGzj74NcAPeqg99Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/Bs9YiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D729FC19425;
-	Wed, 22 Apr 2026 21:38:22 +0000 (UTC)
+	 Message-Id; b=MGXg6K88HcAl8aEs5M4bmk0LZ/Zk5vvX7+ZumydTBgPuReKVXVdMjbciX7K9bIHPtRsHADbcoV5M4VvMuJx2pqBnhRPMGfl3UKicU7naYoSKszTSyL30GGwkFPN+bUu/6ltAZm34xuWmyp1kCZnjtp7uym30C5Gir0cYK2Oh8o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJgGw5Mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EB7C19425;
+	Wed, 22 Apr 2026 21:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776893903;
-	bh=PIMIpVvVlAuyWm10NzB91Nr65egCIsiyN5AZF4b7uhY=;
+	s=k20201202; t=1776894591;
+	bh=m2heAE7Kzlc5BnBry5vsKjZ4ZvaPz5SGFCoKLzCQwH4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=U/Bs9YiZ5cmj6EkcmGVtwaKbwQvlbpL2U/VgTo1IZ4n57LMR6CYykulzPbpuSO4sw
-	 ON0gScHhr88htVQbQz5QvoPSPmh1dafmQthfpvgc6cl1weNsHP7KWo852c8x0nGE/R
-	 QHnwzDkRFmUPCTNRkwIFgdNEMEQL/Pc39lX8E+4mvpmzI0PdtMUsbn2XsYZ9L6kbx9
-	 Z1J2IW+pee0aK0pABeDzFWgGKrAprls3K0viAVo9SHSOPFgE9t34+adThC17aQMsJF
-	 OM0scjiWZZysPPlORLn/0u6xGCD8ahxGY3Nz9c4QWkcrEsdyoS0xtxpUKudTKBcB6B
-	 FEQdgnm9vv8pg==
+	b=dJgGw5MfYHZ8buBmwUA5Ccv1Y2zGSGz/1j7hfULE2yguv+qbYfttqRajtk4m8Hd7L
+	 0ljggSViy5jI3qYuoblO2nNC8cERCR0I+ZdLrwko4jUFpIG57y63bMn3BuO1w5LdBb
+	 S6IO8WDI/yEO1fK3qRCO5qg6T2H6G24CJ5a3dVIGiQcNg+1I9r6qcdef6hrByl0bz/
+	 Rh9Cha6ltACazTcm9pu7utpQHyJht+OQguNdMb1j3WC2Y4OhP0MCV9MTUvtzn2ZuSM
+	 hIY/WheOInhHS/THNPw6nnw7L5yADQnF9+/bzqLu5q3T/sYWtWn2C+8k+kb9ItFx7T
+	 /snclQyDa9HCA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 01/12] thermal/driver/tegra/soctherm: Use devm_
- variant when registering a cooling device
+Subject: Re: [PATCH v2 02/12] thermal/of: Move OF code where it belongs to
 Reply-To: sashiko@lists.linux.dev
 To: "Daniel Lezcano" <daniel.lezcano@oss.qualcomm.com>
 Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260422174305.2899095-2-daniel.lezcano@oss.qualcomm.com>
-References: <20260422174305.2899095-2-daniel.lezcano@oss.qualcomm.com>
+In-Reply-To: <20260422174305.2899095-3-daniel.lezcano@oss.qualcomm.com>
+References: <20260422174305.2899095-3-daniel.lezcano@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Apr 2026 21:38:22 +0000
-Message-Id: <20260422213822.D729FC19425@smtp.kernel.org>
+Date: Wed, 22 Apr 2026 21:49:51 +0000
+Message-Id: <20260422214951.92EB7C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -65,14 +64,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13474-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13475-lists,linux-hwmon=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWO(0.00)[2];
@@ -87,165 +86,92 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev]
-X-Rspamd-Queue-Id: 61C4244AFF6
+X-Rspamd-Queue-Id: 5177D44B213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Sashiko AI review found 3 potential issue(s):
-- [High] Hardware reset sequence completely bypassed during probe.
-- [High] Double clock disable during driver removal and failure to fix the =
-described race window.
-- [Medium] Clock enablement and disablement order is reversed.
+Sashiko AI review found 2 potential issue(s):
+- [High] A syntax error is introduced in `include/linux/thermal.h` when `CO=
+NFIG_THERMAL` is disabled, breaking compilation. Note: I found the fix late=
+r in the series in commit fb0063667bcf5 ("thermal/core: Remove node pointer=
+ parameter when registering a tz").
+- [High] The patch intentionally breaks cooling device registration for non=
+-OF drivers on systems without `CONFIG_THERMAL_OF` enabled, causing runtime=
+ regressions. Note: I found the fix later in the series in commit b79ce9cd7=
+a188 ("hwmon:: Use non-OF thermal cooling device register function").
 --
 
-commit c2cefc8b595baea6413baca093c73c6b01f2bfd1
+commit 7dfab179cb2bd36aaace42ff2d1aeceaaeb233da
 Author: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 
-thermal/driver/tegra/soctherm: Use devm_ variant when registering a cooling=
- device
+thermal/of: Move OF code where it belongs to
 
-The driver is updated to use devm_thermal_of_cooling_device_register()
-to automatically unregister the cooling device. To avoid a window where
-the cooling device remains registered while the hardware is powered down,
-it also switches to using devm_clk_get_enabled().
+This commit moves thermal_of_cooling_device_register and
+devm_thermal_of_cooling_device_register from thermal-core to thermal-of.
+It adds temporary stubs returning errors for non-OF drivers when
+CONFIG_THERMAL_OF is disabled.
 
-> diff --git a/drivers/thermal/tegra/soctherm.c b/drivers/thermal/tegra/soc=
-therm.c
-> index 5d26b52beaba7..790c4c96a9b5f 100644
-> --- a/drivers/thermal/tegra/soctherm.c
-> +++ b/drivers/thermal/tegra/soctherm.c
+> As the thermal-of file depends on CONFIG_THERMAL_OF=3Dy, by moving these
+> two functions in it, when non-OF drivers are using this API that
+> results in a link issue. In order to prevent unnecessary
+> circumvolutions with the changes, the stubs have been added in the
+> header file resulting in having the non-OF drivers compiled without
+> the CONFIG_THERMAL_OF=3Dy using these stubs and failing to register
+> their cooling devices.
+>=20
+> This is temporary as the next changes introduces the functions for
+> non-OF drivers and returning to the initial state.
 
-[ ... ]
+Is it acceptable to temporarily break cooling device registration for
+non-OF drivers when CONFIG_THERMAL_OF is disabled?
 
-> @@ -2133,13 +2133,13 @@ static int tegra_soctherm_probe(struct platform_d=
-evice *pdev)
->  		return PTR_ERR(tegra->reset);
->  	}
-> =20
-> -	tegra->clock_tsensor =3D devm_clk_get(&pdev->dev, "tsensor");
-> +	tegra->clock_tsensor =3D devm_clk_get_enabled(&pdev->dev, "tsensor");
->  	if (IS_ERR(tegra->clock_tsensor)) {
->  		dev_err(&pdev->dev, "can't get tsensor clock\n");
->  		return PTR_ERR(tegra->clock_tsensor);
->  	}
-> =20
-> -	tegra->clock_soctherm =3D devm_clk_get(&pdev->dev, "soctherm");
-> +	tegra->clock_soctherm =3D devm_clk_get_enabled(&pdev->dev, "soctherm");
+Since the stubs return ERR_PTR(-ENODEV), it looks like non-OF drivers will
+fail to register their cooling devices during this window.
 
-Does this invert the clock enablement order?
+I noticed this is fixed later in the series in commit b79ce9cd7a188, but
+does introducing an intentional functional regression here break git bisect?
 
-The original soctherm_clk_enable() enabled the soctherm clock before the
-tsensor clock:
-
-drivers/thermal/tegra/soctherm.c:soctherm_clk_enable() {
-	...
-	if (enable) {
-		err =3D clk_prepare_enable(tegra->clock_soctherm);
-		if (err) {
-			...
-		}
-
-		err =3D clk_prepare_enable(tegra->clock_tsensor);
-	...
-}
-
-By retrieving and enabling tsensor first with devm_clk_get_enabled(), the
-tsensor clock is now enabled before soctherm, and the devres LIFO cleanup w=
-ill
-disable soctherm before tsensor.
-
-Will this cause undefined behavior if the tsensor block relies on the main
-soctherm clock?
+> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+> --- a/include/linux/thermal.h
+> +++ b/include/linux/thermal.h
 
 [ ... ]
 
-> @@ -2171,10 +2171,6 @@ static int tegra_soctherm_probe(struct platform_de=
-vice *pdev)
->  	if (!tegra->thermctl_tzs)
->  		return -ENOMEM;
-> =20
-> -	err =3D soctherm_clk_enable(pdev, true);
-> -	if (err)
-> -		return err;
-> -
+> @@ -305,18 +323,7 @@ thermal_cooling_device_register(const char *type, vo=
+id *devdata,
+>  	const struct thermal_cooling_device_ops *ops)
+>  { return ERR_PTR(-ENODEV); }
+>  static inline struct thermal_cooling_device *
+> -thermal_of_cooling_device_register(struct device_node *np,
+> -	const char *type, void *devdata,
+> -	const struct thermal_cooling_device_ops *ops)
+> -{ return ERR_PTR(-ENODEV); }
+> -static inline struct thermal_cooling_device *
+> -devm_thermal_of_cooling_device_register(struct device *dev,
+> -				struct device_node *np,
+> -				const char *type, void *devdata,
+> -				const struct thermal_cooling_device_ops *ops)
+> -{
+> -	return ERR_PTR(-ENODEV);
+> -}
+> +
+>  static inline void thermal_cooling_device_unregister(
+>  	struct thermal_cooling_device *cdev)
+>  { }
 
-By completely removing this call, doesn't it also bypass the hardware reset
-sequence?
+Does this leave a dangling return type that causes a compiler syntax error
+when CONFIG_THERMAL is disabled?
 
-Looking at soctherm_clk_enable(), it performs a hardware reset along with c=
-lock
-management:
-
-drivers/thermal/tegra/soctherm.c:soctherm_clk_enable() {
-	...
-	reset_control_assert(tegra->reset);
-
-	if (enable) {
-		err =3D clk_prepare_enable(tegra->clock_soctherm);
-		...
-		err =3D clk_prepare_enable(tegra->clock_tsensor);
-		...
-	} else {
-		...
-	}
-
-	reset_control_deassert(tegra->reset);
-	...
-}
-
-Without this sequence, will the thermal controller hardware remain in an
-uninitialized state?
-
-[ ... ]
-
-> @@ -2218,11 +2212,6 @@ static int tegra_soctherm_probe(struct platform_de=
-vice *pdev)
->  	soctherm_debug_init(pdev);
-> =20
->  	return 0;
-> -
-> -disable_clocks:
-> -	soctherm_clk_enable(pdev, false);
-> -
-> -	return err;
->  }
-> =20
->  static void tegra_soctherm_remove(struct platform_device *pdev)
-
-The commit message states:
-
-> A bug can be subtly introduced by this change because the driver still
-> manually disables the hardware clocks during the probe error path and
-> in tegra_soctherm_remove(). This creates a window where the cooling
-> device remains registered and exposed to the thermal core and sysfs
-> while the underlying hardware is powered down.
->
-> In order to prevent this potential issue, use the devm_ variant for the
-> clk.
-
-Does the race window described here remain open? The manual call to
-soctherm_clk_enable(pdev, false) is still present in tegra_soctherm_remove(=
-):
-
-drivers/thermal/tegra/soctherm.c:tegra_soctherm_remove() {
-	...
-	soctherm_clk_enable(pdev, false);
-}
-
-Since this executes before devres automatically unregisters the cooling dev=
-ice,
-the clocks are powered down while the cooling device is still registered.
-
-Additionally, when devres later cleans up the clocks, will it cause a
-double-disable and clock reference count underflow since the clocks were
-already manually disabled?
+I see this was also fixed later in the series by commit fb0063667bcf5, but
+does leaving this invalid C syntax here hurt bisectability for builds
+without CONFIG_THERMAL?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260422174305.2899=
-095-1-daniel.lezcano@oss.qualcomm.com?part=3D1
+095-1-daniel.lezcano@oss.qualcomm.com?part=3D2
 
