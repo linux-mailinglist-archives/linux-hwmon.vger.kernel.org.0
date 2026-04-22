@@ -1,61 +1,62 @@
-Return-Path: <linux-hwmon+bounces-13434-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13436-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CH0ZDNg76GlfHQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13434-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:09:12 +0200
+	id 2JmJGB096GlaHgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13436-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:37 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CD7441BA4
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:09:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F341B441BFB
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3B6593006D68
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 03:09:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 585F7301E944
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 03:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50D02FA0DF;
-	Wed, 22 Apr 2026 03:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5744F382373;
+	Wed, 22 Apr 2026 03:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNlGUUCg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUPHOaYu"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301C13A1D05
-	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 03:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100333A1D05
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 03:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776827345; cv=none; b=okZFOSrBcApkgdBvzwhxCUfn72VbqOoys6xPu0/lFAvoNtYVKIm0WetL079yzOllQeCA+c3T3bSJnS4yBEe942k/GtyhU/I2GI2JbCn8xjWIqC59/7xl3JG/1KQ8Z9w1EviQDJqfaA8+gtxMZQZf0HoADi5+kX2FkalzDj8qfOE=
+	t=1776827347; cv=none; b=rtZWP3QI5Ks9oqbh7g/4vqfffXofAJV+rC1Dfv+PvvZJ0Vs33Z4UAf1yEXYMATrrpBTRGgLWOZKwDJ5bgxf9DJUtJJEHN9v4oMfAZX6e/6TWY7VS1vX+uYElUkLJXr3VGn5fLEOyn5rLsblO2m+DiNuVRSWvSPNonyCbZor22kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776827345; c=relaxed/simple;
-	bh=8bm78vUKdsk8Po8E7LxyjC8xxBtU4HtuWx2z2NS/1a4=;
+	s=arc-20240116; t=1776827347; c=relaxed/simple;
+	bh=ds76EB4aXqz9zsoC33KatdNojF+QDZT3aqqu0K9xgbA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ElDKbnZgsQaEKsNKD2yPwxPpaEIpvwP5xmSwgOiBacN59G9IkSRlgHUXqUFTo+UOeAwCWgk6ZgX4eZ0+C+xLP+S6mqG5rmQGbMTSKWra2KJFQiV6T7MxCWh4zig7y1pZmnJIwUHYeYW/nxJQYpriDTldMPaXFWZspFTNAR7oV3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNlGUUCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BFCC2BCB0;
-	Wed, 22 Apr 2026 03:09:03 +0000 (UTC)
+	 Message-Id; b=eK/E1sjLKzh/8os32PdzcXH/zBxco5VIi8TwPLA0bmpuOtHjoR7csRu+O5L2XZKYjnS9agARQyTV/UUX6aQNTPNSWjkN7b+yDn6vLRyNoRbGIQu2GdA8bsocqtu+GpuSxG3qOpW1hLcLs1wVlfInycxSUcIkCwM/bRZIQfzfvuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUPHOaYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CEFC2BCB5;
+	Wed, 22 Apr 2026 03:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776827344;
-	bh=8bm78vUKdsk8Po8E7LxyjC8xxBtU4HtuWx2z2NS/1a4=;
+	bh=ds76EB4aXqz9zsoC33KatdNojF+QDZT3aqqu0K9xgbA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=VNlGUUCgOXKtqwspkQjUdQwF1rWjJtNy82vXXwwYr0UFE4gtLjRZsbCat+W3ijjhj
-	 TNZwtM/j16Ozz8vtCc9zsihTSKjOb42Z2UyLWS0qicEDDkcwuAO4ALHhGz4HvMxSh9
-	 L9sv9BiA/SoR9Ch0GNn3a89UqUl57b8JQuQn11tTRUZke84u5VmtwpJhtF8ay09cib
-	 5pV7OfidKI4nQ+DC6UIYM9vF5N8VscFmdfLQYFgAOhSjgqW9IFiUglIBUz3U5n3u3e
-	 0M1FoVqkMNvQwgECINzKzV9BfYBFFBH5Vlx8XqPG5GK7g0g8POWR+gHBrxxPn1CjiG
-	 3BH4iK9+jWwng==
+	b=qUPHOaYu8I2/b8Y+7nw9kGJRt7hbLlgNCcXigsbEQd4GPjVo+l4WjqTxhJ2/EcGUw
+	 1LCjRRLjP+lK363CN9nQHsSmrpmaZtBXz8lTE5/0laTGlHlvj6fh9V5kBXepU8gf4f
+	 mzhnFq/fC6iA3V2tJF1ia8/NC/kJrDLsRMoBXFtxB/ds4mf+BekAtBxkiq5ZN5VhqG
+	 BBvkVDf3X9gYXNCPt+xCn/ZyOamaYtwG5M+a7FYdID4umwHW3NtyZ7cZJBa12jXuXb
+	 nn6WnWF3g9hXO0OgUlL7bGxCYBnKyKeb5easvaPBOYFTQ+cPztBikmY2SPlygRNhf+
+	 4JglJUscAueiQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 15/23] Drivers: hv: Use RCU to protect access of
- HK_TYPE_MANAGED_IRQ cpumask
+Subject: Re: [PATCH 17/23] sched/isolation: Extend
+ housekeeping_dereference_check() to cover changes in nohz_full or
+ manged_irqs cpumasks
 Reply-To: sashiko@lists.linux.dev
 To: "Waiman Long" <longman@redhat.com>
-Cc: tj@kernel.org, mkoutny@suse.com, linux-hwmon@vger.kernel.org, hannes@cmpxchg.org
-In-Reply-To: <20260421030351.281436-16-longman@redhat.com>
-References: <20260421030351.281436-16-longman@redhat.com>
+Cc: hannes@cmpxchg.org, linux-hwmon@vger.kernel.org, mkoutny@suse.com, tj@kernel.org
+In-Reply-To: <20260421030351.281436-18-longman@redhat.com>
+References: <20260421030351.281436-18-longman@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Apr 2026 03:09:03 +0000
-Message-Id: <20260422030903.E1BFCC2BCB0@smtp.kernel.org>
+Date: Wed, 22 Apr 2026 03:09:04 +0000
+Message-Id: <20260422030904.B1CEFC2BCB5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -65,14 +66,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13434-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13436-lists,linux-hwmon=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -87,68 +88,91 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev]
-X-Rspamd-Queue-Id: 24CD7441BA4
+X-Rspamd-Queue-Id: F341B441BFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Sashiko AI review found 3 potential issue(s):
-- [High] Infinite loop causing RCU stall when a NUMA node lacks housekeepin=
-g CPUs.
-- [Medium] Mixing `goto`-based cleanup with scope-based `guard()` violates =
-subsystem guidelines.
-- [Low] Unnecessary unconditional memory allocation for non-performance cha=
-nnels.
+Sashiko AI review found 2 potential issue(s):
+- [Critical] Unprotected access to newly dynamic HK_TYPE_KERNEL_NOISE cause=
+s lockdep splats and Use-After-Free.
+- [Critical] Flawed lockdep exemptions mask genuine Use-After-Free vulnerab=
+ilities.
 --
 
-[Note: Due to recitation restrictions, this report uses a free-form summary
-format rather than quoting the original patch lines directly.]
-
-commit bc4398753271c194097795d20b6095f594c74b4c
+commit 7b12dcd17d401c6b135ee53ba4e8384a7bd3d867
 Author: Waiman Long <longman@redhat.com>
-Drivers: hv: Use RCU to protect access of HK_TYPE_MANAGED_IRQ cpumask
 
-This commit uses RCU to protect the HK_TYPE_MANAGED_IRQ cpumask during acce=
-ss,
-moving the cpumask allocation before taking the RCU read lock since the
-allocation can sleep.
+sched/isolation: Extend housekeeping_dereference_check() to cover changes i=
+n nohz_full or manged_irqs cpumasks
 
-I noticed a few potential regressions in this patch:
+This commit extends housekeeping_dereference_check() to apply the same
+lockdep exemptions used by HK_TYPE_DOMAIN to HK_TYPE_KERNEL_NOISE and
+HK_TYPE_MANAGED_IRQ, preparing them to be runtime changeable.
 
-First, looking at the loop in init_vp_index(), if a selected NUMA node has
-no CPUs present in the housekeeping mask (for example, if the entire node is
-isolated), the intersection of available_mask and hk_mask becomes empty.
-The code then clears allocated_mask and jumps back to the retry label.
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -38,7 +38,8 @@ EXPORT_SYMBOL_GPL(housekeeping_enabled);
+> =20
+>  static bool housekeeping_dereference_check(enum hk_type type)
+>  {
+> -	if (IS_ENABLED(CONFIG_LOCKDEP) && type =3D=3D HK_TYPE_DOMAIN) {
+> +	if (IS_ENABLED(CONFIG_LOCKDEP) &&
+> +	   (BIT(type) & (HK_FLAG_DOMAIN | HK_FLAG_KERNEL_NOISE | HK_FLAG_MANAGE=
+D_IRQ))) {
 
-Since the variables do not change state across retries, does this create
-an infinite loop? Because this patch places the loop inside an RCU
-read-side critical section via guard(rcu)(), would this spin result in
-an RCU stall?
+Because HK_TYPE_KERNEL_NOISE is becoming runtime changeable, does this
+expose existing readers to concurrent updates and use-after-free?
 
-Second, the patch introduces guard(rcu)() in init_vp_index() while retaining
-the goto out_free cleanup path for free_cpumask_var(). According to the
-kernel's cleanup guidelines, mixing goto-based error handling with
-scope-based cleanups like guard() in the same function creates confusing
-ownership semantics.=20
+For example, housekeeping_show() reads this mask without holding
+rcu_read_lock(). Similarly, tmigr_isolated_exclude_cpumask() reads it
+holding only cpus_read_lock(), not the write lock.
 
-Should this function be fully converted to scope-based cleanup, or=20
-alternatively, use explicit rcu_read_lock() and rcu_read_unlock() calls=20
-to avoid this mix?
+If housekeeping_update() allocates a new mask, calls synchronize_rcu(),
+and frees the old mask while these functions are accessing the pointer,
+could this result in a use-after-free?
 
-Finally, before this patch, the code used short-circuit logic to skip
-allocating the cpumask if the channel was not performance-critical. The
-patch refactors this to unconditionally call alloc_cpumask_var() at the top
-of the function before evaluating the channel type.=20
+Additionally, does extending this lockdep exemption mask genuine
+use-after-free vulnerabilities?
 
-Does this introduce unnecessary sleepable memory allocation and deallocatio=
-n=20
-cycles for non-performance channels?
+The exemptions below assume that holding cpuset_mutex or cpus_write_lock()
+protects the pointer:
+
+>  		/* Cpuset isn't even writable yet? */
+>  		if (system_state <=3D SYSTEM_SCHEDULING)
+>  			return true;
+>=20
+>  		/* CPU hotplug write locked, so cpuset partition can't be overwritten =
+*/
+>  		if (IS_ENABLED(CONFIG_HOTPLUG_CPU) && lockdep_is_cpus_write_held())
+>  			return true;
+>=20
+>  		/* Cpuset lock held, partitions not writable */
+>  		if (IS_ENABLED(CONFIG_CPUSETS) && lockdep_is_cpuset_held())
+>  			return true;
+
+However, housekeeping_update() explicitly drops cpuset_mutex and
+cpus_read_lock() before updating masks and calling synchronize_rcu().
+
+This means housekeeping_update() can run in parallel with readers
+holding cpuset_mutex or CPU hotplug callbacks holding cpus_write_lock().
+
+Since these readers are exempted from needing rcu_read_lock(),
+synchronize_rcu() will not wait for them. Could this result in a silent
+use-after-free on a freed cpumask?
+
+>  		return false;
+>  	}
+>=20
+>  	return true;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260421030351.2814=
-36-1-longman@redhat.com?part=3D15
+36-1-longman@redhat.com?part=3D17
 
