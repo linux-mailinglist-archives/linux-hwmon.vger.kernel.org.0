@@ -1,361 +1,176 @@
-Return-Path: <linux-hwmon+bounces-13469-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13472-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFgqN58d6Wl+UgIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13469-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 21:12:31 +0200
+	id gGoQCp8g6Wn2UgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13472-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 21:25:19 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6159D44A094
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 21:12:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEC944A1F7
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 21:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBB1D307ABEF
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 19:09:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C291303205B
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 19:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6A83F077F;
-	Wed, 22 Apr 2026 19:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB193F0775;
+	Wed, 22 Apr 2026 19:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JcFk5j9i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5hevye9"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BBA3F074A;
-	Wed, 22 Apr 2026 19:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC253F075A
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 19:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776884993; cv=none; b=o/5/yplHFj/T45WxlLhtapyJ8XNfCSU0HRAAOZoD1J+4M+YrTwsaZSHEVI6lWi8g0sfz/GQdF/VX/B02bh/zxX7sDhbHG2qG1XOYUcpZIcKzYcYtSr8Ca+N+/llucSEGSEFd0UAjpyqWFzo1rs58/wB6kr6xDec71wV7VFKdZzg=
+	t=1776885914; cv=none; b=Omdcn5NlUpuehkrVzEvrvTzFsoCSd7AwL4DVevx2I3ZeUwTESmIPO7/l2fsWdqz5uKaT/qOKUZ2MNrWD9+kWKVhmUpChgZBOdaXt/pP/N8XM64R3w5q60zFTly/aXejUZJEM9pWwCKtZkLi+vHj3MNnHGPXi17STPfgFUyLA17w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776884993; c=relaxed/simple;
-	bh=Cq9ntGuniLpfxw15CP8xJiYmwt7Mrtt3HRmb0vxAfxs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JUi5Ku5rtta6uSnWt7mL4EgSeq8oonEMJkroD6F+ALktbdcvlggLbGg4TR43YGYPqmMbICa6918Ja5HGnU4/QAhLlL/AJ4MsXz9Fd9oY8kMlgmwrxJma4hmUsYVNyZI9H4Eu4Fqv6LaGEHDQ71DfJRFeQgwCo2nTuGMPTVG9xcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JcFk5j9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DB3C19425;
-	Wed, 22 Apr 2026 19:09:46 +0000 (UTC)
+	s=arc-20240116; t=1776885914; c=relaxed/simple;
+	bh=3Fj/d3xKuzMpcPj+pc/EMVD52hGfQHHxFEfr+emMN1Y=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=eRmIVxLC+e6e3/sNzTeDX1/ctuithQ2wnBJau/Xcff70GpKU/XCx3GWguQuf/7qH55MmMwHvpaavllLvy+KxGz1nR4tFX3ccQ32aV2Kc5tH7tVr21nf6Bc7BkA5N5z3chaoVwjz1Z3seSOFRsQKHoXP9IshViHn5xCoiux4Bgds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5hevye9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF0DC19425;
+	Wed, 22 Apr 2026 19:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776884989;
-	bh=Cq9ntGuniLpfxw15CP8xJiYmwt7Mrtt3HRmb0vxAfxs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcFk5j9i5pPz/F6lIHNNSJIqwTbNKUZc9zUfRMAV1apZRit+QYN0WKr+FpgIrZ1Rd
-	 AH7eKpMkWyUAVdzRfIz+0tvcelulxE19DxG4vuU83MlNvi5gnIyFGjsa+Y8sYwX2cA
-	 OEjQwfKZBrE4MR9qbLJNYRdiU/LXEkJHGp1Y4uXbD2QZjpQyFH1NCp9BscRKS0iG3V
-	 9XulxNrlM2/W84Qg5HJLfq+jfxs6wJYhZE9yJiR2As6zXNapnuK6jvEGpulFlZO5hS
-	 AR528ykwd8jj/taje9nLC6NG1XPetesFFeb1Lkeu+1Kr322Bg1dApE926ciQseBmxr
-	 HIBGy8M15HZRQ==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
- LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
- Armin Wolf <w_armin@gmx.de>, Jiajia Liu <liujiajia@kylinos.cn>,
- Marc Zyngier <maz@kernel.org>,
- Enric Balletbo i Serra <enric.balletbo@collabora.com>,
- linux-hwmon@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
-Subject:
- [PATCH v1 2/2] thermal: hwmon: Use extra_groups for adding temperature
- attributes
-Date: Wed, 22 Apr 2026 21:09:33 +0200
-Message-ID: <2267033.irdbgypaU6@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <5100596.31r3eYUQgx@rafael.j.wysocki>
-References: <5100596.31r3eYUQgx@rafael.j.wysocki>
+	s=k20201202; t=1776885913;
+	bh=3Fj/d3xKuzMpcPj+pc/EMVD52hGfQHHxFEfr+emMN1Y=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=p5hevye9gqUoO9nn5iObMb5+84R6t8L1ZlEVJ+xP6y2LkHivjKK9Vt/Tgqv8TUi9l
+	 1qSHXw29xx37EBCTdcCrmiTB57lsjKwPFp4gzviTQaWPxIWaRN1Wrctkbxc4vCpzHt
+	 T1Xg3nWMYVQEctU87MaFAboPZqGgXmx4Vj7mOYIQozvDYxowLevHlA2FlT3NHSjXTn
+	 BcEsGLSWKBLsetiudaM+Qs/0iZczx0mcJgF20t/3SDBbZIyZRzZ+nzVmPNYjdT0pOq
+	 sH/B+DMY4UasAQWIFAcIHWS9VGG9S2VKxg8PbA/YBrd0UNuEkeJQST49LSugHGDex5
+	 H12z+ll/WxXyA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] hwmon: (pmbus/lx1308) Add support for LX1308
+Reply-To: sashiko@lists.linux.dev
+To: "Brian Chiang" <chiang.brian@inventec.com>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260422-add-support-lx1308-v1-2-9b8322f45aae@inventec.com>
+References: <20260422-add-support-lx1308-v1-2-9b8322f45aae@inventec.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 Apr 2026 19:25:12 +0000
+Message-Id: <20260422192512.EEF0DC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTE_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,arm.com,gmx.de,kylinos.cn,kernel.org,collabora.com,roeck-us.net];
-	TAGGED_FROM(0.00)[bounces-13469-lists,linux-hwmon=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13472-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6159D44A094
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,smtp.kernel.org:mid,lists.linux.dev:replyto,inventec.com:email]
+X-Rspamd-Queue-Id: 6DEC944A1F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Sashiko AI review found 2 potential issue(s):
+- [High] Left shifting a negative mantissa in `linear11_to_int()` invokes u=
+ndefined behavior in C.
+- [Low] Alphabetical sorting violation in Kconfig and Makefile.
+--
 
-Instead of passing NULL as the last argument to __hwmon_device_register()
-in hwmon_device_register_for_thermal() and then adding each temperature
-sysfs attribute to the hwmon device via device_create_file(), redefine
-hwmon_device_register_for_thermal() to take an extra_groups argument
-that will be passed to __hwmon_device_register(), define an attribute
-group with a proper .is_visible() callback for the temperature
-attributes and a related attribute groups pointer, and pass the latter
-to hwmon_device_register_for_thermal().
+commit 1f51fd323179e1fa2a4bde6554dcffd04d32b646
+Author: Brian Chiang <chiang.brian@inventec.com>
 
-This causes the code to be way more straightforward and closer to what
-the other users of the hwmon subsystem do.
+hwmon: (pmbus/lx1308) Add support for LX1308
+   =20
+Add support for the Luxshare LX1308, a high-efficiency 12V 860W
+DC/DC power module. The module operates from 40-60V input voltage.
 
-No intentional functional impact.
+> diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
+> --- a/drivers/hwmon/pmbus/Kconfig
+> +++ b/drivers/hwmon/pmbus/Kconfig
+> @@ -221,6 +221,16 @@ config SENSORS_ISL68137
+>  	  This driver can also be built as a module. If so, the module will
+>  	  be called isl68137.
+> =20
+> +config SENSORS_LX1308
+> +	tristate "Luxshare LX1308 DC/DC Power Module"
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/hwmon/hwmon.c           |    6 +-
- drivers/thermal/thermal_hwmon.c |  112 ++++++++++++++++------------------------
- include/linux/hwmon.h           |    3 -
- 3 files changed, 51 insertions(+), 70 deletions(-)
+This isn't a bug, but should this be placed further down? SENSORS_LX1308 is
+inserted between SENSORS_ISL68137 and SENSORS_LM25066, which breaks
+alphabetical ordering.
 
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -1081,6 +1081,7 @@ EXPORT_SYMBOL_GPL(hwmon_device_register_
-  * @dev: the parent device
-  * @name: hwmon name attribute
-  * @drvdata: driver data to attach to created device
-+ * @extra_groups: pointer to list of additional non-standard attribute groups
-  *
-  * The use of this function is restricted. It is provided for legacy reasons
-  * and must only be called from the thermal subsystem.
-@@ -1092,12 +1093,13 @@ EXPORT_SYMBOL_GPL(hwmon_device_register_
-  */
- struct device *
- hwmon_device_register_for_thermal(struct device *dev, const char *name,
--				  void *drvdata)
-+				  void *drvdata,
-+				  const struct attribute_group **extra_groups)
- {
- 	if (!name || !dev)
- 		return ERR_PTR(-EINVAL);
- 
--	return __hwmon_device_register(dev, name, drvdata, NULL, NULL);
-+	return __hwmon_device_register(dev, name, drvdata, NULL, extra_groups);
- }
- EXPORT_SYMBOL_NS_GPL(hwmon_device_register_for_thermal, "HWMON_THERMAL");
- 
---- a/drivers/thermal/thermal_hwmon.c
-+++ b/drivers/thermal/thermal_hwmon.c
-@@ -19,16 +19,12 @@
- #include "thermal_hwmon.h"
- #include "thermal_core.h"
- 
--struct thermal_hwmon_attr {
--	struct device_attribute attr;
--};
--
- /* one temperature input for each thermal zone */
- struct thermal_hwmon_temp {
- 	struct list_head hwmon_node;
- 	struct thermal_zone_device *tz;
--	struct thermal_hwmon_attr temp_input;	/* hwmon sys attr */
--	struct thermal_hwmon_attr temp_crit;	/* hwmon sys attr */
-+	struct device_attribute temp_input;	/* hwmon sys attr */
-+	struct device_attribute temp_crit;	/* hwmon sys attr */
- };
- 
- /* hwmon sys I/F */
-@@ -45,19 +41,14 @@ static LIST_HEAD(thermal_hwmon_list);
- static DEFINE_MUTEX(thermal_hwmon_list_lock);
- 
- static ssize_t
--temp_input_show(struct device *dev, struct device_attribute *attr, char *buf)
-+temp1_input_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
-+	struct thermal_hwmon_device *hwmon = dev_get_drvdata(dev);
-+	struct thermal_zone_device *tz = hwmon->tz_temp.tz;
- 	int temperature;
- 	int ret;
--	struct thermal_hwmon_attr *hwmon_attr
--			= container_of(attr, struct thermal_hwmon_attr, attr);
--	struct thermal_hwmon_temp *temp
--			= container_of(hwmon_attr, struct thermal_hwmon_temp,
--				       temp_input);
--	struct thermal_zone_device *tz = temp->tz;
- 
- 	ret = thermal_zone_get_temp(tz, &temperature);
--
- 	if (ret)
- 		return ret;
- 
-@@ -65,14 +56,10 @@ temp_input_show(struct device *dev, stru
- }
- 
- static ssize_t
--temp_crit_show(struct device *dev, struct device_attribute *attr, char *buf)
-+temp1_crit_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
--	struct thermal_hwmon_attr *hwmon_attr
--			= container_of(attr, struct thermal_hwmon_attr, attr);
--	struct thermal_hwmon_temp *temp
--			= container_of(hwmon_attr, struct thermal_hwmon_temp,
--				       temp_crit);
--	struct thermal_zone_device *tz = temp->tz;
-+	struct thermal_hwmon_device *hwmon = dev_get_drvdata(dev);
-+	struct thermal_zone_device *tz = hwmon->tz_temp.tz;
- 	int temperature;
- 	int ret;
- 
-@@ -85,22 +72,49 @@ temp_crit_show(struct device *dev, struc
- 	return sysfs_emit(buf, "%d\n", temperature);
- }
- 
--static bool thermal_zone_crit_temp_valid(struct thermal_zone_device *tz)
-+static DEVICE_ATTR_RO(temp1_input);
-+static DEVICE_ATTR_RO(temp1_crit);
-+
-+static struct attribute *thermal_hwmon_attrs[] = {
-+	&dev_attr_temp1_input.attr,
-+	&dev_attr_temp1_crit.attr,
-+	NULL,
-+};
-+
-+static umode_t thermal_hwmon_attr_is_visible(struct kobject *kobj,
-+					     struct attribute *a, int n)
- {
--	int temp;
--	return tz->ops.get_crit_temp && !tz->ops.get_crit_temp(tz, &temp);
-+	if (a == &dev_attr_temp1_input.attr)
-+		return a->mode;
-+
-+	if (a == &dev_attr_temp1_crit.attr) {
-+		struct thermal_hwmon_device *hwmon = dev_get_drvdata(kobj_to_dev(kobj));
-+		struct thermal_zone_device *tz = hwmon->tz_temp.tz;
-+		int dummy;
-+
-+		if (tz->ops.get_crit_temp && !tz->ops.get_crit_temp(tz, &dummy))
-+			return a->mode;
-+	}
-+
-+	return 0;
- }
- 
-+static const struct attribute_group thermal_hwmon_group = {
-+	.attrs	= thermal_hwmon_attrs,
-+	.is_visible = thermal_hwmon_attr_is_visible,
-+};
-+
-+__ATTRIBUTE_GROUPS(thermal_hwmon);
-+
- int thermal_add_hwmon_sysfs(struct thermal_zone_device *tz)
- {
- 	struct thermal_hwmon_device *hwmon;
--	struct thermal_hwmon_temp *temp;
--	int result;
- 
- 	hwmon = kzalloc_obj(*hwmon);
- 	if (!hwmon)
- 		return -ENOMEM;
- 
-+	hwmon->tz_temp.tz = tz;
- 	/*
- 	 * Append the thermal zone ID preceded by an underline character to the
- 	 * type to disambiguate the sensors command output.
-@@ -108,33 +122,13 @@ int thermal_add_hwmon_sysfs(struct therm
- 	scnprintf(hwmon->type, THERMAL_NAME_LENGTH, "%s_%d", tz->type, tz->id);
- 	strreplace(hwmon->type, '-', '_');
- 	hwmon->device = hwmon_device_register_for_thermal(&tz->device,
--							  hwmon->type, hwmon);
-+							  hwmon->type, hwmon,
-+							  thermal_hwmon_groups);
- 	if (IS_ERR(hwmon->device)) {
--		result = PTR_ERR(hwmon->device);
--		goto free_mem;
--	}
-+		int result = PTR_ERR(hwmon->device);
- 
--	temp = &hwmon->tz_temp;
--
--	temp->tz = tz;
--
--	temp->temp_input.attr.attr.name = "temp1_input";
--	temp->temp_input.attr.attr.mode = 0444;
--	temp->temp_input.attr.show = temp_input_show;
--	sysfs_attr_init(&temp->temp_input.attr.attr);
--	result = device_create_file(hwmon->device, &temp->temp_input.attr);
--	if (result)
--		goto unregister_name;
--
--	if (thermal_zone_crit_temp_valid(tz)) {
--		temp->temp_crit.attr.attr.name = "temp1_crit";
--		temp->temp_crit.attr.attr.mode = 0444;
--		temp->temp_crit.attr.show = temp_crit_show;
--		sysfs_attr_init(&temp->temp_crit.attr.attr);
--		result = device_create_file(hwmon->device,
--					    &temp->temp_crit.attr);
--		if (result)
--			goto unregister_input;
-+		kfree(hwmon);
-+		return result;
- 	}
- 
- 	/* The list is needed for hwmon lookup during removal. */
-@@ -143,15 +137,6 @@ int thermal_add_hwmon_sysfs(struct therm
- 	}
- 
- 	return 0;
--
-- unregister_input:
--	device_remove_file(hwmon->device, &temp->temp_input.attr);
-- unregister_name:
--	hwmon_device_unregister(hwmon->device);
-- free_mem:
--	kfree(hwmon);
--
--	return result;
- }
- EXPORT_SYMBOL_GPL(thermal_add_hwmon_sysfs);
- 
-@@ -170,7 +155,6 @@ thermal_hwmon_lookup(const struct therma
- void thermal_remove_hwmon_sysfs(struct thermal_zone_device *tz)
- {
- 	struct thermal_hwmon_device *hwmon;
--	struct thermal_hwmon_temp *temp;
- 
- 	scoped_guard(mutex, &thermal_hwmon_list_lock) {
- 		hwmon = thermal_hwmon_lookup(tz);
-@@ -180,12 +164,6 @@ void thermal_remove_hwmon_sysfs(struct t
- 		list_del(&hwmon->node);
- 	}
- 
--	temp = &hwmon->tz_temp;
--
--	device_remove_file(hwmon->device, &temp->temp_input.attr);
--	if (thermal_zone_crit_temp_valid(tz))
--		device_remove_file(hwmon->device, &temp->temp_crit.attr);
--
- 	hwmon_device_unregister(hwmon->device);
- 	kfree(hwmon);
- }
---- a/include/linux/hwmon.h
-+++ b/include/linux/hwmon.h
-@@ -477,7 +477,8 @@ hwmon_device_register_with_info(struct d
- 				const struct attribute_group **extra_groups);
- struct device *
- hwmon_device_register_for_thermal(struct device *dev, const char *name,
--				  void *drvdata);
-+				  void *drvdata,
-+				  const struct attribute_group **extra_groups);
- struct device *
- devm_hwmon_device_register_with_info(struct device *dev,
- 				const char *name, void *drvdata,
+[ ... ]
 
+> diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
+> --- a/drivers/hwmon/pmbus/Makefile
+> +++ b/drivers/hwmon/pmbus/Makefile
+> @@ -23,6 +23,7 @@ obj-$(CONFIG_SENSORS_IR36021)	+=3D ir36021.o
+>  obj-$(CONFIG_SENSORS_IR38064)	+=3D ir38064.o
+>  obj-$(CONFIG_SENSORS_IRPS5401)	+=3D irps5401.o
+>  obj-$(CONFIG_SENSORS_ISL68137)	+=3D isl68137.o
+> +obj-$(CONFIG_SENSORS_LX1308)	+=3D lx1308.o
+>  obj-$(CONFIG_SENSORS_LM25066)	+=3D lm25066.o
 
+This isn't a bug, but should this also be placed further down to maintain
+alphabetical ordering?
 
+[ ... ]
+
+> diff --git a/drivers/hwmon/pmbus/lx1308.c b/drivers/hwmon/pmbus/lx1308.c
+> --- /dev/null
+> +++ b/drivers/hwmon/pmbus/lx1308.c
+[ ... ]
+> +/*
+> + * Decode a Linear11-encoded word to an integer value.
+> + * Linear11 format: bits[15:11] =3D signed 5-bit exponent,
+> + * bits[10:0] =3D signed 11-bit mantissa. Result =3D mant * 2^exp.
+> + */
+> +static inline int linear11_to_int(u16 word)
+> +{
+> +	s16 exp =3D ((s16)word) >> 11;
+> +	s16 mant =3D ((s16)((word & 0x7ff) << 5)) >> 5;
+> +
+> +	return (exp >=3D 0) ? (mant << exp) : (mant / (1 << (-exp)));
+
+When a user writes a negative threshold value to a writable sysfs limit
+attribute, the PMBus core encodes it into a Linear11 word with a negative
+mantissa.
+
+If exp >=3D 0, this evaluates (mant << exp).
+
+In C, left-shifting a negative signed integer invokes undefined behavior and
+can trigger a UBSAN shift-out-of-bounds splat.
+
+Could this invoke undefined behavior when mant is negative?
+
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260422-add-suppor=
+t-lx1308-v1-0-9b8322f45aae@inventec.com?part=3D2
 
