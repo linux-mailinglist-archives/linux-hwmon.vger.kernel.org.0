@@ -1,60 +1,61 @@
-Return-Path: <linux-hwmon+bounces-13435-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13439-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDPHCiA96GlaHgIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13435-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:40 +0200
+	id cPFuNNk76GlfHQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13439-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:09:13 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64D3441C09
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:14:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFEB441BAB
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 05:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B82B301F99F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 03:09:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 827F2301B4C3
+	for <lists+linux-hwmon@lfdr.de>; Wed, 22 Apr 2026 03:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633EC3A383B;
-	Wed, 22 Apr 2026 03:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BD43A1689;
+	Wed, 22 Apr 2026 03:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OK3yvufX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXWqNVEB"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4F23A1E9B
-	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 03:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1D93A1697
+	for <linux-hwmon@vger.kernel.org>; Wed, 22 Apr 2026 03:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776827347; cv=none; b=aZaBuKFIw0TqQOVBqYRgGuOozjSapcUa0cgGUeNydzLgtVdcQeaB7O2niOpAtmuUfcUU4QcjA2iGX/FcenmujtMyaDpn5FCfj2Nv83kP/S4NHB3PTVnJuTk6W3WAcgzzeSHWD0/7FhVjYBRgLzb5J9sBpYdCR7MPt2s/AH4RMZY=
+	t=1776827348; cv=none; b=GmFzBT725hsUMj3IEDnDFWlZwLkl5UquUbAmFz03t1sr8GXM45oBYxdy2VFgYPh9ABZMyTyknt0CDoa8rGd6wCGi1acVRn5AaXoyMsbnaj5GDMwm8jCrYJWOuy7V7UWgfcAXBK2IFYhUN8E/z3vh3y+RHEzcPf49GJ8a7ZeSD0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776827347; c=relaxed/simple;
-	bh=CXcOC8EpU2mlFVkaMvmVIcdfDN5KvtTohNiRWi0YLrE=;
+	s=arc-20240116; t=1776827348; c=relaxed/simple;
+	bh=hP+iiIIku2MrV/xIeM7/5MqKjWpD9hgA9ekphVmkHzs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Suayuyi4CiPz/gi1ubVag1Vm01nUDN0ZX1s8vWbkD7r88ze0qf+lCXSdsyiEyHXMPyVegvh1H2MAS9EQLZuYMfQkerlIY5IXstLKbzVBC8KDZh4nwLjByIFlteCkt5VvBnFFcHkIYtZiABiP3ozJKHNTRp+o9wHZgVBLAZx1tlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OK3yvufX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB79C2BCB0;
-	Wed, 22 Apr 2026 03:09:05 +0000 (UTC)
+	 Message-Id; b=P8CMyt3dG5sP+jTdM6blKX6Z1oHVos2akdb/sCIL159PBr6ogLiyVyMyRiJqtZrWSbKJ1On7mKyDj1xEG7XXjNdbY4JXNiDhDkRZ+DQGkHjf9f8Y56hQ9fNC3h5SA4uw6rrX+FCzv3PWe100H3r6HTdz3cxVyYhBp3ToKixkHjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXWqNVEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7662AC2BCB6;
+	Wed, 22 Apr 2026 03:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776827345;
-	bh=CXcOC8EpU2mlFVkaMvmVIcdfDN5KvtTohNiRWi0YLrE=;
+	s=k20201202; t=1776827346;
+	bh=hP+iiIIku2MrV/xIeM7/5MqKjWpD9hgA9ekphVmkHzs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=OK3yvufXbKGroOLOjtzpUUQP2inTEooIsv8EUT3KKgPUC8QfQuSQ5yX/x2VGJYHhF
-	 Fx6+edN4aAEjA2TR4++cqRAr/Wc9qFQNrdcIe9+TvGMSndH85TC9Uh02IoMTHvfwWq
-	 qC2J2C9wfOJtRy33PsNIEeMJeZA0xOFkNioPBBnkyRyVlhjGW2ZPdInHkcdrJg1HRU
-	 +lS2WjjgCNHIrE7uUQiU1JWoAzevJMsauBlCvBdrYaCTBI0f68rtBoYiQUleu7LPnN
-	 Rbq1kBfmzTKD5rzCTZVjFczlQNYH/0KJbR/KvuMh3dzceoy4lwX1+b1KAbyVGrs4Zl
-	 GxCF65YX1SMoQ==
+	b=YXWqNVEBT4pFsv0ksuxcC9719o7E+31IGmJOujEuPXZ+9bvxPw2h6sY0nIzgL0GR+
+	 lIn7tOc/epDyHCPqWTJgvEWjEOQd6Dyx+7KVcBReKqjeYbBHsx8o/FNE4yr88dtG43
+	 4drqbkTyKuf8MkGb4zRF2e90AC5dq/Smo2JKZZO3pSrv1DYizxp1vTTZ83kE3SgNE/
+	 6XmtwanjjznY5YZglJjveQ4WL2S0zgVZdIzoqMWOoE2ebw5U26Ca8649VWG0BO6jqE
+	 gQcFl7c3YL+acUWCe7h8yEnq7DvF4gDCoPFW7NFd393U5dsvGdbVMeSv1g6G7C4kAj
+	 H27tydlDN+jBA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 18/23] cpu/hotplug: Add a new cpuhp_offline_cb() API
+Subject: Re: [PATCH 20/23] cgroup/cpuset: Enable runtime update of
+ HK_TYPE_{KERNEL_NOISE,MANAGED_IRQ} cpumasks
 Reply-To: sashiko@lists.linux.dev
 To: "Waiman Long" <longman@redhat.com>
-Cc: linux-hwmon@vger.kernel.org, hannes@cmpxchg.org, tj@kernel.org, mkoutny@suse.com
-In-Reply-To: <20260421030351.281436-19-longman@redhat.com>
-References: <20260421030351.281436-19-longman@redhat.com>
+Cc: tj@kernel.org, linux-hwmon@vger.kernel.org, hannes@cmpxchg.org, mkoutny@suse.com
+In-Reply-To: <20260421030351.281436-21-longman@redhat.com>
+References: <20260421030351.281436-21-longman@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Wed, 22 Apr 2026 03:09:05 +0000
-Message-Id: <20260422030905.8FB79C2BCB0@smtp.kernel.org>
+Message-Id: <20260422030906.7662AC2BCB6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -64,14 +65,14 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13435-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13439-lists,linux-hwmon=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -86,140 +87,181 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev]
-X-Rspamd-Queue-Id: C64D3441C09
+X-Rspamd-Queue-Id: 8AFEB441BAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Sashiko AI review found 4 potential issue(s):
-- [High] Early loop break in the rollback path leaves successfully offlined=
- CPUs permanently offline.
-- [High] Race condition in the `device_online()` retry loop bypasses recove=
-ry if hotplug is re-enabled immediately.
-- [High] Hardcoded 100ms timeout for `cpu_hotplug_disabled` is brittle due =
-to lock dropping, leading to permanently stranded CPUs.
-- [Medium] Time-of-check to time-of-use (TOCTOU) race on `cpu_online_mask` =
-validation triggers spurious kernel warnings and API failure.
+Sashiko AI review found 6 potential issue(s):
+- [High] Stale mask used for DOMAIN isolation when `tick_nohz_full_enabled(=
+)` is false, permanently breaking CPU isolation updates.
+- [High] Dynamic CPU de-isolation fails silently for `HK_TYPE_KERNEL_NOISE`=
+ and `HK_TYPE_MANAGED_IRQ` masks, causing isolated CPUs to grow monotonical=
+ly.
+- [High] Lack of rollback on `housekeeping_update()` or hotplug failures ca=
+uses unrecoverable state desynchronization.
+- [High] `cpuset_nohz_update_cbfunc()` silently swallows the return value o=
+f `housekeeping_update()`, hiding failures from the hotplug callback.
+- [High] Housekeeping updates triggered by partition invalidations are perm=
+anently lost during CPU offline callbacks.
+- [Medium] TOCTOU race when reading `cpu_online_mask` after dropping `cpus_=
+read_lock()` leads to potential hotplug abortion and state inconsistency.
 --
 
-commit ebe2a08265b3e2e79b0d74906f6ed951ac37520b
+commit 35eda8af3da1589e50363cd927f6b3b902b398a2
 Author: Waiman Long <longman@redhat.com>
+Subject: cgroup/cpuset: Enable runtime update of HK_TYPE_{KERNEL_NOISE,MANA=
+GED_IRQ} cpumasks
 
-cpu/hotplug: Add a new cpuhp_offline_cb() API
+This commit enables runtime updates for KERNEL_NOISE and MANAGED_IRQ
+housekeeping cpumasks. It uses CPU hotplug to facilitate transitioning CPUs
+into and out of isolated states when a nohz_full boot parameter is provided.
 
-This patch introduces the cpuhp_offline_cb() API to offline a set of CPUs,
-execute a callback function, and then bring them back online. It allows
-runtime adjustment of command line options like nohz_full and isolcpus.
-A new flag, cpuhp_offline_cb_mode, is added to optimize hotplug operations
-while the system is in this transient state.
-
-> diff --git a/kernel/cpu.c b/kernel/cpu.c
-> index 0d02b5d7a7baf..9b32f742cd1da 100644
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -1520,6 +1520,76 @@ int remove_cpu(unsigned int cpu)
->  }
->  EXPORT_SYMBOL_GPL(remove_cpu);
-> =20
-> +bool cpuhp_offline_cb_mode;
-> +
-> +/**
-> + * cpuhp_offline_cb - offline CPUs, invoke callback function & online CP=
-Us afterward
-> + * @mask: A mask of CPUs to be taken offline and then online
-> + * @func: A callback function to be invoked while the given CPUs are off=
-line
-> + * @arg:  Argument to be passed back to the callback function
-> + *
-> + * Return: 0 if successful, an error code otherwise
-> + */
-> +int cpuhp_offline_cb(struct cpumask *mask, cpuhp_cb_t func, void *arg)
-> +{
-> +	int off_cpu, on_cpu, ret, ret2 =3D 0;
-> +
-> +	if (WARN_ON_ONCE(cpumask_empty(mask) ||
-> +	   !cpumask_subset(mask, cpu_online_mask)))
-> +		return -EINVAL;
-
-Since the mask validation checks cpu_online_mask before acquiring
-lock_device_hotplug(), could a concurrent user-initiated sysfs CPU offline
-operation remove a CPU from cpu_online_mask after the caller generates the
-mask? This would trigger a spurious WARN_ON_ONCE and fail with -EINVAL.
-Should this validation be moved under the hotplug lock?
-
-> +
-> +	pr_debug("%s: begin (CPU list =3D %*pbl)\n", __func__, cpumask_pr_args(=
-mask));
-> +	lock_device_hotplug();
-> +	cpuhp_offline_cb_mode =3D true;
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 1b0c50b46a49c..a927b9cd4f718 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
 
 [ ... ]
 
-> +	/* Bring previously offline CPUs back online */
-> +	for_each_cpu(on_cpu, mask) {
-> +		int retries =3D 0;
+> @@ -1328,29 +1336,67 @@ static bool prstate_housekeeping_conflict(int prs=
+tate, struct cpumask *new_cpus)
+>  	return false;
+>  }
+> =20
+> +static int cpuset_nohz_update_cbfunc(void *arg)
+> +{
+> +	struct cpumask *isol_cpus =3D (struct cpumask *)arg;
 > +
-> +		if (on_cpu =3D=3D off_cpu)
-> +			break;
-> +
-> +retry:
-> +		ret2 =3D device_online(get_cpu_device(on_cpu));
-> +
-> +		/*
-> +		 * With the unlikely event that CPU hotplug is disabled while
-> +		 * this operation is in progress, we will need to wait a bit
-> +		 * for hotplug to hopefully be re-enabled again. If not, print
-> +		 * a warning and return the error.
-> +		 *
-> +		 * cpu_hotplug_disabled is supposed to be accessed while
-> +		 * holding the cpu_add_remove_lock mutex. So we need to
-> +		 * use the data_race() macro to access it here.
-> +		 */
-> +		while ((ret2 =3D=3D -EBUSY) && data_race(cpu_hotplug_disabled) &&
-> +		       (++retries <=3D 5)) {
-
-If device_online() returns -EBUSY, but another thread re-enables CPU hotplug
-right before the while loop condition is evaluated,
-data_race(cpu_hotplug_disabled) will evaluate to false. Doesn't this
-short-circuit the loop entirely, leaving ret2 =3D=3D -EBUSY and bypassing t=
-he
-retry mechanism exactly when recovery would have succeeded?
-
-Additionally, is the hardcoded 100ms (5 * 20ms) timeout sufficient?
-Concurrent paths like PCI probing or idle injection might hold the
-cpu_add_remove_lock for several seconds via cpu_hotplug_disable(). If the
-timeout expires during the online phase, won't this abort the API and
-permanently abandon the CPUs in an offline state?
-
-> +			msleep(20);
-> +			if (!data_race(cpu_hotplug_disabled))
-> +				goto retry;
-> +		}
-> +		if (ret2) {
-> +			pr_warn("%s: Failed to bring CPU %d back online!\n",
-> +				__func__, on_cpu);
-> +			break;
-
-If device_online() fails to bring a CPU back online and breaks out of the
-loop here, doesn't it prematurely exit the restoration loop? This would skip
-any remaining CPUs in the mask that were successfully taken offline, leaving
-them permanently offline and reducing system capacity. Should this use
-continue instead of break to ensure all offlined CPUs have a chance to be
-restored?
-
-> +		}
-> +	}
-> +	cpuhp_offline_cb_mode =3D false;
-> +	unlock_device_hotplug();
-> +	pr_debug("%s: end\n", __func__);
-> +	return ret ? ret : ret2;
+> +	if (isol_cpus)
+> +		housekeeping_update(isol_cpus, BIT(HK_TYPE_KERNEL_NOISE));
+> +	return 0;
 > +}
+
+Is it intentional to discard the return value of housekeeping_update() here?
+If housekeeping_update() fails, returning 0 will cause cpuhp_offline_cb()
+to assume success, potentially hiding failures from the hotplug callback.
+
+[ ... ]
+
+> +	/*
+> +	 * Update isolated_nohz_cpus/isolated_mirq_cpus if necessary
+> +	 */
+> +	if (!boot_nohz_le_domain) {
+> +		cpumask_andnot(cpus, cpu_possible_mask,
+> +			       housekeeping_cpumask(HK_TYPE_KERNEL_NOISE));
+> +		cpumask_or(cpus, cpus, isolated_cpus);
+
+Could this prevent dynamic CPU de-isolation? Because housekeeping_cpumask()
+returns the current runtime mask rather than the boot mask, the newly
+isolated CPUs remain in the mask when cpumask_or() is called. This might
+cause isolated CPUs to grow monotonically rather than allowing removal.
+
+> +		update_nohz =3D !cpumask_equal(isolated_nohz_cpus, cpus);
+> +		if (update_nohz)
+> +			cpumask_copy(isolated_nohz_cpus, cpus);
+
+If a failure occurs later in this function, these tracking masks are updated
+but the state is not. For example, if cpuhp_offline_cb() fails, the code
+jumps to out_free. If userspace then retries the operation, won't it see
+cpumask_equal(isolated_cpus, isolated_hk_cpus) as true and return early,
+leaving the system permanently out of sync?
+
+[ ... ]
+
+> @@ -1360,10 +1406,103 @@ static void cpuset_update_sd_hk_unlock(void)
+>  	 */
+>  	mutex_unlock(&cpuset_mutex);
+>  	cpus_read_unlock();
+
+[ ... ]
+
+> +		/*
+> +		 * Mask out offline CPUs in cpus
+> +		 * If there is no online CPUs, we can call
+> +		 * housekeeping_update() directly if needed.
+> +		 */
+> +		cpumask_and(cpus, cpus, cpu_online_mask);
+
+Can this race with CPU hotplug operations? The cpus_read_lock was released
+earlier in this function. If a CPU is offlined concurrently right after this
+check, cpuhp_offline_cb() might be passed a CPU that is no longer online,
+potentially causing the hotplug loop to abort.
+
+[ ... ]
+
+> +/*
+> + * cpuset_update_sd_hk_unlock - Rebuild sched domains, update HK & unlock
+> + *
+> + * Update housekeeping cpumasks and rebuild sched domains if necessary a=
+nd
+> + * then do a cpuset_full_unlock().
+> + * This should be called at the end of cpuset operation.
+> + */
+> +static void cpuset_update_sd_hk_unlock(void)
+> +	__releases(&cpuset_mutex)
+> +	__releases(&cpuset_top_mutex)
+> +{
+> +	/* force_sd_rebuild will be cleared in rebuild_sched_domains_locked() */
+> +	if (force_sd_rebuild)
+> +		rebuild_sched_domains_locked();
+> +
+> +	update_housekeeping =3D false;
+> +
+> +	if (cpumask_equal(isolated_cpus, isolated_hk_cpus)) {
+> +		cpuset_full_unlock();
+> +		return;
+> +	}
+> +
+> +	if (!tick_nohz_full_enabled()) {
+> +		/*
+> +		 * housekeeping_update() is now called without holding
+> +		 * cpus_read_lock and cpuset_mutex. Only cpuset_top_mutex
+> +		 * is still being held for mutual exclusion.
+> +		 */
+> +		mutex_unlock(&cpuset_mutex);
+> +		cpus_read_unlock();
+> +		WARN_ON_ONCE(housekeeping_update(isolated_hk_cpus,
+> +						 BIT(HK_TYPE_DOMAIN)));
+
+Are we passing a stale mask here? If tick_nohz_full_enabled() is false, we
+skip calling cpuset_update_housekeeping_unlock(), which means
+isolated_hk_cpus is never updated to match isolated_cpus. Subsequent checks
+for cpumask_equal(isolated_cpus, isolated_hk_cpus) will continue to fail,
+and the new mask is never applied to the DOMAIN isolation.
+
+> +		mutex_unlock(&cpuset_top_mutex);
+> +	} else {
+> +		cpuset_update_housekeeping_unlock();
+> +	}
+> +}
+
+[ ... ]
+
+> @@ -3954,7 +4116,10 @@ static void cpuset_handle_hotplug(void)
+>  	 */
+>  	if (force_sd_rebuild)
+>  		rebuild_sched_domains_cpuslocked();
+> -	if (update_housekeeping)
+> +	/*
+> +	 * Don't need to update housekeeping cpumasks in cpuhp_offline_cb mode.
+> +	 */
+> +	if (update_housekeeping && !cpuhp_offline_cb_mode)
+>  		queue_work(system_dfl_wq, &hk_sd_work);
+> =20
+>  	free_tmpmasks(ptmp);
+
+Does this cause housekeeping updates to be lost? If a CPU is offlined and
+it invalidates a cpuset partition, update_housekeeping is set to true. If we
+skip queuing the work here because cpuhp_offline_cb_mode is true, there
+doesn't appear to be a mechanism to retroactively process the pending flag
+once the bounce cycle completes.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260421030351.2814=
-36-1-longman@redhat.com?part=3D18
+36-1-longman@redhat.com?part=3D20
 
