@@ -1,101 +1,100 @@
-Return-Path: <linux-hwmon+bounces-13602-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13606-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKrlEYkv8mlvogEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13602-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 18:19:21 +0200
+	id UN++Jf0v8mlvogEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13606-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 18:21:17 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD4F497A24
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 18:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D112497A8C
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 18:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1197306E664
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 16:15:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 779563037928
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 16:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FB5402451;
-	Wed, 29 Apr 2026 16:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E992406280;
+	Wed, 29 Apr 2026 16:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FvQWoVWE";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="j+BQYLbu"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="adwaPxQN";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TIXy+KVR"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443D54014B6
-	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4BE402430
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777479299; cv=none; b=aDGXrGb2nsbqMVT38Z9AJobKBwnyhc34VkQUksRCeY3aGStx1tZ7gwMUsJnYkSu1Ya4eUwE4PidKsisWd51Q2dZkWRaCHVe4e1uthvBoWwZnjYIiV9dwwFyL4DLmBHfoUqtsftMukDxwaKmD+Vm11HF74jeSsFjmqEJgMTPNUyU=
+	t=1777479308; cv=none; b=igmzM9pAdIgHBpE+Jl3OrxaNpH4k+SqdZ3yiSghoyf9T0fyRtFqVooNiT/cVzffcic20a5JkzysFRil7y3zdvIO8RjRYMB38vizJRUUYTO98EqoHTQj4pgPj3/mxaWRvQ8775gRqOVjH4fhOezPJPGyPKQMZnOJQCrNysm8dtQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777479299; c=relaxed/simple;
-	bh=nTw8RjWFKITdcvHReTcq1FHnN43/FCA/K0PRTQQ9P6E=;
+	s=arc-20240116; t=1777479308; c=relaxed/simple;
+	bh=+DRR6FZB+Ld5aamPPfnWIhChpMSGE/UzOJvDixuYT8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDtjzEWux81QD/Wa06xEfjLgquTZneC4AeoHDvjA7YGMBi+NcvoEl/+t8kmlYDajvHUblqu+w/A6WD4oqmkhjG+fr0lIFuIcs0xkuGJzkPEuAZ9aVayHDNs2d5r5gty9wgiMRB7hb8vF0Dca2dNOM+bvBZLbDKT39Eq81vp/BII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FvQWoVWE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=j+BQYLbu; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=BfQ3eJ0crzfbJazIZETBF6zu8RP/W9uig5UQHwDkKLhllH6AHgLs1ga637HwpwF7RNRC1SS4Z+DU9RSF65PBcCjfFGq9Wixjk+ca1y+FVUc9XwxT8t6zKaqwrh0+/4WrfwUBskOSioI/bmR3rf1coYXMegfrA5c2RNO+BZOvCNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=adwaPxQN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TIXy+KVR; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TFEBNp963229
-	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:55 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TFAg3D3067082
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=5X6EWdy6gq/
-	TxQgL9gfFBe5KbMSDagX2IixukijnMmo=; b=FvQWoVWEDz2znEo6zPvKxw1Of6i
-	DWoo+JJ5TZkiMfinl++SZNC3zQLl+mo+AqVxWIxWC0kSgag+FNyvGb5LJouVWHw0
-	HDA77gl6FjFw4To0KVQjXyfTw+Q0H4PQ0Cr/auVEvSG9unlus4cx4WZWeKEOS0jn
-	/gQh9IAjRY6O0OZPSzm+iYm8wIyl/Qkk4qWIqxMjRBPMMbCS3od5IXAo+SbFGpKK
-	VjsFn8nCgr9ni1QGcxUNAAHxvpjYfziwGCoYnpr22XSY3aOpFMxtQPcBM8YiVc0a
-	dZ5XRI0oyvOGXGgCktxLjo05qGlropswOtU/Vim21Sjm8eLB6QL2dg+HcAQ==
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4du2m4v98e-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=QlIuh8BM0Sa
+	SyTeAREDnPHaWMXvZjHEGYrSurFk/U6c=; b=adwaPxQN1ZFLAoj5evhUxLj8Dub
+	gQzwmrMQs6MKYZhkYAg85k5YXLDNXCttNlXn+hKBLMJdI9GgMACVPujLb+6/1Izp
+	UW0vdfGT5a5liZ9LTWnwFm5rbs7wmB3j7jv3Uhvb3llXqB0CSLXuP4D9Q19ZsoxA
+	GDC8cksxVQv5T/jW04qUiJKBV9/WU0CLRqI2uko3JP1CsnDtRynkT95VczHZ54wr
+	mtnQXkq4PowTF1OVbQkCE3U5xpZPhIVPidMLdA2eAVDzTUWI1W4uh4xEf8TEfce1
+	gB47Dua0eYb6FNxWDUI/DhbNawh24OfStpfOCdoxge/dwBEqFyuAvXKLoAw==
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com [209.85.221.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4du7sxbe02-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:55 +0000 (GMT)
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-953d479ea6eso15557235241.3
-        for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 09:14:54 -0700 (PDT)
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:56 +0000 (GMT)
+Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-5662a21d35bso26113183e0c.2
+        for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 09:14:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777479294; x=1778084094; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1777479296; x=1778084096; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5X6EWdy6gq/TxQgL9gfFBe5KbMSDagX2IixukijnMmo=;
-        b=j+BQYLbu6K3lZO4kj100/fZey3pYDWENgAlv8oLFGiuLbqnNvCqglY4m57E/ghNkay
-         McL6LR4o4o0vAFuWCdsa5VALy4+Q5MwnejN/zydGlPeejh0wP1m8bz8/vUqnq+gPz6hE
-         Lcz9j4vFDAQOrvfs0ftlscApsCQuUqLQvj8FSlFYqBhhbpvrY62S6ePNM+S/uuH+KN/W
-         JET9d4SfzsiKlWcBfQwQH/BBKe0dvUlhkERG6TOM0w4wR3OGUGuHeNlXoSlHoZY+qLmh
-         ZmJasPRn4c9rc7nOQsQpgAGvajJjgBrAVYfxR6eKwvHN2GmkANOZgBhg/we1fBMt5IMs
-         HO6Q==
+        bh=QlIuh8BM0SaSyTeAREDnPHaWMXvZjHEGYrSurFk/U6c=;
+        b=TIXy+KVRjGLiV7RHrZxDALkPPaHMCGYkGAKnxwLYmObOKMCEu7JjTLf3HtYUV6YI4l
+         Vff8qYz3W4pBL2J4sQ65sNpz4Jg5yTZ2x3QpIROR5EnD5iODk9MGpnh7hZxtLSHOXN0a
+         DibBHZyGYDDY40BetRosIEmpg2Ylto7RhVW5Jg9GxU4DWlgktTvWsj5O9Pw/fqrbYERJ
+         ZiZddlKXvVlTvWLRuPjGo+Mq3QMTKe63h+ShMiIeMbKTFKGVLuL+gBjLUz5KFdTZ1vKQ
+         oJyVOeKxyfYviKmMefsTY7mXAXFwqGAZRWWPdPjoDxqGGI9GT6XXPD9C6RuneRqJWder
+         J5Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777479294; x=1778084094;
+        d=1e100.net; s=20251104; t=1777479296; x=1778084096;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5X6EWdy6gq/TxQgL9gfFBe5KbMSDagX2IixukijnMmo=;
-        b=BLYxg50qV4rSYG3R+OPaVKqrgmZ7XVpUv2RWtxcljafMwXJ3IX43tIb6um6kfc7U3Z
-         bqkXx9GUcMjwLld90UcOONsweHK6PH+FCt5VYYkAQvI8MNNgq2gVgmsLV1q7Fuj21z6z
-         UvY0dGlgZat1adDGOw3Dq1LYR9sHqUBO/afya+PWIgtuXEIrT3JCyGb2xIzGvSLY25sz
-         myhQWaNhHweW3NAtmZRbjyPj6dWFNj4R4HjThaxDJTiQj5CpPSQ3XowVwSNbxpvxNvha
-         rl5Sclr3C+pt1hPcF79L5ZfPG99FlsJhdL2ms8SnGoGgnsRNtKSu0gz1VScagsao3V1f
-         MPyg==
-X-Forwarded-Encrypted: i=1; AFNElJ9aByY1wQVlMcby+YWpei9Mw429oqQ++EGkNNTz+wIzQYckzGhsIPc+3TKEEn8NJzCyVh51Hsj4zHZbFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3O88kqCCxmYac1nQ4ZhtzSy2a7Sdn6g2APQ3LL/KSJAGfCGkE
-	UPtOB3OKF+lsADLXHfMQzS3Zk6BAh6wJ4py5hZxaMREZ1CQa5tbBkuiO3nu7bVrsgua/ahD9wjk
-	Ej1LPcxoRoVAISMaCG+DDtXxb4eR33eO54qmOX/YnYsbGqWBdOc5FGmlfJ21Zu9iA0JIHBkdMMg
-	==
-X-Gm-Gg: AeBDiesWGPTFt3BMtGBqNMs72sxZQhdJ+D25kKJmsgC96Xmn1zxeY33tC0Z72/CaZWF
-	b1lvP9/w/jAIqrnaGT+8vQe5wV0mLcAjV+pxSDZr5SjthehbqTR5lgDuJtvCqc1RNbma8QLYAFx
-	0Gq+k5LBgnd/ctFZIySeD/BwZtS0HKUSAesEnB0CiW93wfg2nYypEMu+qcMYX1IUyGtjsadZlmd
-	ZWoRsIPiAG+tUgb3qj5yJFNwxa8OqRQgFDlk5vgabWYj6zH/Zhl4WTVHvrlYtVZBo6Lnpw5XC0g
-	I4m7lEUG7Z1m3CuPdFGSR5/s98ivdUPA4XBL5W69eny+F1YA89WglujLj8cdl1hmWPb/ODD+8X/
-	83/knFNxIBKe4MwPWDmcxBL2yZW/bqdgAWuNeXCO8VcM4a3KsAvGGnpGZuHOG
-X-Received: by 2002:a05:6122:d91:b0:56b:7023:1393 with SMTP id 71dfb90a1353d-573b35fc098mr2556144e0c.11.1777479293837;
-        Wed, 29 Apr 2026 09:14:53 -0700 (PDT)
-X-Received: by 2002:a05:6122:d91:b0:56b:7023:1393 with SMTP id 71dfb90a1353d-573b35fc098mr2556050e0c.11.1777479293244;
-        Wed, 29 Apr 2026 09:14:53 -0700 (PDT)
+        bh=QlIuh8BM0SaSyTeAREDnPHaWMXvZjHEGYrSurFk/U6c=;
+        b=YJbhAX1E+RGm7c37cW4wGxGfh0/Y/J6lZTAYq3Ux0skd51WDk5Ss67jn6dB+qMXRig
+         Z25SB50LPsk3RNiPM46Cmtew5tLqZIBlGJlvCReNa4NmCBNcBhTTMHKF677zYfqe32RU
+         zmzPVygwBxy+H+NOlXAJGKwBkuMo7TlXTRuddp6Utpa0uCHCeUIXh2UXtuv4Y9qdRsUE
+         d9RjxE1tRkAzGcPjqoioslI3Im1SsazIgoves+DaeWlSuZvKWQidhtGBMotzVlKlVEia
+         UUvO0FYI1tYWt+/PyKBPGbPprlHIOEoL1UX4WlDxVBV8ASDV4LWlTFdnvhnLvzf+untC
+         9asQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8QZyX//8P1yqeEFGhaz0Yri60Rhi7Alu4a+jmTZFKuB0btcuy7xdl4XG8jQnBf4Ihjwaz7AisyaHQVkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL4wK748YowvNLRk3AoXAixN4L0ccSE3lxM7VbayXtykjklGsR
+	0iGqbreqXsR/8yQojt24W2MHLykjyrSXJ3q0pK0g4ZJYeMjka2YDoC63hjg1iwZe2SbakszuIU8
+	7fPvlEphtbu3K3oCwV+m4AazdcbYwPB4JJKUpxa41GVel9y90/NsPwoqgJWAL59tLFQ==
+X-Gm-Gg: AeBDies3cNvCfdB5g6fCId3Tg1sgxyZ72MIakbWSpfoehHRdg7bO64EEWOwYCwnwrwa
+	bDbzaapsWvtUbHlItzRfnpE+qSZlrLV3qHgUD5ilmMYK5JZ/nH3ADnpwREyWN1dShtc1/K6uHKz
+	oDCoEcVkLVPkpgNKgcJh/mZl1e5IKm6Kt5AJc04jTwAZZYoxuJGI+mcCjB5+soGuJ0D+PaKibVA
+	myAs+tvke47GXbF8qto+bTOqwGqPBI5mvFNQLRo0Qw9Af6yJYMIj4KOfDpxjgR+vs/hvMxlvwOB
+	oD01xIE93AReUcKOpx1kI6QbruLPAkOEI1XmtTujrcPHal7wqWi1ga1Bov4m+U+F4yLnO8D+iJL
+	Or85bR0EBuyW1Mk/itpCsdvCBoE4MKQUcZFuQ3YWo9MIWTRdZk0yegO74fwPo
+X-Received: by 2002:a05:6122:24c:b0:56f:7c7e:f33a with SMTP id 71dfb90a1353d-573a52eea5dmr5244078e0c.0.1777479295798;
+        Wed, 29 Apr 2026 09:14:55 -0700 (PDT)
+X-Received: by 2002:a05:6122:24c:b0:56f:7c7e:f33a with SMTP id 71dfb90a1353d-573a52eea5dmr5244024e0c.0.1777479295316;
+        Wed, 29 Apr 2026 09:14:55 -0700 (PDT)
 Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:ae20:597c:99b8:d161])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed659dsm2438525e9.2.2026.04.29.09.14.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed659dsm2438525e9.2.2026.04.29.09.14.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 09:14:52 -0700 (PDT)
+        Wed, 29 Apr 2026 09:14:54 -0700 (PDT)
 From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 To: rafael@kernel.org, daniel.lezcano@kernel.org
 Cc: gaurav.kohli@oss.qualcomm.com, Zhang Rui <rui.zhang@intel.com>,
@@ -125,25 +124,11 @@ Cc: gaurav.kohli@oss.qualcomm.com, Zhang Rui <rui.zhang@intel.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
         Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>, Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@kernel.org>,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM/ASPEED MACHINE SUPPORT),
-        linux-aspeed@lists.ozlabs.org (moderated list:ARM/ASPEED MACHINE SUPPORT),
-        openbmc@lists.ozlabs.org (moderated list:ARM/NUVOTON NPCM ARCHITECTURE),
-        linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT),
-        linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM MAILING LIST),
-        linux-amlogic@lists.infradead.org (open list:KHADAS MCU MFD DRIVER),
-        llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT)
-Subject: [PATCH v3 07/11] thermal/of: Rename the devm_thermal_of_cooling_device_register() function
-Date: Wed, 29 Apr 2026 18:14:20 +0200
-Message-ID: <20260429161430.3802970-8-daniel.lezcano@oss.qualcomm.com>
+        etnaviv@lists.freedesktop.org (moderated list:DRM DRIVERS FOR VIVANTE GPU IP),
+        dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR VIVANTE GPU IP)
+Subject: [PATCH v3 08/11] thermal/of: Introduce cooling device of_index
+Date: Wed, 29 Apr 2026 18:14:21 +0200
+Message-ID: <20260429161430.3802970-9-daniel.lezcano@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260429161430.3802970-1-daniel.lezcano@oss.qualcomm.com>
 References: <20260429161430.3802970-1-daniel.lezcano@oss.qualcomm.com>
@@ -154,398 +139,230 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE2MiBTYWx0ZWRfX8n8kTLKZZtwL
- pZInVt+dnELKVF3Di0OpQTlQYqXpazbPXv/db7X4bh+d++2XQD1TjkGiirXEEf5pK2s243GQUR7
- MRkAaUQj6Jz9cqRDruwtobcw1jO0k4l8I0ONAA4dEZ2scRVVKqd4RQqh7G/25qJcp9ViYc3AaqS
- Wj242Rgc+ZlrRENOMLMh2gLtqmQ4n3/m3XhR3z8b4Ol0jS6kYNP2DKbb9rJbzg3/kBXbtzizWgi
- 84kn+rh8zvtwBE6d08wgsMzTJX6ozK0GuIxUL2oeSuZ+bfR7i3iBWXBvywkjidfXXssK4LT7+Gy
- ju1olbgB762/YE4YrTme0B15xvPQRm8By3MeSuSLMnakh7FmYe7w6ex+Xc+V7rVGAgZpL4JQDkG
- Jf0j+SkIEODvDQ0qp1Jgr0VcPK1mD/xbzVCZ5V+Mq6BSk9LTIVgXjNnbmbNJBd4qimO9QVV5PdS
- gyYsbu/Sr2suIkX0ovQ==
-X-Proofpoint-GUID: T3uDMxjNRi1V-IPMrAuhyeGwEiA1lo4L
-X-Authority-Analysis: v=2.4 cv=MuFiLWae c=1 sm=1 tr=0 ts=69f22e7f cx=c_pps
- a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=xqWC_Br6kY4A:10 a=A5OVakUREuEA:10
+X-Proofpoint-GUID: bkyGCiYVGYHYjUE4gE-NxLneC6vdaNfz
+X-Authority-Analysis: v=2.4 cv=eeANubEH c=1 sm=1 tr=0 ts=69f22e80 cx=c_pps
+ a=JIY1xp/sjQ9K5JH4t62bdg==:117 a=xqWC_Br6kY4A:10 a=A5OVakUREuEA:10
  a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8 a=YYchOvpREA9nlnY3_CYA:9
- a=1WsBpfsz9X-RYQiigVTh:22
-X-Proofpoint-ORIG-GUID: T3uDMxjNRi1V-IPMrAuhyeGwEiA1lo4L
+ a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8 a=kkni0TwwaAke5k-tc94A:9
+ a=tNoRWFLymzeba-QzToBc:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE2MiBTYWx0ZWRfX7ceKdGgJIWk+
+ uk8FPdS0kF91EVB8K2l1CapVmoggEhe+G1hvCPJDDd99xPvv00VydL2m8zz0ndYHcdu2etThdTP
+ f5oSkwuHQsd+3Bc4Q5+WapNgw7JcvWkFL2mFSrDo/+rNSex6UXwOTtA5TfBg6xxhIiriGxT4ZoD
+ hQHH1WvfxsLVt/cd08rRZnSTj6SRycEspBEDaxggxngXoBUb8Et67+eIOG35Z9olzx9vCgrZFX6
+ dok3HJr89fbF54tHN4J9CZscqf2QjQEDjweQ2YWyPJYvjW1QN8ppqme8c9VJ059ndQgfWIMCSUA
+ 6SSqlCUkq65AS6KQ1cvD+eQMpcccWrQ1RixFuqfAyFAWBAyUrfvTeV1rS0oU5mSPwVW2Stg/ePb
+ gmlIFZ2KOPZUR12MNHHeSPLEC4XkYQYaKfw9jZ6wUmrnN4Jux4OQ/uzVcCRlw1tjTdt46+1yM0u
+ bxiF0SXmsSmRuH0wYkw==
+X-Proofpoint-ORIG-GUID: bkyGCiYVGYHYjUE4gE-NxLneC6vdaNfz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-29_01,2026-04-28_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 lowpriorityscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604290162
-X-Rspamd-Queue-Id: DBD4F497A24
+ priorityscore=1501 adultscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290162
+X-Rspamd-Queue-Id: 0D112497A8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,intel.com,arm.com,kernel.org,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org,lists.freedesktop.org];
+	RCPT_COUNT_TWELVE(0.00)[39];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,intel.com,arm.com,kernel.org,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-13606-lists,linux-hwmon=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13602-lists,linux-hwmon=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_GT_50(0.00)[54];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt,etnaviv,lkml];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt,etnaviv];
+	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 
-The cooling devices can be composed with a cooling device controller
-and a set of cooling devices attached to it. Until now, the DT
-bindings were described using a node for the cooling device controller
-and child nodes for all the cooling devices.
+As described in the previous change, the new incoming DT binding will
+describe a tuple device_node + cooling device id, instead of child
+nodes.
 
-Recently, a new set of cooling devices were proposed with the same
-bindings. Those were rejected because DT maintainers do not want this
-format anymore. In place, a cooling device will be created with an
-id. Whatever its meaning, the thermal OF will bind a thermal zone and
-a cooling device by checking the device node pointer + the id are
-matching the cooling map with the cooling device.
+Let's augment thermal_of_cooling_device_register() to receive the
+cooling device id and propagate the changes to the four remaining
+drivers using the non-devm version of the cooling device registering
+function.
 
-Actually this approach is consistent with the thermal which are also
-registered with a device and an id.
-
-In order to do a distinction between the old binding with child nodes
-and the incoming new binding, let's rename the registering function
-with a self-explanatory name.
-
-Rename the functions:
-	devm_thermal_of_cooling_device_register() -> devm_thermal_of_child_cooling_device_register()
-
-Used the command:
-
-     	 find . -type f -name '*.[ch]' -exec \
-	 sed -i 's/devm_thermal_of_cooling_device_register/\
-	 devm_thermal_of_child_cooling_device_register/g' {} \;
-
-Did not used clang-format-diff because it does not indent correctly
-and checkpatch complained. Manually reindented to make checkpatch
-happy
+Add the id in the cooling device structure and store the value when
+registering it.
 
 Signed-off-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
 ---
- drivers/hwmon/amc6821.c                  |  2 +-
- drivers/hwmon/aspeed-pwm-tacho.c         |  5 +++--
- drivers/hwmon/emc2305.c                  |  6 +++---
- drivers/hwmon/gpio-fan.c                 |  6 ++++--
- drivers/hwmon/max6650.c                  |  6 +++---
- drivers/hwmon/npcm750-pwm-fan.c          |  6 ++++--
- drivers/hwmon/pwm-fan.c                  |  5 +++--
- drivers/hwmon/qnap-mcu-hwmon.c           |  6 +++---
- drivers/hwmon/tc654.c                    |  5 +++--
- drivers/memory/tegra/tegra210-emc-core.c |  4 ++--
- drivers/soc/qcom/qcom_aoss.c             |  2 +-
- drivers/thermal/khadas_mcu_fan.c         |  7 ++++---
- drivers/thermal/tegra/soctherm.c         |  6 +++---
- drivers/thermal/thermal_of.c             | 15 +++++++++------
- include/linux/thermal.h                  | 16 ++++++++--------
- 15 files changed, 54 insertions(+), 43 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c |  5 +++--
+ drivers/thermal/cpufreq_cooling.c     |  2 +-
+ drivers/thermal/cpuidle_cooling.c     |  2 +-
+ drivers/thermal/devfreq_cooling.c     |  2 +-
+ drivers/thermal/thermal_of.c          | 21 ++++++++++++++++-----
+ include/linux/thermal.h               |  6 ++++--
+ 6 files changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hwmon/amc6821.c b/drivers/hwmon/amc6821.c
-index d5f864b360b0..8e5926b06070 100644
---- a/drivers/hwmon/amc6821.c
-+++ b/drivers/hwmon/amc6821.c
-@@ -1076,7 +1076,7 @@ static int amc6821_probe(struct i2c_client *client)
- 				     "Failed to initialize hwmon\n");
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index a891d4f1f843..552631c3554a 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -1791,8 +1791,9 @@ static int etnaviv_gpu_bind(struct device *dev, struct device *master,
+ 	int ret;
  
- 	if (IS_ENABLED(CONFIG_THERMAL) && fan_np && data->fan_cooling_levels)
--		return PTR_ERR_OR_ZERO(devm_thermal_of_cooling_device_register(dev,
-+		return PTR_ERR_OR_ZERO(devm_thermal_of_child_cooling_device_register(dev,
- 			fan_np, client->name, data, &amc6821_cooling_ops));
- 
- 	return 0;
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index aa159bf158a3..1c5945d4ba37 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -841,8 +841,9 @@ static int aspeed_create_pwm_cooling(struct device *dev,
+ 	if (IS_ENABLED(CONFIG_DRM_ETNAVIV_THERMAL)) {
+-		gpu->cooling = thermal_of_cooling_device_register(dev->of_node,
+-				(char *)dev_name(dev), gpu, &cooling_ops);
++		gpu->cooling = thermal_of_cooling_device_register(dev->of_node, 0,
++								  dev_name(dev),
++								  gpu, &cooling_ops);
+ 		if (IS_ERR(gpu->cooling))
+ 			return PTR_ERR(gpu->cooling);
  	}
- 	snprintf(cdev->name, MAX_CDEV_NAME_LEN, "%pOFn%d", child, pwm_port);
+diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
+index 32bf5ab44f4a..768859a7aed0 100644
+--- a/drivers/thermal/cpufreq_cooling.c
++++ b/drivers/thermal/cpufreq_cooling.c
+@@ -592,7 +592,7 @@ __cpufreq_cooling_register(struct device_node *np,
+ 	if (!name)
+ 		goto remove_qos_req;
  
--	cdev->tcdev = devm_thermal_of_cooling_device_register(dev, child,
--					cdev->name, cdev, &aspeed_pwm_cool_ops);
-+	cdev->tcdev = devm_thermal_of_child_cooling_device_register(dev, child,
-+								    cdev->name, cdev,
-+								    &aspeed_pwm_cool_ops);
- 	if (IS_ERR(cdev->tcdev))
- 		return PTR_ERR(cdev->tcdev);
+-	cdev = thermal_of_cooling_device_register(np, name, cpufreq_cdev,
++	cdev = thermal_of_cooling_device_register(np, 0, name, cpufreq_cdev,
+ 						  cooling_ops);
+ 	kfree(name);
  
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index 64b213e1451e..2505e9fac499 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -309,9 +309,9 @@ static int emc2305_set_single_tz(struct device *dev, struct device_node *fan_nod
- 	pwm = data->pwm_min[cdev_idx];
- 
- 	data->cdev_data[cdev_idx].cdev =
--		devm_thermal_of_cooling_device_register(dev, fan_node,
--							emc2305_fan_name[idx], data,
--							&emc2305_cooling_ops);
-+		devm_thermal_of_child_cooling_device_register(dev, fan_node,
-+							      emc2305_fan_name[idx], data,
-+							      &emc2305_cooling_ops);
- 
- 	if (IS_ERR(data->cdev_data[cdev_idx].cdev)) {
- 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
-diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
-index a8892ced1e54..084828e1e281 100644
---- a/drivers/hwmon/gpio-fan.c
-+++ b/drivers/hwmon/gpio-fan.c
-@@ -592,8 +592,10 @@ static int gpio_fan_probe(struct platform_device *pdev)
+diff --git a/drivers/thermal/cpuidle_cooling.c b/drivers/thermal/cpuidle_cooling.c
+index 425f596614e8..bbd2e91cf5ab 100644
+--- a/drivers/thermal/cpuidle_cooling.c
++++ b/drivers/thermal/cpuidle_cooling.c
+@@ -207,7 +207,7 @@ static int __cpuidle_cooling_register(struct device_node *np,
+ 		goto out_unregister;
  	}
  
- 	/* Optional cooling device register for Device tree platforms */
--	fan_data->cdev = devm_thermal_of_cooling_device_register(dev, np,
--				"gpio-fan", fan_data, &gpio_fan_cool_ops);
-+	fan_data->cdev = devm_thermal_of_child_cooling_device_register(dev, np,
-+								       "gpio-fan",
-+								       fan_data,
-+								       &gpio_fan_cool_ops);
- 
- 	dev_info(dev, "GPIO fan initialized\n");
- 
-diff --git a/drivers/hwmon/max6650.c b/drivers/hwmon/max6650.c
-index 9649c6611d5f..a50b1b0f1f48 100644
---- a/drivers/hwmon/max6650.c
-+++ b/drivers/hwmon/max6650.c
-@@ -793,9 +793,9 @@ static int max6650_probe(struct i2c_client *client)
- 		return err;
- 
- 	if (IS_ENABLED(CONFIG_THERMAL)) {
--		cooling_dev = devm_thermal_of_cooling_device_register(dev,
--						dev->of_node, client->name,
--						data, &max6650_cooling_ops);
-+		cooling_dev = devm_thermal_of_child_cooling_device_register(dev, dev->of_node,
-+									    client->name, data,
-+									    &max6650_cooling_ops);
- 		if (IS_ERR(cooling_dev)) {
- 			dev_warn(dev, "thermal cooling device register failed: %ld\n",
- 				 PTR_ERR(cooling_dev));
-diff --git a/drivers/hwmon/npcm750-pwm-fan.c b/drivers/hwmon/npcm750-pwm-fan.c
-index c8f5e695fb6d..aea0b8659f5f 100644
---- a/drivers/hwmon/npcm750-pwm-fan.c
-+++ b/drivers/hwmon/npcm750-pwm-fan.c
-@@ -857,8 +857,10 @@ static int npcm7xx_create_pwm_cooling(struct device *dev,
- 	snprintf(cdev->name, THERMAL_NAME_LENGTH, "%pOFn%d", child,
- 		 pwm_port);
- 
--	cdev->tcdev = devm_thermal_of_cooling_device_register(dev, child,
--				cdev->name, cdev, &npcm7xx_pwm_cool_ops);
-+	cdev->tcdev = devm_thermal_of_child_cooling_device_register(dev, child,
-+								    cdev->name,
-+								    cdev,
-+								    &npcm7xx_pwm_cool_ops);
- 	if (IS_ERR(cdev->tcdev))
- 		return PTR_ERR(cdev->tcdev);
- 
-diff --git a/drivers/hwmon/pwm-fan.c b/drivers/hwmon/pwm-fan.c
-index 37269db2de84..e6a567d58579 100644
---- a/drivers/hwmon/pwm-fan.c
-+++ b/drivers/hwmon/pwm-fan.c
-@@ -685,8 +685,9 @@ static int pwm_fan_probe(struct platform_device *pdev)
- 
- 	ctx->pwm_fan_state = ctx->pwm_fan_max_state;
- 	if (IS_ENABLED(CONFIG_THERMAL)) {
--		cdev = devm_thermal_of_cooling_device_register(dev,
--			dev->of_node, "pwm-fan", ctx, &pwm_fan_cooling_ops);
-+		cdev = devm_thermal_of_child_cooling_device_register(dev, dev->of_node,
-+								     "pwm-fan", ctx,
-+								     &pwm_fan_cooling_ops);
- 		if (IS_ERR(cdev)) {
- 			ret = PTR_ERR(cdev);
- 			dev_err(dev,
-diff --git a/drivers/hwmon/qnap-mcu-hwmon.c b/drivers/hwmon/qnap-mcu-hwmon.c
-index e86e64c4d391..c1c1e9d6f340 100644
---- a/drivers/hwmon/qnap-mcu-hwmon.c
-+++ b/drivers/hwmon/qnap-mcu-hwmon.c
-@@ -337,9 +337,9 @@ static int qnap_mcu_hwmon_probe(struct platform_device *pdev)
- 	 * levels and only succeed with either no or correct cooling levels.
- 	 */
- 	if (IS_ENABLED(CONFIG_THERMAL) && hwm->fan_cooling_levels) {
--		cdev = devm_thermal_of_cooling_device_register(dev,
--					to_of_node(hwm->fan_node), "qnap-mcu-hwmon",
--					hwm, &qnap_mcu_hwmon_cooling_ops);
-+		cdev = devm_thermal_of_child_cooling_device_register(dev, to_of_node(hwm->fan_node),
-+								     "qnap-mcu-hwmon", hwm,
-+								     &qnap_mcu_hwmon_cooling_ops);
- 		if (IS_ERR(cdev))
- 			return dev_err_probe(dev, PTR_ERR(cdev),
- 				"Failed to register qnap-mcu-hwmon as cooling device\n");
-diff --git a/drivers/hwmon/tc654.c b/drivers/hwmon/tc654.c
-index 39fe5836f237..ba18b442b81e 100644
---- a/drivers/hwmon/tc654.c
-+++ b/drivers/hwmon/tc654.c
-@@ -541,8 +541,9 @@ static int tc654_probe(struct i2c_client *client)
- 	if (IS_ENABLED(CONFIG_THERMAL)) {
- 		struct thermal_cooling_device *cdev;
- 
--		cdev = devm_thermal_of_cooling_device_register(dev, dev->of_node, client->name,
--							       hwmon_dev, &tc654_fan_cool_ops);
-+		cdev = devm_thermal_of_child_cooling_device_register(dev, dev->of_node,
-+								     client->name, hwmon_dev,
-+								     &tc654_fan_cool_ops);
- 		return PTR_ERR_OR_ZERO(cdev);
- 	}
- 
-diff --git a/drivers/memory/tegra/tegra210-emc-core.c b/drivers/memory/tegra/tegra210-emc-core.c
-index e96ca4157d48..065ae8bc2830 100644
---- a/drivers/memory/tegra/tegra210-emc-core.c
-+++ b/drivers/memory/tegra/tegra210-emc-core.c
-@@ -1966,8 +1966,8 @@ static int tegra210_emc_probe(struct platform_device *pdev)
- 
- 	tegra210_emc_debugfs_init(emc);
- 
--	cd = devm_thermal_of_cooling_device_register(emc->dev, np, "emc", emc,
--						     &tegra210_emc_cd_ops);
-+	cd = devm_thermal_of_child_cooling_device_register(emc->dev, np, "emc", emc,
-+							   &tegra210_emc_cd_ops);
- 	if (IS_ERR(cd)) {
- 		err = PTR_ERR(cd);
- 		dev_err(emc->dev, "failed to register cooling device: %d\n",
-diff --git a/drivers/soc/qcom/qcom_aoss.c b/drivers/soc/qcom/qcom_aoss.c
-index a543ab9bee6c..742f571200fa 100644
---- a/drivers/soc/qcom/qcom_aoss.c
-+++ b/drivers/soc/qcom/qcom_aoss.c
-@@ -381,7 +381,7 @@ static int qmp_cooling_device_add(struct qmp *qmp,
- 	qmp_cdev->qmp = qmp;
- 	qmp_cdev->state = !qmp_cdev_max_state;
- 	qmp_cdev->name = cdev_name;
--	qmp_cdev->cdev = devm_thermal_of_cooling_device_register
-+	qmp_cdev->cdev = devm_thermal_of_child_cooling_device_register
- 				(qmp->dev, node,
- 				cdev_name,
- 				qmp_cdev, &qmp_cooling_device_ops);
-diff --git a/drivers/thermal/khadas_mcu_fan.c b/drivers/thermal/khadas_mcu_fan.c
-index d35e5313bea4..21b3d0a71bd0 100644
---- a/drivers/thermal/khadas_mcu_fan.c
-+++ b/drivers/thermal/khadas_mcu_fan.c
-@@ -90,9 +90,10 @@ static int khadas_mcu_fan_probe(struct platform_device *pdev)
- 	ctx->mcu = mcu;
- 	platform_set_drvdata(pdev, ctx);
- 
--	cdev = devm_thermal_of_cooling_device_register(dev->parent,
--			dev->parent->of_node, "khadas-mcu-fan", ctx,
--			&khadas_mcu_fan_cooling_ops);
-+	cdev = devm_thermal_of_child_cooling_device_register(dev->parent,
-+							     dev->parent->of_node,
-+							     "khadas-mcu-fan", ctx,
-+							     &khadas_mcu_fan_cooling_ops);
+-	cdev = thermal_of_cooling_device_register(np, name, idle_cdev,
++	cdev = thermal_of_cooling_device_register(np, 0, name, idle_cdev,
+ 						  &cpuidle_cooling_ops);
  	if (IS_ERR(cdev)) {
  		ret = PTR_ERR(cdev);
- 		dev_err(dev, "Failed to register khadas-mcu-fan as cooling device: %d\n",
-diff --git a/drivers/thermal/tegra/soctherm.c b/drivers/thermal/tegra/soctherm.c
-index 6a56638c98f1..d8e988a0d43e 100644
---- a/drivers/thermal/tegra/soctherm.c
-+++ b/drivers/thermal/tegra/soctherm.c
-@@ -1707,9 +1707,9 @@ static void soctherm_init_hw_throt_cdev(struct platform_device *pdev)
- 			stc->init = true;
- 		} else {
+diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+index 1c7dffc8d45f..0330a8112832 100644
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -454,7 +454,7 @@ of_devfreq_cooling_register_power(struct device_node *np, struct devfreq *df,
+ 	if (!name)
+ 		goto remove_qos_req;
  
--			tcd = devm_thermal_of_cooling_device_register(dev, np_stcc,
--								      (char *)name, ts,
--								      &throt_cooling_ops);
-+			tcd = devm_thermal_of_child_cooling_device_register(dev, np_stcc,
-+									    (char *)name, ts,
-+									    &throt_cooling_ops);
- 			if (IS_ERR_OR_NULL(tcd)) {
- 				dev_err(dev,
- 					"throttle-cfg: %s: failed to register cooling device\n",
+-	cdev = thermal_of_cooling_device_register(np, name, dfc, ops);
++	cdev = thermal_of_cooling_device_register(np, 0, name, dfc, ops);
+ 	kfree(name);
+ 
+ 	if (IS_ERR(cdev)) {
 diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index ba6f246ddef0..cf60ac64db54 100644
+index cf60ac64db54..b38623f6b89f 100644
 --- a/drivers/thermal/thermal_of.c
 +++ b/drivers/thermal/thermal_of.c
-@@ -557,7 +557,7 @@ static void thermal_of_cooling_device_release(void *data)
+@@ -511,16 +511,23 @@ void devm_thermal_of_zone_unregister(struct device *dev, struct thermal_zone_dev
+ }
+ EXPORT_SYMBOL_GPL(devm_thermal_of_zone_unregister);
+ 
++struct thermal_of_cdev_init {
++	struct device_node *np;
++	int of_index;
++};
++
+ static void thermal_of_cooling_device_init(struct thermal_cooling_device *cdev, void *data)
+ {
+-	struct device_node *np = data;
++	struct thermal_of_cdev_init *of_cdev = data;
+ 
+-	cdev->np = np;
++	cdev->np = of_cdev->np;
++	cdev->of_index = of_cdev->of_index;
  }
  
  /**
-- * devm_thermal_of_cooling_device_register() - register an OF thermal cooling
-+ * devm_thermal_of_child_cooling_device_register() - register an OF thermal cooling
-  *					       device
-  * @dev:	a valid struct device pointer of a sensor device.
+  * thermal_of_cooling_device_register() - register an OF thermal cooling device
   * @np:		a pointer to a device tree node.
-@@ -570,14 +570,17 @@ static void thermal_of_cooling_device_release(void *data)
-  * to /sys/class/thermal/ folder as cooling_device[0-*]. It tries to bind itself
-  * to all the thermal zone devices registered at the same time.
-  *
-+ * This function should be used when a cooling controller has child
-+ * nodes which are referenced in the thermal zone cooling map.
-+ *
-  * Return: a pointer to the created struct thermal_cooling_device or an
++ * @of_index:	a cooling device index in the cooling controller
+  * @type:	the thermal cooling device type.
+  * @devdata:	device private data.
+  * @ops:		standard thermal cooling devices callbacks.
+@@ -534,14 +541,18 @@ static void thermal_of_cooling_device_init(struct thermal_cooling_device *cdev,
   * ERR_PTR. Caller must check return value with IS_ERR*() helpers.
   */
  struct thermal_cooling_device *
--devm_thermal_of_cooling_device_register(struct device *dev,
--					struct device_node *np,
--					const char *type, void *devdata,
--					const struct thermal_cooling_device_ops *ops)
-+devm_thermal_of_child_cooling_device_register(struct device *dev,
-+					      struct device_node *np,
-+					      const char *type, void *devdata,
-+					      const struct thermal_cooling_device_ops *ops)
+-thermal_of_cooling_device_register(struct device_node *np,
++thermal_of_cooling_device_register(struct device_node *np, int of_index,
+ 				   const char *type, void *devdata,
+ 				   const struct thermal_cooling_device_ops *ops)
  {
  	struct thermal_cooling_device *cdev;
- 	int ret;
-@@ -592,4 +595,4 @@ devm_thermal_of_cooling_device_register(struct device *dev,
++	struct thermal_of_cdev_init of_cdev = {
++		.np = np,
++		.of_index = of_index,
++	};
  
- 	return cdev;
- }
--EXPORT_SYMBOL_GPL(devm_thermal_of_cooling_device_register);
-+EXPORT_SYMBOL_GPL(devm_thermal_of_child_cooling_device_register);
+ 	cdev = __thermal_cooling_device_register(type, devdata, ops,
+-						 thermal_of_cooling_device_init, np);
++						 thermal_of_cooling_device_init, &of_cdev);
+ 	if (IS_ERR(cdev))
+ 		return cdev;
+ 
+@@ -585,7 +596,7 @@ devm_thermal_of_child_cooling_device_register(struct device *dev,
+ 	struct thermal_cooling_device *cdev;
+ 	int ret;
+ 
+-	cdev = thermal_of_cooling_device_register(np, type, devdata, ops);
++	cdev = thermal_of_cooling_device_register(np, 0, type, devdata, ops);
+ 	if (IS_ERR(cdev))
+ 		return cdev;
+ 
 diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index f207ca6b63ae..e39bec84b2b6 100644
+index e39bec84b2b6..26e33c0236c4 100644
 --- a/include/linux/thermal.h
 +++ b/include/linux/thermal.h
-@@ -205,10 +205,10 @@ thermal_of_cooling_device_register(struct device_node *np, const char *type, voi
+@@ -134,6 +134,7 @@ struct thermal_cooling_device {
+ 	struct list_head node;
+ #ifdef CONFIG_THERMAL_OF
+ 	struct device_node *np;
++	int of_index;
+ #endif
+ #ifdef CONFIG_THERMAL_DEBUGFS
+ 	struct thermal_debugfs *debugfs;
+@@ -201,7 +202,8 @@ struct thermal_zone_device *devm_thermal_of_zone_register(struct device *dev, in
+ void devm_thermal_of_zone_unregister(struct device *dev, struct thermal_zone_device *tz);
+ 
+ struct thermal_cooling_device *
+-thermal_of_cooling_device_register(struct device_node *np, const char *type, void *devdata,
++thermal_of_cooling_device_register(struct device_node *np, int of_index,
++				   const char *type, void *data,
  				   const struct thermal_cooling_device_ops *ops);
  
  struct thermal_cooling_device *
--devm_thermal_of_cooling_device_register(struct device *dev,
--					struct device_node *np,
--					const char *type, void *devdata,
--					const struct thermal_cooling_device_ops *ops);
-+devm_thermal_of_child_cooling_device_register(struct device *dev,
-+					      struct device_node *np,
-+					      const char *type, void *devdata,
-+					      const struct thermal_cooling_device_ops *ops);
- #else
- 
- static inline
-@@ -232,10 +232,10 @@ thermal_of_cooling_device_register(struct device_node *np,
+@@ -224,7 +226,7 @@ static inline void devm_thermal_of_zone_unregister(struct device *dev,
  }
  
  static inline struct thermal_cooling_device *
--devm_thermal_of_cooling_device_register(struct device *dev,
--					struct device_node *np,
--					const char *type, void *devdata,
--					const struct thermal_cooling_device_ops *ops)
-+devm_thermal_of_child_cooling_device_register(struct device *dev,
-+					      struct device_node *np,
-+					      const char *type, void *devdata,
-+					      const struct thermal_cooling_device_ops *ops)
+-thermal_of_cooling_device_register(struct device_node *np,
++thermal_of_cooling_device_register(struct device_node *np, int of_index,
+ 				   const char *type, void *devdata,
+ 				   const struct thermal_cooling_device_ops *ops)
  {
- 	return ERR_PTR(-ENODEV);
- }
 -- 
 2.43.0
 
