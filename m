@@ -1,417 +1,404 @@
-Return-Path: <linux-hwmon+bounces-13592-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13598-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LCUC74W8mljnwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13592-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 16:33:34 +0200
+	id cCVWFAcv8mlvogEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13598-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 18:17:11 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CE9495D31
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 16:33:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD4A497976
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 18:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42DA33117BE7
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 14:28:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C58F73042422
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 16:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CEC33AD88;
-	Wed, 29 Apr 2026 14:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABCA3815E8;
+	Wed, 29 Apr 2026 16:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1GtnQRO"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ma85PxT5";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Bhea/zy0"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7B73368AF;
-	Wed, 29 Apr 2026 14:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312AB3FF899
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777472906; cv=none; b=OXAeymgVV4efR2YndG6p663m2UMhDzT5GtqepeDvyN75/t44xMps7yUXPKQfL+7CAR3JOf2aO4L4zHeTvmU6PHWtC2StMzNpHh6+fOO3s4hg55Wzj56V3YSsSpXuohWWFuFpHxVkObmE+W0uIo2TZJTn2d3y/mGLkqrGbWcgj/A=
+	t=1777479290; cv=none; b=kDFMKun2p/jP5Pp7JgNnhlt1RF4KjBYAg3p+gP4Ol3J8XXVRyTVLet8ZYwJoSiuGAoA0y7l/VxiVR/scdLiclM65q9IRiF4ORrSSILDWxpR6S8DRhVCHiygjlIbTt1WLzEmmS0obBIAP9O/thY05aFIFFP1+LmTzftmaQc/mBII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777472906; c=relaxed/simple;
-	bh=q0OBolyO+np6isYYNrLETHSPsTrPm943iwcgVVM48t8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R777uqJlIPvdcrlHDvCV48GMkhASnKp5nI4lBuRJRply3EZXWc+FHcrtJVmmmgE7WTfslN96lSHITvh1X2+c/CUvsmlEaP6azuvZ9KYAvq+ATacoUKft6Bmbo40vWUfjCVlteM9FeS81l3CeXMAe1NVVSpMQAsMa4knWB5e9YjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I1GtnQRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EE8D1C2BCF5;
-	Wed, 29 Apr 2026 14:28:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777472906;
-	bh=q0OBolyO+np6isYYNrLETHSPsTrPm943iwcgVVM48t8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=I1GtnQRORTaHBe20eUiSWSasTN9KZOs3S0Z8KEXGV3uhJui0nHJva8x4W8LWtZ/TR
-	 HEAHSQjbJAUYmRey+sWr2RNbEW4bNkxLdI5lMieNm5ao/RS7gJQSx52KNri1CXEFGu
-	 XSeHqs1eBlOfkQm0bfSaKGAQp/KXlRBlfKHJPwLxWiXDGDUQASctHQ99OTbiNWjKP3
-	 KBhNE0LNr+iRtL7o8GGeejJw4hzBMZ69QZ1SPP63uE4LuKXKGuasa2v7rV8E5CVqE8
-	 NP3M74277yL3UKbhgLfTKfwLD18UbC0dJqwiYcP1HBgkwN+Vhv3Sb18Hr4a/JM25EX
-	 tqzZfFt70t9xQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2EFBFF8867;
-	Wed, 29 Apr 2026 14:28:25 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Wed, 29 Apr 2026 15:28:28 +0100
-Subject: [PATCH v11 3/3] gpio: gpio-ltc4283: Add support for the LTC4283
- Swap Controller
+	s=arc-20240116; t=1777479290; c=relaxed/simple;
+	bh=nMSPPfwRBbo8PMwanHsXp5mfP6ohvGo4qxHHhAAmESU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sLNfHn4S4yjXMeBMe7pDa8lv9uNYKEwU/FaKC6ZJ7O5uE0ILMOFeyBAgJmlG8kcZ5nUIdRUfM+E6MasGTNCrURcBdgUSMrHct0q+ZrtlOkRGpYwvW6wv0CbgiStHIjvpalQwgmM+biQC7ZyKBFOWskRVL0SzxjbF0zyr87foLGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ma85PxT5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Bhea/zy0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TF17OP901798
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=5XIEIU3Lp20hM7lvbKpbtA
+	gDJ68FndI6Gkohfoyi7KU=; b=ma85PxT5+wIWWCSm++8OI1ptpmnyx9/MBNwlSl
+	xvad51F0XZDClGUITaSCR1wFAv3fhTohdVa2hY3+3d1n4rUcYSe38uC2q7Vm0AFm
+	U34EQi5cS9kvRfcr6fOPaTxfH06vnrn/NxrYPzohLM99FyNScXliA436XDhXGH/d
+	UyvABOeNcZUWiY+agyM7lY0eRJXIFNtTHvoiLULnQkXs3zcnZeO9Gko9iL68NpoT
+	OsZ22UWAaSpS1BDnbjWC8/TLp5Drg+7JNc4hOKAAwC2NzC14jQb9dX0bSVxMod8O
+	AW0eTkE9aHnNxNs3fjzWuGylIo2u/7J4wTGo3/rOe/lkFllg==
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com [209.85.221.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dubq9jhyq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 16:14:40 +0000 (GMT)
+Received: by mail-vk1-f200.google.com with SMTP id 71dfb90a1353d-56f67ce97a7so8789982e0c.3
+        for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 09:14:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777479279; x=1778084079; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5XIEIU3Lp20hM7lvbKpbtAgDJ68FndI6Gkohfoyi7KU=;
+        b=Bhea/zy0HrLOm/uABGrXeZr2t4o674jRUHtNZe/bDHzspWf8OlDoRK7xNQG+f8ixpB
+         WO2JzgwTWJqHWJI+YOpybhsr4dZx9xaZEckAV4TJfiGKLeLtnfvodDkBSYFufC20EsyM
+         wasC2Tb6eG27PdyU+6YEY9MvBR8bCI4Vu36XtBjNzcM54HMJr0LtMS3/jhcw4tF/yOdw
+         TX0i3++wVuqUpjx7Fw7DZAvELqwkbbqwRLm5n5EiNgC8qNFcCgh9lMudGwMhZQFnIBGW
+         Ox+pjfWGLNQG5EhRqhcX9cxkrwH0w7NSZzXnCcpvyIpKXk9dPG9MGOOirOytCYzcpmhK
+         +C9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777479279; x=1778084079;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5XIEIU3Lp20hM7lvbKpbtAgDJ68FndI6Gkohfoyi7KU=;
+        b=lgy3lh+wN3kPpbEPQ5MuK5ISlIztSOE5KW9QthTILWvHksQGMvqrRJfa1kQrUjeGQP
+         zIf9Qgy5mgjGm5JdUl+60VVA66i2zfxZ/RbeU/6j7HdkBdTeY+jT/0+LotBAif7iEeSW
+         loNCElTUXJnuzuYJCjC+0Tt05zifOwwbRcrjHKQctrogOkqeGHEP6Q+MfSMW6QJxxb04
+         R6KrPAzfjLKTZVCi5KdKuS014XKA+TziqwDS/jO2RVYCGY+grXxAVzR7bzY1+264fiqF
+         7Nv2QUlLLM4VETsxXPhLgxFnJ8E1QoSyk2Mq7lcNQX2Tjy51rsyLLcSecViHsjCVt2Ys
+         RbBw==
+X-Forwarded-Encrypted: i=1; AFNElJ/WPgnS3ef2zian7y36Mfu1Xu1EHbVEye+ASSBtM5m6ZnEVUfJyv2SQjmV5T2wCla9nXsTTqswa+o4qQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTSk6q3If+js2eU9J2TtnbOWYzpLhISm7xLwtt+ePZjQ9Cc44H
+	R9PmzQSkfDcXyh9+xObpy9wyBFMnbXY09t2HypTDnVn+8OwJwdBrTkMJZ21HriaW4P95bBlqge/
+	3yGtgU/5E1i3d7P6F5Ohs5WuaYy8SKLzFLbn8tomdrVaeF84ZB8gezaIH9DVXj3fHCA==
+X-Gm-Gg: AeBDiesJNbEBDnAz2fkKj/TgmU34baqUAXBmh5pV8aIm/ULMRAxlVS/Ns5VYgfDE8O2
+	qVREf03EXcr7UF34FXEeck+4hdpqEq9ZlJn9f7zTP1W81YCOG4ac/TJfVEd/7eJ1QvDjHyLtQ2c
+	bDOeU8dtIO3ShTbxxM8FE/9Js9pSAqgbKnXrjNGN6+bKkNftz3vHLag7Btq9dBelpUlZt0SJa8x
+	B8xd1U8NSvjz6ZCzJgvkYVpjFrFbB2r3Lu+GT6eRhqTVxnMLVAoWjJwrhmxk2wN3oTJeIOuRrbk
+	ZRoMtms1QnmblyJxzXODyL8wl6iom3UcwbjsNVi4q6TB8+EWo1pwQg0a97v5pgP5tB519Th+TGH
+	1JIoL9GeXaKU2K0maiysSm4dZjjwsC2GmvLtuECWXwM2xBMZ90+kPd6+/XWii
+X-Received: by 2002:a05:6122:3d06:b0:56a:f979:a9d1 with SMTP id 71dfb90a1353d-573b34d89b4mr2330272e0c.1.1777479279038;
+        Wed, 29 Apr 2026 09:14:39 -0700 (PDT)
+X-Received: by 2002:a05:6122:3d06:b0:56a:f979:a9d1 with SMTP id 71dfb90a1353d-573b34d89b4mr2330226e0c.1.1777479278473;
+        Wed, 29 Apr 2026 09:14:38 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:ae20:597c:99b8:d161])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed659dsm2438525e9.2.2026.04.29.09.14.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 09:14:37 -0700 (PDT)
+From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+To: rafael@kernel.org, daniel.lezcano@kernel.org
+Cc: gaurav.kohli@oss.qualcomm.com, Zhang Rui <rui.zhang@intel.com>,
+        Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Russell King <linux+etnaviv@armlinux.org.uk>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Guenter Roeck <linux@roeck-us.net>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Benson Leung <bleung@chromium.org>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: [PATCH v3 00/11] Support cooling device with ID in the OF
+Date: Wed, 29 Apr 2026 18:14:13 +0200
+Message-ID: <20260429161430.3802970-1-daniel.lezcano@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260429-ltc4283-support-v11-3-27ccde619dad@analog.com>
-References: <20260429-ltc4283-support-v11-0-27ccde619dad@analog.com>
-In-Reply-To: <20260429-ltc4283-support-v11-0-27ccde619dad@analog.com>
-To: linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
- Bartosz Golaszewski <brgl@kernel.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777472958; l=8619;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=wO2eYhQ1QAyG4tDbVM3m77DgMlDdrHUHpO1jtVnuCnw=;
- b=XtMc9T9OSRSWXJq5kQrthTi1K+7K+j2T3uFNTc6bQsMUrhy0176+AwMwd67pqZqI8Rf6Yq94S
- IsOfGprvS1uB3n7euOGA8vNJOImIFebUohkWCXtlNPOm1GpBNCqitTu
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
-X-Rspamd-Queue-Id: B3CE9495D31
+X-Proofpoint-GUID: UXiUXJmV-hpVAKpuY7bccFz2ntJMQ_ZW
+X-Proofpoint-ORIG-GUID: UXiUXJmV-hpVAKpuY7bccFz2ntJMQ_ZW
+X-Authority-Analysis: v=2.4 cv=Wak8rUhX c=1 sm=1 tr=0 ts=69f22e70 cx=c_pps
+ a=wuOIiItHwq1biOnFUQQHKA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=maJSIIvfzRj4fPHbN6IA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=XD7yVLdPMpWraOa8Un9W:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE2MyBTYWx0ZWRfX97zEIPn4XHue
+ 54+HEWWPzhbY2njIySHGzBPtnDxzandwC3+uzWm0/dRBv2psGjxJ29LIA34ZXPa+MwcKDWnKYZc
+ DDQPpTf/nkfsaUvGABlFWEfCeUJxtjp4lLb1B4OChB7ofjo94XQ/2wQ60s9qExPkaw+6n9gf/ex
+ JHL+PHtBnhfDrjXpAkOwoZ2H3Ww4jSnzVRBWtC1Q/aRVVXls9A63Ci6i4ZPnDSGYAL6Zmy0rT1S
+ azzaum5wWBGovm75XUyMY9f8nOt1AYsV/7He5dMBVot/gm7hUJ9jzQQKhs6A5xMrY6mQlaUs8fS
+ gkFqN6PFz2wEa/07fqCQctWrun9txORAPe6MG5GAUKxwcJFIq9Pd0OJeK92+ZryFiZ/qnh6mgHv
+ HaafGQRhKOPf5zC99p7c8mIrfNPTbH4dv5IW7OKOOFswRZSwTNjwu5IOaEVTiINPueNdM6+yFuO
+ Mwy/3p/kHwGgkGvexKQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-29_01,2026-04-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0 clxscore=1015
+ bulkscore=0 impostorscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290163
+X-Rspamd-Queue-Id: EAD4A497976
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13592-lists,linux-hwmon=lfdr.de,nuno.sa.analog.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,intel.com,arm.com,kernel.org,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCPT_COUNT_TWELVE(0.00)[37];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[nuno.sa@analog.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13598-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,analog.com:email,analog.com:replyto,analog.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt,etnaviv];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-From: Nuno Sá <nuno.sa@analog.com>
+Ultra short description. Dt Cooling device description:
+      Old: <&mycdev min max>
+      New: <&mycdev min max> OR/AND <&mycdev id min max>
 
-The LTC4283 device has up to 8 pins that can be configured as GPIOs.
+Depends on series:
+	https://lore.kernel.org/all/20260424160019.41710-1-daniel.lezcano@oss.qualcomm.com/
 
-Note that PGIO pins are not set as GPIOs by default so if they are
-configured to be used as GPIOs we need to make sure to initialize them
-to a sane default. They are set as inputs by default.
+A cooling device can be a single cooling device or a cooling device
+controller with multiple cooling devices attached to it.
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+The thermal framework builds a connection between a cooling device and
+a thermal zone when there is a trip point to be mitigated by the
+cooling device. In the Linux kernel thermal semantic, the action of
+connecting the cooling device and the thermal zone is called a
+binding.
+
+The description of the aforementioned connection depends on the
+firmware definition and in our case it is through the device tree. The
+cooling map describes this connection.
+
+How is it done ?
+
+For a single cooling device, the DT describes:
+
+ * A cooling device:
+
+	mycooling_device {
+		...
+	};
+
+ * A cooling map in a thermal zone
+
+	mythermal_zone {
+	...
+      		cooling-maps {
+			map0 {
+				...
+				cooling-device = <&mycooling_device min max>;
+				...
+		   	};
+      		}
+      	...
+   	};
+
+For a cooling device controller with multiple cooling devices
+attached, the DT describes:
+
+ * A cooling device controller:
+
+	mycooling_device_ctrl {
+		mycooling_device1 {
+			...
+		};
+
+		mycooling_device2 {
+			...
+		};
+
+		...
+
+		mycooling_deviceN {
+			...
+		};
+   };
+
+ * A cooling map in a thermal zone
+
+	mythermal_zone {
+	...
+      		cooling-maps {
+			map0 {
+				...
+				cooling-device = <&mycooling_device1 min max>;
+				...
+		   	};
+      		}
+      	...
+   	};
+
+When the cooling device "mycooling_device" is registered, then the
+binding function will browse all the cooling maps and matches the node
+device pointer to do the association (the pĥandle in the cooling map
+vs the cooling device node).
+
+That is how the connection between the cooling device and the thermal
+zone is done.
+
+DT maintainers consider the above description with child nodes is
+incorrect if a child node doesn't have its own bindings as explained
+in the documentation [1].
+
+Gaurav Kohli posted a series to support the QMI TMD (Qualcomm
+Messaging Interface based Thermal Mitigation Devices) [2]. This device
+is a dedicated, centralized cooling device controller managing a set
+of cooling devices.
+
+Because of the above restrictions with child nodes there is no DT
+bindings allowing to do the connection between the cooling device
+inside the cooling device controller and a thermal zone.
+
+A QMI TMD is not a standalone cooling device neither a multiple
+cooling devices with their own DT description.
+
+For this reason, the proposed changes with child nodes has been
+rejected [3].
+
+As a solution, it has been proposed to fold all these child nodes into
+an array and add an id in the cooling maps to identify the cooling
+device entry in the controller node [4].
+
+Given the thermal zone has the same mechanism [5], that is a phandle
+to a sensor node and an sensor specifier. The proposed approach makes
+sense as it is consistent with the thermal zone description.
+
+This series provides a cleanup around the usage of the OF code which
+is interleaved with non-OF code. The OF and the non-OF code are
+separated and remain self-encapsulated.
+
+Then the function to register a cooling device is renamed to reflect
+the legacy usage and a new function is introduced with the id
+parameter.
+
+Finally, the DT bindings is updated with the new format and the
+thermal OF is changed to handle the new DT bindings.
+
+Given the trivial changes impacting the files outside of the thermal
+framework, this series is designed to have all changes going through
+the thermal tree.
+
+Thanks!
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/writing-bindings.rst
+[2] https://lore.kernel.org/all/20260127155722.2797783-1-gaurav.kohli@oss.qualcomm.com/
+[3] https://lore.kernel.org/all/546faeda-d896-403c-a449-5c9b0cd7159e@kernel.org/
+[4] https://lore.kernel.org/all/74f59ef0-ead7-483f-a80e-a3da2f6ebcdb@oss.qualcomm.com/
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/thermal/thermal-zones.yaml#n99
+
 ---
- MAINTAINERS                 |   2 +
- drivers/gpio/Kconfig        |  15 +++
- drivers/gpio/Makefile       |   1 +
- drivers/gpio/gpio-ltc4283.c | 218 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 236 insertions(+)
+Changelog:
+ - V3
+   - Reordered and reworked the patches to be git bisect safe
+   - Reworked devm usage by using a more adequate function doing the
+     same as the group of calls to devm*
+   - Pass an init callback instead of moving
+     thermal_cooling_device_init_complete() out of the function and
+     calling it in different places
+   - Sent separetely changes to the tegra soctherm driver
+ - V2
+   - Added stubs for OF functions in order to prevent to break the git
+     bisectability compilation
+   - Added missing call to thermal_cooling_device_init_complete() in
+     devm_thermal_of_cooling_device_register()
+   - Fixed assymetry in devm_ calls for the tegra/soctherm() driver
+   - Fixed kernel documentation for API changes
+   - Added missing static inline for a API stub
+   - Hardened the test with two or three arguments in the cooling spec
+   - Narrowed const: 2 strict in pwm-fan
+---
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a63833b6fe8b..0947cdbac5e5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15163,9 +15163,11 @@ F:	drivers/hwmon/ltc4282.c
- 
- LTC4283 HARDWARE MONITOR AND GPIO DRIVER
- M:	Nuno Sá <nuno.sa@analog.com>
-+L:	linux-gpio@vger.kernel.org
- L:	linux-hwmon@vger.kernel.org
- S:	Supported
- F:	Documentation/devicetree/bindings/hwmon/adi,ltc4283.yaml
-+F:	drivers/gpio/gpio-ltc4283.c
- F:	drivers/hwmon/ltc4283.c
- 
- LTC4286 HARDWARE MONITOR DRIVER
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index b45fb799e36c..ba2621024598 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1758,6 +1758,21 @@ config GPIO_WM8994
- 
- endmenu
- 
-+menu "Auxiliary Bus GPIO drivers"
-+	depends on AUXILIARY_BUS
-+
-+config GPIO_LTC4283
-+	tristate "Analog Devices LTC4283 GPIO support"
-+	depends on SENSORS_LTC4283
-+	help
-+	  If you say yes here you want the GPIO function available in Analog
-+	  Devices LTC4283 Negative Voltage Hot Swap Controller.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called gpio-ltc4283.
-+
-+endmenu
-+
- menu "PCI GPIO expanders"
- 	depends on PCI
- 
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index c05f7d795c43..ff37aca5029c 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -102,6 +102,7 @@ obj-$(CONFIG_GPIO_LP873X)		+= gpio-lp873x.o
- obj-$(CONFIG_GPIO_LP87565)		+= gpio-lp87565.o
- obj-$(CONFIG_GPIO_LPC18XX)		+= gpio-lpc18xx.o
- obj-$(CONFIG_GPIO_LPC32XX)		+= gpio-lpc32xx.o
-+obj-$(CONFIG_GPIO_LTC4283)		+= gpio-ltc4283.o
- obj-$(CONFIG_GPIO_MACSMC)		+= gpio-macsmc.o
- obj-$(CONFIG_GPIO_MADERA)		+= gpio-madera.o
- obj-$(CONFIG_GPIO_MAX3191X)		+= gpio-max3191x.o
-diff --git a/drivers/gpio/gpio-ltc4283.c b/drivers/gpio/gpio-ltc4283.c
-new file mode 100644
-index 000000000000..6609443c5d62
---- /dev/null
-+++ b/drivers/gpio/gpio-ltc4283.c
-@@ -0,0 +1,218 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices LTC4283 GPIO driver
-+ *
-+ * Copyright 2025 Analog Devices Inc.
-+ */
-+
-+#include <linux/auxiliary_bus.h>
-+#include <linux/bitfield.h>
-+#include <linux/bitmap.h>
-+#include <linux/bits.h>
-+#include <linux/device.h>
-+#include <linux/gpio/driver.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#define LTC4283_PINS_MAX			8
-+#define LTC4283_PGIOX_START_NR			4
-+#define LTC4283_INPUT_STATUS			0x02
-+#define LTC4283_PGIO_CONFIG			0x10
-+#define   LTC4283_PGIO_CFG_MASK(pin) \
-+	GENMASK(((pin) - LTC4283_PGIOX_START_NR) * 2 + 1, (((pin) - LTC4283_PGIOX_START_NR) * 2))
-+#define LTC4283_PGIO_CONFIG_2			0x11
-+
-+#define LTC4283_ADIO_CONFIG			0x12
-+/* starts at bit 4 */
-+#define   LTC4283_ADIOX_CONFIG_MASK(pin)	BIT((pin) + 4)
-+#define LTC4283_PGIO_DIR_IN			3
-+#define LTC4283_PGIO_DIR_OUT			2
-+
-+struct ltc4283_gpio {
-+	struct gpio_chip gpio_chip;
-+	struct regmap *regmap;
-+};
-+
-+static int ltc4283_pgio_get_direction(const struct ltc4283_gpio *st, unsigned int off)
-+{
-+	unsigned int val;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, LTC4283_PGIO_CONFIG, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = field_get(LTC4283_PGIO_CFG_MASK(off), val);
-+	if (val == LTC4283_PGIO_DIR_IN)
-+		return GPIO_LINE_DIRECTION_IN;
-+
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int ltc4283_gpio_get_direction(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+	unsigned int val;
-+	int ret;
-+
-+	if (off >= LTC4283_PGIOX_START_NR)
-+		return ltc4283_pgio_get_direction(st, off);
-+
-+	ret = regmap_read(st->regmap, LTC4283_ADIO_CONFIG, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val & LTC4283_ADIOX_CONFIG_MASK(off))
-+		return GPIO_LINE_DIRECTION_IN;
-+
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int ltc4283_gpio_direction_set(const struct ltc4283_gpio *st,
-+				      unsigned int off, bool input)
-+{
-+	if (off >= LTC4283_PGIOX_START_NR) {
-+		unsigned int val = LTC4283_PGIO_DIR_OUT;
-+
-+		if (input)
-+			val = LTC4283_PGIO_DIR_IN;
-+
-+		val = field_prep(LTC4283_PGIO_CFG_MASK(off), val);
-+		return regmap_update_bits(st->regmap, LTC4283_PGIO_CONFIG,
-+					  LTC4283_PGIO_CFG_MASK(off), val);
-+	}
-+
-+	return regmap_update_bits(st->regmap, LTC4283_ADIO_CONFIG,
-+				  LTC4283_ADIOX_CONFIG_MASK(off),
-+				  field_prep(LTC4283_ADIOX_CONFIG_MASK(off), input));
-+}
-+
-+static int __ltc4283_gpio_set_value(const struct ltc4283_gpio *st,
-+				    unsigned int off, int val)
-+{
-+	u32 reg = off < LTC4283_PGIOX_START_NR ? LTC4283_ADIO_CONFIG : LTC4283_PGIO_CONFIG_2;
-+
-+	return regmap_update_bits(st->regmap, reg, BIT(off),
-+				  field_prep(BIT(off), !!val));
-+}
-+
-+static int ltc4283_gpio_direction_input(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+
-+	return ltc4283_gpio_direction_set(st, off, true);
-+}
-+
-+static int ltc4283_gpio_direction_output(struct gpio_chip *gc, unsigned int off, int val)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+	int ret;
-+
-+	ret = ltc4283_gpio_direction_set(st, off, false);
-+	if (ret)
-+		return ret;
-+
-+	return __ltc4283_gpio_set_value(st, off, val);
-+}
-+
-+static int ltc4283_gpio_get_value(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+	unsigned int val, reg;
-+	int ret, dir;
-+
-+	dir = ltc4283_gpio_get_direction(gc, off);
-+	if (dir < 0)
-+		return dir;
-+
-+	if (dir == GPIO_LINE_DIRECTION_IN) {
-+		ret = regmap_read(st->regmap, LTC4283_INPUT_STATUS, &val);
-+		if (ret)
-+			return ret;
-+
-+		/* ADIO1 is at bit 3. */
-+		if (off < LTC4283_PGIOX_START_NR)
-+			return !!(val & BIT(3 - off));
-+
-+		/* PGIO1 is at bit 7. */
-+		return !!(val & BIT(7 - (off - LTC4283_PGIOX_START_NR)));
-+	}
-+
-+	if (off < LTC4283_PGIOX_START_NR)
-+		reg = LTC4283_ADIO_CONFIG;
-+	else
-+		reg = LTC4283_PGIO_CONFIG_2;
-+
-+	ret = regmap_read(st->regmap, reg, &val);
-+	if (ret)
-+		return ret;
-+
-+	return !!(val & BIT(off));
-+}
-+
-+static int ltc4283_gpio_set_value(struct gpio_chip *gc, unsigned int off, int val)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+
-+	return __ltc4283_gpio_set_value(st, off, val);
-+}
-+
-+static int ltc4283_init_valid_mask(struct gpio_chip *gc, unsigned long *valid_mask,
-+				   unsigned int ngpios)
-+{
-+	unsigned long *mask = dev_get_platdata(gc->parent);
-+
-+	bitmap_copy(valid_mask, mask, ngpios);
-+	return 0;
-+}
-+
-+static int ltc4283_gpio_probe(struct auxiliary_device *adev,
-+			      const struct auxiliary_device_id *id)
-+{
-+	struct device *dev = &adev->dev;
-+	struct ltc4283_gpio *st;
-+	struct gpio_chip *gc;
-+
-+	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
-+	if (!st)
-+		return -ENOMEM;
-+
-+	st->regmap = dev_get_regmap(dev->parent, NULL);
-+	if (!st->regmap)
-+		return dev_err_probe(dev, -ENODEV,
-+				     "Failed to get regmap\n");
-+
-+	gc = &st->gpio_chip;
-+	gc->parent = dev;
-+	gc->get_direction = ltc4283_gpio_get_direction;
-+	gc->direction_input = ltc4283_gpio_direction_input;
-+	gc->direction_output = ltc4283_gpio_direction_output;
-+	gc->get = ltc4283_gpio_get_value;
-+	gc->set = ltc4283_gpio_set_value;
-+	gc->init_valid_mask = ltc4283_init_valid_mask;
-+	gc->can_sleep = true;
-+
-+	gc->base = -1;
-+	gc->ngpio = LTC4283_PINS_MAX;
-+	gc->label = adev->name;
-+	gc->owner = THIS_MODULE;
-+
-+	return devm_gpiochip_add_data(dev, &st->gpio_chip, st);
-+}
-+
-+static const struct auxiliary_device_id ltc4283_aux_id_table[] = {
-+	{ "ltc4283.gpio" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(auxiliary, ltc4283_aux_id_table);
-+
-+static struct auxiliary_driver ltc4283_gpio_driver = {
-+	.probe = ltc4283_gpio_probe,
-+	.id_table = ltc4283_aux_id_table,
-+};
-+module_auxiliary_driver(ltc4283_gpio_driver);
-+
-+MODULE_AUTHOR("Nuno Sá <nuno.sa@analog.com>");
-+MODULE_DESCRIPTION("GPIO LTC4283 Driver");
-+MODULE_LICENSE("GPL");
+
+Daniel Lezcano (10):
+  thermal/core: Use devm_add_action_or_reset() when registering a
+    cooling device
+  Add a non-OF registering funciton
+  thermal/of: Move the node pointer assignation in the OF code file
+  hwmon:: Use non-OF thermal cooling device register function
+  thermal/core: Put of_node field cooling device structure under Kconfig
+    option
+  thermal/of: Move OF code where it belongs to
+  thermal/of: Rename the devm_thermal_of_cooling_device_register()
+    function
+  thermal/of: Introduce cooling device of_index
+  thermal/of: Pass the of_index and add a function to register with an
+    index
+  thermal/of: Process cooling device index in cooling-spec
+
+Gaurav Kohli (1):
+  dt-bindings: thermal: cooling-devices: Update support for 3 cells
+    cooling device
+
+ .../devicetree/bindings/hwmon/pwm-fan.yaml    |   3 +-
+ .../thermal/thermal-cooling-devices.yaml      |   8 +-
+ .../bindings/thermal/thermal-zones.yaml       |   3 +-
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c         |   5 +-
+ drivers/hwmon/amc6821.c                       |   2 +-
+ drivers/hwmon/aspeed-pwm-tacho.c              |   5 +-
+ drivers/hwmon/cros_ec_hwmon.c                 |   4 +-
+ drivers/hwmon/dell-smm-hwmon.c                |   4 +-
+ drivers/hwmon/emc2305.c                       |   6 +-
+ drivers/hwmon/gpio-fan.c                      |   6 +-
+ drivers/hwmon/max6650.c                       |   6 +-
+ drivers/hwmon/mlxreg-fan.c                    |   4 +-
+ drivers/hwmon/npcm750-pwm-fan.c               |   6 +-
+ drivers/hwmon/pwm-fan.c                       |   5 +-
+ drivers/hwmon/qnap-mcu-hwmon.c                |   6 +-
+ drivers/hwmon/tc654.c                         |   5 +-
+ drivers/memory/tegra/tegra210-emc-core.c      |   4 +-
+ drivers/soc/qcom/qcom_aoss.c                  |   2 +-
+ drivers/thermal/cpufreq_cooling.c             |   2 +-
+ drivers/thermal/cpuidle_cooling.c             |   2 +-
+ drivers/thermal/devfreq_cooling.c             |   2 +-
+ drivers/thermal/khadas_mcu_fan.c              |   7 +-
+ drivers/thermal/tegra/soctherm.c              |   6 +-
+ drivers/thermal/thermal_core.c                | 106 ++++--------
+ drivers/thermal/thermal_core.h                |   6 +
+ drivers/thermal/thermal_of.c                  | 157 +++++++++++++++++-
+ include/linux/thermal.h                       |  71 ++++++--
+ 27 files changed, 303 insertions(+), 140 deletions(-)
 
 -- 
-2.54.0
-
+2.43.0
 
 
