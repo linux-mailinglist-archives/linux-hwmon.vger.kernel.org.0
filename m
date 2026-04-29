@@ -1,56 +1,56 @@
-Return-Path: <linux-hwmon+bounces-13578-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13576-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uI/SA3fS8WnPkgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13578-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:42:15 +0200
+	id UEu4OCXV8Wm3kgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13576-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:53:41 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B74F492271
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:42:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D1B4925B7
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B58453019123
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 09:42:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 92091301DA68
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 09:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696383B27CA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600143A960F;
 	Wed, 29 Apr 2026 09:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmMxhhT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXXQsdYO"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C623793DB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A9B1DF736;
 	Wed, 29 Apr 2026 09:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777455726; cv=none; b=Z+tZwq1jhhwwBU6UCkMQN/N2EVHbrqNR2HP+8U1IFamjWtIeALcI9+YTjAG/uZQRsmUCSNBI3KxnwcLkA66TcGXxBy1VEZ8KjQXBVbeP1/zLj4aD1IbtNwlu9SaDNuhpsHeFib+AsGr2ntkgC6fU6JlJ7Tv4ZvSYvynR8F+f6Js=
+	t=1777455726; cv=none; b=p7JsUrEAznHN/O61oD8yZZb7zVGaN7+pRKzEgjHmw1fv5SBrYsPp8rUt6ryhwvtSOGbAs8VeklKoCPpoXBwaIDKmFEIFhCAbsFzM3qwN6GvtajeaUV/bIXYe92u7p9Jye1IrvD33z2xSeDQQG8aofIlBqXVWTeLxL0L99WDRV+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777455726; c=relaxed/simple;
-	bh=9mATjHy/p92zdocodNNWbLZIIdHAStQKLxfvQ0r+77c=;
+	bh=S+G5f1v55KF/VQLbCDiNNSR5kkKkvNfM7BwvHCeUeBg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QGhjy1lOs/CD9XSeGQvudFROKjiofCe3fjUul3XLFvG59T3hzlDRORor4TR27JYh2AyYKYbz4a409WmreYzHA+1MnIv5X4TcVoDygx+m4T5xyTVF+EbCMCYkrD3aM4r+eLsioxG26PtwgvGuTs2qEUm1sf4zcv4ayER1mr6+VuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmMxhhT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D3634C2BCC4;
+	 In-Reply-To:To:Cc; b=FyhikDsAw8AX4mV23leLdbeUlcXKuMNW6+KnfOKYaSbpRvE9XUn/cI5L24oqXOffwHX3wuXaKl022iesmqa5is3cqf65qRl2vdVhUK1KNwFrZfSg/HfaoEinmTKUlkmMybL3E49yf7zxu7zk8vb3Ryec7nDkRDy4fcijxzMqvtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXXQsdYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E1160C2BCB3;
 	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777455725;
-	bh=9mATjHy/p92zdocodNNWbLZIIdHAStQKLxfvQ0r+77c=;
+	s=k20201202; t=1777455726;
+	bh=S+G5f1v55KF/VQLbCDiNNSR5kkKkvNfM7BwvHCeUeBg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=TmMxhhT38l/2E5hjRN5zAVx/VF93Yt74UxHpbf6lRRhL8FmJkClc+BfWafBK+OBoI
-	 0H46IrMRkkyItpaZLyqHDhuWEf1Sv0uu1CXUg57h2LxtMUirVyIu+SXj8Vo7Xl9aO1
-	 JDb/pR/8Zm98dioy+A1G6Mu6qoFnkt62qrIEy901usT38kVN32JKL5cOmVzwgU23YQ
-	 mia7Fx1iAwPSjyu1dlO1meJybJOODuYtARpnEPRiRk/V6WVmRC3ivVuJQT+ShD3sTN
-	 hvDcDIJB0RIEsRVz7CQdfm9/63MbN9GNJ7+XJhQILiaAbysYl4uEyRb9b9K6ksn+WE
-	 rZfW0JX6WVQvQ==
+	b=HXXQsdYOn3+u6oLbU1f6H0UcN0dlMOYU9IwNrGlAmh7hYPA722XQ5SVg/dAJqb7dt
+	 zu7Y/rtHTcKHnVGDO4TaUDmn/ae601+Aej3J9LNpKjCd8CxBQ+5ltBLpas9jy3oerI
+	 qhEjsYxh1bHwtOy8/DoE8KJUUdt+y+9Q7hhMqbKH0knfc24TofczEEMsa+rzsa8kWB
+	 pLJ8oeNXjuWedxGiNOHSA45DUvKAVet4kqJPbSEjOciWJLqvm2ary3aFQi5xRCKbHn
+	 qso2IXIrG8KLaNDg5VWBuFq689ygfsqIcDXdXgmfzsM8MSUS3zhNFE7rJ64ubi36Pc
+	 q6xVfLWGrODpQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2754FF8875;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D482AFF8867;
 	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
 From: Colin Huang via B4 Relay <devnull+u8813345.gmail.com@kernel.org>
-Date: Wed, 29 Apr 2026 17:41:58 +0800
-Subject: [PATCH 1/3] dt-bindings: hwmon: pmbus: add Delta E50SN12051
- binding
+Date: Wed, 29 Apr 2026 17:41:59 +0800
+Subject: [PATCH 2/3] Documentation/hwmon: add Delta E50SN12051
+ documentation
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260429-add-e50sn12051-v1-1-c101e6c80bbb@gmail.com>
+Message-Id: <20260429-add-e50sn12051-v1-2-c101e6c80bbb@gmail.com>
 References: <20260429-add-e50sn12051-v1-0-c101e6c80bbb@gmail.com>
 In-Reply-To: <20260429-add-e50sn12051-v1-0-c101e6c80bbb@gmail.com>
 To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
@@ -70,18 +70,18 @@ Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  Colin Huang <colin.huang2@amd.com>, Colin Huang <u8813345@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455724; l=1513;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455724; l=3926;
  i=u8813345@gmail.com; s=20260202; h=from:subject:message-id;
- bh=4ai3gQorriR95uJn5LyCKNAUfjhgHd9lSkC+s7TUrI8=;
- b=a221JMOGHN2o9wbB6pOEIlq4J//kGnqL99ROnMmLVkYapRPebeu8B5/gLt0jB3dJyj2OVUXZJ
- 7QYkvSSrVMVA4OlYnv8JNf/p0vdGTO3wzfFuzrW6NUHSYia97vwZeyf
+ bh=fjIHEdGdFgCZriZJJHZn9TW0wcDHjeFCHvbUS0lc100=;
+ b=OQYAtUS5gceSbMFz9dZPyD2rf4Qm0AflH+UO2NrCetAs6F6sEafEl25322aXmtL3nAJdcfcn5
+ NgmOVNwn0XuBDGS8Ksi5B0N+F+YdlZ/TzBFRut/b25qai0q2ovsvhJW
 X-Developer-Key: i=u8813345@gmail.com; a=ed25519;
  pk=Zlg0WqpCw4qbswOqamTBTXIchwR/3SnYZpy7rjaGMdQ=
 X-Endpoint-Received: by B4 Relay for u8813345@gmail.com/20260202 with
  auth_id=761
 X-Original-From: Colin Huang <u8813345@gmail.com>
 Reply-To: u8813345@gmail.com
-X-Rspamd-Queue-Id: 9B74F492271
+X-Rspamd-Queue-Id: 17D1B4925B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.34 / 15.00];
@@ -89,90 +89,146 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13578-lists,linux-hwmon=lfdr.de,u8813345.gmail.com];
+	TAGGED_FROM(0.00)[bounces-13576-lists,linux-hwmon=lfdr.de,u8813345.gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	HAS_REPLYTO(0.00)[u8813345@gmail.com];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	DBL_PROHIBIT(0.00)[0.0.0.40:email];
+	NEURAL_HAM(-0.00)[-0.898];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.965];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,devicetree.org:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	HAS_REPLYTO(0.00)[u8813345@gmail.com];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 From: Colin Huang <u8813345@gmail.com>
 
-Add devicetree binding documentation for the Delta E50SN12051
-PMBus-compliant device.
+Document the hardware monitoring support for the Delta E50SN12051
+device.
+
+The documentation describes the supported sensors exposed via the
+hwmon subsystem, including voltage, current, and temperature measurements.
 
 Signed-off-by: Colin Huang <u8813345@gmail.com>
 ---
- .../bindings/hwmon/pmbus/delta,e50sn12051.yaml     | 40 ++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ Documentation/hwmon/e50sn12051.rst | 81 ++++++++++++++++++++++++++++++++++++++
+ Documentation/hwmon/index.rst      |  1 +
+ 2 files changed, 82 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/delta,e50sn12051.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/delta,e50sn12051.yaml
+diff --git a/Documentation/hwmon/e50sn12051.rst b/Documentation/hwmon/e50sn12051.rst
 new file mode 100644
-index 000000000000..362cbbf10bfe
+index 000000000000..cbbfa7895d82
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/hwmon/pmbus/delta,e50sn12051.yaml
-@@ -0,0 +1,40 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+---
-+$id: http://devicetree.org/schemas/hwmon/pmbus/delta,e50sn12051.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/hwmon/e50sn12051.rst
+@@ -0,0 +1,81 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
 +
-+title: Delta E50SN12051 PMBus Sensor
++Kernel driver e50sn12051
++========================
 +
-+maintainers:
-+  - Kevin Chang <kevin.chang2@amd.com>
++Supported chips:
 +
-+description: |
-+  This binding describes the Delta E50SN12051 PMBus sensor.
-+  The driver supports reading voltage, current, and temperature
-+  using the PMBus interface.
++  * Delta E50SN12051
 +
-+properties:
-+  compatible:
-+    const: delta,e50sn12051
++    Prefix: 'e50sn12051'
 +
-+  reg:
-+    maxItems: 1
-+    description: I2C bus address of the PMBus device
++    Addresses scanned: -
 +
-+required:
-+  - compatible
-+  - reg
++    Datasheet:
 +
-+additionalProperties: false
++      Provided by Delta upon request and NDA
 +
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++Description
++-----------
 +
-+        e50sn12051@40 {
-+            compatible = "delta,e50sn12051";
-+            reg = <0x40>;
-+        };
-+    };
++E50SN12051 is a 600W non-isolated 1/8th brick DC-DC power module.
++
++This driver supports the E50SN12051 PMBus compliant monitor device.
++
++The device provides measurements for:
++
++* Input voltage
++* Output current
++* Output voltage
++* Temperature
++
++The driver is based on the PMBus core and exposes standard hwmon
++sysfs attributes.
++
++Sysfs attributes
++----------------
++
++======================= =======================================================
++curr1_label             "iout1"
++curr1_crit              Critical maximum current.
++                        From IOUT_OC_FAULT_LIMIT register.
++curr1_crit_alarm        Current critical high alarm.
++                        From IOUT_OC_FAULT status.
++curr1_input             Measured current.
++                        From READ_IOUT register.
++curr1_max               Maximum current.
++                        From IOUT_OC_WARN_LIMIT register.
++curr1_max_alarm         Current high alarm.
++                        From IOUT_OC_WARN_LIMIT status.
++
++in1_label               "vin"
++in1_alarm               Input voltage alarm.
++in1_input               Measured voltage.
++                        From READ_VIN register.
++
++in2_label               "vout1"
++in2_crit                Critical maximum voltage.
++                        From VOUT_OV_FAULT_LIMIT register.
++in2_crit_alarm          Voltage critical high alarm.
++                        From VOLTAGE_OV_FAULT status.
++in2_input               Measured voltage.
++                        From READ_VOUT register.
++in2_max                 Maximum voltage.
++                        From VOUT_OV_WARN_LIMIT register.
++in2_max_alarm           Voltage high alarm.
++                        From VOLTAGE_OV_WARNING status.
++
++temp1_crit              Critical high temperature.
++                        From OT_FAULT_LIMIT register.
++temp1_crit_alarm        Module temperature critical high alarm.
++                        Set by comparing READ_TEMPERATURE_1 with OT_FAULT_LIMIT
++                        if TEMP_OT_FAULT status is set.
++temp1_input             Measured module's hot spot temperature.
++                        From READ_TEMPERATURE_1 register.
++temp1_max               Maximum temperature.
++                        From OT_WARN_LIMIT register.
++temp1_max_alarm         Module temperature high alarm.
++                        Set by comparing READ_TEMPERATURE_1 with OT_WARN_LIMIT if
++                        TEMP_OT_WARNING status is set.
++======================= =======================================================
++
+diff --git a/Documentation/hwmon/index.rst b/Documentation/hwmon/index.rst
+index 8b655e5d6b68..ba08655fc496 100644
+--- a/Documentation/hwmon/index.rst
++++ b/Documentation/hwmon/index.rst
+@@ -68,6 +68,7 @@ Hardware Monitoring Kernel Drivers
+    drivetemp
+    ds1621
+    ds620
++   e50sn12051
+    emc1403
+    emc2103
+    emc2305
 
 -- 
 2.34.1
