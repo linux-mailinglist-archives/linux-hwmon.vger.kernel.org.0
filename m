@@ -1,233 +1,160 @@
-Return-Path: <linux-hwmon+bounces-13575-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13579-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OxNBZ/S8Wm3kgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13575-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:42:55 +0200
+	id qBGzFePW8WlNkwEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13579-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 12:01:07 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974974922B0
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:42:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A1B492805
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 12:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F267A300230A
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 09:42:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2C3D3010BB8
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 09:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F48D3A783E;
-	Wed, 29 Apr 2026 09:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C42E3B5304;
+	Wed, 29 Apr 2026 09:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZokkeA5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ME5pV8Vh"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B622D2397;
-	Wed, 29 Apr 2026 09:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19A933B97A
+	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 09:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777455726; cv=none; b=rQ9/sk0mUF1RIds2fWCBW3VsDwajghr1k9dnV8ywRf7PRn/UYb33+v4c15xo3hM5TvBfSoanmXKV6oO0p1NesWyr0ci4FTrTFeQkZ/W6YnwHPpNtmOMq8YGbj6N0VZhwGb0WUdk6PrDxP3BIB1+8JVeXW9uHDMdq1XtRnI48a4E=
+	t=1777456617; cv=none; b=ovihyOBDfg0j/NafG77M+ADLMkuQAmJHbowPjKoJqoRbkh5wsN+MjgMdRt1ziB1eU/jr6g5hNVf/kqD3N/kjSC59LVP6bH5kIvtA+V+K1G4kjz1pxXYRNb9puhPpcflg/s0Hr+lsWQM9sPRbhz0wfJtNtjTt9866eWjCKjQxN9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777455726; c=relaxed/simple;
-	bh=T/qLh2DupgIrsjSNqn3yKpnc1y1Jix5B8y23UGV1XfI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dp7MQterYOfYpS4hNhhiYqyz51K9Yk+xEgLyr6wVRX2XCvGCRkYrMi0O5153I1Zk9Mz84Gd0PNtsYvqcTr4tp3Ru6d4IhRY0H2+x329RdBv/na3YVAxJlUmxjoxfmXrmPlgMFSo3b6VFftO9CPl0l+jTALBLPc0pBASiVOJgSWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZokkeA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EE737C2BCF4;
-	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
+	s=arc-20240116; t=1777456617; c=relaxed/simple;
+	bh=jFxgogTN7ec8FUK/+pP1R4sVZ1Bikjnnpb7UN3czJII=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cwVGWnkpi7VV1z6UMvrIRsOddAa6S2FEyIqHf4r0S3e+niw5jhblMo42johNDciWqnBhZQBIa7r20WTuayXMvojB/gjhW+CtUg+PxhuhiIHAT9zMvPLrRQrbrGgd9a9de5Zki6Nua7mp6FQkJ4tfds5wBB2HBWkFVKVj7iGJvE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ME5pV8Vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2664FC19425;
+	Wed, 29 Apr 2026 09:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777455726;
-	bh=T/qLh2DupgIrsjSNqn3yKpnc1y1Jix5B8y23UGV1XfI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RZokkeA5JXlISB6vdc25hSCLHlN6n4Juo5ieY0H3SI7uZPmW7K7nDzc1jdJoAIAVF
-	 th1dnzxuUJEHPjt6yN7i52TPMeg1Gjc08NC9OIRE754yCdc/jmHp7Lg0ji0uoN8gPv
-	 VzsfJjfsRA5MPDMuMKHliTPDdAZ08C5vS3Ig/d/c1qpZINgbS4sBFVicfcWBP7urIt
-	 iVvCC8SWtjLpTjvmljKy70G7A3bkvFl5HALyXD2VLqE9kv2SC58YImH2XRiat7Hz0f
-	 tgFcLVC3NL5QYZVTLnEfgP3iG5goHlCRvHJa5kmykf2PJzA3WNiykoMzLnwVl7zdpN
-	 ti/ZRO8U7ZP/A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E56B0CCFA13;
-	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
-From: Colin Huang via B4 Relay <devnull+u8813345.gmail.com@kernel.org>
-Date: Wed, 29 Apr 2026 17:42:00 +0800
-Subject: [PATCH 3/3] hwmon: (pmbus) add support for Delta E50SN12051
+	s=k20201202; t=1777456617;
+	bh=jFxgogTN7ec8FUK/+pP1R4sVZ1Bikjnnpb7UN3czJII=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=ME5pV8Vh5HNLq5emU43qNBRi0dTdw+rOt3ZQZZicVPpVgqHaJEyExAWIDyQ6PYM8s
+	 xE6zKtRkxcNc8cJMOlWjyM+njfnYxrP6ut2oCTRaWmr+RiujfUH8W2KjOR6PFxhtkf
+	 HiaHeH50Ibay5IpKOePxHp/vypuFReoHF4QCLvhEWIc0GS9baKgSLyt7u3qzi4/AME
+	 KQBVMJbkmJBDb92bnEuwUsc+wkJvgJ78FKpZydYcMokwNPzZi0Fme9snoIpym6Unoe
+	 LwYobed2Htlqu9DdfyYN230dREY7qqPK410bB12lz49g1VSsrHdADn6w7bqGPthCvR
+	 W4XIiFEKezNhw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: hwmon: pmbus: add Delta E50SN12051
+ binding
+Reply-To: sashiko@lists.linux.dev
+To: "Colin Huang via B4 Relay" <devnull+u8813345.gmail.com@kernel.org>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260429-add-e50sn12051-v1-1-c101e6c80bbb@gmail.com>
+References: <20260429-add-e50sn12051-v1-1-c101e6c80bbb@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Apr 2026 09:56:56 +0000
+Message-Id: <20260429095657.2664FC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260429-add-e50sn12051-v1-3-c101e6c80bbb@gmail.com>
-References: <20260429-add-e50sn12051-v1-0-c101e6c80bbb@gmail.com>
-In-Reply-To: <20260429-add-e50sn12051-v1-0-c101e6c80bbb@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Kevin Chang <kevin.chang2@amd.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- Colin Huang <colin.huang2@amd.com>, Colin Huang <u8813345@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455724; l=3531;
- i=u8813345@gmail.com; s=20260202; h=from:subject:message-id;
- bh=oOfgVU8xJ23RAc8R7rLid7SuguEX/M0GzcoNaRye0hw=;
- b=jarYjTXPvj4km61NsJwQXm0GK3UGwAeHLJM7WJvJTCBuUOS1odnDwNauakyjdtfNNLzm/Vt9O
- ioWDlSYvmLVCWwPFk4kA4oIKYAPX397nkAtfhMtjgjx+2WjWUZzFn7c
-X-Developer-Key: i=u8813345@gmail.com; a=ed25519;
- pk=Zlg0WqpCw4qbswOqamTBTXIchwR/3SnYZpy7rjaGMdQ=
-X-Endpoint-Received: by B4 Relay for u8813345@gmail.com/20260202 with
- auth_id=761
-X-Original-From: Colin Huang <u8813345@gmail.com>
-Reply-To: u8813345@gmail.com
-X-Rspamd-Queue-Id: 974974922B0
+X-Rspamd-Queue-Id: 75A1B492805
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13575-lists,linux-hwmon=lfdr.de,u8813345.gmail.com];
+	TAGGED_FROM(0.00)[bounces-13579-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	RSPAMD_URIBL_FAIL(0.00)[sashiko.dev:query timed out];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.985];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	HAS_REPLYTO(0.00)[u8813345@gmail.com];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,u8813345.gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,devicetree.org:url,0.0.0.40:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-From: Colin Huang <u8813345@gmail.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Low] The devicetree binding schema is missing the '%YAML 1.2' declaratio=
+n.
+- [Low] The devicetree example uses a device-specific node name 'e50sn12051=
+@40' instead of a generic class name.
+--
 
-Add the pmbus driver for Delta E50SN12051 600W Non-isolated
-1/8th Brick DCDC Power Modules.
+commit 91ccfd1047b5355c8ba1210c7c4b1e1a74f2e8cc
+Author: Colin Huang <u8813345@gmail.com>
 
-Signed-off-by: Colin Huang <u8813345@gmail.com>
----
- drivers/hwmon/pmbus/Kconfig      |  9 ++++++
- drivers/hwmon/pmbus/Makefile     |  1 +
- drivers/hwmon/pmbus/e50sn12051.c | 60 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 70 insertions(+)
+dt-bindings: hwmon: pmbus: add Delta E50SN12051 binding
 
-diff --git a/drivers/hwmon/pmbus/Kconfig b/drivers/hwmon/pmbus/Kconfig
-index 8f4bff375ecb..4fbfcbc4a9c5 100644
---- a/drivers/hwmon/pmbus/Kconfig
-+++ b/drivers/hwmon/pmbus/Kconfig
-@@ -161,6 +161,15 @@ config SENSORS_DPS920AB
- 	  This driver can also be built as a module. If so, the module will
- 	  be called dps920ab.
- 
-+config SENSORS_E50SN12051
-+	tristate "Delta E50SN12051 Power Modules"
-+	help
-+	  If you say yes here you get hardware monitoring support for Delta
-+	  E50SN12051 Power Modules.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called e50sn12051.
-+
- config SENSORS_INA233
- 	tristate "Texas Instruments INA233 and compatibles"
- 	help
-diff --git a/drivers/hwmon/pmbus/Makefile b/drivers/hwmon/pmbus/Makefile
-index 7129b62bc00f..fc910bf34fe3 100644
---- a/drivers/hwmon/pmbus/Makefile
-+++ b/drivers/hwmon/pmbus/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_SENSORS_FSP_3Y)	+= fsp-3y.o
- obj-$(CONFIG_SENSORS_HAC300S)	+= hac300s.o
- obj-$(CONFIG_SENSORS_IBM_CFFPS)	+= ibm-cffps.o
- obj-$(CONFIG_SENSORS_DPS920AB)	+= dps920ab.o
-+obj-$(CONFIG_SENSORS_E50SN12051) += e50sn12051.o
- obj-$(CONFIG_SENSORS_INA233)	+= ina233.o
- obj-$(CONFIG_SENSORS_INSPUR_IPSPS) += inspur-ipsps.o
- obj-$(CONFIG_SENSORS_IR35221)	+= ir35221.o
-diff --git a/drivers/hwmon/pmbus/e50sn12051.c b/drivers/hwmon/pmbus/e50sn12051.c
-new file mode 100644
-index 000000000000..56935e9543b6
---- /dev/null
-+++ b/drivers/hwmon/pmbus/e50sn12051.c
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Hardware monitoring driver for E50SN12051
-+ */
-+
-+#include <linux/debugfs.h>
-+#include <linux/i2c.h>
-+#include <linux/kstrtox.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include "pmbus.h"
-+
-+static struct pmbus_driver_info e50sn12051_info = {
-+	.pages = 1,
-+	.format[PSC_VOLTAGE_IN] = linear,
-+	.format[PSC_VOLTAGE_OUT] = linear,
-+	.format[PSC_CURRENT_OUT] = linear,
-+	.format[PSC_TEMPERATURE] = linear,
-+	.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_STATUS_INPUT |
-+		   PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
-+		   PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT |
-+		   PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP,
-+};
-+
-+static const struct i2c_device_id e50sn12051_id[] = { { "e50sn12051", 0 }, {} };
-+MODULE_DEVICE_TABLE(i2c, e50sn12051_id);
-+
-+static const struct of_device_id e50sn12051_of_match[] = {
-+	{ .compatible = "delta,e50sn12051" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, e50sn12051_of_match);
-+
-+static int e50sn12051_probe(struct i2c_client *client)
-+{
-+	struct pmbus_driver_info *info;
-+
-+	info = devm_kmemdup(&client->dev, &e50sn12051_info, sizeof(*info),
-+			    GFP_KERNEL);
-+	if (!info)
-+		return -ENOMEM;
-+
-+	return pmbus_do_probe(client, info);
-+}
-+
-+static struct i2c_driver e50sn12051_driver = {
-+	.driver = {
-+		.name = "e50sn12051",
-+		.of_match_table = e50sn12051_of_match,
-+	},
-+	.probe = e50sn12051_probe,
-+
-+	.id_table = e50sn12051_id,
-+};
-+
-+module_i2c_driver(e50sn12051_driver);
-+
-+MODULE_AUTHOR("Kevin Chang <kevin.chang2@amd.com>");
-+MODULE_DESCRIPTION("PMBus driver for E50SN12051");
-+MODULE_LICENSE("GPL");
+This commit adds the devicetree binding documentation for the Delta
+E50SN12051 PMBus-compliant device. It supports reading voltage, current,
+and temperature over the PMBus interface.
 
--- 
-2.34.1
+> diff --git a/Documentation/devicetree/bindings/hwmon/pmbus/delta,e50sn120=
+51.yaml b/Documentation/devicetree/bindings/hwmon/pmbus/delta,e50sn12051.ya=
+ml
+> new file mode 100644
+> index 000000000000..362cbbf10bfe
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/pmbus/delta,e50sn12051.yaml
+> @@ -0,0 +1,40 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 
+This isn't a bug, but shouldn't this include the %YAML 1.2 declaration
+immediately after the SPDX license identifier and before the '---' document
+separator? Without this, schema validation tooling might fail to process the
+file correctly or report formatting errors.
 
+> +---
+> +$id: http://devicetree.org/schemas/hwmon/pmbus/delta,e50sn12051.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+[ ... ]
+
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        e50sn12051@40 {
+
+This isn't a bug, but could this example use a generic node name like
+sensor@40 or hwmon@40 instead of the device-specific e50sn12051@40? This
+would help comply with standard devicetree practices and prevent dtc
+warnings during validation.
+
+> +            compatible =3D "delta,e50sn12051";
+> +            reg =3D <0x40>;
+> +        };
+> +    };
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260429-add-e50sn1=
+2051-v1-0-c101e6c80bbb@gmail.com?part=3D1
 
