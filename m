@@ -1,167 +1,151 @@
-Return-Path: <linux-hwmon+bounces-13574-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13577-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFw/Nt3F8WkbkQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13574-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 10:48:29 +0200
+	id CJg7ECnV8Wm3kgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13577-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:53:45 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E195A491575
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 10:48:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 598274925C0
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 11:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CCB2B3009F3F
-	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 08:48:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F477302086B
+	for <lists+linux-hwmon@lfdr.de>; Wed, 29 Apr 2026 09:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7659D3314BF;
-	Wed, 29 Apr 2026 08:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666A63ACF0C;
+	Wed, 29 Apr 2026 09:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADRiKH2q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRqZkbhN"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DAA2571C0
-	for <linux-hwmon@vger.kernel.org>; Wed, 29 Apr 2026 08:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BEF2EA480;
+	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777452495; cv=none; b=X8uJSuVt9DgcJM336dMqbGcir8FPnws8kt+bn/dzqUw8tWj1sAMYZhHNM2zRkd6826INEQyv2sBqZBVb+dVmwB9ALW5zWq+K+y0kxkyp9Sopn17hWJywEWobLE7SJDs4IAn6k3FgcRL8DGRSbTE7qC29/DJniaUeSvYbjzmpHHg=
+	t=1777455726; cv=none; b=MTH4lzroHk0fqJ1AwCSdc/9jVKe+swPfHHzLPi1M5Z4drqfWDSf/j0FHHIhBfiRDYlTRPW7NCg9E8gfwbkgqZcYegYkgYbLp1tMSHkjOhKOUbFx8u7WBt/hDTPSCbDsoDZJVRaJs2S8EDP1mkSZK9qM/tvpM51mbvQbfKPAAbdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777452495; c=relaxed/simple;
-	bh=KlJg9T7D8IRjaEXrZcRg+XavJPfYNazGXy9GW8+Yc1o=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=s/cO70B3elQzP/CPkJHtKkj8lUeshWlcMAEXzb6Wgl9YymowWYNyoefZSHXWfYAujiPBE5GY1iJWyTI82HtEafnm3VjRg/Pk/UoiMJzr6STZqk3egtOGgg09j20HVK07EpcGFACtEXjNMUp7jI9BzuliLB0xDR9suQSalrP1Yxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADRiKH2q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46C3C19425;
-	Wed, 29 Apr 2026 08:48:14 +0000 (UTC)
+	s=arc-20240116; t=1777455726; c=relaxed/simple;
+	bh=0y9JaSUmIm7Cf56BjsT/WsN/esPBNQXSw1vyf1V8eGg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lHIiBdJO9E9vBfJtBqdGC1xrXRHYLXrWHraVjqfEv+hX3k8teEDKJ9Ppgb9R4r+/CfUyYZyYOEMMusJB/4ZqGJiSQV39LnmVwcdh73aBrWP71UP58pJLv41VB9KtBvGgZGut/ivrE9qjHjYoXYHj2r+9ySFV7T2XnD/NmbbVkAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRqZkbhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BFCEAC19425;
+	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777452495;
-	bh=KlJg9T7D8IRjaEXrZcRg+XavJPfYNazGXy9GW8+Yc1o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=ADRiKH2qTjDij0oa9T0vRjS42Pwdjk+IPgFIaeJyRV3kQlub06GReGTeMWVnQ9jNQ
-	 3/hAwSyHwKTN4nyQt/LpgrAWKcW3ClXkvQqCO+Va0/maVcq1NrNGzhT5aA/rwAs0Z7
-	 QLAzM7Mevc7bCWl6XQFWPl4c4RQ7Kkq4QrOPPd7k5Ce5a2tuImrNOmw9UpT/bOwGTn
-	 u27nAbKpLHfY+fphROvUpg1dRL3xb35c3L8oz3FOQplq0k7y8Mu0f2uR4aXryb80gI
-	 bZ9KR1sy7OuOBYGhPJNe2e1QfuTN5liZ2W5Ipm9/ljOW5MEesyzO8XYv2ncGveg+qk
-	 f1T3eI0JGP/yA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 3/3] hwmon: emc2305: Support configurable fan PWM at
- shutdown
-Reply-To: sashiko@lists.linux.dev
-To: florin.leotescu@oss.nxp.com
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260429065955.2113012-4-florin.leotescu@oss.nxp.com>
-References: <20260429065955.2113012-4-florin.leotescu@oss.nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Apr 2026 08:48:14 +0000
-Message-Id: <20260429084814.C46C3C19425@smtp.kernel.org>
+	s=k20201202; t=1777455725;
+	bh=0y9JaSUmIm7Cf56BjsT/WsN/esPBNQXSw1vyf1V8eGg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YRqZkbhNQzvZZDn91s6Qg9AORL25l4bqHqrJJtYIvPuaIdgCf8jg7p6xxCFk4uPpa
+	 Fl4O9Ydv9UI6QlqPK8LA6jFsS9jLXTx6YSZGGLSKPeguswZkKNlxvv/VxbHL0Gk02r
+	 N/vE2tGzCTUQcG5N94Q8bPYDFGOgYGQA71Upt+/XlfDGhSTNh3AlWsit6rXN95HGbr
+	 DFnboXz1QgSdP+NRZ2uFYKSLU4gB8z2lchSJ+QAf0lDkPbiFwNy8JKTZ3KIlMJTqek
+	 M7TAK8FETnuoAYvM35gTfRwARZj8yx4YIbAFl4Ir4u5Kyghb/QG9IfXYFwPDQ8ZbWK
+	 C5fvyu4SV0POQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0392FF8877;
+	Wed, 29 Apr 2026 09:42:05 +0000 (UTC)
+From: Colin Huang via B4 Relay <devnull+u8813345.gmail.com@kernel.org>
+Subject: [PATCH 0/3] add support for Delta E50SN12051
+Date: Wed, 29 Apr 2026 17:41:57 +0800
+Message-Id: <20260429-add-e50sn12051-v1-0-c101e6c80bbb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: E195A491575
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGbS8WkC/x3MTQqAIBBA4avIrBMcwx+6SrSQnGo2FgoRSHdva
+ Pkt3uvQqDI1mFSHSjc3PosABwXrkcpOmrMYrLHejOh1ylmTM62gNQ6F0caUfQghgURXpY2ffzg
+ v7/sBbxj9k2AAAAA=
+X-Change-ID: 20260316-add-e50sn12051-ad828ad6777a
+To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Kevin Chang <kevin.chang2@amd.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Colin Huang <colin.huang2@amd.com>, Colin Huang <u8813345@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455724; l=1265;
+ i=u8813345@gmail.com; s=20260202; h=from:subject:message-id;
+ bh=0y9JaSUmIm7Cf56BjsT/WsN/esPBNQXSw1vyf1V8eGg=;
+ b=mn8qZyutbL7t8frB13vm0Rv2XHlAhqEgI+TlkbfmTaiDwpRdCwt/Rz+QSJNdYGI1+91kS5mFV
+ lpfPhLmRI/NDoC9/l8nYi3goq0uXFRm7nQaZHCrHhm2RUZiv9w9TPK0
+X-Developer-Key: i=u8813345@gmail.com; a=ed25519;
+ pk=Zlg0WqpCw4qbswOqamTBTXIchwR/3SnYZpy7rjaGMdQ=
+X-Endpoint-Received: by B4 Relay for u8813345@gmail.com/20260202 with
+ auth_id=761
+X-Original-From: Colin Huang <u8813345@gmail.com>
+Reply-To: u8813345@gmail.com
+X-Rspamd-Queue-Id: 598274925C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13574-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13577-lists,linux-hwmon=lfdr.de,u8813345.gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_NONE(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.962];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	HAS_REPLYTO(0.00)[u8813345@gmail.com];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,lists.linux.dev:replyto,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,smtp.kernel.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The emc2305_shutdown() callback sets the hardware to a safe shutdo=
-wn state but does not prevent concurrent or subsequent modifications from t=
-he thermal framework or sysfs, and violates hwmon locking guidelines.
---
+Delta E50SN12051 is a 600W non-isolated 1/8th brick DC-DC power module.
+With this series applied, voltage, current and temperature sensors can 
+be exposed through the standard hwmon interface.
 
-commit 13f5fb0080b01e93b042a4e45c254e10cd715c59
-Author: Florin Leotescu <florin.leotescu@nxp.com>
+Changes in this series:
+- Introduce device-tree binding documentation for the new device
+- Add hwmon documentation describing the supported sensors
+- Add PMBus driver support for Delta E50SN12051
 
-hwmon: emc2305: Support configurable fan PWM at shutdown
+Signed-off-by: Colin Huang <u8813345@gmail.com>
+---
+Colin Huang (3):
+      dt-bindings: hwmon: pmbus: add Delta E50SN12051 binding
+      Documentation/hwmon: add Delta E50SN12051 documentation
+      hwmon: (pmbus) add support for Delta E50SN12051
 
-This commit adds support for an optional "fan-shutdown-percent" device tree
-property to configure the safe shutdown PWM duty cycle per fan output. It
-introduces a shutdown callback to apply these configured states during
-system handoff.
+ .../bindings/hwmon/pmbus/delta,e50sn12051.yaml     | 40 +++++++++++
+ Documentation/hwmon/e50sn12051.rst                 | 81 ++++++++++++++++++++++
+ Documentation/hwmon/index.rst                      |  1 +
+ drivers/hwmon/pmbus/Kconfig                        |  9 +++
+ drivers/hwmon/pmbus/Makefile                       |  1 +
+ drivers/hwmon/pmbus/e50sn12051.c                   | 60 ++++++++++++++++
+ 6 files changed, 192 insertions(+)
+---
+base-commit: b584e7d50af502462349910bf4ed30057620b69f
+change-id: 20260316-add-e50sn12051-ad828ad6777a
 
-> diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-> index f71a0e265924..c5a0b2146478 100644
-> --- a/drivers/hwmon/emc2305.c
-> +++ b/drivers/hwmon/emc2305.c
+Best regards,
+-- 
+Colin Huang <u8813345@gmail.com>
 
-[ ... ]
 
-> @@ -727,6 +744,23 @@ static int emc2305_probe(struct i2c_client *client)
->  	return 0;
->  }
-> =20
-> +static void emc2305_shutdown(struct i2c_client *client)
-> +{
-> +	int i;
-> +	int ret;
-> +	struct emc2305_data *data =3D i2c_get_clientdata(client);
-> +
-> +	for (i =3D 0; i < data->pwm_num; i++) {
-> +		if (data->pwm_shutdown[i] !=3D EMC2305_PWM_SHUTDOWN_UNSET) {
-> +			ret =3D i2c_smbus_write_byte_data(client, EMC2305_REG_FAN_DRIVE(i),
-> +							data->pwm_shutdown[i]);
-
-Does this hardware access need to be serialized? The hwmon subsystem
-guidelines explicitly state that drivers must use hwmon_lock() and
-hwmon_unlock() to serialize hardware operations for attributes registered
-outside the hwmon core.
-
-Also, can concurrent or subsequent updates overwrite this safe shutdown sta=
-te?
-
-During system shutdown, kernel workqueues remain active and can continue to
-execute thermal zone polling. Because the driver does not track whether it =
-is
-shutting down, the thermal framework's set_cur_state callback could execute
-and overwrite the safe shutdown PWM state with a temperature-based value.
-
-Would it make sense to introduce a boolean flag (e.g., shutting_down)
-protected by hwmon_lock() here, and check this flag in the thermal and sysfs
-write paths to abort further updates?
-
-> +			if (ret < 0)
-> +				dev_warn(&client->dev,
-> +					 "Failed to set shutdown PWM for ch %d\n", i);
-> +		}
-> +	}
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260429065955.2113=
-012-1-florin.leotescu@oss.nxp.com?part=3D3
 
