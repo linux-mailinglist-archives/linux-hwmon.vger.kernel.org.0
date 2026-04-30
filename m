@@ -1,82 +1,82 @@
-Return-Path: <linux-hwmon+bounces-13642-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13643-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FsgFEuQ82lJ5AEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13642-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 19:24:27 +0200
+	id UH/bDpCQ82ky5AEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13643-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 19:25:36 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4454A6535
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 19:24:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E99F4A65A5
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 19:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA59300F134
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 17:23:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE61730252A4
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 17:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371594611FF;
-	Thu, 30 Apr 2026 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD494779A1;
+	Thu, 30 Apr 2026 17:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yol647O1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iq6yh5Vc"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80113630B9
-	for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 17:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A6544D688
+	for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 17:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777569787; cv=none; b=Bd6HrrDQ+n2mN2flVL/bD6QM7yDzT74gDpoi1McVYGl7taT1aOuNIBp9tZ41qpaodfB2iSqZNGJ4AHaM6mb/4vUrCJQnMKkKfDb5n4hfm/6JlE5RyU6xfI9n5KixcNmv2xvzHo9ymt3Jvfhn5HyYeDwWlm1Dns6Vbd670fvDSS0=
+	t=1777569856; cv=none; b=CQDt4LDubfMWIN+RcluYrrfZiMa+L7sZfw5ZcEYF8zRvw53fXWOXgdmy82/I9BlB1tRl6prG+xqNHNzddGqtoVqTrf8GDRAqbmtrr3dF6YcIJH2CrVNku/0v5YlDc+qnQQCHYNBUYED/Ti1NqGxJRJ4yJrSQKZxyrD+y9GGE5LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777569787; c=relaxed/simple;
-	bh=zFB/iOZ19wQjJXG0nzOV7p8jbdcKKyA1ghYwzJk8F+4=;
+	s=arc-20240116; t=1777569856; c=relaxed/simple;
+	bh=5jnnMZbdE3Kv+HAQM2cpPpp5ffHMDfQm3jg7X/t7sQk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mcnmHdKPd6HI5aoQ9L3c64HdRUzezNrPyc8p8rGeoOhu0064NoxfldOn8M/qETEzlrRte8TGdHN2q4sSHVDKx+0pTCExtHKbyxAiSkmDTxxsd/+5D9eLPF8lzpq9gXBDoeKVoIGtH0SaiX88fn/ezTGr468iqpiKzAJjd1Tu3rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yol647O1; arc=none smtp.client-ip=209.85.214.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=dsNq/ksvk8bwr9Ekg9utM4l48lcwPGqTss8j7wDkvF8kXoneRKZqEVvpgGs9N9yxC4/YeUZhqYENe/L17Kpn1fk7aKcQVUdnXN2StaRAa6UTAQcnvuY/w10WrCwLWSchfTAMhdRbtlpgPjjNUQkwyl5wKmsCH8GUSvqGMSam//A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iq6yh5Vc; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a8fba3f769so5093515ad.2
-        for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 10:23:05 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c7da372b87eso476284a12.0
+        for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 10:24:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777569785; x=1778174585; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777569855; x=1778174655; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8Fsgwp7UDQpeyb+JW2HoyU5IVU1CSyJAoqsfmKXtsW4=;
-        b=Yol647O1gjCVwM1TL8PUeaplA4PMzJPBh/m3pjGDVmR6O6kS9bJMnmZgCmBOilEv5q
-         9dXmTTdCFN/T8D4/HjAZkYlrK5BxgTxc/Eda9ZRFlhcI9mJYH69o8vaOfHYz+2iaV1TW
-         lg9Fpw1JoQFv2Jpk9Ln1x8cboeAUIUODre1GVwGRhPYX3Yn6o0PpDcpBie7n/J/4cy7+
-         PzgfOvlS05EesG22ra80vXy2765o8v1KUS0eghlHuhTmjz+F1f1oOuGKdHDj4Ui3p+bB
-         kDHSCHr8lcdEEv8snxp0PPrMQ05hFt8979N+Qs6eiLtay2nVXINxMSDidtfS9XPwMUL0
-         xdew==
+        bh=ss/d5BxGn+KBRcms2g4Npg2cD3lutl8/H/gA06wn6Do=;
+        b=iq6yh5VceMggHL7Ixd93NOfkIyNrjqTSasDRXkjUPDf7+I/ZICxa+gEZkPx1U0B32d
+         dDXpZdWybZkQI/J70kQZ+ypW+lmP/6KI/FUEPsblzf6Iy5EbZ4UdFvlBwsg4slmMdAs0
+         kF6/oxdupwePL6FTd17O08vhd5tTBXLprT7ZMJYF+jNVLxhPkyEnL3LMHK40kSmXjTS7
+         e9UWIKIMsWRmj34NFJN6Bi9paK8rAPPlDaUc3W+X5L2SZZgaZJ2Z3NJMepelY3/OtLBL
+         SapByww1wfJdXtnllgd2z654qFguEmwza/jZXnWkpvbpnFI6rj7xLGZg2/JYr56GGDLN
+         06rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777569785; x=1778174585;
+        d=1e100.net; s=20251104; t=1777569855; x=1778174655;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=8Fsgwp7UDQpeyb+JW2HoyU5IVU1CSyJAoqsfmKXtsW4=;
-        b=QDGUR1WLaHq/SQCDRx+5do/fHi+vlK7AjZSu+BZwRd2/Q/10XNccKvbVq2QuzhW087
-         nQFV9X7pqQMAsofSSK3YBkxIVF2Z3VPIgLO1bgvpjgffn+VO55LVYxCgnbWLigF/8siW
-         L1VlJ7aESYNhkTfgoVFhdFwyZndYtFqu8jL242KyT5biU2w4t/oAn5bd3gXCZS9VP0lc
-         f8aDZ/CqxszSp0LSDaqDOICviD8Tz0pUPCtICFcnctKj43y9RXPhWdWLPQij1SFO66wu
-         OfN0hmMJn4+/MuhEMW3KmXxPWgvNeDbKg4A1cxvA0TzL2blnwli0qKs6Sc7UvgJS8/yb
-         gbZw==
-X-Gm-Message-State: AOJu0YxzLHb6+0GLEQ7W80mRIiWC7b4AWhBUuGY3Ia/G52jZ7urfbxSU
-	F7gT7epUrtsXU+fQ00kDlrcCk5GCxDDPveBa04wSmmfU9yqF54qfqD+i
-X-Gm-Gg: AeBDies5oY3UCNpSggJZTf+wXQG//xxLmfL1q70MZ0q9zW5AMKgOqqC4GLP+fD33x1U
-	XkMEvgxpHQU9IARxhym3axI9tB8UBzXxRaovUROqOJTOJq2hPl+X/GZhpaIQzRe9KiF+ZVb9WLU
-	G9qtbBb+KQ96guPfzyBUlStEPd1jqSf9NIdr8itxyoIhQ80yL3L8K1kskBIIhTX5lq/JsdNM/IG
-	p7EWRAnpb69ll/dPr2r/IhzcHoWpUTfdZ1UND46vdR3T/PfF7aPny/D8RboqzZBWP/lKrcZdYhi
-	vo7da2hzMtyO0UgkTUWxviOaIUaKNHI1HCV/Nr9MvgQ8fp/qTr47ffIq3GhYIHpD8X0yL5e7mtC
-	ZtNd9XE146Py1yiMertGWnBn6WAd63yZOnz0dfKjAY2JNa7EWzwNB6v0WliwZIJMFqke/Lwe0Ax
-	t1rw3AN2jLaBjWeELVKsKOFZF441BH1ao1gmBJkXaXTJnlxE8=
-X-Received: by 2002:a17:903:5cf:b0:2b0:7225:d2c0 with SMTP id d9443c01a7336-2b9a2504c12mr24809985ad.30.1777569785201;
-        Thu, 30 Apr 2026 10:23:05 -0700 (PDT)
+        bh=ss/d5BxGn+KBRcms2g4Npg2cD3lutl8/H/gA06wn6Do=;
+        b=BAvNlw10eFy4wy1EbptJHCU3AX6IOPeySGTFhwUJsOPuS2USy8aMVsh8niN/jBn85i
+         b6WcOd4XQwSe+z8mXdQAkp+Nu4HXYU0HZWBdIDmlGsBg2pKsMJ3e+9nugCzih09zt3e0
+         47iWPOuvmyul67t9Hznvm3cley1htn+nt3fhQLcesFPypUIDbyHZEy/u26xFqXkZLXGO
+         C1oIClAuFyJxKYA3QuWjC8i8cldSdPQSAaV+KuWKm0RBt1dZZvZjjOQSPmhlCAanSumj
+         1+9FCa2AqL4nJ5YsbuinqCNGEYO+SWDpflGWwo2fNDePpZleX0w/sP29CH+rvuLGAZnQ
+         kafA==
+X-Gm-Message-State: AOJu0YzAQjOXkMk41S2bj5gCSBzu24GImMS6FD/TvOVS/FADIgvJDsBy
+	1mPS2WwuE0SMKN3OqPKeRiz0X/0/QBAifJHP6tg/Q1xrIgjsEG3oWwKx
+X-Gm-Gg: AeBDieuCncZ23AXS1UB3MLbYl0NhGe1dMAWZsDoTjMzdhrCXPccsfXRgoJgvXLFEs3T
+	FExEpaQW1xbM2WEbJ27PlQBdCCNwjPaklcx624oUl4Vz6+VFC51Q7LCvCIwhiakfIitQLyJB0Nq
+	TficKgIjbIRI5tNmymG/5fpu7PM+pY1cs3ftpKidUtdc/gcuX8bRt3oYWQxUG96KizQ8Yu03Phk
+	3JNHPJiEiF0zmllljF6E/PYvPUF4VhP5a5gm8dkdfI/Tu6uIZpr4/rceAsMkp3YuO/g76mJW1gB
+	KNMyAbPK+2KEAPVEHUcgZzmuNTx72aOX0WT7BGon+1nR7LbX7loB3mXxscJq1BdtEpZAPzsAU3c
+	v3rjRbpP05LWmP//ppXZO/gHJWgKrQRrgkIZdWsYWggkcWvHCEBrvu5JQEE3cfRg1ydWC8HnLU5
+	jn/I5z1MRPrjnIlcqVyy0uEg7dxp774lBr6iU4gN8sEQlHUbg=
+X-Received: by 2002:a05:6a20:3949:b0:39f:706d:62e3 with SMTP id adf61e73a8af0-3a3cf8d59c2mr4406073637.54.1777569854543;
+        Thu, 30 Apr 2026 10:24:14 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9caa7e47asm1984265ad.15.2026.04.30.10.23.04
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7ffbc85c61sm211872a12.22.2026.04.30.10.24.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 10:23:04 -0700 (PDT)
+        Thu, 30 Apr 2026 10:24:14 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 30 Apr 2026 10:23:03 -0700
+Date: Thu, 30 Apr 2026 10:24:13 -0700
 From: Guenter Roeck <linux@roeck-us.net>
 To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
 Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
@@ -84,11 +84,10 @@ Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	Sanman Pradhan <psanman@juniper.net>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/2] hwmon: (ltc2992) Clamp threshold writes to hardware
- range
-Message-ID: <693bf2bf-55ee-4985-b8d6-344d358e933b@roeck-us.net>
+Subject: Re: [PATCH 2/2] hwmon: (ltc2992) Fix u32 overflow in power read path
+Message-ID: <54523114-cb32-4351-8261-daa2c19070ca@roeck-us.net>
 References: <20260416215904.101969-1-sanman.pradhan@hpe.com>
- <20260416215904.101969-2-sanman.pradhan@hpe.com>
+ <20260416215904.101969-3-sanman.pradhan@hpe.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -97,18 +96,18 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260416215904.101969-2-sanman.pradhan@hpe.com>
-X-Rspamd-Queue-Id: BE4454A6535
+In-Reply-To: <20260416215904.101969-3-sanman.pradhan@hpe.com>
+X-Rspamd-Queue-Id: 8E99F4A65A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13642-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13643-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
@@ -118,7 +117,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -128,45 +127,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:mid,juniper.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,juniper.net:email,roeck-us.net:mid]
 
-On Thu, Apr 16, 2026 at 09:59:30PM +0000, Pradhan, Sanman wrote:
+On Thu, Apr 16, 2026 at 09:59:40PM +0000, Pradhan, Sanman wrote:
 > From: Sanman Pradhan <psanman@juniper.net>
 > 
-> ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
-> do not validate the user-supplied value before converting it to a
-> register value. This can result in:
+> ltc2992_get_power() computes the divisor for mul_u64_u32_div() as
+> r_sense_uohm * 1000. This multiplication overflows u32 when
+> r_sense_uohm exceeds about 4.29 ohms (4294967 micro-ohms), producing
+> a truncated divisor and an incorrect power reading.
 > 
-> 1. Negative input values wrapping to large positive register values.
->    For power, the negative long is implicitly cast to u64 in
->    mul_u64_u32_div(), producing an incorrect value. For voltage and
->    current, the negative converted value wraps when passed to
->    ltc2992_write_reg() as a u32.
+> Cancel the factor of 1000 from both the numerator
+> (VADC_UV_LSB * IADC_NANOV_LSB = 312500000) and the divisor
+> (r_sense_uohm * 1000), giving (VADC_UV_LSB / 1000) * IADC_NANOV_LSB
+> = 312500 as the numerator and plain r_sense_uohm as the divisor.
+> The cancellation is exact because LTC2992_VADC_UV_LSB (25000) is
+> divisible by 1000.
 > 
-> 2. Intermediate arithmetic exceeding the range representable in u64 on
->    64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
->    exceed U64_MAX when val is a large positive long. In
->    ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
->    similarly. In ltc2992_set_power(), the computed value may not fit
->    in u64.
-> 
-> 3. Register values exceeding the hardware field width. Voltage and
->    current threshold registers are 12-bit (stored left-justified in
->    16 bits), and power threshold registers are 24-bit. Without
->    clamping, bits above the field width are truncated in
->    ltc2992_write_reg().
-> 
-> Fix by clamping negative values to zero, clamping positive values to
-> the rounded hardware-representable maximum (the value returned by the
-> read path for a full-scale register) to prevent intermediate overflow,
-> and clamping the converted register value to the hardware field width
-> before writing. The existing conversion formula and rounding behavior
-> are preserved.
-> 
-> In the power write path, cancel the factor of 1000 from both the
-> numerator (r_sense_uohm * 1000) and the denominator
-> (VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
-> r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
+> This is the read-path counterpart of the write-path fix applied in
+> the preceding patch.
 > 
 > Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
 > Cc: stable@vger.kernel.org
