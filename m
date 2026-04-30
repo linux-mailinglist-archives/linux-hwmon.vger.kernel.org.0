@@ -1,417 +1,227 @@
-Return-Path: <linux-hwmon+bounces-13629-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13633-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ANPNrUY82nNxAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13629-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:54:13 +0200
+	id MFNeFHAq82mwxgEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13633-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 12:09:52 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A9C49F796
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA57C4A088D
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 12:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D68A2300F513
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 08:51:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F9A83025900
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6783FE650;
-	Thu, 30 Apr 2026 08:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA56393DD9;
+	Thu, 30 Apr 2026 10:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dj3z+HY7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTvwSLt3"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263C32264B0;
-	Thu, 30 Apr 2026 08:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA69927EFE9
+	for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 10:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777539072; cv=none; b=n6Asw7nnkA98GjYATQtT7qB2L7y3d/xmcPczxfB5W+Gm9k6MQo5aKh70lTapC17GOb9zebVBpWJ5zedKtT+SuLO58jT2U2pZxGNCWGwlKNlkJ+eYNkTWZDNLfIiqac+gLbYoZ3+E1oKwWD8Ln8quZUhDwR2uGgZiWCt74d8qBkw=
+	t=1777543423; cv=none; b=CxeGXGr7J/cvZHHoSH/0N9d2qkpkixtdheYKJI5ObQ4hgBK25mYVxqgrNFKjqELBNb9m3oOVyPxXLPOG387nbWN9+6ys5wO9qlbSA7GzWcgHNBOdmYU5nwz1pSAGHj2fvsQR+O5UKxEmu5LHWQ78ATm2Bn1NLkRGhFeuPo4Cd80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777539072; c=relaxed/simple;
-	bh=ruQEE7iNdjUeMjgQ5l9kwFErghIXZ2/d/hvkCEGDcmM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a7/eae/afNwflrIJjN+sfyZYxeSraIMKWv9pnGFpNF+et4zqOd1NEankpwMtHFhZkwZNVc9f80Bkm6JRUoSLcKlMwcjMvmyMOBNuqMfiphXSXbieXSFR/s1KPhNRiDdaIY1GT4ZE0vkvlvBM4WNd6scaqrpbEeGwb81lB4TPbGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dj3z+HY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F1681C2BCFC;
-	Thu, 30 Apr 2026 08:51:11 +0000 (UTC)
+	s=arc-20240116; t=1777543423; c=relaxed/simple;
+	bh=ngAA55b4mi+jLZ0nu9ksP+eB/DRp55ue+FmaSQMGoyI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JAERctEcCT4vFWh41/Mr/a1KmCHnchjoLS7BznDIljmJmAtjZ9gWJM9k+4K2RofrtjbbcCHMlwTOxUHzZb5qzKbehfBOIh6U1ANCEggbpR+DFdrrbrJ+40adDfyw3M4fItI8lKEz+7e5tTCrC67+tC8ubgfQU9ZYi0OUhR1YXeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTvwSLt3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D31C2BCB3;
+	Thu, 30 Apr 2026 10:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777539072;
-	bh=ruQEE7iNdjUeMjgQ5l9kwFErghIXZ2/d/hvkCEGDcmM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=dj3z+HY7uPESOhaBgXdMIXyaP9kL/r/2qgaMJ0zAhtpzWHvcMzzR7uG0yezAvjZL8
-	 AIHONTrffXaRxHKIGF1Cvwiqu73eNKNwTSIMu4jSjrP/eM2X+D7KXE5kGIfUf+zDd3
-	 SDF8HUKGoKpmxxUnwpRmahshHchG9nwnzKmf/sSucVAegmU5v7zHkf100kuOr6oXVG
-	 u05xY/5AJrCfji8umHsHfrBzKmLjV6qstbewbL2R9uhtG+dXca9XlW1SK/sZg4Bokb
-	 bpivbNbKezV+SS9nEaCCduV2sMGm+KR+ZtMuzwRmDED/C5RUp9g/nD2Cg35Xo+2ln7
-	 6tJFMb34T03Dg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5865CD13DA;
-	Thu, 30 Apr 2026 08:51:11 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Thu, 30 Apr 2026 09:52:05 +0100
-Subject: [PATCH v12 3/3] gpio: gpio-ltc4283: Add support for the LTC4283
+	s=k20201202; t=1777543423;
+	bh=ngAA55b4mi+jLZ0nu9ksP+eB/DRp55ue+FmaSQMGoyI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=uTvwSLt3s1RoZN/TwKXDY73DMJBizavFozU8Gkg8ABNpb/T5XBm9XmWZw1ra0gb7j
+	 MyyTmUvXN6XTHATjFnuja+z7IN5D3uIZGLiFT2Duehi8rzowVgZuBR8oBHDdO1+75X
+	 mrT3C92uOVP8ei2Ia+peG5Rq+mZKJoFkK8I94x17wiinICkvzwpGUseZsmXtnFeT7E
+	 NZSJo3lNGP7hpZpcNCCobVioul9qdET/S3Z8DYVjU931gUFg7xvj3s33A4mXNQAsRo
+	 7QgRyk4p0kOYFqNRgXJl1F86H7uI6NDRLGFBgflrldYdBpinbAYvzuln/00xJyHSGd
+	 qNAZL0StMlPJw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 2/3] hwmon: ltc4283: Add support for the LTC4283
  Swap Controller
+Reply-To: sashiko@lists.linux.dev
+To: =?utf-8?b?TnVubyBTw6EgdmlhIEI0IFJlbGF5?= <devnull+nuno.sa.analog.com@kernel.org>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260430-ltc4283-support-v12-2-5dc9901f2567@analog.com>
+References: <20260430-ltc4283-support-v12-2-5dc9901f2567@analog.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 30 Apr 2026 10:03:42 +0000
+Message-Id: <20260430100343.45D31C2BCB3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260430-ltc4283-support-v12-3-5dc9901f2567@analog.com>
-References: <20260430-ltc4283-support-v12-0-5dc9901f2567@analog.com>
-In-Reply-To: <20260430-ltc4283-support-v12-0-5dc9901f2567@analog.com>
-To: linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
- Bartosz Golaszewski <brgl@kernel.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777539125; l=8619;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=HcILxbeDidetLOLt+/phZczCP+cgodBWiQsD5gX/J/s=;
- b=OBUhmMYnb/FTGI/13d6I/4oJGBrOVGaTUy5Xbh1ZDHHfvm/TBsgCkv3sm2uPNI092RV+03amr
- FrVaysb8RqZDtBZpy2+txcAkNup8Dj6RGZA5j3GklU3+hs+sEuLNnhQ
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
-X-Rspamd-Queue-Id: 45A9C49F796
+X-Rspamd-Queue-Id: AA57C4A088D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13633-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13629-lists,linux-hwmon=lfdr.de,nuno.sa.analog.com];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[nuno.sa@analog.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,analog.com:replyto,analog.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon,nuno.sa.analog.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,lists.linux.dev:replyto]
 
-From: Nuno Sá <nuno.sa@analog.com>
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] Debugfs entries are leaked and will trigger a Use-After-Free if `_=
+_devm_auxiliary_device_create` fails during probe.
+- [Medium] Read-modify-write (RMW) operations on hardware fault/alarm log r=
+egisters can accidentally clear and permanently lose concurrent hardware ev=
+ents.
+- [Low] The debugfs attributes for FET faults are registered with incorrect=
+ names (`in0_...` instead of `in11_...`).
+- [Low] Invalid string values in device tree properties are silently ignore=
+d despite comments indicating they should be caught.
+--
 
-The LTC4283 device has up to 8 pins that can be configured as GPIOs.
+commit d9fab3c87e5bd2f43c5dc67392ad85d9104dbf0b
+Author: Nuno S=C3=A1 <nuno.sa@analog.com>
+Subject: hwmon: ltc4283: Add support for the LTC4283 Swap Controller
 
-Note that PGIO pins are not set as GPIOs by default so if they are
-configured to be used as GPIOs we need to make sure to initialize them
-to a sane default. They are set as inputs by default.
+This commit adds support for the Analog Devices LTC4283 Hot Swap Controller.
+It provides monitoring of board current, voltage, power, energy, and fault
+status via an I2C interface.
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- MAINTAINERS                 |   2 +
- drivers/gpio/Kconfig        |  15 +++
- drivers/gpio/Makefile       |   1 +
- drivers/gpio/gpio-ltc4283.c | 218 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 236 insertions(+)
+> diff --git a/drivers/hwmon/ltc4283.c b/drivers/hwmon/ltc4283.c
+> new file mode 100644
+> index 0000000000000..d66815bfb1341
+> --- /dev/null
+> +++ b/drivers/hwmon/ltc4283.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c657ca0a4652..de6bc7828f28 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15240,9 +15240,11 @@ F:	drivers/hwmon/ltc4282.c
- 
- LTC4283 HARDWARE MONITOR AND GPIO DRIVER
- M:	Nuno Sá <nuno.sa@analog.com>
-+L:	linux-gpio@vger.kernel.org
- L:	linux-hwmon@vger.kernel.org
- S:	Supported
- F:	Documentation/devicetree/bindings/hwmon/adi,ltc4283.yaml
-+F:	drivers/gpio/gpio-ltc4283.c
- F:	drivers/hwmon/ltc4283.c
- 
- LTC4286 HARDWARE MONITOR DRIVER
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 020e51e30317..9b6e0a34eff6 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1783,6 +1783,21 @@ config GPIO_WM8994
- 
- endmenu
- 
-+menu "Auxiliary Bus GPIO drivers"
-+	depends on AUXILIARY_BUS
-+
-+config GPIO_LTC4283
-+	tristate "Analog Devices LTC4283 GPIO support"
-+	depends on SENSORS_LTC4283
-+	help
-+	  If you say yes here you want the GPIO function available in Analog
-+	  Devices LTC4283 Negative Voltage Hot Swap Controller.
-+
-+	  This driver can also be built as a module. If so, the module will
-+	  be called gpio-ltc4283.
-+
-+endmenu
-+
- menu "PCI GPIO expanders"
- 	depends on PCI
- 
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index b267598b517d..6e2367cab94f 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -100,6 +100,7 @@ obj-$(CONFIG_GPIO_LP873X)		+= gpio-lp873x.o
- obj-$(CONFIG_GPIO_LP87565)		+= gpio-lp87565.o
- obj-$(CONFIG_GPIO_LPC18XX)		+= gpio-lpc18xx.o
- obj-$(CONFIG_GPIO_LPC32XX)		+= gpio-lpc32xx.o
-+obj-$(CONFIG_GPIO_LTC4283)		+= gpio-ltc4283.o
- obj-$(CONFIG_GPIO_MACSMC)		+= gpio-macsmc.o
- obj-$(CONFIG_GPIO_MADERA)		+= gpio-madera.o
- obj-$(CONFIG_GPIO_MAX3191X)		+= gpio-max3191x.o
-diff --git a/drivers/gpio/gpio-ltc4283.c b/drivers/gpio/gpio-ltc4283.c
-new file mode 100644
-index 000000000000..6609443c5d62
---- /dev/null
-+++ b/drivers/gpio/gpio-ltc4283.c
-@@ -0,0 +1,218 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices LTC4283 GPIO driver
-+ *
-+ * Copyright 2025 Analog Devices Inc.
-+ */
-+
-+#include <linux/auxiliary_bus.h>
-+#include <linux/bitfield.h>
-+#include <linux/bitmap.h>
-+#include <linux/bits.h>
-+#include <linux/device.h>
-+#include <linux/gpio/driver.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#define LTC4283_PINS_MAX			8
-+#define LTC4283_PGIOX_START_NR			4
-+#define LTC4283_INPUT_STATUS			0x02
-+#define LTC4283_PGIO_CONFIG			0x10
-+#define   LTC4283_PGIO_CFG_MASK(pin) \
-+	GENMASK(((pin) - LTC4283_PGIOX_START_NR) * 2 + 1, (((pin) - LTC4283_PGIOX_START_NR) * 2))
-+#define LTC4283_PGIO_CONFIG_2			0x11
-+
-+#define LTC4283_ADIO_CONFIG			0x12
-+/* starts at bit 4 */
-+#define   LTC4283_ADIOX_CONFIG_MASK(pin)	BIT((pin) + 4)
-+#define LTC4283_PGIO_DIR_IN			3
-+#define LTC4283_PGIO_DIR_OUT			2
-+
-+struct ltc4283_gpio {
-+	struct gpio_chip gpio_chip;
-+	struct regmap *regmap;
-+};
-+
-+static int ltc4283_pgio_get_direction(const struct ltc4283_gpio *st, unsigned int off)
-+{
-+	unsigned int val;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, LTC4283_PGIO_CONFIG, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = field_get(LTC4283_PGIO_CFG_MASK(off), val);
-+	if (val == LTC4283_PGIO_DIR_IN)
-+		return GPIO_LINE_DIRECTION_IN;
-+
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int ltc4283_gpio_get_direction(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+	unsigned int val;
-+	int ret;
-+
-+	if (off >= LTC4283_PGIOX_START_NR)
-+		return ltc4283_pgio_get_direction(st, off);
-+
-+	ret = regmap_read(st->regmap, LTC4283_ADIO_CONFIG, &val);
-+	if (ret)
-+		return ret;
-+
-+	if (val & LTC4283_ADIOX_CONFIG_MASK(off))
-+		return GPIO_LINE_DIRECTION_IN;
-+
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int ltc4283_gpio_direction_set(const struct ltc4283_gpio *st,
-+				      unsigned int off, bool input)
-+{
-+	if (off >= LTC4283_PGIOX_START_NR) {
-+		unsigned int val = LTC4283_PGIO_DIR_OUT;
-+
-+		if (input)
-+			val = LTC4283_PGIO_DIR_IN;
-+
-+		val = field_prep(LTC4283_PGIO_CFG_MASK(off), val);
-+		return regmap_update_bits(st->regmap, LTC4283_PGIO_CONFIG,
-+					  LTC4283_PGIO_CFG_MASK(off), val);
-+	}
-+
-+	return regmap_update_bits(st->regmap, LTC4283_ADIO_CONFIG,
-+				  LTC4283_ADIOX_CONFIG_MASK(off),
-+				  field_prep(LTC4283_ADIOX_CONFIG_MASK(off), input));
-+}
-+
-+static int __ltc4283_gpio_set_value(const struct ltc4283_gpio *st,
-+				    unsigned int off, int val)
-+{
-+	u32 reg = off < LTC4283_PGIOX_START_NR ? LTC4283_ADIO_CONFIG : LTC4283_PGIO_CONFIG_2;
-+
-+	return regmap_update_bits(st->regmap, reg, BIT(off),
-+				  field_prep(BIT(off), !!val));
-+}
-+
-+static int ltc4283_gpio_direction_input(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+
-+	return ltc4283_gpio_direction_set(st, off, true);
-+}
-+
-+static int ltc4283_gpio_direction_output(struct gpio_chip *gc, unsigned int off, int val)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+	int ret;
-+
-+	ret = ltc4283_gpio_direction_set(st, off, false);
-+	if (ret)
-+		return ret;
-+
-+	return __ltc4283_gpio_set_value(st, off, val);
-+}
-+
-+static int ltc4283_gpio_get_value(struct gpio_chip *gc, unsigned int off)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+	unsigned int val, reg;
-+	int ret, dir;
-+
-+	dir = ltc4283_gpio_get_direction(gc, off);
-+	if (dir < 0)
-+		return dir;
-+
-+	if (dir == GPIO_LINE_DIRECTION_IN) {
-+		ret = regmap_read(st->regmap, LTC4283_INPUT_STATUS, &val);
-+		if (ret)
-+			return ret;
-+
-+		/* ADIO1 is at bit 3. */
-+		if (off < LTC4283_PGIOX_START_NR)
-+			return !!(val & BIT(3 - off));
-+
-+		/* PGIO1 is at bit 7. */
-+		return !!(val & BIT(7 - (off - LTC4283_PGIOX_START_NR)));
-+	}
-+
-+	if (off < LTC4283_PGIOX_START_NR)
-+		reg = LTC4283_ADIO_CONFIG;
-+	else
-+		reg = LTC4283_PGIO_CONFIG_2;
-+
-+	ret = regmap_read(st->regmap, reg, &val);
-+	if (ret)
-+		return ret;
-+
-+	return !!(val & BIT(off));
-+}
-+
-+static int ltc4283_gpio_set_value(struct gpio_chip *gc, unsigned int off, int val)
-+{
-+	struct ltc4283_gpio *st = gpiochip_get_data(gc);
-+
-+	return __ltc4283_gpio_set_value(st, off, val);
-+}
-+
-+static int ltc4283_init_valid_mask(struct gpio_chip *gc, unsigned long *valid_mask,
-+				   unsigned int ngpios)
-+{
-+	unsigned long *mask = dev_get_platdata(gc->parent);
-+
-+	bitmap_copy(valid_mask, mask, ngpios);
-+	return 0;
-+}
-+
-+static int ltc4283_gpio_probe(struct auxiliary_device *adev,
-+			      const struct auxiliary_device_id *id)
-+{
-+	struct device *dev = &adev->dev;
-+	struct ltc4283_gpio *st;
-+	struct gpio_chip *gc;
-+
-+	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
-+	if (!st)
-+		return -ENOMEM;
-+
-+	st->regmap = dev_get_regmap(dev->parent, NULL);
-+	if (!st->regmap)
-+		return dev_err_probe(dev, -ENODEV,
-+				     "Failed to get regmap\n");
-+
-+	gc = &st->gpio_chip;
-+	gc->parent = dev;
-+	gc->get_direction = ltc4283_gpio_get_direction;
-+	gc->direction_input = ltc4283_gpio_direction_input;
-+	gc->direction_output = ltc4283_gpio_direction_output;
-+	gc->get = ltc4283_gpio_get_value;
-+	gc->set = ltc4283_gpio_set_value;
-+	gc->init_valid_mask = ltc4283_init_valid_mask;
-+	gc->can_sleep = true;
-+
-+	gc->base = -1;
-+	gc->ngpio = LTC4283_PINS_MAX;
-+	gc->label = adev->name;
-+	gc->owner = THIS_MODULE;
-+
-+	return devm_gpiochip_add_data(dev, &st->gpio_chip, st);
-+}
-+
-+static const struct auxiliary_device_id ltc4283_aux_id_table[] = {
-+	{ "ltc4283.gpio" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(auxiliary, ltc4283_aux_id_table);
-+
-+static struct auxiliary_driver ltc4283_gpio_driver = {
-+	.probe = ltc4283_gpio_probe,
-+	.id_table = ltc4283_aux_id_table,
-+};
-+module_auxiliary_driver(ltc4283_gpio_driver);
-+
-+MODULE_AUTHOR("Nuno Sá <nuno.sa@analog.com>");
-+MODULE_DESCRIPTION("GPIO LTC4283 Driver");
-+MODULE_LICENSE("GPL");
+[ ... ]
 
--- 
-2.54.0
+> +static int ltc4283_read_alarm(struct ltc4283_hwmon *st, u32 reg,
+> +			      u32 mask, long *val)
+> +{
+> +	u32 alarm;
+> +	int ret;
+> +
+> +	ret =3D regmap_read(st->map, reg, &alarm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val =3D !!(alarm & mask);
+> +
+> +	/* If not status/fault logs, clear the alarm after reading it. */
+> +	if (reg !=3D LTC4283_FAULT_STATUS && reg !=3D LTC4283_FAULT_LOG)
+> +		return regmap_write(st->map, reg, alarm & ~mask);
 
+Could this read-modify-write operation accidentally clear concurrent hardwa=
+re
+events? If a new hardware event asserts immediately between the read and the
+write, the mask inversion might write 0 to that newly asserted bit, causing
+the event to be cleared before the software ever processes it.
 
+[ ... ]
+
+> +static void ltc4283_debugfs_init(struct ltc4283_hwmon *st, struct i2c_cl=
+ient *i2c)
+> +{
+> +	debugfs_create_file_unsafe("in0_crit_fault_log", 0400, i2c->debugfs, st,
+> +				   &ltc4283_in0_crit_fault_log);
+> +	debugfs_create_file_unsafe("in0_lcrit_fault_log", 0400, i2c->debugfs, s=
+t,
+> +				   &ltc4283_in0_lcrit_fault_log);
+> +	debugfs_create_file_unsafe("in0_fet_bad_fault_log", 0400, i2c->debugfs,=
+ st,
+> +				   &ltc4283_fet_bad_fault_log);
+> +	debugfs_create_file_unsafe("in0_fet_short_fault_log", 0400, i2c->debugf=
+s, st,
+> +				   &ltc4283_fet_short_fault_log);
+
+Should these debugfs attributes for the FET faults be named starting with
+in11_ instead of in0_? The MOSFET DRAIN channel is in11, and the
+documentation in ltc4283.rst lists these attributes as
+in11_fet_short_fault_log and in11_fet_bad_fault_log.
+
+[ ... ]
+
+> +static int ltc4283_setup(struct ltc4283_hwmon *st, struct device *dev)
+> +{
+[ ... ]
+> +	ret =3D device_property_match_property_string(dev, "adi,overcurrent-ret=
+ries",
+> +						    ltc4283_oc_fet_retry,
+> +						    ARRAY_SIZE(ltc4283_oc_fet_retry));
+> +	/* We still want to catch when an invalid string is given. */
+> +	if (ret < 0 && ret !=3D -EINVAL)
+> +		return dev_err_probe(dev, ret,
+> +				     "adi,overcurrent-retries invalid value\n");
+
+Does this condition silently ignore invalid string values?
+device_property_match_property_string() returns -EINVAL both when a
+property is missing and when the string does not match any entry in the
+provided array.
+
+[ ... ]
+
+> +static int ltc4283_probe(struct i2c_client *client)
+> +{
+[ ... ]
+> +	hwmon =3D devm_hwmon_device_register_with_info(dev, "ltc4283", st,
+> +						     &ltc4283_chip_info, NULL);
+> +
+> +	if (IS_ERR(hwmon))
+> +		return PTR_ERR(hwmon);
+> +
+> +	ltc4283_debugfs_init(st, client);
+> +
+> +	if (!st->gpio_mask)
+> +		return 0;
+> +
+> +	id =3D (client->adapter->nr << 10) | client->addr;
+> +	adev =3D __devm_auxiliary_device_create(dev, KBUILD_MODNAME, "gpio",
+> +					      &st->gpio_mask, id);
+> +	if (!adev)
+> +		return dev_err_probe(dev, -ENODEV, "Failed to add GPIO device\n");
+
+Can this error path lead to a use-after-free?
+
+According to the I2C subsystem rules, debugfs entries attached to the
+client debugfs directory are only cleaned up during the client device
+removal function on driver unbind.
+
+If __devm_auxiliary_device_create() fails, the probe function aborts and
+the devres subsystem frees the st pointer. However, the debugfs files
+persist and retain operations that operate on the freed st pointer.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260430-ltc4283-su=
+pport-v12-0-5dc9901f2567@analog.com?part=3D2
 
