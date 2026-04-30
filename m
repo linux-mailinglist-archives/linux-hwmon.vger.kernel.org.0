@@ -1,300 +1,172 @@
-Return-Path: <linux-hwmon+bounces-13628-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13631-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCHTNeUN82nZwwEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13628-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:08:05 +0200
+	id IGssJQQY82llxAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13631-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:51:16 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5238E49F0F6
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:08:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D6849F710
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 10:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2648A300D63F
-	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 08:08:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01A9C301DEC6
+	for <lists+linux-hwmon@lfdr.de>; Thu, 30 Apr 2026 08:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CEB38E5EF;
-	Thu, 30 Apr 2026 08:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DAE3FE67B;
+	Thu, 30 Apr 2026 08:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z2D1BRD9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UmWrdU/U"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868B3377574
-	for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 08:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265B234A773;
+	Thu, 30 Apr 2026 08:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777536481; cv=none; b=JE/Y2KWG9Ka2y94MKb79eU7fE0zOxYxet2oS0yRUJBmLsTi/hOWw2sUYq/yFOm2vP9I+rsN+froP6vHlycEYljHmpDbZj7ipBUzTzhHoJQA/azK8tEaHI+4b3JcMh0mYqpMhVtA7eXeyFpDwtb2RCciJsxNQMkVgTj/GW6qUE5g=
+	t=1777539072; cv=none; b=V2XiMnk32GEfg+2rceG/KUfeG5WhEPCxMh5TmtN/ZM+t5pS8lDGYlAjsS54IpG40p9izu5s+nTHwcUHtMGsQ4f5ZvXAG1Lh8McfQX2c8K0ouNB4I1O6nKnlE44SGu0WaktY35/pt7+rvoHPU3qWUiuJOTOh9AWElcLN6RCsIkm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777536481; c=relaxed/simple;
-	bh=lYuTZ4Zhas8ZPRyj5etivQlp/UpZ+eG+upGuTZAwe6Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fvzT7BBR4/9tyWtw2HQS41fjG07MbuVvJnf/+pyyQJaXBD2DW1zQSqrA5rkPd8D36gQRIMKg0TXXuwjBx7aoRfy6+0F1BoHTViOq7es2gnIlEgPN0a6YNMh/7zKsFZLcm/UsOGDrvqQMSMpFic5+C566W8/2OBI6Dec4Dhs2RwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z2D1BRD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA92C2BCB3;
-	Thu, 30 Apr 2026 08:08:01 +0000 (UTC)
+	s=arc-20240116; t=1777539072; c=relaxed/simple;
+	bh=X1hORcvEfGXH+JxOkAabXjsJ0RPQOd7wDQ4R+LR8WXM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W4wdTjJhT/FToX/9wh6meNLzNIGOB7OomeCpGlzyr7tbGa+1sofLwtLJ11sl0KTXTHBKeQfiUh2nAS4GdBvmhHFeHvfRBqdaM44LNc2aX11edOzzhELwQQnKOzz6E77AyjdsSzmfZ+wzbpPawr+2z9MMCZjHKTJJ2syToMTTYnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UmWrdU/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C5B77C2BCC4;
+	Thu, 30 Apr 2026 08:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777536481;
-	bh=lYuTZ4Zhas8ZPRyj5etivQlp/UpZ+eG+upGuTZAwe6Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Z2D1BRD997dsWgitW7ZBH/FScuxWh40mSJsMKdjZ9LP9sXldYEd/SDcVMIHhXgPuB
-	 KAUXBUxDQ+eOM4dD7+d98eT6IkHg4qkz91saZ365WwsTpMS6f/dZkOaEu9przJrZut
-	 4CFRTAxiAVOhr3lQ+igw/Szm3GdmFq/3W36utfDwpq7lIAN2FDoie+aM0Hm5FaT3GT
-	 HUKHFnn1FlzLAq9EhwjEOpGA+G6niHrSK7NSmFJq8jJMvsTJosqyAo0QYuZ7Sr+x69
-	 4jE6OWvd7aTlu22Vedp3W6O9kSDZCJfdgVUBJyJJQptwirKW/4vEum7f07ObANT0e0
-	 tLwJ1AXHufTmg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] hwmon: Add Eswin EIC7700 PVT sensor driver
-Reply-To: sashiko@lists.linux.dev
-To: hehuan1@eswincomputing.com
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260430064519.1632-1-hehuan1@eswincomputing.com>
-References: <20260430064519.1632-1-hehuan1@eswincomputing.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Apr 2026 08:08:00 +0000
-Message-Id: <20260430080801.1AA92C2BCB3@smtp.kernel.org>
+	s=k20201202; t=1777539071;
+	bh=X1hORcvEfGXH+JxOkAabXjsJ0RPQOd7wDQ4R+LR8WXM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=UmWrdU/UkJfgXHqfyU6azjXocasXmBkZ0l2Nzol5raKTCjocz8EAi/2V44ZS4jL4U
+	 5FiAykYLcEceAuKqwwCRIyawI4CFTcHeJFmmx3EjhrTVO1R/HVpqnopYGRhRN5bSei
+	 MFDCNJANowKkDhgSvJ5N4IZmIih2bNAii9ywp4AsfqH6n4021mzQQTDDDGUhaUSkR6
+	 SEJIQWK741spXcK+QCZ2G8I8v6kqEZgpiCk5Tn3lxGNik7tSXw3yKT3uia8/0DEQ61
+	 rWSBG6goBHnW1hWJwolekBK7Sr1Ikk3JaNzglr/N9TRd4v3xKbDQSQg4f6cVjIS0Jp
+	 jmjBibI8YYDag==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B35B3FF886F;
+	Thu, 30 Apr 2026 08:51:11 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v12 0/3] hwmon: Add support for the LTC4283 Hot Swap
+ Controller
+Date: Thu, 30 Apr 2026 09:52:02 +0100
+Message-Id: <20260430-ltc4283-support-v12-0-5dc9901f2567@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 5238E49F0F6
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XO3U7EIBAF4FfZcC2GGegAXvkexgvkZ5dkbRuoj
+ WbTd5fujTXo5TnJfGdurMaSY2VPpxsrcc01T2MLgA8n5i9uPEeeQysYCiQhheTXxSs0ktePeZ7
+ KwgXJpI3zfnCKtau5xJQ/7+TLa8uXXJepfN0XVtrb/62VuOAxRYBBYHIBn93ortP50U/vbMdWc
+ wBQ94BpgNIQIg5D0Gg6wP4ASlAP2Aa8EfnktbJI0AEgDgKaXgCx/5CQkiJlwcuegCNh/yCgEai
+ 9D5HABhd+Edu2fQNhQFX8uAEAAA==
+X-Change-ID: 20260303-ltc4283-support-063f78acc5a4
+To: linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777539125; l=2204;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=X1hORcvEfGXH+JxOkAabXjsJ0RPQOd7wDQ4R+LR8WXM=;
+ b=meKXRoX3OHpHON0TjTUrShcmctKrv2zBkfnhG2M4tPMLJusAzu/d3JQgqf73dHS1QCyvYDaBC
+ CMq/LgDUCzeAXLc3A//ILHI1RW7PwgokdZ3lZsTCZ5IvAIgbzWiDTdw
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
+X-Rspamd-Queue-Id: 57D6849F710
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13628-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-13631-lists,linux-hwmon=lfdr.de,nuno.sa.analog.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,smtp.kernel.org:mid]
+	HAS_REPLYTO(0.00)[nuno.sa@analog.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,analog.com:replyto,analog.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
-s) to consider:
-- [High] Hardware access with disabled clock when CONFIG_PM=3Dn
-- [High] Resource leak and hardware powered on during driver unbind
-- [High] System suspend state desynchronization causes potential crashes
-- [High] Unclocked hardware access in the interrupt handler
-- [Medium] Missing synchronization on timeout path causes race condition an=
-d stale data
-- [Medium] Unvalidated sysfs input and hwmon ABI violation for temp_offset
-- [Low] Mismatch between commit message and implemented voltage channels
+This is v8 for the LTC4283 how swap controller. 
+
+Similar to the LTC4282 device, we're clearing some fault logs in the
+reset_history attributes.
+
+Guenter, for my last email worrying about rsense low values, this is
+what I got internally:
+
+"10uOhm at the smallest sense voltage of 15mV would be 1500A and 72kW, which
+seems a tad excessive. The highest currents I’ve seen are around 200A, and
+the -48V market 4283 serves is generally a lot lower than that. Normal values
+are around 200uOhm.  I’d say the resolution should be around 1uohm and if a
+minimum is needed, 50uOhm is probably safe."
+
+For the resolution, I'm pretty sure I got the tenths of micro
+resolution for ltc4282 so I just kept it in here. So, if you don't mind
+I would prefer to keep it this way to be safer and changing that now would
+require me to change some formulas and I would prefer not to do that at
+this stage.
+
+---
+Changes in v12:
+- Patch 2:
+  * Add missing in0_reset_history in docs;
+  * Make sure to pass st->gpio_mask in __devm_auxiliary_device_create().
+- Link to v11: https://patch.msgid.link/20260429-ltc4283-support-v11-0-27ccde619dad@analog.com
+
+---
+Nuno Sá (3):
+      dt-bindings: hwmon: Document the LTC4283 Swap Controller
+      hwmon: ltc4283: Add support for the LTC4283 Swap Controller
+      gpio: gpio-ltc4283: Add support for the LTC4283 Swap Controller
+
+ .../devicetree/bindings/hwmon/adi,ltc4283.yaml     |  272 +++
+ Documentation/hwmon/index.rst                      |    1 +
+ Documentation/hwmon/ltc4283.rst                    |  267 +++
+ MAINTAINERS                                        |    9 +
+ drivers/gpio/Kconfig                               |   15 +
+ drivers/gpio/Makefile                              |    1 +
+ drivers/gpio/gpio-ltc4283.c                        |  218 +++
+ drivers/hwmon/Kconfig                              |   12 +
+ drivers/hwmon/Makefile                             |    1 +
+ drivers/hwmon/ltc4283.c                            | 1795 ++++++++++++++++++++
+ 10 files changed, 2591 insertions(+)
+---
+base-commit: 992920ad25f27f41521c1bb905d0e1062ecb9e93
+change-id: 20260303-ltc4283-support-063f78acc5a4
 --
 
-commit 226d2b003d7fbabad9b8abaf9c71cf6fdf386a91
-Author: Huan He <hehuan1@eswincomputing.com>
+Thanks!
+- Nuno Sá
 
-hwmon: Add Eswin EIC7700 PVT sensor driver
-   =20
-Add support for ESWIN EIC7700 Voltage and Temperature sensor. The driver
-supports temperature and voltage monitoring with polynomial conversion,
-and provides sysfs interface for sensor data access.
-   =20
-The PVT IP contains one temperature sensor and four voltage sensors for
-process variation monitoring.
 
-> The PVT IP contains one temperature sensor and four voltage sensors for
-> process variation monitoring.
-
-This isn't a bug, but the commit message states there are four voltage
-sensors, while the driver implementation only exposes a single voltage chan=
-nel.
-Could the commit message be updated to match the implementation?
-
-> diff --git a/drivers/hwmon/eic7700-pvt.c b/drivers/hwmon/eic7700-pvt.c
-> new file mode 100644
-> index 0000000000000..d9d6a035defeb
-> --- /dev/null
-> +++ b/drivers/hwmon/eic7700-pvt.c
-[ ... ]
-> +static irqreturn_t eic7700_pvt_hard_isr(int irq, void *data)
-> +{
-> +	struct pvt_hwmon *pvt =3D data;
-> +	u32 val;
-> +
-> +	eic7700_pvt_update(pvt->regs + PVT_INT, PVT_INT_CLR, PVT_INT_CLR);
-> +	/*
-> +	 * Read the data, update the cache and notify a waiter of this event.
-> +	 */
-> +	val =3D readl(pvt->regs + PVT_DATA);
-
-Could this cause a bus fault if a spurious or delayed interrupt fires while
-the device is in the RPM_SUSPENDED state?
-
-When the device is suspended, the hardware clock is gated. Accessing regist=
-ers
-without checking the PM runtime state could lead to a crash. Should this use
-pm_runtime_get_if_active() to protect against accessing unclocked hardware?
-
-[ ... ]
-> +static int eic7700_pvt_read_data(struct pvt_hwmon *pvt,
-> +				 enum pvt_sensor_type type, long *val)
-> +{
-> +	unsigned long timeout;
-> +	u32 data;
-> +	int ret;
-> +
-> +	/*
-> +	 * Wait for PVT conversion to complete and update the data cache. The
-> +	 * data read procedure is following: set the requested PVT sensor mode,
-> +	 * enable conversion, wait until conversion is finished, then disable
-> +	 * conversion and IRQ, and read the cached data.
-> +	 */
-> +	reinit_completion(&pvt->conversion);
-> +
-> +	eic7700_pvt_set_mode(pvt, pvt_info[type].mode);
-> +	eic7700_pvt_update(pvt->regs + PVT_ENA, PVT_ENA_EN, PVT_ENA_EN);
-> +
-> +	/*
-> +	 * Wait with timeout since in case if the sensor is suddenly powered
-> +	 * down the request won't be completed and the caller will hang up on
-> +	 * this procedure until the power is back up again. Multiply the
-> +	 * timeout by the factor of two to prevent a false timeout.
-> +	 */
-> +	timeout =3D 2 * usecs_to_jiffies(ktime_to_us(pvt->timeout));
-> +	ret =3D wait_for_completion_timeout(&pvt->conversion, timeout);
-> +
-> +	eic7700_pvt_update(pvt->regs + PVT_ENA, PVT_ENA_EN, 0);
-> +	eic7700_pvt_update(pvt->regs + PVT_INT, PVT_INT_CLR, PVT_INT_CLR);
-> +
-> +	data =3D READ_ONCE(pvt->data_cache);
-> +
-> +	if (!ret)
-> +		return -ETIMEDOUT;
-
-If the timeout expires, could an interrupt still be in flight?
-
-If so, a subsequent read request would call reinit_completion(), and the
-delayed interrupt handler could execute, complete the new request premature=
-ly,
-and cause the read to return stale data.
-
-Does the timeout path need to call synchronize_irq() to ensure no interrupt
-handler is running before returning?
-
-[ ... ]
-> +static int eic7700_pvt_write_trim(struct pvt_hwmon *pvt, long val)
-> +{
-> +	/*
-> +	 * Update PVT trim register safely while the controller is temporarily
-> +	 * disabled.
-> +	 */
-> +	eic7700_pvt_set_trim(pvt, val);
-> +
-> +	return 0;
-> +}
-
-Does this code validate the user input before writing it to the hardware?
-
-Writing a negative value could truncate to 0xFFFFFFFF and overwrite reserved
-bits in the register. Additionally, the hwmon ABI specifies that temp_offset
-should be in millidegrees Celsius, but this writes the raw value directly to
-the register without scaling.
-
-[ ... ]
-> +static void eic7700_pvt_disable_pm_runtime(void *data)
-> +{
-> +	struct pvt_hwmon *pvt =3D data;
-> +
-> +	pm_runtime_dont_use_autosuspend(pvt->dev);
-> +	pm_runtime_disable(pvt->dev);
-> +}
-
-Can this leak the clock reference and leave the hardware powered on if the
-device is unbound?
-
-Because pm_runtime_put_autosuspend() is used after reads, the device remains
-active for a 3-second window. If the module is removed during this window,
-pm_runtime_disable() will cancel the pending suspend but it does not suspend
-a device that is currently RPM_ACTIVE.
-
-Should this cleanup action explicitly suspend the device if it is active?
-
-[ ... ]
-> +static int eic7700_pvt_probe(struct platform_device *pdev)
-> +{
-[ ... ]
-> +	ret =3D eic7700_pvt_init_iface(pvt);
-> +	if (ret) {
-> +		clk_disable_unprepare(pvt->clk);
-> +		return ret;
-> +	}
-> +
-> +	clk_disable_unprepare(pvt->clk);
-
-Is this driver intended to be built when CONFIG_PM is disabled?
-
-If CONFIG_PM is disabled, pm_runtime_get_sync() in the hwmon read function =
-is
-a no-op that returns 1. Because the clock is explicitly disabled at the end=
- of
-probe() and relies entirely on PM runtime to re-enable it, a read operation
-will access the hardware registers while the clock is gated, leading to an
-external abort or system hang.
-
-Also, eic7700_pvt_suspend() checks !pm_runtime_status_suspended(dev), which
-is always false when CONFIG_PM=3Dn, causing it to erroneously call
-clk_disable_unprepare() on an already disabled clock.
-
-[ ... ]
-> +static int __maybe_unused eic7700_pvt_suspend(struct device *dev)
-> +{
-> +	int ret =3D 0;
-> +
-> +	if (!pm_runtime_status_suspended(dev)) {
-> +		ret =3D eic7700_pvt_runtime_suspend(dev);
-> +		if (ret) {
-> +			dev_err(dev, "Failed to suspend: %d\n", ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-
-Does calling eic7700_pvt_runtime_suspend() directly leave the PM runtime
-state desynchronized?
-
-This manually gates the clock if the device is active, but it fails to upda=
-te
-the device's PM runtime status. The PM core still considers the device to be
-RPM_ACTIVE.
-
-If a kernel thread calls pm_runtime_get_sync() before late suspend, it will
-see the state as active, return immediately without re-enabling the clock,
-and crash when accessing registers.
-
-Should this use pm_runtime_force_suspend() and pm_runtime_force_resume() to
-safely maintain state consistency?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260430064107.1598=
--1-hehuan1@eswincomputing.com?part=3D2
 
