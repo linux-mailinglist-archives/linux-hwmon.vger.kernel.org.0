@@ -1,143 +1,164 @@
-Return-Path: <linux-hwmon+bounces-13673-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13675-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4M9dLgMG9GlW9wEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13673-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 01 May 2026 03:46:43 +0200
+	id WDSqHpYR9GnY+AEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13675-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 01 May 2026 04:36:06 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334924A9B1A
-	for <lists+linux-hwmon@lfdr.de>; Fri, 01 May 2026 03:46:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0029D4A9D5B
+	for <lists+linux-hwmon@lfdr.de>; Fri, 01 May 2026 04:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36487300B844
-	for <lists+linux-hwmon@lfdr.de>; Fri,  1 May 2026 01:46:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A349630238D8
+	for <lists+linux-hwmon@lfdr.de>; Fri,  1 May 2026 02:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B2719DF62;
-	Fri,  1 May 2026 01:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31BC2FB965;
+	Fri,  1 May 2026 02:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZ1IAxy3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ke8d60ap"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4FE40DFC5
-	for <linux-hwmon@vger.kernel.org>; Fri,  1 May 2026 01:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D843519E968
+	for <linux-hwmon@vger.kernel.org>; Fri,  1 May 2026 02:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777599998; cv=none; b=n1RgLpLhrllftvLoDOzYQDCml+rZmYFOoPWgEdH1zuw7/rhhLjYWfuwKVyMQOdGqhzDhpnOFs4Lv/hmxWYBySULuHy/kE8xHdqqFcXo3OICb65sEbUhLhQ/yqQwUtilDckfGYMP/bP/Nn9d7Sn1kLiCZXn/Hl+pVY4ArEF1hZUc=
+	t=1777602944; cv=none; b=hQ17zOrhqfqduSgoM0UpMSa4mZe3OWXZmoYuUTe4vRytMaE3FsvYkcrJv/KNuqeySnpeXDkLZ/2Qttl/rk8rJ2v/KJHxPXPz2QDCHq5H1uCAZ1YXffy8DLv5BLPdd9noO95OS0fIHKU0HghHj/7oDD1yQ+bEFROajIAre346BWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777599998; c=relaxed/simple;
-	bh=If8Fdw6Hpk+6Ln1L/DdDqHqiRynd6T2oMeAzbSYKzhY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MAmMJgvW0VuBYIPB/eIVkWPJyO6d0JgIpK/u3spZl2GpbBh+I1ZxJaVlEBaDNdCZNEIBUl3/iC7L1hyA9JjBVTGYaw600JihSu/1WimzeCQ32ZdwTf48MYUuYwQPrzD8fyVIWNgtg6HU3qLhsLKX6dbkzqyrlO4oxwqyh0WdsAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZ1IAxy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3155C2BCB3;
-	Fri,  1 May 2026 01:46:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777599998;
-	bh=If8Fdw6Hpk+6Ln1L/DdDqHqiRynd6T2oMeAzbSYKzhY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=kZ1IAxy3YZ9UszRPaJu/5H7IaKkksTpeyh/mwPJpT9jB7pPBBE4PtZf52mLPl8FdL
-	 AITQkahs+/Fv6zm6IkLbQsLm/8eykVkPTD3iIcjjyQq/VjFW/PwV+JlQI037NdQYrC
-	 b1vn9OeofmZV11z0ELawukRr0XjPN7pQ+pTOVFvdoviDuUfNL34g2aVHv+F/k+2tYU
-	 1YiEipR7WRSzgZf+Styq4PNoeRbYu9zGCkxCMRcA2Rpa02NIPdQ+XjAqWRhJY4E+Fo
-	 pdBKMlFZYEfZyGcyB8mSPfEQTNFpRcFqSpzbZvIH1Pljhi/Z4yhvwefFn7Pavc5CTt
-	 xtPE8SXWuT0aA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/3] hwmon: (ads7871) Fix endianness bug in 16-bit
- register reads
-Reply-To: sashiko@lists.linux.dev
-To: "Tabrez Ahmed" <tabreztalks@gmail.com>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260501013044.22756-2-tabreztalks@gmail.com>
-References: <20260501013044.22756-2-tabreztalks@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 01 May 2026 01:46:37 +0000
-Message-Id: <20260501014637.F3155C2BCB3@smtp.kernel.org>
+	s=arc-20240116; t=1777602944; c=relaxed/simple;
+	bh=2y2/y0G4xKegMxAeB9N6LvOQxHely/EGyWUZnJ3S/bo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VMMGepGag6mhxhpIuq2ESdWu7t8gMCAgx/fiz/iGxHmLQarkX2H97cTVZhHrqzipke6zj+nbkQw0ZNxoCvratvwpXs3L4elllzpVzlrVNKgEHqCH6xa/j0QBkRp21qsZg+LAzi4fYIwA3h0zsNHjmGHtgjZ07qMVGcnpsXyNLpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ke8d60ap; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b0afa0210bso8257555ad.2
+        for <linux-hwmon@vger.kernel.org>; Thu, 30 Apr 2026 19:35:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777602938; x=1778207738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZxEZzG7nuqjedaY2huiV2Gx6afd+VeNrKDvHH9D11HM=;
+        b=Ke8d60ap51WMEsIiQPLNw+VcH1P2f87agFuPn5puZl/zm3lG/A6KrBak/jXurdHn3X
+         oNMEqDToJzxX8+nbZGYH7W7gWw7QruTpMyQWqJZ2w/BdAMGo2MaK4WOTHJzVEhyuChmz
+         SoM7aTYRlI/yhS7sRejQc7q+fvqx6SlrnVWBOwI6SwGUjYu09uEuB7VnmvT//rj9+RA4
+         yeFe69bmXESXstuxF9DJ/bKvu99F3DItf9suwU2bn3CjRraG7jXdHq6iSWebtJpW1Ms8
+         eaQvT/Ym/sJNHVJ552Is9CXcXvMoWk6nxLsUFAtRu/F+RE1vuCau1XiIuXZnEvlTlwfS
+         Fybg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777602938; x=1778207738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZxEZzG7nuqjedaY2huiV2Gx6afd+VeNrKDvHH9D11HM=;
+        b=Anc0ydgc2XbTXiyq06fNUrVZlczPT83bFVeZarJxXnUAaFhvspTkjcT2PqbXQXcQHS
+         HdG1qbWJN/eVchyfJXg5Kebxt+THandQCBNWlP4Camxg8SKxpNyo1EC7ktYPuPFHXPXv
+         rh+PJnGP0bxy3PagpJ96tiKbN9IuRKcD7NrQLZRPWwZrnSQ4NHRnw7upBkX4JjoHVkTK
+         9vPsgKVNAc22PtAvaSVsXVZCxzAErvWdylbl/PulN+ffgadUU3Yw8tWtN6Rn3gLbVpWO
+         HhrpQAVoh8Yhkx0PPYGddLrBiJvEvR1+D1tYNM36ieQe2BMaLIiPaQOjlmy8sCqR0lew
+         X5yA==
+X-Gm-Message-State: AOJu0YzFT0boGlwsGO1VV/u+sUvLrRBB3bFurZqRca7quXX6vLyrcLYX
+	tBKGDnhWUa1wj13bZhNjCU6zpMVAKhd0mZOxlcaUDhlLAOiq/r+w0MgE
+X-Gm-Gg: AeBDieuGD5iNBejlHdF0LpSyuLqUsZ+7TuKoVTT4tRdWJrQRMTeo7s/ZbwQJHg/0axJ
+	c382xMKTywsf+lWAm1DDMG4bHE+u6YRXcJiySiUv5bqtiY1sfOgGl64wMAhkYzTvPX5TEv1OeEu
+	PMBlYenJ2No5KOTJPCWBUhxe/5WAYcPHqRwdUbGablND/e43t6aRTy/FxonWf0nZQmq8mgkwsjz
+	xv1qTHRIHNr5X3GRLAyJBsbAAL+9qwuTx/ZbfrUnR+1Yq3wo3tFeuSfq2WnuRQgANLQWLeXQJUe
+	YdKV+TrJHnP6ZB2PVCqOGrl4WH8pASO/D24ANDiyRJSOMPXWyv1ZrlLkxliq8VnEUUYCIXwiqy5
+	bnjp0mdC3JzZvoqhjlC880bTf6BGdx0LCIQVRhc8HDXYSwto2d3p+W9GbDACI0Frt5hjToLnA/9
+	CoJ7I3zmdpQe5Azxz/G6AvkzrgptJ/yNHgxQlQ1Wc/CMDm3Pt7GMN4o5OLcrzhXOKegadGXBKB4
+	4lChTX3tvZQXXR3
+X-Received: by 2002:a17:902:b48f:b0:2b2:5203:acd3 with SMTP id d9443c01a7336-2b9a24b8916mr39052195ad.26.1777602938124;
+        Thu, 30 Apr 2026 19:35:38 -0700 (PDT)
+Received: from tabrez-VivoBook-ASUSLaptop-X513UA-KM513UA.. ([116.72.73.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9caa7e791sm9341385ad.7.2026.04.30.19.35.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 19:35:37 -0700 (PDT)
+From: Tabrez Ahmed <tabreztalks@gmail.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shuah@kernel.org,
+	me@brighamcampbell.com,
+	Tabrez Ahmed <tabreztalks@gmail.com>
+Subject: [PATCH v5 0/3] hwmon: (ads7871) Fix endianness and modernize driver
+Date: Fri,  1 May 2026 08:05:27 +0530
+Message-ID: <20260501023530.31160-1-tabreztalks@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 334924A9B1A
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0029D4A9D5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13673-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,brighamcampbell.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-13675-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tabreztalks@gmail.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,smtp.kernel.org:mid,lists.linux.dev:replyto]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The patch includes the architecture-specific `<asm/unaligned.h>` in=
-stead of the generic `<linux/unaligned.h>`.
---
+This series addresses several issues in the ads7871 driver. It fixes an
+architecture-dependent endianness bug in the 16-bit register read logic,
+migrates the driver to the modern hwmon_device_register_with_info() API,
+and moves the SPI transfer buffer into the driver's private data structure
+to ensure DMA safety.
 
-commit f2dcf018978363b0b13a49ceee94284796f154fb
-Author: Tabrez Ahmed <tabreztalks@gmail.com>
+Note: I do not have access to the physical ADS7871 hardware. This
+series has been compile-tested only.
 
-hwmon: (ads7871) Fix endianness bug in 16-bit register reads
+Changes in v5:
+- Fixed a bisectability issue where the <linux/unaligned.h> include 
+  modernization was accidentally squashed into Patch 3 instead of Patch 1.
+- Ensured the 1-byte SPI command write in ads7871_read_reg16() uses a 
+  strictly typed 'u8' variable to prevent a Big-Endian pointer hazard.
 
-This commit replaces spi_w8r16() with a manual spi_write_then_read() into a
-byte array to address an endianness bug. The 16-bit value is then safely
-reconstructed using get_unaligned_le16().
+Changes in v4:
+- Patch 1: Refactored 16-bit register reads to use a dedicated 'u8' 
+  transmit variable, eliminating a 32-bit pointer endianness hazard.
 
-Closes: https://sashiko.dev/#/patchset/20260418034601.90226-1-tabreztalks@g=
-mail.com
+Changes in v3:
+- Added Patch 1 to fix the pre-existing endianness bug in 16-bit reads.
+- Fixed multiple formatting and alignment issues caught by checkpatch
+  --strict, as requested by Guenter Roeck.
+- Added "While at it, fix checkpatch violations" to Patch 2 commit message.
 
-> diff --git a/drivers/hwmon/ads7871.c b/drivers/hwmon/ads7871.c
-> index 9bfdf9e6bcd77..15104d9b2b733 100644
-> --- a/drivers/hwmon/ads7871.c
-> +++ b/drivers/hwmon/ads7871.c
-> @@ -59,6 +59,7 @@
->  #include <linux/hwmon-sysfs.h>
->  #include <linux/err.h>
->  #include <linux/delay.h>
-> +#include <asm/unaligned.h>
+Tabrez Ahmed (3):
+  hwmon: (ads7871) Fix endianness bug in 16-bit register reads
+  hwmon: (ads7871) Convert to hwmon_device_register_with_info
+  hwmon: (ads7871) Use DMA-safe buffer for SPI writes
 
-Should this use <linux/unaligned.h> instead of the architecture-specific
-<asm/unaligned.h> header?
+ drivers/hwmon/ads7871.c | 122 +++++++++++++++++++++++-----------------
+ 1 file changed, 71 insertions(+), 51 deletions(-)
 
-Directly including <asm/unaligned.h> can cause build failures on platforms
-that no longer expose this header directly to drivers.
+-- 
+2.43.0
 
-I notice this is addressed later in the patch series in the commit
-"hwmon: (ads7871) Use DMA-safe buffer for SPI writes". Does this temporary
-inclusion break the expectation that every patch in a series must
-independently compile?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260501013044.2275=
-6-1-tabreztalks@gmail.com?part=3D1
 
