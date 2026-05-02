@@ -1,154 +1,210 @@
-Return-Path: <linux-hwmon+bounces-13739-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13740-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AL0kFDtB9mlYTQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13739-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 20:23:55 +0200
+	id KDhjI89K9mk2TgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13740-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 21:04:47 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E6E4B3317
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 20:23:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B91F4B3451
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 21:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DF74300A518
-	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 18:23:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A50E4300E713
+	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 19:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846EB387345;
-	Sat,  2 May 2026 18:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F4E3876BF;
+	Sat,  2 May 2026 19:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KdPKMSt6"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="tJu2qBVq"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409D6382288
-	for <linux-hwmon@vger.kernel.org>; Sat,  2 May 2026 18:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE89938758B;
+	Sat,  2 May 2026 19:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777746230; cv=none; b=Vbx+9rG+09/c6voMRCdKMooF0FV50m+NfCJEyQDtwKiwxi0JbWne0fNMh6Evfl0YzCNrksfEpXYoWoFGGeo1Pa1KU6NrDuagOmbo1wl7HVonE84EOIfotLF/xNtXpyTIOc76fIdYLbuN/jolzPaj4u8XMNrYZIZ0zOMJWwRsJEc=
+	t=1777748662; cv=none; b=G3Ek+QL/ZelUlgLwmPq+86FGb0b8EQrFRXekh8rexcN9ni0TUxPR89zXfQar+gIkXmnoN70RgQJ7IUjRIW1j5Bgq5OhJbu96EbFJDc3MF7pROboOha/xd/3bLuYRLqciAtRXyXBbBJRH2fd5QF56NzFiIAj1toTadY4pV3oZNnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777746230; c=relaxed/simple;
-	bh=/JZ7X4T/h0NnmjWz65EBKYU2mQrWeemJS0en2zcpv2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=USO9HTIFsaBwZrjyx1xRAMUkPUI7pgtXBn9g5sZlKO5MM77DsxHuKKbhMp/FpM1dmJnpz27x0BQVgxRCuFbXpaBs6OdS0qaL/gQdui+La9aQzj24vUxArrKheyRVoDreUHwk/31DlZ2YuKKTJEwaNNBsCdfo8m5AliHztQ4Ez74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KdPKMSt6; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b4520f6b32so4409309eec.0
-        for <linux-hwmon@vger.kernel.org>; Sat, 02 May 2026 11:23:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777746228; x=1778351028; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=niqmaPYrIRL6pEqOUUxVRD/ACd/HcNml6ARMk/pYX9s=;
-        b=KdPKMSt6us3ThNa3DoJvIKRMCalsrlm3rgS2FgIqi1fja/a2sCrR8/SFWNRxOMsQPt
-         Gw0tqqNt86WcstP16lkYuECT8Vgh41+6yI9jZhTDTip9PmrFGx6c7kqnaSyZEAy4sIJi
-         BpyIULPh0KeSmz/tAI27fW0LxS6QAuatMdJ8QX0c+oZwJuHGisg/1MoZBRyISKQmLCje
-         dh6oO8yCFGHFKHylnyPe4g7HSgqlvpbdcTKhPQ/52EiMO03CkJQ1NFSrXDfv5gWXT5Jq
-         VIJlbqnAwkZQERHTsv4sOI5kDqvHls//ktLUZwoyqWm80Egy/OQmN7U7weVViIVmpwRd
-         N2Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777746228; x=1778351028;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=niqmaPYrIRL6pEqOUUxVRD/ACd/HcNml6ARMk/pYX9s=;
-        b=R264fCKv9laRUFjWQo345vzqIIq6zq4kXmfEDHQD9FidzV1kHzz1aMV4IVIBERWXiY
-         IzQf39KU408wfNUYy4z+mh4q6RfLPrDU4lOkaNpa6gh88b+iqlf65VciQSdK4N2lWHRY
-         4v4Mr5LZaUzGwT/n3qpYw8aOzJHTZrWfcwq81Ys1Jh8ZERyxg0Zd9Tf31TnyAWA8FEpV
-         WVP4NLlwZr5L/GswgFrt7oIAhp/GQxHM3M2ypu+UgOgHV6chmOMuMW7jGlAuhjNKqf7d
-         HPr3AEZLfmkaKx+nrfCNH3lpGLcZI9xzaRg8szTsvcHEwyOFBANs9MDaKUvBX3sLbx0M
-         eMBg==
-X-Gm-Message-State: AOJu0YyMl+9urm+XxSchUbTajsQbCK5GaYEoz4f83cYxhe/zgXCYdgDr
-	TSMK93bjFzYiGVbnMP23A/Hxk7x93oC1CKF50DrcVn+WPNm76FqyoO+S
-X-Gm-Gg: AeBDies7rUzrYAI0kLMJTPWm/VYlHFJtxDdQklk5Sznt3ICPfQOS7awB6vrKPUaMaqc
-	3h8XZ89SrO4QMGGbHchDY9dMC48kT45s7gtIGSUFOfflQmacWwbQRBJzx3fbJsZniRLSQAg0mWT
-	N+3Ma7B3CHMurNZi3EhztGvLUt4i2ecXY9tJBjzMRCLWosaXY7gAXlBUZ30eAxTZu6h+Qv7W85d
-	MffS8eATbkI8mpkGR0E91QVkpJIAYPKoO8KEfc2gQLAlQ/pGJn8lsGzAwSlWg0Cs4CQXUGDn45t
-	2w0LCNEO+Juw61d1xqStfia5KnhU6L8tHjrwTujhPDuPzBYsN9aKl6iAXyHQAMM/uwaer4pKGYl
-	VskESUd1UE/TkiW0WHj70jwADX/N6yeoVxugi5l/A9gomBDmLXDU1avQOp6u7aECMTW5TTm2SQO
-	gYcHH5Uni/UI3mfSShLJWg6WS9pDlHkC4iwAgZsd+zBR6JVvM=
-X-Received: by 2002:a05:7301:6786:b0:2c8:7172:3b88 with SMTP id 5a478bee46e88-2efba5b3e9dmr1728972eec.28.1777746228364;
-        Sat, 02 May 2026 11:23:48 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee38e71cedsm10971844eec.9.2026.05.02.11.23.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 11:23:47 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sat, 2 May 2026 11:23:47 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Tabrez Ahmed <tabreztalks@gmail.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com, me@brighamcampbell.com,
-	shuah@kernel.org
-Subject: Re: [PATCH v6 3/3] hwmon: (ads7871) Use DMA-safe buffer for SPI
- writes
-Message-ID: <8f4363a4-b05a-4e42-8868-e7b611fd0dda@roeck-us.net>
-References: <20260502020844.110038-1-tabreztalks@gmail.com>
- <20260502020844.110038-4-tabreztalks@gmail.com>
+	s=arc-20240116; t=1777748662; c=relaxed/simple;
+	bh=Zuw1y+XK0Y+ckAYeITz31T9MIPPRI0wiOk5RT/5LNOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XPlgsuh/JsaNw5h65zLpTIL3dQ3CFjhZoHs/RDEuHjtdiqqKXrUltkUzY79QK6tjxuYOUXl3/MpLV6UIbkFdDnz/SaIorHQR5ZhLeuQl5/jNnXEmw/bSmV+c/58RzYYcwuWQMVC+pyaxFxUlYJfDzLT5Kv26xBG0TgUsSPWE18g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=tJu2qBVq; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1777748659; x=1778353459;
+	i=markus.stockhausen@gmx.de;
+	bh=Zuw1y+XK0Y+ckAYeITz31T9MIPPRI0wiOk5RT/5LNOM=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=tJu2qBVqO9gcLA/RWSHZUnvzwn9iCKS2zlrMcvvcAGJgy9oYzzdHd6otB4v0tDLb
+	 eDHX0ZXv56eEa93S4uLrxtL1q0ZkKzK2Z4ROEk1vSVy9sNg/eZqhDiWpAsy6aNoOL
+	 +okjbdY9gOzN17+iP7JCmRjJktTrPfEVLoocJU/g3PgFwbLQ9IKSmGDA1JYfmiCwY
+	 CnwdvLqkJo2BjLAslGrCXFXXy3fTDHdLL0Dmht2JzsTbqru6vIR1ovlfPj67ZgIHx
+	 nRC+fgeCRC1BfK+6bWf8hOtdiVJ+GiBqfCn5GkQFJZHNiUbX4vfOJ1n2c9YQHwH9M
+	 clq86eSbQMlU7PpopA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpDJX-1vXrWH3svn-00aQB7; Sat, 02
+ May 2026 21:04:19 +0200
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
+To: linux@roeck-us.net,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
+Subject: [PATCH v2 0/2] Support active-high alert polarity for LM75
+Date: Sat,  2 May 2026 21:04:06 +0200
+Message-ID: <20260502190408.3577731-1-markus.stockhausen@gmx.de>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260502020844.110038-4-tabreztalks@gmail.com>
-X-Rspamd-Queue-Id: C5E6E4B3317
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:a0wdPPArZ+BnhgPApxtbkAxsfjApU1Hrz3MfLc/sX0cGePL5Pg6
+ Cn6QIrMW7+kVZm0rUv9CZHpbXM0KFaHqbYHv4Mvi46raSSMc4dTdn7M74jYNxpkSMnHeEGP
+ yF3xDHb1SAGMSbCEijMXB4cdKH4XEBr8TGD8Jb1SpQC/9N8ayZ4mYFetLfodvFbr0P8hVhz
+ KMt2HITlki6uYRJTFe5Yg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:poqgwcpI3f0=;CbXx/3bT5AfhJfqIcnxEqSgfcS3
+ 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
+ 3tsXbDv4DWK4nCL8qdamF6BiSySV4sfCQQyI=
+X-Rspamd-Queue-Id: 3B91F4B3451
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13739-lists,linux-hwmon=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,brighamcampbell.com,kernel.org];
+	FREEMAIL_CC(0.00)[gmx.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-13740-lists,linux-hwmon=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[markus.stockhausen@gmx.de,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	NEURAL_HAM(-0.00)[-0.992];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,gmx.de:dkim,gmx.de:mid]
 
-On Sat, May 02, 2026 at 07:38:44AM +0530, Tabrez Ahmed wrote:
-> The driver currently passes a stack-allocated buffer to spi_write(),
-> which is incompatible with DMA on systems with CONFIG_VMAP_STACK
-> enabled.
-> 
-> Move the transfer buffer into the driver's private data structure
-> to ensure it is DMA-safe. Since this shared buffer now requires
-> serialization, this change depends on the previous commit which
-> migrated the driver to the hwmon 'with_info' API.
-> 
-> While moving the logic, also:
-> - Corrected the sign extension for 14-bit data by casting to s16.
-> - Scaled the output to millivolts (2500mV full scale
-> ) to comply with the hwmon ABI.
-> 
-> Signed-off-by: Tabrez Ahmed <tabreztalks@gmail.com>
+The LM75 configuration register allows to switch the alert polarity.
+In default mode the alert output pin is active-low. There are hardware
+designs that use this alert output for an hardware assisted automatic
+fan speed control. E.g. the D-Link DGS-1250 implements
 
-Applied.
+- temperature below Tmax threshold -> alert pin low -> fan slow speed
+- temperature above Tmax threshold -> alert pin high -> fan high speed
 
-Thanks,
-Guenter
+Provide a devicetree configuration option and a driver enhancement to
+support these hardware designs.
+
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+
+---
+
+Changes in v2
+- Carve out AS6200 polarity fix into separate series
+- Rename devicetree prefix from lm75 to ti
+
 
