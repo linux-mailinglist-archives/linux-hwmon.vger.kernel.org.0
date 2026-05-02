@@ -1,232 +1,171 @@
-Return-Path: <linux-hwmon+bounces-13706-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13709-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAZ0NMXH9Wm8OwIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13706-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 11:45:41 +0200
+	id cOVwNDfK9WkhPAIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13709-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 11:56:07 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC2B4B18E5
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 11:45:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461D84B1945
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 11:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2304E3004610
-	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 09:45:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0437D300E3CF
+	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 09:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6A32DEA9B;
-	Sat,  2 May 2026 09:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529EA30F95F;
+	Sat,  2 May 2026 09:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="WRSR3OQL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1pPyeGY"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A6019DF55
-	for <linux-hwmon@vger.kernel.org>; Sat,  2 May 2026 09:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2927121ADA4;
+	Sat,  2 May 2026 09:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777715138; cv=none; b=OodPOWoxFHjlUX+eJw5Cng9grYyIOE8d9tQnw+E6rHMSCUPnzcdWfbZmIUH2+D9H5KxFKv5K3ylouxgFQ1rx4N9jsYIkQVMWuR3Md/WKEbvej+M/NzhXaQDx+/HCFdT46ctTLZQrbKkemUcarvZUrrSF18PBMsD35Y55HFN8oI4=
+	t=1777715764; cv=none; b=GqvOFBwbHZc0VyiqWt1/R7IS2g6UhAEdJ691BVaBvTW5xUmEdUjPJnx6DjhdKRDDmoJ+ozOG8/gXu9OxugfbUOPe0PSZip/xRCZ9aqWRlJ884ElYWWO02OPldlJZV5DFufTW6/iC+ckgb5YSu7MK5o6GQU66aqjVppNWe1/xejk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777715138; c=relaxed/simple;
-	bh=zjmetr59dpT0ANapC2Jl367MDpgyAmp3w1CTXwd/140=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtzaflZvHzVJORolEw+uHlTeATt51UN77nlHptot3DMs5CQPWeWgEWIRTCUu5y72MFLIz21Jw2bEGv1aMf8ccrlR6rnNdRZBczniBlbKdrUtl73Lq1/Teno86WkzRPrQ4Btm82VRrTzPHrD9uJXYJ8Wv47Nu7YP+fQs/IrI5EpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=WRSR3OQL; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1777715134; x=1778319934;
-	i=markus.stockhausen@gmx.de;
-	bh=CBCRx6hPnhZlW2Ni3mL/bj2oqmBVyoHImGpycQNuaCc=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=WRSR3OQLRt78NNwwVj6Uzx/8wAOtwNaZavfmfn+M39g0umeOxcwsPmhjgGom4lpY
-	 j/WmyBNbL6kOpgBvy+X+oVaMPum8GiqBim+hHsHWNqPd0u1ZTn2pxkoYF/O+/3yZ6
-	 173PG35P7Q2FWql/Jjc9bESDFJwiDzctEt8N9m07Pi+RZ5jorauFokNALpe6Pso/Z
-	 UhC3TY1Zlwt8MUAra/kTM1TGRBoug1tqpb/Kgwp75vRD1G+HgRfsHFFX1zXflmsG2
-	 dEaBnloZL0a/XKTGxRhQVcm/Ux8/5TpKaiJuASPCNE0G6vR+sGO1SlrTo4UDypPKn
-	 KR5JJZDViBkWf2bWmQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M9Fjb-1wDtZx2ayF-00CK9u; Sat, 02
- May 2026 11:45:34 +0200
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
-To: linux@roeck-us.net,
-	linux-hwmon@vger.kernel.org,
-	wsa+renesas@sang-engineering.com,
-	alkuor@gmail.com
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH 2/2] hwmon: (lm75) Fix configuration register writes.
-Date: Sat,  2 May 2026 11:45:24 +0200
-Message-ID: <20260502094524.3358193-3-markus.stockhausen@gmx.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260502094524.3358193-1-markus.stockhausen@gmx.de>
-References: <20260502094524.3358193-1-markus.stockhausen@gmx.de>
+	s=arc-20240116; t=1777715764; c=relaxed/simple;
+	bh=1qCobfoCEucgrjRGXrCQ3vKcmNt1JqyTqC3CN//BeTg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i7SJxOYgNGqnkerbXCKwC+WG+AOtT9/codxCzlII8f2VV30CdNOUnNnpEmxR03+bHIaTCZ5v5jjjw5zKzmJBq1dmqJtxUsi/VBCtqxzRvaPwZRTpoTKFhyilXf+x6bASnsQwPTV7CLyZSRxA4kkQY6zE5uwhrShN9IndD2amSKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1pPyeGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E823DC19425;
+	Sat,  2 May 2026 09:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777715764;
+	bh=1qCobfoCEucgrjRGXrCQ3vKcmNt1JqyTqC3CN//BeTg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=M1pPyeGYpiWzdiXrmobDlFflvw9s24olyRdbqRATTTAhtKgiERc85RytS7XUMII2Y
+	 Un6AyaR2vCT9VVkLPICXEtq0YvlQ/9V5NexhU+Vx49WV711VwcNfbKPxqM5ln7NH5j
+	 N1wNk8gLqjlqE2wW65KgkqocCKsxrpviwqEkWy6McHuuY3EKda/ZOKrWcCFmHt+jQf
+	 lMs44AXYr0l7SDfGR5QClz4acV8UQDu7/QIR04oDVC5w7CI6gSwr276WwUgPSAzMjH
+	 llic//IQVKNgV/RjFQX+G1Xuz5FDHDH3vFjEMwdnIsDVAzRgf3LYPAC35jNZSnO4nZ
+	 jx/crUDCL2/yw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D37D6CCFA13;
+	Sat,  2 May 2026 09:56:03 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v13 0/3] hwmon: Add support for the LTC4283 Hot Swap
+ Controller
+Date: Sat, 02 May 2026 10:56:51 +0100
+Message-Id: <20260502-ltc4283-support-v13-0-1c206542e652@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:NK3tIidJd5BdS2xaAeqrwyMa+Zfrp5r4UhUZddMNRAEhI1ZNv75
- 6NUTg+m55JIgAbkJcSYF2lSHBdNOByI4HQ/TwPuiRKUKfWr+2Y7tkNJiXdvnGBAldzSIT9q
- EI5dPE3Ls5T6H1El0DW8/yEB+WeNvIi0nHf4dY3/VueCe+yM1+9Lf+HEOMGIchNBubbT5vY
- ip2tNzOnp86Ftp+nq8ivw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:hmVEW9T7e8M=;ybzeZBtjlGAoU7k3Ha9fEUxhgc1
- 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
- dz6D7iUJlWAZ2Tw==
-X-Rspamd-Queue-Id: 2FC2B4B18E5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOTW7DIBAF4KtErEvFDDBAVr1H1AXlJ0FKbct2r
+ VSR716cTV2RLt+T5ntzZ1MaS5rY8XBnY1rKVPquBpAvBxYuvjsnXmItGAokIYXk1zkotJJPX8P
+ QjzMXJLOxPgTtFatXw5hyuT3I03vNlzLN/fj9WFhoa/+3FuKCp5wAtMDsI775zl/782voP9mGL
+ XYHoGkBWwFlICbUOhq0DeB+ASWoBVwFPohCDkY5JGgAEDsBbSuA2H7ISFmRchBkS8CecE8IqAS
+ aEGIicNHHlsAdIcUTAiuhY3BOQEZN5g+xrusPVc8HOvsBAAA=
+X-Change-ID: 20260303-ltc4283-support-063f78acc5a4
+To: linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777715816; l=2159;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=1qCobfoCEucgrjRGXrCQ3vKcmNt1JqyTqC3CN//BeTg=;
+ b=2lD4JiD7HXmz7ICmwv1z6+5Qet99RmrVlaltpn/Focc/QXX+JPWkpzj+DaEU4TL5LGUfout9r
+ vuW1Qo/ZJ8IBW+kTu4Yt997g/CISjNBTJsH9T3DiZYwHyMOVLWZm2u9
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
+X-Rspamd-Queue-Id: 461D84B1945
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13706-lists,linux-hwmon=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[roeck-us.net,vger.kernel.org,sang-engineering.com,gmail.com];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[markus.stockhausen@gmx.de,linux-hwmon@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-13709-lists,linux-hwmon=lfdr.de,nuno.sa.analog.com];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmx.de];
-	NEURAL_HAM(-0.00)[-0.984];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,renesas];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[nuno.sa@analog.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,gmx.de:dkim,gmx.de:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,analog.com:replyto,analog.com:mid]
 
-Sensors configurations are defined by set and clear masks. These
-do not follow a consistent "clear mask is a superset of set mask"
-rule. This relaxed definition breaks lm75_write_config()
+This is v8 for the LTC4283 how swap controller. 
 
-static inline int lm75_write_config(struct lm75_data *data, u16 set_mask,
-				    u16 clr_mask)
-{
-	return regmap_update_bits(data->regmap, LM75_REG_CONF,
-				  clr_mask | LM75_SHUTDOWN, set_mask);
-}
+Similar to the LTC4282 device, we're clearing some fault logs in the
+reset_history attributes.
 
-Basically all bits from set_mask that are not defined in clr_mask are
-dropped. Fix that by enhancing the helper to always combine clr_mask
-and set_mask into the mask bits of regmap_update_bits().
+Guenter, for my last email worrying about rsense low values, this is
+what I got internally:
 
-Fixes: 6da24a2 ("hwmon: (lm75) Hide register size differences in regmap ac=
-cess functions")
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-=2D--
- drivers/hwmon/lm75.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+"10uOhm at the smallest sense voltage of 15mV would be 1500A and 72kW, which
+seems a tad excessive. The highest currents I’ve seen are around 200A, and
+the -48V market 4283 serves is generally a lot lower than that. Normal values
+are around 200uOhm.  I’d say the resolution should be around 1uohm and if a
+minimum is needed, 50uOhm is probably safe."
 
-diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-index 4fd4288ae502..c601bb494dad 100644
-=2D-- a/drivers/hwmon/lm75.c
-+++ b/drivers/hwmon/lm75.c
-@@ -353,7 +353,7 @@ static inline int lm75_write_config(struct lm75_data *=
-data, u16 set_mask,
- 				    u16 clr_mask)
- {
- 	return regmap_update_bits(data->regmap, LM75_REG_CONF,
--				  clr_mask | LM75_SHUTDOWN, set_mask);
-+				  clr_mask | set_mask | LM75_SHUTDOWN, set_mask);
- }
-=20
- static irqreturn_t lm75_alarm_handler(int irq, void *private)
-=2D-=20
-2.54.0
+For the resolution, I'm pretty sure I got the tenths of micro
+resolution for ltc4282 so I just kept it in here. So, if you don't mind
+I would prefer to keep it this way to be safer and changing that now would
+require me to change some formulas and I would prefer not to do that at
+this stage.
+
+---
+Changes in v13:
+- Patch 2
+   * Properly register debugfs fet faults to match DRAIN channel (in11).
+- Link to v12: https://patch.msgid.link/20260430-ltc4283-support-v12-0-5dc9901f2567@analog.com
+
+---
+Nuno Sá (3):
+      dt-bindings: hwmon: Document the LTC4283 Swap Controller
+      hwmon: ltc4283: Add support for the LTC4283 Swap Controller
+      gpio: gpio-ltc4283: Add support for the LTC4283 Swap Controller
+
+ .../devicetree/bindings/hwmon/adi,ltc4283.yaml     |  272 +++
+ Documentation/hwmon/index.rst                      |    1 +
+ Documentation/hwmon/ltc4283.rst                    |  267 +++
+ MAINTAINERS                                        |    9 +
+ drivers/gpio/Kconfig                               |   15 +
+ drivers/gpio/Makefile                              |    1 +
+ drivers/gpio/gpio-ltc4283.c                        |  218 +++
+ drivers/hwmon/Kconfig                              |   12 +
+ drivers/hwmon/Makefile                             |    1 +
+ drivers/hwmon/ltc4283.c                            | 1795 ++++++++++++++++++++
+ 10 files changed, 2591 insertions(+)
+---
+base-commit: 992920ad25f27f41521c1bb905d0e1062ecb9e93
+change-id: 20260303-ltc4283-support-063f78acc5a4
+--
+
+Thanks!
+- Nuno Sá
+
 
 
