@@ -1,163 +1,174 @@
-Return-Path: <linux-hwmon+bounces-13713-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13714-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id FWl4IXXM9WmoPAIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13713-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 12:05:41 +0200
+	id wPHJC4fN9WnOPAIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13714-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 12:10:15 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DC94B19DF
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 12:05:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818C64B1A09
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 12:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25B44300ECAF
-	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 10:05:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 976643011F3D
+	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 10:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5A52DEA90;
-	Sat,  2 May 2026 10:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738FE31E83E;
+	Sat,  2 May 2026 10:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Voyje0Bh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETBPvY1k"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694EE1EFFA1
-	for <linux-hwmon@vger.kernel.org>; Sat,  2 May 2026 10:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A447431E834
+	for <linux-hwmon@vger.kernel.org>; Sat,  2 May 2026 10:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777716336; cv=none; b=gFCt8o6Et+I8HJKTFwFAlV414Ru44Rma+36DM1UoK0MKfjw0H/Sctb+DpgxZVa7rIQfWCm/eFBFtauuxQA83beiGxOWHaPrup38mkwgKNk21HdJUPLhB5X7C8Dt5fEaJTDLsZ1TVbHP9jYQS7uLOhXYB1OrbDx9KCIs3XdIrGms=
+	t=1777716610; cv=none; b=XlqVLHqbjrLS2f+CzRvmWhoTZ/y37pkN/kiQ1ZlTPm1SQ8Z3p59nCOnKYbILUqD8ZSokBGB+5rkAnjuOWEpkpzoOgv5GpewnMGMKJQSqSQlfpa3v3hbP0aoYi722zh7YmIGhkthr92ieJkMs0YtBY8zyRnPStjYo+Kb9XyO7WSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777716336; c=relaxed/simple;
-	bh=V8bfvRKVf1iNBXbeumQpRo2SAL4HWWOZ4/Tr5ADZelY=;
+	s=arc-20240116; t=1777716610; c=relaxed/simple;
+	bh=pzPcvx7yCrqJdLHmjRlJR1nGW7z7thAfgaiPAh+Sejw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=canK847xNXCa/U0RJ0anAd5m2b/xvhsxI74OYKCU4txDQB/VrTqpN/HFAmGUgeXPnfNIrPpOslsTyiZOOZM8pktA/heEHNpJFM5fOh0zFXWQeH3/FNlcNOfpnWqNFDSlejkyiEU7yW0SDcDalHdecejfq3rP1twcR5Fq9a074kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Voyje0Bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD16FC19425;
-	Sat,  2 May 2026 10:05:35 +0000 (UTC)
+	 Message-Id; b=PVpWCR28HLG4mVeuqkxz0S9uhl7QzfNZSmBjeBzqzmkVfOsXH7yKcnYUvlKDBj1MMT62QlXJlvIp0BDH2ozcpKEDJa7KA/u3ABCXu0akoxTmzayvdWs+Gei+U8QUVHsR2nca1DvlCikDPO/QfFJA7LF7b6hOPtWgPwqOHjh/kJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETBPvY1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDF8C19425;
+	Sat,  2 May 2026 10:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777716336;
-	bh=V8bfvRKVf1iNBXbeumQpRo2SAL4HWWOZ4/Tr5ADZelY=;
+	s=k20201202; t=1777716610;
+	bh=pzPcvx7yCrqJdLHmjRlJR1nGW7z7thAfgaiPAh+Sejw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=Voyje0Bha24DzsGUQBJhDQmg0pgdBzN6ilxVz7S3P2RUaIdxXXdFGtC9uXYLxYY/v
-	 GObXjEtYBbL4LKWNW0Edzv1I5YR/a3JLDmEM+pGM/wWtCJSKzWo0wpP6p3UNIM3aOd
-	 7tMv91HwT4eK1pzEbBoSAvOwCqaON8kE4KtQHhTL4oZ+GsxdQYXHJexfRPtH2xk3xh
-	 eULaJ0XJ2nIu8kUtu3Wio3vn9D6EjoyT+iKxT2pAuGzYkgbJT0EqRjtz5POqKBJLQF
-	 ah3YFFF296er4NS+/8tk1cjdSl9/aN76WxLfRP82qIOtyKLL8K6jenlDRnldP+2RVH
-	 ROzA5VDcvXNFA==
+	b=ETBPvY1kud25ZamDy7e7f5ZtNGFopQ7PLXDZmUQFaRgV2TaVknOCKH8RVe3d1vJ+u
+	 z5rI3wt8laMAnx1yQssP2wNDzGjuu9SZ3tOBL9c0jnI2Dv341QC5sIe0ldQl7gKUU1
+	 Du4v+nGPjZ3OqQn0M0wJ1n6D7k6QvrSwGNgRapLhm/HFPxhGffz1WysgkVQz98t2mO
+	 1YtNLXnmxgV1lJGvPp4+vx8/vZoRWTEtKw0yHmebQSvtfj4+T36vbZWHw34Y4whY4Y
+	 AOktHHJRM4WJ+wDlIfD6VWViF3YIGjsIREU9Pvonc/J0wZy7zaHy45zU54qFdyZ9pW
+	 M+QfyJQzHgNzw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v13 1/3] dt-bindings: hwmon: Document the LTC4283 Swap
- Controller
+Subject: Re: [PATCH 1/2] hwmon: (lm75) Fix AS6200 setup and alarm handling
 Reply-To: sashiko@lists.linux.dev
-To: =?utf-8?b?TnVubyBTw6EgdmlhIEI0IFJlbGF5?= <devnull+nuno.sa.analog.com@kernel.org>
+To: "Markus Stockhausen" <markus.stockhausen@gmx.de>
 Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260502-ltc4283-support-v13-1-1c206542e652@analog.com>
-References: <20260502-ltc4283-support-v13-1-1c206542e652@analog.com>
+In-Reply-To: <20260502094524.3358193-2-markus.stockhausen@gmx.de>
+References: <20260502094524.3358193-2-markus.stockhausen@gmx.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 02 May 2026 10:05:35 +0000
-Message-Id: <20260502100535.DD16FC19425@smtp.kernel.org>
+Date: Sat, 02 May 2026 10:10:09 +0000
+Message-Id: <20260502101009.DFDF8C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: D1DC94B19DF
+X-Rspamd-Queue-Id: 818C64B1A09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13713-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13714-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmx.de];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,nuno.sa.analog.com];
+	TAGGED_RCPT(0.00)[linux-hwmon];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,analog.com:email,sashiko.dev:url,lists.linux.dev:replyto,smtp.kernel.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,smtp.kernel.org:mid,lists.linux.dev:replyto]
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] The `dependencies` block forces `adi,pgio4-func` to be explicitl=
-y defined when external fault properties are used, breaking its default val=
-ue semantics.
+- [High] The updated set_mask of 0x10C0 is byte-swapped over I2C and will f=
+orce the sensor into single-shot mode instead of the intended continuous mo=
+de.
+- [High] The new alarm reporting logic is mathematically inverted, violatin=
+g the hwmon ABI by returning 0 during an active alarm.
 --
 
-commit 95d75c53b856792667507b1a119fd7e090fe8173
-Author: Nuno S=C3=A1 <nuno.sa@analog.com>
+commit bef39cd430ab022cea5921c7c9e935e0fe939e92
+Author: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-dt-bindings: hwmon: Document the LTC4283 Swap Controller
+hwmon: (lm75) Fix AS6200 setup and alarm handling
 
-This commit introduces device tree binding documentation for the LTC4283
-negative voltage hot swap controller. It also updates the MAINTAINERS file
-with the new binding document.
+This commit attempts to fix the AS6200 initialization by changing the set
+mask to enable continuous conversion mode. It also modifies the alarm
+handling logic with the intention of correctly reporting alarms regardless
+of the configured polarity.
 
-> diff --git a/Documentation/devicetree/bindings/hwmon/adi,ltc4283.yaml b/D=
-ocumentation/devicetree/bindings/hwmon/adi,ltc4283.yaml
-> new file mode 100644
-> index 000000000000..05e2132ad4d8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/hwmon/adi,ltc4283.yaml
-> @@ -0,0 +1,272 @@
+> diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
+> index f1a1e5b888f6..4fd4288ae502 100644
+> --- a/drivers/hwmon/lm75.c
+> +++ b/drivers/hwmon/lm75.c
+> @@ -137,7 +137,7 @@ static const struct lm75_params device_params[] =3D {
+>  	},
+>  	[as6200] =3D {
+>  		.config_reg_16bits =3D true,
+> -		.set_mask =3D 0x94C0,	/* 8 sample/s, 4 CF, positive polarity */
+> +		.set_mask =3D 0x10C0,	/* 8 sample/s, 4 CF */
+
+The intent described in the commit message is to clear bit 15 to disable
+single-shot mode. However, won't this new mask still force the sensor into
+single-shot mode over the wire?
+
+The LM75 driver writes LM75_REG_CONF using i2c_smbus_write_word_data(),
+which transmits data in little-endian order. The AS6200 is a big-endian I2C
+sensor. When 0x10C0 is transmitted, the lower byte (0xC0) is sent first and
+interpreted by the device as the MSB. Since 0xC0 is 11000000 in binary,
+bit 15 remains set to 1.
 
 [ ... ]
 
-> +  adi,pgio4-func:
-> +    description: Configures the function of the PGIO4 pin.
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [inverted_external_fault, external_fault, gpio]
-> +    default: inverted_external_fault
+> @@ -416,7 +416,7 @@ static int lm75_read(struct device *dev, enum hwmon_s=
+ensor_types type,
+>  			switch (data->kind) {
+>  			case as6200:
+>  			case tmp112:
+> -				*val =3D (regval >> 13) & 0x1;
+> +				*val =3D !!(regval & BIT(13)) ^ !!(regval & BIT(2));
 
-[ ... ]
+Does this logic correctly map to the hwmon ABI, which expects a value of 1
+during an active alarm?
 
-> +dependencies:
+According to the sensor datasheets, the AL bit reflects the ALERT pin
+directly.=20
 
-[ ... ]
+If POL=3D0 (active low), the pin is low on alarm (AL=3D0), so 0 ^ 0 =3D 0.
+If POL=3D1 (active high), the pin is high on alarm (AL=3D1), so 1 ^ 1 =3D 0.
 
-> +  adi,external-fault-retry-enable:
-> +    - adi,pgio4-func
-> +  adi,external-fault-fet-off-enable:
-> +    - adi,pgio4-func
+In both cases, it appears this expression evaluates to 0 during an active
+alarm and 1 during normal operation, inverting the expected hwmon behavior.
 
-Does this dependencies block cause a regression for device trees that rely =
-on
-the default value of adi,pgio4-func?
+Additionally, does hardcoding BIT(13) and BIT(2) solidify an underlying
+I2C byte-swapping behavior directly into the logic rather than fixing the
+root cause?
 
-Because adi,pgio4-func defines a default value of "inverted_external_fault"
-above, omitting it from a node is perfectly valid. However, standard JSON
-schema dependencies check for the literal presence of the key in the instan=
-ce.
-
-If a device tree defines adi,external-fault-retry-enable but omits
-adi,pgio4-func to rely on the default value, schema validation will fail.
-
-Since the allOf block already rejects conflicting configurations (such as w=
-hen
-adi,pgio4-func is set to "gpio"), could these dependency requirements be
-removed to allow device trees to safely use the default value?
+>  				break;
+>  			default:
+>  				return -EINVAL;
+>  			}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260502-ltc4283-su=
-pport-v13-0-1c206542e652@analog.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260502094524.3358=
+193-1-markus.stockhausen@gmx.de?part=3D1
 
