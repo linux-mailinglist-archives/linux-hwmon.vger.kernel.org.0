@@ -1,232 +1,268 @@
-Return-Path: <linux-hwmon+bounces-13720-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13722-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCorOOwg9mluSgIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13720-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 18:06:04 +0200
+	id 9rOWNYIk9mndSgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13722-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 18:21:22 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7AC4B2C0C
-	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 18:06:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D7A4B2C86
+	for <lists+linux-hwmon@lfdr.de>; Sat, 02 May 2026 18:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21D8E300C580
-	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 16:06:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84CCF3001315
+	for <lists+linux-hwmon@lfdr.de>; Sat,  2 May 2026 16:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F7D364959;
-	Sat,  2 May 2026 16:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4D938237D;
+	Sat,  2 May 2026 16:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="kcEiApMQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IUNU5LcW"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90B7353ED9
-	for <linux-hwmon@vger.kernel.org>; Sat,  2 May 2026 16:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17C2366DB6
+	for <linux-hwmon@vger.kernel.org>; Sat,  2 May 2026 16:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777737961; cv=none; b=e2u6PyQMk5do6NaCsV1FkMytpeZCVzpKjx/LwQzYcedthcOCdR4Q/rmupwRimsK56kmz6JyaYsZ9VBR+sSo6d2iVgAW/i1X0lFgZVs1Ckp23hwsKmsfDBm/OtXtqrGmIziJTW3/K5fxPxot63p/R5nbOti4poawS2M50jtM6AyE=
+	t=1777738880; cv=none; b=J0DxwdVq2yPn3YiEKgPIE+gASp25bapufW4yB7lEYwWYi/B5YK0+OmiCENbUsoyLDKVUg5Q5KCBYtoZ6bSUtr3a2msJ9D33LhiAR/cWtEdMe8mQvUhy1FNTU0mEx9vOf1fVxy1wLJ1WibmUgZPx9y59fy6DDZ/7LcT9kL1Xn9lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777737961; c=relaxed/simple;
-	bh=kz0o5Hg1jd/EcbRff+UPuFU8nRkkNW/vqLvA+Obry+M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDwhXr94rc/jXqaBY7m/MLaJZ8MbPKELsx4Y9DHf9L+tNUUXOx0xh+Fd6oD7hIWA+nWwwekMGxaeyOBZLi5jnXLKjdds/M4eoR3QPQb0D/Uh5FnORmoVYI/BCgF864OX7QqXxDRZnIRoLWXYWEUkhWCiIT4f2OpuoKTyQCIWHSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=kcEiApMQ; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1777737943; x=1778342743;
-	i=markus.stockhausen@gmx.de;
-	bh=o9jV84UFJP1amyG0BZeB1LpQg4+zYRHdpF/O2u42Y94=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=kcEiApMQImCpdkEgMUCLnPJuq9IGcba98WDSTJcNRa5/nAyCt8RGnm0hqZNkcsMm
-	 tR6ub7LKBQxgD/Tff81pb1PJxuVkqCbKOvsQ5XBGPCI4OYwfxRv/57OKywbZojWkP
-	 IXNlEbsDajQOy0VzvSEiUmlhBQxqoIUBDro81AVI6NAlvr1vieQN/fULjY0vPFKOr
-	 ERy7n5qFFBbma8/GCjYub9i41KoTq8SVqCskOb6tH2tuw3LVQbq/rLUxT5bmxSX8M
-	 UqCjFHwd0ZObTt1hlQpmA5nUzuLczp9w0vZoi3ktz/fdkgHwF7rCIT6J5nj/yMdpc
-	 EZz5MWH7oB6tNjDHDg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M59GG-1wI6ux3UuK-00HXOr; Sat, 02
- May 2026 18:05:43 +0200
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
-To: linux@roeck-us.net,
-	linux-hwmon@vger.kernel.org,
-	wsa+renesas@sang-engineering.com,
-	alkuor@gmail.com
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH v2 2/2] hwmon: (lm75) Fix configuration register writes.
-Date: Sat,  2 May 2026 18:05:33 +0200
-Message-ID: <20260502160533.3527619-3-markus.stockhausen@gmx.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260502160533.3527619-1-markus.stockhausen@gmx.de>
-References: <20260502160533.3527619-1-markus.stockhausen@gmx.de>
+	s=arc-20240116; t=1777738880; c=relaxed/simple;
+	bh=4lcOWwOoovpMO5JkId9lOWhkOIZF6lSTx38XB75DQhE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S9E7fy5VyFTSwQw157kr9X3K1ebaMiHXv1iMBJShCFRbzNLKh/IE5HTpcDWpr8Mzxp1Xth2h1s5FtA81IYOmi+91zk/34wPC7HVusgeKyT779+b436fnsfOZXNt0jtxfa18LRjh6YhVWh1aTq0CGtQD2TmqkM4upE2jfjY+cRls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IUNU5LcW; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ef84d016d9so2435211eec.0
+        for <linux-hwmon@vger.kernel.org>; Sat, 02 May 2026 09:21:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777738878; x=1778343678; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=nStQiooF/IuN5DSIiAanMcTFav97M7ip63dFpkHzmq0=;
+        b=IUNU5LcWpwdAXqyt78hgdNlbu+VVZ29/EBkiRvBSCTPUbeMMPg+TVOYDQN6UCLWoMy
+         KiVYniqRSQdu7g3blFchXfwzZyhsqlFqEM2/38uvF6U5irrup7E3yHpVTb4yws3V3B49
+         kni+k/s0iK0axCOGtNPJjgYBRRx+z0xDi+I2t/zR9F32uxRDe5c7DJIakP2eiTkhId/N
+         T6el+3MvbOPcS1i9ZqKTvaMH+OXL5xA7V9ASc10GgB8jH2hQrRR/ThXvQPPnVojQgtHh
+         ezWPrXL8AnDu9agoE7SVqDmMPYkGdR5bplZVQzifmKSKSk8FLxLWujC9yLfvAeEDHio5
+         XzBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777738878; x=1778343678;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nStQiooF/IuN5DSIiAanMcTFav97M7ip63dFpkHzmq0=;
+        b=SlqDge1xe8pIqbZR6PO6udoayw0Auy12388klMcwSvNNPfxC3UCqIUUyZcpQLvxdzX
+         dBepdBwKPcsxGh3lqR2fdRMDVa/g/n6R9Mn7kXDaTtwDvXD5f3cQ11Uqmrm8dBz5A3Dk
+         V6uN7517Lr23R/JO5PgIk3WFvPztSQrgZAuoTgeD3dtnmYeur8B4J3brxFLhDFEXuOHt
+         YUYklG985PllbXR9rgJqKPMa7LhULIeLGHLcSJPRjCM7/cTKQZucR+JNlQ6Wl+rKC14Z
+         02vgfLH5L/XDsU6GM3OEzbEW2JJwWBRrMPsg1/3ISL2hacq5vk5Pcus+TAViJGzV3Y4m
+         1crA==
+X-Gm-Message-State: AOJu0YzFNrR7PaQwEtQwFJSy0kABLymRFp2tON9l/MGWPjKXiNRwDIbk
+	F2I333s4cOR869WWqHeD0WGngI+9O31aUVkf+L8XA2HXK4WYNLOMf7Bj2lSp5Q==
+X-Gm-Gg: AeBDieuBMruIpR+UX6PodLnbhU+aUNcZp/6I1pUMc9fRlizq9Hl4aABmPhIBYpzNitf
+	YM2QqOKMwrQlasSkvbjGPAXnjnytTmgaFPnOE9s6aqSe10BKppXv+N4v11RoeztIU4L5yx89Reo
+	KlluMBhnLKqit8EUoMkco+A4vzQ/N0Cl/L+lkEe3ihP/C8Ivy/7pF8V+1yn98fL1YvFauFW9i+C
+	yRtWArTW+OrgX9FGoi6Vf6iWgYF4bVy1maWf5RxiNWXPJ5uE6JquaJxTL+uPbKs+hbk+mZmEfxI
+	8flF/vc99klguqkqvkNrZzr6LoHK0R+ras9IL5k+mFgMRp6RxzMXTO+NTNlwGDLShR2WunfDz0J
+	3LMO2QJirAD1XPGMmnSmSDD2/b4Or5RgKZi0symZwOOWN8BwoqY2UKCJ2rixQp4YmI7gRA7TcEA
+	rfZ4ARz1ENUzcAoGyd7cDM4kkSbIYZx1TCXw2MvNi6hK52CL6/U75t2efUBmHFHOrjBxoqks4BJ
+	kj43t/laGs=
+X-Received: by 2002:a05:7300:8186:b0:2d9:fa9c:87a9 with SMTP id 5a478bee46e88-2efb79cbc97mr1566398eec.5.1777738877505;
+        Sat, 02 May 2026 09:21:17 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3c05dc28sm8461990eec.30.2026.05.02.09.21.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 May 2026 09:21:16 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <3044ffed-b9a8-4a30-852e-2689b0cf0118@roeck-us.net>
+Date: Sat, 2 May 2026 09:21:15 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sDBWu1acXCpD1yc+pW3LyVIp62NPDS5nbrVDputIzzVZTX/T4mt
- 6QhhidKR/mTIk0w01VTyCAHQgidEy3Zl6GFW0jhN9SGxTjVRr/BF0qbHZQHrR3vmmLpmWIa
- aLHrb7/SbdWUFuxtt4tuRmXiQeEEUAKQEdwlslGDYGSPqXGPAjNwUWhSbAj6smUnhuhA8Qu
- 3wm6osBX8/DRch1lVmESg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:xjJGFB+2fN0=;BA6RisYsCbtJlRWlce2E1o1+UzR
- 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
- ytG59JtToMr3MWLn8Nmcnzb0mEPjXnuS85cQ=
-X-Rspamd-Queue-Id: 5F7AC4B2C0C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 2/3] hwmon: ltc4283: Add support for the LTC4283 Swap
+ Controller
+To: =?UTF-8?Q?Nuno_S=C3=A1_via_B4_Relay?=
+ <devnull+nuno.sa.analog.com@kernel.org>
+Cc: linux-hwmon@vger.kernel.org
+References: <20260502-ltc4283-support-v13-2-1c206542e652@analog.com>
+ <20260502104311.0D48EC19425@smtp.kernel.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260502104311.0D48EC19425@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 59D7A4B2C86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13720-lists,linux-hwmon=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-13722-lists,linux-hwmon=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[roeck-us.net,vger.kernel.org,sang-engineering.com,gmail.com];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[markus.stockhausen@gmx.de,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmx.de];
-	NEURAL_HAM(-0.00)[-0.985];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon,renesas];
+	RCPT_COUNT_TWO(0.00)[2];
+	DMARC_NA(0.00)[roeck-us.net];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,gmx.de:dkim,gmx.de:mid]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-hwmon,nuno.sa.analog.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,analog.com:email]
 
-Sensors configurations are defined by set and clear masks. These
-do not follow a consistent "clear mask is a superset of set mask"
-rule. This relaxed definition breaks lm75_write_config()
+On 5/2/26 03:43, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] Read-modify-write operations on hardware alarm and fault log registers will cause concurrent events to be lost.
+> --
+> 
+> commit 768d24f774b79f50e1444b93b756d7bda5873159
+> Author: Nuno Sá <nuno.sa@analog.com>
+> 
+> hwmon: ltc4283: Add support for the LTC4283 Swap Controller
+> 
+> This commit introduces driver support for the Analog Devices LTC4283
+> Negative Voltage Hot Swap Controller. It adds functionality to monitor
+> voltage, current, power, and various hardware faults via an I2C interface.
+> 
+>> diff --git a/drivers/hwmon/ltc4283.c b/drivers/hwmon/ltc4283.c
+>> new file mode 100644
+>> index 000000000000..d8931c9a4685
+>> --- /dev/null
+>> +++ b/drivers/hwmon/ltc4283.c
+> 
+> [ ... ]
+> 
+>> +static int ltc4283_read_alarm(struct ltc4283_hwmon *st, u32 reg,
+>> +			      u32 mask, long *val)
+>> +{
+>> +	u32 alarm;
+>> +	int ret;
+>> +
+>> +	ret = regmap_read(st->map, reg, &alarm);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	*val = !!(alarm & mask);
+>> +
+>> +	/* If not status/fault logs, clear the alarm after reading it. */
+>> +	if (reg != LTC4283_FAULT_STATUS && reg != LTC4283_FAULT_LOG)
+>> +		return regmap_write(st->map, reg, alarm & ~mask);
+> 
+> Could this read-modify-write sequence cause concurrent hardware events to be
+> lost?
+> 
+> If these alarm registers use write-0-to-clear semantics, writing back
+> alarm & ~mask will inadvertently write a 0 to any new alarm bits that were
+> asserted by the hardware between the regmap_read() and regmap_write() calls.
+> Usually, a direct atomic write of ~mask without reading first is preferred
+> to avoid clearing unrelated active alarms.
+> 
 
-static inline int lm75_write_config(struct lm75_data *data, u16 set_mask,
-				    u16 clr_mask)
-{
-	return regmap_update_bits(data->regmap, LM75_REG_CONF,
-				  clr_mask | LM75_SHUTDOWN, set_mask);
-}
+Sashiko comes back to this one. Looking this up in the datasheet, it says
+that alarm bits are reset by writing 0 into the alarm bit. That isn't
+what is done here, though. It will write 0 into any alarm bits which were
+not set when the register was read.
 
-Basically all bits from set_mask that are not defined in clr_mask are
-dropped. Fix that by enhancing the helper to always combine clr_mask
-and set_mask into the mask bits of regmap_update_bits().
+Should this be something like the following instead ?
 
-Fixes: 6da24a2 ("hwmon: (lm75) Hide register size differences in regmap ac=
-cess functions")
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-=2D--
- drivers/hwmon/lm75.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	alarm &= mask;
+	*val = !!alarm;
 
-diff --git a/drivers/hwmon/lm75.c b/drivers/hwmon/lm75.c
-index 724efc0e820a..b8d67a9b58ec 100644
-=2D-- a/drivers/hwmon/lm75.c
-+++ b/drivers/hwmon/lm75.c
-@@ -353,7 +353,7 @@ static inline int lm75_write_config(struct lm75_data *=
-data, u16 set_mask,
- 				    u16 clr_mask)
- {
- 	return regmap_update_bits(data->regmap, LM75_REG_CONF,
--				  clr_mask | LM75_SHUTDOWN, set_mask);
-+				  clr_mask | set_mask | LM75_SHUTDOWN, set_mask);
- }
-=20
- static irqreturn_t lm75_alarm_handler(int irq, void *private)
-=2D-=20
-2.54.0
+	if (reg != LTC4283_FAULT_STATUS && reg != LTC4283_FAULT_LOG && alarm)
+		return regmap_write(st->map, reg, ~alarm & 0xff);
+
+That would ensure that only the checked bit is cleared, and that it is only
+cleared if the bit was set when it was read.
+
+> [ ... ]
+> 
+>> +static int ltc4283_reset_power_hist(struct ltc4283_hwmon *st)
+>> +{
+> 
+> [ ... ]
+> 
+>> +	/* Clear possible power faults. */
+>> +	return regmap_clear_bits(st->map, LTC4283_FAULT_LOG,
+>> +				 LTC4283_PWR_FAIL_FAULT_MASK | LTC4283_PGI_FAULT_MASK);
+>> +}
+> 
+> Will using regmap_clear_bits() here and in other history reset functions
+> also risk losing concurrent fault logs?
+> 
+> Since regmap_clear_bits() performs a read-modify-write under the hood, any
+> new faults asserting between the read and write phases might be cleared
+> silently. Direct writes using regmap_write() might be safer if the register
+> behaves as write-0-to-clear.
+> 
+Again, looking into the datasheet, I agree. It would be safer to explicitly
+write something like
+	~(LTC4283_PWR_FAIL_FAULT_MASK | LTC4283_PGI_FAULT_MASK) & 0xff.
+This would avoid accidentally clearing bits which were set between the read
+and the write operation.
+
+Thanks,
+Guenter
 
 
