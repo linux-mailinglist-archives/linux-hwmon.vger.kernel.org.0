@@ -1,386 +1,225 @@
-Return-Path: <linux-hwmon+bounces-13773-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13777-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAPmDbnZ+WnNEgMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13773-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Tue, 05 May 2026 13:51:21 +0200
+	id SG2VCt/e+WlPEwMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13777-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Tue, 05 May 2026 14:13:19 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7154CCFF8
-	for <lists+linux-hwmon@lfdr.de>; Tue, 05 May 2026 13:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDF34CD441
+	for <lists+linux-hwmon@lfdr.de>; Tue, 05 May 2026 14:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B19B3036440
-	for <lists+linux-hwmon@lfdr.de>; Tue,  5 May 2026 11:48:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 93C083016CE5
+	for <lists+linux-hwmon@lfdr.de>; Tue,  5 May 2026 12:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7213A2570;
-	Tue,  5 May 2026 11:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF2D421880;
+	Tue,  5 May 2026 12:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUk3P0/+"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cK3dces2";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="co4d7gsE"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB8E395D8C;
-	Tue,  5 May 2026 11:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16613345CDC
+	for <linux-hwmon@vger.kernel.org>; Tue,  5 May 2026 12:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777981635; cv=none; b=R7FDQAqGaDX9LemqaWZrvmxux//phBwjzMVjpbU2R60OAo8mQwilNeVtMfcpEftjoJxjxL8zCMfxp5Dm9Joak/YVJjQHdVWgoBbW1I+JC7N7Kw3O3nTSHjfiUwv8JAWPw86p7+jSdMC2pt9L+53eZKhGh99IqeL85lVHii8L7rQ=
+	t=1777983196; cv=none; b=DLevHw7F7woIded6uz6sUd1NREkTrJshF2LhRWwWbyP3shSpFIGkLAbk9KhiFn2pSfod9e1DycOZK26s6hXYRqktktRIQ+nx9+/H8TVTitKHQAqtzJShdsFS6Uof33WM+st+AjgNJ4NVHGsxtZ1CPzLFWR1ynFh0HPni20Ym93A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777981635; c=relaxed/simple;
-	bh=h1noATD0rAmANdV1ooDO4BcdM9R1dSu8eOkWjuaPq18=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OcPC5WzQU0ibYSFJOaKr6j1E2HlxNwt7SvFC/Wbn6yR26JT1+lm2fc3czwC1+gJbYK1O1lYIlG5UgVoq40TA82Ec0erSXTcHC9bU8c/2Wm4LgEj7KGaNCyn/nc4NH45OEN/8tCUbkK8I+IQNqRhkx2SUz+ioWc/8Y25x1pCVlgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUk3P0/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA51C2BCB4;
-	Tue,  5 May 2026 11:47:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777981635;
-	bh=h1noATD0rAmANdV1ooDO4BcdM9R1dSu8eOkWjuaPq18=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUk3P0/+LRl+AHDvMTCcFJy5fMPkn007b39v4pFYWiTiBhWoLY0mTbUk+DDy97zRO
-	 R0c7qCtRX0f6eA7z05dJ0CuLQS3LqoG14u5O9qoTSiM/TU3dMnNgotr8SHM+YvaHg4
-	 6eDz+xCWtNaahbPlb3NXdu0IKAuBCXH3ltSWqzf6Fy2Xn2AtHMG5y/jbNNk5OSdNVY
-	 eTMM0HdpmWATzXix7uUKJ9iJo9M7TmI74VL3EENh5k/fhUF+ArDCs865PDXv7+sJzg
-	 nE75ekNkomtiD/+u5DNuYWJnY6yW1gFxM9KZTH5xh/0mGMXXC9+cZqzl90e0dXVwvC
-	 UTjFNE/yjic7g==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
- LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
- Armin Wolf <w_armin@gmx.de>, Jiajia Liu <liujiajia@kylinos.cn>,
- Marc Zyngier <maz@kernel.org>, linux-hwmon@vger.kernel.org,
- Guenter Roeck <linux@roeck-us.net>
-Subject:
- [PATCH v2 3/3] thermal: hwmon: Use extra_groups for adding temperature
- attributes
-Date: Tue, 05 May 2026 13:47:01 +0200
-Message-ID: <8704209.T7Z3S40VBb@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <6017595.DvuYhMxLoT@rafael.j.wysocki>
-References: <6017595.DvuYhMxLoT@rafael.j.wysocki>
+	s=arc-20240116; t=1777983196; c=relaxed/simple;
+	bh=OQvqFhE24Y5pB0xCcm3z87p4KhQpxHZXfaNDspZ8roY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OVElvOvQtAtLMTdRfwstaBYvEbm+T3munN/+Qi1dimgq5dFIpzkl1UpWVYDFpaT6zfyn6Bgtw87iBqLtWIOr4jxU+gTiv2VyS8HQlYbgyh32/CMvX6ASkA2Ak1DTflHO9xznSdYpWcBqtuaeQthULV7pNydfCGX9lUVQEiq5lYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cK3dces2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=co4d7gsE; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6459VUk22859242
+	for <linux-hwmon@vger.kernel.org>; Tue, 5 May 2026 12:13:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	uZTZSQae76/lpsimQGsL5aDJF8C5tsNVr80B5V4mcZw=; b=cK3dces2NEuLdSiR
+	OwaGiAMNYEcV1uiT4TlPtm8Hn5ILTklvTmx+h/CdeGja1INCBdmK0FaVd0RBG0US
+	r6x0ap3xsW6XiltiPcxSIfFbqlKMAs63H5oyY3Qn7L38f2ZUwSx91MW+Or9VsNpr
+	Ctg1RoiFKVQamSaxTaGfOEbpbHZd4I4Dcwzl4KZ0eBXMk9YXLvc2aU+M4ClC/RN0
+	UiF/ncnyRZadYxksZo36OwHluNaI7o3lI2PFo7Lf63Q4avFRQvQH4/6Xg9uxMNyt
+	ktU1/Z38UCpnpLy9oKXfta54dMFwibKdwwhk8mQxZaKjtF7yhZDKnR+G5LI2EtpH
+	7hqadw==
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dye0agn8b-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-hwmon@vger.kernel.org>; Tue, 05 May 2026 12:13:13 +0000 (GMT)
+Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-56b6751339fso12374819e0c.1
+        for <linux-hwmon@vger.kernel.org>; Tue, 05 May 2026 05:13:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777983193; x=1778587993; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uZTZSQae76/lpsimQGsL5aDJF8C5tsNVr80B5V4mcZw=;
+        b=co4d7gsER607ALX2wondVyfgueoD8LFrlNn4M178EmXkS2m5qRkvk5DiHG+aD/UMkU
+         gliBhxeNrddWUVy023JxeCgoGN7hInwlc47iZp9gci221mVHayxofwEsuTaiuAiePdL4
+         b0rz7nyIyck0Pz2852T6VxP8PStx1dGkkrnBBJdhpn06IwRI/5CWJbNbOn2dyJVTjQEc
+         OUlEy70W/J1juL1jQuxO/TuxFkZkaW8k5sSn9WUbIbVhmuWG7O9/C0Q/BMZBgaY2fBYv
+         HFhaOyUysUM0L807VsxGM3E3qrZjVo9IgS6V6pGyb+zff2JQrlq8zvYvBVJewxunefYW
+         qhKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777983193; x=1778587993;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uZTZSQae76/lpsimQGsL5aDJF8C5tsNVr80B5V4mcZw=;
+        b=O1PC1GZadu3FLjFfiDAoZw4NEZXfhDRNV0PfkUbyPtZb8MRNXLh66A1HXCJ61Tc3kS
+         l1eIdXRaM9zTv60htGKJ1a9tvcdAddmassVlEU03r0UAH+72p5x3AteMSiHal1VqQ9iy
+         iEK8ZfxFVLeGGjHk7LajaDaatrEfbTVxA7K/WghExWmlpvRr0evuPLpWEczfy+fwPCMU
+         YKM4jxcSyejggI+7QhtPcRQkSgyfK3VC0WazKOr/x4V9RWELHezay5YFnQdSkSmstdCD
+         O5ox9LCdlv0/+iNREsanN0l+ZL4tzvASL0iC0YkXMNKT+Vi7VI1JgcBbFw1BGtxQDxOv
+         RPXg==
+X-Forwarded-Encrypted: i=1; AFNElJ9SAiJMwhANxRiVB4K51CUKwYT5xBMxttLuIQRxOzjYl9cpunr8wErf1/gWtWsP8Iwit4Lhv7V+iqOeCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9fSqnWuqOqPY+OGEFvGIxKD4PX6Hfhe8DA/w1RlVbxnhqyFRY
+	dA3OkfcbjwBMEibHqcHUCbwmbgIZ7pRX8ywxcSijTAHDti0S3McFh2Y8zvnouEepsPYYNbbCUa8
+	9KkdTGQj6nfmcfyjw7KQ/+C1czUPFk5Fd8YXBYHXZrWgjqcJYfibt68BZCCv27UaZIw==
+X-Gm-Gg: AeBDiesvfTr+42DN2a2Hh9iqqX3yv4fElay2PPTd73DJpxWcaTx0AfmtyW00UU/Wp2s
+	QkemzOdmes/ko+bO4ikwFkrKpkVyC0MeNTvXfTGojjNQzSNCP6BX5vRYFI3UF+T+s7NT40iHM71
+	tWXN8BVhfZBvzhD26mp6KBXgJmIEv9aOesu3dbeRZiOc3gWMlHFA3Clw0nkGau9pebaZSVrBL8X
+	7NCDhaz0DUXWRM+hpvixSa6RHS9dcjbuPZ0JsbrxFwZXQhnmdI+hqrqS5TdhhFJuN7fHoqxRrhR
+	Qze338s7vld8VRkKhE3dDzZpXZkxz33M6/5uspAfv3vN7fbak3ZL8GfGoinH8PO2se6dUORZKbh
+	JqhLw9fPgraWuwEneCmt3+Bj/QMa9sdZK9K96td8WxGdsyxV0eOTxSGQtnxtbW8MNrrMxICUcP7
+	NGUeOv7lrwU0nQl0B9W/5f6mjRP2k=
+X-Received: by 2002:a05:6122:2653:b0:56b:942f:b870 with SMTP id 71dfb90a1353d-5754414b0cdmr959060e0c.0.1777983193357;
+        Tue, 05 May 2026 05:13:13 -0700 (PDT)
+X-Received: by 2002:a05:6122:2653:b0:56b:942f:b870 with SMTP id 71dfb90a1353d-5754414b0cdmr959040e0c.0.1777983192951;
+        Tue, 05 May 2026 05:13:12 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:3d0:c2e8:9f02:5c9d? ([2a05:6e02:1041:c10:3d0:c2e8:9f02:5c9d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45052483166sm4277424f8f.7.2026.05.05.05.13.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 05:13:12 -0700 (PDT)
+Message-ID: <cf419489-82b1-4b07-9eb4-e8b0ab8ec155@oss.qualcomm.com>
+Date: Tue, 5 May 2026 14:13:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 1E7154CCFF8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/11] thermal/of: Move the node pointer assignation in
+ the OF code file
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: daniel.lezcano@kernel.org, gaurav.kohli@oss.qualcomm.com,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Russell King <linux+etnaviv@armlinux.org.uk>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Guenter Roeck <linux@roeck-us.net>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>,
+        =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Benson Leung <bleung@chromium.org>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?=
+ <pali@kernel.org>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Amit Kucheria
+ <amitk@kernel.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+References: <20260429161430.3802970-1-daniel.lezcano@oss.qualcomm.com>
+ <20260429161430.3802970-4-daniel.lezcano@oss.qualcomm.com>
+ <CAJZ5v0jTbOkR8Odok2Cq6iWHGRzkF56spHr2xp_M8Zayg6ZAfA@mail.gmail.com>
+ <CAJZ5v0ikmPwRq6ykwCH=Qi7Z477sTktm5dRU721Ye6+qQKs2Dw@mail.gmail.com>
+ <731f3161-a202-40e0-ac22-aa16ea58e832@oss.qualcomm.com>
+ <CAJZ5v0huQ3B4buieAUnbqnbV_fpFBPG3+UgULs0qcK9j44NwSw@mail.gmail.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+In-Reply-To: <CAJZ5v0huQ3B4buieAUnbqnbV_fpFBPG3+UgULs0qcK9j44NwSw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDExNSBTYWx0ZWRfX9nIQkMV5aY+P
+ eluc4HJqJIJMjRpmY6K8OfU8RpuP1+w5f786BHNnk8OApHY3HhMaVSBzHXdBusr+Pa0tlSE6a+o
+ k8b2LzW/gFMiZoZqYM5+OHuKPbaXa7MeNxs4/LqaloBAJB6Polox2OzKXWT8m6SqbCJoCfQcwLk
+ Lqqj90Ku3XlSN9z7nBl7Oxkcca2+NjLoSVuACl/wrKpc9F6M8YEp4zTBNhabfe/1f8w5ZTVUlWR
+ 17IXqU1lTES3CpRyuPbOoBnFIi+oahcVPGuo35HZdmYVvELrAD+mG0gfCuRlcdFdB0OkskB3Ole
+ /Rn3Z9ukK5+fsnVPWrj44yllCATC69cXNgvZTTae1tDCkQbSqzpCuWohbn2tudjOFrnp4vjGVuL
+ 9G81Pl241Xrj/E6qHo3MD4qkaBBnNyiK5uSfmEwv8kWc662aCeAMKiY2IYvdT7grH2Pf26wjEqn
+ loGS8d3mqsdXRBbF63g==
+X-Authority-Analysis: v=2.4 cv=Wtkb99fv c=1 sm=1 tr=0 ts=69f9deda cx=c_pps
+ a=+D9SDfe9YZWTjADjLiQY5g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=3HINNAhyQBWNLSIiySMA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
+ a=vmgOmaN-Xu0dpDh8OwbV:22
+X-Proofpoint-GUID: W7o7QbuLw3_Wiu5s9YdRzQ_jLZbE70U0
+X-Proofpoint-ORIG-GUID: W7o7QbuLw3_Wiu5s9YdRzQ_jLZbE70U0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ malwarescore=0 spamscore=0 bulkscore=0 adultscore=0 clxscore=1015
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605050115
+X-Rspamd-Queue-Id: BFDF34CD441
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTE_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,arm.com,gmx.de,kylinos.cn,kernel.org,roeck-us.net];
-	TAGGED_FROM(0.00)[bounces-13773-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
+	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,intel.com,arm.com,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-13777-lists,linux-hwmon=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[37];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,rafael.j.wysocki:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[daniel.lezcano@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt,etnaviv];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 5/5/26 12:20, Rafael J. Wysocki wrote:
 
-Instead of passing NULL as the last argument to __hwmon_device_register()
-in hwmon_device_register_for_thermal() and then adding each temperature
-sysfs attribute to the hwmon device via device_create_file(), redefine
-hwmon_device_register_for_thermal() to take an extra_groups argument
-that will be passed to __hwmon_device_register(), define an attribute
-group with a proper .is_visible() callback for the temperature
-attributes and a related attribute groups pointer, and pass the latter
-to hwmon_device_register_for_thermal().
+[ ... ]
 
-This causes the code to be way more straightforward and closer to
-what the other users of the hwmon subsystem do.
+>> [1]
+>> https://lore.kernel.org/all/20260422174305.2899095-4-daniel.lezcano@oss.qualcomm.com/
+> 
+> I don't think that adding the init callback is a good idea, sorry.
 
-No intentional functional impact.
+Ok.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-v1 -> v2:
-   * Rebase on top of [1-2/3]
-   * Drop struct thermal_hwmon_temp (sashiko.dev)
-   * 
-
----
- drivers/hwmon/hwmon.c           |    6 +
- drivers/thermal/thermal_hwmon.c |  122 ++++++++++++++--------------------------
- include/linux/hwmon.h           |    3 
- 3 files changed, 51 insertions(+), 80 deletions(-)
-
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -1082,6 +1082,7 @@ EXPORT_SYMBOL_GPL(hwmon_device_register_
-  * @dev: the parent device
-  * @name: hwmon name attribute
-  * @drvdata: driver data to attach to created device
-+ * @extra_groups: pointer to list of additional non-standard attribute groups
-  *
-  * The use of this function is restricted. It is provided for legacy reasons
-  * and must only be called from the thermal subsystem.
-@@ -1093,12 +1094,13 @@ EXPORT_SYMBOL_GPL(hwmon_device_register_
-  */
- struct device *
- hwmon_device_register_for_thermal(struct device *dev, const char *name,
--				  void *drvdata)
-+				  void *drvdata,
-+				  const struct attribute_group **extra_groups)
- {
- 	if (!name || !dev)
- 		return ERR_PTR(-EINVAL);
- 
--	return __hwmon_device_register(dev, name, drvdata, NULL, NULL);
-+	return __hwmon_device_register(dev, name, drvdata, NULL, extra_groups);
- }
- EXPORT_SYMBOL_NS_GPL(hwmon_device_register_for_thermal, "HWMON_THERMAL");
- 
---- a/drivers/thermal/thermal_hwmon.c
-+++ b/drivers/thermal/thermal_hwmon.c
-@@ -25,25 +25,13 @@
-  */
- #define THERMAL_HWMON_NAME_LENGTH (THERMAL_NAME_LENGTH + 11)
- 
--struct thermal_hwmon_attr {
--	struct device_attribute attr;
--};
--
--/* one temperature input for each thermal zone */
--struct thermal_hwmon_temp {
--	struct thermal_zone_device *tz;
--	struct thermal_hwmon_attr temp_input;	/* hwmon sys attr */
--	struct thermal_hwmon_attr temp_crit;	/* hwmon sys attr */
--	bool temp_crit_present;
--};
--
- /* hwmon sys I/F */
- /* thermal zone devices with the same type share one hwmon device */
- struct thermal_hwmon_device {
- 	char name[THERMAL_HWMON_NAME_LENGTH];
- 	struct device *device;
- 	struct list_head node;
--	struct thermal_hwmon_temp tz_temp;
-+	struct thermal_zone_device *tz;
- };
- 
- static LIST_HEAD(thermal_hwmon_list);
-@@ -51,19 +39,14 @@ static LIST_HEAD(thermal_hwmon_list);
- static DEFINE_MUTEX(thermal_hwmon_list_lock);
- 
- static ssize_t
--temp_input_show(struct device *dev, struct device_attribute *attr, char *buf)
-+temp1_input_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
-+	struct thermal_hwmon_device *hwmon = dev_get_drvdata(dev);
-+	struct thermal_zone_device *tz = hwmon->tz;
- 	int temperature;
- 	int ret;
--	struct thermal_hwmon_attr *hwmon_attr
--			= container_of(attr, struct thermal_hwmon_attr, attr);
--	struct thermal_hwmon_temp *temp
--			= container_of(hwmon_attr, struct thermal_hwmon_temp,
--				       temp_input);
--	struct thermal_zone_device *tz = temp->tz;
- 
- 	ret = thermal_zone_get_temp(tz, &temperature);
--
- 	if (ret)
- 		return ret;
- 
-@@ -71,14 +54,10 @@ temp_input_show(struct device *dev, stru
- }
- 
- static ssize_t
--temp_crit_show(struct device *dev, struct device_attribute *attr, char *buf)
-+temp1_crit_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
--	struct thermal_hwmon_attr *hwmon_attr
--			= container_of(attr, struct thermal_hwmon_attr, attr);
--	struct thermal_hwmon_temp *temp
--			= container_of(hwmon_attr, struct thermal_hwmon_temp,
--				       temp_crit);
--	struct thermal_zone_device *tz = temp->tz;
-+	struct thermal_hwmon_device *hwmon = dev_get_drvdata(dev);
-+	struct thermal_zone_device *tz = hwmon->tz;
- 	int temperature;
- 	int ret;
- 
-@@ -91,22 +70,49 @@ temp_crit_show(struct device *dev, struc
- 	return sysfs_emit(buf, "%d\n", temperature);
- }
- 
--static bool thermal_zone_crit_temp_valid(struct thermal_zone_device *tz)
-+static DEVICE_ATTR_RO(temp1_input);
-+static DEVICE_ATTR_RO(temp1_crit);
-+
-+static struct attribute *thermal_hwmon_attrs[] = {
-+	&dev_attr_temp1_input.attr,
-+	&dev_attr_temp1_crit.attr,
-+	NULL,
-+};
-+
-+static umode_t thermal_hwmon_attr_is_visible(struct kobject *kobj,
-+					     struct attribute *a, int n)
- {
--	int temp;
--	return tz->ops.get_crit_temp && !tz->ops.get_crit_temp(tz, &temp);
-+	if (a == &dev_attr_temp1_input.attr)
-+		return a->mode;
-+
-+	if (a == &dev_attr_temp1_crit.attr) {
-+		struct thermal_hwmon_device *hwmon = dev_get_drvdata(kobj_to_dev(kobj));
-+		struct thermal_zone_device *tz = hwmon->tz;
-+		int dummy;
-+
-+		if (tz->ops.get_crit_temp && !tz->ops.get_crit_temp(tz, &dummy))
-+			return a->mode;
-+	}
-+
-+	return 0;
- }
- 
-+static const struct attribute_group thermal_hwmon_group = {
-+	.attrs	= thermal_hwmon_attrs,
-+	.is_visible = thermal_hwmon_attr_is_visible,
-+};
-+
-+__ATTRIBUTE_GROUPS(thermal_hwmon);
-+
- int thermal_add_hwmon_sysfs(struct thermal_zone_device *tz)
- {
- 	struct thermal_hwmon_device *hwmon;
--	struct thermal_hwmon_temp *temp;
--	int result;
- 
- 	hwmon = kzalloc_obj(*hwmon);
- 	if (!hwmon)
- 		return -ENOMEM;
- 
-+	hwmon->tz = tz;
- 	/*
- 	 * Append the thermal zone ID preceded by an underline character to the
- 	 * type to disambiguate the sensors command output.
-@@ -114,35 +120,13 @@ int thermal_add_hwmon_sysfs(struct therm
- 	scnprintf(hwmon->name, THERMAL_HWMON_NAME_LENGTH, "%s_%d", tz->type, tz->id);
- 	strreplace(hwmon->name, '-', '_');
- 	hwmon->device = hwmon_device_register_for_thermal(&tz->device,
--							  hwmon->name, hwmon);
-+							  hwmon->name, hwmon,
-+							  thermal_hwmon_groups);
- 	if (IS_ERR(hwmon->device)) {
--		result = PTR_ERR(hwmon->device);
--		goto free_mem;
--	}
--
--	temp = &hwmon->tz_temp;
--
--	temp->tz = tz;
-+		int result = PTR_ERR(hwmon->device);
- 
--	temp->temp_input.attr.attr.name = "temp1_input";
--	temp->temp_input.attr.attr.mode = 0444;
--	temp->temp_input.attr.show = temp_input_show;
--	sysfs_attr_init(&temp->temp_input.attr.attr);
--	result = device_create_file(hwmon->device, &temp->temp_input.attr);
--	if (result)
--		goto unregister_name;
--
--	if (thermal_zone_crit_temp_valid(tz)) {
--		temp->temp_crit.attr.attr.name = "temp1_crit";
--		temp->temp_crit.attr.attr.mode = 0444;
--		temp->temp_crit.attr.show = temp_crit_show;
--		sysfs_attr_init(&temp->temp_crit.attr.attr);
--		result = device_create_file(hwmon->device,
--					    &temp->temp_crit.attr);
--		if (result)
--			goto unregister_input;
--
--		temp->temp_crit_present = true;
-+		kfree(hwmon);
-+		return result;
- 	}
- 
- 	/* The list is needed for hwmon lookup during removal. */
-@@ -151,15 +135,6 @@ int thermal_add_hwmon_sysfs(struct therm
- 	mutex_unlock(&thermal_hwmon_list_lock);
- 
- 	return 0;
--
-- unregister_input:
--	device_remove_file(hwmon->device, &temp->temp_input.attr);
-- unregister_name:
--	hwmon_device_unregister(hwmon->device);
-- free_mem:
--	kfree(hwmon);
--
--	return result;
- }
- EXPORT_SYMBOL_GPL(thermal_add_hwmon_sysfs);
- 
-@@ -169,7 +144,7 @@ thermal_hwmon_lookup(const struct therma
- 	struct thermal_hwmon_device *hwmon;
- 
- 	list_for_each_entry(hwmon, &thermal_hwmon_list, node) {
--		if (hwmon->tz_temp.tz == tz)
-+		if (hwmon->tz == tz)
- 			return hwmon;
- 	}
- 	return NULL;
-@@ -178,7 +153,6 @@ thermal_hwmon_lookup(const struct therma
- void thermal_remove_hwmon_sysfs(struct thermal_zone_device *tz)
- {
- 	struct thermal_hwmon_device *hwmon;
--	struct thermal_hwmon_temp *temp;
- 
- 	scoped_guard(mutex, &thermal_hwmon_list_lock) {
- 		hwmon = thermal_hwmon_lookup(tz);
-@@ -188,12 +162,6 @@ void thermal_remove_hwmon_sysfs(struct t
- 		list_del(&hwmon->node);
- 	}
- 
--	temp = &hwmon->tz_temp;
--
--	device_remove_file(hwmon->device, &temp->temp_input.attr);
--	if (temp->temp_crit_present)
--		device_remove_file(hwmon->device, &temp->temp_crit.attr);
--
- 	hwmon_device_unregister(hwmon->device);
- 	kfree(hwmon);
- }
---- a/include/linux/hwmon.h
-+++ b/include/linux/hwmon.h
-@@ -477,7 +477,8 @@ hwmon_device_register_with_info(struct d
- 				const struct attribute_group **extra_groups);
- struct device *
- hwmon_device_register_for_thermal(struct device *dev, const char *name,
--				  void *drvdata);
-+				  void *drvdata,
-+				  const struct attribute_group **extra_groups);
- struct device *
- devm_hwmon_device_register_with_info(struct device *dev,
- 				const char *name, void *drvdata,
-
-
-
+May I create a separate preparatory changes splitting the function and 
+then rebase the current series on top of it ? So we end up with smaller 
+chunk of changes ?
 
