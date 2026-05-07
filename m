@@ -1,152 +1,171 @@
-Return-Path: <linux-hwmon+bounces-13820-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13822-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DHwDJMR/GkjLAAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13820-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 07 May 2026 06:14:11 +0200
+	id kBUXL0sf/GkfLwAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13822-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 07 May 2026 07:12:43 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC68C4E2CED
-	for <lists+linux-hwmon@lfdr.de>; Thu, 07 May 2026 06:14:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3604E308D
+	for <lists+linux-hwmon@lfdr.de>; Thu, 07 May 2026 07:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BF8E3009CF2
-	for <lists+linux-hwmon@lfdr.de>; Thu,  7 May 2026 04:14:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 936A1301C6E5
+	for <lists+linux-hwmon@lfdr.de>; Thu,  7 May 2026 05:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DB131CA4E;
-	Thu,  7 May 2026 04:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA20329371;
+	Thu,  7 May 2026 05:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avdHQttl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6femQKK"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD01F3BA2;
-	Thu,  7 May 2026 04:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0553B26ED41;
+	Thu,  7 May 2026 05:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778127248; cv=none; b=YEuDMAI0tYT6MBKqaPcuGVVfh9Cv5y6Yidgq+7Klx3xdBqLE32SK1zajkw5UFHjWY3yh+3JL9Wc8Nco5TqThWixIUH4EYKxHvhGNHYkDM0mp4kolUOjCYCNG/RHU1BoBJDi1rxkTeeN8WazL63K/rDrNnvIheTdizZeY8vhCNGQ=
+	t=1778130755; cv=none; b=cbJt6c4wHT7KSQuGYTlASNt7iYRzncdmT3JQdyzi+88gdhFfo+vF5PwQTVj9bNdq8gBGXWw+z91O70Q6G6DLKwHw19v9RQrTVgBX2n01F0SuloPD+Y3/ObP93FlJ69MJxoh9IoDLXY+4IfBL8l0TiPDs7FhIUSKiDG8ndexaAqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778127248; c=relaxed/simple;
-	bh=+Vt8zEJ+r9dsyJnh4bur3B+ar7F8gndoI9eBYPPbNbY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kIXhoB6w1J3r2z1jVPk3vXd7i+hdjMtKjQYMDwlfmrqGkVRoReNUkwJr8+QI9fbEgevdryOtL/2DxFfPBHIm+f6dS+rJqigSqRJaCbcQeYwqyXFcuDRcY7+JygFZNNpJa9Lc88dcz8y18eR5bXfTwmWF0eawG8Ag5t4suO4pz/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avdHQttl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493A7C2BCF4;
-	Thu,  7 May 2026 04:14:08 +0000 (UTC)
+	s=arc-20240116; t=1778130755; c=relaxed/simple;
+	bh=CZULrdKEKUjyo58BZeIybbnpWRynSP6n1PZzb6YPirY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rX0VJayVT3u5H4rOQ0V3g60ujare64uST91Ld90Zs0Z0paL+wXOHn3ESIhZa132FqESVrhZ7wbG/nQc/cS22k/oAusHdGNyS3ixryTacSTUfwrLZ54kGBgtHZ3g6irmwFqpTgnfUPPthYMwyLBnhrwU1miYnxZiLgcXgmHv/usY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6femQKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9E9EEC2BCB8;
+	Thu,  7 May 2026 05:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778127248;
-	bh=+Vt8zEJ+r9dsyJnh4bur3B+ar7F8gndoI9eBYPPbNbY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=avdHQttldlCnr3z/AXxaeesqrlTCzTZGEiqQ4BzNaLj9qTpzSoffU8ka/YHYk4p22
-	 pHhZkuYCuBneUKhyF7lBhhGy3xMeaVzO88kDNZgwh1IkJMTnt1YinEeUnPGMjJM58k
-	 wOwC0xobfO/D+PYCPtZzUMmEMGwsWKMZ09y/J5/wPv7iZ4SPJEWK40UfolyYS/fN6I
-	 A/Q53uk0SoAYFdaf0goPbc+S2YlBuJq1aWYgzEf+LuJ9c73DEijPbmWmVcOhtDe7Rp
-	 PAvx1GUCqrA0lvqOXDkoEdns2zCyTn0OsibYQpH9lPIa+L5N18G4BmcfAbzyn1aumS
-	 ca5PzHPZ2bTZw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] usb: xhci-pci: add generic auxiliary device
- interface
-Reply-To: sashiko@lists.linux.dev
-To: "Jihong Min" <hurryman2212@gmail.com>
-Cc: linux-pci@vger.kernel.org, linux-hwmon@vger.kernel.org
-In-Reply-To: <effa7bd7bef8a8ea28b9e28fe47af6a58e39edf2.1778123510.git.hurryman2212@gmail.com>
-References: <effa7bd7bef8a8ea28b9e28fe47af6a58e39edf2.1778123510.git.hurryman2212@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 07 May 2026 04:14:07 +0000
-Message-Id: <20260507041408.493A7C2BCF4@smtp.kernel.org>
+	s=k20201202; t=1778130754;
+	bh=CZULrdKEKUjyo58BZeIybbnpWRynSP6n1PZzb6YPirY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Y6femQKKIDTp4TcdZuoYK41VccO7rNEaBlnNRjKgLxOMSOk8qFFFu4t5ZBp6Mza/c
+	 N1kIbv0945e+PrZY9MmSFpDyavC9N/axtaYs3qcH70ZrmoTNkRtz8bg/BUycNK8Brf
+	 DCl56FEo6eQy4/EtXNfowU3APTt+IncrKX4bQ5DbepJnqEZkOkgqKVATq7mlLK9Gur
+	 LOkF6scLbLLfLC/G2JgJA4b7l2yxil7onpDCXrft8WzNoPpiNGzHmq1M+ISvIXkN4a
+	 fiHDsqm/1K9b5mD0tFdmg1QhVtK+jEVb3oAymd8WxLORKPtkylz4cOXgh50Vvl2YSX
+	 PLzubGPGU/fOg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EB16CD3442;
+	Thu,  7 May 2026 05:12:34 +0000 (UTC)
+From: Colin Huang via B4 Relay <devnull+u8813345.gmail.com@kernel.org>
+Subject: [PATCH v4 0/3] add support for Delta E50SN12051
+Date: Thu, 07 May 2026 13:12:25 +0800
+Message-Id: <20260507-add-e50sn12051-v4-0-ff2b3768ac7e@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: BC68C4E2CED
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADkf/GkC/33M0Q6CIBTG8VdxXEeDA4J11Xu0LhCOypbaoLGa8
+ 91Du3G5dfmds99/IhGDx0jOxUQCJh/9OOQhDwWxnRlapN7lTYCBYoIrapyjWLI4cGAlz7OCyji
+ ltTYko0fAxr/W4PWWd+fjcwzvtZ/4cv2mJJx+U4lTRi1nHJWtWF3Xl7Y3/n60Y0+WVIINF2zHI
+ XOnVYMSZAVmx8V/LjJvlJOYv2i13fJ5nj9NDVv/KgEAAA==
+X-Change-ID: 20260316-add-e50sn12051-ad828ad6777a
+To: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Kevin Chang <kevin.chang2@amd.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Colin Huang <colin.huang2@amd.com>, Colin Huang <u8813345@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778130752; l=2026;
+ i=u8813345@gmail.com; s=20260202; h=from:subject:message-id;
+ bh=CZULrdKEKUjyo58BZeIybbnpWRynSP6n1PZzb6YPirY=;
+ b=+BgMMz2iQjcARQdnDtHRIGv8FB+bP4ZOmwTQ7WxzCEHxW4kJ5en2exSg3aiY3tC29W4AlCqz+
+ 7aB1JWDFLnmCWPhBwjZYK9e3Od2+XqxTi6jggvIecuOP5wRkfLouZtw
+X-Developer-Key: i=u8813345@gmail.com; a=ed25519;
+ pk=Zlg0WqpCw4qbswOqamTBTXIchwR/3SnYZpy7rjaGMdQ=
+X-Endpoint-Received: by B4 Relay for u8813345@gmail.com/20260202 with
+ auth_id=761
+X-Original-From: Colin Huang <u8813345@gmail.com>
+Reply-To: u8813345@gmail.com
+X-Rspamd-Queue-Id: 7F3604E308D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13820-lists,linux-hwmon=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13822-lists,linux-hwmon=lfdr.de,u8813345.gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	HAS_REPLYTO(0.00)[sashiko@lists.linux.dev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,smtp.kernel.org:mid]
+	HAS_REPLYTO(0.00)[u8813345@gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DBL_PROHIBIT(0.00)[0.0.0.40:email];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Lockless modification of devres payload in `xhci_pci_try_remove_=
-aux_device` bypasses the subsystem's devres locking mechanism.
---
+Delta E50SN12051 is a 600W non-isolated 1/8th brick DC-DC power module.
+With this series applied, voltage, current and temperature sensors can 
+be exposed through the standard hwmon interface.
 
-commit bb8a85242e2a88f6613cf1810360076073e5ac66
-Author: Jihong Min <hurryman2212@gmail.com>
+Changes in this series:
+- Introduce device-tree binding documentation for the new device
+- Add hwmon documentation describing the supported sensors
+- Add PMBus driver support for Delta E50SN12051
 
-usb: xhci-pci: add generic auxiliary device interface
+Signed-off-by: Colin Huang <u8813345@gmail.com>
+---
+Changes in v4:
+- Rewrite binding description to be hardware-centric and OS-agnostic.
+- Rename example node from hwmon@40 to a generic power-module@40.
+- Link to v3: https://lore.kernel.org/r/20260430-add-e50sn12051-v3-0-f6d4e043ec7c@gmail.com
 
-This commit adds a small auxiliary device registration path for selected
-xHCI PCI controllers like the AMD Promontory 21. It creates an auxiliary
-device and stores it in devres so subsystem-specific child drivers can bind
-to controller-specific functionality outside xhci-pci.
+Changes in v3:
+- Simplify to pass &e50sn12051_info directly to pmbus_do_probe() 
+  to avoid the extra memory allocation
+- Link to v2: https://lore.kernel.org/r/20260430-add-e50sn12051-v2-0-d76fe42482ab@gmail.com
 
-> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-> index 585b2f3117b08..618d6840e1083 100644
-> --- a/drivers/usb/host/xhci-pci.c
-> +++ b/drivers/usb/host/xhci-pci.c
-[ ... ]
-> @@ -103,6 +106,80 @@ static int xhci_pci_run(struct usb_hcd *hcd);
-[ ... ]
-> +static void xhci_pci_try_remove_aux_device(struct pci_dev *pdev)
-> +{
-> +	struct xhci_pci_aux_devres *devres;
-> +
-> +	devres =3D devres_find(&pdev->dev, xhci_pci_aux_devres_release, NULL,
-> +			     NULL);
-> +	if (!devres || !devres->auxdev)
-> +		return;
-> +
-> +	auxiliary_device_destroy(devres->auxdev);
-> +	devres->auxdev =3D NULL;
+Changes in v2:
+- Add %YAML 1.2 declaration in binding document.
+- Use a generic node name in examples in binding document.
+- Add MODULE_IMPORT_NS("PMBUS")
+- Remove unused / incorrect headers
+- Link to v1: https://lore.kernel.org/r/20260429-add-e50sn12051-v1-0-c101e6c80bbb@gmail.com
 
-Is it safe to locklessly modify the devres payload here?
+---
+Colin Huang (3):
+      dt-bindings: hwmon: pmbus: add Delta E50SN12051 binding
+      Documentation/hwmon: add Delta E50SN12051 documentation
+      hwmon: (pmbus) add support for Delta E50SN12051
 
-The code uses devres_find() to obtain the devres object and manually clears
-devres->auxdev after destroying the auxiliary device. This bypasses the
-devres subsystem's internal spinlocks and leaves a dead devres node in the
-device's list until standard devres_release_all() runs.
+ .../bindings/hwmon/pmbus/delta,e50sn12051.yaml     | 42 +++++++++++
+ Documentation/hwmon/e50sn12051.rst                 | 81 ++++++++++++++++++++++
+ Documentation/hwmon/index.rst                      |  1 +
+ drivers/hwmon/pmbus/Kconfig                        |  9 +++
+ drivers/hwmon/pmbus/Makefile                       |  1 +
+ drivers/hwmon/pmbus/e50sn12051.c                   | 52 ++++++++++++++
+ 6 files changed, 186 insertions(+)
+---
+base-commit: b584e7d50af502462349910bf4ed30057620b69f
+change-id: 20260316-add-e50sn12051-ad828ad6777a
 
-Should this use devres_release() instead? Calling devres_release() would
-safely acquire the required locks, invoke the callback, remove the node
-from the list, and free the memory.
+Best regards,
+-- 
+Colin Huang <u8813345@gmail.com>
 
-> +}
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1778123510.gi=
-t.hurryman2212@gmail.com?part=3D1
 
