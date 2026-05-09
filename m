@@ -1,153 +1,113 @@
-Return-Path: <linux-hwmon+bounces-13899-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13901-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJKtJGpV/2kg5AAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13899-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:40:26 +0200
+	id eKN9LxRW/2mo4wAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13901-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:43:16 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139E5500531
-	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:40:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A605005A3
+	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 611EA300FB57
-	for <lists+linux-hwmon@lfdr.de>; Sat,  9 May 2026 15:40:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAF443037E6F
+	for <lists+linux-hwmon@lfdr.de>; Sat,  9 May 2026 15:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7292D7DDD;
-	Sat,  9 May 2026 15:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE282F49FD;
+	Sat,  9 May 2026 15:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RK4LbZuT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6Sev1uf"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005CC26B75B
-	for <linux-hwmon@vger.kernel.org>; Sat,  9 May 2026 15:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA372EA151;
+	Sat,  9 May 2026 15:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778341223; cv=none; b=Og1WrO1GaimpLsRszFru+/eZtHnlUql0TYiT3BE5DEfeWMOFP5TdveEcGixefyCnV123lZ7jdDa5dnocZb8biyXkO+l5+L0uXav6CdH0yB54oG+Y3b5xoFQES1n5NHsZkuIG0bmY6E4l3c26bOUEaeFAL7K4C3NO/yxHgCdRtiE=
+	t=1778341273; cv=none; b=TmF0fvYBEHs0yixTiid1JsKA/cI5HzIAL7DfoPii1q9Li11LeI2Bb/c+etNPKXQiL6wKarUABvc/pZobKTo64mksDpbRDKcYpQ26NpwPbwWEIpbH11z7LQ0UhTD+XVvsQLdjaUEwpUW6dA+W+XwI4SMyf/kKobE0GLk+/qrgF1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778341223; c=relaxed/simple;
-	bh=90ABeSQWds/sn2w99N2BJPg8+8uGqH/ToAzyW/wK/8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yf0qOxenNZN/cyliYCIC14HmZZx8mBjsZym3rlupw7CdR+Tx5TL/qzhwO3fVzVzClu2QxP0pVHqmFDkNziEl/gFC6xpbynAPfAeCrs2qIzQHjS76Epc6RinDFEgQQYmkCmgKsR0lmG6qEqWrjqh/od5xdlboc/mvIpa+LrOhpqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RK4LbZuT; arc=none smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1329507c387so2859651c88.1
-        for <linux-hwmon@vger.kernel.org>; Sat, 09 May 2026 08:40:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778341221; x=1778946021; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wIunFsTg35qiBdjtt8jGYanfPNrLdcpPoJiWvKofhfQ=;
-        b=RK4LbZuTX8yjgCbR71Wkmypz/DH4oSMxN7dmayOVLp928o5DxIAlrOmuDqv/eLEb7x
-         dqbFpxzcRa4Q1jeZ7uXqqgPyGbtWWKH+ZQ27IiUtRnVf4DKiH6kfYzEjW50oplKoB1AY
-         bBzMrUWuiog0YdrYJ+YuGJ+svSyNzkczqjkLVDm2S8GV8QIV662rnc0WQKPQX55fkrDH
-         g0yMSyQn5YhGMnZPVD0+6Yd9LVpsD8dFHCloOMBFRzflGNrmJbAqdW0b5uD5mduMNI/H
-         T4MLuxUlAAia9wciifDp3VAtqrVmMbeo0YNPVKdOYSsmbcUvFb4kYQZcZ6bNazhJnciQ
-         72Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778341221; x=1778946021;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wIunFsTg35qiBdjtt8jGYanfPNrLdcpPoJiWvKofhfQ=;
-        b=JaJW2iDs5TPaO0osyvYRmvmkKL3Ch2kyBqIz2FiEyOa0X+hHO9HbGqU9ZsJ7oKx372
-         z2EMzE0aP0Dzy4UJF2aWaX0zjOlTaq4aN6Z6KPXU8Xwy8rvMYgYV43grPDjIRRiBgF8J
-         hDNBiPiGIuRJ6Kih28trrF71ti/0gq2d+fON0B/jmnKSe4upVRmKfhoqFe/jqzGkyKkq
-         /vSoo+Os+mouDPqKf9525TSJxhWAu0Ef7YzJU19/4lEXQNCR+smTxhM1PG7S/8P7Mx8P
-         Cc9FHWMovl9P+ZJvZGeq22+flCuN/pPa7r9a0r0b+HnDXz5BoJT6bk4CXWeqmMTebKLt
-         Sx6g==
-X-Forwarded-Encrypted: i=1; AFNElJ9XDpPWOqcFQPwPisvnSeT+MtvglTJLjP31M6ciJ24lnS5T3/ZZUyO8ZuMmEnXj6YaRhF1PnEDV5YZgFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl2Xq276Gwt9LghFL5Kwqp1NRtenW1rrLcRDaRguLcoWcTcp4L
-	G2gi9MF/mxgz3bFeG2W/prqBWgtubDAxmNEkZthj2qKqutdkKyYqJWki
-X-Gm-Gg: Acq92OELkagUwp6swGj2UU9Z9D4J11abn8iB34+nHYtwRW1nqroSdSu6QgoL4eWMof9
-	m28Sd+HT06nfVnPgG9wQoTaSe8CvOnWQjgS97P6kA+H6mAVvRcEcmC41ASd50ez3dOuoaD9o9/c
-	6YiHCs9tihNfJEGU/Vv5WzkNuFOTgD5rKBXp9EvLHi4l9Iaa6HUcXI8DIAEuC8hTyi5vCP9p/v8
-	R6DIqkf88cUDjRdaQYtULrVq0MFwY0VvV9Tv5+wjlAHfsnNS8IwQXncDYcb63s3IfyDK+s/6pGJ
-	AlVO1RMW4uSKyd5owBaV9Qypt5ny4dJbfTgo0B/FYewOLL7K3NlXIynRBZt+Q7zJsTRlkkMHyBV
-	6qEzarLsxAA4MBmezdW4tHt2eMc8ayjLaZoruKgKkZ3q8jfJaZz8WcKIBnpsDyKdIZFPrhHesEP
-	FesPbc7UzsiPbcuc3X0qXgdMeYvAGlKrtqWEIlrep8/Go684U=
-X-Received: by 2002:a05:7022:e1e:b0:12d:de3f:d849 with SMTP id a92af1059eb24-1319cf5bd08mr10389339c88.44.1778341220922;
-        Sat, 09 May 2026 08:40:20 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13278758e0csm7279364c88.12.2026.05.09.08.40.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2026 08:40:20 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sat, 9 May 2026 08:40:19 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Colin Huang <u8813345@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kevin Chang <kevin.chang2@amd.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Colin Huang <colin.huang2@amd.com>
-Subject: Re: [PATCH v5 2/3] Documentation/hwmon: add Delta E50SN12051
- documentation
-Message-ID: <2c1cf69f-2732-4ce5-8626-09dd380227e8@roeck-us.net>
-References: <20260508-add-e50sn12051-v5-0-abebdcc29665@gmail.com>
- <20260508-add-e50sn12051-v5-2-abebdcc29665@gmail.com>
+	s=arc-20240116; t=1778341273; c=relaxed/simple;
+	bh=gj2bUYzpmljT6npKjlpPlu1YknJpdQaidXcdjsIjTWk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=RSbZyBzOeQpH4YifsELtyfAtrWCXTqhMFSY8qywhzW14StFM3hqMwkMZgu7PzaehlkJ1wfBct23LQkhp6QRp9DMklZnM3mVvcpuyO1HIB++ACRqZno+qsoONqSpbbLzQOXqdlTb97eZ9tHfRDidA7ZeqlLo3YmrD04seD9G3gGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6Sev1uf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B83C4AF09;
+	Sat,  9 May 2026 15:41:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778341273;
+	bh=gj2bUYzpmljT6npKjlpPlu1YknJpdQaidXcdjsIjTWk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=T6Sev1ufaeN1tea6m/o9wfyL5C3GGA3BMqeGfnJc7PNOTE0Xw+or8TneHAdDq++du
+	 nSphVjn+aN/cwabU99ITj2ZEk0n2KP708YgH3LnQpIkcXRiQjIit8dJhXLlBX/hxTI
+	 eu/mdWbRDu2K/P0k7d7A1POtpqGnB+3Bby1wEVSFlU0qJppFNbF8kLRIQiUjKlNBvO
+	 EMMyKpDzv9dVXKvFU1Vm0QJGUMyUTSrSbVxJFqxRpVdIvsCdf19mkfeN4Gr/hCU+mq
+	 DPe251r7KnLlABQ+/2hrnbPWCCDBQBE51VpB/v72LtnXLvVkL5ET2dUy0rGu2w6rlg
+	 yZZAhx8e7y2Sg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 429DC3811A55;
+	Sat,  9 May 2026 15:40:22 +0000 (UTC)
+Subject: Re: [GIT PULL] hwmon fixes for v7.1-rc3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260509142855.1456995-1-linux@roeck-us.net>
+References: <20260509142855.1456995-1-linux@roeck-us.net>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260509142855.1456995-1-linux@roeck-us.net>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v7.1-rc3
+X-PR-Tracked-Commit-Id: 99076a17a112ac43cbd37f6883898ae649166303
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ec89572766744e844df24c27d31c97b4c00f4e07
+Message-Id: <177834122121.1109995.4394799295821407573.pr-tracker-bot@kernel.org>
+Date: Sat, 09 May 2026 15:40:21 +0000
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260508-add-e50sn12051-v5-2-abebdcc29665@gmail.com>
-X-Rspamd-Queue-Id: 139E5500531
+X-Rspamd-Queue-Id: 17A605005A3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13899-lists,linux-hwmon=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-13901-lists,linux-hwmon=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NO_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pr-tracker-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,roeck-us.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Fri, May 08, 2026 at 05:44:29PM +0800, Colin Huang wrote:
-> From: Colin Huang <u8813345@gmail.com>
-> 
-> Document the hardware monitoring support for the Delta E50SN12051
-> device.
-> 
-> The documentation describes the supported sensors exposed via the
-> hwmon subsystem, including voltage, current, and temperature measurements.
-> 
-> Signed-off-by: Colin Huang <u8813345@gmail.com>
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+The pull request you sent on Sat,  9 May 2026 07:28:55 -0700:
 
-Applied.
+> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-for-v7.1-rc3
 
-Thanks,
-Guenter
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ec89572766744e844df24c27d31c97b4c00f4e07
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
