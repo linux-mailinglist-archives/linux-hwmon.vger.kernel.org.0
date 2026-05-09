@@ -1,96 +1,90 @@
-Return-Path: <linux-hwmon+bounces-13900-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13902-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBJWOIlV/2kg5AAAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13900-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:40:57 +0200
+	id oHQaJh9W/2mo4wAAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13902-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:43:27 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4688F500550
-	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:40:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0815005B3
+	for <lists+linux-hwmon@lfdr.de>; Sat, 09 May 2026 17:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A047300A759
-	for <lists+linux-hwmon@lfdr.de>; Sat,  9 May 2026 15:40:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA4A93001465
+	for <lists+linux-hwmon@lfdr.de>; Sat,  9 May 2026 15:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C7D2D7380;
-	Sat,  9 May 2026 15:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DC42D8DD6;
+	Sat,  9 May 2026 15:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmlpNz4E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F77lzqdu"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A566D2580D7
-	for <linux-hwmon@vger.kernel.org>; Sat,  9 May 2026 15:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E28826B777
+	for <linux-hwmon@vger.kernel.org>; Sat,  9 May 2026 15:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778341254; cv=none; b=heqpRt+5HWRPBfI9x07a5hcgs3l01pCuOMPqsyiOgjeR8efJLtqqqyyi4ixfA31xko0f3xtl7JKdbT728i03b4pBENzp2EuP04MdUucAkff1W4PRXRzOx2jz5LpKwfVgZFETj699p97Uf8G6/hpAGDtP/v/f9rWzC/EY/MpJAKU=
+	t=1778341404; cv=none; b=ZZSF6U56oUUSDjIzuzLi5X6CSHBbVLQHc8iYf4TeTW3+Rk6GqRjjsenk5U21p61ZP7gTvXqcmfa1q6j7L2gb98E4rSopjB834llzOxdtUGITxd+EmHyGXIhlQ2nVa10l3SMatr2p0KpO5QRy1CUmW34wo17jX9969OsMhGpUznU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778341254; c=relaxed/simple;
-	bh=DO0uuXw4XHQbU70ojqf9zPsomYorV9Oj36hGoursxqQ=;
+	s=arc-20240116; t=1778341404; c=relaxed/simple;
+	bh=qZ3p5AG2+MACCsXmmyx9bg5RSvxC92SkrO3C4EqJL4M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cjeq3fYmS7lHNbd4uHKfl6Llr2H6Gw8cnQL0lom/1eIuikaGIRj6SAAGkahHtkWisVG7rHPY1dS0pgujNDiMGi64CxIQhJ0Nb/hj6ywoKDQmUE4d4sHBVFR4JHj/RVOm8dTLxD1N1QRsmDWpuZ5+TNLsATdC+VOrZn9B1n0WZJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmlpNz4E; arc=none smtp.client-ip=74.125.82.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rhn4G9GraCtX4siTwCrx5j9pwqb2Ot5GJNBPaS0d/TMt3Z63IdFH5W02+c1b3qmSVfTkEu4ly613tokTOkFX/wYhiCgW9mjVGaFTF6KoYh8ZZ/9nLm+eOdW/w0pvv3nHw4pBmzv2SV5ehRskAMePofxt6IBREpKkwrkAVfEljWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F77lzqdu; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12db2e415a7so2094764c88.1
-        for <linux-hwmon@vger.kernel.org>; Sat, 09 May 2026 08:40:53 -0700 (PDT)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c80227b1f6cso1202854a12.1
+        for <linux-hwmon@vger.kernel.org>; Sat, 09 May 2026 08:43:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778341253; x=1778946053; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778341402; x=1778946202; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4xYjp8R8MGjk1tvhBBohAtI6RYlnEbpBj/HtDKZx7fw=;
-        b=cmlpNz4EZ2YnVQZycu2frjLyjTDK3E3awfeaONQ665OACts5B68i7kZV29ZFGxbw1I
-         bAbLehvPA1swjzExpe1Y2zwBh92J+Mfs/uxtFK98XCGGlMDzkRtu6Db933ZKLjQGksXy
-         uzd9g4rdxrZcrReSM5Znyf9BGQsMQyveyKv67dZEB9Och9OO0r0LiUs3EwcywPA+QKDU
-         NFDpRfesjK3A5RvUc+OKUq792o+SQA6yPeTFK8DccEp8QnIQwHz1/7Blq8pr1xYg3xZ2
-         g8dHj6WCWJXY/pVEEVjV3CGJS87J3pCEjnJiNEehuh+61BaaYde89MR/kc6Q2vqCJRpE
-         y2sQ==
+        bh=Ghf+v/bXUU4Mfzw7RTvk8pkjl1aXFl87yvIP3L5ZJ+0=;
+        b=F77lzqduSXaCzkqppunuhkbKlEIKa6M8smnJHaGaIeawaQ7Tkg+B8Ujl7fEhuaXf5i
+         mATerutVvxE4sZcnKlQ2MzkUbGF/Q3jP4ESkwTMB9KLr1U6Se9zpd/EZjECrClop9GdR
+         NNXnsUOrWzqLfBpKi7jbm+EHAQDC2ZlLdBBn9w2/0x/HV9yA+BS+gMatuuSJQ7KkZime
+         nw404u+C62tO4s/yu9iZj4ZgDR1rNw+o9YGSiY54MGXHFQYrucqKHVo3dvDtSJqIHyp5
+         /o2XP75xiVPP//33boPFp0N0ewJVpyu++hiLlMQBA3kcvTZ2j9NIb5PdQROPg8iE9YNu
+         3R0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778341253; x=1778946053;
+        d=1e100.net; s=20251104; t=1778341402; x=1778946202;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4xYjp8R8MGjk1tvhBBohAtI6RYlnEbpBj/HtDKZx7fw=;
-        b=dUNo4eQhw7Ufb20V+5XS7L7RAh3noA1EiZH5S5HQp91d4KFq8PdIBGoWD3tsz4lxLb
-         0hSX6iiXcM5ujURudEQeVHhFDNBcA3KG9Fxd3AxaQUIyj/y7Pl6huCsJOAjnszuV1yRz
-         IyLnUsV4CUxAZ0/CONjKCHhTJk+ecE4mMWRfqtVl3yflwqGHCtsj4YVQoUgm+Ztj4Bzr
-         D+D8JZULcwirtwEZa4tcsYd7gmJavq9KDTc4HW2c5v9x3/ooIZf1MPKSUvoHL8JOl4Br
-         SuFl0BLHMQR9rZ3XkbvdnTrvPSimk0q5kzgDnnvn6b5OFJswu0kr10XIJm84M+qajzGb
-         3nJw==
-X-Forwarded-Encrypted: i=1; AFNElJ9YMnoiz3Ji9gvBUV1jvVHY+M6HeNoIsidq28u6QFC2CvhSHOSG9BxznmtyJNFxNn0mcHrnN3lT2pA9pQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxa6bW0rUQuaWqs3PWDGVYJIPLiUVykLU/ezgNNicUPL189bqvO
-	o2FXbpSDr8ELLAn+VzcxwHu2XFjBMS+GXDdDYUl/LH64vYoKA44YPlVp
-X-Gm-Gg: Acq92OFgzACty+EcEeb62ejkxUCNU9G4h+nMyM6C8DN8oOnq02wkODU2ZXQze85gjKc
-	7xlvWun/m0MLJY8ZVz8tGELsOvdhohB9DdvMs8LEjst9jWiXeR7Ks2yJKuMVbHL+a6oNCDfPymv
-	E0h57g39DEuV5QxaN75eaZQDT8sD4LX96LpoEZrB5ygBd7axi18VmfNyQ42EqypAsyHJiP7iOjb
-	DnVrUY82I4kPVQd61ojslYp7J61CIz0UxiOfwyXXlJD5ZsrheIlsrKbWLIhAeUjdLa07surxATF
-	WzAXlxr6cyDYHN/Ts8aF2BjaAoU7HEXwT+4LqwqdiWoUPVpxN1hYENZIuQzuMIpGBcZZG+UJ+6O
-	AZbNCEmPQOuz5TvRKjCFqnCcPaCSBMt1bB4Xq1scjczxt/GtRV3UUw2FLdJH/+mePghtCkKZ58N
-	4whFFlgHCFlwUqOpJ9QGaHatunvzoIT1vUVd0z8dVrb0ZMfl8=
-X-Received: by 2002:a05:7022:f411:b0:128:ccb7:7fa3 with SMTP id a92af1059eb24-1319d14f7efmr9154077c88.34.1778341252823;
-        Sat, 09 May 2026 08:40:52 -0700 (PDT)
+        bh=Ghf+v/bXUU4Mfzw7RTvk8pkjl1aXFl87yvIP3L5ZJ+0=;
+        b=EhtQ8xHs/HKFB8983mLiCSlxy4Ri0C4DOM6xJW/TzUUuy80j7BQdk0dR8HDuJ6WxPF
+         lxod/LiQavBXjICkWQiG2vF3DA6yMY0Qd+vzhJ0/845EX02PeINaEh7IhTd5Hw703gq3
+         zTDdDkvHgVKtX+zmMnAnC2tpg+nR96XXrOIH8fpSJoeBkCgL85RSzyFhGCgo4XzO5XUg
+         hGEWbJBqtdHHadOSMWiYJm4w4Gkf9j65SOoAEUaqTRdAGhM9jUD0ajgkcVGhxKjqEgJG
+         7azhyZU4d/4c/K5N5wxQ+lljAs0I9l/sbVVDgK6LOvs6NZmLQ3yz4e16zgYlGQB8aSd5
+         vuYQ==
+X-Gm-Message-State: AOJu0YwAHOS0ePncQJKxFBZVxd4p66Ozq2TXGeAuHukHMb3F1adJibid
+	x7Z7Ta3q59f2w41ztAwdem2WfKR7PDNnNwLkhFddcpUu712gEhCe7G7zaMH2jQ==
+X-Gm-Gg: Acq92OEKhJQ0u1yNXDjayy8vBTU5g7o2zKFHqHCCvBTIBWD8tJMJHs/3Y3ex+pwdFR9
+	R7GD+1jp3z564xZRfZGkCM3hAjCfZRoxVExvMQtI/+xA7d1NlJDtUoRi7YN4h8UDRacwTU0zi25
+	6qBTpo7g2gqJxxlUcacgma39I1SfMbTkbEPbOIP9L6gfxexNrnm4R92WOn3M2DhiAXSUMJXmXu/
+	svcWchKjOTX0EhYO2e+4t2Thb9LoGo/MQ3/QhHrNww7DeTrMWprsw6LdC+stjBGG5t/8Y23B8wm
+	a0JxE8G46unMEBmihBGM501TazEoAXSLJNrxoNREmpvB26agPbM3aLnRRf+V/8LMnkJGAyeEuzR
+	cluTF8wiwWg7YUMfHjiABTSK9QPR9JHR/b8hw/DsXoktV4mb+O8tzEZrZXQkAd/KQGjSnYj4d7Z
+	w1wDb+dUOctJtUP0S7gD5IPrgJUmcw4nyWgHa+
+X-Received: by 2002:a05:6a20:7fa7:b0:398:b433:87ed with SMTP id adf61e73a8af0-3aab17e8acemr8336221637.44.1778341402483;
+        Sat, 09 May 2026 08:43:22 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13278210d40sm8386334c88.4.2026.05.09.08.40.51
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c826767be49sm4686725a12.3.2026.05.09.08.43.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2026 08:40:52 -0700 (PDT)
+        Sat, 09 May 2026 08:43:21 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sat, 9 May 2026 08:40:51 -0700
+Date: Sat, 9 May 2026 08:43:20 -0700
 From: Guenter Roeck <linux@roeck-us.net>
-To: Colin Huang <u8813345@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kevin Chang <kevin.chang2@amd.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Colin Huang <colin.huang2@amd.com>
-Subject: Re: [PATCH v5 3/3] hwmon: (pmbus) add support for Delta E50SN12051
-Message-ID: <355daf0c-afb7-43b2-b6a2-fa25426eedc1@roeck-us.net>
-References: <20260508-add-e50sn12051-v5-0-abebdcc29665@gmail.com>
- <20260508-add-e50sn12051-v5-3-abebdcc29665@gmail.com>
+To: Aureo Serrano de Souza <aureo.serrano@arctic.de>
+Cc: linux-hwmon@vger.kernel.org, linux@weissschuh.net, corbet@lwn.net,
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 RESEND] hwmon: add driver for ARCTIC Fan Controller
+Message-ID: <839d67bb-79fe-4096-965f-ead57112b3a3@roeck-us.net>
+References: <20260508064405.38676-1-aureo.serrano@arctic.de>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -99,50 +93,61 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260508-add-e50sn12051-v5-3-abebdcc29665@gmail.com>
-X-Rspamd-Queue-Id: 4688F500550
+In-Reply-To: <20260508064405.38676-1-aureo.serrano@arctic.de>
+X-Rspamd-Queue-Id: 3D0815005B3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13900-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-13902-lists,linux-hwmon=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,roeck-us.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:mid]
 X-Rspamd-Action: no action
 
-On Fri, May 08, 2026 at 05:44:30PM +0800, Colin Huang wrote:
-> From: Colin Huang <u8813345@gmail.com>
+On Fri, May 08, 2026 at 02:44:00PM +0800, Aureo Serrano de Souza wrote:
+> Add hwmon driver for the ARCTIC Fan Controller, a USB HID device
+> (VID 0x3904, PID 0xF001) with 10 fan channels. Exposes fan speed in
+> RPM (read-only) and PWM duty cycle (0-255, read/write) via sysfs.
 > 
-> Add the pmbus driver for Delta E50SN12051 600W Non-isolated
-> 1/8th Brick DCDC Power Modules.
+> The device pushes IN reports at ~1 Hz containing RPM readings. PWM is
+> set via OUT reports; the device applies the new duty cycle and sends
+> back a 2-byte ACK (Report ID 0x02). The driver waits up to 1 s for
+> the ACK using a completion. Measured device latency: max ~563 ms over
+> 500 iterations. PWM control is manual-only: the device never changes
+> duty cycle autonomously.
 > 
-> Signed-off-by: Colin Huang <u8813345@gmail.com>
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> raw_event() may run in hardirq context, so fan_rpm[] is protected by
+> a spinlock with irq-save. pwm_duty[] is also protected by this spinlock
+> because reset_resume() clears it outside the hwmon core lock. The OUT
+> report buffer is built and write_pending is armed under the same lock so
+> that no reset_resume() can race with the pwm_duty[] snapshot. priv->buf
+> is exclusively accessed by write(), which the hwmon core serializes.
+> 
+> Signed-off-by: Aureo Serrano de Souza <aureo.serrano@arctic.de>
 
-Applied.
+I guess we can live with the potential 1-second sysfs read stall on driver
+unload reported by Sashiko. Applied.
 
 Thanks,
 Guenter
