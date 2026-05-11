@@ -1,155 +1,188 @@
-Return-Path: <linux-hwmon+bounces-13908-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13912-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDc5FHBRAWq+UgEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13908-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 05:48:00 +0200
+	id 4NM5Jq5fAWr/WwEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13912-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 06:48:46 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DA8507C18
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 05:47:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4391507E2C
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 06:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3EA6300697D
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 03:46:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0082A300372B
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 04:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFD0378806;
-	Mon, 11 May 2026 03:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DB13630BC;
+	Mon, 11 May 2026 04:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="Ntl3BLzl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CRF6YEbH"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B2E37C907
-	for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 03:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778471192; cv=pass; b=DGCjcDR32QTIcl16WOkrwt9oCqZtfPtC/asrlGLkJRerysUI45xQf6QkKMhwgfPuJgYqzXywF1kb1Ln9W3XvDz4s0wIzMBmuGncw1xQ+4eCYVCckskSkwwOQyI94bTL36fJaTplNHkYg2LTODTYLYJxLFifiyVXP3DERxY8z6Bc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778471192; c=relaxed/simple;
-	bh=+1qHEkLfxIoZVewscuCmC9HNjP4/clF+MrL1iv+Pe/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g9EpxSH6eKxT6W/jNZF1VqFQM8dPi4+BbNof5k+SLH4ScsHZRMouf64blPrD2CzC+kU5rhONNVjj5OCo4aYmRGQTZvuzU6VlCOFj9XMmaG6MXD+ShjWdLKOODk5yJ1W97WFWv294YadvOY3nEYIt8nTfCotOfxdcJk199BSj53c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=Ntl3BLzl; arc=pass smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7bdec52f48dso54218417b3.0
-        for <linux-hwmon@vger.kernel.org>; Sun, 10 May 2026 20:46:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778471190; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X/P1KOipbiaRssIAQ7f46r7czjb/hQlMaaL6EXH+x77bopW8FPGxhRcGUDhZH3W1Ux
-         wXLr+aBepFHwVHHuxHg91nDaw96zH+LEqUgKE/BPrtjGp8JI5uiqP4EmgMUegsNQ9bQ1
-         zBmQDFsMuLAvfFJOBKSDDBudwLy6yKtjHD2EmVpm+rzU/Aj3UothjqyQ8PHXIlBLIw4j
-         25ZRVf42gR4V7pqAdSQMK4Z+PEnrtpB2nErj58q4CPxrXPcrtZe+PtM8+M9iZHqhqlsZ
-         QK870o1r+MWEijjiw9Y7VqUTiLsD4I3gWKZhNPtd1nV5iLGAg5sHO3gFxLCLHfpLaoxX
-         ItOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=+1qHEkLfxIoZVewscuCmC9HNjP4/clF+MrL1iv+Pe/g=;
-        fh=fVHuQEAch9ciNFVAxegCLHZK1r4HmTpPJJmZPQfIuqA=;
-        b=DsPej88yX0DnQh2Y98SgNIpvLDpPgkio+2DzLwzQ1AL93DhSErLSAQX4dBSy+uKZmh
-         ClsZdkKKnenmv1X8fXRqqk41HY68Z/gTmyH9k6OOAMPBB5tnMgydz0/29CR5+QhG2NxX
-         sqaXsYma6BAdRaSlvecrcf5oYTDeh5/AjGdpWTgnScGoPwrP58u3XVwflQ/5mwnDz64v
-         3li/U4BHw+0v2cuuHF1h5GnzFPiX0VGTJfpPedG6nKgoNoPyVS21lT7o2r/rXXUc05Ws
-         eQsKt7MPVVDv4JJKkvl45e9a3nQleSUTszis6JnpSzhi+/uXc0ppiRD4BCQI7XyGv1Rp
-         pKgw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1778471190; x=1779075990; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+1qHEkLfxIoZVewscuCmC9HNjP4/clF+MrL1iv+Pe/g=;
-        b=Ntl3BLzlEUzncNbT6e17j+a3usu6P2uqEy3G6Y+MdjakQ9NPoVXRHj1q0Yk9NwWxO1
-         nq/Zk7ynUW9DHppN9tEnlaAZCKVAi/XmphMMZi3CLSHcFWjEywJ629mJV1BtcO4ufhUY
-         foVa6zT0FcdjRjHbVzxsEkIdxr0LATmZC08dkFX7DPLFqax6+Dzgem9KVs9kjAi5wWeJ
-         GqD/ptWHmo8ov+StUt8wpBcAaPWhRyPqrteeIJ25He5rbMsl/IKjoY3R39xkROiHTiet
-         V+tRy1BW2aWT2TKA6TS4sog4ZJ8oPu1qND2JY0jJA/erFgR4yaa+DSqmDReFrAuRHC3a
-         KClA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778471190; x=1779075990;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+1qHEkLfxIoZVewscuCmC9HNjP4/clF+MrL1iv+Pe/g=;
-        b=rnmdKZdo/myMrDAgOx38kpkR25SqezPb408ObkUjwl+lbMUc1igHKYhJBxD/6ydcqn
-         gdJ8YzPJuQItdGpOWWNbYf9AF73zVNwiOZ999bmZxfeu8GW4q08CbBiFu8ZzQn6VmYdz
-         f3QkfNrjvq05BNjUIx7o/ISoWwXUzIdPlRbMZynbuPs8TRec2tsK5F/BRRbd65bQMCCc
-         sUO5ZE0IiaWNzW/OWFR6TKQ3d/EAOeIwEi86eGbbEzTeEDtxSDot5rGey86ey866Klk/
-         TIQ8EbF78AGCLimfFRKmztLWfh0LI+xOzQzR0rGDeF2iXc+wcyKEf3RMEhmGd4o6VWF/
-         mipA==
-X-Forwarded-Encrypted: i=1; AFNElJ9wtEp5wQsYaEJWXeBzwlX4Vh6sO+UeXsGK5D54UIbKj620vwR+8dZz9KnN4LMlfnFAyRATlhnklGyjZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKBr+LCxmEg3RInCAlKqX+WNS+R3oLQ4c1I+gcuTrGb159XSui
-	64+YzQZNIpy/mUyMMXo9ugciSZL9tVrdvYAnY2OPbUCfOyOCsjJOysrOVAc6cRXB21joLncBRi1
-	3Av1ykHOx4qt7TTATyD7jH4EZAKnUPW3+O3qjvfa5tQ==
-X-Gm-Gg: Acq92OEMTibjCFXtHUw+6F6j0fUgcFdH5R5ZcRvJ8VGawPmhRyMbcj/r2bzGYvTFwZq
-	o+nP36hnEb7U8/uEI8xxB+m1Vhv2+AzDmcyM2TKrj/zx0xaCA7XDswgCuF8Dzu40n9GGD5MFJzL
-	mXWOv7N3Yoa6koMWpARWFYHJswICuyEQ3HUDXgrKBIkOWkL72K/o63S0ZxrJwvfcQFoC3aJqfBS
-	lhr82aOvFGREkMZJFuhKwxOiaC+VM7/Lp7O8jy4HysaGKnuhG7rFbT/0QCoVXoYWWRXc+v4WHNM
-	wlYGk9c=
-X-Received: by 2002:a05:690c:c504:b0:7b3:b0a6:2c60 with SMTP id
- 00721157ae682-7bf04b126eamr137293717b3.1.1778471190558; Sun, 10 May 2026
- 20:46:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573B026B0A9;
+	Mon, 11 May 2026 04:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778474918; cv=none; b=OmXoP+Ci97MgfjArfIti23QX9zzbPhksEAyEF6w803s4MHW/xhytA9gxBjPtL04SqQh1CIAhZE4rqq8DWolmPayKu7JgJUitM40DvqE+0/FoWRv0dDfBwXWmZkdx+g3Qgo1fls3WcsK84AWH27PxpCpBu5+N+ilUFXdy/H8JzXo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778474918; c=relaxed/simple;
+	bh=ge4OQCXy0fmwgEqR1w3vvbQqKhQjN1Vu7qZH9VrR5JI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YVQ5sb2eFbM3fZO6DnQfvWfweq6QkSPfvk3i5B8PeaBZ2jTplGaGX22sl4bRj7SsVoPtZ2QbRVUUzmB7nt9uffJfliH8yw3Q4P7rO75Jo+EUeB7M3zD8sp2c9GbK8iL6b9t6PBRDphZdqE64yPbo2Ni1w5/3exYtb+9lCrTl/NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CRF6YEbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 08D04C2BCB0;
+	Mon, 11 May 2026 04:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778474918;
+	bh=ge4OQCXy0fmwgEqR1w3vvbQqKhQjN1Vu7qZH9VrR5JI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=CRF6YEbHG7ljOaWmKYgfoNRV4oFTyqgBs4BsC4WggHBUpP6xcIsQF9PfbqmKNaToE
+	 VTmHHPEOY00al6gOy+bSoSovPENL0tfinNXhjceIbk/rXpQKoxKjXG1vVXEdo2mVqE
+	 4ugk0qcNxDHEpCAdUYoPEXjLYi3Z9CnsCcx69qy0dc2C8y25kWUCO1SL2mIR4CHm8n
+	 8W8lrNw+QKf2abU10xHQ5odG6e6B8TBYK7MOguBy3rN73WVCrveIZVMflSMZ3yfbQq
+	 iDsBFY44uUjfyXU/FbisU/1A1+a7OAEuAbNgL9P4RO/3bo4zvjIlJix42WzN6fe6rh
+	 s4EkC13RQWOIA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9DFFCD37B7;
+	Mon, 11 May 2026 04:48:37 +0000 (UTC)
+From: Abdurrahman Hussain via B4 Relay <devnull+abdurrahman.nexthop.ai@kernel.org>
+Subject: [PATCH v2 0/5] hwmon: (pmbus/adm1266) blackbox, FW rev, rtc_class,
+ GPIO label
+Date: Sun, 10 May 2026 21:48:06 -0700
+Message-Id: <20260510-adm1266-v2-0-3a22b903c2f1@nexthop.ai>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260508-adm1266-v1-0-ec08bf29e0ce@nexthop.ai>
- <53d965b4-ab1c-4cb1-9fc3-c99538336d53@roeck-us.net> <CAGYn4vyDi8Z2i4mvuEZEP-nXCOO-X393=UuaogWJ9k3sXhQ8nQ@mail.gmail.com>
- <4a886ce7-9ddf-4fd2-8c39-a4c97373d168@roeck-us.net>
-In-Reply-To: <4a886ce7-9ddf-4fd2-8c39-a4c97373d168@roeck-us.net>
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Sun, 10 May 2026 20:46:19 -0700
-X-Gm-Features: AVHnY4Joweipqm-AOztfgSuE-kce3xA1utwoWASIzJwoQMDUdAyaSBOnPiy1UzQ
-Message-ID: <CAGYn4vyM+1pg9Z1zDuJ4AURcZtc=U_RHsWVAt9ox4SqDPDKyDg@mail.gmail.com>
-Subject: Re: [PATCH 0/7] hwmon: (pmbus/adm1266) RTC fix, blackbox, FW rev, rtc_class
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Alexandru Tachici <alexandru.tachici@analog.com>, linux-hwmon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: A1DA8507C18
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIZfAWoC/z2NQQ6CMBBFr0JmbU0ZtKIr72FYlOnUjolAWiQYw
+ t0FjC5f8v77EySOwgku2QSRB0nSNgvgLgMKtrmzErcwoEajj/qkrHvmaIwiX1h/QEeFQ1jsLrK
+ XcSvdqi+nV/1g6tf5agRJfRvf29WQr96vWv6rQ660YtJl7fHMmvja8NiHtttbgWqe5w9DT6F8s
+ QAAAA==
+X-Change-ID: 20260507-adm1266-cf3af42dc3d2
+To: Guenter Roeck <linux@roeck-us.net>, 
+ Alexandru Tachici <alexandru.tachici@analog.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Abdurrahman Hussain <abdurrahman@nexthop.ai>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3349;
+ i=abdurrahman@nexthop.ai; h=from:subject:message-id;
+ bh=ge4OQCXy0fmwgEqR1w3vvbQqKhQjN1Vu7qZH9VrR5JI=;
+ b=owJ4nJvAy8zAJbYltPXv6rsCXxhPqyUxZDHGL2Fk89+qyNzOx629o7F7Y2Z3iSSf6+W4CXxBa
+ y6nZGftndNRysIgxsUgK6bIMueR/5u2jraIDTGH7GHmsDKBDGHg4hSAifhqM/zT+HzF493XuROu
+ 5uzzCy0462Hzy0pd4uzvA+UFk+d2FT/KZPifI74iwDeH59akOEGbR4w1Tw8VXKh6t2zJMRav1a9
+ mdYjxAAArI0y1
+X-Developer-Key: i=abdurrahman@nexthop.ai; a=openpgp;
+ fpr=9CE24FEC86888658B05CC23FB45585FDABDD10F4
+X-Endpoint-Received: by B4 Relay for abdurrahman@nexthop.ai/default with
+ auth_id=756
+X-Original-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reply-To: abdurrahman@nexthop.ai
+X-Rspamd-Queue-Id: D4391507E2C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-13908-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13912-lists,linux-hwmon=lfdr.de,abdurrahman.nexthop.ai];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nexthop.ai:+];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,linux-hwmon@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-hwmon];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,nexthop.ai:dkim]
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[abdurrahman@nexthop.ai];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hi Guenter,
+This series fills in some gaps in the adm1266 driver and removes a
+probe-time RTC seed that was clobbering valid device state.
 
-Thank you for the link.
+Patch 1 exposes the firmware revision (IC_DEVICE_REV, 0xAE) via
+debugfs alongside the existing sequencer_state entry.
 
-I am not sure why the replies are being filtered;
-it may be related to using the b4 relay web endpoint.
+Patch 2 adds a write-only clear_blackbox debugfs file. Devices
+configured for single-recording mode (BLACKBOX_CONFIG[0] = 0) need
+an explicit clear once the 32-record buffer fills; the documented
+sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
+from userspace.
 
-I will address the comments on Sashiko and submit v2 shortly.
-I'll send the next version directly to avoid further delivery issues.
+Patch 3 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
+The same value is embedded in every blackbox record, so the live
+value lets userspace match a captured record back to the boot it
+came from when correlating logs.
+
+Patch 4 replaces the probe-time SET_RTC seed with an rtc_class
+device backed by SET_RTC. The existing seed used CLOCK_MONOTONIC
+seconds, which is meaningless as a wall-clock time and clobbers
+whatever the device retained across a warm reboot. The data sheet
+(Rev. D, p. 22) explicitly recommends "frequently send the time
+stamp to the ADM1266 to synchronize the UNIX time and reduce the
+time from drifting" when running on the internal oscillator (no
+external 32.768 kHz crystal). Letting userspace own the policy via
+standard tooling (hwclock, chrony, systemd-timesyncd) against
+/dev/rtcN is both more correct and avoids any driver-specific
+sysfs ABI.
+
+Patch 5 disambiguates GPIO line labels on platforms that fit two
+ADM1266 devices on different I2C buses at the same slave address.
+
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+---
+Changes in v2:
+- Drop the v1 "use wall-clock seconds for SET_RTC" and "write
+  fractional-seconds field of SET_RTC" patches. v1 patch 6 already
+  added an rtc_class device, so userspace now owns the time-set
+  policy and the probe-time seed is no longer needed - removing it
+  also fixes the cross-reboot blackbox-correlation regression the
+  seed introduced.
+- In the rtc_class patch, write the SET_RTC fractional-seconds
+  bytes as zero rather than computing them from a timespec64. The
+  rtc_class API is second-precision, so the divide that v1 patch 2
+  was adding never produced a non-zero result anyway. This also
+  drops the 64-bit divide that would have failed to link on 32-bit
+  builds (Sashiko review).
+- Use %d (decimal) for the I2C adapter number in GPIO line labels,
+  matching the i2c-N convention used elsewhere in Linux. v1 used
+  %x, which rendered bus numbers >= 10 in hexadecimal (Sashiko
+  review).
+- Link to v1: https://patch.msgid.link/20260508-adm1266-v1-0-ec08bf29e0ce@nexthop.ai
+
+---
+Abdurrahman Hussain (5):
+      hwmon: (pmbus/adm1266) add firmware_revision debugfs entry
+      hwmon: (pmbus/adm1266) add clear_blackbox debugfs entry
+      hwmon: (pmbus/adm1266) add powerup_counter debugfs entry
+      hwmon: (pmbus/adm1266) replace probe-time RTC seed with rtc_class device
+      hwmon: (pmbus/adm1266) include adapter number in GPIO line label
+
+ drivers/hwmon/pmbus/adm1266.c | 162 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 150 insertions(+), 12 deletions(-)
+---
+base-commit: 917719c412c48687d4a176965d1fa35320ec457c
+change-id: 20260507-adm1266-cf3af42dc3d2
 
 Best regards,
-Abdurrahman Hussain
+--  
+Abdurrahman Hussain <abdurrahman@nexthop.ai>
+
+
 
