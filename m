@@ -1,84 +1,84 @@
-Return-Path: <linux-hwmon+bounces-13920-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13919-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OcnO9CLAWp4dQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13920-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 09:57:04 +0200
+	id OGmjH4GMAWp4dQEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13919-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 10:00:01 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E5E509AE0
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 09:57:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 038B1509B5B
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 10:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FC293001CDC
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 07:55:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B0AB30B71A5
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 07:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43FC3AB26A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734FB3B3C05;
 	Mon, 11 May 2026 07:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="dru2DOmx"
+	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="K7Oj2E8s"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB9B3AA4F2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93C63AC0C4
 	for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 07:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485906; cv=none; b=lyMl+oarbZ5YzHrCAfwNscjEl4i20ddmmbmGdNUZ7bXgOc0kmjP/MMDQG/ApnVmzgwURlJrhV3KI/RROctOPvbn9PMZcQ+kLaG1uUhI7kb00PafbzGtAp5+Qr1T/5WGSMmWP52me+r5n3Xke7q/jNqoc0Jm8r9PJMzsJTokUZ10=
+	t=1778485906; cv=none; b=jTf+FSLKTii7A16Qt6FQhH8j07tJZKgU7Vu80Qa2tUNEtUVySnDV7fXzRJ/zv/fF2ktQ/FcA+egifwMjVPXuZ72x9ZbLF8XPqNESQteLqIOvaI0UCBjFMcr2U1Cz2kLPNNaJy/1uEglAWGhhns7mt/xEwP3TWH/b0j72kNKzLFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778485906; c=relaxed/simple;
-	bh=4ibCJKgh5O0PlQIzarHRly8PpVR0ik1+YJcgF8LKXcQ=;
+	bh=XbXHyUmmSPnlINR9vCvpAV0eATuZ1frtfzVXW5r+IYw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VMyJQQ7omqD6DWq8wZBwD7QtQTv+j1q0Cd0XkSKfIZKDchb6sIausCyU1hRxUGcigArJ7W+NfgeoIH2YFBnTpDBmVlW3W2R88gotZI6H2nBK2i4m+YvShn71EADZV4vivMPsSsg3JAf/+IXAux/deppsZX/QKLpfX9DgCLRD7TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=dru2DOmx; arc=none smtp.client-ip=74.125.82.171
+	 In-Reply-To:To:Cc; b=gpzLAjXmR2wElUk/N1gOCe8nujHS5Om7G+OxSk6uA7uVzeyjAVYCxp9eA1DbzfChOcpScr6FkNHUhIXplFMZ6JAokK6PKjMBXVJ1yBVaOewn1GyBq3X12gSZSQClBfEMrP11WkY4bAZLrsg+RxIOau6tFBfrYd+fgBfAXc0eMB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=K7Oj2E8s; arc=none smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ee990e8597so7084568eec.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 00:51:34 -0700 (PDT)
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso4105326eec.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 00:51:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1778485888; x=1779090688; darn=vger.kernel.org;
+        d=nexthop.ai; s=google; t=1778485889; x=1779090689; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gOMLJB4Oh7xtGNEINQHb/KOg6mgGsuMaGDF24hTcF4o=;
-        b=dru2DOmxZbt/rBepApbb+Dm+/+I4wkfqSOkm4CCvDDlw0chs1XiRX8ObqjVv5MEz6j
-         Dc/V4bOQoRXs0rS6pwL22+lwUfDpDlzSCXRUMuWqD9+Obv8b7QHGugsDnc+1TXAtUv8N
-         W6bVeUyCgpZcGc1sfWZljx05+Uw8fDGmRyq0davN/AnjKsl6idEBKPfvhHpJxR6Ky9hr
-         +58owaDk8wweyBG5ORgF0ry/4zACD0Uk/uN85Fhqu1CzBNwSHq5MrpasdAFTDhH0MmOh
-         Jv1faExq07NuIKeLume/xAIjDiQiKQot7Nk8xRPMogFU/wiXu1RPJFprf4nF4R1AUCc5
-         gUZg==
+        bh=4q1SHKtQsxrNG23clQPndB4aglh1g+mHmxJ8IDbl1eM=;
+        b=K7Oj2E8sJ6NTYQ0PG6B29rRaplwdyP3TcaretaY2PgPz4C2ZzORvmfM4+bAw6/py7i
+         7bkj30BdDBFAA91cCf+CqrwOfqzX7HFezcDIx8+q406VUNtB1OTkMypB6ntdSG1h30Qu
+         So3aSoesYM4s554/ufFZUy1907o1jP/SJLqqOF6yLtIK9IaxaNyudo4e08lGH7+FN8YS
+         6kESlDDaAxCq5KveFM6mxkUdjadgIrN6XvV+0A4jxpVN4H9KJdxPEzOaWNYCPoaVabMd
+         EOf84eXQYZsH4UmGT6NJZsixXp6mcqaR4h4FCMKEhLJemqjFT++/U1jajYjSEhH/ijpx
+         mU3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778485888; x=1779090688;
+        d=1e100.net; s=20251104; t=1778485889; x=1779090689;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=gOMLJB4Oh7xtGNEINQHb/KOg6mgGsuMaGDF24hTcF4o=;
-        b=nKLSsAihgDHhdnScLgHd82ndmPu136ZQP/gfG/3RH44kQ0r6ftLdmpqDeAYzAZgcz9
-         YcZJvaq8McOefNnxUrUWcbNfA7rnkhKGQ/+09xIZ8vd+gPsiJiNw9pQ+ztaO/AUmpP/j
-         ZN/NWV1/DFq4ZQsiQxCdL4P7xahyWZgIu4HUmOWi7ZtoR1TwP+RHoSsPOhp/bknQIHgf
-         eTD6VDR12tAdk1Q5mHAE6t/etoQ6sPTsEmBemsoQFt5x91Ix+Y3eMl3O9wM6kJxm+LUj
-         apU9sT5YAHfAz20sg6RboShYoN3qKyAhiKw2zr7Td8LHes98Gnz98u+WJJFmM2c6xiAm
-         fHyg==
-X-Gm-Message-State: AOJu0YxJm9OgZl6piK+UXaTkHFQ0AXV+nhVmXbvcizgXPkfaOrh9L0i0
-	K3nSIWT0GFyudwDVPAwbNNMP/PLn4svpq6WHK3EQxFGECS6j/9SbFd0/cp55f96q4PA=
-X-Gm-Gg: Acq92OGMNn8qYdnaB12y/qiUuoTNzD2eKL5rP6zmo2RxYvvWN5BNF3SMVUBe+kBQakX
-	vilYkgDiV3lq69dncRgRsrL78XqyuMkyIJSG0b9QMghAdGS7sJiOsEhHRMNt5sUn6n1PkBXjxof
-	hmsCAnIer5Q//pgGeL6gJQjPpxpRtt1mNbg07df5gOZ/5Ij/hTP2mbDrhLzjZJrBhS2MGM2WkY8
-	3qHfDHos1g4puTrFVQ8VeltRKMqfu6xfPhyK8YRjctd6YHqYowe+N4WVSs03YiEHWrt9Ij9WTXQ
-	ciP1Nrho9T3JWZTczElp0D7NBXuWiTcl/4s3/b03AmlR7ceUA3B+Hx7FiktCjXreWV+BOHt9TmM
-	ZLDArwbpr3nvkX8pdfLj7KsKIWeZtGQD0gNhk0P60AKXH9cq7S2plETbaH9vB8JDXx7tNSLBa0/
-	dL+sXTL02vR/ATf3nhPzNwR/YHmg==
-X-Received: by 2002:a05:693c:2c01:b0:2c5:b23e:48a6 with SMTP id 5a478bee46e88-2f54b265a7dmr11730370eec.23.1778485888037;
+        bh=4q1SHKtQsxrNG23clQPndB4aglh1g+mHmxJ8IDbl1eM=;
+        b=sQcklAfWIIhYGAvhSvYHunAO06M+V5IAzweDPCflsSos/oMVRc6LcbAZNPIICnNXrT
+         rIbOc3oc0pO8N+2oRYBwIE/W0tcQLXNEJAANlhAzHgKu/mTKlpG7sS9ZIuC80jwSL7kt
+         RiK2a0i4KRI3EDrZHgiEV8PpRyrbYHin+sN3UHnT0TkKkNAYLLtfwVqcBW8/xxnKsjgH
+         XKk1P8Tvft6M60xYVRhUtQpg9ukduVOyG2d1bj8fFK37QAn5xNCP2UUoxqoEflR7Qkip
+         AdfAh+jNdgeWnkn7dxlQSHk+ieYjdT/Vv0ISpjGQRjJUAcd31oBeD6D6/hNXWAjPMCOz
+         57mw==
+X-Gm-Message-State: AOJu0Yy3I38atF7753Btxr1zLFfHygrtxpdhO3pYAsXE2Rholi0NhxVW
+	k0x5pMbAvVWvRAvsJVu1bZ86smivmj5Kyt/Yu5FKen8LG5hZA+omyj4B5XQ2VuM2OpM=
+X-Gm-Gg: Acq92OETg3+rZylm/scxlKOjxFFa6GHF72sCnewpOmIRUdmj+Prnm8qsnaTfKeeSWmb
+	gfQ9OxGyu7sUQRqGhgJxQb11EI9tnuctA/+RNf9qixYXouzvoVgekgP73uHKqOaDzHVYAzBtki2
+	78AwxNH6g2SmHh8/3Wqrjc/BeZkIKAPofeHnB6i2W349EeET0aINuQWt58XyIvqIA89foeZfyaX
+	epaOUsLoQHn0xoJ4SMR67TEY+mUHRW5VcyyQmvrDxdoC7vnZe6R1tY72IOmxW6F5VPBQ9Mu2rnz
+	/kvMbRQLT0Y4tBkwxja74ortXoKMxEP4VSBtM519HXkoygZ7+0PAfDufFDNxKRobDniW59hmIe8
+	/2Lrzow4O4y3ZvXqka685fQGHygNbGoWhNueTqYggN3c2qkEfGO0HPMMgnClze7udIROA9USSUl
+	EoWtqbnXNNc41hpyG3LjVY/Xqt96TBGznS2Syg
+X-Received: by 2002:a05:7300:4313:b0:2ed:e14:42e7 with SMTP id 5a478bee46e88-2f54b068c4fmr11223026eec.32.1778485888725;
         Mon, 11 May 2026 00:51:28 -0700 (PDT)
 Received: from [127.0.0.2] ([50.145.100.174])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8862d429asm12549498eec.12.2026.05.11.00.51.27
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8862d429asm12549498eec.12.2026.05.11.00.51.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 00:51:27 -0700 (PDT)
+        Mon, 11 May 2026 00:51:28 -0700 (PDT)
 From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Mon, 11 May 2026 00:51:22 -0700
-Subject: [PATCH RESEND v2 4/5] hwmon: (pmbus/adm1266) replace probe-time
- RTC seed with rtc_class device
+Date: Mon, 11 May 2026 00:51:23 -0700
+Subject: [PATCH RESEND v2 5/5] hwmon: (pmbus/adm1266) include adapter
+ number in GPIO line label
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -87,26 +87,26 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-adm1266-v2-4-7a6d34f0de5d@nexthop.ai>
+Message-Id: <20260511-adm1266-v2-5-7a6d34f0de5d@nexthop.ai>
 References: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
 In-Reply-To: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
 To: Guenter Roeck <linux@roeck-us.net>, 
  Alexandru Tachici <alexandru.tachici@analog.com>
 Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778485884; l=4478;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778485884; l=1498;
  i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=4ibCJKgh5O0PlQIzarHRly8PpVR0ik1+YJcgF8LKXcQ=;
- b=ETLsCjM6H4EMaCozDZLBwrdM/ijhzzcc38skjIZYng0g5ME3hk6FcDI+ofaNo9bzLZ8FSJDwv
- RyvPs1Q4UI7CsFu4ZIz7XnG9ONonKq1lMoV+ugVjX2nlH3hls/JeE6B
+ bh=XbXHyUmmSPnlINR9vCvpAV0eATuZ1frtfzVXW5r+IYw=;
+ b=srho/Xbrh37yWynX9q07r5979zsJrJjZSCUUfohsmL88CnamFqct9tWXTH2ubO8iA0n6KDUrR
+ lX3d9ecsTQNDNVN3STBYL/UA30ETWw6dqosByNDcLAW7PLHn9hlqnmO
 X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
  pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
-X-Rspamd-Queue-Id: F2E5E509AE0
+X-Rspamd-Queue-Id: 038B1509B5B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -115,7 +115,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[nexthop.ai:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13920-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13919-lists,linux-hwmon=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -123,147 +123,47 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The driver currently writes the device's internal RTC at probe with
-ktime_get_seconds(), which returns CLOCK_MONOTONIC seconds since boot
-and is not a wall-clock value. The resulting timestamps embedded in
-blackbox records are therefore meaningless across reboots, defeating
-the cross-reboot record-correlation use case the field exists for.
+Platforms that fit more than one ADM1266 on different I2C buses at
+the same 7-bit slave address (a common shelf-management pattern,
+e.g. one device per power domain) end up with duplicate GPIO line
+labels because the existing format only includes the slave address.
+Including the adapter number disambiguates them.
 
-Switching the seed to ktime_get_real_seconds() does not actually fix
-this: at probe the system wall clock may not yet have been set (no
-external RTC, no userspace NTP), and seeding unconditionally also
-clobbers whatever valid time the ADM1266 retained across a warm
-reboot.
+The adapter number is formatted as decimal to match the i2c-N
+convention used elsewhere in Linux (sysfs paths, dev nodes); the
+slave address keeps its conventional hexadecimal form.
 
-The data sheet (Rev. D, p. 22) recommends "frequently send the time
-stamp to the ADM1266 to synchronize the UNIX time and reduce the time
-from drifting" when running on the internal oscillator. The clean way
-to expose that policy is an rtc_class device backed by SET_RTC, so
-that userspace tooling (hwclock, chrony, systemd-timesyncd) can drive
-the re-sync against /dev/rtcN once it trusts the system clock - with
-no driver-specific sysfs ABI.
+The label is purely informational (visible via gpioinfo and the
+gpiochip /sys/class/gpio name); no DT or ABI consumer parses it.
 
-Drop the probe-time seed and adm1266_set_rtc() entirely. Add an
-rtc_class device whose ->read_time and ->set_time callbacks read and
-write the SET_RTC frame. The rtc_class API is second-precision, so
-the SET_RTC fractional-seconds bytes are always written as zero.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
 Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 ---
- drivers/hwmon/pmbus/adm1266.c | 70 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 60 insertions(+), 10 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 99e92a8365fb..0dfb02db8683 100644
+index 0dfb02db8683..479e768ff87c 100644
 --- a/drivers/hwmon/pmbus/adm1266.c
 +++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -18,8 +18,8 @@
- #include <linux/nvmem-consumer.h>
- #include <linux/nvmem-provider.h>
- #include "pmbus.h"
-+#include <linux/rtc.h>
- #include <linux/slab.h>
--#include <linux/timekeeping.h>
- 
- #define ADM1266_IC_DEVICE_REV	0xAE
- #define ADM1266_BLACKBOX_CONFIG	0xD3
-@@ -513,21 +513,71 @@ static int adm1266_config_nvmem(struct adm1266_data *data)
- 	return 0;
- }
- 
--static int adm1266_set_rtc(struct adm1266_data *data)
-+/*
-+ * SET_RTC frame layout (datasheet Rev. D, Table 84):
-+ *   bytes [1:0] = fractional seconds, LSB = 1/65536 s
-+ *   bytes [5:2] = seconds since 1970-01-01 UTC
-+ * The rtc_class API is second-precision, so the fractional bytes are
-+ * always written as zero.
-+ */
-+static int adm1266_write_rtc(struct i2c_client *client, time64_t secs)
- {
--	time64_t kt;
--	char write_buf[6];
-+	u8 buf[6] = { 0 };
+@@ -292,8 +292,9 @@ static int adm1266_config_gpio(struct adm1266_data *data)
  	int i;
  
--	kt = ktime_get_seconds();
-+	for (i = 0; i < 4; i++)
-+		buf[2 + i] = (secs >> (i * 8)) & 0xFF;
-+
-+	return i2c_smbus_write_block_data(client, ADM1266_SET_RTC, sizeof(buf), buf);
-+}
-+
-+static int adm1266_rtc_read_time(struct device *dev, struct rtc_time *tm)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	u8 buf[I2C_SMBUS_BLOCK_MAX];
-+	u32 secs;
-+	int ret;
-+	int i;
- 
--	memset(write_buf, 0, sizeof(write_buf));
-+	ret = i2c_smbus_read_block_data(client, ADM1266_SET_RTC, buf);
-+	if (ret < 0)
-+		return ret;
-+	if (ret != 6)
-+		return -EIO;
- 
-+	secs = 0;
- 	for (i = 0; i < 4; i++)
--		write_buf[2 + i] = (kt >> (i * 8)) & 0xFF;
-+		secs |= (u32)buf[2 + i] << (i * 8);
-+
-+	rtc_time64_to_tm(secs, tm);
-+	return 0;
-+}
-+
-+static int adm1266_rtc_set_time(struct device *dev, struct rtc_time *tm)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+
-+	return adm1266_write_rtc(client, rtc_tm_to_time64(tm));
-+}
-+
-+static const struct rtc_class_ops adm1266_rtc_ops = {
-+	.read_time = adm1266_rtc_read_time,
-+	.set_time = adm1266_rtc_set_time,
-+};
-+
-+static int adm1266_register_rtc(struct adm1266_data *data)
-+{
-+	struct rtc_device *rtc;
-+
-+	rtc = devm_rtc_allocate_device(&data->client->dev);
-+	if (IS_ERR(rtc))
-+		return PTR_ERR(rtc);
-+
-+	rtc->ops = &adm1266_rtc_ops;
-+	rtc->range_min = 0;
-+	rtc->range_max = U32_MAX;
- 
--	return i2c_smbus_write_block_data(data->client, ADM1266_SET_RTC, sizeof(write_buf),
--					  write_buf);
-+	return devm_rtc_register_device(rtc);
- }
- 
- static int adm1266_probe(struct i2c_client *client)
-@@ -553,7 +603,7 @@ static int adm1266_probe(struct i2c_client *client)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = adm1266_set_rtc(data);
-+	ret = adm1266_register_rtc(data);
- 	if (ret < 0)
- 		return ret;
+ 	for (i = 0; i < ARRAY_SIZE(data->gpio_names); i++) {
+-		gpio_name = devm_kasprintf(&data->client->dev, GFP_KERNEL, "adm1266-%x-%s",
+-					   data->client->addr, adm1266_names[i]);
++		gpio_name = devm_kasprintf(&data->client->dev, GFP_KERNEL, "adm1266-%d-%x-%s",
++					   data->client->adapter->nr, data->client->addr,
++					   adm1266_names[i]);
+ 		if (!gpio_name)
+ 			return -ENOMEM;
  
 
 -- 
