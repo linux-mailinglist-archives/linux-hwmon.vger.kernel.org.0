@@ -1,58 +1,57 @@
-Return-Path: <linux-hwmon+bounces-13923-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13924-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KiyC3Q0AmocpAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13923-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 21:56:36 +0200
+	id eCuNBh81AmocpAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13924-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 21:59:27 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52A4515563
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 21:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C06F5155BB
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 21:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76DEA301DB8E
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 19:54:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86D6B3007E39
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 19:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D7337E315;
-	Mon, 11 May 2026 19:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F0737EFF2;
+	Mon, 11 May 2026 19:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSeuP0Sw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CykrfC3+"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E33120E334;
-	Mon, 11 May 2026 19:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDA030C360;
+	Mon, 11 May 2026 19:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778529295; cv=none; b=GdaLvkVDlBoIQ5RuqYBQT9ET3Jb+Jc5DyodFFP1VMvp17YbXnpbbh21Fe3IaOWDNdOz5XQzgQpDFZVrEd/Ko+Py5pGz1It/zUwGJ3VvrDcTCDzqxJwT+OIUn6ZhnWPUsmhSB2y1686xLhiTtaiO2lQg4+mOplNBjoSp+2ZtwXLk=
+	t=1778529378; cv=none; b=TLMzxGXFB9u27SjP+gyE3sGArmM3QY8vTCVbX4vPm75qpIv96RU3zsGzildtcV8gIaw/lODjf4EGFra2dJpAIBkM4pjCkKTXWFZmlwTONviNd1tjQfpzWTHtu+RiF/U5VAyW8TAjo6vfcbcT+rNt6urxGQvVPVcmn1bX78jWsE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778529295; c=relaxed/simple;
-	bh=SmycbUfU5q/ceSLi9AUZnde3P/EFVo+BHXzp2TdjABc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jtE/9FM2TknTKn4sZBNGjCVa7AZx/boY7vsV3952fLlBDeel4q9YfRnVkJslb73tydsR1LEjUX9wsRYW/IpX23YWIqoEtkQfGuhPqd0ihGdwGwT4vfk5NEqMjYndnUNlCkDf0xoQttuztndtGDLDZVk7XAcLubiRZTzwxdYvyEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSeuP0Sw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE97C2BCB0;
-	Mon, 11 May 2026 19:54:53 +0000 (UTC)
+	s=arc-20240116; t=1778529378; c=relaxed/simple;
+	bh=93lVSHJd6NyfiSRTkX2eDf3XB5gzNVLnf/Bvh2fKnxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fX9RFjxqp0n2nZRPhefgrNmD2UL1Y5YQ+2aC7LPjxazPWKjJRij7h7W+FMSuoVTFJsIAwRJ81PsNfit7IA1/OZShvJjUPNaez4pZf0vneqWAdCrdKoTSjjcvXaVLpYscirbTl7amIpcHx9Tr/b6wmsUG2u0FeURue6Mg6IVv9qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CykrfC3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5F7C2BCB0;
+	Mon, 11 May 2026 19:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778529295;
-	bh=SmycbUfU5q/ceSLi9AUZnde3P/EFVo+BHXzp2TdjABc=;
+	s=k20201202; t=1778529378;
+	bh=93lVSHJd6NyfiSRTkX2eDf3XB5gzNVLnf/Bvh2fKnxY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TSeuP0SwSU++DiMKa3ziOZHaiJ8VSgg9UgrphBJvtTMzFy+jK6T22Mh4RCN8kpOd0
-	 3ChOF3mJWUhL9LNhsJHR//8H6NuX9v3U+RNYjfFt1tfFsHOdU12pxQT+R1FA3oaw1v
-	 WlQPxXmCuJMIEZBCZvMwjacvxhxD137E6ocxLmk2xvv7mIbHQ5zW1OKR0Qq4mmuTVy
-	 +Jb/yo53RHZXIX+Q+octytrR7NA8KX3WsMkh+/8neTqBY4p6e8REYzerLyegSZvF8r
-	 t5Tkf9WvNVDje+o2UhC8K0Dn7p7ST0t2vCjIqnejnUXlutTv8TF5W41lWCQfCLLAoJ
-	 evBg+bUNRbbXQ==
+	b=CykrfC3+sRaCnDLwoKKSXf0giciFOW9XsZDEQ7nEGk2uiB74+m9pf0bx4Gl2pQNtQ
+	 9xpUDDEvm2vx+tASC2JwJky/eqC9LvxHMWItcUeteMGKPnd1iGPSLyZPKck+6L+Oqp
+	 P46vDJnQyKLLdLO4ZTaGDPGmMaXljw6om2sd/cs/r5j7aRG18w/+72sXMSMl622j7W
+	 0losqq39mMpdwuKiPiEyrsQiijrYhslCenWuPjG+Hgt6/fQf2DhDDn6T66LflLrFvo
+	 Z4FJFjXEFNkqU2DPKZP3LFkZ+jzCkVUX0inCeG4UujgupHGFSIsRYLmiA3yHU2aRN2
+	 SjQGOG8EE0hsg==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: linux-hwmon@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
  Linux ACPI <linux-acpi@vger.kernel.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linux PM <linux-pm@vger.kernel.org>
-Subject:
- [PATCH v1] hwmon: (acpi_power_meter) Check ACPI_COMPANION() against NULL
-Date: Mon, 11 May 2026 21:54:51 +0200
-Message-ID: <5068745.GXAFRqVoOG@rafael.j.wysocki>
+ Linux PM <linux-pm@vger.kernel.org>, Luca Tettamanti <kronos.it@gmail.com>
+Subject: [PATCH v1] hwmon: (asus_atk0110) Check ACPI_COMPANION() against NULL
+Date: Mon, 11 May 2026 21:56:14 +0200
+Message-ID: <2261594.irdbgypaU6@rafael.j.wysocki>
 Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -62,24 +61,25 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C52A4515563
+X-Rspamd-Queue-Id: 8C06F5155BB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	CTE_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-13924-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.intel.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-13923-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,11 +87,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,linux-hwmon@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,rafael.j.wysocki:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rafael.j.wysocki:mid,intel.com:email]
 X-Rspamd-Action: no action
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
@@ -101,33 +102,39 @@ its list of device IDs because of device_match_driver_override(), so
 platform drivers that rely on the existence of a device's ACPI companion
 object need to verify its presence.
 
-Accordingly, add a requisite ACPI_COMPANION() check against NULL to the
-acpi_power_meter hwmon driver.
+Accordingly, add a requisite ACPI_HANDLE() check against NULL to the
+asus_atk0110 hwmon driver.
 
-Fixes: afc6c4aedea5 ("hwmon: (acpi_power_meter) Convert ACPI driver to a platform one")
+Fixes: ee1752590733 ("hwmon: (asus_atk0110) Convert ACPI driver to a platform one")
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/hwmon/acpi_power_meter.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hwmon/asus_atk0110.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -884,10 +884,14 @@ static void acpi_power_meter_notify(acpi
+--- a/drivers/hwmon/asus_atk0110.c
++++ b/drivers/hwmon/asus_atk0110.c
+@@ -1273,15 +1273,20 @@ static int atk_probe(struct platform_dev
+ 	struct acpi_buffer buf;
+ 	union acpi_object *obj;
+ 	struct atk_data *data;
++	acpi_handle handle;
  
- static int acpi_power_meter_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 	struct acpi_power_meter_resource *resource;
-+	struct acpi_device *device;
- 	int res;
+ 	dev_dbg(&pdev->dev, "adding...\n");
  
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
++	handle = ACPI_HANDLE(&pdev->dev);
++	if (!handle)
 +		return -ENODEV;
 +
- 	resource = kzalloc_obj(*resource);
- 	if (!resource)
+ 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
  		return -ENOMEM;
+ 
+ 	data->dev = &pdev->dev;
+-	data->atk_handle = ACPI_HANDLE(&pdev->dev);
++	data->atk_handle = handle;
+ 	INIT_LIST_HEAD(&data->sensor_list);
+ 	data->disable_ec = false;
+ 
 
 
 
