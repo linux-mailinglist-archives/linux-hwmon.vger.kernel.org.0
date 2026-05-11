@@ -1,83 +1,84 @@
-Return-Path: <linux-hwmon+bounces-13916-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13918-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHDNMEmOAWpyeAEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13916-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 10:07:37 +0200
+	id wLjWAJOLAWp4dQEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13918-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 09:56:03 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C83509CFB
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 10:07:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9222A509A89
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 09:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82D8830CB866
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 07:54:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F2CD83017E7B
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 07:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DD63B19D2;
-	Mon, 11 May 2026 07:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F23B3C18;
+	Mon, 11 May 2026 07:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="D73AanxA"
+	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="FiA+3OKz"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392713A9002
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9F63A6B8F
 	for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 07:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485898; cv=none; b=KZvjnO41TPW6D0PtW6K2PZUlj8Par7rxcUPeZ9Xgb0RKt+s/w50Cbu5W2qUxBsraSC2jO4I4oAWwUnEjdZOzVak1SywQKNCJ5kZ79u4zEFZGru2swKevZwf/7s2WmWfLoAFoxisgoedae+/94OkClzyKo+db1LCCr9s8k4I9fm8=
+	t=1778485906; cv=none; b=cXg2l1xmCSDv6MvGyN+a2eTHnXeFOsS99Mbqj7iBILPzAE96Lnu+DSU0ro0wKyYcJgRrOn2Z6/A0XIQZ7meFR7y6f04ajmoIeCU/JAbLZ/uAw6zS1LO1U2SWD5ep2d9hON+MAa7VuKh0ts+fJ9Ziqbcy9tlky6O+5lX3BEbQ3Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778485898; c=relaxed/simple;
-	bh=+s7AraqSSLTzzLZprtX85wFGz+qaFHzAS/LVroao8Pw=;
+	s=arc-20240116; t=1778485906; c=relaxed/simple;
+	bh=Fvs4izgDZLwvwAFpe9E0YJJPp97a8WERWKXmnjgLvo4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Xuy8+p+CbXy6TeUBb5r2EreWrjwFT8g5SoZGDgdbrMTAYxm7jdH48beDQoXRCiDmAYWAKcGmxzlwe6ESFgRKzO4BrrEOXcktGBoFyzu/BxbUHl5mLGEPwfDXbXx+/yPf3UFSBPsZOiT1FrpygYmBq7HMtdrXp/jL6gf3xrx5R48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=D73AanxA; arc=none smtp.client-ip=74.125.82.177
+	 In-Reply-To:To:Cc; b=JC2fTG6Z2BETx4GkUB2knNbCNwzkwjGSSvfH6zxuTP32Bh7/8CnhJjhynBqBs4VxuZ7Y7i+pBMYrUWjs2I0xGs0wczneKYRo56h/GisEcDP7EkUQTuyitncv7tlTWRT3BJt37LBxEsrNWvBOX0cTas0Vtf4lNs3n+DY2fqvq730=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=FiA+3OKz; arc=none smtp.client-ip=74.125.82.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso4105291eec.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 00:51:30 -0700 (PDT)
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-13246950f3cso4660001c88.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 00:51:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1778485887; x=1779090687; darn=vger.kernel.org;
+        d=nexthop.ai; s=google; t=1778485888; x=1779090688; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4AmrptWkczEF869M9qrsApFWh7ZKodviz0ehsBGJgsM=;
-        b=D73AanxA5GAq8woMQyq7DcvumycFhZAP77vY58pkFj+oJo3pLWwrXSuWzE3JjWO5dx
-         xYn6N1dp0RxrEs7LJ3zklrdEpKxMuyY6m20lFflJiWmOGcKhbOTGrnNJhSjbI41UCIKk
-         R1PF813zekHlNIHeFSkUwGYoA8PB/vTTqaKic0hvwDaTJHROFizW1bx9VoeU4ekjqjLs
-         s7VB/jAhmfAJ5+S/nvWA3sCoN0Mr4aOlR1BrXJtEPUoUloWjtxuJ8HIK9MVaSqWzKClQ
-         0+Pz2LoFDDNtTyp4gZfeZg8vtqnVkk763+gWNITNP6QbFX+CuQPA2yLV88Gqdxn/VsyZ
-         v1Wg==
+        bh=f8vyo3aKJz6kvSqhB3iqzMJn3n4LWS3lqwD60ofe3OY=;
+        b=FiA+3OKz8MHV+zIZquC1f52TTRJWivm6pJK/TzvF5E1WCUXjFXznO8vIfIZUEoebrg
+         Lv/2Fs5BXo/aRq7UZju72ei8giSI9FUKKbouSZy5V0Fgp4GdY/L9sM7ICrYeDZSUKZYd
+         m09p3Gx0Vq1PliFDM+ymz9QZRO/mVQxO63w0oWeTn+PIQSBFogPsZPxZ3GO92/7IdIlE
+         x4l5ETRB1h4tKg6zJ1IDvQThcmHIVC8cgxGh8xb2d2n9WeRGuVP6IW1Y53xliuixyVH2
+         1UxcWazZetDiWIwUFqC6tKUzsfaCU2ZsTMomMZsPYRDtJw8MDJ/yx1g6WFWFgTk+mrGW
+         Xb2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778485887; x=1779090687;
+        d=1e100.net; s=20251104; t=1778485888; x=1779090688;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4AmrptWkczEF869M9qrsApFWh7ZKodviz0ehsBGJgsM=;
-        b=ijVgvYf/+//3PDIl2P90xuoR5T5InGMOjGewgeTSAe0qdK+or25CgKF7lUaO3bnvZO
-         sj6MvMiAkjnB1aVDEgLe2ol4hlxSQC/NtXgXSgK6g2pnviK5iyjHLou6z0Nhs5e1pAkb
-         Wolb+TbgRmIU8XulG1cedREq3vVVUmq6b+vvalXA1PM0lJC5evVFjRV/mHelHDNsgNg+
-         jaf5uQu9omWKrX/+J2y/s7hMoSvUDm3ZV6KhiwaC7rFQyr+zRG/3howBZ9UZXKZBCcqV
-         5uNaLkJe1PS86AAH799IOwCNKATWL2QOHZWm04ITelSAz8b8tW/jzdTy1FWblBIVNxYG
-         vz4A==
-X-Gm-Message-State: AOJu0YyWMHAVDTWyWoY2R3O8bh+xj/IA3nxXqhWEWkwrTH88yLagUyvu
-	XviyeDAZcGy0Nt/ISH+6lUpLQLStn7zUVxbsU2u+NOb5XdrPkHw5HVnF0Fz0Y0iMAVQ=
-X-Gm-Gg: Acq92OGPfctxYX4dA8ht4GXxBCXPcn0SK3crgHeb/IZeHKVJT/bvOOJMpN6hJ1ZTJj+
-	ivRSNrePmn79jOJ04MWCdtPhJZRsgrarUv8F2364JR3HegPCGwTo1ax57YmEquxWWcZYjGjrihj
-	eLswL94WY3PQv1Eid/UD7kO0XgUkMd8r95kw1EmjFQ+c+9yLphI2gkTLjmJvPlzDBwRT5wiYsKF
-	+qfLDXwpf82iOi29cHzT0Lwzx2xJNu6id6eF8iCST+eW9FoY+It1PwpJrp6+L8bl6dv2RurFQrT
-	eeloEGRhaOjuZo3KIBqNTIl0/BzUVx3ZDBMk2ADhgoC3ov5FXOrJnYYq3CGJsMFo8Ww/Tem+i+e
-	AmNRLHHsbfVNTY+AN9qX9JQo2iQoN9z72CZKIse3XZF5Pfo5Mg2jS5/AL4bsdaXUYYxzZu88Jbk
-	/SYqr00bL7Ws+qJB8YZctNhILUe0rIc9LM0aoS
-X-Received: by 2002:a05:693c:3015:b0:2ef:2878:7ade with SMTP id 5a478bee46e88-2f548b9d579mr11792574eec.15.1778485886641;
-        Mon, 11 May 2026 00:51:26 -0700 (PDT)
+        bh=f8vyo3aKJz6kvSqhB3iqzMJn3n4LWS3lqwD60ofe3OY=;
+        b=PiA+rJfdxwS5XNwEEuVX9dubslmqDdB3JSDzSSVJcqdu/tMvY9WRWE69aRc6cqXw/5
+         YOxm5227RUZkI8B3Y4iBrKQNjfKL91Dn4v08AzVJyZuQyWmPgR6A2bfHhIRjWuocWHfh
+         zKn1l4kzfj7NCoTfbPt72fGZUJZQqykzWIcKW8Q2p9rXspTE1OSRuZvNXnYOUR22Kpx9
+         d9N0jtX8YiqCJt44RdG5U7pMNUdRh9Zbj0VrwBVovtO5yil7dBYeBuMJ8v7gnvVxyYoS
+         DR4DzJh9C1dMxo2MWPuFtnIztSYLFyyvAk+/xdT9vRBTwYLGnMH/zHWu5Qth/ghkQ3eQ
+         lKjg==
+X-Gm-Message-State: AOJu0YylRtrf0MEPSpAyZ98AFItX4D1NK8hfOTYXaAB1jqzN61QmR1T8
+	RFgqJB+RRKlmPZ0ttTGcInPNnGvGjZYGUrjxEsVuAKYdRiG0hXTqhdZtFP+AOBK2ubqM2qXcFO5
+	VGgOxJiQ=
+X-Gm-Gg: Acq92OFeMg4Q66C2NS9WgTTOsT9QXHaLnUWMGFS4ytARffL+1N5ZpiAP8VwtJebvXw0
+	p0vCv7utVv1J+oRxLvNyqSO2cP0CtbRqghU4Tufb6WGMKGJm/K2YgZ1rQ4UyrVgIHLUMsyEsIvw
+	S+qD32x0PSlAOw8Z+8XJ/0ZAxX2U/Mmq/CgvehCJ9yOYy+lcWimPQxBdqdSiblerbPKAO4qzVFf
+	4OoyVej/03EYRzy23hHQghklMDe9HTw2rbpPUNfivvey7J6WJ0kgYzHeYZ8d1uREM4Ej+zDmdau
+	R3j8OaEY1QoUJ/JM6RZdr6rHaygDwaZmyOTS+7eaVDzt+1qNV65e9UWHvjsVQC8WORIYumltYTt
+	YfzY8IsOHdXpXPKZwBZQ/sK+VtEUZNHZjk1V4+QHQt2LUZ+drZfkLKo73eb18hC/skD6u6+iV3U
+	fSA4RKY5Kd9UvjnPi4k7rO+hc9Cg==
+X-Received: by 2002:a05:7022:2381:b0:11b:9b9f:426b with SMTP id a92af1059eb24-132a81d8664mr4496956c88.20.1778485887332;
+        Mon, 11 May 2026 00:51:27 -0700 (PDT)
 Received: from [127.0.0.2] ([50.145.100.174])
         by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8862d429asm12549498eec.12.2026.05.11.00.51.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 11 May 2026 00:51:26 -0700 (PDT)
 From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Mon, 11 May 2026 00:51:20 -0700
-Subject: [PATCH RESEND v2 2/5] hwmon: (pmbus/adm1266) add clear_blackbox
+Date: Mon, 11 May 2026 00:51:21 -0700
+Subject: [PATCH RESEND v2 3/5] hwmon: (pmbus/adm1266) add powerup_counter
  debugfs entry
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
@@ -87,26 +88,26 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-adm1266-v2-2-7a6d34f0de5d@nexthop.ai>
+Message-Id: <20260511-adm1266-v2-3-7a6d34f0de5d@nexthop.ai>
 References: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
 In-Reply-To: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
 To: Guenter Roeck <linux@roeck-us.net>, 
  Alexandru Tachici <alexandru.tachici@analog.com>
 Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778485884; l=2640;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778485884; l=2726;
  i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=+s7AraqSSLTzzLZprtX85wFGz+qaFHzAS/LVroao8Pw=;
- b=Nv+wnetTK53JcpETk016gR49G2k2LvmpuFfWh1lSCDwq84785lv4CqrT8m6vuzb7f0FORl9Ug
- C4RjvNW2MZ2AAE6qxP1DElN6gqz28FwAHMiJZKiBSryy4AYU6WfCjV6
+ bh=Fvs4izgDZLwvwAFpe9E0YJJPp97a8WERWKXmnjgLvo4=;
+ b=PBeENLC9td927hNWKsmqwm5769GFt+CUkHzmLGWArXRD8tz/THMLZKlOEiPvb3UiJ5WTHh+pO
+ xYg0EngFBRZCg7djMVmXMRaASxho+mQDEVoPimvIebvhLFKNvLX415I
 X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
  pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
-X-Rspamd-Queue-Id: 34C83509CFB
+X-Rspamd-Queue-Id: 9222A509A89
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -115,7 +116,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[nexthop.ai:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13916-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-13918-lists,linux-hwmon=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -123,82 +124,82 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim]
 X-Rspamd-Action: no action
 
-The ADM1266 blackbox can be configured in two recording modes via
-BLACKBOX_CONFIG[0]: cyclic, where the device overwrites the oldest
-record once the 32-record buffer fills, and single, where it stops
-recording until the buffer is cleared. Deployments that need to
-preserve the full record history across multiple fault episodes
-typically run in single mode and need a way to clear the buffer
-after the records have been collected.
+The ADM1266 maintains a 16-bit non-volatile POWERUP_COUNTER register
+(0xE4, datasheet Rev. D, Table 93) that increments on every power
+cycle and cannot be reset by the host. Each blackbox record already
+embeds the counter at record time, so the standalone live value is
+primarily useful for matching a captured record back to the boot it
+came from when correlating logs.
 
-Expose a write-only debugfs file alongside sequencer_state. Writing
-any data to it issues the documented clear-blackbox sub-command:
-a 2-byte block-write to READ_BLACKBOX (0xDE) with payload
-{0xFE, 0x00} (datasheet Rev. D).
+Expose it as a read-only debugfs file alongside firmware_revision.
+The block-read returns two payload bytes in little-endian order.
 
 Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 ---
- drivers/hwmon/pmbus/adm1266.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 7b8433226176..31aefa8fc75f 100644
+index 31aefa8fc75f..99e92a8365fb 100644
 --- a/drivers/hwmon/pmbus/adm1266.c
 +++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -356,6 +356,36 @@ static int adm1266_firmware_revision_read(struct seq_file *s, void *pdata)
+@@ -28,6 +28,7 @@
+ #define ADM1266_READ_BLACKBOX	0xDE
+ #define ADM1266_SET_RTC		0xDF
+ #define ADM1266_GPIO_CONFIG	0xE1
++#define ADM1266_POWERUP_COUNTER	0xE4
+ #define ADM1266_BLACKBOX_INFO	0xE6
+ #define ADM1266_PDIO_STATUS	0xE9
+ #define ADM1266_GPIO_STATUS	0xEA
+@@ -356,6 +357,31 @@ static int adm1266_firmware_revision_read(struct seq_file *s, void *pdata)
  	return 0;
  }
  
 +/*
-+ * Clearing the blackbox is required when the device is configured in
-+ * single-recording mode (BLACKBOX_CONFIG[0] = 0): once the 32-record
-+ * buffer is full the device stops recording until cleared.
-+ *
-+ * The clear is issued as a 2-byte block-write to READ_BLACKBOX with
-+ * payload {0xFE, 0x00} per the datasheet.
++ * POWERUP_COUNTER (0xE4) is a 2-byte little-endian non-volatile counter
++ * that increments on every device power cycle (datasheet Rev. D, Table
++ * 93). It saturates at 65535 and cannot be reset by the host. Each
++ * blackbox record embeds the counter value at record time, so this live
++ * read is mainly useful for matching a record back to its boot.
 + */
-+static ssize_t adm1266_clear_blackbox_write(struct file *file, const char __user *ubuf,
-+					    size_t count, loff_t *ppos)
++static int adm1266_powerup_counter_read(struct seq_file *s, void *pdata)
 +{
-+	struct i2c_client *client = file->private_data;
-+	u8 payload[2] = { 0xFE, 0x00 };
++	struct device *dev = s->private;
++	struct i2c_client *client = to_i2c_client(dev);
++	u8 buf[I2C_SMBUS_BLOCK_MAX];
 +	int ret;
 +
-+	ret = i2c_smbus_write_block_data(client, ADM1266_READ_BLACKBOX,
-+					 sizeof(payload), payload);
++	ret = i2c_smbus_read_block_data(client, ADM1266_POWERUP_COUNTER, buf);
 +	if (ret < 0)
 +		return ret;
++	if (ret != 2)
++		return -EIO;
 +
-+	return count;
++	seq_printf(s, "%u\n", buf[0] | (buf[1] << 8));
++
++	return 0;
 +}
 +
-+static const struct file_operations adm1266_clear_blackbox_fops = {
-+	.owner = THIS_MODULE,
-+	.open = simple_open,
-+	.write = adm1266_clear_blackbox_write,
-+	.llseek = noop_llseek,
-+};
-+
- static void adm1266_init_debugfs(struct adm1266_data *data)
- {
- 	struct dentry *root;
-@@ -370,6 +400,8 @@ static void adm1266_init_debugfs(struct adm1266_data *data)
+ /*
+  * Clearing the blackbox is required when the device is configured in
+  * single-recording mode (BLACKBOX_CONFIG[0] = 0): once the 32-record
+@@ -400,6 +426,8 @@ static void adm1266_init_debugfs(struct adm1266_data *data)
  				    adm1266_state_read);
  	debugfs_create_devm_seqfile(&data->client->dev, "firmware_revision", data->debugfs_dir,
  				    adm1266_firmware_revision_read);
-+	debugfs_create_file("clear_blackbox", 0200, data->debugfs_dir, data->client,
-+			    &adm1266_clear_blackbox_fops);
++	debugfs_create_devm_seqfile(&data->client->dev, "powerup_counter", data->debugfs_dir,
++				    adm1266_powerup_counter_read);
+ 	debugfs_create_file("clear_blackbox", 0200, data->debugfs_dir, data->client,
+ 			    &adm1266_clear_blackbox_fops);
  }
- 
- static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
 
 -- 
 2.53.0
