@@ -1,172 +1,214 @@
-Return-Path: <linux-hwmon+bounces-13919-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-13921-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGmjH4GMAWp4dQEAu9opvQ
-	(envelope-from <linux-hwmon+bounces-13919-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 10:00:01 +0200
+	id GPryHcPkAWoEmAEAu9opvQ
+	(envelope-from <linux-hwmon+bounces-13921-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 16:16:35 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038B1509B5B
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 10:00:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85E050FE9C
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 16:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B0AB30B71A5
-	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 07:55:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 068403037EF0
+	for <lists+linux-hwmon@lfdr.de>; Mon, 11 May 2026 14:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734FB3B3C05;
-	Mon, 11 May 2026 07:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48253FB7F6;
+	Mon, 11 May 2026 14:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="K7Oj2E8s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MCGMUPaK"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93C63AC0C4
-	for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 07:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7361F3FB07E
+	for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 14:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778485906; cv=none; b=jTf+FSLKTii7A16Qt6FQhH8j07tJZKgU7Vu80Qa2tUNEtUVySnDV7fXzRJ/zv/fF2ktQ/FcA+egifwMjVPXuZ72x9ZbLF8XPqNESQteLqIOvaI0UCBjFMcr2U1Cz2kLPNNaJy/1uEglAWGhhns7mt/xEwP3TWH/b0j72kNKzLFQ=
+	t=1778508639; cv=none; b=BIh1knvphf2eTWf/FIBBh9X8+JTDai2r+zeBLMURxCW/0BxEu7CSZem3hIcsluy41a1TQ4QP77MZtnk4hwBpCIZoSEINVgQBNdbuMOR69rTEf+h0ER+wBWqDnJVonuyF1X9eEy7nJjbjZr9Ky/5OKPPPaqOo7cVvLPxXhN8f6SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778485906; c=relaxed/simple;
-	bh=XbXHyUmmSPnlINR9vCvpAV0eATuZ1frtfzVXW5r+IYw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gpzLAjXmR2wElUk/N1gOCe8nujHS5Om7G+OxSk6uA7uVzeyjAVYCxp9eA1DbzfChOcpScr6FkNHUhIXplFMZ6JAokK6PKjMBXVJ1yBVaOewn1GyBq3X12gSZSQClBfEMrP11WkY4bAZLrsg+RxIOau6tFBfrYd+fgBfAXc0eMB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=K7Oj2E8s; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso4105326eec.1
-        for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 00:51:33 -0700 (PDT)
+	s=arc-20240116; t=1778508639; c=relaxed/simple;
+	bh=C3TYF3A+xLeWhTvn+PpgTVJyoz3bnNYXCV2J4whcObA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qcRMUaTHTg1xH35R+xeu54T9bqq5X/7XSAmoPLFdyva71u1TlEmZkq2PYt1cqTuEBlg7sPF7XBiAl8Yp68tI+T3dkzZlx7oFRs9PeI3CCQ36nYj9YEP3l589WFtdGO1NnXjdruAljjVmzbjyqyQOXCPE5X5fGli8sisJWynU3LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MCGMUPaK; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2f0ad52830cso6267748eec.1
+        for <linux-hwmon@vger.kernel.org>; Mon, 11 May 2026 07:10:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1778485889; x=1779090689; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4q1SHKtQsxrNG23clQPndB4aglh1g+mHmxJ8IDbl1eM=;
-        b=K7Oj2E8sJ6NTYQ0PG6B29rRaplwdyP3TcaretaY2PgPz4C2ZzORvmfM4+bAw6/py7i
-         7bkj30BdDBFAA91cCf+CqrwOfqzX7HFezcDIx8+q406VUNtB1OTkMypB6ntdSG1h30Qu
-         So3aSoesYM4s554/ufFZUy1907o1jP/SJLqqOF6yLtIK9IaxaNyudo4e08lGH7+FN8YS
-         6kESlDDaAxCq5KveFM6mxkUdjadgIrN6XvV+0A4jxpVN4H9KJdxPEzOaWNYCPoaVabMd
-         EOf84eXQYZsH4UmGT6NJZsixXp6mcqaR4h4FCMKEhLJemqjFT++/U1jajYjSEhH/ijpx
-         mU3A==
+        d=gmail.com; s=20251104; t=1778508637; x=1779113437; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=q2m5k8HcnqElTrUL4NOVcwGXoLhFvGTwO4KH82Z/apY=;
+        b=MCGMUPaK+8fWhn+9DTbG5TkBW+FwuzFXuVAFElmYCHF6J/veoLJLo1U1jmwEpToivR
+         j55Sr9482423zKG/hPOiVot4J097gndI4CnxPRmggDa2jBDwqcP/GsSiClvnh4doR/tF
+         8kqJLcsEeqitDVjiBux2nyPQNshXnviaGNwiQlgO8ilWc5k4/v25lQJLGt23AZhH4zm5
+         1/flU476o+qelEVuUHsKEuKg+GM3wTlsZndFmkVUN4JoiDibUjuNCTACae2oyg+Zu4AG
+         fnk41kcSdlcKeDp/gMxsTPGNTLp0ZsJZ0HExmqvchGk3P0US+zrBbPyq74yTxLOvyLeZ
+         zyWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778485889; x=1779090689;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4q1SHKtQsxrNG23clQPndB4aglh1g+mHmxJ8IDbl1eM=;
-        b=sQcklAfWIIhYGAvhSvYHunAO06M+V5IAzweDPCflsSos/oMVRc6LcbAZNPIICnNXrT
-         rIbOc3oc0pO8N+2oRYBwIE/W0tcQLXNEJAANlhAzHgKu/mTKlpG7sS9ZIuC80jwSL7kt
-         RiK2a0i4KRI3EDrZHgiEV8PpRyrbYHin+sN3UHnT0TkKkNAYLLtfwVqcBW8/xxnKsjgH
-         XKk1P8Tvft6M60xYVRhUtQpg9ukduVOyG2d1bj8fFK37QAn5xNCP2UUoxqoEflR7Qkip
-         AdfAh+jNdgeWnkn7dxlQSHk+ieYjdT/Vv0ISpjGQRjJUAcd31oBeD6D6/hNXWAjPMCOz
-         57mw==
-X-Gm-Message-State: AOJu0Yy3I38atF7753Btxr1zLFfHygrtxpdhO3pYAsXE2Rholi0NhxVW
-	k0x5pMbAvVWvRAvsJVu1bZ86smivmj5Kyt/Yu5FKen8LG5hZA+omyj4B5XQ2VuM2OpM=
-X-Gm-Gg: Acq92OETg3+rZylm/scxlKOjxFFa6GHF72sCnewpOmIRUdmj+Prnm8qsnaTfKeeSWmb
-	gfQ9OxGyu7sUQRqGhgJxQb11EI9tnuctA/+RNf9qixYXouzvoVgekgP73uHKqOaDzHVYAzBtki2
-	78AwxNH6g2SmHh8/3Wqrjc/BeZkIKAPofeHnB6i2W349EeET0aINuQWt58XyIvqIA89foeZfyaX
-	epaOUsLoQHn0xoJ4SMR67TEY+mUHRW5VcyyQmvrDxdoC7vnZe6R1tY72IOmxW6F5VPBQ9Mu2rnz
-	/kvMbRQLT0Y4tBkwxja74ortXoKMxEP4VSBtM519HXkoygZ7+0PAfDufFDNxKRobDniW59hmIe8
-	/2Lrzow4O4y3ZvXqka685fQGHygNbGoWhNueTqYggN3c2qkEfGO0HPMMgnClze7udIROA9USSUl
-	EoWtqbnXNNc41hpyG3LjVY/Xqt96TBGznS2Syg
-X-Received: by 2002:a05:7300:4313:b0:2ed:e14:42e7 with SMTP id 5a478bee46e88-2f54b068c4fmr11223026eec.32.1778485888725;
-        Mon, 11 May 2026 00:51:28 -0700 (PDT)
-Received: from [127.0.0.2] ([50.145.100.174])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8862d429asm12549498eec.12.2026.05.11.00.51.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 00:51:28 -0700 (PDT)
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Mon, 11 May 2026 00:51:23 -0700
-Subject: [PATCH RESEND v2 5/5] hwmon: (pmbus/adm1266) include adapter
- number in GPIO line label
+        d=1e100.net; s=20251104; t=1778508637; x=1779113437;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q2m5k8HcnqElTrUL4NOVcwGXoLhFvGTwO4KH82Z/apY=;
+        b=MvgtIHn+4L5/XGPhPe/a0FTlLddPLHEVqgMie7lOW5j9BdgvzwDyeMGdYewpTL1dLS
+         VRLjLP/dsy9+EHU2IXB5jlXOaEFNKoxQJpPzSuTMxJt8izWJwDno9ycRg/bFqYkewFpg
+         AQp5+sM/P86e8jhpfdY01LCxrA6sVZSJDxvgLBYwAKS53Yl08i26HVQWvcARclu0QYhL
+         Elqz+Ydd35ccidbl5qbYE8DfD6EOF6fH6fZ+xObNapPydxbjMGSbapYLhlq6tEtFM23P
+         ESu5/4hZtWnEnmgm/W8XusALhfjcQqVMwg7AFjj/hCQgiq/YU1rnieGgy9Wtea/kb5LC
+         ZlNg==
+X-Gm-Message-State: AOJu0YyYupUKRi76WKDsiH6zTj8FHfCaaWALn+p/b0lveYgXACnLkOpR
+	HVM0Z7+cdljOSpCpQtj54TTjuQ3esF9Dh3hn3wUEduj+/fmAfpMmlyHr
+X-Gm-Gg: Acq92OEKGwC4oAV45VJD9GnRrU+2bOqpnIfhwY3TURlgNVEhauqVCAyJWVaooNOKSl4
+	ddUF5EmlMTvNpwlYA/tYmLOSkZbWl5FKY7kaxqcrLHufn/z4ygWKekE29VIBKB4+msTtVMA07Yr
+	m49soweVLm0t4usF0rlqKXGMzmRnCWrwneZYUFni6MEEZ9ldfEq12ADlrgpxyT5/3K9KTHiNmbD
+	jtiaLbo4ouSzyo3BOQwFvqcmFEbLqRtUp4l3AAOXMmHYpfSU5QhVZAznJoj2b3XgvZp72UUDx97
+	cdxnyPA+JR7FMpjKfT3BMR1/Obkgkrb6kjWOXlhjqrJCOts40V8RGKBQ0hrgCWPY/Jj3ua3BcwS
+	XVNDp8iWgPNZsL+RA/tkpfgBN1jnODbihg5FGYksCyVDRdFzz1rIcUcHCIX4EfQu3PxsMxMh4D0
+	/AxTcu6xi0u6DaJ1YJSke4MGZJttZ1fEj4Lo2fuxN3bzU/L7wre0pXfZ7H7CkzBmoiYtJvrNAx
+X-Received: by 2002:a05:7300:2319:b0:2ea:b85c:153d with SMTP id 5a478bee46e88-2fb4e0419aemr3728477eec.27.1778508637388;
+        Mon, 11 May 2026 07:10:37 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8862d429asm13664218eec.12.2026.05.11.07.10.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 May 2026 07:10:36 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <94cd8a1a-7b72-4c4b-a4ca-72cdf5ba73da@roeck-us.net>
+Date: Mon, 11 May 2026 07:10:35 -0700
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-adm1266-v2-5-7a6d34f0de5d@nexthop.ai>
-References: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
-In-Reply-To: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
-To: Guenter Roeck <linux@roeck-us.net>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 0/5] hwmon: (pmbus/adm1266) blackbox, FW rev,
+ rtc_class, GPIO label
+To: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
  Alexandru Tachici <alexandru.tachici@analog.com>
 Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778485884; l=1498;
- i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=XbXHyUmmSPnlINR9vCvpAV0eATuZ1frtfzVXW5r+IYw=;
- b=srho/Xbrh37yWynX9q07r5979zsJrJjZSCUUfohsmL88CnamFqct9tWXTH2ubO8iA0n6KDUrR
- lX3d9ecsTQNDNVN3STBYL/UA30ETWw6dqosByNDcLAW7PLHn9hlqnmO
-X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
- pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
-X-Rspamd-Queue-Id: 038B1509B5B
+References: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAmgrMyQFCSbODQkACgkQyx8mb86fmYGcWRAA
+ oRwrk7V8fULqnGGpBIjp7pvR187Yzx+lhMGUHuM5H56TFEqeVwCMLWB2x1YRolYbY4MEFlQg
+ VUFcfeW0OknSr1s6wtrtQm0gdkolM8OcCL9ptTHOg1mmXa4YpW8QJiL0AVtbpE9BroeWGl9v
+ 2TGILPm9mVp+GmMQgkNeCS7Jonq5f5pDUGumAMguWzMFEg+Imt9wr2YA7aGen7KPSqJeQPpj
+ onPKhu7O/KJKkuC50ylxizHzmGx+IUSmOZxN950pZUFvVZH9CwhAAl+NYUtcF5ry/uSYG2U7
+ DCvpzqOryJRemKN63qt1bjF6cltsXwxjKOw6CvdjJYA3n6xCWLuJ6yk6CAy1Ukh545NhgBAs
+ rGGVkl6TUBi0ixL3EF3RWLa9IMDcHN32r7OBhw6vbul8HqyTFZWY2ksTvlTl+qG3zV6AJuzT
+ WdXmbcKN+TdhO5XlxVlbZoCm7ViBj1+PvIFQZCnLAhqSd/DJlhaq8fFXx1dCUPgQDcD+wo65
+ qulV/NijfU8bzFfEPgYP/3LP+BSAyFs33y/mdP8kbMxSCjnLEhimQMrSSo/To1Gxp5C97fw5
+ 3m1CaMILGKCmfI1B8iA8zd8ib7t1Rg0qCwcAnvsM36SkrID32GfFbv873bNskJCHAISK3Xkz
+ qo7IYZmjk/IJGbsiGzxUhvicwkgKE9r7a1rOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAmgrMyQFCSbODQkACgkQyx8mb86fmYHlgg/9
+ H5JeDmB4jsreE9Bn621wZk7NMzxy9STxiVKSh8Mq4pb+IDu1RU2iLyetCY1TiJlcxnE362kj
+ njrfAdqyPteHM+LU59NtEbGwrfcXdQoh4XdMuPA5ADetPLma3YiRa3VsVkLwpnR7ilgwQw6u
+ dycEaOxQ7LUXCs0JaGVVP25Z2hMkHBwx6BlW6EZLNgzGI2rswSZ7SKcsBd1IRHVf0miwIFYy
+ j/UEfAFNW+tbtKPNn3xZTLs3quQN7GdYLh+J0XxITpBZaFOpwEKV+VS36pSLnNl0T5wm0E/y
+ scPJ0OVY7ly5Vm1nnoH4licaU5Y1nSkFR/j2douI5P7Cj687WuNMC6CcFd6j72kRfxklOqXw
+ zvy+2NEcXyziiLXp84130yxAKXfluax9sZhhrhKT6VrD45S6N3HxJpXQ/RY/EX35neH2/F7B
+ RgSloce2+zWfpELyS1qRkCUTt1tlGV2p+y2BPfXzrHn2vxvbhEn1QpQ6t+85FKN8YEhJEygJ
+ F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
+ FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260511-adm1266-v2-0-7a6d34f0de5d@nexthop.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D85E050FE9C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[nexthop.ai:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-13921-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-13919-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
 	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Platforms that fit more than one ADM1266 on different I2C buses at
-the same 7-bit slave address (a common shelf-management pattern,
-e.g. one device per power domain) end up with duplicate GPIO line
-labels because the existing format only includes the slave address.
-Including the adapter number disambiguates them.
+On 5/11/26 00:51, Abdurrahman Hussain wrote:
+> This series fills in some gaps in the adm1266 driver and removes a
+> probe-time RTC seed that was clobbering valid device state.
+> 
+> Patch 1 exposes the firmware revision (IC_DEVICE_REV, 0xAE) via
+> debugfs alongside the existing sequencer_state entry.
+> 
+> Patch 2 adds a write-only clear_blackbox debugfs file. Devices
+> configured for single-recording mode (BLACKBOX_CONFIG[0] = 0) need
+> an explicit clear once the 32-record buffer fills; the documented
+> sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
+> from userspace.
+> 
+> Patch 3 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
+> The same value is embedded in every blackbox record, so the live
+> value lets userspace match a captured record back to the boot it
+> came from when correlating logs.
+> 
+> Patch 4 replaces the probe-time SET_RTC seed with an rtc_class
+> device backed by SET_RTC. The existing seed used CLOCK_MONOTONIC
+> seconds, which is meaningless as a wall-clock time and clobbers
+> whatever the device retained across a warm reboot. The data sheet
+> (Rev. D, p. 22) explicitly recommends "frequently send the time
+> stamp to the ADM1266 to synchronize the UNIX time and reduce the
+> time from drifting" when running on the internal oscillator (no
+> external 32.768 kHz crystal). Letting userspace own the policy via
+> standard tooling (hwclock, chrony, systemd-timesyncd) against
+> /dev/rtcN is both more correct and avoids any driver-specific
+> sysfs ABI.
+> 
+> Patch 5 disambiguates GPIO line labels on platforms that fit two
+> ADM1266 devices on different I2C buses at the same slave address.
+> 
+> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+> ---
+> Changes in v2:
 
-The adapter number is formatted as decimal to match the i2c-N
-convention used elsewhere in Linux (sysfs paths, dev nodes); the
-slave address keeps its conventional hexadecimal form.
+And why the resend ?
 
-The label is purely informational (visible via gpioinfo and the
-gpiochip /sys/class/gpio name); no DT or ABI consumer parses it.
-
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
----
- drivers/hwmon/pmbus/adm1266.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 0dfb02db8683..479e768ff87c 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -292,8 +292,9 @@ static int adm1266_config_gpio(struct adm1266_data *data)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(data->gpio_names); i++) {
--		gpio_name = devm_kasprintf(&data->client->dev, GFP_KERNEL, "adm1266-%x-%s",
--					   data->client->addr, adm1266_names[i]);
-+		gpio_name = devm_kasprintf(&data->client->dev, GFP_KERNEL, "adm1266-%d-%x-%s",
-+					   data->client->adapter->nr, data->client->addr,
-+					   adm1266_names[i]);
- 		if (!gpio_name)
- 			return -ENOMEM;
- 
-
--- 
-2.53.0
+Guenter
 
 
