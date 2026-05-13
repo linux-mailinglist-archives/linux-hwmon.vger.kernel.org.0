@@ -1,237 +1,195 @@
-Return-Path: <linux-hwmon+bounces-14013-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14015-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHF/BDayBGoQNQIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14013-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2026 19:17:42 +0200
+	id OMwqJte7BGrmNQIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14015-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2026 19:58:47 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C545A537E08
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2026 19:17:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C54538751
+	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2026 19:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC733300CC84
-	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2026 17:17:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2AC733078015
+	for <lists+linux-hwmon@lfdr.de>; Wed, 13 May 2026 17:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C3A4DA55A;
-	Wed, 13 May 2026 17:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C834DD6CD;
+	Wed, 13 May 2026 17:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kryTxQA6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BCjxlbY3"
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="OynzPFv7"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6283A2E12
-	for <linux-hwmon@vger.kernel.org>; Wed, 13 May 2026 17:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210844DC55E
+	for <linux-hwmon@vger.kernel.org>; Wed, 13 May 2026 17:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778692635; cv=none; b=SsuNC4F+/pl0xmxQWh3MZP6UWveTyY/wupmfsSYPFlev708gUb3YVeqUeNmEI9PMqVPgp/Q9AN8T6jgEPs+2ZcLUZMFr5G2o7HDgvihnyiQ566kaFeI0IKxFWmr4dC6HGRWrEx6q11iIA08j3iPBRlsy26SBjAuoG0yfA8Huf9s=
+	t=1778694634; cv=none; b=qnlu/BjOnoYwCsTbdyd6ufMS5iOHDit4l4VFlORZJrfhTf2ekTxVz5ev4wU2CFVGxEowLVaroODgkpOr368bOXO16At0wkj1vsveuYqfYdqRmgqSem9lw/IopyGFUgTmRBYqDOyVsRmQxnxBlcswye1um1CzRkxbrjicdEF9g3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778692635; c=relaxed/simple;
-	bh=Kj3iXhctlrnoi195JSqc+ZVTxrEJIVDVilbcH2wOlpY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JYm3/iyFXwLB3uVkP0r1RzqWErQvIfGQiw08E7Xsz+kg4DqAPjQn+cEVKwMTuL4LCx2gSzhxOQJSK5NfuaF+iHD6Bq9Sk65r/dvqZBR9gP1Au0cv0UKKbPNowL3mRpKciNg5VtH7zeNjFFNWxA+pV4rdNh2YSwvi3RmZkZNd7/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kryTxQA6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BCjxlbY3; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64DC4gr13324691
-	for <linux-hwmon@vger.kernel.org>; Wed, 13 May 2026 17:17:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aSNW5jdxcUIAPP3Bs33L7OprcOwqqAXBDPxUoI0e9M0=; b=kryTxQA6RM485eQX
-	dx42ibBOB75xs/MJw/7b3DKZEiDJoe6dqOpjyvUAVS/XrFHKfS7lTZhkbJMgzocU
-	m8TngOGjPaWwym33crrprlVCa/LhJP7R2/qHPUFnxVCLowrI1BDsElkK7//ZEtWt
-	1Oyuw+KaiRd3xVbzKPDHVxIxS9tJga80y+guWSPjrExWnzHAgkPbLmRbKKIODbjf
-	harIdC9nNhxRhduZLHu2336MAwCDgWEQkn1tN7iFieVDpCdTzbDg61a91GhkyNjw
-	pNQq9AZFNeEJEwZHfZN/qLVPM2HdlXKI711JqpJ6sWkMQki6Uq7Fw0ye6KznP0Ue
-	OCw5LA==
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e4kvdamkr-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-hwmon@vger.kernel.org>; Wed, 13 May 2026 17:17:07 +0000 (GMT)
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2bdd327d970so3970553eec.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 13 May 2026 10:17:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778692626; x=1779297426; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aSNW5jdxcUIAPP3Bs33L7OprcOwqqAXBDPxUoI0e9M0=;
-        b=BCjxlbY3jZcFIHe8YTMbEOoh4nr9Rt8veOvWDiLvlnV0U+Kwy8O2zUr1hYIkAuoGPa
-         6YJoUPghFitnuGro3hhGppBsX6Vwm2a1OLkij8P1Xpv4iFQvAcUZfJG7TA9dQoqJp07p
-         mut20yOvGfXt58G04drxekh9TpVRuY/kHShEWcU0qsPaznaM5TWZoIYSHiZK+Cgx2BZl
-         8d3OjUlexApnS0rlojIzwzLy0x1aVCeJ+BZwitNXpFGBcCdUkgwfVz39zf+B3/eX0RqS
-         WdGnEDx7fvPRmQKCtV/fIZimjLSGdIDXzF1byI9eZG1+aqSq4DFBj1iBMLk/AP59OJlh
-         yEng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778692626; x=1779297426;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aSNW5jdxcUIAPP3Bs33L7OprcOwqqAXBDPxUoI0e9M0=;
-        b=gwYkiyC0jkbqt+79CYzSbYU5bVvFz81kAcsCH65tSABBMsXJzFq4M0jMv96688x7pL
-         V6pSr/s8rjixawpBvUl72G2vmVOUwFZJjFjsPq8Af5FDpjjoiqzYUwCB+Wh0WekUb26L
-         J0IqBbOMTNwzwlbkVYrlYdKwfuBnzIXCXn/lT+Gg85z9+o8i/3Xoep4vKZZcs5+nbofa
-         yltAKkEbl8TvHMo4M2xwaVWR7RRfZHGJKCfPL1pOrqNkRW84Jx+VS+mxASZ+uUWzi0ks
-         2jz1XHt+dVlFsuVj+5qFLeuPW8TCgENfCbpqesYh3/6Q8AOF9VDqD1IC8ISAUqLeo++8
-         zSBw==
-X-Forwarded-Encrypted: i=1; AFNElJ+lJKAhQkxWBquyaDGCiJ9O6U5PlJUbd9zPjz4WA9fiqQNh1QytUNbT0MUc/tgm6SDnt7Mj8Y2oZYMhvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHHScrnimAvRJrIjKJBZlION7KBfz1uqnP04u5nlISiRAmAfTM
-	Q4v29cqmF84veuvd4AbS+bheZZl/I/fS5+kDGInjDckBo56UksgrOR5uF5W7WnkbgBTrtgkUNFi
-	4terGzp9fiKP+TNKIUiCZxr1So8BMVRhEjWOOzKcOH6NGj2cOwB/IOoZ+59hQ+oDk8w==
-X-Gm-Gg: Acq92OFG/6sjVZvj6XF75ejaKajFb5P7WDnvH9xHu7Bzc0HuqZDcUm0XJOG3iP+DX1d
-	u29BE/DE7OpebPu1lJ+MJIiT45vEx6sL/OKZcSG7nQfL0UeZoTt84eKB8o8vVfDGkyD+Asd9ugJ
-	Zj8Qs2xjUMMx+hxtQ2ZypXXFn0mR9yiwMZ2JK+mjCnrNP7eRqTtOjzd46cMOr7hv3qLneNioMdt
-	AdC/vHHiNJ/4lxofu5HN0ZlutlOO+ZaD5VVWM5Vo73HZJStwavoIj915+FGu3YlGKzJzn5D2Evt
-	hrmVCsZgrm3FlRgQOS8U2u/pVZoF9Wn8eRhUsJCSqEB06Q6uppoLLtZfuIG0BJmr2cqO93NvOHU
-	gKAYB63vrUYzYtl1uEUpF8IOMF1hjJhYGRAH007NNb9UAtbtjSw6FQ4IgSZg7q2NNI3aSMfk=
-X-Received: by 2002:a05:7300:d505:b0:2f1:1fe8:cf5c with SMTP id 5a478bee46e88-3025fd4ce24mr270846eec.11.1778692625728;
-        Wed, 13 May 2026 10:17:05 -0700 (PDT)
-X-Received: by 2002:a05:7300:d505:b0:2f1:1fe8:cf5c with SMTP id 5a478bee46e88-3025fd4ce24mr270809eec.11.1778692625112;
-        Wed, 13 May 2026 10:17:05 -0700 (PDT)
-Received: from hu-aletran-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888d3af4esm23075939eec.25.2026.05.13.10.17.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 10:17:04 -0700 (PDT)
-From: Alex Tran <alex.tran@oss.qualcomm.com>
-Date: Wed, 13 May 2026 10:16:58 -0700
-Subject: [PATCH v2 5/5] pinctrl: pinctrl-scmi: Log number of pins, groups,
- functions
+	s=arc-20240116; t=1778694634; c=relaxed/simple;
+	bh=edwYczmmc9Ijp4DGSiY9cCwZHmymT/Zbqii98OC1Yfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xnqw3hTRsbT8E7guQEWKHTaWGpvysl1wbCE4acH+khvkpRErc51Dul9TZvg6AoxVzfeKRwCkFYK6yq6DTT00H/Pkht79hiLAsr2Z7Wb7qvIICWhm2UeVs8tOBEV46hPMl8Mh/91ZK5PcIcvqgf+IxHPCAB2q2QO0iNNPtQxllp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=OynzPFv7; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 39829240028
+	for <linux-hwmon@vger.kernel.org>; Wed, 13 May 2026 19:50:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1778694630; bh=KDPeJu8/Dh5Kcfz4lwP9uY/C6+srG+yWSqzQzYxYnfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=OynzPFv7H/ssqeJw87sFdxQUQZ6R/zSU00cxWLkswXSCF07sRw7ujFgr8i4HAi7zj
+	 VwRSivFKOSchwwnuem/mMw1MasyHG1QRysRlRUvz/MyV7THJepgYtEmFuHzN6py53s
+	 5XSZkYLMpmbgBH3lnW8yyQKOobIduDxjGJ/YC3tdlDbJ6vkt5aifrVcGr4o8JEOPGi
+	 MX0LTbS664dNDD3eCOIeusEOlllE8kynzmlIyKpv15Wh3WorYgL/hPqH+MputcT67X
+	 +Bui6criNe3cnt28y/8udH0xuO3LNymQP1blMz+c0Cxn9mDJIBPJ68Y7PFtqSi2bo0
+	 U8G8oTg2Q+YQA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4gG1Fx2tnFz9rxP;
+	Wed, 13 May 2026 19:50:29 +0200 (CEST)
+Date: Wed, 13 May 2026 17:50:30 +0000
+From: Wilken Gottwalt <wilken.gottwalt@posteo.net>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH] hwmon: corsair-psu: fix and readd locking of command
+ buffer
+Message-ID: <20260513195027.028b7b63@posteo.net>
+In-Reply-To: <62e02950-e31b-4faa-8b36-98bbfe898367@roeck-us.net>
+References: <agR9YW7hGTJ_l7ms@monster.localdomain>
+	<5f0406fa-9692-49f0-bcfe-c013f5fc7b62@roeck-us.net>
+	<bde0fa1e-93a5-4819-aa19-04554c24d31c@roeck-us.net>
+	<20260513162135.2893e42d@posteo.net>
+	<254b59a8-182f-4ad3-8469-4f9e9511d3a5@roeck-us.net>
+	<20260513175350.07900558@posteo.net>
+	<62e02950-e31b-4faa-8b36-98bbfe898367@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260513-scmi-client-probe-log-v2-5-36607e9dd540@oss.qualcomm.com>
-References: <20260513-scmi-client-probe-log-v2-0-36607e9dd540@oss.qualcomm.com>
-In-Reply-To: <20260513-scmi-client-probe-log-v2-0-36607e9dd540@oss.qualcomm.com>
-To: Jyoti Bhayana <jbhayana@google.com>, Jonathan Cameron <jic23@kernel.org>,
-        David Lechner <dlechner@baylibre.com>,
-        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Sudeep Holla <sudeep.holla@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Linus Walleij <linusw@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, Alex Tran <alex.tran@oss.qualcomm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778692619; l=1456;
- i=alex.tran@oss.qualcomm.com; h=from:subject:message-id;
- bh=Kj3iXhctlrnoi195JSqc+ZVTxrEJIVDVilbcH2wOlpY=;
- b=8IZtV5wzteupSXqIq+Bsxez1uHO07ft4wROITW/YKp+/ETuq3ZDtrIO4dorhEbPjGInJMDVlv
- mm2SVl1RvGNAtCxpfXCiux0cQSUOEKk7z9zzmj5dpwtHLyyAvkQN8yW
-X-Developer-Key: i=alex.tran@oss.qualcomm.com; a=ed25519;
- pk=vKab/gw1fXij5UviWoglv+ho+H/oOiTHyETCLfayPE0=
-X-Proofpoint-GUID: YgXWAoEbACiG9xAwFTM2zluBfN_DtZTb
-X-Proofpoint-ORIG-GUID: YgXWAoEbACiG9xAwFTM2zluBfN_DtZTb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEzMDE3NCBTYWx0ZWRfX/X1X/KLQaR2b
- NigSJhpe6cRPMfrLiLPqIszrqKFgoFzoge7xSNhdiuyjCm8Ejy45Y20uHj7WTrTrLelqPQRfFWA
- gg3f3MLi2GKVEqGaoeeVtcBQiwRd3Ith5leOEHRYzyk4sO3z+LKQEw+xwn5zxb3Aw0kl8wZfoXG
- s6UrEaSlMCNACRuFAUVVpv5zDnaxxu2EhMb0QdGd9MkntTAmuwlNBlKnVJV1+ov83Yu4FwHuhxq
- KbpwC305JoziTITmIESM0t+/a7N7lS7Z5AHD9ixz6nz5zCkgXT3QCCXkR6QfF8FVfDLCK+YNxOk
- gn8bw4bUOOcrO+xzri1LAPJzClrZs3FILU/PnsUFumVWfcXSLbxcII1g2VFBWkMCO0+bdwbea3n
- Sn/JquRiaDY0A+36N7fAO3OL7NO9OSYAEu4pi9wkUbqp1TOWbAoXPQpm8JeEiHEK/tA17n5CKJy
- QS5VDGMPmBsAyY2smcw==
-X-Authority-Analysis: v=2.4 cv=Iu0utr/g c=1 sm=1 tr=0 ts=6a04b213 cx=c_pps
- a=Uww141gWH0fZj/3QKPojxA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=HhDMDxCfm6Xc3nGqG0sA:9 a=QEXdDO2ut3YA:10
- a=PxkB5W3o20Ba91AHUih5:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-13_01,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 spamscore=0 adultscore=0 impostorscore=0
- bulkscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605130174
-X-Rspamd-Queue-Id: C545A537E08
+X-Rspamd-Queue-Id: 95C54538751
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[posteo.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[posteo.net:s=2017];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-14013-lists,linux-hwmon=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DKIM_TRACE(0.00)[posteo.net:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex.tran@oss.qualcomm.com,linux-hwmon@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-14015-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wilken.gottwalt@posteo.net,linux-hwmon@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[posteo.net:mid,posteo.net:dkim,roeck-us.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The SCMI pinctrl driver does not currently log the number of pins,
-groups, and functions discovered from firmware. This information is
-useful for confirming the firmware exposed pinctrl resources during
-debugging.
+On Wed, 13 May 2026 09:42:08 -0700
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-Log these counts after a successful probe to align with the existing
-SCMI client driver logging pattern.
+> On Wed, May 13, 2026 at 03:53:51PM +0000, Wilken Gottwalt wrote:
+> > On Wed, 13 May 2026 07:58:14 -0700
+> > Guenter Roeck <linux@roeck-us.net> wrote:
+> > 
+> ...
+> > Okay, that will get a bit complex now, because I added my hack and I see
+> > exactly what I assumed is happening.
+> > 
+> ...
+> > 
+> > If this does not explain the obvious issue, I have not idea how explain
+> > it further. My English is limited. This is a HID driver with data gathering
+> > functions running in the context of the USB-HID context. Callbacks from the
+> > hwmon and the debugfs subsystem call these data gathering functions, and the
+> > first function in that context, corsairpsu_request(), which can run several
+> > instances in paralellel, needs the mutex.
+> > 
+> 
+> You don't explain why the patches below are insufficient.
+> 
+> I used guard() to keep the changes simple, but hwmon_lock() / hwmon_unlock()
+> would be similar. Please provide evidence that this does not work.
+> 
+> Thanks,
+> Guenter
+> --
+> From aa3ec1484bdd619e8fa2ce569ec653d35fbf3615 Mon Sep 17 00:00:00 2001
+> From: Guenter Roeck <linux@roeck-us.net>
+> Date: Wed, 13 May 2026 07:14:33 -0700
+> Subject: [PATCH 1/4] hwmon: Support guard() and scoped_guard for subsystem
+>  locks
+> 
+> Add support for guard() and scoped_guard() for the hwmon subsystem lock
+> to simplify its use.
+> 
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  Documentation/hwmon/hwmon-kernel-api.rst | 7 ++++---
+>  include/linux/hwmon.h                    | 2 ++
+>  2 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/hwmon/hwmon-kernel-api.rst b/Documentation/hwmon/hwmon-kernel-api.rst
+> index 1d7f1397a827..9fcde32a140d 100644
+> --- a/Documentation/hwmon/hwmon-kernel-api.rst
+> +++ b/Documentation/hwmon/hwmon-kernel-api.rst
+> @@ -85,9 +85,10 @@ removal.
+>  When using ``[devm_]hwmon_device_register_with_info()`` to register the
+>  hardware monitoring device, accesses using the associated access functions
+>  are serialised by the hardware monitoring core. If a driver needs locking
+> -for other functions such as interrupt handlers or for attributes which are
+> -fully implemented in the driver, hwmon_lock() and hwmon_unlock() can be used
+> -to ensure that calls to those functions are serialized.
+> +for other functions such as interrupt handlers, attributes which are fully
+> +implemented in the driver, or debugfs functions, hwmon_lock() and hwmon_unlock()
+> +can be used to ensure that calls to those functions are serialized. Those
+> +functions also support guard() and scoped_guard() variants.
+>  
+>  Using devm_hwmon_device_register_with_info()
+>  --------------------------------------------
+> diff --git a/include/linux/hwmon.h b/include/linux/hwmon.h
+> index 301a83afbd66..04959e044fd0 100644
+> --- a/include/linux/hwmon.h
+> +++ b/include/linux/hwmon.h
+> @@ -495,6 +495,8 @@ char *devm_hwmon_sanitize_name(struct device *dev, const char *name);
+>  void hwmon_lock(struct device *dev);
+>  void hwmon_unlock(struct device *dev);
+>  
+> +DEFINE_GUARD(hwmon_lock, struct device *, hwmon_lock(_T), hwmon_unlock(_T))
+> +
+>  /**
+>   * hwmon_is_bad_char - Is the char invalid in a hwmon name
+>   * @ch: the char to be considered
 
-Signed-off-by: Alex Tran <alex.tran@oss.qualcomm.com>
----
- drivers/pinctrl/pinctrl-scmi.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Now I am completely confused. What is that guard() and scoped_guard() patch?
+It is not part of Torvalds repo or your
+git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git repo. Not
+in branch hwmon, hwmon-next, hwmon-playground, hwmon-staging, testing, fixes
+or master.
+I mean, it is a bit hard to check against this, if it is not upstream. Did
+you maybe forgot to push it? I really fetched everything to be on the
+latest commits and grepped for "DEFINE_GUARD". The only one I see is the
+one in drivers/hwmon/pmbus/pmbus.h.
 
-diff --git a/drivers/pinctrl/pinctrl-scmi.c b/drivers/pinctrl/pinctrl-scmi.c
-index f22be6b7b82a..999c2061ddc3 100644
---- a/drivers/pinctrl/pinctrl-scmi.c
-+++ b/drivers/pinctrl/pinctrl-scmi.c
-@@ -40,6 +40,7 @@ struct scmi_pinctrl {
- 	struct pinctrl_desc pctl_desc;
- 	struct pinfunction *functions;
- 	unsigned int nr_functions;
-+	unsigned int nr_groups;
- };
- 
- static int pinctrl_scmi_get_groups_count(struct pinctrl_dev *pctldev)
-@@ -578,7 +579,15 @@ static int scmi_pinctrl_probe(struct scmi_device *sdev)
- 	if (!pmx->functions)
- 		return -ENOMEM;
- 
--	return pinctrl_enable(pmx->pctldev);
-+	pmx->nr_groups = pinctrl_scmi_get_groups_count(pmx->pctldev);
-+
-+	ret = pinctrl_enable(pmx->pctldev);
-+	if (ret)
-+		return ret;
-+
-+	dev_dbg(dev, "Initialized %d pins, %d groups, %d functions\n",
-+		 pmx->pctl_desc.npins, pmx->nr_groups, pmx->nr_functions);
-+	return 0;
- }
- 
- static const struct scmi_device_id scmi_id_table[] = {
-
--- 
-2.43.0
-
+greetings,
+Wilken
 
