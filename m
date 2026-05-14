@@ -1,183 +1,169 @@
-Return-Path: <linux-hwmon+bounces-14041-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14043-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOuhJ+UhBWpySwIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14041-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:14:13 +0200
+	id WFjZKq0iBWpySwIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14043-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:17:33 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4329153C998
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:14:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2694F53CA3A
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D5B76301E740
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 01:14:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F74A302444C
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 01:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EBF30DEDD;
-	Thu, 14 May 2026 01:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303A32F25F5;
+	Thu, 14 May 2026 01:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HizGYsDb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rA/x5RBe"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2E33093DF;
-	Thu, 14 May 2026 01:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C807199FAB
+	for <linux-hwmon@vger.kernel.org>; Thu, 14 May 2026 01:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778721250; cv=none; b=FERJJ9FMe4lxwRuN7r9CEm39lrmCnHUmpRm1TbqtaRyTD4OXajwtkAu8NWK83ayHiA6kXRfZp77agxTvdRAU3XvVWsStPPmlhmKdGS539hC6P8GfOISJHQ2E6sKSOpVGiqe7W4HqEz1LAX7txYsgprtAXtESOcNVgNvYxdshmBA=
+	t=1778721450; cv=none; b=h50961BgVqBQwRhJMvw4dPBLveMztWvQoVyI0Zv2etSZZie3bkafTh1WjdojLp00JXt32tMIglo/IJSOafCIXzZaA+UGOsV8ig4DPZep9jYRCFlXm1QSAOUxJw4vtB1kmeTCKK7VetAaDOFVByJQfBprxLjT7YTyJQg0Sxb0Exk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778721250; c=relaxed/simple;
-	bh=206ZJi52YVqCPsmcE8rNx3mGgWx0LmTRdSIDdbqLAr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tO6bl+aJB7C/11Ogq0QXsXVdnk9eISJXJl9DBwvJjOsz2hCwyg/I/H3YCHcLzf+NDgf4YYYlIxEX1fOJxIkPRE9ErN8kD0IMii4viMBsGPkLqZH0osWQAt+AiHauxxNg/GKvEZ9xljtnVz3BcjwxcvVJDjbf3kvZlbAn1vyL7mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HizGYsDb; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=x+
-	tjZgJ/1ED50GWoMRrtTY0DZaXuGmFDlBwH0MLLdtk=; b=HizGYsDbzQZFhJITTa
-	4ssHc8Yv1QQTyaSAI2XVgUV1taCfNtz5OOwrnbrIgbM+aI5Pvg95d2x4e2PdaQn4
-	Klgxv/kAoVdxvI/LTwJKDJ4aljjtCaxnES3q27iBB2+k8fBxdrunKK/mk/YFX5nk
-	9eX/CewRoVJPgNAonDinA2srw=
-Received: from debian.lenovo.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3Hy+1IQVqnFYFBQ--.27803S5;
-	Thu, 14 May 2026 09:13:42 +0800 (CST)
-From: Kean <rh_king@163.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kean <rh_king@163.com>
-Subject: [PATCH 3/3] hwmon: lenovo-ec-sensors: Use devm_request_region for automatic cleanup
-Date: Thu, 14 May 2026 09:14:11 +0800
-Message-ID: <20260514011411.4167069-4-rh_king@163.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260514011411.4167069-1-rh_king@163.com>
-References: <20260514011411.4167069-1-rh_king@163.com>
+	s=arc-20240116; t=1778721450; c=relaxed/simple;
+	bh=+0h40Tz2wOcu8+E4NDHUeq2u7eecomJlI5tJEozui5o=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jnFn9Hh/hNJilAasHqyph6FvtUCRaM3aC96eqrHpMGDIa5vmA3pxjmK27wFPumtHx0wC0KMqcRsi788z2W751vmulzQP7qOGQrpNArIj1Ej1wxLKkI4GeWI9kfJ1BvNMUODxJb9wni+vtCcxBdcxWiIABc935ajK7s2jYIC5LBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rA/x5RBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891CFC2BCB8;
+	Thu, 14 May 2026 01:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778721449;
+	bh=+0h40Tz2wOcu8+E4NDHUeq2u7eecomJlI5tJEozui5o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=rA/x5RBe9fozmaQjiEmd85vkWRfBus+KFd3xxNraCyp7IFd/wPmVYsKa9IGzvKm1H
+	 eLCaslAsbyxXFM9WoXNKbcVD5Dzuj3LUFLBwii8CkULqHLXb0EqMVI1Ca5TrP635/e
+	 9qBkfix40F07v8j2MBfbulZNoqEWNPcasXJwtq3+vPRbiDNk3vMJoXhA2k/iax8PuQ
+	 lYt54nxux/n6+98i0RbzRf+Oc6aSreq5w/yTiL+SuCMqEiRhnmpMCoXIXW82PIIhV9
+	 6paOfqGZ2f2B5l5F8RAx/EMEtzSP6CxS1PV42FMKwli6DTNBQ+Nr6xDOrv6t6dqiuu
+	 318hRr59ELJoA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/5] hwmon: (pmbus/adm1266) add powerup_counter
+ debugfs entry
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Abdurrahman Hussain" <abdurrahman@nexthop.ai>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260512-adm1266-v3-3-a81a479b0bb0@nexthop.ai>
+References: <20260512-adm1266-v3-3-a81a479b0bb0@nexthop.ai>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 14 May 2026 01:17:28 +0000
+Message-Id: <20260514011729.891CFC2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3Hy+1IQVqnFYFBQ--.27803S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAFy5Kr48JFW3uFy3ur45Wrg_yoW5AF4kp3
-	yrJFW5Wr95GFyj934kA3Z7ZFn3Aws3taySkry5Kwn3u3ZrJr98GrZ5A3Z29FW2yFW8J3Wf
-	Xw15trWS9F4DXrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UPfHbUUUUU=
-X-CM-SenderInfo: 5ukbyxlqj6il2tof0z/xtbC+wZVBGoFIcYMDQAA3l
-X-Rspamd-Queue-Id: 4329153C998
+X-Rspamd-Queue-Id: 2694F53CA3A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14043-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	TAGGED_FROM(0.00)[bounces-14041-lists,linux-hwmon=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rh_king@163.com,linux-hwmon@vger.kernel.org];
-	FREEMAIL_CC(0.00)[squebb.ca,vger.kernel.org,163.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-hwmon];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,lists.linux.dev:replyto,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url,smtp.kernel.org:mid]
 X-Rspamd-Action: no action
 
-Replace manual request_region()/release_region() with
-devm_request_region(). This lets the device-managed framework
-handle I/O region lifetime automatically and fixes:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Missing locking in debugfs read callback `adm1266_powerup_counte=
+r_read` violates subsystem concurrency guidelines and allows interleaving w=
+ith PMBus sequences.
+--
 
-- A double release_region() when probe fails after acquiring the
-  I/O region: the probe error path releases it, and then
-  lenovo_ec_init() releases it again on the same error path.
+commit d2c76f8ee7556a97e62b160e80fa96f155d632ed
+Author: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-- A release-after-free in lenovo_ec_exit() where release_region()
-  was called after platform_device_unregister(), which has already
-  released the I/O region via the platform device removal path.
+hwmon: (pmbus/adm1266) add powerup_counter debugfs entry
 
-- Missing release_region() in lenovo_ec_probe() on the DMI match
-  failure path, which leaked the I/O region.
+This commit exposes the adm1266 16-bit non-volatile powerup counter as a
+read-only debugfs file. The live value is read using a block-read to
+retrieve two payload bytes in little-endian order.
 
-Remove all manual release_region() calls that are now handled
-automatically by the devm framework.
+> diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+> index bd3784d59a7c8..080e7dbd0c069 100644
+> --- a/drivers/hwmon/pmbus/adm1266.c
+> +++ b/drivers/hwmon/pmbus/adm1266.c
+[ ... ]
+> @@ -356,6 +357,31 @@ static int adm1266_firmware_revision_read(struct seq=
+_file *s, void *pdata)
+>  	return 0;
+>  }
+> =20
+> +/*
+> + * POWERUP_COUNTER (0xE4) is a 2-byte little-endian non-volatile counter
+> + * that increments on every device power cycle (datasheet Rev. D, Table
+> + * 93). It saturates at 65535 and cannot be reset by the host. Each
+> + * blackbox record embeds the counter value at record time, so this live
+> + * read is mainly useful for matching a record back to its boot.
+> + */
+> +static int adm1266_powerup_counter_read(struct seq_file *s, void *pdata)
+> +{
+> +	struct device *dev =3D s->private;
+> +	struct i2c_client *client =3D to_i2c_client(dev);
+> +	u8 buf[I2C_SMBUS_BLOCK_MAX];
+> +	int ret;
+> +
+> +	ret =3D i2c_smbus_read_block_data(client, ADM1266_POWERUP_COUNTER, buf);
 
-Signed-off-by: Kean <rh_king@163.com>
+Does this lockless hardware access introduce a regression by violating hwmon
+subsystem concurrency guidelines?
 
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
----
- drivers/hwmon/lenovo-ec-sensors.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+The hwmon guidelines specify that drivers must implement locking for
+attributes registered by any other means, such as debugfs files. While a
+single i2c transaction is serialized at the adapter level, a lockless
+access here could interleave with stateful multi-transaction pmbus
+sequences on other threads, such as setting a page register followed by
+a read.
 
-diff --git a/drivers/hwmon/lenovo-ec-sensors.c b/drivers/hwmon/lenovo-ec-sensors.c
-index b0f2a04ce679..ea74bddbad5a 100644
---- a/drivers/hwmon/lenovo-ec-sensors.c
-+++ b/drivers/hwmon/lenovo-ec-sensors.c
-@@ -519,8 +519,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
- 	if (!ec_data)
- 		return -ENOMEM;
- 
--	if (!request_region(IO_REGION_START, IO_REGION_LENGTH, "LNV-WKS")) {
--		pr_err(":request fail\n");
-+	if (!devm_request_region(dev, IO_REGION_START, IO_REGION_LENGTH, "LNV-WKS")) {
-+		dev_err(dev, "Failed to request I/O region.\n");
- 		return -EIO;
- 	}
- 
-@@ -541,7 +541,6 @@ static int lenovo_ec_probe(struct platform_device *pdev)
- 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE1) != 'C') || 
- 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE2) != 'H') ||
- 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE3) != 'P')) {
--		release_region(IO_REGION_START, IO_REGION_LENGTH);
- 		return -ENODEV;
- 	}
- 
-@@ -579,7 +578,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
- 		lenovo_ec_chip_info.info = lenovo_ec_hwmon_info_p8;
- 		break;
- 	default:
--		release_region(IO_REGION_START, IO_REGION_LENGTH);
-+		dev_err(dev, "Unsupported platform type %ld\n",
-+			(long)dmi_id->driver_data);
- 		return -ENODEV;
- 	}
- 
-@@ -608,10 +608,8 @@ static int __init lenovo_ec_init(void)
- 		platform_create_bundle(&lenovo_ec_sensors_platform_driver,
- 				       lenovo_ec_probe, NULL, 0, NULL, 0);
- 
--	if (IS_ERR(lenovo_ec_sensors_platform_device)) {
--		release_region(IO_REGION_START, IO_REGION_LENGTH);
-+	if (IS_ERR(lenovo_ec_sensors_platform_device)) 
- 		return PTR_ERR(lenovo_ec_sensors_platform_device);
--	}
- 
- 	return 0;
- }
-@@ -619,7 +617,6 @@ module_init(lenovo_ec_init);
- 
- static void __exit lenovo_ec_exit(void)
- {
--	release_region(IO_REGION_START, IO_REGION_LENGTH);
- 	platform_device_unregister(lenovo_ec_sensors_platform_device);
- 	platform_driver_unregister(&lenovo_ec_sensors_platform_driver);
- }
--- 
-2.47.3
+Should this function acquire pmbus_lock(client) to safely serialize the
+hardware access and prevent disruption of the device internal state machine?
 
+> +	if (ret < 0)
+> +		return ret;
+> +	if (ret !=3D 2)
+> +		return -EIO;
+> +
+> +	seq_printf(s, "%u\n", buf[0] | (buf[1] << 8));
+> +
+> +	return 0;
+> +}
+> +
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260512-adm1266-v3=
+-0-a81a479b0bb0@nexthop.ai?part=3D3
 
