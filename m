@@ -1,57 +1,57 @@
-Return-Path: <linux-hwmon+bounces-14042-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14041-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHSQCVkiBWpySwIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14042-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:16:09 +0200
+	id eOuhJ+UhBWpySwIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14041-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:14:13 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F9D53C9DA
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:16:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4329153C998
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 03:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90483307CED2
-	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 01:14:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D5B76301E740
+	for <lists+linux-hwmon@lfdr.de>; Thu, 14 May 2026 01:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF06C30CDAE;
-	Thu, 14 May 2026 01:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EBF30DEDD;
+	Thu, 14 May 2026 01:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Y9Vp3y4t"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HizGYsDb"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB07308F0A;
-	Thu, 14 May 2026 01:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2E33093DF;
+	Thu, 14 May 2026 01:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778721252; cv=none; b=KFJigo8xXp9sl/z1pROzyQimgHcd13bQoKHApd8TZomqKpfam2FIzLwDqUXrfhqwjEbK3n7f6RmHwOLqrJnZ4b+pXRGPvDZKSAUNh7MSsHRxsyX769Z96sBtQd0V3PHx5wD0RPh9tbPek5FHVZkEV+uIbmA8B7U95SO3yafYGBI=
+	t=1778721250; cv=none; b=FERJJ9FMe4lxwRuN7r9CEm39lrmCnHUmpRm1TbqtaRyTD4OXajwtkAu8NWK83ayHiA6kXRfZp77agxTvdRAU3XvVWsStPPmlhmKdGS539hC6P8GfOISJHQ2E6sKSOpVGiqe7W4HqEz1LAX7txYsgprtAXtESOcNVgNvYxdshmBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778721252; c=relaxed/simple;
-	bh=sXLih5raIl33sSNlnOoF6ZEBSgpWgjRZfHKHN76USE0=;
+	s=arc-20240116; t=1778721250; c=relaxed/simple;
+	bh=206ZJi52YVqCPsmcE8rNx3mGgWx0LmTRdSIDdbqLAr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMH9k9K1Fw7Mm5cTGK2ZgZZZm3s9JubauOnRN9KMN50Q6r6ORt5hsMjeosNlhBdILl9Rv/Y0kW6Ou6amg6/fPl77nG+XI4UWoE3I60AttzKT7MPucs9dwwWcMOnji3zY9UTpxJRekTrHztCbUgeWLXdIbv9iKnG42QKnajNuzH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Y9Vp3y4t; arc=none smtp.client-ip=220.197.31.4
+	 MIME-Version; b=tO6bl+aJB7C/11Ogq0QXsXVdnk9eISJXJl9DBwvJjOsz2hCwyg/I/H3YCHcLzf+NDgf4YYYlIxEX1fOJxIkPRE9ErN8kD0IMii4viMBsGPkLqZH0osWQAt+AiHauxxNg/GKvEZ9xljtnVz3BcjwxcvVJDjbf3kvZlbAn1vyL7mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HizGYsDb; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Kc
-	Drh3VbtdURX7weCLGXHiqFH5wBtE/xwYPo6+ozhNU=; b=Y9Vp3y4taV180X+Pxs
-	rKAxYV4+hvWdk2uoFq9yeF64FZdMAh1V6FZf5pUr8lJ5Jr1Fc6UKDDLFD7C1C0RF
-	zkjtAkxaYYA8skrGwaeFDBD57+OpQBOSjw6yk56RFpSkxcTXzTi0AF8XDKI5Sg5H
-	ij7wPjAY77Q9zo5QU1WM4xd6Y=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=x+
+	tjZgJ/1ED50GWoMRrtTY0DZaXuGmFDlBwH0MLLdtk=; b=HizGYsDbzQZFhJITTa
+	4ssHc8Yv1QQTyaSAI2XVgUV1taCfNtz5OOwrnbrIgbM+aI5Pvg95d2x4e2PdaQn4
+	Klgxv/kAoVdxvI/LTwJKDJ4aljjtCaxnES3q27iBB2+k8fBxdrunKK/mk/YFX5nk
+	9eX/CewRoVJPgNAonDinA2srw=
 Received: from debian.lenovo.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3Hy+1IQVqnFYFBQ--.27803S4;
-	Thu, 14 May 2026 09:13:40 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3Hy+1IQVqnFYFBQ--.27803S5;
+	Thu, 14 May 2026 09:13:42 +0800 (CST)
 From: Kean <rh_king@163.com>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: Mark Pearson <mpearson-lenovo@squebb.ca>,
 	linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Kean <rh_king@163.com>
-Subject: [PATCH 2/3] hwmon: lenovo-ec-sensors: Fix NULL pointer dereference when DMI match fails
-Date: Thu, 14 May 2026 09:14:10 +0800
-Message-ID: <20260514011411.4167069-3-rh_king@163.com>
+Subject: [PATCH 3/3] hwmon: lenovo-ec-sensors: Use devm_request_region for automatic cleanup
+Date: Thu, 14 May 2026 09:14:11 +0800
+Message-ID: <20260514011411.4167069-4-rh_king@163.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260514011411.4167069-1-rh_king@163.com>
 References: <20260514011411.4167069-1-rh_king@163.com>
@@ -62,72 +62,121 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3Hy+1IQVqnFYFBQ--.27803S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF45Xw13Jw1fJF1UZFWUurg_yoWDWrc_ur
-	1Uur97XryYywn0yr4vvF4S9F90kFWq9rykZr1Iy3yfAw18XFs5WFWkZrs0v3WfurWUAFZ8
-	A395AF93uw4fAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRpHqxUUUUUU==
-X-CM-SenderInfo: 5ukbyxlqj6il2tof0z/xtbC3wRVBGoFIcT3RAAA3z
-X-Rspamd-Queue-Id: A2F9D53C9DA
+X-CM-TRANSID:_____wD3Hy+1IQVqnFYFBQ--.27803S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFy5Kr48JFW3uFy3ur45Wrg_yoW5AF4kp3
+	yrJFW5Wr95GFyj934kA3Z7ZFn3Aws3taySkry5Kwn3u3ZrJr98GrZ5A3Z29FW2yFW8J3Wf
+	Xw15trWS9F4DXrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UPfHbUUUUU=
+X-CM-SenderInfo: 5ukbyxlqj6il2tof0z/xtbC+wZVBGoFIcYMDQAA3l
+X-Rspamd-Queue-Id: 4329153C998
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14042-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[squebb.ca,vger.kernel.org,163.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[163.com];
+	TAGGED_FROM(0.00)[bounces-14041-lists,linux-hwmon=lfdr.de];
 	DKIM_TRACE(0.00)[163.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rh_king@163.com,linux-hwmon@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
+	FROM_NEQ_ENVFROM(0.00)[rh_king@163.com,linux-hwmon@vger.kernel.org];
+	FREEMAIL_CC(0.00)[squebb.ca,vger.kernel.org,163.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,squebb.ca:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-dmi_first_match() returns NULL if the running system does not match any
-entry in thinkstation_dmi_table. Without a NULL check, the subsequent
-dmi_id->driver_data access dereferences a NULL pointer, causing a kernel
-oops or panic.
+Replace manual request_region()/release_region() with
+devm_request_region(). This lets the device-managed framework
+handle I/O region lifetime automatically and fixes:
 
-Add a NULL check and return -ENODEV to gracefully fail the probe when
-the driver is loaded on an unsupported platform.
+- A double release_region() when probe fails after acquiring the
+  I/O region: the probe error path releases it, and then
+  lenovo_ec_init() releases it again on the same error path.
+
+- A release-after-free in lenovo_ec_exit() where release_region()
+  was called after platform_device_unregister(), which has already
+  released the I/O region via the platform device removal path.
+
+- Missing release_region() in lenovo_ec_probe() on the DMI match
+  failure path, which leaked the I/O region.
+
+Remove all manual release_region() calls that are now handled
+automatically by the devm framework.
 
 Signed-off-by: Kean <rh_king@163.com>
 
 Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 ---
- drivers/hwmon/lenovo-ec-sensors.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/lenovo-ec-sensors.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/hwmon/lenovo-ec-sensors.c b/drivers/hwmon/lenovo-ec-sensors.c
-index a32b1f2c6a3a..b0f2a04ce679 100644
+index b0f2a04ce679..ea74bddbad5a 100644
 --- a/drivers/hwmon/lenovo-ec-sensors.c
 +++ b/drivers/hwmon/lenovo-ec-sensors.c
-@@ -546,6 +546,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+@@ -519,8 +519,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+ 	if (!ec_data)
+ 		return -ENOMEM;
+ 
+-	if (!request_region(IO_REGION_START, IO_REGION_LENGTH, "LNV-WKS")) {
+-		pr_err(":request fail\n");
++	if (!devm_request_region(dev, IO_REGION_START, IO_REGION_LENGTH, "LNV-WKS")) {
++		dev_err(dev, "Failed to request I/O region.\n");
+ 		return -EIO;
  	}
  
- 	dmi_id = dmi_first_match(thinkstation_dmi_table);
-+	if (!dmi_id)
-+		return -ENODEV;
+@@ -541,7 +541,6 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+ 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE1) != 'C') || 
+ 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE2) != 'H') ||
+ 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE3) != 'P')) {
+-		release_region(IO_REGION_START, IO_REGION_LENGTH);
+ 		return -ENODEV;
+ 	}
  
- 	switch ((long)dmi_id->driver_data) {
- 	case 0:
+@@ -579,7 +578,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+ 		lenovo_ec_chip_info.info = lenovo_ec_hwmon_info_p8;
+ 		break;
+ 	default:
+-		release_region(IO_REGION_START, IO_REGION_LENGTH);
++		dev_err(dev, "Unsupported platform type %ld\n",
++			(long)dmi_id->driver_data);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -608,10 +608,8 @@ static int __init lenovo_ec_init(void)
+ 		platform_create_bundle(&lenovo_ec_sensors_platform_driver,
+ 				       lenovo_ec_probe, NULL, 0, NULL, 0);
+ 
+-	if (IS_ERR(lenovo_ec_sensors_platform_device)) {
+-		release_region(IO_REGION_START, IO_REGION_LENGTH);
++	if (IS_ERR(lenovo_ec_sensors_platform_device)) 
+ 		return PTR_ERR(lenovo_ec_sensors_platform_device);
+-	}
+ 
+ 	return 0;
+ }
+@@ -619,7 +617,6 @@ module_init(lenovo_ec_init);
+ 
+ static void __exit lenovo_ec_exit(void)
+ {
+-	release_region(IO_REGION_START, IO_REGION_LENGTH);
+ 	platform_device_unregister(lenovo_ec_sensors_platform_device);
+ 	platform_driver_unregister(&lenovo_ec_sensors_platform_driver);
+ }
 -- 
 2.47.3
 
