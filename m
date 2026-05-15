@@ -1,267 +1,176 @@
-Return-Path: <linux-hwmon+bounces-14137-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14140-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIL/CUFHB2r6wAIAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14137-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2026 18:18:09 +0200
+	id 2D5kOQ5KB2rqwgIAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14140-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2026 18:30:06 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6459552F9D
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2026 18:18:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2ACE55349F
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2026 18:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CB8CA30D6FC3
-	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2026 15:58:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3FAAE3193F2A
+	for <lists+linux-hwmon@lfdr.de>; Fri, 15 May 2026 16:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228B5305683;
-	Fri, 15 May 2026 15:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZwVaSOj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A664BC03E;
+	Fri, 15 May 2026 16:06:01 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0027B305668
-	for <linux-hwmon@vger.kernel.org>; Fri, 15 May 2026 15:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C6A4B8DC3
+	for <linux-hwmon@vger.kernel.org>; Fri, 15 May 2026 16:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860689; cv=none; b=hM/fEL7k0NojlP/TVm5+l+YosJjOy6pO/EEXKhgoME378amMcsF5uYjKLD1eHVjGI766EbADVB09saw6LGQ6LeZrchKl1DoNCTPTq6wE7boi++61Hm12q26q3XCR2tajPqWk4jwNTvteNpCqA1ehxC9d4279BoTwDdF20WzYCZY=
+	t=1778861161; cv=none; b=RieU5riNYQFhKIx4/6hdxH+tyrQ6Ix0TcQ7FqlLroJSNynXYwbpQgYW9YMcgEw/qozA1JSfagiiXXQsMt6rqEOnXH/fFJyVZ93lJscLB6ZA/Uj0mURl3qprzefko6BTH1NZDsPrJrt9ad6asFVDwGqCsknhZpwKLlLWSzUFXXnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860689; c=relaxed/simple;
-	bh=2QxrSXh3RfVdD9VPrsCvlhcHYFMiXQKs1ERqRgbEjEM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FNpm7nGQiRnxmZ9cbjMt2/KXpEr5UBqcpKJrFN9RgAGYE81auwfMiiRP19hbh+9/y/iGKuQvL9lKKonu8z245O2pidV4QXMiyti0dEipq+LL/HYBBgl/AsTHtpDQyhyauNhrBd/0eMfFACeRfGkKQ8l17lKpgajKgXUAe9TCdsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZwVaSOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC27CC2BCB3;
-	Fri, 15 May 2026 15:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778860688;
-	bh=2QxrSXh3RfVdD9VPrsCvlhcHYFMiXQKs1ERqRgbEjEM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=YZwVaSOje00wcAWC19cBpOq9CIgTQlLx3i5i8Z3TXa0f+17c4OwD06s64kcv597ox
-	 BdIUvwypEqyUiQyGnBVKrVlEyHqhablnNRsvTviQlGtfAZqccWuuWf6ORDQbV79pZT
-	 PWwmPM44vyYAsHeDbx9KorPxPne3xQe2+WNADNu1iHYfXIOfPlBpDQQ/5kMITdnTwf
-	 v7/+5M/rR0BhIo74jeWTO3L7J2W0UOExlkRhBXdcGESDWE6AYXIZJOP9FOF7wM05cB
-	 vVHi/c8tTR7H31YRv9iQTBLYUlPC7yo/kxU6bIy3kxtS0sUrsti5XRpvWTr1KiSDvG
-	 iGV+rs5Med1oA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/6] misc: amd-sbi: Add SBTSI ioctl register transfer
- interface
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Akshay Gupta" <Akshay.Gupta@amd.com>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260515134506.397649-6-Akshay.Gupta@amd.com>
-References: <20260515134506.397649-6-Akshay.Gupta@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 15 May 2026 15:58:07 +0000
-Message-Id: <20260515155808.AC27CC2BCB3@smtp.kernel.org>
+	s=arc-20240116; t=1778861161; c=relaxed/simple;
+	bh=4KIkh63BU3PUwiYX3ifpkOYopUQfeeMxKZet3sob/xI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sE9EM1OacyMHTdnhJ8ro6HnZgjtMldcQn20S6j8cRanZjndtW4skZJsROCwsT9yYLKBiDxN8MFO35vAPKIzMn3zwKS/KLln2kPdxVvoPegf/RFD/iqGTdTQqDoIo/bV82yJCNCYh1P8a2zZpw0Lkawesoy6byrhKmrr3RzYLclk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wNv2h-00023Y-2h; Fri, 15 May 2026 18:05:39 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wNv2g-000wnC-1i;
+	Fri, 15 May 2026 18:05:38 +0200
+Received: from ore by dude04 with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wNv2g-00000000U91-1r6w;
+	Fri, 15 May 2026 18:05:38 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Peter Rosin <peda@axentia.se>,
+	Linus Walleij <linusw@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	David Jander <david@protonic.nl>
+Subject: [PATCH v12 0/6] mfd: Add support for NXP MC33978/MC34978 MSDI
+Date: Fri, 15 May 2026 18:05:28 +0200
+Message-ID: <20260515160537.115808-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: C6459552F9D
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
+X-Rspamd-Queue-Id: A2ACE55349F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14137-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14140-lists,linux-hwmon=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,lists.linux.dev:replyto,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,smtp.kernel.org:mid]
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.902];
+	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,linux-hwmon@vger.kernel.org];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:mid]
 X-Rspamd-Action: no action
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [Critical] Use-After-Free of `sbtsi_data` due to misaligned devres and VF=
-S lifecycles
-- [High] Unsafe DMA Buffer Allocation from stack variables
-- [High] Subsystem Guideline Violation: Redundant custom lock instead of hw=
-mon_lock()
-- [High] sysfs name collision for miscdevice on multi-bus systems
-- [Medium] Hardware state desynchronization via unrestricted IOCTL writes
-- [Medium] UAPI Flaw: Unvalidated padding byte in IOCTL message
+changes v7:
+- drop gpiolib irq fix and make pinctrl more robust against NULL point
+  dereference.
+
+This series adds support for the NXP MC33978/MC34978 Multiple Switch Detection
+Interface (MSDI) via the MFD framework.
+
+Architecture overview:
+* mfd: Core driver handling 2-frame pipelined SPI, regulator sequencing, and
+  linear irq_domain. Harvests status bits from SPI MISO MSB.
+* pinctrl: Exposes 22 physical switch inputs as standard GPIOs. Proxies IRQs to
+  the MFD domain.
+* hwmon: Exposes thermal limits, VBATP/VDDQ voltage boundaries, and dynamic
+  fault alarms.
+* mux: Controls the 24-to-1 AMUX routing analog signals (switch voltages,
+  temperature, VBATP) to an external ADC.
+
+Initial pinctrl implementation by David Jander, reworked into this MFD
+architecture.
+
+Best regards,
+Oleksij
+
+David Jander (1):
+  pinctrl: add NXP MC33978/MC34978 pinctrl driver
+
+Oleksij Rempel (5):
+  dt-bindings: pinctrl: add NXP MC33978/MC34978 MSDI
+  mfd: add NXP MC33978/MC34978 core driver
+  pinctrl: core: Make pin group callbacks optional for pin-only drivers
+  hwmon: add NXP MC33978/MC34978 driver
+  mux: add NXP MC33978/MC34978 AMUX driver
+
+ .../bindings/pinctrl/nxp,mc33978.yaml         |  158 +++
+ drivers/hwmon/Kconfig                         |   10 +
+ drivers/hwmon/Makefile                        |    1 +
+ drivers/hwmon/mc33978-hwmon.c                 |  576 +++++++++
+ drivers/mfd/Kconfig                           |   15 +
+ drivers/mfd/Makefile                          |    2 +
+ drivers/mfd/mc33978.c                         |  187 +++
+ drivers/mux/Kconfig                           |   14 +
+ drivers/mux/Makefile                          |    2 +
+ drivers/mux/mc33978-mux.c                     |  141 +++
+ drivers/pinctrl/Kconfig                       |   16 +
+ drivers/pinctrl/Makefile                      |    1 +
+ drivers/pinctrl/core.c                        |   40 +-
+ drivers/pinctrl/pinconf.c                     |    9 +-
+ drivers/pinctrl/pinctrl-mc33978.c             | 1020 +++++++++++++++
+ drivers/platform/Kconfig                      |    2 +
+ drivers/platform/Makefile                     |    1 +
+ drivers/platform/misc/Kconfig                 |   10 +
+ drivers/platform/misc/Makefile                |    6 +
+ drivers/platform/misc/mc33978-core.c          | 1106 +++++++++++++++++
+ include/linux/mfd/mc33978.h                   |  160 +++
+ 21 files changed, 3470 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,mc33978.yaml
+ create mode 100644 drivers/hwmon/mc33978-hwmon.c
+ create mode 100644 drivers/mfd/mc33978.c
+ create mode 100644 drivers/mux/mc33978-mux.c
+ create mode 100644 drivers/pinctrl/pinctrl-mc33978.c
+ create mode 100644 drivers/platform/misc/Kconfig
+ create mode 100644 drivers/platform/misc/Makefile
+ create mode 100644 drivers/platform/misc/mc33978-core.c
+ create mode 100644 include/linux/mfd/mc33978.h
+
 --
+2.47.3
 
-commit a076ef47ca989260af804712d32ac63c2aaf11cb
-Author: Prathima <Prathima.Lk@amd.com>
-
-misc: amd-sbi: Add SBTSI ioctl register transfer interface
-
-Implement IOCTL interface for SB-TSI driver to enable userspace access
-to TSI register read/write operations through the AMD Advanced Platform
-Management Link (APML) protocol.
-Add an ioctl command (SBTSI_IOCTL_REG_XFER_CMD) that accepts a register
-address, data byte, and direction flag.
-
-> diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
-> index d7ae986d824c4..00e982f4c716c 100644
-> --- a/drivers/hwmon/sbtsi_temp.c
-> +++ b/drivers/hwmon/sbtsi_temp.c
-> @@ -64,12 +64,15 @@ static inline void sbtsi_mc_to_reg(s32 temp, u8 *inte=
-ger, u8 *decimal)
->  /*
->   * Read integer and decimal parts of an SB-TSI temperature register pair
->   * The read order is determined by the ReadOrder bit to ensure atomic la=
-tching.
-> + * The mutex protects against concurrent access to the shared I2C/I3C bu=
-s by
-> + * the hwmon sysfs and a userspace ioctl
->   */
->  static int sbtsi_temp_read(struct sbtsi_data *data, u8 reg1, u8 reg2,
->  			   u8 *val1, u8 *val2)
->  {
->  	int ret;
-> =20
-> +	guard(mutex)(&data->lock);
-
-Does this custom lock bypass the standardized hwmon core synchronization
-mechanism? The hwmon subsystem guidelines appear to mandate using
-hwmon_lock() and hwmon_unlock() to serialize sysfs operations against
-attributes registered by other means.
-
-[ ... ]
-
-> diff --git a/drivers/misc/amd-sbi/tsi-core.c b/drivers/misc/amd-sbi/tsi-c=
-ore.c
-> index 19388737b225e..c5bd60409d5bb 100644
-> --- a/drivers/misc/amd-sbi/tsi-core.c
-> +++ b/drivers/misc/amd-sbi/tsi-core.c
-[ ... ]
-> +static int apml_tsi_reg_xfer(struct sbtsi_data *data,
-> +			     struct apml_tsi_xfer_msg __user *arg)
-> +{
-> +	struct apml_tsi_xfer_msg msg =3D { 0 };
-> +	int ret;
-> +
-> +	if (copy_from_user(&msg, arg, sizeof(struct apml_tsi_xfer_msg)))
-> +		return -EFAULT;
-> +
-> +	ret =3D sbtsi_xfer_ioctl(data, msg.reg_addr, &msg.data_in_out, msg.rfla=
-g);
-
-Could passing &msg.data_in_out to sbtsi_xfer_ioctl() eventually result in
-a DMA transfer from stack memory?
-
-If the transfer goes over I3C, sbtsi_i3c_read() uses this pointer directly:
-
-static int sbtsi_i3c_read(struct sbtsi_data *data, u8 reg, u8 *val)
-{
-	struct i3c_xfer xfers[2] =3D { };
-
-	xfers[0].rnw =3D false;
-	xfers[0].len =3D 1;
-	xfers[0].data.out =3D &reg;
-
-	xfers[1].rnw =3D true;
-	xfers[1].len =3D 1;
-	xfers[1].data.in =3D val;
-
-	return i3c_device_do_xfers(data->i3cdev, xfers, 2, I3C_SDR);
-}
-
-Since I3C host controllers commonly use DMA, and stack variables are not
-cacheline aligned (and reside in virtually mapped memory with
-CONFIG_VMAP_STACK enabled), this might violate the DMA API and lead to adja=
-cent
-stack corruption.
-
-Furthermore, does this unrestricted IOCTL write capability allow userspace
-to overwrite the SBTSI_REG_CONFIG register?
-
-During probe, the driver caches hardware state (ext_range_mode and
-read_order) from this register. If userspace modifies it without the
-driver intercepting the write to update its cache, the hwmon interface
-could report incorrect temperatures.
-
-[ ... ]
-
-> +static long sbtsi_ioctl(struct file *fp, unsigned int cmd, unsigned long=
- arg)
-> +{
-> +	void __user *argp =3D (void __user *)arg;
-> +	struct sbtsi_data *data;
-> +
-> +	data =3D container_of(fp->private_data, struct sbtsi_data, sbtsi_misc_d=
-ev);
-
-Can this lead to a use-after-free if the device is unbound?
-
-The sbtsi_data structure is allocated with devm_kzalloc(), tying its
-lifetime to the device's driver binding. When the device unbinds, devres
-calls misc_deregister() and frees sbtsi_data.
-
-Since misc_deregister() does not close or revoke existing file descriptors,
-a process could retain its file descriptor and call ioctl() after the unbin=
-d,
-extracting the freed sbtsi_data pointer and attempting to lock data->lock.
-
-[ ... ]
-
-> +int create_misc_tsi_device(struct sbtsi_data *data, struct device *dev)
-> +{
-> +	int ret;
-> +
-> +	data->sbtsi_misc_dev.name =3D devm_kasprintf(dev, GFP_KERNEL,
-> +						   "sbtsi-%x", data->dev_addr);
-
-Will this naming scheme cause a sysfs name collision on systems with
-multiple I2C/I3C buses?
-
-If identically-addressed sensors exist on different buses, it looks like
-misc_register() will attempt to create a duplicate sysfs entry
-(e.g., /sys/class/misc/sbtsi-4c), fail with -EEXIST, and abort the probe.
-
-[ ... ]
-
-> diff --git a/include/uapi/misc/amd-apml.h b/include/uapi/misc/amd-apml.h
-> index 745b3338fc06f..8a85f79b0938d 100644
-> --- a/include/uapi/misc/amd-apml.h
-> +++ b/include/uapi/misc/amd-apml.h
-> @@ -73,6 +73,13 @@ struct apml_reg_xfer_msg {
->  	__u8 rflag;
->  };
-> =20
-> +struct apml_tsi_xfer_msg {
-> +	__u8 reg_addr;		/* TSI register address offset */
-> +	__u8 data_in_out;	/* Register data for read/write */
-> +	__u8 rflag;		/* Register read or write */
-> +	__u8 pad;		/* Explicit padding */
-> +};
-
-Should msg.pad be validated in apml_tsi_reg_xfer() to ensure it is zero?
-
-Without this check, userspace can pass uninitialized garbage in the padding
-field, which might prevent safely repurposing this field for new flags or
-extensions in the future.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260515134506.3976=
-49-1-Akshay.Gupta@amd.com?part=3D5
 
