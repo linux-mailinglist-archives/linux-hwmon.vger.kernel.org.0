@@ -1,154 +1,191 @@
-Return-Path: <linux-hwmon+bounces-14215-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14216-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJNuGWbHCGqc4wMAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14215-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Sat, 16 May 2026 21:37:10 +0200
+	id EJybFHjKCGr65QMAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14216-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Sat, 16 May 2026 21:50:16 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC1055D970
-	for <lists+linux-hwmon@lfdr.de>; Sat, 16 May 2026 21:37:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3924855D99D
+	for <lists+linux-hwmon@lfdr.de>; Sat, 16 May 2026 21:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4D8E3013A43
-	for <lists+linux-hwmon@lfdr.de>; Sat, 16 May 2026 19:37:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 497B93003823
+	for <lists+linux-hwmon@lfdr.de>; Sat, 16 May 2026 19:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BCC35FF58;
-	Sat, 16 May 2026 19:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5EA371045;
+	Sat, 16 May 2026 19:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dk9YluEO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3dJzLnE"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C815730C17D;
-	Sat, 16 May 2026 19:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D63371042
+	for <linux-hwmon@vger.kernel.org>; Sat, 16 May 2026 19:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778960225; cv=none; b=I5yjNEYnKLlar70CdvRpWHbbMB8/oo+L2XRpp99VUvGerOSK8r00relbjC3y0XGgI858hasErHlryK+2QX82zrKFw2/E76QQrKZSuaJmNyAsmirMsFnQCVWXc4uQ4Tb8GQNeaJruWsH53xcf3T6H/hOGou0cfQE6twUesdh2Efo=
+	t=1778960703; cv=none; b=rH2LuA33aMMIrJT5naXGuDD8q0Nv/M3oCZODR3L8MJbONGfTKRVC2DPaESGSm/RwX3+/xjWm0CnZp7W0XQbC6ID+rVey7bjrgS4TK0pPl3XgxjeJFNE2WgQFoRSRUYNWO6r7XDmXGRiFYwXnfloaQXJbiEwNO/QCkAOTbSehjrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778960225; c=relaxed/simple;
-	bh=7/WHj5XFUUJLhqNRPGaO0Y/TS2Woku8/eo5bmNh8yjQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WDbMtxaLsOghhhL1C7j0LRQiTAjmSaYg7funlQcFOOIWoUfqLlEiLYA4luNIYiwMNivXnchfDPZSsp6zHhKBLGLLhBG34shD04zgHtZdFi93mmcZoKMQd+1nEeOzMUmO0/yUQjYHUmXUvESP2XhfcCvFOEFsJCXP4O1rqhIa0Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dk9YluEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EA9C19425;
-	Sat, 16 May 2026 19:37:03 +0000 (UTC)
+	s=arc-20240116; t=1778960703; c=relaxed/simple;
+	bh=vfTAZiVDMEFiz+XnvzQxLUkcvrHbApboM5S7qaPnbkg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=dYzaVgTMEHdow7OieT0MsU49ySwGRns+otSnDYPFG0hDGqZIBLD2YLUG4M45pr4HFhyaeG3nAsbAD9xBSgEybT/JL1AE5TRg+ZLaM/NIco8qhjUXth8YFvMwoaVGptyaCb885gpdZ/qnwIZn3mvO18mo7KKD+ZH7Y1ffL0OjIvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3dJzLnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B563C19425;
+	Sat, 16 May 2026 19:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778960225;
-	bh=7/WHj5XFUUJLhqNRPGaO0Y/TS2Woku8/eo5bmNh8yjQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Dk9YluEOo72DeCYm6MKI/0PcYFTsBRCLxN8RPYPhf7IKbSM7cCab+6CZFnAXZKTvt
-	 VEoI9SBZLOo4pMcwCtufUbGVbYvrppR6brlH9RHzFgJ2TLTjlTtn12OS9fa3nGhwXe
-	 oi57A9hlK/T/srIQp1JVa4wmrgXY65HPiP4BLQp5DB65U//brOS4Ae3jj/stTQ2Lkf
-	 4ziFrvTRgPVjqcGFNPIbBPH9/CyOMnq0V9g/Xuo75cQuVqGZMrbj8iWXf+cK/WUwsK
-	 QcXQ6WZFYamxakKelDsgy5AR7RIBFyxS9CfsvUqe2PZrxZSTq/ZmdjFvhRs+8VC4mP
-	 eLYD5q3cOjCuA==
-Message-ID: <f24607ee-6b7f-4a58-b0a1-bda8802dcb74@kernel.org>
-Date: Sat, 16 May 2026 21:37:01 +0200
+	s=k20201202; t=1778960703;
+	bh=vfTAZiVDMEFiz+XnvzQxLUkcvrHbApboM5S7qaPnbkg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
+	b=H3dJzLnEYOg0rrOTxYQhqBCaARBkEXEzRaJRBYiJFtPwUeeiDK/q7QMQmxaeCxOJw
+	 eaWhvsFVqzj7QzzWNVMNkLMTrFxbPHpwy8d2up8VcReDjlQmfVZXMUOMcpyxUkeJ/2
+	 szeColSAuZaKyM8iiD3awK5d6yirr3fksOi+eQIZwCB5VFtiC17vh6fYAB1x4bHeFn
+	 IwlVQ1WPEsNDxaaTJJHsJWQmZsRJOcrLULrhFKD06Kz+jjw33erMgvOkMc/0N3D4D6
+	 d4Ykz4ghJzORn6WYp0YVBblZtoLn1tYnj9+jm35p8fHXsDh/PcBp3tbsvqF4U7FW3d
+	 +bvX074De7khw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] hwmon: raspberrypi: Add voltage input support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shubham Chakraborty" <chakrabortyshubham66@gmail.com>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260516191555.17978-3-chakrabortyshubham66@gmail.com>
+References: <20260516191555.17978-3-chakrabortyshubham66@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 16 May 2026 19:45:02 +0000
+Message-Id: <20260516194503.3B563C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] Documentation: fix typo in heading for max31730
-To: Guenter Roeck <linux@roeck-us.net>, Hassan Maazu <maazudev@proton.me>
-Cc: "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "corbet@lwn.net" <corbet@lwn.net>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <hGgiFItk4iaav9-zfXL4hA_EVmxAaZYRbYviXz8aKKzOVAqduObTpd-PvRy1-9Ksuziam1HIXZNEkXbw3znqWX86Lplbq-Axo3fImYbtNZA=@proton.me>
- <ce11a8ba-8ebc-4c09-b6d0-7e98febeae6b@roeck-us.net>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <ce11a8ba-8ebc-4c09-b6d0-7e98febeae6b@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CEC1055D970
+X-Rspamd-Queue-Id: 3924855D99D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [9.34 / 15.00];
+	URIBL_BLACK(7.50)[packet.id:url];
+	MISSING_MIME_VERSION(2.00)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14215-lists,linux-hwmon=lfdr.de];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14216-lists,linux-hwmon=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	GREYLIST(0.00)[pass,body];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-hwmon@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Action: no action
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FROM_NO_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_SPAM(0.00)[0.030];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.linux.dev:replyto,smtp.kernel.org:mid,sashiko.dev:url,packet.id:url]
+X-Rspamd-Action: add header
+X-Spam: Yes
 
-On 16/05/2026 14:29, Guenter Roeck wrote:
-> On Sat, May 16, 2026 at 06:00:01AM +0000, Hassan Maazu wrote:
->> Wrong device name used in heading.
->>
-> 
-> That is not a proper commit description.
-But luckily that one-liner was reviewed by Sashiko. :/
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] Unconditional self-rescheduling of the background workqueue le=
+ads to a use-after-free on device removal.
+- [Medium] The driver incorrectly detects and exposes unsupported voltage c=
+hannels due to unverified firmware responses.
+--
 
-Best regards,
-Krzysztof
+commit aa874218705dba1c84bc41a7c3b61abd93bbf0a2
+Author: Shubham Chakraborty <chakrabortyshubham66@gmail.com>
+
+hwmon: raspberrypi: Add voltage input support
+
+This commit extends the raspberrypi-hwmon driver to expose firmware-provided
+voltage measurements. It adds core and SDRAM voltage inputs, converting
+the values from microvolts to millivolts for the hwmon subsystem.
+Inputs are only exposed if the firmware reports support for the correspondi=
+ng
+voltage ID.
+
+> diff --git a/drivers/hwmon/raspberrypi-hwmon.c b/drivers/hwmon/raspberryp=
+i-hwmon.c
+> index a2938881ccd2f..4f96f37116f32 100644
+> --- a/drivers/hwmon/raspberrypi-hwmon.c
+> +++ b/drivers/hwmon/raspberrypi-hwmon.c
+
+[ ... ]
+
+> @@ -56,6 +70,23 @@ static void rpi_firmware_get_throttled(struct rpi_hwmo=
+n_data *data)
+>  	hwmon_notify_event(data->hwmon_dev, hwmon_in, hwmon_in_lcrit_alarm, 0);
+>  }
+> =20
+> +static int rpi_firmware_get_voltage(struct rpi_hwmon_data *data, u32 id,
+> +				    long *val)
+> +{
+> +	struct rpi_firmware_get_value packet;
+> +	int ret;
+> +
+> +	packet.id =3D cpu_to_le32(id);
+> +	packet.val =3D 0;
+> +	ret =3D rpi_firmware_property(data->fw, RPI_FIRMWARE_GET_VOLTAGE,
+> +				    &packet, sizeof(packet));
+
+If the firmware does not support the RPI_FIRMWARE_GET_VOLTAGE tag or the
+specific voltage ID, could the mailbox transaction still return 0 without
+modifying the tag buffer?
+
+If so, packet.val would remain 0 and this function would return success.
+During probe, this would cause the channel to be incorrectly flagged as
+supported, exposing sysfs files that permanently read 0mV.
+
+Would it be safer to initialize packet.val to a sentinel value like ~0
+before querying the firmware to verify the voltage ID is actually supported?
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val =3D le32_to_cpu(packet.val) / 1000;
+> +	return 0;
+> +}
+> +
+>  static void get_values_poll(struct work_struct *work)
+>  {
+>  	struct rpi_hwmon_data *data;
+
+Does the unconditional rescheduling in get_values_poll() cause a
+use-after-free regression during driver removal?
+
+If the work function executes concurrently with driver unbind,
+cancel_delayed_work_sync() will wait for it to finish. However,
+get_values_poll() currently reschedules itself just before returning:
+
+get_values_poll() {
+        ...
+        schedule_delayed_work(&data->get_values_poll_work, 2 * HZ);
+}
+
+After cancellation completes, devres frees the memory for data. When the
+rescheduled work executes later, it accesses the freed data pointer.
+
+Could a shutdown flag be added to safely prevent rescheduling during
+teardown?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260516191555.1797=
+8-1-chakrabortyshubham66@gmail.com?part=3D2
 
