@@ -1,150 +1,136 @@
-Return-Path: <linux-hwmon+bounces-14277-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14278-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOwrIkwKC2o0/gQAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14277-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 May 2026 14:47:08 +0200
+	id iKdeCA0mC2pAEAUAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14278-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 May 2026 16:45:33 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C730756CF40
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 May 2026 14:47:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1A956F227
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 May 2026 16:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43191306D63A
-	for <lists+linux-hwmon@lfdr.de>; Mon, 18 May 2026 12:41:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B43E832276E9
+	for <lists+linux-hwmon@lfdr.de>; Mon, 18 May 2026 14:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D729421889;
-	Mon, 18 May 2026 12:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D7C36DA0F;
+	Mon, 18 May 2026 14:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2GW/dml"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SgDTBoSp"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF97541C2F3
-	for <linux-hwmon@vger.kernel.org>; Mon, 18 May 2026 12:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3732F8E85
+	for <linux-hwmon@vger.kernel.org>; Mon, 18 May 2026 14:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779108070; cv=none; b=QNCm6kpfNMveY6OcsmixjhciQ2bxsMDYA5JeRbY8mN2o59WPhli6E5aFw5o4aCQmliV+5Cjt/fklKXzmbxCK4xFzzTGRdvdptVIt6e07HukalGxz4GJG2whv9BfCnlnPBcf9s7Ht5vIq0nm8gaIhNvJEx6A2/0s+uhAH/75FfSc=
+	t=1779114886; cv=none; b=jErr7IUnZTjitj6ZNhWB4K1klF+kMEPlrUZQ0uG6e+Hm0nQXFvrPmF6vMAXleiIsvMPVtbL59CFdXaRYcRpKof22qcBanxkNHjqH8JU5FTE1fCS5IphcfYqDvS81lFfOkaTgFuVkkEz/KHegCbMonVzVmfABEmgxXuYFClU/YNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779108070; c=relaxed/simple;
-	bh=tx9NkS+I8fqIhMmmFfEtn5idwpXo7OCEAnSmOp/YZV0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=a43IVvU8xENvTscL2xi+hZRatvO2iH1CbV87XD70t3wkGyGkrTahjo70gajw1344z3nFZ9bgxffog6aXRYBC7LG1Fnv4JKiWEEd3kgOq3du/Y1ryDRpGAUD+vQyFpWJgaaGpujXSV4NSMSDFsq+GtQXcJCNPGIgY+U+3GDaTvl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2GW/dml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEA9C2BCB8;
-	Mon, 18 May 2026 12:41:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779108069;
-	bh=tx9NkS+I8fqIhMmmFfEtn5idwpXo7OCEAnSmOp/YZV0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date:From;
-	b=W2GW/dmlGyRg4AHIzLXnCpNSUvCTNruGsavfB98kJFJ80bkU2FpRZGz8oyIC+Z5NA
-	 gMNjqrZ3tl6Yk7EZfnb39gdp9SIKT9XzCoHzVYIu7metqZTjRuk5ASpOc0aABD9g2a
-	 sDMWEjZ6p22t3s1z/4ZU6SeHOEgk8PjLacr4sDj475HEBtkVp2P3uL66B8sa0npsR+
-	 P4aGcUMZW5uuYMUacL5rbE8tV/bJ691BK7T7aiH48stSj6g+D781FHoAi/kO0So6PR
-	 aGH3Vd/wacAJmXuf53gWq5JILlfWLGDDIJYiGri/I3ZtYLkOIeQ1v7LKT0pPzOULGW
-	 UI9cZQg+D4RGA==
-From: sashiko-bot@kernel.org
+	s=arc-20240116; t=1779114886; c=relaxed/simple;
+	bh=kEzuKrjF9DSnzIGSuxEBMLoh+RMcJn51uHfaxO6O+xs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PA+6eAPPexqfEKV6lel0UpdyB2h99P6eCcy+2hcF0CvI6kHy23Sdk4fVqeaBxm8a1VS2ct8RIuy5YQ0LgN8H9uT57mTk7W4lNGyGZNlWUhfp80A+YkWOSJdryNWtQTsZy/tQWL3qKAGT37FKe71U2BEI1c4gj6PzwsApopRo0/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SgDTBoSp; arc=none smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2f3c623322bso7521077eec.0
+        for <linux-hwmon@vger.kernel.org>; Mon, 18 May 2026 07:34:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779114884; x=1779719684; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tq/tMENDugKK+/odHb7mfz+FK++239XdK53ZrKDvh54=;
+        b=SgDTBoSpws2SDVMRrRxojLj96c+lQx1NUDLHEG+6HZx9roYmYejcK8XiLrv7rByJSD
+         lWTYGPeHVh1eztkpzvvPeYgpb/LejNF+EgF/L6GEqegTZH+BKQEa9empMRzGmuqhyOmU
+         HcSw8XBnO5dNug7ufATn7eK/D6uxtwqGrq8QAuh8FErC5P4WHtw3++wprUJz5u3/L06h
+         b7rIxMamP1BHJYYOn/vZeuOIunnsK8jGnB6snu5GqiXGVik3lOy9VaR5pGE//psRUQ6A
+         6bIzEuWhgbtvaCfcXX3/RRVzJJ+0sTXvT+CQTdafWe59c330SJJXSCEntpju1nhR1+ji
+         LA9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779114884; x=1779719684;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Tq/tMENDugKK+/odHb7mfz+FK++239XdK53ZrKDvh54=;
+        b=Rma74eVkOko3bxSBSnmpZ6+/B/7vCi032fo6KkVFt33OtdnC0mqrFoVpzCuuUB+x/B
+         XkNPxY3Ty3uXj0Pu8fTlmks39oSNLe92932S/Q0eWlB/bAVESRh0gVgGMGlhhlHKlamO
+         gO3cmKdH8QFfQ9NqjscWdIcZCEKw+gWNObMquLxwOR2kxx6igSdLMHFfKh56vz+Y2NyK
+         oh7pyp5XOeorKs7wa4uW0LsIU/5NTfotkU2ZYZb3irNkysCsRe6gzNiNYJIvn0W5wHIx
+         Q4tAP8DA7QYcCKE/KIxmmi9F414HZpDlXxtseyRZb6prFmQ7EQrnqI+nUlYiaGBBHs4x
+         TMvQ==
+X-Gm-Message-State: AOJu0Yye7HxKGCCr47VMc+H/ZdP8uqDURdMTvh/ogAzDWO4vLGRxrYvI
+	MK1Z2oLriHD+5eVL4sdsPB2z0AkHvyIV2OVnnFJoS04YPUn2rHz1OoXr
+X-Gm-Gg: Acq92OEcRKBrC0ke/aeIqtazIHPlh+TKkzRiR6oTNR+k/YZFdSwQht9dAAMrItLrW6b
+	SfsJ0tgQNpE4GFWsdwWg2EWarVidKP5gQMfwJbfo+PtoYIAho3ijfsbVrKqWHD4vS45r7r7WdbJ
+	+V4pKYPEJFLgqT03V6LUO79PNX5pLRCxvdkOfNYiYLIaWbLTma0sPL0mkCZqzCwTai3m0ImjJAx
+	YAMKuphj+kyRPOeWQ7voHMRUB/O/9353yzAp7oku0E0bG7CS2vCKTPZhSBZX9iBP2kH77CmwjEB
+	CtTmkKS+D36mIIOQI2V3gOccDH2vUJF2XX3+/koHsjskABtZ1QIvkSDEBBRNnBAU48bLdECAvCW
+	ybEDMl89GzgRoIXbQuaWtiQxOw/bZlYOraRjOuLZgFI8drQPbPZI00QN2D5iByAOVZy07vQM143
+	qdpu2uKqQ3W0MPOdMpU9sUWBqguN8ByO2SynZ4
+X-Received: by 2002:a05:693c:3282:b0:2ed:e12:3771 with SMTP id 5a478bee46e88-303986b1633mr6802967eec.33.1779114884385;
+        Mon, 18 May 2026 07:34:44 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30296dcc458sm16627652eec.18.2026.05.18.07.34.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 07:34:43 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Mon, 18 May 2026 07:34:42 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Flaviu Nistor <flaviu.nistor@gmail.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] hwmon: (tmp102) Drop unnecessary __maybe_unused
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Flaviu Nistor" <flaviu.nistor@gmail.com>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260518122210.10288-1-flaviu.nistor@gmail.com>
+Message-ID: <9ed1938c-8cd5-4617-a776-5d148044ba97@roeck-us.net>
 References: <20260518122210.10288-1-flaviu.nistor@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 12:41:09 +0000
-Message-Id: <20260518124109.BEEA9C2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: C730756CF40
-X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_MIME_VERSION(2.00)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260518122210.10288-1-flaviu.nistor@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14277-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14278-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
-	RCPT_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
 	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:mid]
+X-Rspamd-Queue-Id: 8B1A956F227
 X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Removing `__maybe_unused` without also removing `of_match_ptr()`=
- resurrects a build warning on `!CONFIG_OF` builds.
---
-
-commit 48f4abeb993e88df34017f1f7dacc66c48dc3d0e
-Author: Flaviu Nistor <flaviu.nistor@gmail.com>
-
-hwmon: (tmp102) Drop unnecessary __maybe_unused
-
-The commit removes the __maybe_unused annotation from the tmp102_of_match
-array. It states that the array is used unconditionally in tmp102_driver.
-
+On Mon, May 18, 2026 at 03:22:10PM +0300, Flaviu Nistor wrote:
 > tmp102_of_match is used unconditionally in tmp102_driver, so there is no
 > need for __maybe_unused.
+> 
+> Signed-off-by: Flaviu Nistor <flaviu.nistor@gmail.com>
 
-Is this description accurate? Looking at tmp102_driver, the array
-assignment remains wrapped in the of_match_ptr() macro:
+I'll squash this patch into the preceding patch.
 
-static struct i2c_driver tmp102_driver =3D {
-	.driver.name	=3D DRIVER_NAME,
-	.driver.of_match_table =3D of_match_ptr(tmp102_of_match),
-	...
-
-When the kernel is compiled with CONFIG_OF disabled, of_match_ptr()
-evaluates to NULL and tmp102_of_match is left completely unreferenced.
-
-> diff --git a/drivers/hwmon/tmp102.c b/drivers/hwmon/tmp102.c
-> index 3aa1a3fbeaa92..23f66f70d5a9a 100644
-> --- a/drivers/hwmon/tmp102.c
-> +++ b/drivers/hwmon/tmp102.c
-> @@ -400,7 +400,7 @@ static const struct i2c_device_id tmp102_id[] =3D {
->  };
->  MODULE_DEVICE_TABLE(i2c, tmp102_id);
-> =20
-> -static const struct of_device_id __maybe_unused tmp102_of_match[] =3D {
-> +static const struct of_device_id tmp102_of_match[] =3D {
->  	{ .compatible =3D "ti,tmp102" },
->  	{ },
->  };
-
-Does this removal resurrect the -Wunused-const-variable build warning
-on !CONFIG_OF builds?
-
-To safely drop __maybe_unused and make the usage truly unconditional,
-should the of_match_ptr() wrapper also be removed?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260518122210.1028=
-8-1-flaviu.nistor@gmail.com?part=3D1
+Thanks,
+Guenter
 
