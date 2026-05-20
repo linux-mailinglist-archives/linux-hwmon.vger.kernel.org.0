@@ -1,223 +1,202 @@
-Return-Path: <linux-hwmon+bounces-14365-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14366-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMs5EKUODmo35wUAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14365-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 20 May 2026 21:42:29 +0200
+	id QFTaMY84DmpC8gUAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14366-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 00:41:19 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD923598A2C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 20 May 2026 21:42:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FE059C31C
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 00:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0ECD30BCC45
-	for <lists+linux-hwmon@lfdr.de>; Wed, 20 May 2026 19:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7212F317366A
+	for <lists+linux-hwmon@lfdr.de>; Wed, 20 May 2026 19:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BA1351C04;
-	Wed, 20 May 2026 19:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6395735BDB2;
+	Wed, 20 May 2026 19:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="Dxf59BCA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7gqvzRj"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE72351C31
-	for <linux-hwmon@vger.kernel.org>; Wed, 20 May 2026 19:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E9F34A3C4
+	for <linux-hwmon@vger.kernel.org>; Wed, 20 May 2026 19:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779306027; cv=none; b=HohYFPgY8xHRN0tulLYVnJ4lwkgwpcZh3RBo9dwcAfGl1br6AckxySZHAVUkai5ekQUiO7JOqrcf5ybo5iDxEZu1a306aJLqomaMV41Yw5vVTJQYY6KNS1U4waiGQ4BaaQaP5nZHxB7sifBQOW+XhDQ4+3/MBLZw9yZmz/2QV2I=
+	t=1779306885; cv=none; b=Wf7SgGr1TmELVgPenSxcjE+kilw1vxxPLwxKRt/GgfUCI5SqHpBrAjbnDBquyB/28R3hKTAvq30iQKFLhbnfUBABVmb0jqznZr9nUrSU/LLi+vy9D3Pl0edQOgToxcJZp/C8V27PQJs0axiTyfSX73tIcHI9aTUBanr7sCWcWyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779306027; c=relaxed/simple;
-	bh=gD9FvkX53JUVKNkxLtMwVrYMxYM+/fehb1JKmOS+44k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=FhAlDGCwRk3BTmjLjYE2eI8ExIDynlB/a+sxT1myAqzyE3Nu0vZIwbrtivK1/mdwbQJh01L/LS47WSeY1dLCSL3Nol6TGlMx0BaPFxROfOzkEY2u6End1iOtdEjYQG76wbJWooeOoBjCcGuvYKqjZfKGxBle+W0fRwkLVHhYsN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=Dxf59BCA; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-13621cca8f5so783748c88.0
-        for <linux-hwmon@vger.kernel.org>; Wed, 20 May 2026 12:40:23 -0700 (PDT)
+	s=arc-20240116; t=1779306885; c=relaxed/simple;
+	bh=9ZWtFRH0DPYU9OZpvc16UhZqJMlJFzczsymdwuMzGxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mn+kYii2wXLRVyo7c0MpLkLvdL4BWn+Ak+bKmVrvISJd1tc091EzkgCT27nqmwJQHwkq/+eC+HQUK9VwnTMC7b3/BQTnmgFvGiQg6TWwYEuXu33bwzNctW7bO5a1hcfC/VQgPWb2aJtlLjexP+VdqziOSD71ipVtAu2dba7ro+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7gqvzRj; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ba6485d219so38975635ad.3
+        for <linux-hwmon@vger.kernel.org>; Wed, 20 May 2026 12:54:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1779306023; x=1779910823; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H4Z6auHD47mpoadC6kfYBTYbgxuz8kIYh8F1YtTA+WM=;
-        b=Dxf59BCAl0XpbIGF1c/lwwesAU9E8b2K1YxMXU2qiof8xPs2rtb1NaYAUAlCgFxZQe
-         /lFnFv+hJgGM8/ZZ4OgswZAJ6KqG/TTirNvb2Huc2RxB5gDP8YiDVl1A/i0/sU3yY7Dz
-         5h7hSw/bpXcseF4/9d0aTRG4o7WsI449/uHOetL2igOnwmbOETCIEvumQ+twJWEzjdmt
-         5rBfAMZltD2LZBZZLn2j09h1YPJCu1+d0H/yRqXMztcCidRH3zibMs5Plr5lDBTcLBbG
-         z7A/ExEcg3Bh7tV15/bDJhMkgg6KJKyYAZ80EwzG+7mgvgxhazJ+1FxkTuKl9tVo85J2
-         lbGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779306023; x=1779910823;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+        d=gmail.com; s=20251104; t=1779306883; x=1779911683; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=H4Z6auHD47mpoadC6kfYBTYbgxuz8kIYh8F1YtTA+WM=;
-        b=I2Kl0MW1Zb6ExVDAM9oa4TrmqyVChyhhdQFmkaWlkeGD90PUb4YdT34xNzTH3331R4
-         ELWCB2DueYfNYEOXeLuVHU8ARQzFOHgU+VZjAmd0ee7VjKANheKAAREssxmzmw9tGuA6
-         PexuXHQsReZVjeTtQ0tAzFtV3HHaK1KxyxBFXdtzlBOHq4lWf8qB5Lknd2OGGhyjVnlV
-         6yLFtDoIs+4y8uVToQAjhjVAJKshQ+Q7Vn4XG+ucF1gzfLzRmu9pTequQd/ZeGHdQ5mZ
-         PEvbbWJjkiDRNNY20pKJDIbhTTRixzHrjzDDr0ry9cEWlU5t0liVM6clczGEA8UbLWSS
-         j6XQ==
-X-Gm-Message-State: AOJu0Yw+sKGdU3c/qtlKWxbELzAazX1hUCekvS/XEzWwomN7e0Sh8/s9
-	3hjJ8u8/5YTFleJt+JkbDtNKoM6kZTnnJzUiQf3B/aYmXkTAMoNzDJ3slHFLmxGXXwU=
-X-Gm-Gg: Acq92OFQ6IMMab/CH7lnR+XNF/QA6xzBRPdN+Tn14g3ltYDa6yiNsV6g5KPzC51VtEB
-	xcUhYe6r1aullBRO+x/820KxXdW791y0hNbyKj+emNgcjcaRM1RfCEObsF5s+v6Z0cSePVvWU2S
-	Zwqn4sS2Flm5YUoua76LQ3XjXsoG1ouzfJCWE8ah74g2/SFGiCgOeHGh4ItVwYfGXz8x/zT6meB
-	EQEvaMpRLcvNbsI6bfmh3tYDuansZsD4RKHEz4KEodw09vbTQxEnDxjRGxYUr27th4OqtFLoLF8
-	09k2wmUPFwvPQep/GYvcN5g/MjmoCJfyGxSSa6/MhvfxkHOxH9FXbf9IC3Oq1hs6lST2yDbM8+v
-	NkAJg9S9RDtyFJKyomss/EzfnUBhN7nV4CVltWD2nKUbZYYzjyP1oRhBTi7rLiPROsdHLTc+2y9
-	EY46R6mH/BItPY6ojI69+4SkCgXmpyyBXcxw==
-X-Received: by 2002:a05:7022:311:b0:128:d34a:320f with SMTP id a92af1059eb24-13504625a7fmr12415188c88.12.1779306022775;
-        Wed, 20 May 2026 12:40:22 -0700 (PDT)
-Received: from localhost ([50.145.100.174])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbdce9fasm22637332c88.4.2026.05.20.12.40.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 12:40:22 -0700 (PDT)
+        bh=MvDmyYYDhU9M3W4nTBWC6Lb+TYu2a1Dlqugl0ynZCbs=;
+        b=V7gqvzRjnpD/U1FBJiUhin3xfMWZDkhKCFHpT/XgNYO8nLcoGvUINYhbzflGJjY4bb
+         sP0rRCHknKCyt2akAUK0amJptk+KaDxs/dd3N0RnOYCHrLogVlbIia89bRlSOPAYhqEh
+         KOVYYERnwXuYGFcdY///0cYRlPW+xEmhF2lD3PTMhKFTxfKWTaCHvgQAAZrDL/NKA2A+
+         V9rbYysPtF4ErNH8c9rLpPf/SqZ+78IA9ry2nzGLdKKhNTuleGhEkToosuhGPoPtBcDy
+         em+qVW5J7XdwFzTCCD3yasEd+XHJQCLyyNeuLkmxmqcC1PrjKGTMT4GF+j+nSyL9cd8S
+         pQ+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779306883; x=1779911683;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MvDmyYYDhU9M3W4nTBWC6Lb+TYu2a1Dlqugl0ynZCbs=;
+        b=qrrVXOpFWXIAf7k6FmHex5A1/gRX1hrDKvWnNWl8Rnu4afUogu+w37JL4PE5VOm8cP
+         tXl2sEh7eHouSkLa9ah3mrWkJhzk7Q2ZFZwIlxA/GIIWH/+yHlCuB5DupBLORel0k7aH
+         ZebGHraJgtE5UWo3i8X/q/7jGcZ0buOely4NOfqVa1Nbau0XRYqjl+NY+TeWLYvabQuY
+         vvWAgfSXQuAGzV9wWoZpckaff1d20VIKUGUE2t6Sn6+0oDYap2HAeuw5pmOWhAVSQWiO
+         bne5ZJYZAkfATKYkIAtdMHho/R9MpyEx7FvWOHk88eFRMe2KvKZhpVLgJcoOuk0A6tYh
+         3jzA==
+X-Gm-Message-State: AOJu0YzOQ0OhgRJNbGwHXOVzOPPzvcfftaE8j0sb7KtF4SnXH7PD/67O
+	/Z4m0WCO5D3ZH3HklxflnTqoquFBhdTVIJNb3IT0jRZsvJWAxrGXnZNb4de2z2NX
+X-Gm-Gg: Acq92OH8YYejqvxR9U56kefHo689vTcmVEilhEHts865V7EneH3QH+W4lHBIJ1Mw3s7
+	y0GFvDYWc4uVSYnQh3AnewL7U9H/6Eg+wuaFD60klCjx88/0IWB+/WpudUoFdg0pTilQV25Qv6T
+	CBdReaLWSRSku8UM3EwSAF+lW5OV0dc0Un+/gFuoEGUouAXdC3qROJWOQ0x/9Zfh0NRq3GMsAVu
+	J8yZ7bdpHRDC5tUoKVYfUw3KyDGSA9ON8KdkijYJOnKjAnxN5by35GlLK71u2fKD6Qt3OBZT8is
+	XjlQY89QzdiqZWMKzizvU0Med0Bfga0TvDRnCHL4Na+aDcX2RCb7I67dr0ovSza+rEJKWKHDJbq
+	CUCxuaMc4kPLDWki0dBcqz4vvbsWKQVjxnlFOkNI9VrN85Z+EsCCvrpWDPgybNh0+O3DDvT14bC
+	7Gdzp7VM6vsBKGRiP/lMwoBejV8m28zSR3NlGm4aUWCN4Ph1s=
+X-Received: by 2002:a17:903:22c9:b0:2bc:e2ed:fd03 with SMTP id d9443c01a7336-2bd7e9c8834mr267611215ad.39.1779306883142;
+        Wed, 20 May 2026 12:54:43 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d0fcb10sm227212495ad.60.2026.05.20.12.54.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 12:54:42 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Wed, 20 May 2026 12:54:41 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Reiner =?iso-8859-1?Q?Pr=F6ls?= <reiner.proels@gmail.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: nct6683 Add support for ASRock Z890 Pro-A
+Message-ID: <7ec1cd4a-c094-42a2-ba60-e6cc7d82e7e2@roeck-us.net>
+References: <4eee938d-e4ca-427d-a161-aa9ef737af3c@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 May 2026 12:40:21 -0700
-Message-Id: <DINRCDZ0SHS3.1X4T3VVLSL36E@nexthop.ai>
-To: "Abdurrahman Hussain" <abdurrahman@nexthop.ai>, "Guenter Roeck"
- <linux@roeck-us.net>, "Alexandru Tachici" <alexandru.tachici@analog.com>
-Cc: <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>, "Guenter Roeck" <groeck7@gmail.com>
-Subject: Re: [PATCH v4 0/3] hwmon: (pmbus/adm1266) add clear_blackbox and
- powerup_counter debugfs entries
-From: "Abdurrahman Hussain" <abdurrahman@nexthop.ai>
-X-Mailer: aerc 0.21.0
-References: <20260516-adm1266-v4-0-1f8df4797258@nexthop.ai>
- <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
- <DINO5GQHP6VK.ZBC2D5ENBYKW@nexthop.ai>
-In-Reply-To: <DINO5GQHP6VK.ZBC2D5ENBYKW@nexthop.ai>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4eee938d-e4ca-427d-a161-aa9ef737af3c@gmail.com>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14365-lists,linux-hwmon=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-14366-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[roeck-us.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nexthop.ai:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,linux-hwmon@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim]
-X-Rspamd-Queue-Id: AD923598A2C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,roeck-us.net:mid]
+X-Rspamd-Queue-Id: 44FE059C31C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed May 20, 2026 at 10:10 AM PDT, Abdurrahman Hussain wrote:
-> On Wed May 20, 2026 at 7:10 AM PDT, Guenter Roeck wrote:
->> Hi,
->>
->> On 5/16/26 18:18, Abdurrahman Hussain wrote:
->>> This is what remains of the v3 series after Guenter applied patches
->>> 1/5 (firmware_revision) and 5/5 (GPIO line label) to hwmon-next, and
->>> asked for patch 4/5 (rtc_class) to be dropped.
->>>=20
->>> Patch 1 adds a write-only clear_blackbox debugfs file. Devices
->>> configured for single-recording mode (BLACKBOX_CONFIG[0] =3D 0) need
->>> an explicit clear once the 32-record buffer fills; the documented
->>> sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
->>> from userspace. The patch also acquires pmbus_lock at the
->>> adm1266_nvmem_read() callback boundary so the memset of
->>> data->dev_mem, the blackbox refill, and the memcpy to userspace run
->>> as a single critical section -- the nvmem core does not serialize
->>> concurrent reg_read calls.
->>>=20
->>> Patch 2 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
->>> The same value is embedded in every blackbox record, so the live
->>> value lets userspace match a captured record back to the boot it
->>> came from when correlating logs. The block-read is taken under
->>> pmbus_lock to serialise against any pmbus_core PAGE+register
->>> sequence on the device.
->>>=20
->>> Patch 3 takes pmbus_lock in adm1266_state_read() (the pre-existing
->>> sequencer_state debugfs handler) for the same defensive-locking
->>> reason that motivates the new debugfs files in patches 1 and 2:
->>> any direct device access from outside pmbus_core should be ordered
->>> with respect to pmbus_core's own PAGE+register sequences.
->>>=20
->>> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
->>
->> The series no longer applies after applying the bug fix series.
->> Please rebase it on top of the hwmon-next branch of
->> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
->> and resubmit.
->>
->> Sorry for the trouble, and thanks a lot for fixing all the problems
->> with the driver.
->>
->> Guenter
->
-> Will do, thank you for your support!
->
-> Abdurrahman
+On Wed, May 20, 2026 at 09:16:37PM +0200, Reiner Pröls wrote:
+> From ac010d19f5ba1e44a0ddb83cc570f18ca3348015 Mon Sep 17 00:00:00 2001
+> From: =?UTF-8?q?Reiner=20Pr=C3=B6ls?= <Reiner.Pröls@gmail.com>
+> Date: Wed, 20 May 2026 20:59:57 +0200
+> Subject: [PATCH] Add support for ASRock Z890 Pro-A mainboard
 
-Hi Guenter,
+Subject should be
+	"hwmon: (nct6683) Add support for ASRock Z890 Pro-A"
+or similar. Actually, your outer subject comes close.
 
-Before I send v5 of the adm1266 series, I'd like to revisit the
-SET_RTC exposure question from your v3 review [1].
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
+> 
 
-The use case I keep landing on is the one the datasheet itself
-recommends: a userspace agent (chrony hook, systemd-timesyncd
-script, or a small periodic daemon) keeps the chip's seconds
-counter aligned with wall-clock so the value embedded in each
-blackbox record stays correct across long uptimes.  The probe-
-time ktime_get_real_seconds() seed (now in hwmon-next) only fixes
-this at boot; the chip's counter drifts after that.
+Description goes here. Look into the driver log for examples.
 
-You ruled out rtc_class and called a kernel-side periodic timer
-"a bit excessive", which I agree, it is.  That leaves a
-userspace-triggered sync.  Two debugfs shapes I'd consider, both under
-pmbus/<hwmon>/adm1266/ (alongside the clear_blackbox,
-powerup_counter, and sequencer_state entries v5 already adds):
+Also, it looks like you embedded your patch in another patch
+with a different subject. That probably triggers:
 
-  A. RW since_epoch -- mirrors /sys/class/rtc/<dev>/since_epoch.
-     Read returns the chip's SET_RTC seconds counter, write sets
-     it.  The read has the useful side benefit of letting
-     userspace measure host-vs-chip drift without writing.
+WARNING: From:/Signed-off-by: email address mismatch: 'From: "Reiner Pröls" <Reiner.PrÃ¶ls@gmail.com>' != 'Signed-off-by: Reiner Pröls <Reiner.Pröls@gmail.com>'
 
-  B. Write-only set_rtc -- writing anything to the file makes
-     the driver read ktime_get_real_seconds() itself and push it
-     to SET_RTC.  Simpler interface (kernel owns the time
-     source; userspace just triggers the sync), no payload to
-     parse, no way for userspace to pass in a wrong value.
+Also, when I try to apply the patch, I get "patch is empty".
 
-Do either of these look right to you, or would you rather I just
-leave the driver at "probe-time seed only" and skip a SET_RTC
-interface entirely?  v5 as it stands has no such interface and
-is ready to send; a SET_RTC patch can follow separately later if
-you'd like one.
+Please fix this up.
 
-[1] https://lore.kernel.org/r/20260512-adm1266-v3-0-a81a479b0bb0@nexthop.ai
+> Signed-off-by: Reiner Pröls <Reiner.Pröls@gmail.com>
+> ---
+>  drivers/hwmon/nct6683.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/nct6683.c b/drivers/hwmon/nct6683.c
+> index 0581770380cc..1b9092f48c7d 100644
+> --- a/drivers/hwmon/nct6683.c
+> +++ b/drivers/hwmon/nct6683.c
+> @@ -177,12 +177,13 @@ superio_exit(int ioreg)
+>  #define NCT6683_CUSTOMER_ID_MSI3    0x207
+>  #define NCT6683_CUSTOMER_ID_MSI4    0x20d
+>  #define NCT6683_CUSTOMER_ID_AMD        0x162b
+> -#define NCT6683_CUSTOMER_ID_ASROCK        0xe2c
+> +#define NCT6683_CUSTOMER_ID_ASROCK    0xe2c
+>  #define NCT6683_CUSTOMER_ID_ASROCK2    0xe1b
+>  #define NCT6683_CUSTOMER_ID_ASROCK3    0x1631
+>  #define NCT6683_CUSTOMER_ID_ASROCK4    0x163e
+>  #define NCT6683_CUSTOMER_ID_ASROCK5    0x1621
+>  #define NCT6683_CUSTOMER_ID_ASROCK6    0x1633
+> +#define NCT6683_CUSTOMER_ID_ASROCK7    0x163d // Z890 Pro-A
 
-Thanks,
-Abdurrahman
+No C++ comments in this file, please.
 
+> 
+>  #define NCT6683_REG_BUILD_YEAR        0x604
+>  #define NCT6683_REG_BUILD_MONTH        0x605
+> @@ -1248,6 +1249,8 @@ static int nct6683_probe(struct platform_device *pdev)
+>          break;
+>      case NCT6683_CUSTOMER_ID_ASROCK6:
+>          break;
+> +    case NCT6683_CUSTOMER_ID_ASROCK7:
+> +        break;
+
+Was this cut-and-paste ? There are no tabs, just spaces, meaning the
+patch would not apply. That would also explain the duplicated headers.
+
+Guenter
+
+>      default:
+>          if (!force)
+>              return -ENODEV;
+> -- 
+> 2.43.0
+> 
+> 
 
