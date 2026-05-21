@@ -1,142 +1,124 @@
-Return-Path: <linux-hwmon+bounces-14390-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14391-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCANLSgxD2pSHgYAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14390-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 18:22:00 +0200
+	id 0NH6K8dSD2qpJAYAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14391-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 20:45:27 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A5B5A9287
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 18:22:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41405AB385
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 20:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF26E3579E5E
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 14:50:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 32EAA318F3EB
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 18:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FA0395ACE;
-	Thu, 21 May 2026 14:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15E3383991;
+	Thu, 21 May 2026 18:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zc9Y2EKE"
+	dkim=pass (2048-bit key) header.d=al2klimov.de header.i=@al2klimov.de header.b="Q30D93bx"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mta.al2klimov.de (mta.al2klimov.de [162.55.223.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E6237206F;
-	Thu, 21 May 2026 14:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B7A3630AD;
+	Thu, 21 May 2026 18:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.223.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779374856; cv=none; b=JaL3IMqfjNr+O55C5GUfYYsD8S9N5jxlLuGoYSA7Yq9y506bRvPL82es725SXclfgKi4KMnd6YZoPCzTUKP9sgF3YwJhvyKLDbKrptD+041taRmWzU8/k1CFnLU7x7sMJAL6Mut08O62sF1iNrd1+SE1v5Zg/90R0HkYsPVrFI4=
+	t=1779386648; cv=none; b=qiVXnLGijqrDSPJyEkara/1wSPFDtRZuVeo51EwW8wWydHKHwCRzGm8n2sEUfxunMU3NZdOab9Wr4YruWd8mh6G2tGKG0WPoqdfTf65TpZpmSIaJ9IIpEh9u23NrWMj/ey0NA8a3qLFS4FN5IPfVJOWKiqp6CmiobwwBGdXDnvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779374856; c=relaxed/simple;
-	bh=34vM8oC08HMw+E4/NG6bZv1CxZSArT+5viOXRQ6TiDs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kwBJWguVBthGRg9uYqs7oes/tYd+Ad7RpoMzscmNdk1qRR3j7yg6qYGbvSr5N5kqjzmdayY/Qgb65gg06KmT2KlgIejAuPrMFtyDTvTtOyYnYb12psXGF1/A2PtJG4pBt+o1V7gItlpjkE/leIQ6Q5e77FC28kboGRjD5RLcgV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zc9Y2EKE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE69D1F000E9;
-	Thu, 21 May 2026 14:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779374855;
-	bh=gVaOyRE5SdvShW4Noo+xeu/A7h7G8HtSGPx8etBkX5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=zc9Y2EKE6Helr38u2v9PnCCoGJaGhBxPLIr/lzyyt/VgW3GZ+YkVvF4am9hfWZp45
-	 3EnKnJNkmumsFoSOcbQd3oxj4i35n3jrzNMLtA5jEKljl4HyFEjuwZhuOLFdOp2Wel
-	 uQySJhO8rQObXQqBR38SuTyAlC5QQVT5W0BKA+jk=
-Date: Thu, 21 May 2026 16:47:38 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Jihong Min <hurryman2212@gmail.com>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mario Limonciello <superm1@kernel.org>,
-	Yaroslav Isakov <yaroslav.isakov@gmail.com>,
-	linux-usb@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/2] usb: xhci-pci: add AMD Promontory 21 PCI glue
-Message-ID: <2026052131-dad-glory-59b3@gregkh>
-References: <20260519000732.2334711-1-hurryman2212@gmail.com>
- <20260519000732.2334711-2-hurryman2212@gmail.com>
- <06236462-6c4f-413d-8324-537fb8f743d9@roeck-us.net>
+	s=arc-20240116; t=1779386648; c=relaxed/simple;
+	bh=IV/1L/Rj7qMwpngEZcxEoQroL40wwhkoCZUkW3msxew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qQ+jMacwPgfrREJ19+xTUHYyosR86poiYe6g2hXT3cdpFpQHhqjqZo6gV+ou7vbnn7j1ROTDr8nr/6J0MccpmjZ8glmD7j08D7EGPMeXxDBTPOR7BrcC1jG1QcA/9VOkq0xV75HCZytYDGf5aNIoc4sCb7NMwQFtg8BCbCiU0LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=al2klimov.de; spf=pass smtp.mailfrom=al2klimov.de; dkim=pass (2048-bit key) header.d=al2klimov.de header.i=@al2klimov.de header.b=Q30D93bx; arc=none smtp.client-ip=162.55.223.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=al2klimov.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=al2klimov.de
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=default; bh=IV/1L/Rj7qMw
+	pngEZcxEoQroL40wwhkoCZUkW3msxew=; h=date:subject:cc:to:from;
+	d=al2klimov.de; b=Q30D93bxUhe5/x+GIcPpv80ZoBQHru0iiYvkSKGcX0gJ1ic5PdKC
+	tuXbB3IP+a7LMR4X2dloWJG/psl/r4iZTUvKzFhJbJ0+znjk1XMTuLdu24EEt04hqCWUm9
+	CqTlqjsnZT5BixwM1jHiXezrp/E1xRjTybRzuvUF0pPP/9PP3qU0N1rtr+VdB0QFCpaCbf
+	+DVzsWiZc8HKjg0/aoV350TFSlB0OqPYV6CXGP7PtXQdbvXrcuzJr3HTJYJcCkll+7MPUR
+	6u8fVCSBCdK+7D1ZGEaKFKu5RaZ6kyloY/rk+NlNwUp2IjMt4HlauZDYoLEjbOuDBJJ+ds
+	DYUZBgo4tQ==
+Received: from cachy-ak (2a02-2455-18e9-e011-4d8a-aad2-c25c-50e5.dyn6.pyur.net [2a02:2455:18e9:e011:4d8a:aad2:c25c:50e5])
+	by mta.al2klimov.de (OpenSMTPD) with ESMTPSA id 6c7f6f1e (TLSv1.3:TLS_CHACHA20_POLY1305_SHA256:256:NO);
+	Thu, 21 May 2026 18:03:53 +0000 (UTC)
+From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To: Guenter Roeck <linux@roeck-us.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Florin Leotescu <florin.leotescu@nxp.com>,
+	linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING),
+	linux-kernel@vger.kernel.org (open list)
+Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH] hwmon: (emc2305) update of_emc2305_match_table
+Date: Thu, 21 May 2026 20:03:33 +0200
+Message-ID: <20260521180334.19706-1-grandmaster@al2klimov.de>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <06236462-6c4f-413d-8324-537fb8f743d9@roeck-us.net>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[al2klimov.de,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[al2klimov.de:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14390-lists,linux-hwmon=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[gmail.com,intel.com,lwn.net,linuxfoundation.org,amd.com,kernel.org,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14391-lists,linux-hwmon=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[grandmaster@al2klimov.de,linux-hwmon@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[al2klimov.de:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 20A5B5A9287
+	TAGGED_RCPT(0.00)[linux-hwmon];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[al2klimov.de:email,al2klimov.de:mid,al2klimov.de:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B41405AB385
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 07:18:49AM -0700, Guenter Roeck wrote:
-> On Tue, May 19, 2026 at 09:07:31AM +0900, Jihong Min wrote:
-> > AMD Promontory 21 (PROM21) xHCI PCI functions use the common xhci-pci
-> > core for USB operation, but also expose controller-specific sensor data.
-> > Add a small PROM21 PCI glue driver for AMD 1022:43fc and 1022:43fd
-> > controllers.
-> > 
-> > The glue delegates USB host operation to the common xhci-pci core and
-> > publishes a "hwmon" auxiliary device with parent-provided MMIO data.
-> > Auxiliary device creation failure is logged but does not fail the xHCI
-> > probe.
-> > 
-> > Make the PROM21 glue a hidden Kconfig tristate driven by the user-visible
-> > SENSORS_PROM21_XHCI option. If sensor support is disabled, generic
-> > xhci-pci binds PROM21 controllers normally. If sensor support is enabled,
-> > the glue follows USB_XHCI_PCI.
-> > 
-> > This keeps the auxiliary device available for a modular sensor driver while
-> > avoiding a built-in xhci-pci core handing PROM21 controllers to a glue
-> > driver that is only available as a module during initramfs.
-> > 
-> > Assisted-by: Codex:gpt-5.5
-> > Signed-off-by: Jihong Min <hurryman2212@gmail.com>
-> > Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> > Tested-by: Yaroslav Isakov <yaroslav.isakov@gmail.com>
-> 
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-> 
-> The two patches should be applied together. For now I will assume that
-> they will both be applied through a usb tree since this patch touches
-> common usb code.
+Latter was added with only emc2305, in contrast to emc2305_ids
+which also listed emc2301, emc2302 and emc2303.
+So these three devices couldn't be probed based on device tree contents
+until now. I fixed this.
 
-Sounds good, I'll go take it now, thanks.
+Fixes: 882bd6de1a5b ("hwmon: emc2305: Add OF support")
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+---
+ drivers/hwmon/emc2305.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-greg k-h
+diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+index 64b213e1451e..4c99018d0575 100644
+--- a/drivers/hwmon/emc2305.c
++++ b/drivers/hwmon/emc2305.c
+@@ -716,6 +716,9 @@ static int emc2305_probe(struct i2c_client *client)
+ 
+ static const struct of_device_id of_emc2305_match_table[] = {
+ 	{ .compatible = "microchip,emc2305", },
++	{ .compatible = "microchip,emc2303", },
++	{ .compatible = "microchip,emc2302", },
++	{ .compatible = "microchip,emc2301", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, of_emc2305_match_table);
+-- 
+2.54.0
+
 
