@@ -1,60 +1,61 @@
-Return-Path: <linux-hwmon+bounces-14382-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14384-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id r3BNNImBDmrY/AUAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14382-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 05:52:41 +0200
+	id 4HEgH+GBDmrY/AUAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14384-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 05:54:09 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E839A59E8EE
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 05:52:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A106959E921
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 05:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87D70302D519
-	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 03:52:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0EBC302E416
+	for <lists+linux-hwmon@lfdr.de>; Thu, 21 May 2026 03:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B22F30DD30;
-	Thu, 21 May 2026 03:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E1D32B115;
+	Thu, 21 May 2026 03:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RX8htm3f"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lnbDvau9"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBBD54654;
-	Thu, 21 May 2026 03:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0E154654;
+	Thu, 21 May 2026 03:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779335558; cv=none; b=u5AxWliB65zgqZiGIxt5WbZLfuKHwisMNFMy3IKaP0xy3vxpghL1XhVEeV7JaAyvZqaDD4NlfePKv94aKuDSmsznsn6/nQWOEH9ATtBkM520/QxScSAfb6iVByI8qnTU9BHfbpVLMlgVZuEMoeAA4sI5GdcNpiRVlSbTamHWb64=
+	t=1779335567; cv=none; b=GuEtk384MMwf9ECxHMWkpYaselmFfmpOQVn5SSccLnWsW4mS3F9NARRoUAFc6FXTixtMulqctlDEVX9f7m9jjpI5DM+CBmdMmP4TYGQaG+KAS1En0s7nCWDjhxa1fH4drRcba8goaPD3fCFLr6+/RNdYLL5W5r5PCKmdeD1yf84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779335558; c=relaxed/simple;
-	bh=clSYjA84FoZWd7KFdJFfFsdv3M6kzsaMCSMj1IiVF0c=;
+	s=arc-20240116; t=1779335567; c=relaxed/simple;
+	bh=bUK2ho+j5toFRnjRQWI28+5pwi4bUAMybKGDmA4lTD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE3klRJ7dwg1504cp4FmcC4RqGr4zVr2n0Cy6UsXcfvinOKOlBLnQDDd2cYUTscZZw77enMcd8ohJ+a7FsRWDO/1r6hPi8X7lutFJg9G3urMsbIvRPPE5IfRJyW44HrTGq9BjwBTP9cuYvfwM2a8GYbCdR1CkxtCm/rEbMV4Ayw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RX8htm3f; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=m7e6P7NJo3R0U2TXhTMkP2zyB6j5VgiuvL4LjQGK5PvLoD/1jzlV5gnQOdaExJdwc1niKfhid6nKRyZMEsTYV1b5iF2TM5lnlhwq5vshGrSpgsMr3emSHgmtSzqBSL68D2P/as1fTyzj1rfpO4ObEwkbm9AwWO2XeCfWyGfqgJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lnbDvau9; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=u6
-	B05ut8gcm7kTgE/pcHPOZKiVNBIkWUc0Tg3IC8aHc=; b=RX8htm3fT45SQkZIFq
-	I3jsUIwrYzAo6u2Us1A23zb0puQtaxV2Vj72co2cRGV2ihqAuGTgmd5qBqEIyB3i
-	VKc0pnAQ1tphMTpjY9pOskB/gxqsedilF/kvLFvrJfUmSJoSyaIrODyKY1MsL4a3
-	gDDCVihQdVsYavCNjTR42UhOo=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=hI
+	KMTgwdfCd2LgtR+i3HDZWojkJBdv53ri/ogj5zX4I=; b=lnbDvau9xhR9r3NVTg
+	Rn+u+irQi5i1j14CA2+NczbDEA8i2YFgXtYTW5y7nsfsIe2h4cITl50D+yxK3tSO
+	AeSFu24i0FRbOc14TZFHiIfYD3JuAR4o3vGCAKle0XW9fU4xvsAKnbbL4Vqd7wHO
+	DqIzKAh8/ncHeNN42ZThpm4i0=
 Received: from debian.lenovo.com (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3Xx5ngQ5qPDdQCg--.18159S2;
-	Thu, 21 May 2026 11:52:08 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3Xx5ngQ5qPDdQCg--.18159S3;
+	Thu, 21 May 2026 11:52:12 +0800 (CST)
 From: Kean Ren <rh_king@163.com>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: Mark Pearson <mpearson-lenovo@squebb.ca>,
 	linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Kean Ren <rh_king@163.com>
-Subject: [PATCH v3 0/2] hwmon: (lenovo-ec-sensors): Fix EC signature validation and I/O resource management
-Date: Thu, 21 May 2026 11:52:26 +0800
-Message-ID: <20260521035228.533317-1-rh_king@163.com>
+Subject: [PATCH v3 1/2] hwmon: (lenovo-ec-sensors): Convert to  devm_request_region()
+Date: Thu, 21 May 2026 11:52:27 +0800
+Message-ID: <20260521035228.533317-2-rh_king@163.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260514011411.4167069-1-rh_king@163.com>
+In-Reply-To: <20260521035228.533317-1-rh_king@163.com>
 References: <20260514011411.4167069-1-rh_king@163.com>
+ <20260521035228.533317-1-rh_king@163.com>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -62,23 +63,23 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3Xx5ngQ5qPDdQCg--.18159S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XrW8JF4DZrW5CrW7GF13CFg_yoWDGwcE9F
-	WFka4xXry8t3W3tFsrAr4ayFWfKF4UWF1rJrs8tay7AwnxJrsxGr40y393Xr1vvFWYkFn3
-	Xrn8XFWxAw1SvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRR89N5UUUUU==
-X-CM-SenderInfo: 5ukbyxlqj6il2tof0z/xtbC+wiYR2oOgWiMHgAA3z
+X-CM-TRANSID:_____wD3Xx5ngQ5qPDdQCg--.18159S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFy8KFy8AryruF47KrW8Xrb_yoW5ZFyfp3
+	yrJFW5ur95GFyj934DAas7ZFn3Aws3t3y0kryYgws3u3ZrJryDWrWkAFn29FW2yFW8J3Wr
+	X34DtrWS9F4DXr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pMVby-UUUUU=
+X-CM-SenderInfo: 5ukbyxlqj6il2tof0z/xtbC+wyZSGoOgWyMwAAA3j
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14382-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14384-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -94,40 +95,97 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E839A59E8EE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,squebb.ca:email,lenovo_ec_chip_info.info:url]
+X-Rspamd-Queue-Id: A106959E921
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Guenter,
+Replace manual request_region()/release_region() with
+devm_request_region().  This lets the device-managed framework
+handle I/O region lifetime automatically and fixes:
 
-Thank you for your patient review.
-This is v3 of the lenovo-ec-sensors fix series.
+- A double release_region() when probe fails after acquiring the
+  I/O region: the probe error path releases it, and then
+  lenovo_ec_init() releases it again on the same error path.
 
-Changes from v2:
+- A release-after-use window in lenovo_ec_exit() where
+  release_region() was called before platform_device_unregister(),
+  leaving the hwmon device active with a released I/O region.
 
-- Corrected bug description and Remove unnecessary {}.
-- Reproduce patch 0002 based 0001 changed.
+- Missing release_region() in lenovo_ec_probe() if
+  devm_hwmon_device_register_with_info() fails.
 
-Patch 1 converts manual request_region()/release_region() calls to
-devm_request_region(), eliminating a double-release on the probe error
-path and a release-after-use window on module exit.
+Remove all four manual release_region() calls that are now handled
+automatically and replace request_region with
+devm_request_region, use dev_err replace pr_err.
 
-Patch 2 fixes the EC "MCHP" signature check that used && instead of ||,
-which caused the validation to accept a non-Microchip EC if any single
-byte of the expected 4-byte signature happened to match.
+Also remove the now-unnecessary braces around the single-statement
+if body.
 
-Both patches apply cleanly against v7.1-rc3 and pass checkpatch with
-0 errors, 0 warnings.
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Kean Ren <rh_king@163.com>
+---
+Changes in v3: Corrected bug description.
 
-Kean Ren (2):
-  hwmon: (lenovo-ec-sensors): Convert to  devm_request_region()
-  hwmon: (lenovo-ec-sensors): Fix EC "MCHP" signature  validation logic
+ drivers/hwmon/lenovo-ec-sensors.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
- drivers/hwmon/lenovo-ec-sensors.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
-
+diff --git a/drivers/hwmon/lenovo-ec-sensors.c b/drivers/hwmon/lenovo-ec-sensors.c
+index 8681bbf6665b..a16cc5e4053a 100644
+--- a/drivers/hwmon/lenovo-ec-sensors.c
++++ b/drivers/hwmon/lenovo-ec-sensors.c
+@@ -519,8 +519,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+ 	if (!ec_data)
+ 		return -ENOMEM;
+ 
+-	if (!request_region(IO_REGION_START, IO_REGION_LENGTH, "LNV-WKS")) {
+-		pr_err(":request fail\n");
++	if (!devm_request_region(dev, IO_REGION_START, IO_REGION_LENGTH, "LNV-WKS")) {
++		dev_err(dev, "Failed to request I/O region\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -540,10 +540,8 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+ 	if ((inb_p(MCHP_EMI0_EC_DATA_BYTE0) != 'M') &&
+ 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE1) != 'C') &&
+ 	    (inb_p(MCHP_EMI0_EC_DATA_BYTE2) != 'H') &&
+-	    (inb_p(MCHP_EMI0_EC_DATA_BYTE3) != 'P')) {
+-		release_region(IO_REGION_START, IO_REGION_LENGTH);
++	    (inb_p(MCHP_EMI0_EC_DATA_BYTE3) != 'P'))
+ 		return -ENODEV;
+-	}
+ 
+ 	dmi_id = dmi_first_match(thinkstation_dmi_table);
+ 
+@@ -577,7 +575,6 @@ static int lenovo_ec_probe(struct platform_device *pdev)
+ 		lenovo_ec_chip_info.info = lenovo_ec_hwmon_info_p8;
+ 		break;
+ 	default:
+-		release_region(IO_REGION_START, IO_REGION_LENGTH);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -606,10 +603,8 @@ static int __init lenovo_ec_init(void)
+ 		platform_create_bundle(&lenovo_ec_sensors_platform_driver,
+ 				       lenovo_ec_probe, NULL, 0, NULL, 0);
+ 
+-	if (IS_ERR(lenovo_ec_sensors_platform_device)) {
+-		release_region(IO_REGION_START, IO_REGION_LENGTH);
++	if (IS_ERR(lenovo_ec_sensors_platform_device))
+ 		return PTR_ERR(lenovo_ec_sensors_platform_device);
+-	}
+ 
+ 	return 0;
+ }
+@@ -617,7 +612,6 @@ module_init(lenovo_ec_init);
+ 
+ static void __exit lenovo_ec_exit(void)
+ {
+-	release_region(IO_REGION_START, IO_REGION_LENGTH);
+ 	platform_device_unregister(lenovo_ec_sensors_platform_device);
+ 	platform_driver_unregister(&lenovo_ec_sensors_platform_driver);
+ }
 -- 
 2.53.0
 
