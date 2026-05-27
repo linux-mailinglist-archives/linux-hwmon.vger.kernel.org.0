@@ -1,141 +1,619 @@
-Return-Path: <linux-hwmon+bounces-14513-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14515-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eD6BBMKnFmrEoAcAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14513-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 10:13:54 +0200
+	id IFhhNW6oFmrEoAcAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14515-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 10:16:46 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7AA5E0EB3
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 10:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B45E0F34
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 10:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 651C6302BCF5
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 08:13:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 21D62304B699
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 08:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039633D25A3;
-	Wed, 27 May 2026 08:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ZiSi+MNn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673763B2FF6;
+	Wed, 27 May 2026 08:15:35 +0000 (UTC)
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80043D092D;
-	Wed, 27 May 2026 08:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D022F2C324C;
+	Wed, 27 May 2026 08:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869586; cv=none; b=q4Eqmb13Giy6ucfXGBYLk4uHrzi8jUSm/6bjPqigIOdj5xmKLtuyYYREE19sqiDdSTNG9cysMVUKe7cp4UI4wtkYCKGL/4o6j9ZMoD6TfWYzLiD+2tLbg/qgnZ5J54TL7mVjEvFSJbqBFnz6oNp9GInsGHPbj+V9l9oH/OXAavM=
+	t=1779869735; cv=none; b=CD9vOjF5oDN0dFow9HHj4K0iryy7oNND1kz28G7PM51jbOkU0z2MTGJcIK1gG1fFlAHocxnWVDGfDJGUtEnNVkIi6offv1YzTsFYG0+pC4oMeXiQf5Zt7LhP+w4jVgtllRWZGiyZwfZ17JXGoRY4NQSm23PA60VUnDldk7IY/VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869586; c=relaxed/simple;
-	bh=PJI/0OCwHO2Fn6mzq/s1XHABKDONV3du61S+3/32ikU=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=KxDcSa7jvCyAzPox2Mw9vGZq2ySRTYyBpNNVfTzswS52fYkcgDtcXcy0IGOv+8zIZ48bEL/GEzpEVo6AD4H74BC9RJghuk5Z0qo3b4oWmdA/zUT4Ds21KQPfU9ZHGoI3IFc6ilJZX8gF3bPQeNqHu6XduLGPKpZIwkBp8oCThGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ZiSi+MNn; arc=none smtp.client-ip=43.163.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779869582;
-	bh=s+gv3bCyBiFdhdGpOV9qIzoa3h/dhnm5AXIqtqXa4XQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZiSi+MNnXNoojxWTwN9o4EsruEwbiHzsyavVnWik7IJqDxY7E/2gkXneSWvi0m37n
-	 qpE61mg/NbrM9D2ZpQnDITVYpfUiqYiwf7JWLkgJh3/kHCQ6gg2JqawLDex2YahII6
-	 U0849QK8XcYzJXl+r3i1UlAM3mfzfyPaZQKQfQFs=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 339BD2B7; Wed, 27 May 2026 16:12:57 +0800
-X-QQ-mid: xmsmtpt1779869580t8rule520
-Message-ID: <tencent_F6CCA9B9DA441472AB5119417E7B619DB40A@qq.com>
-X-QQ-XMAILINFO: NM4txV5xeln2VB+zFmGlaHqz+Lw3IJGd7jwGyYTTA/kOGQARkausMRepijAQSd
-	 WfXkoPhUCDvhMMoBc1xJ62dE3owVWWg4adHrDZ585IHhhk3HYOb8yMSf8YfqtRevDxNhufdQUPme
-	 h51VHxjKs+xBDVx8jtK4bC8O30sbyhQOUKQnxdsq5w1zlyxue4QhgMkpniTlMH58BsE8bxWRlVmh
-	 nXxVZ2ZGwU7WweGOcEVvzu1NZmRbaPCKPi1/xFdqr+UDaH2Qx20BKaAYMUwDaEFji9bQiVFgCgso
-	 m3jSmhL5ik2V0nNhoRE6I/fcx74eQ+3eKSeJ+Rk9kZZ0drb/U5HSoHALPq3JPnaVkndc4CUuAoYY
-	 1SQluDBSYnqMuelt1eFBJj3Q21QNu/SK+vY3hS+StJSN7lW8v2MdM9j6Vl2X1p2ovgJYUcp7u4R1
-	 ARx1X1EKsl8HEwBAxIdxmFSDJiiBDZ2/EbtSrMTCadgNdsB8KzXIbPx/5ACDQh/yXBP58fDDGSH7
-	 5JXPly3NB9S70pBFnspfDGZv1fjW/KFJYGYlX3NtTLMsZNYTFYReUJor5uYXuKbsPrJbb3u8V7v+
-	 qFuknGevYAYoTqB8vuS9OEyO8YLTzTLaBQ5cpQjaRNnhh3q9240hlmW0QUVCnnq7galrB+UGGA/2
-	 8oVxO5XfYgosNmSJhv4dGGI5K8YTsYt8zo1fSDVtPqeES5S1MCb9JfuPUY9OW9S3Ux0dMYMJQ/YE
-	 ++Hg3pPvvwiICDCbpYX8qvleuRnkyXj6S58Pba/76Hba6aR0IUOkNOQOUzOR8FQnOug6pjqw/9j2
-	 CZyIdZqUzC+1yBZ6Vll8eZiUbcUP3unGSo3Hc+JtoQWVsZKkfgeO1YmXe4cp0nhjc9TVhEvO9fV7
-	 JwFuuRHsA5xtdP+oTEk077qUunlgQ2jvKEYbOEZ+LakpNQo/CFsolIh4JxA4K5nt70YCtARpoQ6i
-	 ugowFVzzXTXQucb/bNs95ndKjjtwRGfnmwIpVbjfcVUWjZxskNWGvCTActl+Nx88B5d4SDN6Zvdx
-	 poFKAMGLrrFWRsegQavijhluo2s9s=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: xiaopeitux@foxmail.com
-To: cryolitia@uniontech.com,
-	linux@roeck-us.net,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v2 3/3] hwmon: (gpd-fan): upgrade log level from warn to err for platform device creation failure
-Date: Wed, 27 May 2026 16:10:56 +0800
-X-OQ-MSGID: <dd7b8d506dde2c187af9dacbd3fd6408a6cc9ead.1779868768.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1779868768.git.xiaopei01@kylinos.cn>
-References: <cover.1779868768.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1779869735; c=relaxed/simple;
+	bh=OlRgt01Zpw0H2vUaX4i8by8XXdzmzIWRoEMxvTA4GH4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=uJmu1IB1K1iS3rEgalD+MZKiPJHDf/G/GpcNog14nTR9cNHJ/ubryQQYuUhkEnt1Qb51NTFRIiWPwBtYuDNW+DIPnsNkn0cy1J1qGZkDaSpiyxz7kwu256JGaozhvru+4oNQMzMMiBi9ZQj/LgZdwqcFv/4UE60z7uftVaWUO+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 376a106259a411f1aa26b74ffac11d73-20260527
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:c4e91963-9042-41ea-9599-25777d62b8f3,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:9acf2f89fd0394b9f6e3f158e2b3f937,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|865|898,TC:nil,Content:0
+	|15|52,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,O
+	SI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 376a106259a411f1aa26b74ffac11d73-20260527
+X-User: xiaopei01@kylinos.cn
+Received: from [10.42.12.251] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 2108697802; Wed, 27 May 2026 16:15:26 +0800
+Message-ID: <f2e51776-9c9d-42ee-9ed8-966b16bfe88c@kylinos.cn>
+Date: Wed, 27 May 2026 16:15:23 +0800
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] hwmon: (gpd-fan): drop global driver data and use
+ per-device allocation
+To: xiaopeitux@foxmail.com, cryolitia@uniontech.com, linux@roeck-us.net,
+ linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1779868768.git.xiaopei01@kylinos.cn>
+ <tencent_E54E78E6CA5D212364B95FA8BC2061BD3009@qq.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
+In-Reply-To: <tencent_E54E78E6CA5D212364B95FA8BC2061BD3009@qq.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[foxmail.com,uniontech.com,roeck-us.net,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-14515-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14513-lists,linux-hwmon=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[foxmail.com];
+	DMARC_NA(0.00)[kylinos.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiaopeitux@foxmail.com,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[foxmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,foxmail.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: 9F7AA5E0EB3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xiaopei01@kylinos.cn,linux-hwmon@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.985];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,foxmail.com:email,kylinos.cn:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: 4F7B45E0F34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
 
-When platform_create_bundle() fails, the error is fatal and prevents the
-driver from loading. Use pr_err() instead of pr_warn() to clearly indicate
-a critical failure.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/hwmon/gpd-fan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hwmon/gpd-fan.c b/drivers/hwmon/gpd-fan.c
-index 745b3fb9e3a4..b18725f4d108 100644
---- a/drivers/hwmon/gpd-fan.c
-+++ b/drivers/hwmon/gpd-fan.c
-@@ -712,7 +712,7 @@ static int __init gpd_fan_init(void)
- 							 match, sizeof(*match));
- 
- 	if (IS_ERR(gpd_fan_platform_device)) {
--		pr_warn("Failed to create platform device\n");
-+		pr_error("Failed to create platform device\n");
- 		return PTR_ERR(gpd_fan_platform_device);
- 	}
- 
--- 
-2.25.1
+在 2026/5/27 16:10, xiaopeitux@foxmail.com 写道:
+> From: Pei Xiao <xiaopei01@kylinos.cn>
+>
+> replace the global state gpd_driver_priv with per-device private data
+> (struct gpd_fan_data) allocated in probe. This allows the driver to
+> support multiple instances in the future and aligns with kernel best
+> practices.
+>
+> No functional change intended.
+>
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+> ---
+> changs in v2: 
+> 1.move gpd_init_ec before register hwmon device
+igore this, thanks!
+> 2.platform_create_bundle pass a driver_data  pointer to
+> ---
+>  drivers/hwmon/gpd-fan.c | 209 ++++++++++++++++++++++------------------
+>  1 file changed, 115 insertions(+), 94 deletions(-)
+>
+> diff --git a/drivers/hwmon/gpd-fan.c b/drivers/hwmon/gpd-fan.c
+> index 80de5f20781e..7284babd4f5c 100644
+> --- a/drivers/hwmon/gpd-fan.c
+> +++ b/drivers/hwmon/gpd-fan.c
+> @@ -40,12 +40,11 @@ enum FAN_PWM_ENABLE {
+>  	AUTOMATIC	= 2,
+>  };
+>  
+> -static struct {
+> +struct gpd_fan_data {
+>  	enum FAN_PWM_ENABLE pwm_enable;
+>  	u8 pwm_value;
+> -
+>  	const struct gpd_fan_drvdata *drvdata;
+> -} gpd_driver_priv;
+> +};
+>  
+>  struct gpd_fan_drvdata {
+>  	const char *board_name; // Board name for module param comparison
+> @@ -249,10 +248,10 @@ static const struct gpd_fan_drvdata *gpd_module_drvdata[] = {
+>  };
+>  
+>  // Helper functions to handle EC read/write
+> -static void gpd_ecram_read(u16 offset, u8 *val)
+> +static void gpd_ecram_read(const struct gpd_fan_drvdata *drvdata, u16 offset, u8 *val)
+>  {
+> -	u16 addr_port = gpd_driver_priv.drvdata->addr_port;
+> -	u16 data_port = gpd_driver_priv.drvdata->data_port;
+> +	u16 addr_port = drvdata->addr_port;
+> +	u16 data_port = drvdata->data_port;
+>  
+>  	outb(0x2E, addr_port);
+>  	outb(0x11, data_port);
+> @@ -270,10 +269,10 @@ static void gpd_ecram_read(u16 offset, u8 *val)
+>  	*val = inb(data_port);
+>  }
+>  
+> -static void gpd_ecram_write(u16 offset, u8 value)
+> +static void gpd_ecram_write(const struct gpd_fan_drvdata *drvdata, u16 offset, u8 value)
+>  {
+> -	u16 addr_port = gpd_driver_priv.drvdata->addr_port;
+> -	u16 data_port = gpd_driver_priv.drvdata->data_port;
+> +	u16 addr_port = drvdata->addr_port;
+> +	u16 data_port = drvdata->data_port;
+>  
+>  	outb(0x2E, addr_port);
+>  	outb(0x11, data_port);
+> @@ -291,198 +290,198 @@ static void gpd_ecram_write(u16 offset, u8 value)
+>  	outb(value, data_port);
+>  }
+>  
+> -static int gpd_generic_read_rpm(void)
+> +static int gpd_generic_read_rpm(struct gpd_fan_data *data)
+>  {
+> -	const struct gpd_fan_drvdata *const drvdata = gpd_driver_priv.drvdata;
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+>  	u8 high, low;
+>  
+> -	gpd_ecram_read(drvdata->rpm_read, &high);
+> -	gpd_ecram_read(drvdata->rpm_read + 1, &low);
+> +	gpd_ecram_read(drvdata, drvdata->rpm_read, &high);
+> +	gpd_ecram_read(drvdata, drvdata->rpm_read + 1, &low);
+>  
+>  	return (u16)high << 8 | low;
+>  }
+>  
+> -static int gpd_wm2_read_rpm(void)
+> +static int gpd_wm2_read_rpm(struct gpd_fan_data *data)
+>  {
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+> +
+>  	for (u16 pwm_ctr_offset = GPD_PWM_CTR_OFFSET;
+>  	     pwm_ctr_offset <= GPD_PWM_CTR_OFFSET + 2; pwm_ctr_offset++) {
+>  		u8 PWMCTR;
+>  
+> -		gpd_ecram_read(pwm_ctr_offset, &PWMCTR);
+> +		gpd_ecram_read(drvdata, pwm_ctr_offset, &PWMCTR);
+>  
+>  		if (PWMCTR != 0xB8)
+> -			gpd_ecram_write(pwm_ctr_offset, 0xB8);
+> +			gpd_ecram_write(drvdata, pwm_ctr_offset, 0xB8);
+>  	}
+>  
+> -	return gpd_generic_read_rpm();
+> +	return gpd_generic_read_rpm(data);
+>  }
+>  
+>  // Read value for fan1_input
+> -static int gpd_read_rpm(void)
+> +static int gpd_read_rpm(struct gpd_fan_data *data)
+>  {
+> -	switch (gpd_driver_priv.drvdata->board) {
+> +	switch (data->drvdata->board) {
+>  	case win4_6800u:
+>  	case win_mini:
+>  	case duo:
+>  	case mpc2:
+> -		return gpd_generic_read_rpm();
+> +		return gpd_generic_read_rpm(data);
+>  	case win_max_2:
+> -		return gpd_wm2_read_rpm();
+> +		return gpd_wm2_read_rpm(data);
+>  	}
+>  
+>  	return 0;
+>  }
+>  
+> -static int gpd_wm2_read_pwm(void)
+> +static int gpd_wm2_read_pwm(struct gpd_fan_data *data)
+>  {
+> -	const struct gpd_fan_drvdata *const drvdata = gpd_driver_priv.drvdata;
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+>  	u8 var;
+>  
+> -	gpd_ecram_read(drvdata->pwm_write, &var);
+> +	gpd_ecram_read(drvdata, drvdata->pwm_write, &var);
+>  
+>  	// Match gpd_generic_write_pwm(u8) below
+>  	return DIV_ROUND_CLOSEST((var - 1) * 255, (drvdata->pwm_max - 1));
+>  }
+>  
+>  // Read value for pwm1
+> -static int gpd_read_pwm(void)
+> +static int gpd_read_pwm(struct gpd_fan_data *data)
+>  {
+> -	switch (gpd_driver_priv.drvdata->board) {
+> +	switch (data->drvdata->board) {
+>  	case win_mini:
+>  	case duo:
+>  	case win4_6800u:
+>  	case mpc2:
+> -		switch (gpd_driver_priv.pwm_enable) {
+> +		switch (data->pwm_enable) {
+>  		case DISABLE:
+>  			return 255;
+>  		case MANUAL:
+> -			return gpd_driver_priv.pwm_value;
+> +			return data->pwm_value;
+>  		case AUTOMATIC:
+>  			return -EOPNOTSUPP;
+>  		}
+>  		break;
+>  	case win_max_2:
+> -		return gpd_wm2_read_pwm();
+> +		return gpd_wm2_read_pwm(data);
+>  	}
+>  	return 0;
+>  }
+>  
+>  // PWM value's range in EC is 1 - pwm_max, cast 0 - 255 to it.
+> -static inline u8 gpd_cast_pwm_range(u8 val)
+> +static inline u8 gpd_cast_pwm_range(const struct gpd_fan_drvdata *drvdata, u8 val)
+>  {
+> -	const struct gpd_fan_drvdata *const drvdata = gpd_driver_priv.drvdata;
+> -
+>  	return DIV_ROUND_CLOSEST(val * (drvdata->pwm_max - 1), 255) + 1;
+>  }
+>  
+> -static void gpd_generic_write_pwm(u8 val)
+> +static void gpd_generic_write_pwm(struct gpd_fan_data *data, u8 val)
+>  {
+> -	const struct gpd_fan_drvdata *const drvdata = gpd_driver_priv.drvdata;
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+>  	u8 pwm_reg;
+>  
+> -	pwm_reg = gpd_cast_pwm_range(val);
+> -	gpd_ecram_write(drvdata->pwm_write, pwm_reg);
+> +	pwm_reg = gpd_cast_pwm_range(drvdata, val);
+> +	gpd_ecram_write(drvdata, drvdata->pwm_write, pwm_reg);
+>  }
+>  
+> -static void gpd_duo_write_pwm(u8 val)
+> +static void gpd_duo_write_pwm(struct gpd_fan_data *data, u8 val)
+>  {
+> -	const struct gpd_fan_drvdata *const drvdata = gpd_driver_priv.drvdata;
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+>  	u8 pwm_reg;
+>  
+> -	pwm_reg = gpd_cast_pwm_range(val);
+> -	gpd_ecram_write(drvdata->pwm_write, pwm_reg);
+> -	gpd_ecram_write(drvdata->pwm_write + 1, pwm_reg);
+> +	pwm_reg = gpd_cast_pwm_range(drvdata, val);
+> +	gpd_ecram_write(drvdata, drvdata->pwm_write, pwm_reg);
+> +	gpd_ecram_write(drvdata, drvdata->pwm_write + 1, pwm_reg);
+>  }
+>  
+>  // Write value for pwm1
+> -static int gpd_write_pwm(u8 val)
+> +static int gpd_write_pwm(struct gpd_fan_data *data, u8 val)
+>  {
+> -	if (gpd_driver_priv.pwm_enable != MANUAL)
+> +	if (data->pwm_enable != MANUAL)
+>  		return -EPERM;
+>  
+> -	switch (gpd_driver_priv.drvdata->board) {
+> +	switch (data->drvdata->board) {
+>  	case duo:
+> -		gpd_duo_write_pwm(val);
+> +		gpd_duo_write_pwm(data, val);
+>  		break;
+>  	case win_mini:
+>  	case win4_6800u:
+>  	case win_max_2:
+>  	case mpc2:
+> -		gpd_generic_write_pwm(val);
+> +		gpd_generic_write_pwm(data, val);
+>  		break;
+>  	}
+>  
+>  	return 0;
+>  }
+>  
+> -static void gpd_win_mini_set_pwm_enable(enum FAN_PWM_ENABLE pwm_enable)
+> +static void gpd_win_mini_set_pwm_enable(struct gpd_fan_data *data, enum FAN_PWM_ENABLE pwm_enable)
+>  {
+>  	switch (pwm_enable) {
+>  	case DISABLE:
+> -		gpd_generic_write_pwm(255);
+> +		gpd_generic_write_pwm(data, 255);
+>  		break;
+>  	case MANUAL:
+> -		gpd_generic_write_pwm(gpd_driver_priv.pwm_value);
+> +		gpd_generic_write_pwm(data, data->pwm_value);
+>  		break;
+>  	case AUTOMATIC:
+> -		gpd_ecram_write(gpd_driver_priv.drvdata->pwm_write, 0);
+> +		gpd_ecram_write(data->drvdata, data->drvdata->pwm_write, 0);
+>  		break;
+>  	}
+>  }
+>  
+> -static void gpd_duo_set_pwm_enable(enum FAN_PWM_ENABLE pwm_enable)
+> +static void gpd_duo_set_pwm_enable(struct gpd_fan_data *data, enum FAN_PWM_ENABLE pwm_enable)
+>  {
+>  	switch (pwm_enable) {
+>  	case DISABLE:
+> -		gpd_duo_write_pwm(255);
+> +		gpd_duo_write_pwm(data, 255);
+>  		break;
+>  	case MANUAL:
+> -		gpd_duo_write_pwm(gpd_driver_priv.pwm_value);
+> +		gpd_duo_write_pwm(data, data->pwm_value);
+>  		break;
+>  	case AUTOMATIC:
+> -		gpd_ecram_write(gpd_driver_priv.drvdata->pwm_write, 0);
+> +		gpd_ecram_write(data->drvdata, data->drvdata->pwm_write, 0);
+>  		break;
+>  	}
+>  }
+>  
+> -static void gpd_wm2_set_pwm_enable(enum FAN_PWM_ENABLE enable)
+> +static void gpd_wm2_set_pwm_enable(struct gpd_fan_data *data, enum FAN_PWM_ENABLE enable)
+>  {
+> -	const struct gpd_fan_drvdata *const drvdata = gpd_driver_priv.drvdata;
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+>  
+>  	switch (enable) {
+>  	case DISABLE:
+> -		gpd_generic_write_pwm(255);
+> -		gpd_ecram_write(drvdata->manual_control_enable, 1);
+> +		gpd_generic_write_pwm(data, 255);
+> +		gpd_ecram_write(drvdata, drvdata->manual_control_enable, 1);
+>  		break;
+>  	case MANUAL:
+> -		gpd_generic_write_pwm(gpd_driver_priv.pwm_value);
+> -		gpd_ecram_write(drvdata->manual_control_enable, 1);
+> +		gpd_generic_write_pwm(data, data->pwm_value);
+> +		gpd_ecram_write(drvdata, drvdata->manual_control_enable, 1);
+>  		break;
+>  	case AUTOMATIC:
+> -		gpd_ecram_write(drvdata->manual_control_enable, 0);
+> +		gpd_ecram_write(drvdata, drvdata->manual_control_enable, 0);
+>  		break;
+>  	}
+>  }
+>  
+>  // Write value for pwm1_enable
+> -static void gpd_set_pwm_enable(enum FAN_PWM_ENABLE enable)
+> +static void gpd_set_pwm_enable(struct gpd_fan_data *data, enum FAN_PWM_ENABLE enable)
+>  {
+>  	if (enable == MANUAL)
+>  		// Set pwm_value to max firstly when switching to manual mode, in
+>  		// consideration of device safety.
+> -		gpd_driver_priv.pwm_value = 255;
+> +		data->pwm_value = 255;
+>  
+> -	switch (gpd_driver_priv.drvdata->board) {
+> +	switch (data->drvdata->board) {
+>  	case win_mini:
+>  	case win4_6800u:
+>  	case mpc2:
+> -		gpd_win_mini_set_pwm_enable(enable);
+> +		gpd_win_mini_set_pwm_enable(data, enable);
+>  		break;
+>  	case duo:
+> -		gpd_duo_set_pwm_enable(enable);
+> +		gpd_duo_set_pwm_enable(data, enable);
+>  		break;
+>  	case win_max_2:
+> -		gpd_wm2_set_pwm_enable(enable);
+> +		gpd_wm2_set_pwm_enable(data, enable);
+>  		break;
+>  	}
+>  }
+> @@ -505,15 +504,16 @@ static umode_t gpd_fan_hwmon_is_visible(__always_unused const void *drvdata,
+>  	return 0;
+>  }
+>  
+> -static int gpd_fan_hwmon_read(__always_unused struct device *dev,
+> +static int gpd_fan_hwmon_read(struct device *dev,
+>  			      enum hwmon_sensor_types type, u32 attr,
+>  			      __always_unused int channel, long *val)
+>  {
+> +	struct gpd_fan_data *data = dev_get_drvdata(dev);
+>  	int ret;
+>  
+>  	if (type == hwmon_fan) {
+>  		if (attr == hwmon_fan_input) {
+> -			ret = gpd_read_rpm();
+> +			ret = gpd_read_rpm(data);
+>  
+>  			if (ret < 0)
+>  				return ret;
+> @@ -524,10 +524,10 @@ static int gpd_fan_hwmon_read(__always_unused struct device *dev,
+>  	} else if (type == hwmon_pwm) {
+>  		switch (attr) {
+>  		case hwmon_pwm_enable:
+> -			*val = gpd_driver_priv.pwm_enable;
+> +			*val = data->pwm_enable;
+>  			return 0;
+>  		case hwmon_pwm_input:
+> -			ret = gpd_read_pwm();
+> +			ret = gpd_read_pwm(data);
+>  
+>  			if (ret < 0)
+>  				return ret;
+> @@ -540,27 +540,29 @@ static int gpd_fan_hwmon_read(__always_unused struct device *dev,
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> -static int gpd_fan_hwmon_write(__always_unused struct device *dev,
+> +static int gpd_fan_hwmon_write(struct device *dev,
+>  			       enum hwmon_sensor_types type, u32 attr,
+>  			       __always_unused int channel, long val)
+>  {
+> +	struct gpd_fan_data *data = dev_get_drvdata(dev);
+> +
+>  	if (type == hwmon_pwm) {
+>  		switch (attr) {
+>  		case hwmon_pwm_enable:
+>  			if (!in_range(val, 0, 3))
+>  				return -EINVAL;
+>  
+> -			gpd_driver_priv.pwm_enable = val;
+> +			data->pwm_enable = val;
+>  
+> -			gpd_set_pwm_enable(gpd_driver_priv.pwm_enable);
+> +			gpd_set_pwm_enable(data, data->pwm_enable);
+>  			return 0;
+>  		case hwmon_pwm_input:
+>  			if (!in_range(val, 0, 256))
+>  				return -EINVAL;
+>  
+> -			gpd_driver_priv.pwm_value = val;
+> +			data->pwm_value = val;
+>  
+> -			return gpd_write_pwm(val);
+> +			return gpd_write_pwm(data, val);
+>  		}
+>  	}
+>  
+> @@ -584,26 +586,27 @@ static struct hwmon_chip_info gpd_fan_chip_info = {
+>  	.info = gpd_fan_hwmon_channel_info
+>  };
+>  
+> -static void gpd_win4_init_ec(void)
+> +static void gpd_win4_init_ec(struct gpd_fan_data *data)
+>  {
+> +	const struct gpd_fan_drvdata *drvdata = data->drvdata;
+>  	u8 chip_id, chip_ver;
+>  
+> -	gpd_ecram_read(0x2000, &chip_id);
+> +	gpd_ecram_read(drvdata, 0x2000, &chip_id);
+>  
+>  	if (chip_id == 0x55) {
+> -		gpd_ecram_read(0x1060, &chip_ver);
+> -		gpd_ecram_write(0x1060, chip_ver | 0x80);
+> +		gpd_ecram_read(drvdata, 0x1060, &chip_ver);
+> +		gpd_ecram_write(drvdata, 0x1060, chip_ver | 0x80);
+>  	}
+>  }
+>  
+> -static void gpd_init_ec(void)
+> +static void gpd_init_ec(struct gpd_fan_data *data)
+>  {
+>  	// The buggy firmware won't initialize EC properly on boot.
+>  	// Before its initialization, reading RPM will always return 0,
+>  	// and writing PWM will have no effect.
+>  	// Initialize it manually on driver load.
+> -	if (gpd_driver_priv.drvdata->board == win4_6800u)
+> -		gpd_win4_init_ec();
+> +	if (data->drvdata->board == win4_6800u)
+> +		gpd_win4_init_ec(data);
+>  }
+>  
+>  static int gpd_fan_probe(struct platform_device *pdev)
+> @@ -611,7 +614,9 @@ static int gpd_fan_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	const struct resource *region;
+>  	const struct resource *res;
+> -	const struct device *hwdev;
+> +	struct device *hwdev;
+> +	struct gpd_fan_data *data;
+> +	const struct gpd_fan_drvdata *match;
+>  
+>  	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
+>  	if (!res)
+> @@ -624,24 +629,42 @@ static int gpd_fan_probe(struct platform_device *pdev)
+>  		return dev_err_probe(dev, -EBUSY,
+>  				     "Failed to request region\n");
+>  
+> +	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+> +	if (!data)
+> +		return -ENOMEM;
+> +
+> +	match = dev_get_platdata(dev);
+> +	if (!match)
+> +		return -EINVAL;
+> +
+> +	data->drvdata = match;
+> +	data->pwm_enable = AUTOMATIC;
+> +	data->pwm_value = 255;
+> +
+> +	dev_set_drvdata(dev, data);
+> +
+>  	hwdev = devm_hwmon_device_register_with_info(dev,
+>  						     DRIVER_NAME,
+> -						     NULL,
+> +						     data,
+>  						     &gpd_fan_chip_info,
+>  						     NULL);
+>  	if (IS_ERR(hwdev))
+>  		return dev_err_probe(dev, PTR_ERR(hwdev),
+>  				     "Failed to register hwmon device\n");
+>  
+> -	gpd_init_ec();
+> +	gpd_init_ec(data);
+>  
+>  	return 0;
+>  }
+>  
+> -static void gpd_fan_remove(__always_unused struct platform_device *pdev)
+> +static void gpd_fan_remove(struct platform_device *pdev)
+>  {
+> -	gpd_driver_priv.pwm_enable = AUTOMATIC;
+> -	gpd_set_pwm_enable(AUTOMATIC);
+> +	struct gpd_fan_data *data = dev_get_drvdata(&pdev->dev);
+> +
+> +	if (data) {
+> +		data->pwm_enable = AUTOMATIC;
+> +		gpd_set_pwm_enable(data, AUTOMATIC);
+> +	}
+>  }
+>  
+>  static struct platform_driver gpd_fan_driver = {
+> @@ -668,6 +691,7 @@ static int __init gpd_fan_init(void)
+>  	if (!match) {
+>  		const struct dmi_system_id *dmi_match =
+>  			dmi_first_match(dmi_table);
+> +
+>  		if (dmi_match)
+>  			match = dmi_match->driver_data;
+>  	}
+> @@ -675,10 +699,6 @@ static int __init gpd_fan_init(void)
+>  	if (!match)
+>  		return -ENODEV;
+>  
+> -	gpd_driver_priv.pwm_enable = AUTOMATIC;
+> -	gpd_driver_priv.pwm_value = 255;
+> -	gpd_driver_priv.drvdata = match;
+> -
+>  	struct resource gpd_fan_resources[] = {
+>  		{
+>  			.start = match->addr_port,
+> @@ -690,7 +710,8 @@ static int __init gpd_fan_init(void)
+>  	gpd_fan_platform_device = platform_create_bundle(&gpd_fan_driver,
+>  							 gpd_fan_probe,
+>  							 gpd_fan_resources,
+> -							 1, NULL, 0);
+> +							 1,
+> +							 match, sizeof(*match));
+>  
+>  	if (IS_ERR(gpd_fan_platform_device)) {
+>  		pr_warn("Failed to create platform device\n");
 
 
