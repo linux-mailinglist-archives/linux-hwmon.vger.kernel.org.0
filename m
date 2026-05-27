@@ -1,194 +1,133 @@
-Return-Path: <linux-hwmon+bounces-14532-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14533-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEmxOcXbFmofuAcAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14532-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 13:55:49 +0200
+	id qOQ6C8ziFmpbvQcAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14533-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 14:25:48 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B355E3BA5
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 13:55:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C005E4244
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 14:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35219300EF79
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 11:54:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EFB683002D2F
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 12:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A1C3F9272;
-	Wed, 27 May 2026 11:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF911364E88;
+	Wed, 27 May 2026 12:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HxBgulyv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJqP5HZC"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6822D3BADB4
-	for <linux-hwmon@vger.kernel.org>; Wed, 27 May 2026 11:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B381A9B46
+	for <linux-hwmon@vger.kernel.org>; Wed, 27 May 2026 12:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779882844; cv=none; b=YRknBZfn+5pqxJNMQRGlu0sYjKum+za4UYUSkiNe9BAluFGr2wygiDtr8o3Sml5XvUFIIzhz7t1/TVDJDJMSomheKfb7qgj8v23INYujd3rOqIS2zbSNa8mE4B+DDlu5p/LBCDEEJy54cDma+AabZiCgFGCp7Y7mbUMa5JD9SFQ=
+	t=1779884241; cv=none; b=cz7+TyGOsTSraPVD6qzf9r9dLWDasYBQQ7DwOq5ao9ctKE88hb3bHNrv3F55toPBTjJqUCrBhsYvKq/sG4WdgmKuFo0iXlXRsi97kZOtp34t7K1hxJ0rR9E2bUCOI1DSQVOUNGH77u5wwNSgV1RdWBUqogGG0PzYGmV6V3sSJHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779882844; c=relaxed/simple;
-	bh=EvfSLyottFHTKEjNHamFONTYoWIu7N8e5ndpd72WGf4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fajz08qldqD88bOh0KTyFrQ7dR9K9fJ/PRPZ3OnpgQrE0FanVHXNIjKL/NtTEx8F/VlJkotymcoRnlaLgwm+m7Xp2Xz3Lqi5L1oVh+7SQJmwp+nK94NQcExwKerlaNixyTXRjmcQ1B4Mdz7rEauWYcCFU78yfpXialb/wqzpSCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HxBgulyv; arc=none smtp.client-ip=74.125.82.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-3045c195251so4995518eec.1
-        for <linux-hwmon@vger.kernel.org>; Wed, 27 May 2026 04:54:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779882842; x=1780487642; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aunltCQrVILEaQ+TbdbV0mNvTCr1h5KSg1QSOe5Corg=;
-        b=HxBgulyv/l9Aok5jF3Rw2pcHjsnqSJSxDW/tae7Wy7+aLUYdEHaLlJ3ejS0MGguNCo
-         yUuaqAI5kyK7Hgb3T/H0OJk/dCHb6rgn75trzP1bpnoVD/gLSHzyu9NDhMk4fZiRY9FI
-         foFDYgdTYd4FcLdexK6juCeGOE8JtYBu4mLij5o9GenlAMAHQoGR2DrJdDEykBtZ1oNA
-         Vgs//7pO2F/ymlSpug607U5TFXAo4Yj/IsMZApROKFTkbgdzh5TdX4TTVGvK1MVIkjIK
-         XwQjgeA9Bx5ZqZbI8FMAx7giaZDCduQNZf7L1zUKuitOzy21gnBlimABxuP6nlXpl9t1
-         28AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779882842; x=1780487642;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aunltCQrVILEaQ+TbdbV0mNvTCr1h5KSg1QSOe5Corg=;
-        b=PFFVZbXZhDI2vWe2uDz9IkCbuFFjsuaq7ICudTlHXf7kzWNU2RdbnjhV2EgZkmXlkf
-         uEanfviYJ9bE9XyYwto0tExUyTACpZcEcdy4hfIM4fZmEvKjFiCPi6DC6QnLuo6ISzH5
-         MO3erQlY7kTnCbXB+D/WCRW/xjokwvuuxVMT15TzqvweEP8RAo7kdskbqrITNv1tsxTA
-         luipZUNfZRnMXVfadqH6iqaL86KW4HpsnGlvpH0mpBgvbuVs5sMKilu0CJFGu2pORFae
-         LocR4vBAFp3NQceuMJGa15AqRSQDoBb7mszKiQkQ9oNkX2k5Jcoauqn0T8s1oSY+jn/P
-         RIQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ94eb8yXLDWltrUJ/FEcmJghn1OL8QiQNervJkL1XbB7F4s1bn8ajOAQUJpy3FRu12b7WJ/1OGM1f7p4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSkCNYd9VNslAD0jNrD2MfkYFy/ZTxax1KsLMZ1QCN0d4Y4B3Q
-	yZ3wY5NeUi4On8xQmjcmd4p+fSAVYB8O/YLmLYXwdG+vTfL+DFZsKJc7
-X-Gm-Gg: Acq92OE5Pz7Kh7XrRe7IIKD6WHttw/+MaPftcfJKF8UYmWgSZZLF7+jD5hoivllY7Oz
-	vRLYFEd904gKwUt4pJP4rLvGxCAIbaw2KVOZAVoOcgJ2xdlkJUOyp2nYzJUlyYfqxnem5+J2DIm
-	L6j5KH2BJHoYFdkKkxRgwpsyEip+zDfrQc11d8IXvbY+QJpDLfO9DFte5BMX62+RJfC3QptV/7O
-	yVBf/GiY0PYOeSHWsMRV5J+eHiz5EbtUQ3y/Xew+cOj45DwTO+iySQdZGdf1Y3VVfBZU2U/XrfO
-	9LBf2Hz7a3MAeh6iSw/2ORgekO4aV+HPVpNlaZ+Yhol22t3RBQJ9aeuULvT324MLLV9vgN/Q+rX
-	RQdphySUmgKdMDLVibSu6pcxQLqc6seMpqnromGt289ojj58RSDJ64hkyedRyJ6tN5QCaKdVgPy
-	XXDNV4iI2v6PLk7VqgQmaBYQ==
-X-Received: by 2002:a05:7300:8607:b0:2ed:935:aa33 with SMTP id 5a478bee46e88-30448fd64b5mr11992768eec.5.1779882842238;
-        Wed, 27 May 2026 04:54:02 -0700 (PDT)
-Received: from zhanwei.. ([192.227.223.214])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304cb5c381asm216045eec.8.2026.05.27.04.53.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 04:54:01 -0700 (PDT)
-From: Zhan Wei <zhanwei919@gmail.com>
-To: Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Raag Jadav <raag.jadav@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Guenter Roeck <linux@roeck-us.net>,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhan Wei <zhanwei919@gmail.com>
-Subject: [RFC PATCH] drm/xe/hwmon: report a single fan for DG2 instead of two
-Date: Wed, 27 May 2026 19:53:11 +0800
-Message-ID: <20260527115311.13398-1-zhanwei919@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1779884241; c=relaxed/simple;
+	bh=IFhCiB7ViOJIzRgtT1FuBaOx8lSqen25MDiMZbmxGVc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VhW0IAhpG4X7ZRZL1ruJc5/lRzjgAF1RYXzkGt7YL5ZvcFO4qTjEdEWhLmJC3LN+3f3r9LlBcS+QRm1ipHEknxp1miCmNJMRdZDTHl0QxDR0f3teFSENbVv/eEQKGxV+mJKfMWjJW6V/URFTa8L/8i/df1JQmb1uWuEC+j2ADto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJqP5HZC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6161F000E9;
+	Wed, 27 May 2026 12:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779884240;
+	bh=VrLDzUdeKYnZql0WobZxUkoM049YDG68k+UNBqVvLPI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PJqP5HZCBjvAA6xNH8lPHyGh/VDDMMkv4/MfEQQWC5Uub2Osu9FG+J9JgimIbNw0Z
+	 LrLk1H2E+Sb9QH5+PNFcFzvWFNx3SIVWez2wP70S/e5kG/B2t+LJgiEqaa2bqBaK0j
+	 lfUqS4XqF2qgqDdPsw9rIoCsXwAyGiUyxTI7X1UAy6TuPfqmRm1TBqhrvEsmsUPkQm
+	 cwISe3FQEb7A4DS9VwXew9kMqXTEfDpx4O6EyYUH8jTQY2EQWLaH3+8KLvrtTlh3ew
+	 mE948oWbeGI/5b5ItnM4d+xZBaRe09ZQS6AJzB1tE3g4/905um6HtETkFjD0MJCDjI
+	 JcMnmQun2qbTA==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH] drm/xe/hwmon: report a single fan for DG2 instead
+ of two
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhan Wei" <zhanwei919@gmail.com>
+Cc: linux-hwmon@vger.kernel.org
+In-Reply-To: <20260527115311.13398-1-zhanwei919@gmail.com>
+References: <20260527115311.13398-1-zhanwei919@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 12:17:19 +0000
+Message-Id: <20260527121720.5B6161F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,gmail.com,ffwll.ch,roeck-us.net,lists.freedesktop.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-14532-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14533-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhanwei919@gmail.com,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 38B355E3BA5
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sashiko.dev:url,smtp.kernel.org:mid,lists.linux.dev:replyto]
+X-Rspamd-Queue-Id: 40C005E4244
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-xe_hwmon_pcode_read_fan_control() currently hardcodes *uval = 2 when
-queried with FSC_READ_NUM_FANS on DG2. This causes fan2_input to be
-exposed via sysfs, but on the tested Arc A750 LE (DG2 G10, PCI ID
-0x56a1) fan2_input reads 0 RPM permanently while fan1_input correctly
-reports ~800 RPM with both physical fan physically spinning.
+> xe_hwmon_pcode_read_fan_control() currently hardcodes *uval =3D 2 when
+> queried with FSC_READ_NUM_FANS on DG2. This causes fan2_input to be
+> exposed via sysfs, but on the tested Arc A750 LE (DG2 G10, PCI ID
+> 0x56a1) fan2_input reads 0 RPM permanently while fan1_input correctly
+> reports ~800 RPM with both physical fan physically spinning.
+>=20
+> The RPM is calculated delta-based from a tach pulse counter:
+>=20
+>     rotations =3D (reg_val - fi->reg_val_prev) / 2;
+>=20
+> so a constant-zero RPM means the register at offset 0x138170
+> (BMG_FAN_2_SPEED) simply does not accumulate pulses on DG2 silicon.
+> The i915 driver does not expose fan2 on DG2 at all -- it only maps
+> PCU_PWM_FAN_SPEED (0x138140, identical to BMG_FAN_1_SPEED), consistent
+> with the observation that only one fan tach register is wired on DG2.
+>=20
+> Report a single fan for DG2 to keep the phantom fan2_input out of
+> sysfs.  Battlemage paths are unchanged.
+>=20
+> Tested on Arc A750 LE (DG2 G10): with this patch applied, fan2_input
+> no longer appears in /sys/class/hwmon/hwmonX/ and `sensors xe-pci-0300`
+> shows fan1 only.
+>=20
+> Fixes: 28f79ac609de ("drm/xe/hwmon: expose fan speed")
+> Signed-off-by: Zhan Wei <zhanwei919@gmail.com>
 
-The RPM is calculated delta-based from a tach pulse counter:
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-    rotations = (reg_val - fi->reg_val_prev) / 2;
-
-so a constant-zero RPM means the register at offset 0x138170
-(BMG_FAN_2_SPEED) simply does not accumulate pulses on DG2 silicon.
-The i915 driver does not expose fan2 on DG2 at all -- it only maps
-PCU_PWM_FAN_SPEED (0x138140, identical to BMG_FAN_1_SPEED), consistent
-with the observation that only one fan tach register is wired on DG2.
-
-Report a single fan for DG2 to keep the phantom fan2_input out of
-sysfs.  Battlemage paths are unchanged.
-
-Tested on Arc A750 LE (DG2 G10): with this patch applied, fan2_input
-no longer appears in /sys/class/hwmon/hwmonX/ and `sensors xe-pci-0300`
-shows fan1 only.
-
-Fixes: 28f79ac609de ("drm/xe/hwmon: expose fan speed")
-Signed-off-by: Zhan Wei <zhanwei919@gmail.com>
----
-Open questions for reviewers: this is verified only on DG2 G10. Owners
-of G11 (e.g. ASRock Challenger A750) and G12 (e.g. Sparkle Titan A750
-with three physical fans) -- does fan2_input or fan3_input ever read
-non-zero in your setup? If so, the right fix is a per-subplatform
-table rather than a flat 1.
-
- drivers/gpu/drm/xe/xe_hwmon.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_hwmon.c b/drivers/gpu/drm/xe/xe_hwmon.c
-index de3f2aeffc3f..2a60a76b1971 100644
---- a/drivers/gpu/drm/xe/xe_hwmon.c
-+++ b/drivers/gpu/drm/xe/xe_hwmon.c
-@@ -860,9 +860,15 @@ static int xe_hwmon_pcode_read_fan_control(const struct xe_hwmon *hwmon, u32 sub
- {
- 	struct xe_tile *root_tile = xe_device_get_root_tile(hwmon->xe);
- 
--	/* Platforms that don't return correct value */
-+	/*
-+	 * The PCODE FAN_SPEED_CONTROL subcommands return an error on DG2, so we
-+	 * answer the FSC_READ_NUM_FANS query here. DG2 only wires a single fan
-+	 * tachometer register (BMG_FAN_1_SPEED == 0x138140, shared with i915's
-+	 * PCU_PWM_FAN_SPEED); BMG_FAN_2/3_SPEED read 0 on DG2 silicon. Reporting
-+	 * one fan keeps a phantom fan2_input that always reads 0 out of sysfs.
-+	 */
- 	if (hwmon->xe->info.platform == XE_DG2 && subcmd == FSC_READ_NUM_FANS) {
--		*uval = 2;
-+		*uval = 1;
- 		return 0;
- 	}
- 
--- 
-2.43.0
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527115311.1339=
+8-1-zhanwei919@gmail.com?part=3D1
 
 
