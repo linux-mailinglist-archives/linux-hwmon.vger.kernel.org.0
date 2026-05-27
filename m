@@ -1,60 +1,61 @@
-Return-Path: <linux-hwmon+bounces-14559-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14560-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGJWKABAF2qg9wcAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14559-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 21:03:28 +0200
+	id UKVoLlVCF2p8+wcAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14560-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 21:13:25 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294C85E956C
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 21:03:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DF15E9657
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 21:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35E8D301E6E4
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 19:03:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE4CC3003ED2
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 19:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E89136165F;
-	Wed, 27 May 2026 19:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A25D3655EE;
+	Wed, 27 May 2026 19:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLUCjyW8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PD8UdKLb"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B62C360EED
-	for <linux-hwmon@vger.kernel.org>; Wed, 27 May 2026 19:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F5C3655DA;
+	Wed, 27 May 2026 19:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779908605; cv=none; b=umUEm/XZOCCBUPwZRmoT3Y+o1C47U6UfM1jsQqNvg+Hvz9VSy9EYj1ykABdFON2AcOImrOwDhy9xpQZyMj50wa2/P9P+MJ1Oj9rueDCoaYds0zxR4VWByehcJeqTH6sDHPOqhmo/pNsTJeAk4I1dSsc2WF7NCuG5wZNzFlP/w5k=
+	t=1779909118; cv=none; b=VmlMcRsKlMqvZ5sKQYRPP8OBwxxxPPG/HbWQLvtfdYWsEwWDIb9vIvxLzudUrSP2cWSfL/JdYUllofF2PSqf6AFFwfxjHVYAWUdxwTAAs2L+nrfUiMQO4bLPu0Zu0Jn9tNNvTv9RiAZZyyVEtsRCdxlk/nIKyAQQr7XWuVCutnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779908605; c=relaxed/simple;
-	bh=37y0W+B6o9/Zavr1rBFsYH/t+H6wpJ0J/JRIMqFBYZc=;
+	s=arc-20240116; t=1779909118; c=relaxed/simple;
+	bh=C2KJwgh2oDWlpeuEvaNMx7QgYqsxxx8EDEhfgij/+Yg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hbAnXFg2WXKXgMG3kGKi26+cO76pI5iwMZ4KK1eA/pCpCq08x3kRbFisivaS9ATFfn0MLUodrWwrWOTsnKyPCLQgWS08yv9jXbRCkM7p7VPOnNt7Wh5f03XCNmLa9rGUkUot28siucQ1ksS608Fq1j9SUr9fyd5vekpC04LVtbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLUCjyW8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036C61F000E9;
-	Wed, 27 May 2026 19:03:23 +0000 (UTC)
+	 Message-Id; b=IphVr9mjYCWvRUwDXno/osz2jvjfDyhxFxgq9JInn6bvbzNwlx/ayWL5dGeHXOYkYtYeJ4VrKgQ5yy4WeRKmP2AABAzyu0T/gjPl+E0gz5Dyt2/4ZFvD5s6Pbh/qU8MO4BJ6UZ+mzgo4CZmoasrIeK3ehtBolcAVer4T0CeOX0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PD8UdKLb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EB21F000E9;
+	Wed, 27 May 2026 19:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779908604;
-	bh=i70Nbpqrgbv46DzAkYEUe+L25M8dtD7xnsWbX79Gw9M=;
+	s=k20260515; t=1779909117;
+	bh=aDihwv5OppegrdNUb8LS7osx87EwyS6+T+kSRAFn5Hw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CLUCjyW8258DZL7cXeeHdZihLDch63UCoQ1P4tqFXWNQI+0t9dfKy9TFwzSP4lbe1
-	 G9H0LOPOi7cq4hMVdVR9TpnViEvMURDSGpCsYb4836RXcRU55LJM1HULjBTRM8eTWN
-	 hM70tUGazv3LYbMNH4STm50Rd/heWS8QHaJAic4+6yEZEFJxnd988qBgF7HN9/xKa0
-	 qiJ/03mdX0/cl9k5ZpoL1QyQqny9pfzCiVa9S6chB/jhZ8Lo3kez+UCrM00lcMN4GI
-	 Yh0CF9t9a9cO0htnIJWO5T/kCDp7QGf5FNoJJ541gk68Oyw1L9pK0vgM5NewtfY7F8
-	 Z3dQ1wI7wIL6g==
+	b=PD8UdKLbP5FkDKEtbUyvdhRLzvBUDehJBbAqToeCRc9MmbFXAwQ1KpiMn/+hUO5Mo
+	 hjWzc/TMt0f2aQfJjTo2XC7aFn8dwYQovENL65t9rr/EjbDQWY5MMCAIuIi7HoJrKO
+	 RR9xwlEqCeXMnB8Vig19GQgTtaeJlXXZQD35k6C0Nbo6Xr2IxeAulgA+3YpVeBJn0N
+	 4ONkaKKN1iSQSwBmRKIY6Ox/yAfmbajwzMbO+qP+k7hNyU4nnp8tk/kackwLVssRBA
+	 GMEnWVAdE1aiRFYAdQCK82Kd1sMdlGGTeQiHcetA58XQmmb+sosnSSkxRuajH6tyo4
+	 n/6EIl5T6Qosg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] iio: types: add IIO_VOLUMEFLOW channel type
+Subject: Re: [PATCH v2 2/3] dt-bindings: iio: flow: add Sensirion SLF3S
+ liquid flow sensor
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wadim Mueller" <wafgo01@gmail.com>
-Cc: linux-hwmon@vger.kernel.org
-In-Reply-To: <20260527184257.141635-2-wafgo01@gmail.com>
-References: <20260527184257.141635-2-wafgo01@gmail.com>
+Cc: conor+dt@kernel.org, linux-hwmon@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260527184257.141635-3-wafgo01@gmail.com>
+References: <20260527184257.141635-3-wafgo01@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 19:03:23 +0000
-Message-Id: <20260527190324.036C61F000E9@smtp.kernel.org>
+Date: Wed, 27 May 2026 19:11:56 +0000
+Message-Id: <20260527191157.00EB21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -65,54 +66,146 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14559-lists,linux-hwmon=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14560-lists,linux-hwmon=lfdr.de];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[linux-hwmon];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lists.linux.dev:replyto]
-X-Rspamd-Queue-Id: 294C85E956C
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-hwmon,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 11DF15E9657
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> Add a new IIO channel type for liquid volumetric flow sensors.  The
-> unit exposed via the standard _scale attribute is litres per second
-> (l/s), so drivers reporting smaller native units (e.g. ml/min) only
-> need to set a fractional scale.
->=20
-> Update iio-core's name table, the iio_event_monitor whitelist and
-> the sysfs-bus-iio ABI document to match.  The new _scale attribute is
-> folded into the existing shared _scale block; only the per-type _raw
-> needs a fresh entry.
->=20
-> Signed-off-by: Wadim Mueller <wafgo01@gmail.com>
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] The MAINTAINERS entry for the 'SENSIRION SLF3S LIQUID FLOW SENSO=
+R DRIVER' broadly claims the entire 'drivers/iio/flow/' directory instead o=
+f just its specific driver files.
+- [Medium] The `sensirion,medium` property encodes software configuration i=
+nstead of hardware description.
+- [Medium] The `compatible` schema allows the generic fallback string `sens=
+irion,slf3s` to be used by itself.
+--
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+commit 40e1aaa676db52ce37dbf148be41d0cd96f854a7
+Author: Wadim Mueller <wafgo01@gmail.com>
+
+dt-bindings: iio: flow: add Sensirion SLF3S liquid flow sensor
+
+This commit documents the device tree bindings for the Sensirion SLF3S fami=
+ly
+of digital liquid-flow sensors. It includes the compatible strings, required
+properties, and a custom property for selecting the calibration medium. It =
+also
+adds the corresponding MAINTAINERS entry for the driver.
+
+> diff --git a/Documentation/devicetree/bindings/iio/flow/sensirion,slf3s.y=
+aml b/Documentation/devicetree/bindings/iio/flow/sensirion,slf3s.yaml
+> new file mode 100644
+> index 0000000000000..f58cf199ac3a8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/flow/sensirion,slf3s.yaml
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - sensirion,slf3s-0600f
+> +              - sensirion,slf3s-1300f
+> +              - sensirion,slf3s-4000b
+> +          - const: sensirion,slf3s
+> +      - const: sensirion,slf3s
+
+[Severity: Medium]
+Does this schema allow the generic fallback string sensirion,slf3s to be us=
+ed
+by itself?
+
+Device tree best practices generally mandate that nodes include a hardware
+specific compatible string to uniquely identify the device, even when a
+generic fallback is present. Allowing the generic string alone could prevent
+the OS from identifying exact hardware variations or applying variant-speci=
+fic
+quirks.
+
+Should the standalone - const: sensirion,slf3s option be removed?
+
+[ ... ]
+
+> +  sensirion,medium:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ water, ipa ]
+> +    default: water
+> +    description:
+> +      Calibration medium the sensor is configured for at probe time.
+> +      SLF3S sensors are factory-calibrated for both water and
+> +      isopropyl alcohol (IPA); this property selects which calibration
+> +      to activate.  Defaults to water when omitted.
+
+[Severity: Medium]
+Does the sensirion,medium property encode software configuration instead of
+hardware description?
+
+Since device tree bindings are meant to strictly describe hardware structure
+and integration, usage policies like the target fluid medium might be better
+suited for user-space control.
+
+Could this calibration setting be exposed via an IIO sysfs attribute instead
+of being hardcoded in the device tree?
+
+[ ... ]
+
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6aa3fe2ee1bbf..7eeabe22fcdd5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+
+[ ... ]
+
+> +SENSIRION SLF3S LIQUID FLOW SENSOR DRIVER
+> +M:	Wadim Mueller <wafgo01@gmail.com>
+> +R:	Maxwell Doose <m32285159@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/iio/flow/sensirion,slf3s.yaml
+> +F:	drivers/iio/flow/
+
+[Severity: Medium]
+Will this broad directory pattern cause get_maintainer.pl to assign
+maintainership of all future IIO flow sensors to this driver's authors?
+
+Since F: drivers/iio/flow/ encompasses the entire subsystem-level directory,
+it will match any future flow sensors added by other vendors.
+
+Could this be scoped to the specific driver files, such as
+F: drivers/iio/flow/slf3s* ?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527184257.1416=
-35-1-wafgo01@gmail.com?part=3D1
-
+35-1-wafgo01@gmail.com?part=3D2
 
