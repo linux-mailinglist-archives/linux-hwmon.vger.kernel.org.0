@@ -1,199 +1,316 @@
-Return-Path: <linux-hwmon+bounces-14523-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14527-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MpLBCfDFmrOqgcAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14523-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 12:10:47 +0200
+	id kLGMLEnGFmpVrwcAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14527-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 12:24:09 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70495E2692
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 12:10:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFF05E299D
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 12:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6805A30071C2
-	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 10:10:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D95783008886
+	for <lists+linux-hwmon@lfdr.de>; Wed, 27 May 2026 10:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEA43EF664;
-	Wed, 27 May 2026 10:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C31A3EF643;
+	Wed, 27 May 2026 10:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="m9G42cOJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWEtAHnq"
 X-Original-To: linux-hwmon@vger.kernel.org
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F2E3EE1DD;
-	Wed, 27 May 2026 10:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E02C3E8348;
+	Wed, 27 May 2026 10:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779876641; cv=none; b=kmIaPjEpIs9aFLZPcIWKUKXwSixtjQZjEaZLP9Opj6TvDchYT7EFi58viaAixHKHF0WwgYtLUw6uFfVG3+GTA8bbcJSPeFrYcoJ3273/0uVsDC5sJyfcxtgkdDW0242kYQzl3v56Kpo9GRP4jhPG2Z2mVOCErdy8YbHL5GAjKCU=
+	t=1779877267; cv=none; b=RK/DGGE+f8p2YDTAeS/H0wV85H9mU97kIxBlfJ5VWOPGyiBj0GQWNArUvoqbW8BanDIKlsPDmido90QE0SA0k3anA2SWU3KeMbEJMT3Mh3AXemeVPb1Um2fuCE0Xe1C8euIVIcQ3X0dJEhaApGq/K60kgB8xAth6glo9ZBjcHcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779876641; c=relaxed/simple;
-	bh=Ol3glDq6H5Br2QeDO7jhgv4EWGxPA2aIhuJTtiASi9I=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=ABkUPRojUDArnIEkJU66i4EWAb8KypFpT2vOQVQbflmDbTt0B3Lzn1xds+f8cJm4SV0KeCr6MrtptyS3f3DrsNqgoYHLHV335d9d+cFUjsad5grcHqRuIMOj/xdyJN/xy3Cmf5VJM/KvlJu15Uetdr0teZzPY7W6eS4M2lI9Cfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=m9G42cOJ; arc=none smtp.client-ip=162.62.57.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779876627;
-	bh=4z1/pgQ8KqDxpTzdwrUunL5u1UbgBCHZPktnK3HpEUU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m9G42cOJ2180PcFd3V2TiZEM35KLdwdYdDPQUpfJRjjdUmVnAE6YyqgkTlWeDautZ
-	 lTA5gOZmDKxuZfj5JcRthpgvFg4ZwWGF6v4splIIhwea0/tlJe1uD6Hjsgki2d1S9d
-	 jMR79JKjI7aPAHQ1H6ca+4fCyov0lPLJ7A+Kn1xI=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 29704417; Wed, 27 May 2026 18:10:23 +0800
-X-QQ-mid: xmsmtpt1779876626twvv8frjk
-Message-ID: <tencent_395A116FDCB95475901B5E5C27237380AE08@qq.com>
-X-QQ-XMAILINFO: MRMtjO3A6C9XbL8tSaNaDSJdvqhC7JnbPNOAmpJOjM7tHjMNVWmFlOgdHicH+Q
-	 KXY2wEIEMVHQ2YJCpFfig8pDQ50F0JLW9VLjhX+EzifTkMeqIfwu8S2nA97KNdQx5MXxW9KL02Xc
-	 8oJisvAq/8yW2cFJtGpNIEbYVwqS1fWw+WYRb071iFlYAwshRKvfaXehbkJJBZ6NzYo3jumIgchR
-	 0CDJbV4/7hs6YgH+W+vNX4HF/07MQ6Q8gQ6oyftxHEKJM+TUJVuw8ggLEeqVvtR6iPa03bl2Vooq
-	 2v9quwRHxCI+//c/6jv1AgdCusGQZjZKwQCutXshl0C/k+hjh7egkPXp5hCe5Z2v8gAPgWPA8Omt
-	 CqPv5SXbmkTetGlUyffx1RNJ9s91Nvd5qDXGID825kMiGWiNs4Sv3tFG1MxLFoC09yBl6TC6r+V3
-	 nuY0/oPNlmEeTB2juxXAvfIEYSg3zOv/cZ7DIgVVi8T+9tONFNYt5xk17bpGt2hFzixfifjQxSbm
-	 0bvsh3o71VOmr9wQXPGor9Fw63HoGORbM9qXMvC0oAHrQ/Nmowb5+cf6FH5tL16yYYpu/6d7h2M4
-	 AwyEKaOtYdnBxT1tT4utg2rhomKn3Q9PLiN0niauvtesF3TzoMl3hcOVDDmk+L9h89q0gdBN4RuX
-	 Cp7xAfquDrObBiwVLrb8pB2/vfgnKCw3CxoVkF6DtW4G6aNs8DfbU8HwsuVwH0xDLbSXNT7wJ7nm
-	 8X/uO53AMW16mD2kCErPChO9qG2aOn6nvrWrRoY5ryRZcVyNDEEdee85tAJ/GslDlMBeDCk3SM46
-	 s2FNUfxkeE2y2DHKHe3r/0kgfF8SfCUuJ/bmFq4TSFpxtsdA7Bkj+E/wzy7lA+ZLr4ZWM+TSKDsQ
-	 UAXhQkYLb6rgEKeVPUKt60ofZ23Bp1AwiWhk7qN1GkWHrDdaMQyZADDciIxMm5/QbE7+bew2mqlS
-	 d5DlBIuHK1sFEU6TOtRrNwIE0hv1jo2VcMzqT2qeiP4aSsIqFrKZZVqndjW8/bXcPoNs6DcygZhp
-	 eUg/YimaAqPpIypzds
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: xiaopeitux@foxmail.com
-To: cryolitia@uniontech.com,
-	linux@roeck-us.net,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH 4/4] hwmon: (gpd-fan): fix race condition between device removal and sysfs access
-Date: Wed, 27 May 2026 18:10:21 +0800
-X-OQ-MSGID: <17fe1cce7705f8ea79a44541834b7eef101f0e3a.1779876412.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1779876412.git.xiaopei01@kylinos.cn>
-References: <cover.1779876412.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1779877267; c=relaxed/simple;
+	bh=rr3iUanCvxzPtflgkiF0N3PNamcGvgGaRHcgJCRhp8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IibfwS6+htYCF3H0u7wa8o2SHLhBvcOnZ0DB3Jv2PJ2R7OaBGMsbJ04+mAnXndsm9osajLZUp7n4upLyboepGHwthV8+94vOsprzMOXWD9JrTZXHU4NkMqcZpm7ltg9Su4jQJgPDdhwMQWyMcaTpNK7qBntHDWpoBpH0+40SU44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWEtAHnq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A081F000E9;
+	Wed, 27 May 2026 10:21:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779877264;
+	bh=AzruJ+BlvcpcAs2QfB2KvKS3wb5J5MmbBC6u8WBLHZk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CWEtAHnq5cB5NbYhw5As2LtFMh50tegwsU7icPwU9iHTEjpylhyP4atthYrP7qhnE
+	 J0lP6SkucT/xOdZyunmLjdv27HI8xT6m1Ixazy6RI9ImmUl0IE0JeV0mivElBeyJNC
+	 CqcCco8v8d+10jDQJdGKy+8jWzNpfNOUVZCckAdVvLeQLREhaU4DDPwV4dRESY3Svv
+	 wXZuALf4x599MuLJPwSvDuEsS1e7HtlavuuKGm16aP0k13Byv7G1ESNjnVroT6hOGg
+	 9mkwLUzqw/OLFSuDh85uvQs4LNmEl3qJbuttiu1Wv1od6JysXzS5SAqAe8My4E2ltC
+	 lQCOVQRkSu9sg==
+Date: Wed, 27 May 2026 11:21:01 +0100
+From: Conor Dooley <conor@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-hwmon@vger.kernel.org
+Subject: Re: [RFC] hwmon: add a driver for the temp/voltage sensor on
+ PolarFire SoC
+Message-ID: <20260527-unrobed-example-ab127093e448@spud>
+References: <20260527-earring-bully-eb4a268c2e68@spud>
+ <20260527093427.B33061F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
 List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="e1it+ucShdGc6Me2"
+Content-Disposition: inline
+In-Reply-To: <20260527093427.B33061F00A3A@smtp.kernel.org>
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-14527-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14523-lists,linux-hwmon=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[foxmail.com];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiaopeitux@foxmail.com,linux-hwmon@vger.kernel.org];
-	DKIM_TRACE(0.00)[foxmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,linux-hwmon@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qq.com:mid,kylinos.cn:email,foxmail.com:dkim]
-X-Rspamd-Queue-Id: A70495E2692
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3DFF05E299D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
 
-Replace the manual gpd_fan_remove() callback with a devres-managed
-action using devm_add_action_or_reset(). The original remove hook
-resets the fan to AUTOMATIC mode, but the hwmon sysfs interface
-(registered with devm_hwmon_device_register_with_info()) remains
-active until after the remove callback completes. This creates a
-race window where a concurrent userspace sysfs access can interleave
-with the EC I/O sequence, potentially corrupting EC registers.
+--e1it+ucShdGc6Me2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Using devm_add_action_or_reset() registers the reset function as a
-devres action. Due to the LIFO release order of devres, the hwmon
-device is unregistered (sysfs removed) before the reset action
-executes, eliminating the race condition.
+On Wed, May 27, 2026 at 09:34:27AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 10 potential iss=
+ue(s) to consider:
+> - [High] Masking out the sign bit of a two's complement value incorrectly=
+ reports small negative voltages as massive positive spikes.
+> - [High] Hardware initialization occurs after device registration and use=
+s `regmap_write`, creating a race condition and clobbering existing registe=
+r state.
+> - [High] Missing return value checks for `regmap_read` expose uninitializ=
+ed kernel stack memory to userspace.
+> - [High] Blind dereference of `pdev->dev.parent` in the probe function.
+> - [Medium] The `update_interval` attribute is exposed and expected in mic=
+roseconds, violating the hwmon sysfs ABI standard.
+> - [Medium] Boolean sysfs enable attributes fail to properly reject negati=
+ve values.
+> - [Medium] The driver uses syscon APIs but its Kconfig entry does not dep=
+end on or select `MFD_SYSCON`.
+> - [Medium] The driver ignores return values from hardware write operation=
+s, masking potential hardware failures.
+> - [Low] Using a bitwise right shift (`>> 4`) on potentially negative temp=
+eratures relies on implementation-defined behavior and rounds incorrectly.
+> - [Low] The comment explaining the absolute zero constant is mathematical=
+ly incorrect.
+> --
+>=20
+> commit 0cc52b7af906d819cbf1265ac544bb7d896a59da
+> Author: Lars Randers <lranders@mail.dk>
+>=20
+> hwmon: add a driver for the temp/voltage sensor on PolarFire SoC
+>=20
+> Add a driver for the temperature and voltage sensors on PolarFire SoC.
+> The temperature reports how hot the die is, and the voltages are the
+> SoC's 1.05, 1.8 and 2.5 volt rails respectively.
+>=20
+> > diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> > index 14e4cea48acc4..194c8116fd018 100644
+> > --- a/drivers/hwmon/Kconfig
+> > +++ b/drivers/hwmon/Kconfig
+>=20
+> [ ... ]
+>=20
+> > @@ -930,6 +930,18 @@ config SENSORS_JC42
+> >  	  This driver can also be built as a module. If so, the module
+> >  	  will be called jc42.
+> > =20
+> > +config SENSORS_POLARFIRE_SOC_TVS
+> > +	tristate "PolarFire SoC (MPFS) temperature and voltage sensor"
+> > +	depends on POLARFIRE_SOC_MAILBOX
+>=20
+> [Severity: Medium]
+> Should this Kconfig entry depend on or select MFD_SYSCON?
+>=20
+> The driver explicitly calls device_node_to_regmap() which is provided by
+> the syscon framework. If MFD_SYSCON is not enabled, the fallback stub
+> unconditionally returns -ENOTSUPP, which would cause the driver to silent=
+ly
+> fail to probe at runtime without producing any build-time warnings.
 
-Fixes: 0ab88e239439 ("hwmon: add GPD devices sensor driver")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/hwmon/gpd-fan.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+I'm not sure why this uses the mailbox as a dep, but it depends on
+MFD_SYSCON so that satisfies the condition. The deps here need rework.
 
-diff --git a/drivers/hwmon/gpd-fan.c b/drivers/hwmon/gpd-fan.c
-index 1b57a5add934..d1993cd645cb 100644
---- a/drivers/hwmon/gpd-fan.c
-+++ b/drivers/hwmon/gpd-fan.c
-@@ -609,6 +609,16 @@ static void gpd_init_ec(struct gpd_fan_data *data)
- 		gpd_win4_init_ec(data);
- }
- 
-+static void gpd_fan_reset_hardware(void *pdata)
-+{
-+	struct gpd_fan_data *data = pdata;
-+
-+	if (data) {
-+		data->pwm_enable = AUTOMATIC;
-+		gpd_set_pwm_enable(data, AUTOMATIC);
-+	}
-+}
-+
- static int gpd_fan_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -617,6 +627,7 @@ static int gpd_fan_probe(struct platform_device *pdev)
- 	struct device *hwdev;
- 	struct gpd_fan_data *data;
- 	const struct gpd_fan_drvdata *match;
-+	int ret;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
- 	if (!res)
-@@ -644,6 +655,11 @@ static int gpd_fan_probe(struct platform_device *pdev)
- 	dev_set_drvdata(dev, data);
- 
- 	gpd_init_ec(data);
-+
-+	ret = devm_add_action_or_reset(dev, gpd_fan_reset_hardware, data);
-+	if (ret)
-+		return ret;
-+
- 	hwdev = devm_hwmon_device_register_with_info(dev,
- 						     DRIVER_NAME,
- 						     data,
-@@ -655,19 +671,8 @@ static int gpd_fan_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static void gpd_fan_remove(struct platform_device *pdev)
--{
--	struct gpd_fan_data *data = dev_get_drvdata(&pdev->dev);
--
--	if (data) {
--		data->pwm_enable = AUTOMATIC;
--		gpd_set_pwm_enable(data, AUTOMATIC);
--	}
--}
--
- static struct platform_driver gpd_fan_driver = {
- 	.probe = gpd_fan_probe,
--	.remove = gpd_fan_remove,
- 	.driver = {
- 		.name = KBUILD_MODNAME,
- 	},
--- 
-2.25.1
+> > +/*
+> > + * For all of these the value in millivolts is stored in 16 bits, with=
+ an upper
+> > + * sign bit and a lower 2 bits of decimal. These masks discard the sig=
+n bit and
+> > + * decimal places, because if Linux is running these voltages cannot b=
+e negative
+> > + * and so avoid having to convert to two's complement.
+> > + */
+> > +#define MPFS_OUTPUT0_V1P8_MASK	GENMASK(30, 19)
+> > +#define MPFS_OUTPUT0_V1P05_MASK	GENMASK(14, 3)
+> > +#define MPFS_OUTPUT1_V2P5_MASK	GENMASK(14, 3)
+>=20
+> [Severity: High]
+> Does discarding the sign bit cause issues with slight negative readings?
+>=20
+> If the hardware measures a slightly negative voltage due to sensor noise
+> (for example, -1 mV), wouldn't the two's complement representation have t=
+he
+> integer bits set to all 1s?
+>=20
+> Since the driver discards the sign bit and extracts the remaining bits via
+> FIELD_GET, it seems this could result in reporting the maximum positive
+> integer (4095 mV) instead of clamping to 0.
 
+The comment covers this.
+
+> > +static int mpfs_tvs_voltage_read(struct mpfs_tvs *data, u32 attr,
+> > +				 int channel, long *val)
+> > +{
+> > +	u32 tmp, control;
+> > +
+> > +	if (attr !=3D hwmon_in_input && attr !=3D hwmon_in_enable)
+> > +		return -EOPNOTSUPP;
+> > +
+> > +	regmap_read(data->regmap, MPFS_TVS_CTRL, &control);
+>=20
+> [Severity: High]
+> Can a failed regmap_read() leave the control variable uninitialized?
+>=20
+> If the underlying bus read fails, the control variable remains uninitiali=
+zed,
+> and this function could extract bits from uninitialized kernel stack memo=
+ry
+> and return it to userspace via sysfs. This also appears to happen with the
+> tmp variable in the other read functions below.
+
+It's an MMIO bus, I've never bothered checking the results of
+regmap_read() etc cos I can't check the result of readl().
+
+> > +static int mpfs_tvs_temp_read(struct mpfs_tvs *data, u32 attr, long *v=
+al)
+> > +{
+> > +	u32 tmp, control;
+> > +
+> > +	if (attr !=3D hwmon_temp_input && attr !=3D hwmon_temp_enable)
+> > +		return -EOPNOTSUPP;
+> > +
+> > +	regmap_read(data->regmap, MPFS_TVS_CTRL, &control);
+> > +
+> > +	if (attr =3D=3D hwmon_temp_enable) {
+> > +		*val =3D FIELD_GET(MPFS_TVS_CTRL_TEMP_ENABLE, control);
+> > +		return 0;
+> > +	}
+> > +
+> > +	if (!(control & MPFS_TVS_CTRL_TEMP_VALID))
+> > +		return -EINVAL;
+> > +
+> > +	regmap_read(data->regmap, MPFS_TVS_OUTPUT1, &tmp);
+> > +	*val =3D FIELD_GET(MPFS_OUTPUT1_TEMP_MASK, tmp);
+> > +	*val -=3D MPFS_TVS_K_TO_C;
+> > +	*val =3D (1000 * *val) >> 4; /* fixed point (11.4) to millidegrees */
+>=20
+> [Severity: Low]
+> Does using a bitwise right shift on a potentially negative temperature
+> value rely on implementation-defined behavior?
+>=20
+> Subtracting MPFS_TVS_K_TO_C can yield a negative number. An arithmetic
+> right shift rounds towards negative infinity rather than towards zero like
+> standard division, which might introduce minor inaccuracies for sub-zero
+> temperatures.
+
+Does this matter?
+
+> > +static int mpfs_tvs_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device *hwmon_dev;
+> > +	struct mpfs_tvs *data;
+> > +
+> > +	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+> > +	if (!data)
+> > +		return -ENOMEM;
+> > +
+> > +	data->regmap =3D device_node_to_regmap(pdev->dev.parent->of_node);
+>=20
+> [Severity: High]
+> Could pdev->dev.parent be NULL if the platform device is instantiated
+> manually?
+>=20
+> If a privileged user writes to sysfs to instantiate the device or it is
+> bound such that pdev->dev.parent is NULL, would this unconditional
+> dereference trigger a NULL pointer dereference?
+
+I don't think I have ever seen code check this.
+
+> > +	if (IS_ERR(data->regmap))
+> > +		return dev_err_probe(&pdev->dev, PTR_ERR(data->regmap),
+> > +				     "Failed to find syscon regmap\n");
+> > +
+> > +	hwmon_dev =3D devm_hwmon_device_register_with_info(&pdev->dev, "mpfs_=
+tvs",
+> > +							 data,
+> > +							 &mpfs_tvs_chip_info,
+> > +							 NULL);
+> > +	if (IS_ERR(hwmon_dev))
+> > +		return dev_err_probe(&pdev->dev, PTR_ERR(hwmon_dev),
+> > +				     "hwmon device registration failed.\n");
+> > +
+> > +	regmap_write(data->regmap, MPFS_TVS_CTRL, MPFS_TVS_CTRL_ENABLE_ALL);
+>=20
+> [Severity: High]
+> Does registering the device before enabling the sensors create a race win=
+dow?
+>=20
+> The thermal core or userspace might attempt to read sensors after
+> devm_hwmon_device_register_with_info() completes but before they are
+> enabled.
+
+Is this a realistic concern? Moving it is effectively free I think
+anyway, not really even worth turning them off in a remove callback.
+
+> Also, does this regmap_write() clobber the update_interval field?
+> Overwriting the entire control register with MPFS_TVS_CTRL_ENABLE_ALL
+> appears to zero out bits 15:8, destroying any interval settings made duri=
+ng
+> the race window or pre-configured by the bootloader.
+
+Intentionally, to get a known-good state.
+
+--e1it+ucShdGc6Me2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCahbFjQAKCRB4tDGHoIJi
+0tuIAQCdL4bfdgFo8xNvtOXzyO/OwsDd1Y1RIjgwTB8UhnLxVwD/c42grZjuJLbZ
+8sXY6hMs6qhG3S25WIK5yIDGTH8WaAw=
+=VBjd
+-----END PGP SIGNATURE-----
+
+--e1it+ucShdGc6Me2--
 
