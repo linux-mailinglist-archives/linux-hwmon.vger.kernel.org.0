@@ -1,60 +1,60 @@
-Return-Path: <linux-hwmon+bounces-14582-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14583-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MXyKCaBGGpPkggAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14582-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Thu, 28 May 2026 19:53:42 +0200
+	id cKquE9yEGGq6kggAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14583-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Thu, 28 May 2026 20:09:32 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E2D5F5F19
-	for <lists+linux-hwmon@lfdr.de>; Thu, 28 May 2026 19:53:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 951725F61C3
+	for <lists+linux-hwmon@lfdr.de>; Thu, 28 May 2026 20:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19EC030C642B
-	for <lists+linux-hwmon@lfdr.de>; Thu, 28 May 2026 17:48:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA3BA305EE4E
+	for <lists+linux-hwmon@lfdr.de>; Thu, 28 May 2026 18:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25C13B4E8A;
-	Thu, 28 May 2026 17:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81486407599;
+	Thu, 28 May 2026 18:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OybtAhcE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNwN0+Cv"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0712D94AB;
-	Thu, 28 May 2026 17:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B6406290;
+	Thu, 28 May 2026 18:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779990527; cv=none; b=b63fMoBMSuLAXCWiqQcL5SkCtVzSQAQggl/l/j00ss2BYLByP4BrGVUXVX4S+PM8rpstpkANUo5r8JX+jj67IzZxRAXgW7HmLnzab3FdI43mmJZserPVb2IOTHx6RX8yjeanZ4BO0EZuJud1ccpuERKf1Oey39llsQKBLxP8lIE=
+	t=1779991459; cv=none; b=gAD40Iims/CDJ4BgXNs+TmDzIEmRGQVRJX/4iiux0DtecDZQdHVaN3ZJhfesyOZLEa6vBdcJsgZ7Tk4xxo/1AZQudaL7azHCLaxaMkYO6XGr4HFWr26+XjMtVS9iHQA/jduXsJun5Ar7veiyZ0j1sZJN1GFyKbSEIbN28KLpvPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779990527; c=relaxed/simple;
-	bh=FOi6BvqNBpelg7dc8/Q0YNAXScZDElcRGdGHUdPAcIw=;
+	s=arc-20240116; t=1779991459; c=relaxed/simple;
+	bh=t6RDpDDxcNoZAAmXu/8HFpc1mNtpoDRAiDdeeLDmsfI=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=P1CaUV2zVJKWuxXN3sOfONTjdzbNFdySoZK5LeNLBqWjDYPk1aEvsi/eI+CVBjBN7bVjQHTp9LEh2ycObSOvtdto+TJWtoNckS99iIlLjQS54g3u7IGh3UStlMXzOA/kfaWhZZW+bTcu5gsZLoxxRE+J86mn0rY3z0js0Trn9MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OybtAhcE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591811F000E9;
-	Thu, 28 May 2026 17:48:45 +0000 (UTC)
+	 Message-Id; b=EHMbro1bfm4MxTDXDUDtqzTVPVUsFB2FkvyA/1o1FuYI5VxsskICmsHuLow64iK2kwJ01Cg5wyI/eiuy23+gD2COsG8or8JU0NT/7FELcXxB6ft8K789oIe65n6QVQJRTFBlgbyGgY3krVJyJdywRh4KUguPvhyff6xeREQ8ILk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNwN0+Cv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1A11F000E9;
+	Thu, 28 May 2026 18:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779990526;
-	bh=FOi6BvqNBpelg7dc8/Q0YNAXScZDElcRGdGHUdPAcIw=;
+	s=k20260515; t=1779991458;
+	bh=t6RDpDDxcNoZAAmXu/8HFpc1mNtpoDRAiDdeeLDmsfI=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=OybtAhcEbS8DH3lVXhcb3Kmo9SyMxhkNQZZSAAS+htmW150YAxNvCvNIWokuvzsdM
-	 kUmd4YvE49soXoi0aoEfogEYFQuVmLQlFbLUEfuV/AnQFcZrDNbSjrV6eoraMJuXA2
-	 GgGzE4uqPbS5WEFdfYcEa1nSK26+LKP7LFNAGAi9Ia/cszeBHIFvueozh0g7vZ7we+
-	 9/2JxWc4VoAvvYzyXhvpTx5fmAHsiTDTzVjk5WiVOupzsqi+v+UwaAIgqXUOsIGySR
-	 DFA/KJihEvw+wVZ+rGtY6nMtjXk2ggPeBJKnyldxRa8SU6iSzjqzhnXd6ik9ppBjqW
-	 5SfPAIsfF43bw==
+	b=cNwN0+CvvZwrfne+xLI3r5G+/33tLmQKc10of/X/QnbJ/l7gqEkaBUw68e6YSUEkf
+	 HKRcxqOz1YAm23RNy0CO+810+P8/nan6BDWxvzQsiYYYn0sm7PQflNXrfwgZuxhXh4
+	 7JHZNXzrKCpzhgtZuy8RxqqXnDIKAVJKGzi4B0V6bLrEEM8psR8z92Db8e2htxb1qw
+	 uAfLYSyGDUCXXgOjPNSayNwsOzEIK3athvm7odz3eEyIFGGMxpSrm0WLtHPs8chdDq
+	 XKnZ640O2SVz5rblHezOdvSPvc6ie0d5xTZBMLatxaUd2V3Zb6buKQEFrWdR+OSBtw
+	 S9ew3CsmZM3jA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: hwmon: pmbus: Add Analog Devices
- MAX20860A
+Subject: Re: [PATCH v2 2/2] hwmon: (pmbus/max20860a) Add driver for Analog
+ Devices MAX20860A
 Reply-To: sashiko-reviews@lists.linux.dev
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, linux-hwmon@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20260528173424.87503-2-sanman.pradhan@hpe.com>
-References: <20260528173424.87503-2-sanman.pradhan@hpe.com>
+Cc: robh@kernel.org, linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260528173424.87503-3-sanman.pradhan@hpe.com>
+References: <20260528173424.87503-3-sanman.pradhan@hpe.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 17:48:45 +0000
-Message-Id: <20260528174846.591811F000E9@smtp.kernel.org>
+Date: Thu, 28 May 2026 18:04:17 +0000
+Message-Id: <20260528180418.2F1A11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -66,13 +66,13 @@ X-Spamd-Result: default: False [1.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	REPLYTO_DN_EQ_FROM_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-14582-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14583-lists,linux-hwmon=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[sashiko-bot@kernel.org,linux-hwmon@vger.kernel.org];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,30 +87,32 @@ X-Spamd-Result: default: False [1.84 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NO_DN(0.00)[];
 	HAS_REPLYTO(0.00)[sashiko-reviews@lists.linux.dev]
-X-Rspamd-Queue-Id: 83E2D5F5F19
+X-Rspamd-Queue-Id: 951725F61C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> From: Sanman Pradhan <psanman@juniper.net>
+> From: Syed Arif <arif.syed@hpe.com>
 >=20
-> Add devicetree binding documentation for the Analog Devices MAX20860A
-> step-down DC-DC switching regulator with PMBus interface.
+> Add a PMBus driver for the Analog Devices MAX20860A step-down DC-DC
+> switching regulator. The MAX20860A provides monitoring of input/output
+> voltage, output current, and temperature via the PMBus interface using
+> linear data format.
 >=20
 > Both "adi,max20860a" and "maxim,max20860a" compatible strings are
-> supported. The MAX20860A was originally manufactured by Maxim Integrated,
-> now part of Analog Devices.
+> supported for devicetree matching.
 >=20
+> Signed-off-by: Syed Arif <arif.syed@hpe.com>
 > Signed-off-by: Sanman Pradhan <psanman@juniper.net>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528173424.8750=
-3-1-sanman.pradhan@hpe.com?part=3D1
+3-1-sanman.pradhan@hpe.com?part=3D2
 
 
