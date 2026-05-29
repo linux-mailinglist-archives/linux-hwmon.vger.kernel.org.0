@@ -1,49 +1,50 @@
-Return-Path: <linux-hwmon+bounces-14627-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14624-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEhxCQf5GWqN0QgAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14627-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 22:37:27 +0200
+	id QLaWCev4GWqN0QgAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14624-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 22:36:59 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0686089C9
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 22:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC146089A4
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 22:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F2C1305EA46
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 20:32:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46BF830550B6
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 20:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A284266A8;
-	Fri, 29 May 2026 20:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F23B423141;
+	Fri, 29 May 2026 20:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="U2rvkXQI"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="jET+S+XO"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1377379960;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84B54218A0;
 	Fri, 29 May 2026 20:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780086731; cv=none; b=E2S356BsxkhrIT+E9iNeldYZ7bFgzS01oWGDHKGAAVz1Na5/wd+yXKUChRkjxf1gldTmgKVtyYLRlGCopWwSLfrQabh9kNxcI53S/v4Mz34tmAJ2kQbDy25q+7RtclEf8Ks8yBs/FoCt6nkaYtCyEkPyRj1qadPjL91nTgbDktk=
+	t=1780086730; cv=none; b=VevTBqRPllDmHD8Hw9PxamgbyeWMRNrJi5gIwvxM1KG603lfCQwjXBhTglV2qRBFTREer1QgAFA56PlUjcv0/xZrOfakhOO3mSU1tlaeXMsuoz3egp9gokpEyrT7GLVqLJ9ScNCCzNqBcqxN+6TxhKDPaqFV3ny8H9EvNX8nFa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780086731; c=relaxed/simple;
-	bh=Ky8L4lA3yo7PFD7iBo6oAcdZcPDbE9U+3KavKenGgT8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DbrjPCjFvNmNUIhZ1e3SdszREVjIQh17AbL0dT8xqYjCIBXAshtk+hFYx4LNyee6ss628eMki7hG3gg2QdhYnoPQNDtZwrgFCkGBGNp35DyE/FcNmtXi8fymtukJDrKNGpyN98CRuwychjsxYwa4ssQsurAZkdp14WaPtnwie48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=U2rvkXQI; arc=none smtp.client-ip=159.69.126.157
+	s=arc-20240116; t=1780086730; c=relaxed/simple;
+	bh=9dhz5D1a0Ksv2nfOCHB6O5HOpDxXY+m49njNGjn9knQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=OFHx1/bMHgkLJtS60OH3YBa5HdIoxyutQlO6Hl8w9366cSLAf+BwqkUbvsFkPB28/gACqep6nJV1VDzaqn4phZBrY/qblErpXvaAgekBVB2w+I2ycJ8M6xo630Cf0kvvIfL1I7qSUeGCuEM/je/wg/IS836ubd/kOk4R8Mv2yzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=jET+S+XO; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1780086726;
-	bh=Ky8L4lA3yo7PFD7iBo6oAcdZcPDbE9U+3KavKenGgT8=;
-	h=From:Subject:Date:To:Cc:From;
-	b=U2rvkXQI3YBLoEfplkwAqxm/MkBy3CoBFFN2d/rus6wUh89WuJrvQ1TJKL4acDm3/
-	 HDFP5DPnM1bKG1AkymQyQ/DVOa8EZ/RaW/QZvyl5NuDxQwdBYdhVMF+dPOdMrlheDN
-	 IE901dqGyQ6JciKOWEiL8/UZK37foBP/78AUgzAQ=
+	bh=9dhz5D1a0Ksv2nfOCHB6O5HOpDxXY+m49njNGjn9knQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=jET+S+XOKIwlGDn3p9uF4Bqxygg9yWYu2JyjNw1ktmSRfMVJvFWd7RT9rRILEwCZE
+	 44P/Yq9s0HQf0zc5raGKh5NggeTjL5Up9o6zAthO656A1V4mso484LoCy5QSwD4ocb
+	 SYMif3iZodMf/t0LPi4dD0dj/Ye7Mbtdt5N0RXno=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 0/5] hwmon: (cros_ec) Add support for fan curves
-Date: Fri, 29 May 2026 22:31:51 +0200
-Message-Id: <20260529-cros_ec-hwmon-fan-curve-v1-0-da6792b3830f@weissschuh.net>
+Date: Fri, 29 May 2026 22:31:52 +0200
+Subject: [PATCH 1/5] hwmon: (cros_ec) Implement custom kelvin to celsius
+ conversions
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -52,21 +53,20 @@ List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QrCMAxA0V8ZeTbQdlTEXxGRLstcBFtJtimM/
- fuqPp6He1cwVmGDc7OC8iImJVf4QwM0pnxnlL4aggtHF4NH0mI3Jhzfz5JxSBlp1oUxnGLrUte
- m6Blq/VIe5PM7X65/29w9mKbvDrZtB27wz+17AAAA
-X-Change-ID: 20260521-cros_ec-hwmon-fan-curve-28530ab3a51e
+Message-Id: <20260529-cros_ec-hwmon-fan-curve-v1-1-da6792b3830f@weissschuh.net>
+References: <20260529-cros_ec-hwmon-fan-curve-v1-0-da6792b3830f@weissschuh.net>
+In-Reply-To: <20260529-cros_ec-hwmon-fan-curve-v1-0-da6792b3830f@weissschuh.net>
 To: Guenter Roeck <linux@roeck-us.net>, Benson Leung <bleung@chromium.org>, 
  Shuah Khan <skhan@linuxfoundation.org>
 Cc: Guenter Roeck <groeck@chromium.org>, chrome-platform@lists.linux.dev, 
  linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780086726; l=925;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780086726; l=2067;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=Ky8L4lA3yo7PFD7iBo6oAcdZcPDbE9U+3KavKenGgT8=;
- b=HDT8T+V3lRpjgU+zFGPWjKM5OgsE15Yna06tEXCVoEPgqADC8bdBxvTKu+zDLluUdOhS92I1s
- D0DIv+bH2M2BcYaH0deLd8StUIRkFz+9FNvro8C0ML2SZQi/7vMdHqU
+ bh=9dhz5D1a0Ksv2nfOCHB6O5HOpDxXY+m49njNGjn9knQ=;
+ b=t6zV1I7u0qOz71i5ZZNII8yQZZHNU+cgLiLNE+o04Ee69DBaUNYOQ/vMHLWC8AMxOdmizsz97
+ lG/f6RXJBFRCddiP8rAfUPMyuI2M70uKcsdngpqgfwp6YXbRxo1m70+
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-14627-lists,linux-hwmon=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-14624-lists,linux-hwmon=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -94,32 +94,64 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-hwmon];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7F0686089C9
+X-Rspamd-Queue-Id: 7AC146089A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Allow reading and writing the fan curves used by the embedded
-controller.
-Only allow the curves to be made more aggressive than the current ones.
+The ChromeOS EC APIs use integers representing degrees kelvin for
+temperatures. The default conversions from linux/units.h will then
+always convert these integer degrees celsius with a 150 millidegree
+offset. This is a bit confusing, as it also differs from other CrOS EC
+tooling. Internally the EC uses a kelvin to celsius offset of a round
+273, so the current conversion is also not entirely accurate.
+
+Implement a custom conversion which preserves round values.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
-Thomas Weißschuh (5):
-      hwmon: (cros_ec) Implement custom kelvin to celsius conversions
-      hwmon: (cros_ec) Prepare the addition of custom groups
-      hwmon: (cros_ec) Split out cros_ec_hwmon_get_thermal_config()
-      hwmon: (cros_ec) Add support for displaying fan curves
-      hwmon: (cros_ec) Allow modification of fan curves
+ drivers/hwmon/cros_ec_hwmon.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
- Documentation/hwmon/cros_ec_hwmon.rst |   3 +
- drivers/hwmon/cros_ec_hwmon.c         | 248 +++++++++++++++++++++++++++++++++-
- 2 files changed, 244 insertions(+), 7 deletions(-)
----
-base-commit: 18825a69b1bf72ac6e80c6f45f59cac52745927d
-change-id: 20260521-cros_ec-hwmon-fan-curve-28530ab3a51e
+diff --git a/drivers/hwmon/cros_ec_hwmon.c b/drivers/hwmon/cros_ec_hwmon.c
+index 7c308b0a4b9e..f1b6c9c2d2a3 100644
+--- a/drivers/hwmon/cros_ec_hwmon.c
++++ b/drivers/hwmon/cros_ec_hwmon.c
+@@ -147,9 +147,23 @@ static bool cros_ec_hwmon_is_error_temp(u8 temp)
+ 	       temp == EC_TEMP_SENSOR_NOT_CALIBRATED;
+ }
+ 
++/* This differs slightly from the variant in units.h to avoid rounding inconsistencies. */
++#define CROS_EC_HWMON_ABSOLUTE_ZERO_MILLICELSIUS (-273000)
++
++static long cros_ec_hwmon_kelvin_to_millicelsius(long t)
++{
++	return t * MILLIDEGREE_PER_DEGREE + CROS_EC_HWMON_ABSOLUTE_ZERO_MILLICELSIUS;
++}
++
++static long cros_ec_hwmon_millicelsius_to_kelvin(long t)
++{
++	return DIV_ROUND_CLOSEST(t - CROS_EC_HWMON_ABSOLUTE_ZERO_MILLICELSIUS,
++				 MILLIDEGREE_PER_DEGREE);
++}
++
+ static long cros_ec_hwmon_temp_to_millicelsius(u8 temp)
+ {
+-	return kelvin_to_millicelsius((((long)temp) + EC_TEMP_SENSOR_OFFSET));
++	return cros_ec_hwmon_kelvin_to_millicelsius((((long)temp) + EC_TEMP_SENSOR_OFFSET));
+ }
+ 
+ static bool cros_ec_hwmon_attr_is_temp_threshold(u32 attr)
+@@ -228,7 +242,7 @@ static int cros_ec_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 								cros_ec_hwmon_attr_to_thres(attr),
+ 								&threshold);
+ 			if (ret == 0)
+-				*val = kelvin_to_millicelsius(threshold);
++				*val = cros_ec_hwmon_kelvin_to_millicelsius(threshold);
+ 		}
+ 	}
+ 
 
-Best regards,
---  
-Thomas Weißschuh <linux@weissschuh.net>
+-- 
+2.54.0
 
 
