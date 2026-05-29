@@ -1,51 +1,51 @@
-Return-Path: <linux-hwmon+bounces-14616-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14617-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GuFE9uzGWr3yQgAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14616-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:42:19 +0200
+	id sEjRMOG1GWovyggAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14617-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:50:57 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA218604F04
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:42:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B3E6050E8
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E48A3180083
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 15:33:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 986FA30A3EF7
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 15:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42B43E9C1F;
-	Fri, 29 May 2026 15:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657CD3E6386;
+	Fri, 29 May 2026 15:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="jctJe062"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Pfa4L/FK"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50DA3F928E;
-	Fri, 29 May 2026 15:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F251F363C69;
+	Fri, 29 May 2026 15:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780068402; cv=none; b=Fi1fpTAttYwbsHdOQY/Xj9/hU4kqvPiiivH5UhfsI5H/ZPRPs1PkkOUrkvt48NDISDqyrK1NPHRsOAEPtfW5qlzBkrCy66ZGks1yr0Y7LjwHXlw/06jpP9xxiLn7E0VSJABVItY+FYArhHN8NrhCGY653N3faL9AX1Zr4F97mCg=
+	t=1780068607; cv=none; b=MEzIhUxSooxG/gkkxo/3IlIUrRy0w4xLHfx6IGmKrl8jE8JlMqNhVhWGUnz3IiT3upWBrgGq8ZC2BNSndO4oDr+/4ML1VRkCZIR3A7TnxS+ue4XBaNwqLpUODEqJoqqqQ+TwHfR5C5dtTSvfiiR/Bs6otLPXT6I8o0STy9glLAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780068402; c=relaxed/simple;
-	bh=l2h6L9+8xpQj76sKZcSHGf0inZVWrk3HOuwkI1cwSSU=;
+	s=arc-20240116; t=1780068607; c=relaxed/simple;
+	bh=t8jvtGoTA6NsSG45gsni10zkQY1QqHrekli+F1qR+m4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jpJVkJCWu8mdPQJOkhYR0TJJAb34mp9BqWLTNFW03ygGBggRzEN3+Ql/VYzd+gaGqDtFuZ2gQ5JxF/fu+CweAAiq2T/jI0C9jjxk9idCWOBxkZhb8umyktkgGrwG5EUETkoWZXAv70zuOJqKOA5xnPYPQdXONasTb4L7K4N0O4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jctJe062; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=s5A3jpmJPrB2uwMj/bwJWOAfPNX91gWt1f9P7l0Wp3ogbaXqHYpWtBntjJt/gockczzg+mr0B0pc5/PUgHmX3+2MT+XL13+G65zmcDyoq6mXDGw3Z8bAG+XaDk2T5rivepTKFKQrABn+xfc7zOIjvCqOVM9n5OM9zC7nakDQiOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Pfa4L/FK; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 137F633EA;
-	Fri, 29 May 2026 08:26:35 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 632AD1C00;
+	Fri, 29 May 2026 08:30:00 -0700 (PDT)
 Received: from [10.57.26.238] (unknown [10.57.26.238])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B2D23FAF5;
-	Fri, 29 May 2026 08:26:33 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E9CC3F632;
+	Fri, 29 May 2026 08:29:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780068400; bh=l2h6L9+8xpQj76sKZcSHGf0inZVWrk3HOuwkI1cwSSU=;
+	t=1780068605; bh=t8jvtGoTA6NsSG45gsni10zkQY1QqHrekli+F1qR+m4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jctJe062Ocsi72FLYnrMsAlas8KPbHkbhS2ysefQ8uKAVvWVrEBCOe82UFr8Nqd+y
-	 HDMcz3y5oUHF+9BvmCRmJPiLhp0BSLPWMrAkLHhGbgIR/LA+YxZyjFl5cFfc5lxaDL
-	 LJiG9Fq7JgD7VQjnYzs2gt0Cqlpb5as8PSrPIjyA=
-Message-ID: <bfcfd7c9-8185-4ac5-83ab-3bc3a1a94990@arm.com>
-Date: Fri, 29 May 2026 16:26:31 +0100
+	b=Pfa4L/FKAb+5nrqjrCR+CTutNf8vkqUBDg8NLnw+djIKmp0z9ZJRRb8qsV/fb4oti
+	 pUcx/vlim8s7389kqGIwwdjIFxjSgOkIh1A6KkqD0SFSEWNIFbYRydHOeImOcnDlJN
+	 ELxFE21iHGzD/vR8lj4aU/H+N64SJ4IlxNuPFvmU=
+Message-ID: <c66d527a-17d3-4419-a0c4-676dc92bbe43@arm.com>
+Date: Fri, 29 May 2026 16:29:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -53,13 +53,12 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/10] dt-bindings: thermal: cooling-devices: Update
- support for 3 cells cooling device
-To: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>, rafael@kernel.org,
- daniel.lezcano@kernel.org
-Cc: Zhang Rui <rui.zhang@intel.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Lucas Stach <l.stach@pengutronix.de>,
+Subject: Re: [PATCH vs/3/4/ 00/11] Support cooling device with ID in the OF
+To: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: daniel.lezcano@kernel.org, Zhang Rui <rui.zhang@intel.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lucas Stach <l.stach@pengutronix.de>,
  Russell King <linux+etnaviv@armlinux.org.uk>,
  Christian Gmeiner <christian.gmeiner@gmail.com>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
@@ -79,35 +78,34 @@ Cc: Zhang Rui <rui.zhang@intel.com>, Rob Herring <robh@kernel.org>,
  Viresh Kumar <viresh.kumar@linaro.org>,
  Neil Armstrong <neil.armstrong@linaro.org>, Amit Kucheria
  <amitk@kernel.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>
+ linux-hwmon@vger.kernel.org
 References: <20260526140802.1059293-12-daniel.lezcano@oss.qualcomm.com>
- <20260526140802.1059293-22-daniel.lezcano@oss.qualcomm.com>
+ <a943706d-d413-4ed8-a0fd-a3234c66cd8d@oss.qualcomm.com>
+ <CAJZ5v0hG4aNrTR1j1DX+xv7cBNwsN4Y+qa3eFfXtLrrDBZ6kCA@mail.gmail.com>
+ <41eec804-5678-475d-b0b2-a5c0b3b005d4@oss.qualcomm.com>
 Content-Language: en-US
 From: Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <20260526140802.1059293-22-daniel.lezcano@oss.qualcomm.com>
+In-Reply-To: <41eec804-5678-475d-b0b2-a5c0b3b005d4@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[intel.com,kernel.org,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-14616-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,intel.com,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-14617-lists,linux-hwmon=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[39];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[arm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -117,82 +115,52 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt,etnaviv];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,arm.com:mid,arm.com:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DA218604F04
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email,arm.com:mid,arm.com:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 97B3E6050E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Rafael and Daniel,
 
+On 5/29/26 13:41, Daniel Lezcano wrote:
+> On 5/29/26 14:35, Rafael J. Wysocki wrote:
+>> Hi Daniel,
+>>
+>> On Fri, May 29, 2026 at 10:35 AM Daniel Lezcano
+>> <daniel.lezcano@oss.qualcomm.com> wrote:
+>>>
+>>>
+>>> Hi Rafael,
+>>>
+>>> On 5/26/26 16:08, Daniel Lezcano wrote:
+>>>
+>>> [ ... ]
+>>>
+>>>> ---
+>>>> Changelog:
+>>>>    - V4
+>>>>      - Reworked splitted functions to register a cooling device and
+>>>>        merged separately
+>>>
+>>> Are you fine with the thermal core changes in this series ?
+>>
+>> Generally, yes, I am, but let me have one more look at it.
+>>
+>>> Is it ok if I pick the series in my branch (and may be send a early 
+>>> PR) ?
+>>
+>> I have no comments, I'll respond with an Acked-by to it later today.
+>>
+>> Thanks!
+> 
+> Thanks
 
-On 5/26/26 15:08, Daniel Lezcano wrote:
-> From: Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>
-> 
-> Extend the thermal cooling device binding to support a 3 cells specifier
-> along with the 2 cells format.
-> 
-> Update #cooling-cells property to enum to support both 2 and 3 arguments.
-> 
-> Fix pwm-fan.yaml to restrict the number of cells to 'const: 2'
-> 
-> Signed-off-by: Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
->   Documentation/devicetree/bindings/hwmon/pwm-fan.yaml      | 3 ++-
->   .../bindings/thermal/thermal-cooling-devices.yaml         | 8 ++++++--
->   .../devicetree/bindings/thermal/thermal-zones.yaml        | 3 ++-
->   3 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml b/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
-> index a84cc3a4cfdc..6a24851fd80d 100644
-> --- a/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
-> +++ b/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
-> @@ -63,7 +63,8 @@ properties:
->       description: The PWM that is used to control the fan.
->       maxItems: 1
->   
-> -  "#cooling-cells": true
-> +  "#cooling-cells":
-> +    const: 2
->   
->   required:
->     - compatible
-> diff --git a/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml b/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
-> index b9022f1613d8..28f5818f1e60 100644
-> --- a/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
-> +++ b/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
-> @@ -44,10 +44,14 @@ select: true
->   properties:
->     "#cooling-cells":
->       description:
-> -      Must be 2, in order to specify minimum and maximum cooling state used in
-> +      Must be 2 or 3. If 2, specifies minimum and maximum cooling state used in
->         the cooling-maps reference. The first cell is the minimum cooling state
->         and the second cell is the maximum cooling state requested.
-> -    const: 2
-> +      If 3, the first cell specifies the thermal mitigation device specifier
-> +      index for devices that support multiple thermal mitigation mechanisms.
-> +      The two other cells are respectively the minimum cooling state and the
-> +      maximum cooling state.
-> +    enum: [2, 3]
->   
->   additionalProperties: true
->   
-> diff --git a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-> index 07d9f576ffe7..999ad40a20d5 100644
-> --- a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-> +++ b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-> @@ -211,7 +211,8 @@ patternProperties:
->                     device. Using the THERMAL_NO_LIMIT (-1UL) constant in the
->                     cooling-device phandle limit specifier lets the framework
->                     use the minimum and maximum cooling state for that cooling
-> -                  device automatically.
-> +                  device automatically. If three arguments are specified,
-> +                  the first argument is the cooling device specifier.
->   
->                 contribution:
->                   $ref: /schemas/types.yaml#/definitions/uint32
-
+I have re-ordered the patch 4 <-> 5 and the compilation issue goes away.
+If you decide to do that feel free to add my tag to the current patch
+04/10:
 
 Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+
+Regards,
+Lukasz
 
