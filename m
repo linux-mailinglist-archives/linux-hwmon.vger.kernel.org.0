@@ -1,51 +1,51 @@
-Return-Path: <linux-hwmon+bounces-14615-lists+linux-hwmon=lfdr.de@vger.kernel.org>
+Return-Path: <linux-hwmon+bounces-14616-lists+linux-hwmon=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-hwmon@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FYaDY62GWpCyggAu9opvQ
-	(envelope-from <linux-hwmon+bounces-14615-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:53:50 +0200
+	id 2GuFE9uzGWr3yQgAu9opvQ
+	(envelope-from <linux-hwmon+bounces-14616-lists+linux-hwmon=lfdr.de@vger.kernel.org>)
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:42:19 +0200
 X-Original-To: lists+linux-hwmon@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DC3605185
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:53:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA218604F04
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 17:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33BD235D34C6
-	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 15:32:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E48A3180083
+	for <lists+linux-hwmon@lfdr.de>; Fri, 29 May 2026 15:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE2F43CEFB;
-	Fri, 29 May 2026 15:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42B43E9C1F;
+	Fri, 29 May 2026 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FiBDSh56"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="jctJe062"
 X-Original-To: linux-hwmon@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758FD43C06A;
-	Fri, 29 May 2026 15:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50DA3F928E;
+	Fri, 29 May 2026 15:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780068339; cv=none; b=a6LKcoFJFkKx2iaPyw4xb7HwSgiIHrLQHINChbBItLuh7fh5tatKfrNzcBtfAvvYq889KjrDNW5OQF5cwviNR2Yrkw7AyQ52d2OXyDFYnFW1pEPnWO+4WULmWURcLqHMyYg0k2y6MHmRszjG2QeUHYTZiUbNigGtociRgFW4hhI=
+	t=1780068402; cv=none; b=Fi1fpTAttYwbsHdOQY/Xj9/hU4kqvPiiivH5UhfsI5H/ZPRPs1PkkOUrkvt48NDISDqyrK1NPHRsOAEPtfW5qlzBkrCy66ZGks1yr0Y7LjwHXlw/06jpP9xxiLn7E0VSJABVItY+FYArhHN8NrhCGY653N3faL9AX1Zr4F97mCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780068339; c=relaxed/simple;
-	bh=sNebAPAYrZbeC4nLbGieW9R1xvkfOHd4d2XSWM2VjcY=;
+	s=arc-20240116; t=1780068402; c=relaxed/simple;
+	bh=l2h6L9+8xpQj76sKZcSHGf0inZVWrk3HOuwkI1cwSSU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oCSYq946PFmeRnX6UOIuIKjPNj6leKf598umeLn3w4v299iEQDOz2hY+4nJzUOnD+hsoywpPbXJZ97Xwx1xGbib3iCgUqF8DC5vt7K7At2usX3QRYm5/aXYuYFy49z44EaWdEZePPgCALMWic76pJ5p9/cGdmIal21YDV8oxj0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FiBDSh56; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=jpJVkJCWu8mdPQJOkhYR0TJJAb34mp9BqWLTNFW03ygGBggRzEN3+Ql/VYzd+gaGqDtFuZ2gQ5JxF/fu+CweAAiq2T/jI0C9jjxk9idCWOBxkZhb8umyktkgGrwG5EUETkoWZXAv70zuOJqKOA5xnPYPQdXONasTb4L7K4N0O4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jctJe062; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BBE7133EA;
-	Fri, 29 May 2026 08:25:31 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 137F633EA;
+	Fri, 29 May 2026 08:26:35 -0700 (PDT)
 Received: from [10.57.26.238] (unknown [10.57.26.238])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 897883FAF5;
-	Fri, 29 May 2026 08:25:30 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B2D23FAF5;
+	Fri, 29 May 2026 08:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780068336; bh=sNebAPAYrZbeC4nLbGieW9R1xvkfOHd4d2XSWM2VjcY=;
+	t=1780068400; bh=l2h6L9+8xpQj76sKZcSHGf0inZVWrk3HOuwkI1cwSSU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FiBDSh56YZLRX/eBUiGNisrIH6kU+Dr0Nv85Ju8ZLOdxoi6UiNX1w5dLKkc4lElll
-	 W7+dA+v3izTCcLsbTLj7S7brUPbsAGSolMHTm/TTAHRLM/A2pwHu9Np3hpzppAoVD+
-	 Osh/DfD0W9r6mAc94G5mKLZGSDB8mNBuP0Qug6qc=
-Message-ID: <736518a8-0c81-4d48-ab73-bf83eb5ee98a@arm.com>
-Date: Fri, 29 May 2026 16:25:28 +0100
+	b=jctJe062Ocsi72FLYnrMsAlas8KPbHkbhS2ysefQ8uKAVvWVrEBCOe82UFr8Nqd+y
+	 HDMcz3y5oUHF+9BvmCRmJPiLhp0BSLPWMrAkLHhGbgIR/LA+YxZyjFl5cFfc5lxaDL
+	 LJiG9Fq7JgD7VQjnYzs2gt0Cqlpb5as8PSrPIjyA=
+Message-ID: <bfcfd7c9-8185-4ac5-83ab-3bc3a1a94990@arm.com>
+Date: Fri, 29 May 2026 16:26:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-hwmon@vger.kernel.org
 List-Id: <linux-hwmon.vger.kernel.org>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:linux-hwmon+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-hwmon+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/10] thermal/of: Support cooling device ID in
- cooling-spec
+Subject: Re: [PATCH v4 10/10] dt-bindings: thermal: cooling-devices: Update
+ support for 3 cells cooling device
 To: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>, rafael@kernel.org,
  daniel.lezcano@kernel.org
 Cc: Zhang Rui <rui.zhang@intel.com>, Rob Herring <robh@kernel.org>,
@@ -79,32 +79,35 @@ Cc: Zhang Rui <rui.zhang@intel.com>, Rob Herring <robh@kernel.org>,
  Viresh Kumar <viresh.kumar@linaro.org>,
  Neil Armstrong <neil.armstrong@linaro.org>, Amit Kucheria
  <amitk@kernel.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org
+ linux-hwmon@vger.kernel.org, Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>
 References: <20260526140802.1059293-12-daniel.lezcano@oss.qualcomm.com>
- <20260526140802.1059293-21-daniel.lezcano@oss.qualcomm.com>
+ <20260526140802.1059293-22-daniel.lezcano@oss.qualcomm.com>
 Content-Language: en-US
 From: Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <20260526140802.1059293-21-daniel.lezcano@oss.qualcomm.com>
+In-Reply-To: <20260526140802.1059293-22-daniel.lezcano@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[intel.com,kernel.org,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-14615-lists,linux-hwmon=lfdr.de];
+	FREEMAIL_CC(0.00)[intel.com,kernel.org,pengutronix.de,armlinux.org.uk,gmail.com,ffwll.ch,roeck-us.net,jms.id.au,codeconstruct.com.au,weissschuh.net,chromium.org,google.com,sntech.de,nvidia.com,linaro.org,vger.kernel.org,oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-14616-lists,linux-hwmon=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[36];
+	RCPT_COUNT_TWELVE(0.00)[39];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[arm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -114,92 +117,82 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-hwmon,dt,etnaviv];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,arm.com:mid,arm.com:dkim,qualcomm.com:email,cooling_spec.np:url]
-X-Rspamd-Queue-Id: 84DC3605185
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,arm.com:mid,arm.com:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DA218604F04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 
 On 5/26/26 15:08, Daniel Lezcano wrote:
-> Extend the cooling device specifier parsing to support an optional
-> cooling device identifier (cdev_id).
+> From: Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>
 > 
-> Two formats are now supported:
+> Extend the thermal cooling device binding to support a 3 cells specifier
+> along with the 2 cells format.
 > 
->    - Legacy format:
->          <&cdev lower upper>
+> Update #cooling-cells property to enum to support both 2 and 3 arguments.
 > 
->    - Indexed format:
->          <&cdev cdev_id lower upper>
+> Fix pwm-fan.yaml to restrict the number of cells to 'const: 2'
 > 
-> When the indexed format is used, both the device node and the
-> cdev_id must match in order to bind a cooling device to a thermal
-> zone. The legacy format continues to match on the device node only,
-> preserving backward compatibility.
-> 
-> Update the parsing logic accordingly to handle both formats and
-> extract the mitigation limits from the appropriate arguments.
-> 
-> This is a preparatory step for upcoming DT bindings describing
-> cooling devices using (device node, id) tuples instead of child
-> nodes.
-> 
-> No functional change for existing device trees.
-> 
+> Signed-off-by: Gaurav Kohli <gaurav.kohli@oss.qualcomm.com>
 > Signed-off-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 > ---
->   drivers/thermal/thermal_of.c | 26 ++++++++++++++++++++++----
->   1 file changed, 22 insertions(+), 4 deletions(-)
+>   Documentation/devicetree/bindings/hwmon/pwm-fan.yaml      | 3 ++-
+>   .../bindings/thermal/thermal-cooling-devices.yaml         | 8 ++++++--
+>   .../devicetree/bindings/thermal/thermal-zones.yaml        | 3 ++-
+>   3 files changed, 10 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-> index 3584024b76f5..100fd8a0c8ce 100644
-> --- a/drivers/thermal/thermal_of.c
-> +++ b/drivers/thermal/thermal_of.c
-> @@ -259,16 +259,34 @@ static bool thermal_of_get_cooling_spec(struct device_node *map_np, int index,
+> diff --git a/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml b/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
+> index a84cc3a4cfdc..6a24851fd80d 100644
+> --- a/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/pwm-fan.yaml
+> @@ -63,7 +63,8 @@ properties:
+>       description: The PWM that is used to control the fan.
+>       maxItems: 1
 >   
->   	of_node_put(cooling_spec.np);
+> -  "#cooling-cells": true
+> +  "#cooling-cells":
+> +    const: 2
 >   
-> -	if (cooling_spec.args_count < 2) {
-> -		pr_err("wrong reference to cooling device, missing limits\n");
-> +	/*
-> +	 * There are two formats:
-> +	 * - Legacy format :	<&cdev lower upper>
-> +	 * - New format    :	<&cdev cdev_id lower upper>
-> +	 *
-> +	 * With the new format, along with the device node pointer,
-> +	 * the cdev_id must match with the cooling device cdev_id in
-> +	 * order to bind
-> +	 */
-> +	if (cooling_spec.args_count < 2 || cooling_spec.args_count > 3) {
-> +		pr_err("Invalid number of cooling device parameters\n");
->   		return false;
->   	}
+>   required:
+>     - compatible
+> diff --git a/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml b/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
+> index b9022f1613d8..28f5818f1e60 100644
+> --- a/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
+> +++ b/Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
+> @@ -44,10 +44,14 @@ select: true
+>   properties:
+>     "#cooling-cells":
+>       description:
+> -      Must be 2, in order to specify minimum and maximum cooling state used in
+> +      Must be 2 or 3. If 2, specifies minimum and maximum cooling state used in
+>         the cooling-maps reference. The first cell is the minimum cooling state
+>         and the second cell is the maximum cooling state requested.
+> -    const: 2
+> +      If 3, the first cell specifies the thermal mitigation device specifier
+> +      index for devices that support multiple thermal mitigation mechanisms.
+> +      The two other cells are respectively the minimum cooling state and the
+> +      maximum cooling state.
+> +    enum: [2, 3]
 >   
->   	if (cooling_spec.np != cdev->np)
->   		return false;
+>   additionalProperties: true
 >   
-> -	c->lower = cooling_spec.args[0];
-> -	c->upper = cooling_spec.args[1];
-> +	if (cooling_spec.args_count == 3 &&
-> +	    cooling_spec.args[0] != cdev->cdev_id)
-> +		return false;
-> +
-> +	if (cooling_spec.args_count != 3) {
+> diff --git a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
+> index 07d9f576ffe7..999ad40a20d5 100644
+> --- a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
+> +++ b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
+> @@ -211,7 +211,8 @@ patternProperties:
+>                     device. Using the THERMAL_NO_LIMIT (-1UL) constant in the
+>                     cooling-device phandle limit specifier lets the framework
+>                     use the minimum and maximum cooling state for that cooling
+> -                  device automatically.
+> +                  device automatically. If three arguments are specified,
+> +                  the first argument is the cooling device specifier.
+>   
+>                 contribution:
+>                   $ref: /schemas/types.yaml#/definitions/uint32
 
-A bit odd to read the negation format while still having 'else'.
-
-> +		c->lower = cooling_spec.args[0];
-> +		c->upper = cooling_spec.args[1];
-> +	} else {
-> +		c->lower = cooling_spec.args[1];
-> +		c->upper = cooling_spec.args[2];
-> +	}
->   	c->weight = weight;
->   
->   	return true;
-
-Just a minor comment, which can be ignored, fill free to do so
 
 Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
 
